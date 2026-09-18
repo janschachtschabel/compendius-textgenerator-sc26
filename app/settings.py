@@ -172,14 +172,6 @@ class Settings(BaseSettings):
     def llm_fast_section_ids(self) -> list[str]:
         return _split_csv(self.llm_fast_sections)
 
-    @property
-    def b_api_chat_url(self) -> str:
-        return f"{self.b_api_base_url.rstrip('/')}/api/v1/llm/{self.b_api_provider}/chat/completions"
-
-    @property
-    def b_api_models_url(self) -> str:
-        return f"{self.b_api_base_url.rstrip('/')}/api/v1/llm/{self.b_api_provider}/models"
-
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
