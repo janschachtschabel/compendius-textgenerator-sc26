@@ -210,3 +210,15 @@ def test_metalink_from_a_foreign_host_is_not_fetched(tmp_path: Path, sources: di
     report = _sync(tmp_path, ForeignCatalog(offers, sources), FakeDownloader(sources)).run(BOOTSTRAP)
     assert ForeignCatalog.fetched == []
     assert report.downloaded == [] and any("evil.example" in error for error in report.errors)
+
+
+def test_partial_downloads_of_superseded_dumps_are_removed(tmp_path: Path, sources: dict[str, Path]) -> None:
+    _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    stale = tmp_path / "klexikon_de_sample_2026-01.zim.part"  # an older dump that never finished
+    pending = tmp_path / "klexikon_de_sample_2026-09.zim.part"  # a newer dump the next run resumes
+    foreign = tmp_path / "freecodecamp_de_all_2026-01.zim.part"  # no subscription of this profile: not ours to judge
+    for part in (stale, pending, foreign):
+        part.write_bytes(b"x" * 16)
+    report = _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    assert not stale.exists() and pending.exists() and foreign.exists()
+    assert report.pruned == [stale.name]

@@ -30,6 +30,7 @@ from app.sources.zim.archive import ZimArchive, dump_date
 from app.sources.zim.catalog import OPDS_DEFAULT_URL, CatalogEntry, KiwixCatalog, Metalink
 from app.sources.zim.downloader import (
     DEFAULT_ALLOWED_HOSTS,
+    PART_SUFFIX,
     Downloader,
     DownloadError,
     DownloadProgress,
@@ -134,6 +135,7 @@ class ZimSync:
         for sub in subscriptions:
             self._update(sub, state, options, report)
         self._prune(state, report)
+        self._prune_partials(subscriptions, state, report)
         state.updated_at = self._clock().isoformat()
         write_active(self._zim_dir, state)
         report.finished_at = self._clock().isoformat()
@@ -242,6 +244,24 @@ class ZimSync:
                     continue
             report.pruned.append(retired.file)
         state.retired = keep
+
+    def _prune_partials(self, subscriptions: Sequence[Subscription], state: ActiveState, report: SyncReport) -> None:
+        """Delete ``.part`` files of dumps no newer than the active one: no run will resume them (up to 14 GB each).
+
+        Files of other profiles' subscriptions and of newer dumps stay; a newer one is resumed by the next run.
+        """
+        for part in sorted(self._zim_dir.glob(f"*.zim{PART_SUFFIX}")):
+            target = part.name.removesuffix(PART_SUFFIX)
+            sub = next((s for s in subscriptions if s.matches_file(target)), None)
+            active = state.archives.get(sub.id) if sub is not None else None
+            if active is None or not dump_date(target) or dump_date(target) > dump_date(active.file):
+                continue
+            try:
+                part.unlink()
+            except OSError as exc:
+                log.warning("cannot delete %s yet: %s", part.name, exc)
+                continue
+            report.pruned.append(part.name)
 
     # -- helpers ---------------------------------------------------------------------------------
     def _describe(self, path: Path, sub: Subscription) -> ActiveArchive:
