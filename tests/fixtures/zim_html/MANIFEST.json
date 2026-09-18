@@ -1,0 +1,185 @@
+{
+  "note": "Article HTML from Kiwix ZIM dumps (openZIM/mwoffliner), CC BY-SA 4.0. Used only to build small sample archives for offline tests.",
+  "entries": [
+    {
+      "project": "klexikon",
+      "title": "Brille",
+      "path": "Brille",
+      "file": "klexikon/Brille.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Bruchrechnung",
+      "path": "Bruchrechnung",
+      "file": "klexikon/Bruchrechnung.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Demokratie",
+      "path": "Demokratie",
+      "file": "klexikon/Demokratie.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Licht",
+      "path": "Licht",
+      "file": "klexikon/Licht.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Linse",
+      "path": "Linse",
+      "file": "klexikon/Linse.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Optik",
+      "path": "Optik",
+      "file": "klexikon/Optik.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Photosynthese",
+      "path": "Photosynthese",
+      "file": "klexikon/Photosynthese.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "klexikon",
+      "title": "Regenbogen",
+      "path": "Regenbogen",
+      "file": "klexikon/Regenbogen.html",
+      "zim": "klexikon_de_all_maxi_2026-08.zim",
+      "zim_date": "2026-08-07",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Augenoptiker",
+      "path": "Augenoptiker",
+      "file": "wikipedia/Augenoptiker.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Brechung (Physik)",
+      "path": "Brechung_(Physik)",
+      "file": "wikipedia/Brechung_(Physik).html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Deutsche Gesellschaft für angewandte Optik",
+      "path": "Deutsche_Gesellschaft_für_angewandte_Optik",
+      "file": "wikipedia/Deutsche_Gesellschaft_f_r_angewandte_Optik.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Ernst Abbe",
+      "path": "Ernst_Abbe",
+      "file": "wikipedia/Ernst_Abbe.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Geometrische Optik",
+      "path": "Geometrische_Optik",
+      "file": "wikipedia/Geometrische_Optik.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Lichtmikroskop",
+      "path": "Lichtmikroskop",
+      "file": "wikipedia/Lichtmikroskop.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Optik",
+      "path": "Optik",
+      "file": "wikipedia/Optik.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Optik (Begriffsklärung)",
+      "path": "Optik_(Begriffsklärung)",
+      "file": "wikipedia/Optik_(Begriffskl_rung).html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Programmiersprache",
+      "path": "Programmiersprache",
+      "file": "wikipedia/Programmiersprache.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Schutz vor optischer Strahlung",
+      "path": "Schutz_vor_optischer_Strahlung",
+      "file": "wikipedia/Schutz_vor_optischer_Strahlung.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Sinfonie",
+      "path": "Sinfonie",
+      "file": "wikipedia/Sinfonie.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "project": "wikipedia",
+      "title": "Technische Optik",
+      "path": "Technische_Optik",
+      "file": "wikipedia/Technische_Optik.html",
+      "zim": "wikipedia_de_all_nopic_2026-01.zim",
+      "zim_date": "2026-01-15",
+      "license": "CC BY-SA 4.0"
+    }
+  ]
+}

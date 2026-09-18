@@ -1,0 +1,609 @@
+{
+ "references": [
+  {
+   "ref": {
+    "repo": "local",
+    "id": "f1f89a13-37de-4a8f-94a2-603bf431b99b",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Optik_1614987800864",
+   "title": "Optik",
+   "modifiedAt": "2026-09-17T19:23:03.772Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Fachliche News"
+    ],
+    "ccm:wwwurl": [
+     "https://www.geogebra.org/m/PzBHcpNG"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/0f519bd5-069c-4d32-b6d3-a373ac96724c"
+    ],
+    "cclom:general_description": [
+     "Faszinierende Phänomene aus der Optik"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "Phänomene",
+     "Spiegel",
+     "Reflexion",
+     "Spiegelbild",
+     "Brechung",
+     "Wölbspiegel",
+     "Totalreflexion",
+     "Linsen",
+     "Beugung",
+     "Farben",
+     "Farbmischung",
+     "Spektren",
+     "GeoGebra"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_NC_SA"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/f1f89a13-37de-4a8f-94a2-603bf431b99b"
+   },
+   "originalId": "4bfa7693-0764-4dca-9720-c5fb0b8892d6",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "454327ba-848e-4245-b89a-2d8d68eb3dc0",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Licht_1692186176752",
+   "title": "Unterrichtsreihe zum Licht",
+   "modifiedAt": "2026-09-17T19:23:04.952Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Astronomie",
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Unterrichtsreihe zum Licht"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Wiki (dynamisch)",
+     "Material",
+     "Unterrichtsidee"
+    ],
+    "ccm:wwwurl": [
+     "https://unterrichten.zum.de/wiki/Licht"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/6b9748e4-fb3b-4082-ae08-c7a11c717256",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/1846d876-d8fd-476a-b540-b8ffd713fedb",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/94222751-6c90-4623-9c7e-09e21d885599"
+    ],
+    "cclom:general_description": [
+     "Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/46014",
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Astronomie",
+     "Sonnenfinsternis"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_SA"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/454327ba-848e-4245-b89a-2d8d68eb3dc0"
+   },
+   "originalId": "525c9902-bfd2-4f0d-a090-7f88137bbd6e",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "f3ae3d5b-1180-4160-aea1-3ab0cf4596e0",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Stationsarbeit zur Optik_1603117169288",
+   "title": "Stationsarbeit zur Optik",
+   "modifiedAt": "2026-08-25T12:37:12.629Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik",
+     "Biologie"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Stationsarbeit zur Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt"
+    ],
+    "ccm:wwwurl": [
+     "https://www.tutory.de/bereitstellung/dokument/02533634-a664-4805-91d6-325976ef7313"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78"
+    ],
+    "cclom:general_description": [
+     "1 Beschrifte  das Augenmodell mit den folgenden Begriffen:  Netzhaut - Linse - Muskel - Pupille - Hornhaut 2 Vergleiche  die Teile des Auges mit denen einer Lochkamera. Auge Lochkamera Linse Netzhaut Pupille 3 Wie sieht die Pupille bei Helligkeit aus, wie bei Dunkelheit?  Ordne zu . Helligkeit - Dunkelheit Erkläre  das Phänomen. 4 Zusatzaufgabe: Was ist im Auge für Farbsehen und was für das Hell-Dunkel-Sehen verantwortlich?  Physik Angaben zu den Urhebern und Lizenzbedingungen der einzelnen Bestandteile dieses Dokuments finden Sie unter  https://www.tutory.de/bereitstellung/dokument/stationsarbeit-zur-optik-1"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460",
+     "http://w3id.org/openeduhub/vocabs/discipline/080"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Auge",
+     "Netzhaut",
+     "Pupille",
+     "Linse",
+     "Lochkamera",
+     "Stationenlernen",
+     "Stationenarbeit",
+     "Selbstlernstationen"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_0"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/f3ae3d5b-1180-4160-aea1-3ab0cf4596e0"
+   },
+   "originalId": "ac66224b-42b0-4676-a53d-71b058dc780b",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "3ecfebce-cfc3-4e3c-bfa9-54aec5f4e130",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Suchgitter Optik_1692538461936",
+   "title": "Suchgitter Optik",
+   "modifiedAt": "2026-09-17T19:23:07.355Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Suchgitter Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt"
+    ],
+    "ccm:wwwurl": [
+     "https://www.tutory.de/entdecken/dokument/suchgitter-optik"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78"
+    ],
+    "cclom:general_description": [
+     "Finde alle optischen Begriffe in diesem Suchgitter zum Thema Optik."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "Rätsel",
+     "Suchgitter"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_SA"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/3ecfebce-cfc3-4e3c-bfa9-54aec5f4e130"
+   },
+   "originalId": "fa68de48-7ef3-4970-942e-e2668e3eb7b7",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "30af1c0d-d225-47fc-b994-6607b935c4c9",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Stationsarbeit zur Optik_1692497732979",
+   "title": "Stationsarbeit zur Optik",
+   "modifiedAt": "2023-08-20T02:15:40.358Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Stationsarbeit zur Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt"
+    ],
+    "ccm:wwwurl": [
+     "https://www.tutory.de/entdecken/dokument/stationsarbeit-zur-optik"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78"
+    ],
+    "cclom:general_description": [
+     "Arbeitsblatt - Stationsarbeit zur Optik - Physik - tutory.de [...]"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Lochkamera",
+     "Stationenarbeit",
+     "Stationenlernen",
+     "Selbstlernstationen",
+     "Stationen",
+     "tutory"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_0"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/30af1c0d-d225-47fc-b994-6607b935c4c9"
+   },
+   "originalId": "d5d9ff0c-7d58-4dbe-8053-54c34488f490",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "e4640668-f482-4c6a-9998-eec0c1bdde3e",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Stationsarbeit zur Optik_1603117044175",
+   "title": "Stationsarbeit zur Optik",
+   "modifiedAt": "2022-09-25T08:25:57.068Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Stationsarbeit zur Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt"
+    ],
+    "ccm:wwwurl": [
+     "https://www.tutory.de/bereitstellung/dokument/32684fc2-3cc3-4430-8560-43f68bd836a2"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78"
+    ],
+    "cclom:general_description": [
+     "1 Bau einer Lochkamera Schaue  dir die unten abgebildete Anleitung  an . Baue  mithilfe der Materialien im Korb 1 deine eigene Lochkamera. Hinweis Die Nägel befinden sich nicht im Korb. Hole sie dir vorne bei der Lehrkraft ab. Achtung!  Gehe vorsichtig mit den Nägeln um, damit du dich nicht verletzt. Bildunterschrift/Quelle Bohre  dem dünnen Nagel ein Loch in die Mitte der Pappscheibe. Klebe  die Pappscheibe auf ein Ende der größeren Pappröhre. Klebe  das Transparentpapier auf ein Ende der kleineren Pappröhre. Stecke  die kleinere Pappröhre mit dem Transparentpapier voran in die größere Pappröhre. Fertig! 2 Versuche mit der Lochkamera Führe  die folgenden Versuche  durch . Entwickle  für jeden Teilversuch eine  Je-desto-Beziehnung . Beachte Suche dir für jeden Versuch denselben Ausgangspunkt und stelle die Lochkamera so ein, dass du die Kerze scharf siehst.  Achtung!  Gehe mit der Kerze vorsichtig um, damit du dich nicht verbrennst! Physik Seite  1 / 2 Angaben zu den Urhebern und Lizen"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Lochkamera",
+     "Station",
+     "Stationenarbeit",
+     "Stationenlernen",
+     "Selbstlernstationen",
+     "Bauanleitung",
+     "tutory"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_0"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/e4640668-f482-4c6a-9998-eec0c1bdde3e"
+   },
+   "originalId": "ba80f021-0a14-461d-a34d-2ded15b44fc0",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "c1c5f25d-e125-4f2b-a069-261f2a45c3e8",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Wiederholung der Inhalte mithilfe von Quizfragen_1596562322585",
+   "title": "Wiederholung der Inhalte mithilfe von Quizfragen",
+   "modifiedAt": "2022-06-21T17:03:26.809Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Mediendidaktik",
+     "Physik",
+     "Pädagogik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "cclom:title": [
+     "Wiederholung der Inhalte mithilfe von Quizfragen"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Unterrichtsplanung",
+     "Übungsmaterial"
+    ],
+    "ccm:wwwurl": [
+     "https://cloud.schulcampus-rlp.de/edu-sharing/components/render/b30ca19a-bca1-4a67-b69a-7a52b09e47f0"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/7381f17f-50a6-4ce1-b3a0-9d85a482eec0",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/a33ef73d-9210-4305-97f9-7357bbf43486"
+    ],
+    "cclom:general_description": [
+     "Das Unterrichtsbeispiel richtet sich an Schülerinnen und Schüler der Klassenstufe 5 bis 13 und befasst sich praxisorientiert mit dem onlinegestützen Lernen von Inhalten am Ende einer Lerneinheit. Schritt für Schritt erläutert der Autor, wie in Schulgruppen Quizfragen gemeinsam erstellt, mittels Tabellen in die App Socrative importiert und anschließend online gespielt werden können. Zusätzlich wird eine alternative Spielform vorgeschlagen. Das Unterrichtsbeispiel orientiert sich an der Sendung \"Wer wird Millionär\", die Beispieltabellen beinhalten Fragen zum Thema Schall und Optik, Klasse 7."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/400",
+     "http://w3id.org/openeduhub/vocabs/discipline/460",
+     "http://w3id.org/openeduhub/vocabs/discipline/440"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cclom:general_keyword": [
+     "Quiz",
+     "App",
+     "Lernen",
+     "individuelles Lernen",
+     "Physik"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/c1c5f25d-e125-4f2b-a069-261f2a45c3e8"
+   },
+   "originalId": "eb274ad5-f96c-4a1e-9501-a73bd8bbf6ed",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "756ec0fa-2694-417c-8c18-e79f6399c836",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Optik — Grundwissen Physik - 1",
+   "title": "Optik — Grundwissen Physik",
+   "modifiedAt": "2022-09-08T08:42:54.722Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "cclom:title": [
+     "Optik — Grundwissen Physik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Lehrbuch und Grundlagenwerk (auch E-Book)"
+    ],
+    "ccm:wwwurl": [
+     "https://www.grund-wissen.de/physik/optik/index.html"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/a5897142-bf57-4cd0-bcd9-7d0f1932e87a"
+    ],
+    "cclom:general_description": [
+     "In diesem Kapitel zur Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cclom:general_keyword": [
+     "Optik"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_NC_ND"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/756ec0fa-2694-417c-8c18-e79f6399c836"
+   },
+   "originalId": "bcce209b-87c3-4924-abf8-07eeb6c12ce0",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "45cb1a2d-0509-4d25-b3d0-4f3161634b85",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Optik_1614907726103",
+   "title": "Optik mit GeoGebra",
+   "modifiedAt": "2022-09-26T08:24:07.429Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "cclom:title": [
+     "Optik mit GeoGebra"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Simulation",
+     "Animation"
+    ],
+    "ccm:wwwurl": [
+     "https://www.geogebra.org/m/QxdDUY5z"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/2e4157ad-e29a-4f10-b4e6-370e0fd59d26",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/2e67ce4e-49ce-468b-bd94-96a74e4832aa"
+    ],
+    "cclom:general_description": [
+     "Eine Sammlung von GeoGebradateien zu verschiedenen Themen aus dem Gebiet der Optik."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "Reflexion",
+     "Brechung",
+     "Wellenoptik",
+     "Farben",
+     "GeoGebra"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_NC_SA"
+    ]
+   },
+   "mimetype": "text/plain",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/45cb1a2d-0509-4d25-b3d0-4f3161634b85"
+   },
+   "originalId": "7424bea3-7471-4e0d-a62c-931030821294",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "11e4a379-2fe9-4d4d-85aa-7753401c89ee",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "dwu-Unterrichtsmaterialien Physik - Optik - 1",
+   "title": "dwu-Unterrichtsmaterialien Optik",
+   "modifiedAt": "2022-12-06T11:30:22.438Z",
+   "properties": {
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "dwu-Unterrichtsmaterialien Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt",
+     "Simulation",
+     "Animation"
+    ],
+    "ccm:wwwurl": [
+     "https://dwu-unterrichtsmaterialien.de/umapop.htm"
+    ],
+    "cclom:general_description": [
+     "Eine Sammlung von Arbeitsblättern/Folien und Animationen rund um das Thema Optik."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "ccm:commonlicense_key": [
+     "CUSTOM"
+    ],
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/2e4157ad-e29a-4f10-b4e6-370e0fd59d26",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/2e67ce4e-49ce-468b-bd94-96a74e4832aa"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "OHP"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/11e4a379-2fe9-4d4d-85aa-7753401c89ee"
+   },
+   "originalId": "d9ad2f92-4bcf-4675-8b9a-8f4b86f398a6",
+   "isPublic": true
+  }
+ ],
+ "pagination": {
+  "total": 16,
+  "from": 0,
+  "count": 10
+ }
+}

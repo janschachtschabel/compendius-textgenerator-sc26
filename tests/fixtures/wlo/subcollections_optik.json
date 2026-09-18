@@ -1,0 +1,207 @@
+{
+ "collections": [
+  {
+   "ref": {
+    "repo": "local",
+    "id": "f35c17d1-a29e-4b26-9d22-802682fad43d",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:map",
+   "name": "Geometrische Optik",
+   "title": "Geometrische Optik",
+   "modifiedAt": "2025-07-17T14:04:14.582Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "ccm:collectionshorttitle": [
+     ""
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "cm:title": [
+     "Geometrische Optik"
+    ],
+    "ccm:collectiontype": [
+     "EDITORIAL"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cm:description": [
+     "Die geometrische Optik nutzt das physikalische Modell des Lichtstrahls: Licht besteht aus unendlich vielen, unendlich feinen Lichtstrahlen, die sich geradlinig im Raum ausbreiten. In den meisten Fällen ist es völlig ausreichend, nur einzelne dieser Lichtstrahlen zu zeichnen. Mit der geometrischen Optik lassen sich grundlegende Phänomene aus dem Alltag wie die Reflexion und Brechung von Licht oder die Entstehung von Schatten gut erklären."
+    ],
+    "cclom:general_keyword": [
+     "In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert."
+    ]
+   },
+   "mimetype": "application/x-directory",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/f35c17d1-a29e-4b26-9d22-802682fad43d"
+   },
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "95f2002f-1745-4b47-889d-8376af38fe41",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:map",
+   "name": "Farben",
+   "title": "Farben",
+   "modifiedAt": "2025-07-17T14:01:29.331Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "cm:title": [
+     "Farben"
+    ],
+    "ccm:collectiontype": [
+     "EDITORIAL"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cm:description": [
+     "Die Welt um uns herum besteht aus Farben. Wie kommt das eigentlich? Das Licht selbst kann aus unterschiedlichen Farben bestehen. Immer dann, wenn “alle” Farben gleichzeitig von einer Lichtquelle ausgesandt werden, wirkt das Licht für uns weiß. Aus diesem Grund lässt weißes Licht sich auch mit Hilfe eines Prismas in die Spektralfarben zerlegen - den gleichen Effekt kannst du bei einem Regenbogen beobachten."
+    ],
+    "ccm:collectionshorttitle": [
+     "Farben"
+    ],
+    "cclom:general_keyword": [
+     "additiven Farbmischung",
+     "Subtraktive Farbmischung",
+     "lichtempfindlichen Zapfen",
+     "Zerlegung von Sonnenlicht",
+     "Prisma",
+     "Weißes Licht",
+     "Spektralfarben",
+     "Elektromagnetisches Spektrum"
+    ]
+   },
+   "mimetype": "application/x-directory",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/95f2002f-1745-4b47-889d-8376af38fe41"
+   },
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "bf729405-18ff-440b-9d5b-dd466ff563c3",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:map",
+   "name": "Wellenoptik",
+   "title": "Wellenoptik",
+   "modifiedAt": "2025-10-09T07:22:54.438Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe II"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "cm:title": [
+     "Wellenoptik"
+    ],
+    "ccm:collectiontype": [
+     "EDITORIAL"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cm:description": [
+     "In der Wellenoptik wird Licht als elektromagnetische Welle beschrieben, die sich geradlinig im Raum ausbreitet. Durch diese Beschreibung von Licht können Interferenzphänomene erklärt werden wie die Beugung am Einfach- und Doppelspalt oder die Aufspaltung von Licht in seine Spektralfarben an einer CD-Rom. Die Wellenoptik nutzt dabei mathematisches Handwerkzeug, das auch zur Beschriebung anderer Wellenarten genutzt wird."
+    ],
+    "ccm:collectionshorttitle": [
+     "Wellenoptik"
+    ],
+    "cclom:general_keyword": [
+     "Als Wellenoptik wird der Bereich der Optik bezeichnet",
+     "der von der Wellennatur des Lichts handelt.",
+     "Wellenmodell des Lichts"
+    ]
+   },
+   "mimetype": "application/x-directory",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/bf729405-18ff-440b-9d5b-dd466ff563c3"
+   },
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "d8b1849b-26a2-4d08-8dd3-0e0cb733113b",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:map",
+   "name": "Menschliches Auge",
+   "title": "Menschliches Auge",
+   "modifiedAt": "2025-10-09T07:25:03.381Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "cm:title": [
+     "Menschliches Auge"
+    ],
+    "ccm:collectiontype": [
+     "EDITORIAL"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cm:description": [
+     "Das menschliche Auge ist unser wahrscheinlich wichtigstes Sinnesorgan: Über das Auge nehmen wir die Welt wahr, erkennen Formen und Farben. Das Auge erfüllt also wichtige biologische Funktionen. Unter physikalischen Gesichtspunkten betrachtet besteht das Auge im Wesentlichen aus einer Sammellinse, die einen entfernten Gegenstand auf die Netzhaut abbildet. Mit diesem Wissen lässt sich der Prozess des Sehens physikalisch erklären."
+    ],
+    "ccm:collectionshorttitle": [
+     ""
+    ],
+    "cclom:general_keyword": [
+     "scharfes Sehen",
+     "Netzhaut",
+     "Akkomodation",
+     "Sehfehler",
+     "Augenlinse",
+     "Linse mit veränderbarer Brennweite",
+     "Iris",
+     "Pupille",
+     "lichtempfindlichen Zapfen"
+    ]
+   },
+   "mimetype": "application/x-directory",
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/d8b1849b-26a2-4d08-8dd3-0e0cb733113b"
+   },
+   "isPublic": true
+  }
+ ]
+}

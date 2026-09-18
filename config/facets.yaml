@@ -1,0 +1,66 @@
+# Facetten-Deklaration (siehe PLAN.md, Abschnitt 4.6).
+# Wertelisten sind Vorschläge und redaktionell änderbar. "allowed_slots" nennt die Bausteine
+# (Slot-Schlüssel), in denen eine Facette zulässig ist; "required_in" die Bausteine, in denen
+# sie Pflicht ist. "minimal" markiert die Facetten, die bei FACETS_LEVEL=minimal annotiert werden.
+facets:
+  Zeitbezug:
+    values: [historisch, gegenwärtig, prospektiv]
+    allowed_slots: [entwicklung_ausblick]
+    required_in: [entwicklung_ausblick]
+    cardinality: "1"
+    minimal: true
+  Evidenzgrad:
+    values: [belegt, Schlussfolgerung, Annahme, Prognose]
+    allowed_slots: [gesellschaftlicher_kontext, entwicklung_ausblick, beruf_wirtschaft, praxis]
+    required_in: []
+    cardinality: "1"
+    default: belegt
+    minimal: true
+  Haltbarkeit:
+    values: [stabil, volatil]
+    allowed_slots: [entwicklung_ausblick, akteure, beruf_wirtschaft, bildung, regularien, praxis]
+    required_in: []
+    cardinality: "1"
+    default: stabil
+  Bildungsstufe:
+    values: [Elementar, Primar, Sek I, Sek II, Hochschule, Berufliche Bildung, Erwachsenenbildung]
+    allowed_slots: [themendefinition, systematik, fachinhalte, gesellschaftlicher_kontext, beruf_wirtschaft, bildung, praxis]
+    required_in: [bildung]
+    cardinality: "1..n"
+    minimal: true
+  Querschnittsthema:
+    values: [Nachhaltigkeit, Digitalisierung, Demokratiebildung, Gesundheit, Medienbildung, Berufsorientierung, Sprachbildung, Inklusion]
+    allowed_slots: [themendefinition, gesellschaftlicher_kontext, entwicklung_ausblick, bildung, querschnitt]
+    required_in: []
+    cardinality: "0..n"
+  Akteursfunktion:
+    values: [Rahmensetzung, Wissenschaft & Entwicklung, Bildung, Vernetzung & Fachgebietsentwicklung]
+    allowed_slots: [akteure]
+    required_in: [akteure]
+    cardinality: "1..n"
+  Geltungsebene:
+    values: [EU, Bund, Land, Organisation, international]
+    allowed_slots: [regularien]
+    required_in: [regularien]
+    cardinality: "1..n"
+    minimal: true
+  Regelungsgegenstand:
+    values: [Sicherheit, Datenschutz, Zulassung, Qualität, Bildung, Umwelt, Arbeitsschutz]
+    allowed_slots: [regularien]
+    required_in: []
+    cardinality: "0..n"
+  Domäne:
+    values: []
+    allowed_slots: [praxis, quellen]
+    required_in: []
+    cardinality: "0..n"
+  Zugang:
+    values: [frei, registrierungspflichtig, kostenpflichtig]
+    allowed_slots: [quellen]
+    required_in: [quellen]
+    cardinality: "1"
+  Vertrauensgrad:
+    values: [hoch, mittel, gering]
+    allowed_slots: [quellen]
+    required_in: [quellen]
+    cardinality: "1"

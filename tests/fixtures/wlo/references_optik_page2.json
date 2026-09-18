@@ -1,0 +1,399 @@
+{
+ "references": [
+  {
+   "ref": {
+    "repo": "local",
+    "id": "e99949a2-248a-46a0-ac7e-7d6f4f60daed",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "DLR_School_Lab - Lernmodul_ Licht - 1",
+   "title": "DLR_School_Lab - Lernmodul: Licht",
+   "modifiedAt": "2022-09-15T06:31:13.629Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "cclom:title": [
+     "DLR_School_Lab - Lernmodul: Licht"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Unterrichtsbaustein",
+     "Kurs"
+    ],
+    "ccm:wwwurl": [
+     "https://www.dlr.de/schoollab/desktopdefault.aspx/tabid-17395/"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/5098cf0b-1c12-4a1b-a6d3-b3f29621e11d",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/4e16015a-7862-49ed-9b5e-6c1c6e0ffcd1"
+    ],
+    "cclom:general_description": [
+     "Ein umfangreiches Lernmodul rund um das Thema Licht von der DLR."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "Licht",
+     "Farben",
+     "Regenbogen",
+     "Sonne",
+     "Wellenlänge",
+     "infrarot"
+    ],
+    "ccm:commonlicense_key": [
+     "COPYRIGHT_FREE"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/e99949a2-248a-46a0-ac7e-7d6f4f60daed"
+   },
+   "originalId": "836aa7c1-ccce-4c88-9784-e6882100f3d9",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "fab5617f-7c03-4fae-9a46-2662a96e6de0",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Homepage der Physik-Didaktik an der HU Berlin - 1",
+   "title": "Phänomenbasierter Anfangsunterricht Optik",
+   "modifiedAt": "2022-09-15T06:31:56.048Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Phänomenbasierter Anfangsunterricht Optik"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Arbeitsblatt",
+     "Experiment (Lehr- und Lernmaterial)",
+     "Unterrichtseinheit und -sequenz",
+     "Pädagogische Methode, Konzept"
+    ],
+    "ccm:wwwurl": [
+     "http://didaktik.physik.hu-berlin.de/material/PbPU_Anfangsoptik.html"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/36e68792-6159-481d-a97b-2c00901f4f78",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/4735c61a-429b-4909-9f3c-cbf975e2aa0e",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/ef58097d-c1de-4e6a-b4da-6f10e3716d3d",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/477115fd-5042-4174-ac39-7c05f8a24766"
+    ],
+    "cclom:general_description": [
+     "Diese an der HU Berlin entwickelte Unterrichtseinheit für den Anfangsunterricht in der Optik entwickelt tragfähige Vorstellungen zur geometrischen Optik entlang des Prinzips Ameise, bei dem die Schüler:innen sich gedanklich an den Entstehungsort des Bildes versetzen. Sie wurde im Rahmen des SINUS-Projekts entwickelt."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Didaktik",
+     "Physik",
+     "Optik",
+     "Lehrer",
+     "Lehre",
+     "Curriculum",
+     "Lilienthal",
+     "Internet",
+     "distance learning",
+     "Physikunterricht",
+     "GDCP",
+     "Feynman",
+     "Fermat",
+     "Fortbildungen",
+     "Foucault",
+     "Pendel",
+     "Zeiger",
+     "Ph&auml;nomen",
+     "Spielzeug",
+     "Sehen",
+     "Wahrnehmung",
+     "Foulcault",
+     "Pendel",
+     "optik",
+     "zeiger",
+     "fermat",
+     "anfangsoptik",
+     "sinus",
+     "Auge"
+    ],
+    "ccm:commonlicense_key": [
+     "COPYRIGHT_FREE"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/fab5617f-7c03-4fae-9a46-2662a96e6de0"
+   },
+   "originalId": "b54ec24e-7eae-4155-8bba-7150771742db",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "b8f05049-6a44-4dd3-a4f9-d379dd75c149",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Steinphysik - Programmieren und Aufgaben fr den Physikunterricht - 3 - 1",
+   "title": "Steinphysik - Physik-Geschichten aus Bad Einstein",
+   "modifiedAt": "2022-09-08T08:30:43.859Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I"
+    ],
+    "cclom:title": [
+     "Steinphysik - Physik-Geschichten aus Bad Einstein"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "sonstiges Buch und E-Book",
+     "Übungsmaterial"
+    ],
+    "ccm:wwwurl": [
+     "https://steinphysik.de/physik-geschichten/"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/01551356-a6a3-44fc-9662-7d366d7af0ac",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/a33ef73d-9210-4305-97f9-7357bbf43486"
+    ],
+    "cclom:general_description": [
+     "Ein Aufgabenbuch mit 223 Aufgaben und Lösungen für Physiklehrer und Physikschüler der Sekundarstufe I."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+    ],
+    "cclom:general_keyword": [
+     "Optik",
+     "Mechanik",
+     "Aufgaben",
+     "Stein Physik",
+     "Elektrik",
+     "Wärmelehre"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_NC_SA"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/b8f05049-6a44-4dd3-a4f9-d379dd75c149"
+   },
+   "originalId": "53581c97-c14e-4f00-980d-8f2a4a8d7fde",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "eb7de880-73cc-4994-a2d2-0a41c7f70ff1",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Die Geschichte der Leuchtmittel",
+   "title": "Die Geschichte der Leuchtmittel",
+   "modifiedAt": "2022-09-15T06:30:59.357Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "cclom:title": [
+     "Die Geschichte der Leuchtmittel"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Fachliche News"
+    ],
+    "ccm:wwwurl": [
+     "https://sensor.geo.tu-dresden.de/index.php/bildungsbausteine?view=article&id=9:leuchtmittel&catid=14:bausteine"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/0f519bd5-069c-4d32-b6d3-a373ac96724c"
+    ],
+    "cclom:general_description": [
+     "Energie in Form von elektrischem Strom ist im Leben kaum wegzudenken. Der Lichtschalter, bei dessen Betätigung die Lampen anfangen zu leuchten, die Elektrogeräte, die für den Unterricht im Schulgebäude benötigt werden, Computer, Mobiltelefone, Tablets und vieles mehr. Alles verbraucht Strom in unterschiedlichem Maße. Um Energie nun sinnvoll einsparen zu können, ist es wichtig zu wissen, wie Verbrauch und Effizienz gemessen werden kann. In diesem Modul wird dabei ein Blick auf die Geschichte der Leuchtmittel geworfen. Wie hat sich die Effizienz einzelner Leuchtmittel über die Jahre verändert? Warum ist diese Entwicklung dringend nötig gewesen?\n\nEs erfolgt am Beispiel des Leuchtmittelvergleichs eine Einordnung der Entwicklungsgeschichte beginnend mit der Kohledraht-Glühbirne bis hin zur modernen LED-Leuchte. Lampen aus verschiedenen Epochen werden besprochen und miteinander verglichen. Dies ist mit einem Leuchtmittelkoffer mit integriertem Leistungsmessgerät und einem Luxmeter möglich.\n\nIm Vordergrund dieses Experiments steht das Unterrichtsfach Physik. Einheiten wie Spannung, Strom, Leistung und Lichtstärke werden besprochen und ausgewertet. Gemeinsam werden auch Nutzungszeiten von Lampen abgeschätzt und gemessene Energieverbräuche einzelner Leuchtmittel tabellarisch erfasst. Daraus lassen sich die Verbräuche pro Tag, Monat und Jahr berechnen. Schülerinnen und Schüler bekommen die Möglichkeit, Leuchtmittel anhand ihrer Effizienzklassen zu unterscheiden und Schlussfolgerungen über das eigene Nutzungsverhalten anzustellen. Damit wird ein Bewusstsein entwickelt, das Einfluss auf das eigene Konsumverhalten und den energetischen Fußabdruck haben kann.\n\nEbenso sieht die Projektarbeit vor, in Gruppenarbeit Quellen zu den einzelnen Leuchtmitteln zu studieren, wichtige Inhalte zusammenzufassen und sie dann gemeinsam auszuwerten. Somit wird projektorientiertes Arbeiten und der Umgang mit Quellen zu Leuchtmitteln und zu aktuellen Klimaschutzverordnungen geschult."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2"
+    ],
+    "cclom:general_keyword": [
+     "OER",
+     "Experiment",
+     "Energiesparen",
+     "Energie",
+     "Leuchtmittel",
+     "Nachhaltigkeit",
+     "Handlungsorientierung"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY_SA"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/eb7de880-73cc-4994-a2d2-0a41c7f70ff1"
+   },
+   "originalId": "8a51a40d-9aa2-426f-8cd8-aeb7f85b612e",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "ac9f3f6f-de0f-4c0f-9e27-0db9104b89cf",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Grundlagen der Optik - Online-Kurs - 2 - 1",
+   "title": "Kurs Grundlagen der Optik ",
+   "modifiedAt": "2022-09-07T10:23:09.109Z",
+   "properties": {
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Sekundarstufe II",
+     "Hochschule"
+    ],
+    "cclom:title": [
+     "Kurs Grundlagen der Optik "
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Kurs"
+    ],
+    "ccm:wwwurl": [
+     "https://de.universaldenker.org/kurse/1113"
+    ],
+    "cclom:general_description": [
+     "In diesem umfangreichen Kurs lernst du die Grundlagen der Strahlen- und Wellenoptik. Damit kannst du das Verhalten des Lichts aus unserem Alltag beschreiben."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_2",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/hochschule"
+    ],
+    "ccm:commonlicense_key": [
+     "CC_BY"
+    ],
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/4e16015a-7862-49ed-9b5e-6c1c6e0ffcd1"
+    ],
+    "cclom:general_keyword": [
+     "grundlagen der optik",
+     "grundlagen optik physik",
+     "optik für anfänger",
+     "grundlagen strahlenoptik",
+     "grundlagen der wellenoptik",
+     "Universaldenker",
+     "Physik",
+     "Selbstlernkurs"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/ac9f3f6f-de0f-4c0f-9e27-0db9104b89cf"
+   },
+   "originalId": "d93cc71a-fbe1-4c59-8b4b-192a1f483641",
+   "isPublic": true
+  },
+  {
+   "ref": {
+    "repo": "local",
+    "id": "93330f20-3840-4bc0-b30f-2038403bc064",
+    "archived": false,
+    "isHomeRepo": true
+   },
+   "type": "ccm:io",
+   "name": "Bevor Sie zu YouTube weitergehen - 9",
+   "title": "Was ist Optik?",
+   "modifiedAt": "2026-03-25T11:47:31.231Z",
+   "properties": {
+    "ccm:taxonid_DISPLAYNAME": [
+     "Physik"
+    ],
+    "ccm:educationalcontext_DISPLAYNAME": [
+     "Primarstufe",
+     "Erwachsenenbildung"
+    ],
+    "cclom:title": [
+     "Was ist Optik?"
+    ],
+    "ccm:oeh_lrt_DISPLAYNAME": [
+     "Video (Material)",
+     "Erklärvideo und gefilmtes Experiment"
+    ],
+    "ccm:wwwurl": [
+     "https://www.youtube.com/shorts/gCCTSfvY6uU"
+    ],
+    "ccm:oeh_lrt": [
+     "http://w3id.org/openeduhub/vocabs/new_lrt/7a6e9608-2554-4981-95dc-47ab9ba924de",
+     "http://w3id.org/openeduhub/vocabs/new_lrt/a0218a48-a008-4975-a62a-27b1a83d454f"
+    ],
+    "cclom:general_description": [
+     "Kurzes Erklärvideo. Es fasst kurz und gut verständlich zusammen, was man in der Physik unter Optik versteht und welche Teilbereiche es gibt."
+    ],
+    "ccm:taxonid": [
+     "http://w3id.org/openeduhub/vocabs/discipline/460"
+    ],
+    "ccm:educationalcontext": [
+     "http://w3id.org/openeduhub/vocabs/educationalContext/grundschule",
+     "http://w3id.org/openeduhub/vocabs/educationalContext/erwachsenenbildung"
+    ],
+    "cclom:general_keyword": [
+     "Erklärvideo"
+    ],
+    "ccm:commonlicense_key": [
+     "COPYRIGHT_FREE"
+    ]
+   },
+   "mimetype": null,
+   "content": {
+    "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/93330f20-3840-4bc0-b30f-2038403bc064"
+   },
+   "originalId": "374026d4-4245-4da4-8026-d44245ada424",
+   "isPublic": true
+  }
+ ],
+ "pagination": {
+  "total": 16,
+  "from": 10,
+  "count": 6
+ }
+}

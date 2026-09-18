@@ -1,0 +1,47 @@
+# WLO-Fachvokabular -> MEM-Schulfach-Suchbegriffe (PLAN.md 4.2, 5.3).
+#
+# id: Kennung im SKOS-Vokabular http://w3id.org/openeduhub/vocabs/discipline/<id> (ccm:taxonid der Sammlung).
+# aliases: weitere Schreibweisen aus Anfragen ("Physik: Optik", "Mathe").
+# mem: kleingeschriebene Teilstrings, die auf die Schulfach-Labels der MEM-Lehrplaene passen
+#      (Stand der Labels: MEM-Abfrage 2026-09-17, 299 verschiedene Labels; Bayern fuehrt integrierte
+#      Faecher wie "Natur und Technik", Berlin haengt "(KIM-Schulfach)" an).
+# Ohne Treffer in dieser Tabelle wird ueber alle Faecher gesucht.
+version: 1
+subjects:
+  - {id: "460", label: Physik, aliases: [], mem: [physik, natur und technik, naturwissenschaften]}
+  - {id: "100", label: Chemie, aliases: [], mem: [chemie, natur und technik, naturwissenschaften]}
+  - {id: "080", label: Biologie, aliases: [bio], mem: [biologie, natur und technik, naturwissenschaften]}
+  - {id: "380", label: Mathematik, aliases: [mathe], mem: [mathematik]}
+  - {id: "120", label: Deutsch, aliases: [], mem: [deutsch]}
+  - {id: "28002", label: Deutsch als Zweitsprache, aliases: [daz], mem: [deutsch als zweitsprache]}
+  - {id: "20001", label: Englisch, aliases: [], mem: [englisch]}
+  - {id: "20002", label: Französisch, aliases: [franzoesisch], mem: [französisch]}
+  - {id: "20005", label: Latein, aliases: [], mem: [latein]}
+  - {id: "20007", label: Spanisch, aliases: [], mem: [spanisch]}
+  - {id: "20006", label: Russisch, aliases: [], mem: [russisch]}
+  - {id: "20004", label: Italienisch, aliases: [], mem: [italienisch]}
+  - {id: "20003", label: Alt-Griechisch, aliases: [griechisch], mem: [griechisch]}
+  - {id: "240", label: Geschichte, aliases: [], mem: [geschichte, gesellschaftslehre, gesellschaftswissenschaft]}
+  - {id: "220", label: Geografie, aliases: [geographie, erdkunde], mem: [geographie, geografie, erdkunde, gesellschaftslehre]}
+  - {id: "480", label: Politik, aliases: [sozialkunde, gemeinschaftskunde, politische bildung, politik und gesellschaft], mem: [politik, sozialkunde, gemeinschaftskunde, gesellschaftslehre, gesellschaftskunde]}
+  - {id: "48005", label: Gesellschaftskunde, aliases: [], mem: [gesellschaftskunde, gesellschaftslehre, politik und gesellschaft]}
+  - {id: "700", label: Wirtschaftskunde, aliases: [wirtschaft, oekonomie, ökonomie], mem: [wirtschaft]}
+  - {id: "020", label: Arbeitslehre, aliases: [], mem: [arbeitslehre, wirtschaft und beruf, werken]}
+  - {id: "320", label: Informatik, aliases: [], mem: [informatik]}
+  - {id: "420", label: Musik, aliases: [], mem: [musik]}
+  - {id: "060", label: Kunst, aliases: [bildende kunst], mem: [kunst]}
+  - {id: "12002", label: Darstellendes Spiel, aliases: [theater], mem: [darstellendes spiel, theater]}
+  - {id: "600", label: Sport, aliases: [], mem: [sport]}
+  - {id: "160", label: Ethik, aliases: [], mem: [ethik, werte und normen]}
+  - {id: "520", label: Religion, aliases: [religionslehre, evangelische religion, katholische religion], mem: [religion, islamischer unterricht]}
+  - {id: "20041", label: Chinesisch, aliases: [], mem: [chinesisch]}
+  - {id: "450", label: Philosophie, aliases: [], mem: [philosophie]}
+  - {id: "440", label: Pädagogik, aliases: [paedagogik], mem: [pädagogik]}
+  - {id: "510", label: Psychologie, aliases: [], mem: [psychologie]}
+  - {id: "28010", label: Sachunterricht, aliases: [heimat- und sachunterricht, hsu], mem: [sachunterricht]}
+  - {id: "46014", label: Astronomie, aliases: [], mem: [astronomie]}
+  - {id: "900", label: Medienbildung, aliases: [medienkunde], mem: [medien]}
+  - {id: "50005", label: Werken, aliases: [technisches werken], mem: [werken]}
+  - {id: "04013", label: Wirtschaft und Verwaltung, aliases: [], mem: [wirtschaft und verwaltung, betriebswirtschaft, volkswirtschaft]}
+  - {id: "260", label: Gesundheit, aliases: [], mem: [gesundheit]}
+  - {id: "04006", label: Ernährung und Hauswirtschaft, aliases: [hauswirtschaft, ernaehrung], mem: [ernährung, hauswirtschaft]}

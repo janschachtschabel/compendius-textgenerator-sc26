@@ -1,0 +1,50 @@
+# Abo-Manifest für Kiwix-ZIM-Archive (PLAN.md 4.1). Die Archiv-ID ist name_flavour und entspricht
+# dem Dateinamen ohne Datum und Endung (wikipedia_de_all_nopic_2026-01.zim -> wikipedia_de_all_nopic).
+# Der Kiwix-Katalog filtert nur nach name; den Flavour wählt der Client (geprüft am 2026-09-17).
+version: 1
+
+profiles:
+  compact: "Entwicklung, CI, kleine Hosts: Wikipedia-Top-Artikel und Klexikon (ca. 1,4 GB)"
+  standard: "Produktion zum Start: vollständige deutsche Wikipedia ohne Bilder und Klexikon (ca. 14,1 GB)"
+  extended: "standard plus Wikibooks und Wikiversity (ca. 18,1 GB)"
+
+subscriptions:
+  - id: wikipedia_de_all_nopic
+    name: wikipedia_de_all
+    flavour: nopic
+    project: wikipedia
+    required: true
+    profiles: [standard, extended]
+    description: "Deutsche Wikipedia, alle Artikel, ohne Bilder (Leitquelle)"
+
+  - id: wikipedia_de_top_nopic
+    name: wikipedia_de_top
+    flavour: nopic
+    project: wikipedia
+    required: true
+    profiles: [compact]
+    description: "Deutsche Wikipedia, meistgelesene Artikel, ohne Bilder (Leitquelle im Profil compact)"
+
+  - id: klexikon_de_all_maxi
+    name: klexikon_de_all
+    flavour: maxi
+    project: klexikon
+    required: true
+    profiles: [compact, standard, extended]
+    description: "Klexikon, Kinderlexikon in einfacher Sprache"
+
+  - id: wikibooks_de_all_nopic
+    name: wikibooks_de_all
+    flavour: nopic
+    project: wikibooks
+    required: false
+    profiles: [extended]
+    description: "Wikibooks, Lehr- und Sachbücher"
+
+  - id: wikiversity_de_all_nopic
+    name: wikiversity_de_all
+    flavour: nopic
+    project: wikiversity
+    required: false
+    profiles: [extended]
+    description: "Wikiversity, Lehrmaterial auf Hochschulniveau"

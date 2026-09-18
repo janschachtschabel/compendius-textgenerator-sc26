@@ -1,0 +1,73 @@
+{
+  "id": "standard",
+  "version": 1,
+  "name": "Standard (Lehrbuch, 6 Bausteine)",
+  "default_slot": "fachinhalte",
+  "description": "Klassische lehrbuchartige Gliederung: Definition, Geschichte, Theorie, Anwendung, Grenzen, Quellen.",
+  "empty_slot_policy": "note",
+  "builtin": true,
+  "slots": [
+    {
+      "id": "std_1",
+      "slot": "themendefinition",
+      "title": "1. Definition und zentrale Grundbegriffe",
+      "description": "Grundlegende Begriffsklärung, Definition des Gegenstands und Einordnung des Themas.",
+      "inclusions": "Definition, Gegenstandsbereich, Leitfragen, wesentliche Grundbegriffe",
+      "exclusions": "Formelherleitungen, Chronologie, Detailanwendungen, Berufsdefinitionen",
+      "search_queries": ["Definition", "bezeichnet", "Begriff", "Überblick"],
+      "budget": {"min_chunks": 1, "max_chunks": 3, "target_chars": 1200, "weight": 1.0}
+    },
+    {
+      "id": "std_2",
+      "slot": "entwicklung_ausblick",
+      "title": "2. Historische Entwicklung und Meilensteine",
+      "description": "Chronologische Entwicklungsgeschichte von den Ursprüngen bis heute.",
+      "inclusions": "Epochen, Entdeckungen, Meilensteine, Ursprünge",
+      "exclusions": "Zukunftsprognosen, Formeln, Berufsbeschreibungen",
+      "search_queries": ["Geschichte", "Entwicklung", "Ursprung", "Jahrhundert", "Entstehung"],
+      "facets": {"required": ["Zeitbezug"], "allowed": ["Zeitbezug", "Evidenzgrad"], "defaults": {}},
+      "budget": {"min_chunks": 1, "max_chunks": 4, "target_chars": 1500, "weight": 1.0}
+    },
+    {
+      "id": "std_3",
+      "slot": "fachinhalte",
+      "title": "3. Theoretische Grundlagen, Modelle und Verfahren",
+      "description": "Fachliche Gesetze, Modelle, Theorien und Mechanismen.",
+      "inclusions": "Gesetzmäßigkeiten, Modelle, Formeln, Fachbegriffe, Funktionsweisen",
+      "exclusions": "Einleitungsfloskeln, Anekdoten, Marktberichte",
+      "search_queries": ["Modell", "Theorie", "Gesetz", "Formel", "Prinzip", "Funktionsweise"],
+      "budget": {"min_chunks": 1, "max_chunks": 5, "target_chars": 2000, "weight": 1.3}
+    },
+    {
+      "id": "std_4",
+      "slot": "praxis",
+      "title": "4. Praktische Anwendungsfelder und Relevanz",
+      "description": "Einsatz in realen Systemen, Technologien, Geräten und Anwendungen.",
+      "inclusions": "Anwendungsbereiche, Geräte, Verfahren, Systemintegration",
+      "exclusions": "Gesetzestexte, Curricula, theoretische Beweise",
+      "search_queries": ["Anwendung", "Einsatz", "Verwendung", "Gerät", "Beispiel"],
+      "budget": {"min_chunks": 1, "max_chunks": 5, "target_chars": 1800, "weight": 1.2}
+    },
+    {
+      "id": "std_5",
+      "slot": "gesellschaftlicher_kontext",
+      "title": "5. Grenzen, Herausforderungen und Kontroversen",
+      "description": "Kritische Einordnung, offene Probleme, Grenzen, ethische Fragen und Debatten.",
+      "inclusions": "Grenzen, Probleme, Risiken, Debatten, Kritik",
+      "exclusions": "Erfolgsberichte ohne kritischen Bezug, Chronologien",
+      "search_queries": ["Kritik", "Problem", "Grenze", "Risiko", "Debatte"],
+      "budget": {"min_chunks": 1, "max_chunks": 4, "target_chars": 1500, "weight": 1.0}
+    },
+    {
+      "id": "std_6",
+      "slot": "quellen",
+      "title": "6. Quellennachweis und Lizenzangaben",
+      "description": "Verwendete Quellen mit Revisionsständen und Lizenzen.",
+      "inclusions": "Quellen, Lizenzen, Revisionsstände",
+      "exclusions": "Fließtext",
+      "search_queries": [],
+      "generator": "sources",
+      "budget": {"min_chunks": 0, "max_chunks": 0, "target_chars": 3000, "weight": 0.5}
+    }
+  ]
+}

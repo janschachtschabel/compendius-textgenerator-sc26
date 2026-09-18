@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metalink xmlns="urn:ietf:params:xml:ns:metalink">
+  <generator>MirrorBrain/2.19.0</generator>
+  <origin dynamic="true">https://lb.download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim.meta4</origin>
+  <published>2026-09-17T09:02:56Z</published>
+  <publisher>
+    <name>Kiwix project</name>
+    <url>https://kiwix.org</url>
+  </publisher>
+
+  <file name="klexikon_de_all_maxi_2026-08.zim">
+    <size>135008418</size>
+
+    <!-- <mtime>1787334981</mtime> -->
+
+    <!-- internal id: 9472 -->
+    <hash type="md5">76fe0485a83b555b44517774443e2261</hash>
+    <hash type="sha-1">93786c09be8cb82f8e6e59fa0b7a3c4a9152e36d</hash>
+    <hash type="sha-256">763ddf84ad13e9f1d6ad4e364f048e7f18ecc2289c1d228d9dd4bb24e69d81b4</hash>
+    <pieces length="4194304" type="sha-1">
+      <hash>60bda565ee843ec058d973e9c6c36751232534fc</hash>
+      <hash>836f4f2bc07e0bac123875699adc3a29fcd58be8</hash>
+      <hash>c5983ecf8b3a7706e7dfce062fe4cb9744cb3cab</hash>
+      <hash>b53af8753f0b94297deb1c84afff5f988f519b9e</hash>
+      <hash>5b55946b5fd30fd4ac28844499f6b4c511d216bf</hash>
+      <hash>d8b483df536c7e5910f2a024044aacb91eb44a5a</hash>
+      <hash>9ab493e801633af52dbd5b1018c64de7ce284004</hash>
+      <hash>52f99b808fd381b805dba44d8f947e2514bfa94d</hash>
+      <hash>5c7c6338390596501f90ccc508a7a886a1a59812</hash>
+      <hash>051760fb898ba5c03f98ab520e316cba8e3b158d</hash>
+      <hash>3ab8c876798b32019731e3765ca6fc87e8540924</hash>
+      <hash>9c2f830d2887cc49e9439d5118ddf63d07ef9058</hash>
+      <hash>2d2f038a6a6f861e43928c34e13c0730795e1c17</hash>
+      <hash>64e1aca016bf2ab47c856de9b74875d4317a08e7</hash>
+      <hash>35a27eae6ec9d1007b9de5c9790ec1b3a4966f74</hash>
+      <hash>4c7b8ee2eb82e1df8c5ddc5a4e2a516300bb6967</hash>
+      <hash>18036772ba5369305f1f661f32a48ae77d1b5125</hash>
+      <hash>e373cbde34340a1d8244a61055c20246e9de2777</hash>
+      <hash>f92013b512b9ef61d3a6b2b373d55aeced125661</hash>
+      <hash>e964bdd871275265ff929b4bbaf444eb45bfb6a0</hash>
+      <hash>77f51058eba9e965c1184f55b3c731265ea3b8c2</hash>
+      <hash>2f3fff48652559b14cbbe193a4f80614a6dbb660</hash>
+      <hash>9f171df7c6c1578cdb6d6381748238cf7880fb31</hash>
+      <hash>78e43128bfe199dea8bc72341e75a99db64d5e3a</hash>
+      <hash>c926da40e7ae51a3fade314d44c6924e46b1a3ad</hash>
+      <hash>6fee7addcf0780a23c3dc4d679d1e3e2d1b601cc</hash>
+      <hash>c3659a0f8212166963f69b74d357ae6712e7a843</hash>
+      <hash>efb762acff0c4ba6fe8af4ecb791ab55bf68749c</hash>
+      <hash>c809fbe61015cf97c44ec46292228734b31f0572</hash>
+      <hash>520b2ec751f3179ce808660d061b63f17b4c1b19</hash>
+      <hash>0bc2dcc6a576855716391af5d94fc3e9c7b0f673</hash>
+      <hash>b27d4e4fa943d68b0ca230b069f43d51ff44b239</hash>
+      <hash>020d8a6e394b2546338663ff18c56a46c46adcb3</hash>
+    </pieces>
+
+
+    <!-- Found 8 mirrors: 0 in the same network prefix, 0 in the same autonomous system,
+         1 handling this country, 3 in the same region, 2 elsewhere -->
+
+    <!-- Mirrors in the same network (unknown): -->
+
+    <!-- Mirrors in the same AS (unknown): -->
+
+    <!-- Mirrors which handle this country (DE): -->
+    <url location="de" priority="1">https://ftp.fau.de/kiwix/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+
+    <!-- Mirrors in the same continent (EU): -->
+    <url location="se" priority="2">https://mirror.accum.se/mirror/kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+    <url location="fr" priority="3">https://mirror.download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+    <url location="fr" priority="4">https://mirror-sites-fr.mblibrary.info/mirror-sites/download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+
+    <!-- Mirrors in the rest of the world: -->
+    <url location="us" priority="5">https://wi.mirror.driftle.ss/kiwix/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+    <url location="aq" priority="6">https://mirror-sites-in.mblibrary.info/mirror-sites/download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim</url>
+  </file>
+</metalink>

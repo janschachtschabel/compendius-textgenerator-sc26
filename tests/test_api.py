@@ -1,0 +1,130 @@
+from pathlib import Path
+from typing import Any
+
+import httpx
+import pytest
+from fastapi.testclient import TestClient
+
+from app.llm.client import BApiClient
+from app.main import build_llm, create_app
+from app.settings import Settings
+from tests.conftest import make_settings
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
+
+
+@pytest.fixture(scope="module")
+def client(settings: Settings) -> TestClient:
+    return TestClient(create_app(settings))
+
+
+def test_health_and_ready(client: TestClient) -> None:
+    health = client.get("/health").json()
+    assert health["status"] == "healthy"
+    assert health["service"] == "compendious-text-fastapi"
+    assert len(health["components"]["zim"]["archives"]) == 2
+    assert health["components"]["llm"] == {
+        "enabled": False,
+        "provider": "openai",
+        "model": "gpt-5.6-luna",
+        "available": False,
+    }
+    assert client.get("/ready").status_code == 200
+
+
+def test_ready_is_503_without_required_archives(tmp_path: Path) -> None:
+    empty_settings = make_settings([], tmp_path, zim_dir=tmp_path)
+    with TestClient(create_app(empty_settings)) as client:
+        assert client.get("/ready").status_code == 503
+        assert client.post("/api/v2/compendium", json={"topic": "Optik"}).status_code == 503
+
+
+def test_generate_via_api(client: TestClient) -> None:
+    response = client.post("/api/v2/compendium", json={"topic": "Optik", "target_length": 8000})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["topic"] == "Optik"
+    assert body["markdown"].startswith("---")
+    assert body["frontmatter"]["template"] == {"id": "sc26", "version": 1}
+    assert body["audit"]["matcher"] == "hybrid_light"
+
+
+def test_unknown_topic_is_404_with_resolution(client: TestClient) -> None:
+    response = client.post("/api/v2/compendium", json={"topic": "Xyzzyplomb"})
+    assert response.status_code == 404
+    assert response.json()["detail"]["resolution"]["normalized"] == "Xyzzyplomb"
+
+
+def test_templates_and_strategies(client: TestClient) -> None:
+    templates = client.get("/api/v2/templates").json()
+    assert {t["id"] for t in templates} >= {"sc26", "standard"}
+    assert client.get("/api/v2/templates/sc26").json()["slots"][0]["slot"] == "themendefinition"
+    assert client.get("/api/v2/templates/nope").status_code == 404
+    strategies = client.get("/api/v2/matching/strategies").json()
+    assert any(s["id"] == "hybrid_light" and s["recommended"] for s in strategies)
+    status = client.get("/api/v2/zim/status").json()
+    assert status["missing_required"] == []
+
+
+def test_hybrid_request_without_llm_falls_back_and_says_so(client: TestClient) -> None:
+    payload = {"topic": "Optik", "mode": "hybrid-fast", "parts": ["world"], "target_length": 8000}
+    response = client.post("/api/v2/compendium", json=payload)
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["mode"] == "rule-based" and body["frontmatter"]["mode_requested"] == "hybrid-fast"
+    assert "konfiguriert" in body["audit"]["llm"]["note"] and body["audit"]["llm_tokens"] is None
+    assert client.post("/api/v2/compendium", json={"topic": "Optik", "mode": "turbo"}).status_code == 422
+
+
+def test_health_reports_the_llm_gateway(settings: Settings) -> None:
+    app = create_app(settings)
+    app.state.llm = make_gateway(FakeBApi())
+    app.state.llm.check_model()
+    with TestClient(app) as client:
+        llm = client.get("/health").json()["components"]["llm"]
+    assert llm["enabled"] and llm["available"] and llm["check"]["ok"]
+    assert llm["provider"] == "openai" and llm["model"] == "gpt-5.6-luna" and llm["budget"]["used_today"] == 0
+
+
+def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    assert build_llm(make_settings([], tmp_path, llm_enabled=False, b_api_key="k")) is None
+    assert build_llm(make_settings([], tmp_path, llm_enabled=True, b_api_key="")) is None
+
+    fake = FakeBApi()
+
+    def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
+        return BApiClient(*args, transport=httpx.MockTransport(fake), **kwargs)
+
+    monkeypatch.setattr("app.main.BApiClient", offline_client)
+    settings = make_settings(
+        [],
+        tmp_path,
+        llm_enabled=True,
+        b_api_key="k",
+        llm_fast_sections="sc26_1",
+        llm_router_enabled=False,
+        llm_unsupported_sentences="mark",
+    )
+    gateway = build_llm(settings)
+    assert gateway is not None and gateway.check is not None and gateway.check.ok
+    assert gateway.options.fast_sections == ("sc26_1",) and gateway.router is None
+    assert gateway.synthesizer.mark_unsupported is True
+    assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
+    assert gateway.budget.per_request == 20_000 and gateway.budget.daily == 2_000_000
+    assert (tmp_path / "llm_budget.db").exists(), "the daily counter is shared through STATE_DIR"
+    assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
+
+
+def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """With LLM_ENABLED and B_API_KEY in the shell the offline fixtures would build a gateway to the real b-api."""
+    monkeypatch.setenv("LLM_ENABLED", "true")
+    monkeypatch.setenv("B_API_KEY", "shell-key")
+    assert make_settings([], tmp_path).llm_enabled is False
+    assert make_settings([], tmp_path, llm_enabled=True).llm_enabled is True
+
+
+def test_matching_defaults_follow_the_measurement_of_2026_09_18(tmp_path: Path) -> None:
+    settings = make_settings([], tmp_path)
+    assert settings.policy_confident_score == 0.65 and settings.policy_section_smoothing == 0.5

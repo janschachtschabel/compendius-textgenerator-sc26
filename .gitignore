@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Lokale Konfiguration und Zustand
+.env
+data/
+logs/
+*.zim
+*.zim.part
+*.idx
+*.idx.tmp/
+
+# Editor
+.idea/
+.vscode/
+*.swp
+
+# Eval: Exporte zum Labeln sind reproduzierbar (compendium eval export); Gold und Berichte bleiben im Repo
+eval/export/
+
+# Alter Dienst als lokale Referenz; seine Historie liegt im GitLab-Repo
+alterCode/

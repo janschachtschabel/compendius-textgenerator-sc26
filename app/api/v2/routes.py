@@ -1,0 +1,64 @@
+"""v2 endpoints: compendium generation and templates (archives: zim.py, matching: matching.py)."""
+
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+from fastapi import APIRouter, HTTPException, Request
+
+from app.api.deps import get_service
+from app.domain.models import Compendium
+from app.domain.requests import GenerateRequest
+from app.service import TopicNotFoundError
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
+from app.templates.manager import TemplateNotFoundError
+
+log = logging.getLogger(__name__)
+router = APIRouter(prefix="/api/v2", tags=["v2"])
+
+
+@router.post("/compendium", response_model=Compendium)
+def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
+    """Generate the compendium for a topic or a collection in rule-based mode (parts 1 to 3)."""
+    service = get_service(request)
+    try:
+        return service.generate(payload)
+    except TopicNotFoundError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
+        ) from exc
+    except CollectionNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Sammlung nicht gefunden: {exc}") from exc
+    except EduSharingError as exc:
+        raise HTTPException(status_code=502, detail=f"edu-sharing nicht erreichbar: {exc}") from exc
+    except TemplateNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
+    except KeyError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/templates")
+def list_templates(request: Request) -> list[dict[str, Any]]:
+    return [
+        {
+            "id": t.id,
+            "version": t.version,
+            "name": t.name,
+            "description": t.description,
+            "slots": len(t.slots),
+            "builtin": t.builtin,
+        }
+        for t in request.app.state.templates.list()
+    ]
+
+
+@router.get("/templates/{template_id}")
+def get_template(template_id: str, request: Request) -> dict[str, Any]:
+    try:
+        template = request.app.state.templates.get(template_id)
+    except TemplateNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}") from exc
+    data: dict[str, Any] = template.model_dump()
+    return data

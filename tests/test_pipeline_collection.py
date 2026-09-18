@@ -1,0 +1,67 @@
+"""Collections in the pipeline: topic from the collection, part 3 in the markdown, knowledge sources for part 1."""
+
+from collections.abc import Iterator
+from pathlib import Path
+
+import httpx
+import pytest
+from pydantic import ValidationError
+
+from app.domain.requests import GenerateRequest
+from app.service import CompendiumService
+from app.sources.wlo.cache import TtlCache
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
+from app.sources.wlo.part import CollectionBuilder
+from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
+
+
+@pytest.fixture
+def with_collections(
+    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> Iterator[CompendiumService]:
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+    builder = CollectionBuilder(client=client, cache=TtlCache(tmp_path / "wlo_cache.db"))
+    monkeypatch.setattr(service, "collections", builder)
+    yield service
+
+
+def test_collection_gives_topic_subject_and_part_three(with_collections: CompendiumService) -> None:
+    result = with_collections.generate(GenerateRequest(collection_id=OPTIK, parts=["world", "collection"]))
+    assert result.topic == "Optik" and result.resolution.query == "Optik"
+    assert result.collection is not None and result.collection.available
+    assert result.collection.summary["materials"] == 16
+    assert result.frontmatter["parts"] == ["world", "collection"]
+    markdown = result.markdown
+    assert markdown.index("## Teil 1 · Weltwissen") < markdown.index("## Teil 3 · Die Sammlung im Überblick")
+    assert f"<!-- f: Sammlung={OPTIK}; Fach=Physik; Bildungsstufe=Sek I -->" in markdown
+    assert result.audit.timings_ms["collection"] >= 0
+
+
+def test_an_explicit_topic_wins_over_the_collection_title(with_collections: CompendiumService) -> None:
+    request = GenerateRequest(topic="Photosynthese", collection_id=OPTIK, parts=["world", "collection"])
+    result = with_collections.generate(request)
+    assert result.topic == "Photosynthese"
+    assert result.collection is not None and result.collection.title == "Optik"
+
+
+def test_knowledge_collection_adds_reusable_material_sources(with_collections: CompendiumService) -> None:
+    request = GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"])
+    result = with_collections.generate(request)
+    materials = [source for source in result.sources if source.project == "wlo_material"]
+    assert materials
+    assert all(source.license in {"CC0 1.0", "CC BY 4.0", "CC BY-SA 4.0"} for source in materials)
+    assert result.audit.knowledge is not None
+    assert result.audit.knowledge["sources"] == len(materials) and result.audit.knowledge["skipped_license"] == 8
+
+
+def test_unknown_collection_is_reported(with_collections: CompendiumService) -> None:
+    with pytest.raises(CollectionNotFoundError):
+        with_collections.generate(GenerateRequest(collection_id=UNKNOWN))
+
+
+def test_request_needs_a_topic_or_a_valid_collection_id() -> None:
+    with pytest.raises(ValidationError):
+        GenerateRequest()
+    with pytest.raises(ValidationError):
+        GenerateRequest(collection_id="not-a-uuid")
+    assert GenerateRequest(collection_id=OPTIK).topic is None

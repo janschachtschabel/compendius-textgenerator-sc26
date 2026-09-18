@@ -1,0 +1,83 @@
+# Überschriften-Lexikon (PLAN.md, Abschnitt 4.4, Stufe 1).
+#
+# Wikipedia-Abschnittsüberschriften bilden ein kleines Vokabular. Ein Chunk, dessen
+# Überschriftenpfad eines der Muster trifft, wird deterministisch dem Baustein zugeordnet
+# (Score 0,9), ohne Themenwissen. Muster sind reguläre Ausdrücke, Groß-/Kleinschreibung
+# wird ignoriert, geprüft wird zuerst die tiefste Überschrift, dann die Eltern; die Reihenfolge
+# der Bausteine unten entscheidet bei mehreren Treffern (erster gewinnt).
+#
+# Fassung 3 (2026-09-17): Präfix-Muster je Baustein aus den Verwechslungen des Goldstandards
+# (eval/gold, 10 Themen) ergänzt; Wortgrenze verhindert Treffer wie „Entwicklungsumgebung“.
+# Fassung 2 (2026-09-17): nachgeschärft mit einer Erhebung über 20.000 Zufallsartikel des
+# deutschen Wikipedia-Dumps (scripts/harvest_headings.py, eval/headings_top.csv). Aufgenommen
+# wurden nur Überschriften, die in Sachartikeln vorkommen und themenneutral sind; Biografie-,
+# Orts-, Sport- und Werkverzeichnis-Überschriften (Leben, Karriere, Lage, Finale, Diskografie)
+# bleiben absichtlich unklassifiziert oder werden ausgeschlossen. Themenspezifisches Vokabular
+# gehört nicht hierher, sondern in das Template (heading_patterns je Slot).
+version: 3
+
+# Überschriften, deren Inhalt nicht als Fließtext übernommen wird. Ihre Einträge
+# fließen als Quellenhinweise und Relationen in die generierten Bausteine.
+exclude:
+  - '^(Einzelnachweise?|Anmerkungen?|Fußnoten|Belege|Einzelbelege|Nachweise|Referenzen|Quellen?|Quellenangaben|Bemerkungen)( und (Anmerkungen|Einzelnachweise|Fußnoten|Weblinks|Quellen|Nachweise))?$'
+  - '^(Literatur|Weiterführende Literatur|Weblinks?|Externe Links|Links)( und (Quellen|Weblinks|Literatur))?( \(Auswahl\))?$'
+  - '^(Schriften|Werke|Publikationen|Veröffentlichungen|Filmografie|Filmographie|Diskografie|Diskographie|Diskographische Hinweise|Bibliografie|Bibliographie|Monografien|Monographien|Herausgeberschaften?|Textausgaben|Ausgaben|Tondokumente|Studioalben|Livealben|Alben|Singles|EPs|Kompilationen|Hörspiele|Filme|Dokumentationen|Hörfunk|Romane|Erzählungen|Lyrik|Bücher)( \(Auswahl\))?$'
+  - '^(Navigationsmenü|Inhaltsverzeichnis|Inhalt|Zeichenerklärung)$'
+
+# Überschriften, die als Relationen zu anderen Themen gewertet werden (Baustein 11).
+relations:
+  - '^(Siehe auch|Verwandte Themen|Verwandte Begriffe|Verwandte Artikel)$'
+
+slots:
+  themendefinition:
+    - '^(Definition|Definitionen|Begriffsbestimmung|Begriffsdefinition|Begriffsklärung|Begriff|Abgrenzung|Allgemeines|Allgemein|Überblick|Übersicht|Einleitung|Einführung|Gegenstand|Zusammenfassung|Charakteristik)$'
+    - '^Was ist'
+  systematik:
+    - '^(Einteilung|Gliederung|Systematik|Klassifikation|Klassifizierung|Klassifikationen|Kategorien|Kategorisierung|Arten|Typen|Typologie|Formen|Teilgebiete|Teilbereiche|Teildisziplinen|Untergliederung|Unterteilung|Taxonomie|Disziplinen|Richtungen|Ausprägungen|Varianten|Unterarten|Ähnliche Arten|Einordnung)$'
+    - '^(Teilgebiete|Teilbereiche|Arten|Typen|Formen|Einteilung|Gliederung|Klassifikation) (der|des|von)'
+    - 'Systematik'
+    - '^(Typologie|Typologien|Klassifikation|Klassifikationen|Einteilung|Gliederung|Teilgebiete|Teilbereiche|Unterarten|Varianten|Kategorien|Taxonomie)\b'
+  fachinhalte:
+    - '^(Grundlagen|Theorie|Theorien|Theoretische Grundlagen|Physikalische Grundlagen|Mathematische Grundlagen|Wissenschaftliche Grundlagen|Prinzip|Prinzipien|Funktionsweise|Funktionsprinzip|Funktion|Funktionen|Wirkungsweise|Wirkprinzip|Wirkung|Nebenwirkungen|Aufbau|Eigenschaften|Merkmale|Kennzeichen|Mechanismus|Mechanismen|Berechnung|Herleitung|Formel|Formeln|Gleichung|Gleichungen|Gesetz|Gesetze|Gesetzmäßigkeiten|Mathematische Beschreibung|Mathematische Formulierung|Modell|Modelle|Konzept|Kenngrößen|Kennzahlen|Technische Daten|Größen|Einheiten|Maßeinheiten|Notation|Schreibweise|Terminologie|Nomenklatur|Etymologie|Wortherkunft|Namensherkunft|Namensgebung|Benennung|Toponymie|Herkunft und Bedeutung|Herkunft des Namens|Name|Namen|Bezeichnung|Bezeichnungen|Begriffe|Fachbegriffe|Struktur|Zusammensetzung|Inhaltsstoffe|Kristallstruktur|Chromosomensatz|Chemische Eigenschaften|Physikalische Eigenschaften|Ursachen|Entstehung des Phänomens|Beschreibung|Erklärung|Phänomene|Effekte|Vorkommen|Verbreitung|Lebensweise|Lebensraum|Ökologie|Fortpflanzung|Ernährung|Nahrung|Verhalten|Erscheinungsbild|Aussehen|Form|Sprache|Biologie|Interpretation|Interpretationen|Voraussetzungen)$'
+    - '^(Physikalische|Chemische|Mathematische|Biologische) (Grundlagen|Beschreibung|Eigenschaften)'
+    - '^(Verbreitung|Vorkommen) und '
+    - '^(Blüten|Früchte|Lautäußerungen)'
+    - 'Merkmale$'
+    - '^(Definition|Definitionen) nach\b'
+    - '^(Ursachen|Grundlagen|Eigenschaften|Aufbau|Funktionsweise|Merkmale|Mechanismus|Mechanismen|Wortherkunft|Etymologie|Theorie|Theorien|Modell|Modelle)\b'
+  gesellschaftlicher_kontext:
+    - '^(Kritik|Kritiken|Rezensionen|Bewertung|Reaktionen|Kontroverse|Kontroversen|Debatte|Debatten|Diskussion|Diskurs|Rezeption|Nachwirkung|Nachwirkungen|Gesellschaft|Gesellschaftliche Bedeutung|Gesellschaftliche Aspekte|Gesellschaftliche Auswirkungen|Bedeutung|Relevanz|Politik|Politische Aspekte|Politische Bedeutung|Ethik|Ethische Aspekte|Ethische Fragen|Soziale Aspekte|Soziale Auswirkungen|Alltag|Kultur|Kulturelle Bedeutung|Kulturgeschichte|Öffentliche Wahrnehmung|Wahrnehmung|Umwelt|Umweltaspekte|Risiken|Gefahren|Gefährdung|Gefährdungssituation|Zwischenfälle|Unfälle|Störfälle|Katastrophen|Nachteile|Probleme|Kritikpunkte|Auswirkungen|Folgen|Gesundheitliche Aspekte|Gesundheit|Mythos|Mythologie|Überlieferung)$'
+    - '^(Bedeutung|Relevanz|Auswirkungen|Folgen) (für|in) '
+    - '^(Kritik|Kritiken|Rezeption|Kontroverse|Kontroversen|Debatte|Debatten|Gesellschaftliche|Gesellschaftlicher|Gesellschaftliches|Politische|Politischer|Ethische|Soziale|Auswirkungen|Folgen|Risiken|Gefahren)\b'
+    - 'Gefährdung'
+  entwicklung_ausblick:
+    - '^(Geschichte|Historie|Historisches|Geschichtliches|Historische Entwicklung|Entwicklung|Weitere Entwicklung|Entwicklungsgeschichte|Entstehungsgeschichte|Entstehung|Ursprung|Ursprünge|Herkunft|Gründung|Chronologie|Zeittafel|Zeitleiste|Meilensteine|Vorgeschichte|Frühgeschichte|Anfänge|Zukunft|Ausblick|Perspektiven|Zukunftsperspektiven|Trends|Aktuelle Entwicklungen|Neuere Entwicklungen|Jüngere Entwicklungen|Forschung|Forschungsstand|Forschungsgeschichte|Forschungsschwerpunkte|Aktuelle Forschung|Studien|Planung|Entdeckung|Entdeckungsgeschichte|Antike|Mittelalter|Frühe Neuzeit|Neuzeit|Moderne|Gegenwart|Heute|Historischer Hintergrund|Geschichtlicher Hintergrund|Versionen|Erweiterungen|Nachfolger)$'
+    - '^Geschichte( und| des| der| von)'
+    - '(Jahrhundert|Jahrzehnt)$'
+    - 'geschichte$'
+    - '^(Geschichte|Geschichtliche|Geschichtlicher|Geschichtliches|Entwicklung|Entstehung|Ursprung|Ursprünge|Vorgeschichte|Frühgeschichte|Chronologie|Zukunft|Ausblick|Evolution|Historische|Historischer|Historisches|Forschungsgeschichte)\b'
+    - '^Paläo'
+    - '^(Die |Der |Das )?\d{4}er Jahre'
+    - 'Jahrhundert'
+  akteure:
+    - '^(Bekannte|Bedeutende|Berühmte|Wichtige) '
+    - '^(Persönlichkeiten|Personen|Vertreter|Pioniere|Wissenschaftler|Forscher|Forscherinnen|Protagonisten|Organisationen|Institutionen|Institute|Verbände|Fachgesellschaften|Gesellschaften|Hersteller|Herausgeber|Eigentümer|Leitung|Führung|Mitwirkende|Unternehmen|Firmen|Akteure|Träger|Mitglieder|Netzwerke|Initiativen|Projekte|Programme|Fördereinrichtungen|Behörden|Zuständigkeiten)$'
+  beruf_wirtschaft:
+    - '^(Beruf|Berufe|Berufsbild|Berufsbilder|Berufsfeld|Berufsfelder|Berufsbezeichnung|Tätigkeit|Tätigkeiten|Tätigkeitsfeld|Tätigkeitsfelder|Arbeitsfelder|Arbeitsgebiete|Arbeitsmarkt|Beschäftigung|Wirtschaft|Wirtschaftliche Bedeutung|Ökonomische Bedeutung|Wirtschaftlichkeit|Industrie|Markt|Märkte|Marktsituation|Branche|Branchen|Kosten|Preise|Preisentwicklung|Produktion|Produkte|Dienstleistungen|Handel|Vertrieb|Vermarktung|Finanzierung|Wertschöpfung|Fachkräfte|Fachkräftemangel|Verdienst|Gehalt|Einkommen)$'
+    - '^Wirtschaft( und |liche)'
+    - '^(Wirtschaft|Wirtschaftliche|Beruf|Berufe|Berufsbild|Arbeitsmarkt|Branche|Industrie|Markt)\b'
+  bildung:
+    - '^(Ausbildung|Ausbildungen|Studium|Lehre|Unterricht|Didaktik|Fachdidaktik|Schule|Schulen|Schulische Bildung|Bildung|Bildungseinrichtungen|Lehrpläne|Lehrplan|Curriculum|Curricula|Weiterbildung|Fortbildung|Qualifikation|Qualifikationen|Kompetenzen|Lernen|Vermittlung|Lehrmittel|Lehrmaterial|Unterrichtsmaterial|Hochschulen|Fakultäten|Studiengänge|Ausbildungswege|Bildungswege|Forschung und Lehre|Lehre und Forschung)$'
+    - '^(Ausbildung|Studium|Unterricht|Vermittlung) (zum|zur|im|in|an)'
+    - '^(Ausbildung|Studium|Unterricht|Didaktik|Lehrplan|Lehrpläne|Bildung)\b'
+  regularien:
+    - '^(Recht|Rechtliches|Rechtliche Aspekte|Rechtliche Grundlagen|Rechtliche Situation|Rechtslage|Rechtsgrundlagen|Rechtsform|Gesetz|Gesetze|Gesetzgebung|Gesetzliche Regelung|Gesetzliche Regelungen|Regelung|Regelungen|Regeln|Spielregeln|Regelwerk|Reglement|Vorschriften|Normen|Normung|Normen und Standards|Standards|Standardisierung|Richtlinien|Zulassung|Sicherheit|Sicherheitsvorschriften|Sicherheitshinweise|Sicherheitsaspekte|Arbeitsschutz|Grenzwerte|Kennzeichnung|Kennzeichnungspflicht|Lizenz|Lizenzen|Patente|Patentrecht|Datenschutz|Haftung|Regulierung|Zertifizierung|Prüfung und Zertifizierung|Schutzmaßnahmen|Schutzzweck|Schutzstatus|Denkmalschutz|Zuständigkeit|Verbot|Verbote)$'
+    - '^(Rechtliche|Gesetzliche|Regulatorische) '
+    - '^(Recht|Rechtliche|Rechtlicher|Rechtliches|Gesetz|Gesetze|Gesetzliche|Regelung|Regelungen|Vorschriften|Normen|Norm|Sicherheit|Zulassung|Kennzeichnung|Regulierung|Richtlinien|Standards)\b'
+  praxis:
+    - '^(Anwendung|Anwendungen|Anwendungsgebiete|Anwendungsbereiche|Anwendungsbeispiele|Anwendungsfelder|Verwendung|Verwendungen|Verwendungszweck|Einsatz|Einsatzgebiete|Einsatzbereiche|Einsatzmöglichkeiten|Nutzung|Praxis|Praktische Anwendung|Praktische Bedeutung|Technik|Techniken|Technische Anwendung|Technische Anwendungen|Verfahren|Methoden|Methodik|Werkzeuge|Geräte|Instrumente|Hilfsmittel|Ausrüstung|Herstellung|Herstellungsverfahren|Gewinnung|Gewinnung und Darstellung|Darstellung und Gewinnung|Synthese|Zubereitung|Fertigung|Bauformen|Bauarten|Bauweise|Bau|Konstruktion|Design|Gestaltung|Beispiele|Beispiel|Umsetzung|Durchführung|Betrieb|Handhabung|Bedienung|Vorgehen|Vorgehensweise|Realisierung|Implementierung|Installation|Wartung|Therapie|Behandlung|Diagnostik|Diagnose)$'
+    - '^(Anwendung|Anwendungen|Verwendung|Einsatz) (in|im|als|bei|für)'
+    - 'Nutzung$'
+    - '^(Anwendung|Anwendungen|Anwendungsgebiete|Anwendungsbereiche|Verwendung|Einsatz|Nutzung|Praxis|Herstellung|Verfahren|Methoden|Instrumente|Geräte)\b'
+  querschnitt:
+    - '^(Interdisziplinäre Aspekte|Interdisziplinarität|Nachbardisziplinen|Verwandte Gebiete|Verwandte Disziplinen|Beziehung zu anderen|Bezug zu anderen|Abgrenzung zu|Vergleich|Vergleich mit|Zusammenhang mit|Querbezüge|Schnittstellen|Nachhaltigkeit|Technikfolgen|Technikfolgenabschätzung)'

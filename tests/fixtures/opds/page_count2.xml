@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:opds="https://specs.opds.io/opds-1.2"
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <id>ea7c8642-741a-b8dc-90e6-7ad55817d461</id>
+
+  <link rel="self"
+        href="/catalog/v2/entries?lang=deu&amp;count=2"
+        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+  <link rel="start"
+        href="/catalog/v2/root.xml"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up"
+        href="/catalog/v2/root.xml"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+
+  <title>Filtered Entries (lang=deu&amp;count=2)</title>
+  <updated>2026-09-17T09:03:42Z</updated>
+  <totalResults>306</totalResults>
+  <startIndex>0</startIndex>
+  <itemsPerPage>2</itemsPerPage>
+  <entry>
+    <id>urn:uuid:9ccbecf1-4fb8-0b1a-1243-b6876f4bb842</id>
+    <title>FreeCodeCamp</title>
+    <updated>2026-08-11T00:00:00Z</updated>
+    <summary>Alle FreeCodeCamp-Kurse</summary>
+    <language>deu</language>
+    <name>freecodecamp_de_all</name>
+    <flavour></flavour>
+    <category></category>
+    <tags>FCC;freeCodeCamp;_ftindex:no;_pictures:yes;_videos:yes;_details:yes</tags>
+    <articleCount>460</articleCount>
+    <mediaCount>4</mediaCount>
+    <link rel="http://opds-spec.org/image/thumbnail"
+          href="/catalog/v2/illustration/9ccbecf1-4fb8-0b1a-1243-b6876f4bb842/?size=48"
+          type="image/png;width=48;height=48;scale=1"/>
+    <link type="text/html" href="https://browse.library.kiwix.org/content/freecodecamp_de_all_2026-08" />
+    <author>
+      <name>freeCodeCamp</name>
+    </author>
+    <publisher>
+      <name>openZIM</name>
+    </publisher>
+    <dc:issued>2026-08-11T00:00:00Z</dc:issued>
+    <link rel="http://opds-spec.org/acquisition/open-access" type="application/x-zim" href="https://lb.download.kiwix.org/zim/freecodecamp/freecodecamp_de_all_2026-08.zim.meta4" length="7144448" />
+  </entry>
+  <entry>
+    <id>urn:uuid:2825119f-b7eb-85fb-8d97-71b7ab1b461b</id>
+    <title>Ubuntuusers Wiki</title>
+    <updated>2017-12-08T00:00:00Z</updated>
+    <summary>Fragen ist menschlich!</summary>
+    <language>deu</language>
+    <name>ubuntuusers_de_all</name>
+    <flavour></flavour>
+    <category></category>
+    <tags>_ftindex:no;_pictures:yes;_videos:yes;_details:yes</tags>
+    <articleCount>4846</articleCount>
+    <mediaCount>13795</mediaCount>
+    <link rel="http://opds-spec.org/image/thumbnail"
+          href="/catalog/v2/illustration/2825119f-b7eb-85fb-8d97-71b7ab1b461b/?size=48"
+          type="image/png;width=48;height=48;scale=1"/>
+    <link type="text/html" href="https://browse.library.kiwix.org/content/ubuntuusers_de_all_2017-03" />
+    <author>
+      <name>Ubuntuusers</name>
+    </author>
+    <publisher>
+      <name>Kiwix</name>
+    </publisher>
+    <dc:issued>2017-12-08T00:00:00Z</dc:issued>
+    <link rel="http://opds-spec.org/acquisition/open-access" type="application/x-zim" href="https://lb.download.kiwix.org/zim/other/ubuntuusers_de_all_2017-03.zim.meta4" length="159076352" />
+  </entry>
+</feed>
