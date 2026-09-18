@@ -4,6 +4,8 @@ version = "2.0.0a0"
 description = "Kompendium-API v2: kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten"
 authors = [{ name = "Jan Schachtschabel", email = "schachtschabel@edu-sharing.net" }]
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.13,<3.14"
 keywords = ["compendium", "kiwix", "zim", "wikipedia", "fastapi", "wirlernenonline"]
 dependencies = [
@@ -33,7 +35,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling>=1.27"]  # PEP 639 licence metadata
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
