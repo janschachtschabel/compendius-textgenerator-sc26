@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -57,3 +58,34 @@ def test_duplicate_slot_ids_are_rejected() -> None:
             name="x",
             slots=[TemplateSlot(id="a", slot="praxis", title="A"), TemplateSlot(id="a", slot="bildung", title="B")],
         )
+
+
+def test_a_broken_custom_template_does_not_take_the_others_down(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    manager = TemplateManager(custom_dir=tmp_path)
+    manager.save(Template(id="gut", name="Gut", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")]))
+    (tmp_path / "kaputt.json").write_text("{ kein JSON", encoding="utf-8")
+    with caplog.at_level("ERROR"):
+        assert {"sc26", "gut"} <= {template.id for template in manager.list()}
+        assert manager.get("gut").name == "Gut" and manager.get("sc26").builtin
+    assert "kaputt.json" in caplog.text
+
+
+def test_custom_templates_are_read_again_only_after_a_change(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    manager = TemplateManager(custom_dir=tmp_path)
+    manager.save(Template(id="mein", name="Mein", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")]))
+    reads: list[str] = []
+    original = Path.read_text
+
+    def counting(self: Path, *args: Any, **kwargs: Any) -> str:
+        reads.append(self.name)
+        return original(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", counting)
+    for _ in range(3):
+        manager.get("mein")
+        manager.list()
+    assert reads.count("mein.json") <= 1  # every compendium request asks for its template
+    manager.save(manager.get("mein"))
+    assert manager.get("mein").version == 2
