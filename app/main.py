@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import logging
 import sqlite3
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
 from fastapi.concurrency import run_in_threadpool
-from starlette.middleware.base import RequestResponseEndpoint
 
 from app import __version__
 from app.api.health import router as health_router
@@ -171,6 +172,25 @@ def build_curricula(settings: Settings) -> CurriculaBuilder:
     )
 
 
+def close_clients(app: FastAPI) -> None:
+    """Close the outbound HTTP clients (Kiwix catalog, edu-sharing, b-api) when the process shuts down."""
+    collections = getattr(app.state, "collections", None)
+    llm = getattr(app.state, "llm", None)
+    for client in (
+        getattr(app.state, "catalog", None),
+        collections.client if collections is not None else None,
+        llm.client if llm is not None else None,
+    ):
+        if client is not None:
+            client.close()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    yield
+    close_clients(app)
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -191,6 +211,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title="Kompendium-API v2",
         version=__version__,
         description="Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten.",
+        lifespan=lifespan,
         docs_url="/docs" if settings.api_docs_enabled else None,
         redoc_url="/redoc" if settings.api_docs_enabled else None,
         openapi_url="/openapi.json" if settings.api_docs_enabled else None,
@@ -221,7 +242,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         refresher = RegistryRefresher(registry, settings.zim_dir)
 
         @app.middleware("http")
-        async def follow_active_archives(request: Request, call_next: RequestResponseEndpoint) -> Response:
+        async def follow_active_archives(
+            request: Request, call_next: Callable[[Request], Awaitable[Response]]
+        ) -> Response:
             # One stat call per request; archives are reopened only when the sync job replaced active.json.
             await run_in_threadpool(refresher.refresh)
             return await call_next(request)

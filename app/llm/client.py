@@ -125,6 +125,9 @@ class BApiClient:
             headers={"X-API-KEY": api_key, "Accept": "application/json"}, timeout=timeout_s, transport=transport
         )
 
+    def close(self) -> None:
+        self._client.close()
+
     @property
     def suspended(self) -> bool:
         """True while the circuit breaker is open after a connection failure or a timeout."""

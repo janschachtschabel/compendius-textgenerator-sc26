@@ -1,5 +1,6 @@
 import inspect
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import httpx
@@ -168,3 +169,22 @@ def test_api_docs_can_be_switched_off(sample_zims: dict[str, Path], tmp_path: Pa
     with TestClient(create_app(settings)) as hidden:
         assert [hidden.get(path).status_code for path in ("/docs", "/redoc", "/openapi.json")] == [404, 404, 404]
         assert hidden.get("/health").status_code == 200
+
+
+def test_shutdown_closes_the_outbound_http_clients(settings: Settings) -> None:
+    app = create_app(settings)
+    closed: list[str] = []
+
+    class Client:
+        def __init__(self, name: str) -> None:
+            self.name = name
+
+        def close(self) -> None:
+            closed.append(self.name)
+
+    app.state.catalog = Client("kiwix")
+    app.state.collections = SimpleNamespace(client=Client("edu-sharing"))
+    app.state.llm = SimpleNamespace(client=Client("b-api"))
+    with TestClient(app):
+        assert closed == []
+    assert sorted(closed) == ["b-api", "edu-sharing", "kiwix"]
