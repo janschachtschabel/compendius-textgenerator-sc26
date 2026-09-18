@@ -102,6 +102,7 @@ def sample_zims(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
 def make_settings(paths: Iterable[Path], state_dir: Path, **overrides: Any) -> Settings:
     # Offline by default: LLM_ENABLED and B_API_KEY from the shell must never reach the real b-api in tests.
     overrides.setdefault("llm_enabled", False)
+    overrides.setdefault("rate_limit", 0)  # tests opt in to the limit (tests/test_rate_limit.py)
     return Settings(
         _env_file=None,  # type: ignore[call-arg]
         zim_paths=",".join(str(p) for p in paths),

@@ -13,6 +13,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, Query, Request
 
 from app.api.admin import require_admin
+from app.api.limits import rate_limited
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
@@ -46,7 +47,7 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
     }
 
 
-@router.get("/search")
+@router.get("/search", dependencies=[Depends(rate_limited)])
 def lehrplan_search(
     request: Request,
     q: str = Query(..., min_length=3, max_length=200, description="Topic or keyword"),

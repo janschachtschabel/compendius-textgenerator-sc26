@@ -5,9 +5,10 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.api.deps import get_service
+from app.api.limits import rate_limited
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
@@ -19,7 +20,7 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
-@router.post("/compendium", response_model=Compendium)
+@router.post("/compendium", response_model=Compendium, dependencies=[Depends(rate_limited)])
 def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
     """Generate the compendium for a topic or a collection: the requested parts, in the requested mode."""
     service = get_service(request)

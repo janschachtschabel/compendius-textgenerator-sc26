@@ -12,6 +12,7 @@ from starlette.middleware.base import RequestResponseEndpoint
 
 from app import __version__
 from app.api.health import router as health_router
+from app.api.limits import RateLimiter
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -205,6 +206,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.manifest = manifest
     app.state.required_ids = resolve_required_ids(settings, manifest)
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
+    app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.include_router(health_router)
     app.include_router(v2_router)
     app.include_router(matching_router)

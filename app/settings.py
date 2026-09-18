@@ -125,7 +125,14 @@ class Settings(BaseSettings):
     llm_router_max_chunks: int = Field(12, ge=0, le=50, description="Doubtful chunks routed per compendium")
 
     # --- Service -------------------------------------------------------------------------------
-    request_timeout_s: int = Field(120, ge=5, description="Total time budget per compendium request")
+    request_timeout_s: int = Field(
+        120,
+        ge=5,
+        description="Time budget per compendium request for LLM calls and material reads of the knowledge collection",
+    )
+    rate_limit: int = Field(
+        60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
+    )
     admin_token: str = Field("", description="Token for admin endpoints; empty disables them")
     api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
 
