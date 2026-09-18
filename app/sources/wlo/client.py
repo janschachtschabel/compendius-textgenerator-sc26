@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 
 USER_AGENT = "compendious-text-fastapi/2.0 (+https://wirlernenonline.de; Kompendium-Sammlungsueberblick)"
 DEFAULT_PAGE_SIZE = 100
+MAX_PAGES = 200  # 20,000 references at the default page size; beyond that the listing is cut
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
 _NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 _BODY_EXCERPT = 200
@@ -95,7 +96,7 @@ class EduSharingClient:
         refs: list[MaterialRef] = []
         seen: set[str] = set()
         skip = 0
-        while True:
+        for _page in range(MAX_PAGES):
             params = {"maxItems": self._page_size, "skipCount": skip, "propertyFilter": "-all-"}
             payload = self._get(path, params)
             if payload is None:
@@ -110,6 +111,8 @@ class EduSharingClient:
             skip += len(items)
             if not items or len(items) < self._page_size or (total is not None and skip >= total):
                 return refs
+        log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
+        return refs
 
     def text_content(self, node_id: str) -> str:
         """Extracted plain text of a material, or an empty string when the node has none (404)."""
@@ -130,12 +133,15 @@ class EduSharingClient:
             if response.status_code == 404:
                 return None
             if response.status_code >= 400:
-                raise EduSharingError(
-                    f"HTTP {response.status_code} von {self.base_url}{path}: {response.text[:_BODY_EXCERPT]}"
+                log.warning(
+                    "HTTP %s from %s%s: %s", response.status_code, self.base_url, path, response.text[:_BODY_EXCERPT]
                 )
+                raise EduSharingError(f"HTTP {response.status_code} vom Repository")
             try:
                 data: dict[str, Any] = response.json()
             except ValueError as exc:
-                raise EduSharingError(f"Antwort von {self.base_url}{path} ist kein JSON") from exc
+                log.warning("answer of %s%s is not JSON", self.base_url, path)
+                raise EduSharingError("Antwort des Repositorys ist kein JSON") from exc
             return data
-        raise EduSharingError(f"edu-sharing nicht erreichbar ({self.base_url}): {last_error}") from last_error
+        log.warning("%s%s not reachable: %s", self.base_url, path, last_error)
+        raise EduSharingError(f"edu-sharing nicht erreichbar ({type(last_error).__name__})") from last_error

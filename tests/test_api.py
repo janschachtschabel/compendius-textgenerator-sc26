@@ -1,3 +1,4 @@
+import inspect
 from pathlib import Path
 from typing import Any
 
@@ -5,6 +6,7 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api.health import health, ready
 from app.llm.client import BApiClient
 from app.main import build_llm, create_app
 from app.settings import Settings
@@ -151,3 +153,18 @@ def test_internal_key_errors_are_not_reported_as_client_errors(
 
 def test_empty_parts_are_rejected(client: TestClient) -> None:
     assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": []}).status_code == 422
+
+
+def test_health_reports_every_component_without_blocking_the_event_loop(client: TestClient) -> None:
+    components = client.get("/health").json()["components"]
+    assert components["lehrplan_cache"]["available"] in (True, False)
+    assert components["edu_sharing"] == {"enabled": True}
+    # /health reads SQLite (budget, curriculum cache); as plain functions both probes run in the threadpool
+    assert not inspect.iscoroutinefunction(health) and not inspect.iscoroutinefunction(ready)
+
+
+def test_api_docs_can_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    settings = make_settings(sample_zims.values(), tmp_path / "state", api_docs_enabled=False)
+    with TestClient(create_app(settings)) as hidden:
+        assert [hidden.get(path).status_code for path in ("/docs", "/redoc", "/openapi.json")] == [404, 404, 404]
+        assert hidden.get("/health").status_code == 200

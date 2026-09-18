@@ -7,6 +7,7 @@ import sqlite3
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
+from fastapi.concurrency import run_in_threadpool
 from starlette.middleware.base import RequestResponseEndpoint
 
 from app import __version__
@@ -14,6 +15,7 @@ from app.api.health import router as health_router
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
+from app.api.v2.matching import admin as matching_admin_router
 from app.api.v2.matching import router as matching_router
 from app.api.v2.routes import router as v2_router
 from app.api.v2.zim import admin as zim_admin_router
@@ -188,8 +190,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title="Kompendium-API v2",
         version=__version__,
         description="Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten.",
-        docs_url="/docs",
-        redoc_url="/redoc",
+        docs_url="/docs" if settings.api_docs_enabled else None,
+        redoc_url="/redoc" if settings.api_docs_enabled else None,
+        openapi_url="/openapi.json" if settings.api_docs_enabled else None,
     )
     app.state.settings = settings
     app.state.registry = registry
@@ -205,6 +208,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health_router)
     app.include_router(v2_router)
     app.include_router(matching_router)
+    app.include_router(matching_admin_router)
     app.include_router(zim_router)
     app.include_router(zim_admin_router)
     app.include_router(lehrplan_router)
@@ -217,7 +221,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         @app.middleware("http")
         async def follow_active_archives(request: Request, call_next: RequestResponseEndpoint) -> Response:
             # One stat call per request; archives are reopened only when the sync job replaced active.json.
-            refresher.refresh()
+            await run_in_threadpool(refresher.refresh)
             return await call_next(request)
 
     return app

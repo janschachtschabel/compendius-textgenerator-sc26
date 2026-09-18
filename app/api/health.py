@@ -1,4 +1,8 @@
-"""Health (process alive) and readiness (archives present)."""
+"""Health (process alive) and readiness (archives present).
+
+Both probes read SQLite (token budget, curriculum cache), so they are plain functions: FastAPI runs them in the
+threadpool and a slow volume cannot stall the event loop. Neither probe calls a remote system.
+"""
 
 from __future__ import annotations
 
@@ -23,11 +27,21 @@ def _components(request: Request) -> dict[str, Any]:
         if llm is not None
         else {"enabled": False, "provider": settings.b_api_provider, "model": settings.b_api_model, "available": False}
     )
-    return {"zim": {"archives": registry.snapshot(), "missing_required": missing}, "llm": llm_status}
+    curricula = getattr(request.app.state, "curricula", None)
+    meta = curricula.store.meta() if curricula is not None else {}
+    return {
+        "zim": {"archives": registry.snapshot(), "missing_required": missing},
+        "lehrplan_cache": {
+            "available": curricula is not None and curricula.store.available,
+            "harvested_at": meta.get("harvested_at"),
+        },
+        "edu_sharing": {"enabled": getattr(request.app.state, "collections", None) is not None},
+        "llm": llm_status,
+    }
 
 
 @router.get("/health")
-async def health(request: Request) -> dict[str, Any]:
+def health(request: Request) -> dict[str, Any]:
     return {
         "status": "healthy",
         "service": "compendious-text-fastapi",
@@ -38,7 +52,7 @@ async def health(request: Request) -> dict[str, Any]:
 
 
 @router.get("/ready")
-async def ready(request: Request) -> JSONResponse:
+def ready(request: Request) -> JSONResponse:
     components = _components(request)
     is_ready = request.app.state.registry.ready and not components["zim"]["missing_required"]
     return JSONResponse(

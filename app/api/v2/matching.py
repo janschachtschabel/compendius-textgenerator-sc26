@@ -4,15 +4,18 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 
+from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.matching.eval_runner import DEFAULT_MATCHERS, compare_topic, find_gold
 from app.matching.registry import list_strategies
 from app.service import TopicNotFoundError
 
 router = APIRouter(prefix="/api/v2/matching", tags=["matching"])
+# The comparator builds a corpus and runs several strategies: a diagnosis tool, not a public endpoint.
+admin = APIRouter(prefix="/api/v2/matching", tags=["matching-admin"], dependencies=[Depends(require_admin)])
 
 
 class CompareRequest(BaseModel):
@@ -27,12 +30,13 @@ def matching_strategies() -> list[dict[str, Any]]:
     return list_strategies()
 
 
-@router.post("/compare")
+@admin.post("/compare")
 def compare(payload: CompareRequest, request: Request) -> dict[str, Any]:
     """Run several strategies on one topic; with a gold file the metrics come along, agreement always."""
     service = get_service(request)
+    matchers = list(dict.fromkeys(payload.matchers))
     known = {strategy["id"] for strategy in list_strategies()}
-    unknown = [name for name in payload.matchers if name not in known]
+    unknown = [name for name in matchers if name not in known]
     if unknown:
         raise HTTPException(status_code=422, detail=f"Unbekannte Strategie(n): {', '.join(unknown)}")
     gold_dir = request.app.state.settings.eval_gold_dir
@@ -40,7 +44,7 @@ def compare(payload: CompareRequest, request: Request) -> dict[str, Any]:
         result = compare_topic(
             service,
             payload.topic,
-            payload.matchers,
+            matchers,
             gold_for=lambda *names: find_gold(gold_dir, *names),
             template_id=payload.template_id,
             target_length=payload.target_length,

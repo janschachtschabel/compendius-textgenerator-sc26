@@ -108,3 +108,11 @@ def test_broken_cache_is_reported_as_unavailable_not_as_a_server_error(
         assert search.status_code == 200 and search.json()["available"] is False
         status = client.get("/api/v2/lehrplan/status")
         assert status.status_code == 200 and status.json()["counts"] == {"lehrplaene": {}, "nodes": 0}
+
+
+def test_public_answers_do_not_reveal_server_paths(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    with _client(sample_zims, tmp_path) as client:
+        status = client.get("/api/v2/lehrplan/status").json()
+        compendium = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["curricula"]}).json()
+    assert "db_path" not in status and str(tmp_path) not in str(status)
+    assert compendium["curricula"]["summary"] == {"reason": "cache_missing"}

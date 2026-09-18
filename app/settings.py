@@ -127,6 +127,7 @@ class Settings(BaseSettings):
     # --- Service -------------------------------------------------------------------------------
     request_timeout_s: int = Field(120, ge=5, description="Total time budget per compendium request")
     admin_token: str = Field("", description="Token for admin endpoints; empty disables them")
+    api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
 
     @property
     def zim_required_ids(self) -> list[str]:

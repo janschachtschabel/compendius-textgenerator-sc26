@@ -39,7 +39,6 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
     return {
         "available": store.available,
         "file_present": store.exists,
-        "db_path": str(store.path),
         "meta": meta,
         "counts": store.counts(),
         "coverage": coverage(meta),

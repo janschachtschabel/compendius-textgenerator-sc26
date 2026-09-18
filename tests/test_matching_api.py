@@ -1,6 +1,7 @@
 """Matching endpoints: strategies and the comparator with and without a gold file."""
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
@@ -11,6 +12,8 @@ from app.matching.gold import GoldLabel, GoldSet, save_gold, text_hash
 from app.settings import Settings
 from tests.conftest import make_settings
 
+AUTH = {"X-Admin-Token": "s3cret"}
+
 
 @pytest.fixture(scope="module")
 def gold_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
@@ -19,8 +22,10 @@ def gold_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 @pytest.fixture(scope="module")
 def client(sample_zims: dict[str, Path], gold_dir: Path, tmp_path_factory: pytest.TempPathFactory) -> TestClient:
-    settings: Settings = make_settings(sample_zims.values(), tmp_path_factory.mktemp("state"), eval_gold_dir=gold_dir)
-    return TestClient(create_app(settings))
+    settings: Settings = make_settings(
+        sample_zims.values(), tmp_path_factory.mktemp("state"), eval_gold_dir=gold_dir, admin_token="s3cret"
+    )
+    return TestClient(create_app(settings), headers=AUTH)
 
 
 def test_strategies_are_listed(client: TestClient) -> None:
@@ -64,3 +69,22 @@ def test_compare_rejects_unknown_matcher_and_topic(client: TestClient) -> None:
     response = client.post("/api/v2/matching/compare", json={"topic": "Xyzzyplomb"})
     assert response.status_code == 404
     assert response.json()["detail"]["resolution"]["normalized"] == "Xyzzyplomb"
+
+
+def test_compare_is_an_admin_tool(client: TestClient) -> None:
+    payload = {"topic": "Optik", "matchers": ["bm25"]}
+    assert client.post("/api/v2/matching/compare", json=payload, headers={"X-Admin-Token": "wrong"}).status_code == 403
+    assert client.get("/api/v2/matching/strategies", headers={"X-Admin-Token": "wrong"}).status_code == 200
+
+
+def test_compare_runs_every_strategy_once(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    service = client.app.state.service  # type: ignore[attr-defined]
+    original, runs = service.match, []
+
+    def counting(*args: Any, **kwargs: Any) -> Any:
+        runs.append(args[1])
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(service, "match", counting)
+    response = client.post("/api/v2/matching/compare", json={"topic": "Optik", "matchers": ["bm25"] * 8})
+    assert response.status_code == 200 and runs == ["bm25"]

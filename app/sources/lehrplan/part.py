@@ -65,7 +65,7 @@ class CurriculaBuilder:
                 available=False,
                 keywords=keywords,
                 subject_terms=subject_terms,
-                summary={"reason": "cache_missing", "db_path": str(self.store.path)},
+                summary={"reason": "cache_missing"},
                 markdown=render_missing_cache(),
             )
         try:

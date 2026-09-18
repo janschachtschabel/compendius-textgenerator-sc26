@@ -102,3 +102,22 @@ def test_errors_are_mapped_and_ids_validated() -> None:
         with pytest.raises(ValueError):
             validate_node_id(bad)
     assert validate_node_id(OPTIK) == OPTIK
+
+
+def test_error_messages_carry_no_repository_internals(caplog: pytest.LogCaptureFixture) -> None:
+    client = _client(FakeRepository())
+    with caplog.at_level("WARNING"), pytest.raises(EduSharingError) as failure:
+        client.text_content("11111111-1111-4111-8111-111111111111")
+    assert str(failure.value) == "HTTP 500 vom Repository"  # shown to API clients and printed in part 3
+    assert BASE in caplog.text  # the details stay in the log
+
+
+def test_pagination_stops_at_the_page_cap(monkeypatch: pytest.MonkeyPatch) -> None:
+    def endless(request: httpx.Request) -> httpx.Response:
+        skip = int(request.url.params["skipCount"])
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{skip + i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes})  # always a full page, never a total
+
+    monkeypatch.setattr("app.sources.wlo.client.MAX_PAGES", 3)
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(endless), page_size=2)
+    assert len(client.references(OPTIK)) == 6
