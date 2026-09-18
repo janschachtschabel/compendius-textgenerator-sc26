@@ -109,12 +109,14 @@ def test_abort_keeps_the_previous_database(tmp_path: Path) -> None:
 
 def test_cache_is_available_only_with_the_current_schema_version(tmp_path: Path) -> None:
     import sqlite3
+    from contextlib import closing
 
     path = tmp_path / "lehrplan.db"
     store = _write(path)
     assert store.available and store.meta()["schema_version"] == "1"
-    with sqlite3.connect(path) as connection:
+    with closing(sqlite3.connect(path)) as connection:  # sqlite3's own context manager commits but never closes
         connection.execute("UPDATE meta SET value = '0' WHERE key = 'schema_version'")
+        connection.commit()
     assert store.exists and not store.available
     assert store.search(["Optik"]) == []
     path.write_bytes(b"not a database at all")

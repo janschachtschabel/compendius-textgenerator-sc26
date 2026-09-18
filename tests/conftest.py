@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
@@ -48,6 +49,18 @@ SAMPLE_META = {
         "redirects": [],
     },
 }
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    """Tests never see the developer's shell configuration.
+
+    ``Settings`` reads the environment case-insensitively; a B_API_KEY, LLM_ENABLED, MODEL2VEC_PATH or POLICY_* from
+    the shell would otherwise reach the real b-api or change calibrated results. Tests that need a variable set it
+    with ``monkeypatch.setenv``.
+    """
+    fields = {name.lower() for name in Settings.model_fields}
+    for key in [key for key in os.environ if key.lower() in fields]:
+        del os.environ[key]
 
 
 class HtmlItem(Item):
