@@ -1,6 +1,10 @@
 """TTL cache for repository answers: SQLite file, expiry by injected clock, JSON values."""
 
+import sqlite3
+from contextlib import closing
 from pathlib import Path
+
+import pytest
 
 from app.sources.wlo.cache import TtlCache
 
@@ -24,3 +28,29 @@ def test_two_instances_share_the_file(tmp_path: Path) -> None:
     path = tmp_path / "wlo_cache.db"
     TtlCache(path, clock=lambda: 0.0).set("k", "v", ttl_s=100)
     assert TtlCache(path, clock=lambda: 50.0).get("k") == "v"
+
+
+def test_writes_sweep_expired_entries_of_other_keys(tmp_path: Path) -> None:
+    now = [0.0]
+    path = tmp_path / "wlo_cache.db"
+    cache = TtlCache(path, clock=lambda: now[0])
+    cache.set("text:old", "a" * 1000, ttl_s=10)
+    now[0] += 20
+    cache.set("text:new", "b", ttl_s=10)  # nobody will ask for text:old again; the write removes it
+    with closing(sqlite3.connect(path)) as connection:
+        assert [row[0] for row in connection.execute("SELECT key FROM cache")] == ["text:new"]
+
+
+def test_an_unusable_cache_file_degrades_to_misses(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    cache = TtlCache(tmp_path / "wlo_cache.db")
+
+    def locked(*_args: object, **_kwargs: object) -> sqlite3.Connection:
+        raise sqlite3.OperationalError("database is locked")
+
+    monkeypatch.setattr(cache, "_connect", locked)
+    with caplog.at_level("WARNING"):
+        assert cache.get("collection:1") is None
+        cache.set("collection:1", {"title": "Optik"}, ttl_s=60)  # the cache only saves time; no exception
+    assert "database is locked" in caplog.text
