@@ -1,0 +1,110 @@
+# Alarmregeln für die Kompendium-API (Metriken siehe README, Abschnitt „Überwachung“; Maßnahmen in docs/betrieb.md).
+# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, REQUEST_TIMEOUT_S 120.
+groups:
+  - name: kompendium-verfuegbarkeit
+    rules:
+      - alert: KompendiumDown
+        expr: up{job="kompendium"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Kompendium-API nicht erreichbar
+          description: Prometheus erreicht /metrics seit fünf Minuten nicht.
+      - alert: KompendiumNotReady
+        expr: kompendium_zim_ready == 0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: Pflichtarchive fehlen, /ready meldet 503
+          description: kompendium_zim_required_missing nennt die Zahl; Sync-Job und active.json prüfen.
+      - alert: KompendiumHighErrorRate
+        expr: |
+          sum(rate(kompendium_http_requests_total{status=~"5.."}[10m]))
+            / sum(rate(kompendium_http_requests_total[10m])) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: Mehr als 5 % der Anfragen enden mit 5xx
+          description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
+      - alert: KompendiumSlowCompendia
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le) (rate(kompendium_http_request_duration_seconds_bucket{route="/api/v2/compendium"}[15m]))
+          ) > 60
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: 95 % der Kompendien brauchen mehr als 60 Sekunden
+          description: kompendium_compendium_phase_seconds zeigt, welche Phase langsam ist.
+
+  - name: kompendium-datenquellen
+    rules:
+      - alert: KompendiumZimSyncErrors
+        expr: kompendium_zim_sync_last_run_errors > 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte ZIM-Sync hatte Fehler
+          description: sync_status.json oder GET /api/v2/zim/progress nennen die Fehler.
+      - alert: KompendiumZimSyncStale
+        expr: time() - kompendium_zim_sync_last_run_timestamp_seconds > 35 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sync ist seit mehr als 35 Tagen nicht gelaufen
+          description: Der Updater-Sidecar läuft nicht oder hängt.
+      - alert: KompendiumLehrplanCacheMissing
+        expr: kompendium_lehrplan_cache_available == 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Lehrplan-Cache fehlt oder ist nicht lesbar
+          description: Teil 2 enthält nur den Hinweistext; Harvest anstoßen.
+      - alert: KompendiumLehrplanCacheStale
+        expr: time() - kompendium_lehrplan_cache_harvested_timestamp_seconds > 40 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Lehrplan-Cache ist älter als 40 Tage
+          description: Der Harvest-Sidecar läuft nicht oder scheitert.
+      - alert: KompendiumLehrplanHarvestFailed
+        expr: kompendium_lehrplan_harvest_failed == 1
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte Lehrplan-Harvest ist gescheitert
+          description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
+
+  - name: kompendium-llm
+    rules:
+      - alert: KompendiumLlmUnavailable
+        expr: kompendium_llm_enabled == 1 and kompendium_llm_available == 0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: b-api nicht verfügbar, Hybridanfragen laufen im Regelmodus
+          description: components.llm in GET /health zeigt die letzte Modellprüfung.
+      - alert: KompendiumLlmBudgetNearlySpent
+        expr: kompendium_llm_tokens_used_today / kompendium_llm_daily_budget_tokens > 0.9
+        labels:
+          severity: warning
+        annotations:
+          summary: Mehr als 90 % des LLM-Tagesbudgets verbraucht
+          description: Danach laufen Hybridanfragen bis Mitternacht (UTC) im Regelmodus.
+      - alert: KompendiumHybridFallbacks
+        expr: |
+          sum(rate(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used="rule-based"}[30m])) > 0
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: Hybridanfragen fallen auf den Regelmodus zurück
+          description: audit.llm.note der Antworten nennt den Grund.

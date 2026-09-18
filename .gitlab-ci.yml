@@ -37,6 +37,17 @@ dependency-audit:
     - uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
     - uvx pip-audit --requirement requirements.txt --disable-pip --no-deps
 
+alert-rules:
+  stage: lint
+  image:
+    name: prom/prometheus:v3.14.0
+    entrypoint: [""]
+  cache: []
+  before_script: []
+  script:
+    - promtool check config monitoring/prometheus.yml
+    - promtool test rules monitoring/alerts_test.yml
+
 pytest:
   stage: test
   script:

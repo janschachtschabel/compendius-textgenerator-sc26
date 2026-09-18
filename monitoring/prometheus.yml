@@ -1,0 +1,18 @@
+# Prometheus für die Kompendium-API: lokal mit `docker compose --profile monitoring up -d api prometheus`,
+# sonst als Vorlage für den eigenen Scrape-Job. Alarmregeln in alerts.yml, ihre Tests in alerts_test.yml
+# (`promtool test rules monitoring/alerts_test.yml`). Benachrichtigungen braucht einen Alertmanager.
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  - job_name: kompendium
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api:8000"]
+    # Mit METRICS_TOKEN verlangt /metrics ein Bearer-Token:
+    # authorization:
+    #   credentials_file: /etc/prometheus/metrics_token
