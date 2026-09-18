@@ -41,7 +41,7 @@ from app.sources.wlo.part import CollectionBuilder, collection_topic
 from app.sources.zim.registry import ZimRegistry
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
-from app.synthesis.writer import LlmJob, SectionWriter
+from app.synthesis.writer import LlmJob, SectionWriter, WrittenSections
 from app.templates.manager import TemplateManager
 from app.templates.schema import Template, TemplateSlot
 
@@ -81,6 +81,31 @@ class Matched:
     duration_ms: int
 
 
+@dataclass
+class WorldPart:
+    """Part 1 of one request: what was written, how, and what the audit reports about it."""
+
+    matcher: str
+    mode: str
+    llm_note: str | None
+    chunks_assigned: int = 0
+    routing: RoutingResult | None = None
+    written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
+
+
+class _Stopwatch:
+    """Writes the milliseconds since the previous lap into ``timings``."""
+
+    def __init__(self, timings: dict[str, int]) -> None:
+        self._timings = timings
+        self._started = time.perf_counter()
+
+    def lap(self, name: str) -> None:
+        now = time.perf_counter()
+        self._timings[name] = int((now - self._started) * 1000)
+        self._started = now
+
+
 class CompendiumService:
     def __init__(
         self,
@@ -106,13 +131,7 @@ class CompendiumService:
     def prepare(self, request: GenerateRequest) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching."""
         timings: dict[str, int] = {}
-        started = time.perf_counter()
-
-        def lap(name: str) -> None:
-            nonlocal started
-            now = time.perf_counter()
-            timings[name] = int((now - started) * 1000)
-            started = now
+        lap = _Stopwatch(timings).lap
 
         template = self.templates.get(request.template_id or self.settings.template_default)
         if request.empty_slot_policy:
@@ -227,55 +246,17 @@ class CompendiumService:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
         prepared = self.prepare(request)
         mode_requested = request.mode or self.settings.llm_mode_default
-        mode, llm_note = self._resolve_mode(mode_requested)
-        budget = self.llm.open_budget() if mode != "rule-based" and self.llm is not None else None
-        matched = self.match(prepared, request.matcher, request.target_length)
-        timings = {**prepared.timings, "match": matched.duration_ms}
-        started = time.perf_counter()
+        timings = dict(prepared.timings)
+        world = self._world_part(prepared, request, mode_requested, deadline, timings)
+        lap = _Stopwatch(timings).lap
 
-        def lap(name: str) -> None:
-            nonlocal started
-            now = time.perf_counter()
-            timings[name] = int((now - started) * 1000)
-            started = now
-
-        routing = self._route(prepared, matched.assignment.doubtful, budget, deadline)
-        if routing is not None:
-            if routing.overrides:
-                matched = self.match(prepared, request.matcher, request.target_length, overrides=routing.overrides)
-            lap("route")
-
-        template, lexicon, sources, chunks = prepared.template, prepared.lexicon, prepared.sources, prepared.chunks
-        sources_by_id = prepared.sources_by_id
+        template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
         normalized, resolution = prepared.normalized, prepared.resolution
-        matcher_name, assignment = matched.matcher, matched.assignment
-        facets_visible = self.settings.facets_visible if request.facets_visible is None else request.facets_visible
+        sections, citations, routing = world.written.sections, world.written.citations, world.routing
+        matcher_name, mode, llm_note = world.matcher, world.mode, world.llm_note
+        facets_visible = self._facets_visible(request)
         topic = resolution.title or normalized.topic
-
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
-        llm_job: LlmJob | None = None
-        if budget is not None and self.llm is not None:
-            llm_job = LlmJob(
-                synthesizer=self.llm.synthesizer,
-                budget=budget,
-                slots=self.llm.llm_slots(mode, (slot.id for slot in template.content_slots())),
-                topic=topic,
-                concurrency=self.llm.options.concurrency,
-                deadline=deadline,
-            )
-        # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
-        written = self.writer.write(
-            _scale_budgets(template, request.target_length),
-            assignment.assigned,
-            sources,
-            sources_by_id,
-            facets_visible,
-            primary,
-            lexicon,
-            llm=llm_job,
-        )
-        sections, citations = written.sections, written.citations
-        lap("synthesize")
 
         curricula: CurriculaPart | None = None
         if "curricula" in request.parts and self.curricula is not None:
@@ -300,10 +281,11 @@ class CompendiumService:
         findings = lint_sections(template, sections, self.facets)
         generated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
         # The mode actually used: a hybrid request without any LLM contribution is a rule-based compendium.
-        llm_contributed = bool(written.llm and written.llm.sections) or bool(routing and routing.moved)
+        llm_report = world.written.llm
+        llm_contributed = bool(llm_report and llm_report.sections) or bool(routing and routing.moved)
         mode_used = mode if llm_contributed else "rule-based"
         llm_audit, llm_tokens, llm_front = build_llm_report(
-            self.llm, mode_requested, mode_used, llm_note, written.llm, routing
+            self.llm, mode_requested, mode_used, llm_note, llm_report, routing
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -342,7 +324,7 @@ class CompendiumService:
             timings_ms=timings,
             lint=findings,
             chunks_total=len(chunks),
-            chunks_assigned=sum(len(v) for v in assignment.assigned.values()),
+            chunks_assigned=world.chunks_assigned,
             sections_filled=filled,
             sections_empty=len(sections) - filled,
             citations=len(citations),
@@ -364,6 +346,63 @@ class CompendiumService:
             sources=[s.to_ref() for s in sources],
             markdown=markdown,
             audit=audit,
+        )
+
+    def _facets_visible(self, request: GenerateRequest) -> bool:
+        return self.settings.facets_visible if request.facets_visible is None else request.facets_visible
+
+    def _world_part(
+        self,
+        prepared: PreparedTopic,
+        request: GenerateRequest,
+        mode_requested: str,
+        deadline: Deadline,
+        timings: dict[str, int],
+    ) -> WorldPart:
+        """Part 1: match the chunks, let the LLM settle close calls (hybrid modes) and write the sections."""
+        mode, llm_note = self._resolve_mode(mode_requested)
+        budget = self.llm.open_budget() if mode != "rule-based" and self.llm is not None else None
+        matched = self.match(prepared, request.matcher, request.target_length)
+        timings["match"] = matched.duration_ms
+        lap = _Stopwatch(timings).lap
+
+        routing = self._route(prepared, matched.assignment.doubtful, budget, deadline)
+        if routing is not None:
+            if routing.overrides:
+                matched = self.match(prepared, request.matcher, request.target_length, overrides=routing.overrides)
+            lap("route")
+
+        template, sources = prepared.template, prepared.sources
+        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        llm_job: LlmJob | None = None
+        if budget is not None and self.llm is not None:
+            llm_job = LlmJob(
+                synthesizer=self.llm.synthesizer,
+                budget=budget,
+                slots=self.llm.llm_slots(mode, (slot.id for slot in template.content_slots())),
+                topic=prepared.resolution.title or prepared.normalized.topic,
+                concurrency=self.llm.options.concurrency,
+                deadline=deadline,
+            )
+        # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
+        written = self.writer.write(
+            _scale_budgets(template, request.target_length),
+            matched.assignment.assigned,
+            sources,
+            prepared.sources_by_id,
+            self._facets_visible(request),
+            primary,
+            prepared.lexicon,
+            llm=llm_job,
+        )
+        lap("synthesize")
+        return WorldPart(
+            matcher=matched.matcher,
+            mode=mode,
+            llm_note=llm_note,
+            chunks_assigned=sum(len(v) for v in matched.assignment.assigned.values()),
+            routing=routing,
+            written=written,
         )
 
     def _resolve_mode(self, requested: str) -> tuple[str, str | None]:
