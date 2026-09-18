@@ -1,7 +1,8 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-17, Fassung v2 (Antworten von Jan eingearbeitet, siehe Änderungsprotokoll) ·
-Status: Entwurf zur Abstimmung · Grundlage: Code-Analyse von
+Stand: 2026-09-18, Fassung v12 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+teilweise), Phasen 6 und 7 offen; Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
+Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
 `../mem-schule-optik` und `../mem-schule-abruf` (gezielter Abruf von Lehrplanelementen zu einem
 Thema per MEM-SPARQL), `../lehrplan-ontologien` (nur die Notizen zum MEM-Import: RDF-Struktur,
@@ -296,9 +297,11 @@ compendious-text-fastapi/
 | `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen SPARQL-Anfragen im Harvest |
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` (= alle) | optionale Kappung von Teil 2 je Bundesland und Bildungsstufe; Standard ohne Kappung (D23) |
 | ~~`LEHRPLAN_LIVE_FALLBACK`~~ | – | gestrichen (D22): ohne Cache Hinweistext, nie SPARQL zur Inferenzzeit |
-| `RESULT_CACHE_TTL_H` | `168` | Ergebnis-Cache |
-| `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest, Templates schreiben) |
-| `REQUEST_TIMEOUT_S` | `120` | Gesamtfrist je Anfrage; begrenzt die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) |
+| `RESULT_CACHE_TTL_H` | `168` | geplant, nicht umgesetzt: Ergebnis-Cache (8.3) |
+| `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest-Anstoß, Matching-Vergleich; Templates schreiben ist geplant) |
+| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf den erzeugenden Endpunkten, je Worker; 0 = aus (D30) |
+| `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc`, `/openapi.json` ausliefern |
+| `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) und das Lesen der Materialtexte; keine harte Gesamtfrist (geplant: 504, 8.1) |
 
 ---
 
@@ -485,7 +488,7 @@ rund 1.200 Tokens in 3 s. Nur verschobene Chunks zählen als LLM-Beitrag zum Mod
 - **Entscheidung (D20, D21):** `MATCHER_DEFAULT=hybrid_light` mit Model2Vec; das Modell wird zur
   Bauzeit ins `base`-Image gelegt (`/models/m2v`, `HF_HUB_OFFLINE=1`), das Extra `ml` (torch,
   Cross-Encoder, Electra-QA) kommt nicht ins Produktionsimage. Der Zielwert 0,70 ist **nicht
-  erreicht**; die Freigabe des Regelmodus erfolgt trotzdem, weil micro-F1 0,63 und die großen
+  erreicht**; die Freigabe des Regelmodus erfolgt trotzdem, weil micro-F1 0,63 (nach D28: 0,66) und die großen
   Bausteine tragen, kleine Bausteine ehrlich leer bleiben dürfen (`empty_slot_policy`) und der
   LLM-Router in Phase 5 genau die Zweifelsfälle adressiert. Offen: Redaktionsprüfung der Labels,
   mehr Gold für die kleinen Bausteine, Hold-out-Themen für die Schwellen.
@@ -710,8 +713,8 @@ Umlaute), geschrieben als `.tmp` und per `os.replace` getauscht; Leser öffnen j
   Matching 6–154 ms, Rendering 0–13 ms, Median 48 ms, Maximum 163 ms je Thema („Licht“ ohne Fach: 1.109 Treffer,
   2.066 Wortfragment-Treffer ausgeschlossen). Ohne Kappung wird Teil 2 bei breiten Themen ohne Fach sehr lang
   (Demokratie/Politik 161.000 Zeichen, „Wasser“ ohne Fach 720.000); mit Fach bleiben Optik 34.000 und
-  Photosynthese 57.000 Zeichen. `LEHRPLAN_LIVE_FALLBACK=true` erlaubt SPARQL nur bei
-  leerem Cache; Standard ist ein Hinweistext statt Abbruch.
+  Photosynthese 57.000 Zeichen. Ohne Cache oder bei einem nicht lesbaren Cache enthält Teil 2 einen
+  Hinweistext; SPARQL gibt es zur Inferenzzeit nicht (D22).
 
 **Umsetzung (2026-09-17):** Stichwortsatz aus Titel, Aliasen und Teilgebieten (Titel verlinkter
 Artikel mit Themenstamm), Bindestrich-Teile ohne Gattungswörter, höchstens zwölf (`matcher.build_keywords`);
@@ -914,7 +917,9 @@ Akteurs-Klassifikation und Glossar-Politur per LLM, Template-Kurztexte, QA-Endpu
 
 Grundsatz: keine Fehler als Markdown mit HTTP 200. Stattdessen 422 (Validierung), 404 (Thema
 nicht auflösbar, mit Alternativen), 503 (ZIM fehlt, LLM erforderlich aber deaktiviert), 504
-(Zeitbudget). Teilergebnisse werden als solche gekennzeichnet (`parts_status`).
+(Zeitbudget). Teilergebnisse werden als solche gekennzeichnet (`parts_status`). **Stand 2026-09-18:** 422, 404,
+429 (`RATE_LIMIT`), 502 und 503 sind umgesetzt; 504 und `parts_status` sind geplant (Phase 6), Teilausfälle
+stehen bis dahin als `available: false` im jeweiligen Teil.
 
 ### 8.2 Neue Endpunkte (v2)
 
@@ -964,12 +969,12 @@ LLM-Bausteine) und `llm` {prompt, model, tokens, dropped_sentences, unsupported_
 verfügbares LLM ist kein Fehler, sondern ein Kompendium im Regelmodus mit Hinweis. `GET /health` zeigt
 `components.llm` {enabled, provider, model, available, check, budget}.
 
-Weitere: `GET /api/v2/templates`, `GET|PUT|DELETE /api/v2/templates/{id}`,
-`POST /api/v2/templates/{id}/descriptions` (LLM, Admin); `GET /api/v2/zim/status`,
+Weitere: `GET /api/v2/templates`, `GET /api/v2/templates/{id}` (geplant: `PUT|DELETE /api/v2/templates/{id}`,
+`POST /api/v2/templates/{id}/descriptions` mit LLM, Admin); `GET /api/v2/zim/status`,
 `GET /api/v2/zim/catalog`, `POST /api/v2/zim/sync`, `GET /api/v2/zim/progress`,
 `DELETE /api/v2/zim/{file}` (Admin); `GET /api/v2/lehrplan/status`,
 `POST /api/v2/lehrplan/harvest` (Admin), `GET /api/v2/lehrplan/search?q=&subject=`;
-`GET /api/v2/matching/strategies`, `POST /api/v2/matching/compare`;
+`GET /api/v2/matching/strategies`, `POST /api/v2/matching/compare` (Admin, seit dem Audit vom 2026-09-18);
 `GET /api/v2/collections/{id}/overview` (Teil 3 einzeln).
 
 ### 8.3 Laufzeitverhalten
@@ -978,7 +983,7 @@ Synchron mit Gesamtbudget `REQUEST_TIMEOUT_S` (Standard 120 s). Regelmodus liegt
 Hybridmodus parallelisiert LLM-Aufrufe (Semaphore). Ein Job-Modell (`202 Accepted` +
 `GET /api/v2/jobs/{id}`) ist vorgesehen, aber erst nötig, wenn Konsumenten es brauchen.
 
-Ergebnis-Cache: Schlüssel aus aufgelöstem Titel, Template-ID und -Version, Teilen, Modus,
+Ergebnis-Cache (geplant, nicht umgesetzt): Schlüssel aus aufgelöstem Titel, Template-ID und -Version, Teilen, Modus,
 ZIM-UUIDs, Harvest-Datum, `collection_id` + `modifiedAt`; TTL 7 Tage; `force: true` umgeht ihn.
 
 ---
@@ -1067,7 +1072,7 @@ Aufwände sind Schätzungen in Personentagen (PT), Unsicherheit ±30 %.
 |---|---|---|---|
 | 0 Fundament ✅ (2026-09-17) | Repo-Struktur, uv/pyproject, Settings, Logging, Kern aus dem Prototyp portiert, Optik-Keywords entfernt (Wächter-Test), Sample-ZIM-Fixture aus 20 eingecheckten Artikeln, CI-Konfiguration, CLI, minimale API (`/health`, `/ready`, `POST /api/v2/compendium`, Templates, Strategien, ZIM-Status) | erfüllt: Teil 1 im Regelmodus aus Sample-ZIM und aus den echten Dumps; 52 Tests offline grün, Ruff und mypy strict ohne Befund | 2 |
 | 1 ZIM-Betrieb ✅ (2026-09-17) | Manifest, Kiwix-OPDS-Katalog, Downloader (Range-Resume, SHA-256 aus dem Metalink, Host-Allowlist), `active.json` mit Watcher und Reload ohne Neustart, Sync-Job (adopt, bootstrap, update, retire, prune) als CLI und `--loop`-Sidecar mit Trigger-Datei, Admin-Endpunkte (Katalog, Fortschritt, Sync-Anstoß, Löschen), Dockerfile `base`, `compose.yml`, CI-Image-Jobs | erfüllt: Realdaten-Sync lädt fehlende Pflichtarchive selbst (Klexikon maxi und nopic; Abbruch bei 25 MB und Resume geprüft); `/ready` wechselt im Test ohne Neustart von 503 auf 200; 103 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
-| 2 Matching und Template ⚠ teilweise (2026-09-17) | Überschriften-Lexikon aus 20.000 Dump-Artikeln erhoben und in Fassung 3 nachgeschärft, Policy kalibriert (Standardbaustein, Vertrauensschwelle, Teilgebiets-Einleitungen, Personen- und Werkartikel ausgenommen, Fragmentfilter), Goldstandard 10 Themen / 603 Chunks, Eval-Harness (CLI und `POST /api/v2/matching/compare`), Matcher-Entscheidung `hybrid_light` + Model2Vec im Image. Facetten-Annotatoren unverändert (Best Effort, D13) | macro-F1 0,43 (Ziel 0,70 nicht erreicht), micro-F1 0,63, Baseline 0,27/0,32; Halluzinations-Slots bei kleinen Bausteinen vorhanden; Redaktionsprüfung steht aus | 7 |
+| 2 Matching und Template ⚠ teilweise (2026-09-17) | Überschriften-Lexikon aus 20.000 Dump-Artikeln erhoben und in Fassung 3 nachgeschärft, Policy kalibriert (Standardbaustein, Vertrauensschwelle, Teilgebiets-Einleitungen, Personen- und Werkartikel ausgenommen, Fragmentfilter), Goldstandard 10 Themen / 603 Chunks, Eval-Harness (CLI und `POST /api/v2/matching/compare`), Matcher-Entscheidung `hybrid_light` + Model2Vec im Image. Facetten-Annotatoren unverändert (Best Effort, D13) | macro-F1 0,43 (Ziel 0,70 nicht erreicht), micro-F1 0,63, nach D28 0,45 / 0,66, Baseline 0,27/0,32; Halluzinations-Slots bei kleinen Bausteinen vorhanden; Redaktionsprüfung steht aus | 7 |
 | 3 Teil 2 Lehrpläne ✅ (2026-09-17) | Vokabular und Query-Builder (Closure über Virtuosos transitive Option mit `t_distinct`), SPARQL-Client mit Pacing und Retry, Vollabzug aller 16 Länder in `lehrplan.db` (SQLite, FTS5 trigram, atomarer Tausch), Rollen aus Ontologie plus Override-Tabelle, Fach-Mapping `config/subjects.yaml`, Themen-Matching mit Wortgrenzen-Regel, Rendering mit Markern, `compendium lehrplan status|check|harvest|search`, Endpunkte `/api/v2/lehrplan/*`, Sidecar in `compose.yml` | Harvest 25 min für 2.514 Lehrpläne / 295.184 Knoten (Ziel < 2 h); Äquivalenz zum Prototyp: SN 218/272, RP 200/200, BE 0/0, BY 278 neu; Teil 2 Optik 135 Lehrplanelemente in 14 Lehrplänen aus 3 Ländern (Fach Physik, 110 ms); 204 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
 | 4 Teil 3 Sammlung ✅ (2026-09-17) | edu-sharing-Client (anonym oder Basic, Paginierung, UUID-Validierung, 404/502-Abbildung), TTL-Cache, Überblick mit Untersammlungen in parsebaren Blöcken, Wissens-Sammlung mit Lizenz-Policy und Policy-Regel für Materialbelege, `collection_id` als Eingabe (Thema, Fach, Kontext), `GET /api/v2/collections/{id}/overview`, CLI `compendium collection overview` | Überblick für 5 reale Sammlungen (3,5–6,8 s ungecacht, 6.800–63.000 Zeichen, alle Blöcke parsebar); Wissens-Sammlung Optik: 6 Materialquellen, ein zusätzlicher Beleg (Bildung); 234 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
 | 5 LLM-Schicht ✅ (2026-09-18) | b-api-Client (beide Anfrageformen, Retry, Semaphore, Modellprüfung gegen `/models`), Prompt-Registry mit Versionen, Token-Budget je Kompendium und Tag, Gateway mit Rückfall, `hybrid-fast` und `hybrid-quality` mit Belegprüfung je Satz (Nummer und Deckung), LLM-Router für Zweifelsfälle, `mode` in Anfrage und CLI, LLM-Status in `/health`, Audit und Frontmatter mit tatsächlich verwendetem Modus | Live mit `gpt-5.6-luna`: jeder Satz der LLM-Bausteine trägt eine gültige Belegnummer (Endmessung: 4 Läufe, 167 Sätze, 0 ohne gültige Nummer, Belegfolge lückenlos); nicht erreichbare b-api ergibt ein Kompendium im Regelmodus mit `mode_requested` (4,3 s); unabhängiges Review eingearbeitet, offene Punkte geschlossen (D27); Image gebaut und im Container mit zwei Workern geprüft (Hybridlauf, gemeinsamer Tageszähler, Schlüssel nicht im Log); 337 Tests offline grün, Ruff und mypy strict ohne Befund | 3 |
@@ -1200,6 +1205,16 @@ API.
   die Materialregel (D24) startet an der konfigurierten Schwelle. Verworfen nach Messung: gelernte Zuordnung,
   Schwellen je Baustein, zentrierte Embeddings, Überschriften-Embedding, Füllregel für leere Bausteine. Der
   Vergleich mit der Testapp steht in `eval/README.md`.
+- **D29 (2026-09-18)** Der Code liegt auf GitHub (`janschachtschabel/compendius-textgenerator-sc26`, Branch
+  `main`) und steht unter Apache-2.0 (LICENSE von Jan, im Paket als `License-Expression` erklärt). Die
+  Laufzeitabhängigkeit libzim steht unter GPL-3.0-or-later; ob die Weitergabe des Images daran etwas ändert,
+  klärt edu-sharing vor einer Veröffentlichung. Die Historie des alten Dienstes bleibt im GitLab-Repo.
+- **D30 (2026-09-18)** Nach dem Audit (`docs/audits/2026-09-18-audit.md`): Das Rate-Limit des alten Dienstes
+  (`RATE_LIMIT`, 60 je Minute und Client) gilt wieder, aber nur für die erzeugenden Endpunkte, damit Proben
+  nie gedrosselt werden. Der Matching-Vergleich ist ein Admin-Werkzeug. Eine Anmeldung für die öffentlichen
+  Endpunkte gibt es nicht; ob der Dienst nur hinter dem WLO-Gateway steht oder eigene Schlüssel braucht, ist
+  offen und Jans Entscheidung. Materialien der Wissens-Sammlung nennen Urheber und Lizenzversion so, wie das
+  Repository sie führt; fehlt eine Angabe, wird nichts ergänzt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
@@ -1387,3 +1402,16 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   schwellenrelative Materialregel. Gold macro-F1 0,430 → 0,447, micro-F1 0,632 → 0,656, fehlbelegt 212 → 189;
   Richter auf vier fremden Themen: falsche gedruckte Absätze 23 → 14 bei gleich vielen klar passenden.
   Testsuite 340 Tests, Ruff und mypy strict grün.
+- **2026-09-18, Fassung v12 (Audit und Behebung, D29, D30):** Audit über den ganzen Code (Bericht in
+  `docs/audits/2026-09-18-audit.md`, 71 von 100, bedingt produktionsreif), danach Behebung in einzelnen
+  Commits auf GitHub: `parts` ohne `world` wird eingehalten, unbekannte Matcher sind 422 und interne Fehler
+  500, ein nicht lesbarer Lehrplan-Cache ergibt den Hinweis statt 500, Downloads sind auf die angekündigte
+  Größe begrenzt und nur per https von der Allowlist, der Matching-Vergleich braucht das Admin-Token, keine
+  Serverpfade und Repository-Antworten in Fehlermeldungen, Materialien mit Urheber und Lizenzversion, Cache
+  räumt Abgelaufenes weg und übersteht Fehler, Templates robust gegen defekte Dateien, LRU für geparste
+  Artikel, Korpus-Kappung nach Herkunft, Frist für Materialtexte, Router ohne zweiten Ranker-Lauf,
+  `.part`-Bereinigung, `RATE_LIMIT`, Lifespan schließt die HTTP-Clients, Tests ohne Shell-Variablen, Model2Vec
+  getestet, Abdeckungsschwelle 90 %, GitHub-Actions-CI mit pip-audit, Image mit fester uv-Version und
+  Modell-Revision, `WEB_CONCURRENCY`, Betriebshandbuch `docs/betrieb.md`. Offen: Zugriffsschutz (D30),
+  v1-Vertrag und Fehlermodell (Phase 6), Observability (Phase 7), Sperre gegen parallele Sync-Läufe,
+  Aufteilung von Policy und Korpusbau. Testsuite 376 Tests, Ruff und mypy strict grün.

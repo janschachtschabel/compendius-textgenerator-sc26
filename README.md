@@ -16,7 +16,8 @@ Builds.
   `active.json` mit Wechsel ohne Neustart, Sync-Job als Sidecar, Dockerfile und Compose.
 - Phase 2 (Matching, teilweise): Goldstandard über zehn Schulfach-Themen, Eval-Harness,
   Überschriften-Lexikon aus dem Dump, kalibrierte Policy mit Standardbaustein, Model2Vec im
-  Image. macro-F1 0,43 und micro-F1 0,63 (Ziel 0,70 nicht erreicht, siehe `eval/README.md`).
+  Image, Vertrauensschwelle 0,65 mit Abschnitts-Glättung (D28). macro-F1 0,45 und micro-F1 0,66
+  (Ziel 0,70 nicht erreicht, siehe `eval/README.md`).
 - Phase 3 (Lehrplanbezüge): Vollabzug aller MEM-Lehrpläne in einen SQLite-Cache
   (`lehrplan.db`), wöchentliche Zählprüfung, Themen-Matching mit Wortgrenzen-Regel und
   Fach-Filter, Teil 2 mit Markern je Absatz, Endpunkte und CLI. Zur Inferenzzeit kein
@@ -28,6 +29,9 @@ Builds.
 - Phase 5 (LLM-Schicht): b-api-Client, Prompt-Registry mit Versionen, Modi `rule-based`,
   `hybrid-fast` und `hybrid-quality`, Belegprüfung je Satz, LLM-Router für Zweifelsfälle des
   Matchings, Token-Budget, Modellprüfung gegen `/models`, Rückfall auf den Regelmodus.
+- Audit vom 2026-09-18 ([Bericht](docs/audits/2026-09-18-audit.md)): Befunde zu API-Vertrag, Fehlerpfaden,
+  Attribution, Downloads, Caches, Rate-Limit, Tests, CI und Image behoben; offen sind Zugriffsschutz,
+  v1-Vertrag (Phase 6) und Observability (Phase 7). Stand je Befund im Nachtrag des Berichts.
 
 ## Entwicklung
 
@@ -37,6 +41,10 @@ uv run pytest
 uv run ruff check . && uv run ruff format --check .
 uv run mypy app
 ```
+
+Die CI (GitHub Actions `.github/workflows/ci.yml`, GitLab `.gitlab-ci.yml`) führt dieselben Prüfungen aus,
+dazu die Tests mit Zweigabdeckung (`uv run pytest --cov`, Schwelle 90 %) und `pip-audit` über die gelockten
+Laufzeitpakete. Tests sehen keine Variablen aus der Shell (`tests/conftest.py`), auch nicht `B_API_KEY`.
 
 Ein Kompendium von der Kommandozeile (Teil 1 und, wenn der Lehrplan-Cache vorliegt, Teil 2;
 Regelmodus):
@@ -125,8 +133,13 @@ Inhalte als kompakte Liste und die Untersammlungen eine Ebene tief, jeder Block 
 `<!-- f: Sammlung=<id>; Fach=…; Bildungsstufe=… -->` und `<!-- /f -->`. Fehlende Beschreibungen
 bleiben sichtbar leer. `knowledge_collection_id` nimmt die Materialien einer Sammlung als Quellen
 in Teil 1 auf, wörtlich nur unter CC0, PDM, CC BY oder CC BY-SA (Bausteine Bildung und Praxis
-bevorzugen sie). Das Repository (`EDU_SHARING_BASE_URL`, anonym oder Basic-Auth) wird zur
-Inferenzzeit gelesen, Sammlungen 1 h und Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db`).
+bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der Version, die das
+Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
+angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen. Das Repository
+(`EDU_SHARING_BASE_URL`, anonym oder Basic-Auth) wird zur Inferenzzeit gelesen, Sammlungen 1 h und
+Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db`, abgelaufene Einträge räumt jeder Schreibvorgang
+weg). Materialtexte, die bis zum Ablauf von `REQUEST_TIMEOUT_S` nicht geholt sind, bleiben draußen und
+stehen als `timed_out` im Audit.
 
 ```bash
 uv run compendium collection overview 9e7ae956-e9df-430f-bace-f3db4b910013 --out optik_teil3.md
@@ -166,8 +179,8 @@ Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Nach ei
 Timeout setzt ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus. Jeder Aufruf
 reserviert sein Token-Budget vorab (`LLM_MAX_TOKENS_PER_REQUEST` je Kompendium, `LLM_DAILY_TOKEN_BUDGET` je Tag);
 der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts.
-`REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit einer Anfrage: jeder Aufruf bekommt höchstens die Restzeit, bei
-weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper
+`REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen der Materialtexte einer Anfrage: jeder Aufruf
+bekommt höchstens die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper
 der b-api nur im Log.
 
 ```bash
@@ -179,10 +192,11 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --z
 | Endpunkt | Zweck |
 |---|---|
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
-| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection`; `subject`, `knowledge_collection_id`; `mode` wählt `rule-based`, `hybrid-fast`, `hybrid-quality` |
+| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen und das Matching); `subject`, `knowledge_collection_id`; `mode` wählt `rule-based`, `hybrid-fast`, `hybrid-quality`; unbekannte Strategie in `matcher`: 422 |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar) |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |
+| `POST /api/v2/matching/compare` (Admin) | Strategien auf einem Thema vergleichen, mit Gold-Metriken, wenn `EVAL_GOLD_DIR` eine Gold-Datei hat |
 | `GET /api/v2/lehrplan/status` | Lehrplan-Cache: Stand, Abdeckung, Lehrpläne je Land, letzter Harvest |
 | `GET /api/v2/lehrplan/search?q=&subject=` | Lehrplanelemente zu einem Stichwort aus dem Cache |
 | `POST /api/v2/lehrplan/harvest` (Admin) | Harvest-Prüfung anstoßen (Trigger-Datei für den Sidecar) |
@@ -194,3 +208,19 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --z
 
 Admin-Endpunkte erwarten den Header `X-Admin-Token` mit dem Wert von `ADMIN_TOKEN`; ohne
 gesetztes Token sind sie deaktiviert.
+
+`POST /api/v2/compendium`, `GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search`
+sind je Client auf `RATE_LIMIT` Anfragen pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
+0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Hinter einem Reverse-Proxy sieht uvicorn die
+Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung für die öffentlichen Endpunkte gibt es nicht;
+der Dienst gehört hinter ein Gateway. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und
+`/openapi.json` ab. `GET /health` meldet `zim`, `lehrplan_cache`, `edu_sharing` und `llm`; Fehlermeldungen
+nennen keine Serverpfade und keine Antworttexte des Repositorys (die stehen im Log).
+
+Betrieb, Störungen und Wiederherstellung: [docs/betrieb.md](docs/betrieb.md).
+
+## Lizenz
+
+Der Code steht unter der Apache License 2.0 ([LICENSE](LICENSE)). Das Image enthält libzim, das unter
+GPL-3.0-or-later steht; wer das Image weitergibt, prüft dessen Bedingungen. Die erzeugten Texte übernehmen
+Inhalte unter den Lizenzen der Quellen (Wikipedia und Klexikon CC BY-SA 4.0, Materialien wie angegeben).
