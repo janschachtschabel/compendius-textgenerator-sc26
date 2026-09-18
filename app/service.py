@@ -30,7 +30,7 @@ from app.llm.report import build_llm_report
 from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
 from app.matching.policy import AssignmentResult, Doubt, assign
-from app.matching.registry import get_matcher
+from app.matching.registry import ensure_strategy, get_matcher
 from app.matching.router import RoutingResult
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
@@ -244,10 +244,15 @@ class CompendiumService:
 
     def generate(self, request: GenerateRequest) -> Compendium:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
+        matcher_default = ensure_strategy(request.matcher or self.settings.matcher_default)  # before any work
         prepared = self.prepare(request)
         mode_requested = request.mode or self.settings.llm_mode_default
         timings = dict(prepared.timings)
-        world = self._world_part(prepared, request, mode_requested, deadline, timings)
+        want_world = "world" in request.parts
+        if want_world:
+            world = self._world_part(prepared, request, mode_requested, deadline, timings)
+        else:  # parts 2 and 3 only: no matching, no synthesis, no LLM work
+            world = WorldPart(matcher=matcher_default, mode="rule-based", llm_note=None)
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
@@ -272,7 +277,7 @@ class CompendiumService:
         if "collection" in request.parts and request.collection_id and self.collections is not None:
             collection_part = self._collection_part(request.collection_id)
             lap("collection")
-        parts = ["world"]
+        parts = ["world"] if want_world else []
         if curricula is not None:
             parts.append("curricula")
         if collection_part is not None:
@@ -307,14 +312,16 @@ class CompendiumService:
             matcher=matcher_name,
             parts=parts,
         )
+        source_refs = [s.to_ref() for s in sources] if want_world else []  # the sources belong to part 1
         markdown = render_markdown(
             topic=topic,
             frontmatter=frontmatter,
             template=template,
             sections=sections,
-            sources=[s.to_ref() for s in sources],
+            sources=source_refs,
             facets_visible=facets_visible,
             extra_parts=[part.markdown for part in (curricula, collection_part) if part is not None],
+            include_world=want_world,
         )
         lap("assemble")
 
@@ -343,7 +350,7 @@ class CompendiumService:
             sections=sections,
             curricula=curricula,
             collection=collection_part,
-            sources=[s.to_ref() for s in sources],
+            sources=source_refs,
             markdown=markdown,
             audit=audit,
         )

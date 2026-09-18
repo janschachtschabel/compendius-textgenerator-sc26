@@ -128,3 +128,26 @@ def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monke
 def test_matching_defaults_follow_the_measurement_of_2026_09_18(tmp_path: Path) -> None:
     settings = make_settings([], tmp_path)
     assert settings.policy_confident_score == 0.65 and settings.policy_section_smoothing == 0.5
+
+
+def test_unknown_matcher_is_a_german_422(client: TestClient) -> None:
+    response = client.post("/api/v2/compendium", json={"topic": "Optik", "matcher": "gibtsnicht"})
+    assert response.status_code == 422
+    assert response.json()["detail"] == "Unbekannte Matching-Strategie: gibtsnicht"
+
+
+def test_internal_key_errors_are_not_reported_as_client_errors(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = create_app(settings)
+
+    def broken(*_args: object, **_kwargs: object) -> None:
+        raise KeyError("sc26_99")
+
+    monkeypatch.setattr(app.state.service, "generate", broken)
+    with TestClient(app, raise_server_exceptions=False) as failing:
+        assert failing.post("/api/v2/compendium", json={"topic": "Optik"}).status_code == 500
+
+
+def test_empty_parts_are_rejected(client: TestClient) -> None:
+    assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": []}).status_code == 422

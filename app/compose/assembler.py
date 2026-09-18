@@ -28,6 +28,11 @@ def section_marker(section: Section) -> str:
     return f"<!-- kompendium:section id={section.slot_id} status={section.status.value}{facet_part} hash={digest} -->"
 
 
+EMPTY_SECTION_TEXT = (
+    "*Für diesen Baustein lagen in den herangezogenen Quellen keine hinreichend passenden Abschnitte vor.*"
+)
+
+
 def build_frontmatter(
     *,
     topic: str,
@@ -54,11 +59,12 @@ def build_frontmatter(
         "ai_disclosure": AI_DISCLOSURE.get(mode, AI_DISCLOSURE["rule-based"]),
         "review": {"status": "maschinell-extraktiv" if mode == "rule-based" else "ki-generiert", "interval_months": 12},
         "sources_snapshot": [dict(s) for s in zim_snapshot],
-        "license": (
+    }
+    if "world" in parts:  # the licence note speaks about part 1 only
+        frontmatter["license"] = (
             "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0); "
             "TULLU je Quelle in Baustein 12"
-        ),
-    }
+        )
     if mode_requested is not None and mode_requested != mode:
         frontmatter["mode_requested"] = mode_requested
     if llm is not None:
@@ -75,8 +81,12 @@ def render_markdown(
     sources: Sequence[SourceRef],
     facets_visible: bool,
     extra_parts: Sequence[str] = (),
+    include_world: bool = True,
 ) -> str:
-    """Render frontmatter, title and part 1 with one marker per section; ``extra_parts`` follow as given."""
+    """Render frontmatter, title and part 1 with one marker per section; ``extra_parts`` follow as given.
+
+    ``include_world`` is off when the request did not ask for part 1.
+    """
     lines: list[str] = [
         "---",
         yaml.safe_dump(dict(frontmatter), allow_unicode=True, sort_keys=False).rstrip(),
@@ -85,26 +95,25 @@ def render_markdown(
     ]
     lines.append(f"# Kompendium: {topic}")
     lines.append("")
-    lines.append("## Teil 1 · Weltwissen")
-    lines.append("")
-    for section in sections:
-        if section.status is SectionStatus.EMPTY and template.empty_slot_policy == "omit":
-            continue
-        title = section.title
-        if facets_visible and section.facets:
-            title = f"{title} {format_visible(section.facets)}"
-        lines.append(f"### {title}")
-        lines.append(section_marker(section))
+    if include_world:
+        lines.append("## Teil 1 · Weltwissen")
         lines.append("")
-        if section.status is SectionStatus.EMPTY:
-            lines.append(
-                "*Für diesen Baustein lagen in den herangezogenen Quellen keine hinreichend passenden Abschnitte vor.*"
-            )
-        else:
-            lines.append(section.text)
-        lines.append("")
-    if not sources:
-        lines.append("*Keine Quellen gefunden.*")
+        for section in sections:
+            if section.status is SectionStatus.EMPTY and template.empty_slot_policy == "omit":
+                continue
+            title = section.title
+            if facets_visible and section.facets:
+                title = f"{title} {format_visible(section.facets)}"
+            lines.append(f"### {title}")
+            lines.append(section_marker(section))
+            lines.append("")
+            if section.status is SectionStatus.EMPTY:
+                lines.append(EMPTY_SECTION_TEXT)
+            else:
+                lines.append(section.text)
+            lines.append("")
+        if not sources:
+            lines.append("*Keine Quellen gefunden.*")
     for part in extra_parts:
         lines.extend(["", part.rstrip()])
     return "\n".join(lines).rstrip() + "\n"

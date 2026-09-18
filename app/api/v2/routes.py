@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException, Request
 from app.api.deps import get_service
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
+from app.matching.registry import UnknownMatcherError
 from app.service import TopicNotFoundError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
 from app.templates.manager import TemplateNotFoundError
@@ -20,7 +21,7 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 @router.post("/compendium", response_model=Compendium)
 def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
-    """Generate the compendium for a topic or a collection in rule-based mode (parts 1 to 3)."""
+    """Generate the compendium for a topic or a collection: the requested parts, in the requested mode."""
     service = get_service(request)
     try:
         return service.generate(payload)
@@ -35,8 +36,8 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
         raise HTTPException(status_code=502, detail=f"edu-sharing nicht erreichbar: {exc}") from exc
     except TemplateNotFoundError as exc:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
-    except KeyError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except UnknownMatcherError as exc:
+        raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
 
 
 @router.get("/templates")

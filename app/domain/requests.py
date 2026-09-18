@@ -27,6 +27,7 @@ class GenerateRequest(BaseModel):
     )
     parts: list[Part] = Field(
         default_factory=_default_parts,
+        min_length=1,
         description="Parts to generate: world (part 1), curricula (part 2), collection (part 3, needs collection_id)",
     )
     subject: str | None = Field(

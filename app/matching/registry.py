@@ -13,6 +13,10 @@ from app.matching.lexical import BM25Matcher, CharTfidfMatcher
 from app.templates.schema import TemplateSlot
 
 
+class UnknownMatcherError(ValueError):
+    """No matching strategy with this id; the message is the id."""
+
+
 class LexiconOnlyMatcher:
     """No ranking at all: only heading-lexicon hits and the lead are assigned by the policy."""
 
@@ -56,6 +60,13 @@ STRATEGIES: dict[str, dict[str, Any]] = {
 }
 
 
+def ensure_strategy(name: str) -> str:
+    """Return ``name`` when it is a known strategy id; raise ``UnknownMatcherError`` otherwise."""
+    if name not in STRATEGIES:
+        raise UnknownMatcherError(name)
+    return name
+
+
 def get_matcher(name: str, model2vec_path: str = "") -> Matcher:
     if name == "hybrid_light":
         return HybridLightMatcher(model2vec_path)
@@ -65,7 +76,7 @@ def get_matcher(name: str, model2vec_path: str = "") -> Matcher:
         return CharTfidfMatcher()
     if name == "lexicon_only":
         return LexiconOnlyMatcher()
-    raise KeyError(f"unknown matching strategy: {name}")
+    raise UnknownMatcherError(name)
 
 
 def list_strategies() -> list[dict[str, Any]]:

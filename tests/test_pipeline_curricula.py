@@ -43,6 +43,17 @@ def test_missing_cache_yields_the_hint_instead_of_an_error(
     assert "Lehrplan-Cache" in result.markdown
 
 
+def test_parts_without_world_skip_part_one(service: CompendiumService, settings: Settings) -> None:
+    write_cache(settings.state_dir)
+    result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"], subject="Physik"))
+    assert result.frontmatter["parts"] == ["curricula"]
+    assert result.sections == [] and result.sources == []
+    assert "Teil 1" not in result.markdown and "## Teil 2 · Lehrplanbezüge" in result.markdown
+    assert result.curricula is not None and result.curricula.summary["matches"] == 1
+    assert result.audit.chunks_assigned == 0 and result.audit.citations == 0
+    assert "match" not in result.audit.timings_ms and "synthesize" not in result.audit.timings_ms
+
+
 def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
 ) -> None:
