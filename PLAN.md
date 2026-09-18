@@ -301,6 +301,7 @@ compendious-text-fastapi/
 | `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest-Anstoß, Matching-Vergleich; Templates schreiben ist geplant) |
 | `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf den erzeugenden Endpunkten, je Worker; 0 = aus (D30) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc`, `/openapi.json` ausliefern |
+| `METRICS_ENABLED`, `METRICS_TOKEN` | `true` / – | Prometheus-Endpunkt `/metrics`, optional nur mit Bearer-Token (D31) |
 | `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) und das Lesen der Materialtexte; keine harte Gesamtfrist (geplant: 504, 8.1) |
 
 ---
@@ -1038,7 +1039,9 @@ wird auf die neuen Modi umgestellt (Regelmodus 0, Hybridszenarien).
 
 **Beobachtbarkeit.** Strukturierte JSON-Logs mit Request-ID, Phasenzeiten je Anfrage in
 `pipeline_statistics`, optional `/metrics` (Prometheus): Latenz, Cache-Trefferquote, LLM-Tokens,
-ZIM-Stand, Harvest-Alter.
+ZIM-Stand, Harvest-Alter. **Stand 2026-09-18:** `/metrics` umgesetzt (D31) mit Latenz, LLM-Tokens,
+ZIM-Stand und Harvest-Alter, dazu Alarmregeln; die Cache-Trefferquote fehlt, weil es den Ergebnis-Cache
+noch nicht gibt. Request-IDs und JSON-Logs sind offen.
 
 **Sicherheit.** Admin-Endpunkte hinter `ADMIN_TOKEN`; Download-URLs nur von Kiwix-Hosts;
 Dateinamen ohne Pfadanteile; edu-sharing-Zugangsdaten als Secret; keine Nutzereingaben in
@@ -1215,6 +1218,13 @@ API.
   Endpunkte gibt es nicht; ob der Dienst nur hinter dem WLO-Gateway steht oder eigene Schlüssel braucht, ist
   offen und Jans Entscheidung. Materialien der Wissens-Sammlung nennen Urheber und Lizenzversion so, wie das
   Repository sie führt; fehlt eine Angabe, wird nichts ergänzt.
+- **D31 (2026-09-18)** Überwachung über Prometheus. `GET /metrics` liefert Zustandswerte, die bei jedem Abruf
+  aus Registry, Cache und Statusdateien gelesen werden (in jedem Worker gleich, unbekannte Werte fehlen statt
+  0), und Laufzeitmetriken, die über `PROMETHEUS_MULTIPROC_DIR` über alle Worker summiert werden. Labels nur aus
+  festen Mengen. Die Kompendium-Metriken stammen aus dem Audit, der Service kennt Prometheus nicht. Alarmregeln
+  mit promtool-Tests in `monitoring/`, Prometheus als Compose-Profil `monitoring`. Optionaler Schutz über
+  `METRICS_TOKEN`, weil Budget- und Archivstand intern sind. Nicht Teil des Repos: Alertmanager und Dashboards.
+  Neue Abhängigkeit prometheus-client (offizieller Client des Prometheus-Projekts, Apache-2.0/BSD-2).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
@@ -1415,3 +1425,7 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   Modell-Revision, `WEB_CONCURRENCY`, Betriebshandbuch `docs/betrieb.md`. Offen: Zugriffsschutz (D30),
   v1-Vertrag und Fehlermodell (Phase 6), Observability (Phase 7), Sperre gegen parallele Sync-Läufe,
   Aufteilung von Policy und Korpusbau. Testsuite 376 Tests, Ruff und mypy strict grün.
+- **2026-09-18, Fassung v13 (Überwachung, D31):** Prometheus-Endpunkt `/metrics` mit Zustandswerten (Archive,
+  Sync-Läufe, Lehrplan-Cache und Harvest, edu-sharing, LLM und Tagesbudget) und Laufzeitmetriken (Anfragen je
+  Routen-Template, Modi, Phasen, Teile, Wissens-Sammlung, LLM-Verbrauch und Belegprüfung), summiert über die
+  Worker; zwölf Alarmregeln mit promtool-Tests, Compose-Profil `monitoring`, `METRICS_ENABLED` und `METRICS_TOKEN`.

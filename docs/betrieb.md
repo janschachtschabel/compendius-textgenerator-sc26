@@ -25,6 +25,17 @@ Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Architektur und 
 - Die Sidecars haben keinen HTTP-Server und keinen Healthcheck; ihren Stand zeigen `sync_status.json` und
   `GET /api/v2/zim/progress` (Admin) sowie die Logs.
 
+## Überwachung
+
+`GET /metrics` liefert Zustand und Laufzeitmetriken für Prometheus (Liste im README). Die Alarmregeln in
+`monitoring/alerts.yml` decken die Störungen unten ab: `KompendiumDown`, `KompendiumNotReady`,
+`KompendiumHighErrorRate`, `KompendiumSlowCompendia`, `KompendiumZimSyncErrors`, `KompendiumZimSyncStale`,
+`KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
+`KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumHybridFallbacks`. Nach einer Änderung
+an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
+Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
+will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`).
+
 ## Störungen
 
 | Symptom | Ursache und Verhalten | Maßnahme |
