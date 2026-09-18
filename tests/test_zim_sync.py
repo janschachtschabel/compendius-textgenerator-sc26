@@ -4,7 +4,7 @@ import hashlib
 import shutil
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import httpx
 import pytest
@@ -190,3 +190,23 @@ def test_catalog_failure_is_reported_not_raised(tmp_path: Path, sources: dict[st
     status = read_status(tmp_path)
     assert status is not None
     assert status["state"] == "idle"
+
+
+def test_metalink_from_a_foreign_host_is_not_fetched(tmp_path: Path, sources: dict[str, Path]) -> None:
+    class ForeignCatalog(FakeCatalog):
+        fetched: ClassVar[list[str]] = []
+
+        def latest(self, name: str, flavour: str) -> CatalogEntry | None:
+            entry = super().latest(name, flavour)
+            if entry is None:
+                return None
+            return entry.model_copy(update={"metalink_url": f"https://evil.example/{entry.file_name}.meta4"})
+
+        def metalink(self, url: str) -> Metalink:
+            self.fetched.append(url)
+            return super().metalink(url)
+
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    report = _sync(tmp_path, ForeignCatalog(offers, sources), FakeDownloader(sources)).run(BOOTSTRAP)
+    assert ForeignCatalog.fetched == []
+    assert report.downloaded == [] and any("evil.example" in error for error in report.errors)

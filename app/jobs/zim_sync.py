@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -28,7 +28,13 @@ from app.sources.zim.active import (
 )
 from app.sources.zim.archive import ZimArchive, dump_date
 from app.sources.zim.catalog import OPDS_DEFAULT_URL, CatalogEntry, KiwixCatalog, Metalink
-from app.sources.zim.downloader import Downloader, DownloadError, DownloadProgress
+from app.sources.zim.downloader import (
+    DEFAULT_ALLOWED_HOSTS,
+    Downloader,
+    DownloadError,
+    DownloadProgress,
+    check_download_url,
+)
 from app.sources.zim.subscriptions import Subscription, SubscriptionManifest, load_manifest
 
 log = logging.getLogger(__name__)
@@ -106,6 +112,7 @@ class ZimSync:
         *,
         clock: Callable[[], datetime] = _utcnow,
         retention: timedelta = timedelta(hours=24),
+        allowed_hosts: Sequence[str] = DEFAULT_ALLOWED_HOSTS,
     ) -> None:
         self._zim_dir = Path(zim_dir)
         self._manifest = manifest
@@ -113,6 +120,7 @@ class ZimSync:
         self._downloader = downloader
         self._clock = clock
         self._retention = retention
+        self._allowed_hosts = tuple(allowed_hosts)
         self._report: SyncReport | None = None
 
     def run(self, options: SyncOptions) -> SyncReport:
@@ -194,6 +202,7 @@ class ZimSync:
             report.missing.append(sub.id)
             return
         try:
+            check_download_url(remote.metalink_url, self._allowed_hosts)  # the hash must come from Kiwix too
             metalink = self._catalog.metalink(remote.metalink_url)
             path = self._downloader.download(
                 remote.download_url,
@@ -278,5 +287,10 @@ def build_sync(settings: Settings, *, offline: bool = False) -> ZimSync:
     catalog = None if offline else KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     downloader = Downloader(allowed_hosts=settings.zim_download_host_list)
     return ZimSync(
-        settings.zim_dir, manifest, catalog, downloader, retention=timedelta(hours=settings.zim_retention_hours)
+        settings.zim_dir,
+        manifest,
+        catalog,
+        downloader,
+        retention=timedelta(hours=settings.zim_retention_hours),
+        allowed_hosts=settings.zim_download_host_list,
     )

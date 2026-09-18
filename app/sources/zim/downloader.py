@@ -12,7 +12,7 @@ import logging
 import os
 import re
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Collection, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -30,6 +30,20 @@ _FILE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.zim$")
 
 class DownloadError(RuntimeError):
     """Transfer or verification failed; the message says whether the ``.part`` file was kept."""
+
+
+class _OversizedError(Exception):
+    """Internal signal: the stream exceeded the size the metalink announced."""
+
+
+def check_download_url(url: str, allowed_hosts: Collection[str]) -> None:
+    """Raise ``DownloadError`` unless ``url`` is https and starts at an allowlisted host."""
+    parsed = httpx.URL(url)
+    if parsed.scheme != "https":
+        raise DownloadError(f"download URL must use https: {url!r}")
+    host = (parsed.host or "").lower()
+    if host not in {allowed.lower() for allowed in allowed_hosts}:
+        raise DownloadError(f"download host {host!r} is not in the allowlist {sorted(allowed_hosts)}")
 
 
 def validate_file_name(name: str) -> str:
@@ -96,9 +110,7 @@ class Downloader:
         self, url: str, target_dir: Path, *, sha256: str, size: int, progress: ProgressCallback | None = None
     ) -> Path:
         """Fetch ``url`` into ``target_dir``, resuming a ``.part`` file; return the verified file path."""
-        host = (httpx.URL(url).host or "").lower()
-        if host not in self.allowed_hosts:
-            raise DownloadError(f"download host {host!r} is not in the allowlist {sorted(self.allowed_hosts)}")
+        check_download_url(url, self.allowed_hosts)
         try:
             file_name = validate_file_name(url.rsplit("/", 1)[-1])
         except ValueError as exc:
@@ -158,9 +170,16 @@ class Downloader:
                         fh.write(chunk)
                         transfer.hasher.update(chunk)
                         state.bytes_done += len(chunk)
+                        if state.bytes_done > state.bytes_total:  # mirrors are not allowlisted; cap what they send
+                            raise _OversizedError
                         now = time.monotonic()
                         if progress and now - last_report >= self.progress_interval_s:
                             progress(state)
                             last_report = now
+        except _OversizedError:
+            transfer.part.unlink(missing_ok=True)
+            raise DownloadError(
+                f"{transfer.part.name}: the server sent more than the expected {state.bytes_total} bytes; .part removed"
+            ) from None
         except httpx.HTTPError as exc:
             raise DownloadError(f"transfer of {transfer.part.name} failed: {exc}; .part kept for resume") from exc

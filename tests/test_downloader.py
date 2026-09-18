@@ -123,3 +123,18 @@ def test_file_name_validation() -> None:
     for bad in ("../x.zim", "x.zim.part", "a b.zim", "x/y.zim", "", "x.txt", ".hidden.zim"):
         with pytest.raises(ValueError):
             validate_file_name(bad)
+
+
+def test_plain_http_is_rejected_before_any_request(tmp_path: Path) -> None:
+    calls: list[httpx.Request] = []
+    with pytest.raises(DownloadError, match="https"):
+        _downloader(_server(BLOB, calls)).download(URL.replace("https://", "http://"), tmp_path, sha256=SHA, size=1)
+    assert calls == []
+
+
+def test_a_stream_longer_than_announced_is_aborted(tmp_path: Path) -> None:
+    calls: list[httpx.Request] = []
+    announced = len(BLOB) // 4
+    with pytest.raises(DownloadError, match="more than the expected"):
+        _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=announced)
+    assert list(tmp_path.glob("*")) == []  # nothing is kept from a source that ignores the announced size
