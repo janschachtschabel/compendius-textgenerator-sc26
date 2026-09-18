@@ -12,6 +12,7 @@ from app.api.limits import rate_limited
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
+from app.observability.metrics import record_compendium
 from app.service import TopicNotFoundError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
 from app.templates.manager import TemplateNotFoundError
@@ -25,7 +26,7 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
     """Generate the compendium for a topic or a collection: the requested parts, in the requested mode."""
     service = get_service(request)
     try:
-        return service.generate(payload)
+        compendium = service.generate(payload)
     except TopicNotFoundError as exc:
         raise HTTPException(
             status_code=404,
@@ -39,6 +40,8 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except UnknownMatcherError as exc:
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
+    record_compendium(compendium)
+    return compendium
 
 
 @router.get("/templates")

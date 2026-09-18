@@ -135,6 +135,8 @@ class Settings(BaseSettings):
     )
     admin_token: str = Field("", description="Token for admin endpoints; empty disables them")
     api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
+    metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
+    metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
 
     @property
     def zim_required_ids(self) -> list[str]:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import sqlite3
+import time
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -14,6 +15,8 @@ from fastapi.concurrency import run_in_threadpool
 from app import __version__
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
+from app.api.metrics import METRICS_PATH
+from app.api.metrics import router as metrics_router
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -28,6 +31,7 @@ from app.llm.client import BApiClient
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.logging import configure_logging
 from app.matching.lexicon import HeadingLexicon
+from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.service import CompendiumService
 from app.settings import Settings, get_settings
 from app.sources.lehrplan.part import CurriculaBuilder
@@ -237,6 +241,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(lehrplan_router)
     app.include_router(lehrplan_admin_router)
     app.include_router(collections_router)
+    if settings.metrics_enabled:
+        app.include_router(metrics_router)
 
     if not settings.zim_path_list:
         refresher = RegistryRefresher(registry, settings.zim_dir)
@@ -248,5 +254,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # One stat call per request; archives are reopened only when the sync job replaced active.json.
             await run_in_threadpool(refresher.refresh)
             return await call_next(request)
+
+    @app.middleware("http")
+    async def record_http_metrics(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+        # Added last, so it runs outermost and times the whole request; scrapes are not requests of the service.
+        if request.url.path == METRICS_PATH:
+            return await call_next(request)
+        started = time.perf_counter()
+        status = 500  # an exception escaping the app reaches the client as a 500
+        try:
+            response = await call_next(request)
+            status = response.status_code
+            return response
+        finally:
+            # FastAPI stores the matched route in the scope; its template keeps the label values bounded
+            route = getattr(request.scope.get("route"), "path", None) or UNMATCHED_ROUTE
+            observe_request(request.method, route, status, time.perf_counter() - started)
 
     return app
