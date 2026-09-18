@@ -1,0 +1,1749 @@
+{
+  "gold_dir": "eval\\gold",
+  "matchers": [
+    "hybrid_light"
+  ],
+  "skipped": [],
+  "runs": [
+    {
+      "topic": "Barockliteratur",
+      "labeled": 23,
+      "stale": 0,
+      "results": {
+        "hybrid_light": {
+          "topic": "Barockliteratur",
+          "topics": [
+            "Barockliteratur"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 1,
+              "predicted": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            {
+              "slot": "systematik",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 8,
+              "predicted": 7,
+              "tp": 2,
+              "fp": 5,
+              "fn": 6,
+              "precision": 0.2857142857142857,
+              "recall": 0.25,
+              "f1": 0.26666666666666666
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 4,
+              "predicted": 8,
+              "tp": 3,
+              "fp": 5,
+              "fn": 1,
+              "precision": 0.375,
+              "recall": 0.75,
+              "f1": 0.5
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 3,
+              "predicted": 6,
+              "tp": 2,
+              "fp": 4,
+              "fn": 1,
+              "precision": 0.3333333333333333,
+              "recall": 0.6666666666666666,
+              "f1": 0.4444444444444444
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 23,
+          "assigned": 23,
+          "misassigned": 15,
+          "missed": 0,
+          "hallucination_slots": [
+            "regularien"
+          ],
+          "honest_empty_slots": [
+            "beruf_wirtschaft",
+            "bildung",
+            "praxis"
+          ],
+          "confusion": {
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "fachinhalte>gesellschaftlicher_kontext": 2,
+            "fachinhalte>entwicklung_ausblick": 4,
+            "none>regularien": 1,
+            "none>fachinhalte": 3,
+            "none>gesellschaftlicher_kontext": 1,
+            "systematik>fachinhalte": 1,
+            "entwicklung_ausblick>gesellschaftlicher_kontext": 1,
+            "querschnitt>gesellschaftlicher_kontext": 1
+          },
+          "stale_labels": 0,
+          "duration_ms": 2542,
+          "macro_f1": 0.3685185185185185,
+          "micro_f1": 0.3902439024390244
+        }
+      }
+    },
+    {
+      "topic": "Bruchrechnung",
+      "labeled": 44,
+      "stale": 5,
+      "results": {
+        "hybrid_light": {
+          "topic": "Bruchrechnung",
+          "topics": [
+            "Bruchrechnung"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 2,
+              "predicted": 2,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            {
+              "slot": "systematik",
+              "support": 4,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 4,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 37,
+              "predicted": 34,
+              "tp": 29,
+              "fp": 5,
+              "fn": 8,
+              "precision": 0.8529411764705882,
+              "recall": 0.7837837837837838,
+              "f1": 0.8169014084507041
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 44,
+          "assigned": 42,
+          "misassigned": 11,
+          "missed": 2,
+          "hallucination_slots": [
+            "entwicklung_ausblick",
+            "regularien",
+            "praxis",
+            "querschnitt"
+          ],
+          "honest_empty_slots": [
+            "gesellschaftlicher_kontext",
+            "beruf_wirtschaft",
+            "bildung"
+          ],
+          "confusion": {
+            "fachinhalte>querschnitt": 2,
+            "systematik>fachinhalte": 4,
+            "fachinhalte>entwicklung_ausblick": 1,
+            "fachinhalte>praxis": 2,
+            "fachinhalte>regularien": 1,
+            "none>fachinhalte": 1
+          },
+          "stale_labels": 5,
+          "duration_ms": 2259,
+          "macro_f1": 0.6056338028169014,
+          "micro_f1": 0.7294117647058824
+        }
+      }
+    },
+    {
+      "topic": "Demokratie",
+      "labeled": 80,
+      "stale": 1,
+      "results": {
+        "hybrid_light": {
+          "topic": "Demokratie",
+          "topics": [
+            "Demokratie"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 4,
+              "predicted": 2,
+              "tp": 2,
+              "fp": 0,
+              "fn": 2,
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666
+            },
+            {
+              "slot": "systematik",
+              "support": 13,
+              "predicted": 12,
+              "tp": 10,
+              "fp": 2,
+              "fn": 3,
+              "precision": 0.8333333333333334,
+              "recall": 0.7692307692307693,
+              "f1": 0.8
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 19,
+              "predicted": 27,
+              "tp": 13,
+              "fp": 14,
+              "fn": 6,
+              "precision": 0.48148148148148145,
+              "recall": 0.6842105263157895,
+              "f1": 0.5652173913043478
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 20,
+              "predicted": 11,
+              "tp": 9,
+              "fp": 2,
+              "fn": 11,
+              "precision": 0.8181818181818182,
+              "recall": 0.45,
+              "f1": 0.5806451612903226
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 14,
+              "predicted": 22,
+              "tp": 13,
+              "fp": 9,
+              "fn": 1,
+              "precision": 0.5909090909090909,
+              "recall": 0.9285714285714286,
+              "f1": 0.7222222222222223
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 3,
+              "predicted": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 2,
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "f1": 0.5
+            },
+            {
+              "slot": "querschnitt",
+              "support": 1,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 80,
+          "assigned": 78,
+          "misassigned": 30,
+          "missed": 2,
+          "hallucination_slots": [
+            "beruf_wirtschaft"
+          ],
+          "honest_empty_slots": [
+            "bildung",
+            "regularien"
+          ],
+          "confusion": {
+            "themendefinition>fachinhalte": 2,
+            "gesellschaftlicher_kontext>fachinhalte": 6,
+            "systematik>fachinhalte": 3,
+            "gesellschaftlicher_kontext>entwicklung_ausblick": 2,
+            "fachinhalte>gesellschaftlicher_kontext": 2,
+            "fachinhalte>systematik": 1,
+            "entwicklung_ausblick>fachinhalte": 1,
+            "none>fachinhalte": 2,
+            "praxis>entwicklung_ausblick": 2,
+            "gesellschaftlicher_kontext>systematik": 1,
+            "gesellschaftlicher_kontext>beruf_wirtschaft": 2,
+            "fachinhalte>entwicklung_ausblick": 2,
+            "none>entwicklung_ausblick": 3,
+            "none>querschnitt": 1
+          },
+          "stale_labels": 1,
+          "duration_ms": 2469,
+          "macro_f1": 0.5478216344976513,
+          "micro_f1": 0.631578947368421
+        }
+      }
+    },
+    {
+      "topic": "Französische Revolution",
+      "labeled": 74,
+      "stale": 1,
+      "results": {
+        "hybrid_light": {
+          "topic": "Französische Revolution",
+          "topics": [
+            "Französische Revolution"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 2,
+              "predicted": 2,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            {
+              "slot": "systematik",
+              "support": 1,
+              "predicted": 3,
+              "tp": 1,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 48,
+              "predicted": 40,
+              "tp": 36,
+              "fp": 4,
+              "fn": 12,
+              "precision": 0.9,
+              "recall": 0.75,
+              "f1": 0.8181818181818182
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 3,
+              "predicted": 3,
+              "tp": 1,
+              "fp": 2,
+              "fn": 2,
+              "precision": 0.3333333333333333,
+              "recall": 0.3333333333333333,
+              "f1": 0.3333333333333333
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 5,
+              "predicted": 11,
+              "tp": 3,
+              "fp": 8,
+              "fn": 2,
+              "precision": 0.2727272727272727,
+              "recall": 0.6,
+              "f1": 0.37499999999999994
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 74,
+          "assigned": 63,
+          "misassigned": 20,
+          "missed": 8,
+          "hallucination_slots": [
+            "bildung",
+            "praxis",
+            "querschnitt"
+          ],
+          "honest_empty_slots": [
+            "beruf_wirtschaft",
+            "regularien"
+          ],
+          "confusion": {
+            "gesellschaftlicher_kontext>entwicklung_ausblick": 1,
+            "fachinhalte>praxis": 1,
+            "fachinhalte>systematik": 1,
+            "fachinhalte>querschnitt": 1,
+            "fachinhalte>bildung": 1,
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "none>systematik": 1,
+            "none>fachinhalte": 3,
+            "none>gesellschaftlicher_kontext": 2,
+            "none>praxis": 1,
+            "fachinhalte>entwicklung_ausblick": 2,
+            "none>entwicklung_ausblick": 5
+          },
+          "stale_labels": 1,
+          "duration_ms": 2167,
+          "macro_f1": 0.6053030303030302,
+          "micro_f1": 0.7049180327868851
+        }
+      }
+    },
+    {
+      "topic": "Klimawandel",
+      "labeled": 61,
+      "stale": 3,
+      "results": {
+        "hybrid_light": {
+          "topic": "Klimawandel",
+          "topics": [
+            "Klimawandel"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 2,
+              "predicted": 2,
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            {
+              "slot": "systematik",
+              "support": 2,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 21,
+              "predicted": 28,
+              "tp": 18,
+              "fp": 10,
+              "fn": 3,
+              "precision": 0.6428571428571429,
+              "recall": 0.8571428571428571,
+              "f1": 0.7346938775510204
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 5,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 5,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 21,
+              "predicted": 16,
+              "tp": 14,
+              "fp": 2,
+              "fn": 7,
+              "precision": 0.875,
+              "recall": 0.6666666666666666,
+              "f1": 0.7567567567567567
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 61,
+          "assigned": 51,
+          "misassigned": 17,
+          "missed": 8,
+          "hallucination_slots": [
+            "bildung",
+            "regularien"
+          ],
+          "honest_empty_slots": [
+            "beruf_wirtschaft",
+            "querschnitt"
+          ],
+          "confusion": {
+            "systematik>fachinhalte": 1,
+            "entwicklung_ausblick>fachinhalte": 6,
+            "none>entwicklung_ausblick": 2,
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "entwicklung_ausblick>systematik": 1,
+            "gesellschaftlicher_kontext>regularien": 1,
+            "none>bildung": 1,
+            "none>gesellschaftlicher_kontext": 1,
+            "none>regularien": 1,
+            "none>fachinhalte": 2
+          },
+          "stale_labels": 3,
+          "duration_ms": 2449,
+          "macro_f1": 0.41524177238462956,
+          "micro_f1": 0.6601941747572816
+        }
+      }
+    },
+    {
+      "topic": "Optik",
+      "labeled": 98,
+      "stale": 7,
+      "results": {
+        "hybrid_light": {
+          "topic": "Optik",
+          "topics": [
+            "Optik"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 3,
+              "predicted": 2,
+              "tp": 2,
+              "fp": 0,
+              "fn": 1,
+              "precision": 1.0,
+              "recall": 0.6666666666666666,
+              "f1": 0.8
+            },
+            {
+              "slot": "systematik",
+              "support": 12,
+              "predicted": 17,
+              "tp": 12,
+              "fp": 5,
+              "fn": 0,
+              "precision": 0.7058823529411765,
+              "recall": 1.0,
+              "f1": 0.8275862068965517
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 37,
+              "predicted": 48,
+              "tp": 28,
+              "fp": 20,
+              "fn": 9,
+              "precision": 0.5833333333333334,
+              "recall": 0.7567567567567568,
+              "f1": 0.6588235294117648
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 8,
+              "predicted": 10,
+              "tp": 8,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.8,
+              "recall": 1.0,
+              "f1": 0.888888888888889
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 11,
+              "predicted": 4,
+              "tp": 2,
+              "fp": 2,
+              "fn": 9,
+              "precision": 0.5,
+              "recall": 0.18181818181818182,
+              "f1": 0.26666666666666666
+            },
+            {
+              "slot": "bildung",
+              "support": 6,
+              "predicted": 5,
+              "tp": 5,
+              "fp": 0,
+              "fn": 1,
+              "precision": 1.0,
+              "recall": 0.8333333333333334,
+              "f1": 0.9090909090909091
+            },
+            {
+              "slot": "regularien",
+              "support": 2,
+              "predicted": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 1,
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666
+            },
+            {
+              "slot": "praxis",
+              "support": 12,
+              "predicted": 9,
+              "tp": 2,
+              "fp": 7,
+              "fn": 10,
+              "precision": 0.2222222222222222,
+              "recall": 0.16666666666666666,
+              "f1": 0.1904761904761905
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 98,
+          "assigned": 97,
+          "misassigned": 37,
+          "missed": 0,
+          "hallucination_slots": [
+            "querschnitt"
+          ],
+          "honest_empty_slots": [],
+          "confusion": {
+            "fachinhalte>systematik": 4,
+            "praxis>fachinhalte": 10,
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "themendefinition>fachinhalte": 1,
+            "none>fachinhalte": 4,
+            "beruf_wirtschaft>entwicklung_ausblick": 2,
+            "beruf_wirtschaft>praxis": 2,
+            "beruf_wirtschaft>fachinhalte": 4,
+            "fachinhalte>praxis": 4,
+            "none>praxis": 1,
+            "beruf_wirtschaft>systematik": 1,
+            "bildung>beruf_wirtschaft": 1,
+            "regularien>beruf_wirtschaft": 1,
+            "fachinhalte>querschnitt": 1
+          },
+          "stale_labels": 7,
+          "duration_ms": 1929,
+          "macro_f1": 0.5786887842330709,
+          "micro_f1": 0.6349206349206349
+        }
+      }
+    },
+    {
+      "topic": "Photosynthese",
+      "labeled": 60,
+      "stale": 3,
+      "results": {
+        "hybrid_light": {
+          "topic": "Photosynthese",
+          "topics": [
+            "Photosynthese"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 2,
+              "predicted": 3,
+              "tp": 2,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            {
+              "slot": "systematik",
+              "support": 2,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 37,
+              "predicted": 37,
+              "tp": 26,
+              "fp": 11,
+              "fn": 11,
+              "precision": 0.7027027027027027,
+              "recall": 0.7027027027027027,
+              "f1": 0.7027027027027027
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 2,
+              "predicted": 6,
+              "tp": 1,
+              "fp": 5,
+              "fn": 1,
+              "precision": 0.16666666666666666,
+              "recall": 0.5,
+              "f1": 0.25
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 4,
+              "predicted": 5,
+              "tp": 4,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.8,
+              "recall": 1.0,
+              "f1": 0.888888888888889
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 60,
+          "assigned": 53,
+          "misassigned": 20,
+          "missed": 5,
+          "hallucination_slots": [
+            "beruf_wirtschaft",
+            "regularien"
+          ],
+          "honest_empty_slots": [
+            "bildung",
+            "querschnitt"
+          ],
+          "confusion": {
+            "fachinhalte>themendefinition": 1,
+            "systematik>fachinhalte": 2,
+            "fachinhalte>regularien": 1,
+            "praxis>fachinhalte": 1,
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "none>entwicklung_ausblick": 1,
+            "none>fachinhalte": 7,
+            "fachinhalte>gesellschaftlicher_kontext": 3,
+            "fachinhalte>beruf_wirtschaft": 1,
+            "none>gesellschaftlicher_kontext": 2
+          },
+          "stale_labels": 3,
+          "duration_ms": 2026,
+          "macro_f1": 0.44026526526526527,
+          "micro_f1": 0.6534653465346534
+        }
+      }
+    },
+    {
+      "topic": "Programmiersprache",
+      "labeled": 74,
+      "stale": 8,
+      "results": {
+        "hybrid_light": {
+          "topic": "Programmiersprache",
+          "topics": [
+            "Programmiersprache"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 2,
+              "predicted": 13,
+              "tp": 2,
+              "fp": 11,
+              "fn": 0,
+              "precision": 0.15384615384615385,
+              "recall": 1.0,
+              "f1": 0.2666666666666667
+            },
+            {
+              "slot": "systematik",
+              "support": 13,
+              "predicted": 7,
+              "tp": 5,
+              "fp": 2,
+              "fn": 8,
+              "precision": 0.7142857142857143,
+              "recall": 0.38461538461538464,
+              "f1": 0.5
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 36,
+              "predicted": 30,
+              "tp": 20,
+              "fp": 10,
+              "fn": 16,
+              "precision": 0.6666666666666666,
+              "recall": 0.5555555555555556,
+              "f1": 0.606060606060606
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 2,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 12,
+              "predicted": 12,
+              "tp": 10,
+              "fp": 2,
+              "fn": 2,
+              "precision": 0.8333333333333334,
+              "recall": 0.8333333333333334,
+              "f1": 0.8333333333333334
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 2,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 3,
+              "tp": 0,
+              "fp": 3,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 1,
+              "predicted": 3,
+              "tp": 1,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 74,
+          "assigned": 70,
+          "misassigned": 32,
+          "missed": 4,
+          "hallucination_slots": [
+            "regularien"
+          ],
+          "honest_empty_slots": [
+            "beruf_wirtschaft",
+            "querschnitt"
+          ],
+          "confusion": {
+            "systematik>fachinhalte": 3,
+            "fachinhalte>themendefinition": 8,
+            "gesellschaftlicher_kontext>themendefinition": 1,
+            "systematik>themendefinition": 2,
+            "systematik>entwicklung_ausblick": 1,
+            "entwicklung_ausblick>systematik": 1,
+            "fachinhalte>praxis": 1,
+            "fachinhalte>entwicklung_ausblick": 1,
+            "gesellschaftlicher_kontext>fachinhalte": 1,
+            "bildung>fachinhalte": 2,
+            "fachinhalte>bildung": 1,
+            "fachinhalte>gesellschaftlicher_kontext": 1,
+            "fachinhalte>regularien": 3,
+            "none>systematik": 1,
+            "none>fachinhalte": 4,
+            "none>praxis": 1
+          },
+          "stale_labels": 8,
+          "duration_ms": 2053,
+          "macro_f1": 0.3865800865800866,
+          "micro_f1": 0.5507246376811593
+        }
+      }
+    },
+    {
+      "topic": "Säure-Base-Konzepte",
+      "labeled": 33,
+      "stale": 12,
+      "results": {
+        "hybrid_light": {
+          "topic": "Säure-Base-Konzepte",
+          "topics": [
+            "Säure-Base-Konzepte"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 3,
+              "predicted": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 2,
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "f1": 0.5
+            },
+            {
+              "slot": "systematik",
+              "support": 3,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 3,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 22,
+              "predicted": 29,
+              "tp": 22,
+              "fp": 7,
+              "fn": 0,
+              "precision": 0.7586206896551724,
+              "recall": 1.0,
+              "f1": 0.8627450980392156
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 0,
+              "predicted": 1,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 33,
+          "assigned": 32,
+          "misassigned": 9,
+          "missed": 1,
+          "hallucination_slots": [
+            "bildung",
+            "querschnitt"
+          ],
+          "honest_empty_slots": [
+            "gesellschaftlicher_kontext",
+            "entwicklung_ausblick",
+            "beruf_wirtschaft",
+            "regularien",
+            "praxis"
+          ],
+          "confusion": {
+            "none>fachinhalte": 5,
+            "systematik>querschnitt": 1,
+            "themendefinition>bildung": 1,
+            "themendefinition>fachinhalte": 1,
+            "systematik>fachinhalte": 1
+          },
+          "stale_labels": 12,
+          "duration_ms": 1886,
+          "macro_f1": 0.4542483660130719,
+          "micro_f1": 0.7666666666666666
+        }
+      }
+    },
+    {
+      "topic": "Sinfonie",
+      "labeled": 56,
+      "stale": 0,
+      "results": {
+        "hybrid_light": {
+          "topic": "Sinfonie",
+          "topics": [
+            "Sinfonie"
+          ],
+          "matcher": "hybrid_light",
+          "slots": [
+            {
+              "slot": "themendefinition",
+              "support": 1,
+              "predicted": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            },
+            {
+              "slot": "systematik",
+              "support": 4,
+              "predicted": 8,
+              "tp": 3,
+              "fp": 5,
+              "fn": 1,
+              "precision": 0.375,
+              "recall": 0.75,
+              "f1": 0.5
+            },
+            {
+              "slot": "fachinhalte",
+              "support": 11,
+              "predicted": 14,
+              "tp": 3,
+              "fp": 11,
+              "fn": 8,
+              "precision": 0.21428571428571427,
+              "recall": 0.2727272727272727,
+              "f1": 0.23999999999999996
+            },
+            {
+              "slot": "gesellschaftlicher_kontext",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "entwicklung_ausblick",
+              "support": 16,
+              "predicted": 19,
+              "tp": 12,
+              "fp": 7,
+              "fn": 4,
+              "precision": 0.631578947368421,
+              "recall": 0.75,
+              "f1": 0.6857142857142857
+            },
+            {
+              "slot": "beruf_wirtschaft",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "bildung",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "regularien",
+              "support": 0,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "praxis",
+              "support": 0,
+              "predicted": 2,
+              "tp": 0,
+              "fp": 2,
+              "fn": 0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            {
+              "slot": "querschnitt",
+              "support": 1,
+              "predicted": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          ],
+          "labeled": 56,
+          "assigned": 44,
+          "misassigned": 25,
+          "missed": 1,
+          "hallucination_slots": [
+            "praxis"
+          ],
+          "honest_empty_slots": [
+            "beruf_wirtschaft",
+            "bildung",
+            "regularien"
+          ],
+          "confusion": {
+            "none>entwicklung_ausblick": 3,
+            "fachinhalte>entwicklung_ausblick": 3,
+            "fachinhalte>systematik": 3,
+            "none>fachinhalte": 5,
+            "entwicklung_ausblick>fachinhalte": 4,
+            "systematik>fachinhalte": 1,
+            "querschnitt>fachinhalte": 1,
+            "none>systematik": 2,
+            "gesellschaftlicher_kontext>entwicklung_ausblick": 1,
+            "fachinhalte>praxis": 1,
+            "none>praxis": 1
+          },
+          "stale_labels": 0,
+          "duration_ms": 2128,
+          "macro_f1": 0.4042857142857143,
+          "micro_f1": 0.48717948717948717
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "hybrid_light": {
+      "topic": "gesamt",
+      "topics": [
+        "Barockliteratur",
+        "Bruchrechnung",
+        "Demokratie",
+        "Französische Revolution",
+        "Klimawandel",
+        "Optik",
+        "Photosynthese",
+        "Programmiersprache",
+        "Säure-Base-Konzepte",
+        "Sinfonie"
+      ],
+      "matcher": "hybrid_light",
+      "slots": [
+        {
+          "slot": "themendefinition",
+          "support": 22,
+          "predicted": 29,
+          "tp": 17,
+          "fp": 12,
+          "fn": 5,
+          "precision": 0.5862068965517241,
+          "recall": 0.7727272727272727,
+          "f1": 0.6666666666666667
+        },
+        {
+          "slot": "systematik",
+          "support": 55,
+          "predicted": 48,
+          "tp": 31,
+          "fp": 17,
+          "fn": 24,
+          "precision": 0.6458333333333334,
+          "recall": 0.5636363636363636,
+          "f1": 0.6019417475728155
+        },
+        {
+          "slot": "fachinhalte",
+          "support": 276,
+          "predicted": 294,
+          "tp": 197,
+          "fp": 97,
+          "fn": 79,
+          "precision": 0.6700680272108843,
+          "recall": 0.7137681159420289,
+          "f1": 0.6912280701754386
+        },
+        {
+          "slot": "gesellschaftlicher_kontext",
+          "support": 38,
+          "predicted": 30,
+          "tp": 14,
+          "fp": 16,
+          "fn": 24,
+          "precision": 0.4666666666666667,
+          "recall": 0.3684210526315789,
+          "f1": 0.4117647058823529
+        },
+        {
+          "slot": "entwicklung_ausblick",
+          "support": 83,
+          "predicted": 102,
+          "tp": 66,
+          "fp": 36,
+          "fn": 17,
+          "precision": 0.6470588235294118,
+          "recall": 0.7951807228915663,
+          "f1": 0.7135135135135136
+        },
+        {
+          "slot": "beruf_wirtschaft",
+          "support": 11,
+          "predicted": 7,
+          "tp": 2,
+          "fp": 5,
+          "fn": 9,
+          "precision": 0.2857142857142857,
+          "recall": 0.18181818181818182,
+          "f1": 0.2222222222222222
+        },
+        {
+          "slot": "bildung",
+          "support": 8,
+          "predicted": 9,
+          "tp": 5,
+          "fp": 4,
+          "fn": 3,
+          "precision": 0.5555555555555556,
+          "recall": 0.625,
+          "f1": 0.5882352941176471
+        },
+        {
+          "slot": "regularien",
+          "support": 2,
+          "predicted": 9,
+          "tp": 1,
+          "fp": 8,
+          "fn": 1,
+          "precision": 0.1111111111111111,
+          "recall": 0.5,
+          "f1": 0.1818181818181818
+        },
+        {
+          "slot": "praxis",
+          "support": 18,
+          "predicted": 19,
+          "tp": 4,
+          "fp": 15,
+          "fn": 14,
+          "precision": 0.21052631578947367,
+          "recall": 0.2222222222222222,
+          "f1": 0.21621621621621623
+        },
+        {
+          "slot": "querschnitt",
+          "support": 3,
+          "predicted": 6,
+          "tp": 0,
+          "fp": 6,
+          "fn": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      ],
+      "labeled": 603,
+      "assigned": 553,
+      "misassigned": 216,
+      "missed": 31,
+      "hallucination_slots": [
+        "beruf_wirtschaft",
+        "bildung",
+        "entwicklung_ausblick",
+        "praxis",
+        "querschnitt",
+        "regularien"
+      ],
+      "honest_empty_slots": [],
+      "confusion": {
+        "none>fachinhalte": 36,
+        "systematik>fachinhalte": 16,
+        "none>entwicklung_ausblick": 14,
+        "fachinhalte>entwicklung_ausblick": 13,
+        "gesellschaftlicher_kontext>fachinhalte": 12,
+        "entwicklung_ausblick>fachinhalte": 11,
+        "praxis>fachinhalte": 11,
+        "fachinhalte>praxis": 9,
+        "fachinhalte>systematik": 9,
+        "fachinhalte>themendefinition": 9,
+        "fachinhalte>gesellschaftlicher_kontext": 8,
+        "none>gesellschaftlicher_kontext": 6,
+        "fachinhalte>regularien": 5,
+        "fachinhalte>querschnitt": 4,
+        "themendefinition>fachinhalte": 4,
+        "gesellschaftlicher_kontext>entwicklung_ausblick": 4,
+        "none>systematik": 4,
+        "none>praxis": 4,
+        "beruf_wirtschaft>fachinhalte": 4,
+        "none>regularien": 2,
+        "praxis>entwicklung_ausblick": 2,
+        "gesellschaftlicher_kontext>beruf_wirtschaft": 2,
+        "fachinhalte>bildung": 2,
+        "entwicklung_ausblick>systematik": 2,
+        "beruf_wirtschaft>entwicklung_ausblick": 2,
+        "beruf_wirtschaft>praxis": 2,
+        "systematik>themendefinition": 2,
+        "bildung>fachinhalte": 2,
+        "entwicklung_ausblick>gesellschaftlicher_kontext": 1,
+        "querschnitt>gesellschaftlicher_kontext": 1,
+        "gesellschaftlicher_kontext>systematik": 1,
+        "none>querschnitt": 1,
+        "gesellschaftlicher_kontext>regularien": 1,
+        "none>bildung": 1,
+        "beruf_wirtschaft>systematik": 1,
+        "bildung>beruf_wirtschaft": 1,
+        "regularien>beruf_wirtschaft": 1,
+        "fachinhalte>beruf_wirtschaft": 1,
+        "gesellschaftlicher_kontext>themendefinition": 1,
+        "systematik>entwicklung_ausblick": 1,
+        "systematik>querschnitt": 1,
+        "themendefinition>bildung": 1,
+        "querschnitt>fachinhalte": 1
+      },
+      "stale_labels": 40,
+      "duration_ms": 21908,
+      "macro_f1": 0.42936066181850546,
+      "micro_f1": 0.6304957904583723
+    }
+  }
+}
