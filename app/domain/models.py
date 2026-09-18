@@ -200,6 +200,7 @@ class AuditReport(BaseModel):
     timings_ms: dict[str, int] = Field(default_factory=dict)
     lint: list[LintFinding] = Field(default_factory=list)
     chunks_total: int = 0
+    chunks_truncated: int = Field(0, description="Paragraphs left out by the CORPUS_MAX_CHUNKS cap")
     chunks_assigned: int = 0
     sections_filled: int = 0
     sections_empty: int = 0

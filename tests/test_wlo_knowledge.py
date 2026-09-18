@@ -73,3 +73,16 @@ def test_budget_failures_and_cache(tmp_path: Path) -> None:
     assert all(sum(len(p.text) for s in src.sections for p in s.paragraphs) <= 120 + 200 for src in result.sources)
     again = material_sources(client, cache, refs[:1], options=KnowledgeOptions())
     assert len(again.sources) == 1 and client.calls.count("n0") == 1  # second run served from the cache
+
+
+def test_materials_not_started_before_the_deadline_are_skipped(tmp_path: Path) -> None:
+    refs = [_ref(node_id, "CC_BY", f"Material {node_id}") for node_id in ("a", "b", "c")]
+    client = FakeTexts({"a": TEXT, "b": TEXT, "c": TEXT})
+    cache = TtlCache(tmp_path / "c.db")
+    cache.set("text:c", TEXT, ttl_s=60)  # a cached text costs nothing and is used even after the deadline
+    checks = iter([False, True, True])
+    result = material_sources(
+        client, cache, refs, options=KnowledgeOptions(concurrency=1), expired=lambda: next(checks)
+    )
+    assert client.calls == ["a"]
+    assert result.timed_out == 1 and [source.title for source in result.sources] == ["Material a", "Material c"]

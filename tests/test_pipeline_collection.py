@@ -80,3 +80,36 @@ def test_material_attribution_names_authors_and_the_exact_licences(with_collecti
     note = sources_block[sources_block.index("Lizenz- und Attributionshinweis") :]
     for licence in {source.license for source in result.sources}:
         assert licence in note  # the note names what was actually used instead of claiming one licence for all
+
+
+def test_a_capped_corpus_keeps_the_requested_materials_and_lists_only_used_sources(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    request = GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"])
+    full = with_collections.prepare(request)
+    assert full.chunks_truncated == 0 and len(full.chunks) > 30
+    monkeypatch.setattr(with_collections.settings, "corpus_max_chunks", 30)
+    capped = with_collections.prepare(request)
+    used = {chunk.source_id for chunk in capped.chunks}
+    assert len(capped.chunks) == 30 and capped.chunks_truncated == len(full.chunks) - 30
+    materials = {source.source_id for source in full.sources if source.origin == "material"}
+    assert materials and materials <= used  # the collection was asked for; it is not the first thing cut
+    assert all(source.source_id in used for source in capped.sources)  # no source listed without a paragraph
+    assert with_collections.generate(request).audit.chunks_truncated == len(full.chunks) - 30
+
+
+def test_the_request_deadline_stops_material_fetches(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class Spent:
+        def __init__(self, seconds: float) -> None:
+            self.seconds = seconds
+
+        def remaining(self) -> float:
+            return 0.0
+
+    monkeypatch.setattr("app.service.Deadline", Spent)
+    result = with_collections.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"]))
+    knowledge = result.audit.knowledge
+    assert knowledge is not None
+    assert knowledge["timed_out"] == knowledge["considered"] > 0 and knowledge["sources"] == 0

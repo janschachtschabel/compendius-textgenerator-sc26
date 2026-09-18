@@ -17,6 +17,7 @@ from app.domain.models import (
     Compendium,
     CurriculaPart,
     Resolution,
+    ScoredChunk,
     SectionStatus,
     Source,
 )
@@ -68,6 +69,7 @@ class PreparedTopic:
     subject: str | None = None
     collection: CollectionInfo | None = None
     knowledge: dict[str, Any] | None = None
+    chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -79,6 +81,7 @@ class Matched:
     matcher: str
     assignment: AssignmentResult
     duration_ms: int
+    scores: dict[str, list[ScoredChunk]] = field(default_factory=dict)  # smoothed, fused; reused by reassign
 
 
 @dataclass
@@ -128,8 +131,12 @@ class CompendiumService:
         self.llm = llm
         self.writer = SectionWriter(facets, settings.facets_level, registry.lookup)
 
-    def prepare(self, request: GenerateRequest) -> PreparedTopic:
-        """Resolve the topic, build the corpus and segment it: everything that precedes matching."""
+    def prepare(self, request: GenerateRequest, deadline: Deadline | None = None) -> PreparedTopic:
+        """Resolve the topic, build the corpus and segment it: everything that precedes matching.
+
+        ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
+        time are left out and counted in the audit.
+        """
         timings: dict[str, int] = {}
         lap = _Stopwatch(timings).lap
 
@@ -155,10 +162,10 @@ class CompendiumService:
         lap("corpus")
         knowledge: dict[str, Any] | None = None
         if request.knowledge_collection_id and self.collections is not None:
-            knowledge = self._knowledge(request.knowledge_collection_id, sources)
+            knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
             lap("knowledge")
 
-        chunks, sources = _segment_corpus(sources, lexicon, self.settings.corpus_max_chunks)
+        chunks, sources, truncated = _segment_corpus(sources, lexicon, self.settings.corpus_max_chunks)
         lap("segment")
         return PreparedTopic(
             template=template,
@@ -171,6 +178,7 @@ class CompendiumService:
             subject=request.subject or normalized.subject or (derived.subject if derived else None),
             collection=collection,
             knowledge=knowledge,
+            chunks_truncated=truncated,
         )
 
     def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
@@ -192,10 +200,11 @@ class CompendiumService:
             raise RuntimeError("collections are not configured (EDU_SHARING_BASE_URL)")
         return self.collections
 
-    def _knowledge(self, collection_id: str, sources: list[Source]) -> dict[str, Any]:
+    def _knowledge(self, collection_id: str, sources: list[Source], deadline: Deadline | None) -> dict[str, Any]:
         """Add the reusable materials of the knowledge collection to the corpus; failures go to the audit."""
         try:
-            result = self._collections_or_fail().knowledge_sources(collection_id)
+            expired = (lambda: deadline.remaining() <= 0) if deadline is not None else None
+            result = self._collections_or_fail().knowledge_sources(collection_id, expired=expired)
         except EduSharingError as exc:
             log.warning("knowledge collection %s not readable: %s", collection_id, exc)
             return {"collection_id": collection_id, "error": str(exc), "sources": 0}
@@ -207,6 +216,7 @@ class CompendiumService:
             "skipped_license": result.skipped_license,
             "empty": result.empty,
             "failed": result.failed,
+            "timed_out": result.timed_out,
         }
 
     def _collection_part(self, collection_id: str) -> CollectionPart:
@@ -224,28 +234,46 @@ class CompendiumService:
         prepared: PreparedTopic,
         matcher_name: str | None,
         target_length: int,
-        overrides: Mapping[str, str] | None = None,
     ) -> Matched:
-        """Score and assign the prepared chunks with one matching strategy; ``overrides`` come from the LLM router."""
+        """Score and assign the prepared chunks with one matching strategy."""
         name = matcher_name or self.settings.matcher_default
         started = time.perf_counter()
         matcher = get_matcher(name, self.settings.model2vec_path)
         fused = matcher.score(prepared.template.slots, prepared.chunks)
         fused = smooth_sections(fused, prepared.chunks, self.settings.policy_section_smoothing)
-        assignment = assign(
+        assignment = self._assign(prepared, fused, target_length, overrides=None)
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms, scores=fused)
+
+    def reassign(
+        self, prepared: PreparedTopic, matched: Matched, target_length: int, overrides: Mapping[str, str]
+    ) -> Matched:
+        """Repeat only the assignment with the LLM router's ``overrides``; the scores are those of ``matched``."""
+        started = time.perf_counter()
+        assignment = self._assign(prepared, matched.scores, target_length, overrides=overrides)
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        return Matched(matcher=matched.matcher, assignment=assignment, duration_ms=duration_ms, scores=matched.scores)
+
+    def _assign(
+        self,
+        prepared: PreparedTopic,
+        scores: dict[str, list[ScoredChunk]],
+        target_length: int,
+        overrides: Mapping[str, str] | None,
+    ) -> AssignmentResult:
+        return assign(
             _scale_budgets(prepared.template, target_length),
             prepared.chunks,
-            fused,
+            scores,
             prepared.sources_by_id,
             confident_score=self.settings.policy_confident_score,
             overrides=overrides,
         )
-        return Matched(matcher=name, assignment=assignment, duration_ms=int((time.perf_counter() - started) * 1000))
 
     def generate(self, request: GenerateRequest) -> Compendium:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
         matcher_default = ensure_strategy(request.matcher or self.settings.matcher_default)  # before any work
-        prepared = self.prepare(request)
+        prepared = self.prepare(request, deadline)
         mode_requested = request.mode or self.settings.llm_mode_default
         timings = dict(prepared.timings)
         want_world = "world" in request.parts
@@ -338,6 +366,7 @@ class CompendiumService:
             llm_tokens=llm_tokens,
             llm=llm_audit,
             knowledge=prepared.knowledge,
+            chunks_truncated=prepared.chunks_truncated,
         )
         return Compendium(
             topic=topic,
@@ -376,7 +405,7 @@ class CompendiumService:
         routing = self._route(prepared, matched.assignment.doubtful, budget, deadline)
         if routing is not None:
             if routing.overrides:
-                matched = self.match(prepared, request.matcher, request.target_length, overrides=routing.overrides)
+                matched = self.reassign(prepared, matched, request.target_length, routing.overrides)
             lap("route")
 
         template, sources = prepared.template, prepared.sources
@@ -437,25 +466,50 @@ class CompendiumService:
             return RoutingResult(considered=len(doubts), skipped=f"unerwarteter Fehler ({type(exc).__name__})")
 
 
+# Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for,
+# then the neighbours found by links and search. Anything else (lookups) comes last.
+ORIGIN_PRIORITY = {"primary": 0, "same_topic": 1, "material": 2, "linked": 3, "search": 4}
+
+
 def _segment_corpus(
     sources: list[Source], lexicon: HeadingLexicon, max_chunks: int
-) -> tuple[list[Chunk], list[Source]]:
-    """Segment all sources; articles pulled in by search or by a link that does not carry the
-    topic in its title contribute only paragraphs that mention the topic, otherwise they are dropped."""
+) -> tuple[list[Chunk], list[Source], int]:
+    """Segment all sources and apply the chunk cap; return chunks, the sources that kept a chunk, and the cut count.
+
+    Articles pulled in by search or by a link that does not carry the topic in its title contribute only paragraphs
+    that mention the topic. The cap is filled in ``ORIGIN_PRIORITY`` order while chunks keep the corpus order; a
+    source left without chunks is not listed (the primary article always is).
+    """
     primary = next((s for s in sources if s.is_primary), None)
     stem = topic_stem(primary.title) if primary else ""
-    chunks: list[Chunk] = []
-    kept: list[Source] = []
+    segmented: list[list[Chunk]] = []
     for source in sources:
         source_chunks = segment_source(source, lexicon)
         needs_filter = source.origin in {"linked", "search"} and stem and stem not in source.title.lower()
         if needs_filter:
             source_chunks = [c for c in source_chunks if stem in f"{c.full_heading} {c.text}".lower()]
-        if not source_chunks and not source.is_primary:
+        segmented.append(source_chunks)
+
+    allowed = [0] * len(sources)
+    budget = max_chunks
+    by_priority = sorted(
+        range(len(sources)), key=lambda i: (ORIGIN_PRIORITY.get(sources[i].origin, len(ORIGIN_PRIORITY)), i)
+    )
+    for index in by_priority:
+        allowed[index] = min(len(segmented[index]), budget)
+        budget -= allowed[index]
+
+    chunks: list[Chunk] = []
+    kept: list[Source] = []
+    for source, source_chunks, take in zip(sources, segmented, allowed, strict=True):
+        if not take and not source.is_primary:
             continue
         kept.append(source)
-        chunks.extend(source_chunks)
-    return chunks[:max_chunks], kept
+        chunks.extend(source_chunks[:take])
+    truncated = sum(len(source_chunks) for source_chunks in segmented) - len(chunks)
+    if truncated:
+        log.info("corpus capped at %d chunks; %d left out", max_chunks, truncated)
+    return chunks, kept, truncated
 
 
 def _subtopics(sources: list[Source], primary: Source | None) -> list[str]:

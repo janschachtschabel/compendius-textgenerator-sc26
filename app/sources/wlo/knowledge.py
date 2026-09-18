@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Protocol
@@ -22,6 +23,7 @@ log = logging.getLogger(__name__)
 
 PROJECT = "wlo_material"
 MIN_PARAGRAPH_CHARS = 40
+TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in material_sources
 # Consent banners and cookie notices crawled from the material's page are not knowledge
 _CONSENT = re.compile(r"cookie|consent|store and/or access information|datenschutzeinstellungen", re.IGNORECASE)
 
@@ -45,6 +47,7 @@ class KnowledgeResult:
     skipped_license: int = 0
     empty: int = 0
     failed: list[str] = field(default_factory=list)
+    timed_out: int = 0  # not fetched because the request's time budget was spent
 
 
 def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
@@ -85,9 +88,18 @@ def _source(ref: MaterialRef, paragraphs: list[str]) -> Source:
 
 
 def material_sources(
-    client: TextClient, cache: TtlCache | None, refs: list[MaterialRef], *, options: KnowledgeOptions
+    client: TextClient,
+    cache: TtlCache | None,
+    refs: list[MaterialRef],
+    *,
+    options: KnowledgeOptions,
+    expired: Callable[[], bool] | None = None,
 ) -> KnowledgeResult:
-    """Sources for the reusable materials of a collection, fetched in parallel within the budget."""
+    """Sources for the reusable materials of a collection, fetched in parallel within the budget.
+
+    ``expired`` tells whether the request's time budget is spent: texts not in the cache are then no longer
+    fetched, so a slow repository cannot hold the request for 30 materials times the client timeout.
+    """
     result = KnowledgeResult()
     allowed = [ref for ref in refs if is_extractive(ref.license_key)]
     result.skipped_license = len(refs) - len(allowed)
@@ -99,6 +111,8 @@ def material_sources(
         cached = cache.get(key) if cache is not None else None
         if isinstance(cached, str):
             return ref, cached, None
+        if expired is not None and expired():
+            return ref, None, TIME_UP
         try:
             text = client.text_content(ref.id)
         except EduSharingError as exc:
@@ -110,6 +124,9 @@ def material_sources(
     with ThreadPoolExecutor(max_workers=max(1, options.concurrency)) as pool:
         outcomes = list(pool.map(fetch, chosen))
     for ref, text, error in outcomes:
+        if error is TIME_UP:
+            result.timed_out += 1
+            continue
         if error is not None:
             log.warning("material %s (%s) could not be read: %s", ref.id, ref.title, error)
             result.failed.append(ref.id)

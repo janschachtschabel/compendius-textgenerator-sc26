@@ -11,6 +11,7 @@ from typing import Any
 import httpx
 import pytest
 
+from app import service as service_module
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.budget import TokenBudget
@@ -334,3 +335,34 @@ def test_mark_mode_shows_conclusions_in_the_document_and_in_the_facets(
     assert graded and all("Schlussfolgerung" in s.facets["Evidenzgrad"] for s in graded)
     numbers = [c.number for s in result.sections for c in s.citations]
     assert numbers == list(range(1, len(numbers) + 1))
+
+
+def test_router_overrides_reuse_the_scores_of_the_first_pass(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    doubtful = "wikipedia:Augenoptiker:c002"
+
+    def responder(body: dict[str, Any]) -> str:
+        if body["messages"][1]["content"].startswith("Bausteine:"):
+            return json.dumps({doubtful: "sc26_8"})
+        return answer_from_evidence(body)
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(responder)))
+    scored: list[str] = []
+    original = service_module.get_matcher
+
+    def counting(name: str, model2vec_path: str = "") -> Any:
+        matcher = original(name, model2vec_path)
+        score = matcher.score
+
+        def counted(*args: Any, **kwargs: Any) -> Any:
+            scored.append(name)
+            return score(*args, **kwargs)
+
+        matcher.score = counted  # type: ignore[method-assign]
+        return matcher
+
+    monkeypatch.setattr(service_module, "get_matcher", counting)
+    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
+    assert result.audit.llm is not None and result.audit.llm["router"]["moved"] == 1
+    assert scored == ["hybrid_light"]  # the overrides only repeat the assignment, not the rankers

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import dataclasses
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -125,10 +126,11 @@ class CollectionBuilder:
             available=True, collection_id=collection_id, title=info.title, summary=summary, markdown=markdown
         )
 
-    def knowledge_sources(self, collection_id: str) -> KnowledgeResult:
-        """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3)."""
+    def knowledge_sources(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> KnowledgeResult:
+        """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3); ``expired`` see
+        ``material_sources``."""
         refs = self.references(collection_id)
-        return material_sources(self.client, self.cache, refs, options=self.options.knowledge)
+        return material_sources(self.client, self.cache, refs, options=self.options.knowledge, expired=expired)
 
     def _remember(self, key: str, value: Any) -> None:
         if self.cache is not None:
