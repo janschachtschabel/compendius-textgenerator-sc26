@@ -46,6 +46,9 @@ VOLUME ["/data/zim", "/data/state"]
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
     CMD ["python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
-# API-Prozess; die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst).
+# API-Prozess; die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst). Die Worker legen
+# ihre Prometheus-Werte in PROMETHEUS_MULTIPROC_DIR ab, /metrics summiert sie. Das Verzeichnis wird vor dem Start
+# geleert, sonst zaehlten Werte eines frueheren Laufs mit; nur dieser Befehl setzt die Variable, die Sidecars
+# zaehlen im eigenen Prozess. exec, damit uvicorn die Signale bekommt (sauberes Herunterfahren).
 # Der Updater nutzt dasselbe Image mit: compendium zim sync --loop
-CMD ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "export PROMETHEUS_MULTIPROC_DIR=${PROMETHEUS_MULTIPROC_DIR:-/tmp/prometheus} && rm -rf \"$PROMETHEUS_MULTIPROC_DIR\" && mkdir -p \"$PROMETHEUS_MULTIPROC_DIR\" && exec uvicorn app.main:create_app --factory --host 0.0.0.0 --port 8000"]
