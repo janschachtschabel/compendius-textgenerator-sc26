@@ -1,0 +1,36 @@
+# Checks for every push to main and every pull request: the same commands as the GitLab pipeline.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.7.13"
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install
+        run: uv sync --frozen --all-extras
+      - name: Lint and format
+        run: |
+          uv run ruff check app tests scripts
+          uv run ruff format --check app tests scripts
+      - name: Types
+        run: uv run mypy app
+      - name: Tests with coverage gate
+        run: uv run pytest -m "not live" --cov
+      - name: Known vulnerabilities in the runtime dependencies
+        run: |
+          uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
+          uvx pip-audit --requirement requirements.txt --disable-pip --no-deps

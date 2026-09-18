@@ -32,6 +32,7 @@ dev = [
     "ruff>=0.12",
     "mypy>=1.16",
     "types-PyYAML>=6.0",
+    "pytest-cov>=6.0",
 ]
 
 [build-system]
@@ -68,6 +69,16 @@ exclude = ["alterCode/", "scripts/"]
 [[tool.mypy.overrides]]
 module = ["libzim.*", "sklearn.*", "model2vec.*"]
 ignore_missing_imports = true
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
+
+[tool.coverage.report]
+# Measured 92 % on 2026-09-18; the gate catches a large untested addition, not every percent
+fail_under = 90
+skip_covered = true
+show_missing = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

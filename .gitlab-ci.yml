@@ -31,10 +31,16 @@ mypy:
   script:
     - uv run mypy app
 
+dependency-audit:
+  stage: lint
+  script:
+    - uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
+    - uvx pip-audit --requirement requirements.txt --disable-pip --no-deps
+
 pytest:
   stage: test
   script:
-    - uv run pytest -m "not live"
+    - uv run pytest -m "not live" --cov
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
@@ -58,7 +64,7 @@ pytest:
   cache: []
   before_script:
     - docker --version
-    - docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USERNAME" --password-stdin
   script:
     - docker buildx build --tag $IMAGE_NAME:$IMAGE_TAG .
     - docker image push $IMAGE_NAME:$IMAGE_TAG
