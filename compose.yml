@@ -1,0 +1,52 @@
+# Lokaler Betrieb und Vorlage fuer das Deployment (PLAN.md 10): API plus Updater-Sidecar.
+# Das Volume "zim" ist fuer 40 GB geplant (Entscheidung D18). Docker begrenzt Volumes nicht;
+# in Kubernetes entspricht das einem PersistentVolumeClaim mit 40Gi.
+services:
+  api:
+    image: ${IMAGE:-compendious-text-fastapi:local}
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ZIM_DIR: /data/zim
+      STATE_DIR: /data/state
+    volumes:
+      - zim:/data/zim
+      - state:/data/state
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  zim-updater:
+    image: ${IMAGE:-compendious-text-fastapi:local}
+    build: .
+    command: ["compendium", "zim", "sync", "--loop"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ZIM_DIR: /data/zim
+      # Erststart: fehlende Pflichtarchive des Profils laden (Profil standard: ca. 14,1 GB)
+      ZIM_BOOTSTRAP_DOWNLOAD: ${ZIM_BOOTSTRAP_DOWNLOAD:-true}
+    volumes:
+      - zim:/data/zim
+    restart: unless-stopped
+
+  lehrplan-updater:
+    image: ${IMAGE:-compendious-text-fastapi:local}
+    build: .
+    # Woechentliche Zaehlpruefung gegen MEM, Vollabzug bei Aenderung oder Alter (PLAN.md 5.2, D16)
+    command: ["compendium", "lehrplan", "harvest", "--loop"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      STATE_DIR: /data/state
+    volumes:
+      - state:/data/state
+    restart: unless-stopped
+
+volumes:
+  zim:
+  state:

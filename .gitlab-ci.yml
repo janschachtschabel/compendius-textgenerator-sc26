@@ -1,0 +1,79 @@
+stages:
+  - lint
+  - test
+  - deploy
+
+variables:
+  UV_VERSION: "0.7.13"
+  PYTHON_VERSION: "3.13"
+  UV_LINK_MODE: copy
+  UV_CACHE_DIR: .uv-cache
+
+default:
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-bookworm-slim
+  cache:
+    - key:
+        files:
+          - uv.lock
+      paths:
+        - $UV_CACHE_DIR
+  before_script:
+    - uv sync --frozen --all-extras
+
+ruff:
+  stage: lint
+  script:
+    - uv run ruff check app tests scripts
+    - uv run ruff format --check app tests scripts
+
+mypy:
+  stage: lint
+  script:
+    - uv run mypy app
+
+pytest:
+  stage: test
+  script:
+    - uv run pytest -m "not live"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+# Image build and push (Profil base, siehe Dockerfile). Variablen wie in der alten Pipeline:
+# $DIND_IMAGE, $DIND_HOST, $DIND_DRIVER, $DIND_TLS_CERTDIR, $DOCKER_REGISTRY, $DOCKER_USERNAME, $DOCKER_PASSWORD.
+.docker-build:
+  stage: deploy
+  image: $DIND_IMAGE
+  variables:
+    DOCKER_HOST: "$DIND_HOST"
+    DOCKER_DRIVER: "$DIND_DRIVER"
+    DOCKER_TLS_CERTDIR: "$DIND_TLS_CERTDIR"
+    IMAGE_NAME: $DOCKER_REGISTRY/projects/wlo/compendious-text-fastapi
+  services:
+    - name: "$DIND_IMAGE"
+      alias: docker
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
+  cache: []
+  before_script:
+    - docker --version
+    - docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  script:
+    - docker buildx build --tag $IMAGE_NAME:$IMAGE_TAG .
+    - docker image push $IMAGE_NAME:$IMAGE_TAG
+
+docker image (main, develop):
+  extends: .docker-build
+  variables:
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+docker image (tag):
+  extends: .docker-build
+  variables:
+    IMAGE_TAG: $CI_COMMIT_REF_NAME
+  rules:
+    - if: $CI_COMMIT_TAG
