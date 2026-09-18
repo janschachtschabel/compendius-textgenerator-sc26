@@ -15,13 +15,17 @@ services:
       - zim:/data/zim
       - state:/data/state
     ports:
-      - "8000:8000"
+      # Nur lokal erreichbar; fuer andere Rechner einen Reverse-Proxy davor setzen (Rate-Limit: FORWARDED_ALLOW_IPS)
+      - "127.0.0.1:8000:8000"
     restart: unless-stopped
 
   zim-updater:
     image: ${IMAGE:-compendious-text-fastapi:local}
     build: .
     command: ["compendium", "zim", "sync", "--loop"]
+    # Kein HTTP-Server: der Healthcheck des Images (GET /health) gilt nur fuer die API
+    healthcheck:
+      disable: true
     env_file:
       - path: .env
         required: false
@@ -38,6 +42,8 @@ services:
     build: .
     # Woechentliche Zaehlpruefung gegen MEM, Vollabzug bei Aenderung oder Alter (PLAN.md 5.2, D16)
     command: ["compendium", "lehrplan", "harvest", "--loop"]
+    healthcheck:
+      disable: true
     env_file:
       - path: .env
         required: false
