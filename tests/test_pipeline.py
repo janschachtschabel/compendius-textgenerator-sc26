@@ -1,12 +1,16 @@
 """End-to-end part 1 on the offline sample archives."""
 
 import re
+from pathlib import Path
+from typing import Any
 
 import pytest
 
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, TopicNotFoundError
+from app.sources.zim import archive as archive_module
+from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
 
 
@@ -86,3 +90,25 @@ def test_standard_template(service: CompendiumService) -> None:
     result = service.generate(GenerateRequest(topic="Optik", template_id="standard"))
     assert result.template_id == "standard"
     assert len(result.sections) == 6
+
+
+def test_parse_cache_evicts_the_least_recently_used_article(
+    sample_zims: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    archive = ZimArchive(sample_zims["wikipedia"])  # own instance: the session registry's cache is shared state
+    monkeypatch.setattr("app.sources.zim.archive.PARSE_CACHE_SIZE", 2)
+    parsed: list[str] = []
+    original = archive_module.parse_article
+
+    def counting(html: str, title: str) -> Any:
+        parsed.append(title)
+        return original(html, title)
+
+    monkeypatch.setattr(archive_module, "parse_article", counting)
+    articles = {title: archive.read(title) for title in ("Optik", "Ernst Abbe", "Sinfonie")}
+    for title in ("Optik", "Ernst Abbe", "Optik", "Sinfonie", "Optik", "Ernst Abbe"):
+        article = articles[title]
+        assert article is not None
+        archive.parse(article)
+    # Optik stays hot; Ernst Abbe was the least recently used when Sinfonie came in
+    assert parsed == ["Optik", "Ernst Abbe", "Sinfonie", "Ernst Abbe"]

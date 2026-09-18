@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import logging
 import re
+import threading
+from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -24,6 +26,7 @@ PROJECT_ROLES: dict[str, SourceRole] = {
     "wikibooks": SourceRole.LEHRBUCH,
     "wikiversity": SourceRole.HOCHSCHULE,
 }
+PARSE_CACHE_SIZE = 256  # parsed articles kept per archive; a corpus reads about 12 plus lookups
 PROJECT_PRIORITY = {"wikipedia": 0, "klexikon": 1, "wikiversity": 2, "wikibooks": 3}
 PROJECT_AUTHORITY = {"wikipedia": 0.95, "klexikon": 0.85, "wikibooks": 0.80, "wikiversity": 0.75}
 PROJECT_URLS = {
@@ -87,7 +90,8 @@ class ZimArchive:
         self.priority = PROJECT_PRIORITY.get(self.project, 9)
         self.has_fulltext = bool(self._archive.has_fulltext_index)
         self.article_count = int(self._archive.article_count)
-        self._cache: dict[str, ParsedArticle] = {}
+        self._cache: OrderedDict[str, ParsedArticle] = OrderedDict()  # LRU of parsed articles
+        self._cache_lock = threading.Lock()  # one archive serves all request threads
 
     def _meta(self, key: str) -> str:
         try:
@@ -137,13 +141,18 @@ class ZimArchive:
         return ZimArticle(title=str(entry.title), path=str(entry.path), html=html)
 
     def parse(self, article: ZimArticle) -> ParsedArticle:
-        cached = self._cache.get(article.path)
-        if cached is None:
-            cached = parse_article(article.html, article.title)
-            if len(self._cache) > 256:
-                self._cache.clear()
-            self._cache[article.path] = cached
-        return cached
+        with self._cache_lock:
+            cached = self._cache.get(article.path)
+            if cached is not None:
+                self._cache.move_to_end(article.path)
+                return cached
+        parsed = parse_article(article.html, article.title)  # outside the lock: parsing is the slow part
+        with self._cache_lock:
+            self._cache[article.path] = parsed
+            self._cache.move_to_end(article.path)
+            while len(self._cache) > PARSE_CACHE_SIZE:
+                self._cache.popitem(last=False)
+        return parsed
 
     def suggest(self, prefix: str, limit: int = 8) -> list[str]:
         try:
