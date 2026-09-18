@@ -18,6 +18,7 @@ from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
+from app.sources.lehrplan.store import LehrplanCacheError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"])
@@ -59,7 +60,11 @@ def lehrplan_search(
     subject_terms = builder.subjects.mem_terms(subject)
     if not builder.store.available:
         return {"available": False, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
-    result = LehrplanMatcher(builder.store).match(keywords, subject_terms=subject_terms)
+    try:
+        result = LehrplanMatcher(builder.store).match(keywords, subject_terms=subject_terms)
+    except LehrplanCacheError as exc:
+        log.error("%s", exc)
+        return {"available": False, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
     return {
         "available": True,
         "keywords": result.keywords,

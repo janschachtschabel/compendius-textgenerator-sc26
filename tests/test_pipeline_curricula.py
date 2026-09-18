@@ -9,7 +9,7 @@ from app.settings import Settings
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
 from tests.conftest import make_settings
-from tests.test_lehrplan_api import write_cache
+from tests.test_lehrplan_api import write_broken_cache, write_cache
 
 
 def test_generate_appends_part_two_from_the_cache(service: CompendiumService, settings: Settings) -> None:
@@ -41,3 +41,15 @@ def test_missing_cache_yields_the_hint_instead_of_an_error(
     result = service.generate(GenerateRequest(topic="Optik"))
     assert result.curricula is not None and result.curricula.available is False
     assert "Lehrplan-Cache" in result.markdown
+
+
+def test_unreadable_cache_yields_the_hint_instead_of_an_error(
+    sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
+) -> None:
+    settings = make_settings(sample_zims.values(), tmp_path / "state-broken")
+    write_broken_cache(settings.state_dir)
+    service = build_service(settings, registry, TemplateManager(custom_dir=settings.state_dir / "templates"))
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world", "curricula"]))
+    assert result.curricula is not None and result.curricula.available is False
+    assert result.curricula.summary["reason"] == "cache_unreadable"
+    assert "## Teil 2 · Lehrplanbezüge" in result.markdown and len(result.sections) > 0

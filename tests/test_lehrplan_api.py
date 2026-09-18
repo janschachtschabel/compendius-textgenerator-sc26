@@ -1,5 +1,7 @@
 """Lehrplan endpoints: public status and search from the local cache, admin harvest request."""
 
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 from typing import Any
 
@@ -7,7 +9,7 @@ from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.sources.lehrplan.harvest import TRIGGER_FILE
-from app.sources.lehrplan.store import LehrplanRecord, LehrplanWriter
+from app.sources.lehrplan.store import SCHEMA_VERSION, LehrplanRecord, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
 from tests.conftest import make_settings
 
@@ -40,6 +42,15 @@ def write_cache(state_dir: Path) -> None:
         {"harvested_at": "2026-09-17T12:00:00+00:00", "counts": '{"SN": 1}', "endpoint": "https://sparql.test/"}
     )
     writer.commit()
+
+
+def write_broken_cache(state_dir: Path) -> None:
+    """A file that passes the schema check but lacks the node tables, as after an interrupted copy."""
+    state_dir.mkdir(parents=True, exist_ok=True)
+    with closing(sqlite3.connect(state_dir / "lehrplan.db")) as connection:
+        connection.execute("CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
+        connection.execute("INSERT INTO meta VALUES ('schema_version', ?)", (SCHEMA_VERSION,))
+        connection.commit()
 
 
 def _client(sample_zims: dict[str, Path], tmp_path: Path, **overrides: Any) -> TestClient:
@@ -86,3 +97,14 @@ def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
         assert client.post("/api/v2/lehrplan/harvest").status_code == 403
         assert client.post("/api/v2/lehrplan/harvest", headers=AUTH).status_code == 202
         assert (tmp_path / "state" / TRIGGER_FILE).exists()
+
+
+def test_broken_cache_is_reported_as_unavailable_not_as_a_server_error(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    write_broken_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        search = client.get("/api/v2/lehrplan/search", params={"q": "Optik"})
+        assert search.status_code == 200 and search.json()["available"] is False
+        status = client.get("/api/v2/lehrplan/status")
+        assert status.status_code == 200 and status.json()["counts"] == {"lehrplaene": {}, "nodes": 0}

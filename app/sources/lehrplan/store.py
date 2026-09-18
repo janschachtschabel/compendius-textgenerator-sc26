@@ -120,6 +120,10 @@ def _record(row: sqlite3.Row) -> LehrplanRecord:
     )
 
 
+class LehrplanCacheError(RuntimeError):
+    """The cache file exists and claims the right schema, but SQLite cannot read what is needed."""
+
+
 class LehrplanStore:
     """Read side of the cache; every method copes with a missing file."""
 
@@ -151,8 +155,16 @@ class LehrplanStore:
             return {}
 
     def counts(self) -> dict[str, Any]:
+        empty: dict[str, Any] = {"lehrplaene": {}, "nodes": 0}
         if not self.available:
-            return {"lehrplaene": {}, "nodes": 0}
+            return empty
+        try:
+            return self._counts()
+        except sqlite3.Error as exc:
+            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            return empty
+
+    def _counts(self) -> dict[str, Any]:
         with closing(self._connect()) as connection:
             per_state = {
                 row["bundesland_code"]: row["n"]
@@ -169,7 +181,8 @@ class LehrplanStore:
         """Content nodes whose label or parent label contains one of ``keywords`` (case-insensitive).
 
         ``subject_terms`` are lowercase substrings of the curriculum's subject labels and title
-        ("physik", "natur und technik"); with none given all subjects are searched.
+        ("physik", "natur und technik"); with none given all subjects are searched. A cache SQLite cannot
+        read raises ``LehrplanCacheError``, so callers can say so instead of reporting zero matches.
         """
         words = [word.strip() for word in keywords if len(word.strip()) >= MIN_KEYWORD_CHARS]
         if not words or not self.available:
@@ -191,6 +204,12 @@ class LehrplanStore:
         sql += " ORDER BY node.id LIMIT ?"
         params.append(int(limit))
         folded = [word.casefold() for word in words]
+        try:
+            return self._hits(sql, params, folded)
+        except sqlite3.Error as exc:
+            raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable: {exc}") from exc
+
+    def _hits(self, sql: str, params: Sequence[Any], folded: Sequence[str]) -> list[NodeHit]:
         hits: list[NodeHit] = []
         with closing(self._connect()) as connection:
             for row in connection.execute(sql, params):

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
 from typing import Any
@@ -9,8 +10,10 @@ from typing import Any
 from app.domain.models import CurriculaPart
 from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
 from app.sources.lehrplan.render import RenderOptions, render_curricula, render_missing_cache
-from app.sources.lehrplan.store import LehrplanStore
+from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
+
+log = logging.getLogger(__name__)
 
 MAX_ENTRIES = 200
 
@@ -65,7 +68,17 @@ class CurriculaBuilder:
                 summary={"reason": "cache_missing", "db_path": str(self.store.path)},
                 markdown=render_missing_cache(),
             )
-        result = LehrplanMatcher(self.store).match(keywords, subject_terms=subject_terms)
+        try:
+            result = LehrplanMatcher(self.store).match(keywords, subject_terms=subject_terms)
+        except LehrplanCacheError as exc:  # part 2 degrades to the hint; parts 1 and 3 are not lost
+            log.error("%s", exc)
+            return CurriculaPart(
+                available=False,
+                keywords=keywords,
+                subject_terms=subject_terms,
+                summary={"reason": "cache_unreadable"},
+                markdown=render_missing_cache(),
+            )
         markdown, summary = render_curricula(
             result, meta=self.store.meta(), options=replace(self.options, facets_visible=facets_visible)
         )
