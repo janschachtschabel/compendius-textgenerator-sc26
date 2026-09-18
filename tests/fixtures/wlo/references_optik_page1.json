@@ -57,6 +57,9 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY_NC_SA"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "3.0"
     ]
    },
    "mimetype": "text/plain",
@@ -117,6 +120,9 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY_SA"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "4.0"
     ]
    },
    "mimetype": "text/plain",
@@ -234,6 +240,9 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY_SA"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "4.0"
     ]
    },
    "mimetype": "text/plain",
@@ -416,6 +425,12 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "4.0"
+    ],
+    "ccm:lifecyclecontributer_authorFN": [
+     "Alexander Ubrig"
     ]
    },
    "mimetype": "text/plain",
@@ -471,6 +486,12 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY_NC_ND"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "4.0"
+    ],
+    "ccm:author_freetext": [
+     "https://www.grund-wissen.de/impressum.html"
     ]
    },
    "mimetype": null,
@@ -533,6 +554,9 @@
     ],
     "ccm:commonlicense_key": [
      "CC_BY_NC_SA"
+    ],
+    "ccm:commonlicense_cc_version": [
+     "3.0"
     ]
    },
    "mimetype": "text/plain",
@@ -591,6 +615,12 @@
     "cclom:general_keyword": [
      "Optik",
      "OHP"
+    ],
+    "ccm:lifecyclecontributer_authorFN": [
+     "Dieter Welz"
+    ],
+    "ccm:author_freetext": [
+     "Dieter Welz, Ulm"
     ]
    },
    "mimetype": null,

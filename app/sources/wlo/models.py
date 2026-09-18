@@ -18,12 +18,12 @@ EXTRACTIVE_LICENSES = frozenset({"CC_0", "PDM", "CC_BY", "CC_BY_SA"})
 LICENSE_LABELS = {
     "CC_0": "CC0 1.0",
     "PDM": "Public Domain Mark",
-    "CC_BY": "CC BY 4.0",
-    "CC_BY_SA": "CC BY-SA 4.0",
-    "CC_BY_ND": "CC BY-ND 4.0",
-    "CC_BY_NC": "CC BY-NC 4.0",
-    "CC_BY_NC_SA": "CC BY-NC-SA 4.0",
-    "CC_BY_NC_ND": "CC BY-NC-ND 4.0",
+    "CC_BY": "CC BY",
+    "CC_BY_SA": "CC BY-SA",
+    "CC_BY_ND": "CC BY-ND",
+    "CC_BY_NC": "CC BY-NC",
+    "CC_BY_NC_SA": "CC BY-NC-SA",
+    "CC_BY_NC_ND": "CC BY-NC-ND",
     "COPYRIGHT_FREE": "frei zugänglich (keine OER-Lizenz)",
     "COPYRIGHT_LICENSE": "urheberrechtlich geschützt",
     "CUSTOM": "eigene Lizenzbedingungen",
@@ -37,8 +37,14 @@ def is_extractive(license_key: str) -> bool:
     return license_key in EXTRACTIVE_LICENSES
 
 
-def license_label(license_key: str) -> str:
-    return LICENSE_LABELS.get(license_key, license_key)
+def license_label(license_key: str, version: str = "") -> str:
+    """Display name of a licence. The CC BY family exists in several versions (the WLO repository holds 3.0 and
+    4.0); the version comes from ``ccm:commonlicense_cc_version`` and is never guessed, because a wrong version is
+    a wrong attribution."""
+    label = LICENSE_LABELS.get(license_key, license_key)
+    if version and license_key.startswith("CC_BY"):
+        return f"{label} {version}"
+    return label
 
 
 @dataclass(frozen=True)
@@ -64,6 +70,12 @@ class MaterialRef:
     educational_contexts: tuple[str, ...]
     subjects: tuple[str, ...]
     subject_uris: tuple[str, ...]
+    license_version: str = ""
+    authors: tuple[str, ...] = ()  # formatted names plus the free-text field, as the contributor entered them
+
+    @property
+    def license(self) -> str:
+        return license_label(self.license_key, self.license_version)
 
 
 @dataclass(frozen=True)
@@ -127,6 +139,15 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
     )
 
 
+def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:
+    """Names for the attribution: the structured authors (vCard ``FN``); the free-text field only stands in when
+    there are none, because it often repeats the same person with extras ("Dieter Welz, Ulm")."""
+    names = [name.strip() for name in _values(props, "ccm:lifecyclecontributer_authorFN") if name.strip()]
+    if not names:
+        names = [name.strip() for name in _values(props, "ccm:author_freetext") if name.strip()]
+    return tuple(dict.fromkeys(names))
+
+
 def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
     props: Mapping[str, Any] = node.get("properties") or {}
     url = _first(props, "ccm:wwwurl") or str((node.get("content") or {}).get("url") or "")
@@ -143,6 +164,8 @@ def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         subjects=_labels(props, "ccm:taxonid"),
         subject_uris=tuple(_values(props, "ccm:taxonid")),
+        license_version=_first(props, "ccm:commonlicense_cc_version"),
+        authors=_authors(props),
     )
 
 

@@ -65,3 +65,18 @@ def test_request_needs_a_topic_or_a_valid_collection_id() -> None:
     with pytest.raises(ValidationError):
         GenerateRequest(collection_id="not-a-uuid")
     assert GenerateRequest(collection_id=OPTIK).topic is None
+
+
+def test_material_attribution_names_authors_and_the_exact_licences(with_collections: CompendiumService) -> None:
+    request = GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"])
+    result = with_collections.generate(request)
+    sources_block = next(section.text for section in result.sections if section.slot_key == "quellen")
+    assert "siehe Material" not in sources_block
+    materials = [source for source in result.sources if source.project == "wlo_material"]
+    assert any(source.authors for source in materials)
+    for source in materials:
+        named = ", ".join(source.authors) if source.authors else "nicht angegeben"
+        assert f"Titel „{source.title}“ · Urheber {named} · Lizenz {source.license}" in sources_block
+    note = sources_block[sources_block.index("Lizenz- und Attributionshinweis") :]
+    for licence in {source.license for source in result.sources}:
+        assert licence in note  # the note names what was actually used instead of claiming one licence for all

@@ -16,7 +16,7 @@ from typing import Protocol
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
-from app.sources.wlo.models import MaterialRef, is_extractive, license_label
+from app.sources.wlo.models import MaterialRef, is_extractive
 
 log = logging.getLogger(__name__)
 
@@ -75,7 +75,8 @@ def _source(ref: MaterialRef, paragraphs: list[str]) -> Source:
         role=SourceRole.MATERIAL,
         title=ref.title or ref.id,
         url=ref.url,
-        license=license_label(ref.license_key),
+        license=ref.license,
+        authors=list(ref.authors),
         authority_score=0.8,
         is_primary=False,
         origin="material",

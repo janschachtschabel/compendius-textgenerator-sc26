@@ -11,8 +11,15 @@ PROJECT_LABELS = {
     "klexikon": ("Klexikon", "Nachschlagewerk (einfache Sprache)", "Klexikon-Autorinnen und -Autoren", "hoch"),
     "wikibooks": ("Wikibooks", "Grundlagenwerk", "Wikibooks-Autorinnen und -Autoren", "mittel"),
     "wikiversity": ("Wikiversity", "Grundlagenwerk (Hochschule)", "Wikiversity-Autorinnen und -Autoren", "mittel"),
-    "wlo_material": ("WirLernenOnline", "Sammlung & Archiv", "siehe Material", "mittel"),
+    "wlo_material": ("WirLernenOnline", "Sammlung & Archiv", "nicht angegeben", "mittel"),
 }
+
+
+def _enumerate(items: Sequence[str]) -> str:
+    """German enumeration: ``A``, ``A und B``, ``A, B und C``."""
+    if len(items) <= 1:
+        return "".join(items)
+    return f"{', '.join(items[:-1])} und {items[-1]}"
 
 
 def _cell(text: str) -> str:
@@ -25,6 +32,8 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
         label, form, authors, trust = PROJECT_LABELS.get(
             source.project, (source.project, "Quelle", "unbekannt", "mittel")
         )
+        if source.authors:  # materials name their authors; wiki projects credit their community
+            authors = ", ".join(source.authors)
         stand = f", Stand des Archivs {source.zim_date}" if source.zim_date else ""
         facet = f" [Zugang: frei] [Vertrauensgrad: {trust}]" if facets_visible else ""
         lines.append(f"- **[{source.title}]({source.url})** — {label}, {form}{stand}{facet}")
@@ -58,10 +67,11 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
         lines += ["", "### Weiterführende Quellen aus den Artikeln", ""]
         lines += [f"- {_cell(ref)}" for ref in references]
 
+    used = _enumerate(sorted({source.license for source in sources}))
     lines += [
         "",
-        "> **Lizenz- und Attributionshinweis:** Teil 1 verwendet Inhalte aus den oben genannten Wissensbeständen "
-        "(CC BY-SA 4.0). Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die "
-        "Herkunft jedes Absatzes. Dieser Teil steht damit ebenfalls unter CC BY-SA 4.0.",
+        f"> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen ({used}); "
+        "Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu "
+        "gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
     ]
     return "\n".join(lines)

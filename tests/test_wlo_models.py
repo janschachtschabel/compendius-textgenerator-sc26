@@ -54,6 +54,25 @@ def test_subcollections_from_the_payload() -> None:
 def test_license_policy_allows_only_verbatim_reuse_licenses() -> None:
     assert is_extractive("CC_0") and is_extractive("PDM") and is_extractive("CC_BY") and is_extractive("CC_BY_SA")
     assert not is_extractive("CC_BY_NC_SA") and not is_extractive("COPYRIGHT_FREE") and not is_extractive("")
-    assert license_label("CC_BY_SA") == "CC BY-SA 4.0" and license_label("CC_0") == "CC0 1.0"
+    assert license_label("CC_BY_SA", "3.0") == "CC BY-SA 3.0" and license_label("CC_0") == "CC0 1.0"
+    assert license_label("CC_BY_SA") == "CC BY-SA"  # no version recorded, none invented
     assert license_label("COPYRIGHT_FREE") == "frei zugänglich (keine OER-Lizenz)"
     assert license_label("SOMETHING_NEW") == "SOMETHING_NEW"
+
+
+def test_reference_carries_licence_version_and_authors() -> None:
+    node = {
+        "ref": {"id": "11111111-1111-4111-8111-111111111111"},
+        "properties": {
+            "ccm:commonlicense_key": ["CC_BY_SA"],
+            "ccm:commonlicense_cc_version": ["3.0"],
+            "ccm:lifecyclecontributer_authorFN": ["Dieter Welz", ""],
+            "ccm:author_freetext": ["Dieter Welz", "Schulphysik Ulm"],
+        },
+    }
+    ref = parse_reference(node)
+    assert ref.license_version == "3.0"
+    assert ref.authors == ("Dieter Welz",)  # the structured author wins; the free text only repeats it here
+    freetext_only = {**node, "properties": {"ccm:author_freetext": ["Schulphysik Ulm", "Schulphysik Ulm", ""]}}
+    assert parse_reference(freetext_only).authors == ("Schulphysik Ulm",)
+    assert parse_reference({"ref": {"id": "x"}, "properties": {}}).authors == ()

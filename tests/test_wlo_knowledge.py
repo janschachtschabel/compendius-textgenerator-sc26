@@ -1,5 +1,6 @@
 """Knowledge collection (PLAN.md 6.3): licence policy, text fetch with budget and tolerance, sources for part 1."""
 
+import dataclasses
 from pathlib import Path
 
 from app.domain.models import SourceRole
@@ -46,7 +47,8 @@ class FakeTexts:
 
 
 def test_only_reusable_licences_become_sources_with_cleaned_paragraphs(tmp_path: Path) -> None:
-    refs = [_ref("a", "CC_BY_SA", "Brechung"), _ref("b", "CC_BY_NC_SA", "Gesperrt"), _ref("c", "CC_0", "Leer")]
+    licensed = dataclasses.replace(_ref("a", "CC_BY_SA", "Brechung"), license_version="3.0", authors=("Dieter Welz",))
+    refs = [licensed, _ref("b", "CC_BY_NC_SA", "Gesperrt"), _ref("c", "CC_0", "Leer")]
     client = FakeTexts({"a": TEXT, "c": ""})
     result = material_sources(client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions())
     assert result.skipped_license == 1 and result.empty == 1 and result.failed == []
@@ -54,7 +56,8 @@ def test_only_reusable_licences_become_sources_with_cleaned_paragraphs(tmp_path:
     assert [source.title for source in result.sources] == ["Brechung"]
     source = result.sources[0]
     assert source.project == "wlo_material" and source.role is SourceRole.MATERIAL and source.origin == "material"
-    assert source.license == "CC BY-SA 4.0" and source.url == "https://example.org/a" and source.source_id == "wlo:a"
+    assert source.license == "CC BY-SA 3.0" and source.authors == ["Dieter Welz"]
+    assert source.url == "https://example.org/a" and source.source_id == "wlo:a"
     texts = [p.text for section in source.sections for p in section.paragraphs]
     assert texts[0].startswith("Ein Arbeitsblatt")  # the description opens the lead section
     assert any(t.startswith("Trifft Licht") for t in texts) and any(t.startswith("Konstruiere") for t in texts)

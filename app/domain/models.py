@@ -59,6 +59,7 @@ class Source(BaseModel):
     zim_date: str | None = None
     entry_path: str | None = None
     license: str = "CC BY-SA 4.0"
+    authors: list[str] = Field(default_factory=list, description="Named authors; empty for wiki projects")
     language: str = "de"
     authority_score: float = 1.0
     is_primary: bool = False
@@ -86,6 +87,7 @@ class Source(BaseModel):
             zim_file=self.zim_file,
             zim_date=self.zim_date,
             license=self.license,
+            authors=list(self.authors),
             authority_score=self.authority_score,
             is_primary=self.is_primary,
         )
@@ -102,6 +104,7 @@ class SourceRef(BaseModel):
     zim_file: str | None = None
     zim_date: str | None = None
     license: str
+    authors: list[str] = Field(default_factory=list)
     authority_score: float
     is_primary: bool
 

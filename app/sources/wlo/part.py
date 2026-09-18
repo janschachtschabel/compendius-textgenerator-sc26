@@ -57,6 +57,8 @@ def _hydrate[T: (CollectionInfo, MaterialRef, SubCollection)](cls: type[T], data
     """Rebuild a frozen record from its cached JSON form (tuples come back as lists)."""
     kwargs: dict[str, Any] = {}
     for spec in dataclasses.fields(cls):
+        if spec.name not in data and spec.default is not dataclasses.MISSING:
+            continue  # written before the field existed; the default applies
         value = data.get(spec.name)
         if isinstance(value, list) and "tuple" in str(spec.type):
             value = tuple(value)

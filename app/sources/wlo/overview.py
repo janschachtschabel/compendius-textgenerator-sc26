@@ -13,7 +13,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection, license_label
+from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
 from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
@@ -73,7 +73,7 @@ def _item_line(ref: MaterialRef) -> str:
     if ref.keywords:
         parts.append("Schlagwörter: " + ", ".join(ref.keywords[:MAX_KEYWORDS]))
     parts.extend(label for label in (*ref.resource_types[:2], *ref.educational_contexts[:2]) if label)
-    parts.append(license_label(ref.license_key))
+    parts.append(ref.license)
     if ref.url:
         parts.append(f"[Material]({ref.url})")
     return "- " + " · ".join(parts)
@@ -99,7 +99,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
     types = Counter(label for ref in refs for label in ref.resource_types)
     contexts = Counter(label for ref in refs for label in ref.educational_contexts)
     subjects = Counter(label for ref in refs for label in ref.subjects)
-    licenses = Counter(license_label(ref.license_key) for ref in refs)
+    licenses = Counter(ref.license for ref in refs)
     parts = [
         f"Kennzahlen: {len(refs)} Inhalte, {len(subs)} Untersammlungen.",
         _counts("Materialtypen", types),

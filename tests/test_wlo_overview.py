@@ -40,7 +40,7 @@ def test_overview_has_purpose_key_figures_materials_and_subcollections_in_parsea
     assert "### Inhalte der Sammlung" in text and "### Untersammlungen" in text
     assert "#### Geometrische Optik" in text and "#### Menschliches Auge" in text
     assert "- **Optik** · Faszinierende Phänomene aus der Optik · Schlagwörter: Optik, Phänomene, Spiegel" in text
-    assert "CC BY-NC-SA 4.0 · [Material](https://www.geogebra.org/m/PzBHcpNG)" in text
+    assert "CC BY-NC-SA 3.0 · [Material](https://www.geogebra.org/m/PzBHcpNG)" in text  # version from the repository
     assert (
         "[Sammlung öffnen](https://repo.test/edu-sharing/components/render/9e7ae956-e9df-430f-bace-f3db4b910013)"
         in text
