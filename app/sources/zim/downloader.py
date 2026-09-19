@@ -32,6 +32,11 @@ class DownloadError(RuntimeError):
     """Transfer or verification failed; the message says whether the ``.part`` file was kept."""
 
 
+class TransferError(DownloadError):
+    """The transfer stopped on the way (network, HTTP status, short body); a later run resumes or retries it
+    cheaply. Size or hash mismatches are plain DownloadErrors: fetching again soon would not help."""
+
+
 class _OversizedError(Exception):
     """Internal signal: the stream exceeded the size the metalink announced."""
 
@@ -142,7 +147,7 @@ class Downloader:
 
         done = part.stat().st_size
         if done < size:
-            raise DownloadError(f"incomplete download of {file_name}: {done} of {size} bytes; .part kept for resume")
+            raise TransferError(f"incomplete download of {file_name}: {done} of {size} bytes; .part kept for resume")
         if done > size:
             part.unlink()
             raise DownloadError(f"size mismatch for {file_name}: got {done}, expected {size} bytes; .part removed")
@@ -179,7 +184,7 @@ class Downloader:
                         transfer.hasher = hashlib.sha256()
                         state.bytes_done = state.resumed_from = 0
                 else:
-                    raise DownloadError(f"HTTP {response.status_code} for {url}")
+                    raise TransferError(f"HTTP {response.status_code} for {url}")
                 with transfer.part.open(mode) as fh:
                     for chunk in response.iter_bytes(self.chunk_size):
                         fh.write(chunk)
@@ -197,4 +202,4 @@ class Downloader:
                 f"{transfer.part.name}: the server sent more than the expected {state.bytes_total} bytes; .part removed"
             ) from None
         except httpx.HTTPError as exc:
-            raise DownloadError(f"transfer of {transfer.part.name} failed: {exc}; .part kept for resume") from exc
+            raise TransferError(f"transfer of {transfer.part.name} failed: {exc}; .part kept for resume") from exc

@@ -37,6 +37,7 @@ from app.sources.zim.downloader import (
     Downloader,
     DownloadError,
     DownloadProgress,
+    TransferError,
     check_download_url,
 )
 from app.sources.zim.subscriptions import Subscription, SubscriptionManifest, load_manifest
@@ -90,6 +91,8 @@ class SyncReport:
     missing: list[str] = field(default_factory=list)
     pruned: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    # An error a run soon after can fix cheaply: resume a .part, reach the catalog again (not a hash mismatch)
+    retry_soon: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -233,6 +236,7 @@ class ZimSync:
             remote = self._catalog.latest(sub.name, sub.flavour)
         except Exception as exc:  # the catalog is a remote system; one failure must not stop the run
             report.errors.append(f"{sub.id}: catalog lookup failed: {exc}")
+            report.retry_soon = True
             return
         if remote is None:
             report.errors.append(f"{sub.id}: not offered by the catalog")
@@ -254,7 +258,12 @@ class ZimSync:
                 size=metalink.size,
                 progress=self._on_progress,
             )
-        except (DownloadError, httpx.HTTPError, ValueError, OSError) as exc:
+        except (TransferError, httpx.HTTPError, OSError) as exc:  # network, full volume: the next run resumes
+            report.errors.append(f"{sub.id}: {exc}")
+            report.retry_soon = True
+            self._write_status("running")
+            return
+        except (DownloadError, ValueError) as exc:  # refused or broken: fetching again soon would not help
             report.errors.append(f"{sub.id}: {exc}")
             self._write_status("running")
             return

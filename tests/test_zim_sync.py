@@ -14,7 +14,7 @@ import pytest
 from app.jobs.zim_sync import STATUS_FILE, SyncOptions, ZimSync, read_status
 from app.sources.zim.active import read_active
 from app.sources.zim.catalog import CatalogEntry, Metalink
-from app.sources.zim.downloader import DownloadError, DownloadProgress
+from app.sources.zim.downloader import DownloadError, DownloadProgress, TransferError
 from app.sources.zim.subscriptions import Subscription, SubscriptionManifest
 
 T0 = datetime(2026, 9, 17, 9, 0, tzinfo=UTC)
@@ -335,3 +335,28 @@ def test_a_downloaded_archive_libzim_cannot_open_is_recorded_not_fatal(
     assert report.downloaded == [] and any("wikipedia_de_sample" in error for error in report.errors)
     status = read_status(tmp_path / "zim")
     assert status is not None and status["state"] == "idle"
+
+
+@pytest.mark.parametrize(
+    ("failure", "retry_soon"),
+    [
+        (TransferError("transfer failed; .part kept for resume"), True),  # the next run resumes cheaply
+        (OSError(28, "No space left on device"), True),  # resumes once there is room again
+        (DownloadError("SHA-256 mismatch; .part removed"), False),  # retrying soon would fetch 14 GB again
+    ],
+)
+def test_only_failures_a_next_run_resumes_ask_for_an_early_retry(
+    tmp_path: Path, sources: dict[str, Path], failure: Exception, retry_soon: bool
+) -> None:
+    class Failing(FakeDownloader):
+        def download(self, url: str, target_dir: Path, *, sha256: str, size: int, progress: Any = None) -> Path:
+            raise failure
+
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    report = _sync(tmp_path, FakeCatalog(offers, sources), Failing(sources)).run(BOOTSTRAP)
+    assert report.errors and report.retry_soon is retry_soon
+
+
+def test_an_unreachable_catalog_asks_for_an_early_retry(tmp_path: Path, sources: dict[str, Path]) -> None:
+    report = _sync(tmp_path, FakeCatalog({}, sources, fail=True), FakeDownloader(sources)).run(BOOTSTRAP)
+    assert report.errors and report.retry_soon is True

@@ -25,7 +25,7 @@ def parse_interval(text: str) -> timedelta:
 
 
 def run_periodically(
-    task: Callable[[], None],
+    task: Callable[[], bool | None],
     interval: timedelta,
     *,
     retry_after: timedelta | None = None,
@@ -38,8 +38,8 @@ def run_periodically(
     """Run ``task`` now and then every ``interval``; a trigger file runs it early and is removed.
 
     The loop wakes every ``poll_s`` seconds to look for the trigger file and the stop event.
-    Exceptions from the task are logged and the loop continues, after ``retry_after`` when that is shorter
-    than the interval; it returns once ``stop`` is set.
+    A task that raises (logged) or returns ``False`` runs again after ``retry_after`` when that is shorter than
+    the interval; the loop returns once ``stop`` is set.
     """
     stop = stop or threading.Event()
     next_run = clock()
@@ -49,11 +49,11 @@ def run_periodically(
             if triggered and trigger_file is not None:
                 trigger_file.unlink(missing_ok=True)
                 log.info("run requested via %s", trigger_file.name)
-            wait = interval
+            early = min(interval, retry_after) if retry_after is not None else interval
             try:
-                task()
+                wait = interval if task() is not False else early
             except Exception:
-                wait = min(interval, retry_after) if retry_after is not None else interval
+                wait = early
                 log.exception("job failed; next attempt in %s", wait)
             next_run = clock() + wait.total_seconds()
         if stop.is_set():

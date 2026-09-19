@@ -9,7 +9,15 @@ from datetime import timedelta
 from pathlib import Path
 
 from app.jobs.runner import parse_interval, run_periodically
-from app.jobs.zim_sync import TRIGGER_FILE, SyncOptions, SyncReport, SyncRunningError, build_sync, read_status
+from app.jobs.zim_sync import (
+    TRIGGER_FILE,
+    SyncOptions,
+    SyncReport,
+    SyncRunningError,
+    ZimSync,
+    build_sync,
+    read_status,
+)
 from app.settings import get_settings
 from app.sources.zim.active import read_active
 from app.sources.zim.archive import ZimArchive
@@ -17,7 +25,9 @@ from app.sources.zim.catalog import OPDS_DEFAULT_URL, KiwixCatalog
 from app.sources.zim.subscriptions import load_manifest
 
 POLL_SECONDS = 60
-# An aborted run (full volume, crash) is tried again after an hour, not after ZIM_SYNC_INTERVAL (30 days)
+# A run that aborted, or whose downloads stopped on the way (network, full volume), is tried again after an hour,
+# not after ZIM_SYNC_INTERVAL (30 days); the next run resumes the .part. Hash or size mismatches and archives
+# libzim cannot open wait for the interval, so a broken file is not fetched every hour.
 RETRY_AFTER_FAILURE = timedelta(hours=1)
 
 
@@ -97,7 +107,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
     print(f"Sync-Schleife: Profil {options.profile}, Intervall {settings.zim_sync_interval}, Trigger-Datei {trigger}")
     try:
         run_periodically(
-            lambda: _print_report(sync.run(options)),
+            lambda: _run_once(sync, options),
             interval,
             retry_after=RETRY_AFTER_FAILURE,
             poll_s=POLL_SECONDS,
@@ -106,6 +116,13 @@ def cmd_sync(args: argparse.Namespace) -> int:
     except KeyboardInterrupt:
         print("Sync-Schleife beendet.")
     return 0
+
+
+def _run_once(sync: ZimSync, options: SyncOptions) -> bool:
+    """One loop run; ``False`` asks the loop for the early retry."""
+    report = sync.run(options)
+    _print_report(report)
+    return not report.retry_soon
 
 
 def _print_report(report: SyncReport) -> None:

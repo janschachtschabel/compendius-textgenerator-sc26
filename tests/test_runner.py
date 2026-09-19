@@ -102,3 +102,26 @@ def test_a_failed_task_is_retried_before_the_next_interval() -> None:
         sleep=clock.sleep,
     )
     assert runs == [1000.0, 1030.0, 2030.0]  # soon after the failure, then the interval again
+
+
+def test_a_task_that_asks_for_an_early_retry_gets_it() -> None:
+    clock = FakeClock()
+    stop = threading.Event()
+    runs: list[float] = []
+
+    def task() -> bool:
+        runs.append(clock.now)
+        if len(runs) == 3:
+            stop.set()
+        return len(runs) != 1  # the first run kept a .part file that the next one can resume
+
+    run_periodically(
+        task,
+        timedelta(seconds=1000),
+        retry_after=timedelta(seconds=30),
+        poll_s=10,
+        stop=stop,
+        clock=clock,
+        sleep=clock.sleep,
+    )
+    assert runs == [1000.0, 1030.0, 2030.0]

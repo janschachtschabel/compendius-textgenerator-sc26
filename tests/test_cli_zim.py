@@ -74,3 +74,19 @@ def test_a_manual_sync_while_the_updater_runs_says_so(zim_env: Path, capsys: pyt
     (zim_env / "sync.lock").write_text("pid 1\n", encoding="utf-8")
     assert main(["zim", "sync", "--offline"]) == 1
     assert "läuft bereits" in capsys.readouterr().err
+
+
+def test_one_loop_run_asks_for_an_early_retry_when_its_report_says_so() -> None:
+    from app.cli_zim import _run_once
+    from app.jobs.zim_sync import SyncOptions, SyncReport
+
+    class OneRun:
+        def __init__(self, report: SyncReport) -> None:
+            self.report = report
+
+        def run(self, options: SyncOptions) -> SyncReport:
+            return self.report
+
+    options = SyncOptions(profile="compact")
+    assert _run_once(OneRun(SyncReport("compact", "t0", retry_soon=True)), options) is False  # type: ignore[arg-type]
+    assert _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), options) is True  # type: ignore[arg-type]

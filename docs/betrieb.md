@@ -49,7 +49,7 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 | `/ready` bleibt 503 | Pflichtarchive fehlen oder `active.json` ist beschädigt (steht im Log) | `compendium zim status`; Sync anstoßen (`POST /api/v2/zim/sync`, Admin) |
 | ZIM-Volume läuft voll | abgelöste Dumps bleiben `ZIM_RETENTION_HOURS` liegen; `.part`-Dateien älterer Dumps räumt der Sync weg | `DELETE /api/v2/zim/{datei}` (Admin) für nicht aktive Dateien; Volume für zwei Generationen des Profils auslegen (Profil `standard`: rund 2 × 14 GB) |
 | `KompendiumZimSyncHangs`: Sync läuft laut Statusdatei, schreibt aber seit sechs Stunden nicht mehr | Updater abgestürzt (OOM, `docker kill`) oder Volume voll, sodass nicht einmal die Statusdatei geschrieben werden kann; ein Lauf, der mit einer Ausnahme abbricht, endet dagegen mit `state: error`, löst `KompendiumZimSyncErrors` aus und wird nach einer Stunde wiederholt | Log des Updaters; Platz schaffen, Sidecar neu starten |
-| Download bricht ab | `.part` bleibt für den nächsten Lauf; ein Spiegel, der mehr als die angekündigte Größe schickt, wird abgebrochen und die `.part` gelöscht | Log des Updaters; der nächste Lauf setzt fort |
+| Download bricht ab | `.part` bleibt für den nächsten Lauf; ein Spiegel, der mehr als die angekündigte Größe schickt, wird abgebrochen und die `.part` gelöscht | Log des Updaters; nach einer Stunde setzt der nächste Lauf fort (auch bei vollem Volume, sobald Platz ist). Nach einem Hash- oder Größenfehler oder einem Archiv, das libzim nicht öffnen kann, wartet der Updater das normale Intervall ab; eine schon vollständige, geprüfte Datei lädt er nicht noch einmal |
 
 ## Regeln
 
