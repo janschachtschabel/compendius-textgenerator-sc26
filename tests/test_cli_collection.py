@@ -26,7 +26,7 @@ def fake_repository(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator
         client=EduSharingClient(BASE, transport=httpx.MockTransport(repo), page_size=10),
         cache=TtlCache(tmp_path / "state" / "wlo_cache.db"),
     )
-    monkeypatch.setattr("app.cli_collection.build_collections", lambda settings: builder)
+    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)  # imported when the command runs
     yield repo
     get_settings.cache_clear()
 

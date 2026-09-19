@@ -5,7 +5,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from app.main import build_service
 from app.service import CompendiumService
 from app.settings import get_settings
 from app.sources.zim.registry import ZimRegistry
@@ -29,5 +28,9 @@ def cli_service(zim_args: list[str] | None) -> CompendiumService:
     if not registry.ready:
         print("Keine ZIM-Archive gefunden. --zim <pfad> angeben oder ZIM_DIR/ZIM_PATHS setzen.", file=sys.stderr)
         raise SystemExit(2)
+    # Imported here: app.main loads the API metrics, which the sync and harvest sidecars must not create
+    # (with PROMETHEUS_MULTIPROC_DIR from a shared .env they would open files in a missing directory)
+    from app.main import build_service
+
     templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")
     return build_service(settings, registry, templates)

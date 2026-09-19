@@ -340,3 +340,11 @@ def test_a_request_that_fails_inside_the_app_is_counted_as_500(
         - value(before, "kompendium_http_requests_total", **labels)
         == 1
     )
+
+
+def test_the_sidecar_commands_start_with_the_api_metrics_variable_set(tmp_path: Path) -> None:
+    # compose passes the same .env to every service; importing the API metrics there would open files in a
+    # directory that only the API command creates, and the sync and harvest sidecars would crash at start
+    environment = {**os.environ, "PROMETHEUS_MULTIPROC_DIR": str(tmp_path / "gibt-es-nicht")}
+    script = "import sys\nimport app.cli\nassert 'app.main' not in sys.modules\n"
+    subprocess.run([sys.executable, "-c", script], env=environment, cwd=ROOT, check=True, timeout=120)  # noqa: S603
