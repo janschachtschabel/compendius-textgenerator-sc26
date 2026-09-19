@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Callable
 from typing import Any
 
 import httpx
@@ -90,13 +91,21 @@ class EduSharingClient:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
         return [parse_subcollection(node) for node in payload.get("collections") or []]
 
-    def references(self, collection_id: str) -> list[MaterialRef]:
-        """All materials referenced by the collection, page by page until the reported total is reached."""
+    def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
+        """All materials referenced by the collection, page by page until the reported total is reached.
+
+        ``expired`` tells whether the caller's time budget is spent; the listing then ends after the current page.
+        """
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/references"
         refs: list[MaterialRef] = []
         seen: set[str] = set()
         skip = 0
         for _page in range(MAX_PAGES):
+            if refs and expired is not None and expired():
+                log.warning(
+                    "collection %s: listing cut after %d references, the time budget is spent", collection_id, len(refs)
+                )
+                return refs
             params = {"maxItems": self._page_size, "skipCount": skip, "propertyFilter": "-all-"}
             payload = self._get(path, params)
             if payload is None:

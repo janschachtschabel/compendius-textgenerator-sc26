@@ -82,12 +82,14 @@ class CollectionBuilder:
         self._remember(key, dataclasses.asdict(info))
         return info
 
-    def references(self, collection_id: str) -> list[MaterialRef]:
+    def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
         key = f"references:{collection_id}"
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(MaterialRef, item) for item in cached]
-        refs = self.client.references(collection_id)
+        refs = self.client.references(collection_id, expired=expired)
+        if expired is not None and expired():  # possibly cut short: not kept for the next hour's requests
+            return refs
         self._remember(key, [dataclasses.asdict(ref) for ref in refs])
         return refs
 
@@ -129,7 +131,7 @@ class CollectionBuilder:
     def knowledge_sources(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> KnowledgeResult:
         """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3); ``expired`` see
         ``material_sources``."""
-        refs = self.references(collection_id)
+        refs = self.references(collection_id, expired=expired)
         return material_sources(self.client, self.cache, refs, options=self.options.knowledge, expired=expired)
 
     def _remember(self, key: str, value: Any) -> None:

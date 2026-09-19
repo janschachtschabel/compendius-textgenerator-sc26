@@ -49,3 +49,17 @@ def test_knowledge_sources_follow_the_licence_policy_and_report_gaps(tmp_path: P
     assert all(source.project == "wlo_material" for source in result.sources)
     assert {source.title for source in result.sources} >= {"Unterrichtsreihe zum Licht"}
     assert result.empty == result.considered - len(result.sources)
+
+
+def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path: Path) -> None:
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+
+    def listings() -> int:
+        return sum(request.url.path.endswith("/children/references") for request in repo.requests)
+
+    result = builder.knowledge_sources(OPTIK, expired=lambda: listings() >= 1)  # the budget ends after one page
+    assert listings() == 1  # a large collection could take 200 pages outside the request's time budget
+    assert result.timed_out == result.considered  # no text is read after the time is up either
+    builder.references(OPTIK)
+    assert listings() == 3  # the cut listing was not kept for an hour: the next read lists both pages again
