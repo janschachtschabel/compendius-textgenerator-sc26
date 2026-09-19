@@ -1,7 +1,7 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-18, Fassung v12 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
-teilweise), Phasen 6 und 7 offen; Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
+Stand: 2026-09-19, Fassung v15 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
 `../mem-schule-optik` und `../mem-schule-abruf` (gezielter Abruf von Lehrplanelementen zu einem
