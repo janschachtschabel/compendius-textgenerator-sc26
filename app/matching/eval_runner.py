@@ -64,7 +64,8 @@ class TopicRun:
     topic: str
     gold: GoldSet
     alignment: Alignment
-    results: dict[str, EvalResult] = field(default_factory=dict)
+    results: dict[str, EvalResult] = field(default_factory=dict)  # classification before the budgets
+    printed: dict[str, EvalResult] = field(default_factory=dict)  # what the text prints, also <strategy>+llm
     llm_note: str | None = None
 
 
@@ -72,7 +73,8 @@ class TopicRun:
 class EvalReport:
     runs: list[TopicRun] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)  # gold topics the archives could not resolve
-    aggregate: dict[str, EvalResult] = field(default_factory=dict)
+    aggregate: dict[str, EvalResult] = field(default_factory=dict)  # classification, strategies only
+    printed: dict[str, EvalResult] = field(default_factory=dict)  # printed paragraphs, also <strategy>+llm
     llm_note: str | None = None  # why the LLM extraction was not evaluated
 
 
@@ -197,9 +199,20 @@ def evaluate_topic(
         llm_extraction=llm_extraction,
     )
     assert compared.alignment is not None  # noqa: S101 - gold_for always returns the gold set here
-    results = {name: outcome.metrics for name, outcome in compared.results.items() if outcome.metrics is not None}
+    # The LLM's choice has no classification before budgets; it is compared with what the rules print
+    results = {
+        name: outcome.metrics
+        for name, outcome in compared.results.items()
+        if outcome.metrics is not None and not name.endswith(LLM_SUFFIX)
+    }
+    printed = {name: outcome.selection for name, outcome in compared.results.items() if outcome.selection is not None}
     return TopicRun(
-        topic=gold.topic, gold=gold, alignment=compared.alignment, results=results, llm_note=compared.llm_note
+        topic=gold.topic,
+        gold=gold,
+        alignment=compared.alignment,
+        results=results,
+        printed=printed,
+        llm_note=compared.llm_note,
     )
 
 
@@ -221,10 +234,9 @@ def evaluate_gold_dir(
             report.skipped.append(gold.topic)
             continue
         report.runs.append(run)
-    names = list(dict.fromkeys(name for run in report.runs for name in run.results))
     report.llm_note = next((run.llm_note for run in report.runs if run.llm_note), None)
-    for name in names:
-        results = [run.results[name] for run in report.runs if name in run.results]
-        if results:
-            report.aggregate[name] = aggregate(results)
+    for name in dict.fromkeys(name for run in report.runs for name in run.results):
+        report.aggregate[name] = aggregate([run.results[name] for run in report.runs if name in run.results])
+    for name in dict.fromkeys(name for run in report.runs for name in run.printed):
+        report.printed[name] = aggregate([run.printed[name] for run in report.runs if name in run.printed])
     return report

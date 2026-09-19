@@ -60,11 +60,14 @@ def test_export_import_run_round_trip(cli_env: Path, capsys: pytest.CaptureFixtu
     out = capsys.readouterr().out
     assert "hybrid_light" in out
     assert "macro-F1" in out
+    assert "Klassifikation vor Budget" in out and "Gedruckt" in out
     report = json.loads(report_path.read_text(encoding="utf-8"))
     assert report["runs"][0]["topic"] == "Optik"
     assert report["runs"][0]["labeled"] == count
     assert report["aggregate"]["hybrid_light"]["macro_f1"] == pytest.approx(1.0)  # gold equals its own output
     assert report["aggregate"]["lexicon_only"]["macro_f1"] < 1.0
+    assert set(report["printed"]) == {"hybrid_light", "lexicon_only"}
+    assert set(report["runs"][0]["printed"]) == {"hybrid_light", "lexicon_only"}
 
     assert main([*argv, "--min-f1", "1.01"]) == 1
 

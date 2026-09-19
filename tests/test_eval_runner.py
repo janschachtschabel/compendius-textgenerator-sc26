@@ -101,7 +101,7 @@ def test_without_a_usable_llm_the_extraction_is_left_out(service: CompendiumServ
     assert service.llm is None
     save_gold(tmp_path / "optik.jsonl", _gold_for_optik(service))
     report = evaluate_gold_dir(service, tmp_path, matchers=["hybrid_light"], llm_extraction=True)
-    assert set(report.aggregate) == {"hybrid_light"}
+    assert set(report.aggregate) == set(report.printed) == {"hybrid_light"}
     assert report.llm_note is not None and "konfiguriert" in report.llm_note
 
 
@@ -111,5 +111,9 @@ def test_the_gold_directory_pools_the_llm_extraction(
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(first_sentences)))
     save_gold(tmp_path / "optik.jsonl", _gold_for_optik(service))
     report = evaluate_gold_dir(service, tmp_path, matchers=["hybrid_light"], llm_extraction=True)
-    assert set(report.aggregate) == {"hybrid_light", "hybrid_light+llm"}
-    assert report.aggregate["hybrid_light+llm"].llm_tokens > 0 and report.llm_note is None
+    # The LLM's choice is only comparable with what the rules print: it has no classification before budgets
+    assert set(report.aggregate) == {"hybrid_light"}
+    assert set(report.printed) == {"hybrid_light", "hybrid_light+llm"}
+    assert report.printed["hybrid_light+llm"].llm_tokens > 0 and report.llm_note is None
+    assert report.printed["hybrid_light"].assigned <= report.aggregate["hybrid_light"].assigned
+    assert set(report.runs[0].printed) == {"hybrid_light", "hybrid_light+llm"}

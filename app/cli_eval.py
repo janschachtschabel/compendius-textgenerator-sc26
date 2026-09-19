@@ -77,16 +77,19 @@ def _report_dict(report: EvalReport, gold_dir: Path, matchers: list[str]) -> dic
         "gold_dir": str(gold_dir),
         "matchers": matchers,
         "skipped": report.skipped,
+        "llm_note": report.llm_note,
         "runs": [
             {
                 "topic": run.topic,
                 "labeled": len(run.alignment.gold_by_chunk),
                 "stale": len(run.alignment.stale),
                 "results": {name: result.model_dump() for name, result in run.results.items()},
+                "printed": {name: result.model_dump() for name, result in run.printed.items()},
             }
             for run in report.runs
         ],
         "aggregate": {name: result.model_dump() for name, result in report.aggregate.items()},
+        "printed": {name: result.model_dump() for name, result in report.printed.items()},
     }
 
 
@@ -102,21 +105,28 @@ def cmd_run(args: argparse.Namespace) -> int:
         return 2
     if report.llm_note:
         print(f"LLM-Extraktion nicht bewertet: {report.llm_note}", file=sys.stderr)
-    names = list(report.aggregate)  # the strategies, then <strategy>+llm when the LLM extraction ran
+    names = list(report.printed)  # the strategies, then <strategy>+llm when the LLM extraction ran
     print(f"Goldstandard {gold_dir}: {len(report.runs)} Themen, übersprungen: {report.skipped or '-'}")
-    for name in names:
+    print("Klassifikation vor Budget:")
+    for name in report.aggregate:
         _print_result(report.aggregate[name])
-    detail = report.aggregate.get(args.detail or matchers[-1])
+    print("Gedruckt (nach den Bausteinbudgets, was der Text zeigt):")
+    for name in names:
+        _print_result(report.printed[name])
+    wanted = args.detail or matchers[-1]
+    detail, kind = report.aggregate.get(wanted), "Klassifikation vor Budget"
+    if detail is None:
+        detail, kind = report.printed.get(wanted), "gedruckt"
     if detail is not None:
-        print(f"Bausteine ({detail.matcher}, Klassifikation vor Budget, alle Themen gepoolt):")
+        print(f"Bausteine ({detail.matcher}, {kind}, alle Themen gepoolt):")
         _print_slots(detail)
         top = list(detail.confusion.items())[:12]
         if top:
             print("  häufigste Verwechslungen (Gold>Zuordnung): " + ", ".join(f"{k} {v}" for k, v in top))
     best = report.aggregate.get(matchers[0])
-    print("Je Thema (macro-F1):")
+    print("Je Thema (macro-F1 der gedruckten Absätze):")
     for run in report.runs:
-        cells = "  ".join(f"{name} {run.results[name].macro_f1:.2f}" for name in names if name in run.results)
+        cells = "  ".join(f"{name} {run.printed[name].macro_f1:.2f}" for name in names if name in run.printed)
         print(f"  {run.topic:24s} {cells}")
     if args.json:
         Path(args.json).write_text(json.dumps(_report_dict(report, gold_dir, names), ensure_ascii=False, indent=2))
