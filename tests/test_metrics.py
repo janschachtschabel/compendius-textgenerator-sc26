@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+import httpx
 import pytest
 import yaml
 from fastapi.testclient import TestClient
@@ -17,10 +18,14 @@ from prometheus_client.parser import text_string_to_metric_families
 from app import __version__
 from app.main import create_app
 from app.settings import Settings
+from app.sources.wlo.cache import TtlCache
+from app.sources.wlo.client import EduSharingClient
+from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import ROOT, make_settings
 from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import answer_from_evidence, make_gateway
+from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 Samples = dict[tuple[str, tuple[tuple[str, str], ...]], float]
 
@@ -290,3 +295,48 @@ def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Pat
         exported = {name for name, _labels in scrape(client)}
     assert len(used) >= 10
     assert used <= exported, sorted(used - exported)
+
+
+def test_part_three_and_the_knowledge_collection_are_counted(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    with _app(sample_zims, tmp_path) as client:
+        repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+        builder = CollectionBuilder(client=repository, cache=TtlCache(tmp_path / "wlo_cache.db"))
+        monkeypatch.setattr(client.app.state.service, "collections", builder)  # type: ignore[attr-defined]
+        before = scrape(client)
+        payload = {"topic": "Optik", "collection_id": OPTIK, "knowledge_collection_id": OPTIK}
+        response = client.post("/api/v2/compendium", json={**payload, "parts": ["world", "collection"]})
+        assert response.status_code == 200, response.text
+        after = scrape(client)
+
+    def delta(name: str, **labels: str) -> float:
+        return value(after, name, **labels) - value(before, name, **labels)
+
+    knowledge = response.json()["audit"]["knowledge"]
+    assert delta("kompendium_parts_total", part="collection", available="true") == 1
+    assert delta("kompendium_parts_total", part="knowledge", available="true") == 1
+    assert knowledge["sources"] > 0
+    assert delta("kompendium_knowledge_materials_total", outcome="used") == knowledge["sources"]
+    assert delta("kompendium_knowledge_materials_total", outcome="skipped_license") == knowledge["skipped_license"]
+
+
+def test_a_request_that_fails_inside_the_app_is_counted_as_500(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = create_app(make_settings(sample_zims.values(), tmp_path / "state", zim_dir=tmp_path / "zim"))
+
+    def broken(*_args: object, **_kwargs: object) -> None:
+        raise RuntimeError("unexpected")
+
+    monkeypatch.setattr(app.state.service, "generate", broken)
+    with TestClient(app, raise_server_exceptions=False) as client:
+        before = scrape(client)
+        assert client.post("/api/v2/compendium", json={"topic": "Optik"}).status_code == 500
+        after = scrape(client)
+    labels = {"method": "POST", "route": "/api/v2/compendium", "status": "500"}
+    assert (
+        value(after, "kompendium_http_requests_total", **labels)
+        - value(before, "kompendium_http_requests_total", **labels)
+        == 1
+    )
