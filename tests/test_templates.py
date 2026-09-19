@@ -51,6 +51,19 @@ def test_builtin_templates_are_protected(tmp_path: Path) -> None:
         manager.delete("standard")
 
 
+def test_a_custom_file_cannot_replace_a_builtin_template(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    builtin = TemplateManager().get("sc26")
+    # save() refuses built-in ids; a file copied onto the volume by hand must not get around that
+    (tmp_path / "sc26.json").write_text(
+        builtin.model_copy(update={"name": "Fremd"}).model_dump_json(), encoding="utf-8"
+    )
+    manager = TemplateManager(custom_dir=tmp_path)
+    with caplog.at_level("ERROR"):
+        assert manager.get("sc26").name == builtin.name and manager.get("sc26").builtin
+        assert [t.name for t in manager.list() if t.id == "sc26"] == [builtin.name]
+    assert "sc26.json" in caplog.text
+
+
 def test_duplicate_slot_ids_are_rejected() -> None:
     with pytest.raises(ValueError):
         Template(

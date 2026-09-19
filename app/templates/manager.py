@@ -69,6 +69,9 @@ class TemplateManager:
             except (OSError, ValueError, ValidationError) as exc:
                 log.error("custom template %s skipped: %s", name, exc)
                 continue
+            if template.id in self._builtin:  # built-in templates are read-only, as in save() and delete()
+                log.error("custom template %s skipped: the id %r belongs to a built-in template", name, template.id)
+                continue
             templates[template.id] = template
         self._custom_cache = (signature, templates)
         return templates
