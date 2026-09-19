@@ -1,4 +1,7 @@
-"""Token budget for the LLM layer (PLAN.md 7): a cap per compendium request and a daily cap per process.
+"""Token budget for the LLM layer (PLAN.md 7): a cap per compendium request and a daily cap for all workers.
+
+The daily counter lives in a ``DailyStore`` (llm_budget.db in STATE_DIR); only without it does each process count
+for itself.
 
 Calls reserve their upper-bound estimate before they start and settle to the actual usage afterwards, so parallel
 drafts cannot overshoot a limit between the check and the call.
