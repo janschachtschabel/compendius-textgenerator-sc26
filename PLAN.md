@@ -1549,7 +1549,11 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   Statuscodes, `statistics.notes`, `parts_status` je Teil und der Teil-Regeneration
   (`compose/regeneration.py`); `MIGRATION.md` beschreibt den Umstieg. Neu außerdem: jede Antwort trägt
   `X-Request-ID`, jede Logzeile der Anfrage nennt sie, und ein unerwarteter Fehler wird geloggt und als 500 mit
-  `request_id` beantwortet (Audit OPS-03). Testsuite 553 Tests, Ruff und mypy strict grün.
+  `request_id` beantwortet (Audit OPS-03). Behoben außerdem ein Fehler, den erst die Linux-CI zeigte: Linux gibt
+  die Inode einer gelöschten Datei an die nächste weiter, deshalb hielt ein pausierter Lauf die übernommene
+  Sperre für seine eigene; die Sperre vergleicht jetzt auch ihren Text. Die CI war seit Fassung v15 rot, ohne
+  dass es jemand sah (`gh` war nicht angemeldet); seit `1b475dd` ist sie grün. Testsuite 554 Tests, Ruff und
+  mypy strict grün.
 - **2026-09-19, Fassung v16 (LLM-Schalter, D33):** `extraction` und `generation` ersetzen `mode` (4.7, 8.2):
   LLM-Satzauswahl je Baustein (`synthesis/selection.py`, Prompt `passage_selection` v1), Steuerung über alle
   Bausteine (`synthesis/extraction.py`), Kandidaten aus den Scores der Policy (`slot_scores`), Status
