@@ -25,7 +25,7 @@ from app.sources.lehrplan.vocab import MATCHABLE_ROLES
 
 log = logging.getLogger(__name__)
 
-# Bump when the tables change; a cache written by another version counts as missing (part 2 renders
+# Bump when the tables change; a cache written by another version counts as unreadable (part 2 renders
 # its hint) instead of failing every compendium request.
 SCHEMA_VERSION = "1"
 TMP_SUFFIX = ".tmp"
@@ -135,9 +135,22 @@ class LehrplanStore:
         return self.path.is_file()
 
     @property
+    def state(self) -> str:
+        """``missing`` without a file, ``unreadable`` when SQLite cannot read it or another schema version
+        wrote it, ``ok`` otherwise; operators repair an unreadable file instead of looking for a missing one."""
+        if not self.exists:
+            return "missing"
+        try:
+            version = self._read_meta().get("schema_version")
+        except sqlite3.Error as exc:
+            log.warning("lehrplan cache %s is unreadable: %s", self.path, exc)
+            return "unreadable"
+        return "ok" if version == SCHEMA_VERSION else "unreadable"
+
+    @property
     def available(self) -> bool:
-        """A readable cache written by this schema version; anything else counts as missing."""
-        return self.exists and self.meta().get("schema_version") == SCHEMA_VERSION
+        """A readable cache written by this schema version."""
+        return self.state == "ok"
 
     def _connect(self) -> sqlite3.Connection:
         connection = sqlite3.connect(f"{self.path.resolve().as_uri()}?mode=ro", uri=True)
@@ -148,11 +161,14 @@ class LehrplanStore:
         if not self.exists:
             return {}
         try:
-            with closing(self._connect()) as connection:
-                return {row["key"]: row["value"] for row in connection.execute("SELECT key, value FROM meta")}
+            return self._read_meta()
         except sqlite3.Error as exc:
             log.warning("lehrplan cache %s is unreadable: %s", self.path, exc)
             return {}
+
+    def _read_meta(self) -> dict[str, str]:
+        with closing(self._connect()) as connection:
+            return {row["key"]: row["value"] for row in connection.execute("SELECT key, value FROM meta")}
 
     def counts(self) -> dict[str, Any]:
         empty: dict[str, Any] = {"lehrplaene": {}, "nodes": 0}
@@ -185,8 +201,11 @@ class LehrplanStore:
         read raises ``LehrplanCacheError``, so callers can say so instead of reporting zero matches.
         """
         words = [word.strip() for word in keywords if len(word.strip()) >= MIN_KEYWORD_CHARS]
-        if not words or not self.available:
+        state = self.state
+        if not words or state == "missing":
             return []
+        if state != "ok":  # checked again here: the file may have changed since the caller looked
+            raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable or of another schema version")
         match = " OR ".join('"' + word.replace('"', '""') + '"' for word in words)
         sql = (
             "SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label, node.jahrgangsstufen,"

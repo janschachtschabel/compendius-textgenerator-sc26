@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from app.sources.lehrplan.store import LehrplanRecord, LehrplanStore, LehrplanWriter
+from app.sources.lehrplan.store import LehrplanCacheError, LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
 
 PHYSIK = LehrplanRecord(
@@ -118,10 +118,13 @@ def test_cache_is_available_only_with_the_current_schema_version(tmp_path: Path)
         connection.execute("UPDATE meta SET value = '0' WHERE key = 'schema_version'")
         connection.commit()
     assert store.exists and not store.available
-    assert store.search(["Optik"]) == []
+    with pytest.raises(LehrplanCacheError):  # zero matches from an unusable cache would look like an answer
+        store.search(["Optik"])
     path.write_bytes(b"not a database at all")
     assert store.exists and not store.available  # a corrupt file is reported, not raised
-    assert store.meta() == {} and store.search(["Optik"]) == []
+    assert store.meta() == {}
+    with pytest.raises(LehrplanCacheError):
+        store.search(["Optik"])
 
 
 def test_subject_filter_falls_back_to_the_curriculum_title(tmp_path: Path) -> None:
@@ -139,3 +142,12 @@ def test_subject_filter_falls_back_to_the_curriculum_title(tmp_path: Path) -> No
     store = LehrplanStore(tmp_path / "lehrplan.db")
     assert [hit.iri for hit in store.search(["Optische"], subject_terms=["physik"])] == ["n:9"]
     assert store.search(["Optische"], subject_terms=["chemie"]) == []
+
+
+def test_the_state_tells_a_missing_from_an_unreadable_cache(tmp_path: Path) -> None:
+    store = LehrplanStore(tmp_path / "lehrplan.db")
+    assert store.state == "missing"
+    store.path.write_bytes(b"not a database at all")
+    assert store.state == "unreadable" and not store.available
+    _write(store.path)
+    assert store.state == "ok" and store.available

@@ -60,12 +60,13 @@ class CurriculaBuilder:
     ) -> CurriculaPart:
         keywords = build_keywords(title, aliases=aliases, subtopics=subtopics)
         subject_terms = self.subjects.mem_terms(subject)
-        if not self.store.available:
+        state = self.store.state
+        if state != "ok":
             return CurriculaPart(
                 available=False,
                 keywords=keywords,
                 subject_terms=subject_terms,
-                summary={"reason": "cache_missing"},
+                summary={"reason": "cache_missing" if state == "missing" else "cache_unreadable"},
                 markdown=render_missing_cache(),
             )
         try:

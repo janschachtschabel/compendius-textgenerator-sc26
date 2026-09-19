@@ -79,6 +79,18 @@ def test_parts_without_world_say_nothing_about_generating_part_one(service: Comp
     assert result.audit.llm is None and result.audit.matcher is None
 
 
+def test_a_corrupt_cache_file_is_reported_as_unreadable_not_as_missing(
+    sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
+) -> None:
+    settings = make_settings(sample_zims.values(), tmp_path / "state")
+    settings.state_dir.mkdir(parents=True)
+    settings.lehrplan_db_path.write_bytes(b"not a database at all")
+    service = build_service(settings, registry, TemplateManager())
+    result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"]))
+    # Operators should repair the file, not look for a missing one
+    assert result.curricula is not None and result.curricula.summary == {"reason": "cache_unreadable"}
+
+
 def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
 ) -> None:
