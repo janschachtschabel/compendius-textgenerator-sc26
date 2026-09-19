@@ -1,6 +1,7 @@
 """Eval runner on the offline sample archives: export for labelling, evaluate matchers, gold directory."""
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -117,3 +118,19 @@ def test_the_gold_directory_pools_the_llm_extraction(
     assert report.printed["hybrid_light+llm"].llm_tokens > 0 and report.llm_note is None
     assert report.printed["hybrid_light"].assigned <= report.aggregate["hybrid_light"].assigned
     assert set(report.runs[0].printed) == {"hybrid_light", "hybrid_light+llm"}
+
+
+def test_blocks_that_fell_back_are_named_in_the_measurement(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.matching.eval_runner import compare_topic
+
+    def one_block_fails(body: dict[str, Any]) -> str:
+        user = body["messages"][1]["content"]
+        return "kaputt" if "Baustein: 1 · Themendefinition" in user else first_sentences(body)
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(one_block_fails)))
+    gold = _gold_for_optik(service)
+    compared = compare_topic(service, "Optik", ["hybrid_light"], gold_for=lambda *_: gold, llm_extraction=True)
+    metrics = compared.results["hybrid_light+llm"].metrics
+    assert metrics is not None and metrics.llm_fallbacks == 1  # that block kept the policy's paragraphs

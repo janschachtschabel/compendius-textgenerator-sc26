@@ -59,8 +59,9 @@ PASSAGE_SELECTION = Prompt(
         "Textstellen aus. Du schreibst selbst keinen Text, du nennst nur die Nummern der Sätze. Wähle Sätze, die zur "
         "Aufgabe des Bausteins passen und zu dem, was hineingehört. Lass Sätze weg, die unter „Gehört nicht hinein“ "
         "fallen, nichts zum Thema beitragen oder ohne ihren Zusammenhang unverständlich sind. Wähle so viele Sätze, "
-        "wie die Ziellänge braucht, aber keine unpassenden, nur um sie zu erreichen. Ordne die Nummern in der "
-        "Reihenfolge, in der die Sätze im Baustein stehen sollen. Antworte ausschließlich mit einem JSON-Objekt wie "
+        "wie die Ziellänge braucht, aber keine unpassenden, nur um sie zu erreichen. Nenne die Textstellen in der "
+        "Reihenfolge, in der sie im Baustein stehen sollen; innerhalb einer Textstelle bleiben die Sätze in ihrer "
+        "Reihenfolge. Antworte ausschließlich mit einem JSON-Objekt wie "
         '{"saetze": ["1.1", "1.2", "3.1"]}; passt kein Satz, antworte {"saetze": []}. Keine Erklärungen.'
     ),
     user=(

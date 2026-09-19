@@ -73,9 +73,11 @@ def test_the_chunk_cap_does_not_cost_part_two_its_subtopics(
 def test_parts_without_world_say_nothing_about_generating_part_one(service: CompendiumService) -> None:
     # The LLM switches and the matcher concern part 1: an LLM request for part 2 alone is no fallback to the
     # rule-based path, and counting it as one would keep KompendiumLlmFallbacks firing
-    result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"], generation="llm"))
+    request = GenerateRequest(topic="Optik", parts=["curricula"], extraction="llm", generation="llm")
+    result = service.generate(request)
     assert result.generation == "rule-based"
-    assert {"generation_requested", "llm", "matcher"}.isdisjoint(result.frontmatter)
+    assert result.extraction == "rule-based"
+    assert {"generation_requested", "extraction_requested", "llm", "matcher"}.isdisjoint(result.frontmatter)
     assert result.audit.llm is None and result.audit.matcher is None
 
 

@@ -281,7 +281,7 @@ compendious-text-fastapi/
 | `LLM_GENERATION_DEFAULT` | `rule-based` | `rule-based`, `llm-fast` oder `llm` (siehe 4.7, D33) |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | Absätze je Baustein, die `extraction=llm` anbietet: die der Policy, dann die nächstbesten nach ihrem Score |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
-| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 40000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
+| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
 | `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | GPT-5- und o-Serie (D25); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
 | `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `4` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
@@ -656,8 +656,9 @@ Eingabe, 3.707 Ausgabe mit Denken), 10,9 s, 81 Sätze in 10 Bausteinen, keine un
 Reasoning-Modelle zählen ihr Denken in `max_completion_tokens`; die Synthese hatte die Grenze nur nach der
 Textlänge bemessen (Baustein 2: 555 Tokens) und bekam reproduzierbar eine leere Antwort mit
 `finish_reason=length`. Seither kommen für Reasoning-Modelle 1.000 Tokens hinzu (`REASONING_ALLOWANCE`, auch in
-der Reservierung), und `LLM_MAX_TOKENS_PER_REQUEST` steht auf 40.000, weil 20.000 bei beiden Schaltern sieben von
-zehn Bausteinen abwiesen. Beobachtet: das Modell wählte in „Fachinhalte“ einen Satz, der auf eine entfernte Formel
+der Reservierung), und `LLM_MAX_TOKENS_PER_REQUEST` steht auf 60.000: 20.000 wiesen bei beiden Schaltern sieben von zehn Bausteinen
+ab, und über die zehn Gold-Themen kostet allein die Auswahl 14.056 bis 22.435 Tokens (Optik mit 16.216 im unteren
+Drittel), das Schreiben 10.500 bis 14.500. Beobachtet: das Modell wählte in „Fachinhalte“ einen Satz, der auf eine entfernte Formel
 verweist („Dabei ist der Laplace-Operator …“); der Prompt schließt solche Sätze nur allgemein aus. Gegen den
 Goldstandard (10 Themen, `compendium eval run --llm-extraction`, Einzelheiten in `eval/README.md`): das LLM druckt
 131 Absätze, 77 richtig und 54 falsch, die Regeln in derselben Konfiguration (ohne Model2Vec) 107, 63 und 44;

@@ -55,6 +55,7 @@ def cmd_import(args: argparse.Namespace) -> int:
 def _print_result(result: EvalResult) -> None:
     hallucinated = ", ".join(result.hallucination_slots) or "-"
     tokens = f"  {result.llm_tokens} Tokens" if result.llm_tokens else ""
+    tokens += f"  {result.llm_fallbacks} Rückfälle" if result.llm_fallbacks else ""
     print(
         f"{result.matcher:18s} macro-F1 {result.macro_f1:.3f}  micro-F1 {result.micro_f1:.3f}  "
         f"zugeordnet {result.assigned}/{result.labeled}  fehlbelegt {result.misassigned}  verpasst {result.missed}  "
@@ -113,6 +114,9 @@ def cmd_run(args: argparse.Namespace) -> int:
     print("Gedruckt (nach den Bausteinbudgets, was der Text zeigt):")
     for name in names:
         _print_result(report.printed[name])
+        scored = sum(1 for run in report.runs if name in run.printed)
+        if scored < len(report.runs):  # a run the LLM could not finish must not look like a full measurement
+            print(f"{name} ist nur für {scored} von {len(report.runs)} Themen bewertet", file=sys.stderr)
     wanted = args.detail or matchers[-1]
     detail, kind = report.aggregate.get(wanted), "Klassifikation vor Budget"
     if detail is None:

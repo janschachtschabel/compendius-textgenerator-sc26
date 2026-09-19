@@ -99,7 +99,7 @@ def test_llm_fast_writes_the_fast_sections_with_cited_sentences_only(
     tokens = result.audit.llm_tokens
     assert tokens is not None and tokens["calls"] >= 1 and tokens["total"] == 24 * tokens["calls"]
     assert result.audit.llm is not None and result.audit.llm["generation"]["used"] == "llm-fast"
-    assert sum(1 for b in fake.bodies if not b["messages"][1]["content"].startswith("Bausteine:")) == len(llm_sections)
+    assert len(fake.bodies) == len(llm_sections), "one call per block the LLM writes"
 
 
 def test_llm_generation_writes_every_filled_content_section(with_llm: CompendiumService) -> None:

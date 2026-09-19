@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import sqlite3
 import time
 from collections.abc import AsyncIterator, Awaitable, Callable
@@ -203,10 +204,25 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     close_clients(app)
 
 
+# D33 replaced these; unknown names are ignored, so a stale value would change nothing without a word
+REMOVED_SETTINGS = ("LLM_MODE_DEFAULT", "LLM_ROUTER_ENABLED", "LLM_ROUTER_MAX_CHUNKS")
+
+
+def warn_about_removed_settings() -> None:
+    """Name settings of the environment that no longer do anything (only the process environment is visible here)."""
+    stale = [name for name in REMOVED_SETTINGS if os.environ.get(name)]
+    if stale:
+        log.warning(
+            "%s no longer exist (D33): part 1 follows LLM_EXTRACTION_DEFAULT and LLM_GENERATION_DEFAULT",
+            ", ".join(stale),
+        )
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
     configure_logging(settings.log_level)
+    warn_about_removed_settings()
     registry = build_registry(settings)
     templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")
     service = build_service(settings, registry, templates)

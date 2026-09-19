@@ -1,4 +1,4 @@
-"""CLI: ``compendium generate --mode`` on the offline sample archives (LLM off, so hybrid requests fall back)."""
+"""CLI: ``compendium generate`` with the LLM switches on the offline sample archives (LLM off: everything falls back)."""
 
 from collections.abc import Iterator
 from pathlib import Path

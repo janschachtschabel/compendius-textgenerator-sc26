@@ -1,4 +1,4 @@
-"""Hybrid synthesis (PLAN.md 4.7, 7): the LLM writes a block from its evidence; only cited sentences survive.
+"""LLM generation (PLAN.md 4.7, 7): the LLM writes a block from its evidence; only cited sentences survive.
 
 The evidence block numbers the assigned chunks locally ([1] … [k]). After the call every sentence must carry
 at least one valid marker; the rest is dropped and counted. Surviving markers are renumbered into the global

@@ -37,7 +37,7 @@ Lookup = Callable[[str], Source | None]
 
 @dataclass
 class LlmJob:
-    """What the hybrid modes hand to the writer: the synthesizer, the request budget and the slots to write."""
+    """What LLM generation hands to the writer: the synthesizer, the request budget and the slots to write."""
 
     synthesizer: LlmSynthesizer
     budget: RequestBudget

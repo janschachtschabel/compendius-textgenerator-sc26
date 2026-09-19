@@ -61,6 +61,7 @@ class EvalResult(BaseModel):
     stale_labels: int = 0
     duration_ms: int = 0
     llm_tokens: int = Field(0, description="Tokens the LLM spent choosing the passages (extraction=llm)")
+    llm_fallbacks: int = Field(0, description="Blocks that kept the rule-based paragraphs although the LLM was asked")
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -157,6 +158,7 @@ def aggregate(results: Sequence[EvalResult]) -> EvalResult:
         stale_labels=sum(r.stale_labels for r in results),
         duration_ms=sum(r.duration_ms for r in results),
         llm_tokens=sum(r.llm_tokens for r in results),
+        llm_fallbacks=sum(r.llm_fallbacks for r in results),
     )
 
 

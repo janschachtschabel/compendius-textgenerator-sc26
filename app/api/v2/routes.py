@@ -23,7 +23,7 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 @router.post("/compendium", response_model=Compendium, dependencies=[Depends(rate_limited)])
 def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
-    """Generate the compendium for a topic or a collection: the requested parts, in the requested mode."""
+    """Generate the compendium for a topic or a collection: the requested parts, with the requested switches."""
     service = get_service(request)
     try:
         compendium = service.generate(payload)

@@ -167,6 +167,7 @@ def compare_topic(
                     metrics.stale_labels = len(alignment.stale)
                     metrics.duration_ms = duration_ms
                     metrics.llm_tokens = extracted.report.total_tokens
+                    metrics.llm_fallbacks = len(extracted.report.fallbacks)
                 filled = sum(1 for items in extracted.assigned.values() if items)
                 # The choice is what the text prints: classification and selection are the same here
                 result.results[name] = MatcherOutcome(

@@ -160,3 +160,35 @@ def test_rule_based_extraction_with_llm_generation_never_asks_for_a_choice(
     assert result.extraction == "rule-based" and result.generation == "llm-fast"
     assert fake.bodies and not any(is_selection(b) for b in fake.bodies)
     assert result.audit.llm is not None and result.audit.llm["extraction"]["requested"] == "rule-based"
+
+
+def test_both_switches_spend_one_budget_per_request(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(first_sentences)
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=2_500))
+    result = service.generate(GenerateRequest(topic="Optik", extraction="llm", generation="llm", parts=["world"]))
+    audit = result.audit.llm or {}
+    assert audit["extraction"]["sections"] and audit["extraction"]["fallbacks"], "the budget ends inside the choice"
+    assert audit["generation"]["fallbacks"], "what the choice spent is missing for the writing"
+    budget_reasons = [*audit["extraction"]["fallbacks"].values(), *audit["generation"]["fallbacks"].values()]
+    assert all("Budget der Anfrage" in reason for reason in budget_reasons)
+    tokens = result.audit.llm_tokens or {}
+    assert tokens["total"] <= 2_500
+
+
+def test_a_block_whose_writing_fails_keeps_the_chosen_sentences(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def writing_fails(body: dict[str, Any]) -> str:
+        return first_sentences(body) if is_selection(body) else ""  # empty answer: the block cannot be written
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(writing_fails)))
+    result = service.generate(GenerateRequest(topic="Optik", extraction="llm", generation="llm", parts=["world"]))
+    filled = [s for s in _content(result) if s.text]
+    assert filled and all(s.status is SectionStatus.LLM_SELECTED for s in filled)
+    assert result.extraction == "llm" and result.generation == "rule-based"
+    audit = result.audit.llm or {}
+    assert audit["generation"]["fallbacks"] and all(
+        "leere Antwort" in r for r in audit["generation"]["fallbacks"].values()
+    )
