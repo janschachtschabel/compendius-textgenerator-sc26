@@ -157,3 +157,12 @@ def test_an_unconfigured_part_two_does_not_make_part_three_need_an_article(
     result = with_collections.generate(request)  # a TopicNotFoundError (404) before
     assert result.collection is not None and result.collection.available
     assert result.sources == [] and "corpus" not in result.audit.timings_ms
+
+
+def test_part_three_keeps_to_the_time_budget_of_the_request(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(with_collections.settings, "request_timeout_s", 0)  # spent before part 3 starts
+    result = with_collections.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
+    assert result.collection is not None and result.collection.available
+    assert result.collection.summary["incomplete"] is True

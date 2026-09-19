@@ -67,6 +67,23 @@ def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path
     assert listings() == 3  # the cut listing was not kept for an hour: the next read lists both pages again
 
 
+def test_the_overview_stops_listing_when_the_time_is_up_and_says_so(tmp_path: Path) -> None:
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+
+    def listings() -> int:
+        return sum(request.url.path.endswith("/children/references") for request in repo.requests)
+
+    part = builder.overview(OPTIK, expired=lambda: listings() >= 1)  # the budget ends after the first page
+    assert listings() == 1  # neither the second page nor the materials of the four sub-collections
+    assert part.available and part.summary["incomplete"] is True and part.summary["subcollections"] == 4
+    assert set(part.summary["subcollection_materials"].values()) == {0}
+    assert "möglicherweise unvollständig" in part.markdown
+    (tmp_path / "b").mkdir()
+    complete = _builder(FakeRepository(), tmp_path / "b").overview(OPTIK)
+    assert complete.summary["incomplete"] is False and "unvollständig" not in complete.markdown
+
+
 def _without_attribution(ref: MaterialRef) -> dict[str, object]:
     """A listing entry as the version before license_version and authors wrote it."""
     return {key: value for key, value in dataclasses.asdict(ref).items() if key not in {"license_version", "authors"}}

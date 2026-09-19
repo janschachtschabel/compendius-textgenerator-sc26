@@ -244,9 +244,9 @@ class CompendiumService:
             "timed_out": result.timed_out,
         }
 
-    def _collection_part(self, collection_id: str) -> CollectionPart:
+    def _collection_part(self, collection_id: str, deadline: Deadline) -> CollectionPart:
         try:
-            return self._collections_or_fail().overview(collection_id)
+            return self._collections_or_fail().overview(collection_id, expired=lambda: deadline.remaining() <= 0)
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
@@ -325,7 +325,7 @@ class CompendiumService:
             lap("curricula")
         collection_part: CollectionPart | None = None
         if "collection" in request.parts and request.collection_id and self.collections is not None:
-            collection_part = self._collection_part(request.collection_id)
+            collection_part = self._collection_part(request.collection_id, deadline)
             lap("collection")
         parts = ["world"] if want_world else []
         if curricula is not None:

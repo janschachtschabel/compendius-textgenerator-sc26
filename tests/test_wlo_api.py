@@ -62,3 +62,10 @@ def test_repository_errors_say_what_failed_once(sample_zims: dict[str, Path], tm
         compendium = client.post("/api/v2/compendium", json={"collection_id": OPTIK}).json()["detail"]
     for detail in (overview, compendium):
         assert detail.count("nicht erreichbar") == 1 and detail.count("edu-sharing") == 1, detail
+
+
+def test_the_overview_endpoint_keeps_to_the_request_time_budget(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    with _client(sample_zims, tmp_path, FakeRepository()) as client:
+        client.app.state.settings.request_timeout_s = 0  # type: ignore[attr-defined]  # spent at once
+        body = client.get(f"/api/v2/collections/{OPTIK}/overview").json()
+    assert body["available"] and body["summary"]["incomplete"] is True

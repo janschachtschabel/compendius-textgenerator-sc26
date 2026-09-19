@@ -105,11 +105,15 @@ class CollectionBuilder:
         self._remember(key, [dataclasses.asdict(sub) for sub in subs])
         return subs
 
-    def overview(self, collection_id: str) -> CollectionPart:
-        """Part 3 for the collection; ``CollectionNotFoundError`` propagates, other failures become a hint."""
+    def overview(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> CollectionPart:
+        """Part 3 for the collection; ``CollectionNotFoundError`` propagates, other failures become a hint.
+
+        ``expired`` tells whether the request's time budget is spent: a listing then ends after its current page,
+        further sub-collections are not listed, and the text says that the lists may be incomplete.
+        """
         info = self.info(collection_id)
         try:
-            refs = self.references(collection_id)
+            refs = self.references(collection_id, expired=expired)
             subs = self.subcollections(collection_id)
         except EduSharingError as exc:
             log.warning("collection %s could not be listed: %s", collection_id, exc)
@@ -119,13 +123,21 @@ class CollectionBuilder:
             )
         contents: list[SubCollectionContents] = []
         for sub in subs:
+            if expired is not None and expired():
+                contents.append(SubCollectionContents(info=sub))  # named, but its materials are not listed
+                continue
             try:
-                contents.append(SubCollectionContents(info=sub, refs=tuple(self.references(sub.id))))
+                contents.append(SubCollectionContents(info=sub, refs=tuple(self.references(sub.id, expired=expired))))
             except EduSharingError as exc:  # one broken sub-collection must not hide the others
                 log.warning("sub-collection %s could not be listed: %s", sub.id, exc)
                 contents.append(SubCollectionContents(info=sub))
         markdown, summary = render_collection_overview(
-            info, refs, contents, render_url=self.client.render_url, options=self.options.overview
+            info,
+            refs,
+            contents,
+            render_url=self.client.render_url,
+            options=self.options.overview,
+            incomplete=expired is not None and expired(),
         )
         return CollectionPart(
             available=True, collection_id=collection_id, title=info.title, summary=summary, markdown=markdown

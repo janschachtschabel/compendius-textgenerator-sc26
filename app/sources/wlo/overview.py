@@ -19,6 +19,9 @@ from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
 NO_DESCRIPTION = "*Für diese Sammlung ist keine Beschreibung hinterlegt.*"
 NO_ITEMS = "*Keine Inhalte gelistet.*"
+INCOMPLETE_TEXT = (
+    "*Das Zeitbudget der Anfrage war erschöpft; die Listen dieses Überblicks sind möglicherweise unvollständig.*"
+)
 COLLECTION_TYPES = {
     "EDITORIAL": "redaktionelle Sammlung",
     "EDITORIAL_GROUP": "redaktionelle Gruppensammlung",
@@ -123,8 +126,9 @@ def render_collection_overview(
     *,
     render_url: Callable[[str], str],
     options: OverviewOptions,
+    incomplete: bool = False,
 ) -> tuple[str, dict[str, Any]]:
-    """Markdown for part 3 plus a summary for the JSON answer and the audit."""
+    """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` adds a visible hint."""
     facets = _collection_facets(info)
     head = [f"**{info.title}** · [Sammlung öffnen]({render_url(info.id)})"]
     if info.subject_labels:
@@ -165,8 +169,11 @@ def render_collection_overview(
                     "",
                 ]
             )
+    if incomplete:
+        lines.extend([INCOMPLETE_TEXT, ""])
     summary.update(
         {
+            "incomplete": incomplete,
             "collection_id": info.id,
             "title": info.title,
             "materials": len(refs),

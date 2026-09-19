@@ -7,6 +7,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.api.limits import rate_limited
+from app.llm.deadline import Deadline
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, validate_node_id
 from app.sources.wlo.part import CollectionBuilder
 
@@ -23,8 +24,9 @@ def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
         validate_node_id(collection_id)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    deadline = Deadline(request.app.state.settings.request_timeout_s)  # the same budget as a compendium's part 3
     try:
-        part = builder.overview(collection_id)
+        part = builder.overview(collection_id, expired=lambda: deadline.remaining() <= 0)
     except CollectionNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except EduSharingError as exc:
