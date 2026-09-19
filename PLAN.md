@@ -640,11 +640,14 @@ diesen Baustein (`AssignmentResult.slot_scores`), zusammen `LLM_EXTRACTION_CANDI
 Kandidat erscheint mit nummerierten Sätzen („2.3“ ist der dritte Satz des zweiten Absatzes): nur die brauchbaren
 Sätze der Regeln (Mindestlänge, keine durch eine entfernte Formel abgeschnittenen Sätze), höchstens 1.000
 Zeichen je Absatz; Listen und Tabellen sind eine Einheit. Das Modell antwortet mit `{"saetze": [...]}` (Prompt
-`passage_selection` v1). Nicht angebotene Nummern werden verworfen und gezählt (`invalid_numbers`); die gewählten
+`passage_selection` v1). Nicht angebotene Nummern werden verworfen und gezählt (`invalid_numbers`); Zahlen liest der Parser als Text, damit
+`2.10` nicht zu `2.1` wird, und eine Antwort, in der keine einzige Nummer angeboten war, gilt als unlesbar (die
+Absätze der Policy bleiben). Die gewählten
 Sätze eines Absatzes stehen in Quellreihenfolge, die Absätze in der Reihenfolge, in der das Modell sie nennt;
-über das 1,5-Fache der Ziellänge hinaus endet die Auswahl an einer Absatzgrenze (`cut_sentences`). Der Schreiber
-übernimmt alle gewählten Sätze (Regelmodus: die ersten drei, im Lead fünf); die Dublettenprüfung über
-Satzanfänge gilt weiter. Eine leere Auswahl heißt: kein angebotener Absatz passt, der Baustein bleibt leer
+über das 1,5-Fache der Ziellänge hinaus endet die Auswahl an einer Absatzgrenze (`cut_sentences`). Ein Absatz kann Kandidat mehrerer Bausteine sein; die Auswahlen werden daher in
+Template-Reihenfolge entdoppelt (der frühere Baustein behält den Satz, `deduped_sentences`), bei Optik 20 Sätze.
+Der Schreiber übernimmt alle gewählten Sätze (Regelmodus: die ersten drei, im Lead fünf); seine Dublettenprüfung
+über Satzanfänge gilt weiter und fasst seit D33 auch Listen und Tabellen als eine Einheit. Eine leere Auswahl heißt: kein angebotener Absatz passt, der Baustein bleibt leer
 (`emptied`, Status `leer`). Scheitert die Auswahl (b-api, Budget, Frist, unlesbare Antwort, unerwarteter Fehler),
 behält der Baustein die Absätze der Policy (`fallbacks`). Die Aufrufe laufen parallel (`LLM_MAX_CONCURRENCY`) aus
 demselben Anfragebudget wie das Schreiben. Status `ki-ausgewählt`; die KI-Kennzeichnung im Frontmatter nennt
@@ -1006,7 +1009,8 @@ summary, markdown, error} und `audit.knowledge`. Neu: `GET /api/v2/collections/{
 `generation` (tatsächlich verwendet), je Baustein `status` (`ki-ausgewählt` für Sätze, die das LLM gewählt hat,
 `ki-generiert` für LLM-Text) und bei LLM-Text `llm` {prompt, model, tokens, dropped_sentences,
 unsupported_sentences, marked_sentences}, dazu `audit.llm` {note, extraction {requested, used, sections, emptied,
-fallbacks, sentences, invalid_numbers, cut_sentences}, generation {requested, used, sections, fallbacks,
+fallbacks, offered, sentences, invalid_numbers, deduped_sentences, cut_sentences}, generation {requested, used,
+sections, fallbacks,
 dropped_sentences, unsupported_sentences, marked_sentences}} und `audit.llm_tokens` {prompt, completion, total,
 calls}. Frontmatter: `extraction` und `generation`, bei Abweichung `extraction_requested` bzw.
 `generation_requested`, und `llm` {provider, model, prompts, extraction {sections, emptied, fallbacks},
@@ -1530,4 +1534,10 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   (`finish_reason=length`) durch `REASONING_ALLOWANCE`; Budget je Anfrage 40.000. Live gemessen (Optik): Auswahl
   16.467 Tokens in 11 s, beide Schalter 27.205 Tokens in 18 s. Eval `--llm-extraction` mit getrennten Sichten
   Klassifikation und gedruckt; Goldstandard: LLM 77 richtige und 54 falsche gedruckte Absätze gegen 63 und 44 der
-  Regeln (ohne Model2Vec). Testsuite 506 Tests, Ruff und mypy strict grün.
+  Regeln (ohne Model2Vec). Ein Review ohne Kontext fand danach zwei schwere Fehler (eine Antwort mit Zahlen statt
+  Zeichenketten leerte Bausteine; Listen und Tabellen konnten in zwei Bausteinen stehen) und zehn kleinere; alle
+  behoben, dazu Entdoppelung über die Bausteine, Warnung für entfallene Umgebungsvariablen und Budget 60.000.
+  Bewusst offen: die Kostenbuchung liegt doppelt in `ExtractionReport` und `LlmReport`; der Schreiber trennt die
+  Auszüge erneut in Sätze (Nahtstellen können anders fallen, seit der Entdoppelung ohne bekannte Wirkung);
+  `predictions_from_selection` zählt bei zurückgefallenen Bausteinen alle Sätze eines Absatzes. Testsuite 518 Tests,
+  Ruff und mypy strict grün.
