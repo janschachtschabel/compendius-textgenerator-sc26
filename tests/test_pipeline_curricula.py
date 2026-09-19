@@ -70,6 +70,15 @@ def test_the_chunk_cap_does_not_cost_part_two_its_subtopics(
     assert keywords[20] == keywords[5000]
 
 
+def test_parts_without_world_say_nothing_about_generating_part_one(service: CompendiumService) -> None:
+    # Mode and matcher concern part 1: a hybrid request for part 2 alone is no fallback to the rule-based mode,
+    # and counting it as one would keep KompendiumHybridFallbacks firing
+    result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"], mode="hybrid-quality"))
+    assert result.mode == "rule-based"
+    assert {"mode_requested", "llm", "matcher"}.isdisjoint(result.frontmatter)
+    assert result.audit.llm is None and result.audit.matcher is None
+
+
 def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
 ) -> None:

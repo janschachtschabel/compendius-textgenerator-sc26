@@ -41,12 +41,13 @@ def build_frontmatter(
     mode: str,
     generated_at: str,
     zim_snapshot: Sequence[Mapping[str, Any]],
-    matcher: str,
+    matcher: str | None,
     parts: Sequence[str],
     mode_requested: str | None = None,
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``mode`` is the mode actually used; ``mode_requested`` appears only when a hybrid request fell back."""
+    """``mode`` is the mode actually used; ``mode_requested`` appears only when a hybrid request fell back, and
+    ``matcher`` only when part 1 was generated."""
     frontmatter: dict[str, Any] = {
         "kompendium_version": 2,
         "topic": topic,
@@ -55,7 +56,7 @@ def build_frontmatter(
         "parts": list(parts),
         "generated_at": generated_at,
         "mode": mode,
-        "matcher": matcher,
+        **({"matcher": matcher} if matcher is not None else {}),
         "ai_disclosure": AI_DISCLOSURE.get(mode, AI_DISCLOSURE["rule-based"]),
         "review": {"status": "maschinell-extraktiv" if mode == "rule-based" else "ki-generiert", "interval_months": 12},
         "sources_snapshot": [dict(s) for s in zim_snapshot],

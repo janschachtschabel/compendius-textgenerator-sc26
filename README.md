@@ -195,7 +195,7 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --z
 |---|---|
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
-| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen und das Matching); `subject`, `knowledge_collection_id`; `mode` wählt `rule-based`, `hybrid-fast`, `hybrid-quality`; unbekannte Strategie in `matcher`: 422 |
+| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `mode` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `mode` wählt `rule-based`, `hybrid-fast`, `hybrid-quality`; unbekannte Strategie in `matcher`: 422 |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar) |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |

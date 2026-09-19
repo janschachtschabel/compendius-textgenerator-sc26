@@ -196,7 +196,7 @@ class LintFinding(BaseModel):
 
 
 class AuditReport(BaseModel):
-    matcher: str
+    matcher: str | None = Field(None, description="Matching strategy of part 1; null without part 1")
     timings_ms: dict[str, int] = Field(default_factory=dict)
     lint: list[LintFinding] = Field(default_factory=list)
     chunks_total: int = 0

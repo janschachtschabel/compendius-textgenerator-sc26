@@ -89,7 +89,7 @@ class Matched:
 class WorldPart:
     """Part 1 of one request: what was written, how, and what the audit reports about it."""
 
-    matcher: str
+    matcher: str | None  # None when part 1 was not requested: no strategy ran
     mode: str
     llm_note: str | None
     chunks_assigned: int = 0
@@ -282,15 +282,17 @@ class CompendiumService:
 
     def generate(self, request: GenerateRequest) -> Compendium:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
-        matcher_default = ensure_strategy(request.matcher or self.settings.matcher_default)  # before any work
+        if request.matcher:  # before any work; the configured default was checked at start
+            ensure_strategy(request.matcher)
         prepared = self.prepare(request, deadline)
-        mode_requested = request.mode or self.settings.llm_mode_default
-        timings = dict(prepared.timings)
         want_world = "world" in request.parts
+        # Mode and matcher describe how part 1 is written; parts 2 and 3 alone are rule-based by definition
+        mode_requested = (request.mode or self.settings.llm_mode_default) if want_world else "rule-based"
+        timings = dict(prepared.timings)
         if want_world:
             world = self._world_part(prepared, request, mode_requested, deadline, timings)
-        else:  # parts 2 and 3 only: no matching, no synthesis, no LLM work
-            world = WorldPart(matcher=matcher_default, mode="rule-based", llm_note=None)
+        else:  # no matching, no synthesis, no LLM work
+            world = WorldPart(matcher=None, mode="rule-based", llm_note=None)
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
