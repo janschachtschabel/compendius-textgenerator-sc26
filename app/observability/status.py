@@ -82,6 +82,11 @@ class StatusCollector:
         yield _gauge(
             "kompendium_zim_sync_running", "1 while the ZIM sync job runs", int(status.get("state") == "running")
         )
+        updated = _timestamp(status.get("updated_at"))
+        if updated is not None:  # a running job writes at every step and download progress; a dead one stops
+            yield _gauge(
+                "kompendium_zim_sync_status_updated_timestamp_seconds", "Last write of sync_status.json", updated
+            )
         run = _last_run(status)
         finished = _timestamp(run.get("finished_at"))
         if finished is not None:

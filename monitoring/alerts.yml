@@ -58,6 +58,15 @@ groups:
         annotations:
           summary: Der ZIM-Sync ist seit mehr als 35 Tagen nicht gelaufen
           description: Der Updater-Sidecar läuft nicht oder hängt.
+      - alert: KompendiumZimSyncHangs
+        # Ein laufender Sync schreibt bei jedem Schritt und im Sekundentakt beim Download; ein toter Prozess nicht mehr
+        expr: kompendium_zim_sync_running == 1 and time() - kompendium_zim_sync_status_updated_timestamp_seconds > 6 * 3600
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
+          description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
       - alert: KompendiumLehrplanCacheMissing
         expr: kompendium_lehrplan_cache_available == 0
         for: 1h

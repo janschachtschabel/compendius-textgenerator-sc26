@@ -83,6 +83,27 @@ def test_status_gauges_describe_archives_caches_and_sidecars(sample_zims: dict[s
     assert value(samples, "kompendium_llm_enabled") == 0 and value(samples, "kompendium_llm_available") == 0
 
 
+def test_a_running_sync_reports_when_it_last_wrote_its_status(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    (tmp_path / "zim").mkdir()
+    (tmp_path / "zim" / "sync_status.json").write_text(
+        json.dumps(
+            {
+                "state": "running",
+                "updated_at": "2026-09-18T01:00:00+00:00",
+                "last_run": {"started_at": "2026-09-18T00:00:00+00:00", "finished_at": "", "errors": []},
+            }
+        ),
+        encoding="utf-8",
+    )
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    assert value(samples, "kompendium_zim_sync_running") == 1
+    # A killed or stuck run stops writing: the alert compares this time with now
+    assert value(samples, "kompendium_zim_sync_status_updated_timestamp_seconds") == epoch("2026-09-18T01:00:00+00:00")
+    names = {name for name, _labels in samples}
+    assert "kompendium_zim_sync_last_run_timestamp_seconds" not in names  # the running run has no end yet
+
+
 def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _app(sample_zims, tmp_path) as client:
         samples = scrape(client)

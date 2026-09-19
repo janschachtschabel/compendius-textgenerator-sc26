@@ -97,3 +97,33 @@ tests:
             exp_annotations:
               summary: Der Lehrplan-Cache ist älter als 40 Tage
               description: Der Harvest-Sidecar läuft nicht oder scheitert.
+
+  - name: Hängender ZIM-Sync
+    interval: 1m
+    input_series:
+      # haengt: läuft laut Statusdatei, schreibt aber seit dem Start nicht mehr (abgestürzt, volles Volume)
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="haengt"}'
+        values: "1x480"
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="haengt"}'
+        values: "0x480"
+      # laeuft: ein langer Download schreibt jede Minute seinen Fortschritt
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="laeuft"}'
+        values: "1x480"
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="laeuft"}'
+        values: "0+60x480"
+      # ruht: zwischen zwei Läufen ist die Statusdatei alt, das ist normal
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="ruht"}'
+        values: "0x480"
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="ruht"}'
+        values: "0x480"
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: KompendiumZimSyncHangs
+        exp_alerts: []
+      - eval_time: 6h20m
+        alertname: KompendiumZimSyncHangs
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: haengt }
+            exp_annotations:
+              summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
+              description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
