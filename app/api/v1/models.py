@@ -126,3 +126,77 @@ class PipelineCompendiumOnlyResponse(BaseModel):
     linker_output: LinkerOutput
     compendium_output: CompendiumResponse
     pipeline_statistics: PipelineStatistics
+
+
+class LinkerEndpointConfig(LinkerConfig):
+    """``config`` of ``POST /api/v1/linker``: there the old service defaulted to ``extract`` once a config was sent."""
+
+    MODE: Literal["extract", "generate"] = "extract"
+
+
+class LinkerRequest(BaseModel):
+    text: str
+    config: LinkerEndpointConfig | None = Field(
+        None, description="Without a config the old service generated neighbours; with one it only extracted"
+    )
+
+
+class LinkerWikipediaSource(WikipediaSource):
+    """The full source shape of the old linker answer; the fields the archives cannot fill stay empty."""
+
+    internal_links: list[str] = Field(default_factory=list)
+    infobox_type: str | None = None
+    dbpedia_uri: str | None = None
+    source: str = "zim"
+    needs_fallback: bool = False
+    fallback_attempts: int = 0
+
+
+class LinkerEntitySources(BaseModel):
+    wikipedia: LinkerWikipediaSource
+
+
+class LinkerEntity(BaseModel):
+    entity: str
+    details: EntityDetails
+    sources: LinkerEntitySources
+    id: str = Field(description="Stable id of the article, not a random one per request")
+
+
+class LinkerStatistics(BaseModel):
+    total_entities: int
+    total_relationships: int = 0
+    top10: dict[str, dict[str, int]] = Field(default_factory=dict)
+    types_distribution: dict[str, int] = Field(default_factory=dict)
+    linked: dict[str, dict[str, float]] = Field(default_factory=dict)
+    relationships: dict[str, Any] = Field(default_factory=dict)
+    qa_pairs: dict[str, Any] = Field(default_factory=dict)
+
+
+class LinkerResponse(BaseModel):
+    original_text: str
+    entities: list[LinkerEntity] = Field(default_factory=list)
+    relationships: list[dict[str, Any]] = Field(default_factory=list)
+    qa_pairs: list[dict[str, Any]] = Field(default_factory=list)
+    statistics: LinkerStatistics
+
+
+class SplitRequest(BaseModel):
+    text: str = Field(min_length=1)
+    chunk_size: int = Field(1000, ge=10, le=5000)
+    overlap: int = Field(50, ge=0, le=500)
+    split_by: Literal["sentence", "char"] = "sentence"
+
+
+class SplitResponse(BaseModel):
+    chunks: list[str]
+
+
+class SynonymRequest(BaseModel):
+    word: str = Field(min_length=1)
+    max_synonyms: int = Field(5, ge=1, le=20)
+    lang: str = Field("de", min_length=2, max_length=5)
+
+
+class SynonymResponse(BaseModel):
+    synonyms: list[str]
