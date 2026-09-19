@@ -10,13 +10,13 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
-from fastapi.concurrency import run_in_threadpool
 
 from app import __version__
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
 from app.api.metrics import METRICS_PATH
 from app.api.metrics import router as metrics_router
+from app.api.system_threads import run_system, system_limiter
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -232,6 +232,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.required_ids = resolve_required_ids(settings, manifest)
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
+    app.state.system_limiter = system_limiter()
     app.include_router(health_router)
     app.include_router(v2_router)
     app.include_router(matching_router)
@@ -251,8 +252,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         async def follow_active_archives(
             request: Request, call_next: Callable[[Request], Awaitable[Response]]
         ) -> Response:
-            # One stat call per request; archives are reopened only when the sync job replaced active.json.
-            await run_in_threadpool(refresher.refresh)
+            # One stat call per request; archives are reopened only when the sync job replaced active.json. It runs
+            # in the monitoring threads, so a probe never waits for a thread that a compendium request holds.
+            await run_system(request, refresher.refresh)
             return await call_next(request)
 
     @app.middleware("http")

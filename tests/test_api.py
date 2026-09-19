@@ -1,13 +1,15 @@
-import inspect
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
+import anyio
+import anyio.to_thread
 import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.health import health, ready
+import app.api.health as health_module
 from app.llm.client import BApiClient
 from app.main import build_llm, create_app
 from app.settings import Settings
@@ -156,12 +158,42 @@ def test_empty_parts_are_rejected(client: TestClient) -> None:
     assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": []}).status_code == 422
 
 
-def test_health_reports_every_component_without_blocking_the_event_loop(client: TestClient) -> None:
+def test_health_reports_every_component(client: TestClient) -> None:
     components = client.get("/health").json()["components"]
     assert components["lehrplan_cache"]["available"] in (True, False)
     assert components["edu_sharing"] == {"enabled": True}
-    # /health reads SQLite (budget, curriculum cache); as plain functions both probes run in the threadpool
-    assert not inspect.iscoroutinefunction(health) and not inspect.iscoroutinefunction(ready)
+
+
+def test_probes_and_metrics_answer_while_every_default_thread_is_busy(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # ZIM_DIR mode, as in the image: the archive check runs before every request
+    app = create_app(make_settings([], tmp_path / "state", zim_dir=tmp_path / "zim"))
+    threads: list[int] = []
+    components = health_module._components
+
+    def spy(request: Any) -> Any:
+        threads.append(threading.get_ident())
+        return components(request)
+
+    monkeypatch.setattr(health_module, "_components", spy)
+
+    async def scenario() -> list[int]:
+        # Long compendium requests hold every thread of anyio's default pool (40 per worker)
+        limiter = anyio.to_thread.current_default_thread_limiter()
+        holders = [object() for _ in range(int(limiter.total_tokens))]
+        for holder in holders:
+            await limiter.acquire_on_behalf_of(holder)
+        try:
+            async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+                with anyio.fail_after(10):
+                    return [(await client.get(path)).status_code for path in ("/health", "/ready", "/metrics")]
+        finally:
+            for holder in holders:
+                limiter.release_on_behalf_of(holder)
+
+    assert anyio.run(scenario) == [200, 503, 200]  # no archives in ZIM_DIR: not ready, but answering
+    assert threads and threading.get_ident() not in threads  # the probes read SQLite off the event loop
 
 
 def test_api_docs_can_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:

@@ -1,7 +1,8 @@
 """Health (process alive) and readiness (archives present).
 
-Both probes read SQLite (token budget, curriculum cache), so they are plain functions: FastAPI runs them in the
-threadpool and a slow volume cannot stall the event loop. Neither probe calls a remote system.
+Both probes read SQLite (token budget, curriculum cache), so the reads run in the monitoring threads
+(app/api/system_threads.py): a slow volume cannot stall the event loop, and compendium requests that hold the
+default threads cannot hold up a probe. Neither probe calls a remote system.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from app import __version__
+from app.api.system_threads import run_system
 
 router = APIRouter(tags=["system"])
 
@@ -41,19 +43,20 @@ def _components(request: Request) -> dict[str, Any]:
 
 
 @router.get("/health")
-def health(request: Request) -> dict[str, Any]:
+async def health(request: Request) -> dict[str, Any]:
+    components = await run_system(request, _components, request)
     return {
         "status": "healthy",
         "service": "compendious-text-fastapi",
         "version": __version__,
         "timestamp": datetime.now(UTC).isoformat(),
-        "components": _components(request),
+        "components": components,
     }
 
 
 @router.get("/ready")
-def ready(request: Request) -> JSONResponse:
-    components = _components(request)
+async def ready(request: Request) -> JSONResponse:
+    components = await run_system(request, _components, request)
     is_ready = request.app.state.registry.ready and not components["zim"]["missing_required"]
     return JSONResponse(
         status_code=200 if is_ready else 503,
