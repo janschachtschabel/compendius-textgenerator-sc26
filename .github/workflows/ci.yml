@@ -39,6 +39,8 @@ jobs:
         run: |
           docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool prom/prometheus:v3.14.0 check config /m/prometheus.yml
           docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool prom/prometheus:v3.14.0 test rules /m/alerts_test.yml
+      - name: Image builds (without the embedding model, to stay fast)
+        run: docker build --build-arg MODEL2VEC_ID= -t compendious-text-fastapi:ci .
       - name: Known vulnerabilities in the runtime dependencies
         run: |
           uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
