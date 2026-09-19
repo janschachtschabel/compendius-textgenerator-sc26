@@ -42,6 +42,7 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 
 | Symptom | Ursache und Verhalten | Maßnahme |
 |---|---|---|
+| Ein Aufrufer meldet einen Fehler | Die Antwort trug `request_id`; danach im Log suchen (jede Zeile der Anfrage nennt sie), der Grund steht dort, nicht in der Antwort | `docker compose logs api | Select-String <id>` |
 | LLM-Anfragen kommen mit `extraction: rule-based` oder `generation: rule-based` und dem Feld `*_requested` zurück | b-api nicht erreichbar, Modell fehlt in `/models`, Tagesbudget erschöpft oder Schutzschalter aktiv (60 s nach einem Verbindungsfehler) | `components.llm` in `/health` und `audit.llm.note` lesen; die Modellprüfung wiederholt sich höchstens alle zehn Minuten von selbst |
 | Teil 3 meldet, dass der Sammlungsüberblick nicht erstellt werden konnte | edu-sharing antwortet nicht oder mit Fehler; Details stehen im Log, nicht in der Antwort | Repository prüfen; `GET /api/v2/collections/{id}/overview` antwortet 502, wenn schon die Sammlung nicht lesbar ist, sonst 200 mit `available: false` |
 | Teil 2 enthält nur den Hinweistext | `lehrplan.db` fehlt (`reason: cache_missing`) oder ist beschädigt oder von einer anderen Schemaversion (`cache_unreadable`) | `POST /api/v2/lehrplan/harvest` (Admin) oder `compendium lehrplan harvest --force` im Sidecar |

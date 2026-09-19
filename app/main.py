@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from starlette.routing import Route
 
@@ -36,7 +37,7 @@ from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.client import BApiClient
 from app.llm.gateway import LlmGateway, LlmOptions
-from app.logging import configure_logging
+from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.service import CompendiumService
@@ -314,5 +315,24 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if route is None:
                 route = request.url.path if request.url.path in plain_paths else UNMATCHED_ROUTE
             observe_request(request.method, route, status, time.perf_counter() - started)
+
+    @app.middleware("http")
+    async def name_the_request(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+        # Added last, so it runs outermost: every log line of this request, and the answer, carry the same id
+        request_id = set_request_id(request.headers.get(REQUEST_ID_HEADER))
+        response = await call_next(request)
+        response.headers[REQUEST_ID_HEADER] = request_id
+        return response
+
+    @app.exception_handler(Exception)
+    async def report_unexpected(request: Request, exc: Exception) -> JSONResponse:
+        """An error nobody planned for: the log holds the cause, the caller gets the id to quote (audit OPS-03)."""
+        request_id = current_request_id()
+        log.exception("unhandled error in %s %s (request %s)", request.method, request.url.path, request_id)
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Interner Fehler; bitte die Anfrage-ID melden", "request_id": request_id},
+            headers={REQUEST_ID_HEADER: request_id},
+        )
 
     return app

@@ -209,6 +209,7 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --gen
 | Endpunkt | Zweck |
 |---|---|
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
+| Alle Antworten | tragen `X-Request-ID` (die des Aufrufers oder eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
 | `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`; das frühere Feld `mode`: 422; unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503 |
 | `POST /api/v1/compendium`, `/api/v1/pipeline-compendium-only`, `/api/v1/pipeline` | Vertrag des alten Dienstes auf dem Neubau: gleiche Anfrage, `markdown` ist das ganze Kompendium, `statistics.notes` nennt Optionen ohne Wirkung; Fehler als Status statt als Text ([MIGRATION.md](MIGRATION.md)) |
