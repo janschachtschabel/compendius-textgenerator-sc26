@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import re
 import time
 from collections.abc import Iterator
@@ -11,7 +10,6 @@ from typing import Any
 import httpx
 import pytest
 
-from app import service as service_module
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.budget import TokenBudget
@@ -191,27 +189,6 @@ def test_gateway_status_for_health(fake: FakeBApi) -> None:
     assert gateway.generation_slots("rule-based", {"sc26_1"}) == set()
 
 
-def test_router_decision_moves_a_doubtful_chunk_into_the_chosen_section(
-    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    doubtful = "wikipedia:Augenoptiker:c002"  # sc26_4 0.49 vs sc26_8 0.42 on the sample archives; by rule in sc26_3
-
-    def responder(body: dict[str, Any]) -> str:
-        if body["messages"][1]["content"].startswith("Bausteine:"):
-            return json.dumps({doubtful: "sc26_8"})
-        return answer_from_evidence(body)
-
-    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(responder)))
-    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
-    by_id = {s.slot_id: s for s in result.sections}
-    assert doubtful in by_id["sc26_8"].chunk_ids and doubtful not in by_id["sc26_3"].chunk_ids
-    assert result.audit.llm is not None and result.audit.llm["router"]["moved"] == 1
-    assert (
-        result.frontmatter["llm"]["router"]["moved"] == 1 and "slot_router@v1" in result.frontmatter["llm"]["prompts"]
-    )
-    assert "route" in result.audit.timings_ms
-
-
 def test_unexpected_errors_in_the_llm_layer_never_break_the_compendium(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -221,15 +198,12 @@ def test_unexpected_errors_in_the_llm_layer_never_break_the_compendium(
         raise RuntimeError("kaputt")
 
     monkeypatch.setattr(gateway.synthesizer, "write_section", boom)
-    assert gateway.router is not None
-    monkeypatch.setattr(gateway.router, "route", boom)
     monkeypatch.setattr(service, "llm", gateway)
     result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     assert result.generation == "rule-based" and result.frontmatter["generation_requested"] == "llm"
     assert result.audit.llm is not None
     fallbacks = result.audit.llm["generation"]["fallbacks"]
     assert fallbacks and all("unerwarteter Fehler (RuntimeError)" in reason for reason in fallbacks.values())
-    assert "unerwarteter Fehler (RuntimeError)" in result.audit.llm["router"]["skipped"]
     assert all(s.status is not SectionStatus.LLM for s in result.sections)
 
 
@@ -321,7 +295,6 @@ def test_request_timeout_bounds_the_llm_work(service: CompendiumService, monkeyp
     assert result.generation == "rule-based" and result.audit.llm is not None
     fallbacks = result.audit.llm["generation"]["fallbacks"]
     assert fallbacks and all("Zeitbudget" in reason for reason in fallbacks.values())
-    assert "Zeitbudget" in result.audit.llm["router"]["skipped"]
     assert all(request.url.path.endswith("/models") for request in fake.requests)
 
 
@@ -341,34 +314,3 @@ def test_mark_mode_shows_conclusions_in_the_document_and_in_the_facets(
     assert graded and all("Schlussfolgerung" in s.facets["Evidenzgrad"] for s in graded)
     numbers = [c.number for s in result.sections for c in s.citations]
     assert numbers == list(range(1, len(numbers) + 1))
-
-
-def test_router_overrides_reuse_the_scores_of_the_first_pass(
-    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    doubtful = "wikipedia:Augenoptiker:c002"
-
-    def responder(body: dict[str, Any]) -> str:
-        if body["messages"][1]["content"].startswith("Bausteine:"):
-            return json.dumps({doubtful: "sc26_8"})
-        return answer_from_evidence(body)
-
-    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(responder)))
-    scored: list[str] = []
-    original = service_module.get_matcher
-
-    def counting(name: str, model2vec_path: str = "") -> Any:
-        matcher = original(name, model2vec_path)
-        score = matcher.score
-
-        def counted(*args: Any, **kwargs: Any) -> Any:
-            scored.append(name)
-            return score(*args, **kwargs)
-
-        matcher.score = counted  # type: ignore[method-assign]
-        return matcher
-
-    monkeypatch.setattr(service_module, "get_matcher", counting)
-    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
-    assert result.audit.llm is not None and result.audit.llm["router"]["moved"] == 1
-    assert scored == ["hybrid_light"]  # the overrides only repeat the assignment, not the rankers

@@ -30,6 +30,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             knowledge_collection_id=args.knowledge_collection_id,
             template_id=args.template,
             matcher=args.matcher,
+            extraction=args.extraction,
             generation=args.generation,
             target_length=args.length,
             facets_visible=args.facets_visible or None,
@@ -58,7 +59,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"JSON geschrieben: {args.json}")
     audit = result.audit
     print(
-        f"Thema: {result.topic} | Generierung: {result.generation} | Quellen: {len(result.sources)} "
+        f"Thema: {result.topic} | Extraktion: {result.extraction} | Generierung: {result.generation} "
+        f"| Quellen: {len(result.sources)} "
         f"| Chunks: {audit.chunks_total} "
         f"(zugeordnet {audit.chunks_assigned}) | Bausteine gefüllt: {audit.sections_filled}, "
         f"leer: {audit.sections_empty} "
@@ -67,13 +69,14 @@ def cmd_generate(args: argparse.Namespace) -> int:
     )
     if audit.llm is not None:
         tokens = audit.llm_tokens or {}
-        generation = audit.llm["generation"]
+        extraction, generation = audit.llm["extraction"], audit.llm["generation"]
+        fallbacks = len(extraction["fallbacks"]) + len(generation["fallbacks"])
         print(
-            f"LLM: Generierung angefordert {generation['requested']}, verwendet {generation['used']} "
+            f"LLM: Extraktion angefordert {extraction['requested']}, verwendet {extraction['used']} "
+            f"| Generierung angefordert {generation['requested']}, verwendet {generation['used']} "
             f"| Aufrufe: {tokens.get('calls', 0)} | Tokens: {tokens.get('total', 0)} "
-            f"| Bausteine per LLM: {len(generation['sections'])} "
-            f"| Rückfälle: {len(generation['fallbacks'])}"
-            + (f" | {audit.llm['note']}" if audit.llm.get("note") else ""),
+            f"| Bausteine ausgewählt: {len(extraction['sections'])}, geschrieben: {len(generation['sections'])} "
+            f"| Rückfälle: {fallbacks}" + (f" | {audit.llm['note']}" if audit.llm.get("note") else ""),
             file=sys.stderr,
         )
     for finding in audit.lint:
@@ -101,6 +104,13 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
     gen.add_argument("--template", default=None)
     gen.add_argument("--matcher", default=None)
+    gen.add_argument(
+        "--extraction",
+        default=None,
+        choices=["rule-based", "llm"],
+        help="Wer die Sätze der Bausteine auswählt; ohne Angabe LLM_EXTRACTION_DEFAULT (llm braucht LLM_ENABLED "
+        "und B_API_KEY)",
+    )
     gen.add_argument(
         "--generation",
         default=None,

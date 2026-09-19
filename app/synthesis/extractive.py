@@ -32,7 +32,7 @@ def usable_sentences(text: str) -> list[str]:
     return usable
 
 
-def _select_sentences(text: str, seen: set[str], limit: int) -> list[str]:
+def _select_sentences(text: str, seen: set[str], limit: int | None) -> list[str]:
     selected: list[str] = []
     for clean in usable_sentences(text):
         key = _fingerprint(clean)
@@ -40,7 +40,7 @@ def _select_sentences(text: str, seen: set[str], limit: int) -> list[str]:
             continue
         seen.add(key)
         selected.append(clean)
-        if len(selected) >= limit:
+        if limit is not None and len(selected) >= limit:
             break
     return selected
 
@@ -68,8 +68,13 @@ def synthesize(
     sources: Mapping[str, Source],
     citation_start: int,
     seen_sentences: set[str],
+    all_sentences: bool = False,
 ) -> tuple[str, list[Citation]]:
-    """Build section text from assigned chunks; every paragraph ends with its citation number."""
+    """Build section text from assigned chunks; every paragraph ends with its citation number.
+
+    The rules take the first sentences of a paragraph; ``all_sentences`` keeps every usable one, for excerpts whose
+    sentences the LLM already chose.
+    """
     paragraphs: list[str] = []
     citations: list[Citation] = []
     number = citation_start
@@ -83,7 +88,7 @@ def synthesize(
         elif chunk.kind is ChunkKind.TABLE:
             body = _render_table(chunk.text)
         else:
-            limit = SENTENCES_PER_CHUNK + (2 if chunk.is_lead else 0)
+            limit = None if all_sentences else SENTENCES_PER_CHUNK + (2 if chunk.is_lead else 0)
             sentences = _select_sentences(chunk.text, seen_sentences, limit)
             if not sentences:
                 continue

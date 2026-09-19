@@ -1,72 +1,74 @@
-"""Audit block, token counts and frontmatter block of the LLM layer for one compendium (PLAN.md 7)."""
+"""Audit block, token counts and frontmatter block of the LLM layer for one compendium (PLAN.md 7, D33)."""
 
 from __future__ import annotations
 
 from typing import Any
 
 from app.llm.gateway import LlmGateway
-from app.llm.prompts import get_prompt
-from app.matching.router import RoutingResult
+from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import LlmReport
+
+NOTHING_CONTRIBUTED = "LLM hat keinen Baustein ausgewählt oder geschrieben; Regelmodus verwendet"
 
 
 def build_llm_report(
     gateway: LlmGateway | None,
+    *,
+    extraction_requested: str,
+    extraction_used: str,
     generation_requested: str,
     generation_used: str,
     note: str | None,
-    report: LlmReport | None,
-    routing: RoutingResult | None,
+    extraction: ExtractionReport | None,
+    generation: LlmReport | None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
-    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` for plain rule-based runs."""
-    if generation_requested == "rule-based" and report is None:
+    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when no switch asked for it."""
+    if extraction_requested == "rule-based" and generation_requested == "rule-based":
         return None, None, None
-    calls = (report.calls if report else 0) + (routing.calls if routing else 0)
+    reports: list[ExtractionReport | LlmReport] = [r for r in (extraction, generation) if r is not None]
+    calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
     if calls:
         tokens = {
-            "prompt": (report.prompt_tokens if report else 0) + (routing.prompt_tokens if routing else 0),
-            "completion": (report.completion_tokens if report else 0) + (routing.completion_tokens if routing else 0),
-            "total": (report.total_tokens if report else 0) + (routing.total_tokens if routing else 0),
+            "prompt": sum(r.prompt_tokens for r in reports),
+            "completion": sum(r.completion_tokens for r in reports),
+            "total": sum(r.total_tokens for r in reports),
             "calls": calls,
         }
-    if note is None and generation_used == "rule-based":
-        note = "kein Baustein per LLM geschrieben; Regelmodus verwendet"
-    generation: dict[str, Any] = {
+    if note is None and extraction_used == "rule-based" and generation_used == "rule-based":
+        note = NOTHING_CONTRIBUTED
+    extraction_block: dict[str, Any] = {
+        "requested": extraction_requested,
+        "used": extraction_used,
+        "sections": list(extraction.slots) if extraction else [],
+        "emptied": list(extraction.emptied) if extraction else [],
+        "fallbacks": dict(extraction.fallbacks) if extraction else {},
+        "sentences": extraction.sentences if extraction else 0,
+        "invalid_numbers": extraction.invalid if extraction else 0,
+        "cut_sentences": extraction.cut if extraction else 0,
+    }
+    generation_block: dict[str, Any] = {
         "requested": generation_requested,
         "used": generation_used,
-        "sections": list(report.sections) if report else [],
-        "fallbacks": dict(report.fallbacks) if report else {},
-        "dropped_sentences": report.dropped_sentences if report else 0,
-        "unsupported_sentences": report.unsupported_sentences if report else 0,
-        "marked_sentences": report.marked_sentences if report else 0,
+        "sections": list(generation.sections) if generation else [],
+        "fallbacks": dict(generation.fallbacks) if generation else {},
+        "dropped_sentences": generation.dropped_sentences if generation else 0,
+        "unsupported_sentences": generation.unsupported_sentences if generation else 0,
+        "marked_sentences": generation.marked_sentences if generation else 0,
     }
-    audit: dict[str, Any] = {
-        "note": note,
-        "generation": generation,
-        "router": (
-            {
-                "considered": routing.considered,
-                "routed": routing.routed,
-                "moved": routing.moved,
-                "calls": routing.calls,
-                "skipped": routing.skipped,
-            }
-            if routing is not None
-            else None
-        ),
-    }
-    prompts = set(report.prompts) if report else set()
-    if routing is not None and routing.calls:
-        prompts.add(get_prompt("slot_router").tag)
+    audit: dict[str, Any] = {"note": note, "extraction": extraction_block, "generation": generation_block}
     front: dict[str, Any] = {}
     if gateway is not None:
+        models = [r.model for r in (generation, extraction) if r is not None and r.model]
         front["provider"] = gateway.client.provider
-        front["model"] = report.model if report and report.model else gateway.client.model
-    front["prompts"] = sorted(prompts)
-    front["generation"] = {"sections": generation["sections"], "fallbacks": generation["fallbacks"]}
+        front["model"] = models[0] if models else gateway.client.model
+    front["prompts"] = sorted({prompt for r in reports for prompt in r.prompts})
+    front["extraction"] = {
+        "sections": extraction_block["sections"],
+        "emptied": extraction_block["emptied"],
+        "fallbacks": extraction_block["fallbacks"],
+    }
+    front["generation"] = {"sections": generation_block["sections"], "fallbacks": generation_block["fallbacks"]}
     if note:
         front["note"] = note
-    if routing is not None:
-        front["router"] = {"considered": routing.considered, "routed": routing.routed, "moved": routing.moved}
     return audit, tokens, front

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import time
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -24,15 +24,13 @@ from app.domain.models import (
 from app.domain.requests import GenerateRequest
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
-from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
 from app.llm.report import build_llm_report
 from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
-from app.matching.policy import AssignmentResult, Doubt, assign
+from app.matching.policy import AssignmentResult, assign
 from app.matching.registry import STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
-from app.matching.router import RoutingResult
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
@@ -40,6 +38,7 @@ from app.sources.wlo.models import CollectionInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import CollectionBuilder, collection_topic
 from app.sources.zim.registry import ZimRegistry
+from app.synthesis.extraction import ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
 from app.synthesis.writer import LlmJob, SectionWriter, WrittenSections
@@ -94,10 +93,11 @@ class WorldPart:
     """Part 1 of one request: what was written, how, and what the audit reports about it."""
 
     matcher: str | None  # None when part 1 was not requested: no strategy ran
-    generation: str  # the generation switch in effect: rule-based when the LLM cannot be used
+    extraction: str  # the switches in effect: rule-based when the LLM cannot be used
+    generation: str
     llm_note: str | None
     chunks_assigned: int = 0
-    routing: RoutingResult | None = None
+    extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
     written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
 
 
@@ -305,19 +305,21 @@ class CompendiumService:
         prepared = self.prepare(request, deadline)
         want_world = "world" in request.parts
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
-        requested = request.generation or self.settings.llm_generation_default
-        generation_requested = requested if want_world else "rule-based"
+        extraction_requested = request.extraction or self.settings.llm_extraction_default
+        generation_requested = request.generation or self.settings.llm_generation_default
+        if not want_world:
+            extraction_requested = generation_requested = "rule-based"
         timings = dict(prepared.timings)
         if want_world:
-            world = self._world_part(prepared, request, generation_requested, deadline, timings)
+            switches = (extraction_requested, generation_requested)
+            world = self._world_part(prepared, request, switches, deadline, timings)
         else:  # no matching, no synthesis, no LLM work
-            world = WorldPart(matcher=None, generation="rule-based", llm_note=None)
+            world = WorldPart(matcher=None, extraction="rule-based", generation="rule-based", llm_note=None)
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
         normalized, resolution = prepared.normalized, prepared.resolution
-        sections, citations, routing = world.written.sections, world.written.citations, world.routing
-        matcher_name, generation, llm_note = world.matcher, world.generation, world.llm_note
+        sections, citations, matcher_name = world.written.sections, world.written.citations, world.matcher
         facets_visible = self._facets_visible(request)
         topic = resolution.title or normalized.topic
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
@@ -344,12 +346,19 @@ class CompendiumService:
 
         findings = lint_sections(template, sections, self.facets)
         generated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
-        # The switch actually used: an LLM request without any LLM contribution is a rule-based compendium.
-        llm_report = world.written.llm
-        llm_contributed = bool(llm_report and llm_report.sections) or bool(routing and routing.moved)
-        generation_used = generation if llm_contributed else "rule-based"
+        # The switches actually used: a switch without any LLM contribution is rule-based in the compendium.
+        extracted, drafted = world.extracted, world.written.llm
+        extraction_used = world.extraction if extracted and extracted.slots else "rule-based"
+        generation_used = world.generation if drafted and drafted.sections else "rule-based"
         llm_audit, llm_tokens, llm_front = build_llm_report(
-            self.llm, generation_requested, generation_used, llm_note, llm_report, routing
+            self.llm,
+            extraction_requested=extraction_requested,
+            extraction_used=extraction_used,
+            generation_requested=generation_requested,
+            generation_used=generation_used,
+            note=world.llm_note,
+            extraction=extracted,
+            generation=drafted,
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -363,6 +372,8 @@ class CompendiumService:
                 "alternatives": resolution.alternatives,
             },
             template=template,
+            extraction=extraction_used,
+            extraction_requested=extraction_requested,
             generation=generation_used,
             generation_requested=generation_requested,
             llm=llm_front,
@@ -404,6 +415,7 @@ class CompendiumService:
             resolution=resolution,
             template_id=template.id,
             template_version=template.version,
+            extraction=extraction_used,
             generation=generation_used,
             generated_at=generated_at,
             frontmatter=frontmatter,
@@ -433,54 +445,73 @@ class CompendiumService:
         self,
         prepared: PreparedTopic,
         request: GenerateRequest,
-        generation_requested: str,
+        requested: tuple[str, str],
         deadline: Deadline,
         timings: dict[str, int],
     ) -> WorldPart:
-        """Part 1: match the chunks, let the LLM settle close calls and write the sections as the switch asks."""
-        llm_note = self._llm_unavailable() if generation_requested != "rule-based" else None
-        generation = "rule-based" if llm_note else generation_requested
-        budget = self.llm.open_budget() if generation != "rule-based" and self.llm is not None else None
+        """Part 1: match the chunks, let the LLM choose sentences and write blocks as the switches ask (D33).
+
+        ``requested`` holds the extraction and the generation switch; without a usable LLM both run rule-based.
+        """
+        wants_llm = any(switch != "rule-based" for switch in requested)
+        llm_note = self._llm_unavailable() if wants_llm else None
+        extraction, generation = ("rule-based", "rule-based") if llm_note else requested
+        llm = self.llm if wants_llm and llm_note is None else None
+        budget = llm.open_budget() if llm is not None else None  # one budget for both switches
         matched = self.match(prepared, request.matcher, request.target_length)
         timings["match"] = matched.duration_ms
         lap = _Stopwatch(timings).lap
 
-        routing = self._route(prepared, matched.assignment.doubtful, budget, deadline)
-        if routing is not None:
-            if routing.overrides:
-                matched = self.reassign(prepared, matched, request.target_length, routing.overrides)
-            lap("route")
-
-        template, sources = prepared.template, prepared.sources
-        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
-        llm_job: LlmJob | None = None
-        if budget is not None and self.llm is not None:
-            llm_job = LlmJob(
-                synthesizer=self.llm.synthesizer,
+        # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
+        template = _scale_budgets(prepared.template, request.target_length)
+        topic = prepared.resolution.title or prepared.normalized.topic
+        assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
+        selected: set[str] = set()
+        extracted: ExtractionReport | None = None
+        if extraction == "llm" and llm is not None and budget is not None:
+            job = ExtractionJob(
+                selector=llm.selector,
                 budget=budget,
-                slots=self.llm.generation_slots(generation, (slot.id for slot in template.content_slots())),
-                topic=prepared.resolution.title or prepared.normalized.topic,
-                concurrency=self.llm.options.concurrency,
+                topic=topic,
+                candidates=llm.options.extraction_candidates,
+                concurrency=llm.options.concurrency,
                 deadline=deadline,
             )
-        # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
+            result = extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
+            assigned, selected, extracted = result.assigned, result.selected, result.report
+            lap("extract")
+
+        sources = prepared.sources
+        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        llm_job: LlmJob | None = None
+        if generation != "rule-based" and llm is not None and budget is not None:
+            llm_job = LlmJob(
+                synthesizer=llm.synthesizer,
+                budget=budget,
+                slots=llm.generation_slots(generation, (slot.id for slot in template.content_slots())),
+                topic=topic,
+                concurrency=llm.options.concurrency,
+                deadline=deadline,
+            )
         written = self.writer.write(
-            _scale_budgets(template, request.target_length),
-            matched.assignment.assigned,
+            template,
+            assigned,
             sources,
             prepared.sources_by_id,
             self._facets_visible(request),
             primary,
             prepared.lexicon,
             llm=llm_job,
+            selected=selected,
         )
         lap("synthesize")
         return WorldPart(
             matcher=matched.matcher,
+            extraction=extraction,
             generation=generation,
             llm_note=llm_note,
-            chunks_assigned=sum(len(v) for v in matched.assignment.assigned.values()),
-            routing=routing,
+            chunks_assigned=sum(len(v) for v in assigned.values()),
+            extracted=extracted,
             written=written,
         )
 
@@ -491,20 +522,6 @@ class CompendiumService:
         if not self.llm.available:
             return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
         return None
-
-    def _route(
-        self, prepared: PreparedTopic, doubts: list[Doubt], budget: RequestBudget | None, deadline: Deadline
-    ) -> RoutingResult | None:
-        """Let the LLM decide the close calls of the policy (LLM generation with an enabled router)."""
-        if budget is None or self.llm is None or self.llm.router is None or not doubts:
-            return None
-        chunks = {chunk.chunk_id: chunk for chunk in prepared.chunks}
-        try:
-            return self.llm.router.route(doubts, chunks, prepared.template, budget, deadline=deadline)
-        except Exception as exc:
-            # Same rule as for the drafts: a failing router leaves the policy decision as it is.
-            log.exception("LLM router failed unexpectedly")
-            return RoutingResult(considered=len(doubts), skipped=f"unerwarteter Fehler ({type(exc).__name__})")
 
 
 # Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for,

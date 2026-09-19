@@ -1,15 +1,16 @@
 """Writes the part 1 sections of a compendium: text per content slot, generated blocks after them.
 
-Extracted from the orchestrator (``service.py``). In the hybrid modes (PLAN.md 4.7) an ``LlmJob`` names the
+Extracted from the orchestrator (``service.py``). With LLM generation (PLAN.md 4.7) an ``LlmJob`` names the
 slots the LLM writes; their drafts are produced in parallel with local citation numbers and shifted into the
 global sequence while the sections are assembled in template order. Every slot the LLM cannot deliver falls
-back to the extractive text and is listed in the ``LlmReport``.
+back to the extractive text and is listed in the ``LlmReport``. Slots in ``selected`` hold excerpts whose
+sentences the LLM chose (extraction=llm, D33); their extractive text keeps all of those sentences.
 """
 
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Collection, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
@@ -84,6 +85,7 @@ class SectionWriter:
         primary: Source | None,
         lexicon: HeadingLexicon,
         llm: LlmJob | None = None,
+        selected: Collection[str] = frozenset(),
     ) -> WrittenSections:
         drafts = _draft_with_llm(template, assigned, sources_by_id, llm) if llm is not None else {}
         report = LlmReport() if llm is not None else None
@@ -126,9 +128,15 @@ class SectionWriter:
                 if isinstance(draft, LlmSkipped) and report is not None:
                     report.fallbacks[slot.id] = draft.reason
                     _account_skipped(report, draft)
-                text, citations = synthesize(scored, sources_by_id, len(all_citations), seen_sentences)
+                chosen = slot.id in selected
+                text, citations = synthesize(
+                    scored, sources_by_id, len(all_citations), seen_sentences, all_sentences=chosen
+                )
                 section.text, section.citations = text, citations
-                section.status = SectionStatus.EXTRACTIVE if text else SectionStatus.EMPTY
+                if not text:
+                    section.status = SectionStatus.EMPTY
+                else:
+                    section.status = SectionStatus.LLM_SELECTED if chosen else SectionStatus.EXTRACTIVE
             all_citations.extend(section.citations)
             if section.text:
                 section.facets = facet_rules.annotate(slot, chunks, sources_by_id, self.facets, self.facets_level)

@@ -18,6 +18,7 @@ from app.llm.budget import RequestBudget, TokenBudget
 from app.llm.client import SUSPENDED_MESSAGE, BApiClient, ModelCheck
 from app.matching.router import LlmRouter
 from app.synthesis.llm import LlmSynthesizer
+from app.synthesis.selection import LlmSelector
 
 log = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ RECHECK_S = 600.0  # an unavailable model is re-checked at most every ten minute
 @dataclass(frozen=True)
 class LlmOptions:
     fast_sections: tuple[str, ...] = ("sc26_1", "sc26_11")  # slots generation=llm-fast writes with the LLM
+    extraction_candidates: int = 8  # paragraphs offered per block with extraction=llm
     router_enabled: bool = True
     router_max_chunks: int = 12
     concurrency: int = 4
@@ -45,6 +47,7 @@ class LlmGateway:
         self.budget = budget
         self.options = options or LlmOptions()
         self.synthesizer = LlmSynthesizer(client, mark_unsupported=self.options.mark_unsupported)
+        self.selector = LlmSelector(client)
         self.router = (
             LlmRouter(client, max_chunks=self.options.router_max_chunks) if self.options.router_enabled else None
         )

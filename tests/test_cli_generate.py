@@ -29,16 +29,20 @@ def cli_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[Path]:
     get_settings.cache_clear()
 
 
-def test_generate_accepts_a_generation_switch_and_reports_the_fallback(
+def test_generate_accepts_the_llm_switches_and_reports_the_fallback(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:
     out_file = cli_env / "optik.md"
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
-    assert main(["generate", "--topic", "Optik", "--generation", "llm-fast", "--out", str(out_file), *zim_args]) == 0
+    switches = ["--extraction", "llm", "--generation", "llm-fast"]
+    assert main(["generate", "--topic", "Optik", *switches, "--out", str(out_file), *zim_args]) == 0
     err = capsys.readouterr().err
-    assert "Generierung: rule-based" in err and "angefordert llm-fast" in err and "nicht konfiguriert" in err
+    assert "Extraktion: rule-based" in err and "Generierung: rule-based" in err
+    assert "Extraktion angefordert llm" in err and "Generierung angefordert llm-fast" in err
+    assert "nicht konfiguriert" in err
     text = out_file.read_text(encoding="utf-8")
     assert "generation: rule-based" in text and "generation_requested: llm-fast" in text
+    assert "extraction: rule-based" in text and "extraction_requested: llm" in text
 
 
 def test_generate_rejects_an_unknown_generation(cli_env: Path) -> None:

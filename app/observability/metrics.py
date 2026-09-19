@@ -48,6 +48,11 @@ PARTS = Counter(
 LLM_TOKENS = Counter("kompendium_llm_tokens_total", "LLM tokens by type", ["type"])
 LLM_CALLS = Counter("kompendium_llm_calls_total", "LLM calls for sections and the router")
 LLM_SECTIONS = Counter("kompendium_llm_sections_total", "Blocks the LLM was asked to write, by outcome", ["outcome"])
+LLM_SELECTIONS = Counter(
+    "kompendium_llm_selections_total",
+    "Blocks whose sentences the LLM was asked to choose (extraction=llm), by outcome: chosen, emptied, fallback",
+    ["outcome"],
+)
 LLM_SENTENCES = Counter(
     "kompendium_llm_sentences_total",
     "LLM sentences the citation check dropped, found unsupported or marked as conclusions",
@@ -68,8 +73,13 @@ def observe_request(method: str, route: str, status: int, seconds: float) -> Non
 def record_compendium(compendium: Compendium) -> None:
     """Count one generated compendium from its audit: LLM switches, phases, parts, LLM usage, materials."""
     audit = compendium.audit
-    requested = str(compendium.frontmatter.get("generation_requested", compendium.generation))
-    COMPENDIA.labels(_flag(requested != "rule-based"), _flag(compendium.generation != "rule-based")).inc()
+    front = compendium.frontmatter
+    requested = (
+        front.get("extraction_requested", compendium.extraction),
+        front.get("generation_requested", compendium.generation),
+    )
+    used = (compendium.extraction, compendium.generation)
+    COMPENDIA.labels(_flag(requested), _flag(used)).inc()
     for phase, milliseconds in audit.timings_ms.items():
         PHASES.labels(phase).observe(milliseconds / 1000)
     for part, section in (("curricula", compendium.curricula), ("collection", compendium.collection)):
@@ -84,6 +94,11 @@ def record_compendium(compendium: Compendium) -> None:
         LLM_TOKENS.labels("completion").inc(audit.llm_tokens.get("completion", 0))
         LLM_CALLS.inc(audit.llm_tokens.get("calls", 0))
     if audit.llm:
+        extraction = audit.llm.get("extraction") or {}
+        emptied = len(extraction.get("emptied") or [])
+        LLM_SELECTIONS.labels("chosen").inc(len(extraction.get("sections") or []) - emptied)
+        LLM_SELECTIONS.labels("emptied").inc(emptied)
+        LLM_SELECTIONS.labels("fallback").inc(len(extraction.get("fallbacks") or {}))
         generation = audit.llm.get("generation") or {}
         LLM_SECTIONS.labels("written").inc(len(generation.get("sections") or []))
         LLM_SECTIONS.labels("fallback").inc(len(generation.get("fallbacks") or {}))
@@ -91,8 +106,9 @@ def record_compendium(compendium: Compendium) -> None:
             LLM_SENTENCES.labels(outcome).inc(generation.get(f"{outcome}_sentences", 0))
 
 
-def _flag(value: bool) -> str:
-    return "true" if value else "false"
+def _flag(switches: tuple[object, ...]) -> str:
+    """``"true"`` when any of the switches asks for (or used) the LLM."""
+    return "true" if any(switch != "rule-based" for switch in switches) else "false"
 
 
 def _record_knowledge(knowledge: dict[str, object]) -> None:

@@ -50,6 +50,8 @@ class AssignmentResult:
     notes: list[str] = field(default_factory=list)
     classified: dict[str, str] = field(default_factory=dict)  # chunk id -> slot id before the budgets cut
     doubtful: list[Doubt] = field(default_factory=list)  # close calls the LLM router may decide (hybrid modes)
+    # slot id -> chunk id -> the policy's score of the chunk for that slot (> 0): candidates for extraction=llm
+    slot_scores: dict[str, dict[str, float]] = field(default_factory=dict)
 
 
 def exclusion_terms(slot: TemplateSlot) -> set[str]:
@@ -191,6 +193,7 @@ def assign(
     content_ids = {slot.id for slot in content_slots}
     best: dict[str, tuple[str, float, list[str]]] = {}
     doubtful: list[Doubt] = []
+    slot_scores: dict[str, dict[str, float]] = {slot.id: {} for slot in content_slots}
     skipped = 0
     for chunk in chunks:
         if chunk.lexicon_slot in generated_keys:  # e.g. "Bekannte Vertreter": material for the actors block
@@ -207,6 +210,8 @@ def assign(
             if fused_item:
                 reasons = [*fused_item.reasons[:3], *reasons]
             candidates.append((slot.id, score, reasons))
+            if score > 0:
+                slot_scores[slot.id][chunk.chunk_id] = round(score, 4)
         if not candidates:
             continue
         candidates.sort(key=lambda c: -c[1])  # stable: ties keep the template order
@@ -263,7 +268,12 @@ def assign(
             unassigned += dropped
         per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, sc.chunk.position))
     return AssignmentResult(
-        assigned=per_slot, unassigned=unassigned, notes=notes, classified=classified, doubtful=doubtful
+        assigned=per_slot,
+        unassigned=unassigned,
+        notes=notes,
+        classified=classified,
+        doubtful=doubtful,
+        slot_scores=slot_scores,
     )
 
 

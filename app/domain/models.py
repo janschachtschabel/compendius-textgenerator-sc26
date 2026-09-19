@@ -150,6 +150,7 @@ class SectionStatus(StrEnum):
     EXTRACTIVE = "maschinell-extraktiv"
     GENERATED = "maschinell-generiert"
     LLM = "ki-generiert"
+    LLM_SELECTED = "ki-ausgewählt"  # verbatim source sentences the LLM chose (extraction=llm, D33)
     REVIEWED = "redaktionell-geprüft"
     EMPTY = "leer"
 
@@ -207,7 +208,8 @@ class AuditReport(BaseModel):
     citations: int = 0
     llm_tokens: dict[str, int] | None = Field(None, description="prompt, completion, total, calls (LLM switches)")
     llm: dict[str, Any] | None = Field(
-        None, description="LLM switches: generation (requested, used, blocks written, fallbacks), note, router"
+        None,
+        description="LLM switches: extraction and generation (requested, used, blocks, fallbacks), note, router",
     )
     knowledge: dict[str, Any] | None = Field(
         None, description="Knowledge collection: materials considered, used, failed"
@@ -243,6 +245,7 @@ class Compendium(BaseModel):
     resolution: Resolution
     template_id: str
     template_version: int
+    extraction: str = Field(description="Extraction switch actually used: rule-based or llm")
     generation: str = Field(description="Generation switch actually used: rule-based, llm-fast or llm")
     generated_at: str
     frontmatter: dict[str, Any] = Field(default_factory=dict)

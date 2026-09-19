@@ -97,11 +97,11 @@ def build_service(settings: Settings, registry: ZimRegistry, templates: Template
 
 
 def build_llm(settings: Settings) -> LlmGateway | None:
-    """The b-api gateway for the hybrid modes (PLAN.md 7); off without LLM_ENABLED or without a key."""
+    """The b-api gateway for the LLM switches (PLAN.md 7); off without LLM_ENABLED or without a key."""
     if not settings.llm_enabled:
         return None
     if not settings.b_api_key:
-        log.warning("LLM_ENABLED is set but B_API_KEY is empty; hybrid requests fall back to the rule-based mode")
+        log.warning("LLM_ENABLED is set but B_API_KEY is empty; LLM requests fall back to the rule-based path")
         return None
     client = BApiClient(
         settings.b_api_base_url,
@@ -129,6 +129,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     )
     options = LlmOptions(
         fast_sections=tuple(settings.llm_fast_section_ids),
+        extraction_candidates=settings.llm_extraction_candidates,
         router_enabled=settings.llm_router_enabled,
         router_max_chunks=settings.llm_router_max_chunks,
         concurrency=settings.llm_max_concurrency,

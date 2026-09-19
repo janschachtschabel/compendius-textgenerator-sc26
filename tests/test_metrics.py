@@ -24,6 +24,7 @@ from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import ROOT, make_settings
 from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_extraction import first_sentences
 from tests.test_pipeline_llm import answer_from_evidence, make_gateway
 from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
@@ -235,10 +236,10 @@ def test_a_compendium_records_its_mode_phases_and_parts(client: TestClient) -> N
 
 
 def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
-    gateway = make_gateway(FakeBApi(answer_from_evidence))
+    gateway = make_gateway(FakeBApi(first_sentences))
     monkeypatch.setattr(client.app.state.service, "llm", gateway)  # type: ignore[attr-defined]
     before = scrape(client)
-    payload = {"topic": "Optik", "generation": "llm-fast", "parts": ["world"]}
+    payload = {"topic": "Optik", "extraction": "llm", "generation": "llm-fast", "parts": ["world"]}
     response = client.post("/api/v2/compendium", json=payload)
     assert response.status_code == 200
     audit = response.json()["audit"]
@@ -251,7 +252,10 @@ def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: p
     assert delta("kompendium_llm_tokens_total", type="prompt") == audit["llm_tokens"]["prompt"]
     assert delta("kompendium_llm_tokens_total", type="completion") == audit["llm_tokens"]["completion"]
     assert delta("kompendium_llm_calls_total") == audit["llm_tokens"]["calls"]
-    generation = audit["llm"]["generation"]
+    generation, extraction = audit["llm"]["generation"], audit["llm"]["extraction"]
+    chosen = len(extraction["sections"]) - len(extraction["emptied"])
+    assert chosen > 0 and delta("kompendium_llm_selections_total", outcome="chosen") == chosen
+    assert delta("kompendium_llm_selections_total", outcome="fallback") == len(extraction["fallbacks"])
     assert delta("kompendium_llm_sections_total", outcome="written") == len(generation["sections"])
     assert delta("kompendium_llm_sentences_total", outcome="dropped") == generation["dropped_sentences"]
     assert delta("kompendium_compendium_requests_total", llm_requested="true", llm_used="true") == 1

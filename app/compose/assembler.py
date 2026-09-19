@@ -17,6 +17,11 @@ AI_DISCLOSURE = {  # by the generation switch actually used
     "llm-fast": "Maschinell erstellter Text, Teile KI-generiert (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
     "llm": "KI-generierter Text auf Basis belegter Quellen (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
 }
+# Rule-based writing from sentences the LLM chose (extraction=llm): the wording is the sources', the choice is not
+AI_SELECTED_DISCLOSURE = (
+    "Maschinell erstellter Text aus wörtlichen Quellenauszügen, Auswahl KI-gestützt (Kennzeichnung je Abschnitt) "
+    "nach Art. 50 EU AI Act"
+)
 
 
 def section_marker(section: Section) -> str:
@@ -36,16 +41,24 @@ def build_frontmatter(
     topic: str,
     resolution: Mapping[str, Any],
     template: Template,
+    extraction: str,
     generation: str,
     generated_at: str,
     zim_snapshot: Sequence[Mapping[str, Any]],
     matcher: str | None,
     parts: Sequence[str],
+    extraction_requested: str | None = None,
     generation_requested: str | None = None,
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``generation`` is the switch actually used; ``generation_requested`` appears only when an LLM request fell
-    back, and ``matcher`` only when part 1 was generated."""
+    """``extraction`` and ``generation`` are the switches actually used; ``*_requested`` appears only when a switch
+    fell back to rule-based, and ``matcher`` only when part 1 was generated."""
+    if generation != "rule-based":
+        disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"
+    elif extraction == "llm":
+        disclosure, review = AI_SELECTED_DISCLOSURE, "ki-ausgewählt"
+    else:
+        disclosure, review = AI_DISCLOSURE["rule-based"], "maschinell-extraktiv"
     frontmatter: dict[str, Any] = {
         "kompendium_version": 2,
         "topic": topic,
@@ -53,13 +66,11 @@ def build_frontmatter(
         "template": {"id": template.id, "version": template.version},
         "parts": list(parts),
         "generated_at": generated_at,
+        "extraction": extraction,
         "generation": generation,
         **({"matcher": matcher} if matcher is not None else {}),
-        "ai_disclosure": AI_DISCLOSURE.get(generation, AI_DISCLOSURE["rule-based"]),
-        "review": {
-            "status": "maschinell-extraktiv" if generation == "rule-based" else "ki-generiert",
-            "interval_months": 12,
-        },
+        "ai_disclosure": disclosure,
+        "review": {"status": review, "interval_months": 12},
         "sources_snapshot": [dict(s) for s in zim_snapshot],
     }
     if "world" in parts:  # the licence note speaks about part 1 only
@@ -67,6 +78,8 @@ def build_frontmatter(
             "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0); "
             "TULLU je Quelle in Baustein 12"
         )
+    if extraction_requested is not None and extraction_requested != extraction:
+        frontmatter["extraction_requested"] = extraction_requested
     if generation_requested is not None and generation_requested != generation:
         frontmatter["generation_requested"] = generation_requested
     if llm is not None:

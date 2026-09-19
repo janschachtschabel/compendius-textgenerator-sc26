@@ -7,6 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, model_validator
 
 Part = Literal["world", "curricula", "collection"]
+Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
@@ -36,6 +37,12 @@ class GenerateRequest(BaseModel):
     language: str = Field("de", pattern="^de$")
     template_id: str | None = Field(None, description="Template id; default from settings")
     matcher: str | None = Field(None, description="Matching strategy; default from settings")
+    extraction: Extraction | None = Field(
+        None,
+        description="Who picks the passages of part 1: rule-based (the policy's paragraphs, their first sentences) "
+        "or llm (the LLM chooses sentences by number among the best candidates; the wording stays the source's); "
+        "default LLM_EXTRACTION_DEFAULT. Falls back to rule-based when the b-api is not configured or not available",
+    )
     generation: Generation | None = Field(
         None,
         description="Who writes the blocks of part 1: rule-based (verbatim excerpts), llm-fast (the LLM writes the "
@@ -52,7 +59,7 @@ class GenerateRequest(BaseModel):
     def _no_mode(cls, data: Any) -> Any:
         # Unknown fields are ignored; a request that still asks for a mode must not silently run rule-based
         if isinstance(data, dict) and "mode" in data:
-            raise ValueError("mode gibt es nicht mehr: generation wählt, wer die Bausteine schreibt (PLAN.md D33)")
+            raise ValueError("mode gibt es nicht mehr: extraction und generation ersetzen es (PLAN.md D33)")
         return data
 
     @model_validator(mode="after")
