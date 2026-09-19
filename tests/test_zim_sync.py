@@ -63,7 +63,11 @@ class FakeCatalog:
         source = self.sources[file_name]
         digest = hashlib.sha256(source.read_bytes()).hexdigest()
         return Metalink(
-            file_name=file_name, size=source.stat().st_size, sha256=digest, urls=[url.removesuffix(".meta4")]
+            file_name=file_name,
+            size=source.stat().st_size,
+            sha256=digest,
+            urls=[url.removesuffix(".meta4")],
+            source_url=url,  # read where it was asked for, as KiwixCatalog reports it
         )
 
 
@@ -287,3 +291,14 @@ def test_a_long_download_keeps_its_lock_alive(tmp_path: Path, sources: dict[str,
 def test_a_status_file_without_a_json_object_counts_as_missing(tmp_path: Path, content: str) -> None:
     (tmp_path / STATUS_FILE).write_text(content, encoding="utf-8")
     assert read_status(tmp_path) is None
+
+
+def test_a_metalink_redirected_to_a_foreign_host_is_not_trusted(tmp_path: Path, sources: dict[str, Path]) -> None:
+    class RedirectedCatalog(FakeCatalog):
+        def metalink(self, url: str) -> Metalink:
+            return super().metalink(url).model_copy(update={"source_url": "https://evil.example/x.zim.meta4"})
+
+    downloader = FakeDownloader(sources)
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    report = _sync(tmp_path, RedirectedCatalog(offers, sources), downloader).run(BOOTSTRAP)
+    assert downloader.calls == [] and any("evil.example" in error for error in report.errors)

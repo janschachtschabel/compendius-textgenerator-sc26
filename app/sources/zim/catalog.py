@@ -26,6 +26,8 @@ ATOM = "{http://www.w3.org/2005/Atom}"
 METALINK = "{urn:ietf:params:xml:ns:metalink}"
 ACQUISITION_TYPE = "application/x-zim"
 MAX_PAGES = 50
+# A metalink is a few kB; an acquisition link that points at the archive itself must not be read into memory
+MAX_METALINK_BYTES = 1 << 20
 
 
 class CatalogEntry(BaseModel):
@@ -73,12 +75,16 @@ class Metalink(BaseModel):
     size: int
     sha256: str
     urls: list[str] = Field(default_factory=list, description="Mirror URLs, best priority first")
+    source_url: str = Field("", description="Where it was read, after redirects; empty is never trusted")
 
 
 def _parse_xml(data: bytes) -> Element:
     # Feed and metalink come from the configured Kiwix host, carry no external entities, and expat
     # (>= 2.4) caps entity expansion; defusedxml would not earn its place as a dependency here.
-    return ET.fromstring(data)  # noqa: S314
+    try:
+        return ET.fromstring(data)  # noqa: S314
+    except ET.ParseError as exc:  # a SyntaxError, not a ValueError: callers catch ValueError for bad input
+        raise ValueError(f"not an XML document: {exc}") from exc
 
 
 def _text(element: Element, tag: str) -> str:
@@ -184,6 +190,14 @@ class KiwixCatalog:
         return max(matches, key=lambda e: (e.dump_date, e.updated))
 
     def metalink(self, url: str) -> Metalink:
-        response = self._client.get(url)
-        response.raise_for_status()
-        return parse_metalink(response.content)
+        """The metalink at ``url``; ``source_url`` names where it was read after redirects, so the caller can
+        check that host too. More than ``MAX_METALINK_BYTES`` raises ``ValueError``."""
+        body = bytearray()
+        with self._client.stream("GET", url) as response:
+            response.raise_for_status()
+            for chunk in response.iter_bytes():
+                body.extend(chunk)
+                if len(body) > MAX_METALINK_BYTES:
+                    raise ValueError(f"metalink at {url} is larger than {MAX_METALINK_BYTES} bytes")
+            source_url = str(response.url)
+        return parse_metalink(bytes(body)).model_copy(update={"source_url": source_url})

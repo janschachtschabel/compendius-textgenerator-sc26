@@ -246,6 +246,7 @@ class ZimSync:
         try:
             check_download_url(remote.metalink_url, self._allowed_hosts)  # the hash must come from Kiwix too
             metalink = self._catalog.metalink(remote.metalink_url)
+            check_download_url(metalink.source_url, self._allowed_hosts)  # also after redirects
             path = self._downloader.download(
                 remote.download_url,
                 self._zim_dir,

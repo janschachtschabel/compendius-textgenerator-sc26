@@ -4,6 +4,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 import httpx
+import pytest
 
 from app.sources.zim.catalog import KiwixCatalog, parse_feed, parse_metalink
 
@@ -124,3 +125,35 @@ def test_metalink_fetch_uses_client() -> None:
 
     url = "https://lb.download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim.meta4"
     assert _catalog(handler).metalink(url).sha256.startswith("763ddf84")
+
+
+KIWIX_METALINK = "https://lb.download.kiwix.org/zim/other/klexikon_de_all_maxi_2026-08.zim.meta4"
+
+
+def test_a_metalink_reports_where_it_was_read_after_redirects() -> None:
+    body = (OPDS / "klexikon_de_all_maxi_2026-08.zim.meta4").read_bytes()
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "lb.download.kiwix.org":
+            return httpx.Response(302, headers={"Location": "https://evil.example/x.zim.meta4"})
+        return httpx.Response(200, content=body)
+
+    catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True))
+    # The hash is the only integrity check of the archive: the sync checks this address against its allowlist
+    assert catalog.metalink(KIWIX_METALINK).source_url == "https://evil.example/x.zim.meta4"
+
+
+def test_a_link_to_the_archive_itself_is_not_read_into_memory() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=b"x" * (2 * 1024 * 1024))  # an acquisition link without .meta4
+
+    with pytest.raises(ValueError, match="larger than"):
+        _catalog(handler).metalink(KIWIX_METALINK)
+
+
+def test_a_metalink_that_is_no_xml_is_a_value_error() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=b"<html><body>Bad Gateway")  # an error page of a proxy
+
+    with pytest.raises(ValueError):  # the sync records ValueError per subscription; a ParseError aborted the run
+        _catalog(handler).metalink(KIWIX_METALINK)
