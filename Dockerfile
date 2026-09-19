@@ -3,8 +3,13 @@
 # dem statischen Embedding-Modell fuer den hybriden Matcher (Entscheidung D20). Das Profil "ml"
 # (torch, Cross-Encoder) bleibt Phase 7 vorbehalten, falls die Evaluation den Mehrwert zeigt.
 
-# Basis-Image mit derselben uv-Version wie CI und Lockfile, damit ein Build morgen dasselbe Image ergibt
-FROM ghcr.io/astral-sh/uv:0.7.13-python3.13-bookworm-slim AS builder
+# Basis ist das offizielle Python-Image, per Digest gepinnt: ein Build morgen ergibt dasselbe Image, und Debian-
+# und CPython-Sicherheitskorrekturen kommen als neuer Digest, den Dependabot (.github/dependabot.yml) woechentlich
+# vorschlaegt. uv nur im Builder, in derselben Version wie CI und Lockfile.
+FROM ghcr.io/astral-sh/uv:0.7.13@sha256:6c1e19020ec221986a210027040044a5df8de762eb36d5240e382bc41d7a9043 AS uv
+
+FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS builder
+COPY --from=uv /uv /uvx /bin/
 WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 # Abhaengigkeiten zuerst (eigene Layer, aendern sich selten)
@@ -25,7 +30,7 @@ RUN mkdir -p /models/m2v && if [ -n "$MODEL2VEC_ID" ]; then \
       /app/.venv/bin/python -c "import sys; from huggingface_hub import snapshot_download; from model2vec import StaticModel; StaticModel.from_pretrained(snapshot_download(sys.argv[1], revision=sys.argv[2])).save_pretrained('/models/m2v')" "$MODEL2VEC_ID" "$MODEL2VEC_REVISION"; \
     fi
 
-FROM ghcr.io/astral-sh/uv:0.7.13-python3.13-bookworm-slim AS runtime
+FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \

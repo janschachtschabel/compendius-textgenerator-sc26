@@ -1,0 +1,13 @@
+# Dependabot: woechentliche Pull Requests fuer die gepinnten Basis-Images im Dockerfile (neue Digests bringen
+# Debian- und CPython-Sicherheitskorrekturen) und fuer die Actions der CI. Die Python-Pakete bleiben beim Lockfile
+# (uv 0.7.13 in CI und Image); bekannte Schwachstellen meldet pip-audit in jeder Pipeline.
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
