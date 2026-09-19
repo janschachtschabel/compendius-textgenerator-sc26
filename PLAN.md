@@ -963,6 +963,16 @@ nicht auflösbar, mit Alternativen), 503 (ZIM fehlt, LLM erforderlich aber deakt
 429 (`RATE_LIMIT`), 502 und 503 sind umgesetzt; 504 und `parts_status` sind geplant (Phase 6), Teilausfälle
 stehen bis dahin als `available: false` im jeweiligen Teil.
 
+**Stand Phase 6 (2026-09-20, `app/api/v1/`):** Alle Endpunkte der Tabelle antworten aus dem Neubau
+(`routes.py` Kompendium und beide Pipelines, `linker.py`, `qa.py`, `utils.py` mit Split, Synonymen und
+Übersetzung); Anfrageform, Standardwerte und Grenzen sind die alten, die Fehler die ehrlichen. Optionen ohne
+Entsprechung (`enable_citations`, `educational_mode`, Linker-Feineinstellungen, `length` außerhalb des Bereichs)
+stehen in `statistics.notes`, `config.compendium` nimmt zusätzlich `template_id`, `collection_id`,
+`knowledge_collection_id`, `subject`, `parts`, `extraction` und `generation`. Der Linker liest die Archive
+(stabile IDs, Lead als `extract`, keine Wikidata-, Kategorie- und Bildangaben), QA schreibt mit LLM und sonst aus
+Fragevorlagen, `split` beachtet endlich `chunk_size`, `translate` braucht das LLM (sonst 503, bei Fehler 502).
+Der Umstieg steht in `MIGRATION.md`. Offen in Phase 6: Teil-Regeneration, 504 und `parts_status`, OpenAPI-Texte.
+
 ### 8.2 Neue Endpunkte (v2)
 
 `POST /api/v2/compendium` — `topic` oder `collection_id`, mindestens eines; bei beiden gewinnt
