@@ -52,15 +52,17 @@ SAMPLE_META = {
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Tests never see the developer's shell configuration.
+    """Tests never see the developer's shell configuration or a local ``.env``.
 
     ``Settings`` reads the environment case-insensitively; a B_API_KEY, LLM_ENABLED, MODEL2VEC_PATH or POLICY_* from
-    the shell would otherwise reach the real b-api or change calibrated results. Tests that need a variable set it
-    with ``monkeypatch.setenv``.
+    the shell would otherwise reach the real b-api or change calibrated results. The same goes for a ``.env`` in the
+    working directory, which ``get_settings()`` reads for the CLI commands. Tests that need a variable set it with
+    ``monkeypatch.setenv``.
     """
     fields = {name.lower() for name in Settings.model_fields}
     for key in [key for key in os.environ if key.lower() in fields]:
         del os.environ[key]
+    Settings.model_config["env_file"] = None
 
 
 def strings_in(value: Any) -> Iterator[str]:

@@ -50,6 +50,11 @@ alert-rules:
 
 pytest:
   stage: test
+  # Set on purpose: tests/conftest.py must keep shell configuration away from the tests (test_isolation.py)
+  variables:
+    LLM_ENABLED: "true"
+    B_API_KEY: ci-dummy-not-a-key
+    POLICY_CONFIDENT_SCORE: "0.1"
   script:
     - uv run pytest -m "not live" --cov
   rules:

@@ -29,6 +29,11 @@ jobs:
       - name: Types
         run: uv run mypy app
       - name: Tests with coverage gate
+        # Set on purpose: tests/conftest.py must keep shell configuration away from the tests (test_isolation.py)
+        env:
+          LLM_ENABLED: "true"
+          B_API_KEY: ci-dummy-not-a-key
+          POLICY_CONFIDENT_SCORE: "0.1"
         run: uv run pytest -m "not live" --cov
       - name: Prometheus configuration and alert rules
         run: |
