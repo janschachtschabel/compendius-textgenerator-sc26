@@ -1,7 +1,7 @@
 """Downloader: range resume, hash verification, host allowlist; server simulated with MockTransport."""
 
 import hashlib
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 
 import httpx
@@ -152,3 +152,25 @@ def test_a_malformed_url_is_a_download_error(url: str) -> None:
     # The sync catches DownloadError per subscription; any other exception would abort the whole run
     with pytest.raises(DownloadError, match="URL"):
         check_download_url(url, DEFAULT_ALLOWED_HOSTS)
+
+
+class Pieces(httpx.SyncByteStream):
+    """A body sent in pieces that counts how many the client pulled."""
+
+    def __init__(self, blob: bytes, size: int) -> None:
+        self.pulled = 0
+        self._blob, self._size = blob, size
+
+    def __iter__(self) -> Iterator[bytes]:
+        for start in range(0, len(self._blob), self._size):
+            self.pulled += 1
+            yield self._blob[start : start + self._size]
+
+
+def test_a_stream_longer_than_announced_is_cut_as_soon_as_it_passes_the_size(tmp_path: Path) -> None:
+    pieces = Pieces(BLOB, 1024)  # ten pieces; announced are two and a half
+    client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, stream=pieces)))
+    with pytest.raises(DownloadError, match="more than the expected"):
+        Downloader(client=client, chunk_size=1024).download(URL, tmp_path, sha256=SHA, size=2560)
+    assert pieces.pulled == 3  # cut in the middle: a mirror cannot make it read the rest first
+    assert list(tmp_path.glob("*")) == []
