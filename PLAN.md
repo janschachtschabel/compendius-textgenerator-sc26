@@ -944,7 +944,7 @@ Akteurs-Klassifikation und Glossar-Politur per LLM, Template-Kurztexte, QA-Endpu
 | Endpunkt | Alt | Neu | Hinweis |
 |---|---|---|---|
 | `GET /health` | status, service, version, timestamp | unverändert + `components` (zim, lehrplan_cache, llm, edu_sharing) | zusätzlich `GET /ready` |
-| `POST /api/v1/pipeline-compendium-only` | Linker → LLM-Text | Themenauflösung → 3-Teile-Kompendium | Request unverändert; `compendium_output.markdown` = vollständiger Text, `bibliography` = Baustein 12, `statistics` erweitert; `linker_output.entities` aus den aufgelösten Artikeln (Label, url_de, Extract = Lead) als Kompatibilitäts-Shim; neue optionale Felder `config.compendium.{template_id, collection_id, knowledge_collection_id, subject, mode, parts}`; ein `text`, der eine nodeId (UUID) ist, wird als `collection_id` interpretiert |
+| `POST /api/v1/pipeline-compendium-only` | Linker → LLM-Text | Themenauflösung → 3-Teile-Kompendium | Request unverändert; `compendium_output.markdown` = vollständiger Text, `bibliography` = Baustein 12, `statistics` erweitert; `linker_output.entities` aus den aufgelösten Artikeln (Label, url_de, Extract = Lead) als Kompatibilitäts-Shim; neue optionale Felder `config.compendium.{template_id, collection_id, knowledge_collection_id, subject, extraction, generation, parts}`; ein `text`, der eine nodeId (UUID) ist, wird als `collection_id` interpretiert |
 | `POST /api/v1/compendium` | text oder linker_output → LLM | `text` → Themenauflösung; `linker_output` → Entity-Labels als Zusatzthemen | gleiche Response |
 | `POST /api/v1/pipeline` | Linker → Text → QA | wie oben, QA nur mit `LLM_ENABLED` | ohne LLM: 503 mit klarem `detail` |
 | `POST /api/v1/linker` | LLM-Entities + Wikipedia-API | ZIM-basiert und offline: Titel, Suggestion, Redirects, Lead als Extract, verlinkte Artikel als „generierte" Entities; `MODE=generate` zusätzlich mit LLM, wenn aktiviert | bleibt erhalten und wird verbessert (D14) |
@@ -973,7 +973,8 @@ stehen bis dahin als `available: false` im jeweiligen Teil.
   "collection_id": "a1b2c3…",
   "knowledge_collection_id": null,
   "subject": "Physik",
-  "mode": "rule-based",
+  "extraction": "rule-based",
+  "generation": "rule-based",
   "matcher": null,
   "target_length": 12000,
   "empty_slot_policy": "omit",
