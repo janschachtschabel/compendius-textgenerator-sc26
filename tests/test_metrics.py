@@ -111,6 +111,21 @@ def test_a_running_sync_reports_when_it_last_wrote_its_status(sample_zims: dict[
     assert "kompendium_zim_sync_last_run_timestamp_seconds" not in names  # the running run has no end yet
 
 
+def test_a_running_sync_keeps_the_errors_and_end_of_the_last_finished_run(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    (tmp_path / "zim").mkdir()
+    last = {"finished_at": "2026-09-18T01:00:00+00:00", "errors": ["wikipedia_de_sample: transfer failed"]}
+    running = {"started_at": "2026-09-18T02:00:00+00:00", "finished_at": "", "errors": []}
+    status = {"state": "running", "updated_at": "2026-09-18T02:05:00+00:00", "last_run": running, "last_finished": last}
+    (tmp_path / "zim" / "sync_status.json").write_text(json.dumps(status), encoding="utf-8")
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    # Without them the error alert lost its series whenever a retry ran longer than a scrape interval
+    assert value(samples, "kompendium_zim_sync_last_run_errors") == 1
+    assert value(samples, "kompendium_zim_sync_last_run_timestamp_seconds") == epoch("2026-09-18T01:00:00+00:00")
+
+
 def test_status_files_without_a_json_object_do_not_break_the_scrape(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:

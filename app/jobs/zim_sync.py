@@ -114,6 +114,17 @@ def read_status(zim_dir: Path) -> dict[str, Any] | None:
     return data
 
 
+def _finished_run(status: dict[str, Any] | None) -> dict[str, Any] | None:
+    """The report of the last run that finished, from a status file written by any earlier run."""
+    if status is None:
+        return None
+    run = status.get("last_run")
+    if isinstance(run, dict) and run.get("finished_at"):
+        return run
+    earlier = status.get("last_finished")
+    return earlier if isinstance(earlier, dict) else None
+
+
 def _utcnow() -> datetime:
     return datetime.now(UTC)
 
@@ -140,6 +151,7 @@ class ZimSync:
         self._retention = retention
         self._allowed_hosts = tuple(allowed_hosts)
         self._report: SyncReport | None = None
+        self._last_finished: dict[str, Any] | None = None
         self._lock: Path | None = None
 
     def run(self, options: SyncOptions) -> SyncReport:
@@ -162,6 +174,9 @@ class ZimSync:
             self._lock = None
 
     def _run(self, options: SyncOptions) -> SyncReport:
+        # The end and the errors of the last finished run stay in the status while this one runs; the age and
+        # error alerts would otherwise lose their series for the length of every run
+        self._last_finished = _finished_run(read_status(self._zim_dir))
         report = SyncReport(profile=options.profile, started_at=self._clock().isoformat())
         self._report = report
         self._write_status("running")
@@ -351,6 +366,7 @@ class ZimSync:
             "state": state,
             "updated_at": self._clock().isoformat(),
             "last_run": self._report.to_dict() if self._report else None,
+            "last_finished": self._last_finished,
             "download": download,
         }
         try:

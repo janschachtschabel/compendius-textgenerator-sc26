@@ -360,3 +360,22 @@ def test_only_failures_a_next_run_resumes_ask_for_an_early_retry(
 def test_an_unreachable_catalog_asks_for_an_early_retry(tmp_path: Path, sources: dict[str, Path]) -> None:
     report = _sync(tmp_path, FakeCatalog({}, sources, fail=True), FakeDownloader(sources)).run(BOOTSTRAP)
     assert report.errors and report.retry_soon is True
+
+
+def test_the_last_finished_run_stays_in_the_status_while_the_next_one_runs(
+    tmp_path: Path, sources: dict[str, Path]
+) -> None:
+    first = _sync(tmp_path, FakeCatalog({}, sources, fail=True), FakeDownloader(sources)).run(BOOTSTRAP)
+    seen: list[dict[str, Any] | None] = []
+
+    class Peeking(FakeCatalog):
+        def latest(self, name: str, flavour: str) -> CatalogEntry | None:
+            seen.append(read_status(tmp_path))  # what /metrics reads while the second run works
+            return super().latest(name, flavour)
+
+    _sync(tmp_path, Peeking({}, sources), FakeDownloader(sources)).run(BOOTSTRAP)
+    status = seen[0]
+    assert status is not None and status["state"] == "running" and not status["last_run"]["finished_at"]
+    # The errors and the end of the finished run stay visible, so the error and age alerts keep their series
+    assert status["last_finished"]["finished_at"] == first.finished_at
+    assert status["last_finished"]["errors"] == first.errors

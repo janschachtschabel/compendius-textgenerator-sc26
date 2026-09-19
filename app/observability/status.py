@@ -90,6 +90,10 @@ class StatusCollector:
             )
         run = _last_run(status)
         finished = _timestamp(run.get("finished_at"))
+        if finished is None:  # a run is in progress: report the last one that finished
+            earlier = status.get("last_finished")
+            run = earlier if isinstance(earlier, dict) else {}
+            finished = _timestamp(run.get("finished_at"))
         if finished is not None:
             yield _gauge("kompendium_zim_sync_last_run_timestamp_seconds", "End of the last ZIM sync run", finished)
             errors = run.get("errors")
