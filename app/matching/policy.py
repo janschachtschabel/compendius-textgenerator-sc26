@@ -24,23 +24,8 @@ SUBTOPIC_LEAD_SCORE = 0.9
 CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks then take the default slot
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
 MATERIAL_SCORE = CONFIDENT_SCORE  # a curated OER material starts at the confidence threshold (PLAN.md 6.3, D24)
-DOUBT_MARGIN = 0.1  # two slots this close are a doubtful case for the LLM router (PLAN.md 4.4, phase 5)
-DOUBT_FLOOR = 0.45  # close calls count from here, also below the confidence threshold: that band is the router's
-DOUBT_CANDIDATES = 3
 DEFINITION_SLOT_KEYS = ("themendefinition", "definition")
 SYSTEMATIK_SLOT_KEYS = ("systematik",)
-
-
-@dataclass
-class Doubt:
-    """A chunk whose two best slots lie within ``DOUBT_MARGIN``; ``candidates`` are (slot id, score), best first."""
-
-    chunk_id: str
-    candidates: list[tuple[str, float]]
-
-    @property
-    def margin(self) -> float:
-        return self.candidates[0][1] - self.candidates[1][1] if len(self.candidates) > 1 else 1.0
 
 
 @dataclass
@@ -49,7 +34,6 @@ class AssignmentResult:
     unassigned: int
     notes: list[str] = field(default_factory=list)
     classified: dict[str, str] = field(default_factory=dict)  # chunk id -> slot id before the budgets cut
-    doubtful: list[Doubt] = field(default_factory=list)  # close calls the LLM router may decide (hybrid modes)
     # slot id -> chunk id -> the policy's score of the chunk for that slot (> 0): candidates for extraction=llm
     slot_scores: dict[str, dict[str, float]] = field(default_factory=dict)
 
@@ -172,14 +156,11 @@ def assign(
     fused: Mapping[str, Sequence[ScoredChunk]],
     sources: Mapping[str, Source],
     confident_score: float = CONFIDENT_SCORE,
-    overrides: Mapping[str, str] | None = None,
 ) -> AssignmentResult:
     """Assign every chunk to at most one slot (global best fit) within the slot budgets.
 
     ``confident_score`` is the fused score from which a ranker hit counts as evidence; below it a
     topical chunk takes the template's default slot (setting ``POLICY_CONFIDENT_SCORE``).
-    ``overrides`` (chunk id -> slot id) are decisions of the LLM router for doubtful cases; they count
-    as confident hits, unknown slot ids are ignored.
     """
     content_slots = template.content_slots()
     fused_lookup: dict[str, dict[str, ScoredChunk]] = {
@@ -190,9 +171,7 @@ def assign(
     primary_stem = topic_stem(primary.title) if primary else ""
 
     generated_keys = {slot.slot for slot in template.slots if slot.is_generated}
-    content_ids = {slot.id for slot in content_slots}
     best: dict[str, tuple[str, float, list[str]]] = {}
-    doubtful: list[Doubt] = []
     slot_scores: dict[str, dict[str, float]] = {slot.id: {} for slot in content_slots}
     skipped = 0
     for chunk in chunks:
@@ -215,19 +194,7 @@ def assign(
         if not candidates:
             continue
         candidates.sort(key=lambda c: -c[1])  # stable: ties keep the template order
-        override = overrides.get(chunk.chunk_id) if overrides else None
-        if override in content_ids:
-            slot_id, score, reasons = next(c for c in candidates if c[0] == override)
-            best[chunk.chunk_id] = (
-                slot_id,
-                max(score, confident_score),
-                [*reasons, "LLM-Router: Zweifelsfall zugeordnet"],
-            )
-            continue
         best[chunk.chunk_id] = candidates[0]
-        doubt = _doubt(chunk, candidates)
-        if doubt is not None:
-            doubtful.append(doubt)
 
     per_slot: dict[str, list[ScoredChunk]] = {slot.id: [] for slot in template.slots}
     chunk_by_id = {c.chunk_id: c for c in chunks}
@@ -272,19 +239,5 @@ def assign(
         unassigned=unassigned,
         notes=notes,
         classified=classified,
-        doubtful=doubtful,
         slot_scores=slot_scores,
     )
-
-
-def _doubt(chunk: Chunk, candidates: Sequence[tuple[str, float, list[str]]]) -> Doubt | None:
-    """A close call: best slot at least ``DOUBT_FLOOR`` and below a lexicon hit, second within ``DOUBT_MARGIN``."""
-    if chunk.is_lead or len(candidates) < 2:
-        return None
-    best_score, second_score = candidates[0][1], candidates[1][1]
-    if not (DOUBT_FLOOR <= best_score < LEXICON_SCORE) or second_score <= 0:
-        return None
-    if best_score - second_score >= DOUBT_MARGIN:
-        return None
-    top = [(slot_id, round(score, 4)) for slot_id, score, _ in candidates[:DOUBT_CANDIDATES] if score > 0]
-    return Doubt(chunk_id=chunk.chunk_id, candidates=top)

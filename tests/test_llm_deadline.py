@@ -13,11 +13,8 @@ from app.llm.budget import TokenBudget
 from app.llm.call import LlmSkipped
 from app.llm.client import BApiClient, LlmError
 from app.llm.deadline import MIN_CALL_S, Deadline
-from app.matching.policy import Doubt
-from app.matching.router import LlmRouter
 from app.synthesis.llm import LlmSection, LlmSynthesizer
 from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi
-from tests.test_llm_router import MORE, TEMPLATE
 from tests.test_llm_synthesis import ANSWER, SCORED, SOURCES, _slot
 
 
@@ -88,18 +85,6 @@ def test_synthesizer_shrinks_the_timeout_and_skips_when_the_time_is_up() -> None
     )
     assert isinstance(skipped, LlmSkipped) and "Zeitbudget" in skipped.reason and skipped.calls == 0
     assert len(fake.requests) == 1 and budget.remaining == 20_000 - budget.used, "nothing stays reserved"
-
-
-def test_router_skips_when_the_time_is_up() -> None:
-    clock = Clock()
-    deadline = Deadline(30.0, clock=clock)
-    clock.now += 28
-    fake = FakeBApi(lambda body: "{}")
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
-    doubts = [Doubt(chunk_id="d1", candidates=[("t_a", 0.62), ("t_b", 0.58)])]
-    result = LlmRouter(_client(fake)).route(doubts, MORE, TEMPLATE, budget, deadline=deadline)
-    assert result.skipped is not None and "Zeitbudget" in result.skipped and result.calls == 0
-    assert fake.requests == []
 
 
 def test_waiting_for_a_free_call_slot_counts_against_the_timeout() -> None:

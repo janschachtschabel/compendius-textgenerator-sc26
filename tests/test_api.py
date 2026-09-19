@@ -124,12 +124,12 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
         llm_enabled=True,
         b_api_key="k",
         llm_fast_sections="sc26_1",
-        llm_router_enabled=False,
+        llm_extraction_candidates=5,
         llm_unsupported_sentences="mark",
     )
     gateway = build_llm(settings)
     assert gateway is not None and gateway.check is not None and gateway.check.ok
-    assert gateway.options.fast_sections == ("sc26_1",) and gateway.router is None
+    assert gateway.options.fast_sections == ("sc26_1",) and gateway.options.extraction_candidates == 5
     assert gateway.synthesizer.mark_unsupported is True
     assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
     assert gateway.budget.per_request == 20_000 and gateway.budget.daily == 2_000_000

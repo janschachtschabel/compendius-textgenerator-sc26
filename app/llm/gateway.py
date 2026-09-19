@@ -1,4 +1,4 @@
-"""Gateway between the orchestrator and the LLM layer (PLAN.md 7): availability, switches, synthesizer, router.
+"""Gateway between the orchestrator and the LLM layer (PLAN.md 7): availability, switches, synthesizer, selector.
 
 The service asks the gateway whether the model may be used (start-up check against ``/models``, re-checked
 every ``RECHECK_S`` while unavailable), which slots the generation switch writes with the LLM, and for a
@@ -16,7 +16,6 @@ from typing import Any
 
 from app.llm.budget import RequestBudget, TokenBudget
 from app.llm.client import SUSPENDED_MESSAGE, BApiClient, ModelCheck
-from app.matching.router import LlmRouter
 from app.synthesis.llm import LlmSynthesizer
 from app.synthesis.selection import LlmSelector
 
@@ -29,8 +28,6 @@ RECHECK_S = 600.0  # an unavailable model is re-checked at most every ten minute
 class LlmOptions:
     fast_sections: tuple[str, ...] = ("sc26_1", "sc26_11")  # slots generation=llm-fast writes with the LLM
     extraction_candidates: int = 8  # paragraphs offered per block with extraction=llm
-    router_enabled: bool = True
-    router_max_chunks: int = 12
     concurrency: int = 4
     mark_unsupported: bool = False  # keep failed sentences as conclusion blocks instead of dropping them
 
@@ -48,9 +45,6 @@ class LlmGateway:
         self.options = options or LlmOptions()
         self.synthesizer = LlmSynthesizer(client, mark_unsupported=self.options.mark_unsupported)
         self.selector = LlmSelector(client)
-        self.router = (
-            LlmRouter(client, max_chunks=self.options.router_max_chunks) if self.options.router_enabled else None
-        )
         self.check: ModelCheck | None = None
         self._checked_at = 0.0
         self._clock = clock

@@ -127,8 +127,6 @@ class Settings(BaseSettings):
         "drop",
         description="LLM sentences without a valid, covering citation: drop them, or keep them marked as conclusions",
     )
-    llm_router_enabled: bool = Field(True, description="Hybrid modes: let the LLM decide doubtful slot assignments")
-    llm_router_max_chunks: int = Field(12, ge=0, le=50, description="Doubtful chunks routed per compendium")
 
     # --- Service -------------------------------------------------------------------------------
     request_timeout_s: int = Field(

@@ -27,8 +27,6 @@ SECTION_PROMPT = get_prompt("section_synthesis").tag
 def answer_from_evidence(body: dict[str, Any]) -> str:
     """Paraphrases every evidence item with its marker and adds one uncited claim (which must be dropped)."""
     user = body["messages"][1]["content"]
-    if user.startswith("Bausteine:"):  # router prompt
-        return "{}"
     sentences = [
         f"{text.split('. ')[0].rstrip('.')[:160]} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user)
     ]
@@ -40,8 +38,6 @@ def make_gateway(fake: FakeBApi, per_request: int = 20_000, **options: Any) -> L
     client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake))
     settings = {
         "fast_sections": ("sc26_1", "sc26_11"),
-        "router_enabled": True,
-        "router_max_chunks": 12,
         "concurrency": 2,
     }
     settings.update(options)
@@ -212,7 +208,7 @@ def test_target_length_reaches_the_prompt_and_the_output_limit(
 ) -> None:
     def definition_call(target_length: int) -> dict[str, Any]:
         fake = FakeBApi(answer_from_evidence)
-        monkeypatch.setattr(service, "llm", make_gateway(fake, router_enabled=False))
+        monkeypatch.setattr(service, "llm", make_gateway(fake))
         service.generate(
             GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"], target_length=target_length)
         )
@@ -228,7 +224,7 @@ def test_target_length_reaches_the_prompt_and_the_output_limit(
 
 def test_malformed_answers_fall_back_per_section(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(raw={"choices": [{"message": "kein Objekt"}], "usage": [1, 2]})
-    monkeypatch.setattr(service, "llm", make_gateway(fake, router_enabled=False))
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
     result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     assert result.generation == "rule-based" and result.audit.llm is not None
     assert result.audit.llm["generation"]["fallbacks"] and all(
@@ -276,7 +272,7 @@ def test_budget_running_out_mid_run_with_parallel_drafts(
         return answer_from_evidence(body)
 
     fake = FakeBApi(slow_answer)
-    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=3_000, router_enabled=False, concurrency=4))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=3_000, concurrency=4))
     result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     assert result.audit.llm is not None
     written, fallbacks = result.audit.llm["generation"]["sections"], result.audit.llm["generation"]["fallbacks"]

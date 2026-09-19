@@ -85,7 +85,6 @@ class Matched:
     matcher: str
     assignment: AssignmentResult
     duration_ms: int
-    scores: dict[str, list[ScoredChunk]] = field(default_factory=dict)  # smoothed, fused; reused by reassign
 
 
 @dataclass
@@ -266,25 +265,15 @@ class CompendiumService:
         matcher = get_matcher(name, self.settings.model2vec_path)
         fused = matcher.score(prepared.template.slots, prepared.chunks)
         fused = smooth_sections(fused, prepared.chunks, self.settings.policy_section_smoothing)
-        assignment = self._assign(prepared, fused, target_length, overrides=None)
+        assignment = self._assign(prepared, fused, target_length)
         duration_ms = int((time.perf_counter() - started) * 1000)
-        return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms, scores=fused)
-
-    def reassign(
-        self, prepared: PreparedTopic, matched: Matched, target_length: int, overrides: Mapping[str, str]
-    ) -> Matched:
-        """Repeat only the assignment with the LLM router's ``overrides``; the scores are those of ``matched``."""
-        started = time.perf_counter()
-        assignment = self._assign(prepared, matched.scores, target_length, overrides=overrides)
-        duration_ms = int((time.perf_counter() - started) * 1000)
-        return Matched(matcher=matched.matcher, assignment=assignment, duration_ms=duration_ms, scores=matched.scores)
+        return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
 
     def _assign(
         self,
         prepared: PreparedTopic,
         scores: dict[str, list[ScoredChunk]],
         target_length: int,
-        overrides: Mapping[str, str] | None,
     ) -> AssignmentResult:
         return assign(
             _scale_budgets(prepared.template, target_length),
@@ -292,7 +281,6 @@ class CompendiumService:
             scores,
             prepared.sources_by_id,
             confident_score=self.settings.policy_confident_score,
-            overrides=overrides,
         )
 
     def generate(self, request: GenerateRequest) -> Compendium:

@@ -64,7 +64,7 @@ def _slot() -> Any:
 
 
 def test_prompt_registry_has_versioned_prompts() -> None:
-    assert {"section_synthesis", "slot_router"} <= set(PROMPTS)
+    assert {"section_synthesis", "passage_selection"} <= set(PROMPTS)
     prompt = get_prompt("section_synthesis")
     assert prompt.version >= 1 and prompt.tag == f"section_synthesis@v{prompt.version}"
     messages = prompt.render(
@@ -79,8 +79,6 @@ def test_prompt_registry_has_versioned_prompts() -> None:
     )
     assert [m["role"] for m in messages] == ["system", "user"]
     assert "Thema" in messages[1]["content"] and "[1] (Test › Einleitung) Text" in messages[1]["content"]
-    router = get_prompt("slot_router").render(slots="- t_a: Alpha", chunks="d1: Text")
-    assert '{"' in router[0]["content"] + router[1]["content"]  # the JSON example survives formatting
 
 
 def test_evidence_block_numbers_chunks_with_source_and_heading() -> None:

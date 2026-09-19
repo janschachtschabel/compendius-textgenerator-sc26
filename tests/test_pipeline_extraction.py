@@ -71,7 +71,7 @@ def test_llm_extraction_fills_the_blocks_with_sentences_it_chose_verbatim(
     assert extraction["requested"] == extraction["used"] == "llm"
     assert set(extraction["sections"]) >= {s.slot_id for s in filled} and extraction["fallbacks"] == {}
     selection_calls = [b for b in fake.bodies if is_selection(b)]
-    assert len(selection_calls) == len(extraction["sections"]) == len(fake.bodies)  # no synthesis, no router
+    assert len(selection_calls) == len(extraction["sections"]) == len(fake.bodies)  # no synthesis call
     tokens = result.audit.llm_tokens
     assert tokens is not None and tokens["calls"] == len(selection_calls)
     assert SELECTION_PROMPT in result.frontmatter["llm"]["prompts"]
@@ -153,5 +153,4 @@ def test_rule_based_extraction_with_llm_generation_never_asks_for_a_choice(
     result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
     assert result.extraction == "rule-based" and result.generation == "llm-fast"
     assert fake.bodies and not any(is_selection(b) for b in fake.bodies)
-    assert not any(b["messages"][1]["content"].startswith("Bausteine:") for b in fake.bodies), "no router call"
     assert result.audit.llm is not None and result.audit.llm["extraction"]["requested"] == "rule-based"

@@ -353,8 +353,8 @@ def test_section_smoothing_lets_paragraphs_under_one_heading_support_each_other(
     assert smooth_sections(fused, chunks, 0.0) is fused
 
 
-def test_doubts_for_the_router_start_below_the_confidence_threshold() -> None:
-    """With the stricter threshold the band 0.45 to 0.65 is no longer assigned by rule; the LLM router may decide it."""
+def test_below_the_confidence_threshold_a_topical_paragraph_takes_the_default_block() -> None:
+    """With the stricter threshold the band 0.45 to 0.65 is no evidence; extraction=llm may still choose it."""
     template = TemplateManager().get("sc26")
     ids = {s.slot: s.id for s in template.slots}
     chunk = _chunk("z1", "Sonstiger Absatz", "Brillen und Kameras nutzen Linsen; die Branche beschäftigt Fachkräfte.")
@@ -363,7 +363,5 @@ def test_doubts_for_the_router_start_below_the_confidence_threshold() -> None:
         ids["beruf_wirtschaft"]: [ScoredChunk(chunk=chunk, score=0.5, matcher="fused")],
     }
     result = assign(template, [chunk], fused, SOURCES, confident_score=0.65)
-    assert [d.chunk_id for d in result.doubtful] == ["z1"]
     assert result.classified == {"z1": ids["fachinhalte"]}, "by rule it stays in the default block"
-    routed = assign(template, [chunk], fused, SOURCES, confident_score=0.65, overrides={"z1": ids["praxis"]})
-    assert routed.classified == {"z1": ids["praxis"]}
+    assert result.slot_scores[ids["praxis"]]["z1"] > 0, "a candidate of the block for extraction=llm"

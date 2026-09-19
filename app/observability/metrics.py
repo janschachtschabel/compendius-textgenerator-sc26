@@ -46,7 +46,7 @@ PARTS = Counter(
     ["part", "available"],
 )
 LLM_TOKENS = Counter("kompendium_llm_tokens_total", "LLM tokens by type", ["type"])
-LLM_CALLS = Counter("kompendium_llm_calls_total", "LLM calls for sections and the router")
+LLM_CALLS = Counter("kompendium_llm_calls_total", "LLM calls for choosing sentences and writing blocks")
 LLM_SECTIONS = Counter("kompendium_llm_sections_total", "Blocks the LLM was asked to write, by outcome", ["outcome"])
 LLM_SELECTIONS = Counter(
     "kompendium_llm_selections_total",

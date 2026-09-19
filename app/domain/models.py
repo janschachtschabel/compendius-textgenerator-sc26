@@ -209,7 +209,7 @@ class AuditReport(BaseModel):
     llm_tokens: dict[str, int] | None = Field(None, description="prompt, completion, total, calls (LLM switches)")
     llm: dict[str, Any] | None = Field(
         None,
-        description="LLM switches: extraction and generation (requested, used, blocks, fallbacks), note, router",
+        description="LLM switches: extraction and generation (requested, used, blocks, fallbacks), note",
     )
     knowledge: dict[str, Any] | None = Field(
         None, description="Knowledge collection: materials considered, used, failed"

@@ -51,22 +51,6 @@ SECTION_SYNTHESIS = Prompt(
     ),
 )
 
-SLOT_ROUTER = Prompt(
-    id="slot_router",
-    version=1,
-    system=(
-        "Du ordnest Textabschnitte den Bausteinen eines Kompendium-Templates zu. Wähle für jeden Abschnitt genau "
-        "einen der für ihn angebotenen Bausteine, und zwar den, in dem der Abschnitt inhaltlich am besten "
-        "aufgehoben ist. Antworte ausschließlich mit einem JSON-Objekt, das Abschnitts-IDs auf Baustein-IDs "
-        'abbildet, zum Beispiel {"a1": "sc26_3", "a2": "sc26_10"}. Keine Erklärungen.'
-    ),
-    user=(
-        "Bausteine:\n{slots}\n\n"
-        "Abschnitte (jeweils mit den möglichen Bausteinen):\n{chunks}\n\n"
-        "Gib das JSON-Objekt zurück."
-    ),
-)
-
 PASSAGE_SELECTION = Prompt(
     id="passage_selection",
     version=1,
@@ -92,7 +76,7 @@ PASSAGE_SELECTION = Prompt(
     ),
 )
 
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, SLOT_ROUTER, PASSAGE_SELECTION)}
+PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION)}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

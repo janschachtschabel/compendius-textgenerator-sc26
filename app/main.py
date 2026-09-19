@@ -130,8 +130,6 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     options = LlmOptions(
         fast_sections=tuple(settings.llm_fast_section_ids),
         extraction_candidates=settings.llm_extraction_candidates,
-        router_enabled=settings.llm_router_enabled,
-        router_max_chunks=settings.llm_router_max_chunks,
         concurrency=settings.llm_max_concurrency,
         mark_unsupported=settings.llm_unsupported_sentences == "mark",
     )
