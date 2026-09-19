@@ -1230,8 +1230,12 @@ API.
   damit Kompendium-Anfragen, die alle 40 Standard-Threads halten, weder einen Healthcheck noch einen Scrape
   aufhalten. Öffentliche Statusendpunkte fassen den Stand der Sidecars ohne Fehlertexte zusammen; die Texte
   bleiben in den Statusdateien, in `GET /api/v2/zim/progress` (Admin) und im Log. Ein ZIM-Sync hält die
-  Sperrdatei `sync.lock` mit Lebenszeichen, endet bei einer Ausnahme mit `state: error` und wird dann nach einer
-  Stunde wiederholt; `KompendiumZimSyncHangs` meldet einen laufenden Sync, der sechs Stunden nichts schreibt.
+  Sperrdatei `sync.lock` mit Lebenszeichen und Identität, endet bei einer Ausnahme mit `state: error` und wird
+  nach einer Stunde wiederholt, ebenso wenn ein Download unterwegs stehen blieb (Netz, volles Volume); Hash- und
+  Größenfehler und Archive, die libzim nicht öffnen kann, warten das normale Intervall ab, damit eine kaputte
+  Datei nicht stündlich geladen wird. SIGTERM beendet Sync und Harvest sauber. `KompendiumZimSyncHangs` meldet
+  einen laufenden Sync, der sechs Stunden nichts schreibt; ein gescheiterter Status-Abschnitt meldet sich über
+  `KompendiumStatusIncomplete`, statt seine Alarme verstummen zu lassen.
   `KompendiumLlmUnavailable` stützt sich auf die über alle Worker summierten Kompendium-Zähler. `mode` und
   `matcher` betreffen nur Teil 1: ohne ihn ist ein Kompendium regelbasiert; Teil 3 allein braucht keinen
   Artikel in den Archiven; ein Auftrag ohne erzeugbaren Teil ist 422 (nur `collection` ohne `collection_id`)
@@ -1454,3 +1458,10 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   mit Index, Formatversion und Start ohne lesbare Datei, Auflistung in der Frist und ohne Endlosseiten,
   Teile-Semantik (D32), Basis-Image per Digest mit Dependabot, Tests ohne lokale `.env`. Testsuite 449 Tests,
   93,2 % Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-19, Fassung v15 (Nachprüfung, D32):** drei weitere Prüfer auf `c0fe5fd..0e806ca` (1 schwer, 14 klein,
+  10 geringfügig), behoben in 16 Commits: kein Abbruch und keine Download-Schleife bei einem Archiv, das libzim
+  nicht öffnen kann, frühe Wiederholung nur für fortsetzbare Fehler, letzter abgeschlossener Lauf bleibt sichtbar,
+  SIGTERM in den Schleifen, Sperre mit Identität, `KompendiumStatusIncomplete`, Metalink-Host vor dem Lesen geprüft
+  und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
+  Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
+  Zweigabdeckung, Ruff und mypy strict grün.
