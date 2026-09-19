@@ -115,7 +115,8 @@ def test_public_answers_do_not_reveal_server_paths(sample_zims: dict[str, Path],
     with _client(sample_zims, tmp_path) as client:
         status = client.get("/api/v2/lehrplan/status").json()
         compendium = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["curricula"]}).json()
-    assert "db_path" not in status and str(tmp_path) not in str(status)
+    # Every string, not str(status): the repr doubles the backslashes of a Windows path, so it would never match
+    assert "db_path" not in status and not any(str(tmp_path) in text for text in strings_in(status))
     assert compendium["curricula"]["summary"] == {"reason": "cache_missing"}
 
 

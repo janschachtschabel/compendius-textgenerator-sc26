@@ -14,6 +14,7 @@ from app.llm.client import BApiClient
 from app.main import build_llm, create_app
 from app.settings import Settings
 from tests.conftest import make_settings
+from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
@@ -173,10 +174,15 @@ def test_empty_parts_are_rejected(client: TestClient) -> None:
     assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": []}).status_code == 422
 
 
-def test_health_reports_every_component(client: TestClient) -> None:
-    components = client.get("/health").json()["components"]
-    assert components["lehrplan_cache"]["available"] in (True, False)
+def test_health_reports_every_component(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "leer"))) as client:
+        components = client.get("/health").json()["components"]
+    assert components["lehrplan_cache"] == {"available": False, "harvested_at": None}
     assert components["edu_sharing"] == {"enabled": True}
+    write_cache(tmp_path / "voll")
+    with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "voll"))) as client:
+        cache = client.get("/health").json()["components"]["lehrplan_cache"]
+    assert cache == {"available": True, "harvested_at": "2026-09-17T12:00:00+00:00"}
 
 
 def test_probes_and_metrics_answer_while_every_default_thread_is_busy(
