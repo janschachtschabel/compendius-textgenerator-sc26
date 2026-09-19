@@ -174,3 +174,8 @@ def test_a_stream_longer_than_announced_is_cut_as_soon_as_it_passes_the_size(tmp
         Downloader(client=client, chunk_size=1024).download(URL, tmp_path, sha256=SHA, size=2560)
     assert pieces.pulled == 3  # cut in the middle: a mirror cannot make it read the rest first
     assert list(tmp_path.glob("*")) == []
+
+
+def test_a_host_that_is_no_valid_idna_name_is_a_download_error() -> None:
+    with pytest.raises(DownloadError, match="URL"):
+        check_download_url("https://xn--.com/x.zim", DEFAULT_ALLOWED_HOSTS)

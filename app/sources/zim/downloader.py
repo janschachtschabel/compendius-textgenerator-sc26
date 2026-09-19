@@ -40,11 +40,11 @@ def check_download_url(url: str, allowed_hosts: Collection[str]) -> None:
     """Raise ``DownloadError`` unless ``url`` is https and starts at an allowlisted host."""
     try:
         parsed = httpx.URL(url)
-    except httpx.InvalidURL as exc:  # not an httpx.HTTPError: it would abort the whole sync run
+        host = (parsed.host or "").lower()  # decodes IDNA labels, which can fail as well
+    except (httpx.InvalidURL, ValueError) as exc:  # not an httpx.HTTPError: it would abort the whole sync run
         raise DownloadError(f"invalid download URL {url!r}: {exc}") from exc
     if parsed.scheme != "https":
         raise DownloadError(f"download URL must use https: {url!r}")
-    host = (parsed.host or "").lower()
     if host not in {allowed.lower() for allowed in allowed_hosts}:
         raise DownloadError(f"download host {host!r} is not in the allowlist {sorted(allowed_hosts)}")
 
