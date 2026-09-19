@@ -78,3 +78,27 @@ def test_failing_task_keeps_the_loop_alive() -> None:
 
     run_periodically(task, timedelta(seconds=50), poll_s=10, stop=stop, clock=clock, sleep=clock.sleep)
     assert len(calls) == 2
+
+
+def test_a_failed_task_is_retried_before_the_next_interval() -> None:
+    clock = FakeClock()
+    stop = threading.Event()
+    runs: list[float] = []
+
+    def task() -> None:
+        runs.append(clock.now)
+        if len(runs) == 3:
+            stop.set()
+        if len(runs) == 1:
+            raise OSError(28, "No space left on device")
+
+    run_periodically(
+        task,
+        timedelta(seconds=1000),
+        retry_after=timedelta(seconds=30),
+        poll_s=10,
+        stop=stop,
+        clock=clock,
+        sleep=clock.sleep,
+    )
+    assert runs == [1000.0, 1030.0, 2030.0]  # soon after the failure, then the interval again

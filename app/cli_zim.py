@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import timedelta
 from pathlib import Path
 
 from app.jobs.runner import parse_interval, run_periodically
@@ -15,6 +16,8 @@ from app.sources.zim.catalog import OPDS_DEFAULT_URL, KiwixCatalog
 from app.sources.zim.subscriptions import load_manifest
 
 POLL_SECONDS = 60
+# An aborted run (full volume, crash) is tried again after an hour, not after ZIM_SYNC_INTERVAL (30 days)
+RETRY_AFTER_FAILURE = timedelta(hours=1)
 
 
 def _gb(size: int) -> str:
@@ -88,7 +91,13 @@ def cmd_sync(args: argparse.Namespace) -> int:
     trigger = Path(settings.zim_dir) / TRIGGER_FILE
     print(f"Sync-Schleife: Profil {options.profile}, Intervall {settings.zim_sync_interval}, Trigger-Datei {trigger}")
     try:
-        run_periodically(lambda: _print_report(sync.run(options)), interval, poll_s=POLL_SECONDS, trigger_file=trigger)
+        run_periodically(
+            lambda: _print_report(sync.run(options)),
+            interval,
+            retry_after=RETRY_AFTER_FAILURE,
+            poll_s=POLL_SECONDS,
+            trigger_file=trigger,
+        )
     except KeyboardInterrupt:
         print("Sync-Schleife beendet.")
     return 0

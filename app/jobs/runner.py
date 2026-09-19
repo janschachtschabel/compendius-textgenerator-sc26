@@ -28,6 +28,7 @@ def run_periodically(
     task: Callable[[], None],
     interval: timedelta,
     *,
+    retry_after: timedelta | None = None,
     poll_s: float = 60.0,
     trigger_file: Path | None = None,
     stop: threading.Event | None = None,
@@ -37,7 +38,8 @@ def run_periodically(
     """Run ``task`` now and then every ``interval``; a trigger file runs it early and is removed.
 
     The loop wakes every ``poll_s`` seconds to look for the trigger file and the stop event.
-    Exceptions from the task are logged and the loop continues; it returns once ``stop`` is set.
+    Exceptions from the task are logged and the loop continues, after ``retry_after`` when that is shorter
+    than the interval; it returns once ``stop`` is set.
     """
     stop = stop or threading.Event()
     next_run = clock()
@@ -47,11 +49,13 @@ def run_periodically(
             if triggered and trigger_file is not None:
                 trigger_file.unlink(missing_ok=True)
                 log.info("run requested via %s", trigger_file.name)
+            wait = interval
             try:
                 task()
             except Exception:
-                log.exception("job failed; next attempt in %s", interval)
-            next_run = clock() + interval.total_seconds()
+                wait = min(interval, retry_after) if retry_after is not None else interval
+                log.exception("job failed; next attempt in %s", wait)
+            next_run = clock() + wait.total_seconds()
         if stop.is_set():
             break
         sleep(min(poll_s, max(next_run - clock(), 0.0)))

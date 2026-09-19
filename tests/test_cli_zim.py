@@ -2,7 +2,9 @@
 
 import shutil
 from collections.abc import Iterator
+from datetime import timedelta
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -54,3 +56,15 @@ def test_zim_sync_offline_adopts_and_status_reports(zim_env: Path, capsys: pytes
     status = capsys.readouterr().out
     assert "klexikon_de_sample_2026-08.zim" in status
     assert "wikipedia_de_sample" in status  # listed as missing required archive
+
+
+def test_the_sync_loop_retries_a_failed_run_after_an_hour(zim_env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+
+    def loop(task: Any, interval: timedelta, **kwargs: Any) -> None:
+        captured.update(kwargs, interval=interval)
+
+    monkeypatch.setattr("app.cli_zim.run_periodically", loop)
+    assert main(["zim", "sync", "--offline", "--loop"]) == 0
+    # A run that aborts (full volume, crash) is not left alone for the 30 days of ZIM_SYNC_INTERVAL
+    assert captured["interval"] == timedelta(days=30) and captured["retry_after"] == timedelta(hours=1)
