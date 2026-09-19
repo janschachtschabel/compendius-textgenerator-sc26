@@ -58,7 +58,7 @@ class SyncRunningError(RuntimeError):
 class CatalogLike(Protocol):
     def latest(self, name: str, flavour: str) -> CatalogEntry | None: ...
 
-    def metalink(self, url: str) -> Metalink: ...
+    def metalink(self, url: str, *, check: Callable[[str], None] | None = None) -> Metalink: ...
 
 
 class DownloaderLike(Protocol):
@@ -245,7 +245,7 @@ class ZimSync:
             return
         try:
             check_download_url(remote.metalink_url, self._allowed_hosts)  # the hash must come from Kiwix too
-            metalink = self._catalog.metalink(remote.metalink_url)
+            metalink = self._catalog.metalink(remote.metalink_url, check=self._check_url)
             check_download_url(metalink.source_url, self._allowed_hosts)  # also after redirects
             path = self._downloader.download(
                 remote.download_url,
@@ -305,6 +305,9 @@ class ZimSync:
             report.pruned.append(part.name)
 
     # -- helpers ---------------------------------------------------------------------------------
+    def _check_url(self, url: str) -> None:
+        check_download_url(url, self._allowed_hosts)
+
     def _describe(self, path: Path, sub: Subscription) -> ActiveArchive:
         archive = ZimArchive(path)  # open only long enough to read the metadata
         return ActiveArchive(

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import xml.etree.ElementTree as ET
+from collections.abc import Callable
 from xml.etree.ElementTree import Element
 
 import httpx
@@ -26,8 +27,10 @@ ATOM = "{http://www.w3.org/2005/Atom}"
 METALINK = "{urn:ietf:params:xml:ns:metalink}"
 ACQUISITION_TYPE = "application/x-zim"
 MAX_PAGES = 50
-# A metalink is a few kB; an acquisition link that points at the archive itself must not be read into memory
-MAX_METALINK_BYTES = 1 << 20
+# A metalink lists one SHA-1 per 4 MiB piece, about 15 bytes per MiB of archive: 200 KB for the 14 GB Wikipedia.
+# 8 MiB is enough for archives up to about 550 GiB; an acquisition link that points at the archive itself stops
+# here instead of being read into memory.
+MAX_METALINK_BYTES = 8 << 20
 
 
 class CatalogEntry(BaseModel):
@@ -83,7 +86,7 @@ def _parse_xml(data: bytes) -> Element:
     # (>= 2.4) caps entity expansion; defusedxml would not earn its place as a dependency here.
     try:
         return ET.fromstring(data)  # noqa: S314
-    except ET.ParseError as exc:  # a SyntaxError, not a ValueError: callers catch ValueError for bad input
+    except (ET.ParseError, LookupError) as exc:  # SyntaxError, unknown encoding: callers catch ValueError
         raise ValueError(f"not an XML document: {exc}") from exc
 
 
@@ -189,11 +192,17 @@ class KiwixCatalog:
             return None
         return max(matches, key=lambda e: (e.dump_date, e.updated))
 
-    def metalink(self, url: str) -> Metalink:
-        """The metalink at ``url``; ``source_url`` names where it was read after redirects, so the caller can
-        check that host too. More than ``MAX_METALINK_BYTES`` raises ``ValueError``."""
+    def metalink(self, url: str, *, check: Callable[[str], None] | None = None) -> Metalink:
+        """The metalink at ``url``; ``source_url`` names where it was read after redirects.
+
+        ``check`` gets that final address before any of the body is read and raises to refuse it, so nothing
+        from a host outside the allowlist reaches the XML parser. More than ``MAX_METALINK_BYTES`` raises
+        ``ValueError``.
+        """
         body = bytearray()
         with self._client.stream("GET", url) as response:
+            if check is not None:
+                check(str(response.url))
             response.raise_for_status()
             for chunk in response.iter_bytes():
                 body.extend(chunk)

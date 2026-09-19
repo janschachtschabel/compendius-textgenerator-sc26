@@ -58,7 +58,9 @@ class FakeCatalog:
             name=name, flavour=flavour, file_name=file_name, metalink_url=f"{BASE}{file_name}.meta4", size=1
         )
 
-    def metalink(self, url: str) -> Metalink:
+    def metalink(self, url: str, *, check: Any = None) -> Metalink:
+        if check is not None:
+            check(url)  # no redirect: read where it was asked for
         file_name = url.rsplit("/", 1)[-1].removesuffix(".meta4")
         source = self.sources[file_name]
         digest = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -208,9 +210,9 @@ def test_metalink_from_a_foreign_host_is_not_fetched(tmp_path: Path, sources: di
                 return None
             return entry.model_copy(update={"metalink_url": f"https://evil.example/{entry.file_name}.meta4"})
 
-        def metalink(self, url: str) -> Metalink:
+        def metalink(self, url: str, *, check: Any = None) -> Metalink:
             self.fetched.append(url)
-            return super().metalink(url)
+            return super().metalink(url, check=check)
 
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
     report = _sync(tmp_path, ForeignCatalog(offers, sources), FakeDownloader(sources)).run(BOOTSTRAP)
@@ -295,10 +297,25 @@ def test_a_status_file_without_a_json_object_counts_as_missing(tmp_path: Path, c
 
 def test_a_metalink_redirected_to_a_foreign_host_is_not_trusted(tmp_path: Path, sources: dict[str, Path]) -> None:
     class RedirectedCatalog(FakeCatalog):
-        def metalink(self, url: str) -> Metalink:
+        def metalink(self, url: str, *, check: Any = None) -> Metalink:  # ignores check: the sync checks again
             return super().metalink(url).model_copy(update={"source_url": "https://evil.example/x.zim.meta4"})
 
     downloader = FakeDownloader(sources)
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
     report = _sync(tmp_path, RedirectedCatalog(offers, sources), downloader).run(BOOTSTRAP)
+    assert downloader.calls == [] and any("evil.example" in error for error in report.errors)
+
+
+def test_the_sync_has_the_metalink_host_checked_before_the_body_is_read(
+    tmp_path: Path, sources: dict[str, Path]
+) -> None:
+    class RedirectingCatalog(FakeCatalog):
+        def metalink(self, url: str, *, check: Any = None) -> Metalink:
+            if check is not None:
+                check("https://evil.example/x.zim.meta4")  # where the redirect ended, before reading anything
+            return super().metalink(url)
+
+    downloader = FakeDownloader(sources)
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    report = _sync(tmp_path, RedirectingCatalog(offers, sources), downloader).run(BOOTSTRAP)
     assert downloader.calls == [] and any("evil.example" in error for error in report.errors)

@@ -6,7 +6,9 @@ from pathlib import Path
 import httpx
 import pytest
 
-from app.sources.zim.catalog import KiwixCatalog, parse_feed, parse_metalink
+from app.sources.zim.catalog import MAX_METALINK_BYTES, KiwixCatalog, parse_feed, parse_metalink
+from app.sources.zim.downloader import DEFAULT_ALLOWED_HOSTS, DownloadError, check_download_url
+from tests.test_downloader import Pieces
 
 OPDS = Path(__file__).parent / "fixtures" / "opds"
 FEED_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
@@ -144,11 +146,10 @@ def test_a_metalink_reports_where_it_was_read_after_redirects() -> None:
 
 
 def test_a_link_to_the_archive_itself_is_not_read_into_memory() -> None:
-    def handler(request: httpx.Request) -> httpx.Response:
-        return httpx.Response(200, content=b"x" * (2 * 1024 * 1024))  # an acquisition link without .meta4
-
+    pieces = Pieces(b"x" * (MAX_METALINK_BYTES * 2), 1024 * 1024)  # an acquisition link without .meta4
     with pytest.raises(ValueError, match="larger than"):
-        _catalog(handler).metalink(KIWIX_METALINK)
+        _catalog(lambda request: httpx.Response(200, stream=pieces)).metalink(KIWIX_METALINK)
+    assert pieces.pulled == MAX_METALINK_BYTES // (1024 * 1024) + 1  # stopped at the cap, not after the body
 
 
 def test_a_metalink_that_is_no_xml_is_a_value_error() -> None:
@@ -157,3 +158,23 @@ def test_a_metalink_that_is_no_xml_is_a_value_error() -> None:
 
     with pytest.raises(ValueError):  # the sync records ValueError per subscription; a ParseError aborted the run
         _catalog(handler).metalink(KIWIX_METALINK)
+
+
+def test_a_metalink_with_an_unknown_encoding_is_a_value_error() -> None:
+    body = b'<?xml version="1.0" encoding="x-unbekannt"?><metalink/>'
+    with pytest.raises(ValueError):  # a LookupError aborted the whole sync run
+        _catalog(lambda request: httpx.Response(200, content=body)).metalink(KIWIX_METALINK)
+
+
+def test_a_redirect_to_a_foreign_host_is_refused_before_the_body_is_read() -> None:
+    pieces = Pieces((OPDS / "klexikon_de_all_maxi_2026-08.zim.meta4").read_bytes(), 512)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "lb.download.kiwix.org":
+            return httpx.Response(302, headers={"Location": "https://evil.example/x.zim.meta4"})
+        return httpx.Response(200, stream=pieces)
+
+    catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True))
+    with pytest.raises(DownloadError, match=r"evil\.example"):
+        catalog.metalink(KIWIX_METALINK, check=lambda url: check_download_url(url, DEFAULT_ALLOWED_HOSTS))
+    assert pieces.pulled == 0  # nothing from the foreign host reaches the XML parser
