@@ -76,3 +76,19 @@ def test_run_without_gold_files_exits_2(cli_env: Path) -> None:
 
 def test_export_unknown_topic_exits_1(cli_env: Path) -> None:
     assert main(["eval", "export", "--topic", "Xyzzyplomb", "--out", str(cli_env / "x.csv")]) == 1
+
+
+def test_run_with_llm_extraction_but_no_llm_says_so_and_evaluates_the_rules(
+    cli_env: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    csv_path = cli_env / "optik.csv"
+    assert main(["eval", "export", "--topic", "Optik", "--out", str(csv_path)]) == 0
+    _accept_suggestions(csv_path)
+    gold_path = cli_env / "gold" / "optik.jsonl"
+    assert main(["eval", "import", str(csv_path), "--topic", "Optik", "--out", str(gold_path)]) == 0
+    capsys.readouterr()
+    argv = ["eval", "run", "--gold", str(cli_env / "gold"), "--matcher", "hybrid_light", "--llm-extraction"]
+    assert main(argv) == 0
+    captured = capsys.readouterr()
+    assert "hybrid_light" in captured.out and "hybrid_light+llm" not in captured.out
+    assert "LLM-Extraktion nicht bewertet" in captured.err and "konfiguriert" in captured.err

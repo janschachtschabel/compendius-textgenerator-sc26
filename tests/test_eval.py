@@ -3,7 +3,7 @@
 import pytest
 
 from app.domain.models import Chunk, ScoredChunk
-from app.matching.eval import aggregate, align, evaluate, predictions_from_assignment
+from app.matching.eval import aggregate, align, evaluate, predictions_from_assignment, predictions_from_selection
 from app.matching.gold import GoldLabel, GoldSet, text_hash
 from app.templates.manager import TemplateManager
 
@@ -85,6 +85,19 @@ def test_predictions_from_assignment_maps_slot_ids_to_keys() -> None:
     chunk = _chunk("c0", "Text.")
     assigned = {"sc26_3": [ScoredChunk(chunk=chunk, score=1.0)], "sc26_10": []}
     assert predictions_from_assignment(assigned, template) == {"c0": "fachinhalte"}
+
+
+def test_a_paragraph_the_llm_split_counts_for_the_block_with_most_of_its_sentences() -> None:
+    template = TemplateManager().get("sc26")
+    both = _chunk("c0", "Licht breitet sich geradlinig aus. Es wird an Spiegeln reflektiert.")
+    first = _chunk("c0", "Licht breitet sich geradlinig aus.")
+    other = _chunk("c1", "Brillen korrigieren Fehlsichtigkeit.")
+    assigned = {  # dict order is not template order: the tie below must still go to the earlier block
+        "sc26_10": [ScoredChunk(chunk=other, score=1.0)],
+        "sc26_1": [ScoredChunk(chunk=first, score=1.0)],
+        "sc26_3": [ScoredChunk(chunk=both, score=1.0), ScoredChunk(chunk=other, score=1.0)],
+    }
+    assert predictions_from_selection(assigned, template) == {"c0": "fachinhalte", "c1": "fachinhalte"}
 
 
 def test_pairwise_agreement_is_jaccard_over_chunk_slot_pairs() -> None:

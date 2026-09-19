@@ -2,10 +2,15 @@
 
 from pathlib import Path
 
+import pytest
+
 from app.domain.requests import GenerateRequest
 from app.matching.eval_runner import evaluate_gold_dir, evaluate_topic, export_topic
 from app.matching.gold import GoldLabel, GoldSet, save_gold, text_hash
 from app.service import CompendiumService
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_extraction import first_sentences
+from tests.test_pipeline_llm import make_gateway
 
 
 def _gold_for_optik(service: CompendiumService) -> GoldSet:
@@ -72,3 +77,39 @@ def test_evaluate_gold_dir_skips_unknown_topics(service: CompendiumService, tmp_
     assert total.topics == ["Optik"]
     assert total.labeled == 2
     assert total.stale_labels == 1
+
+
+def test_the_llm_extraction_is_evaluated_as_a_strategy_of_its_own(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.matching.eval_runner import compare_topic
+
+    fake = FakeBApi(first_sentences)
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    gold = _gold_for_optik(service)
+    compared = compare_topic(service, "Optik", ["hybrid_light"], gold_for=lambda *_: gold, llm_extraction=True)
+    outcome = compared.results["hybrid_light+llm"]
+    assert outcome.metrics is not None and outcome.metrics.matcher == "hybrid_light+llm"
+    assert outcome.selection == outcome.metrics  # what the LLM chose is what the text prints
+    assert {m.slot: m.tp for m in outcome.metrics.slots}["themendefinition"] == 1  # the lead's first sentence
+    assert fake.bodies and outcome.metrics.llm_tokens == 24 * len(fake.bodies)
+    assert compared.results["hybrid_light"].metrics is not None
+    assert compared.results["hybrid_light"].metrics.llm_tokens == 0
+
+
+def test_without_a_usable_llm_the_extraction_is_left_out(service: CompendiumService, tmp_path: Path) -> None:
+    assert service.llm is None
+    save_gold(tmp_path / "optik.jsonl", _gold_for_optik(service))
+    report = evaluate_gold_dir(service, tmp_path, matchers=["hybrid_light"], llm_extraction=True)
+    assert set(report.aggregate) == {"hybrid_light"}
+    assert report.llm_note is not None and "konfiguriert" in report.llm_note
+
+
+def test_the_gold_directory_pools_the_llm_extraction(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(first_sentences)))
+    save_gold(tmp_path / "optik.jsonl", _gold_for_optik(service))
+    report = evaluate_gold_dir(service, tmp_path, matchers=["hybrid_light"], llm_extraction=True)
+    assert set(report.aggregate) == {"hybrid_light", "hybrid_light+llm"}
+    assert report.aggregate["hybrid_light+llm"].llm_tokens > 0 and report.llm_note is None

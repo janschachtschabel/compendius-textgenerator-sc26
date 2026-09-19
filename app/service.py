@@ -24,6 +24,7 @@ from app.domain.models import (
 from app.domain.requests import GenerateRequest
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
+from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
 from app.llm.report import build_llm_report
@@ -38,7 +39,7 @@ from app.sources.wlo.models import CollectionInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import CollectionBuilder, collection_topic
 from app.sources.zim.registry import ZimRegistry
-from app.synthesis.extraction import ExtractionJob, ExtractionReport, extract_with_llm
+from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
 from app.synthesis.writer import LlmJob, SectionWriter, WrittenSections
@@ -442,7 +443,7 @@ class CompendiumService:
         ``requested`` holds the extraction and the generation switch; without a usable LLM both run rule-based.
         """
         wants_llm = any(switch != "rule-based" for switch in requested)
-        llm_note = self._llm_unavailable() if wants_llm else None
+        llm_note = self.llm_unavailable() if wants_llm else None
         extraction, generation = ("rule-based", "rule-based") if llm_note else requested
         llm = self.llm if wants_llm and llm_note is None else None
         budget = llm.open_budget() if llm is not None else None  # one budget for both switches
@@ -456,17 +457,10 @@ class CompendiumService:
         assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
         selected: set[str] = set()
         extracted: ExtractionReport | None = None
-        if extraction == "llm" and llm is not None and budget is not None:
-            job = ExtractionJob(
-                selector=llm.selector,
-                budget=budget,
-                topic=topic,
-                candidates=llm.options.extraction_candidates,
-                concurrency=llm.options.concurrency,
-                deadline=deadline,
-            )
-            result = extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
-            assigned, selected, extracted = result.assigned, result.selected, result.report
+        if extraction == "llm" and budget is not None:
+            result = self.extract(prepared, matched, request.target_length, budget=budget, deadline=deadline)
+            if result is not None:
+                assigned, selected, extracted = result.assigned, result.selected, result.report
             lap("extract")
 
         sources = prepared.sources
@@ -503,7 +497,33 @@ class CompendiumService:
             written=written,
         )
 
-    def _llm_unavailable(self) -> str | None:
+    def extract(
+        self,
+        prepared: PreparedTopic,
+        matched: Matched,
+        target_length: int,
+        *,
+        budget: RequestBudget | None = None,
+        deadline: Deadline | None = None,
+    ) -> Extracted | None:
+        """extraction=llm on matched chunks (D33): the LLM's choice per block; ``None`` without a configured LLM.
+
+        The caller checks ``llm_unavailable`` first; a budget of its own is opened when none is given (evaluation).
+        """
+        if self.llm is None:
+            return None
+        job = ExtractionJob(
+            selector=self.llm.selector,
+            budget=budget if budget is not None else self.llm.open_budget(),
+            topic=prepared.resolution.title or prepared.normalized.topic,
+            candidates=self.llm.options.extraction_candidates,
+            concurrency=self.llm.options.concurrency,
+            deadline=deadline,
+        )
+        template = _scale_budgets(prepared.template, target_length)  # the prompts name the target length
+        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
+
+    def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""
         if self.llm is None:
             return "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"

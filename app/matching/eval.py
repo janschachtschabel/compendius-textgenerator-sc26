@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from pydantic import BaseModel, Field, computed_field
 
 from app.domain.models import Chunk, ScoredChunk
+from app.knowledge.segmentation import split_sentences
 from app.matching.gold import GoldLabel, GoldSet, text_hash
 from app.templates.schema import Template
 
@@ -59,6 +60,7 @@ class EvalResult(BaseModel):
     confusion: dict[str, int] = Field(default_factory=dict, description="'gold>predicted' -> count, mismatches only")
     stale_labels: int = 0
     duration_ms: int = 0
+    llm_tokens: int = Field(0, description="Tokens the LLM spent choosing the passages (extraction=llm)")
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -154,6 +156,7 @@ def aggregate(results: Sequence[EvalResult]) -> EvalResult:
         confusion=dict(sorted(confusion.items(), key=lambda item: -item[1])),
         stale_labels=sum(r.stale_labels for r in results),
         duration_ms=sum(r.duration_ms for r in results),
+        llm_tokens=sum(r.llm_tokens for r in results),
     )
 
 
@@ -204,6 +207,22 @@ def predictions_from_assignment(assigned: Mapping[str, Sequence[ScoredChunk]], t
         if slot_id in key_of
         for scored in items
     }
+
+
+def predictions_from_selection(assigned: Mapping[str, Sequence[ScoredChunk]], template: Template) -> dict[str, str]:
+    """Chunk id -> slot key where the text prints most of the chunk's sentences (extraction=llm, D33).
+
+    The LLM may take sentences of one paragraph for several blocks; the gold standard knows one block per
+    paragraph. A tie goes to the block that comes first in the template.
+    """
+    best: dict[str, tuple[int, str]] = {}
+    for slot in template.slots:
+        for item in assigned.get(slot.id, []):
+            count = max(1, len(split_sentences(item.chunk.text)))
+            known = best.get(item.chunk.chunk_id)
+            if known is None or count > known[0]:
+                best[item.chunk.chunk_id] = (count, slot.slot)
+    return {chunk_id: key for chunk_id, (_, key) in best.items()}
 
 
 def pairwise_agreement(predictions: Mapping[str, Mapping[str, str]]) -> dict[str, float]:

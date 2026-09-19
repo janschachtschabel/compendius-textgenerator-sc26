@@ -54,10 +54,11 @@ def cmd_import(args: argparse.Namespace) -> int:
 
 def _print_result(result: EvalResult) -> None:
     hallucinated = ", ".join(result.hallucination_slots) or "-"
+    tokens = f"  {result.llm_tokens} Tokens" if result.llm_tokens else ""
     print(
-        f"{result.matcher:14s} macro-F1 {result.macro_f1:.3f}  micro-F1 {result.micro_f1:.3f}  "
+        f"{result.matcher:18s} macro-F1 {result.macro_f1:.3f}  micro-F1 {result.micro_f1:.3f}  "
         f"zugeordnet {result.assigned}/{result.labeled}  fehlbelegt {result.misassigned}  verpasst {result.missed}  "
-        f"Halluzination: {hallucinated}  veraltete Labels {result.stale_labels}  {result.duration_ms} ms"
+        f"Halluzination: {hallucinated}  veraltete Labels {result.stale_labels}  {result.duration_ms} ms{tokens}"
     )
 
 
@@ -93,14 +94,18 @@ def cmd_run(args: argparse.Namespace) -> int:
     settings = get_settings()
     gold_dir = Path(args.gold or settings.eval_gold_dir)
     matchers = list(args.matcher or DEFAULT_MATCHERS)
-    report = evaluate_gold_dir(cli_service(args.zim), gold_dir, matchers, template_id=args.template)
+    report = evaluate_gold_dir(
+        cli_service(args.zim), gold_dir, matchers, template_id=args.template, llm_extraction=args.llm_extraction
+    )
     if not report.runs:
         print(f"Keine auswertbaren Gold-Dateien in {gold_dir} (übersprungen: {report.skipped})", file=sys.stderr)
         return 2
+    if report.llm_note:
+        print(f"LLM-Extraktion nicht bewertet: {report.llm_note}", file=sys.stderr)
+    names = list(report.aggregate)  # the strategies, then <strategy>+llm when the LLM extraction ran
     print(f"Goldstandard {gold_dir}: {len(report.runs)} Themen, übersprungen: {report.skipped or '-'}")
-    for name in matchers:
-        if name in report.aggregate:
-            _print_result(report.aggregate[name])
+    for name in names:
+        _print_result(report.aggregate[name])
     detail = report.aggregate.get(args.detail or matchers[-1])
     if detail is not None:
         print(f"Bausteine ({detail.matcher}, Klassifikation vor Budget, alle Themen gepoolt):")
@@ -111,10 +116,10 @@ def cmd_run(args: argparse.Namespace) -> int:
     best = report.aggregate.get(matchers[0])
     print("Je Thema (macro-F1):")
     for run in report.runs:
-        cells = "  ".join(f"{name} {run.results[name].macro_f1:.2f}" for name in matchers if name in run.results)
+        cells = "  ".join(f"{name} {run.results[name].macro_f1:.2f}" for name in names if name in run.results)
         print(f"  {run.topic:24s} {cells}")
     if args.json:
-        Path(args.json).write_text(json.dumps(_report_dict(report, gold_dir, matchers), ensure_ascii=False, indent=2))
+        Path(args.json).write_text(json.dumps(_report_dict(report, gold_dir, names), ensure_ascii=False, indent=2))
         print(f"Bericht: {args.json}")
     if args.min_f1 is not None and best is not None and best.macro_f1 < args.min_f1:
         print(
@@ -152,5 +157,11 @@ def add_eval_commands(sub: argparse._SubParsersAction[argparse.ArgumentParser]) 
     run.add_argument("--json", default=None, help="Bericht als JSON-Datei")
     run.add_argument("--min-f1", type=float, default=None, help="Exit 1, wenn die erste Strategie darunter bleibt")
     run.add_argument("--detail", default=None, help="Strategie für die Baustein-Tabelle (Standard: letzte)")
+    run.add_argument(
+        "--llm-extraction",
+        action="store_true",
+        help="auch extraction=llm auf der Standardstrategie bewerten (<strategie>+llm); braucht LLM_ENABLED und "
+        "B_API_KEY, ein Aufruf je Baustein mit Kandidaten",
+    )
     run.add_argument("--zim", action="append")
     run.set_defaults(func=cmd_run)
