@@ -254,9 +254,14 @@ class ZimSync:
                 size=metalink.size,
                 progress=self._on_progress,
             )
-            archive = self._describe(path, sub)
         except (DownloadError, httpx.HTTPError, ValueError, OSError) as exc:
             report.errors.append(f"{sub.id}: {exc}")
+            self._write_status("running")
+            return
+        try:
+            archive = self._describe(path, sub)
+        except Exception as exc:  # libzim raises RuntimeError for a file it cannot read, e.g. a newer version
+            report.errors.append(f"{sub.id}: cannot open the downloaded {path.name}: {exc}")
             self._write_status("running")
             return
         if local is not None and local.file != archive.file:

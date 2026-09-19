@@ -179,3 +179,17 @@ def test_a_stream_longer_than_announced_is_cut_as_soon_as_it_passes_the_size(tmp
 def test_a_host_that_is_no_valid_idna_name_is_a_download_error() -> None:
     with pytest.raises(DownloadError, match="URL"):
         check_download_url("https://xn--.com/x.zim", DEFAULT_ALLOWED_HOSTS)
+
+
+def test_a_complete_verified_target_is_not_downloaded_again(tmp_path: Path) -> None:
+    (tmp_path / FILE).write_bytes(BLOB)  # an earlier run finished the download but could not activate it
+    calls: list[httpx.Request] = []
+    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    assert path == tmp_path / FILE and calls == []  # size and SHA-256 match: 14 GB are not fetched twice
+
+
+def test_a_target_that_does_not_match_is_downloaded_again(tmp_path: Path) -> None:
+    (tmp_path / FILE).write_bytes(BLOB[:-1] + b"x")  # same size, other content
+    calls: list[httpx.Request] = []
+    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    assert len(calls) == 1 and path.read_bytes() == BLOB

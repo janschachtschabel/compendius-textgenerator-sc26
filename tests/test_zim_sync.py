@@ -319,3 +319,19 @@ def test_the_sync_has_the_metalink_host_checked_before_the_body_is_read(
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
     report = _sync(tmp_path, RedirectingCatalog(offers, sources), downloader).run(BOOTSTRAP)
     assert downloader.calls == [] and any("evil.example" in error for error in report.errors)
+
+
+def test_a_downloaded_archive_libzim_cannot_open_is_recorded_not_fatal(
+    tmp_path: Path, sources: dict[str, Path]
+) -> None:
+    unreadable = tmp_path / "quelle" / "wikipedia_de_sample_2026-01.zim"
+    unreadable.parent.mkdir()
+    unreadable.write_bytes(b"kein ZIM-Archiv" * 64)  # a dump in a ZIM version the pinned libzim cannot read
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    catalog = FakeCatalog(offers, {"wikipedia_de_sample_2026-01.zim": unreadable})
+    report = _sync(tmp_path / "zim", catalog, FakeDownloader({"wikipedia_de_sample_2026-01.zim": unreadable})).run(
+        BOOTSTRAP
+    )  # a RuntimeError aborted the run, and the hourly retry downloaded the dump again and again
+    assert report.downloaded == [] and any("wikipedia_de_sample" in error for error in report.errors)
+    status = read_status(tmp_path / "zim")
+    assert status is not None and status["state"] == "idle"

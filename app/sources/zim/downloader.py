@@ -122,6 +122,9 @@ class Downloader:
         directory.mkdir(parents=True, exist_ok=True)
         target = directory / file_name
         part = directory / f"{file_name}{PART_SUFFIX}"
+        if self._already_complete(target, sha256=sha256, size=size):
+            log.info("%s is already complete and verified; not downloading it again", target.name)
+            return target
 
         existing = part.stat().st_size if part.exists() else 0
         if existing > size:
@@ -151,6 +154,15 @@ class Downloader:
         if progress:
             progress(transfer.progress)
         return target
+
+    def _already_complete(self, target: Path, *, sha256: str, size: int) -> bool:
+        """A target of an earlier run with the announced size and hash: a run that downloaded it but could not
+        activate it must not fetch it again."""
+        if not target.is_file() or target.stat().st_size != size:
+            return False
+        hasher = hashlib.sha256()
+        _hash_file(target, hasher, self.chunk_size)
+        return hasher.hexdigest() == sha256.lower()
 
     def _transfer(self, url: str, transfer: _Transfer, progress: ProgressCallback | None) -> None:
         state = transfer.progress
