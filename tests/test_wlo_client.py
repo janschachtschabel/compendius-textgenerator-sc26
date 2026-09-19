@@ -108,7 +108,7 @@ def test_error_messages_carry_no_repository_internals(caplog: pytest.LogCaptureF
     client = _client(FakeRepository())
     with caplog.at_level("WARNING"), pytest.raises(EduSharingError) as failure:
         client.text_content("11111111-1111-4111-8111-111111111111")
-    assert str(failure.value) == "HTTP 500 vom Repository"  # shown to API clients and printed in part 3
+    assert str(failure.value) == "edu-sharing antwortete mit HTTP 500"  # shown to API clients and in part 3
     assert BASE in caplog.text  # the details stay in the log
 
 

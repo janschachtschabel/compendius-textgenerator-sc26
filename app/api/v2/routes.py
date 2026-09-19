@@ -33,9 +33,9 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
             detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
         ) from exc
     except CollectionNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Sammlung nicht gefunden: {exc}") from exc
+        raise HTTPException(status_code=404, detail=str(exc)) from exc  # the messages name the repository
     except EduSharingError as exc:
-        raise HTTPException(status_code=502, detail=f"edu-sharing nicht erreichbar: {exc}") from exc
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
     except TemplateNotFoundError as exc:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except UnknownMatcherError as exc:

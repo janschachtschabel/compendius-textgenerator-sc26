@@ -25,10 +25,10 @@ def cmd_overview(args: argparse.Namespace) -> int:
     try:
         part = builder.overview(args.collection_id)
     except CollectionNotFoundError as exc:
-        print(f"Sammlung nicht gefunden: {exc}", file=sys.stderr)
+        print(str(exc), file=sys.stderr)
         return 1
     except EduSharingError as exc:
-        print(f"edu-sharing nicht erreichbar: {exc}", file=sys.stderr)
+        print(str(exc), file=sys.stderr)
         return 1
     if args.out:
         Path(args.out).write_text(part.markdown, encoding="utf-8")

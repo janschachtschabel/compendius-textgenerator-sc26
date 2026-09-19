@@ -28,5 +28,5 @@ def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
     except CollectionNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except EduSharingError as exc:
-        raise HTTPException(status_code=502, detail=f"edu-sharing nicht erreichbar: {exc}") from exc
+        raise HTTPException(status_code=502, detail=str(exc)) from exc  # the message names the repository
     return part.model_dump()

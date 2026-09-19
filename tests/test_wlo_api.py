@@ -51,3 +51,14 @@ def test_compendium_from_a_collection_and_repository_failure(sample_zims: dict[s
     with _client(sample_zims, tmp_path / "b", FakeRepository(fail=True)) as client:
         assert client.get(f"/api/v2/collections/{OPTIK}/overview").status_code == 502
         assert client.post("/api/v2/compendium", json={"collection_id": OPTIK}).status_code == 502
+
+
+def test_repository_errors_say_what_failed_once(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    with _client(sample_zims, tmp_path / "a", FakeRepository()) as client:
+        missing = client.post("/api/v2/compendium", json={"collection_id": UNKNOWN}).json()["detail"]
+    assert missing == f"Sammlung {UNKNOWN} nicht gefunden"  # "Sammlung nicht gefunden: Sammlung … nicht gefunden"
+    with _client(sample_zims, tmp_path / "b", FakeRepository(fail=True)) as client:
+        overview = client.get(f"/api/v2/collections/{OPTIK}/overview").json()["detail"]
+        compendium = client.post("/api/v2/compendium", json={"collection_id": OPTIK}).json()["detail"]
+    for detail in (overview, compendium):
+        assert detail.count("nicht erreichbar") == 1 and detail.count("edu-sharing") == 1, detail

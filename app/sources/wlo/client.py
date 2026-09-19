@@ -149,12 +149,12 @@ class EduSharingClient:
                 log.warning(
                     "HTTP %s from %s%s: %s", response.status_code, self.base_url, path, response.text[:_BODY_EXCERPT]
                 )
-                raise EduSharingError(f"HTTP {response.status_code} vom Repository")
+                raise EduSharingError(f"edu-sharing antwortete mit HTTP {response.status_code}")
             try:
                 data: dict[str, Any] = response.json()
             except ValueError as exc:
                 log.warning("answer of %s%s is not JSON", self.base_url, path)
-                raise EduSharingError("Antwort des Repositorys ist kein JSON") from exc
+                raise EduSharingError("edu-sharing antwortete nicht mit JSON") from exc
             return data
         log.warning("%s%s not reachable: %s", self.base_url, path, last_error)
         raise EduSharingError(f"edu-sharing nicht erreichbar ({type(last_error).__name__})") from last_error

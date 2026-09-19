@@ -30,7 +30,7 @@ log = logging.getLogger(__name__)
 # Part of the cache keys of records: bump it when a cached record gains or changes a field, so entries written
 # by an earlier version are not read (they expire by their TTL). 2: MaterialRef with licence version and authors.
 CACHE_FORMAT = 2
-UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden, das Repository antwortete nicht: {error}*"
+UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden: {error}*"
 
 
 @dataclass(frozen=True)
