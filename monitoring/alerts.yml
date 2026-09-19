@@ -30,6 +30,15 @@ groups:
         annotations:
           summary: Mehr als 5 % der Anfragen enden mit 5xx
           description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive oder ein angefragter Teil, der nicht eingerichtet ist (Log „compendium request refused“).
+      - alert: KompendiumStatusIncomplete
+        # Ein gescheiterter Abschnitt fehlt im Abruf; die Alarme auf seine Werte schweigen so lange
+        expr: kompendium_status_section_failed == 1
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Ein Teil der Zustandswerte fehlt in /metrics
+          description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).
       - alert: KompendiumSlowCompendia
         expr: |
           histogram_quantile(0.95,

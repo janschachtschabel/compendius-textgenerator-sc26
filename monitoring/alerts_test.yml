@@ -13,6 +13,9 @@ tests:
         values: "1x10 0x20"
       - series: 'kompendium_zim_ready{job="kompendium", instance="api:8000"}'
         values: "1 1 0x30"
+      # a ready instance beside it: only the not-ready one may fire
+      - series: 'kompendium_zim_ready{job="kompendium", instance="api:8001"}'
+        values: "1x30"
       - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
         values: "1x30"
       - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000"}'
@@ -326,3 +329,22 @@ tests:
       - eval_time: 60m
         alertname: KompendiumHybridFallbacks
         exp_alerts: []
+
+  - name: Zustandswerte unvollständig
+    interval: 1m
+    input_series:
+      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:8000", section="curricula"}'
+        values: "1x40"
+      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:8000", section="archives"}'
+        values: "0x40"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: KompendiumStatusIncomplete
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: KompendiumStatusIncomplete
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", section: curricula }
+            exp_annotations:
+              summary: Ein Teil der Zustandswerte fehlt in /metrics
+              description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).

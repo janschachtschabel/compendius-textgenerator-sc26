@@ -151,6 +151,10 @@ def test_a_failing_status_section_leaves_the_others_in_the_scrape(
         samples = scrape(client)
     assert value(samples, "kompendium_zim_ready") == 1 and value(samples, "kompendium_edu_sharing_enabled") == 1
     assert "kompendium_lehrplan_cache_available" not in {name for name, _labels in samples}
+    # Its alerts would stay silent: the failure itself is reported, per section
+    assert value(samples, "kompendium_status_section_failed", section="curricula") == 1
+    assert ("kompendium_status_section_failed", (("section", "archives"),)) in samples
+    assert value(samples, "kompendium_status_section_failed", section="archives") == 0
 
 
 def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path], tmp_path: Path) -> None:

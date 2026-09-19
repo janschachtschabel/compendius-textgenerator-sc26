@@ -29,7 +29,8 @@ Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Architektur und 
 
 `GET /metrics` liefert Zustand und Laufzeitmetriken für Prometheus (Liste im README). Die Alarmregeln in
 `monitoring/alerts.yml` decken die Störungen unten ab: `KompendiumDown`, `KompendiumNotReady`,
-`KompendiumHighErrorRate`, `KompendiumSlowCompendia`, `KompendiumZimSyncErrors`, `KompendiumZimSyncStale`,
+`KompendiumHighErrorRate`, `KompendiumStatusIncomplete`, `KompendiumSlowCompendia`, `KompendiumZimSyncErrors`,
+`KompendiumZimSyncStale`,
 `KompendiumZimSyncHangs`,
 `KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
 `KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumHybridFallbacks`. Nach einer Änderung

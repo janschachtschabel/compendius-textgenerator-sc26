@@ -53,13 +53,28 @@ class StatusCollector:
         build = GaugeMetricFamily("kompendium_build_info", "Version of the service", labels=["version"])
         build.add_metric([__version__], 1)
         yield build
-        for section in (self._archives, self._zim_sync, self._curricula, self._edu_sharing, self._llm):
+        # A failing section is left out of the scrape, and the alerts on its gauges then stay silent: the failure
+        # itself is a gauge of its own (KompendiumStatusIncomplete)
+        failed = GaugeMetricFamily(
+            "kompendium_status_section_failed", "1 when a status section could not be read", labels=["section"]
+        )
+        sections = (
+            ("archives", self._archives),
+            ("zim_sync", self._zim_sync),
+            ("curricula", self._curricula),
+            ("edu_sharing", self._edu_sharing),
+            ("llm", self._llm),
+        )
+        for name, section in sections:
             try:
                 metrics = list(section())
             except Exception:  # one unreadable source must not fail the scrape and fire KompendiumDown
-                log.exception("status section %s left out of this scrape", section.__name__)
+                log.exception("status section %s left out of this scrape", name)
+                failed.add_metric([name], 1)
                 continue
+            failed.add_metric([name], 0)
             yield from metrics
+        yield failed
 
     def _archives(self) -> Iterator[Metric]:
         registry = self._state.registry
