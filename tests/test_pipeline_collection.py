@@ -131,3 +131,11 @@ def test_a_request_for_part_three_alone_needs_its_collection() -> None:
         GenerateRequest(topic="Optik", parts=["collection"])  # nothing could be generated: an empty 200 before
     assert GenerateRequest(topic="Optik").parts == ["world", "curricula", "collection"]  # part 3 simply drops out
     assert GenerateRequest(topic="Optik", parts=["world", "collection"]).collection_id is None
+
+
+def test_part_three_alone_needs_no_article_in_the_archives(with_collections: CompendiumService) -> None:
+    request = GenerateRequest(topic="Xyzzyplomb", collection_id=OPTIK, parts=["collection"])
+    result = with_collections.generate(request)  # a TopicNotFoundError (404) before
+    assert result.collection is not None and result.collection.available
+    assert result.topic == "Xyzzyplomb" and result.resolution.title is None  # tried, not needed
+    assert result.sources == [] and "corpus" not in result.audit.timings_ms  # no corpus built for nothing

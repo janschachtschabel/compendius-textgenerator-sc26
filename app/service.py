@@ -144,6 +144,7 @@ class CompendiumService:
     def prepare(self, request: GenerateRequest, deadline: Deadline | None = None) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
 
+        Part 3 alone needs the collection only: its topic is resolved where possible, and no corpus is built.
         ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
         time are left out and counted in the audit.
         """
@@ -160,40 +161,46 @@ class CompendiumService:
         normalized = normalize_topic(request.topic or (derived.topic if derived else ""))
         context = [*normalized.context, *(derived.context if derived else [])]
         resolution = self.registry.resolve_topic(normalized.topic, context=context, query=normalized.query)
-        if not resolution.resolved:
+        needs_corpus = bool({"world", "curricula"} & set(request.parts))
+        if not resolution.resolved and needs_corpus:
             raise TopicNotFoundError(resolution)
         lap("resolve")
-
-        sources = self.registry.build_corpus(
-            resolution,
-            slots=template.content_slots(),
-            max_articles=request.max_articles or self.settings.corpus_max_articles,
-        )
-        lap("corpus")
-        knowledge: dict[str, Any] | None = None
-        # The materials are sources of part 1 only; without it their texts would be read and thrown away
-        if request.knowledge_collection_id and self.collections is not None and "world" in request.parts:
-            knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
-            lap("knowledge")
-
-        # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
-        subtopics = _subtopics(sources, next((s for s in sources if s.is_primary), sources[0] if sources else None))
-        chunks, sources, truncated = _segment_corpus(sources, lexicon, self.settings.corpus_max_chunks)
-        lap("segment")
-        return PreparedTopic(
+        prepared = PreparedTopic(
             template=template,
             lexicon=lexicon,
             normalized=normalized,
             resolution=resolution,
-            sources=sources,
-            chunks=chunks,
+            sources=[],
+            chunks=[],
             timings=timings,
             subject=request.subject or normalized.subject or (derived.subject if derived else None),
             collection=collection,
-            knowledge=knowledge,
-            chunks_truncated=truncated,
-            subtopics=subtopics,
         )
+        if needs_corpus:
+            self._add_corpus(prepared, request, deadline)
+        return prepared
+
+    def _add_corpus(self, prepared: PreparedTopic, request: GenerateRequest, deadline: Deadline | None) -> None:
+        """The articles of the topic, the knowledge collection for part 1, the sub-topics and the capped chunks."""
+        lap = _Stopwatch(prepared.timings).lap
+        sources = self.registry.build_corpus(
+            prepared.resolution,
+            slots=prepared.template.content_slots(),
+            max_articles=request.max_articles or self.settings.corpus_max_articles,
+        )
+        lap("corpus")
+        # The materials are sources of part 1 only; without it their texts would be read and thrown away
+        if request.knowledge_collection_id and self.collections is not None and "world" in request.parts:
+            prepared.knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
+            lap("knowledge")
+
+        # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
+        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        prepared.subtopics = _subtopics(sources, primary)
+        prepared.chunks, prepared.sources, prepared.chunks_truncated = _segment_corpus(
+            sources, prepared.lexicon, self.settings.corpus_max_chunks
+        )
+        lap("segment")
 
     def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
         """The collection behind the request; unreachable repositories only matter when the topic depends on it."""
