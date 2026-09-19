@@ -77,7 +77,29 @@ PASSAGE_SELECTION = Prompt(
     ),
 )
 
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION)}
+QA_PAIRS = Prompt(
+    id="qa_pairs",
+    version=1,
+    system=(
+        "Du schreibst Frage-Antwort-Paare zu einem Text für Lehrkräfte auf Deutsch. Stütze jede Antwort "
+        "ausschließlich auf den Text und erfinde nichts hinzu. Schreibe je Zeile genau ein Paar in der Form "
+        "Frage;Antwort, ohne Nummerierung, ohne Aufzählungszeichen und ohne weitere Zeilen. Die Fragen sollen "
+        "unterschiedliche Stellen des Textes abdecken."
+    ),
+    user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),
+)
+
+TRANSLATE = Prompt(
+    id="translate",
+    version=1,
+    system=(
+        "Du übersetzt Texte vollständig und wortgetreu in die Zielsprache. Gib ausschließlich die Übersetzung "
+        "zurück: keine Vorbemerkung, keine Erklärung, keine Anführungszeichen um den Text."
+    ),
+    user="Zielsprache: {target_lang}\n\nText:\n{text}",
+)
+
+PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION, QA_PAIRS, TRANSLATE)}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

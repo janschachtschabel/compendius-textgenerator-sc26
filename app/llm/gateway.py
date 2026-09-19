@@ -17,7 +17,9 @@ from typing import Any
 from app.llm.budget import RequestBudget, TokenBudget
 from app.llm.client import SUSPENDED_MESSAGE, BApiClient, ModelCheck
 from app.synthesis.llm import LlmSynthesizer
+from app.synthesis.qa import LlmQaWriter
 from app.synthesis.selection import LlmSelector
+from app.synthesis.translate import LlmTranslator
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +47,8 @@ class LlmGateway:
         self.options = options or LlmOptions()
         self.synthesizer = LlmSynthesizer(client, mark_unsupported=self.options.mark_unsupported)
         self.selector = LlmSelector(client)
+        self.qa = LlmQaWriter(client)
+        self.translator = LlmTranslator(client)
         self.check: ModelCheck | None = None
         self._checked_at = 0.0
         self._clock = clock

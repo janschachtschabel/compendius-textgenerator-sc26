@@ -12,8 +12,17 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.api.deps import get_service
 from app.api.limits import rate_limited
-from app.api.v1.models import SplitRequest, SplitResponse, SynonymRequest, SynonymResponse
+from app.api.v1.models import (
+    SplitRequest,
+    SplitResponse,
+    SynonymRequest,
+    SynonymResponse,
+    TranslateRequest,
+    TranslateResponse,
+)
 from app.knowledge.chunking import clean, split_text
+from app.llm.call import LlmSkipped
+from app.llm.deadline import Deadline
 from app.sources.zim.registry import ZimRegistry
 
 router = APIRouter(prefix="/api/v1/utils", tags=["v1"])
@@ -56,3 +65,22 @@ def from_archives(registry: ZimRegistry, word: str, limit: int) -> list[str]:
     lowered = word.strip().lower()
     unique = dict.fromkeys(name.strip() for name in found if name.strip() and name.strip().lower() != lowered)
     return list(unique)[:limit]
+
+
+@router.post("/translate", response_model=TranslateResponse, dependencies=[Depends(rate_limited)])
+def translate(payload: TranslateRequest, request: Request) -> TranslateResponse:
+    """Translation of a text; without a usable LLM this is a 503, never a faked answer."""
+    service = get_service(request)
+    note = service.llm_unavailable()
+    if service.llm is None or note is not None:
+        raise HTTPException(status_code=503, detail=f"Übersetzungen brauchen ein LLM: {note}")
+    result = service.llm.translator.translate(
+        payload.text,
+        payload.target_lang,
+        budget=service.llm.open_budget(),
+        deadline=Deadline(service.settings.request_timeout_s),
+    )
+    if isinstance(result, LlmSkipped):
+        status = 502 if result.reason.startswith("b-api") else 503
+        raise HTTPException(status_code=status, detail=f"Übersetzung nicht möglich: {result.reason}")
+    return TranslateResponse(translation=result)

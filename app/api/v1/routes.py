@@ -22,8 +22,13 @@ from app.api.v1.models import (
     InputType,
     PipelineCompendiumOnlyRequest,
     PipelineCompendiumOnlyResponse,
+    PipelineRequest,
+    PipelineResponse,
     PipelineStatistics,
+    QAPair,
+    QAResponse,
 )
+from app.api.v1.qa import pairs_for
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
@@ -122,5 +127,53 @@ def pipeline_compendium_only(
             total_steps=2,
             errors=[],
             total_processing_time=round(total, 3),
+        ),
+    )
+
+
+@router.post("/pipeline", response_model=PipelineResponse, dependencies=[Depends(rate_limited)])
+def pipeline(payload: PipelineRequest, request: Request) -> PipelineResponse:
+    """The three steps of the old pipeline in one answer: articles, compendium, question and answer pairs."""
+    text = payload.text.strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="text is required")
+    notes: list[str] = []
+    try:
+        adapter.note_linker_config(payload.config.linker, notes)
+    except adapter.UnsupportedOptionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    service = get_service(request)
+    started = time.perf_counter()
+    generated = _generate(service, _build(text, payload.config.compendium, notes))
+    written = time.perf_counter()
+    settings = payload.config.qa
+    pairs = pairs_for(
+        service,
+        text=generated.markdown,  # the pairs are about the compendium, as in the old service
+        count=settings.num_pairs,
+        max_answer_length=settings.max_answer_length,
+        level_property=settings.level_property,
+        level_values=settings.level_values or (),
+    )
+    done = time.perf_counter()
+    timings = generated.audit.timings_ms
+    resolve = sum(timings.get(phase, 0) for phase in ("resolve", "corpus", "segment")) / 1000
+    return PipelineResponse(
+        original_text=text,
+        linker_output=adapter.linker_output(generated, text),
+        compendium_output=adapter.compendium_response(
+            generated, input_type="text", notes=notes, input_length=len(text)
+        ),
+        qa_output=QAResponse(original_text=generated.markdown, qa=[QAPair(**vars(pair)) for pair in pairs]),
+        pipeline_statistics=PipelineStatistics(
+            processing_times={
+                "linker": round(resolve, 3),
+                "compendium": round(max(written - started - resolve, 0.0), 3),
+                "qa": round(done - written, 3),
+            },
+            completed_steps=3,
+            total_steps=3,
+            errors=[],
+            total_processing_time=round(done - started, 3),
         ),
     )

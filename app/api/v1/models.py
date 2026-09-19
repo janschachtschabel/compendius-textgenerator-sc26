@@ -200,3 +200,64 @@ class SynonymRequest(BaseModel):
 
 class SynonymResponse(BaseModel):
     synonyms: list[str]
+
+
+class QARequest(BaseModel):
+    text: str = Field(min_length=1)
+    num_pairs: int = Field(15, ge=1, le=200)
+    max_answer_length: int = Field(400, ge=50, le=1000)
+    level_property: str | None = None
+    level_values: list[str] | None = None
+
+
+class QAPair(BaseModel):
+    question: str
+    answer: str
+    level_property: str | None = None
+    level_value: str | None = None
+
+
+class QAResponse(BaseModel):
+    original_text: str
+    qa: list[QAPair] = Field(default_factory=list)
+
+
+class QAConfig(BaseModel):
+    num_pairs: int = Field(15, ge=1, le=200)
+    max_answer_length: int = Field(400, ge=50, le=1000)
+    level_property: str | None = None
+    level_values: list[str] | None = None
+
+
+class PipelineConfig(BaseModel):
+    linker: LinkerConfig = Field(default_factory=LinkerConfig)
+    compendium: StrictCompendiumConfig = Field(default_factory=StrictCompendiumConfig)
+    qa: QAConfig = Field(default_factory=QAConfig)
+
+
+class PipelineRequest(BaseModel):
+    """The old request also carried the QA settings at the top level; they are validated and, as before, unused."""
+
+    text: str = Field(min_length=1)
+    config: PipelineConfig = Field(default_factory=PipelineConfig)
+    num_pairs: int = Field(15, ge=1, le=200)
+    max_answer_length: int = Field(400, ge=50, le=1000)
+    level_property: str | None = None
+    level_values: list[str] | None = None
+
+
+class PipelineResponse(BaseModel):
+    original_text: str
+    linker_output: LinkerOutput
+    compendium_output: CompendiumResponse
+    qa_output: QAResponse
+    pipeline_statistics: PipelineStatistics
+
+
+class TranslateRequest(BaseModel):
+    text: str = Field(min_length=1)
+    target_lang: str = Field("en", min_length=2, max_length=5)
+
+
+class TranslateResponse(BaseModel):
+    translation: str
