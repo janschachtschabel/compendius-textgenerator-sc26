@@ -99,6 +99,28 @@ def test_a_custom_file_that_vanishes_while_listing_is_skipped(tmp_path: Path, mo
     assert manager.get("gut").name == "Gut" and manager.get("sc26").builtin
 
 
+def test_a_save_in_another_thread_cannot_break_a_reader(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    manager = TemplateManager(custom_dir=tmp_path)
+    manager.save(Template(id="mein", name="Mein", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")]))
+    manager.get("mein")  # fills the cache
+    cached = manager._custom_cache
+
+    class SavedInBetween:
+        """The first read sees the filled cache; every later read sees the cache a concurrent save has cleared."""
+
+        reads = 0
+
+        def __get__(self, instance: object, owner: object = None) -> object:
+            SavedInBetween.reads += 1
+            return cached if SavedInBetween.reads == 1 else None
+
+        def __set__(self, instance: object, value: object) -> None:
+            pass
+
+    monkeypatch.setattr(TemplateManager, "_custom_cache", SavedInBetween(), raising=False)
+    assert manager.get("mein").name == "Mein"
+
+
 def test_custom_templates_are_read_again_only_after_a_change(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     manager = TemplateManager(custom_dir=tmp_path)
     manager.save(Template(id="mein", name="Mein", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")]))

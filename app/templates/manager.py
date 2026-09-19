@@ -59,8 +59,9 @@ class TemplateManager:
         if directory is None:
             return {}
         signature = _signature(directory)
-        if self._custom_cache is not None and self._custom_cache[0] == signature:
-            return self._custom_cache[1]
+        cached = self._custom_cache  # read once: a save in another thread may clear it meanwhile
+        if cached is not None and cached[0] == signature:
+            return cached[1]
         templates: dict[str, Template] = {}
         for name, _mtime, _size in signature:
             try:
