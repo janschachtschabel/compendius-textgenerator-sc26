@@ -119,7 +119,11 @@ class Settings(BaseSettings):
     llm_reasoning_effort: str = Field("low", description="GPT-5 and o-series models: reasoning_effort (D25)")
     llm_verbosity: str = Field("low", description="GPT-5 series models: verbosity (D25)")
     llm_temperature: float = Field(0.2, ge=0.0, le=2.0, description="Classic models only (GPT-5 rejects it)")
-    llm_max_tokens_per_request: int = Field(20_000, ge=100, description="Budget guard per compendium request")
+    llm_max_tokens_per_request: int = Field(
+        40_000,
+        ge=100,
+        description="Budget guard per compendium request; both LLM switches used 27,205 tokens for Optik (D33)",
+    )
     llm_daily_token_budget: int = Field(
         2_000_000, ge=0, description="Daily token cap of all workers together (llm_budget.db in STATE_DIR)"
     )

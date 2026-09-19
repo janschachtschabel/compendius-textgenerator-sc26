@@ -132,7 +132,7 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     assert gateway.options.fast_sections == ("sc26_1",) and gateway.options.extraction_candidates == 5
     assert gateway.synthesizer.mark_unsupported is True
     assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
-    assert gateway.budget.per_request == 20_000 and gateway.budget.daily == 2_000_000
+    assert gateway.budget.per_request == 40_000 and gateway.budget.daily == 2_000_000
     assert (tmp_path / "llm_budget.db").exists(), "the daily counter is shared through STATE_DIR"
     assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
 
