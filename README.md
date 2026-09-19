@@ -231,8 +231,8 @@ beantwortet (letzte Modellprüfung, Schutzschalter), und er sieht Antworten mit 
 `KompendiumLlmUnavailable` stützt sich deshalb auf die über alle Worker summierten Kompendium-Zähler. Unbekannte
 Werte (noch kein Sync, kein Cache) fehlen, statt als 0 zu erscheinen.
 Laufzeitmetriken summiert der Endpunkt über alle Worker: Im Image legt jeder Worker seine Werte in
-`PROMETHEUS_MULTIPROC_DIR` ab (`/tmp/prometheus`, beim Start geleert; die Variable setzt nur der API-Befehl, die
-Sidecars laden die Metriken nicht). Labels kommen nur aus festen Mengen
+`PROMETHEUS_MULTIPROC_DIR` ab (`/tmp/prometheus`; der Start löscht dort nur die Metrik-Dateien eines früheren
+Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars laden die Metriken nicht). Labels kommen nur aus festen Mengen
 (Routen-Templates, Modi, Phasen), nie aus Eingaben. Die Kompendium-Metriken stammen aus dem Audit jeder Antwort.
 
 | Metrik | Bedeutung |
