@@ -169,6 +169,29 @@ def test_requests_are_counted_by_route_template(client: TestClient) -> None:
     assert "/metrics" not in routes  # scrapes are not requests of the service
 
 
+def test_unusual_methods_share_one_label(client: TestClient) -> None:
+    before = scrape(client)
+    assert client.request("PROPFIND", "/health").status_code == 405
+    assert client.request("X-SERIES-BOMB", "/health").status_code == 405
+    after = scrape(client)
+    counted = value(after, "kompendium_http_requests_total", method="other", route="/health", status="405")
+    assert counted - value(before, "kompendium_http_requests_total", method="other", route="/health", status="405") == 2
+    methods = {dict(labels).get("method") for _name, labels in after}
+    assert "PROPFIND" not in methods and "X-SERIES-BOMB" not in methods  # clients cannot create new series
+
+
+def test_the_api_docs_are_counted_under_their_own_path(client: TestClient) -> None:
+    before = scrape(client)
+    assert client.get("/openapi.json").status_code == 200
+    after = scrape(client)
+
+    def delta(name: str, **labels: str) -> float:
+        return value(after, name, **labels) - value(before, name, **labels)
+
+    assert delta("kompendium_http_requests_total", method="GET", route="/openapi.json", status="200") == 1
+    assert delta("kompendium_http_requests_total", method="GET", route="unmatched", status="200") == 0
+
+
 def test_a_compendium_records_its_mode_phases_and_parts(client: TestClient) -> None:
     before = scrape(client)
     response = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world", "curricula"]})

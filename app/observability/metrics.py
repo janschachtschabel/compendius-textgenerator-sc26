@@ -14,6 +14,9 @@ from prometheus_client import Counter, Histogram
 from app.domain.models import Compendium
 
 UNMATCHED_ROUTE = "unmatched"  # 404s: the raw path would let every client create new series
+# The method is client input as well: anything else (PROPFIND, invented verbs) shares one label
+HTTP_METHODS = frozenset({"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"})
+OTHER_METHOD = "other"
 
 HTTP_REQUESTS = Counter(
     "kompendium_http_requests_total",
@@ -57,6 +60,7 @@ CHUNKS_TRUNCATED = Counter("kompendium_corpus_chunks_truncated_total", "Paragrap
 
 
 def observe_request(method: str, route: str, status: int, seconds: float) -> None:
+    method = method if method in HTTP_METHODS else OTHER_METHOD
     HTTP_REQUESTS.labels(method, route, str(status)).inc()
     HTTP_DURATION.labels(method, route).observe(seconds)
 

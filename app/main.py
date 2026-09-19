@@ -10,6 +10,8 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, Response
+from fastapi.routing import APIRoute
+from starlette.routing import Route
 
 from app import __version__
 from app.api.health import router as health_router
@@ -257,6 +259,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             await run_system(request, refresher.refresh)
             return await call_next(request)
 
+    # /docs, /redoc and /openapi.json are plain Starlette routes, which leave no route in the scope; their paths
+    # are a fixed set, so they may serve as labels
+    plain_paths = frozenset(r.path for r in app.routes if isinstance(r, Route) and not isinstance(r, APIRoute))
+
     @app.middleware("http")
     async def record_http_metrics(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         # Added last, so it runs outermost and times the whole request; scrapes are not requests of the service.
@@ -270,7 +276,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return response
         finally:
             # FastAPI stores the matched route in the scope; its template keeps the label values bounded
-            route = getattr(request.scope.get("route"), "path", None) or UNMATCHED_ROUTE
+            route = getattr(request.scope.get("route"), "path", None)
+            if route is None:
+                route = request.url.path if request.url.path in plain_paths else UNMATCHED_ROUTE
             observe_request(request.method, route, status, time.perf_counter() - started)
 
     return app
