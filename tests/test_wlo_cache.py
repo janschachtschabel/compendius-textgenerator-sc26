@@ -6,7 +6,9 @@ from pathlib import Path
 
 import pytest
 
+from app.main import create_app
 from app.sources.wlo.cache import TtlCache
+from tests.conftest import make_settings
 
 
 def test_roundtrip_expiry_and_overwrite(tmp_path: Path) -> None:
@@ -54,3 +56,15 @@ def test_an_unusable_cache_file_degrades_to_misses(
         assert cache.get("collection:1") is None
         cache.set("collection:1", {"title": "Optik"}, ttl_s=60)  # the cache only saves time; no exception
     assert "database is locked" in caplog.text
+
+
+def test_a_corrupt_cache_file_does_not_stop_the_start(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    state = tmp_path / "state"
+    state.mkdir()
+    (state / "wlo_cache.db").write_bytes(b"not a database at all")
+    with caplog.at_level("WARNING"):
+        app = create_app(make_settings(sample_zims.values(), state))  # a DatabaseError before
+    assert app.state.collections is not None and app.state.collections.cache is None  # reads go to the repository
+    assert "wlo_cache.db" in caplog.text

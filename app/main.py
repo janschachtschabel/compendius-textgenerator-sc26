@@ -160,7 +160,14 @@ def build_collections(settings: Settings) -> CollectionBuilder | None:
             text_ttl_s=settings.material_text_cache_ttl_s,
         ),
     )
-    return CollectionBuilder(client=client, cache=TtlCache(settings.wlo_cache_path), options=options)
+    cache: TtlCache | None = None
+    try:
+        cache = TtlCache(settings.wlo_cache_path)
+    except (sqlite3.Error, OSError) as exc:  # the cache only saves time; the repository still answers
+        log.warning(
+            "repository cache unavailable at %s (%s); every read goes to the repository", settings.wlo_cache_path, exc
+        )
+    return CollectionBuilder(client=client, cache=cache, options=options)
 
 
 def build_curricula(settings: Settings) -> CurriculaBuilder:
