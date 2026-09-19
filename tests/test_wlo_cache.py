@@ -68,3 +68,12 @@ def test_a_corrupt_cache_file_does_not_stop_the_start(
         app = create_app(make_settings(sample_zims.values(), state))  # a DatabaseError before
     assert app.state.collections is not None and app.state.collections.cache is None  # reads go to the repository
     assert "wlo_cache.db" in caplog.text
+
+
+def test_the_sweep_of_expired_entries_uses_an_index(tmp_path: Path) -> None:
+    path = tmp_path / "wlo_cache.db"
+    TtlCache(path)
+    with closing(sqlite3.connect(path)) as connection:
+        plan = connection.execute("EXPLAIN QUERY PLAN DELETE FROM cache WHERE expires_at <= ?", (0,)).fetchall()
+    # Every write sweeps; a full scan would cost time in proportion to the whole cache
+    assert "USING INDEX" in " ".join(str(row[-1]) for row in plan), plan

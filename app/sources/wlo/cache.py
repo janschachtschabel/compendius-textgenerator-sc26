@@ -20,6 +20,8 @@ from typing import Any
 log = logging.getLogger(__name__)
 
 _SCHEMA = "CREATE TABLE IF NOT EXISTS cache (key TEXT PRIMARY KEY, value TEXT NOT NULL, expires_at REAL NOT NULL)"
+# Every write sweeps expired entries; without the index each write would scan the whole table
+_INDEX = "CREATE INDEX IF NOT EXISTS cache_expires ON cache(expires_at)"
 
 
 class TtlCache:
@@ -29,6 +31,7 @@ class TtlCache:
         self._path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self._connect()) as connection:
             connection.execute(_SCHEMA)
+            connection.execute(_INDEX)
             connection.commit()
 
     def _connect(self) -> sqlite3.Connection:
