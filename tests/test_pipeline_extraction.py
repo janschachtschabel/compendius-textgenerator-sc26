@@ -70,6 +70,12 @@ def test_llm_extraction_fills_the_blocks_with_sentences_it_chose_verbatim(
     extraction = result.audit.llm["extraction"] if result.audit.llm else {}
     assert extraction["requested"] == extraction["used"] == "llm"
     assert set(extraction["sections"]) >= {s.slot_id for s in filled} and extraction["fallbacks"] == {}
+    assert extraction["offered"] > len(extraction["sections"])  # several paragraphs per block
+    assert extraction["invalid_numbers"] == 0
+    # Blocks share candidates, so several of them chose the same sentences; each is printed once, in the first block
+    assert extraction["deduped_sentences"] > 0
+    bodies = [p.rsplit(" [", 1)[0] for section in filled for p in section.text.split("\n\n")]
+    assert len(bodies) == len(set(bodies))
     selection_calls = [b for b in fake.bodies if is_selection(b)]
     assert len(selection_calls) == len(extraction["sections"]) == len(fake.bodies)  # no synthesis call
     tokens = result.audit.llm_tokens

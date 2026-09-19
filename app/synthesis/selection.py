@@ -34,6 +34,7 @@ _KIND_NOTE = {ChunkKind.LIST: "; Liste", ChunkKind.TABLE: "; Tabelle"}
 @dataclass(frozen=True)
 class Selection:
     excerpts: list[ScoredChunk]  # chosen sentences per paragraph, paragraphs in the order the model named them
+    picked: tuple[tuple[int, int], ...]  # (index into the candidates, sentence) in the order the model named them
     sentences: int  # chosen sentences that made it into the excerpts
     offered: int  # paragraphs offered
     invalid: int  # numbers in the answer that were not offered
@@ -43,6 +44,7 @@ class Selection:
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
+    deduped: int = 0  # sentences an earlier block already prints (set by the extraction, D33)
 
 
 def numbered_sentences(chunk: Chunk) -> list[str]:
@@ -85,12 +87,17 @@ def candidate_block(
 
 
 def parse_selection(text: str) -> list[str] | None:
-    """Sentence numbers from the JSON answer (its first list), ``None`` when the answer holds no such object."""
+    """Sentence numbers from the JSON answer (its first list), ``None`` when the answer holds no such object.
+
+    Numbers are read as text (``parse_float``/``parse_int``), because a model may answer ``[1.1, 2.10]`` instead of
+    strings and ``2.10`` must not become ``2.1``. Everything else is kept as its text too, so a wrong entry counts
+    as an offer that does not exist instead of disappearing.
+    """
     start, end = text.find("{"), text.rfind("}")
     if start < 0 or end <= start:
         return None
     try:
-        data = json.loads(text[start : end + 1])
+        data = json.loads(text[start : end + 1], parse_float=str, parse_int=str)
     except ValueError:
         return None
     if not isinstance(data, dict):
@@ -100,7 +107,7 @@ def parse_selection(text: str) -> list[str] | None:
         values = next((value for value in data.values() if isinstance(value, list)), None)
         if values is None:
             return None
-    return [item.strip().strip("[]").strip() for item in values if isinstance(item, str)]
+    return [str(item).strip().strip("[]").strip() for item in values]
 
 
 class LlmSelector:
@@ -134,9 +141,14 @@ class LlmSelector:
             return LlmSkipped.after(reason, answer)
         unique = list(dict.fromkeys(chosen))
         picked = [ids[number] for number in unique if number in ids]
-        excerpts, sentences, cut = _excerpts(candidates, picked, slot.budget.target_chars * LENGTH_FACTOR)
+        if unique and not picked:
+            # Not an empty choice but an answer in another shape: the rule-based paragraphs are the better guess
+            reason = f"unlesbare Antwort des Modells: keine der {len(unique)} Nummern stand im Angebot"
+            return LlmSkipped.after(reason, answer)
+        excerpts, sentences, cut = build_excerpts(candidates, picked, slot.budget.target_chars * LENGTH_FACTOR)
         return Selection(
             excerpts=excerpts,
+            picked=tuple(picked),
             sentences=sentences,
             offered=len({index for index, _ in ids.values()}),
             invalid=len(unique) - len(picked),
@@ -149,10 +161,14 @@ class LlmSelector:
         )
 
 
-def _excerpts(
+def build_excerpts(
     candidates: Sequence[ScoredChunk], picked: Sequence[tuple[int, int]], max_chars: float
 ) -> tuple[list[ScoredChunk], int, int]:
-    """Excerpts in the order the model named their paragraphs, sentences in source order; stop past ``max_chars``."""
+    """Excerpts in the order the model named their paragraphs, sentences in source order; stop past ``max_chars``.
+
+    ``picked`` are (index into ``candidates``, sentence) pairs; the extraction rebuilds them when an earlier block
+    already prints one of the sentences.
+    """
     by_paragraph: dict[int, set[int]] = {}
     for index, position in picked:
         by_paragraph.setdefault(index, set()).add(position)

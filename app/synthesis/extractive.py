@@ -83,10 +83,12 @@ def synthesize(
         source = sources.get(chunk.source_id)
         if source is None:
             continue
-        if chunk.kind is ChunkKind.LIST:
-            body = _render_list(chunk.text)
-        elif chunk.kind is ChunkKind.TABLE:
-            body = _render_table(chunk.text)
+        if chunk.kind is not ChunkKind.TEXT:
+            body = _render_list(chunk.text) if chunk.kind is ChunkKind.LIST else _render_table(chunk.text)
+            key = _fingerprint(body)  # a list or table is one unit: without this it could be printed twice
+            if key in seen_sentences:
+                continue
+            seen_sentences.add(key)
         else:
             limit = None if all_sentences else SENTENCES_PER_CHUNK + (2 if chunk.is_lead else 0)
             sentences = _select_sentences(chunk.text, seen_sentences, limit)

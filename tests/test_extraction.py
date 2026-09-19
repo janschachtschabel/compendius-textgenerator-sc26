@@ -9,13 +9,14 @@ from typing import Any
 import httpx
 import pytest
 
-from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
+from app.domain.models import Chunk, ChunkKind, ScoredChunk, Source, SourceRole
 from app.domain.requests import GenerateRequest
 from app.llm.budget import TokenBudget
 from app.llm.client import BApiClient
 from app.matching.policy import AssignmentResult
 from app.service import CompendiumService
 from app.synthesis.extraction import ExtractionJob, candidates_for, extract_with_llm
+from app.synthesis.extractive import synthesize
 from app.synthesis.selection import LlmSelector
 from app.templates.manager import TemplateManager
 from tests.test_llm_client import BASE, KEY, FakeBApi
@@ -141,3 +142,28 @@ def test_the_policy_reports_its_score_of_every_chunk_for_every_block(service: Co
     assert [slot_id for slot_id, by_chunk in scores.items() if lead.chunk_id in by_chunk] == ["sc26_1"]
     assert all(score > 0 for by_chunk in scores.values() for score in by_chunk.values())
     assert sum(len(by_chunk) for by_chunk in scores.values()) > len(prepared.chunks)  # runners-up, not only winners
+
+
+def test_a_passage_two_blocks_chose_goes_to_the_first_of_them() -> None:
+    # The policy gives a paragraph to one block; among the candidates of extraction=llm it can appear in several
+    answers = {
+        "sc26_1": json.dumps({"saetze": []}),
+        "sc26_5": json.dumps({"saetze": ["2.1"]}),  # candidate c2, the runner-up of this block
+        "sc26_10": json.dumps({"saetze": ["1.1"]}),  # the same paragraph c2
+    }
+    extracted = extract_with_llm(TEMPLATE, _assignment(), CHUNKS, SOURCES, _job(_by_block(answers)))
+    assert [e.chunk.chunk_id for e in extracted.assigned["sc26_5"]] == ["c2"]
+    assert extracted.assigned["sc26_10"] == []  # the sentence is already printed in block 5
+    assert extracted.report.deduped == 1 and extracted.report.emptied == ["sc26_1", "sc26_10"]
+    assert extracted.report.offered == 5  # 1 + 3 + 1 paragraphs were on offer
+
+
+def test_a_list_is_printed_once_even_when_two_blocks_take_it() -> None:
+    # Lists and tables are one unit, so the sentence fingerprints of the writer do not catch a repeat
+    chunk = _chunk("l1", "Teilgebiete", "Geometrische Optik\nWellenoptik")
+    listed = [ScoredChunk(chunk=chunk.model_copy(update={"kind": ChunkKind.LIST}), score=0.5)]
+    seen: set[str] = set()
+    first, citations = synthesize(listed, SOURCES, 0, seen)
+    second, more = synthesize(listed, SOURCES, len(citations), seen)
+    assert "- Geometrische Optik" in first and citations
+    assert second == "" and more == []

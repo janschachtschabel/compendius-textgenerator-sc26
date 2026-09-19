@@ -113,10 +113,20 @@ def test_the_offer_numbers_paragraphs_and_their_sentences() -> None:
 
 def test_parse_selection_reads_the_json_answer() -> None:
     assert parse_selection('{"saetze": ["1.1", "2.3"]}') == ["1.1", "2.3"]
-    assert parse_selection('Hier: {"saetze": [" [1.2] ", 3, "x"]} fertig') == ["1.2", "x"]
+    assert parse_selection('Hier: {"saetze": [" [1.2] ", 7, "x"]} fertig') == ["1.2", "7", "x"]
     assert parse_selection('{"saetze": []}') == []
     assert parse_selection("Ich wähle Satz 1.1") is None
     assert parse_selection('{"begruendung": "keine"}') is None
+
+
+def test_numbers_in_the_answer_keep_their_digits() -> None:
+    # A model may answer with JSON numbers instead of strings; 2.10 must not become 2.1
+    assert parse_selection('{"saetze": [1.1, 2.10, 3]}') == ["1.1", "2.10", "3"]
+
+
+def test_an_answer_without_a_single_offered_number_keeps_the_rule_based_paragraphs() -> None:
+    result = _select(FakeBApi(lambda body: '{"saetze": ["12.1", "nein"]}'))
+    assert isinstance(result, LlmSkipped) and "unlesbar" in result.reason and result.calls == 1
 
 
 def test_select_returns_the_chosen_sentences_verbatim_in_the_models_paragraph_order() -> None:

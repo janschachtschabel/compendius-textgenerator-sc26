@@ -43,8 +43,10 @@ def build_llm_report(
         "sections": list(extraction.slots) if extraction else [],
         "emptied": list(extraction.emptied) if extraction else [],
         "fallbacks": dict(extraction.fallbacks) if extraction else {},
+        "offered": extraction.offered if extraction else 0,
         "sentences": extraction.sentences if extraction else 0,
         "invalid_numbers": extraction.invalid if extraction else 0,
+        "deduped_sentences": extraction.deduped if extraction else 0,
         "cut_sentences": extraction.cut if extraction else 0,
     }
     generation_block: dict[str, Any] = {

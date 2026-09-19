@@ -5,7 +5,8 @@ Rule-based, the policy assigns whole paragraphs to the blocks and the writer tak
 policy gave the block, then the next best by the policy's score for that block. The choices run in parallel, one
 call per block with candidates. A block whose choice fails (b-api, budget, time, unreadable answer, unexpected
 error) keeps the policy's paragraphs, and the reason goes to the audit; a block where no offered paragraph fits
-stays empty.
+stays empty. A paragraph can be a candidate of several blocks, so the choices are deduplicated in template
+order afterwards: a sentence an earlier block prints is dropped from the later one (``deduped``).
 """
 
 from __future__ import annotations
@@ -13,14 +14,14 @@ from __future__ import annotations
 import logging
 from collections.abc import Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from app.domain.models import Chunk, ScoredChunk, Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
 from app.matching.policy import AssignmentResult
-from app.synthesis.selection import LlmSelector, Selection
+from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts
 from app.templates.schema import Template, TemplateSlot
 
 log = logging.getLogger(__name__)
@@ -43,6 +44,7 @@ class ExtractionJob:
 @dataclass
 class ExtractionReport:
     slots: list[str] = field(default_factory=list)  # blocks whose sentences the LLM chose
+    offered: int = 0  # paragraphs offered over all blocks
     emptied: list[str] = field(default_factory=list)  # of those: no offered paragraph fit, the block stays empty
     fallbacks: dict[str, str] = field(default_factory=dict)  # slot id -> why the policy's paragraphs stayed
     prompts: set[str] = field(default_factory=set)
@@ -53,6 +55,7 @@ class ExtractionReport:
     total_tokens: int = 0
     sentences: int = 0
     invalid: int = 0  # numbers in answers that were not offered
+    deduped: int = 0  # chosen sentences an earlier block already prints
     cut: int = 0  # chosen sentences left out for length
 
 
@@ -109,15 +112,40 @@ def extract_with_llm(
 
     with ThreadPoolExecutor(max_workers=max(1, min(job.concurrency, len(work)))) as pool:
         results = list(pool.map(choose, work))
+    used: set[tuple[str, int]] = set()  # (chunk id, sentence) already printed by an earlier block
     for slot, result in zip(work, results, strict=True):
         if isinstance(result, Selection):
-            assigned[slot.id] = result.excerpts
+            selection = _without_duplicates(result, offers[slot.id], slot, used)
+            assigned[slot.id] = selection.excerpts
             extracted.selected.add(slot.id)
-            _account(report, slot.id, result)
+            _account(report, slot.id, selection)
         else:
             report.fallbacks[slot.id] = result.reason
             _account_skipped(report, result)
     return extracted
+
+
+def _without_duplicates(
+    selection: Selection, candidates: Sequence[ScoredChunk], slot: TemplateSlot, used: set[tuple[str, int]]
+) -> Selection:
+    """Drop sentences an earlier block already prints and rebuild the excerpts; ``used`` grows with the rest."""
+    keep = [(index, position) for index, position in selection.picked if _key(candidates, index, position) not in used]
+    used.update(_key(candidates, index, position) for index, position in keep)
+    if len(keep) == len(selection.picked):
+        return selection
+    excerpts, sentences, cut = build_excerpts(candidates, keep, slot.budget.target_chars * LENGTH_FACTOR)
+    return replace(
+        selection,
+        excerpts=excerpts,
+        picked=tuple(keep),
+        sentences=sentences,
+        cut=selection.cut + cut,
+        deduped=len(selection.picked) - len(keep),
+    )
+
+
+def _key(candidates: Sequence[ScoredChunk], index: int, position: int) -> tuple[str, int]:
+    return candidates[index].chunk.chunk_id, position
 
 
 def _account(report: ExtractionReport, slot_id: str, selection: Selection) -> None:
@@ -131,8 +159,10 @@ def _account(report: ExtractionReport, slot_id: str, selection: Selection) -> No
     report.completion_tokens += selection.completion_tokens
     report.total_tokens += selection.total_tokens
     report.sentences += selection.sentences
+    report.offered += selection.offered
     report.invalid += selection.invalid
     report.cut += selection.cut
+    report.deduped += selection.deduped
 
 
 def _account_skipped(report: ExtractionReport, skipped: LlmSkipped) -> None:
