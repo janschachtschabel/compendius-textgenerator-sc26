@@ -74,7 +74,12 @@ def _build(text: str | None, config: Any, notes: list[str]) -> GenerateRequest:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
-@router.post("/compendium", response_model=CompendiumResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/compendium",
+    response_model=CompendiumResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Kompendium zu einem Thema oder zu einer Linker-Ausgabe (alter Vertrag)",
+)
 def compendium(payload: CompendiumRequest, request: Request) -> CompendiumResponse:
     """Compendium for a topic (``input_type=text``) or for the output of a linker run."""
     notes: list[str] = []

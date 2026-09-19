@@ -24,7 +24,12 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1", tags=["v1"])
 
 
-@router.post("/qa", response_model=QAResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/qa",
+    response_model=QAResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Frage-Antwort-Paare zu einem Text (alter Vertrag)",
+)
 def qa(payload: QARequest, request: Request) -> QAResponse:
     """Question and answer pairs for a text; without an LLM they come from the templates."""
     text = payload.text.strip()

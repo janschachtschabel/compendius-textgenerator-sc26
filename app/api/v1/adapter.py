@@ -117,6 +117,7 @@ def statistics(compendium: Compendium, *, input_type: str, notes: list[str], **e
             "extraction": compendium.extraction,
             "generation": compendium.generation,
             "parts": compendium.frontmatter.get("parts", []),
+            "parts_status": compendium.parts_status,
             "sections_filled": audit.sections_filled,
             "sections_empty": audit.sections_empty,
             "citations": audit.citations,

@@ -30,7 +30,12 @@ router = APIRouter(prefix="/api/v1/utils", tags=["v1"])
 SUGGEST_EXTRA = 5  # ask for a few more than requested: the word itself and duplicates drop out
 
 
-@router.post("/split", response_model=SplitResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/split",
+    response_model=SplitResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Text in Abschnitte teilen (alter Vertrag)",
+)
 def split(payload: SplitRequest) -> SplitResponse:
     """Chunks of at most ``chunk_size`` characters, whole sentences where they fit."""
     if not clean(payload.text):
@@ -41,7 +46,12 @@ def split(payload: SplitRequest) -> SplitResponse:
     return SplitResponse(chunks=chunks)
 
 
-@router.post("/synonyms", response_model=SynonymResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/synonyms",
+    response_model=SynonymResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Andere Namen eines Begriffs aus den Archiven (alter Vertrag)",
+)
 def synonyms(payload: SynonymRequest, request: Request) -> SynonymResponse:
     """Other names of a word from the archives: article title, alternative names of the lead, suggestions."""
     if payload.lang != "de":
@@ -67,7 +77,12 @@ def from_archives(registry: ZimRegistry, word: str, limit: int) -> list[str]:
     return list(unique)[:limit]
 
 
-@router.post("/translate", response_model=TranslateResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/translate",
+    response_model=TranslateResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Text übersetzen; braucht ein LLM (alter Vertrag)",
+)
 def translate(payload: TranslateRequest, request: Request) -> TranslateResponse:
     """Translation of a text; without a usable LLM this is a 503, never a faked answer."""
     service = get_service(request)

@@ -242,7 +242,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(
         title="Kompendium-API v2",
         version=__version__,
-        description="Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten.",
+        description=(
+            "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. "
+            "`/api/v2` ist der Vertrag des Neubaus, `/api/v1` der des alten Dienstes auf derselben Maschinerie "
+            "(Unterschiede in MIGRATION.md). Fehler kommen als Status, nie als Text mit HTTP 200."
+        ),
         lifespan=lifespan,
         docs_url="/docs" if settings.api_docs_enabled else None,
         redoc_url="/redoc" if settings.api_docs_enabled else None,

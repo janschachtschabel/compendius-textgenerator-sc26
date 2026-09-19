@@ -385,6 +385,7 @@ class CompendiumService:
         lap("assemble")
 
         filled = sum(1 for s in sections if s.status is not SectionStatus.EMPTY)
+        parts_status = _parts_status(request, want_world, filled, curricula, collection_part)
         audit = AuditReport(
             matcher=matcher_name,
             timings_ms=timings,
@@ -398,6 +399,7 @@ class CompendiumService:
             llm=llm_audit,
             knowledge=prepared.knowledge,
             chunks_truncated=prepared.chunks_truncated,
+            parts_status=parts_status,
         )
         return Compendium(
             topic=topic,
@@ -413,6 +415,7 @@ class CompendiumService:
             collection=collection_part,
             sources=source_refs,
             markdown=markdown,
+            parts_status=parts_status,
             audit=audit,
         )
 
@@ -530,6 +533,27 @@ class CompendiumService:
         if not self.llm.available:
             return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
         return None
+
+
+def _parts_status(
+    request: GenerateRequest,
+    want_world: bool,
+    filled: int,
+    curricula: CurriculaPart | None,
+    collection: CollectionPart | None,
+) -> dict[str, str]:
+    """What became of every requested part (PLAN.md 8.1): whole, empty, cut short or not available here."""
+    status: dict[str, str] = {}
+    if want_world:
+        status["world"] = "ok" if filled else "empty"
+    if "curricula" in request.parts:
+        status["curricula"] = "unavailable" if curricula is None or not curricula.available else "ok"
+    if "collection" in request.parts:
+        if collection is None or not collection.available:
+            status["collection"] = "unavailable"
+        else:
+            status["collection"] = "incomplete" if collection.summary.get("incomplete") else "ok"
+    return status
 
 
 # Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for,

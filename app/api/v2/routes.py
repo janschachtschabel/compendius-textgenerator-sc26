@@ -21,7 +21,12 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
-@router.post("/compendium", response_model=Compendium, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/compendium",
+    response_model=Compendium,
+    dependencies=[Depends(rate_limited)],
+    summary="Kompendium erzeugen",
+)
 def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
     """Generate the compendium for a topic or a collection: the requested parts, with the requested switches."""
     service = get_service(request)

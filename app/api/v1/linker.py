@@ -36,7 +36,12 @@ NAMED_ORIGINS = {"primary", "same_topic"}  # what the text itself names; the res
 PRIMARY_TYPE, RELATED_TYPE = "TOPIC", "RELATED"
 
 
-@router.post("/linker", response_model=LinkerResponse, dependencies=[Depends(rate_limited)])
+@router.post(
+    "/linker",
+    response_model=LinkerResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Artikel zu einem Text aus den Archiven (alter Vertrag)",
+)
 def linker(payload: LinkerRequest, request: Request) -> LinkerResponse:
     """Entities of a text: the resolved article and, with ``MODE=generate``, the articles around it."""
     text = payload.text.strip()

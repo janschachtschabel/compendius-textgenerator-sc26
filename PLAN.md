@@ -971,7 +971,11 @@ stehen in `statistics.notes`, `config.compendium` nimmt zusätzlich `template_id
 `knowledge_collection_id`, `subject`, `parts`, `extraction` und `generation`. Der Linker liest die Archive
 (stabile IDs, Lead als `extract`, keine Wikidata-, Kategorie- und Bildangaben), QA schreibt mit LLM und sonst aus
 Fragevorlagen, `split` beachtet endlich `chunk_size`, `translate` braucht das LLM (sonst 503, bei Fehler 502).
-Der Umstieg steht in `MIGRATION.md`. Offen in Phase 6: Teil-Regeneration, 504 und `parts_status`, OpenAPI-Texte.
+Der Umstieg steht in `MIGRATION.md`. Jede Antwort trägt `parts_status` je angefragtem Teil (`ok`, `empty`,
+`incomplete`, `unavailable`), auch im Audit und in den Statistiken von v1. Offen in Phase 6: Teil-Regeneration;
+ein 504 ist bisher nicht nötig, weil jede Phase bei erschöpfter Frist abbaut statt zu hängen (LLM-Arbeit und
+Materialtexte enden, Teil 3 kürzt seine Listen), und ein fertiges Kompendium mit 504 zu verwerfen wäre
+Verschwendung; sollte ein Aufrufer den Statuscode brauchen, ist das eine bewusste Entscheidung.
 
 ### 8.2 Neue Endpunkte (v2)
 

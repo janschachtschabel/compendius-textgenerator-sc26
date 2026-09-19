@@ -225,6 +225,9 @@ class AuditReport(BaseModel):
     knowledge: dict[str, Any] | None = Field(
         None, description="Knowledge collection: materials considered, used, failed"
     )
+    parts_status: dict[str, str] = Field(
+        default_factory=dict, description="Per requested part: ok, empty, incomplete or unavailable"
+    )
 
 
 class CollectionPart(BaseModel):
@@ -265,4 +268,8 @@ class Compendium(BaseModel):
     collection: CollectionPart | None = None
     sources: list[SourceRef] = Field(default_factory=list)
     markdown: str = ""
+    parts_status: dict[str, str] = Field(
+        default_factory=dict,
+        description="Per requested part: ok (whole), empty (nothing found), incomplete (cut short), unavailable",
+    )
     audit: AuditReport
