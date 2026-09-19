@@ -70,6 +70,7 @@ class PreparedTopic:
     collection: CollectionInfo | None = None
     knowledge: dict[str, Any] | None = None
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
+    subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -165,6 +166,8 @@ class CompendiumService:
             knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
             lap("knowledge")
 
+        # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
+        subtopics = _subtopics(sources, next((s for s in sources if s.is_primary), sources[0] if sources else None))
         chunks, sources, truncated = _segment_corpus(sources, lexicon, self.settings.corpus_max_chunks)
         lap("segment")
         return PreparedTopic(
@@ -179,6 +182,7 @@ class CompendiumService:
             collection=collection,
             knowledge=knowledge,
             chunks_truncated=truncated,
+            subtopics=subtopics,
         )
 
     def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
@@ -296,7 +300,7 @@ class CompendiumService:
             curricula = self.curricula.build(
                 title=topic,
                 aliases=list(primary.aliases) if primary else [],
-                subtopics=_subtopics(sources, primary),
+                subtopics=prepared.subtopics,
                 subject=prepared.subject,
                 facets_visible=facets_visible,
             )

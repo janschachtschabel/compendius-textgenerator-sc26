@@ -54,6 +54,22 @@ def test_parts_without_world_skip_part_one(service: CompendiumService, settings:
     assert "match" not in result.audit.timings_ms and "synthesize" not in result.audit.timings_ms
 
 
+def test_the_chunk_cap_does_not_cost_part_two_its_subtopics(
+    sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
+) -> None:
+    # CORPUS_MAX_CHUNKS decides which paragraphs part 1 uses; part 2 searches for the sub-topics of the whole corpus.
+    keywords: dict[int, list[str]] = {}
+    for cap in (5000, 20):
+        settings = make_settings(sample_zims.values(), tmp_path / f"state-{cap}", corpus_max_chunks=cap)
+        service = build_service(settings, registry, TemplateManager())
+        result = service.generate(GenerateRequest(topic="Optik", parts=["world", "curricula"]))
+        assert result.curricula is not None
+        keywords[cap] = result.curricula.keywords
+    assert result.audit.chunks_truncated > 0  # the cap of 20 bites
+    assert "Geometrische Optik" in keywords[5000]
+    assert keywords[20] == keywords[5000]
+
+
 def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
 ) -> None:
