@@ -134,3 +134,27 @@ def test_a_repository_that_ignores_the_offset_is_not_paged_to_the_cap() -> None:
     client = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2)
     assert len(client.references(OPTIK)) == 2
     assert len(requests) == 2  # the second page brought nothing new; MAX_PAGES pages took about 80 s before
+
+
+def test_overlapping_pages_keep_the_listing_going() -> None:
+    def overlapping(request: httpx.Request) -> httpx.Response:
+        skip = int(request.url.params["skipCount"])
+        start = max(0, skip - 1)  # every page repeats the last reference of the one before
+        nodes = [
+            {"ref": {"id": f"00000000-0000-4000-8000-{i:012d}"}, "properties": {}} for i in range(start, start + 2)
+        ]
+        return httpx.Response(200, json={"references": nodes, "pagination": {"total": 7}})
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(overlapping), page_size=2)
+    assert len(client.references(OPTIK)) == 7  # a repeated id is no reason to stop
+
+
+def test_the_warning_names_the_page_that_repeats(caplog: pytest.LogCaptureFixture) -> None:
+    def same_page(request: httpx.Request) -> httpx.Response:
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes, "pagination": {"total": 5000}})
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2)
+    with caplog.at_level("WARNING"):
+        client.references(OPTIK)
+    assert "offset 2 " in caplog.text  # the page requested with skipCount=2, to be reproduced with curl

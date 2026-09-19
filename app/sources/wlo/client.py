@@ -122,7 +122,9 @@ class EduSharingClient:
             if not items or len(items) < self._page_size or (total is not None and skip >= total):
                 return refs
             if len(refs) == known:  # a full page without a new id: the repository ignores skipCount
-                log.warning("collection %s: the page at offset %d repeats earlier references", collection_id, skip)
+                log.warning(
+                    "collection %s: the page at offset %d repeats earlier references", collection_id, skip - len(items)
+                )
                 return refs
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
         return refs
