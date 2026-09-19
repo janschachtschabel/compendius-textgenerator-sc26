@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import time
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -161,7 +161,8 @@ class CompendiumService:
         normalized = normalize_topic(request.topic or (derived.topic if derived else ""))
         context = [*normalized.context, *(derived.context if derived else [])]
         resolution = self.registry.resolve_topic(normalized.topic, context=context, query=normalized.query)
-        needs_corpus = bool({"world", "curricula"} & set(request.parts))
+        # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not
+        needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
         if not resolution.resolved and needs_corpus:
             raise TopicNotFoundError(resolution)
         lap("resolve")
@@ -295,9 +296,9 @@ class CompendiumService:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
         if request.matcher:  # before any work; the configured default was checked at start
             ensure_strategy(request.matcher)
-        unconfigured = self._unconfigured(request.parts)
-        if len(unconfigured) == len(set(request.parts)):  # an empty compendium would look like a success
-            raise PartsUnavailableError("; ".join(unconfigured.values()))
+        unmakeable = self._unmakeable(request)
+        if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
+            raise PartsUnavailableError("; ".join(unmakeable.values()))
         prepared = self.prepare(request, deadline)
         want_world = "world" in request.parts
         # Mode and matcher describe how part 1 is written; parts 2 and 3 alone are rule-based by definition
@@ -410,13 +411,15 @@ class CompendiumService:
             audit=audit,
         )
 
-    def _unconfigured(self, parts: Sequence[str]) -> dict[str, str]:
-        """Requested parts this server cannot generate, with the reason."""
+    def _unmakeable(self, request: GenerateRequest) -> dict[str, str]:
+        """Requested parts this request cannot get from this server, with the reason."""
         reasons: dict[str, str] = {}
-        if "curricula" in parts and self.curricula is None:
+        if "curricula" in request.parts and self.curricula is None:
             reasons["curricula"] = "Teil 2 ist in diesem Dienst nicht eingerichtet"
-        if "collection" in parts and self.collections is None:
+        if "collection" in request.parts and self.collections is None:
             reasons["collection"] = "Teil 3 braucht ein edu-sharing-Repository (EDU_SHARING_BASE_URL)"
+        elif "collection" in request.parts and not request.collection_id:
+            reasons["collection"] = "Teil 3 braucht collection_id"
         return reasons
 
     def _facets_visible(self, request: GenerateRequest) -> bool:

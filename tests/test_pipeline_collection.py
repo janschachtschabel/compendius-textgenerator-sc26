@@ -8,7 +8,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.domain.requests import GenerateRequest
-from app.service import CompendiumService
+from app.service import CompendiumService, PartsUnavailableError
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
@@ -139,3 +139,21 @@ def test_part_three_alone_needs_no_article_in_the_archives(with_collections: Com
     assert result.collection is not None and result.collection.available
     assert result.topic == "Xyzzyplomb" and result.resolution.title is None  # tried, not needed
     assert result.sources == [] and "corpus" not in result.audit.timings_ms  # no corpus built for nothing
+
+
+def test_parts_this_service_cannot_make_are_refused_not_answered_empty(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(with_collections, "curricula", None)  # a service without part 2
+    with pytest.raises(PartsUnavailableError, match="collection_id"):  # was a compendium with parts: []
+        with_collections.generate(GenerateRequest(topic="Optik", parts=["curricula", "collection"]))
+
+
+def test_an_unconfigured_part_two_does_not_make_part_three_need_an_article(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(with_collections, "curricula", None)
+    request = GenerateRequest(topic="Xyzzyplomb", collection_id=OPTIK, parts=["curricula", "collection"])
+    result = with_collections.generate(request)  # a TopicNotFoundError (404) before
+    assert result.collection is not None and result.collection.available
+    assert result.sources == [] and "corpus" not in result.audit.timings_ms
