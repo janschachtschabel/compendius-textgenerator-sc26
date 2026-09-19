@@ -13,6 +13,6 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets: ["api:8000"]
-    # Mit METRICS_TOKEN verlangt /metrics ein Bearer-Token:
+    # Mit METRICS_TOKEN verlangt /metrics ein Bearer-Token; die Datei monitoring/metrics_token ist in .gitignore:
     # authorization:
     #   credentials_file: /etc/prometheus/metrics_token
