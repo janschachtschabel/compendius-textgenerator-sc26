@@ -1220,11 +1220,24 @@ API.
   Repository sie führt; fehlt eine Angabe, wird nichts ergänzt.
 - **D31 (2026-09-18)** Überwachung über Prometheus. `GET /metrics` liefert Zustandswerte, die bei jedem Abruf
   aus Registry, Cache und Statusdateien gelesen werden (in jedem Worker gleich bis auf `kompendium_llm_available`,
-  den Stand des antwortenden Workers; unbekannte Werte fehlen statt 0), und Laufzeitmetriken, die über `PROMETHEUS_MULTIPROC_DIR` über alle Worker summiert werden. Labels nur aus
-  festen Mengen. Die Kompendium-Metriken stammen aus dem Audit, der Service kennt Prometheus nicht. Alarmregeln
+  den Stand des antwortenden Workers; unbekannte Werte fehlen statt 0), und Laufzeitmetriken, die über
+  `PROMETHEUS_MULTIPROC_DIR` über alle Worker summiert werden. Labels nur aus festen Mengen. Die Kompendium-Metriken stammen aus dem Audit, der Service kennt Prometheus nicht. Alarmregeln
   mit promtool-Tests in `monitoring/`, Prometheus als Compose-Profil `monitoring`. Optionaler Schutz über
   `METRICS_TOKEN`, weil Budget- und Archivstand intern sind. Nicht Teil des Repos: Alertmanager und Dashboards.
   Neue Abhängigkeit prometheus-client (offizieller Client des Prometheus-Projekts, Apache-2.0/BSD-2).
+- **D32 (2026-09-19)** Nach dem Review der Audit-Behebung (Nachtrag 2 in `docs/audits/2026-09-18-audit.md`):
+  Proben, Archivprüfung und `/metrics` laufen in vier eigenen Threads je Worker (`app/api/system_threads.py`),
+  damit Kompendium-Anfragen, die alle 40 Standard-Threads halten, weder einen Healthcheck noch einen Scrape
+  aufhalten. Öffentliche Statusendpunkte fassen den Stand der Sidecars ohne Fehlertexte zusammen; die Texte
+  bleiben in den Statusdateien, in `GET /api/v2/zim/progress` (Admin) und im Log. Ein ZIM-Sync hält die
+  Sperrdatei `sync.lock` mit Lebenszeichen, endet bei einer Ausnahme mit `state: error` und wird dann nach einer
+  Stunde wiederholt; `KompendiumZimSyncHangs` meldet einen laufenden Sync, der sechs Stunden nichts schreibt.
+  `KompendiumLlmUnavailable` stützt sich auf die über alle Worker summierten Kompendium-Zähler. `mode` und
+  `matcher` betreffen nur Teil 1: ohne ihn ist ein Kompendium regelbasiert; Teil 3 allein braucht keinen
+  Artikel in den Archiven; ein Auftrag ohne erzeugbaren Teil ist 422 (nur `collection` ohne `collection_id`)
+  oder 503 (Teil nicht eingerichtet). Das Image baut auf dem per Digest gepinnten `python:3.13-slim-bookworm`
+  (Dependabot schlägt neue Digests vor), uv gibt es nur im Builder, und der Start `python -m app.serve` löscht
+  im Metrik-Verzeichnis nur die Dateien von prometheus_client.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
@@ -1429,3 +1442,15 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   Sync-Läufe, Lehrplan-Cache und Harvest, edu-sharing, LLM und Tagesbudget) und Laufzeitmetriken (Anfragen je
   Routen-Template, Modi, Phasen, Teile, Wissens-Sammlung, LLM-Verbrauch und Belegprüfung), summiert über die
   Worker; zwölf Alarmregeln mit promtool-Tests, Compose-Profil `monitoring`, `METRICS_ENABLED` und `METRICS_TOKEN`.
+- **2026-09-19, Fassung v14 (Review der Behebung, D32):** Review von `3e6dd10..c0fe5fd` (0 kritisch, 4 schwer,
+  21 klein, 7 geringfügig, dazu 9 ältere Punkte), behoben in 44 Commits (Code-Korrekturen mit zuerst rotem
+  Test, Build-Änderungen am gebauten Image geprüft): Unterthemen von Teil 2 vor der Chunk-Kappung, eigene Threads für Proben und `/metrics`, ZIM-Sync mit Endstatus, Sperre,
+  Wiederholung und `KompendiumZimSyncHangs`, Templates robust gegen JSON ohne Objekt und verschwindende
+  Dateien, öffentliche Status ohne Fehlertexte, Metalink-Host nach Weiterleitungen geprüft und auf 1 MiB
+  begrenzt, Start ohne `rm -rf`, Sidecars ohne API-Metriken, Methode als Label begrenzt, Fehlerquote ohne
+  Proben, LLM-Alarm aus Zählern, 13 Alarmregeln mit je einem auslösenden und einem ruhigen promtool-Fall und
+  Abgleich aller Metriknamen gegen einen echten Abruf (die Angabe „zwölf Alarmregeln mit promtool-Tests“ in
+  v13 war zu hoch gegriffen: fünf Regeln hatten keinen Testfall), Lehrplan-Cache mit Zustand, edu-sharing-Cache
+  mit Index, Formatversion und Start ohne lesbare Datei, Auflistung in der Frist und ohne Endlosseiten,
+  Teile-Semantik (D32), Basis-Image per Digest mit Dependabot, Tests ohne lokale `.env`. Testsuite 449 Tests,
+  93,2 % Zweigabdeckung, Ruff und mypy strict grün.
