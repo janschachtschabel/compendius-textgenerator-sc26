@@ -45,7 +45,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             print("Vorschläge: " + ", ".join(exc.resolution.alternatives), file=sys.stderr)
         return 1
     except EduSharingError as exc:
-        print(f"edu-sharing: {exc}", file=sys.stderr)
+        print(str(exc), file=sys.stderr)  # the message names the repository
         return 1
     except PartsUnavailableError as exc:
         print(f"Kein angefragter Teil ist erzeugbar: {exc}", file=sys.stderr)

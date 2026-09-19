@@ -3,11 +3,15 @@
 from collections.abc import Iterator
 from pathlib import Path
 
+import httpx
 import pytest
 
 from app.cli import main
 from app.settings import get_settings
+from app.sources.wlo.client import EduSharingClient
+from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import ROOT
+from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 
 @pytest.fixture
@@ -41,3 +45,15 @@ def test_generate_rejects_an_unknown_mode(cli_env: Path) -> None:
     with pytest.raises(SystemExit) as info:
         main(["generate", "--topic", "Optik", "--mode", "turbo"])
     assert info.value.code == 2
+
+
+def test_generate_reports_a_repository_failure_once(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository(fail=True)))
+    builder = CollectionBuilder(client=client, cache=None)
+    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)  # imported when the command runs
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    assert main(["generate", "--collection-id", OPTIK, *zim_args]) == 1
+    err = capsys.readouterr().err
+    assert "edu-sharing nicht erreichbar" in err and err.count("edu-sharing") == 1, err

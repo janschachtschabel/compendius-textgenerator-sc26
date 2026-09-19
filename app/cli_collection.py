@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from app.settings import get_settings
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, validate_node_id
+from app.sources.wlo.client import EduSharingError, validate_node_id
 
 
 def cmd_overview(args: argparse.Namespace) -> int:
@@ -24,10 +24,7 @@ def cmd_overview(args: argparse.Namespace) -> int:
         return 1
     try:
         part = builder.overview(args.collection_id)
-    except CollectionNotFoundError as exc:
-        print(str(exc), file=sys.stderr)
-        return 1
-    except EduSharingError as exc:
+    except EduSharingError as exc:  # CollectionNotFoundError included; the messages name the repository
         print(str(exc), file=sys.stderr)
         return 1
     if args.out:
