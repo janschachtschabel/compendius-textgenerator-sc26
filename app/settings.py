@@ -9,7 +9,7 @@ from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.domain.requests import Mode as LlmMode
+from app.domain.requests import Generation
 
 Provider = Literal["openai", "academiccloud"]
 FacetsLevel = Literal["minimal", "full"]
@@ -101,8 +101,8 @@ class Settings(BaseSettings):
 
     # --- LLM (optional, via b-api) -------------------------------------------------------------
     llm_enabled: bool = Field(False, description="Enable b-api usage at all")
-    llm_mode_default: LlmMode = Field("rule-based", description="Default generation mode")
-    llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots written by the LLM in hybrid-fast mode")
+    llm_generation_default: Generation = Field("rule-based", description="Default of the generation switch")
+    llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
     b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")
     b_api_base_url: str = Field("https://b-api.staging.openeduhub.net", description="b-api host, no path")
     b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")

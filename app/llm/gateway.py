@@ -1,7 +1,8 @@
-"""Gateway between the orchestrator and the LLM layer (PLAN.md 7): availability, modes, synthesizer, router.
+"""Gateway between the orchestrator and the LLM layer (PLAN.md 7): availability, switches, synthesizer, router.
 
 The service asks the gateway whether the model may be used (start-up check against ``/models``, re-checked
-every ``RECHECK_S`` while unavailable), which slots a mode writes with the LLM, and for a per-request budget.
+every ``RECHECK_S`` while unavailable), which slots the generation switch writes with the LLM, and for a
+per-request budget.
 """
 
 from __future__ import annotations
@@ -25,7 +26,7 @@ RECHECK_S = 600.0  # an unavailable model is re-checked at most every ten minute
 
 @dataclass(frozen=True)
 class LlmOptions:
-    fast_sections: tuple[str, ...] = ("sc26_1", "sc26_11")  # slots hybrid-fast writes with the LLM
+    fast_sections: tuple[str, ...] = ("sc26_1", "sc26_11")  # slots generation=llm-fast writes with the LLM
     router_enabled: bool = True
     router_max_chunks: int = 12
     concurrency: int = 4
@@ -60,7 +61,7 @@ class LlmGateway:
         if check.ok:
             log.info("LLM ready: %s", check.message)
         else:
-            log.warning("LLM unavailable, hybrid requests fall back to the rule-based mode: %s", check.message)
+            log.warning("LLM unavailable, LLM requests fall back to the rule-based path: %s", check.message)
         return check
 
     @property
@@ -80,12 +81,12 @@ class LlmGateway:
             return SUSPENDED_MESSAGE
         return "Modellprüfung steht aus"
 
-    def llm_slots(self, mode: str, content_slot_ids: Iterable[str]) -> set[str]:
-        """Slot ids the given mode writes with the LLM (D10)."""
+    def generation_slots(self, generation: str, content_slot_ids: Iterable[str]) -> set[str]:
+        """Slot ids the LLM writes under the given generation switch (D10, D33)."""
         ids = set(content_slot_ids)
-        if mode == "hybrid-quality":
+        if generation == "llm":
             return ids
-        if mode == "hybrid-fast":
+        if generation == "llm-fast":
             return ids & set(self.options.fast_sections)
         return set()
 

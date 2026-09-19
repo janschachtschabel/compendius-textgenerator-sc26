@@ -33,7 +33,7 @@ Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Architektur und 
 `KompendiumZimSyncStale`,
 `KompendiumZimSyncHangs`,
 `KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
-`KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumHybridFallbacks`. Nach einer Änderung
+`KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
 will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`).

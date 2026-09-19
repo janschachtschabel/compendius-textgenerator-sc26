@@ -72,14 +72,20 @@ def test_templates_and_strategies(client: TestClient) -> None:
     assert status["missing_required"] == []
 
 
-def test_hybrid_request_without_llm_falls_back_and_says_so(client: TestClient) -> None:
-    payload = {"topic": "Optik", "mode": "hybrid-fast", "parts": ["world"], "target_length": 8000}
+def test_llm_request_without_llm_falls_back_and_says_so(client: TestClient) -> None:
+    payload = {"topic": "Optik", "generation": "llm-fast", "parts": ["world"], "target_length": 8000}
     response = client.post("/api/v2/compendium", json=payload)
     assert response.status_code == 200, response.text
     body = response.json()
-    assert body["mode"] == "rule-based" and body["frontmatter"]["mode_requested"] == "hybrid-fast"
+    assert body["generation"] == "rule-based" and body["frontmatter"]["generation_requested"] == "llm-fast"
     assert "konfiguriert" in body["audit"]["llm"]["note"] and body["audit"]["llm_tokens"] is None
-    assert client.post("/api/v2/compendium", json={"topic": "Optik", "mode": "turbo"}).status_code == 422
+    assert client.post("/api/v2/compendium", json={"topic": "Optik", "generation": "turbo"}).status_code == 422
+
+
+def test_the_former_mode_field_is_rejected_with_a_hint(client: TestClient) -> None:
+    response = client.post("/api/v2/compendium", json={"topic": "Optik", "mode": "hybrid-fast"})
+    assert response.status_code == 422
+    assert "generation" in response.text and "D33" in response.text
 
 
 def test_health_reports_the_llm_gateway(settings: Settings) -> None:

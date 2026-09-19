@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
 Part = Literal["world", "curricula", "collection"]
-Mode = Literal["rule-based", "hybrid-fast", "hybrid-quality"]  # generation modes (PLAN.md 4.7, D10)
+Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 
@@ -36,15 +36,24 @@ class GenerateRequest(BaseModel):
     language: str = Field("de", pattern="^de$")
     template_id: str | None = Field(None, description="Template id; default from settings")
     matcher: str | None = Field(None, description="Matching strategy; default from settings")
-    mode: Mode | None = Field(
+    generation: Generation | None = Field(
         None,
-        description="rule-based (no LLM), hybrid-fast (few LLM calls) or hybrid-quality; default LLM_MODE_DEFAULT. "
-        "Hybrid modes fall back to rule-based when the b-api is not configured or not available",
+        description="Who writes the blocks of part 1: rule-based (verbatim excerpts), llm-fast (the LLM writes the "
+        "blocks of LLM_FAST_SECTIONS) or llm (every content block); default LLM_GENERATION_DEFAULT. Falls back to "
+        "rule-based when the b-api is not configured or not available",
     )
     target_length: int = Field(12_000, ge=2_000, le=60_000, description="Approximate total characters for part 1")
     empty_slot_policy: Literal["omit", "note"] | None = Field(None, description="Override the template policy")
     facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
     max_articles: int | None = Field(None, ge=1, le=50)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _no_mode(cls, data: Any) -> Any:
+        # Unknown fields are ignored; a request that still asks for a mode must not silently run rule-based
+        if isinstance(data, dict) and "mode" in data:
+            raise ValueError("mode gibt es nicht mehr: generation wählt, wer die Bausteine schreibt (PLAN.md D33)")
+        return data
 
     @model_validator(mode="after")
     def _topic_or_collection(self) -> GenerateRequest:

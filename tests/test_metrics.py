@@ -227,19 +227,19 @@ def test_a_compendium_records_its_mode_phases_and_parts(client: TestClient) -> N
     def delta(name: str, **labels: str) -> float:
         return value(after, name, **labels) - value(before, name, **labels)
 
-    modes = {"mode_requested": "rule-based", "mode_used": "rule-based"}
-    assert delta("kompendium_compendium_requests_total", **modes) == 1
+    assert delta("kompendium_compendium_requests_total", llm_requested="false", llm_used="false") == 1
     for phase in ("resolve", "corpus", "match", "synthesize", "curricula"):
         assert delta("kompendium_compendium_phase_seconds_count", phase=phase) == 1
     available = "true" if response.json()["curricula"]["available"] else "false"
     assert delta("kompendium_parts_total", part="curricula", available=available) == 1
 
 
-def test_llm_usage_of_a_hybrid_compendium_is_counted(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
     gateway = make_gateway(FakeBApi(answer_from_evidence))
     monkeypatch.setattr(client.app.state.service, "llm", gateway)  # type: ignore[attr-defined]
     before = scrape(client)
-    response = client.post("/api/v2/compendium", json={"topic": "Optik", "mode": "hybrid-fast", "parts": ["world"]})
+    payload = {"topic": "Optik", "generation": "llm-fast", "parts": ["world"]}
+    response = client.post("/api/v2/compendium", json=payload)
     assert response.status_code == 200
     audit = response.json()["audit"]
     after = scrape(client)
@@ -251,9 +251,10 @@ def test_llm_usage_of_a_hybrid_compendium_is_counted(client: TestClient, monkeyp
     assert delta("kompendium_llm_tokens_total", type="prompt") == audit["llm_tokens"]["prompt"]
     assert delta("kompendium_llm_tokens_total", type="completion") == audit["llm_tokens"]["completion"]
     assert delta("kompendium_llm_calls_total") == audit["llm_tokens"]["calls"]
-    assert delta("kompendium_llm_sections_total", outcome="written") == len(audit["llm"]["sections"])
-    assert delta("kompendium_llm_sentences_total", outcome="dropped") == audit["llm"]["dropped_sentences"]
-    assert delta("kompendium_compendium_requests_total", mode_requested="hybrid-fast", mode_used="hybrid-fast") == 1
+    generation = audit["llm"]["generation"]
+    assert delta("kompendium_llm_sections_total", outcome="written") == len(generation["sections"])
+    assert delta("kompendium_llm_sentences_total", outcome="dropped") == generation["dropped_sentences"]
+    assert delta("kompendium_compendium_requests_total", llm_requested="true", llm_used="true") == 1
 
 
 def test_metrics_can_require_a_token_or_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:

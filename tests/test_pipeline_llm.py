@@ -1,4 +1,4 @@
-"""Hybrid modes in the pipeline: LLM sections carry only cited sentences, everything else falls back to rules."""
+"""LLM generation in the pipeline: LLM sections carry only cited sentences, everything else falls back to rules."""
 
 from __future__ import annotations
 
@@ -68,12 +68,12 @@ def _content_sections(result: Any) -> list[Any]:
     return [s for s in result.sections if s.slot_key not in {"akteure", "quellen", "glossar"}]
 
 
-def test_hybrid_fast_writes_the_fast_sections_with_cited_sentences_only(
+def test_llm_fast_writes_the_fast_sections_with_cited_sentences_only(
     with_llm: CompendiumService, fake: FakeBApi
 ) -> None:
-    result = with_llm.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
-    assert result.mode == "hybrid-fast" and result.frontmatter["mode"] == "hybrid-fast"
-    assert "mode_requested" not in result.frontmatter
+    result = with_llm.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
+    assert result.generation == "llm-fast" and result.frontmatter["generation"] == "llm-fast"
+    assert "generation_requested" not in result.frontmatter
     by_id = {s.slot_id: s for s in result.sections}
     definition = by_id["sc26_1"]
     assert definition.status is SectionStatus.LLM
@@ -101,24 +101,24 @@ def test_hybrid_fast_writes_the_fast_sections_with_cited_sentences_only(
     )
     llm = result.frontmatter["llm"]
     assert llm["provider"] == "openai" and llm["model"] == "gpt-5.6-luna"
-    assert SECTION_PROMPT in llm["prompts"] and "sc26_1" in llm["sections"]
+    assert SECTION_PROMPT in llm["prompts"] and "sc26_1" in llm["generation"]["sections"]
     tokens = result.audit.llm_tokens
     assert tokens is not None and tokens["calls"] >= 1 and tokens["total"] == 24 * tokens["calls"]
-    assert result.audit.llm is not None and result.audit.llm["mode"] == "hybrid-fast"
+    assert result.audit.llm is not None and result.audit.llm["generation"]["used"] == "llm-fast"
     assert sum(1 for b in fake.bodies if not b["messages"][1]["content"].startswith("Bausteine:")) == len(llm_sections)
 
 
-def test_hybrid_quality_writes_every_filled_content_section(with_llm: CompendiumService) -> None:
-    result = with_llm.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
+def test_llm_generation_writes_every_filled_content_section(with_llm: CompendiumService) -> None:
+    result = with_llm.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     filled = [s for s in _content_sections(result) if s.text]
     assert filled and all(s.status is SectionStatus.LLM for s in filled)
     for section in filled:  # text markers and citations agree in every section, not only in the first (offset 0)
         assert {int(n) for n in MARKER_RE.findall(section.text)} == {c.number for c in section.citations}
     numbers = [c.number for s in result.sections for c in s.citations]
     assert numbers == list(range(1, len(numbers) + 1))
-    assert result.mode == "hybrid-quality"
-    assert result.audit.llm is not None and result.audit.llm["fallbacks"] == {}
-    assert "sc26_1" in result.frontmatter["llm"]["sections"]
+    assert result.generation == "llm"
+    assert result.audit.llm is not None and result.audit.llm["generation"]["fallbacks"] == {}
+    assert "sc26_1" in result.frontmatter["llm"]["generation"]["sections"]
     tokens = result.audit.llm_tokens
     assert tokens is not None and tokens["calls"] >= len(filled)
 
@@ -127,49 +127,53 @@ def test_unreachable_api_at_the_check_falls_back_to_rule_based(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(transport_failures=100)))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
-    assert result.mode == "rule-based" and result.frontmatter["mode"] == "rule-based"
-    assert result.frontmatter["mode_requested"] == "hybrid-fast"
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
+    assert result.generation == "rule-based" and result.frontmatter["generation"] == "rule-based"
+    assert result.frontmatter["generation_requested"] == "llm-fast"
     assert all(s.status is not SectionStatus.LLM for s in result.sections)
     assert result.audit.llm is not None and "erreichbar" in result.audit.llm["note"]
     assert result.audit.llm_tokens is None
 
 
-def test_failing_calls_fall_back_per_section_and_report_the_mode_actually_used(
+def test_failing_calls_fall_back_per_section_and_report_the_generation_actually_used(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     fake = FakeBApi(answer_from_evidence, statuses=[400] * 40)
     monkeypatch.setattr(service, "llm", make_gateway(fake))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
-    assert result.mode == "rule-based" and result.frontmatter["mode_requested"] == "hybrid-fast"
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
+    assert result.generation == "rule-based" and result.frontmatter["generation_requested"] == "llm-fast"
     assert all(s.status is not SectionStatus.LLM for s in result.sections)
-    fallbacks = result.audit.llm["fallbacks"] if result.audit.llm else {}
+    fallbacks = result.audit.llm["generation"]["fallbacks"] if result.audit.llm else {}
     assert "sc26_1" in fallbacks and "b-api" in fallbacks["sc26_1"]
-    assert result.frontmatter["llm"]["fallbacks"] == fallbacks
+    assert result.frontmatter["llm"]["generation"]["fallbacks"] == fallbacks
 
 
 def test_exhausted_budget_falls_back_without_calls(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(answer_from_evidence)
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.mode == "rule-based"
-    assert result.audit.llm is not None and all("Budget" in reason for reason in result.audit.llm["fallbacks"].values())
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.generation == "rule-based"
+    assert result.audit.llm is not None and all(
+        "Budget" in reason for reason in result.audit.llm["generation"]["fallbacks"].values()
+    )
     assert all(request.url.path.endswith("/models") for request in fake.requests)
 
 
-def test_hybrid_request_without_configured_llm_falls_back(service: CompendiumService) -> None:
+def test_llm_request_without_configured_llm_falls_back(service: CompendiumService) -> None:
     assert service.llm is None
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.mode == "rule-based" and result.frontmatter["mode_requested"] == "hybrid-quality"
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.generation == "rule-based" and result.frontmatter["generation_requested"] == "llm"
     assert result.audit.llm is not None and "konfiguriert" in result.audit.llm["note"]
 
 
-def test_default_mode_comes_from_the_settings(with_llm: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(with_llm.settings, "llm_mode_default", "hybrid-fast")
+def test_default_generation_comes_from_the_settings(
+    with_llm: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(with_llm.settings, "llm_generation_default", "llm-fast")
     result = with_llm.generate(GenerateRequest(topic="Optik", parts=["world"]))
-    assert result.mode == "hybrid-fast"
-    result = with_llm.generate(GenerateRequest(topic="Optik", mode="rule-based", parts=["world"]))
-    assert result.mode == "rule-based" and result.audit.llm is None
+    assert result.generation == "llm-fast"
+    result = with_llm.generate(GenerateRequest(topic="Optik", generation="rule-based", parts=["world"]))
+    assert result.generation == "rule-based" and result.audit.llm is None
 
 
 def test_gateway_status_for_health(fake: FakeBApi) -> None:
@@ -182,9 +186,9 @@ def test_gateway_status_for_health(fake: FakeBApi) -> None:
     assert status["enabled"] is True and status["available"] is True
     assert status["check"]["ok"] is True and status["model"] == "gpt-5.6-luna"
     assert status["budget"]["daily"] == 2_000_000 and status["budget"]["used_today"] == 0
-    assert gateway.llm_slots("hybrid-fast", {"sc26_1", "sc26_2", "sc26_11"}) == {"sc26_1", "sc26_11"}
-    assert gateway.llm_slots("hybrid-quality", {"sc26_1", "sc26_2"}) == {"sc26_1", "sc26_2"}
-    assert gateway.llm_slots("rule-based", {"sc26_1"}) == set()
+    assert gateway.generation_slots("llm-fast", {"sc26_1", "sc26_2", "sc26_11"}) == {"sc26_1", "sc26_11"}
+    assert gateway.generation_slots("llm", {"sc26_1", "sc26_2"}) == {"sc26_1", "sc26_2"}
+    assert gateway.generation_slots("rule-based", {"sc26_1"}) == set()
 
 
 def test_router_decision_moves_a_doubtful_chunk_into_the_chosen_section(
@@ -198,7 +202,7 @@ def test_router_decision_moves_a_doubtful_chunk_into_the_chosen_section(
         return answer_from_evidence(body)
 
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(responder)))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
     by_id = {s.slot_id: s for s in result.sections}
     assert doubtful in by_id["sc26_8"].chunk_ids and doubtful not in by_id["sc26_3"].chunk_ids
     assert result.audit.llm is not None and result.audit.llm["router"]["moved"] == 1
@@ -220,10 +224,10 @@ def test_unexpected_errors_in_the_llm_layer_never_break_the_compendium(
     assert gateway.router is not None
     monkeypatch.setattr(gateway.router, "route", boom)
     monkeypatch.setattr(service, "llm", gateway)
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.mode == "rule-based" and result.frontmatter["mode_requested"] == "hybrid-quality"
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.generation == "rule-based" and result.frontmatter["generation_requested"] == "llm"
     assert result.audit.llm is not None
-    fallbacks = result.audit.llm["fallbacks"]
+    fallbacks = result.audit.llm["generation"]["fallbacks"]
     assert fallbacks and all("unerwarteter Fehler (RuntimeError)" in reason for reason in fallbacks.values())
     assert "unerwarteter Fehler (RuntimeError)" in result.audit.llm["router"]["skipped"]
     assert all(s.status is not SectionStatus.LLM for s in result.sections)
@@ -236,7 +240,7 @@ def test_target_length_reaches_the_prompt_and_the_output_limit(
         fake = FakeBApi(answer_from_evidence)
         monkeypatch.setattr(service, "llm", make_gateway(fake, router_enabled=False))
         service.generate(
-            GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"], target_length=target_length)
+            GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"], target_length=target_length)
         )
         return next(b for b in fake.bodies if "Baustein: 1 · Themendefinition" in b["messages"][1]["content"])
 
@@ -251,9 +255,11 @@ def test_target_length_reaches_the_prompt_and_the_output_limit(
 def test_malformed_answers_fall_back_per_section(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(raw={"choices": [{"message": "kein Objekt"}], "usage": [1, 2]})
     monkeypatch.setattr(service, "llm", make_gateway(fake, router_enabled=False))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.mode == "rule-based" and result.audit.llm is not None
-    assert result.audit.llm["fallbacks"] and all("Format" in r for r in result.audit.llm["fallbacks"].values())
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.generation == "rule-based" and result.audit.llm is not None
+    assert result.audit.llm["generation"]["fallbacks"] and all(
+        "Format" in r for r in result.audit.llm["generation"]["fallbacks"].values()
+    )
 
 
 def test_gateway_rechecks_an_unavailable_model_only_after_the_interval() -> None:
@@ -297,23 +303,23 @@ def test_budget_running_out_mid_run_with_parallel_drafts(
 
     fake = FakeBApi(slow_answer)
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=3_000, router_enabled=False, concurrency=4))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     assert result.audit.llm is not None
-    written, fallbacks = result.audit.llm["sections"], result.audit.llm["fallbacks"]
+    written, fallbacks = result.audit.llm["generation"]["sections"], result.audit.llm["generation"]["fallbacks"]
     assert 1 <= len(written) <= 2 and len(fallbacks) >= 3
     assert all("Budget der Anfrage" in reason for reason in fallbacks.values())
     chat_calls = [r for r in fake.requests if r.url.path.endswith("/chat/completions")]
     assert len(chat_calls) == len(written), "a denied draft never reaches the b-api"
-    assert result.mode == "hybrid-quality"
+    assert result.generation == "llm"
 
 
 def test_request_timeout_bounds_the_llm_work(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(answer_from_evidence)
     monkeypatch.setattr(service, "llm", make_gateway(fake))
     monkeypatch.setattr(service.settings, "request_timeout_s", 5)  # less than the minimum a call needs
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.mode == "rule-based" and result.audit.llm is not None
-    fallbacks = result.audit.llm["fallbacks"]
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.generation == "rule-based" and result.audit.llm is not None
+    fallbacks = result.audit.llm["generation"]["fallbacks"]
     assert fallbacks and all("Zeitbudget" in reason for reason in fallbacks.values())
     assert "Zeitbudget" in result.audit.llm["router"]["skipped"]
     assert all(request.url.path.endswith("/models") for request in fake.requests)
@@ -323,8 +329,8 @@ def test_mark_mode_shows_conclusions_in_the_document_and_in_the_facets(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_from_evidence), mark_unsupported=True))
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-quality", parts=["world"]))
-    assert result.audit.llm is not None and result.audit.llm["marked_sentences"] >= 1
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.audit.llm is not None and result.audit.llm["generation"]["marked_sentences"] >= 1
     assert (
         "<!-- f: Evidenzgrad=Schlussfolgerung -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->"
         in result.markdown
@@ -363,6 +369,6 @@ def test_router_overrides_reuse_the_scores_of_the_first_pass(
         return matcher
 
     monkeypatch.setattr(service_module, "get_matcher", counting)
-    result = service.generate(GenerateRequest(topic="Optik", mode="hybrid-fast", parts=["world"]))
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm-fast", parts=["world"]))
     assert result.audit.llm is not None and result.audit.llm["router"]["moved"] == 1
     assert scored == ["hybrid_light"]  # the overrides only repeat the assignment, not the rankers

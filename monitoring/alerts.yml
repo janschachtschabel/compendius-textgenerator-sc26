@@ -107,28 +107,28 @@ groups:
         # Aus den summierten Zählern aller Worker: kompendium_llm_available zeigt nur den Stand des Workers, der den
         # Abruf beantwortet (letzte Modellprüfung, Schutzschalter), und sieht Antworten mit 401 oder 5xx nicht
         expr: |
-          sum(increase(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used="rule-based"}[15m])) > 0
-            and (sum(increase(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used!="rule-based"}[15m])) or vector(0)) == 0
+          sum(increase(kompendium_compendium_requests_total{llm_requested="true", llm_used="false"}[15m])) > 0
+            and (sum(increase(kompendium_compendium_requests_total{llm_requested="true", llm_used="true"}[15m])) or vector(0)) == 0
             and on() max(kompendium_llm_enabled) == 1
         for: 10m
         labels:
           severity: warning
         annotations:
-          summary: Keine Hybridanfrage erreicht das LLM, alle laufen im Regelmodus
-          description: Seit 15 Minuten fällt jede Hybridanfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
+          summary: Keine LLM-Anfrage erreicht das LLM, alle laufen im Regelmodus
+          description: Seit 15 Minuten fällt jede LLM-Anfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
       - alert: KompendiumLlmBudgetNearlySpent
         expr: kompendium_llm_tokens_used_today / kompendium_llm_daily_budget_tokens > 0.9
         labels:
           severity: warning
         annotations:
           summary: Mehr als 90 % des LLM-Tagesbudgets verbraucht
-          description: Danach laufen Hybridanfragen bis Mitternacht (UTC) im Regelmodus.
-      - alert: KompendiumHybridFallbacks
+          description: Danach laufen LLM-Anfragen bis Mitternacht (UTC) im Regelmodus.
+      - alert: KompendiumLlmFallbacks
         expr: |
-          sum(rate(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used="rule-based"}[30m])) > 0
+          sum(rate(kompendium_compendium_requests_total{llm_requested="true", llm_used="false"}[30m])) > 0
         for: 30m
         labels:
           severity: info
         annotations:
-          summary: Hybridanfragen fallen auf den Regelmodus zurück
+          summary: LLM-Anfragen fallen auf den Regelmodus zurück
           description: audit.llm.note der Antworten nennt den Grund.

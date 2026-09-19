@@ -12,14 +12,14 @@ from app.synthesis.writer import LlmReport
 
 def build_llm_report(
     gateway: LlmGateway | None,
-    mode_requested: str,
-    mode_used: str,
+    generation_requested: str,
+    generation_used: str,
     note: str | None,
     report: LlmReport | None,
     routing: RoutingResult | None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` for plain rule-based runs."""
-    if mode_requested == "rule-based" and report is None:
+    if generation_requested == "rule-based" and report is None:
         return None, None, None
     calls = (report.calls if report else 0) + (routing.calls if routing else 0)
     tokens: dict[str, int] | None = None
@@ -30,17 +30,20 @@ def build_llm_report(
             "total": (report.total_tokens if report else 0) + (routing.total_tokens if routing else 0),
             "calls": calls,
         }
-    if note is None and mode_used == "rule-based":
+    if note is None and generation_used == "rule-based":
         note = "kein Baustein per LLM geschrieben; Regelmodus verwendet"
-    audit: dict[str, Any] = {
-        "mode_requested": mode_requested,
-        "mode": mode_used,
-        "note": note,
+    generation: dict[str, Any] = {
+        "requested": generation_requested,
+        "used": generation_used,
         "sections": list(report.sections) if report else [],
         "fallbacks": dict(report.fallbacks) if report else {},
         "dropped_sentences": report.dropped_sentences if report else 0,
         "unsupported_sentences": report.unsupported_sentences if report else 0,
         "marked_sentences": report.marked_sentences if report else 0,
+    }
+    audit: dict[str, Any] = {
+        "note": note,
+        "generation": generation,
         "router": (
             {
                 "considered": routing.considered,
@@ -60,7 +63,8 @@ def build_llm_report(
     if gateway is not None:
         front["provider"] = gateway.client.provider
         front["model"] = report.model if report and report.model else gateway.client.model
-    front.update({"prompts": sorted(prompts), "sections": audit["sections"], "fallbacks": audit["fallbacks"]})
+    front["prompts"] = sorted(prompts)
+    front["generation"] = {"sections": generation["sections"], "fallbacks": generation["fallbacks"]}
     if note:
         front["note"] = note
     if routing is not None:

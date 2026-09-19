@@ -205,9 +205,9 @@ class AuditReport(BaseModel):
     sections_filled: int = 0
     sections_empty: int = 0
     citations: int = 0
-    llm_tokens: dict[str, int] | None = Field(None, description="prompt, completion, total, calls (hybrid modes)")
+    llm_tokens: dict[str, int] | None = Field(None, description="prompt, completion, total, calls (LLM switches)")
     llm: dict[str, Any] | None = Field(
-        None, description="Hybrid modes: requested and used mode, note, sections written, fallbacks, router"
+        None, description="LLM switches: generation (requested, used, blocks written, fallbacks), note, router"
     )
     knowledge: dict[str, Any] | None = Field(
         None, description="Knowledge collection: materials considered, used, failed"
@@ -243,7 +243,7 @@ class Compendium(BaseModel):
     resolution: Resolution
     template_id: str
     template_version: int
-    mode: str
+    generation: str = Field(description="Generation switch actually used: rule-based, llm-fast or llm")
     generated_at: str
     frontmatter: dict[str, Any] = Field(default_factory=dict)
     sections: list[Section] = Field(default_factory=list)

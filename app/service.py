@@ -94,7 +94,7 @@ class WorldPart:
     """Part 1 of one request: what was written, how, and what the audit reports about it."""
 
     matcher: str | None  # None when part 1 was not requested: no strategy ran
-    mode: str
+    generation: str  # the generation switch in effect: rule-based when the LLM cannot be used
     llm_note: str | None
     chunks_assigned: int = 0
     routing: RoutingResult | None = None
@@ -304,19 +304,20 @@ class CompendiumService:
             raise PartsUnavailableError("; ".join(unmakeable.values()))
         prepared = self.prepare(request, deadline)
         want_world = "world" in request.parts
-        # Mode and matcher describe how part 1 is written; parts 2 and 3 alone are rule-based by definition
-        mode_requested = (request.mode or self.settings.llm_mode_default) if want_world else "rule-based"
+        # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
+        requested = request.generation or self.settings.llm_generation_default
+        generation_requested = requested if want_world else "rule-based"
         timings = dict(prepared.timings)
         if want_world:
-            world = self._world_part(prepared, request, mode_requested, deadline, timings)
+            world = self._world_part(prepared, request, generation_requested, deadline, timings)
         else:  # no matching, no synthesis, no LLM work
-            world = WorldPart(matcher=None, mode="rule-based", llm_note=None)
+            world = WorldPart(matcher=None, generation="rule-based", llm_note=None)
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
         normalized, resolution = prepared.normalized, prepared.resolution
         sections, citations, routing = world.written.sections, world.written.citations, world.routing
-        matcher_name, mode, llm_note = world.matcher, world.mode, world.llm_note
+        matcher_name, generation, llm_note = world.matcher, world.generation, world.llm_note
         facets_visible = self._facets_visible(request)
         topic = resolution.title or normalized.topic
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
@@ -343,12 +344,12 @@ class CompendiumService:
 
         findings = lint_sections(template, sections, self.facets)
         generated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
-        # The mode actually used: a hybrid request without any LLM contribution is a rule-based compendium.
+        # The switch actually used: an LLM request without any LLM contribution is a rule-based compendium.
         llm_report = world.written.llm
         llm_contributed = bool(llm_report and llm_report.sections) or bool(routing and routing.moved)
-        mode_used = mode if llm_contributed else "rule-based"
+        generation_used = generation if llm_contributed else "rule-based"
         llm_audit, llm_tokens, llm_front = build_llm_report(
-            self.llm, mode_requested, mode_used, llm_note, llm_report, routing
+            self.llm, generation_requested, generation_used, llm_note, llm_report, routing
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -362,8 +363,8 @@ class CompendiumService:
                 "alternatives": resolution.alternatives,
             },
             template=template,
-            mode=mode_used,
-            mode_requested=mode_requested,
+            generation=generation_used,
+            generation_requested=generation_requested,
             llm=llm_front,
             generated_at=generated_at,
             zim_snapshot=self.registry.snapshot(),
@@ -403,7 +404,7 @@ class CompendiumService:
             resolution=resolution,
             template_id=template.id,
             template_version=template.version,
-            mode=mode_used,
+            generation=generation_used,
             generated_at=generated_at,
             frontmatter=frontmatter,
             sections=sections,
@@ -432,13 +433,14 @@ class CompendiumService:
         self,
         prepared: PreparedTopic,
         request: GenerateRequest,
-        mode_requested: str,
+        generation_requested: str,
         deadline: Deadline,
         timings: dict[str, int],
     ) -> WorldPart:
-        """Part 1: match the chunks, let the LLM settle close calls (hybrid modes) and write the sections."""
-        mode, llm_note = self._resolve_mode(mode_requested)
-        budget = self.llm.open_budget() if mode != "rule-based" and self.llm is not None else None
+        """Part 1: match the chunks, let the LLM settle close calls and write the sections as the switch asks."""
+        llm_note = self._llm_unavailable() if generation_requested != "rule-based" else None
+        generation = "rule-based" if llm_note else generation_requested
+        budget = self.llm.open_budget() if generation != "rule-based" and self.llm is not None else None
         matched = self.match(prepared, request.matcher, request.target_length)
         timings["match"] = matched.duration_ms
         lap = _Stopwatch(timings).lap
@@ -456,7 +458,7 @@ class CompendiumService:
             llm_job = LlmJob(
                 synthesizer=self.llm.synthesizer,
                 budget=budget,
-                slots=self.llm.llm_slots(mode, (slot.id for slot in template.content_slots())),
+                slots=self.llm.generation_slots(generation, (slot.id for slot in template.content_slots())),
                 topic=prepared.resolution.title or prepared.normalized.topic,
                 concurrency=self.llm.options.concurrency,
                 deadline=deadline,
@@ -475,27 +477,25 @@ class CompendiumService:
         lap("synthesize")
         return WorldPart(
             matcher=matched.matcher,
-            mode=mode,
+            generation=generation,
             llm_note=llm_note,
             chunks_assigned=sum(len(v) for v in matched.assignment.assigned.values()),
             routing=routing,
             written=written,
         )
 
-    def _resolve_mode(self, requested: str) -> tuple[str, str | None]:
-        """The mode the request can run in: hybrid modes need a configured and available LLM (D3, D10)."""
-        if requested == "rule-based":
-            return requested, None
+    def _llm_unavailable(self) -> str | None:
+        """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""
         if self.llm is None:
-            return "rule-based", "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
+            return "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
         if not self.llm.available:
-            return "rule-based", f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
-        return requested, None
+            return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
+        return None
 
     def _route(
         self, prepared: PreparedTopic, doubts: list[Doubt], budget: RequestBudget | None, deadline: Deadline
     ) -> RoutingResult | None:
-        """Let the LLM decide the close calls of the policy (hybrid modes with an enabled router)."""
+        """Let the LLM decide the close calls of the policy (LLM generation with an enabled router)."""
         if budget is None or self.llm is None or self.llm.router is None or not doubts:
             return None
         chunks = {chunk.chunk_id: chunk for chunk in prepared.chunks}

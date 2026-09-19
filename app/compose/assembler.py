@@ -12,12 +12,10 @@ from app.domain.models import Section, SectionStatus, SourceRef
 from app.synthesis.facets import format_marker, format_visible
 from app.templates.schema import Template
 
-AI_DISCLOSURE = {
+AI_DISCLOSURE = {  # by the generation switch actually used
     "rule-based": "Maschinell erstellter Text (regelbasiert-extraktiv) nach Art. 50 EU AI Act",
-    "hybrid-fast": "Maschinell erstellter Text, Teile KI-generiert (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
-    "hybrid-quality": (
-        "KI-generierter Text auf Basis belegter Quellen (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act"
-    ),
+    "llm-fast": "Maschinell erstellter Text, Teile KI-generiert (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
+    "llm": "KI-generierter Text auf Basis belegter Quellen (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
 }
 
 
@@ -38,16 +36,16 @@ def build_frontmatter(
     topic: str,
     resolution: Mapping[str, Any],
     template: Template,
-    mode: str,
+    generation: str,
     generated_at: str,
     zim_snapshot: Sequence[Mapping[str, Any]],
     matcher: str | None,
     parts: Sequence[str],
-    mode_requested: str | None = None,
+    generation_requested: str | None = None,
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``mode`` is the mode actually used; ``mode_requested`` appears only when a hybrid request fell back, and
-    ``matcher`` only when part 1 was generated."""
+    """``generation`` is the switch actually used; ``generation_requested`` appears only when an LLM request fell
+    back, and ``matcher`` only when part 1 was generated."""
     frontmatter: dict[str, Any] = {
         "kompendium_version": 2,
         "topic": topic,
@@ -55,10 +53,13 @@ def build_frontmatter(
         "template": {"id": template.id, "version": template.version},
         "parts": list(parts),
         "generated_at": generated_at,
-        "mode": mode,
+        "generation": generation,
         **({"matcher": matcher} if matcher is not None else {}),
-        "ai_disclosure": AI_DISCLOSURE.get(mode, AI_DISCLOSURE["rule-based"]),
-        "review": {"status": "maschinell-extraktiv" if mode == "rule-based" else "ki-generiert", "interval_months": 12},
+        "ai_disclosure": AI_DISCLOSURE.get(generation, AI_DISCLOSURE["rule-based"]),
+        "review": {
+            "status": "maschinell-extraktiv" if generation == "rule-based" else "ki-generiert",
+            "interval_months": 12,
+        },
         "sources_snapshot": [dict(s) for s in zim_snapshot],
     }
     if "world" in parts:  # the licence note speaks about part 1 only
@@ -66,8 +67,8 @@ def build_frontmatter(
             "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0); "
             "TULLU je Quelle in Baustein 12"
         )
-    if mode_requested is not None and mode_requested != mode:
-        frontmatter["mode_requested"] = mode_requested
+    if generation_requested is not None and generation_requested != generation:
+        frontmatter["generation_requested"] = generation_requested
     if llm is not None:
         frontmatter["llm"] = dict(llm)
     return frontmatter

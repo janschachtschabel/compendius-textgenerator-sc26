@@ -29,21 +29,21 @@ def cli_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[Path]:
     get_settings.cache_clear()
 
 
-def test_generate_accepts_a_mode_and_reports_the_fallback(
+def test_generate_accepts_a_generation_switch_and_reports_the_fallback(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:
     out_file = cli_env / "optik.md"
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
-    assert main(["generate", "--topic", "Optik", "--mode", "hybrid-fast", "--out", str(out_file), *zim_args]) == 0
+    assert main(["generate", "--topic", "Optik", "--generation", "llm-fast", "--out", str(out_file), *zim_args]) == 0
     err = capsys.readouterr().err
-    assert "Modus: rule-based" in err and "angefordert hybrid-fast" in err and "nicht konfiguriert" in err
+    assert "Generierung: rule-based" in err and "angefordert llm-fast" in err and "nicht konfiguriert" in err
     text = out_file.read_text(encoding="utf-8")
-    assert "mode: rule-based" in text and "mode_requested: hybrid-fast" in text
+    assert "generation: rule-based" in text and "generation_requested: llm-fast" in text
 
 
-def test_generate_rejects_an_unknown_mode(cli_env: Path) -> None:
+def test_generate_rejects_an_unknown_generation(cli_env: Path) -> None:
     with pytest.raises(SystemExit) as info:
-        main(["generate", "--topic", "Optik", "--mode", "turbo"])
+        main(["generate", "--topic", "Optik", "--generation", "turbo"])
     assert info.value.code == 2
 
 

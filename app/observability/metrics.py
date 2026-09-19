@@ -4,7 +4,7 @@ The metrics are module-level objects, so every process has one set. With several
 ``PROMETHEUS_MULTIPROC_DIR`` makes prometheus_client keep the values in shared files, and the /metrics
 endpoint sums them over all workers (app/api/metrics.py). Everything about a compendium is taken from its
 audit after generation, so the service itself knows nothing about Prometheus. Label values come from
-fixed sets (route templates, modes, phases), never from user input, to keep the number of series bounded.
+fixed sets (route templates, switches, phases), never from user input, to keep the number of series bounded.
 """
 
 from __future__ import annotations
@@ -31,8 +31,8 @@ HTTP_DURATION = Histogram(
 )
 COMPENDIA = Counter(
     "kompendium_compendium_requests_total",
-    "Generated compendia by requested and used mode (a hybrid request may fall back to rule-based)",
-    ["mode_requested", "mode_used"],
+    "Generated compendia: was an LLM switch requested, did the LLM contribute (a request may fall back to rules)",
+    ["llm_requested", "llm_used"],
 )
 PHASES = Histogram(
     "kompendium_compendium_phase_seconds",
@@ -66,10 +66,10 @@ def observe_request(method: str, route: str, status: int, seconds: float) -> Non
 
 
 def record_compendium(compendium: Compendium) -> None:
-    """Count one generated compendium from its audit: modes, phases, parts, LLM usage, materials."""
+    """Count one generated compendium from its audit: LLM switches, phases, parts, LLM usage, materials."""
     audit = compendium.audit
-    requested = str(compendium.frontmatter.get("mode_requested", compendium.mode))
-    COMPENDIA.labels(requested, compendium.mode).inc()
+    requested = str(compendium.frontmatter.get("generation_requested", compendium.generation))
+    COMPENDIA.labels(_flag(requested != "rule-based"), _flag(compendium.generation != "rule-based")).inc()
     for phase, milliseconds in audit.timings_ms.items():
         PHASES.labels(phase).observe(milliseconds / 1000)
     for part, section in (("curricula", compendium.curricula), ("collection", compendium.collection)):
@@ -84,10 +84,15 @@ def record_compendium(compendium: Compendium) -> None:
         LLM_TOKENS.labels("completion").inc(audit.llm_tokens.get("completion", 0))
         LLM_CALLS.inc(audit.llm_tokens.get("calls", 0))
     if audit.llm:
-        LLM_SECTIONS.labels("written").inc(len(audit.llm.get("sections") or []))
-        LLM_SECTIONS.labels("fallback").inc(len(audit.llm.get("fallbacks") or {}))
+        generation = audit.llm.get("generation") or {}
+        LLM_SECTIONS.labels("written").inc(len(generation.get("sections") or []))
+        LLM_SECTIONS.labels("fallback").inc(len(generation.get("fallbacks") or {}))
         for outcome in ("dropped", "unsupported", "marked"):
-            LLM_SENTENCES.labels(outcome).inc(audit.llm.get(f"{outcome}_sentences", 0))
+            LLM_SENTENCES.labels(outcome).inc(generation.get(f"{outcome}_sentences", 0))
+
+
+def _flag(value: bool) -> str:
+    return "true" if value else "false"
 
 
 def _record_knowledge(knowledge: dict[str, object]) -> None:

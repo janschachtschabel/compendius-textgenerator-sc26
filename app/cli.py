@@ -30,7 +30,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             knowledge_collection_id=args.knowledge_collection_id,
             template_id=args.template,
             matcher=args.matcher,
-            mode=args.mode,
+            generation=args.generation,
             target_length=args.length,
             facets_visible=args.facets_visible or None,
         )
@@ -58,7 +58,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"JSON geschrieben: {args.json}")
     audit = result.audit
     print(
-        f"Thema: {result.topic} | Modus: {result.mode} | Quellen: {len(result.sources)} | Chunks: {audit.chunks_total} "
+        f"Thema: {result.topic} | Generierung: {result.generation} | Quellen: {len(result.sources)} "
+        f"| Chunks: {audit.chunks_total} "
         f"(zugeordnet {audit.chunks_assigned}) | Bausteine gefüllt: {audit.sections_filled}, "
         f"leer: {audit.sections_empty} "
         f"| Belege: {audit.citations} | Zeiten ms: {audit.timings_ms}",
@@ -66,11 +67,12 @@ def cmd_generate(args: argparse.Namespace) -> int:
     )
     if audit.llm is not None:
         tokens = audit.llm_tokens or {}
+        generation = audit.llm["generation"]
         print(
-            f"LLM: angefordert {audit.llm['mode_requested']}, verwendet {result.mode} "
+            f"LLM: Generierung angefordert {generation['requested']}, verwendet {generation['used']} "
             f"| Aufrufe: {tokens.get('calls', 0)} | Tokens: {tokens.get('total', 0)} "
-            f"| Bausteine per LLM: {len(audit.llm['sections'])} "
-            f"| Rückfälle: {len(audit.llm['fallbacks'])}"
+            f"| Bausteine per LLM: {len(generation['sections'])} "
+            f"| Rückfälle: {len(generation['fallbacks'])}"
             + (f" | {audit.llm['note']}" if audit.llm.get("note") else ""),
             file=sys.stderr,
         )
@@ -100,10 +102,11 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--template", default=None)
     gen.add_argument("--matcher", default=None)
     gen.add_argument(
-        "--mode",
+        "--generation",
         default=None,
-        choices=["rule-based", "hybrid-fast", "hybrid-quality"],
-        help="Erzeugungsmodus; ohne Angabe LLM_MODE_DEFAULT (Hybridmodi brauchen LLM_ENABLED und B_API_KEY)",
+        choices=["rule-based", "llm-fast", "llm"],
+        help="Wer die Bausteine schreibt; ohne Angabe LLM_GENERATION_DEFAULT (llm-fast und llm brauchen "
+        "LLM_ENABLED und B_API_KEY)",
     )
     gen.add_argument("--length", type=int, default=12_000)
     gen.add_argument("--facets-visible", action="store_true")
