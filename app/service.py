@@ -31,7 +31,7 @@ from app.llm.report import build_llm_report
 from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
 from app.matching.policy import AssignmentResult, Doubt, assign
-from app.matching.registry import ensure_strategy, get_matcher
+from app.matching.registry import STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
 from app.matching.router import RoutingResult
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
@@ -131,6 +131,11 @@ class CompendiumService:
         self.collections = collections
         self.llm = llm
         self.writer = SectionWriter(facets, settings.facets_level, registry.lookup)
+        try:  # at start: a wrong default is the operator's error, not a 422 for every request
+            ensure_strategy(settings.matcher_default)
+        except UnknownMatcherError as exc:
+            known = ", ".join(STRATEGIES)
+            raise ValueError(f"MATCHER_DEFAULT={settings.matcher_default!r} is not a strategy ({known})") from exc
 
     def prepare(self, request: GenerateRequest, deadline: Deadline | None = None) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.

@@ -141,6 +141,13 @@ def test_unknown_matcher_is_a_german_422(client: TestClient) -> None:
     assert response.json()["detail"] == "Unbekannte Matching-Strategie: gibtsnicht"
 
 
+def test_an_unknown_matcher_default_stops_the_start(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    # A typo in MATCHER_DEFAULT is the operator's error; every request would otherwise get a client error (422)
+    settings = make_settings(sample_zims.values(), tmp_path, matcher_default="gibtsnicht")
+    with pytest.raises(ValueError, match="MATCHER_DEFAULT"):
+        create_app(settings)
+
+
 def test_internal_key_errors_are_not_reported_as_client_errors(
     settings: Settings, monkeypatch: pytest.MonkeyPatch
 ) -> None:
