@@ -102,6 +102,7 @@ class EduSharingClient:
             if payload is None:
                 raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
             items = payload.get("references") or payload.get("nodes") or []
+            known = len(refs)
             for node in items:
                 ref = parse_reference(node)
                 if ref.id and ref.id not in seen:
@@ -110,6 +111,9 @@ class EduSharingClient:
             total = (payload.get("pagination") or {}).get("total")
             skip += len(items)
             if not items or len(items) < self._page_size or (total is not None and skip >= total):
+                return refs
+            if len(refs) == known:  # a full page without a new id: the repository ignores skipCount
+                log.warning("collection %s: the page at offset %d repeats earlier references", collection_id, skip)
                 return refs
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
         return refs

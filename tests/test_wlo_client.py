@@ -121,3 +121,16 @@ def test_pagination_stops_at_the_page_cap(monkeypatch: pytest.MonkeyPatch) -> No
     monkeypatch.setattr("app.sources.wlo.client.MAX_PAGES", 3)
     client = EduSharingClient(BASE, transport=httpx.MockTransport(endless), page_size=2)
     assert len(client.references(OPTIK)) == 6
+
+
+def test_a_repository_that_ignores_the_offset_is_not_paged_to_the_cap() -> None:
+    requests: list[httpx.Request] = []
+
+    def same_page(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes, "pagination": {"total": 5000}})  # skipCount ignored
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2)
+    assert len(client.references(OPTIK)) == 2
+    assert len(requests) == 2  # the second page brought nothing new; MAX_PAGES pages took about 80 s before
