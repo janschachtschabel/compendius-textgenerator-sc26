@@ -36,6 +36,22 @@ def test_a_run_does_not_refresh_a_lock_another_run_took_over(tmp_path: Path) -> 
     assert lock.path.stat().st_mtime == pytest.approx(old)  # its sign of life is not ours to give
 
 
+def test_a_lock_whose_inode_was_re_used_is_still_not_ours(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Linux hands the inode of a deleted file to the next one, so device and inode alone tell no takeover apart."""
+    lock = _acquire(tmp_path / "sync.lock")
+    identity = lock.path.stat()
+    _take_over(lock.path)
+    original = Path.stat
+
+    def same_identity(self: Path, *args: Any, **kwargs: Any) -> os.stat_result:
+        return identity if self == lock.path else original(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "stat", same_identity)
+    lock.refresh()
+    lock.release()
+    assert lock.path.read_text(encoding="utf-8") == "pid 2\n"  # the new holder keeps its lock
+
+
 def test_refresh_and_release_act_on_the_own_lock(tmp_path: Path) -> None:
     lock = _acquire(tmp_path / "sync.lock")
     old = time.time() - 7200

@@ -2,8 +2,10 @@
 
 The lock is a file created exclusively, so it also holds across processes and containers that share the
 volume. A lock whose modification time is older than ``stale_s`` belongs to a crashed run and is taken over;
-a foreign lock is never removed otherwise. A run remembers which file it created (device and inode), so a run
-that paused past the limit neither refreshes nor removes the lock another run took over meanwhile.
+a foreign lock is never removed otherwise. A run remembers the file it created (device, inode and the text it
+wrote), so a run that paused past the limit neither refreshes nor removes the lock another run took over
+meanwhile. The text matters: Linux hands the inode of a deleted file to the next one, so device and inode alone
+cannot tell a takeover apart (measured in the Linux CI, 2026-09-20).
 
 simplify: the takeover of a stale lock checks the file again right before removing it, which leaves a window of
 a few microseconds between two contenders; ``fcntl.flock`` would close it but does not exist on Windows.
@@ -39,11 +41,14 @@ class HeldLock:
 
     path: Path
     identity: tuple[int, int]
+    owner: str  # what this run wrote into the file; a takeover writes its own text
 
     def _ours(self) -> bool:
         try:
-            return _identity(self.path.stat()) == self.identity
-        except FileNotFoundError:
+            if _identity(self.path.stat()) != self.identity:
+                return False
+            return self.path.read_text(encoding="utf-8") == self.owner
+        except OSError:  # gone, or unreadable: not ours to touch either way
             return False
 
     def refresh(self) -> None:
@@ -75,7 +80,7 @@ def acquire_lock(path: Path, *, stale_s: float, now: Callable[[], float], owner:
             raise LockHeldError(path, max(age, 0)) from None
         with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
             handle.write(owner)
-        return HeldLock(path, _identity(path.stat()))
+        return HeldLock(path, _identity(path.stat()), owner)
     raise LockHeldError(path, 0)
 
 
