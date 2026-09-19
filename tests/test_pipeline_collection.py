@@ -124,3 +124,10 @@ def test_the_knowledge_collection_is_read_only_for_part_one(
     result = service.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["curricula"]))
     # The materials only feed part 1: without it, up to REQUEST_TIMEOUT_S of text reads would be thrown away
     assert result.audit.knowledge is None and repository.requests == []
+
+
+def test_a_request_for_part_three_alone_needs_its_collection() -> None:
+    with pytest.raises(ValidationError, match="collection_id"):
+        GenerateRequest(topic="Optik", parts=["collection"])  # nothing could be generated: an empty 200 before
+    assert GenerateRequest(topic="Optik").parts == ["world", "curricula", "collection"]  # part 3 simply drops out
+    assert GenerateRequest(topic="Optik", parts=["world", "collection"]).collection_id is None

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import time
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -47,6 +47,10 @@ from app.templates.manager import TemplateManager
 from app.templates.schema import Template, TemplateSlot
 
 log = logging.getLogger(__name__)
+
+
+class PartsUnavailableError(RuntimeError):
+    """None of the requested parts can be generated with the configuration of this server."""
 
 
 class TopicNotFoundError(LookupError):
@@ -284,6 +288,9 @@ class CompendiumService:
         deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
         if request.matcher:  # before any work; the configured default was checked at start
             ensure_strategy(request.matcher)
+        unconfigured = self._unconfigured(request.parts)
+        if len(unconfigured) == len(set(request.parts)):  # an empty compendium would look like a success
+            raise PartsUnavailableError("; ".join(unconfigured.values()))
         prepared = self.prepare(request, deadline)
         want_world = "world" in request.parts
         # Mode and matcher describe how part 1 is written; parts 2 and 3 alone are rule-based by definition
@@ -395,6 +402,15 @@ class CompendiumService:
             markdown=markdown,
             audit=audit,
         )
+
+    def _unconfigured(self, parts: Sequence[str]) -> dict[str, str]:
+        """Requested parts this server cannot generate, with the reason."""
+        reasons: dict[str, str] = {}
+        if "curricula" in parts and self.curricula is None:
+            reasons["curricula"] = "Teil 2 ist in diesem Dienst nicht eingerichtet"
+        if "collection" in parts and self.collections is None:
+            reasons["collection"] = "Teil 3 braucht ein edu-sharing-Repository (EDU_SHARING_BASE_URL)"
+        return reasons
 
     def _facets_visible(self, request: GenerateRequest) -> bool:
         return self.settings.facets_visible if request.facets_visible is None else request.facets_visible

@@ -148,6 +148,14 @@ def test_an_unknown_matcher_default_stops_the_start(sample_zims: dict[str, Path]
         create_app(settings)
 
 
+def test_a_request_whose_parts_this_server_cannot_make_is_503(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    settings = make_settings(sample_zims.values(), tmp_path, edu_sharing_base_url="")
+    payload = {"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "parts": ["collection"]}
+    with TestClient(create_app(settings)) as client:
+        response = client.post("/api/v2/compendium", json=payload)
+    assert response.status_code == 503 and "EDU_SHARING_BASE_URL" in response.json()["detail"]
+
+
 def test_internal_key_errors_are_not_reported_as_client_errors(
     settings: Settings, monkeypatch: pytest.MonkeyPatch
 ) -> None:

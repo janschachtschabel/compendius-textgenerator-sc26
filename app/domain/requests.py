@@ -50,4 +50,7 @@ class GenerateRequest(BaseModel):
     def _topic_or_collection(self) -> GenerateRequest:
         if not self.topic and not self.collection_id:
             raise ValueError("topic oder collection_id ist erforderlich")
+        # Without a collection part 3 drops out (as with the default parts); it must not be the only part
+        if not self.collection_id and not {"world", "curricula"} & set(self.parts):
+            raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")
         return self

@@ -15,7 +15,7 @@ from app.cli_lehrplan import add_lehrplan_commands
 from app.cli_zim import add_zim_commands
 from app.domain.requests import GenerateRequest
 from app.logging import configure_logging
-from app.service import TopicNotFoundError
+from app.service import PartsUnavailableError, TopicNotFoundError
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
 from app.templates.manager import TemplateManager
@@ -46,6 +46,9 @@ def cmd_generate(args: argparse.Namespace) -> int:
         return 1
     except EduSharingError as exc:
         print(f"edu-sharing: {exc}", file=sys.stderr)
+        return 1
+    except PartsUnavailableError as exc:
+        print(f"Kein angefragter Teil ist erzeugbar: {exc}", file=sys.stderr)
         return 1
     if args.out:
         Path(args.out).write_text(result.markdown, encoding="utf-8")

@@ -13,7 +13,7 @@ from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
 from app.observability.metrics import record_compendium
-from app.service import TopicNotFoundError
+from app.service import PartsUnavailableError, TopicNotFoundError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
 from app.templates.manager import TemplateNotFoundError
 
@@ -40,6 +40,8 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except UnknownMatcherError as exc:
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
+    except PartsUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=f"Kein angefragter Teil ist erzeugbar: {exc}") from exc
     record_compendium(compendium)
     return compendium
 
