@@ -68,9 +68,10 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
         lines += [f"- {_cell(ref)}" for ref in references]
 
     used = _enumerate(sorted({source.license for source in sources}))
+    licences = f" ({used})" if used else ""
     lines += [
         "",
-        f"> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen ({used}); "
+        f"> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen{licences}; "
         "Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu "
         "gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
     ]

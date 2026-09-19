@@ -76,3 +76,9 @@ def test_reference_carries_licence_version_and_authors() -> None:
     freetext_only = {**node, "properties": {"ccm:author_freetext": ["Schulphysik Ulm", "Schulphysik Ulm", ""]}}
     assert parse_reference(freetext_only).authors == ("Schulphysik Ulm",)
     assert parse_reference({"ref": {"id": "x"}, "properties": {}}).authors == ()
+
+
+def test_author_names_are_one_line_each() -> None:
+    # A line break in a name would break the TULLU line of the sources block
+    node = {"ref": {"id": "x"}, "properties": {"ccm:author_freetext": ["Dieter\nWelz,\r\n  Ulm", "Dieter Welz, Ulm"]}}
+    assert parse_reference(node).authors == ("Dieter Welz, Ulm",)
