@@ -7,7 +7,14 @@ from pathlib import Path
 import httpx
 import pytest
 
-from app.sources.zim.downloader import Downloader, DownloadError, DownloadProgress, validate_file_name
+from app.sources.zim.downloader import (
+    DEFAULT_ALLOWED_HOSTS,
+    Downloader,
+    DownloadError,
+    DownloadProgress,
+    check_download_url,
+    validate_file_name,
+)
 
 BLOB = bytes(range(256)) * 40  # 10240 bytes
 SHA = hashlib.sha256(BLOB).hexdigest()
@@ -138,3 +145,10 @@ def test_a_stream_longer_than_announced_is_aborted(tmp_path: Path) -> None:
     with pytest.raises(DownloadError, match="more than the expected"):
         _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=announced)
     assert list(tmp_path.glob("*")) == []  # nothing is kept from a source that ignores the announced size
+
+
+@pytest.mark.parametrize("url", ["https://[::1/x.zim", "https://download.kiwix.org/x\x00.zim"])
+def test_a_malformed_url_is_a_download_error(url: str) -> None:
+    # The sync catches DownloadError per subscription; any other exception would abort the whole run
+    with pytest.raises(DownloadError, match="URL"):
+        check_download_url(url, DEFAULT_ALLOWED_HOSTS)

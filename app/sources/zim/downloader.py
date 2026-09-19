@@ -38,7 +38,10 @@ class _OversizedError(Exception):
 
 def check_download_url(url: str, allowed_hosts: Collection[str]) -> None:
     """Raise ``DownloadError`` unless ``url`` is https and starts at an allowlisted host."""
-    parsed = httpx.URL(url)
+    try:
+        parsed = httpx.URL(url)
+    except httpx.InvalidURL as exc:  # not an httpx.HTTPError: it would abort the whole sync run
+        raise DownloadError(f"invalid download URL {url!r}: {exc}") from exc
     if parsed.scheme != "https":
         raise DownloadError(f"download URL must use https: {url!r}")
     host = (parsed.host or "").lower()
