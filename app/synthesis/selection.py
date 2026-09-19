@@ -25,7 +25,7 @@ from app.synthesis.llm import slot_prompt_fields
 from app.templates.schema import TemplateSlot
 
 MAX_CANDIDATE_CHARS = 1000  # per paragraph: complete sentences up to this length
-MAX_OUTPUT_TOKENS = 800  # numbers only, but reasoning models spend part of the limit before they answer
+MAX_OUTPUT_TOKENS = 400  # sentence numbers only (reasoning models get their room to think on top)
 LENGTH_FACTOR = 1.5  # a choice stops at a paragraph boundary once it holds this multiple of the target (as the policy)
 MATCHER = "llm"
 _KIND_NOTE = {ChunkKind.LIST: "; Liste", ChunkKind.TABLE: "; Tabelle"}

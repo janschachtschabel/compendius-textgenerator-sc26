@@ -51,8 +51,13 @@ def budgeted_chat(
     what: str,
     deadline: Deadline | None = None,
 ) -> ChatResult | LlmSkipped:
-    """Reserve the estimated tokens, call within the time left, settle the real cost; ``what`` names the block."""
-    needed = estimate_tokens("".join(m["content"] for m in messages)) + max_output_tokens
+    """Reserve the estimated tokens, call within the time left, settle the real cost; ``what`` names the block.
+
+    ``max_output_tokens`` is the length of the answer; the reservation and the call add the room a reasoning model
+    needs to think (``BApiClient.completion_limit``).
+    """
+    limit = client.completion_limit(max_output_tokens)
+    needed = estimate_tokens("".join(m["content"] for m in messages)) + limit
     timeout_s: float | None = None
     if deadline is not None:
         timeout_s = deadline.call_timeout(client.timeout_s)
@@ -63,7 +68,7 @@ def budgeted_chat(
         return LlmSkipped(denial)
     spent = 0
     try:
-        answer = client.chat(messages, max_output_tokens=max_output_tokens, timeout_s=timeout_s)
+        answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s)
         spent = answer.total_tokens
     except LlmError as exc:
         log.warning("LLM call for %s failed: %s", what, exc)

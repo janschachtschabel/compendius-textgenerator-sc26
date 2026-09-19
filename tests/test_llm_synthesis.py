@@ -9,7 +9,7 @@ import httpx
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.llm.budget import TokenBudget
 from app.llm.call import LlmSkipped
-from app.llm.client import BApiClient
+from app.llm.client import REASONING_ALLOWANCE, BApiClient
 from app.llm.prompts import PROMPTS, get_prompt
 from app.synthesis.citations import CONCLUSION_OPEN, drop_unsupported, renumber, verify_citations
 from app.synthesis.facets import END_MARKER
@@ -243,7 +243,7 @@ def test_write_section_returns_verified_text_with_global_citations() -> None:
     assert result.total_tokens == 24 and result.dropped_sentences == 2 and result.unsupported_sentences == 0
     assert budget.used == 24
     body = fake.bodies[0]
-    assert 200 <= body["max_completion_tokens"] <= 1500
+    assert 200 + REASONING_ALLOWANCE <= body["max_completion_tokens"] <= 1500 + REASONING_ALLOWANCE
     user = body["messages"][1]["content"]
     assert "Thema" in user and "Themendefinition" in user and "[2] (Test › Geschichte)" in user
 

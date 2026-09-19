@@ -31,6 +31,9 @@ BREAKER_S = 60.0  # after a connection failure or a timeout, calls fail fast ins
 SUSPENDED_MESSAGE = "b-api nach Verbindungsfehlern vorübergehend ausgesetzt"
 _KEY_RE = re.compile(r"^[!-~]+$")  # printable ASCII without spaces; anything else breaks the header
 _REASONING_PREFIXES = ("gpt-5", "o1", "o3", "o4")
+# Reasoning models count their thinking in max_completion_tokens; gpt-5.6-luna (reasoning_effort=low) used a
+# block's whole limit of 555 tokens for it and answered with nothing (finish_reason=length, 2026-09-19)
+REASONING_ALLOWANCE = 1000
 
 Message = Mapping[str, str]
 
@@ -189,6 +192,10 @@ class BApiClient:
             message = f"Modell {self.model} ist stark ausgelastet (demand {info.demand})"
             return ModelCheck(False, self.model, True, info.status, info.demand, message)
         return ModelCheck(True, self.model, True, info.status, info.demand, f"Modell {self.model} verfügbar")
+
+    def completion_limit(self, answer_tokens: int) -> int:
+        """The API's output limit for an answer of ``answer_tokens``: reasoning models also spend it on thinking."""
+        return answer_tokens + REASONING_ALLOWANCE if is_reasoning_model(self.model) else answer_tokens
 
     def _body(self, messages: Sequence[Message], max_output_tokens: int) -> dict[str, Any]:
         body: dict[str, Any] = {"model": self.model, "messages": [dict(m) for m in messages]}
