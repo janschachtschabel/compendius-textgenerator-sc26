@@ -67,7 +67,32 @@ SLOT_ROUTER = Prompt(
     ),
 )
 
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, SLOT_ROUTER)}
+PASSAGE_SELECTION = Prompt(
+    id="passage_selection",
+    version=1,
+    system=(
+        "Du wählst für einen Baustein eines kompendialen Textes für Lehrkräfte die passenden Sätze aus nummerierten "
+        "Textstellen aus. Du schreibst selbst keinen Text, du nennst nur die Nummern der Sätze. Wähle Sätze, die zur "
+        "Aufgabe des Bausteins passen und zu dem, was hineingehört. Lass Sätze weg, die unter „Gehört nicht hinein“ "
+        "fallen, nichts zum Thema beitragen oder ohne ihren Zusammenhang unverständlich sind. Wähle so viele Sätze, "
+        "wie die Ziellänge braucht, aber keine unpassenden, nur um sie zu erreichen. Ordne die Nummern in der "
+        "Reihenfolge, in der die Sätze im Baustein stehen sollen. Antworte ausschließlich mit einem JSON-Objekt wie "
+        '{"saetze": ["1.1", "1.2", "3.1"]}; passt kein Satz, antworte {"saetze": []}. Keine Erklärungen.'
+    ),
+    user=(
+        "Thema: {topic}\n"
+        "Baustein: {title}\n"
+        "Aufgabe des Bausteins: {description}\n"
+        "Gehört hinein: {inclusions}\n"
+        "Gehört nicht hinein: {exclusions}\n"
+        "Unterpunkte:\n{sub_items}\n"
+        "Ziellänge: etwa {target_chars} Zeichen.\n\n"
+        "Textstellen:\n{passages}\n\n"
+        "Gib das JSON-Objekt zurück."
+    ),
+)
+
+PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, SLOT_ROUTER, PASSAGE_SELECTION)}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

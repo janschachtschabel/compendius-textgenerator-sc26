@@ -57,6 +57,18 @@ def evidence_block(
     return "\n".join(lines), items
 
 
+def slot_prompt_fields(slot: TemplateSlot) -> dict[str, object]:
+    """The block's task as the LLM prompts show it: title, description, scope, sub-items and target length."""
+    return {
+        "title": slot.title,
+        "description": slot.description or "–",
+        "inclusions": slot.inclusions or "–",
+        "exclusions": slot.exclusions or "–",
+        "sub_items": "\n".join(f"- {item}" for item in slot.sub_items) or "–",
+        "target_chars": slot.budget.target_chars,
+    }
+
+
 def shift_citations(section: LlmSection, offset: int) -> LlmSection:
     """Move a section written with local numbers into the global citation sequence (parallel drafts)."""
     if offset == 0:
@@ -87,16 +99,7 @@ class LlmSynthesizer:
         if not items:
             return LlmSkipped("keine Belege für den Baustein")
         prompt = get_prompt("section_synthesis")
-        messages = prompt.render(
-            topic=topic,
-            title=slot.title,
-            description=slot.description or "–",
-            inclusions=slot.inclusions or "–",
-            exclusions=slot.exclusions or "–",
-            sub_items="\n".join(f"- {item}" for item in slot.sub_items) or "–",
-            target_chars=slot.budget.target_chars,
-            evidence=evidence,
-        )
+        messages = prompt.render(topic=topic, evidence=evidence, **slot_prompt_fields(slot))
         max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
         result = budgeted_chat(
             self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline

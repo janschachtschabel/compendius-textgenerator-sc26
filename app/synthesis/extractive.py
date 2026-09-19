@@ -19,14 +19,22 @@ def _fingerprint(sentence: str) -> str:
     return " ".join(sentence.lower().split()[:7])
 
 
-def _select_sentences(text: str, seen: set[str], limit: int) -> list[str]:
-    selected: list[str] = []
+def usable_sentences(text: str) -> list[str]:
+    """Whitespace-normalised sentences that can stand in a block: long enough and not cut off by a formula."""
+    usable: list[str] = []
     for sentence in split_sentences(text):
         clean = re.sub(r"\s+", " ", sentence).strip()
         if len(clean) < MIN_SENTENCE_CHARS or clean.endswith((":", ";", ",")):
             continue
         if _DANGLING_RE.search(clean):  # a formula was removed here; the sentence is incomplete
             continue
+        usable.append(clean)
+    return usable
+
+
+def _select_sentences(text: str, seen: set[str], limit: int) -> list[str]:
+    selected: list[str] = []
+    for clean in usable_sentences(text):
         key = _fingerprint(clean)
         if key in seen:
             continue
