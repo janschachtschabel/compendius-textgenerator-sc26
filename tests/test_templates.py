@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Any
 
@@ -132,6 +133,18 @@ def test_a_save_in_another_thread_cannot_break_a_reader(tmp_path: Path, monkeypa
 
     monkeypatch.setattr(TemplateManager, "_custom_cache", SavedInBetween(), raising=False)
     assert manager.get("mein").name == "Mein"
+
+
+def test_a_template_changed_on_the_volume_is_read_again(tmp_path: Path) -> None:
+    manager = TemplateManager(custom_dir=tmp_path)
+    saved = manager.save(Template(id="mein", name="Alt", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")]))
+    assert manager.get("mein").name == "Alt"  # now cached
+    path = tmp_path / "mein.json"
+    modified = path.stat().st_mtime_ns + 1_000_000_000
+    # Edited by hand to the same size: only the modification time tells the manager about it
+    path.write_text(saved.model_copy(update={"name": "Neu"}).model_dump_json(indent=2, exclude={"builtin"}), "utf-8")
+    os.utime(path, ns=(modified, modified))
+    assert manager.get("mein").name == "Neu"
 
 
 def test_custom_templates_are_read_again_only_after_a_change(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
