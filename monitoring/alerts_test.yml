@@ -195,3 +195,134 @@ tests:
       - eval_time: 20m
         alertname: KompendiumLlmUnavailable
         exp_alerts: []
+
+  - name: Langsame Kompendien (alle zwischen 60 und 120 Sekunden)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="60"}'
+        values: "0x40"
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="120"}'
+        values: "0+1x40"
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="+Inf"}'
+        values: "0+1x40"
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: KompendiumSlowCompendia
+        exp_alerts: []
+      - eval_time: 35m
+        alertname: KompendiumSlowCompendia
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: 95 % der Kompendien brauchen mehr als 60 Sekunden
+              description: kompendium_compendium_phase_seconds zeigt, welche Phase langsam ist.
+
+  - name: Schnelle Kompendien (alle unter einer Sekunde)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="1"}'
+        values: "0+1x40"
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="60"}'
+        values: "0+1x40"
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="+Inf"}'
+        values: "0+1x40"
+    alert_rule_test:
+      - eval_time: 35m
+        alertname: KompendiumSlowCompendia
+        exp_alerts: []
+
+  - name: Datenquellen mit und ohne Fehler
+    interval: 1m
+    input_series:
+      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "2x90"
+      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "0x90"
+      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "0x90"
+      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "1x90"
+      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "1x90"
+      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "0x90"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: KompendiumZimSyncErrors
+        exp_alerts: []
+      - eval_time: 70m
+        alertname: KompendiumZimSyncErrors
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der letzte ZIM-Sync hatte Fehler
+              description: sync_status.json oder GET /api/v2/zim/progress nennen die Fehler.
+      - eval_time: 30m
+        alertname: KompendiumLehrplanCacheMissing
+        exp_alerts: []
+      - eval_time: 70m
+        alertname: KompendiumLehrplanCacheMissing
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Lehrplan-Cache fehlt oder ist nicht lesbar
+              description: Teil 2 enthält nur den Hinweistext; Harvest anstoßen.
+      - eval_time: 30m
+        alertname: KompendiumLehrplanHarvestFailed
+        exp_alerts: []
+      - eval_time: 70m
+        alertname: KompendiumLehrplanHarvestFailed
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der letzte Lehrplan-Harvest ist gescheitert
+              description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
+
+  - name: Tagesbudget knapp und frei
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000", fall="knapp"}'
+        values: "1900000x10"
+      - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="knapp"}'
+        values: "2000000x10"
+      - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000", fall="frei"}'
+        values: "1000x10"
+      - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="frei"}'
+        values: "2000000x10"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: KompendiumLlmBudgetNearlySpent
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: knapp }
+            exp_annotations:
+              summary: Mehr als 90 % des LLM-Tagesbudgets verbraucht
+              description: Danach laufen Hybridanfragen bis Mitternacht (UTC) im Regelmodus.
+
+  - name: Hybridanfragen fallen zurück
+    interval: 1m
+    input_series:
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-quality", mode_used="rule-based"}'
+        values: "0+1x90"
+    alert_rule_test:
+      - eval_time: 20m
+        alertname: KompendiumHybridFallbacks
+        exp_alerts: []
+      - eval_time: 60m
+        alertname: KompendiumHybridFallbacks
+        exp_alerts:
+          - exp_labels: { severity: info }
+            exp_annotations:
+              summary: Hybridanfragen fallen auf den Regelmodus zurück
+              description: audit.llm.note der Antworten nennt den Grund.
+
+  - name: Hybridanfragen ohne Rückfall
+    interval: 1m
+    input_series:
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-quality", mode_used="rule-based"}'
+        values: "3x90"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-quality", mode_used="hybrid-quality"}'
+        values: "0+1x90"
+    alert_rule_test:
+      - eval_time: 60m
+        alertname: KompendiumHybridFallbacks
+        exp_alerts: []

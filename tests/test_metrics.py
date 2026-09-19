@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime
@@ -9,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 from fastapi.testclient import TestClient
 from prometheus_client.parser import text_string_to_metric_families
 
@@ -260,3 +262,31 @@ def test_workers_are_summed_from_the_multiprocess_directory(
     assert value(samples, "kompendium_http_requests_total", method="GET", route="/worker", status="200") == 2
     assert value(samples, "kompendium_http_request_duration_seconds_count", method="GET", route="/worker") == 2
     assert value(samples, "kompendium_zim_ready") == 1  # the status is still read at scrape time
+
+
+def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    # promtool tests the rules against series named like the rules; only a real scrape catches a misspelt name
+    rules = yaml.safe_load((ROOT / "monitoring" / "alerts.yml").read_text(encoding="utf-8"))
+    used = {
+        name
+        for group in rules["groups"]
+        for rule in group["rules"]
+        for name in re.findall(r"\bkompendium_[a-z0-9_]+", rule["expr"])
+    }
+    write_cache(tmp_path / "state")
+    finished = {"finished_at": "2026-09-18T03:00:00+00:00", "errors": []}
+    (tmp_path / "state" / "lehrplan_status.json").write_text(
+        json.dumps({"state": "idle", "last_run": finished}), encoding="utf-8"
+    )
+    (tmp_path / "zim").mkdir()
+    (tmp_path / "zim" / "sync_status.json").write_text(
+        json.dumps({"state": "idle", "updated_at": "2026-09-18T03:00:00+00:00", "last_run": finished}), encoding="utf-8"
+    )
+    with _app(sample_zims, tmp_path) as client:
+        gateway = make_gateway(FakeBApi(answer_from_evidence))
+        gateway.check_model()
+        client.app.state.llm = gateway  # type: ignore[attr-defined]
+        assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]}).status_code == 200
+        exported = {name for name, _labels in scrape(client)}
+    assert len(used) >= 10
+    assert used <= exported, sorted(used - exported)
