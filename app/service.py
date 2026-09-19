@@ -162,7 +162,8 @@ class CompendiumService:
         )
         lap("corpus")
         knowledge: dict[str, Any] | None = None
-        if request.knowledge_collection_id and self.collections is not None:
+        # The materials are sources of part 1 only; without it their texts would be read and thrown away
+        if request.knowledge_collection_id and self.collections is not None and "world" in request.parts:
             knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
             lap("knowledge")
 

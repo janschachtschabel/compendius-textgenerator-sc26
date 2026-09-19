@@ -113,3 +113,14 @@ def test_the_request_deadline_stops_material_fetches(
     knowledge = result.audit.knowledge
     assert knowledge is not None
     assert knowledge["timed_out"] == knowledge["considered"] > 0 and knowledge["sources"] == 0
+
+
+def test_the_knowledge_collection_is_read_only_for_part_one(
+    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repository = FakeRepository()
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(repository), page_size=10)
+    monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=TtlCache(tmp_path / "c.db")))
+    result = service.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["curricula"]))
+    # The materials only feed part 1: without it, up to REQUEST_TIMEOUT_S of text reads would be thrown away
+    assert result.audit.knowledge is None and repository.requests == []
