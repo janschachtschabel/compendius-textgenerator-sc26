@@ -121,7 +121,7 @@ def _record(row: sqlite3.Row) -> LehrplanRecord:
 
 
 class LehrplanCacheError(RuntimeError):
-    """The cache file exists and claims the right schema, but SQLite cannot read what is needed."""
+    """The cache file exists but cannot be used: SQLite cannot read it, or another schema version wrote it."""
 
 
 class LehrplanStore:

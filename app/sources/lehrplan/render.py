@@ -27,6 +27,11 @@ MISSING_CACHE_TEXT = (
     "(`compendium lehrplan harvest`) die MEM-Lehrpläne einmal vollständig abgezogen hat; zur "
     "Inferenzzeit wird nicht auf MEM zugegriffen.*"
 )
+UNREADABLE_CACHE_TEXT = (
+    "*Der lokale Lehrplan-Cache ist nicht lesbar (beschädigt oder von einer anderen Version). Lehrplanbezüge "
+    "erscheinen wieder, sobald der Harvest-Job (`compendium lehrplan harvest --force`) ihn neu aufgebaut hat; "
+    "zur Inferenzzeit wird nicht auf MEM zugegriffen.*"
+)
 
 
 @dataclass(frozen=True)
@@ -50,6 +55,10 @@ class _Group:
 
 def render_missing_cache() -> str:
     return f"{PART_HEADING}\n\n{MISSING_CACHE_TEXT}\n"
+
+
+def render_unreadable_cache() -> str:
+    return f"{PART_HEADING}\n\n{UNREADABLE_CACHE_TEXT}\n"
 
 
 def coverage(meta: Mapping[str, str]) -> dict[str, Any]:

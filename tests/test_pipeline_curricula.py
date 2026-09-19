@@ -98,6 +98,7 @@ def test_a_corrupt_cache_file_is_reported_as_unreadable_not_as_missing(
     result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"]))
     # Operators should repair the file, not look for a missing one
     assert result.curricula is not None and result.curricula.summary == {"reason": "cache_unreadable"}
+    assert "nicht lesbar" in result.curricula.markdown and "nicht vorhanden" not in result.curricula.markdown
 
 
 def test_unreadable_cache_yields_the_hint_instead_of_an_error(
@@ -110,3 +111,4 @@ def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     assert result.curricula is not None and result.curricula.available is False
     assert result.curricula.summary["reason"] == "cache_unreadable"
     assert "## Teil 2 · Lehrplanbezüge" in result.markdown and len(result.sections) > 0
+    assert "nicht lesbar" in result.curricula.markdown

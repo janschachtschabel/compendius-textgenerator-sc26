@@ -9,7 +9,12 @@ from typing import Any
 
 from app.domain.models import CurriculaPart
 from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
-from app.sources.lehrplan.render import RenderOptions, render_curricula, render_missing_cache
+from app.sources.lehrplan.render import (
+    RenderOptions,
+    render_curricula,
+    render_missing_cache,
+    render_unreadable_cache,
+)
 from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
 
@@ -67,7 +72,7 @@ class CurriculaBuilder:
                 keywords=keywords,
                 subject_terms=subject_terms,
                 summary={"reason": "cache_missing" if state == "missing" else "cache_unreadable"},
-                markdown=render_missing_cache(),
+                markdown=render_missing_cache() if state == "missing" else render_unreadable_cache(),
             )
         try:
             result = LehrplanMatcher(self.store).match(keywords, subject_terms=subject_terms)
@@ -78,7 +83,7 @@ class CurriculaBuilder:
                 keywords=keywords,
                 subject_terms=subject_terms,
                 summary={"reason": "cache_unreadable"},
-                markdown=render_missing_cache(),
+                markdown=render_unreadable_cache(),
             )
         markdown, summary = render_curricula(
             result, meta=self.store.meta(), options=replace(self.options, facets_visible=facets_visible)
