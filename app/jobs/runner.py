@@ -28,9 +28,10 @@ def parse_interval(text: str) -> timedelta:
 def stop_on_sigterm() -> None:
     """Let SIGTERM raise KeyboardInterrupt, as Ctrl+C does.
 
-    A container stop sends SIGTERM to PID 1 and kills it ten seconds later. Python ignores SIGTERM's default,
-    so without this a running job never wrote its final status or released its lock, and the next container
-    waited for the lock to go stale.
+    A container stop sends SIGTERM to PID 1 and kills it ten seconds later. Python installs no SIGTERM handler,
+    and the kernel drops a signal without a handler for PID 1 (elsewhere it ends the process at once), so without
+    this a running job never wrote its final status or released its lock, and the next container waited for the
+    lock to go stale.
     """
     signal.signal(signal.SIGTERM, signal.default_int_handler)
 
