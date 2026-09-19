@@ -119,7 +119,7 @@ def _labels(props: Mapping[str, Any], key: str) -> tuple[str, ...]:
 
 def _title(node: Mapping[str, Any], props: Mapping[str, Any]) -> str:
     title = str(node.get("title") or "").strip()
-    return title or _first(props, "cclom:title", "cm:title") or str(node.get("name") or "")
+    return _one_line(title or _first(props, "cclom:title", "cm:title") or str(node.get("name") or ""))
 
 
 def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:

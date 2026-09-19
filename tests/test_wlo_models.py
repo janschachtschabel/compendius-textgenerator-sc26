@@ -82,3 +82,11 @@ def test_author_names_are_one_line_each() -> None:
     # A line break in a name would break the TULLU line of the sources block
     node = {"ref": {"id": "x"}, "properties": {"ccm:author_freetext": ["Dieter\nWelz,\r\n  Ulm", "Dieter Welz, Ulm"]}}
     assert parse_reference(node).authors == ("Dieter Welz, Ulm",)
+
+
+def test_titles_are_one_line() -> None:
+    # A line break in a title would break the TULLU line of part 1 and the lists and headings of part 3
+    node = {"ref": {"id": "x"}, "title": "Licht\nund  Schatten\r\n", "properties": {}}
+    assert parse_reference(node).title == "Licht und Schatten"
+    collection = {"ref": {"id": "y"}, "title": "", "properties": {"cclom:title": ["Optik\n  Klasse 7"]}}
+    assert parse_collection({"collection": collection}).title == "Optik Klasse 7"
