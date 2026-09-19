@@ -100,7 +100,8 @@ Hälfte mit dem Mittel seines Abschnitts für denselben Baustein verrechnet).
 Die fremden Themen (Plattentektonik, Ökosystem, Atommodell, Industrielle Revolution) waren weder im Gold noch
 an der Abstimmung beteiligt. Preis der Änderung: weniger belegte Bausteine (22 statt 31 auf den fremden Themen,
 drei Volltreffer weniger); von zehn dort aussortierten Absätzen bewertete der Richter sieben als falsch. Das Band
-0,45 bis 0,65 geht in den Hybridmodi weiter an den LLM-Router (`DOUBT_FLOOR`). Die Materialregel der
+0,45 bis 0,65 geht in den Hybridmodi weiter an den LLM-Router (`DOUBT_FLOOR`; seit D33 entfallen, die LLM-Extraktion
+bietet solche Absätze als Kandidaten an). Die Materialregel der
 Wissens-Sammlung startet jetzt an der konfigurierten Schwelle statt fest bei 0,5.
 
 ## Vergleich mit den Matchern der Testapp (2026-09-18)
@@ -137,3 +138,32 @@ Lesart:
   Dreierkombination und rund dreimal schneller (108 statt 313 ms je Thema), weil das Zeichen-TF-IDF entfällt.
 - Mit den Slot-Texten der Testapp statt denen dieses Templates schneiden deren Matcher auf dem Gold nicht besser ab
   (macro-F1 0,21 und 0,18).
+
+## LLM-Extraktion (D33, 2026-09-19)
+
+`compendium eval run --llm-extraction` bewertet zusätzlich, was `extraction=llm` auf der Standardstrategie druckt
+(`hybrid_light+llm`): Das LLM (`gpt-5.6-luna`) wählt je Baustein Sätze unter bis zu acht Kandidaten-Absätzen. Ein
+Absatz zählt für den Baustein, der die meisten seiner Sätze druckt. Weil diese Auswahl keine Klassifikation vor dem
+Budget kennt, ist der faire Vergleich „gedruckt gegen gedruckt“; der Bericht führt seit dem 2026-09-19 beide Sichten
+getrennt (`aggregate` = Klassifikation, `printed` = gedruckt).
+
+| Verfahren (10 Themen, 603 Labels) | gedruckt | richtig | falsch | davon Gold „none“ | macro-F1 | micro-F1 |
+|---|---|---|---|---|---|---|
+| `hybrid_light` + Model2Vec (Produktion) | 110 | 67 | 43 | – | 0,277 | 0,214 |
+| `hybrid_light` ohne Model2Vec | 107 | 63 | 44 | 14 | 0,214 | 0,202 |
+| `hybrid_light+llm` (ohne Model2Vec) | 131 | 77 | 54 | 7 | 0,273 | 0,238 |
+
+Berichte: `reports/d33_llm_extraction.json` (LLM-Lauf; dort ist `aggregate.hybrid_light+llm` die gedruckte
+Auswahl, `aggregate.hybrid_light` noch die Klassifikation), `reports/d33_rules_printed.json` und
+`reports/d33_rules_printed_m2v.json` (Regeln in beiden Sichten). Kosten des LLM-Laufs: 189.975 Tokens, 87 s für
+alle zehn Themen. Der LLM-Lauf entstand ohne Model2Vec (lokal war `MODEL2VEC_PATH` leer), die Kandidaten kamen also
+aus der schwächeren Rangfolge; der Vergleich mit der Produktion ist deshalb nur ein Anhaltspunkt.
+
+Lesart:
+- Gegen dieselbe Konfiguration (ohne Model2Vec) druckt das LLM 14 richtige Absätze mehr bei gleicher Präzision
+  (0,59) und halbiert die Absätze, die in keinen Baustein gehören (14 zu 7).
+- Die großen Bausteine gewinnen an Präzision (Fachinhalte 0,60 zu 0,77, Systematik 0,62 zu 0,67, Entwicklung 0,73
+  zu 0,79); die kleinen füllt das LLM mit falschen Absätzen (Querschnitt 7 gedruckt, keiner richtig; Bildung und
+  Beruf schlechter). Der Prompt erlaubt eine leere Auswahl; wie oft das Modell sie nutzt, zeigt je Kompendium
+  `audit.llm.extraction.emptied`, der Eval-Bericht erfasst es nicht.
+- Der Goldstandard begünstigt die Policy (siehe oben); ein Richter-Vergleich der gedruckten Texte steht aus.

@@ -658,7 +658,12 @@ Textlänge bemessen (Baustein 2: 555 Tokens) und bekam reproduzierbar eine leere
 `finish_reason=length`. Seither kommen für Reasoning-Modelle 1.000 Tokens hinzu (`REASONING_ALLOWANCE`, auch in
 der Reservierung), und `LLM_MAX_TOKENS_PER_REQUEST` steht auf 40.000, weil 20.000 bei beiden Schaltern sieben von
 zehn Bausteinen abwiesen. Beobachtet: das Modell wählte in „Fachinhalte“ einen Satz, der auf eine entfernte Formel
-verweist („Dabei ist der Laplace-Operator …“); der Prompt schließt solche Sätze nur allgemein aus.
+verweist („Dabei ist der Laplace-Operator …“); der Prompt schließt solche Sätze nur allgemein aus. Gegen den
+Goldstandard (10 Themen, `compendium eval run --llm-extraction`, Einzelheiten in `eval/README.md`): das LLM druckt
+131 Absätze, 77 richtig und 54 falsch, die Regeln in derselben Konfiguration (ohne Model2Vec) 107, 63 und 44;
+macro-F1 der gedruckten Absätze 0,273 zu 0,214, die Regeln mit Model2Vec (Produktion) 0,277. Gewinn in den großen
+Bausteinen, Verlust in den kleinen (Querschnitt, Bildung, Beruf), halb so viele Absätze ohne Baustein; 189.975
+Tokens für zehn Themen. Offen: Lauf mit Model2Vec, Prompt für die kleinen Bausteine, Richter-Vergleich der Texte.
 
 ---
 
@@ -1521,4 +1526,6 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   Metriken `llm_requested`/`llm_used` und `kompendium_llm_selections_total`, Router entfernt. Gemeinsamer
   budgetierter Aufruf für Auswahl und Synthese (`llm/call.py`). Behoben: leere Antworten von Reasoning-Modellen
   (`finish_reason=length`) durch `REASONING_ALLOWANCE`; Budget je Anfrage 40.000. Live gemessen (Optik): Auswahl
-  16.467 Tokens in 11 s, beide Schalter 27.205 Tokens in 18 s. Testsuite 501 Tests, Ruff und mypy strict grün.
+  16.467 Tokens in 11 s, beide Schalter 27.205 Tokens in 18 s. Eval `--llm-extraction` mit getrennten Sichten
+  Klassifikation und gedruckt; Goldstandard: LLM 77 richtige und 54 falsche gedruckte Absätze gegen 63 und 44 der
+  Regeln (ohne Model2Vec). Testsuite 506 Tests, Ruff und mypy strict grün.
