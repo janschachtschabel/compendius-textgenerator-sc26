@@ -15,8 +15,6 @@ tests:
         values: "1 1 0x30"
       - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
         values: "1x30"
-      - series: 'kompendium_llm_available{job="kompendium", instance="api:8000"}'
-        values: "1x4 0x26"
       - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000"}'
         values: "1000x30"
       - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000"}'
@@ -42,13 +40,6 @@ tests:
             exp_annotations:
               summary: Pflichtarchive fehlen, /ready meldet 503
               description: kompendium_zim_required_missing nennt die Zahl; Sync-Job und active.json prüfen.
-      - eval_time: 25m
-        alertname: KompendiumLlmUnavailable
-        exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000" }
-            exp_annotations:
-              summary: b-api nicht verfügbar, Hybridanfragen laufen im Regelmodus
-              description: components.llm in GET /health zeigt die letzte Modellprüfung.
       - eval_time: 25m
         alertname: KompendiumLlmBudgetNearlySpent
         exp_alerts: []
@@ -157,3 +148,50 @@ tests:
             exp_annotations:
               summary: Mehr als 5 % der Anfragen enden mit 5xx
               description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
+
+  - name: LLM nicht erreichbar (alle Hybridanfragen im Regelmodus)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+        values: "1x40"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-fast", mode_used="rule-based"}'
+        values: "0+2x40"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-fast", mode_used="hybrid-fast"}'
+        values: "5x40"
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: KompendiumLlmUnavailable
+        exp_alerts: []
+      - eval_time: 20m
+        alertname: KompendiumLlmUnavailable
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Keine Hybridanfrage erreicht das LLM, alle laufen im Regelmodus
+              description: Seit 15 Minuten fällt jede Hybridanfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
+
+  - name: LLM teilweise erreichbar
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+        values: "1x40"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-fast", mode_used="rule-based"}'
+        values: "0+1x40"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-fast", mode_used="hybrid-fast"}'
+        values: "0+1x40"
+    alert_rule_test:
+      - eval_time: 20m
+        alertname: KompendiumLlmUnavailable
+        exp_alerts: []
+
+  - name: LLM abgeschaltet (LLM_ENABLED=false)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+        values: "0x40"
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", mode_requested="hybrid-fast", mode_used="rule-based"}'
+        values: "0+2x40"
+    alert_rule_test:
+      - eval_time: 20m
+        alertname: KompendiumLlmUnavailable
+        exp_alerts: []

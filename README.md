@@ -226,7 +226,10 @@ Betrieb, Störungen und Wiederherstellung: [docs/betrieb.md](docs/betrieb.md).
 
 `GET /metrics` liefert Metriken im Prometheus-Format (Textformat 0.0.4 oder OpenMetrics, je nach `Accept`).
 Zustandswerte liest der Endpunkt bei jedem Abruf aus Registry, Cache und den Statusdateien der Sidecars; sie
-sind in jedem Worker gleich. Unbekannte Werte (noch kein Sync, kein Cache) fehlen, statt als 0 zu erscheinen.
+sind in jedem Worker gleich, bis auf `kompendium_llm_available`: Das ist der Stand des Workers, der den Abruf
+beantwortet (letzte Modellprüfung, Schutzschalter), und er sieht Antworten mit 401 oder 5xx nicht. Der Alarm
+`KompendiumLlmUnavailable` stützt sich deshalb auf die über alle Worker summierten Kompendium-Zähler. Unbekannte
+Werte (noch kein Sync, kein Cache) fehlen, statt als 0 zu erscheinen.
 Laufzeitmetriken summiert der Endpunkt über alle Worker: Im Image legt jeder Worker seine Werte in
 `PROMETHEUS_MULTIPROC_DIR` ab (`/tmp/prometheus`, beim Start geleert). Labels kommen nur aus festen Mengen
 (Routen-Templates, Modi, Phasen), nie aus Eingaben. Die Kompendium-Metriken stammen aus dem Audit jeder Antwort.
@@ -236,7 +239,7 @@ Laufzeitmetriken summiert der Endpunkt über alle Worker: Im Image legt jeder Wo
 | `kompendium_zim_ready`, `kompendium_zim_archives`, `kompendium_zim_required_missing`, `kompendium_zim_archive_articles{archive}` | Archive, wie `/ready` sie sieht |
 | `kompendium_zim_sync_running`, `kompendium_zim_sync_status_updated_timestamp_seconds`, `kompendium_zim_sync_last_run_timestamp_seconds`, `kompendium_zim_sync_last_run_errors` | Updater-Sidecar (`sync_status.json`); ein abgebrochener Lauf endet mit `state: error` |
 | `kompendium_lehrplan_cache_available`, `kompendium_lehrplan_cache_harvested_timestamp_seconds`, `kompendium_lehrplan_harvest_failed`, `kompendium_lehrplan_harvest_last_run_timestamp_seconds` | Lehrplan-Cache und Harvest-Sidecar |
-| `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget |
+| `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget; `_available` ist der Stand des antwortenden Workers |
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version}` | Konfiguration und Version |
 | `kompendium_http_requests_total{method,route,status}`, `kompendium_http_request_duration_seconds{method,route}` | Anfragen je Routen-Template (unbekannte Pfade als `unmatched`) |
 | `kompendium_compendium_requests_total{mode_requested,mode_used}`, `kompendium_compendium_phase_seconds{phase}` | Kompendien, Rückfall auf den Regelmodus, Dauer der Phasen |

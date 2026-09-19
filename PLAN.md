@@ -1219,8 +1219,8 @@ API.
   offen und Jans Entscheidung. Materialien der Wissens-Sammlung nennen Urheber und Lizenzversion so, wie das
   Repository sie führt; fehlt eine Angabe, wird nichts ergänzt.
 - **D31 (2026-09-18)** Überwachung über Prometheus. `GET /metrics` liefert Zustandswerte, die bei jedem Abruf
-  aus Registry, Cache und Statusdateien gelesen werden (in jedem Worker gleich, unbekannte Werte fehlen statt
-  0), und Laufzeitmetriken, die über `PROMETHEUS_MULTIPROC_DIR` über alle Worker summiert werden. Labels nur aus
+  aus Registry, Cache und Statusdateien gelesen werden (in jedem Worker gleich bis auf `kompendium_llm_available`,
+  den Stand des antwortenden Workers; unbekannte Werte fehlen statt 0), und Laufzeitmetriken, die über `PROMETHEUS_MULTIPROC_DIR` über alle Worker summiert werden. Labels nur aus
   festen Mengen. Die Kompendium-Metriken stammen aus dem Audit, der Service kennt Prometheus nicht. Alarmregeln
   mit promtool-Tests in `monitoring/`, Prometheus als Compose-Profil `monitoring`. Optionaler Schutz über
   `METRICS_TOKEN`, weil Budget- und Archivstand intern sind. Nicht Teil des Repos: Alertmanager und Dashboards.

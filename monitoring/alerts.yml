@@ -95,13 +95,18 @@ groups:
   - name: kompendium-llm
     rules:
       - alert: KompendiumLlmUnavailable
-        expr: kompendium_llm_enabled == 1 and kompendium_llm_available == 0
-        for: 15m
+        # Aus den summierten Zählern aller Worker: kompendium_llm_available zeigt nur den Stand des Workers, der den
+        # Abruf beantwortet (letzte Modellprüfung, Schutzschalter), und sieht Antworten mit 401 oder 5xx nicht
+        expr: |
+          sum(increase(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used="rule-based"}[15m])) > 0
+            and (sum(increase(kompendium_compendium_requests_total{mode_requested!="rule-based", mode_used!="rule-based"}[15m])) or vector(0)) == 0
+            and on() max(kompendium_llm_enabled) == 1
+        for: 10m
         labels:
           severity: warning
         annotations:
-          summary: b-api nicht verfügbar, Hybridanfragen laufen im Regelmodus
-          description: components.llm in GET /health zeigt die letzte Modellprüfung.
+          summary: Keine Hybridanfrage erreicht das LLM, alle laufen im Regelmodus
+          description: Seit 15 Minuten fällt jede Hybridanfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
       - alert: KompendiumLlmBudgetNearlySpent
         expr: kompendium_llm_tokens_used_today / kompendium_llm_daily_budget_tokens > 0.9
         labels:
