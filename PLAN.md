@@ -303,7 +303,7 @@ compendious-text-fastapi/
 | `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf den erzeugenden Endpunkten, je Worker; 0 = aus (D30) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc`, `/openapi.json` ausliefern |
 | `METRICS_ENABLED`, `METRICS_TOKEN` | `true` / – | Prometheus-Endpunkt `/metrics`, optional nur mit Bearer-Token (D31) |
-| `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) und das Lesen der Materialtexte; keine harte Gesamtfrist (geplant: 504, 8.1) |
+| `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) und das Lesen der Materialtexte und der Listen von Teil 3 (dann `summary.incomplete` mit Hinweis); keine harte Gesamtfrist (geplant: 504, 8.1) |
 
 ---
 
