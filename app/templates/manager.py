@@ -28,6 +28,8 @@ class TemplateNotFoundError(KeyError):
 
 def _load(path: Path, *, builtin: bool) -> Template:
     data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"expected a JSON object, got {type(data).__name__}")
     return Template.model_validate({**data, "builtin": builtin})
 
 
@@ -37,7 +39,11 @@ def _signature(directory: Path) -> _Signature:
         return ()
     entries = []
     for path in sorted(directory.glob("*.json")):
-        stat = path.stat()
+        try:
+            stat = path.stat()
+        except OSError as exc:  # deleted or replaced between the listing and this call
+            log.warning("custom template %s skipped: %s", path.name, exc)
+            continue
         entries.append((path.name, stat.st_mtime_ns, stat.st_size))
     return tuple(entries)
 
