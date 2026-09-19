@@ -7,25 +7,22 @@ citation sequence of the compendium, so the sources table stays deterministic.
 
 from __future__ import annotations
 
-import logging
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from app.domain.models import Chunk, Citation, ScoredChunk, Source
-from app.llm.budget import RequestBudget, estimate_tokens
-from app.llm.client import BApiClient, LlmError
+from app.llm.budget import RequestBudget
+from app.llm.call import LlmSkipped, budgeted_chat
+from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.synthesis.citations import collapse, drop_unsupported, marker_numbers, renumber, verify_citations
 from app.templates.schema import TemplateSlot
 
-log = logging.getLogger(__name__)
-
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block
 MIN_OUTPUT_TOKENS = 200
 MAX_OUTPUT_TOKENS = 1500
 SNIPPET_CHARS = 220
-TIME_UP = "Zeitbudget der Anfrage erschöpft (REQUEST_TIMEOUT_S)"
 
 
 @dataclass(frozen=True)
@@ -40,17 +37,6 @@ class LlmSection:
     dropped_sentences: int  # no valid citation marker
     unsupported_sentences: int = 0  # marker present, but the cited chunks do not cover the sentence
     marked_sentences: int = 0  # mark mode: failed sentences kept as conclusion blocks instead of being dropped
-
-
-@dataclass(frozen=True)
-class LlmSkipped:
-    """The block falls back to extractive synthesis; ``reason`` goes to the audit, tokens of a failed call too."""
-
-    reason: str
-    calls: int = 0
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
 
 
 def evidence_block(
@@ -112,45 +98,22 @@ class LlmSynthesizer:
             evidence=evidence,
         )
         max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
-        needed = estimate_tokens(messages[0]["content"] + messages[1]["content"]) + max_output
-        timeout_s: float | None = None
-        if deadline is not None:
-            timeout_s = deadline.call_timeout(self.client.timeout_s)
-            if timeout_s is None:
-                return LlmSkipped(TIME_UP)
-        denial = budget.reserve(needed)
-        if denial is not None:
-            return LlmSkipped(denial)
-        spent = 0
-        try:
-            result = self.client.chat(messages, max_output_tokens=max_output, timeout_s=timeout_s)
-            spent = result.total_tokens
-        except LlmError as exc:
-            log.warning("LLM synthesis for %s failed: %s", slot.id, exc)
-            return LlmSkipped(f"b-api: {exc}", calls=1)
-        finally:
-            budget.settle(needed, spent)  # also on unexpected errors: a leaked reservation would shrink the day
-
-        def skipped(reason: str) -> LlmSkipped:
-            return LlmSkipped(
-                reason,
-                calls=1,
-                prompt_tokens=result.prompt_tokens,
-                completion_tokens=result.completion_tokens,
-                total_tokens=result.total_tokens,
-            )
-
+        result = budgeted_chat(
+            self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline
+        )
+        if isinstance(result, LlmSkipped):
+            return result
         if not result.text.strip():
             # Measured: the model answers with nothing when the evidence does not fit the block.
-            return skipped(f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})")
+            reason = f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})"
+            return LlmSkipped.after(reason, result)
         mark = self.mark_unsupported
         text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
         if not marker_numbers(text):  # conclusion blocks alone are no evidence-based section
-            return skipped(
-                f"kein belegter Satz in der Antwort ({dropped} ohne Beleg, {unsupported} ohne Deckung im Beleg)"
-            )
+            reason = f"kein belegter Satz in der Antwort ({dropped} ohne Beleg, {unsupported} ohne Deckung im Beleg)"
+            return LlmSkipped.after(reason, result)
         used = marker_numbers(text)
         mapping = {local: citation_start + index + 1 for index, local in enumerate(used)}
         citations = [

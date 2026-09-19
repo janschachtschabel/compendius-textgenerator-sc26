@@ -10,11 +10,12 @@ import httpx
 import pytest
 
 from app.llm.budget import TokenBudget
+from app.llm.call import LlmSkipped
 from app.llm.client import BApiClient, LlmError
 from app.llm.deadline import MIN_CALL_S, Deadline
 from app.matching.policy import Doubt
 from app.matching.router import LlmRouter
-from app.synthesis.llm import LlmSection, LlmSkipped, LlmSynthesizer
+from app.synthesis.llm import LlmSection, LlmSynthesizer
 from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi
 from tests.test_llm_router import MORE, TEMPLATE
 from tests.test_llm_synthesis import ANSWER, SCORED, SOURCES, _slot

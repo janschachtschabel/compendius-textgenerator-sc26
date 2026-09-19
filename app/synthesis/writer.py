@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 
 from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Source
 from app.llm.budget import RequestBudget
+from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
@@ -22,7 +23,7 @@ from app.synthesis.actors import build_actors_section, collect_actors
 from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
-from app.synthesis.llm import LlmSection, LlmSkipped, LlmSynthesizer, shift_citations
+from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import Template, TemplateSlot
 

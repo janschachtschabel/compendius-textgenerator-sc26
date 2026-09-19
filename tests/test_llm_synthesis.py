@@ -8,6 +8,7 @@ import httpx
 
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.llm.budget import TokenBudget
+from app.llm.call import LlmSkipped
 from app.llm.client import BApiClient
 from app.llm.prompts import PROMPTS, get_prompt
 from app.synthesis.citations import CONCLUSION_OPEN, drop_unsupported, renumber, verify_citations
@@ -15,7 +16,6 @@ from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
     MAX_EVIDENCE_CHARS,
     LlmSection,
-    LlmSkipped,
     LlmSynthesizer,
     evidence_block,
     shift_citations,
