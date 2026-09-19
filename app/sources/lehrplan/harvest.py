@@ -23,6 +23,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
 
+from app.jobs.lock import LockHeldError, acquire_lock
 from app.sources.lehrplan import queries
 from app.sources.lehrplan.store import LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import ClassInfo, build_class_index, build_nodes
@@ -178,22 +179,15 @@ class LehrplanHarvest:
             lock.unlink(missing_ok=True)
 
     def _acquire_lock(self) -> Path:
-        path = self._state_dir / LOCK_FILE
-        path.parent.mkdir(parents=True, exist_ok=True)
-        for _attempt in range(2):
-            try:
-                descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            except FileExistsError:
-                age = self._clock().timestamp() - path.stat().st_mtime
-                if age > LOCK_STALE_S:
-                    log.warning("removing stale harvest lock %s (age %.0f s)", path, age)
-                    path.unlink(missing_ok=True)
-                    continue
-                raise HarvestRunningError(f"Ein Harvest läuft bereits ({path}, seit {max(age, 0):.0f} s)") from None
-            with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-                handle.write(f"pid {os.getpid()}\nstarted {self._clock().isoformat()}\n")
-            return path
-        raise HarvestRunningError(f"Ein Harvest läuft bereits ({path})")
+        try:
+            return acquire_lock(
+                self._state_dir / LOCK_FILE,
+                stale_s=LOCK_STALE_S,
+                now=lambda: self._clock().timestamp(),
+                owner=f"pid {os.getpid()}\nstarted {self._clock().isoformat()}\n",
+            )
+        except LockHeldError as exc:
+            raise HarvestRunningError(f"Ein Harvest läuft bereits ({exc.path}, seit {exc.age_s:.0f} s)") from None
 
     def _run(self) -> HarvestReport:
         started = self._clock()
