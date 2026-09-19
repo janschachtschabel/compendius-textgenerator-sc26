@@ -1,5 +1,6 @@
 """CollectionBuilder: cached repository reads, part 3 with sub-collection contents, knowledge sources, topic derivation."""
 
+import dataclasses
 from pathlib import Path
 
 import httpx
@@ -7,7 +8,8 @@ import pytest
 
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
-from app.sources.wlo.part import CollectionBuilder, CollectionOptions, collection_topic
+from app.sources.wlo.models import MaterialRef
+from app.sources.wlo.part import CollectionBuilder, CollectionOptions, _hydrate, collection_topic
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
@@ -63,3 +65,25 @@ def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path
     assert result.timed_out == result.considered  # no text is read after the time is up either
     builder.references(OPTIK)
     assert listings() == 3  # the cut listing was not kept for an hour: the next read lists both pages again
+
+
+def _without_attribution(ref: MaterialRef) -> dict[str, object]:
+    """A listing entry as the version before license_version and authors wrote it."""
+    return {key: value for key, value in dataclasses.asdict(ref).items() if key not in {"license_version", "authors"}}
+
+
+def test_listings_cached_by_an_earlier_version_are_read_again(tmp_path: Path) -> None:
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+    earlier = [_without_attribution(ref) for ref in builder.client.references(OPTIK)]
+    assert builder.cache is not None
+    builder.cache.set(f"references:{OPTIK}", earlier, ttl_s=3600)  # written just before the deploy
+    # Reusing it would print "Urheber nicht angegeben" for every material for up to an hour
+    assert any(ref.authors for ref in builder.references(OPTIK))
+
+
+def test_a_cached_record_without_newer_fields_gets_their_defaults(tmp_path: Path) -> None:
+    ref = _builder(FakeRepository(), tmp_path).client.references(OPTIK)[0]
+    hydrated = _hydrate(MaterialRef, _without_attribution(ref))
+    assert hydrated.authors == () and hydrated.license_version == ""
+    assert hydrated.keywords == ref.keywords and isinstance(hydrated.keywords, tuple)  # lists come back as tuples

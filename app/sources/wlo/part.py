@@ -27,6 +27,9 @@ from app.sources.wlo.overview import (
 
 log = logging.getLogger(__name__)
 
+# Part of the cache keys of records: bump it when a cached record gains or changes a field, so entries written
+# by an earlier version are not read (they expire by their TTL). 2: MaterialRef with licence version and authors.
+CACHE_FORMAT = 2
 UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden, das Repository antwortete nicht: {error}*"
 
 
@@ -74,7 +77,7 @@ class CollectionBuilder:
     options: CollectionOptions = field(default_factory=CollectionOptions)
 
     def info(self, collection_id: str) -> CollectionInfo:
-        key = f"collection:{collection_id}"
+        key = f"collection:v{CACHE_FORMAT}:{collection_id}"
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(CollectionInfo, cached)
@@ -83,7 +86,7 @@ class CollectionBuilder:
         return info
 
     def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
-        key = f"references:{collection_id}"
+        key = f"references:v{CACHE_FORMAT}:{collection_id}"
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(MaterialRef, item) for item in cached]
@@ -94,7 +97,7 @@ class CollectionBuilder:
         return refs
 
     def subcollections(self, collection_id: str) -> list[SubCollection]:
-        key = f"subcollections:{collection_id}"
+        key = f"subcollections:v{CACHE_FORMAT}:{collection_id}"
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(SubCollection, item) for item in cached]
