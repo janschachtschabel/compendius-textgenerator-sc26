@@ -128,16 +128,22 @@ class ZimSync:
         report = SyncReport(profile=options.profile, started_at=self._clock().isoformat())
         self._report = report
         self._write_status("running")
-        state = self._load_state(options.profile)
-        subscriptions = self._manifest.for_profile(options.profile)
-        for sub in subscriptions:
-            self._adopt(sub, state, report)
-        for sub in subscriptions:
-            self._update(sub, state, options, report)
-        self._prune(state, report)
-        self._prune_partials(subscriptions, state, report)
-        state.updated_at = self._clock().isoformat()
-        write_active(self._zim_dir, state)
+        try:
+            state = self._load_state(options.profile)
+            subscriptions = self._manifest.for_profile(options.profile)
+            for sub in subscriptions:
+                self._adopt(sub, state, report)
+            for sub in subscriptions:
+                self._update(sub, state, options, report)
+            self._prune(state, report)
+            self._prune_partials(subscriptions, state, report)
+            state.updated_at = self._clock().isoformat()
+            write_active(self._zim_dir, state)
+        except BaseException as exc:  # also a full volume or Ctrl+C: the status must not stay "running"
+            report.errors.append(f"Lauf abgebrochen: {type(exc).__name__}: {exc}")
+            report.finished_at = self._clock().isoformat()
+            self._write_status("error")
+            raise
         report.finished_at = self._clock().isoformat()
         self._write_status("idle")
         log.info(

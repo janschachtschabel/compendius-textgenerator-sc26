@@ -222,3 +222,23 @@ def test_partial_downloads_of_superseded_dumps_are_removed(tmp_path: Path, sourc
     report = _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
     assert not stale.exists() and pending.exists() and foreign.exists()
     assert report.pruned == [stale.name]
+
+
+def test_an_aborted_run_leaves_a_final_status(
+    tmp_path: Path, sources: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def volume_full(*_args: Any, **_kwargs: Any) -> None:
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr("app.jobs.zim_sync.write_active", volume_full)
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    later = iter([T0, T0 + timedelta(minutes=5)] + [T0 + timedelta(minutes=9)] * 20)
+    sync = _sync(tmp_path, FakeCatalog(offers, sources), FakeDownloader(sources), clock=lambda: next(later))
+    with pytest.raises(OSError, match="No space left"):
+        sync.run(BOOTSTRAP)
+    status = read_status(tmp_path)
+    assert status is not None
+    # Not "running" without an end: the timestamp and the error count reach the alerts
+    assert status["state"] == "error"
+    assert status["last_run"]["finished_at"] == (T0 + timedelta(minutes=9)).isoformat()
+    assert any("Lauf abgebrochen" in error and "OSError" in error for error in status["last_run"]["errors"])
