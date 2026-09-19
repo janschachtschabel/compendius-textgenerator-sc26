@@ -2,13 +2,15 @@
 
 Runs in the updater sidecar (``compendium zim sync --loop``) or by hand; the API never downloads.
 Every successful activation is written at once, so an interrupted run leaves a valid state and
-the next run continues where it stopped (the downloader resumes ``.part`` files).
+the next run continues where it stopped (the downloader resumes ``.part`` files). One run at a time:
+two would download into the same ``.part`` file and overwrite each other's ``active.json``.
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import os
 from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime, timedelta
@@ -17,6 +19,7 @@ from typing import Any, Protocol
 
 import httpx
 
+from app.jobs.lock import LockHeldError, acquire_lock
 from app.settings import Settings
 from app.sources.zim.active import (
     ActiveArchive,
@@ -42,6 +45,14 @@ log = logging.getLogger(__name__)
 
 STATUS_FILE = "sync_status.json"
 TRIGGER_FILE = "sync.request"
+LOCK_FILE = "sync.lock"
+# A run writes its status at every step and every second of a download, and each write refreshes the lock;
+# an hour without a sign of life means the run crashed.
+LOCK_STALE_S = 3600
+
+
+class SyncRunningError(RuntimeError):
+    """Another sync holds the lock file in the ZIM directory."""
 
 
 class CatalogLike(Protocol):
@@ -123,8 +134,28 @@ class ZimSync:
         self._retention = retention
         self._allowed_hosts = tuple(allowed_hosts)
         self._report: SyncReport | None = None
+        self._lock: Path | None = None
 
     def run(self, options: SyncOptions) -> SyncReport:
+        """One run over the subscriptions; ``SyncRunningError`` while another run holds the lock."""
+        try:
+            self._lock = acquire_lock(
+                self._zim_dir / LOCK_FILE,
+                stale_s=LOCK_STALE_S,
+                now=lambda: self._clock().timestamp(),
+                owner=f"pid {os.getpid()}\nstarted {self._clock().isoformat()}\n",
+            )
+        except LockHeldError as exc:
+            raise SyncRunningError(
+                f"Ein ZIM-Sync läuft bereits ({exc.path.name}, letztes Lebenszeichen vor {exc.age_s:.0f} s)"
+            ) from None
+        try:
+            return self._run(options)
+        finally:
+            self._lock.unlink(missing_ok=True)
+            self._lock = None
+
+    def _run(self, options: SyncOptions) -> SyncReport:
         report = SyncReport(profile=options.profile, started_at=self._clock().isoformat())
         self._report = report
         self._write_status("running")
@@ -305,6 +336,11 @@ class ZimSync:
             atomic_write_text(self._zim_dir / STATUS_FILE, json.dumps(payload, ensure_ascii=False, indent=2))
         except OSError as exc:
             log.warning("cannot write %s: %s", STATUS_FILE, exc)
+        if self._lock is not None:
+            try:
+                os.utime(self._lock)  # sign of life: a lock older than LOCK_STALE_S counts as abandoned
+            except OSError as exc:
+                log.warning("cannot refresh %s: %s", LOCK_FILE, exc)
 
 
 def build_sync(settings: Settings, *, offline: bool = False) -> ZimSync:

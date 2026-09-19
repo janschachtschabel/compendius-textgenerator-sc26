@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import timedelta
 from pathlib import Path
 
 from app.jobs.runner import parse_interval, run_periodically
-from app.jobs.zim_sync import TRIGGER_FILE, SyncOptions, SyncReport, build_sync, read_status
+from app.jobs.zim_sync import TRIGGER_FILE, SyncOptions, SyncReport, SyncRunningError, build_sync, read_status
 from app.settings import get_settings
 from app.sources.zim.active import read_active
 from app.sources.zim.archive import ZimArchive
@@ -84,7 +85,11 @@ def cmd_sync(args: argparse.Namespace) -> int:
         download_missing=args.download_missing or settings.zim_bootstrap_download,
     )
     if not args.loop:
-        report = sync.run(options)
+        try:
+            report = sync.run(options)
+        except SyncRunningError as exc:
+            print(f"{exc}; der Updater setzt den Lauf fort.", file=sys.stderr)
+            return 1
         _print_report(report)
         return 1 if report.errors else 0
     interval = parse_interval(settings.zim_sync_interval)

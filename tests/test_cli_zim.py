@@ -68,3 +68,9 @@ def test_the_sync_loop_retries_a_failed_run_after_an_hour(zim_env: Path, monkeyp
     assert main(["zim", "sync", "--offline", "--loop"]) == 0
     # A run that aborts (full volume, crash) is not left alone for the 30 days of ZIM_SYNC_INTERVAL
     assert captured["interval"] == timedelta(days=30) and captured["retry_after"] == timedelta(hours=1)
+
+
+def test_a_manual_sync_while_the_updater_runs_says_so(zim_env: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    (zim_env / "sync.lock").write_text("pid 1\n", encoding="utf-8")
+    assert main(["zim", "sync", "--offline"]) == 1
+    assert "läuft bereits" in capsys.readouterr().err

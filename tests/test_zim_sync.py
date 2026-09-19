@@ -1,7 +1,9 @@
 """Sync job: adopt local files, bootstrap, update with retirement and pruning; no network."""
 
 import hashlib
+import os
 import shutil
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, ClassVar
@@ -12,7 +14,7 @@ import pytest
 from app.jobs.zim_sync import STATUS_FILE, SyncOptions, ZimSync, read_status
 from app.sources.zim.active import read_active
 from app.sources.zim.catalog import CatalogEntry, Metalink
-from app.sources.zim.downloader import DownloadError
+from app.sources.zim.downloader import DownloadError, DownloadProgress
 from app.sources.zim.subscriptions import Subscription, SubscriptionManifest
 
 T0 = datetime(2026, 9, 17, 9, 0, tzinfo=UTC)
@@ -242,3 +244,40 @@ def test_an_aborted_run_leaves_a_final_status(
     assert status["state"] == "error"
     assert status["last_run"]["finished_at"] == (T0 + timedelta(minutes=9)).isoformat()
     assert any("Lauf abgebrochen" in error and "OSError" in error for error in status["last_run"]["errors"])
+
+
+def test_a_second_sync_is_refused_while_a_run_holds_the_lock(tmp_path: Path, sources: dict[str, Path]) -> None:
+    from app.jobs.zim_sync import LOCK_FILE, LOCK_STALE_S, SyncRunningError
+
+    lock = tmp_path / LOCK_FILE
+    lock.write_text("pid 1\n", encoding="utf-8")  # the updater loop is downloading
+    downloader = FakeDownloader(sources)
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    with pytest.raises(SyncRunningError, match="läuft bereits"):
+        _sync(tmp_path, FakeCatalog(offers, sources), downloader).run(BOOTSTRAP)
+    # Both runs would write into the same .part file and active.json; the second one touches nothing
+    assert downloader.calls == [] and read_status(tmp_path) is None and lock.exists()
+
+    stale = T0.timestamp() - LOCK_STALE_S - 1  # a crashed run gave its last sign of life long ago
+    os.utime(lock, (stale, stale))
+    report = _sync(tmp_path, FakeCatalog(offers, sources), downloader).run(BOOTSTRAP)
+    assert report.downloaded == ["wikipedia_de_sample"] and not lock.exists()
+
+
+def test_a_long_download_keeps_its_lock_alive(tmp_path: Path, sources: dict[str, Path]) -> None:
+    from app.jobs.zim_sync import LOCK_FILE
+
+    ages: list[float] = []
+
+    class SlowDownloader(FakeDownloader):
+        def download(self, url: str, target_dir: Path, *, sha256: str, size: int, progress: Any = None) -> Path:
+            lock = Path(target_dir) / LOCK_FILE
+            quiet = time.time() - 7200
+            os.utime(lock, (quiet, quiet))  # two hours into the download
+            progress(DownloadProgress("x.zim", 1, 2, 0, time.monotonic()))
+            ages.append(time.time() - lock.stat().st_mtime)
+            return super().download(url, target_dir, sha256=sha256, size=size, progress=progress)
+
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    _sync(tmp_path, FakeCatalog(offers, sources), SlowDownloader(sources)).run(BOOTSTRAP)
+    assert ages and ages[0] < 60  # every progress report is a sign of life, so no second run takes over

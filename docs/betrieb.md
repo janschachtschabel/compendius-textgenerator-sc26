@@ -52,9 +52,10 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 
 ## Regeln
 
-- Keinen zweiten Sync von Hand starten, solange der Sidecar lädt: Es gibt keine Sperre gegen zwei
-  gleichzeitige Läufe, beide würden in dieselbe `.part` schreiben. Einen Lauf stößt man über
-  `POST /api/v2/zim/sync` (Admin) oder die Trigger-Datei an.
+- Es läuft immer nur ein Sync: Die Sperrdatei `sync.lock` im ZIM-Verzeichnis weist einen zweiten Lauf ab
+  („Ein ZIM-Sync läuft bereits“), weil beide in dieselbe `.part` schreiben würden. Jeder Statuseintrag des
+  laufenden Syncs frischt sie auf; nach einer Stunde ohne Lebenszeichen gilt sie als verwaist und wird
+  übernommen. Einen Lauf stößt man über `POST /api/v2/zim/sync` (Admin) oder die Trigger-Datei an.
 - Der Dienst hat keine Anmeldung für die öffentlichen Endpunkte; er gehört hinter ein Gateway. Admin-Endpunkte
   sind nur mit `ADMIN_TOKEN` aktiv.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
