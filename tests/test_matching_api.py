@@ -88,3 +88,10 @@ def test_compare_runs_every_strategy_once(client: TestClient, monkeypatch: pytes
     monkeypatch.setattr(service, "match", counting)
     response = client.post("/api/v2/matching/compare", json={"topic": "Optik", "matchers": ["bm25"] * 8})
     assert response.status_code == 200 and runs == ["bm25"]
+
+
+def test_compare_with_an_unknown_template_is_404(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    settings = make_settings(sample_zims.values(), tmp_path, admin_token="s3cret")
+    with TestClient(create_app(settings), headers=AUTH, raise_server_exceptions=False) as client:
+        response = client.post("/api/v2/matching/compare", json={"topic": "Optik", "template_id": "gibtsnicht"})
+    assert response.status_code == 404 and response.json()["detail"] == "Template nicht gefunden: gibtsnicht"

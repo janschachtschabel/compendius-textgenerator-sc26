@@ -12,6 +12,7 @@ from app.api.deps import get_service
 from app.matching.eval_runner import DEFAULT_MATCHERS, compare_topic, find_gold
 from app.matching.registry import list_strategies
 from app.service import TopicNotFoundError
+from app.templates.manager import TemplateNotFoundError
 
 router = APIRouter(prefix="/api/v2/matching", tags=["matching"])
 # The comparator builds a corpus and runs several strategies: a diagnosis tool, not a public endpoint.
@@ -54,6 +55,8 @@ def compare(payload: CompareRequest, request: Request) -> dict[str, Any]:
             status_code=404,
             detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
         ) from exc
+    except TemplateNotFoundError as exc:  # as POST /api/v2/compendium answers it
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     gold: dict[str, Any] | None = None
     if result.gold is not None and result.alignment is not None:
         gold = {
