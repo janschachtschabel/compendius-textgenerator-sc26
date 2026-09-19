@@ -10,6 +10,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from app.compose.assembler import build_frontmatter, render_markdown
+from app.compose.regeneration import PreservedSection, parse_document, to_keep
 from app.domain.models import (
     AuditReport,
     Chunk,
@@ -98,6 +99,7 @@ class WorldPart:
     llm_note: str | None
     chunks_assigned: int = 0
     extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
+    regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text
     written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
 
 
@@ -400,6 +402,7 @@ class CompendiumService:
             knowledge=prepared.knowledge,
             chunks_truncated=prepared.chunks_truncated,
             parts_status=parts_status,
+            regenerated=world.regenerated,
         )
         return Compendium(
             topic=topic,
@@ -478,6 +481,7 @@ class CompendiumService:
                 concurrency=llm.options.concurrency,
                 deadline=deadline,
             )
+        preserved = self._preserved(request, template)
         written = self.writer.write(
             template,
             assigned,
@@ -488,6 +492,7 @@ class CompendiumService:
             prepared.lexicon,
             llm=llm_job,
             selected=selected,
+            preserved=preserved,
         )
         lap("synthesize")
         return WorldPart(
@@ -498,6 +503,11 @@ class CompendiumService:
             chunks_assigned=sum(len(v) for v in assigned.values()),
             extracted=extracted,
             written=written,
+            regenerated=(
+                [slot.id for slot in template.content_slots() if slot.id not in preserved]
+                if request.existing_markdown
+                else []
+            ),
         )
 
     def extract(
@@ -525,6 +535,14 @@ class CompendiumService:
         )
         template = _scale_budgets(prepared.template, target_length)  # the prompts name the target length
         return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
+
+    def _preserved(self, request: GenerateRequest, template: Template) -> dict[str, PreservedSection]:
+        """Blocks of an earlier compendium that stay word for word (PLAN.md 4.6); generated blocks never do."""
+        if not request.existing_markdown:
+            return {}
+        keep = to_keep(parse_document(request.existing_markdown), request.regenerate_sections)
+        content = {slot.id for slot in template.content_slots()}
+        return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
 
     def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""

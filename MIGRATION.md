@@ -84,5 +84,8 @@ Es gibt weiterhin keine Anmeldung und kein CORS; beides gehört wie bisher vor d
 ## Noch nicht da
 
 - `write_back` gibt es nicht: Der Dienst schreibt nichts in edu-sharing zurück, der Aufrufer speichert (D11).
-- Teil-Regeneration (`existing_markdown`, `regenerate_sections`) und ein 504 bei erschöpftem Zeitbudget sind
-  vorgesehen, aber noch nicht umgesetzt (PLAN.md 8, Phase 6).
+- Ein 504 bei erschöpftem Zeitbudget ist vorgesehen, aber nicht umgesetzt: Jede Phase baut bei erschöpfter Frist
+  ab, statt zu hängen, und ein fertiges Kompendium mit 504 zu verwerfen wäre Verschwendung (PLAN.md 8.1).
+- Die Teil-Regeneration gibt es nur im neuen Vertrag: `POST /api/v2/compendium` nimmt `existing_markdown` und
+  `regenerate_sections`. Bausteine mit dem Marker `redaktionell-geprüft` bleiben wörtlich erhalten, samt ihren
+  Belegnummern; neue Bausteine zählen darüber weiter.

@@ -228,6 +228,9 @@ class AuditReport(BaseModel):
     parts_status: dict[str, str] = Field(
         default_factory=dict, description="Per requested part: ok, empty, incomplete or unavailable"
     )
+    regenerated: list[str] = Field(
+        default_factory=list, description="Blocks made anew although an earlier text was given (PLAN.md 4.6)"
+    )
 
 
 class CollectionPart(BaseModel):

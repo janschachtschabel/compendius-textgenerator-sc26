@@ -51,6 +51,15 @@ class GenerateRequest(BaseModel):
     )
     target_length: int = Field(12_000, ge=2_000, le=60_000, description="Approximate total characters for part 1")
     empty_slot_policy: Literal["omit", "note"] | None = Field(None, description="Override the template policy")
+    existing_markdown: str | None = Field(
+        None,
+        max_length=2_000_000,
+        description="An earlier compendium: blocks marked redaktionell-geprüft are kept word for word",
+    )
+    regenerate_sections: list[str] | None = Field(
+        None,
+        description="With an earlier compendium: only these blocks are made anew, every other one is kept",
+    )
     facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
     max_articles: int | None = Field(None, ge=1, le=50)
 

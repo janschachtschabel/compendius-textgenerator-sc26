@@ -972,8 +972,13 @@ stehen in `statistics.notes`, `config.compendium` nimmt zusätzlich `template_id
 (stabile IDs, Lead als `extract`, keine Wikidata-, Kategorie- und Bildangaben), QA schreibt mit LLM und sonst aus
 Fragevorlagen, `split` beachtet endlich `chunk_size`, `translate` braucht das LLM (sonst 503, bei Fehler 502).
 Der Umstieg steht in `MIGRATION.md`. Jede Antwort trägt `parts_status` je angefragtem Teil (`ok`, `empty`,
-`incomplete`, `unavailable`), auch im Audit und in den Statistiken von v1. Offen in Phase 6: Teil-Regeneration;
-ein 504 ist bisher nicht nötig, weil jede Phase bei erschöpfter Frist abbaut statt zu hängen (LLM-Arbeit und
+`incomplete`, `unavailable`), auch im Audit und in den Statistiken von v1. Die Teil-Regeneration ist umgesetzt
+(`compose/regeneration.py`): `existing_markdown` und `regenerate_sections` in der v2-Anfrage, geprüfte Bausteine
+(`redaktionell-geprüft`) bleiben wörtlich erhalten, mit `regenerate_sections` bleibt alles außer den genannten.
+Ein erhaltener Baustein behält seine Belegnummern, die neuen zählen darüber weiter; die Nummern eines Dokuments
+sind damit eindeutig, aber nicht mehr aufsteigend, und die Belegtabelle führt beide. Bausteine, die im alten Text
+fehlen (weil sie leer waren), entstehen neu; `audit.regenerated` nennt sie. Offen in Phase 6:
+ein 504 bleibt offen, weil jede Phase bei erschöpfter Frist abbaut statt zu hängen (LLM-Arbeit und
 Materialtexte enden, Teil 3 kürzt seine Listen), und ein fertiges Kompendium mit 504 zu verwerfen wäre
 Verschwendung; sollte ein Aufrufer den Statuscode brauchen, ist das eine bewusste Entscheidung.
 

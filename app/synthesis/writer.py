@@ -2,7 +2,9 @@
 
 Extracted from the orchestrator (``service.py``). With LLM generation (PLAN.md 4.7) an ``LlmJob`` names the
 slots the LLM writes; their drafts are produced in parallel with local citation numbers and shifted into the
-global sequence while the sections are assembled in template order. Every slot the LLM cannot deliver falls
+global sequence while the sections are assembled in template order. Blocks in ``preserved`` come from an
+earlier compendium (PLAN.md 4.6): they are copied word for word with their citation numbers, and the new
+blocks are numbered after the highest of them. Every slot the LLM cannot deliver falls
 back to the extractive text and is listed in the ``LlmReport``. Slots in ``selected`` hold excerpts whose
 sentences the LLM chose (extraction=llm, D33); their extractive text keeps all of those sentences.
 """
@@ -14,6 +16,7 @@ from collections.abc import Callable, Collection, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
+from app.compose.regeneration import PreservedSection
 from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
@@ -86,13 +89,20 @@ class SectionWriter:
         lexicon: HeadingLexicon,
         llm: LlmJob | None = None,
         selected: Collection[str] = frozenset(),
+        preserved: Mapping[str, PreservedSection] | None = None,
     ) -> WrittenSections:
-        drafts = _draft_with_llm(template, assigned, sources_by_id, llm) if llm is not None else {}
+        kept = dict(preserved or {})
+        drafts = _draft_with_llm(template, assigned, sources_by_id, llm, skip=set(kept)) if llm is not None else {}
         report = LlmReport() if llm is not None else None
         sections: list[Section] = []
-        all_citations: list[Citation] = []
+        all_citations: list[Citation] = [c for block in kept.values() for c in block.citations]
+        highest = max((c.number for c in all_citations), default=0)  # the new blocks count on from here
         seen_sentences: set[str] = set()
         for slot in template.slots:
+            block = kept.get(slot.id)
+            if block is not None and not slot.is_generated:
+                sections.append(_preserved_section(slot, block))
+                continue
             if slot.is_generated:
                 sections.append(Section(slot_id=slot.id, slot_key=slot.slot, title=slot.title))
                 continue
@@ -111,7 +121,7 @@ class SectionWriter:
             )
             draft = drafts.get(slot.id)
             if isinstance(draft, LlmSection) and report is not None:
-                draft = shift_citations(draft, len(all_citations))
+                draft = shift_citations(draft, highest)
                 section.text, section.citations, section.status = draft.text, draft.citations, SectionStatus.LLM
                 section.llm = {
                     "prompt": draft.prompt,
@@ -129,21 +139,21 @@ class SectionWriter:
                     report.fallbacks[slot.id] = draft.reason
                     _account_skipped(report, draft)
                 chosen = slot.id in selected
-                text, citations = synthesize(
-                    scored, sources_by_id, len(all_citations), seen_sentences, all_sentences=chosen
-                )
+                text, citations = synthesize(scored, sources_by_id, highest, seen_sentences, all_sentences=chosen)
                 section.text, section.citations = text, citations
                 if not text:
                     section.status = SectionStatus.EMPTY
                 else:
                     section.status = SectionStatus.LLM_SELECTED if chosen else SectionStatus.EXTRACTIVE
             all_citations.extend(section.citations)
+            highest = max(highest, *(c.number for c in section.citations)) if section.citations else highest
             if section.text:
                 section.facets = facet_rules.annotate(slot, chunks, sources_by_id, self.facets, self.facets_level)
                 if isinstance(draft, LlmSection) and draft.marked_sentences and "Evidenzgrad" in section.facets:
                     section.facets["Evidenzgrad"] = [*section.facets["Evidenzgrad"], "Schlussfolgerung"]
             sections.append(section)
 
+        all_citations.sort(key=lambda citation: citation.number)  # kept and new blocks in one sequence
         for section in sections:
             gen_slot = _slot(template, section.slot_id)
             if gen_slot is None or not gen_slot.is_generated:
@@ -183,14 +193,32 @@ class SectionWriter:
         return "", {}
 
 
+def _preserved_section(slot: TemplateSlot, block: PreservedSection) -> Section:
+    """A block of the earlier compendium, word for word, with the status and facets it had."""
+    return Section(
+        slot_id=slot.id,
+        slot_key=slot.slot,
+        title=slot.title,
+        text=block.text,
+        citations=list(block.citations),
+        facets=dict(block.facets),
+        status=block.status,
+    )
+
+
 def _draft_with_llm(
     template: Template,
     assigned: Mapping[str, Sequence[ScoredChunk]],
     sources_by_id: Mapping[str, Source],
     job: LlmJob,
+    skip: set[str],
 ) -> dict[str, LlmSection | LlmSkipped]:
     """Drafts for every LLM slot with assigned chunks, in parallel, numbered locally from 1."""
-    slots = [slot for slot in template.content_slots() if slot.id in job.slots and assigned.get(slot.id)]
+    slots = [
+        slot
+        for slot in template.content_slots()
+        if slot.id in job.slots and assigned.get(slot.id) and slot.id not in skip
+    ]
     if not slots:
         return {}
 
