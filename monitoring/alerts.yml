@@ -29,7 +29,7 @@ groups:
           severity: critical
         annotations:
           summary: Mehr als 5 % der Anfragen enden mit 5xx
-          description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
+          description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive oder ein angefragter Teil, der nicht eingerichtet ist (Log „compendium request refused“).
       - alert: KompendiumSlowCompendia
         expr: |
           histogram_quantile(0.95,

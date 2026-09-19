@@ -58,7 +58,7 @@ tests:
           - exp_labels: { severity: critical }
             exp_annotations:
               summary: Mehr als 5 % der Anfragen enden mit 5xx
-              description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
+              description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive oder ein angefragter Teil, der nicht eingerichtet ist (Log „compendium request refused“).
 
   - name: Alter von Sync und Lehrplan-Cache
     interval: 1d
@@ -147,7 +147,7 @@ tests:
           - exp_labels: { severity: critical }
             exp_annotations:
               summary: Mehr als 5 % der Anfragen enden mit 5xx
-              description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
+              description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive oder ein angefragter Teil, der nicht eingerichtet ist (Log „compendium request refused“).
 
   - name: LLM nicht erreichbar (alle Hybridanfragen im Regelmodus)
     interval: 1m

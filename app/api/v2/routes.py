@@ -41,6 +41,8 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
     except UnknownMatcherError as exc:
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
     except PartsUnavailableError as exc:
+        # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives
+        log.warning("compendium request refused: %s", exc)
         raise HTTPException(status_code=503, detail=f"Kein angefragter Teil ist erzeugbar: {exc}") from exc
     record_compendium(compendium)
     return compendium
