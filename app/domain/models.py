@@ -25,6 +25,15 @@ class ChunkKind(StrEnum):
     TABLE = "table"
 
 
+LEAD_CHARS = 400  # a preview, not the article
+
+
+def collapse_lead(text: str) -> str:
+    """The first sentences of a lead on one line, capped for API answers."""
+    single = " ".join(text.split())
+    return single if len(single) <= LEAD_CHARS else single[: LEAD_CHARS - 1].rstrip() + "…"
+
+
 class Paragraph(BaseModel):
     """One block of an article section."""
 
@@ -79,6 +88,7 @@ class Source(BaseModel):
 
     def to_ref(self) -> SourceRef:
         return SourceRef(
+            lead=collapse_lead(self.lead_text),
             source_id=self.source_id,
             project=self.project,
             role=self.role,
@@ -107,6 +117,7 @@ class SourceRef(BaseModel):
     authors: list[str] = Field(default_factory=list)
     authority_score: float
     is_primary: bool
+    lead: str = Field("", description="Beginning of the article's lead paragraph, for callers that show a preview")
 
 
 class Chunk(BaseModel):

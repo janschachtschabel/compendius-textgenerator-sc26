@@ -20,6 +20,7 @@ from app.api.limits import RateLimiter
 from app.api.metrics import METRICS_PATH
 from app.api.metrics import router as metrics_router
 from app.api.system_threads import run_system, system_limiter
+from app.api.v1.routes import router as v1_router
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -258,6 +259,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)
+    app.include_router(v1_router)  # the contract of the old service (8.1)
     app.include_router(v2_router)
     app.include_router(matching_router)
     app.include_router(matching_admin_router)
