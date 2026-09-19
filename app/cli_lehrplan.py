@@ -8,7 +8,7 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 
-from app.jobs.runner import parse_interval, run_periodically
+from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
 from app.settings import Settings, get_settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, HarvestRunningError, LehrplanHarvest, read_status
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
@@ -82,12 +82,16 @@ def cmd_harvest(args: argparse.Namespace) -> int:
             print("Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE")
 
     if args.loop:
-        run_periodically(
-            task,
-            parse_interval(settings.lehrplan_check_interval),
-            poll_s=POLL_SECONDS,
-            trigger_file=Path(settings.state_dir) / TRIGGER_FILE,
-        )
+        stop_on_sigterm()
+        try:
+            run_periodically(
+                task,
+                parse_interval(settings.lehrplan_check_interval),
+                poll_s=POLL_SECONDS,
+                trigger_file=Path(settings.state_dir) / TRIGGER_FILE,
+            )
+        except KeyboardInterrupt:  # Ctrl+C or a container stop; the harvest has written its status
+            print("Harvest-Schleife beendet.")
         return 0
     try:
         task()

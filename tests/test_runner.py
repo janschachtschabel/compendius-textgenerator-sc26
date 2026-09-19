@@ -1,12 +1,13 @@
 """Job runner: interval parsing and the periodic loop with a trigger file."""
 
+import signal
 import threading
 from datetime import timedelta
 from pathlib import Path
 
 import pytest
 
-from app.jobs.runner import parse_interval, run_periodically
+from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
 
 
 def test_parse_interval() -> None:
@@ -125,3 +126,14 @@ def test_a_task_that_asks_for_an_early_retry_gets_it() -> None:
         sleep=clock.sleep,
     )
     assert runs == [1000.0, 1030.0, 2030.0]
+
+
+def test_a_container_stop_reaches_the_job_as_a_keyboard_interrupt() -> None:
+    # docker stop sends SIGTERM to PID 1 and kills it ten seconds later; as KeyboardInterrupt the running job still
+    # writes its final status and releases its lock
+    previous = signal.getsignal(signal.SIGTERM)
+    try:
+        stop_on_sigterm()
+        assert signal.getsignal(signal.SIGTERM) is signal.default_int_handler
+    finally:
+        signal.signal(signal.SIGTERM, previous)

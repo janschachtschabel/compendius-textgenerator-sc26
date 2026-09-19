@@ -51,3 +51,15 @@ def test_search_on_a_cache_without_its_tables_says_so(state_dir: Path, capsys: p
     write_broken_cache(state_dir)  # the schema check passes, the node tables are missing
     assert main(["lehrplan", "search", "--q", "Optik"]) == 1  # a traceback before
     assert "nicht lesbar" in capsys.readouterr().err
+
+
+def test_the_harvest_loop_stops_cleanly_on_sigterm(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    installed: list[object] = []
+    monkeypatch.setattr("app.cli_lehrplan.stop_on_sigterm", lambda: installed.append("sigterm"))
+
+    def interrupted(*args: object, **kwargs: object) -> None:
+        raise KeyboardInterrupt  # what SIGTERM becomes
+
+    monkeypatch.setattr("app.cli_lehrplan.run_periodically", interrupted)
+    assert main(["lehrplan", "harvest", "--loop"]) == 0  # a stopped container, not a traceback
+    assert installed == ["sigterm"]

@@ -8,7 +8,7 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
-from app.jobs.runner import parse_interval, run_periodically
+from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
 from app.jobs.zim_sync import (
     TRIGGER_FILE,
     SyncOptions,
@@ -105,6 +105,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
     interval = parse_interval(settings.zim_sync_interval)
     trigger = Path(settings.zim_dir) / TRIGGER_FILE
     print(f"Sync-Schleife: Profil {options.profile}, Intervall {settings.zim_sync_interval}, Trigger-Datei {trigger}")
+    stop_on_sigterm()
     try:
         run_periodically(
             lambda: _run_once(sync, options),

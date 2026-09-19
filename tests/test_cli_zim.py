@@ -90,3 +90,11 @@ def test_one_loop_run_asks_for_an_early_retry_when_its_report_says_so() -> None:
     options = SyncOptions(profile="compact")
     assert _run_once(OneRun(SyncReport("compact", "t0", retry_soon=True)), options) is False  # type: ignore[arg-type]
     assert _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), options) is True  # type: ignore[arg-type]
+
+
+def test_the_sync_loop_stops_cleanly_on_sigterm(zim_env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    installed: list[object] = []
+    monkeypatch.setattr("app.cli_zim.stop_on_sigterm", lambda: installed.append("sigterm"))
+    monkeypatch.setattr("app.cli_zim.run_periodically", lambda *args, **kwargs: None)
+    assert main(["zim", "sync", "--offline", "--loop"]) == 0
+    assert installed == ["sigterm"]

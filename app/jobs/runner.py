@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
+import signal
 import threading
 import time
 from collections.abc import Callable
@@ -22,6 +23,16 @@ def parse_interval(text: str) -> timedelta:
     if not match:
         raise ValueError(f"invalid interval {text!r}; use <number><s|m|h|d>, e.g. 30d")
     return timedelta(seconds=int(match.group(1)) * _UNITS[match.group(2).lower()])
+
+
+def stop_on_sigterm() -> None:
+    """Let SIGTERM raise KeyboardInterrupt, as Ctrl+C does.
+
+    A container stop sends SIGTERM to PID 1 and kills it ten seconds later. Python ignores SIGTERM's default,
+    so without this a running job never wrote its final status or released its lock, and the next container
+    waited for the lock to go stale.
+    """
+    signal.signal(signal.SIGTERM, signal.default_int_handler)
 
 
 def run_periodically(
