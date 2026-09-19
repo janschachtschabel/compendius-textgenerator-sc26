@@ -83,11 +83,14 @@ def read_status(state_dir: Path) -> dict[str, Any] | None:
     if not path.exists():
         return None
     try:
-        loaded: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
-        return loaded
+        loaded = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         log.warning("cannot read %s: %s", path, exc)
         return None
+    if not isinstance(loaded, dict):  # every reader expects the object the job writes
+        log.warning("%s holds no JSON object; ignored", path)
+        return None
+    return loaded
 
 
 def _tidy(text: str) -> str:

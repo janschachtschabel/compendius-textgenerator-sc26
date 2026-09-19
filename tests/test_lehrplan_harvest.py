@@ -228,3 +228,9 @@ def test_html_entities_in_labels_are_unescaped(tmp_path: Path, monkeypatch: pyte
     hits = {hit.iri: hit for hit in LehrplanStore(tmp_path / "lehrplan.db").search(["Optik"])}
     assert hits["sn:k1"].label == "Licht und Schatten & Farben"
     assert hits["sn:k1"].lehrplan.label == "Gymnasium Physik"
+
+
+@pytest.mark.parametrize("content", ["[1]", "null", '"idle"'])
+def test_a_status_file_without_a_json_object_counts_as_missing(tmp_path: Path, content: str) -> None:
+    (tmp_path / STATUS_FILE).write_text(content, encoding="utf-8")
+    assert read_status(tmp_path) is None

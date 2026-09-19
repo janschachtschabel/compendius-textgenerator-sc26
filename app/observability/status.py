@@ -8,6 +8,7 @@ a zero timestamp would look like a 56-year-old cache.
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterator, Mapping
 from datetime import datetime
 from pathlib import Path
@@ -19,6 +20,8 @@ from prometheus_client.metrics_core import Metric
 from app import __version__
 from app.jobs.zim_sync import read_status as read_zim_status
 from app.sources.lehrplan.harvest import read_status as read_harvest_status
+
+log = logging.getLogger(__name__)
 
 
 def _gauge(name: str, documentation: str, value: float) -> GaugeMetricFamily:
@@ -50,15 +53,13 @@ class StatusCollector:
         build = GaugeMetricFamily("kompendium_build_info", "Version of the service", labels=["version"])
         build.add_metric([__version__], 1)
         yield build
-        yield from self._archives()
-        yield from self._zim_sync()
-        yield from self._curricula()
-        yield _gauge(
-            "kompendium_edu_sharing_enabled",
-            "1 when an edu-sharing repository is configured",
-            int(getattr(self._state, "collections", None) is not None),
-        )
-        yield from self._llm()
+        for section in (self._archives, self._zim_sync, self._curricula, self._edu_sharing, self._llm):
+            try:
+                metrics = list(section())
+            except Exception:  # one unreadable source must not fail the scrape and fire KompendiumDown
+                log.exception("status section %s left out of this scrape", section.__name__)
+                continue
+            yield from metrics
 
     def _archives(self) -> Iterator[Metric]:
         registry = self._state.registry
@@ -126,6 +127,13 @@ class StatusCollector:
             yield _gauge(
                 "kompendium_lehrplan_harvest_last_run_timestamp_seconds", "End of the last successful harvest", finished
             )
+
+    def _edu_sharing(self) -> Iterator[Metric]:
+        yield _gauge(
+            "kompendium_edu_sharing_enabled",
+            "1 when an edu-sharing repository is configured",
+            int(getattr(self._state, "collections", None) is not None),
+        )
 
     def _llm(self) -> Iterator[Metric]:
         llm = getattr(self._state, "llm", None)

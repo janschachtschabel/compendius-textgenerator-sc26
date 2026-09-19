@@ -281,3 +281,9 @@ def test_a_long_download_keeps_its_lock_alive(tmp_path: Path, sources: dict[str,
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
     _sync(tmp_path, FakeCatalog(offers, sources), SlowDownloader(sources)).run(BOOTSTRAP)
     assert ages and ages[0] < 60  # every progress report is a sign of life, so no second run takes over
+
+
+@pytest.mark.parametrize("content", ["[1]", "null", '"idle"'])
+def test_a_status_file_without_a_json_object_counts_as_missing(tmp_path: Path, content: str) -> None:
+    (tmp_path / STATUS_FILE).write_text(content, encoding="utf-8")
+    assert read_status(tmp_path) is None

@@ -104,6 +104,33 @@ def test_a_running_sync_reports_when_it_last_wrote_its_status(sample_zims: dict[
     assert "kompendium_zim_sync_last_run_timestamp_seconds" not in names  # the running run has no end yet
 
 
+def test_status_files_without_a_json_object_do_not_break_the_scrape(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    (tmp_path / "state").mkdir()
+    (tmp_path / "state" / "lehrplan_status.json").write_text("[]", encoding="utf-8")
+    (tmp_path / "zim").mkdir()
+    (tmp_path / "zim" / "sync_status.json").write_text("[1]", encoding="utf-8")
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)  # a 500 here would fire KompendiumDown although the API runs
+    names = {name for name, _labels in samples}
+    assert "kompendium_zim_sync_running" not in names and "kompendium_lehrplan_harvest_failed" not in names
+    assert value(samples, "kompendium_zim_ready") == 1
+
+
+def test_a_failing_status_section_leaves_the_others_in_the_scrape(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def broken(self: object) -> None:
+        raise RuntimeError("lehrplan.db locked")
+
+    monkeypatch.setattr("app.observability.status.StatusCollector._curricula", broken)
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    assert value(samples, "kompendium_zim_ready") == 1 and value(samples, "kompendium_edu_sharing_enabled") == 1
+    assert "kompendium_lehrplan_cache_available" not in {name for name, _labels in samples}
+
+
 def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _app(sample_zims, tmp_path) as client:
         samples = scrape(client)
