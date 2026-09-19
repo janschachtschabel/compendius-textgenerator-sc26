@@ -182,7 +182,7 @@ class CompendiumService:
         return prepared
 
     def _add_corpus(self, prepared: PreparedTopic, request: GenerateRequest, deadline: Deadline | None) -> None:
-        """The articles of the topic, the knowledge collection for part 1, the sub-topics and the capped chunks."""
+        """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks."""
         lap = _Stopwatch(prepared.timings).lap
         sources = self.registry.build_corpus(
             prepared.resolution,
@@ -198,6 +198,9 @@ class CompendiumService:
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
         prepared.subtopics = _subtopics(sources, primary)
+        if "world" not in request.parts:  # paragraphs and their cap serve part 1 only
+            prepared.sources = sources
+            return
         prepared.chunks, prepared.sources, prepared.chunks_truncated = _segment_corpus(
             sources, prepared.lexicon, self.settings.corpus_max_chunks
         )

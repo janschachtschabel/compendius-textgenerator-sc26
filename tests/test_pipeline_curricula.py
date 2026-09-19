@@ -79,6 +79,15 @@ def test_parts_without_world_say_nothing_about_generating_part_one(service: Comp
     assert result.audit.llm is None and result.audit.matcher is None
 
 
+def test_part_two_alone_counts_no_paragraphs_of_a_part_one(service: CompendiumService) -> None:
+    result = service.generate(GenerateRequest(topic="Optik", parts=["curricula"]))
+    # Segmentation and chunk cap serve part 1; their counts (and the truncation metric) would describe a part 1
+    # that was never written
+    assert result.audit.chunks_total == 0 and result.audit.chunks_truncated == 0
+    assert "segment" not in result.audit.timings_ms
+    assert result.curricula is not None and "Geometrische Optik" in result.curricula.keywords  # still from the corpus
+
+
 def test_a_corrupt_cache_file_is_reported_as_unreadable_not_as_missing(
     sample_zims: dict[str, Path], registry: ZimRegistry, tmp_path: Path
 ) -> None:
