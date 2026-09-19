@@ -20,9 +20,10 @@ groups:
           summary: Pflichtarchive fehlen, /ready meldet 503
           description: kompendium_zim_required_missing nennt die Zahl; Sync-Job und active.json prüfen.
       - alert: KompendiumHighErrorRate
+        # Ohne die Proben: /ready meldet beim Erststart 503, und viele /health-Aufrufe verdünnen echte Fehler
         expr: |
-          sum(rate(kompendium_http_requests_total{status=~"5.."}[10m]))
-            / sum(rate(kompendium_http_requests_total[10m])) > 0.05
+          sum(rate(kompendium_http_requests_total{status=~"5..", route!~"/health|/ready"}[10m]))
+            / sum(rate(kompendium_http_requests_total{route!~"/health|/ready"}[10m])) > 0.05
         for: 10m
         labels:
           severity: critical

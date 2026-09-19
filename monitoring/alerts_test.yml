@@ -127,3 +127,33 @@ tests:
             exp_annotations:
               summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
               description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
+
+  - name: Fehlerquote beim Erststart (nur /ready meldet 503)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/ready", status="503"}'
+        values: "0+2x30"
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/health", status="200"}'
+        values: "0+2x30"
+    alert_rule_test:
+      - eval_time: 25m
+        alertname: KompendiumHighErrorRate
+        exp_alerts: []
+
+  - name: Fehlerquote hinter vielen Proben (die Hälfte der Kompendien scheitert)
+    interval: 1m
+    input_series:
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/health", status="200"}'
+        values: "0+100x30"
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="200"}'
+        values: "0+1x30"
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="502"}'
+        values: "0+1x30"
+    alert_rule_test:
+      - eval_time: 25m
+        alertname: KompendiumHighErrorRate
+        exp_alerts:
+          - exp_labels: { severity: critical }
+            exp_annotations:
+              summary: Mehr als 5 % der Anfragen enden mit 5xx
+              description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive.
