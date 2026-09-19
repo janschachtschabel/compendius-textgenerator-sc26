@@ -23,7 +23,20 @@ from app.sources.lehrplan.store import LehrplanCacheError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"])
+HARVEST_FAILED = (
+    "Der letzte Harvest ist gescheitert; den Grund nennen das Log des Harvest-Sidecars "
+    "und `compendium lehrplan status`."
+)
 admin = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan-admin"], dependencies=[Depends(require_admin)])
+
+
+def _public_harvest(status: dict[str, Any] | None) -> dict[str, Any] | None:
+    """The harvest status without the error text, which can name server paths; the file and the log keep it."""
+    if status is None:
+        return None
+    public = {key: status.get(key) for key in ("state", "updated_at", "started_at", "progress", "last_run")}
+    public["error"] = HARVEST_FAILED if status.get("error") else None
+    return public
 
 
 def _builder(request: Request) -> CurriculaBuilder:
@@ -43,7 +56,7 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
         "meta": meta,
         "counts": store.counts(),
         "coverage": coverage(meta),
-        "harvest": read_status(Path(settings.state_dir)),
+        "harvest": _public_harvest(read_status(Path(settings.state_dir))),
     }
 
 

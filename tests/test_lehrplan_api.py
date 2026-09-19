@@ -1,5 +1,6 @@
 """Lehrplan endpoints: public status and search from the local cache, admin harvest request."""
 
+import json
 import sqlite3
 from contextlib import closing
 from pathlib import Path
@@ -11,7 +12,7 @@ from app.main import create_app
 from app.sources.lehrplan.harvest import TRIGGER_FILE
 from app.sources.lehrplan.store import SCHEMA_VERSION, LehrplanRecord, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
-from tests.conftest import make_settings
+from tests.conftest import make_settings, strings_in
 
 AUTH = {"X-Admin-Token": "s3cret"}
 PHYSIK = LehrplanRecord(
@@ -116,3 +117,17 @@ def test_public_answers_do_not_reveal_server_paths(sample_zims: dict[str, Path],
         compendium = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["curricula"]}).json()
     assert "db_path" not in status and str(tmp_path) not in str(status)
     assert compendium["curricula"]["summary"] == {"reason": "cache_missing"}
+
+
+def test_the_public_status_leaves_the_error_text_of_the_harvest_to_the_log(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    state = tmp_path / "state"
+    state.mkdir()
+    error = f"OperationalError: unable to open database file: {state / 'lehrplan.db.tmp'}"
+    status = {"state": "error", "updated_at": "2026-09-18T04:00:00+00:00", "started_at": "2026-09-18T03:40:00+00:00"}
+    (state / "lehrplan_status.json").write_text(json.dumps({**status, "error": error}), encoding="utf-8")
+    with _client(sample_zims, tmp_path) as client:
+        harvest = client.get("/api/v2/lehrplan/status").json()["harvest"]
+    assert harvest["state"] == "error" and harvest["error"]  # that it failed stays visible
+    assert not any(str(tmp_path) in text or "OperationalError" in text for text in strings_in(harvest))

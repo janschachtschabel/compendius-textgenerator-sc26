@@ -200,10 +200,10 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --z
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |
 | `POST /api/v2/matching/compare` (Admin) | Strategien auf einem Thema vergleichen, mit Gold-Metriken, wenn `EVAL_GOLD_DIR` eine Gold-Datei hat |
-| `GET /api/v2/lehrplan/status` | Lehrplan-Cache: Stand, Abdeckung, Lehrpläne je Land, letzter Harvest |
+| `GET /api/v2/lehrplan/status` | Lehrplan-Cache: Stand, Abdeckung, Lehrpläne je Land, letzter Harvest (ob er scheiterte, ohne Fehlertext) |
 | `GET /api/v2/lehrplan/search?q=&subject=` | Lehrplanelemente zu einem Stichwort aus dem Cache |
 | `POST /api/v2/lehrplan/harvest` (Admin) | Harvest-Prüfung anstoßen (Trigger-Datei für den Sidecar) |
-| `GET /api/v2/zim/status` | Archive, Pflichtarchive, `active.json`, letzter Sync |
+| `GET /api/v2/zim/status` | Archive, Pflichtarchive, `active.json`, letzter Sync (Zahl der Fehler; die Texte nennt `/progress`) |
 | `GET /api/v2/zim/catalog` (Admin) | Kiwix-Katalog mit Markierung abonniert/installiert |
 | `GET /api/v2/zim/progress` (Admin) | Stand des Sync-Jobs samt laufendem Download |
 | `POST /api/v2/zim/sync` (Admin) | Sync anstoßen (Trigger-Datei für den Updater) |

@@ -1,5 +1,6 @@
 """ZIM endpoints: public status with sync info, admin protection, catalog, sync trigger, delete."""
 
+import json
 import shutil
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,7 @@ from app.jobs.zim_sync import TRIGGER_FILE
 from app.main import create_app
 from app.sources.zim.active import ActiveArchive, ActiveState, write_active
 from app.sources.zim.catalog import KiwixCatalog
-from tests.conftest import make_settings
+from tests.conftest import make_settings, strings_in
 
 OPDS = Path(__file__).parent / "fixtures" / "opds"
 AUTH = {"X-Admin-Token": "s3cret"}
@@ -110,3 +111,19 @@ def test_delete_refuses_active_and_removes_stray_files(
         assert sorted(response.json()["removed"]) == [stray.name, part.name]
         assert not stray.exists()
         assert not part.exists()
+
+
+def test_the_public_status_leaves_the_error_texts_of_the_sync_to_the_admin(zim_dir: Path, tmp_path: Path) -> None:
+    part = zim_dir / "wikipedia_de_sample_2026-09.zim.part"
+    errors = [f"wikipedia_de_sample: [Errno 28] No space left on device: '{part}'"]
+    last_run = {"profile": "compact", "started_at": "2026-09-18T03:00:00+00:00"}
+    last_run |= {"finished_at": "2026-09-18T03:20:00+00:00", "downloaded": [], "errors": errors}
+    status = {"state": "idle", "updated_at": "2026-09-18T03:20:00+00:00", "last_run": last_run, "download": None}
+    (zim_dir / "sync_status.json").write_text(json.dumps(status), encoding="utf-8")
+    with _client(zim_dir, tmp_path, admin_token="s3cret") as client:
+        public = client.get("/api/v2/zim/status").json()["sync"]
+        progress = client.get("/api/v2/zim/progress", headers=AUTH).json()
+    assert public["state"] == "idle" and public["last_run"]["finished_at"] == "2026-09-18T03:20:00+00:00"
+    assert public["last_run"]["error_count"] == 1
+    assert not any(str(tmp_path) in text or "Errno" in text for text in strings_in(public))
+    assert progress["last_run"]["errors"] == errors  # the admin endpoint keeps the detail

@@ -20,6 +20,7 @@ from app.sources.zim.downloader import PART_SUFFIX, validate_file_name
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/zim", tags=["zim"])
+PUBLIC_RUN_FIELDS = ("profile", "started_at", "finished_at", "adopted", "downloaded", "skipped", "missing", "pruned")
 admin = APIRouter(prefix="/api/v2/zim", tags=["zim-admin"], dependencies=[Depends(require_admin)])
 
 
@@ -29,6 +30,24 @@ def _active(settings: Settings) -> ActiveState:
     except ValueError as exc:
         log.error("%s", exc)
         return ActiveState(profile=settings.zim_profile)
+
+
+def _public_sync(status: dict[str, Any] | None) -> dict[str, Any] | None:
+    """The sync status without its error texts, which can name server paths; GET /progress (admin) keeps them."""
+    if status is None:
+        return None
+    run = status.get("last_run")
+    public_run: dict[str, Any] | None = None
+    if isinstance(run, dict):
+        errors = run.get("errors")
+        public_run = {key: run.get(key) for key in PUBLIC_RUN_FIELDS}
+        public_run["error_count"] = len(errors) if isinstance(errors, list) else 0
+    return {
+        "state": status.get("state"),
+        "updated_at": status.get("updated_at"),
+        "last_run": public_run,
+        "download": status.get("download"),
+    }
 
 
 @router.get("/status")
@@ -42,7 +61,7 @@ def zim_status(request: Request) -> dict[str, Any]:
         "missing_required": registry.has_ids(required),
         "profile": settings.zim_profile,
         "active": _active(settings).model_dump(),
-        "sync": read_status(settings.zim_dir),
+        "sync": _public_sync(read_status(settings.zim_dir)),
     }
 
 

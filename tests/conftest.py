@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import os
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +61,23 @@ def pytest_configure(config: pytest.Config) -> None:
     fields = {name.lower() for name in Settings.model_fields}
     for key in [key for key in os.environ if key.lower() in fields]:
         del os.environ[key]
+
+
+def strings_in(value: Any) -> Iterator[str]:
+    """Every string of a JSON answer, keys included.
+
+    Path checks look at these instead of ``str(answer)``: the repr of a dict doubles the backslashes of Windows
+    paths, so a leaked path would never match.
+    """
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield str(key)
+            yield from strings_in(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from strings_in(item)
 
 
 class HtmlItem(Item):
