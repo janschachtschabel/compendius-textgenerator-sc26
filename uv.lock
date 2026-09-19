@@ -132,6 +132,7 @@ dependencies = [
 
 [package.optional-dependencies]
 embeddings = [
+    { name = "huggingface-hub" },
     { name = "model2vec" },
 ]
 
@@ -148,6 +149,7 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.116" },
     { name = "httpx", specifier = ">=0.28" },
+    { name = "huggingface-hub", marker = "extra == 'embeddings'", specifier = ">=1.31" },
     { name = "libzim", specifier = ">=3.13" },
     { name = "model2vec", marker = "extra == 'embeddings'", specifier = ">=0.9" },
     { name = "numpy", specifier = ">=2.0" },
