@@ -15,7 +15,7 @@ from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.sparql import SparqlClient, SparqlError
-from app.sources.lehrplan.store import LehrplanStore
+from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
 
 POLL_SECONDS = 60
@@ -107,7 +107,11 @@ def cmd_search(args: argparse.Namespace) -> int:
         print("kein brauchbarer Lehrplan-Cache vorhanden (compendium lehrplan harvest)", file=sys.stderr)
         return 1
     keywords = build_keywords(args.q, aliases=[], subtopics=[])
-    result = LehrplanMatcher(store).match(keywords, subject_terms=_subjects(settings).mem_terms(args.subject))
+    try:
+        result = LehrplanMatcher(store).match(keywords, subject_terms=_subjects(settings).mem_terms(args.subject))
+    except LehrplanCacheError as exc:
+        print(f"Lehrplan-Cache nicht lesbar ({exc}); compendium lehrplan harvest --force", file=sys.stderr)
+        return 1
     print(
         f"{len(result.matches)} Treffer ({result.excluded_noise} als Wortfragment ausgeschlossen) "
         f"für {', '.join(result.keywords)}"

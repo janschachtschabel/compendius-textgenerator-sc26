@@ -8,7 +8,7 @@ import pytest
 from app.cli import main
 from app.settings import get_settings
 from tests.conftest import ROOT
-from tests.test_lehrplan_api import write_cache
+from tests.test_lehrplan_api import write_broken_cache, write_cache
 
 
 @pytest.fixture
@@ -45,3 +45,9 @@ def test_search_prints_matches_and_respects_the_subject(state_dir: Path, capsys:
     assert "1 Treffer" in out and "Lichtbrechung an Linsen" in out and "[SN]" in out
     assert main(["lehrplan", "search", "--q", "Optik", "--subject", "Chemie"]) == 0
     assert capsys.readouterr().out.startswith("0 Treffer")
+
+
+def test_search_on_a_cache_without_its_tables_says_so(state_dir: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    write_broken_cache(state_dir)  # the schema check passes, the node tables are missing
+    assert main(["lehrplan", "search", "--q", "Optik"]) == 1  # a traceback before
+    assert "nicht lesbar" in capsys.readouterr().err
