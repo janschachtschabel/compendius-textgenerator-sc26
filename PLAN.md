@@ -1,6 +1,6 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-19, Fassung v15 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+Stand: 2026-09-19, Fassung v16 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
 teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
@@ -33,7 +33,7 @@ Warum Neubau statt Überarbeitung:
 | Kriterium | Alt (`alterCode`) | Neu (v2, Regelmodus) |
 |---|---|---|
 | Laufzeit je Kompendium | 45–90 s (README) | ca. 5–10 s (Prototyp: 7 s mit ZIM) |
-| LLM-Aufrufe je Kompendium | 2–15 (Linker, Synonym-Fallbacks, Text, ggf. QA) | 0 im Standardmodus; 2–3 in `hybrid-fast`; bis 15 in `hybrid-quality` |
+| LLM-Aufrufe je Kompendium | 2–15 (Linker, Synonym-Fallbacks, Text, ggf. QA) | 0 im Standard; optional (D33) `extraction=llm` einer je Baustein, `generation` 2–3 (`llm-fast`) bis 10 (`llm`); beide auf `llm` bei Optik 20 |
 | Externe Live-Abhängigkeit zur Inferenzzeit | Wikipedia-API, b-api | keine; edu-sharing (eigene Infrastruktur) und b-api nur optional |
 | Quellenbindung | 10 Wikipedia-Extracts im Prompt, kein Nachweis je Aussage | jede Aussage mit Zitationsnummer, Quelle, Revisionsstand, Lizenz |
 | Struktur | vom LLM frei gewählt | Template-gesteuert (SC26, 13 Bausteine, editierbar) |
@@ -204,9 +204,9 @@ compendious-text-fastapi/
 │   │   ├── wlo/               edu-sharing-Client (Sammlung, Referenzen, textContent), Lizenz-Policy
 │   │   └── lehrplan/          vocab, sparql, queries, tree, store (SQLite+FTS5), harvest, stufen, matcher, render, subjects, part
 │   ├── knowledge/             store (FTS5), segmentation, related (Linkranking), aliases
-│   ├── matching/              lexicon, lexical (BM25, Char-TF-IDF), embeddings (Model2Vec), rerank (optional), policy, router (LLM, Zweifelsfälle), registry, eval
+│   ├── matching/              lexicon, lexical (BM25, Char-TF-IDF), embeddings (Model2Vec), rerank (optional), policy, registry, eval
 │   ├── templates/             manager, schema, builtin/{standard,sc26}.json, validation
-│   ├── synthesis/             writer (Bausteine schreiben), extractive, llm (Evidenzblock, LLM-Baustein), citations (Belegprüfung), actors, glossary, sources_section, facets, lint
+│   ├── synthesis/             writer (Bausteine schreiben), extractive, extraction und selection (LLM-Satzauswahl, D33), llm (Evidenzblock, LLM-Baustein), citations (Belegprüfung), actors, glossary, sources_section, facets, lint
 │   ├── compose/               assembler, frontmatter, markdown, partial_regeneration
 │   ├── llm/                   client (b-api), prompts (IDs, Versionen), budget, budget_store (Tageszähler in STATE_DIR), deadline (Anfragefrist), gateway (Verfügbarkeit, Modi), report (Audit, Frontmatter)
 │   ├── jobs/                  runner (--loop, Trigger-Datei), zim_sync; später lehrplan_harvest, cache_prune
@@ -227,7 +227,7 @@ compendious-text-fastapi/
 | `matching/{bm25,char_tfidf,model2vec}` | `matching/lexical.py`, `embeddings.py` | Guardrails entfernt, nur noch Scoring |
 | `matching/hybrid_pipeline.py` | `matching/registry.py` + `policy.py` | RRF bleibt; Policy einmalig; Cross-Encoder und QA-Filter optional (Extra `ml`) |
 | `matching/extractive_qa_matcher.py`, `cross_encoder_matcher.py`, `e5_onnx_matcher.py` | `matching/rerank.py` (optional) | nur wenn Evaluation Mehrwert zeigt |
-| `matching/llm_matcher.py` | `matching/llm_router.py` | über b-api-Client, nur für Zweifelsfälle mit Budget |
+| `matching/llm_matcher.py` | `synthesis/selection.py`, `synthesis/extraction.py` | über b-api-Client und Budget: das LLM wählt je Baustein Sätze unter den Kandidaten der Policy (`extraction=llm`, D33); der zuerst gebaute Router für Zweifelsfälle ist entfallen |
 | `matching/comparator.py` | `matching/eval.py` | plus Goldstandard-Metriken |
 | `template_manager.py` | `templates/` | JSON-Schema, Versionierung, Facetten, Budgets, Heading-Patterns |
 | `synthesizer.py` | `synthesis/` | Facetten deklarativ, Akteure und Glossar neu |
@@ -277,13 +277,14 @@ compendious-text-fastapi/
 | `B_API_BASE_URL` | `https://b-api.staging.openeduhub.net` | nur der Host; der Pfad `/api/v1/llm/{provider}/…` wird aus dem Provider gebildet |
 | `B_API_PROVIDER` | `openai` | `openai` oder `academiccloud`, zur Laufzeit umschaltbar (Entscheidung D19) |
 | `B_API_MODEL` | `gpt-5.6-luna` | Modell-ID beim gewählten Provider; wird beim Start gegen `/models` geprüft |
-| `LLM_MODE_DEFAULT` | `rule-based` | `rule-based`, `hybrid-fast`, `hybrid-quality` (siehe 4.7) |
-| `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `hybrid-fast` per LLM formuliert |
-| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 20000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
+| `LLM_EXTRACTION_DEFAULT` | `rule-based` | `rule-based` oder `llm` (siehe 4.7, D33) |
+| `LLM_GENERATION_DEFAULT` | `rule-based` | `rule-based`, `llm-fast` oder `llm` (siehe 4.7, D33) |
+| `LLM_EXTRACTION_CANDIDATES` | `8` | Absätze je Baustein, die `extraction=llm` anbietet: die der Policy, dann die nächstbesten nach ihrem Score |
+| `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
+| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 40000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
 | `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | GPT-5- und o-Serie (D25); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
 | `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `4` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
-| `LLM_ROUTER_ENABLED`, `LLM_ROUTER_MAX_CHUNKS` | `true` / `12` | LLM-Router für Zweifelsfälle des Matchings, nur in den Hybridmodi |
 | `EDU_SHARING_BASE_URL` | `https://redaktion.openeduhub.net/edu-sharing/rest` | Repository für Teil 3 und Wissens-Sammlung; leer = aus |
 | `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | – | optional Basic-Auth; ohne Zugangsdaten anonym (öffentliche Sammlungen) |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Timeout je Repository-Anfrage |
@@ -452,7 +453,9 @@ zweiten liegt; Leads nie. `AssignmentResult.doubtful` nennt je Chunk bis zu drei
 `LLM_ROUTER_MAX_CHUNKS`) und erwartet ein JSON-Objekt; Antworten außerhalb der angebotenen Kandidaten werden
 verworfen. `assign(..., overrides=…)` übernimmt die Entscheidungen als sichere Treffer in einem zweiten Lauf.
 Gemessen (Optik): 3 Zweifelsfälle, 3 Entscheidungen, davon 2 abweichend von der Policy (`moved`), ein Aufruf mit
-rund 1.200 Tokens in 3 s. Nur verschobene Chunks zählen als LLM-Beitrag zum Modus.
+rund 1.200 Tokens in 3 s. Nur verschobene Chunks zählen als LLM-Beitrag zum Modus. **Abgelöst (D33,
+2026-09-19):** Der Router ist entfernt; mit `extraction=llm` wählt das LLM die Sätze jedes Bausteins unter den
+Kandidaten der Policy (4.7), die dafür je Baustein ihren Score jedes Absatzes meldet (`AssignmentResult.slot_scores`).
 
 **Explizit entfernt:** alle Optik-Signalwörter, Slot-Guardrails in den Matchern,
 `SLOT_ENHANCED_QUERIES` im Planner.
@@ -491,7 +494,7 @@ rund 1.200 Tokens in 3 s. Nur verschobene Chunks zählen als LLM-Beitrag zum Mod
   Cross-Encoder, Electra-QA) kommt nicht ins Produktionsimage. Der Zielwert 0,70 ist **nicht
   erreicht**; die Freigabe des Regelmodus erfolgt trotzdem, weil micro-F1 0,63 (nach D28: 0,66) und die großen
   Bausteine tragen, kleine Bausteine ehrlich leer bleiben dürfen (`empty_slot_policy`) und der
-  LLM-Router in Phase 5 genau die Zweifelsfälle adressiert. Offen: Redaktionsprüfung der Labels,
+  LLM-Router in Phase 5 genau die Zweifelsfälle adressiert (seit D33 die optionale LLM-Extraktion). Offen: Redaktionsprüfung der Labels,
   mehr Gold für die kleinen Bausteine, Hold-out-Themen für die Schwellen.
 - Der Comparator-Endpunkt bleibt (`POST /api/v2/matching/compare`) und liefert die Metriken.
 
@@ -577,7 +580,7 @@ Generierte Bausteine:
   Heuristik: Person (Lebensdaten-Muster „(* 1571", Überschrift „Leben"), Organisation
   (Rechtsform, „gegründet", „Sitz"), Vorhaben (Laufzeit, „Projekt", „Programm"), Netzwerk
   („Verbund", „Community"). Nur Name, Kurzbeschreibung aus dem Lead, Anker-Link, Facette
-  Akteursfunktion aus Lexikon. Optional LLM-Klassifikation im Hybridmodus.
+  Akteursfunktion aus Lexikon. Optional LLM-Klassifikation (geplant, nicht umgesetzt).
 - **12 Quellen:** alle Quellen mit Publikationsform (Nachschlagewerk, Grundlagenwerk,
   Primärquelle …), TULLU, Zugang, Vertrauensgrad, Revisionsstand; dazu die aus den Artikeln
   extrahierten Literatur- und Weblink-Abschnitte als „weiterführende Quellen".
@@ -585,19 +588,22 @@ Generierte Bausteine:
   Fachbegriffe; Definition = erster Satz des Lead-Absatzes des verlinkten Artikels (Belegstelle);
   SKOS-Relationen `broader`/`narrower` aus der Gliederung in 2, `altLabel` aus Aliasen.
 
-**Drei Modi (Entscheidung D10).**
+**Zwei LLM-Schalter (Entscheidung D33, löst die drei Modi aus D10 ab).**
 
-| Modus | LLM-Aufrufe | Was das LLM tut | Rest |
+| Schalter | Wert | Was das LLM tut | Aufrufe je Kompendium |
 |---|---|---|---|
-| `rule-based` (Standard) | 0 | nichts | alles extraktiv oder deterministisch generiert |
-| `hybrid-fast` | 2–3 | formuliert nur die Bausteine, die Einordnung statt Auszug brauchen (`LLM_FAST_SECTIONS`, Vorschlag 1 Themendefinition und 11 Querschnitt) aus ihrem Evidenzblock; optional ein Router-Aufruf für Zweifelsfälle des Matchings | extraktiv |
-| `hybrid-quality` | 13–15 | formuliert alle elf Inhaltsbausteine aus ihren Evidenzblöcken, klassifiziert Akteure (Kaskade), poliert Glossardefinitionen | Quellen, Belegtabelle und Marker bleiben deterministisch |
+| `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze | 0 |
+| | `llm` | wählt je Inhaltsbaustein die passenden Sätze unter den Kandidaten; antwortet nur mit Satznummern, der Wortlaut bleibt der der Quelle | einer je Baustein mit Kandidaten (Optik: 10) |
+| `generation` | `rule-based` (Standard) | nichts: der Baustein besteht aus den gewählten Sätzen mit Belegnummer je Absatz | 0 |
+| | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Vorschlag 1 Themendefinition und 11 Querschnitt) aus ihrem Evidenzblock | 2–3 |
+| | `llm` | formuliert alle Inhaltsbausteine aus ihren Evidenzblöcken | 8–10 |
 
-In beiden Hybridmodi gilt: Prompt mit Evidenzblock, strikte Zitationspflicht, Nachprüfung, dass
-jede Zitationsnummer existiert; Sätze ohne Beleg werden verworfen oder als
-`Evidenzgrad: Schlussfolgerung` markiert (konfigurierbar). Fällt die b-api aus oder ist das
-Budget erschöpft, wird der Abschnitt extraktiv erzeugt und der tatsächlich verwendete Modus im
-Frontmatter vermerkt.
+Die Schalter sind frei kombinierbar; beide auf `llm` heißt: das LLM wählt die Sätze, und dieselben Sätze sind der
+Evidenzblock, aus dem es schreibt. Quellen, Belegtabelle, Glossar, Akteure und Marker bleiben deterministisch.
+Für `generation` gilt: Prompt mit Evidenzblock, strikte Zitationspflicht, Nachprüfung, dass jede Zitationsnummer
+existiert; Sätze ohne Beleg werden verworfen oder als `Evidenzgrad: Schlussfolgerung` markiert (konfigurierbar).
+Fällt die b-api aus oder ist das Budget erschöpft, bleibt der Baustein regelbasiert, und der tatsächlich
+verwendete Schalter steht im Frontmatter.
 
 **Umsetzung (2026-09-18, `synthesis/llm.py`, `synthesis/citations.py`, `synthesis/writer.py`).** Evidenzblock je Baustein mit lokalen
 Nummern `[1] (Quelle › Überschrift) Text`, höchstens 1.500 Zeichen je Absatz; Ausgabegrenze aus dem Bausteinbudget
@@ -622,11 +628,37 @@ bleiben sie ohne Nummer stehen, eingefasst in `<!-- f: Evidenzgrad=Schlussfolger
 extraktiv. Entwürfe entstehen parallel (`LLM_MAX_CONCURRENCY`) mit lokalen Nummern und werden beim
 Zusammenbau in die eine globale Belegfolge verschoben. Jeder Baustein, den das LLM nicht liefert (Fehler, Budget,
 leere Antwort, nichts Belegtes), entsteht extraktiv; der Grund steht in `audit.llm.fallbacks`. Eine leere Antwort
-mit `finish_reason=stop` heißt: die Belege passen nach Urteil des Modells nicht zum Baustein. Frontmatter `mode`
-nennt den tatsächlich verwendeten Modus: ohne LLM-Baustein und ohne vom Router verschobenen Chunk ist das
-`rule-based`, der Wunsch steht dann in `mode_requested`. `target_length` wirkt über die skalierten Bausteinbudgets
+mit `finish_reason=stop` heißt: die Belege passen nach Urteil des Modells nicht zum Baustein. Frontmatter `generation`
+nennt den tatsächlich verwendeten Schalter: ohne LLM-Baustein ist das `rule-based`, der Wunsch steht dann in
+`generation_requested`. `target_length` wirkt über die skalierten Bausteinbudgets
 auch auf Ziellänge und Ausgabegrenze der LLM-Bausteine. Unerwartete Fehler in der LLM-Schicht (nicht nur
 b-api-Fehler) führen ebenfalls zum extraktiven Baustein und stehen mit Fehlertyp im Audit.
+
+**LLM-Extraktion (D33, 2026-09-19, `synthesis/selection.py`, `synthesis/extraction.py`).** Kandidaten eines
+Bausteins sind die Absätze, die ihm die Policy gibt (alle), danach die nächstbesten nach dem Score der Policy für
+diesen Baustein (`AssignmentResult.slot_scores`), zusammen `LLM_EXTRACTION_CANDIDATES` (Standard 8). Jeder
+Kandidat erscheint mit nummerierten Sätzen („2.3“ ist der dritte Satz des zweiten Absatzes): nur die brauchbaren
+Sätze der Regeln (Mindestlänge, keine durch eine entfernte Formel abgeschnittenen Sätze), höchstens 1.000
+Zeichen je Absatz; Listen und Tabellen sind eine Einheit. Das Modell antwortet mit `{"saetze": [...]}` (Prompt
+`passage_selection` v1). Nicht angebotene Nummern werden verworfen und gezählt (`invalid_numbers`); die gewählten
+Sätze eines Absatzes stehen in Quellreihenfolge, die Absätze in der Reihenfolge, in der das Modell sie nennt;
+über das 1,5-Fache der Ziellänge hinaus endet die Auswahl an einer Absatzgrenze (`cut_sentences`). Der Schreiber
+übernimmt alle gewählten Sätze (Regelmodus: die ersten drei, im Lead fünf); die Dublettenprüfung über
+Satzanfänge gilt weiter. Eine leere Auswahl heißt: kein angebotener Absatz passt, der Baustein bleibt leer
+(`emptied`, Status `leer`). Scheitert die Auswahl (b-api, Budget, Frist, unlesbare Antwort, unerwarteter Fehler),
+behält der Baustein die Absätze der Policy (`fallbacks`). Die Aufrufe laufen parallel (`LLM_MAX_CONCURRENCY`) aus
+demselben Anfragebudget wie das Schreiben. Status `ki-ausgewählt`; die KI-Kennzeichnung im Frontmatter nennt
+wörtliche Quellenauszüge mit KI-gestützter Auswahl, `review.status` ist `ki-ausgewählt`. Der Router für
+Zweifelsfälle (4.4) ist entfallen, weil die Extraktion alle Absätze eines Bausteins entscheidet, nicht nur die
+knappen. Gemessen mit `gpt-5.6-luna` (Optik, 2026-09-19): `extraction=llm` 10 Aufrufe, 16.467 Tokens (12.760
+Eingabe, 3.707 Ausgabe mit Denken), 10,9 s, 81 Sätze in 10 Bausteinen, keine ungültige Nummer; beide Schalter auf
+`llm` 20 Aufrufe, 27.205 Tokens, 18 s, alle 10 Bausteine geschrieben, kein Satz verworfen. Dabei fiel auf:
+Reasoning-Modelle zählen ihr Denken in `max_completion_tokens`; die Synthese hatte die Grenze nur nach der
+Textlänge bemessen (Baustein 2: 555 Tokens) und bekam reproduzierbar eine leere Antwort mit
+`finish_reason=length`. Seither kommen für Reasoning-Modelle 1.000 Tokens hinzu (`REASONING_ALLOWANCE`, auch in
+der Reservierung), und `LLM_MAX_TOKENS_PER_REQUEST` steht auf 40.000, weil 20.000 bei beiden Schaltern sieben von
+zehn Bausteinen abwiesen. Beobachtet: das Modell wählte in „Fachinhalte“ einen Satz, der auf eine entfernte Formel
+verweist („Dabei ist der Laplace-Operator …“); der Prompt schließt solche Sätze nur allgemein aus.
 
 ---
 
@@ -846,11 +878,11 @@ exponentiellem Backoff bei 429/502/503/504 (kein `retry-after`), Timeout ≥ 120
 Beim Start wird das konfigurierte Modell gegen `/models` geprüft und bei Abweichung gewarnt,
 bei `status != ready` oder hohem `demand` fällt der Dienst auf den Regelmodus zurück.
 
-Einsatzorte (alle einzeln abschaltbar): Abschnittssynthese im Hybridmodus, LLM-Router für
-Zweifelsfälle, Akteurs-Klassifikation, Glossar-Politur, Template-Kurztexte (Admin), QA-Endpunkt.
+Einsatzorte (alle einzeln abschaltbar): Satzauswahl (`extraction=llm`, D33), Abschnittssynthese (`generation`),
+Akteurs-Klassifikation, Glossar-Politur, Template-Kurztexte (Admin), QA-Endpunkt.
 Jeder Prompt hat eine ID und Version in `llm/prompt_registry.py`; beide landen im Frontmatter.
 
-Kostenmodell (Schätzung je Kompendium, Modellklasse gpt-4.1-mini): `rule-based` 0;
+Kostenmodell (Schätzung der Planung je Kompendium, Modellklasse gpt-4.1-mini; Messwerte unten und in 4.7): `rule-based` 0;
 `hybrid-fast` 2–3 Aufrufe × (1.500 Eingabe- + 400 Ausgabe-Tokens) ≈ 4.500/1.200;
 `hybrid-quality` 13–15 Aufrufe ≈ 20.000/5.500. Zum Vergleich alt: ~1.500 Eingabe- + bis 4.000
 Ausgabe-Tokens für den Text, plus 1–2 Linker-Aufrufe. Kostenschutz über
@@ -871,13 +903,13 @@ Wiederholung; der Schlüssel erscheint in keiner Meldung. `check_model()` vergle
 ist `status != ready` oder `demand ≥ 3`, gilt das LLM als nicht verfügbar; der Dienst prüft beim Start und, solange
 nicht verfügbar, höchstens alle zehn Minuten erneut (`gateway.py`). Die Prüfung ist ein einzelner Versuch mit 10 s Timeout, `/health` liest nur den letzten
 Stand und ruft die b-api nie selbst. Zeitüberschreitungen werden nicht wiederholt; nach einem Verbindungsfehler
-oder Timeout setzt ein Schutzschalter die b-api 60 s aus, Hybrid-Anfragen laufen in dieser Zeit sofort im
+oder Timeout setzt ein Schutzschalter die b-api 60 s aus, LLM-Anfragen laufen in dieser Zeit sofort im
 Regelmodus. Der Schlüssel wird von Leerraum befreit, bei unzulässigen Zeichen abgelehnt (ohne ihn zu nennen) und
 aus jeder Fehlermeldung geschwärzt, weil httpx unzulässige Header-Werte im Fehlertext zitiert; Fehlerkörper der
 b-api stehen nur im Log, nie in `/health`, Audit oder Frontmatter. Antworten in unerwartetem Format werden zu
 `LlmError`; fehlt `usage`, wird der Verbrauch aus den Textlängen geschätzt, damit das Budget weiterzählt.
 `prompts.py`: `section_synthesis` v2 und
-`slot_router` v1; v2 entstand nach der ersten Messung, weil v1 die Ausschlussliste des Bausteins im Text
+`passage_selection` v1 (D33; der frühere `slot_router` v1 ist mit dem Router entfallen); v2 entstand nach der ersten Messung, weil v1 die Ausschlussliste des Bausteins im Text
 wiedergab und Schlussfolgerungen mit Belegnummer versah. `budget.py` und `budget_store.py`: Grenze je Kompendium und Tagesgrenze mit UTC-Wechsel; die verbrauchten Tokens
 des Tages liegen in `STATE_DIR/llm_budget.db` (SQLite, UPSERT), gelten für alle Worker gemeinsam und überstehen
 Neustarts, weil das Image mit zwei uvicorn-Workern läuft; Reservierungen laufender Aufrufe bleiben im Prozess,
@@ -893,7 +925,7 @@ Tagesgrenze greift.
 Gemessen am 2026-09-18 gegen `b-api.staging.openeduhub.net`: `/models` openai 138 Modelle ohne `status`/`demand`,
 academiccloud 14 Modelle mit `status` und `demand` 0 bis 2; `gpt-5.6-luna` antwortet mit
 `max_completion_tokens`, `reasoning_effort` und `verbosity` in 2,4 s; identische Anfragen beantwortet die b-api aus
-einem Cache (0,2 s, gleiche `usage`). Kosten je Kompendium (Optik, Klimawandel, Photosynthese, Französische Revolution): `hybrid-fast` 2 bis 3 Aufrufe
+einem Cache (0,2 s, gleiche `usage`). Kosten je Kompendium (Optik, Klimawandel, Photosynthese, Französische Revolution; die Modi heißen seit D33 `generation=llm-fast` und `generation=llm`): `hybrid-fast` 2 bis 3 Aufrufe
 und 2.300 bis 4.000 Tokens (9 bis 15 s gesamt), `hybrid-quality` 8 bis 10 Aufrufe und 10.500 bis 14.500 Tokens
 (16 bis 20 s gesamt bei vier parallelen Aufrufen), also unter der Schätzung oben, weil nur Bausteine mit Belegen geschrieben werden. Nicht umgesetzt:
 Akteurs-Klassifikation und Glossar-Politur per LLM, Template-Kurztexte, QA-Endpunkt (Phase 6).
@@ -961,14 +993,19 @@ ist optional, wenn `collection_id` gesetzt ist. Die Antwort trägt `collection` 
 summary, markdown, error} und `audit.knowledge`. Neu: `GET /api/v2/collections/{id}/overview` (422 ungültige ID,
 404 unbekannt, 502 Repository nicht erreichbar). `write_back` bleibt außen vor (D11).
 
-**Stand Phase 5 (2026-09-18):** `mode` nimmt `rule-based`, `hybrid-fast`, `hybrid-quality` oder fehlt (dann
-`LLM_MODE_DEFAULT`). Die Antwort trägt `mode` (tatsächlich verwendet), je Baustein `status` (`ki-generiert` für
-LLM-Bausteine) und `llm` {prompt, model, tokens, dropped_sentences, unsupported_sentences}, dazu `audit.llm`
-{mode_requested, mode, note, sections, fallbacks, dropped_sentences, unsupported_sentences, router} und
-`audit.llm_tokens` {prompt, completion, total, calls}. Frontmatter: `mode`, bei Abweichung `mode_requested`, und
-`llm` {provider, model, prompts, sections, fallbacks, note, router}. Ein Hybridwunsch ohne konfiguriertes oder
-verfügbares LLM ist kein Fehler, sondern ein Kompendium im Regelmodus mit Hinweis. `GET /health` zeigt
-`components.llm` {enabled, provider, model, available, check, budget}.
+**Stand D33 (2026-09-19, vorher Phase 5 mit `mode`):** `extraction` nimmt `rule-based` oder `llm`,
+`generation` nimmt `rule-based`, `llm-fast` oder `llm`; fehlt ein Feld, gilt `LLM_EXTRACTION_DEFAULT` bzw.
+`LLM_GENERATION_DEFAULT`; das frühere Feld `mode` ergibt 422 mit Hinweis. Die Antwort trägt `extraction` und
+`generation` (tatsächlich verwendet), je Baustein `status` (`ki-ausgewählt` für Sätze, die das LLM gewählt hat,
+`ki-generiert` für LLM-Text) und bei LLM-Text `llm` {prompt, model, tokens, dropped_sentences,
+unsupported_sentences, marked_sentences}, dazu `audit.llm` {note, extraction {requested, used, sections, emptied,
+fallbacks, sentences, invalid_numbers, cut_sentences}, generation {requested, used, sections, fallbacks,
+dropped_sentences, unsupported_sentences, marked_sentences}} und `audit.llm_tokens` {prompt, completion, total,
+calls}. Frontmatter: `extraction` und `generation`, bei Abweichung `extraction_requested` bzw.
+`generation_requested`, und `llm` {provider, model, prompts, extraction {sections, emptied, fallbacks},
+generation {sections, fallbacks}, note}. Ein LLM-Wunsch ohne konfiguriertes oder verfügbares LLM ist kein Fehler,
+sondern ein Kompendium im Regelmodus mit Hinweis. `GET /health` zeigt `components.llm` {enabled, provider, model,
+available, check, budget}.
 
 Weitere: `GET /api/v2/templates`, `GET /api/v2/templates/{id}` (geplant: `PUT|DELETE /api/v2/templates/{id}`,
 `POST /api/v2/templates/{id}/descriptions` mit LLM, Admin); `GET /api/v2/zim/status`,
@@ -981,10 +1018,10 @@ Weitere: `GET /api/v2/templates`, `GET /api/v2/templates/{id}` (geplant: `PUT|DE
 ### 8.3 Laufzeitverhalten
 
 Synchron mit Gesamtbudget `REQUEST_TIMEOUT_S` (Standard 120 s). Regelmodus liegt weit darunter;
-Hybridmodus parallelisiert LLM-Aufrufe (Semaphore). Ein Job-Modell (`202 Accepted` +
+Die LLM-Schalter parallelisieren ihre Aufrufe (Semaphore). Ein Job-Modell (`202 Accepted` +
 `GET /api/v2/jobs/{id}`) ist vorgesehen, aber erst nötig, wenn Konsumenten es brauchen.
 
-Ergebnis-Cache (geplant, nicht umgesetzt): Schlüssel aus aufgelöstem Titel, Template-ID und -Version, Teilen, Modus,
+Ergebnis-Cache (geplant, nicht umgesetzt): Schlüssel aus aufgelöstem Titel, Template-ID und -Version, Teilen, LLM-Schaltern,
 ZIM-UUIDs, Harvest-Datum, `collection_id` + `modifiedAt`; TTL 7 Tage; `force: true` umgeht ihn.
 
 ---
@@ -1078,7 +1115,7 @@ Aufwände sind Schätzungen in Personentagen (PT), Unsicherheit ±30 %.
 | 2 Matching und Template ⚠ teilweise (2026-09-17) | Überschriften-Lexikon aus 20.000 Dump-Artikeln erhoben und in Fassung 3 nachgeschärft, Policy kalibriert (Standardbaustein, Vertrauensschwelle, Teilgebiets-Einleitungen, Personen- und Werkartikel ausgenommen, Fragmentfilter), Goldstandard 10 Themen / 603 Chunks, Eval-Harness (CLI und `POST /api/v2/matching/compare`), Matcher-Entscheidung `hybrid_light` + Model2Vec im Image. Facetten-Annotatoren unverändert (Best Effort, D13) | macro-F1 0,43 (Ziel 0,70 nicht erreicht), micro-F1 0,63, nach D28 0,45 / 0,66, Baseline 0,27/0,32; Halluzinations-Slots bei kleinen Bausteinen vorhanden; Redaktionsprüfung steht aus | 7 |
 | 3 Teil 2 Lehrpläne ✅ (2026-09-17) | Vokabular und Query-Builder (Closure über Virtuosos transitive Option mit `t_distinct`), SPARQL-Client mit Pacing und Retry, Vollabzug aller 16 Länder in `lehrplan.db` (SQLite, FTS5 trigram, atomarer Tausch), Rollen aus Ontologie plus Override-Tabelle, Fach-Mapping `config/subjects.yaml`, Themen-Matching mit Wortgrenzen-Regel, Rendering mit Markern, `compendium lehrplan status|check|harvest|search`, Endpunkte `/api/v2/lehrplan/*`, Sidecar in `compose.yml` | Harvest 25 min für 2.514 Lehrpläne / 295.184 Knoten (Ziel < 2 h); Äquivalenz zum Prototyp: SN 218/272, RP 200/200, BE 0/0, BY 278 neu; Teil 2 Optik 135 Lehrplanelemente in 14 Lehrplänen aus 3 Ländern (Fach Physik, 110 ms); 204 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
 | 4 Teil 3 Sammlung ✅ (2026-09-17) | edu-sharing-Client (anonym oder Basic, Paginierung, UUID-Validierung, 404/502-Abbildung), TTL-Cache, Überblick mit Untersammlungen in parsebaren Blöcken, Wissens-Sammlung mit Lizenz-Policy und Policy-Regel für Materialbelege, `collection_id` als Eingabe (Thema, Fach, Kontext), `GET /api/v2/collections/{id}/overview`, CLI `compendium collection overview` | Überblick für 5 reale Sammlungen (3,5–6,8 s ungecacht, 6.800–63.000 Zeichen, alle Blöcke parsebar); Wissens-Sammlung Optik: 6 Materialquellen, ein zusätzlicher Beleg (Bildung); 234 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
-| 5 LLM-Schicht ✅ (2026-09-18) | b-api-Client (beide Anfrageformen, Retry, Semaphore, Modellprüfung gegen `/models`), Prompt-Registry mit Versionen, Token-Budget je Kompendium und Tag, Gateway mit Rückfall, `hybrid-fast` und `hybrid-quality` mit Belegprüfung je Satz (Nummer und Deckung), LLM-Router für Zweifelsfälle, `mode` in Anfrage und CLI, LLM-Status in `/health`, Audit und Frontmatter mit tatsächlich verwendetem Modus | Live mit `gpt-5.6-luna`: jeder Satz der LLM-Bausteine trägt eine gültige Belegnummer (Endmessung: 4 Läufe, 167 Sätze, 0 ohne gültige Nummer, Belegfolge lückenlos); nicht erreichbare b-api ergibt ein Kompendium im Regelmodus mit `mode_requested` (4,3 s); unabhängiges Review eingearbeitet, offene Punkte geschlossen (D27); Image gebaut und im Container mit zwei Workern geprüft (Hybridlauf, gemeinsamer Tageszähler, Schlüssel nicht im Log); 337 Tests offline grün, Ruff und mypy strict ohne Befund | 3 |
+| 5 LLM-Schicht ✅ (2026-09-18) | b-api-Client (beide Anfrageformen, Retry, Semaphore, Modellprüfung gegen `/models`), Prompt-Registry mit Versionen, Token-Budget je Kompendium und Tag, Gateway mit Rückfall, `hybrid-fast` und `hybrid-quality` mit Belegprüfung je Satz (Nummer und Deckung), LLM-Router für Zweifelsfälle, `mode` in Anfrage und CLI, LLM-Status in `/health`, Audit und Frontmatter mit tatsächlich verwendetem Modus; seit D33 (2026-09-19) zwei Schalter `extraction` (LLM wählt Sätze) und `generation` statt `mode`, Router entfernt | Live mit `gpt-5.6-luna`: jeder Satz der LLM-Bausteine trägt eine gültige Belegnummer (Endmessung: 4 Läufe, 167 Sätze, 0 ohne gültige Nummer, Belegfolge lückenlos); nicht erreichbare b-api ergibt ein Kompendium im Regelmodus mit `mode_requested` (4,3 s); unabhängiges Review eingearbeitet, offene Punkte geschlossen (D27); Image gebaut und im Container mit zwei Workern geprüft (Hybridlauf, gemeinsamer Tageszähler, Schlüssel nicht im Log); 337 Tests offline grün, Ruff und mypy strict ohne Befund | 3 |
 | 6 API-Vertrag | v1-Adapter, Contract-Tests, `collection_id`-Eingabe mit Themen-Normalisierung, Alt-Funktionen erhalten und verbessern (Linker offline, QA-Rückfall, Synonyme über ZIM), v2-Endpunkte, Teil-Regeneration, Fehlerverhalten, OpenAPI-Texte, `MIGRATION.md` | alle Contract-Tests grün; Teil-Regeneration erhält geprüfte Abschnitte; Linker und Synonyme laufen ohne LLM | 4 |
 | 7 Betrieb und Umstellung | CI-Jobs, Image `ml` optional, Runbook (Volume, Erststart, Update, Harvest), Vergleichslauf 20 Themen, Cutover | Image im Registry, Runbook geprüft, Umstellung durch Container-Tausch | 3 |
 | | **Summe** | | **31** |
@@ -1094,7 +1131,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 
 | Risiko | Wirkung | Gegenmaßnahme |
 |---|---|---|
-| Matching-Qualität bleibt unter Erwartung | dünne oder falsch belegte Bausteine | Überschriften-Lexikon als präzise erste Stufe, Goldstandard-Gate vor Festlegung, LLM-Router nur für Zweifelsfälle, ehrlich leere Slots |
+| Matching-Qualität bleibt unter Erwartung | dünne oder falsch belegte Bausteine | Überschriften-Lexikon als präzise erste Stufe, Goldstandard-Gate vor Festlegung, optionale LLM-Satzauswahl je Baustein (D33), ehrlich leere Slots |
 | MEM deckt nur 4–5 Länder ab | Teil 2 lückenhaft | Abdeckung im Text nennen; Harvest fragt alle 16 Landesklassen ab und wächst mit, sobald MEM weitere Länder veröffentlicht |
 | SPARQL-Endpoint instabil oder Schema ändert sich | Harvest schlägt fehl | Vollabzug mit Diff, alte Datenbank bleibt aktiv, Regressionstests gegen aufgezeichnete Antworten, Ontologie-Version protokolliert |
 | MEM-Datenlizenz unbestätigt (manifest: `unconfirmed`); Wikipedia CC BY-SA färbt auf den Text (von Jan freigegeben, F6) | rechtliche Unsicherheit bei den Lehrplandaten | BY-SA-Attribution im Frontmatter und Baustein 12; MEM-Lizenz vor Produktivbetrieb bei FWU klären, bis dahin nur Labels und Links zitieren |
@@ -1102,7 +1139,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 | Image mit torch zu groß | Deploy-Zeit, Angriffsfläche | `ml` nur bei nachgewiesenem Mehrwert, sonst `base` |
 | Konsumenten hängen an Details des alten Response (Entities) | Bruch beim Tausch | Shim für `linker_output`, Contract-Tests, Vergleichslauf, Rollback-Image |
 | libzim-Thread-Sicherheit bei mehreren Workern | seltene Abstürze | Archive je Prozess, Searcher je Anfrage, Lasttest in Phase 1 |
-| b-api-Limits und Modell-IDs ändern sich | Hybridmodus fällt aus | Modellprüfung beim Start, Backoff, Rückfall auf Regelmodus |
+| b-api-Limits und Modell-IDs ändern sich | LLM-Schalter fallen auf den Regelmodus zurück | Modellprüfung beim Start, Backoff, Rückfall auf Regelmodus |
 | Zu häufige Abrufe externer Quellen (MEM, Kiwix) belasten Dritte oder führen zu Sperren | Harvest oder Sync scheitern, Teil 2 veraltet | Lehrpläne ausschließlich aus dem lokalen Cache; wöchentliche Zählprüfung, Vollabzug nur bei Änderung oder monatlich, Rate-Limit 1–2 Anfragen/s; ZIM-Katalog monatlich; keinerlei Abrufe zur Inferenzzeit (D16) |
 
 ### 13.2 Fragen: Antworten von Jan (2026-09-17) und Reststand
@@ -1112,7 +1149,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 | F1 Konsumenten und Eingabe | Nicht genau bekannt, an der alten API orientieren. In der Regel wird die Sammlung hineingegeben. Eingabe per nodeId gewünscht, dann Metadaten der Sammlung nutzen. | v1-Vertrag bleibt unverändert (`text`); zusätzlich `collection_id` in v1 (`config.compendium`) und v2; eine UUID in `text` wird als Sammlung interpretiert; Thema aus dem Titel, Fach aus `ccm:taxonid`, Kontext aus Beschreibung, Schlagwörtern und `ccm:educationalcontext` (4.2, 6.1, D12). Beim Cutover Zugriffslogs der alten API auswerten, um die Konsumenten sicher zu identifizieren. |
 | F2 Rückschreiben | Prüfen, wie es die alte API löst. | Geprüft: die alte API kennt edu-sharing nicht und liefert nur Markdown; der Aufrufer speichert. v2 behält das bei, `write_back` optional (6.4, D11). |
 | F3 ZIM-Umfang | Zum Start nur deutsche Wikipedia (ca. 13–14 GB) und Klexikon (ca. 130 MB); weitere Archive abonnierbar. | Profil `standard` als Produktionsstandard, `extended` und beliebige Manifest-Einträge zuschaltbar; Volume 32 GB (4.1, 10, D9). |
-| F4 Modus | Standard ohne LLM; schneller Hybridmodus mit wenig LLM; gute Qualität mit LLM. | Drei Modi `rule-based` (Standard), `hybrid-fast`, `hybrid-quality` (4.7, 7, D10). Provider und Modell bleiben Konfiguration, Vorschlag in Abschnitt 7. |
+| F4 Modus | Standard ohne LLM; schneller Hybridmodus mit wenig LLM; gute Qualität mit LLM. | Drei Modi `rule-based` (Standard), `hybrid-fast`, `hybrid-quality` (4.7, 7, D10), seit D33 zwei Schalter `extraction` und `generation`. Provider und Modell bleiben Konfiguration, Vorschlag in Abschnitt 7. |
 | F5 Facetten | Idee war, später gezielt Absätze zu parsen (z. B. zum Bundesland eines Lehrplans); in Teil 1 nicht kritisch. | Marker je Absatz in Teil 2 verbindlich; Facetten in Teil 1 Best Effort mit `FACETS_LEVEL=minimal`; sichtbare Notation abschaltbar (4.6, 5.4, D13). |
 | F6 Lizenz | CC BY-SA ist ok. | Attribution im Frontmatter und Baustein 12; MEM-Datenlizenz bleibt Prüfpunkt im Runbook (13.1). |
 | F7 Goldstandard | Begriff unklar; selbst entscheiden; Themen über Schulfächer streuen. | Erklärung in 4.5; zehn Themen quer über Physik, Biologie, Chemie, Mathematik, Deutsch, Geschichte, Geographie, Politik, Informatik, Musik; Erstellung durch das Entwicklungsteam (D17). |
@@ -1144,7 +1181,7 @@ API.
 - **D9 Start-Archive: deutsche Wikipedia (`wikipedia_de_all_nopic`) und Klexikon**; weitere
   Kiwix-Archive nur über das Abo-Manifest.
 - **D10 Drei Modi:** `rule-based` (Standard, 0 LLM), `hybrid-fast` (2–3 Aufrufe),
-  `hybrid-quality` (alle Inhaltsbausteine per LLM; Quellen und Marker deterministisch).
+  `hybrid-quality` (alle Inhaltsbausteine per LLM; Quellen und Marker deterministisch). Abgelöst durch D33.
 - **D11 Kein Rückschreiben durch den Dienst**; der Aufrufer speichert wie bisher, `write_back`
   optional.
 - **D12 Eingabe per Thema oder Sammlungs-nodeId** mit Themen-Normalisierung („Optik in Klasse 7"
@@ -1169,7 +1206,7 @@ API.
   0,59 statt 0,38, Kosten 4 s je zehn Themen bei gecachtem Modell.
 - **D21 (2026-09-17)** Das Phase-2-Gate (macro-F1 ≥ 0,70) ist nicht erreicht; der Regelmodus geht trotzdem in
   Produktion, weil die großen Bausteine tragen und kleine Bausteine ehrlich leer bleiben. Zweifelsfälle bekommt
-  der budgetierte LLM-Router in Phase 5; das Extra `ml` (torch, Cross-Encoder) bleibt draußen.
+  der budgetierte LLM-Router in Phase 5 (seit D33 die optionale LLM-Extraktion); das Extra `ml` (torch, Cross-Encoder) bleibt draußen.
 - **D22 (2026-09-17)** Kein SPARQL zur Inferenzzeit, auch nicht als Rückfall: `LEHRPLAN_LIVE_FALLBACK` entfällt,
   ohne Cache trägt Teil 2 einen Hinweistext. Begründung: ein Themenabruf ohne Fachfilter bräuchte Hunderte
   Anfragen je Kompendium, und die Abdeckungsfrage ist mit dem Harvest beantwortet. Ebenso: Closure-Abfragen über Virtuosos transitive Option mit `t_distinct` und `t_max`
@@ -1204,7 +1241,8 @@ API.
   gedruckte Absätze (66 zu 67) bei einem Drittel weniger falschen (63 zu 43); ein blinder LLM-Richter bestätigt
   das auf vier fremden Themen (klar passend 46 zu 46, falsch 23 zu 14), drei von zwanzig Bausteinen verlieren
   dabei ihren Volltreffer. Begründung: Ein falscher Absatz in einem Baustein schadet mehr als ein ehrlich leerer
-  Baustein (D21). Das Band 0,45 bis 0,65 bleibt in den Hybridmodi Sache des LLM-Routers (`DOUBT_FLOOR`);
+  Baustein (D21). Das Band 0,45 bis 0,65 bleibt in den Hybridmodi Sache des LLM-Routers (`DOUBT_FLOOR`; seit D33
+  entfallen, die LLM-Extraktion bietet solche Absätze als Kandidaten an);
   die Materialregel (D24) startet an der konfigurierten Schwelle. Verworfen nach Messung: gelernte Zuordnung,
   Schwellen je Baustein, zentrierte Embeddings, Überschriften-Embedding, Füllregel für leere Bausteine. Der
   Vergleich mit der Testapp steht in `eval/README.md`.
@@ -1236,12 +1274,23 @@ API.
   Datei nicht stündlich geladen wird. SIGTERM beendet Sync und Harvest sauber. `KompendiumZimSyncHangs` meldet
   einen laufenden Sync, der sechs Stunden nichts schreibt; ein gescheiterter Status-Abschnitt meldet sich über
   `KompendiumStatusIncomplete`, statt seine Alarme verstummen zu lassen.
-  `KompendiumLlmUnavailable` stützt sich auf die über alle Worker summierten Kompendium-Zähler. `mode` und
-  `matcher` betreffen nur Teil 1: ohne ihn ist ein Kompendium regelbasiert; Teil 3 allein braucht keinen
+  `KompendiumLlmUnavailable` stützt sich auf die über alle Worker summierten Kompendium-Zähler. `mode` (seit D33
+  `extraction` und `generation`) und `matcher` betreffen nur Teil 1: ohne ihn ist ein Kompendium regelbasiert; Teil 3 allein braucht keinen
   Artikel in den Archiven; ein Auftrag ohne erzeugbaren Teil ist 422 (nur `collection` ohne `collection_id`)
   oder 503 (Teil nicht eingerichtet). Das Image baut auf dem per Digest gepinnten `python:3.13-slim-bookworm`
   (Dependabot schlägt neue Digests vor), uv gibt es nur im Builder, und der Start `python -m app.serve` löscht
   im Metrik-Verzeichnis nur die Dateien von prometheus_client.
+- **D33 (2026-09-19)** LLM-Unterstützung als zwei unabhängige Schalter statt drei Modi (Jan): `extraction`
+  (`rule-based` Standard, `llm`) entscheidet, wer die Textstellen eines Bausteins auswählt, `generation`
+  (`rule-based` Standard, `llm-fast`, `llm`) entscheidet, wer den Baustein schreibt. `llm-fast` und `llm`
+  entsprechen dem Schreiben der früheren Modi `hybrid-fast` und `hybrid-quality`. Die LLM-Extraktion wählt
+  Sätze per Nummer (Jan: „Sätze wählen“ statt nur zuordnen oder frei zitieren), damit der Wortlaut der Quelle
+  bleibt und nichts erfunden werden kann. Der Router für Zweifelsfälle geht darin auf und ist entfernt; `mode`
+  entfällt ohne Übergang, weil v2 noch keine Nutzer hat, und eine Anfrage mit `mode` bekommt 422 mit Hinweis,
+  statt stillschweigend regelbasiert zu laufen. Die Metrik `kompendium_compendium_requests_total` zählt nur
+  noch, ob ein LLM-Schalter verlangt war und ob das LLM beigetragen hat (`llm_requested`, `llm_used`), damit die
+  Alarmregeln für beide Schalter eine Bedingung behalten; `KompendiumHybridFallbacks` heißt jetzt
+  `KompendiumLlmFallbacks`. Budget je Anfrage 40.000 statt 20.000 (4.7).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
@@ -1465,3 +1514,11 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-19, Fassung v16 (LLM-Schalter, D33):** `extraction` und `generation` ersetzen `mode` (4.7, 8.2):
+  LLM-Satzauswahl je Baustein (`synthesis/selection.py`, Prompt `passage_selection` v1), Steuerung über alle
+  Bausteine (`synthesis/extraction.py`), Kandidaten aus den Scores der Policy (`slot_scores`), Status
+  `ki-ausgewählt`, Frontmatter und Audit mit Blöcken je Schalter, CLI `--extraction` und `--generation`,
+  Metriken `llm_requested`/`llm_used` und `kompendium_llm_selections_total`, Router entfernt. Gemeinsamer
+  budgetierter Aufruf für Auswahl und Synthese (`llm/call.py`). Behoben: leere Antworten von Reasoning-Modellen
+  (`finish_reason=length`) durch `REASONING_ALLOWANCE`; Budget je Anfrage 40.000. Live gemessen (Optik): Auswahl
+  16.467 Tokens in 11 s, beide Schalter 27.205 Tokens in 18 s. Testsuite 501 Tests, Ruff und mypy strict grün.

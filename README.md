@@ -26,9 +26,9 @@ Builds.
   mit Untersammlungen, Eingabe per `collection_id` (Thema, Fach und Kontext aus der Sammlung),
   Wissens-Sammlung (`knowledge_collection_id`) mit Lizenz-Policy als zusätzliche Quellen für
   Teil 1, Caches, `GET /api/v2/collections/{id}/overview`, CLI `compendium collection overview`.
-- Phase 5 (LLM-Schicht): b-api-Client, Prompt-Registry mit Versionen, Modi `rule-based`,
-  `hybrid-fast` und `hybrid-quality`, Belegprüfung je Satz, LLM-Router für Zweifelsfälle des
-  Matchings, Token-Budget, Modellprüfung gegen `/models`, Rückfall auf den Regelmodus.
+- Phase 5 (LLM-Schicht): b-api-Client, Prompt-Registry mit Versionen, zwei Schalter `extraction`
+  (das LLM wählt die Sätze, D33) und `generation` (`llm-fast`, `llm`), Belegprüfung je Satz,
+  Token-Budget, Modellprüfung gegen `/models`, Rückfall auf den Regelmodus.
 - Audit vom 2026-09-18 ([Bericht](docs/audits/2026-09-18-audit.md)): Befunde zu API-Vertrag, Fehlerpfaden,
   Attribution, Downloads, Caches, Rate-Limit, Tests, CI und Image behoben; offen sind Zugriffsschutz,
   v1-Vertrag (Phase 6) und Request-IDs mit Fehlererfassung (Phase 7). Stand je Befund im Nachtrag des Berichts.
@@ -150,16 +150,30 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 
 ## LLM-Schicht (optional)
 
-Standard ist der Regelmodus ohne LLM. Mit `LLM_ENABLED=true` und `B_API_KEY` stehen zwei Hybridmodi
-bereit, je Anfrage über `mode` oder global über `LLM_MODE_DEFAULT`:
+Standard ist der Regelmodus ohne LLM. Mit `LLM_ENABLED=true` und `B_API_KEY` lassen sich zwei Schritte von
+Teil 1 unabhängig voneinander an das LLM geben (D33): je Anfrage über `extraction` und `generation`, global
+über `LLM_EXTRACTION_DEFAULT` und `LLM_GENERATION_DEFAULT`.
 
-| Modus | Was das LLM tut | Gemessen je Kompendium (vier Themen, gpt-5.6-luna, 2026-09-18) |
+| Schalter | Wert | Was das LLM tut |
 |---|---|---|
-| `rule-based` | nichts | 0 Tokens, unter 1 s Synthese |
-| `hybrid-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11), entscheidet Zweifelsfälle des Matchings | 2 bis 3 Aufrufe, 2.300 bis 4.000 Tokens, 9 bis 15 s |
-| `hybrid-quality` | formuliert jeden Inhaltsbaustein mit Belegen, entscheidet Zweifelsfälle | 8 bis 10 Aufrufe, 10.500 bis 14.500 Tokens, 16 bis 20 s |
+| `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
+| | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
+| `generation` | `rule-based` (Standard) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
+| | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11) aus ihren Belegen |
+| | `llm` | formuliert jeden Inhaltsbaustein aus seinen Belegen |
 
-Das LLM sieht nur den nummerierten Evidenzblock des Bausteins. Nach dem Aufruf bleibt ein Satz nur
+Gemessen für „Optik“ mit `gpt-5.6-luna` am 2026-09-19: `extraction=llm` 10 Aufrufe, rund 16.500 Tokens und 11 s;
+beide Schalter auf `llm` 20 Aufrufe, rund 27.200 Tokens und 18 s. Das Schreiben allein (Messung vom 2026-09-18,
+vier Themen): `llm-fast` 2 bis 3 Aufrufe und 2.300 bis 4.000 Tokens, `llm` 8 bis 10 Aufrufe und 10.500 bis
+14.500 Tokens.
+
+Mit `extraction=llm` tragen die Bausteine den Status `ki-ausgewählt`, die KI-Kennzeichnung im Frontmatter nennt
+wörtliche Quellenauszüge mit KI-gestützter Auswahl. Passt kein angebotener Absatz, bleibt der Baustein leer
+(`audit.llm.extraction.emptied`); scheitert die Auswahl (b-api, Budget, Zeit, unlesbare Antwort), behält der
+Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`).
+
+Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
+ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
 stehen, wenn er eine gültige Belegnummer trägt und seine Inhaltswörter im zitierten Absatz vorkommen;
 alles andere wird verworfen und im Audit gezählt (`dropped_sentences`, `unsupported_sentences`). Mit
 `LLM_UNSUPPORTED_SENTENCES=mark` bleiben solche Sätze ohne Nummer stehen, eingefasst in
@@ -169,9 +183,10 @@ Quellen, Belegtabelle, Glossar, Akteure und alle Marker bleiben deterministisch.
 den Status `ki-generiert`, Prompt-ID und Version stehen im Frontmatter (`llm.prompts`).
 
 Fällt die b-api aus, fehlt das Modell in `/models`, ist das Budget erschöpft oder liefert das Modell
-nichts Belegtes, entsteht der Baustein extraktiv. Das Frontmatter nennt den tatsächlich verwendeten
-Modus (`mode`) und, wenn er abweicht, den angeforderten (`mode_requested`); `audit.llm` nennt Gründe
-je Baustein, `audit.llm_tokens` den Verbrauch. `GET /health` zeigt unter `components.llm`
+nichts Brauchbares, bleibt der Baustein regelbasiert. Das Frontmatter nennt die tatsächlich verwendeten
+Schalter (`extraction`, `generation`) und, wenn sie abweichen, die angeforderten (`extraction_requested`,
+`generation_requested`); `audit.llm` nennt je Schalter Bausteine und Gründe, `audit.llm_tokens` den
+Verbrauch. `GET /health` zeigt unter `components.llm`
 Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-5.6-luna` beim Provider `openai`
 mit `reasoning_effort=low` und `verbosity=low`; ein Wechsel auf `academiccloud` braucht nur
 `B_API_PROVIDER` und `B_API_MODEL`.
@@ -186,7 +201,7 @@ bekommt höchstens die Restzeit, bei weniger als 5 s Rest entsteht der Baustein 
 der b-api nur im Log.
 
 ```bash
-LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --zim … --out optik.md
+LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
 ```
 
 ## Endpunkte
@@ -195,7 +210,7 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --mode hybrid-fast --z
 |---|---|
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
-| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `mode` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `mode` wählt `rule-based`, `hybrid-fast`, `hybrid-quality`; unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503 |
+| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`; das frühere Feld `mode`: 422; unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503 |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar) |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |
@@ -233,7 +248,7 @@ Werte (noch kein Sync, kein Cache) fehlen, statt als 0 zu erscheinen.
 Laufzeitmetriken summiert der Endpunkt über alle Worker: Im Image legt jeder Worker seine Werte in
 `PROMETHEUS_MULTIPROC_DIR` ab (`/tmp/prometheus`; der Start löscht dort nur die Metrik-Dateien eines früheren
 Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars laden die Metriken nicht). Labels kommen nur aus festen Mengen
-(Routen-Templates, Modi, Phasen), nie aus Eingaben. Die Kompendium-Metriken stammen aus dem Audit jeder Antwort.
+(Routen-Templates, Schalter, Phasen), nie aus Eingaben. Die Kompendium-Metriken stammen aus dem Audit jeder Antwort.
 
 | Metrik | Bedeutung |
 |---|---|
@@ -244,9 +259,9 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version}` | Konfiguration und Version |
 | `kompendium_status_section_failed{section}` | 1, wenn ein Abschnitt dieser Zustandswerte nicht gelesen werden konnte (seine Werte fehlen dann) |
 | `kompendium_http_requests_total{method,route,status}`, `kompendium_http_request_duration_seconds{method,route}` | Anfragen je Routen-Template (unbekannte Pfade als `unmatched`) |
-| `kompendium_compendium_requests_total{mode_requested,mode_used}`, `kompendium_compendium_phase_seconds{phase}` | Kompendien, Rückfall auf den Regelmodus, Dauer der Phasen |
+| `kompendium_compendium_requests_total{llm_requested,llm_used}`, `kompendium_compendium_phase_seconds{phase}` | Kompendien, Rückfall auf den Regelmodus (ein LLM-Schalter verlangt, nichts vom LLM), Dauer der Phasen |
 | `kompendium_parts_total{part,available}`, `kompendium_knowledge_materials_total{outcome}`, `kompendium_corpus_chunks_truncated_total` | Teile 2 und 3, Wissens-Sammlung, Kappung des Korpus |
-| `kompendium_llm_tokens_total{type}`, `kompendium_llm_calls_total`, `kompendium_llm_sections_total{outcome}`, `kompendium_llm_sentences_total{outcome}` | LLM-Verbrauch und Belegprüfung |
+| `kompendium_llm_tokens_total{type}`, `kompendium_llm_calls_total`, `kompendium_llm_selections_total{outcome}`, `kompendium_llm_sections_total{outcome}`, `kompendium_llm_sentences_total{outcome}` | LLM-Verbrauch, Satzauswahl (`chosen`, `emptied`, `fallback`) und Belegprüfung |
 
 `METRICS_TOKEN` verlangt `Authorization: Bearer …`, `METRICS_ENABLED=false` schaltet den Endpunkt ab.
 Alarmregeln liegen in [monitoring/alerts.yml](monitoring/alerts.yml), ihre Tests in `monitoring/alerts_test.yml`:
