@@ -19,7 +19,7 @@ from typing import Any, Protocol
 
 import httpx
 
-from app.jobs.lock import LockHeldError, acquire_lock
+from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
 from app.settings import Settings
 from app.sources.zim.active import (
     ActiveArchive,
@@ -152,7 +152,7 @@ class ZimSync:
         self._allowed_hosts = tuple(allowed_hosts)
         self._report: SyncReport | None = None
         self._last_finished: dict[str, Any] | None = None
-        self._lock: Path | None = None
+        self._lock: HeldLock | None = None
 
     def run(self, options: SyncOptions) -> SyncReport:
         """One run over the subscriptions; ``SyncRunningError`` while another run holds the lock."""
@@ -170,7 +170,7 @@ class ZimSync:
         try:
             return self._run(options)
         finally:
-            self._lock.unlink(missing_ok=True)
+            self._lock.release()
             self._lock = None
 
     def _run(self, options: SyncOptions) -> SyncReport:
@@ -375,7 +375,7 @@ class ZimSync:
             log.warning("cannot write %s: %s", STATUS_FILE, exc)
         if self._lock is not None:
             try:
-                os.utime(self._lock)  # sign of life: a lock older than LOCK_STALE_S counts as abandoned
+                self._lock.refresh()  # sign of life: a lock older than LOCK_STALE_S counts as abandoned
             except OSError as exc:
                 log.warning("cannot refresh %s: %s", LOCK_FILE, exc)
 

@@ -23,7 +23,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
 
-from app.jobs.lock import LockHeldError, acquire_lock
+from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
 from app.sources.lehrplan import queries
 from app.sources.lehrplan.store import LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import ClassInfo, build_class_index, build_nodes
@@ -179,9 +179,9 @@ class LehrplanHarvest:
         try:
             return self._run()
         finally:
-            lock.unlink(missing_ok=True)
+            lock.release()
 
-    def _acquire_lock(self) -> Path:
+    def _acquire_lock(self) -> HeldLock:
         try:
             return acquire_lock(
                 self._state_dir / LOCK_FILE,
