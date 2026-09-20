@@ -7,6 +7,11 @@ found what, so a caller can tell the difference instead of guessing.
 
 The endpoint deliberately does not use ``get_service``: it needs no compendium service, and a service without
 archives must answer here rather than report 503.
+
+The dictionary promises terms that have an article, so a term whose entry turns out to be a disambiguation
+page is left out rather than returned unlinked - measured against the real Wikipedia, that removes about half
+the noise and costs no real term (docs/umbau.md U3b). Recognition by the model is never filtered this way:
+it makes no promise about archives.
 """
 
 from __future__ import annotations
@@ -28,6 +33,10 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 Method = Literal["ner", "dictionary"]
 MAX_TEXT_CHARS = 50_000  # a request body is caller input; recognition is linear in the text length
+UNCHECKED_NOTE = (
+    "link=false: ohne Nachschlagen lässt sich nicht erkennen, ob hinter einem Begriff ein Artikel oder eine "
+    "Begriffsklärungsseite steht; die Treffer des Wörterbuchs sind deshalb ungeprüft"
+)
 
 
 def _default_methods() -> list[Method]:
@@ -47,7 +56,13 @@ class EntitiesRequest(BaseModel):
     )
     link: bool = Field(True, description="Look up the article behind each entity in the archives")
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks all of them")
-    max_entities: int = Field(50, ge=1, le=200)
+    max_entities: int = Field(
+        50,
+        ge=1,
+        le=200,
+        description="Upper bound; it applies before the article check, so fewer may come back when terms of the "
+        "dictionary turn out to sit behind a disambiguation page",
+    )
 
 
 class EntityArticle(BaseModel):
@@ -73,6 +88,11 @@ class EntitiesResponse(BaseModel):
     methods: list[Method] = Field(description="The ways that actually ran")
     archives: list[str] = Field(description="The archives that were asked")
     entities: list[Entity]
+    note: str | None = Field(
+        None,
+        description="What a reader should know about how the entities came about: with link=false the dictionary "
+        "cannot tell an article from a disambiguation page, so its terms are unchecked",
+    )
 
 
 def _article_kind(source: Source) -> str | None:
@@ -145,5 +165,7 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
                 article=article,
             )
             for mention, article in zip(found, linked, strict=True)
+            if article is not None or mention.source != "dictionary" or not payload.link
         ],
+        note=UNCHECKED_NOTE if not payload.link and "dictionary" in ran else None,
     )

@@ -66,9 +66,26 @@ Ungenauigkeit des Wörterbuchs und die schiefen Fragevorlagen in U5a zugleich. D
 `de_core_news_md` im Image widerlegt das: „Fach“, „Thema“, „Richtung“,
 „Prinzip“, „Schule“ und „Medien“ sind allesamt `NOUN` — genau wie die
 echten Treffer „Brechungsindex“ und „Linse“. Die Wortart trägt an dieser Stelle kein
-Signal, weil die Fehltreffer **echte Substantive** sind. Es bleibt die Worthäufigkeit: Ein Wort, das in jedem
-deutschen Text vorkommt, ist selten die interessante Entität. Das braucht eine Frequenzliste im Image und ist
-**weiterhin offen**. Wer heute Genauigkeit braucht, fragt `methods: ["ner"]`.
+Signal, weil die Fehltreffer **echte Substantive** sind. **Und die Worthäufigkeit hilft auch nicht.** Zweite Messung am selben Tag, mit `Lexeme.rank` aus demselben
+Modell (kein neues Paket nötig). Die Trennung sah zunächst hervorragend aus — Allerweltswörter 114 bis 1557,
+Fachbegriffe 7927 bis 19685, unbekannte Wörter am Maximum. Dann die Gegenprobe mit Themenwörtern, und sie
+verwirft den Ansatz: bei einer Schwelle von 6000 fielen **19 von 22** Themenwörtern weg — „Licht“ (973),
+„Kraft“ (988), „Auge“ (1844), „Optik“ (3820), „Physik“ (5875) — dazu
+„Berlin“ (307) und „Abbe“ (4687). Der Grund ist grundsätzlich, nicht eine Frage der Schwelle:
+**Ein Lehrtext handelt von häufigen Begriffen.** Häufigkeit kann nicht zwischen „häufiges Füllwort“ und
+„häufiger Gegenstand des Textes“ unterscheiden.
+
+**Was stattdessen greift: der eigene Vertrag der Methode.** `dictionary` verspricht „Begriffe, die einen
+Artikel haben“. Eine Begriffsklärungsseite ist kein Artikel. Gemessen gegen die echte Wikipedia sind 6 der
+11 geprüften Fehltreffer Begriffsklärungsseiten (Fach, Thema, Medien, Bereich, Mittel, Weise) und **kein
+einziger** der 10 echten Treffer. Anders als bei den beiden verworfenen Kriterien ist das Verlustrisiko damit
+null. Der Filter nutzt den Parse, den das Verknüpfen ohnehin macht, kostet also nichts; `ner` bleibt unberührt,
+weil das Erkennen kein Versprechen über Archive macht. Mit `link: false` findet keine Prüfung statt, und die
+Antwort sagt es unter `note`.
+
+Was der Filter **nicht** löst: „Richtung“, „Prinzip“, „Schule“, „Form“ und
+„Grund“ haben echte Artikel und bleiben. Die andere Hälfte des Rauschens ist also **weiterhin offen** —
+und beide naheliegenden Kriterien sind gemessen und erledigt. Wer heute Genauigkeit braucht, fragt `methods: ["ner"]`.
 
 Bei den Fragevorlagen in U5a war die Wortart dagegen genau richtig, weil die Fehlgriffe dort **keine**
 Substantive sind (Adverbien am Satzanfang); das ist behoben, siehe unten. Bis dahin liefert `dictionary` viel

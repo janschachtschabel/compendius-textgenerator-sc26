@@ -33,7 +33,13 @@ SAMPLE_META = {
         "Language": "deu",
         "Flavour": "nopic",
         "Tags": "wikipedia;_category:wikipedia;_pictures:no;_ftindex:yes",
-        "redirects": [("Lichtlehre", "Lichtlehre", "Optik"), ("Strahlenoptik", "Strahlenoptik", "Geometrische_Optik")],
+        "redirects": [
+            ("Lichtlehre", "Lichtlehre", "Optik"),
+            ("Strahlenoptik", "Strahlenoptik", "Geometrische_Optik"),
+            # A plain word whose entry is a disambiguation page, as "Brechung" really is in the German
+            # Wikipedia: the title lookup finds it, the article behind it proves nothing (docs/umbau.md U3b)
+            ("Brechung", "Brechung", "Optik_(Begriffsklärung)"),
+        ],
     },
     "klexikon": {
         "file": "klexikon_de_sample_2026-08.zim",

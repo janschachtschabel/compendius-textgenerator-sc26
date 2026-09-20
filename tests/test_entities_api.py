@@ -113,3 +113,36 @@ def test_the_number_of_entities_is_capped(client: TestClient) -> None:
 def test_health_says_whether_the_model_is_there(client: TestClient, sample_zims: dict[str, Path]) -> None:
     entities = client.get("/health").json()["components"]["entities"]
     assert entities == {"ner": False, "model": ""}
+
+
+DISAMBIGUATION_TEXT = "Die Brechung des Lichts erklärt das Lichtmikroskop und die Geometrische Optik."
+
+
+def test_a_dictionary_term_whose_entry_is_a_disambiguation_page_is_left_out(client: TestClient) -> None:
+    """The dictionary promises terms that have an article; a disambiguation page is not one (docs/umbau.md U3b)."""
+    body = client.post("/api/v2/entities", json={"text": DISAMBIGUATION_TEXT}).json()
+    found = {entity["text"] for entity in body["entities"]}
+    assert "Brechung" not in found, "its entry is a disambiguation page, so it proves nothing"
+    assert {"Lichtmikroskop", "Geometrische Optik"} <= found, "the real terms stay"
+    assert all(entity["linked"] for entity in body["entities"] if entity["source"] == "dictionary")
+
+
+def test_the_model_keeps_its_entity_even_behind_a_disambiguation_page(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Recognition does not depend on the archives; only the dictionary makes a promise about articles."""
+
+    def nlp(text: str) -> FakeDoc:
+        return FakeDoc(ents=[FakeEnt("Brechung", 4, 12, "MISC")])
+
+    monkeypatch.setattr("app.api.v2.entities.load_spacy", lambda path: nlp)
+    body = client.post("/api/v2/entities", json={"text": DISAMBIGUATION_TEXT}).json()
+    brechung = next(entity for entity in body["entities"] if entity["text"] == "Brechung")
+    assert brechung["source"] == "ner" and brechung["linked"] is False and brechung["article"] is None
+
+
+def test_without_linking_the_dictionary_cannot_check_and_says_so(client: TestClient) -> None:
+    """link=false means: do not look anything up - so the check that needs a lookup does not run."""
+    body = client.post("/api/v2/entities", json={"text": DISAMBIGUATION_TEXT, "link": False}).json()
+    assert "Brechung" in {entity["text"] for entity in body["entities"]}
+    assert body["note"] and "link" in body["note"]
