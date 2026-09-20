@@ -5,6 +5,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
+from urllib.parse import urlparse
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -14,6 +15,20 @@ from app.domain.requests import Extraction, Generation
 Provider = Literal["openai", "academiccloud"]
 FacetsLevel = Literal["minimal", "full"]
 ZimProfile = Literal["compact", "standard", "extended"]
+
+
+# Which b-api belongs to which edu-sharing repository (hosts reachable on 2026-09-20). A service that reads
+# staging collections must not quietly ask the production model, so the b-api follows the repository unless
+# B_API_BASE_URL says otherwise. An installation outside these two names sets both addresses itself.
+B_API_BY_REPOSITORY = {
+    "repository.staging.openeduhub.net": "https://b-api.staging.openeduhub.net",
+    "redaktion.openeduhub.net": "https://b-api.prod.openeduhub.net",
+}
+
+
+def b_api_for(repository_url: str) -> str:
+    """The b-api belonging to this repository, or "" when the host is not one of the known environments."""
+    return B_API_BY_REPOSITORY.get(urlparse(repository_url).hostname or "", "")
 
 
 def _split_csv(value: str) -> list[str]:
@@ -85,7 +100,7 @@ class Settings(BaseSettings):
 
     # --- Collections: edu-sharing repository for part 3 and the knowledge collection (PLAN.md 6) ---
     edu_sharing_base_url: str = Field(
-        "https://redaktion.openeduhub.net/edu-sharing/rest",
+        "https://repository.staging.openeduhub.net/edu-sharing/rest",
         description="REST root of the edu-sharing repository; empty disables collections",
     )
     edu_sharing_user: str = Field("", description="Optional Basic-Auth user; anonymous reads otherwise")
@@ -107,7 +122,9 @@ class Settings(BaseSettings):
     llm_generation_default: Generation = Field("rule-based", description="Default of the generation switch")
     llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
     b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")
-    b_api_base_url: str = Field("https://b-api.staging.openeduhub.net", description="b-api host, no path")
+    b_api_base_url: str = Field(
+        "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
+    )
     b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")
     b_api_model: str = Field("gpt-5.6-luna", description="Model id at the selected provider")
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
@@ -144,6 +161,11 @@ class Settings(BaseSettings):
     api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
     metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
     metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
+
+    @property
+    def b_api_url(self) -> str:
+        """The b-api to call: the configured one, otherwise the one belonging to the repository."""
+        return self.b_api_base_url or b_api_for(self.edu_sharing_base_url)
 
     @property
     def zim_required_ids(self) -> list[str]:

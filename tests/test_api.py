@@ -35,6 +35,7 @@ def test_health_and_ready(client: TestClient) -> None:
         "provider": "openai",
         "model": "gpt-5.6-luna",
         "available": False,
+        "host": "b-api.staging.openeduhub.net",  # derived from the repository, which is staging by default
     }
     assert client.get("/ready").status_code == 200
 
@@ -197,7 +198,7 @@ def test_health_reports_every_component(sample_zims: dict[str, Path], tmp_path: 
     with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "leer"))) as client:
         components = client.get("/health").json()["components"]
     assert components["lehrplan_cache"] == {"available": False, "harvested_at": None}
-    assert components["edu_sharing"] == {"enabled": True}
+    assert components["edu_sharing"] == {"enabled": True, "repository": "repository.staging.openeduhub.net"}
     write_cache(tmp_path / "voll")
     with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "voll"))) as client:
         cache = client.get("/health").json()["components"]["lehrplan_cache"]

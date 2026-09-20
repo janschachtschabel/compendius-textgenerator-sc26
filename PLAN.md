@@ -1,6 +1,6 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-20, Fassung v18 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+Stand: 2026-09-20, Fassung v19 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
 teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
@@ -1556,6 +1556,16 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-20, Fassung v19 (Umgebung, Sichtbarkeit):** Repository und b-api gehören zusammen und sind beide
+  frei einstellbar. `EDU_SHARING_BASE_URL` steht jetzt auf Staging (`repository.staging.openeduhub.net`), die
+  Produktion (`redaktion.openeduhub.net`) daneben auskommentiert; `B_API_BASE_URL` ist leer und heißt dann: die
+  b-api des eingestellten Repositories (`b-api.staging` bzw. `b-api.prod`, beide am 2026-09-20 erreichbar
+  geprüft). Ein ausdrücklicher Wert wird befolgt, ein Wert aus der anderen Umgebung beim Start benannt — vorher
+  mischte der Standard Produktions-Repository mit Staging-b-api, ohne dass es jemand sah. Sichtbar ist beides
+  nun in `/health` (`edu_sharing.repository`, `llm.host`), ebenso der Matcher mit seinen Komponenten
+  (`matching.components`, `matching.embeddings`): Ein konfiguriertes, aber nicht ladbares Model2Vec-Modell ließ
+  den Dienst bisher still schwächer rechnen und stand nur als Warnung im Log. Auch `/docs` zeigt jetzt für beide
+  Kompendium-Endpunkte ein Beispiel, das der Endpunkt annimmt (Test dazu). Testsuite 573 Tests.
 - **2026-09-20, Fassung v18 (lauffähiges Image, Installation):** Das Image wurde lokal gebaut und gefahren, und
   dabei zeigte sich ein Fehler, den weder Tests noch CI sehen konnten: Mit der Standardeinstellung zwei Worker
   tötete der Elternprozess von uvicorn bei **jeder** Kompendium-Anfrage den arbeitenden Worker, weil dieser

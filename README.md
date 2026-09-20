@@ -152,8 +152,15 @@ bleiben sichtbar leer. `knowledge_collection_id` nimmt die Materialien einer Sam
 in Teil 1 auf, wörtlich nur unter CC0, PDM, CC BY oder CC BY-SA (Bausteine Bildung und Praxis
 bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der Version, die das
 Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
-angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen. Das Repository
-(`EDU_SHARING_BASE_URL`, anonym oder Basic-Auth) wird zur Inferenzzeit gelesen, Sammlungen 1 h und
+angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen.
+
+Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
+Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht
+auskommentiert daneben. Die b-api folgt dem Repository: `B_API_BASE_URL` leer lassen heißt
+`b-api.staging` zum Staging-Repository und `b-api.prod` zur Produktion. Ein eigener Wert wird befolgt,
+und wenn er nicht zum Repository passt, sagt es das Log beim Start. `GET /health` nennt beide Hosts
+(`components.edu_sharing.repository`, `components.llm.host`), damit sichtbar ist, womit der Dienst
+gerade spricht. Das Repository wird zur Inferenzzeit gelesen, Sammlungen 1 h und
 Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db`, abgelaufene Einträge räumt jeder Schreibvorgang
 weg). Materialtexte, die bis zum Ablauf von `REQUEST_TIMEOUT_S` nicht geholt sind, bleiben draußen und
 stehen als `timed_out` im Audit.

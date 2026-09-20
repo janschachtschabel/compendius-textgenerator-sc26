@@ -9,6 +9,7 @@ import time
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
@@ -39,9 +40,10 @@ from app.llm.client import BApiClient
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
+from app.matching.registry import STRATEGIES, active_components
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.service import CompendiumService
-from app.settings import Settings, get_settings
+from app.settings import Settings, b_api_for, get_settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.render import RenderOptions
 from app.sources.lehrplan.store import LehrplanStore
@@ -102,6 +104,26 @@ def build_service(settings: Settings, registry: ZimRegistry, templates: Template
     )
 
 
+def resolve_b_api(settings: Settings) -> str:
+    """The b-api address to call: the configured one, otherwise the one belonging to the repository."""
+    belongs_to_repository = b_api_for(settings.edu_sharing_base_url)
+    if not settings.b_api_base_url:
+        if not belongs_to_repository:
+            log.warning(
+                "B_API_BASE_URL is empty and %s is not one of the known repositories, so no b-api can be derived",
+                settings.edu_sharing_base_url or "(no repository)",
+            )
+        return settings.b_api_url
+    if belongs_to_repository and settings.b_api_base_url.rstrip("/") != belongs_to_repository:
+        log.warning(
+            "B_API_BASE_URL=%s does not belong to the repository %s, whose b-api is %s; using the configured one",
+            settings.b_api_base_url,
+            settings.edu_sharing_base_url,
+            belongs_to_repository,
+        )
+    return settings.b_api_url
+
+
 def build_llm(settings: Settings) -> LlmGateway | None:
     """The b-api gateway for the LLM switches (PLAN.md 7); off without LLM_ENABLED or without a key."""
     if not settings.llm_enabled:
@@ -109,8 +131,12 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     if not settings.b_api_key:
         log.warning("LLM_ENABLED is set but B_API_KEY is empty; LLM requests fall back to the rule-based path")
         return None
+    base_url = resolve_b_api(settings)
+    if not base_url:
+        log.warning("LLM_ENABLED is set but no b-api address is known; LLM requests fall back to the rule-based path")
+        return None
     client = BApiClient(
-        settings.b_api_base_url,
+        base_url,
         settings.b_api_key,
         provider=settings.b_api_provider,
         model=settings.b_api_model,
@@ -223,6 +249,28 @@ def warn_about_removed_settings() -> None:
         )
 
 
+def describe_matching(settings: Settings) -> dict[str, Any]:
+    """What the matcher really consists of, decided once at start; /health reports it.
+
+    A Model2Vec model that is configured but does not load leaves the matcher weaker without saying so. The
+    check happens here, so the answer costs nothing per request and the model is loaded before the first one.
+    """
+    if settings.matcher_default not in STRATEGIES:
+        log.warning("MATCHER_DEFAULT=%r is not a known strategy", settings.matcher_default)
+        return {"matcher": settings.matcher_default, "components": [], "embeddings": False}
+    components = active_components(settings.matcher_default, settings.model2vec_path)
+    if settings.model2vec_path and "model2vec" not in components:
+        log.error(
+            "MODEL2VEC_PATH=%s holds no usable model; the matcher runs without embeddings and finds less",
+            settings.model2vec_path,
+        )
+    return {
+        "matcher": settings.matcher_default,
+        "components": components,
+        "embeddings": "model2vec" in components,
+    }
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -264,6 +312,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.manifest = manifest
     app.state.required_ids = resolve_required_ids(settings, manifest)
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
+    app.state.matching = describe_matching(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)

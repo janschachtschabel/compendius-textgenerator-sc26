@@ -82,6 +82,7 @@ Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein B
 | `ZIM_PROFILE` | welche Archive geladen werden (Tabelle oben) |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | in der Vorlage `true`: der Updater lädt beim ersten Start die fehlenden Pflichtarchive |
 | `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden |
+| `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, Produktion steht auskommentiert daneben. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
 
 `.env` enthält Zugangsdaten und gehört niemals ins Repository — `.gitignore` hält sie schon draußen.

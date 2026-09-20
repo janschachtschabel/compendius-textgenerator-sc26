@@ -67,6 +67,13 @@ def ensure_strategy(name: str) -> str:
     return name
 
 
+def active_components(name: str, model2vec_path: str = "") -> list[str]:
+    """The matchers that really contribute; a configured Model2Vec model that does not load is not among them."""
+    matcher = get_matcher(name, model2vec_path)
+    components = getattr(matcher, "components", None)
+    return [component.name for component in components] if components else [matcher.name]
+
+
 def get_matcher(name: str, model2vec_path: str = "") -> Matcher:
     if name == "hybrid_light":
         return HybridLightMatcher(model2vec_path)

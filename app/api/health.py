@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import urlparse
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
@@ -17,6 +18,11 @@ from app import __version__
 from app.api.system_threads import run_system
 
 router = APIRouter(tags=["system"])
+
+
+def _host(url: str) -> str:
+    """Only the host of a configured address; the path adds nothing a reader of /health needs."""
+    return urlparse(url).hostname or ""
 
 
 def _components(request: Request) -> dict[str, Any]:
@@ -29,6 +35,7 @@ def _components(request: Request) -> dict[str, Any]:
         if llm is not None
         else {"enabled": False, "provider": settings.b_api_provider, "model": settings.b_api_model, "available": False}
     )
+    llm_status = {**llm_status, "host": _host(settings.b_api_url)}
     curricula = getattr(request.app.state, "curricula", None)
     meta = curricula.store.meta() if curricula is not None else {}
     return {
@@ -37,7 +44,13 @@ def _components(request: Request) -> dict[str, Any]:
             "available": curricula is not None and curricula.store.available,
             "harvested_at": meta.get("harvested_at"),
         },
-        "edu_sharing": {"enabled": getattr(request.app.state, "collections", None) is not None},
+        "matching": request.app.state.matching,
+        "edu_sharing": {
+            "enabled": getattr(request.app.state, "collections", None) is not None,
+            # Which repository the collections come from, and which b-api belongs to it: an operator has to be
+            # able to see whether this service is talking to staging or to production
+            "repository": _host(settings.edu_sharing_base_url),
+        },
         "llm": llm_status,
     }
 
