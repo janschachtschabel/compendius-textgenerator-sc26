@@ -78,14 +78,32 @@ verwirft den Ansatz: bei einer Schwelle von 6000 fielen **19 von 22** Themenwör
 **Was stattdessen greift: der eigene Vertrag der Methode.** `dictionary` verspricht „Begriffe, die einen
 Artikel haben“. Eine Begriffsklärungsseite ist kein Artikel. Gemessen gegen die echte Wikipedia sind 6 der
 11 geprüften Fehltreffer Begriffsklärungsseiten (Fach, Thema, Medien, Bereich, Mittel, Weise) und **kein
-einziger** der 10 echten Treffer. Anders als bei den beiden verworfenen Kriterien ist das Verlustrisiko damit
+einziger** der 10 echten Treffer — mit dem weiteren Suchfenster von unten sind es 8 von 11 (dazu Form und
+Grund). Anders als bei den beiden verworfenen Kriterien ist das Verlustrisiko damit
 null. Der Filter nutzt den Parse, den das Verknüpfen ohnehin macht, kostet also nichts; `ner` bleibt unberührt,
 weil das Erkennen kein Versprechen über Archive macht. Mit `link: false` findet keine Prüfung statt, und die
 Antwort sagt es unter `note`.
 
-Was der Filter **nicht** löst: „Richtung“, „Prinzip“, „Schule“, „Form“ und
-„Grund“ haben echte Artikel und bleiben. Die andere Hälfte des Rauschens ist also **weiterhin offen** —
-und beide naheliegenden Kriterien sind gemessen und erledigt. Wer heute Genauigkeit braucht, fragt `methods: ["ner"]`.
+Was der Filter **nicht** löst: „Richtung“, „Prinzip“ und „Schule“ haben echte Artikel und bleiben. Wer dort
+Genauigkeit braucht, fragt `methods: ["ner"]`.
+
+**Nachgebessert am 2026-09-20: Das Suchfenster war zu klein.** „Form“ und „Grund“ standen hier als Rauschen —
+in Wahrheit sind beide Begriffsklärungsseiten, die der Filter nur nicht gesehen hat. Er suchte den Hinweis
+„Begriffsklärungsseite“ in den ersten 2000 Zeichen der ersten beiden Abschnitte; die Vorlage steht aber am
+**Ende** der Seite: bei „Form“ ab Zeichen 2281 von 2589, bei „Grund“ ab 5291 von 5599, bei „Feld“ ab 5815 von
+6124. Gemessen an 807 echten Wörterbuch-Treffern aus sieben Themen fängt der ganze Text **30 weitere**
+Begriffsklärungsseiten — „Fall“, „Lage“, „Ordnung“, „Punkt“, „Rolle“, „Schicht“, „Sohn“, „Abbe“, „Faust“
+unter ihnen —, und jede trägt die typische Eröffnung („… steht für:“, „… ist der Familienname folgender
+Personen:“). Gegenprobe auf Fehltreffer: von 600 zufälligen Artikeln kippte **keiner**.
+
+**Die Rückwirkung auf die Themenauflösung ist gewollt, aber nicht gratis.** Von 27 geprüften Themen ändern
+sich 11, alle davon mehrdeutige Wörter. Vorher baute ein Kompendium zu „Form“ stillschweigend auf der
+Listenseite auf und meldete `disambiguation: false` — eine falsche Angabe über die eigene Quelle. Jetzt meldet
+es die Mehrdeutigkeit samt Alternativen und nimmt eine echte Bedeutung. Mit Kontext wählt
+`_pick_from_disambiguation` brauchbar („Feld“ + Physik → Elektromagnetisches Feld, „Faust“ + Goethe →
+Goethes Faust, „Union“ + Politik → CDU/CSU); ohne Kontext gewinnt der erste Link, und der kann danebenliegen
+(„Punkt“ → „Latein“, der Etymologie-Link). **Offener Punkt:** Die Auswahl sieht nur `links[:12]` und zählt
+Kontextwörter in den ersten 1500 Zeichen — bei „Punkt“ und „Rolle“ reicht das nicht.
 
 Bei den Fragevorlagen in U5a war die Wortart dagegen genau richtig, weil die Fehlgriffe dort **keine**
 Substantive sind (Adverbien am Satzanfang); das ist behoben, siehe unten. Bis dahin liefert `dictionary` viel

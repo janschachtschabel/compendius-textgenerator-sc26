@@ -61,3 +61,24 @@ def test_all_fixtures_parse() -> None:
     for path in FIXTURES.rglob("*.html"):
         parsed = parse_article(Path(path).read_text(encoding="utf-8"), path.stem)
         assert parsed.sections, path
+
+
+def test_a_long_disambiguation_page_is_detected_although_its_note_stands_at_the_end() -> None:
+    """Measured against the real Wikipedia on 2026-09-20: the note sits at character 2254 of 2562 in
+    "Schöpfer" and at 5815 of 6124 in "Feld". A window over the beginning does not reach it, and both pages
+    came back as articles - "Schöpfer" as a person, "Feld" as a piece of farmland."""
+    entries = "".join(f"<p>Bedeutung {index}: eine von vielen Lesarten dieses Wortes.</p>" for index in range(40))
+    html = (
+        "<html><body><p>Schöpfer steht für:</p>"
+        + entries
+        + "<p>Dies ist eine Begriffsklärungsseite zur Unterscheidung mehrerer mit demselben Wort "
+        "bezeichneter Begriffe.</p></body></html>"
+    )
+    parsed = parse_article(html, "Schöpfer")
+    assert parsed.text.lower().index("begriffsklärungsseite") > 2000, "otherwise the old window would reach it"
+    assert parsed.is_disambiguation
+
+
+def test_an_article_that_never_mentions_the_note_stays_an_article(optik_html: str) -> None:
+    """The counter-check to the open window: measured on 600 random articles, none of them flipped."""
+    assert not parse_article(optik_html, "Optik").is_disambiguation

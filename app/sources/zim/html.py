@@ -333,8 +333,13 @@ def parse_article(html: str, title: str) -> ParsedArticle:
     sections = [s for s in parser.sections if s.paragraphs]
     lead_text = sections[0].paragraphs[0].text if sections and sections[0].level == 0 else ""
     aliases = _aliases(parser.bold_terms, lead_text, title)
-    text_head = " ".join(p.text for s in sections[:2] for p in s.paragraphs)[:2000].lower()
-    is_disambiguation = "(begriffsklärung)" in title.lower() or "begriffsklärungsseite" in text_head
+    # The note stands wherever the template put it, and on a long page that is the very end: measured against
+    # the real Wikipedia on 2026-09-20 at character 2254 of 2562 in "Schöpfer" and at 5815 of 6124 in "Feld".
+    # A window over the first sections missed 30 of 807 dictionary hits from seven real topics - "Form",
+    # "Ordnung", "Fall", "Lage", "Rolle" among them - and let them pass as articles. Reading the whole text
+    # instead costs one lowercase per parsed article and flipped none of 600 random articles.
+    whole_text = " ".join(p.text for s in sections for p in s.paragraphs).lower()
+    is_disambiguation = "(begriffsklärung)" in title.lower() or "begriffsklärungsseite" in whole_text
     return ParsedArticle(
         title=title, sections=sections, links=parser.links, aliases=aliases, is_disambiguation=is_disambiguation
     )
