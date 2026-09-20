@@ -26,8 +26,10 @@ verwenden; `ZIM_PATHS` ist für Entwicklung und Tests gedacht.
 
 - `GET /health`: Prozess lebt; `components` zeigt `zim`, `lehrplan_cache`, `edu_sharing` und `llm`
   (Modellprüfung, Tagesverbrauch). Je Modell steht dort, ob es wirklich geladen ist: `matching.embeddings`
-  für das Model2Vec-Modell, `entities.ner` für das spaCy-Modell — ein fehlendes Modell macht die Antworten
-  schwächer, ohne dass eine Anfrage scheitert. Ruft keinen fremden Dienst auf.
+  für das Model2Vec-Modell, `entities.ner` für das spaCy-Modell, `qa_models.present` für die beiden Modelle der
+  QA-Stufe `models` — ein fehlendes Modell macht die Antworten schwächer, ohne dass eine Anfrage scheitert.
+  `qa_models` meldet nur, ob die Dateien da sind: eine Sonde darf keine 1,3 GB in den Speicher ziehen.
+  Ruft keinen fremden Dienst auf.
 - `GET /ready`: 200 erst, wenn alle Pflichtarchive des Profils vorliegen, sonst 503.
 - `GET /api/v2/zim/status`, `GET /api/v2/lehrplan/status`: Archive, letzter Sync, Cache-Stand.
 - Die Sidecars haben keinen HTTP-Server und keinen Healthcheck; ihren Stand zeigen `sync_status.json` und

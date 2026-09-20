@@ -5,8 +5,9 @@ answer is the sentence itself, so nothing is invented and nothing is needed - no
 lets the b-api write them and falls back to the templates rather than failing; the answer names the stage that
 actually produced the pairs, and why the other one did not.
 
-The third stage of the plan, ``models`` with the small German QG and QA models, needs torch and therefore the
-ml image profile; it is not offered here, because an option that can never work is worse than a missing one.
+``models`` runs two small German models instead (app/synthesis/qa_models.py): a generator writes the question
+for a noun phrase of the text, an extractive model marks the place that answers it. Both are baked into the
+image; without them, or without the spaCy model their candidates come from, this stage falls back as well.
 """
 
 from __future__ import annotations
@@ -23,11 +24,12 @@ from app.domain.models import Resolution, Source
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.synthesis.qa import QaPair, rule_based_pairs
+from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
-Method = Literal["rule-based", "llm"]
+Method = Literal["rule-based", "models", "llm"]
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
 NO_TAGGER_NOTE = (
     "spaCy-Modell nicht geladen; die Fragevorlagen können Satzanfänge nicht prüfen und fragen unter Umständen "
@@ -44,8 +46,9 @@ class QaRequest(BaseModel):
     )
     method: Method = Field(
         "rule-based",
-        description="rule-based needs nothing and is the default; llm lets the b-api write the pairs and falls "
-        "back to rule-based when it is not configured, not available or delivers nothing usable",
+        description="rule-based needs nothing and is the default; models uses the two German models baked "
+        "into the image (question generator plus extractive answers); llm lets the b-api write the pairs. "
+        "Both fall back to rule-based when they cannot run, and note says why",
     )
     count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
@@ -87,6 +90,22 @@ def _text_of(sources: list[Source]) -> str:
             parts.append(text)
             total += len(text)
     return "\n\n".join(parts)
+
+
+def _from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
+    """The pairs of the two small models, or ``None`` and the reason the templates have to do it."""
+    settings = request.app.state.settings
+    models = load_qa_models(settings.qg_model_path, settings.qa_model_path)
+    if models is None:
+        return None, "QA-Modelle nicht im Image (QG_MODEL_PATH/QA_MODEL_PATH); Regelmodus verwendet"
+    nlp = load_spacy(settings.spacy_model)
+    if nlp is None:
+        return None, "spaCy-Modell fehlt; ohne seine Nominalphrasen gibt es keine Antwortkandidaten"
+    candidates = answer_candidates(nlp(text[:MAX_TEXT_CHARS]))
+    pairs = model_pairs(candidates, models, count=payload.count, max_answer_length=payload.max_answer_length)
+    if not pairs:
+        return None, "Die Modelle fanden keine beantwortbare Frage; Regelmodus verwendet"
+    return pairs, ""
 
 
 def _from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
@@ -132,13 +151,14 @@ def qa(payload: QaRequest, request: Request) -> QaResponse:
     method: Method = "rule-based"
     notes: list[str] = []
     pairs: list[QaPair] | None = None
-    if payload.method == "llm":
-        pairs, reason = _from_llm(request, text, payload)
+    if payload.method in ("llm", "models"):
+        produce = _from_llm if payload.method == "llm" else _from_models
+        pairs, reason = produce(request, text, payload)
         if pairs is None:
             log.info("QA fell back to the templates: %s", reason)
             notes.append(reason)
         else:
-            method = "llm"
+            method = payload.method
     if pairs is None:
         nlp = load_spacy(request.app.state.settings.spacy_model)
         if nlp is None:

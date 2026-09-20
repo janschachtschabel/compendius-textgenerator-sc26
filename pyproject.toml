@@ -27,6 +27,18 @@ embeddings = ["model2vec>=0.9", "huggingface-hub>=1.31"]
 # spaCy brings the German NER for /api/v2/entities; the model itself is baked into the image (Dockerfile,
 # SPACY_MODEL_REVISION). Without the extra the endpoint still answers - with the terms from the archives only.
 entities = ["spacy>=3.8"]
+# The QA stage `models` (docs/umbau.md U5b): a question generator and an extractive answer model, both
+# German and MIT-licensed, baked into the image with pinned revisions (Dockerfile). torch comes from the
+# CPU index below - the PyPI default is the CUDA build and pulls gigabytes of drivers this service never uses.
+qa-models = ["torch>=2.9", "transformers>=5.0"]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
 
 [project.scripts]
 compendium = "app.cli:main"
@@ -72,7 +84,7 @@ plugins = ["pydantic.mypy"]
 exclude = ["alterCode/", "scripts/"]
 
 [[tool.mypy.overrides]]
-module = ["libzim.*", "sklearn.*", "model2vec.*"]
+module = ["libzim.*", "sklearn.*", "model2vec.*", "torch.*", "transformers.*"]
 ignore_missing_imports = true
 
 [tool.coverage.run]

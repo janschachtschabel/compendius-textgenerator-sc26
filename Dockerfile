@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1.7
-# Image-Profil "base" (PLAN.md 10): Python 3.13, libzim, numpy, scikit-learn, Extra "embeddings" mit
-# dem statischen Embedding-Modell fuer den hybriden Matcher (Entscheidung D20). Das Profil "ml"
-# (torch, Cross-Encoder) bleibt Phase 7 vorbehalten, falls die Evaluation den Mehrwert zeigt.
+# Ein einziges Image (Entscheidung vom 2026-09-20; sie ersetzt das geplante zweite Profil "ml"): Python 3.13,
+# libzim, numpy, scikit-learn, das statische Embedding-Modell fuer den hybriden Matcher (D20), spaCy fuer die
+# Entitaeten und torch/transformers samt den beiden QA-Modellen (U5b). torch kommt als CPU-Rad ueber den
+# Index in pyproject.toml - der PyPI-Standard ist der CUDA-Bau und zoege Treiber nach, die hier nie laufen.
 
 # Basis ist das offizielle Python-Image, per Digest gepinnt: ein Build morgen ergibt dasselbe Image, und Debian-
 # und CPython-Sicherheitskorrekturen kommen als neuer Digest, den Dependabot (.github/dependabot.yml) woechentlich
@@ -16,7 +17,7 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev --extra embeddings --extra entities
+    uv sync --locked --no-install-project --no-dev --extra embeddings --extra entities --extra qa-models
 # Embedding-Modell zur Bauzeit laden, damit die Laufzeit den Hugging-Face-Hub nie anspricht. Die Revision ist
 # festgelegt, damit jeder Build dasselbe Modell enthaelt (neue Revision: Eval neu messen, dann hier eintragen).
 # MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF.
@@ -39,10 +40,23 @@ RUN --mount=type=cache,target=/root/.cache/uv \
       && /app/.venv/bin/python -c "import spacy, sys; spacy.load(sys.argv[1])" "$SPACY_MODEL"; \
     fi
 
+# Die beiden Modelle der QA-Stufe `models` (docs/umbau.md U5b), beide MIT und deutsch: ein Fragengenerator
+# (T5, antwortbewusst - die Antwort wird im Satz mit <hl> markiert) und ein extraktives Antwortmodell, das
+# die Stelle im Text markiert, statt zu formulieren. Revisionen festgelegt; das Skript holt nur die Dateien,
+# die die Lader brauchen, und laedt beide einmal, damit ein kaputter Download den Bau scheitern laesst.
+ARG QG_MODEL_ID=dehio/german-qg-t5-quad
+ARG QG_MODEL_REVISION=e5eeeeaef49576b5679469f2d186971e4f647ea7
+ARG QA_MODEL_ID=deepset/gelectra-base-germanquad
+ARG QA_MODEL_REVISION=b2c4057739c802027af43f59a44bcd1beb9666d1
+COPY scripts/fetch_qa_models.py ./scripts/fetch_qa_models.py
+RUN /app/.venv/bin/python scripts/fetch_qa_models.py \
+      --qg-id "$QG_MODEL_ID" --qg-revision "$QG_MODEL_REVISION" \
+      --qa-id "$QA_MODEL_ID" --qa-revision "$QA_MODEL_REVISION"
+
 COPY pyproject.toml uv.lock README.md ./
 COPY app ./app
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --inexact --no-dev --no-editable --extra embeddings --extra entities
+    uv sync --locked --inexact --no-dev --no-editable --extra embeddings --extra entities --extra qa-models
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
@@ -53,6 +67,8 @@ ENV PATH="/app/.venv/bin:$PATH" \
     CONFIG_DIR=/app/config \
     MODEL2VEC_PATH=/models/m2v \
     SPACY_MODEL=de_core_news_md \
+    QG_MODEL_PATH=/models/qg \
+    QA_MODEL_PATH=/models/qa \
     HF_HUB_OFFLINE=1 \
     WEB_CONCURRENCY=2
 RUN useradd --create-home --uid 10001 app \

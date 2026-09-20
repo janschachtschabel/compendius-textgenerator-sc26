@@ -116,6 +116,44 @@ def check_pairs(answer: dict[str, object]) -> str:
     return f"{len(questions)} pairs, no question about an adverb"
 
 
+def ask_for_model_pairs(base_url: str, container: str) -> dict[str, object]:
+    """The only place the two QA models are ever executed; loading them costs about eight seconds."""
+    body = {
+        "text": (
+            "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht. "
+            "Der Brechungsindex eines Mediums bestimmt, wie stark Licht gebrochen wird."
+        ),
+        "method": "models",
+        "count": 3,
+    }
+    try:
+        response = httpx.post(f"{base_url}/api/v2/qa", json=body, timeout=REQUEST_TIMEOUT_S)
+    except httpx.HTTPError as exc:
+        raise SystemExit(f"the model request got no answer ({exc}):\n{run('logs', container)}") from exc
+    if response.status_code != 200:
+        raise SystemExit(f"POST /api/v2/qa (models) answered {response.status_code}: {response.text[:400]}")
+    return dict(response.json())
+
+
+def check_model_pairs(answer: dict[str, object]) -> str:
+    """Return the evidence line, or raise when the packaged models did not run.
+
+    The wording of a generated question is not pinned - a small model varies. What has to hold is that the
+    stage ran at all, that it asked questions, and that every answer is a span of the text (extractive).
+    """
+    if answer.get("method") != "models":
+        raise SystemExit(f"the image fell back instead of using its models: {answer.get('note')}")
+    pairs = answer.get("pairs")
+    if not isinstance(pairs, list) or not pairs:
+        raise SystemExit("the models ran but produced no pair")
+    for pair in pairs:
+        if not str(pair.get("question", "")).endswith("?"):
+            raise SystemExit(f"not a question: {pair}")
+        if not str(pair.get("answer", "")).strip():
+            raise SystemExit(f"empty answer: {pair}")
+    return f"{len(pairs)} pairs from the two models"
+
+
 def check_entities(answer: dict[str, object]) -> str:
     """Return the evidence line, or raise when the model of the image did not run."""
     methods = answer.get("methods")
@@ -170,6 +208,7 @@ def main() -> int:
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
             print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
+            print(f"the image asks with models: {check_model_pairs(ask_for_model_pairs(base_url, container))}")
         finally:
             run("rm", "-f", args.name)
     return 0

@@ -155,6 +155,31 @@ beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Arch
 Die Antwortmodelle sind **extraktiv**: Sie markieren die Stelle im Text, die die Frage beantwortet. Damit bleibt
 auch diese Stufe belegbar — nichts wird erfunden.
 
+### Wie U5b am 2026-09-20 gebaut wurde
+
+**Der Fragengenerator ist antwortbewusst — das stand nicht im Entwurf oben.** `german-qg-t5-quad` liest keinen
+Text und denkt sich Fragen aus; es bekommt einen Satz mit der gewünschten Antwort zwischen `<hl>`-Marken und
+schreibt die Frage dazu. Die Antworten müssen also **zuerst** gewählt werden. Sie kommen aus den Nominalphrasen,
+die spaCy findet (`doc.noun_chunks`, auf Deutsch unterstützt, gemessen 15 brauchbare Kandidaten in vier Sätzen)
+— wonach eine Verständnisfrage fragt, ist fast immer eine Nominalphrase.
+
+**Der Antwortkontext ist der eigene Satz, nicht der ganze Text.** A/B im Image: Mit dem ganzen Text wurde aus
+„Was ist das beste Medium, um Licht zu brechen?“ die Antwort „Die Optik“ (aus einem anderen
+Satz), mit dem eigenen Satz „Der Brechungsindex eines Mediums“. Richtiger **und** schneller (6,8 s statt
+9,3 s für fünf Paare). Die Frage entstand aus genau diesem Satz; der ganze Text lädt das Modell nur ein,
+woanders zu suchen. Der `context`-Parameter ist damit widerlegt und wieder entfernt.
+
+**Gemessen im Image** (CPU): Modelle laden 7,9 s, danach rund 2,2 s je Paar. Die Modelle werden erst bei der
+ersten Anfrage geladen, die sie braucht — 1,3 GB je Worker sollen nicht in jedem Dienst liegen, der die Stufe
+nie anfragt. Qualität gemischt: „Welche Bedeutung hat der Brechungsindex?“ ist gut,
+„Zu welcher Physik gehört die Optik?“ ist schiefes Deutsch. Das ist die Güte eines kleinen Modells; die
+Antworten bleiben in jedem Fall Textstellen.
+
+**Image 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten): torch 769 MB,
+QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB. **Offen:** Das QG-Modell
+liegt als fp32-`.bin` vor; safetensors in fp16 wären rund 430 MB, das ändert aber das Modell und müsste
+nachgemessen werden.
+
 ### Wie U5a am 2026-09-20 gebaut wurde
 
 **`app/synthesis/qa.py` hatte seit U1 keinen Aufrufweg mehr** — der v1-Endpunkt war weg, die Tests mit ihm.
@@ -282,7 +307,7 @@ Entscheidung, die das Image wirklich schwer macht.
 | U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
 | U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
 | U5a ✓ | `POST /api/v2/qa` mit `rule-based` und `llm` — erledigt am 2026-09-20; kein neues Gewicht, kein zweites Image | mittel |
-| U5b | Stufe `models` (QG- und QA-Modell) samt `ml`-Profil im Bau | groß (torch, zwei Modelle) |
+| U5b ✓ | Stufe `models` (QG- und QA-Modell), torch im Basis-Image statt eines zweiten Profils — erledigt am 2026-09-20 | groß (torch, zwei Modelle) |
 | U6 ✓ | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung — erledigt am 2026-09-20; `/health` je Modell war mit U3 schon da | klein |
 
 U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.
@@ -292,7 +317,7 @@ U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.
 | Frage | Entscheidung |
 |---|---|
 | v1-Vertrag | **sofort ganz entfernen** — `app/api/v1/`, `MIGRATION.md`, die zugehörigen Tests |
-| torch | **eigenes `ml`-Profil**; `base` bleibt bei 830 MB und kann QA per Vorlagen oder LLM |
+| torch | ~~eigenes `ml`-Profil~~ → **am 2026-09-20 umentschieden: ein einziges Image**. Zwei Images hätten zwei CI-Bauten und je Deployment eine Wahl bedeutet; der Betrieb wiegt schwerer als die 2,3 GB. Das Image läuft **rein auf CPU** (belegt: `torch 2.14.0+cpu`, CUDA nicht einkompiliert, kein NVIDIA-Paket) |
 | Wikidata | **optional, standardmäßig aus** — und, nach der Ergänzung vom selben Tag, **lokal statt live** |
 | Netzzugriff zur Laufzeit | **keiner**: Alles muss offline gehen. Indizes und Modelle werden einmal erzeugt bzw. ins Image gebacken |
 | spaCy-Modell | `de_core_news_md` als Standard, über eine Einstellung auf `lg` umstellbar |

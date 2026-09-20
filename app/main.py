@@ -59,6 +59,7 @@ from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from app.sources.zim.subscriptions import SubscriptionManifest, load_manifest
 from app.synthesis.facets import FacetCatalog
+from app.synthesis.qa_models import describe as describe_qa_models
 from app.templates.manager import TemplateManager
 
 log = logging.getLogger(__name__)
@@ -336,6 +337,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.matching = describe_matching(settings)
     app.state.entities = describe_entities(settings)
+    app.state.qa_models = describe_qa_models(settings.qg_model_path, settings.qa_model_path)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)

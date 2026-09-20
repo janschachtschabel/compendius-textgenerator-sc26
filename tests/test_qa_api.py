@@ -92,7 +92,7 @@ def test_either_a_text_or_a_topic_is_required(client: TestClient) -> None:
     assert client.post("/api/v2/qa", json={}).status_code == 422
     assert client.post("/api/v2/qa", json={"text": "x" * 50_001}).status_code == 422
     assert client.post("/api/v2/qa", json={"text": TEXT, "count": 0}).status_code == 422
-    assert client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).status_code == 422
+    assert client.post("/api/v2/qa", json={"text": TEXT, "method": "zauberei"}).status_code == 422
 
 
 def test_a_text_without_a_single_fitting_sentence_answers_empty_not_error(client: TestClient) -> None:
@@ -118,3 +118,46 @@ def test_with_the_tagger_an_adverb_gets_no_question_and_there_is_no_note(
     assert body["note"] is None
     assert "Daneben" not in " ".join(pair["question"] for pair in body["pairs"])
     assert "Was versteht man unter Optik?" in [pair["question"] for pair in body["pairs"]]
+
+
+def test_the_model_stage_falls_back_when_the_models_are_not_in_the_image(client: TestClient) -> None:
+    """docs/umbau.md U5b: the test service carries no weights, so the answer has to say what it did instead."""
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
+    assert body["method"] == "rule-based"
+    assert body["note"] and "Modelle" in body["note"]
+    assert body["pairs"], "the fallback still delivers"
+
+
+def test_the_model_stage_uses_the_two_models_when_they_are_there(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.synthesis.qa_models import Candidate, QaModels
+
+    sentence = "Die Optik ist ein Teilgebiet der Physik."
+    candidate = Candidate(text="Die Optik", sentence=sentence, start=0, end=9)
+    monkeypatch.setattr("app.api.v2.qa.answer_candidates", lambda doc: [candidate])
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: lambda text: object())
+    monkeypatch.setattr(
+        "app.api.v2.qa.load_qa_models",
+        lambda qg, qa: QaModels(lambda marked: "Was ist die Optik?", lambda q, c: "ein Teilgebiet der Physik"),
+    )
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
+    assert body["method"] == "models" and body["note"] is None
+    assert body["pairs"] == [{"question": "Was ist die Optik?", "answer": "ein Teilgebiet der Physik"}]
+
+
+def test_the_model_stage_needs_the_spacy_model_for_its_candidates(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.synthesis.qa_models import QaModels
+
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: None)
+    monkeypatch.setattr("app.api.v2.qa.load_qa_models", lambda qg, qa: QaModels(lambda m: "Frage?", lambda q, c: "A"))
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
+    assert body["method"] == "rule-based" and body["note"] and "spaCy" in body["note"]
+
+
+def test_health_says_whether_the_qa_models_are_in_the_image(client: TestClient) -> None:
+    """A probe must not pull 1.3 GB into memory, so /health reports presence, not a load."""
+    qa_models = client.get("/health").json()["components"]["qa_models"]
+    assert qa_models == {"question_generator": "", "answer_model": "", "present": False}

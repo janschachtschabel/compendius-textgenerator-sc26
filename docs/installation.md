@@ -9,8 +9,8 @@ einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung steh
 | | Minimum | Empfohlen | warum |
 |---|---|---|---|
 | CPU | 2 Kerne | 4 Kerne | eine Anfrage belegt einen Worker vollständig (`WEB_CONCURRENCY`, im Image 2) |
-| RAM | 4 GB | 8 GB | gemessen rund 1 GB je Worker nach einer Anfrage; dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt |
-| Platte | 25 GB | 60 GB | Image rund 830 MB, Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
+| RAM | 4 GB | 8 GB | gemessen rund 1 GB je Worker nach einer Anfrage; dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Die QA-Stufe `models` lädt bei ihrer ersten Anfrage rund 1,3 GB je Worker nach — wer sie nie anfragt, zahlt das nie |
+| Platte | 25 GB | 60 GB | Image rund 3,4 GB (gemessen; davon 1,6 GB Modelle und 0,8 GB torch), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
 | Netz | – | – | der Erststart lädt die Archive; danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
 
 Die Archivgröße bestimmt das Profil (`ZIM_PROFILE`, Manifest in `config/zim_subscriptions.yaml`):
@@ -94,7 +94,7 @@ cd /srv/kompendium && sudo -u kompendium docker compose build
 ```
 
 Der Bau holt die Abhängigkeiten und backt das Embedding-Modell für den Matcher mit ein, damit die Laufzeit
-nie den Hugging-Face-Hub braucht (rund 830 MB Image). Ohne Modell — kleineres Image, schwächeres Matching —
+nie den Hugging-Face-Hub braucht. Ohne Modell — kleineres Image, schwächeres Matching —
 geht auch `docker compose build --build-arg MODEL2VEC_ID=`.
 
 ## 6. Erster Start

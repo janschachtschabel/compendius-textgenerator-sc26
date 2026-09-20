@@ -72,7 +72,7 @@ def rule_based_pairs(
         if question is None or question in asked:
             continue
         asked.add(question)
-        pairs.append(QaPair(question=question, answer=_cut(sentence, max_answer_length), level_property=level_property))
+        pairs.append(QaPair(question=question, answer=cut(sentence, max_answer_length), level_property=level_property))
         if len(pairs) >= limit:
             break
     return pairs
@@ -116,7 +116,7 @@ def _lower_article(subject: str) -> str:
     return f"{article.lower()}{subject[len(article) :]}" if article else subject
 
 
-def _cut(text: str, limit: int) -> str:
+def cut(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
@@ -186,7 +186,7 @@ def parse_pairs(
         pairs.append(
             QaPair(
                 question=question,
-                answer=_cut(parts[1], max_answer_length),
+                answer=cut(parts[1], max_answer_length),
                 level_property=level_property,
                 level_value=level,
             )

@@ -46,6 +46,7 @@ def _components(request: Request) -> dict[str, Any]:
         },
         "matching": request.app.state.matching,
         "entities": request.app.state.entities,
+        "qa_models": request.app.state.qa_models,
         "edu_sharing": {
             "enabled": getattr(request.app.state, "collections", None) is not None,
             # Which repository the collections come from, and which b-api belongs to it: an operator has to be
