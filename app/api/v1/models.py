@@ -11,7 +11,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.domain.requests import NODE_ID_PATTERN, Extraction, Generation, Part
 
@@ -55,6 +55,12 @@ class LinkerConfig(BaseModel):
 
 
 class CompendiumRequest(BaseModel):
+    # ``input_type`` names the kind of input, not the topic: the topic belongs in ``text``. Without an example
+    # /docs builds a body from the field names alone, and that reading is easy to get wrong.
+    model_config = ConfigDict(
+        json_schema_extra={"examples": [{"input_type": "text", "text": "Optik", "config": {"length": 6000}}]}
+    )
+
     input_type: InputType
     text: str | None = None
     linker_data: dict[str, Any] | None = None
