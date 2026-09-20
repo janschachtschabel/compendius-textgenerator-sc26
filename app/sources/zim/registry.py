@@ -38,6 +38,13 @@ class ZimRegistry:
                 log.error("cannot open ZIM archive %s: %s", path, exc)
         self.archives = sorted(archives, key=lambda a: (a.priority, a.file_name))
 
+    def only(self, archive_ids: Sequence[str]) -> ZimRegistry:
+        """A view on the named archives, in the order of this registry; the archives stay open and shared."""
+        wanted = set(archive_ids)
+        view = ZimRegistry([])
+        view.archives = [archive for archive in self.archives if archive.id in wanted]
+        return view
+
     @classmethod
     def discover(cls, directory: Path) -> ZimRegistry:
         paths = sorted(p for p in Path(directory).glob("*.zim")) if Path(directory).exists() else []

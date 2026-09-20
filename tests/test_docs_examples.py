@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.settings import Settings
 
-STARTING_POINTS = ["/api/v2/compendium"]
+STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge"]
 
 
 @pytest.fixture(scope="module")

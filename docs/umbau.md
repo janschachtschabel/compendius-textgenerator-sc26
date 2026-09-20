@@ -140,8 +140,8 @@ Entscheidung, die das Image wirklich schwer macht.
 
 | Phase | Inhalt | Aufwand |
 |---|---|---|
-| U1 | v1 entfernen (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests), Endpunktliste aufräumen | klein, viel Löschung |
-| U2 | `POST /api/v2/knowledge` — die Bausteine dafür gibt es alle | klein |
+| U1 ✓ | v1 entfernt (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests) — erledigt am 2026-09-20 | klein, viel Löschung |
+| U2 ✓ | `POST /api/v2/knowledge` — erledigt am 2026-09-20; `ZimRegistry.only()` grenzt auf Archive ein | klein |
 | U3 | `POST /api/v2/entities` mit spaCy und Auflösung; Wikidata optional | mittel |
 | U4 | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und Prompt v3; Nebenläufigkeit 10 | mittel |
 | U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
