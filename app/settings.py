@@ -25,7 +25,6 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore")
 
-    app_name: str = "compendious-text-fastapi"
     log_level: str = Field("INFO", description="Python log level name")
 
     # --- ZIM archives ------------------------------------------------------------------------
