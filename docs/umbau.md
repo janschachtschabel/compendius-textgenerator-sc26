@@ -59,7 +59,11 @@ trägt. Die Genauigkeit noch nicht: Von 20 gefundenen Begriffen eines Physik-Abs
 Entitäten (Brechungsindex, Hornhaut, Netzhaut, Lupe, Regenbogen), die übrigen Allerweltswörter mit eigenem
 Artikel („Fach", „Thema", „Richtung", „Prinzip", „Schule", „Medien"). **Offener Punkt U3b:** Ein Filter dafür
 braucht ein Kriterium, das nicht geraten ist — etwa Worthäufigkeit aus einer Frequenzliste oder die
-Wortart aus dem spaCy-Modell, sobald es geladen ist. Bis dahin liefert `dictionary` viel und ungenau; wer
+Wortart aus dem spaCy-Modell, sobald es geladen ist. **Dieselbe Ursache trifft die Fragevorlagen in U5a:**
+Deutsch schreibt am Satzanfang groß, also greift „Großbuchstabe + ist/sind“ auf jedes
+satzanfängliche Adverb — gemessen gegen die echte Wikipedia am 2026-09-20 entstanden „Was versteht man
+unter Daneben?“ und „… unter Beispielsweise?“. Ein Kriterium behebt beide Stellen.
+Bis dahin liefert `dictionary` viel und ungenau; wer
 Genauigkeit braucht, fragt `methods: ["ner"]`. Zweiter Punkt derselben Art: Ein Begriff kann einen Eintrag
 haben, der eine Begriffsklärungsseite ist („Brechung", „Carl Zeiss"). Das Wörterbuch findet ihn über den
 Titel, die Verknüpfung lehnt ihn ab — die Entität kommt dann mit `linked: false` zurück, obwohl es etwas
@@ -124,6 +128,24 @@ beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Arch
 
 Die Antwortmodelle sind **extraktiv**: Sie markieren die Stelle im Text, die die Frage beantwortet. Damit bleibt
 auch diese Stufe belegbar — nichts wird erfunden.
+
+### Wie U5a am 2026-09-20 gebaut wurde
+
+**`app/synthesis/qa.py` hatte seit U1 keinen Aufrufweg mehr** — der v1-Endpunkt war weg, die Tests mit ihm.
+U5a belebt das Modul wieder, statt Neues zu schreiben, und gibt ihm seine Tests zurück (12 Einheitentests).
+
+**`models` steht nicht im Schema.** Ein Aufzählungswert, der nie funktionieren kann, ist schlimmer als ein
+fehlender; U5b fügt ihn hinzu. Einen Wert zu ergänzen bricht keinen Aufrufer.
+
+**Die Stufenverteilung (`level_property`, `level_values`) bleibt ungenutzt.** Gemessen am 2026-09-20:
+`_level()` bildet über Teilstrings ab und setzt sonst stillschweigend die **erste** angebotene Stufe — aus
+„Sekundarstufe II“ wird „Primar“. Das ist ein falsches Etikett, kein fehlendes.
+Der Endpunkt bietet Stufen deshalb nicht an; wer sie braucht, braucht zuerst eine Abbildung, die scheitern
+darf. **Offener Punkt.**
+
+**Gemessen gegen die echten Archive** (Wikipedia 5 Mio. Artikel + Klexikon): „Optik“ HTTP 200 in
+0,38 s, „Photosynthese“ in 0,88 s, je 50.000 Zeichen Quelltext, unbekanntes Thema 404. Die
+Geschwindigkeit trägt. Die Fragequalität der Vorlagen nicht — siehe U3b, es ist dieselbe Ursache.
 
 ## 4. Kompendium: die zwei KI-Optionen
 
@@ -217,7 +239,8 @@ Entscheidung, die das Image wirklich schwer macht.
 | U2 ✓ | `POST /api/v2/knowledge` — erledigt am 2026-09-20; `ZimRegistry.only()` grenzt auf Archive ein | klein |
 | U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
 | U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
-| U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
+| U5a ✓ | `POST /api/v2/qa` mit `rule-based` und `llm` — erledigt am 2026-09-20; kein neues Gewicht, kein zweites Image | mittel |
+| U5b | Stufe `models` (QG- und QA-Modell) samt `ml`-Profil im Bau | groß (torch, zwei Modelle) |
 | U6 ✓ | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung — erledigt am 2026-09-20; `/health` je Modell war mit U3 schon da | klein |
 
 U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.

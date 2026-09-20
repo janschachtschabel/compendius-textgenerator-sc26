@@ -1,0 +1,142 @@
+"""Question and answer pairs for a text or a topic (docs/umbau.md, U5).
+
+Two stages today. ``rule-based`` builds the pairs from question templates over the sentences of the text: the
+answer is the sentence itself, so nothing is invented and nothing is needed - no model, no network. ``llm``
+lets the b-api write them and falls back to the templates rather than failing; the answer names the stage that
+actually produced the pairs, and why the other one did not.
+
+The third stage of the plan, ``models`` with the small German QG and QA models, needs torch and therefore the
+ml image profile; it is not offered here, because an option that can never work is worse than a missing one.
+"""
+
+from __future__ import annotations
+
+import logging
+from typing import Literal
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+from app.api.deps import corpus_for_topic, get_service
+from app.api.limits import rate_limited
+from app.domain.models import Resolution, Source
+from app.llm.deadline import Deadline
+from app.synthesis.qa import QaPair, rule_based_pairs
+
+log = logging.getLogger(__name__)
+router = APIRouter(prefix="/api/v2", tags=["v2"])
+
+Method = Literal["rule-based", "llm"]
+MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
+
+
+class QaRequest(BaseModel):
+    model_config = ConfigDict(json_schema_extra={"examples": [{"topic": "Optik", "count": 5}]})
+
+    text: str | None = Field(None, min_length=1, max_length=MAX_TEXT_CHARS, description="The text to ask about")
+    topic: str | None = Field(
+        None, min_length=1, max_length=300, description="Instead of a text: the articles of this topic are used"
+    )
+    method: Method = Field(
+        "rule-based",
+        description="rule-based needs nothing and is the default; llm lets the b-api write the pairs and falls "
+        "back to rule-based when it is not configured, not available or delivers nothing usable",
+    )
+    count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
+    max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
+
+    @model_validator(mode="after")
+    def _text_or_topic(self) -> QaRequest:
+        if not self.text and not self.topic:
+            raise ValueError("text oder topic ist erforderlich")
+        return self
+
+
+class Pair(BaseModel):
+    question: str
+    answer: str
+
+
+class QaResponse(BaseModel):
+    method: Method = Field(description="The stage that produced the pairs; llm falls back to rule-based")
+    topic: str | None = Field(None, description="The resolved topic, when one was asked for")
+    resolution: Resolution | None = None
+    chars: int = Field(description="Characters of the text the pairs were made from")
+    pairs: list[Pair]
+    note: str | None = Field(None, description="Why the LLM did not write the pairs, when it was asked to")
+
+
+def _text_of(sources: list[Source]) -> str:
+    """The articles as one text, bounded: whole sections in reading order, cut at a section border."""
+    parts: list[str] = []
+    total = 0
+    for source in sources:
+        for section in source.sections:
+            text = "\n\n".join(paragraph.text for paragraph in section.paragraphs).strip()
+            if not text or total + len(text) > MAX_TEXT_CHARS:
+                continue
+            parts.append(text)
+            total += len(text)
+    return "\n\n".join(parts)
+
+
+def _from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
+    """The model's pairs, or ``None`` and the reason the templates have to do it."""
+    service = request.app.state.service
+    llm = service.llm if service is not None else None
+    if llm is None:
+        return None, "LLM nicht konfiguriert (LLM_ENABLED/B_API_KEY); Regelmodus verwendet"
+    unavailable = service.llm_unavailable()
+    if unavailable:
+        return None, f"LLM nicht verfügbar: {unavailable}; Regelmodus verwendet"
+    pairs = llm.qa.pairs(
+        text,
+        count=payload.count,
+        max_answer_length=payload.max_answer_length,
+        budget=llm.open_budget(),
+        deadline=Deadline(service.settings.request_timeout_s),
+    )
+    if pairs is None:
+        return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"
+    return pairs, ""
+
+
+@router.post(
+    "/qa",
+    response_model=QaResponse,
+    dependencies=[Depends(rate_limited)],
+    summary="Frage-Antwort-Paare zu einem Text oder Thema",
+)
+def qa(payload: QaRequest, request: Request) -> QaResponse:
+    """Build the pairs, from the caller's text or from the articles of a topic."""
+    topic: str | None = None
+    resolution: Resolution | None = None
+    if payload.topic:
+        service = get_service(request)  # a topic needs the archives; a plain text does not
+        topic, resolution, sources = corpus_for_topic(service, service.registry, payload.topic)
+        text = _text_of(sources)
+    else:
+        text = payload.text or ""
+    if not text.strip():
+        raise HTTPException(status_code=404, detail="Zum Thema stehen in den Archiven keine Texte bereit.")
+
+    method: Method = "rule-based"
+    note: str | None = None
+    pairs: list[QaPair] | None = None
+    if payload.method == "llm":
+        pairs, reason = _from_llm(request, text, payload)
+        if pairs is None:
+            log.info("QA fell back to the templates: %s", reason)
+            note = reason
+        else:
+            method = "llm"
+    if pairs is None:
+        pairs = rule_based_pairs(text, limit=payload.count, max_answer_length=payload.max_answer_length)
+    return QaResponse(
+        method=method,
+        topic=topic,
+        resolution=resolution,
+        chars=len(text),
+        pairs=[Pair(question=pair.question, answer=pair.answer) for pair in pairs[: payload.count]],
+        note=note,
+    )

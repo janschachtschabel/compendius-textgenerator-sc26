@@ -29,6 +29,7 @@ from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
 from app.api.v2.matching import admin as matching_admin_router
 from app.api.v2.matching import router as matching_router
+from app.api.v2.qa import router as qa_router
 from app.api.v2.routes import admin as v2_admin_router
 from app.api.v2.routes import router as v2_router
 from app.api.v2.zim import admin as zim_admin_router
@@ -342,6 +343,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(v2_admin_router)
     app.include_router(knowledge_router)
     app.include_router(entities_router)
+    app.include_router(qa_router)
     app.include_router(matching_router)
     app.include_router(matching_admin_router)
     app.include_router(zim_router)

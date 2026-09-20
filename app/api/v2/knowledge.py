@@ -7,14 +7,12 @@ corpus builder would use, with their sections, optionally limited to single arch
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.api.deps import archives_for, get_service
+from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
-from app.knowledge.topic import normalize_topic
-from app.templates.manager import TemplateNotFoundError
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
@@ -98,22 +96,8 @@ def knowledge(payload: KnowledgeRequest, request: Request) -> KnowledgeResponse:
     """Resolve the topic and return the articles of its corpus, with their sections."""
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
-    normalized = normalize_topic(payload.topic)
-    resolution = registry.resolve_topic(normalized.topic, context=normalized.context, query=normalized.query)
-    if not resolution.resolved:
-        raise HTTPException(
-            status_code=404,
-            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": resolution.model_dump()},
-        )
-    try:
-        template = service.templates.get(payload.template_id or service.settings.template_default)
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
-
-    sources = registry.build_corpus(
-        resolution,
-        slots=template.content_slots(),
-        max_articles=payload.max_articles or service.settings.corpus_max_articles,
+    topic, resolution, sources = corpus_for_topic(
+        service, registry, payload.topic, template_id=payload.template_id, max_articles=payload.max_articles
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []
@@ -132,7 +116,7 @@ def knowledge(payload: KnowledgeRequest, request: Request) -> KnowledgeResponse:
         if truncated:
             break
     return KnowledgeResponse(
-        topic=normalized.topic,
+        topic=topic,
         resolution=resolution,
         archives=[archive.id for archive in registry.archives],
         articles=articles,

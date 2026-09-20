@@ -1,4 +1,4 @@
-"""Question and answer pairs for the legacy endpoint (PLAN.md 8.1, D14).
+"""Question and answer pairs behind POST /api/v2/qa (PLAN.md 8.1, D14; docs/umbau.md U5).
 
 Without an LLM the pairs come from question templates over the sentences of the text: a definition becomes
 "Was versteht man unter X?", a year "Was geschah im Jahr …?", an enumeration "Woraus besteht …?" and a purpose
