@@ -1,0 +1,135 @@
+# Umbau: schlanke API, KI nur als Option
+
+Vorschlag vom 2026-09-20, noch nicht umgesetzt. Ziel: ein Dienst, der **vollständig ohne generative KI**
+arbeitet, daneben Entitäten und Frage-Antwort-Paare liefert, und bei dem ein LLM nur dort zugeschaltet wird,
+wo der Aufrufer es ausdrücklich will — sichtbar in der Antwort. Der alte v1-Vertrag entfällt.
+
+## Was geprüft wurde
+
+| Befund | Beleg |
+|---|---|
+| 24 Endpunkte, davon 8 aus dem alten Vertrag | `/openapi.json` des laufenden Dienstes |
+| **Die ZIM-Dumps führen keine Wikidata-IDs** — keine Q-Nummern, kein `wgWikibaseItemId`, keine DBpedia-Verweise | Artikel „Optik" aus `wikipedia_de_all_nopic_2026-01.zim`, 32.836 Zeichen HTML, null Treffer |
+| Deutsche Modelle ohne generative KI existieren (siehe Tabelle unten) | Hugging-Face-API, 2026-09-20 |
+| `TemplateManager.save()` und `.delete()` haben **keinen Aufrufweg** — weder API noch CLI (`compendium templates` listet nur) | Quelltext und `--help` |
+| ZIM-Verwaltung ist vollständig (Manifest, `active.json`, Sync-Sidecar, Admin-Endpunkte, Aufbewahrung) | `app/sources/zim/`, Endpunktliste |
+| `ZIM_PATHS` umgeht `active.json` samt Wechsel ohne Neustart — als Entwicklungsweg gedacht, läuft aber auch produktiv (z. B. die lokale Einrichtung) | `app/main.py:build_registry` |
+
+## Zielbild der Endpunkte
+
+Aus 24 werden 17, und jeder hat genau eine Aufgabe.
+
+| Neu | Ersetzt | Aufgabe |
+|---|---|---|
+| `POST /api/v2/compendium` | `/api/v1/compendium`, `/api/v1/pipeline*` | kompendialer Text, Teile 1–3 |
+| `POST /api/v2/entities` | `/api/v1/linker`, `/api/v1/utils/synonyms` | Entitäten zu einer Eingabe, mit Artikelbezug (der Wikipedia-Linker) |
+| `POST /api/v2/qa` | `/api/v1/qa` | Frage-Antwort-Paare zu einem Text oder Thema |
+| `POST /api/v2/knowledge` | — (neu) | Wissenstexte zu einem Thema aus gewählten Archiven, ohne Kompendium |
+| — | `/api/v1/utils/split` | Zerlegung ist ein internes Detail, kein Dienst |
+| — | `/api/v1/utils/translate` | nur mit LLM sinnvoll; widerspricht dem Ziel |
+
+Verwaltung bleibt, wo sie ist (`/api/v2/zim/*`, `/api/v2/lehrplan/*`, `/api/v2/templates*`, `/api/v2/matching/*`,
+`/api/v2/collections/*`), bekommt aber die fehlenden Schreibwege (siehe „Verwaltung").
+
+## 1. Entitäten (und der Linker)
+
+Ein Endpunkt, drei Stufen — jede für sich abschaltbar:
+
+1. **Erkennen** (ohne KI): spaCy `de_core_news_md` (rund 45 MB, kein torch) findet Personen, Orte,
+   Organisationen und Sonstiges. Alternativ `_sm` (15 MB, schwächer) oder `_lg` (550 MB).
+2. **Auflösen** (ohne Netz): jede Entität wird über die vorhandene Themenauflösung auf Artikel der Archive
+   abgebildet — Titel, Weiterleitungen, Volltextsuche. Das ist derselbe Mechanismus, der heute das Thema
+   auflöst, und liefert Titel, Archiv-ID, Lead und Link.
+3. **Verknüpfen** (optional, braucht Netz): Wikidata-ID über `pageprops` der Wikipedia-API, im Zustand
+   gecacht. **Ohne diesen Schritt gibt es keine Q-Nummern** — die Dumps führen sie nicht (siehe Befund). Die
+   DBpedia-URI lässt sich dagegen aus dem Titel bilden, ohne dass ihre Existenz geprüft wäre; sie wird nur auf
+   Wunsch mitgegeben und als „konstruiert" gekennzeichnet.
+
+```
+POST /api/v2/entities
+{"text": "...", "resolve": true, "wikidata": false, "archives": ["wikipedia_de_all_nopic"]}
+```
+
+## 2. Wissenstexte je Archiv
+
+```
+POST /api/v2/knowledge
+{"topic": "Optik", "archives": ["wikipedia_de_all_nopic", "klexikon_de_all_maxi"], "max_chars": 20000}
+```
+
+Gibt die aufgelösten Artikel mit ihren Abschnitten zurück — kein Template, keine Bausteine, keine Synthese.
+Das ist der Baustein, den ein anderer Dienst braucht, wenn er nur die Quelle will. Die Auswahl der Archive
+beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Archiven".
+
+## 3. Frage-Antwort-Paare in drei Stufen
+
+| Stufe | Womit | Braucht |
+|---|---|---|
+| `rule-based` (Standard) | Fragevorlagen über die Sätze des Textes — das gibt es heute schon | nichts |
+| `models` | **Fragen**: `dehio/german-qg-t5-quad` (MIT, T5, auf GermanQuAD trainiert). **Antworten**: `deepset/gelectra-base-germanquad` (MIT, extraktiv, 1.900 Abrufe/Monat) oder `-large` für mehr Güte | torch + transformers |
+| `llm` | b-api, wie heute | b-api-Schlüssel |
+
+Die Antwortmodelle sind **extraktiv**: Sie markieren die Stelle im Text, die die Frage beantwortet. Damit bleibt
+auch diese Stufe belegbar — nichts wird erfunden.
+
+## 4. Kompendium: die zwei KI-Optionen
+
+| Option | Feld | Was das Modell tut | Wortlaut |
+|---|---|---|---|
+| **A — semantisches Routing** | `extraction: llm` | wählt je Baustein aus den Kandidaten die passenden Sätze | bleibt der Quelle |
+| **B — Veredlung** | `generation: llm` (oder `llm-fast`) | formuliert die Bausteine aus den Belegen | neu formuliert, **jeder Satz belegt** |
+| **B+ — Veredlung mit Modellwissen** | `generation: llm` **plus** `enrichment: model-knowledge` | darf über die Quellen hinaus ergänzen | neu, teils unbelegt |
+
+`enrichment` ist neu und steht standardmäßig auf `sources-only`. Nur mit `model-knowledge` darf das Modell
+eigenes Wissen einbringen — und dann gilt:
+
+- Der Prompt verlangt, ergänzte Sätze zu kennzeichnen.
+- Die Belegprüfung streicht sie nicht mehr, sondern markiert sie im Text.
+- Die Antwort sagt es: `enrichment: "model-knowledge"`, je Baustein die Zahl der ergänzten Sätze, und im
+  Frontmatter ein Hinweis. Ein Leser sieht damit, welcher Teil aus den Archiven stammt und welcher aus dem
+  Modell.
+
+**Nebenläufigkeit**: `LLM_MAX_CONCURRENCY` steigt von 4 auf **10**. Die Aufrufe je Baustein laufen bereits
+parallel; die Grenze war nur konservativ gesetzt.
+
+## 5. Verwaltung
+
+- **Templates**: `PUT /api/v2/templates/{id}` und `DELETE /api/v2/templates/{id}` hinter `ADMIN_TOKEN`. Der
+  Manager kann es längst, es fehlt nur der Weg. Dazu `compendium templates save|delete` in der CLI.
+- **ZIM**: bleibt. Ergänzt um eine Warnung beim Start, wenn `ZIM_PATHS` gesetzt ist — dann gibt es keinen
+  Wechsel ohne Neustart und keine Verwaltung durch den Sync-Job.
+- **Modelle** (spaCy, QA): wie das Embedding-Modell zur Bauzeit ins Image, mit festgelegter Revision; `/health`
+  meldet je Modell, ob es geladen ist — wie jetzt schon `matching.components`.
+
+## Image-Profile
+
+| Profil | Inhalt | Größe | kann |
+|---|---|---|---|
+| `base` (heute) | Python, libzim, numpy, scikit-learn, Model2Vec | 830 MB | Kompendium, Entitäten (spaCy `md`: +45 MB), QA `rule-based` |
+| `ml` | dazu torch, transformers, QG- und QA-Modell | geschätzt 2,5–3 GB | zusätzlich QA `models` |
+
+spaCy braucht kein torch und passt deshalb in `base`. Die QA-Modelle brauchen torch — das ist die eine
+Entscheidung, die das Image wirklich schwer macht.
+
+## Phasen
+
+| Phase | Inhalt | Aufwand |
+|---|---|---|
+| U1 | v1 entfernen (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests), Endpunktliste aufräumen | klein, viel Löschung |
+| U2 | `POST /api/v2/knowledge` — die Bausteine dafür gibt es alle | klein |
+| U3 | `POST /api/v2/entities` mit spaCy und Auflösung; Wikidata optional | mittel |
+| U4 | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und Prompt v3; Nebenläufigkeit 10 | mittel |
+| U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
+| U6 | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung, `/health` je Modell | klein |
+
+U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.
+
+## Was ich von dir brauche
+
+1. **v1 wirklich löschen?** Der Vertrag ist erst einen Tag alt (Phase 6) und `MIGRATION.md` beschreibt ihn.
+   Löschen heißt: Wer den alten Dienst aufruft, muss umstellen. Gibt es noch Aufrufer?
+2. **torch ins Image?** Ohne das gibt es QA nur als Vorlagen (`rule-based`) oder per LLM. Mit ihm wächst das
+   Image auf rund 3 GB — als eigenes Profil, damit der schlanke Weg bleibt.
+3. **Wikidata-IDs?** Nur mit Netzzugriff zur Laufzeit (gecacht) möglich. Ohne sie bleiben Entitäten auf Artikel
+   der Archive beschränkt — offline, aber ohne Q-Nummern.
+4. **spaCy-Modellgröße**: `md` (45 MB) als Standard, oder `lg` (550 MB) für bessere Erkennung?
