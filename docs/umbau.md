@@ -187,6 +187,21 @@ prüft das jetzt („every answer a span of the text“) mit einem Text, der abs
 Griechisch enthält. Die Auswahl des Bereichs liegt als reine Funktion `answer_span` im Modul, weil der
 Fehler ausgerechnet im untestbaren Teil des ersten Entwurfs steckte.
 
+**Zweiter Nachtrag: Die Sätze kamen vom falschen Trenner.** Nach der Behebung oben blieben die Antworten
+kurz („(von“, „optikós“). Ursache: spaCy zerschneidet deutsche Leads an
+Abkürzungen und Datumsangaben. Gemessen an der echten Wikipedia wurde aus dem Optik-Lead drei Fragmente
+(36, 66 und 242 Zeichen), aus dem Abbe-Lead ebenfalls drei (79, 51, 105). Aus einem Fragment kann nur eine
+Fragment-Antwort kommen.
+
+Zwei naheliegende Fixes wurden gemessen und verworfen: Eine Mindestlänge greift nicht (nur 3 von 268
+Kandidaten liegen unter 30 Zeichen, und das schlechte „Die Optik (von altgriechisch ὀπτικός“
+hat 36); die gemeinsame Wahl des besten Spans statt zweier Einzelmaxima ändert auf sauberen Sätzen nichts.
+Gewirkt hat vorhandener Projektcode: `split_sentences` aus `app/knowledge/segmentation.py` ist auf dieses
+Korpus abgestimmt (Abkürzungen, Initialen, Ordnungszahlen) und hielt alle geprüften Leads zusammen; 568
+Sätze aus fünf Artikeln sind wörtliche Teilstücke, die Zuordnung der Nominalphrasen trägt also. Live danach:
+aus „(von“ wurde „Lehre vom Licht genannt, ist ein Gebiet der Physik“, und die Fragen selbst
+wurden besser, weil der Generator ganze Sätze sieht. Preis: 20,6 s statt 12 s für vier Paare.
+
 **Image 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten): torch 769 MB,
 QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB. **Offen:** Das QG-Modell
 liegt als fp32-`.bin` vor; safetensors in fp16 wären rund 430 MB, das ändert aber das Modell und müsste

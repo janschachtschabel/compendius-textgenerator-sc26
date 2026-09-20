@@ -101,7 +101,9 @@ def _from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[
     nlp = load_spacy(settings.spacy_model)
     if nlp is None:
         return None, "spaCy-Modell fehlt; ohne seine Nominalphrasen gibt es keine Antwortkandidaten"
-    candidates = answer_candidates(nlp(text[:MAX_TEXT_CHARS]))
+    # Both the model and the splitter have to see the same string, so the offsets line up
+    prepared = " ".join(text[:MAX_TEXT_CHARS].split())
+    candidates = answer_candidates(nlp(prepared), prepared)
     pairs = model_pairs(candidates, models, count=payload.count, max_answer_length=payload.max_answer_length)
     if not pairs:
         return None, "Die Modelle fanden keine beantwortbare Frage; Regelmodus verwendet"

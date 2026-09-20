@@ -81,16 +81,10 @@ def test_a_question_without_a_question_mark_is_no_question() -> None:
 
 
 class FakeSpan:
-    """The bits of a spaCy span the candidate extraction touches."""
+    """The bits of a spaCy noun chunk the candidate extraction touches: its text and where it starts."""
 
-    def __init__(self, text: str, start_char: int, sent: FakeSpan | None = None) -> None:
+    def __init__(self, text: str, start_char: int) -> None:
         self.text, self.start_char = text, start_char
-        self._sent = sent
-
-    @property
-    def sent(self) -> FakeSpan:
-        assert self._sent is not None
-        return self._sent
 
 
 class FakeDoc:
@@ -100,9 +94,9 @@ class FakeDoc:
 
 def test_candidates_carry_their_place_inside_their_own_sentence() -> None:
     """The offsets are relative to the sentence, not to the document: the generator only sees the sentence."""
-    second = FakeSpan(SECOND, start_char=len(FIRST) + 1)
-    doc = FakeDoc([FakeSpan("Ernst Abbe", start_char=len(FIRST) + 1, sent=second)])
-    candidate = answer_candidates(doc)[0]
+    text = f"{FIRST} {SECOND}"
+    doc = FakeDoc([FakeSpan("Ernst Abbe", start_char=text.index("Ernst Abbe"))])
+    candidate = answer_candidates(doc, text)[0]
     assert candidate.sentence == SECOND
     assert candidate.start == 0 and candidate.end == len("Ernst Abbe")
     assert candidate.sentence[candidate.start : candidate.end] == "Ernst Abbe"
@@ -164,3 +158,24 @@ def test_a_context_without_a_single_usable_token_answers_nothing() -> None:
     offsets = spans(GREEK)
     start_scores, end_scores = scores(offsets, 0, 1)
     assert answer_span(GREEK, offsets, start_scores, end_scores, [False] * len(offsets)) == ""
+
+
+# Measured in the image on 2026-09-20: spaCy cuts the Optik lead into three pieces (36, 66 and 242 characters),
+# the first of them "Die Optik (von altgriechisch ὀπτικός". The project's own splitter keeps such leads whole.
+LEAD = (
+    "Ernst Karl Abbe [ˈabə] (* 23. Januar 1840 in Eisenach; † 14. Januar 1905 in Jena) war ein deutscher "
+    "Physiker. Er schuf mit Carl Zeiß die Grundlagen der modernen Optik."
+)
+
+
+def test_the_sentence_comes_from_the_projects_splitter_not_from_the_model() -> None:
+    """spaCy breaks German leads at abbreviations and dates; a fragment yields a fragment of an answer."""
+    doc = FakeDoc([FakeSpan("Ernst Karl Abbe", start_char=0)])
+    candidate = answer_candidates(doc, LEAD)[0]
+    assert candidate.sentence.endswith("war ein deutscher Physiker.")
+    assert "23. Januar 1840" in candidate.sentence, "the date must not end the sentence"
+
+
+def test_a_chunk_behind_the_last_sentence_is_left_out() -> None:
+    doc = FakeDoc([FakeSpan("Ernst Karl Abbe", start_char=len(LEAD) + 50)])
+    assert answer_candidates(doc, LEAD) == []

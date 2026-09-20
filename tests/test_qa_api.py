@@ -135,7 +135,7 @@ def test_the_model_stage_uses_the_two_models_when_they_are_there(
 
     sentence = "Die Optik ist ein Teilgebiet der Physik."
     candidate = Candidate(text="Die Optik", sentence=sentence, start=0, end=9)
-    monkeypatch.setattr("app.api.v2.qa.answer_candidates", lambda doc: [candidate])
+    monkeypatch.setattr("app.api.v2.qa.answer_candidates", lambda doc, text: [candidate])
     monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: lambda text: object())
     monkeypatch.setattr(
         "app.api.v2.qa.load_qa_models",

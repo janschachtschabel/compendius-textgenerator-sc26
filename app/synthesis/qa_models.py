@@ -21,6 +21,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from app.knowledge.segmentation import split_sentences
 from app.synthesis.qa import QaPair, cut
 
 log = logging.getLogger(__name__)
@@ -55,13 +56,33 @@ def highlighted(candidate: Candidate) -> str:
     return TASK_PREFIX + marked
 
 
-def answer_candidates(doc: Any) -> list[Candidate]:
-    """The noun phrases of a spaCy document, each with its sentence and its place inside it."""
+def answer_candidates(doc: Any, text: str) -> list[Candidate]:
+    """The noun phrases of a spaCy document, each with the sentence it stands in and its place inside it.
+
+    The phrases come from the model, the sentences do not. Measured on the real Wikipedia on 2026-09-20,
+    spaCy cuts German leads at abbreviations and dates: "Die Optik (von altgriechisch ὀπτικός" was a sentence
+    of its own, and "Ernst Karl Abbe [ˈabə] (* 23. Januar 1840 in Eisenach;" another. A question generated
+    from a fragment can only be answered with a fragment. ``split_sentences`` is the project's own splitter,
+    tuned on this corpus (abbreviations, initials, ordinals), and kept all five checked leads whole.
+
+    ``text`` has to be the string the document was built from; a chunk outside every sentence is left out.
+    """
+    bounds: list[tuple[int, int, str]] = []
+    position = 0
+    for sentence in split_sentences(text):
+        start = text.find(sentence, position)
+        if start < 0:  # split_sentences normalises whitespace; a caller that did not is no reason to fail
+            continue
+        bounds.append((start, start + len(sentence), sentence))
+        position = start + len(sentence)
+
     candidates: list[Candidate] = []
     for chunk in doc.noun_chunks:
-        sentence = chunk.sent
-        start = chunk.start_char - sentence.start_char
-        candidates.append(Candidate(text=chunk.text, sentence=sentence.text, start=start, end=start + len(chunk.text)))
+        found = next((b for b in bounds if b[0] <= chunk.start_char < b[1]), None)
+        if found is None:
+            continue
+        start = chunk.start_char - found[0]
+        candidates.append(Candidate(text=chunk.text, sentence=found[2], start=start, end=start + len(chunk.text)))
     return candidates
 
 
