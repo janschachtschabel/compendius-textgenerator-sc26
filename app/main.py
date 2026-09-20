@@ -22,10 +22,6 @@ from app.api.limits import RateLimiter
 from app.api.metrics import METRICS_PATH
 from app.api.metrics import router as metrics_router
 from app.api.system_threads import run_system, system_limiter
-from app.api.v1.linker import router as v1_linker_router
-from app.api.v1.qa import router as v1_qa_router
-from app.api.v1.routes import router as v1_router
-from app.api.v1.utils import router as v1_utils_router
 from app.api.v2.collections import router as collections_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -293,8 +289,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         version=__version__,
         description=(
             "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. "
-            "`/api/v2` ist der Vertrag des Neubaus, `/api/v1` der des alten Dienstes auf derselben Maschinerie "
-            "(Unterschiede in MIGRATION.md). Fehler kommen als Status, nie als Text mit HTTP 200."
+            "Der Dienst arbeitet ohne generative KI; ein LLM kommt nur dazu, wenn die Anfrage es verlangt, "
+            "und die Antwort sagt dann, was es beigetragen hat. Fehler kommen als Status, nie als Text mit HTTP 200."
         ),
         lifespan=lifespan,
         docs_url="/docs" if settings.api_docs_enabled else None,
@@ -316,10 +312,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)
-    app.include_router(v1_router)  # the contract of the old service (8.1)
-    app.include_router(v1_linker_router)
-    app.include_router(v1_qa_router)
-    app.include_router(v1_utils_router)
     app.include_router(v2_router)
     app.include_router(matching_router)
     app.include_router(matching_admin_router)

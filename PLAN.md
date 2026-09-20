@@ -1,6 +1,6 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-20, Fassung v19 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+Stand: 2026-09-20, Fassung v20 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
 teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
@@ -1556,6 +1556,13 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-20, Fassung v20 (Umbau U1: der alte Vertrag ist weg):** `app/api/v1/` mit seinen acht Endpunkten,
+  `MIGRATION.md`, `knowledge/chunking.py`, `synthesis/translate.py` samt Prompt und die vier v1-Testdateien sind
+  gelöscht. Der Dienst hat noch 16 Endpunkte, alle unter `/api/v2` plus `/health` und `/ready`. Grund: Der
+  Neubau soll schlank bleiben und ohne generative KI auskommen; die Übersetzung ging nur mit LLM, die Zerlegung
+  war ein internes Detail als Endpunkt. Der Plan für die weiteren Schritte steht in
+  [docs/umbau.md](docs/umbau.md) (Entitäten, Wissenstexte, QA ohne LLM, `enrichment`, Verwaltung). Testsuite
+  548 Tests (von 573; die 25 gelöschten prüften v1).
 - **2026-09-20, Fassung v19 (Umgebung, Sichtbarkeit):** Repository und b-api gehören zusammen und sind beide
   frei einstellbar. `EDU_SHARING_BASE_URL` steht jetzt auf Staging (`repository.staging.openeduhub.net`), die
   Produktion (`redaktion.openeduhub.net`) daneben auskommentiert; `B_API_BASE_URL` ist leer und heißt dann: die

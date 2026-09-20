@@ -89,17 +89,7 @@ QA_PAIRS = Prompt(
     user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),
 )
 
-TRANSLATE = Prompt(
-    id="translate",
-    version=1,
-    system=(
-        "Du übersetzt Texte vollständig und wortgetreu in die Zielsprache. Gib ausschließlich die Übersetzung "
-        "zurück: keine Vorbemerkung, keine Erklärung, keine Anführungszeichen um den Text."
-    ),
-    user="Zielsprache: {target_lang}\n\nText:\n{text}",
-)
-
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION, QA_PAIRS, TRANSLATE)}
+PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION, QA_PAIRS)}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

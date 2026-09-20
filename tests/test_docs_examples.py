@@ -1,8 +1,8 @@
 """The example in /docs has to work: it is the first request most callers ever send.
 
 A caller who opens the interactive documentation edits the body it shows. Without an example, Swagger builds
-one from the schema alone, and the field names carry the whole explanation - ``input_type`` invites the topic
-that belongs in ``text``. So every endpoint a person starts with documents a request that the endpoint takes.
+one from the schema alone, and the field names have to carry the whole explanation - which is how a caller ends
+up sending the topic in the wrong field. So every endpoint a person starts with documents a request it takes.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.settings import Settings
 
-STARTING_POINTS = ["/api/v1/compendium", "/api/v2/compendium"]
+STARTING_POINTS = ["/api/v2/compendium"]
 
 
 @pytest.fixture(scope="module")
