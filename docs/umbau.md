@@ -175,6 +175,18 @@ nie anfragt. Qualität gemischt: „Welche Bedeutung hat der Brechungsindex?“ 
 „Zu welcher Physik gehört die Optik?“ ist schiefes Deutsch. Das ist die Güte eines kleinen Modells; die
 Antworten bleiben in jedem Fall Textstellen.
 
+**Nachtrag am selben Tag: Die Antworten waren keine Textstellen.** Bei einer Live-Probe fiel
+„Die Optik ( von altgriechisch optikós ) ist ...“ auf. Erste Vermutung: Artefakte in der
+ZIM-Extraktion. **Falsch** — gemessen an fünf echten Artikeln (290.000 Zeichen) enthält der extrahierte
+Text 0 bis 1 Artefakt. Die Ursache lag im eigenen Code: `tokenizer.decode(token_ids)` gibt keine Textstelle
+zurück, sondern eine Rekonstruktion — Zeichen außerhalb des Modellvokabulars (hier das Griechische)
+verschwinden, und die Wortabstände werden neu gesetzt. Behoben über `return_offsets_mapping`: die
+Antwort wird jetzt per Zeichenbereich aus dem Quelltext geschnitten. Gegenprobe im Image: von drei Fragen
+waren mit dem alten Weg **zwei Antworten keine Textstellen**, mit dem neuen alle drei. Der Rauchtest
+prüft das jetzt („every answer a span of the text“) mit einem Text, der absichtlich
+Griechisch enthält. Die Auswahl des Bereichs liegt als reine Funktion `answer_span` im Modul, weil der
+Fehler ausgerechnet im untestbaren Teil des ersten Entwurfs steckte.
+
 **Image 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten): torch 769 MB,
 QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB. **Offen:** Das QG-Modell
 liegt als fp32-`.bin` vor; safetensors in fp16 wären rund 430 MB, das ändert aber das Modell und müsste

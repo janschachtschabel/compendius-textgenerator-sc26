@@ -15,7 +15,7 @@ testable without torch and keeps the loading in one place (``load_qa_models``).
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -92,6 +92,32 @@ def model_pairs(
     return pairs
 
 
+def answer_span(
+    context: str,
+    offsets: Sequence[tuple[int, int]],
+    start_scores: Sequence[float],
+    end_scores: Sequence[float],
+    is_context: Sequence[bool],
+) -> str:
+    """The best span of ``context`` the model points at, sliced out of the source verbatim.
+
+    Decoding the token ids instead looks equivalent and is not: it drops every character the model's
+    vocabulary does not know and re-joins the rest with its own spacing. Measured in the image on 2026-09-20,
+    a lead came back as "Die Optik ( von altgriechisch optikós ..." - the Greek word gone, brackets left
+    behind, "(von" turned into "( von". This stage promises spans of the source, so it has to cut them out.
+
+    ``is_context`` keeps the question out of the answer; an empty span means the text does not answer.
+    """
+    usable = [index for index, ok in enumerate(is_context) if ok]
+    if not usable:
+        return ""
+    start = max(usable, key=lambda index: start_scores[index])
+    end = max(usable, key=lambda index: end_scores[index])
+    if end < start:
+        return ""
+    return context[offsets[start][0] : offsets[end][1]]
+
+
 @lru_cache(maxsize=1)
 def load_qa_models(qg_path: str, qa_path: str) -> QaModels | None:
     """Load both models once per process; anything missing means: this stage cannot run.
@@ -120,15 +146,22 @@ def load_qa_models(qg_path: str, qa_path: str) -> QaModels | None:
         return str(qg_tokenizer.decode(output[0], skip_special_tokens=True))
 
     def extract(question: str, context: str) -> str:
-        encoded = qa_tokenizer(question, context, return_tensors="pt", truncation=True, max_length=512)
+        encoded = qa_tokenizer(
+            question,
+            context,
+            return_tensors="pt",
+            truncation="only_second",  # the question is short and must survive whole
+            max_length=512,
+            return_offsets_mapping=True,
+        )
+        offsets = [tuple(pair) for pair in encoded.pop("offset_mapping")[0].tolist()]
+        in_context = [
+            sequence == 1 and offset != (0, 0)
+            for sequence, offset in zip(encoded.sequence_ids(0), offsets, strict=True)
+        ]
         with torch.no_grad():
             output = qa_model(**encoded)
-        start = int(output.start_logits.argmax())
-        end = int(output.end_logits.argmax()) + 1
-        if end <= start:
-            return ""
-        tokens = encoded["input_ids"][0][start:end]
-        return str(qa_tokenizer.decode(tokens, skip_special_tokens=True))
+        return answer_span(context, offsets, output.start_logits[0].tolist(), output.end_logits[0].tolist(), in_context)
 
     log.info("QA models loaded: %s, %s", qg_path, qa_path)
     return QaModels(generate_question=generate, extract_answer=extract)

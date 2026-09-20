@@ -9,7 +9,14 @@ without a gigabyte of weights. That the real models load and produce German is c
 
 from __future__ import annotations
 
-from app.synthesis.qa_models import Candidate, QaModels, answer_candidates, highlighted, model_pairs
+from app.synthesis.qa_models import (
+    Candidate,
+    QaModels,
+    answer_candidates,
+    answer_span,
+    highlighted,
+    model_pairs,
+)
 
 TEXT = "Die Optik ist ein Teilgebiet der Physik. Ernst Abbe entwickelte in Jena das Lichtmikroskop."
 FIRST = "Die Optik ist ein Teilgebiet der Physik."
@@ -99,3 +106,61 @@ def test_candidates_carry_their_place_inside_their_own_sentence() -> None:
     assert candidate.sentence == SECOND
     assert candidate.start == 0 and candidate.end == len("Ernst Abbe")
     assert candidate.sentence[candidate.start : candidate.end] == "Ernst Abbe"
+
+
+# Measured in the image on 2026-09-20: decoding the token ids gives a reconstruction, not the source.
+GREEK = "Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend“) ist ein Gebiet der Physik."
+
+
+def spans(context: str) -> list[tuple[int, int]]:
+    """Character offsets of a two-token question plus one token per word of the context."""
+    offsets = [(0, 0), (0, 0), (0, 0)]  # [CLS] Frage [SEP]
+    position = 0
+    for word in context.split(" "):
+        start = context.index(word, position)
+        offsets.append((start, start + len(word)))
+        position = start + len(word)
+    offsets.append((0, 0))  # [SEP]
+    return offsets
+
+
+def is_context(offsets: list[tuple[int, int]]) -> list[bool]:
+    return [index > 2 and offset != (0, 0) for index, offset in enumerate(offsets)]
+
+
+def scores(offsets: list[tuple[int, int]], start: int, end: int) -> tuple[list[float], list[float]]:
+    return (
+        [1.0 if i == start else 0.0 for i in range(len(offsets))],
+        [1.0 if i == end else 0.0 for i in range(len(offsets))],
+    )
+
+
+def test_the_answer_is_a_verbatim_slice_of_the_source() -> None:
+    """Characters outside the model's vocabulary must not vanish, and spacing must not be reinvented."""
+    offsets = spans(GREEK)
+    start, end = 3, 8  # "Die" through "optikós", across the Greek word
+    start_scores, end_scores = scores(offsets, start, end)
+    answer = answer_span(GREEK, offsets, start_scores, end_scores, is_context(offsets))
+    assert answer == "Die Optik (von altgriechisch ὀπτικός optikós"
+    assert answer in GREEK, "an extractive answer is a span of the text, not a reconstruction of it"
+
+
+def test_the_question_is_never_part_of_the_answer() -> None:
+    offsets = spans(GREEK)
+    start_scores = [1.0] + [0.0] * (len(offsets) - 1)  # the model likes a question token best
+    end_scores = [0.0] * len(offsets)
+    end_scores[5] = 1.0
+    answer = answer_span(GREEK, offsets, start_scores, end_scores, is_context(offsets))
+    assert answer and answer in GREEK and not answer.startswith("[")
+
+
+def test_an_end_before_the_start_answers_nothing() -> None:
+    offsets = spans(GREEK)
+    start_scores, end_scores = scores(offsets, 8, 4)
+    assert answer_span(GREEK, offsets, start_scores, end_scores, is_context(offsets)) == ""
+
+
+def test_a_context_without_a_single_usable_token_answers_nothing() -> None:
+    offsets = spans(GREEK)
+    start_scores, end_scores = scores(offsets, 0, 1)
+    assert answer_span(GREEK, offsets, start_scores, end_scores, [False] * len(offsets)) == ""
