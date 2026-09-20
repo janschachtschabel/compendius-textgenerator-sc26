@@ -41,6 +41,9 @@ jobs:
           docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool prom/prometheus:v3.14.0 test rules /m/alerts_test.yml
       - name: Image builds (without the embedding model, to stay fast)
         run: docker build --build-arg MODEL2VEC_ID= -t compendious-text-fastapi:ci .
+      - name: Image answers with a compendium
+        # The suite calls the service in the same process, so only this step sees the packaged service run
+        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:ci
       - name: Known vulnerabilities in the runtime dependencies
         run: |
           uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt

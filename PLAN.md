@@ -1101,7 +1101,10 @@ einem Kompendium arbeitet, antwortet nicht: Die Arbeit steckt in C-Code (ZIM-Les
 Interpreter-Sperre hält — gemessen 26 Sekunden am Stück in einer einzigen Anfrage. Mit mehr als einem Worker
 endete deshalb **jede** Kompendium-Anfrage mit einem getöteten Worker und einer abgebrochenen Verbindung; mit
 einem Worker (ohne Elternprozess) fiel es nicht auf, ebenso wenig in den Tests, die den Dienst im selben
-Prozess aufrufen. `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden, damit es
+Prozess aufrufen. Ob es zuschlägt, hängt an der Last: Auf einer leerlaufenden Maschine geht dieselbe Anfrage
+durch, unter Knappheit stirbt der Worker. Gemessen mit `--cpus 0.4` und zwei gleichzeitigen Anfragen: ohne den
+Fix ein getöteter Worker und eine Anfrage ohne Antwort, mit ihm zwei Antworten und kein Todesfall. Das trifft
+also genau dann, wenn der Dienst am meisten zu tun hat. `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden, damit es
 eine ganze Anfrage überdauert und ein wirklich hängender Worker trotzdem ersetzt wird.
 
 **Erststart.** `GET /ready` bleibt rot, bis die Pflicht-Archive vorliegen. Mit
@@ -1557,8 +1560,11 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   dabei zeigte sich ein Fehler, den weder Tests noch CI sehen konnten: Mit der Standardeinstellung zwei Worker
   tötete der Elternprozess von uvicorn bei **jeder** Kompendium-Anfrage den arbeitenden Worker, weil dieser
   während der Arbeit in C-Code die Interpreter-Sperre hält und den Healthcheck nicht beantwortet (Abschnitt 10).
-  `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden; belegt mit drei Anfragen im
-  Container ohne einen einzigen getöteten Worker. Außerdem: `.env.example` dokumentiert jede Einstellung und
+  Wie oft es zuschlägt, hängt an der Last der Maschine — auf einer leerlaufenden fällt es nicht auf.
+  `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden; belegt rot/grün unter
+  `--cpus 0.4`: ohne den Fix ein getöteter Worker, mit ihm keiner. `scripts/smoke_image.py` fährt das gebaute
+  Image und lässt es ein Kompendium erzeugen — die Lücke, durch die der Fehler kam: die CI baute das Image,
+  fuhr es aber nie. Außerdem: `.env.example` dokumentiert jede Einstellung und
   jede Prozessvariable (neuer Test `tests/test_env_example.py`), die tote Einstellung `APP_NAME` ist entfernt
   (`/health` nennt den Dienst fest, so verlangt es der v1-Vertrag), `ZIM_BOOTSTRAP_DOWNLOAD` steht in der
   Vorlage auf `true` — sonst schaltete ein kopiertes `.env` den Erststart-Download still ab —, das
