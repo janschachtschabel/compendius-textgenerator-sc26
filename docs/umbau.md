@@ -202,10 +202,21 @@ Sätze aus fünf Artikeln sind wörtliche Teilstücke, die Zuordnung der Nominal
 aus „(von“ wurde „Lehre vom Licht genannt, ist ein Gebiet der Physik“, und die Fragen selbst
 wurden besser, weil der Generator ganze Sätze sieht. Preis: 20,6 s statt 12 s für vier Paare.
 
-**Image 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten): torch 769 MB,
-QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB. **Offen:** Das QG-Modell
-liegt als fp32-`.bin` vor; safetensors in fp16 wären rund 430 MB, das ändert aber das Modell und müsste
-nachgemessen werden.
+**Image zunächst 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten):
+torch 769 MB, QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB.
+
+**Erledigt am 2026-09-20: Beide Modelle liegen jetzt in halber Genauigkeit, das Image bei 2,74 GB.** Offen war,
+ob fp16 das Modell ändert. Gemessen im Image, mit denselben Eingaben und fp32 beim Rechnen: **12 von 12 Fragen
+und 8 von 8 Antwortstellen wortgleich**. Der Generator fällt von 892 auf 446 MB, das Antwortmodell von 437 auf
+219 MB, das Image von 3,40 auf 2,74 GB — ein Fünftel weniger. Die gepickelte `pytorch_model.bin` geht mit,
+safetensors braucht kein `torch.load`.
+
+Zwei Zahlen hat erst die Gegenprobe zurechtgerückt. Der erste Ladevorgang sah mit 10,5 s gegen 2,0 s teuer aus
+— das war kalter Cache auf einer eben geschriebenen Datei. Warm kostet die Umwandlung **0,8 s** (1,1 s gegen
+0,3 s), und zu lesen sind halb so viele Bytes. Und: **transformers 5 lädt im dtype der Datei.** Ohne
+ausdrückliches `dtype=torch.float32` in `load_qa_models` hätte der Dienst ab sofort in fp16 gerechnet — auf
+dieser CPU gemessen ohne Unterschied (4 von 4 Fragen gleich, 4,2 s gegen 3,9 s), aber fp16 auf der CPU ist
+nichts, was dieses Image für jeden Wirt versprechen kann. Halbiert wird die Datei, nicht die Arithmetik.
 
 ### Wie U5a am 2026-09-20 gebaut wurde
 

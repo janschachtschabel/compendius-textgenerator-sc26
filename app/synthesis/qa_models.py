@@ -152,10 +152,13 @@ def load_qa_models(qg_path: str, qa_path: str) -> QaModels | None:
         import torch  # optional extra "qa-models"; the service runs without it
         from transformers import AutoModelForQuestionAnswering, AutoModelForSeq2SeqLM, AutoTokenizer
 
+        # The weights are stored in half precision to halve what they weigh (scripts/fetch_qa_models.py),
+        # and transformers follows the dtype of the file. Naming float32 keeps the arithmetic where it was
+        # measured: fp16 on the CPU is not something this image can promise for every host it runs on.
         qg_tokenizer = AutoTokenizer.from_pretrained(qg_path)
-        qg_model = AutoModelForSeq2SeqLM.from_pretrained(qg_path)
+        qg_model = AutoModelForSeq2SeqLM.from_pretrained(qg_path, dtype=torch.float32)
         qa_tokenizer = AutoTokenizer.from_pretrained(qa_path)
-        qa_model = AutoModelForQuestionAnswering.from_pretrained(qa_path)
+        qa_model = AutoModelForQuestionAnswering.from_pretrained(qa_path, dtype=torch.float32)
     except Exception as exc:  # a missing package or a broken directory must not take the endpoint down
         log.error("QA models not usable (%s, %s): %s", qg_path, qa_path, exc)
         return None
