@@ -10,7 +10,7 @@ facets:
     cardinality: "1"
     minimal: true
   Evidenzgrad:
-    values: [belegt, Schlussfolgerung, Annahme, Prognose]
+    values: [belegt, Schlussfolgerung, Modellwissen, Annahme, Prognose]
     allowed_slots: [gesellschaftlicher_kontext, entwicklung_ausblick, beruf_wirtschaft, praxis]
     required_in: []
     cardinality: "1"

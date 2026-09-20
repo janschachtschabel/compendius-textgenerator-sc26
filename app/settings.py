@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.domain.requests import Extraction, Generation
+from app.domain.requests import Enrichment, Extraction, Generation
 
 Provider = Literal["openai", "academiccloud"]
 FacetsLevel = Literal["minimal", "full"]
@@ -126,6 +126,11 @@ class Settings(BaseSettings):
     )
     llm_generation_default: Generation = Field("rule-based", description="Default of the generation switch")
     llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
+    llm_enrichment_default: Enrichment = Field(
+        "sources-only",
+        description="Default of the enrichment switch: sources-only, or model-knowledge to let the writing "
+        "LLM add knowledge of its own (marked in the text, counted per block)",
+    )
     b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")
     b_api_base_url: str = Field(
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
@@ -133,7 +138,7 @@ class Settings(BaseSettings):
     b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")
     b_api_model: str = Field("gpt-5.6-luna", description="Model id at the selected provider")
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
-    llm_max_concurrency: int = Field(4, ge=1, le=26, description="Parallel LLM requests")
+    llm_max_concurrency: int = Field(10, ge=1, le=26, description="Parallel LLM requests")
     llm_attempts: int = Field(
         3, ge=1, le=6, description="Attempts per LLM request (429/502/503/504, connection errors)"
     )

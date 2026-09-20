@@ -32,6 +32,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             matcher=args.matcher,
             extraction=args.extraction,
             generation=args.generation,
+            enrichment=args.enrichment,
             target_length=args.length,
             facets_visible=args.facets_visible or None,
         )
@@ -58,8 +59,10 @@ def cmd_generate(args: argparse.Namespace) -> int:
         Path(args.json).write_text(result.model_dump_json(indent=2), encoding="utf-8")
         print(f"JSON geschrieben: {args.json}")
     audit = result.audit
+    veredelt = f"| Veredlung: {result.enrichment} " if result.enrichment != "sources-only" else ""
     print(
         f"Thema: {result.topic} | Extraktion: {result.extraction} | Generierung: {result.generation} "
+        f"{veredelt}"
         f"| Quellen: {len(result.sources)} "
         f"| Chunks: {audit.chunks_total} "
         f"(zugeordnet {audit.chunks_assigned}) | Bausteine gefüllt: {audit.sections_filled}, "
@@ -117,6 +120,13 @@ def main(argv: list[str] | None = None) -> int:
         choices=["rule-based", "llm-fast", "llm"],
         help="Wer die Bausteine schreibt; ohne Angabe LLM_GENERATION_DEFAULT (llm-fast und llm brauchen "
         "LLM_ENABLED und B_API_KEY)",
+    )
+    gen.add_argument(
+        "--enrichment",
+        default=None,
+        choices=["sources-only", "model-knowledge"],
+        help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe LLM_ENRICHMENT_DEFAULT. Ergänzte Sätze "
+        "stehen im Text als Evidenzgrad=Modellwissen und brauchen --generation llm oder llm-fast",
     )
     gen.add_argument("--length", type=int, default=12_000)
     gen.add_argument("--facets-visible", action="store_true")

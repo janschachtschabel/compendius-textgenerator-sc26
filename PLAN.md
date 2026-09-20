@@ -279,12 +279,13 @@ compendious-text-fastapi/
 | `B_API_MODEL` | `gpt-5.6-luna` | Modell-ID beim gewählten Provider; wird beim Start gegen `/models` geprüft |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | `rule-based` oder `llm` (siehe 4.7, D33) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | `rule-based`, `llm-fast` oder `llm` (siehe 4.7, D33) |
+| `LLM_ENRICHMENT_DEFAULT` | `sources-only` | `model-knowledge` lässt das schreibende LLM eigenes Wissen ergänzen; solche Sätze tragen keine Belegnummer und werden als `Evidenzgrad=Modellwissen` gekennzeichnet (docs/umbau.md U4) |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | Absätze je Baustein, die `extraction=llm` anbietet: die der Policy, dann die nächstbesten nach ihrem Score |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
 | `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
 | `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | GPT-5- und o-Serie (D25); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
-| `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `4` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
+| `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `10` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
 | `EDU_SHARING_BASE_URL` | `https://redaktion.openeduhub.net/edu-sharing/rest` | Repository für Teil 3 und Wissens-Sammlung; leer = aus |
 | `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | – | optional Basic-Auth; ohne Zugangsdaten anonym (öffentliche Sammlungen) |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Timeout je Repository-Anfrage |
@@ -625,7 +626,10 @@ Median 0,73, Schlussfolgerungen mit bloßer Nummer 0,00 bis 0,17, schwächste tr
 Sätze stehen als `dropped_sentences` und `unsupported_sentences` im Audit; mit `LLM_UNSUPPORTED_SENTENCES=mark`
 bleiben sie ohne Nummer stehen, eingefasst in `<!-- f: Evidenzgrad=Schlussfolgerung -->` und `<!-- /f -->`
 (`marked_sentences`, Facette Evidenzgrad ergänzt); ein Baustein ganz ohne belegten Satz entsteht trotzdem
-extraktiv. Entwürfe entstehen parallel (`LLM_MAX_CONCURRENCY`) mit lokalen Nummern und werden beim
+extraktiv. **Nachtrag 2026-09-20 (U4):** `enrichment: model-knowledge` macht aus dem Ja/Nein der Markierung
+einen Grad — `Schlussfolgerung` wie bisher, `Modellwissen` unter Veredlung — und schreibt mit einem eigenen
+Prompt (`section_enrichment@v1`), der eigenes Fachwissen erlaubt, aber ohne Belegnummer verlangt. Die
+Deckungsprüfung bleibt unverändert; nur ihre Folge ändert sich vom Verwerfen zum Kennzeichnen. Entwürfe entstehen parallel (`LLM_MAX_CONCURRENCY`) mit lokalen Nummern und werden beim
 Zusammenbau in die eine globale Belegfolge verschoben. Jeder Baustein, den das LLM nicht liefert (Fehler, Budget,
 leere Antwort, nichts Belegtes), entsteht extraktiv; der Grund steht in `audit.llm.fallbacks`. Eine leere Antwort
 mit `finish_reason=stop` heißt: die Belege passen nach Urteil des Modells nicht zum Baustein. Frontmatter `generation`

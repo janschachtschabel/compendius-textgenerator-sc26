@@ -16,7 +16,15 @@ from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
-from app.synthesis.citations import collapse, drop_unsupported, marker_numbers, renumber, verify_citations
+from app.synthesis.citations import (
+    CONCLUSION,
+    MODEL_KNOWLEDGE,
+    collapse,
+    drop_unsupported,
+    marker_numbers,
+    renumber,
+    verify_citations,
+)
 from app.templates.schema import TemplateSlot
 
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block
@@ -36,7 +44,7 @@ class LlmSection:
     total_tokens: int
     dropped_sentences: int  # no valid citation marker
     unsupported_sentences: int = 0  # marker present, but the cited chunks do not cover the sentence
-    marked_sentences: int = 0  # mark mode: failed sentences kept as conclusion blocks instead of being dropped
+    marked_sentences: int = 0  # sentences kept marked instead of dropped (conclusions, or model knowledge)
 
 
 def evidence_block(
@@ -93,12 +101,18 @@ class LlmSynthesizer:
         citation_start: int,
         budget: RequestBudget,
         deadline: Deadline | None = None,
+        enrich: bool = False,
     ) -> LlmSection | LlmSkipped:
-        """Write one block from its assigned chunks; ``LlmSkipped`` means: use the extractive text."""
+        """Write one block from its assigned chunks; ``LlmSkipped`` means: use the extractive text.
+
+        With ``enrich`` the model may go beyond the evidence (enrichment=model-knowledge, docs/umbau.md U4):
+        the other prompt asks for it, and an uncovered sentence is kept marked as Modellwissen instead of
+        being dropped. One sentence from the sources stays required - a block of pure model knowledge is none.
+        """
         evidence, items = evidence_block(scored, sources)
         if not items:
             return LlmSkipped("keine Belege für den Baustein")
-        prompt = get_prompt("section_synthesis")
+        prompt = get_prompt("section_enrichment" if enrich else "section_synthesis")
         messages = prompt.render(topic=topic, evidence=evidence, **slot_prompt_fields(slot))
         max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
         result = budgeted_chat(
@@ -110,7 +124,7 @@ class LlmSynthesizer:
             # Measured: the model answers with nothing when the evidence does not fit the block.
             reason = f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})"
             return LlmSkipped.after(reason, result)
-        mark = self.mark_unsupported
+        mark = MODEL_KNOWLEDGE if enrich else (CONCLUSION if self.mark_unsupported else "")
         text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
@@ -142,5 +156,5 @@ class LlmSynthesizer:
             total_tokens=result.total_tokens,
             dropped_sentences=dropped,
             unsupported_sentences=unsupported,
-            marked_sentences=dropped + unsupported if mark else 0,
+            marked_sentences=dropped + unsupported if mark else 0,  # what a reader sees marked in the text
         )

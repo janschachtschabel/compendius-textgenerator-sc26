@@ -264,6 +264,11 @@ class Compendium(BaseModel):
     template_version: int
     extraction: str = Field(description="Extraction switch actually used: rule-based or llm")
     generation: str = Field(description="Generation switch actually used: rule-based, llm-fast or llm")
+    enrichment: str = Field(
+        "sources-only",
+        description="Enrichment actually in effect: sources-only, or model-knowledge when the LLM was allowed "
+        "to add knowledge of its own (marked in the text, counted per block)",
+    )
     generated_at: str
     frontmatter: dict[str, Any] = Field(default_factory=dict)
     sections: list[Section] = Field(default_factory=list)

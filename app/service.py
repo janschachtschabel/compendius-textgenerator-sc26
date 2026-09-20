@@ -96,6 +96,7 @@ class WorldPart:
     matcher: str | None  # None when part 1 was not requested: no strategy ran
     extraction: str  # the switches in effect: rule-based when the LLM cannot be used
     generation: str
+    enrichment: str  # sources-only unless an LLM actually writes blocks and the request allowed more
     llm_note: str | None
     chunks_assigned: int = 0
     extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
@@ -298,14 +299,22 @@ class CompendiumService:
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
         extraction_requested = request.extraction or self.settings.llm_extraction_default
         generation_requested = request.generation or self.settings.llm_generation_default
+        enrichment_requested = request.enrichment or self.settings.llm_enrichment_default
         if not want_world:
             extraction_requested = generation_requested = "rule-based"
+            enrichment_requested = "sources-only"
         timings = dict(prepared.timings)
         if want_world:
-            switches = (extraction_requested, generation_requested)
+            switches = (extraction_requested, generation_requested, enrichment_requested)
             world = self._world_part(prepared, request, switches, deadline, timings)
         else:  # no matching, no synthesis, no LLM work
-            world = WorldPart(matcher=None, extraction="rule-based", generation="rule-based", llm_note=None)
+            world = WorldPart(
+                matcher=None,
+                extraction="rule-based",
+                generation="rule-based",
+                enrichment="sources-only",
+                llm_note=None,
+            )
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
@@ -341,12 +350,16 @@ class CompendiumService:
         extracted, drafted = world.extracted, world.written.llm
         extraction_used = world.extraction if extracted and extracted.slots else "rule-based"
         generation_used = world.generation if drafted and drafted.sections else "rule-based"
+        # Enrichment only means something where the LLM actually wrote a block
+        enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
             extraction_used=extraction_used,
             generation_requested=generation_requested,
             generation_used=generation_used,
+            enrichment_requested=enrichment_requested,
+            enrichment_used=enrichment_used,
             note=world.llm_note,
             extraction=extracted,
             generation=drafted,
@@ -367,6 +380,7 @@ class CompendiumService:
             extraction_requested=extraction_requested,
             generation=generation_used,
             generation_requested=generation_requested,
+            enrichment=enrichment_used,
             llm=llm_front,
             generated_at=generated_at,
             zim_snapshot=self.registry.snapshot(),
@@ -411,6 +425,7 @@ class CompendiumService:
             template_version=template.version,
             extraction=extraction_used,
             generation=generation_used,
+            enrichment=enrichment_used,
             generated_at=generated_at,
             frontmatter=frontmatter,
             sections=sections,
@@ -440,17 +455,20 @@ class CompendiumService:
         self,
         prepared: PreparedTopic,
         request: GenerateRequest,
-        requested: tuple[str, str],
+        requested: tuple[str, str, str],
         deadline: Deadline,
         timings: dict[str, int],
     ) -> WorldPart:
         """Part 1: match the chunks, let the LLM choose sentences and write blocks as the switches ask (D33).
 
-        ``requested`` holds the extraction and the generation switch; without a usable LLM both run rule-based.
+        ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
+        the first two run rule-based and nothing is enriched.
         """
-        wants_llm = any(switch != "rule-based" for switch in requested)
+        extraction_wanted, generation_wanted, enrichment_wanted = requested
+        wants_llm = extraction_wanted != "rule-based" or generation_wanted != "rule-based"
         llm_note = self.llm_unavailable() if wants_llm else None
-        extraction, generation = ("rule-based", "rule-based") if llm_note else requested
+        extraction, generation = ("rule-based", "rule-based") if llm_note else (extraction_wanted, generation_wanted)
+        enrichment = "sources-only" if generation == "rule-based" else enrichment_wanted
         llm = self.llm if wants_llm and llm_note is None else None
         budget = llm.open_budget() if llm is not None else None  # one budget for both switches
         matched = self.match(prepared, request.matcher, request.target_length)
@@ -480,6 +498,7 @@ class CompendiumService:
                 topic=topic,
                 concurrency=llm.options.concurrency,
                 deadline=deadline,
+                enrich=enrichment == "model-knowledge",
             )
         preserved = self._preserved(request, template)
         written = self.writer.write(
@@ -499,6 +518,7 @@ class CompendiumService:
             matcher=matched.matcher,
             extraction=extraction,
             generation=generation,
+            enrichment=enrichment,
             llm_note=llm_note,
             chunks_assigned=sum(len(v) for v in assigned.values()),
             extracted=extracted,

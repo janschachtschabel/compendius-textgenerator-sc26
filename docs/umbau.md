@@ -145,6 +145,27 @@ eigenes Wissen einbringen — und dann gilt:
 **Nebenläufigkeit**: `LLM_MAX_CONCURRENCY` steigt von 4 auf **10**. Die Aufrufe je Baustein laufen bereits
 parallel; die Grenze war nur konservativ gesetzt.
 
+### Wie U4 am 2026-09-20 gebaut wurde
+
+Zwei Abweichungen vom Entwurf oben, beide mit Grund:
+
+**Kein Prompt v3, sondern ein zweiter Prompt.** Der bestehende `section_synthesis@v2` ändert sich nicht — eine
+Versionserhöhung ohne Textänderung wäre falsche Herkunftsangabe. Die Veredlung bekommt `section_enrichment@v1`.
+Damit steht im Frontmatter unter `llm.prompts`, welcher der beiden einen Baustein geschrieben hat, statt nur,
+dass sich ein Prompt geändert hat.
+
+**Kein zweiter Kennzeichnungsweg.** Den gab es schon: `LLM_UNSUPPORTED_SENTENCES=mark` hält Sätze ohne Deckung
+als `<!-- f: Evidenzgrad=Schlussfolgerung -->` … `<!-- /f -->` im Text. U4 macht aus dem Ja/Nein einen **Grad**:
+`Schlussfolgerung` wie bisher, `Modellwissen` unter Veredlung. Gezählt wird weiter in `marked_sentences`; was die
+Zahl bedeutet, sagt `enrichment` daneben.
+
+Eine Festlegung, die der Entwurf offen ließ: **Ein Baustein braucht weiterhin mindestens einen belegten Satz.**
+Ein Baustein ganz aus Modellwissen wäre kein Kompendiumsbaustein mehr; er fällt auf den extraktiven Text zurück
+und steht mit Grund in `audit.llm.generation.fallbacks`.
+
+**Nicht gemessen:** Wie oft ein Modell die Regel „höchstens jeder dritte Satz aus eigenem Wissen“ einhält, ist
+offen — das braucht einen Lauf gegen die echte b-api und kostet Tokens.
+
 ## 5. Verwaltung
 
 - **Templates**: `PUT /api/v2/templates/{id}` und `DELETE /api/v2/templates/{id}` hinter `ADMIN_TOKEN`. Der
@@ -171,7 +192,7 @@ Entscheidung, die das Image wirklich schwer macht.
 | U1 ✓ | v1 entfernt (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests) — erledigt am 2026-09-20 | klein, viel Löschung |
 | U2 ✓ | `POST /api/v2/knowledge` — erledigt am 2026-09-20; `ZimRegistry.only()` grenzt auf Archive ein | klein |
 | U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
-| U4 | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und Prompt v3; Nebenläufigkeit 10 | mittel |
+| U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
 | U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
 | U6 | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung, `/health` je Modell | klein |
 

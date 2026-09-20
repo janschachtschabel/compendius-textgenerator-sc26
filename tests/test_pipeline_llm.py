@@ -310,3 +310,57 @@ def test_mark_mode_shows_conclusions_in_the_document_and_in_the_facets(
     assert graded and all("Schlussfolgerung" in s.facets["Evidenzgrad"] for s in graded)
     numbers = [c.number for s in result.sections for c in s.citations]
     assert numbers == list(range(1, len(numbers) + 1))
+
+
+def answer_with_model_knowledge(body: dict[str, Any]) -> str:
+    """Cites every evidence item and adds one sentence the sources do not carry."""
+    return f"{answer_from_evidence(body)} Fachleute ordnen das Thema seit Langem der klassischen Physik zu."
+
+
+def test_enrichment_marks_model_knowledge_in_the_text_and_reports_it(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """docs/umbau.md U4: what the model added beyond the sources is visible, counted and announced."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_with_model_knowledge)))
+    result = service.generate(
+        GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+    assert result.enrichment == "model-knowledge"
+    assert "<!-- f: Evidenzgrad=Modellwissen -->" in result.markdown
+    assert "Evidenzgrad=Schlussfolgerung" not in result.markdown
+    llm_sections = [s for s in result.sections if s.status is SectionStatus.LLM]
+    assert llm_sections and all(s.llm is not None and s.llm["marked_sentences"] >= 1 for s in llm_sections)
+    assert result.audit.llm is not None
+    generation = result.audit.llm["generation"]
+    assert generation["enrichment"] == "model-knowledge" and generation["marked_sentences"] >= len(llm_sections)
+    assert result.frontmatter["enrichment"] == "model-knowledge"
+    assert "Modellwissen" in result.frontmatter["ai_disclosure"]
+    numbers = [c.number for s in result.sections for c in s.citations]
+    assert numbers == list(range(1, len(numbers) + 1)), "the citation sequence stays intact"
+
+
+def test_the_enrichment_prompt_is_the_one_that_allows_model_knowledge(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(answer_with_model_knowledge)
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    result = service.generate(
+        GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+    assert result.frontmatter["llm"]["prompts"] == [get_prompt("section_enrichment").tag]
+
+
+def test_without_the_switch_nothing_changes(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_with_model_knowledge)))
+    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    assert result.enrichment == "sources-only"
+    assert "Modellwissen" not in result.markdown
+    assert result.frontmatter["llm"]["prompts"] == [SECTION_PROMPT]
+
+
+def test_enrichment_without_llm_generation_is_reported_as_sources_only(service: CompendiumService) -> None:
+    """No LLM writes a block, so nothing can be enriched; the answer must not claim otherwise."""
+    result = service.generate(
+        GenerateRequest(topic="Optik", generation="rule-based", enrichment="model-knowledge", parts=["world"])
+    )
+    assert result.enrichment == "sources-only" and "Modellwissen" not in result.markdown

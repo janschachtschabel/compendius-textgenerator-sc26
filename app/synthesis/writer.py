@@ -24,6 +24,7 @@ from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
 from app.synthesis.actors import build_actors_section, collect_actors
+from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE
 from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
@@ -46,8 +47,9 @@ class LlmJob:
     budget: RequestBudget
     slots: set[str]
     topic: str
-    concurrency: int = 4
+    concurrency: int = 10  # the service passes LlmOptions.concurrency; this is only the bare default
     deadline: Deadline | None = None
+    enrich: bool = False  # enrichment=model-knowledge: the model may add its own knowledge (docs/umbau.md U4)
 
 
 @dataclass
@@ -150,7 +152,8 @@ class SectionWriter:
             if section.text:
                 section.facets = facet_rules.annotate(slot, chunks, sources_by_id, self.facets, self.facets_level)
                 if isinstance(draft, LlmSection) and draft.marked_sentences and "Evidenzgrad" in section.facets:
-                    section.facets["Evidenzgrad"] = [*section.facets["Evidenzgrad"], "Schlussfolgerung"]
+                    grade = MODEL_KNOWLEDGE if llm is not None and llm.enrich else CONCLUSION
+                    section.facets["Evidenzgrad"] = [*section.facets["Evidenzgrad"], grade]
             sections.append(section)
 
         all_citations.sort(key=lambda citation: citation.number)  # kept and new blocks in one sequence
@@ -232,6 +235,7 @@ def _draft_with_llm(
                 citation_start=0,
                 budget=job.budget,
                 deadline=job.deadline,
+                enrich=job.enrich,
             )
         except Exception as exc:
             # The LLM layer must never break the rule-based path (PLAN.md 4.7): log it, write the block extractively.

@@ -51,6 +51,28 @@ SECTION_SYNTHESIS = Prompt(
     ),
 )
 
+# enrichment=model-knowledge (docs/umbau.md U4): its own prompt id rather than a version of SECTION_SYNTHESIS,
+# so the frontmatter says which of the two wrote a block instead of only that the prompt changed.
+SECTION_ENRICHMENT = Prompt(
+    id="section_enrichment",
+    version=1,  # v1 (2026-09-20): the model may add its own knowledge, but only without an evidence number
+    system=(
+        "Du formulierst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Grundlage sind die "
+        "nummerierten Belege aus der Anfrage. Jeder Satz, der aus einem Beleg stammt, endet vor dem Satzzeichen mit "
+        "mindestens einer Belegnummer in eckigen Klammern, zum Beispiel: Licht breitet sich geradlinig aus [2]. "
+        "Du darfst darüber hinaus gesichertes eigenes Fachwissen ergänzen, wenn es den Baustein verständlicher oder "
+        "vollständiger macht. Solche Sätze schreibst du ohne jede Belegnummer — sie werden im Ergebnis als "
+        "Modellwissen gekennzeichnet. Setze niemals eine Nummer an einen Satz, den der Beleg nicht hergibt, und "
+        "ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt überwiegend belegt: Ergänze höchstens "
+        "einen von drei Sätzen aus eigenem Wissen. Nenne nur Nummern, die in den Belegen vorkommen. "
+        "Schreibe zusammenhängende Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine "
+        "Einleitungs- oder Schlussfloskeln, keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. "
+        "Die Angaben zu Aufgabe, Inhalt und Abgrenzung des Bausteins steuern nur deine Auswahl: Gib sie nicht wieder "
+        "und schreibe nicht, was nicht in den Baustein gehört."
+    ),
+    user=SECTION_SYNTHESIS.user,
+)
+
 PASSAGE_SELECTION = Prompt(
     id="passage_selection",
     version=1,
@@ -89,7 +111,7 @@ QA_PAIRS = Prompt(
     user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),
 )
 
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, PASSAGE_SELECTION, QA_PAIRS)}
+PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, QA_PAIRS)}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

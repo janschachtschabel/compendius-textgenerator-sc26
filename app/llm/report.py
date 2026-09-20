@@ -9,6 +9,10 @@ from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import LlmReport
 
 NOTHING_CONTRIBUTED = "LLM hat keinen Baustein ausgewählt oder geschrieben; Regelmodus verwendet"
+MODEL_KNOWLEDGE_NOTE = (
+    "Sätze mit Evidenzgrad=Modellwissen stammen aus dem Wissen des Sprachmodells, nicht aus den "
+    "aufgeführten Quellen, und sind nicht belegt."
+)
 
 
 def build_llm_report(
@@ -18,6 +22,8 @@ def build_llm_report(
     extraction_used: str,
     generation_requested: str,
     generation_used: str,
+    enrichment_requested: str,
+    enrichment_used: str,
     note: str | None,
     extraction: ExtractionReport | None,
     generation: LlmReport | None,
@@ -57,6 +63,8 @@ def build_llm_report(
         "dropped_sentences": generation.dropped_sentences if generation else 0,
         "unsupported_sentences": generation.unsupported_sentences if generation else 0,
         "marked_sentences": generation.marked_sentences if generation else 0,
+        "enrichment": enrichment_used,
+        "enrichment_requested": enrichment_requested,
     }
     audit: dict[str, Any] = {"note": note, "extraction": extraction_block, "generation": generation_block}
     front: dict[str, Any] = {}
@@ -71,6 +79,13 @@ def build_llm_report(
         "fallbacks": extraction_block["fallbacks"],
     }
     front["generation"] = {"sections": generation_block["sections"], "fallbacks": generation_block["fallbacks"]}
+    if enrichment_used == "model-knowledge":
+        # The reader has to be able to see this without reading the audit block (docs/umbau.md U4)
+        front["enrichment"] = {
+            "mode": enrichment_used,
+            "marked_sentences": generation_block["marked_sentences"],
+            "hinweis": MODEL_KNOWLEDGE_NOTE,
+        }
     if note:
         front["note"] = note
     return audit, tokens, front

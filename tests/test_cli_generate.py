@@ -61,3 +61,20 @@ def test_generate_reports_a_repository_failure_once(
     assert main(["generate", "--collection-id", OPTIK, *zim_args]) == 1
     err = capsys.readouterr().err
     assert "edu-sharing nicht erreichbar" in err and err.count("edu-sharing") == 1, err
+
+
+def test_generate_accepts_the_enrichment_switch_and_reports_sources_only_without_an_llm(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    """docs/umbau.md U4: the switch is reachable from the CLI, and without a usable LLM it cannot take effect."""
+    out_file = cli_env / "optik.md"
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    switches = ["--generation", "llm", "--enrichment", "model-knowledge"]
+    assert main(["generate", "--topic", "Optik", *switches, "--out", str(out_file), *zim_args]) == 0
+    assert "enrichment: sources-only" in out_file.read_text(encoding="utf-8")
+    assert "Modellwissen" not in capsys.readouterr().err
+
+
+def test_generate_rejects_an_unknown_enrichment(cli_env: Path) -> None:
+    with pytest.raises(SystemExit):
+        main(["generate", "--topic", "Optik", "--enrichment", "alles-erfinden"])

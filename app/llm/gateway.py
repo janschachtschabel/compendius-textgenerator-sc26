@@ -29,7 +29,7 @@ RECHECK_S = 600.0  # an unavailable model is re-checked at most every ten minute
 class LlmOptions:
     fast_sections: tuple[str, ...] = ("sc26_1", "sc26_11")  # slots generation=llm-fast writes with the LLM
     extraction_candidates: int = 8  # paragraphs offered per block with extraction=llm
-    concurrency: int = 4
+    concurrency: int = 10  # kept in step with LLM_MAX_CONCURRENCY; the service always passes the setting
     mark_unsupported: bool = False  # keep failed sentences as conclusion blocks instead of dropping them
 
 

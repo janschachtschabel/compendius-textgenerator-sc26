@@ -38,9 +38,24 @@ MIN_SENTENCE_END_WORD = 5
 _HEADING_RE = re.compile(r"^\s*#{1,6}\s")
 # The compendium is parsed by its comment markers (sections, facet blocks): nothing the model writes may look like one.
 _COMMENT_RE = re.compile(r"<!--.*?-->|<!--|-->", re.DOTALL)
-# Mark mode (LLM_UNSUPPORTED_SENTENCES=mark): a sentence that fails a check stays, without numbers, inside this block.
-CONCLUSION_OPEN = "<!-- f: Evidenzgrad=Schlussfolgerung -->"
-_CONCLUSION_RE = re.compile(re.escape(CONCLUSION_OPEN) + r".*?" + re.escape(END_MARKER), re.DOTALL)
+# A sentence that fails a check can stay instead of being dropped: without numbers, inside such a block. The grade
+# says why it is unsupported - a conclusion of the model (LLM_UNSUPPORTED_SENTENCES=mark), or knowledge it brought
+# along because the request allowed that (enrichment=model-knowledge, docs/umbau.md U4).
+CONCLUSION = "Schlussfolgerung"
+MODEL_KNOWLEDGE = "Modellwissen"
+
+
+def opening_marker(grade: str) -> str:
+    """The facet comment that opens a marked sentence; ``END_MARKER`` closes it."""
+    return f"<!-- f: Evidenzgrad={grade} -->"
+
+
+CONCLUSION_OPEN = opening_marker(CONCLUSION)
+MODEL_KNOWLEDGE_OPEN = opening_marker(MODEL_KNOWLEDGE)
+_OPENERS = (CONCLUSION_OPEN, MODEL_KNOWLEDGE_OPEN)
+_MARKED_RE = re.compile(
+    "(?:" + "|".join(re.escape(opener) for opener in _OPENERS) + ")" + r".*?" + re.escape(END_MARKER), re.DOTALL
+)
 _BULLET_RE = re.compile(r"^\s*[-*•–]\s+")
 _NUMBERED_RE = re.compile(r"^\s*\d{1,2}[.)]\s+")
 
@@ -54,10 +69,10 @@ def marker_numbers(text: str) -> list[int]:
     return list(dict.fromkeys(int(m) for m in _MARKER_RE.findall(text)))
 
 
-def verify_citations(text: str, valid: set[int], *, mark: bool = False) -> tuple[str, int]:
+def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str, int]:
     """Keep only sentences with at least one valid marker; return the cleaned text and the number that failed.
 
-    With ``mark`` a failing sentence is not dropped but kept as a conclusion block (without numbers).
+    ``mark`` names the Evidenzgrad a failing sentence is kept under instead of being dropped; empty drops it.
     """
     dropped = 0
     paragraphs: list[str] = []
@@ -71,7 +86,7 @@ def verify_citations(text: str, valid: set[int], *, mark: bool = False) -> tuple
                 if not any(m in valid for m in markers):
                     dropped += 1
                     if mark:
-                        kept.append(_as_conclusion(sentence))
+                        kept.append(_as_marked(sentence, mark))
                     continue
                 clean = _MARKER_RE.sub(lambda m: m.group(0) if int(m.group(1)) in valid else "", sentence)
                 clean = re.sub(r"\s+([.!?,;:…])", r"\1", collapse(_COMMENT_RE.sub(" ", clean)))
@@ -118,18 +133,18 @@ def _units(paragraph: str) -> list[str]:
     return units
 
 
-def _as_conclusion(sentence: str) -> str:
+def _as_marked(sentence: str, grade: str) -> str:
     """The sentence without its numbers inside a parseable block: a marker that proves nothing must not stay."""
     # Removing a number can join "-" and "->" into a comment delimiter, so comments are stripped once more.
     plain = re.sub(r"\s+([.!?,;:…])", r"\1", collapse(_COMMENT_RE.sub(" ", _MARKER_RE.sub("", sentence))))
-    return f"{CONCLUSION_OPEN}{plain}{END_MARKER}"
+    return f"{opening_marker(grade)}{plain}{END_MARKER}"
 
 
 def _split_claims(text: str) -> list[str]:
-    """Sentences of a text; conclusion blocks of the mark mode stay whole."""
+    """Sentences of a text; already marked sentences stay whole."""
     claims: list[str] = []
     position = 0
-    for block in _CONCLUSION_RE.finditer(text):
+    for block in _MARKED_RE.finditer(text):
         claims.extend(_split_plain(text[position : block.start()]))
         claims.append(block.group(0))
         position = block.end()
@@ -203,10 +218,11 @@ def _stems(text: str) -> set[str]:
     return {token[:STEM_CHARS] for token in tokenize(text) if len(token) >= 4}
 
 
-def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: bool = False) -> tuple[str, int]:
+def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: str = "") -> tuple[str, int]:
     """Drop sentences whose content words barely occur in the chunks they cite; a marker alone proves nothing.
 
-    With ``mark`` such a sentence is kept as a conclusion block instead. Returns the text and the number that failed.
+    ``mark`` names the Evidenzgrad such a sentence is kept under instead; empty drops it. Returns the text
+    and the number that failed.
     """
     stems_by_number = {number: _stems(chunk_text) for number, chunk_text in evidence.items()}
     unsupported = 0
@@ -214,7 +230,7 @@ def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: bool = Fal
     for paragraph in text.split("\n\n"):
         kept: list[str] = []
         for sentence in _split_claims(paragraph):
-            if sentence.startswith(CONCLUSION_OPEN):
+            if sentence.startswith(_OPENERS):
                 kept.append(sentence)
                 continue
             own = _stems(_MARKER_RE.sub("", sentence))
@@ -224,7 +240,7 @@ def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: bool = Fal
             if len(own) >= MIN_CONTENT_STEMS and len(own & cited) / len(own) < MIN_SUPPORT:
                 unsupported += 1
                 if mark:
-                    kept.append(_as_conclusion(sentence))
+                    kept.append(_as_marked(sentence, mark))
                 continue
             kept.append(sentence)
         if kept:

@@ -11,7 +11,16 @@ from app.llm.budget import TokenBudget
 from app.llm.call import LlmSkipped
 from app.llm.client import REASONING_ALLOWANCE, BApiClient
 from app.llm.prompts import PROMPTS, get_prompt
-from app.synthesis.citations import CONCLUSION_OPEN, drop_unsupported, renumber, verify_citations
+from app.synthesis.citations import (
+    CONCLUSION,
+    CONCLUSION_OPEN,
+    MODEL_KNOWLEDGE,
+    MODEL_KNOWLEDGE_OPEN,
+    drop_unsupported,
+    opening_marker,
+    renumber,
+    verify_citations,
+)
 from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
     MAX_EVIDENCE_CHARS,
@@ -322,7 +331,7 @@ def test_html_comments_in_the_answer_never_reach_the_document() -> None:
 
 
 def test_mark_mode_keeps_uncited_sentences_as_conclusions() -> None:
-    text, failed = verify_citations("Erster Satz [1]. Zweiter Satz ohne Beleg. Dritter Satz [9].", {1}, mark=True)
+    text, failed = verify_citations("Erster Satz [1]. Zweiter Satz ohne Beleg. Dritter Satz [9].", {1}, mark=CONCLUSION)
     assert text == (
         f"Erster Satz [1]. {CONCLUSION_OPEN}Zweiter Satz ohne Beleg.{END_MARKER} {CONCLUSION_OPEN}Dritter Satz.{END_MARKER}"
     )
@@ -334,7 +343,7 @@ def test_mark_mode_keeps_unsupported_sentences_without_their_markers_and_leaves_
         f"Licht breitet sich geradlinig aus und wird an Grenzflächen gebrochen [1]. {CONCLUSION_OPEN}Schon markiert.{END_MARKER} "
         "Damit verweist das Thema auf allgemeine Fragen der Systemgestaltung und der Kooperation von Teilstrukturen [1]."
     )
-    kept, failed = drop_unsupported(text, EVIDENCE, mark=True)
+    kept, failed = drop_unsupported(text, EVIDENCE, mark=CONCLUSION)
     assert kept == (
         f"Licht breitet sich geradlinig aus und wird an Grenzflächen gebrochen [1]. {CONCLUSION_OPEN}Schon markiert.{END_MARKER} "
         f"{CONCLUSION_OPEN}Damit verweist das Thema auf allgemeine Fragen der Systemgestaltung und der Kooperation "
@@ -364,14 +373,14 @@ def test_write_section_in_mark_mode_reports_conclusions_and_needs_one_cited_sent
 
 def test_removing_invalid_numbers_never_reassembles_a_comment_delimiter() -> None:
     """``-[9]->`` turns into ``-->`` once the invalid number is gone; the same for ``<!-[9]-``."""
-    for mark in (False, True):
+    for mark in ("", CONCLUSION, MODEL_KNOWLEDGE):
         text, _ = verify_citations(
             "Ein Pfeil -[9]-> zeigt nach rechts [1]. Offen <!-[9]- und ohne Beleg.", {1}, mark=mark
         )
-        body = text.replace(CONCLUSION_OPEN, "").replace(END_MARKER, "")
+        body = text.replace(opening_marker(mark), "").replace(END_MARKER, "")
         assert "-->" not in body and "<!--" not in body, text
     unsupported = "Gesellschaftliche Debatten prägen -[1]-> die politische Bewertung wirtschaftlicher Interessen."
-    text, failed = drop_unsupported(unsupported, EVIDENCE, mark=True)
+    text, failed = drop_unsupported(unsupported, EVIDENCE, mark=CONCLUSION)
     assert failed == 1 and "-->" not in text.replace(CONCLUSION_OPEN, "").replace(END_MARKER, "")
 
 
@@ -382,3 +391,43 @@ def test_an_ellipsis_or_a_scholarly_abbreviation_before_a_lower_case_word_is_no_
         "Das gilt ausschl. für sichtbares Licht und entspr. für Infrarot [1].",
     ):
         assert verify_citations(answer, {1}) == (answer, 0), answer
+
+
+def test_enrichment_marks_model_knowledge_instead_of_dropping_it() -> None:
+    """enrichment=model-knowledge (docs/umbau.md U4): a sentence beyond the evidence stays, graded Modellwissen."""
+    answer = (
+        "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
+        "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
+    )
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: answer)))
+    result = synthesizer.write_section(
+        _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
+    )
+    assert isinstance(result, LlmSection)
+    assert MODEL_KNOWLEDGE_OPEN in result.text and CONCLUSION_OPEN not in result.text
+    assert result.marked_sentences == 1 and result.prompt == get_prompt("section_enrichment").tag
+
+
+def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> None:
+    answer = (
+        "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
+        "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
+    )
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
+        _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
+    )
+    assert isinstance(result, LlmSection)
+    assert "Linsen" not in result.text and result.marked_sentences == 0
+    assert result.prompt == get_prompt("section_synthesis").tag
+
+
+def test_enrichment_still_needs_one_sentence_from_the_sources() -> None:
+    """A block made only of model knowledge is no compendium block; the extractive text takes over."""
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: "Alles nur aus dem Modellwissen geschöpft.")))
+    result = synthesizer.write_section(
+        _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
+    )
+    assert isinstance(result, LlmSkipped) and "belegt" in result.reason

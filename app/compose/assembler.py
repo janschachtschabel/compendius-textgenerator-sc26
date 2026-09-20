@@ -17,6 +17,11 @@ AI_DISCLOSURE = {  # by the generation switch actually used
     "llm-fast": "Maschinell erstellter Text, Teile KI-generiert (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
     "llm": "KI-generierter Text auf Basis belegter Quellen (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
 }
+# enrichment=model-knowledge: the text carries sentences no source covers, so the disclosure has to say so
+AI_ENRICHED_DISCLOSURE = (
+    "KI-generierter Text auf Basis belegter Quellen, ergänzt um Modellwissen ohne Quellenbeleg "
+    "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
+)
 # Rule-based writing from sentences the LLM chose (extraction=llm): the wording is the sources', the choice is not
 AI_SELECTED_DISCLOSURE = (
     "Maschinell erstellter Text aus wörtlichen Quellenauszügen, Auswahl KI-gestützt (Kennzeichnung je Abschnitt) "
@@ -44,6 +49,7 @@ def build_frontmatter(
     extraction: str,
     generation: str,
     generated_at: str,
+    enrichment: str = "sources-only",
     zim_snapshot: Sequence[Mapping[str, Any]],
     matcher: str | None,
     parts: Sequence[str],
@@ -53,7 +59,9 @@ def build_frontmatter(
 ) -> dict[str, Any]:
     """``extraction`` and ``generation`` are the switches actually used; ``*_requested`` appears only when a switch
     fell back to rule-based, and ``matcher`` only when part 1 was generated."""
-    if generation != "rule-based":
+    if generation != "rule-based" and enrichment == "model-knowledge":
+        disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
+    elif generation != "rule-based":
         disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"
     elif extraction == "llm":
         disclosure, review = AI_SELECTED_DISCLOSURE, "ki-ausgewählt"
@@ -68,6 +76,7 @@ def build_frontmatter(
         "generated_at": generated_at,
         "extraction": extraction,
         "generation": generation,
+        "enrichment": enrichment,
         **({"matcher": matcher} if matcher is not None else {}),
         "ai_disclosure": disclosure,
         "review": {"status": review, "interval_months": 12},

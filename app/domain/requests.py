@@ -9,6 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 Part = Literal["world", "curricula", "collection"]
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
+# Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
+Enrichment = Literal["sources-only", "model-knowledge"]
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 
@@ -53,6 +55,13 @@ class GenerateRequest(BaseModel):
         description="Who writes the blocks of part 1: rule-based (verbatim excerpts), llm-fast (the LLM writes the "
         "blocks of LLM_FAST_SECTIONS) or llm (every content block); default LLM_GENERATION_DEFAULT. Falls back to "
         "rule-based when the b-api is not configured or not available",
+    )
+    enrichment: Enrichment | None = Field(
+        None,
+        description="Whether the LLM may add knowledge of its own beyond the sources: sources-only (default) "
+        "or model-knowledge. Such sentences carry no citation number, are marked in the text as "
+        "Evidenzgrad=Modellwissen and counted per block. Needs generation llm or llm-fast; with rule-based "
+        "generation, or without a usable b-api, the answer reports sources-only",
     )
     target_length: int = Field(12_000, ge=2_000, le=60_000, description="Approximate total characters for part 1")
     empty_slot_policy: Literal["omit", "note"] | None = Field(None, description="Override the template policy")
