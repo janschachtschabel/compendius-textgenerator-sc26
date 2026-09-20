@@ -45,6 +45,7 @@ def _components(request: Request) -> dict[str, Any]:
             "harvested_at": meta.get("harvested_at"),
         },
         "matching": request.app.state.matching,
+        "entities": request.app.state.entities,
         "edu_sharing": {
             "enabled": getattr(request.app.state, "collections", None) is not None,
             # Which repository the collections come from, and which b-api belongs to it: an operator has to be

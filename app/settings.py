@@ -85,6 +85,11 @@ class Settings(BaseSettings):
     corpus_max_articles: int = Field(12, ge=1, le=50, description="Maximum articles per compendium corpus")
     corpus_max_chunks: int = Field(400, ge=20, le=5000, description="Maximum chunks per compendium corpus")
     model2vec_path: str = Field("", description="Local Model2Vec model path; empty disables the embedding matcher")
+    spacy_model: str = Field(
+        "",
+        description="spaCy model for /api/v2/entities: installed name or path; empty disables the model-based "
+        "recognition and leaves the terms of the archives",
+    )
     eval_gold_dir: Path = Field(Path("eval/gold"), description="Gold standard files for eval run and matching/compare")
 
     # --- Curricula: MEM cache for part 2 (PLAN.md 5, decision D16) -----------------------------

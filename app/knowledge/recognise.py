@@ -3,8 +3,8 @@
 Two ways that do not depend on each other, so either can be missing:
 
 * **the model** finds names - people, places, organisations - and knows nothing about the archives;
-* **the archives** find terms that have an article of that name, which the model does not return at all
-  (``Photosynthese`` is no named entity, but it is what a teaching text is about).
+* **the archives** find terms that have an article of that name, which the model does not return at all:
+  a subject term is no named entity, yet it is what a teaching text is mostly about.
 
 Both return the same ``Mention``, and ``merge`` decides which survives where they overlap. Nothing here reads
 article content or touches the compendium path.
@@ -17,7 +17,6 @@ import re
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 log = logging.getLogger(__name__)
@@ -45,16 +44,16 @@ class Mention:
 
 
 @lru_cache(maxsize=2)
-def load_spacy(model_path: str) -> Any | None:
-    """Load the spaCy pipeline once per process; an empty or unusable path means: no model, no NER."""
-    if not model_path or not Path(model_path).exists():
+def load_spacy(model: str) -> Any | None:
+    """Load the pipeline once per process, by installed name or by path; nothing usable means: no NER."""
+    if not model:
         return None
     try:
         import spacy  # optional extra "entities"; the service runs without it
 
-        return spacy.load(model_path)
-    except Exception as exc:  # a broken model must not take the endpoint down
-        log.error("spaCy model %s not usable: %s", model_path, exc)
+        return spacy.load(model)
+    except Exception as exc:  # a missing model or a missing spaCy must not take the endpoint down
+        log.error("spaCy model %r not usable: %s", model, exc)
         return None
 
 

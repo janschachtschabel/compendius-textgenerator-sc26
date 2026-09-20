@@ -1,6 +1,6 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-20, Fassung v20 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+Stand: 2026-09-20, Fassung v21 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
 teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
@@ -1556,6 +1556,17 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-20, Fassung v21 (Umbau U2 und U3):** Zwei neue Endpunkte, beide ohne generative KI.
+  `POST /api/v2/knowledge` gibt die Artikel des Korpus mit ihren Abschnitten heraus, wahlweise nur aus
+  bestimmten Archiven (`ZimRegistry.only`), gedeckelt über `max_chars`. `POST /api/v2/entities` erkennt
+  Entitäten in **zwei Schichten, die unabhängig voneinander ausfallen dürfen**: das spaCy-Modell findet Namen
+  und braucht keine Archive, der Titelindex der Archive findet Begriffe, die einen Artikel haben
+  (`ZimArchive.has`, ein Titelblick ohne Entpacken). Die Verknüpfung hängt Artikel, Lead und die Art aus dem
+  Lead an (`classify_entity`). Der erste Entwurf band die Erkennung an die Archive; ohne Wikipedia-ZIM hätte
+  sie fast nichts gefunden, und dieselbe Eingabe hätte je Installation etwas anderes ergeben — deshalb der
+  Schnitt. spaCy ist der optionale Extra `entities`, das Modell `de_core_news_md` steckt mit fester Fassung im
+  Image, und `/health` meldet unter `entities`, ob es geladen ist. Die Kompendium-Erzeugung ist unberührt.
+  Testsuite 571 Tests.
 - **2026-09-20, Fassung v20 (Umbau U1: der alte Vertrag ist weg):** `app/api/v1/` mit seinen acht Endpunkten,
   `MIGRATION.md`, `knowledge/chunking.py`, `synthesis/translate.py` samt Prompt und die vier v1-Testdateien sind
   gelöscht. Der Dienst hat noch 16 Endpunkte, alle unter `/api/v2` plus `/health` und `/ready`. Grund: Der

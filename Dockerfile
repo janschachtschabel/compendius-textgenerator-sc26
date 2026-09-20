@@ -16,7 +16,7 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev --extra embeddings
+    uv sync --locked --no-install-project --no-dev --extra embeddings --extra entities
 # Embedding-Modell zur Bauzeit laden, damit die Laufzeit den Hugging-Face-Hub nie anspricht. Die Revision ist
 # festgelegt, damit jeder Build dasselbe Modell enthaelt (neue Revision: Eval neu messen, dann hier eintragen).
 # MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF.
@@ -26,10 +26,23 @@ RUN mkdir -p /models/m2v && if [ -n "$MODEL2VEC_ID" ]; then \
       /app/.venv/bin/python -c "import sys; from huggingface_hub import snapshot_download; from model2vec import StaticModel; StaticModel.from_pretrained(snapshot_download(sys.argv[1], revision=sys.argv[2])).save_pretrained('/models/m2v')" "$MODEL2VEC_ID" "$MODEL2VEC_REVISION"; \
     fi
 
+# spaCy-Modell fuer die Entitaetserkennung (POST /api/v2/entities). Die Fassung ist festgelegt, damit jeder
+# Build dasselbe Modell enthaelt; das Rad liegt bei den spacy-models-Releases, nicht auf PyPI. SPACY_MODEL=""
+# baut ohne Modell - der Endpunkt antwortet dann nur mit den Begriffen, die einen Artikel in den Archiven haben.
+# Der Projekt-Sync danach laeuft mit --inexact, sonst raeumt er das Modellrad wieder weg.
+ARG SPACY_MODEL=de_core_news_md
+ARG SPACY_MODEL_VERSION=3.8.0
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ -n "$SPACY_MODEL" ]; then \
+      uv pip install --python /app/.venv/bin/python --no-deps \
+        "https://github.com/explosion/spacy-models/releases/download/${SPACY_MODEL}-${SPACY_MODEL_VERSION}/${SPACY_MODEL}-${SPACY_MODEL_VERSION}-py3-none-any.whl" \
+      && /app/.venv/bin/python -c "import spacy, sys; spacy.load(sys.argv[1])" "$SPACY_MODEL"; \
+    fi
+
 COPY pyproject.toml uv.lock README.md ./
 COPY app ./app
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev --no-editable --extra embeddings
+    uv sync --locked --inexact --no-dev --no-editable --extra embeddings --extra entities
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
@@ -39,6 +52,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
     STATE_DIR=/data/state \
     CONFIG_DIR=/app/config \
     MODEL2VEC_PATH=/models/m2v \
+    SPACY_MODEL=de_core_news_md \
     HF_HUB_OFFLINE=1 \
     WEB_CONCURRENCY=2
 RUN useradd --create-home --uid 10001 app \

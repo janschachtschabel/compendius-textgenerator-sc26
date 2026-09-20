@@ -10,12 +10,10 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.api.deps import get_service
+from app.api.deps import archives_for, get_service
 from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
 from app.knowledge.topic import normalize_topic
-from app.service import CompendiumService
-from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateNotFoundError
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -90,17 +88,6 @@ def _article(source: Source, archive_id: str, sections: list[KnowledgeSection]) 
     )
 
 
-def _registry(service: CompendiumService, archive_ids: list[str]) -> ZimRegistry:
-    """The registry, narrowed to the requested archives; an unknown id is a 404 rather than a silent miss."""
-    registry = service.registry
-    if not archive_ids:
-        return registry
-    unknown = [name for name in archive_ids if name not in {a.id for a in registry.archives}]
-    if unknown:
-        raise HTTPException(status_code=404, detail=f"Unbekannte Archive: {', '.join(unknown)}")
-    return registry.only(archive_ids)
-
-
 @router.post(
     "/knowledge",
     response_model=KnowledgeResponse,
@@ -110,7 +97,7 @@ def _registry(service: CompendiumService, archive_ids: list[str]) -> ZimRegistry
 def knowledge(payload: KnowledgeRequest, request: Request) -> KnowledgeResponse:
     """Resolve the topic and return the articles of its corpus, with their sections."""
     service = get_service(request)
-    registry = _registry(service, payload.archives)
+    registry = archives_for(service.registry, payload.archives)
     normalized = normalize_topic(payload.topic)
     resolution = registry.resolve_topic(normalized.topic, context=normalized.context, query=normalized.query)
     if not resolution.resolved:

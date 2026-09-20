@@ -54,6 +54,14 @@ spaCy-Modell bleibt `dictionary`, und `/health` meldet das fehlende Modell — w
 `matching.components` die fehlenden Embeddings meldet. Der Endpunkt antwortet in beiden Fällen, statt
 auszufallen.
 
+**Gemessen am 2026-09-20 gegen die echte Wikipedia** (5.042.001 Artikel): 216 Wörter in 58 ms — das Tempo
+trägt. Die Genauigkeit noch nicht: Von 20 gefundenen Begriffen eines Physik-Absatzes waren rund zehn echte
+Entitäten (Brechungsindex, Hornhaut, Netzhaut, Lupe, Regenbogen), die übrigen Allerweltswörter mit eigenem
+Artikel („Fach", „Thema", „Richtung", „Prinzip", „Schule", „Medien"). **Offener Punkt U3b:** Ein Filter dafür
+braucht ein Kriterium, das nicht geraten ist — etwa Worthäufigkeit aus einer Frequenzliste oder die
+Wortart aus dem spaCy-Modell, sobald es geladen ist. Bis dahin liefert `dictionary` viel und ungenau; wer
+Genauigkeit braucht, fragt `methods: ["ner"]`.
+
 ### Schicht 2: Verknüpfen — nutzt, was da ist
 
 1. `ZimRegistry.resolve_topic()` bildet jede Entität auf einen Artikel ab (Titel, Weiterleitungen,
@@ -159,7 +167,7 @@ Entscheidung, die das Image wirklich schwer macht.
 |---|---|---|
 | U1 ✓ | v1 entfernt (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests) — erledigt am 2026-09-20 | klein, viel Löschung |
 | U2 ✓ | `POST /api/v2/knowledge` — erledigt am 2026-09-20; `ZimRegistry.only()` grenzt auf Archive ein | klein |
-| U3 | `POST /api/v2/entities` mit spaCy und Auflösung; Wikidata optional | mittel |
+| U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
 | U4 | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und Prompt v3; Nebenläufigkeit 10 | mittel |
 | U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
 | U6 | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung, `/health` je Modell | klein |

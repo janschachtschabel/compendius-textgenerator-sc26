@@ -73,6 +73,30 @@ def ask_for_a_compendium(base_url: str, container: str) -> dict[str, object]:
     return dict(response.json())
 
 
+def ask_for_entities(base_url: str, container: str) -> dict[str, object]:
+    """The entity endpoint is the only place the packaged spaCy model is ever executed."""
+    body = {"text": "Alexander von Humboldt reiste 1799 nach Südamerika.", "link": False}
+    try:
+        response = httpx.post(f"{base_url}/api/v2/entities", json=body, timeout=REQUEST_TIMEOUT_S)
+    except httpx.HTTPError as exc:
+        raise SystemExit(f"the entity request got no answer ({exc}):\n{run('logs', container)}") from exc
+    if response.status_code != 200:
+        raise SystemExit(f"POST /api/v2/entities answered {response.status_code}: {response.text[:400]}")
+    return dict(response.json())
+
+
+def check_entities(answer: dict[str, object]) -> str:
+    """Return the evidence line, or raise when the model of the image did not run."""
+    methods = answer.get("methods")
+    if not isinstance(methods, list) or "ner" not in methods:
+        raise SystemExit(f"the image recognised nothing with its model; methods were {methods}")
+    entities = answer.get("entities")
+    found = len(entities) if isinstance(entities, list) else 0
+    if not found:
+        raise SystemExit("the model ran but found no entity in a sentence that has two")
+    return f"{found} entities, ways: {', '.join(str(m) for m in methods)}"
+
+
 def check(compendium: dict[str, object], logs: str) -> str:
     """Return the evidence line, or raise with what is wrong."""
     markdown = str(compendium.get("markdown", ""))
@@ -113,6 +137,7 @@ def main() -> int:
             wait_until_ready(base_url, container)
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
+            print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
         finally:
             run("rm", "-f", args.name)
     return 0

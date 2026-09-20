@@ -23,6 +23,7 @@ from app.api.metrics import METRICS_PATH
 from app.api.metrics import router as metrics_router
 from app.api.system_threads import run_system, system_limiter
 from app.api.v2.collections import router as collections_router
+from app.api.v2.entities import router as entities_router
 from app.api.v2.knowledge import router as knowledge_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
@@ -31,6 +32,7 @@ from app.api.v2.matching import router as matching_router
 from app.api.v2.routes import router as v2_router
 from app.api.v2.zim import admin as zim_admin_router
 from app.api.v2.zim import router as zim_router
+from app.knowledge.recognise import load_spacy
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.client import BApiClient
@@ -268,6 +270,18 @@ def describe_matching(settings: Settings) -> dict[str, Any]:
     }
 
 
+def describe_entities(settings: Settings) -> dict[str, Any]:
+    """Whether the recognition model is there, decided once at start; /health reports it.
+
+    The model is optional: without it /api/v2/entities answers with the terms of the archives alone. That is a
+    weaker answer, not an error, so it has to be visible rather than silent.
+    """
+    ready = load_spacy(settings.spacy_model) is not None
+    if settings.spacy_model and not ready:
+        log.error("SPACY_MODEL=%r is not usable; entity recognition runs without it", settings.spacy_model)
+    return {"ner": ready, "model": settings.spacy_model}
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -310,11 +324,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.required_ids = resolve_required_ids(settings, manifest)
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.matching = describe_matching(settings)
+    app.state.entities = describe_entities(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)
     app.include_router(v2_router)
     app.include_router(knowledge_router)
+    app.include_router(entities_router)
     app.include_router(matching_router)
     app.include_router(matching_admin_router)
     app.include_router(zim_router)
