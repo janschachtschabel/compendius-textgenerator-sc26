@@ -33,14 +33,26 @@ Verwaltung bleibt, wo sie ist (`/api/v2/zim/*`, `/api/v2/lehrplan/*`, `/api/v2/t
 
 ## 1. Entitäten (und der Linker)
 
-Ein Endpunkt, drei Stufen — jede für sich abschaltbar:
+Ein Endpunkt, vier Stufen — jede für sich abschaltbar. Die ersten drei nutzen Technik, die es im Dienst
+schon gibt:
 
-1. **Erkennen** (ohne KI): spaCy `de_core_news_md` (rund 45 MB, kein torch) findet Personen, Orte,
-   Organisationen und Sonstiges. Alternativ `_sm` (15 MB, schwächer) oder `_lg` (550 MB).
-2. **Auflösen** (ohne Netz): jede Entität wird über die vorhandene Themenauflösung auf Artikel der Archive
-   abgebildet — Titel, Weiterleitungen, Volltextsuche. Das ist derselbe Mechanismus, der heute das Thema
-   auflöst, und liefert Titel, Archiv-ID, Lead und Link.
-3. **Verknüpfen** (optional, ohne Netz): Die Dumps führen keine Q-Nummern (siehe Befund), also kommt die
+1. **Erkennen — mit dem, was schon da ist.** Der Titelindex der Archive ist ein Wörterbuch: `Archive.suggest()`
+   (libzim-Titelsuche) sagt zu jeder Zeichenkette, ob es einen Artikel dieses Namens gibt. Also aus dem
+   Eingabetext Wortgruppen bilden (ein bis vier Wörter), jede gegen den Index halten, den längsten Treffer
+   nehmen. Das braucht **kein Modell**, keine zusätzliche Abhängigkeit und arbeitet offline — und es findet
+   genau die Entitäten, die sich anschließend auch belegen lassen.
+2. **Auflösen** (ohne Netz): `ZimRegistry.resolve_topic()` — dieselbe Auflösung, die heute das Thema eines
+   Kompendiums findet: Titel, Weiterleitungen, Volltextsuche, Zwilling im zweiten Archiv. Liefert Titel,
+   Archiv-ID, Lead und Link.
+3. **Einordnen** (ohne Netz): `classify_entity()` aus `app/knowledge/entities.py` bestimmt aus dem Lead, ob ein
+   Artikel eine Person, eine Organisation, ein Projekt, ein Netzwerk oder ein Werk ist. Das ist die
+   Entitätsart — heute schon im Einsatz für den Baustein Akteure und für die Matching-Policy.
+
+   **spaCy wird damit optional.** Es hilft nur noch bei Namen, die in keinem Archiv stehen (dann gibt es
+   ohnehin keinen Beleg) und beim Aussieben von Wortgruppen, die zufällig einen Artikeltitel treffen. Erster
+   Schritt also ohne Modell; spaCy `de_core_news_md` (45 MB, kein torch) kommt nur dazu, wenn die Messung zeigt,
+   dass das Wörterbuch zu grob ist.
+4. **Verknüpfen** (optional, ohne Netz): Die Dumps führen keine Q-Nummern (siehe Befund), also kommt die
    Zuordnung aus einem **lokalen Index**, einmal erzeugt und danach offline:
 
    | Weg | Was er leistet | Preis |
