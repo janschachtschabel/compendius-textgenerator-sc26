@@ -33,27 +33,40 @@ Verwaltung bleibt, wo sie ist (`/api/v2/zim/*`, `/api/v2/lehrplan/*`, `/api/v2/t
 
 ## 1. Entitäten (und der Linker)
 
-Ein Endpunkt, vier Stufen — jede für sich abschaltbar. Die ersten drei nutzen Technik, die es im Dienst
-schon gibt:
+**Zwei Schichten, die unabhängig voneinander ausfallen dürfen.** Der erste Entwurf hing an den Archiven: Er
+las den Titelindex als Wörterbuch. Das ist nicht generisch — ohne das Wikipedia-ZIM findet er fast nichts, und
+dieselbe Eingabe ergibt auf zwei Installationen verschiedene Entitäten. Erkennen und Verknüpfen gehören
+deshalb getrennt.
 
-1. **Erkennen — mit dem, was schon da ist.** Der Titelindex der Archive ist ein Wörterbuch: `Archive.suggest()`
-   (libzim-Titelsuche) sagt zu jeder Zeichenkette, ob es einen Artikel dieses Namens gibt. Also aus dem
-   Eingabetext Wortgruppen bilden (ein bis vier Wörter), jede gegen den Index halten, den längsten Treffer
-   nehmen. Das braucht **kein Modell**, keine zusätzliche Abhängigkeit und arbeitet offline — und es findet
-   genau die Entitäten, die sich anschließend auch belegen lassen.
-2. **Auflösen** (ohne Netz): `ZimRegistry.resolve_topic()` — dieselbe Auflösung, die heute das Thema eines
-   Kompendiums findet: Titel, Weiterleitungen, Volltextsuche, Zwilling im zweiten Archiv. Liefert Titel,
-   Archiv-ID, Lead und Link.
-3. **Einordnen** (ohne Netz): `classify_entity()` aus `app/knowledge/entities.py` bestimmt aus dem Lead, ob ein
-   Artikel eine Person, eine Organisation, ein Projekt, ein Netzwerk oder ein Werk ist. Das ist die
-   Entitätsart — heute schon im Einsatz für den Baustein Akteure und für die Matching-Policy.
+### Schicht 1: Erkennen — ohne Archive, ohne Netz
 
-   **spaCy wird damit optional.** Es hilft nur noch bei Namen, die in keinem Archiv stehen (dann gibt es
-   ohnehin keinen Beleg) und beim Aussieben von Wortgruppen, die zufällig einen Artikeltitel treffen. Erster
-   Schritt also ohne Modell; spaCy `de_core_news_md` (45 MB, kein torch) kommt nur dazu, wenn die Messung zeigt,
-   dass das Wörterbuch zu grob ist.
-4. **Verknüpfen** (optional, ohne Netz): Die Dumps führen keine Q-Nummern (siehe Befund), also kommt die
-   Zuordnung aus einem **lokalen Index**, einmal erzeugt und danach offline:
+| Verfahren | Was es findet | Hängt ab von |
+|---|---|---|
+| `ner` (Standard) | benannte Entitäten: Personen, Orte, Organisationen, Sonstiges — spaCy `de_core_news_md`, statistisch, kein torch | nur vom Modell im Image (35 MB spaCy + 44 MB Modell) |
+| `dictionary` | Fachbegriffe und Themen, die einen Artikel haben — der Titelindex der Archive über `Archive.suggest()` | den geladenen Archiven |
+
+Die beiden schließen einander nicht aus, sie ergänzen sich: NER liefert **Namen** (Ernst Abbe, Jena, Zeiss),
+das Wörterbuch liefert **Begriffe** (Photosynthese, Brechungsindex) — und Begriffe sind in Lehrtexten meist
+die interessanteren Entitäten. Jede Entität sagt in der Antwort, woher sie kommt (`source: "ner" | "dictionary"`).
+
+**Ausfallverhalten:** Ohne Archive liefert `ner` weiterhin Entitäten, nur ohne Artikelbezug. Ohne
+spaCy-Modell bleibt `dictionary`, und `/health` meldet das fehlende Modell — wie heute schon
+`matching.components` die fehlenden Embeddings meldet. Der Endpunkt antwortet in beiden Fällen, statt
+auszufallen.
+
+### Schicht 2: Verknüpfen — nutzt, was da ist
+
+1. `ZimRegistry.resolve_topic()` bildet jede Entität auf einen Artikel ab (Titel, Weiterleitungen,
+   Volltextsuche) und liefert Titel, Archiv-ID, Lead und Link.
+2. `classify_entity()` aus `app/knowledge/entities.py` schärft die Art aus dem Lead: Person, Organisation,
+   Projekt, Netzwerk, Werk.
+3. Optional die Wikidata-QID aus dem lokalen Index (siehe unten).
+
+Jede Entität trägt `linked: true|false`. Ohne passende Archive ist das Ergebnis also ärmer, aber nicht leer —
+und die Antwort sagt, welche Archive befragt wurden.
+
+4. **Verknüpfen mit Wikidata** (optional, ohne Netz): Die Dumps führen keine Q-Nummern (siehe Befund), also
+   kommt die Zuordnung aus einem **lokalen Index**, einmal erzeugt und danach offline:
 
    | Weg | Was er leistet | Preis |
    |---|---|---|
@@ -61,9 +74,9 @@ schon gibt:
    | `spacy-entity-linker` 1.0.3 | Entitäten direkt auf Wikidata, eigene lokale Wissensbasis | rund 1,3 GB einmalig |
    | `Babelscape/wikineural-multilingual-ner` | NER auf Wikipedia trainiert, mehrsprachig, 675.000 Abrufe/Monat | braucht torch (`ml`-Profil) |
 
-   Empfehlung: `wikimapper` — der Index passt zum Archivbestand, wird wie die ZIM-Dumps gepflegt und hält den
-   Dienst vollständig offline. Die DBpedia-URI lässt sich aus dem Titel bilden, ohne dass ihre Existenz geprüft
-   wäre; sie wird nur auf Wunsch mitgegeben und als „konstruiert" gekennzeichnet.
+   Empfehlung: `wikimapper` — der Index wird wie die ZIM-Dumps gepflegt und hält den Dienst offline. Die
+   DBpedia-URI lässt sich aus dem Titel bilden, ohne dass ihre Existenz geprüft wäre; sie wird nur auf Wunsch
+   mitgegeben und als „konstruiert" gekennzeichnet.
 
    **Die Testapp (`../kompendium-test`) löst das anders:** Sie holt QIDs live über `pageprops` der
    Wikipedia-API und die Entitätsdaten von `wikidata.org/wiki/Special:EntityData/{qid}.json`
@@ -72,8 +85,12 @@ schon gibt:
 
 ```
 POST /api/v2/entities
-{"text": "...", "resolve": true, "wikidata": false, "archives": ["wikipedia_de_all_nopic"]}
+{"text": "...", "methods": ["ner", "dictionary"], "link": true, "wikidata": false,
+ "archives": ["wikipedia_de_all_nopic"]}
 ```
+
+Die Antwort nennt `methods`, die befragten `archives` und je Entität `source`, `kind`, `linked` und —
+falls verknüpft — Artikel, Lead und Link. Damit ist ablesbar, was aus dem Modell und was aus den Archiven kam.
 
 ## 2. Wissenstexte je Archiv
 
@@ -130,7 +147,7 @@ parallel; die Grenze war nur konservativ gesetzt.
 
 | Profil | Inhalt | Größe | kann |
 |---|---|---|---|
-| `base` (heute) | Python, libzim, numpy, scikit-learn, Model2Vec | 830 MB | Kompendium, Entitäten (spaCy `md`: +45 MB), QA `rule-based` |
+| `base` | Python, libzim, numpy, scikit-learn, Model2Vec, **spaCy + `de_core_news_md`** | 830 MB heute, rund 950–980 MB mit spaCy (35 MB Rad, 44 MB Modell, dazu thinc und Kleinteile) | Kompendium, Entitäten, QA `rule-based` |
 | `ml` | dazu torch, transformers, QG- und QA-Modell | geschätzt 2,5–3 GB | zusätzlich QA `models` |
 
 spaCy braucht kein torch und passt deshalb in `base`. Die QA-Modelle brauchen torch — das ist die eine
