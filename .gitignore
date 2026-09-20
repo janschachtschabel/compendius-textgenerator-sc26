@@ -13,6 +13,8 @@ dist/
 
 # Lokale Konfiguration und Zustand
 .env
+# Maschinenspezifische Compose-Ergaenzung (eigene Pfade, eigene Token)
+compose.override.yml
 # Bearer-Token fuer den Scrape-Job (monitoring/prometheus.yml, credentials_file)
 monitoring/metrics_token
 data/
