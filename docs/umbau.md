@@ -40,10 +40,23 @@ Ein Endpunkt, drei Stufen — jede für sich abschaltbar:
 2. **Auflösen** (ohne Netz): jede Entität wird über die vorhandene Themenauflösung auf Artikel der Archive
    abgebildet — Titel, Weiterleitungen, Volltextsuche. Das ist derselbe Mechanismus, der heute das Thema
    auflöst, und liefert Titel, Archiv-ID, Lead und Link.
-3. **Verknüpfen** (optional, braucht Netz): Wikidata-ID über `pageprops` der Wikipedia-API, im Zustand
-   gecacht. **Ohne diesen Schritt gibt es keine Q-Nummern** — die Dumps führen sie nicht (siehe Befund). Die
-   DBpedia-URI lässt sich dagegen aus dem Titel bilden, ohne dass ihre Existenz geprüft wäre; sie wird nur auf
-   Wunsch mitgegeben und als „konstruiert" gekennzeichnet.
+3. **Verknüpfen** (optional, ohne Netz): Die Dumps führen keine Q-Nummern (siehe Befund), also kommt die
+   Zuordnung aus einem **lokalen Index**, einmal erzeugt und danach offline:
+
+   | Weg | Was er leistet | Preis |
+   |---|---|---|
+   | `wikimapper` 0.2.0 | Wikipedia-Titel ↔ Wikidata-QID aus den Wikipedia-SQL-Dumps; SQLite im Zustandsvolume | Dumps einmal laden, Index bauen |
+   | `spacy-entity-linker` 1.0.3 | Entitäten direkt auf Wikidata, eigene lokale Wissensbasis | rund 1,3 GB einmalig |
+   | `Babelscape/wikineural-multilingual-ner` | NER auf Wikipedia trainiert, mehrsprachig, 675.000 Abrufe/Monat | braucht torch (`ml`-Profil) |
+
+   Empfehlung: `wikimapper` — der Index passt zum Archivbestand, wird wie die ZIM-Dumps gepflegt und hält den
+   Dienst vollständig offline. Die DBpedia-URI lässt sich aus dem Titel bilden, ohne dass ihre Existenz geprüft
+   wäre; sie wird nur auf Wunsch mitgegeben und als „konstruiert" gekennzeichnet.
+
+   **Die Testapp (`../kompendium-test`) löst das anders:** Sie holt QIDs live über `pageprops` der
+   Wikipedia-API und die Entitätsdaten von `wikidata.org/wiki/Special:EntityData/{qid}.json`
+   (`kompendium/adapters/wikipedia.py`, `wikidata.py`). Die **Form** der Ausgabe (QID, Label, Beschreibung,
+   URL, Kategorien) ist übernehmenswert, die **Quelle** nicht — sie widerspricht dem Offline-Ziel.
 
 ```
 POST /api/v2/entities
@@ -124,12 +137,12 @@ Entscheidung, die das Image wirklich schwer macht.
 
 U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.
 
-## Was ich von dir brauche
+## Entscheidungen vom 2026-09-20
 
-1. **v1 wirklich löschen?** Der Vertrag ist erst einen Tag alt (Phase 6) und `MIGRATION.md` beschreibt ihn.
-   Löschen heißt: Wer den alten Dienst aufruft, muss umstellen. Gibt es noch Aufrufer?
-2. **torch ins Image?** Ohne das gibt es QA nur als Vorlagen (`rule-based`) oder per LLM. Mit ihm wächst das
-   Image auf rund 3 GB — als eigenes Profil, damit der schlanke Weg bleibt.
-3. **Wikidata-IDs?** Nur mit Netzzugriff zur Laufzeit (gecacht) möglich. Ohne sie bleiben Entitäten auf Artikel
-   der Archive beschränkt — offline, aber ohne Q-Nummern.
-4. **spaCy-Modellgröße**: `md` (45 MB) als Standard, oder `lg` (550 MB) für bessere Erkennung?
+| Frage | Entscheidung |
+|---|---|
+| v1-Vertrag | **sofort ganz entfernen** — `app/api/v1/`, `MIGRATION.md`, die zugehörigen Tests |
+| torch | **eigenes `ml`-Profil**; `base` bleibt bei 830 MB und kann QA per Vorlagen oder LLM |
+| Wikidata | **optional, standardmäßig aus** — und, nach der Ergänzung vom selben Tag, **lokal statt live** |
+| Netzzugriff zur Laufzeit | **keiner**: Alles muss offline gehen. Indizes und Modelle werden einmal erzeugt bzw. ins Image gebacken |
+| spaCy-Modell | `de_core_news_md` als Standard, über eine Einstellung auf `lg` umstellbar |
