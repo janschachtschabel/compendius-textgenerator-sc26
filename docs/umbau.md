@@ -60,7 +60,10 @@ Entitäten (Brechungsindex, Hornhaut, Netzhaut, Lupe, Regenbogen), die übrigen 
 Artikel („Fach", „Thema", „Richtung", „Prinzip", „Schule", „Medien"). **Offener Punkt U3b:** Ein Filter dafür
 braucht ein Kriterium, das nicht geraten ist — etwa Worthäufigkeit aus einer Frequenzliste oder die
 Wortart aus dem spaCy-Modell, sobald es geladen ist. Bis dahin liefert `dictionary` viel und ungenau; wer
-Genauigkeit braucht, fragt `methods: ["ner"]`.
+Genauigkeit braucht, fragt `methods: ["ner"]`. Zweiter Punkt derselben Art: Ein Begriff kann einen Eintrag
+haben, der eine Begriffsklärungsseite ist („Brechung", „Carl Zeiss"). Das Wörterbuch findet ihn über den
+Titel, die Verknüpfung lehnt ihn ab — die Entität kommt dann mit `linked: false` zurück, obwohl es etwas
+gibt. Richtig wäre, die Alternativen der Begriffsklärung mitzugeben.
 
 ### Schicht 2: Verknüpfen — nutzt, was da ist
 
