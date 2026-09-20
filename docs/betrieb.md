@@ -15,12 +15,19 @@ in [.env.example](../.env.example).
 | Volume | Inhalt | Wiederherstellung |
 |---|---|---|
 | `zim` (`ZIM_DIR`) | ZIM-Archive, `active.json`, `sync_status.json` | neu laden lassen (`ZIM_BOOTSTRAP_DOWNLOAD=true`) oder Dateien hineinkopieren; der nächste Sync übernimmt sie |
-| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden |
+
+**`ZIM_PATHS` umgeht dieses Volume.** Sind dort Pfade eingetragen, liest der Dienst genau diese Dateien:
+`active.json` wird nicht gelesen, der Sync-Job verwaltet die Archive nicht, und ein Wechsel braucht einen
+Neustart. Der Start warnt ausdrücklich davor. Für den Betrieb `ZIM_PATHS` leer lassen und `ZIM_DIR`
+verwenden; `ZIM_PATHS` ist für Entwicklung und Tests gedacht.
+| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
 
 ## Zustand prüfen
 
 - `GET /health`: Prozess lebt; `components` zeigt `zim`, `lehrplan_cache`, `edu_sharing` und `llm`
-  (Modellprüfung, Tagesverbrauch). Ruft keinen fremden Dienst auf.
+  (Modellprüfung, Tagesverbrauch). Je Modell steht dort, ob es wirklich geladen ist: `matching.embeddings`
+  für das Model2Vec-Modell, `entities.ner` für das spaCy-Modell — ein fehlendes Modell macht die Antworten
+  schwächer, ohne dass eine Anfrage scheitert. Ruft keinen fremden Dienst auf.
 - `GET /ready`: 200 erst, wenn alle Pflichtarchive des Profils vorliegen, sonst 503.
 - `GET /api/v2/zim/status`, `GET /api/v2/lehrplan/status`: Archive, letzter Sync, Cache-Stand.
 - Die Sidecars haben keinen HTTP-Server und keinen Healthcheck; ihren Stand zeigen `sync_status.json` und

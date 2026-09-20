@@ -11,7 +11,7 @@ wo der Aufrufer es ausdrücklich will — sichtbar in der Antwort. Der alte v1-V
 | 24 Endpunkte, davon 8 aus dem alten Vertrag | `/openapi.json` des laufenden Dienstes |
 | **Die ZIM-Dumps führen keine Wikidata-IDs** — keine Q-Nummern, kein `wgWikibaseItemId`, keine DBpedia-Verweise | Artikel „Optik" aus `wikipedia_de_all_nopic_2026-01.zim`, 32.836 Zeichen HTML, null Treffer |
 | Deutsche Modelle ohne generative KI existieren (siehe Tabelle unten) | Hugging-Face-API, 2026-09-20 |
-| `TemplateManager.save()` und `.delete()` haben **keinen Aufrufweg** — weder API noch CLI (`compendium templates` listet nur) | Quelltext und `--help` |
+| `TemplateManager.save()` und `.delete()` hatten **keinen Aufrufweg** — weder API noch CLI (`compendium templates` listete nur); mit U6 behoben | Quelltext und `--help` |
 | ZIM-Verwaltung ist vollständig (Manifest, `active.json`, Sync-Sidecar, Admin-Endpunkte, Aufbewahrung) | `app/sources/zim/`, Endpunktliste |
 | `ZIM_PATHS` umgeht `active.json` samt Wechsel ohne Neustart — als Entwicklungsweg gedacht, läuft aber auch produktiv (z. B. die lokale Einrichtung) | `app/main.py:build_registry` |
 
@@ -181,6 +181,24 @@ offen — das braucht einen Lauf gegen die echte b-api und kostet Tokens.
 - **Modelle** (spaCy, QA): wie das Embedding-Modell zur Bauzeit ins Image, mit festgelegter Revision; `/health`
   meldet je Modell, ob es geladen ist — wie jetzt schon `matching.components`.
 
+### Wie U6 am 2026-09-20 gebaut wurde
+
+**Der dritte Punkt war schon erledigt.** `/health` meldet seit U3 je Modell, ob es geladen ist:
+`matching.embeddings` für Model2Vec, `entities.ner` für spaCy. Das sind die beiden Modelle, die das
+`base`-Image hat; die QA-Modelle kommen erst mit U5 und bringen ihren Eintrag dann mit. Hier war nichts
+zu bauen, nur nachzusehen.
+
+**Die CLI behält ihren alten Befehl.** `compendium templates` listet weiter ohne Verb; `save` und `delete`
+kommen als optionale Unterbefehle dazu. Der Weg über `add_subparsers(required=True)` wie bei `zim` hätte
+eine bestehende Gewohnheit gebrochen, ohne etwas zu gewinnen.
+
+**Die id steht im Pfad und im Body** und muss übereinstimmen (422). Den Body stillschweigend auf die
+Pfad-id umzuschreiben wäre bequemer, würde aber ein Template irgendwohin legen, wo der Aufrufer es nicht
+haben wollte.
+
+**Eingebaute Templates antworten 409**, nicht 403: Es fehlt kein Recht, das Ziel ist schreibgeschützt. Die
+Meldung des Managers sagt, was stattdessen geht (unter neuer id kopieren).
+
 ## Image-Profile
 
 | Profil | Inhalt | Größe | kann |
@@ -200,7 +218,7 @@ Entscheidung, die das Image wirklich schwer macht.
 | U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
 | U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
 | U5 | `POST /api/v2/qa` mit `rule-based`, `models`, `llm`; `ml`-Profil im Bau | groß (torch, zwei Modelle) |
-| U6 | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung, `/health` je Modell | klein |
+| U6 ✓ | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung — erledigt am 2026-09-20; `/health` je Modell war mit U3 schon da | klein |
 
 U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.
 

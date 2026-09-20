@@ -274,3 +274,20 @@ def test_settings_that_no_longer_exist_are_named_at_start(
         create_app(settings)
     assert "LLM_MODE_DEFAULT" in caplog.text and "LLM_ROUTER_ENABLED" in caplog.text
     assert "LLM_EXTRACTION_DEFAULT" in caplog.text and "LLM_GENERATION_DEFAULT" in caplog.text
+
+
+def test_zim_paths_warns_that_it_bypasses_the_archive_management(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """docs/umbau.md U6: ZIM_PATHS is meant for development but also runs in production - silently, until now."""
+    with caplog.at_level(logging.WARNING):
+        create_app(make_settings(sample_zims.values(), tmp_path / "state"))
+    assert "ZIM_PATHS" in caplog.text
+    assert "active.json" in caplog.text, "the warning has to name what is bypassed"
+
+
+def test_without_zim_paths_there_is_no_such_warning(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    settings = make_settings([], tmp_path / "state", zim_dir=tmp_path / "zim")
+    with caplog.at_level(logging.WARNING):
+        create_app(settings)
+    assert "ZIM_PATHS umgeht" not in caplog.text

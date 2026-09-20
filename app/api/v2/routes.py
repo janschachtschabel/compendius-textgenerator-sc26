@@ -1,4 +1,8 @@
-"""v2 endpoints: compendium generation and templates (archives: zim.py, matching: matching.py)."""
+"""v2 endpoints: compendium generation and templates (archives: zim.py, matching: matching.py).
+
+Reading templates is open; writing and deleting them sit behind ``ADMIN_TOKEN`` like the archive
+endpoints, because a template decides what every following compendium looks like (docs/umbau.md U6).
+"""
 
 from __future__ import annotations
 
@@ -7,6 +11,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 
+from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.limits import rate_limited
 from app.domain.models import Compendium
@@ -16,9 +21,11 @@ from app.observability.metrics import record_compendium
 from app.service import PartsUnavailableError, TopicNotFoundError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
 from app.templates.manager import TemplateNotFoundError
+from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
+admin = APIRouter(prefix="/api/v2", tags=["v2-admin"], dependencies=[Depends(require_admin)])
 
 
 @router.post(
@@ -76,3 +83,35 @@ def get_template(template_id: str, request: Request) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}") from exc
     data: dict[str, Any] = template.model_dump()
     return data
+
+
+@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen")
+def put_template(template_id: str, payload: Template, request: Request) -> dict[str, Any]:
+    """Store a custom template under this id; the version counts up on every write.
+
+    The id in the path and the id in the body have to agree: silently renaming what the caller sent would
+    put a template somewhere they did not ask for. Built-in templates are read-only (409).
+    """
+    if payload.id != template_id:
+        raise HTTPException(
+            status_code=422, detail=f"id im Pfad ({template_id}) und im Body ({payload.id}) stimmen nicht überein"
+        )
+    try:
+        stored = request.app.state.templates.save(payload)
+    except ValueError as exc:  # a built-in id; the message names it and says what to do instead
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    log.info("template %s saved as version %d", stored.id, stored.version)
+    data: dict[str, Any] = stored.model_dump()
+    return data
+
+
+@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen")
+def delete_template(template_id: str, request: Request) -> None:
+    """Delete a custom template; built-in templates are refused (409), an unknown id is a 404."""
+    try:
+        removed = request.app.state.templates.delete(template_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not removed:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}")
+    log.info("template %s deleted", template_id)

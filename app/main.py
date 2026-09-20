@@ -29,6 +29,7 @@ from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
 from app.api.v2.matching import admin as matching_admin_router
 from app.api.v2.matching import router as matching_router
+from app.api.v2.routes import admin as v2_admin_router
 from app.api.v2.routes import router as v2_router
 from app.api.v2.zim import admin as zim_admin_router
 from app.api.v2.zim import router as zim_router
@@ -65,6 +66,15 @@ log = logging.getLogger(__name__)
 def build_registry(settings: Settings) -> ZimRegistry:
     """Explicit ZIM_PATHS win (development, tests); otherwise active.json in ZIM_DIR decides."""
     if settings.zim_path_list:
+        # It is meant for development, but it also runs in production, where it quietly turns off the archive
+        # management an operator expects (docs/umbau.md U6). Saying so at start beats finding out later.
+        log.warning(
+            "ZIM_PATHS umgeht die Archivverwaltung: active.json wird nicht gelesen, der Sync-Job verwaltet "
+            "diese Archive nicht, und ein Wechsel braucht einen Neustart. Für den Betrieb ZIM_PATHS leer "
+            "lassen und ZIM_DIR=%s verwenden. Geladen aus: %s",
+            settings.zim_dir,
+            settings.zim_paths,
+        )
         return ZimRegistry(settings.zim_path_list)
     return ZimRegistry.from_active(settings.zim_dir)
 
@@ -329,6 +339,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)
     app.include_router(v2_router)
+    app.include_router(v2_admin_router)
     app.include_router(knowledge_router)
     app.include_router(entities_router)
     app.include_router(matching_router)

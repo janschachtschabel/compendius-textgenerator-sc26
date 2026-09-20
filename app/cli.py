@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from app.service import TopicNotFoundError
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
 from app.templates.manager import TemplateManager
+from app.templates.schema import Template
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
@@ -87,12 +89,45 @@ def cmd_generate(args: argparse.Namespace) -> int:
     return 0
 
 
+def template_manager() -> TemplateManager:
+    return TemplateManager(custom_dir=Path(get_settings().state_dir) / "templates")
+
+
 def cmd_templates(args: argparse.Namespace) -> int:
-    settings = get_settings()
-    manager = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")
-    for template in manager.list():
+    for template in template_manager().list():
         marker = "builtin" if template.builtin else "custom"
         print(f"{template.id:12s} v{template.version}  {len(template.slots):2d} Slots  {marker}  {template.name}")
+    return 0
+
+
+def cmd_templates_save(args: argparse.Namespace) -> int:
+    """Store a template from a JSON file; the version counts up when the id is already there."""
+    path = Path(args.file)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        template = Template.model_validate({**data, "builtin": False})
+    except (OSError, ValueError, ValidationError) as exc:
+        print(f"{path}: {exc}", file=sys.stderr)
+        return 1
+    try:
+        stored = template_manager().save(template)
+    except ValueError as exc:  # a built-in id is read-only; the message says what to do instead
+        print(str(exc), file=sys.stderr)
+        return 1
+    print(f"{stored.id} v{stored.version} gespeichert ({len(stored.slots)} Slots)")
+    return 0
+
+
+def cmd_templates_delete(args: argparse.Namespace) -> int:
+    try:
+        removed = template_manager().delete(args.template_id)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    if not removed:
+        print(f"Template nicht gefunden: {args.template_id}", file=sys.stderr)
+        return 1
+    print(f"{args.template_id} gelöscht")
     return 0
 
 
@@ -139,8 +174,17 @@ def main(argv: list[str] | None = None) -> int:
     add_lehrplan_commands(sub)
     add_collection_commands(sub)
 
-    tpl = sub.add_parser("templates", help="Templates auflisten")
-    tpl.set_defaults(func=cmd_templates)
+    tpl = sub.add_parser("templates", help="Templates auflisten, speichern, löschen")
+    tpl.set_defaults(func=cmd_templates)  # the bare command keeps listing, as it always did
+    tpl_sub = tpl.add_subparsers(dest="templates_command")
+
+    tpl_save = tpl_sub.add_parser("save", help="Template aus einer JSON-Datei speichern")
+    tpl_save.add_argument("file", help="JSON-Datei mit dem Template")
+    tpl_save.set_defaults(func=cmd_templates_save)
+
+    tpl_delete = tpl_sub.add_parser("delete", help="eigenes Template löschen (eingebaute bleiben)")
+    tpl_delete.add_argument("template_id", help="id des Templates")
+    tpl_delete.set_defaults(func=cmd_templates_delete)
 
     args = parser.parse_args(argv)
     configure_logging(get_settings().log_level)

@@ -254,6 +254,8 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --gen
 | `POST /api/v2/entities` | Entitäten in einem Text, in zwei Schichten: `methods` wählt `ner` (spaCy-Modell, braucht keine Archive) und `dictionary` (Begriffe, die einen Artikel haben); die Antwort nennt unter `methods`, welche Wege wirklich liefen, und je Entität `source`, `kind`, `linked` und den Artikel mit seinem Lead. `link: false` lässt das Nachschlagen weg, `archives` grenzt ein (unbekannte ID: 404); fällt beides aus — kein Modell und keine Archive —: 503 |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar); hält sich an `REQUEST_TIMEOUT_S`, danach `summary.incomplete` und ein Hinweis im Text |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
+| `PUT /api/v2/templates/{id}` (Admin) | eigenes Template anlegen oder ersetzen; die Version zählt bei jedem Schreiben hoch. Die id im Pfad und im Body müssen übereinstimmen (sonst 422), eingebaute Templates sind schreibgeschützt (409) |
+| `DELETE /api/v2/templates/{id}` (Admin) | eigenes Template löschen (204); eingebaute: 409, unbekannte: 404 |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |
 | `POST /api/v2/matching/compare` (Admin) | Strategien auf einem Thema vergleichen, mit Gold-Metriken, wenn `EVAL_GOLD_DIR` eine Gold-Datei hat |
 | `GET /api/v2/lehrplan/status` | Lehrplan-Cache: Stand, Abdeckung, Lehrpläne je Land, letzter Harvest (ob er scheiterte, ohne Fehlertext) |
@@ -266,7 +268,9 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --gen
 | `DELETE /api/v2/zim/{datei}` (Admin) | nicht aktive Archivdatei samt `.part` löschen |
 
 Admin-Endpunkte erwarten den Header `X-Admin-Token` mit dem Wert von `ADMIN_TOKEN`; ohne
-gesetztes Token sind sie deaktiviert.
+gesetztes Token sind sie deaktiviert. Dieselben Schreibwege gibt es in der CLI:
+`compendium templates save datei.json` und `compendium templates delete id`; `compendium templates`
+ohne Verb listet wie bisher.
 
 `POST /api/v2/compendium`, `GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search`
 sind je Client auf `RATE_LIMIT` Anfragen pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
