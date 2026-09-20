@@ -40,7 +40,7 @@ def with_llm(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> Iterator[Te
 
 def test_pairs_from_a_text_need_no_model(client: TestClient) -> None:
     body = client.post("/api/v2/qa", json={"text": TEXT}).json()
-    assert body["method"] == "rule-based" and body["note"] is None
+    assert body["method"] == "rule-based", "no model is needed to answer"
     assert [pair["question"] for pair in body["pairs"]] == [
         "Was versteht man unter Optik?",
         "Woraus besteht ein Fernrohr?",
@@ -98,3 +98,23 @@ def test_either_a_text_or_a_topic_is_required(client: TestClient) -> None:
 def test_a_text_without_a_single_fitting_sentence_answers_empty_not_error(client: TestClient) -> None:
     body = client.post("/api/v2/qa", json={"text": "Darüber hinaus gibt es weitere Gesichtspunkte zu bedenken."})
     assert body.status_code == 200 and body.json()["pairs"] == []
+
+
+def test_without_the_tagger_the_answer_says_the_questions_are_unchecked(client: TestClient) -> None:
+    """The test service has no spaCy model, so the note has to name the weaker questions (docs/umbau.md U5a)."""
+    body = client.post("/api/v2/qa", json={"text": TEXT}).json()
+    assert body["note"] and "spaCy" in body["note"]
+
+
+def test_with_the_tagger_an_adverb_gets_no_question_and_there_is_no_note(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from tests.test_qa_pairs import fake_nlp
+
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: fake_nlp)
+    body = client.post(
+        "/api/v2/qa", json={"text": "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. " + TEXT}
+    ).json()
+    assert body["note"] is None
+    assert "Daneben" not in " ".join(pair["question"] for pair in body["pairs"])
+    assert "Was versteht man unter Optik?" in [pair["question"] for pair in body["pairs"]]

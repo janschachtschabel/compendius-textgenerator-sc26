@@ -11,8 +11,9 @@ from __future__ import annotations
 
 import logging
 import re
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from typing import Any
 
 from app.knowledge.segmentation import split_sentences
 from app.llm.budget import RequestBudget
@@ -33,6 +34,12 @@ _PARTS = re.compile(r"^(?P<subject>.{3,60}?)\s+(?:besteht aus|bestehen aus|glied
 _PURPOSE = re.compile(r"^(?P<subject>.{3,60}?)\s+(?P<verb>dient|dienen|ermöglicht|ermöglichen)\b")
 _YEAR = re.compile(r"\b(1[0-9]{3}|20[0-9]{2})\b")
 _NUMBERING = re.compile(r"^\s*(?:\d+\s*[.)]|[a-z]\))\s*")
+# German capitalises at a sentence start, so the subject patterns also match adverbs and prepositions there.
+# Measured with de_core_news_md on 2026-09-20 (docs/umbau.md U5a): every wrong subject of the live run began
+# ADV or ADP, every right one carried a NOUN or PROPN - tagging the subject span alone was enough for all of
+# them. Without the model the check is skipped and the endpoint says so.
+_NOT_A_SUBJECT_START = frozenset({"ADV", "ADP"})
+_NOUNS = frozenset({"NOUN", "PROPN"})
 
 
 @dataclass(frozen=True)
@@ -44,15 +51,24 @@ class QaPair:
 
 
 def rule_based_pairs(
-    text: str, *, limit: int, max_answer_length: int, level_property: str | None = None
+    text: str,
+    *,
+    limit: int,
+    max_answer_length: int,
+    level_property: str | None = None,
+    nlp: Callable[[str], Any] | None = None,
 ) -> list[QaPair]:
-    """Pairs from question templates; the answer is the sentence the question was built from."""
+    """Pairs from question templates; the answer is the sentence the question was built from.
+
+    ``nlp`` is the spaCy pipeline, when there is one: it decides whether a matched subject really is a noun
+    phrase. Without it every template fires as before, which on real text yields questions about adverbs.
+    """
     pairs: list[QaPair] = []
     asked: set[str] = set()
     for sentence in split_sentences(" ".join(text.split())):
         if len(sentence) < MIN_SENTENCE_CHARS:
             continue
-        question = _question(sentence)
+        question = _question(sentence, nlp)
         if question is None or question in asked:
             continue
         asked.add(question)
@@ -62,21 +78,31 @@ def rule_based_pairs(
     return pairs
 
 
-def _question(sentence: str) -> str | None:
+def _question(sentence: str, nlp: Callable[[str], Any] | None = None) -> str | None:
     definition = _DEFINITION.match(_without_article(sentence))
-    if definition:
+    if definition and _is_noun_phrase(definition.group("subject"), nlp):
         return f"Was versteht man unter {definition.group('subject')}?"
     parts = _PARTS.match(sentence)
-    if parts:
+    if parts and _is_noun_phrase(parts.group("subject"), nlp):
         return f"Woraus besteht {_lower_article(parts.group('subject'))}?"
     purpose = _PURPOSE.match(sentence)
-    if purpose:
+    if purpose and _is_noun_phrase(purpose.group("subject"), nlp):
         verb = "dienen" if purpose.group("verb").endswith("en") else "dient"
         return f"Wozu {verb} {_lower_article(purpose.group('subject'))}?"
     year = _YEAR.search(sentence)
     if year:
         return f"Was geschah im Jahr {year.group(1)}?"
     return None
+
+
+def _is_noun_phrase(subject: str, nlp: Callable[[str], Any] | None) -> bool:
+    """Whether the match really names a thing; without the model every match passes, as it did before."""
+    if nlp is None:
+        return True
+    tokens = list(nlp(subject))
+    if not tokens or tokens[0].pos_ in _NOT_A_SUBJECT_START:
+        return False  # "Daneben sind …", "Als Reduktionsmittel dienen …": the subject comes later
+    return any(token.pos_ in _NOUNS for token in tokens)
 
 
 def _without_article(sentence: str) -> str:

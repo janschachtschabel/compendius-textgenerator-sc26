@@ -59,11 +59,20 @@ trägt. Die Genauigkeit noch nicht: Von 20 gefundenen Begriffen eines Physik-Abs
 Entitäten (Brechungsindex, Hornhaut, Netzhaut, Lupe, Regenbogen), die übrigen Allerweltswörter mit eigenem
 Artikel („Fach", „Thema", „Richtung", „Prinzip", „Schule", „Medien"). **Offener Punkt U3b:** Ein Filter dafür
 braucht ein Kriterium, das nicht geraten ist — etwa Worthäufigkeit aus einer Frequenzliste oder die
-Wortart aus dem spaCy-Modell, sobald es geladen ist. **Dieselbe Ursache trifft die Fragevorlagen in U5a:**
-Deutsch schreibt am Satzanfang groß, also greift „Großbuchstabe + ist/sind“ auf jedes
-satzanfängliche Adverb — gemessen gegen die echte Wikipedia am 2026-09-20 entstanden „Was versteht man
-unter Daneben?“ und „… unter Beispielsweise?“. Ein Kriterium behebt beide Stellen.
-Bis dahin liefert `dictionary` viel und ungenau; wer
+Wortart aus dem spaCy-Modell, sobald es geladen ist.
+
+**Nachgemessen am 2026-09-20: Die Wortart hilft hier nicht.** Ich hatte vermutet, ein Kriterium behebe die
+Ungenauigkeit des Wörterbuchs und die schiefen Fragevorlagen in U5a zugleich. Die Messung mit
+`de_core_news_md` im Image widerlegt das: „Fach“, „Thema“, „Richtung“,
+„Prinzip“, „Schule“ und „Medien“ sind allesamt `NOUN` — genau wie die
+echten Treffer „Brechungsindex“ und „Linse“. Die Wortart trägt an dieser Stelle kein
+Signal, weil die Fehltreffer **echte Substantive** sind. Es bleibt die Worthäufigkeit: Ein Wort, das in jedem
+deutschen Text vorkommt, ist selten die interessante Entität. Das braucht eine Frequenzliste im Image und ist
+**weiterhin offen**. Wer heute Genauigkeit braucht, fragt `methods: ["ner"]`.
+
+Bei den Fragevorlagen in U5a war die Wortart dagegen genau richtig, weil die Fehlgriffe dort **keine**
+Substantive sind (Adverbien am Satzanfang); das ist behoben, siehe unten. Bis dahin liefert `dictionary` viel
+und ungenau; wer
 Genauigkeit braucht, fragt `methods: ["ner"]`. Zweiter Punkt derselben Art: Ein Begriff kann einen Eintrag
 haben, der eine Begriffsklärungsseite ist („Brechung", „Carl Zeiss"). Das Wörterbuch findet ihn über den
 Titel, die Verknüpfung lehnt ihn ab — die Entität kommt dann mit `linked: false` zurück, obwohl es etwas
@@ -145,7 +154,23 @@ darf. **Offener Punkt.**
 
 **Gemessen gegen die echten Archive** (Wikipedia 5 Mio. Artikel + Klexikon): „Optik“ HTTP 200 in
 0,38 s, „Photosynthese“ in 0,88 s, je 50.000 Zeichen Quelltext, unbekanntes Thema 404. Die
-Geschwindigkeit trägt. Die Fragequalität der Vorlagen nicht — siehe U3b, es ist dieselbe Ursache.
+Geschwindigkeit trägt. Die Fragequalität der Vorlagen nicht: Deutsch schreibt am Satzanfang groß, also griff
+„Großbuchstabe + ist/sind“ auf jedes satzanfängliche Adverb — es entstanden „Was versteht man
+unter Daneben?“, „… unter Beispielsweise?“ und „Wozu dienen Als Reduktionsmittel?“.
+
+**Behoben mit der Wortart, gemessen statt geraten.** Getaggt mit `de_core_news_md` im Image begann jeder
+falsche Betreff mit `ADV` oder `ADP`, jeder richtige trug ein `NOUN` oder `PROPN` — bei allen acht Fällen des
+Live-Laufs, und die Prüfung des Betreffs allein (ohne Satzkontext) reichte bei allen zwölf Proben. Die Regel
+lautet deshalb: Der Betreff darf nicht mit `ADV`/`ADP` beginnen und muss ein `NOUN`/`PROPN` enthalten. Ohne
+geladenes Modell bleibt es beim alten Verhalten, und die Antwort sagt es unter `note` — eine stille
+Qualitätsabhängigkeit von einem optionalen Modell wäre schlimmer als eine genannte. Der Rauchtest prüft es
+im Image, weil nur dort das echte Modell läuft.
+
+**Gegenprobe gegen die echten Archive nach der Behebung:** „Optik“ liefert jetzt „Was versteht
+man unter Auge?“ und drei Jahreszahlfragen, „Photosynthese“ „Was versteht man unter
+Photosynthese?“ und drei Jahreszahlen; kein Betreff ist mehr ein Adverb. **Beobachtung, nicht behoben:**
+Weil die Definitionsvorlage seltener greift, überwiegen jetzt Jahreszahlfragen. Die sind sachlich richtig,
+aber eintönig — eine Mischungsregel wäre eine eigene Entscheidung und steht nicht in diesem Schritt.
 
 ## 4. Kompendium: die zwei KI-Optionen
 

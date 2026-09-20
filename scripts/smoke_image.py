@@ -85,6 +85,37 @@ def ask_for_entities(base_url: str, container: str) -> dict[str, object]:
     return dict(response.json())
 
 
+def ask_for_pairs(base_url: str, container: str) -> dict[str, object]:
+    """The question templates only check their subjects when the packaged spaCy model really runs."""
+    body = {
+        "text": (
+            "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. "
+            "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht."
+        ),
+        "count": 5,
+    }
+    try:
+        response = httpx.post(f"{base_url}/api/v2/qa", json=body, timeout=REQUEST_TIMEOUT_S)
+    except httpx.HTTPError as exc:
+        raise SystemExit(f"the qa request got no answer ({exc}):\n{run('logs', container)}") from exc
+    if response.status_code != 200:
+        raise SystemExit(f"POST /api/v2/qa answered {response.status_code}: {response.text[:400]}")
+    return dict(response.json())
+
+
+def check_pairs(answer: dict[str, object]) -> str:
+    """Return the evidence line, or raise when the subjects went unchecked in the image."""
+    if answer.get("note"):
+        raise SystemExit(f"the image could not check the question subjects: {answer['note']}")
+    pairs = answer.get("pairs")
+    questions = [str(pair.get("question", "")) for pair in pairs] if isinstance(pairs, list) else []
+    if any("Daneben" in question for question in questions):
+        raise SystemExit(f"a sentence-initial adverb became a question: {questions}")
+    if "Was versteht man unter Optik?" not in questions:
+        raise SystemExit(f"the real subject lost its question: {questions}")
+    return f"{len(questions)} pairs, no question about an adverb"
+
+
 def check_entities(answer: dict[str, object]) -> str:
     """Return the evidence line, or raise when the model of the image did not run."""
     methods = answer.get("methods")
@@ -138,6 +169,7 @@ def main() -> int:
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
+            print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
         finally:
             run("rm", "-f", args.name)
     return 0

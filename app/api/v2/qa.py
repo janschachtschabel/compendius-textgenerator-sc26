@@ -20,6 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.api.deps import corpus_for_topic, get_service
 from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
+from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.synthesis.qa import QaPair, rule_based_pairs
 
@@ -28,6 +29,10 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 Method = Literal["rule-based", "llm"]
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
+NO_TAGGER_NOTE = (
+    "spaCy-Modell nicht geladen; die Fragevorlagen können Satzanfänge nicht prüfen und fragen unter Umständen "
+    "nach Adverbien statt nach Begriffen"
+)
 
 
 class QaRequest(BaseModel):
@@ -63,7 +68,11 @@ class QaResponse(BaseModel):
     resolution: Resolution | None = None
     chars: int = Field(description="Characters of the text the pairs were made from")
     pairs: list[Pair]
-    note: str | None = Field(None, description="Why the LLM did not write the pairs, when it was asked to")
+    note: str | None = Field(
+        None,
+        description="What a reader should know about how the pairs came about: why the LLM did not write them, "
+        "or that the spaCy model for checking the question subjects is missing",
+    )
 
 
 def _text_of(sources: list[Source]) -> str:
@@ -121,22 +130,25 @@ def qa(payload: QaRequest, request: Request) -> QaResponse:
         raise HTTPException(status_code=404, detail="Zum Thema stehen in den Archiven keine Texte bereit.")
 
     method: Method = "rule-based"
-    note: str | None = None
+    notes: list[str] = []
     pairs: list[QaPair] | None = None
     if payload.method == "llm":
         pairs, reason = _from_llm(request, text, payload)
         if pairs is None:
             log.info("QA fell back to the templates: %s", reason)
-            note = reason
+            notes.append(reason)
         else:
             method = "llm"
     if pairs is None:
-        pairs = rule_based_pairs(text, limit=payload.count, max_answer_length=payload.max_answer_length)
+        nlp = load_spacy(request.app.state.settings.spacy_model)
+        if nlp is None:
+            notes.append(NO_TAGGER_NOTE)
+        pairs = rule_based_pairs(text, limit=payload.count, max_answer_length=payload.max_answer_length, nlp=nlp)
     return QaResponse(
         method=method,
         topic=topic,
         resolution=resolution,
         chars=len(text),
         pairs=[Pair(question=pair.question, answer=pair.answer) for pair in pairs[: payload.count]],
-        note=note,
+        note="; ".join(notes) or None,
     )

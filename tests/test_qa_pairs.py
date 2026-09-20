@@ -104,3 +104,60 @@ def test_rule_based_pairs_stamp_the_level_property_they_were_given() -> None:
         level_property="Bildungsstufe",
     )
     assert pairs[0].level_property == "Bildungsstufe" and pairs[0].level_value is None
+
+
+class FakeToken:
+    """A spaCy token as the question templates use it: text and word class."""
+
+    def __init__(self, text: str, pos: str) -> None:
+        self.text, self.pos_ = text, pos
+
+
+# The tags measured with de_core_news_md inside the image on 2026-09-20 (docs/umbau.md U3b)
+TAGS = {
+    "Daneben": "ADV",
+    "Beispielsweise": "ADV",
+    "Bedeutsam": "ADV",
+    "Wiederum": "ADV",
+    "Als": "ADP",
+    "Ein": "DET",
+    "Eine": "DET",
+    "Die": "DET",
+}
+
+
+def fake_nlp(text: str) -> list[FakeToken]:
+    return [FakeToken(word, TAGS.get(word, "NOUN")) for word in text.split()]
+
+
+def test_a_sentence_initial_adverb_asks_no_definition_question() -> None:
+    """Measured against the real Wikipedia: German capitalises at a sentence start, so "Daneben ist …" matched."""
+    sentence = "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung."
+    assert questions(sentence) == ["Was versteht man unter Daneben?"], "without a tagger, as before"
+    assert rule_based_pairs(sentence, limit=5, max_answer_length=300, nlp=fake_nlp) == []
+
+
+def test_a_prepositional_phrase_asks_no_purpose_question() -> None:
+    sentence = "Als Reduktionsmittel dienen die Elektronen oxidierbarer Stoffe in der Zelle."
+    assert questions(sentence) == ["Wozu dienen Als Reduktionsmittel?"], "without a tagger, as before"
+    assert rule_based_pairs(sentence, limit=5, max_answer_length=300, nlp=fake_nlp) == []
+
+
+def test_a_real_noun_subject_still_gets_its_question() -> None:
+    text = (
+        "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht. "
+        "Ein Fernrohr besteht aus einem Objektiv und einem Okular. "
+        "Eine Sammellinse dient der Bündelung von Lichtstrahlen im Brennpunkt."
+    )
+    pairs = rule_based_pairs(text, limit=5, max_answer_length=300, nlp=fake_nlp)
+    assert [pair.question for pair in pairs] == [
+        "Was versteht man unter Optik?",
+        "Woraus besteht ein Fernrohr?",
+        "Wozu dient eine Sammellinse?",
+    ]
+
+
+def test_the_year_question_needs_no_subject_and_survives_the_check() -> None:
+    sentence = "Wiederum im Jahr 1704 veröffentlichte Newton sein Werk über die Farben des Lichts."
+    pairs = rule_based_pairs(sentence, limit=5, max_answer_length=300, nlp=fake_nlp)
+    assert [pair.question for pair in pairs] == ["Was geschah im Jahr 1704?"]
