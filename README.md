@@ -35,6 +35,21 @@ Builds.
 - Überwachung: Prometheus-Endpunkt `/metrics` mit Zustand und Laufzeitmetriken, getestete Alarmregeln in
   `monitoring/`, Prometheus als Compose-Profil (D31).
 
+## Installation
+
+Für eine Maschine, auf der nur Debian 13 liegt, führt [docs/installation.md](docs/installation.md) von
+Docker bis zum ersten Kompendium. Kurzfassung, wenn Docker schon läuft:
+
+```bash
+git clone https://github.com/janschachtschabel/compendius-textgenerator-sc26.git && cd compendius-textgenerator-sc26
+cp .env.example .env          # läuft unverändert und ohne LLM; ZIM_PROFILE wählt die Archivgröße
+docker compose build
+docker compose up -d          # der Updater lädt die Archive des Profils (standard: rund 14,1 GB)
+curl -fsS http://127.0.0.1:8000/ready
+```
+
+`/ready` meldet bis dahin 503 und nennt die Archive, auf die der Dienst noch wartet.
+
 ## Entwicklung
 
 ```bash

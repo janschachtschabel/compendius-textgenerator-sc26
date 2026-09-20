@@ -1,6 +1,6 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-20, Fassung v17 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
+Stand: 2026-09-20, Fassung v18 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
 teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
@@ -1095,6 +1095,15 @@ Laufzeit findet kein Download statt (`HF_HUB_OFFLINE=1`).
 `state` (2 GB). Ressourcen: 2 CPU, 2 GB RAM (`base`) bzw. 4 GB (`ml`); libzim nutzt mmap, der
 Betriebssystem-Cache profitiert von zusätzlichem RAM.
 
+**Worker und Healthcheck (Fund vom 2026-09-20).** Der Elternprozess von uvicorn pingt jedes Kind und tötet
+es, wenn es nicht binnen `--timeout-worker-healthcheck` antwortet (Standard fünf Sekunden). Ein Worker, der an
+einem Kompendium arbeitet, antwortet nicht: Die Arbeit steckt in C-Code (ZIM-Lesen, Matching), der die
+Interpreter-Sperre hält — gemessen 26 Sekunden am Stück in einer einzigen Anfrage. Mit mehr als einem Worker
+endete deshalb **jede** Kompendium-Anfrage mit einem getöteten Worker und einer abgebrochenen Verbindung; mit
+einem Worker (ohne Elternprozess) fiel es nicht auf, ebenso wenig in den Tests, die den Dienst im selben
+Prozess aufrufen. `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden, damit es
+eine ganze Anfrage überdauert und ein wirklich hängender Worker trotzdem ersetzt wird.
+
 **Erststart.** `GET /ready` bleibt rot, bis die Pflicht-Archive vorliegen. Mit
 `ZIM_BOOTSTRAP_DOWNLOAD=true` lädt der Updater sie (14 GB bei 50 MB/s ≈ 5 min, bei 10 MB/s ≈
 25 min). Alternativ werden die Dateien einmalig auf das Volume kopiert.
@@ -1108,7 +1117,7 @@ wird auf die neuen Modi umgestellt (Regelmodus 0, Hybridszenarien).
 `pipeline_statistics`, optional `/metrics` (Prometheus): Latenz, Cache-Trefferquote, LLM-Tokens,
 ZIM-Stand, Harvest-Alter. **Stand 2026-09-18:** `/metrics` umgesetzt (D31) mit Latenz, LLM-Tokens,
 ZIM-Stand und Harvest-Alter, dazu Alarmregeln; die Cache-Trefferquote fehlt, weil es den Ergebnis-Cache
-noch nicht gibt. Request-IDs und JSON-Logs sind offen.
+noch nicht gibt. Request-IDs sind seit Fassung v17 umgesetzt (OPS-03), JSON-Logs sind offen.
 
 **Sicherheit.** Admin-Endpunkte hinter `ADMIN_TOKEN`; Download-URLs nur von Kiwix-Hosts;
 Dateinamen ohne Pfadanteile; edu-sharing-Zugangsdaten als Secret; keine Nutzereingaben in
@@ -1544,6 +1553,17 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-20, Fassung v18 (lauffähiges Image, Installation):** Das Image wurde lokal gebaut und gefahren, und
+  dabei zeigte sich ein Fehler, den weder Tests noch CI sehen konnten: Mit der Standardeinstellung zwei Worker
+  tötete der Elternprozess von uvicorn bei **jeder** Kompendium-Anfrage den arbeitenden Worker, weil dieser
+  während der Arbeit in C-Code die Interpreter-Sperre hält und den Healthcheck nicht beantwortet (Abschnitt 10).
+  `app/serve.py` setzt das Fenster jetzt auf `REQUEST_TIMEOUT_S` plus 60 Sekunden; belegt mit drei Anfragen im
+  Container ohne einen einzigen getöteten Worker. Außerdem: `.env.example` dokumentiert jede Einstellung und
+  jede Prozessvariable (neuer Test `tests/test_env_example.py`), die tote Einstellung `APP_NAME` ist entfernt
+  (`/health` nennt den Dienst fest, so verlangt es der v1-Vertrag), `ZIM_BOOTSTRAP_DOWNLOAD` steht in der
+  Vorlage auf `true` — sonst schaltete ein kopiertes `.env` den Erststart-Download still ab —, das
+  Embedding-Modell wird im Dockerfile vor dem Quelltext geladen (Schicht bleibt über Code-Änderungen im Cache),
+  und `docs/installation.md` führt von einem frischen Debian 13 bis zum ersten Kompendium.
 - **2026-09-20, Fassung v17 (Phase 6 und Request-IDs):** Der Vertrag des alten Dienstes läuft auf dem Neubau
   (`app/api/v1/`: Kompendium, beide Pipelines, Linker, QA, Split, Synonyme, Übersetzung), mit ehrlichen
   Statuscodes, `statistics.notes`, `parts_status` je Teil und der Teil-Regeneration
