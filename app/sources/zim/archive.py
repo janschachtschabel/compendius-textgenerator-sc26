@@ -128,6 +128,10 @@ class ZimArchive:
                     log.debug("lookup of %r failed: %s", candidate, exc)
         return None
 
+    def has(self, identifier: str) -> bool:
+        """Whether an article of this name exists, without unpacking it: a title lookup, no content read."""
+        return self._entry(identifier) is not None
+
     def read(self, identifier: str) -> ZimArticle | None:
         entry = self._entry(identifier)
         if entry is None:

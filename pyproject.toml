@@ -24,6 +24,9 @@ dependencies = [
 [project.optional-dependencies]
 # huggingface-hub: the image build downloads the model with snapshot_download (Dockerfile, MODEL2VEC_REVISION)
 embeddings = ["model2vec>=0.9", "huggingface-hub>=1.31"]
+# spaCy brings the German NER for /api/v2/entities; the model itself is baked into the image (Dockerfile,
+# SPACY_MODEL_REVISION). Without the extra the endpoint still answers - with the terms from the archives only.
+entities = ["spacy>=3.8"]
 
 [project.scripts]
 compendium = "app.cli:main"
