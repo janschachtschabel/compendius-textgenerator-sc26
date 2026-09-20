@@ -50,6 +50,7 @@ def build_frontmatter(
     generation: str,
     generated_at: str,
     enrichment: str = "sources-only",
+    enriched_sentences: int = 0,
     zim_snapshot: Sequence[Mapping[str, Any]],
     matcher: str | None,
     parts: Sequence[str],
@@ -58,8 +59,12 @@ def build_frontmatter(
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """``extraction`` and ``generation`` are the switches actually used; ``*_requested`` appears only when a switch
-    fell back to rule-based, and ``matcher`` only when part 1 was generated."""
-    if generation != "rule-based" and enrichment == "model-knowledge":
+    fell back to rule-based, and ``matcher`` only when part 1 was generated.
+
+    ``enrichment`` is the mode the request was granted; ``enriched_sentences`` is what the text really carries.
+    The disclosure follows the text: a permission the model did not use must not be declared as model knowledge.
+    """
+    if generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences:
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
     elif generation != "rule-based":
         disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"

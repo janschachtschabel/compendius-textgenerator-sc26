@@ -212,7 +212,9 @@ aber ohne Belegnummer verlangt und höchstens jeden dritten Satz. Ein Baustein b
 einen belegten Satz, sonst bleibt er regelbasiert. Die Antwort sagt es an drei Stellen: `enrichment` im
 Kompendium und im Frontmatter, `frontmatter.llm.enrichment` mit Satzzahl und Hinweis, `audit.llm.generation`
 mit `enrichment` und `marked_sentences`, je Baustein `sections[].llm.marked_sentences`. Die KI-Kennzeichnung
-im Frontmatter nennt dann ausdrücklich „ergänzt um Modellwissen ohne Quellenbeleg“. Ohne schreibendes LLM
+richtet sich nach dem Text, nicht nach der Erlaubnis: Nur wenn wirklich etwas ergänzt wurde, nennt sie
+„ergänzt um Modellwissen ohne Quellenbeleg“ — bleibt das Modell in den Quellen, steht dort die gewohnte
+Kennzeichnung und der erklärende Hinweis im Frontmatter entfällt. Ohne schreibendes LLM
 (`generation: rule-based` oder b-api nicht verfügbar) meldet die Antwort `sources-only` — der Schalter kann
 dann nichts bewirken.
 Quellen, Belegtabelle, Glossar, Akteure und alle Marker bleiben deterministisch. LLM-Bausteine tragen

@@ -381,6 +381,7 @@ class CompendiumService:
             generation=generation_used,
             generation_requested=generation_requested,
             enrichment=enrichment_used,
+            enriched_sentences=drafted.marked_sentences if drafted else 0,
             llm=llm_front,
             generated_at=generated_at,
             zim_snapshot=self.registry.snapshot(),

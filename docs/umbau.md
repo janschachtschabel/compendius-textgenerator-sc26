@@ -163,6 +163,12 @@ Eine Festlegung, die der Entwurf offen ließ: **Ein Baustein braucht weiterhin m
 Ein Baustein ganz aus Modellwissen wäre kein Kompendiumsbaustein mehr; er fällt auf den extraktiven Text zurück
 und steht mit Grund in `audit.llm.generation.fallbacks`.
 
+**Kennzeichnung folgt dem Text, nicht der Erlaubnis.** Bei der Selbstprüfung gefunden: Wer `model-knowledge`
+erlaubt bekommt, aber in den Quellen bleibt, hätte eine KI-Kennzeichnung mit „ergänzt um Modellwissen“
+bekommen, obwohl nichts ergänzt wurde — eine Falschaussage in genau dem Feld, das nach Art. 50 stimmen muss.
+`ai_disclosure` und der erklärende Frontmatter-Hinweis hängen jetzt an der Zahl der gekennzeichneten Sätze;
+`enrichment` selbst bleibt der gewährte Modus.
+
 **Nicht gemessen:** Wie oft ein Modell die Regel „höchstens jeder dritte Satz aus eigenem Wissen“ einhält, ist
 offen — das braucht einen Lauf gegen die echte b-api und kostet Tokens.
 

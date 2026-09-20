@@ -80,12 +80,12 @@ def build_llm_report(
     }
     front["generation"] = {"sections": generation_block["sections"], "fallbacks": generation_block["fallbacks"]}
     if enrichment_used == "model-knowledge":
-        # The reader has to be able to see this without reading the audit block (docs/umbau.md U4)
-        front["enrichment"] = {
-            "mode": enrichment_used,
-            "marked_sentences": generation_block["marked_sentences"],
-            "hinweis": MODEL_KNOWLEDGE_NOTE,
-        }
+        # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
+        # explains marked sentences, so it only appears where there are any - the model may stay in the sources.
+        marked = generation_block["marked_sentences"]
+        front["enrichment"] = {"mode": enrichment_used, "marked_sentences": marked}
+        if marked:
+            front["enrichment"]["hinweis"] = MODEL_KNOWLEDGE_NOTE
     if note:
         front["note"] = note
     return audit, tokens, front

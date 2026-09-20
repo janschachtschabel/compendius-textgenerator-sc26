@@ -364,3 +364,25 @@ def test_enrichment_without_llm_generation_is_reported_as_sources_only(service: 
         GenerateRequest(topic="Optik", generation="rule-based", enrichment="model-knowledge", parts=["world"])
     )
     assert result.enrichment == "sources-only" and "Modellwissen" not in result.markdown
+
+
+def only_cited_sentences(body: dict[str, Any]) -> str:
+    """Stays inside the evidence: the permission to enrich is given, but the model does not use it."""
+    user = body["messages"][1]["content"]
+    return " ".join(
+        f"{text.split('. ')[0].rstrip('.')[:160]} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user)
+    )
+
+
+def test_the_disclosure_claims_model_knowledge_only_when_there_is_some(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The mode says what was allowed; the AI disclosure has to say what the text actually contains (Art. 50)."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(only_cited_sentences)))
+    result = service.generate(
+        GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+    assert result.enrichment == "model-knowledge", "the switch was honoured"
+    assert result.audit.llm is not None and result.audit.llm["generation"]["marked_sentences"] == 0
+    assert "Modellwissen" not in result.frontmatter["ai_disclosure"]
+    assert "Modellwissen" not in result.markdown
