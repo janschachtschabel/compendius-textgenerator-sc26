@@ -1,7 +1,8 @@
 # Betrieb der Kompendium-API
 
-Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Architektur und Entscheidungen stehen in
-[PLAN.md](../PLAN.md), alle Einstellungen in [.env.example](../.env.example).
+Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Die Einrichtung einer neuen Maschine steht in
+[installation.md](installation.md), Architektur und Entscheidungen in [PLAN.md](../PLAN.md), alle Einstellungen
+in [.env.example](../.env.example).
 
 ## Prozesse und Volumes
 
@@ -65,5 +66,10 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 - Der Dienst hat keine Anmeldung für die öffentlichen Endpunkte; er gehört hinter ein Gateway. Admin-Endpunkte
   sind nur mit `ADMIN_TOKEN` aktiv.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
+- Zurück auf eine frühere Fassung: Das Image entsteht aus dem Quelltext, also `git checkout <Commit>` und
+  `docker compose build && docker compose up -d`. Die Volumes bleiben, wie sie sind. Findet die ältere Fassung
+  einen neueren Zustand vor — etwa `lehrplan.db` mit einer anderen Schemaversion —, meldet sie das als
+  `cache_unreadable` und ein Harvest baut den Cache neu auf (siehe Störungen); die Archive sind davon nicht
+  betroffen.
 - Ein neues Embedding-Modell oder eine neue Revision (`MODEL2VEC_REVISION` im Dockerfile) erst nach einer
   Messung mit `compendium eval run` übernehmen; die Zahlen stehen in [eval/README.md](../eval/README.md).
