@@ -47,3 +47,11 @@ def test_the_start_prepares_the_directory_and_hands_over_to_uvicorn(
     assert (file, args[:3]) == ("uvicorn", ["uvicorn", "app.main:create_app", "--factory"])
     assert env["PROMETHEUS_MULTIPROC_DIR"] == str(directory) and not (directory / "counter_1.db").exists()
     assert "PROMETHEUS_MULTIPROC_DIR" not in os.environ or configured  # the test process itself stays unchanged
+
+
+@pytest.mark.parametrize("budget", [120, 300])
+def test_a_worker_outlives_the_longest_request_it_may_serve(budget: int) -> None:
+    """The parent kills a worker that stays silent; one compendium holds the interpreter lock far past 5 seconds."""
+    command = serve.uvicorn_command(budget)
+    timeout = int(command[command.index("--timeout-worker-healthcheck") + 1])
+    assert timeout > budget
