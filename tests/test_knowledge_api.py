@@ -61,3 +61,5 @@ def test_the_text_is_capped_and_says_so(client: TestClient) -> None:
     assert not full["truncated"]
     short = client.post("/api/v2/knowledge", json={"topic": "Optik", "max_chars": 500}).json()
     assert short["truncated"] and short["chars"] <= 500 < full["chars"]
+    # An article the cap left nothing of is not worth listing; truncated already says there would be more
+    assert all(article["sections"] for article in short["articles"])

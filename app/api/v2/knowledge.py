@@ -139,6 +139,8 @@ def knowledge(payload: KnowledgeRequest, request: Request) -> KnowledgeResponse:
                 break
             kept.append(section)
             total += len(section.text)
+        if truncated and not kept:  # nothing of this article fit; listing it empty would say nothing
+            break
         articles.append(_article(source, by_file.get(source.zim_file or "", ""), kept))
         if truncated:
             break
