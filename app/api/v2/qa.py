@@ -19,15 +19,17 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.api.deps import corpus_for_topic, get_service
+from app.api.deps import get_service
 from app.api.limits import rate_limited
-from app.domain.models import Resolution, Source
+from app.domain.models import Compendium, Resolution
+from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
-from app.matching.lexicon import HeadingLexicon
+from app.service import CompendiumService, PartsUnavailableError, TopicNotFoundError
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
+from app.templates.manager import TemplateNotFoundError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -44,9 +46,20 @@ NO_TAGGER_NOTE = (
 class QaRequest(BaseModel):
     model_config = ConfigDict(json_schema_extra={"examples": [{"topic": "Optik", "count": 5}]})
 
-    text: str | None = Field(None, min_length=1, max_length=MAX_TEXT_CHARS, description="The text to ask about")
+    text: str | None = Field(
+        None,
+        min_length=1,
+        max_length=MAX_TEXT_CHARS,
+        description="The text the pairs are made from - the markdown of a compendium you already "
+        "have, or any other text",
+    )
     topic: str | None = Field(
-        None, min_length=1, max_length=300, description="Instead of a text: the articles of this topic are used"
+        None,
+        min_length=1,
+        max_length=300,
+        description="Instead of a text: part 1 of the compendium for this topic is made first and the "
+        "pairs are asked about it. That costs a compendium generation - hand the text over instead when "
+        "you already have one",
     )
     method: Method = Field(
         "rule-based",
@@ -92,26 +105,32 @@ class QaResponse(BaseModel):
     )
 
 
-def _text_of(sources: list[Source], lexicon: HeadingLexicon) -> str:
-    """The articles as one text, bounded: whole sections in reading order, cut at a section border.
+def _part_one(service: CompendiumService, topic: str) -> Compendium:
+    """Make part 1 of the compendium for the topic; its errors are the ones the compendium endpoint gives.
 
-    Literatur, Weblinks, Einzelnachweise and Siehe auch are left out, the same way ``segment_source``
-    leaves them out of the compendium: they are references, not content. Measured in the image on
-    2026-09-21 over four real topics - for a short article 21 of its 70 sentences were appendix, and at
-    the endpoint's largest count one candidate in a hundred came out of one ("2. Auflage").
+    Only ``world`` is asked for: part 2 lists curriculum elements and part 3 lists materials of a
+    collection, and neither is prose a question can be built from.
     """
-    parts: list[str] = []
-    total = 0
-    for source in sources:
-        for section in source.sections:
-            if lexicon.is_excluded(section.path) or lexicon.is_relation(section.path):
-                continue
-            text = "\n\n".join(paragraph.text for paragraph in section.paragraphs).strip()
-            if not text or total + len(text) > MAX_TEXT_CHARS:
-                continue
-            parts.append(text)
-            total += len(text)
-    return "\n\n".join(parts)
+    try:
+        return service.generate(GenerateRequest(topic=topic, parts=["world"]))
+    except TopicNotFoundError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
+        ) from exc
+    except TemplateNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
+    except PartsUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=f"Teil 1 ist nicht erzeugbar: {exc}") from exc
+
+
+def _text_of_compendium(compendium: Compendium) -> str:
+    """The prose of the blocks, in reading order - not the markdown around them.
+
+    The finished document carries headings, citation numbers, facet markers and a sources block. A
+    question generated from those asks about a number or a heading, so only the block texts are used.
+    """
+    return "\n\n".join(section.text.strip() for section in compendium.sections if section.text.strip())
 
 
 def _from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
@@ -199,7 +218,12 @@ def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     summary="Frage-Antwort-Paare zu einem Text oder Thema",
 )
 def qa(payload: QaRequest, request: Request) -> QaResponse:
-    """Build the pairs, from the caller's text or from the articles of a topic."""
+    """Build the pairs from the caller's text, or from the compendium this endpoint makes for the topic.
+
+    Both steps in one call, or one step with a text of your own: that is the pipeline. A topic makes
+    part 1 first and asks about its blocks - not about the raw articles, which carry far more than the
+    compendium ever shows.
+    """
     if payload.levels:
         # From here on only the project's own values travel, so the prompt and the pairs speak one
         # vocabulary and _level() can map the model's answer back onto it.
@@ -208,8 +232,9 @@ def qa(payload: QaRequest, request: Request) -> QaResponse:
     resolution: Resolution | None = None
     if payload.topic:
         service = get_service(request)  # a topic needs the archives; a plain text does not
-        topic, resolution, sources = corpus_for_topic(service, service.registry, payload.topic)
-        text = _text_of(sources, service.lexicon)
+        compendium = _part_one(service, payload.topic)
+        topic, resolution = compendium.topic, compendium.resolution
+        text = _text_of_compendium(compendium)
     else:
         text = payload.text or ""
     if not text.strip():

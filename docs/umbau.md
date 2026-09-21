@@ -259,6 +259,34 @@ Die Antwortmodelle sind **extraktiv**: Sie markieren die Stelle im Text, die die
 auch diese Stufe belegbar — nichts wird erfunden.
 
 
+### Die Textbasis der Paare: das Kompendium, nicht der Rohkorpus
+
+**Befund vom 2026-09-21.** Mit `topic` las der Endpunkt den ganzen Korpus der Artikel. Am laufenden Dienst
+gemessen: **50 068 Zeichen** Korpus gegen **31 050 Zeichen** Kompendium zum selben Thema. Die Paare zeigten
+es auch — „Was geschah im Jahr 1240?" stammt aus der Optik-Geschichte tief im Artikeltext, die im Kompendium
+gar nicht vorkommt.
+
+Das war nie die Absicht der Kette. Sie lautet: **erst das Kompendium erzeugen, dann daraus fragen.**
+
+| Aufruf | Textbasis |
+|---|---|
+| `text` gesetzt | genau dieser Text — etwa das Markdown eines Kompendiums, das der Aufrufer schon hat |
+| nur `topic` | Teil 1 wird erzeugt und **seine Bausteintexte** sind die Basis |
+
+Genommen wird die **Prosa der Bausteine**, nicht das fertige Markdown: das trägt Überschriften,
+Belegnummern, Facetten-Marken und den Quellen-Baustein, und eine Frage nach einer Belegnummer lehrt
+niemanden etwas. Angefragt wird nur `parts: ["world"]` — Teil 2 zählt Lehrplanelemente auf und Teil 3
+Materialien einer Sammlung, beides keine Prosa, aus der sich fragen lässt.
+
+Der Preis ist ehrlich zu nennen: Ein `topic`-Aufruf kostet jetzt eine Kompendium-Erzeugung (bei *Optik*
+regelbasiert rund 8 bis 14 Sekunden). Wer das nicht will, erzeugt einmal und übergibt den Text.
+
+**Nebenwirkung, geprüft:** `_text_of` im Endpunkt hatte damit keinen Aufrufer mehr und ist entfallen, samt
+dem Test, der am selben Tag dafür geschrieben worden war. Die Zusicherung dahinter — aus Literatur,
+Weblinks, Einzelnachweisen und „Siehe auch" entstehen keine Fragen — hält jetzt eine Ebene höher und
+stärker: `segment_source` macht aus diesen Abschnitten gar keine Chunks, und das Kompendium besteht nur aus
+Chunks (`tests/test_segmentation.py`).
+
 ### Bildungsstufen — eine Option der Stufe `llm`
 
 `levels` in der Anfrage verteilt die Paare über Bildungsstufen und gibt je Paar eine zurück (`level`).
