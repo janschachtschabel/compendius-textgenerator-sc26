@@ -11,7 +11,7 @@ from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, TopicNotFoundError
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
-from app.sources.zim.registry import ZimRegistry
+from app.sources.zim.registry import ZimRegistry, context_score
 
 
 def test_registry_loads_both_archives(registry: ZimRegistry) -> None:
@@ -112,3 +112,16 @@ def test_parse_cache_evicts_the_least_recently_used_article(
         archive.parse(article)
     # Optik stays hot; Ernst Abbe was the least recently used when Sinfonie came in
     assert parsed == ["Optik", "Ernst Abbe", "Sinfonie", "Ernst Abbe"]
+
+
+def test_the_context_is_looked_for_in_the_title_as_well() -> None:
+    """A German disambiguation page puts the distinction in the title, and the body rarely repeats it.
+
+    Measured against the real Wikipedia on 2026-09-21: the article behind "Rolle (Physik)" opens with
+    "Eine Rolle ist ein Maschinenelement" and never writes the word Physik. Scored on its body alone it
+    stayed at zero, so "Mangel (Gerät)" - the first link of the page - won the topic "Rolle" in a physics
+    context, although the right meaning stood second in the same list.
+    """
+    body = "Eine Rolle ist ein Maschinenelement und dient dem Umlenken eines Seils."
+    assert context_score({"physik"}, "Rolle (Physik)", body) == 1
+    assert context_score({"physik"}, "Mangel (Gerät)", body) == 0

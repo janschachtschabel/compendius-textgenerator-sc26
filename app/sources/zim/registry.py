@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +19,22 @@ log = logging.getLogger(__name__)
 
 SEARCH_RESERVE = 3  # corpus slots kept for slot-targeted full-text hits
 RELATED_MIN_CHARS = 350
+
+
+def context_score(context_words: Collection[str], title: str, text: str) -> int:
+    """How many of the caller's context words a candidate of a disambiguation page shows.
+
+    The title counts as much as the opening text, because that is where a German disambiguation page keeps
+    the distinction - "Rolle (Physik)", "Feld (Numismatik)" - while the body often never repeats it.
+    Measured against the real Wikipedia on 2026-09-21: the article behind "Rolle (Physik)" opens with "Eine
+    Rolle ist ein Maschinenelement" and does not contain the word Physik at all, so it scored zero and the
+    first link of the page won instead. Reading the title as well decided that case and left the other
+    seventeen checked topics exactly where they were.
+
+    ``context_words`` are expected in lower case; the candidate is not.
+    """
+    haystack = f"{title} {text[:1500]}".lower()
+    return sum(1 for word in context_words if word in haystack)
 
 
 class ZimRegistry:
@@ -132,7 +148,7 @@ class ZimRegistry:
             parsed = archive.parse(article)
             if parsed.is_disambiguation:
                 continue
-            score = sum(1 for w in context_words if w in parsed.text[:1500].lower())
+            score = context_score(context_words, parsed.title, parsed.text)
             candidates.append((score, len(candidates), article))
         if not candidates:
             return None

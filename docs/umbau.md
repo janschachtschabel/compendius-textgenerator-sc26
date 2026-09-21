@@ -102,8 +102,19 @@ Listenseite auf und meldete `disambiguation: false` — eine falsche Angabe übe
 es die Mehrdeutigkeit samt Alternativen und nimmt eine echte Bedeutung. Mit Kontext wählt
 `_pick_from_disambiguation` brauchbar („Feld“ + Physik → Elektromagnetisches Feld, „Faust“ + Goethe →
 Goethes Faust, „Union“ + Politik → CDU/CSU); ohne Kontext gewinnt der erste Link, und der kann danebenliegen
-(„Punkt“ → „Latein“, der Etymologie-Link). **Offener Punkt:** Die Auswahl sieht nur `links[:12]` und zählt
-Kontextwörter in den ersten 1500 Zeichen — bei „Punkt“ und „Rolle“ reicht das nicht.
+(„Punkt“ → „Latein“, der Etymologie-Link).
+
+**Nachgebessert am 2026-09-21: Die Bewertung las den Titel nicht.** Genau dort steht bei einer deutschen
+Begriffsklärung die Unterscheidung — „Rolle (Physik)“, „Feld (Numismatik)“ —, und der Artikelkörper
+wiederholt sie selten. Der Text hinter „Rolle (Physik)“ beginnt mit „Eine Rolle ist ein Maschinenelement“
+und enthält das Wort „Physik“ überhaupt nicht; er bekam null Punkte, und „Mangel (Gerät)“ als erster Link
+der Seite gewann das Thema „Rolle“ im Physik-Kontext. Mit dem Titel in der Bewertung wird daraus
+„Rolle (Physik)“, und von 18 gegen die echten Archive geprüften Fällen ändert sich **genau dieser eine**.
+Dasselbe Muster nutzt die Volltextsuche derselben Datei längst (`f"{hit.title} {hit.lead_text}"`).
+
+**Weiterhin offen:** Die Auswahl sieht nur `links[:12]`. Bei „Punkt“ steht die gesuchte Bedeutung nicht
+darin — die ersten zwölf Links sind Etymologie und Punktesysteme —, deshalb bleibt es bei „Latein“. Ein
+größeres Fenster kostet je Kandidat einen Archivzugriff samt Parse und müsste erst gemessen werden.
 
 Bei den Fragevorlagen in U5a war die Wortart dagegen genau richtig, weil die Fehlgriffe dort **keine**
 Substantive sind (Adverbien am Satzanfang); das ist behoben, siehe unten. Bis dahin liefert `dictionary` viel
