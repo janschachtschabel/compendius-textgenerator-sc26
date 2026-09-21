@@ -125,8 +125,9 @@ class ZimRegistry:
             parsed = archive.parse(article)
             if parsed.is_disambiguation:
                 resolution.disambiguation = True
-                resolution.alternatives = parsed.links[:8]
-                chosen = self._pick_from_disambiguation(archive, listed_meanings(parsed), context)
+                meanings = listed_meanings(parsed)  # one list: what is offered is what is chosen from
+                resolution.alternatives = meanings[:8]
+                chosen = self._pick_from_disambiguation(archive, meanings, context)
                 if chosen is not None:
                     resolution.title, resolution.path, resolution.project = chosen.title, chosen.path, archive.project
                     return resolution

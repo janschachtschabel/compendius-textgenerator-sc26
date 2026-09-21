@@ -46,7 +46,7 @@ def classify_entity(source: Source) -> str | None:
     a second sentence listing companies does not turn a concept into an organisation. And an article whose
     title *is* the type word is that concept, never an instance of it.
 
-    Measured against the real Wikipedia on 2026-09-21 over 29 hand-labelled articles: 19 right before, 25
+    Measured against the real Wikipedia on 2026-09-21 over 29 hand-labelled articles: 20 right before, 26
     after - six false actors gone (the concepts behind economy, company, museum, library, enterprise and
     cooperation) and no real actor lost. What stays wrong is a concept whose lead defines it *through* an
     actor word ("... ist ein Teil der Kooperation"); that needs the head of the predicate, not a pattern.
