@@ -151,6 +151,27 @@ Der Spitzenwert lässt sich im laufenden Container nachlesen:
 docker exec <container> sh -c 'cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes /sys/fs/cgroup/memory/memory.oom_control'
 ```
 
+## 7b. Welche Modelle wie viel Speicher kosten
+
+Im Image stecken vier Modelle. Gemessen am 2026-09-21, jedes allein in einem frischen Prozess im
+laufenden Container (`VmRSS` vorher/nachher), damit die Reihenfolge nichts verfaelscht:
+
+| Modell | auf der Platte | im Speicher | wann geladen |
+|---|---|---|---|
+| torch (nur die Bibliothek) | 0,8 GB | +209 MiB | sobald irgendein Modell kommt |
+| die Anwendung selbst | — | +138 MiB | immer |
+| spaCy `de_core_news_md` | 60 MB | **+580 MiB** | immer: Entitaeten und die Antwortkandidaten der Stufe `models` |
+| Model2Vec `m2v-gte-256-edu` | 322 MB | **+1012 MiB** | nur bei Matching-Strategie `model2vec` |
+| `dehio/german-qg-t5-quad` + `deepset/gelectra-base-germanquad` | 637 MB | **+1728 MiB** | nur bei `method: "models"` am QA-Endpunkt, faul und je Worker |
+
+Wer `method: "models"` nie anfragt, zahlt dessen 1,7 GB nie. Wer eine andere Matching-Strategie als
+`model2vec` waehlt, zahlt dessen 1,0 GB nie.
+
+**Halbe Genauigkeit spart Platte, nicht Speicher.** Die beiden QA-Modelle liegen als float16 im Image
+(das hat es von 3,40 auf 2,74 GB gebracht), werden beim Laden aber bewusst auf float32 zurueckgerechnet:
+halbe Genauigkeit rechnet auf einer CPU teils gar nicht und teils falsch. Aus 637 MB auf der Platte
+werden so rund 1,3 GB Gewichte im Speicher. Wer nach dem Image-Umfang plant, plant den Speicher zu klein.
+
 ## 8. Von außen erreichbar machen
 
 Compose veröffentlicht den Port absichtlich nur auf `127.0.0.1`. Für Zugriff von außen gehört ein
