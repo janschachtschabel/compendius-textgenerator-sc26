@@ -73,7 +73,14 @@ def test_the_count_bounds_the_pairs_and_stops_the_work() -> None:
 
 
 def test_a_long_answer_is_cut_to_the_bound() -> None:
-    pairs = model_pairs(CANDIDATES[:1], models(answer="x" * 400), count=1, max_answer_length=50)
+    """A span can be long when its sentence is long; the bound still holds.
+
+    The setup used to hand back an answer ten times the length of its sentence. MAX_ANSWER_SHARE now
+    rejects that, and ``extract_answer`` cannot produce it either: the span is a slice of the sentence
+    (test_the_answer_is_a_verbatim_slice_of_the_source). A long sentence carries a long slice instead.
+    """
+    sentence = "Die Optik " + "und die Brechung " * 30 + "sind ein Teilgebiet der Physik."
+    pairs = model_pairs([at(sentence, "Die Optik")], models(answer=sentence[:300]), count=1, max_answer_length=50)
     assert len(pairs[0].answer) == 50 and pairs[0].answer.endswith("…")
 
 
@@ -209,3 +216,26 @@ def test_spreading_nothing_is_no_error() -> None:
     """A text the tagger finds no noun phrase in must answer with no pairs, not with a traceback."""
     assert spread([]) == []
     assert model_pairs([], models(), count=3, max_answer_length=300) == []
+
+
+def test_an_answer_that_repeats_the_whole_sentence_is_dropped() -> None:
+    """A span equal to its sentence answers nothing; it reads the sentence back.
+
+    Measured in the image on 2026-09-21 over 32 pairs from four real topics: 7 of them had an answer
+    covering more than 80 percent of its own sentence, and they carry most of the pairs a reader would
+    call useless ("Was ist die Wellennatur des Lichtes?" answered with "Grundlage der Wellenoptik ist die
+    Wellennatur des Lichts").
+    """
+    assert model_pairs([at(FIRST, "Die Optik")], models("Was ist die Optik?", FIRST), count=5) == []
+
+
+def test_a_dropped_repetition_does_not_cost_the_candidates_behind_it() -> None:
+    """The loop goes on: one rejected pair may not end the search."""
+    questions = iter(["Was ist die Optik?", "Wo entwickelte er das Mikroskop?"])
+    answers = iter([FIRST, "in Jena"])
+    one_each = QaModels(
+        generate_question=lambda marked: next(questions),
+        extract_answer=lambda question, context: next(answers),
+    )
+    pairs = model_pairs([at(FIRST, "Die Optik"), at(SECOND, "Ernst Abbe")], one_each, count=5)
+    assert [pair.answer for pair in pairs] == ["in Jena"]

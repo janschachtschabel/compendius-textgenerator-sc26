@@ -30,6 +30,12 @@ log = logging.getLogger(__name__)
 TASK_PREFIX = "generate question: "
 HIGHLIGHT = "<hl>"
 MIN_ANSWER_CHARS = 2
+# A span that covers nearly its whole sentence does not answer the question, it reads the sentence back.
+# Measured in the image on 2026-09-21 over 32 pairs from four real topics: the shares fall into two groups
+# with a gap between them - answers at 0.03 to 0.48, then 0.71 and 0.78, then 0.86 to 1.00. The pair at
+# 0.71 is a real answer that happens to be a long definition, the one at 0.86 starts with a subordinate
+# clause ("Soweit die energiereichen organischen Stoffe ..."), so the line belongs between them.
+MAX_ANSWER_SHARE = 0.8
 
 
 @dataclass(frozen=True)
@@ -116,6 +122,11 @@ def model_pairs(
     invites the model to answer from somewhere else - it turned "Was ist das beste Medium, um Licht zu
     brechen?" from "Der Brechungsindex eines Mediums" into "Die Optik". The sentence is also faster
     (6.8 s against 9.3 s for five pairs). The tokenizer bounds the length at 512 tokens.
+
+    A span that covers nearly its whole sentence is rejected (``MAX_ANSWER_SHARE``) and the search goes
+    on with the next candidate. Measured in the image on 2026-09-21 over four real topics, 8 pairs each:
+    24 of 32 pairs were free of a checkable defect before, 30 of 32 after - and all 32 pairs were still
+    delivered, because the candidates that replace a rejected one were there all along.
     """
     pairs: list[QaPair] = []
     asked: set[str] = set()
@@ -128,6 +139,8 @@ def model_pairs(
         answer = models.extract_answer(question, candidate.sentence).strip()
         if len(answer) < MIN_ANSWER_CHARS:
             continue  # the text does not answer it; inventing an answer would break the promise of this stage
+        if len(answer) > MAX_ANSWER_SHARE * len(candidate.sentence):
+            continue  # the span is the sentence; the next candidate may still carry a real answer
         asked.add(question)
         pairs.append(QaPair(question=question, answer=cut(answer, max_answer_length)))
     return pairs
