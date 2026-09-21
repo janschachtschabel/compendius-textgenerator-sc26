@@ -463,6 +463,51 @@ Vorteil der Mikrooptik gegenüber der Wellenlänge?" zählt als mangelfrei, obwo
 nichts steht — das erfindet das Fragemodell, und dagegen hilft nur ein größeres Modell oder eine Prüfung,
 die den Text versteht.
 
+### Erfundene Frageinhalte: als Maß widerlegt, dafür ein Textbefund
+
+**Die Frage war:** Wie oft erfindet das Fragemodell Inhalte, die im Text nicht stehen („Was ist der
+*Vorteil* der Mikrooptik?" — von einem Vorteil steht dort nichts)? **Der Versuch:** Ein Inhaltswort der
+Frage gilt als gedeckt, wenn sein Anfang (6 Zeichen) im Quellsatz vorkommt; ungedeckte Wörter wären der
+Verdacht.
+
+**Gemessen an 32 Paaren aus vier echten Themen: 10 voll gedeckt, 13 mit einem offenen Wort, 9 mit zwei
+und mehr.** Die offenen Wörter sind überwiegend harmlose Umschreibungen — „bezeichnet", „Bereich",
+„Beruf", „Grund", „große" (statt „bedeutende"), „Teile" (statt „Teilchen"). Als Filter würde die
+Wortdeckung **zwei Drittel der guten Fragen** mitnehmen. Der Ansatz ist damit **widerlegt**, nicht
+aufgeschoben: Gegen erfundene Inhalte hilft nur ein größeres Modell oder eine Prüfung, die den Text
+versteht — keine Wortstatistik.
+
+### Der Quelltext: Anhänge gehörten nicht hinein
+
+Beim Nachmessen fiel etwas anderes auf. `segment_source` schließt Literatur, Weblinks, Einzelnachweise
+und Siehe auch über das Überschriften-Lexikon aus — sie sind Belege, kein Inhalt. `_text_of` im
+QA-Endpunkt ging aber **direkt** über `source.sections` und kannte das Lexikon nicht.
+
+| Thema | ganzer Text | ohne Anhänge |
+|---|---|---|
+| Optik | 10 812 Zeichen, **70 Sätze** | 9 003 Zeichen, **49 Sätze** |
+| Zahnmedizin | 18 814 Zeichen, 113 Sätze | 16 250 Zeichen, 97 Sätze |
+| Klimawandel | 49 820 Zeichen, 217 Sätze | 49 425 Zeichen, 215 Sätze |
+| Photosynthese | 50 046 Zeichen, 332 Sätze | 49 987 Zeichen, 332 Sätze |
+
+In Zeichen sind das nur 3,7 % — **in Sätzen bei einem kurzen Artikel 30 %**, weil Literaturzeilen kurz
+sind. Und `spread` gibt jedem Satz ein Paar, bevor einer ein zweites bekommt, stellt „2. Auflage." also
+gleichberechtigt neben den Fachinhalt.
+
+**Wie groß der Schaden wirklich war, wurde gemessen, bevor etwas gebaut wurde:** Die Kandidaten kommen in
+Dokumentreihenfolge, der Anhang steht am Ende. Bei `count` bis 20 stammen **0 von 80** der zuerst
+probierten Kandidaten aus dem Anhang; erst beim größtmöglichen `count` von 50 ist es **1 von 100** — und
+zwar „2. Auflage" aus „2. Auflage.".
+
+Behoben wurde es trotzdem, und der Grund ist nicht die Häufigkeit: Das Projekt hat längst entschieden,
+dass diese Abschnitte kein Inhalt sind — nur der QA-Endpunkt fragte nicht danach. Eine Inkonsistenz von
+drei Zeilen, keine Geschmacksfrage.
+
+**Nebenbei korrigiert sich eine frühere Messung:** Die Proben bis dahin lasen `sections[:3]` und
+schnitten bei 3000 Zeichen. Die Produktion nimmt ganze Abschnitte bis 50 000 — bei *Optik* 10 773 statt
+3000 Zeichen, bei *Photosynthese* schöpft sie die Grenze aus. Die Zahlen zur Fragequalität oben stammen
+aus dem verkürzten Text und gelten für diesen; die Größenordnung hat sich in der Nachmessung bestätigt.
+
 ## 4. Kompendium: die zwei KI-Optionen
 
 | Option | Feld | Was das Modell tut | Wortlaut |

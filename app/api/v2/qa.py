@@ -24,6 +24,7 @@ from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
+from app.matching.lexicon import HeadingLexicon
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
 
@@ -88,12 +89,20 @@ class QaResponse(BaseModel):
     )
 
 
-def _text_of(sources: list[Source]) -> str:
-    """The articles as one text, bounded: whole sections in reading order, cut at a section border."""
+def _text_of(sources: list[Source], lexicon: HeadingLexicon) -> str:
+    """The articles as one text, bounded: whole sections in reading order, cut at a section border.
+
+    Literatur, Weblinks, Einzelnachweise and Siehe auch are left out, the same way ``segment_source``
+    leaves them out of the compendium: they are references, not content. Measured in the image on
+    2026-09-21 over four real topics - for a short article 21 of its 70 sentences were appendix, and at
+    the endpoint's largest count one candidate in a hundred came out of one ("2. Auflage").
+    """
     parts: list[str] = []
     total = 0
     for source in sources:
         for section in source.sections:
+            if lexicon.is_excluded(section.path) or lexicon.is_relation(section.path):
+                continue
             text = "\n\n".join(paragraph.text for paragraph in section.paragraphs).strip()
             if not text or total + len(text) > MAX_TEXT_CHARS:
                 continue
@@ -175,7 +184,7 @@ def qa(payload: QaRequest, request: Request) -> QaResponse:
     if payload.topic:
         service = get_service(request)  # a topic needs the archives; a plain text does not
         topic, resolution, sources = corpus_for_topic(service, service.registry, payload.topic)
-        text = _text_of(sources)
+        text = _text_of(sources, service.lexicon)
     else:
         text = payload.text or ""
     if not text.strip():

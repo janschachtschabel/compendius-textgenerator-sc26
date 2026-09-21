@@ -12,6 +12,8 @@ from collections.abc import Iterator
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api.v2.qa import _text_of
+from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -208,3 +210,38 @@ def test_levels_are_also_said_out_loud_when_the_llm_falls_back(client: TestClien
     note = body["note"] or ""
     assert "LLM nicht konfiguriert" in note, "the reason for the fallback"
     assert "Stufen" in note, "and that the levels went with it"
+
+
+def test_the_appendix_of_an_article_is_no_source_for_questions(client: TestClient) -> None:
+    """Literatur, Weblinks and Einzelnachweise are references, not content - the lexicon says so.
+
+    segment_source has excluded them from the compendium since U1; the QA endpoint read the sections
+    directly and did not ask. Measured in the image on 2026-09-21 over four real topics: for a short
+    article 21 of 70 sentences were appendix, and at the endpoint's largest count one of a hundred
+    candidates came out of one ("2. Auflage" from "2. Auflage.").
+    """
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    source = Source(
+        source_id="wikipedia:Probe",
+        project="wikipedia",
+        role=SourceRole.LEITQUELLE,
+        title="Probe",
+        url="u",
+        sections=[
+            ArticleSection(
+                heading="",
+                path=[],
+                level=0,
+                paragraphs=[Paragraph(text="Die Optik ist ein Teilgebiet der Physik.")],
+            ),
+            ArticleSection(
+                heading="Literatur",
+                path=["Literatur"],
+                level=2,
+                paragraphs=[Paragraph(text="Barfuß: Populäres Lehrbuch der Optik. 2. Auflage. 1860.")],
+            ),
+        ],
+    )
+    text = _text_of([source], service.lexicon)
+    assert "Teilgebiet der Physik" in text
+    assert "2. Auflage" not in text, "a question about an edition number teaches nobody anything"
