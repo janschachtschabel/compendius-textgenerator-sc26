@@ -3,8 +3,10 @@
 .mypy_cache
 .ruff_cache
 .pytest_cache
-__pycache__
-*.pyc
+# Ohne ** trifft das Muster nur die oberste Ebene: gemessen am 2026-09-21 trug das Image 16 Verzeichnisse
+# mit Bytecode vom Entwicklungsrechner.
+**/__pycache__
+**/*.pyc
 alterCode
 data
 tests
