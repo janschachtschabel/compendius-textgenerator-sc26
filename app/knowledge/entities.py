@@ -54,8 +54,8 @@ def classify_entity(source: Source) -> str | None:
     Measured against the real Wikipedia on 2026-09-21. Type words, over 29 hand-labelled articles: 20
     right before, 26 after - six false actors gone (the concepts behind economy, company, museum,
     library, enterprise and cooperation) and no real actor lost. The markers, over 1500 random articles:
-    71 persons won and 47 lost, and 45 of those 47 are lists of names ("X ist der Familienname folgender
-    Personen"), which the old rule counted as one person because the entries carry birth dates. The 71
+    61 persons won and 45 lost, and 42 of those 45 are lists of names ("X ist der Familienname folgender
+    Personen"), which the old rule counted as one person because the entries carry birth dates. The 61
     are the leads the old rule could not read: an alias before the marker, or a Julian/Gregorian date.
     Of 18 historical persons it missed eight, one of them labelled an organisation once the person rule
     had failed.

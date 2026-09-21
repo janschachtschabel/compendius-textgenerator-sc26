@@ -381,6 +381,38 @@ Photosynthese?“ und drei Jahreszahlen; kein Betreff ist mehr ein Adverb. **Beo
 Weil die Definitionsvorlage seltener greift, überwiegen jetzt Jahreszahlfragen. Die sind sachlich richtig,
 aber eintönig — eine Mischungsregel wäre eine eigene Entscheidung und steht nicht in diesem Schritt.
 
+### Fragequalitaet der kleinen Modelle, am 2026-09-21 gemessen
+
+In meinen Berichten stand mehrfach, die Qualitaet der Fragen haenge an der Modellgroesse. In dieser
+Datei stand sie nie, und gemessen war sie auch nicht. Jetzt gemessen, im Image, an den ersten 14 Paaren
+zu *Optik* (Kandidat, erzeugte Frage, gefundene Antwort, je Paar sichtbar):
+
+Zuerst das Erfreuliche: **keine einzige Frage nach einer Jahreszahl mehr**. Der Befund, mit dem diese
+Arbeit anfing, ist weg — die 14 Paare stammen aus 14 verschiedenen Saetzen, und alle 14 kommen durch den
+Filter (keines wird als unbeantwortbar verworfen).
+
+Die verbleibenden Maengel sitzen aber **nicht nur im Modell**. Von Hand zugeordnet:
+
+| Fehlerort | Was passiert | Beispiel aus dem Lauf |
+|---|---|---|
+| Kandidat | markiert ist das Satzsubjekt, ueber das sich nichts fragen laesst | Kandidat „Grundlage" in „Grundlage der Wellenoptik ist die Wellennatur des Lichts" ergibt „Was ist die Wellennatur des Lichtes?" — die Frage stellt das Praedikat als Subjekt |
+| Satz | der Satz verweist zurueck und ist allein nicht beantwortbar | „Viele Gesetzmaessigkeiten … gelten auch **ausserhalb dieser Bereiche**" ergibt „Was gibt es ausserhalb dieser Bereiche?" |
+| Fragemodell | kaputte Grammatik oder erfundener Inhalt | „Was ist der **Vorteil** der Mikrooptik gegenueber der Wellenlaenge?" — von einem Vorteil steht dort nichts |
+| Antwortmodell | liefert den ganzen Quellsatz statt einer Spanne | 5 der 14 Antworten sind der vollstaendige Satz |
+
+Nach Handurteil sind **6 der 14 brauchbar**. Etwa die Haelfte der Maengel entsteht also vor dem Modell, in
+der Auswahl von Kandidat und Satz. Ein groesseres Modell wuerde die Zeilen 2, 6 und 9 heilen und die
+uebrigen nicht.
+
+Drei Ansatzpunkte, keiner davon umgesetzt — es sind Produktentscheidungen, keine Fehler:
+
+1. Saetze mit Rueckverweis (`dabei`, `dieser`, `daneben`, ein einleitendes `es`) als Kandidatenquelle
+   ueberspringen. Im Lauf betrifft das 2 von 14.
+2. Eine Antwort verwerfen, die praktisch den ganzen Satz umfasst — sie beantwortet nichts, sie wiederholt.
+   Im Lauf 5 von 14; der Ertrag saenke entsprechend.
+3. Das Satzsubjekt eines definierenden Satzes als Kandidat meiden. Vorsicht: genau diese Form liefert auch
+   die besten Paare des Laufs („Was ist die Quantenoptik?"), eine pauschale Regel waere schlechter.
+
 ## 4. Kompendium: die zwei KI-Optionen
 
 | Option | Feld | Was das Modell tut | Wortlaut |
