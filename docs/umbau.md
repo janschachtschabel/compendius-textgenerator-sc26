@@ -306,10 +306,17 @@ U5a belebt das Modul wieder, statt Neues zu schreiben, und gibt ihm seine Tests 
 fehlender; U5b fügt ihn hinzu. Einen Wert zu ergänzen bricht keinen Aufrufer.
 
 **Die Stufenverteilung (`level_property`, `level_values`) bleibt ungenutzt.** Gemessen am 2026-09-20:
-`_level()` bildet über Teilstrings ab und setzt sonst stillschweigend die **erste** angebotene Stufe — aus
-„Sekundarstufe II“ wird „Primar“. Das ist ein falsches Etikett, kein fehlendes.
-Der Endpunkt bietet Stufen deshalb nicht an; wer sie braucht, braucht zuerst eine Abbildung, die scheitern
-darf. **Offener Punkt.**
+`_level()` bildet über Teilstrings ab und setzte sonst stillschweigend die **erste** angebotene Stufe — aus
+„Sekundarstufe II“ wurde „Primar“. Das war ein falsches Etikett, kein fehlendes.
+
+**Behoben am 2026-09-21: Was die Regel nicht abbildet, bleibt leer.** Die Abbildung darf jetzt scheitern —
+genau das, was hier gefehlt hat. Ein Aufrufer sieht eine leere Stufe und kann entscheiden; durch eine
+erfundene sieht er nicht hindurch. Der Test, der die alte Fassung festhielt, sagte in seinem eigenen
+Docstring „pins what the code does today, not what it should“ und ist mitgewandert.
+
+**Weiterhin offen, aber aus einem anderen Grund:** Der Endpunkt bietet Stufen nicht an. Das ist jetzt keine
+Sicherheitsfrage mehr, sondern eine Produktfrage — niemand hat sie bisher gebraucht. Wer sie will, hängt
+`level_property` und `level_values` an `POST /api/v2/qa`; die Schicht darunter trägt sie bereits.
 
 **Gemessen gegen die echten Archive** (Wikipedia 5 Mio. Artikel + Klexikon): „Optik“ HTTP 200 in
 0,38 s, „Photosynthese“ in 0,88 s, je 50.000 Zeichen Quelltext, unbekanntes Thema 404. Die

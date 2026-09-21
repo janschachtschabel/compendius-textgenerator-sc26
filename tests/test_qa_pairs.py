@@ -84,15 +84,16 @@ def test_parse_pairs_strips_a_numbering_the_model_added() -> None:
     assert [pair.question for pair in pairs] == ["Was ist Licht?", "Was ist Optik?"]
 
 
-def test_parse_pairs_maps_a_level_by_substring_and_falls_back_to_the_first_one() -> None:
-    """Measured 2026-09-20: a label the substring rule misses silently becomes the FIRST offered level.
+def test_a_level_the_rule_cannot_map_stays_empty_instead_of_becoming_the_first_one() -> None:
+    """A label the substring rule misses used to become the FIRST offered level silently.
 
-    "Sekundarstufe II" is a wrong label then, not a missing one, which is why POST /api/v2/qa does not
-    offer levels yet (docs/umbau.md, open point). This pins what the code does today, not what it should.
+    Measured 2026-09-20: "Sekundarstufe II" came back as "Primar", and a pair without a third field got
+    one too - a wrong label, not a missing one. A caller can see an empty level and decide for itself; it
+    cannot see through an invented one.
     """
     answer = "Frage A;Antwort;Sek I\nFrage B;Antwort;sek ii\nFrage C;Antwort;Sekundarstufe II\nFrage D;Antwort"
     pairs = parse_pairs(answer, max_answer_length=300, level_property="Bildungsstufe", level_values=LEVELS)
-    assert [pair.level_value for pair in pairs] == ["Sek I", "Sek II", "Primar", "Primar"]
+    assert [pair.level_value for pair in pairs] == ["Sek I", "Sek II", None, None]
     assert all(pair.level_property == "Bildungsstufe" for pair in pairs)
 
 

@@ -180,9 +180,9 @@ def parse_pairs(
         if len(parts) < 2 or not parts[0] or not parts[1]:
             continue
         question = _NUMBERING.sub("", parts[0])
+        # An unmappable label stays empty. It used to become level_values[0], which turned a level the
+        # model named into one it never named - a wrong label instead of a missing one (docs/umbau.md U5).
         level = _level(parts[2], level_values) if len(parts) > 2 and level_values else None
-        if level_values and level is None:
-            level = level_values[0]
         pairs.append(
             QaPair(
                 question=question,
