@@ -9,7 +9,9 @@ question; it is *extractive*, so every answer is a span of the source and nothin
 
 A candidate whose question the answer model cannot answer from the text is dropped rather than guessed at.
 Both models are an external boundary here: ``QaModels`` holds them as two callables, which keeps this module
-testable without torch and keeps the loading in one place (``load_qa_models``).
+testable without torch and keeps the loading in one place (``load_qa_models``). The generator takes a whole
+round of sentences at a time rather than one - see ``BATCH_SIZE`` for what that is worth and why it is not
+simply "all of them".
 """
 
 from __future__ import annotations
@@ -36,6 +38,17 @@ MIN_ANSWER_CHARS = 2
 # 0.71 is a real answer that happens to be a long definition, the one at 0.86 starts with a subordinate
 # clause ("Soweit die energiereichen organischen Stoffe ..."), so the line belongs between them.
 MAX_ANSWER_SHARE = 0.8
+# The generator is asked for a whole round of candidates at once, because one call per candidate leaves the
+# machine idle between them. Measured in the image on 2026-09-21 over 24 candidates of a real compendium
+# text, four beams throughout: 1.64 s per question one at a time, 0.83 s in batches of five, 0.79 s in
+# batches of eight, 1.21 s in one batch of 24 - a batch pads every row to its longest sentence, so a large
+# one pays for that sentence 24 times. The wording was identical to the single calls in all 24 cases and
+# all three sizes, so this is speed without a quality trade - but not without a memory one: eight sentences
+# times four beams are in flight at once, and the same day the peak of the whole process rose by about
+# 190 MiB against one call at a time (15.4 s -> 10.7 s for five pairs, 38.0 s -> 22.2 s for twenty, the same
+# pairs in both). A host too small for that can lower this number; four beams of four sentences still beat
+# four beams of one.
+BATCH_SIZE = 8
 
 
 @dataclass(frozen=True)
@@ -52,7 +65,7 @@ class Candidate:
 class QaModels:
     """The two models as plain callables, so everything around them can be tested without torch."""
 
-    generate_question: Callable[[str], str]  # a highlighted sentence -> a question
+    generate_questions: Callable[[Sequence[str]], list[str]]  # highlighted sentences -> their questions
     extract_answer: Callable[[str, str], str]  # question, context -> the answering span, or empty
 
 
@@ -117,7 +130,11 @@ def model_pairs(
     """One pair per candidate the models can both ask and answer, up to ``count``.
 
     The candidates are re-ordered first (``spread``), so the pairs cover the text instead of exhausting its
-    first sentence. The answer is extracted from the candidate's own sentence, not from the whole text. Measured in the
+    first sentence, and then worked through in rounds of ``BATCH_SIZE`` so the generator is asked once per
+    round instead of once per candidate. A round that finishes the count ends the work, so the waste is the
+    tail of the last round at most: measured in the image on 2026-09-21 on a real compendium text, 20 pairs
+    cost 25 of the 314 candidates, so a round rarely has to be followed by another.
+    The answer is extracted from the candidate's own sentence, not from the whole text. Measured in the
     image on 2026-09-20: the question was generated from that one sentence, so offering the whole text only
     invites the model to answer from somewhere else - it turned "Was ist das beste Medium, um Licht zu
     brechen?" from "Der Brechungsindex eines Mediums" into "Die Optik". The sentence is also faster
@@ -128,21 +145,30 @@ def model_pairs(
     24 of 32 pairs were free of a checkable defect before, 30 of 32 after - and all 32 pairs were still
     delivered, because the candidates that replace a rejected one were there all along.
     """
+    if count <= 0:
+        return []
     pairs: list[QaPair] = []
     asked: set[str] = set()
-    for candidate in spread(candidates):
+    ordered = spread(candidates)
+    size = min(count, BATCH_SIZE)
+    for begin in range(0, len(ordered), size):
+        round_ = ordered[begin : begin + size]
+        questions = models.generate_questions([highlighted(candidate) for candidate in round_])
+        for candidate, raw in zip(round_, questions, strict=True):
+            if len(pairs) >= count:
+                break
+            question = raw.strip()
+            if not question.endswith("?") or question in asked:
+                continue  # small generators sometimes echo a fragment instead of asking
+            answer = models.extract_answer(question, candidate.sentence).strip()
+            if len(answer) < MIN_ANSWER_CHARS:
+                continue  # the text does not answer it; inventing an answer would break the promise of this stage
+            if len(answer) > MAX_ANSWER_SHARE * len(candidate.sentence):
+                continue  # the span is the sentence; the next candidate may still carry a real answer
+            asked.add(question)
+            pairs.append(QaPair(question=question, answer=cut(answer, max_answer_length)))
         if len(pairs) >= count:
             break
-        question = models.generate_question(highlighted(candidate)).strip()
-        if not question.endswith("?") or question in asked:
-            continue  # small generators sometimes echo a fragment instead of asking
-        answer = models.extract_answer(question, candidate.sentence).strip()
-        if len(answer) < MIN_ANSWER_CHARS:
-            continue  # the text does not answer it; inventing an answer would break the promise of this stage
-        if len(answer) > MAX_ANSWER_SHARE * len(candidate.sentence):
-            continue  # the span is the sentence; the next candidate may still carry a real answer
-        asked.add(question)
-        pairs.append(QaPair(question=question, answer=cut(answer, max_answer_length)))
     return pairs
 
 
@@ -196,11 +222,13 @@ def load_qa_models(qg_path: str, qa_path: str) -> QaModels | None:
         log.error("QA models not usable (%s, %s): %s", qg_path, qa_path, exc)
         return None
 
-    def generate(marked: str) -> str:
-        encoded = qg_tokenizer(marked, return_tensors="pt", truncation=True, max_length=512)
+    def generate(marked: Sequence[str]) -> list[str]:
+        # padding=True lines the batch up on its longest sentence; the attention mask keeps the padding
+        # out of the arithmetic, which is why the batched wording matches the single calls exactly.
+        encoded = qg_tokenizer(list(marked), return_tensors="pt", truncation=True, max_length=512, padding=True)
         with torch.no_grad():
             output = qg_model.generate(**encoded, max_new_tokens=48, num_beams=4)
-        return str(qg_tokenizer.decode(output[0], skip_special_tokens=True))
+        return [str(qg_tokenizer.decode(one, skip_special_tokens=True)) for one in output]
 
     def extract(question: str, context: str) -> str:
         encoded = qa_tokenizer(
@@ -221,7 +249,7 @@ def load_qa_models(qg_path: str, qa_path: str) -> QaModels | None:
         return answer_span(context, offsets, output.start_logits[0].tolist(), output.end_logits[0].tolist(), in_context)
 
     log.info("QA models loaded: %s, %s", qg_path, qa_path)
-    return QaModels(generate_question=generate, extract_answer=extract)
+    return QaModels(generate_questions=generate, extract_answer=extract)
 
 
 def describe(qg_path: str, qa_path: str) -> dict[str, Any]:

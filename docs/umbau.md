@@ -547,6 +547,60 @@ schnitten bei 3000 Zeichen. Die Produktion nimmt ganze Abschnitte bis 50 000 —
 3000 Zeichen, bei *Photosynthese* schöpft sie die Grenze aus. Die Zahlen zur Fragequalität oben stammen
 aus dem verkürzten Text und gelten für diesen; die Größenordnung hat sich in der Nachmessung bestätigt.
 
+### Das Tempo der Modellstufe: die Schleife, nicht das Modell (2026-09-21 gemessen)
+
+**Anlass:** 18 Sekunden für fünf Paare. Erster Verdacht war das Modell — `german-qg-t5-quad` ist t5-base
+mit rund 220 Millionen Parametern. Der Verdacht war falsch. Gemessen wurden stattdessen die zwei Hebel im
+eigenen Code: die Zahl der Strahlen und die Bündelung. Zehn Kandidaten eines echten Kompendiumtextes:
+
+| Einstellung | je Frage |
+|---|---|
+| 4 Strahlen, einzeln (die bisherige Fassung) | 1,97 s |
+| 2 Strahlen, einzeln | 1,29 s |
+| 1 Strahl, einzeln | 0,90 s |
+| 1 Strahl, gebündelt | 0,40 s |
+| **4 Strahlen, gebündelt** | **1,03 s** |
+
+**Weniger Strahlen kostet Qualität — gemessen, nicht vermutet.** Aus „Welche Physikrichtung beschäftigt
+sich mit der Ausbreitung von Licht?" wurde mit einem Strahl „Was ist die Physik?" (die Antwort wäre
+*Optik*, nicht *Physik*), aus „Welche Optik befasst sich mit den angrenzenden Strahlungsbereichen…"
+wurde „Welches Instrument befasst sich…", und „im elektrischen Feld oder im Magnetfeld" verlor das
+elektrische Feld. Die Strahlen bleiben bei vier.
+
+**Die Bündelung dagegen ist wortgleich.** 24 Kandidaten, vier Strahlen durchgehend, gegen die
+Einzelaufrufe verglichen:
+
+| Bündel | je Frage | wortgleich |
+|---|---|---|
+| einzeln | 1,64 s | — |
+| 5 | 0,83 s | 24/24 |
+| **8** | **0,79 s** | **24/24** |
+| 24 | 1,21 s | 24/24 |
+
+**Ein großes Bündel ist wieder langsamer.** Die Auffüllung richtet jede Zeile am längsten Satz aus, also
+zahlt ein Bündel zu 24 diesen Satz 24-mal. Der Punkt liegt bei etwa acht — daher `BATCH_SIZE = 8`.
+
+**Der Verschnitt ist klein.** Eine Runde wird ganz erzeugt, auch wenn die geforderte Zahl mitten darin
+erreicht ist. Gemessen: 20 Paare kosteten 25 der 314 Kandidaten, also folgt einer Runde selten eine zweite.
+
+**A/B im selben Prozess** (alte Schleife nachgebildet, gleiche Modelle, gleicher Text):
+
+| angefragt | alt | neu | schneller | Paare identisch |
+|---|---|---|---|---|
+| 5 | 15,4 s | 10,7 s | 1,44× | 5/5 |
+| 20 | 38,0 s | 22,2 s | 1,71× | 20/20 |
+
+**Der Preis ist Speicher.** Acht Sätze zu je vier Strahlen sind gleichzeitig unterwegs; das Hochwasser des
+Prozesses stieg um rund 190 MiB. Wer zu knapp bemessen ist, senkt `BATCH_SIZE` — vier Sätze schlagen immer
+noch einen.
+
+**Warum kein anderes Modell.** `dehio/german-qg-t5-e2e-quad` erzeugt mehrere Fragen in einem Durchgang,
+ist aber ebenfalls t5-base und spart genau das, was die Bündelung schon einsammelt: den Kodierer und den
+Aufrufaufwand, nicht die Ausgabe-Token. Vor allem ist es **nicht antwortbewusst** — die `<hl>`-Markierung
+und damit `spread()` fielen weg, also gerade das, was die Jahreszahlen-Flut behoben hat.
+`FLAN-T5-small` ist dreimal kleiner, aber englisch und ebenfalls nicht antwortbewusst; ein deutsches
+t5-small gibt es in dieser Linie nicht (`valhalla/t5-small-qa-qg-hl` ist auf englischem SQuAD trainiert).
+
 ## 4. Kompendium: die zwei KI-Optionen
 
 | Option | Feld | Was das Modell tut | Wortlaut |
