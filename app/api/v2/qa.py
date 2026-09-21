@@ -59,9 +59,11 @@ class QaRequest(BaseModel):
     levels: list[str] = Field(
         default_factory=list,
         max_length=12,
-        description="Educational levels to spread the pairs over, from config/facets.yaml "
-        "(Elementar, Primar, Sek I, Sek II, Hochschule, Berufliche Bildung, Erwachsenenbildung). "
-        "Only the llm stage can assign one; the other stages say so in note",
+        description="Educational levels to spread the pairs over. Optional; without them nothing changes. "
+        "Written as the Bildungsstufe vocabulary writes it - the label (Sekundarstufe I), an alternative label "
+        "(Sekundarstufe 1) or the concept URI - or as config/facets.yaml writes it (Elementar, Primar, Sek I, "
+        "Sek II, Hochschule, Berufliche Bildung, Erwachsenenbildung). Only the llm stage can assign one; the "
+        "other stages return the pairs without a level and say so in note",
     )
 
     @model_validator(mode="after")
