@@ -293,9 +293,7 @@ def test_a_text_is_still_taken_as_it_comes(client: TestClient, monkeypatch: pyte
     assert body["chars"] == len(TEXT) and body["topic"] is None
 
 
-def test_the_generated_blocks_are_no_source_for_questions(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_the_generated_blocks_are_no_source_for_questions(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
     """Sources, glossary and the actor directory are apparatus, not subject matter.
 
     Measured against the running service on 2026-09-21 for one topic: of 27 614 characters of blocks,

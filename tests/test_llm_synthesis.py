@@ -443,6 +443,8 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
     Optotechnikers?".
     """
     assert without_markers("Licht breitet sich geradlinig aus [2].") == "Licht breitet sich geradlinig aus."
-    assert without_markers("Er maß die Brechung. [12]\nDas Feld ist weit.") == "Er maß die Brechung.\nDas Feld ist weit."
+    assert (
+        without_markers("Er maß die Brechung. [12]\nDas Feld ist weit.") == "Er maß die Brechung.\nDas Feld ist weit."
+    )
     assert without_markers("Beides gilt [1, 2] und mehr [3; 4].") == "Beides gilt und mehr."
     assert without_markers("Ohne Nummern bleibt alles.") == "Ohne Nummern bleibt alles."
