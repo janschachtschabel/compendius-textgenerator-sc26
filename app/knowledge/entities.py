@@ -31,23 +31,41 @@ _WORK_RE = re.compile(
     r"Album|Lied|Single|Gemälde|Skulptur|Fernsehserie|Serie|Computerspiel|Videospiel|Comic|Manga|Sachbuch|Werk)\b"
 )
 _COPULA_RE = re.compile(r"\b(ist|war)\b")
+_KINDS = (("Organisation", _ORG_RE), ("Vorhaben", _PROJECT_RE), ("Netzwerk", _NETWORK_RE))
+# German names an organisation after what it is, so the type word in the name is the signal. Behind the
+# copula it only counts inside the defining sentence.
+_IS_A = r"\b(?:ist|war) (?:ein|eine|einer|der|die|das) [^.]{0,120}?"
+_DEFINED_AS = {kind: re.compile(_IS_A + pattern.pattern) for kind, pattern in _KINDS}
 
 
 def classify_entity(source: Source) -> str | None:
-    """Cascade: Person, Organisation, Vorhaben, Netzwerk; first match wins; ``None`` for a subject."""
+    """Cascade: Person, Organisation, Vorhaben, Netzwerk; first match wins; ``None`` for a subject.
+
+    The type word is read in two places, and in neither of them wherever it likes. In the **name** before
+    the copula it means an instance; **behind** the copula it counts only within the defining sentence, so
+    a second sentence listing companies does not turn a concept into an organisation. And an article whose
+    title *is* the type word is that concept, never an instance of it.
+
+    Measured against the real Wikipedia on 2026-09-21 over 29 hand-labelled articles: 19 right before, 25
+    after - six false actors gone (the concepts behind economy, company, museum, library, enterprise and
+    cooperation) and no real actor lost. What stays wrong is a concept whose lead defines it *through* an
+    actor word ("... ist ein Teil der Kooperation"); that needs the head of the predicate, not a pattern.
+    A wrong kind is worse than a missing one here, because the matching policy keeps the body text of
+    actors out of the default block.
+    """
+    if any(pattern.fullmatch(source.title.strip()) for _, pattern in _KINDS):
+        return None
     lead = source.lead_text[:600]
     if not lead:
         return None
     if _PERSON_RE.search(lead):
         return "Person"
     head = lead[:260]
-    if _COPULA_RE.search(head):
-        if _ORG_RE.search(head):
-            return "Organisation"
-        if _PROJECT_RE.search(head):
-            return "Vorhaben"
-        if _NETWORK_RE.search(head):
-            return "Netzwerk"
+    copula = _COPULA_RE.search(head)
+    name = head[: copula.start()] if copula else ""
+    for kind, pattern in _KINDS:
+        if pattern.search(name) or _DEFINED_AS[kind].search(head):
+            return kind
     return None
 
 

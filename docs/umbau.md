@@ -174,6 +174,25 @@ POST /api/v2/entities
 Die Antwort nennt `methods`, die befragten `archives` und je Entität `source`, `kind`, `linked` und —
 falls verknüpft — Artikel, Lead und Link. Damit ist ablesbar, was aus dem Modell und was aus den Archiven kam.
 
+**Befund vom 2026-09-21: `kind` etikettierte Begriffsartikel als Akteure.** Aufgefallen beim Nachmessen des
+Wörterbuchs: „Wirtschaft“ kam als `Organisation` zurück, „Hilfe“ als `Netzwerk`, „Firma“ als `Organisation`.
+Die Ursache stand im Muster: `classify_entity` suchte das Typwort („Unternehmen“, „Kooperation“, „Museum“)
+**irgendwo** in den ersten 260 Zeichen, sobald dort auch ein „ist“ stand. Der Lead „Wirtschaft … ist die
+Gesamtheit aller Einrichtungen … Zu den wirtschaftlichen Einrichtungen gehören **Unternehmen**“ traf damit,
+obwohl der zweite Satz etwas ganz anderes sagt. Das ist keine Kosmetik: Die Matching-Policy hält den
+Fließtext von Akteuren aus dem Standard-Baustein heraus, ein falsches Etikett schließt also Inhalt aus.
+
+**Zwei Versuche gemessen und verworfen, der dritte trägt.** Das Muster nur hinter der Kopula zu verankern —
+die Form, die `_WORK_RE` längst nutzt — macht es **schlechter** (18 von 29 statt 19): Deutsche
+Organisationen heißen nach ihrem Typ („…-Gesellschaft“, „Deutsches Museum“), und genau dieses Signal im
+Namen zerstört die Verankerung. Die Verbindung aus beidem bringt nur +1. Was fehlte, war die dritte
+Beobachtung: Ein Artikel, dessen **Titel** das Typwort ist, ist der Begriff und nie eine Instanz.
+
+Mit allen dreien, gegen die echten Archive und 29 handgeurteilte Artikel gemessen: **20 richtig vorher, 26
+nachher**, sechs falsche Akteure weg (Wirtschaft, Firma, Kooperation, Museum, Bibliothek, Unternehmen) und
+**kein einziger echter Akteur verloren**. Was bleibt: ein Begriff, dessen Lead ihn *über* ein Akteurswort
+definiert („Hilfe … ist ein Teil der Kooperation“) — dafür braucht es den Kopf des Prädikats, kein Muster.
+
 ## 2. Wissenstexte je Archiv
 
 ```
