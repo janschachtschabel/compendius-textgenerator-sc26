@@ -398,6 +398,7 @@ class CompendiumService:
             facets_visible=facets_visible,
             extra_parts=[part.markdown for part in (curricula, collection_part) if part is not None],
             include_world=want_world,
+            include_frontmatter=request.frontmatter_in_markdown,
         )
         lap("assemble")
 

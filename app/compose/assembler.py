@@ -111,17 +111,22 @@ def render_markdown(
     facets_visible: bool,
     extra_parts: Sequence[str] = (),
     include_world: bool = True,
+    include_frontmatter: bool = True,
 ) -> str:
     """Render frontmatter, title and part 1 with one marker per section; ``extra_parts`` follow as given.
 
-    ``include_world`` is off when the request did not ask for part 1.
+    ``include_world`` is off when the request did not ask for part 1. Without ``include_frontmatter``
+    the text starts at the heading: the caller renders the document elsewhere and does not want a YAML
+    block in front of it. The data is not lost - it stays in the ``frontmatter`` field of the answer.
     """
-    lines: list[str] = [
-        "---",
-        yaml.safe_dump(dict(frontmatter), allow_unicode=True, sort_keys=False).rstrip(),
-        "---",
-        "",
-    ]
+    lines: list[str] = []
+    if include_frontmatter:
+        lines += [
+            "---",
+            yaml.safe_dump(dict(frontmatter), allow_unicode=True, sort_keys=False).rstrip(),
+            "---",
+            "",
+        ]
     lines.append(f"# Kompendium: {topic}")
     lines.append("")
     if include_world:

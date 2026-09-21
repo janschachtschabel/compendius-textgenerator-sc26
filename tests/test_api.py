@@ -291,3 +291,26 @@ def test_without_zim_paths_there_is_no_such_warning(tmp_path: Path, caplog: pyte
     with caplog.at_level(logging.WARNING):
         create_app(settings)
     assert "ZIM_PATHS umgeht" not in caplog.text
+
+
+def test_the_markdown_can_start_at_the_content(client: TestClient) -> None:
+    """A caller who renders the document elsewhere does not want a YAML block in front of it.
+
+    The frontmatter carries the AI Act disclosure, the review status and the snapshot of the archives,
+    so it stays in by default and it stays in the answer either way - only the markdown drops it.
+    """
+    body = client.post(
+        "/api/v2/compendium",
+        json={"topic": "Optik", "parts": ["world"], "frontmatter_in_markdown": False},
+    ).json()
+    markdown = body["markdown"]
+    assert markdown.startswith("# Kompendium: Optik"), markdown[:80]
+    assert "kompendium_version" not in markdown, "the YAML block is what was asked to go"
+    assert body["frontmatter"]["ai_disclosure"], "the disclosure is not lost, it moves to the field"
+
+
+def test_the_markdown_carries_its_frontmatter_by_default(client: TestClient) -> None:
+    """Nothing changes for a caller who does not ask: the document stays self-contained."""
+    body = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]}).json()
+    assert body["markdown"].startswith("---\n"), body["markdown"][:60]
+    assert "ai_disclosure" in body["markdown"]

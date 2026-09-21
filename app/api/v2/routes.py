@@ -86,7 +86,12 @@ def generate_compendium(
     **What else.** ``matcher`` picks the strategy (unknown: 422), ``template_id`` the template,
     ``max_articles`` the size of the corpus, ``facets_visible`` and ``empty_slot_policy`` override the
     settings and the template. ``existing_markdown`` with ``regenerate_sections`` makes only the named
-    blocks anew and keeps the rest word for word.
+    blocks anew and keeps the rest word for word. ``frontmatter_in_markdown: false`` starts the text at
+    the heading instead of the YAML block - the same data stays in the ``frontmatter`` field.
+
+    **What comes back.** ``markdown`` is the whole document: every requested part joined in reading
+    order, part 1 then part 2 then part 3. ``sections``, ``curricula`` and ``collection`` carry the same
+    parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
     collection: 404. Repository unreachable: 502. No requested part can be made at all - part 3 without

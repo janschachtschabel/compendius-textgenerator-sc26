@@ -80,6 +80,13 @@ class GenerateRequest(BaseModel):
         description="With an earlier compendium: only these blocks are made anew, every other one is kept",
     )
     facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
+    frontmatter_in_markdown: bool = Field(
+        True,
+        description="Whether the markdown opens with the YAML frontmatter. It carries the AI Act "
+        "disclosure, the review status and the snapshot of the archives, so a document meant to stand "
+        "on its own keeps it. Off starts the text at the heading; the frontmatter field of the answer "
+        "holds the same data either way",
+    )
     max_articles: int | None = Field(
         None,
         ge=1,
