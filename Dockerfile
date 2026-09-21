@@ -55,8 +55,14 @@ RUN /app/.venv/bin/python scripts/fetch_qa_models.py \
 
 COPY pyproject.toml uv.lock README.md ./
 COPY app ./app
+# uv caches the wheel it builds for this project under its version, and that version does not change
+# between commits: measured on 2026-09-21 a build installed the app as it stood three commits earlier
+# while every layer reported DONE. --reinstall-package rebuilds it, and the comparison afterwards proves
+# the venv carries what was copied - a silently old image is worse than a failed build.
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --inexact --no-dev --no-editable --extra embeddings --extra entities --extra qa-models
+    uv sync --locked --inexact --no-dev --no-editable --reinstall-package compendious-text-fastapi \
+      --extra embeddings --extra entities --extra qa-models \
+    && diff -r -x __pycache__ app /app/.venv/lib/python*/site-packages/app
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
