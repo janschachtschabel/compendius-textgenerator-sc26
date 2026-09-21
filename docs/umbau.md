@@ -404,14 +404,48 @@ Nach Handurteil sind **6 der 14 brauchbar**. Etwa die Haelfte der Maengel entste
 der Auswahl von Kandidat und Satz. Ein groesseres Modell wuerde die Zeilen 2, 6 und 9 heilen und die
 uebrigen nicht.
 
-Drei Ansatzpunkte, keiner davon umgesetzt — es sind Produktentscheidungen, keine Fehler:
+### Der erste Ansatzpunkt, umgesetzt und gemessen
 
-1. Saetze mit Rueckverweis (`dabei`, `dieser`, `daneben`, ein einleitendes `es`) als Kandidatenquelle
-   ueberspringen. Im Lauf betrifft das 2 von 14.
-2. Eine Antwort verwerfen, die praktisch den ganzen Satz umfasst — sie beantwortet nichts, sie wiederholt.
-   Im Lauf 5 von 14; der Ertrag saenke entsprechend.
-3. Das Satzsubjekt eines definierenden Satzes als Kandidat meiden. Vorsicht: genau diese Form liefert auch
-   die besten Paare des Laufs („Was ist die Quantenoptik?"), eine pauschale Regel waere schlechter.
+**Eine Antwort, die praktisch den ganzen Satz umfasst, ist keine Antwort** — sie liest den Satz vor. Aus
+dieser Beobachtung wurde `MAX_ANSWER_SHARE` in `model_pairs`.
+
+Die Schwelle ist gemessen, nicht geraten. Über 32 Paare aus vier echten Themen fällt der Anteil der
+Antwort am Satz in Gruppen mit einer Lücke dazwischen:
+
+```
+0.03 ... 0.48 | 0.71  0.78 | 0.86  0.92  0.98  0.98  0.98  0.99  1.00
+```
+
+Das Paar bei 0.71 („Was wird als photosynthetische Effizienz bezeichnet?") ist eine echte Antwort, die
+zufällig eine lange Definition ist. Das bei 0.86 beginnt mit einem Nebensatz („Soweit die energiereichen
+organischen Stoffe …"). Die Linie gehört dazwischen: **0,8**.
+
+Derselbe Harnisch gegen beide Fassungen, vier Themen, je 8 Paare angefragt:
+
+| | alte Fassung | neue Fassung |
+|---|---|---|
+| angefragt / geliefert | 32 / 32 | 32 / **32** |
+| mangelfrei | 24 (75 %) | **30 (94 %)** |
+| WIEDERHOLUNG | 7 | **0** |
+| RUECKVERWEIS | 1 | 1 |
+| ECHO | 4 | **1** |
+
+**Kein Ertragsverlust.** Wer eine Wiederholung verwirft, verliert kein Paar: die Schleife nimmt den
+nächsten Kandidaten, und der war die ganze Zeit da — er wurde nur von der Wiederholung verdrängt. Bei
+*Optik* fielen damit 5 von 8 Mängeln auf 1, bei *Photosynthese* 3 auf 0.
+
+### Was bewusst nicht umgesetzt ist
+
+1. Rückverweise (`dabei`, `dieser`, `daneben`) aus der Frage verwerfen: **1 von 32**. Eine Regel für 3 %
+   wäre mehr Code als Nutzen, und das eine Beispiel („Welcher Charakter des Lichts spielt dabei eine große
+   Rolle?") hat eine richtige Antwort.
+2. Das Satzsubjekt eines definierenden Satzes meiden. Genau diese Form liefert auch die besten Paare
+   („Was ist die Quantenoptik?"), eine pauschale Regel wäre schlechter.
+
+**Was die Maßzahl nicht misst.** Die drei Kriterien sind ein Boden, kein Qualitätsurteil. „Was ist der
+Vorteil der Mikrooptik gegenüber der Wellenlänge?" zählt als mangelfrei, obwohl von einem Vorteil im Text
+nichts steht — das erfindet das Fragemodell, und dagegen hilft nur ein größeres Modell oder eine Prüfung,
+die den Text versteht.
 
 ## 4. Kompendium: die zwei KI-Optionen
 
