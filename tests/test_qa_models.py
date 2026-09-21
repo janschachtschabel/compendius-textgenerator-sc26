@@ -10,12 +10,14 @@ without a gigabyte of weights. That the real models load and produce German is c
 from __future__ import annotations
 
 from app.synthesis.qa_models import (
+    HIGHLIGHT,
     Candidate,
     QaModels,
     answer_candidates,
     answer_span,
     highlighted,
     model_pairs,
+    spread,
 )
 
 TEXT = "Die Optik ist ein Teilgebiet der Physik. Ernst Abbe entwickelte in Jena das Lichtmikroskop."
@@ -179,3 +181,25 @@ def test_the_sentence_comes_from_the_projects_splitter_not_from_the_model() -> N
 def test_a_chunk_behind_the_last_sentence_is_left_out() -> None:
     doc = FakeDoc([FakeSpan("Ernst Karl Abbe", start_char=len(LEAD) + 50)])
     assert answer_candidates(doc, LEAD) == []
+
+
+def test_the_pairs_do_not_all_come_from_the_first_sentence() -> None:
+    """The order of the candidates is the coverage of the text, because the generator works per sentence.
+
+    Measured against the real Wikipedia on 2026-09-21: taken in reading order, all twenty pairs asked for
+    "Optik" came out of the first two sentences, and all eight for "Ernst Abbe" out of his birth-and-death
+    line - so every question wanted a date or a place.
+    """
+    echo = QaModels(
+        generate_question=lambda marked: f"Was ist {marked.split(HIGHLIGHT)[1].strip()}?",
+        extract_answer=lambda question, context: context.split()[0],
+    )
+    pairs = model_pairs(CANDIDATES, echo, count=2, max_answer_length=300)
+    assert [pair.answer for pair in pairs] == ["Die", "Ernst"]
+
+
+def test_a_sentence_with_more_candidates_contributes_them_in_the_later_rounds() -> None:
+    """Nothing is dropped by the spreading; the extra candidates of a rich sentence come after the others."""
+    rich = [at(FIRST, "Die Optik"), at(FIRST, "ein Teilgebiet"), at(FIRST, "der Physik")]
+    order = spread([*rich, at(SECOND, "Ernst Abbe")])
+    assert [c.text for c in order] == ["Die Optik", "Ernst Abbe", "ein Teilgebiet", "der Physik"]

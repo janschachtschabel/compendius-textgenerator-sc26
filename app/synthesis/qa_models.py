@@ -18,6 +18,7 @@ import logging
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from functools import lru_cache
+from itertools import zip_longest
 from pathlib import Path
 from typing import Any
 
@@ -86,6 +87,24 @@ def answer_candidates(doc: Any, text: str) -> list[Candidate]:
     return candidates
 
 
+def spread(candidates: Iterable[Candidate]) -> list[Candidate]:
+    """The candidates re-ordered so every sentence contributes one before any contributes a second.
+
+    The generator writes one question per sentence, so the order of the candidates decides how much of the
+    text the pairs cover. Measured against the real Wikipedia on 2026-09-21, reading order was not enough:
+    of twenty pairs for a subject article all twenty came out of its first two sentences, and of eight for a
+    biography all eight out of the birth-and-death line, which left every question asking for a date or a
+    place (docs/umbau.md U5b).
+
+    Sentences keep the order they appear in, and a sentence with more candidates than the others simply
+    contributes them in the later rounds.
+    """
+    by_sentence: dict[str, list[Candidate]] = {}
+    for candidate in candidates:
+        by_sentence.setdefault(candidate.sentence, []).append(candidate)
+    return [c for round_ in zip_longest(*by_sentence.values()) for c in round_ if c is not None]
+
+
 def model_pairs(
     candidates: Iterable[Candidate], models: QaModels, *, count: int, max_answer_length: int = 300
 ) -> list[QaPair]:
@@ -99,7 +118,7 @@ def model_pairs(
     """
     pairs: list[QaPair] = []
     asked: set[str] = set()
-    for candidate in candidates:
+    for candidate in spread(candidates):
         if len(pairs) >= count:
             break
         question = models.generate_question(highlighted(candidate)).strip()

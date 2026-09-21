@@ -231,6 +231,25 @@ Sätze aus fünf Artikeln sind wörtliche Teilstücke, die Zuordnung der Nominal
 aus „(von“ wurde „Lehre vom Licht genannt, ist ein Gebiet der Physik“, und die Fragen selbst
 wurden besser, weil der Generator ganze Sätze sieht. Preis: 20,6 s statt 12 s für vier Paare.
 
+**Aus dem Betrieb gemeldet und am 2026-09-21 behoben: Die Fragen deckten den Artikel nicht ab.** Jan
+berichtete, zu „Optik“ drehten sich fast alle Fragen um Jahreszahlen. Nachgestellt gegen die echten
+Archive: Die Ursache ist nicht das Modell, sondern die **Reihenfolge der Kandidaten**. Der Generator
+arbeitet satzweise, und die Nominalphrasen wurden streng in Lesereihenfolge abgearbeitet — der erste Satz
+einer Biografie enthält ein halbes Dutzend davon (Name, Datum, Ort, Bundesstaat, Beruf), also war `count`
+erschöpft, bevor der zweite Satz an die Reihe kam. Gemessen: zu „Ernst Abbe“ stammten **alle acht** Fragen
+aus der Geburts- und Sterbezeile („Wo geboren?“, „Wann gestorben?“, „In welchem Bundesstaat?“), zu „Optik“
+**alle zwanzig** aus den ersten zwei Sätzen, vier davon Varianten derselben Frage.
+
+`spread` verteilt reihum: Jeder Satz liefert eine Nominalphrase, bevor einer eine zweite liefert. Danach,
+im Image gegen dieselben Archive gemessen: „Ernst Abbe“ 8 Paare mit **8 verschiedenen Antworten** (Beruf,
+Zeiß und Schott, Glaswerk, Vater, Schulzeit, Studienmotiv), „Optik“ bei `count: 20` **20 verschiedene
+Fragen** über Mikrooptik, Quantenoptik, nichtlineare und atmosphärische Optik, Brechungsgesetz, Spiegel und
+Linsen. Der Preis ist null: Es werden nicht mehr Aufrufe gemacht, nur andere.
+
+**Was das nicht behebt:** Die Fragen der kleinen Modelle bleiben stellenweise schief — „Wer hat in Eisenach
+einfache Beziehungen geschlossen?“ oder eine Frage, die das Subjekt des Satzes verfehlt. Das ist die
+Qualität der 220-Millionen-Parameter-Modelle und kein Reihenfolgeproblem.
+
 **Image zunächst 3,4 GB, gemessen** (Schätzung war 2,5–3 GB, sie rechnete mit Radgrößen statt entpackten):
 torch 769 MB, QG-Modell 853 MB, QA-Modell 418 MB, Embedding-Modell 322 MB, transformers 114 MB.
 
