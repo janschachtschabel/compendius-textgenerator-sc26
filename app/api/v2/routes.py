@@ -66,7 +66,32 @@ EXAMPLES = {
 def generate_compendium(
     payload: Annotated[GenerateRequest, Body(openapi_examples=EXAMPLES)], request: Request
 ) -> Compendium:
-    """Generate the compendium for a topic or a collection: the requested parts, with the requested switches."""
+    """Generate the compendium for a topic or a collection: the requested parts, with the requested switches.
+
+    **What it makes.** ``parts`` picks the parts: ``world`` is part 1, the compendium text itself;
+    ``curricula`` is part 2, the curriculum elements; ``collection`` is part 3, the materials of an
+    edu-sharing collection and needs ``collection_id``. Without ``world`` there is no part 1, no sources
+    of its own, no matching and no knowledge collection - the rest is rule-based by definition.
+
+    **How long it gets.** ``target_length`` is shared over the blocks by weight and steers upwards until
+    the sources run out. It is a steer, not a cap: a block is never shorter than its first paragraph.
+
+    **Who writes it.** Three switches, and each falls back to ``rule-based`` when the b-api is missing:
+    ``extraction`` picks the sentences (``rule-based`` takes the policy's paragraphs, ``llm`` lets the
+    model choose among the best candidates and the wording stays the source's), ``generation`` writes the
+    blocks (``rule-based``, ``llm-fast`` for the main ones, ``llm`` for every one - every sentence cited),
+    and ``enrichment`` decides whether the model may add knowledge of its own (``sources-only`` or
+    ``model-knowledge``, which is marked in the text). ``audit`` says afterwards what really ran.
+
+    **What else.** ``matcher`` picks the strategy (unknown: 422), ``template_id`` the template,
+    ``max_articles`` the size of the corpus, ``facets_visible`` and ``empty_slot_policy`` override the
+    settings and the template. ``existing_markdown`` with ``regenerate_sections`` makes only the named
+    blocks anew and keeps the rest word for word.
+
+    **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
+    collection: 404. Repository unreachable: 502. No requested part can be made at all - part 3 without
+    ``EDU_SHARING_BASE_URL``, for instance: 503.
+    """
     service = get_service(request)
     try:
         compendium = service.generate(payload)
@@ -93,7 +118,12 @@ def generate_compendium(
 
 @router.get("/templates")
 def list_templates(request: Request) -> list[dict[str, Any]]:
-    """The templates this service knows, built-in and custom, with their slot count and version."""
+    """The templates this service knows, built-in and custom, with their slot count and version.
+
+    A short row each: id, version, name, description, how many blocks it has and whether it ships with
+    the image. The blocks themselves are in ``GET /api/v2/templates/{id}``. The id goes into
+    ``template_id`` of a compendium request; without one the default from the settings applies.
+    """
     return [
         {
             "id": t.id,
@@ -109,7 +139,12 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
 
 @router.get("/templates/{template_id}")
 def get_template(template_id: str, request: Request) -> dict[str, Any]:
-    """One template in full, with every block and its budget, facets and search queries (404 unknown)."""
+    """One template in full: every block with its budget, facets, search queries and generator.
+
+    This is the shape ``PUT /api/v2/templates/{id}`` takes back, so it is also the way to start a custom
+    template - read a built-in one, change what you need, write it under your own id. An unknown id is a
+    404.
+    """
     try:
         template = request.app.state.templates.get(template_id)
     except TemplateNotFoundError as exc:
@@ -140,7 +175,11 @@ def put_template(template_id: str, payload: Template, request: Request) -> dict[
 
 @admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen")
 def delete_template(template_id: str, request: Request) -> None:
-    """Delete a custom template; built-in templates are refused (409), an unknown id is a 404."""
+    """Delete a custom template (204).
+
+    Built-in templates ship with the image and are refused (409); an unknown id is a 404. A compendium
+    request naming the deleted id answers 404 from then on, so check what still uses it first.
+    """
     try:
         removed = request.app.state.templates.delete(template_id)
     except ValueError as exc:

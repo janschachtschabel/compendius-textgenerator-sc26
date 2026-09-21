@@ -16,7 +16,15 @@ router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
 
 @router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited)])
 def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
-    """Purpose, key figures and compact material lists of a collection (cached for an hour)."""
+    """Part 3 for one edu-sharing collection: purpose, key figures and compact material lists.
+
+    The same part a compendium request produces with ``parts: ["collection"]``, but on its own and
+    without a topic - useful to look at a collection before putting it into a compendium.
+
+    Unknown collection: 404. Repository unreachable: 502. The endpoint keeps to ``REQUEST_TIMEOUT_S``; if
+    it runs out, ``summary.incomplete`` is set and the text says which lists stayed short. The answer is
+    cached, so a second call within the hour is free.
+    """
     builder: CollectionBuilder | None = request.app.state.collections
     if builder is None:
         raise HTTPException(status_code=503, detail="Kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL).")

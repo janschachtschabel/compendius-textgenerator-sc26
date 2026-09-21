@@ -46,7 +46,15 @@ def _builder(request: Request) -> CurriculaBuilder:
 
 @router.get("/status")
 def lehrplan_status(request: Request) -> dict[str, Any]:
-    """Cache presence, harvest metadata, curricula per state and the harvest job's last status."""
+    """What the curriculum cache holds and how fresh it is.
+
+    Whether the cache is there at all, when it was harvested, how many curricula per federal state it
+    carries and what the harvest job last reported - including whether it failed. The error text stays
+    out: it can name server paths. The file and the log keep it.
+
+    Part 2 of a compendium reads this cache; an empty one is why ``parts: ["curricula"]`` comes back
+    thin. The sidecar fills it, ``POST /api/v2/lehrplan/harvest`` asks it to check now.
+    """
     settings: Settings = request.app.state.settings
     store = _builder(request).store
     meta = store.meta()
@@ -67,7 +75,14 @@ def lehrplan_search(
     subject: str | None = Query(None, max_length=100, description="WLO discipline id, URI, label or alias"),
     limit: int = Query(50, ge=1, le=500),
 ) -> dict[str, Any]:
-    """Curriculum elements for a keyword, ranked like part 2; local, no MEM access."""
+    """Curriculum elements for a keyword, out of the local cache - no MEM access, no network.
+
+    ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking
+    is the one part 2 uses, so what comes back here is what a compendium would draw on.
+
+    An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
+    says which it is.
+    """
     builder = _builder(request)
     keywords = build_keywords(q, aliases=[], subtopics=[])
     subject_terms = builder.subjects.mem_terms(subject)
@@ -90,7 +105,12 @@ def lehrplan_search(
 
 @admin.post("/harvest", status_code=202)
 def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
-    """Ask the harvest loop to check MEM now; this process fetches nothing."""
+    """Ask the harvest sidecar to check MEM now.
+
+    This process fetches nothing: it writes a request file that the sidecar polls, so the answer says the
+    request was placed, not that a harvest ran. ``GET /api/v2/lehrplan/status`` shows what came of it.
+    Admin only.
+    """
     state_dir = Path(request.app.state.settings.state_dir)
     state_dir.mkdir(parents=True, exist_ok=True)
     (state_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")

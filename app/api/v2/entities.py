@@ -140,7 +140,20 @@ def _recognise(payload: EntitiesRequest, registry: ZimRegistry, model_path: str)
     summary="Entitäten in einem Text erkennen",
 )
 def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
-    """Recognise the entities of a text and, unless ``link`` is off, name the article behind each of them."""
+    """Recognise the entities of a text and, unless ``link`` is off, name the article behind each.
+
+    Two ways, and ``methods`` picks them. ``ner`` reads the spaCy model and needs no archives at all;
+    ``dictionary`` looks for terms that have an article. The answer says under ``methods`` which ways
+    really ran, and per entity where it came from (``source``), what it is (``kind``), whether an article
+    was found (``linked``) and the article with its lead.
+
+    ``link: false`` skips the lookup, ``archives`` narrows it to single archives (unknown id: 404).
+    ``max_entities`` bounds the result, and it bites before the lookup - so fewer may come back.
+
+    A term of the dictionary whose only article is a disambiguation page is dropped: that way promises
+    terms **with** an article. This does not apply to ``ner`` and not with ``link: false``; there ``note``
+    says the result is unchecked. When neither way can run - no model and no archives - the answer is 503.
+    """
     settings = request.app.state.settings
     registry = archives_for(request.app.state.registry, payload.archives)
     ran, mentions = _recognise(payload, registry, settings.spacy_model)

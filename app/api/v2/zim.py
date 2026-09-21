@@ -70,7 +70,12 @@ def zim_status(request: Request) -> dict[str, Any]:
 
 @admin.get("/catalog")
 def zim_catalog(request: Request) -> list[dict[str, Any]]:
-    """German archives offered by Kiwix, marked as subscribed and installed (live call, admin only)."""
+    """The German archives Kiwix offers, each marked as subscribed and installed.
+
+    A live call to the Kiwix catalogue, so it needs the network and takes as long as that takes. What is
+    already here is marked, so the list shows at a glance what a sync would fetch. ``ZIM_CATALOG_URL``
+    points it elsewhere. Admin only.
+    """
     manifest = request.app.state.manifest
     subscribed = {s.id for s in manifest.subscriptions} if manifest is not None else set()
     installed = {a.id for a in request.app.state.registry.archives}
@@ -94,13 +99,23 @@ def zim_catalog(request: Request) -> list[dict[str, Any]]:
 
 @admin.get("/progress")
 def zim_progress(request: Request) -> dict[str, Any]:
-    """Last status the sync job wrote, including a running download."""
+    """Where the sync job stands, including a download in flight and the error texts.
+
+    The counterpart of ``GET /api/v2/zim/status``, which keeps the texts out because they can name server
+    paths - here they are, which is why this one is admin only. A download in flight comes with its file
+    and how far it got.
+    """
     return read_status(request.app.state.settings.zim_dir) or {"state": "unknown", "last_run": None, "download": None}
 
 
 @admin.post("/sync", status_code=202)
 def zim_sync_now(request: Request) -> dict[str, Any]:
-    """Ask the updater for a run; it polls for the request file, this process downloads nothing."""
+    """Ask the updater sidecar for a sync run.
+
+    This process downloads nothing: it writes a request file that the updater polls. The answer says the
+    request was placed, not that anything was fetched - ``GET /api/v2/zim/progress`` shows what came of
+    it. Admin only.
+    """
     zim_dir = Path(request.app.state.settings.zim_dir)
     zim_dir.mkdir(parents=True, exist_ok=True)
     (zim_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
@@ -112,7 +127,12 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
 
 @admin.delete("/{file_name}")
 def zim_delete(file_name: str, request: Request) -> dict[str, Any]:
-    """Delete a stray archive (and its .part file); active or open archives are refused."""
+    """Delete an archive file that is not in use, together with its ``.part`` leftover.
+
+    Meant for a stray download or an archive the profile no longer names. An archive that is active or
+    open is refused rather than pulled out from under the running service. Admin only, and it frees the
+    disk immediately - the files are gone, not moved.
+    """
     settings: Settings = request.app.state.settings
     try:
         validate_file_name(file_name)

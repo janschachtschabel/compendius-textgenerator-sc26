@@ -119,7 +119,19 @@ EXAMPLES = {
 def knowledge(
     payload: Annotated[KnowledgeRequest, Body(openapi_examples=EXAMPLES)], request: Request
 ) -> KnowledgeResponse:
-    """Resolve the topic and return the articles of its corpus, with their sections."""
+    """The articles of a topic, with their sections - no template, no matching, no synthesis.
+
+    What comes back is the corpus as it is: the topic's article, its twin from the simpler project when
+    there is one, and the further articles the search found. Each with its sections and their paragraphs.
+
+    ``archives`` asks single archives by id and nothing else (unknown id: 404), ``max_articles`` bounds
+    the further articles - topic and twin are always in - and ``max_chars`` caps the text over all
+    articles and sets ``truncated`` when it bit. ``template_id`` only decides which search queries look
+    for the further articles.
+
+    A topic the archives do not have is a 404 carrying the resolution, so the answer names the
+    alternatives instead of coming back empty.
+    """
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
     topic, resolution, sources = corpus_for_topic(

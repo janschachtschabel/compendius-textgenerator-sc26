@@ -46,7 +46,17 @@ def matching_strategies() -> list[dict[str, Any]]:
 
 @admin.post("/compare")
 def compare(payload: CompareRequest, request: Request) -> dict[str, Any]:
-    """Run several strategies on one topic; with a gold file the metrics come along, agreement always."""
+    """Run several matching strategies on one topic and put their results side by side.
+
+    ``matchers`` names the strategies from ``GET /api/v2/matching/strategies`` (an unknown one: 422),
+    ``template_id`` and ``target_length`` work as in a compendium request. What comes back is, per
+    strategy, which passage went into which block - and the agreement between the strategies, always.
+
+    Where ``EVAL_GOLD_DIR`` holds a gold file for the topic, the metrics come along: what the strategy
+    got right against the hand-labelled assignment. Without one there are no metrics, only the agreement.
+
+    Admin only, because a comparison runs the whole matching several times over.
+    """
     service = get_service(request)
     matchers = list(dict.fromkeys(payload.matchers))
     known = {strategy["id"] for strategy in list_strategies()}
