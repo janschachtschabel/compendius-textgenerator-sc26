@@ -224,22 +224,37 @@ def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
 
 
 EXAMPLES = {
-    "kuerzeste Anfrage": {
-        "summary": "Ein Thema: das Kompendium wird erzeugt und abgefragt",
-        "value": {"topic": "Optik", "count": 5},
-    },
-    "mit den Schaltern": {
-        "summary": "Eigener Text, die Modellstufe und Bildungsstufen",
+    "1 · regelbasiert (Standard)": {
+        "summary": "Fragevorlagen über die Sätze - braucht kein Modell und kein Netz",
         "description": (
-            "Wer das Kompendium schon hat, übergibt seinen Text und spart die Erzeugung. method wählt die "
-            "Stufe; levels wirkt nur mit llm und nimmt auch die Schreibweise des Vokabulars "
-            "(Sekundarstufe I, Sekundarstufe 1, oder die Begriffs-URI)."
+            "Ein Thema erzeugt erst Teil 1 des Kompendiums und fragt dessen Bausteine ab. Die Stufe kennt "
+            "vier Vorlagen; gemessen am 2026-09-21 greift auf einem Kompendiumtext nur jeder achte Satz, "
+            "und die Hälfte der Fragen fragt nach einer Jahreszahl. Dafür kostet sie nichts."
+        ),
+        "value": {"topic": "Optik", "count": 20},
+    },
+    "2 · kleine Modelle im Image": {
+        "summary": "dehio/german-qg-t5-quad schreibt die Frage, gelectra-base-germanquad findet die Antwort",
+        "description": (
+            "Die Fragen entstehen aus den Nominalphrasen des Textes statt aus Vorlagen, darum sind sie "
+            "vielfältiger: derselbe Text ergab 20 von 20 Paaren mit 18 verschiedenen Fragetypen und keiner "
+            "einzigen Jahresfrage. Preis: rund 1,7 GB Arbeitsspeicher je Worker bei der ersten Anfrage und "
+            "etwa 2,2 Sekunden je Paar auf CPU."
+        ),
+        "value": {"topic": "Optik", "method": "models", "count": 20, "max_answer_length": 240},
+    },
+    "3 · großes Sprachmodell über die b-api": {
+        "summary": "Die b-api schreibt die Paare; als einzige Stufe kann sie Bildungsstufen zuordnen",
+        "description": (
+            "Braucht LLM_ENABLED und B_API_KEY - ohne sie fällt die Anfrage auf rule-based zurück und note "
+            "sagt es. levels nimmt auch die Schreibweise des Vokabulars (Sekundarstufe I, Sekundarstufe 1 "
+            "oder die Begriffs-URI). Wer das Kompendium schon hat, übergibt seinen Text und spart die "
+            "Erzeugung."
         ),
         "value": {
-            "text": "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht.",
+            "topic": "Optik",
             "method": "llm",
-            "count": 8,
-            "max_answer_length": 240,
+            "count": 12,
             "levels": ["Sekundarstufe I", "Sekundarstufe II"],
         },
     },

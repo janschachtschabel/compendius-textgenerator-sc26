@@ -54,6 +54,20 @@ EXAMPLES = {
             "empty_slot_policy": "note",
         },
     },
+    "mit einer Sammlung (Teil 3)": {
+        "summary": "Alle drei Teile: Weltwissen, Lehrpläne und die Materialien einer edu-sharing-Sammlung",
+        "description": (
+            "collection_id ist die Knoten-ID der Sammlung im Repository, hier eine aus der Staging - für "
+            "eine andere Umgebung ersetzen. Teil 3 braucht EDU_SHARING_BASE_URL; fehlt sie, antwortet der "
+            "Endpunkt 503. Mit collection_id braucht Teil 3 keinen Artikel in den Archiven."
+        ),
+        "value": {
+            "topic": "Optik",
+            "parts": ["world", "curricula", "collection"],
+            "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "target_length": 12000,
+        },
+    },
 }
 
 
