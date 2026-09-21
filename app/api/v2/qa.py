@@ -159,7 +159,7 @@ def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     The Bildungsstufe vocabulary (OpenEduHub) names a level as prefLabel ("Sekundarstufe I"), altLabel
     ("Sekundarstufe 1") or concept URI (".../educationalContext/sekundarstufe_1"); ``bildungsstufe_facet``
     reads all three, and the project's own values map to themselves. Four levels of that vocabulary -
-    Schule, Foerderschule, Fernunterricht, Informelles Lernen - have no counterpart in config/facets.yaml.
+    Schule, Förderschule, Fernunterricht, Informelles Lernen - have no counterpart in config/facets.yaml.
     They are refused by name rather than bent onto a neighbour, because a made-up level would travel on
     the pairs into a service that does not know it.
     """
@@ -174,8 +174,8 @@ def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     unknown: list[str] = []
     for level in levels:
         value = bildungsstufe_facet(level)
-        if value in declaration.values:
-            mapped.append(str(value))
+        if value is not None and value in declaration.values:
+            mapped.append(value)
         else:
             unknown.append(level)
     if unknown:
