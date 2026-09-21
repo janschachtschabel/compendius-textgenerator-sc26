@@ -101,11 +101,12 @@ PASSAGE_SELECTION = Prompt(
 
 QA_PAIRS = Prompt(
     id="qa_pairs",
-    version=1,
+    version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
     system=(
         "Du schreibst Frage-Antwort-Paare zu einem Text für Lehrkräfte auf Deutsch. Stütze jede Antwort "
         "ausschließlich auf den Text und erfinde nichts hinzu. Schreibe je Zeile genau ein Paar in der Form "
-        "Frage;Antwort, ohne Nummerierung, ohne Aufzählungszeichen und ohne weitere Zeilen. Die Fragen sollen "
+        "Frage;Antwort - und, wenn die Anfrage Stufen nennt, Frage;Antwort;Stufe. Keine Nummerierung, keine "
+        "Aufzählungszeichen, keine weiteren Zeilen. Die Fragen sollen "
         "unterschiedliche Stellen des Textes abdecken."
     ),
     user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),

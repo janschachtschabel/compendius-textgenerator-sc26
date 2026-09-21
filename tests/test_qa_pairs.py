@@ -162,3 +162,28 @@ def test_the_year_question_needs_no_subject_and_survives_the_check() -> None:
     sentence = "Wiederum im Jahr 1704 veröffentlichte Newton sein Werk über die Farben des Lichts."
     pairs = rule_based_pairs(sentence, limit=5, max_answer_length=300, nlp=fake_nlp)
     assert [pair.question for pair in pairs] == ["Was geschah im Jahr 1704?"]
+
+
+def test_the_prompt_does_not_ask_for_two_fields_and_three_at_once() -> None:
+    """With levels the model is asked for a third field; the system message must allow it.
+
+    The system message is not formatted - ``Prompt.render`` fills only the user part - so a contradiction
+    there is invisible to a fake b-api, which answers with three fields whatever it was told. It said
+    "in der Form Frage;Antwort ... ohne weitere Zeilen" while the user part asked for the level as a third
+    field, and a model that follows the stronger instruction drops the level without a word.
+    """
+    from app.llm.prompts import get_prompt
+
+    prompt = get_prompt("qa_pairs")
+    plain = prompt.render(text="Ein Text.", count=3, max_answer_length=100, levels="")
+    with_levels = prompt.render(
+        text="Ein Text.",
+        count=3,
+        max_answer_length=100,
+        levels="\nStufen (Bildungsstufe): Primar, Sek I. Verteile die Paare gleichmäßig über die Stufen "
+        "und hänge die Stufe als drittes Feld an.",
+    )
+    system = plain[0]["content"]
+    assert system == with_levels[0]["content"], "render fills only the user part; the system text is fixed"
+    assert "Frage;Antwort;Stufe" in system, "the fixed system text has to permit the third field"
+    assert "Stufe" in with_levels[1]["content"] and "Stufe" not in plain[1]["content"]
