@@ -233,7 +233,7 @@ Commit geladen): **61 Personen gewonnen**, 45 verloren — davon **42 Namenslist
 *eine* Person hielt, weil ihre Einträge Geburtsdaten tragen, dazu eine Band und eine Obstsorte. Der echte
 Preis sind **zwei Artikel**: ein Künstlername, dessen Kopula vor dem Zeichen steht („Mata Hari … war der
 Künstlername der Tänzerin … (* 1876)"), und eine Begriffsklärung über Firmen, die vorher falsch als Person
-und jetzt falsch als Organisation zurückkommt. Nebenbei belegt: `libzim`s `get_random_entry` lässt sich
+und jetzt falsch als Organisation zurückkommt. Eine Nebenwirkung geprüft und entkräftet: Wer keine Person mehr ist, gilt als Sachartikel — dessen Fließtext lässt die Matching-Policy in den Standard-Baustein. Von den 45 verlorenen Seiten erkennt der Parser aber **43 als Begriffsklärung**; sie erreichen den Korpus gar nicht. Übrig bleiben die Band und der Künstlername. Nebenbei belegt: `libzim`s `get_random_entry` lässt sich
 nicht säen — Stichproben sind nur **innerhalb** eines Laufs vergleichbar, nicht zwischen Läufen.
 
 ## 2. Wissenstexte je Archiv
