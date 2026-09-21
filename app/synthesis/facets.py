@@ -245,7 +245,15 @@ _BILDUNGSSTUFE_RULES: tuple[tuple[re.Pattern[str], str], ...] = (
 
 
 def bildungsstufe_facet(label: str) -> str | None:
-    """The facet value (config/facets.yaml) for a level label as MEM or edu-sharing spell it, else ``None``."""
+    """The facet value (config/facets.yaml) for a level as MEM, edu-sharing or OpenEduHub name it.
+
+    The OpenEduHub vocabulary names a level three ways - prefLabel, altLabel and the concept URI
+    (``.../educationalContext/sekundarstufe_1``). The labels read as they are; the URI does not,
+    because its underscore is no whitespace, so the last path segment is unpacked first.
+    """
+    if "/" in label:
+        label = label.rstrip("/").rsplit("/", 1)[-1]
+    label = label.replace("_", " ")
     for pattern, value in _BILDUNGSSTUFE_RULES:
         if pattern.search(label):
             return value

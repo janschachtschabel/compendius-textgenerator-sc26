@@ -25,6 +25,7 @@ from app.domain.models import Resolution, Source
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
+from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
 
@@ -152,8 +153,16 @@ def _from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaP
     return pairs, ""
 
 
-def _check_levels(request: Request, levels: Sequence[str]) -> None:
-    """Refuse a level the project does not know; a made-up one would reach the prompt unnoticed."""
+def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
+    """Map what the caller sent onto the project's own level values, or refuse it by name.
+
+    The Bildungsstufe vocabulary (OpenEduHub) names a level as prefLabel ("Sekundarstufe I"), altLabel
+    ("Sekundarstufe 1") or concept URI (".../educationalContext/sekundarstufe_1"); ``bildungsstufe_facet``
+    reads all three, and the project's own values map to themselves. Four levels of that vocabulary -
+    Schule, Foerderschule, Fernunterricht, Informelles Lernen - have no counterpart in config/facets.yaml.
+    They are refused by name rather than bent onto a neighbour, because a made-up level would travel on
+    the pairs into a service that does not know it.
+    """
     service = request.app.state.service
     declaration = service.facets.facets.get(LEVEL_PROPERTY) if service is not None else None
     if declaration is None or not declaration.values:
@@ -161,12 +170,24 @@ def _check_levels(request: Request, levels: Sequence[str]) -> None:
             status_code=422,
             detail=f"Stufenvokabular {LEVEL_PROPERTY} ist nicht konfiguriert (config/facets.yaml)",
         )
-    unknown = [level for level in levels if level not in declaration.values]
+    mapped: list[str] = []
+    unknown: list[str] = []
+    for level in levels:
+        value = bildungsstufe_facet(level)
+        if value in declaration.values:
+            mapped.append(str(value))
+        else:
+            unknown.append(level)
     if unknown:
         raise HTTPException(
             status_code=422,
-            detail=f"Unbekannte Stufen: {', '.join(unknown)}. Erlaubt: {', '.join(declaration.values)}",
+            detail=(
+                f"Unbekannte Stufen: {', '.join(unknown)}. "
+                f"Erlaubt sind {', '.join(declaration.values)} sowie ihre Bezeichnungen und URIs "
+                f"aus dem Vokabular {LEVEL_PROPERTY}"
+            ),
         )
+    return list(dict.fromkeys(mapped))
 
 
 @router.post(
@@ -178,7 +199,9 @@ def _check_levels(request: Request, levels: Sequence[str]) -> None:
 def qa(payload: QaRequest, request: Request) -> QaResponse:
     """Build the pairs, from the caller's text or from the articles of a topic."""
     if payload.levels:
-        _check_levels(request, payload.levels)
+        # From here on only the project's own values travel, so the prompt and the pairs speak one
+        # vocabulary and _level() can map the model's answer back onto it.
+        payload = payload.model_copy(update={"levels": _levels_from(request, payload.levels)})
     topic: str | None = None
     resolution: Resolution | None = None
     if payload.topic:

@@ -262,9 +262,20 @@ auch diese Stufe belegbar — nichts wird erfunden.
 ### Bildungsstufen — eine Option der Stufe `llm`
 
 `levels` in der Anfrage verteilt die Paare über Bildungsstufen und gibt je Paar eine zurück (`level`).
-Die erlaubten Werte kommen aus dem Vokabular, das das Projekt ohnehin führt (`config/facets.yaml`,
-Facette `Bildungsstufe`): Elementar, Primar, Sek I, Sek II, Hochschule, Berufliche Bildung,
-Erwachsenenbildung. Eine unbekannte Stufe ist ein **422**, kein stilles Durchreichen an den Prompt.
+Das Feld ist **optional**; ohne Angabe läuft alles wie zuvor.
+
+**Die Eingabe spricht das Vokabular des Aufrufers, der Dienst seine eigenen Werte.** Die Bildungsstufe
+kommt als OpenEduHub-Begriff — als prefLabel („Sekundarstufe I"), als altLabel („Sekundarstufe 1") oder
+als Begriffs-URI (`.../educationalContext/sekundarstufe_1`). Alle drei bildet `bildungsstufe_facet` auf
+den Wert aus `config/facets.yaml` ab, und die Projektwerte bilden auf sich selbst ab. Ab der Prüfung
+reist nur noch **ein** Vokabular: der Prompt bekommt „Sek I", und `_level()` kann die Antwort des Modells
+darauf zurückführen.
+
+Vier Stufen des Vokabulars haben kein Gegenstück — **Schule, Förderschule, Fernunterricht, Informelles
+Lernen**. Sie werden **namentlich abgelehnt** (422), nicht auf einen Nachbarn gebogen: Ein erfundenes
+Etikett würde an den Paaren in einen Dienst weiterreisen, der es nicht kennt. Wer sie braucht, erweitert
+`config/facets.yaml` — das ist eine Entscheidung über das Kompendium-Vokabular, nicht über diesen
+Endpunkt.
 
 **Nur `llm` kann eine Stufe zuordnen**, und das ist keine Bequemlichkeit: `rule-based` könnte die
 Eigenschaft aufstempeln, aber nie einen Wert — Fragevorlagen haben kein Schwierigkeitssignal. `models`

@@ -245,3 +245,36 @@ def test_the_appendix_of_an_article_is_no_source_for_questions(client: TestClien
     text = _text_of([source], service.lexicon)
     assert "Teilgebiet der Physik" in text
     assert "2. Auflage" not in text, "a question about an edition number teaches nobody anything"
+
+
+def test_levels_may_arrive_in_the_vocabularys_own_wording(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """A caller sends what the Bildungsstufe vocabulary calls it, not what facets.yaml calls it.
+
+    prefLabel, altLabel and the concept URI all name the same level; the endpoint maps them onto the
+    project's own value before the prompt sees them, so the model is asked for one vocabulary only.
+    """
+    api = FakeBApi(lambda body: LEVELLED)
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "llm", make_gateway(api))
+    body = client.post(
+        "/api/v2/qa",
+        json={
+            "text": TEXT,
+            "method": "llm",
+            "levels": [
+                "Primarstufe",
+                "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1",
+            ],
+        },
+    ).json()
+    assert body["method"] == "llm"
+    asked = str(api.bodies[0])
+    assert "Primar" in asked and "Sek I" in asked
+    assert "Primarstufe" not in asked and "sekundarstufe_1" not in asked, "one vocabulary reaches the model"
+
+
+def test_a_level_without_a_counterpart_names_itself_in_the_refusal(client: TestClient) -> None:
+    """Foerderschule and Informelles Lernen are real levels of the vocabulary with no facet value."""
+    answer = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Förderschule"]})
+    assert answer.status_code == 422
+    assert "Förderschule" in answer.text

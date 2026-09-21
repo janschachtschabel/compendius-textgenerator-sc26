@@ -1,5 +1,5 @@
 from app.domain.models import Chunk, Section, SectionStatus, Source, SourceRole
-from app.synthesis.facets import FacetCatalog, annotate
+from app.synthesis.facets import FacetCatalog, annotate, bildungsstufe_facet
 from app.synthesis.lint import lint_sections
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT
@@ -82,3 +82,21 @@ def test_lint_ignores_empty_sections() -> None:
         Section(slot_id="sc26_5", slot_key="entwicklung_ausblick", title="5", text="", status=SectionStatus.EMPTY)
     ]
     assert lint_sections(template, sections, _catalog()) == []
+
+
+def test_a_level_arrives_as_a_label_or_as_a_vocabulary_uri() -> None:
+    """The OpenEduHub vocabulary names a level three ways; all three have to land on the facet value.
+
+    prefLabel ("Sekundarstufe I"), altLabel ("Sekundarstufe 1") and the concept URI
+    (.../educationalContext/sekundarstufe_1) are the same level. The labels were already read; the URI
+    was not, because its underscore is no whitespace.
+    """
+    base = "http://w3id.org/openeduhub/vocabs/educationalContext/"
+    assert bildungsstufe_facet("Sekundarstufe I") == "Sek I"
+    assert bildungsstufe_facet("Sekundarstufe 1") == "Sek I"
+    assert bildungsstufe_facet(base + "sekundarstufe_1") == "Sek I"
+    assert bildungsstufe_facet(base + "sekundarstufe_2") == "Sek II"
+    assert bildungsstufe_facet(base + "elementarbereich") == "Elementar"
+    assert bildungsstufe_facet(base + "berufliche_bildung") == "Berufliche Bildung"
+    assert bildungsstufe_facet("Sek I") == "Sek I", "the project's own value still maps to itself"
+    assert bildungsstufe_facet(base + "informelles_lernen") is None, "no counterpart, and no invented one"
