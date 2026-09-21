@@ -92,6 +92,7 @@ class ParsedArticle:
     title: str
     sections: list[ArticleSection]
     links: list[str] = field(default_factory=list)
+    list_links: list[str] = field(default_factory=list)  # the subset that stands inside a list item
     aliases: list[str] = field(default_factory=list)
     is_disambiguation: bool = False
 
@@ -106,6 +107,7 @@ class _ArticleParser(HTMLParser):
         self.title = title
         self.sections: list[ArticleSection] = [ArticleSection(heading="", path=[], level=0)]
         self.links: list[str] = []
+        self.list_links: list[str] = []
         self.bold_terms: list[str] = []
         self._skip: list[str] = []
         self._heading_level: int | None = None
@@ -322,6 +324,8 @@ class _ArticleParser(HTMLParser):
             return
         self._seen_links.add(title.lower())
         self.links.append(title)
+        if self._list_depth:
+            self.list_links.append(title)
 
 
 def parse_article(html: str, title: str) -> ParsedArticle:
@@ -341,7 +345,12 @@ def parse_article(html: str, title: str) -> ParsedArticle:
     whole_text = " ".join(p.text for s in sections for p in s.paragraphs).lower()
     is_disambiguation = "(begriffsklärung)" in title.lower() or "begriffsklärungsseite" in whole_text
     return ParsedArticle(
-        title=title, sections=sections, links=parser.links, aliases=aliases, is_disambiguation=is_disambiguation
+        title=title,
+        sections=sections,
+        links=parser.links,
+        list_links=parser.list_links,
+        aliases=aliases,
+        is_disambiguation=is_disambiguation,
     )
 
 

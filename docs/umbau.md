@@ -96,6 +96,22 @@ Begriffsklärungsseiten — „Fall“, „Lage“, „Ordnung“, „Punkt“, 
 unter ihnen —, und jede trägt die typische Eröffnung („… steht für:“, „… ist der Familienname folgender
 Personen:“). Gegenprobe auf Fehltreffer: von 600 zufälligen Artikeln kippte **keiner**.
 
+**Nachgebessert am 2026-09-21: Wo ein Link steht, ist keine Frage des Textvergleichs.** Die erste Fassung
+von `listed_meanings` suchte den Linktitel im *Text* der Listenabsätze. Gemessen an 1207 Links aus 31 echten
+Seiten warf das **22** weg, davon nur drei die gewollten Etymologie-Links — die übrigen 19 waren echte
+Bedeutungen, weil die angezeigte Beschriftung nicht der Titel ist („Punktierung (Musik)“ steht als
+„Punktierung“, „Bezirk Friedrichshain-Kreuzberg“ als „Friedrichshain-Kreuzberg“). Der Parser weiß beim
+Erfassen, ob ein Link in einem Listeneintrag steht, und merkt sich das jetzt (`ParsedArticle.list_links`).
+Danach fallen **11** statt 22 weg, die drei Etymologie-Links weiterhin darunter; die restlichen acht stehen
+nachweislich in Überleitungssätzen („in der Geographie“, „in der Astronomie“, „Furchen, Rillen“) und sind
+keine Bedeutungen.
+
+**Und die Alternativen kamen aus einer anderen Liste als die Auswahl.** `resolution.alternatives` las die
+ungefilterten Links weiter, obwohl daneben schon gefiltert gewählt wurde — „Punkt“ meldete `Latein`,
+„Wende“ meldete `Althochdeutsch`, „Rinne“ meldete `Mulde`. Diese Liste ist sichtbar: im 404 des Dienstes
+und als „Vorschläge“ im CLI. Jetzt wird sie einmal berechnet und zweimal benutzt, womit das Auseinanderlaufen
+nicht mehr möglich ist statt bloß behoben.
+
 **Die Rückwirkung auf die Themenauflösung ist gewollt, aber nicht gratis.** Von 27 geprüften Themen ändern
 sich 11, alle davon mehrdeutige Wörter. Vorher baute ein Kompendium zu „Form“ stillschweigend auf der
 Listenseite auf und meldete `disambiguation: false` — eine falsche Angabe über die eigene Quelle. Jetzt meldet

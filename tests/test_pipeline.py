@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from app.domain.models import ArticleSection, ChunkKind, Paragraph, SectionStatus
+from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, TopicNotFoundError
 from app.sources.zim import archive as archive_module
@@ -139,14 +139,9 @@ def test_the_etymology_of_a_disambiguation_page_is_no_meaning() -> None:
     page = ParsedArticle(
         title="Punkt",
         links=["Latein", "Punkt (Geometrie)", "Punktewertung"],
-        sections=[
-            ArticleSection(
-                heading="",
-                paragraphs=[
-                    Paragraph(kind=ChunkKind.TEXT, text="Punkt (lateinisch punctum: der Einstich) steht für:"),
-                    Paragraph(kind=ChunkKind.LIST, text="- Punkt in der Geometrie\n- Punktewertung im Sport"),
-                ],
-            )
-        ],
+        list_links=["Punkt (Geometrie)", "Punktewertung"],
+        sections=[],
     )
     assert listed_meanings(page) == ["Punkt (Geometrie)", "Punktewertung"]
+    prose = ParsedArticle(title="Punkt", links=["Punkt (Geometrie)"], sections=[])
+    assert listed_meanings(prose) == ["Punkt (Geometrie)"], "a page without a list keeps its links"

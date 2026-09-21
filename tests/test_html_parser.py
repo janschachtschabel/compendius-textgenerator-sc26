@@ -82,3 +82,21 @@ def test_a_long_disambiguation_page_is_detected_although_its_note_stands_at_the_
 def test_an_article_that_never_mentions_the_note_stays_an_article(optik_html: str) -> None:
     """The counter-check to the open window: measured on 600 random articles, none of them flipped."""
     assert not parse_article(optik_html, "Optik").is_disambiguation
+
+
+def test_a_link_inside_a_list_is_marked_as_one() -> None:
+    """Which links a disambiguation page offers as meanings is a question of where they stand.
+
+    Measured against the real Wikipedia on 2026-09-21: deciding it by searching the list *text* threw away
+    19 real meanings to remove 3 etymology links, because the rendered label of a link is not its title
+    ("Bezirk Friedrichshain-Kreuzberg", "Punktierung (Musik)"). The parser knows the difference.
+    """
+    html = (
+        "<html><body><p>Punkt (<a href='Latein' title='Latein'>lateinisch</a> punctum) steht für:</p>"
+        "<ul><li><a href='Punkt_(Geometrie)' title='Punkt (Geometrie)'>Punkt</a> in der Geometrie</li>"
+        "<li><a href='Punktewertung' title='Punktewertung'>Punktewertung</a> im Sport</li></ul>"
+        "</body></html>"
+    )
+    parsed = parse_article(html, "Punkt")
+    assert parsed.links == ["Latein", "Punkt (Geometrie)", "Punktewertung"]
+    assert parsed.list_links == ["Punkt (Geometrie)", "Punktewertung"]

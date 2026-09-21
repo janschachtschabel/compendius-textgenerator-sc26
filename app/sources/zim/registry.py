@@ -8,7 +8,7 @@ from collections.abc import Collection, Sequence
 from pathlib import Path
 from typing import Any
 
-from app.domain.models import ChunkKind, Resolution, Source
+from app.domain.models import Resolution, Source
 from app.knowledge.related import is_blacklisted, rank_related_candidates
 from app.knowledge.topic import topic_stem
 from app.sources.zim.active import read_active
@@ -23,20 +23,22 @@ RELATED_MIN_CHARS = 350
 
 
 def listed_meanings(article: ParsedArticle) -> list[str]:
-    """The links a disambiguation page offers as meanings - the ones its list actually names.
+    """The links a disambiguation page offers as meanings - the ones that stand in its list.
 
     Such a page opens with a sentence of its own, and the links in it are etymology, not meanings. They
     stand in front of everything else, so with no context to score against they won: measured against the
-    real Wikipedia on 2026-09-21, the topic "Punkt" resolved to "Latein" and "Wende" to "Althochdeutsch".
-    Three of 34 checked pages carried such a link, and in each of them the first real meaning stood right
-    behind it.
+    real Wikipedia on 2026-09-21, the topic "Punkt" resolved to "Latein" and "Wende" to "Althochdeutsch",
+    and both were reported as alternative meanings as well.
 
-    The qualifier is cut off before matching, because the list writes the word and the link carries the
-    article title. A page whose meanings are prose rather than a list keeps all its links: narrowing to
-    nothing would lose the topic altogether, and none of 38 checked pages needed that fallback.
+    Deciding this by searching the list *text* was measured and thrown out: it dropped 19 real meanings to
+    remove 3 etymology links, because the rendered label of a link is not its title - "Punktierung (Musik)"
+    reads as "Punktierung", "Bezirk Friedrichshain-Kreuzberg" as "Friedrichshain-Kreuzberg". Where a link
+    stands is not a guess, so the parser records it.
+
+    A page whose meanings are prose rather than a list keeps all its links: narrowing to nothing would lose
+    the topic altogether.
     """
-    listed = " ".join(p.text for s in article.sections for p in s.paragraphs if p.kind == ChunkKind.LIST).lower()
-    return [link for link in article.links if link.split(" (")[0].lower() in listed] or list(article.links)
+    return list(article.list_links) or list(article.links)
 
 
 def context_score(context_words: Collection[str], title: str, text: str) -> int:

@@ -44,13 +44,19 @@ def shrink(path: Path, loader: Any) -> None:
     """
     import torch
 
-    model = loader.from_pretrained(str(path))
-    model.half().save_pretrained(str(path), safe_serialization=True)
+    model = loader.from_pretrained(str(path)).half()
+    # half() saturates a weight above 65504 to infinity without a word. Nothing downstream would notice
+    # until the answers turned to noise, so the build asks here.
+    if not all(torch.isfinite(parameter).all() for parameter in model.parameters()):
+        raise SystemExit(f"{path}: half precision put infinities into the weights")
+    model.save_pretrained(str(path), safe_serialization=True)
     del model
     (path / "pytorch_model.bin").unlink(missing_ok=True)  # save_pretrained wrote safetensors beside it
-    reloaded = loader.from_pretrained(str(path), dtype=torch.float32)
-    if reloaded.dtype is not torch.float32:
-        raise SystemExit(f"{path} does not load in full precision: {reloaded.dtype}")
+    # Reloaded *without* a dtype on purpose: naming one would cast, and the check would pass whatever the
+    # file holds. What has to be proven here is that the file itself is half precision.
+    reloaded = loader.from_pretrained(str(path))
+    if reloaded.dtype is not torch.float16:
+        raise SystemExit(f"{path} was not stored in half precision: {reloaded.dtype}")
 
 
 def prepare(qg: Path, qa: Path) -> None:
