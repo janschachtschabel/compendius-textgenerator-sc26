@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.settings import Settings
 
-STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge"]
+STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"]
 
 
 @pytest.fixture(scope="module")
@@ -23,20 +23,42 @@ def client(settings: Settings) -> TestClient:
     return TestClient(create_app(settings))
 
 
-def documented_example(spec: dict[str, Any], path: str) -> Any:
-    """The first example of the request body, as /docs shows it; None when the endpoint documents none."""
-    schema = spec["paths"][path]["post"]["requestBody"]["content"]["application/json"]["schema"]
-    name = str(schema.get("$ref", "")).rsplit("/", 1)[-1]
-    examples = spec["components"]["schemas"].get(name, {}).get("examples") or []
-    return examples[0] if examples else None
+def documented_examples(spec: dict[str, Any], path: str) -> dict[str, Any]:
+    """Every example of the request body, by name, as /docs offers them.
+
+    Named examples live on the media type and Swagger shows them in a chooser; a plain list on the
+    schema is shown as the one body it prefills. Both are read, so neither form goes unchecked.
+    """
+    content = spec["paths"][path]["post"]["requestBody"]["content"]["application/json"]
+    named = content.get("examples") or {}
+    if named:
+        return {name: entry.get("value") for name, entry in named.items()}
+    name = str(content["schema"].get("$ref", "")).rsplit("/", 1)[-1]
+    listed = spec["components"]["schemas"].get(name, {}).get("examples") or []
+    return {f"example {index}": body for index, body in enumerate(listed)}
 
 
 @pytest.mark.parametrize("path", STARTING_POINTS)
-def test_the_documented_example_is_a_request_the_endpoint_takes(client: TestClient, path: str) -> None:
-    example = documented_example(client.get("/openapi.json").json(), path)
-    assert example is not None, f"{path} shows no example, so /docs invents one from the field names"
-    response = client.post(path, json=example)
-    assert response.status_code != 422, f"the example of {path} is refused: {response.text[:300]}"
+def test_every_documented_example_is_a_request_the_endpoint_takes(client: TestClient, path: str) -> None:
+    examples = documented_examples(client.get("/openapi.json").json(), path)
+    assert examples, f"{path} shows no example, so /docs invents one from the field names"
+    for name, example in examples.items():
+        response = client.post(path, json=example)
+        assert response.status_code != 422, f"example {name!r} of {path} is refused: {response.text[:300]}"
+
+
+@pytest.mark.parametrize("path", STARTING_POINTS)
+def test_an_endpoint_a_caller_starts_with_shows_its_switches_too(client: TestClient, path: str) -> None:
+    """One example is the shortest request that works; a second one has to show what else there is.
+
+    The minimal body is what a caller should send first, and it deliberately names three fields. That
+    is also why the switches are invisible in the box Swagger prefills - so a second example carries
+    them, and Swagger offers both by name.
+    """
+    examples = documented_examples(client.get("/openapi.json").json(), path)
+    assert len(examples) >= 2, f"{path} offers only {sorted(examples)}; the switches stay invisible"
+    sizes = sorted(len(body) for body in examples.values())
+    assert sizes[-1] > sizes[0], "the second example has to carry more than the shortest one"
 
 
 def _request_models(schema: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -91,3 +113,19 @@ def test_every_field_a_caller_fills_in_explains_itself(client: TestClient) -> No
         if not spec.get("description")
     ]
     assert not bare, "request fields without a help text in /docs:\n  " + "\n  ".join(bare)
+
+
+def test_every_endpoint_says_what_it_does(client: TestClient) -> None:
+    """An endpoint without a description is a bare path and a verb in /docs.
+
+    The description comes from the handler's docstring, so a missing one is a handler nobody wrote a
+    sentence for. Measured on 2026-09-21: six of twenty-one had none.
+    """
+    schema = client.get("/openapi.json").json()
+    bare = [
+        f"{method.upper()} {path}"
+        for path, operations in sorted(schema.get("paths", {}).items())
+        for method, operation in operations.items()
+        if method in ("get", "post", "put", "delete", "patch") and not (operation.get("description") or "").strip()
+    ]
+    assert not bare, "endpoints without a description in /docs:\n  " + "\n  ".join(bare)

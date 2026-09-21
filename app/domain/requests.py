@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 Part = Literal["world", "curricula", "collection"]
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
@@ -20,11 +20,6 @@ def _default_parts() -> list[Part]:
 
 class GenerateRequest(BaseModel):
     """Either ``topic`` or ``collection_id`` is required; with both, the topic wins (PLAN.md 4.2, D12)."""
-
-    # What /docs offers as a starting point: the shortest request that produces a whole compendium
-    model_config = ConfigDict(
-        json_schema_extra={"examples": [{"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000}]}
-    )
 
     topic: str | None = Field(None, min_length=1, max_length=300, description="Topic; default: the collection title")
     collection_id: str | None = Field(

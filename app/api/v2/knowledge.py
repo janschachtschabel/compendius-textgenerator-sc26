@@ -7,8 +7,10 @@ corpus builder would use, with their sections, optionally limited to single arch
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Request
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Annotated
+
+from fastapi import APIRouter, Body, Depends, Request
+from pydantic import BaseModel, Field
 
 from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.limits import rate_limited
@@ -18,8 +20,6 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
 class KnowledgeRequest(BaseModel):
-    model_config = ConfigDict(json_schema_extra={"examples": [{"topic": "Optik", "max_chars": 20000}]})
-
     topic: str = Field(
         min_length=1, max_length=300, description="The topic whose articles are returned; not found is a 404"
     )
@@ -88,13 +88,37 @@ def _article(source: Source, archive_id: str, sections: list[KnowledgeSection]) 
     )
 
 
+EXAMPLES = {
+    "kuerzeste Anfrage": {
+        "summary": "Nur ein Thema",
+        "value": {"topic": "Optik"},
+    },
+    "mit den Schaltern": {
+        "summary": "Gezielt ein Archiv, begrenzte Artikelzahl und ein Zeichendeckel",
+        "description": (
+            "archives fragt einzelne Archive (unbekannte id: 404), max_articles begrenzt die zusätzlichen "
+            "Artikel, max_chars deckelt den Text über alle Artikel und setzt truncated."
+        ),
+        "value": {
+            "topic": "Optik",
+            "archives": ["wikipedia_de_all_nopic"],
+            "max_articles": 6,
+            "max_chars": 40000,
+            "template_id": "sc26",
+        },
+    },
+}
+
+
 @router.post(
     "/knowledge",
     response_model=KnowledgeResponse,
     dependencies=[Depends(rate_limited)],
     summary="Wissenstexte zu einem Thema",
 )
-def knowledge(payload: KnowledgeRequest, request: Request) -> KnowledgeResponse:
+def knowledge(
+    payload: Annotated[KnowledgeRequest, Body(openapi_examples=EXAMPLES)], request: Request
+) -> KnowledgeResponse:
     """Resolve the topic and return the articles of its corpus, with their sections."""
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)

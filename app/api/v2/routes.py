@@ -7,9 +7,9 @@ endpoints, because a template decides what every following compendium looks like
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -28,13 +28,44 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 admin = APIRouter(prefix="/api/v2", tags=["v2-admin"], dependencies=[Depends(require_admin)])
 
 
+EXAMPLES = {
+    "kuerzeste Anfrage": {
+        "summary": "Das Nötigste: ein Thema, zwei Teile, eine Ziellänge",
+        "value": {"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000},
+    },
+    "mit den Schaltern": {
+        "summary": "Was sonst noch geht: Template, Matching, die drei KI-Schalter, Facetten",
+        "description": (
+            "extraction wählt die Sätze, generation formuliert die Bausteine, enrichment entscheidet, ob das "
+            "Modell eigenes Wissen beisteuern darf. Alle drei fallen auf rule-based zurück, wenn die b-api "
+            "fehlt, und audit sagt hinterher, was wirklich lief."
+        ),
+        "value": {
+            "topic": "Optik",
+            "parts": ["world", "curricula"],
+            "target_length": 12000,
+            "template_id": "sc26",
+            "matcher": "hybrid_light",
+            "extraction": "llm",
+            "generation": "llm-fast",
+            "enrichment": "sources-only",
+            "facets_visible": True,
+            "max_articles": 12,
+            "empty_slot_policy": "note",
+        },
+    },
+}
+
+
 @router.post(
     "/compendium",
     response_model=Compendium,
     dependencies=[Depends(rate_limited)],
     summary="Kompendium erzeugen",
 )
-def generate_compendium(payload: GenerateRequest, request: Request) -> Compendium:
+def generate_compendium(
+    payload: Annotated[GenerateRequest, Body(openapi_examples=EXAMPLES)], request: Request
+) -> Compendium:
     """Generate the compendium for a topic or a collection: the requested parts, with the requested switches."""
     service = get_service(request)
     try:
@@ -62,6 +93,7 @@ def generate_compendium(payload: GenerateRequest, request: Request) -> Compendiu
 
 @router.get("/templates")
 def list_templates(request: Request) -> list[dict[str, Any]]:
+    """The templates this service knows, built-in and custom, with their slot count and version."""
     return [
         {
             "id": t.id,
@@ -77,6 +109,7 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
 
 @router.get("/templates/{template_id}")
 def get_template(template_id: str, request: Request) -> dict[str, Any]:
+    """One template in full, with every block and its budget, facets and search queries (404 unknown)."""
     try:
         template = request.app.state.templates.get(template_id)
     except TemplateNotFoundError as exc:

@@ -52,6 +52,9 @@ def _public_sync(status: dict[str, Any] | None) -> dict[str, Any] | None:
 
 @router.get("/status")
 def zim_status(request: Request) -> dict[str, Any]:
+    """The archives: what is loaded, which ids are required and missing, the profile, the active set
+    and the last sync (its error count; the texts are in GET /api/v2/zim/progress).
+    """
     registry = request.app.state.registry
     settings: Settings = request.app.state.settings
     required: list[str] = request.app.state.required_ids

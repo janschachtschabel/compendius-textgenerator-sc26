@@ -59,6 +59,9 @@ def _components(request: Request) -> dict[str, Any]:
 
 @router.get("/health")
 async def health(request: Request) -> dict[str, Any]:
+    """The process lives: version, timestamp and the state of the archives, the curriculum cache,
+    edu-sharing and the LLM. Always 200 - for the question whether the service can work, ask /ready.
+    """
     components = await run_system(request, _components, request)
     return {
         "status": "healthy",
@@ -71,6 +74,9 @@ async def health(request: Request) -> dict[str, Any]:
 
 @router.get("/ready")
 async def ready(request: Request) -> JSONResponse:
+    """Whether the service can work: 200 when the archives are loaded and none of the required ones is
+    missing, 503 otherwise. The same components as /health come along, so a probe that fails says why.
+    """
     components = await run_system(request, _components, request)
     is_ready = request.app.state.registry.ready and not components["zim"]["missing_required"]
     return JSONResponse(

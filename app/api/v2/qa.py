@@ -14,10 +14,10 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Sequence
-from typing import Literal
+from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import get_service
 from app.api.limits import rate_limited
@@ -44,8 +44,6 @@ NO_TAGGER_NOTE = (
 
 
 class QaRequest(BaseModel):
-    model_config = ConfigDict(json_schema_extra={"examples": [{"topic": "Optik", "count": 5}]})
-
     text: str | None = Field(
         None,
         min_length=1,
@@ -211,13 +209,36 @@ def _levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     return list(dict.fromkeys(mapped))
 
 
+EXAMPLES = {
+    "kuerzeste Anfrage": {
+        "summary": "Ein Thema: das Kompendium wird erzeugt und abgefragt",
+        "value": {"topic": "Optik", "count": 5},
+    },
+    "mit den Schaltern": {
+        "summary": "Eigener Text, die Modellstufe und Bildungsstufen",
+        "description": (
+            "Wer das Kompendium schon hat, übergibt seinen Text und spart die Erzeugung. method wählt die "
+            "Stufe; levels wirkt nur mit llm und nimmt auch die Schreibweise des Vokabulars "
+            "(Sekundarstufe I, Sekundarstufe 1, oder die Begriffs-URI)."
+        ),
+        "value": {
+            "text": "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht.",
+            "method": "llm",
+            "count": 8,
+            "max_answer_length": 240,
+            "levels": ["Sekundarstufe I", "Sekundarstufe II"],
+        },
+    },
+}
+
+
 @router.post(
     "/qa",
     response_model=QaResponse,
     dependencies=[Depends(rate_limited)],
     summary="Frage-Antwort-Paare zu einem Text oder Thema",
 )
-def qa(payload: QaRequest, request: Request) -> QaResponse:
+def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: Request) -> QaResponse:
     """Build the pairs from the caller's text, or from the compendium this endpoint makes for the topic.
 
     Both steps in one call, or one step with a text of your own: that is the pipeline. A topic makes
