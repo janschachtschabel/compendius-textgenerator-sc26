@@ -20,10 +20,17 @@ admin = APIRouter(prefix="/api/v2/matching", tags=["matching-admin"], dependenci
 
 
 class CompareRequest(BaseModel):
-    topic: str = Field(..., min_length=1, max_length=300)
-    matchers: list[str] = Field(default_factory=lambda: list(DEFAULT_MATCHERS), min_length=1, max_length=8)
-    template_id: str | None = None
-    target_length: int = Field(12_000, ge=2_000, le=60_000)
+    topic: str = Field(..., min_length=1, max_length=300, description="The topic the strategies run on")
+    matchers: list[str] = Field(
+        default_factory=lambda: list(DEFAULT_MATCHERS),
+        min_length=1,
+        max_length=8,
+        description="Strategies to compare, from GET /api/v2/matching/strategies; an unknown one is a 422",
+    )
+    template_id: str | None = Field(None, description="Template whose blocks are matched; default from settings")
+    target_length: int = Field(
+        12_000, ge=2_000, le=60_000, description="Length the blocks aim at, as in POST /api/v2/compendium"
+    )
 
 
 @router.get("/strategies")

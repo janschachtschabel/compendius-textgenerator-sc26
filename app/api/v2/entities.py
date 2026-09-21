@@ -48,7 +48,7 @@ class EntitiesRequest(BaseModel):
         json_schema_extra={"examples": [{"text": "Alexander von Humboldt reiste 1799 nach Südamerika."}]}
     )
 
-    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS)
+    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS, description="The text the entities are read from")
     methods: list[Method] = Field(
         default_factory=_default_methods,
         min_length=1,

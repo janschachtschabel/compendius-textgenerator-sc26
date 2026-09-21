@@ -20,7 +20,9 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 class KnowledgeRequest(BaseModel):
     model_config = ConfigDict(json_schema_extra={"examples": [{"topic": "Optik", "max_chars": 20000}]})
 
-    topic: str = Field(min_length=1, max_length=300)
+    topic: str = Field(
+        min_length=1, max_length=300, description="The topic whose articles are returned; not found is a 404"
+    )
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
     max_articles: int | None = Field(
         None,

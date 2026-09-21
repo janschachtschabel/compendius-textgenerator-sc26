@@ -41,7 +41,7 @@ class GenerateRequest(BaseModel):
     subject: str | None = Field(
         None, max_length=100, description="Subject for part 2: WLO discipline id, vocabulary URI, label or alias"
     )
-    language: str = Field("de", pattern="^de$")
+    language: str = Field("de", pattern="^de$", description="Only German today; any other value is a 422")
     template_id: str | None = Field(None, description="Template id; default from settings")
     matcher: str | None = Field(None, description="Matching strategy; default from settings")
     extraction: Extraction | None = Field(
@@ -85,7 +85,12 @@ class GenerateRequest(BaseModel):
         description="With an earlier compendium: only these blocks are made anew, every other one is kept",
     )
     facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
-    max_articles: int | None = Field(None, ge=1, le=50)
+    max_articles: int | None = Field(
+        None,
+        ge=1,
+        le=50,
+        description="Articles the corpus may hold; default CORPUS_MAX_ARTICLES. Topic and twin are always in",
+    )
 
     @model_validator(mode="before")
     @classmethod
