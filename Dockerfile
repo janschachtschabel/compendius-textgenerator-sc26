@@ -62,7 +62,9 @@ COPY app ./app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --inexact --no-dev --no-editable --reinstall-package compendious-text-fastapi \
       --extra embeddings --extra entities --extra qa-models \
-    && diff -r -x __pycache__ app /app/.venv/lib/python*/site-packages/app
+    && ! find app -name __pycache__ -print -quit | grep -q . \
+    && installed=$(/app/.venv/bin/python -c "import app, pathlib; print(pathlib.Path(app.__file__).parent)") \
+    && diff -r -x __pycache__ app "$installed"
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
