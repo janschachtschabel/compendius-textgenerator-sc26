@@ -110,7 +110,8 @@ def model_pairs(
 ) -> list[QaPair]:
     """One pair per candidate the models can both ask and answer, up to ``count``.
 
-    The answer is extracted from the candidate's own sentence, not from the whole text. Measured in the
+    The candidates are re-ordered first (``spread``), so the pairs cover the text instead of exhausting its
+    first sentence. The answer is extracted from the candidate's own sentence, not from the whole text. Measured in the
     image on 2026-09-20: the question was generated from that one sentence, so offering the whole text only
     invites the model to answer from somewhere else - it turned "Was ist das beste Medium, um Licht zu
     brechen?" from "Der Brechungsindex eines Mediums" into "Die Optik". The sentence is also faster

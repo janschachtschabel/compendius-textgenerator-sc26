@@ -203,3 +203,9 @@ def test_a_sentence_with_more_candidates_contributes_them_in_the_later_rounds() 
     rich = [at(FIRST, "Die Optik"), at(FIRST, "ein Teilgebiet"), at(FIRST, "der Physik")]
     order = spread([*rich, at(SECOND, "Ernst Abbe")])
     assert [c.text for c in order] == ["Die Optik", "Ernst Abbe", "ein Teilgebiet", "der Physik"]
+
+
+def test_spreading_nothing_is_no_error() -> None:
+    """A text the tagger finds no noun phrase in must answer with no pairs, not with a traceback."""
+    assert spread([]) == []
+    assert model_pairs([], models(), count=3, max_answer_length=300) == []
