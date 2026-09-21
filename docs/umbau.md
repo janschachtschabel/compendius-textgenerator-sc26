@@ -566,6 +566,43 @@ bekommen, obwohl nichts ergänzt wurde — eine Falschaussage in genau dem Feld,
 **Nicht gemessen:** Wie oft ein Modell die Regel „höchstens jeder dritte Satz aus eigenem Wissen“ einhält, ist
 offen — das braucht einen Lauf gegen die echte b-api und kostet Tokens.
 
+### Wie weit `target_length` die Länge wirklich steuert (2026-09-21 gemessen)
+
+Am laufenden Dienst, Thema *Optik*, nur Teil 1:
+
+| `target_length` | Markdown gesamt | Bausteintext |
+|---|---|---|
+| 2 000 | 25 784 | 23 127 |
+| 4 000 | 27 583 | — |
+| 8 000 | 31 050 | 28 323 |
+| 12 000 (Vorgabe) | 32 523 | — |
+| 20 000 | **35 056** | **32 329** |
+| 40 000 | 35 056 | — |
+| 60 000 | 35 056 | 32 329 |
+
+**Nach oben steuert der Wert, bis die Quellen ausgehen.** Ab 20 000 ändert sich nichts mehr: mehr
+Zielzeichen, aber kein Material. Genau hier hilft, was ohnehin geplant ist — **mehr Quellen heben diese
+Decke**, und der Parameter steuert dann weiter.
+
+**Nach unten steuert er kaum.** Bei Ziel 2 000 kommen 25 784 Zeichen heraus. Der Grund steht nicht im
+Ziel, sondern in der Absatzgrenze: `_scale_budgets` verteilt den Wert nach Gewicht auf die Bausteine
+(mindestens 300 Zeichen je Baustein), und `build_excerpts` hört erst **an einer Absatzgrenze** auf,
+sobald das Anderthalbfache des Anteils erreicht ist. Die Bausteinlängen bei Ziel 2 000:
+
+```
+318  348  357  502  524  534  563  1092  3348  5893  9648
+```
+
+Ein einzelner Baustein ist **9 648 Zeichen** — fast das Fünffache der gesamten angefragten Länge, weil
+sein Quellabsatz so lang ist. Ein Baustein kann nie kürzer sein als sein erster Absatz.
+
+**Das ist eine Entwurfsentscheidung, kein Fehler:** Die Regelextraktion nimmt ganze Absätze, damit der
+Wortlaut der Quelle erhalten bleibt und jeder Satz belegt ist. Wer wirklich kurze Texte braucht, schneidet
+entweder mitten im Absatz (dann ist der Beleg hin) oder lässt den LLM-Modus formulieren (`generation:
+llm`), der die Ziellänge im Prompt nennt. Geändert wurde deshalb nur die **Feldbeschreibung**, die bis
+hierhin „Approximate total characters for part 1" versprach — eine Zahl, die am unteren Ende um den
+Faktor zehn danebenlag.
+
 ## 5. Verwaltung
 
 - **Templates**: `PUT /api/v2/templates/{id}` und `DELETE /api/v2/templates/{id}` hinter `ADMIN_TOKEN`. Der

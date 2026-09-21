@@ -63,7 +63,17 @@ class GenerateRequest(BaseModel):
         "Evidenzgrad=Modellwissen and counted per block. Needs generation llm or llm-fast; with rule-based "
         "generation, or without a usable b-api, the answer reports sources-only",
     )
-    target_length: int = Field(12_000, ge=2_000, le=60_000, description="Approximate total characters for part 1")
+    target_length: int = Field(
+        12_000,
+        ge=2_000,
+        le=60_000,
+        description="Steers the length of part 1: the value is shared over the content blocks by "
+        "weight, and a block stops at a paragraph boundary once it holds one and a half times its "
+        "share. It is a steer, not a cap - a block is never shorter than its first paragraph, so a "
+        "small value does not make a small compendium. Measured for one topic on 2026-09-21: 2 000 "
+        "gave 25 784 characters, 12 000 gave 32 523, and from 20 000 on nothing grew because the "
+        "sources were exhausted - more sources raise that ceiling",
+    )
     empty_slot_policy: Literal["omit", "note"] | None = Field(None, description="Override the template policy")
     existing_markdown: str | None = Field(
         None,
