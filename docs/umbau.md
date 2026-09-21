@@ -258,6 +258,22 @@ beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Arch
 Die Antwortmodelle sind **extraktiv**: Sie markieren die Stelle im Text, die die Frage beantwortet. Damit bleibt
 auch diese Stufe belegbar — nichts wird erfunden.
 
+
+### Bildungsstufen — eine Option der Stufe `llm`
+
+`levels` in der Anfrage verteilt die Paare über Bildungsstufen und gibt je Paar eine zurück (`level`).
+Die erlaubten Werte kommen aus dem Vokabular, das das Projekt ohnehin führt (`config/facets.yaml`,
+Facette `Bildungsstufe`): Elementar, Primar, Sek I, Sek II, Hochschule, Berufliche Bildung,
+Erwachsenenbildung. Eine unbekannte Stufe ist ein **422**, kein stilles Durchreichen an den Prompt.
+
+**Nur `llm` kann eine Stufe zuordnen**, und das ist keine Bequemlichkeit: `rule-based` könnte die
+Eigenschaft aufstempeln, aber nie einen Wert — Fragevorlagen haben kein Schwierigkeitssignal. `models`
+hat überhaupt keinen Begriff von Schwierigkeit; die erfundene Stufe dieser Stufe wurde am 2026-09-21
+ausgebaut (Commit 2746291). Wer `levels` an eine andere Stufe schickt, bekommt die Paare ohne Stufe —
+**und einen Hinweis im Feld `note`**. Der Hinweis hängt an der *tatsächlichen* Stufe, nicht an der
+angefragten: Wer `llm` anfragt und in den Regelmodus zurückfällt, verliert die Stufen mit, und das steht
+dann auch da.
+
 ### Wie U5b am 2026-09-20 gebaut wurde
 
 **Der Fragengenerator ist antwortbewusst — das stand nicht im Entwurf oben.** `german-qg-t5-quad` liest keinen

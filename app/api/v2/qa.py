@@ -13,6 +13,7 @@ image; without them, or without the spaCy model their candidates come from, this
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -30,6 +31,7 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 Method = Literal["rule-based", "models", "llm"]
+LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
 NO_TAGGER_NOTE = (
     "spaCy-Modell nicht geladen; die Fragevorlagen können Satzanfänge nicht prüfen und fragen unter Umständen "
@@ -52,6 +54,13 @@ class QaRequest(BaseModel):
     )
     count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
+    levels: list[str] = Field(
+        default_factory=list,
+        max_length=12,
+        description="Educational levels to spread the pairs over, from config/facets.yaml "
+        "(Elementar, Primar, Sek I, Sek II, Hochschule, Berufliche Bildung, Erwachsenenbildung). "
+        "Only the llm stage can assign one; the other stages say so in note",
+    )
 
     @model_validator(mode="after")
     def _text_or_topic(self) -> QaRequest:
@@ -63,6 +72,7 @@ class QaRequest(BaseModel):
 class Pair(BaseModel):
     question: str
     answer: str
+    level: str | None = Field(None, description=f"The {LEVEL_PROPERTY} the llm stage assigned, if any")
 
 
 class QaResponse(BaseModel):
@@ -124,11 +134,30 @@ def _from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaP
         count=payload.count,
         max_answer_length=payload.max_answer_length,
         budget=llm.open_budget(),
+        level_property=LEVEL_PROPERTY if payload.levels else None,
+        level_values=payload.levels,
         deadline=Deadline(service.settings.request_timeout_s),
     )
     if pairs is None:
         return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"
     return pairs, ""
+
+
+def _check_levels(request: Request, levels: Sequence[str]) -> None:
+    """Refuse a level the project does not know; a made-up one would reach the prompt unnoticed."""
+    service = request.app.state.service
+    declaration = service.facets.facets.get(LEVEL_PROPERTY) if service is not None else None
+    if declaration is None or not declaration.values:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Stufenvokabular {LEVEL_PROPERTY} ist nicht konfiguriert (config/facets.yaml)",
+        )
+    unknown = [level for level in levels if level not in declaration.values]
+    if unknown:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unbekannte Stufen: {', '.join(unknown)}. Erlaubt: {', '.join(declaration.values)}",
+        )
 
 
 @router.post(
@@ -139,6 +168,8 @@ def _from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaP
 )
 def qa(payload: QaRequest, request: Request) -> QaResponse:
     """Build the pairs, from the caller's text or from the articles of a topic."""
+    if payload.levels:
+        _check_levels(request, payload.levels)
     topic: str | None = None
     resolution: Resolution | None = None
     if payload.topic:
@@ -166,11 +197,19 @@ def qa(payload: QaRequest, request: Request) -> QaResponse:
         if nlp is None:
             notes.append(NO_TAGGER_NOTE)
         pairs = rule_based_pairs(text, limit=payload.count, max_answer_length=payload.max_answer_length, nlp=nlp)
+    if payload.levels and method != "llm":
+        # The effective stage decides, not the one that was asked for: an llm that fell back loses the
+        # levels with it, and that has to be said, not left for the reader to infer from empty fields.
+        notes.append(
+            f"Stufen ({LEVEL_PROPERTY}) kann nur die Stufe llm zuordnen; {method} liefert die Paare ohne Stufe"
+        )
     return QaResponse(
         method=method,
         topic=topic,
         resolution=resolution,
         chars=len(text),
-        pairs=[Pair(question=pair.question, answer=pair.answer) for pair in pairs[: payload.count]],
+        pairs=[
+            Pair(question=pair.question, answer=pair.answer, level=pair.level_value) for pair in pairs[: payload.count]
+        ],
         note="; ".join(notes) or None,
     )

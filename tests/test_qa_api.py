@@ -143,7 +143,9 @@ def test_the_model_stage_uses_the_two_models_when_they_are_there(
     )
     body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
     assert body["method"] == "models" and body["note"] is None
-    assert body["pairs"] == [{"question": "Was ist die Optik?", "answer": "ein Teilgebiet der Physik"}]
+    assert body["pairs"] == [
+        {"question": "Was ist die Optik?", "answer": "ein Teilgebiet der Physik", "level": None}
+    ], "the model stage has no notion of difficulty, so it assigns no level"
 
 
 def test_the_model_stage_needs_the_spacy_model_for_its_candidates(
@@ -161,3 +163,48 @@ def test_health_says_whether_the_qa_models_are_in_the_image(client: TestClient) 
     """A probe must not pull 1.3 GB into memory, so /health reports presence, not a load."""
     qa_models = client.get("/health").json()["components"]["qa_models"]
     assert qa_models == {"question_generator": "", "answer_model": "", "present": False}
+
+
+LEVELLED = (
+    "Was ist Licht?;Elektromagnetische Strahlung im sichtbaren Bereich.;Primar\n"
+    "Was ist Optik?;Ein Teilgebiet der Physik.;Sek I"
+)
+
+
+def test_the_llm_spreads_the_pairs_over_the_levels_it_was_given(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Levels are an option of the llm stage: the prompt names them and every pair carries one."""
+    api = FakeBApi(lambda body: LEVELLED)
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "llm", make_gateway(api))
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Primar", "Sek I"]}).json()
+    assert body["method"] == "llm"
+    assert [pair["level"] for pair in body["pairs"]] == ["Primar", "Sek I"]
+    asked = str(api.bodies[0])
+    assert "Primar" in asked and "Sek I" in asked, "the prompt has to name the levels it should spread over"
+
+
+def test_a_level_outside_the_catalogue_is_refused(client: TestClient) -> None:
+    """The values come from config/facets.yaml; a made-up one is a bad request, not a silent pass."""
+    answer = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Klasse 7"]})
+    assert answer.status_code == 422
+    assert "Klasse 7" in answer.text
+
+
+def test_levels_without_the_llm_stage_are_said_out_loud(client: TestClient) -> None:
+    """Only the llm stage can assign a level; the other two would stamp an empty label."""
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "rule-based", "levels": ["Primar"]}).json()
+    assert body["method"] == "rule-based"
+    assert all(pair["level"] is None for pair in body["pairs"])
+    assert "Stufen" in (body["note"] or ""), "silently dropping the levels would be the worse failure"
+
+
+def test_levels_are_also_said_out_loud_when_the_llm_falls_back(client: TestClient) -> None:
+    """Asking for llm and getting the templates loses the levels; the note has to name both reasons."""
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Primar"]}).json()
+    assert body["method"] == "rule-based"
+    assert all(pair["level"] is None for pair in body["pairs"])
+    note = body["note"] or ""
+    assert "LLM nicht konfiguriert" in note, "the reason for the fallback"
+    assert "Stufen" in note, "and that the levels went with it"
