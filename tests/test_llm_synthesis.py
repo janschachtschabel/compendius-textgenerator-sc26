@@ -20,6 +20,7 @@ from app.synthesis.citations import (
     opening_marker,
     renumber,
     verify_citations,
+    without_markers,
 )
 from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
@@ -431,3 +432,17 @@ def test_enrichment_still_needs_one_sentence_from_the_sources() -> None:
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
     )
     assert isinstance(result, LlmSkipped) and "belegt" in result.reason
+
+
+def test_a_reading_text_carries_no_evidence_numbers() -> None:
+    """The markers belong to the compendium, not to a text something else is built from.
+
+    Every sentence of part 1 ends with at least one evidence number, and they sit inside the block text
+    rather than in the markdown around it. A question generator reads them as words: measured on the
+    running service on 2026-09-21 one pair came back as "Woraus besteht [12] Das Arbeitsfeld eines
+    Optotechnikers?".
+    """
+    assert without_markers("Licht breitet sich geradlinig aus [2].") == "Licht breitet sich geradlinig aus."
+    assert without_markers("Er maß die Brechung. [12]\nDas Feld ist weit.") == "Er maß die Brechung.\nDas Feld ist weit."
+    assert without_markers("Beides gilt [1, 2] und mehr [3; 4].") == "Beides gilt und mehr."
+    assert without_markers("Ohne Nummern bleibt alles.") == "Ohne Nummern bleibt alles."

@@ -64,6 +64,20 @@ def collapse(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def without_markers(text: str) -> str:
+    """The text without its evidence numbers, for something that is read rather than cited.
+
+    The markers belong to the compendium: every sentence of part 1 ends with at least one, and they
+    sit inside the block text, not in the markdown around it. Anything built *from* that text reads
+    them as words - on 2026-09-21 the question generator built one around a marker, asking what an
+    evidence number consists of. Single and grouped markers go, and the space they leave with them.
+    """
+    text = _MULTI_MARKER_RE.sub("", _MARKER_RE.sub("", text))
+    text = re.sub(r"[ \t]+([.,;:!?])", r"\1", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return re.sub(r"[ \t]+($|\n)", r"\1", text).strip()
+
+
 def marker_numbers(text: str) -> list[int]:
     """Evidence numbers in order of first appearance."""
     return list(dict.fromkeys(int(m) for m in _MARKER_RE.findall(text)))

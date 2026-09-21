@@ -21,11 +21,12 @@ from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import get_service
 from app.api.limits import rate_limited
-from app.domain.models import Compendium, Resolution
+from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, PartsUnavailableError, TopicNotFoundError
+from app.synthesis.citations import without_markers
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
@@ -123,12 +124,25 @@ def _part_one(service: CompendiumService, topic: str) -> Compendium:
 
 
 def _text_of_compendium(compendium: Compendium) -> str:
-    """The prose of the blocks, in reading order - not the markdown around them.
+    """The prose of the content blocks, in reading order - not the apparatus around them.
 
-    The finished document carries headings, citation numbers, facet markers and a sources block. A
-    question generated from those asks about a number or a heading, so only the block texts are used.
+    Two things are left out, and both for the same reason: they are apparatus, not subject matter.
+    The markdown of the finished document carries headings, citation numbers and facet markers, so
+    only the block texts are read. And of those the generated blocks are skipped - the sources block,
+    the glossary and the actor directory are link lists and tables that a question generator turns
+    into nonsense.
+
+    Measured against the running service on 2026-09-21 for one topic: of 27 614 characters of blocks,
+    20 522 were the three generated ones. Asked about, they produced a question about the year 1999
+    answered with a literature line and its ISBN - three quarters of the text taught nothing, and the
+    literature lines are where the flood of year questions came from.
     """
-    return "\n\n".join(section.text.strip() for section in compendium.sections if section.text.strip())
+    joined = "\n\n".join(
+        section.text.strip()
+        for section in compendium.sections
+        if section.text.strip() and section.status is not SectionStatus.GENERATED
+    )
+    return without_markers(joined)
 
 
 def _from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:

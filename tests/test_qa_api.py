@@ -13,7 +13,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from app.domain.models import AuditReport, Compendium, Resolution, Section
+from app.domain.models import AuditReport, Compendium, Resolution, Section, SectionStatus
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -291,3 +291,46 @@ def test_a_text_is_still_taken_as_it_comes(client: TestClient, monkeypatch: pyte
     monkeypatch.setattr(service, "generate", never)
     body = client.post("/api/v2/qa", json={"text": TEXT}).json()
     assert body["chars"] == len(TEXT) and body["topic"] is None
+
+
+def test_the_generated_blocks_are_no_source_for_questions(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Sources, glossary and the actor directory are apparatus, not subject matter.
+
+    Measured against the running service on 2026-09-21 for one topic: of 27 614 characters of blocks,
+    20 522 were the three generated ones - link lists, a markdown glossary table and the sources block
+    with its ISBN-laden literature lines. Asked about, they yield "Was geschah im Jahr 1999?" answered
+    with "Pabst, Lengerich 1999, ISBN 3-934252-13-3", which is where the flood of year questions came
+    from. Three quarters of the text taught nothing.
+    """
+    content = "Die Brechzahl von Wasser beträgt etwa 1,33 und bestimmt den Winkel des gebrochenen Strahls."
+    apparatus = "Ludwig Bergmann, Clemens Schaefer: Optik. De Gruyter, Berlin 2004, ISBN 3-11-017081-7."
+
+    def with_apparatus(payload: Any) -> Compendium:
+        return Compendium(
+            topic="Optik",
+            resolution=Resolution(query="Optik", normalized="Optik", title="Optik"),
+            template_id="sc26",
+            template_version=1,
+            extraction="rule-based",
+            generation="rule-based",
+            generated_at="2026-09-21T00:00:00Z",
+            audit=AuditReport(),
+            sections=[
+                Section(slot_id="s1", slot_key="fachinhalte", title="Fachinhalte", text=content),
+                Section(
+                    slot_id="s2",
+                    slot_key="quellen",
+                    title="Quellen",
+                    text=apparatus,
+                    status=SectionStatus.GENERATED,
+                ),
+            ],
+        )
+
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "generate", with_apparatus)
+    body = client.post("/api/v2/qa", json={"topic": "Optik", "count": 10}).json()
+    assert body["chars"] == len(content), "only the subject matter is asked about"
+    assert all("ISBN" not in pair["answer"] for pair in body["pairs"])
