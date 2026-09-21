@@ -209,6 +209,33 @@ nachher**, sechs falsche Akteure weg (Wirtschaft, Firma, Kooperation, Museum, Bi
 **kein einziger echter Akteur verloren**. Was bleibt: ein Begriff, dessen Lead ihn *über* ein Akteurswort
 definiert („Hilfe … ist ein Teil der Kooperation“) — dafür braucht es den Kopf des Prädikats, kein Muster.
 
+**Zweiter Befund vom 2026-09-21: `kind` verfehlte historische Personen — und etikettierte eine als
+Organisation.** Aufgefallen beim Nachmessen des Akteursverzeichnisses auf dem Produktionsweg (die ersten 40
+Links von sechs echten Themen, 240 Nachschläge, 10 Akteure): **Hans Carl von Carlowitz**, geboren 1645,
+gestorben 1714, stand als `Organisation` darin. Die Ursache war eine Kette: Die Personenregel verlangte die
+Klammer **unmittelbar** vor dem Geburtszeichen (`\(\*`). Deutsche Leads setzen aber oft erst den Zweitnamen
+(„Tycho Brahe (Tyge Ottesen Brahe, auch bekannt als …; * 14. Dezember 1546"), und das julianisch-gregorianische
+Datum klebt an den Monat („* 14. Dezemberjul. / 24. Dezember 1645greg."). Wenn die erste Stufe der Kaskade
+so danebengreift, fällt der Artikel nicht durch — die nächste Stufe gewinnt. Bei Carlowitz war das
+„**Kammer**- und Bergrat".
+
+Gemessen an 18 historischen Personen: **8 verfehlt**, danach **18 von 18 richtig**.
+
+**Drei Zuschnitte gemessen, der dritte trägt.** Das Zeichen irgendwo im Vorspann zu lesen holt sich ein
+Museum („Peter Hennig († 2013)" im dritten Satz). Es nur im **ersten Satz** zu lesen verliert 12 echte
+Biografien, weil der Satztrenner mitten im Namen schneidet („1. Baronet", „Jr.", „ndl."). Was trägt, ist
+derselbe Gedanke, den die Typwörter schon nutzen: Das Zeichen zählt im **Namensteil vor der Kopula**. Eine
+Namensliste stellt die Kopula an den Anfang („Zapatka **ist** der Familienname folgender Personen: …"), ein
+Museum auch — eine Biografie nie.
+
+Alt gegen neu auf denselben 1500 Zufallsartikeln (beide Male die echte Funktion, der alte Stand aus dem
+Commit geladen): **61 Personen gewonnen**, 45 verloren — davon **42 Namenslisten**, die die alte Regel für
+*eine* Person hielt, weil ihre Einträge Geburtsdaten tragen, dazu eine Band und eine Obstsorte. Der echte
+Preis sind **zwei Artikel**: ein Künstlername, dessen Kopula vor dem Zeichen steht („Mata Hari … war der
+Künstlername der Tänzerin … (* 1876)"), und eine Begriffsklärung über Firmen, die vorher falsch als Person
+und jetzt falsch als Organisation zurückkommt. Nebenbei belegt: `libzim`s `get_random_entry` lässt sich
+nicht säen — Stichproben sind nur **innerhalb** eines Laufs vergleichbar, nicht zwischen Läufen.
+
 ## 2. Wissenstexte je Archiv
 
 ```
