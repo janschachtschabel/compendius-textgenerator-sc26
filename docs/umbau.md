@@ -112,9 +112,21 @@ der Seite gewann das Thema „Rolle“ im Physik-Kontext. Mit dem Titel in der B
 „Rolle (Physik)“, und von 18 gegen die echten Archive geprüften Fällen ändert sich **genau dieser eine**.
 Dasselbe Muster nutzt die Volltextsuche derselben Datei längst (`f"{hit.title} {hit.lead_text}"`).
 
-**Weiterhin offen:** Die Auswahl sieht nur `links[:12]`. Bei „Punkt“ steht die gesuchte Bedeutung nicht
-darin — die ersten zwölf Links sind Etymologie und Punktesysteme —, deshalb bleibt es bei „Latein“. Ein
-größeres Fenster kostet je Kandidat einen Archivzugriff samt Parse und müsste erst gemessen werden.
+**Nachgebessert am 2026-09-21: Die Etymologie ist keine Bedeutung.** Eine deutsche Begriffsklärung beginnt
+mit einem eigenen Satz — „Punkt (lateinisch punctum: der Einstich) steht für:“ —, und dessen Links sind
+Wortherkunft, keine Bedeutungen. Sie stehen vor allem anderen, also gewannen sie ohne Kontext: „Punkt“
+löste zu „Latein“ auf, „Wende“ zu „Althochdeutsch“. Gemessen an 34 echten Seiten trifft das **drei** von
+ihnen, und in allen drei stand die erste echte Bedeutung direkt dahinter. `listed_meanings` nimmt nur
+Links, die auch in den Listenabsätzen stehen; von 38 geprüften Seiten behielt **jede** mindestens drei
+Kandidaten, eine Seite ohne Listen behält sicherheitshalber alle.
+
+**Das Fenster `links[:12]` bleibt — gemessen, nicht aus Bequemlichkeit.** Bei „Punkt“ steht die
+Geometrie-Bedeutung auf Position 20 von 36; ein Fenster von 24 würde sie fangen und kostet nur 0,16 s je
+mehrdeutigem Thema (0,52 s gegen 1,14 s für vier Themen, kalter Parse-Cache). Es ist aber **kein sauberer
+Gewinn**: Von 18 geprüften Fällen werden zwei besser („Punkt“ + Geometrie → Punkt (Geometrie), „Lage“ +
+Stadt → Lage (Lippe)) und einer schlechter („Faust“ + Goethe → „Faust. Der Tragödie zweiter Teil“ statt
+„Goethes Faust“, weil ein später Kandidat höher punktet). Mit einer bekannten Verschlechterung für seltene
+Themen bleibt es bei 12; wer das ändern will, braucht zuerst eine bessere Punktevergabe.
 
 Bei den Fragevorlagen in U5a war die Wortart dagegen genau richtig, weil die Fehlgriffe dort **keine**
 Substantive sind (Adverbien am Satzanfang); das ist behoben, siehe unten. Bis dahin liefert `dictionary` viel

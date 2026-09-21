@@ -6,12 +6,13 @@ from typing import Any
 
 import pytest
 
-from app.domain.models import SectionStatus
+from app.domain.models import ArticleSection, ChunkKind, Paragraph, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, TopicNotFoundError
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
-from app.sources.zim.registry import ZimRegistry, context_score
+from app.sources.zim.html import ParsedArticle
+from app.sources.zim.registry import ZimRegistry, context_score, listed_meanings
 
 
 def test_registry_loads_both_archives(registry: ZimRegistry) -> None:
@@ -125,3 +126,27 @@ def test_the_context_is_looked_for_in_the_title_as_well() -> None:
     body = "Eine Rolle ist ein Maschinenelement und dient dem Umlenken eines Seils."
     assert context_score({"physik"}, "Rolle (Physik)", body) == 1
     assert context_score({"physik"}, "Mangel (Gerät)", body) == 0
+
+
+def test_the_etymology_of_a_disambiguation_page_is_no_meaning() -> None:
+    """A German disambiguation page opens with a sentence of its own, and its links are not meanings.
+
+    Measured against the real Wikipedia on 2026-09-21: "Punkt (lateinisch punctum: der Einstich) steht
+    für:" puts the link "Latein" in front of every listed meaning. With no context to score against, that
+    first link won - the topic "Punkt" resolved to "Latein", "Wende" to "Althochdeutsch". Three of 34
+    checked pages carried such a link, and in each the first real meaning stood right behind it.
+    """
+    page = ParsedArticle(
+        title="Punkt",
+        links=["Latein", "Punkt (Geometrie)", "Punktewertung"],
+        sections=[
+            ArticleSection(
+                heading="",
+                paragraphs=[
+                    Paragraph(kind=ChunkKind.TEXT, text="Punkt (lateinisch punctum: der Einstich) steht für:"),
+                    Paragraph(kind=ChunkKind.LIST, text="- Punkt in der Geometrie\n- Punktewertung im Sport"),
+                ],
+            )
+        ],
+    )
+    assert listed_meanings(page) == ["Punkt (Geometrie)", "Punktewertung"]
