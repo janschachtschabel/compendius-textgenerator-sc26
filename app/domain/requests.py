@@ -36,9 +36,16 @@ class GenerateRequest(BaseModel):
     subject: str | None = Field(
         None, max_length=100, description="Subject for part 2: WLO discipline id, vocabulary URI, label or alias"
     )
-    language: str = Field("de", pattern="^de$", description="Only German today; any other value is a 422")
+    language: str = Field("de", pattern="^de$", description="Only 'de' today; any other value is a 422")
     template_id: str | None = Field(None, description="Template id; default from settings")
-    matcher: str | None = Field(None, description="Matching strategy; default from settings")
+    matcher: str | None = Field(
+        None,
+        description="How paragraphs are matched onto the template blocks; default from MATCHER_DEFAULT. "
+        "All four run locally on the CPU and cost nothing: hybrid_light (heading lexicon, BM25 and "
+        "character TF-IDF together, plus Model2Vec embeddings when MODEL2VEC_PATH is set) is the "
+        "default; bm25 is Okapi BM25 alone; char_tfidf is character TF-IDF, which carries German "
+        "compounds; lexicon_only uses the heading lexicon without a ranker. An unknown name is a 422",
+    )
     extraction: Extraction | None = Field(
         None,
         description="Who picks the passages of part 1: rule-based (the policy's paragraphs, their first sentences) "
@@ -69,7 +76,12 @@ class GenerateRequest(BaseModel):
         "gave 25 784 characters, 12 000 gave 32 523, and from 20 000 on nothing grew because the "
         "sources were exhausted - more sources raise that ceiling",
     )
-    empty_slot_policy: Literal["omit", "note"] | None = Field(None, description="Override the template policy")
+    empty_slot_policy: Literal["omit", "note"] | None = Field(
+        None,
+        description="What happens to a block the corpus has nothing for, overriding the template: "
+        "omit leaves it out of the document, note keeps the heading and says the sources carry "
+        "nothing about it",
+    )
     existing_markdown: str | None = Field(
         None,
         max_length=2_000_000,

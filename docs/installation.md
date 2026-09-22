@@ -2,7 +2,8 @@
 
 Von der leeren Maschine bis zum ersten Kompendium. Die Anleitung setzt nur ein installiertes Debian 13 und
 einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung stehen in
-[betrieb.md](betrieb.md), alle Einstellungen in [.env.example](../.env.example).
+[betrieb.md](betrieb.md), alle Einstellungen mit ihrer Bedeutung im Abschnitt *Konfiguration* der
+[README](../README.md#konfiguration); [.env.example](../.env.example) ist die kommentarfreie Vorlage dazu.
 
 ## Was die Maschine braucht
 

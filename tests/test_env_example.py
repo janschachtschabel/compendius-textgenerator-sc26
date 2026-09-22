@@ -48,3 +48,32 @@ def test_no_credential_carries_a_value() -> None:
     values = documented()
     filled = [name for name in SECRETS if values.get(name)]
     assert not filled, f"the committed example must not carry credentials: {filled}"
+
+
+_VARIABLE_LINE = re.compile(r"^[A-Z][A-Z0-9_]*=.*$")
+PROSE = (
+    Path(__file__).resolve().parents[1] / "README.md",
+    *(Path(__file__).resolve().parents[1] / "docs").glob("*.md"),
+)
+
+
+def test_the_example_is_nothing_but_variable_lines() -> None:
+    """No comments, no blank lines: the file is parsed line by line by the hosting we import into.
+
+    A hoster that reads every line on its own chokes on a prose comment and can take "# FOO=bar" for a
+    variable named "# FOO". So the explanations live in README.md and docs/, and this file stays machine
+    readable - which is also why the test below makes sure the explanations really are there.
+    """
+    offenders = [
+        f"{number}: {line}"
+        for number, line in enumerate(EXAMPLE.read_text(encoding="utf-8").splitlines(), start=1)
+        if not _VARIABLE_LINE.match(line)
+    ]
+    assert not offenders, "only NAME=value lines belong in .env.example:\n" + "\n".join(offenders)
+
+
+def test_every_variable_is_explained_in_the_prose() -> None:
+    """What the comments used to say has to be somewhere a reader finds it, or it is gone."""
+    prose = "\n".join(path.read_text(encoding="utf-8") for path in PROSE)
+    missing = sorted(name for name in documented() if name not in prose)
+    assert not missing, f"named in .env.example but explained nowhere in README.md or docs/: {missing}"

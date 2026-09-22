@@ -2,7 +2,8 @@
 
 Kurzes Handbuch für Betrieb, Störungen und Wiederherstellung. Die Einrichtung einer neuen Maschine steht in
 [installation.md](installation.md), Architektur und Entscheidungen in [PLAN.md](../PLAN.md), alle Einstellungen
-in [.env.example](../.env.example).
+mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfiguration);
+[.env.example](../.env.example) ist die kommentarfreie Vorlage dazu.
 
 ## Prozesse und Volumes
 

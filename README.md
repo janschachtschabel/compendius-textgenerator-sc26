@@ -76,8 +76,8 @@ API lokal:
 uv run uvicorn app.main:create_app --factory --reload
 ```
 
-Konfiguration über Umgebungsvariablen oder `.env` (Vorlage `.env.example`, Felder in
-`app/settings.py`).
+Konfiguration über Umgebungsvariablen oder `.env` (Vorlage `.env.example`, jede Variable erklärt
+unter [Konfiguration](#konfiguration)).
 
 ## Matching bewerten
 
@@ -241,6 +241,141 @@ der b-api nur im Log.
 ```bash
 LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
 ```
+
+## Konfiguration
+
+Alle Einstellungen kommen aus Umgebungsvariablen (`app/settings.py`). `.env.example` ist die Vorlage:
+Kopie als `.env`, Werte anpassen. **Die Vorlage enthält bewusst keine Kommentare und keine Leerzeilen** —
+nur `NAME=Wert`, eine Einstellung je Zeile. Manche Hosting-Umgebungen (etwa Hostinger) lesen eine solche
+Datei Zeile für Zeile und stolpern über Kommentare oder halten `# FOO=bar` für eine Variable namens
+`# FOO`. Die Erklärungen stehen deshalb hier und in `docs/`; ein Test hält beides zusammen.
+
+Die angegebenen Werte sind die der Vorlage. Wer eine Zeile wegnimmt, bekommt die Vorgabe aus
+`app/settings.py` — bei den meisten ist das derselbe Wert.
+
+### Betrieb
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `LOG_LEVEL` | `INFO` | Protokollstufe der Anwendung (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
+| `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit und das Lesen der Materialtexte. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`) |
+| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
+| `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus |
+| `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
+| `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
+| `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Matching-Vergleich) nur mit diesem Token; leer schaltet sie ab |
+
+### ZIM-Archive
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `ZIM_DIR` | `/data/zim` | Verzeichnis mit `active.json`, vom Sync-Job gepflegt |
+| `ZIM_PATHS` | leer | Statt des Verzeichnisses explizite Pfade, durch Komma getrennt — für die Entwicklung. Gesetzt hat es Vorrang vor `ZIM_DIR` |
+| `ZIM_PROFILE` | `standard` | Welches Archivbündel gilt: `compact`, `standard` oder `extended` (`config/zim_subscriptions.yaml`) |
+| `ZIM_REQUIRED` | leer | Pflichtarchive für `/ready`; leer leitet sie aus `config/zim_subscriptions.yaml` für `ZIM_PROFILE` ab |
+| `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | Lädt beim ersten Start die fehlenden Pflichtarchive des Profils — `compact` rund 1,4 GB, `standard` rund 14,1 GB, `extended` rund 18,1 GB. Erst danach meldet `/ready` den Dienst bereit. `false` lässt das Volume, wie es ist; dann müssen die Archive von Hand hinein |
+| `ZIM_SYNC_INTERVAL` | `30d` | Wie oft der Sync-Job (`compendium zim sync --loop` im Updater-Sidecar) den Katalog prüft |
+| `ZIM_RETENTION_HOURS` | `24` | Wie lange ein ersetztes Archiv nach dem Umschalten liegen bleibt, bevor es gelöscht wird |
+| `ZIM_CATALOG_URL` | leer | OPDS-Katalog für den Sync-Job; leer nimmt den eingebauten Kiwix-Katalog (`https://opds.library.kiwix.org/catalog/v2/entries`) |
+| `ZIM_DOWNLOAD_HOSTS` | `download.kiwix.org,lb.download.kiwix.org,mirror.download.kiwix.org` | Von welchen Hosts der Sync-Job laden darf. Ein Katalogeintrag, der woanders hinzeigt, wird abgelehnt |
+
+### Ablage
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates |
+| `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `zim_subscriptions.yaml` und den Templates |
+| `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval` und `POST /api/v2/matching/compare` (Admin); im Image nicht enthalten |
+
+### Kompendium und Matching
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt |
+| `MATCHER_DEFAULT` | `hybrid_light` | Zuordnungsstrategie, wenn die Anfrage keine nennt. Vier stehen zur Wahl, alle laufen lokal auf der CPU und kosten nichts: **`hybrid_light`** (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist) — der Standard; **`bm25`** (Okapi BM25 allein); **`char_tfidf`** (Zeichen-TF-IDF, trägt deutsche Komposita); **`lexicon_only`** (nur das Überschriften-Lexikon, ohne Ranker). Eine unbekannte Strategie beantwortet der Endpunkt mit 422 |
+| `POLICY_CONFIDENT_SCORE` | `0.65` | Ab dieser fusionierten Trefferstärke gilt ein Ranker-Treffer als Beleg; darunter greift der Standardbaustein des Templates. Mit Glättung 0,5 auf `eval/gold` gemessen: 0,45 → 0,65 hebt macro-F1 von 0,430 auf 0,447 und senkt falsch gedruckte Absätze um ein Drittel |
+| `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score — Absätze unter einer Überschrift stützen sich gegenseitig; `0` schaltet es ab |
+| `FACETS_LEVEL` | `minimal` | Wie viele Facetten das Frontmatter trägt: `minimal` oder `full` |
+| `FACETS_VISIBLE` | `false` | Facettenmarken zusätzlich sichtbar in den Text schreiben |
+| `CORPUS_MAX_ARTICLES` | `12` | Artikel je Kompendium. Thema und Zwilling sind immer dabei |
+| `CORPUS_MAX_CHUNKS` | `400` | Absätze je Kompendium. Gefüllt wird in der Reihenfolge Hauptartikel, Klexikon, angeforderte Materialien, verlinkte, gesuchte Artikel; der Rest steht als `chunks_truncated` im Audit |
+
+### Modelle im Image
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `MODEL2VEC_PATH` | `/models/m2v` | Statisches Einbettungsmodell für `hybrid_light`; im Image unter `/models/m2v`. Lokal eine Hugging-Face-ID mit `HF_HUB_OFFLINE=1`, wenn das Modell im Cache liegt. Leer heißt: `hybrid_light` ohne Einbettungen |
+| `SPACY_MODEL` | `de_core_news_md` | Modell für die Entitätserkennung (`POST /api/v2/entities`) und für die QA-Stufen `rule-based` und `parse-based`: installierter Name oder Pfad. Leer heißt: `/api/v2/entities` antwortet nur mit den Begriffen, die einen Artikel haben, und `parse-based` fällt auf `rule-based` zurück |
+| `QG_MODEL_PATH` | `/models/qg` | Fragengenerator der QA-Stufe `models`. Leer schaltet die Stufe ab; die Anfrage fällt dann auf `rule-based` zurück und sagt es in `note` |
+| `QA_MODEL_PATH` | `/models/qa` | Extraktives Antwortmodell derselben Stufe. Zusammen kosten beide rund 1,7 GB je Worker, und zwar erst bei der ersten Anfrage, die sie braucht |
+
+### Lehrpläne (Teil 2)
+
+Vollabzug aus MEM in `STATE_DIR/lehrplan.db` durch den Harvest-Sidecar (`compendium lehrplan harvest --loop`);
+die API liest nur den Cache. Wöchentlich wird die Zählung geprüft, ein Vollabzug bei Änderung oder spätestens
+nach `LEHRPLAN_HARVEST_MAX_AGE` angestoßen — er dauert rund 25 Minuten und stellt 2.605 Anfragen.
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `LEHRPLAN_ENDPOINT` | `https://sparql.mem.edufeed.org/sparql/` | SPARQL-Endpunkt der MEM |
+| `LEHRPLAN_CHECK_INTERVAL` | `7d` | Wie oft die Zählung geprüft wird |
+| `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Spätestens nach dieser Zeit wird neu abgezogen, auch ohne erkannte Änderung |
+| `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen zwei Anfragen an die MEM |
+| `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` | Optionale Kappung der Lernbereiche je Bundesland und Bildungsstufe; `0` heißt: alle Treffer, denn kompendiale Texte dürfen lang sein |
+
+### Sammlungen (Teil 3) und Wissens-Sammlung
+
+edu-sharing-Repository, anonym oder mit Basic-Auth; leere Basis-URL schaltet Teil 3 ab (der Endpunkt
+antwortet dann 503). Der Cache liegt in `STATE_DIR/wlo_cache.db`. Wörtlich übernommen wird nur, was unter
+CC0, PDM, CC BY oder CC BY-SA steht.
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` |
+| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym |
+| `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
+| `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |
+| `COLLECTION_CACHE_TTL_S` | `3600` | Wie lange eine Sammlung im Cache gilt |
+| `COLLECTION_MAX_ITEMS` | `0` | Optionale Kappung der Inhalte je Sammlung; `0` listet alle |
+| `MATERIAL_TEXT_CACHE_TTL_S` | `604800` | Wie lange ein geholter Materialtext im Cache gilt (sieben Tage) |
+| `KNOWLEDGE_MAX_MATERIALS` | `30` | Materialien, die die Wissens-Sammlung höchstens liest |
+| `KNOWLEDGE_MAX_CHARS` | `20000` | Zeichen je Materialtext |
+| `KNOWLEDGE_CONCURRENCY` | `4` | Wie viele Materialtexte gleichzeitig geholt werden |
+
+### LLM-Schicht über die b-api
+
+Optional und standardmäßig aus. Ohne `LLM_ENABLED=true` **und** einen `B_API_KEY` laufen beide Schalter
+regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise `generation_requested`.
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
+| `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
+| `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
+| `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |
+| `LLM_EXTRACTION_CANDIDATES` | `8` | Bei `extraction=llm` angebotene Absätze je Baustein: erst die der Policy, dann die nächstbesten nach Score |
+| `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Welche Bausteine `llm-fast` schreibt |
+| `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |
+| `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
+| `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
+| `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
+| `B_API_MODEL` | `gpt-5.6-luna` | Modell, das die b-api ansprechen soll |
+| `LLM_REASONING_EFFORT` | `low` | Nur GPT-5- und o-Serie |
+| `LLM_VERBOSITY` | `low` | Nur GPT-5- und o-Serie |
+| `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; die GPT-5-Serie nutzt stattdessen die beiden Zeilen darüber |
+| `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
+| `LLM_MAX_CONCURRENCY` | `10` | Gleichzeitige LLM-Aufrufe |
+| `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
+| `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Kompendium. Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500. Parallele Aufrufe reservieren vorab ihren Höchstbedarf, daher der Abstand |
+| `LLM_DAILY_TOKEN_BUDGET` | `2000000` | Kostenschutz je Tag. Der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts |
+
+### Metriken
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `METRICS_ENABLED` | `true` | `GET /metrics` ausliefern |
+| `METRICS_TOKEN` | leer | Verlangt `Authorization: Bearer <Token>`; leer heißt ohne Token |
+| `PROMETHEUS_MULTIPROC_DIR` | leer | Wo die Worker ihre Werte ablegen, damit `/metrics` sie summiert. Leer nimmt den Standard `/tmp/prometheus`, den der API-Befehl des Images selbst setzt — **in der Regel leer lassen**, denn diese Datei gilt auch für die Sidecars, die keine Metriken schreiben. Ein eigener Pfad muss je Container leer und beschreibbar sein und darf niemals das Zustandsvolume sein |
 
 ## Endpunkte
 
