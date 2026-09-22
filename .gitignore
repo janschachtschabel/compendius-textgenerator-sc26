@@ -13,7 +13,9 @@ dist/
 
 # Lokale Konfiguration und Zustand
 .env
-# Maschinenspezifische Compose-Ergaenzung (eigene Pfade, eigene Token)
+# Maschinenspezifische Compose-Ergaenzung (eigene Pfade, eigene Token); beide Schreibweisen, damit eine
+# aeltere lokale Datei nicht ploetzlich im Repository landet
+docker-compose.override.yml
 compose.override.yml
 # Bearer-Token fuer den Scrape-Job (monitoring/prometheus.yml, credentials_file)
 monitoring/metrics_token

@@ -70,7 +70,7 @@ Dienst ohne sein Pflichtarchiv und die Worker sterben, was wie ein Speicherprobl
 ## Geheimnisse
 
 Keine Schlüssel, Token oder Passwörter im Quellcode, auch nicht als Rückfallwert. `.env` und
-`compose.override.yml` sind lokal und stehen in `.gitignore`; sie gehören nicht ins Repository und ihr
+`docker-compose.override.yml` sind lokal und stehen in `.gitignore`; sie gehören nicht ins Repository und ihr
 Inhalt nicht in Ausgaben, Protokolle oder Fehlermeldungen.
 
 ## Wo was steht

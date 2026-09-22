@@ -113,7 +113,7 @@ Profils selbst (Profil `standard` rund 14,1 GB). Alternativ werden die Dateien e
 `ZIM_DIR` kopiert; der nächste Sync übernimmt sie. `GET /ready` antwortet erst mit 200, wenn
 alle Pflichtarchive vorliegen.
 
-Container: `compose.yml` startet `api`, `zim-updater` und `lehrplan-updater` aus demselben
+Container: `docker-compose.yml` startet `api`, `zim-updater` und `lehrplan-updater` aus demselben
 Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und `state`.
 
 ```bash
