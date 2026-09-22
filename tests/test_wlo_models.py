@@ -6,7 +6,6 @@ from pathlib import Path
 from app.sources.wlo.models import (
     is_extractive,
     license_label,
-    license_url,
     parse_collection,
     parse_reference,
     parse_subcollection,
@@ -107,12 +106,3 @@ def test_a_reference_without_an_original_falls_back_to_its_own_id() -> None:
     node.pop("originalId")
     ref = parse_reference(node)
     assert ref.original_id is None and ref.node_id == ref.id
-
-
-def test_license_url_links_the_creative_commons_deed_and_nothing_else() -> None:
-    assert license_url("CC_BY_SA", "3.0") == "https://creativecommons.org/licenses/by-sa/3.0/deed.de"
-    assert license_url("CC_BY_NC_ND", "4.0") == "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.de"
-    assert license_url("CC_0") == "https://creativecommons.org/publicdomain/zero/1.0/deed.de"
-    assert license_url("PDM") == "https://creativecommons.org/publicdomain/mark/1.0/deed.de"
-    assert license_url("CC_BY_SA") == ""  # no version recorded: a guessed deed is a wrong attribution
-    assert license_url("COPYRIGHT_FREE") == "" and license_url("CUSTOM") == "" and license_url("") == ""

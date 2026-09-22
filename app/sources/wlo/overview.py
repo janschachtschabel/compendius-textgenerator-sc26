@@ -4,20 +4,20 @@ No judgement and no invention: a missing description stays visibly missing. Ever
 facet marker (collection id, subject, level) and ``<!-- /f -->`` so it can be parsed out later, like
 the curriculum blocks of part 2. Nothing is cut unless a cap is configured (decision D23).
 
-Each material is a fenced ``::: wlo-material`` block carrying its node id in the preview URL, so another
-system can lift the materials out of the markdown and look them up in the repository; the README section
-"Materialblöcke in Teil 3" is the contract.
+Each material is a fenced ``::: wlo-material`` block naming its node id, so another system can lift the
+materials out of the markdown and look them up in the repository; the README section "Materialblöcke in
+Teil 3" is the contract.
 """
 
 from __future__ import annotations
 
 import re
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Any
 
-from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection, license_url
+from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
 from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
@@ -36,14 +36,6 @@ MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
 MATERIAL_FENCE = "wlo-material"  # the block a downstream parser looks for; the README documents its shape
 _LINK_TEXT_ESCAPE = str.maketrans({"[": r"\[", "]": r"\]"})
-
-
-class RepositoryUrls(Protocol):
-    """The public URLs of a node in the repository the collection came from (``EduSharingClient``)."""
-
-    def render_url(self, node_id: str) -> str: ...
-
-    def preview_url(self, node_id: str) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -110,21 +102,19 @@ def _metadata_line(ref: MaterialRef) -> str:
     return " ".join(" · ".join(parts).split())
 
 
-def _material_block(ref: MaterialRef, urls: RepositoryUrls) -> list[str]:
-    """One material as a fenced block: preview, titled link, licence, metadata.
+def _material_block(ref: MaterialRef, render_url: Callable[[str], str]) -> list[str]:
+    """One material as a fenced block: node id, titled link with the licence, metadata.
 
-    The preview URL carries the material's node id, which is what another system needs to look it up; the
-    title links to the material itself, or to its page in the repository when it has no own URL, so a parser
-    always finds exactly one target. The licence links its deed where there is one.
+    The node id is what another system needs to look the material up, so it stands on its own line rather
+    than hidden in a URL. The title links to the material itself, or to its page in the repository when it
+    has no own URL, so a parser always finds exactly one target. The licence is the short label.
     """
     title = ref.title or "ohne Titel"
-    deed = license_url(ref.license_key, ref.license_version)
-    licence = _link(ref.license, deed) if deed else ref.license
     lines = [
         f"::: {MATERIAL_FENCE}",
-        f"!{_link(title, urls.preview_url(ref.node_id))}",
+        f"nodeId: {ref.node_id}",
         "",
-        f"{_link(f'**{title}**', ref.url or urls.render_url(ref.node_id))} — Lizenz: {licence}",
+        f"{_link(f'**{title}**', ref.url or render_url(ref.node_id))} — Lizenz: {ref.license}",
     ]
     metadata = _metadata_line(ref)
     if metadata:
@@ -133,12 +123,12 @@ def _material_block(ref: MaterialRef, urls: RepositoryUrls) -> list[str]:
     return lines
 
 
-def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions, urls: RepositoryUrls) -> list[str]:
+def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions, render_url: Callable[[str], str]) -> list[str]:
     """The material blocks of one list, each separated by a blank line so every fence stands on its own block."""
     if not refs:
         return ["", NO_ITEMS, ""]
     shown = refs if options.max_items is None else refs[: options.max_items]
-    lines = [line for ref in shown for line in ("", *_material_block(ref, urls))]
+    lines = [line for ref in shown for line in ("", *_material_block(ref, render_url))]
     if len(refs) > len(shown):
         lines.extend(["", f"*weitere {len(refs) - len(shown)} Inhalte*"])
     return [*lines, ""]
@@ -176,13 +166,13 @@ def render_collection_overview(
     refs: Sequence[MaterialRef],
     subs: Sequence[SubCollectionContents],
     *,
-    urls: RepositoryUrls,
+    render_url: Callable[[str], str],
     options: OverviewOptions,
     incomplete: bool = False,
 ) -> tuple[str, dict[str, Any]]:
     """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` adds a visible hint."""
     facets = _collection_facets(info)
-    head = [f"**{info.title}** · {_link('Sammlung öffnen', urls.render_url(info.id))}"]
+    head = [f"**{info.title}** · {_link('Sammlung öffnen', render_url(info.id))}"]
     if info.subject_labels:
         head.append("Fach: " + ", ".join(info.subject_labels))
     if info.educational_contexts:
@@ -205,7 +195,9 @@ def render_collection_overview(
         END_MARKER,
         "",
     ]
-    lines.extend(["### Inhalte der Sammlung", "", _marker(facets), *_item_lines(refs, options, urls), END_MARKER, ""])
+    lines.extend(
+        ["### Inhalte der Sammlung", "", _marker(facets), *_item_lines(refs, options, render_url), END_MARKER, ""]
+    )
     if subs:
         lines.extend(["### Untersammlungen", ""])
         for sub in subs:
@@ -215,7 +207,7 @@ def render_collection_overview(
                     "",
                     _marker({"Sammlung": [sub.info.id], "Übergeordnet": [info.id]}),
                     sub.info.description or NO_DESCRIPTION,
-                    *_item_lines(sub.refs, options, urls),
+                    *_item_lines(sub.refs, options, render_url),
                     END_MARKER,
                     "",
                 ]

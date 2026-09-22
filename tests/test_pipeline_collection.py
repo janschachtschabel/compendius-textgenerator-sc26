@@ -193,8 +193,8 @@ def test_all_three_parts_land_in_one_markdown_in_order(with_collections: Compend
     # 16 own materials plus the same 16 under each of the four sub-collections: the repository double answers
     # every children/references path with the same two pages.
     assert part_three.count("::: wlo-material") == 80
-    assert part_three.count("/edu-sharing/preview?nodeId=") == 80  # every block carries its node id
-    assert "/edu-sharing/preview?nodeId=4bfa7693-0764-4dca-9720-c5fb0b8892d6" in part_three
+    assert part_three.count("nodeId: ") == 80  # every block carries its node id
+    assert "nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6" in part_three
 
 
 def test_the_order_of_the_parts_is_the_documents_not_the_requests(

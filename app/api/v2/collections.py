@@ -21,8 +21,8 @@ def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
     The same part a compendium request produces with ``parts: ["collection"]``, but on its own and
     without a topic - useful to look at a collection before putting it into a compendium.
 
-    Every material is a ``::: wlo-material`` block whose preview URL carries its node id, so another
-    system can lift the materials back out of the markdown.
+    Every material is a ``::: wlo-material`` block naming its node id, so another system can lift the
+    materials back out of the markdown and look them up in the repository.
 
     Unknown collection: 404. Repository unreachable: 502. The endpoint keeps to ``REQUEST_TIMEOUT_S``; if
     it runs out, ``summary.incomplete`` is set and the text says which lists stayed short. The answer is

@@ -160,11 +160,10 @@ def test_the_warning_names_the_page_that_repeats(caplog: pytest.LogCaptureFixtur
     assert "offset 2 " in caplog.text  # the page requested with skipCount=2, to be reproduced with curl
 
 
-def test_public_urls_of_a_node_are_built_from_the_repository_host() -> None:
-    """The render URL opens the node's page, the preview URL serves its thumbnail; both validate the id, so a
-    crafted id cannot be written into a link the compendium publishes."""
+def test_the_public_url_of_a_node_is_built_from_the_repository_host() -> None:
+    """The render URL opens the node's page and validates the id, so a crafted id cannot be written into a
+    link the compendium publishes."""
     client = _client(FakeRepository())
     assert client.render_url(OPTIK) == f"https://repo.test/edu-sharing/components/render/{OPTIK}"
-    assert client.preview_url(OPTIK) == f"https://repo.test/edu-sharing/preview?nodeId={OPTIK}"
     with pytest.raises(ValueError):
-        client.preview_url("../secret")
+        client.render_url("../secret")

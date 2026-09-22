@@ -135,7 +135,7 @@ class CollectionBuilder:
             info,
             refs,
             contents,
-            urls=self.client,
+            render_url=self.client.render_url,
             options=self.options.overview,
             incomplete=expired is not None and expired(),
         )

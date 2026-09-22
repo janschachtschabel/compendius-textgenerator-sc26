@@ -194,9 +194,9 @@ Werkzeug es ohne Kenntnis dieses Dienstes herauslösen kann:
 
 ```markdown
 ::: wlo-material
-![Elliptischer Hohlspiegel](https://repository.staging.openeduhub.net/edu-sharing/preview?nodeId=8f42c56f-cd9f-47e1-bc20-b75fbb81ce51)
+nodeId: 8f42c56f-cd9f-47e1-bc20-b75fbb81ce51
 
-[**Elliptischer Hohlspiegel**](https://www.geogebra.org/classic/WtDBvGD9) — Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.de)
+[**Elliptischer Hohlspiegel**](https://www.geogebra.org/classic/WtDBvGD9) — Lizenz: CC BY-SA 3.0
 
 Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I
 :::
@@ -207,9 +207,9 @@ Was dabei zugesichert ist:
 | Zeile | Inhalt |
 |---|---|
 | `::: wlo-material` | öffnet den Block; davor und danach steht eine Leerzeile, `:::` allein schließt ihn |
-| `![Titel](…/preview?nodeId=<id>)` | die Vorschau trägt die **nodeId** des Materials — das ist `originalId` der Sammlungs­referenz, also der Knoten des Materials selbst, nicht der der Referenz |
+| `nodeId: <id>` | der Knoten des Materials selbst — `originalId` der Sammlungs­referenz, nicht die Id der Referenz. Damit lässt sich das Material im Repository nachschlagen (`…/edu-sharing/components/render/<id>`, Vorschaubild `…/edu-sharing/preview?nodeId=<id>`) |
 | `[**Titel**](URL) — Lizenz: …` | Titel verlinkt das Material; hat es keine eigene URL, verlinkt er seine Seite im Repository, sodass immer genau ein Ziel dasteht |
-| Lizenz | verlinkt den Creative-Commons-Deed, wenn Schlüssel **und** Version vorliegen; sonst reiner Text (`frei zugänglich (keine OER-Lizenz)`, `urheberrechtlich geschützt`, …). Eine Version wird nie geraten |
+| Lizenz | die Kurzangabe, wie das Repository sie führt: `CC BY-SA 3.0`, `CC0 1.0`, `frei zugänglich (keine OER-Lizenz)`, `urheberrechtlich geschützt`, … Die Version kommt aus `ccm:commonlicense_cc_version` und wird nie geraten |
 | letzte Zeile | Beschreibungssatz, Schlagwörter, Materialtyp, Bildungsstufe — entfällt, wenn nichts davon hinterlegt ist |
 
 Titel und URLs kommen aus dem Repository und werden entschärft, bevor sie in den Block gehen:
