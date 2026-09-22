@@ -137,10 +137,10 @@ def test_the_model_stage_uses_the_two_models_when_they_are_there(
 
     sentence = "Die Optik ist ein Teilgebiet der Physik."
     candidate = Candidate(text="Die Optik", sentence=sentence, start=0, end=9)
-    monkeypatch.setattr("app.api.v2.qa.answer_candidates", lambda doc, text: [candidate])
-    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: lambda text: object())
+    monkeypatch.setattr("app.api.v2.qa_stages.answer_candidates", lambda doc, text: [candidate])
+    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: lambda text: object())
     monkeypatch.setattr(
-        "app.api.v2.qa.load_qa_models",
+        "app.api.v2.qa_stages.load_qa_models",
         lambda qg, qa: QaModels(
             lambda marked: ["Was ist die Optik?"] * len(marked),
             lambda q, c: "ein Teilgebiet der Physik",
@@ -158,9 +158,9 @@ def test_the_model_stage_needs_the_spacy_model_for_its_candidates(
 ) -> None:
     from app.synthesis.qa_models import QaModels
 
-    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: None)
+    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: None)
     monkeypatch.setattr(
-        "app.api.v2.qa.load_qa_models", lambda qg, qa: QaModels(lambda m: ["Frage?"] * len(m), lambda q, c: "A")
+        "app.api.v2.qa_stages.load_qa_models", lambda qg, qa: QaModels(lambda m: ["Frage?"] * len(m), lambda q, c: "A")
     )
     body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
     assert body["method"] == "rule-based" and body["note"] and "spaCy" in body["note"]
