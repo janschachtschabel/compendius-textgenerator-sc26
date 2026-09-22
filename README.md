@@ -9,6 +9,28 @@ Der vollständige Plan mit Architektur, Entscheidungen und Phasen steht in [PLAN
 Der alte Dienst liegt bis zur Abnahme als Referenz unter `alterCode/` und ist nicht Teil des
 Builds.
 
+## Aufbau des Dokuments
+
+Angefragte Teile ergeben **ein** Markdown, nicht drei: ein YAML-Vorspann, eine Überschrift
+`# Kompendium: <Thema>`, danach die gewählten Teile in fester Reihenfolge.
+
+```
+---
+kompendium_version: 2 … parts: [world, curricula, collection]
+---
+
+# Kompendium: Optik
+
+## Teil 1 · Weltwissen          (Bausteine des Templates, je Abschnitt eine Markierung)
+## Teil 2 · Lehrplanbezüge      (aus dem MEM-Cache, je Fundstelle ein Facettenblock)
+## Teil 3 · Die Sammlung im Überblick   (Kennzahlen, Materialblöcke, Untersammlungen)
+```
+
+`parts` wählt aus; nicht angefragte Teile entfallen ersatzlos, die Reihenfolge der übrigen
+bleibt. Der Vorspann nennt unter `parts`, was wirklich drinsteht. `frontmatter_in_markdown: false`
+lässt den Vorspann weg und beginnt bei der Überschrift — die Angaben stehen dann weiter im
+Antwortfeld `frontmatter`.
+
 ## Stand
 
 - Phase 0 (Fundament): Kern aus dem Prototyp portiert, Teil 1 im Regelmodus, Tests offline.

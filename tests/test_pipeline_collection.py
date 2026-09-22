@@ -9,9 +9,11 @@ from pydantic import ValidationError
 
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, PartsUnavailableError
+from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
+from tests.test_lehrplan_api import write_cache
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
@@ -166,3 +168,47 @@ def test_part_three_keeps_to_the_time_budget_of_the_request(
     result = with_collections.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
     assert result.collection is not None and result.collection.available
     assert result.collection.summary["incomplete"] is True
+
+
+def test_all_three_parts_land_in_one_markdown_in_order(with_collections: CompendiumService, settings: Settings) -> None:
+    """The answer carries one document, not three: part 1 from the archives, part 2 from the curriculum cache
+    and part 3 from the collection follow each other under a single frontmatter block and a single title."""
+    write_cache(settings.state_dir)
+    result = with_collections.generate(
+        GenerateRequest(collection_id=OPTIK, parts=["world", "curricula", "collection"], subject="Physik")
+    )
+    assert result.frontmatter["parts"] == ["world", "curricula", "collection"]
+    assert result.curricula is not None and result.collection is not None and result.collection.available
+
+    markdown = result.markdown
+    fences = [i for i, line in enumerate(markdown.split("\n")) if line == "---"]
+    assert markdown.count("# Kompendium: Optik") == 1 and len(fences) == 2  # one title, one frontmatter
+    assert fences[0] == 0
+    world = markdown.index("## Teil 1 · Weltwissen")
+    curricula = markdown.index("## Teil 2 · Lehrplanbezüge")
+    collection = markdown.index("## Teil 3 · Die Sammlung im Überblick")
+    assert world < curricula < collection
+    assert "„Lichtbrechung an Linsen“ (Kompetenz)" in markdown[curricula:collection]
+    part_three = markdown[collection:]
+    # 16 own materials plus the same 16 under each of the four sub-collections: the repository double answers
+    # every children/references path with the same two pages.
+    assert part_three.count("::: wlo-material") == 80
+    assert part_three.count("/edu-sharing/preview?nodeId=") == 80  # every block carries its node id
+    assert "/edu-sharing/preview?nodeId=4bfa7693-0764-4dca-9720-c5fb0b8892d6" in part_three
+
+
+def test_the_order_of_the_parts_is_the_documents_not_the_requests(
+    with_collections: CompendiumService, settings: Settings
+) -> None:
+    """A caller may list ``parts`` in any order; the document keeps 1-2-3, and so does the frontmatter."""
+    write_cache(settings.state_dir)
+    result = with_collections.generate(
+        GenerateRequest(collection_id=OPTIK, parts=["collection", "curricula", "world"], subject="Physik")
+    )
+    assert result.frontmatter["parts"] == ["world", "curricula", "collection"]
+    markdown = result.markdown
+    assert (
+        markdown.index("## Teil 1 · Weltwissen")
+        < markdown.index("## Teil 2 · Lehrplanbezüge")
+        < markdown.index("## Teil 3 · Die Sammlung im Überblick")
+    )
