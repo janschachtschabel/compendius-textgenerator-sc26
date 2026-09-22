@@ -166,6 +166,35 @@ def test_the_model_stage_needs_the_spacy_model_for_its_candidates(
     assert body["method"] == "rule-based" and body["note"] and "spaCy" in body["note"]
 
 
+def test_the_parse_stage_falls_back_without_the_spacy_model(client: TestClient) -> None:
+    """The test service carries no spaCy model, and without a parse there are no sentence subjects."""
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "parse-based"}).json()
+    assert body["method"] == "rule-based"
+    assert body["note"] and "spaCy" in body["note"]
+    assert body["pairs"], "the fallback still delivers"
+
+
+def test_the_parse_stage_swaps_the_subject_for_a_question_word(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The answer is the subject, not the sentence - that is what this stage buys over the templates."""
+    from tests.test_qa_parse import FakeNlp
+
+    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
+    body = client.post(
+        "/api/v2/qa",
+        json={"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes.", "method": "parse-based"},
+    ).json()
+    assert body["method"] == "parse-based" and body["note"] is None
+    assert body["pairs"] == [
+        {
+            "question": "Was beschreibt die Brechung des Lichtes?",
+            "answer": "Das Brechungsgesetz",
+            "level": None,
+        }
+    ]
+
+
 def test_health_says_whether_the_qa_models_are_in_the_image(client: TestClient) -> None:
     """A probe must not pull 1.3 GB into memory, so /health reports presence, not a load."""
     qa_models = client.get("/health").json()["components"]["qa_models"]

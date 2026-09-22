@@ -1,15 +1,16 @@
 """What the endpoint asks for outside the question templates, and what it says when the answer is no.
 
-Everything here can refuse: the two small models may not be in the image, the b-api may be switched off
-or over budget, and a level the caller names may have no counterpart in the project's own vocabulary.
-The first two answer with ``None`` and a reason the endpoint puts in ``note`` - falling back to the
-templates is the promise of this endpoint, so a missing model is not an error. The third refuses loudly
-with 422, because a made-up level would travel on the pairs into a service that does not know it.
+Everything here can refuse: the two small models may not be in the image, the spaCy model the parse needs
+may be missing, the b-api may be switched off or over budget, and a level the caller names may have no
+counterpart in the project's own vocabulary. The three stages answer with ``None`` and a reason the
+endpoint puts in ``note`` - falling back to the templates is the promise of this endpoint, so a missing
+model is not an error. ``levels_from`` refuses loudly with 422 instead, because a made-up level would
+travel on the pairs into a service that does not know it.
 """
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 
 from fastapi import HTTPException, Request
 
@@ -19,6 +20,7 @@ from app.llm.deadline import Deadline
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair
 from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
+from app.synthesis.qa_parse import parse_based_pairs
 
 
 def from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
@@ -62,6 +64,19 @@ def from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPa
     return pairs, ""
 
 
+def from_parse(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
+    """The pairs of the dependency parse, or ``None`` and the reason the templates have to do it."""
+    nlp = load_spacy(request.app.state.settings.spacy_model)
+    if nlp is None:
+        return None, "spaCy-Modell fehlt; ohne seinen Parse gibt es keine Satzsubjekte"
+    pairs = parse_based_pairs(
+        text[:MAX_TEXT_CHARS], limit=payload.count, max_answer_length=payload.max_answer_length, nlp=nlp
+    )
+    if not pairs:
+        return None, "Der Parse fand kein Satzsubjekt zum Umstellen; Regelmodus verwendet"
+    return pairs, ""
+
+
 def levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     """Map what the caller sent onto the project's own level values, or refuse it by name.
 
@@ -97,3 +112,9 @@ def levels_from(request: Request, levels: Sequence[str]) -> list[str]:
             ),
         )
     return list(dict.fromkeys(mapped))
+
+
+# The stages that can refuse, by the ``method`` that asks for them. rule-based is not here: it is what
+# the endpoint falls back to, so it has no reason to be dispatched.
+Stage = Callable[[Request, str, QaRequest], tuple[list[QaPair] | None, str]]
+STAGES: dict[str, Stage] = {"parse-based": from_parse, "models": from_models, "llm": from_llm}

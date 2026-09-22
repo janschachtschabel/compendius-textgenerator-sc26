@@ -1,16 +1,19 @@
 """Question and answer pairs for a text or a topic (docs/umbau.md, U5).
 
-Two stages today. ``rule-based`` builds the pairs from question templates over the sentences of the text: the
-answer is the sentence itself, so nothing is invented and nothing is needed - no model, no network. ``llm``
-lets the b-api write them and falls back to the templates rather than failing; the answer names the stage that
-actually produced the pairs, and why the other one did not.
+Four stages, in the order of what they cost. ``rule-based`` builds the pairs from question templates over
+the sentences of the text: the answer is the sentence itself, so nothing is invented and nothing is needed -
+no model, no network. ``parse-based`` swaps the sentence subject for a question word using the spaCy parse
+(app/synthesis/qa_parse.py), which yields four times as many sentences and an answer that is a noun phrase
+rather than a whole sentence. ``models`` runs two small German models instead
+(app/synthesis/qa_models.py): a generator writes the question for a noun phrase of the text, an extractive
+model marks the place that answers it - the most accurate of the four and by far the slowest. ``llm`` lets
+the b-api write them.
 
-``models`` runs two small German models instead (app/synthesis/qa_models.py): a generator writes the question
-for a noun phrase of the text, an extractive model marks the place that answers it. Both are baked into the
-image; without them, or without the spaCy model their candidates come from, this stage falls back as well.
+The three optional stages fall back to the templates rather than failing; the answer names the stage that
+actually produced the pairs, and why the asked-for one did not.
 
 This module is the endpoint itself: where the text comes from, which stage is asked, and what the answer
-says. The wire contract lives in qa_schemas.py, the two optional stages in qa_stages.py.
+says. The wire contract lives in qa_schemas.py, the stages that can refuse in qa_stages.py.
 """
 
 from __future__ import annotations
@@ -23,7 +26,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import get_service
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, Method, Pair, QaRequest, QaResponse
-from app.api.v2.qa_stages import from_llm, from_models, levels_from
+from app.api.v2.qa_stages import STAGES, levels_from
 from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
@@ -92,7 +95,18 @@ EXAMPLES = {
         ),
         "value": {"topic": "Optik", "count": 20},
     },
-    "2 · kleine Modelle im Image": {
+    "2 · Satzsubjekte über den Parse": {
+        "summary": "Das Satzsubjekt wird zum Fragewort - ohne Modell, aber viermal so ergiebig wie die Vorlagen",
+        "description": (
+            "Nutzt den spaCy-Parse, der ohnehin geladen ist: aus „Christiaan Huygens bemerkte um 1650, …“ "
+            "wird „Wer bemerkte um 1650, …?“ mit „Christiaan Huygens“ als Antwort - die Antwort ist also eine "
+            "Nominalphrase statt des ganzen Satzes. Gemessen am 2026-09-22 über 172 Sätze aus vier Kompendien: "
+            "33 Sätze liefern eine Frage statt 8, rund 4 ms je Satz (warm), 26 der 33 Paare mangelfrei. Braucht das "
+            "spaCy-Modell; ohne es fällt die Anfrage auf rule-based zurück und note sagt es."
+        ),
+        "value": {"topic": "Optik", "method": "parse-based", "count": 20},
+    },
+    "3 · kleine Modelle im Image": {
         "summary": "dehio/german-qg-t5-quad schreibt die Frage, gelectra-base-germanquad findet die Antwort",
         "description": (
             "Die Fragen entstehen aus den Nominalphrasen des Textes statt aus Vorlagen, darum sind sie "
@@ -102,7 +116,7 @@ EXAMPLES = {
         ),
         "value": {"topic": "Optik", "method": "models", "count": 20, "max_answer_length": 240},
     },
-    "3 · großes Sprachmodell über die b-api": {
+    "4 · großes Sprachmodell über die b-api": {
         "summary": "Die b-api schreibt die Paare; als einzige Stufe kann sie Bildungsstufen zuordnen",
         "description": (
             "Braucht LLM_ENABLED und B_API_KEY - ohne sie fällt die Anfrage auf rule-based zurück und note "
@@ -152,9 +166,8 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     method: Method = "rule-based"
     notes: list[str] = []
     pairs: list[QaPair] | None = None
-    if payload.method in ("llm", "models"):
-        produce = from_llm if payload.method == "llm" else from_models
-        pairs, reason = produce(request, text, payload)
+    if payload.method in STAGES:
+        pairs, reason = STAGES[payload.method](request, text, payload)
         if pairs is None:
             log.info("QA fell back to the templates: %s", reason)
             notes.append(reason)

@@ -601,6 +601,62 @@ und damit `spread()` fielen weg, also gerade das, was die Jahreszahlen-Flut beho
 `FLAN-T5-small` ist dreimal kleiner, aber englisch und ebenfalls nicht antwortbewusst; ein deutsches
 t5-small gibt es in dieser Linie nicht (`valhalla/t5-small-qa-qg-hl` ist auf englischem SQuAD trainiert).
 
+### Eine dritte Regelstufe: das Satzsubjekt statt der Entitaet (2026-09-22 gemessen)
+
+**Die Frage war, ob Entitaetenerkennung schnellere Fragen erzeugt.** Tempo war nicht das Problem: der
+Regelmodus braucht 0,078 s für 20 angefragte Paare, die Modellstufe 23,4 s — 300-mal so lang. Der
+Regelmodus ist nicht langsam, er ist **dünn**: 8 von 20 Paaren, und die Hälfte davon fragt nach einer
+Jahreszahl.
+
+**Reine Entitaetenregeln tragen nicht.** Gemessen über 172 Sätze aus vier echten Kompendien (Optik,
+Ernst Abbe, Französische Revolution, Photosynthese): 95 % der Sätze gehen heute leer aus oder treffen nur
+die Jahres-Vorlage, 67 % davon enthalten eine Entität. Aber die Etiketten stimmen zu oft nicht — spaCy
+gab `PER` für „Prüfungsvorbereitungskurse an Meisterschulen" und `ORG` für „Grundlage der Wellenoptik ist
+die Wellennatur des Lichts", und `MISC` war im Geschichtstext mit 50 von 79 der größte Topf und ist
+semantisch leer. Eine Regel „enthält PER → *Wer war X?*" hätte messbar Unsinn erzeugt.
+
+**Was trägt, ist der Parse, den das Modell ohnehin mitliefert.** `de_core_news_md` hat einen Parser in
+der Pipeline. Ein deutscher Aussagesatz stellt das Subjekt voran und das finite Verb an zweite Stelle —
+also bleibt es Deutsch, wenn man das Subjekt durch ein Fragewort ersetzt und den Rest wörtlich stehen
+lässt. Die Antwort ist dann das Subjekt, nicht der ganze Satz:
+
+| | Vorlagen | Subjekttausch | models |
+|---|---|---|---|
+| Sätze mit brauchbarer Frage | 8 von 172 (5 %) | **33 von 172 (19 %)** | — |
+| Zeit | 0,078 s | ~4 ms je Satz (gebündelt, warm) | 23,4 s je 20 Paare |
+| Antwort | ganzer Satz | Nominalphrase | Textstelle |
+| mangelfrei | Jahresfragen weitgehend wertlos | 26 von 33 (79 %) | 30 von 32 (94 %) |
+
+Viermal so viele brauchbare Fragen ohne Modell, aber messbar schlechter als die Modelle — deshalb eine
+**dritte Option** (`method: parse-based`) und kein Ersatz. `rule-based` bleibt unverändert der Standard.
+Der Ort, an dem die neue Stufe wirklich gewinnt, ist der kleine vServer: dort wird die Modellstufe
+OOM-getötet (Exit 137, gemessen), und acht dünne Paare waren bisher alles, was blieb.
+
+### Die vier Wachen, jede gegen eine gemessene Fehlfrage
+
+Ohne Wachen liefert der Subjekttausch 70 der 172 Sätze (41 %), aber mit Fehlern. Jede Wache steht für
+eine falsche Frage, die die Messung erzeugt hat — nicht für einen ausgedachten Fall:
+
+1. **Kein Pronomen als Subjekt.** „Was ist eine Wissenschaft und gehört zur Physik?" — Antwort „Sie".
+   12 von 172 Sätzen. spaCy hat keine Koreferenz, das ist nicht reparierbar; Biografien verlieren dadurch
+   den größten Teil ihrer Sätze („Er wurde 1840 geboren").
+2. **Kein Pluralverb.** „Was gelten auch außerhalb dieser Bereiche?" ist kein Deutsch. 15 von 172.
+3. **Keine unpaarige Klammer im Subjekt.** Der Parse schnitt „Ernst Karl Abbe [" ab und fragte den Rest.
+4. **Kein Rest, der mit Komma beginnt.** Eine Apposition außerhalb des Subtrees ließ „Was , wird durch
+   Verfolgen des Strahlenverlaufs konstruiert?" übrig.
+
+Mit den Wachen bleiben 33 der 172 Sätze.
+
+**Am ausgelieferten Code nachgeprüft, nicht nur an der Sonde.** `parse_based_pairs` selbst, im Image,
+über dieselben vier Texte: 172 Sätze zu 33 Paaren (19 %), davon 4 mit *Wer* und 29 mit *Was* — dieselben
+Zahlen wie die Sonde. Die Zeit liegt warm bei 3,8 bis 4,2 ms je Satz; der erste Text eines Prozesses
+zahlt mit 18,1 ms je Satz einmalig das Aufwärmen von spaCy.
+
+**Verworfen: „Wer" über eine Person irgendwo im Subjekt.** Naheliegend, weil „Sein Vater Georg Adam Abbe"
+und „Der Politikwissenschaftler Iring Fetscher" am Kopf ein Substantiv tragen und deshalb „Was" bekommen.
+Gemessen: die Lockerung repariert diese zwei Fälle und zerbricht zwei andere („Wer dauern in Vollzeit
+ungefähr ein Jahr?", „Wer ˈabə] (* 23. Januar 1840 …?"). Netto null, also bleibt es beim Kopf.
+
 ## 4. Kompendium: die zwei KI-Optionen
 
 | Option | Feld | Was das Modell tut | Wortlaut |

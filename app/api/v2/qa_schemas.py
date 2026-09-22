@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from app.domain.models import Resolution
 
-Method = Literal["rule-based", "models", "llm"]
+Method = Literal["rule-based", "parse-based", "models", "llm"]
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
 
@@ -36,9 +36,13 @@ class QaRequest(BaseModel):
     )
     method: Method = Field(
         "rule-based",
-        description="rule-based needs nothing and is the default; models uses the two German models baked "
-        "into the image (question generator plus extractive answers); llm lets the b-api write the pairs. "
-        "Both fall back to rule-based when they cannot run, and note says why",
+        description="rule-based needs nothing and is the default: four question templates over the "
+        "sentence openings, and the answer is the whole sentence. parse-based swaps the sentence subject "
+        "for a question word using the spaCy parse that is loaded anyway - four times as many sentences "
+        "yield a question and the answer is the subject itself, at about 4 ms per sentence once warm. models uses "
+        "the two German models baked into the image (question generator plus extractive answers) and is "
+        "the most accurate and by far the slowest. llm lets the b-api write the pairs. All three fall "
+        "back to rule-based when they cannot run, and note says why",
     )
     count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
