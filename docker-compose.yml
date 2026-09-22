@@ -1,11 +1,15 @@
 # Lokaler Betrieb und Vorlage fuer das Deployment (PLAN.md 10): API plus Updater-Sidecar.
+# Das Image kommt aus der GitHub Container Registry; IMAGE ueberschreibt es, build: . baut es lokal.
+# Eine .env wird gelesen, wenn sie da ist; fehlt sie, gelten die Vorgaben aus app/settings.py.
 # Das Volume "zim" ist fuer 40 GB geplant (Entscheidung D18). Docker begrenzt Volumes nicht;
 # in Kubernetes entspricht das einem PersistentVolumeClaim mit 40Gi.
 services:
   api:
-    image: ${IMAGE:-compendious-text-fastapi:local}
+    image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
     env_file:
+      # Lange Schreibweise mit Absicht: ohne required: false bricht Compose ab, wenn keine .env da
+      # ist - und beim Import aus einer URL ist genau das der Normalfall. Braucht Compose 2.24+.
       - path: .env
         required: false
     environment:
@@ -15,12 +19,13 @@ services:
       - zim:/data/zim
       - state:/data/state
     ports:
-      # Nur lokal erreichbar; fuer andere Rechner einen Reverse-Proxy davor setzen (Rate-Limit: FORWARDED_ALLOW_IPS)
-      - "127.0.0.1:8000:8000"
+      # Standard: nur lokal erreichbar. Ein Host, der den Dienst selbst veroeffentlicht, setzt
+      # API_BIND=0.0.0.0:8000 - dann gehoert ein Reverse-Proxy davor (Rate-Limit: FORWARDED_ALLOW_IPS)
+      - "${API_BIND:-127.0.0.1:8000}:8000"
     restart: unless-stopped
 
   zim-updater:
-    image: ${IMAGE:-compendious-text-fastapi:local}
+    image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
     command: ["compendium", "zim", "sync", "--loop"]
     # Kein HTTP-Server: der Healthcheck des Images (GET /health) gilt nur fuer die API
@@ -38,7 +43,7 @@ services:
     restart: unless-stopped
 
   lehrplan-updater:
-    image: ${IMAGE:-compendious-text-fastapi:local}
+    image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
     # Woechentliche Zaehlpruefung gegen MEM, Vollabzug bei Aenderung oder Alter (PLAN.md 5.2, D16)
     command: ["compendium", "lehrplan", "harvest", "--loop"]

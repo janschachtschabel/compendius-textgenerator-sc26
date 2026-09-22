@@ -120,6 +120,21 @@ Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und 
 docker compose up --build
 ```
 
+Ohne eigenen Bau zieht Compose das fertige Image aus der GitHub Container Registry; dorthin
+veröffentlicht es `.github/workflows/publish.yml` bei jedem Push auf `main` (Tags `latest`, `main` und
+die Commit-Sha):
+
+```bash
+docker compose up -d
+```
+
+**Das Paket ist so sichtbar wie das Repository, also privat.** Ein fremder Host braucht deshalb einmalig
+Zugangsdaten — ein persönliches Zugriffstoken mit `read:packages` genügt:
+
+```bash
+docker login ghcr.io -u <GitHub-Konto> --password-stdin
+```
+
 ## Lehrpläne betreiben (Teil 2)
 
 Einzige Quelle ist der MEM-Triplestore der FWU (`LEHRPLAN_ENDPOINT`). Der Harvest-Job zieht
@@ -252,6 +267,16 @@ Datei Zeile für Zeile und stolpern über Kommentare oder halten `# FOO=bar` fü
 
 Die angegebenen Werte sind die der Vorlage. Wer eine Zeile wegnimmt, bekommt die Vorgabe aus
 `app/settings.py` — bei den meisten ist das derselbe Wert.
+
+### Compose-Variablen
+
+Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen deshalb **nicht** in
+`.env.example`, sondern werden beim Aufruf gesetzt oder in die `.env` geschrieben.
+
+| Variable | Vorgabe | Bedeutung |
+|---|---|---|
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image die drei Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
+| `API_BIND` | `127.0.0.1:8000` | Woran der Port der API gebunden wird. Die Vorgabe ist **nur lokal** erreichbar; ein Host, der den Dienst selbst veröffentlicht, setzt `API_BIND=0.0.0.0:8000` und stellt einen Reverse-Proxy davor (siehe `FORWARDED_ALLOW_IPS`) |
 
 ### Betrieb
 

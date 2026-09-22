@@ -98,6 +98,17 @@ Der Bau holt die Abhängigkeiten und backt das Embedding-Modell für den Matcher
 nie den Hugging-Face-Hub braucht. Ohne Modell — kleineres Image, schwächeres Matching —
 geht auch `docker compose build --build-arg MODEL2VEC_ID=`.
 
+**Oder gar nicht bauen.** `.github/workflows/publish.yml` veröffentlicht das fertige Image bei jedem Push
+auf `main` in die GitHub Container Registry; dann genügt Schritt 6 ohne Schritt 5. Das Paket ist so
+sichtbar wie das Repository — bei einem privaten Repository meldet sich der Host einmalig an:
+
+```bash
+sudo -u kompendium docker login ghcr.io -u <GitHub-Konto> --password-stdin   # Token mit read:packages
+```
+
+Der Bau auf der Zielmaschine dauert länger und braucht Platz für die Zwischenschichten; das Ziehen kostet
+einmalig 2,74 GB. Wer eine eigene Registry nutzt, setzt `IMAGE` auf deren Adresse.
+
 ## 6. Erster Start
 
 ```bash
@@ -178,8 +189,14 @@ werden so rund 1,3 GB Gewichte im Speicher. Wer nach dem Image-Umfang plant, pla
 
 ## 8. Von außen erreichbar machen
 
-Compose veröffentlicht den Port absichtlich nur auf `127.0.0.1`. Für Zugriff von außen gehört ein
-Reverse-Proxy davor, der TLS beendet — der Dienst selbst kennt weder Anmeldung noch CORS.
+Compose bindet den Port absichtlich nur an `127.0.0.1` — das ist die Vorgabe der Variablen `API_BIND`.
+Für Zugriff von außen gehört ein Reverse-Proxy davor, der TLS beendet; der Dienst selbst kennt weder
+Anmeldung noch CORS.
+
+Eine Hosting-Umgebung, die den Dienst selbst veröffentlicht und schon einen Proxy mitbringt, braucht die
+Bindung an alle Schnittstellen: `API_BIND=0.0.0.0:8000` in der `.env` oder in der Umgebung. Dann gehört
+zwingend auch `FORWARDED_ALLOW_IPS` auf das Netz dieses Proxys gesetzt — sonst sehen alle Aufrufer
+dieselbe Adresse und teilen sich ein Rate-Limit-Fenster.
 
 ```nginx
 location / {
