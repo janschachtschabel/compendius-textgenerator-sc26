@@ -247,11 +247,12 @@ Gibt die aufgelösten Artikel mit ihren Abschnitten zurück — kein Template, k
 Das ist der Baustein, den ein anderer Dienst braucht, wenn er nur die Quelle will. Die Auswahl der Archive
 beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Archiven".
 
-## 3. Frage-Antwort-Paare in drei Stufen
+## 3. Frage-Antwort-Paare in vier Stufen
 
 | Stufe | Womit | Braucht |
 |---|---|---|
 | `rule-based` (Standard) | Fragevorlagen über die Sätze des Textes — das gibt es heute schon | nichts |
+| `parse-based` | Das Satzsubjekt wird zum Fragewort, die Antwort ist das Subjekt (nachgetragen am 2026-09-22, siehe *Eine dritte Regelstufe* weiter unten) | spaCy-Modell |
 | `models` | **Fragen**: `dehio/german-qg-t5-quad` (MIT, T5, auf GermanQuAD trainiert). **Antworten**: `deepset/gelectra-base-germanquad` (MIT, extraktiv, 1.900 Abrufe/Monat) oder `-large` für mehr Güte | torch + transformers |
 | `llm` | b-api, wie heute | b-api-Schlüssel |
 
@@ -327,7 +328,7 @@ Satz), mit dem eigenen Satz „Der Brechungsindex eines Mediums“. Richtiger **
 9,3 s für fünf Paare). Die Frage entstand aus genau diesem Satz; der ganze Text lädt das Modell nur ein,
 woanders zu suchen. Der `context`-Parameter ist damit widerlegt und wieder entfernt.
 
-**Gemessen im Image** (CPU): Modelle laden 7,9 s, danach rund 2,2 s je Paar. Die Modelle werden erst bei der
+**Gemessen im Image** (CPU): Modelle laden 7,9 s, danach rund 2,2 s je Paar — seit der Bündelung am 2026-09-21 rund 1,1 s, siehe *Das Tempo der Modellstufe* weiter unten. Die Modelle werden erst bei der
 ersten Anfrage geladen, die sie braucht — 1,3 GB je Worker sollen nicht in jedem Dienst liegen, der die Stufe
 nie anfragt. Qualität gemischt: „Welche Bedeutung hat der Brechungsindex?“ ist gut,
 „Zu welcher Physik gehört die Optik?“ ist schiefes Deutsch. Das ist die Güte eines kleinen Modells; die

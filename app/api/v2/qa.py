@@ -112,7 +112,8 @@ EXAMPLES = {
             "Die Fragen entstehen aus den Nominalphrasen des Textes statt aus Vorlagen, darum sind sie "
             "vielfältiger: derselbe Text ergab 20 von 20 Paaren mit 18 verschiedenen Fragetypen und keiner "
             "einzigen Jahresfrage. Preis: rund 1,7 GB Arbeitsspeicher je Worker bei der ersten Anfrage und "
-            "etwa 2,2 Sekunden je Paar auf CPU."
+            "etwa 1,1 Sekunden je Paar auf CPU bei 20 Paaren - bei wenigen Paaren mehr, weil der "
+            "Generator eine ganze Runde auf einmal erzeugt."
         ),
         "value": {"topic": "Optik", "method": "models", "count": 20, "max_answer_length": 240},
     },

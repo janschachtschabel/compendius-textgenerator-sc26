@@ -145,6 +145,8 @@ eine Demo-Aufstellung, keine Betriebsaufstellung, denn eine einzige lange Anfrag
 Wer die Modellstufe anbieten will, braucht die 4 GB aus der Tabelle oben. Ein kleineres Archivprofil
 (`compact`) senkt den Grundbedarf, wurde hier aber nicht gemessen.
 
+**Was auf so einer Maschine trotzdem geht:** `method: "parse-based"`. Die Stufe braucht nur das spaCy-Modell, das ohnehin geladen ist, kostet also keinen zusaetzlichen Speicher — und liefert gemessen ueber 172 Saetze vierer Kompendien 33 Fragen statt der 8 der Vorlagen, bei rund 4 ms je Satz. Auf 2 GB ist sie damit der einzige Weg zu mehr als einer Handvoll duenner Paare.
+
 Der Spitzenwert lässt sich im laufenden Container nachlesen:
 
 ```bash
@@ -163,6 +165,7 @@ laufenden Container (`VmRSS` vorher/nachher), damit die Reihenfolge nichts verfa
 | spaCy `de_core_news_md` | 60 MB | **+580 MiB** | immer: Entitaeten und die Antwortkandidaten der Stufe `models` |
 | Model2Vec `m2v-gte-256-edu` | 322 MB | **+1012 MiB** | nur bei Matching-Strategie `model2vec` |
 | `dehio/german-qg-t5-quad` + `deepset/gelectra-base-germanquad` | 637 MB | **+1728 MiB** | nur bei `method: "models"` am QA-Endpunkt, faul und je Worker |
+| dieselben beim Erzeugen | — | **+190 MiB** Spitze | zusaetzlich waehrend der Anfrage: acht Saetze zu je vier Strahlen rechnen gleichzeitig (`BATCH_SIZE` in `app/synthesis/qa_models.py`) |
 
 Wer `method: "models"` nie anfragt, zahlt dessen 1,7 GB nie. Wer eine andere Matching-Strategie als
 `model2vec` waehlt, zahlt dessen 1,0 GB nie.
