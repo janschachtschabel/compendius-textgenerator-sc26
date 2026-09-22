@@ -161,9 +161,38 @@ uv run compendium lehrplan search --q Optik --subject Physik
 
 `collection_id` (nodeId einer WLO-Sammlung) liefert Thema, Fach und Bildungsstufe für Teil 1
 und 2 sowie Teil 3: Zweck, Kennzahlen (Materialtypen, Bildungsstufen, Fächer, Lizenzen), alle
-Inhalte als kompakte Liste und die Untersammlungen eine Ebene tief, jeder Block zwischen
+Inhalte und die Untersammlungen eine Ebene tief, jeder Block zwischen
 `<!-- f: Sammlung=<id>; Fach=…; Bildungsstufe=… -->` und `<!-- /f -->`. Fehlende Beschreibungen
-bleiben sichtbar leer. `knowledge_collection_id` nimmt die Materialien einer Sammlung als Quellen
+bleiben sichtbar leer.
+
+### Materialblöcke in Teil 3
+
+Jedes Material steht in einem eigenen Block `::: wlo-material` … `:::`, damit ein nachgelagertes
+Werkzeug es ohne Kenntnis dieses Dienstes herauslösen kann:
+
+```markdown
+::: wlo-material
+![Elliptischer Hohlspiegel](https://repository.staging.openeduhub.net/edu-sharing/preview?nodeId=8f42c56f-cd9f-47e1-bc20-b75fbb81ce51)
+
+[**Elliptischer Hohlspiegel**](https://www.geogebra.org/classic/WtDBvGD9) — Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.de)
+
+Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I
+:::
+```
+
+Was dabei zugesichert ist:
+
+| Zeile | Inhalt |
+|---|---|
+| `::: wlo-material` | öffnet den Block; davor und danach steht eine Leerzeile, `:::` allein schließt ihn |
+| `![Titel](…/preview?nodeId=<id>)` | die Vorschau trägt die **nodeId** des Materials — das ist `originalId` der Sammlungs­referenz, also der Knoten des Materials selbst, nicht der der Referenz |
+| `[**Titel**](URL) — Lizenz: …` | Titel verlinkt das Material; hat es keine eigene URL, verlinkt er seine Seite im Repository, sodass immer genau ein Ziel dasteht |
+| Lizenz | verlinkt den Creative-Commons-Deed, wenn Schlüssel **und** Version vorliegen; sonst reiner Text (`frei zugänglich (keine OER-Lizenz)`, `urheberrechtlich geschützt`, …). Eine Version wird nie geraten |
+| letzte Zeile | Beschreibungssatz, Schlagwörter, Materialtyp, Bildungsstufe — entfällt, wenn nichts davon hinterlegt ist |
+
+Titel und URLs kommen aus dem Repository und werden entschärft, bevor sie in den Block gehen:
+`[` und `]` im Titel werden maskiert, URLs mit Leerzeichen oder Klammern in `<…>` gesetzt. Ein Block
+kann damit nicht durch einen Materialtitel aufgebrochen werden. `knowledge_collection_id` nimmt die Materialien einer Sammlung als Quellen
 in Teil 1 auf, wörtlich nur unter CC0, PDM, CC BY oder CC BY-SA (Bausteine Bildung und Praxis
 bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der Version, die das
 Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht

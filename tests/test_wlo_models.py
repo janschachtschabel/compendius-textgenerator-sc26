@@ -6,6 +6,7 @@ from pathlib import Path
 from app.sources.wlo.models import (
     is_extractive,
     license_label,
+    license_url,
     parse_collection,
     parse_reference,
     parse_subcollection,
@@ -90,3 +91,28 @@ def test_titles_are_one_line() -> None:
     assert parse_reference(node).title == "Licht und Schatten"
     collection = {"ref": {"id": "y"}, "title": "", "properties": {"cclom:title": ["Optik\n  Klasse 7"]}}
     assert parse_collection({"collection": collection}).title == "Optik Klasse 7"
+
+
+def test_the_node_id_of_a_material_is_the_original_not_the_reference() -> None:
+    """A collection member is a reference node; the material itself lives under ``originalId``. The repository
+    resolves the original to the real material (its preview knows the type), so that is the id to publish."""
+    node = _load("references_optik_page1.json")["references"][0]
+    ref = parse_reference(node)
+    assert ref.id == "f1f89a13-37de-4a8f-94a2-603bf431b99b"
+    assert ref.node_id == "4bfa7693-0764-4dca-9720-c5fb0b8892d6" == ref.original_id
+
+
+def test_a_reference_without_an_original_falls_back_to_its_own_id() -> None:
+    node = _load("references_optik_page1.json")["references"][0]
+    node.pop("originalId")
+    ref = parse_reference(node)
+    assert ref.original_id is None and ref.node_id == ref.id
+
+
+def test_license_url_links_the_creative_commons_deed_and_nothing_else() -> None:
+    assert license_url("CC_BY_SA", "3.0") == "https://creativecommons.org/licenses/by-sa/3.0/deed.de"
+    assert license_url("CC_BY_NC_ND", "4.0") == "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.de"
+    assert license_url("CC_0") == "https://creativecommons.org/publicdomain/zero/1.0/deed.de"
+    assert license_url("PDM") == "https://creativecommons.org/publicdomain/mark/1.0/deed.de"
+    assert license_url("CC_BY_SA") == ""  # no version recorded: a guessed deed is a wrong attribution
+    assert license_url("COPYRIGHT_FREE") == "" and license_url("CUSTOM") == "" and license_url("") == ""

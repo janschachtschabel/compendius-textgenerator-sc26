@@ -37,6 +37,36 @@ def is_extractive(license_key: str) -> bool:
     return license_key in EXTRACTIVE_LICENSES
 
 
+# Path segment of the Creative Commons deed per licence key; the versionless keys carry their own path.
+_CC_PATHS = {
+    "CC_BY": "licenses/by",
+    "CC_BY_SA": "licenses/by-sa",
+    "CC_BY_ND": "licenses/by-nd",
+    "CC_BY_NC": "licenses/by-nc",
+    "CC_BY_NC_SA": "licenses/by-nc-sa",
+    "CC_BY_NC_ND": "licenses/by-nc-nd",
+}
+_CC_FIXED = {
+    "CC_0": "publicdomain/zero/1.0",
+    "PDM": "publicdomain/mark/1.0",
+}
+
+
+def license_url(license_key: str, version: str = "") -> str:
+    """German deed of a Creative Commons licence, or ``""`` when there is none to link.
+
+    Only the CC family has a deed; every other key (``COPYRIGHT_FREE``, ``CUSTOM``, the UrhG ones) stays
+    unlinked text. A CC licence without a recorded version stays unlinked too, for the same reason
+    ``license_label`` does not invent one: a deed of the wrong version is a wrong attribution.
+    """
+    if license_key in _CC_FIXED:
+        return f"https://creativecommons.org/{_CC_FIXED[license_key]}/deed.de"
+    path = _CC_PATHS.get(license_key)
+    if not path or not version:
+        return ""
+    return f"https://creativecommons.org/{path}/{version}/deed.de"
+
+
 def license_label(license_key: str, version: str = "") -> str:
     """Display name of a licence. The CC BY family exists in several versions (the WLO repository holds 3.0 and
     4.0); the version comes from ``ccm:commonlicense_cc_version`` and is never guessed, because a wrong version is
@@ -76,6 +106,15 @@ class MaterialRef:
     @property
     def license(self) -> str:
         return license_label(self.license_key, self.license_version)
+
+    @property
+    def node_id(self) -> str:
+        """The material's own node: ``originalId`` where the repository gave one, else the reference itself.
+
+        The original is what the repository resolves to the real material - its preview knows the material's
+        type, the reference node's does not - and it is the id another system can look the material up by.
+        """
+        return self.original_id or self.id
 
 
 @dataclass(frozen=True)

@@ -75,8 +75,15 @@ class EduSharingClient:
 
     def render_url(self, node_id: str) -> str:
         """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
-        host = self.base_url.split("/edu-sharing", 1)[0]
-        return f"{host}/edu-sharing/components/render/{validate_node_id(node_id)}"
+        return f"{self._host}/edu-sharing/components/render/{validate_node_id(node_id)}"
+
+    def preview_url(self, node_id: str) -> str:
+        """Thumbnail of a node (``…/edu-sharing/preview?nodeId={id}``); the repository falls back to a type icon."""
+        return f"{self._host}/edu-sharing/preview?nodeId={validate_node_id(node_id)}"
+
+    @property
+    def _host(self) -> str:
+        return self.base_url.split("/edu-sharing", 1)[0]
 
     def collection(self, collection_id: str) -> CollectionInfo:
         payload = self._get(f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}")

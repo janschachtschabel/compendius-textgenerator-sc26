@@ -16,10 +16,13 @@ router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
 
 @router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited)])
 def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
-    """Part 3 for one edu-sharing collection: purpose, key figures and compact material lists.
+    """Part 3 for one edu-sharing collection: purpose, key figures and the materials as parseable blocks.
 
     The same part a compendium request produces with ``parts: ["collection"]``, but on its own and
     without a topic - useful to look at a collection before putting it into a compendium.
+
+    Every material is a ``::: wlo-material`` block whose preview URL carries its node id, so another
+    system can lift the materials back out of the markdown.
 
     Unknown collection: 404. Repository unreachable: 502. The endpoint keeps to ``REQUEST_TIMEOUT_S``; if
     it runs out, ``summary.incomplete`` is set and the text says which lists stayed short. The answer is
