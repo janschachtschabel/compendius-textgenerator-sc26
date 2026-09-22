@@ -189,14 +189,18 @@ werden so rund 1,3 GB Gewichte im Speicher. Wer nach dem Image-Umfang plant, pla
 
 ## 8. Von außen erreichbar machen
 
-Compose bindet den Port absichtlich nur an `127.0.0.1` — das ist die Vorgabe der Variablen `API_BIND`.
-Für Zugriff von außen gehört ein Reverse-Proxy davor, der TLS beendet; der Dienst selbst kennt weder
-Anmeldung noch CORS.
+Compose bindet den Port an alle Schnittstellen (`API_BIND`, Vorgabe `0.0.0.0:8000`). Das ist nötig, damit
+eine Hosting-Umgebung ihn erreicht: deren Proxy läuft in der Regel nicht im selben Netz-Namensraum und
+käme an eine Loopback-Bindung nicht heran. **Der Schutz ist damit die Firewall des Hosts** — der Dienst
+selbst kennt weder Anmeldung noch CORS.
 
-Eine Hosting-Umgebung, die den Dienst selbst veröffentlicht und schon einen Proxy mitbringt, braucht die
-Bindung an alle Schnittstellen: `API_BIND=0.0.0.0:8000` in der `.env` oder in der Umgebung. Dann gehört
-zwingend auch `FORWARDED_ALLOW_IPS` auf das Netz dieses Proxys gesetzt — sonst sehen alle Aufrufer
-dieselbe Adresse und teilen sich ein Rate-Limit-Fenster.
+Auf einer Maschine, die nur selbst zugreifen soll, gehört die alte Bindung zurück:
+`API_BIND=127.0.0.1:8000`.
+
+Für Zugriff von außen gehört ein Reverse-Proxy davor, der TLS beendet. Dann gehört zwingend auch
+`FORWARDED_ALLOW_IPS` auf das Netz dieses Proxys gesetzt — sonst sehen alle Aufrufer dieselbe Adresse und
+teilen sich ein Rate-Limit-Fenster. Steht der Proxy in einem eigenen Container, ist seine Adresse die des
+Docker-Netzes (meist `172.16.0.0/12`), nicht `127.0.0.1`.
 
 ```nginx
 location / {

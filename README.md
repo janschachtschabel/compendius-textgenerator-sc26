@@ -276,7 +276,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorgabe | Bedeutung |
 |---|---|---|
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image die drei Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
-| `API_BIND` | `127.0.0.1:8000` | Woran der Port der API gebunden wird. Die Vorgabe ist **nur lokal** erreichbar; ein Host, der den Dienst selbst veröffentlicht, setzt `API_BIND=0.0.0.0:8000` und stellt einen Reverse-Proxy davor (siehe `FORWARDED_ALLOW_IPS`) |
+| `API_BIND` | `0.0.0.0:8000` | Woran der Port der API gebunden wird. Die Vorgabe bindet an **alle** Schnittstellen, damit der Dienst in einer Hosting-Umgebung überhaupt erreichbar ist — deren Proxy läuft meist nicht im selben Netz-Namensraum und käme an eine Loopback-Bindung nicht heran. Der Schutz ist dann die Firewall des Hosts und ein Reverse-Proxy davor, denn der Dienst kennt keine Anmeldung. Auf einem Arbeitsrechner gehört `API_BIND=127.0.0.1:8000` gesetzt |
 
 ### Betrieb
 
