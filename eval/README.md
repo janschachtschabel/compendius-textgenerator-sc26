@@ -171,3 +171,16 @@ Lesart:
   Beruf schlechter). Der Prompt erlaubt eine leere Auswahl; wie oft das Modell sie nutzt, zeigt je Kompendium
   `audit.llm.extraction.emptied`, der Eval-Bericht erfasst es nicht.
 - Der Goldstandard begünstigt die Policy (siehe oben); ein Richter-Vergleich der gedruckten Texte steht aus.
+
+## Artikelwahl
+
+`artikelwahl/` hält ein zweites Gold, für den Schritt vor der Zuordnung: welche Artikel der Dienst aus den Archiven
+holt (Messung M8 in `docs/entwicklung/05-messprotokoll.md`).
+
+| Pfad | Inhalt |
+|---|---|
+| `artikelwahl/hauptartikel.yaml` | 59 Anfragen in sechs Arten (normal, mit Zusatz, mehrdeutig mit und ohne Fach, Varianten, ohne gleichnamigen Artikel) mit den akzeptierten Hauptartikeln; festgelegt, bevor der Dienst sie aufgelöst hat |
+| `artikelwahl/korpus_labels.yaml` | 288 blind vergebene Noten (2 gehört zum Thema, 1 verwandt, 0 passt nicht) für die Korpusartikel der 20 Themen aus M1 und die Artikel des alten Dienstes |
+
+Beide sind von Claude festgelegt und redaktionell ungeprüft. Messen und auswerten: `docs/entwicklung/messung/`
+(`mc_artikelwahl.py`, `mc_artikel_richter.py`, `mc_artikelwahl_auswertung.py`).

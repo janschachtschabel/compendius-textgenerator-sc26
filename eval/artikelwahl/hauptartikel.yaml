@@ -1,0 +1,89 @@
+# Gold für die Themenauflösung: welcher Wikipedia-Artikel ist der richtige Hauptartikel einer Anfrage?
+#
+# Festgelegt von Claude am 2026-09-23, bevor der Dienst diese Anfragen aufgelöst hat; redaktionell ungeprüft.
+# "erwartet" nennt die akzeptierten Titel. Eine Weiterleitung, die Wikipedia selbst für einen dieser Titel setzt,
+# zählt mit (die Auswertung liest jeden erwarteten Titel im Archiv und nimmt das Ziel dazu). Bei Anfragen ohne
+# Kontext, die mehrere Bedeutungen haben, gilt die im Schulunterricht übliche.
+#
+# Korrektur vor dem ersten Lauf: Einen Artikel „Welle (Physik)“ gibt es im Archiv nicht; der Artikel „Welle“ ist
+# der physikalische, die Bedeutungen stehen unter „Welle (Begriffsklärung)“. Beide Welle-Anfragen erwarten „Welle“.
+#
+# Arten:
+#   normal                  - die 20 Themen der Laufzeitmessung M1, so wie Lehrkräfte sie eingeben
+#   zusatz                  - Klassen-, Stufen- und Fachzusätze, die vor der Auflösung abgetrennt werden
+#   mehrdeutig_mit_fach     - mehrdeutiges Wort mit vorangestelltem Fach als Kontext
+#   mehrdeutig_ohne_kontext - mehrdeutiges Wort ohne jeden Kontext
+#   variante                - andere Schreibung, Abkürzung, Mehrzahl, Kleinschreibung
+#   ohne_eigenen_artikel    - Anfragen, zu denen es keinen gleichnamigen Artikel gibt
+
+anfragen:
+  # normal
+  - {anfrage: Barockliteratur, erwartet: [Barockliteratur, Literatur des Barock], art: normal}
+  - {anfrage: Bruchrechnung, erwartet: [Bruchrechnung], art: normal}
+  - {anfrage: Demokratie, erwartet: [Demokratie], art: normal}
+  - {anfrage: Französische Revolution, erwartet: [Französische Revolution], art: normal}
+  - {anfrage: Klimawandel, erwartet: [Klimawandel], art: normal}
+  - {anfrage: Optik, erwartet: [Optik], art: normal}
+  - {anfrage: Photosynthese, erwartet: [Photosynthese], art: normal}
+  - {anfrage: Programmiersprache, erwartet: [Programmiersprache], art: normal}
+  - {anfrage: Säure-Base-Konzepte, erwartet: [Säure-Base-Konzepte], art: normal}
+  - {anfrage: Sinfonie, erwartet: [Sinfonie], art: normal}
+  - {anfrage: Plattentektonik, erwartet: [Plattentektonik], art: normal}
+  - {anfrage: Ökosystem, erwartet: [Ökosystem], art: normal}
+  - {anfrage: Atommodell, erwartet: [Atommodell], art: normal}
+  - {anfrage: Industrielle Revolution, erwartet: [Industrielle Revolution], art: normal}
+  - {anfrage: Elektrischer Strom, erwartet: [Elektrischer Strom], art: normal}
+  - {anfrage: Wasserkreislauf, erwartet: [Wasserkreislauf], art: normal}
+  - {anfrage: Römisches Reich, erwartet: [Römisches Reich], art: normal}
+  - {anfrage: Lineare Funktion, erwartet: [Lineare Funktion], art: normal}
+  - {anfrage: Zelle (Biologie), erwartet: [Zelle (Biologie)], art: normal}
+  - {anfrage: Gedicht, erwartet: [Gedicht], art: normal}
+
+  # zusatz
+  - {anfrage: Optik in Klasse 7, erwartet: [Optik], art: zusatz}
+  - {anfrage: "Physik: Optik (Sek I)", erwartet: [Optik], art: zusatz}
+  - {anfrage: Photosynthese für die Grundschule, erwartet: [Photosynthese], art: zusatz}
+  - {anfrage: Bruchrechnung Klasse 6, erwartet: [Bruchrechnung], art: zusatz}
+  - {anfrage: Demokratie in der Sekundarstufe I, erwartet: [Demokratie], art: zusatz}
+  - {anfrage: "Thema: Klimawandel", erwartet: [Klimawandel], art: zusatz}
+  - {anfrage: "Geschichte: Französische Revolution", erwartet: [Französische Revolution], art: zusatz}
+  - {anfrage: Plattentektonik (Oberstufe), erwartet: [Plattentektonik], art: zusatz}
+
+  # mehrdeutig_mit_fach
+  - {anfrage: "Physik: Welle", erwartet: [Welle], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Leiter", erwartet: [Elektrischer Leiter], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Strom", erwartet: [Elektrischer Strom], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Leistung", erwartet: [Leistung (Physik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Arbeit", erwartet: [Arbeit (Physik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Biologie: Zelle", erwartet: [Zelle (Biologie)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Chemie: Bindung", erwartet: [Chemische Bindung], art: mehrdeutig_mit_fach}
+  - {anfrage: "Mathematik: Funktion", erwartet: [Funktion (Mathematik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Mathematik: Satz", erwartet: [Satz (Mathematik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Deutsch: Satz", erwartet: [Satz (Grammatik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Musik: Takt", erwartet: [Takt (Musik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Baum", erwartet: [Baum (Datenstruktur)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Maus", erwartet: [Maus (Computer), Computermaus], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Virus", erwartet: [Computervirus], art: mehrdeutig_mit_fach}
+  - {anfrage: "Erdkunde: Strom", erwartet: [Strom (Gewässer)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Geschichte: Wende", erwartet: [Wende und friedliche Revolution in der DDR], art: mehrdeutig_mit_fach}
+
+  # mehrdeutig_ohne_kontext
+  - {anfrage: Strom, erwartet: [Elektrischer Strom], art: mehrdeutig_ohne_kontext}
+  - {anfrage: Zelle, erwartet: [Zelle (Biologie)], art: mehrdeutig_ohne_kontext}
+  - {anfrage: Welle, erwartet: [Welle], art: mehrdeutig_ohne_kontext}
+
+  # variante
+  - {anfrage: Fotosynthese, erwartet: [Photosynthese], art: variante}
+  - {anfrage: photosynthese, erwartet: [Photosynthese], art: variante}
+  - {anfrage: Lichtlehre, erwartet: [Optik], art: variante}
+  - {anfrage: Klimaerwärmung, erwartet: [Globale Erwärmung], art: variante}
+  - {anfrage: DNA, erwartet: [Desoxyribonukleinsäure], art: variante}
+  - {anfrage: EU, erwartet: [Europäische Union], art: variante}
+  - {anfrage: Bruchrechnen, erwartet: [Bruchrechnung], art: variante}
+  - {anfrage: Lineare Funktionen, erwartet: [Lineare Funktion], art: variante}
+
+  # ohne_eigenen_artikel
+  - {anfrage: Gewaltenteilung in Deutschland, erwartet: [Gewaltenteilung], art: ohne_eigenen_artikel}
+  - {anfrage: Die Französische Revolution, erwartet: [Französische Revolution], art: ohne_eigenen_artikel}
+  - {anfrage: Photosynthese bei Pflanzen, erwartet: [Photosynthese], art: ohne_eigenen_artikel}
+  - {anfrage: Kreislauf des Wassers, erwartet: [Wasserkreislauf], art: ohne_eigenen_artikel}
