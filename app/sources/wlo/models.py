@@ -128,7 +128,7 @@ def _labels(props: Mapping[str, Any], key: str) -> tuple[str, ...]:
 
 def _title(node: Mapping[str, Any], props: Mapping[str, Any]) -> str:
     title = str(node.get("title") or "").strip()
-    return _one_line(title or _first(props, "cclom:title", "cm:title") or str(node.get("name") or ""))
+    return one_line(title or _first(props, "cclom:title", "cm:title") or str(node.get("name") or ""))
 
 
 def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
@@ -151,15 +151,16 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
 def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:
     """Names for the attribution: the structured authors (vCard ``FN``); the free-text field only stands in when
     there are none, because it often repeats the same person with extras ("Dieter Welz, Ulm")."""
-    names = [_one_line(name) for name in _values(props, "ccm:lifecyclecontributer_authorFN") if name.strip()]
+    names = [one_line(name) for name in _values(props, "ccm:lifecyclecontributer_authorFN") if name.strip()]
     if not names:
-        names = [_one_line(name) for name in _values(props, "ccm:author_freetext") if name.strip()]
+        names = [one_line(name) for name in _values(props, "ccm:author_freetext") if name.strip()]
     return tuple(dict.fromkeys(names))
 
 
-def _one_line(name: str) -> str:
-    """Free text as it was typed, on one line: a line break would break the TULLU line of the sources."""
-    return " ".join(name.split())
+def one_line(text: str) -> str:
+    """Free text as it was typed, on one line: a line break would break the line it goes into - the TULLU line
+    of the sources, a line of a material block in part 3."""
+    return " ".join(text.split())
 
 
 def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
