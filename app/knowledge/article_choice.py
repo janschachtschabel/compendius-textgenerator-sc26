@@ -1,26 +1,35 @@
-"""LLM article choice (article_choice=llm, D35): the model decides the article where the rules are unsure.
+"""LLM article choice (article_choice=llm, D35): the model helps choose the articles of a compendium.
 
-Measured against the three gold files of eval/artikelwahl on 2026-09-23 (docs/entwicklung/02-weltwissen.md, M8): the
-rules alone found 55 of 59, 22 of 23 and 9 of 12 main articles; with the model deciding their unsure resolutions it
-was 57, 23 and 11, at about 950 tokens for each of the 18 of 94 requests it was asked for. The model sees the topic,
-the subject and the candidates the rules weighed, each with the beginning of its text, and answers with a number;
-when none fits it may name the title of a German Wikipedia article, which counts only when the archive has it.
+Two steps, both measured against the gold of eval/artikelwahl on 2026-09-23 (docs/entwicklung/02-weltwissen.md, M8):
+
+- The main article, where the rules are unsure. The rules alone found 55 of 59, 22 of 23 and 9 of 12 main articles;
+  with the model deciding their unsure resolutions it was 57, 23 and 11, at about 950 tokens for each of the 18 of
+  94 requests it was asked for. The model sees the topic, the subject and the candidates the rules weighed, each
+  with the beginning of its text, and answers with a number; when none fits it may name the title of a German
+  Wikipedia article, which counts only when the archive has it.
+- The full-text hits of the corpus. The model rates every article of the corpus on the scale of the gold, with the
+  prompt of the M8 judge, and the hits it rates 0 are dropped: 11 of the 16 hits the gold calls unfit, none that fit,
+  and of the paragraphs the standard strategy printed from unfit articles 10 instead of 26 were left, at about 890
+  tokens for each of the 16 of 20 topics that had hits. Rated alone, without the rest of the corpus to compare, the
+  model let most unfit hits through (6 of 16).
 
 Whatever keeps the model from answering usably - b-api, budget, time, an unreadable answer - leaves the rules'
-article, and the reason goes to the audit.
+article and every hit, and the reason goes to the audit.
 """
 
 from __future__ import annotations
 
 import json
+import random
 import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
+from app.domain.models import Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
-from app.llm.client import BApiClient
+from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 
@@ -29,6 +38,10 @@ NO_SUBJECT = "nicht angegeben"
 UNREADABLE = "Antwort nicht lesbar"
 INVALID_NUMBER = "Antwort ohne gültige Nummer"
 NOTHING_FITS = "kein Kandidat passt, kein Titel genannt"
+HIT_ORIGIN = "search"  # the corpus articles the hit check may drop: full-text hits for a block
+HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
+HIT_OUTPUT_TOKENS_PER_ARTICLE = 12
+HIT_SEED = 20260923  # the order of the articles in the call, fixed per topic as measured
 _JSON = re.compile(r"\{.*\}", re.DOTALL)
 
 
@@ -42,16 +55,43 @@ class ArticleChoiceJob:
 
 
 @dataclass
-class ArticleChoiceReport:
-    offered: int = 0  # candidates shown to the model; 0 when the rules were sure and it was not asked
-    named: str | None = None  # a title the model named instead of choosing a candidate
-    fallback: str | None = None  # why the model's answer did not decide
+class _Usage:
     calls: int = 0
     prompt_tokens: int = 0
     completion_tokens: int = 0
     total_tokens: int = 0
     model: str | None = None
     prompts: list[str] = field(default_factory=list)
+
+    def count(self, answer: ChatResult | LlmSkipped, prompt_tag: str) -> None:
+        """Add the cost of a call; a call that answered also names its model and prompt."""
+        self.calls += answer.calls if isinstance(answer, LlmSkipped) else 1
+        self.prompt_tokens += answer.prompt_tokens
+        self.completion_tokens += answer.completion_tokens
+        self.total_tokens += answer.total_tokens
+        if isinstance(answer, ChatResult):
+            self.model = answer.model
+            self.prompts = [prompt_tag]
+
+
+@dataclass
+class ArticleChoiceReport(_Usage):
+    offered: int = 0  # candidates shown to the model; 0 when the rules were sure and it was not asked
+    named: str | None = None  # a title the model named instead of choosing a candidate
+    fallback: str | None = None  # why the model's answer did not decide
+
+
+@dataclass
+class HitCheckReport(_Usage):
+    checked: int = 0  # full-text hits in the corpus; 0 when there were none and the model was not asked
+    rated: int = 0  # articles in the call: the whole corpus, so the model can compare
+    dropped: list[str] = field(default_factory=list)  # titles of the hits rated 0
+    fallback: str | None = None  # why every hit stayed although the model was asked
+
+    @property
+    def answered(self) -> bool:
+        """The model rated the hits: its answer decided which stay, also when all of them do."""
+        return bool(self.prompts) and self.fallback is None
 
 
 class LlmArticleChooser:
@@ -81,19 +121,10 @@ class LlmArticleChooser:
             what="Artikelwahl",
             deadline=self.job.deadline,
         )
+        report.count(answer, self.prompt.tag)
         if isinstance(answer, LlmSkipped):
-            report.calls += answer.calls
-            report.prompt_tokens += answer.prompt_tokens
-            report.completion_tokens += answer.completion_tokens
-            report.total_tokens += answer.total_tokens
             report.fallback = answer.reason
             return None, None
-        report.calls += 1
-        report.prompt_tokens += answer.prompt_tokens
-        report.completion_tokens += answer.completion_tokens
-        report.total_tokens += answer.total_tokens
-        report.model = answer.model
-        report.prompts = [self.prompt.tag]
         data = _read_object(answer.text)
         if data is None:
             report.fallback = UNREADABLE
@@ -107,6 +138,45 @@ class LlmArticleChooser:
             return None, named
         report.fallback = NOTHING_FITS if number == 0 else INVALID_NUMBER
         return None, None
+
+
+def check_hits(job: ArticleChoiceJob, topic: str, sources: Sequence[Source]) -> tuple[set[str], HitCheckReport]:
+    """The ids of the full-text hits the model rates as not fitting the topic, and what the check did and cost.
+
+    The call holds every article of the corpus, in an order fixed per topic, each with its title and the beginning of
+    its text; only full-text hits can be dropped. Without hits the model is not asked.
+    """
+    report = HitCheckReport(checked=sum(1 for s in sources if s.origin == HIT_ORIGIN))
+    if not report.checked:
+        return set(), report
+    by_key = {f"{s.project}:{s.title}": s for s in sources}
+    keys = sorted(by_key)
+    random.Random(f"{HIT_SEED}:{topic}").shuffle(keys)  # noqa: S311 - a reproducible order, not a secret
+    alias = {f"a{number}": by_key[key] for number, key in enumerate(keys, 1)}
+    report.rated = len(alias)
+    listing = "\n".join(
+        f"{a}: {s.title} — {' '.join(s.lead_text.split())[:HIT_OPENING_CHARS]}" for a, s in alias.items()
+    )
+    prompt = get_prompt("hit_check")
+    answer = budgeted_chat(
+        job.client,
+        prompt.render(topic=topic, articles=listing),
+        max_output_tokens=HIT_OUTPUT_TOKENS_PER_ARTICLE * len(alias),
+        budget=job.budget,
+        what="Trefferprüfung",
+        deadline=job.deadline,
+    )
+    report.count(answer, prompt.tag)
+    if isinstance(answer, LlmSkipped):
+        report.fallback = answer.reason
+        return set(), report
+    notes = _read_object(answer.text)
+    if notes is None:
+        report.fallback = UNREADABLE
+        return set(), report
+    gone = [s for a, s in alias.items() if s.origin == HIT_ORIGIN and _number(notes.get(a)) == 0]
+    report.dropped = [s.title for s in gone]
+    return {s.source_id for s in gone}, report
 
 
 def _read_object(text: str) -> dict[str, Any] | None:

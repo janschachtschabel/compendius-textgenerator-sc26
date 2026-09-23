@@ -51,11 +51,12 @@ class GenerateRequest(BaseModel):
     )
     article_choice: ArticleChoice | None = Field(
         None,
-        description="Who decides the article of the topic where the rules are unsure (a disambiguation nothing "
-        "decides, an exact title that names nothing of the subject, a title suggestion or a full-text hit): "
-        "rule-based keeps the rules' article, llm lets the LLM of the b-api choose among the candidates or name "
-        "a Wikipedia title (one call of about 1 000 tokens, only for unsure topics; measured in eval/artikelwahl: "
-        "57 instead of 55 of 59 main articles right); default LLM_ARTICLE_CHOICE_DEFAULT. Falls back to "
+        description="Who chooses the articles: rule-based keeps what the rules choose; llm lets the LLM of the "
+        "b-api decide the article of the topic where the rules are unsure (a disambiguation nothing decides, an "
+        "exact title that names nothing of the subject, a title suggestion or a full-text hit) and drop the "
+        "full-text hits of the corpus that do not fit the topic (one call of about 1 000 tokens each, only where "
+        "there is something to decide; measured in eval/artikelwahl: 57 instead of 55 of 59 main articles right, "
+        "11 of 16 unfit hits dropped and none that fit); default LLM_ARTICLE_CHOICE_DEFAULT. Falls back to "
         "rule-based when the b-api is not configured or not available",
     )
     extraction: Extraction | None = Field(

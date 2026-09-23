@@ -23,7 +23,14 @@ from app.domain.models import (
     Source,
 )
 from app.domain.requests import GenerateRequest
-from app.knowledge.article_choice import ArticleChoiceJob, ArticleChoiceReport, LlmArticleChooser
+from app.knowledge.article_choice import (
+    HIT_ORIGIN,
+    ArticleChoiceJob,
+    ArticleChoiceReport,
+    HitCheckReport,
+    LlmArticleChooser,
+    check_hits,
+)
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
 from app.llm.budget import RequestBudget
@@ -81,6 +88,8 @@ class PreparedTopic:
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
     article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
+    hit_check: HitCheckReport | None = None  # article_choice=llm: which full-text hits the model dropped
+    search_hits: int = 0  # full-text hits build_corpus added, before any check
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -206,11 +215,20 @@ class CompendiumService:
             article_choice=chooser.report if chooser is not None else None,
         )
         if needs_corpus:
-            self._add_corpus(prepared, request, deadline)
+            self._add_corpus(prepared, request, deadline, choice)
         return prepared
 
-    def _add_corpus(self, prepared: PreparedTopic, request: GenerateRequest, deadline: Deadline | None) -> None:
-        """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks."""
+    def _add_corpus(
+        self,
+        prepared: PreparedTopic,
+        request: GenerateRequest,
+        deadline: Deadline | None,
+        choice: ArticleChoiceJob | None = None,
+    ) -> None:
+        """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks.
+
+        With ``choice`` the model drops the full-text hits that do not fit the topic (D35).
+        """
         lap = _Stopwatch(prepared.timings).lap
         sources = self.registry.build_corpus(
             prepared.resolution,
@@ -218,6 +236,12 @@ class CompendiumService:
             max_articles=request.max_articles or self.settings.corpus_max_articles,
         )
         lap("corpus")
+        prepared.search_hits = sum(1 for s in sources if s.origin == HIT_ORIGIN)
+        if choice is not None and prepared.search_hits:
+            topic = prepared.resolution.title or prepared.normalized.topic
+            gone, prepared.hit_check = check_hits(choice, topic, sources)
+            sources = [s for s in sources if s.source_id not in gone]
+            lap("hit_check")
         # The materials are sources of part 1 only; without it their texts would be read and thrown away
         if request.knowledge_collection_id and self.collections is not None and "world" in request.parts:
             prepared.knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
@@ -416,7 +440,9 @@ class CompendiumService:
         generation_used = world.generation if drafted and drafted.sections else "rule-based"
         # Enrichment only means something where the LLM actually wrote a block
         enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-        choice_used = "llm" if resolution.method == CHOSEN_BY_LLM else "rule-based"
+        hit_check = prepared.hit_check
+        chose = resolution.method == CHOSEN_BY_LLM or (hit_check is not None and hit_check.answered)
+        choice_used = "llm" if chose else "rule-based"
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
@@ -434,8 +460,10 @@ class CompendiumService:
             choice_requested=choice_requested,
             choice_used=choice_used,
             choice=prepared.article_choice,
-            choice_chosen=resolution.title if choice_used == "llm" else None,
-            choice_needed=not resolution.confident,  # a chosen article stays unsure, a sure one never asks
+            choice_chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
+            # the model is asked for an unsure article (a chosen one stays unsure) and for full-text hits
+            choice_needed=not resolution.confident or prepared.search_hits > 0,
+            hit_check=hit_check,
         )
         frontmatter = build_frontmatter(
             topic=topic,

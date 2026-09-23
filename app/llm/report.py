@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.knowledge.article_choice import ArticleChoiceReport
+from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.extraction import ExtractionReport
@@ -41,17 +41,19 @@ def build_llm_report(
     choice: ArticleChoiceReport | None = None,
     choice_chosen: str | None = None,
     choice_needed: bool = False,
+    hit_check: HitCheckReport | None = None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it.
 
     ``matching_*`` describe matcher=llm (D34), ``choice_*`` article_choice=llm (D35): ``llm`` or ``rule-based``,
-    like the two switches; ``choice_chosen`` is the article the model decided on, ``choice_needed`` whether the
-    rules were unsure - only then is the model asked, so only then is its absence a fallback.
+    like the two switches; ``choice_chosen`` is the article the model decided on, ``hit_check`` what it did with the
+    full-text hits, and ``choice_needed`` whether there was anything to ask - an unsure article or hits to check;
+    only then is the model asked, so only then is its absence a fallback.
     """
     if extraction_requested == generation_requested == matching_requested == choice_requested == "rule-based":
         return None, None, None
-    reports: list[ExtractionReport | LlmReport | LlmAssignmentReport | ArticleChoiceReport] = [
-        r for r in (choice, matching, extraction, generation) if r is not None
+    reports: list[ExtractionReport | LlmReport | LlmAssignmentReport | ArticleChoiceReport | HitCheckReport] = [
+        r for r in (choice, hit_check, matching, extraction, generation) if r is not None
     ]
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
@@ -76,6 +78,9 @@ def build_llm_report(
         "chosen": choice_chosen,
         "named": choice.named if choice else None,
         "fallback": choice_fallback,
+        "hits_checked": hit_check.checked if hit_check else 0,
+        "hits_dropped": list(hit_check.dropped) if hit_check else [],
+        "hits_fallback": hit_check.fallback if hit_check else None,
     }
     extraction_block: dict[str, Any] = {
         "requested": extraction_requested,
@@ -118,7 +123,7 @@ def build_llm_report(
     }
     front: dict[str, Any] = {}
     if gateway is not None:
-        models = [r.model for r in (generation, extraction, matching, choice) if r is not None and r.model]
+        models = [r.model for r in (generation, extraction, matching, choice, hit_check) if r is not None and r.model]
         front["provider"] = gateway.client.provider
         front["model"] = models[0] if models else gateway.client.model
     front["prompts"] = sorted({prompt for r in reports for prompt in r.prompts})
@@ -132,8 +137,9 @@ def build_llm_report(
         front["matching"] = {
             key: matching_block[key] for key in ("paragraphs", "answered", "fallback_paragraphs", "fallbacks")
         }
-    if choice_block["asked"]:
-        front["article_choice"] = {key: choice_block[key] for key in ("offered", "chosen", "fallback")}
+    if choice_block["asked"] or choice_block["hits_checked"]:
+        keys = ("offered", "chosen", "fallback", "hits_checked", "hits_dropped", "hits_fallback")
+        front["article_choice"] = {key: choice_block[key] for key in keys}
     if enrichment_used == "model-knowledge":
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.

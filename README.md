@@ -304,7 +304,11 @@ wenn das Archiv ihn als Artikel hat. Die Auflösung trägt dann `method: llm` un
 Scheitert der Aufruf oder nennt die Antwort nichts Brauchbares, bleibt der Artikel der Regeln
 (`audit.llm.article_choice`). Gemessen an den drei Goldsätzen in `eval/artikelwahl` am 2026-09-23: 57 statt 55 von
 59, 23 statt 22 von 23 und 11 statt 9 von 12 Hauptartikeln richtig, rund 950 Tokens je Aufruf bei 18 von 94
-Anfragen, also im Mittel unter 200 Tokens je Anfrage.
+Anfragen. Außerdem prüft das LLM die Volltexttreffer des Korpus: Es benotet alle Korpusartikel eines Themas in einem
+Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und die Volltexttreffer mit 0 fallen heraus
+(`hits_dropped`). Gemessen an den blind vergebenen Noten der 20 Themen aus M1: 11 von 16 unpassenden Treffern
+verworfen, kein passender; statt 26 druckte die Standard-Strategie 10 Absätze aus unpassenden Artikeln, rund 890
+Tokens je Thema mit Treffern.
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
@@ -469,7 +473,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` oder `llm` (das LLM entscheidet eine unsichere Artikelwahl, D35) |
+| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` oder `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35) |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |

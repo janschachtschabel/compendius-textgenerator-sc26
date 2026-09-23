@@ -1416,10 +1416,17 @@ API.
   Goldsätzen in `eval/artikelwahl` (Haupt 59, Validierung 23, zurückgehaltener Test 12): alter Stand 45, 14 und 7
   richtig, die Regeln 55, 22 und 9, mit dem Modell 57, 23 und 11; der Testsatz lief zuerst mit 8 und 9 und ist seit
   zwei danach behobenen Fehlern nicht mehr unabhängig. Das Modell wurde bei 18 von 94 Anfragen gefragt, rund 950
-  Tokens je Aufruf. Standard bleibt `rule-based` (`LLM_ARTICLE_CHOICE_DEFAULT`), weil jede LLM-Nutzung im Dienst ein
-  Schalter ist; die gewählte Auflösung trägt `method: llm` und bleibt als unsicher markiert. In
-  `kompendium_compendium_requests_total` zählt der Schalter nur, wo die Regeln unsicher waren: ein sicheres Thema
-  fragt das Modell nie, und als Rückfall gezählt hätte es die LLM-Alarme ausgelöst.
+  Tokens je Aufruf. Derselbe Schalter lässt das Modell die Volltexttreffer des Korpus prüfen, mit dem Prompt des
+  M8-Richters (`hit_check` v1): Es benotet alle Korpusartikel eines Themas in einem Aufruf, und Volltexttreffer mit 0
+  fallen heraus. An den blind vergebenen Noten der 20 Themen aus M1 verwarf es 11 von 16 unpassenden Treffern und
+  keinen passenden; die Standard-Strategie druckte danach 10 statt 26 Absätze aus unpassenden Artikeln, 346 statt
+  332 aus passenden und verwandten, bei zwei leeren Bausteinen mehr, die zuvor nur Unpassendes trugen. Einfache
+  Filter (Themenstamm im Titel oder ersten Satz, Model2Vec-Ähnlichkeit) trennten nicht, und die Treffer allein, ohne
+  die übrigen Korpusartikel zum Vergleich, benotete das Modell zu mild (6 von 16). Standard bleibt `rule-based`
+  (`LLM_ARTICLE_CHOICE_DEFAULT`), weil jede LLM-Nutzung im Dienst ein Schalter ist; die gewählte Auflösung trägt
+  `method: llm` und bleibt als unsicher markiert. In `kompendium_compendium_requests_total` zählt der Schalter nur,
+  wo es etwas zu fragen gab (unsichere Auflösung oder Volltexttreffer): als Rückfall gezählt hätte ein sicheres Thema
+  ohne Treffer die LLM-Alarme ausgelöst.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

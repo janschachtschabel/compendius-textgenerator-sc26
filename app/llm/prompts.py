@@ -133,6 +133,23 @@ ARTICLE_CHOICE = Prompt(
     user="Thema: {topic}\nSchulfach: {subject}\n\nKandidaten:\n{candidates}\n\nGib das JSON-Objekt zurück.",
 )
 
+# article_choice=llm (D35): the prompt of the M8 judge (docs/entwicklung/messung/mc_artikel_richter.py), measured as
+# a filter for the full-text hits of the corpus on 2026-09-23
+HIT_CHECK = Prompt(
+    id="hit_check",
+    version=1,
+    system=(
+        "Du beurteilst, welche Lexikonartikel in ein Kompendium für Lehrkräfte zu einem Unterrichtsthema gehören. "
+        "Vergib je Artikel eine Note: 2 = gehört zum Thema (das Thema selbst, ein Teilgebiet, ein Kernbegriff, ein "
+        "zentraler Vorgang, ein zentrales Ereignis oder eine Person, deren Bedeutung im Thema liegt); 1 = verwandt "
+        "(Nachbarthema, direkter Oberbegriff, Hintergrund, einzelnes Werk als Beispiel, Person mit breiterem Wirken, "
+        "allgemeiner Artikel zu einem beteiligten Stoff); 0 = passt nicht (andere Bedeutung, Begriffsklärung, Liste, "
+        "Film gleichen Namens, weit entfernter Oberbegriff oder kein erkennbarer Bezug). Antworte ausschließlich mit "
+        'einem JSON-Objekt, das jede Artikel-ID auf ihre Note abbildet, zum Beispiel {"a1": 2, "a2": 0}.'
+    ),
+    user="Thema des Kompendiums: {topic}\n\nArtikel:\n{articles}\n\nGib das JSON-Objekt zurück.",
+)
+
 QA_PAIRS = Prompt(
     id="qa_pairs",
     version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
@@ -148,7 +165,15 @@ QA_PAIRS = Prompt(
 
 PROMPTS: dict[str, Prompt] = {
     p.id: p
-    for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, PARAGRAPH_ASSIGNMENT, ARTICLE_CHOICE, QA_PAIRS)
+    for p in (
+        SECTION_SYNTHESIS,
+        SECTION_ENRICHMENT,
+        PASSAGE_SELECTION,
+        PARAGRAPH_ASSIGNMENT,
+        ARTICLE_CHOICE,
+        HIT_CHECK,
+        QA_PAIRS,
+    )
 }
 
 
