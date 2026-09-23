@@ -46,7 +46,7 @@ class GenerateRequest(BaseModel):
         "character TF-IDF together, plus Model2Vec embeddings when MODEL2VEC_PATH is set) is the "
         "default; bm25 is Okapi BM25 alone; char_tfidf is character TF-IDF, which carries German "
         "compounds; lexicon_only uses the heading lexicon without a ranker. llm lets the LLM of the b-api "
-        "assign every paragraph (about 240 tokens per paragraph); where it gives no answer, and without a "
+        "assign every paragraph (about 180 tokens per paragraph); where it gives no answer, and without a "
         "usable b-api, the default strategy decides. An unknown name is a 422",
     )
     article_choice: ArticleChoice | None = Field(

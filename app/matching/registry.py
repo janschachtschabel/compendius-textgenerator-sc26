@@ -60,7 +60,7 @@ STRATEGIES: dict[str, dict[str, Any]] = {
     "lexicon_only": {"name": "Nur Überschriften-Lexikon", "cost": "0 €", "hardware": "CPU", "recommended": False},
     "llm": {
         "name": "LLM ordnet jeden Absatz zu; wo es nicht entscheidet, gilt die Standard-Strategie",
-        "cost": "rund 240 Tokens je Absatz, im Median rund 39.000 je Kompendium",
+        "cost": "rund 180 Tokens je Absatz (gemessen 177 am Goldstandard, D36)",
         "hardware": "b-api",
         "recommended": False,
     },

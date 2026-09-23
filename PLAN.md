@@ -1399,7 +1399,7 @@ API.
   deutlich besser ist). Im Ablauf des Dienstes am Goldstandard gemessen: macro-F1 0,66 statt 0,43 für `hybrid_light`
   mit Model2Vec auf denselben 603 Absätzen, 125 statt 205 Fehlzuordnungen, rund 240 Tokens je Absatz
   (`docs/entwicklung/03-matching.md`). Standard bleibt `hybrid_light`, weil ein Kompendium mit LLM im Median rund
-  39.000 Tokens kostet. Das Modell ordnet jeden Absatz zu, 25 je Aufruf, mit dem gemessenen Prompt
+  39.000 Tokens kostet. Das Modell ordnet jeden Absatz zu, 25 je Aufruf (seit D36 50), mit dem gemessenen Prompt
   `paragraph_assignment` v1; die sc26-Regeln stehen als `assignment_rules` im Template, nicht im Code. Die
   Standard-Strategie läuft vorher und bleibt je Absatz der Rückfall; `MATCHER_DEFAULT=llm` verweigert der Dienst beim
   Start. Bausteine mit LLM-zugeordneten Absätzen tragen `ki-ausgewählt`, der Vorspann die Kennzeichnung „Auswahl
@@ -1427,6 +1427,14 @@ API.
   `method: llm` und bleibt als unsicher markiert. In `kompendium_compendium_requests_total` zählt der Schalter nur,
   wo es etwas zu fragen gab (unsichere Auflösung oder Volltexttreffer): als Rückfall gezählt hätte ein sicheres Thema
   ohne Treffer die LLM-Alarme ausgelöst.
+- **D36 (2026-09-24)** `matcher=llm` mit 50 Absätzen je Aufruf und 400 Zeichen je Absatz statt 25 und 700. Auf
+  denselben 597 Absätzen des Goldstandards gab das macro-F1 0,72 statt 0,66, micro-F1 0,82 statt 0,79 und 113 statt
+  127 Fehlzuordnungen, in keinem Baustein schlechter, bei 105.727 statt 144.062 Tokens (−27 %). Ein Lauf; frühere
+  Wiederholungen derselben Einstellung streuten um etwa 0,03 macro-F1, ein zweiter unabhängiger Lauf kostet rund
+  250.000 Tokens und steht aus. Übernommen, weil `matcher=llm` ohnehin gewählt werden muss und die Einstellung auch
+  ohne den Qualitätsgewinn billiger ist. Verworfen: nur die Absätze an das LLM zu geben, bei denen die Policy kein
+  sicheres Signal hat (47 % der Absätze, 71.173 Tokens): macro-F1 0,54 und so viele Fehlzuordnungen wie die Regeln,
+  weil die Policy auch ihre „sicheren“ Absätze zu 39 % falsch zuordnet. Der Prompt bleibt `paragraph_assignment` v1.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

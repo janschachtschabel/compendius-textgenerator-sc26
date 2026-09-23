@@ -287,13 +287,16 @@ Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`).
 **Zuordnung durch das LLM (`matcher: llm`, D34).** Statt der Policy kann das LLM jeden Absatz einem Baustein
 zuordnen oder keinem, je Anfrage über `matcher`, nicht als `MATCHER_DEFAULT`. Es sieht die Bausteine mit
 Beschreibung, „gehört hinein“ und „gehört nicht hinein“, die Zuordnungsregeln des Templates (`assignment_rules`)
-und je Absatz Artikel, Rolle, Überschriftenpfad und Text (bis 700 Zeichen), 25 Absätze je Aufruf. Die
+und je Absatz Artikel, Rolle, Überschriftenpfad und Text (bis 400 Zeichen), 50 Absätze je Aufruf. Die
 Standard-Strategie läuft vorher und bleibt der Rückfall: Absätze, für die das LLM nicht entscheidet (b-api, Budget,
 Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`audit.llm.matching`); ohne nutzbares
 LLM gilt die Standard-Strategie ganz, und der Vorspann nennt `matcher_requested: llm`. Bausteine mit Absätzen, die
 das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstandard am 2026-09-23: macro-F1 0,66
-statt 0,43, rund 240 Tokens je Absatz, im Median rund 39.000 je Kompendium. Große Themen stoßen an
-`LLM_MAX_TOKENS_PER_REQUEST`; für die übrigen Absätze entscheidet dann die Standard-Strategie.
+statt 0,43, rund 240 Tokens je Absatz mit 25 Absätzen je Aufruf und 700 Zeichen, im Median rund 39.000 je
+Kompendium. Am 2026-09-24 gaben 50 Absätze je Aufruf mit 400 Zeichen auf denselben Absätzen 0,72, in keinem Baustein
+schlechter, bei rund 177 Tokens je Absatz (ein Lauf); das ist seitdem die Einstellung. Nur die Absätze, bei denen die
+Policy unsicher ist, an das LLM zu geben, brachte 0,54. Große Themen stoßen an `LLM_MAX_TOKENS_PER_REQUEST`; für die
+übrigen Absätze entscheidet dann die Standard-Strategie.
 
 **Artikelwahl durch das LLM (`article_choice: llm`, D35).** Die Regeln lösen jedes Thema zuerst selbst auf und
 halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
