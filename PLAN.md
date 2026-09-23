@@ -1,7 +1,9 @@
 # Plan: Kompendium-API v2 (`compendious-text-fastapi`)
 
-Stand: 2026-09-20, Fassung v21 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 5 umgesetzt (Phase 2
-teilweise), Phasen 6 und 7 offen (aus Phase 7 vorgezogen: CI mit Image-Build, Prometheus-Überwachung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
+Stand: 2026-09-23, Fassung v22 (siehe Änderungsprotokoll) · Status: Phasen 0 bis 6 umgesetzt (Phase 2
+teilweise), danach Umbau U1 bis U6 ([docs/umbau.md](docs/umbau.md); U1 hat den v1-Vertrag aus Phase 6 wieder
+entfernt); Phase 7 teilweise (CI mit Image-Build, Image in der GitHub Container Registry, Release 2.0.0,
+Prometheus-Überwachung, Betriebshandbuch; offen: Vergleichslauf und Umstellung); Code in `github.com/janschachtschabel/compendius-textgenerator-sc26`.
 Abschnitte, die noch nicht Umgesetztes beschreiben, sind als „geplant“ markiert · Grundlage: Code-Analyse von
 `alterCode/compendious` (alter Dienst), `../kompendium-test` (ZIM-/Matching-Prototyp),
 `../mem-schule-optik` und `../mem-schule-abruf` (gezielter Abruf von Lehrplanelementen zu einem
@@ -151,6 +153,11 @@ Nicht-Ziele (dieser Ausbaustufe): Web-Dashboard des Prototyps (nur Swagger; Reda
 gehört in die edu-sharing-Oberfläche), englische Kompendien (technisch über `wikipedia_en`-ZIM
 später möglich), Bilder, QA-Generierung ohne LLM.
 
+**Nachtrag 2026-09-23:** Z1 gilt nicht mehr. Umbau U1 hat den v1-Vertrag am 2026-09-20 entfernt (Fassung v20);
+es gibt nur noch die Endpunkte unter `/api/v2` sowie `/health`, `/ready` und `/metrics`. Auch das Nicht-Ziel
+„QA-Generierung ohne LLM“ ist überholt: `POST /api/v2/qa` erzeugt Paare ohne LLM (Stufen `rule-based`,
+`parse-based`, `models`), `llm` ist eine Option ([docs/umbau.md](docs/umbau.md), Abschnitt 3).
+
 ---
 
 ## 3. Zielarchitektur
@@ -181,6 +188,10 @@ Jobs (Sidecar oder CronJob, gleiches Image):
 
 Volumes: /data/zim (Archive, active.json)   /data/state (SQLite: lehrplan.db, cache.db, templates/)
 ```
+
+**Nachtrag 2026-09-23:** Den Legacy-Vertrag aus Diagramm und Paketstruktur (3.2: `api/v1/`, Tests `contract (v1)`,
+`MIGRATION.md`) gibt es nicht mehr; Umbau U1 hat ihn am 2026-09-20 gelöscht (Fassung v20). Kompendien entstehen
+nur noch über `POST /api/v2/compendium`, die Nachfolger der übrigen v1-Endpunkte nennt 8.1.
 
 ### 3.2 Paketstruktur
 
@@ -400,6 +411,19 @@ Eingabe ist ein Thema (`topic` bzw. `text`) oder eine Sammlung (`collection_id`)
 5. Quellenrollen nach Projekt: Wikipedia = Leitquelle; Klexikon = einfache Sprache (Facette
    `Bildungsstufe: Primarstufe/Sek I`, bevorzugt für Baustein 1 und 4); Wikibooks/Wikiversity =
    Lehrbuch/Hochschule (bevorzugt für 3, 8, 10).
+
+**Nachtrag 2026-09-23 (Stand des Codes: `sources/zim/registry.py`, `service.py`):** Die Schritte 2 und 4 laufen
+anders als oben beschrieben. Ist schon der exakte Titel eine Begriffsklärungsseite, wählt `resolve_topic` unter den
+ersten zwölf Bedeutungen ihrer Liste (Links im Einleitungssatz zählen nicht) die mit den meisten Kontextwörtern in
+Titel und Textanfang, bei Gleichstand die zuerst gelistete. Kontextwörter sind die Wörter ab vier Buchstaben aus den
+Zusätzen, die Schritt 0 abtrennt („Klasse 7“, „Fach Physik“), und aus den Bildungsstufen der Sammlung
+(`ccm:educationalcontext`); `subject` (aus Anfrage oder Sammlung), Beschreibung und Schlagwörter fließen nicht ein.
+Eine Begriffsklärungsseite erkennt der Parser am Titel oder am Wort „Begriffsklärungsseite“ irgendwo im Text, nicht
+nur im Lead. Die Volltextsuche je Baustein nimmt einen Treffer nur auf, wenn Titel oder Lead den Themenstamm
+enthalten (`topic_stem`: erstes Titelwort, ab fünf Buchstaben ohne den letzten, „Optik“ → „opti“). Such- und
+Link-Artikel ohne diesen Stamm im Titel liefern nur Absätze, deren Überschriftenpfad oder Text ihn enthält
+(`_segment_corpus`); Aliase spielen dabei keine Rolle. Sie suchen den Zwilling in den anderen Archiven und fließen
+in Teil 2 und ins Glossar.
 
 ### 4.3 Segmentierung
 
@@ -922,7 +946,8 @@ Kostenmodell (Schätzung der Planung je Kompendium, Modellklasse gpt-4.1-mini; M
 `hybrid-fast` 2–3 Aufrufe × (1.500 Eingabe- + 400 Ausgabe-Tokens) ≈ 4.500/1.200;
 `hybrid-quality` 13–15 Aufrufe ≈ 20.000/5.500. Zum Vergleich alt: ~1.500 Eingabe- + bis 4.000
 Ausgabe-Tokens für den Text, plus 1–2 Linker-Aufrufe. Kostenschutz über
-`LLM_MAX_TOKENS_PER_REQUEST` und ein Tagesbudget; Tokenverbrauch steht in `pipeline_statistics`.
+`LLM_MAX_TOKENS_PER_REQUEST` und ein Tagesbudget; Tokenverbrauch steht in `pipeline_statistics` (Feld des alten
+v1-Vertrags; im Neubau `audit.llm_tokens`).
 **Vorkonfiguration (Entscheidung D19):** Provider `openai`, Modell `gpt-5.6-luna`. Provider,
 Modell und Basis-URL sind Konfiguration (`B_API_PROVIDER`, `B_API_MODEL`, `B_API_BASE_URL`), der
 Pfad `/api/v1/llm/{provider}/chat/completions` wird daraus gebildet, ein Wechsel auf
@@ -964,13 +989,20 @@ academiccloud 14 Modelle mit `status` und `demand` 0 bis 2; `gpt-5.6-luna` antwo
 einem Cache (0,2 s, gleiche `usage`). Kosten je Kompendium (Optik, Klimawandel, Photosynthese, Französische Revolution; die Modi heißen seit D33 `generation=llm-fast` und `generation=llm`): `hybrid-fast` 2 bis 3 Aufrufe
 und 2.300 bis 4.000 Tokens (9 bis 15 s gesamt), `hybrid-quality` 8 bis 10 Aufrufe und 10.500 bis 14.500 Tokens
 (16 bis 20 s gesamt bei vier parallelen Aufrufen), also unter der Schätzung oben, weil nur Bausteine mit Belegen geschrieben werden. Nicht umgesetzt:
-Akteurs-Klassifikation und Glossar-Politur per LLM, Template-Kurztexte, QA-Endpunkt (Phase 6).
+Akteurs-Klassifikation und Glossar-Politur per LLM, Template-Kurztexte, QA-Endpunkt (Phase 6; Nachtrag 2026-09-23:
+seit Umbau U5a `POST /api/v2/qa`, dessen Stufe `llm` die b-api nutzt).
 
 ---
 
 ## 8. API-Design und Kompatibilität
 
 ### 8.1 Legacy-Endpunkte (v1) — Verhalten im Neubau
+
+**Nachtrag 2026-09-23:** Keinen der v1-Endpunkte dieser Tabelle gibt es mehr. Umbau U1 hat sie am 2026-09-20 samt
+`app/api/v1/`, `MIGRATION.md` und den v1-Tests gelöscht (Fassung v20); Tabelle und „Stand Phase 6“ beschreiben den
+Zwischenstand davor. Nachfolger nach [docs/umbau.md](docs/umbau.md): `POST /api/v2/compendium` für Kompendium und
+Pipelines, `POST /api/v2/entities` für Linker und Synonyme, `POST /api/v2/qa` für QA, neu `POST /api/v2/knowledge`;
+Split und Übersetzung entfallen ersatzlos. `GET /health` und `GET /ready` bleiben.
 
 | Endpunkt | Alt | Neu | Hinweis |
 |---|---|---|---|
@@ -1144,7 +1176,7 @@ und Push für `main`, `develop`, Tags; zusätzlicher Job für das `ml`-Tag. Der 
 wird auf die neuen Modi umgestellt (Regelmodus 0, Hybridszenarien).
 
 **Beobachtbarkeit.** Strukturierte JSON-Logs mit Request-ID, Phasenzeiten je Anfrage in
-`pipeline_statistics`, optional `/metrics` (Prometheus): Latenz, Cache-Trefferquote, LLM-Tokens,
+`pipeline_statistics` (v1; im Neubau `audit.timings_ms`), optional `/metrics` (Prometheus): Latenz, Cache-Trefferquote, LLM-Tokens,
 ZIM-Stand, Harvest-Alter. **Stand 2026-09-18:** `/metrics` umgesetzt (D31) mit Latenz, LLM-Tokens,
 ZIM-Stand und Harvest-Alter, dazu Alarmregeln; die Cache-Trefferquote fehlt, weil es den Ergebnis-Cache
 noch nicht gibt. Request-IDs sind seit Fassung v17 umgesetzt (OPS-03), JSON-Logs sind offen.
@@ -1156,7 +1188,9 @@ SPARQL ohne die Validatoren aus `queries.py`.
 **Umstellung.** v2-Image parallel deployen, Contract-Tests und einen Vergleichslauf über 20
 Themen fahren (alt vs. neu, Länge, Belegquote, Laufzeit), dann Image-Tag umschalten; altes Image
 für Rollback behalten. Ablauf in `docs/MIGRATION.md`. `alterCode/` wird nach Abnahme entfernt
-(Git-Historie reicht).
+(Git-Historie reicht). **Nachtrag 2026-09-23:** Seit Umbau U1 spricht der Dienst keinen v1-Vertrag mehr; ein Tausch
+des Images stellt bisherige Aufrufer deshalb nicht um, sie müssen auf `/api/v2` wechseln. Contract-Tests und
+`MIGRATION.md` sind gelöscht; Vergleichslauf und Umstellung stehen noch aus.
 
 ---
 
@@ -1166,7 +1200,7 @@ für Rollback behalten. Ablauf in `docs/MIGRATION.md`. `alterCode/` wird nach Ab
 |---|---|---|
 | Unit | Segmentierung, Satzsplitter, Überschriften-Lexikon, Policy-Layer, Facetten-Annotatoren, Lint, Lehrplan-Matcher (`is_noise`, Stufenleiter), Renderer, Lizenz-Policy | nein |
 | Integration | Sample-ZIM (10 Artikel aus eingecheckten HTML-Fixtures, mit `libzim.Creator` in der Test-Session gebaut, Volltextindex an) → komplette Teil-1-Pipeline; Harvest gegen aufgezeichnete SPARQL-Antworten; Teil 3 gegen `respx`-Mocks | nein |
-| Contract | alte Request- und Response-Modelle aus `alterCode` als Fixtures; jeder v1-Endpunkt antwortet schemakonform | nein |
+| Contract | alte Request- und Response-Modelle aus `alterCode` als Fixtures; jeder v1-Endpunkt antwortet schemakonform (mit Umbau U1 samt v1 gelöscht, Fassung v20) | nein |
 | Golden | Markdown-Ausgabe für drei Themen aus dem Sample-ZIM, Änderungen müssen bewusst bestätigt werden | nein |
 | Evaluation | Goldstandard (4.5), nächtlich oder manuell, nicht blockierend | ZIM lokal |
 | Live-Smoke (manuell, markiert) | echter ZIM-Dump, MEM-Endpoint, edu-sharing Staging, b-api Staging | ja |
@@ -1185,8 +1219,8 @@ Aufwände sind Schätzungen in Personentagen (PT), Unsicherheit ±30 %.
 | 3 Teil 2 Lehrpläne ✅ (2026-09-17) | Vokabular und Query-Builder (Closure über Virtuosos transitive Option mit `t_distinct`), SPARQL-Client mit Pacing und Retry, Vollabzug aller 16 Länder in `lehrplan.db` (SQLite, FTS5 trigram, atomarer Tausch), Rollen aus Ontologie plus Override-Tabelle, Fach-Mapping `config/subjects.yaml`, Themen-Matching mit Wortgrenzen-Regel, Rendering mit Markern, `compendium lehrplan status|check|harvest|search`, Endpunkte `/api/v2/lehrplan/*`, Sidecar in `docker-compose.yml` | Harvest 25 min für 2.514 Lehrpläne / 295.184 Knoten (Ziel < 2 h); Äquivalenz zum Prototyp: SN 218/272, RP 200/200, BE 0/0, BY 278 neu; Teil 2 Optik 135 Lehrplanelemente in 14 Lehrplänen aus 3 Ländern (Fach Physik, 110 ms); 204 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
 | 4 Teil 3 Sammlung ✅ (2026-09-17) | edu-sharing-Client (anonym oder Basic, Paginierung, UUID-Validierung, 404/502-Abbildung), TTL-Cache, Überblick mit Untersammlungen in parsebaren Blöcken, Wissens-Sammlung mit Lizenz-Policy und Policy-Regel für Materialbelege, `collection_id` als Eingabe (Thema, Fach, Kontext), `GET /api/v2/collections/{id}/overview`, CLI `compendium collection overview` | Überblick für 5 reale Sammlungen (3,5–6,8 s ungecacht, 6.800–63.000 Zeichen, alle Blöcke parsebar); Wissens-Sammlung Optik: 6 Materialquellen, ein zusätzlicher Beleg (Bildung); 234 Tests offline grün, Ruff und mypy strict ohne Befund | 4 |
 | 5 LLM-Schicht ✅ (2026-09-18) | b-api-Client (beide Anfrageformen, Retry, Semaphore, Modellprüfung gegen `/models`), Prompt-Registry mit Versionen, Token-Budget je Kompendium und Tag, Gateway mit Rückfall, `hybrid-fast` und `hybrid-quality` mit Belegprüfung je Satz (Nummer und Deckung), LLM-Router für Zweifelsfälle, `mode` in Anfrage und CLI, LLM-Status in `/health`, Audit und Frontmatter mit tatsächlich verwendetem Modus; seit D33 (2026-09-19) zwei Schalter `extraction` (LLM wählt Sätze) und `generation` statt `mode`, Router entfernt | Live mit `gpt-5.6-luna`: jeder Satz der LLM-Bausteine trägt eine gültige Belegnummer (Endmessung: 4 Läufe, 167 Sätze, 0 ohne gültige Nummer, Belegfolge lückenlos); nicht erreichbare b-api ergibt ein Kompendium im Regelmodus mit `mode_requested` (4,3 s); unabhängiges Review eingearbeitet, offene Punkte geschlossen (D27); Image gebaut und im Container mit zwei Workern geprüft (Hybridlauf, gemeinsamer Tageszähler, Schlüssel nicht im Log); 337 Tests offline grün, Ruff und mypy strict ohne Befund | 3 |
-| 6 API-Vertrag | v1-Adapter, Contract-Tests, `collection_id`-Eingabe mit Themen-Normalisierung, Alt-Funktionen erhalten und verbessern (Linker offline, QA-Rückfall, Synonyme über ZIM), v2-Endpunkte, Teil-Regeneration, Fehlerverhalten, OpenAPI-Texte, `MIGRATION.md` | alle Contract-Tests grün; Teil-Regeneration erhält geprüfte Abschnitte; Linker und Synonyme laufen ohne LLM | 4 |
-| 7 Betrieb und Umstellung | CI-Jobs, Image `ml` optional, Runbook (Volume, Erststart, Update, Harvest), Vergleichslauf 20 Themen, Cutover | Image im Registry, Runbook geprüft, Umstellung durch Container-Tausch | 3 |
+| 6 API-Vertrag ✅ (2026-09-20) | v1-Adapter, Contract-Tests, `collection_id`-Eingabe mit Themen-Normalisierung, Alt-Funktionen erhalten und verbessern (Linker offline, QA-Rückfall, Synonyme über ZIM), v2-Endpunkte, Teil-Regeneration, Fehlerverhalten, OpenAPI-Texte, `MIGRATION.md` | alle Contract-Tests grün; Teil-Regeneration erhält geprüfte Abschnitte; Linker und Synonyme laufen ohne LLM — umgesetzt mit Fassung v17 (8.1, „Stand Phase 6“), 504 bewusst offen; den v1-Teil (Adapter, Contract-Tests, Linker, Synonyme, Übersetzung, `MIGRATION.md`) hat Umbau U1 mit Fassung v20 wieder entfernt | 4 |
+| 7 Betrieb und Umstellung ⚠ teilweise (Stand 2026-09-23) | CI-Jobs, Image `ml` optional, Runbook (Volume, Erststart, Update, Harvest), Vergleichslauf 20 Themen, Cutover | Image im Registry, Runbook geprüft, Umstellung durch Container-Tausch — erreicht: GitHub-Actions-CI mit Image-Build und Rauchtest, Image bei jedem Push auf `main` in der GitHub Container Registry, Release 2.0.0, Betriebshandbuch `docs/betrieb.md` und `docs/installation.md`, ein einziges Image statt `ml` (docs/umbau.md); offen: Vergleichslauf und Umstellung, die seit Umbau U1 kein bloßer Container-Tausch mehr ist (10) | 3 |
 | | **Summe** | | **31** |
 
 Reihenfolge: 0 → 1 → 2 (Gate) → 3 und 4 parallelisierbar → 5 → 6 → 7. Teil 2 und Teil 3 sind
@@ -1206,7 +1240,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 | MEM-Datenlizenz unbestätigt (manifest: `unconfirmed`); Wikipedia CC BY-SA färbt auf den Text (von Jan freigegeben, F6) | rechtliche Unsicherheit bei den Lehrplandaten | BY-SA-Attribution im Frontmatter und Baustein 12; MEM-Lizenz vor Produktivbetrieb bei FWU klären, bis dahin nur Labels und Links zitieren |
 | Plattenplatz und I/O für 14 GB | langsame Kaltstarts | Profil `compact` als Rückfall, RAM für Page-Cache, Ergebnis-Cache |
 | Image mit torch zu groß | Deploy-Zeit, Angriffsfläche | `ml` nur bei nachgewiesenem Mehrwert, sonst `base` |
-| Konsumenten hängen an Details des alten Response (Entities) | Bruch beim Tausch | Shim für `linker_output`, Contract-Tests, Vergleichslauf, Rollback-Image |
+| Konsumenten hängen an Details des alten Response (Entities) | Bruch beim Tausch | Shim für `linker_output`, Contract-Tests, Vergleichslauf, Rollback-Image; Nachtrag 2026-09-23: Shim und Contract-Tests sind mit Umbau U1 entfallen, bisherige Aufrufer müssen auf `/api/v2` umstellen |
 | libzim-Thread-Sicherheit bei mehreren Workern | seltene Abstürze | Archive je Prozess, Searcher je Anfrage, Lasttest in Phase 1 |
 | b-api-Limits und Modell-IDs ändern sich | LLM-Schalter fallen auf den Regelmodus zurück | Modellprüfung beim Start, Backoff, Rückfall auf Regelmodus |
 | Zu häufige Abrufe externer Quellen (MEM, Kiwix) belasten Dritte oder führen zu Sperren | Harvest oder Sync scheitern, Teil 2 veraltet | Lehrpläne ausschließlich aus dem lokalen Cache; wöchentliche Zählprüfung, Vollabzug nur bei Änderung oder monatlich, Rate-Limit 1–2 Anfragen/s; ZIM-Katalog monatlich; keinerlei Abrufe zur Inferenzzeit (D16) |
@@ -1215,14 +1249,14 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 
 | Frage | Antwort | Konsequenz im Plan |
 |---|---|---|
-| F1 Konsumenten und Eingabe | Nicht genau bekannt, an der alten API orientieren. In der Regel wird die Sammlung hineingegeben. Eingabe per nodeId gewünscht, dann Metadaten der Sammlung nutzen. | v1-Vertrag bleibt unverändert (`text`); zusätzlich `collection_id` in v1 (`config.compendium`) und v2; eine UUID in `text` wird als Sammlung interpretiert; Thema aus dem Titel, Fach aus `ccm:taxonid`, Kontext aus Beschreibung, Schlagwörtern und `ccm:educationalcontext` (4.2, 6.1, D12). Beim Cutover Zugriffslogs der alten API auswerten, um die Konsumenten sicher zu identifizieren. |
+| F1 Konsumenten und Eingabe | Nicht genau bekannt, an der alten API orientieren. In der Regel wird die Sammlung hineingegeben. Eingabe per nodeId gewünscht, dann Metadaten der Sammlung nutzen. | v1-Vertrag bleibt unverändert (`text`); zusätzlich `collection_id` in v1 (`config.compendium`) und v2; eine UUID in `text` wird als Sammlung interpretiert; Thema aus dem Titel, Fach aus `ccm:taxonid`, Kontext aus Beschreibung, Schlagwörtern und `ccm:educationalcontext` (4.2, 6.1, D12). Beim Cutover Zugriffslogs der alten API auswerten, um die Konsumenten sicher zu identifizieren. Nachtrag 2026-09-23: Mit Umbau U1 sind v1 und die UUID-Deutung von `text` entfallen, die Sammlung kommt nur über `collection_id`; ihren Kontext liefert nur `ccm:educationalcontext` (4.2). |
 | F2 Rückschreiben | Prüfen, wie es die alte API löst. | Geprüft: die alte API kennt edu-sharing nicht und liefert nur Markdown; der Aufrufer speichert. v2 behält das bei, `write_back` optional (6.4, D11). |
 | F3 ZIM-Umfang | Zum Start nur deutsche Wikipedia (ca. 13–14 GB) und Klexikon (ca. 130 MB); weitere Archive abonnierbar. | Profil `standard` als Produktionsstandard, `extended` und beliebige Manifest-Einträge zuschaltbar; Volume 32 GB (4.1, 10, D9). |
 | F4 Modus | Standard ohne LLM; schneller Hybridmodus mit wenig LLM; gute Qualität mit LLM. | Drei Modi `rule-based` (Standard), `hybrid-fast`, `hybrid-quality` (4.7, 7, D10), seit D33 zwei Schalter `extraction` und `generation`. Provider und Modell bleiben Konfiguration, Vorschlag in Abschnitt 7. |
 | F5 Facetten | Idee war, später gezielt Absätze zu parsen (z. B. zum Bundesland eines Lehrplans); in Teil 1 nicht kritisch. | Marker je Absatz in Teil 2 verbindlich; Facetten in Teil 1 Best Effort mit `FACETS_LEVEL=minimal`; sichtbare Notation abschaltbar (4.6, 5.4, D13). |
 | F6 Lizenz | CC BY-SA ist ok. | Attribution im Frontmatter und Baustein 12; MEM-Datenlizenz bleibt Prüfpunkt im Runbook (13.1). |
 | F7 Goldstandard | Begriff unklar; selbst entscheiden; Themen über Schulfächer streuen. | Erklärung in 4.5; zehn Themen quer über Physik, Biologie, Chemie, Mathematik, Deutsch, Geschichte, Geographie, Politik, Informatik, Musik; Erstellung durch das Entwicklungsteam (D17). |
-| F8 Alt-Funktionen | Erhalten und verbessern, da Bedarf unbekannt. | Keine Deprecation; Linker offline über ZIM, QA mit regelbasiertem Rückfall, Synonyme über ZIM, Übersetzung per LLM (8.1, D14). Phase 6 um einen Tag verlängert. |
+| F8 Alt-Funktionen | Erhalten und verbessern, da Bedarf unbekannt. | Keine Deprecation; Linker offline über ZIM, QA mit regelbasiertem Rückfall, Synonyme über ZIM, Übersetzung per LLM (8.1, D14). Phase 6 um einen Tag verlängert. Nachtrag 2026-09-23: mit Umbau U1 aufgehoben (D14). |
 | F9 Sprache | Nur deutsche Kompendien. | Englisch gestrichen; der Sprachparameter bleibt im Schema für später (D15). |
 | F10 Themen wie „Optik in Klasse 7" | Auf „Optik" normalisieren; Kompendien sind bildungsbereichsübergreifend und bilden Weltwissen ab. | Normalisierungsschritt vor der Titelauflösung; Stufen- und Fachzusätze werden Kontext, nie Filter (4.2, D12). |
 
@@ -1259,7 +1293,8 @@ API.
 - **D13 Facetten:** Marker je Absatz in Teil 2 verbindlich; Teil 1 Best Effort mit
   `FACETS_LEVEL=minimal`, sichtbare Notation abschaltbar.
 - **D14 Alt-Funktionen erhalten und verbessern** (Linker, QA, Synonyme, Übersetzung), keine
-  Deprecation.
+  Deprecation. Aufgehoben durch Umbau U1 (2026-09-20, Fassung v20): Linker und Synonyme gehen in
+  `POST /api/v2/entities` auf, QA in `POST /api/v2/qa`, Übersetzung und Split entfallen (docs/umbau.md).
 - **D15 Nur Deutsch** in dieser Ausbaustufe.
 - **D16 Aktualisierungsrhythmus:** Lehrpläne wöchentlich prüfen, Vollabzug bei Änderung oder
   monatlich; ZIM-Katalog monatlich; nichts davon zur Inferenzzeit.
@@ -1298,7 +1333,7 @@ API.
   20 % der Inhaltswort-Stämme im zitierten Absatz; alles andere wird verworfen und gezählt. Begründung: In der
   ersten Messung trugen Schlussfolgerungen des Modells eine Belegnummer, ohne im Beleg zu stehen (Deckung 0,00
   bis 0,17). Das Frontmatter nennt den tatsächlich verwendeten Modus; ein Hybridwunsch ohne LLM-Beitrag ist
-  `rule-based` mit `mode_requested`. Leere Antworten des Modells führen zum extraktiven Baustein, nicht zu einem
+  `rule-based` mit `mode_requested` (seit D33 `extraction_requested` bzw. `generation_requested`). Leere Antworten des Modells führen zum extraktiven Baustein, nicht zu einem
   leeren. Das Tagesbudget zählte zunächst je API-Prozess; seit D27 liegt der Zähler in `STATE_DIR`.
 - **D27 (2026-09-18)** Offene Punkte der Phase 5 geschlossen: gemeinsamer, neustartfester Tageszähler in
   `STATE_DIR/llm_budget.db` (das Image läuft mit zwei Workern); `REQUEST_TIMEOUT_S` als Frist für die LLM-Arbeit
@@ -1583,6 +1618,12 @@ Die Sammlung „…" bündelt 48 Inhalte in 4 Untersammlungen …
   und Grenze 8 MiB, Teile-Prüfung vollständig, Hinweistext für einen unlesbaren Lehrplan-Cache, Dependabot nur für
   Digests und Image-Build in der GitHub-CI (Nachtrag 3 im Audit-Bericht). Testsuite 478 Tests, 93,5 %
   Zweigabdeckung, Ruff und mypy strict grün.
+- **2026-09-23, Fassung v22 (Abgleich mit dem Code):** Datierte Nachträge, wo der Plan dem Code widersprach,
+  statt den Text umzuschreiben. Kopf und 12: Phase 6 ist mit Fassung v17 umgesetzt, ihren v1-Teil hat Umbau U1
+  wieder entfernt; Phase 7 teilweise. 2, 3.1, 7, 8.1, 10, 11, 13 und 14 (D14, D26): v1-Vertrag und `mode` sind
+  entfallen, die Nachfolger stehen dabei. 4.2: Die Begriffsklärung wählt über Kontextwörter statt über `subject`,
+  der Absatzfilter prüft den Themenstamm statt Aliase, und der Kontext einer Sammlung kommt nur aus
+  `ccm:educationalcontext` (`sources/zim/registry.py`, `service.py`). Code unverändert.
 - **2026-09-20, Fassung v21 (Umbau U2 und U3):** Zwei neue Endpunkte, beide ohne generative KI.
   `POST /api/v2/knowledge` gibt die Artikel des Korpus mit ihren Abschnitten heraus, wahlweise nur aus
   bestimmten Archiven (`ZimRegistry.only`), gedeckelt über `max_chars`. `POST /api/v2/entities` erkennt
