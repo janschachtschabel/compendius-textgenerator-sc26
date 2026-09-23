@@ -185,7 +185,11 @@ uv run compendium lehrplan search --q Optik --subject Physik
 und 2 sowie Teil 3: Zweck, Kennzahlen (Materialtypen, Bildungsstufen, Fächer, Lizenzen), alle
 Inhalte und die Untersammlungen eine Ebene tief, jeder Block zwischen
 `<!-- f: Sammlung=<id>; Fach=…; Bildungsstufe=… -->` und `<!-- /f -->`. Fehlende Beschreibungen
-bleiben sichtbar leer.
+bleiben sichtbar leer. `knowledge_collection_id` nimmt die Materialien einer Sammlung als Quellen
+in Teil 1 auf, wörtlich nur unter CC0, PDM, CC BY oder CC BY-SA (Bausteine Bildung und Praxis
+bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der Version, die das
+Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
+angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen.
 
 ### Materialblöcke in Teil 3
 
@@ -214,11 +218,7 @@ Was dabei zugesichert ist:
 
 Titel und URLs kommen aus dem Repository und werden entschärft, bevor sie in den Block gehen:
 `[` und `]` im Titel werden maskiert, URLs mit Leerzeichen oder Klammern in `<…>` gesetzt. Ein Block
-kann damit nicht durch einen Materialtitel aufgebrochen werden. `knowledge_collection_id` nimmt die Materialien einer Sammlung als Quellen
-in Teil 1 auf, wörtlich nur unter CC0, PDM, CC BY oder CC BY-SA (Bausteine Bildung und Praxis
-bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der Version, die das
-Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
-angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen.
+kann damit nicht durch einen Materialtitel aufgebrochen werden.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht
