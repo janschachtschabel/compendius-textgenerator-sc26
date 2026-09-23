@@ -1,0 +1,33 @@
+Ausgabe von mc_eval.py am 23.09.2026: alle Verfahren im Ablauf des Dienstes, Goldstandard (Pool gold = die 603 gelabelten Absätze, Pool full = alle 1.632 Absätze); die beiden LLM-Läufe (erste Messung mit Skript, matcher=llm im Dienst) nur im Pool gold
+
+=== Kandidatenpool: gold ===
+Verfahren                          Themen  macroF1  microF1 zugeordnet  falsch | Auswahl beurteilt richtig%  Slots Slots ok | @2 richtig% Slots ok@2 |    ms
+MEIN matcher=llm (Dienst)              10     0.66     0.79        547     125 |     174       174     72.4    5.8      5.1 |        74.8        4.9 |  2173
+MEIN LLM gpt-5.6-luna                  10     0.63     0.79        547     128 |     547       547     76.6    5.8      5.1 |        72.6        4.7 |  7496
+MEIN hybrid_light + M2V                10     0.43     0.64        546     205 |     155       155     56.8    5.7      4.1 |        60.8        3.9 |   114
+MEIN BM25 + Model2Vec                  10     0.43     0.64        546     208 |     159       159     56.6    5.6      4.0 |        58.3        3.8 |    21
+MEIN Model2Vec allein                  10     0.41     0.57        566     260 |     193       193     43.5    7.1      4.1 |        43.2        3.7 |    16
+MEIN char_tfidf                        10     0.40     0.61        551     223 |     169       169     49.1    6.6      4.1 |        51.4        3.9 |    88
+MEIN hybrid_light (ohne M2V)           10     0.38     0.63        543     207 |     147       147     57.1    5.4      3.9 |        57.4        3.6 |   113
+MEIN Frage-Antwort-Modell allein       10     0.37     0.64        531     196 |     148       148     55.4    5.7      3.6 |        53.7        3.4 |     0
+MEIN MiniLM-Satzvektoren allein        10     0.37     0.57        562     254 |     187       187     42.8    6.9      3.9 |        41.7        3.5 |     0
+MEIN hybrid_light + M2V + Cross-Encoder (fusioniert)     10     0.36     0.63        546     214 |     157       157     55.4    6.3      3.9 |        52.9        3.8 |     0
+MEIN bm25                              10     0.36     0.63        536     203 |     139       139     59.7    5.1      3.7 |        59.8        3.5 |    11
+MEIN lexicon_only                      10     0.35     0.65        518     184 |     128       128     63.3    4.4      3.6 |        63.3        3.4 |     5
+MEIN hybrid_light + M2V, Cross-Encoder sortiert um     10     0.32     0.43        584     345 |     237       237     34.6    7.8      3.7 |        35.0        3.4 |     0
+MEIN Cross-Encoder allein              10     0.29     0.45        570     327 |     233       233     30.0    8.2      3.7 |        30.6        3.4 |     0
+
+=== Kandidatenpool: full ===
+Verfahren                          Themen  macroF1  microF1 zugeordnet  falsch | Auswahl beurteilt richtig%  Slots Slots ok | @2 richtig% Slots ok@2 |    ms
+MEIN Model2Vec allein                  10     0.45     0.62        550     218 |     202       125     54.4    7.3      3.5 |        53.7        3.3 |    36
+MEIN hybrid_light + M2V                10     0.45     0.66        533     189 |     172       110     60.9    6.0      3.6 |        67.1        3.4 |   304
+MEIN BM25 + Model2Vec                  10     0.44     0.65        535     194 |     171       111     60.4    5.9      3.6 |        62.9        3.3 |    48
+MEIN char_tfidf                        10     0.42     0.64        538     203 |     200       125     52.0    7.1      3.6 |        55.6        3.3 |   249
+MEIN hybrid_light (ohne M2V)           10     0.39     0.65        531     193 |     170       107     58.9    6.0      3.4 |        61.2        3.0 |   258
+MEIN Frage-Antwort-Modell allein       10     0.38     0.65        527     190 |     166       104     56.7    6.1      3.2 |        55.6        2.9 |     0
+MEIN hybrid_light + M2V + Cross-Encoder (fusioniert)     10     0.37     0.64        535     197 |     178       115     58.3    6.5      3.5 |        57.9        3.4 |     0
+MEIN MiniLM-Satzvektoren allein        10     0.37     0.60        550     229 |     204       131     45.8    7.3      3.4 |        48.3        3.2 |     0
+MEIN bm25                              10     0.37     0.65        525     189 |     163       101     60.4    5.6      3.3 |        61.5        3.0 |    33
+MEIN hybrid_light + M2V, Cross-Encoder sortiert um     10     0.35     0.51        568     289 |     262       149     37.6    8.6      3.0 |        37.9        2.6 |     0
+MEIN lexicon_only                      10     0.35     0.65        518     184 |     151        93     62.4    5.1      3.2 |        63.9        2.9 |    16
+MEIN Cross-Encoder allein              10     0.30     0.53        550     270 |     254       150     32.7    8.8      2.9 |        35.6        2.6 |     0

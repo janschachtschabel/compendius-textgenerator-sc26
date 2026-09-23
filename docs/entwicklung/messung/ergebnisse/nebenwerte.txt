@@ -1,0 +1,21 @@
+Nebenwerte vom 23.09.2026, auf die sich die Seiten 01 bis 04 beziehen
+
+Testsuite (Entwicklungsstand 02070a3, nach 2.0.0, mit dem Fix 8955312):
+  pytest -m "not live" --cov  ->  753 passed, Abdeckung 94,04 % (Schwelle 90 %), 112 s
+
+Entitätenerkennung auf dem Server (POST /api/v2/entities, drei Aufrufe nacheinander):
+  Text: "Isaac Newton zerlegte das Licht mit einem Prisma in seine Spektralfarben."
+  Dauer 0,15 s / 0,09 s / 0,07 s; methods ner + dictionary; Entitäten: Isaac Newton, Licht, Prisma, Spektralfarben
+
+Auflösung "Kiefer" (lokale Archive, ohne Kontext und mit Kontext "Biologie"):
+  beide Male Kiefer (Anatomie); Alternativen: Kiefer (Anatomie), Kiefer (Insekt), Kiefer (Familienname), Werk Kiefer,
+  Kieferngewächse, Kiefern, Waldkiefer, Schwarzkiefer
+
+Länge des Markdowns mit Teil 1 und 2, ohne Fachangabe (M1, Durchgang 1, Zeichen):
+  Demokratie 318080, Elektrischer Strom 311376, Photosynthese 93376, Optik 69241
+
+Teil 2 zu Optik (lokaler Entwicklungscontainer, Lehrplan-Cache vom 20.09.2026), Satz aus dem Kompendium:
+  145 Lehrplanelemente in 19 Lehrplänen aus 3 Ländern; Stichwörter: Optik, Lehre vom Licht, Wellenoptik, Technische Optik, Geometrische Optik, Mikrooptik, Augenoptiker, Röntgenoptik.
+
+Teil 3 der Sammlung Optik (9e7ae956-e9df-430f-bace-f3db4b910013, Repository-Stand 23.09.2026):
+  233 Knotenzeilen nach dem regulären Ausdruck ^( *)- (Sammlung|Untersammlung|Inhalt): (.*) · nodeId: ([0-9a-f-]{36})$

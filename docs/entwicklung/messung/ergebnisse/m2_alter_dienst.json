@@ -1,0 +1,466 @@
+[
+ {
+  "topic": "Optik",
+  "dir": "old_runs",
+  "seconds": 374.34,
+  "error": null,
+  "llm_calls": 12,
+  "llm_tokens": 4926,
+  "llm_seconds": 44.8,
+  "wiki_requests": 240,
+  "wiki_not_ok": 240,
+  "wiki_seconds": 10.4,
+  "entities": 10,
+  "found": 0,
+  "main_article": "Optik",
+  "main_article_used": false,
+  "title_differs": [],
+  "disambiguation_pages": [],
+  "extract_chars": 0,
+  "markdown_chars": 11906,
+  "headings": 15,
+  "aspects_as_headings": 14,
+  "sentences": 78,
+  "cited": 0,
+  "uncited": 78,
+  "supported": 0,
+  "unsupported": 0,
+  "too_short": 0,
+  "coverage_median": null,
+  "weakest": []
+ },
+ {
+  "topic": "Barockliteratur",
+  "dir": "old_runs_ua",
+  "seconds": 37.01,
+  "error": null,
+  "llm_calls": 3,
+  "llm_tokens": 8685,
+  "llm_seconds": 33.4,
+  "wiki_requests": 12,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 2.9,
+  "entities": 9,
+  "found": 9,
+  "main_article": "Barockliteratur",
+  "main_article_used": false,
+  "title_differs": [
+   "Emblem (Literatur) -> Symbol"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 14071,
+  "markdown_chars": 15522,
+  "headings": 17,
+  "aspects_as_headings": 15,
+  "sentences": 101,
+  "cited": 20,
+  "uncited": 81,
+  "supported": 18,
+  "unsupported": 2,
+  "too_short": 0,
+  "coverage_median": 0.39,
+  "weakest": [
+   [
+    0.125,
+    "Der Beitrag der Barockliteratur zum Weltwissen liegt in ihrer einzigartigen Reflexion über das Verhältnis von Leben und Tod, in der Entwicklung literarischer Formen wie dem Sonett [5] und der Etablierung literarischer Ga"
+   ],
+   [
+    0.16666666666666666,
+    "Es wird als „Klinggedicht“ bezeichnet, da es eine musikalisch strukturierte Form darstellt [5]."
+   ]
+  ]
+ },
+ {
+  "topic": "Bruchrechnung",
+  "dir": "old_runs_ua",
+  "seconds": 60.41,
+  "error": null,
+  "llm_calls": 7,
+  "llm_tokens": 8200,
+  "llm_seconds": 37.7,
+  "wiki_requests": 34,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 22.6,
+  "entities": 10,
+  "found": 5,
+  "main_article": "Bruchrechnung",
+  "main_article_used": true,
+  "title_differs": [
+   "Bruch (Mathematik) -> Rationale Zahl",
+   "Zähler (Bruch) -> Division (Mathematik)",
+   "Nenner -> Bruchrechnung",
+   "Gemischte Zahl -> Bruchrechnung",
+   "Bruchrechnung#Grundrechenarten_mit_Brüchen -> Bruchrechnung"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 7801,
+  "markdown_chars": 13751,
+  "headings": 17,
+  "aspects_as_headings": 15,
+  "sentences": 95,
+  "cited": 12,
+  "uncited": 83,
+  "supported": 11,
+  "unsupported": 1,
+  "too_short": 0,
+  "coverage_median": 0.55,
+  "weakest": [
+   [
+    0.0,
+    "**Quellenangaben:** [1]–[5] gemäß Referenzliste"
+   ]
+  ]
+ },
+ {
+  "topic": "Demokratie",
+  "dir": "old_runs_ua",
+  "seconds": 32.56,
+  "error": null,
+  "llm_calls": 2,
+  "llm_tokens": 7819,
+  "llm_seconds": 29.8,
+  "wiki_requests": 10,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 2.7,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Demokratie",
+  "main_article_used": true,
+  "title_differs": [],
+  "disambiguation_pages": [],
+  "extract_chars": 16522,
+  "markdown_chars": 12622,
+  "headings": 16,
+  "aspects_as_headings": 14,
+  "sentences": 87,
+  "cited": 29,
+  "uncited": 58,
+  "supported": 28,
+  "unsupported": 1,
+  "too_short": 0,
+  "coverage_median": 0.57,
+  "weakest": [
+   [
+    0.0,
+    "Formen sind Volksabstimmungen, Volksinitiativen, Referenden [2]."
+   ]
+  ]
+ },
+ {
+  "topic": "Französische Revolution",
+  "dir": "old_runs_ua",
+  "seconds": 29.4,
+  "error": null,
+  "llm_calls": 4,
+  "llm_tokens": 7220,
+  "llm_seconds": 25.8,
+  "wiki_requests": 16,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 3.5,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Französische Revolution",
+  "main_article_used": true,
+  "title_differs": [
+   "Louis XVI. -> Ludwig XVI.",
+   "Nationalversammlung (Frankreich 1789) -> Verfassunggebende Versammlung",
+   "Robespierre-Regime -> Terrorherrschaft"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 10498,
+  "markdown_chars": 12362,
+  "headings": 16,
+  "aspects_as_headings": 15,
+  "sentences": 81,
+  "cited": 29,
+  "uncited": 52,
+  "supported": 27,
+  "unsupported": 2,
+  "too_short": 0,
+  "coverage_median": 0.5,
+  "weakest": [
+   [
+    0.0,
+    "Die Revolution führte zur Etablierung von Rechtsprinzipien, die heute Grundlage moderner Demokratien und Rechtsstaaten sind, darunter Gleichheit vor dem Gesetz, Freiheit der Meinungsäußerung und Recht auf Eigentum [5]."
+   ],
+   [
+    0.14285714285714285,
+    "Der Adel und der Klerus genossen Privilegien, während das Bürgertum, die Bauern und städtischen Arbeiter unter hohen Steuern und mangelnder politischer Mitbestimmung litten [1]."
+   ]
+  ]
+ },
+ {
+  "topic": "Klimawandel",
+  "dir": "old_runs_ua",
+  "seconds": 28.78,
+  "error": null,
+  "llm_calls": 2,
+  "llm_tokens": 11044,
+  "llm_seconds": 25.8,
+  "wiki_requests": 10,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 2.9,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Klimawandel",
+  "main_article_used": true,
+  "title_differs": [
+   "Erneuerbare Energie -> Erneuerbare Energien",
+   "Klimafolgen -> Folgen der globalen Erwärmung",
+   "Fossiler Brennstoff -> Fossile Energie"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 28170,
+  "markdown_chars": 11702,
+  "headings": 16,
+  "aspects_as_headings": 15,
+  "sentences": 83,
+  "cited": 9,
+  "uncited": 74,
+  "supported": 8,
+  "unsupported": 0,
+  "too_short": 1,
+  "coverage_median": 0.76,
+  "weakest": []
+ },
+ {
+  "topic": "Optik",
+  "dir": "old_runs_ua",
+  "seconds": 30.84,
+  "error": null,
+  "llm_calls": 4,
+  "llm_tokens": 7880,
+  "llm_seconds": 27.0,
+  "wiki_requests": 18,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 3.8,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Optik",
+  "main_article_used": true,
+  "title_differs": [
+   "Brechung -> Brechen",
+   "Linsen (Optik) -> Sammellinse",
+   "Polarisation (Wellenlehre) -> Polarisierung"
+  ],
+  "disambiguation_pages": [
+   "Brechen",
+   "Beugung",
+   "Polarisierung",
+   "Interferenz"
+  ],
+  "extract_chars": 13509,
+  "markdown_chars": 12010,
+  "headings": 15,
+  "aspects_as_headings": 14,
+  "sentences": 76,
+  "cited": 17,
+  "uncited": 59,
+  "supported": 15,
+  "unsupported": 2,
+  "too_short": 0,
+  "coverage_median": 0.42,
+  "weakest": [
+   [
+    0.125,
+    "**Beugung:** Die Ablenkung von Lichtwellen an Hindernissen und Öffnungen, die zu charakteristischen Interferenzmustern führt [6]."
+   ],
+   [
+    0.15384615384615385,
+    "Beim Auftreffen auf Materialien erfährt Licht Effekte wie Reflexion, Brechung, Absorption oder Streuung, die entscheidend für optische Phänomene sind [2]."
+   ]
+  ]
+ },
+ {
+  "topic": "Photosynthese",
+  "dir": "old_runs_ua",
+  "seconds": 28.62,
+  "error": null,
+  "llm_calls": 2,
+  "llm_tokens": 7946,
+  "llm_seconds": 25.6,
+  "wiki_requests": 10,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 3.0,
+  "entities": 10,
+  "found": 9,
+  "main_article": "Photosynthese",
+  "main_article_used": true,
+  "title_differs": [
+   "Chlorophyll -> Chlorophylle",
+   "Lichtreaktion -> Photosynthese",
+   "Glukose -> Glucose"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 12407,
+  "markdown_chars": 10912,
+  "headings": 17,
+  "aspects_as_headings": 15,
+  "sentences": 77,
+  "cited": 28,
+  "uncited": 49,
+  "supported": 27,
+  "unsupported": 1,
+  "too_short": 0,
+  "coverage_median": 0.56,
+  "weakest": [
+   [
+    0.07692307692307693,
+    "Dabei fungieren lichtabsorbierende Pigmente, vor allem **Chlorophyll**, als zentrale Akteure, die Photonen absorbieren und die Energie in chemische Formen überführen [3]."
+   ]
+  ]
+ },
+ {
+  "topic": "Programmiersprache",
+  "dir": "old_runs_ua",
+  "seconds": 43.1,
+  "error": null,
+  "llm_calls": 6,
+  "llm_tokens": 7307,
+  "llm_seconds": 38.5,
+  "wiki_requests": 22,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 4.5,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Programmiersprache",
+  "main_article_used": true,
+  "title_differs": [
+   "Interpreter (Computerprogramm) -> Dolmetscher",
+   "Syntax (Informatik) -> Grammatik",
+   "Semantik (Informatik) -> Bedeutungslehre",
+   "Programmierer -> Softwareentwickler",
+   "Algorithmen -> Verfahren"
+  ],
+  "disambiguation_pages": [
+   "Bedeutungslehre",
+   "Assembler",
+   "Hochsprache",
+   "Verfahren"
+  ],
+  "extract_chars": 9975,
+  "markdown_chars": 14085,
+  "headings": 15,
+  "aspects_as_headings": 14,
+  "sentences": 95,
+  "cited": 28,
+  "uncited": 67,
+  "supported": 18,
+  "unsupported": 9,
+  "too_short": 1,
+  "coverage_median": 0.33,
+  "weakest": [
+   [
+    0.0,
+    "**Interpreter:** Ein Programm, das Quellcode direkt ausführt, indem es ihn zur Laufzeit analysiert und interpretiert [3]."
+   ],
+   [
+    0.0,
+    "Auch die Nutzung deklarativer Ansätze für Datenbankzugriffe oder Konfigurationsmanagement ist verbreitet [9]."
+   ],
+   [
+    0.0,
+    "Diese Vernetzung ist zentral für die Ausbildung umfassender IT-Kompetenzen [1][4][5]."
+   ]
+  ]
+ },
+ {
+  "topic": "Sinfonie",
+  "dir": "old_runs_ua",
+  "seconds": 37.55,
+  "error": null,
+  "llm_calls": 2,
+  "llm_tokens": 7838,
+  "llm_seconds": 35.2,
+  "wiki_requests": 10,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 2.3,
+  "entities": 10,
+  "found": 10,
+  "main_article": "Sinfonie",
+  "main_article_used": true,
+  "title_differs": [
+   "Sonatenhauptsatzform -> Sonatensatzform",
+   "Romantische Musik -> Musik der Romantik"
+  ],
+  "disambiguation_pages": [],
+  "extract_chars": 12076,
+  "markdown_chars": 13920,
+  "headings": 16,
+  "aspects_as_headings": 14,
+  "sentences": 111,
+  "cited": 18,
+  "uncited": 93,
+  "supported": 14,
+  "unsupported": 4,
+  "too_short": 0,
+  "coverage_median": 0.33,
+  "weakest": [
+   [
+    0.0,
+    "Die Sinfonie wurde so zu einem Medium bürgerlicher Kultur und gesellschaftlicher Identifikation [2]."
+   ],
+   [
+    0.07692307692307693,
+    "Die Sinfonie dient als Forum für Komponisten, ihr musikalisches Weltbild und ihre ästhetischen Ideale zu artikulieren, und spielt eine Schlüsselrolle im Konzertleben [2]."
+   ],
+   [
+    0.14285714285714285,
+    "**Kontrapunkt**: Technik des Mehrstimmigkeitsaufbaus, in der unabhängige Stimmen miteinander verwoben werden [10]."
+   ]
+  ]
+ },
+ {
+  "topic": "Säure-Base-Konzepte",
+  "dir": "old_runs_ua",
+  "seconds": 62.36,
+  "error": null,
+  "llm_calls": 7,
+  "llm_tokens": 8845,
+  "llm_seconds": 56.2,
+  "wiki_requests": 32,
+  "wiki_not_ok": 0,
+  "wiki_seconds": 6.2,
+  "entities": 10,
+  "found": 8,
+  "main_article": "Säure-Base-Konzepte",
+  "main_article_used": true,
+  "title_differs": [
+   "Säure -> Säuren",
+   "Base (Chemie) -> Basen (Chemie)",
+   "pH-Wert -> Säuregrad",
+   "Bronsted-Säure-Base-Theorie -> Säure-Base-Konzepte",
+   "Arrhenius-Konzept -> Säure-Base-Konzepte",
+   "Salz (Chemie) -> Natriumchlorid"
+  ],
+  "disambiguation_pages": [
+   "Säuregrad",
+   "Wasserstoffion"
+  ],
+  "extract_chars": 11042,
+  "markdown_chars": 15525,
+  "headings": 24,
+  "aspects_as_headings": 14,
+  "sentences": 110,
+  "cited": 30,
+  "uncited": 80,
+  "supported": 26,
+  "unsupported": 3,
+  "too_short": 1,
+  "coverage_median": 0.33,
+  "weakest": [
+   [
+    0.0,
+    "Online-Datenbanken und Open Educational Resources (OER) bieten Zugang zu experimentellen Daten und Lehrmaterialien [1][4][6]."
+   ],
+   [
+    0.125,
+    "Bei der Neutralisation entstehen Salze, die aus Kationen der Base und Anionen der Säure bestehen [8]."
+   ],
+   [
+    0.14285714285714285,
+    "Das Wasserstoffion (H⁺) ist das zentrale Teilchen in vielen Säure-Base-Theorien [7]."
+   ]
+  ]
+ }
+]

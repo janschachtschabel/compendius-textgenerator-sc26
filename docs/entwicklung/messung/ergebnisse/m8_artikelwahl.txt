@@ -1,0 +1,89 @@
+## Hauptartikel
+
+| Art der Anfrage | richtig |
+|---|---|
+| normale Themen | 20 von 20 |
+| mit Klassen-, Stufen- oder Fachzusatz | 8 von 8 |
+| mehrdeutig, Fach als Kontext | 6 von 16 |
+| mehrdeutig, ohne Kontext | 3 von 3 |
+| Schreibvariante, Abkürzung, Mehrzahl | 6 von 8 |
+| ohne gleichnamigen Artikel zum Thema | 2 von 4 |
+| **alle** | **45 von 59** |
+
+Falsch aufgelöst:
+
+- Physik: Leiter -> Leiter (Physik) (erwartet: Elektrischer Leiter)
+- Chemie: Bindung -> Binden (Kochen) (erwartet: Chemische Bindung)
+- Mathematik: Funktion -> Funktion (Organisation) (erwartet: Funktion (Mathematik))
+- Mathematik: Satz -> Theorem (erwartet: Satz (Mathematik))
+- Deutsch: Satz -> Serie (Briefmarke) (erwartet: Satz (Grammatik))
+- Informatik: Baum -> Baum (erwartet: Baum (Datenstruktur))
+- Informatik: Maus -> Gemeine Figur (erwartet: Maus (Computer), Computermaus)
+- Informatik: Virus -> Viren (erwartet: Computervirus)
+- Erdkunde: Strom -> Wirtschaftskreislauf (erwartet: Strom (Gewässer), Strom (Gewässerart))
+- Geschichte: Wende -> Wende (Segeln) (erwartet: Wende und friedliche Revolution in der DDR)
+- Lichtlehre -> Ernst Adalbert Voretzsch (erwartet: Optik)
+- Lineare Funktionen -> Funktionenraum (erwartet: Lineare Funktion)
+- Die Französische Revolution -> Die Französische Revolution (erwartet: Französische Revolution)
+- Kreislauf des Wassers -> Meereswärmekraftwerk (erwartet: Wasserkreislauf)
+
+## Korpus des neuen Dienstes (20 normale Themen)
+
+Anteile gehört zum Thema | verwandt | passt nicht
+
+| Artikel | Anzahl | Gold | Richter |
+|---|---|---|---|
+| Hauptartikel | 20 | 100 % | 0 % | 0 % | 100 % | 0 % | 0 % |
+| dasselbe Thema aus Klexikon | 14 | 86 % | 14 % | 0 % | 86 % | 0 % | 14 % |
+| verlinkter Unterartikel | 140 | 50 % | 41 % | 9 % | 54 % | 41 % | 6 % |
+| Volltexttreffer je Baustein | 47 | 32 % | 34 % | 34 % | 40 % | 36 % | 23 % |
+| **alle gewählten** | **221** | 53 % | 34 % | 13 % | 57 % | 33 % | 10 % |
+| davon mit Absätzen im Korpus | 183 | 58 % | 31 % | 11 % | 61 % | 31 % | 9 % |
+| davon ohne Absatz (Themenfilter) | 38 | 29 % | 50 % | 21 % | 39 % | 47 % | 13 % |
+
+| Absätze | im Korpus | davon aus Artikeln „passt nicht“ (Gold) | gedruckt (Standard) | davon aus Artikeln „passt nicht“ (Gold) |
+|---|---|---|---|---|
+| 20 Themen | 3035 | 149 (5 %) | 358 | 26 (7 %) |
+
+Artikel mit Absätzen im Korpus, die nach Gold nicht passen:
+
+- Französische Revolution: Die Französische Revolution (verlinkter Unterartikel, 20 Absätze, 1 gedruckt)
+- Französische Revolution: Trente Glorieuses (Volltexttreffer je Baustein, 4 Absätze, 3 gedruckt)
+- Klimawandel: Gerechtigkeit (Volltexttreffer je Baustein, 1 Absätze, 0 gedruckt)
+- Klimawandel: Lea Dohm (Volltexttreffer je Baustein, 4 Absätze, 1 gedruckt)
+- Programmiersprache: Liste von Programmiersprachen (verlinkter Unterartikel, 24 Absätze, 0 gedruckt)
+- Ökosystem: System (verlinkter Unterartikel, 2 Absätze, 1 gedruckt)
+- Ökosystem: Ökosystemischer Ansatz nach Bronfenbrenner (verlinkter Unterartikel, 7 Absätze, 3 gedruckt)
+- Ökosystem: Naturvolk (Volltexttreffer je Baustein, 15 Absätze, 0 gedruckt)
+- Ökosystem: Organizismus (Volltexttreffer je Baustein, 2 Absätze, 1 gedruckt)
+- Atommodell: Physik (verlinkter Unterartikel, 1 Absätze, 1 gedruckt)
+- Atommodell: Zeittafel physikalischer Entdeckungen (Volltexttreffer je Baustein, 2 Absätze, 2 gedruckt)
+- Atommodell: Kernwaffe (Volltexttreffer je Baustein, 7 Absätze, 4 gedruckt)
+- Industrielle Revolution: Produktion (verlinkter Unterartikel, 1 Absätze, 0 gedruckt)
+- Industrielle Revolution: Soziokulturelle Evolution (Volltexttreffer je Baustein, 12 Absätze, 3 gedruckt)
+- Lineare Funktion: Differenzierbarkeit (Volltexttreffer je Baustein, 19 Absätze, 0 gedruckt)
+- Lineare Funktion: Markow-Operator (Volltexttreffer je Baustein, 3 Absätze, 0 gedruckt)
+- Lineare Funktion: Probit-Modell (Volltexttreffer je Baustein, 14 Absätze, 5 gedruckt)
+- Zelle (Biologie): Tier (verlinkter Unterartikel, 1 Absätze, 0 gedruckt)
+- Zelle (Biologie): Evolutionsfaktor (Volltexttreffer je Baustein, 1 Absätze, 1 gedruckt)
+- Zelle (Biologie): Hermaphroditismus (Volltexttreffer je Baustein, 7 Absätze, 0 gedruckt)
+- Gedicht: Cheryl Chapman (Volltexttreffer je Baustein, 2 Absätze, 0 gedruckt)
+
+## Alter und neuer Dienst auf den zehn Goldthemen
+
+| Dienst | Artikel | je Thema (Median) | Gold: gehört | verwandt | passt nicht | Richter: gehört | verwandt | passt nicht |
+|---|---|---|---|---|---|---|---|---|
+| alter Dienst (bester Fall) | 91 | 10 | 51 % | 35 % | 14 % | 71 % | 23 % | 5 % |
+| neuer Dienst, Artikel mit Absätzen | 87 | 11 | 62 % | 32 % | 6 % | 66 % | 32 % | 2 % |
+
+## Übereinstimmung Gold und Richter
+
+223 von 288 Artikeln gleich bewertet (77 %), Cohens Kappa 0,61.
+
+| Gold \ Richter | 2 | 1 | 0 |
+|---|---|---|---|
+| 2 | 135 | 10 | 0 |
+| 1 | 27 | 68 | 6 |
+| 0 | 7 | 15 | 20 |
+
+Richter: 20 Aufrufe, 21166 Tokens, 0 fehlgeschlagen.

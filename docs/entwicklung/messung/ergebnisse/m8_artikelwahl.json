@@ -1,0 +1,3829 @@
+{
+ "anfragen": [
+  {
+   "anfrage": "Barockliteratur",
+   "art": "normal",
+   "akzeptiert": [
+    "Barockliteratur",
+    "Literatur des Barock"
+   ],
+   "titel": "Barockliteratur",
+   "richtig": true,
+   "normalisiert": "Barockliteratur",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.33,
+   "schritte_ms": {
+    "resolve": 7,
+    "corpus": 313,
+    "segment": 14
+   }
+  },
+  {
+   "anfrage": "Bruchrechnung",
+   "art": "normal",
+   "akzeptiert": [
+    "Bruchrechnung"
+   ],
+   "titel": "Bruchrechnung",
+   "richtig": true,
+   "normalisiert": "Bruchrechnung",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 1.06,
+   "schritte_ms": {
+    "resolve": 30,
+    "corpus": 1017,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Demokratie",
+   "art": "normal",
+   "akzeptiert": [
+    "Demokratie"
+   ],
+   "titel": "Demokratie",
+   "richtig": true,
+   "normalisiert": "Demokratie",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.36,
+   "schritte_ms": {
+    "resolve": 51,
+    "corpus": 292,
+    "segment": 16
+   }
+  },
+  {
+   "anfrage": "Französische Revolution",
+   "art": "normal",
+   "akzeptiert": [
+    "Französische Revolution"
+   ],
+   "titel": "Französische Revolution",
+   "richtig": true,
+   "normalisiert": "Französische Revolution",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.44,
+   "schritte_ms": {
+    "resolve": 29,
+    "corpus": 369,
+    "segment": 36
+   }
+  },
+  {
+   "anfrage": "Klimawandel",
+   "art": "normal",
+   "akzeptiert": [
+    "Klimawandel"
+   ],
+   "titel": "Klimawandel",
+   "richtig": true,
+   "normalisiert": "Klimawandel",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.65,
+   "schritte_ms": {
+    "resolve": 69,
+    "corpus": 546,
+    "segment": 32
+   }
+  },
+  {
+   "anfrage": "Optik",
+   "art": "normal",
+   "akzeptiert": [
+    "Optik"
+   ],
+   "titel": "Optik",
+   "richtig": true,
+   "normalisiert": "Optik",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.16,
+   "schritte_ms": {
+    "resolve": 6,
+    "corpus": 143,
+    "segment": 6
+   }
+  },
+  {
+   "anfrage": "Photosynthese",
+   "art": "normal",
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "titel": "Photosynthese",
+   "richtig": true,
+   "normalisiert": "Photosynthese",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.73,
+   "schritte_ms": {
+    "resolve": 41,
+    "corpus": 665,
+    "segment": 19
+   }
+  },
+  {
+   "anfrage": "Programmiersprache",
+   "art": "normal",
+   "akzeptiert": [
+    "Programmiersprache"
+   ],
+   "titel": "Programmiersprache",
+   "richtig": true,
+   "normalisiert": "Programmiersprache",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.42,
+   "schritte_ms": {
+    "resolve": 9,
+    "corpus": 402,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Säure-Base-Konzepte",
+   "art": "normal",
+   "akzeptiert": [
+    "Säure-Base-Konzepte"
+   ],
+   "titel": "Säure-Base-Konzepte",
+   "richtig": true,
+   "normalisiert": "Säure-Base-Konzepte",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.82,
+   "schritte_ms": {
+    "resolve": 18,
+    "corpus": 794,
+    "segment": 5
+   }
+  },
+  {
+   "anfrage": "Sinfonie",
+   "art": "normal",
+   "akzeptiert": [
+    "Sinfonie"
+   ],
+   "titel": "Sinfonie",
+   "richtig": true,
+   "normalisiert": "Sinfonie",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.37,
+   "schritte_ms": {
+    "resolve": 5,
+    "corpus": 356,
+    "segment": 11
+   }
+  },
+  {
+   "anfrage": "Plattentektonik",
+   "art": "normal",
+   "akzeptiert": [
+    "Plattentektonik"
+   ],
+   "titel": "Plattentektonik",
+   "richtig": true,
+   "normalisiert": "Plattentektonik",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.45,
+   "schritte_ms": {
+    "resolve": 12,
+    "corpus": 429,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Ökosystem",
+   "art": "normal",
+   "akzeptiert": [
+    "Ökosystem"
+   ],
+   "titel": "Ökosystem",
+   "richtig": true,
+   "normalisiert": "Ökosystem",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.12,
+   "schritte_ms": {
+    "resolve": 15,
+    "corpus": 98,
+    "segment": 9
+   }
+  },
+  {
+   "anfrage": "Atommodell",
+   "art": "normal",
+   "akzeptiert": [
+    "Atommodell",
+    "Liste der Atommodelle"
+   ],
+   "titel": "Liste der Atommodelle",
+   "richtig": true,
+   "normalisiert": "Atommodell",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.52,
+   "schritte_ms": {
+    "resolve": 3,
+    "corpus": 501,
+    "segment": 17
+   }
+  },
+  {
+   "anfrage": "Industrielle Revolution",
+   "art": "normal",
+   "akzeptiert": [
+    "Industrielle Revolution"
+   ],
+   "titel": "Industrielle Revolution",
+   "richtig": true,
+   "normalisiert": "Industrielle Revolution",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.43,
+   "schritte_ms": {
+    "resolve": 23,
+    "corpus": 380,
+    "segment": 29
+   }
+  },
+  {
+   "anfrage": "Elektrischer Strom",
+   "art": "normal",
+   "akzeptiert": [
+    "Elektrischer Strom"
+   ],
+   "titel": "Elektrischer Strom",
+   "richtig": true,
+   "normalisiert": "Elektrischer Strom",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.17,
+   "schritte_ms": {
+    "resolve": 10,
+    "corpus": 147,
+    "segment": 10
+   }
+  },
+  {
+   "anfrage": "Wasserkreislauf",
+   "art": "normal",
+   "akzeptiert": [
+    "Wasserkreislauf"
+   ],
+   "titel": "Wasserkreislauf",
+   "richtig": true,
+   "normalisiert": "Wasserkreislauf",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.36,
+   "schritte_ms": {
+    "resolve": 4,
+    "corpus": 344,
+    "segment": 13
+   }
+  },
+  {
+   "anfrage": "Römisches Reich",
+   "art": "normal",
+   "akzeptiert": [
+    "Römisches Reich"
+   ],
+   "titel": "Römisches Reich",
+   "richtig": true,
+   "normalisiert": "Römisches Reich",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.36,
+   "schritte_ms": {
+    "resolve": 23,
+    "corpus": 304,
+    "segment": 27
+   }
+  },
+  {
+   "anfrage": "Lineare Funktion",
+   "art": "normal",
+   "akzeptiert": [
+    "Lineare Funktion"
+   ],
+   "titel": "Lineare Funktion",
+   "richtig": true,
+   "normalisiert": "Lineare Funktion",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.46,
+   "schritte_ms": {
+    "resolve": 17,
+    "corpus": 429,
+    "segment": 14
+   }
+  },
+  {
+   "anfrage": "Zelle (Biologie)",
+   "art": "normal",
+   "akzeptiert": [
+    "Zelle (Biologie)"
+   ],
+   "titel": "Zelle (Biologie)",
+   "richtig": true,
+   "normalisiert": "Zelle (Biologie)",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.12,
+   "schritte_ms": {
+    "resolve": 8,
+    "corpus": 102,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Gedicht",
+   "art": "normal",
+   "akzeptiert": [
+    "Gedicht"
+   ],
+   "titel": "Gedicht",
+   "richtig": true,
+   "normalisiert": "Gedicht",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.4,
+   "schritte_ms": {
+    "resolve": 0,
+    "corpus": 394,
+    "segment": 7
+   }
+  },
+  {
+   "anfrage": "Optik in Klasse 7",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Optik"
+   ],
+   "titel": "Optik",
+   "richtig": true,
+   "normalisiert": "Optik",
+   "kontext": [
+    "Klasse 7"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.16,
+   "schritte_ms": {
+    "resolve": 6,
+    "corpus": 147,
+    "segment": 6
+   }
+  },
+  {
+   "anfrage": "Physik: Optik (Sek I)",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Optik"
+   ],
+   "titel": "Optik",
+   "richtig": true,
+   "normalisiert": "Optik",
+   "kontext": [
+    "Fach Physik",
+    "Sek I"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.05,
+   "schritte_ms": {
+    "resolve": 0,
+    "corpus": 44,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Photosynthese für die Grundschule",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "titel": "Photosynthese",
+   "richtig": true,
+   "normalisiert": "Photosynthese",
+   "kontext": [
+    "Grundschule"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.75,
+   "schritte_ms": {
+    "resolve": 44,
+    "corpus": 690,
+    "segment": 19
+   }
+  },
+  {
+   "anfrage": "Bruchrechnung Klasse 6",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Bruchrechnung"
+   ],
+   "titel": "Bruchrechnung",
+   "richtig": true,
+   "normalisiert": "Bruchrechnung",
+   "kontext": [
+    "Klasse 6"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 1.01,
+   "schritte_ms": {
+    "resolve": 30,
+    "corpus": 970,
+    "segment": 9
+   }
+  },
+  {
+   "anfrage": "Demokratie in der Sekundarstufe I",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Demokratie"
+   ],
+   "titel": "Demokratie",
+   "richtig": true,
+   "normalisiert": "Demokratie",
+   "kontext": [
+    "Sekundarstufe I"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.33,
+   "schritte_ms": {
+    "resolve": 51,
+    "corpus": 259,
+    "segment": 16
+   }
+  },
+  {
+   "anfrage": "Thema: Klimawandel",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Klimawandel"
+   ],
+   "titel": "Klimawandel",
+   "richtig": true,
+   "normalisiert": "Klimawandel",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.51,
+   "schritte_ms": {
+    "resolve": 44,
+    "corpus": 436,
+    "segment": 31
+   }
+  },
+  {
+   "anfrage": "Geschichte: Französische Revolution",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Französische Revolution"
+   ],
+   "titel": "Französische Revolution",
+   "richtig": true,
+   "normalisiert": "Französische Revolution",
+   "kontext": [
+    "Fach Geschichte"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.35,
+   "schritte_ms": {
+    "resolve": 34,
+    "corpus": 293,
+    "segment": 16
+   }
+  },
+  {
+   "anfrage": "Plattentektonik (Oberstufe)",
+   "art": "zusatz",
+   "akzeptiert": [
+    "Plattentektonik"
+   ],
+   "titel": "Plattentektonik",
+   "richtig": true,
+   "normalisiert": "Plattentektonik",
+   "kontext": [
+    "Oberstufe"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.49,
+   "schritte_ms": {
+    "resolve": 12,
+    "corpus": 465,
+    "segment": 15
+   }
+  },
+  {
+   "anfrage": "Physik: Welle",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Welle"
+   ],
+   "titel": "Welle",
+   "richtig": true,
+   "normalisiert": "Welle",
+   "kontext": [
+    "Fach Physik"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.29,
+   "schritte_ms": {
+    "resolve": 11,
+    "corpus": 272,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Physik: Leiter",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Elektrischer Leiter"
+   ],
+   "titel": "Leiter (Physik)",
+   "richtig": false,
+   "normalisiert": "Leiter",
+   "kontext": [
+    "Fach Physik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Leiter (Gerät)",
+    "Leiter (Heraldik)",
+    "Leiter (Physik)",
+    "Führungskraft (Führungslehre)",
+    "Blattrippe (Fleisch)",
+    "Leiter (Fluss)",
+    "H. Leiter",
+    "Al Leiter"
+   ],
+   "sekunden": 0.38,
+   "schritte_ms": {
+    "resolve": 97,
+    "corpus": 263,
+    "segment": 22
+   }
+  },
+  {
+   "anfrage": "Physik: Strom",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Elektrischer Strom"
+   ],
+   "titel": "Elektrischer Strom",
+   "richtig": true,
+   "normalisiert": "Strom",
+   "kontext": [
+    "Fach Physik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Elektrischer Strom",
+    "Strom (Gewässerart)",
+    "Strom (Physik)",
+    "Strom (Mathematik)",
+    "Strom (Bremen)",
+    "Strom (Ucker)",
+    "Peenestrom",
+    "Gehlsbach (Fluss)"
+   ],
+   "sekunden": 0.25,
+   "schritte_ms": {
+    "resolve": 110,
+    "corpus": 126,
+    "segment": 11
+   }
+  },
+  {
+   "anfrage": "Physik: Leistung",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Leistung (Physik)"
+   ],
+   "titel": "Leistung (Physik)",
+   "richtig": true,
+   "normalisiert": "Leistung",
+   "kontext": [
+    "Fach Physik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Leistung (Physik)",
+    "Leistung (Frequenzverwaltung)",
+    "Leistung (Nachrichtentechnik)",
+    "Leistung (Rechnungswesen)",
+    "Leistung (Sport)",
+    "Leistung (Psychologie)",
+    "Leistung (Schule)",
+    "Leistung (Recht)"
+   ],
+   "sekunden": 0.31,
+   "schritte_ms": {
+    "resolve": 73,
+    "corpus": 219,
+    "segment": 15
+   }
+  },
+  {
+   "anfrage": "Physik: Arbeit",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Arbeit (Physik)"
+   ],
+   "titel": "Arbeit (Physik)",
+   "richtig": true,
+   "normalisiert": "Arbeit",
+   "kontext": [
+    "Fach Physik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Arbeit (Philosophie)",
+    "Arbeit (Betriebswirtschaftslehre)",
+    "Arbeit (Physik)",
+    "Arbeit (Sozialwissenschaften)",
+    "Arbeit (Volkswirtschaftslehre)",
+    "Erwerbstätigkeit",
+    "Lohnarbeit",
+    "Beschäftigungsverhältnis"
+   ],
+   "sekunden": 0.47,
+   "schritte_ms": {
+    "resolve": 125,
+    "corpus": 326,
+    "segment": 17
+   }
+  },
+  {
+   "anfrage": "Biologie: Zelle",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Zelle (Biologie)"
+   ],
+   "titel": "Zelle (Biologie)",
+   "richtig": true,
+   "normalisiert": "Zelle",
+   "kontext": [
+    "Fach Biologie"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Zelle (Biologie)",
+    "Bienenwabe",
+    "Zelle (Soziologie)",
+    "Zelle (Meteorologie)",
+    "Elementarzelle",
+    "Zellkomplex",
+    "Funkzelle",
+    "Flugzeugzelle"
+   ],
+   "sekunden": 0.27,
+   "schritte_ms": {
+    "resolve": 138,
+    "corpus": 120,
+    "segment": 9
+   }
+  },
+  {
+   "anfrage": "Chemie: Bindung",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Chemische Bindung"
+   ],
+   "titel": "Binden (Kochen)",
+   "richtig": false,
+   "normalisiert": "Bindung",
+   "kontext": [
+    "Fach Chemie"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Binden (Kochen)",
+    "Legato",
+    "Skibindung",
+    "Tourenbindung",
+    "Snowboard-Bindung",
+    "Bindung (Weben)",
+    "Bindungslehre",
+    "Buchbinden"
+   ],
+   "sekunden": 0.74,
+   "schritte_ms": {
+    "resolve": 73,
+    "corpus": 653,
+    "segment": 13
+   }
+  },
+  {
+   "anfrage": "Mathematik: Funktion",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Funktion (Mathematik)"
+   ],
+   "titel": "Funktion (Organisation)",
+   "richtig": false,
+   "normalisiert": "Funktion",
+   "kontext": [
+    "Fach Mathematik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Funktion (Objekt)",
+    "Funktion (Organisation)",
+    "Funktion (Mathematik)",
+    "Funktion (Programmierung)",
+    "Prädikat (Grammatik)",
+    "Funktional",
+    "Funktionalität"
+   ],
+   "sekunden": 0.23,
+   "schritte_ms": {
+    "resolve": 104,
+    "corpus": 117,
+    "segment": 10
+   }
+  },
+  {
+   "anfrage": "Mathematik: Satz",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Satz (Mathematik)"
+   ],
+   "titel": "Theorem",
+   "richtig": false,
+   "normalisiert": "Satz",
+   "kontext": [
+    "Fach Mathematik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Satz (Grammatik)",
+    "Satz (Mathematik)",
+    "Satz (Druck)",
+    "Satz (Sport)",
+    "Satz (Einheit)",
+    "Münzsatz",
+    "Serie (Briefmarke)",
+    "Theorem"
+   ],
+   "sekunden": 0.2,
+   "schritte_ms": {
+    "resolve": 59,
+    "corpus": 126,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Deutsch: Satz",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Satz (Grammatik)"
+   ],
+   "titel": "Serie (Briefmarke)",
+   "richtig": false,
+   "normalisiert": "Satz",
+   "kontext": [
+    "Fach Deutsch"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Satz (Grammatik)",
+    "Satz (Mathematik)",
+    "Satz (Druck)",
+    "Satz (Sport)",
+    "Satz (Einheit)",
+    "Münzsatz",
+    "Serie (Briefmarke)",
+    "Theorem"
+   ],
+   "sekunden": 1.31,
+   "schritte_ms": {
+    "resolve": 19,
+    "corpus": 1279,
+    "segment": 12
+   }
+  },
+  {
+   "anfrage": "Musik: Takt",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Takt (Musik)"
+   ],
+   "titel": "Takt (Musik)",
+   "richtig": true,
+   "normalisiert": "Takt",
+   "kontext": [
+    "Fach Musik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Takt (Musik)",
+    "Taktierendes Versprinzip",
+    "Takt (Reiten)",
+    "Verbrennungsmotor",
+    "Taktfahrplan",
+    "Taktgefühl",
+    "Taktsignal",
+    "Taktung"
+   ],
+   "sekunden": 0.8,
+   "schritte_ms": {
+    "resolve": 99,
+    "corpus": 689,
+    "segment": 10
+   }
+  },
+  {
+   "anfrage": "Informatik: Baum",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Baum (Datenstruktur)"
+   ],
+   "titel": "Baum",
+   "richtig": false,
+   "normalisiert": "Baum",
+   "kontext": [
+    "Fach Informatik"
+   ],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.5,
+   "schritte_ms": {
+    "resolve": 22,
+    "corpus": 462,
+    "segment": 14
+   }
+  },
+  {
+   "anfrage": "Informatik: Maus",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Maus (Computer)",
+    "Computermaus"
+   ],
+   "titel": "Gemeine Figur",
+   "richtig": false,
+   "normalisiert": "Maus",
+   "kontext": [
+    "Fach Informatik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Kleinsäuger",
+    "Mäuseartige",
+    "Langschwanzmäuse",
+    "Hausmaus",
+    "Mäuse",
+    "Micky Maus",
+    "Die Sendung mit der Maus",
+    "Gemeine Figur"
+   ],
+   "sekunden": 0.78,
+   "schritte_ms": {
+    "resolve": 148,
+    "corpus": 588,
+    "segment": 46
+   }
+  },
+  {
+   "anfrage": "Informatik: Virus",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Computervirus"
+   ],
+   "titel": "Viren",
+   "richtig": false,
+   "normalisiert": "Virus",
+   "kontext": [
+    "Fach Informatik"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Viren",
+    "Computervirus",
+    "Virus (Automarke)",
+    "Access Virus",
+    "Pipistrel Virus",
+    "Radio SRF Virus",
+    "VIRUS (Zeitschrift)",
+    "Virus (deutsche Band)"
+   ],
+   "sekunden": 0.79,
+   "schritte_ms": {
+    "resolve": 122,
+    "corpus": 654,
+    "segment": 15
+   }
+  },
+  {
+   "anfrage": "Erdkunde: Strom",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Strom (Gewässer)",
+    "Strom (Gewässerart)"
+   ],
+   "titel": "Wirtschaftskreislauf",
+   "richtig": false,
+   "normalisiert": "Strom",
+   "kontext": [
+    "Fach Erdkunde"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Elektrischer Strom",
+    "Strom (Gewässerart)",
+    "Strom (Physik)",
+    "Strom (Mathematik)",
+    "Strom (Bremen)",
+    "Strom (Ucker)",
+    "Peenestrom",
+    "Gehlsbach (Fluss)"
+   ],
+   "sekunden": 0.66,
+   "schritte_ms": {
+    "resolve": 113,
+    "corpus": 522,
+    "segment": 18
+   }
+  },
+  {
+   "anfrage": "Geschichte: Wende",
+   "art": "mehrdeutig_mit_fach",
+   "akzeptiert": [
+    "Wende und friedliche Revolution in der DDR"
+   ],
+   "titel": "Wende (Segeln)",
+   "richtig": false,
+   "normalisiert": "Wende",
+   "kontext": [
+    "Fach Geschichte"
+   ],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Wende (Einheit)",
+    "Wende (Schwimmen)",
+    "Wende (Segeln)",
+    "Wendeschleife",
+    "Wende (Bundesrepublik Deutschland)",
+    "Wende und friedliche Revolution in der DDR",
+    "Samtene Revolution",
+    "Rosenrevolution"
+   ],
+   "sekunden": 0.66,
+   "schritte_ms": {
+    "resolve": 94,
+    "corpus": 542,
+    "segment": 17
+   }
+  },
+  {
+   "anfrage": "Strom",
+   "art": "mehrdeutig_ohne_kontext",
+   "akzeptiert": [
+    "Elektrischer Strom"
+   ],
+   "titel": "Elektrischer Strom",
+   "richtig": true,
+   "normalisiert": "Strom",
+   "kontext": [],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Elektrischer Strom",
+    "Strom (Gewässerart)",
+    "Strom (Physik)",
+    "Strom (Mathematik)",
+    "Strom (Bremen)",
+    "Strom (Ucker)",
+    "Peenestrom",
+    "Gehlsbach (Fluss)"
+   ],
+   "sekunden": 0.19,
+   "schritte_ms": {
+    "resolve": 28,
+    "corpus": 152,
+    "segment": 10
+   }
+  },
+  {
+   "anfrage": "Zelle",
+   "art": "mehrdeutig_ohne_kontext",
+   "akzeptiert": [
+    "Zelle (Biologie)"
+   ],
+   "titel": "Zelle (Biologie)",
+   "richtig": true,
+   "normalisiert": "Zelle",
+   "kontext": [],
+   "begriffsklaerung": true,
+   "alternativen": [
+    "Zelle (Biologie)",
+    "Bienenwabe",
+    "Zelle (Soziologie)",
+    "Zelle (Meteorologie)",
+    "Elementarzelle",
+    "Zellkomplex",
+    "Funkzelle",
+    "Flugzeugzelle"
+   ],
+   "sekunden": 0.3,
+   "schritte_ms": {
+    "resolve": 155,
+    "corpus": 125,
+    "segment": 14
+   }
+  },
+  {
+   "anfrage": "Welle",
+   "art": "mehrdeutig_ohne_kontext",
+   "akzeptiert": [
+    "Welle"
+   ],
+   "titel": "Welle",
+   "richtig": true,
+   "normalisiert": "Welle",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.37,
+   "schritte_ms": {
+    "resolve": 16,
+    "corpus": 341,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Fotosynthese",
+   "art": "variante",
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "titel": "Photosynthese",
+   "richtig": true,
+   "normalisiert": "Fotosynthese",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.72,
+   "schritte_ms": {
+    "resolve": 43,
+    "corpus": 654,
+    "segment": 20
+   }
+  },
+  {
+   "anfrage": "photosynthese",
+   "art": "variante",
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "titel": "Photosynthese",
+   "richtig": true,
+   "normalisiert": "photosynthese",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.16,
+   "schritte_ms": {
+    "resolve": 0,
+    "corpus": 141,
+    "segment": 20
+   }
+  },
+  {
+   "anfrage": "Lichtlehre",
+   "art": "variante",
+   "akzeptiert": [
+    "Optik"
+   ],
+   "titel": "Ernst Adalbert Voretzsch",
+   "richtig": false,
+   "normalisiert": "Lichtlehre",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [
+    "Hesychasmus"
+   ],
+   "sekunden": 0.25,
+   "schritte_ms": {
+    "resolve": 6,
+    "corpus": 223,
+    "segment": 22
+   }
+  },
+  {
+   "anfrage": "Klimaerwärmung",
+   "art": "variante",
+   "akzeptiert": [
+    "Globale Erwärmung"
+   ],
+   "titel": "Globale Erwärmung",
+   "richtig": true,
+   "normalisiert": "Klimaerwärmung",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.73,
+   "schritte_ms": {
+    "resolve": 75,
+    "corpus": 617,
+    "segment": 33
+   }
+  },
+  {
+   "anfrage": "DNA",
+   "art": "variante",
+   "akzeptiert": [
+    "Desoxyribonukleinsäure"
+   ],
+   "titel": "Desoxyribonukleinsäure",
+   "richtig": true,
+   "normalisiert": "DNA",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.72,
+   "schritte_ms": {
+    "resolve": 0,
+    "corpus": 705,
+    "segment": 15
+   }
+  },
+  {
+   "anfrage": "EU",
+   "art": "variante",
+   "akzeptiert": [
+    "Europäische Union"
+   ],
+   "titel": "Europäische Union",
+   "richtig": true,
+   "normalisiert": "EU",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.56,
+   "schritte_ms": {
+    "resolve": 99,
+    "corpus": 440,
+    "segment": 22
+   }
+  },
+  {
+   "anfrage": "Bruchrechnen",
+   "art": "variante",
+   "akzeptiert": [
+    "Bruchrechnung"
+   ],
+   "titel": "Bruchrechnung",
+   "richtig": true,
+   "normalisiert": "Bruchrechnen",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.98,
+   "schritte_ms": {
+    "resolve": 31,
+    "corpus": 944,
+    "segment": 8
+   }
+  },
+  {
+   "anfrage": "Lineare Funktionen",
+   "art": "variante",
+   "akzeptiert": [
+    "Lineare Funktion"
+   ],
+   "titel": "Funktionenraum",
+   "richtig": false,
+   "normalisiert": "Lineare Funktionen",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [
+    "Lineare Funktion"
+   ],
+   "sekunden": 0.7,
+   "schritte_ms": {
+    "resolve": 24,
+    "corpus": 664,
+    "segment": 10
+   }
+  },
+  {
+   "anfrage": "Gewaltenteilung in Deutschland",
+   "art": "ohne_eigenen_artikel",
+   "akzeptiert": [
+    "Gewaltenteilung"
+   ],
+   "titel": "Gewaltenteilung",
+   "richtig": true,
+   "normalisiert": "Gewaltenteilung in Deutschland",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [
+    "Trennung von Amt und Mandat",
+    "Neue Richtervereinigung",
+    "Staatsgewalt",
+    "Zweikammersystem"
+   ],
+   "sekunden": 0.29,
+   "schritte_ms": {
+    "resolve": 24,
+    "corpus": 246,
+    "segment": 23
+   }
+  },
+  {
+   "anfrage": "Die Französische Revolution",
+   "art": "ohne_eigenen_artikel",
+   "akzeptiert": [
+    "Französische Revolution"
+   ],
+   "titel": "Die Französische Revolution",
+   "richtig": false,
+   "normalisiert": "Die Französische Revolution",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [],
+   "sekunden": 0.21,
+   "schritte_ms": {
+    "resolve": 8,
+    "corpus": 184,
+    "segment": 19
+   }
+  },
+  {
+   "anfrage": "Photosynthese bei Pflanzen",
+   "art": "ohne_eigenen_artikel",
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "titel": "Photosynthese",
+   "richtig": true,
+   "normalisiert": "Photosynthese bei Pflanzen",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [
+    "C4-Pflanze",
+    "C3-Pflanze",
+    "CO2-Kompensationspunkt",
+    "Photosynthetisch aktive Strahlung"
+   ],
+   "sekunden": 0.18,
+   "schritte_ms": {
+    "resolve": 8,
+    "corpus": 150,
+    "segment": 19
+   }
+  },
+  {
+   "anfrage": "Kreislauf des Wassers",
+   "art": "ohne_eigenen_artikel",
+   "akzeptiert": [
+    "Wasserkreislauf"
+   ],
+   "titel": "Meereswärmekraftwerk",
+   "richtig": false,
+   "normalisiert": "Kreislauf des Wassers",
+   "kontext": [],
+   "begriffsklaerung": false,
+   "alternativen": [
+    "Heizkreis",
+    "Kühlung eines Kompressors",
+    "Kühlmittelkreislauf",
+    "Kreislauf der Gesteine"
+   ],
+   "sekunden": 0.24,
+   "schritte_ms": {
+    "resolve": 17,
+    "corpus": 209,
+    "segment": 11
+   }
+  }
+ ],
+ "korpus": {
+  "Barockliteratur": {
+   "hauptartikel": "Barockliteratur",
+   "artikel": [
+    {
+     "titel": "Barockliteratur",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 22,
+     "gedruckt": 14
+    },
+    {
+     "titel": "Barock",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Literaturgeschichte",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Regelpoetik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Trümmerliteratur",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "DDR-Literatur",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Metapher",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Epoche (Literatur)",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Aufklärung (Literatur)",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 23,
+   "gekappt": 0
+  },
+  "Bruchrechnung": {
+   "hauptartikel": "Bruchrechnung",
+   "artikel": [
+    {
+     "titel": "Bruchrechnung",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 58,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Bruchrechnung",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Rechnen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Term",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Kürzen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Rationale Zahl",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Multiplikation",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Definitionsmenge",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Addition",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 67,
+   "gekappt": 0
+  },
+  "Demokratie": {
+   "hauptartikel": "Demokratie",
+   "artikel": [
+    {
+     "titel": "Demokratie",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 168,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Demokratie",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Demokratisierung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 28,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Repräsentative Demokratie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 25,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Demokratietheorie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 37,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Direkte Demokratie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 37,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Konkordanzdemokratie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 18,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Defekte Demokratie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 15,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Postdemokratie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 24,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Souverän",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Staatsmodell",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Rechtsstaat",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 12,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 383,
+   "gekappt": 0
+  },
+  "Französische Revolution": {
+   "hauptartikel": "Französische Revolution",
+   "artikel": [
+    {
+     "titel": "Französische Revolution",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 124,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Französische Revolution",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 13,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Revolution",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Die Französische Revolution",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 20,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Revolutionstribunal",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Revolutionsexport",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Bürger",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Republik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Verfassung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Liberalismus",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 8,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Trente Glorieuses",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Revolutionskult",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 189,
+   "gekappt": 0
+  },
+  "Klimawandel": {
+   "hauptartikel": "Klimawandel",
+   "artikel": [
+    {
+     "titel": "Klimawandel",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 73,
+     "gedruckt": 6
+    },
+    {
+     "titel": "Klimawandel",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 26,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Klima",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 26,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Anthropogen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Treibhausgas",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Phanerozoikum",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Vulkanismus",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Supervulkan",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Forschungsgeschichte des Klimawandels",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 141,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Klimapolitik",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 53,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Gerechtigkeit",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Lea Dohm",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 327,
+   "gekappt": 0
+  },
+  "Optik": {
+   "hauptartikel": "Optik",
+   "artikel": [
+    {
+     "titel": "Optik",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 20,
+     "gedruckt": 6
+    },
+    {
+     "titel": "Optik",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Wellenoptik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 13,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Technische Optik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 6,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Geometrische Optik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 11,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Auge",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Mikrooptik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Augenoptiker",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 17,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Röntgenoptik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 12,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Schnittweite",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Superposition (Physik)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Geschichte der Physik",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 6,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 98,
+   "gekappt": 0
+  },
+  "Photosynthese": {
+   "hauptartikel": "Photosynthese",
+   "artikel": [
+    {
+     "titel": "Photosynthese",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 128,
+     "gedruckt": 8
+    },
+    {
+     "titel": "Photosynthese",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Pflanze",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Bakterien",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Licht",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Chlorophylle",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Kohlenstoffdioxid",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Wasser",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Sauerstoff",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 154,
+   "gekappt": 0
+  },
+  "Programmiersprache": {
+   "hauptartikel": "Programmiersprache",
+   "artikel": [
+    {
+     "titel": "Programmiersprache",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 45,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Geschichte der Programmiersprachen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 24,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Deklarative Programmierung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Höhere Programmiersprache",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Esoterische Programmiersprache",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Visuelle Programmiersprache",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 23,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Allzweck-Programmiersprache",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Logische Programmierung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Liste von Programmiersprachen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 24,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Unterprogramm",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Syntax",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Selbstübersetzung (Compiler)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 169,
+   "gekappt": 0
+  },
+  "Säure-Base-Konzepte": {
+   "hauptartikel": "Säure-Base-Konzepte",
+   "artikel": [
+    {
+     "titel": "Säure-Base-Konzepte",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 33,
+     "gedruckt": 8
+    },
+    {
+     "titel": "Säuren",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Starke Säuren",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Schwache Säuren",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Basenkonstante",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Basenanhydride",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Basen (Chemie)",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Salze",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Ion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 37,
+   "gekappt": 0
+  },
+  "Sinfonie": {
+   "hauptartikel": "Sinfonie",
+   "artikel": [
+    {
+     "titel": "Sinfonie",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Sinfonia",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Sinfonik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Manfred-Sinfonie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 12,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Programmmusik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Sinfonische Dichtung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Sinfoniekantate",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Sinfonia concertante",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 8,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Orchester",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 21,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Sonatensatzform",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 9,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Franz Schubert",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 11,
+     "gedruckt": 2
+    },
+    {
+     "titel": "7. Sinfonie (Bruckner)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 75,
+     "gedruckt": 4
+    }
+   ],
+   "absaetze_gesamt": 185,
+   "gekappt": 0
+  },
+  "Plattentektonik": {
+   "hauptartikel": "Plattentektonik",
+   "artikel": [
+    {
+     "titel": "Plattentektonik",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 57,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Plattentektonik",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 23,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Theorie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Tektonik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Lithosphäre",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Vulkanismus",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Vulkan",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Konvektion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Kontinentaldrift",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Tiefseerinne",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Pangaea",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 94,
+   "gekappt": 0
+  },
+  "Ökosystem": {
+   "hauptartikel": "Ökosystem",
+   "artikel": [
+    {
+     "titel": "Ökosystem",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 53,
+     "gedruckt": 8
+    },
+    {
+     "titel": "Ökosystem",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Ökosystemleistung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 26,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Ökologie",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 2
+    },
+    {
+     "titel": "System",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Ökosystemforschung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Ökosystemfunktion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Ökosystemverfall",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Ökosystemischer Ansatz nach Bronfenbrenner",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Ökologisches Gleichgewicht",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 11,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Naturvolk",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 15,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Organizismus",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 141,
+   "gekappt": 0
+  },
+  "Atommodell": {
+   "hauptartikel": "Liste der Atommodelle",
+   "artikel": [
+    {
+     "titel": "Liste der Atommodelle",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 18,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Atom",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Thomsonsches Atommodell",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Rutherfordsches Atommodell",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Bohrsches Atommodell",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Bohr-sommerfeldsches Atommodell",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Physik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Atomorbital",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Teilchenmodell",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Zeittafel physikalischer Entdeckungen",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Kernwaffe",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 4
+    }
+   ],
+   "absaetze_gesamt": 30,
+   "gekappt": 0
+  },
+  "Industrielle Revolution": {
+   "hauptartikel": "Industrielle Revolution",
+   "artikel": [
+    {
+     "titel": "Industrielle Revolution",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 102,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Industrielle Revolution",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Revolution",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Kapitalismus",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 6,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Maschine",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Dampfmaschine",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Kohle",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Eisen",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Produktion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Soziokulturelle Evolution",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 12,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Proletariat",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Hochindustrialisierung in Deutschland",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 8,
+     "gedruckt": 3
+    }
+   ],
+   "absaetze_gesamt": 160,
+   "gekappt": 0
+  },
+  "Elektrischer Strom": {
+   "hauptartikel": "Elektrischer Strom",
+   "artikel": [
+    {
+     "titel": "Elektrischer Strom",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 39,
+     "gedruckt": 12
+    },
+    {
+     "titel": "Strom",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Gleichstrom",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Wechselstrom",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Mischstrom",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Gleichstrommaschine",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 6,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Dreiphasenwechselstrom",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Stromquelle",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Stromnetz",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 9,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Stromfluss",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Elektrische Spannung",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 65,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Bidirektionales Laden",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 161,
+   "gekappt": 0
+  },
+  "Wasserkreislauf": {
+   "hauptartikel": "Wasserkreislauf",
+   "artikel": [
+    {
+     "titel": "Wasserkreislauf",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 9,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Wasserkreislauf",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 12,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Wasser",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Eis",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Astronomisches Objekt",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Meer",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Verdunstung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Niederschlag",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Grundwasser",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Infiltration (Hydrogeologie)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Tracer (Geowissenschaften)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    }
+   ],
+   "absaetze_gesamt": 30,
+   "gekappt": 0
+  },
+  "Römisches Reich": {
+   "hauptartikel": "Römisches Reich",
+   "artikel": [
+    {
+     "titel": "Römisches Reich",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 83,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Römisches Reich",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 33,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Römische Republik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 57,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Römische Königszeit",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Wirtschaft im Römischen Reich",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 79,
+     "gedruckt": 7
+    },
+    {
+     "titel": "Römisches Recht",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 31,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Römisches Verfassungsrecht",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 103,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Republik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Kaiser",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Territorialstaat",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Ruralisierung",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Privatrecht",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 400,
+   "gekappt": 83
+  },
+  "Lineare Funktion": {
+   "hauptartikel": "Lineare Funktion",
+   "artikel": [
+    {
+     "titel": "Lineare Funktion",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 18,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Funktionsgraph",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Gerade",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Steigung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": false,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Ganzrationale Funktion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 15,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Lineare Abbildung",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 32,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Konstante Funktion",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Funktion (Mathematik)",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Lineare Algebra",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 50,
+     "gedruckt": 6
+    },
+    {
+     "titel": "Differenzierbarkeit",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 19,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Markow-Operator",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Probit-Modell",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 14,
+     "gedruckt": 5
+    }
+   ],
+   "absaetze_gesamt": 160,
+   "gekappt": 0
+  },
+  "Zelle (Biologie)": {
+   "hauptartikel": "Zelle (Biologie)",
+   "artikel": [
+    {
+     "titel": "Zelle (Biologie)",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 29,
+     "gedruckt": 3
+    },
+    {
+     "titel": "Zelle",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Protein",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 10,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Zellkern",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 17,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Tier",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Plastid",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 5,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Vakuole",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 6,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Zellmembran",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 23,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Membran",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Organell",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 34,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Evolutionsfaktor",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 1
+    },
+    {
+     "titel": "Hermaphroditismus",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 7,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 145,
+   "gekappt": 0
+  },
+  "Gedicht": {
+   "hauptartikel": "Gedicht",
+   "artikel": [
+    {
+     "titel": "Gedicht",
+     "projekt": "wikipedia",
+     "herkunft": "primary",
+     "im_korpus": true,
+     "absaetze": 0,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Gedicht",
+     "projekt": "klexikon",
+     "herkunft": "same_topic",
+     "im_korpus": true,
+     "absaetze": 3,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Lyrik",
+     "projekt": "wikipedia",
+     "herkunft": "linked",
+     "im_korpus": true,
+     "absaetze": 21,
+     "gedruckt": 4
+    },
+    {
+     "titel": "Ballade (Gedicht)",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 17,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Der siebente Ring",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 34,
+     "gedruckt": 5
+    },
+    {
+     "titel": "Mein fremder Alltag",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 1,
+     "gedruckt": 0
+    },
+    {
+     "titel": "Das Eleusische Fest",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 4,
+     "gedruckt": 2
+    },
+    {
+     "titel": "Cheryl Chapman",
+     "projekt": "wikipedia",
+     "herkunft": "search",
+     "im_korpus": true,
+     "absaetze": 2,
+     "gedruckt": 0
+    }
+   ],
+   "absaetze_gesamt": 82,
+   "gekappt": 0
+  }
+ },
+ "alter_dienst": {
+  "Barockliteratur": [
+   {
+    "titel": "Barock",
+    "begriffe": [
+     "Barock"
+    ]
+   },
+   {
+    "titel": "Martin Opitz",
+    "begriffe": [
+     "Martin Opitz"
+    ]
+   },
+   {
+    "titel": "Andreas Gryphius",
+    "begriffe": [
+     "Andreas Gryphius"
+    ]
+   },
+   {
+    "titel": "Johann Christoph Gottsched",
+    "begriffe": [
+     "Johann Christoph Gottsched"
+    ]
+   },
+   {
+    "titel": "Sonett",
+    "begriffe": [
+     "Sonett"
+    ]
+   },
+   {
+    "titel": "Barockmusik",
+    "begriffe": [
+     "Barockmusik"
+    ]
+   },
+   {
+    "titel": "Dreißigjähriger Krieg",
+    "begriffe": [
+     "Dreißigjähriger Krieg"
+    ]
+   },
+   {
+    "titel": "Vanitas",
+    "begriffe": [
+     "Vanitas"
+    ]
+   },
+   {
+    "titel": "Symbol",
+    "begriffe": [
+     "Emblem (Literatur)"
+    ]
+   }
+  ],
+  "Bruchrechnung": [
+   {
+    "titel": "Rationale Zahl",
+    "begriffe": [
+     "Bruch (Mathematik)"
+    ]
+   },
+   {
+    "titel": "Bruchrechnung",
+    "begriffe": [
+     "Bruchrechnung",
+     "Nenner",
+     "Gemischte Zahl",
+     "Bruchrechnung#Grundrechenarten_mit_Brüchen"
+    ]
+   },
+   {
+    "titel": "Division (Mathematik)",
+    "begriffe": [
+     "Zähler (Bruch)"
+    ]
+   },
+   {
+    "titel": "Dezimalbruch",
+    "begriffe": [
+     "Dezimalbruch"
+    ]
+   },
+   {
+    "titel": "Kleinstes gemeinsames Vielfaches",
+    "begriffe": [
+     "Kleinstes gemeinsames Vielfaches"
+    ]
+   }
+  ],
+  "Demokratie": [
+   {
+    "titel": "Demokratie",
+    "begriffe": [
+     "Demokratie"
+    ]
+   },
+   {
+    "titel": "Direkte Demokratie",
+    "begriffe": [
+     "Direkte Demokratie"
+    ]
+   },
+   {
+    "titel": "Repräsentative Demokratie",
+    "begriffe": [
+     "Repräsentative Demokratie"
+    ]
+   },
+   {
+    "titel": "Gewaltenteilung",
+    "begriffe": [
+     "Gewaltenteilung"
+    ]
+   },
+   {
+    "titel": "Menschenrechte",
+    "begriffe": [
+     "Menschenrechte"
+    ]
+   },
+   {
+    "titel": "Wahlrecht",
+    "begriffe": [
+     "Wahlrecht"
+    ]
+   },
+   {
+    "titel": "Politisches System",
+    "begriffe": [
+     "Politisches System"
+    ]
+   },
+   {
+    "titel": "Verfassung",
+    "begriffe": [
+     "Verfassung"
+    ]
+   },
+   {
+    "titel": "Freiheit",
+    "begriffe": [
+     "Freiheit"
+    ]
+   },
+   {
+    "titel": "Diktatur",
+    "begriffe": [
+     "Diktatur"
+    ]
+   }
+  ],
+  "Französische Revolution": [
+   {
+    "titel": "Französische Revolution",
+    "begriffe": [
+     "Französische Revolution"
+    ]
+   },
+   {
+    "titel": "Ludwig XVI.",
+    "begriffe": [
+     "Louis XVI."
+    ]
+   },
+   {
+    "titel": "Maximilien de Robespierre",
+    "begriffe": [
+     "Maximilien de Robespierre"
+    ]
+   },
+   {
+    "titel": "Jakobiner",
+    "begriffe": [
+     "Jakobiner"
+    ]
+   },
+   {
+    "titel": "Erklärung der Menschen- und Bürgerrechte",
+    "begriffe": [
+     "Erklärung der Menschen- und Bürgerrechte"
+    ]
+   },
+   {
+    "titel": "Generalstände",
+    "begriffe": [
+     "Generalstände"
+    ]
+   },
+   {
+    "titel": "Verfassunggebende Versammlung",
+    "begriffe": [
+     "Nationalversammlung (Frankreich 1789)"
+    ]
+   },
+   {
+    "titel": "Bastille",
+    "begriffe": [
+     "Bastille"
+    ]
+   },
+   {
+    "titel": "Terrorherrschaft",
+    "begriffe": [
+     "Robespierre-Regime"
+    ]
+   },
+   {
+    "titel": "Napoleon Bonaparte",
+    "begriffe": [
+     "Napoleon Bonaparte"
+    ]
+   }
+  ],
+  "Klimawandel": [
+   {
+    "titel": "Klimawandel",
+    "begriffe": [
+     "Klimawandel"
+    ]
+   },
+   {
+    "titel": "Treibhausgas",
+    "begriffe": [
+     "Treibhausgas"
+    ]
+   },
+   {
+    "titel": "Globale Erwärmung",
+    "begriffe": [
+     "Globale Erwärmung"
+    ]
+   },
+   {
+    "titel": "Kohlenstoffdioxid",
+    "begriffe": [
+     "Kohlenstoffdioxid"
+    ]
+   },
+   {
+    "titel": "Erneuerbare Energien",
+    "begriffe": [
+     "Erneuerbare Energie"
+    ]
+   },
+   {
+    "titel": "Intergovernmental Panel on Climate Change",
+    "begriffe": [
+     "Intergovernmental Panel on Climate Change"
+    ]
+   },
+   {
+    "titel": "Klimapolitik",
+    "begriffe": [
+     "Klimapolitik"
+    ]
+   },
+   {
+    "titel": "Folgen der globalen Erwärmung",
+    "begriffe": [
+     "Klimafolgen"
+    ]
+   },
+   {
+    "titel": "Fossile Energie",
+    "begriffe": [
+     "Fossiler Brennstoff"
+    ]
+   },
+   {
+    "titel": "Klimaschutz",
+    "begriffe": [
+     "Klimaschutz"
+    ]
+   }
+  ],
+  "Optik": [
+   {
+    "titel": "Optik",
+    "begriffe": [
+     "Optik"
+    ]
+   },
+   {
+    "titel": "Licht",
+    "begriffe": [
+     "Licht"
+    ]
+   },
+   {
+    "titel": "Brechen",
+    "begriffe": [
+     "Brechung"
+    ]
+   },
+   {
+    "titel": "Reflexion (Physik)",
+    "begriffe": [
+     "Reflexion (Physik)"
+    ]
+   },
+   {
+    "titel": "Sammellinse",
+    "begriffe": [
+     "Linsen (Optik)"
+    ]
+   },
+   {
+    "titel": "Beugung",
+    "begriffe": [
+     "Beugung"
+    ]
+   },
+   {
+    "titel": "Polarisierung",
+    "begriffe": [
+     "Polarisation (Wellenlehre)"
+    ]
+   },
+   {
+    "titel": "Spektrum (Physik)",
+    "begriffe": [
+     "Spektrum (Physik)"
+    ]
+   },
+   {
+    "titel": "Interferenz",
+    "begriffe": [
+     "Interferenz"
+    ]
+   },
+   {
+    "titel": "Isaac Newton",
+    "begriffe": [
+     "Isaac Newton"
+    ]
+   }
+  ],
+  "Photosynthese": [
+   {
+    "titel": "Photosynthese",
+    "begriffe": [
+     "Photosynthese",
+     "Lichtreaktion"
+    ]
+   },
+   {
+    "titel": "Chloroplast",
+    "begriffe": [
+     "Chloroplast"
+    ]
+   },
+   {
+    "titel": "Chlorophylle",
+    "begriffe": [
+     "Chlorophyll"
+    ]
+   },
+   {
+    "titel": "Calvin-Zyklus",
+    "begriffe": [
+     "Calvin-Zyklus"
+    ]
+   },
+   {
+    "titel": "Kohlenstoffdioxid",
+    "begriffe": [
+     "Kohlenstoffdioxid"
+    ]
+   },
+   {
+    "titel": "Wasser",
+    "begriffe": [
+     "Wasser"
+    ]
+   },
+   {
+    "titel": "Glucose",
+    "begriffe": [
+     "Glukose"
+    ]
+   },
+   {
+    "titel": "Sauerstoff",
+    "begriffe": [
+     "Sauerstoff"
+    ]
+   },
+   {
+    "titel": "Licht",
+    "begriffe": [
+     "Licht"
+    ]
+   }
+  ],
+  "Programmiersprache": [
+   {
+    "titel": "Programmiersprache",
+    "begriffe": [
+     "Programmiersprache"
+    ]
+   },
+   {
+    "titel": "Compiler",
+    "begriffe": [
+     "Compiler"
+    ]
+   },
+   {
+    "titel": "Dolmetscher",
+    "begriffe": [
+     "Interpreter (Computerprogramm)"
+    ]
+   },
+   {
+    "titel": "Grammatik",
+    "begriffe": [
+     "Syntax (Informatik)"
+    ]
+   },
+   {
+    "titel": "Bedeutungslehre",
+    "begriffe": [
+     "Semantik (Informatik)"
+    ]
+   },
+   {
+    "titel": "Programmierparadigma",
+    "begriffe": [
+     "Programmierparadigma"
+    ]
+   },
+   {
+    "titel": "Assembler",
+    "begriffe": [
+     "Assembler"
+    ]
+   },
+   {
+    "titel": "Hochsprache",
+    "begriffe": [
+     "Hochsprache"
+    ]
+   },
+   {
+    "titel": "Softwareentwickler",
+    "begriffe": [
+     "Programmierer"
+    ]
+   },
+   {
+    "titel": "Verfahren",
+    "begriffe": [
+     "Algorithmen"
+    ]
+   }
+  ],
+  "Sinfonie": [
+   {
+    "titel": "Sinfonie",
+    "begriffe": [
+     "Sinfonie"
+    ]
+   },
+   {
+    "titel": "Klassische Musik",
+    "begriffe": [
+     "Klassische Musik"
+    ]
+   },
+   {
+    "titel": "Ludwig van Beethoven",
+    "begriffe": [
+     "Ludwig van Beethoven"
+    ]
+   },
+   {
+    "titel": "Wolfgang Amadeus Mozart",
+    "begriffe": [
+     "Wolfgang Amadeus Mozart"
+    ]
+   },
+   {
+    "titel": "Joseph Haydn",
+    "begriffe": [
+     "Joseph Haydn"
+    ]
+   },
+   {
+    "titel": "Orchester",
+    "begriffe": [
+     "Orchester"
+    ]
+   },
+   {
+    "titel": "Kammermusik",
+    "begriffe": [
+     "Kammermusik"
+    ]
+   },
+   {
+    "titel": "Sonatensatzform",
+    "begriffe": [
+     "Sonatenhauptsatzform"
+    ]
+   },
+   {
+    "titel": "Musik der Romantik",
+    "begriffe": [
+     "Romantische Musik"
+    ]
+   },
+   {
+    "titel": "Musiktheorie",
+    "begriffe": [
+     "Musiktheorie"
+    ]
+   }
+  ],
+  "Säure-Base-Konzepte": [
+   {
+    "titel": "Säuren",
+    "begriffe": [
+     "Säure"
+    ]
+   },
+   {
+    "titel": "Basen (Chemie)",
+    "begriffe": [
+     "Base (Chemie)"
+    ]
+   },
+   {
+    "titel": "Säuregrad",
+    "begriffe": [
+     "pH-Wert"
+    ]
+   },
+   {
+    "titel": "Säure-Base-Konzepte",
+    "begriffe": [
+     "Bronsted-Säure-Base-Theorie",
+     "Arrhenius-Konzept"
+    ]
+   },
+   {
+    "titel": "Neutralisation (Chemie)",
+    "begriffe": [
+     "Neutralisation (Chemie)"
+    ]
+   },
+   {
+    "titel": "Säure-Base-Titration",
+    "begriffe": [
+     "Säure-Base-Titration"
+    ]
+   },
+   {
+    "titel": "Wasserstoffion",
+    "begriffe": [
+     "Wasserstoffion"
+    ]
+   },
+   {
+    "titel": "Natriumchlorid",
+    "begriffe": [
+     "Salz (Chemie)"
+    ]
+   }
+  ]
+ },
+ "zusammenfassung": {
+  "normal": "20 von 20",
+  "zusatz": "8 von 8",
+  "mehrdeutig_mit_fach": "6 von 16",
+  "mehrdeutig_ohne_kontext": "3 von 3",
+  "variante": "6 von 8",
+  "ohne_eigenen_artikel": "2 von 4"
+ }
+}

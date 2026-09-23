@@ -1,0 +1,1526 @@
+{
+ "summary": {
+  "topics": 10,
+  "tokens": 144486,
+  "calls": 28,
+  "macro_f1": 0.6648683664859634,
+  "micro_f1": 0.7939793038570085,
+  "assigned": 547,
+  "misassigned": 125,
+  "top2_judged": 107,
+  "top2_correct": 80,
+  "same_as_first_run": 586,
+  "compared_with_first_run": 603
+ },
+ "topics": {
+  "Barockliteratur": {
+   "paragraphs": 23,
+   "answered": 23,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 1,
+   "tokens": 5520,
+   "wall_seconds": 3.31,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Barockliteratur:c000": "themendefinition",
+    "wikipedia:Barockliteratur:c001": "entwicklung_ausblick",
+    "wikipedia:Barockliteratur:c002": "gesellschaftlicher_kontext",
+    "wikipedia:Barockliteratur:c003": "fachinhalte",
+    "wikipedia:Barockliteratur:c004": "fachinhalte",
+    "wikipedia:Barockliteratur:c005": "fachinhalte",
+    "wikipedia:Barockliteratur:c006": "fachinhalte",
+    "wikipedia:Barockliteratur:c007": "fachinhalte",
+    "wikipedia:Barockliteratur:c009": "fachinhalte",
+    "wikipedia:Barockliteratur:c012": "fachinhalte",
+    "wikipedia:Barockliteratur:c015": "entwicklung_ausblick",
+    "wikipedia:Barockliteratur:c016": "systematik",
+    "wikipedia:Barockliteratur:c017": "gesellschaftlicher_kontext",
+    "wikipedia:Barockliteratur:c018": "gesellschaftlicher_kontext",
+    "wikipedia:Barockliteratur:c019": "gesellschaftlicher_kontext",
+    "wikipedia:Barockliteratur:c020": "entwicklung_ausblick",
+    "wikipedia:Barockliteratur:c021": "entwicklung_ausblick",
+    "wikipedia:Barock:c064": "entwicklung_ausblick"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Barockliteratur:c000",
+      0.98
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Barockliteratur:c016",
+      0.9
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Barockliteratur:c003",
+      0.96
+     ],
+     [
+      "wikipedia:Barockliteratur:c009",
+      0.96
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "wikipedia:Barockliteratur:c019",
+      0.91
+     ],
+     [
+      "wikipedia:Barockliteratur:c018",
+      0.9
+     ],
+     [
+      "wikipedia:Barockliteratur:c017",
+      0.88
+     ],
+     [
+      "wikipedia:Barockliteratur:c002",
+      0.86
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Barockliteratur:c021",
+      0.96
+     ],
+     [
+      "wikipedia:Barockliteratur:c020",
+      0.94
+     ],
+     [
+      "wikipedia:Barock:c064",
+      0.93
+     ],
+     [
+      "wikipedia:Barockliteratur:c015",
+      0.87
+     ]
+    ]
+   }
+  },
+  "Bruchrechnung": {
+   "paragraphs": 44,
+   "answered": 44,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 2,
+   "tokens": 8182,
+   "wall_seconds": 0.21,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Bruchrechnung:c000": "themendefinition",
+    "wikipedia:Bruchrechnung:c001": "fachinhalte",
+    "wikipedia:Bruchrechnung:c003": "fachinhalte",
+    "wikipedia:Bruchrechnung:c005": "fachinhalte",
+    "wikipedia:Bruchrechnung:c006": "fachinhalte",
+    "wikipedia:Bruchrechnung:c008": "fachinhalte",
+    "wikipedia:Bruchrechnung:c010": "systematik",
+    "wikipedia:Bruchrechnung:c011": "systematik",
+    "wikipedia:Bruchrechnung:c013": "systematik",
+    "wikipedia:Bruchrechnung:c014": "fachinhalte",
+    "wikipedia:Bruchrechnung:c016": "fachinhalte",
+    "wikipedia:Bruchrechnung:c017": "systematik",
+    "wikipedia:Bruchrechnung:c018": "systematik",
+    "wikipedia:Bruchrechnung:c020": "systematik",
+    "wikipedia:Bruchrechnung:c022": "systematik",
+    "wikipedia:Bruchrechnung:c024": "fachinhalte",
+    "wikipedia:Bruchrechnung:c026": "fachinhalte",
+    "wikipedia:Bruchrechnung:c027": "fachinhalte",
+    "wikipedia:Bruchrechnung:c029": "fachinhalte",
+    "wikipedia:Bruchrechnung:c031": "fachinhalte",
+    "wikipedia:Bruchrechnung:c032": "fachinhalte",
+    "wikipedia:Bruchrechnung:c034": "fachinhalte",
+    "wikipedia:Bruchrechnung:c036": "fachinhalte",
+    "wikipedia:Bruchrechnung:c038": "fachinhalte",
+    "wikipedia:Bruchrechnung:c041": "fachinhalte",
+    "wikipedia:Bruchrechnung:c042": "fachinhalte",
+    "wikipedia:Bruchrechnung:c044": "fachinhalte",
+    "wikipedia:Bruchrechnung:c045": "fachinhalte",
+    "wikipedia:Bruchrechnung:c046": "fachinhalte",
+    "wikipedia:Bruchrechnung:c047": "fachinhalte",
+    "wikipedia:Bruchrechnung:c048": "fachinhalte",
+    "wikipedia:Bruchrechnung:c049": "fachinhalte",
+    "wikipedia:Bruchrechnung:c051": "fachinhalte",
+    "wikipedia:Bruchrechnung:c052": "fachinhalte",
+    "wikipedia:Bruchrechnung:c054": "fachinhalte",
+    "wikipedia:Bruchrechnung:c056": "fachinhalte",
+    "klexikon:Bruchrechnung:c000": "themendefinition",
+    "klexikon:Bruchrechnung:c001": "fachinhalte",
+    "klexikon:Bruchrechnung:c002": "fachinhalte",
+    "klexikon:Bruchrechnung:c003": "fachinhalte",
+    "wikipedia:Rechnen:c003": "bildung",
+    "wikipedia:Kürzen:c000": "fachinhalte",
+    "wikipedia:Rationale_Zahl:c008": "fachinhalte",
+    "wikipedia:Rationale_Zahl:c011": "fachinhalte"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Bruchrechnung:c000",
+      0.99
+     ],
+     [
+      "klexikon:Bruchrechnung:c000",
+      0.95
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Bruchrechnung:c011",
+      0.97
+     ],
+     [
+      "wikipedia:Bruchrechnung:c017",
+      0.96
+     ],
+     [
+      "wikipedia:Bruchrechnung:c020",
+      0.95
+     ],
+     [
+      "wikipedia:Bruchrechnung:c018",
+      0.94
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Kürzen:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Bruchrechnung:c026",
+      0.99
+     ],
+     [
+      "wikipedia:Bruchrechnung:c027",
+      0.99
+     ],
+     [
+      "wikipedia:Bruchrechnung:c029",
+      0.99
+     ],
+     [
+      "wikipedia:Bruchrechnung:c032",
+      0.99
+     ],
+     [
+      "wikipedia:Bruchrechnung:c034",
+      0.99
+     ]
+    ],
+    "bildung": [
+     [
+      "wikipedia:Rechnen:c003",
+      0.85
+     ]
+    ]
+   }
+  },
+  "Demokratie": {
+   "paragraphs": 80,
+   "answered": 80,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 4,
+   "tokens": 20523,
+   "wall_seconds": 0.33,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Demokratie:c000": "themendefinition",
+    "wikipedia:Demokratie:c004": "themendefinition",
+    "wikipedia:Demokratie:c008": "themendefinition",
+    "wikipedia:Demokratie:c013": "themendefinition",
+    "wikipedia:Demokratie:c017": "fachinhalte",
+    "wikipedia:Demokratie:c021": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c026": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c030": "systematik",
+    "wikipedia:Demokratie:c032": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c037": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c041": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c045": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c050": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c054": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c060": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c062": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c066": "entwicklung_ausblick",
+    "wikipedia:Demokratie:c070": "systematik",
+    "wikipedia:Demokratie:c078": "systematik",
+    "wikipedia:Demokratie:c083": "systematik",
+    "wikipedia:Demokratie:c087": "fachinhalte",
+    "wikipedia:Demokratie:c091": "systematik",
+    "wikipedia:Demokratie:c095": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c099": "fachinhalte",
+    "wikipedia:Demokratie:c103": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c108": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c111": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c115": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c120": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c124": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c128": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c133": "fachinhalte",
+    "wikipedia:Demokratie:c137": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c141": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c146": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c150": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c154": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c159": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratie:c163": "gesellschaftlicher_kontext",
+    "klexikon:Demokratie:c000": "themendefinition",
+    "klexikon:Demokratie:c003": "fachinhalte",
+    "klexikon:Demokratie:c007": "systematik",
+    "klexikon:Demokratie:c010": "regularien",
+    "wikipedia:Demokratisierung:c000": "themendefinition",
+    "wikipedia:Demokratisierung:c007": "entwicklung_ausblick",
+    "wikipedia:Demokratisierung:c014": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratisierung:c022": "entwicklung_ausblick",
+    "wikipedia:Repräsentative_Demokratie:c000": "themendefinition",
+    "wikipedia:Repräsentative_Demokratie:c006": "systematik",
+    "wikipedia:Repräsentative_Demokratie:c018": "gesellschaftlicher_kontext",
+    "wikipedia:Demokratietheorie:c000": "systematik",
+    "wikipedia:Demokratietheorie:c008": "entwicklung_ausblick",
+    "wikipedia:Demokratietheorie:c018": "fachinhalte",
+    "wikipedia:Direkte_Demokratie:c000": "systematik",
+    "wikipedia:Direkte_Demokratie:c009": "systematik",
+    "wikipedia:Direkte_Demokratie:c017": "entwicklung_ausblick",
+    "wikipedia:Direkte_Demokratie:c027": "regularien",
+    "wikipedia:Konkordanzdemokratie:c000": "systematik",
+    "wikipedia:Konkordanzdemokratie:c003": "entwicklung_ausblick",
+    "wikipedia:Konkordanzdemokratie:c008": "fachinhalte",
+    "wikipedia:Konkordanzdemokratie:c013": "gesellschaftlicher_kontext",
+    "wikipedia:Defekte_Demokratie:c000": "systematik",
+    "wikipedia:Defekte_Demokratie:c004": "entwicklung_ausblick",
+    "wikipedia:Defekte_Demokratie:c008": "fachinhalte",
+    "wikipedia:Defekte_Demokratie:c011": "fachinhalte",
+    "wikipedia:Postdemokratie:c000": "entwicklung_ausblick",
+    "wikipedia:Postdemokratie:c005": "gesellschaftlicher_kontext",
+    "wikipedia:Postdemokratie:c011": "gesellschaftlicher_kontext",
+    "wikipedia:Postdemokratie:c017": "gesellschaftlicher_kontext",
+    "wikipedia:Souverän:c000": "fachinhalte",
+    "wikipedia:Souverän:c002": "fachinhalte",
+    "wikipedia:Souverän:c003": "fachinhalte",
+    "wikipedia:Staatsmodell:c001": "systematik",
+    "wikipedia:Staatsmodell:c003": "systematik",
+    "wikipedia:Rechtsstaat:c002": "gesellschaftlicher_kontext",
+    "wikipedia:Rechtsstaat:c008": "entwicklung_ausblick",
+    "wikipedia:Rechtsstaat:c026": "entwicklung_ausblick",
+    "wikipedia:Rechtsstaat:c032": "entwicklung_ausblick"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "klexikon:Demokratie:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Demokratisierung:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Repräsentative_Demokratie:c000",
+      0.99
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Konkordanzdemokratie:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Direkte_Demokratie:c000",
+      0.98
+     ],
+     [
+      "wikipedia:Demokratie:c070",
+      0.98
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Defekte_Demokratie:c008",
+      0.98
+     ],
+     [
+      "wikipedia:Souverän:c000",
+      0.96
+     ],
+     [
+      "klexikon:Demokratie:c003",
+      0.96
+     ],
+     [
+      "wikipedia:Defekte_Demokratie:c011",
+      0.96
+     ],
+     [
+      "wikipedia:Demokratietheorie:c018",
+      0.96
+     ],
+     [
+      "wikipedia:Souverän:c002",
+      0.95
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "wikipedia:Demokratie:c120",
+      0.99
+     ],
+     [
+      "wikipedia:Demokratie:c146",
+      0.99
+     ],
+     [
+      "wikipedia:Demokratie:c150",
+      0.99
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Demokratisierung:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Demokratie:c066",
+      0.99
+     ],
+     [
+      "wikipedia:Konkordanzdemokratie:c003",
+      0.98
+     ]
+    ],
+    "regularien": [
+     [
+      "klexikon:Demokratie:c010",
+      0.98
+     ],
+     [
+      "wikipedia:Direkte_Demokratie:c027",
+      0.86
+     ]
+    ]
+   }
+  },
+  "Französische Revolution": {
+   "paragraphs": 74,
+   "answered": 74,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 3,
+   "tokens": 19452,
+   "wall_seconds": 0.3,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Französische_Revolution:c000": "themendefinition",
+    "wikipedia:Französische_Revolution:c003": "gesellschaftlicher_kontext",
+    "wikipedia:Französische_Revolution:c006": "gesellschaftlicher_kontext",
+    "wikipedia:Französische_Revolution:c009": "fachinhalte",
+    "wikipedia:Französische_Revolution:c012": "fachinhalte",
+    "wikipedia:Französische_Revolution:c015": "fachinhalte",
+    "wikipedia:Französische_Revolution:c018": "fachinhalte",
+    "wikipedia:Französische_Revolution:c022": "fachinhalte",
+    "wikipedia:Französische_Revolution:c025": "fachinhalte",
+    "wikipedia:Französische_Revolution:c028": "fachinhalte",
+    "wikipedia:Französische_Revolution:c031": "fachinhalte",
+    "wikipedia:Französische_Revolution:c034": "fachinhalte",
+    "wikipedia:Französische_Revolution:c037": "fachinhalte",
+    "wikipedia:Französische_Revolution:c039": "fachinhalte",
+    "wikipedia:Französische_Revolution:c043": "fachinhalte",
+    "wikipedia:Französische_Revolution:c046": "fachinhalte",
+    "wikipedia:Französische_Revolution:c049": "fachinhalte",
+    "wikipedia:Französische_Revolution:c052": "fachinhalte",
+    "wikipedia:Französische_Revolution:c055": "fachinhalte",
+    "wikipedia:Französische_Revolution:c058": "fachinhalte",
+    "wikipedia:Französische_Revolution:c062": "fachinhalte",
+    "wikipedia:Französische_Revolution:c065": "fachinhalte",
+    "wikipedia:Französische_Revolution:c068": "fachinhalte",
+    "wikipedia:Französische_Revolution:c071": "fachinhalte",
+    "wikipedia:Französische_Revolution:c074": "fachinhalte",
+    "wikipedia:Französische_Revolution:c077": "fachinhalte",
+    "wikipedia:Französische_Revolution:c080": "fachinhalte",
+    "wikipedia:Französische_Revolution:c084": "fachinhalte",
+    "wikipedia:Französische_Revolution:c087": "fachinhalte",
+    "wikipedia:Französische_Revolution:c090": "fachinhalte",
+    "wikipedia:Französische_Revolution:c093": "fachinhalte",
+    "wikipedia:Französische_Revolution:c096": "fachinhalte",
+    "wikipedia:Französische_Revolution:c099": "fachinhalte",
+    "wikipedia:Französische_Revolution:c102": "fachinhalte",
+    "wikipedia:Französische_Revolution:c106": "fachinhalte",
+    "wikipedia:Französische_Revolution:c109": "fachinhalte",
+    "wikipedia:Französische_Revolution:c112": "fachinhalte",
+    "wikipedia:Französische_Revolution:c115": "fachinhalte",
+    "wikipedia:Französische_Revolution:c118": "fachinhalte",
+    "wikipedia:Französische_Revolution:c120": "entwicklung_ausblick",
+    "klexikon:Französische_Revolution:c000": "themendefinition",
+    "klexikon:Französische_Revolution:c003": "fachinhalte",
+    "klexikon:Französische_Revolution:c006": "fachinhalte",
+    "klexikon:Französische_Revolution:c009": "gesellschaftlicher_kontext",
+    "wikipedia:Revolution:c005": "systematik",
+    "wikipedia:Revolutionstribunal:c000": "fachinhalte",
+    "wikipedia:Revolutionsexport:c002": "entwicklung_ausblick",
+    "wikipedia:Revolutionsexport:c005": "entwicklung_ausblick",
+    "wikipedia:Revolutionsexport:c008": "entwicklung_ausblick",
+    "wikipedia:Revolutionsexport:c014": "querschnitt",
+    "wikipedia:Bürger:c005": "entwicklung_ausblick",
+    "wikipedia:Republik:c008": "entwicklung_ausblick",
+    "wikipedia:Republik:c014": "entwicklung_ausblick",
+    "wikipedia:Verfassung:c031": "entwicklung_ausblick",
+    "wikipedia:Liberalismus:c000": "querschnitt",
+    "wikipedia:Liberalismus:c009": "querschnitt",
+    "wikipedia:Liberalismus:c029": "querschnitt",
+    "wikipedia:Liberalismus:c032": "querschnitt",
+    "wikipedia:Revolutionskult:c000": "entwicklung_ausblick",
+    "wikipedia:Revolutionskult:c003": "fachinhalte",
+    "wikipedia:Revolutionskult:c004": "gesellschaftlicher_kontext"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "klexikon:Französische_Revolution:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Französische_Revolution:c000",
+      0.98
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Revolution:c005",
+      0.93
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Französische_Revolution:c084",
+      0.99
+     ],
+     [
+      "wikipedia:Französische_Revolution:c090",
+      0.99
+     ],
+     [
+      "wikipedia:Französische_Revolution:c093",
+      0.99
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "klexikon:Französische_Revolution:c009",
+      0.98
+     ],
+     [
+      "wikipedia:Französische_Revolution:c003",
+      0.96
+     ],
+     [
+      "wikipedia:Revolutionskult:c004",
+      0.93
+     ],
+     [
+      "wikipedia:Französische_Revolution:c006",
+      0.9
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Französische_Revolution:c120",
+      0.97
+     ],
+     [
+      "wikipedia:Revolutionskult:c000",
+      0.92
+     ],
+     [
+      "wikipedia:Revolutionsexport:c002",
+      0.9
+     ],
+     [
+      "wikipedia:Bürger:c005",
+      0.9
+     ],
+     [
+      "wikipedia:Revolutionsexport:c005",
+      0.88
+     ]
+    ],
+    "querschnitt": [
+     [
+      "wikipedia:Liberalismus:c029",
+      0.95
+     ],
+     [
+      "wikipedia:Liberalismus:c009",
+      0.92
+     ]
+    ]
+   }
+  },
+  "Klimawandel": {
+   "paragraphs": 61,
+   "answered": 61,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 3,
+   "tokens": 16543,
+   "wall_seconds": 0.26,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Klimawandel:c000": "themendefinition",
+    "wikipedia:Klimawandel:c002": "systematik",
+    "wikipedia:Klimawandel:c004": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c005": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c007": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c008": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c009": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c011": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c013": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c015": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c017": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c019": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c021": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c023": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c025": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c027": "fachinhalte",
+    "wikipedia:Klimawandel:c030": "fachinhalte",
+    "wikipedia:Klimawandel:c032": "fachinhalte",
+    "wikipedia:Klimawandel:c034": "fachinhalte",
+    "wikipedia:Klimawandel:c036": "fachinhalte",
+    "wikipedia:Klimawandel:c038": "fachinhalte",
+    "wikipedia:Klimawandel:c040": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c042": "fachinhalte",
+    "wikipedia:Klimawandel:c044": "fachinhalte",
+    "wikipedia:Klimawandel:c046": "fachinhalte",
+    "wikipedia:Klimawandel:c048": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c051": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c053": "entwicklung_ausblick",
+    "wikipedia:Klimawandel:c054": "fachinhalte",
+    "wikipedia:Klimawandel:c055": "fachinhalte",
+    "wikipedia:Klimawandel:c057": "fachinhalte",
+    "wikipedia:Klimawandel:c060": "fachinhalte",
+    "wikipedia:Klimawandel:c062": "fachinhalte",
+    "wikipedia:Klimawandel:c063": "fachinhalte",
+    "wikipedia:Klimawandel:c064": "fachinhalte",
+    "wikipedia:Klimawandel:c065": "gesellschaftlicher_kontext",
+    "wikipedia:Klimawandel:c068": "querschnitt",
+    "wikipedia:Klimawandel:c070": "entwicklung_ausblick",
+    "klexikon:Klimawandel:c000": "themendefinition",
+    "klexikon:Klimawandel:c006": "fachinhalte",
+    "klexikon:Klimawandel:c013": "entwicklung_ausblick",
+    "klexikon:Klimawandel:c019": "gesellschaftlicher_kontext",
+    "wikipedia:Klima:c002": "systematik",
+    "wikipedia:Klima:c049": "entwicklung_ausblick",
+    "wikipedia:Klima:c056": "fachinhalte",
+    "wikipedia:Anthropogen:c003": "entwicklung_ausblick",
+    "wikipedia:Treibhausgas:c023": "fachinhalte",
+    "wikipedia:Treibhausgas:c026": "fachinhalte",
+    "wikipedia:Forschungsgeschichte_des_Klimawandels:c000": "entwicklung_ausblick",
+    "wikipedia:Forschungsgeschichte_des_Klimawandels:c036": "entwicklung_ausblick",
+    "wikipedia:Forschungsgeschichte_des_Klimawandels:c070": "entwicklung_ausblick",
+    "wikipedia:Forschungsgeschichte_des_Klimawandels:c106": "fachinhalte",
+    "wikipedia:Klimapolitik:c001": "gesellschaftlicher_kontext",
+    "wikipedia:Klimapolitik:c074": "gesellschaftlicher_kontext",
+    "wikipedia:Klimapolitik:c197": "gesellschaftlicher_kontext",
+    "wikipedia:Klimapolitik:c251": "regularien",
+    "wikipedia:Gerechtigkeit:c009": "gesellschaftlicher_kontext",
+    "wikipedia:Lea_Dohm:c005": "gesellschaftlicher_kontext"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Klimawandel:c000",
+      0.99
+     ],
+     [
+      "klexikon:Klimawandel:c000",
+      0.98
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Klima:c002",
+      0.9
+     ],
+     [
+      "wikipedia:Klimawandel:c002",
+      0.86
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Klimawandel:c044",
+      0.99
+     ],
+     [
+      "wikipedia:Klimawandel:c027",
+      0.98
+     ],
+     [
+      "wikipedia:Klimawandel:c030",
+      0.98
+     ],
+     [
+      "wikipedia:Klimawandel:c034",
+      0.98
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "wikipedia:Gerechtigkeit:c009",
+      0.96
+     ],
+     [
+      "wikipedia:Klimapolitik:c001",
+      0.95
+     ],
+     [
+      "wikipedia:Klimawandel:c065",
+      0.95
+     ],
+     [
+      "wikipedia:Klimapolitik:c074",
+      0.94
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Forschungsgeschichte_des_Klimawandels:c000",
+      0.98
+     ],
+     [
+      "wikipedia:Klimawandel:c004",
+      0.98
+     ],
+     [
+      "wikipedia:Klimawandel:c005",
+      0.98
+     ]
+    ],
+    "regularien": [
+     [
+      "wikipedia:Klimapolitik:c251",
+      0.9
+     ]
+    ],
+    "querschnitt": [
+     [
+      "wikipedia:Klimawandel:c068",
+      0.85
+     ]
+    ]
+   }
+  },
+  "Optik": {
+   "paragraphs": 97,
+   "answered": 97,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 4,
+   "tokens": 20788,
+   "wall_seconds": 8.73,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Optik:c000": "themendefinition",
+    "wikipedia:Optik:c001": "systematik",
+    "wikipedia:Optik:c002": "systematik",
+    "wikipedia:Optik:c003": "systematik",
+    "wikipedia:Optik:c004": "fachinhalte",
+    "wikipedia:Optik:c005": "fachinhalte",
+    "wikipedia:Optik:c006": "fachinhalte",
+    "wikipedia:Optik:c007": "systematik",
+    "wikipedia:Optik:c008": "fachinhalte",
+    "wikipedia:Optik:c009": "fachinhalte",
+    "wikipedia:Optik:c010": "fachinhalte",
+    "wikipedia:Optik:c011": "entwicklung_ausblick",
+    "wikipedia:Optik:c012": "entwicklung_ausblick",
+    "wikipedia:Optik:c013": "systematik",
+    "wikipedia:Optik:c014": "systematik",
+    "klexikon:Optik:c000": "themendefinition",
+    "klexikon:Optik:c001": "praxis",
+    "klexikon:Optik:c002": "praxis",
+    "klexikon:Optik:c003": "fachinhalte",
+    "klexikon:Optik:c004": "themendefinition",
+    "wikipedia:Wellenoptik:c000": "systematik",
+    "wikipedia:Wellenoptik:c001": "entwicklung_ausblick",
+    "wikipedia:Wellenoptik:c002": "fachinhalte",
+    "wikipedia:Wellenoptik:c003": "fachinhalte",
+    "wikipedia:Wellenoptik:c004": "fachinhalte",
+    "wikipedia:Wellenoptik:c005": "fachinhalte",
+    "wikipedia:Wellenoptik:c006": "fachinhalte",
+    "wikipedia:Wellenoptik:c007": "fachinhalte",
+    "wikipedia:Wellenoptik:c008": "fachinhalte",
+    "wikipedia:Wellenoptik:c009": "fachinhalte",
+    "wikipedia:Wellenoptik:c010": "fachinhalte",
+    "wikipedia:Wellenoptik:c011": "fachinhalte",
+    "wikipedia:Wellenoptik:c012": "entwicklung_ausblick",
+    "wikipedia:Technische_Optik:c000": "systematik",
+    "wikipedia:Technische_Optik:c001": "beruf_wirtschaft",
+    "wikipedia:Technische_Optik:c002": "beruf_wirtschaft",
+    "wikipedia:Technische_Optik:c003": "bildung",
+    "wikipedia:Technische_Optik:c004": "bildung",
+    "wikipedia:Technische_Optik:c005": "bildung",
+    "wikipedia:Geometrische_Optik:c000": "systematik",
+    "wikipedia:Geometrische_Optik:c001": "systematik",
+    "wikipedia:Geometrische_Optik:c002": "fachinhalte",
+    "wikipedia:Geometrische_Optik:c003": "fachinhalte",
+    "wikipedia:Geometrische_Optik:c004": "fachinhalte",
+    "wikipedia:Geometrische_Optik:c005": "praxis",
+    "wikipedia:Geometrische_Optik:c006": "praxis",
+    "wikipedia:Geometrische_Optik:c007": "praxis",
+    "wikipedia:Geometrische_Optik:c008": "querschnitt",
+    "wikipedia:Geometrische_Optik:c009": "fachinhalte",
+    "wikipedia:Auge:c007": "fachinhalte",
+    "wikipedia:Auge:c013": "fachinhalte",
+    "wikipedia:Auge:c015": "fachinhalte",
+    "wikipedia:Auge:c038": "fachinhalte",
+    "wikipedia:Auge:c044": "fachinhalte",
+    "wikipedia:Mikrooptik:c000": "systematik",
+    "wikipedia:Augenoptiker:c000": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c001": "regularien",
+    "wikipedia:Augenoptiker:c002": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c003": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c004": "fachinhalte",
+    "wikipedia:Augenoptiker:c005": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c006": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c007": "fachinhalte",
+    "wikipedia:Augenoptiker:c008": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c009": "beruf_wirtschaft",
+    "wikipedia:Augenoptiker:c010": "bildung",
+    "wikipedia:Augenoptiker:c011": "bildung",
+    "wikipedia:Augenoptiker:c012": "bildung",
+    "wikipedia:Augenoptiker:c013": "bildung",
+    "wikipedia:Augenoptiker:c014": "regularien",
+    "wikipedia:Augenoptiker:c015": "bildung",
+    "wikipedia:Augenoptiker:c016": "bildung",
+    "wikipedia:Röntgenoptik:c000": "themendefinition",
+    "wikipedia:Röntgenoptik:c001": "systematik",
+    "wikipedia:Röntgenoptik:c002": "fachinhalte",
+    "wikipedia:Röntgenoptik:c003": "fachinhalte",
+    "wikipedia:Röntgenoptik:c004": "fachinhalte",
+    "wikipedia:Röntgenoptik:c005": "fachinhalte",
+    "wikipedia:Röntgenoptik:c006": "fachinhalte",
+    "wikipedia:Röntgenoptik:c007": "praxis",
+    "wikipedia:Röntgenoptik:c008": "fachinhalte",
+    "wikipedia:Röntgenoptik:c009": "fachinhalte",
+    "wikipedia:Röntgenoptik:c010": "fachinhalte",
+    "wikipedia:Röntgenoptik:c011": "praxis",
+    "wikipedia:Schnittweite:c000": "fachinhalte",
+    "wikipedia:Superposition_(Physik):c000": "fachinhalte",
+    "wikipedia:Geschichte_der_Physik:c001": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Physik:c007": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Physik:c016": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Physik:c019": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Physik:c024": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Physik:c033": "entwicklung_ausblick"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "klexikon:Optik:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Optik:c000",
+      0.98
+     ],
+     [
+      "wikipedia:Röntgenoptik:c000",
+      0.97
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Optik:c001",
+      0.99
+     ],
+     [
+      "wikipedia:Optik:c002",
+      0.98
+     ],
+     [
+      "wikipedia:Wellenoptik:c000",
+      0.97
+     ],
+     [
+      "wikipedia:Optik:c003",
+      0.97
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Schnittweite:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Geometrische_Optik:c004",
+      0.99
+     ],
+     [
+      "wikipedia:Röntgenoptik:c010",
+      0.99
+     ],
+     [
+      "wikipedia:Röntgenoptik:c002",
+      0.98
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Geschichte_der_Physik:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Optik:c011",
+      0.99
+     ],
+     [
+      "wikipedia:Optik:c012",
+      0.99
+     ],
+     [
+      "wikipedia:Geschichte_der_Physik:c016",
+      0.99
+     ]
+    ],
+    "beruf_wirtschaft": [
+     [
+      "wikipedia:Technische_Optik:c001",
+      0.99
+     ],
+     [
+      "wikipedia:Technische_Optik:c002",
+      0.99
+     ],
+     [
+      "wikipedia:Augenoptiker:c009",
+      0.99
+     ],
+     [
+      "wikipedia:Augenoptiker:c000",
+      0.98
+     ]
+    ],
+    "bildung": [
+     [
+      "wikipedia:Augenoptiker:c013",
+      0.98
+     ],
+     [
+      "wikipedia:Augenoptiker:c015",
+      0.98
+     ],
+     [
+      "wikipedia:Augenoptiker:c011",
+      0.97
+     ],
+     [
+      "wikipedia:Augenoptiker:c012",
+      0.97
+     ]
+    ],
+    "regularien": [
+     [
+      "wikipedia:Augenoptiker:c014",
+      0.96
+     ],
+     [
+      "wikipedia:Augenoptiker:c001",
+      0.93
+     ]
+    ],
+    "praxis": [
+     [
+      "wikipedia:Geometrische_Optik:c005",
+      0.99
+     ],
+     [
+      "wikipedia:Röntgenoptik:c011",
+      0.99
+     ],
+     [
+      "wikipedia:Geometrische_Optik:c006",
+      0.98
+     ],
+     [
+      "klexikon:Optik:c002",
+      0.97
+     ],
+     [
+      "wikipedia:Röntgenoptik:c007",
+      0.95
+     ],
+     [
+      "klexikon:Optik:c001",
+      0.9
+     ]
+    ],
+    "querschnitt": [
+     [
+      "wikipedia:Geometrische_Optik:c008",
+      0.86
+     ]
+    ]
+   }
+  },
+  "Photosynthese": {
+   "paragraphs": 60,
+   "answered": 60,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 3,
+   "tokens": 15881,
+   "wall_seconds": 0.19,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Photosynthese:c000": "themendefinition",
+    "wikipedia:Photosynthese:c003": "fachinhalte",
+    "wikipedia:Photosynthese:c007": "fachinhalte",
+    "wikipedia:Photosynthese:c010": "fachinhalte",
+    "wikipedia:Photosynthese:c011": "fachinhalte",
+    "wikipedia:Photosynthese:c014": "entwicklung_ausblick",
+    "wikipedia:Photosynthese:c018": "fachinhalte",
+    "wikipedia:Photosynthese:c022": "fachinhalte",
+    "wikipedia:Photosynthese:c028": "gesellschaftlicher_kontext",
+    "wikipedia:Photosynthese:c031": "fachinhalte",
+    "wikipedia:Photosynthese:c032": "fachinhalte",
+    "wikipedia:Photosynthese:c035": "fachinhalte",
+    "wikipedia:Photosynthese:c036": "fachinhalte",
+    "wikipedia:Photosynthese:c039": "fachinhalte",
+    "wikipedia:Photosynthese:c040": "fachinhalte",
+    "wikipedia:Photosynthese:c044": "fachinhalte",
+    "wikipedia:Photosynthese:c049": "fachinhalte",
+    "wikipedia:Photosynthese:c053": "fachinhalte",
+    "wikipedia:Photosynthese:c057": "fachinhalte",
+    "wikipedia:Photosynthese:c061": "systematik",
+    "wikipedia:Photosynthese:c063": "fachinhalte",
+    "wikipedia:Photosynthese:c064": "fachinhalte",
+    "wikipedia:Photosynthese:c068": "fachinhalte",
+    "wikipedia:Photosynthese:c074": "systematik",
+    "wikipedia:Photosynthese:c078": "fachinhalte",
+    "wikipedia:Photosynthese:c085": "fachinhalte",
+    "wikipedia:Photosynthese:c089": "fachinhalte",
+    "wikipedia:Photosynthese:c090": "praxis",
+    "wikipedia:Photosynthese:c093": "praxis",
+    "wikipedia:Photosynthese:c097": "fachinhalte",
+    "wikipedia:Photosynthese:c101": "entwicklung_ausblick",
+    "wikipedia:Photosynthese:c102": "fachinhalte",
+    "wikipedia:Photosynthese:c105": "fachinhalte",
+    "wikipedia:Photosynthese:c106": "fachinhalte",
+    "wikipedia:Photosynthese:c108": "fachinhalte",
+    "wikipedia:Photosynthese:c110": "gesellschaftlicher_kontext",
+    "wikipedia:Photosynthese:c112": "gesellschaftlicher_kontext",
+    "wikipedia:Photosynthese:c116": "entwicklung_ausblick",
+    "wikipedia:Photosynthese:c120": "entwicklung_ausblick",
+    "wikipedia:Photosynthese:c124": "entwicklung_ausblick",
+    "klexikon:Photosynthese:c000": "themendefinition",
+    "klexikon:Photosynthese:c001": "themendefinition",
+    "klexikon:Photosynthese:c002": "themendefinition",
+    "klexikon:Photosynthese:c003": "gesellschaftlicher_kontext",
+    "wikipedia:Pflanze:c006": "fachinhalte",
+    "wikipedia:Bakterien:c013": "fachinhalte",
+    "wikipedia:Bakterien:c036": "gesellschaftlicher_kontext",
+    "wikipedia:Chlorophylle:c000": "fachinhalte",
+    "wikipedia:Chlorophylle:c001": "fachinhalte",
+    "wikipedia:Chlorophylle:c003": "fachinhalte",
+    "wikipedia:Chlorophylle:c020": "fachinhalte",
+    "wikipedia:Kohlenstoffdioxid:c002": "fachinhalte",
+    "wikipedia:Kohlenstoffdioxid:c087": "fachinhalte",
+    "wikipedia:Kohlenstoffdioxid:c091": "fachinhalte",
+    "wikipedia:Sauerstoff:c060": "fachinhalte"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Photosynthese:c000",
+      0.99
+     ],
+     [
+      "klexikon:Photosynthese:c000",
+      0.99
+     ],
+     [
+      "klexikon:Photosynthese:c001",
+      0.9
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Photosynthese:c074",
+      0.98
+     ],
+     [
+      "wikipedia:Photosynthese:c061",
+      0.94
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Photosynthese:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Photosynthese:c018",
+      0.99
+     ],
+     [
+      "wikipedia:Photosynthese:c032",
+      0.99
+     ],
+     [
+      "wikipedia:Photosynthese:c035",
+      0.99
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "wikipedia:Photosynthese:c112",
+      0.99
+     ],
+     [
+      "klexikon:Photosynthese:c003",
+      0.98
+     ],
+     [
+      "wikipedia:Photosynthese:c028",
+      0.92
+     ],
+     [
+      "wikipedia:Bakterien:c036",
+      0.9
+     ],
+     [
+      "wikipedia:Photosynthese:c110",
+      0.86
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Photosynthese:c014",
+      0.99
+     ],
+     [
+      "wikipedia:Photosynthese:c116",
+      0.99
+     ],
+     [
+      "wikipedia:Photosynthese:c120",
+      0.99
+     ]
+    ],
+    "praxis": [
+     [
+      "wikipedia:Photosynthese:c093",
+      0.98
+     ],
+     [
+      "wikipedia:Photosynthese:c090",
+      0.96
+     ]
+    ]
+   }
+  },
+  "Programmiersprache": {
+   "paragraphs": 74,
+   "answered": 74,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 3,
+   "tokens": 15309,
+   "wall_seconds": 0.22,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Programmiersprache:c000": "themendefinition",
+    "wikipedia:Programmiersprache:c001": "fachinhalte",
+    "wikipedia:Programmiersprache:c002": "fachinhalte",
+    "wikipedia:Programmiersprache:c003": "fachinhalte",
+    "wikipedia:Programmiersprache:c005": "fachinhalte",
+    "wikipedia:Programmiersprache:c006": "gesellschaftlicher_kontext",
+    "wikipedia:Programmiersprache:c007": "gesellschaftlicher_kontext",
+    "wikipedia:Programmiersprache:c009": "systematik",
+    "wikipedia:Programmiersprache:c010": "systematik",
+    "wikipedia:Programmiersprache:c011": "systematik",
+    "wikipedia:Programmiersprache:c013": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c014": "fachinhalte",
+    "wikipedia:Programmiersprache:c015": "fachinhalte",
+    "wikipedia:Programmiersprache:c016": "praxis",
+    "wikipedia:Programmiersprache:c017": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c018": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c020": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c021": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c022": "entwicklung_ausblick",
+    "wikipedia:Programmiersprache:c024": "systematik",
+    "wikipedia:Programmiersprache:c025": "systematik",
+    "wikipedia:Programmiersprache:c026": "fachinhalte",
+    "wikipedia:Programmiersprache:c028": "fachinhalte",
+    "wikipedia:Programmiersprache:c029": "fachinhalte",
+    "wikipedia:Programmiersprache:c030": "systematik",
+    "wikipedia:Programmiersprache:c031": "fachinhalte",
+    "wikipedia:Programmiersprache:c032": "fachinhalte",
+    "wikipedia:Programmiersprache:c033": "fachinhalte",
+    "wikipedia:Programmiersprache:c034": "fachinhalte",
+    "wikipedia:Programmiersprache:c035": "fachinhalte",
+    "wikipedia:Programmiersprache:c036": "fachinhalte",
+    "wikipedia:Programmiersprache:c037": "fachinhalte",
+    "wikipedia:Programmiersprache:c038": "fachinhalte",
+    "wikipedia:Programmiersprache:c039": "fachinhalte",
+    "wikipedia:Programmiersprache:c041": "fachinhalte",
+    "wikipedia:Programmiersprache:c042": "fachinhalte",
+    "wikipedia:Programmiersprache:c043": "fachinhalte",
+    "wikipedia:Geschichte_der_Programmiersprachen:c000": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Programmiersprachen:c006": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Programmiersprachen:c012": "entwicklung_ausblick",
+    "wikipedia:Geschichte_der_Programmiersprachen:c018": "entwicklung_ausblick",
+    "wikipedia:Deklarative_Programmierung:c000": "systematik",
+    "wikipedia:Deklarative_Programmierung:c001": "fachinhalte",
+    "wikipedia:Deklarative_Programmierung:c002": "systematik",
+    "wikipedia:Höhere_Programmiersprache:c000": "systematik",
+    "wikipedia:Höhere_Programmiersprache:c003": "entwicklung_ausblick",
+    "wikipedia:Höhere_Programmiersprache:c007": "fachinhalte",
+    "wikipedia:Höhere_Programmiersprache:c010": "systematik",
+    "wikipedia:Esoterische_Programmiersprache:c000": "systematik",
+    "wikipedia:Esoterische_Programmiersprache:c001": "fachinhalte",
+    "wikipedia:Esoterische_Programmiersprache:c002": "praxis",
+    "wikipedia:Esoterische_Programmiersprache:c003": "bildung",
+    "wikipedia:Visuelle_Programmiersprache:c000": "themendefinition",
+    "wikipedia:Visuelle_Programmiersprache:c005": "fachinhalte",
+    "wikipedia:Visuelle_Programmiersprache:c012": "fachinhalte",
+    "wikipedia:Visuelle_Programmiersprache:c017": "bildung",
+    "wikipedia:Allzweck-Programmiersprache:c000": "systematik",
+    "wikipedia:Allzweck-Programmiersprache:c001": "fachinhalte",
+    "wikipedia:Allzweck-Programmiersprache:c002": "fachinhalte",
+    "wikipedia:Logische_Programmierung:c001": "fachinhalte",
+    "wikipedia:Logische_Programmierung:c003": "entwicklung_ausblick",
+    "wikipedia:Unterprogramm:c001": "fachinhalte",
+    "wikipedia:Unterprogramm:c011": "entwicklung_ausblick",
+    "wikipedia:Unterprogramm:c017": "fachinhalte",
+    "wikipedia:Unterprogramm:c022": "praxis",
+    "wikipedia:Syntax:c002": "systematik",
+    "wikipedia:Syntax:c014": "fachinhalte",
+    "wikipedia:Syntax:c015": "fachinhalte",
+    "wikipedia:Syntax:c016": "entwicklung_ausblick"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Programmiersprache:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Visuelle_Programmiersprache:c000",
+      0.98
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Deklarative_Programmierung:c002",
+      0.99
+     ],
+     [
+      "wikipedia:Programmiersprache:c025",
+      0.99
+     ],
+     [
+      "wikipedia:Programmiersprache:c010",
+      0.98
+     ],
+     [
+      "wikipedia:Programmiersprache:c011",
+      0.98
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Programmiersprache:c003",
+      0.99
+     ],
+     [
+      "wikipedia:Höhere_Programmiersprache:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Programmiersprache:c014",
+      0.99
+     ],
+     [
+      "wikipedia:Programmiersprache:c015",
+      0.99
+     ]
+    ],
+    "gesellschaftlicher_kontext": [
+     [
+      "wikipedia:Programmiersprache:c007",
+      0.97
+     ],
+     [
+      "wikipedia:Programmiersprache:c006",
+      0.92
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Geschichte_der_Programmiersprachen:c000",
+      0.99
+     ],
+     [
+      "wikipedia:Geschichte_der_Programmiersprachen:c006",
+      0.99
+     ],
+     [
+      "wikipedia:Geschichte_der_Programmiersprachen:c012",
+      0.99
+     ]
+    ],
+    "bildung": [
+     [
+      "wikipedia:Visuelle_Programmiersprache:c017",
+      0.9
+     ],
+     [
+      "wikipedia:Esoterische_Programmiersprache:c003",
+      0.84
+     ]
+    ],
+    "praxis": [
+     [
+      "wikipedia:Unterprogramm:c022",
+      0.88
+     ],
+     [
+      "wikipedia:Esoterische_Programmiersprache:c002",
+      0.86
+     ],
+     [
+      "wikipedia:Programmiersprache:c016",
+      0.84
+     ]
+    ]
+   }
+  },
+  "Säure-Base-Konzepte": {
+   "paragraphs": 33,
+   "answered": 33,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 2,
+   "tokens": 7170,
+   "wall_seconds": 0.13,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Säure-Base-Konzepte:c000": "themendefinition",
+    "wikipedia:Säure-Base-Konzepte:c001": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c002": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c003": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c004": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c005": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c006": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c007": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c008": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c009": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c011": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c012": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c013": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c014": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c015": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c016": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c017": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c018": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c019": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c020": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c021": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c022": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c023": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c026": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c027": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c029": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c030": "fachinhalte",
+    "wikipedia:Säure-Base-Konzepte:c031": "themendefinition",
+    "wikipedia:Säuren:c001": "themendefinition",
+    "wikipedia:Säuren:c016": "themendefinition",
+    "wikipedia:Säuren:c017": "fachinhalte",
+    "wikipedia:Basen_(Chemie):c001": "systematik"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Säure-Base-Konzepte:c000",
+      0.98
+     ],
+     [
+      "wikipedia:Säuren:c016",
+      0.98
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c031",
+      0.9
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Basen_(Chemie):c001",
+      0.9
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Säure-Base-Konzepte:c002",
+      0.99
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c003",
+      0.99
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c004",
+      0.99
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c006",
+      0.99
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Säure-Base-Konzepte:c011",
+      0.99
+     ]
+    ]
+   }
+  },
+  "Sinfonie": {
+   "paragraphs": 55,
+   "answered": 55,
+   "fallback": 0,
+   "fallbacks": {},
+   "unknown_keys": 0,
+   "calls": 3,
+   "tokens": 15118,
+   "wall_seconds": 8.05,
+   "matcher": "llm",
+   "classified": {
+    "wikipedia:Sinfonie:c000": "themendefinition",
+    "wikipedia:Sinfonie:c001": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c002": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c003": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c004": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c006": "systematik",
+    "wikipedia:Sinfonie:c007": "systematik",
+    "wikipedia:Sinfonie:c008": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c009": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c010": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c011": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c012": "entwicklung_ausblick",
+    "wikipedia:Sinfonie:c013": "entwicklung_ausblick",
+    "wikipedia:Sinfonia:c000": "fachinhalte",
+    "wikipedia:Sinfonia:c002": "entwicklung_ausblick",
+    "wikipedia:Sinfonia:c003": "fachinhalte",
+    "wikipedia:Sinfonik:c000": "fachinhalte",
+    "wikipedia:Sinfonik:c007": "querschnitt",
+    "wikipedia:Sinfonik:c010": "querschnitt",
+    "wikipedia:Manfred-Sinfonie:c009": "fachinhalte",
+    "wikipedia:Programmmusik:c002": "fachinhalte",
+    "wikipedia:Programmmusik:c005": "entwicklung_ausblick",
+    "wikipedia:Programmmusik:c018": "fachinhalte",
+    "wikipedia:Sinfonische_Dichtung:c000": "systematik",
+    "wikipedia:Sinfonische_Dichtung:c001": "entwicklung_ausblick",
+    "wikipedia:Sinfonische_Dichtung:c002": "systematik",
+    "wikipedia:Sinfoniekantate:c000": "systematik",
+    "wikipedia:Sinfonia_concertante:c000": "systematik",
+    "wikipedia:Sinfonia_concertante:c002": "entwicklung_ausblick",
+    "wikipedia:Sinfonia_concertante:c006": "entwicklung_ausblick",
+    "wikipedia:Orchester:c000": "systematik",
+    "wikipedia:Orchester:c005": "fachinhalte",
+    "wikipedia:Orchester:c011": "fachinhalte",
+    "wikipedia:Orchester:c015": "systematik",
+    "wikipedia:Sonatensatzform:c000": "fachinhalte",
+    "wikipedia:Sonatensatzform:c015": "fachinhalte",
+    "wikipedia:Sonatensatzform:c021": "entwicklung_ausblick",
+    "wikipedia:Sonatensatzform:c023": "entwicklung_ausblick",
+    "wikipedia:7__Sinfonie_(Bruckner):c018": "fachinhalte",
+    "wikipedia:7__Sinfonie_(Bruckner):c036": "fachinhalte"
+   },
+   "selection": {
+    "themendefinition": [
+     [
+      "wikipedia:Sinfonie:c000",
+      0.98
+     ]
+    ],
+    "systematik": [
+     [
+      "wikipedia:Sinfonie:c007",
+      0.99
+     ],
+     [
+      "wikipedia:Sinfoniekantate:c000",
+      0.95
+     ],
+     [
+      "wikipedia:Sinfonia_concertante:c000",
+      0.95
+     ],
+     [
+      "wikipedia:Sinfonie:c006",
+      0.95
+     ]
+    ],
+    "fachinhalte": [
+     [
+      "wikipedia:Sonatensatzform:c000",
+      0.95
+     ],
+     [
+      "wikipedia:Manfred-Sinfonie:c009",
+      0.95
+     ],
+     [
+      "wikipedia:Sonatensatzform:c015",
+      0.95
+     ],
+     [
+      "wikipedia:Sinfonia:c003",
+      0.94
+     ],
+     [
+      "wikipedia:Programmmusik:c018",
+      0.9
+     ]
+    ],
+    "entwicklung_ausblick": [
+     [
+      "wikipedia:Sinfonie:c004",
+      0.97
+     ],
+     [
+      "wikipedia:Sinfonie:c011",
+      0.97
+     ]
+    ],
+    "querschnitt": [
+     [
+      "wikipedia:Sinfonik:c007",
+      0.9
+     ],
+     [
+      "wikipedia:Sinfonik:c010",
+      0.86
+     ]
+    ]
+   }
+  }
+ }
+}

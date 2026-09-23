@@ -1,0 +1,29 @@
+Ausgabe von xml_dump_ratio.py am 23.09.2026 (dewiki-latest-pages-articles-multistream.xml.bz2, Stand 07.09.2026)
+
+sample  1 at  0.26 GB:  3.90 MB ->  13.38 MB  ratio 3.43
+sample  2 at  0.77 GB:  3.83 MB ->  14.83 MB  ratio 3.87
+sample  3 at  1.29 GB:  4.12 MB ->  14.59 MB  ratio 3.54
+sample  4 at  1.80 GB:  4.13 MB ->  15.71 MB  ratio 3.80
+sample  5 at  2.32 GB:  4.12 MB ->  15.41 MB  ratio 3.74
+sample  6 at  2.84 GB:  4.10 MB ->  15.33 MB  ratio 3.74
+sample  7 at  3.35 GB:  4.08 MB ->  15.65 MB  ratio 3.83
+sample  8 at  3.87 GB:  4.01 MB ->  15.22 MB  ratio 3.80
+sample  9 at  4.38 GB:  3.98 MB ->  15.69 MB  ratio 3.94
+sample 10 at  4.90 GB:  4.03 MB ->  16.66 MB  ratio 4.13
+sample 11 at  5.41 GB:  4.12 MB ->  16.22 MB  ratio 3.94
+sample 12 at  5.93 GB:  4.04 MB ->  17.21 MB  ratio 4.26
+sample 13 at  6.45 GB:  4.02 MB ->  15.81 MB  ratio 3.93
+sample 14 at  6.96 GB:  4.03 MB ->  15.76 MB  ratio 3.91
+sample 15 at  7.48 GB:  4.09 MB ->  16.70 MB  ratio 4.08
+sample 16 at  7.99 GB:  4.04 MB ->  16.44 MB  ratio 4.07
+
+file size (packed): 8.25 GB, streams decompressed: 541
+ratio unpacked/packed: 3.88 (min 3.43, max 4.26)
+estimated unpacked XML: 32.0 GB (29.8 GiB)
+
+Weitere Größen, per HEAD-Anfrage bzw. Kiwix-Katalog am selben Tag abgefragt:
+dewiki-latest-pages-articles.xml.bz2              7.962.534.106 Byte, Stand 07.09.2026
+dewiki-latest-pages-articles-multistream.xml.bz2  8.249.997.972 Byte, Stand 07.09.2026
+dewikibooks-latest-pages-articles.xml.bz2           109.769.413 Byte, Stand 01.09.2026
+Wikimedia-Enterprise-HTML-Dumps: öffentliche Läufe 20250201 bis 20250320; dewiki-NS0 am 20.03.2025 33.054.717.366 Byte
+Kiwix wikipedia_de_all: nopic 14.578.860.032 Byte (15.01.2026), maxi 52.392.226.816 Byte (15.01.2026), mini 4.226.454.528 Byte (14.07.2026)

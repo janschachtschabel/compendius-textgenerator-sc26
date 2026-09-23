@@ -1,0 +1,1623 @@
+[
+ {
+  "label": "warmup",
+  "request": {
+   "topic": "Magnetismus",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 10.775,
+  "timings_ms": {
+   "resolve": 279,
+   "corpus": 2582,
+   "segment": 29,
+   "match": 2848,
+   "synthesize": 4170,
+   "curricula": 198,
+   "assemble": 45
+  },
+  "chunks_total": 144,
+  "chunks_assigned": 16,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 16,
+  "sources": 8,
+  "resolved_title": "Magnetismus",
+  "markdown_chars": 81415,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Barockliteratur",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 5.662,
+  "timings_ms": {
+   "resolve": 134,
+   "corpus": 2042,
+   "segment": 25,
+   "match": 414,
+   "synthesize": 2884,
+   "curricula": 135,
+   "assemble": 4
+  },
+  "chunks_total": 23,
+  "chunks_assigned": 15,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 15,
+  "sources": 2,
+  "resolved_title": "Barockliteratur",
+  "markdown_chars": 20092,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Bruchrechnung",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 8.437,
+  "timings_ms": {
+   "resolve": 136,
+   "corpus": 3135,
+   "segment": 15,
+   "match": 370,
+   "synthesize": 4467,
+   "curricula": 283,
+   "assemble": 13
+  },
+  "chunks_total": 67,
+  "chunks_assigned": 8,
+  "sections_filled": 4,
+  "sections_empty": 9,
+  "citations": 8,
+  "sources": 5,
+  "resolved_title": "Bruchrechnung",
+  "markdown_chars": 14618,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Demokratie",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 10.819,
+  "timings_ms": {
+   "resolve": 314,
+   "corpus": 1789,
+   "segment": 48,
+   "match": 3016,
+   "synthesize": 4436,
+   "curricula": 1152,
+   "assemble": 6
+  },
+  "chunks_total": 383,
+  "chunks_assigned": 21,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 20,
+  "sources": 12,
+  "resolved_title": "Demokratie",
+  "markdown_chars": 318080,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Französische Revolution",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 6.683,
+  "timings_ms": {
+   "resolve": 124,
+   "corpus": 1722,
+   "segment": 29,
+   "match": 1468,
+   "synthesize": 3070,
+   "curricula": 253,
+   "assemble": 3
+  },
+  "chunks_total": 189,
+  "chunks_assigned": 13,
+  "sections_filled": 9,
+  "sections_empty": 4,
+  "citations": 13,
+  "sources": 12,
+  "resolved_title": "Französische Revolution",
+  "markdown_chars": 42062,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Klimawandel",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 5.309,
+  "timings_ms": {
+   "resolve": 105,
+   "corpus": 1510,
+   "segment": 49,
+   "match": 1214,
+   "synthesize": 2233,
+   "curricula": 171,
+   "assemble": 5
+  },
+  "chunks_total": 327,
+  "chunks_assigned": 16,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 16,
+  "sources": 9,
+  "resolved_title": "Klimawandel",
+  "markdown_chars": 85327,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Optik",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 7.722,
+  "timings_ms": {
+   "resolve": 17,
+   "corpus": 385,
+   "segment": 9,
+   "match": 174,
+   "synthesize": 7048,
+   "curricula": 54,
+   "assemble": 4
+  },
+  "chunks_total": 98,
+  "chunks_assigned": 26,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 24,
+  "sources": 12,
+  "resolved_title": "Optik",
+  "markdown_chars": 69241,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Photosynthese",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 5.74,
+  "timings_ms": {
+   "resolve": 101,
+   "corpus": 2490,
+   "segment": 28,
+   "match": 502,
+   "synthesize": 2225,
+   "curricula": 351,
+   "assemble": 7
+  },
+  "chunks_total": 154,
+  "chunks_assigned": 14,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 14,
+  "sources": 8,
+  "resolved_title": "Photosynthese",
+  "markdown_chars": 93376,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Programmiersprache",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 6.676,
+  "timings_ms": {
+   "resolve": 161,
+   "corpus": 1920,
+   "segment": 16,
+   "match": 1167,
+   "synthesize": 2985,
+   "curricula": 406,
+   "assemble": 4
+  },
+  "chunks_total": 169,
+  "chunks_assigned": 31,
+  "sections_filled": 12,
+  "sections_empty": 1,
+  "citations": 31,
+  "sources": 12,
+  "resolved_title": "Programmiersprache",
+  "markdown_chars": 86930,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Säure-Base-Konzepte",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 5.067,
+  "timings_ms": {
+   "resolve": 60,
+   "corpus": 2708,
+   "segment": 8,
+   "match": 107,
+   "synthesize": 1958,
+   "curricula": 202,
+   "assemble": 3
+  },
+  "chunks_total": 37,
+  "chunks_assigned": 8,
+  "sections_filled": 6,
+  "sections_empty": 7,
+  "citations": 8,
+  "sources": 3,
+  "resolved_title": "Säure-Base-Konzepte",
+  "markdown_chars": 211526,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Sinfonie",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 10.415,
+  "timings_ms": {
+   "resolve": 40,
+   "corpus": 1895,
+   "segment": 19,
+   "match": 1105,
+   "synthesize": 7110,
+   "curricula": 217,
+   "assemble": 8
+  },
+  "chunks_total": 185,
+  "chunks_assigned": 20,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 20,
+  "sources": 12,
+  "resolved_title": "Sinfonie",
+  "markdown_chars": 45844,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Plattentektonik",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 8.521,
+  "timings_ms": {
+   "resolve": 94,
+   "corpus": 3500,
+   "segment": 27,
+   "match": 503,
+   "synthesize": 4027,
+   "curricula": 346,
+   "assemble": 5
+  },
+  "chunks_total": 94,
+  "chunks_assigned": 10,
+  "sections_filled": 5,
+  "sections_empty": 8,
+  "citations": 9,
+  "sources": 9,
+  "resolved_title": "Plattentektonik",
+  "markdown_chars": 29683,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Ökosystem",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 14.927,
+  "timings_ms": {
+   "resolve": 109,
+   "corpus": 951,
+   "segment": 22,
+   "match": 5988,
+   "synthesize": 7375,
+   "curricula": 407,
+   "assemble": 15
+  },
+  "chunks_total": 141,
+  "chunks_assigned": 23,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 23,
+  "sources": 12,
+  "resolved_title": "Ökosystem",
+  "markdown_chars": 145157,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Atommodell",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 15.017,
+  "timings_ms": {
+   "resolve": 203,
+   "corpus": 7805,
+   "segment": 59,
+   "match": 442,
+   "synthesize": 6338,
+   "curricula": 130,
+   "assemble": 9
+  },
+  "chunks_total": 30,
+  "chunks_assigned": 14,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 14,
+  "sources": 6,
+  "resolved_title": "Liste der Atommodelle",
+  "markdown_chars": 84581,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Industrielle Revolution",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 6.838,
+  "timings_ms": {
+   "resolve": 95,
+   "corpus": 1878,
+   "segment": 58,
+   "match": 1076,
+   "synthesize": 3654,
+   "curricula": 54,
+   "assemble": 6
+  },
+  "chunks_total": 160,
+  "chunks_assigned": 20,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 20,
+  "sources": 11,
+  "resolved_title": "Industrielle Revolution",
+  "markdown_chars": 37296,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Elektrischer Strom",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 7.806,
+  "timings_ms": {
+   "resolve": 43,
+   "corpus": 3332,
+   "segment": 19,
+   "match": 587,
+   "synthesize": 3333,
+   "curricula": 447,
+   "assemble": 5
+  },
+  "chunks_total": 161,
+  "chunks_assigned": 27,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 27,
+  "sources": 12,
+  "resolved_title": "Elektrischer Strom",
+  "markdown_chars": 311376,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Wasserkreislauf",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 7.245,
+  "timings_ms": {
+   "resolve": 46,
+   "corpus": 2717,
+   "segment": 24,
+   "match": 141,
+   "synthesize": 4012,
+   "curricula": 287,
+   "assemble": 3
+  },
+  "chunks_total": 30,
+  "chunks_assigned": 13,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 13,
+  "sources": 8,
+  "resolved_title": "Wasserkreislauf",
+  "markdown_chars": 28881,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Römisches Reich",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 9.93,
+  "timings_ms": {
+   "resolve": 116,
+   "corpus": 1560,
+   "segment": 62,
+   "match": 1889,
+   "synthesize": 5828,
+   "curricula": 453,
+   "assemble": 5
+  },
+  "chunks_total": 400,
+  "chunks_assigned": 26,
+  "sections_filled": 12,
+  "sections_empty": 1,
+  "citations": 26,
+  "sources": 7,
+  "resolved_title": "Römisches Reich",
+  "markdown_chars": 56142,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Lineare Funktion",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 5.794,
+  "timings_ms": {
+   "resolve": 145,
+   "corpus": 2377,
+   "segment": 26,
+   "match": 340,
+   "synthesize": 2635,
+   "curricula": 252,
+   "assemble": 3
+  },
+  "chunks_total": 160,
+  "chunks_assigned": 21,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 20,
+  "sources": 11,
+  "resolved_title": "Lineare Funktion",
+  "markdown_chars": 61977,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Zelle (Biologie)",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 4.349,
+  "timings_ms": {
+   "resolve": 31,
+   "corpus": 713,
+   "segment": 15,
+   "match": 1116,
+   "synthesize": 2304,
+   "curricula": 148,
+   "assemble": 4
+  },
+  "chunks_total": 145,
+  "chunks_assigned": 17,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 17,
+  "sources": 12,
+  "resolved_title": "Zelle (Biologie)",
+  "markdown_chars": 191940,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass1",
+  "request": {
+   "topic": "Gedicht",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.813,
+  "timings_ms": {
+   "resolve": 41,
+   "corpus": 3111,
+   "segment": 13,
+   "match": 449,
+   "synthesize": 26,
+   "curricula": 152,
+   "assemble": 3
+  },
+  "chunks_total": 82,
+  "chunks_assigned": 15,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 15,
+  "sources": 8,
+  "resolved_title": "Gedicht",
+  "markdown_chars": 233512,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Barockliteratur",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.055,
+  "timings_ms": {
+   "resolve": 18,
+   "corpus": 898,
+   "segment": 32,
+   "match": 134,
+   "synthesize": 1866,
+   "curricula": 82,
+   "assemble": 8
+  },
+  "chunks_total": 23,
+  "chunks_assigned": 15,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 15,
+  "sources": 2,
+  "resolved_title": "Barockliteratur",
+  "markdown_chars": 20092,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Bruchrechnung",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 6.162,
+  "timings_ms": {
+   "resolve": 112,
+   "corpus": 3780,
+   "segment": 20,
+   "match": 143,
+   "synthesize": 1956,
+   "curricula": 134,
+   "assemble": 3
+  },
+  "chunks_total": 67,
+  "chunks_assigned": 8,
+  "sections_filled": 4,
+  "sections_empty": 9,
+  "citations": 8,
+  "sources": 5,
+  "resolved_title": "Bruchrechnung",
+  "markdown_chars": 14618,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Demokratie",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 4.568,
+  "timings_ms": {
+   "resolve": 102,
+   "corpus": 1089,
+   "segment": 47,
+   "match": 1530,
+   "synthesize": 1467,
+   "curricula": 303,
+   "assemble": 5
+  },
+  "chunks_total": 383,
+  "chunks_assigned": 21,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 20,
+  "sources": 12,
+  "resolved_title": "Demokratie",
+  "markdown_chars": 318080,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Französische Revolution",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.513,
+  "timings_ms": {
+   "resolve": 64,
+   "corpus": 1126,
+   "segment": 25,
+   "match": 606,
+   "synthesize": 1654,
+   "curricula": 20,
+   "assemble": 3
+  },
+  "chunks_total": 189,
+  "chunks_assigned": 13,
+  "sections_filled": 9,
+  "sections_empty": 4,
+  "citations": 13,
+  "sources": 12,
+  "resolved_title": "Französische Revolution",
+  "markdown_chars": 42062,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Klimawandel",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 4.303,
+  "timings_ms": {
+   "resolve": 86,
+   "corpus": 1033,
+   "segment": 60,
+   "match": 1040,
+   "synthesize": 1971,
+   "curricula": 80,
+   "assemble": 7
+  },
+  "chunks_total": 327,
+  "chunks_assigned": 16,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 16,
+  "sources": 9,
+  "resolved_title": "Klimawandel",
+  "markdown_chars": 85327,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Optik",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.241,
+  "timings_ms": {
+   "resolve": 34,
+   "corpus": 564,
+   "segment": 12,
+   "match": 292,
+   "synthesize": 1263,
+   "curricula": 58,
+   "assemble": 4
+  },
+  "chunks_total": 98,
+  "chunks_assigned": 26,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 24,
+  "sources": 12,
+  "resolved_title": "Optik",
+  "markdown_chars": 69241,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Photosynthese",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.539,
+  "timings_ms": {
+   "resolve": 92,
+   "corpus": 1656,
+   "segment": 42,
+   "match": 464,
+   "synthesize": 1219,
+   "curricula": 48,
+   "assemble": 3
+  },
+  "chunks_total": 154,
+  "chunks_assigned": 14,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 14,
+  "sources": 8,
+  "resolved_title": "Photosynthese",
+  "markdown_chars": 93376,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Programmiersprache",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 8.247,
+  "timings_ms": {
+   "resolve": 156,
+   "corpus": 3444,
+   "segment": 32,
+   "match": 2461,
+   "synthesize": 1576,
+   "curricula": 222,
+   "assemble": 70
+  },
+  "chunks_total": 169,
+  "chunks_assigned": 31,
+  "sections_filled": 12,
+  "sections_empty": 1,
+  "citations": 31,
+  "sources": 12,
+  "resolved_title": "Programmiersprache",
+  "markdown_chars": 86930,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Säure-Base-Konzepte",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.78,
+  "timings_ms": {
+   "resolve": 72,
+   "corpus": 2531,
+   "segment": 11,
+   "match": 113,
+   "synthesize": 903,
+   "curricula": 125,
+   "assemble": 4
+  },
+  "chunks_total": 37,
+  "chunks_assigned": 8,
+  "sections_filled": 6,
+  "sections_empty": 7,
+  "citations": 8,
+  "sources": 3,
+  "resolved_title": "Säure-Base-Konzepte",
+  "markdown_chars": 211526,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Sinfonie",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.61,
+  "timings_ms": {
+   "resolve": 23,
+   "corpus": 1152,
+   "segment": 21,
+   "match": 954,
+   "synthesize": 1381,
+   "curricula": 62,
+   "assemble": 4
+  },
+  "chunks_total": 185,
+  "chunks_assigned": 20,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 20,
+  "sources": 12,
+  "resolved_title": "Sinfonie",
+  "markdown_chars": 45844,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Plattentektonik",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.065,
+  "timings_ms": {
+   "resolve": 42,
+   "corpus": 1514,
+   "segment": 15,
+   "match": 248,
+   "synthesize": 1168,
+   "curricula": 60,
+   "assemble": 4
+  },
+  "chunks_total": 94,
+  "chunks_assigned": 10,
+  "sections_filled": 5,
+  "sections_empty": 8,
+  "citations": 9,
+  "sources": 9,
+  "resolved_title": "Plattentektonik",
+  "markdown_chars": 29683,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Ökosystem",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.739,
+  "timings_ms": {
+   "resolve": 33,
+   "corpus": 461,
+   "segment": 17,
+   "match": 1177,
+   "synthesize": 894,
+   "curricula": 65,
+   "assemble": 5
+  },
+  "chunks_total": 141,
+  "chunks_assigned": 23,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 23,
+  "sources": 12,
+  "resolved_title": "Ökosystem",
+  "markdown_chars": 145157,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Atommodell",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.955,
+  "timings_ms": {
+   "resolve": 14,
+   "corpus": 1214,
+   "segment": 31,
+   "match": 150,
+   "synthesize": 1481,
+   "curricula": 48,
+   "assemble": 3
+  },
+  "chunks_total": 30,
+  "chunks_assigned": 14,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 14,
+  "sources": 6,
+  "resolved_title": "Liste der Atommodelle",
+  "markdown_chars": 84581,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Industrielle Revolution",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.631,
+  "timings_ms": {
+   "resolve": 49,
+   "corpus": 1161,
+   "segment": 70,
+   "match": 621,
+   "synthesize": 1684,
+   "curricula": 29,
+   "assemble": 4
+  },
+  "chunks_total": 160,
+  "chunks_assigned": 20,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 20,
+  "sources": 11,
+  "resolved_title": "Industrielle Revolution",
+  "markdown_chars": 37296,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Elektrischer Strom",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.59,
+  "timings_ms": {
+   "resolve": 31,
+   "corpus": 518,
+   "segment": 17,
+   "match": 271,
+   "synthesize": 1537,
+   "curricula": 178,
+   "assemble": 5
+  },
+  "chunks_total": 161,
+  "chunks_assigned": 27,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 27,
+  "sources": 12,
+  "resolved_title": "Elektrischer Strom",
+  "markdown_chars": 311376,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Wasserkreislauf",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.403,
+  "timings_ms": {
+   "resolve": 12,
+   "corpus": 1270,
+   "segment": 24,
+   "match": 114,
+   "synthesize": 956,
+   "curricula": 12,
+   "assemble": 3
+  },
+  "chunks_total": 30,
+  "chunks_assigned": 13,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 13,
+  "sources": 8,
+  "resolved_title": "Wasserkreislauf",
+  "markdown_chars": 28881,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Römisches Reich",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 3.778,
+  "timings_ms": {
+   "resolve": 47,
+   "corpus": 691,
+   "segment": 33,
+   "match": 1012,
+   "synthesize": 1899,
+   "curricula": 65,
+   "assemble": 4
+  },
+  "chunks_total": 400,
+  "chunks_assigned": 26,
+  "sections_filled": 12,
+  "sections_empty": 1,
+  "citations": 26,
+  "sources": 7,
+  "resolved_title": "Römisches Reich",
+  "markdown_chars": 56142,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Lineare Funktion",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.215,
+  "timings_ms": {
+   "resolve": 33,
+   "corpus": 1031,
+   "segment": 25,
+   "match": 194,
+   "synthesize": 865,
+   "curricula": 49,
+   "assemble": 4
+  },
+  "chunks_total": 160,
+  "chunks_assigned": 21,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 20,
+  "sources": 11,
+  "resolved_title": "Lineare Funktion",
+  "markdown_chars": 61977,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Zelle (Biologie)",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 1.834,
+  "timings_ms": {
+   "resolve": 22,
+   "corpus": 444,
+   "segment": 24,
+   "match": 397,
+   "synthesize": 844,
+   "curricula": 82,
+   "assemble": 4
+  },
+  "chunks_total": 145,
+  "chunks_assigned": 17,
+  "sections_filled": 8,
+  "sections_empty": 5,
+  "citations": 17,
+  "sources": 12,
+  "resolved_title": "Zelle (Biologie)",
+  "markdown_chars": 191940,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "pass2",
+  "request": {
+   "topic": "Gedicht",
+   "parts": [
+    "world",
+    "curricula"
+   ]
+  },
+  "http": 200,
+  "seconds": 2.343,
+  "timings_ms": {
+   "resolve": 14,
+   "corpus": 1860,
+   "segment": 15,
+   "match": 327,
+   "synthesize": 24,
+   "curricula": 63,
+   "assemble": 3
+  },
+  "chunks_total": 82,
+  "chunks_assigned": 15,
+  "sections_filled": 10,
+  "sections_empty": 3,
+  "citations": 15,
+  "sources": 8,
+  "resolved_title": "Gedicht",
+  "markdown_chars": 233512,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "all3",
+  "request": {
+   "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"
+  },
+  "http": 200,
+  "seconds": 8.689,
+  "timings_ms": {
+   "resolve": 569,
+   "corpus": 428,
+   "segment": 14,
+   "match": 222,
+   "synthesize": 942,
+   "curricula": 62,
+   "collection": 6417,
+   "assemble": 8
+  },
+  "chunks_total": 98,
+  "chunks_assigned": 26,
+  "sections_filled": 11,
+  "sections_empty": 2,
+  "citations": 24,
+  "sources": 12,
+  "resolved_title": "Optik",
+  "markdown_chars": 151089,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok",
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "part3",
+  "request": {
+   "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+   "parts": [
+    "collection"
+   ]
+  },
+  "http": 200,
+  "seconds": 0.06,
+  "timings_ms": {
+   "resolve": 8,
+   "collection": 17,
+   "assemble": 4
+  },
+  "chunks_total": 0,
+  "chunks_assigned": 0,
+  "sections_filled": 0,
+  "sections_empty": 0,
+  "citations": 0,
+  "sources": 0,
+  "resolved_title": "Optik",
+  "markdown_chars": 86207,
+  "parts_status": {
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "all3",
+  "request": {
+   "collection_id": "f35c17d1-a29e-4b26-9d22-802682fad43d"
+  },
+  "http": 200,
+  "seconds": 11.249,
+  "timings_ms": {
+   "resolve": 367,
+   "corpus": 2798,
+   "segment": 20,
+   "match": 122,
+   "synthesize": 2577,
+   "curricula": 40,
+   "collection": 5286,
+   "assemble": 4
+  },
+  "chunks_total": 26,
+  "chunks_assigned": 12,
+  "sections_filled": 6,
+  "sections_empty": 7,
+  "citations": 9,
+  "sources": 9,
+  "resolved_title": "Geometrische Optik",
+  "markdown_chars": 72332,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok",
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "part3",
+  "request": {
+   "collection_id": "f35c17d1-a29e-4b26-9d22-802682fad43d",
+   "parts": [
+    "collection"
+   ]
+  },
+  "http": 200,
+  "seconds": 0.023,
+  "timings_ms": {
+   "resolve": 6,
+   "collection": 8,
+   "assemble": 2
+  },
+  "chunks_total": 0,
+  "chunks_assigned": 0,
+  "sections_filled": 0,
+  "sections_empty": 0,
+  "citations": 0,
+  "sources": 0,
+  "resolved_title": "Geometrische Optik",
+  "markdown_chars": 56550,
+  "parts_status": {
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "all3",
+  "request": {
+   "collection_id": "d38101c1-9a43-414b-a51f-e2dcff0add44"
+  },
+  "http": 200,
+  "seconds": 4.092,
+  "timings_ms": {
+   "resolve": 305,
+   "corpus": 1513,
+   "segment": 31,
+   "match": 342,
+   "synthesize": 1447,
+   "curricula": 46,
+   "collection": 374,
+   "assemble": 4
+  },
+  "chunks_total": 154,
+  "chunks_assigned": 14,
+  "sections_filled": 7,
+  "sections_empty": 6,
+  "citations": 14,
+  "sources": 8,
+  "resolved_title": "Photosynthese",
+  "markdown_chars": 79144,
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok",
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ },
+ {
+  "label": "part3",
+  "request": {
+   "collection_id": "d38101c1-9a43-414b-a51f-e2dcff0add44",
+   "parts": [
+    "collection"
+   ]
+  },
+  "http": 200,
+  "seconds": 0.016,
+  "timings_ms": {
+   "resolve": 4,
+   "collection": 1,
+   "assemble": 2
+  },
+  "chunks_total": 0,
+  "chunks_assigned": 0,
+  "sections_filled": 0,
+  "sections_empty": 0,
+  "citations": 0,
+  "sources": 0,
+  "resolved_title": "Photosynthese",
+  "markdown_chars": 3403,
+  "parts_status": {
+   "collection": "ok"
+  },
+  "llm": null,
+  "error": null
+ }
+]

@@ -1,0 +1,314 @@
+{
+ "wie_ausgeliefert": [
+  {
+   "topic": "Optik",
+   "seconds": 374.34,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 0,
+   "distinct_articles": 0,
+   "prompt_tokens": 1630,
+   "completion_tokens": 3296,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 10,
+    "text": 1
+   },
+   "text_call_seconds": [
+    23.97
+   ],
+   "text_call_completion_tokens": [
+    2541
+   ],
+   "wikipedia_status": {
+    "403": 240
+   },
+   "wikipedia_request_seconds_total": 10.4,
+   "markdown_chars": 11906,
+   "paren_markers": 15,
+   "bibliography": "## Literaturverzeichnis\n\n*Keine Referenzen verfügbar.*"
+  }
+ ],
+ "bester_fall": [
+  {
+   "topic": "Barockliteratur",
+   "seconds": 37.01,
+   "model": "gpt-4.1-mini",
+   "entities": 9,
+   "entities_with_article": 9,
+   "distinct_articles": 9,
+   "prompt_tokens": 4630,
+   "completion_tokens": 4055,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 1,
+    "text": 1
+   },
+   "text_call_seconds": [
+    28.06
+   ],
+   "text_call_completion_tokens": [
+    3511
+   ],
+   "wikipedia_status": {
+    "200": 12
+   },
+   "wikipedia_request_seconds_total": 2.9,
+   "markdown_chars": 15522,
+   "paren_markers": 28,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Barock\n2. https://de.w"
+  },
+  {
+   "topic": "Bruchrechnung",
+   "seconds": 60.41,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 8,
+   "distinct_articles": 5,
+   "prompt_tokens": 4394,
+   "completion_tokens": 3806,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 5,
+    "text": 1
+   },
+   "text_call_seconds": [
+    27.84
+   ],
+   "text_call_completion_tokens": [
+    3108
+   ],
+   "wikipedia_status": {
+    "200": 34
+   },
+   "wikipedia_request_seconds_total": 22.6,
+   "markdown_chars": 13751,
+   "paren_markers": 11,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Rationale_Zahl\n2. http"
+  },
+  {
+   "topic": "Demokratie",
+   "seconds": 32.56,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 4625,
+   "completion_tokens": 3194,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 0,
+    "text": 1
+   },
+   "text_call_seconds": [
+    24.68
+   ],
+   "text_call_completion_tokens": [
+    2617
+   ],
+   "wikipedia_status": {
+    "200": 10
+   },
+   "wikipedia_request_seconds_total": 2.7,
+   "markdown_chars": 12622,
+   "paren_markers": 29,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Demokratie\n2. https://"
+  },
+  {
+   "topic": "Französische Revolution",
+   "seconds": 29.4,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 3829,
+   "completion_tokens": 3391,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 2,
+    "text": 1
+   },
+   "text_call_seconds": [
+    18.94
+   ],
+   "text_call_completion_tokens": [
+    2733
+   ],
+   "wikipedia_status": {
+    "200": 16
+   },
+   "wikipedia_request_seconds_total": 3.5,
+   "markdown_chars": 12362,
+   "paren_markers": 25,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Französische_Revolutio"
+  },
+  {
+   "topic": "Klimawandel",
+   "seconds": 28.78,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 7786,
+   "completion_tokens": 3258,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 0,
+    "text": 1
+   },
+   "text_call_seconds": [
+    20.49
+   ],
+   "text_call_completion_tokens": [
+    2648
+   ],
+   "wikipedia_status": {
+    "200": 10
+   },
+   "wikipedia_request_seconds_total": 2.9,
+   "markdown_chars": 11702,
+   "paren_markers": 18,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Klimawandel\n2. https:/"
+  },
+  {
+   "topic": "Optik",
+   "seconds": 30.84,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 4548,
+   "completion_tokens": 3332,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 2,
+    "text": 1
+   },
+   "text_call_seconds": [
+    19.77
+   ],
+   "text_call_completion_tokens": [
+    2715
+   ],
+   "wikipedia_status": {
+    "200": 18
+   },
+   "wikipedia_request_seconds_total": 3.8,
+   "markdown_chars": 12010,
+   "paren_markers": 16,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Optik\n2. https://de.wi"
+  },
+  {
+   "topic": "Photosynthese",
+   "seconds": 28.62,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 9,
+   "prompt_tokens": 4742,
+   "completion_tokens": 3204,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 0,
+    "text": 1
+   },
+   "text_call_seconds": [
+    18.92
+   ],
+   "text_call_completion_tokens": [
+    2610
+   ],
+   "wikipedia_status": {
+    "200": 10
+   },
+   "wikipedia_request_seconds_total": 3.0,
+   "markdown_chars": 10912,
+   "paren_markers": 23,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Photosynthese\n2. https"
+  },
+  {
+   "topic": "Programmiersprache",
+   "seconds": 43.1,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 3662,
+   "completion_tokens": 3645,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 4,
+    "text": 1
+   },
+   "text_call_seconds": [
+    29.8
+   ],
+   "text_call_completion_tokens": [
+    2997
+   ],
+   "wikipedia_status": {
+    "200": 22
+   },
+   "wikipedia_request_seconds_total": 4.5,
+   "markdown_chars": 14085,
+   "paren_markers": 32,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Programmiersprache\n2. "
+  },
+  {
+   "topic": "Sinfonie",
+   "seconds": 37.55,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 10,
+   "distinct_articles": 10,
+   "prompt_tokens": 4090,
+   "completion_tokens": 3748,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 0,
+    "text": 1
+   },
+   "text_call_seconds": [
+    29.77
+   ],
+   "text_call_completion_tokens": [
+    3158
+   ],
+   "wikipedia_status": {
+    "200": 10
+   },
+   "wikipedia_request_seconds_total": 2.3,
+   "markdown_chars": 13920,
+   "paren_markers": 16,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Sinfonie\n2. https://de"
+  },
+  {
+   "topic": "Säure-Base-Konzepte",
+   "seconds": 62.36,
+   "model": "gpt-4.1-mini",
+   "entities": 10,
+   "entities_with_article": 9,
+   "distinct_articles": 8,
+   "prompt_tokens": 4284,
+   "completion_tokens": 4561,
+   "calls": {
+    "begriffe": 1,
+    "synonyme": 5,
+    "text": 1
+   },
+   "text_call_seconds": [
+    44.18
+   ],
+   "text_call_completion_tokens": [
+    3827
+   ],
+   "wikipedia_status": {
+    "200": 32
+   },
+   "wikipedia_request_seconds_total": 6.2,
+   "markdown_chars": 15525,
+   "paren_markers": 34,
+   "bibliography": "## Literaturverzeichnis\n\n1. https://de.wikipedia.org/wiki/Säuren\n2. https://de.w"
+  }
+ ]
+}

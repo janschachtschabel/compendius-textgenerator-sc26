@@ -1,0 +1,89 @@
+{
+ "topics": [
+  "Plattentektonik",
+  "Ökosystem",
+  "Atommodell",
+  "Industrielle Revolution"
+ ],
+ "calls": 11,
+ "tokens": 5835,
+ "rows": [
+  {
+   "method": "MEIN lexicon_only",
+   "paragraphs": 38,
+   "mean": 1.394736842105263,
+   "clear": 63.1578947368421,
+   "partly": 13.157894736842104,
+   "wrong": 23.68421052631579,
+   "covered": 5.25,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN bm25",
+   "paragraphs": 38,
+   "mean": 1.368421052631579,
+   "clear": 63.1578947368421,
+   "partly": 10.526315789473685,
+   "wrong": 26.31578947368421,
+   "covered": 5.25,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN hybrid_light (ohne M2V)",
+   "paragraphs": 38,
+   "mean": 1.368421052631579,
+   "clear": 63.1578947368421,
+   "partly": 10.526315789473685,
+   "wrong": 26.31578947368421,
+   "covered": 5.25,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN BM25 + Model2Vec",
+   "paragraphs": 39,
+   "mean": 1.358974358974359,
+   "clear": 61.53846153846154,
+   "partly": 12.820512820512821,
+   "wrong": 25.641025641025642,
+   "covered": 5.25,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN hybrid_light + M2V",
+   "paragraphs": 39,
+   "mean": 1.3333333333333333,
+   "clear": 61.53846153846154,
+   "partly": 10.256410256410257,
+   "wrong": 28.205128205128204,
+   "covered": 5.5,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN char_tfidf",
+   "paragraphs": 42,
+   "mean": 1.3095238095238095,
+   "clear": 59.523809523809526,
+   "partly": 11.904761904761905,
+   "wrong": 28.571428571428573,
+   "covered": 5.75,
+   "full_hits": 3.75,
+   "unrated": 0
+  },
+  {
+   "method": "MEIN Model2Vec allein",
+   "paragraphs": 49,
+   "mean": 1.163265306122449,
+   "clear": 48.97959183673469,
+   "partly": 18.367346938775512,
+   "wrong": 32.6530612244898,
+   "covered": 7.0,
+   "full_hits": 4.25,
+   "unrated": 0
+  }
+ ]
+}

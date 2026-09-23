@@ -1,0 +1,28 @@
+Ausgabe von final_checks.py am 23.09.2026 (Server v2.0.0, lokale Archive wie auf dem Server)
+
+1) Hauptartikel und Begriffsklärungen im Korpus
+   Barockliteratur          Hauptartikel 'Barockliteratur'            Quellen  2
+   Bruchrechnung            Hauptartikel 'Bruchrechnung'              Quellen  5
+   Demokratie               Hauptartikel 'Demokratie'                 Quellen 12
+   Französische Revolution  Hauptartikel 'Französische Revolution'    Quellen 12
+   Klimawandel              Hauptartikel 'Klimawandel'                Quellen  9
+   Optik                    Hauptartikel 'Optik'                      Quellen 12
+   Photosynthese            Hauptartikel 'Photosynthese'              Quellen  8
+   Programmiersprache       Hauptartikel 'Programmiersprache'         Quellen 12
+   Säure-Base-Konzepte      Hauptartikel 'Säure-Base-Konzepte'        Quellen  3
+   Sinfonie                 Hauptartikel 'Sinfonie'                   Quellen 12
+   Quellen gesamt 87, davon Begriffsklärungsseiten 0
+2) Gleiche Anfrage zweimal (Server, regelbasiert)
+   identisch bis auf generated_at: True (93335 Zeichen)
+3) F1 je Baustein, hybrid_light + M2V, voller Pool
+   macro 0.447 micro 0.656
+   themendefinition             Gold-Absätze  22  F1 0.68
+   systematik                   Gold-Absätze  55  F1 0.60
+   fachinhalte                  Gold-Absätze 276  F1 0.71
+   gesellschaftlicher_kontext   Gold-Absätze  38  F1 0.40
+   entwicklung_ausblick         Gold-Absätze  83  F1 0.74
+   beruf_wirtschaft             Gold-Absätze  11  F1 0.31
+   bildung                      Gold-Absätze   8  F1 0.50
+   regularien                   Gold-Absätze   2  F1 0.33
+   praxis                       Gold-Absätze  18  F1 0.20
+   querschnitt                  Gold-Absätze   3  F1 0.00

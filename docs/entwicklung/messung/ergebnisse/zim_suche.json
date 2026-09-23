@@ -1,0 +1,24 @@
+{
+ "archiv": "wikipedia_de_all_nopic_2026-01.zim",
+ "oeffnen_ms": 31.1,
+ "erster_titelvorschlag_ms": 13.3,
+ "erste_volltextsuche_ms": 0.9,
+ "erste_volltextsuche_treffer": [
+  "Hauptebene (Optik)",
+  "Linse (Optik)",
+  "Optik",
+  "Dünne Linse"
+ ],
+ "titelvorschlag_median_ms": 2.9,
+ "titelvorschlag_max_ms": 11.6,
+ "volltextsuche_median_ms": 0.4,
+ "volltextsuche_max_ms": 1.9,
+ "wiederholungen": {
+  "titelvorschlag": 10,
+  "volltextsuche": 20
+ },
+ "ohne_treffer": {
+  "titelvorschlag": 0,
+  "volltextsuche": 3
+ }
+}
