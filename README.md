@@ -156,12 +156,13 @@ die Commit-Sha):
 docker compose up -d
 ```
 
-**Das Paket ist so sichtbar wie das Repository, also privat.** Ein fremder Host braucht deshalb einmalig
-Zugangsdaten — ein persönliches Zugriffstoken mit `read:packages` genügt:
-
-```bash
-docker login ghcr.io -u <GitHub-Konto> --password-stdin
-```
+**Das Paket ist öffentlich** wie das Repository; ein Host zieht es ohne Anmeldung. GHCR übernimmt die
+Sichtbarkeit nicht vom Repository: Ein neues Paket ist erst einmal privat und wird in seinen
+Einstellungen umgestellt. Öffentlich muss es bleiben, denn bei einem privaten Paket scheitert der Pull
+mit `unauthorized`, Compose startet die Container mit dem Image, das schon auf dem Host liegt, und das
+Update meldet trotzdem Erfolg. `publish.yml` prüft deshalb nach jedem Push, dass das Image ohne
+Anmeldung ziehbar ist. Ein privater Fork braucht auf dem Host einmalig `docker login ghcr.io` mit einem
+Zugriffstoken mit `read:packages`.
 
 ## Lehrpläne betreiben (Teil 2)
 
