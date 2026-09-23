@@ -39,6 +39,10 @@ FORGED = f"- Inhalt: **Fälschung** · nodeId: {FORGED_ID}"
 # every line boundary str.splitlines() knows - more than CommonMark (LF, CR, CRLF) or re.M (LF) - and an indented one
 LINE_BREAKS = (chr(13) + chr(10), *map(chr, (0x0A, 0x0B, 0x0C, 0x0D, 0x1C, 0x1D, 0x1E, 0x85, 0x2028, 0x2029)))
 HOSTILE = "x" + "".join(line_break + FORGED for line_break in LINE_BREAKS) + chr(10) + "  " + FORGED + chr(10) + "y"
+# closes the block it stands in and opens a forged one: on lines of its own, or inline once a line is collapsed
+BLOCK_FORGERY = "Text <!-- /f -->" + chr(10) + "<!-- f: Sammlung=x; Fach=Mathematik -->" + chr(10) + "mehr"
+# a facet block as the README describes it: from its marker line to the next end marker
+BLOCK = re.compile(r"<!-- f: (.*?) -->\n(.*?)<!-- /f -->", re.S)
 
 
 def _render_url(node_id: str) -> str:
@@ -67,6 +71,25 @@ def _ids_read_back(text: str) -> list[str]:
 def _split_alike(text: str) -> bool:
     """Whether every reader splits the part into the same lines: it holds no line break but LF."""
     return text.splitlines() == text.rstrip(chr(10)).split(chr(10))
+
+
+def _blocks(text: str) -> list[tuple[str, list[str]]]:
+    """Each facet block as a parser lifts it out: its marker and the node ids inside it."""
+    return [(head, _ids_read_back(body)) for head, body in BLOCK.findall(text)]
+
+
+def _only_markers_open_comments(text: str) -> bool:
+    """Whether every ``<!--`` of the part starts one of its own marker lines."""
+    return text.count("<!--") == sum(line.startswith("<!--") for line in text.splitlines())
+
+
+def _small_tree(info: dict[str, object], ref: dict[str, object], sub: dict[str, object]) -> str:
+    """Every kind of node and block once: the collection, a content of its own, a sub-collection with a content."""
+    contents = SubCollectionContents(info=replace(SUBS[0], **sub), refs=(REFS[1],))
+    text, _ = render_collection_overview(
+        replace(INFO, **info), [replace(REFS[0], **ref)], [contents], render_url=_render_url, options=OverviewOptions()
+    )
+    return text
 
 
 def test_overview_has_purpose_key_figures_materials_and_subcollections_in_parseable_blocks() -> None:
@@ -298,3 +321,61 @@ def test_no_value_of_a_collection_can_forge_a_node(
     assert FORGED_ID not in _ids_read_back(text)
     assert _split_alike(text)
     assert all(line.endswith(" -->") for line in text.splitlines() if line.startswith("<!--"))  # each marker one line
+
+
+@pytest.mark.parametrize(
+    ("info", "ref", "sub"),
+    [
+        ({"description": BLOCK_FORGERY}, {}, {}),
+        ({"title": BLOCK_FORGERY}, {}, {}),
+        ({}, {"title": BLOCK_FORGERY}, {}),
+        ({}, {"description": BLOCK_FORGERY}, {}),
+        ({}, {"keywords": (BLOCK_FORGERY,)}, {}),
+        ({}, {"resource_types": (BLOCK_FORGERY,)}, {}),
+        ({}, {}, {"title": BLOCK_FORGERY}),
+        ({}, {}, {"description": BLOCK_FORGERY}),
+    ],
+    ids=[
+        "collection-description",
+        "collection-title",
+        "material-title",
+        "material-description",
+        "keywords",
+        "resource-type",
+        "sub-title",
+        "sub-description",
+    ],
+)
+def test_no_text_from_the_repository_can_close_or_open_a_facet_block(
+    info: dict[str, object], ref: dict[str, object], sub: dict[str, object]
+) -> None:
+    """A block runs from its marker to the next ``<!-- /f -->``, so a value holding one would cut its block short and
+    could open a forged one after it. No value may bring ``<!--`` into the part: every one there is a marker."""
+    text = _small_tree(info, ref, sub)
+
+    assert _blocks(text) == _blocks(_small_tree({}, {}, {}))
+    assert _only_markers_open_comments(text)
+
+
+def test_a_comment_opener_from_the_repository_reads_the_same_but_opens_nothing() -> None:
+    """The exclamation mark after ``<`` is escaped: CommonMark shows the text as typed, but it holds no ``<!--``."""
+    text = _small_tree({"description": "Siehe <!-- Hinweis -->"}, {"title": "A <!-- B"}, {})
+    escaped = "<" + chr(92) + "!--"
+
+    assert f"{chr(10)}Siehe {escaped} Hinweis -->{chr(10)}" in text
+    assert f"- Inhalt: [**A {escaped} B**](" in text
+
+
+def test_a_facet_value_cannot_split_itself_add_a_pair_or_end_its_marker() -> None:
+    """In a marker ``;`` separates the pairs, ``=`` a name from its values, ``|`` the values, and ``-->`` ends it.
+    Inside a value these are percent-encoded, with ``<``, so the subject reads back whole and nothing is added."""
+    text = _small_tree({"subject_labels": ("Physik; Bildungsstufe=Hochschule|Chemie --> <!-- /f -->",)}, {}, {})
+    head = dict(pair.split("=", 1) for pair in _blocks(text)[0][0].split("; "))
+
+    assert head == {
+        "Sammlung": INFO.id,
+        "Fach": "Physik%3B Bildungsstufe%3DHochschule%7CChemie --%3E %3C!-- /f --%3E",
+        "Bildungsstufe": "Sek I",
+    }
+    assert [ids for _, ids in _blocks(text)] == [ids for _, ids in _blocks(_small_tree({}, {}, {}))]
+    assert _only_markers_open_comments(text)

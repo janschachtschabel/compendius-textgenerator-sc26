@@ -60,12 +60,18 @@ def first_sentence(text: str) -> str:
     return sentence
 
 
+def _no_comment(text: str) -> str:
+    """``text`` without ``<!--``: a value from the repository must not open a facet marker, close a block or hide what
+    follows in an HTML comment. The ``!`` after the ``<`` is escaped, which CommonMark shows as typed."""
+    return text.replace("<!--", r"<\!--")
+
+
 def _description(text: str) -> str:
     """The collection's description as its editors wrote it, with their lines and paragraphs, but without a line that
     reads as a node: every line break becomes a plain one - CommonMark also breaks at CR, ``str.splitlines`` at
     U+2028 and more - and a dash that starts a line is escaped, which CommonMark shows as the dash it is. A list the
     editors typed therefore reads as running text."""
-    return "\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines())
+    return _no_comment("\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines()))
 
 
 def _marker(facets: dict[str, list[str]]) -> str:
@@ -97,14 +103,14 @@ def _node_line(kind: str, title: str, url: str, fields: Sequence[str], node_id: 
     The title is the link where the node has a URL, its brackets escaped so it stays one link. Every value comes
     from the repository, where an editor can type anything, so the whole line is collapsed: a line break would
     otherwise split the node or start a line that reads as another one. The URL is collapsed first, so that a
-    line break in it turns into a space before its target is chosen.
+    line break in it turns into a space before its target is chosen. No value opens a comment (``_no_comment``).
     """
     heading = f"**{title or 'ohne Titel'}**"
     target = one_line(url)
     if target:
         heading = f"[{heading.translate(_LINK_TEXT_ESCAPE)}]({_link_target(target)})"
-    return "- " + one_line(
-        " · ".join([f"{kind}: {heading}", *(field for field in fields if field), f"nodeId: {node_id}"])
+    return _no_comment(
+        "- " + one_line(" · ".join([f"{kind}: {heading}", *(field for field in fields if field), f"nodeId: {node_id}"]))
     )
 
 
@@ -135,7 +141,7 @@ def _counts(label: str, counter: Counter[str]) -> str:
 
 def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionContents]) -> tuple[str, dict[str, Any]]:
     """The key figures line and its summary. The line names labels straight from the repository, so it is collapsed
-    like a material line; the summary keeps them as the repository gave them."""
+    and kept free of comments like a material line; the summary keeps them as the repository gave them."""
     types = Counter(label for ref in refs for label in ref.resource_types)
     contexts = Counter(label for ref in refs for label in ref.educational_contexts)
     subjects = Counter(label for ref in refs for label in ref.subjects)
@@ -153,7 +159,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
         "subjects": dict(subjects),
         "licenses": dict(licenses),
     }
-    return one_line("; ".join(part for part in parts if part)), summary
+    return _no_comment(one_line("; ".join(part for part in parts if part))), summary
 
 
 def render_collection_overview(

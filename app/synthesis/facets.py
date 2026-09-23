@@ -226,12 +226,18 @@ def format_visible(facets: Mapping[str, Sequence[str]]) -> str:
     return " ".join(f"[{name}: {', '.join(values)}]" for name, values in facets.items() if values)
 
 
+# the marker's own syntax - pair, name and value separators, the ends of its HTML comment - as a value holds it
+_MARKER_VALUE_ESCAPE = str.maketrans({";": "%3B", "=": "%3D", "|": "%7C", "<": "%3C", ">": "%3E"})
+
+
 def format_marker(facets: Mapping[str, Sequence[str]]) -> str:
-    """The inside of a facet marker, ``name=value|value; name=value``, on one line whatever a value holds: values
-    come from sources editors type into, and a line break would end the marker early and put the rest of the value
-    on a line of the document."""
+    """The inside of a facet marker, ``name=value|value; name=value``, on one line whatever a value holds. Values
+    come from sources editors type into: a line break would end the marker early, and ``;``, ``=``, ``|``, ``<`` and
+    ``>`` would add a pair, split a value or end the comment, so a value holds them percent-encoded."""
     return "; ".join(
-        f"{name}=" + "|".join(" ".join(value.split()) for value in values) for name, values in facets.items() if values
+        f"{name}=" + "|".join(" ".join(value.split()).translate(_MARKER_VALUE_ESCAPE) for value in values)
+        for name, values in facets.items()
+        if values
     )
 
 

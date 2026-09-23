@@ -31,6 +31,12 @@ bleibt. Der Vorspann nennt unter `parts`, was wirklich drinsteht. `frontmatter_i
 lässt den Vorspann weg und beginnt bei der Überschrift — die Angaben stehen dann weiter im
 Antwortfeld `frontmatter`.
 
+Facettenmarker haben die Form `<!-- f: Name=Wert|Wert; Name=Wert -->` und stehen immer auf einer
+Zeile; ein Block reicht vom Marker bis zum nächsten `<!-- /f -->`. In einem Wert sind `;`, `=`, `|`,
+`<` und `>` prozentkodiert (`%3B`, `%3D`, `%7C`, `%3C`, `%3E`), damit kein Wert ein Paar anfügen,
+sich in zwei teilen oder den Marker beenden kann; dasselbe gilt im `facets`-Attribut der
+Abschnittsmarker von Teil 1.
+
 ## Stand
 
 - Phase 0 (Fundament): Kern aus dem Prototyp portiert, Teil 1 im Regelmodus, Tests offline.
@@ -228,7 +234,10 @@ gewöhnlicher, und ein Bindestrich am Zeilenanfang wird als `\-` maskiert, den C
 Bindestrich zeigt; eine Aufzählung in der Beschreibung liest sich deshalb als Fließtext. So kann kein
 Wert aus dem Repository eine Zeile teilen oder einen Knoten vortäuschen, auch nicht für einen Leser,
 der wie `str.splitlines()` an `\r`, U+2028 und den übrigen Unicode-Zeilenumbrüchen trennt, und eine
-nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt.
+nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt. Ebenso bringt
+kein Wert `<!--` in den Teil: Es steht als `<\!--` da, das CommonMark genauso zeigt. Jedes `<!--` in
+Teil 3 ist also einer seiner Marker, und kein Wert kann einen Block vorzeitig schließen oder einen
+eigenen öffnen.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht

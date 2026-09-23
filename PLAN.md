@@ -856,6 +856,11 @@ dieselben 226 nodeIds in derselben Reihenfolge. Die Beschreibung der Sammlung be
 Umbruch wird ein gewöhnlicher und ein Bindestrich am Zeilenanfang `\-`; Facettenmarker stehen immer auf einer
 Zeile (`format_marker`, auch in Teil 1 und 2). So kann kein Wert aus dem Repository einen Knoten vortäuschen; eine
 Aufzählung in einer Beschreibung wird dafür Fließtext (von den 16 Beschreibungen im Optik-Teilbaum hat keine eine).
+Auch den Facettenblock-Vertrag kann kein Wert brechen: `<!--` aus dem Repository wird in Teil 3 zu `<\!--`
+(CommonMark zeigt es gleich), und `format_marker` kodiert `;`, `=`, `|`, `<` und `>` in Werten als `%3B` usw.
+Maskieren statt Entfernen wie bei Modellantworten (D27, 4.7), weil Redaktionstext nicht still verschwinden soll.
+Kein Markerwert der 2.514 Lehrpläne im Cache enthält eines der Zeichen; Teil 2 (vier Themen, 306 Blöcke) und
+Teil 3 (Optik, live) bleiben byte-identisch.
 
 ### 6.3 Wissens-Sammlung (optional, `knowledge_collection_id`)
 

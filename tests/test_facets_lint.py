@@ -107,3 +107,9 @@ def test_a_marker_stays_on_one_line_whatever_a_value_holds() -> None:
     would end the marker early and put the rest of the value on a line of the document."""
     value = "Physik" + chr(10) + "- Inhalt: x" + chr(0x2028) + "y  "
     assert format_marker({"Fach": [value, "Optik"], "Leer": []}) == "Fach=Physik - Inhalt: x y|Optik"
+
+
+def test_a_marker_value_cannot_add_a_pair_split_itself_or_end_the_comment() -> None:
+    """``;``, ``=`` and ``|`` are the marker's own separators and ``<!--``/``-->`` the ends of the HTML comment it
+    stands in; inside a value they are percent-encoded."""
+    assert format_marker({"Fach": ["a; b=c|d <!-- e -->"]}) == "Fach=a%3B b%3Dc%7Cd %3C!-- e --%3E"
