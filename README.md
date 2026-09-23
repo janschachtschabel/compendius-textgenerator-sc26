@@ -23,7 +23,7 @@ kompendium_version: 2 … parts: [world, curricula, collection]
 
 ## Teil 1 · Weltwissen          (Bausteine des Templates, je Abschnitt eine Markierung)
 ## Teil 2 · Lehrplanbezüge      (aus dem MEM-Cache, je Fundstelle ein Facettenblock)
-## Teil 3 · Die Sammlung im Überblick   (Kennzahlen, Materialblöcke, Untersammlungen)
+## Teil 3 · Die Sammlung im Überblick   (Kennzahlen, Materialliste, Untersammlungen)
 ```
 
 `parts` wählt aus; nicht angefragte Teile entfallen ersatzlos, die Reihenfolge der übrigen
@@ -191,38 +191,32 @@ bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der V
 Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
 angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen.
 
-### Materialblöcke in Teil 3
+### Materialzeilen in Teil 3
 
-Jedes Material steht in einem eigenen Block `::: wlo-material` … `:::`, damit ein nachgelagertes
-Werkzeug es ohne Kenntnis dieses Dienstes herauslösen kann:
+Jedes Material steht auf genau einer Listenzeile, deren letztes Feld seine nodeId ist:
 
 ```markdown
-::: wlo-material
-nodeId: 8f42c56f-cd9f-47e1-bc20-b75fbb81ce51
-
-[**Elliptischer Hohlspiegel**](https://www.geogebra.org/classic/WtDBvGD9) — Lizenz: CC BY-SA 3.0
-
-Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I
-:::
+- **Elliptischer Hohlspiegel** · Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I · CC BY-SA 3.0 · [Material](https://www.geogebra.org/classic/WtDBvGD9) · nodeId: 8f42c56f-cd9f-47e1-bc20-b75fbb81ce51
 ```
 
-Was dabei zugesichert ist:
+Die Felder stehen, soweit hinterlegt, in dieser Reihenfolge: Titel, erster Satz der Beschreibung,
+Schlagwörter, bis zu zwei Materialtypen und Bildungsstufen, Lizenz als Kurzangabe (die Version aus
+`ccm:commonlicense_cc_version`, nie geraten), `[Material](URL)`, `nodeId: <id>`. Für Programme
+zugesichert ist nur der Rahmen:
 
-| Zeile | Inhalt |
+| Zusicherung | Bedeutung |
 |---|---|
-| `::: wlo-material` | öffnet den Block; davor und danach steht eine Leerzeile, `:::` allein schließt ihn |
-| `nodeId: <id>` | der Knoten des Materials selbst — `originalId` der Sammlungs­referenz, nicht die Id der Referenz. Damit lässt sich das Material im Repository nachschlagen (`…/edu-sharing/components/render/<id>`, Vorschaubild `…/edu-sharing/preview?nodeId=<id>`) |
-| `[**Titel**](URL) — Lizenz: …` | Titel verlinkt das Material; hat es keine eigene URL, verlinkt er seine Seite im Repository. Ist auch die nodeId unbrauchbar, bleibt der Titel unverlinkt (`**Titel** — Lizenz: …`), und die übrigen Materialien erscheinen wie gewohnt |
-| Lizenz | die Kurzangabe, wie das Repository sie führt: `CC BY-SA 3.0`, `CC0 1.0`, `frei zugänglich (keine OER-Lizenz)`, `urheberrechtlich geschützt`, … Die Version kommt aus `ccm:commonlicense_cc_version` und wird nie geraten |
-| letzte Zeile | Beschreibungssatz, Schlagwörter, Materialtyp, Bildungsstufe — entfällt, wenn nichts davon hinterlegt ist |
+| eine Zeile je Material | sie beginnt mit `- **`; die Liste einer (Unter-)Sammlung steht zwischen ihrem Facettenmarker `<!-- f: Sammlung=<id>; … -->` und `<!-- /f -->` |
+| `· nodeId: <id>` am Zeilenende | der Knoten des Materials selbst — `originalId` der Sammlungsreferenz, nicht die Id der Referenz. Damit lässt sich das Material im Repository nachschlagen (`…/edu-sharing/components/render/<id>`, Vorschaubild `…/edu-sharing/preview?nodeId=<id>`) |
+| `[Material](URL)` | fehlt nur, wenn das Repository keine URL führt; eine URL mit Leerzeichen oder Klammern steht in `<…>` |
 
-Jeder Wert eines Materials kommt aus dem Repository, wo Redakteure frei tippen können, und wird
-entschärft, bevor er in Teil 3 landet — im Block wie in der Kennzahlenzeile darüber: Zeilenumbrüche
-werden zu Leerzeichen, eine Metadatenzeile, die mit `:::` beginnt, bekommt einen Backslash vor den
-ersten Doppelpunkt (Markdown zeigt `\:` als `:`), `[` und `]` im Titel werden maskiert, URLs mit
-Leerzeichen oder Klammern stehen in `<…>`. Kein Wert eines Materials kann so einen Block öffnen,
-schließen oder vortäuschen. Nicht erfasst sind die Beschreibungen der Sammlung und ihrer
-Untersammlungen: sie bleiben mehrzeilig, so wie die Redaktion sie angelegt hat.
+Ein Parser braucht damit nur `^- \*\*(.+?)\*\* · .* · nodeId: ([0-9a-f-]{36})$`.
+
+Jeder Wert eines Materials kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird
+jede Materialzeile auf eine Zeile gebracht, ebenso die Kennzahlenzeile darüber, in der Lizenzen,
+Materialtypen, Bildungsstufen und Fächer stehen: Kein Wert kann eine Materialzeile teilen oder eine
+Zeile beginnen, die wie ein weiteres Material aussieht. Nicht erfasst sind die Beschreibungen der
+Sammlung und ihrer Untersammlungen — sie bleiben mehrzeilig, so wie die Redaktion sie angelegt hat.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht

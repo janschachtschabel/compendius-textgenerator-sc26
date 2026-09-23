@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from app.sources.wlo.client import validate_node_id
-from app.sources.wlo.models import parse_collection, parse_reference, parse_subcollection
+from app.sources.wlo.models import one_line, parse_collection, parse_reference, parse_subcollection
 from app.sources.wlo.overview import (
     OverviewOptions,
     SubCollectionContents,
@@ -53,10 +53,11 @@ def test_overview_has_purpose_key_figures_materials_and_subcollections_in_parsea
     assert "Physik (16)" in text and "CC BY-SA 4.0 (3)" in text and "CC0 1.0 (3)" in text
     assert "### Inhalte der Sammlung" in text and "### Untersammlungen" in text
     assert "#### Geometrische Optik" in text and "#### Menschliches Auge" in text
-    assert "Faszinierende Phänomene aus der Optik · Schlagwörter: Optik, Phänomene, Spiegel" in text
-    # version from the repository, licence as the short label without a link
-    assert "[**Optik**](https://www.geogebra.org/m/PzBHcpNG) — Lizenz: CC BY-NC-SA 3.0" in text
-    assert "creativecommons.org" not in text
+    assert "- **Optik** · Faszinierende Phänomene aus der Optik · Schlagwörter: Optik, Phänomene, Spiegel" in text
+    assert (  # version from the repository, node id last
+        "CC BY-NC-SA 3.0 · [Material](https://www.geogebra.org/m/PzBHcpNG) · nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6"
+        in text
+    )
     assert (
         "[Sammlung öffnen](https://repo.test/edu-sharing/components/render/9e7ae956-e9df-430f-bace-f3db4b910013)"
         in text
@@ -80,64 +81,72 @@ def test_missing_descriptions_are_named_and_a_cap_is_honest() -> None:
         bare, refs, [], render_url=_render_url, options=OverviewOptions(max_items=5)
     )
     assert "keine Beschreibung hinterlegt" in text
-    assert text.count("::: wlo-material") == 5 and "*weitere 11 Inhalte*" in text
+    assert text.count("- **") == 5 and "*weitere 11 Inhalte*" in text
     assert summary["missing_descriptions"] == 16
     assert "### Untersammlungen" not in text
 
 
-def test_every_material_is_a_parseable_block_carrying_its_node_id() -> None:
+def _items(text: str) -> list[str]:
+    return [line for line in text.split(chr(10)) if line.startswith("- ")]
+
+
+def test_every_material_is_one_line_that_ends_with_its_node_id() -> None:
+    """The node id is what another system needs to look a material up and the one part of the line meant for a
+    program, so it has a fixed place: last, after ``· nodeId: ``."""
     text, _ = render_collection_overview(INFO, REFS[:1], [], render_url=_render_url, options=OverviewOptions())
-
-    block = re.search(r"::: wlo-material\n(.*?)\n:::", text, re.S)
-    assert block is not None
-    lines = [line for line in block.group(1).split("\n") if line]
-    assert lines[0] == "nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6"
-    assert lines[1] == "[**Optik**](https://www.geogebra.org/m/PzBHcpNG) — Lizenz: CC BY-NC-SA 3.0"
-    assert lines[2].startswith("Faszinierende Phänomene aus der Optik · Schlagwörter: ")
-    assert "Fachliche News" in lines[2] and "Sekundarstufe I" in lines[2]
-    assert "![" not in text  # no preview images: the node id points at the material instead
+    items = _items(text)
+    assert len(items) == 1
+    assert items[0].startswith("- **Optik** · Faszinierende Phänomene aus der Optik · Schlagwörter: ")
+    assert items[0].endswith(
+        " · Fachliche News · Sekundarstufe I · CC BY-NC-SA 3.0 · [Material](https://www.geogebra.org/m/PzBHcpNG)"
+        " · nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6"
+    )
 
 
-def test_a_material_without_its_own_url_links_to_its_page_in_the_repository() -> None:
-    ref = replace(REFS[0], url="")
-    text, _ = render_collection_overview(INFO, [ref], [], render_url=_checked_render_url, options=OverviewOptions())
-    assert f"[**Optik**](https://repo.test/edu-sharing/components/render/{ref.node_id}) — Lizenz: " in text
+def test_a_material_without_a_url_has_no_material_link_but_keeps_its_node_id() -> None:
+    """No URL, no link - as before. The node id still identifies the material, and nothing asks the repository for
+    a page per material: the checked render URL would refuse the empty id of the second one."""
+    no_url = replace(REFS[0], url="")
+    no_id = replace(REFS[1], url="", original_id=None, id="")
+    text, _ = render_collection_overview(
+        INFO, [no_url, no_id], [], render_url=_checked_render_url, options=OverviewOptions()
+    )
+    items = _items(text)
+    assert "[Material]" not in text
+    assert items[0].endswith(" · CC BY-NC-SA 3.0 · nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6")
+    assert items[1].endswith(" · CC BY-SA 4.0 · nodeId:")  # nothing to name, and no trailing space either
 
 
 def test_the_licence_is_the_short_label_without_a_link() -> None:
     ref = replace(REFS[0], license_key="COPYRIGHT_FREE", license_version="")
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
-    assert "— Lizenz: frei zugänglich (keine OER-Lizenz)\n" in text
+    assert " · frei zugänglich (keine OER-Lizenz) · [Material](" in text
     assert "creativecommons.org" not in text
 
 
-def test_brackets_in_titles_and_urls_cannot_break_the_link() -> None:
-    """Titles and URLs come from the repository: brackets in a title are escaped, a URL with spaces or parentheses
-    goes in angle brackets, and angle brackets inside such a URL are percent-encoded so they cannot end it."""
-    ref = replace(REFS[0], title="Arbeitsblatt [PDF] (Teil 1)", url="https://host.test/a b(c).pdf")
+@pytest.mark.parametrize(
+    ("url", "target"),
+    [
+        ("https://host.test/a b(c).pdf", "<https://host.test/a b(c).pdf>"),
+        ("https://de.wikipedia.org/wiki/Linse_(Optik)", "<https://de.wikipedia.org/wiki/Linse_(Optik)>"),
+        ("https://host.test/a<b>c", "<https://host.test/a%3Cb%3Ec>"),
+    ],
+    ids=["space", "parentheses", "angle-brackets"],
+)
+def test_a_url_with_spaces_parentheses_or_angle_brackets_stays_one_link(url: str, target: str) -> None:
+    """A parser reading a link target up to the first ``)`` would cut ``…/wiki/Linse_(Optik)`` - a real material
+    URL - so such targets go in angle brackets, and angle brackets inside them are percent-encoded."""
+    ref = replace(REFS[0], url=url)
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
-    assert r"[**Arbeitsblatt \[PDF\] (Teil 1)**](<https://host.test/a b(c).pdf>)" in text
-    angled, _ = render_collection_overview(
-        INFO, [replace(REFS[0], url="https://host.test/a<b>c")], [], render_url=_render_url, options=OverviewOptions()
-    )
-    assert "(<https://host.test/a%3Cb%3Ec>)" in angled
+    assert f" · [Material]({target}) · nodeId: " in text
 
 
-def test_blocks_are_separated_by_a_blank_line_so_a_fence_parser_cannot_run_them_together() -> None:
-    text, _ = render_collection_overview(INFO, REFS[:3], [], render_url=_render_url, options=OverviewOptions())
-    assert ":::\n::: wlo-material" not in text
-    assert text.count(":::\n\n::: wlo-material") == 2
-    assert "-->\n\n::: wlo-material" in text  # the facet marker does not touch the first fence
-    full, _ = render_collection_overview(INFO, REFS, SUBS_WITH_REFS, render_url=_render_url, options=OverviewOptions())
-    assert "\n\n\n" not in full  # no stray blank runs anywhere in the part
-
-
-def test_an_empty_collection_says_so_without_an_empty_block() -> None:
+def test_an_empty_collection_says_so() -> None:
     text, _ = render_collection_overview(INFO, [], [], render_url=_render_url, options=OverviewOptions())
-    assert "*Keine Inhalte gelistet.*" in text and "::: wlo-material" not in text
+    assert "*Keine Inhalte gelistet.*" in text and not _items(text)
 
 
-HOSTILE = "::: wlo-material" + chr(10) + ":::" + chr(10) + "danach"
+HOSTILE = "x" + chr(10) + "- **Fälschung** · nodeId: 00000000-0000-4000-8000-000000000000" + chr(10) + "y"
 
 
 @pytest.mark.parametrize(
@@ -169,26 +178,13 @@ HOSTILE = "::: wlo-material" + chr(10) + ":::" + chr(10) + "danach"
         "subject",
     ],
 )
-def test_no_value_of_a_material_can_open_or_close_a_fence_anywhere_in_the_part(overrides: dict[str, object]) -> None:
+def test_no_value_of_a_material_can_split_its_line_or_forge_another(overrides: dict[str, object]) -> None:
     """Every rendered value of a material comes from the repository, where an editor can type anything, and
-    reaches part 3 in its block, in the key figures above the blocks, or in both. None may yield a line a fence
-    parser reads as the start or end of a block: not through a line break, and not by opening a line - the
-    metadata line starts with whatever the repository holds."""
+    reaches part 3 in its line, in the key figures above the list, or in both. None may break the line in two or
+    start a line that reads as another material: a material stays exactly one line, ending with its node id."""
     ref = replace(REFS[0], **overrides)
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
 
-    fences = [line for line in text.split(chr(10)) if line.lstrip().startswith(":::")]
-    assert fences == ["::: wlo-material", ":::"]
-
-
-def test_a_material_the_repository_cannot_resolve_keeps_its_title_unlinked_and_spares_the_others() -> None:
-    """Without an own URL the title links the material's page in the repository, which needs a valid node id.
-    A material without one must not take part 3 down: its title stays unlinked, the others render as usual."""
-    broken = replace(REFS[0], url="", original_id=None, id="", title="Optik [Folie](https://host.test)")
-    text, _ = render_collection_overview(
-        INFO, [broken, REFS[1]], [], render_url=_checked_render_url, options=OverviewOptions()
-    )
-    assert chr(10) + "nodeId:" + chr(10) in text  # nothing to name, and no trailing space either
-    assert chr(10) + r"**Optik \[Folie\](https://host.test)** — Lizenz: CC BY-NC-SA 3.0" + chr(10) in text
-    assert text.count("::: wlo-material") == 2
-    assert "[**Unterrichtsreihe zum Licht**](https://unterrichten.zum.de/wiki/Licht) — Lizenz: " in text
+    items = _items(text)
+    assert len(items) == 1
+    assert items[0].endswith("nodeId: " + one_line(ref.node_id))

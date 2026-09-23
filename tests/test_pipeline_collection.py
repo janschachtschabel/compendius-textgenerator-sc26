@@ -192,8 +192,8 @@ def test_all_three_parts_land_in_one_markdown_in_order(with_collections: Compend
     part_three = markdown[collection:]
     # 16 own materials plus the same 16 under each of the four sub-collections: the repository double answers
     # every children/references path with the same two pages.
-    assert part_three.count("::: wlo-material") == 80
-    assert part_three.count("nodeId: ") == 80  # every block carries its node id
+    items = [line for line in part_three.split(chr(10)) if line.startswith("- **")]
+    assert len(items) == 80 and all(" · nodeId: " in item for item in items)  # one line per material, node id in it
     assert "nodeId: 4bfa7693-0764-4dca-9720-c5fb0b8892d6" in part_three
 
 

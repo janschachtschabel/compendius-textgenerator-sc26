@@ -1,12 +1,11 @@
-"""Part 3 rendering (PLAN.md 6.2): purpose, key figures, material blocks, sub-collections one level down.
+"""Part 3 rendering (PLAN.md 6.2): purpose, key figures, compact material lists, sub-collections one level down.
 
 No judgement and no invention: a missing description stays visibly missing. Every block sits between a
 facet marker (collection id, subject, level) and ``<!-- /f -->`` so it can be parsed out later, like
 the curriculum blocks of part 2. Nothing is cut unless a cap is configured (decision D23).
 
-Each material is a fenced ``::: wlo-material`` block naming its node id, so another system can lift the
-materials out of the markdown and look them up in the repository; the README section "Materialblöcke in
-Teil 3" is the contract.
+Each material is one list line ending in ``· nodeId: <id>``, so another system can lift the materials out of the
+markdown and look them up in the repository; the README section "Materialzeilen in Teil 3" is the contract.
 """
 
 from __future__ import annotations
@@ -34,8 +33,6 @@ COLLECTION_TYPES = {
 MAX_KEYWORDS = 8
 MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
-MATERIAL_FENCE = "wlo-material"  # the block a downstream parser looks for; the README documents its shape
-_LINK_TEXT_ESCAPE = str.maketrans({"[": r"\[", "]": r"\]"})
 
 
 @dataclass(frozen=True)
@@ -74,84 +71,45 @@ def _collection_facets(info: CollectionInfo) -> dict[str, list[str]]:
     return facets
 
 
-def _link(text: str, url: str) -> str:
-    """A markdown link whose text and target cannot break out of it.
-
-    Titles and URLs come from the repository, so they are untrusted input for a format that is meant to be
-    parsed: brackets in the text are escaped, and a target with spaces or parentheses goes in angle brackets,
-    which in turn needs the angle brackets of the URL itself percent-encoded.
-    """
+def _link_target(url: str) -> str:
+    """``url`` as a markdown link target that cannot end early: with spaces or parentheses it goes in angle
+    brackets - ``…/wiki/Linse_(Optik)`` is a real material URL, which a parser reading up to the first ``)``
+    would cut - and angle brackets inside it are percent-encoded."""
     if any(char in url for char in " ()<>"):
-        url = f"<{url.replace('<', '%3C').replace('>', '%3E')}>"
-    return f"[{text.translate(_LINK_TEXT_ESCAPE)}]({url})"
+        return f"<{url.replace('<', '%3C').replace('>', '%3E')}>"
+    return url
 
 
-def _metadata_line(ref: MaterialRef) -> str:
-    """Description, keywords, type and level on one line.
+def _item_line(ref: MaterialRef) -> str:
+    """One material on one line, its node id last.
 
-    It is the one line of a block whose start the repository decides. Beyond being collapsed like every value
-    in the block, a line that starts with ``:::`` gets a backslash before its first colon: a fence parser would
-    read it as the start or the end of a block, while markdown shows the escaped colon as a plain one.
+    Every value comes from the repository, where an editor can type anything, so the whole line is collapsed:
+    a line break would otherwise split the material or start a line that reads as another one. The URL is
+    collapsed first, so that a line break in it turns into a space before its target is chosen.
     """
-    parts = []
+    parts = [f"**{ref.title or 'ohne Titel'}**"]
     sentence = first_sentence(ref.description)
     if sentence:
         parts.append(sentence)
     if ref.keywords:
         parts.append("Schlagwörter: " + ", ".join(ref.keywords[:MAX_KEYWORDS]))
     parts.extend(label for label in (*ref.resource_types[:2], *ref.educational_contexts[:2]) if label)
-    line = one_line(" · ".join(parts))
-    return r"\:" + line[1:] if line.startswith(":::") else line
+    parts.append(ref.license)
+    url = one_line(ref.url)
+    if url:
+        parts.append(f"[Material]({_link_target(url)})")
+    parts.append(f"nodeId: {ref.node_id}")
+    return "- " + one_line(" · ".join(parts))
 
 
-def _repository_page(node_id: str, render_url: Callable[[str], str]) -> str:
-    """The material's page in the repository, or ``""`` when its id is not one the repository could resolve.
-
-    ``render_url`` refuses such an id with ``ValueError``. One unresolvable material must not take the whole
-    part down with it, so its title just stays unlinked.
-    """
-    try:
-        return render_url(node_id)
-    except ValueError:
-        return ""
-
-
-def _material_block(ref: MaterialRef, render_url: Callable[[str], str]) -> list[str]:
-    """One material as a fenced block: node id, titled link with the licence, metadata.
-
-    The node id is what another system needs to look the material up, so it stands on its own line rather
-    than hidden in a URL. The title links to the material itself, or to its page in the repository when it
-    has no own URL; with neither it stays unlinked. The licence is the short label.
-
-    Every value comes from the repository, where an editor can type anything, so each is put on one line:
-    a line break would otherwise start a line of its own inside the block, and one reading ``:::`` would end it.
-    """
-    node_id = one_line(ref.node_id)
-    title = f"**{one_line(ref.title) or 'ohne Titel'}**"
-    target = one_line(ref.url) or _repository_page(node_id, render_url)
-    heading = _link(title, target) if target else title.translate(_LINK_TEXT_ESCAPE)  # escaped either way
-    lines = [
-        f"::: {MATERIAL_FENCE}",
-        f"nodeId: {node_id}".rstrip(),
-        "",
-        f"{heading} — Lizenz: {one_line(ref.license)}",
-    ]
-    metadata = _metadata_line(ref)
-    if metadata:
-        lines.extend(["", metadata])
-    lines.append(":::")
-    return lines
-
-
-def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions, render_url: Callable[[str], str]) -> list[str]:
-    """The material blocks of one list, each separated by a blank line so every fence stands on its own block."""
+def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions) -> list[str]:
     if not refs:
-        return ["", NO_ITEMS, ""]
+        return [NO_ITEMS]
     shown = refs if options.max_items is None else refs[: options.max_items]
-    lines = [line for ref in shown for line in ("", *_material_block(ref, render_url))]
+    lines = [_item_line(ref) for ref in shown]
     if len(refs) > len(shown):
-        lines.extend(["", f"*weitere {len(refs) - len(shown)} Inhalte*"])
-    return [*lines, ""]
+        lines.append(f"- *weitere {len(refs) - len(shown)} Inhalte*")
+    return lines
 
 
 def _counts(label: str, counter: Counter[str]) -> str:
@@ -161,8 +119,8 @@ def _counts(label: str, counter: Counter[str]) -> str:
 
 
 def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionContents]) -> tuple[str, dict[str, Any]]:
-    """The key figures line and its summary. The line names labels straight from the repository, so it is put on
-    one line like the values in a block; the summary keeps them as the repository gave them."""
+    """The key figures line and its summary. The line names labels straight from the repository, so it is collapsed
+    like a material line; the summary keeps them as the repository gave them."""
     types = Counter(label for ref in refs for label in ref.resource_types)
     contexts = Counter(label for ref in refs for label in ref.educational_contexts)
     subjects = Counter(label for ref in refs for label in ref.subjects)
@@ -194,7 +152,7 @@ def render_collection_overview(
 ) -> tuple[str, dict[str, Any]]:
     """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` adds a visible hint."""
     facets = _collection_facets(info)
-    head = [f"**{info.title}** · {_link('Sammlung öffnen', render_url(info.id))}"]
+    head = [f"**{info.title}** · [Sammlung öffnen]({render_url(info.id)})"]
     if info.subject_labels:
         head.append("Fach: " + ", ".join(info.subject_labels))
     if info.educational_contexts:
@@ -217,9 +175,7 @@ def render_collection_overview(
         END_MARKER,
         "",
     ]
-    lines.extend(
-        ["### Inhalte der Sammlung", "", _marker(facets), *_item_lines(refs, options, render_url), END_MARKER, ""]
-    )
+    lines.extend(["### Inhalte der Sammlung", "", _marker(facets), *_item_lines(refs, options), END_MARKER, ""])
     if subs:
         lines.extend(["### Untersammlungen", ""])
         for sub in subs:
@@ -229,7 +185,8 @@ def render_collection_overview(
                     "",
                     _marker({"Sammlung": [sub.info.id], "Übergeordnet": [info.id]}),
                     sub.info.description or NO_DESCRIPTION,
-                    *_item_lines(sub.refs, options, render_url),
+                    "",
+                    *_item_lines(sub.refs, options),
                     END_MARKER,
                     "",
                 ]
