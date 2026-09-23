@@ -17,7 +17,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
+from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection, one_line
 from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
@@ -89,8 +89,9 @@ def _link(text: str, url: str) -> str:
 def _metadata_line(ref: MaterialRef) -> str:
     """Description, keywords, type and level on one line.
 
-    The line is collapsed to single spaces at the end: a keyword the repository stores with a line break
-    would otherwise put its own lines into the block, and one reading ``:::`` would close it early.
+    It is the one line of a block whose start the repository decides. Beyond being collapsed like every value
+    in the block, a line that starts with ``:::`` gets a backslash before its first colon: a fence parser would
+    read it as the start or the end of a block, while markdown shows the escaped colon as a plain one.
     """
     parts = []
     sentence = first_sentence(ref.description)
@@ -99,7 +100,20 @@ def _metadata_line(ref: MaterialRef) -> str:
     if ref.keywords:
         parts.append("Schlagwörter: " + ", ".join(ref.keywords[:MAX_KEYWORDS]))
     parts.extend(label for label in (*ref.resource_types[:2], *ref.educational_contexts[:2]) if label)
-    return " ".join(" · ".join(parts).split())
+    line = one_line(" · ".join(parts))
+    return r"\:" + line[1:] if line.startswith(":::") else line
+
+
+def _repository_page(node_id: str, render_url: Callable[[str], str]) -> str:
+    """The material's page in the repository, or ``""`` when its id is not one the repository could resolve.
+
+    ``render_url`` refuses such an id with ``ValueError``. One unresolvable material must not take the whole
+    part down with it, so its title just stays unlinked.
+    """
+    try:
+        return render_url(node_id)
+    except ValueError:
+        return ""
 
 
 def _material_block(ref: MaterialRef, render_url: Callable[[str], str]) -> list[str]:
@@ -107,14 +121,20 @@ def _material_block(ref: MaterialRef, render_url: Callable[[str], str]) -> list[
 
     The node id is what another system needs to look the material up, so it stands on its own line rather
     than hidden in a URL. The title links to the material itself, or to its page in the repository when it
-    has no own URL, so a parser always finds exactly one target. The licence is the short label.
+    has no own URL; with neither it stays unlinked. The licence is the short label.
+
+    Every value comes from the repository, where an editor can type anything, so each is put on one line:
+    a line break would otherwise start a line of its own inside the block, and one reading ``:::`` would end it.
     """
-    title = ref.title or "ohne Titel"
+    node_id = one_line(ref.node_id)
+    title = f"**{one_line(ref.title) or 'ohne Titel'}**"
+    target = one_line(ref.url) or _repository_page(node_id, render_url)
+    heading = _link(title, target) if target else title.translate(_LINK_TEXT_ESCAPE)  # escaped either way
     lines = [
         f"::: {MATERIAL_FENCE}",
-        f"nodeId: {ref.node_id}",
+        f"nodeId: {node_id}".rstrip(),
         "",
-        f"{_link(f'**{title}**', ref.url or render_url(ref.node_id))} — Lizenz: {ref.license}",
+        f"{heading} — Lizenz: {one_line(ref.license)}",
     ]
     metadata = _metadata_line(ref)
     if metadata:
@@ -141,6 +161,8 @@ def _counts(label: str, counter: Counter[str]) -> str:
 
 
 def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionContents]) -> tuple[str, dict[str, Any]]:
+    """The key figures line and its summary. The line names labels straight from the repository, so it is put on
+    one line like the values in a block; the summary keeps them as the repository gave them."""
     types = Counter(label for ref in refs for label in ref.resource_types)
     contexts = Counter(label for ref in refs for label in ref.educational_contexts)
     subjects = Counter(label for ref in refs for label in ref.subjects)
@@ -158,7 +180,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
         "subjects": dict(subjects),
         "licenses": dict(licenses),
     }
-    return "; ".join(part for part in parts if part), summary
+    return one_line("; ".join(part for part in parts if part)), summary
 
 
 def render_collection_overview(

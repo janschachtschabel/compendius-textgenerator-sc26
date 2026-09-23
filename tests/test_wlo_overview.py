@@ -1,10 +1,13 @@
-"""Part 3 rendering: purpose, key figures, compact material lists, sub-collections, parseable blocks."""
+"""Part 3 rendering: purpose, key figures, parseable material blocks, sub-collections."""
 
 import json
 import re
 from dataclasses import replace
 from pathlib import Path
 
+import pytest
+
+from app.sources.wlo.client import validate_node_id
 from app.sources.wlo.models import parse_collection, parse_reference, parse_subcollection
 from app.sources.wlo.overview import (
     OverviewOptions,
@@ -33,6 +36,11 @@ SUBS_WITH_REFS = [SubCollectionContents(info=s, refs=tuple(REFS[:2]) if i == 0 e
 
 def _render_url(node_id: str) -> str:
     return f"https://repo.test/edu-sharing/components/render/{node_id}"
+
+
+def _checked_render_url(node_id: str) -> str:
+    """What the client does: refuse an id the repository could not resolve."""
+    return f"https://repo.test/edu-sharing/components/render/{validate_node_id(node_id)}"
 
 
 def test_overview_has_purpose_key_figures_materials_and_subcollections_in_parseable_blocks() -> None:
@@ -92,22 +100,27 @@ def test_every_material_is_a_parseable_block_carrying_its_node_id() -> None:
 
 def test_a_material_without_its_own_url_links_to_its_page_in_the_repository() -> None:
     ref = replace(REFS[0], url="")
-    text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
+    text, _ = render_collection_overview(INFO, [ref], [], render_url=_checked_render_url, options=OverviewOptions())
     assert f"[**Optik**](https://repo.test/edu-sharing/components/render/{ref.node_id}) — Lizenz: " in text
 
 
-def test_a_licence_without_a_deed_stays_unlinked_text() -> None:
+def test_the_licence_is_the_short_label_without_a_link() -> None:
     ref = replace(REFS[0], license_key="COPYRIGHT_FREE", license_version="")
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
     assert "— Lizenz: frei zugänglich (keine OER-Lizenz)\n" in text
     assert "creativecommons.org" not in text
 
 
-def test_brackets_in_a_title_cannot_break_the_block_structure() -> None:
-    """Titles come from the repository, so they are untrusted input for the markdown the compendium publishes."""
+def test_brackets_in_titles_and_urls_cannot_break_the_link() -> None:
+    """Titles and URLs come from the repository: brackets in a title are escaped, a URL with spaces or parentheses
+    goes in angle brackets, and angle brackets inside such a URL are percent-encoded so they cannot end it."""
     ref = replace(REFS[0], title="Arbeitsblatt [PDF] (Teil 1)", url="https://host.test/a b(c).pdf")
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
     assert r"[**Arbeitsblatt \[PDF\] (Teil 1)**](<https://host.test/a b(c).pdf>)" in text
+    angled, _ = render_collection_overview(
+        INFO, [replace(REFS[0], url="https://host.test/a<b>c")], [], render_url=_render_url, options=OverviewOptions()
+    )
+    assert "(<https://host.test/a%3Cb%3Ec>)" in angled
 
 
 def test_blocks_are_separated_by_a_blank_line_so_a_fence_parser_cannot_run_them_together() -> None:
@@ -124,17 +137,58 @@ def test_an_empty_collection_says_so_without_an_empty_block() -> None:
     assert "*Keine Inhalte gelistet.*" in text and "::: wlo-material" not in text
 
 
-def test_no_repository_field_can_close_the_fence_early() -> None:
-    """The fence must survive whatever a contributor typed: angle brackets in a URL, and a keyword that
-    carries a line break and a closing fence. Both would otherwise end the block inside a material."""
-    ref = replace(
-        REFS[0],
-        url="https://host.test/a<b>c",
-        keywords=("harmlos", "boese" + chr(10) + ":::" + chr(10) + "Text"),
-    )
+HOSTILE = "::: wlo-material" + chr(10) + ":::" + chr(10) + "danach"
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"title": HOSTILE},
+        {"url": HOSTILE},
+        {"original_id": HOSTILE},
+        {"original_id": None, "id": HOSTILE},
+        {"license_key": HOSTILE, "license_version": ""},
+        {"license_key": "CC_BY", "license_version": HOSTILE},
+        {"description": HOSTILE},
+        {"keywords": (HOSTILE,)},
+        {"description": "", "keywords": (), "resource_types": (HOSTILE,)},
+        {"educational_contexts": (HOSTILE,)},
+        {"subjects": (HOSTILE,)},
+    ],
+    ids=[
+        "title",
+        "url",
+        "node-id",
+        "reference-id",
+        "licence",
+        "licence-version",
+        "description",
+        "keywords",
+        "resource-type",
+        "level",
+        "subject",
+    ],
+)
+def test_no_value_of_a_material_can_open_or_close_a_fence_anywhere_in_the_part(overrides: dict[str, object]) -> None:
+    """Every rendered value of a material comes from the repository, where an editor can type anything, and
+    reaches part 3 in its block, in the key figures above the blocks, or in both. None may yield a line a fence
+    parser reads as the start or end of a block: not through a line break, and not by opening a line - the
+    metadata line starts with whatever the repository holds."""
+    ref = replace(REFS[0], **overrides)
     text, _ = render_collection_overview(INFO, [ref], [], render_url=_render_url, options=OverviewOptions())
 
-    closings = [line for line in text.split(chr(10)) if line == ":::"]
-    assert len(closings) == 1  # exactly one closing fence: nothing in the material closed the block early
-    assert "<https://host.test/a%3Cb%3Ec>" in text
-    assert text.count("::: wlo-material") == 1
+    fences = [line for line in text.split(chr(10)) if line.lstrip().startswith(":::")]
+    assert fences == ["::: wlo-material", ":::"]
+
+
+def test_a_material_the_repository_cannot_resolve_keeps_its_title_unlinked_and_spares_the_others() -> None:
+    """Without an own URL the title links the material's page in the repository, which needs a valid node id.
+    A material without one must not take part 3 down: its title stays unlinked, the others render as usual."""
+    broken = replace(REFS[0], url="", original_id=None, id="", title="Optik [Folie](https://host.test)")
+    text, _ = render_collection_overview(
+        INFO, [broken, REFS[1]], [], render_url=_checked_render_url, options=OverviewOptions()
+    )
+    assert chr(10) + "nodeId:" + chr(10) in text  # nothing to name, and no trailing space either
+    assert chr(10) + r"**Optik \[Folie\](https://host.test)** — Lizenz: CC BY-NC-SA 3.0" + chr(10) in text
+    assert text.count("::: wlo-material") == 2
+    assert "[**Unterrichtsreihe zum Licht**](https://unterrichten.zum.de/wiki/Licht) — Lizenz: " in text

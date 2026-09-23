@@ -212,13 +212,17 @@ Was dabei zugesichert ist:
 |---|---|
 | `::: wlo-material` | öffnet den Block; davor und danach steht eine Leerzeile, `:::` allein schließt ihn |
 | `nodeId: <id>` | der Knoten des Materials selbst — `originalId` der Sammlungs­referenz, nicht die Id der Referenz. Damit lässt sich das Material im Repository nachschlagen (`…/edu-sharing/components/render/<id>`, Vorschaubild `…/edu-sharing/preview?nodeId=<id>`) |
-| `[**Titel**](URL) — Lizenz: …` | Titel verlinkt das Material; hat es keine eigene URL, verlinkt er seine Seite im Repository, sodass immer genau ein Ziel dasteht |
+| `[**Titel**](URL) — Lizenz: …` | Titel verlinkt das Material; hat es keine eigene URL, verlinkt er seine Seite im Repository. Ist auch die nodeId unbrauchbar, bleibt der Titel unverlinkt (`**Titel** — Lizenz: …`), und die übrigen Materialien erscheinen wie gewohnt |
 | Lizenz | die Kurzangabe, wie das Repository sie führt: `CC BY-SA 3.0`, `CC0 1.0`, `frei zugänglich (keine OER-Lizenz)`, `urheberrechtlich geschützt`, … Die Version kommt aus `ccm:commonlicense_cc_version` und wird nie geraten |
 | letzte Zeile | Beschreibungssatz, Schlagwörter, Materialtyp, Bildungsstufe — entfällt, wenn nichts davon hinterlegt ist |
 
-Titel und URLs kommen aus dem Repository und werden entschärft, bevor sie in den Block gehen:
-`[` und `]` im Titel werden maskiert, URLs mit Leerzeichen oder Klammern in `<…>` gesetzt. Ein Block
-kann damit nicht durch einen Materialtitel aufgebrochen werden.
+Jeder Wert eines Materials kommt aus dem Repository, wo Redakteure frei tippen können, und wird
+entschärft, bevor er in Teil 3 landet — im Block wie in der Kennzahlenzeile darüber: Zeilenumbrüche
+werden zu Leerzeichen, eine Metadatenzeile, die mit `:::` beginnt, bekommt einen Backslash vor den
+ersten Doppelpunkt (Markdown zeigt `\:` als `:`), `[` und `]` im Titel werden maskiert, URLs mit
+Leerzeichen oder Klammern stehen in `<…>`. Kein Wert eines Materials kann so einen Block öffnen,
+schließen oder vortäuschen. Nicht erfasst sind die Beschreibungen der Sammlung und ihrer
+Untersammlungen: sie bleiben mehrzeilig, so wie die Redaktion sie angelegt hat.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht
