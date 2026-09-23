@@ -31,9 +31,16 @@ def _stems(title: str) -> list[str]:
     return [w[:-1] if len(w) > 5 else w for w in words]
 
 
-def is_blacklisted(title: str) -> bool:
-    """Meta pages, list articles, languages, bare years and umbrella terms never enter a corpus."""
-    return any(p.search(title.strip().lower()) for p in _BLACKLIST)
+def is_blacklisted(title: str, topic: str | None = None) -> bool:
+    """Meta pages, list articles, languages, bare years and umbrella terms never enter a corpus.
+
+    A pattern the ``topic`` matches itself does not count, so a language topic keeps its language articles. It used
+    to waive every pattern: "Programmiersprache" matched the language one and let "Liste von Programmiersprachen"
+    in (M8, 2026-09-23).
+    """
+    key = title.strip().lower()
+    waived = topic.strip().lower() if topic else ""
+    return any(p.search(key) and not (waived and p.search(waived)) for p in _BLACKLIST)
 
 
 def rank_related_candidates(main: Source, candidates: list[str]) -> list[str]:
@@ -53,7 +60,7 @@ def rank_related_candidates(main: Source, candidates: list[str]) -> list[str]:
         if not link or key in seen or key == main_title:
             continue
         seen.add(key)
-        if is_blacklisted(key) and not is_blacklisted(main_title):
+        if is_blacklisted(key, topic=main_title):
             continue
         score = 0.0
         if any(stem in key for stem in stems):
