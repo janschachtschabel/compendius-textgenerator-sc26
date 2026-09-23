@@ -16,13 +16,13 @@ router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
 
 @router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited)])
 def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
-    """Part 3 for one edu-sharing collection: purpose, key figures and compact material lists.
+    """Part 3 for one edu-sharing collection: purpose, key figures and one line per node of its tree.
 
     The same part a compendium request produces with ``parts: ["collection"]``, but on its own and
     without a topic - useful to look at a collection before putting it into a compendium.
 
-    Every material is one list line ending in its node id, so another system can lift the materials back
-    out of the markdown and look them up in the repository.
+    Every node - the collection, each sub-collection, each content - names its kind and its node id, so
+    another system can read the tree back from the markdown and look every node up in the repository.
 
     Unknown collection: 404. Repository unreachable: 502. The endpoint keeps to ``REQUEST_TIMEOUT_S``; if
     it runs out, ``summary.incomplete`` is set and the text says which lists stayed short. The answer is

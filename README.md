@@ -23,7 +23,7 @@ kompendium_version: 2 … parts: [world, curricula, collection]
 
 ## Teil 1 · Weltwissen          (Bausteine des Templates, je Abschnitt eine Markierung)
 ## Teil 2 · Lehrplanbezüge      (aus dem MEM-Cache, je Fundstelle ein Facettenblock)
-## Teil 3 · Die Sammlung im Überblick   (Kennzahlen, Materialliste, Untersammlungen)
+## Teil 3 · Die Sammlung im Überblick   (je Knoten eine Zeile mit Art und nodeId)
 ```
 
 `parts` wählt aus; nicht angefragte Teile entfallen ersatzlos, die Reihenfolge der übrigen
@@ -191,32 +191,42 @@ bevorzugen sie). Die Quellenliste nennt je Material Urheber und Lizenz mit der V
 Repository führt (`ccm:commonlicense_cc_version`; ohne Angabe keine Version, ohne Urheber „nicht
 angegeben“), der Lizenzhinweis die tatsächlich verwendeten Lizenzen.
 
-### Materialzeilen in Teil 3
+### Knotenzeilen in Teil 3
 
-Jedes Material steht auf genau einer Listenzeile, deren letztes Feld seine nodeId ist:
+Jeder Knoten — die Sammlung selbst, jede Untersammlung, jeder Inhalt — steht auf genau einer
+Listenzeile: vorn seine Art, hinten seine nodeId. Die Inhalte einer Untersammlung stehen eingerückt
+unter ihrer Zeile:
 
 ```markdown
-- **Elliptischer Hohlspiegel** · Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I · CC BY-SA 3.0 · [Material](https://www.geogebra.org/classic/WtDBvGD9) · nodeId: 8f42c56f-cd9f-47e1-bc20-b75fbb81ce51
+- Sammlung: [**Optik**](https://repository.staging.openeduhub.net/edu-sharing/components/render/9e7ae956-e9df-430f-bace-f3db4b910013) · Fach: Physik · Bildungsstufe: Sekundarstufe I · redaktionelle Sammlung · Stand 2026-09-22 · nodeId: 9e7ae956-e9df-430f-bace-f3db4b910013
+- Inhalt: [**Elliptischer Hohlspiegel**](https://www.geogebra.org/classic/WtDBvGD9) · Ein Hohlspiegel mit elliptischem Querschnitt · Schlagwörter: Optik, Spiegel · Simulation · Sekundarstufe I · CC BY-SA 3.0 · nodeId: 8f42c56f-cd9f-47e1-bc20-b75fbb81ce51
+- Untersammlung: **Geometrische Optik** · Die geometrische Optik nutzt das physikalische Modell des Lichtstrahls. · nodeId: f35c17d1-a29e-4b26-9d22-802682fad43d
+  - Inhalt: [**Phänomenbasierter Anfangsunterricht Optik**](http://didaktik.physik.hu-berlin.de/material/PbPU_Anfangsoptik.html) · … · nodeId: …
 ```
 
-Die Felder stehen, soweit hinterlegt, in dieser Reihenfolge: Titel, erster Satz der Beschreibung,
-Schlagwörter, bis zu zwei Materialtypen und Bildungsstufen, Lizenz als Kurzangabe (die Version aus
-`ccm:commonlicense_cc_version`, nie geraten), `[Material](URL)`, `nodeId: <id>`. Für Programme
-zugesichert ist nur der Rahmen:
+Die Zeilen stehen in ihren Abschnitten: die Sammlung im Kopf, ihre eigenen Inhalte unter „Inhalte
+der Sammlung", die Untersammlungen unter „Untersammlungen", jede Gruppe zwischen ihrem Facettenmarker
+`<!-- f: Sammlung=<id>; … -->` und `<!-- /f -->`.
 
-| Zusicherung | Bedeutung |
-|---|---|
-| eine Zeile je Material | sie beginnt mit `- **`; die Liste einer (Unter-)Sammlung steht zwischen ihrem Facettenmarker `<!-- f: Sammlung=<id>; … -->` und `<!-- /f -->` |
-| `· nodeId: <id>` am Zeilenende | der Knoten des Materials selbst — `originalId` der Sammlungsreferenz, nicht die Id der Referenz. Damit lässt sich das Material im Repository nachschlagen (`…/edu-sharing/components/render/<id>`, Vorschaubild `…/edu-sharing/preview?nodeId=<id>`) |
-| `[Material](URL)` | fehlt nur, wenn das Repository keine URL führt; eine URL mit Leerzeichen oder Klammern steht in `<…>` |
+| Art | Titel | Felder |
+|---|---|---|
+| `Sammlung` | verlinkt die Sammlung im Repository | Fach, Bildungsstufe, Sammlungstyp, Stand |
+| `Untersammlung` | ohne Link | erster Satz ihrer Beschreibung |
+| `Inhalt` | verlinkt das Material; ohne URL unverlinkt | erster Satz, bis zu fünf Schlagwörter, bis zu zwei Materialtypen und Bildungsstufen, Lizenz als Kurzangabe (die Version aus `ccm:commonlicense_cc_version`, nie geraten) |
 
-Ein Parser braucht damit nur `^- \*\*(.+?)\*\* · .* · nodeId: ([0-9a-f-]{36})$`.
+Die nodeId eines Inhalts ist sein eigener Knoten — die `originalId` der Sammlungsreferenz, nicht die
+Id der Referenz —, die einer (Unter-)Sammlung deren Knoten. Damit lässt sich jeder Knoten im
+Repository nachschlagen (`…/edu-sharing/components/render/<id>`). Ein Parser braucht nur
+`^( *)- (Sammlung|Untersammlung|Inhalt): (.*) · nodeId: ([0-9a-f-]{36})$`; ein eingerückter Inhalt
+gehört zur Untersammlung in der Zeile über seiner Gruppe.
 
-Jeder Wert eines Materials kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird
-jede Materialzeile auf eine Zeile gebracht, ebenso die Kennzahlenzeile darüber, in der Lizenzen,
-Materialtypen, Bildungsstufen und Fächer stehen: Kein Wert kann eine Materialzeile teilen oder eine
-Zeile beginnen, die wie ein weiteres Material aussieht. Nicht erfasst sind die Beschreibungen der
-Sammlung und ihrer Untersammlungen — sie bleiben mehrzeilig, so wie die Redaktion sie angelegt hat.
+Jeder Wert kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird jede Knotenzeile
+auf eine Zeile gebracht, ebenso die Kennzahlenzeile; `[` und `]` im Titel werden maskiert, URLs mit
+Leerzeichen oder Klammern stehen in `<…>`. Kein Wert eines Inhalts, einer Untersammlung oder von
+Titel, Typ und Datum der Sammlung kann so eine Zeile teilen oder einen Knoten vortäuschen, und eine
+nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt. Nicht erfasst
+sind die Beschreibung der Sammlung selbst, die als Absatz mehrzeilig bleibt, und die
+Facettenmarker: Dort könnte eine Eingabe eine Zeile erzeugen, die wie eine Knotenzeile aussieht.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht

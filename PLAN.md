@@ -847,6 +847,13 @@ und `<!-- /f -->`. Keine Kappung (D23; `COLLECTION_MAX_ITEMS` optional). Gemesse
 in 5,5 s (6 Blöcke), Geometrische Optik 63.000 in 6,8 s (8), Wellenoptik 34.000 in 5,5 s (6), Photosynthese 6.800
 in 3,5 s (2), Vorgänge in der Zelle 13.700 in 4,1 s (5); gecacht 3 ms.
 
+**Nachtrag (2026-09-23):** Jeder Knoten eine Zeile `- <Art>: <Titel> · … · nodeId: <id>` mit Art `Sammlung`,
+`Untersammlung` oder `Inhalt`; der Titel eines Inhalts verlinkt das Material (kein eigenes „Link"-Feld mehr),
+Schlagwörter auf fünf gekappt, eine Untersammlung als Zeile mit dem ersten Satz ihrer Beschreibung statt
+Überschrift und Absatz, ihre Inhalte eingerückt darunter. Die nodeId eines Inhalts ist die `originalId`.
+Vertrag und Parser-Ausdruck: README „Knotenzeilen in Teil 3". Gemessen an Optik (226 Inhalte): 5,3 % kürzer,
+dieselben 226 nodeIds in derselben Reihenfolge.
+
 ### 6.3 Wissens-Sammlung (optional, `knowledge_collection_id`)
 
 Metadaten und Volltexte (`GET /node/v1/nodes/-home-/{id}/textContent`) der referenzierten

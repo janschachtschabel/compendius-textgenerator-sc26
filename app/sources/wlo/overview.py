@@ -1,11 +1,12 @@
-"""Part 3 rendering (PLAN.md 6.2): purpose, key figures, compact material lists, sub-collections one level down.
+"""Part 3 rendering (PLAN.md 6.2): purpose, key figures, one line per node, sub-collections one level down.
 
 No judgement and no invention: a missing description stays visibly missing. Every block sits between a
 facet marker (collection id, subject, level) and ``<!-- /f -->`` so it can be parsed out later, like
 the curriculum blocks of part 2. Nothing is cut unless a cap is configured (decision D23).
 
-Each material is one list line ending in ``· nodeId: <id>``, so another system can lift the materials out of the
-markdown and look them up in the repository; the README section "Materialzeilen in Teil 3" is the contract.
+Every node - the collection, each sub-collection, each content - is one list line ``- <kind>: … · nodeId: <id>``,
+so another system can read the tree back from the markdown and look every node up in the repository; the README
+section "Knotenzeilen in Teil 3" is the contract.
 """
 
 from __future__ import annotations
@@ -30,9 +31,10 @@ COLLECTION_TYPES = {
     "EDITORIAL_GROUP": "redaktionelle Gruppensammlung",
     "PRIVATE": "private Sammlung",
 }
-MAX_KEYWORDS = 8
+MAX_KEYWORDS = 5
 MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
+_LINK_TEXT_ESCAPE = str.maketrans({"[": r"\[", "]": r"\]"})
 
 
 @dataclass(frozen=True)
@@ -80,35 +82,39 @@ def _link_target(url: str) -> str:
     return url
 
 
-def _item_line(ref: MaterialRef) -> str:
-    """One material on one line, its node id last.
+def _node_line(kind: str, title: str, url: str, fields: Sequence[str], node_id: str) -> str:
+    """One node of the collection tree on one line: ``- <kind>: <title> · <fields> · nodeId: <id>``.
 
-    Every value comes from the repository, where an editor can type anything, so the whole line is collapsed:
-    a line break would otherwise split the material or start a line that reads as another one. The URL is
-    collapsed first, so that a line break in it turns into a space before its target is chosen.
+    The title is the link where the node has a URL, its brackets escaped so it stays one link. Every value comes
+    from the repository, where an editor can type anything, so the whole line is collapsed: a line break would
+    otherwise split the node or start a line that reads as another one. The URL is collapsed first, so that a
+    line break in it turns into a space before its target is chosen.
     """
-    parts = [f"**{ref.title or 'ohne Titel'}**"]
-    sentence = first_sentence(ref.description)
-    if sentence:
-        parts.append(sentence)
+    heading = f"**{title or 'ohne Titel'}**"
+    target = one_line(url)
+    if target:
+        heading = f"[{heading.translate(_LINK_TEXT_ESCAPE)}]({_link_target(target)})"
+    return "- " + one_line(
+        " · ".join([f"{kind}: {heading}", *(field for field in fields if field), f"nodeId: {node_id}"])
+    )
+
+
+def _item_line(ref: MaterialRef) -> str:
+    fields = [first_sentence(ref.description)]
     if ref.keywords:
-        parts.append("Schlagwörter: " + ", ".join(ref.keywords[:MAX_KEYWORDS]))
-    parts.extend(label for label in (*ref.resource_types[:2], *ref.educational_contexts[:2]) if label)
-    parts.append(ref.license)
-    url = one_line(ref.url)
-    if url:
-        parts.append(f"[Material]({_link_target(url)})")
-    parts.append(f"nodeId: {ref.node_id}")
-    return "- " + one_line(" · ".join(parts))
+        fields.append("Schlagwörter: " + ", ".join(ref.keywords[:MAX_KEYWORDS]))
+    fields.extend((*ref.resource_types[:2], *ref.educational_contexts[:2], ref.license))
+    return _node_line("Inhalt", ref.title, ref.url, fields, ref.node_id)
 
 
-def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions) -> list[str]:
+def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions, indent: str = "") -> list[str]:
+    """The content lines of one list; ``indent`` nests them under the sub-collection line above them."""
     if not refs:
-        return [NO_ITEMS]
+        return [f"{indent}- {NO_ITEMS}" if indent else NO_ITEMS]
     shown = refs if options.max_items is None else refs[: options.max_items]
-    lines = [_item_line(ref) for ref in shown]
+    lines = [indent + _item_line(ref) for ref in shown]
     if len(refs) > len(shown):
-        lines.append(f"- *weitere {len(refs) - len(shown)} Inhalte*")
+        lines.append(f"{indent}- *weitere {len(refs) - len(shown)} Inhalte*")
     return lines
 
 
@@ -126,7 +132,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
     subjects = Counter(label for ref in refs for label in ref.subjects)
     licenses = Counter(ref.license for ref in refs)
     parts = [
-        f"Kennzahlen: {len(refs)} Inhalte, {len(subs)} Untersammlungen.",
+        f"Kennzahlen: {len(refs)} Inhalte, {len(subs)} Untersammlungen",
         _counts("Materialtypen", types),
         _counts("Bildungsstufen", contexts),
         _counts("Fächer", subjects),
@@ -152,7 +158,7 @@ def render_collection_overview(
 ) -> tuple[str, dict[str, Any]]:
     """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` adds a visible hint."""
     facets = _collection_facets(info)
-    head = [f"**{info.title}** · [Sammlung öffnen]({render_url(info.id)})"]
+    head = []
     if info.subject_labels:
         head.append("Fach: " + ", ".join(info.subject_labels))
     if info.educational_contexts:
@@ -167,7 +173,7 @@ def render_collection_overview(
         PART_HEADING,
         "",
         _marker(facets),
-        " · ".join(head),
+        _node_line("Sammlung", info.title, render_url(info.id), head, info.id),
         "",
         info.description or NO_DESCRIPTION,
         "",
@@ -179,14 +185,14 @@ def render_collection_overview(
     if subs:
         lines.extend(["### Untersammlungen", ""])
         for sub in subs:
+            # no link for a sub-collection: that would ask render_url for every one of them, and a broken id
+            # there would take the whole part down; its node id names it
+            first = first_sentence(sub.info.description)
             lines.extend(
                 [
-                    f"#### {sub.info.title}",
-                    "",
                     _marker({"Sammlung": [sub.info.id], "Übergeordnet": [info.id]}),
-                    sub.info.description or NO_DESCRIPTION,
-                    "",
-                    *_item_lines(sub.refs, options),
+                    _node_line("Untersammlung", sub.info.title, "", [first], sub.info.id),
+                    *_item_lines(sub.refs, options, indent="  "),
                     END_MARKER,
                     "",
                 ]
