@@ -5,10 +5,13 @@ from __future__ import annotations
 from typing import Any
 
 from app.llm.gateway import LlmGateway
+from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import LlmReport
 
-NOTHING_CONTRIBUTED = "LLM hat keinen Baustein ausgewählt oder geschrieben; Regelmodus verwendet"
+NOTHING_CONTRIBUTED = (
+    "LLM hat keinen Absatz zugeordnet und keinen Baustein ausgewählt oder geschrieben; Regelmodus verwendet"
+)
 MODEL_KNOWLEDGE_NOTE = (
     "Sätze mit Evidenzgrad=Modellwissen stammen aus dem Wissen des Sprachmodells, nicht aus den "
     "aufgeführten Quellen, und sind nicht belegt."
@@ -27,11 +30,19 @@ def build_llm_report(
     note: str | None,
     extraction: ExtractionReport | None,
     generation: LlmReport | None,
+    matching_requested: str = "rule-based",
+    matching_used: str = "rule-based",
+    matching: LlmAssignmentReport | None = None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
-    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when no switch asked for it."""
-    if extraction_requested == "rule-based" and generation_requested == "rule-based":
+    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it.
+
+    ``matching_*`` describe matcher=llm (D34): ``llm`` or ``rule-based``, like the two switches.
+    """
+    if extraction_requested == generation_requested == matching_requested == "rule-based":
         return None, None, None
-    reports: list[ExtractionReport | LlmReport] = [r for r in (extraction, generation) if r is not None]
+    reports: list[ExtractionReport | LlmReport | LlmAssignmentReport] = [
+        r for r in (matching, extraction, generation) if r is not None
+    ]
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
     if calls:
@@ -41,7 +52,7 @@ def build_llm_report(
             "total": sum(r.total_tokens for r in reports),
             "calls": calls,
         }
-    if note is None and extraction_used == "rule-based" and generation_used == "rule-based":
+    if note is None and extraction_used == generation_used == matching_used == "rule-based":
         note = NOTHING_CONTRIBUTED
     extraction_block: dict[str, Any] = {
         "requested": extraction_requested,
@@ -66,10 +77,24 @@ def build_llm_report(
         "enrichment": enrichment_used,
         "enrichment_requested": enrichment_requested,
     }
-    audit: dict[str, Any] = {"note": note, "extraction": extraction_block, "generation": generation_block}
+    matching_block: dict[str, Any] = {
+        "requested": matching_requested,
+        "used": matching_used,
+        "paragraphs": matching.paragraphs if matching else 0,
+        "answered": matching.answered if matching else 0,
+        "fallback_paragraphs": matching.fallback if matching else 0,
+        "fallbacks": dict(matching.fallbacks) if matching else {},
+        "unknown_keys": matching.unknown_keys if matching else 0,
+    }
+    audit: dict[str, Any] = {
+        "note": note,
+        "matching": matching_block,
+        "extraction": extraction_block,
+        "generation": generation_block,
+    }
     front: dict[str, Any] = {}
     if gateway is not None:
-        models = [r.model for r in (generation, extraction) if r is not None and r.model]
+        models = [r.model for r in (generation, extraction, matching) if r is not None and r.model]
         front["provider"] = gateway.client.provider
         front["model"] = models[0] if models else gateway.client.model
     front["prompts"] = sorted({prompt for r in reports for prompt in r.prompts})
@@ -79,6 +104,10 @@ def build_llm_report(
         "fallbacks": extraction_block["fallbacks"],
     }
     front["generation"] = {"sections": generation_block["sections"], "fallbacks": generation_block["fallbacks"]}
+    if matching_requested == "llm":
+        front["matching"] = {
+            key: matching_block[key] for key in ("paragraphs", "answered", "fallback_paragraphs", "fallbacks")
+        }
     if enrichment_used == "model-knowledge":
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.

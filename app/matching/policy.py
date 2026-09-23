@@ -217,9 +217,30 @@ def assign(
         classified[chunk_id] = slot_id
         per_slot[slot_id].append(ScoredChunk(chunk=chunk, score=round(score, 4), matcher="policy", reasons=reasons))
 
+    kept, notes, dropped = cut_to_budgets(template, per_slot)
+    return AssignmentResult(
+        assigned=kept,
+        unassigned=unassigned + dropped,
+        notes=notes,
+        classified=classified,
+        slot_scores=slot_scores,
+    )
+
+
+def cut_to_budgets(
+    template: Template, candidates: Mapping[str, Sequence[ScoredChunk]]
+) -> tuple[dict[str, list[ScoredChunk]], list[str], int]:
+    """The best-scored chunks of every content slot within its budget, lead first and then in reading order.
+
+    Returns the kept chunks for every slot of the template, the notes about cuts and how many chunks were cut.
+    """
+    kept_per_slot: dict[str, list[ScoredChunk]] = {
+        slot.id: list(candidates.get(slot.id, [])) for slot in template.slots
+    }
     notes: list[str] = []
-    for slot in content_slots:
-        items = sorted(per_slot[slot.id], key=lambda sc: (-sc.score, sc.chunk.position))
+    dropped_total = 0
+    for slot in template.content_slots():
+        items = sorted(kept_per_slot[slot.id], key=lambda sc: (-sc.score, sc.chunk.position))
         kept: list[ScoredChunk] = []
         chars = 0
         for item in items:
@@ -232,12 +253,6 @@ def assign(
         dropped = len(items) - len(kept)
         if dropped:
             notes.append(f"{slot.id}: {dropped} Kandidaten über Budget verworfen")
-            unassigned += dropped
-        per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, sc.chunk.position))
-    return AssignmentResult(
-        assigned=per_slot,
-        unassigned=unassigned,
-        notes=notes,
-        classified=classified,
-        slot_scores=slot_scores,
-    )
+            dropped_total += dropped
+        kept_per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, sc.chunk.position))
+    return kept_per_slot, notes, dropped_total

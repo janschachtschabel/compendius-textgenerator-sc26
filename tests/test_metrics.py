@@ -26,6 +26,7 @@ from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_extraction import first_sentences
 from tests.test_pipeline_llm import answer_from_evidence, make_gateway
+from tests.test_pipeline_llm_matcher import leads_define_the_rest_is_content
 from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 Samples = dict[tuple[str, tuple[tuple[str, str], ...]], float]
@@ -259,6 +260,24 @@ def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: p
     assert delta("kompendium_llm_sections_total", outcome="written") == len(generation["sections"])
     assert delta("kompendium_llm_sentences_total", outcome="dropped") == generation["dropped_sentences"]
     assert delta("kompendium_compendium_requests_total", llm_requested="true", llm_used="true") == 1
+
+
+def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    # A matcher=llm request that falls back to the rules has to reach the fallback alarm like the switches do
+    payload = {"topic": "Optik", "matcher": "llm", "parts": ["world"]}
+    before = scrape(client)
+    assert client.post("/api/v2/compendium", json=payload).status_code == 200  # no LLM configured: the rules
+    gateway = make_gateway(FakeBApi(leads_define_the_rest_is_content), per_request=1_000_000)
+    monkeypatch.setattr(client.app.state.service, "llm", gateway)  # type: ignore[attr-defined]
+    assert client.post("/api/v2/compendium", json=payload).status_code == 200
+    after = scrape(client)
+
+    def delta(**labels: str) -> float:
+        name = "kompendium_compendium_requests_total"
+        return value(after, name, **labels) - value(before, name, **labels)
+
+    assert delta(llm_requested="true", llm_used="false") == 1
+    assert delta(llm_requested="true", llm_used="true") == 1
 
 
 def test_metrics_can_require_a_token_or_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:

@@ -37,9 +37,10 @@ class CompareRequest(BaseModel):
 def matching_strategies() -> list[dict[str, Any]]:
     """The matching strategies this build offers, with cost and hardware.
 
-    Matching assigns passages to the blocks of a template; every strategy here runs locally and
-    costs nothing. The LLM does not match - it comes after, through the extraction and generation
-    switches of POST /api/v2/compendium.
+    Matching assigns passages to the blocks of a template. All strategies but ``llm`` run locally and
+    cost nothing; ``llm`` lets the LLM of the b-api assign every passage and falls back on the default
+    strategy where it cannot. The extraction and generation switches of POST /api/v2/compendium come
+    after the matching.
     """
     return list_strategies()
 

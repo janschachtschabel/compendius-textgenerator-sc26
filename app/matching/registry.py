@@ -1,4 +1,5 @@
-"""Matching strategies. All strategies return fused candidates; the policy assigns."""
+"""Matching strategies. The local ones return fused candidates and the policy assigns; ``llm`` is no ``Matcher``:
+``CompendiumService.match`` runs the default strategy and lets the model decide on top (llm_assignment.py, D34)."""
 
 from __future__ import annotations
 
@@ -57,7 +58,14 @@ STRATEGIES: dict[str, dict[str, Any]] = {
     "bm25": {"name": "Okapi BM25", "cost": "0 €", "hardware": "CPU", "recommended": False},
     "char_tfidf": {"name": "Zeichen-TF-IDF (Komposita)", "cost": "0 €", "hardware": "CPU", "recommended": False},
     "lexicon_only": {"name": "Nur Überschriften-Lexikon", "cost": "0 €", "hardware": "CPU", "recommended": False},
+    "llm": {
+        "name": "LLM ordnet jeden Absatz zu; wo es nicht entscheidet, gilt die Standard-Strategie",
+        "cost": "rund 240 Tokens je Absatz, im Median rund 39.000 je Kompendium",
+        "hardware": "b-api",
+        "recommended": False,
+    },
 }
+LLM_MATCHER = "llm"  # handled by CompendiumService.match through app/matching/llm_assignment.py (D34)
 
 
 def ensure_strategy(name: str) -> str:

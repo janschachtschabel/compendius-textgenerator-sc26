@@ -12,6 +12,7 @@ from __future__ import annotations
 from prometheus_client import Counter, Histogram
 
 from app.domain.models import Compendium
+from app.matching.registry import LLM_MATCHER
 
 UNMATCHED_ROUTE = "unmatched"  # 404s: the raw path would let every client create new series
 # The method is client input as well: anything else (PROPFIND, invented verbs) shares one label
@@ -31,7 +32,8 @@ HTTP_DURATION = Histogram(
 )
 COMPENDIA = Counter(
     "kompendium_compendium_requests_total",
-    "Generated compendia: was an LLM switch requested, did the LLM contribute (a request may fall back to rules)",
+    "Generated compendia: was an LLM switch or matcher=llm requested, did the LLM contribute (a request may fall "
+    "back to rules)",
     ["llm_requested", "llm_used"],
 )
 PHASES = Histogram(
@@ -77,8 +79,9 @@ def record_compendium(compendium: Compendium) -> None:
     requested = (
         front.get("extraction_requested", compendium.extraction),
         front.get("generation_requested", compendium.generation),
+        _matching(front.get("matcher_requested", audit.matcher)),
     )
-    used = (compendium.extraction, compendium.generation)
+    used = (compendium.extraction, compendium.generation, _matching(audit.matcher))
     COMPENDIA.labels(_flag(requested), _flag(used)).inc()
     for phase, milliseconds in audit.timings_ms.items():
         PHASES.labels(phase).observe(milliseconds / 1000)
@@ -109,6 +112,11 @@ def record_compendium(compendium: Compendium) -> None:
 def _flag(switches: tuple[object, ...]) -> str:
     """``"true"`` when any of the switches asks for (or used) the LLM."""
     return "true" if any(switch != "rule-based" for switch in switches) else "false"
+
+
+def _matching(matcher: object) -> str:
+    """matcher=llm as a switch value: ``llm``, every local strategy ``rule-based`` (D34)."""
+    return "llm" if matcher == LLM_MATCHER else "rule-based"
 
 
 def _record_knowledge(knowledge: dict[str, object]) -> None:

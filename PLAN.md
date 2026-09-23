@@ -1395,6 +1395,16 @@ API.
   noch, ob ein LLM-Schalter verlangt war und ob das LLM beigetragen hat (`llm_requested`, `llm_used`), damit die
   Alarmregeln für beide Schalter eine Bedingung behalten; `KompendiumHybridFallbacks` heißt jetzt
   `KompendiumLlmFallbacks`. Budget je Anfrage 40.000 statt 20.000 (4.7).
+- **D34 (2026-09-23)** Zuordnung durch das LLM als wählbare Strategie `matcher=llm` (Jan: integrieren, wenn es
+  deutlich besser ist). Im Ablauf des Dienstes am Goldstandard gemessen: macro-F1 0,66 statt 0,43 für `hybrid_light`
+  mit Model2Vec auf denselben 603 Absätzen, 125 statt 205 Fehlzuordnungen, rund 240 Tokens je Absatz
+  (`docs/entwicklung/03-matching.md`). Standard bleibt `hybrid_light`, weil ein Kompendium mit LLM im Median rund
+  39.000 Tokens kostet. Das Modell ordnet jeden Absatz zu, 25 je Aufruf, mit dem gemessenen Prompt
+  `paragraph_assignment` v1; die sc26-Regeln stehen als `assignment_rules` im Template, nicht im Code. Die
+  Standard-Strategie läuft vorher und bleibt je Absatz der Rückfall; `MATCHER_DEFAULT=llm` verweigert der Dienst beim
+  Start. Bausteine mit LLM-zugeordneten Absätzen tragen `ki-ausgewählt`, der Vorspann die Kennzeichnung „Auswahl
+  KI-gestützt“, und `kompendium_compendium_requests_total` zählt `matcher=llm` wie einen LLM-Schalter. Das Template
+  sc26 bleibt Version 1, weil sich seine Bausteine nicht geändert haben.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

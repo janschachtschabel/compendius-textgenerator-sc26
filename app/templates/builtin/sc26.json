@@ -5,6 +5,7 @@
   "description": "Kompendiale Struktur nach Spezifikation 2026: 13 Bausteine, deklarierte Facetten, vereinheitlichte Zeitachse in Baustein 5, Akteursverzeichnis, Definitionen nur im Glossar.",
   "empty_slot_policy": "omit",
   "default_slot": "fachinhalte",
+  "assignment_rules": "Regeln der Zuordnung:\n- themendefinition nur für die Einleitung des Hauptartikels, ausdrückliche Definitions- und Abgrenzungsabsätze des\n  Themas und die Einleitung desselben Themas aus Klexikon.\n- systematik: Teilgebiete, Typen und Varianten des Themas, Einleitungen von Teilgebiets-Artikeln, Gliederungen und\n  Typologien.\n- fachinhalte: Gesetze, Mechanismen, Begriffe, Rechenregeln, Verlauf eines historischen Ereignisses (bei\n  Ereignisthemen), Theorien; der Regelfall für Fließtext des Hauptartikels.\n- gesellschaftlicher_kontext: Bedeutung, Alltag, Kritik, Rezeption, Debatten, Politik, Risiken.\n- entwicklung_ausblick: Geschichte des Themas, Forschungsgeschichte, Epochen, Folgen, Prognosen.\n- beruf_wirtschaft, bildung, regularien, praxis, querschnitt gemäß ihren Beschreibungen.\n- keiner: Personen-, Werk- und Autorenlisten, Formelreste, Bildunterschriften, Verweise, Biografie- und\n  Einzelwerk-Absätze, Filmartikel, Listenartikel, Absätze ohne Themenbezug.",
   "builtin": true,
   "slots": [
     {

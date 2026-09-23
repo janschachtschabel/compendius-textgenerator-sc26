@@ -22,7 +22,8 @@ AI_ENRICHED_DISCLOSURE = (
     "KI-generierter Text auf Basis belegter Quellen, ergänzt um Modellwissen ohne Quellenbeleg "
     "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
 )
-# Rule-based writing from sentences the LLM chose (extraction=llm): the wording is the sources', the choice is not
+# Rule-based writing from sentences or paragraphs an LLM chose (extraction=llm, matcher=llm): the wording is the
+# sources', the choice is not
 AI_SELECTED_DISCLOSURE = (
     "Maschinell erstellter Text aus wörtlichen Quellenauszügen, Auswahl KI-gestützt (Kennzeichnung je Abschnitt) "
     "nach Art. 50 EU AI Act"
@@ -54,12 +55,13 @@ def build_frontmatter(
     zim_snapshot: Sequence[Mapping[str, Any]],
     matcher: str | None,
     parts: Sequence[str],
+    matcher_requested: str | None = None,
     extraction_requested: str | None = None,
     generation_requested: str | None = None,
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``extraction`` and ``generation`` are the switches actually used; ``*_requested`` appears only when a switch
-    fell back to rule-based, and ``matcher`` only when part 1 was generated.
+    """``extraction``, ``generation`` and ``matcher`` are what was actually used; ``*_requested`` appears only when
+    a switch or matcher=llm fell back to the rules, and ``matcher`` only when part 1 was generated.
 
     ``enrichment`` is the mode the request was granted; ``enriched_sentences`` is what the text really carries.
     The disclosure follows the text: a permission the model did not use must not be declared as model knowledge.
@@ -68,7 +70,7 @@ def build_frontmatter(
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
     elif generation != "rule-based":
         disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"
-    elif extraction == "llm":
+    elif extraction == "llm" or matcher == "llm":
         disclosure, review = AI_SELECTED_DISCLOSURE, "ki-ausgewählt"
     else:
         disclosure, review = AI_DISCLOSURE["rule-based"], "maschinell-extraktiv"
@@ -96,6 +98,8 @@ def build_frontmatter(
         frontmatter["extraction_requested"] = extraction_requested
     if generation_requested is not None and generation_requested != generation:
         frontmatter["generation_requested"] = generation_requested
+    if matcher_requested is not None and matcher_requested != matcher:
+        frontmatter["matcher_requested"] = matcher_requested
     if llm is not None:
         frontmatter["llm"] = dict(llm)
     return frontmatter

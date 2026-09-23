@@ -161,7 +161,8 @@ class SectionStatus(StrEnum):
     EXTRACTIVE = "maschinell-extraktiv"
     GENERATED = "maschinell-generiert"
     LLM = "ki-generiert"
-    LLM_SELECTED = "ki-ausgewählt"  # verbatim source sentences the LLM chose (extraction=llm, D33)
+    # verbatim source text an LLM chose: its sentences (extraction=llm, D33) or its paragraphs (matcher=llm, D34)
+    LLM_SELECTED = "ki-ausgewählt"
     REVIEWED = "redaktionell-geprüft"
     EMPTY = "leer"
 

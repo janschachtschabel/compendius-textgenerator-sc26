@@ -41,10 +41,12 @@ class GenerateRequest(BaseModel):
     matcher: str | None = Field(
         None,
         description="How paragraphs are matched onto the template blocks; default from MATCHER_DEFAULT. "
-        "All four run locally on the CPU and cost nothing: hybrid_light (heading lexicon, BM25 and "
+        "Four run locally on the CPU and cost nothing: hybrid_light (heading lexicon, BM25 and "
         "character TF-IDF together, plus Model2Vec embeddings when MODEL2VEC_PATH is set) is the "
         "default; bm25 is Okapi BM25 alone; char_tfidf is character TF-IDF, which carries German "
-        "compounds; lexicon_only uses the heading lexicon without a ranker. An unknown name is a 422",
+        "compounds; lexicon_only uses the heading lexicon without a ranker. llm lets the LLM of the b-api "
+        "assign every paragraph (about 240 tokens per paragraph); where it gives no answer, and without a "
+        "usable b-api, the default strategy decides. An unknown name is a 422",
     )
     extraction: Extraction | None = Field(
         None,

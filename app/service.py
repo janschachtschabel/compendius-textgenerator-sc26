@@ -31,8 +31,10 @@ from app.llm.gateway import LlmGateway
 from app.llm.report import build_llm_report
 from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
+from app.matching.llm_assignment import MATCHER as LLM_ASSIGNED
+from app.matching.llm_assignment import AssignmentJob, LlmAssignmentReport, assign_with_llm
 from app.matching.policy import AssignmentResult, assign
-from app.matching.registry import STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
+from app.matching.registry import LLM_MATCHER, STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
@@ -84,9 +86,10 @@ class PreparedTopic:
 
 @dataclass
 class Matched:
-    matcher: str
+    matcher: str  # the strategy that decided: llm only when the model answered for at least one paragraph
     assignment: AssignmentResult
     duration_ms: int
+    llm: LlmAssignmentReport | None = None  # matcher=llm: what the model decided and what it cost
 
 
 @dataclass
@@ -94,6 +97,7 @@ class WorldPart:
     """Part 1 of one request: what was written, how, and what the audit reports about it."""
 
     matcher: str | None  # None when part 1 was not requested: no strategy ran
+    matcher_requested: str | None  # the strategy the request asked for (or the default)
     extraction: str  # the switches in effect: rule-based when the LLM cannot be used
     generation: str
     enrichment: str  # sources-only unless an LLM actually writes blocks and the request allowed more
@@ -102,6 +106,7 @@ class WorldPart:
     extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
     regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text
     written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
+    matching: LlmAssignmentReport | None = None  # matcher=llm: what the model decided
 
 
 class _Stopwatch:
@@ -143,6 +148,8 @@ class CompendiumService:
         except UnknownMatcherError as exc:
             known = ", ".join(STRATEGIES)
             raise ValueError(f"MATCHER_DEFAULT={settings.matcher_default!r} is not a strategy ({known})") from exc
+        if settings.matcher_default == LLM_MATCHER:  # matcher=llm falls back on the default, which needs no b-api
+            raise ValueError("MATCHER_DEFAULT=llm is not possible: the default strategy has to run without the b-api")
 
     def prepare(self, request: GenerateRequest, deadline: Deadline | None = None) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
@@ -262,9 +269,18 @@ class CompendiumService:
         prepared: PreparedTopic,
         matcher_name: str | None,
         target_length: int,
+        *,
+        budget: RequestBudget | None = None,
+        deadline: Deadline | None = None,
     ) -> Matched:
-        """Score and assign the prepared chunks with one matching strategy."""
+        """Score and assign the prepared chunks with one matching strategy.
+
+        ``llm`` runs the default strategy and lets the model decide on top (D34); ``budget`` and ``deadline`` bound
+        its calls, and a budget of its own is opened when none is given (evaluation).
+        """
         name = matcher_name or self.settings.matcher_default
+        if name == LLM_MATCHER:
+            return self._match_with_llm(prepared, target_length, budget, deadline)
         started = time.perf_counter()
         matcher = get_matcher(name, self.settings.model2vec_path)
         fused = matcher.score(prepared.template.slots, prepared.chunks)
@@ -272,6 +288,27 @@ class CompendiumService:
         assignment = self._assign(prepared, fused, target_length)
         duration_ms = int((time.perf_counter() - started) * 1000)
         return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
+
+    def _match_with_llm(
+        self, prepared: PreparedTopic, target_length: int, budget: RequestBudget | None, deadline: Deadline | None
+    ) -> Matched:
+        """matcher=llm: the default strategy decides first; without a usable LLM its result is the answer."""
+        started = time.perf_counter()
+        base = self.match(prepared, self.settings.matcher_default, target_length)
+        if self.llm is None or self.llm_unavailable() is not None:
+            return base
+        job = AssignmentJob(
+            client=self.llm.client,
+            budget=budget if budget is not None else self.llm.open_budget(),
+            topic=prepared.resolution.title or prepared.normalized.topic,
+            concurrency=self.llm.options.concurrency,
+            deadline=deadline,
+        )
+        template = _scale_budgets(prepared.template, target_length)
+        assignment, report = assign_with_llm(template, prepared.chunks, prepared.sources_by_id, base.assignment, job)
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        matcher = LLM_MATCHER if report.answered else base.matcher
+        return Matched(matcher=matcher, assignment=assignment, duration_ms=duration_ms, llm=report)
 
     def _assign(
         self,
@@ -310,6 +347,7 @@ class CompendiumService:
         else:  # no matching, no synthesis, no LLM work
             world = WorldPart(
                 matcher=None,
+                matcher_requested=None,
                 extraction="rule-based",
                 generation="rule-based",
                 enrichment="sources-only",
@@ -360,9 +398,12 @@ class CompendiumService:
             generation_used=generation_used,
             enrichment_requested=enrichment_requested,
             enrichment_used=enrichment_used,
+            matching_requested="llm" if world.matcher_requested == LLM_MATCHER else "rule-based",
+            matching_used="llm" if matcher_name == LLM_MATCHER else "rule-based",
             note=world.llm_note,
             extraction=extracted,
             generation=drafted,
+            matching=world.matching,
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -386,6 +427,7 @@ class CompendiumService:
             generated_at=generated_at,
             zim_snapshot=self.registry.snapshot(),
             matcher=matcher_name,
+            matcher_requested=world.matcher_requested,
             parts=parts,
         )
         source_refs = [s.to_ref() for s in sources] if want_world else []  # the sources belong to part 1
@@ -461,19 +503,23 @@ class CompendiumService:
         deadline: Deadline,
         timings: dict[str, int],
     ) -> WorldPart:
-        """Part 1: match the chunks, let the LLM choose sentences and write blocks as the switches ask (D33).
+        """Part 1: match the chunks (with matcher=llm the model assigns them, D34), let the LLM choose sentences and
+        write blocks as the switches ask (D33).
 
         ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
         the first two run rule-based and nothing is enriched.
         """
         extraction_wanted, generation_wanted, enrichment_wanted = requested
-        wants_llm = extraction_wanted != "rule-based" or generation_wanted != "rule-based"
+        matcher_wanted = request.matcher or self.settings.matcher_default
+        wants_llm = (
+            extraction_wanted != "rule-based" or generation_wanted != "rule-based" or matcher_wanted == LLM_MATCHER
+        )
         llm_note = self.llm_unavailable() if wants_llm else None
         extraction, generation = ("rule-based", "rule-based") if llm_note else (extraction_wanted, generation_wanted)
         enrichment = "sources-only" if generation == "rule-based" else enrichment_wanted
         llm = self.llm if wants_llm and llm_note is None else None
-        budget = llm.open_budget() if llm is not None else None  # one budget for both switches
-        matched = self.match(prepared, request.matcher, request.target_length)
+        budget = llm.open_budget() if llm is not None else None  # one budget for all LLM work of the request
+        matched = self.match(prepared, request.matcher, request.target_length, budget=budget, deadline=deadline)
         timings["match"] = matched.duration_ms
         lap = _Stopwatch(timings).lap
 
@@ -503,6 +549,11 @@ class CompendiumService:
                 enrich=enrichment == "model-knowledge",
             )
         preserved = self._preserved(request, template)
+        ai_assigned = {  # blocks holding paragraphs the model assigned: marked as chosen by an AI
+            slot_id
+            for slot_id, items in matched.assignment.assigned.items()
+            if any(item.matcher == LLM_ASSIGNED for item in items)
+        }
         written = self.writer.write(
             template,
             assigned,
@@ -513,11 +564,13 @@ class CompendiumService:
             prepared.lexicon,
             llm=llm_job,
             selected=selected,
+            ai_assigned=ai_assigned,
             preserved=preserved,
         )
         lap("synthesize")
         return WorldPart(
             matcher=matched.matcher,
+            matcher_requested=matcher_wanted,
             extraction=extraction,
             generation=generation,
             enrichment=enrichment,
@@ -525,6 +578,7 @@ class CompendiumService:
             chunks_assigned=sum(len(v) for v in assigned.values()),
             extracted=extracted,
             written=written,
+            matching=matched.llm,
             regenerated=(
                 [slot.id for slot in template.content_slots() if slot.id not in preserved]
                 if request.existing_markdown

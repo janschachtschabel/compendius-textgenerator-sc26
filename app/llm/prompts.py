@@ -99,6 +99,25 @@ PASSAGE_SELECTION = Prompt(
     ),
 )
 
+# matcher=llm (D34): the prompt measured against the gold standard on 2026-09-23 (docs/entwicklung/03-matching.md)
+PARAGRAPH_ASSIGNMENT = Prompt(
+    id="paragraph_assignment",
+    version=1,
+    system=(
+        "Du ordnest Absätze aus Lexikonartikeln den Bausteinen eines Kompendiums für Lehrkräfte zu "
+        "(WirLernenOnline). Jeder Absatz gehört in genau einen Baustein oder in keinen. Antworte ausschließlich mit "
+        'einem JSON-Objekt, das jede Absatz-ID auf [Baustein-Schlüssel oder "keiner", Sicherheit von 0 bis 1] '
+        'abbildet, zum Beispiel {"p1": ["fachinhalte", 0.8], "p2": ["keiner", 0.9]}.'
+    ),
+    user=(
+        "Thema des Kompendiums: {topic}\n\n"
+        "Bausteine:\n{blocks}\n\n"
+        "{rules}"
+        "Absätze:\n{paragraphs}\n\n"
+        "Gib das JSON-Objekt zurück."
+    ),
+)
+
 QA_PAIRS = Prompt(
     id="qa_pairs",
     version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
@@ -112,7 +131,9 @@ QA_PAIRS = Prompt(
     user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),
 )
 
-PROMPTS: dict[str, Prompt] = {p.id: p for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, QA_PAIRS)}
+PROMPTS: dict[str, Prompt] = {
+    p.id: p for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, PARAGRAPH_ASSIGNMENT, QA_PAIRS)
+}
 
 
 def get_prompt(prompt_id: str) -> Prompt:

@@ -96,6 +96,11 @@ class Template(BaseModel):
     default_slot: str | None = Field(
         None, description="Slot key for topical chunks without a confident match (PLAN.md 4.4, stage 3)"
     )
+    assignment_rules: str = Field(
+        "",
+        description="Rules for matcher=llm beyond the blocks' own descriptions, in prose, naming blocks by their "
+        "slot key; empty: the model assigns by the descriptions alone",
+    )
     slots: list[TemplateSlot] = Field(
         description="The blocks, in reading order; at least one, and their ids have to be unique"
     )

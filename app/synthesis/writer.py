@@ -6,7 +6,9 @@ global sequence while the sections are assembled in template order. Blocks in ``
 earlier compendium (PLAN.md 4.6): they are copied word for word with their citation numbers, and the new
 blocks are numbered after the highest of them. Every slot the LLM cannot deliver falls
 back to the extractive text and is listed in the ``LlmReport``. Slots in ``selected`` hold excerpts whose
-sentences the LLM chose (extraction=llm, D33); their extractive text keeps all of those sentences.
+sentences the LLM chose (extraction=llm, D33); their extractive text keeps all of those sentences. Slots in
+``ai_assigned`` hold paragraphs an LLM assigned (matcher=llm, D34); like ``selected`` they are marked as chosen by
+an AI, but keep the first sentences of each paragraph.
 """
 
 from __future__ import annotations
@@ -91,6 +93,7 @@ class SectionWriter:
         lexicon: HeadingLexicon,
         llm: LlmJob | None = None,
         selected: Collection[str] = frozenset(),
+        ai_assigned: Collection[str] = frozenset(),
         preserved: Mapping[str, PreservedSection] | None = None,
     ) -> WrittenSections:
         kept = dict(preserved or {})
@@ -146,7 +149,8 @@ class SectionWriter:
                 if not text:
                     section.status = SectionStatus.EMPTY
                 else:
-                    section.status = SectionStatus.LLM_SELECTED if chosen else SectionStatus.EXTRACTIVE
+                    by_ai = chosen or slot.id in ai_assigned
+                    section.status = SectionStatus.LLM_SELECTED if by_ai else SectionStatus.EXTRACTIVE
             all_citations.extend(section.citations)
             highest = max(highest, *(c.number for c in section.citations)) if section.citations else highest
             if section.text:

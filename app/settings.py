@@ -67,7 +67,9 @@ class Settings(BaseSettings):
     state_dir: Path = Field(Path("data/state"), description="SQLite databases, custom templates")
     config_dir: Path = Field(Path("config"), description="facets.yaml, heading_lexicon.yaml, ...")
     template_default: str = Field("sc26", description="Default template id")
-    matcher_default: str = Field("hybrid_light", description="Default slot matching strategy")
+    matcher_default: str = Field(
+        "hybrid_light", description="Default matching strategy; a local one, it is also what matcher=llm falls back on"
+    )
     policy_confident_score: float = Field(
         0.65,
         ge=0.0,
