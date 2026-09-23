@@ -60,18 +60,31 @@ ist, prüft niemand.
 **Neuer Dienst:**
 
 1. **Thema bereinigen.** Zusätze wie „in Klasse 7“ oder „Physik:“ werden abgetrennt und als Kontext behalten. Mit
-   `collection_id` kommen das Thema und die Bildungsstufen als Kontext aus der Sammlung; ihr Fach nutzt Teil 2.
+   `collection_id` kommen das Thema und die Bildungsstufen als Kontext aus der Sammlung. Das Fach (aus dem Thema, der
+   Anfrage oder der Sammlung) bringt seine Kontextwörter aus `config/subjects.yaml` mit, für Physik etwa *physik*
+   und *physikalisch*, für Informatik auch *computer* und *software*.
 2. **Exakter Titel** in den Archiven, Wikipedia zuerst; Weiterleitungen werden verfolgt („Atommodell“ führt zu
-   *Liste der Atommodelle*).
-3. **Begriffsklärung erkennen.** Der Dienst wählt die Bedeutung, deren Titel und Einleitung die meisten
-   Kontextwörter enthalten; ohne passenden Kontext die erste. Bis zu acht Alternativen stehen in der Antwort.
-   „Strom“ wird zu *Elektrischer Strom*, „Kiefer“ zu *Kiefer (Anatomie)*, auch mit dem Zusatz „Biologie“; wer den
-   Baum meint, wählt ihn aus den Alternativen (*Kiefern*, *Waldkiefer*).
-4. **Sonst** Titelvorschläge des Archivs, dann Volltextsuche.
-5. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
+   *Liste der Atommodelle*). Nennt sein Textanfang kein Kontextwort des Fachs, sieht der Dienst auf der Seite
+   „Titel (Begriffsklärung)“ nach: „Informatik: Baum“ führt so zu *Baum (Datenstruktur)*. Findet er dort nichts
+   Eindeutiges, bleibt der Titel, gilt aber als unsicher.
+3. **Begriffsklärung erkennen.** Unter bis zu 40 gelisteten Bedeutungen gewinnt die, deren Titel (dreifach
+   gewertet) und Textanfang die meisten Kontextwörter tragen, verglichen als Wortanfang: „chemi“ findet *Chemische
+   Bindung*. Wortformen eines Fachworts zählen einmal. Personen und Werke, die die Seite erst nach einer gewöhnlichen
+   Bedeutung nennt, kommen zuletzt; sonst endete „Geschichte: Wende“ beim Historiker Peter Wende. Bis zu acht
+   Alternativen stehen in der Antwort.
+4. **Sonst** gebeugte Formen („Lineare Funktionen“, „Vulkane“), Genitivwendungen („Kreislauf des Wassers“ über das
+   Kompositum *Wasserkreislauf*, „Ursachen der Französischen Revolution“ über das, was dem Aspektwort folgt), dann
+   Titelvorschläge und Volltexttreffer, gereiht nach den Wörtern der Anfrage.
+5. **Sicherheit melden.** Die Auflösung nennt ihren Weg (`method`: title, variant, disambiguation, suggestion, search
+   oder llm) und ob sie sicher ist (`confident`). Unsicher sind eine Begriffsklärung, die das Fach nicht entscheidet,
+   ein exakter Titel ohne Fachbezug, Varianten und alle Vorschlags- und Suchtreffer.
+6. **Optional das LLM** (`article_choice=llm`, D35): Nur bei einer unsicheren Auflösung wählt `gpt-5.6-luna` unter den
+   Kandidaten der Regeln oder nennt einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
+7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
    im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf
    einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen. Höchstens 12 Artikel und 400 Absätze.
-   Artikel ohne das Themenwort im Titel geben nur Absätze ab, die das Thema nennen.
+   Artikel ohne das Themenwort im Titel geben nur Absätze ab, die das Thema nennen. Mit `article_choice=llm` benotet
+   das LLM alle Korpusartikel in einem Aufruf, und Volltexttreffer mit der Note 0 fallen heraus.
 
 | Gemessen an zehn Themen | Alter Dienst, bester Fall | Neuer Dienst |
 |---|---|---|
@@ -86,7 +99,8 @@ ist, prüft niemand.
 
 Die Artikelwahl ist der kritischste Schritt: Ein falscher Hauptartikel macht das ganze Kompendium falsch, ein
 unpassender Unterartikel bringt fremde Absätze in den Text. Gemessen wurde sie am 23.09.2026 im Ablauf des Dienstes
-([Messprotokoll](05-messprotokoll.md), M8) gegen ein eigenes Gold in `eval/artikelwahl/`:
+([Messprotokoll](05-messprotokoll.md), M8) gegen ein eigenes Gold in `eval/artikelwahl/`. Die folgenden Tabellen
+zeigen den Stand vor den Verbesserungen vom 23. und 24.09.2026; was sie brachten, steht im nächsten Abschnitt.
 
 - **Hauptartikel:** 59 Anfragen mit dem erwarteten Artikel, festgelegt, bevor der Dienst sie aufgelöst hat.
 - **Korpus:** alle 221 Artikel, die der Dienst für die 20 Themen aus M1 holt, und die 91 Artikel, die der alte Dienst
@@ -120,7 +134,8 @@ unpassender Unterartikel bringt fremde Absätze in den Text. Gemessen wurde sie 
 
 Bei Begriffsklärungen und Suchtreffern stehen Alternativen in der Antwort, bei „Lineare Funktionen“ etwa der richtige
 Artikel; die Redaktion kann dann den genauen Titel angeben. Bei einem eindeutigen Titel wie *Baum* gibt es keine
-Alternativen. Unbemerkt bleibt ein Fehlgriff leicht, weil der Dienst nicht meldet, wie sicher er ist.
+Alternativen. Unbemerkt blieb ein Fehlgriff damals leicht, weil der Dienst nicht meldete, wie sicher er ist; das tut
+er seitdem (Schritt 5 oben).
 
 **Korpus der 20 Themen** (Anteile gehört zum Thema, verwandt, passt nicht):
 
@@ -150,15 +165,54 @@ Gold und Richter uneins: nach Gold liegt der neue Dienst vorn (62 % gegen 51 %),
 oder *Interferenz*, wertete er als passend, weil er den Begriff im Titel beurteilte, nicht die Seite; als Quelle
 taugen sie nicht. Insgesamt stimmen Gold und Richter bei 223 von 288 Artikeln überein (77 %, Cohens Kappa 0,61).
 
-**Nächste Hebel**, nach Aufwand geordnet:
+### Was seit M8 besser wurde (M9 bis M11)
 
-1. Kontextwörter bereinigen: „Fach“ nicht mitzählen, Wortstämme vergleichen („chemi“).
-2. Auch bei einem eindeutigen Titel das Fach prüfen: Passt der Artikel nicht zum Fach, die Begriffsklärung
-   „Titel (Begriffsklärung)“ heranziehen.
-3. Titelvorschläge und Volltexttreffer für den Hauptartikel nur annehmen, wenn ein Wort der Anfrage in Titel oder
-   Einleitung steht; sonst die Alternativen melden und die Auflösung als unsicher kennzeichnen.
-4. Volltexttreffer je Baustein strenger filtern, etwa mit Model2Vec gegen die Einleitung des Hauptartikels.
-5. Optional ein LLM über Hauptartikel und Alternativen entscheiden lassen, wie beim LLM-Zuordner.
+Die Hebel aus M8 wurden umgesetzt und gemessen, gegen das Hauptgold und zwei neue Goldsätze: 23 Anfragen zur
+Validierung und 12 zurückgehaltene, die erst liefen, als die Regeln feststanden (M9).
+
+| Hauptartikel richtig | alter Stand | Regeln | Regeln und LLM (`article_choice=llm`) |
+|---|---|---|---|
+| Hauptgold, 59 Anfragen | 45 | 55 | 57 |
+| Validierung, 23 | 14 | 22 | 23 |
+| zurückgehaltener Test, 12, erster Lauf | 7 | 8 | 9 |
+| zurückgehaltener Test nach zwei Korrekturen | 7 | 9 | 11 |
+
+- **Die Regeln** (Schritte 1 bis 5 oben) brachten den größten Teil: Bei mehrdeutigen Wörtern mit Fach stieg die
+  Trefferzahl über alle drei Sätze von 19 auf 31 von 38, bei Anfragen ohne gleichnamigen Artikel von 3 auf 9 von 9.
+  Unabhängig gemessen ist nur der erste Lauf des Testsatzes, 7 zu 8. Zwei Fehler, die er zeigte, wurden danach
+  behoben; seitdem ist auch er nicht mehr unabhängig.
+- **Das LLM** entscheidet nur, wo die Regeln unsicher sind: 18 von 94 Anfragen, rund 950 Tokens je Aufruf. Es
+  holte „Geschichte: Wende“, „Deutsch: Fall“ (*Kasus*), „Physik: Linse“, „Erdkunde: Delta“ (*Flussdelta*) und
+  „Lichtlehre“ (*Optik*, einen Titel, den es selbst nannte). Einen richtigen Artikel der Regeln hat es nie verworfen.
+- **Übrig** sind Fälle, in denen die Regeln sich sicher sind und deshalb nicht fragen: „Physik: Leiter“ und
+  „Physik: Strom“ enden bei *Leiter (Physik)* und *Strom (Physik)*, allgemeineren Physikartikeln zum richtigen
+  Begriff, „Informatik: Netzwerk“ bei *Netzwerk* statt *Rechnernetz*.
+
+**Volltexttreffer je Baustein** (M10). Einfache Filter trennen sie nicht: Das Themenwort in Titel oder erstem Satz
+zu verlangen, verwirft 14 der 16 unpassenden Treffer, aber auch 7 der 15 zentralen; die Model2Vec-Ähnlichkeit zur
+Einleitung des Hauptartikels ist bei unpassenden Treffern wie *Kernwaffe* (Atommodell) so hoch wie bei guten. Das LLM
+mit dem Prompt des M8-Richters trennt sie, wenn es alle Korpusartikel eines Themas zugleich benotet: 11 der 16
+unpassenden Treffer bekommen eine 0, keiner der passenden. Die Treffer allein benotet es zu mild (6 von 16). Ohne die
+mit 0 benoteten Treffer druckt der Standard 10 statt 26 Absätze aus unpassenden Artikeln und 346 statt 332 aus
+passenden oder verwandten. Das ist Teil von `article_choice=llm`, rund 890 Tokens je Thema mit Treffern.
+
+**Sperrliste** (M10, Nebenbefund). Passte der Hauptartikel selbst auf ein Muster der Sperrliste für Links, galt die
+ganze Liste nicht: „Programmiersprache“ passt auf das Sprachmuster und ließ *Liste von Programmiersprachen* ein,
+*Liste der Atommodelle* auf das Listenmuster und ließ *Physik* ein. Jetzt fällt nur das Muster weg, auf das der Titel
+selbst passt.
+
+**Weitere Quellen: Wikibooks und Wikiversity** (M11). Aus weiteren Archiven nimmt der Dienst nur einen Artikel mit
+genau dem Titel des Hauptartikels; für die 20 Themen aus M1 waren das zwei Seiten, und die Zahl gefüllter Bausteine
+blieb bei 122. Mit der Volltextsuche beider Archive, drei Treffer je Archiv, kamen 88 Seiten hinzu und 1 gefüllter
+Baustein (mit der LLM-Prüfung 3). Die Suche findet gute Seiten, etwa *Physikunterricht/ Optik* oder den
+Wikiversity-Kurs *Kurs:Optik* mit Versuchen, doch aus keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt
+wurde aus Seiten wie *Arbeiten mit .NET* oder *Kommutative Ringe/Bruchrechnung/Aufgabe*, und das *Ungarisch-Lesebuch*
+belegte bei sieben Themen die Treffer aus Wikibooks. Das deckt sich mit dem gemischten Bild aus der Testapp. Die
+Zusatzsuche wurde deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind.
+
+**Offen:** ein LLM-Vorschlag, wenn die Regeln gar keinen Artikel finden (bisher ein 404 mit Alternativen); die
+didaktischen Seiten aus Wikibooks und Wikiversity gezielt für Praxis und Bildung nutzen, etwa mit `matcher=llm` (nicht
+gemessen, ein Kompendium kostet dann rund 30.000 Tokens); eine redaktionelle Prüfung der drei Goldsätze.
 
 ## Extraktiv oder generativ
 

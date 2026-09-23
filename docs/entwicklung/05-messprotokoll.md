@@ -1,4 +1,4 @@
-# Messprotokoll (23.09.2026)
+# Messprotokoll (23. und 24.09.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -10,7 +10,7 @@
 | Entwicklungsrechner | Windows 11, Python 3.13.5; venv des neuen Dienstes, venv der Testapp (torch 2.14, transformers 5.17, model2vec 0.9), venv des alten Dienstes nach seiner Lock-Datei (openai 2.26, aiohttp 3.12.13); dieselben Archive |
 | Testsuite | 767 Tests bestanden, 94,11 % Abdeckung mit `matcher=llm` (D34); Stand `02070a3` nach 2.0.0: 753 Tests, 94,04 %; Schwelle der CI 90 % |
 | Sprachmodelle | `gpt-4.1-mini` für den alten Dienst, `gpt-5.6-luna` für den Richter und als Zuordner, alle über die b-api |
-| Tokens für diese Messungen | alter Dienst 87.710 (`gpt-4.1-mini`); mit `gpt-5.6-luna`: Richter 67.936, LLM als Zuordner 144.596, Richter der Artikelwahl 21.166, `matcher=llm` im Dienst 144.486 laut b-api, davon acht Themen aus ihrem Zwischenspeicher |
+| Tokens für diese Messungen | alter Dienst 87.710 (`gpt-4.1-mini`); mit `gpt-5.6-luna`: Richter 67.936, LLM als Zuordner 144.596, Richter der Artikelwahl 21.166, `matcher=llm` im Dienst 144.486 laut b-api, davon acht Themen aus ihrem Zwischenspeicher. M9 bis M12 (24.09.2026): Artikelwahl 17.116, Trefferprüfung 6.330 und 14.240, Zusatzquellen 18.188, schärfere Beschreibungen 149.910, Zuordnung nur für unsichere Absätze 71.173, mit 50 und 400 105.727; dazu Wiederholungen aus dem Zwischenspeicher der b-api (dieselben Prompts, dieselben Antworten), die sie trotzdem mit ihren Tokens meldet |
 
 Gerundet wird kaufmännisch. Nebenwerte (Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2,
 Knotenzeilen von Teil 3) stehen in `messung/ergebnisse/nebenwerte.txt`, die Suchzeiten des Wikipedia-Archivs in
@@ -312,3 +312,138 @@ eine 2 als das Gold. Von den sieben Artikeln, die das Gold mit 0 und der Richter
 Begriffsklärungsseiten des alten Dienstes. Die falsch aufgelösten Anfragen, die unpassenden Artikel mit Absätzen im
 Korpus und die Kreuztabelle stehen in `messung/ergebnisse/m8_artikelwahl.txt`, die Rohdaten in
 `m8_artikelwahl.json` und `m8_artikel_richter.json`.
+
+## M9 Artikelwahl: schärfere Regeln und LLM für unsichere Fälle (23. und 24.09.2026)
+
+**Aufbau:** Zu `hauptartikel.yaml` aus M8 kamen zwei Goldsätze, beide festgelegt, bevor die Verbesserungen
+geschrieben wurden: `hauptartikel_validierung.yaml` mit 23 Anfragen und `hauptartikel_test.yaml` mit 12
+zurückgehaltenen Anfragen, die erst liefen, als die Regeln feststanden. `mc_aufloesung.py` löst jede Anfrage durch
+`CompendiumService.prepare` auf, ohne Korpus, einmal nur mit den Regeln und einmal mit `article_choice=llm`
+(`gpt-5.6-luna`). Der alte Stand ist Commit `c03dafe` in einer `git archive`-Kopie. Eine Weiterleitung, die
+Wikipedia für einen akzeptierten Titel setzt, zählt wie in M8 mit.
+
+| Goldsatz | alter Stand | Regeln | Regeln und LLM | LLM gefragt |
+|---|---|---|---|---|
+| Hauptgold, 59 Anfragen | 45 | 55 | 57 | 7 |
+| Validierung, 23 | 14 | 22 | 23 | 5 |
+| Test, 12, erster Lauf | 7 | 8 | 9 | 4 |
+| Test, 12, nach zwei Korrekturen | 7 | 9 | 11 | 6 |
+
+| Art der Anfrage (alle drei Sätze) | alter Stand | Regeln | Regeln und LLM |
+|---|---|---|---|
+| normale Themen | 24 von 24 | 24 | 24 |
+| mit Klassen-, Stufen- oder Fachzusatz | 8 von 8 | 8 | 8 |
+| mehrdeutig, Fach als Kontext | 19 von 38 | 31 | 35 |
+| mehrdeutig, ohne Kontext | 3 von 3 | 3 | 3 |
+| Schreibvariante, Abkürzung, Mehrzahl | 9 von 12 | 11 | 12 |
+| ohne gleichnamigen Artikel zum Thema | 3 von 9 | 9 | 9 |
+
+Die Validierung ist seit ihrem ersten Lauf nach der ersten Regelrunde (21 von 23) nicht mehr unabhängig: Ihre beiden
+Fehler flossen in die zweite Runde ein. Der Testsatz fand im ersten Lauf zwei Fehler, die danach behoben wurden:
+Wortformen eines Fachworts zählten doppelt („Mathematik: Ableitung“ wurde zu *Ableitung (Informatik)*), und ein
+exakter Titel ohne jeden Fachbezug galt als sicher („Erdkunde: Delta“ blieb beim Buchstaben). Unabhängig gemessen
+sind also 7 zu 8 zu 9 auf dem Testsatz.
+
+Übrig: „Physik: Leiter“ und „Physik: Strom“ enden bei *Leiter (Physik)* und *Strom (Physik)*, allgemeineren
+Physikartikeln zum richtigen Begriff; die Regeln sind sich dort sicher, also fragen sie das LLM nicht.
+„Informatik: Netzwerk“ bleibt bei *Netzwerk* statt *Rechnernetz*. Das LLM wurde 18-mal gefragt, rund 950 Tokens je
+Aufruf, zusammen 17.116; der Messlauf mit eigenem Skript und der Lauf über den Schalter des Dienstes ergaben genau
+dieselben Titel und dieselbe Tokenzahl, die b-api erkannte die Prompts als gleich. Rohdaten:
+`m9_aufloesung_alt.json`, `m9_aufloesung_regeln.json`, `m9_aufloesung_llm.json`.
+
+## M10 Volltexttreffer je Baustein: Filter (24.09.2026)
+
+**Aufbau:** Die 47 Volltexttreffer der 20 Themen aus M1 mit ihren blind vergebenen Noten aus M8.
+`mc_trefferfilter.py` beschreibt jeden Treffer so, wie ein Filter ihn sehen könnte. `mc_treffer_llm.py` lässt
+`gpt-5.6-luna` mit dem unveränderten Prompt des M8-Richters benoten, einmal die Treffer allein, einmal mit allen
+Korpusartikeln des Themas im selben Aufruf (`--korpus`). `mc_treffer_wirkung.py` baut den Korpus ohne die mit 0
+benoteten Treffer und zählt, was der Standard druckt.
+
+| Filter | behalten: gehört, verwandt, passt nicht | verworfen |
+|---|---|---|
+| heute: Themenstamm in Titel oder Einleitung | 15, 16, 16 | 0, 0, 0 |
+| Themenstamm im Titel oder im ersten Satz | 8, 5, 2 | 7, 11, 14 |
+| alle Themenwörter in Titel und Einleitung | 14, 16, 13 | 1, 0, 3 |
+| Model2Vec-Ähnlichkeit zur Einleitung des Hauptartikels ≥ 0,7 | 14, 12, 10 | 1, 4, 6 |
+| LLM, Treffer allein benotet | 15, 16, 10 | 0, 0, 6 |
+| LLM, mit dem ganzen Korpus benotet | 15, 16, 5 | 0, 0, 11 |
+
+| 20 Themen, Standard | gedruckt: gehört, verwandt, passt nicht | gefüllte Inhaltsbausteine |
+|---|---|---|
+| heute | 252, 80, 26 | 122 |
+| ohne die mit 0 benoteten Treffer | 260, 86, 10 | 120 |
+
+Die zwei Bausteine, die leer werden, trugen bei „Atommodell“ nur Absätze aus *Kernwaffe*. Das LLM brauchte 16 Aufrufe
+mit 14.240 Tokens (Treffer allein: 6.330); über den Schalter des Dienstes verwarf es dieselben 11 Treffer (14.243
+Tokens). Nebenbefund: Passte der Hauptartikel selbst auf ein Muster der Sperrliste für Links, galt die ganze Liste
+nicht; „Atommodell“ leitet auf *Liste der Atommodelle* um und ließ so *Physik* ein. Seit der Korrektur ändern sich
+zwei Korpora: *Liste von Programmiersprachen* weicht *Zeittafel der Programmiersprachen*, *Physik* weicht *Molekül*.
+Rohdaten: `m10_trefferfilter.json`, `m10_treffer_llm_allein.json`, `m10_treffer_llm_korpus.json`,
+`m10_treffer_wirkung.json`.
+
+## M11 Wikibooks und Wikiversity als weitere Quellen (24.09.2026)
+
+**Aufbau:** Die 20 Themen aus M1 mit Wikipedia und Klexikon (Profil `standard`) und zusätzlich mit
+`wikibooks_de_all_nopic_2026-01` und `wikiversity_de_all_nopic_2026-07` (Profil `extended`), zugeordnet mit dem
+Standard. `mc_zusatzquellen.py` misst den heutigen Weg: Aus weiteren Archiven kommt nur ein Artikel mit genau dem
+Titel des Hauptartikels. `mc_zusatzsuche.py` fügt je Archiv die ersten drei Volltexttreffer zum Thema hinzu
+(Metaseiten und Sperrliste ausgenommen) und misst ohne und mit der Trefferprüfung aus M10.
+
+| 20 Themen | Seiten aus Wikibooks und Wikiversity | davon verworfen | gedruckt | gefüllte Inhaltsbausteine |
+|---|---|---|---|---|
+| nur Wikipedia und Klexikon | 0 | | | 122 |
+| heute: gleicher Titel | 2 | | 2 | 122 |
+| Volltextsuche, 3 je Archiv | 88 | | 29 | 123 |
+| Volltextsuche mit Trefferprüfung | 88 | 33 | 31 | 125 |
+
+Über den gleichen Titel kamen nur Wikibooks *Optik* (kein Absatz gedruckt) und Wikiversity *Lineare Funktion*
+(2 Absätze); bei „Lineare Funktion“ druckte der Standard danach 16 statt 21 Absätze, weil der Zwilling einen
+Korpusplatz belegt. Die Volltextsuche findet Brauchbares, etwa *Physikunterricht/ Optik*, den Wikiversity-Kurs
+*Kurs:Optik*, *Anorganische Chemie für Schüler/ Säure-Base-…* oder *Wikijunior Wie Dinge funktionieren/ Elektrischer
+Strom*, aber von keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt wurde aus Seiten wie
+*OpenSource4School/Potenziale digitaler Medien*, *Arbeiten mit .NET*, *SHK-Handwerk in Sachsen* oder *Kommutative
+Ringe/Bruchrechnung/Aufgabe*. Bei sieben Themen belegt das *Ungarisch-Lesebuch* die Wikibooks-Treffer. Ohne die
+Prüfung sinkt „Wasserkreislauf“ von 5 auf 3 gefüllte Bausteine. Tokens der Prüfung: 18.188. Rohdaten:
+`m11_zusatzquellen.json`, `m11_zusatzsuche.json`; die Textanfänge der Seiten bleiben außerhalb des Repositorys.
+
+## M12 Zuordnung: schärfere Bausteinbeschreibungen und günstigere LLM-Zuordnung (23. und 24.09.2026)
+
+**Aufbau:** `mc_varianten.py` und `mc_llm_sparvarianten.py` auf festen Korpora der zehn Goldthemen, wie M4 und M5.
+Die schärferen Beschreibungen stehen in `messung/sc26_beschreibungen.json` (sc26 mit überarbeiteten Beschreibungen,
+„gehört hinein“ und „gehört nicht hinein“; Suchanfragen und Überschriftenmuster unverändert, damit der Korpus
+gleich bleibt).
+
+| Bausteinbeschreibungen | Pool | macro-F1 | micro-F1 | richtig unter Top 2 | Tokens |
+|---|---|---|---|---|---|
+| sc26, `hybrid_light` | alle Absätze | 0,447 | 0,656 | 67,1 % | |
+| schärfer, `hybrid_light` | alle Absätze | 0,448 | 0,658 | 63,4 % | |
+| sc26, `matcher=llm` | Gold | 0,665 | 0,794 | 74,8 % | 144.486 |
+| schärfer, `matcher=llm` | Gold | 0,678 | 0,795 | 81,2 % | 149.910 |
+
+Nicht übernommen: lokal kein Gewinn, mit dem LLM +0,013 macro-F1, innerhalb der Streuung wiederholter Läufe.
+
+| LLM-Zuordnung, Gold-Pool (597 Absätze) | macro-F1 | micro-F1 | falsch | an das LLM | Tokens |
+|---|---|---|---|---|---|
+| Regeln (`hybrid_light` mit Model2Vec) | 0,433 | 0,645 | 201 von 542 | 0 | 0 |
+| 25 Absätze je Aufruf, 700 Zeichen (bis D36) | 0,657 | 0,791 | 127 von 548 | 597 | 144.062 |
+| nur Absätze ohne sicheres Signal der Policy | 0,543 | 0,686 | 203 von 578 | 278 | 71.173 |
+| 50 Absätze je Aufruf, 400 Zeichen (D36) | 0,720 | 0,820 | 113 von 550 | 597 | 105.727 |
+
+| F1 je Baustein | Belege | Regeln | 25 und 700 | nur unsichere | 50 und 400 |
+|---|---|---|---|---|---|
+| Fachinhalte | 276 | 0,70 | 0,84 | 0,74 | 0,86 |
+| Entwicklung & Ausblick | 83 | 0,73 | 0,83 | 0,74 | 0,84 |
+| Gliederung & Systematik | 55 | 0,60 | 0,76 | 0,64 | 0,78 |
+| Gesellschaftlicher Kontext | 38 | 0,41 | 0,71 | 0,58 | 0,80 |
+| Themendefinition | 22 | 0,68 | 0,81 | 0,65 | 0,91 |
+| Praxis | 18 | 0,19 | 0,34 | 0,51 | 0,58 |
+| Beruf & Wirtschaft | 11 | 0,27 | 0,80 | 0,50 | 0,80 |
+| Bildung | 8 | 0,50 | 0,74 | 0,62 | 0,78 |
+| Querschnitt & Bezüge | 3 | 0,00 | 0,17 | 0,22 | 0,19 |
+| Regularien & Rahmensetzung | 2 | 0,25 | 0,57 | 0,22 | 0,67 |
+
+Der Lauf mit 25 und 700 kam für neun der zehn Themen aus dem Zwischenspeicher der b-api (4,9 s): dieselben Prompts
+wie in M5, dieselben Antworten. Die Policy entscheidet 319 der 597 Absätze mit sicherem Signal und liegt bei 125 davon
+falsch (39 %), bei den übrigen 278 bei 131 (47 %); darum hilft das LLM nur für die unsicheren wenig. 50 und 400 ist ein
+einzelner Lauf; Wiederholungen derselben Einstellung streuten bisher um etwa 0,03 macro-F1 (0,63 bis 0,665). Rohdaten:
+`m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json`, `m12_sparvarianten.json`.

@@ -425,6 +425,15 @@ Link-Artikel ohne diesen Stamm im Titel liefern nur Absätze, deren Überschrift
 (`_segment_corpus`); Aliase spielen dabei keine Rolle. Sie suchen den Zwilling in den anderen Archiven und fließen
 in Teil 2 und ins Glossar.
 
+**Nachtrag 2026-09-24 (D35, `sources/zim/topic_rules.py`, `registry.py`):** Die Bedeutung einer Begriffsklärung
+entscheiden jetzt die Kontextwörter des Fachs aus `config/subjects.yaml` (`kontext`; das Fach kommt aus Anfrage,
+Thema oder Sammlung), unter bis zu 40 gelisteten Bedeutungen, als Wortanfang verglichen, im Titel dreifach gewertet;
+Wortformen eines Fachworts zählen einmal, Personen und Werke nach einer gewöhnlichen Bedeutung kommen zuletzt. Ein
+exakter Titel ohne Fachbezug schickt zur Seite „Titel (Begriffsklärung)“. Vor Titelvorschlägen und Volltextsuche
+kommen gebeugte Formen und Genitivwendungen. Jede Auflösung trägt `method` und `confident`; mit `article_choice=llm`
+entscheidet das LLM die unsicheren und verwirft unpassende Volltexttreffer je Baustein. Die Sperrliste für Links setzt
+nur das Muster aus, auf das der Titel des Hauptartikels selbst passt.
+
 ### 4.3 Segmentierung
 
 - HTML → Abschnittsbaum (h2/h3/h4) mit vollständigem Überschriftenpfad; Boilerplate-Filter

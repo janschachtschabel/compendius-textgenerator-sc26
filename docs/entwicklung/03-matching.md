@@ -181,14 +181,16 @@ Rechenzeit: Zuordnung je Thema auf einem Entwicklungsrechner, nur CPU.
 
 Ein Sprachmodell, `gpt-5.6-luna`, bekommt die Bausteine mit Beschreibung, „gehört hinein“ und „gehört nicht hinein“,
 dazu die Zuordnungsregeln aus dem Template; sie entsprechen den Labelregeln des Goldstandards. Je Absatz sieht es den
-Artikel und dessen Rolle, den Überschriftenpfad und den Text, gekürzt auf 700 Zeichen, 25 Absätze je Aufruf. Es
-antwortet je Absatz mit einem Baustein oder „keiner“ und einer Sicherheit. Gemessen wurde zweimal auf denselben 603
-gelabelten Absätzen: zuerst mit einem Skript, dann im Dienst als `matcher=llm` über `CompendiumService.match` (D34).
-Die Tabelle zeigt alle Verfahren auf diesen Absätzen:
+Artikel und dessen Rolle, den Überschriftenpfad und den Text, gekürzt auf 700 Zeichen, 25 Absätze je Aufruf; seit
+D36 sind es 400 Zeichen und 50 Absätze. Es antwortet je Absatz mit einem Baustein oder „keiner“ und einer Sicherheit.
+Gemessen wurde zweimal auf denselben 603 gelabelten Absätzen: zuerst mit einem Skript, dann im Dienst als
+`matcher=llm` über `CompendiumService.match` (D34). Die Tabelle zeigt alle Verfahren auf diesen Absätzen; die Zeile
+für D36 stammt aus M12 und lief auf 597 davon, weil sich ein Korpus seitdem geändert hat (Sperrliste, M10):
 
 | Verfahren | macro-F1 | micro-F1 | richtig unter Top 2 | falsch zugeordnet |
 |---|---|---|---|---|
-| **`matcher=llm` im Dienst** | **0,66** | **0,79** | **75 %** | 125 von 547 |
+| **`matcher=llm`, 50 Absätze zu 400 Zeichen je Aufruf (D36, M12)** | **0,72** | **0,82** | nicht gemessen | 113 von 550 |
+| `matcher=llm` im Dienst, 25 Absätze zu 700 Zeichen | 0,66 | 0,79 | 75 % | 125 von 547 |
 | `gpt-5.6-luna`, erste Messung mit Skript | 0,63 | 0,79 | 73 % | 128 von 547 |
 | nur Überschriften-Lexikon (`lexicon_only`) | 0,35 | 0,65 | 63 % | 184 von 518 |
 | BM25 (`bm25`) | 0,36 | 0,63 | 60 % | 203 von 536 |
@@ -211,10 +213,16 @@ Die Tabelle zeigt alle Verfahren auf diesen Absätzen:
 - **Top 2:** „Richtig unter Top 2“ zählt im Dienst wie bei allen anderen Verfahren nach den Längenbudgets. Der erste
   Lauf kannte keine Budgets.
 - **Kosten:** 144.486 Tokens für 601 Absätze laut b-api, rund 240 je Absatz. Im ersten Lauf dauerte ein Aufruf im
-  Median 5,5 s, ein Thema 7,5 s.
+  Median 5,5 s, ein Thema 7,5 s. Mit 50 Absätzen zu 400 Zeichen (D36) sind es 105.727 Tokens für 597 Absätze, rund
+  177 je Absatz.
 - **Hochgerechnet auf ein ganzes Kompendium:** im Median rund 39.000 Tokens und 11 s, bei großen Themen bis 92.000
-  Tokens und 22 s. Das ist mehr als der ganze alte Dienst mit rund 7.900 Tokens. Je Anfrage erlaubt der Dienst
-  60.000 Tokens (`LLM_MAX_TOKENS_PER_REQUEST`); darüber entscheidet für die übrigen Absätze die Standard-Strategie.
+  Tokens und 22 s; mit D36 im selben Verhältnis rund 29.000 und 68.000 Tokens, nicht eigens gemessen. Das ist mehr als
+  der ganze alte Dienst mit rund 7.900 Tokens. Je Anfrage erlaubt der Dienst 60.000 Tokens
+  (`LLM_MAX_TOKENS_PER_REQUEST`); darüber entscheidet für die übrigen Absätze die Standard-Strategie.
+- **Größere Stapel, kürzere Texte (D36, M12):** 50 Absätze zu 400 Zeichen je Aufruf ordneten in jedem Baustein
+  mindestens so gut zu wie 25 zu 700, am deutlichsten in Praxis (0,34 auf 0,58) und Themendefinition (0,81 auf 0,91).
+  Ein Lauf; Wiederholungen derselben Einstellung streuten bisher um etwa 0,03 macro-F1. Übernommen, weil die
+  Einstellung auch ohne den Gewinn billiger ist.
 - **Vorbehalt:** Die Goldlabels hat ebenfalls ein Sprachmodell vorgeschlagen, Claude. Ein LLM als Zuordner teilt
   womöglich dessen Sicht, und es kennt die Labelregeln. Die Gegenprobe mit dem Richter entfällt, weil Richter und
   Zuordner dasselbe Modell wären.
@@ -262,14 +270,14 @@ Bausteine gewinnen, kleine füllt das LLM oft falsch: In Querschnitt landeten 7 
    der Ranker.
 6. **Mögliche Vereinfachung:** BM25 + Model2Vec erreicht fast dasselbe (0,44 und 63 %, beim Richter gleichauf) in
    0,05 statt 0,30 s.
-7. **Das LLM ist besser, aber teuer.** 0,66 statt 0,43 auf den gelabelten Absätzen, dafür rund 39.000 Tokens je
-   Kompendium. Deshalb ist es wählbar, nicht Standard.
+7. **Das LLM ist besser, aber teuer.** 0,72 statt 0,43 auf den gelabelten Absätzen (D36), dafür hochgerechnet rund
+   29.000 Tokens je Kompendium. Deshalb ist es wählbar, nicht Standard.
 
 ## Das LLM als wählbare Strategie
 
-Das LLM ist das einzige gemessene Verfahren, das klar besser zuordnet: 0,66 statt 0,43 macro-F1 und 125 statt 205
-Fehlzuordnungen auf denselben Absätzen. Als Standard kommt es wegen der Kosten nicht in Frage. Seit D34 steht es je
-Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und steht noch in keiner Version mit Tag.
+Das LLM ist das einzige gemessene Verfahren, das klar besser zuordnet: 0,72 statt 0,43 macro-F1 und 113 statt 201
+Fehlzuordnungen auf denselben Absätzen (D36, M12). Als Standard kommt es wegen der Kosten nicht in Frage. Seit D34
+steht es je Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und steht noch in keiner Version mit Tag.
 
 - **Wie gemessen:** Das Modell ordnet jeden Absatz zu, mit demselben Prompt.
 - **Rückfall je Absatz:** Die Standard-Strategie läuft vorher. Absätze, für die das Modell nicht entscheidet (b-api,
@@ -279,8 +287,11 @@ Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und steht noch in ke
 - **Kennzeichnung:** Bausteine mit Absätzen, die das Modell zugeordnet hat, tragen den Status `ki-ausgewählt`. Der
   Vorspann kennzeichnet die Auswahl als KI-gestützt. `audit.llm.matching` zählt entschiedene und zurückgefallene
   Absätze, und die Metrik der Anfragen zählt `matcher=llm` wie einen LLM-Schalter.
+- **Gemessen und verworfen (M12):** das LLM nur über die Absätze entscheiden lassen, die die Policy ohne sicheres
+  Signal zuordnet oder weglässt (278 von 597, 71.173 Tokens): macro-F1 0,54 und so viele Fehlzuordnungen wie die
+  Regeln. Die Policy liegt auch bei ihren sicheren Absätzen zu 39 % falsch, dort hilft das LLM dann nicht.
 - **Nicht umgesetzt, weil nicht gemessen:** das LLM nur über die Kandidaten der Ranker entscheiden lassen (Median 109
-  von 162 Absätzen, rund 26.000 Tokens je Kompendium) oder nur über Zweifelsfälle knapp unter der Schwelle von 0,65.
+  von 162 Absätzen).
 
 Der Schalter `extraction=llm` geht einen anderen Weg und lässt sich mit `matcher=llm` kombinieren: Er lässt die
 Zuordnung stehen und das LLM Sätze aus den besten Kandidaten wählen. Beide teilen sich das Tokenbudget der Anfrage.
@@ -289,8 +300,8 @@ einem Sprachmodell stammen.
 
 ## Grenzen und nächste Hebel
 
-Das Ziel macro-F1 0,70 erreicht kein Verfahren; das LLM kommt mit 0,66 am nächsten. Beim Standard gelingen große
-Bausteine, kleine kaum:
+Das Ziel macro-F1 0,70 erreicht nur das LLM mit 50 Absätzen je Aufruf (0,72, ein Lauf, M12); die lokalen Verfahren
+bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kleine kaum:
 
 | Baustein | Gold-Absätze | F1 |
 |---|---|---|
@@ -308,7 +319,11 @@ Bausteine, kleine kaum:
 - **Mehr und geprüftes Gold.** Kleine Bausteine haben nur 2 bis 18 Belege; ihre Werte schwanken stark. Eine
   redaktionelle Prüfung der Labels steht aus.
 - **Abdeckung statt eines anderen lokalen Rankers.** Enzyklopädische Artikel enthalten zu Beruf, Bildung oder Praxis
-  wenig. Mehr bringen Quellen, die solche Inhalte haben: Wikibooks, Wikiversity, Materialien einer Wissens-Sammlung.
+  wenig. Mehr versprechen Quellen, die solche Inhalte haben. Wikibooks und Wikiversity über ihre Volltextsuche
+  brachten in M11 fast nichts: +1 gefüllter Baustein in 20 Themen, und aus den didaktischen Seiten druckte der
+  Standard keinen Absatz. Materialien einer Wissens-Sammlung bleiben der aussichtsreichere Weg.
+- **Schärfere Bausteinbeschreibungen (M12):** lokal kein Gewinn (0,448 statt 0,447), mit dem LLM +0,013 innerhalb der
+  Streuung; nicht übernommen.
 - **Schon verworfen, weil gemessen schlechter oder nicht besser:** am 18.09.2026 gelernte Zuordnung per
   logistischer Regression (macro-F1 höchstens 0,35 bei Kreuzvalidierung über Themen), Schwellen je Baustein,
   zentrierte Embeddings, ein Embedding der Überschriften, eine Füllregel für leere Bausteine; am 23.09.2026

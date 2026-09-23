@@ -1,0 +1,335 @@
+{
+ "tokens": 6330,
+ "calls": 16,
+ "treffer": [
+  {
+   "thema": "Demokratie",
+   "titel": "Staatsmodell",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Demokratie",
+   "titel": "Rechtsstaat",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Demokratie",
+   "titel": "Souverän",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Liberalismus",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 2
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Revolutionskult",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Trente Glorieuses",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 3
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Lea Dohm",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Klimapolitik",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Gerechtigkeit",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Optik",
+   "titel": "Geschichte der Physik",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Optik",
+   "titel": "Schnittweite",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Optik",
+   "titel": "Superposition (Physik)",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Syntax",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 4
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Unterprogramm",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 5
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Selbstübersetzung (Compiler)",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "Franz Schubert",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 2
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "Sonatensatzform",
+   "gold": 2,
+   "llm": 1,
+   "gedruckt_m8": 3
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "7. Sinfonie (Bruckner)",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 4
+  },
+  {
+   "thema": "Plattentektonik",
+   "titel": "Pangaea",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Plattentektonik",
+   "titel": "Tiefseerinne",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Ökologisches Gleichgewicht",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Naturvolk",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Organizismus",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Atommodell",
+   "titel": "Kernwaffe",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 4
+  },
+  {
+   "thema": "Atommodell",
+   "titel": "Zeittafel physikalischer Entdeckungen",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 2
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Soziokulturelle Evolution",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 3
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Hochindustrialisierung in Deutschland",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 3
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Proletariat",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Bidirektionales Laden",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Stromfluss",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Elektrische Spannung",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 5
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "titel": "Infiltration (Hydrogeologie)",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "titel": "Tracer (Geowissenschaften)",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Ruralisierung",
+   "gold": 1,
+   "llm": 1,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Territorialstaat",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Privatrecht",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Markow-Operator",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Probit-Modell",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 5
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Differenzierbarkeit",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Hermaphroditismus",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Organell",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Evolutionsfaktor",
+   "gold": 0,
+   "llm": 1,
+   "gedruckt_m8": 1
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Der siebente Ring",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 5
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Das Eleusische Fest",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 2
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Cheryl Chapman",
+   "gold": 0,
+   "llm": 0,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Mein fremder Alltag",
+   "gold": 1,
+   "llm": 2,
+   "gedruckt_m8": 0
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Ballade (Gedicht)",
+   "gold": 2,
+   "llm": 2,
+   "gedruckt_m8": 2
+  }
+ ]
+}

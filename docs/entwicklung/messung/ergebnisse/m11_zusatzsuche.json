@@ -1,0 +1,975 @@
+{
+ "tokens": 18188,
+ "themen": {
+  "Barockliteratur": {
+   "bausteine_gefuellt": {
+    "ohne": 4,
+    "mit": 4,
+    "geprueft": 4
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [],
+   "verworfen_sonst": []
+  },
+  "Bruchrechnung": {
+   "bausteine_gefuellt": {
+    "ohne": 2,
+    "mit": 5,
+    "geprueft": 5
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "2 · Gliederung & Systematik": 1,
+     "3 · Fachinhalte": 1,
+     "8 · Bildung": 3,
+     "10 · Praxis": 1
+    },
+    "geprueft": {
+     "2 · Gliederung & Systematik": 1,
+     "3 · Fachinhalte": 1,
+     "8 · Bildung": 3,
+     "10 · Praxis": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "OpenSource4School/Potenziale digitaler Medien/Bruchrechnung - Addition und Subtraktion",
+     "verworfen": false,
+     "gedruckt_mit": 5,
+     "gedruckt_geprueft": 5
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kommutative Ringe/Bruchrechnung/Aufgabe",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "OpenSource4School/Potenziale digitaler Medien",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Mathematrix: MA TER/ Theorie/ Grundrechenarten und Bruchrechnungen",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Mathematrix: AT AHS/ Theorie nach Thema/ Grundrechenarten und Bruchrechnungen",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Mathematrix: AT BRP/ Theorie nach Thema/ Grundrechenarten und Bruchrechnungen",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Demokratie": {
+   "bausteine_gefuellt": {
+    "ohne": 8,
+    "mit": 8,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Hans Castorps Schneetraum: Thomas Mann und die Demokratie",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kamener Impulse",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Französische Revolution": {
+   "bausteine_gefuellt": {
+    "ohne": 6,
+    "mit": 6,
+    "geprueft": 6
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "10 · Praxis": 1
+    },
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Leistungskurs Französisch des Willibald-Gymnasiums (Eichstätt):Unterrichtsmaterialien:Le cours/Archiv3",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:OOo Impress/Material/Benutzerdefinierte Animation",
+     "verworfen": true,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Leistungskurs Französisch des Willibald-Gymnasiums (Eichstätt):Unterrichtsmaterialien:Le cours/Archiv 4",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Die Französische Revolution",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": [
+    "Trente Glorieuses"
+   ]
+  },
+  "Klimawandel": {
+   "bausteine_gefuellt": {
+    "ohne": 8,
+    "mit": 8,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "2 · Gliederung & Systematik": 1,
+     "10 · Praxis": 1
+    },
+    "geprueft": {
+     "2 · Gliederung & Systematik": 1,
+     "10 · Praxis": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Vergleich: Coronaepidemie und Klimawandel",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Mathematische Modellbildung/Themen/Klimawandel",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Mathematische Modellbildung/Themen/Klimawandel/Einführung Thema",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Klimawandel",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Optik": {
+   "bausteine_gefuellt": {
+    "ohne": 8,
+    "mit": 8,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Optik",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Optik/Beugung am Gitter",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Optik/Brechung, optische Dichte und Brechzahl",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Formelsammlung Physik: Optik: Geometrische Optik",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Physikunterricht/ Optik",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Digitale bildgebende Verfahren: Literatur",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Photosynthese": {
+   "bausteine_gefuellt": {
+    "ohne": 5,
+    "mit": 6,
+    "geprueft": 6
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "2 · Gliederung & Systematik": 1,
+     "10 · Praxis": 2
+    },
+    "geprueft": {
+     "2 · Gliederung & Systematik": 1,
+     "10 · Praxis": 2
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Γεωγραφία&Ιστορία/Photosynthese",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Luft/Gasgemisch",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Γεωγραφία&Ιστορία/Kohlenstoffkreislauf",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Der Baum als Lebewesen: Chemie: Photosynthese",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Cyanobakterien: Merkmale der Cyanobakterien",
+     "verworfen": false,
+     "gedruckt_mit": 2,
+     "gedruckt_geprueft": 2
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Cyanobakterien: Bedeutung der Cyanobakterien für die Entwicklung des irdischen Lebens",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Programmiersprache": {
+   "bausteine_gefuellt": {
+    "ohne": 9,
+    "mit": 8,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "3 · Fachinhalte": 3,
+     "11 · Querschnitt & Bezüge": 2
+    },
+    "geprueft": {
+     "3 · Fachinhalte": 3,
+     "11 · Querschnitt & Bezüge": 2
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Objektorientierte Programmierung",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Neueste Internet- und WWW-Technologien/Web-Tests mit Selenium",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:KTurtle",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Strukturierte Programmierung",
+     "verworfen": false,
+     "gedruckt_mit": 2,
+     "gedruckt_geprueft": 2
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Arbeiten mit .NET: Allgemeines/ Einführung/ Lesehinweise",
+     "verworfen": false,
+     "gedruckt_mit": 3,
+     "gedruckt_geprueft": 3
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Arbeiten mit .NET/ Inhaltsverzeichnis",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Säure-Base-Konzepte": {
+   "bausteine_gefuellt": {
+    "ohne": 3,
+    "mit": 3,
+    "geprueft": 3
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikibooks",
+     "titel": "Anorganische Chemie für Schüler/ Säure-Base-Gleichgewichte",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Sinfonie": {
+   "bausteine_gefuellt": {
+    "ohne": 7,
+    "mit": 7,
+    "geprueft": 7
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Künstliche Intelligenz",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Mach dich schlau am Instrument/Methodik",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Enzyklopädie der populären Irrtümer/ Kultur",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Liederbuch/ Freude, schöner Götterfunken",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Werksverzeichnis Fredrik Schwenk",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Plattentektonik": {
+   "bausteine_gefuellt": {
+    "ohne": 3,
+    "mit": 3,
+    "geprueft": 3
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Pangaea",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Gondwana",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Die Kontinentaldrift",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Ökosystem": {
+   "bausteine_gefuellt": {
+    "ohne": 7,
+    "mit": 7,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {
+     "9 · Regularien & Rahmensetzung": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Biodiversität",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Forum Citizen Science",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Mathematische Modellbildung/Themen/Biodiversität",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Die Serengeti",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Fische (ausgewählte Fischarten)",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Greifvögel",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": [
+    "Naturvolk"
+   ]
+  },
+  "Atommodell": {
+   "bausteine_gefuellt": {
+    "ohne": 5,
+    "mit": 5,
+    "geprueft": 5
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "3 · Fachinhalte": 1,
+     "5 · Entwicklung & Ausblick": 1
+    },
+    "geprueft": {
+     "3 · Fachinhalte": 1,
+     "5 · Entwicklung & Ausblick": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Philosophie und Quantenphysik - Von der Entschlüsselung emergenter Phänomene zur Weltformel",
+     "verworfen": true,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Gedanken zu \"Sein und Zeit\"",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Lehrbuch der Biochemie: Grundlagen: Physik",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Allgemeine und Anorganische Chemie/ Druckversion",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Industrielle Revolution": {
+   "bausteine_gefuellt": {
+    "ohne": 7,
+    "mit": 8,
+    "geprueft": 8
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "2 · Gliederung & Systematik": 1,
+     "9 · Regularien & Rahmensetzung": 1
+    },
+    "geprueft": {
+     "2 · Gliederung & Systematik": 1,
+     "9 · Regularien & Rahmensetzung": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "GWS Jahrestagung 2016/Referenten/Kristina Lahl",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "GWS Jahrestagung 2016/Programm",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Das Klima-Buch",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "SHK-Handwerk in Sachsen: 1800 bis 1861: Industrielle Revolution und Gewerbefreiheit",
+     "verworfen": false,
+     "gedruckt_mit": 2,
+     "gedruckt_geprueft": 2
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Politik und Wirtschaftskunde für gewerbliche Berufe/ Betriebliche Mitbestimmung",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": [
+    "Soziokulturelle Evolution"
+   ]
+  },
+  "Elektrischer Strom": {
+   "bausteine_gefuellt": {
+    "ohne": 8,
+    "mit": 7,
+    "geprueft": 7
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Elektrisches Netzwerk/Zugehöriges lineares Gleichungssystem/Einführung/Beispiel",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Fachbereich Physik/Klassische Elektrodynamik/Maxwell-Einführung",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Strommessung",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Wikijunior Wie Dinge funktionieren/ Elektrischer Strom",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Der elektrische Strom – Eigenschaften und Wirkungen: Teil I",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Der elektrische Strom – Eigenschaften und Wirkungen: Teil III",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Wasserkreislauf": {
+   "bausteine_gefuellt": {
+    "ohne": 5,
+    "mit": 3,
+    "geprueft": 6
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "5 · Entwicklung & Ausblick": 1
+    },
+    "geprueft": {
+     "5 · Entwicklung & Ausblick": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Umweltparcours Queichland",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Mathematische Modellbildung/Themen/Biodiversität",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Das Klima-Buch",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Kajak/ Vorbereitung",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Ungarisch/Ungarisch-Lesebuch/Thema Geologie",
+     "verworfen": true,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": []
+  },
+  "Römisches Reich": {
+   "bausteine_gefuellt": {
+    "ohne": 9,
+    "mit": 9,
+    "geprueft": 9
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [],
+   "verworfen_sonst": []
+  },
+  "Lineare Funktion": {
+   "bausteine_gefuellt": {
+    "ohne": 5,
+    "mit": 6,
+    "geprueft": 5
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "1 · Themendefinition": 1,
+     "2 · Gliederung & Systematik": 2,
+     "9 · Regularien & Rahmensetzung": 1,
+     "11 · Querschnitt & Bezüge": 1
+    },
+    "geprueft": {
+     "1 · Themendefinition": 1,
+     "2 · Gliederung & Systematik": 2,
+     "3 · Fachinhalte": 3,
+     "9 · Regularien & Rahmensetzung": 1
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Affine Funktion",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 3
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Komplexe Zahlen/Gebrochen lineare Funktionen/Textabschnitt",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Maßtheorie auf topologischen Räumen/Maße als stetige lineare Funktionen",
+     "verworfen": true,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Mathematrix: Aufgabensammlung/ Lineare Funktion",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Himmelsgesetze der Bewegung/ Lineare Funktionen",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Mathematrix: Aufgabensammlung/ Lineare Funktion und Regression",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    }
+   ],
+   "verworfen_sonst": [
+    "Probit-Modell",
+    "Markow-Operator"
+   ]
+  },
+  "Zelle (Biologie)": {
+   "bausteine_gefuellt": {
+    "ohne": 6,
+    "mit": 6,
+    "geprueft": 5
+   },
+   "gedruckt_zusatz": {
+    "mit": {},
+    "geprueft": {}
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Disziplin:Cytologie",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Neuronale Netze/biologische neuronale Netze",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kolloquium Biologie",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Medizinische Biologie: Biologische Membranen und Signaltransduktion",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Topographische Anatomie: Anatomische Propädeutik: Grundlagen der Biologie",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Medizinische Biologie: Zellzyklus",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": [
+    "Evolutionsfaktor",
+    "Hermaphroditismus"
+   ]
+  },
+  "Gedicht": {
+   "bausteine_gefuellt": {
+    "ohne": 7,
+    "mit": 6,
+    "geprueft": 6
+   },
+   "gedruckt_zusatz": {
+    "mit": {
+     "3 · Fachinhalte": 2
+    },
+    "geprueft": {
+     "3 · Fachinhalte": 2
+    }
+   },
+   "treffer": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Einblicke in eine Sammlung. Deutsche Literatur bis 1900.",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Kurs:Friedrich Schiller/Material/Literatur",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikiversity",
+     "titel": "Testseite5",
+     "verworfen": true,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "A Poem a Day – Gedichte zum Auswendiglernen",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Die besten Ideen von Joachim Stiller/ Die besten Gedichte von Joachim Stiller",
+     "verworfen": false,
+     "gedruckt_mit": 1,
+     "gedruckt_geprueft": 1
+    },
+    {
+     "projekt": "wikibooks",
+     "titel": "Bürgerwissen Deutschland/ Kultur und Wissenschaft/ Dichtung",
+     "verworfen": false,
+     "gedruckt_mit": 0,
+     "gedruckt_geprueft": 0
+    }
+   ],
+   "verworfen_sonst": [
+    "Cheryl Chapman"
+   ]
+  }
+ }
+}

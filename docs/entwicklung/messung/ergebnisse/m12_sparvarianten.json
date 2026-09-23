@@ -1,0 +1,256 @@
+{
+ "wege": {
+  "rules": {
+   "macro_f1": 0.4328574988936452,
+   "micro_f1": 0.6446124763705103,
+   "assigned": 542,
+   "misassigned": 201,
+   "tokens": 0,
+   "llm_paragraphs": 0,
+   "fallback": 0,
+   "seconds": 4.3,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.68,
+     "support": 22,
+     "predicted": 28
+    },
+    "systematik": {
+     "f1": 0.6,
+     "support": 55,
+     "predicted": 45
+    },
+    "fachinhalte": {
+     "f1": 0.7012089810017272,
+     "support": 276,
+     "predicted": 303
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.4109589041095891,
+     "support": 38,
+     "predicted": 35
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.7322404371584699,
+     "support": 83,
+     "predicted": 100
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.26666666666666666,
+     "support": 11,
+     "predicted": 4
+    },
+    "bildung": {
+     "f1": 0.5,
+     "support": 8,
+     "predicted": 4
+    },
+    "regularien": {
+     "f1": 0.25,
+     "support": 2,
+     "predicted": 6
+    },
+    "praxis": {
+     "f1": 0.1875,
+     "support": 18,
+     "predicted": 14
+    },
+    "querschnitt": {
+     "f1": 0.0,
+     "support": 3,
+     "predicted": 3
+    }
+   }
+  },
+  "llm": {
+   "macro_f1": 0.6571019466894767,
+   "micro_f1": 0.7913533834586466,
+   "assigned": 548,
+   "misassigned": 127,
+   "tokens": 144062,
+   "llm_paragraphs": 597,
+   "fallback": 0,
+   "seconds": 4.9,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.8076923076923077,
+     "support": 22,
+     "predicted": 30
+    },
+    "systematik": {
+     "f1": 0.7586206896551724,
+     "support": 55,
+     "predicted": 61
+    },
+    "fachinhalte": {
+     "f1": 0.8364312267657992,
+     "support": 276,
+     "predicted": 262
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.7142857142857143,
+     "support": 38,
+     "predicted": 46
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.8342245989304812,
+     "support": 83,
+     "predicted": 104
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.7999999999999999,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.7368421052631579,
+     "support": 8,
+     "predicted": 11
+    },
+    "regularien": {
+     "f1": 0.5714285714285715,
+     "support": 2,
+     "predicted": 5
+    },
+    "praxis": {
+     "f1": 0.3448275862068966,
+     "support": 18,
+     "predicted": 11
+    },
+    "querschnitt": {
+     "f1": 0.16666666666666666,
+     "support": 3,
+     "predicted": 9
+    }
+   }
+  },
+  "llm_zweifel": {
+   "macro_f1": 0.5427059471679652,
+   "micro_f1": 0.6855575868372943,
+   "assigned": 578,
+   "misassigned": 203,
+   "tokens": 71173,
+   "llm_paragraphs": 278,
+   "fallback": 0,
+   "seconds": 60.7,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.6451612903225806,
+     "support": 22,
+     "predicted": 40
+    },
+    "systematik": {
+     "f1": 0.6446280991735537,
+     "support": 55,
+     "predicted": 66
+    },
+    "fachinhalte": {
+     "f1": 0.7388781431334622,
+     "support": 276,
+     "predicted": 241
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.577319587628866,
+     "support": 38,
+     "predicted": 59
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.74,
+     "support": 83,
+     "predicted": 117
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.5,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.625,
+     "support": 8,
+     "predicted": 8
+    },
+    "regularien": {
+     "f1": 0.22222222222222224,
+     "support": 2,
+     "predicted": 7
+    },
+    "praxis": {
+     "f1": 0.5116279069767442,
+     "support": 18,
+     "predicted": 25
+    },
+    "querschnitt": {
+     "f1": 0.2222222222222222,
+     "support": 3,
+     "predicted": 6
+    }
+   }
+  },
+  "llm_billig": {
+   "macro_f1": 0.7198304905385867,
+   "micro_f1": 0.8198874296435271,
+   "assigned": 550,
+   "misassigned": 113,
+   "tokens": 105727,
+   "llm_paragraphs": 597,
+   "fallback": 0,
+   "seconds": 92.0,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.9090909090909091,
+     "support": 22,
+     "predicted": 22
+    },
+    "systematik": {
+     "f1": 0.7777777777777778,
+     "support": 55,
+     "predicted": 53
+    },
+    "fachinhalte": {
+     "f1": 0.8597122302158272,
+     "support": 276,
+     "predicted": 280
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.8,
+     "support": 38,
+     "predicted": 47
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.8361581920903955,
+     "support": 83,
+     "predicted": 94
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.7999999999999999,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.7777777777777777,
+     "support": 8,
+     "predicted": 10
+    },
+    "regularien": {
+     "f1": 0.6666666666666666,
+     "support": 2,
+     "predicted": 4
+    },
+    "praxis": {
+     "f1": 0.5806451612903226,
+     "support": 18,
+     "predicted": 13
+    },
+    "querschnitt": {
+     "f1": 0.1904761904761905,
+     "support": 3,
+     "predicted": 18
+    }
+   }
+  }
+ },
+ "zweifelsband": {
+  "angeboten": 278,
+  "alle": 597
+ }
+}

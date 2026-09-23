@@ -1,0 +1,367 @@
+{
+ "Barockliteratur": {
+  "heute": {
+   "gedruckt": {
+    "2": 14,
+    "1": 1
+   },
+   "bausteine_gefuellt": 4,
+   "absaetze": 23
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 14,
+    "1": 1
+   },
+   "bausteine_gefuellt": 4,
+   "absaetze": 23
+  }
+ },
+ "Bruchrechnung": {
+  "heute": {
+   "gedruckt": {
+    "2": 7,
+    "1": 1
+   },
+   "bausteine_gefuellt": 2,
+   "absaetze": 67
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 7,
+    "1": 1
+   },
+   "bausteine_gefuellt": 2,
+   "absaetze": 67
+  }
+ },
+ "Demokratie": {
+  "heute": {
+   "gedruckt": {
+    "2": 19,
+    "1": 2
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 383
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 19,
+    "1": 2
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 383
+  }
+ },
+ "Französische Revolution": {
+  "heute": {
+   "gedruckt": {
+    "2": 2,
+    "1": 7,
+    "0": 4
+   },
+   "bausteine_gefuellt": 6,
+   "absaetze": 189
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 7,
+    "1": 7,
+    "0": 2
+   },
+   "bausteine_gefuellt": 6,
+   "absaetze": 185
+  }
+ },
+ "Klimawandel": {
+  "heute": {
+   "gedruckt": {
+    "2": 14,
+    "1": 1,
+    "0": 1
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 327
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 14,
+    "1": 1,
+    "0": 1
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 327
+  }
+ },
+ "Optik": {
+  "heute": {
+   "gedruckt": {
+    "2": 15,
+    "1": 11
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 98
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 15,
+    "1": 11
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 98
+  }
+ },
+ "Photosynthese": {
+  "heute": {
+   "gedruckt": {
+    "2": 11,
+    "1": 3
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 154
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 11,
+    "1": 3
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 154
+  }
+ },
+ "Programmiersprache": {
+  "heute": {
+   "gedruckt": {
+    "2": 26,
+    "1": 5
+   },
+   "bausteine_gefuellt": 9,
+   "absaetze": 169
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 26,
+    "1": 5
+   },
+   "bausteine_gefuellt": 9,
+   "absaetze": 169
+  }
+ },
+ "Säure-Base-Konzepte": {
+  "heute": {
+   "gedruckt": {
+    "2": 8
+   },
+   "bausteine_gefuellt": 3,
+   "absaetze": 37
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 8
+   },
+   "bausteine_gefuellt": 3,
+   "absaetze": 37
+  }
+ },
+ "Sinfonie": {
+  "heute": {
+   "gedruckt": {
+    "2": 13,
+    "1": 7
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 185
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 13,
+    "1": 7
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 185
+  }
+ },
+ "Plattentektonik": {
+  "heute": {
+   "gedruckt": {
+    "2": 10
+   },
+   "bausteine_gefuellt": 3,
+   "absaetze": 94
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 10
+   },
+   "bausteine_gefuellt": 3,
+   "absaetze": 94
+  }
+ },
+ "Ökosystem": {
+  "heute": {
+   "gedruckt": {
+    "2": 16,
+    "1": 2,
+    "0": 5
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 141
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 15,
+    "1": 3,
+    "0": 4
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 126
+  }
+ },
+ "Atommodell": {
+  "heute": {
+   "gedruckt": {
+    "2": 6,
+    "0": 7,
+    "1": 1
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 30
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 6,
+    "1": 1,
+    "0": 3
+   },
+   "bausteine_gefuellt": 3,
+   "absaetze": 23
+  }
+ },
+ "Industrielle Revolution": {
+  "heute": {
+   "gedruckt": {
+    "2": 9,
+    "1": 8,
+    "0": 3
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 160
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 11,
+    "1": 9
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 148
+  }
+ },
+ "Elektrischer Strom": {
+  "heute": {
+   "gedruckt": {
+    "2": 20,
+    "1": 7
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 161
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 20,
+    "1": 7
+   },
+   "bausteine_gefuellt": 8,
+   "absaetze": 161
+  }
+ },
+ "Wasserkreislauf": {
+  "heute": {
+   "gedruckt": {
+    "2": 10,
+    "1": 3
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 30
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 10,
+    "1": 3
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 30
+  }
+ },
+ "Römisches Reich": {
+  "heute": {
+   "gedruckt": {
+    "2": 26
+   },
+   "bausteine_gefuellt": 9,
+   "absaetze": 400
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 26
+   },
+   "bausteine_gefuellt": 9,
+   "absaetze": 400
+  }
+ },
+ "Lineare Funktion": {
+  "heute": {
+   "gedruckt": {
+    "2": 4,
+    "1": 12,
+    "0": 5
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 160
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 5,
+    "1": 16
+   },
+   "bausteine_gefuellt": 5,
+   "absaetze": 124
+  }
+ },
+ "Zelle (Biologie)": {
+  "heute": {
+   "gedruckt": {
+    "2": 14,
+    "1": 2,
+    "0": 1
+   },
+   "bausteine_gefuellt": 6,
+   "absaetze": 145
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 15,
+    "1": 2
+   },
+   "bausteine_gefuellt": 6,
+   "absaetze": 137
+  }
+ },
+ "Gedicht": {
+  "heute": {
+   "gedruckt": {
+    "2": 8,
+    "1": 7
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 82
+  },
+  "ohne_0_treffer": {
+   "gedruckt": {
+    "2": 8,
+    "1": 7
+   },
+   "bausteine_gefuellt": 7,
+   "absaetze": 80
+  }
+ }
+}

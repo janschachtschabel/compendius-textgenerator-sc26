@@ -1,0 +1,709 @@
+{
+ "standard": {
+  "Barockliteratur": {
+   "bausteine_gefuellt": 4,
+   "gedruckt": 15,
+   "artikel": 2,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Barockliteratur",
+    "Barock"
+   ]
+  },
+  "Bruchrechnung": {
+   "bausteine_gefuellt": 2,
+   "gedruckt": 8,
+   "artikel": 5,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Bruchrechnung",
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ]
+  },
+  "Demokratie": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 21,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Demokratie",
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ]
+  },
+  "Französische Revolution": {
+   "bausteine_gefuellt": 6,
+   "gedruckt": 13,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Bürger",
+    "Republik",
+    "Verfassung",
+    "Liberalismus",
+    "Trente Glorieuses",
+    "Revolutionskult"
+   ]
+  },
+  "Klimawandel": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 16,
+   "artikel": 9,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Klimawandel",
+    "Klimawandel",
+    "Klima",
+    "Anthropogen",
+    "Treibhausgas",
+    "Forschungsgeschichte des Klimawandels",
+    "Klimapolitik",
+    "Gerechtigkeit",
+    "Lea Dohm"
+   ]
+  },
+  "Optik": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 26,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Optik",
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Schnittweite",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ]
+  },
+  "Photosynthese": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 14,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Photosynthese",
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ]
+  },
+  "Programmiersprache": {
+   "bausteine_gefuellt": 9,
+   "gedruckt": 31,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Programmiersprache",
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax",
+    "Selbstübersetzung (Compiler)"
+   ]
+  },
+  "Säure-Base-Konzepte": {
+   "bausteine_gefuellt": 3,
+   "gedruckt": 8,
+   "artikel": 3,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Säure-Base-Konzepte",
+    "Säuren",
+    "Basen (Chemie)"
+   ]
+  },
+  "Sinfonie": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 20,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Sinfonie",
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Orchester",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ]
+  },
+  "Plattentektonik": {
+   "bausteine_gefuellt": 3,
+   "gedruckt": 10,
+   "artikel": 9,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Plattentektonik",
+    "Plattentektonik",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Kontinentaldrift",
+    "Tiefseerinne",
+    "Pangaea"
+   ]
+  },
+  "Ökosystem": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 23,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Ökosystem",
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ]
+  },
+  "Atommodell": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 13,
+   "artikel": 5,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Liste der Atommodelle",
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen",
+    "Kernwaffe"
+   ]
+  },
+  "Industrielle Revolution": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 20,
+   "artikel": 11,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Revolution",
+    "Kapitalismus",
+    "Dampfmaschine",
+    "Kohle",
+    "Eisen",
+    "Produktion",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ]
+  },
+  "Elektrischer Strom": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 27,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Elektrischer Strom",
+    "Strom",
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Stromfluss",
+    "Elektrische Spannung",
+    "Bidirektionales Laden"
+   ]
+  },
+  "Wasserkreislauf": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 13,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Wasserkreislauf",
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ]
+  },
+  "Römisches Reich": {
+   "bausteine_gefuellt": 9,
+   "gedruckt": 26,
+   "artikel": 7,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Römisches Reich",
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht"
+   ]
+  },
+  "Lineare Funktion": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 21,
+   "artikel": 11,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Lineare Funktion",
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra",
+    "Differenzierbarkeit",
+    "Markow-Operator",
+    "Probit-Modell"
+   ]
+  },
+  "Zelle (Biologie)": {
+   "bausteine_gefuellt": 6,
+   "gedruckt": 17,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Zelle (Biologie)",
+    "Zelle",
+    "Protein",
+    "Zellkern",
+    "Tier",
+    "Plastid",
+    "Vakuole",
+    "Zellmembran",
+    "Membran",
+    "Organell",
+    "Evolutionsfaktor",
+    "Hermaphroditismus"
+   ]
+  },
+  "Gedicht": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 15,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Gedicht",
+    "Gedicht",
+    "Lyrik",
+    "Ballade (Gedicht)",
+    "Der siebente Ring",
+    "Mein fremder Alltag",
+    "Das Eleusische Fest",
+    "Cheryl Chapman"
+   ]
+  }
+ },
+ "erweitert": {
+  "Barockliteratur": {
+   "bausteine_gefuellt": 4,
+   "gedruckt": 15,
+   "artikel": 2,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Barockliteratur",
+    "Barock"
+   ]
+  },
+  "Bruchrechnung": {
+   "bausteine_gefuellt": 2,
+   "gedruckt": 8,
+   "artikel": 5,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Bruchrechnung",
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ]
+  },
+  "Demokratie": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 21,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Demokratie",
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ]
+  },
+  "Französische Revolution": {
+   "bausteine_gefuellt": 6,
+   "gedruckt": 13,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Bürger",
+    "Republik",
+    "Verfassung",
+    "Liberalismus",
+    "Trente Glorieuses",
+    "Revolutionskult"
+   ]
+  },
+  "Klimawandel": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 16,
+   "artikel": 9,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Klimawandel",
+    "Klimawandel",
+    "Klima",
+    "Anthropogen",
+    "Treibhausgas",
+    "Forschungsgeschichte des Klimawandels",
+    "Klimapolitik",
+    "Gerechtigkeit",
+    "Lea Dohm"
+   ]
+  },
+  "Optik": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 27,
+   "artikel": 12,
+   "zusatzquellen": [
+    {
+     "projekt": "wikibooks",
+     "titel": "Optik",
+     "herkunft": "same_topic",
+     "absaetze": 86,
+     "gedruckt": 0,
+     "bausteine": {}
+    }
+   ],
+   "verdraengt": [
+    "Optik",
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Schnittweite",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ]
+  },
+  "Photosynthese": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 14,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Photosynthese",
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ]
+  },
+  "Programmiersprache": {
+   "bausteine_gefuellt": 9,
+   "gedruckt": 31,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Programmiersprache",
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax",
+    "Selbstübersetzung (Compiler)"
+   ]
+  },
+  "Säure-Base-Konzepte": {
+   "bausteine_gefuellt": 3,
+   "gedruckt": 8,
+   "artikel": 3,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Säure-Base-Konzepte",
+    "Säuren",
+    "Basen (Chemie)"
+   ]
+  },
+  "Sinfonie": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 20,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Sinfonie",
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Orchester",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ]
+  },
+  "Plattentektonik": {
+   "bausteine_gefuellt": 3,
+   "gedruckt": 10,
+   "artikel": 9,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Plattentektonik",
+    "Plattentektonik",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Kontinentaldrift",
+    "Tiefseerinne",
+    "Pangaea"
+   ]
+  },
+  "Ökosystem": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 23,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Ökosystem",
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ]
+  },
+  "Atommodell": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 13,
+   "artikel": 5,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Liste der Atommodelle",
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen",
+    "Kernwaffe"
+   ]
+  },
+  "Industrielle Revolution": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 20,
+   "artikel": 11,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Revolution",
+    "Kapitalismus",
+    "Dampfmaschine",
+    "Kohle",
+    "Eisen",
+    "Produktion",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ]
+  },
+  "Elektrischer Strom": {
+   "bausteine_gefuellt": 8,
+   "gedruckt": 27,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Elektrischer Strom",
+    "Strom",
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Stromfluss",
+    "Elektrische Spannung",
+    "Bidirektionales Laden"
+   ]
+  },
+  "Wasserkreislauf": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 13,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Wasserkreislauf",
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ]
+  },
+  "Römisches Reich": {
+   "bausteine_gefuellt": 9,
+   "gedruckt": 26,
+   "artikel": 7,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Römisches Reich",
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht"
+   ]
+  },
+  "Lineare Funktion": {
+   "bausteine_gefuellt": 5,
+   "gedruckt": 16,
+   "artikel": 11,
+   "zusatzquellen": [
+    {
+     "projekt": "wikiversity",
+     "titel": "Lineare Funktion",
+     "herkunft": "same_topic",
+     "absaetze": 16,
+     "gedruckt": 2,
+     "bausteine": {
+      "1 · Themendefinition": 1,
+      "9 · Regularien & Rahmensetzung": 1
+     }
+    }
+   ],
+   "verdraengt": [
+    "Lineare Funktion",
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Differenzierbarkeit",
+    "Markow-Operator",
+    "Probit-Modell"
+   ]
+  },
+  "Zelle (Biologie)": {
+   "bausteine_gefuellt": 6,
+   "gedruckt": 17,
+   "artikel": 12,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Zelle (Biologie)",
+    "Zelle",
+    "Protein",
+    "Zellkern",
+    "Tier",
+    "Plastid",
+    "Vakuole",
+    "Zellmembran",
+    "Membran",
+    "Organell",
+    "Evolutionsfaktor",
+    "Hermaphroditismus"
+   ]
+  },
+  "Gedicht": {
+   "bausteine_gefuellt": 7,
+   "gedruckt": 15,
+   "artikel": 8,
+   "zusatzquellen": [],
+   "verdraengt": [
+    "Gedicht",
+    "Gedicht",
+    "Lyrik",
+    "Ballade (Gedicht)",
+    "Der siebente Ring",
+    "Mein fremder Alltag",
+    "Das Eleusische Fest",
+    "Cheryl Chapman"
+   ]
+  }
+ }
+}

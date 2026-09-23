@@ -1,6 +1,6 @@
 # Messskripte zur Entwicklungsdokumentation
 
-Die Skripte zu den Messungen vom 23.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
+Die Skripte zu den Messungen vom 23. und 24.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
 Entwicklungsrechner geschrieben: Archive unter `kompendium-test\data`, die venv dieses Projekts, die venv der Testapp
 und die venv des alten Dienstes. Pfade stehen am Anfang jedes Skripts. Wer auf dem Server misst, übergibt dessen
 Adresse als Argument; sie steht nicht im Repository. Der b-api-Schlüssel kommt aus `B_API_KEY` und wird nirgends
@@ -18,6 +18,10 @@ geschrieben.
 | M7 Größe des XML-Dumps | `xml_dump_ratio.py` | beliebiges Python | keins; lädt rund 64 MB Stichproben |
 | M8 Artikelwahl | `mc_artikelwahl.py <alte-läufe> <ergebnis.json> <pool.json>`, dann `mc_artikel_richter.py <pool.json> <richter.json> <token-grenze>`, dann `mc_artikelwahl_auswertung.py <ergebnis.json> <richter.json> <out.txt>` | venv dieses Projekts | Richter `gpt-5.6-luna`, harte Tokengrenze als Argument |
 | Suchzeiten des Archivs | `mc_zim_suche.py <out.json>` | venv dieses Projekts | keins |
+| M9 Artikelwahl mit Regeln und LLM | `mc_aufloesung.py <out.json> [--llm] <gold.yaml>…`; den alten Stand mit `PYTHONPATH` auf eine `git archive`-Kopie von `c03dafe` | venv dieses Projekts | mit `--llm` `gpt-5.6-luna` über `article_choice=llm`, rund 950 Tokens je unsicherer Anfrage |
+| M10 Volltexttreffer | `mc_trefferfilter.py <out.json>`, `mc_treffer_llm.py <out.json> [--korpus]`, `mc_treffer_wirkung.py <bewertungen.json> <out.json>` | venv dieses Projekts | `mc_treffer_llm.py`: `gpt-5.6-luna`, rund 900 Tokens je Thema |
+| M11 Wikibooks und Wikiversity | `mc_zusatzquellen.py <out.json> <pool.json>`, `mc_zusatzsuche.py <out.json> <treffer-je-archiv>` | venv dieses Projekts, beide Archive unter `kompendium-test\data` | `mc_zusatzsuche.py`: `gpt-5.6-luna` für die Trefferprüfung |
+| M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> <weg>…` | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -73,6 +77,13 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m8_artikelwahl.json` | M8, Auflösung jeder Anfrage; Korpus der 20 Themen mit Herkunft, Absätzen und gedruckten Absätzen je Artikel; Artikel des alten Dienstes |
 | `ergebnisse/m8_artikel_richter.json` | M8, Note des Richters je Artikel, Aufrufe und Tokens |
 | `ergebnisse/m8_artikelwahl.txt` | M8, alle Tabellen, falsch aufgelöste Anfragen, unpassende Artikel mit Absätzen, Kreuztabelle Gold und Richter |
+| `ergebnisse/m9_aufloesung_alt.json`, `m9_aufloesung_regeln.json`, `m9_aufloesung_llm.json` | M9, Auflösung jeder Anfrage der drei Goldsätze: alter Stand, Regeln, Regeln und LLM, mit Weg, Sicherheit und Alternativen |
+| `ergebnisse/m10_trefferfilter.json` | M10, die 47 Volltexttreffer mit Note und Filtermerkmalen |
+| `ergebnisse/m10_treffer_llm_allein.json`, `m10_treffer_llm_korpus.json` | M10, Note des LLM je Treffer, allein und mit dem ganzen Korpus benotet |
+| `ergebnisse/m10_treffer_wirkung.json` | M10, gedruckte Absätze nach Note und gefüllte Bausteine je Thema, mit und ohne die mit 0 benoteten Treffer |
+| `ergebnisse/m11_zusatzquellen.json`, `m11_zusatzsuche.json` | M11, Seiten aus Wikibooks und Wikiversity je Thema, ihre gedruckten Absätze und Bausteine, das Urteil der Trefferprüfung |
+| `ergebnisse/m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json` | M12, sc26 gegen schärfere Beschreibungen, lokal und mit `matcher=llm` |
+| `ergebnisse/m12_sparvarianten.json` | M12, Regeln und drei Wege der LLM-Zuordnung mit F1 je Baustein und Tokens |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |
 

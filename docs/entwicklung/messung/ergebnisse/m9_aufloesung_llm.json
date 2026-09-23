@@ -1,0 +1,1703 @@
+{
+ "tokens": 17116,
+ "ergebnisse": {
+  "hauptartikel.yaml": [
+   {
+    "anfrage": "Barockliteratur",
+    "art": "normal",
+    "akzeptiert": [
+     "Barockliteratur",
+     "Literatur des Barock"
+    ],
+    "titel": "Barockliteratur",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Bruchrechnung",
+    "art": "normal",
+    "akzeptiert": [
+     "Bruchrechnung"
+    ],
+    "titel": "Bruchrechnung",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Demokratie",
+    "art": "normal",
+    "akzeptiert": [
+     "Demokratie"
+    ],
+    "titel": "Demokratie",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Französische Revolution",
+    "art": "normal",
+    "akzeptiert": [
+     "Französische Revolution"
+    ],
+    "titel": "Französische Revolution",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Klimawandel",
+    "art": "normal",
+    "akzeptiert": [
+     "Klimawandel"
+    ],
+    "titel": "Klimawandel",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Optik",
+    "art": "normal",
+    "akzeptiert": [
+     "Optik"
+    ],
+    "titel": "Optik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Photosynthese",
+    "art": "normal",
+    "akzeptiert": [
+     "Photosynthese"
+    ],
+    "titel": "Photosynthese",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Programmiersprache",
+    "art": "normal",
+    "akzeptiert": [
+     "Programmiersprache"
+    ],
+    "titel": "Programmiersprache",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Säure-Base-Konzepte",
+    "art": "normal",
+    "akzeptiert": [
+     "Säure-Base-Konzepte"
+    ],
+    "titel": "Säure-Base-Konzepte",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Sinfonie",
+    "art": "normal",
+    "akzeptiert": [
+     "Sinfonie"
+    ],
+    "titel": "Sinfonie",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Plattentektonik",
+    "art": "normal",
+    "akzeptiert": [
+     "Plattentektonik"
+    ],
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Ökosystem",
+    "art": "normal",
+    "akzeptiert": [
+     "Ökosystem"
+    ],
+    "titel": "Ökosystem",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Atommodell",
+    "art": "normal",
+    "akzeptiert": [
+     "Atommodell",
+     "Liste der Atommodelle"
+    ],
+    "titel": "Liste der Atommodelle",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Industrielle Revolution",
+    "art": "normal",
+    "akzeptiert": [
+     "Industrielle Revolution"
+    ],
+    "titel": "Industrielle Revolution",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Elektrischer Strom",
+    "art": "normal",
+    "akzeptiert": [
+     "Elektrischer Strom"
+    ],
+    "titel": "Elektrischer Strom",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Wasserkreislauf",
+    "art": "normal",
+    "akzeptiert": [
+     "Wasserkreislauf"
+    ],
+    "titel": "Wasserkreislauf",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Römisches Reich",
+    "art": "normal",
+    "akzeptiert": [
+     "Römisches Reich"
+    ],
+    "titel": "Römisches Reich",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Lineare Funktion",
+    "art": "normal",
+    "akzeptiert": [
+     "Lineare Funktion"
+    ],
+    "titel": "Lineare Funktion",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Zelle (Biologie)",
+    "art": "normal",
+    "akzeptiert": [
+     "Zelle (Biologie)"
+    ],
+    "titel": "Zelle (Biologie)",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Gedicht",
+    "art": "normal",
+    "akzeptiert": [
+     "Gedicht"
+    ],
+    "titel": "Gedicht",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Optik in Klasse 7",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Optik"
+    ],
+    "titel": "Optik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Optik (Sek I)",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Optik"
+    ],
+    "titel": "Optik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Photosynthese für die Grundschule",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Photosynthese"
+    ],
+    "titel": "Photosynthese",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Bruchrechnung Klasse 6",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Bruchrechnung"
+    ],
+    "titel": "Bruchrechnung",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Demokratie in der Sekundarstufe I",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Demokratie"
+    ],
+    "titel": "Demokratie",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Thema: Klimawandel",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Klimawandel"
+    ],
+    "titel": "Klimawandel",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Geschichte: Französische Revolution",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Französische Revolution"
+    ],
+    "titel": "Französische Revolution",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Plattentektonik (Oberstufe)",
+    "art": "zusatz",
+    "akzeptiert": [
+     "Plattentektonik"
+    ],
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Welle",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Welle"
+    ],
+    "titel": "Welle",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Leiter",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Elektrischer Leiter"
+    ],
+    "titel": "Leiter (Physik)",
+    "richtig": false,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Leiter (Gerät)",
+     "Leiter (Heraldik)",
+     "Leiter (Physik)",
+     "Führungskraft (Führungslehre)",
+     "Blattrippe (Fleisch)",
+     "Leiter (Fluss)",
+     "H. Leiter",
+     "Al Leiter"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Strom",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Elektrischer Strom"
+    ],
+    "titel": "Strom (Physik)",
+    "richtig": false,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Elektrischer Strom",
+     "Strom (Gewässerart)",
+     "Strom (Physik)",
+     "Strom (Mathematik)",
+     "Strom (Bremen)",
+     "Strom (Ucker)",
+     "Peenestrom",
+     "Gehlsbach (Fluss)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Leistung",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Leistung (Physik)"
+    ],
+    "titel": "Leistung (Physik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Leistung (Physik)",
+     "Leistung (Frequenzverwaltung)",
+     "Leistung (Nachrichtentechnik)",
+     "Leistung (Rechnungswesen)",
+     "Leistung (Sport)",
+     "Leistung (Psychologie)",
+     "Leistung (Schule)",
+     "Leistung (Recht)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Arbeit",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Arbeit (Physik)"
+    ],
+    "titel": "Arbeit (Physik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Arbeit (Philosophie)",
+     "Arbeit (Betriebswirtschaftslehre)",
+     "Arbeit (Physik)",
+     "Arbeit (Sozialwissenschaften)",
+     "Arbeit (Volkswirtschaftslehre)",
+     "Erwerbstätigkeit",
+     "Lohnarbeit",
+     "Beschäftigungsverhältnis"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Biologie: Zelle",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Zelle (Biologie)"
+    ],
+    "titel": "Zelle (Biologie)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Zelle (Biologie)",
+     "Bienenwabe",
+     "Zelle (Soziologie)",
+     "Zelle (Meteorologie)",
+     "Elementarzelle",
+     "Zellkomplex",
+     "Funkzelle",
+     "Flugzeugzelle"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Chemie: Bindung",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Chemische Bindung"
+    ],
+    "titel": "Chemische Bindung",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Binden (Kochen)",
+     "Legato",
+     "Skibindung",
+     "Tourenbindung",
+     "Snowboard-Bindung",
+     "Bindung (Weben)",
+     "Bindungslehre",
+     "Buchbinden"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Mathematik: Funktion",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Funktion (Mathematik)"
+    ],
+    "titel": "Funktion (Mathematik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Funktion (Objekt)",
+     "Funktion (Organisation)",
+     "Funktion (Mathematik)",
+     "Funktion (Programmierung)",
+     "Prädikat (Grammatik)",
+     "Funktional",
+     "Funktionalität"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Mathematik: Satz",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Satz (Mathematik)"
+    ],
+    "titel": "Satz (Mathematik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Satz (Grammatik)",
+     "Satz (Mathematik)",
+     "Satz (Druck)",
+     "Satz (Sport)",
+     "Satz (Einheit)",
+     "Münzsatz",
+     "Serie (Briefmarke)",
+     "Theorem"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Deutsch: Satz",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Satz (Grammatik)"
+    ],
+    "titel": "Satz (Grammatik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Satz (Grammatik)",
+     "Satz (Mathematik)",
+     "Satz (Druck)",
+     "Satz (Sport)",
+     "Satz (Einheit)",
+     "Münzsatz",
+     "Serie (Briefmarke)",
+     "Theorem"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Musik: Takt",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Takt (Musik)"
+    ],
+    "titel": "Takt (Musik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Takt (Musik)",
+     "Taktierendes Versprinzip",
+     "Takt (Reiten)",
+     "Verbrennungsmotor",
+     "Taktfahrplan",
+     "Taktgefühl",
+     "Taktsignal",
+     "Taktung"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Baum",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Baum (Datenstruktur)"
+    ],
+    "titel": "Baum (Datenstruktur)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Baum",
+     "Baum",
+     "Baum (Familienname)",
+     "Baum (Heraldik)",
+     "Baum (Marskrater)",
+     "Baum (Segeln)",
+     "Hebebaum",
+     "Jüttbaum"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Maus",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Maus (Computer)",
+     "Computermaus"
+    ],
+    "titel": "Computermaus",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Kleinsäuger",
+     "Mäuseartige",
+     "Langschwanzmäuse",
+     "Hausmaus",
+     "Mäuse",
+     "Micky Maus",
+     "Die Sendung mit der Maus",
+     "Gemeine Figur"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Virus",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Computervirus"
+    ],
+    "titel": "Computervirus",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Viren",
+     "Computervirus",
+     "Virus (Automarke)",
+     "Access Virus",
+     "Pipistrel Virus",
+     "Radio SRF Virus",
+     "VIRUS (Zeitschrift)",
+     "Virus (deutsche Band)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Erdkunde: Strom",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Strom (Gewässer)",
+     "Strom (Gewässerart)"
+    ],
+    "titel": "Strom (Gewässerart)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Elektrischer Strom",
+     "Strom (Gewässerart)",
+     "Strom (Physik)",
+     "Strom (Mathematik)",
+     "Strom (Bremen)",
+     "Strom (Ucker)",
+     "Peenestrom",
+     "Gehlsbach (Fluss)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Geschichte: Wende",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Wende und friedliche Revolution in der DDR"
+    ],
+    "titel": "Wende und friedliche Revolution in der DDR",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Wende (Einheit)",
+     "Wende (Einheit)",
+     "Wende (Schwimmen)",
+     "Wende (Segeln)",
+     "Wendeschleife",
+     "Wende (Bundesrepublik Deutschland)",
+     "Samtene Revolution",
+     "Rosenrevolution"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Strom",
+    "art": "mehrdeutig_ohne_kontext",
+    "akzeptiert": [
+     "Elektrischer Strom"
+    ],
+    "titel": "Elektrischer Strom",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Elektrischer Strom",
+     "Strom (Gewässerart)",
+     "Strom (Physik)",
+     "Strom (Mathematik)",
+     "Strom (Bremen)",
+     "Strom (Ucker)",
+     "Peenestrom",
+     "Gehlsbach (Fluss)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Zelle",
+    "art": "mehrdeutig_ohne_kontext",
+    "akzeptiert": [
+     "Zelle (Biologie)"
+    ],
+    "titel": "Zelle (Biologie)",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Zelle (Biologie)",
+     "Bienenwabe",
+     "Zelle (Soziologie)",
+     "Zelle (Meteorologie)",
+     "Elementarzelle",
+     "Zellkomplex",
+     "Funkzelle",
+     "Flugzeugzelle"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Welle",
+    "art": "mehrdeutig_ohne_kontext",
+    "akzeptiert": [
+     "Welle"
+    ],
+    "titel": "Welle",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Fotosynthese",
+    "art": "variante",
+    "akzeptiert": [
+     "Photosynthese"
+    ],
+    "titel": "Photosynthese",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "photosynthese",
+    "art": "variante",
+    "akzeptiert": [
+     "Photosynthese"
+    ],
+    "titel": "Photosynthese",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Lichtlehre",
+    "art": "variante",
+    "akzeptiert": [
+     "Optik"
+    ],
+    "titel": "Optik",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Ernst Adalbert Voretzsch",
+     "Hesychasmus"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Klimaerwärmung",
+    "art": "variante",
+    "akzeptiert": [
+     "Globale Erwärmung"
+    ],
+    "titel": "Globale Erwärmung",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "DNA",
+    "art": "variante",
+    "akzeptiert": [
+     "Desoxyribonukleinsäure"
+    ],
+    "titel": "Desoxyribonukleinsäure",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "EU",
+    "art": "variante",
+    "akzeptiert": [
+     "Europäische Union"
+    ],
+    "titel": "Europäische Union",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Bruchrechnen",
+    "art": "variante",
+    "akzeptiert": [
+     "Bruchrechnung"
+    ],
+    "titel": "Bruchrechnung",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Lineare Funktionen",
+    "art": "variante",
+    "akzeptiert": [
+     "Lineare Funktion"
+    ],
+    "titel": "Lineare Funktion",
+    "richtig": true,
+    "methode": "variant",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Gewaltenteilung in Deutschland",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Gewaltenteilung"
+    ],
+    "titel": "Gewaltenteilung",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Trennung von Amt und Mandat",
+     "Neue Richtervereinigung",
+     "Staatsgewalt",
+     "Zweikammersystem"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Die Französische Revolution",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Französische Revolution"
+    ],
+    "titel": "Französische Revolution",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [
+     "Die Französische Revolution"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Photosynthese bei Pflanzen",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Photosynthese"
+    ],
+    "titel": "Photosynthese",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "C4-Pflanze",
+     "C3-Pflanze",
+     "CO2-Kompensationspunkt",
+     "Photosynthetisch aktive Strahlung"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Kreislauf des Wassers",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Wasserkreislauf"
+    ],
+    "titel": "Wasserkreislauf",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   }
+  ],
+  "hauptartikel_validierung.yaml": [
+   {
+    "anfrage": "Physik: Feld",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Feld (Physik)"
+    ],
+    "titel": "Feld (Physik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Spielfeld",
+     "Acker",
+     "Elektromagnetisches Feld",
+     "Lagerstätte",
+     "Kriegsschauplatz",
+     "Feld (Physik)",
+     "Balkentheorie",
+     "Brückenfeld"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Masse",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Masse (Physik)"
+    ],
+    "titel": "Masse (Physik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Masse (Physik)",
+     "Masse (Sozialwissenschaften)",
+     "Masse (Parascha)",
+     "Masse (Elektronik)",
+     "Masse (Lebensmittel)",
+     "Massefigur",
+     "Taubes Gestein",
+     "Masse (Vert)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Druck",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Druck (Physik)"
+    ],
+    "titel": "Druck (Physik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Druck (Physik)",
+     "Stress",
+     "Druck (Webserie)",
+     "Druckerzeugnis",
+     "Drucktechnik",
+     "Kunstdruck",
+     "Buchdruck",
+     "Surface Pressure"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Chemie: Lösung",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Lösung (Chemie)"
+    ],
+    "titel": "Lösung (Chemie)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Småort",
+     "Schweden",
+     "Blekinge län",
+     "Karlskrona (Gemeinde)",
+     "Socken (Kirchspiel)",
+     "Blekinge",
+     "Lösung (Mathematik)",
+     "Lösung (Chemie)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Chemie: Base",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Basen (Chemie)"
+    ],
+    "titel": "Basen (Chemie)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Basen (Chemie)",
+     "Nukleinbasen",
+     "Base (Tabletop)",
+     "Verwandtschaftsbeziehung",
+     "Base32",
+     "Base64",
+     "Kokain",
+     "Apache OpenOffice"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Mathematik: Menge",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Menge (Mathematik)"
+    ],
+    "titel": "Menge (Mathematik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Anzahl",
+     "Menge (Mathematik)",
+     "Menge (Datenstruktur)",
+     "Menge (deutsches Betäubungsmittel- und Cannabisrecht)",
+     "Stoffmenge",
+     "Stückgut",
+     "Masse (Soziologie)",
+     "Menge (Adelsgeschlecht)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Schleife",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Schleife (Programmierung)"
+    ],
+    "titel": "Schleife (Programmierung)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Schleife (Kleidung)",
+     "Awareness Ribbon",
+     "Querbinder",
+     "Bucht (Tauwerk)",
+     "Schleife (Knoten)",
+     "Kehre (Eisenbahn)",
+     "Mäander",
+     "Schleife (Graphentheorie)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Bus",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Bus (Datenverarbeitung)"
+    ],
+    "titel": "Bus (Datenverarbeitung)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Omnibus",
+     "Reisebus",
+     "Kleinbus",
+     "Minibus",
+     "Oberleitungsbus",
+     "Bus (Datenverarbeitung)",
+     "Satellitenbus",
+     "(3254) Bus"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Musik: Note",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Note (Musik)"
+    ],
+    "titel": "Note (Musik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Note (Musik)",
+     "Schulnote",
+     "Diplomatische Note",
+     "Banknote",
+     "Duftnote",
+     "Kostennote",
+     "Nissan Note",
+     "The Note"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Musik: Satz",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Satz (Musikstück)",
+     "Satz (musikalische Formenlehre)",
+     "Tonsatz"
+    ],
+    "titel": "Satz (Musikstück)",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Satz (Grammatik)",
+     "Satz (Mathematik)",
+     "Satz (Druck)",
+     "Satz (Sport)",
+     "Satz (Einheit)",
+     "Münzsatz",
+     "Serie (Briefmarke)",
+     "Theorem"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Deutsch: Fall",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Kasus"
+    ],
+    "titel": "Kasus",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Schlacht an der Sutjeska",
+     "Luftenberg an der Donau",
+     "Wilhering",
+     "Fall (Lenggries)",
+     "Der Jäger von Fall (Roman)",
+     "Ludwig Ganghofer",
+     "Der Fall (Roman)",
+     "Leopoldo Torre Nilsson"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Biologie: Art",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Art (Biologie)"
+    ],
+    "titel": "Art (Biologie)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Art (Biologie)",
+     "Art (Philosophie)",
+     "Art (Vorname)",
+     "ART (Rapper)",
+     "Arnaud Art",
+     "Berthe Art",
+     "Charly Art",
+     "Josef Art"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Geschichte: Restauration",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Restauration (Geschichte)"
+    ],
+    "titel": "Restauration (Geschichte)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Restaurierung",
+     "Restaurant",
+     "Restauration (Geschichte)",
+     "Stuart-Restauration",
+     "Restauration (Frankreich)",
+     "Restauration (Schweiz)",
+     "Restoration",
+     "Restitution"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Treibhauseffekt",
+    "art": "normal",
+    "akzeptiert": [
+     "Treibhauseffekt"
+    ],
+    "titel": "Treibhauseffekt",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Weimarer Republik",
+    "art": "normal",
+    "akzeptiert": [
+     "Weimarer Republik"
+    ],
+    "titel": "Weimarer Republik",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Satz des Pythagoras",
+    "art": "normal",
+    "akzeptiert": [
+     "Satz des Pythagoras"
+    ],
+    "titel": "Satz des Pythagoras",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Physik: Energie",
+    "art": "normal",
+    "akzeptiert": [
+     "Energie"
+    ],
+    "titel": "Energie",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Säure",
+    "art": "variante",
+    "akzeptiert": [
+     "Säuren"
+    ],
+    "titel": "Säuren",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Klimawandels",
+    "art": "variante",
+    "akzeptiert": [
+     "Klimawandel"
+    ],
+    "titel": "Klimawandel",
+    "richtig": true,
+    "methode": "variant",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Evolutionstheorie",
+    "art": "variante",
+    "akzeptiert": [
+     "Evolutionstheorie",
+     "Evolution"
+    ],
+    "titel": "Evolutionstheorie",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Aufbau der Atome",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Atom"
+    ],
+    "titel": "Atom",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Atom",
+     "Angola",
+     "Atomè",
+     "Benin",
+     "Atom (Begriffsklärung)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Ursachen der Französischen Revolution",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Französische Revolution"
+    ],
+    "titel": "Französische Revolution",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Kreislauf des Kohlenstoffs",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Kohlenstoffzyklus"
+    ],
+    "titel": "Kohlenstoffzyklus",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   }
+  ],
+  "hauptartikel_test.yaml": [
+   {
+    "anfrage": "Physik: Spannung",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Elektrische Spannung",
+     "Spannung (Mechanik)",
+     "Mechanische Spannung"
+    ],
+    "titel": "Elektrische Spannung",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Elektrische Spannung",
+     "Mechanische Spannung",
+     "Thermische Spannung (Mechanik)",
+     "Magnetische Spannung",
+     "Anspannung (Psychologie)",
+     "Neugier",
+     "Suspense",
+     "Tonus"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Physik: Linse",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Linse (Optik)"
+    ],
+    "titel": "Linse (Optik)",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Linse (Botanik)",
+     "Linse (Botanik)",
+     "Linsen",
+     "Linsenförmig",
+     "Linse (Geologie)",
+     "Schokolinse",
+     "Linse (Bodenwerder)",
+     "Sprengboot Linse"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Chemie: Element",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Chemisches Element"
+    ],
+    "titel": "Chemisches Element",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Element (Mathematik)",
+     "Chemisches Element",
+     "Systematik der Minerale",
+     "Wetter",
+     "Vier-Elemente-Lehre",
+     "Fünf-Elemente-Lehre",
+     "Element (Auszeichnungssprache)",
+     "Element (Unternehmen)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Musik: Intervall",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Intervall (Musik)"
+    ],
+    "titel": "Intervall (Musik)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Intervall (Mathematik)",
+     "Intervall (Musik)",
+     "Intervall (Physik)",
+     "Zeitintervall"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Deutsch: Artikel",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Artikel (Wortart)"
+    ],
+    "titel": "Artikel (Wortart)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Artikel (Wortart)",
+     "Artikel (Recht)",
+     "Journalistische Darstellungsform",
+     "Lexikon",
+     "Sortiment"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Erdkunde: Delta",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Flussdelta"
+    ],
+    "titel": "Flussdelta",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Delta"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Biologie: Stamm",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Stamm (Systematik)",
+     "Stamm (Biologie)"
+    ],
+    "titel": "Stamm (Biologie)",
+    "richtig": true,
+    "methode": "disambiguation",
+    "sicher": true,
+    "alternativen": [
+     "Stamm (Familienname)",
+     "Stamm (Gesellschaftswissenschaften)",
+     "Stamm (Pfadfinder)",
+     "Stammbesatzung",
+     "Stamm (Biologie)",
+     "Baum",
+     "Sprossachse",
+     "Rumpf (Anatomie)"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Informatik: Netzwerk",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Rechnernetz"
+    ],
+    "titel": "Netzwerk",
+    "richtig": false,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Mathematik: Ableitung",
+    "art": "mehrdeutig_mit_fach",
+    "akzeptiert": [
+     "Differentialrechnung"
+    ],
+    "titel": "Differentialrechnung",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Ableitung (Logik)",
+     "Deduktion",
+     "Differentialrechnung",
+     "Ableitung (Informatik)",
+     "Derivation (Linguistik)",
+     "Blitzschutz",
+     "Drainage (Medizin)",
+     "Elektrokardiogramm"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Vulkane",
+    "art": "variante",
+    "akzeptiert": [
+     "Vulkan"
+    ],
+    "titel": "Vulkan",
+    "richtig": true,
+    "methode": "title",
+    "sicher": true,
+    "alternativen": [],
+    "begriffsklaerung": false,
+    "llm_gefragt": false
+   },
+   {
+    "anfrage": "Ursachen des Ersten Weltkriegs",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Erster Weltkrieg"
+    ],
+    "titel": "Erster Weltkrieg",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "14 - Tagebücher des Ersten Weltkriegs",
+     "Grab- und Gedenkstätten des Ersten Weltkriegs",
+     "Gefallenendenkmal des Ersten Weltkriegs Kirchhain (Doberlug-Kirchhain)",
+     "Denkmal für die Gefallenen des Ersten Weltkriegs (Zillhausen)",
+     "Denkmal für die Gefallenen des Ersten Weltkriegs Hofstetten (Oberbayern)",
+     "Italienfront (Erster Weltkrieg)",
+     "Kaukasusfront (Erster Weltkrieg)",
+     "Kontrollkommission (Erster Weltkrieg)"
+    ],
+    "begriffsklaerung": false,
+    "llm_gefragt": true
+   },
+   {
+    "anfrage": "Aufbau der Zelle",
+    "art": "ohne_eigenen_artikel",
+    "akzeptiert": [
+     "Zelle (Biologie)"
+    ],
+    "titel": "Zelle (Biologie)",
+    "richtig": true,
+    "methode": "llm",
+    "sicher": false,
+    "alternativen": [
+     "Zelle (Biologie)",
+     "Bienenwabe",
+     "Zelle (Soziologie)",
+     "Zelle (Meteorologie)",
+     "Elementarzelle",
+     "Zellkomplex",
+     "Funkzelle",
+     "Flugzeugzelle"
+    ],
+    "begriffsklaerung": true,
+    "llm_gefragt": true
+   }
+  ]
+ }
+}
