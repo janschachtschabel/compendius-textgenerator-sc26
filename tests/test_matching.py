@@ -294,6 +294,7 @@ def test_default_slot_skips_person_and_work_articles() -> None:
 def test_material_chunks_are_evidence_for_the_slots_that_prefer_materials() -> None:
     """PLAN.md 6.3: paragraphs of reusable collection materials feed Bildung and Praxis even without a strong ranker hit."""
     from app.matching.policy import MATERIAL_SCORE
+    from app.sources.wlo.knowledge import TEXT_HEADING
 
     template, ids = TemplateManager().get("sc26"), _ids()
     material = Source(
@@ -309,8 +310,8 @@ def test_material_chunks_are_evidence_for_the_slots_that_prefer_materials() -> N
     chunk = Chunk(
         chunk_id="m1",
         source_id="wlo:mat1",
-        heading="Inhalt",
-        heading_path=["Inhalt"],
+        heading=TEXT_HEADING,
+        heading_path=[TEXT_HEADING],
         heading_level=2,
         text="Beschrifte das Augenmodell und konstruiere den Strahlengang durch die Linse.",
     )

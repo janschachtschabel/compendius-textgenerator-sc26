@@ -878,12 +878,20 @@ Materialien werden als zusätzliche `Source`s (`project=wlo_material`, Lizenz au
 **Umsetzung (2026-09-17, `knowledge.py`, D24):** Lizenz-Allowlist `CC_0`, `PDM`, `CC_BY`, `CC_BY_SA`
 (`COPYRIGHT_FREE` heißt zugänglich, nicht nachnutzbar, und bleibt draußen); Texte über `textContent` parallel
 (vier), Budget 30 Materialien und 20.000 Zeichen je Text, Cache 7 Tage; Zeilen unter 40 Zeichen und
-Consent-Banner werden verworfen; Beschreibung als Lead-Absatz, Text als Abschnitt „Inhalt“; Quellen mit
+Consent-Banner werden verworfen; Beschreibung als Lead-Absatz, Text als Abschnitt „Materialtext“; Quellen mit
 `project=wlo_material`, Rolle `material`, Lizenzlabel. Fehler je Material stehen in `audit.knowledge`, nie
 bricht Teil 1 ab. Policy: Absätze dieser Quellen sind Beleg für Bausteine mit `wlo_material` in
 `source_preference` (sc26: Bildung, Praxis) mit Score 0,5 plus halber Rankerstärke, weil sie sonst gegen
 Wikipedia-Absätze untergehen. Gemessen (Sammlung Optik, 16 Materialien): 8 lizenzkonform, 6 mit Text, 5
 Chunks, ein zusätzlicher Beleg in Baustein 8 (Bildung); Abruf 3,7 s, danach 7 ms aus dem Cache.
+
+**Nachtrag 2026-09-23:** Der Abschnitt hieß bis dahin „Inhalt“, und das Überschriften-Lexikon schließt diese
+Überschrift aus (Inhaltsverzeichnis). Die Materialtexte wurden deshalb zu Quellenhinweisen, Teil 1 erreichten nur
+die Beschreibungen; die 5 Chunks oben waren demnach nur Beschreibungen. Jetzt heißt der Abschnitt „Materialtext“
+(trifft kein Muster des Lexikons, der Facetten oder der Ausschlüsse). Gemessen (Sammlung Optik auf Staging, 30
+lizenzkonforme Materialien angefragt, 6 mit Text): vorher 6 Chunks und 82 Quellenhinweise aus den Texten, jetzt
+73 Chunks, davon 67 aus den Texten; die Policy ordnet 64 dem Baustein Bildung zu, gedruckt wird einer („Finde alle
+optischen Begriffe aus dem Unterricht (23).“ aus „Suchgitter Optik“).
 
 ### 6.4 Rückschreiben (optional, spätere Phase)
 

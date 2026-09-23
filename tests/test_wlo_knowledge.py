@@ -4,10 +4,14 @@ import dataclasses
 from pathlib import Path
 
 from app.domain.models import SourceRole
+from app.knowledge.segmentation import segment_source
+from app.matching.lexicon import HeadingLexicon
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.knowledge import KnowledgeOptions, material_sources
 from app.sources.wlo.models import MaterialRef
+from app.templates.manager import TemplateManager
+from tests.conftest import ROOT
 
 
 def _ref(node_id: str, license_key: str, title: str = "Material") -> MaterialRef:
@@ -86,3 +90,15 @@ def test_materials_not_started_before_the_deadline_are_skipped(tmp_path: Path) -
     )
     assert client.calls == ["a"]
     assert result.timed_out == 1 and [source.title for source in result.sources] == ["Material a", "Material c"]
+
+
+def test_the_text_of_a_material_becomes_chunks_of_part_one(tmp_path: Path) -> None:
+    """Segmented with the real lexicon, as the service does it: the text is knowledge, not a list of references."""
+    lexicon = HeadingLexicon.load(ROOT / "config" / "heading_lexicon.yaml").with_template(TemplateManager().get("sc26"))
+    client = FakeTexts({"a": TEXT})
+    result = material_sources(client, TtlCache(tmp_path / "c.db"), [_ref("a", "CC_BY")], options=KnowledgeOptions())
+    material = result.sources[0]
+    chunks = segment_source(material, lexicon)
+    assert [chunk.text[:12] for chunk in chunks] == ["Ein Arbeitsb", "Trifft Licht", "Konstruiere "]
+    assert material.reference_lines == []  # nothing of the text lands among the further sources
+    assert [chunk.lexicon_slot for chunk in chunks] == [None, None, None]  # the heading claims no block

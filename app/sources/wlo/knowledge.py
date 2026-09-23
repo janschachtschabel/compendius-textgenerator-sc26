@@ -22,6 +22,11 @@ from app.sources.wlo.models import MaterialRef, is_extractive
 log = logging.getLogger(__name__)
 
 PROJECT = "wlo_material"
+# Not "Inhalt": the heading lexicon excludes that heading (a table of contents), which turned every material text
+# into reference lines and left only the description for part 1. Measured 2026-09-23 (collection Optik, staging, six
+# materials with text): 6 chunks before, 73 now (67 from the texts), one of them printed. The name hits no pattern of
+# the lexicon, the facets or the slot exclusions.
+TEXT_HEADING = "Materialtext"
 MIN_PARAGRAPH_CHARS = 40
 TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in material_sources
 # Consent banners and cookie notices crawled from the material's page are not knowledge
@@ -70,7 +75,9 @@ def _source(ref: MaterialRef, paragraphs: list[str]) -> Source:
     if len(ref.description) >= MIN_PARAGRAPH_CHARS:
         sections.append(ArticleSection(heading="", path=[], level=0, paragraphs=[Paragraph(text=ref.description)]))
     sections.append(
-        ArticleSection(heading="Inhalt", path=["Inhalt"], level=2, paragraphs=[Paragraph(text=p) for p in paragraphs])
+        ArticleSection(
+            heading=TEXT_HEADING, path=[TEXT_HEADING], level=2, paragraphs=[Paragraph(text=p) for p in paragraphs]
+        )
     )
     return Source(
         source_id=f"wlo:{ref.id}",

@@ -1,5 +1,6 @@
 """Collections in the pipeline: topic from the collection, part 3 in the markdown, knowledge sources for part 1."""
 
+from collections import Counter
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -94,8 +95,11 @@ def test_a_capped_corpus_keeps_the_requested_materials_and_lists_only_used_sourc
     capped = with_collections.prepare(request)
     used = {chunk.source_id for chunk in capped.chunks}
     assert len(capped.chunks) == 30 and capped.chunks_truncated == len(full.chunks) - 30
-    materials = {source.source_id for source in full.sources if source.origin == "material"}
-    assert materials and materials <= used  # the collection was asked for; it is not the first thing cut
+    origins = {source.source_id: source.origin for source in full.sources}
+    total = Counter(origins[chunk.source_id] for chunk in full.chunks)
+    kept = Counter(origins[chunk.source_id] for chunk in capped.chunks)
+    # The collection was asked for; it is not the first thing cut: linked and searched articles go before it
+    assert kept["material"] and (kept["material"] == total["material"] or not kept["linked"] + kept["search"])
     assert all(source.source_id in used for source in capped.sources)  # no source listed without a paragraph
     assert with_collections.generate(request).audit.chunks_truncated == len(full.chunks) - 30
 
