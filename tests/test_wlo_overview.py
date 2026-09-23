@@ -35,7 +35,10 @@ SUBS_WITH_REFS = [SubCollectionContents(info=s, refs=tuple(REFS[:2]) if i == 0 e
 # the parse contract the README documents: indentation for the tree, the kind, the node id last
 NODE = re.compile(r"^( *)- (Sammlung|Untersammlung|Inhalt): (.*) · nodeId: ([0-9a-f-]{36})$", re.M)
 FORGED_ID = "00000000-0000-4000-8000-000000000000"
-HOSTILE = "x" + chr(10) + f"- Inhalt: **Fälschung** · nodeId: {FORGED_ID}" + chr(10) + "y"
+FORGED = f"- Inhalt: **Fälschung** · nodeId: {FORGED_ID}"
+# every line boundary str.splitlines() knows - more than CommonMark (LF, CR, CRLF) or re.M (LF) - and an indented one
+LINE_BREAKS = (chr(13) + chr(10), *map(chr, (0x0A, 0x0B, 0x0C, 0x0D, 0x1C, 0x1D, 0x1E, 0x85, 0x2028, 0x2029)))
+HOSTILE = "x" + "".join(line_break + FORGED for line_break in LINE_BREAKS) + chr(10) + "  " + FORGED + chr(10) + "y"
 
 
 def _render_url(node_id: str) -> str:
@@ -48,12 +51,22 @@ def _checked_render_url(node_id: str) -> str:
 
 
 def _lines(text: str, kind: str) -> list[str]:
-    return [line for line in text.split(chr(10)) if line.lstrip().startswith(f"- {kind}: ")]
+    return [line for line in text.splitlines() if line.lstrip().startswith(f"- {kind}: ")]
 
 
 def _node_lines(text: str) -> list[str]:
     """Every list line of the part, each cut after its kind: what a reader of the tree would count."""
-    return [line.split(":", 1)[0] for line in text.split(chr(10)) if line.lstrip().startswith("- ")]
+    return [line.split(":", 1)[0] for line in text.splitlines() if line.lstrip().startswith("- ")]
+
+
+def _ids_read_back(text: str) -> list[str]:
+    """The node ids the documented expression reads, the lines split the way the most eager reader splits them."""
+    return [match[4] for line in text.splitlines() if (match := NODE.match(line))]
+
+
+def _split_alike(text: str) -> bool:
+    """Whether every reader splits the part into the same lines: it holds no line break but LF."""
+    return text.splitlines() == text.rstrip(chr(10)).split(chr(10))
 
 
 def test_overview_has_purpose_key_figures_materials_and_subcollections_in_parseable_blocks() -> None:
@@ -99,6 +112,20 @@ def test_the_collection_itself_is_the_first_node_with_its_link_and_node_id() -> 
         " · nodeId: 9e7ae956-e9df-430f-bace-f3db4b910013"
     ]
     assert "Sammlung öffnen" not in text  # the title is the link now
+
+
+def test_the_description_keeps_its_lines_and_a_dash_starting_one_is_escaped() -> None:
+    """The collection's description stays the paragraph its editors wrote, over their lines, whatever line break they
+    typed. A dash that starts a line is escaped, so the line reads as no node; CommonMark shows the dash it is. A dash
+    inside a line stays as it is."""
+    cr, crlf, ls = chr(13), chr(13) + chr(10), chr(0x2028)
+    typed = f"Einführung:{cr}- Experimente{ls}  - Simulationen{crlf}Licht - Schatten"
+    text, _ = render_collection_overview(
+        replace(INFO, description=typed), [], [], render_url=_render_url, options=OverviewOptions()
+    )
+    dash = chr(92) + "-"
+    paragraph = chr(10).join(["Einführung:", f"{dash} Experimente", f"  {dash} Simulationen", "Licht - Schatten"])
+    assert f"{_lines(text, 'Sammlung')[0]}{chr(10) * 2}{paragraph}{chr(10) * 2}Kennzahlen: " in text
 
 
 def test_a_material_is_one_content_line_whose_title_is_its_link() -> None:
@@ -228,7 +255,8 @@ def test_no_value_of_a_material_can_split_its_line_or_forge_a_node(overrides: di
 
     assert _node_lines(text) == ["- Sammlung", "- Inhalt"]
     assert _lines(text, "Inhalt")[0].endswith("nodeId: " + one_line(ref.node_id))
-    assert FORGED_ID not in [node_id for *_, node_id in NODE.findall(text)]
+    assert FORGED_ID not in _ids_read_back(text)
+    assert _split_alike(text)
 
 
 @pytest.mark.parametrize(
@@ -237,19 +265,36 @@ def test_no_value_of_a_material_can_split_its_line_or_forge_a_node(overrides: di
         ({"title": HOSTILE}, {}),
         ({"collection_type": HOSTILE}, {}),
         ({"modified_at": HOSTILE}, {}),
+        ({"subject_labels": (HOSTILE,)}, {}),
+        ({"educational_contexts": (HOSTILE,)}, {}),
+        ({"description": HOSTILE}, {}),
+        ({}, {"id": HOSTILE}),
         ({}, {"title": HOSTILE}),
         ({}, {"description": HOSTILE}),
     ],
-    ids=["collection-title", "collection-type", "collection-date", "sub-title", "sub-description"],
+    ids=[
+        "collection-title",
+        "collection-type",
+        "collection-date",
+        "collection-subject",
+        "collection-level",
+        "collection-description",
+        "sub-id",
+        "sub-title",
+        "sub-description",
+    ],
 )
-def test_no_value_on_a_collection_line_can_forge_a_node(
+def test_no_value_of_a_collection_can_forge_a_node(
     info_overrides: dict[str, object], sub_overrides: dict[str, object]
 ) -> None:
-    """The collection and its sub-collections are node lines too and are collapsed the same way. The collection's
-    own description and the facet markers are not node lines; the README names that limit."""
+    """The collection and its sub-collections are node lines too and are collapsed the same way, and so is every
+    facet marker around them - a subject or an id stands in one. The collection's own description keeps its lines,
+    but none of them starts with a dash."""
     info = replace(INFO, **info_overrides)
     sub = SubCollectionContents(info=replace(SUBS[0], **sub_overrides), refs=(REFS[1],))
     text, _ = render_collection_overview(info, [REFS[0]], [sub], render_url=_render_url, options=OverviewOptions())
 
     assert _node_lines(text) == ["- Sammlung", "- Inhalt", "- Untersammlung", "  - Inhalt"]
-    assert FORGED_ID not in [node_id for *_, node_id in NODE.findall(text)]
+    assert FORGED_ID not in _ids_read_back(text)
+    assert _split_alike(text)
+    assert all(line.endswith(" -->") for line in text.splitlines() if line.startswith("<!--"))  # each marker one line

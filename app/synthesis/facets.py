@@ -227,7 +227,12 @@ def format_visible(facets: Mapping[str, Sequence[str]]) -> str:
 
 
 def format_marker(facets: Mapping[str, Sequence[str]]) -> str:
-    return "; ".join(f"{name}={'|'.join(values)}" for name, values in facets.items() if values)
+    """The inside of a facet marker, ``name=value|value; name=value``, on one line whatever a value holds: values
+    come from sources editors type into, and a line break would end the marker early and put the rest of the value
+    on a line of the document."""
+    return "; ".join(
+        f"{name}=" + "|".join(" ".join(value.split()) for value in values) for name, values in facets.items() if values
+    )
 
 
 # Closes a facet block in parts 2 and 3 (``<!-- f: … -->`` … ``<!-- /f -->``), so blocks can be parsed out

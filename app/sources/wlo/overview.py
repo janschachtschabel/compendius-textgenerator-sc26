@@ -35,6 +35,7 @@ MAX_KEYWORDS = 5
 MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
 _LINK_TEXT_ESCAPE = str.maketrans({"[": r"\[", "]": r"\]"})
+_LEADING_DASH = re.compile(r"^(\s*)-")
 
 
 @dataclass(frozen=True)
@@ -57,6 +58,14 @@ def first_sentence(text: str) -> str:
     if len(sentence) > MAX_SENTENCE_CHARS:
         sentence = sentence[: MAX_SENTENCE_CHARS - 1].rstrip() + "…"
     return sentence
+
+
+def _description(text: str) -> str:
+    """The collection's description as its editors wrote it, with their lines and paragraphs, but without a line that
+    reads as a node: every line break becomes a plain one - CommonMark also breaks at CR, ``str.splitlines`` at
+    U+2028 and more - and a dash that starts a line is escaped, which CommonMark shows as the dash it is. A list the
+    editors typed therefore reads as running text."""
+    return "\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines())
 
 
 def _marker(facets: dict[str, list[str]]) -> str:
@@ -175,7 +184,7 @@ def render_collection_overview(
         _marker(facets),
         _node_line("Sammlung", info.title, render_url(info.id), head, info.id),
         "",
-        info.description or NO_DESCRIPTION,
+        _description(info.description) or NO_DESCRIPTION,
         "",
         figures,
         END_MARKER,

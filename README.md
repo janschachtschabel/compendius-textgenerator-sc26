@@ -221,12 +221,14 @@ Repository nachschlagen (`…/edu-sharing/components/render/<id>`). Ein Parser b
 gehört zur Untersammlung in der Zeile über seiner Gruppe.
 
 Jeder Wert kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird jede Knotenzeile
-auf eine Zeile gebracht, ebenso die Kennzahlenzeile; `[` und `]` im Titel werden maskiert, URLs mit
-Leerzeichen oder Klammern stehen in `<…>`. Kein Wert eines Inhalts, einer Untersammlung oder von
-Titel, Typ und Datum der Sammlung kann so eine Zeile teilen oder einen Knoten vortäuschen, und eine
-nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt. Nicht erfasst
-sind die Beschreibung der Sammlung selbst, die als Absatz mehrzeilig bleibt, und die
-Facettenmarker: Dort könnte eine Eingabe eine Zeile erzeugen, die wie eine Knotenzeile aussieht.
+auf eine Zeile gebracht, ebenso die Kennzahlenzeile und jeder Facettenmarker; `[` und `]` im Titel
+werden maskiert, URLs mit Leerzeichen oder Klammern stehen in `<…>`. Die Beschreibung der Sammlung
+behält die Zeilen und Absätze der Redaktion, doch jeder Zeilenumbruch darin wird ein
+gewöhnlicher, und ein Bindestrich am Zeilenanfang wird als `\-` maskiert, den CommonMark als
+Bindestrich zeigt; eine Aufzählung in der Beschreibung liest sich deshalb als Fließtext. So kann kein
+Wert aus dem Repository eine Zeile teilen oder einen Knoten vortäuschen, auch nicht für einen Leser,
+der wie `str.splitlines()` an `\r`, U+2028 und den übrigen Unicode-Zeilenumbrüchen trennt, und eine
+nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt.
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht

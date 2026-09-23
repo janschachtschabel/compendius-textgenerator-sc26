@@ -852,7 +852,10 @@ in 3,5 s (2), Vorgänge in der Zelle 13.700 in 4,1 s (5); gecacht 3 ms.
 Schlagwörter auf fünf gekappt, eine Untersammlung als Zeile mit dem ersten Satz ihrer Beschreibung statt
 Überschrift und Absatz, ihre Inhalte eingerückt darunter. Die nodeId eines Inhalts ist die `originalId`.
 Vertrag und Parser-Ausdruck: README „Knotenzeilen in Teil 3". Gemessen an Optik (226 Inhalte): 5,3 % kürzer,
-dieselben 226 nodeIds in derselben Reihenfolge.
+dieselben 226 nodeIds in derselben Reihenfolge. Die Beschreibung der Sammlung behält ihre Zeilen, aber jeder
+Umbruch wird ein gewöhnlicher und ein Bindestrich am Zeilenanfang `\-`; Facettenmarker stehen immer auf einer
+Zeile (`format_marker`, auch in Teil 1 und 2). So kann kein Wert aus dem Repository einen Knoten vortäuschen; eine
+Aufzählung in einer Beschreibung wird dafür Fließtext (von den 16 Beschreibungen im Optik-Teilbaum hat keine eine).
 
 ### 6.3 Wissens-Sammlung (optional, `knowledge_collection_id`)
 

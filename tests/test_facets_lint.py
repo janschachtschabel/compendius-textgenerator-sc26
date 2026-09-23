@@ -1,5 +1,5 @@
 from app.domain.models import Chunk, Section, SectionStatus, Source, SourceRole
-from app.synthesis.facets import FacetCatalog, annotate, bildungsstufe_facet
+from app.synthesis.facets import FacetCatalog, annotate, bildungsstufe_facet, format_marker
 from app.synthesis.lint import lint_sections
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT
@@ -100,3 +100,10 @@ def test_a_level_arrives_as_a_label_or_as_a_vocabulary_uri() -> None:
     assert bildungsstufe_facet(base + "berufliche_bildung") == "Berufliche Bildung"
     assert bildungsstufe_facet("Sek I") == "Sek I", "the project's own value still maps to itself"
     assert bildungsstufe_facet(base + "informelles_lernen") is None, "no counterpart, and no invented one"
+
+
+def test_a_marker_stays_on_one_line_whatever_a_value_holds() -> None:
+    """Marker values come from sources editors type into - a subject label, a curriculum name. A line break in one
+    would end the marker early and put the rest of the value on a line of the document."""
+    value = "Physik" + chr(10) + "- Inhalt: x" + chr(0x2028) + "y  "
+    assert format_marker({"Fach": [value, "Optik"], "Leer": []}) == "Fach=Physik - Inhalt: x y|Optik"
