@@ -66,18 +66,22 @@ Programmiersprache, Sinfonie; Hauptartikel je bis 40 Chunks, Nebenartikel je bis
 
 ## Stand
 
-| Lauf (10 Themen, 603 bewertete Chunks) | macro-F1 | micro-F1 |
+| Lauf (10 Themen) | macro-F1 | micro-F1 |
 |---|---|---|
 | Baseline Phase 0/1 (`hybrid_light`) | 0,27 | 0,32 |
 | Standardbaustein, Teilgebiets-Regel, Fragmentfilter, Lexikon v3 (`hybrid_light`) | 0,39 | 0,63 |
 | dazu Model2Vec `JanSchachtschabel/m2v-gte-256-edu` | 0,43 | 0,63 |
 | dazu Schwelle 0,65 und Abschnitts-Glättung 0,5 (2026-09-18) | 0,45 | 0,66 |
 
-Das Ziel macro-F1 ≥ 0,70 aus PLAN.md 4.5 ist nicht erreicht. Die großen Bausteine
-(Themendefinition 0,67, Systematik 0,60, Fachinhalte 0,69, Entwicklung 0,71) tragen den
-micro-Wert; die kleinen (Beruf 0,22, Bildung 0,59, Regularien 0,18, Praxis 0,22, Querschnitt 0,00
-mit 2–18 Gold-Chunks) ziehen den macro-Wert. Schwellen (`POLICY_CONFIDENT_SCORE` 0,35/0,45/0,55
-→ 0,41/0,43/0,43) wurden auf demselben Gold gemessen, es gibt keine Hold-out-Menge.
+Ab der zweiten Zeile werden 603 der 643 Labels bewertet, 40 sind veraltet; die Baseline bewertete noch 644
+(`reports/phase2_baseline.json`).
+
+Das Ziel macro-F1 ≥ 0,70 aus PLAN.md 4.5 ist nicht erreicht. Im Stand 0,45 (`reports/d33_rules_printed_m2v.json`,
+Sicht `aggregate`) tragen die großen Bausteine (Themendefinition 0,68, Systematik 0,60, Fachinhalte 0,71,
+Entwicklung 0,74) den micro-Wert; Gesellschaftlicher Kontext (0,40 bei 38 Gold-Chunks) und die kleinen (Beruf 0,31,
+Bildung 0,50, Regularien 0,33, Praxis 0,20, Querschnitt 0,00 mit 2–18 Gold-Chunks) ziehen den macro-Wert. Das
+Schwellenraster vom 2026-09-17 (`POLICY_CONFIDENT_SCORE` 0,35/0,45/0,55 → 0,41/0,43/0,43, noch ohne Glättung)
+wurde auf demselben Gold gemessen, es gibt keine Hold-out-Menge.
 
 ### Nachschärfung vom 2026-09-18: Schwelle 0,65 und Abschnitts-Glättung
 
@@ -147,7 +151,7 @@ Absatz zählt für den Baustein, der die meisten seiner Sätze druckt. Weil dies
 Budget kennt, ist der faire Vergleich „gedruckt gegen gedruckt“; der Bericht führt seit dem 2026-09-19 beide Sichten
 getrennt (`aggregate` = Klassifikation, `printed` = gedruckt).
 
-| Verfahren (10 Themen, 603 Labels) | gedruckt | richtig | falsch | davon Gold „none“ | macro-F1 | micro-F1 |
+| Verfahren (10 Themen, 603 bewertete Labels) | gedruckt | richtig | falsch | davon Gold „none“ | macro-F1 | micro-F1 |
 |---|---|---|---|---|---|---|
 | `hybrid_light` + Model2Vec (Produktion) | 110 | 67 | 43 | – | 0,277 | 0,214 |
 | `hybrid_light` ohne Model2Vec | 107 | 63 | 44 | 14 | 0,214 | 0,202 |

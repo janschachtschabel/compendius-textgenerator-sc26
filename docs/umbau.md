@@ -1,8 +1,9 @@
 # Umbau: schlanke API, KI nur als Option
 
-Vorschlag vom 2026-09-20, noch nicht umgesetzt. Ziel: ein Dienst, der **vollständig ohne generative KI**
-arbeitet, daneben Entitäten und Frage-Antwort-Paare liefert, und bei dem ein LLM nur dort zugeschaltet wird,
-wo der Aufrufer es ausdrücklich will — sichtbar in der Antwort. Der alte v1-Vertrag entfällt.
+Vorschlag vom 2026-09-20, am selben Tag umgesetzt (U1 bis U6, siehe „Phasen“; offen bleibt Wikidata). Ziel:
+ein Dienst, der **vollständig ohne generative KI** arbeitet, daneben Entitäten und Frage-Antwort-Paare liefert,
+und bei dem ein LLM nur dort zugeschaltet wird, wo der Aufrufer es ausdrücklich will — sichtbar in der Antwort.
+Der alte v1-Vertrag entfällt.
 
 ## Was geprüft wurde
 

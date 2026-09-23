@@ -175,12 +175,18 @@ laufenden Container (`VmRSS` vorher/nachher), damit die Reihenfolge nichts verfa
 | torch (nur die Bibliothek) | 0,8 GB | +209 MiB | sobald irgendein Modell kommt |
 | die Anwendung selbst | — | +138 MiB | immer |
 | spaCy `de_core_news_md` | 60 MB | **+580 MiB** | immer: Entitaeten und die Antwortkandidaten der Stufe `models` |
-| Model2Vec `m2v-gte-256-edu` | 322 MB | **+1012 MiB** | nur bei Matching-Strategie `model2vec` |
+| Model2Vec `m2v-gte-256-edu` | 322 MB | **+1012 MiB** | beim Start je Worker: `hybrid_light` (Standard) laedt es, sobald `MODEL2VEC_PATH` gesetzt ist — im Image `/models/m2v` |
 | `dehio/german-qg-t5-quad` + `deepset/gelectra-base-germanquad` | 637 MB | **+1728 MiB** | nur bei `method: "models"` am QA-Endpunkt, faul und je Worker |
 | dieselben beim Erzeugen | — | **+190 MiB** Spitze | zusaetzlich waehrend der Anfrage: acht Saetze zu je vier Strahlen rechnen gleichzeitig (`BATCH_SIZE` in `app/synthesis/qa_models.py`) |
 
-Wer `method: "models"` nie anfragt, zahlt dessen 1,7 GB nie. Wer eine andere Matching-Strategie als
-`model2vec` waehlt, zahlt dessen 1,0 GB nie.
+Wer `method: "models"` nie anfragt, zahlt dessen 1,7 GB nie. Model2Vec dagegen kostet seine 1,0 GB schon beim
+Start. Eine eigene Matching-Strategie dafuer gibt es nicht: Die vier sind `hybrid_light`, `bm25`, `char_tfidf` und
+`lexicon_only`, und nur `hybrid_light`, der Standard, nutzt das Modell. Eine andere Strategie in der Anfrage spart
+deshalb nichts, das Modell ist dann schon geladen. Sparen laesst es sich nur mit leerem `MODEL2VEC_PATH`;
+`hybrid_light` rechnet dann ohne Einbettungen und ordnet schlechter zu (Goldstandard macro-F1 0,39 statt 0,45,
+`eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`). Wer stattdessen `MATCHER_DEFAULT`
+umstellt, verschiebt das Laden nur: Die erste Anfrage, die `hybrid_light` verlangt, laedt das Modell in ihrem
+Worker nach.
 
 **Halbe Genauigkeit spart Platte, nicht Speicher.** Die beiden QA-Modelle liegen als float16 im Image
 (das hat es von 3,40 auf 2,74 GB gebracht), werden beim Laden aber bewusst auf float32 zurueckgerechnet:
