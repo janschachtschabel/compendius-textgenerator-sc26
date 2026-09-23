@@ -1,0 +1,21 @@
+# Drittes Gold für die Themenauflösung: zurückgehaltener Test.
+#
+# Festgelegt von Claude am 2026-09-23, bevor die Verbesserungen der Artikelwahl geschrieben wurden. Diese Anfragen
+# liefen erst, als die Regeln feststanden: 8 von 12 richtig (alter Stand 7), mit article_choice=llm 9. Dabei zeigten
+# sich zwei Fehler, die danach behoben wurden - Wortformen eines Fachworts zählten doppelt („Mathematik: Ableitung“),
+# und ein exakter Titel ohne jeden Fachbezug galt als sicher („Erdkunde: Delta“); seitdem 9, mit LLM 11, und der Satz
+# ist nicht mehr unabhängig. Redaktionell ungeprüft. Aufbau und Regeln wie in hauptartikel.yaml.
+
+anfragen:
+  - {anfrage: "Physik: Spannung", erwartet: [Elektrische Spannung, Spannung (Mechanik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Linse", erwartet: [Linse (Optik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Chemie: Element", erwartet: [Chemisches Element], art: mehrdeutig_mit_fach}
+  - {anfrage: "Musik: Intervall", erwartet: [Intervall (Musik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Deutsch: Artikel", erwartet: [Artikel (Wortart)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Erdkunde: Delta", erwartet: [Flussdelta], art: mehrdeutig_mit_fach}
+  - {anfrage: "Biologie: Stamm", erwartet: [Stamm (Systematik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Netzwerk", erwartet: [Rechnernetz], art: mehrdeutig_mit_fach}
+  - {anfrage: "Mathematik: Ableitung", erwartet: [Differentialrechnung], art: mehrdeutig_mit_fach}
+  - {anfrage: Vulkane, erwartet: [Vulkan], art: variante}
+  - {anfrage: Ursachen des Ersten Weltkriegs, erwartet: [Erster Weltkrieg], art: ohne_eigenen_artikel}
+  - {anfrage: Aufbau der Zelle, erwartet: [Zelle (Biologie)], art: ohne_eigenen_artikel}

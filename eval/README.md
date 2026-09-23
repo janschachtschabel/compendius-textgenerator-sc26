@@ -180,7 +180,11 @@ holt (Messung M8 in `docs/entwicklung/05-messprotokoll.md`).
 | Pfad | Inhalt |
 |---|---|
 | `artikelwahl/hauptartikel.yaml` | 59 Anfragen in sechs Arten (normal, mit Zusatz, mehrdeutig mit und ohne Fach, Varianten, ohne gleichnamigen Artikel) mit den akzeptierten Hauptartikeln; festgelegt, bevor der Dienst sie aufgelöst hat |
+| `artikelwahl/hauptartikel_validierung.yaml` | 23 weitere Anfragen, festgelegt vor den Verbesserungen der Artikelwahl; die erste Regelrunde entstand ohne sie |
+| `artikelwahl/hauptartikel_test.yaml` | 12 zurückgehaltene Anfragen, erst gelaufen, als die Regeln feststanden |
 | `artikelwahl/korpus_labels.yaml` | 288 blind vergebene Noten (2 gehört zum Thema, 1 verwandt, 0 passt nicht) für die Korpusartikel der 20 Themen aus M1 und die Artikel des alten Dienstes |
 
-Beide sind von Claude festgelegt und redaktionell ungeprüft. Messen und auswerten: `docs/entwicklung/messung/`
-(`mc_artikelwahl.py`, `mc_artikel_richter.py`, `mc_artikelwahl_auswertung.py`).
+Alle sind von Claude festgelegt und redaktionell ungeprüft; die Kopfzeilen der beiden neuen Sätze sagen, wann sie
+aufhörten, unabhängig zu sein. Messen und auswerten: `docs/entwicklung/messung/` (`mc_artikelwahl.py`,
+`mc_artikel_richter.py`, `mc_artikelwahl_auswertung.py`; die Auflösung allein, mit und ohne `article_choice=llm`,
+misst `mc_aufloesung.py`).

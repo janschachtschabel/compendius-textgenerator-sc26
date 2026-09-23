@@ -1,0 +1,41 @@
+# Zweites Gold für die Themenauflösung: neue Anfragen, mit denen die Verbesserungen der Artikelwahl geprüft werden.
+#
+# Festgelegt von Claude am 2026-09-23, bevor die Verbesserungen geschrieben wurden und bevor der Dienst diese Anfragen
+# aufgelöst hat; redaktionell ungeprüft. Aufbau und Regeln wie in hauptartikel.yaml. Die erste Regelrunde entstand
+# ohne diese Anfragen und fand hier 21 statt 14 von 23. Ihre zwei übrigen Fehler („Deutsch: Fall“, „Ursachen der
+# Französischen Revolution“) flossen in die zweite Runde ein; seitdem ist dieser Satz nicht mehr unabhängig.
+#
+# Korrektur vor dem ersten Lauf: Einen Artikel „Satz (Musik)“ gibt es nicht; die Begriffsklärung nennt drei
+# musikalische Bedeutungen, alle drei zählen (mehrere Artikel können passen).
+
+anfragen:
+  # mehrdeutig_mit_fach
+  - {anfrage: "Physik: Feld", erwartet: [Feld (Physik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Masse", erwartet: [Masse (Physik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Physik: Druck", erwartet: [Druck (Physik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Chemie: Lösung", erwartet: [Lösung (Chemie)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Chemie: Base", erwartet: [Basen (Chemie)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Mathematik: Menge", erwartet: [Menge (Mathematik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Schleife", erwartet: [Schleife (Programmierung)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Informatik: Bus", erwartet: [Bus (Datenverarbeitung)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Musik: Note", erwartet: [Note (Musik)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Musik: Satz", erwartet: [Satz (Musikstück), Satz (musikalische Formenlehre), Tonsatz], art: mehrdeutig_mit_fach}
+  - {anfrage: "Deutsch: Fall", erwartet: [Kasus], art: mehrdeutig_mit_fach}
+  - {anfrage: "Biologie: Art", erwartet: [Art (Biologie)], art: mehrdeutig_mit_fach}
+  - {anfrage: "Geschichte: Restauration", erwartet: [Restauration (Geschichte)], art: mehrdeutig_mit_fach}
+
+  # normal, als Gegenprobe, dass nichts kaputtgeht
+  - {anfrage: Treibhauseffekt, erwartet: [Treibhauseffekt], art: normal}
+  - {anfrage: Weimarer Republik, erwartet: [Weimarer Republik], art: normal}
+  - {anfrage: Satz des Pythagoras, erwartet: [Satz des Pythagoras], art: normal}
+  - {anfrage: "Physik: Energie", erwartet: [Energie], art: normal}
+
+  # variante
+  - {anfrage: Säure, erwartet: [Säuren], art: variante}
+  - {anfrage: Klimawandels, erwartet: [Klimawandel], art: variante}
+  - {anfrage: Evolutionstheorie, erwartet: [Evolutionstheorie, Evolution], art: variante}
+
+  # ohne_eigenen_artikel
+  - {anfrage: Aufbau der Atome, erwartet: [Atom], art: ohne_eigenen_artikel}
+  - {anfrage: Ursachen der Französischen Revolution, erwartet: [Französische Revolution], art: ohne_eigenen_artikel}
+  - {anfrage: Kreislauf des Kohlenstoffs, erwartet: [Kohlenstoffzyklus], art: ohne_eigenen_artikel}
