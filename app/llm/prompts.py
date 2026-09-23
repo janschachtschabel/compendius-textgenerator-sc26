@@ -118,6 +118,21 @@ PARAGRAPH_ASSIGNMENT = Prompt(
     ),
 )
 
+# article_choice=llm (D35): the prompt measured against the gold of eval/artikelwahl on 2026-09-23 (M8)
+ARTICLE_CHOICE = Prompt(
+    id="article_choice",
+    version=1,
+    system=(
+        "Du wählst für ein Unterrichtsthema den Wikipedia-Artikel aus, auf dem ein Kompendium für Lehrkräfte "
+        "aufbauen soll. Gesucht ist der Artikel, der das Thema so behandelt, wie es im genannten Schulfach gemeint "
+        "ist. Die Kandidaten sind nummeriert, jeweils mit dem Anfang des Artikels. Antworte ausschließlich mit einem "
+        'JSON-Objekt wie {"wahl": 3, "titel": ""}. Passt keiner der Kandidaten, antworte mit "wahl": 0 und nenne '
+        'unter "titel" den genauen Titel des deutschsprachigen Wikipedia-Artikels, der das Thema behandelt, wenn du '
+        'ihn sicher kennst; sonst bleibt "titel" leer. Keine Erklärungen.'
+    ),
+    user="Thema: {topic}\nSchulfach: {subject}\n\nKandidaten:\n{candidates}\n\nGib das JSON-Objekt zurück.",
+)
+
 QA_PAIRS = Prompt(
     id="qa_pairs",
     version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
@@ -132,7 +147,8 @@ QA_PAIRS = Prompt(
 )
 
 PROMPTS: dict[str, Prompt] = {
-    p.id: p for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, PARAGRAPH_ASSIGNMENT, QA_PAIRS)
+    p.id: p
+    for p in (SECTION_SYNTHESIS, SECTION_ENRICHMENT, PASSAGE_SELECTION, PARAGRAPH_ASSIGNMENT, ARTICLE_CHOICE, QA_PAIRS)
 }
 
 

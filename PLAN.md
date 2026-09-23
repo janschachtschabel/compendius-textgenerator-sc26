@@ -1405,6 +1405,21 @@ API.
   Start. Bausteine mit LLM-zugeordneten Absätzen tragen `ki-ausgewählt`, der Vorspann die Kennzeichnung „Auswahl
   KI-gestützt“, und `kompendium_compendium_requests_total` zählt `matcher=llm` wie einen LLM-Schalter. Das Template
   sc26 bleibt Version 1, weil sich seine Bausteine nicht geändert haben.
+- **D35 (2026-09-23)** Artikelwahl: schärfere Regeln und `article_choice=llm` für die unsicheren Fälle (Jan: die
+  Artikelwahl ist wichtig, mehrere Artikel können passen; gpt-5.6-luna bleibt das Modell). Die Regeln nehmen die
+  Kontextwörter des Fachs aus `config/subjects.yaml` (`kontext`), werten ein Fachwort im Titel einer Bedeutung
+  dreifach, zählen Wortformen eines Fachworts einmal, stellen Personen und Werke hinter die übrigen Bedeutungen,
+  wenn die Seite sie nicht zuerst nennt, und lösen Genitivwendungen über das Kompositum („Kreislauf des Wassers“ ->
+  Wasserkreislauf) oder nach einem Aspektwort über den Rest auf („Ursachen der Französischen Revolution“). Jede
+  Auflösung sagt, wie sie gefunden wurde und ob sie sicher ist (`method`, `confident`). Nur unsichere Auflösungen
+  gehen mit `article_choice=llm` an das Modell, mit dem gemessenen Prompt `article_choice` v1. Gemessen an drei
+  Goldsätzen in `eval/artikelwahl` (Haupt 59, Validierung 23, zurückgehaltener Test 12): alter Stand 45, 14 und 7
+  richtig, die Regeln 55, 22 und 9, mit dem Modell 57, 23 und 11; der Testsatz lief zuerst mit 8 und 9 und ist seit
+  zwei danach behobenen Fehlern nicht mehr unabhängig. Das Modell wurde bei 18 von 94 Anfragen gefragt, rund 950
+  Tokens je Aufruf. Standard bleibt `rule-based` (`LLM_ARTICLE_CHOICE_DEFAULT`), weil jede LLM-Nutzung im Dienst ein
+  Schalter ist; die gewählte Auflösung trägt `method: llm` und bleibt als unsicher markiert. In
+  `kompendium_compendium_requests_total` zählt der Schalter nur, wo die Regeln unsicher waren: ein sicheres Thema
+  fragt das Modell nie, und als Rückfall gezählt hätte es die LLM-Alarme ausgelöst.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

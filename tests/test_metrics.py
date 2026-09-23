@@ -280,6 +280,31 @@ def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: p
     assert delta(llm_requested="true", llm_used="true") == 1
 
 
+def test_article_choice_llm_counts_as_an_llm_request_where_the_rules_are_unsure(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # "Geometrische" resolves through a title suggestion, so the model is asked; "Optik" is sure and never asks,
+    # which must not look like a fallback to the LLM alarms (monitoring/alerts.yml)
+    service = client.app.state.service  # type: ignore[attr-defined]
+    before = scrape(client)
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: '{"wahl": 1}'), per_request=1_000_000))
+    for topic in ("Geometrische", "Optik"):
+        payload = {"topic": topic, "article_choice": "llm", "parts": ["world"]}
+        assert client.post("/api/v2/compendium", json=payload).status_code == 200
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "weiß nicht"), per_request=1_000_000))
+    payload = {"topic": "Geometrische", "article_choice": "llm", "parts": ["world"]}
+    assert client.post("/api/v2/compendium", json=payload).status_code == 200  # unreadable: the rules' article
+    after = scrape(client)
+
+    def delta(**labels: str) -> float:
+        name = "kompendium_compendium_requests_total"
+        return value(after, name, **labels) - value(before, name, **labels)
+
+    assert delta(llm_requested="true", llm_used="true") == 1
+    assert delta(llm_requested="true", llm_used="false") == 1
+    assert delta(llm_requested="false", llm_used="false") == 1
+
+
 def test_metrics_can_require_a_token_or_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _app(sample_zims, tmp_path / "a", metrics_token="geheim") as client:
         assert client.get("/metrics").status_code == 401

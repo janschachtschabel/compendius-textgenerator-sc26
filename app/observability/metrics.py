@@ -32,8 +32,8 @@ HTTP_DURATION = Histogram(
 )
 COMPENDIA = Counter(
     "kompendium_compendium_requests_total",
-    "Generated compendia: was an LLM switch or matcher=llm requested, did the LLM contribute (a request may fall "
-    "back to rules)",
+    "Generated compendia: was an LLM switch, matcher=llm or article_choice=llm requested, did the LLM contribute "
+    "(a request may fall back to rules)",
     ["llm_requested", "llm_used"],
 )
 PHASES = Histogram(
@@ -76,12 +76,16 @@ def record_compendium(compendium: Compendium) -> None:
     """Count one generated compendium from its audit: LLM switches, phases, parts, LLM usage, materials."""
     audit = compendium.audit
     front = compendium.frontmatter
+    # article_choice=llm (D35) counts like a switch where the rules were unsure: a sure topic never asks the model,
+    # and counting it as a fallback would set off the LLM alarms for every such request
+    choice = (audit.llm or {}).get("article_choice") or {}
     requested = (
         front.get("extraction_requested", compendium.extraction),
         front.get("generation_requested", compendium.generation),
         _matching(front.get("matcher_requested", audit.matcher)),
+        choice.get("requested", "rule-based") if choice.get("needed") else "rule-based",
     )
-    used = (compendium.extraction, compendium.generation, _matching(audit.matcher))
+    used = (compendium.extraction, compendium.generation, _matching(audit.matcher), choice.get("used", "rule-based"))
     COMPENDIA.labels(_flag(requested), _flag(used)).inc()
     for phase, milliseconds in audit.timings_ms.items():
         PHASES.labels(phase).observe(milliseconds / 1000)

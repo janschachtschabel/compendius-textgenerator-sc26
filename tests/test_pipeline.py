@@ -12,7 +12,8 @@ from app.service import CompendiumService, TopicNotFoundError
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.html import ParsedArticle
-from app.sources.zim.registry import ZimRegistry, context_score, listed_meanings
+from app.sources.zim.registry import ZimRegistry
+from app.sources.zim.topic_rules import TITLE_WEIGHT, context_score, listed_meanings
 
 
 def test_registry_loads_both_archives(registry: ZimRegistry) -> None:
@@ -124,7 +125,7 @@ def test_the_context_is_looked_for_in_the_title_as_well() -> None:
     context, although the right meaning stood second in the same list.
     """
     body = "Eine Rolle ist ein Maschinenelement und dient dem Umlenken eines Seils."
-    assert context_score({"physik"}, "Rolle (Physik)", body) == 1
+    assert context_score({"physik"}, "Rolle (Physik)", body) == TITLE_WEIGHT
     assert context_score({"physik"}, "Mangel (Gerät)", body) == 0
 
 

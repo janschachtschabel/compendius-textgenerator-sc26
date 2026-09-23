@@ -3,6 +3,7 @@
 A request names a subject by WLO discipline id, by the full vocabulary URI (``ccm:taxonid`` of a
 collection), by label or by an alias ("Mathe"). The catalog turns that into lowercase substrings
 of MEM's Schulfach labels; an unknown subject yields no terms, and the search then spans all subjects.
+It also names the words by which the topic resolution recognises a meaning of the subject (``kontext``).
 """
 
 from __future__ import annotations
@@ -23,6 +24,7 @@ class Subject:
     label: str
     mem_terms: tuple[str, ...]
     aliases: tuple[str, ...] = ()
+    context_terms: tuple[str, ...] = ()  # words of the subject that pick a meaning of an ambiguous topic
 
 
 class SubjectCatalog:
@@ -46,6 +48,7 @@ class SubjectCatalog:
                 label=str(entry["label"]),
                 mem_terms=tuple(str(term).casefold() for term in entry.get("mem", [])),
                 aliases=tuple(str(alias) for alias in entry.get("aliases", [])),
+                context_terms=tuple(str(term).casefold() for term in entry.get("kontext", [])),
             )
             for entry in data.get("subjects", [])
         ]
@@ -66,3 +69,10 @@ class SubjectCatalog:
     def mem_terms(self, value: str | None) -> list[str]:
         subject = self.resolve(value)
         return list(subject.mem_terms) if subject else []
+
+    def context_terms(self, value: str | None) -> list[str]:
+        """Words that mark a meaning as belonging to the subject; without ``kontext``, its label and aliases."""
+        subject = self.resolve(value)
+        if subject is None:
+            return []
+        return list(subject.context_terms) or [subject.label.casefold(), *(a.casefold() for a in subject.aliases)]

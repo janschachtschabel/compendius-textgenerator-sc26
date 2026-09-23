@@ -11,6 +11,7 @@ Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
 Enrichment = Literal["sources-only", "model-knowledge"]
+ArticleChoice = Literal["rule-based", "llm"]  # who decides an unsure article choice (D35)
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 
@@ -47,6 +48,15 @@ class GenerateRequest(BaseModel):
         "compounds; lexicon_only uses the heading lexicon without a ranker. llm lets the LLM of the b-api "
         "assign every paragraph (about 240 tokens per paragraph); where it gives no answer, and without a "
         "usable b-api, the default strategy decides. An unknown name is a 422",
+    )
+    article_choice: ArticleChoice | None = Field(
+        None,
+        description="Who decides the article of the topic where the rules are unsure (a disambiguation nothing "
+        "decides, an exact title that names nothing of the subject, a title suggestion or a full-text hit): "
+        "rule-based keeps the rules' article, llm lets the LLM of the b-api choose among the candidates or name "
+        "a Wikipedia title (one call of about 1 000 tokens, only for unsure topics; measured in eval/artikelwahl: "
+        "57 instead of 55 of 59 main articles right); default LLM_ARTICLE_CHOICE_DEFAULT. Falls back to "
+        "rule-based when the b-api is not configured or not available",
     )
     extraction: Extraction | None = Field(
         None,

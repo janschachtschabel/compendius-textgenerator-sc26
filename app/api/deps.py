@@ -45,7 +45,12 @@ def corpus_for_topic(
     carrying the resolution, so the caller sees the alternatives instead of an empty answer.
     """
     normalized = normalize_topic(topic)
-    resolution = registry.resolve_topic(normalized.topic, context=normalized.context, query=normalized.query)
+    resolution = registry.resolve_topic(
+        normalized.topic,
+        context=normalized.context,
+        query=normalized.query,
+        terms=service.subjects.context_terms(normalized.subject),
+    )
     if not resolution.resolved:
         raise HTTPException(
             status_code=404,

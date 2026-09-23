@@ -23,6 +23,7 @@ from app.domain.models import (
     Source,
 )
 from app.domain.requests import GenerateRequest
+from app.knowledge.article_choice import ArticleChoiceJob, ArticleChoiceReport, LlmArticleChooser
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
 from app.llm.budget import RequestBudget
@@ -37,11 +38,12 @@ from app.matching.policy import AssignmentResult, assign
 from app.matching.registry import LLM_MATCHER, STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
+from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
 from app.sources.wlo.models import CollectionInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import CollectionBuilder, collection_topic
-from app.sources.zim.registry import ZimRegistry
+from app.sources.zim.registry import CHOSEN_BY_LLM, ZimRegistry
 from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
@@ -78,6 +80,7 @@ class PreparedTopic:
     knowledge: dict[str, Any] | None = None
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
+    article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -143,6 +146,10 @@ class CompendiumService:
         self.collections = collections
         self.llm = llm
         self.writer = SectionWriter(facets, settings.facets_level, registry.lookup)
+        # The subject's words pick the meaning of an ambiguous topic (config/subjects.yaml, kontext)
+        self.subjects = (
+            SubjectCatalog.load(settings.subjects_path) if settings.subjects_path.exists() else SubjectCatalog.empty()
+        )
         try:  # at start: a wrong default is the operator's error, not a 422 for every request
             ensure_strategy(settings.matcher_default)
         except UnknownMatcherError as exc:
@@ -151,12 +158,14 @@ class CompendiumService:
         if settings.matcher_default == LLM_MATCHER:  # matcher=llm falls back on the default, which needs no b-api
             raise ValueError("MATCHER_DEFAULT=llm is not possible: the default strategy has to run without the b-api")
 
-    def prepare(self, request: GenerateRequest, deadline: Deadline | None = None) -> PreparedTopic:
+    def prepare(
+        self, request: GenerateRequest, deadline: Deadline | None = None, choice: ArticleChoiceJob | None = None
+    ) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
 
         Part 3 alone needs the collection only: its topic is resolved where possible, and no corpus is built.
         ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
-        time are left out and counted in the audit.
+        time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
         """
         timings: dict[str, int] = {}
         lap = _Stopwatch(timings).lap
@@ -170,7 +179,15 @@ class CompendiumService:
         derived = collection_topic(collection) if collection is not None else None
         normalized = normalize_topic(request.topic or (derived.topic if derived else ""))
         context = [*normalized.context, *(derived.context if derived else [])]
-        resolution = self.registry.resolve_topic(normalized.topic, context=context, query=normalized.query)
+        subject = request.subject or normalized.subject or (derived.subject if derived else None)
+        chooser = LlmArticleChooser(choice, normalized.topic, subject) if choice is not None else None
+        resolution = self.registry.resolve_topic(
+            normalized.topic,
+            context=context,
+            query=normalized.query,
+            terms=self.subjects.context_terms(subject),
+            chooser=chooser,
+        )
         # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not
         needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
         if not resolution.resolved and needs_corpus:
@@ -184,8 +201,9 @@ class CompendiumService:
             sources=[],
             chunks=[],
             timings=timings,
-            subject=request.subject or normalized.subject or (derived.subject if derived else None),
+            subject=subject,
             collection=collection,
+            article_choice=chooser.report if chooser is not None else None,
         )
         if needs_corpus:
             self._add_corpus(prepared, request, deadline)
@@ -331,7 +349,15 @@ class CompendiumService:
         unmakeable = self._unmakeable(request)
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
-        prepared = self.prepare(request, deadline)
+        # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here
+        choice_requested = request.article_choice or self.settings.llm_article_choice_default
+        choice_note = self.llm_unavailable() if choice_requested == "llm" else None
+        budget: RequestBudget | None = None
+        choice: ArticleChoiceJob | None = None
+        if choice_requested == "llm" and choice_note is None and self.llm is not None:
+            budget = self.llm.open_budget()
+            choice = ArticleChoiceJob(self.llm.client, budget, deadline)
+        prepared = self.prepare(request, deadline, choice)
         want_world = "world" in request.parts
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
         extraction_requested = request.extraction or self.settings.llm_extraction_default
@@ -343,7 +369,7 @@ class CompendiumService:
         timings = dict(prepared.timings)
         if want_world:
             switches = (extraction_requested, generation_requested, enrichment_requested)
-            world = self._world_part(prepared, request, switches, deadline, timings)
+            world = self._world_part(prepared, request, switches, deadline, timings, budget)
         else:  # no matching, no synthesis, no LLM work
             world = WorldPart(
                 matcher=None,
@@ -390,6 +416,7 @@ class CompendiumService:
         generation_used = world.generation if drafted and drafted.sections else "rule-based"
         # Enrichment only means something where the LLM actually wrote a block
         enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
+        choice_used = "llm" if resolution.method == CHOSEN_BY_LLM else "rule-based"
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
@@ -400,10 +427,15 @@ class CompendiumService:
             enrichment_used=enrichment_used,
             matching_requested="llm" if world.matcher_requested == LLM_MATCHER else "rule-based",
             matching_used="llm" if matcher_name == LLM_MATCHER else "rule-based",
-            note=world.llm_note,
+            note=world.llm_note or choice_note,
             extraction=extracted,
             generation=drafted,
             matching=world.matching,
+            choice_requested=choice_requested,
+            choice_used=choice_used,
+            choice=prepared.article_choice,
+            choice_chosen=resolution.title if choice_used == "llm" else None,
+            choice_needed=not resolution.confident,  # a chosen article stays unsure, a sure one never asks
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -415,6 +447,8 @@ class CompendiumService:
                 "path": resolution.path,
                 "project": resolution.project,
                 "alternatives": resolution.alternatives,
+                "method": resolution.method,
+                "confident": resolution.confident,
             },
             template=template,
             extraction=extraction_used,
@@ -502,12 +536,14 @@ class CompendiumService:
         requested: tuple[str, str, str],
         deadline: Deadline,
         timings: dict[str, int],
+        shared_budget: RequestBudget | None = None,
     ) -> WorldPart:
         """Part 1: match the chunks (with matcher=llm the model assigns them, D34), let the LLM choose sentences and
         write blocks as the switches ask (D33).
 
         ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
-        the first two run rule-based and nothing is enriched.
+        the first two run rule-based and nothing is enriched. ``shared_budget`` is the request's budget when the
+        article choice opened it already.
         """
         extraction_wanted, generation_wanted, enrichment_wanted = requested
         matcher_wanted = request.matcher or self.settings.matcher_default
@@ -518,7 +554,8 @@ class CompendiumService:
         extraction, generation = ("rule-based", "rule-based") if llm_note else (extraction_wanted, generation_wanted)
         enrichment = "sources-only" if generation == "rule-based" else enrichment_wanted
         llm = self.llm if wants_llm and llm_note is None else None
-        budget = llm.open_budget() if llm is not None else None  # one budget for all LLM work of the request
+        # one budget for all LLM work of the request
+        budget = (shared_budget or llm.open_budget()) if llm is not None else None
         matched = self.match(prepared, request.matcher, request.target_length, budget=budget, deadline=deadline)
         timings["match"] = matched.duration_ms
         lap = _Stopwatch(timings).lap

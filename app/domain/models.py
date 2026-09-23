@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 
 
 class SourceRole(StrEnum):
@@ -195,6 +195,14 @@ class Resolution(BaseModel):
     project: str | None = None
     alternatives: list[str] = Field(default_factory=list)
     disambiguation: bool = False
+    # title (exact or redirect), variant (inflected form, compound, aspect), disambiguation, suggestion, search,
+    # or llm (article_choice=llm decided an unsure resolution, D35)
+    method: str | None = None
+    confident: bool = Field(
+        False, description="False for guesses: title suggestions, full-text hits and meanings nothing spoke for"
+    )
+    # The meanings of the disambiguation page the rules weighed: what article_choice=llm chooses from; not in the API
+    _meanings: list[str] = PrivateAttr(default_factory=list)
 
     @property
     def resolved(self) -> bool:

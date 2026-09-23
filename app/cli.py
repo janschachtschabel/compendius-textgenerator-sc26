@@ -32,6 +32,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             knowledge_collection_id=args.knowledge_collection_id,
             template_id=args.template,
             matcher=args.matcher,
+            article_choice=args.article_choice,
             extraction=args.extraction,
             generation=args.generation,
             enrichment=args.enrichment,
@@ -142,6 +143,13 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
     gen.add_argument("--template", default=None)
     gen.add_argument("--matcher", default=None)
+    gen.add_argument(
+        "--article-choice",
+        default=None,
+        choices=["rule-based", "llm"],
+        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe LLM_ARTICLE_CHOICE_DEFAULT (llm braucht "
+        "LLM_ENABLED und B_API_KEY)",
+    )
     gen.add_argument(
         "--extraction",
         default=None,

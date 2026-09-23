@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.domain.requests import Enrichment, Extraction, Generation
+from app.domain.requests import ArticleChoice, Enrichment, Extraction, Generation
 
 Provider = Literal["openai", "academiccloud"]
 FacetsLevel = Literal["minimal", "full"]
@@ -132,6 +132,9 @@ class Settings(BaseSettings):
 
     # --- LLM (optional, via b-api) -------------------------------------------------------------
     llm_enabled: bool = Field(False, description="Enable b-api usage at all")
+    llm_article_choice_default: ArticleChoice = Field(
+        "rule-based", description="Default of the article_choice switch: llm lets the LLM decide unsure topics (D35)"
+    )
     llm_extraction_default: Extraction = Field("rule-based", description="Default of the extraction switch")
     llm_extraction_candidates: int = Field(
         8, ge=1, le=20, description="Paragraphs offered per block with extraction=llm (rule-based choice first)"

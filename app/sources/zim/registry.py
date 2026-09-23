@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import logging
-import re
-from collections.abc import Collection, Sequence
+from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -13,48 +12,34 @@ from app.knowledge.related import is_blacklisted, rank_related_candidates
 from app.knowledge.topic import topic_stem
 from app.sources.zim.active import read_active
 from app.sources.zim.archive import ZimArchive, ZimArticle
-from app.sources.zim.html import ParsedArticle
+from app.sources.zim.topic_rules import (
+    ASPECT_WORDS,
+    LEADING_ARTICLE,
+    compound_candidates,
+    context_score,
+    disambiguation_stems,
+    inflection_variants,
+    listed_meanings,
+    looks_like_work,
+    nominative,
+    opening,
+    pick_meaning,
+    rank_by_query,
+    split_genitive,
+)
 from app.templates.schema import TemplateSlot
 
 log = logging.getLogger(__name__)
 
 SEARCH_RESERVE = 3  # corpus slots kept for slot-targeted full-text hits
 RELATED_MIN_CHARS = 350
-
-
-def listed_meanings(article: ParsedArticle) -> list[str]:
-    """The links a disambiguation page offers as meanings - the ones that stand in its list.
-
-    Such a page opens with a sentence of its own, and the links in it are etymology, not meanings. They
-    stand in front of everything else, so with no context to score against they won: measured against the
-    real Wikipedia on 2026-09-21, the topic "Punkt" resolved to "Latein" and "Wende" to "Althochdeutsch",
-    and both were reported as alternative meanings as well.
-
-    Deciding this by searching the list *text* was measured and thrown out: it dropped 19 real meanings to
-    remove 3 etymology links, because the rendered label of a link is not its title - "Punktierung (Musik)"
-    reads as "Punktierung", "Bezirk Friedrichshain-Kreuzberg" as "Friedrichshain-Kreuzberg". Where a link
-    stands is not a guess, so the parser records it.
-
-    A page whose meanings are prose rather than a list keeps all its links: narrowing to nothing would lose
-    the topic altogether.
-    """
-    return list(article.list_links) or list(article.links)
-
-
-def context_score(context_words: Collection[str], title: str, text: str) -> int:
-    """How many of the caller's context words a candidate of a disambiguation page shows.
-
-    The title counts as much as the opening text, because that is where a German disambiguation page keeps
-    the distinction - "Rolle (Physik)", "Feld (Numismatik)" - while the body often never repeats it.
-    Measured against the real Wikipedia on 2026-09-21: the article behind "Rolle (Physik)" opens with "Eine
-    Rolle ist ein Maschinenelement" and does not contain the word Physik at all, so it scored zero and the
-    first link of the page won instead. Reading the title as well decided that case and left the other
-    seventeen checked topics exactly where they were.
-
-    ``context_words`` are expected in lower case; the candidate is not.
-    """
-    haystack = f"{title} {text[:1500]}".lower()
-    return sum(1 for word in context_words if word in haystack)
+# Meanings of a disambiguation page that are read; measured on 2026-09-23, the right one stood at place 12
+# ("Schleife") and 26 ("Fall" -> Kasus), and a cap of 12 hid them
+MAX_MEANINGS = 40
+CHOSEN_BY_LLM = "llm"  # resolution method when article_choice=llm decided (D35)
+# article_choice=llm (D35): gets the (title, opening) candidates of an unsure resolution and answers with the index
+# of one, or with a title of its own, or with neither
+ArticleChooser = Callable[[Sequence[tuple[str, str]]], tuple[int | None, str | None]]
 
 
 class ZimRegistry:
@@ -118,10 +103,114 @@ class ZimRegistry:
         return self.archives[0] if self.archives else None
 
     # -- topic resolution ------------------------------------------------------------------------
-    def resolve_topic(self, topic: str, context: Sequence[str] = (), query: str | None = None) -> Resolution:
+    def resolve_topic(
+        self,
+        topic: str,
+        context: Sequence[str] = (),
+        query: str | None = None,
+        terms: Sequence[str] = (),
+        chooser: ArticleChooser | None = None,
+    ) -> Resolution:
+        """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits.
+
+        ``terms`` are the words of the request's subject (``config/subjects.yaml``, ``kontext``); without them
+        the words of ``context`` count, school words like "Klasse" left out. They pick the meaning of a
+        disambiguation page, and they send an exact title that says nothing of the subject to the meanings of
+        its "(Begriffsklärung)" page ("Informatik: Baum"). The resolution records how the title was found and
+        whether that is a guess (``confident``), so a request can show the editor what to check.
+
+        A ``chooser`` (article_choice=llm, D35) decides a guess once more, from the candidates the rules weighed.
+        """
+        resolution = self._resolve_by_rules(topic, context, query, terms)
+        if chooser is not None and resolution.resolved and not resolution.confident:
+            self._let_choose(resolution, chooser)
+        return resolution
+
+    def _let_choose(self, resolution: Resolution, chooser: ArticleChooser) -> None:
+        """Let the chooser decide an unsure resolution; its answer replaces the rules' article when it is one.
+
+        The candidates are the meanings of the disambiguation page in their order, or else the rules' article
+        first, then the meanings its subject check read and the other suggestions and hits.
+        """
+        archive = next((a for a in self.archives if a.project == resolution.project), None)
+        if archive is None:
+            return
+        meanings = resolution._meanings
+        if resolution.method == "disambiguation" and meanings:
+            titles = meanings
+        else:
+            titles = [t for t in dict.fromkeys([resolution.title, *meanings, *resolution.alternatives]) if t]
+        candidates: list[tuple[str, str]] = []
+        articles: list[ZimArticle] = []
+        for title in titles:
+            article = archive.read(title)
+            if article is None:
+                continue
+            parsed = archive.parse(article)
+            if parsed.is_disambiguation or any(parsed.title == known for known, _ in candidates):
+                continue
+            candidates.append((parsed.title, opening(parsed.text)))
+            articles.append(article)
+        if not candidates:
+            return
+        index, named = chooser(candidates)
+        chosen, source = None, archive
+        if index is not None and 0 <= index < len(articles):
+            chosen = articles[index]
+        elif named and self.primary_archive is not None:
+            source = self.primary_archive
+            found = source.read(named)
+            chosen = found if found is not None and not source.parse(found).is_disambiguation else None
+        if chosen is None:
+            return
+        if chosen.title != resolution.title:
+            others = [t for t in resolution.alternatives if t != chosen.title]
+            resolution.alternatives = [t for t in [resolution.title, *others] if t][:8]
+        self._take(resolution, chosen, source, method=CHOSEN_BY_LLM, confident=False)
+
+    def _resolve_by_rules(
+        self, topic: str, context: Sequence[str], query: str | None, terms: Sequence[str]
+    ) -> Resolution:
         resolution = Resolution(query=query or topic, normalized=topic, context=list(context))
+        stems = disambiguation_stems(terms) if terms else disambiguation_stems(context)
+        if self._resolve_exact(topic, stems, resolution, method="title"):
+            return resolution
+        for variant in inflection_variants(topic):
+            if self._resolve_exact(variant, stems, resolution, method="variant"):
+                return resolution
+        genitive = split_genitive(topic)
+        if genitive is not None:
+            head, tail = genitive
+            if head.lower() in ASPECT_WORDS:
+                # "Ursachen der Französischen Revolution": the article is the revolution, a guess at the request
+                inner = self._resolve_by_rules(nominative(tail), context, query or topic, terms)
+                if inner.resolved:
+                    method = "variant" if inner.method == "title" else inner.method
+                    return inner.model_copy(update={"normalized": topic, "method": method, "confident": False})
+            elif self._resolve_compound(head, tail, resolution):
+                return resolution
+        lead = self.primary_archive
+        if lead is None:
+            return resolution
+        suggestions = [t for t in lead.suggest(topic, 10) if "(begriffsklärung)" not in t.lower()]
+        hits = lead.search(topic, 5)
+        exact = [t for t in suggestions if t.lower() == topic.lower()]
+        ranked = rank_by_query(topic, [*suggestions, *hits])
+        candidates = list(dict.fromkeys([*exact, *([ranked] if ranked else []), *suggestions, *hits]))
+        for title in candidates:
+            found = lead.read(title)
+            if found is None or lead.parse(found).is_disambiguation:
+                continue
+            resolution.alternatives = [t for t in candidates if t != title][:8]
+            method = "suggestion" if title in suggestions else "search"
+            self._take(resolution, found, lead, method=method, confident=False)
+            return resolution
+        return resolution
+
+    def _resolve_exact(self, title: str, stems: set[str], resolution: Resolution, *, method: str) -> bool:
+        """Resolve through an exact title (redirects followed) in the archives, leading archive first."""
         for archive in self.archives:
-            article = archive.read(topic)
+            article = archive.read(title)
             if article is None:
                 continue
             parsed = archive.parse(article)
@@ -129,52 +218,87 @@ class ZimRegistry:
                 resolution.disambiguation = True
                 meanings = listed_meanings(parsed)  # one list: what is offered is what is chosen from
                 resolution.alternatives = meanings[:8]
-                chosen = self._pick_from_disambiguation(archive, meanings, context)
+                resolution._meanings = meanings[:MAX_MEANINGS]
+                chosen, confident = self._pick_from_disambiguation(archive, meanings, stems)
                 if chosen is not None:
-                    resolution.title, resolution.path, resolution.project = chosen.title, chosen.path, archive.project
-                    return resolution
+                    self._take(resolution, chosen, archive, method="disambiguation", confident=confident)
+                    return True
                 continue
-            resolution.title, resolution.path, resolution.project = article.title, article.path, archive.project
-            return resolution
+            fits = not stems or context_score(stems, parsed.title, parsed.text) > 0
+            if not fits and self._meaning_for_subject(archive, parsed.title, stems, resolution):
+                return True
+            article_less = LEADING_ARTICLE.match(title)
+            if method == "title" and article_less and looks_like_work(parsed.text):
+                # "Die Französische Revolution" is a film; the topic without its article is the revolution
+                if self._resolve_exact(article_less.group(1), stems, resolution, method="title"):
+                    resolution.alternatives = [parsed.title, *resolution.alternatives][:8]
+                    return True
+            # An article that names nothing of the subject may still be right, but it is a guess ("Erdkunde: Delta")
+            self._take(resolution, article, archive, method=method, confident=fits)
+            return True
+        return False
 
+    def _meaning_for_subject(self, archive: ZimArchive, title: str, stems: set[str], resolution: Resolution) -> bool:
+        """A meaning of "<title> (Begriffsklärung)" that speaks for the subject, when the exact article does not."""
+        page = archive.read(f"{title} (Begriffsklärung)")
+        if page is None:
+            return False
+        parsed = archive.parse(page)
+        if not parsed.is_disambiguation:
+            return False
+        meanings = listed_meanings(parsed)
+        resolution._meanings = meanings[:MAX_MEANINGS]  # an article chooser weighs them against the exact title
+        chosen, confident = self._pick_from_disambiguation(archive, meanings, stems)
+        if chosen is None or not confident:
+            return False
+        resolution.disambiguation = True
+        resolution.alternatives = [title, *(m for m in meanings if m != chosen.title)][:8]
+        self._take(resolution, chosen, archive, method="disambiguation", confident=True)
+        return True
+
+    def _resolve_compound(self, head: str, tail: str, resolution: Resolution) -> bool:
+        """ "Kreislauf des Wassers" -> "Wasserkreislauf": the compound of a genitive phrase, when it is an article."""
         lead = self.primary_archive
         if lead is None:
-            return resolution
-        suggestions = [t for t in lead.suggest(topic, 10) if "(begriffsklärung)" not in t.lower()]
-        if suggestions:
-            exact = [t for t in suggestions if t.lower() == topic.lower()]
-            best = exact[0] if exact else suggestions[0]
-            resolution.alternatives = [t for t in suggestions if t != best][:8]
-            found = lead.read(best)
-            if found is not None and not lead.parse(found).is_disambiguation:
-                resolution.title, resolution.path, resolution.project = found.title, found.path, lead.project
-                return resolution
-        hits = lead.search(topic, 5)
-        if hits:
-            resolution.alternatives = hits[1:9]
-            found = lead.read(hits[0])
-            if found is not None and not lead.parse(found).is_disambiguation:
-                resolution.title, resolution.path, resolution.project = found.title, found.path, lead.project
-        return resolution
+            return False
+        for compound in compound_candidates(head, tail):
+            article = lead.read(compound)
+            if article is not None and not lead.parse(article).is_disambiguation:
+                self._take(resolution, article, lead, method="variant", confident=False)
+                return True
+        return False
 
     def _pick_from_disambiguation(
-        self, archive: ZimArchive, links: Sequence[str], context: Sequence[str]
-    ) -> ZimArticle | None:
-        context_words = {w.lower() for c in context for w in re.findall(r"\w{4,}", c)}
-        candidates: list[tuple[int, int, ZimArticle]] = []
-        for title in links[:12]:
+        self, archive: ZimArchive, links: Sequence[str], stems: set[str]
+    ) -> tuple[ZimArticle | None, bool]:
+        """The meaning the context speaks for (``pick_meaning``) and whether that is sure.
+
+        Without context the first real article of the list is taken, and that is a guess.
+        """
+        articles: list[ZimArticle] = []
+        meanings: list[tuple[str, str]] = []
+        for title in links[:MAX_MEANINGS]:
             article = archive.read(title)
             if article is None:
                 continue
             parsed = archive.parse(article)
             if parsed.is_disambiguation:
                 continue
-            score = context_score(context_words, parsed.title, parsed.text)
-            candidates.append((score, len(candidates), article))
-        if not candidates:
-            return None
-        candidates.sort(key=lambda item: (-item[0], item[1]))
-        return candidates[0][2]
+            if not stems:
+                return article, False
+            articles.append(article)
+            meanings.append((parsed.title, parsed.text))
+        if not articles:
+            return None, False
+        index, confident = pick_meaning(meanings, stems)
+        return articles[index], confident
+
+    @staticmethod
+    def _take(
+        resolution: Resolution, article: ZimArticle, archive: ZimArchive, *, method: str, confident: bool
+    ) -> None:
+        resolution.title, resolution.path, resolution.project = article.title, article.path, archive.project
+        resolution.method, resolution.confident = method, confident
 
     # -- corpus ------------------------------------------------------------------------------------
     def build_corpus(self, resolution: Resolution, slots: Sequence[TemplateSlot], max_articles: int) -> list[Source]:

@@ -261,7 +261,8 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 Standard ist der Regelmodus ohne LLM. Mit `LLM_ENABLED=true` und `B_API_KEY` lassen sich zwei Schritte von
 Teil 1 unabhängig voneinander an das LLM geben (D33): je Anfrage über `extraction` und `generation`, global
 über `LLM_EXTRACTION_DEFAULT` und `LLM_GENERATION_DEFAULT`. Ein dritter Schalter, `enrichment`, entscheidet,
-ob das schreibende Modell über die Quellen hinausgehen darf.
+ob das schreibende Modell über die Quellen hinausgehen darf. Vor Teil 1 kann das LLM außerdem über eine unsichere
+Artikelwahl entscheiden (`article_choice`, siehe unten).
 
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
@@ -293,6 +294,17 @@ LLM gilt die Standard-Strategie ganz, und der Vorspann nennt `matcher_requested:
 das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstandard am 2026-09-23: macro-F1 0,66
 statt 0,43, rund 240 Tokens je Absatz, im Median rund 39.000 je Kompendium. Große Themen stoßen an
 `LLM_MAX_TOKENS_PER_REQUEST`; für die übrigen Absätze entscheidet dann die Standard-Strategie.
+
+**Artikelwahl durch das LLM (`article_choice: llm`, D35).** Die Regeln lösen jedes Thema zuerst selbst auf und
+halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
+einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
+und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
+mit dem Anfang ihres Textes und wählt einen davon oder nennt den Titel eines Wikipedia-Artikels, der nur zählt,
+wenn das Archiv ihn als Artikel hat. Die Auflösung trägt dann `method: llm` und bleibt als unsicher markiert.
+Scheitert der Aufruf oder nennt die Antwort nichts Brauchbares, bleibt der Artikel der Regeln
+(`audit.llm.article_choice`). Gemessen an den drei Goldsätzen in `eval/artikelwahl` am 2026-09-23: 57 statt 55 von
+59, 23 statt 22 von 23 und 11 statt 9 von 12 Hauptartikeln richtig, rund 950 Tokens je Aufruf bei 18 von 94
+Anfragen, also im Mittel unter 200 Tokens je Anfrage.
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
@@ -457,6 +469,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
+| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` oder `llm` (das LLM entscheidet eine unsichere Artikelwahl, D35) |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |
