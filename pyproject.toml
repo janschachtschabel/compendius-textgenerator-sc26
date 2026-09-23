@@ -1,6 +1,6 @@
 [project]
 name = "compendious-text-fastapi"
-version = "2.0.0a0"
+version = "2.0.0"
 description = "Kompendium-API v2: kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten"
 authors = [{ name = "Jan Schachtschabel", email = "schachtschabel@edu-sharing.net" }]
 readme = "README.md"
