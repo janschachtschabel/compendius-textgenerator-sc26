@@ -88,7 +88,11 @@ COPY --chown=app:app config ./config
 USER app
 VOLUME ["/data/zim", "/data/state"]
 EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+# Anlaufzeit gemessen am 2026-09-23 (Docker Desktop, zwei Worker): 144 s bis "Application startup complete",
+# davon rund 100 s Modelle laden. 600 s lassen einem langsameren Host das Vierfache. Kosten hat der Wert nicht:
+# Gelingt eine Probe frueher, gilt der Container sofort als healthy; die Frist verschiebt nur das Urteil
+# unhealthy fuer einen Container, der nie hochkommt. Mit 30 s stand er nach jedem Start minutenlang auf unhealthy.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \
     CMD ["python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
 # API-Prozess (app/serve.py): legt PROMETHEUS_MULTIPROC_DIR an (Standard /tmp/prometheus), loescht darin nur die
 # Metrik-Dateien eines frueheren Laufs und uebergibt per exec an uvicorn, das so die Signale bekommt (sauberes
