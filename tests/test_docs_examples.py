@@ -9,18 +9,29 @@ from __future__ import annotations
 
 from typing import Any
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.settings import Settings
+from app.sources.wlo.client import EduSharingClient
+from app.sources.wlo.part import CollectionBuilder
+from tests.test_wlo_client import BASE, FakeRepository
 
 STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"]
 
 
 @pytest.fixture(scope="module")
 def client(settings: Settings) -> TestClient:
-    return TestClient(create_app(settings))
+    # The part 3 example names a collection of the staging repository, which the default settings point at. The fake
+    # answers for the same collection, so the example runs offline instead of opening a connection to staging.
+    app = create_app(settings)
+    repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+    builder = CollectionBuilder(client=repository, cache=None)
+    app.state.collections = builder
+    app.state.service.collections = builder
+    return TestClient(app)
 
 
 def documented_examples(spec: dict[str, Any], path: str) -> dict[str, Any]:
