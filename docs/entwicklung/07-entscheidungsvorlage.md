@@ -116,6 +116,9 @@ sucht dann den Artikel, um den sich der Korpus dreht.
   v2.0.0 noch, es ist die einzige Anfrage, die schlechter wurde.
 - Validierungs- und Testsatz sind nicht mehr unabhängig; unabhängig gemessen ist nur der erste Lauf des Testsatzes,
   7, 8 und 9 von 12.
+- Ein kleines lokales Entscheidungsmodell statt des LLM hilft nicht: laya-multilingual traf ohne Nachtraining 8 der
+  18 unsicheren Anfragen, weniger als die Regeln, und trennte die Volltexttreffer nicht besser als Zufall; auf der CPU
+  braucht es 1,7 GB und rund 0,5 s je Entscheidung (M16).
 
 ## Schritt 2: Korpus bauen
 

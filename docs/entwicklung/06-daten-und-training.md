@@ -4,12 +4,13 @@
 
 ## Ausgangslage
 
-Die lokalen Verfahren der Zuordnung kommen am Goldstandard auf macro-F1 0,43 bis 0,45, das LLM auf rund 0,7 (0,66
-bis 0,73 in vier Läufen, [Messprotokoll](05-messprotokoll.md), M5 und M12). Bei der Artikelwahl holt das LLM die
-Fälle, in denen die Regeln unsicher sind (M9, M10). Beides kostet je Anfrage Tokens und Zeit (M13). Ein lokal
-trainiertes Modell könnte einen Teil dieses Abstands schließen, ohne Tokens zur Laufzeit. Dafür braucht es Trainingsdaten, und die fehlen: Der Goldstandard hat 603
-Absätze aus zehn Themen. Eine logistische Regression darauf kam am 18.09.2026 bei Kreuzvalidierung über die Themen auf
-höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gegen die Idee.
+Die lokalen Verfahren der Zuordnung kommen am Goldstandard auf macro-F1 0,43 bis 0,45, das LLM auf rund 0,7 (0,66 bis
+0,73 in vier Läufen, [Messprotokoll](05-messprotokoll.md), M5 und M12). Bei der Artikelwahl holt das LLM die Fälle, in
+denen die Regeln unsicher sind (M9, M10). Beides kostet je Anfrage Tokens und Zeit (M13). Ein lokal trainiertes Modell
+könnte einen Teil dieses Abstands schließen, ohne Tokens zur Laufzeit. Dafür braucht es Trainingsdaten, und die
+fehlen: Der Goldstandard hat 603 Absätze aus zehn Themen. Eine logistische Regression darauf kam am 18.09.2026 bei
+Kreuzvalidierung über die Themen auf höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gegen
+die Idee.
 
 ## Woher Trainingsdaten kommen können
 
@@ -31,7 +32,9 @@ und Weitergabe unter gleichen Bedingungen).
   sie aus Protokoll oder Stapellauf erzeugen.
 - **Trainingspaket:** ein eigenes Repository, das die Exporte liest, ein kleines Modell trainiert und eine Modelldatei
   schreibt, die der Dienst als weitere Zuordnungsstrategie lädt. Naheliegend sind die vorhandenen Model2Vec-Vektoren
-  mit einem Klassifikator je Baustein, oder ein kleiner deutscher Encoder, feinjustiert. Die Strategie würde wie alle
+  mit einem Klassifikator je Baustein, oder ein kleiner deutscher Encoder, feinjustiert. Für Artikelwahl und
+  Trefferprüfung wäre laya ein Kandidat, ein Entscheidungsmodell auf mmBERT-Basis: ohne Nachtraining untauglich
+  (M16), nachtrainiert ungeprüft, auf der CPU 1,7 GB und rund 0,5 s je Entscheidung. Die Strategie würde wie alle
   anderen am Goldstandard gemessen, bevor sie Standard werden darf.
 
 ## Datenschutz und Lizenz

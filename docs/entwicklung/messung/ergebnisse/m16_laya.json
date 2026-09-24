@@ -1,0 +1,679 @@
+{
+ "modell": "convaiinnovations/laya-multilingual",
+ "paket": "0.3.20",
+ "geraet": "cpu",
+ "laden_s": 36.3,
+ "artikelwahl": [
+  {
+   "anfrage": "Geschichte: Wende",
+   "kandidaten": 32,
+   "akzeptiert": [
+    "Wende und friedliche Revolution in der DDR"
+   ],
+   "regeln": "Wende (Einheit)",
+   "regeln_richtig": false,
+   "laya": "Wende und friedliche Revolution in der DDR",
+   "laya_richtig": true,
+   "laya_sicherheit": 0.2588,
+   "laya_s": 0.581,
+   "laya_20": "Wende (Einheit)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Strom",
+   "kandidaten": 29,
+   "akzeptiert": [
+    "Elektrischer Strom"
+   ],
+   "regeln": "Elektrischer Strom",
+   "regeln_richtig": true,
+   "laya": "Strom (Ucker)",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.3266,
+   "laya_s": 0.429,
+   "laya_20": "Carl W. Strom",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Zelle",
+   "kandidaten": 33,
+   "akzeptiert": [
+    "Zelle (Biologie)"
+   ],
+   "regeln": "Zelle (Biologie)",
+   "regeln_richtig": true,
+   "laya": "Zellkomplex",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.224,
+   "laya_s": 0.49,
+   "laya_20": "Zell (Zellertal)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Lichtlehre",
+   "kandidaten": 2,
+   "akzeptiert": [
+    "Optik"
+   ],
+   "regeln": "Ernst Adalbert Voretzsch",
+   "regeln_richtig": false,
+   "laya": "Ernst Adalbert Voretzsch",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.0293,
+   "laya_s": 0.256,
+   "laya_20": "Ernst Adalbert Voretzsch",
+   "laya_20_richtig": false,
+   "gold_unter_20": false
+  },
+  {
+   "anfrage": "Gewaltenteilung in Deutschland",
+   "kandidaten": 5,
+   "akzeptiert": [
+    "Gewaltenteilung"
+   ],
+   "regeln": "Gewaltenteilung",
+   "regeln_richtig": true,
+   "laya": "Gewaltenteilung",
+   "laya_richtig": true,
+   "laya_sicherheit": 0.1647,
+   "laya_s": 0.427,
+   "laya_20": "Gewaltenteilung",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Photosynthese bei Pflanzen",
+   "kandidaten": 5,
+   "akzeptiert": [
+    "Photosynthese"
+   ],
+   "regeln": "Photosynthese",
+   "regeln_richtig": true,
+   "laya": "Photosynthese",
+   "laya_richtig": true,
+   "laya_sicherheit": 0.3738,
+   "laya_s": 0.514,
+   "laya_20": "Photosynthese",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Kreislauf des Wassers",
+   "kandidaten": 1,
+   "akzeptiert": [
+    "Wasserkreislauf"
+   ],
+   "regeln": "Wasserkreislauf",
+   "regeln_richtig": true,
+   "laya": "Wasserkreislauf",
+   "laya_richtig": true,
+   "laya_sicherheit": 1.0,
+   "laya_s": 0.178,
+   "laya_20": "Wasserkreislauf",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Musik: Satz",
+   "kandidaten": 17,
+   "akzeptiert": [
+    "Satz (Musikstück)",
+    "Satz (musikalische Formenlehre)",
+    "Tonsatz"
+   ],
+   "regeln": "Satz (Musikstück)",
+   "regeln_richtig": true,
+   "laya": "Satz (Einheit)",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.9523,
+   "laya_s": 0.464,
+   "laya_20": "Satz (Einheit)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Deutsch: Fall",
+   "kandidaten": 37,
+   "akzeptiert": [
+    "Kasus"
+   ],
+   "regeln": "Schlacht an der Sutjeska",
+   "regeln_richtig": false,
+   "laya": "The Fall",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.2812,
+   "laya_s": 0.408,
+   "laya_20": "Westfeldzug",
+   "laya_20_richtig": false,
+   "gold_unter_20": false
+  },
+  {
+   "anfrage": "Aufbau der Atome",
+   "kandidaten": 4,
+   "akzeptiert": [
+    "Atom"
+   ],
+   "regeln": "Atom",
+   "regeln_richtig": true,
+   "laya": "Benin",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.3359,
+   "laya_s": 0.336,
+   "laya_20": "Benin",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Ursachen der Französischen Revolution",
+   "kandidaten": 1,
+   "akzeptiert": [
+    "Französische Revolution"
+   ],
+   "regeln": "Französische Revolution",
+   "regeln_richtig": true,
+   "laya": "Französische Revolution",
+   "laya_richtig": true,
+   "laya_sicherheit": 1.0,
+   "laya_s": 0.182,
+   "laya_20": "Französische Revolution",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Kreislauf des Kohlenstoffs",
+   "kandidaten": 1,
+   "akzeptiert": [
+    "Kohlenstoffzyklus"
+   ],
+   "regeln": "Kohlenstoffzyklus",
+   "regeln_richtig": true,
+   "laya": "Kohlenstoffzyklus",
+   "laya_richtig": true,
+   "laya_sicherheit": 1.0,
+   "laya_s": 0.202,
+   "laya_20": "Kohlenstoffzyklus",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Physik: Spannung",
+   "kandidaten": 14,
+   "akzeptiert": [
+    "Elektrische Spannung",
+    "Spannung (Mechanik)",
+    "Mechanische Spannung"
+   ],
+   "regeln": "Elektrische Spannung",
+   "regeln_richtig": true,
+   "laya": "Elektrische Spannung",
+   "laya_richtig": true,
+   "laya_sicherheit": 0.1216,
+   "laya_s": 0.522,
+   "laya_20": "Elektrische Spannung",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Physik: Linse",
+   "kandidaten": 21,
+   "akzeptiert": [
+    "Linse (Optik)"
+   ],
+   "regeln": "Linse (Botanik)",
+   "regeln_richtig": false,
+   "laya": "Linse (Optik)",
+   "laya_richtig": true,
+   "laya_sicherheit": 0.5861,
+   "laya_s": 0.457,
+   "laya_20": "Linse (Optik)",
+   "laya_20_richtig": true,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Erdkunde: Delta",
+   "kandidaten": 39,
+   "akzeptiert": [
+    "Flussdelta"
+   ],
+   "regeln": "Delta",
+   "regeln_richtig": false,
+   "laya": "Delta Motor Group",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.1876,
+   "laya_s": 0.439,
+   "laya_20": "Delta",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Mathematik: Ableitung",
+   "kandidaten": 8,
+   "akzeptiert": [
+    "Differentialrechnung"
+   ],
+   "regeln": "Differentialrechnung",
+   "regeln_richtig": true,
+   "laya": "Derivation (Linguistik)",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.3457,
+   "laya_s": 0.539,
+   "laya_20": "Derivation (Linguistik)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Ursachen des Ersten Weltkriegs",
+   "kandidaten": 9,
+   "akzeptiert": [
+    "Erster Weltkrieg"
+   ],
+   "regeln": "Erster Weltkrieg",
+   "regeln_richtig": true,
+   "laya": "Kaukasusfront (Erster Weltkrieg)",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.1749,
+   "laya_s": 0.555,
+   "laya_20": "Kaukasusfront (Erster Weltkrieg)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  },
+  {
+   "anfrage": "Aufbau der Zelle",
+   "kandidaten": 33,
+   "akzeptiert": [
+    "Zelle (Biologie)"
+   ],
+   "regeln": "Zelle (Biologie)",
+   "regeln_richtig": true,
+   "laya": "Zelle (Odenthal)",
+   "laya_richtig": false,
+   "laya_sicherheit": 0.2408,
+   "laya_s": 0.518,
+   "laya_20": "Zelle (Odenthal)",
+   "laya_20_richtig": false,
+   "gold_unter_20": true
+  }
+ ],
+ "treffer": [
+  {
+   "thema": "Demokratie",
+   "titel": "Souverän",
+   "gold": 1,
+   "ja": 0.3112,
+   "note": "passt nicht",
+   "s": 0.559
+  },
+  {
+   "thema": "Demokratie",
+   "titel": "Staatsmodell",
+   "gold": 1,
+   "ja": 0.5795,
+   "note": "passt nicht",
+   "s": 0.52
+  },
+  {
+   "thema": "Demokratie",
+   "titel": "Rechtsstaat",
+   "gold": 2,
+   "ja": 0.4611,
+   "note": "passt nicht",
+   "s": 0.538
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Liberalismus",
+   "gold": 1,
+   "ja": 0.6918,
+   "note": "gehört zum Thema",
+   "s": 0.52
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Trente Glorieuses",
+   "gold": 0,
+   "ja": 0.9798,
+   "note": "gehört zum Thema",
+   "s": 0.578
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Revolutionskult",
+   "gold": 2,
+   "ja": 0.8703,
+   "note": "gehört zum Thema",
+   "s": 0.631
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Klimapolitik",
+   "gold": 2,
+   "ja": 0.6185,
+   "note": "passt nicht",
+   "s": 0.544
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Gerechtigkeit",
+   "gold": 0,
+   "ja": 0.0066,
+   "note": "passt nicht",
+   "s": 0.48
+  },
+  {
+   "thema": "Klimawandel",
+   "titel": "Lea Dohm",
+   "gold": 0,
+   "ja": 0.7729,
+   "note": "passt nicht",
+   "s": 0.548
+  },
+  {
+   "thema": "Optik",
+   "titel": "Schnittweite",
+   "gold": 2,
+   "ja": 0.234,
+   "note": "passt nicht",
+   "s": 0.561
+  },
+  {
+   "thema": "Optik",
+   "titel": "Superposition (Physik)",
+   "gold": 1,
+   "ja": 0.2433,
+   "note": "passt nicht",
+   "s": 0.535
+  },
+  {
+   "thema": "Optik",
+   "titel": "Geschichte der Physik",
+   "gold": 1,
+   "ja": 0.7969,
+   "note": "gehört zum Thema",
+   "s": 0.562
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Unterprogramm",
+   "gold": 2,
+   "ja": 0.9489,
+   "note": "verwandt",
+   "s": 0.536
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Syntax",
+   "gold": 1,
+   "ja": 0.9404,
+   "note": "verwandt",
+   "s": 0.505
+  },
+  {
+   "thema": "Programmiersprache",
+   "titel": "Selbstübersetzung (Compiler)",
+   "gold": 1,
+   "ja": 0.9581,
+   "note": "passt nicht",
+   "s": 0.54
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "Sonatensatzform",
+   "gold": 2,
+   "ja": 0.7729,
+   "note": "passt nicht",
+   "s": 0.463
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "Franz Schubert",
+   "gold": 1,
+   "ja": 0.5843,
+   "note": "passt nicht",
+   "s": 0.466
+  },
+  {
+   "thema": "Sinfonie",
+   "titel": "7. Sinfonie (Bruckner)",
+   "gold": 1,
+   "ja": 0.7933,
+   "note": "verwandt",
+   "s": 0.563
+  },
+  {
+   "thema": "Plattentektonik",
+   "titel": "Tiefseerinne",
+   "gold": 2,
+   "ja": 0.2826,
+   "note": "passt nicht",
+   "s": 0.593
+  },
+  {
+   "thema": "Plattentektonik",
+   "titel": "Pangaea",
+   "gold": 2,
+   "ja": 0.7014,
+   "note": "passt nicht",
+   "s": 0.539
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Ökologisches Gleichgewicht",
+   "gold": 2,
+   "ja": 0.932,
+   "note": "gehört zum Thema",
+   "s": 0.501
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Naturvolk",
+   "gold": 0,
+   "ja": 0.1557,
+   "note": "passt nicht",
+   "s": 0.479
+  },
+  {
+   "thema": "Ökosystem",
+   "titel": "Organizismus",
+   "gold": 0,
+   "ja": 0.3784,
+   "note": "passt nicht",
+   "s": 0.474
+  },
+  {
+   "thema": "Atommodell",
+   "titel": "Zeittafel physikalischer Entdeckungen",
+   "gold": 0,
+   "ja": 0.8832,
+   "note": "passt nicht",
+   "s": 0.565
+  },
+  {
+   "thema": "Atommodell",
+   "titel": "Kernwaffe",
+   "gold": 0,
+   "ja": 0.9524,
+   "note": "passt nicht",
+   "s": 0.606
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Soziokulturelle Evolution",
+   "gold": 0,
+   "ja": 0.6012,
+   "note": "passt nicht",
+   "s": 0.536
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Proletariat",
+   "gold": 1,
+   "ja": 0.1036,
+   "note": "passt nicht",
+   "s": 0.465
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "titel": "Hochindustrialisierung in Deutschland",
+   "gold": 2,
+   "ja": 0.1861,
+   "note": "passt nicht",
+   "s": 0.477
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Stromfluss",
+   "gold": 2,
+   "ja": 0.8548,
+   "note": "passt nicht",
+   "s": 0.52
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Elektrische Spannung",
+   "gold": 2,
+   "ja": 0.9161,
+   "note": "passt nicht",
+   "s": 0.458
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "titel": "Bidirektionales Laden",
+   "gold": 1,
+   "ja": 0.5555,
+   "note": "passt nicht",
+   "s": 0.463
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "titel": "Infiltration (Hydrogeologie)",
+   "gold": 2,
+   "ja": 0.47,
+   "note": "passt nicht",
+   "s": 0.457
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "titel": "Tracer (Geowissenschaften)",
+   "gold": 1,
+   "ja": 0.3157,
+   "note": "verwandt",
+   "s": 0.47
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Territorialstaat",
+   "gold": 0,
+   "ja": 0.1133,
+   "note": "verwandt",
+   "s": 0.509
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Ruralisierung",
+   "gold": 1,
+   "ja": 0.2529,
+   "note": "passt nicht",
+   "s": 0.532
+  },
+  {
+   "thema": "Römisches Reich",
+   "titel": "Privatrecht",
+   "gold": 0,
+   "ja": 0.6051,
+   "note": "gehört zum Thema",
+   "s": 0.571
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Differenzierbarkeit",
+   "gold": 0,
+   "ja": 0.9024,
+   "note": "passt nicht",
+   "s": 0.61
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Markow-Operator",
+   "gold": 0,
+   "ja": 0.9025,
+   "note": "passt nicht",
+   "s": 0.51
+  },
+  {
+   "thema": "Lineare Funktion",
+   "titel": "Probit-Modell",
+   "gold": 0,
+   "ja": 0.9371,
+   "note": "passt nicht",
+   "s": 0.497
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Organell",
+   "gold": 2,
+   "ja": 0.9191,
+   "note": "passt nicht",
+   "s": 0.541
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Evolutionsfaktor",
+   "gold": 0,
+   "ja": 0.6784,
+   "note": "passt nicht",
+   "s": 0.551
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "titel": "Hermaphroditismus",
+   "gold": 0,
+   "ja": 0.7652,
+   "note": "passt nicht",
+   "s": 0.587
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Ballade (Gedicht)",
+   "gold": 2,
+   "ja": 0.5967,
+   "note": "passt nicht",
+   "s": 0.492
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Der siebente Ring",
+   "gold": 1,
+   "ja": 0.9381,
+   "note": "passt nicht",
+   "s": 0.46
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Mein fremder Alltag",
+   "gold": 1,
+   "ja": 0.7914,
+   "note": "passt nicht",
+   "s": 0.46
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Das Eleusische Fest",
+   "gold": 1,
+   "ja": 0.168,
+   "note": "passt nicht",
+   "s": 0.468
+  },
+  {
+   "thema": "Gedicht",
+   "titel": "Cheryl Chapman",
+   "gold": 0,
+   "ja": 0.2493,
+   "note": "gehört zum Thema",
+   "s": 0.441
+  }
+ ],
+ "treffer_stapel_s": 21.39
+}

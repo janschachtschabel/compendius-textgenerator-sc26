@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M15
+# Ergebnisse der Messungen M1 bis M16
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. und 24.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -29,6 +29,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M13 | Was kosten die LLM-Schalter an Zeit? | `article_choice=llm` im Median 1,7 s und 927 Tokens mehr; `matcher=llm` Teil 1 im Median 12,0 statt 1,2 s, im Mittel 29.400 Tokens | `m13_laufzeit.txt` | `m13_zeit_alt.json`, `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json`, `m13_zeit_zuordnung.json` |
 | M14 | Fällt mit D39 noch ein Absatz am Budget zurück? | 0 statt 151 von 1.005 (altes Verfahren nachgerechnet, trifft M13 genau); im Mittel 34.500 Tokens je Kompendium; Teil 1 im Median 22,7 s bei langsamerer b-api, Themen ab fünf Stapeln mit zweiter Runde | `m14_zuordnung_budget.txt` | `m14_zeit_zuordnung.json`, `m14_budget_nachrechnung.json` |
 | M15 | Wo unterscheiden sich die lokalen Strategien? | nur in Bildung, Regularien und Beruf & Wirtschaft (21 Gold-Absätze); in den großen Bausteinen höchstens 0,04 auseinander; das LLM hebt fast jeden Baustein | `m15_bausteine_lokal.txt` | `m15_bausteine_lokal.json` |
+| M16 | Taugt das kleine Entscheidungsmodell laya-multilingual für Artikelwahl oder Trefferprüfung? | nein: Artikelwahl 8 von 18 unsicheren Anfragen (Regeln 13, LLM 18), Trefferprüfung auf Zufallsniveau (AUC 0,51); läuft auf der CPU mit 1,7 GB und rund 0,5 s je Entscheidung | – | `m16_laya.json`, `m16_laya_englisch.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

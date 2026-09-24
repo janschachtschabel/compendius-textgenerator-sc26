@@ -542,17 +542,17 @@ Audit von M13.
 | `matcher=llm` vor D39 (M13, andere Themen) | 11,97 s | 10,83 s | 13,36 s | 194 von 1.053 | 146.848 |
 | `matcher=llm` mit D39 (M14) | 22,71 s | 22,22 s | 25,36 s | 0 von 1.005 | 172.440 |
 
-Kein Absatz fiel zurück; ohne Warten wären es 151 gewesen (15 %). Das LLM brauchte 22 Aufrufe und 172 Tokens je
-Absatz (M13: 171), ein Kompendium im Mittel 34.500 Tokens, das größte 45.915. Die Zeit ist aus zwei Gründen länger.
-Die b-api antwortete langsamer als bei M13: Themen mit drei Stapeln, deren Reservierungen zusammen in 60.000 passen
-und die deshalb nie warten, brauchten 15,1 und 16,9 s für die Zuordnung, in M13 10,8 und 11,7 s. Und Themen ab fünf
-Stapeln brauchen eine zweite Runde: Vier Stapel zu je rund 13.000 Tokens passen in 60.000, jeder weitere startet
-erst, wenn laufende abgerechnet haben. Sie brauchten 22,2 bis 25,1 s für die Zuordnung. Ein Budget, das alle Stapel zugleich hält (sechs volle Stapel reservieren rund 80.000),
-spart die zweite Runde, ohne den Verbrauch zu ändern; gemessen ist das nicht. Auch `hybrid_light` lief langsamer als
-in M13 (0,51 statt 0,27 s für die Zuordnung). Wo der Verbrauch selbst an die Grenze kommt, fällt weiter zurück, was
-nicht mehr hineinpasst: gerechnet ab rund 320 Absätzen, wenn der letzte Stapel seine Reservierung nicht mehr neben
-dem Verbrauch der übrigen unterbringt. Rohdaten: `m14_zeit_zuordnung.json`, `m14_budget_nachrechnung.json`;
-Zusammenfassung: `m14_zuordnung_budget.txt`.
+Kein Absatz fiel zurück; ohne Warten wären es 151 gewesen (15 %). Das LLM brauchte 22 Aufrufe und 172 Tokens je Absatz
+(M13: 171), ein Kompendium im Mittel 34.500 Tokens, das größte 45.915. Die Zeit ist aus zwei Gründen länger. Die b-api
+antwortete langsamer als bei M13: Themen mit drei Stapeln, deren Reservierungen zusammen in 60.000 passen und die
+deshalb nie warten, brauchten 15,1 und 16,9 s für die Zuordnung, in M13 10,8 und 11,7 s. Und Themen ab fünf Stapeln
+brauchen eine zweite Runde: Vier Stapel zu je rund 13.000 Tokens passen in 60.000, jeder weitere startet erst, wenn
+laufende abgerechnet haben. Sie brauchten 22,2 bis 25,1 s für die Zuordnung. Ein Budget, das alle Stapel zugleich hält
+(sechs volle Stapel reservieren rund 80.000), spart die zweite Runde, ohne den Verbrauch zu ändern; gemessen ist das
+nicht. Auch `hybrid_light` lief langsamer als in M13 (0,51 statt 0,27 s für die Zuordnung). Wo der Verbrauch selbst an
+die Grenze kommt, fällt weiter zurück, was nicht mehr hineinpasst: gerechnet ab rund 320 Absätzen, wenn der letzte
+Stapel seine Reservierung nicht mehr neben dem Verbrauch der übrigen unterbringt. Rohdaten: `m14_zeit_zuordnung.json`,
+`m14_budget_nachrechnung.json`; Zusammenfassung: `m14_zuordnung_budget.txt`.
 
 ## M15 F1 je Baustein aller lokalen Strategien (24.09.2026)
 
@@ -580,3 +580,46 @@ zusammen 21 Gold-Absätze. Dort liegt der ganze Abstand von 0,35 auf 0,43; in de
 höchstens 0,04 auseinander, bei Gesellschaftlichem Kontext und Praxis liegt das Lexikon allein leicht vorn. Im vollen
 Pool: 0,350, 0,370, 0,422 und 0,448. Rohdaten: `m15_bausteine_lokal.json`; Zusammenfassung: `m15_bausteine_lokal.txt`.
 Die Grafiken der Entscheidungsvorlage erzeugt `mc_grafiken.py` aus diesen und den übrigen Rohdaten.
+
+## M16 laya-multilingual für Artikelwahl und Trefferprüfung (24.09.2026)
+
+**Aufbau:** laya ist ein kleines Entscheidungsmodell ohne Textgenerierung (GitHub NandhaKishorM/laya, Paket `laya`
+0.3.20 von PyPI, Apache 2.0): Es beantwortet typisierte Fragen (Auswahl, Ja/Nein, Skala) in einem Durchlauf. Getestet
+wurde `convaiinnovations/laya-multilingual` (mmBERT-base, 322 Mio. Parameter, 644 MB) ohne Nachtraining auf der CPU des
+Entwicklungsrechners, in der venv der Testapp (torch 2.14 CPU, transformers 5.17). `mc_laya_export.py` legt die
+Entscheidungen so an, wie der Dienst sie dem LLM stellt: für die 18 unsicheren Anfragen der drei Goldsätze dieselben
+Kandidaten mit Textanfang (291 zusammen, 1 bis 39 je Anfrage), für die 47 Volltexttreffer aus M10 Titel, Textanfang und
+den Hauptartikel des Themas. `mc_laya.py` stellt die Artikelwahl als Auswahlfrage und die Trefferprüfung als
+Ja/Nein-Frage und als Dreiwahl (gehört, verwandt, passt nicht). Keine Tokens.
+
+| Artikelwahl, 18 unsichere Anfragen | richtig | ohne die 3 mit nur einem Kandidaten |
+|---|---|---|
+| Regeln | 13 | 10 von 15 |
+| laya, deutsche Anweisung | 8 | 5 von 15 |
+| laya, englische Anweisung | 8 | 5 von 15 |
+| LLM (`article_choice=llm`, M9) | 18 | 15 von 15 |
+
+laya wählte etwa *Strom (Ucker)* für „Strom“, *The Fall* für „Deutsch: Fall“, *Benin* für „Aufbau der Atome“ und
+*Delta Motor Group* für „Erdkunde: Delta“. Auf höchstens 20 Kandidaten begrenzt, wie das Modellblatt rät: 7 richtig.
+
+| Trefferprüfung, 47 Treffer | verworfen: gehört (15), verwandt (16), passt nicht (16) | AUC gehört gegen passt nicht |
+|---|---|---|
+| laya ja/nein unter 0,5, deutsche Anweisung | 5, 6, 5 | 0,51 |
+| laya ja/nein unter 0,5, englische Anweisung | 8, 8, 10 | 0,47 |
+| laya Dreiwahl „passt nicht“ | 12, 11, 12 | – |
+| LLM mit dem ganzen Korpus (M10) | 0, 0, 11 | – |
+
+Die Wahrscheinlichkeit für „ja“ trennt nicht: Unpassende Treffer bekommen im Median 0,72, passende 0,70. Keine
+Schwelle verwirft mehr als einen unpassenden Treffer, ohne einen passenden zu verlieren.
+
+**Auf der CPU** läuft es: Laden 22 bis 61 s aus dem Plattencache (beim ersten Mal 121 s samt Download),
+Arbeitsspeicher 1,7 GB, beim Laden kurz 2,3 GB. Eine Entscheidung dauert 0,2 s bei kurzem Text und rund 0,5 s bei den
+Entscheidungen hier, die 47 Treffer im Stapel 21 s. Die Trefferprüfung eines Themas mit rund 12 Artikeln bräuchte so
+rund 6 s; das LLM braucht im Median 1,4 s für alle Artikel in einem Aufruf.
+
+**Ergebnis:** Ohne Nachtraining taugt laya-multilingual für keine der beiden Entscheidungen. Es liegt bei der
+Artikelwahl unter den Regeln und bei der Trefferprüfung auf Zufallsniveau. Das Modellblatt nennt für die eigene
+Aufgabensammlung 0,352 ohne und 0,766 mit Feinabstimmung (laya-typed-decisions). Ein nachtrainiertes laya käme als
+Schüler eines Destillationsversuchs in Frage (06-daten-und-training.md), bräuchte aber 1,7 GB je Worker und mehr Zeit
+als das LLM. Nicht übernommen. Rohdaten: `m16_laya.json`, `m16_laya_englisch.json`; die Textanfänge der Kandidaten
+bleiben außerhalb des Repositorys.

@@ -1,0 +1,320 @@
+{
+ "artikelwahl": [
+  {
+   "anfrage": "Geschichte: Wende",
+   "kandidaten": 32,
+   "laya_richtig": false,
+   "regeln_richtig": false,
+   "laya": "Wendeschleife"
+  },
+  {
+   "anfrage": "Strom",
+   "kandidaten": 29,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Strom (Ucker)"
+  },
+  {
+   "anfrage": "Zelle",
+   "kandidaten": 33,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Zell (Zellertal)"
+  },
+  {
+   "anfrage": "Lichtlehre",
+   "kandidaten": 2,
+   "laya_richtig": false,
+   "regeln_richtig": false,
+   "laya": "Hesychasmus"
+  },
+  {
+   "anfrage": "Gewaltenteilung in Deutschland",
+   "kandidaten": 5,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Gewaltenteilung"
+  },
+  {
+   "anfrage": "Photosynthese bei Pflanzen",
+   "kandidaten": 5,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Photosynthese"
+  },
+  {
+   "anfrage": "Kreislauf des Wassers",
+   "kandidaten": 1,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Wasserkreislauf"
+  },
+  {
+   "anfrage": "Musik: Satz",
+   "kandidaten": 17,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Satz (Einheit)"
+  },
+  {
+   "anfrage": "Deutsch: Fall",
+   "kandidaten": 37,
+   "laya_richtig": false,
+   "regeln_richtig": false,
+   "laya": "Fall Braun"
+  },
+  {
+   "anfrage": "Aufbau der Atome",
+   "kandidaten": 4,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Atomè"
+  },
+  {
+   "anfrage": "Ursachen der Französischen Revolution",
+   "kandidaten": 1,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Französische Revolution"
+  },
+  {
+   "anfrage": "Kreislauf des Kohlenstoffs",
+   "kandidaten": 1,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Kohlenstoffzyklus"
+  },
+  {
+   "anfrage": "Physik: Spannung",
+   "kandidaten": 14,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Magnetische Spannung"
+  },
+  {
+   "anfrage": "Physik: Linse",
+   "kandidaten": 21,
+   "laya_richtig": true,
+   "regeln_richtig": false,
+   "laya": "Linse (Optik)"
+  },
+  {
+   "anfrage": "Erdkunde: Delta",
+   "kandidaten": 39,
+   "laya_richtig": false,
+   "regeln_richtig": false,
+   "laya": "Delta Verlag"
+  },
+  {
+   "anfrage": "Mathematik: Ableitung",
+   "kandidaten": 8,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Differentialrechnung"
+  },
+  {
+   "anfrage": "Ursachen des Ersten Weltkriegs",
+   "kandidaten": 9,
+   "laya_richtig": true,
+   "regeln_richtig": true,
+   "laya": "Erster Weltkrieg"
+  },
+  {
+   "anfrage": "Aufbau der Zelle",
+   "kandidaten": 33,
+   "laya_richtig": false,
+   "regeln_richtig": true,
+   "laya": "Zellkomplex"
+  }
+ ],
+ "treffer": [
+  {
+   "gold": 1,
+   "ja": 0.1043
+  },
+  {
+   "gold": 1,
+   "ja": 0.4601
+  },
+  {
+   "gold": 2,
+   "ja": 0.0855
+  },
+  {
+   "gold": 1,
+   "ja": 0.6497
+  },
+  {
+   "gold": 0,
+   "ja": 0.955
+  },
+  {
+   "gold": 2,
+   "ja": 0.8068
+  },
+  {
+   "gold": 2,
+   "ja": 0.6407
+  },
+  {
+   "gold": 0,
+   "ja": 0.0078
+  },
+  {
+   "gold": 0,
+   "ja": 0.7594
+  },
+  {
+   "gold": 2,
+   "ja": 0.0731
+  },
+  {
+   "gold": 1,
+   "ja": 0.0737
+  },
+  {
+   "gold": 1,
+   "ja": 0.7211
+  },
+  {
+   "gold": 2,
+   "ja": 0.9663
+  },
+  {
+   "gold": 1,
+   "ja": 0.9324
+  },
+  {
+   "gold": 1,
+   "ja": 0.809
+  },
+  {
+   "gold": 2,
+   "ja": 0.816
+  },
+  {
+   "gold": 1,
+   "ja": 0.6912
+  },
+  {
+   "gold": 1,
+   "ja": 0.7763
+  },
+  {
+   "gold": 2,
+   "ja": 0.0098
+  },
+  {
+   "gold": 2,
+   "ja": 0.0856
+  },
+  {
+   "gold": 2,
+   "ja": 0.9244
+  },
+  {
+   "gold": 0,
+   "ja": 0.029
+  },
+  {
+   "gold": 0,
+   "ja": 0.2084
+  },
+  {
+   "gold": 0,
+   "ja": 0.7413
+  },
+  {
+   "gold": 0,
+   "ja": 0.4841
+  },
+  {
+   "gold": 0,
+   "ja": 0.3049
+  },
+  {
+   "gold": 1,
+   "ja": 0.0384
+  },
+  {
+   "gold": 2,
+   "ja": 0.1198
+  },
+  {
+   "gold": 2,
+   "ja": 0.201
+  },
+  {
+   "gold": 2,
+   "ja": 0.4628
+  },
+  {
+   "gold": 1,
+   "ja": 0.1776
+  },
+  {
+   "gold": 2,
+   "ja": 0.1678
+  },
+  {
+   "gold": 1,
+   "ja": 0.3223
+  },
+  {
+   "gold": 0,
+   "ja": 0.391
+  },
+  {
+   "gold": 1,
+   "ja": 0.2641
+  },
+  {
+   "gold": 0,
+   "ja": 0.3068
+  },
+  {
+   "gold": 0,
+   "ja": 0.9269
+  },
+  {
+   "gold": 0,
+   "ja": 0.7252
+  },
+  {
+   "gold": 0,
+   "ja": 0.8216
+  },
+  {
+   "gold": 2,
+   "ja": 0.8806
+  },
+  {
+   "gold": 0,
+   "ja": 0.2524
+  },
+  {
+   "gold": 0,
+   "ja": 0.4436
+  },
+  {
+   "gold": 2,
+   "ja": 0.5637
+  },
+  {
+   "gold": 1,
+   "ja": 0.8546
+  },
+  {
+   "gold": 1,
+   "ja": 0.5172
+  },
+  {
+   "gold": 1,
+   "ja": 0.4834
+  },
+  {
+   "gold": 0,
+   "ja": 0.3255
+  }
+ ]
+}
