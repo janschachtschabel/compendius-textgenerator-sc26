@@ -1511,6 +1511,17 @@ API.
   Zufall (M16). Die Werte stehen in der Entwicklungsdoku nur zum Vergleich. Wiedervorlage erst mit einem Modell, das
   auf unsere Entscheidungen nachtrainiert ist und am selben Gold mindestens die Regeln schlägt; auch dann kostet es
   1,7 GB je Worker und rund 0,5 s je Entscheidung.
+- **D43 (2026-09-24)** `POST /api/v2/entities` nennt zu jedem verknüpften Wikipedia-Artikel seine Kennungen, nur aus
+  lokalen Daten, ohne Live-Abfrage: GND, Art des Datensatzes und VIAF aus dem Normdaten-Block, den der Kiwix-Dump
+  behält (M18: 503 von 679 Artikeln, 30 von 30 geprüften Nummern passend); die Wikidata-Nummer aus einem SQLite-Index
+  (`STATE_DIR/wikidata.db`), den `compendium wikidata build` aus den Dewiki-Dumps `page_props` und `page` baut
+  (3,1 Mio. Artikel, 106 MB, rund 8 Minuten; 670 von 679); die DBpedia-URI aus dem Titel, als konstruiert
+  beschrieben. Alles zusammen unter `same_as` als URIs. Ohne Index fehlt nur die Wikidata-Nummer, `/health` meldet
+  ihn unter `entities.wikidata`. Verworfen: Live-Abfragen (lobid-gnd, Entity Facts, Wikidata-API; widersprechen
+  dem Betrieb ohne Netz), `wikimapper` (seit 2023 ohne Release, eigener Import sind rund 150 Zeilen),
+  `spacy-entity-linker` (englischlastige Wissensbasis, 1,3 GB) und eine GND-Erkennung direkt aus den DNB-Dumps
+  (Personen über den Namen nicht sicher; erst mit eigenem Gold). Offen: Artikel, die seit dem ZIM umbenannt
+  wurden (9 von 679), bräuchten die Tabelle `redirect` als dritten Dump.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

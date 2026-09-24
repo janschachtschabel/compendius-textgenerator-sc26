@@ -27,7 +27,7 @@ geschrieben.
 | M15 lokale Strategien je Baustein | `mc_varianten.py <out.json> lexicon_only=-:lexicon_only bm25=-:bm25 char_tfidf=-:char_tfidf hybrid_light=-:hybrid_light` | venv dieses Projekts | keins |
 | M16 laya-multilingual | `mc_laya_export.py <ergebnisse-ordner> <export.json> <gold.yaml>…` in der venv dieses Projekts, dann `mc_laya.py <export.json> <out.json>` in der venv der Testapp mit dem Paket `laya` 0.3.20 auf `PYTHONPATH` | beide; das Modell `convaiinnovations/laya-multilingual` (678 MB) von Hugging Face | keins |
 | M17 alter Weg über Begriffe vom LLM | `mc_alte_artikelwahl.py <out.json> <token-grenze> [gpt-4.1-mini]` aus dem Projektordner (der Dienst liest `config/` relativ dazu; ohne die Fachwörter kommen die Regeln auf 79 statt 86) | venv dieses Projekts | der Prompt des alten Dienstes wortgleich; ohne Modellangabe `gpt-5.6-luna`, mit `gpt-4.1-mini` wie im alten Dienst bei Temperatur 0,7; rund 1.300 bis 1.500 Tokens je Anfrage |
-| M18 GND aus dem Archiv | `mc_entitaeten_gnd.py <out.json> [--lobid <n> <stichprobe.json>]` aus dem Projektordner | venv dieses Projekts | keins; `--lobid` fragt lobid-gnd mit nichts als den GND-Nummern, eine Anfrage je Sekunde |
+| M18 Kennungen der Entitäten | `mc_entitaeten_gnd.py <out.json> [--wikidata <wikidata.db>] [--gegen <stichprobe.json>] [--lobid <n> <stichprobe.json>]` aus dem Projektordner; den Index vorher mit `compendium wikidata build` | venv dieses Projekts | keins; `--lobid` fragt lobid-gnd mit nichts als den GND-Nummern, eine Anfrage je Sekunde |
 | Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 | Grafiken der Entscheidungsvorlage | `mc_grafiken.py <ergebnisse-ordner> <bilder-ordner>`, Ziel `docs/entwicklung/bilder` | venv dieses Projekts (liest das Gold aus `eval/artikelwahl`) | keins; reines SVG ohne Bibliothek |
 
@@ -106,7 +106,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m15_bausteine_lokal.json` | M15, die vier lokalen Strategien in beiden Pools: Kennzahlen und F1 je Baustein |
 | `ergebnisse/m16_laya.json`, `m16_laya_englisch.json` | M16, je unsichere Anfrage die Wahl von laya und der Regeln, je Volltexttreffer Goldnote, Ja-Wahrscheinlichkeit und Dreiwahl, dazu die Zeiten; ohne Artikeltext |
 | `ergebnisse/m17_alte_artikelwahl_gpt41mini.json`, `m17_alte_artikelwahl.json` | M17, je Anfrage die Begriffe des alten Wegs mit Artikel, Weg des Nachschlagens, Begriffsklärung und GND, dazu Tokens, Sekunden und der Hauptartikel der Regeln; ohne Artikeltext |
-| `ergebnisse/m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json` | M18, je Thema die verknüpften Entitäten mit Art, Normdaten-Art, GND und VIAF; die Stichprobe mit dem Namen des GND-Datensatzes bei lobid-gnd |
+| `ergebnisse/m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json` | M18, je Thema die verknüpften Entitäten mit Art und den Kennungen des Endpunkts (GND, Normdaten-Art, VIAF, Wikidata); die Stichprobe mit Name und Wikidata-Verknüpfung des GND-Datensatzes bei lobid-gnd |
 | `ergebnisse/m15_bausteine_lokal.txt` | M15 lesbar: Kennzahlen je Strategie, F1 je Baustein neben den LLM-Läufen aus M12 |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |

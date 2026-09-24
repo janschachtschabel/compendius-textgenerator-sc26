@@ -712,5 +712,22 @@ Verknüpfung selbst: Drei von vier verknüpften Wikipedia-Artikeln tragen sie. N
 Wikipedia-Artikel und falsche Verknüpfungen. Wikidata-Nummern gibt der Dump nicht her; dafür bräuchte es einen Index
 aus den Wikipedia-Tabellen `page_props` (105 MB) und `page` (320 MB) oder den Entity-Facts-Abzug der DNB (1,3 GB, nur
 Personen, Familien, Körperschaften, Konferenzen und Geografika). Beim alten Weg aus M17 trugen 67 bis 74 % der
-gefundenen Artikel eine GND. Rohdaten: `m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json`; nur Begriffe, Titel und
-Nummern.
+gefundenen Artikel eine GND.
+
+**Nachtrag, eingebaut (D43):** Der Endpunkt liefert GND, VIAF und die aus dem Titel gebildete DBpedia-URI, die
+Wikidata-Nummer kommt aus einem lokalen Index. `compendium wikidata build` baute ihn aus `page_props` (105 MB) und
+`page` (320 MB) vom 07.09.2026 in 504 s auf dem Entwicklungsrechner: 3.145.893 Artikel, 106 MB. Dieselben 20 Texte,
+jetzt mit der Funktion des Endpunkts gezählt:
+
+| 679 verknüpfte Wikipedia-Artikel | Anzahl |
+|---|---|
+| mit GND-Nummer | 503 (74 %), wie oben |
+| mit Wikidata-Nummer | 670 (98,7 %), darunter alle 503 mit GND |
+| ohne Wikidata-Nummer | 9, etwa *Gedicht*, *Nenner*, *Abszisse*: im Dump vom September Weiterleitungen, seit dem ZIM vom Januar umbenannt |
+| Verknüpfen je Text, Median | 137 ms ohne, 183 ms mit Index (warm, im Mittel 47 Begriffe je Text) |
+
+Gegenprobe ohne Netz: Für die 30 Stichprobennummern nennt lobid-gnd eine Wikidata-Verknüpfung; 29 stimmen mit dem
+Index überein. Die eine Abweichung ist keine: Der Artikel *England* ist das Land (Q21), der GND-Datensatz „England“
+ist in Wikidata mit dem historischen Königreich verknüpft (Q179876). Die neun Umbenannten ließen sich mit der Tabelle
+`redirect` als drittem Dump auflösen. Rohdaten: `m18_entitaeten_gnd.json` (Kennungen je Entität),
+`m18_gnd_stichprobe.json`; nur Begriffe, Titel und Nummern.

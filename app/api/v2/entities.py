@@ -12,6 +12,10 @@ The dictionary promises terms that have an article, so a term whose entry turns 
 page is left out rather than returned unlinked - measured against the real Wikipedia, that removes about half
 the noise and costs no real term (docs/umbau.md U3b). Recognition by the model is never filtered this way:
 it makes no promise about archives.
+
+A linked Wikipedia article also names its identifiers (D43), all from local data: GND and VIAF from the Normdaten
+block the dump keeps, the Wikidata number from the index ``compendium wikidata build`` writes, the DBpedia URI built
+from the title. No live API is asked; without the index the Wikidata number is simply missing.
 """
 
 from __future__ import annotations
@@ -25,7 +29,9 @@ from app.api.deps import archives_for
 from app.api.limits import rate_limited
 from app.domain.models import Source
 from app.knowledge.entities import classify_entity, is_work
+from app.knowledge.identifiers import identifiers
 from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
+from app.sources.wikidata.index import WikidataIndex
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
 
@@ -65,6 +71,23 @@ class EntitiesRequest(BaseModel):
     )
 
 
+class EntityIds(BaseModel):
+    gnd: str | None = Field(
+        description="GND number from the article's Normdaten block; URI https://d-nb.info/gnd/<gnd>"
+    )
+    gnd_kind: str | None = Field(
+        description="Kind of the GND record as the Normdaten block names it: Person, Sachbegriff, Geografikum, "
+        "Körperschaft, Werk, ..."
+    )
+    viaf: str | None = Field(description="VIAF number from the same block; URI https://viaf.org/viaf/<viaf>")
+    wikidata: str | None = Field(
+        description="Wikidata number from the local index (compendium wikidata build); missing without the index "
+        "or for an article the dump does not know; URI http://www.wikidata.org/entity/<wikidata>"
+    )
+    dbpedia: str = Field(description="DBpedia URI built from the title, not checked against DBpedia")
+    same_as: list[str] = Field(description="Every identifier above as a URI, in the order GND, VIAF, Wikidata, DBpedia")
+
+
 class EntityArticle(BaseModel):
     title: str
     archive: str
@@ -72,6 +95,9 @@ class EntityArticle(BaseModel):
     url: str
     lead: str
     kind: str | None = Field(description="Person, Organisation, Vorhaben, Netzwerk or Werk, read from the lead")
+    ids: EntityIds | None = Field(
+        None, description="GND, VIAF, Wikidata and DBpedia, from local data only; null for articles outside Wikipedia"
+    )
 
 
 class Entity(BaseModel):
@@ -100,7 +126,19 @@ def _article_kind(source: Source) -> str | None:
     return classify_entity(source) or ("Werk" if is_work(source) else None)
 
 
-def _link(archives: list[ZimArchive], mention: Mention) -> EntityArticle | None:
+def _ids(title: str, html: str, wikidata: WikidataIndex | None) -> EntityIds:
+    found = identifiers(title, html, wikidata)
+    return EntityIds(
+        gnd=found.gnd,
+        gnd_kind=found.gnd_kind,
+        viaf=found.viaf,
+        wikidata=found.wikidata,
+        dbpedia=found.dbpedia,
+        same_as=found.same_as,
+    )
+
+
+def _link(archives: list[ZimArchive], mention: Mention, wikidata: WikidataIndex | None = None) -> EntityArticle | None:
     """The article of this name, from the first archive that has it; a disambiguation page is no link."""
     for archive in archives:
         article = archive.read(mention.text)
@@ -114,6 +152,7 @@ def _link(archives: list[ZimArchive], mention: Mention) -> EntityArticle | None:
             url=source.url,
             lead=source.lead_text[:400],
             kind=_article_kind(source),
+            ids=_ids(article.title, article.html, wikidata) if source.project == "wikipedia" else None,
         )
     return None
 
@@ -147,6 +186,11 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
     really ran, and per entity where it came from (``source``), what it is (``kind``), whether an article
     was found (``linked``) and the article with its lead.
 
+    A linked Wikipedia article carries ``ids``: GND, its kind and VIAF from the Normdaten block of the archive,
+    the Wikidata number from the local index (``compendium wikidata build``; ``/health`` says whether it is
+    there) and the DBpedia URI built from the title, all as URIs again under ``same_as``. Nothing is asked
+    online. Articles of other archives carry no ``ids``.
+
     ``link: false`` skips the lookup, ``archives`` narrows it to single archives (unknown id: 404).
     ``max_entities`` bounds the result, and it bites before the lookup - so fewer may come back.
 
@@ -163,7 +207,8 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
             detail="Kein Verfahren verfügbar: für ner fehlt das spaCy-Modell, für dictionary fehlen die Archive",
         )
     found = merge(mentions)[: payload.max_entities]
-    linked = [_link(registry.archives, mention) if payload.link else None for mention in found]
+    wikidata = getattr(request.app.state, "wikidata", None)
+    linked = [_link(registry.archives, mention, wikidata) if payload.link else None for mention in found]
     return EntitiesResponse(
         methods=ran,
         archives=[archive.id for archive in registry.archives],

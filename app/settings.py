@@ -216,6 +216,11 @@ class Settings(BaseSettings):
         return Path(self.state_dir) / "lehrplan.db"
 
     @property
+    def wikidata_db_path(self) -> Path:
+        """The local Wikidata index (D43), written by ``compendium wikidata build``."""
+        return Path(self.state_dir) / "wikidata.db"
+
+    @property
     def subjects_path(self) -> Path:
         return Path(self.config_dir) / "subjects.yaml"
 

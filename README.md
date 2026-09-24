@@ -186,6 +186,25 @@ uv run compendium lehrplan harvest --loop  # Sidecar: wöchentlich prüfen (LEHR
 uv run compendium lehrplan search --q Optik --subject Physik
 ```
 
+## Entitäten und Kennungen
+
+`POST /api/v2/entities` erkennt Namen (spaCy) und Begriffe mit Artikel (Titel der Archive) und nennt zu jedem
+verknüpften Wikipedia-Artikel GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
+Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. Die Wikidata-Nummer kommt aus
+`STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia, ohne Live-Abfrage. Fehlt der Index, fehlt
+nur die Wikidata-Nummer; `/health` meldet ihn unter `entities.wikidata`.
+
+```bash
+# einmal laden (105 MB und 320 MB), dann bauen: 3,1 Mio. Artikel, 106 MB, rund 8 Minuten
+curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page_props.sql.gz
+curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page.sql.gz
+uv run compendium wikidata build --page-props dewiki-latest-page_props.sql.gz --page dewiki-latest-page.sql.gz
+uv run compendium wikidata status   # Artikel, Datum des Dumps, Quelldateien
+```
+
+Der Dienst öffnet den Index beim Start; nach einem neuen Bau neu starten. Gemessen an den Entitäten von 20
+Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 670 (M18 im Messprotokoll).
+
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 
 `collection_id` (nodeId einer WLO-Sammlung) liefert Thema, Fach und Bildungsstufe für Teil 1
@@ -443,7 +462,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
-| `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates |
+| `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates, optional der Wikidata-Index `wikidata.db` |
 | `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `zim_subscriptions.yaml` und den Templates |
 | `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval` und `POST /api/v2/matching/compare` (Admin); im Image nicht enthalten |
 
@@ -547,7 +566,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
 | `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `preset` wählt eine Stufe (`llm-free`, `balanced`, `best-quality`) und setzt die Schalter, die die Anfrage offen lässt; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`, `enrichment` `sources-only` oder `model-knowledge`; das frühere Feld `mode`: 422; `matcher: llm` lässt das LLM die Absätze zuordnen (siehe LLM-Schicht); unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503; `template_id` wählt ein Template (Standard aus den Einstellungen), `max_articles` begrenzt den Korpus (Standard `CORPUS_MAX_ARTICLES`, Thema und Zwilling sind immer dabei), `empty_slot_policy` und `facets_visible` überschreiben Template bzw. `FACETS_VISIBLE`, `language` kennt heute nur `de` (sonst 422); zur teilweisen Neuerzeugung mit `existing_markdown` und `regenerate_sections` siehe unten; `frontmatter_in_markdown: false` lässt den YAML-Vorspann im Markdown weg und beginnt bei der Überschrift — dieselben Angaben stehen weiter im Feld `frontmatter` |
 | `POST /api/v2/knowledge` | Wissenstexte zu `topic`, ohne Template und Synthese: die Artikel des Korpus mit ihren Abschnitten. `archives` fragt gezielt einzelne Archive (unbekannte ID: 404), `max_articles` begrenzt die zusätzlichen Artikel (Thema und Zwilling sind immer dabei), `max_chars` deckelt den Text über alle Artikel und setzt `truncated`; Thema nicht gefunden: 404 mit `resolution` |
-| `POST /api/v2/entities` | Entitäten in einem Text, in zwei Schichten: `methods` wählt `ner` (spaCy-Modell, braucht keine Archive) und `dictionary` (Begriffe, die einen Artikel haben); die Antwort nennt unter `methods`, welche Wege wirklich liefen, und je Entität `source`, `kind`, `linked` und den Artikel mit seinem Lead. `link: false` lässt das Nachschlagen weg, `archives` grenzt ein (unbekannte ID: 404); fällt beides aus — kein Modell und keine Archive —: 503. Steht hinter einem Begriff des Wörterbuchs nur eine Begriffsklärungsseite, entfällt er: die Methode verspricht Begriffe **mit** Artikel. Das gilt nicht für `ner` und nicht bei `link: false` — dort sagt `note`, dass ungeprüft geliefert wurde. `max_entities` greift vor dieser Prüfung, es können also weniger zurückkommen |
+| `POST /api/v2/entities` | Entitäten in einem Text, in zwei Schichten: `methods` wählt `ner` (spaCy-Modell, braucht keine Archive) und `dictionary` (Begriffe, die einen Artikel haben); die Antwort nennt unter `methods`, welche Wege wirklich liefen, und je Entität `source`, `kind`, `linked` und den Artikel mit seinem Lead. `link: false` lässt das Nachschlagen weg, `archives` grenzt ein (unbekannte ID: 404); fällt beides aus — kein Modell und keine Archive —: 503. Steht hinter einem Begriff des Wörterbuchs nur eine Begriffsklärungsseite, entfällt er: die Methode verspricht Begriffe **mit** Artikel. Das gilt nicht für `ner` und nicht bei `link: false` — dort sagt `note`, dass ungeprüft geliefert wurde. `max_entities` greift vor dieser Prüfung, es können also weniger zurückkommen. Jeder mit Wikipedia verknüpfte Artikel trägt `ids` (D43), nur aus lokalen Daten: GND, Art des Datensatzes und VIAF aus seinem Normdaten-Block, die Wikidata-Nummer aus dem Index (siehe „Entitäten und Kennungen“), die DBpedia-URI aus dem Titel gebildet; unter `same_as` alle als URIs |
 | `POST /api/v2/qa` | Frage-Antwort-Paare zu `text` oder `topic`. **`text`** ist der Text, aus dem die Paare gemacht werden — etwa das Markdown eines Kompendiums, das du schon hast. **`topic`** erzeugt erst Teil 1 des Kompendiums zu diesem Thema und fragt dessen Bausteine ab; beide Schritte also in einem Aufruf, zum Preis einer Erzeugung (404 mit `resolution`, wenn es das Thema nicht gibt, 503 wenn Teil 1 nicht erzeugbar ist). `method` wählt `rule-based` (Fragevorlagen über die Sätze, braucht nichts, Standard), `parse-based` (der spaCy-Parse ersetzt das Satzsubjekt durch ein Fragewort, die Antwort ist dann das Subjekt statt des ganzen Satzes; braucht das spaCy-Modell), `models` (zwei kleine deutsche Modelle im Image: ein Generator schreibt die Frage zu einer Nominalphrase, ein extraktives Modell markiert die antwortende Stelle — rund 1,1 s je Paar auf CPU bei 20 Paaren, bei wenigen Paaren eher 2 s, weil der Generator eine ganze Runde auf einmal erzeugt; die Modelle laden bei der ersten Anfrage) oder `llm` (die b-api schreibt sie); fehlen die Modelle, die b-api oder eine verwertbare Antwort, fällt es auf `rule-based` zurück und `note` sagt warum. `count` und `max_answer_length` begrenzen. **Welche Stufe wofür:** gemessen am 2026-09-21 auf einem Kompendiumtext greift `rule-based` nur bei jedem achten Satz und die Hälfte der Fragen fragt nach einer Jahreszahl (8 von 20 angefragten Paaren, 4 Fragetypen); `parse-based` holt aus denselben Texten viermal so viel wie die Vorlagen — gemessen am 2026-09-22 über 172 Sätze aus vier Kompendien 33 Fragen statt 8, rund 4 ms je Satz (warm; der erste Text eines Prozesses zahlt einmalig das Aufwärmen von spaCy), 26 der 33 mangelfrei — ohne ein Modell zu laden; `models` lieferte aus demselben Text 20 von 20 mit 18 Fragetypen und keiner Jahresfrage, weil die Fragen aus den Nominalphrasen entstehen statt aus Vorlagen, und ist mit 94 % mangelfreien Paaren die genaueste und mit Abstand langsamste Stufe. `/docs` hat je ein Beispiel dafür. Die Fragevorlagen prüfen mit dem spaCy-Modell, ob der Betreff wirklich ein Begriff ist — Deutsch schreibt am Satzanfang groß, sonst entstünde „Was versteht man unter Daneben?“. Fehlt das Modell, entfällt die Prüfung und `note` sagt es |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar); hält sich an `REQUEST_TIMEOUT_S`, danach `summary.incomplete` und ein Hinweis im Text |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |

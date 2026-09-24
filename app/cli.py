@@ -13,6 +13,7 @@ from app.cli_collection import add_collection_commands
 from app.cli_common import cli_service
 from app.cli_eval import add_eval_commands
 from app.cli_lehrplan import add_lehrplan_commands
+from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
 from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
 from app.logging import configure_logging
@@ -196,6 +197,7 @@ def main(argv: list[str] | None = None) -> int:
     add_eval_commands(sub)
     add_lehrplan_commands(sub)
     add_collection_commands(sub)
+    add_wikidata_commands(sub)
 
     tpl = sub.add_parser("templates", help="Templates auflisten, speichern, löschen")
     tpl.set_defaults(func=cmd_templates)  # the bare command keeps listing, as it always did

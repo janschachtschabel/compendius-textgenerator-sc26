@@ -15,7 +15,9 @@ from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.settings import Settings
+from app.sources.wikidata.index import build_index
 from tests.conftest import make_settings
+from tests.test_wikidata_index import write_dumps
 
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
 
@@ -110,9 +112,11 @@ def test_the_number_of_entities_is_capped(client: TestClient) -> None:
     assert len(body["entities"]) == 1
 
 
-def test_health_says_whether_the_model_is_there(client: TestClient, sample_zims: dict[str, Path]) -> None:
+def test_health_says_whether_the_model_and_the_wikidata_index_are_there(
+    client: TestClient, sample_zims: dict[str, Path]
+) -> None:
     entities = client.get("/health").json()["components"]["entities"]
-    assert entities == {"ner": False, "model": ""}
+    assert entities == {"ner": False, "model": "", "wikidata": {"available": False, "articles": None, "dump": None}}
 
 
 DISAMBIGUATION_TEXT = "Die Brechung des Lichts erklärt das Lichtmikroskop und die Geometrische Optik."
@@ -146,3 +150,51 @@ def test_without_linking_the_dictionary_cannot_check_and_says_so(client: TestCli
     body = client.post("/api/v2/entities", json={"text": DISAMBIGUATION_TEXT, "link": False}).json()
     assert "Brechung" in {entity["text"] for entity in body["entities"]}
     assert body["note"] and "link" in body["note"]
+
+
+@pytest.fixture(scope="module")
+def with_wikidata(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPathFactory) -> TestClient:
+    """A service whose state directory holds a Wikidata index built from two small dumps."""
+    base = tmp_path_factory.mktemp("mit_wikidata")
+    settings = make_settings(sample_zims.values(), base / "state")
+    build_index(*write_dumps(base / "dumps"), settings.wikidata_db_path)
+    return TestClient(create_app(settings))
+
+
+def by_text(body: dict) -> dict[str, dict]:
+    return {entity["text"]: entity for entity in body["entities"]}
+
+
+def test_a_linked_wikipedia_article_names_its_authority_record(client: TestClient) -> None:
+    """GND and VIAF come from the Normdaten block the archive keeps; DBpedia is built from the title (D43)."""
+    found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
+    abbe = found["Ernst Abbe"]["article"]["ids"]
+    assert abbe["gnd"] == "118646419" and abbe["gnd_kind"] == "Person" and abbe["viaf"] == "19744386"
+    assert abbe["dbpedia"] == "http://de.dbpedia.org/resource/Ernst_Abbe"
+    assert abbe["wikidata"] is None, "this state directory holds no Wikidata index"
+    assert abbe["same_as"] == [
+        "https://d-nb.info/gnd/118646419",
+        "https://viaf.org/viaf/19744386",
+        "http://de.dbpedia.org/resource/Ernst_Abbe",
+    ]
+    mikroskop = found["Lichtmikroskop"]["article"]["ids"]
+    assert mikroskop["gnd"] == "4039237-5" and mikroskop["gnd_kind"] == "Sachbegriff" and mikroskop["viaf"] is None
+
+
+def test_the_wikidata_number_comes_from_the_local_index(with_wikidata: TestClient) -> None:
+    found = by_text(with_wikidata.post("/api/v2/entities", json={"text": TEXT}).json())
+    abbe = found["Ernst Abbe"]["article"]["ids"]
+    assert abbe["wikidata"] == "Q999001"
+    assert "http://www.wikidata.org/entity/Q999001" in abbe["same_as"]
+    assert found["Lichtmikroskop"]["article"]["ids"]["wikidata"] is None, "not in the small index"
+    wikidata = with_wikidata.get("/health").json()["components"]["entities"]["wikidata"]
+    assert wikidata == {"available": True, "articles": 4, "dump": "2026-09-07"}
+
+
+def test_an_article_outside_wikipedia_carries_no_ids(client: TestClient) -> None:
+    """The identifiers belong to Wikipedia articles; a Klexikon article has no Normdaten and no Wikidata item."""
+    body = client.post(
+        "/api/v2/entities", json={"text": "Ein Regenbogen entsteht im Licht.", "archives": ["klexikon_de_sample"]}
+    ).json()
+    regenbogen = by_text(body)["Regenbogen"]["article"]
+    assert regenbogen["project"] == "klexikon" and regenbogen["ids"] is None

@@ -149,7 +149,9 @@ ungefähr. Die Zeile `matcher=llm` lief mit den Regeln für die Artikelwahl.
   und schlug sie live bei Wikipedia nach. `POST /api/v2/entities` arbeitet ohne LLM und ohne Netz in zwei Schichten:
   Named-Entity-Erkennung mit spaCy (`de_core_news_md`) und ein Wörterbuch aus den Artikeltiteln der Archive.
   Begriffe, hinter denen nur eine Begriffsklärung steht, fallen heraus. Auf dem Server dauerte ein Beispielsatz
-  0,07 bis 0,15 s.
+  0,07 bis 0,15 s. Wie der alte Linker nennt er zu jedem Artikel die Wikidata-Nummer, dazu GND, VIAF und DBpedia,
+  aber aus lokalen Daten statt live (D43, M18). Als Weg zur Artikelwahl ersetzt der alte Linker die Regeln nicht
+  (M17).
 - **Frage-Antwort-Paare.** Der alte Dienst ließ sie ein LLM schreiben. Der neue hat vier Stufen; die Modellstufe
   (deutscher T5-Fragegenerator und ein extraktives Antwortmodell im Image) lieferte in der Messung aus
   `docs/umbau.md` 94 % mangelfreie Paare bei rund 1 s je Paar, ganz ohne b-api.

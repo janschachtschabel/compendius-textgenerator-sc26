@@ -1,6 +1,7 @@
 # Umbau: schlanke API, KI nur als Option
 
-Vorschlag vom 2026-09-20, am selben Tag umgesetzt (U1 bis U6, siehe „Phasen“; offen bleibt Wikidata). Ziel:
+Vorschlag vom 2026-09-20, am selben Tag umgesetzt (U1 bis U6, siehe „Phasen“); Wikidata, GND und DBpedia folgten am
+2026-09-24 (D43). Ziel:
 ein Dienst, der **vollständig ohne generative KI** arbeitet, daneben Entitäten und Frage-Antwort-Paare liefert,
 und bei dem ein LLM nur dort zugeschaltet wird, wo der Aufrufer es ausdrücklich will — sichtbar in der Antwort.
 Der alte v1-Vertrag entfällt.
@@ -177,6 +178,11 @@ und die Antwort sagt, welche Archive befragt wurden.
    Empfehlung: `wikimapper` — der Index wird wie die ZIM-Dumps gepflegt und hält den Dienst offline. Die
    DBpedia-URI lässt sich aus dem Titel bilden, ohne dass ihre Existenz geprüft wäre; sie wird nur auf Wunsch
    mitgegeben und als „konstruiert" gekennzeichnet.
+
+   **Umgesetzt am 2026-09-24 (D43), anders als hier geplant:** kein `wikimapper`, sondern ein eigener Import
+   derselben zwei Dumps (`compendium wikidata build`, `app/sources/wikidata/index.py`); dazu GND und VIAF aus dem
+   Normdaten-Block, den der Dump doch führt (siehe Befund oben), und die DBpedia-URI immer, als konstruiert
+   beschrieben. Messung: M18 im Messprotokoll.
 
    **Die Testapp (`../kompendium-test`) löst das anders:** Sie holt QIDs live über `pageprops` der
    Wikipedia-API und die Entitätsdaten von `wikidata.org/wiki/Special:EntityData/{qid}.json`
@@ -787,7 +793,7 @@ Entscheidung, die das Image wirklich schwer macht.
 |---|---|---|
 | U1 ✓ | v1 entfernt (8 Endpunkte, `app/api/v1/`, `MIGRATION.md`, Tests) — erledigt am 2026-09-20 | klein, viel Löschung |
 | U2 ✓ | `POST /api/v2/knowledge` — erledigt am 2026-09-20; `ZimRegistry.only()` grenzt auf Archive ein | klein |
-| U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Wikidata bleibt offen | mittel |
+| U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Kennungen (GND, Wikidata, DBpedia) am 2026-09-24 (D43) | mittel |
 | U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
 | U5a ✓ | `POST /api/v2/qa` mit `rule-based` und `llm` — erledigt am 2026-09-20; kein neues Gewicht, kein zweites Image | mittel |
 | U5b ✓ | Stufe `models` (QG- und QA-Modell), torch im Basis-Image statt eines zweiten Profils — erledigt am 2026-09-20 | groß (torch, zwei Modelle) |
