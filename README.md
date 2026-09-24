@@ -240,8 +240,10 @@ konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
 
 **Grenze (gemessen am 24.09.2026):** Sammlungen tragen ihr Thema als Titel („Optik“), Materialien oft ihr Format:
 „Stationsarbeit zur Optik“ und „Suchgitter Optik“ finden in den Archiven keinen Artikel, „Unterrichtsreihe zum Licht“
-endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. Den Hauptartikel aus Beschreibung und Schlagwörtern
-zu finden, etwa über die Entitäten, ist der nächste Schritt.
+endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. An 40 echten Materialien der WLO-Produktion (M21)
+trifft der Titel als Thema 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16 und ein LLM, das den
+Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34, für rund 470 Tokens und 2,8 s. Welcher Weg eingebaut
+wird, ist offen (Optionen im Messprotokoll).
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 

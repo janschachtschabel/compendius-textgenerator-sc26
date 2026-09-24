@@ -810,3 +810,40 @@ kamen die Endungsfolge und die Ausnahmen ohne Artikel dazu, jede mit einem Test.
 
 **Ergebnis:** Übernommen (D46). Nicht gelöst sind Homonyme ohne Genitiv (*Wurzeln* → Fernsehserie, *Zeiträume* →
 Verein); dafür bräuchte die Verknüpfung den Zusammenhang des Textes. Rohdaten: `m20_entitaeten_genitiv.json`.
+
+## M21 Artikelwahl für echte Materialien (24.09.2026)
+
+**Aufbau:** Der Knoten-Eingang (D45) nimmt den Titel eines Materials als Thema. Echte Materialien nennen im Titel aber
+oft ihr Format, ihre Quelle oder ein Datum. Das Gold `eval/materialwahl/materialien.yaml` hält 40 Materialien der
+WLO-Produktion, je Fach 4 mit Beschreibung, gezogen mit fester Saat (`mc_material_stichprobe.py`) und beschriftet von
+Claude, bevor ein Verfahren lief: 31 mit klarem Thema, 7 unscharf (Portal, Methode, Meinung), 2 ohne Thema. Die
+Stichprobe zeigt die Lage der Metadaten: Fächer passen oft nicht (ein Zeitraffer vom Sonnenuntergang unter Chemie,
+englische Videos zur organischen Chemie unter Biologie), Titel nennen Daten („21./22. April 1946“) oder Formate
+(„… - Experiment“), Beschreibungen sind Werbelinks oder der Text des Arbeitsblatts. Verglichen im Ablauf des Dienstes
+(`mc_material_artikelwahl.py`, die Materialien anonym aus dem Repository gelesen):
+
+| Weg | richtig, 38 mit Thema | davon klar, 31 | ohne Artikel | Zeit je Material, Median | Tokens |
+|---|---|---|---|---|---|
+| S0 Titel als Thema (heute) | 7 | 5 | 15 | 11 ms | 0 |
+| S1 Titel ohne Format- und Quellenteile | 9 | 7 | 6 | 11 ms | 0 |
+| S2 das häufigste Schlagwort | 6 | 5 | 11 | 9 ms | 0 |
+| S3 Entitäten aus Titel und Beschreibung, gewichtet | 16 | 13 | 0 | 0,22 s | 0 |
+| S4 das LLM nennt den Artikel | 34 | 30 | 0 | 2,8 s | rund 470 |
+| Regeln, wo sicher, sonst Entitäten | 16 | 13 | 0 | – | 0 |
+| Regeln, wo sicher, sonst LLM | 31 | 28 | 0 | – | weniger |
+
+Das LLM liest aus der Beschreibung, was der Titel verschweigt: „21./22. April 1946“ wird zur *Zwangsvereinigung von
+SPD und KPD zur SED*, ein englisches Video zu SN1 und SN2 zur *Nukleophilen Substitution*, der Text eines
+Arbeitsblatts zu *Dreisatz* oder *Proportionalität*. Die Entitäten schlagen den Titel deutlich, verlieren aber an
+häufige Allerweltswörter: *Brötchen* aus einem Arbeitsblatt, *April*, *Lernen*, *Zeit*. Die Regeln, die bei Themen
+verlässlich sagen, ob sie sicher sind (M9), sind es bei Materialien nicht: Von fünf Materialien, bei denen S1 sich
+sicher gibt, liegen drei falsch, und bei allen dreien läge das LLM richtig, etwa *Scratch (Computer)* statt der
+Programmiersprache. Grenzfall: „20. - 24.
+Sept. 1947“ nennt das LLM *Parteitag der SED*; vertretbar, nach dem Gold falsch. Bei den zwei Materialien ohne Thema
+nennt jeder Weg trotzdem einen Artikel. 18.757 Tokens für 40 Materialien, mit `gpt-6-luna`.
+
+**Ergebnis und Optionen (zu entscheiden):** Der Titel trägt bei echten Materialien nicht. Für Knoten ohne mitgeschicktes
+`topic` stehen vier Wege offen: (A) das LLM nennt das Thema aus Titel, Beschreibung und Schlagwörtern, die Regeln
+schlagen es nach, 34 von 38 für rund 470 Tokens und 2,8 s; (B) die Entitäten aus Titel und Beschreibung, lokal, 16
+von 38 in 0,2 s; (C) A, wo ein LLM bereitsteht (Stufen `balanced` und `best-quality`), sonst B; (D) wie heute der
+Titel, 7 von 38, und der Aufrufer schickt das Thema mit. Die Messung spricht für C. Rohdaten: `m21_materialwahl.json`.

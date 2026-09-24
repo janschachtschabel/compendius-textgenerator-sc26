@@ -188,3 +188,8 @@ Alle sind von Claude festgelegt und redaktionell ungeprüft; die Kopfzeilen der 
 aufhörten, unabhängig zu sein. Messen und auswerten: `docs/entwicklung/messung/` (`mc_artikelwahl.py`,
 `mc_artikel_richter.py`, `mc_artikelwahl_auswertung.py`; die Auflösung allein, mit und ohne `article_choice=llm`,
 misst `mc_aufloesung.py`).
+
+`materialwahl/materialien.yaml` ist das Gold für den Knoten-Eingang (M21): 40 echte Materialien der
+WLO-Produktion mit ID, Titel und Fächern, dazu die Art (klar, unscharf, keins) und die akzeptierten
+Hauptartikel. Ihre Beschreibungen stehen nicht darin; `docs/entwicklung/messung/mc_material_artikelwahl.py`
+liest sie aus dem Repository, `mc_material_stichprobe.py` zieht die Stichprobe neu.

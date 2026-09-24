@@ -1548,9 +1548,10 @@ API.
   (403) gilt als nicht gefunden (Review-Korrektur). `/entities` nimmt `text` oder `node_id`, nicht beides. Gemessen an
   echten Staging-Knoten: Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht
   („Stationsarbeit zur Optik“) oder falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); die Stationsarbeit
-  trägt Biologie und Physik. Offen und als Nächstes zu messen: den Hauptartikel
-  aus Beschreibung und Schlagwörtern finden (Entitäten, Regeln für Formatwörter oder das LLM), an einem Gold aus
-  echten WLO-Materialien.
+  trägt Biologie und Physik. Gemessen an 40 echten WLO-Materialien (M21, Gold `eval/materialwahl`): der Titel
+  trifft 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16, ein LLM, das den Artikel aus Titel,
+  Beschreibung und Schlagwörtern nennt, 34 (rund 470 Tokens, 2,8 s). Offen, welcher Weg eingebaut wird; M21 empfiehlt
+  das LLM, wo eines bereitsteht, sonst die Entitäten.
 - **D46 (2026-09-24)** Entitäten: Ein Genitiv nennt seinen Artikel über die Grundform (`title_candidates` in
   `app/knowledge/recognise.py`). Nach einem Genitivartikel (*des*, *eines* …, ein Wort dazwischen) kommt die Grundform
   zuerst, sonst erst, wenn die wörtliche Form kein Titel ist; „-es“ vor „-s“ (*Reiches* → *Reich*). Ohne Artikel

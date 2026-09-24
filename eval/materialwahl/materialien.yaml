@@ -1,0 +1,378 @@
+# Gold für die Artikelwahl von Knoten-Eingaben (M21): 40 echte Materialien der WLO-Produktion, je Fach 4 mit
+# Beschreibung, gezogen von docs/entwicklung/messung/mc_material_stichprobe.py (Saat 21). Beschriftet am 24.09.2026 von
+# Claude aus Titel, Beschreibung und Schlagwörtern, bevor ein Verfahren lief; eine Redaktion hat es nicht geprüft.
+# art: klar (ein Thema ist erkennbar), unscharf (Portal, Methode, Meinung: ein allgemeiner Artikel ist vertretbar),
+# keins (kein Artikel trägt ein Kompendium). akzeptiert: die Wikipedia-Artikel, auf denen ein Kompendium zu diesem
+# Material aufbauen sollte. Die Beschreibungen stehen nicht hier: Die Messung liest sie aus dem Repository.
+version: 1
+materialien:
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Kurs: Mathematik für Physikbegeisterte 1'
+  faecher:
+  - Physik
+  - Mathematik
+  akzeptiert:
+  - Mathematische Physik
+  art: unscharf
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Zahnrad und Riemen - Experiment:'
+  faecher:
+  - Physik
+  akzeptiert:
+  - Zahnrad
+  - Riemengetriebe
+  - Getriebe
+  art: klar
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Bestimmung des Planckschen Wirkungsquantums h (Variante 1) - Experiment
+  faecher:
+  - Physik
+  akzeptiert:
+  - Planck-Konstante
+  art: klar
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Funktionsweise eines Galvanometer - Experiment
+  faecher:
+  - Physik
+  akzeptiert:
+  - Galvanometer
+  art: klar
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Mond durch mein Teleskop - Moon through my telescope (Skywatcher 200/1000)
+  faecher:
+  - Physik
+  - Astronomie
+  - Chemie
+  - MINT
+  akzeptiert:
+  - Mond
+  - Teleskop
+  art: klar
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Eine Batterie "bauen"
+  faecher:
+  - Physik
+  - Astronomie
+  - Chemie
+  - MINT
+  akzeptiert:
+  - Galvanische Zelle
+  - Batterie (Elektrotechnik)
+  art: klar
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: '"Blitzeis" mit Wasser und Windeln'
+  faecher:
+  - Physik
+  - Astronomie
+  - Chemie
+  - MINT
+  akzeptiert:
+  - Superabsorber
+  art: klar
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Sonnenuntergang im Zeitraffer
+  faecher:
+  - Physik
+  - Astronomie
+  - Chemie
+  - MINT
+  akzeptiert:
+  - Sonnenuntergang
+  - Zeitraffer
+  art: klar
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Organometallic Reagents and Carbanions: Crash Course Organic Chemistry #28'
+  faecher:
+  - Biologie
+  - Chemie
+  akzeptiert:
+  - Metallorganische Chemie
+  - Carbanion
+  art: klar
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Determining SN1, SN2, E1, and E2 Reactions: Crash Course Organic Chemistry #23'
+  faecher:
+  - Biologie
+  - Chemie
+  akzeptiert:
+  - Nukleophile Substitution
+  - Eliminierungsreaktion
+  art: klar
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Alkene Addition Reactions: Crash Course Organic Chemistry #16'
+  faecher:
+  - Biologie
+  - Chemie
+  akzeptiert:
+  - Elektrophile Addition
+  - Additionsreaktion
+  - Alkene
+  art: klar
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Acidity: Crash Course Organic Chemistry #11'
+  faecher:
+  - Biologie
+  - Chemie
+  akzeptiert:
+  - Säurekonstante
+  - Säuren
+  art: klar
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Schritte des Dreisatzes
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Dreisatz
+  art: klar
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Teilen, mit und ohne Rest
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Division mit Rest
+  - Division (Mathematik)
+  art: klar
+- node_id: a0399b0d-75f6-4388-9d1f-d64cda8e0a73
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Abschlussarbeit Klasse 8
+  faecher:
+  - Mathematik
+  akzeptiert: []
+  art: keins
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Proportionale Zuordnungen beschreiben
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Proportionalität
+  art: klar
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Die Weimarer Verfassung
+  faecher:
+  - Geschichte
+  akzeptiert:
+  - Weimarer Verfassung
+  art: klar
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 21./22. April 1946
+  faecher:
+  - Geschichte
+  - Allgemein
+  akzeptiert:
+  - Zwangsvereinigung von SPD und KPD zur SED
+  - Sozialistische Einheitspartei Deutschlands
+  art: klar
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 20. - 24. Sept. 1947
+  faecher:
+  - Geschichte
+  - Allgemein
+  akzeptiert:
+  - Sozialistische Einheitspartei Deutschlands
+  art: klar
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 23. März 2000
+  faecher:
+  - Geschichte
+  - Allgemein
+  akzeptiert:
+  - Horst Köhler
+  - Internationaler Währungsfonds
+  art: klar
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Fachportal Geographie | Landesbildungsserver Baden-Württemberg
+  faecher:
+  - Geografie
+  akzeptiert:
+  - Geographie
+  art: unscharf
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Erdbeben, Vulkanismus, Plattentektonik (Schule) ] memucho
+  faecher:
+  - Geografie
+  akzeptiert:
+  - Plattentektonik
+  - Erdbeben
+  - Vulkanismus
+  art: klar
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Digitales Lernen an außerschulischen Lernorten
+  faecher:
+  - Geografie
+  akzeptiert:
+  - Außerschulischer Lernort
+  art: unscharf
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Landkarte Katar; GinkgoMaps Landkarten Sammlung Kontinent: Asien; Region: Katar'
+  faecher:
+  - Geografie
+  - Sport
+  akzeptiert:
+  - Katar
+  art: klar
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Ehrgeizige Ziele beim 3. Petersberger Klimadialog
+  faecher:
+  - Politik
+  akzeptiert:
+  - Petersberger Klimadialog
+  - Klimapolitik
+  - UN-Klimakonferenz
+  art: klar
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Kann sich Frankreich von der Krise erholen?
+  faecher:
+  - Politik
+  akzeptiert:
+  - Wirtschaft Frankreichs
+  - Frankreich
+  art: klar
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Die Politik muss es nur wollen
+  faecher:
+  - Politik
+  akzeptiert:
+  - Staatsverschuldung
+  - Eurokrise
+  - Vermögensteuer
+  art: klar
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Es ist nicht die Zeit für einen Magier, sondern für handlungsfähige Akteure | bpb
+  faecher:
+  - Politik
+  akzeptiert:
+  - Europäische Wirtschafts- und Währungsunion
+  - Eurozone
+  art: unscharf
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Hörspielfabrik
+  faecher:
+  - Informatik
+  - Medienbildung
+  akzeptiert:
+  - Hörspiel
+  art: klar
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Arbeitsheft "Kosmos YouTube"
+  faecher:
+  - Informatik
+  - Medienbildung
+  akzeptiert:
+  - YouTube
+  art: klar
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Scratch - Gruppenpuzzle (Der Einstieg in kreative Programmierprojekte)
+  faecher:
+  - Informatik
+  - Medienbildung
+  akzeptiert:
+  - Scratch (Programmiersprache)
+  art: klar
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Scratch Projektideen
+  faecher:
+  - Informatik
+  - Medienbildung
+  akzeptiert:
+  - Scratch (Programmiersprache)
+  art: klar
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: digitale Medien im Deutschunterricht
+  faecher:
+  - Deutsch
+  akzeptiert:
+  - Deutschunterricht
+  - Digitale Medien
+  art: unscharf
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Lernen mit dem Fidget Spinner
+  faecher:
+  - Deutsch
+  akzeptiert:
+  - Fidget Spinner
+  art: klar
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Rasmus und der Lanstreicher
+  faecher:
+  - Deutsch
+  akzeptiert:
+  - Rasmus und der Landstreicher
+  - Astrid Lindgren
+  art: klar
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Kompetenz 1
+  faecher:
+  - Deutsch
+  akzeptiert: []
+  art: keins
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Die 5 häufigsten Fehler bei Unternehmensgründungen
+  faecher:
+  - Wirtschaftskunde
+  akzeptiert:
+  - Existenzgründung
+  - Unternehmensgründung
+  art: klar
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Psychologie der Super-Reichen - Dr. Dr. Rainer Zitelmann im Interview
+  faecher:
+  - Wirtschaftskunde
+  akzeptiert:
+  - Reichtum
+  - Rainer Zitelmann
+  art: unscharf
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Selfmade Millionär - Macht Geld glücklich?
+  faecher:
+  - Wirtschaftskunde
+  akzeptiert:
+  - Reichtum
+  - Vermögensmillionär
+  art: unscharf
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Erfolgreich Kunden gewinnen mit Online Seminaren - Rainer von Massenbach im Interview
+  faecher:
+  - Wirtschaftskunde
+  akzeptiert:
+  - Web-Seminar
+  - Akquise
+  art: klar

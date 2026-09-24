@@ -1,0 +1,1905 @@
+[
+ {
+  "node_id": "325c399b-dd66-40b3-8182-3baae248f4d6",
+  "titel": "Kurs: Mathematik für Physikbegeisterte 1",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Mathematische Physik"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Physik",
+   "schlagwort": "Physik",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Mathematik",
+   "kandidaten": [
+    "Mathematik",
+    "Physik",
+    "Physiker"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Mathematische Physik",
+   "genannt": "Mathematische Methoden der Physik",
+   "tokens": 324,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Mathematik",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Mathematische Physik",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "19e322f0-afa5-440f-8dc0-fca1dcde71d8",
+  "titel": "Zahnrad und Riemen - Experiment:",
+  "art": "klar",
+  "akzeptiert": [
+   "Getriebe",
+   "Riemengetriebe",
+   "Zahnrad"
+  ],
+  "S0": {
+   "titel": "Rad",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Riemengetriebe",
+   "sicher": false,
+   "anfrage": "Zahnrad und Riemen",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "École libre des sciences politiques",
+   "schlagwort": "Ecole Science",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Zahnrad",
+   "kandidaten": [
+    "Zahnrad",
+    "École",
+    "Science"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Getriebe",
+   "genannt": "Getriebe",
+   "tokens": 341,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Zahnrad",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Getriebe",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "8e4ee58d-c18c-470b-8f84-c3a634a041c3",
+  "titel": "Bestimmung des Planckschen Wirkungsquantums h (Variante 1) - Experiment",
+  "art": "klar",
+  "akzeptiert": [
+   "Planck-Konstante"
+  ],
+  "S0": {
+   "titel": "Planck-Konstante",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Planck-Konstante",
+   "sicher": false,
+   "anfrage": "Bestimmung des Planckschen Wirkungsquantums h (Variante 1)",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "École libre des sciences politiques",
+   "schlagwort": "Ecole Science",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Planck-Konstante",
+   "kandidaten": [
+    "Planck-Konstante",
+    "École",
+    "Science"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Planck-Konstante",
+   "genannt": "Plancksches Wirkungsquantum",
+   "tokens": 219,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Planck-Konstante",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Planck-Konstante",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "c6c569d7-87c3-40d6-be6f-d92ee5409782",
+  "titel": "Funktionsweise eines Galvanometer - Experiment",
+  "art": "klar",
+  "akzeptiert": [
+   "Galvanometer"
+  ],
+  "S0": {
+   "titel": "Elektromagnetische Induktion",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Tasimeter",
+   "sicher": false,
+   "anfrage": "Funktionsweise eines Galvanometer",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "École libre des sciences politiques",
+   "schlagwort": "Ecole Science",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Galvanometer",
+   "kandidaten": [
+    "Galvanometer",
+    "École",
+    "Science"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Galvanometer",
+   "genannt": "Galvanometer",
+   "tokens": 208,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Galvanometer",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Galvanometer",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "18adeb5f-3f7d-4c32-9a96-3398a756193e",
+  "titel": "Mond durch mein Teleskop - Moon through my telescope (Skywatcher 200/1000)",
+  "art": "klar",
+  "akzeptiert": [
+   "Mond",
+   "Teleskop"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Il mondo della luna (Haydn)",
+   "sicher": false,
+   "anfrage": "Mond durch mein Teleskop",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Teleskop",
+   "schlagwort": "teleskop",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "Teleskop",
+   "kandidaten": [
+    "Teleskop",
+    "Sky-Watcher",
+    "Mond"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Mond",
+   "genannt": "Mond",
+   "tokens": 484,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Teleskop",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Mond",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "c09b26a5-bb4d-497e-8def-c8812e64bb9d",
+  "titel": "Eine Batterie \"bauen\"",
+  "art": "klar",
+  "akzeptiert": [
+   "Batterie (Elektrotechnik)",
+   "Galvanische Zelle"
+  ],
+  "S0": {
+   "titel": "BAE Batterien",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "BAE Batterien",
+   "sicher": false,
+   "anfrage": "Batterie \"bauen",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Batterie (Elektrotechnik)",
+   "schlagwort": "batterie",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "Batterie",
+   "kandidaten": [
+    "Batterie",
+    "Leuchtdiode",
+    "Kamera"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Galvanische Zelle",
+   "genannt": "Galvanische Zelle",
+   "tokens": 722,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Batterie",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Galvanische Zelle",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "6c306be9-a5f5-46ae-af83-31fc480fa389",
+  "titel": "\"Blitzeis\" mit Wasser und Windeln",
+  "art": "klar",
+  "akzeptiert": [
+   "Superabsorber"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Wasser",
+   "schlagwort": "wasser",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Wasser",
+   "kandidaten": [
+    "Wasser",
+    "Windel",
+    "Superabsorber"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Superabsorber",
+   "genannt": "Superabsorber",
+   "tokens": 601,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Wasser",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Superabsorber",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "35162ae1-e3d7-4c8e-95e5-d13d6906fb57",
+  "titel": "Sonnenuntergang im Zeitraffer",
+  "art": "klar",
+  "akzeptiert": [
+   "Sonnenuntergang",
+   "Zeitraffer"
+  ],
+  "S0": {
+   "titel": "Leuchtende Nachtwolke",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Leuchtende Nachtwolke",
+   "sicher": false,
+   "anfrage": "Sonnenuntergang im Zeitraffer",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Sonne",
+   "schlagwort": "sonne",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Sonnenuntergang",
+   "kandidaten": [
+    "Sonnenuntergang",
+    "Zeitraffer",
+    "Musik"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Sonnenuntergang",
+   "genannt": "Sonnenuntergang",
+   "tokens": 286,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Sonnenuntergang",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Sonnenuntergang",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "21e5be2c-c701-438a-a5be-2cc701f38a47",
+  "titel": "Organometallic Reagents and Carbanions: Crash Course Organic Chemistry #28",
+  "art": "klar",
+  "akzeptiert": [
+   "Carbanion",
+   "Metallorganische Chemie"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Magnesiumanthracen",
+   "sicher": false,
+   "anfrage": "Organometallic Reagents and Carbanions",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Chemistry – A European Journal",
+   "schlagwort": "chemistry",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Carbanion",
+   "kandidaten": [
+    "Carbanion",
+    "G",
+    "L"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Metallorganische Chemie",
+   "genannt": "Organometallische Verbindung",
+   "tokens": 688,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Carbanion",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Metallorganische Chemie",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "aff99075-a5b3-49dd-b990-75a5b369dd63",
+  "titel": "Determining SN1, SN2, E1, and E2 Reactions: Crash Course Organic Chemistry #23",
+  "art": "klar",
+  "akzeptiert": [
+   "Eliminierungsreaktion",
+   "Nukleophile Substitution"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Chemistry – A European Journal",
+   "schlagwort": "chemistry",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "SN1",
+   "kandidaten": [
+    "SN1",
+    "SN2",
+    "Reaktionsvideo"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Nukleophile Substitution",
+   "genannt": "Nukleophile Substitution",
+   "tokens": 936,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "SN1",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Nukleophile Substitution",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "c5f133d8-22f1-4f87-b133-d822f1cf87f7",
+  "titel": "Alkene Addition Reactions: Crash Course Organic Chemistry #16",
+  "art": "klar",
+  "akzeptiert": [
+   "Additionsreaktion",
+   "Alkene",
+   "Elektrophile Addition"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Heck-Reaktion",
+   "sicher": false,
+   "anfrage": "Alkene Addition Reactions",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Chemistry – A European Journal",
+   "schlagwort": "chemistry",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "J",
+   "kandidaten": [
+    "J",
+    "New York",
+    "Alkene"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Elektrophile Addition",
+   "genannt": "Elektrophile Addition",
+   "tokens": 788,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "J",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Elektrophile Addition",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b",
+  "titel": "Acidity: Crash Course Organic Chemistry #11",
+  "art": "klar",
+  "akzeptiert": [
+   "Säurekonstante",
+   "Säuren"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Henry Fracker",
+   "sicher": false,
+   "anfrage": "Acidity",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Chemistry – A European Journal",
+   "schlagwort": "chemistry",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "J",
+   "kandidaten": [
+    "J",
+    "A",
+    "S"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Säurekonstante",
+   "genannt": "Säurestärke",
+   "tokens": 689,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "J",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Säurekonstante",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162",
+  "titel": "Schritte des Dreisatzes",
+  "art": "klar",
+  "akzeptiert": [
+   "Dreisatz"
+  ],
+  "S0": {
+   "titel": "Dreisatz",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Dreisatz",
+   "sicher": false,
+   "anfrage": "Schritte des Dreisatzes",
+   "richtig": true
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Brötchen",
+   "kandidaten": [
+    "Brötchen",
+    "Dreisatz",
+    "Anzahl"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Dreisatz",
+   "genannt": "Dreisatz",
+   "tokens": 477,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Brötchen",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Dreisatz",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "5847dba7-3705-457e-a165-528614d8ebf7",
+  "titel": "Teilen, mit und ohne Rest",
+  "art": "klar",
+  "akzeptiert": [
+   "Division (Mathematik)",
+   "Division mit Rest"
+  ],
+  "S0": {
+   "titel": "Käthe, Paula und der ganze Rest",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Käthe, Paula und der ganze Rest",
+   "sicher": false,
+   "anfrage": "Teilen, mit und ohne Rest",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Teilen",
+   "kandidaten": [
+    "Teilen",
+    "Mathematik",
+    "Name"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Division (Mathematik)",
+   "genannt": "Division (Mathematik)",
+   "tokens": 738,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Teilen",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Division (Mathematik)",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "a0399b0d-75f6-4388-9d1f-d64cda8e0a73",
+  "titel": "Abschlussarbeit Klasse 8",
+  "art": "keins",
+  "akzeptiert": [],
+  "S0": {
+   "titel": "Studienabschlussarbeit",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "GCR-Klasse 8",
+   "sicher": false,
+   "anfrage": "Klasse 8",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Zahl",
+   "kandidaten": [
+    "Zahl",
+    "M",
+    "T"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Bruchrechnung",
+   "genannt": "Bruchrechnung",
+   "tokens": 573,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Zahl",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Bruchrechnung",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "8ee3a2ab-e9e9-46d5-a420-f543494cdf63",
+  "titel": "Proportionale Zuordnungen beschreiben",
+  "art": "klar",
+  "akzeptiert": [
+   "Proportionalität"
+  ],
+  "S0": {
+   "titel": "Zweisatz",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Zweisatz",
+   "sicher": false,
+   "anfrage": "Proportionale Zuordnungen beschreiben",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Wort",
+   "kandidaten": [
+    "Wort",
+    "Höhe",
+    "Porto"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Proportionalität",
+   "genannt": "Proportionalität",
+   "tokens": 510,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Wort",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Proportionalität",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "7be6051e-3e39-404a-9e87-4db77e600737",
+  "titel": "Die Weimarer Verfassung",
+  "art": "klar",
+  "akzeptiert": [
+   "Weimarer Verfassung"
+  ],
+  "S0": {
+   "titel": "Weimarer Verfassung",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Weimarer Verfassung",
+   "sicher": false,
+   "anfrage": "Weimarer Verfassung",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "Parlamentarisches Regierungssystem",
+   "schlagwort": "erste parlamentarische Regierung",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Weimarer Verfassung",
+   "kandidaten": [
+    "Weimarer Verfassung",
+    "Das Erste",
+    "Weltkrieg"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Weimarer Verfassung",
+   "genannt": "Weimarer Verfassung",
+   "tokens": 217,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Weimarer Verfassung",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Weimarer Verfassung",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "477256df-e20a-491d-9a43-24de02b0f1cc",
+  "titel": "21./22. April 1946",
+  "art": "klar",
+  "akzeptiert": [
+   "Sozialistische Einheitspartei Deutschlands",
+   "Zwangsvereinigung von SPD und KPD zur SED"
+  ],
+  "S0": {
+   "titel": "1946",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "1946",
+   "sicher": false,
+   "anfrage": "21./22. April 1946",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "April",
+   "kandidaten": [
+    "April",
+    "Sozialistische Einheitspartei Deutschlands",
+    "Sowjetische Besatzungszone"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+   "genannt": "Zwangsvereinigung von SPD und KPD zur SED",
+   "tokens": 287,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "April",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "03476274-616e-4678-9296-4dcce80189bf",
+  "titel": "20. - 24. Sept. 1947",
+  "art": "klar",
+  "akzeptiert": [
+   "Sozialistische Einheitspartei Deutschlands"
+  ],
+  "S0": {
+   "titel": "Liste der Deutschen Meister im Fünfkampf (Leichtathletik)",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "20/20 Vision",
+   "sicher": false,
+   "anfrage": "20.",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Septime",
+   "kandidaten": [
+    "Septime",
+    "Parteitag",
+    "Sozialistische Einheitspartei Deutschlands"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Parteitag der SED",
+   "genannt": "II. Parteitag der SED",
+   "tokens": 389,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Septime",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Parteitag der SED",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc",
+  "titel": "23. März 2000",
+  "art": "klar",
+  "akzeptiert": [
+   "Horst Köhler",
+   "Internationaler Währungsfonds"
+  ],
+  "S0": {
+   "titel": "Südafrikanische Fußballnationalmannschaft/Olympische Spiele",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Südafrikanische Fußballnationalmannschaft/Olympische Spiele",
+   "sicher": false,
+   "anfrage": "23. März 2000",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "März 2000",
+   "kandidaten": [
+    "März 2000",
+    "Horst Köhler",
+    "Christlich Demokratische Union Deutschlands"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Horst Köhler",
+   "genannt": "Horst Köhler",
+   "tokens": 363,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "März 2000",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Horst Köhler",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "a41d9d3f-388b-4938-b3df-2f0c381b601d",
+  "titel": "Fachportal Geographie | Landesbildungsserver Baden-Württemberg",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Geographie"
+  ],
+  "S0": {
+   "titel": "Großherzogtum Hessen",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Geographie",
+   "sicher": true,
+   "anfrage": "Geographie",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "Geographie",
+   "schlagwort": "Geographie",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "Geographie",
+   "kandidaten": [
+    "Geographie",
+    "Landesbildungsserver Baden-Württemberg",
+    "Erdkundeunterricht"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Geographie",
+   "genannt": "Geographie",
+   "tokens": 269,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Geographie",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Geographie",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "9ba086a0-7f3a-4445-8167-fe9959598525",
+  "titel": "Erdbeben, Vulkanismus, Plattentektonik (Schule) ] memucho",
+  "art": "klar",
+  "akzeptiert": [
+   "Erdbeben",
+   "Plattentektonik",
+   "Vulkanismus"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Wettersteine",
+   "sicher": false,
+   "anfrage": "Erdbeben, Vulkanismus, Plattentektonik (Schule)",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Erdbeben",
+   "kandidaten": [
+    "Erdbeben",
+    "Vulkanismus",
+    "Plattentektonik"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Plattentektonik",
+   "genannt": "Plattentektonik",
+   "tokens": 240,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Erdbeben",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Plattentektonik",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9",
+  "titel": "Digitales Lernen an außerschulischen Lernorten",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Außerschulischer Lernort"
+  ],
+  "S0": {
+   "titel": "Lernwerkstatt",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Lernwerkstatt",
+   "sicher": false,
+   "anfrage": "Digitales Lernen an außerschulischen Lernorten",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Digitales Lernspiel",
+   "schlagwort": "digitales Lernen",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Lernen",
+   "kandidaten": [
+    "Lernen",
+    "Actionbound",
+    "Eichstätt"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Geographie",
+   "genannt": "Geographie",
+   "tokens": 495,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Lernen",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Geographie",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "f19f7f52-eeb2-4345-9b4e-559e486fa2e2",
+  "titel": "Landkarte Katar; GinkgoMaps Landkarten Sammlung Kontinent: Asien; Region: Katar",
+  "art": "klar",
+  "akzeptiert": [
+   "Katar"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Katar",
+   "sicher": true,
+   "anfrage": "Katar",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "Landfläche",
+   "schlagwort": "Land",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Katar",
+   "kandidaten": [
+    "Katar",
+    "Kontinent",
+    "Asien"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Katar",
+   "genannt": "Katar",
+   "tokens": 292,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Katar",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Katar",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "bdc8e683-99c0-4f0a-9519-98eef818f610",
+  "titel": "Ehrgeizige Ziele beim 3. Petersberger Klimadialog",
+  "art": "klar",
+  "akzeptiert": [
+   "Klimapolitik",
+   "Petersberger Klimadialog",
+   "UN-Klimakonferenz"
+  ],
+  "S0": {
+   "titel": "Petersberger Klimadialog",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Petersberger Klimadialog",
+   "sicher": false,
+   "anfrage": "Ehrgeizige Ziele beim 3. Petersberger Klimadialog",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "UN-Klimakonferenz",
+   "schlagwort": "UN-Klimakonferenz",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "Petersberger Klimadialog",
+   "kandidaten": [
+    "Petersberger Klimadialog",
+    "UN-Klimakonferenz",
+    "Frage"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Petersberger Klimadialog",
+   "genannt": "Petersberger Klimadialog",
+   "tokens": 253,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Petersberger Klimadialog",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Petersberger Klimadialog",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "87704813-c34a-4771-a577-c0c8008cb772",
+  "titel": "Kann sich Frankreich von der Krise erholen?",
+  "art": "klar",
+  "akzeptiert": [
+   "Frankreich",
+   "Wirtschaft Frankreichs"
+  ],
+  "S0": {
+   "titel": "Argentinien-Krise",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Argentinien-Krise",
+   "sicher": false,
+   "anfrage": "Kann sich Frankreich von der Krise erholen?",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Frankreich",
+   "kandidaten": [
+    "Frankreich",
+    "Krise",
+    "Arbeitskosten"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Wirtschaft Frankreichs",
+   "genannt": "Wirtschaft Frankreichs",
+   "tokens": 224,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Frankreich",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Wirtschaft Frankreichs",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5",
+  "titel": "Die Politik muss es nur wollen",
+  "art": "klar",
+  "akzeptiert": [
+   "Eurokrise",
+   "Staatsverschuldung",
+   "Vermögensteuer"
+  ],
+  "S0": {
+   "titel": "Was gesagt werden muss",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Was gesagt werden muss",
+   "sicher": false,
+   "anfrage": "Politik muss es nur wollen",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Sabine Reiner",
+   "schlagwort": "Susanne Reiner",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Politik",
+   "kandidaten": [
+    "Politik",
+    "Schulden",
+    "Europa"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Eurokrise",
+   "genannt": "Eurokrise",
+   "tokens": 593,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Politik",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Eurokrise",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "f3caa6d3-4750-4fc8-b073-8c8eccf62b40",
+  "titel": "Es ist nicht die Zeit für einen Magier, sondern für handlungsfähige Akteure | bpb",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Europäische Wirtschafts- und Währungsunion",
+   "Eurozone"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Bundeszentrale für politische Bildung",
+   "sicher": true,
+   "anfrage": "bpb",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Europäische Union",
+   "schlagwort": "EU",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Zeit",
+   "kandidaten": [
+    "Zeit",
+    "Projektionsfläche",
+    "Wirtschaftswissenschaftler"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Europäische Wirtschafts- und Währungsunion",
+   "genannt": "Europäische Wirtschafts- und Währungsunion",
+   "tokens": 687,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Bundeszentrale für politische Bildung",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Bundeszentrale für politische Bildung",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "c4d8c077-ea98-486d-98c0-77ea98886df9",
+  "titel": "Hörspielfabrik",
+  "art": "klar",
+  "akzeptiert": [
+   "Hörspiel"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Hörspiel",
+   "schlagwort": "Hörspiel",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "Hörspiel",
+   "kandidaten": [
+    "Hörspiel",
+    "Schüler",
+    "Frage"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Hörspiel",
+   "genannt": "Hörspiel",
+   "tokens": 231,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Hörspiel",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Hörspiel",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "f61cd77c-9a90-41a1-9cd7-7c9a9081a108",
+  "titel": "Arbeitsheft \"Kosmos YouTube\"",
+  "art": "klar",
+  "akzeptiert": [
+   "YouTube"
+  ],
+  "S0": {
+   "titel": "Funk (Medienangebot)",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Kosmos CP1",
+   "sicher": false,
+   "anfrage": "Kosmos YouTube",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "YouTube",
+   "schlagwort": "Youtube",
+   "richtig": true
+  },
+  "S3": {
+   "titel": "YouTube",
+   "kandidaten": [
+    "YouTube",
+    "YouTuber",
+    "Lernvideo"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "YouTube",
+   "genannt": "YouTube",
+   "tokens": 453,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "YouTube",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "YouTube",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "aad2eddf-63e7-4a83-92ed-df63e7ba8389",
+  "titel": "Scratch - Gruppenpuzzle (Der Einstieg in kreative Programmierprojekte)",
+  "art": "klar",
+  "akzeptiert": [
+   "Scratch (Programmiersprache)"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Scratch (Computer)",
+   "sicher": true,
+   "anfrage": "Scratch",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Scratch (Computer)",
+   "schlagwort": "Scratch",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Intro",
+   "kandidaten": [
+    "Intro",
+    "Programmierung",
+    "Gestaltung"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Scratch (Programmiersprache)",
+   "genannt": "Scratch (Programmiersprache)",
+   "tokens": 267,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Scratch (Computer)",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Scratch (Computer)",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932",
+  "titel": "Scratch Projektideen",
+  "art": "klar",
+  "akzeptiert": [
+   "Scratch (Programmiersprache)"
+  ],
+  "S0": {
+   "titel": "Calliope mini",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Scratch (Computer)",
+   "sicher": true,
+   "anfrage": "Scratch",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Scratch (Computer)",
+   "schlagwort": "Scratch",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Broschüre",
+   "kandidaten": [
+    "Broschüre",
+    "Integrierte Entwicklungsumgebung",
+    "Kind"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Scratch (Programmiersprache)",
+   "genannt": "Scratch (Programmiersprache)",
+   "tokens": 334,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Scratch (Computer)",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Scratch (Computer)",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "1c748a03-1563-4524-911a-075e225902d4",
+  "titel": "digitale Medien im Deutschunterricht",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Deutschunterricht",
+   "Digitale Medien"
+  ],
+  "S0": {
+   "titel": "Deutschunterricht",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Deutschunterricht",
+   "sicher": false,
+   "anfrage": "digitale Medien im Deutschunterricht",
+   "richtig": true
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Deutschunterricht",
+   "kandidaten": [
+    "Deutschunterricht",
+    "Medien",
+    "S"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Mediendidaktik",
+   "genannt": "Mediendidaktik",
+   "tokens": 680,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Deutschunterricht",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Mediendidaktik",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "803ebb4d-aa53-4107-922a-85d86bbcd304",
+  "titel": "Lernen mit dem Fidget Spinner",
+  "art": "klar",
+  "akzeptiert": [
+   "Fidget Spinner"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Lernen",
+   "kandidaten": [
+    "Lernen",
+    "Fidget Spinner",
+    "Deutsche Sprache"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Fidget Spinner",
+   "genannt": "Fidget Spinner",
+   "tokens": 275,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Lernen",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Fidget Spinner",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de",
+  "titel": "Rasmus und der Lanstreicher",
+  "art": "klar",
+  "akzeptiert": [
+   "Astrid Lindgren",
+   "Rasmus und der Landstreicher"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": null,
+   "sicher": false,
+   "anfrage": "",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Webbrowser",
+   "kandidaten": [
+    "Webbrowser",
+    "Rasmus",
+    "Ihren"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Rasmus und der Landstreicher",
+   "genannt": "Rasmus und der Landstreicher",
+   "tokens": 288,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Webbrowser",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Rasmus und der Landstreicher",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "f8451c14-12cc-465f-8aac-ad9e2a2851f1",
+  "titel": "Kompetenz 1",
+  "art": "keins",
+  "akzeptiert": [],
+  "S0": {
+   "titel": "Digitale Kompetenz",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Digitale Kompetenz",
+   "sicher": false,
+   "anfrage": "Kompetenz 1",
+   "richtig": false
+  },
+  "S2": {
+   "titel": null,
+   "schlagwort": "",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Schulform",
+   "kandidaten": [
+    "Schulform",
+    "Emma Ihrer",
+    "Bieler"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Digitale Kompetenz",
+   "genannt": "Digitale Kompetenz",
+   "tokens": 664,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Schulform",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Digitale Kompetenz",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168",
+  "titel": "Die 5 häufigsten Fehler bei Unternehmensgründungen",
+  "art": "klar",
+  "akzeptiert": [
+   "Existenzgründung",
+   "Unternehmensgründung"
+  ],
+  "S0": {
+   "titel": "Unternehmensgründung",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Unternehmensgründung",
+   "sicher": false,
+   "anfrage": "5 häufigsten Fehler bei Unternehmensgründungen",
+   "richtig": true
+  },
+  "S2": {
+   "titel": "Immobilie",
+   "schlagwort": "Immobilien",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Immobilie",
+   "kandidaten": [
+    "Immobilie",
+    "Wirtschaft",
+    "Fehler"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Unternehmensgründung",
+   "genannt": "Unternehmensgründung",
+   "tokens": 678,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Immobilie",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Unternehmensgründung",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "5494f4c2-100f-4ca0-94f4-c2100f0ca053",
+  "titel": "Psychologie der Super-Reichen - Dr. Dr. Rainer Zitelmann im Interview",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Rainer Zitelmann",
+   "Reichtum"
+  ],
+  "S0": {
+   "titel": "Rainer Zitelmann",
+   "sicher": false,
+   "richtig": true
+  },
+  "S1": {
+   "titel": "Colin Wilson",
+   "sicher": false,
+   "anfrage": "Psychologie der Super-Reichen",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Immobilie",
+   "schlagwort": "Immobilie",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Rainer Zitelmann",
+   "kandidaten": [
+    "Rainer Zitelmann",
+    "Buch",
+    "Psychologie"
+   ],
+   "richtig": true
+  },
+  "S4": {
+   "titel": "Reichtum",
+   "genannt": "Reichtum",
+   "tokens": 693,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Rainer Zitelmann",
+   "richtig": true
+  },
+  "K2": {
+   "titel": "Reichtum",
+   "richtig": true
+  }
+ },
+ {
+  "node_id": "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc",
+  "titel": "Selfmade Millionär - Macht Geld glücklich?",
+  "art": "unscharf",
+  "akzeptiert": [
+   "Reichtum",
+   "Vermögensmillionär"
+  ],
+  "S0": {
+   "titel": "Pension Groonen",
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Vom Pionier zum Millionär",
+   "sicher": false,
+   "anfrage": "Selfmade Millionär",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Wirtschaft",
+   "schlagwort": "Wirtschaft",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Geld",
+   "kandidaten": [
+    "Geld",
+    "Vermögensmillionär",
+    "Macht"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Geld",
+   "genannt": "Geld",
+   "tokens": 696,
+   "richtig": false
+  },
+  "K1": {
+   "titel": "Geld",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Geld",
+   "richtig": false
+  }
+ },
+ {
+  "node_id": "4041df54-5339-46d7-81df-545339d6d78d",
+  "titel": "Erfolgreich Kunden gewinnen mit Online Seminaren - Rainer von Massenbach im Interview",
+  "art": "klar",
+  "akzeptiert": [
+   "Akquise",
+   "Web-Seminar"
+  ],
+  "S0": {
+   "titel": null,
+   "sicher": false,
+   "richtig": false
+  },
+  "S1": {
+   "titel": "Tourismuskaufmann",
+   "sicher": false,
+   "anfrage": "Erfolgreich Kunden gewinnen mit Online Seminaren",
+   "richtig": false
+  },
+  "S2": {
+   "titel": "Leo von Massenbach",
+   "schlagwort": "Rainer von Massenbach",
+   "richtig": false
+  },
+  "S3": {
+   "titel": "Rainer",
+   "kandidaten": [
+    "Rainer",
+    "Massenbach",
+    "Online"
+   ],
+   "richtig": false
+  },
+  "S4": {
+   "titel": "Web-Seminar",
+   "genannt": "Webinar",
+   "tokens": 605,
+   "richtig": true
+  },
+  "K1": {
+   "titel": "Rainer",
+   "richtig": false
+  },
+  "K2": {
+   "titel": "Web-Seminar",
+   "richtig": true
+  }
+ }
+]
