@@ -11,10 +11,11 @@ import argparse
 import sqlite3
 import sys
 import time
+import zlib
 from pathlib import Path
 
 from app.settings import get_settings
-from app.sources.wikidata.index import WikidataIndex, build_index
+from app.sources.wikidata.index import IndexInUseError, WikidataIndex, build_index
 
 
 def cmd_status(args: argparse.Namespace) -> int:
@@ -39,7 +40,10 @@ def cmd_build(args: argparse.Namespace) -> int:
     started = time.monotonic()
     try:
         meta = build_index(Path(args.page_props), Path(args.page), target)
-    except (OSError, ValueError, sqlite3.Error) as exc:
+    except IndexInUseError as exc:
+        print(f"Wikidata-Index gebaut, aber nicht übernommen: {exc}", file=sys.stderr)
+        return 1
+    except (OSError, EOFError, zlib.error, ValueError, sqlite3.Error) as exc:  # EOFError: a dump cut short
         print(f"Wikidata-Index nicht gebaut: {exc}", file=sys.stderr)
         return 1
     print(

@@ -185,10 +185,15 @@ def test_the_wikidata_number_comes_from_the_local_index(with_wikidata: TestClien
     found = by_text(with_wikidata.post("/api/v2/entities", json={"text": TEXT}).json())
     abbe = found["Ernst Abbe"]["article"]["ids"]
     assert abbe["wikidata"] == "Q999001"
-    assert "http://www.wikidata.org/entity/Q999001" in abbe["same_as"]
+    assert abbe["same_as"] == [
+        "https://d-nb.info/gnd/118646419",
+        "https://viaf.org/viaf/19744386",
+        "http://www.wikidata.org/entity/Q999001",
+        "http://de.dbpedia.org/resource/Ernst_Abbe",
+    ], "GND, VIAF, Wikidata, DBpedia - the order the schema promises"
     assert found["Lichtmikroskop"]["article"]["ids"]["wikidata"] is None, "not in the small index"
     wikidata = with_wikidata.get("/health").json()["components"]["entities"]["wikidata"]
-    assert wikidata == {"available": True, "articles": 4, "dump": "2026-09-07"}
+    assert wikidata == {"available": True, "articles": 5, "dump": "2026-09-07"}
 
 
 def test_an_article_outside_wikipedia_carries_no_ids(client: TestClient) -> None:

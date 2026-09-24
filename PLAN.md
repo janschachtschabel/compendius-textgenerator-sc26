@@ -1515,13 +1515,15 @@ API.
   lokalen Daten, ohne Live-Abfrage: GND, Art des Datensatzes und VIAF aus dem Normdaten-Block, den der Kiwix-Dump
   behält (M18: 503 von 679 Artikeln, 30 von 30 geprüften Nummern passend); die Wikidata-Nummer aus einem SQLite-Index
   (`STATE_DIR/wikidata.db`), den `compendium wikidata build` aus den Dewiki-Dumps `page_props` und `page` baut
-  (3,1 Mio. Artikel, 106 MB, rund 8 Minuten; 670 von 679); die DBpedia-URI aus dem Titel, als konstruiert
+  (3,2 Mio. Titel, 107 MB, fünf bis acht Minuten; 674 von 679); die DBpedia-URI aus dem Titel, als konstruiert
   beschrieben. Alles zusammen unter `same_as` als URIs. Ohne Index fehlt nur die Wikidata-Nummer, `/health` meldet
   ihn unter `entities.wikidata`. Verworfen: Live-Abfragen (lobid-gnd, Entity Facts, Wikidata-API; widersprechen
   dem Betrieb ohne Netz), `wikimapper` (seit 2023 ohne Release, eigener Import sind rund 150 Zeilen),
   `spacy-entity-linker` (englischlastige Wissensbasis, 1,3 GB) und eine GND-Erkennung direkt aus den DNB-Dumps
-  (Personen über den Namen nicht sicher; erst mit eigenem Gold). Offen: Artikel, die seit dem ZIM umbenannt
-  wurden (9 von 679), bräuchten die Tabelle `redirect` als dritten Dump.
+  (Personen über den Namen nicht sicher; erst mit eigenem Gold). Weiterleitungen zählen, wenn Wikidata ihnen ein
+  eigenes Objekt gibt: Das ZIM führt sie als eigene Seiten (*Nenner* → *Bruchrechnung#Nenner*, Q3044574). Ohne eigenes
+  Objekt bleiben sie ohne Nummer (5 von 679); die Nummer des Zielartikels benennt einen anderen Begriff. Korrigiert
+  nach dem Review; die erste Fassung ließ Weiterleitungen aus und hielt die Fehlstellen für Umbenennungen.
 - **D44 (2026-09-24)** Vorgabemodell ist `gpt-6-luna` statt `gpt-5.6-luna` (`B_API_MODEL`). M19: gleiche Güte bei
   Artikelwahl (90 statt 91 von 94), Trefferprüfung (10 statt 11 von 16 unpassenden verworfen, kein passender) und
   LLM-Zuordner (macro-F1 0,703, zwischen 0,694 und 0,720), Tokens gleich bis 12 % höher, zum halben Preis je Token;

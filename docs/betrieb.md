@@ -16,7 +16,7 @@ mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfi
 | Volume | Inhalt | Wiederherstellung |
 |---|---|---|
 | `zim` (`ZIM_DIR`) | ZIM-Archive, `active.json`, `sync_status.json` | neu laden lassen (`ZIM_BOOTSTRAP_DOWNLOAD=true`) oder Dateien hineinkopieren; der nächste Sync übernimmt sie |
-| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/`, optional `wikidata.db` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` mit `compendium wikidata build` aus zwei Wikipedia-Dumps (rund 8 Minuten, siehe README „Entitäten und Kennungen“); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden |
+| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/`, optional `wikidata.db` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` mit `compendium wikidata build` aus zwei Wikipedia-Dumps, im Docker-Betrieb über `docker compose run` in dieses Volume (rund 8 Minuten, siehe README „Entitäten und Kennungen“); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
 
 **`ZIM_PATHS` umgeht dieses Volume.** Sind dort Pfade eingetragen, liest der Dienst genau diese Dateien:
 `active.json` wird nicht gelesen, der Sync-Job verwaltet die Archive nicht, und ein Wechsel braucht einen

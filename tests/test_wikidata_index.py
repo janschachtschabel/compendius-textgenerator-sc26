@@ -1,19 +1,22 @@
 """The local Wikidata index (D43): article title to Wikidata number, built from two dewiki dumps, no network.
 
 The Kiwix dump carries no Wikidata numbers (docs/umbau.md), so they come from ``page_props`` (the property
-``wikibase_item`` per page id) and ``page`` (id, namespace, title, redirect flag). Only articles count: pages of
-other namespaces and redirects are left out, the latter because linking follows a redirect to its article anyway.
+``wikibase_item`` per page id) and ``page`` (id, namespace, title). Only namespace 0 counts. A redirect counts when
+Wikidata links an item of its own to it ("Nenner" redirects into "Bruchrechnung" and is item Q3044574); the ZIM keeps
+such redirects as pages of their own, so their titles reach the index.
 """
 
 from __future__ import annotations
 
 import gzip
+import re
+import sqlite3
 from collections.abc import Iterable
 from pathlib import Path
 
 import pytest
 
-from app.sources.wikidata.index import WikidataIndex, build_index
+from app.sources.wikidata.index import IndexInUseError, WikidataIndex, build_index
 
 BACKSLASH = chr(92)
 PAGE_COLUMNS = (
@@ -36,10 +39,11 @@ PAGES = [
     (1, 0, "Ernst_Abbe", 0),
     (2, 0, "O'Brien", 0),
     (3, 14, "Physik", 0),  # a category
-    (4, 0, "Abbe", 1),  # a redirect
+    (4, 0, "Abbe", 1),  # a redirect with an item of its own
     (5, 0, "Römisches_Reich", 0),
     (6, 0, f"Back{BACKSLASH}slash", 0),
     (7, 0, "Ohne_Wikidata", 0),
+    (8, 0, "Weiterleitung_ohne_Nummer", 1),  # a redirect Wikidata links no item to
 ]
 PROPS = [
     (1, "wikibase_item", "Q999001"),
@@ -90,19 +94,30 @@ def write_dumps(
     props: list[tuple[int, str, str]] = PROPS,
     completed: str = "2026-09-07 16:21:03",
     one_line: bool = False,
+    page_columns: tuple[str, ...] = PAGE_COLUMNS,
 ) -> tuple[Path, Path]:
-    """``page_props`` and ``page`` dumps of the given rows; returns their paths in that order."""
+    """``page_props`` and ``page`` dumps of the given rows; returns their paths in that order.
+
+    ``page_columns`` sets the order of the columns in the page table, as its CREATE TABLE names them."""
     directory.mkdir(parents=True, exist_ok=True)
-    page_rows = [
-        f"({pid},{ns},{sql_string(title)},{redirect},0,0.5,'20260901000000','20260901000000',1,100,'wikitext',NULL)"
-        for pid, ns, title, redirect in pages
-    ]
+    fixed = {"page_is_new": "0", "page_random": "0.5", "page_touched": "'20260901000000'"}
+    fixed |= {"page_links_updated": "'20260901000000'", "page_latest": "1", "page_len": "100"}
+    fixed |= {"page_content_model": "'wikitext'", "page_lang": "NULL"}
+    page_rows = []
+    for pid, ns, title, redirect in pages:
+        values = fixed | {
+            "page_id": str(pid),
+            "page_namespace": str(ns),
+            "page_title": sql_string(title),
+            "page_is_redirect": str(redirect),
+        }
+        page_rows.append("(" + ",".join(values[name] for name in page_columns) + ")")
     prop_rows = [f"({pid},{sql_string(name)},{sql_string(value)},NULL)" for pid, name, value in props]
     return (
         _dump(
             directory / "dewiki-latest-page_props.sql.gz", "page_props", PROPS_COLUMNS, prop_rows, completed, one_line
         ),
-        _dump(directory / "dewiki-latest-page.sql.gz", "page", PAGE_COLUMNS, page_rows, completed, one_line),
+        _dump(directory / "dewiki-latest-page.sql.gz", "page", page_columns, page_rows, completed, one_line),
     )
 
 
@@ -126,16 +141,30 @@ def test_quotes_backslashes_and_umlauts_in_titles_survive_the_dump(index: Wikida
     assert index.qid(f"Back{BACKSLASH}slash") == "Q999006"
 
 
-def test_only_articles_count_not_categories_or_redirects(index: WikidataIndex) -> None:
+def test_only_articles_count_not_categories(index: WikidataIndex) -> None:
     assert index.qid("Physik") is None, "namespace 14 is a category"
-    assert index.qid("Abbe") is None, "a redirect; linking follows it to its article"
     assert index.qid("Ohne Wikidata") is None, "an article without the property has no number"
     assert index.qid("Gibt es nicht") is None
 
 
+def test_a_redirect_counts_with_an_item_of_its_own(index: WikidataIndex) -> None:
+    """Wikidata links some items to a redirect on purpose; following the redirect would name another item."""
+    assert index.qid("Abbe") == "Q999004"
+    assert index.qid("Weiterleitung ohne Nummer") is None, "without an item of its own there is no number"
+
+
+def test_the_columns_are_read_in_the_order_the_create_table_names_them(tmp_path: Path) -> None:
+    reordered = ("page_namespace", "page_title", "page_lang", "page_id", *PAGE_COLUMNS[3:11])
+    page_props, page = write_dumps(tmp_path / "dumps", page_columns=reordered)
+    build_index(page_props, page, tmp_path / "wikidata.db")
+    index = WikidataIndex(tmp_path / "wikidata.db")
+    assert index.qid("Ernst Abbe") == "Q999001"
+    assert index.qid("Physik") is None, "the namespace is still read from its own column"
+
+
 def test_meta_names_the_dump_date_and_the_number_of_articles(index: WikidataIndex) -> None:
     meta = index.meta()
-    assert meta["articles"] == 4
+    assert meta["articles"] == 5
     assert meta["dump"] == "2026-09-07"
     assert meta["sources"] == ["dewiki-latest-page_props.sql.gz", "dewiki-latest-page.sql.gz"]
     assert meta["built_at"]
@@ -171,7 +200,7 @@ def test_a_failed_build_keeps_the_index_that_was_there(tmp_path: Path) -> None:
 def test_the_older_layout_with_all_tuples_on_one_line_reads_the_same(tmp_path: Path) -> None:
     page_props, page = write_dumps(tmp_path / "dumps", one_line=True)
     meta = build_index(page_props, page, tmp_path / "wikidata.db")
-    assert meta["articles"] == 4
+    assert meta["articles"] == 5
     assert WikidataIndex(tmp_path / "wikidata.db").qid("O'Brien") == "Q999002"
 
 
@@ -187,3 +216,46 @@ def test_a_dump_without_its_table_is_refused(tmp_path: Path) -> None:
     _, page = write_dumps(tmp_path / "dumps")
     with pytest.raises(ValueError, match="page_props"):
         build_index(page, page, tmp_path / "wikidata.db")
+
+
+def test_an_index_that_cannot_be_opened_answers_nothing_instead_of_stopping_the_service(
+    index: WikidataIndex, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A lock, missing rights or a path SQLite refuses: the service starts, only the Wikidata numbers are missing."""
+
+    def refuse(*args: object, **kwargs: object) -> None:
+        raise sqlite3.OperationalError("unable to open database file")
+
+    monkeypatch.setattr("app.sources.wikidata.index.sqlite3.connect", refuse)
+    reopened = WikidataIndex(index.path)
+    assert reopened.exists and not reopened.available
+    assert reopened.qid("Ernst Abbe") is None
+
+
+def test_a_build_that_cannot_replace_the_index_in_use_keeps_both(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Windows refuses to replace a file a running service holds open; the finished build waits beside it."""
+    page_props, page = write_dumps(tmp_path / "dumps")
+    target = tmp_path / "wikidata.db"
+    build_index(page_props, page, target)
+
+    def refuse(source: object, destination: object) -> None:
+        raise PermissionError(13, "Zugriff verweigert")
+
+    monkeypatch.setattr("app.sources.wikidata.index.os.replace", refuse)
+    with pytest.raises(IndexInUseError, match=re.escape("wikidata.db.part")):
+        build_index(page_props, page, target)
+    assert WikidataIndex(target).qid("Ernst Abbe") == "Q999001", "the index in use stays"
+    assert WikidataIndex(target.with_name("wikidata.db.part")).qid("Ernst Abbe") == "Q999001", "the new one waits"
+
+
+def test_a_title_is_asked_as_written_before_its_capitalised_form(tmp_path: Path) -> None:
+    """MediaWiki keeps some first letters as they are: "ß" does not become "SS", which names another page."""
+    pages = [(1, 0, "ß_(Begriffsklärung)", 0), (2, 0, "SS_(Begriffsklärung)", 0), (3, 0, "Ernst_Abbe", 0)]
+    props = [(1, "wikibase_item", "Q1"), (2, "wikibase_item", "Q2"), (3, "wikibase_item", "Q3")]
+    page_props, page = write_dumps(tmp_path / "dumps", pages=pages, props=props)
+    build_index(page_props, page, tmp_path / "wikidata.db")
+    index = WikidataIndex(tmp_path / "wikidata.db")
+    assert index.qid("ß (Begriffsklärung)") == "Q1"
+    assert index.qid("ernst Abbe") == "Q3", "a lower-case first letter still finds the article"

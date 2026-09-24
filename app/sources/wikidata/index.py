@@ -1,12 +1,15 @@
 """The local Wikidata index (D43): article title to Wikidata number, from two dumps of the German Wikipedia.
 
 The Kiwix dump carries no Wikidata numbers (docs/umbau.md), so they come from the dump tables ``page_props`` (the
-property ``wikibase_item`` per page id) and ``page`` (id, namespace, title, redirect flag), both published at
+property ``wikibase_item`` per page id) and ``page`` (id, namespace, title), both published at
 dumps.wikimedia.org/dewiki. ``compendium wikidata build`` reads them from disk - no network, no live API - and writes
 one SQLite file into the state directory; the service only reads it.
 
-Only articles (namespace 0) that are no redirect go in, because linking follows a redirect to its article anyway.
-The dumps and the ZIM archive have different dates, so an article renamed in between has no number here.
+Every page of namespace 0 with an item goes in, redirects included: Wikidata links some items to a redirect on purpose
+(badge "sitelink to redirect"), and the ZIM keeps redirects as pages of their own - "Nenner" leads into a section of
+"Bruchrechnung" and is item Q3044574, while the number of "Bruchrechnung" would name another thing. A redirect without
+an item of its own has no number. The dumps and the ZIM archive have different dates, so an article renamed in between
+has no number here.
 """
 
 from __future__ import annotations
@@ -39,6 +42,10 @@ _ESCAPE_RE = re.compile(BACKSLASH * 2 + "(.)", re.DOTALL)
 _ESCAPED = {"0": "\0", "n": "\n", "r": "\r", "t": "\t", "Z": "\x1a"}
 _COLUMN_RE = re.compile(r"^\s+`(\w+)`")
 _COMPLETED_RE = re.compile(r"^-- Dump completed on (\d{4}-\d{2}-\d{2})")
+
+
+class IndexInUseError(OSError):
+    """The new index is built, but the old one cannot be replaced - on Windows while a service holds it open."""
 
 
 def _unescape(value: str) -> str:
@@ -122,10 +129,8 @@ def _write(target: Path, page_props: Path, page: Path) -> dict[str, Any]:
             "INSERT OR IGNORE INTO pages VALUES (?, ?)",
             (
                 (int(page_id), title.replace("_", " "))
-                for page_id, namespace, title, redirect in _rows(
-                    page, "page", ("page_id", "page_namespace", "page_title", "page_is_redirect"), info
-                )
-                if namespace == ARTICLE_NAMESPACE and redirect == "0" and page_id and title
+                for page_id, namespace, title in _rows(page, "page", ("page_id", "page_namespace", "page_title"), info)
+                if namespace == ARTICLE_NAMESPACE and page_id and title
             ),
         )
         connection.executescript(
@@ -163,10 +168,16 @@ def build_index(page_props: Path, page: Path, target: Path) -> dict[str, Any]:
     partial.unlink(missing_ok=True)
     try:
         meta = _write(partial, page_props, page)
-        os.replace(partial, target)
     except BaseException:
         partial.unlink(missing_ok=True)
         raise
+    try:
+        os.replace(partial, target)
+    except PermissionError as exc:  # the finished build stays: it took minutes, the rename takes a moment
+        raise IndexInUseError(
+            f"{target} cannot be replaced - does a running service hold it open? The new index waits in {partial}; "
+            f"stop the service and rename it to {target.name}"
+        ) from exc
     log.info("Wikidata index %s: %d articles from the dump of %s", target, meta["articles"], meta["dump"] or "?")
     return meta
 
@@ -192,13 +203,17 @@ class WikidataIndex:
             self._open()
 
     def _open(self) -> None:
-        connection = sqlite3.connect(self.path.resolve().as_uri() + "?mode=ro", uri=True, check_same_thread=False)
+        # absolute(), not resolve(): on a mapped drive resolve() yields a UNC path, and SQLite refuses its URI
+        uri = self.path.absolute().as_uri() + "?mode=ro"
+        connection: sqlite3.Connection | None = None
         try:
+            connection = sqlite3.connect(uri, uri=True, check_same_thread=False)
             rows = dict(connection.execute("SELECT key, value FROM meta").fetchall())
             if rows.get("schema") != SCHEMA_VERSION:
                 raise sqlite3.DatabaseError(f"schema {rows.get('schema')!r}, expected {SCHEMA_VERSION}")
         except sqlite3.Error as exc:
-            connection.close()
+            if connection is not None:
+                connection.close()
             log.error("Wikidata index %s is not usable: %s", self.path, exc)
             return
         self._connection, self._meta = connection, _read_meta(rows)
@@ -215,14 +230,24 @@ class WikidataIndex:
         return dict(self._meta)
 
     def qid(self, title: str) -> str | None:
-        """The Wikidata number of the article with this title, or ``None``."""
+        """The Wikidata number of the article with this title, or ``None``.
+
+        The title is asked as written, then with a capital first letter as Wikipedia writes titles - but only where
+        that capital is a single letter: MediaWiki keeps "ß" as it is, and "SS" is another page.
+        """
         name = title.replace("_", " ").strip()
         if self._connection is None or not name:
             return None
-        name = name[0].upper() + name[1:]  # Wikipedia titles start with a capital
+        names = [name]
+        capital = name[0].upper()
+        if len(capital) == 1 and capital != name[0]:
+            names.append(capital + name[1:])
         with self._lock:
-            row = self._connection.execute("SELECT qid FROM titles WHERE title = ?", (name,)).fetchone()
-        return str(row[0]) if row else None
+            for candidate in names:
+                row = self._connection.execute("SELECT qid FROM titles WHERE title = ?", (candidate,)).fetchone()
+                if row:
+                    return str(row[0])
+        return None
 
     def close(self) -> None:
         if self._connection is not None:

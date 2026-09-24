@@ -717,21 +717,30 @@ gefundenen Artikel eine GND.
 
 **Nachtrag, eingebaut (D43):** Der Endpunkt liefert GND, VIAF und die aus dem Titel gebildete DBpedia-URI, die
 Wikidata-Nummer kommt aus einem lokalen Index. `compendium wikidata build` baute ihn aus `page_props` (105 MB) und
-`page` (320 MB) vom 07.09.2026 in 504 s auf dem Entwicklungsrechner: 3.145.893 Artikel, 106 MB. Dieselben 20 Texte,
-jetzt mit der Funktion des Endpunkts gezählt:
+`page` (320 MB) vom 07.09.2026 in fünf bis acht Minuten auf dem Entwicklungsrechner (302 und 504 s): 3.177.984 Titel,
+darunter rund 32.100 Weiterleitungen mit eigenem Wikidata-Objekt, 107 MB. Dieselben 20 Texte, jetzt mit der Funktion
+des Endpunkts gezählt:
 
 | 679 verknüpfte Wikipedia-Artikel | Anzahl |
 |---|---|
 | mit GND-Nummer | 503 (74 %), wie oben |
-| mit Wikidata-Nummer | 670 (98,7 %), darunter alle 503 mit GND |
-| ohne Wikidata-Nummer | 9, etwa *Gedicht*, *Nenner*, *Abszisse*: im Dump vom September Weiterleitungen, seit dem ZIM vom Januar umbenannt |
-| Verknüpfen je Text, Median | 137 ms ohne, 183 ms mit Index (warm, im Mittel 47 Begriffe je Text) |
+| mit Wikidata-Nummer | 674 (99,3 %), darunter alle 503 mit GND |
+| ohne Wikidata-Nummer | 5, etwa *Bruchterme*, *Schichten*: Weiterleitungen auf einen Abschnitt, die Wikidata mit keinem eigenen Objekt verknüpft |
+| Verknüpfen je Text, Median | 141 ms ohne, 147 ms mit Index (beide warm, im Mittel 47 Begriffe je Text) |
 
 Gegenprobe ohne Netz: Für die 30 Stichprobennummern nennt lobid-gnd eine Wikidata-Verknüpfung; 29 stimmen mit dem
 Index überein. Die eine Abweichung ist keine: Der Artikel *England* ist das Land (Q21), der GND-Datensatz „England“
-ist in Wikidata mit dem historischen Königreich verknüpft (Q179876). Die neun Umbenannten ließen sich mit der Tabelle
-`redirect` als drittem Dump auflösen. Rohdaten: `m18_entitaeten_gnd.json` (Kennungen je Entität),
-`m18_gnd_stichprobe.json`; nur Begriffe, Titel und Nummern.
+ist in Wikidata mit dem historischen Königreich verknüpft (Q179876). Rohdaten: `m18_entitaeten_gnd.json` (Kennungen
+je Entität), `m18_gnd_stichprobe.json`; nur Begriffe, Titel und Nummern.
+
+**Korrektur nach dem Review (24.09.2026):** Die erste Fassung zählte 670 und hielt die neun Fehlstellen für Artikel,
+die seit dem ZIM umbenannt wurden. Das stimmte nicht. Alle neun sind schon im ZIM vom Januar Weiterleitungen auf einen
+Abschnitt (*Nenner* → *Bruchrechnung#Nenner*), die das ZIM als eigene Seite führt, und der Index ließ Weiterleitungen
+aus. Vier davon sind in Wikidata aber eigene Objekte, mit dem Abzeichen „Sitelink auf Weiterleitung“: *Nenner*
+Q3044574, *Gedicht* Q5185279, *Ordinate* Q500576, *Abszisse* Q515874. Seitdem nimmt der Index sie auf. Die damals
+vorgeschlagene Tabelle `redirect` hätte geschadet: Sie führt zum Zielartikel und damit zur Nummer eines anderen
+Begriffs, *Lyrik* statt *Gedicht*. Auch die erste Zeitmessung war schief: Sie wärmte den Index nicht vor, die 46 ms
+Aufschlag waren kalte Seiten; warm sind es 6 ms je Text.
 
 ## M19 gpt-6-luna gegen gpt-5.6-luna (24.09.2026)
 

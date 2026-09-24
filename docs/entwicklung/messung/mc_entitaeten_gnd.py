@@ -79,7 +79,8 @@ for topic in topics:
         continue
     text = wiki.parse(article).text[:TEXT_CHARS]
     mentions = merge(mentions_from_titles(registry.archives, text))[:MAX_ENTITIES]
-    linked = [_link(registry.archives, mention) for mention in mentions]  # untimed: both timings then read warm
+    # untimed, with the index: both timings then read archive and index warm, and the difference is the lookup
+    linked = [_link(registry.archives, mention, wikidata) for mention in mentions]
     for label, index in (("ohne", None), ("mit", wikidata)) if wikidata else (("ohne", None),):
         started = time.perf_counter()
         linked = [_link(registry.archives, mention, index) for mention in mentions]

@@ -195,15 +195,27 @@ Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weit
 nur die Wikidata-Nummer; `/health` meldet ihn unter `entities.wikidata`.
 
 ```bash
-# einmal laden (105 MB und 320 MB), dann bauen: 3,1 Mio. Artikel, 106 MB, rund 8 Minuten
+# einmal laden (105 MB und 320 MB), dann bauen: 3,2 Mio. Titel, 107 MB, fünf bis acht Minuten
 curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page_props.sql.gz
 curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page.sql.gz
 uv run compendium wikidata build --page-props dewiki-latest-page_props.sql.gz --page dewiki-latest-page.sql.gz
 uv run compendium wikidata status   # Artikel, Datum des Dumps, Quelldateien
 ```
 
-Der Dienst öffnet den Index beim Start; nach einem neuen Bau neu starten. Gemessen an den Entitäten von 20
-Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 670 (M18 im Messprotokoll).
+Im Docker-Betrieb liest der Dienst das Volume `state`, nicht `./data/state` des Hosts. Dort baut ihn ein einmaliger
+Container desselben Images, der die Dumps nur lesend einhängt; `uv` braucht der Server dafür nicht:
+
+```bash
+docker compose run --rm --no-deps -v "$PWD:/dumps:ro" api compendium wikidata build \
+  --page-props /dumps/dewiki-latest-page_props.sql.gz --page /dumps/dewiki-latest-page.sql.gz
+docker compose restart api
+```
+
+Der Dienst öffnet den Index beim Start; nach einem neuen Bau neu starten. Unter Windows lässt sich ein Index, den ein
+laufender Dienst offen hält, nicht ersetzen: Der Bau lässt den neuen Index dann als `wikidata.db.part` daneben liegen
+und sagt, dass er nach dem Beenden des Dienstes umbenannt werden muss. Weiterleitungen zählen mit, wenn Wikidata ihnen
+ein eigenes Objekt gibt (*Nenner* führt in *Bruchrechnung*, ist aber Q3044574). Gemessen an den Entitäten von 20
+Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674 (M18 im Messprotokoll).
 
 ## Knoten als Eingang
 
