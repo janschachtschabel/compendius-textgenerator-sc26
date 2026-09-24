@@ -193,3 +193,10 @@ misst `mc_aufloesung.py`).
 WLO-Produktion mit ID, Titel und Fächern, dazu die Art (klar, unscharf, keins) und die akzeptierten
 Hauptartikel. Ihre Beschreibungen stehen nicht darin; `docs/entwicklung/messung/mc_material_artikelwahl.py`
 liest sie aus dem Repository, `mc_material_stichprobe.py` zieht die Stichprobe neu.
+
+`lehrplan/treffer_noten.yaml` hält die Noten für die Stichprobe von M22: 175 Lehrplanelemente, die Teil 2
+zu den 20 normalen Themen ausgibt, je Element Thema, IRI und Note (2 gehört zum Thema, 1 berührt es,
+0 passt nicht, dazu der Grund). `treffer_noten_zweit.yaml` sind die Noten eines zweiten Beurteilers für
+dieselben Elemente. Die Texte der Elemente stehen nicht darin, da offen ist, ob MEM-Daten weitergegeben
+werden dürfen; `docs/entwicklung/messung/mc_lehrplan_treffer.py` zieht Stichprobe und Bogen neu,
+`mc_lehrplan_auswertung.py` rechnet.

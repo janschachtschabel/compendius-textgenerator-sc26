@@ -847,3 +847,71 @@ nennt jeder Weg trotzdem einen Artikel. 18.757 Tokens für 40 Materialien, mit `
 schlagen es nach, 34 von 38 für rund 470 Tokens und 2,8 s; (B) die Entitäten aus Titel und Beschreibung, lokal, 16
 von 38 in 0,2 s; (C) A, wo ein LLM bereitsteht (Stufen `balanced` und `best-quality`), sonst B; (D) wie heute der
 Titel, 7 von 38, und der Aufrufer schickt das Thema mit. Die Messung spricht für C. Rohdaten: `m21_materialwahl.json`.
+
+## M22 Lehrplanbezüge von Teil 2 (24.09.2026)
+
+**Aufbau:** Teil 2 sucht im lokalen MEM-Cache nach den Stichwörtern eines Themas und schränkt die Lehrpläne auf die
+Fächer ein, wenn welche bekannt sind (`04-lehrplaene-und-sammlung.md`). Ob die ausgegebenen Elemente zum Thema
+gehören, war nicht geprüft; der alte Dienst ordnete keine Lehrpläne zu, einen Vergleich gibt es nicht. Die 20
+normalen Themen des Artikelgolds liefen im Ablauf des Dienstes je zweimal, ohne Fach und mit dem Fach, das eine
+Lehrkraft nennen würde (Optik mit Physik, Klimawandel mit Geografie), über den lokalen Cache vom 17.09.2026
+(`mc_lehrplan_treffer.py`, LLM aus). Der Lauf mit Fach gibt eine Teilmenge des anderen aus. Beurteilt wurde eine
+Stichprobe mit fester Saat: je Thema bis zu fünf Elemente des Laufs mit Fach und bis zu fünf, die nur der Lauf ohne
+Fach ausgibt, zusammen 175, gemischt und ohne Angabe der Schicht. Noten: 2 gehört zum Thema, 1 berührt es (Beispiel
+in einer Aufzählung, Werkzeug, Zeile ohne eigenen Inhalt unter einem passenden Bereich), 0 passt nicht. Claude hat
+beschriftet, ein Claude-Subagent ohne die ersten Noten ein zweites Mal nach denselben Regeln: gleiche Note bei 93 %
+der Elemente (Cohens Kappa 0,89), einig über „passend“ bei 98 %, über „passt nicht“ bei 95 %; strittig war nur die 1,
+etwa Napoleon unter „Aufklärung, Französische Revolution und Napoleon“. Die Anteile sind je Thema aus beiden
+Schichten hochgerechnet und über die Themen gemittelt (`mc_lehrplan_auswertung.py`), in Klammern mit den zweiten
+Noten:
+
+| | ohne Fach | mit Fach |
+|---|---|---|
+| Elemente in den 20 Themen | 4.623 | 3.154 |
+| davon nur über die Überschrift gefunden | 1.503 | 1.211 |
+| passend (Note 2) | 60 % (62 %) | 62 % (64 %) |
+| mindestens berührt (Note 1 oder 2) | 86 % (81 %) | 87 % (81 %) |
+| passende Elemente, hochgerechnet | 2.434 (2.651) | 1.831 (2.048) |
+
+Die Themen gehen weit auseinander, von 100 % passend (Plattentektonik, Industrielle Revolution, Photosynthese mit
+Fach) bis 0 % (Programmiersprache mit Fach: Die Elemente nutzen eine Programmiersprache als Werkzeug, „implementieren
+verkettete Listen in einer objektorientierten Programmiersprache“, und bekommen eine 1). Je Thema und Schicht stehen
+höchstens fünf Elemente in der Stichprobe; die Werte je Thema sind grob, die Mittel über 20 Themen tragen.
+
+Die Fehltreffer (Note 0) haben zwei Ursachen. Im Lauf ohne Fach steckt das Stichwort meist in einem anderen Wort oder
+hat eine andere Bedeutung: „Erdplatten“ trifft die „Herdplatten“, der Bindestrich-Teil „affin“ des Synonyms
+„affin-linearen Funktion“ trifft „Paraffin“ und „Affinität“, „Zelle“ die „Solarzelle“ und die Zellen einer
+Tabellenkalkulation, „Base“ die „Basenpaarung“ der DNA, „Lineare Funktion“ die Überschrift „NICHT-LINEARE
+FUNKTIONEN“. Das Fach nimmt 17 der 21 Wortfehler der Stichprobe heraus, nach den zweiten Noten 20 von 24. Im Lauf
+mit Fach nennt meist nur die Überschrift das Thema, und das Element handelt von etwas anderem, etwa „Ionennachweise“
+unter „Vom Daltonschen Atommodell zum Kern-Hülle-Modell“: 10 der 13 Fehltreffer dieser Schicht sind
+Überschriften-Treffer, nach den zweiten Noten 15 von 19. Überschriften-Treffer sind ein Drittel aller Elemente und
+passen seltener (46 % passend, 25 % gar nicht) als solche mit dem Stichwort im eigenen Text (55 % und 15 %), oft
+aber doch: „Ausbreitung von Licht“ unter „Grundlagen der Optik“.
+
+Das Fach macht Teil 2 um ein Drittel kürzer und hebt die Treffsicherheit kaum. Es verwirft ein Viertel der passenden
+Elemente, vor allem aus drei Gruppen: berufliche Lehrpläne ohne Schulfach (Optik für Podologen und Geomatiker, die
+Sinfonie für Instrumentenmacher), der Sachunterricht der Grundschule (Demokratie, Wasserkreislauf) und Nachbarfächer,
+die das Thema ebenso lehren (Atommodell in Physik statt Chemie, Photosynthese in Chemie, Ökosystem in Geographie,
+Plattentektonik in Geologie, Römisches Reich in Latein). Der Wasserkreislauf behält mit Geografie 2 von 19 Elementen.
+
+**Ergebnis und Optionen (zu entscheiden):** Teil 2 findet zu jedem der 20 Themen passende Lehrplanelemente, aber
+nicht nur solche. Von dem, was er ausgibt, gehören rund 60 % zum Thema, 17 bis 26 % berühren es, 13 bis 19 % passen
+nicht. Vier Wege, die sich ergänzen:
+(A) Stichwortregeln schärfen: Bindestrich-Teile nur aus dem Thema selbst, nicht aus Synonymen und Unterartikeln;
+eine Fundstelle direkt nach „nicht-“ zählt nicht; am Ende eines längeren Wortes zählt ein Treffer nur, wenn davor
+mindestens zwei Buchstaben stehen („H|erdplatten“ ist keine Zusammensetzung, „Ei|zelle“ bleibt); Silbentrennzeichen
+fallen vor dem Vergleich weg. Lokal und ohne Kosten. Über alle Elemente nachgerechnet fallen 44 ohne Fach und 34 mit
+Fach, keines davon passend, 38 bei Lineare Funktion (quadratische, Potenz-, Exponential- und Winkelfunktionen,
+affine Abbildungen der Geometrie); in der Stichprobe 8 der 21 Wortfehler. Andere Bedeutungen kurzer Stichwörter
+(Solarzelle, Stromversorgung) bleiben.
+(B) Überschriften-Treffer bündeln: Elemente, die nur über ihre Überschrift gefunden werden, erscheinen nicht
+einzeln; der Bereich steht einmal da, mit der Zahl seiner Elemente. Teil 2 wird um ein Drittel kürzer, und die
+meisten Fehltreffer im Lauf mit Fach verschwinden; die passenden Elemente darunter sind dann nur über den Bereich zu
+finden. (C) Fachfilter ergänzen: Lehrpläne ohne Schulfach und der Sachunterricht passieren den Filter, oder sie
+folgen dem Fach in einem eigenen Abschnitt; das holt einen Teil der verlorenen passenden Elemente zurück und
+verlängert Teil 2. (D) Inhaltlich prüfen: Ein Ähnlichkeitsmaß (Model2Vec liegt im Image) oder das LLM ordnet oder
+kappt die Elemente; das LLM läse mit Fach im Mittel 158 Elemente je Thema, bei breiten Themen über 500. Beides wäre
+vorher an den 175 Noten zu messen. Die Messung spricht für A und, nach einem Blick auf die Darstellung, für B; C und D
+hängen davon ab, ob Lehrkräfte berufliche Lehrpläne und Nachbarfächer sehen sollen. Rohdaten:
+`m22_lehrplan_treffer.json`, Noten `eval/lehrplan/treffer_noten.yaml` und `treffer_noten_zweit.yaml`.

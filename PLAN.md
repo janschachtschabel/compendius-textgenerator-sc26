@@ -807,6 +807,15 @@ Hinweistext. Äquivalenzprüfung mit den 17 Optik-Stichwörtern des Prototyps ü
 200 (200), Berlin 0 (0), dazu Bayern 278, das der Prototyp wegen
 des Fachlehrplan-Kinds nicht sah.
 
+**Treffsicherheit (M22, 2026-09-24):** 20 Themen je ohne und mit Fach, 175 Elemente von zwei Beurteilern
+benotet (einig bei 93 %, Kappa 0,89): rund 60 % der Elemente gehören zum Thema, 13 bis 19 % passen nicht,
+mit und ohne Fach fast gleich. Fehltreffer entstehen, wo das Stichwort in einem anderen Wort steckt
+(„Herdplatten“, Bindestrich-Teil „affin“ eines Synonyms, „NICHT-LINEARE FUNKTIONEN“) und wo nur die
+Überschrift das Thema nennt. Das Fach kürzt Teil 2 um ein Drittel und verwirft ein Viertel der passenden
+Elemente (berufliche Lehrpläne ohne Schulfach, Sachunterricht, Nachbarfächer). Offen, welche der Optionen
+aus `docs/entwicklung/05-messprotokoll.md` (schärfere Stichwortregeln, Überschriften-Treffer bündeln,
+Fachfilter ergänzen, inhaltliche Prüfung) eingebaut werden.
+
 ### 5.4 Rendering
 
 Struktur (Bildungsstufe → Bundesland → Lehrplan mit Schulart und Klassenstufe → Lernbereich →

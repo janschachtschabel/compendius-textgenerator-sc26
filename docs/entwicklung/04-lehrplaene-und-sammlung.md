@@ -32,10 +32,13 @@ zu acht Ebenen tief.
    Themenwort tragen, höchstens zwölf. Für Optik: Optik, Lehre vom Licht, Wellenoptik, Technische Optik,
    Geometrische Optik, Mikrooptik, Augenoptiker, Röntgenoptik.
 2. **Fachfilter:** Die WLO-Fächer der Sammlung oder des Knotens, alle gleichwertig, oder das Fach der Anfrage werden
-   über `config/subjects.yaml` auf die Fachnamen in MEM abgebildet; ein Lehrplan passt, wenn er zu einem davon gehört. Weil Sachsen bei vielen Lehrplänen Fächer ohne Namen führt, prüft der Filter auch den Titel des
+   über `config/subjects.yaml` auf die Fachnamen in MEM abgebildet; ein Lehrplan passt, wenn er zu einem davon
+   gehört. Weil Sachsen bei vielen Lehrplänen Fächer ohne Namen führt, prüft der Filter auch den Titel des
    Lehrplans.
 3. **Wortgrenzen:** Ein Treffer zählt nur, wenn das Stichwort an einer Wortgrenze steht, zuerst im Text des
    Elements, sonst in dem des übergeordneten Elements. Das hält zufällige Treffer mitten in anderen Wörtern fern.
+   Am Anfang oder Ende eines längeren Wortes zählt ein Treffer, damit Zusammensetzungen wie „Lichtbrechung“ oder
+   „Kernphysik“ bleiben; so trifft aber auch „Erdplatten“ die „Herdplatten“ und „Zelle“ die „Solarzelle“ (M22).
 4. **Stufen:** Schulstufe und Klassenstufe kommen aus den Daten; fehlen sie, leitet der Dienst sie aus der
    Jahrgangsstufe oder dem Titel ab und kennzeichnet sie als abgeleitet.
 
@@ -70,6 +73,9 @@ Obergrenze je Land halten den Teil kürzer.
 - Inhaltliche Änderungen kommen spätestens nach einem Monat an; neue oder wegfallende Lehrpläne fallen durch die
   wöchentliche Zählung früher auf.
 - Ob die MEM-Daten so weitergegeben werden dürfen, ist noch nicht bestätigt.
+- Treffsicherheit (M22): Rund 60 % der Elemente gehören zum Thema, 13 bis 19 % passen nicht; das Fach
+  kürzt Teil 2, hebt die Treffsicherheit aber kaum und verwirft auch passende Elemente aus beruflichen
+  Lehrplänen, dem Sachunterricht und Nachbarfächern. Die Wege dagegen stehen in `05-messprotokoll.md`.
 
 ## Teil 3: Sammlungsüberblick
 

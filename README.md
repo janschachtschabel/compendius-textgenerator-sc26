@@ -176,7 +176,9 @@ aus einem Präfix wie „Physik: Optik“ und wird über `config/subjects.yaml` 
 abgebildet; ohne Fach wird über alle Fächer gesucht. Teil 2 enthält alle Treffer (Kompendialtexte
 dürfen lang sein); jede Gruppe steht zwischen `<!-- f: Bundesland=…; Bildungsstufe=…;
 Klassenstufe=…; Schulart=…; Lehrplan=<IRI> -->` und `<!-- /f -->` und lässt sich so
-herausparsen. `LEHRPLAN_MAX_GROUPS_PER_LAND` kappt optional.
+herausparsen. `LEHRPLAN_MAX_GROUPS_PER_LAND` kappt optional. Rund 60 % der ausgegebenen
+Elemente gehören zum Thema, 13 bis 19 % passen nicht (M22, 20 Themen, mit und ohne Fach fast
+gleich); die Messung und die Wege dagegen stehen in `docs/entwicklung/05-messprotokoll.md`.
 
 ```bash
 uv run compendium lehrplan status          # Cache-Stand, Lehrpläne je Land, letzter Harvest-Lauf

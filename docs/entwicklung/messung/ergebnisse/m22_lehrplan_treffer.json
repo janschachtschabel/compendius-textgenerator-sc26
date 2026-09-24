@@ -1,0 +1,2260 @@
+[
+ {
+  "thema": "Barockliteratur",
+  "fach": "Deutsch",
+  "ohne_fach": {
+   "sekunden": 0.55,
+   "stichwoerter": [
+    "Barockliteratur",
+    "Literatur des Barocks"
+   ],
+   "fachwoerter": [],
+   "elemente": 1,
+   "lehrplaene": 1,
+   "laender": 1,
+   "je_stichwort": {
+    "Barockliteratur": 1
+   },
+   "fundort": {
+    "label": 1
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.09,
+   "stichwoerter": [
+    "Barockliteratur",
+    "Literatur des Barocks"
+   ],
+   "fachwoerter": [
+    "deutsch"
+   ],
+   "elemente": 1,
+   "lehrplaene": 1,
+   "laender": 1,
+   "je_stichwort": {
+    "Barockliteratur": 1
+   },
+   "fundort": {
+    "label": 1
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-56870-1",
+    "schicht": "mit_fach",
+    "stichwort": "Barockliteratur",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Bruchrechnung",
+  "fach": "Mathematik",
+  "ohne_fach": {
+   "sekunden": 1.16,
+   "stichwoerter": [
+    "Bruchrechnung"
+   ],
+   "fachwoerter": [],
+   "elemente": 5,
+   "lehrplaene": 5,
+   "laender": 3,
+   "je_stichwort": {
+    "Bruchrechnung": 5
+   },
+   "fundort": {
+    "label": 5
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.1,
+   "stichwoerter": [
+    "Bruchrechnung"
+   ],
+   "fachwoerter": [
+    "mathematik"
+   ],
+   "elemente": 4,
+   "lehrplaene": 4,
+   "laender": 3,
+   "je_stichwort": {
+    "Bruchrechnung": 4
+   },
+   "fundort": {
+    "label": 4
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/8738bad1-e58f-4895-9663-72eb75180860",
+    "schicht": "mit_fach",
+    "stichwort": "Bruchrechnung",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/37f8ac80-8d11-47ea-9884-0ff98289a80f",
+    "schicht": "mit_fach",
+    "stichwort": "Bruchrechnung",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-37715-1",
+    "schicht": "mit_fach",
+    "stichwort": "Bruchrechnung",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-12859-1",
+    "schicht": "mit_fach",
+    "stichwort": "Bruchrechnung",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-159941-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Bruchrechnung",
+    "fundort": "label",
+    "score": 210
+   }
+  ]
+ },
+ {
+  "thema": "Demokratie",
+  "fach": "Politik",
+  "ohne_fach": {
+   "sekunden": 0.49,
+   "stichwoerter": [
+    "Demokratie",
+    "Volksherrschaft",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie"
+   ],
+   "fachwoerter": [],
+   "elemente": 819,
+   "lehrplaene": 117,
+   "laender": 3,
+   "je_stichwort": {
+    "Demokratie": 794,
+    "Demokratisierung": 25
+   },
+   "fundort": {
+    "label": 440,
+    "parent": 379
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.23,
+   "stichwoerter": [
+    "Demokratie",
+    "Volksherrschaft",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie"
+   ],
+   "fachwoerter": [
+    "politik",
+    "sozialkunde",
+    "gemeinschaftskunde",
+    "gesellschaftslehre",
+    "gesellschaftskunde"
+   ],
+   "elemente": 531,
+   "lehrplaene": 51,
+   "laender": 3,
+   "je_stichwort": {
+    "Demokratie": 511,
+    "Demokratisierung": 20
+   },
+   "fundort": {
+    "label": 273,
+    "parent": 258
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/2868a359-f925-4316-a886-a90b18f6cd8d",
+    "schicht": "mit_fach",
+    "stichwort": "Demokratie",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/lis_live_isb.c.19771.de",
+    "schicht": "mit_fach",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/8bbd44c8-3fb8-4674-9539-cb9742e11624",
+    "schicht": "mit_fach",
+    "stichwort": "Demokratie",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-28423-1",
+    "schicht": "mit_fach",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/26b4b642-4d60-446d-9f14-357afce05d09",
+    "schicht": "mit_fach",
+    "stichwort": "Demokratie",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/191389ec-b902-4c6f-8372-fba6440c9359",
+    "schicht": "nur_ohne",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/lis_live_isb.c.165150.de",
+    "schicht": "nur_ohne",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/lis_live_isb.c.258237.de",
+    "schicht": "nur_ohne",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-11274-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Demokratie",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/d977bc10-b3a1-4f13-a8df-9e04d27dbf7c",
+    "schicht": "nur_ohne",
+    "stichwort": "Demokratie",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Französische Revolution",
+  "fach": "Geschichte",
+  "ohne_fach": {
+   "sekunden": 0.39,
+   "stichwoerter": [
+    "Französische Revolution",
+    "Die Französische Revolution"
+   ],
+   "fachwoerter": [],
+   "elemente": 40,
+   "lehrplaene": 16,
+   "laender": 2,
+   "je_stichwort": {
+    "Französische Revolution": 40
+   },
+   "fundort": {
+    "label": 21,
+    "parent": 19
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.18,
+   "stichwoerter": [
+    "Französische Revolution",
+    "Die Französische Revolution"
+   ],
+   "fachwoerter": [
+    "geschichte",
+    "gesellschaftslehre",
+    "gesellschaftswissenschaft"
+   ],
+   "elemente": 37,
+   "lehrplaene": 13,
+   "laender": 2,
+   "je_stichwort": {
+    "Französische Revolution": 37
+   },
+   "fundort": {
+    "parent": 19,
+    "label": 18
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/d70cc23e-6016-4b1a-a6d4-e4a8941a44ce",
+    "schicht": "mit_fach",
+    "stichwort": "Französische Revolution",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/9fcf7af7-0839-4153-849a-16cf3d1d3e15",
+    "schicht": "mit_fach",
+    "stichwort": "Französische Revolution",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/f85155d4-0f6c-4e4b-a217-5ec6f6f984f8",
+    "schicht": "mit_fach",
+    "stichwort": "Französische Revolution",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/574d3350-2c36-4a5b-b2e9-6ba9a7d11789",
+    "schicht": "mit_fach",
+    "stichwort": "Französische Revolution",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/9944f707-e9a9-40b1-ad6b-a38e37d0b147",
+    "schicht": "mit_fach",
+    "stichwort": "Französische Revolution",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/82d05424-02a3-48c3-af2a-5469c1fbae11",
+    "schicht": "nur_ohne",
+    "stichwort": "Französische Revolution",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/36b1ce13-6acd-4671-9814-2b3d24971dfb",
+    "schicht": "nur_ohne",
+    "stichwort": "Französische Revolution",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/fdc2fc02-faea-42fb-8063-0636dc332cae",
+    "schicht": "nur_ohne",
+    "stichwort": "Französische Revolution",
+    "fundort": "label",
+    "score": 111
+   }
+  ]
+ },
+ {
+  "thema": "Klimawandel",
+  "fach": "Geografie",
+  "ohne_fach": {
+   "sekunden": 0.57,
+   "stichwoerter": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "fachwoerter": [],
+   "elemente": 158,
+   "lehrplaene": 55,
+   "laender": 3,
+   "je_stichwort": {
+    "Klimawandel": 149,
+    "Klimaveränderung": 7,
+    "Klimaänderung": 2
+   },
+   "fundort": {
+    "label": 100,
+    "parent": 58
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.28,
+   "stichwoerter": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "fachwoerter": [
+    "geographie",
+    "geografie",
+    "erdkunde",
+    "gesellschaftslehre"
+   ],
+   "elemente": 98,
+   "lehrplaene": 11,
+   "laender": 3,
+   "je_stichwort": {
+    "Klimawandel": 95,
+    "Klimaveränderung": 3
+   },
+   "fundort": {
+    "label": 50,
+    "parent": 48
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/f7ec3c45-578b-40be-b25c-b9f8e4ed59c5",
+    "schicht": "mit_fach",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/bfef2580-6b3a-4fde-8d65-793c792c0112",
+    "schicht": "mit_fach",
+    "stichwort": "Klimawandel",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/bb168252-b099-4a24-b77c-49d012901b65",
+    "schicht": "mit_fach",
+    "stichwort": "Klimawandel",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernbereich-4305-1",
+    "schicht": "mit_fach",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/50300829-5fad-470b-848c-3da7ab7d4b49",
+    "schicht": "mit_fach",
+    "stichwort": "Klimawandel",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/9334527e-bcad-46de-9c37-07009ee97fef",
+    "schicht": "nur_ohne",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-16891-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Klimawandel",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/a26fe08c-d7ec-4e40-946e-00895a358aa8",
+    "schicht": "nur_ohne",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/a9425fb2-8be6-4966-8d51-89b8c0b062af",
+    "schicht": "nur_ohne",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-16892-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Klimawandel",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Optik",
+  "fach": "Physik",
+  "ohne_fach": {
+   "sekunden": 0.23,
+   "stichwoerter": [
+    "Optik",
+    "Lehre vom Licht",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik"
+   ],
+   "fachwoerter": [],
+   "elemente": 145,
+   "lehrplaene": 19,
+   "laender": 3,
+   "je_stichwort": {
+    "Optik": 145
+   },
+   "fundort": {
+    "parent": 111,
+    "label": 34
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.1,
+   "stichwoerter": [
+    "Optik",
+    "Lehre vom Licht",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik"
+   ],
+   "fachwoerter": [
+    "physik",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 135,
+   "lehrplaene": 14,
+   "laender": 3,
+   "je_stichwort": {
+    "Optik": 135
+   },
+   "fundort": {
+    "parent": 106,
+    "label": 29
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-sachsen.org/resource/lernbereich-64018-1",
+    "schicht": "mit_fach",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 301
+   },
+   {
+    "iri": "https://lp-bavaria.org/lis_live_isb.c.68132.de",
+    "schicht": "mit_fach",
+    "stichwort": "Optik",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/6c3bee06-3174-4f22-8a93-9ddcdc84a7ce",
+    "schicht": "mit_fach",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernbereich-63787-1",
+    "schicht": "mit_fach",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 301
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenzbereich-6098-1",
+    "schicht": "mit_fach",
+    "stichwort": "Optik",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-27283-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Optik",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernbereich-32295-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 301
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179758-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 200
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179757-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Optik",
+    "fundort": "parent",
+    "score": 200
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-89435-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Optik",
+    "fundort": "label",
+    "score": 210
+   }
+  ]
+ },
+ {
+  "thema": "Photosynthese",
+  "fach": "Biologie",
+  "ohne_fach": {
+   "sekunden": 0.88,
+   "stichwoerter": [
+    "Photosynthese",
+    "Fotosynthese",
+    "photosynthetische Effizienz"
+   ],
+   "fachwoerter": [],
+   "elemente": 239,
+   "lehrplaene": 35,
+   "laender": 3,
+   "je_stichwort": {
+    "Fotosynthese": 203,
+    "Photosynthese": 36
+   },
+   "fundort": {
+    "label": 146,
+    "parent": 93
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.18,
+   "stichwoerter": [
+    "Photosynthese",
+    "Fotosynthese",
+    "photosynthetische Effizienz"
+   ],
+   "fachwoerter": [
+    "biologie",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 195,
+   "lehrplaene": 22,
+   "laender": 3,
+   "je_stichwort": {
+    "Fotosynthese": 169,
+    "Photosynthese": 26
+   },
+   "fundort": {
+    "label": 119,
+    "parent": 76
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/e54dabea-8f43-407b-a1fb-a5d243295a99",
+    "schicht": "mit_fach",
+    "stichwort": "Fotosynthese",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/ed17a518-0952-4763-9f1a-067f6bdd8637",
+    "schicht": "mit_fach",
+    "stichwort": "Photosynthese",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-65051-1",
+    "schicht": "mit_fach",
+    "stichwort": "Fotosynthese",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/7bf61615-1d1a-439f-917d-d3bd08711a53",
+    "schicht": "mit_fach",
+    "stichwort": "Fotosynthese",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-28010-1",
+    "schicht": "mit_fach",
+    "stichwort": "Fotosynthese",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/0eef077d-77b5-49f0-8fe0-39f7cee8053d",
+    "schicht": "nur_ohne",
+    "stichwort": "Photosynthese",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/1c0f840a-a857-422c-bf38-774d29af3e8f",
+    "schicht": "nur_ohne",
+    "stichwort": "Fotosynthese",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/fc0f02c5-5c21-4da4-805b-e532ba41c18b",
+    "schicht": "nur_ohne",
+    "stichwort": "Photosynthese",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/43c33a82-e282-45fc-9f27-272e720038d6",
+    "schicht": "nur_ohne",
+    "stichwort": "Fotosynthese",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-57227-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Fotosynthese",
+    "fundort": "parent",
+    "score": 201
+   }
+  ]
+ },
+ {
+  "thema": "Programmiersprache",
+  "fach": "Informatik",
+  "ohne_fach": {
+   "sekunden": 0.51,
+   "stichwoerter": [
+    "Programmiersprache",
+    "Geschichte der Programmiersprachen",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Allzweck",
+    "Zeittafel der Programmiersprachen"
+   ],
+   "fachwoerter": [],
+   "elemente": 133,
+   "lehrplaene": 38,
+   "laender": 3,
+   "je_stichwort": {
+    "Programmiersprache": 133
+   },
+   "fundort": {
+    "label": 100,
+    "parent": 33
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.16,
+   "stichwoerter": [
+    "Programmiersprache",
+    "Geschichte der Programmiersprachen",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Allzweck",
+    "Zeittafel der Programmiersprachen"
+   ],
+   "fachwoerter": [
+    "informatik"
+   ],
+   "elemente": 116,
+   "lehrplaene": 28,
+   "laender": 3,
+   "je_stichwort": {
+    "Programmiersprache": 116
+   },
+   "fundort": {
+    "label": 85,
+    "parent": 31
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/2ab86427-d282-4b12-a146-501479420b4d",
+    "schicht": "mit_fach",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-59579-1",
+    "schicht": "mit_fach",
+    "stichwort": "Programmiersprache",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/47b1929f-7337-4796-8983-c6f539581d76",
+    "schicht": "mit_fach",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/f32605ff-1198-45e3-b59c-fd4d5f9c4d33",
+    "schicht": "mit_fach",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-206495-1",
+    "schicht": "mit_fach",
+    "stichwort": "Programmiersprache",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-95621-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-bavaria.org/9b12aa70-1153-4375-8633-841d1235e553",
+    "schicht": "nur_ohne",
+    "stichwort": "Programmiersprache",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-21172-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-95613-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-21220-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Programmiersprache",
+    "fundort": "label",
+    "score": 210
+   }
+  ]
+ },
+ {
+  "thema": "Säure-Base-Konzepte",
+  "fach": "Chemie",
+  "ohne_fach": {
+   "sekunden": 0.96,
+   "stichwoerter": [
+    "Säure-Base-Konzepte",
+    "Säure",
+    "Base"
+   ],
+   "fachwoerter": [],
+   "elemente": 612,
+   "lehrplaene": 92,
+   "laender": 3,
+   "je_stichwort": {
+    "Säure": 580,
+    "Base": 32
+   },
+   "fundort": {
+    "label": 455,
+    "parent": 157
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.18,
+   "stichwoerter": [
+    "Säure-Base-Konzepte",
+    "Säure",
+    "Base"
+   ],
+   "fachwoerter": [
+    "chemie",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 540,
+   "lehrplaene": 47,
+   "laender": 3,
+   "je_stichwort": {
+    "Säure": 532,
+    "Base": 8
+   },
+   "fundort": {
+    "label": 390,
+    "parent": 150
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/6509d6be-aec1-4b44-b2c2-3be2275e7271",
+    "schicht": "mit_fach",
+    "stichwort": "Säure",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/0deef32f-bce4-4b44-9648-a0764c16604f",
+    "schicht": "mit_fach",
+    "stichwort": "Säure",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/9270b796-c216-4e52-ad1c-fd10fa48b6f5",
+    "schicht": "mit_fach",
+    "stichwort": "Säure",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-36691-1",
+    "schicht": "mit_fach",
+    "stichwort": "Base",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-17033-1",
+    "schicht": "mit_fach",
+    "stichwort": "Säure",
+    "fundort": "parent",
+    "score": 200
+   },
+   {
+    "iri": "https://lp-bavaria.org/3f1e5e56-143f-4a9e-b3b1-4bf2627ff815",
+    "schicht": "nur_ohne",
+    "stichwort": "Säure",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-120104-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Säure",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/4c2cd321-fb89-4527-80ab-4512fc22fd4e",
+    "schicht": "nur_ohne",
+    "stichwort": "Base",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/758bb01e-24a0-4373-a87e-4061c98b1c87",
+    "schicht": "nur_ohne",
+    "stichwort": "Base",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-148812-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Säure",
+    "fundort": "label",
+    "score": 210
+   }
+  ]
+ },
+ {
+  "thema": "Sinfonie",
+  "fach": "Musik",
+  "ohne_fach": {
+   "sekunden": 0.44,
+   "stichwoerter": [
+    "Sinfonie",
+    "Symphonie",
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Manfred",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante"
+   ],
+   "fachwoerter": [],
+   "elemente": 34,
+   "lehrplaene": 20,
+   "laender": 2,
+   "je_stichwort": {
+    "Sinfonie": 20,
+    "Sinfonische Dichtung": 8,
+    "Symphonie": 5,
+    "Sinfonik": 1
+   },
+   "fundort": {
+    "label": 34
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.11,
+   "stichwoerter": [
+    "Sinfonie",
+    "Symphonie",
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Manfred",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante"
+   ],
+   "fachwoerter": [
+    "musik"
+   ],
+   "elemente": 24,
+   "lehrplaene": 16,
+   "laender": 2,
+   "je_stichwort": {
+    "Sinfonie": 16,
+    "Symphonie": 5,
+    "Sinfonische Dichtung": 2,
+    "Sinfonik": 1
+   },
+   "fundort": {
+    "label": 24
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/d0a5f233-c047-40fe-9a53-a2d513a9762b",
+    "schicht": "mit_fach",
+    "stichwort": "Sinfonie",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/3365cdad-6a3f-4ba9-995c-14e69a8730a4",
+    "schicht": "mit_fach",
+    "stichwort": "Sinfonik",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/4f6deada-1797-46e4-a720-26e621a1cf25",
+    "schicht": "mit_fach",
+    "stichwort": "Symphonie",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/17d1eba4-9892-431c-8adc-1078e91a9bd4",
+    "schicht": "mit_fach",
+    "stichwort": "Sinfonie",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/5ef7a392-fed6-4284-a1f9-35ae6342d94d",
+    "schicht": "mit_fach",
+    "stichwort": "Symphonie",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144261-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Sinfonie",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-164743-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Sinfonie",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144285-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Sinfonische Dichtung",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-164757-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Sinfonische Dichtung",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144272-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Sinfonische Dichtung",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Plattentektonik",
+  "fach": "Geografie",
+  "ohne_fach": {
+   "sekunden": 0.53,
+   "stichwoerter": [
+    "Plattentektonik",
+    "Kontinentalplatten",
+    "Erdplatten"
+   ],
+   "fachwoerter": [],
+   "elemente": 33,
+   "lehrplaene": 10,
+   "laender": 2,
+   "je_stichwort": {
+    "Plattentektonik": 32,
+    "Erdplatten": 1
+   },
+   "fundort": {
+    "label": 17,
+    "parent": 16
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.14,
+   "stichwoerter": [
+    "Plattentektonik",
+    "Kontinentalplatten",
+    "Erdplatten"
+   ],
+   "fachwoerter": [
+    "geographie",
+    "geografie",
+    "erdkunde",
+    "gesellschaftslehre"
+   ],
+   "elemente": 30,
+   "lehrplaene": 8,
+   "laender": 2,
+   "je_stichwort": {
+    "Plattentektonik": 30
+   },
+   "fundort": {
+    "parent": 16,
+    "label": 14
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-82243-1",
+    "schicht": "mit_fach",
+    "stichwort": "Plattentektonik",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4338-1",
+    "schicht": "mit_fach",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4344-1",
+    "schicht": "mit_fach",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4334-1",
+    "schicht": "mit_fach",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/7e2da3e6-8c1b-4de4-adb7-753e4af75671",
+    "schicht": "mit_fach",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/ee6c654e-19f7-47ce-8a71-6105c523931e",
+    "schicht": "nur_ohne",
+    "stichwort": "Erdplatten",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/7f67ee92-5174-470d-94a4-7ee88fc71842",
+    "schicht": "nur_ohne",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/46a3fbc0-950f-423a-9929-63f29bb1537e",
+    "schicht": "nur_ohne",
+    "stichwort": "Plattentektonik",
+    "fundort": "label",
+    "score": 111
+   }
+  ]
+ },
+ {
+  "thema": "Ökosystem",
+  "fach": "Biologie",
+  "ohne_fach": {
+   "sekunden": 0.18,
+   "stichwoerter": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall"
+   ],
+   "fachwoerter": [],
+   "elemente": 374,
+   "lehrplaene": 53,
+   "laender": 3,
+   "je_stichwort": {
+    "Ökosystem": 374
+   },
+   "fundort": {
+    "label": 227,
+    "parent": 147
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.1,
+   "stichwoerter": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall"
+   ],
+   "fachwoerter": [
+    "biologie",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 286,
+   "lehrplaene": 30,
+   "laender": 3,
+   "je_stichwort": {
+    "Ökosystem": 286
+   },
+   "fundort": {
+    "label": 163,
+    "parent": 123
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/9447c9db-8b85-4bc3-ab45-73bc7ca2aad1",
+    "schicht": "mit_fach",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-27981-1",
+    "schicht": "mit_fach",
+    "stichwort": "Ökosystem",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/22daeb7e-5e99-43d5-a340-81785e72e4ab",
+    "schicht": "mit_fach",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/15b14097-3dce-4695-9235-22960323443c",
+    "schicht": "mit_fach",
+    "stichwort": "Ökosystem",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7577-1",
+    "schicht": "mit_fach",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/92f80bf1-8316-4381-a852-4e423edaa9d2",
+    "schicht": "nur_ohne",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenzbereich-4148-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/ecb9cca0-1cd5-4559-acd4-1a95993f8ff1",
+    "schicht": "nur_ohne",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/27b36df2-afef-40de-ad18-850f640e13d5",
+    "schicht": "nur_ohne",
+    "stichwort": "Ökosystem",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-16934-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Ökosystem",
+    "fundort": "parent",
+    "score": 201
+   }
+  ]
+ },
+ {
+  "thema": "Atommodell",
+  "fach": "Chemie",
+  "ohne_fach": {
+   "sekunden": 0.61,
+   "stichwoerter": [
+    "Liste der Atommodelle",
+    "Atommodell",
+    "Atomhypothese",
+    "Atomtheorie"
+   ],
+   "fachwoerter": [],
+   "elemente": 206,
+   "lehrplaene": 39,
+   "laender": 3,
+   "je_stichwort": {
+    "Atommodell": 204,
+    "Atomhypothese": 2
+   },
+   "fundort": {
+    "parent": 119,
+    "label": 87
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.12,
+   "stichwoerter": [
+    "Liste der Atommodelle",
+    "Atommodell",
+    "Atomhypothese",
+    "Atomtheorie"
+   ],
+   "fachwoerter": [
+    "chemie",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 139,
+   "lehrplaene": 25,
+   "laender": 3,
+   "je_stichwort": {
+    "Atommodell": 137,
+    "Atomhypothese": 2
+   },
+   "fundort": {
+    "parent": 83,
+    "label": 56
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/47e91231-1b68-4a50-8138-e6fc8ee8586b",
+    "schicht": "mit_fach",
+    "stichwort": "Atommodell",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/bd6b13f8-ec05-4427-96a9-ebe6ed4fc5d0",
+    "schicht": "mit_fach",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/b964c8d0-0d93-43ce-b940-91729eb323ea",
+    "schicht": "mit_fach",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/966f189b-c995-41b4-91dc-dc293bb1a4c2",
+    "schicht": "mit_fach",
+    "stichwort": "Atommodell",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-bavaria.org/040e4f9b-bc2e-4583-8341-10318f93c2ca",
+    "schicht": "mit_fach",
+    "stichwort": "Atommodell",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-27865-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/3c290aaa-4779-490b-86e1-630736e41b46",
+    "schicht": "nur_ohne",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/84519e30-0bd2-4c15-bd51-ed9717623f94",
+    "schicht": "nur_ohne",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-26867-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-19270-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Atommodell",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Industrielle Revolution",
+  "fach": "Geschichte",
+  "ohne_fach": {
+   "sekunden": 0.64,
+   "stichwoerter": [
+    "Industrielle Revolution"
+   ],
+   "fachwoerter": [],
+   "elemente": 13,
+   "lehrplaene": 10,
+   "laender": 3,
+   "je_stichwort": {
+    "Industrielle Revolution": 13
+   },
+   "fundort": {
+    "label": 10,
+    "parent": 3
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.12,
+   "stichwoerter": [
+    "Industrielle Revolution"
+   ],
+   "fachwoerter": [
+    "geschichte",
+    "gesellschaftslehre",
+    "gesellschaftswissenschaft"
+   ],
+   "elemente": 11,
+   "lehrplaene": 8,
+   "laender": 3,
+   "je_stichwort": {
+    "Industrielle Revolution": 11
+   },
+   "fundort": {
+    "label": 8,
+    "parent": 3
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-28275-1",
+    "schicht": "mit_fach",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/472a7b17-67ed-47ba-a15d-9b6bc1a8876b",
+    "schicht": "mit_fach",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-28276-1",
+    "schicht": "mit_fach",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/8d5f6c77-82b2-48d8-ba64-7019c1405f38",
+    "schicht": "mit_fach",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-2909-1",
+    "schicht": "mit_fach",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/de238e75-01c1-492a-9060-f267000bdca3",
+    "schicht": "nur_ohne",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/0f34fd55-9947-4571-92c4-489ea5fa132f",
+    "schicht": "nur_ohne",
+    "stichwort": "Industrielle Revolution",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Elektrischer Strom",
+  "fach": "Physik",
+  "ohne_fach": {
+   "sekunden": 0.27,
+   "stichwoerter": [
+    "Elektrischer Strom",
+    "elektrische Strom",
+    "Strom"
+   ],
+   "fachwoerter": [],
+   "elemente": 740,
+   "lehrplaene": 180,
+   "laender": 3,
+   "je_stichwort": {
+    "Strom": 704,
+    "elektrische Strom": 22,
+    "Elektrischer Strom": 14
+   },
+   "fundort": {
+    "label": 628,
+    "parent": 112
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.09,
+   "stichwoerter": [
+    "Elektrischer Strom",
+    "elektrische Strom",
+    "Strom"
+   ],
+   "fachwoerter": [
+    "physik",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 336,
+   "lehrplaene": 54,
+   "laender": 3,
+   "je_stichwort": {
+    "Strom": 303,
+    "elektrische Strom": 22,
+    "Elektrischer Strom": 11
+   },
+   "fundort": {
+    "label": 269,
+    "parent": 67
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/4a7554d9-384b-4e72-82ab-d1d768450606",
+    "schicht": "mit_fach",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/233d3ba3-3118-4753-91a3-89ae978b3e11",
+    "schicht": "mit_fach",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-27811-1",
+    "schicht": "mit_fach",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-13642-1",
+    "schicht": "mit_fach",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/c4e724c7-7a6d-4a2e-b7a1-14948745af74",
+    "schicht": "mit_fach",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/3afbf9da-70d4-42d2-8781-6e69dab59bb8",
+    "schicht": "nur_ohne",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-192814-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Strom",
+    "fundort": "parent",
+    "score": 200
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-192913-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-bavaria.org/b1f7265e-9331-43b8-8737-e4ab0e36834a",
+    "schicht": "nur_ohne",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/f63c70c1-ef2c-4fb7-bfe0-e826ec5fd679",
+    "schicht": "nur_ohne",
+    "stichwort": "Strom",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Wasserkreislauf",
+  "fach": "Geografie",
+  "ohne_fach": {
+   "sekunden": 0.43,
+   "stichwoerter": [
+    "Wasserkreislauf"
+   ],
+   "fachwoerter": [],
+   "elemente": 19,
+   "lehrplaene": 16,
+   "laender": 3,
+   "je_stichwort": {
+    "Wasserkreislauf": 19
+   },
+   "fundort": {
+    "label": 19
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.12,
+   "stichwoerter": [
+    "Wasserkreislauf"
+   ],
+   "fachwoerter": [
+    "geographie",
+    "geografie",
+    "erdkunde",
+    "gesellschaftslehre"
+   ],
+   "elemente": 2,
+   "lehrplaene": 2,
+   "laender": 1,
+   "je_stichwort": {
+    "Wasserkreislauf": 2
+   },
+   "fundort": {
+    "label": 2
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4113-1",
+    "schicht": "mit_fach",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-8481-1",
+    "schicht": "mit_fach",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/317b1d1e-dd73-40e1-94b7-e1c83815b200",
+    "schicht": "nur_ohne",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/62c444de-c8a4-4e5c-9d1b-9fe821429a89",
+    "schicht": "nur_ohne",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/3ecf85f9-fa66-42ac-8044-cf863dd1f4a5",
+    "schicht": "nur_ohne",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/b00dd98b-95a2-4be4-9dcc-53c8c021ef8c",
+    "schicht": "nur_ohne",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-185428-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Wasserkreislauf",
+    "fundort": "label",
+    "score": 210
+   }
+  ]
+ },
+ {
+  "thema": "Römisches Reich",
+  "fach": "Geschichte",
+  "ohne_fach": {
+   "sekunden": 0.4,
+   "stichwoerter": [
+    "Römisches Reich",
+    "Römische Reich",
+    "Imperium Romanum",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht"
+   ],
+   "fachwoerter": [],
+   "elemente": 75,
+   "lehrplaene": 17,
+   "laender": 2,
+   "je_stichwort": {
+    "Imperium Romanum": 48,
+    "Römisches Reich": 23,
+    "Römische Reich": 3,
+    "Römisches Recht": 1
+   },
+   "fundort": {
+    "label": 39,
+    "parent": 36
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.13,
+   "stichwoerter": [
+    "Römisches Reich",
+    "Römische Reich",
+    "Imperium Romanum",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht"
+   ],
+   "fachwoerter": [
+    "geschichte",
+    "gesellschaftslehre",
+    "gesellschaftswissenschaft"
+   ],
+   "elemente": 61,
+   "lehrplaene": 10,
+   "laender": 2,
+   "je_stichwort": {
+    "Imperium Romanum": 35,
+    "Römisches Reich": 23,
+    "Römische Reich": 2,
+    "Römisches Recht": 1
+   },
+   "fundort": {
+    "parent": 36,
+    "label": 25
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenzbereich-5982-1",
+    "schicht": "mit_fach",
+    "stichwort": "Römisches Reich",
+    "fundort": "label",
+    "score": 311
+   },
+   {
+    "iri": "https://lp-bavaria.org/61cea66d-1d95-4e1a-8242-0d79c11d8960",
+    "schicht": "mit_fach",
+    "stichwort": "Imperium Romanum",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-26618-1",
+    "schicht": "mit_fach",
+    "stichwort": "Römisches Reich",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/dbc671ae-1db2-49d3-9b0f-552249f96aa0",
+    "schicht": "mit_fach",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-11392-1",
+    "schicht": "mit_fach",
+    "stichwort": "Römisches Reich",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/6bbf66f7-1995-40b3-995d-954d923e075c",
+    "schicht": "nur_ohne",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/a75ea77c-41fb-4fa3-9ebf-57e6ba72ea31",
+    "schicht": "nur_ohne",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/41d146cc-c7bf-4161-a34c-576e0bf388ad",
+    "schicht": "nur_ohne",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/100ed30a-6a9f-42eb-81d1-c5bc86a12eff",
+    "schicht": "nur_ohne",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/1bc07104-9b6d-4e00-a63a-0588911ae3e7",
+    "schicht": "nur_ohne",
+    "stichwort": "Imperium Romanum",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Lineare Funktion",
+  "fach": "Mathematik",
+  "ohne_fach": {
+   "sekunden": 0.6,
+   "stichwoerter": [
+    "Lineare Funktion",
+    "linearen Funktion",
+    "affin-linearen Funktion",
+    "affin",
+    "Lineare Abbildung",
+    "Lineare Algebra"
+   ],
+   "fachwoerter": [],
+   "elemente": 104,
+   "lehrplaene": 24,
+   "laender": 3,
+   "je_stichwort": {
+    "Lineare Funktion": 84,
+    "linearen Funktion": 10,
+    "affin": 8,
+    "Lineare Algebra": 2
+   },
+   "fundort": {
+    "parent": 56,
+    "label": 48
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.06,
+   "stichwoerter": [
+    "Lineare Funktion",
+    "linearen Funktion",
+    "affin-linearen Funktion",
+    "affin",
+    "Lineare Abbildung",
+    "Lineare Algebra"
+   ],
+   "fachwoerter": [
+    "mathematik"
+   ],
+   "elemente": 100,
+   "lehrplaene": 20,
+   "laender": 3,
+   "je_stichwort": {
+    "Lineare Funktion": 84,
+    "linearen Funktion": 10,
+    "affin": 4,
+    "Lineare Algebra": 2
+   },
+   "fundort": {
+    "parent": 56,
+    "label": 44
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-13039-1",
+    "schicht": "mit_fach",
+    "stichwort": "Lineare Funktion",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/eff76568-f48c-4366-8b1f-55de82c346f4",
+    "schicht": "mit_fach",
+    "stichwort": "Lineare Funktion",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/7473e29f-3de5-4590-8920-63c59c88cf63",
+    "schicht": "mit_fach",
+    "stichwort": "Lineare Funktion",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/69a7a833-381a-4d38-a8a0-f6cb047e2cac",
+    "schicht": "mit_fach",
+    "stichwort": "Lineare Funktion",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-13044-1",
+    "schicht": "mit_fach",
+    "stichwort": "Lineare Funktion",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179352-1",
+    "schicht": "nur_ohne",
+    "stichwort": "affin",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-106665-1",
+    "schicht": "nur_ohne",
+    "stichwort": "affin",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-200638-1",
+    "schicht": "nur_ohne",
+    "stichwort": "affin",
+    "fundort": "label",
+    "score": 210
+   },
+   {
+    "iri": "https://lp-bavaria.org/f1eec0ab-439d-40ea-bff7-ff6b26550319",
+    "schicht": "nur_ohne",
+    "stichwort": "affin",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ },
+ {
+  "thema": "Zelle (Biologie)",
+  "fach": "Biologie",
+  "ohne_fach": {
+   "sekunden": 0.19,
+   "stichwoerter": [
+    "Zelle",
+    "Zellkern",
+    "Zellmembran"
+   ],
+   "fachwoerter": [],
+   "elemente": 461,
+   "lehrplaene": 125,
+   "laender": 3,
+   "je_stichwort": {
+    "Zelle": 432,
+    "Zellkern": 25,
+    "Zellmembran": 4
+   },
+   "fundort": {
+    "label": 348,
+    "parent": 113
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.05,
+   "stichwoerter": [
+    "Zelle",
+    "Zellkern",
+    "Zellmembran"
+   ],
+   "fachwoerter": [
+    "biologie",
+    "natur und technik",
+    "naturwissenschaften"
+   ],
+   "elemente": 293,
+   "lehrplaene": 53,
+   "laender": 3,
+   "je_stichwort": {
+    "Zelle": 266,
+    "Zellkern": 25,
+    "Zellmembran": 2
+   },
+   "fundort": {
+    "label": 201,
+    "parent": 92
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/2aa28df7-ce33-4833-b8b8-62b270cc815a",
+    "schicht": "mit_fach",
+    "stichwort": "Zellkern",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-55526-1",
+    "schicht": "mit_fach",
+    "stichwort": "Zelle",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/fa19c433-dab7-4807-83a2-d9c1ba282d7a",
+    "schicht": "mit_fach",
+    "stichwort": "Zelle",
+    "fundort": "parent",
+    "score": 101
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7290-1",
+    "schicht": "mit_fach",
+    "stichwort": "Zellmembran",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7834-1",
+    "schicht": "mit_fach",
+    "stichwort": "Zelle",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/916269a3-b142-44a2-b53f-2712dadc4db2",
+    "schicht": "nur_ohne",
+    "stichwort": "Zelle",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/436eabac-aa74-444e-8e56-203b55351904",
+    "schicht": "nur_ohne",
+    "stichwort": "Zelle",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/606cd871-d8b6-4765-821e-f6bfe87cf526",
+    "schicht": "nur_ohne",
+    "stichwort": "Zelle",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/9cd5b0ca-d8ae-46ce-bc81-67e05e2b3cda",
+    "schicht": "nur_ohne",
+    "stichwort": "Zelle",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/ca8a54ae-b1f4-40fe-ba3c-4b57ea1a4dc3",
+    "schicht": "nur_ohne",
+    "stichwort": "Zelle",
+    "fundort": "label",
+    "score": 111
+   }
+  ]
+ },
+ {
+  "thema": "Gedicht",
+  "fach": "Deutsch",
+  "ohne_fach": {
+   "sekunden": 0.49,
+   "stichwoerter": [
+    "Gedicht"
+   ],
+   "fachwoerter": [],
+   "elemente": 412,
+   "lehrplaene": 165,
+   "laender": 3,
+   "je_stichwort": {
+    "Gedicht": 412
+   },
+   "fundort": {
+    "label": 361,
+    "parent": 51
+   }
+  },
+  "mit_fach": {
+   "sekunden": 0.17,
+   "stichwoerter": [
+    "Gedicht"
+   ],
+   "fachwoerter": [
+    "deutsch"
+   ],
+   "elemente": 215,
+   "lehrplaene": 62,
+   "laender": 3,
+   "je_stichwort": {
+    "Gedicht": 215
+   },
+   "fundort": {
+    "label": 168,
+    "parent": 47
+   }
+  },
+  "stichprobe": [
+   {
+    "iri": "https://lp-bavaria.org/d18c898e-75d4-495c-b25f-2fb8824d5901",
+    "schicht": "mit_fach",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-39844-1",
+    "schicht": "mit_fach",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/5e333b4e-bb4a-4e0c-ba24-9b9aef184285",
+    "schicht": "mit_fach",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-rlp.org/resource/kompetenz-9155-1",
+    "schicht": "mit_fach",
+    "stichwort": "Gedicht",
+    "fundort": "parent",
+    "score": 201
+   },
+   {
+    "iri": "https://lp-bavaria.org/fb729e81-580c-4042-ad2b-25be7607872f",
+    "schicht": "mit_fach",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/22b82ee6-7fd7-4130-93b0-f11732961eca",
+    "schicht": "nur_ohne",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-20199-1",
+    "schicht": "nur_ohne",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/af815495-f998-46c5-8516-30871b85c453",
+    "schicht": "nur_ohne",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   },
+   {
+    "iri": "https://lp-bavaria.org/66d37258-73d1-47a2-a2e2-1869ee29b830",
+    "schicht": "nur_ohne",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 111
+   },
+   {
+    "iri": "https://lp-bavaria.org/d0d09678-d0cf-44b3-816c-a10e9de40244",
+    "schicht": "nur_ohne",
+    "stichwort": "Gedicht",
+    "fundort": "label",
+    "score": 211
+   }
+  ]
+ }
+]

@@ -1,0 +1,570 @@
+# Zweite Noten für die Stichprobe von M22, zum Prüfen der ersten (treffer_noten.yaml): vergeben am 24.09.2026 von
+# einem Claude-Subagenten, der die ersten Noten und die Schichten nicht kannte, nach denselben Regeln (siehe dort).
+version: 1
+noten:
+- thema: Barockliteratur
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-56870-1
+  note: 2
+- thema: Bruchrechnung
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-159941-1
+  note: 2
+- thema: Bruchrechnung
+  iri: https://lp-bavaria.org/37f8ac80-8d11-47ea-9884-0ff98289a80f
+  note: 1
+- thema: Bruchrechnung
+  iri: https://lp-rlp.org/resource/kompetenz-12859-1
+  note: 2
+- thema: Bruchrechnung
+  iri: https://lp-bavaria.org/8738bad1-e58f-4895-9663-72eb75180860
+  note: 1
+- thema: Bruchrechnung
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-37715-1
+  note: 2
+- thema: Demokratie
+  iri: https://lp-rlp.org/resource/kompetenz-28423-1
+  note: 0
+  grund: nebenbei
+- thema: Demokratie
+  iri: https://lp-bavaria.org/lis_live_isb.c.258237.de
+  note: 2
+- thema: Demokratie
+  iri: https://lp-rlp.org/resource/kompetenz-11274-1
+  note: 1
+- thema: Demokratie
+  iri: https://lp-bavaria.org/lis_live_isb.c.165150.de
+  note: 2
+- thema: Demokratie
+  iri: https://lp-bavaria.org/26b4b642-4d60-446d-9f14-357afce05d09
+  note: 2
+- thema: Demokratie
+  iri: https://lp-bavaria.org/d977bc10-b3a1-4f13-a8df-9e04d27dbf7c
+  note: 1
+- thema: Demokratie
+  iri: https://lp-bavaria.org/191389ec-b902-4c6f-8372-fba6440c9359
+  note: 2
+- thema: Demokratie
+  iri: https://lp-bavaria.org/2868a359-f925-4316-a886-a90b18f6cd8d
+  note: 0
+  grund: ueberschrift
+- thema: Demokratie
+  iri: https://lp-bavaria.org/lis_live_isb.c.19771.de
+  note: 2
+- thema: Demokratie
+  iri: https://lp-bavaria.org/8bbd44c8-3fb8-4674-9539-cb9742e11624
+  note: 0
+  grund: ueberschrift
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/82d05424-02a3-48c3-af2a-5469c1fbae11
+  note: 1
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/36b1ce13-6acd-4671-9814-2b3d24971dfb
+  note: 1
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/9fcf7af7-0839-4153-849a-16cf3d1d3e15
+  note: 0
+  grund: ueberschrift
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/574d3350-2c36-4a5b-b2e9-6ba9a7d11789
+  note: 0
+  grund: ueberschrift
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/fdc2fc02-faea-42fb-8063-0636dc332cae
+  note: 1
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/9944f707-e9a9-40b1-ad6b-a38e37d0b147
+  note: 2
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/f85155d4-0f6c-4e4b-a217-5ec6f6f984f8
+  note: 0
+  grund: ueberschrift
+- thema: Französische Revolution
+  iri: https://lp-bavaria.org/d70cc23e-6016-4b1a-a6d4-e4a8941a44ce
+  note: 2
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/bfef2580-6b3a-4fde-8d65-793c792c0112
+  note: 0
+  grund: ueberschrift
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/bb168252-b099-4a24-b77c-49d012901b65
+  note: 0
+  grund: ueberschrift
+- thema: Klimawandel
+  iri: https://lp-rlp.org/resource/kompetenz-16892-1
+  note: 2
+- thema: Klimawandel
+  iri: https://lp-sachsen.org/resource/lernbereich-4305-1
+  note: 2
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/a9425fb2-8be6-4966-8d51-89b8c0b062af
+  note: 1
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/9334527e-bcad-46de-9c37-07009ee97fef
+  note: 1
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/a26fe08c-d7ec-4e40-946e-00895a358aa8
+  note: 1
+- thema: Klimawandel
+  iri: https://lp-rlp.org/resource/kompetenz-16891-1
+  note: 2
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/50300829-5fad-470b-848c-3da7ab7d4b49
+  note: 0
+  grund: ueberschrift
+- thema: Klimawandel
+  iri: https://lp-bavaria.org/f7ec3c45-578b-40be-b25c-b9f8e4ed59c5
+  note: 2
+- thema: Optik
+  iri: https://lp-bavaria.org/6c3bee06-3174-4f22-8a93-9ddcdc84a7ce
+  note: 2
+- thema: Optik
+  iri: https://lp-rlp.org/resource/kompetenz-27283-1
+  note: 1
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernbereich-32295-1
+  note: 1
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-179757-1
+  note: 2
+- thema: Optik
+  iri: https://lp-rlp.org/resource/kompetenzbereich-6098-1
+  note: 2
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernbereich-64018-1
+  note: 1
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-89435-1
+  note: 2
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernbereich-63787-1
+  note: 1
+- thema: Optik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-179758-1
+  note: 2
+- thema: Optik
+  iri: https://lp-bavaria.org/lis_live_isb.c.68132.de
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-rlp.org/resource/kompetenz-28010-1
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/0eef077d-77b5-49f0-8fe0-39f7cee8053d
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-65051-1
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/1c0f840a-a857-422c-bf38-774d29af3e8f
+  note: 0
+  grund: ueberschrift
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/fc0f02c5-5c21-4da4-805b-e532ba41c18b
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-57227-1
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/43c33a82-e282-45fc-9f27-272e720038d6
+  note: 0
+  grund: ueberschrift
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/e54dabea-8f43-407b-a1fb-a5d243295a99
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/ed17a518-0952-4763-9f1a-067f6bdd8637
+  note: 2
+- thema: Photosynthese
+  iri: https://lp-bavaria.org/7bf61615-1d1a-439f-917d-d3bd08711a53
+  note: 2
+- thema: Programmiersprache
+  iri: https://lp-bavaria.org/f32605ff-1198-45e3-b59c-fd4d5f9c4d33
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-95613-1
+  note: 2
+- thema: Programmiersprache
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-206495-1
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-bavaria.org/2ab86427-d282-4b12-a146-501479420b4d
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-bavaria.org/47b1929f-7337-4796-8983-c6f539581d76
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-bavaria.org/9b12aa70-1153-4375-8633-841d1235e553
+  note: 2
+- thema: Programmiersprache
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-95621-1
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-59579-1
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-rlp.org/resource/kompetenz-21220-1
+  note: 1
+- thema: Programmiersprache
+  iri: https://lp-rlp.org/resource/kompetenz-21172-1
+  note: 1
+- thema: Säure-Base-Konzepte
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-148812-1
+  note: 0
+  grund: wort
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/3f1e5e56-143f-4a9e-b3b1-4bf2627ff815
+  note: 0
+  grund: wort
+- thema: Säure-Base-Konzepte
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-36691-1
+  note: 2
+- thema: Säure-Base-Konzepte
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-120104-1
+  note: 0
+  grund: wort
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/758bb01e-24a0-4373-a87e-4061c98b1c87
+  note: 0
+  grund: wort
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/0deef32f-bce4-4b44-9648-a0764c16604f
+  note: 2
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/4c2cd321-fb89-4527-80ab-4512fc22fd4e
+  note: 0
+  grund: wort
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/6509d6be-aec1-4b44-b2c2-3be2275e7271
+  note: 2
+- thema: Säure-Base-Konzepte
+  iri: https://lp-bavaria.org/9270b796-c216-4e52-ad1c-fd10fa48b6f5
+  note: 2
+- thema: Säure-Base-Konzepte
+  iri: https://lp-rlp.org/resource/kompetenz-17033-1
+  note: 2
+- thema: Sinfonie
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-144261-1
+  note: 2
+- thema: Sinfonie
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-144285-1
+  note: 0
+  grund: wort
+- thema: Sinfonie
+  iri: https://lp-bavaria.org/5ef7a392-fed6-4284-a1f9-35ae6342d94d
+  note: 2
+- thema: Sinfonie
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-164743-1
+  note: 2
+- thema: Sinfonie
+  iri: https://lp-bavaria.org/17d1eba4-9892-431c-8adc-1078e91a9bd4
+  note: 1
+- thema: Sinfonie
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-144272-1
+  note: 0
+  grund: wort
+- thema: Sinfonie
+  iri: https://lp-bavaria.org/d0a5f233-c047-40fe-9a53-a2d513a9762b
+  note: 1
+- thema: Sinfonie
+  iri: https://lp-bavaria.org/4f6deada-1797-46e4-a720-26e621a1cf25
+  note: 0
+  grund: wort
+- thema: Sinfonie
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-164757-1
+  note: 0
+  grund: wort
+- thema: Sinfonie
+  iri: https://lp-bavaria.org/3365cdad-6a3f-4ba9-995c-14e69a8730a4
+  note: 0
+  grund: wort
+- thema: Plattentektonik
+  iri: https://lp-bavaria.org/ee6c654e-19f7-47ce-8a71-6105c523931e
+  note: 0
+  grund: wort
+- thema: Plattentektonik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-4334-1
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-bavaria.org/46a3fbc0-950f-423a-9929-63f29bb1537e
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-4344-1
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-82243-1
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-bavaria.org/7f67ee92-5174-470d-94a4-7ee88fc71842
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-4338-1
+  note: 2
+- thema: Plattentektonik
+  iri: https://lp-bavaria.org/7e2da3e6-8c1b-4de4-adb7-753e4af75671
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/ecb9cca0-1cd5-4559-acd4-1a95993f8ff1
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/22daeb7e-5e99-43d5-a340-81785e72e4ab
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/27b36df2-afef-40de-ad18-850f640e13d5
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-rlp.org/resource/kompetenzbereich-4148-1
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/15b14097-3dce-4695-9235-22960323443c
+  note: 0
+  grund: ueberschrift
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/92f80bf1-8316-4381-a852-4e423edaa9d2
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-rlp.org/resource/kompetenz-27981-1
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-rlp.org/resource/kompetenz-16934-1
+  note: 1
+- thema: Ökosystem
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-7577-1
+  note: 2
+- thema: Ökosystem
+  iri: https://lp-bavaria.org/9447c9db-8b85-4bc3-ab45-73bc7ca2aad1
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/47e91231-1b68-4a50-8138-e6fc8ee8586b
+  note: 0
+  grund: ueberschrift
+- thema: Atommodell
+  iri: https://lp-rlp.org/resource/kompetenz-27865-1
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/84519e30-0bd2-4c15-bd51-ed9717623f94
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/bd6b13f8-ec05-4427-96a9-ebe6ed4fc5d0
+  note: 2
+- thema: Atommodell
+  iri: https://lp-rlp.org/resource/kompetenz-19270-1
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/3c290aaa-4779-490b-86e1-630736e41b46
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/b964c8d0-0d93-43ce-b940-91729eb323ea
+  note: 2
+- thema: Atommodell
+  iri: https://lp-bavaria.org/966f189b-c995-41b4-91dc-dc293bb1a4c2
+  note: 0
+  grund: ueberschrift
+- thema: Atommodell
+  iri: https://lp-bavaria.org/040e4f9b-bc2e-4583-8341-10318f93c2ca
+  note: 0
+  grund: ueberschrift
+- thema: Atommodell
+  iri: https://lp-rlp.org/resource/kompetenz-26867-1
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-2909-1
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-bavaria.org/de238e75-01c1-492a-9060-f267000bdca3
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-rlp.org/resource/kompetenz-28276-1
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-bavaria.org/472a7b17-67ed-47ba-a15d-9b6bc1a8876b
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-bavaria.org/8d5f6c77-82b2-48d8-ba64-7019c1405f38
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-rlp.org/resource/kompetenz-28275-1
+  note: 2
+- thema: Industrielle Revolution
+  iri: https://lp-bavaria.org/0f34fd55-9947-4571-92c4-489ea5fa132f
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/233d3ba3-3118-4753-91a3-89ae978b3e11
+  note: 1
+- thema: Elektrischer Strom
+  iri: https://lp-rlp.org/resource/kompetenz-13642-1
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/f63c70c1-ef2c-4fb7-bfe0-e826ec5fd679
+  note: 0
+  grund: wort
+- thema: Elektrischer Strom
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-192814-1
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-192913-1
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-rlp.org/resource/kompetenz-27811-1
+  note: 0
+  grund: nebenbei
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/c4e724c7-7a6d-4a2e-b7a1-14948745af74
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/4a7554d9-384b-4e72-82ab-d1d768450606
+  note: 2
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/3afbf9da-70d4-42d2-8781-6e69dab59bb8
+  note: 1
+- thema: Elektrischer Strom
+  iri: https://lp-bavaria.org/b1f7265e-9331-43b8-8737-e4ab0e36834a
+  note: 0
+  grund: wort
+- thema: Wasserkreislauf
+  iri: https://lp-bavaria.org/b00dd98b-95a2-4be4-9dcc-53c8c021ef8c
+  note: 1
+- thema: Wasserkreislauf
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-4113-1
+  note: 2
+- thema: Wasserkreislauf
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-8481-1
+  note: 2
+- thema: Wasserkreislauf
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-185428-1
+  note: 2
+- thema: Wasserkreislauf
+  iri: https://lp-bavaria.org/3ecf85f9-fa66-42ac-8044-cf863dd1f4a5
+  note: 2
+- thema: Wasserkreislauf
+  iri: https://lp-bavaria.org/62c444de-c8a4-4e5c-9d1b-9fe821429a89
+  note: 2
+- thema: Wasserkreislauf
+  iri: https://lp-bavaria.org/317b1d1e-dd73-40e1-94b7-e1c83815b200
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/41d146cc-c7bf-4161-a34c-576e0bf388ad
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/1bc07104-9b6d-4e00-a63a-0588911ae3e7
+  note: 1
+- thema: Römisches Reich
+  iri: https://lp-rlp.org/resource/kompetenz-11392-1
+  note: 1
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/6bbf66f7-1995-40b3-995d-954d923e075c
+  note: 1
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/100ed30a-6a9f-42eb-81d1-c5bc86a12eff
+  note: 1
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/a75ea77c-41fb-4fa3-9ebf-57e6ba72ea31
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-rlp.org/resource/kompetenz-26618-1
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/61cea66d-1d95-4e1a-8242-0d79c11d8960
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-rlp.org/resource/kompetenzbereich-5982-1
+  note: 2
+- thema: Römisches Reich
+  iri: https://lp-bavaria.org/dbc671ae-1db2-49d3-9b0f-552249f96aa0
+  note: 2
+- thema: Lineare Funktion
+  iri: https://lp-rlp.org/resource/kompetenz-13039-1
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-bavaria.org/69a7a833-381a-4d38-a8a0-f6cb047e2cac
+  note: 2
+- thema: Lineare Funktion
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-200638-1
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-179352-1
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-rlp.org/resource/kompetenz-13044-1
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-bavaria.org/eff76568-f48c-4366-8b1f-55de82c346f4
+  note: 2
+- thema: Lineare Funktion
+  iri: https://lp-bavaria.org/f1eec0ab-439d-40ea-bff7-ff6b26550319
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-106665-1
+  note: 0
+  grund: wort
+- thema: Lineare Funktion
+  iri: https://lp-bavaria.org/7473e29f-3de5-4590-8920-63c59c88cf63
+  note: 2
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/916269a3-b142-44a2-b53f-2712dadc4db2
+  note: 0
+  grund: wort
+- thema: Zelle (Biologie)
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-7290-1
+  note: 2
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/436eabac-aa74-444e-8e56-203b55351904
+  note: 0
+  grund: wort
+- thema: Zelle (Biologie)
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-7834-1
+  note: 0
+  grund: ueberschrift
+- thema: Zelle (Biologie)
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-55526-1
+  note: 2
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/ca8a54ae-b1f4-40fe-ba3c-4b57ea1a4dc3
+  note: 0
+  grund: wort
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/2aa28df7-ce33-4833-b8b8-62b270cc815a
+  note: 2
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/606cd871-d8b6-4765-821e-f6bfe87cf526
+  note: 0
+  grund: wort
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/fa19c433-dab7-4807-83a2-d9c1ba282d7a
+  note: 2
+- thema: Zelle (Biologie)
+  iri: https://lp-bavaria.org/9cd5b0ca-d8ae-46ce-bc81-67e05e2b3cda
+  note: 0
+  grund: wort
+- thema: Gedicht
+  iri: https://lp-bavaria.org/66d37258-73d1-47a2-a2e2-1869ee29b830
+  note: 1
+- thema: Gedicht
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-39844-1
+  note: 2
+- thema: Gedicht
+  iri: https://lp-bavaria.org/d0d09678-d0cf-44b3-816c-a10e9de40244
+  note: 1
+- thema: Gedicht
+  iri: https://lp-rlp.org/resource/kompetenz-9155-1
+  note: 1
+- thema: Gedicht
+  iri: https://lp-bavaria.org/d18c898e-75d4-495c-b25f-2fb8824d5901
+  note: 1
+- thema: Gedicht
+  iri: https://lp-bavaria.org/fb729e81-580c-4042-ad2b-25be7607872f
+  note: 1
+- thema: Gedicht
+  iri: https://lp-bavaria.org/22b82ee6-7fd7-4130-93b0-f11732961eca
+  note: 1
+- thema: Gedicht
+  iri: https://lp-sachsen.org/resource/lernziel-lerninhalt-20199-1
+  note: 2
+- thema: Gedicht
+  iri: https://lp-bavaria.org/af815495-f998-46c5-8516-30871b85c453
+  note: 1
+- thema: Gedicht
+  iri: https://lp-bavaria.org/5e333b4e-bb4a-4e0c-ba24-9b9aef184285
+  note: 2
