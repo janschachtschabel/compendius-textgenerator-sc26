@@ -59,6 +59,8 @@ SYSTEM = (
 )
 
 out_path, models = Path(sys.argv[1]), sys.argv[2:]
+if out_path.exists():  # every run keeps its own file: an overwritten run can no longer be checked (M19)
+    raise SystemExit(f"{out_path} gibt es schon; jeder Lauf bekommt eine eigene Datei")
 settings = get_settings()  # the key stays in the settings and is never written out
 base_url = settings.b_api_url
 clients = {m: BApiClient(base_url, settings.b_api_key, provider="openai", model=m, max_concurrency=1) for m in models}

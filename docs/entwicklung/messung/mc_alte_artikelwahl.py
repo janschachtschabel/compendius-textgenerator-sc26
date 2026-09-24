@@ -4,7 +4,7 @@ The old service chose no main article. Its linker asked an LLM for up to ten ent
 article titles" (mode generate, educational mode on, alterCode/compendious/app/core/openai_wrapper.py) and looked
 every title up live: directly with redirects, then with simple spelling variants, then with three LLM synonyms. The
 leads of what it found were the sources of the text. Here the same prompt, word for word, goes to the model of the
-new service (gpt-5.6-luna instead of gpt-4.1-mini, no temperature), and the titles are looked up in the Wikipedia
+new service (in M17 gpt-5.6-luna instead of gpt-4.1-mini, no temperature), and the titles are looked up in the Wikipedia
 archive the new service reads, directly and with the old variants; the synonym step is left out and counted instead.
 
 Per query of the three gold sets in eval/artikelwahl:

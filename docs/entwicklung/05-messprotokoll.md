@@ -750,7 +750,7 @@ Es ist wie sein Vorgänger ein Reasoning-Modell: `max_tokens` beantwortet es mit
 LLM-Entscheidungen des Dienstes an denselben Goldsätzen, mit den Skripten von M9, M10 und M12 und
 `B_API_MODEL=gpt-6-luna`; die Werte von `gpt-5.6-luna` stammen aus diesen Messungen. Zeiten verschiedener Läufe lassen
 sich nicht vergleichen, weil die b-api über den Tag schwankt. Deshalb bekamen beide Modelle dieselben acht frischen
-Prompts abwechselnd in denselben Minuten (`mc_latenz_modelle.py`, zweimal gelaufen).
+Prompts abwechselnd in denselben Minuten (`mc_latenz_modelle.py`, zwei abgelegte Läufe).
 
 | | `gpt-5.6-luna` | `gpt-6-luna` |
 |---|---|---|
@@ -762,8 +762,8 @@ Prompts abwechselnd in denselben Minuten (`mc_latenz_modelle.py`, zweimal gelauf
 | LLM-Zuordner, Goldpool: macro-F1 / micro-F1 | 0,720 und 0,694 / 0,820 (zwei Läufe) | 0,703 / 0,814 |
 | falsch zugeordnet | 113 von 550 | 98 von 519 |
 | Tokens des Zuordners | 105.727 und 103.368 | 108.266 |
-| Latenz bei gleichen frischen Prompts, Median | 1,79 s und 1,60 s | 2,43 s und 2,75 s |
-| Ausgabetokens dabei, Median | 88 und 64 | 166 und 178 |
+| Latenz bei gleichen frischen Prompts, Median | 1,60 s und 2,47 s | 2,75 s und 3,06 s |
+| Ausgabetokens dabei, Summe über acht Aufrufe | 800 und 854 | 1.500 und 1.526 |
 
 Die eine falsche Artikelwahl mehr ist „Lichtlehre“: `gpt-6-luna` nannte *Hesychasmus*, `gpt-5.6-luna` *Optik*. Bei
 „Musik: Satz“ wählte es *Tonsatz* statt *Satz (Musikstück)*, beide nach dem Gold richtig; die übrigen 92 Anfragen enden
@@ -771,8 +771,13 @@ beim selben Artikel. Der Zuordner brauchte auf dem Goldpool im Median 12,6 s je 
 am Vormittag 6,8 s; der Unterschied ist größer als der im gleichzeitigen Vergleich und wohl zum Teil Tagesschwankung.
 
 **Ergebnis:** Gleichauf in der Güte: je eine Entscheidung weniger bei Artikelwahl und Trefferprüfung, beim Zuordner
-zwischen den beiden Läufen von `gpt-5.6-luna`. Die Tokens der Aufgaben des Dienstes liegen gleich bis 12 % höher, zum
-halben Preis also bei rund 45 % geringeren Kosten. Der Preis ist die Zeit: je Aufruf rund 0,6 bis 1,2 s mehr, ein
-Drittel bis zwei Drittel. Übernommen als Vorgabe (D44). `gpt-4.1-mini`, das Modell des alten Dienstes, wird nicht
-mehr verwendet: veraltet und teurer; es diente nur der Nachstellung in M17. Rohdaten: `m19_aufloesung_gpt6.json`,
-`m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json`, `m19_latenz.json`.
+zwischen den beiden Läufen von `gpt-5.6-luna`. Die Tokens der Aufgaben des Dienstes liegen gleich bis 12 % höher; zum
+halben Preis je Token sind das rund 45 % geringere Kosten, solange Ein- und Ausgabe gleich viel kosten. `gpt-6-luna`
+gibt aber fast doppelt so viele Ausgabetokens aus (im Latenzvergleich 1.500 und 1.526 statt 800 und 854 bei gleicher
+Eingabe); kostet die Ausgabe mehr als die Eingabe, fällt die Ersparnis kleiner aus. Der Preis ist die Zeit: je Aufruf
+0,6 und 1,1 s mehr, ein Viertel bis drei Viertel. Übernommen als Vorgabe (D44). `gpt-4.1-mini`, das Modell des alten
+Dienstes, wird nicht mehr verwendet: veraltet und teurer; es diente nur der Nachstellung in M17. Gemessen wurde an der
+Staging-b-api; die Produktiv-b-api ließ sich mit dem Schlüssel der Entwicklung nicht fragen (HTTP 401). Ein erster
+Latenzlauf (1,79 gegen 2,43 s) wurde überschrieben und ist nicht abgelegt; seitdem verweigert das Skript eine
+vorhandene Ausgabedatei. Rohdaten: `m19_aufloesung_gpt6.json`, `m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json`,
+`m19_latenz.json`, `m19_latenz_2.json`.

@@ -25,7 +25,8 @@ ARTICLE_CHOICE_HELP = (
     "2026-09-24: main article right in 57 instead of 55 of 59 queries and in 11 instead of 9 of 12 held back; "
     "10 instead of 26 printed paragraphs from unfit articles over 20 topics. Costs per compendium in the median about "
     "930 tokens and 1.7 s (90th percentile 3.4 s): checking the full-text hits takes 1.4 s, an unsure article "
-    "another 1 to 2.6 s.\n\n"
+    "another 1 to 2.6 s. These numbers are gpt-5.6-luna's; the default gpt-6-luna (D44) chose 90 instead of 91 of "
+    "94 and takes a quarter to three quarters longer per call (M19).\n\n"
     "Without a usable b-api the rules choose, and audit.llm.article_choice says why."
 )
 MATCHER_HELP = (
@@ -44,7 +45,8 @@ MATCHER_HELP = (
     "12.0 and 22.7 s instead of 1.2 and 1.8 s in the median of two measurements, the b-api answering at different "
     "speeds. Where the model gives no answer, and without a usable b-api, the default strategy decides. At the "
     "default LLM_MAX_TOKENS_PER_REQUEST of 60 000 four batches run at once and the others wait for them, so topics "
-    "of more than 200 paragraphs take a second round.\n\n"
+    "of more than 200 paragraphs take a second round. These numbers are gpt-5.6-luna's; the default gpt-6-luna "
+    "(D44) reached 0.70 and takes a quarter to three quarters longer per call (M19).\n\n"
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
 EXTRACTION_HELP = (
@@ -75,7 +77,9 @@ ENRICHMENT_HELP = (
 PRESET_HELP = (
     "One switch for the three levels of docs/entwicklung/07-entscheidungsvorlage.md. It sets article_choice, "
     "matcher, extraction, generation and enrichment; a switch the request sets itself wins. Without a preset the "
-    "settings decide, and they ship as llm-free (D40). Numbers: gold standard and measurements of 2026-09-24.\n\n"
+    "settings decide, and they ship as llm-free (D40). Numbers: gold standard and measurements of "
+    "2026-09-24 with gpt-5.6-luna; the default gpt-6-luna (D44) chose 90 of 94 and takes a quarter to "
+    "three quarters longer per call (M19).\n\n"
     "- **llm-free**: the rules choose the articles, hybrid_light assigns the paragraphs, the text stays verbatim. "
     "Main article right in 86 of 94 gold queries, macro-F1 0.43, part 1 in about 1.4 s, no tokens.\n"
     "- **balanced**: as llm-free, but the LLM decides where the rules are unsure about the article and drops the "

@@ -165,9 +165,9 @@ class Settings(BaseSettings):
     llm_attempts: int = Field(
         3, ge=1, le=6, description="Attempts per LLM request (429/502/503/504, connection errors)"
     )
-    llm_reasoning_effort: str = Field("low", description="GPT-5 and o-series models: reasoning_effort (D25)")
-    llm_verbosity: str = Field("low", description="GPT-5 series models: verbosity (D25)")
-    llm_temperature: float = Field(0.2, ge=0.0, le=2.0, description="Classic models only (GPT-5 rejects it)")
+    llm_reasoning_effort: str = Field("low", description="Reasoning models (GPT-5, GPT-6, o-series): reasoning_effort")
+    llm_verbosity: str = Field("low", description="Reasoning models (GPT-5, GPT-6, o-series): verbosity (D25)")
+    llm_temperature: float = Field(0.2, ge=0.0, le=2.0, description="Classic models only (reasoning models reject it)")
     llm_max_tokens_per_request: int = Field(
         60_000,
         ge=100,

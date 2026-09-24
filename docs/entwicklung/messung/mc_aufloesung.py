@@ -4,9 +4,9 @@ Each query runs through CompendiumService.prepare with parts=["curricula"] and p
 so the service normalises and resolves the topic exactly as for a compendium but builds no corpus. A resolution is correct
 when its title is one of the expected titles or the target of a redirect Wikipedia sets for one of them.
 
-With --llm the service gets the LLM of the b-api (gpt-5.6-luna, key from B_API_KEY) and resolves with
-article_choice=llm (D35): the model decides where the rules are unsure, and the output adds how often it was asked
-and the tokens of the choice. The rules alone are the run without --llm.
+With --llm the service gets the LLM of the b-api (the model of B_API_MODEL, key from B_API_KEY; M9 ran with
+gpt-5.6-luna) and resolves with article_choice=llm (D35): the model decides where the rules are unsure, and the output
+adds how often it was asked and the tokens of the choice. The rules alone are the run without --llm.
 
 Usage: python mc_aufloesung.py <out.json> [--llm] <gold.yaml>...
 """

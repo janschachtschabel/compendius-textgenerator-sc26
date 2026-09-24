@@ -1,9 +1,9 @@
 """b-api client (PLAN.md 7): OpenAI-compatible chat completions behind the ``X-API-KEY`` header.
 
 Measured against ``b-api.staging.openeduhub.net`` on 2026-09-17: the path is
-``/api/v1/llm/{provider}/chat/completions``; the GPT-5 and o-series models take
-``max_completion_tokens``, ``reasoning_effort`` and ``verbosity`` and reject ``temperature``; classic
-models take ``max_tokens`` and ``temperature``; Qwen3 models need ``chat_template_kwargs``
+``/api/v1/llm/{provider}/chat/completions``; the reasoning models - GPT-5, GPT-6 (2026-09-24, D44) and
+the o-series - take ``max_completion_tokens``, ``reasoning_effort`` and ``verbosity`` and reject
+``temperature``; classic models take ``max_tokens`` and ``temperature``; Qwen3 models need ``chat_template_kwargs``
 ``{"enable_thinking": false}``. ``/models`` lists ``status`` and ``demand`` only for academiccloud.
 """
 

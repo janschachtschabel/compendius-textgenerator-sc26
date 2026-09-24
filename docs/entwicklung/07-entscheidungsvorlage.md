@@ -74,8 +74,8 @@ Option nutzt:
 Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben und brauchen kein LLM. Die Schritte 1 bis 4
 laufen bei jeder Anfrage, Schritt 5 nur auf Wunsch. Ein LLM steht nur bereit, wenn es konfiguriert ist:
 `LLM_ENABLED=true` und `B_API_KEY`, Modell `gpt-6-luna` (`B_API_MODEL`, seit D44). Die Zahlen dieser Vorlage stammen
-von `gpt-5.6-luna`; `gpt-6-luna` erreicht dieselbe Güte bei gleich vielen Tokens zum halben Preis, antwortet aber
-rund ein Drittel bis zwei Drittel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api
+von `gpt-5.6-luna`; `gpt-6-luna` erreicht dieselbe Güte mit gleich bis 12 % mehr Tokens zum halben Preis je Token,
+antwortet aber je Aufruf ein Viertel bis drei Viertel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api
 laufen alle Schritte regelbasiert, und das Audit der Antwort nennt den tatsächlich genutzten Weg.
 
 ## Schritt 1: Hauptartikel finden

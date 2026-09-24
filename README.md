@@ -318,11 +318,15 @@ Ohne Angabe läuft alles im Regelmodus, auch wenn ein LLM konfiguriert ist (D40)
 `B_API_KEY`) arbeitet nur, wo eine Anfrage oder eine Vorgabe es verlangt. Am einfachsten wählt `preset` eine der
 drei Stufen der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`, D41):
 
-| `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24) |
+| `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24 mit `gpt-5.6-luna`) |
 |---|---|---|
 | `llm-free` (so arbeitet der Dienst auch ohne `preset`) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
 | `balanced` | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 1,7 s und 930 Tokens mehr |
 | `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s, rund 35.400 Tokens |
+
+Die LLM-Werte hier und in der Tabelle der Schalter unten stammen von `gpt-5.6-luna`. Mit der Vorgabe `gpt-6-luna`
+(D44) ist die Güte gleich (Artikelwahl 90 statt 91 von 94, Zuordner macro-F1 0,70), jeder LLM-Aufruf dauert aber ein
+Viertel bis drei Viertel länger (M19).
 
 Ein Schalter, den die Anfrage selbst setzt, geht dem `preset` vor; so macht etwa `preset: best-quality` mit
 `generation: llm` den Text zusätzlich lesbar. `audit.preset` nennt die Stufe, `compendium generate --preset` wählt
@@ -431,8 +435,8 @@ Schalter (`extraction`, `generation`) und, wenn sie abweichen, die angeforderten
 Verbrauch. `GET /health` zeigt unter `components.llm`
 Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-6-luna` beim Provider `openai`
 mit `reasoning_effort=low` und `verbosity=low` (D44: gleiche Güte wie `gpt-5.6-luna` zum halben Preis je Token,
-aber rund ein Drittel bis zwei Drittel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück); ein Wechsel auf `academiccloud` braucht nur
-`B_API_PROVIDER` und `B_API_MODEL`.
+aber je Aufruf ein Viertel bis drei Viertel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück); ein Wechsel
+auf `academiccloud` braucht nur `B_API_PROVIDER` und `B_API_MODEL`.
 
 Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
 Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Nach einem Verbindungsfehler oder
@@ -578,10 +582,10 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
-| `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`) |
-| `LLM_REASONING_EFFORT` | `low` | Nur GPT-5- und o-Serie |
-| `LLM_VERBOSITY` | `low` | Nur GPT-5- und o-Serie |
-| `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; die GPT-5-Serie nutzt stattdessen die beiden Zeilen darüber |
+| `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm` |
+| `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie |
+| `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie |
+| `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; Reasoning-Modelle nutzen stattdessen die beiden Zeilen darüber |
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
 | `LLM_MAX_CONCURRENCY` | `10` | Gleichzeitige LLM-Aufrufe |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |

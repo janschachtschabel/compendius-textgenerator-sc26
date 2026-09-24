@@ -153,7 +153,7 @@ def prozess() -> None:
             svg.arrow(174, y + box_h, y + row)
     base = top + row * len(steps) + 14
     svg.legend(24, base + 8, [(LOCAL, "läuft lokal, ohne Tokens"),
-                              (LLM, "LLM-Option über die b-api (gpt-5.6-luna)")])
+                              (LLM, "LLM-Option über die b-api (gpt-6-luna)")])
     svg.save("prozess.svg")
 
 

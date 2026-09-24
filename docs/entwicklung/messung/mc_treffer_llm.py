@@ -1,4 +1,4 @@
-"""The M8 judge as a filter for the full-text hits of the corpus (project venv, b-api, gpt-5.6-luna).
+"""The M8 judge as a filter for the full-text hits of the corpus (project venv, b-api, the model of B_API_MODEL).
 
 For the 20 normal topics of eval/artikelwahl/hauptartikel.yaml the service builds its corpus; the articles that came
 in as full-text hits for a block (origin "search") go to the model in one call per topic, with the prompt of

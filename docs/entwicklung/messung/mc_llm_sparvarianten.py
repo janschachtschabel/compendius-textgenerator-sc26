@@ -1,4 +1,4 @@
-"""Cheaper ways of matcher=llm on the gold pool (project venv, b-api, gpt-5.6-luna).
+"""Cheaper ways of matcher=llm on the gold pool (project venv, b-api, the model of B_API_MODEL).
 
 Every gold topic is prepared once through CompendiumService.prepare (archives of the server, Model2Vec on); the pool
 is the paragraphs the gold labels, as in mc_varianten.py. Four ways, all through CompendiumService.match:

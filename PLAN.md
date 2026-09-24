@@ -287,7 +287,7 @@ compendious-text-fastapi/
 | `B_API_KEY` | – | Schlüssel, Header `X-API-KEY` |
 | `B_API_BASE_URL` | `https://b-api.staging.openeduhub.net` | nur der Host; der Pfad `/api/v1/llm/{provider}/…` wird aus dem Provider gebildet |
 | `B_API_PROVIDER` | `openai` | `openai` oder `academiccloud`, zur Laufzeit umschaltbar (Entscheidung D19) |
-| `B_API_MODEL` | `gpt-5.6-luna` | Modell-ID beim gewählten Provider; wird beim Start gegen `/models` geprüft |
+| `B_API_MODEL` | `gpt-6-luna` | Modell-ID beim gewählten Provider; wird beim Start gegen `/models` geprüft (D44, vorher `gpt-5.6-luna`) |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | `rule-based` oder `llm` (siehe 4.7, D33) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | `rule-based`, `llm-fast` oder `llm` (siehe 4.7, D33) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | `model-knowledge` lässt das schreibende LLM eigenes Wissen ergänzen; solche Sätze tragen keine Belegnummer und werden als `Evidenzgrad=Modellwissen` gekennzeichnet (docs/umbau.md U4) |
@@ -295,7 +295,7 @@ compendious-text-fastapi/
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
 | `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
-| `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | GPT-5- und o-Serie (D25); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
+| `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie (D25, D44); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
 | `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `10` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
 | `EDU_SHARING_BASE_URL` | `https://redaktion.openeduhub.net/edu-sharing/rest` | Repository für Teil 3 und Wissens-Sammlung; leer = aus |
 | `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | – | optional Basic-Auth; ohne Zugangsdaten anonym (öffentliche Sammlungen) |
@@ -1526,8 +1526,10 @@ API.
   nach dem Review; die erste Fassung ließ Weiterleitungen aus und hielt die Fehlstellen für Umbenennungen.
 - **D44 (2026-09-24)** Vorgabemodell ist `gpt-6-luna` statt `gpt-5.6-luna` (`B_API_MODEL`). M19: gleiche Güte bei
   Artikelwahl (90 statt 91 von 94), Trefferprüfung (10 statt 11 von 16 unpassenden verworfen, kein passender) und
-  LLM-Zuordner (macro-F1 0,703, zwischen 0,694 und 0,720), Tokens gleich bis 12 % höher, zum halben Preis je Token;
-  dafür je Aufruf ein Drittel bis zwei Drittel länger. Der Client zählt `gpt-6` zu den Reasoning-Modellen
+  LLM-Zuordner (macro-F1 0,703, zwischen 0,694 und 0,720), Tokens gleich bis 12 % höher, zum halben Preis je Token,
+  bei fast doppelt so vielen Ausgabetokens; dafür je Aufruf ein Viertel bis drei Viertel länger (zwei abgelegte
+  Läufe). Gemessen an der Staging-b-api; ob die Produktiv-b-api das Modell führt, ließ sich mit dem Schlüssel der
+  Entwicklung nicht fragen. Der Client zählt `gpt-6` zu den Reasoning-Modellen
   (`max_completion_tokens`, `reasoning_effort`, keine Temperatur); ohne das antwortete die b-api mit HTTP 400. Wer die
   kürzeren Zeiten braucht, setzt `B_API_MODEL=gpt-5.6-luna`. `gpt-4.1-mini` wird nicht mehr verwendet.
 - **D45 (2026-09-24)** Ein Knoten eines edu-sharing-Repositorys ist ein eigener Eingang: `node_id` und `repository`

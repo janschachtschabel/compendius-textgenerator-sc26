@@ -48,7 +48,8 @@ EXAMPLES = {
         "description": (
             "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
             "mehrdeutige Wort Linse -, und verwirft unpassende Volltexttreffer. 91 von 94 Hauptartikeln richtig, "
-            "rund 1,7 s und 930 Tokens mehr. Ohne b-api wählen die Regeln, und audit.llm sagt warum."
+            "rund 1,7 s und 930 Tokens mehr (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna wählte 90 von 94 "
+            "und ist je Aufruf langsamer). Ohne b-api wählen die Regeln, und audit.llm sagt warum."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
     },
@@ -56,7 +57,8 @@ EXAMPLES = {
         "summary": "Stufe best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
         "description": (
             "Wie balanced, dazu matcher llm: macro-F1 0,69 bis 0,72 statt 0,43, Teil 1 rund 14 bis 24 s und rund "
-            "35.400 Tokens. Der Text bleibt wörtlich; wer ihn lesbar formuliert haben will, setzt zusätzlich "
+            "35.400 Tokens (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna erreichte 0,70 und ist je Aufruf "
+            "langsamer). Der Text bleibt wörtlich; wer ihn lesbar formuliert haben will, setzt zusätzlich "
             "generation llm - einzeln gesetzte Schalter gehen dem preset vor."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},
