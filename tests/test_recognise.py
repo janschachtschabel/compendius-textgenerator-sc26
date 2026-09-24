@@ -77,3 +77,62 @@ def test_mentions_that_do_not_overlap_all_survive_in_reading_order() -> None:
     first = Mention(text="Ernst Abbe", start=0, end=10, kind="PER", source="ner")
     second = Mention(text="Lichtmikroskop", start=35, end=49, kind="", source="dictionary")
     assert merge([second, first]) == [first, second]
+
+
+@dataclass(frozen=True)
+class TitleArchive:
+    """An archive that knows titles only - enough for the dictionary, which reads no content."""
+
+    titles: frozenset[str]
+
+    def has(self, title: str) -> bool:
+        return title in self.titles
+
+
+# "Wassers" is a village and "Wasser" the substance; "Abraham" the patriarch and "Abraham Lincoln" the president
+GENITIVE = TitleArchive(
+    frozenset(
+        {"Kreislauf", "Wasser", "Wassers", "Abraham", "Abraham Lincoln", "Kurs", "Kur", "Reich", "Reiche", "Darau"}
+        | {"Goethe", "Faust", "Johann Bereit", "Bereit", "Thales von Milet", "Fall"}
+    )
+)
+
+
+def titles_in(text: str) -> dict[str, str | None]:
+    """Each mention of the dictionary with the title it names; None where that is the text itself."""
+    found = mentions_from_titles([GENITIVE], text)
+    assert all(text[mention.start : mention.end] == mention.text for mention in found), "the text stays as written"
+    return {mention.text: mention.title for mention in found}
+
+
+def test_after_a_genitive_article_the_base_form_names_the_article() -> None:
+    """M18: "des Wassers" linked the village Wassers, not the water."""
+    assert titles_in("Der Kreislauf des Wassers ist ein Thema.") == {"Kreislauf": None, "Wassers": "Wasser"}
+    assert titles_in("Die Dichte des kalten Wassers steigt.")["Wassers"] == "Wasser", "one word may stand between"
+
+
+def test_without_the_article_the_word_itself_wins() -> None:
+    assert titles_in("Das Dorf Wassers liegt am Fluss.") == {"Wassers": None}
+    assert titles_in("Der Kurs beginnt morgen.") == {"Kurs": None}, "a title keeps its meaning, no Kur"
+
+
+def test_a_name_in_the_genitive_names_its_article() -> None:
+    """M18: "Abraham Lincolns" linked the patriarch Abraham; the longer name without its ending exists."""
+    assert titles_in("Abraham Lincolns Rede ist berühmt.") == {"Abraham Lincolns": "Abraham Lincoln"}
+
+
+def test_the_ending_es_is_tried_before_s() -> None:
+    """M18: "des Reiches" named the article Reiche; the genitive of Reich is Reiches."""
+    assert titles_in("Die Grenzen des Reiches wuchsen.") == {"Reiches": "Reich"}
+
+
+def test_a_word_at_the_start_of_a_sentence_is_no_genitive_before_a_small_word() -> None:
+    """M18: "Daraus" and "Bereits" open sentences; read as genitives they named a village and a person."""
+    assert titles_in("Daraus folgt nichts. Bereits im Mittelalter nicht.") == {}
+    assert titles_in("Goethes Faust ist ein Drama.") == {"Goethes": "Goethe", "Faust": None}, "before a noun it is"
+
+
+def test_an_adverb_in_s_opens_no_term_even_before_a_name() -> None:
+    """M18: "Bereits Thales von Milet soll ..." linked the person Johann Bereit through the base form Bereit."""
+    assert titles_in("Bereits Thales von Milet soll es entdeckt haben.") == {"Thales von Milet": None}
+    assert titles_in("Die Lösung des Falls war einfach.") == {"Falls": "Fall"}, "after an article it is a genitive"

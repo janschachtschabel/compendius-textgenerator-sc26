@@ -110,6 +110,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json` | M18, je Thema die verknüpften Entitäten mit Art und den Kennungen des Endpunkts (GND, Normdaten-Art, VIAF, Wikidata); die Stichprobe mit Name und Wikidata-Verknüpfung des GND-Datensatzes bei lobid-gnd |
 | `ergebnisse/m19_aufloesung_gpt6.json`, `m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json` | M19, dieselben Dateien wie in M9, M10 und M12, gerechnet mit `gpt-6-luna` |
 | `ergebnisse/m19_latenz.json`, `m19_latenz_2.json` | M19, zwei Läufe: je Aufruf Modell, Thema, Sekunden und Tokens des gleichzeitigen Latenzvergleichs |
+| `ergebnisse/m20_entitaeten_genitiv.json` | M20, dieselbe Form wie `m18_entitaeten_gnd.json`, gerechnet mit der Genitiv-Regel (D46) |
 | `ergebnisse/m15_bausteine_lokal.txt` | M15 lesbar: Kennzahlen je Strategie, F1 je Baustein neben den LLM-Läufen aus M12 |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |

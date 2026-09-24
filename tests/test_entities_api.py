@@ -13,9 +13,12 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api.v2.entities import _link
+from app.knowledge.recognise import Mention
 from app.main import create_app
 from app.settings import Settings
 from app.sources.wikidata.index import build_index
+from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
 from tests.test_wikidata_index import write_dumps
 
@@ -203,3 +206,18 @@ def test_an_article_outside_wikipedia_carries_no_ids(client: TestClient) -> None
     ).json()
     regenbogen = by_text(body)["Regenbogen"]["article"]
     assert regenbogen["project"] == "klexikon" and regenbogen["ids"] is None
+
+
+def test_a_name_in_the_genitive_links_its_article(client: TestClient) -> None:
+    """The dictionary finds "Ernst Abbes" through "Ernst Abbe"; the entity keeps the words of the text."""
+    body = client.post(
+        "/api/v2/entities", json={"text": "Die Mikroskope Ernst Abbes waren genau.", "methods": ["dictionary"]}
+    )
+    abbe = by_text(body.json())["Ernst Abbes"]
+    assert abbe["article"]["title"] == "Ernst Abbe" and abbe["article"]["ids"]["gnd"] == "118646419"
+
+
+def test_a_name_the_model_gives_in_the_genitive_links_its_article(registry: ZimRegistry) -> None:
+    mention = Mention(text="Ernst Abbes", start=0, end=11, kind="PER", source="ner")
+    article = _link(registry.archives, mention)
+    assert article is not None and article.title == "Ernst Abbe"

@@ -1,0 +1,8608 @@
+[
+ {
+  "thema": "Barockliteratur",
+  "hauptartikel": "Barockliteratur",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Barockliteratur",
+    "titel": "Barockliteratur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "7510577-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1431376"
+    }
+   },
+   {
+    "text": "Literatur des Barocks",
+    "titel": "Barockliteratur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "7510577-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1431376"
+    }
+   },
+   {
+    "text": "Barock",
+    "titel": "Barock",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004541-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37853"
+    }
+   },
+   {
+    "text": "Perle",
+    "titel": "Perle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4173806-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q43436"
+    }
+   },
+   {
+    "text": "Literaturgeschichte",
+    "titel": "Literaturgeschichte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4167873-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q6497044"
+    }
+   },
+   {
+    "text": "Produktion",
+    "titel": "Produktion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047347-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q739302"
+    }
+   },
+   {
+    "text": "Europa",
+    "titel": "Europa",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015701-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "173367061",
+     "wikidata": "Q46"
+    }
+   },
+   {
+    "text": "Italien",
+    "titel": "Italien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4027833-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "152361066",
+     "wikidata": "Q38"
+    }
+   },
+   {
+    "text": "Spanien",
+    "titel": "Spanien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055964-6",
+     "gnd_kind": "Geografikum",
+     "viaf": "235029321",
+     "wikidata": "Q29"
+    }
+   },
+   {
+    "text": "Deutschland",
+    "titel": "Deutschland",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011882-4",
+     "gnd_kind": "Geografikum",
+     "viaf": "1168897875656720002",
+     "wikidata": "Q183"
+    }
+   },
+   {
+    "text": "Frankreich",
+    "titel": "Frankreich",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4018145-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "235459504",
+     "wikidata": "Q142"
+    }
+   },
+   {
+    "text": "Literatur",
+    "titel": "Literatur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4035964-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8242"
+    }
+   },
+   {
+    "text": "Epoche",
+    "titel": "Epoche",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Literatur",
+    "titel": "Literatur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4035964-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8242"
+    }
+   },
+   {
+    "text": "Englands",
+    "titel": "England",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014770-8",
+     "gnd_kind": "Geografikum",
+     "viaf": "142995804",
+     "wikidata": "Q21"
+    }
+   },
+   {
+    "text": "Jahrhunderts",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Barockliteratur",
+    "titel": "Barockliteratur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "7510577-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1431376"
+    }
+   },
+   {
+    "text": "Deutschland",
+    "titel": "Deutschland",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011882-4",
+     "gnd_kind": "Geografikum",
+     "viaf": "1168897875656720002",
+     "wikidata": "Q183"
+    }
+   },
+   {
+    "text": "Barocks",
+    "titel": "Barock",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004541-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37853"
+    }
+   },
+   {
+    "text": "Merkmale",
+    "titel": "Merkmal",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4253132-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1207505"
+    }
+   },
+   {
+    "text": "Literatur",
+    "titel": "Literatur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4035964-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8242"
+    }
+   },
+   {
+    "text": "Literaturgeschichte",
+    "titel": "Literaturgeschichte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4167873-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q6497044"
+    }
+   },
+   {
+    "text": "Barock",
+    "titel": "Barock",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004541-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37853"
+    }
+   },
+   {
+    "text": "Daniel Georg Morhof",
+    "titel": "Daniel Georg Morhof",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118784919",
+     "gnd_kind": "Person",
+     "viaf": "24746228",
+     "wikidata": "Q99609"
+    }
+   },
+   {
+    "text": "Deutsche",
+    "titel": "Deutsche",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4070334-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42884"
+    }
+   },
+   {
+    "text": "Sprache",
+    "titel": "Sprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056449-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q315"
+    }
+   },
+   {
+    "text": "Lyriker",
+    "titel": "Lyrik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4036774-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q182357"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Werken",
+    "titel": "Werkunterricht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4065590-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q13653504"
+    }
+   },
+   {
+    "text": "Elite",
+    "titel": "Elite",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014457-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q192797"
+    }
+   },
+   {
+    "text": "Literatur",
+    "titel": "Literatur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4035964-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8242"
+    }
+   },
+   {
+    "text": "Tradition",
+    "titel": "Tradition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4060560-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q82821"
+    }
+   },
+   {
+    "text": "Dichtung",
+    "titel": "Dichtung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4226367-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q20820061"
+    }
+   },
+   {
+    "text": "B",
+    "titel": "B",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9705"
+    }
+   },
+   {
+    "text": "Tradition",
+    "titel": "Tradition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4060560-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q82821"
+    }
+   },
+   {
+    "text": "Meistersinger",
+    "titel": "Meistersinger",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4169358-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1057436"
+    }
+   },
+   {
+    "text": "Hans Sachs",
+    "titel": "Hans Sachs",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118604597",
+     "gnd_kind": "Person",
+     "viaf": "61551907",
+     "wikidata": "Q19543"
+    }
+   },
+   {
+    "text": "Reform",
+    "titel": "Reform",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4115716-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q900406"
+    }
+   },
+   {
+    "text": "Dichtung",
+    "titel": "Dichtung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4226367-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q20820061"
+    }
+   },
+   {
+    "text": "Buch",
+    "titel": "Buch",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008570-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q571"
+    }
+   },
+   {
+    "text": "Martin Opitz",
+    "titel": "Martin Opitz",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118590111",
+     "gnd_kind": "Person",
+     "viaf": "22167909",
+     "wikidata": "Q60946"
+    }
+   },
+   {
+    "text": "Poetik",
+    "titel": "Poetik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046449-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q835023"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Bruchrechnung",
+  "hauptartikel": "Bruchrechnung",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Rechnen",
+    "titel": "Rechnen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q622821"
+    }
+   },
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Arithmetik",
+    "titel": "Arithmetik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4002919-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11205"
+    }
+   },
+   {
+    "text": "Teilgebiet der Mathematik",
+    "titel": "Teilgebiete der Mathematik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1936384"
+    }
+   },
+   {
+    "text": "Wort",
+    "titel": "Wort",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066951-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8171"
+    }
+   },
+   {
+    "text": "Rechnen",
+    "titel": "Rechnen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q622821"
+    }
+   },
+   {
+    "text": "Zahlen",
+    "titel": "Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q11563"
+    }
+   },
+   {
+    "text": "Zulassung",
+    "titel": "Zulassung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4127410-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q228753"
+    }
+   },
+   {
+    "text": "Nenner",
+    "titel": "Nenner",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q3044574"
+    }
+   },
+   {
+    "text": "Terme",
+    "titel": "Terme",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": "Geografikum",
+     "viaf": "1540169181054669050008",
+     "wikidata": "Q669752"
+    }
+   },
+   {
+    "text": "Bruchterme",
+    "titel": "Bruchterme",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": null
+    }
+   },
+   {
+    "text": "Rechnen",
+    "titel": "Rechnen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q622821"
+    }
+   },
+   {
+    "text": "Algebra",
+    "titel": "Algebra",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4001156-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3968"
+    }
+   },
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Grundrechenarten",
+    "titel": "Grundrechenart",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4197290-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7214750"
+    }
+   },
+   {
+    "text": "Addition",
+    "titel": "Addition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4296282-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q32043"
+    }
+   },
+   {
+    "text": "Subtraktion",
+    "titel": "Subtraktion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4359078-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q40754"
+    }
+   },
+   {
+    "text": "Multiplikation",
+    "titel": "Multiplikation",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4170732-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q40276"
+    }
+   },
+   {
+    "text": "Division",
+    "titel": "Grundrechenarten",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Wurzeln",
+    "titel": "Wurzeln",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": "7740074-4",
+     "gnd_kind": "Werk",
+     "viaf": "183434359",
+     "wikidata": "Q743223"
+    }
+   },
+   {
+    "text": "Besonderheit",
+    "titel": "Allgemeines und Einzelnes",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q97999710"
+    }
+   },
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Unterschied",
+    "titel": "Unterschied",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2656762"
+    }
+   },
+   {
+    "text": "Bruchzahl",
+    "titel": "Rationale Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4048495-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1244890"
+    }
+   },
+   {
+    "text": "Bruchschreibweise",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Bruchstrich",
+    "titel": "Geteiltzeichen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q3961002"
+    }
+   },
+   {
+    "text": "Leonardo von Pisa",
+    "titel": "Leonardo Fibonacci",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "11868700X",
+     "gnd_kind": "Person",
+     "viaf": "108619361",
+     "wikidata": "Q8763"
+    }
+   },
+   {
+    "text": "Mathematik",
+    "titel": "Mathematik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037944-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q395"
+    }
+   },
+   {
+    "text": "Algebra",
+    "titel": "Algebra",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4001156-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3968"
+    }
+   },
+   {
+    "text": "Struktur",
+    "titel": "Struktur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q6671777"
+    }
+   },
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Bruchrechnung",
+    "titel": "Bruchrechnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4008387-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q66055"
+    }
+   },
+   {
+    "text": "Eins",
+    "titel": "Eins",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "7724620-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q199"
+    }
+   },
+   {
+    "text": "Rechnen",
+    "titel": "Rechnen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q622821"
+    }
+   },
+   {
+    "text": "Zahlen",
+    "titel": "Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q11563"
+    }
+   },
+   {
+    "text": "Kuchen",
+    "titel": "Kuchen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4165856-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q13360264"
+    }
+   },
+   {
+    "text": "Beispiel",
+    "titel": "Beispiel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4144383-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14944328"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Demokratie",
+  "hauptartikel": "Demokratie",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Demokratie",
+    "titel": "Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011413-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7174"
+    }
+   },
+   {
+    "text": "Volksherrschaft",
+    "titel": "Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011413-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7174"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Formen",
+    "titel": "Dressieren (Kochen)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2677668"
+    }
+   },
+   {
+    "text": "Partizipation",
+    "titel": "Partizipation",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4044789-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1773152"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Politikwissenschaft",
+    "titel": "Politikwissenschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4076229-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q36442"
+    }
+   },
+   {
+    "text": "Staatsformenlehre",
+    "titel": "Staatsformenlehre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": null
+    }
+   },
+   {
+    "text": "Demokratietheorie",
+    "titel": "Demokratietheorie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1186090"
+    }
+   },
+   {
+    "text": "Attische Demokratie",
+    "titel": "Attische Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q223767"
+    }
+   },
+   {
+    "text": "Herodot",
+    "titel": "Herodot",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118549855",
+     "gnd_kind": "Person",
+     "viaf": "100225976",
+     "wikidata": "Q26825"
+    }
+   },
+   {
+    "text": "Ideengeschichtlich",
+    "titel": "Ideengeschichte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q570018"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Politie",
+    "titel": "Politie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q547921"
+    }
+   },
+   {
+    "text": "Aristoteles",
+    "titel": "Aristoteles",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118650130",
+     "gnd_kind": "Person",
+     "viaf": "7524651",
+     "wikidata": "Q868"
+    }
+   },
+   {
+    "text": "Moderne",
+    "titel": "Moderne",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4039827-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11084414"
+    }
+   },
+   {
+    "text": "Abraham Lincolns",
+    "titel": "Abraham Lincoln",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "11857308X",
+     "gnd_kind": "Person",
+     "viaf": "76349832",
+     "wikidata": "Q91"
+    }
+   },
+   {
+    "text": "Regierung",
+    "titel": "Regierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049012-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7188"
+    }
+   },
+   {
+    "text": "Volkes",
+    "titel": "Volk",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4063790-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2472587"
+    }
+   },
+   {
+    "text": "Volk",
+    "titel": "Volk",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4063790-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2472587"
+    }
+   },
+   {
+    "text": "Volk",
+    "titel": "Volk",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4063790-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2472587"
+    }
+   },
+   {
+    "text": "Demokratie",
+    "titel": "Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011413-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7174"
+    }
+   },
+   {
+    "text": "Wahlen",
+    "titel": "Wahl",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Staatsgewalt",
+    "titel": "Staatsgewalt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056648-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2324993"
+    }
+   },
+   {
+    "text": "Gesetzgebung",
+    "titel": "Gesetzgebung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020682-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3406566"
+    }
+   },
+   {
+    "text": "Regierung",
+    "titel": "Regierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049012-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7188"
+    }
+   },
+   {
+    "text": "Rechtsprechung",
+    "titel": "Rechtsprechung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4115710-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q5418842"
+    }
+   },
+   {
+    "text": "Organe",
+    "titel": "Organ",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Gewaltenteilung",
+    "titel": "Gewaltenteilung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4071817-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q79896"
+    }
+   },
+   {
+    "text": "Garantie",
+    "titel": "Garantie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4134174-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12824221"
+    }
+   },
+   {
+    "text": "Grundrechte",
+    "titel": "Grundrechte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4022344-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3237872"
+    }
+   },
+   {
+    "text": "Demokratie",
+    "titel": "Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011413-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7174"
+    }
+   },
+   {
+    "text": "Entscheidungen",
+    "titel": "Der Ranger – Paradies Heimat: Entscheidungen",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q107634224"
+    }
+   },
+   {
+    "text": "Wahlen",
+    "titel": "Wahl",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Regierung",
+    "titel": "Regierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049012-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7188"
+    }
+   },
+   {
+    "text": "Opposition",
+    "titel": "Opposition",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Bestandteil",
+    "titel": "Bestandteil",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q830414"
+    }
+   },
+   {
+    "text": "Systems",
+    "titel": "Systems",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2377149"
+    }
+   },
+   {
+    "text": "Meinungsäußerung",
+    "titel": "Meinungsfreiheit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4038463-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q22692"
+    }
+   },
+   {
+    "text": "Pressefreiheit",
+    "titel": "Pressefreiheit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047160-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q22688"
+    }
+   },
+   {
+    "text": "Möglichkeit",
+    "titel": "Möglichkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q7631437"
+    }
+   },
+   {
+    "text": "Minderheitenschutz",
+    "titel": "Minderheitenschutz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4039411-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1369260"
+    }
+   },
+   {
+    "text": "Demokratie",
+    "titel": "Demokratie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4011413-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7174"
+    }
+   },
+   {
+    "text": "Stimmvolk",
+    "titel": "Stimmrecht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4057595-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q140775541"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Französische Revolution",
+  "hauptartikel": "Französische Revolution",
+  "begriffe": 45,
+  "entitaeten": [
+   {
+    "text": "Französische Revolution",
+    "titel": "Französische Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4018183-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q6534"
+    }
+   },
+   {
+    "text": "Geschichte",
+    "titel": "Geschichte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020517-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q309"
+    }
+   },
+   {
+    "text": "Ständestaats",
+    "titel": "Ständestaat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4182790-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q872760"
+    }
+   },
+   {
+    "text": "Umsetzung",
+    "titel": "Umsetzung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2478679"
+    }
+   },
+   {
+    "text": "Aufklärung",
+    "titel": "Aufklärung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4003524-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12539"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Menschenrechte",
+    "titel": "Menschenrechte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4074725-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8458"
+    }
+   },
+   {
+    "text": "Europa",
+    "titel": "Europa",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015701-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "173367061",
+     "wikidata": "Q46"
+    }
+   },
+   {
+    "text": "Revolutionen",
+    "titel": "Revolutionen",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2146936"
+    }
+   },
+   {
+    "text": "Verfassungsstaat",
+    "titel": "Verfassungsstaat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4127082-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2515606"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Entwicklung",
+    "titel": "Entwicklung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q340724"
+    }
+   },
+   {
+    "text": "Gesellschaft",
+    "titel": "Gesellschaft",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Nation",
+    "titel": "Nation",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4041279-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q6266"
+    }
+   },
+   {
+    "text": "Prozess",
+    "titel": "Prozess",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4436117-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10843872"
+    }
+   },
+   {
+    "text": "Geschichtsschreibung",
+    "titel": "Geschichtsschreibung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020531-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q50675"
+    }
+   },
+   {
+    "text": "Zeichen",
+    "titel": "Zeichen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4067439-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q262246"
+    }
+   },
+   {
+    "text": "Kampfes",
+    "titel": "Kampf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4163167-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q650711"
+    }
+   },
+   {
+    "text": "Freiheitsrechte",
+    "titel": "Freiheitsrechte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q29556"
+    }
+   },
+   {
+    "text": "Monarchie",
+    "titel": "Monarchie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4040034-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7269"
+    }
+   },
+   {
+    "text": "Bedrohung",
+    "titel": "Bedrohung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4144266-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q707125"
+    }
+   },
+   {
+    "text": "Republik",
+    "titel": "Republik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4177823-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7270"
+    }
+   },
+   {
+    "text": "Ausbildung",
+    "titel": "Ausbildung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4112628-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8434"
+    }
+   },
+   {
+    "text": "Terrors",
+    "titel": "Terror",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q13648784"
+    }
+   },
+   {
+    "text": "Guillotine",
+    "titel": "Guillotine",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4158535-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128015"
+    }
+   },
+   {
+    "text": "Feinde",
+    "titel": "Feinde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q15809413"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Macht",
+    "titel": "Macht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4036824-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q25107"
+    }
+   },
+   {
+    "text": "Gleichheit",
+    "titel": "Gleichheit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4021231-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q773009"
+    }
+   },
+   {
+    "text": "Napoleon Bonaparte",
+    "titel": "Napoleon Bonaparte",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118586408",
+     "gnd_kind": "Person",
+     "viaf": "106964661",
+     "wikidata": "Q517"
+    }
+   },
+   {
+    "text": "Frank",
+    "titel": "Frank",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q220546"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Klimawandel",
+  "hauptartikel": "Klimawandel",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Klimaveränderung",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Klimaänderung",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Klimawechsel",
+    "titel": "Klimawechsel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1774442"
+    }
+   },
+   {
+    "text": "Klimas",
+    "titel": "Klima",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4031170-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7937"
+    }
+   },
+   {
+    "text": "Erde",
+    "titel": "Erde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "1135962553",
+     "gnd_kind": "Geografikum",
+     "viaf": "6270149919445006650001",
+     "wikidata": "Q2"
+    }
+   },
+   {
+    "text": "Planeten",
+    "titel": "Planet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046212-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q634"
+    }
+   },
+   {
+    "text": "Atmosphäre",
+    "titel": "Atmosphäre",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Abkühlung",
+    "titel": "Abkühlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4279871-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3929317"
+    }
+   },
+   {
+    "text": "Erwärmung",
+    "titel": "Wärme",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064171-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q44432"
+    }
+   },
+   {
+    "text": "Zeiträume",
+    "titel": "Zeiträume Bodenstedt",
+    "projekt": "wikipedia",
+    "art": "Organisation",
+    "ids": {
+     "gnd": "1206607130",
+     "gnd_kind": "Körperschaft",
+     "viaf": null,
+     "wikidata": "Q107524841"
+    }
+   },
+   {
+    "text": "Klimazustands",
+    "titel": "Klimazustand",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q14918799"
+    }
+   },
+   {
+    "text": "Klimazone",
+    "titel": "Klimazone",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4128757-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1639168"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Wahrscheinlichkeit",
+    "titel": "Wahrscheinlichkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4137007-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9492"
+    }
+   },
+   {
+    "text": "Menschen",
+    "titel": "Mensch",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Erwärmung",
+    "titel": "Wärme",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064171-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q44432"
+    }
+   },
+   {
+    "text": "Beispiel",
+    "titel": "Beispiel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4144383-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14944328"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Diskussion",
+    "titel": "Diskussion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4012478-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3030248"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Synonym",
+    "titel": "Synonym",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058765-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42106"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Krise",
+    "titel": "Krise",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4033203-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q381072"
+    }
+   },
+   {
+    "text": "Klimakrise",
+    "titel": "Klimakrise",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q60933643"
+    }
+   },
+   {
+    "text": "Klimakatastrophe",
+    "titel": "Klimakatastrophe",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4234460-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1774397"
+    }
+   },
+   {
+    "text": "Klimawandel",
+    "titel": "Klimawandel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164199-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125928"
+    }
+   },
+   {
+    "text": "Strahlungsantriebs",
+    "titel": "Strahlungsantrieb",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1463606"
+    }
+   },
+   {
+    "text": "Strahlungsantrieb",
+    "titel": "Strahlungsantrieb",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1463606"
+    }
+   },
+   {
+    "text": "Kohlenstoffdioxid",
+    "titel": "Kohlenstoffdioxid",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4031648-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1997"
+    }
+   },
+   {
+    "text": "CO2",
+    "titel": "Kohlenstoffdioxid",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4031648-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1997"
+    }
+   },
+   {
+    "text": "Methan",
+    "titel": "Methan",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4169678-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37129"
+    }
+   },
+   {
+    "text": "CH4",
+    "titel": "Methan",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4169678-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37129"
+    }
+   },
+   {
+    "text": "Wasserdampf",
+    "titel": "Wasserdampf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4132825-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q190120"
+    }
+   },
+   {
+    "text": "Sonneneinstrahlung",
+    "titel": "Insolation (Physik)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4120494-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q216973"
+    }
+   },
+   {
+    "text": "Milanković-Zyklen",
+    "titel": "Milanković-Zyklen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4604799-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q211446"
+    }
+   },
+   {
+    "text": "Rückstrahlvermögen",
+    "titel": "Albedo",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4141802-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101038"
+    }
+   },
+   {
+    "text": "Albedo",
+    "titel": "Albedo",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4141802-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101038"
+    }
+   },
+   {
+    "text": "Erdoberfläche",
+    "titel": "Erdoberfläche",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4113458-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1349417"
+    }
+   },
+   {
+    "text": "Ozeane",
+    "titel": "Ozean",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9430"
+    }
+   },
+   {
+    "text": "Klimazustand",
+    "titel": "Klimazustand",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q14918799"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Optik",
+  "hauptartikel": "Optik",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Sehen",
+    "titel": "Visuelle Wahrnehmung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4078921-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q162668"
+    }
+   },
+   {
+    "text": "Sehen",
+    "titel": "Visuelle Wahrnehmung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4078921-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q162668"
+    }
+   },
+   {
+    "text": "Lehre",
+    "titel": "Ausbildung",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Sehen",
+    "titel": "Visuelle Wahrnehmung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4078921-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q162668"
+    }
+   },
+   {
+    "text": "Lehre",
+    "titel": "Ausbildung",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Licht",
+    "titel": "Licht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9128"
+    }
+   },
+   {
+    "text": "Gebiet",
+    "titel": "Gebiet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q4835091"
+    }
+   },
+   {
+    "text": "Physik",
+    "titel": "Physik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045956-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q413"
+    }
+   },
+   {
+    "text": "Licht",
+    "titel": "Licht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9128"
+    }
+   },
+   {
+    "text": "Materie",
+    "titel": "Materie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q53617407"
+    }
+   },
+   {
+    "text": "Licht",
+    "titel": "Licht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9128"
+    }
+   },
+   {
+    "text": "THz",
+    "titel": "Hertz (Einheit)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "120568896X",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q39369"
+    }
+   },
+   {
+    "text": "THz",
+    "titel": "Hertz (Einheit)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "120568896X",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q39369"
+    }
+   },
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Strahlung",
+    "titel": "Strahlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4057849-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q18335"
+    }
+   },
+   {
+    "text": "Infrarot",
+    "titel": "Infrarotstrahlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4161686-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11388"
+    }
+   },
+   {
+    "text": "Ultraviolett",
+    "titel": "Ultraviolettstrahlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4186733-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11391"
+    }
+   },
+   {
+    "text": "Viele",
+    "titel": "Egbert Ludovicus Viele",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": "Person",
+     "viaf": "34329000",
+     "wikidata": "Q5347713"
+    }
+   },
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Beispiel",
+    "titel": "Beispiel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4144383-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14944328"
+    }
+   },
+   {
+    "text": "Röntgenstrahlung",
+    "titel": "Röntgenstrahlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4129728-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q34777"
+    }
+   },
+   {
+    "text": "Röntgenoptik",
+    "titel": "Röntgenoptik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4178318-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q359639"
+    }
+   },
+   {
+    "text": "Mikrowellen",
+    "titel": "Mikrowellen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4039246-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q127995"
+    }
+   },
+   {
+    "text": "Funkwellen",
+    "titel": "Radiowelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4176841-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q4262"
+    }
+   },
+   {
+    "text": "Teilchen",
+    "titel": "Teilchen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1621273"
+    }
+   },
+   {
+    "text": "Feld",
+    "titel": "Feld",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Magnetfeld",
+    "titel": "Magnetismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037021-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3294789"
+    }
+   },
+   {
+    "text": "Elektronenoptik",
+    "titel": "Elektronenoptik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q905233"
+    }
+   },
+   {
+    "text": "Wellenoptik",
+    "titel": "Wellenoptik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4189552-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q942347"
+    }
+   },
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Wellenoptik",
+    "titel": "Wellenoptik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4189552-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q942347"
+    }
+   },
+   {
+    "text": "Wellennatur des Lichts",
+    "titel": "Wellennatur des Lichts",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": null
+    }
+   },
+   {
+    "text": "Optik",
+    "titel": "Optik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043650-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q14620"
+    }
+   },
+   {
+    "text": "Abmessungen",
+    "titel": "Abmessungen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q322481"
+    }
+   },
+   {
+    "text": "Systems",
+    "titel": "System",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058801-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q58778"
+    }
+   },
+   {
+    "text": "Wellenlänge",
+    "titel": "Wellenlänge",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q41364"
+    }
+   },
+   {
+    "text": "Lichts",
+    "titel": "Licht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9128"
+    }
+   },
+   {
+    "text": "Abmessungen",
+    "titel": "Abmessungen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q322481"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Photosynthese",
+  "hauptartikel": "Photosynthese",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Licht",
+    "titel": "Licht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9128"
+    }
+   },
+   {
+    "text": "Fotosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Prozess",
+    "titel": "Prozess",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4436117-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10843872"
+    }
+   },
+   {
+    "text": "Biomoleküle",
+    "titel": "Naturstoff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4041418-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q206229"
+    }
+   },
+   {
+    "text": "Stoffen",
+    "titel": "Stoffen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q61050552"
+    }
+   },
+   {
+    "text": "Hilfe",
+    "titel": "Hilfe",
+    "projekt": "wikipedia",
+    "art": "Netzwerk",
+    "ids": {
+     "gnd": "4444536-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1643184"
+    }
+   },
+   {
+    "text": "Lichtenergie",
+    "titel": "Lichtleistung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1823456"
+    }
+   },
+   {
+    "text": "Pflanzen",
+    "titel": "Pflanze",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q756"
+    }
+   },
+   {
+    "text": "Algen",
+    "titel": "Alge",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4001173-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37868"
+    }
+   },
+   {
+    "text": "Bakterien",
+    "titel": "Bakterien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004296-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10876"
+    }
+   },
+   {
+    "text": "Lichtenergie",
+    "titel": "Lichtleistung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1823456"
+    }
+   },
+   {
+    "text": "Hilfe",
+    "titel": "Hilfe",
+    "projekt": "wikipedia",
+    "art": "Netzwerk",
+    "ids": {
+     "gnd": "4444536-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1643184"
+    }
+   },
+   {
+    "text": "Chlorophyll",
+    "titel": "Chlorophylle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q43177"
+    }
+   },
+   {
+    "text": "Energie",
+    "titel": "Energie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014692-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11379"
+    }
+   },
+   {
+    "text": "Stoffen",
+    "titel": "Stoffen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q61050552"
+    }
+   },
+   {
+    "text": "Kohlenstoffdioxid",
+    "titel": "Kohlenstoffdioxid",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4031648-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1997"
+    }
+   },
+   {
+    "text": "CO2",
+    "titel": "Kohlenstoffdioxid",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4031648-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1997"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Kohlenhydrate",
+    "titel": "Kohlenhydrate",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4164517-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11358"
+    }
+   },
+   {
+    "text": "Energie",
+    "titel": "Energie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014692-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11379"
+    }
+   },
+   {
+    "text": "Assimilate",
+    "titel": "Assimilation (Biologie)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4199389-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q741773"
+    }
+   },
+   {
+    "text": "Lebewesens",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Synthese",
+    "titel": "Synthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4418958-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1134306"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Sauerstoff",
+    "titel": "Sauerstoff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051803-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q629"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Bakterien",
+    "titel": "Bakterien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004296-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10876"
+    }
+   },
+   {
+    "text": "Sauerstoff",
+    "titel": "Sauerstoff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051803-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q629"
+    }
+   },
+   {
+    "text": "Schwefel",
+    "titel": "Schwefel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4180380-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q682"
+    }
+   },
+   {
+    "text": "S",
+    "titel": "S",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9956"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Prozess",
+    "titel": "Prozess",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4436117-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10843872"
+    }
+   },
+   {
+    "text": "Lichtenergie",
+    "titel": "Lichtleistung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1823456"
+    }
+   },
+   {
+    "text": "Sonnenlicht",
+    "titel": "Sonnenstrahlung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139254-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q17996169"
+    }
+   },
+   {
+    "text": "Energie",
+    "titel": "Energie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014692-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11379"
+    }
+   },
+   {
+    "text": "Phototrophie",
+    "titel": "Phototrophie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4473321-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q335183"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Photosynthese",
+    "titel": "Photosynthese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045936-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11982"
+    }
+   },
+   {
+    "text": "Nahrung",
+    "titel": "Nahrung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4171117-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2095"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Programmiersprache",
+  "hauptartikel": "Programmiersprache",
+  "begriffe": 48,
+  "entitaeten": [
+   {
+    "text": "Programmiersprache",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Sprache",
+    "titel": "Sprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056449-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q315"
+    }
+   },
+   {
+    "text": "Formulierung",
+    "titel": "Formulierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q3077570"
+    }
+   },
+   {
+    "text": "Computer",
+    "titel": "Computer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4070083-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q68"
+    }
+   },
+   {
+    "text": "Syntax",
+    "titel": "Syntax",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058779-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37437"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Menschen",
+    "titel": "Mensch",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Ausdrucksweise",
+    "titel": "Diktion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1225396"
+    }
+   },
+   {
+    "text": "Sprachen",
+    "titel": "Einzelsprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q34770"
+    }
+   },
+   {
+    "text": "Maschinensprache",
+    "titel": "Maschinensprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037827-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q55813"
+    }
+   },
+   {
+    "text": "Prozessor",
+    "titel": "Prozessor",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1466064"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Quelltext",
+    "titel": "Quelltext",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4488209-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128751"
+    }
+   },
+   {
+    "text": "Quelltext",
+    "titel": "Quelltext",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4488209-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128751"
+    }
+   },
+   {
+    "text": "Quellcode",
+    "titel": "Quelltext",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4488209-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128751"
+    }
+   },
+   {
+    "text": "Computer",
+    "titel": "Computer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4070083-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q68"
+    }
+   },
+   {
+    "text": "Quelltext",
+    "titel": "Quelltext",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4488209-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128751"
+    }
+   },
+   {
+    "text": "Maschinensprache",
+    "titel": "Maschinensprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037827-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q55813"
+    }
+   },
+   {
+    "text": "Computer",
+    "titel": "Computer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4070083-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q68"
+    }
+   },
+   {
+    "text": "Gegensatz",
+    "titel": "Gegensatz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4156282-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12378336"
+    }
+   },
+   {
+    "text": "Programmiersprachen",
+    "titel": "Programmiersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047409-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9143"
+    }
+   },
+   {
+    "text": "Assemblersprache",
+    "titel": "Assemblersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4003255-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q165436"
+    }
+   },
+   {
+    "text": "Menschen",
+    "titel": "Mensch",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Binärcode",
+    "titel": "Binärcode",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q864135"
+    }
+   },
+   {
+    "text": "Programmierung",
+    "titel": "Programmierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4076370-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q80006"
+    }
+   },
+   {
+    "text": "Maschinensprache",
+    "titel": "Maschinensprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037827-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q55813"
+    }
+   },
+   {
+    "text": "Assemblersprache",
+    "titel": "Assemblersprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4003255-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q165436"
+    }
+   },
+   {
+    "text": "Übersetzung",
+    "titel": "Übersetzung",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Maschinensprache",
+    "titel": "Maschinensprache",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037827-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q55813"
+    }
+   },
+   {
+    "text": "Compiler",
+    "titel": "Compiler",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148248-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q47506"
+    }
+   },
+   {
+    "text": "Interpreter",
+    "titel": "Interpreter",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4162129-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q183065"
+    }
+   },
+   {
+    "text": "JIT-Compiler",
+    "titel": "Just-in-time-Kompilierung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q110546"
+    }
+   },
+   {
+    "text": "Quelltext",
+    "titel": "Quelltext",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4488209-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128751"
+    }
+   },
+   {
+    "text": "Zwischencode",
+    "titel": "Zwischencode",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q244916"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Säure-Base-Konzepte",
+  "hauptartikel": "Säure-Base-Konzepte",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Säure",
+    "titel": "Säuren",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051266-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11158"
+    }
+   },
+   {
+    "text": "Base",
+    "titel": "Verwandtschaft",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Chemie",
+    "titel": "Chemie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4009816-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2329"
+    }
+   },
+   {
+    "text": "Antrieb",
+    "titel": "Antrieb",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2583685"
+    }
+   },
+   {
+    "text": "Entwicklung",
+    "titel": "Entwicklung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q340724"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Johannes Nicolaus Brønsted",
+    "titel": "Johannes Nicolaus Brønsted",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "123077389",
+     "gnd_kind": "Person",
+     "viaf": "32894763",
+     "wikidata": "Q180142"
+    }
+   },
+   {
+    "text": "Martin Lowry",
+    "titel": "Martin Lowry",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "117251860",
+     "gnd_kind": "Person",
+     "viaf": "14924521",
+     "wikidata": "Q908567"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Svante Arrhenius",
+    "titel": "Svante Arrhenius",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118650467",
+     "gnd_kind": "Person",
+     "viaf": "5045360",
+     "wikidata": "Q80956"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Anwesenheit",
+    "titel": "Präsenz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4784905-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1480230"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Chemie",
+    "titel": "Chemie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4009816-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2329"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Gilbert Newton Lewis",
+    "titel": "Gilbert Newton Lewis",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118976575",
+     "gnd_kind": "Person",
+     "viaf": "30534916",
+     "wikidata": "Q208858"
+    }
+   },
+   {
+    "text": "Svante Arrhenius",
+    "titel": "Svante Arrhenius",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118650467",
+     "gnd_kind": "Person",
+     "viaf": "5045360",
+     "wikidata": "Q80956"
+    }
+   },
+   {
+    "text": "Leitfähigkeit",
+    "titel": "Leitfähigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4120663-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12778728"
+    }
+   },
+   {
+    "text": "Salze",
+    "titel": "Salze",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051413-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12370"
+    }
+   },
+   {
+    "text": "Säuren",
+    "titel": "Säuren",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051266-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11158"
+    }
+   },
+   {
+    "text": "Elektrolyte",
+    "titel": "Elektrolyt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4151826-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q162908"
+    }
+   },
+   {
+    "text": "Säuren",
+    "titel": "Säuren",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051266-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11158"
+    }
+   },
+   {
+    "text": "Elektrolyte",
+    "titel": "Elektrolyt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4151826-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q162908"
+    }
+   },
+   {
+    "text": "Reinstoffe",
+    "titel": "Reinstoff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4202617-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q578779"
+    }
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Leitfähigkeit",
+    "titel": "Leitfähigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4120663-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12778728"
+    }
+   },
+   {
+    "text": "Bildung",
+    "titel": "Bildung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4006650-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2653450"
+    }
+   },
+   {
+    "text": "Teilchen",
+    "titel": "Teilchen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1621273"
+    }
+   },
+   {
+    "text": "Kationen",
+    "titel": "Kation",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4163478-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q326277"
+    }
+   },
+   {
+    "text": "Teilchen",
+    "titel": "Teilchen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1621273"
+    }
+   },
+   {
+    "text": "Anionen",
+    "titel": "Anion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q107968"
+    }
+   },
+   {
+    "text": "Merkmal",
+    "titel": "Merkmal",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4253132-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1207505"
+    }
+   },
+   {
+    "text": "Säure",
+    "titel": "Säuren",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4051266-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11158"
+    }
+   },
+   {
+    "text": "H",
+    "titel": "H",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9914"
+    }
+   },
+   {
+    "text": "Anionen",
+    "titel": "Anion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q107968"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Sinfonie",
+  "hauptartikel": "Sinfonie",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Sinfonie",
+    "titel": "Sinfonie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055087-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9734"
+    }
+   },
+   {
+    "text": "Symphonie",
+    "titel": "Sinfonie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055087-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9734"
+    }
+   },
+   {
+    "text": "Instrumentalmusik",
+    "titel": "Instrumentalmusik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4129951-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q639197"
+    }
+   },
+   {
+    "text": "Orchester",
+    "titel": "Orchester",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4172708-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42998"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Vorbild",
+    "titel": "Vorbild",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4391266-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1136974"
+    }
+   },
+   {
+    "text": "Sonate",
+    "titel": "Sonate",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4131190-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q131269"
+    }
+   },
+   {
+    "text": "Sinfonie",
+    "titel": "Sinfonie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055087-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9734"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Orchestermusik",
+    "titel": "Orchester",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4172708-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42998"
+    }
+   },
+   {
+    "text": "Symphonia",
+    "titel": "Symphonia",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q15849785"
+    }
+   },
+   {
+    "text": "Sinfonia",
+    "titel": "Sinfonia",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q377141"
+    }
+   },
+   {
+    "text": "Jahrhunderts",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Sinfonia",
+    "titel": "Sinfonia",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q377141"
+    }
+   },
+   {
+    "text": "Orchester",
+    "titel": "Orchester",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4172708-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42998"
+    }
+   },
+   {
+    "text": "Gesang",
+    "titel": "Gesang",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020470-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q27939"
+    }
+   },
+   {
+    "text": "Kirchenmusik",
+    "titel": "Kirchenmusik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4030736-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8812109"
+    }
+   },
+   {
+    "text": "Oper",
+    "titel": "Oper",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043582-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1344"
+    }
+   },
+   {
+    "text": "Ballett",
+    "titel": "Ballett",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4004351-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q41425"
+    }
+   },
+   {
+    "text": "Kammermusik",
+    "titel": "Kammermusik",
+    "projekt": "wikipedia",
+    "art": "Organisation",
+    "ids": {
+     "gnd": "4136998-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q189201"
+    }
+   },
+   {
+    "text": "Ouvertüre",
+    "titel": "Ouvertüre",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": "4172996-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q202287"
+    }
+   },
+   {
+    "text": "Zwischenaktmusik",
+    "titel": "Entracte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q7114795"
+    }
+   },
+   {
+    "text": "Illustration",
+    "titel": "Illustration",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4123412-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q178659"
+    }
+   },
+   {
+    "text": "Geschehens",
+    "titel": "Ereignis",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4152718-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1190554"
+    }
+   },
+   {
+    "text": "B",
+    "titel": "B",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9705"
+    }
+   },
+   {
+    "text": "Schlachtmusik",
+    "titel": "Musikalisches Schlachtengemälde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4122880-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q4869661"
+    }
+   },
+   {
+    "text": "Johann Sebastian Bach",
+    "titel": "Johann Sebastian Bach",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "11850553X",
+     "gnd_kind": "Person",
+     "viaf": "12304462",
+     "wikidata": "Q1339"
+    }
+   },
+   {
+    "text": "Terminus",
+    "titel": "Terminus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q12812139"
+    }
+   },
+   {
+    "text": "Sinfonia",
+    "titel": "Sinfonia",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q377141"
+    }
+   },
+   {
+    "text": "Partita",
+    "titel": "Partita",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4289318-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q388383"
+    }
+   },
+   {
+    "text": "Clavierübung",
+    "titel": "Clavierübung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4525016-9",
+     "gnd_kind": "Werk",
+     "viaf": "177454234",
+     "wikidata": "Q2299511"
+    }
+   },
+   {
+    "text": "Klavier",
+    "titel": "Klavier",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4030982-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q5994"
+    }
+   },
+   {
+    "text": "Sinfonie",
+    "titel": "Sinfonie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055087-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q9734"
+    }
+   },
+   {
+    "text": "Sinfonia",
+    "titel": "Sinfonia",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q377141"
+    }
+   },
+   {
+    "text": "Ouvertüre",
+    "titel": "Ouvertüre",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": "4172996-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q202287"
+    }
+   },
+   {
+    "text": "Opera seria",
+    "titel": "Opera seria",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139333-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q210675"
+    }
+   },
+   {
+    "text": "Gegensatz",
+    "titel": "Gegensatz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4156282-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12378336"
+    }
+   },
+   {
+    "text": "Ouvertüre",
+    "titel": "Ouvertüre",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": "4172996-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q202287"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Plattentektonik",
+  "hauptartikel": "Plattentektonik",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Plattentektonik",
+    "titel": "Plattentektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046317-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7950"
+    }
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Theorie",
+    "titel": "Theorie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4059787-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q17737"
+    }
+   },
+   {
+    "text": "Geowissenschaften",
+    "titel": "Geowissenschaften",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020288-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8008"
+    }
+   },
+   {
+    "text": "Vorgänge",
+    "titel": "Vorgänge",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2534003"
+    }
+   },
+   {
+    "text": "Erdhülle",
+    "titel": "Erdhülle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1349226"
+    }
+   },
+   {
+    "text": "Lithosphäre",
+    "titel": "Lithosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139001-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83296"
+    }
+   },
+   {
+    "text": "Erdkruste",
+    "titel": "Erdkruste",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015169-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q15316"
+    }
+   },
+   {
+    "text": "Erdmantel",
+    "titel": "Erdmantel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4138985-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101949"
+    }
+   },
+   {
+    "text": "Erde",
+    "titel": "Erde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "1135962553",
+     "gnd_kind": "Geografikum",
+     "viaf": "6270149919445006650001",
+     "wikidata": "Q2"
+    }
+   },
+   {
+    "text": "Erdhülle",
+    "titel": "Erdhülle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1349226"
+    }
+   },
+   {
+    "text": "Erdplatten",
+    "titel": "Lithosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139001-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83296"
+    }
+   },
+   {
+    "text": "Erdmantel",
+    "titel": "Erdmantel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4138985-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101949"
+    }
+   },
+   {
+    "text": "Kontinentaldrift",
+    "titel": "Kontinentaldrift",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4032288-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q178605"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Plattentektonik",
+    "titel": "Plattentektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046317-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7950"
+    }
+   },
+   {
+    "text": "Theorie",
+    "titel": "Theorie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4059787-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q17737"
+    }
+   },
+   {
+    "text": "Teilen",
+    "titel": "Teilen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q459221"
+    }
+   },
+   {
+    "text": "Phänomen",
+    "titel": "Phänomen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4254910-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q483247"
+    }
+   },
+   {
+    "text": "Wissenschaft",
+    "titel": "Wissenschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066562-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q336"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "System",
+    "titel": "System",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058801-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q58778"
+    }
+   },
+   {
+    "text": "Konvektion",
+    "titel": "Konvektion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4117572-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q160329"
+    }
+   },
+   {
+    "text": "Erdmantels",
+    "titel": "Erdmantel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4138985-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101949"
+    }
+   },
+   {
+    "text": "Mantelkonvektion",
+    "titel": "Mantelkonvektion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4354719-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q120005"
+    }
+   },
+   {
+    "text": "Erdoberfläche",
+    "titel": "Erdoberfläche",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4113458-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1349417"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Plattentektonik",
+    "titel": "Plattentektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046317-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7950"
+    }
+   },
+   {
+    "text": "Kontrast",
+    "titel": "Kontrast",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4123552-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q690182"
+    }
+   },
+   {
+    "text": "Formen",
+    "titel": "Dressieren (Kochen)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2677668"
+    }
+   },
+   {
+    "text": "Tektonik",
+    "titel": "Tektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4059351-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q78125729"
+    }
+   },
+   {
+    "text": "Planeten",
+    "titel": "Planet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046212-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q634"
+    }
+   },
+   {
+    "text": "Plattentektonik",
+    "titel": "Plattentektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046317-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7950"
+    }
+   },
+   {
+    "text": "Orogenese",
+    "titel": "Gebirgsbildung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4172850-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q184554"
+    }
+   },
+   {
+    "text": "Kontinente",
+    "titel": "Kontinente",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1783194"
+    }
+   },
+   {
+    "text": "Formen",
+    "titel": "Dressieren (Kochen)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2677668"
+    }
+   },
+   {
+    "text": "Vulkanismus",
+    "titel": "Vulkanismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064081-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q505748"
+    }
+   },
+   {
+    "text": "Erdbeben",
+    "titel": "Erdbeben",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015134-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7944"
+    }
+   },
+   {
+    "text": "Plattentektonik",
+    "titel": "Plattentektonik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046317-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7950"
+    }
+   },
+   {
+    "text": "Struktur",
+    "titel": "Struktur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q6671777"
+    }
+   },
+   {
+    "text": "Lithosphäre",
+    "titel": "Lithosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139001-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83296"
+    }
+   },
+   {
+    "text": "Erdplatten",
+    "titel": "Lithosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139001-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83296"
+    }
+   },
+   {
+    "text": "Nordamerikanische Platte",
+    "titel": "Nordamerikanische Platte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q220305"
+    }
+   },
+   {
+    "text": "Eurasische Platte",
+    "titel": "Eurasische Platte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q188521"
+    }
+   },
+   {
+    "text": "Südamerikanische Platte",
+    "titel": "Südamerikanische Platte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q119490"
+    }
+   },
+   {
+    "text": "Afrikanische Platte",
+    "titel": "Afrikanische Platte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q203548"
+    }
+   },
+   {
+    "text": "Antarktische Platte",
+    "titel": "Antarktische Platte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q501705"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Ökosystem",
+  "hauptartikel": "Ökosystem",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Ökosystem",
+    "titel": "Ökosystem",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043216-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37813"
+    }
+   },
+   {
+    "text": "Haus",
+    "titel": "Haus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4023693-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3947"
+    }
+   },
+   {
+    "text": "Fachbegriff",
+    "titel": "Terminus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q12812139"
+    }
+   },
+   {
+    "text": "Ökosystem",
+    "titel": "Ökosystem",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043216-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37813"
+    }
+   },
+   {
+    "text": "Lebensgemeinschaft",
+    "titel": "Lebensgemeinschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4167021-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q841509"
+    }
+   },
+   {
+    "text": "Organismen",
+    "titel": "Organismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1297766"
+    }
+   },
+   {
+    "text": "Arten",
+    "titel": "Jur Arten",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "1062477030",
+     "gnd_kind": "Person",
+     "viaf": "311723879",
+     "wikidata": "Q80504795"
+    }
+   },
+   {
+    "text": "Biozönose",
+    "titel": "Biozönose",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4069495-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q184806"
+    }
+   },
+   {
+    "text": "Umwelt",
+    "titel": "Umwelt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4061616-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2572474"
+    }
+   },
+   {
+    "text": "Habitat",
+    "titel": "Habitat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4239536-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q52105"
+    }
+   },
+   {
+    "text": "Biotop",
+    "titel": "Biotop",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4006907-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q175208"
+    }
+   },
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Ökosystem",
+    "titel": "Ökosystem",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043216-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37813"
+    }
+   },
+   {
+    "text": "Naturwissenschaften",
+    "titel": "Naturwissenschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4041421-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7991"
+    }
+   },
+   {
+    "text": "Politik",
+    "titel": "Politik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4046514-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7163"
+    }
+   },
+   {
+    "text": "Biotope",
+    "titel": "Biotop",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4006907-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q175208"
+    }
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Wirtschaft",
+    "titel": "Wirtschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066399-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q159810"
+    }
+   },
+   {
+    "text": "Ökonomie",
+    "titel": "Wirtschaftswissenschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066528-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8134"
+    }
+   },
+   {
+    "text": "Informationstechnik",
+    "titel": "Informationstechnik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4026926-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11661"
+    }
+   },
+   {
+    "text": "Ökosystem",
+    "titel": "Ökosystem",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043216-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37813"
+    }
+   },
+   {
+    "text": "Pflanzen",
+    "titel": "Pflanze",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q756"
+    }
+   },
+   {
+    "text": "Mikroorganismen",
+    "titel": "Mikroorganismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4039226-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q39833"
+    }
+   },
+   {
+    "text": "Umwelt",
+    "titel": "Umwelt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4061616-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2572474"
+    }
+   },
+   {
+    "text": "Definition",
+    "titel": "Definition",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4148989-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q101072"
+    }
+   },
+   {
+    "text": "Biodiversitätskonvention",
+    "titel": "Übereinkommen über die biologische Vielfalt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4436902-5",
+     "gnd_kind": "Werk",
+     "viaf": "198553345",
+     "wikidata": "Q152805"
+    }
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Biozönose",
+    "titel": "Biozönose",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4069495-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q184806"
+    }
+   },
+   {
+    "text": "Lebensraum",
+    "titel": "Biotop",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Biotop",
+    "titel": "Biotop",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4006907-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q175208"
+    }
+   },
+   {
+    "text": "Matthias Schaefer",
+    "titel": "Matthias Schaefer",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "1033818615",
+     "gnd_kind": "Person",
+     "viaf": "2725267",
+     "wikidata": "Q22669762"
+    }
+   },
+   {
+    "text": "System",
+    "titel": "System",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058801-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q58778"
+    }
+   },
+   {
+    "text": "Organismen",
+    "titel": "Organismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1297766"
+    }
+   },
+   {
+    "text": "Gebiet",
+    "titel": "Gebiet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q4835091"
+    }
+   },
+   {
+    "text": "Organismen",
+    "titel": "Organismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1297766"
+    }
+   },
+   {
+    "text": "Kategorien",
+    "titel": "Kategorien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1735826"
+    }
+   },
+   {
+    "text": "Arten",
+    "titel": "Jur Arten",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "1062477030",
+     "gnd_kind": "Person",
+     "viaf": "311723879",
+     "wikidata": "Q80504795"
+    }
+   },
+   {
+    "text": "Umwelt",
+    "titel": "Umwelt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4061616-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2572474"
+    }
+   },
+   {
+    "text": "Raum und Zeit",
+    "titel": "1 Live Fiehe",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q208999"
+    }
+   },
+   {
+    "text": "Kurt Jax",
+    "titel": "Kurt Jax",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "122353757",
+     "gnd_kind": "Person",
+     "viaf": "278814631",
+     "wikidata": "Q1793694"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Atommodell",
+  "hauptartikel": "Liste der Atommodelle",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Atommodell",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Vorstellung",
+    "titel": "Vorstellung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064032-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q112040407"
+    }
+   },
+   {
+    "text": "Atome",
+    "titel": "Atome und Moleküle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Altertum",
+    "titel": "Altertum",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q41493"
+    }
+   },
+   {
+    "text": "Atomhypothese",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Atome",
+    "titel": "Atome und Moleküle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Atomhypothese",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Teilchenmodells",
+    "titel": "Teilchenmodell",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4128081-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2400679"
+    }
+   },
+   {
+    "text": "Hypothese",
+    "titel": "Hypothese",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4161152-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q41719"
+    }
+   },
+   {
+    "text": "Teilbarkeit",
+    "titel": "Teilbarkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q114403556"
+    }
+   },
+   {
+    "text": "Materie",
+    "titel": "Materie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q53617407"
+    }
+   },
+   {
+    "text": "Arten",
+    "titel": "Jur Arten",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "1062477030",
+     "gnd_kind": "Person",
+     "viaf": "311723879",
+     "wikidata": "Q80504795"
+    }
+   },
+   {
+    "text": "Anfang",
+    "titel": "Anfang",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q529711"
+    }
+   },
+   {
+    "text": "Jahrhunderts",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Chemie",
+    "titel": "Chemie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4009816-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2329"
+    }
+   },
+   {
+    "text": "Physik",
+    "titel": "Physik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4045956-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q413"
+    }
+   },
+   {
+    "text": "Existenz",
+    "titel": "Existenz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015968-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q468777"
+    }
+   },
+   {
+    "text": "Atome",
+    "titel": "Atome und Moleküle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Atom",
+    "titel": "Atom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9121"
+    }
+   },
+   {
+    "text": "Elements",
+    "titel": "Element",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Gasen",
+    "titel": "Gasen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4527588-9",
+     "gnd_kind": "Geografikum",
+     "viaf": "247827118",
+     "wikidata": "Q528286"
+    }
+   },
+   {
+    "text": "Gastheorie",
+    "titel": "Kinetische Gastheorie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4163881-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q200286"
+    }
+   },
+   {
+    "text": "Atommodell",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Vorstellung",
+    "titel": "Vorstellung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064032-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q112040407"
+    }
+   },
+   {
+    "text": "Kugel",
+    "titel": "Kugel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4165914-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12507"
+    }
+   },
+   {
+    "text": "Durchmesser",
+    "titel": "Durchmesser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q37221"
+    }
+   },
+   {
+    "text": "Masse",
+    "titel": "Gewicht",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Jahrhunderts",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Atomhypothese",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "John Dalton",
+    "titel": "John Dalton",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118678671",
+     "gnd_kind": "Person",
+     "viaf": "56739674",
+     "wikidata": "Q41284"
+    }
+   },
+   {
+    "text": "Atomtheorie",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Stoffen",
+    "titel": "Stoffen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q61050552"
+    }
+   },
+   {
+    "text": "Atome",
+    "titel": "Atome und Moleküle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Teilchen",
+    "titel": "Teilchen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1621273"
+    }
+   },
+   {
+    "text": "Erklärung",
+    "titel": "Erklärung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015293-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7958"
+    }
+   },
+   {
+    "text": "Quantenmechanik",
+    "titel": "Quantenmechanik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047989-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q944"
+    }
+   },
+   {
+    "text": "Atommodelle",
+    "titel": "Liste der Atommodelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q210553"
+    }
+   },
+   {
+    "text": "Frage",
+    "titel": "Frage",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4018041-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q189756"
+    }
+   },
+   {
+    "text": "Atom",
+    "titel": "Atom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9121"
+    }
+   },
+   {
+    "text": "Werner Heisenberg",
+    "titel": "Werner Heisenberg",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118548670",
+     "gnd_kind": "Person",
+     "viaf": "49241584",
+     "wikidata": "Q40904"
+    }
+   },
+   {
+    "text": "Quantenmechanik",
+    "titel": "Quantenmechanik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047989-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q944"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Industrielle Revolution",
+  "hauptartikel": "Industrielle Revolution",
+  "begriffe": 45,
+  "entitaeten": [
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Jahrhunderts",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "England",
+    "titel": "England",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014770-8",
+     "gnd_kind": "Geografikum",
+     "viaf": "142995804",
+     "wikidata": "Q21"
+    }
+   },
+   {
+    "text": "Westeuropa",
+    "titel": "Westeuropa",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4079215-8",
+     "gnd_kind": "Geografikum",
+     "viaf": "245653394",
+     "wikidata": "Q27496"
+    }
+   },
+   {
+    "text": "USA",
+    "titel": "Vereinigte Staaten",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4078704-7",
+     "gnd_kind": "Geografikum",
+     "viaf": "130168302",
+     "wikidata": "Q30"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Japan",
+    "titel": "Japan",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4028495-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "159367111",
+     "wikidata": "Q17"
+    }
+   },
+   {
+    "text": "Teilen",
+    "titel": "Teilen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q459221"
+    }
+   },
+   {
+    "text": "Europas",
+    "titel": "Europa",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015701-5",
+     "gnd_kind": "Geografikum",
+     "viaf": "173367061",
+     "wikidata": "Q46"
+    }
+   },
+   {
+    "text": "Asiens",
+    "titel": "Asien",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4003217-6",
+     "gnd_kind": "Geografikum",
+     "viaf": "234112718",
+     "wikidata": "Q48"
+    }
+   },
+   {
+    "text": "Industriegesellschaft",
+    "titel": "Industriegesellschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4026828-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q917614"
+    }
+   },
+   {
+    "text": "Unternehmer",
+    "titel": "Unternehmer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4061949-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q131524"
+    }
+   },
+   {
+    "text": "Industrielle Revolution",
+    "titel": "Industrielle Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4072790-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2269"
+    }
+   },
+   {
+    "text": "Entwicklung",
+    "titel": "Entwicklung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q340724"
+    }
+   },
+   {
+    "text": "Technik",
+    "titel": "Technik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4059205-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2695280"
+    }
+   },
+   {
+    "text": "Produktivität",
+    "titel": "Produktivität",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047364-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2111958"
+    }
+   },
+   {
+    "text": "Pauperismus",
+    "titel": "Pauperismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4173575-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q836994"
+    }
+   },
+   {
+    "text": "Städte",
+    "titel": "Stadt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056723-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q515"
+    }
+   },
+   {
+    "text": "Arbeitskräfte",
+    "titel": "Arbeitnehmer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4002623-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q703534"
+    }
+   },
+   {
+    "text": "Frage",
+    "titel": "Frage",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4018041-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q189756"
+    }
+   },
+   {
+    "text": "Not",
+    "titel": "Not",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q15837069"
+    }
+   },
+   {
+    "text": "Perspektive",
+    "titel": "Perspektive",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1900281"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Bedeutung",
+    "titel": "Bedeutung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005184-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q183046"
+    }
+   },
+   {
+    "text": "Nomadentum",
+    "titel": "Nomaden",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4042452-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q128393"
+    }
+   },
+   {
+    "text": "Sesshaftigkeit",
+    "titel": "Sesshaftigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4212509-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1141745"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Zeit",
+    "titel": "Zeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4067461-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11471"
+    }
+   },
+   {
+    "text": "Großindustrie",
+    "titel": "Großindustrie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": null
+    }
+   },
+   {
+    "text": "Prozess",
+    "titel": "Prozess",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4436117-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10843872"
+    }
+   },
+   {
+    "text": "Zeit",
+    "titel": "Zeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4067461-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11471"
+    }
+   },
+   {
+    "text": "Schichten",
+    "titel": "Schichten",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": null
+    }
+   },
+   {
+    "text": "Verlauf",
+    "titel": "Verlauf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4282520-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q16295239"
+    }
+   },
+   {
+    "text": "Revolution",
+    "titel": "Revolution",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4049680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q10931"
+    }
+   },
+   {
+    "text": "Lebensqualität",
+    "titel": "Lebensqualität",
+    "projekt": "wikipedia",
+    "art": "Organisation",
+    "ids": {
+     "gnd": "4034922-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q13100823"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Elektrischer Strom",
+  "hauptartikel": "Elektrischer Strom",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Erscheinung",
+    "titel": "Erscheinung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q87864708"
+    }
+   },
+   {
+    "text": "Gebiet",
+    "titel": "Gebiet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q4835091"
+    }
+   },
+   {
+    "text": "Elektrizitätslehre",
+    "titel": "Elektrodynamik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014251-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q377930"
+    }
+   },
+   {
+    "text": "Bedeutung",
+    "titel": "Bedeutung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005184-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q183046"
+    }
+   },
+   {
+    "text": "Begriffs",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Transport",
+    "titel": "Transport",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4060680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1308085"
+    }
+   },
+   {
+    "text": "Leitern",
+    "titel": "Léchelles",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4549850-7",
+     "gnd_kind": "Geografikum",
+     "viaf": "241862797",
+     "wikidata": "Q68059"
+    }
+   },
+   {
+    "text": "Stroms",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Konvektionsstrom",
+    "titel": "Konvektionsstrom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q10547888"
+    }
+   },
+   {
+    "text": "Gesetz",
+    "titel": "Gesetz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020660-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q820655"
+    }
+   },
+   {
+    "text": "Feld",
+    "titel": "Feld",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Erwärmung",
+    "titel": "Wärme",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064171-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q44432"
+    }
+   },
+   {
+    "text": "Stromkreis",
+    "titel": "Stromkreis",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4183738-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2327095"
+    }
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Quelle",
+    "titel": "Quelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4176696-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q124714"
+    }
+   },
+   {
+    "text": "Spannungsquelle",
+    "titel": "Spannungsquelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4206342-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1161128"
+    }
+   },
+   {
+    "text": "Stromkreis",
+    "titel": "Stromkreis",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4183738-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2327095"
+    }
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Spannungsquelle",
+    "titel": "Spannungsquelle",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4206342-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1161128"
+    }
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Verschiebungsstrom",
+    "titel": "Verschiebungsstrom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4272349-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q853178"
+    }
+   },
+   {
+    "text": "Feld",
+    "titel": "Feld",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "B",
+    "titel": "B",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9705"
+    }
+   },
+   {
+    "text": "Konvektionsstrom",
+    "titel": "Konvektionsstrom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q10547888"
+    }
+   },
+   {
+    "text": "Magnetfeld",
+    "titel": "Magnetismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037021-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3294789"
+    }
+   },
+   {
+    "text": "Strom",
+    "titel": "Strom",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Stromstärke",
+    "titel": "Elektrische Stromstärke",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q29996"
+    }
+   },
+   {
+    "text": "Formelzeichen",
+    "titel": "Formelzeichen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4155010-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1401551"
+    }
+   },
+   {
+    "text": "Ampere",
+    "titel": "Ampere",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "1143042131",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q25272"
+    }
+   },
+   {
+    "text": "Thales von Milet",
+    "titel": "Thales",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118801732",
+     "gnd_kind": "Person",
+     "viaf": "290923996",
+     "wikidata": "Q36303"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Bernstein",
+    "titel": "Bernstein",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005818-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q25381"
+    }
+   },
+   {
+    "text": "Körper",
+    "titel": "Körper",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Tüchern",
+    "titel": "Teharje",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4307895-3",
+     "gnd_kind": "Geografikum",
+     "viaf": "131537241",
+     "wikidata": "Q1279874"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Wasserkreislauf",
+  "hauptartikel": "Wasserkreislauf",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Begriff",
+    "titel": "Begriff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4005248-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151885"
+    }
+   },
+   {
+    "text": "Wasserkreislauf",
+    "titel": "Wasserkreislauf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4189218-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q81041"
+    }
+   },
+   {
+    "text": "Transport",
+    "titel": "Transport",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4060680-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1308085"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Aggregatzustand",
+    "titel": "Aggregatzustand",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4141615-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11430"
+    }
+   },
+   {
+    "text": "Hydrosphäre",
+    "titel": "Hydrosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4208258-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83169"
+    }
+   },
+   {
+    "text": "Lithosphäre",
+    "titel": "Lithosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4139001-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q83296"
+    }
+   },
+   {
+    "text": "Biosphäre",
+    "titel": "Biosphäre",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4140407-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q42762"
+    }
+   },
+   {
+    "text": "Atmosphäre",
+    "titel": "Atmosphäre",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Erde",
+    "titel": "Erde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "1135962553",
+     "gnd_kind": "Geografikum",
+     "viaf": "6270149919445006650001",
+     "wikidata": "Q2"
+    }
+   },
+   {
+    "text": "Wassers",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Meer",
+    "titel": "Meer",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4038301-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q165"
+    }
+   },
+   {
+    "text": "Wasserkreislauf",
+    "titel": "Wasserkreislauf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4189218-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q81041"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Ozeane",
+    "titel": "Ozean",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9430"
+    }
+   },
+   {
+    "text": "Wasserspeicher",
+    "titel": "Wasserspeicher",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4189256-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q6501028"
+    }
+   },
+   {
+    "text": "Erde",
+    "titel": "Erde",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "1135962553",
+     "gnd_kind": "Geografikum",
+     "viaf": "6270149919445006650001",
+     "wikidata": "Q2"
+    }
+   },
+   {
+    "text": "Erdoberfläche",
+    "titel": "Erdoberfläche",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4113458-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1349417"
+    }
+   },
+   {
+    "text": "Sonnenenergie",
+    "titel": "Sonnenenergie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4055572-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q40015"
+    }
+   },
+   {
+    "text": "Wasser",
+    "titel": "Wasser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4064689-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q283"
+    }
+   },
+   {
+    "text": "Verdunstung",
+    "titel": "Verdunstung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4187636-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q132814"
+    }
+   },
+   {
+    "text": "Meeresoberfläche",
+    "titel": "Meeresspiegel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4169254-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q125465"
+    }
+   },
+   {
+    "text": "Luftfeuchtigkeit",
+    "titel": "Luftfeuchtigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125789-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q180600"
+    }
+   },
+   {
+    "text": "Wind",
+    "titel": "Wind",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066257-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8094"
+    }
+   },
+   {
+    "text": "Luft",
+    "titel": "Luft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4130887-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7391292"
+    }
+   },
+   {
+    "text": "Luft",
+    "titel": "Luft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4130887-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7391292"
+    }
+   },
+   {
+    "text": "Luftschichten",
+    "titel": "Luftschicht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1875780"
+    }
+   },
+   {
+    "text": "Warmfront",
+    "titel": "Warmfront",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q537536"
+    }
+   },
+   {
+    "text": "Konvektion",
+    "titel": "Konvektion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4117572-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q160329"
+    }
+   },
+   {
+    "text": "Luft",
+    "titel": "Luft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4130887-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7391292"
+    }
+   },
+   {
+    "text": "Kalte",
+    "titel": "Ulrika Kalte",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q4957904"
+    }
+   },
+   {
+    "text": "Luft",
+    "titel": "Luft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4130887-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7391292"
+    }
+   },
+   {
+    "text": "Wasserdampf",
+    "titel": "Wasserdampf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4132825-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q190120"
+    }
+   },
+   {
+    "text": "Luft",
+    "titel": "Luft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4130887-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7391292"
+    }
+   },
+   {
+    "text": "Wasserdampf",
+    "titel": "Wasserdampf",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4132825-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q190120"
+    }
+   },
+   {
+    "text": "Höhe",
+    "titel": "Höhe",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4229619-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q208826"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Römisches Reich",
+  "hauptartikel": "Römisches Reich",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Imperium Romanum",
+    "titel": "Römisches Reich",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4076778-4",
+     "gnd_kind": "Geografikum",
+     "viaf": "244992873",
+     "wikidata": "Q1747689"
+    }
+   },
+   {
+    "text": "Stadt",
+    "titel": "Stadt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056723-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q515"
+    }
+   },
+   {
+    "text": "Rom",
+    "titel": "Rom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4050471-2",
+     "gnd_kind": "Geografikum",
+     "viaf": "145348938",
+     "wikidata": "Q220"
+    }
+   },
+   {
+    "text": "Staat",
+    "titel": "Staat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4056618-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7275"
+    }
+   },
+   {
+    "text": "Gebiet",
+    "titel": "Gebiet",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q4835091"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Epoche",
+    "titel": "Epoche",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Imperium Romanum",
+    "titel": "Römisches Reich",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4076778-4",
+     "gnd_kind": "Geografikum",
+     "viaf": "244992873",
+     "wikidata": "Q1747689"
+    }
+   },
+   {
+    "text": "Zeit",
+    "titel": "Zeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4067461-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11471"
+    }
+   },
+   {
+    "text": "Ciceros",
+    "titel": "Marcus Tullius Cicero",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118520814",
+     "gnd_kind": "Person",
+     "viaf": "78769600",
+     "wikidata": "Q1541"
+    }
+   },
+   {
+    "text": "Augustus",
+    "titel": "Augustus",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": "118505122",
+     "gnd_kind": "Person",
+     "viaf": "18013086",
+     "wikidata": "Q1405"
+    }
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Senatus Populusque Romanus",
+    "titel": "S.P.Q.R.",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q131306"
+    }
+   },
+   {
+    "text": "S",
+    "titel": "S",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9956"
+    }
+   },
+   {
+    "text": "P",
+    "titel": "P",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9946"
+    }
+   },
+   {
+    "text": "Q",
+    "titel": "Q",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9950"
+    }
+   },
+   {
+    "text": "R",
+    "titel": "R",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q9852"
+    }
+   },
+   {
+    "text": "Senat",
+    "titel": "Senat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2570643"
+    }
+   },
+   {
+    "text": "Volk",
+    "titel": "Volk",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4063790-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2472587"
+    }
+   },
+   {
+    "text": "Rom",
+    "titel": "Rom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4050471-2",
+     "gnd_kind": "Geografikum",
+     "viaf": "145348938",
+     "wikidata": "Q220"
+    }
+   },
+   {
+    "text": "Staatsform",
+    "titel": "Staatsform",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4077779-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q183039"
+    }
+   },
+   {
+    "text": "Zeit",
+    "titel": "Zeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4067461-7",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11471"
+    }
+   },
+   {
+    "text": "Republik",
+    "titel": "Republik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4177823-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7270"
+    }
+   },
+   {
+    "text": "Kaisertum",
+    "titel": "Kaiser",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4114123-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q39018"
+    }
+   },
+   {
+    "text": "Geschichte",
+    "titel": "Geschichte",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4020517-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q309"
+    }
+   },
+   {
+    "text": "Zeiträume",
+    "titel": "Zeiträume Bodenstedt",
+    "projekt": "wikipedia",
+    "art": "Organisation",
+    "ids": {
+     "gnd": "1206607130",
+     "gnd_kind": "Körperschaft",
+     "viaf": null,
+     "wikidata": "Q107524841"
+    }
+   },
+   {
+    "text": "Römische Königszeit",
+    "titel": "Römische Königszeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q201038"
+    }
+   },
+   {
+    "text": "Römische Republik",
+    "titel": "Römische Republik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q17167"
+    }
+   },
+   {
+    "text": "Rom",
+    "titel": "Rom",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4050471-2",
+     "gnd_kind": "Geografikum",
+     "viaf": "145348938",
+     "wikidata": "Q220"
+    }
+   },
+   {
+    "text": "Großmacht",
+    "titel": "Großmacht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125218-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q185145"
+    }
+   },
+   {
+    "text": "Mittelmeerraum",
+    "titel": "Mittelmeerraum",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4074900-9",
+     "gnd_kind": "Geografikum",
+     "viaf": "240341731",
+     "wikidata": "Q72499"
+    }
+   },
+   {
+    "text": "Jahrhundert",
+    "titel": "Jahrhundert",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q578"
+    }
+   },
+   {
+    "text": "Untergang der Republik",
+    "titel": "Der Untergang der Republik",
+    "projekt": "wikipedia",
+    "art": "Werk",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q2497575"
+    }
+   },
+   {
+    "text": "Prinzipat",
+    "titel": "Prinzipat",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4047276-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q206414"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Lineare Funktion",
+  "hauptartikel": "Lineare Funktion",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Schulmathematik",
+    "titel": "Schulmathematik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q124057969"
+    }
+   },
+   {
+    "text": "Polynomfunktion",
+    "titel": "Ganzrationale Funktion",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1244652"
+    }
+   },
+   {
+    "text": "Gerade",
+    "titel": "Gerade",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4156780-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37105"
+    }
+   },
+   {
+    "text": "Name",
+    "titel": "Name",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4127959-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q82799"
+    }
+   },
+   {
+    "text": "Linie",
+    "titel": "Linie",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Algebra",
+    "titel": "Algebra",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4001156-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3968"
+    }
+   },
+   {
+    "text": "Algebra",
+    "titel": "Algebra",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4001156-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3968"
+    }
+   },
+   {
+    "text": "Solche",
+    "titel": "Solche",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1397737"
+    }
+   },
+   {
+    "text": "Proportionalität",
+    "titel": "Proportionalität",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q51379"
+    }
+   },
+   {
+    "text": "Anlehnung",
+    "titel": "Anlehnung (Pferdesport)",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q334007"
+    }
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Mathematik",
+    "titel": "Mathematik",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4037944-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q395"
+    }
+   },
+   {
+    "text": "Viele",
+    "titel": "Egbert Ludovicus Viele",
+    "projekt": "wikipedia",
+    "art": "Person",
+    "ids": {
+     "gnd": null,
+     "gnd_kind": "Person",
+     "viaf": "34329000",
+     "wikidata": "Q5347713"
+    }
+   },
+   {
+    "text": "Gerade",
+    "titel": "Gerade",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4156780-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q37105"
+    }
+   },
+   {
+    "text": "Koordinaten",
+    "titel": "Koordinatensystem",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4165251-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11210"
+    }
+   },
+   {
+    "text": "Zahlen",
+    "titel": "Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q11563"
+    }
+   },
+   {
+    "text": "Abszisse",
+    "titel": "Abszisse",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q515874"
+    }
+   },
+   {
+    "text": "Ordinate",
+    "titel": "Ordinate",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q500576"
+    }
+   },
+   {
+    "text": "Bezeichnung",
+    "titel": "Bezeichnung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4125107-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q151411"
+    }
+   },
+   {
+    "text": "Literatur",
+    "titel": "Literatur",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4035964-5",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q8242"
+    }
+   },
+   {
+    "text": "Normalform",
+    "titel": "Normalform",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1152398"
+    }
+   },
+   {
+    "text": "Zahl",
+    "titel": "Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q11563"
+    }
+   },
+   {
+    "text": "Steigung",
+    "titel": "Steigung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q275447"
+    }
+   },
+   {
+    "text": "Zahl",
+    "titel": "Zahl",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q11563"
+    }
+   },
+   {
+    "text": "Ordinatenabschnitt",
+    "titel": "Y-Achsenabschnitt",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q287239"
+    }
+   },
+   {
+    "text": "Inhomogenität",
+    "titel": "Homogenität",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q904929"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Zelle (Biologie)",
+  "hauptartikel": "Zelle (Biologie)",
+  "begriffe": 50,
+  "entitaeten": [
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Organismen",
+    "titel": "Organismus",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1297766"
+    }
+   },
+   {
+    "text": "Einzeller",
+    "titel": "Einzeller",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4135232-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q36468"
+    }
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Mehrzeller",
+    "titel": "Vielzeller",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q36458"
+    }
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Vielzeller",
+    "titel": "Vielzeller",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q36458"
+    }
+   },
+   {
+    "text": "Körper",
+    "titel": "Körper",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Fähigkeit",
+    "titel": "Fähigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4153521-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12379081"
+    }
+   },
+   {
+    "text": "Arbeitsteilung",
+    "titel": "Arbeitsteilung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4002787-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q207449"
+    }
+   },
+   {
+    "text": "Wissenschaft",
+    "titel": "Wissenschaft",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4066562-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q336"
+    }
+   },
+   {
+    "text": "Lehre",
+    "titel": "Ausbildung",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Lebewesen",
+    "titel": "Lebewesen",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4043831-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q7239"
+    }
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "System",
+    "titel": "System",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4058801-4",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q58778"
+    }
+   },
+   {
+    "text": "Nährstoffe",
+    "titel": "Nährstoff",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4171097-6",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q181394"
+    }
+   },
+   {
+    "text": "Energie",
+    "titel": "Energie",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4014692-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q11379"
+    }
+   },
+   {
+    "text": "Stoffwechsel",
+    "titel": "Stoffwechsel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4057699-1",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1057"
+    }
+   },
+   {
+    "text": "Zellteilung",
+    "titel": "Zellteilung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4190668-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q188909"
+    }
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Fähigkeiten",
+    "titel": "Fähigkeit",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4153521-2",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q12379081"
+    }
+   },
+   {
+    "text": "Merkmale",
+    "titel": "Merkmal",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4253132-9",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q1207505"
+    }
+   },
+   {
+    "text": "Lebens",
+    "titel": "Leben",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4034831-3",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q3"
+    }
+   },
+   {
+    "text": "Zelle",
+    "titel": "Zelle",
+    "projekt": "klexikon",
+    "art": null
+   },
+   {
+    "text": "Zellteilung",
+    "titel": "Zellteilung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4190668-8",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q188909"
+    }
+   },
+   {
+    "text": "Stoff- und Energiewechsel",
+    "titel": "Stoff- und Energiewechsel",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q42922451"
+    }
+   },
+   {
+    "text": "Nahrungsaufnahme",
+    "titel": "Ernährung",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": "4015332-0",
+     "gnd_kind": "Sachbegriff",
+     "viaf": null,
+     "wikidata": "Q2138622"
+    }
+   },
+   {
+    "text": "Energieumsatz",
+    "titel": "Energieumsatz",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q1341435"
+    }
+   }
+  ]
+ },
+ {
+  "thema": "Gedicht",
+  "hauptartikel": "Gedicht",
+  "begriffe": 1,
+  "entitaeten": [
+   {
+    "text": "Gedicht",
+    "titel": "Gedicht",
+    "projekt": "wikipedia",
+    "art": null,
+    "ids": {
+     "gnd": null,
+     "gnd_kind": null,
+     "viaf": null,
+     "wikidata": "Q5185279"
+    }
+   }
+  ]
+ }
+]

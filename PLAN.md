@@ -1551,6 +1551,13 @@ API.
   trägt Biologie und Physik. Offen und als Nächstes zu messen: den Hauptartikel
   aus Beschreibung und Schlagwörtern finden (Entitäten, Regeln für Formatwörter oder das LLM), an einem Gold aus
   echten WLO-Materialien.
+- **D46 (2026-09-24)** Entitäten: Ein Genitiv nennt seinen Artikel über die Grundform (`title_candidates` in
+  `app/knowledge/recognise.py`). Nach einem Genitivartikel (*des*, *eines* …, ein Wort dazwischen) kommt die Grundform
+  zuerst, sonst erst, wenn die wörtliche Form kein Titel ist; „-es“ vor „-s“ (*Reiches* → *Reich*). Ohne Artikel
+  bleiben ein Wort am Satzanfang vor einem kleingeschriebenen Wort und Adverbien auf „-s“ wörtlich. Die Erwähnung
+  behält ihren Text, der Titel steht getrennt (`Mention.title`); Namen des Modells versuchen die Grundform nach dem
+  Text. M20 an den 20 Texten von M18: 30 neue Verknüpfungen, keine falsch, beide Genitivfehler von M18 behoben;
+  Homonyme ohne Genitiv bleiben offen.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

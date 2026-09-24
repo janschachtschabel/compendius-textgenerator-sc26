@@ -781,3 +781,32 @@ Staging-b-api; die Produktiv-b-api ließ sich mit dem Schlüssel der Entwicklung
 Latenzlauf (1,79 gegen 2,43 s) wurde überschrieben und ist nicht abgelegt; seitdem verweigert das Skript eine
 vorhandene Ausgabedatei. Rohdaten: `m19_aufloesung_gpt6.json`, `m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json`,
 `m19_latenz.json`, `m19_latenz_2.json`.
+
+## M20 Genitiv beim Verknüpfen der Entitäten (24.09.2026)
+
+**Aufbau:** In M18 verknüpfte das Wörterbuch zwei Genitive falsch: „des Wassers“ mit dem Ort *Wassers*, „Abraham
+Lincolns“ mit dem biblischen *Abraham*. Eine Regel (D46) versucht den Titel ohne Genitivendung, „-es“ vor „-s“: nach
+*des*, *eines* und ähnlichen Artikeln zuerst (ein Wort dazwischen erlaubt), sonst erst, wenn die wörtliche Form kein
+Titel ist. Ohne Artikel bleiben ein einzelnes Wort am Satzanfang vor einem kleingeschriebenen Wort und Adverbien auf
+„-s“ („Bereits“) wörtlich. Dieselben 20 Texte wie in M18, verglichen Verknüpfung für Verknüpfung
+(`mc_entitaeten_gnd.py` mit dem Index von M18).
+
+| | vorher (M18) | mit Regel |
+|---|---|---|
+| Begriffe (höchstens 50 je Text) | 931 | 939 |
+| verknüpft, davon Wikipedia | 724, 679 | 729, 682 |
+| mit GND / mit Wikidata-Nummer | 503 / 674 | 505 / 677 |
+| neue Verknüpfungen | – | 30, keine falsch |
+| ersetzte Verknüpfungen | – | 4: *Abraham* → *Abraham Lincoln*, Ort *Wassers* → *Wasser*, *Klimas* → *Klima*, *Systems* → *System* |
+| von der Obergrenze verdrängt | – | 12 spätere Begriffe |
+
+Die neuen sind Genitive, die ihren Artikel jetzt finden: *Englands*, *Jahrhunderts*, *Europas*, *Lichts*, *Kampfes*,
+*Volkes*, *Ciceros* (→ *Marcus Tullius Cicero*) und weitere. *Stroms* und *Elements* führen in der Wikipedia auf
+Begriffsklärungen und landen deshalb beim Klexikon, beide passend. Die Obergrenze gilt vor dem Verknüpfen in
+Lesereihenfolge, wie `max_entities` am Endpunkt: Findet das Wörterbuch vorn mehr, fallen hinten Begriffe weg. Ein
+erster Entwurf verknüpfte noch *Daraus* → *Darau*, *Bereits* → *Johann Bereit* und *Reiches* → *Reiche*; daher
+kamen die Endungsfolge und die Ausnahmen ohne Artikel dazu, jede mit einem Test. Der Abgleich mit lobid bleibt bei
+29 von 30.
+
+**Ergebnis:** Übernommen (D46). Nicht gelöst sind Homonyme ohne Genitiv (*Wurzeln* → Fernsehserie, *Zeiträume* →
+Verein); dafür bräuchte die Verknüpfung den Zusammenhang des Textes. Rohdaten: `m20_entitaeten_genitiv.json`.

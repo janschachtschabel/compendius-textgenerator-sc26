@@ -192,7 +192,8 @@ uv run compendium lehrplan search --q Optik --subject Physik
 verknüpften Wikipedia-Artikel GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
 Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. Die Wikidata-Nummer kommt aus
 `STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia, ohne Live-Abfrage. Fehlt der Index, fehlt
-nur die Wikidata-Nummer; `/health` meldet ihn unter `entities.wikidata`.
+nur die Wikidata-Nummer; `/health` meldet ihn unter `entities.wikidata`. Ein Genitiv findet seinen Artikel über
+die Grundform: „des Wassers“ → *Wasser*, „Abraham Lincolns“ → *Abraham Lincoln* (D46, M20).
 
 ```bash
 # einmal laden (105 MB und 320 MB), dann bauen: 3,2 Mio. Titel, 107 MB, fünf bis acht Minuten

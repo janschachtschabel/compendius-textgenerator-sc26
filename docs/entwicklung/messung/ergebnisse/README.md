@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M19
+# Ergebnisse der Messungen M1 bis M20
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. und 24.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -33,6 +33,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M17 | Taugt der alte Weg über Begriffe vom LLM für die Artikelwahl? | nein: der richtige Hauptartikel an erster Stelle 55 von 94, unter bis zu zehn Artikeln 58 (`gpt-5.6-luna`) bis 78 (`gpt-4.1-mini`), Regeln 86, mit LLM 91; je Anfrage 6 bis 8 s und rund 1.300 bis 1.500 Tokens; findet aber 6 der 8 Fehler der Regeln | – | `m17_alte_artikelwahl_gpt41mini.json`, `m17_alte_artikelwahl.json` |
 | M18 | Wie viele verknüpfte Entitäten tragen im Archiv eine GND-Nummer? | 503 von 679 Wikipedia-Artikeln (74 %), fast alle Sachbegriffe; 30 von 30 geprüften Nummern passen zum Artikel, 4 der 30 Artikel sind falsch verknüpft; mit dem lokalen Index (D43) Wikidata bei 674 von 679, 29 von 30 wie bei lobid-gnd | – | `m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json` |
 | M19 | Taugt gpt-6-luna als Nachfolger von gpt-5.6-luna? | ja: Artikelwahl 90 statt 91 von 94, Trefferprüfung 10 statt 11 von 16 unpassenden verworfen (kein passender), Zuordner macro-F1 0,703 (gpt-5.6-luna 0,694 und 0,720), Tokens gleich bis +12 % zum halben Preis je Token; je Aufruf ein Viertel bis drei Viertel langsamer | – | `m19_aufloesung_gpt6.json`, `m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json`, `m19_latenz.json`, `m19_latenz_2.json` |
+| M20 | Hilft eine Genitiv-Regel beim Verknüpfen der Entitäten? | ja: 30 neue Verknüpfungen in 20 Texten, keine falsch; beide Genitivfehler von M18 behoben, Wikidata bei 677 von 682 (D46) | – | `m20_entitaeten_genitiv.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise
