@@ -33,6 +33,33 @@ EXAMPLES = {
         "summary": "Das Nötigste: ein Thema, zwei Teile, eine Ziellänge",
         "value": {"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000},
     },
+    "Stufe llm-free": {
+        "summary": "Stufe llm-free: ohne Sprachmodell, so arbeitet der Dienst auch ohne preset",
+        "description": (
+            "preset bündelt die Schalter von Teil 1 zu den drei Stufen der Entscheidungsvorlage. llm-free: die "
+            "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 86 von 94 "
+            "Hauptartikeln richtig, macro-F1 0,43, Teil 1 in rund 1,4 s, keine Tokens (D40)."
+        ),
+        "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
+    },
+    "Stufe balanced": {
+        "summary": "Stufe balanced: das LLM wählt die Artikel, alles andere bleibt lokal",
+        "description": (
+            "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
+            "mehrdeutige Wort Linse -, und verwirft unpassende Volltexttreffer. 91 von 94 Hauptartikeln richtig, "
+            "rund 1,7 s und 930 Tokens mehr. Ohne b-api wählen die Regeln, und audit.llm sagt warum."
+        ),
+        "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
+    },
+    "Stufe best-quality": {
+        "summary": "Stufe best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
+        "description": (
+            "Wie balanced, dazu matcher llm: macro-F1 0,69 bis 0,72 statt 0,43, Teil 1 rund 14 bis 24 s und rund "
+            "35.400 Tokens. Der Text bleibt wörtlich; wer ihn lesbar formuliert haben will, setzt zusätzlich "
+            "generation llm - einzeln gesetzte Schalter gehen dem preset vor."
+        ),
+        "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},
+    },
     "mit den Schaltern": {
         "summary": "Was sonst noch geht: Template, Artikelwahl, Zuordnung, die drei Schreib-Schalter, Facetten",
         "description": (
@@ -116,10 +143,14 @@ def generate_compendium(
     and ``enrichment`` decides whether the model may add knowledge of its own (``sources-only`` or
     ``model-knowledge``, which is marked in the text). ``audit`` says afterwards what really ran.
 
-    **Which articles.** ``article_choice`` decides who picks the articles: ``rule-based`` takes the rules
-    alone, ``llm`` (the default where an LLM is configured) lets the model decide where the rules are unsure
-    and drop the full-text hits that do not fit the topic. ``resolution`` says how the article was found and
-    whether that is sure.
+    **Which level.** ``preset`` sets the switches of part 1 to one of three levels: ``llm-free`` (no LLM,
+    what the service does without a preset), ``balanced`` (the LLM decides the unsure articles) and
+    ``best-quality`` (it also assigns every paragraph). A switch the request sets itself wins; quality, time
+    and tokens of each level are in the help text of the field.
+
+    **Which articles.** ``article_choice`` decides who picks the articles: ``rule-based`` (the default)
+    takes the rules alone, ``llm`` lets the model decide where the rules are unsure and drop the full-text
+    hits that do not fit the topic. ``resolution`` says how the article was found and whether that is sure.
 
     **Which block.** ``matcher`` decides how the paragraphs find their block: ``hybrid_light`` (default),
     ``bm25``, ``char_tfidf`` and ``lexicon_only`` run locally, ``llm`` lets the model assign every paragraph.

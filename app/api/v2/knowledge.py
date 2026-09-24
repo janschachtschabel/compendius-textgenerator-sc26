@@ -10,12 +10,12 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
-from app.domain.requests import ARTICLE_CHOICE_HELP, ArticleChoice
+from app.domain.requests import ARTICLE_CHOICE_HELP, PRESETS, ArticleChoice, Preset
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
@@ -34,7 +34,19 @@ class KnowledgeRequest(BaseModel):
     )
     max_chars: int | None = Field(None, ge=100, description="Cap over all articles; cuts at section borders")
     template_id: str | None = Field(None, description="Its slots steer the full-text search for extra articles")
+    preset: Preset | None = Field(
+        None,
+        description="The level of a compendium request (llm-free, balanced, best-quality); here it only sets "
+        "article_choice: llm-free takes rule-based, balanced and best-quality take llm. An article_choice the "
+        "request sets wins.",
+    )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
+
+    @model_validator(mode="after")
+    def _preset_sets_the_article_choice(self) -> KnowledgeRequest:
+        if self.preset and self.article_choice is None:
+            self.article_choice = PRESETS[self.preset]["article_choice"]  # type: ignore[assignment]
+        return self
 
 
 class KnowledgeSection(BaseModel):
@@ -142,7 +154,8 @@ def knowledge(
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
     ``llm`` the LLM decides where the rules are unsure and drops the full-text hits that do not fit, and
-    ``article_choice`` in the answer says what it did and what it cost.
+    ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the level of a
+    compendium would: ``llm-free`` takes ``rule-based``, ``balanced`` and ``best-quality`` take ``llm``.
 
     A topic the archives do not have is a 404 carrying the resolution, so the answer names the
     alternatives instead of coming back empty.

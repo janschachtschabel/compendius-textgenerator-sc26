@@ -14,7 +14,7 @@ from app.cli_common import cli_service
 from app.cli_eval import add_eval_commands
 from app.cli_lehrplan import add_lehrplan_commands
 from app.cli_zim import add_zim_commands
-from app.domain.requests import MATCHERS, GenerateRequest
+from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
 from app.logging import configure_logging
 from app.service import TopicNotFoundError
 from app.settings import get_settings
@@ -31,6 +31,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             collection_id=args.collection_id,
             knowledge_collection_id=args.knowledge_collection_id,
             template_id=args.template,
+            preset=args.preset,
             matcher=args.matcher,
             article_choice=args.article_choice,
             extraction=args.extraction,
@@ -63,8 +64,9 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"JSON geschrieben: {args.json}")
     audit = result.audit
     veredelt = f"| Veredlung: {result.enrichment} " if result.enrichment != "sources-only" else ""
+    stufe = f"| Stufe: {audit.preset} " if audit.preset else ""
     print(
-        f"Thema: {result.topic} | Extraktion: {result.extraction} | Generierung: {result.generation} "
+        f"Thema: {result.topic} {stufe}| Extraktion: {result.extraction} | Generierung: {result.generation} "
         f"{veredelt}"
         f"| Quellen: {len(result.sources)} "
         f"| Chunks: {audit.chunks_total} "
@@ -143,6 +145,13 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
     gen.add_argument("--template", default=None)
     gen.add_argument(
+        "--preset",
+        default=None,
+        choices=list(PRESETS),
+        help="Stufe der Entscheidungsvorlage: llm-free (wie ohne Angabe), balanced (LLM wählt die Artikel), "
+        "best-quality (LLM ordnet auch zu); einzeln gesetzte Schalter gehen vor",
+    )
+    gen.add_argument(
         "--matcher",
         default=None,
         choices=list(MATCHERS),
@@ -153,8 +162,8 @@ def main(argv: list[str] | None = None) -> int:
         "--article-choice",
         default=None,
         choices=["rule-based", "llm"],
-        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe LLM_ARTICLE_CHOICE_DEFAULT (llm braucht "
-        "LLM_ENABLED und B_API_KEY)",
+        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe LLM_ARTICLE_CHOICE_DEFAULT, ausgeliefert "
+        "rule-based (llm braucht LLM_ENABLED und B_API_KEY)",
     )
     gen.add_argument(
         "--extraction",

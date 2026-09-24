@@ -241,8 +241,9 @@ def test_the_rule_based_default_adds_no_llm_block(service: CompendiumService) ->
     assert result.audit.llm is None and result.resolution.method == "suggestion"
 
 
-def test_the_shipped_default_lets_the_llm_choose_the_articles() -> None:
-    assert Settings(_env_file=None).llm_article_choice_default == "llm"  # type: ignore[call-arg]
+def test_the_shipped_default_leaves_the_articles_to_the_rules() -> None:
+    # D40: LLM-free is the default level, even where an LLM is configured; preset or article_choice ask for it
+    assert Settings(_env_file=None).llm_article_choice_default == "rule-based"  # type: ignore[call-arg]
 
 
 def test_the_llm_default_stays_silent_without_a_configured_llm(

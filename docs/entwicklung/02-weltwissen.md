@@ -78,9 +78,9 @@ ist, prüft niemand.
 5. **Sicherheit melden.** Die Auflösung nennt ihren Weg (`method`: title, variant, disambiguation, suggestion, search
    oder llm) und ob sie sicher ist (`confident`). Unsicher sind eine Begriffsklärung, die das Fach nicht entscheidet,
    ein exakter Titel ohne Fachbezug, Varianten und alle Vorschlags- und Suchtreffer.
-6. **Das LLM, wo eines konfiguriert ist** (`article_choice=llm`, D35, seit D37 Vorgabe): Nur bei einer unsicheren
-   Auflösung wählt `gpt-5.6-luna` unter den Kandidaten der Regeln oder nennt einen Wikipedia-Titel, der nur zählt, wenn
-   das Archiv ihn als Artikel hat. `article_choice=rule-based` schaltet es je Anfrage ab.
+6. **Das LLM auf Wunsch** (`article_choice=llm` oder `preset: balanced`, D35; Standard ist seit D40 wieder
+   `rule-based`): Nur bei einer unsicheren Auflösung wählt `gpt-5.6-luna` unter den Kandidaten der Regeln oder nennt
+   einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
 7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
    im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf
    einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen. Höchstens 12 Artikel und 400 Absätze.
@@ -92,7 +92,7 @@ ist, prüft niemand.
 | Hauptartikel des Themas im Korpus | 9 von 10 | 10 von 10 |
 | Begriffsklärungsseiten als Quelle | 10 (in 3 Themen) | 0 von 87 |
 | Umfang der Quellen | Median 10 Einleitungen, rund 12.200 Zeichen | Median 10,5 ganze Artikel |
-| Laufzeitabhängigkeiten | Wikipedia und LLM | keine; wo ein LLM konfiguriert ist, fragt der Dienst seit D37 die b-api und bleibt bei ihrem Ausfall bei den Regeln |
+| Laufzeitabhängigkeiten | Wikipedia und LLM | keine; mit `article_choice=llm` fragt der Dienst die b-api und bleibt bei ihrem Ausfall bei den Regeln |
 | Gleiche Anfrage, gleiches Ergebnis | nicht zugesichert | ja (Stichprobe Photosynthese) |
 | Artikel, die nicht zum Thema passen (blind bewertet, M8) | 14 % | 6 % |
 
@@ -205,12 +205,13 @@ unpassenden Treffer bekommen eine 0, keiner der passenden. Die Treffer allein be
 mit 0 benoteten Treffer druckt der Standard 10 statt 26 Absätze aus unpassenden Artikeln und 346 statt 332 aus
 passenden oder verwandten. Das ist Teil von `article_choice=llm`, rund 890 Tokens je Thema mit Treffern.
 
-**Zeit und Vorgabe** (M13, D37). Gemessen an 30 Themen, die keine frühere Messung gestellt hatte, damit kein Prompt
+**Zeit und Vorgabe** (M13, D37, D40). Gemessen an 30 Themen, die keine frühere Messung gestellt hatte, damit kein Prompt
 aus dem Zwischenspeicher der b-api kommt: `article_choice=llm` verlängert Teil 1 im Median um 1,7 s (90. Perzentil
 3,4 s, höchstens 3,9 s) bei rund 930 Tokens. Die Trefferprüfung braucht im Median 1,4 s und lief bei allen 30 Themen;
 eine unsichere Artikelwahl kam bei 5 Themen hinzu, mit 1,0 bis 2,7 s. Die schärferen Regeln kosten gegenüber v2.0.0
-keine Zeit: Teil 1 im Median 1,35 statt 1,37 s bei warmem Dateicache. Seit D37 ist `article_choice=llm` die Vorgabe,
-wo ein LLM konfiguriert ist; ohne LLM wählen die Regeln, ohne Hinweis im Audit. Auf denselben 30 Themen wählten die
+keine Zeit: Teil 1 im Median 1,35 statt 1,37 s bei warmem Dateicache. Von D37 bis D40 war `article_choice=llm` die
+Vorgabe, wo ein LLM konfiguriert ist; seit D40 ist es wieder `rule-based`, und `preset: balanced` schaltet die
+LLM-Artikelwahl je Anfrage ein. Auf denselben 30 Themen wählten die
 neuen Regeln bei 5 der 9 mehrdeutigen Wörter einen anderen Hauptartikel als v2.0.0, dem Titel nach jedes Mal den
 besseren (*Blatt (Pflanze)* statt *Keimblatt*, *Körper (Geometrie)* statt *Gegenstand*, *Stimme (Musik)* statt
 *Menschliche Stimme*, *Becken (Geomorphologie)* statt *Einzugsgebiet*, *Salze* statt *Speisesalz*); das ist eine
@@ -244,7 +245,7 @@ Absatz die ersten brauchbaren Sätze wörtlich, mit Belegnummer.
 |---|---|---|
 | Treue zur Quelle | 21 % der Sätze sind durch die zitierte Quelle nachweislich gestützt, der Rest ist nicht belegt | jeder Satz steht wörtlich im zitierten Absatz (458 von 458) |
 | Prüfbarkeit | Verweise auf ganze Artikel, Satzbezug unklar | Belegnummer je Absatz mit Artikel, Abschnitt und Textstelle |
-| Tempo und Kosten | 35 s, rund 7.900 Tokens | 2 s, 0 Tokens; mit `article_choice=llm`, der Vorgabe bei konfiguriertem LLM, rund 1,7 s und 930 Tokens mehr |
+| Tempo und Kosten | 35 s, rund 7.900 Tokens | 2 s, 0 Tokens; mit `article_choice=llm` (Stufe `balanced`) rund 1,7 s und 930 Tokens mehr |
 | Wiederholbarkeit | hängt vom Modell ab (Temperatur 0,7) | gleiche Anfrage, gleicher Text (Stichprobe geprüft) |
 | Lesbarkeit | flüssiger Fließtext aus einem Guss | Auszüge nebeneinander, ohne Überleitungen, mit Stilwechseln zwischen Quellen |
 | Vollständigkeit | füllt jeden Aspekt, notfalls ohne Quelle | Bausteine ohne passenden Absatz bleiben leer |

@@ -12,7 +12,7 @@ from typing import Any, get_args
 import pytest
 from fastapi.testclient import TestClient
 
-from app.domain.requests import MATCHERS, ArticleChoice, Enrichment, Extraction, Generation
+from app.domain.requests import MATCHERS, ArticleChoice, Enrichment, Extraction, Generation, Preset
 from app.main import create_app
 from app.matching.registry import STRATEGIES
 from app.settings import Settings
@@ -50,6 +50,7 @@ def test_the_matchers_a_request_names_are_the_registered_strategies() -> None:
         ("extraction", list(get_args(Extraction))),
         ("generation", list(get_args(Generation))),
         ("enrichment", list(get_args(Enrichment))),
+        ("preset", list(get_args(Preset))),
     ],
 )
 def test_every_switch_of_a_compendium_lists_and_explains_its_values(
@@ -59,6 +60,10 @@ def test_every_switch_of_a_compendium_lists_and_explains_its_values(
     assert enum_of(prop) == values
     unexplained = [value for value in values if value not in prop["description"]]
     assert not unexplained, f"{field}: the help text says nothing about {unexplained}"
+
+
+def test_an_unknown_preset_is_a_422(client: TestClient) -> None:
+    assert client.post("/api/v2/compendium", json={"topic": "Optik", "preset": "turbo"}).status_code == 422
 
 
 def test_an_unknown_matcher_still_gets_the_german_answer(client: TestClient) -> None:
@@ -73,10 +78,17 @@ def test_an_example_sets_the_article_choice_and_the_llm_matcher(spec: dict[str, 
     assert any(body.get("matcher") == "llm" for body in examples)
 
 
+def test_an_example_names_each_preset(spec: dict[str, Any]) -> None:
+    named = {body.get("preset") for body in documented_examples(spec, "/api/v2/compendium").values()}
+    assert set(get_args(Preset)) <= named
+
+
 def test_the_knowledge_endpoint_offers_the_article_choice(spec: dict[str, Any]) -> None:
     prop = spec["components"]["schemas"]["KnowledgeRequest"]["properties"]["article_choice"]
     assert enum_of(prop) == list(get_args(ArticleChoice))
     assert all(value in prop["description"] for value in get_args(ArticleChoice))
+    preset = spec["components"]["schemas"]["KnowledgeRequest"]["properties"]["preset"]
+    assert enum_of(preset) == list(get_args(Preset))
     assert any("article_choice" in body for body in documented_examples(spec, "/api/v2/knowledge").values())
 
 

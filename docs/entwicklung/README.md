@@ -2,9 +2,10 @@
 
 Stand 24.09.2026 · neuer Dienst v2.0.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · nach v2.0.0 kamen hinzu: der LLM-Zuordner `matcher=llm` (D34), die
-schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36) und `article_choice=llm` als
-Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard der Zuordnung (D38); eine Version mit Tag
-gibt es dafür noch nicht
+schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36), `hybrid_light` bleibt
+Standard der Zuordnung (D38), `matcher=llm` ohne Rückfall am Budget (D39), der LLM-freie Modus als Standard (D40, statt
+`article_choice=llm` als Vorgabe mit LLM, D37) und der Schalter `preset` für die drei Stufen der Entscheidungsvorlage
+(D41); eine Version mit Tag gibt es dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. und 24.09.2026 stehen mit Aufbau und
@@ -32,8 +33,8 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
   unsicher ist, holt ein LLM (`article_choice=llm`) weitere 5. Auf den zehn Goldthemen passen 6 % der Korpusartikel
   nicht zum Thema, beim alten Dienst 14 %. Die schwächste Quelle sind die Volltexttreffer je Baustein; mit
   `article_choice=llm` fallen die unpassenden heraus, und der Standard druckt 10 statt 26 Absätze aus unpassenden
-  Artikeln. Das kostet im Median 1,7 s und rund 930 Tokens je Kompendium und ist Vorgabe, wo ein LLM konfiguriert
-  ist (D37).
+  Artikeln. Das kostet im Median 1,7 s und rund 930 Tokens je Kompendium; man schaltet es mit `preset: balanced`
+  ein, Standard ist der LLM-freie Modus (D40).
 - **Zuordnung zu den zehn Inhaltsbausteinen des SC26-Templates** über eine Regel-Policy mit einfachen Rankern
   (`hybrid_light` mit Model2Vec). Alle Verfahren wurden im selben Ablauf gegen den Goldstandard des Dienstes
   gemessen. Unter den lokal laufenden erreicht der Standard den besten Wert (macro-F1 0,45, 67 % richtige
@@ -66,7 +67,7 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
 | Gliederung | 15 Aspekte als Hinweis im Prompt | Template SC26 mit 13 Bausteinen, maschinenlesbar markiert |
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
 | Dauer | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | 2,8 s für Teil 1 und 2 (Median, Server, ohne LLM); mit `article_choice=llm` im Median 1,7 s mehr, mit `matcher=llm` dauert Teil 1 12,0 statt 1,2 s (M13, Entwicklungsrechner), bei langsamerer b-api und ohne Rückfall am Budget 22,7 s (M14) |
-| Tokens je Kompendium | rund 7.900 | 0 ohne LLM; mit konfiguriertem LLM seit D37 im Median 927 für die Artikelwahl; `matcher=llm` im Mittel 29.400 (M13), seit D39 34.500 (M14); Satzauswahl und Umformulierung 2.300 bis rund 37.000 |
+| Tokens je Kompendium | rund 7.900 | 0 im Standard (D40); mit `article_choice=llm` (`preset: balanced`) im Median 927; `matcher=llm` im Mittel 29.400 (M13), seit D39 34.500 (M14); Satzauswahl und Umformulierung 2.300 bis rund 37.000 |
 | Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 86 mit den Regeln, 91 mit `article_choice=llm` (M9) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,43 bis 0,45 mit `hybrid_light` in 0,3 s je Thema; 0,69 bis 0,72 mit `matcher=llm` in 11 bis 22 s (Median in M13 und M14) |
@@ -81,7 +82,8 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
 | Extraktiv als Standard, LLM optional | keine Verfälschung, jeder Satz prüfbar, schnell, ohne Tokens, reproduzierbar | liest sich weniger flüssig |
 | Template SC26 mit Markern | einheitliche Gliederung; Bausteine und Facetten lassen sich maschinell herauslösen | – |
 | Zuordnung über Regel-Policy mit `hybrid_light` und Model2Vec | bester Wert der lokal laufenden Verfahren auf dem Goldstandard, 0,3 s auf der CPU, ohne Tokens; ein LLM ordnet besser zu (0,69 bis 0,72), braucht aber für Teil 1 12,0 bis 22,7 statt 1,2 bis 1,8 s und im Mittel 29.400 bis 34.500 Tokens je Kompendium (M13, M14) und bleibt deshalb wählbar (`matcher=llm`, D38) | Ziel macro-F1 0,70 nicht erreicht |
-| Artikelwahl mit `article_choice=llm`, wo ein LLM konfiguriert ist (D37) | holt die unsicheren Fälle (91 statt 86 von 94 Goldanfragen) und wirft unpassende Volltexttreffer heraus (gedruckt aus unpassenden Artikeln 10 statt 26 Absätze) | im Median 1,7 s und 927 Tokens je Kompendium |
+| Artikelwahl mit `article_choice=llm` auf Wunsch (D35, D40) | holt die unsicheren Fälle (91 statt 86 von 94 Goldanfragen) und wirft unpassende Volltexttreffer heraus (gedruckt aus unpassenden Artikeln 10 statt 26 Absätze) | im Median 1,7 s und 927 Tokens je Kompendium |
+| Standard LLM-frei, drei Stufen mit einem Schalter `preset` (D40, D41) | Zeit und Tokens eines LLM nur, wo es jemand ausdrücklich will; `llm-free`, `balanced` und `best-quality` statt fünf Einzelschalter | die Vorteile der LLM-Artikelwahl muss man einschalten |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
 | Teil 3 zur Anfragezeit aus edu-sharing | aktuell bis auf einen Zwischenspeicher von einer Stunde, kein eigener Datenbestand | hängt an der Erreichbarkeit des Repositorys |
@@ -119,7 +121,7 @@ Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 | 19.09. | Review-Runden; LLM-Schalter statt fester Modi |
 | 20.–22.09. | Umbau: alte v1-Endpunkte entfernt; neue Endpunkte für Wissen, Entitäten und Fragen; Modelle im Image |
 | 23.09. | Release v2.0.0, Betrieb auf Hostinger; danach die Artikelwahl gemessen und der LLM-Zuordner als `matcher=llm` eingebaut (D34) |
-| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14) |
+| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14); Entscheidungsvorlage mit Grafiken (M15); Standard wieder LLM-frei (D40) und der Schalter `preset` (D41) |
 
 ## Begriffe
 

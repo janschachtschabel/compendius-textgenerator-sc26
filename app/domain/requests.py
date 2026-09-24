@@ -15,8 +15,8 @@ MATCHERS = ("hybrid_light", "bm25", "char_tfidf", "lexicon_only", "llm")
 MatcherName = Annotated[str, WithJsonSchema({"type": "string", "enum": list(MATCHERS)})]
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
-    "Who chooses the articles of the topic. Default: LLM_ARTICLE_CHOICE_DEFAULT (llm) where an LLM is configured, "
-    "otherwise rule-based.\n\n"
+    "Who chooses the articles of the topic. Default: LLM_ARTICLE_CHOICE_DEFAULT (rule-based since D40); the presets "
+    "balanced and best-quality set llm.\n\n"
     "- **rule-based**: the rules alone - exact title, the disambiguation page decided by the words of the subject, "
     "inflected forms and genitive phrases, then title suggestions and full-text hits. They say how sure they are "
     "(resolution.method, resolution.confident). No tokens, no extra time.\n"
@@ -29,7 +29,8 @@ ARTICLE_CHOICE_HELP = (
     "Without a usable b-api the rules choose, and audit.llm.article_choice says why."
 )
 MATCHER_HELP = (
-    "How the paragraphs find their block of the template. Default: MATCHER_DEFAULT (hybrid_light). Quality is the "
+    "How the paragraphs find their block of the template. Default: MATCHER_DEFAULT (hybrid_light); the preset "
+    "best-quality sets llm. Quality is the "
     "macro-F1 over the ten content blocks at the gold standard (eval/gold); times are for part 1 of one compendium, "
     "measured on 2026-09-24.\n\n"
     "- **hybrid_light** (default): heading lexicon, BM25 and character TF-IDF together, plus Model2Vec vectors when "
@@ -71,11 +72,33 @@ ENRICHMENT_HELP = (
     "Needs generation llm or llm-fast; with rule-based generation, or without a usable b-api, the answer reports "
     "sources-only."
 )
+PRESET_HELP = (
+    "One switch for the three levels of docs/entwicklung/07-entscheidungsvorlage.md. It sets article_choice, "
+    "matcher, extraction, generation and enrichment; a switch the request sets itself wins. Without a preset the "
+    "settings decide, and they ship as llm-free (D40). Numbers: gold standard and measurements of 2026-09-24.\n\n"
+    "- **llm-free**: the rules choose the articles, hybrid_light assigns the paragraphs, the text stays verbatim. "
+    "Main article right in 86 of 94 gold queries, macro-F1 0.43, part 1 in about 1.4 s, no tokens.\n"
+    "- **balanced**: as llm-free, but the LLM decides where the rules are unsure about the article and drops the "
+    "full-text hits that do not fit (article_choice llm). 91 of 94, 10 instead of 26 printed paragraphs from "
+    "unfit articles over 20 topics, macro-F1 0.43; about 1.7 s and 930 tokens more.\n"
+    "- **best-quality**: balanced plus the LLM assigning every paragraph (matcher llm). 91 of 94, macro-F1 0.69 "
+    "to 0.72; part 1 about 14 to 24 s and about 35 400 tokens. Topics of more than 200 paragraphs take a second "
+    "round of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it.\n\n"
+    "balanced and best-quality need an LLM (LLM_ENABLED, B_API_KEY); without one they fall back to the rules and "
+    "audit.llm says why. For text people read directly, add generation llm-fast or llm to a preset."
+)
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
 Enrichment = Literal["sources-only", "model-knowledge"]
 ArticleChoice = Literal["rule-based", "llm"]  # who decides an unsure article choice (D35)
+Preset = Literal["llm-free", "balanced", "best-quality"]  # the three levels of the decision paper (D41)
+_VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
+PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the order of Preset
+    "llm-free": {"article_choice": "rule-based", "matcher": "hybrid_light", **_VERBATIM},
+    "balanced": {"article_choice": "llm", "matcher": "hybrid_light", **_VERBATIM},
+    "best-quality": {"article_choice": "llm", "matcher": "llm", **_VERBATIM},
+}
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 
@@ -103,6 +126,7 @@ class GenerateRequest(BaseModel):
     )
     language: str = Field("de", pattern="^de$", description="Only 'de' today; any other value is a 422")
     template_id: str | None = Field(None, description="Template id; default from settings")
+    preset: Preset | None = Field(None, description=PRESET_HELP)
     matcher: MatcherName | None = Field(None, description=MATCHER_HELP)
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
     extraction: Extraction | None = Field(None, description=EXTRACTION_HELP)
@@ -156,6 +180,15 @@ class GenerateRequest(BaseModel):
         if isinstance(data, dict) and "mode" in data:
             raise ValueError("mode gibt es nicht mehr: extraction und generation ersetzen es (PLAN.md D33)")
         return data
+
+    @model_validator(mode="after")
+    def _preset_fills_the_open_switches(self) -> GenerateRequest:
+        # A switch the request sets wins; the preset only fills what it left open (D41)
+        if self.preset:
+            for name, value in PRESETS[self.preset].items():
+                if getattr(self, name) is None:
+                    setattr(self, name, value)
+        return self
 
     @model_validator(mode="after")
     def _topic_or_collection(self) -> GenerateRequest:

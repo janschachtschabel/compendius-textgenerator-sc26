@@ -43,7 +43,7 @@ def corpus_for_topic(
     max_articles: int | None = None,
     article_choice: str | None = None,
 ) -> tuple[str, Resolution, list[Source], dict[str, Any] | None]:
-    """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D37).
+    """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D40).
 
     Returns the normalised topic, its resolution, the articles and what the article choice asked and decided - None
     when the rules chose alone. A topic the archives do not have is a 404 carrying the resolution, so the caller sees

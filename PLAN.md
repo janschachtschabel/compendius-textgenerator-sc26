@@ -1492,6 +1492,20 @@ API.
   Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf, an einem Tag, an dem die b-api langsamer antwortete
   als in M13 (dort 10,8 und 11,7 s bei drei Stapeln). Das Budget muss für `matcher=llm` nicht mehr steigen; ein
   höheres spart großen Themen die zweite Runde und lässt Platz für `extraction=llm` oder `generation=llm` daneben.
+- **D40 (2026-09-24)** Vorgabe ist der LLM-freie Modus, auch wo ein LLM konfiguriert ist:
+  `LLM_ARTICLE_CHOICE_DEFAULT` wird mit `rule-based` ausgeliefert statt mit `llm` (D37). Die LLM-Stufen soll man
+  bewusst einschalten, nicht mit einer konfigurierten b-api stillschweigend bekommen. Die Entscheidungsvorlage
+  (`docs/entwicklung/07-entscheidungsvorlage.md`) empfiehlt für den Betrieb die Stufe „ausgewogen“; die Vorgabe
+  bleibt vorerst LLM-frei. Wer die LLM-Artikelwahl global will, setzt `LLM_ARTICLE_CHOICE_DEFAULT=llm`; dass eine
+  solche Vorgabe ohne LLM schweigt (D37), bleibt.
+- **D41 (2026-09-24)** `preset` bündelt die Schalter von Teil 1 zu den drei Stufen der Entscheidungsvorlage:
+  `llm-free` (`article_choice` rule-based, `matcher` hybrid_light, `extraction` und `generation` rule-based,
+  `enrichment` sources-only), `balanced` (dazu `article_choice` llm) und `best-quality` (dazu `matcher` llm). Ein
+  Schalter, den die Anfrage selbst setzt, geht vor; ohne `preset` entscheiden die Einstellungen wie bisher, und die
+  sind ausgeliefert die Stufe `llm-free`. Gilt für `POST /api/v2/compendium`, für `POST /api/v2/knowledge` (dort nur
+  `article_choice`) und `compendium generate --preset`; `audit.preset` nennt die Stufe. Verworfen: eine Vorgabe
+  `PRESET_DEFAULT`, weil sie mit den Vorgaben der Einzelschalter konkurrierte. Keine Stufe schaltet `generation` ein:
+  Die Lesbarkeit ist nicht gemessen, das Umformulieren bleibt eine bewusste Zusatzwahl.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

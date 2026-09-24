@@ -504,6 +504,7 @@ class CompendiumService:
         filled = sum(1 for s in sections if s.status is not SectionStatus.EMPTY)
         parts_status = _parts_status(request, want_world, filled, curricula, collection_part)
         audit = AuditReport(
+            preset=request.preset,
             matcher=matcher_name,
             timings_ms=timings,
             lint=findings,
@@ -683,11 +684,12 @@ class CompendiumService:
     def article_choice_job(
         self, requested: str | None, deadline: Deadline | None
     ) -> tuple[str, str | None, ArticleChoiceJob | None]:
-        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D37).
+        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D37, D40).
 
-        The default ``llm`` (LLM_ARTICLE_CHOICE_DEFAULT) only applies where an LLM is configured; without one the
-        rules choose and nothing is noted, so a service without a b-api does not report a missing LLM in every
-        answer. A request that asks for ``llm`` itself gets the note.
+        The shipped default is ``rule-based`` (D40). A default of ``llm`` (LLM_ARTICLE_CHOICE_DEFAULT) only applies
+        where an LLM is configured; without one the rules choose and nothing is noted, so a service without a b-api
+        does not report a missing LLM in every answer. A request that asks for ``llm`` itself, directly or through
+        a preset, gets the note.
         """
         default = self.settings.llm_article_choice_default if self.llm is not None else "rule-based"
         wanted = requested or default

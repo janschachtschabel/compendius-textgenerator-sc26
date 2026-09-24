@@ -1,10 +1,11 @@
 """Charts of the decision paper (docs/entwicklung/07-entscheidungsvorlage.md) as plain SVG (project venv, no LLM).
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
-artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg, text_schalter.svg and
-kombinationen.svg. Numbers no raw file holds are written here with their source: the text switches (measured on
-2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1, 05-messprotokoll.md). No chart library,
-so the files render on GitHub, in Confluence and in a browser alike. Rounding half up, German number format.
+prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
+text_schalter.svg and kombinationen.svg. Numbers no raw file holds are written here with their source: the text
+switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
+05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
+Rounding half up, German number format.
 
 Usage: python mc_grafiken.py <ergebnisse-dir> <bilder-dir>
 """
@@ -107,7 +108,7 @@ def prozess() -> None:
     steps = [
         ("1", "Hauptartikel finden", "Thema bereinigen, im Archivindex auflösen", False,
          ["Schalter article_choice: rule-based oder llm",
-          "Standard: llm, wo ein LLM konfiguriert ist, sonst rule-based",
+          "Standard: rule-based (D40); llm mit preset balanced oder best-quality",
           "Zeit: rund 0,03 s; LLM nur bei unsicheren Themen, +1,0 bis 2,7 s"]),
         ("2", "Korpus bauen", "bis 12 Artikel, höchstens 400 Absätze", False,
          ["Einstellungen: max_articles (12), ZIM_PROFILE (standard)",
@@ -115,7 +116,7 @@ def prozess() -> None:
           "Zeit: 0,9 s auf dem Server; Trefferprüfung +1,4 s (Median)"]),
         ("3", "Absätze zuordnen", "10 Inhaltsbausteine des Templates SC26", False,
          ["Schalter matcher: hybrid_light, bm25, char_tfidf, lexicon_only, llm",
-          "Standard: hybrid_light (MATCHER_DEFAULT)",
+          "Standard: hybrid_light; llm mit preset best-quality",
           "Zeit: 0,3 s; llm 10 bis 25 s und rund 34.500 Tokens"]),
         ("4", "Text bauen", "Absätze wörtlich, mit Belegnummer", False,
          ["Schalter extraction: rule-based oder llm; Länge: target_length",
@@ -154,6 +155,88 @@ def prozess() -> None:
     svg.legend(24, base + 8, [(LOCAL, "läuft lokal, ohne Tokens"),
                               (LLM, "LLM-Option über die b-api (gpt-5.6-luna)")])
     svg.save("prozess.svg")
+
+
+def prozess_optionen() -> None:
+    """The steps of part 1 with every option in a row: quality, time, tokens and the presets that use it (D41)."""
+    presets = [("llm-free", LOCAL, "l"), ("balanced", "#7a5aa6", "b"), ("best-quality", LLM, "q")]
+    rows = {  # step: [(option, default, llm, presets, quality, time, tokens)]
+        ("1", "Hauptartikel finden", "Thema im Archivindex auflösen"): [
+            ("rule-based", True, False, "l", "86 von 94 richtig", "0,03 s", "0"),
+            ("llm", False, True, "bq", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
+        ],
+        ("2", "Korpus bauen", "bis 12 Artikel, 400 Absätze"): [
+            ("Profil standard", True, False, "lbq", "26 von 358 unpassend", "0,9 s", "0"),
+            ("Trefferprüfung", False, True, "bq", "10 von 356 unpassend", "+1,4 s", "rund 890"),
+            ("Profil extended", False, False, "", "+1 gefüllter Baustein", "–", "0"),
+            ("knowledge_collection_id", False, False, "", "nicht gemessen", "–", "0"),
+        ],
+        ("3", "Absätze zuordnen", "10 Inhaltsbausteine SC26"): [
+            ("hybrid_light", True, False, "lb", "macro-F1 0,43", "0,3 s", "0"),
+            ("char_tfidf", False, False, "", "macro-F1 0,40", "0,25 s", "0"),
+            ("bm25", False, False, "", "macro-F1 0,36", "0,03 s", "0"),
+            ("lexicon_only", False, False, "", "macro-F1 0,35", "0,02 s", "0"),
+            ("llm", False, True, "q", "macro-F1 0,69 bis 0,72", "10 bis 25 s", "rund 34.500"),
+        ],
+        ("4", "Text bauen", "Absätze wörtlich, belegt"): [
+            ("rule-based", True, False, "lbq", "jeder Satz wörtlich belegt", "1,1 s", "0"),
+            ("extraction=llm", False, True, "", "+14 richtige Absätze, 59 %", "rund 11 s", "14.000–22.400"),
+        ],
+        ("5", "Umformulieren", "optional, mit Belegprüfung"): [
+            ("rule-based", True, False, "lbq", "Text bleibt wörtlich", "–", "0"),
+            ("generation=llm-fast", False, True, "", "2 Bausteine neu, belegt", "9 bis 15 s", "2.300–4.000"),
+            ("generation=llm", False, True, "", "alle Bausteine neu, belegt", "16 bis 20 s", "10.500–14.500"),
+        ],
+        ("6", "Zusammensetzen", "mit Teil 2 und Teil 3"): [
+            ("Teil 2 und Teil 3", True, False, "lbq", "kein Schalter", "0,24 / 0,16 s", "0"),
+        ],
+    }
+    columns = {"option": 282, "stufe": 488, "guete": 560, "zeit": 752, "tokens": 858}
+    line_h, pad, top = 24, 8, 88
+    def block_height(options: list[tuple[str, bool, bool, str, str, str, str]]) -> int:
+        return max(len(options) * line_h + 2 * pad, 64)  # room for the two lines of the step box
+
+    height = top + sum(block_height(options) for options in rows.values()) + 96
+    svg = Svg(960, height, "Ablauf von Teil 1 mit allen Optionen, ihrer Güte, Zeit und ihren Tokens")
+    svg.text(20, 30, "Teil 1: jeder Schritt mit seinen Optionen", 17, weight="600")
+    svg.text(20, 52, "Standard ist die Stufe llm-free (D40); preset wählt eine Stufe, einzelne Schalter gehen vor "
+             "(D41).", 12, MUTED, limit=920)
+    for key, head in (("option", "Option"), ("stufe", "Stufe"), ("guete", "Güte"), ("zeit", "Zeit"),
+                      ("tokens", "Tokens")):
+        svg.text(columns[key], top - 12, head, 12, MUTED, weight="600")
+    y = top
+    for (number, title, detail), options in rows.items():
+        block = block_height(options)
+        svg.rect(20, y + 4, 236, block - 8, "#e8f0fa" if number != "5" else PAPER, 8,
+                 LOCAL if number != "5" else LLM, 1.5, None if number != "5" else "6 4")
+        middle = y + block / 2
+        svg.text(34, middle - 4, f"{number}  {title}", 13.5, weight="600", limit=210)
+        svg.text(34, middle + 14, detail, 11, MUTED, limit=214)
+        svg.line(268, y, 952, y, GRID)
+        for index, (option, default, llm, uses, quality, time, tokens) in enumerate(options):
+            base = y + (block - len(options) * line_h) / 2 + index * line_h + 16
+            svg.circle(columns["option"] - 8, base - 4, 4, LLM if llm else LOCAL)
+            svg.text(columns["option"], base, option, 12, INK, weight="600" if default else "normal",
+                     limit=140 if default else 196)
+            if default:
+                width = len(option) * 12 * CHAR_WIDTH + (8 if default else 0)
+                svg.rect(columns["option"] + width + 4, base - 11, 52, 15, PANEL, 7, GRID)
+                svg.text(columns["option"] + width + 30, base - 0.5, "Standard", 9.5, MUTED, "middle")
+            for slot, (_, color, code) in enumerate(presets):
+                if code in uses:
+                    svg.rect(columns["stufe"] + slot * 16, base - 10, 11, 11, color, 2)
+            svg.text(columns["guete"], base, quality, 12, INK, limit=186)
+            svg.text(columns["zeit"], base, time, 12, INK, limit=100)
+            svg.text(columns["tokens"], base, tokens, 12, INK, limit=94)
+        y += block
+    svg.line(268, y, 952, y, GRID)
+    svg.legend(20, y + 30, [(LOCAL, "lokal, ohne Tokens"), (LLM, "über das LLM der b-api")], 11.5)
+    svg.legend(430, y + 30, [(color, f"Stufe {tag}") for tag, color, _ in presets], 11.5)
+    svg.text(20, y + 56, "Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in "
+             "20 Themen (M10); gefüllte Bausteine (M11);", 10.5, MUTED, limit=920)
+    svg.text(20, y + 72, "macro-F1 am Goldstandard (M12, M15); Text (M3, 19.09.). Zeit: Server (M1, M3) oder "
+             "Entwicklungsrechner (M13, M14). Tokens je Kompendium.", 10.5, MUTED, limit=920)
+    svg.save("prozess_optionen.svg")
 
 
 def artikelwahl() -> None:
@@ -423,5 +506,6 @@ def kombinationen() -> None:
 
 
 OUT.mkdir(parents=True, exist_ok=True)
-for chart in (prozess, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter, kombinationen):
+for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
+              kombinationen):
     chart()

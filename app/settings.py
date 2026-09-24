@@ -133,10 +133,10 @@ class Settings(BaseSettings):
     # --- LLM (optional, via b-api) -------------------------------------------------------------
     llm_enabled: bool = Field(False, description="Enable b-api usage at all")
     llm_article_choice_default: ArticleChoice = Field(
-        "llm",
-        description="Default of the article_choice switch: llm lets the LLM decide unsure topics and drop full-text "
-        "hits that do not fit (D35); it takes effect only where an LLM is configured, without one the rules choose "
-        "(D37)",
+        "rule-based",
+        description="Default of the article_choice switch: rule-based (D40), or llm to let the LLM decide unsure "
+        "topics and drop full-text hits that do not fit (D35); llm takes effect only where an LLM is configured, "
+        "without one the rules choose (D37)",
     )
     llm_extraction_default: Extraction = Field("rule-based", description="Default of the extraction switch")
     llm_extraction_candidates: int = Field(

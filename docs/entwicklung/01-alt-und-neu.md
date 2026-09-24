@@ -78,10 +78,10 @@ auf das Warten auf das Modell, im Median 32 s. Seine Endpunktbeschreibung nennt 
 | Problem | Lösung im neuen Dienst |
 |---|---|
 | Wikipedia sperrt, drosselt oder ist nicht erreichbar | Wikipedia und Klexikon liegen als ZIM-Archive beim Dienst; zur Anfragezeit gibt es keinen Wikipedia-Zugriff. Neue Archive holt ein Sidecar mit Prüfsumme und wechselt atomar. |
-| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet ein LLM (`article_choice=llm`, seit D37 Vorgabe, wo eines konfiguriert ist). |
+| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet auf Wunsch ein LLM (`article_choice=llm` oder `preset: balanced`). |
 | nur Einleitungen als Quelle | ganze Artikel, dazu verlinkte Unterartikel und derselbe Artikel aus Klexikon, bis 12 Artikel und 400 Absätze |
 | Text großteils unbelegt, Verweise nicht prüfbar | Absätze werden wörtlich übernommen; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| 35 bis 374 s, rund 7.900 Tokens | 2 bis 3 s und 0 Tokens ohne LLM; ist eines konfiguriert, prüft es seit D37 die Artikelwahl (rund 1,7 s und 930 Tokens mehr); weitere LLM-Schalter nur auf Wunsch |
+| 35 bis 374 s, rund 7.900 Tokens | 2 bis 3 s und 0 Tokens im Standard (D40); LLM-Schalter nur auf Wunsch, etwa die Artikelwahl mit rund 1,7 s und 930 Tokens mehr |
 | Aspekte nur als Hinweis | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten, Prüfung der Regeln (Lint) |
 | nur Weltwissen | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
 | Fehler in einer normalen Antwort | passende Statuscodes, `parts_status` je Teil, Request-ID in jeder Antwort, Prometheus-Metriken und Alarme |
@@ -119,8 +119,8 @@ auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
 
 | Teil 1 je Kompendium | Dauer | Tokens | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
 |---|---|---|---|---|
-| nur Regeln (`article_choice=rule-based`, `hybrid_light`) | Median 1,35 s | 0 | 86 | 0,43 |
-| `article_choice=llm`, Vorgabe, wo ein LLM konfiguriert ist (D37) | im Median 1,7 s mehr | Median 927 | 91 | 0,43 |
+| nur Regeln, Stufe `llm-free` (Standard, D40) | Median 1,35 s | 0 | 86 | 0,43 |
+| `article_choice=llm`, Stufe `balanced` | im Median 1,7 s mehr | Median 927 | 91 | 0,43 |
 | `matcher=llm`, wählbar (D36, D38, D39) | Median 12,0 s (M13), 22,7 s (M14) | im Mittel 29.400 (M13), seit D39 34.500 (M14) | 86 | 0,72 und 0,69 |
 | zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
 

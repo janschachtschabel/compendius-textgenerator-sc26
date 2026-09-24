@@ -258,17 +258,28 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 
 ## LLM-Schicht (optional)
 
-Ohne LLM läuft alles im Regelmodus. Mit `LLM_ENABLED=true` und `B_API_KEY` entscheidet das LLM von sich aus nur
-über unsichere Artikel (`article_choice`, Vorgabe `llm`, D37, siehe unten). Die übrigen Schritte von Teil 1 gibt man
-je Anfrage oder global an das LLM (D33): die Zuordnung der Absätze über `matcher`, die Satzauswahl über
-`extraction` (`LLM_EXTRACTION_DEFAULT`) und das Schreiben über `generation` (`LLM_GENERATION_DEFAULT`). Ein weiterer
-Schalter, `enrichment`, entscheidet, ob das schreibende Modell über die Quellen hinausgehen darf. `/docs` zeigt zu
-jedem Schalter die erlaubten Werte, was sie tun und was sie kosten.
+Ohne Angabe läuft alles im Regelmodus, auch wenn ein LLM konfiguriert ist (D40). Ein LLM (`LLM_ENABLED=true` und
+`B_API_KEY`) arbeitet nur, wo eine Anfrage oder eine Vorgabe es verlangt. Am einfachsten wählt `preset` eine der
+drei Stufen der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`, D41):
+
+| `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24) |
+|---|---|---|
+| `llm-free` (so arbeitet der Dienst auch ohne `preset`) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
+| `balanced` | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 1,7 s und 930 Tokens mehr |
+| `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s, rund 35.400 Tokens |
+
+Ein Schalter, den die Anfrage selbst setzt, geht dem `preset` vor; so macht etwa `preset: best-quality` mit
+`generation: llm` den Text zusätzlich lesbar. `audit.preset` nennt die Stufe, `compendium generate --preset` wählt
+sie auf der Kommandozeile. Einzeln gibt man die Schritte von Teil 1 je Anfrage oder global an das LLM (D33): die
+Artikelwahl über `article_choice`, die Zuordnung der Absätze über `matcher`, die Satzauswahl über `extraction`
+(`LLM_EXTRACTION_DEFAULT`) und das Schreiben über `generation` (`LLM_GENERATION_DEFAULT`). Ein weiterer Schalter,
+`enrichment`, entscheidet, ob das schreibende Modell über die Quellen hinausgehen darf. `/docs` zeigt zu jedem
+Schalter die erlaubten Werte, was sie tun und was sie kosten.
 
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
-| `article_choice` | `rule-based` | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
-| | `llm` (Vorgabe mit LLM) | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
+| `article_choice` | `rule-based` (Standard) | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
+| | `llm` | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
 | `matcher` | `hybrid_light` (Standard), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
 | | `llm` | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
 | `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
@@ -312,9 +323,10 @@ zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln 
 und lässt Platz, wenn `extraction=llm` oder `generation=llm` dazukommen: Neben einem großen Thema bleiben bei 60.000
 nur rund 14.000 Tokens. Es hebt die Kostengrenze, nicht den Verbrauch eines Themas, das darunter bleibt.
 
-**Artikelwahl durch das LLM (`article_choice: llm`, D35, D37).** Das ist die Vorgabe, sobald ein LLM konfiguriert
-ist (`LLM_ARTICLE_CHOICE_DEFAULT=llm`); ohne LLM wählen die Regeln, ohne Hinweis im Audit, und `article_choice:
-rule-based` wählt sie je Anfrage. Die Regeln lösen jedes Thema zuerst selbst auf und
+**Artikelwahl durch das LLM (`article_choice: llm`, D35).** Je Anfrage über `article_choice: llm` oder die Stufen
+`balanced` und `best-quality`, global über `LLM_ARTICLE_CHOICE_DEFAULT=llm`; ausgeliefert wird `rule-based` (D40,
+vorher war `llm` die Vorgabe, D37). Eine Vorgabe `llm` wirkt nur, wo ein LLM konfiguriert ist; ohne LLM wählen dann
+die Regeln, ohne Hinweis im Audit. Die Regeln lösen jedes Thema zuerst selbst auf und
 halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
 einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
 und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
@@ -498,7 +510,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_ARTICLE_CHOICE_DEFAULT` | `llm` | Vorgabe für `article_choice`: `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37) oder `rule-based` |
+| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` (D40) oder `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37). Je Anfrage gehen `article_choice` und `preset` vor |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |
@@ -533,7 +545,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
 | Alle Antworten | tragen `X-Request-ID` (die des Aufrufers oder eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
-| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`, `enrichment` `sources-only` oder `model-knowledge`; das frühere Feld `mode`: 422; `matcher: llm` lässt das LLM die Absätze zuordnen (siehe LLM-Schicht); unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503; `template_id` wählt ein Template (Standard aus den Einstellungen), `max_articles` begrenzt den Korpus (Standard `CORPUS_MAX_ARTICLES`, Thema und Zwilling sind immer dabei), `empty_slot_policy` und `facets_visible` überschreiben Template bzw. `FACETS_VISIBLE`, `language` kennt heute nur `de` (sonst 422); zur teilweisen Neuerzeugung mit `existing_markdown` und `regenerate_sections` siehe unten; `frontmatter_in_markdown: false` lässt den YAML-Vorspann im Markdown weg und beginnt bei der Überschrift — dieselben Angaben stehen weiter im Feld `frontmatter` |
+| `POST /api/v2/compendium` | Kompendium zu `topic` oder `collection_id`; `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `preset` wählt eine Stufe (`llm-free`, `balanced`, `best-quality`) und setzt die Schalter, die die Anfrage offen lässt; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`, `enrichment` `sources-only` oder `model-knowledge`; das frühere Feld `mode`: 422; `matcher: llm` lässt das LLM die Absätze zuordnen (siehe LLM-Schicht); unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503; `template_id` wählt ein Template (Standard aus den Einstellungen), `max_articles` begrenzt den Korpus (Standard `CORPUS_MAX_ARTICLES`, Thema und Zwilling sind immer dabei), `empty_slot_policy` und `facets_visible` überschreiben Template bzw. `FACETS_VISIBLE`, `language` kennt heute nur `de` (sonst 422); zur teilweisen Neuerzeugung mit `existing_markdown` und `regenerate_sections` siehe unten; `frontmatter_in_markdown: false` lässt den YAML-Vorspann im Markdown weg und beginnt bei der Überschrift — dieselben Angaben stehen weiter im Feld `frontmatter` |
 | `POST /api/v2/knowledge` | Wissenstexte zu `topic`, ohne Template und Synthese: die Artikel des Korpus mit ihren Abschnitten. `archives` fragt gezielt einzelne Archive (unbekannte ID: 404), `max_articles` begrenzt die zusätzlichen Artikel (Thema und Zwilling sind immer dabei), `max_chars` deckelt den Text über alle Artikel und setzt `truncated`; Thema nicht gefunden: 404 mit `resolution` |
 | `POST /api/v2/entities` | Entitäten in einem Text, in zwei Schichten: `methods` wählt `ner` (spaCy-Modell, braucht keine Archive) und `dictionary` (Begriffe, die einen Artikel haben); die Antwort nennt unter `methods`, welche Wege wirklich liefen, und je Entität `source`, `kind`, `linked` und den Artikel mit seinem Lead. `link: false` lässt das Nachschlagen weg, `archives` grenzt ein (unbekannte ID: 404); fällt beides aus — kein Modell und keine Archive —: 503. Steht hinter einem Begriff des Wörterbuchs nur eine Begriffsklärungsseite, entfällt er: die Methode verspricht Begriffe **mit** Artikel. Das gilt nicht für `ner` und nicht bei `link: false` — dort sagt `note`, dass ungeprüft geliefert wurde. `max_entities` greift vor dieser Prüfung, es können also weniger zurückkommen |
 | `POST /api/v2/qa` | Frage-Antwort-Paare zu `text` oder `topic`. **`text`** ist der Text, aus dem die Paare gemacht werden — etwa das Markdown eines Kompendiums, das du schon hast. **`topic`** erzeugt erst Teil 1 des Kompendiums zu diesem Thema und fragt dessen Bausteine ab; beide Schritte also in einem Aufruf, zum Preis einer Erzeugung (404 mit `resolution`, wenn es das Thema nicht gibt, 503 wenn Teil 1 nicht erzeugbar ist). `method` wählt `rule-based` (Fragevorlagen über die Sätze, braucht nichts, Standard), `parse-based` (der spaCy-Parse ersetzt das Satzsubjekt durch ein Fragewort, die Antwort ist dann das Subjekt statt des ganzen Satzes; braucht das spaCy-Modell), `models` (zwei kleine deutsche Modelle im Image: ein Generator schreibt die Frage zu einer Nominalphrase, ein extraktives Modell markiert die antwortende Stelle — rund 1,1 s je Paar auf CPU bei 20 Paaren, bei wenigen Paaren eher 2 s, weil der Generator eine ganze Runde auf einmal erzeugt; die Modelle laden bei der ersten Anfrage) oder `llm` (die b-api schreibt sie); fehlen die Modelle, die b-api oder eine verwertbare Antwort, fällt es auf `rule-based` zurück und `note` sagt warum. `count` und `max_answer_length` begrenzen. **Welche Stufe wofür:** gemessen am 2026-09-21 auf einem Kompendiumtext greift `rule-based` nur bei jedem achten Satz und die Hälfte der Fragen fragt nach einer Jahreszahl (8 von 20 angefragten Paaren, 4 Fragetypen); `parse-based` holt aus denselben Texten viermal so viel wie die Vorlagen — gemessen am 2026-09-22 über 172 Sätze aus vier Kompendien 33 Fragen statt 8, rund 4 ms je Satz (warm; der erste Text eines Prozesses zahlt einmalig das Aufwärmen von spaCy), 26 der 33 mangelfrei — ohne ein Modell zu laden; `models` lieferte aus demselben Text 20 von 20 mit 18 Fragetypen und keiner Jahresfrage, weil die Fragen aus den Nominalphrasen entstehen statt aus Vorlagen, und ist mit 94 % mangelfreien Paaren die genaueste und mit Abstand langsamste Stufe. `/docs` hat je ein Beispiel dafür. Die Fragevorlagen prüfen mit dem spaCy-Modell, ob der Betreff wirklich ein Begriff ist — Deutsch schreibt am Satzanfang groß, sonst entstünde „Was versteht man unter Daneben?“. Fehlt das Modell, entfällt die Prüfung und `note` sagt es |

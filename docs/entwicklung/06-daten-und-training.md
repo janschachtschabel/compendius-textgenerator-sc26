@@ -6,8 +6,8 @@
 
 Die lokalen Verfahren der Zuordnung kommen am Goldstandard auf macro-F1 0,43 bis 0,45, das LLM auf rund 0,7 (0,66
 bis 0,73 in vier Läufen, [Messprotokoll](05-messprotokoll.md), M5 und M12). Bei der Artikelwahl holt das LLM die
-Fälle, in denen die Regeln unsicher sind (M9, M10). Beides kostet je Anfrage Tokens und Zeit (M13). Ein lokal trainiertes Modell könnte einen Teil dieses Abstands
-schließen, ohne Tokens zur Laufzeit. Dafür braucht es Trainingsdaten, und die fehlen: Der Goldstandard hat 603
+Fälle, in denen die Regeln unsicher sind (M9, M10). Beides kostet je Anfrage Tokens und Zeit (M13). Ein lokal
+trainiertes Modell könnte einen Teil dieses Abstands schließen, ohne Tokens zur Laufzeit. Dafür braucht es Trainingsdaten, und die fehlen: Der Goldstandard hat 603
 Absätze aus zehn Themen. Eine logistische Regression darauf kam am 18.09.2026 bei Kreuzvalidierung über die Themen auf
 höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gegen die Idee.
 
@@ -43,9 +43,10 @@ speichert und weitergibt, muss die Lizenz mitführen.
 ## Empfehlung
 
 1. **Jetzt kein Protokoll der Zuordnung im Betrieb.** Solange `matcher=llm` selten läuft, sammelt es vor allem
-   Regelentscheidungen. Anders die Artikelwahl: Seit D37 benotet das LLM bei fast jeder Anfrage die Korpusartikel
-   und entscheidet unsichere Themen. Ein kleines Protokoll nur dafür (Thema, Fach, Kandidaten, Noten, Wahl) wäre der
-   billigste Anfang eines Datensatzes, mit dem sich die Trefferprüfung später lokal lernen ließe.
+   Regelentscheidungen. Anders die Artikelwahl: Mit der Stufe `balanced` benotet das LLM bei fast jeder Anfrage die
+   Korpusartikel und entscheidet unsichere Themen; Standard ist sie seit D40 nicht mehr. Ein kleines Protokoll nur
+   dafür (Thema, Fach, Kandidaten, Noten, Wahl) wäre der billigste Anfang eines Datensatzes, mit dem sich die
+   Trefferprüfung später lokal lernen ließe.
 2. **Erst ein Destillationsversuch offline:** 50 bis 100 Themen mit `matcher=llm` (1,5 bis 3 Millionen Tokens), ein
    Schülermodell darauf trainieren und am Goldstandard über die Themen hinweg messen. Erreicht es lokal 0,6 macro-F1
    oder mehr, lohnen Datenpaket, Trainingspaket und ein Protokoll für LLM-Anfragen.

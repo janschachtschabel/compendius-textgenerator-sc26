@@ -5,8 +5,9 @@ Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
 zuschalten. Diese Vorlage zeigt je Schritt, welche Verfahren es gibt, wie man sie im Dienst wählt, was sie leisten und
-was sie an Zeit und Tokens kosten. Am Ende stehen drei empfohlene Kombinationen. „Standard“ heißt: Das gilt, wenn die
-Anfrage nichts anderes verlangt.
+was sie an Zeit und Tokens kosten. Am Ende stehen drei empfohlene Kombinationen; der Schalter `preset` wählt jede
+davon mit einem Wert (D41). „Standard“ heißt: Das gilt, wenn die Anfrage nichts anderes verlangt. Standard ist die
+Stufe LLM-frei, auch wo ein LLM konfiguriert ist (D40).
 
 ## Empfehlung auf einen Blick
 
@@ -22,15 +23,16 @@ Anfrage nichts anderes verlangt.
 | Teil 1 je Kompendium | 1,35 s | rund 3,1 s | rund 14 bis 24 s |
 | Tokens je Kompendium | 0 | Median 927 | rund 35.400 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.150 | rund 56 |
-| entspricht | Vorgabe ohne LLM | Vorgabe mit LLM (D37) | auf Anfrage |
+| so wählt man sie | Standard (D40) oder `preset: llm-free` | `preset: balanced` | `preset: best-quality` |
 
 ![Die drei Kombinationen im Vergleich](bilder/kombinationen.svg)
 
 - **LLM-frei** ist das Beste, was ohne Sprachmodell geht: die geschärften Regeln der Artikelwahl, `hybrid_light` mit
   Model2Vec als bestes lokales Zuordnungsverfahren, wörtlicher Text. Keine Tokens, keine Abhängigkeit von der b-api.
-- **Ausgewogen** ist die Empfehlung für den Betrieb. Die LLM-Artikelwahl ist der billigste Hebel mit messbarer
-  Wirkung: fünf richtige Hauptartikel mehr von 94 und 10 statt 26 gedruckte Absätze aus unpassenden Artikeln, für
-  im Median 1,7 s und 927 Tokens. Das ist seit D37 die Vorgabe, wo ein LLM konfiguriert ist.
+- **Ausgewogen** ist die Empfehlung für den Betrieb, sobald er ein LLM nutzen soll. Die LLM-Artikelwahl ist der
+  billigste Hebel mit messbarer Wirkung: fünf richtige Hauptartikel mehr von 94 und 10 statt 26 gedruckte Absätze aus
+  unpassenden Artikeln, für im Median 1,7 s und 927 Tokens. Vorerst ist sie nicht Standard (D40); man schaltet sie je
+  Anfrage mit `preset: balanced` ein oder global mit `LLM_ARTICLE_CHOICE_DEFAULT=llm`.
 - **Beste Qualität** nimmt dazu das LLM als Zuordner: 0,69 bis 0,72 statt 0,43 macro-F1, aber Teil 1 dauert
   zehnmal so lange, und ein Kompendium kostet mehr Tokens als der ganze alte Dienst. Sinnvoll, wo Qualität zählt und
   Zeit nicht, etwa beim Vorbereiten eines Kompendiums für die Redaktion. Der Text bleibt wörtlich; soll ihn ein Mensch
@@ -40,9 +42,34 @@ Zeiten: Entwicklungsrechner, Teil 1 im Prozess (M13, M14); auf dem Server über 
 2,0 s (M3). „Beste Qualität“ ist die Summe der einzeln gemessenen Schritte; die beiden LLM-Schalter liefen nie
 zusammen, sie arbeiten aber nacheinander, Zeit und Tokens addieren sich also.
 
+## Die Stufen mit einem Schalter: `preset`
+
+`preset` setzt alle Schalter von Teil 1 auf eine der drei Stufen (D41). Einen Schalter, den die Anfrage selbst setzt,
+lässt es stehen; so gibt `{"preset": "best-quality", "generation": "llm"}` die beste Zuordnung und dazu einen
+umformulierten Text. Ohne `preset` gelten die Vorgaben der Einzelschalter, und die sind ausgeliefert die Stufe
+`llm-free`.
+
+| `preset` | `article_choice` | `matcher` | `extraction` | `generation` | `enrichment` |
+|---|---|---|---|---|---|
+| `llm-free` | `rule-based` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
+| `balanced` | `llm` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
+| `best-quality` | `llm` | `llm` | `rule-based` | `rule-based` | `sources-only` |
+
+Wo man es findet: in `/docs` am Feld `preset` von `POST /api/v2/compendium` (mit Güte, Zeit und Tokens je Stufe)
+und in drei Beispielen, eines je Stufe; `POST /api/v2/knowledge` nimmt `preset` ebenfalls an und übernimmt daraus nur
+`article_choice`; auf der Kommandozeile `compendium generate --preset balanced`. Die Antwort nennt die Stufe in
+`audit.preset`, was tatsächlich lief in `audit.llm`. Ohne LLM fallen `balanced` und `best-quality` auf die Regeln
+zurück, und `audit.llm` sagt warum. Keine Stufe schaltet `generation` ein: Die Lesbarkeit ist nicht gemessen, das
+Umformulieren bleibt eine bewusste Zusatzwahl.
+
 ## Der Ablauf
 
 ![Ablauf von Teil 1](bilder/prozess.svg)
+
+Dieselben Schritte mit allen Optionen, ihrer Güte, Zeit und ihren Tokens; die Quadrate zeigen, welche Stufe welche
+Option nutzt:
+
+![Jeder Schritt mit seinen Optionen](bilder/prozess_optionen.svg)
 
 Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben und brauchen kein LLM. Die Schritte 1 bis 4
 laufen bei jeder Anfrage, Schritt 5 nur auf Wunsch. Ein LLM steht nur bereit, wenn es konfiguriert ist:
@@ -60,12 +87,13 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 | **Regeln** (`rule-based`) | wie v2.0.0, aber mit den Kontextwörtern des Fachs aus `config/subjects.yaml`, Wortanfängen statt ganzer Wörter, dreifach gewertetem Titel, Personen und Werken erst zuletzt und Regeln für gebeugte Formen und Genitivwendungen. Sie melden, ob sie sich sicher sind (`method`, `confident`). |
 | **Regeln und LLM** (`llm`) | erst die Regeln; nur wenn sie unsicher sind, wählt das LLM unter ihren Kandidaten oder nennt einen Titel, der nur zählt, wenn das Archiv ihn als Artikel hat. |
 
-**Standard:** `llm`, wo ein LLM konfiguriert ist, sonst `rule-based` (D37).
+**Standard:** `rule-based` (D40); `llm` über `article_choice` oder die Stufen `balanced` und `best-quality`.
 
 | Einstellung | Werte | Standard |
 |---|---|---|
 | Anfrage: `article_choice` (Kompendium und `POST /api/v2/knowledge`) | `rule-based`, `llm` | aus `LLM_ARTICLE_CHOICE_DEFAULT` |
-| Umgebung: `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based`, `llm` | `llm`; wirkt nur mit konfiguriertem LLM |
+| Anfrage: `preset` | `llm-free` setzt `rule-based`, `balanced` und `best-quality` setzen `llm` | kein `preset` |
+| Umgebung: `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based`, `llm` | `rule-based` (D40); `llm` wirkt nur mit konfiguriertem LLM |
 
 | 94 Anfragen in drei Goldsätzen (M9) | v2.0.0 | Regeln | Regeln und LLM |
 |---|---|---|---|
@@ -155,6 +183,7 @@ weil `hybrid_light` sein Rückfall ist.
 | Einstellung | Werte | Standard |
 |---|---|---|
 | Anfrage: `matcher` | `hybrid_light`, `bm25`, `char_tfidf`, `lexicon_only`, `llm` | aus `MATCHER_DEFAULT` |
+| Anfrage: `preset` | `llm-free` und `balanced` setzen `hybrid_light`, `best-quality` setzt `llm` | kein `preset` |
 | Umgebung: `MATCHER_DEFAULT` | die vier lokalen | `hybrid_light` |
 | Umgebung: `MODEL2VEC_PATH` | Pfad des Modells | im Image `/models/m2v`; ohne Model2Vec fällt `hybrid_light` auf 0,38 |
 | Umgebung: `LLM_MAX_TOKENS_PER_REQUEST` | Tokens je Anfrage | 60.000: vier Stapel zugleich, weitere warten (D39); 100.000 erlaubt sieben |
@@ -253,48 +282,51 @@ und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten 
 
 ## Die Empfehlungen im Einzelnen
 
-### LLM-frei: das Optimum ohne Sprachmodell
+### LLM-frei: das Optimum ohne Sprachmodell (Standard)
+
+Anfrage: `{"topic": "Optik"}` genügt, ausdrücklich `{"topic": "Optik", "preset": "llm-free"}`. Die Einstellungen, mit
+denen der Dienst ausgeliefert wird, ergeben diese Stufe; ein LLM darf konfiguriert sein, es wird nicht gefragt:
 
 ```
-LLM_ENABLED=false            # oder je Anfrage "article_choice": "rule-based"
+LLM_ARTICLE_CHOICE_DEFAULT=rule-based   # ausgeliefert (D40)
 MATCHER_DEFAULT=hybrid_light
-MODEL2VEC_PATH=/models/m2v   # im Image gesetzt; ohne Model2Vec 0,38 statt 0,43
+MODEL2VEC_PATH=/models/m2v              # im Image gesetzt; ohne Model2Vec 0,38 statt 0,43
 ZIM_PROFILE=standard
 CORPUS_MAX_ARTICLES=12
 ```
 
-Anfrage: `{"topic": "Optik", "article_choice": "rule-based", "matcher": "hybrid_light"}`; `extraction` und
-`generation` bleiben `rule-based`. Ergebnis: 86 von 94 Hauptartikeln, 26 von 358 gedruckten Absätzen aus unpassenden
-Artikeln, macro-F1 0,43, Teil 1 in 1,35 s ohne Tokens. Keine andere lokale Einstellung war besser: Die übrigen
-Verfahren verlieren in kleinen Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
+Ergebnis: 86 von 94 Hauptartikeln, 26 von 358 gedruckten Absätzen aus unpassenden Artikeln, macro-F1 0,43, Teil 1
+in 1,35 s ohne Tokens. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
+Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
 
 ### Ausgewogen: Zeit und Kosten optimiert bei guter Qualität
 
+Anfrage: `{"topic": "Optik", "preset": "balanced"}`. Dafür muss ein LLM konfiguriert sein:
+
 ```
 LLM_ENABLED=true
-B_API_KEY=…                          # aus dem Geheimnisspeicher, nie im Repository
-LLM_ARTICLE_CHOICE_DEFAULT=llm       # Vorgabe
-MATCHER_DEFAULT=hybrid_light
+B_API_KEY=…                             # aus dem Geheimnisspeicher, nie im Repository
+LLM_ARTICLE_CHOICE_DEFAULT=llm          # nur wenn die Stufe für jede Anfrage gelten soll
 ```
 
-Anfrage: `{"topic": "Optik"}` genügt; ausdrücklich `"article_choice": "llm"`. Ergebnis: 91 von 94 Hauptartikeln, 10
-von 356 gedruckten Absätzen aus unpassenden Artikeln, macro-F1 0,43, Teil 1 im Median 1,7 s länger (90. Perzentil
-3,4 s), rund 930 Tokens. Wer einen lesbaren Einstieg braucht, ergänzt `"generation": "llm-fast"`: 9 bis 15 s und
-2.300 bis 4.000 Tokens mehr für Themendefinition und Querschnitt.
+Ergebnis: 91 von 94 Hauptartikeln, 10 von 356 gedruckten Absätzen aus unpassenden Artikeln, macro-F1 0,43, Teil 1
+im Median 1,7 s länger (90. Perzentil 3,4 s), rund 930 Tokens. Wer einen lesbaren Einstieg braucht, ergänzt
+`"generation": "llm-fast"`: 9 bis 15 s und 2.300 bis 4.000 Tokens mehr für Themendefinition und Querschnitt.
 
 ### Beste Qualität
 
+Anfrage: `{"topic": "Optik", "preset": "best-quality"}`, mit konfiguriertem LLM wie oben und mehr Budget je Anfrage:
+
 ```
-LLM_ENABLED=true
-B_API_KEY=…
-LLM_MAX_TOKENS_PER_REQUEST=100000    # sieben Stapel zugleich: keine zweite Runde bis 350 Absätze und kein
-                                     # Rückfall bei sehr großen Themen (bei 60.000 ab rund 320 Absätzen); nicht gemessen
+LLM_MAX_TOKENS_PER_REQUEST=100000       # sieben Stapel zugleich: keine zweite Runde bis 350 Absätze und kein
+                                        # Rückfall bei sehr großen Themen (bei 60.000 ab rund 320 Absätzen);
+                                        # nicht gemessen
 ```
 
-Anfrage: `{"topic": "Optik", "article_choice": "llm", "matcher": "llm"}`. Ergebnis: 91 von 94 Hauptartikeln,
-macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s je nach Themengröße und b-api, rund 35.400 Tokens. Der Text bleibt
-wörtlich und belegt. Liest ihn ein Mensch direkt, kommt `"generation": "llm"` dazu: 16 bis 20 s und 10.500 bis
-14.500 Tokens mehr; `enrichment` bleibt `sources-only`, damit jeder Satz belegt bleibt.
+Ergebnis: 91 von 94 Hauptartikeln, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s je nach Themengröße und b-api,
+rund 35.400 Tokens. Der Text bleibt wörtlich und belegt. Liest ihn ein Mensch direkt, kommt `"generation": "llm"`
+dazu: 16 bis 20 s und 10.500 bis 14.500 Tokens mehr; `enrichment` bleibt `sources-only`, damit jeder Satz belegt
+bleibt.
 
 ## Was die Zahlen nicht sagen
 
@@ -308,9 +340,9 @@ wörtlich und belegt. Liest ihn ein Mensch direkt, kommt `"generation": "llm"` d
 
 ## Zu entscheiden
 
-1. **Vorgabe im Betrieb:** ausgewogen, also `article_choice=llm` mit `hybrid_light`. Das ist seit D37 schon die
-   Vorgabe, wo ein LLM konfiguriert ist; zu bestätigen sind `LLM_ENABLED`, `B_API_KEY` und das Tagesbudget auf dem
-   Server.
+1. **Vorgabe im Betrieb:** vorerst LLM-frei (D40). Offen ist, ob und wann der Betrieb auf ausgewogen umstellt:
+   je Anfrage mit `preset: balanced` oder global mit `LLM_ARTICLE_CHOICE_DEFAULT=llm`; dafür sind `LLM_ENABLED`,
+   `B_API_KEY` und das Tagesbudget auf dem Server zu prüfen.
 2. **Beste Qualität als eigener Weg:** ob Redaktion oder Stapelläufe `matcher=llm` nutzen sollen, bei rund 35.400
    Tokens und 14 bis 24 s je Kompendium.
 3. **Lesefassung:** ob `generation` für menschliche Leser nötig ist. Vorher sollte ein Richtervergleich die

@@ -217,6 +217,7 @@ class LintFinding(BaseModel):
 
 
 class AuditReport(BaseModel):
+    preset: str | None = Field(None, description="The preset the request named (llm-free, balanced, best-quality)")
     matcher: str | None = Field(None, description="Matching strategy of part 1; null without part 1")
     timings_ms: dict[str, int] = Field(default_factory=dict)
     lint: list[LintFinding] = Field(default_factory=list)
