@@ -18,8 +18,9 @@ from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
 from app.observability.metrics import record_compendium
-from app.service import PartsUnavailableError, TopicNotFoundError
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
+from app.service import PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
+from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.templates.manager import TemplateNotFoundError
 from app.templates.schema import Template
 
@@ -114,6 +115,34 @@ EXAMPLES = {
             "target_length": 12000,
         },
     },
+    "aus einem Knoten des Repositorys": {
+        "summary": "Thema, Fach und Stufe aus den Metadaten eines Knotens, hier die Sammlung Optik der WLO-Staging",
+        "description": (
+            "node_id nennt ein Material oder eine Sammlung; der Titel wird zum Thema, Fach, Bildungsstufe und "
+            "Schlagwörter lenken die Artikelwahl, die Antwort nennt den Knoten unter node. repository ist die "
+            "REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur Hosts aus "
+            "EDU_SHARING_REPOSITORIES, über https. GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."
+        ),
+        "value": {
+            "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+            "parts": ["world", "curricula"],
+        },
+    },
+    "Material mit eigenem Thema": {
+        "summary": "Ein Material der WLO-Staging, dessen Titel ein Format nennt: das Thema kommt aus der Anfrage",
+        "description": (
+            "Titel von Materialien nennen oft ihr Format (hier: Stationsarbeit zur Optik) statt eines "
+            "Lexikonthemas und finden dann keinen Artikel. Ein topic dazu geht vor; Fach, Stufe und "
+            "Schlagwörter des Materials lenken weiter die Artikelwahl."
+        ),
+        "value": {
+            "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+            "topic": "Optik",
+            "parts": ["world"],
+        },
+    },
 }
 
 
@@ -168,8 +197,8 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection: 404. Repository unreachable: 502. No requested part can be made at all - part 3 without
-    ``EDU_SHARING_BASE_URL``, for instance: 503.
+    collection or node: 404. Repository unreachable: 502; a ``repository`` outside the allowlist: 422. No requested
+    part can be made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
     """
     service = get_service(request)
     try:
@@ -179,8 +208,12 @@ def generate_compendium(
             status_code=404,
             detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
         ) from exc
-    except CollectionNotFoundError as exc:
+    except (CollectionNotFoundError, NodeNotFoundError) as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc  # the messages name the repository
+    except RepositoryNotAllowedError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except RepositoryUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except EduSharingError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     except TemplateNotFoundError as exc:

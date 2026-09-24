@@ -12,18 +12,32 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Body, Depends, Request
 from pydantic import BaseModel, Field, model_validator
 
-from app.api.deps import archives_for, corpus_for_topic, get_service
+from app.api.deps import archives_for, corpus_for_topic, get_service, node_errors
 from app.api.limits import rate_limited
-from app.domain.models import Resolution, Source
-from app.domain.requests import ARTICLE_CHOICE_HELP, PRESETS, ArticleChoice, Preset
+from app.domain.models import NodeInput, Resolution, Source
+from app.domain.requests import (
+    ARTICLE_CHOICE_HELP,
+    NODE_ID_HELP,
+    NODE_ID_PATTERN,
+    PRESETS,
+    REPOSITORY_HELP,
+    ArticleChoice,
+    Preset,
+)
+from app.sources.wlo.part import node_topic
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
 class KnowledgeRequest(BaseModel):
-    topic: str = Field(
-        min_length=1, max_length=300, description="The topic whose articles are returned; not found is a 404"
+    topic: str | None = Field(
+        None,
+        min_length=1,
+        max_length=300,
+        description="The topic whose articles are returned; not found is a 404. Default: the title of node_id",
     )
+    node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
+    repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
     max_articles: int | None = Field(
         None,
@@ -41,6 +55,14 @@ class KnowledgeRequest(BaseModel):
         "request sets wins.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
+
+    @model_validator(mode="after")
+    def _topic_or_node(self) -> KnowledgeRequest:
+        if not self.topic and not self.node_id:
+            raise ValueError("topic oder node_id ist erforderlich")
+        if self.repository and not self.node_id:
+            raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
+        return self
 
     @model_validator(mode="after")
     def _preset_sets_the_article_choice(self) -> KnowledgeRequest:
@@ -75,6 +97,7 @@ class KnowledgeResponse(BaseModel):
     articles: list[KnowledgeArticle]
     chars: int
     truncated: bool = Field(description="True when max_chars ended the answer early")
+    node: NodeInput | None = Field(None, description="The node the topic, subject and context came from (node_id)")
     article_choice: dict[str, Any] | None = Field(
         None,
         description="What article_choice=llm asked and decided: the article the LLM chose (chosen) or why the "
@@ -130,6 +153,19 @@ EXAMPLES = {
             "article_choice": "llm",
         },
     },
+    "aus einem Knoten": {
+        "summary": "Thema, Fach und Stufe aus einem Knoten des Repositorys (hier eine Sammlung der WLO-Staging)",
+        "description": (
+            "node_id nennt ein Material oder eine Sammlung; der Titel wird zum Thema, Fach, Bildungsstufe und "
+            "Schlagwörter lenken die Artikelwahl. repository ist die REST-Adresse des Repositorys, ohne Angabe das "
+            "konfigurierte; erlaubt sind nur die Hosts aus EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor. "
+            "GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."
+        ),
+        "value": {
+            "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+        },
+    },
 }
 
 
@@ -162,13 +198,22 @@ def knowledge(
     """
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
+    node, subject, context = None, None, []
+    wanted = payload.topic
+    if payload.node_id:
+        with node_errors():
+            info, node = service.read_node(payload.node_id, payload.repository)
+        derived = node_topic(info)
+        wanted, subject, context = wanted or derived.topic, derived.subject, derived.context
     topic, resolution, sources, choice = corpus_for_topic(
         service,
         registry,
-        payload.topic,
+        wanted or "",
         template_id=payload.template_id,
         max_articles=payload.max_articles,
         article_choice=payload.article_choice,
+        subject=subject,
+        context=context,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []
@@ -194,4 +239,5 @@ def knowledge(
         chars=total,
         truncated=truncated,
         article_choice=choice,
+        node=node,
     )

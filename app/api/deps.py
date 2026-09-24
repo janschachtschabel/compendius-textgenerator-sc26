@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
+from contextlib import contextmanager
 from typing import Any
 
 from fastapi import HTTPException, Request
@@ -11,7 +12,9 @@ from app.domain.models import Resolution, Source
 from app.knowledge.article_choice import HIT_ORIGIN, LlmArticleChooser, check_hits, choice_block, choice_used
 from app.knowledge.topic import normalize_topic
 from app.llm.deadline import Deadline
-from app.service import CompendiumService
+from app.service import CompendiumService, RepositoryUnavailableError
+from app.sources.wlo.client import EduSharingError, NodeNotFoundError
+from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.sources.zim.registry import CHOSEN_BY_LLM, ZimRegistry
 from app.templates.manager import TemplateNotFoundError
 
@@ -22,6 +25,22 @@ def get_service(request: Request) -> CompendiumService:
     if service is None or not request.app.state.registry.ready:
         raise HTTPException(status_code=503, detail="Keine ZIM-Archive geladen; Dienst nicht bereit.")
     return service
+
+
+@contextmanager
+def node_errors() -> Iterator[None]:
+    """The answers when a node cannot be read (D45): an address outside the allowlist is a 422, an unknown node a
+    404, a failing repository a 502 and none at all a 503. The messages name the repository."""
+    try:
+        yield
+    except RepositoryNotAllowedError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except NodeNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except RepositoryUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except EduSharingError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
 def archives_for(registry: ZimRegistry, archive_ids: Sequence[str]) -> ZimRegistry:
@@ -42,6 +61,8 @@ def corpus_for_topic(
     template_id: str | None = None,
     max_articles: int | None = None,
     article_choice: str | None = None,
+    subject: str | None = None,
+    context: Sequence[str] = (),
 ) -> tuple[str, Resolution, list[Source], dict[str, Any] | None]:
     """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D40).
 
@@ -50,13 +71,15 @@ def corpus_for_topic(
     the alternatives instead of an empty answer.
     """
     normalized = normalize_topic(topic)
+    # A subject in the topic ("Physik: Optik") wins over one a node brings; the node's words add to the context
+    subject = normalized.subject or subject
     requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
-    chooser = LlmArticleChooser(job, normalized.topic, normalized.subject) if job is not None else None
+    chooser = LlmArticleChooser(job, normalized.topic, subject) if job is not None else None
     resolution = registry.resolve_topic(
         normalized.topic,
-        context=normalized.context,
+        context=[*normalized.context, *context],
         query=normalized.query,
-        terms=service.subjects.context_terms(normalized.subject),
+        terms=service.subjects.context_terms(subject),
         chooser=chooser,
     )
     if not resolution.resolved:

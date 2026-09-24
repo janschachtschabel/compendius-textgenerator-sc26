@@ -18,8 +18,10 @@ import httpx
 from app.sources.wlo.models import (
     CollectionInfo,
     MaterialRef,
+    NodeInfo,
     SubCollection,
     parse_collection,
+    parse_node,
     parse_reference,
     parse_subcollection,
 )
@@ -40,6 +42,10 @@ class EduSharingError(RuntimeError):
 
 class CollectionNotFoundError(EduSharingError):
     """No collection with this id (HTTP 404)."""
+
+
+class NodeNotFoundError(EduSharingError):
+    """No node with this id in the repository, or none the caller may read (HTTP 404)."""
 
 
 def validate_node_id(value: str) -> str:
@@ -128,6 +134,13 @@ class EduSharingClient:
                 return refs
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
         return refs
+
+    def node(self, node_id: str) -> NodeInfo:
+        """Title, description, keywords, subject and level of a material or a collection (D45)."""
+        payload = self._get(f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata", {"propertyFilter": "-all-"})
+        if payload is None:
+            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden in {self.base_url}")
+        return parse_node(payload)
 
     def text_content(self, node_id: str) -> str:
         """Extracted plain text of a material, or an empty string when the node has none (404)."""

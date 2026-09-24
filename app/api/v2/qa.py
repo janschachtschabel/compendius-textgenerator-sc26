@@ -23,7 +23,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
-from app.api.deps import get_service
+from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import STAGES, levels_from
@@ -44,14 +44,19 @@ NO_TAGGER_NOTE = (
 )
 
 
-def _part_one(service: CompendiumService, topic: str) -> Compendium:
+def _part_one(
+    service: CompendiumService, topic: str | None, node_id: str | None = None, repository: str | None = None
+) -> Compendium:
     """Make part 1 of the compendium for the topic; its errors are the ones the compendium endpoint gives.
 
     Only ``world`` is asked for: part 2 lists curriculum elements and part 3 lists materials of a
     collection, and neither is prose a question can be built from.
     """
     try:
-        return service.generate(GenerateRequest(topic=topic, parts=["world"]))
+        with node_errors():  # no collection here, so a 404 of the repository can only be the node's
+            return service.generate(
+                GenerateRequest(topic=topic, node_id=node_id, repository=repository, parts=["world"])
+            )
     except TopicNotFoundError as exc:
         raise HTTPException(
             status_code=404,
@@ -132,6 +137,18 @@ EXAMPLES = {
             "levels": ["Sekundarstufe I", "Sekundarstufe II"],
         },
     },
+    "5 · Thema aus einem Knoten": {
+        "summary": "Paare zum Thema eines Knotens, hier die Sammlung Optik der WLO-Staging",
+        "description": (
+            "node_id und repository wie beim Kompendium: der Titel des Knotens wird zum Thema, erst entsteht Teil "
+            "1 des Kompendiums, dann die Paare. repository ohne Angabe: das konfigurierte."
+        ),
+        "value": {
+            "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+            "count": 8,
+        },
+    },
 }
 
 
@@ -154,10 +171,11 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         payload = payload.model_copy(update={"levels": levels_from(request, payload.levels)})
     topic: str | None = None
     resolution: Resolution | None = None
-    if payload.topic:
+    node = None
+    if payload.topic or payload.node_id:
         service = get_service(request)  # a topic needs the archives; a plain text does not
-        compendium = _part_one(service, payload.topic)
-        topic, resolution = compendium.topic, compendium.resolution
+        compendium = _part_one(service, payload.topic, payload.node_id, payload.repository)
+        topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
         text = _text_of_compendium(compendium)
     else:
         text = payload.text or ""
@@ -189,6 +207,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         method=method,
         topic=topic,
         resolution=resolution,
+        node=node,
         chars=len(text),
         pairs=[
             Pair(question=pair.question, answer=pair.answer, level=pair.level_value) for pair in pairs[: payload.count]

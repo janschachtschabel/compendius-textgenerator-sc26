@@ -1528,6 +1528,18 @@ API.
   dafür je Aufruf ein Drittel bis zwei Drittel länger. Der Client zählt `gpt-6` zu den Reasoning-Modellen
   (`max_completion_tokens`, `reasoning_effort`, keine Temperatur); ohne das antwortete die b-api mit HTTP 400. Wer die
   kürzeren Zeiten braucht, setzt `B_API_MODEL=gpt-5.6-luna`. `gpt-4.1-mini` wird nicht mehr verwendet.
+- **D45 (2026-09-24)** Ein Knoten eines edu-sharing-Repositorys ist ein eigener Eingang: `node_id` und `repository`
+  bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`, dazu `GET /api/v2/nodes/{node_id}` als Vorschau.
+  Gelesen wird `/node/v1/nodes/-home-/{id}/metadata` (Titel, Beschreibung, Schlagwörter, Fach, Bildungsstufe), für
+  Materialien wie für Sammlungen, gecacht wie Sammlungen. Der Titel wird zum Thema, das Fach lenkt Artikelwahl und
+  Teil 2, Stufen und Schlagwörter gehen als Kontextwörter in die Artikelwahl; ein `topic` geht vor. `repository` ist
+  Eingabe des Aufrufers und damit ein Ziel serverseitiger Anfragen: nur https, nur Hosts aus `EDU_SHARING_REPOSITORIES`
+  (Standard WLO-Staging und -Produktion) und der konfigurierte, keine Zugangsdaten, kein Port, als Pfad nur die
+  REST-Wurzel; andere Repositorys als das konfigurierte werden anonym gelesen. Gemessen an echten Staging-Knoten:
+  Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht („Stationsarbeit zur Optik“) oder
+  falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied). Offen und als Nächstes zu messen: den Hauptartikel
+  aus Beschreibung und Schlagwörtern finden (Entitäten, Regeln für Formatwörter oder das LLM), an einem Gold aus
+  echten WLO-Materialien.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

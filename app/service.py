@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 import logging
+import threading
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import urlsplit
+
+import httpx
 
 from app.compose.assembler import build_frontmatter, render_markdown
 from app.compose.regeneration import PreservedSection, parse_document, to_keep
@@ -17,6 +21,7 @@ from app.domain.models import (
     CollectionPart,
     Compendium,
     CurriculaPart,
+    NodeInput,
     Resolution,
     ScoredChunk,
     SectionStatus,
@@ -47,10 +52,18 @@ from app.matching.registry import LLM_MATCHER, STRATEGIES, UnknownMatcherError, 
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingError
-from app.sources.wlo.models import CollectionInfo
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError
+from app.sources.wlo.models import CollectionInfo, NodeInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
-from app.sources.wlo.part import CollectionBuilder, collection_topic
+from app.sources.wlo.part import (
+    CollectionBuilder,
+    CollectionOptions,
+    CollectionTopic,
+    collection_topic,
+    node_input,
+    node_topic,
+)
+from app.sources.wlo.repository import repository_root
 from app.sources.zim.registry import CHOSEN_BY_LLM, ZimRegistry
 from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
@@ -64,6 +77,10 @@ log = logging.getLogger(__name__)
 
 class PartsUnavailableError(RuntimeError):
     """None of the requested parts can be generated with the configuration of this server."""
+
+
+class RepositoryUnavailableError(RuntimeError):
+    """No repository to read a node from: none is configured and the request names none."""
 
 
 class TopicNotFoundError(LookupError):
@@ -85,6 +102,7 @@ class PreparedTopic:
     timings: dict[str, int] = field(default_factory=dict)
     subject: str | None = None
     collection: CollectionInfo | None = None
+    node: NodeInput | None = None  # the node the topic came from (D45)
     knowledge: dict[str, Any] | None = None
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
@@ -154,6 +172,9 @@ class CompendiumService:
         self.settings = settings
         self.curricula = curricula
         self.collections = collections
+        self.repository_transport: httpx.BaseTransport | None = None  # tests answer other repositories offline
+        self._foreign: dict[str, CollectionBuilder] = {}
+        self._foreign_lock = threading.Lock()
         self.llm = llm
         self.writer = SectionWriter(facets, settings.facets_level, registry.lookup)
         # The subject's words pick the meaning of an ambiguous topic (config/subjects.yaml, kontext)
@@ -186,10 +207,16 @@ class CompendiumService:
         lexicon = self.lexicon.with_template(template)
 
         collection = self._collection_info(request)
-        derived = collection_topic(collection) if collection is not None else None
-        normalized = normalize_topic(request.topic or (derived.topic if derived else ""))
-        context = [*normalized.context, *(derived.context if derived else [])]
-        subject = request.subject or normalized.subject or (derived.subject if derived else None)
+        node_info, node = self.read_node(request.node_id, request.repository) if request.node_id else (None, None)
+        # A topic sent along wins; otherwise the node's title, then the collection's (D12, D45)
+        derived: list[CollectionTopic] = []
+        if node_info is not None:
+            derived.append(node_topic(node_info))
+        if collection is not None:
+            derived.append(collection_topic(collection))
+        normalized = normalize_topic(request.topic or (derived[0].topic if derived else ""))
+        context = [*normalized.context, *(word for found in derived for word in found.context)]
+        subject = request.subject or normalized.subject or next((d.subject for d in derived if d.subject), None)
         chooser = LlmArticleChooser(choice, normalized.topic, subject) if choice is not None else None
         resolution = self.registry.resolve_topic(
             normalized.topic,
@@ -213,6 +240,7 @@ class CompendiumService:
             timings=timings,
             subject=subject,
             collection=collection,
+            node=node,
             article_choice=chooser.report if chooser is not None else None,
         )
         if needs_corpus:
@@ -272,6 +300,41 @@ class CompendiumService:
                 log.warning("collection %s not readable, continuing with the topic: %s", request.collection_id, exc)
                 return None
             raise
+
+    def read_node(self, node_id: str, repository: str | None = None) -> tuple[NodeInfo, NodeInput]:
+        """The metadata of a material or a collection (D45), from the configured repository or another allowed one.
+
+        Raises ``RepositoryNotAllowedError`` for an address outside the allowlist, ``NodeNotFoundError`` for an
+        unknown node, ``EduSharingError`` when the repository fails, ``RepositoryUnavailableError`` without one.
+        """
+        root, builder = self._node_repository(repository)
+        info = builder.node(node_id)
+        return info, node_input(info, root)
+
+    def _node_repository(self, repository: str | None) -> tuple[str, CollectionBuilder]:
+        """The REST root and the reader of a repository: the configured one as configured, any other anonymously."""
+        base = self.settings.edu_sharing_base_url.rstrip("/")
+        if repository is None:
+            if self.collections is None or not base:
+                raise RepositoryUnavailableError(
+                    "Kein Repository konfiguriert (EDU_SHARING_BASE_URL); repository angeben"
+                )
+            return base, self.collections
+        root = repository_root(repository, self.settings.edu_sharing_allowed_hosts)
+        if self.collections is not None and base and urlsplit(root).hostname == urlsplit(base).hostname:
+            return root, self.collections
+        with self._foreign_lock:
+            builder = self._foreign.get(root)
+            if builder is None:
+                # No credentials: those of the configured repository must never travel to another one
+                client = EduSharingClient(
+                    root, timeout_s=self.settings.edu_sharing_timeout_s, transport=self.repository_transport
+                )
+                shared = self.collections  # the same cache and cache time as the configured repository
+                options = shared.options if shared is not None else CollectionOptions()
+                builder = CollectionBuilder(client=client, cache=shared.cache if shared else None, options=options)
+                self._foreign[root] = builder
+        return root, builder
 
     def _collections_or_fail(self) -> CollectionBuilder:
         if self.collections is None:
@@ -533,6 +596,7 @@ class CompendiumService:
             sections=sections,
             curricula=curricula,
             collection=collection_part,
+            node=prepared.node,
             sources=source_refs,
             markdown=markdown,
             parts_status=parts_status,

@@ -265,6 +265,21 @@ class CurriculaPart(BaseModel):
     markdown: str = ""
 
 
+class NodeInput(BaseModel):
+    """The node of an edu-sharing repository a request came from (D45): what was read and used."""
+
+    node_id: str
+    repository: str = Field(description="REST root of the repository the node was read from")
+    kind: str = Field(description="material or collection")
+    title: str
+    description: str
+    keywords: list[str] = Field(default_factory=list)
+    subjects: list[str] = Field(default_factory=list, description="Subjects (ccm:taxonid) as display names")
+    educational_contexts: list[str] = Field(default_factory=list, description="Educational levels, display names")
+    url: str | None = Field(None, description="The material's own address (ccm:wwwurl)")
+    render_url: str = Field(description="Public page of the node in its repository")
+
+
 class Compendium(BaseModel):
     """The generated result: part 1 sections, optional part 2, provenance and audit."""
 
@@ -284,6 +299,7 @@ class Compendium(BaseModel):
     sections: list[Section] = Field(default_factory=list)
     curricula: CurriculaPart | None = None
     collection: CollectionPart | None = None
+    node: NodeInput | None = Field(None, description="The node the topic, subject and levels came from (node_id)")
     sources: list[SourceRef] = Field(default_factory=list)
     markdown: str = ""
     parts_status: dict[str, str] = Field(

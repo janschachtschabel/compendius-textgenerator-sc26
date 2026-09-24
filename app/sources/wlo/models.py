@@ -101,6 +101,21 @@ class CollectionInfo:
     is_topic_page: bool
 
 
+@dataclass(frozen=True)
+class NodeInfo:
+    """A material or a collection as the input of a request (D45): what its metadata says about the topic."""
+
+    node_id: str
+    kind: str  # "collection" or "material"
+    title: str
+    description: str
+    keywords: tuple[str, ...]
+    subject_uris: tuple[str, ...]
+    subject_labels: tuple[str, ...]
+    educational_contexts: tuple[str, ...]
+    url: str  # the material's own address (ccm:wwwurl); empty for a collection
+
+
 def _values(props: Mapping[str, Any], key: str) -> list[str]:
     value = props.get(key)
     if isinstance(value, list):
@@ -145,6 +160,23 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
         collection_type=_first(props, "ccm:collectiontype"),
         modified_at=str(node.get("modifiedAt") or ""),
         is_topic_page=bool(_values(props, "ccm:page_config_ref")),
+    )
+
+
+def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
+    """The answer of ``/node/v1/nodes/-home-/{id}/metadata``; materials and collections share the shape."""
+    node = payload.get("node", payload)
+    props: Mapping[str, Any] = node.get("properties") or {}
+    return NodeInfo(
+        node_id=str((node.get("ref") or {}).get("id") or ""),
+        kind="collection" if "ccm:collection" in (node.get("aspects") or []) else "material",
+        title=_title(node, props),
+        description=_first(props, "cclom:general_description", "cm:description"),
+        keywords=tuple(_values(props, "cclom:general_keyword")),
+        subject_uris=tuple(_values(props, "ccm:taxonid")),
+        subject_labels=_labels(props, "ccm:taxonid"),
+        educational_contexts=_labels(props, "ccm:educationalcontext"),
+        url=_first(props, "ccm:wwwurl"),
     )
 
 

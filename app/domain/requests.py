@@ -106,8 +106,20 @@ def _default_parts() -> list[Part]:
     return ["world", "curricula", "collection"]
 
 
+NODE_ID_HELP = (
+    "A material or collection of an edu-sharing repository (D45): its title becomes the topic, its subject and its "
+    "educational levels and keywords the context of the article choice. A topic sent along wins; the answer names "
+    "the node under node. Titles of materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic."
+)
+REPOSITORY_HELP = (
+    "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
+    "configured one (EDU_SHARING_BASE_URL). Only allowed hosts over https (EDU_SHARING_REPOSITORIES), anything else "
+    "is a 422; another repository than the configured one is read anonymously."
+)
+
+
 class GenerateRequest(BaseModel):
-    """Either ``topic`` or ``collection_id`` is required; with both, the topic wins (PLAN.md 4.2, D12)."""
+    """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
 
     topic: str | None = Field(None, min_length=1, max_length=300, description="Topic; default: the collection title")
     collection_id: str | None = Field(
@@ -116,6 +128,8 @@ class GenerateRequest(BaseModel):
     knowledge_collection_id: str | None = Field(
         None, pattern=NODE_ID_PATTERN, description="Collection whose reusable materials feed part 1 as sources"
     )
+    node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
+    repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
     parts: list[Part] = Field(
         default_factory=_default_parts,
         min_length=1,
@@ -192,8 +206,10 @@ class GenerateRequest(BaseModel):
 
     @model_validator(mode="after")
     def _topic_or_collection(self) -> GenerateRequest:
-        if not self.topic and not self.collection_id:
-            raise ValueError("topic oder collection_id ist erforderlich")
+        if not self.topic and not self.collection_id and not self.node_id:
+            raise ValueError("topic, collection_id oder node_id ist erforderlich")
+        if self.repository and not self.node_id:
+            raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         # Without a collection part 3 drops out (as with the default parts); it must not be the only part
         if not self.collection_id and not {"world", "curricula"} & set(self.parts):
             raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")

@@ -11,7 +11,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.domain.models import Resolution
+from app.domain.models import NodeInput, Resolution
+from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP
 
 Method = Literal["rule-based", "parse-based", "models", "llm"]
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
@@ -34,6 +35,8 @@ class QaRequest(BaseModel):
         "pairs are asked about it. That costs a compendium generation - hand the text over instead when "
         "you already have one",
     )
+    node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
+    repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
     method: Method = Field(
         "rule-based",
         description="rule-based needs nothing and is the default: four question templates over the "
@@ -58,8 +61,10 @@ class QaRequest(BaseModel):
 
     @model_validator(mode="after")
     def _text_or_topic(self) -> QaRequest:
-        if not self.text and not self.topic:
-            raise ValueError("text oder topic ist erforderlich")
+        if not self.text and not self.topic and not self.node_id:
+            raise ValueError("text, topic oder node_id ist erforderlich")
+        if self.repository and not self.node_id:
+            raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         return self
 
 
@@ -73,6 +78,7 @@ class QaResponse(BaseModel):
     method: Method = Field(description="The stage that produced the pairs; llm falls back to rule-based")
     topic: str | None = Field(None, description="The resolved topic, when one was asked for")
     resolution: Resolution | None = None
+    node: NodeInput | None = Field(None, description="The node the topic came from (node_id)")
     chars: int = Field(description="Characters of the text the pairs were made from")
     pairs: list[Pair]
     note: str | None = Field(

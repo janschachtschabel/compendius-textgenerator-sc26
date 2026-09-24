@@ -23,15 +23,17 @@ from __future__ import annotations
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.api.deps import archives_for
+from app.api.deps import archives_for, node_errors
 from app.api.limits import rate_limited
-from app.domain.models import Source
+from app.domain.models import NodeInput, Source
+from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP
 from app.knowledge.entities import classify_entity, is_work
 from app.knowledge.identifiers import identifiers
 from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
 from app.sources.wikidata.index import WikidataIndex
+from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
 
@@ -51,10 +53,25 @@ def _default_methods() -> list[Method]:
 
 class EntitiesRequest(BaseModel):
     model_config = ConfigDict(
-        json_schema_extra={"examples": [{"text": "Alexander von Humboldt reiste 1799 nach Südamerika."}]}
+        json_schema_extra={
+            "examples": [
+                {"text": "Alexander von Humboldt reiste 1799 nach Südamerika."},
+                {
+                    "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+                    "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+                },
+            ]
+        }
     )
 
-    text: str = Field(min_length=1, max_length=MAX_TEXT_CHARS, description="The text the entities are read from")
+    text: str | None = Field(
+        None,
+        min_length=1,
+        max_length=MAX_TEXT_CHARS,
+        description="The text the entities are read from; default: title, description and keywords of node_id",
+    )
+    node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
+    repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
     methods: list[Method] = Field(
         default_factory=_default_methods,
         min_length=1,
@@ -69,6 +86,14 @@ class EntitiesRequest(BaseModel):
         description="Upper bound; it applies before the article check, so fewer may come back when terms of the "
         "dictionary turn out to sit behind a disambiguation page",
     )
+
+    @model_validator(mode="after")
+    def _text_or_node(self) -> EntitiesRequest:
+        if not self.text and not self.node_id:
+            raise ValueError("text oder node_id ist erforderlich")
+        if self.repository and not self.node_id:
+            raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
+        return self
 
 
 class EntityIds(BaseModel):
@@ -119,6 +144,10 @@ class EntitiesResponse(BaseModel):
         description="What a reader should know about how the entities came about: with link=false the dictionary "
         "cannot tell an article from a disambiguation page, so its terms are unchecked",
     )
+    node: NodeInput | None = Field(None, description="The node whose title, description and keywords were read")
+    text: str | None = Field(
+        None, description="The text read from node_id - start and end count in it; null when the request sent one"
+    )
 
 
 def _article_kind(source: Source) -> str | None:
@@ -157,19 +186,27 @@ def _link(archives: list[ZimArchive], mention: Mention, wikidata: WikidataIndex 
     return None
 
 
-def _recognise(payload: EntitiesRequest, registry: ZimRegistry, model_path: str) -> tuple[list[Method], list[Mention]]:
+def _recognise(
+    text: str, methods: list[Method], registry: ZimRegistry, model_path: str
+) -> tuple[list[Method], list[Mention]]:
     """Run the ways that can work here, and say which those were."""
     ran: list[Method] = []
     mentions: list[Mention] = []
-    if "ner" in payload.methods:
+    if "ner" in methods:
         nlp = load_spacy(model_path)
         if nlp is not None:
             ran.append("ner")
-            mentions.extend(mentions_from_ner(nlp, payload.text))
-    if "dictionary" in payload.methods and registry.archives:
+            mentions.extend(mentions_from_ner(nlp, text))
+    if "dictionary" in methods and registry.archives:
         ran.append("dictionary")
-        mentions.extend(mentions_from_titles(registry.archives, payload.text))
+        mentions.extend(mentions_from_titles(registry.archives, text))
     return ran, mentions
+
+
+def _node_text(info: NodeInfo) -> str:
+    """Title, description and keywords of a node, one per line, as the text its entities are read from."""
+    lines = [info.title, info.description, ", ".join(info.keywords)]
+    return "\n".join(line for line in lines if line)[:MAX_TEXT_CHARS]
 
 
 @router.post(
@@ -200,7 +237,12 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
     """
     settings = request.app.state.settings
     registry = archives_for(request.app.state.registry, payload.archives)
-    ran, mentions = _recognise(payload, registry, settings.spacy_model)
+    node, text = None, payload.text
+    if payload.node_id:  # no archive is needed for this, so the service is asked directly
+        with node_errors():
+            info, node = request.app.state.service.read_node(payload.node_id, payload.repository)
+        text = text or _node_text(info)
+    ran, mentions = _recognise(text or "", payload.methods, registry, settings.spacy_model)
     if not ran:
         raise HTTPException(
             status_code=503,
@@ -226,4 +268,6 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
             if article is not None or mention.source != "dictionary" or not payload.link
         ],
         note=UNCHECKED_NOTE if not payload.link and "dictionary" in ran else None,
+        node=node,
+        text=text if payload.text is None else None,
     )

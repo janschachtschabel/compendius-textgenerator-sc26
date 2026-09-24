@@ -120,6 +120,11 @@ class Settings(BaseSettings):
         "https://repository.staging.openeduhub.net/edu-sharing/rest",
         description="REST root of the edu-sharing repository; empty disables collections",
     )
+    edu_sharing_repositories: str = Field(
+        "repository.staging.openeduhub.net,redaktion.openeduhub.net",
+        description="Comma separated hosts a request may name as repository of its node_id (D45), besides the "
+        "configured one; read anonymously over https",
+    )
     edu_sharing_user: str = Field("", description="Optional Basic-Auth user; anonymous reads otherwise")
     edu_sharing_password: str = Field("", description="Optional Basic-Auth password")
     edu_sharing_timeout_s: float = Field(30.0, ge=1.0, description="Timeout per repository request")
@@ -214,6 +219,12 @@ class Settings(BaseSettings):
     @property
     def lehrplan_db_path(self) -> Path:
         return Path(self.state_dir) / "lehrplan.db"
+
+    @property
+    def edu_sharing_allowed_hosts(self) -> frozenset[str]:
+        """Hosts a request may name as repository: the allowlist and the configured repository (D45)."""
+        configured = urlparse(self.edu_sharing_base_url).hostname if self.edu_sharing_base_url else None
+        return frozenset(host.lower() for host in [*_split_csv(self.edu_sharing_repositories), configured] if host)
 
     @property
     def wikidata_db_path(self) -> Path:

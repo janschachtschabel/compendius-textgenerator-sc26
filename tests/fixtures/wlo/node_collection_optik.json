@@ -1,0 +1,60 @@
+{
+ "node": {
+  "ref": {
+   "repo": "local",
+   "id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+   "archived": false,
+   "isHomeRepo": true
+  },
+  "type": "ccm:map",
+  "name": "Optik",
+  "title": "Optik",
+  "modifiedAt": "2026-03-04T10:19:41.546Z",
+  "properties": {
+   "ccm:taxonid_DISPLAYNAME": [
+    "Physik"
+   ],
+   "ccm:educationalcontext_DISPLAYNAME": [
+    "Sekundarstufe I"
+   ],
+   "ccm:taxonid": [
+    "http://w3id.org/openeduhub/vocabs/discipline/460"
+   ],
+   "cm:title": [
+    "Optik"
+   ],
+   "ccm:collectiontype": [
+    "EDITORIAL"
+   ],
+   "ccm:educationalcontext": [
+    "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+   ],
+   "cm:description": [
+    "Die Physik des Lichts, die Optik, hält eine ganze Reihe eindrucksvoller Phänomene bereit. Bereits mit Hilfe einfacher Modelle lassen sich die physikalischen Vorgänge beim Sehvorgang, die Funktionweise von Mikroskopen, Fotoapparaten und Lochkameras sowie die Zusammensetzung weißen Lichts aus verschiedenen Spektralfarben verstehen."
+   ],
+   "ccm:collectionshorttitle": [
+    ""
+   ],
+   "cclom:general_keyword": [
+    "Die Lehre vom Licht.",
+    "Geometrische Optik",
+    "Licht",
+    "Wellenoptik",
+    "Oberflächenphänomene",
+    "Linse",
+    "Auge"
+   ]
+  },
+  "mimetype": "application/x-directory",
+  "content": {
+   "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/9e7ae956-e9df-430f-bace-f3db4b910013"
+  },
+  "isPublic": true,
+  "childReferencesCount": null,
+  "childCollectionsCount": null,
+  "aspects": [
+   "ccm:collection",
+   "cm:titled"
+  ]
+ }
+}

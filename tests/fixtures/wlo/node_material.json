@@ -1,0 +1,48 @@
+{
+ "node": {
+  "ref": {
+   "repo": "local",
+   "id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+   "archived": false,
+   "isHomeRepo": true
+  },
+  "type": "ccm:io",
+  "aspects": [
+   "ccm:iometadata",
+   "cclom:general"
+  ],
+  "name": "Stationsarbeit zur Optik",
+  "title": "Stationsarbeit zur Optik",
+  "isPublic": true,
+  "properties": {
+   "cclom:title": [
+    "Stationsarbeit zur Optik"
+   ],
+   "cclom:general_description": [
+    "An sechs Stationen untersuchen Lernende Aufbau und Funktion des Auges: Netzhaut, Pupille und Linse, dazu ein Vergleich mit der Lochkamera. (Synthetischer Testtext)"
+   ],
+   "cclom:general_keyword": [
+    "Auge",
+    "Netzhaut",
+    "Pupille",
+    "Linse",
+    "Lochkamera"
+   ],
+   "ccm:taxonid": [
+    "http://w3id.org/openeduhub/vocabs/discipline/460"
+   ],
+   "ccm:taxonid_DISPLAYNAME": [
+    "Physik"
+   ],
+   "ccm:educationalcontext": [
+    "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+   ],
+   "ccm:educationalcontext_DISPLAYNAME": [
+    "Sekundarstufe I"
+   ],
+   "ccm:wwwurl": [
+    "https://example.org/stationsarbeit-optik"
+   ]
+  }
+ }
+}
