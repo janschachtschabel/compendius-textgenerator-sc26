@@ -121,7 +121,7 @@ auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
 |---|---|---|---|---|
 | nur Regeln (`article_choice=rule-based`, `hybrid_light`) | Median 1,35 s | 0 | 86 | 0,43 |
 | `article_choice=llm`, Vorgabe, wo ein LLM konfiguriert ist (D37) | im Median 1,7 s mehr | Median 927 | 91 | 0,43 |
-| `matcher=llm`, wählbar (D36, D38) | Median 12,0 s | im Mittel 29.400 | 86 | 0,72 und 0,69 |
+| `matcher=llm`, wählbar (D36, D38, D39) | Median 12,0 s (M13), 22,7 s (M14) | im Mittel 29.400 (M13), seit D39 34.500 (M14) | 86 | 0,72 und 0,69 |
 | zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
 
 Mit `matcher=llm` braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und jeder Satz bleibt

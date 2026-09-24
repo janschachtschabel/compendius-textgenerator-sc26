@@ -1,0 +1,214 @@
+{
+ "zusammenfassung": {
+  "hybrid_light": {
+   "median_s": 1.83,
+   "median_zuordnung_s": 0.51,
+   "max_s": 2.7,
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0
+  },
+  "llm": {
+   "median_s": 22.71,
+   "median_zuordnung_s": 22.22,
+   "max_s": 25.36,
+   "tokens": 172440,
+   "aufrufe": 22,
+   "absaetze": 1005,
+   "rueckfall": 0
+  }
+ },
+ "laeufe": [
+  {
+   "thema": "Relativitätstheorie",
+   "weg": "hybrid_light",
+   "sekunden": 2.23,
+   "phasen_ms": {
+    "resolve": 24,
+    "corpus": 244,
+    "segment": 27,
+    "match": 507,
+    "synthesize": 1418,
+    "assemble": 3
+   },
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Relativitätstheorie",
+   "weg": "llm",
+   "sekunden": 25.36,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 51,
+    "segment": 23,
+    "match": 25111,
+    "synthesize": 168,
+    "assemble": 3
+   },
+   "tokens": 45915,
+   "aufrufe": 6,
+   "absaetze": 284,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Völkerwanderung",
+   "weg": "llm",
+   "sekunden": 24.92,
+   "phasen_ms": {
+    "resolve": 65,
+    "corpus": 756,
+    "segment": 51,
+    "match": 23065,
+    "synthesize": 976,
+    "assemble": 5
+   },
+   "tokens": 42815,
+   "aufrufe": 5,
+   "absaetze": 236,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Völkerwanderung",
+   "weg": "hybrid_light",
+   "sekunden": 1.28,
+   "phasen_ms": {
+    "resolve": 5,
+    "corpus": 246,
+    "segment": 80,
+    "match": 776,
+    "synthesize": 170,
+    "assemble": 3
+   },
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Kreuzzüge",
+   "weg": "hybrid_light",
+   "sekunden": 2.7,
+   "phasen_ms": {
+    "resolve": 30,
+    "corpus": 914,
+    "segment": 25,
+    "match": 603,
+    "synthesize": 1118,
+    "assemble": 4
+   },
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Kreuzzüge",
+   "weg": "llm",
+   "sekunden": 22.71,
+   "phasen_ms": {
+    "resolve": 4,
+    "corpus": 220,
+    "segment": 24,
+    "match": 22218,
+    "synthesize": 229,
+    "assemble": 5
+   },
+   "tokens": 40633,
+   "aufrufe": 5,
+   "absaetze": 231,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Expressionismus",
+   "weg": "llm",
+   "sekunden": 19.23,
+   "phasen_ms": {
+    "resolve": 15,
+    "corpus": 1101,
+    "segment": 13,
+    "match": 16948,
+    "synthesize": 1141,
+    "assemble": 5
+   },
+   "tokens": 24267,
+   "aufrufe": 3,
+   "absaetze": 150,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Expressionismus",
+   "weg": "hybrid_light",
+   "sekunden": 0.66,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 159,
+    "segment": 13,
+    "match": 334,
+    "synthesize": 141,
+    "assemble": 3
+   },
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Verdauung",
+   "weg": "hybrid_light",
+   "sekunden": 1.83,
+   "phasen_ms": {
+    "resolve": 12,
+    "corpus": 890,
+    "segment": 14,
+    "match": 205,
+    "synthesize": 698,
+    "assemble": 5
+   },
+   "tokens": 0,
+   "aufrufe": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Verdauung",
+   "weg": "llm",
+   "sekunden": 15.4,
+   "phasen_ms": {
+    "resolve": 5,
+    "corpus": 147,
+    "segment": 10,
+    "match": 15075,
+    "synthesize": 155,
+    "assemble": 3
+   },
+   "tokens": 18810,
+   "aufrufe": 3,
+   "absaetze": 104,
+   "rueckfall": 0,
+   "gruende": {},
+   "zugeordnet": "llm"
+  }
+ ]
+}

@@ -1,0 +1,145 @@
+{
+ "budget": 60000,
+ "zusammen": {
+  "absaetze": 2058,
+  "rueckfall_ohne_warten": 345
+ },
+ "themen": [
+  {
+   "thema": "Evolution",
+   "artikel": "Evolution",
+   "absaetze": 294,
+   "stapel": 6,
+   "reservierungen": [
+    13046,
+    12729,
+    13258,
+    13736,
+    12883,
+    12555
+   ],
+   "rueckfall_ohne_warten": 94
+  },
+  {
+   "thema": "Reformation",
+   "artikel": "Reformation",
+   "absaetze": 253,
+   "stapel": 6,
+   "reservierungen": [
+    13217,
+    13733,
+    13057,
+    13031,
+    13556,
+    3880
+   ],
+   "rueckfall_ohne_warten": 50
+  },
+  {
+   "thema": "Nervensystem",
+   "artikel": "Nervensystem",
+   "absaetze": 109,
+   "stapel": 3,
+   "reservierungen": [
+    12431,
+    12857,
+    4985
+   ],
+   "rueckfall_ohne_warten": 0
+  },
+  {
+   "thema": "Kernspaltung",
+   "artikel": "Kernspaltung",
+   "absaetze": 258,
+   "stapel": 6,
+   "reservierungen": [
+    12643,
+    13723,
+    14379,
+    13155,
+    12637,
+    5018
+   ],
+   "rueckfall_ohne_warten": 50
+  },
+  {
+   "thema": "Impressionismus",
+   "artikel": "Impressionismus",
+   "absaetze": 139,
+   "stapel": 3,
+   "reservierungen": [
+    12691,
+    12679,
+    10718
+   ],
+   "rueckfall_ohne_warten": 0
+  },
+  {
+   "thema": "Relativitätstheorie",
+   "artikel": "Relativitätstheorie",
+   "absaetze": 284,
+   "stapel": 6,
+   "reservierungen": [
+    13252,
+    12621,
+    13480,
+    12913,
+    12991,
+    9672
+   ],
+   "rueckfall_ohne_warten": 84
+  },
+  {
+   "thema": "Völkerwanderung",
+   "artikel": "Völkerwanderung",
+   "absaetze": 236,
+   "stapel": 5,
+   "reservierungen": [
+    13188,
+    15097,
+    13954,
+    13470,
+    11161
+   ],
+   "rueckfall_ohne_warten": 36
+  },
+  {
+   "thema": "Kreuzzüge",
+   "artikel": "Kreuzzug",
+   "absaetze": 231,
+   "stapel": 5,
+   "reservierungen": [
+    12985,
+    12766,
+    12819,
+    13467,
+    10121
+   ],
+   "rueckfall_ohne_warten": 31
+  },
+  {
+   "thema": "Expressionismus",
+   "artikel": "Expressionismus",
+   "absaetze": 150,
+   "stapel": 3,
+   "reservierungen": [
+    12874,
+    12444,
+    12841
+   ],
+   "rueckfall_ohne_warten": 0
+  },
+  {
+   "thema": "Verdauung",
+   "artikel": "Verdauung",
+   "absaetze": 104,
+   "stapel": 3,
+   "reservierungen": [
+    12041,
+    12420,
+    3967
+   ],
+   "rueckfall_ohne_warten": 0
+  }
+ ]
+}

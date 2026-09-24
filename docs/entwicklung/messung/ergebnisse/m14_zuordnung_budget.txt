@@ -1,0 +1,40 @@
+Erzeugt von mc_zusammenfassung.py aus m14_zeit_zuordnung.json, m14_budget_nachrechnung.json und m13_zeit_zuordnung.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Rückfall ohne Warten, nachgerechnet für ein Budget von 60.000 Tokens
+
+| Thema | Absätze | Stapel | Reservierung je Stapel | Rückfall ohne Warten, nachgerechnet | Rückfall gemessen |
+|---|---|---|---|---|---|
+| Evolution | 294 | 6 | 13.046, 12.729, 13.258, 13.736, 12.883, 12.555 | 94 | 94 (M13, ohne Warten) |
+| Reformation | 253 | 6 | 13.217, 13.733, 13.057, 13.031, 13.556, 3.880 | 50 | 50 (M13, ohne Warten) |
+| Nervensystem | 109 | 3 | 12.431, 12.857, 4.985 | 0 | 0 (M13, ohne Warten) |
+| Kernspaltung | 258 | 6 | 12.643, 13.723, 14.379, 13.155, 12.637, 5.018 | 50 | 50 (M13, ohne Warten) |
+| Impressionismus | 139 | 3 | 12.691, 12.679, 10.718 | 0 | 0 (M13, ohne Warten) |
+| Relativitätstheorie | 284 | 6 | 13.252, 12.621, 13.480, 12.913, 12.991, 9.672 | 84 | 0 (M14, mit D39) |
+| Völkerwanderung | 236 | 5 | 13.188, 15.097, 13.954, 13.470, 11.161 | 36 | 0 (M14, mit D39) |
+| Kreuzzüge | 231 | 5 | 12.985, 12.766, 12.819, 13.467, 10.121 | 31 | 0 (M14, mit D39) |
+| Expressionismus | 150 | 3 | 12.874, 12.444, 12.841 | 0 | 0 (M14, mit D39) |
+| Verdauung | 104 | 3 | 12.041, 12.420, 3.967 | 0 | 0 (M14, mit D39) |
+
+Die Nachrechnung trifft die Rückfälle aus M13 je Thema genau.
+
+## `matcher=llm` mit D39 gegen `hybrid_light`, fünf ganze Kompendien, `article_choice=rule-based`
+
+| Thema | Weg | Teil 1 | davon Zuordnung | Absätze beim LLM | davon Rückfall | Aufrufe | Tokens |
+|---|---|---|---|---|---|---|---|
+| Relativitätstheorie | `hybrid_light` | 2,23 s | 0,51 s |  |  |  | 0 |
+| Relativitätstheorie | `llm` | 25,36 s | 25,11 s | 284 | 0 | 6 | 45.915 |
+| Völkerwanderung | `llm` | 24,92 s | 23,07 s | 236 | 0 | 5 | 42.815 |
+| Völkerwanderung | `hybrid_light` | 1,28 s | 0,78 s |  |  |  | 0 |
+| Kreuzzüge | `hybrid_light` | 2,70 s | 0,60 s |  |  |  | 0 |
+| Kreuzzüge | `llm` | 22,71 s | 22,22 s | 231 | 0 | 5 | 40.633 |
+| Expressionismus | `llm` | 19,23 s | 16,95 s | 150 | 0 | 3 | 24.267 |
+| Expressionismus | `hybrid_light` | 0,66 s | 0,33 s |  |  |  | 0 |
+| Verdauung | `hybrid_light` | 1,83 s | 0,21 s |  |  |  | 0 |
+| Verdauung | `llm` | 15,40 s | 15,08 s | 104 | 0 | 3 | 18.810 |
+
+| Weg | Teil 1, Median | Zuordnung, Median | Teil 1, Maximum | Tokens, fünf Themen |
+|---|---|---|---|---|
+| `hybrid_light` | 1,83 s | 0,51 s | 2,70 s | 0 |
+| `llm` | 22,71 s | 22,22 s | 25,36 s | 172.440 |
+
+Rückfall: 0 von 1.005 Absätzen, ohne Warten nachgerechnet 151. 22 Aufrufe, 172 Tokens je Absatz, je Kompendium im Mittel 34.488 (18.810 bis 45.915). Zuordnung bei drei Stapeln, die nie warten: 16,95 s und 15,08 s, in M13 11,74 s und 10,83 s; ab fünf Stapeln, mit zweiter Runde: 25,11 s und 23,07 s und 22,22 s.

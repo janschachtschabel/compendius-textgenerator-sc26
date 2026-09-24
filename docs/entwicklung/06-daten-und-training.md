@@ -15,7 +15,7 @@ höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gege
 
 | Weg | Was entsteht | Aufwand | Wert |
 |---|---|---|---|
-| **LLM-Entscheidungen offline erzeugen** (Destillation) | Ein Stapellauf ruft den Dienst für eine Themenliste mit `matcher=llm` und `article_choice=llm` auf; die Entscheidungen des Modells sind die Labels. | keine Änderung am Dienst; rund 29.000 Tokens je Thema, 200 Themen also rund 6 Millionen, drei Tage des Tagesbudgets von 2 Millionen | Labels in der Güte des LLM (rund 0,7 am Gold), ohne Nutzerdaten |
+| **LLM-Entscheidungen offline erzeugen** (Destillation) | Ein Stapellauf ruft den Dienst für eine Themenliste mit `matcher=llm` und `article_choice=llm` auf; die Entscheidungen des Modells sind die Labels. | keine Änderung am Dienst; rund 35.000 Tokens je Thema (M14, seit D39 ohne Rückfall am Budget), 200 Themen also rund 7 Millionen, dreieinhalb Tage des Tagesbudgets von 2 Millionen | Labels in der Güte des LLM (rund 0,7 am Gold), ohne Nutzerdaten |
 | **Protokoll im Betrieb** | je Kompendium die Entscheidungen, die der Dienst ohnehin trifft: Auflösung mit Kandidaten und `method`, Korpus mit Herkunft und Trefferprüfung, je Absatz Regelbaustein mit Score, LLM-Baustein mit Sicherheit, gedruckter Baustein | Schalter, Schreibpfad im `STATE_DIR`, Rotation, Export | nur dort neu, wo LLM-Schalter laufen; im Regelmodus protokolliert es, was die Regeln schon wissen |
 | **Redaktionelle Rückmeldung** | Unterschiede zwischen erzeugtem und redaktionell geprüftem Kompendium: Absatz behalten, gestrichen, verschoben | Absprache mit der Redaktion, wie geprüfte Texte zurückkommen; der Dienst liest `existing_markdown` mit `redaktionell-geprüft` schon heute | die einzigen Labels, die kein Modell liefern kann |
 

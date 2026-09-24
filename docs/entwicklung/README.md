@@ -65,11 +65,11 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
 | Entstehung des Textes | ein LLM-Aufruf schreibt alles | Absätze werden zugeordnet und wörtlich übernommen, LLM optional |
 | Gliederung | 15 Aspekte als Hinweis im Prompt | Template SC26 mit 13 Bausteinen, maschinenlesbar markiert |
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
-| Dauer | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | 2,8 s für Teil 1 und 2 (Median, Server, ohne LLM); mit `article_choice=llm` im Median 1,7 s mehr, mit `matcher=llm` dauert Teil 1 12,0 statt 1,2 s (M13, Entwicklungsrechner) |
-| Tokens je Kompendium | rund 7.900 | 0 ohne LLM; mit konfiguriertem LLM seit D37 im Median 927 für die Artikelwahl; `matcher=llm` im Mittel 29.400 (M13); Satzauswahl und Umformulierung 2.300 bis rund 37.000 |
+| Dauer | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | 2,8 s für Teil 1 und 2 (Median, Server, ohne LLM); mit `article_choice=llm` im Median 1,7 s mehr, mit `matcher=llm` dauert Teil 1 12,0 statt 1,2 s (M13, Entwicklungsrechner), bei langsamerer b-api und ohne Rückfall am Budget 22,7 s (M14) |
+| Tokens je Kompendium | rund 7.900 | 0 ohne LLM; mit konfiguriertem LLM seit D37 im Median 927 für die Artikelwahl; `matcher=llm` im Mittel 29.400 (M13), seit D39 34.500 (M14); Satzauswahl und Umformulierung 2.300 bis rund 37.000 |
 | Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 86 mit den Regeln, 91 mit `article_choice=llm` (M9) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
-| Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,43 bis 0,45 mit `hybrid_light` in 0,3 s je Thema; 0,69 bis 0,72 mit `matcher=llm` in rund 11 s |
+| Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,43 bis 0,45 mit `hybrid_light` in 0,3 s je Thema; 0,69 bis 0,72 mit `matcher=llm` in 11 bis 22 s (Median in M13 und M14) |
 | Wenn eine Quelle ausfällt | liefert trotzdem eine normale Antwort, ohne Quellen | Archive liegen lokal; ein fehlender Teil steht in `parts_status` |
 
 ## Die wichtigsten Entscheidungen
@@ -80,7 +80,7 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
 | Kiwix-ZIM statt Live-API oder XML-Dump | direkt nutzbar, Suchindex eingebaut, keine Sperren, Klexikon und weitere Quellen im selben Format | 15 GB Speicher; Aktualität so, wie Kiwix die Archive baut |
 | Extraktiv als Standard, LLM optional | keine Verfälschung, jeder Satz prüfbar, schnell, ohne Tokens, reproduzierbar | liest sich weniger flüssig |
 | Template SC26 mit Markern | einheitliche Gliederung; Bausteine und Facetten lassen sich maschinell herauslösen | – |
-| Zuordnung über Regel-Policy mit `hybrid_light` und Model2Vec | bester Wert der lokal laufenden Verfahren auf dem Goldstandard, 0,3 s auf der CPU, ohne Tokens; ein LLM ordnet besser zu (0,69 bis 0,72), braucht aber für Teil 1 12,0 statt 1,2 s und im Mittel 29.400 Tokens je Kompendium und bleibt deshalb wählbar (`matcher=llm`, D38) | Ziel macro-F1 0,70 nicht erreicht |
+| Zuordnung über Regel-Policy mit `hybrid_light` und Model2Vec | bester Wert der lokal laufenden Verfahren auf dem Goldstandard, 0,3 s auf der CPU, ohne Tokens; ein LLM ordnet besser zu (0,69 bis 0,72), braucht aber für Teil 1 12,0 bis 22,7 statt 1,2 bis 1,8 s und im Mittel 29.400 bis 34.500 Tokens je Kompendium (M13, M14) und bleibt deshalb wählbar (`matcher=llm`, D38) | Ziel macro-F1 0,70 nicht erreicht |
 | Artikelwahl mit `article_choice=llm`, wo ein LLM konfiguriert ist (D37) | holt die unsicheren Fälle (91 statt 86 von 94 Goldanfragen) und wirft unpassende Volltexttreffer heraus (gedruckt aus unpassenden Artikeln 10 statt 26 Absätze) | im Median 1,7 s und 927 Tokens je Kompendium |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
@@ -116,7 +116,7 @@ werden. Die Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 | 19.09. | Review-Runden; LLM-Schalter statt fester Modi |
 | 20.–22.09. | Umbau: alte v1-Endpunkte entfernt; neue Endpunkte für Wissen, Entitäten und Fragen; Modelle im Image |
 | 23.09. | Release v2.0.0, Betrieb auf Hostinger; danach die Artikelwahl gemessen und der LLM-Zuordner als `matcher=llm` eingebaut (D34) |
-| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38) |
+| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14) |
 
 ## Begriffe
 

@@ -1,8 +1,8 @@
-# Ergebnisse der Messungen M1 bis M13
+# Ergebnisse der Messungen M1 bis M14
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. und 24.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
-Zusammenfassungen von M9 bis M13 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach:
+Zusammenfassungen von M9 bis M14 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach:
 
 ```
 python docs/entwicklung/messung/mc_zusammenfassung.py docs/entwicklung/messung/ergebnisse
@@ -25,6 +25,7 @@ python docs/entwicklung/messung/mc_zusammenfassung.py docs/entwicklung/messung/e
 | M11 | Helfen Wikibooks und Wikiversity? | Volltextsuche: +1 gefüllter Baustein in 20 Themen, mit Trefferprüfung +3; verworfen | `m11_zusatzquellen.txt` | `m11_zusatzquellen.json`, `m11_zusatzsuche.json` |
 | M12 | Schärfere Beschreibungen, günstigere LLM-Zuordnung? | Beschreibungen ohne Gewinn; 50 Absätze zu 400 Zeichen so gut wie 25 zu 700 (0,69 bis 0,73), 27 bis 29 % weniger Tokens | `m12_zuordnung.txt` | `m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json`, `m12_sparvarianten.json`, `m12_sparvarianten_rotiert.json` |
 | M13 | Was kosten die LLM-Schalter an Zeit? | `article_choice=llm` im Median 1,7 s und 927 Tokens mehr; `matcher=llm` Teil 1 im Median 12,0 statt 1,2 s, im Mittel 29.400 Tokens | `m13_laufzeit.txt` | `m13_zeit_alt.json`, `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json`, `m13_zeit_zuordnung.json` |
+| M14 | Fällt mit D39 noch ein Absatz am Budget zurück? | 0 statt 151 von 1.005 (altes Verfahren nachgerechnet, trifft M13 genau); im Mittel 34.500 Tokens je Kompendium; Teil 1 im Median 22,7 s bei langsamerer b-api, Themen ab fünf Stapeln mit zweiter Runde | `m14_zuordnung_budget.txt` | `m14_zeit_zuordnung.json`, `m14_budget_nachrechnung.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise
@@ -32,7 +33,7 @@ python docs/entwicklung/messung/mc_zusammenfassung.py docs/entwicklung/messung/e
 - **Zwischenspeicher der b-api.** Einen wortgleichen Prompt beantwortet die b-api aus ihrem Zwischenspeicher, mit
   derselben Antwort und denselben gemeldeten Tokens. Zeiten solcher Läufe sind keine Modellzeit; die
   Zusammenfassungen markieren sie. Unabhängige Wiederholungen brauchen geänderte Prompts, etwa andere Stapel
-  (`--rotieren` in M12) oder neue Themen (M13).
+  (`--rotieren` in M12) oder neue Themen (M13, M14).
 - **Zeiten zwischen Prozessen.** Der Dateicache des Betriebssystems verzerrt Vergleiche zwischen Läufen in
   verschiedenen Prozessen. Belastbar sind die Phasen, die das Audit je Anfrage misst, und Wiederholungen in warmem
   Zustand (M13).

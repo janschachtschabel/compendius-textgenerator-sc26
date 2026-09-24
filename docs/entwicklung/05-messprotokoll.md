@@ -10,7 +10,7 @@
 | Entwicklungsrechner | Windows 11, Python 3.13.5; venv des neuen Dienstes, venv der Testapp (torch 2.14, transformers 5.17, model2vec 0.9), venv des alten Dienstes nach seiner Lock-Datei (openai 2.26, aiohttp 3.12.13); dieselben Archive |
 | Testsuite | 767 Tests bestanden, 94,11 % Abdeckung mit `matcher=llm` (D34); Stand `02070a3` nach 2.0.0: 753 Tests, 94,04 %; Schwelle der CI 90 % |
 | Sprachmodelle | `gpt-4.1-mini` für den alten Dienst, `gpt-5.6-luna` für den Richter und als Zuordner, alle über die b-api |
-| Tokens für diese Messungen | alter Dienst 87.710 (`gpt-4.1-mini`); mit `gpt-5.6-luna`: Richter 67.936, LLM als Zuordner 144.596, Richter der Artikelwahl 21.166, `matcher=llm` im Dienst 144.486 laut b-api, davon acht Themen aus ihrem Zwischenspeicher. M9 bis M12 (24.09.2026): Artikelwahl 17.116, Trefferprüfung 6.330 und 14.240, Zusatzquellen 18.188, schärfere Beschreibungen 149.910, Zuordnung nur für unsichere Absätze 71.173, mit 50 und 400 105.727; M12 zweiter Lauf 144.758 und 103.368; M13 Artikelwahl 34.288, `matcher=llm` 146.848; dazu Wiederholungen aus dem Zwischenspeicher der b-api (dieselben Prompts, dieselben Antworten), die sie trotzdem mit ihren Tokens meldet |
+| Tokens für diese Messungen | alter Dienst 87.710 (`gpt-4.1-mini`); mit `gpt-5.6-luna`: Richter 67.936, LLM als Zuordner 144.596, Richter der Artikelwahl 21.166, `matcher=llm` im Dienst 144.486 laut b-api, davon acht Themen aus ihrem Zwischenspeicher. M9 bis M12 (24.09.2026): Artikelwahl 17.116, Trefferprüfung 6.330 und 14.240, Zusatzquellen 18.188, schärfere Beschreibungen 149.910, Zuordnung nur für unsichere Absätze 71.173, mit 50 und 400 105.727; M12 zweiter Lauf 144.758 und 103.368; M13 Artikelwahl 34.288, `matcher=llm` 146.848; M14 `matcher=llm` 172.440; dazu Wiederholungen aus dem Zwischenspeicher der b-api (dieselben Prompts, dieselben Antworten), die sie trotzdem mit ihren Tokens meldet |
 
 Gerundet wird kaufmännisch. Nebenwerte (Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2,
 Knotenzeilen von Teil 3) stehen in `messung/ergebnisse/nebenwerte.txt`, die Suchzeiten des Wikipedia-Archivs in
@@ -511,3 +511,45 @@ Antwortgrenze samt Denkreserve) und verbraucht rund 8.000; die Stapel laufen par
 nach vier Stapeln verplant, bevor einer abgerechnet hatte. Rohdaten: `m13_zeit_alt.json`,
 `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json`,
 `m13_zeit_zuordnung.json`; Zusammenfassung mit allen Themen: `m13_laufzeit.txt`.
+
+## M14 `matcher=llm` ohne Rückfall am Budget (24.09.2026)
+
+**Frage:** Entscheidet das LLM mit D39 alle Absätze, und was kostet das Warten an Zeit?
+
+**Aufbau:** Fünf Themen, die keine frühere Messung gestellt hatte, damit kein Stapel aus dem Zwischenspeicher der
+b-api kommt, ähnlich groß wie die aus M13: *Relativitätstheorie*, *Völkerwanderung*, *Kreuzzüge* (aufgelöst zu
+*Kreuzzug*), *Expressionismus* und *Verdauung*, zusammen 1.005 Absätze, drei Themen mit fünf oder sechs Stapeln.
+`mc_zeit_zuordnung.py` mit diesen Themen als Argumenten, der Stand mit D39 in einer `git archive`-Kopie, sonst wie
+M13: Teil 1, Model2Vec, `article_choice=rule-based`, `LLM_MAX_TOKENS_PER_REQUEST=60000`, im Wechsel mit
+`hybrid_light`. Was das alte Verfahren mit denselben Themen getan hätte, rechnet `mc_budget_nachrechnung.py` ohne
+b-api nach: Es schneidet die Stapel wie der Dienst, schätzt ihre Reservierung wie `budgeted_chat` und lässt sie der
+Reihe nach zu, bis der nächste nicht mehr passt. So verhielten sich die parallelen Aufrufe, weil jeder reservierte,
+bevor der erste abrechnete. Für die fünf Themen aus M13 ergibt die Rechnung genau die gemessenen Rückfälle (94, 50,
+0, 50 und 0 Absätze), und der erste abgewiesene Stapel von *Evolution* reserviert 12.883 Tokens, die Zahl aus dem
+Audit von M13.
+
+| Thema | Absätze | Stapel | Rückfall ohne Warten, nachgerechnet | mit D39 | Teil 1 | davon Zuordnung | Tokens |
+|---|---|---|---|---|---|---|---|
+| Relativitätstheorie | 284 | 6 | 84 | 0 | 25,36 s | 25,11 s | 45.915 |
+| Völkerwanderung | 236 | 5 | 36 | 0 | 24,92 s | 23,07 s | 42.815 |
+| Kreuzzüge | 231 | 5 | 31 | 0 | 22,71 s | 22,22 s | 40.633 |
+| Expressionismus | 150 | 3 | 0 | 0 | 19,23 s | 16,95 s | 24.267 |
+| Verdauung | 104 | 3 | 0 | 0 | 15,40 s | 15,08 s | 18.810 |
+
+| Teil 1 je Kompendium | Median | davon Zuordnung | Maximum | Rückfall | Tokens |
+|---|---|---|---|---|---|
+| `hybrid_light` (M14) | 1,83 s | 0,51 s | 2,70 s | – | 0 |
+| `matcher=llm` vor D39 (M13, andere Themen) | 11,97 s | 10,83 s | 13,36 s | 194 von 1.053 | 146.848 |
+| `matcher=llm` mit D39 (M14) | 22,71 s | 22,22 s | 25,36 s | 0 von 1.005 | 172.440 |
+
+Kein Absatz fiel zurück; ohne Warten wären es 151 gewesen (15 %). Das LLM brauchte 22 Aufrufe und 172 Tokens je
+Absatz (M13: 171), ein Kompendium im Mittel 34.500 Tokens, das größte 45.915. Die Zeit ist aus zwei Gründen länger.
+Die b-api antwortete langsamer als bei M13: Themen mit drei Stapeln, deren Reservierungen zusammen in 60.000 passen
+und die deshalb nie warten, brauchten 15,1 und 16,9 s für die Zuordnung, in M13 10,8 und 11,7 s. Und Themen ab fünf
+Stapeln brauchen eine zweite Runde: Vier Stapel zu je rund 13.000 Tokens passen in 60.000, jeder weitere startet
+erst, wenn laufende abgerechnet haben. Sie brauchten 22,2 bis 25,1 s für die Zuordnung. Ein Budget, das alle Stapel zugleich hält (sechs volle Stapel reservieren rund 80.000),
+spart die zweite Runde, ohne den Verbrauch zu ändern; gemessen ist das nicht. Auch `hybrid_light` lief langsamer als
+in M13 (0,51 statt 0,27 s für die Zuordnung). Wo der Verbrauch selbst an die Grenze kommt, fällt weiter zurück, was
+nicht mehr hineinpasst: gerechnet ab rund 320 Absätzen, wenn der letzte Stapel seine Reservierung nicht mehr neben
+dem Verbrauch der übrigen unterbringt. Rohdaten: `m14_zeit_zuordnung.json`, `m14_budget_nachrechnung.json`;
+Zusammenfassung: `m14_zuordnung_budget.txt`.

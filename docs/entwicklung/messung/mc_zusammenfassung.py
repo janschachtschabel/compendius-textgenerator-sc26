@@ -1,7 +1,7 @@
-"""Readable summaries of the measurements M9 to M13, computed from their raw files in ergebnisse/ (no service, no LLM).
+"""Readable summaries of the measurements M9 to M14, computed from their raw files in ergebnisse/ (no service, no LLM).
 
-Writes m9_artikelwahl.txt, m10_volltexttreffer.txt, m11_zusatzquellen.txt, m12_zuordnung.txt and m13_laufzeit.txt
-next to the raw files, so every number the pages of docs/entwicklung quote can be traced to a file. Rounding half up,
+Writes m9_artikelwahl.txt, m10_volltexttreffer.txt, m11_zusatzquellen.txt, m12_zuordnung.txt, m13_laufzeit.txt and
+m14_zuordnung_budget.txt next to the raw files, so every number the pages of docs/entwicklung quote can be traced to a file. Rounding half up,
 German number format; the 90th percentile by nearest rank, as mc_zeit_artikelwahl.py computes it.
 
 Usage: python mc_zusammenfassung.py <ergebnisse-dir>
@@ -374,5 +374,51 @@ def m13() -> None:
           "m13_zeit_neu_regeln_zweiter_lauf.json und m13_zeit_zuordnung.json", lines)
 
 
-for step in (m9, m10, m11, m12, m13):
+def m14() -> None:
+    measured, recomputed = load("m14_zeit_zuordnung.json"), load("m14_budget_nachrechnung.json")
+    before = {r["thema"]: r for r in load("m13_zeit_zuordnung.json")["laeufe"] if r["weg"] == "llm"}
+    after = {r["thema"]: r for r in measured["laeufe"] if r["weg"] == "llm"}
+    batches = {row["thema"]: row["stapel"] for row in recomputed["themen"]}
+    lines = [f"## Rückfall ohne Warten, nachgerechnet für ein Budget von {de(recomputed['budget'], '1')} Tokens", ""]
+    body = []
+    for row in recomputed["themen"]:
+        run, label = (before, "M13, ohne Warten") if row["thema"] in before else (after, "M14, mit D39")
+        body.append([row["thema"], row["absaetze"], row["stapel"],
+                     ", ".join(de(need, "1") for need in row["reservierungen"]), row["rueckfall_ohne_warten"],
+                     f"{run[row['thema']]['rueckfall']} ({label})"])
+    lines += table(["Thema", "Absätze", "Stapel", "Reservierung je Stapel", "Rückfall ohne Warten, nachgerechnet",
+                    "Rückfall gemessen"], body)
+    same = all(row["rueckfall_ohne_warten"] == before[row["thema"]]["rueckfall"]
+               for row in recomputed["themen"] if row["thema"] in before)
+    lines += [f"Die Nachrechnung trifft die Rückfälle aus M13 {'je Thema genau' if same else 'nicht'}.", ""]
+
+    lines += ["## `matcher=llm` mit D39 gegen `hybrid_light`, fünf ganze Kompendien, `article_choice=rule-based`", ""]
+    lines += table(["Thema", "Weg", "Teil 1", "davon Zuordnung", "Absätze beim LLM", "davon Rückfall", "Aufrufe",
+                    "Tokens"],
+                   [[r["thema"], f"`{r['weg']}`", seconds(r["sekunden"]), seconds(r["phasen_ms"]["match"] / 1000),
+                     r["absaetze"] or "", r["rueckfall"] if r["absaetze"] else "", r["aufrufe"] or "",
+                     de(r["tokens"], "1")] for r in measured["laeufe"]])
+    summary = measured["zusammenfassung"]
+    lines += table(["Weg", "Teil 1, Median", "Zuordnung, Median", "Teil 1, Maximum", "Tokens, fünf Themen"],
+                   [[f"`{way}`", seconds(s["median_s"]), seconds(s["median_zuordnung_s"]), seconds(s["max_s"]),
+                     de(s["tokens"], "1")] for way, s in summary.items()])
+    llm = summary["llm"]
+    spent = [r["tokens"] for r in after.values()]
+    turned_away = sum(row["rueckfall_ohne_warten"] for row in recomputed["themen"] if row["thema"] in after)
+
+    def matching(runs: dict, wanted: Callable[[int], bool]) -> str:
+        return " und ".join(seconds(r["phasen_ms"]["match"] / 1000) for t, r in runs.items() if wanted(batches[t]))
+
+    per_paragraph = llm["tokens"] / (llm["absaetze"] - llm["rueckfall"])
+    lines += [f"Rückfall: {llm['rueckfall']} von {de(llm['absaetze'], '1')} Absätzen, ohne Warten nachgerechnet "
+              f"{turned_away}. {llm['aufrufe']} Aufrufe, {de(per_paragraph, '1')} Tokens je Absatz, je Kompendium im "
+              f"Mittel {de(statistics.mean(spent), '1')} ({de(min(spent), '1')} bis {de(max(spent), '1')}). "
+              f"Zuordnung bei drei Stapeln, die nie warten: {matching(after, lambda n: n == 3)}, in M13 "
+              f"{matching(before, lambda n: n == 3)}; ab fünf Stapeln, mit zweiter Runde: "
+              f"{matching(after, lambda n: n >= 5)}."]
+    write("m14_zuordnung_budget.txt", "m14_zeit_zuordnung.json, m14_budget_nachrechnung.json und "
+          "m13_zeit_zuordnung.json", lines)
+
+
+for step in (m9, m10, m11, m12, m13, m14):
     step()

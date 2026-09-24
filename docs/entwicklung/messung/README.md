@@ -23,7 +23,8 @@ geschrieben.
 | M11 Wikibooks und Wikiversity | `mc_zusatzquellen.py <out.json> <pool.json>`, `mc_zusatzsuche.py <out.json> <treffer-je-archiv>` | venv dieses Projekts, beide Archive unter `kompendium-test\data` | `mc_zusatzsuche.py`: `gpt-5.6-luna` für die Trefferprüfung |
 | M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> [--rotieren] <weg>…` (Wege rules, llm, llm_25x700, llm_50x400, llm_billig, llm_zweifel) | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
 | M13 Laufzeit | `mc_zeit_artikelwahl.py <out.json> <weg>…` mit `PYTHONPATH` auf die Kopie des Standes; `mc_zeit_zuordnung.py <out.json>` | venv dieses Projekts | `gpt-5.6-luna` für `llm`: rund 1.000 Tokens je Thema bei der Artikelwahl, rund 29.000 bei der Zuordnung |
-| Zusammenfassungen von M9 bis M13 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
+| M14 Budget ohne Rückfall | `mc_zeit_zuordnung.py <out.json> Relativitätstheorie Völkerwanderung Kreuzzüge Expressionismus Verdauung` mit `PYTHONPATH` auf die Kopie des Standes mit D39; `mc_budget_nachrechnung.py <out.json> 60000 <Thema>…` | venv dieses Projekts | `gpt-5.6-luna`: 172.440 Tokens für die fünf Themen; die Nachrechnung ruft die b-api nicht |
+| Zusammenfassungen von M9 bis M14 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -94,6 +95,9 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m13_zeit_alt.json`, `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json` | M13, je Thema und Weg die Sekunden, Phasen, Tokens, Titel und verworfenen Treffer |
 | `ergebnisse/m13_zeit_zuordnung.json` | M13, `matcher=llm` gegen `hybrid_light` an fünf ganzen Kompendien: Sekunden, Phasen, Tokens, Rückfälle |
 | `ergebnisse/m13_laufzeit.txt` | M13 lesbar: Teil 1 je Stand und Weg, Phasen des Audits, alle 30 Themen mit Titel und verworfenen Treffern, `matcher=llm` gegen `hybrid_light` |
+| `ergebnisse/m14_zeit_zuordnung.json` | M14, `matcher=llm` mit D39 gegen `hybrid_light` an fünf neuen Kompendien: Sekunden, Phasen, Tokens, Aufrufe, Rückfälle mit Grund |
+| `ergebnisse/m14_budget_nachrechnung.json` | M14, je Thema aus M13 und M14 die Reservierung jedes Stapels und der Rückfall ohne Warten |
+| `ergebnisse/m14_zuordnung_budget.txt` | M14 lesbar: Nachrechnung gegen die Messungen, `matcher=llm` mit D39 je Thema und im Median |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |
 

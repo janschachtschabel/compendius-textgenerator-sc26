@@ -1,10 +1,11 @@
 """Time of matcher=llm against the default strategy on whole compendia (project venv, b-api, gpt-5.6-luna).
 
-Five plain topics no earlier measurement asked, so no batch comes out of the b-api's cache. Each runs through
-CompendiumService.generate with part 1 only, Model2Vec on and the article choice of the rules, once with hybrid_light
-and once with matcher=llm, the two in turns per topic; a first pass with hybrid_light warms archives and model.
+Five plain topics no earlier measurement asked, so no batch comes out of the b-api's cache; M13 took the default list,
+M14 five other topics given as arguments. Each runs through CompendiumService.generate with part 1 only, Model2Vec
+on and the article choice of the rules, once with hybrid_light and once with matcher=llm, the two in turns per topic;
+a first pass with hybrid_light warms archives and model.
 
-Usage: python mc_zeit_zuordnung.py <out.json>
+Usage: python mc_zeit_zuordnung.py <out.json> [Thema ...]
 """
 
 from __future__ import annotations
@@ -29,7 +30,7 @@ if sys.platform == "win32":
 DATA = Path(r"C:\Users\jan\staging\Windsurf\kompendium-test\data")
 ZIMS = [str(DATA / "wikipedia_de_all_nopic_2026-01.zim"), str(DATA / "klexikon_de_all_maxi_2026-08.zim")]
 M2V = "JanSchachtschabel/m2v-gte-256-edu"
-TOPICS = ["Evolution", "Reformation", "Nervensystem", "Kernspaltung", "Impressionismus"]
+TOPICS = sys.argv[2:] or ["Evolution", "Reformation", "Nervensystem", "Kernspaltung", "Impressionismus"]
 WAYS = ["hybrid_light", "llm"]
 
 out_path = Path(sys.argv[1])
@@ -52,10 +53,12 @@ for index, topic in enumerate(TOPICS):
         result = service.generate(request(topic, way))
         seconds = time.perf_counter() - started
         matching = (result.audit.llm or {}).get("matching") or {}
+        tokens = result.audit.llm_tokens or {}
         rows.append({
             "thema": topic, "weg": way, "sekunden": round(seconds, 2), "phasen_ms": dict(result.audit.timings_ms),
-            "tokens": (result.audit.llm_tokens or {}).get("total", 0), "absaetze": matching.get("paragraphs", 0),
-            "rueckfall": matching.get("fallback_paragraphs", 0), "zugeordnet": result.audit.matcher,
+            "tokens": tokens.get("total", 0), "aufrufe": tokens.get("calls", 0),
+            "absaetze": matching.get("paragraphs", 0), "rueckfall": matching.get("fallback_paragraphs", 0),
+            "gruende": matching.get("fallbacks", {}), "zugeordnet": result.audit.matcher,
         })
         print(f"{way:12s} {seconds:6.2f} s  {topic}", flush=True)
 
@@ -66,6 +69,7 @@ for way in WAYS:
         "median_s": round(statistics.median(r["sekunden"] for r in done), 2),
         "median_zuordnung_s": round(statistics.median(r["phasen_ms"]["match"] / 1000 for r in done), 2),
         "max_s": max(r["sekunden"] for r in done), "tokens": sum(r["tokens"] for r in done),
+        "aufrufe": sum(r["aufrufe"] for r in done),
         "absaetze": sum(r["absaetze"] for r in done), "rueckfall": sum(r["rueckfall"] for r in done),
     }
     print(way, summary[way])

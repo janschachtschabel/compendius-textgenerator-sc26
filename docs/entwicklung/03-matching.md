@@ -1,6 +1,6 @@
 # Zuordnung zu den SC26-Bausteinen
 
-[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M4 bis M6, M12 und M13
+[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M4 bis M6 und M12 bis M14
 
 ## Die Aufgabe
 
@@ -149,7 +149,7 @@ sind nicht belastbar. Für den LLM-Zuordner entfällt die Gegenprobe, weil Richt
 
 ## Ergebnisse (23. und 24.09.2026)
 
-M4 bis M6 liefen mit dem Code-Stand 2.0.0, M12 und M13 mit dem Stand nach D36. Die Rohdaten und lesbare
+M4 bis M6 liefen mit dem Code-Stand 2.0.0, M12 und M13 mit dem Stand nach D36, M14 mit D39. Die Rohdaten und lesbare
 Zusammenfassungen liegen in `messung/ergebnisse/` (Übersicht dort in der README).
 
 ### Auf einen Blick: die wählbaren Verfahren
@@ -158,19 +158,22 @@ Güte am Goldstandard, Zeit auf dem Entwicklungsrechner, für die fünf Werte vo
 
 | `matcher` | macro-F1, gelabelte Absätze | macro-F1, alle Absätze | Zuordnung je Thema | Teil 1 je Kompendium | Tokens je Kompendium |
 |---|---|---|---|---|---|
-| `llm` (D36) | 0,72 und 0,69 (zwei Läufe) | nicht gemessen | 10,8 s | 12,0 s | im Mittel 29.400 (19.000 bis 38.000) |
+| `llm` (D36, D39) | 0,72 und 0,69 (zwei Läufe) | nicht gemessen | 10,8 s (M13), 22,2 s (M14) | 12,0 s (M13), 22,7 s (M14) | im Mittel 34.500 (18.800 bis 45.900) |
 | **`hybrid_light` (Standard)** | 0,43 | 0,45 | 0,30 s | 1,20 s | 0 |
 | `char_tfidf` | 0,40 | 0,42 | 0,25 s | – | 0 |
 | `bm25` | 0,36 | 0,37 | 0,03 s | – | 0 |
 | `lexicon_only` | 0,35 | 0,35 | 0,02 s | – | 0 |
 
 - **Zuordnung je Thema:** Die lokalen Verfahren sind im Mittel über die zehn Goldthemen mit allen Absätzen gemessen
-  (M4). Für `llm` gilt der Median über fünf ganze Kompendien (M13); `hybrid_light` brauchte dort 0,27 s.
-- **Teil 1 je Kompendium:** Median über dieselben fünf Kompendien (M13). Ohne die Zuordnung dauert Teil 1 rund
+  (M4). Für `llm` gilt der Median über fünf ganze Kompendien, vor D39 (M13) und mit D39 an fünf anderen Themen (M14);
+  `hybrid_light` brauchte dort 0,27 und 0,51 s. In M14 antwortete die b-api langsamer: Themen mit drei Stapeln, die
+  nie warten, brauchten 15 bis 17 s statt 11 bis 12 s; Themen ab fünf Stapeln warten seit D39 auf eine zweite Runde
+  (22 bis 25 s).
+- **Teil 1 je Kompendium:** Median über dieselben fünf Kompendien (M13, M14). Ohne die Zuordnung dauert Teil 1 rund
   0,9 s. Die übrigen lokalen Verfahren liegen deshalb knapp unter `hybrid_light`; eigens gemessen wurden sie nicht.
-- **Tokens bei `llm`:** Gemessen wurde mit dem Budget von 60.000 Tokens je Anfrage. Dabei fielen bei drei der fünf
-  Themen die letzten Stapel auf `hybrid_light` zurück, zusammen 18 % der Absätze. Entscheidet das LLM alle Absätze,
-  sind es hochgerechnet rund 36.000 Tokens je Kompendium.
+- **Tokens bei `llm`:** Budget 60.000 Tokens je Anfrage. Vor D39 fielen bei drei der fünf Themen die letzten Stapel
+  auf `hybrid_light` zurück, zusammen 18 % der Absätze, im Mittel 29.400 Tokens (M13). Seit D39 warten diese Stapel;
+  in M14 entschied das LLM alle 1.005 Absätze, im Mittel 34.500 Tokens je Kompendium, rund 172 je Absatz.
 - **Abwägung:** `llm` ordnet klar besser zu (113 statt 201 Fehlzuordnungen auf denselben Absätzen), braucht für
   Teil 1 aber zehnmal so lange und je Kompendium mehr Tokens als der ganze alte Dienst. `hybrid_light` bleibt
   deshalb Standard, `llm` ist je Anfrage wählbar (D38).
@@ -253,7 +256,12 @@ für D36 stammen aus M12 und liefen auf 597 davon, weil sich ein Korpus seitdem 
   Tokens und verbraucht rund 8.000, parallele Stapel erschöpfen das Budget, bevor die ersten abrechnen. Bei 3 von 5
   Themen blieben so die letzten ein bis zwei Stapel bei der Standard-Strategie, 18 % der Absätze. Mit 171 Tokens je
   entschiedenem Absatz kostet ein Kompendium, dessen Absätze das LLM alle entscheidet, hochgerechnet rund 36.000
-  Tokens. Wer `matcher=llm` nutzt, setzt das Budget höher; die Buchung selbst ist offen.
+  Tokens. Seit D39 warten solche Stapel, bis laufende abgerechnet sind.
+- **Ohne Rückfall (D39, M14):** An fünf neuen Themen mit 1.005 Absätzen entschied das LLM alle Absätze; ohne Warten
+  wären 151 zurückgefallen (nachgerechnet mit `mc_budget_nachrechnung.py`, die für M13 genau die 194 ergibt). Ein
+  Kompendium kostete im Mittel 34.500 Tokens (18.800 bis 45.900), rund 172 je Absatz. Teil 1 dauerte im Median 22,7 s:
+  Die b-api antwortete langsamer als in M13, und Themen ab fünf Stapeln warten auf eine zweite Runde, 22 bis 25 s für
+  die Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf. Ein höheres Budget spart die zweite Runde.
 - **Größere Stapel, kürzere Texte (D36, M12):** Im ersten Lauf ordneten 50 Absätze zu 400 Zeichen in jedem Baustein
   mindestens so gut zu wie 25 zu 700. Ein zweiter Lauf mit gedrehter Reihenfolge, also anderen Stapeln und ohne
   Zwischenspeicher, drehte das Ergebnis um (0,69 gegen 0,73). Die großen Bausteine bleiben zwischen den Läufen stabil
@@ -307,9 +315,10 @@ Bausteine gewinnen, kleine füllt das LLM oft falsch: In Querschnitt landeten 7 
 6. **Mögliche Vereinfachung:** BM25 + Model2Vec erreicht fast dasselbe (0,44 und 63 %, beim Richter gleichauf) in
    0,05 statt 0,30 s.
 7. **Das LLM ist besser, aber spürbar langsamer und teuer.** Rund 0,7 statt 0,43 auf den gelabelten Absätzen (0,66
-   bis 0,73 in vier Läufen). Dafür dauert Teil 1 im Median 12,0 statt 1,2 s, und ein Kompendium kostet im Mittel
-   29.400 Tokens, ohne Budgetgrenze rund 36.000 (M13). Am 24.09.2026 entschieden: `hybrid_light` bleibt Standard,
-   `matcher=llm` bleibt je Anfrage wählbar (D38).
+   bis 0,73 in vier Läufen). Dafür dauert Teil 1 im Median 12,0 statt 1,2 s (M13), an einem Tag mit langsamerer
+   b-api 22,7 statt 1,8 s (M14), und ein Kompendium kostet im Mittel 29.400 Tokens mit Rückfällen am Budget (M13),
+   seit D39 ohne sie 34.500 (M14). Am 24.09.2026 entschieden: `hybrid_light` bleibt Standard, `matcher=llm` bleibt je
+   Anfrage wählbar (D38).
 
 ## Das LLM als wählbare Strategie
 
