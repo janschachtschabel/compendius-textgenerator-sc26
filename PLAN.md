@@ -1506,6 +1506,11 @@ API.
   `article_choice`) und `compendium generate --preset`; `audit.preset` nennt die Stufe. Verworfen: eine Vorgabe
   `PRESET_DEFAULT`, weil sie mit den Vorgaben der Einzelschalter konkurrierte. Keine Stufe schaltet `generation` ein:
   Die Lesbarkeit ist nicht gemessen, das Umformulieren bleibt eine bewusste Zusatzwahl.
+- **D42 (2026-09-24)** laya wird nicht eingebaut, weder als Artikelwahl noch als Trefferprüfung. Ohne Nachtraining
+  liegt laya-multilingual unter den Regeln (mit ihnen 81 statt 86 von 94) und trennt die Treffer nicht besser als
+  Zufall (M16). Die Werte stehen in der Entwicklungsdoku nur zum Vergleich. Wiedervorlage erst mit einem Modell, das
+  auf unsere Entscheidungen nachtrainiert ist und am selben Gold mindestens die Regeln schlägt; auch dann kostet es
+  1,7 GB je Worker und rund 0,5 s je Entscheidung.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

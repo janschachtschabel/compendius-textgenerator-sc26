@@ -55,7 +55,8 @@ Wikipedia-Anfragen je Thema zusammen im Median 3,3 s (2,3 bis 22,6 s), obwohl er
 
 **Alter Dienst:** Ein LLM nennt zehn Begriffe samt vermutetem Titel, jeder Titel wird exakt nachgeschlagen, bei
 Misserfolg mit Schreibvarianten und LLM-Synonymen. Ob der Titel eine Begriffsklärung oder ein ganz anderer Artikel
-ist, prüft niemand.
+ist, prüft niemand. Einen Hauptartikel wählt er nicht: Auf den 94 Goldanfragen aus M9 steht der richtige 55 Mal an
+erster Stelle und 58 bis 78 Mal irgendwo unter den bis zu zehn Artikeln, je nach Modell (M17).
 
 **Neuer Dienst:**
 
@@ -171,16 +172,16 @@ taugen sie nicht. Insgesamt stimmen Gold und Richter bei 223 von 288 Artikeln ü
 Die Hebel aus M8 wurden umgesetzt und gemessen, gegen das Hauptgold und zwei neue Goldsätze: 23 Anfragen zur
 Validierung und 12 zurückgehaltene, die erst liefen, als die Regeln feststanden (M9).
 
-| Hauptartikel richtig | alter Stand | Regeln | Regeln und LLM (`article_choice=llm`) |
-|---|---|---|---|
-| Hauptgold, 59 Anfragen | 45 | 55 | 57 |
-| Validierung, 23 | 14 | 22 | 23 |
-| zurückgehaltener Test, 12, erster Lauf | 7 | 8 | 9 |
-| zurückgehaltener Test nach zwei Korrekturen | 7 | 9 | 11 |
-| **alle drei Goldsätze, 94 Anfragen** | **66** | **86** | **91** |
-| Teil 1 je Kompendium, Median (M13, 30 andere Themen) | 1,37 s | 1,35 s | 1,7 s mehr für Artikelwahl und Trefferprüfung, im 90. Perzentil 3,4 s |
-| Tokens je Kompendium (M13) | 0 | 0 | im Median 927 |
-| LLM-Aufrufe je Kompendium | 0 | 0 | einer für die Trefferprüfung, wenn der Korpus Volltexttreffer hat (in M13 alle 30 Themen); ein zweiter, wenn die Regeln unsicher sind |
+| Hauptartikel richtig | alter Stand | Regeln | Regeln und LLM (`article_choice=llm`) | zum Vergleich: Regeln und laya (M16, nicht eingebaut) |
+|---|---|---|---|---|
+| Hauptgold, 59 Anfragen | 45 | 55 | 57 | 54 |
+| Validierung, 23 | 14 | 22 | 23 | 20 |
+| zurückgehaltener Test, 12, erster Lauf | 7 | 8 | 9 | – |
+| zurückgehaltener Test nach zwei Korrekturen | 7 | 9 | 11 | 7 |
+| **alle drei Goldsätze, 94 Anfragen** | **66** | **86** | **91** | **81** |
+| Teil 1 je Kompendium, Median (M13, 30 andere Themen) | 1,37 s | 1,35 s | 1,7 s mehr für Artikelwahl und Trefferprüfung, im 90. Perzentil 3,4 s | nicht gemessen; rund 0,45 s je unsichere Anfrage, dazu 22 bis 61 s Laden und 1,7 GB je Worker |
+| Tokens je Kompendium (M13) | 0 | 0 | im Median 927 | 0 |
+| LLM-Aufrufe je Kompendium | 0 | 0 | einer für die Trefferprüfung, wenn der Korpus Volltexttreffer hat (in M13 alle 30 Themen); ein zweiter, wenn die Regeln unsicher sind | 0 |
 
 - **Die Regeln** (Schritte 1 bis 5 oben) brachten den größten Teil: Bei mehrdeutigen Wörtern mit Fach stieg die
   Trefferzahl über alle drei Sätze von 19 auf 31 von 38, bei Anfragen ohne gleichnamigen Artikel von 3 auf 9 von 9.
@@ -192,6 +193,11 @@ Validierung und 12 zurückgehaltene, die erst liefen, als die Regeln feststanden
   18 von 18. Es holte „Geschichte: Wende“, „Deutsch: Fall“ (*Kasus*), „Physik: Linse“, „Erdkunde: Delta“
   (*Flussdelta*) und „Lichtlehre“ (*Optik*, einen Titel, den es selbst nannte). Einen richtigen Artikel der Regeln
   hat es nie verworfen.
+- **laya** (M16), ein kleines lokales Entscheidungsmodell an der Stelle des LLM, macht es schlechter: 8 der 18
+  unsicheren Anfragen statt 13 mit den Regeln allein. Es müsste erst auf diese Entscheidungen trainiert werden und ist
+  nicht eingebaut (D42).
+- **Der alte Weg über Begriffe vom LLM** (M17) ersetzt die Artikelwahl nicht (55 an erster Stelle, 58 bis 78 unter
+  allen Artikeln), findet aber zwei der drei sicheren Fehler unten: *Elektrischer Strom* und *Rechnernetz*.
 - **Übrig** sind Fälle, in denen die Regeln sich sicher sind und deshalb nicht fragen: „Physik: Leiter“ und
   „Physik: Strom“ enden bei *Leiter (Physik)* und *Strom (Physik)*, allgemeineren Physikartikeln zum richtigen
   Begriff, „Informatik: Netzwerk“ bei *Netzwerk* statt *Rechnernetz*. Alle Anfragen mit Weg und Titel:

@@ -34,7 +34,7 @@ und Weitergabe unter gleichen Bedingungen).
   schreibt, die der Dienst als weitere Zuordnungsstrategie lädt. Naheliegend sind die vorhandenen Model2Vec-Vektoren
   mit einem Klassifikator je Baustein, oder ein kleiner deutscher Encoder, feinjustiert. Für Artikelwahl und
   Trefferprüfung wäre laya ein Kandidat, ein Entscheidungsmodell auf mmBERT-Basis: ohne Nachtraining untauglich
-  (M16), nachtrainiert ungeprüft, auf der CPU 1,7 GB und rund 0,5 s je Entscheidung. Die Strategie würde wie alle
+  (M16), nachtrainiert ungeprüft, auf der CPU 1,7 GB und rund 0,5 s je Entscheidung; eingebaut ist es nicht (D42). Die Strategie würde wie alle
   anderen am Goldstandard gemessen, bevor sie Standard werden darf.
 
 ## Datenschutz und Lizenz

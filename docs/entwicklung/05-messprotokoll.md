@@ -618,8 +618,99 @@ Entscheidungen hier, die 47 Treffer im Stapel 21 s. Die Trefferprüfung eines Th
 rund 6 s; das LLM braucht im Median 1,4 s für alle Artikel in einem Aufruf.
 
 **Ergebnis:** Ohne Nachtraining taugt laya-multilingual für keine der beiden Entscheidungen. Es liegt bei der
-Artikelwahl unter den Regeln und bei der Trefferprüfung auf Zufallsniveau. Das Modellblatt nennt für die eigene
-Aufgabensammlung 0,352 ohne und 0,766 mit Feinabstimmung (laya-typed-decisions). Ein nachtrainiertes laya käme als
-Schüler eines Destillationsversuchs in Frage (06-daten-und-training.md), bräuchte aber 1,7 GB je Worker und mehr Zeit
-als das LLM. Nicht übernommen. Rohdaten: `m16_laya.json`, `m16_laya_englisch.json`; die Textanfänge der Kandidaten
-bleiben außerhalb des Repositorys.
+Artikelwahl unter den Regeln und bei der Trefferprüfung auf Zufallsniveau. An die Stelle des LLM gesetzt, ergäbe es mit
+den Regeln 81 von 94 Hauptartikeln (54, 20 und 7 in den drei Goldsätzen): fünf weniger als die Regeln allein (86) und
+zehn weniger als mit dem LLM (91). Das Modellblatt nennt für die eigene Aufgabensammlung 0,352 ohne und 0,766 mit
+Feinabstimmung (laya-typed-decisions). **laya müsste also erst auf unsere Entscheidungen trainiert werden**, etwa auf
+die Wahlen und Noten, die heute das LLM trifft, und danach am selben Gold bestehen; das wäre ein Destillationsversuch
+(06-daten-und-training.md). Auch dann bräuchte es 1,7 GB je Worker und mehr Zeit als das LLM. **Nicht in die API
+eingebaut** (D42); die Werte stehen hier und in der Entscheidungsvorlage nur zum Vergleich. Rohdaten: `m16_laya.json`,
+`m16_laya_englisch.json`; die Textanfänge der Kandidaten bleiben außerhalb des Repositorys.
+
+## M17 Die Artikelwahl des alten Dienstes auf dem Gold (24.09.2026)
+
+**Aufbau:** Der alte Dienst (v0.2.0) wählte keinen Hauptartikel. Sein Linker ließ ein LLM bis zu zehn Begriffe „mit
+exakten Wikipedia-Titeln“ nennen (Modus `generate`, Bildungsmodus an) und schlug jeden Titel live nach: direkt samt
+Weiterleitung, dann mit Schreibvarianten, dann über drei LLM-Synonyme. Die Einleitungen der Treffer waren die Quellen
+seines Textes. `mc_alte_artikelwahl.py` schickt denselben Prompt wortgleich an das Modell des alten Dienstes
+(`gpt-4.1-mini`, Temperatur 0,7 wie dort) und an das des neuen (`gpt-5.6-luna`) und schlägt die Titel im
+Wikipedia-Archiv des neuen Dienstes nach, direkt und mit den alten Schreibvarianten; den Synonymschritt spart es aus.
+Gezählt wird je Anfrage der drei Goldsätze aus M9, ob der Artikel hinter dem ersten Begriff ein akzeptierter
+Hauptartikel ist und ob einer unter allen Artikeln ist. Im selben Lauf rechnen die Regeln des neuen Dienstes nach: 86
+wie in M9, und 87 Mal steht ein akzeptierter Artikel irgendwo in ihrem Korpus. Je Modell ein Lauf; mit Temperatur 0,7
+streut `gpt-4.1-mini` von Lauf zu Lauf.
+
+| 94 Anfragen | alter Weg, `gpt-4.1-mini`: erster Begriff / unter allen | alter Weg, `gpt-5.6-luna`: erster / unter allen | Regeln | Regeln und LLM (M9) |
+|---|---|---|---|---|
+| normale Themen (24) | 18 / 20 | 5 / 5 | 24 | 24 |
+| mit Klassen-, Stufen- oder Fachzusatz (8) | 7 / 8 | 6 / 7 | 8 | 8 |
+| mehrdeutig, Fach als Kontext (38) | 12 / 30 | 29 / 30 | 31 | 35 |
+| mehrdeutig, ohne Kontext (3) | 2 / 2 | 1 / 1 | 3 | 3 |
+| Schreibvariante, Abkürzung, Mehrzahl (12) | 7 / 9 | 8 / 9 | 11 | 12 |
+| ohne gleichnamigen Artikel (9) | 9 / 9 | 6 / 6 | 9 | 9 |
+| **alle** | **55 / 78** | **55 / 58** | **86** | **91** |
+
+| Je Anfrage | alter Weg, `gpt-4.1-mini` | alter Weg, `gpt-5.6-luna` | Regeln und LLM |
+|---|---|---|---|
+| LLM-Aufrufe | immer einer, im alten Dienst dazu einer je nicht gefundenem Titel | immer einer | nur bei unsicheren Auflösungen einer (18 von 94) |
+| Tokens, Median | 1.311 (123.357 für alle 94) | 1.484 (139.889) | rund 950 je Aufruf |
+| Zeit, Median (90. Perzentil) | 6,3 s (7,3 s) | 8,3 s (9,4 s) | 1,0 bis 2,7 s je Aufruf (M13) |
+| Titel ohne Artikel im Archiv | 102 von 940 (11 %) | 62 von 935 (7 %) | – |
+| Begriffsklärungen unter den Treffern | 29 von 838 (3,5 %) | 32 von 873 (3,7 %) | keine (M8) |
+
+- **Der Prompt verlangt „additional entities“**, also Begriffe neben dem Text. `gpt-5.6-luna` nennt deshalb bei
+  normalen Themen das Thema selbst fast nie (5 von 24; für „Klimawandel“ etwa *Globale Erwärmung*, *Treibhauseffekt*,
+  *Treibhausgas*), `gpt-4.1-mini` öfter (20 von 24). M8 fand im Korpus des alten Dienstes den Hauptartikel bei 9 von
+  10 Goldthemen.
+- **Bei mehrdeutigen Wörtern mit Fach** liegt der alte Weg unter allen Artikeln gleichauf mit den Regeln (30 gegen
+  31 von 38), sagt aber nicht, welcher der Hauptartikel ist. An erster Stelle steht bei `gpt-4.1-mini` in 17 der 38
+  Anfragen das Fach selbst („Physik: Leiter“ ergibt zuerst *Physik*), der richtige Artikel nur 12 Mal.
+- **Wo die Regeln scheitern**, findet er 6 der 8 Hauptartikel, darunter zwei, bei denen sich die Regeln sicher sind
+  und das LLM deshalb nicht gefragt wird: *Elektrischer Strom* für „Physik: Strom“ und *Rechnernetz* für „Informatik:
+  Netzwerk“, mit beiden Modellen; `gpt-4.1-mini` findet auch den dritten, *Elektrischer Leiter*. Dafür fehlt der
+  richtige Artikel bei 14 (`gpt-4.1-mini`) und 34 (`gpt-5.6-luna`) Anfragen, die die Regeln treffen.
+
+**Ergebnis:** Der alte Weg ersetzt die Artikelwahl nicht. Einen Hauptartikel benennt er nicht; an erster Stelle steht
+der richtige 55 von 94 Mal, irgendwo unter bis zu zehn Artikeln 58 bis 78 Mal. Die Regeln treffen 86, mit LLM 91. Er
+kostet bei jeder Anfrage einen Aufruf, 6 bis 8 s und rund 1.300 bis 1.500 Tokens und bringt Begriffsklärungsseiten mit;
+für den Korpus fand M8 bei ihm 14 % unpassende Artikel gegen 6 %. Seine Stärke, das Wissen des Modells um den
+richtigen Titel, nutzt der neue Dienst schon: Mit `article_choice=llm` darf das LLM bei einer unsicheren Auflösung
+einen Titel nennen, der nur zählt, wenn das Archiv ihn als Artikel hat (D35). Offen ist allein, ob das LLM auch die
+drei sicheren Fehler der Regeln fangen soll; dafür müsste es auch sichere Auflösungen mehrdeutiger Wörter prüfen, und
+das wäre eigens zu messen. Rohdaten: `m17_alte_artikelwahl_gpt41mini.json`, `m17_alte_artikelwahl.json`
+(`gpt-5.6-luna`); nur Titel, kein Artikeltext.
+
+## M18 GND-Nummern aus dem Archiv (24.09.2026)
+
+**Aufbau:** Die deutsche Wikipedia schließt die meisten Artikel mit dem Normdaten-Block, und der Kiwix-Dump behält
+ihn: die Art des Datensatzes (Person, Sachbegriff, Geografikum, Körperschaft, Werk), die GND-Nummer, oft VIAF und
+LCCN. Wikidata-Nummern führt der Dump nicht ([Umbau](../umbau.md)). `mc_entitaeten_gnd.py` nimmt die Anfänge (bis
+2.000 Zeichen) der Hauptartikel der 20 Themen aus M1, erkennt die Begriffe über das Wörterbuch von
+`POST /api/v2/entities`, verknüpft sie mit dessen eigener Funktion und liest aus jedem verknüpften Wikipedia-Artikel
+den Normdaten-Block. Das spaCy-Modell liegt nur im Image; ein Name, den es findet, verknüpft über dieselbe Funktion.
+Kein Download, kein Netz; nur die Stichprobe fragt lobid-gnd (hbz), und zwar mit nichts als den Nummern.
+
+| 20 Texte | Anzahl |
+|---|---|
+| Begriffe des Wörterbuchs | 931 |
+| verknüpft (Begriffsklärungen fallen weg) | 724, davon 679 mit einem Wikipedia-Artikel |
+| mit Normdaten-Block | 506 (75 % der Wikipedia-Artikel) |
+| mit GND-Nummer | 503 (74 %): 450 Sachbegriffe, 25 Geografika, 23 Personen, 3 Werke, 2 Körperschaften |
+| Personen nach `kind` des Dienstes mit GND | 21 von 24 |
+
+Ohne GND bleiben 176 Artikel, fast alle Sachartikel (169).
+
+**Stichprobe gegen lobid-gnd:** 30 Nummern mit fester Saat, jede vorkommende Art dabei (12 Sachbegriffe, 7 Geografika,
+7 Personen, 3 Werke, 1 Körperschaft). Alle 30 gibt es, und jede benennt den Gegenstand ihres Artikels (*Lebewesen*
+ergibt „Organismus“, *Martin Lowry* „Lowry, Thomas Martin“). Vier der 30 Artikel sind aber schon falsch verknüpft,
+keiner davon ein Sachbegriff: „Abraham Lincolns“ und „des Wassers“ im Genitiv führen zum biblischen *Abraham* und zum
+Ort *Wassers*, „Potenzen und Wurzeln“ zur Fernsehserie *Wurzeln* (GND „Roots“), „Zeiträume“ zu einem Verein. Der
+Fehler liegt beim Wörterbuch (U3b), nicht bei der Nummer.
+
+**Ergebnis:** Für verknüpfte Entitäten ist die GND-Nummer im Archiv schon vorhanden, ohne Download und so genau wie die
+Verknüpfung selbst: Drei von vier verknüpften Wikipedia-Artikeln tragen sie. Nicht gelöst sind Entitäten ohne
+Wikipedia-Artikel und falsche Verknüpfungen. Wikidata-Nummern gibt der Dump nicht her; dafür bräuchte es einen Index
+aus den Wikipedia-Tabellen `page_props` (105 MB) und `page` (320 MB) oder den Entity-Facts-Abzug der DNB (1,3 GB, nur
+Personen, Familien, Körperschaften, Konferenzen und Geografika). Beim alten Weg aus M17 trugen 67 bis 74 % der
+gefundenen Artikel eine GND. Rohdaten: `m18_entitaeten_gnd.json`, `m18_gnd_stichprobe.json`; nur Begriffe, Titel und
+Nummern.

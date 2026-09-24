@@ -86,6 +86,8 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 | v2.0.0 (nur zum Vergleich) | exakter Titel oder Weiterleitung; bei einer Begriffsklärung zählt, wie oft die Wörter der Anfrage wörtlich im Anfang jeder Bedeutung stehen; sonst Titelvorschläge und Volltextsuche. Nicht mehr wählbar. |
 | **Regeln** (`rule-based`) | wie v2.0.0, aber mit den Kontextwörtern des Fachs aus `config/subjects.yaml`, Wortanfängen statt ganzer Wörter, dreifach gewertetem Titel, Personen und Werken erst zuletzt und Regeln für gebeugte Formen und Genitivwendungen. Sie melden, ob sie sich sicher sind (`method`, `confident`). |
 | **Regeln und LLM** (`llm`) | erst die Regeln; nur wenn sie unsicher sind, wählt das LLM unter ihren Kandidaten oder nennt einen Titel, der nur zählt, wenn das Archiv ihn als Artikel hat. |
+| laya (nur zum Vergleich) | ein kleines lokales Entscheidungsmodell (mmBERT-base, 322 Mio. Parameter) wählt an der Stelle des LLM unter den Kandidaten der Regeln. Ohne Nachtraining gemessen; nicht eingebaut (D42). |
+| alter Weg (v0.2.0, nur zum Vergleich) | ein LLM nennt bei jeder Anfrage bis zu zehn Begriffe mit vermutetem Wikipedia-Titel, jeder wird nachgeschlagen; einen Hauptartikel wählt er nicht. Nicht eingebaut. |
 
 **Standard:** `rule-based` (D40); `llm` über `article_choice` oder die Stufen `balanced` und `best-quality`.
 
@@ -95,11 +97,11 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 | Anfrage: `preset` | `llm-free` setzt `rule-based`, `balanced` und `best-quality` setzen `llm` | kein `preset` |
 | Umgebung: `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based`, `llm` | `rule-based` (D40); `llm` wirkt nur mit konfiguriertem LLM |
 
-| 94 Anfragen in drei Goldsätzen (M9) | v2.0.0 | Regeln | Regeln und LLM |
-|---|---|---|---|
-| Hauptartikel richtig | 66 (70 %) | 86 (91 %) | 91 (97 %) |
-| Zeit | rund 0,03 s | rund 0,03 s | +1,0 bis 2,7 s, nur bei unsicheren Themen |
-| Tokens | 0 | 0 | rund 950 je Aufruf |
+| 94 Anfragen in drei Goldsätzen (M9, M16, M17) | v2.0.0 | Regeln | Regeln und LLM | Regeln und laya | alter Weg |
+|---|---|---|---|---|---|
+| Hauptartikel richtig | 66 (70 %) | 86 (91 %) | 91 (97 %) | 81 (86 %) | 55 (59 %) an erster Stelle, 58 bis 78 unter bis zu zehn Artikeln |
+| Zeit | rund 0,03 s | rund 0,03 s | +1,0 bis 2,7 s, nur bei unsicheren Themen | +0,45 s bei unsicheren Themen, 22 bis 61 s Laden und 1,7 GB je Worker | 6 bis 8 s bei jeder Anfrage |
+| Tokens | 0 | 0 | rund 950 je Aufruf | 0 | 1.300 bis 1.500 je Anfrage |
 
 ![Hauptartikel richtig je Art der Anfrage](bilder/artikelwahl.svg)
 
@@ -117,8 +119,12 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 - Validierungs- und Testsatz sind nicht mehr unabhängig; unabhängig gemessen ist nur der erste Lauf des Testsatzes,
   7, 8 und 9 von 12.
 - Ein kleines lokales Entscheidungsmodell statt des LLM hilft nicht: laya-multilingual traf ohne Nachtraining 8 der
-  18 unsicheren Anfragen, weniger als die Regeln, und trennte die Volltexttreffer nicht besser als Zufall; auf der CPU
-  braucht es 1,7 GB und rund 0,5 s je Entscheidung (M16).
+  18 unsicheren Anfragen, weniger als die Regeln (mit ihnen 81 von 94), und trennte die Volltexttreffer nicht besser
+  als Zufall; auf der CPU braucht es 1,7 GB und rund 0,5 s je Entscheidung (M16). Es müsste erst auf unsere
+  Entscheidungen trainiert werden und ist nicht eingebaut (D42).
+- Der alte Weg über Begriffe vom LLM ersetzt die Artikelwahl nicht (M17): Der richtige Hauptartikel steht 55 Mal an
+  erster Stelle und 58 bis 78 Mal unter bis zu zehn Artikeln, bei jeder Anfrage für 6 bis 8 s und rund 1.400 Tokens.
+  Er fand aber zwei der drei sicheren Fehler der Regeln, *Elektrischer Strom* und *Rechnernetz*.
 
 ## Schritt 2: Korpus bauen
 
@@ -351,3 +357,6 @@ bleibt.
 3. **Lesefassung:** ob `generation` für menschliche Leser nötig ist. Vorher sollte ein Richtervergleich die
    Lesbarkeit und Treue der geschriebenen Texte messen.
 4. **Goldstandard prüfen lassen:** Alle Gütezahlen hängen an Labels, die eine Redaktion noch nicht gesehen hat.
+5. **Sichere Fehler der Regeln:** ob das LLM mit `article_choice=llm` auch sichere Auflösungen mehrdeutiger Wörter
+   prüfen soll. Der alte Weg fand zwei der drei (M17); es kostete einen Aufruf mehr bei jedem solchen Thema und wäre
+   vorher am Gold zu messen.

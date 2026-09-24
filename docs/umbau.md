@@ -11,6 +11,7 @@ Der alte v1-Vertrag entfällt.
 |---|---|
 | 24 Endpunkte, davon 8 aus dem alten Vertrag | `/openapi.json` des laufenden Dienstes |
 | **Die ZIM-Dumps führen keine Wikidata-IDs** — keine Q-Nummern, kein `wgWikibaseItemId`, keine DBpedia-Verweise | Artikel „Optik" aus `wikipedia_de_all_nopic_2026-01.zim`, 32.836 Zeichen HTML, null Treffer |
+| **Wohl aber die GND:** Der Normdaten-Block am Artikelende bleibt im Dump, mit Art des Datensatzes, GND-Nummer, oft VIAF und LCCN (nachgetragen am 2026-09-24) | 503 von 679 verknüpften Wikipedia-Artikeln (74 %), 30 von 30 geprüften Nummern passend (M18 im Messprotokoll) |
 | Deutsche Modelle ohne generative KI existieren (siehe Tabelle unten) | Hugging-Face-API, 2026-09-20 |
 | `TemplateManager.save()` und `.delete()` hatten **keinen Aufrufweg** — weder API noch CLI (`compendium templates` listete nur); mit U6 behoben | Quelltext und `--help` |
 | ZIM-Verwaltung ist vollständig (Manifest, `active.json`, Sync-Sidecar, Admin-Endpunkte, Aufbewahrung) | `app/sources/zim/`, Endpunktliste |

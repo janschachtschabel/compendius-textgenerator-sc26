@@ -1,0 +1,423 @@
+[
+ {
+  "text": "Wind",
+  "titel": "Wind",
+  "art": "Sachbegriff",
+  "gnd": "4066257-3",
+  "gnd_name": "Wind",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q8094"
+  ]
+ },
+ {
+  "text": "Pauperismus",
+  "titel": "Pauperismus",
+  "art": "Sachbegriff",
+  "gnd": "4173575-4",
+  "gnd_name": "Pauperismus",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q836994"
+  ]
+ },
+ {
+  "text": "Frage",
+  "titel": "Frage",
+  "art": "Sachbegriff",
+  "gnd": "4018041-4",
+  "gnd_name": "Frage",
+  "gnd_typ": [
+   "SubjectHeadingSensoStricto",
+   "SubjectHeading"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q189756"
+  ]
+ },
+ {
+  "text": "Addition",
+  "titel": "Addition",
+  "art": "Sachbegriff",
+  "gnd": "4296282-1",
+  "gnd_name": "Addition",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q32043"
+  ]
+ },
+ {
+  "text": "Physik",
+  "titel": "Physik",
+  "art": "Sachbegriff",
+  "gnd": "4045956-1",
+  "gnd_name": "Physik",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q413"
+  ]
+ },
+ {
+  "text": "Krise",
+  "titel": "Krise",
+  "art": "Sachbegriff",
+  "gnd": "4033203-2",
+  "gnd_name": "Krise",
+  "gnd_typ": [
+   "SubjectHeadingSensoStricto",
+   "SubjectHeading"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q381072"
+  ]
+ },
+ {
+  "text": "Sauerstoff",
+  "titel": "Sauerstoff",
+  "art": "Sachbegriff",
+  "gnd": "4051803-6",
+  "gnd_name": "Sauerstoff",
+  "gnd_typ": [
+   "NomenclatureInBiologyOrChemistry",
+   "SubjectHeading"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q629"
+  ]
+ },
+ {
+  "text": "Zeichen",
+  "titel": "Zeichen",
+  "art": "Sachbegriff",
+  "gnd": "4067439-3",
+  "gnd_name": "Zeichen",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q262246"
+  ]
+ },
+ {
+  "text": "Mittelmeerraum",
+  "titel": "Mittelmeerraum",
+  "art": "Geografikum",
+  "gnd": "4074900-9",
+  "gnd_name": "Mittelmeerraum",
+  "gnd_typ": [
+   "NaturalGeographicUnit",
+   "PlaceOrGeographicName"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q72499"
+  ]
+ },
+ {
+  "text": "England",
+  "titel": "England",
+  "art": "Geografikum",
+  "gnd": "4014770-8",
+  "gnd_name": "England",
+  "gnd_typ": [
+   "TerritorialCorporateBodyOrAdministrativeUnit",
+   "PlaceOrGeographicName",
+   "Country"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q179876"
+  ]
+ },
+ {
+  "text": "Imperium Romanum",
+  "titel": "Römisches Reich",
+  "art": "Geografikum",
+  "gnd": "4076778-4",
+  "gnd_name": "Römisches Reich",
+  "gnd_typ": [
+   "PlaceOrGeographicName",
+   "TerritorialCorporateBodyOrAdministrativeUnit",
+   "Country"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q1747689"
+  ]
+ },
+ {
+  "text": "Wassers",
+  "titel": "Wassers",
+  "art": "Geografikum",
+  "gnd": "7837775-4",
+  "gnd_name": "Wassers",
+  "gnd_typ": [
+   "PlaceOrGeographicName",
+   "TerritorialCorporateBodyOrAdministrativeUnit"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q135237681"
+  ]
+ },
+ {
+  "text": "Deutschland",
+  "titel": "Deutschland",
+  "art": "Geografikum",
+  "gnd": "4011882-4",
+  "gnd_name": "Deutschland",
+  "gnd_typ": [
+   "Country",
+   "PlaceOrGeographicName",
+   "TerritorialCorporateBodyOrAdministrativeUnit"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q183"
+  ]
+ },
+ {
+  "text": "Frankreich",
+  "titel": "Frankreich",
+  "art": "Geografikum",
+  "gnd": "4018145-5",
+  "gnd_name": "Frankreich",
+  "gnd_typ": [
+   "PlaceOrGeographicName",
+   "Country",
+   "TerritorialCorporateBodyOrAdministrativeUnit"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q142"
+  ]
+ },
+ {
+  "text": "Hans Sachs",
+  "titel": "Hans Sachs",
+  "art": "Person",
+  "gnd": "118604597",
+  "gnd_name": "Sachs, Hans",
+  "gnd_typ": [
+   "DifferentiatedPerson",
+   "Person"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q19543"
+  ]
+ },
+ {
+  "text": "Augustus",
+  "titel": "Augustus",
+  "art": "Person",
+  "gnd": "118505122",
+  "gnd_name": "Augustus, Römisches Reich, Kaiser",
+  "gnd_typ": [
+   "RoyalOrMemberOfARoyalHouse",
+   "Person"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q1405"
+  ]
+ },
+ {
+  "text": "Abraham",
+  "titel": "Abraham",
+  "art": "Person",
+  "gnd": "118500201",
+  "gnd_name": "Abraham, Biblische Person",
+  "gnd_typ": [
+   "Person",
+   "DifferentiatedPerson"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q9181"
+  ]
+ },
+ {
+  "text": "Martin Lowry",
+  "titel": "Martin Lowry",
+  "art": "Person",
+  "gnd": "117251860",
+  "gnd_name": "Lowry, Thomas Martin",
+  "gnd_typ": [
+   "Person",
+   "DifferentiatedPerson"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q908567"
+  ]
+ },
+ {
+  "text": "Thales von Milet",
+  "titel": "Thales",
+  "art": "Person",
+  "gnd": "118801732",
+  "gnd_name": "Thales, Milesius",
+  "gnd_typ": [
+   "DifferentiatedPerson",
+   "Person"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q36303"
+  ]
+ },
+ {
+  "text": "Svante Arrhenius",
+  "titel": "Svante Arrhenius",
+  "art": "Person",
+  "gnd": "118650467",
+  "gnd_name": "Arrhenius, Svante",
+  "gnd_typ": [
+   "DifferentiatedPerson",
+   "Person"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q80956"
+  ]
+ },
+ {
+  "text": "Clavierübung",
+  "titel": "Clavierübung",
+  "art": "Werk",
+  "gnd": "4525016-9",
+  "gnd_name": "Klavierübung",
+  "gnd_typ": [
+   "MusicalWork",
+   "Work"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q2299511"
+  ]
+ },
+ {
+  "text": "Wurzeln",
+  "titel": "Wurzeln",
+  "art": "Werk",
+  "gnd": "7740074-4",
+  "gnd_name": "Roots",
+  "gnd_typ": [
+   "Work"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q743223"
+  ]
+ },
+ {
+  "text": "Biodiversitätskonvention",
+  "titel": "Übereinkommen über die biologische Vielfalt",
+  "art": "Werk",
+  "gnd": "4436902-5",
+  "gnd_name": "Übereinkommen über die biologische Vielfalt (1992 Juni 05)",
+  "gnd_typ": [
+   "Work"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q152805"
+  ]
+ },
+ {
+  "text": "Zeiträume",
+  "titel": "Zeiträume Bodenstedt",
+  "art": "Körperschaft",
+  "gnd": "1206607130",
+  "gnd_name": "ZeitRäume Bodenstedt",
+  "gnd_typ": [
+   "CorporateBody"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q107524841"
+  ]
+ },
+ {
+  "text": "Albedo",
+  "titel": "Albedo",
+  "art": "Sachbegriff",
+  "gnd": "4141802-5",
+  "gnd_name": "Albedo",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q101038"
+  ]
+ },
+ {
+  "text": "Kontrast",
+  "titel": "Kontrast",
+  "art": "Sachbegriff",
+  "gnd": "4123552-6",
+  "gnd_name": "Kontrast",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q690182"
+  ]
+ },
+ {
+  "text": "Abkühlung",
+  "titel": "Abkühlung",
+  "art": "Sachbegriff",
+  "gnd": "4279871-1",
+  "gnd_name": "Abkühlung",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q3929317"
+  ]
+ },
+ {
+  "text": "Westeuropa",
+  "titel": "Westeuropa",
+  "art": "Geografikum",
+  "gnd": "4079215-8",
+  "gnd_name": "Westeuropa",
+  "gnd_typ": [
+   "PlaceOrGeographicName",
+   "NaturalGeographicUnit"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q27496"
+  ]
+ },
+ {
+  "text": "Johannes Nicolaus Brønsted",
+  "titel": "Johannes Nicolaus Brønsted",
+  "art": "Person",
+  "gnd": "123077389",
+  "gnd_name": "Brønsted, J. N.",
+  "gnd_typ": [
+   "DifferentiatedPerson",
+   "Person"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q180142"
+  ]
+ },
+ {
+  "text": "Lebewesen",
+  "titel": "Lebewesen",
+  "art": "Sachbegriff",
+  "gnd": "4043831-4",
+  "gnd_name": "Organismus",
+  "gnd_typ": [
+   "SubjectHeading",
+   "SubjectHeadingSensoStricto"
+  ],
+  "wikidata": [
+   "http://www.wikidata.org/entity/Q7239"
+  ]
+ }
+]
