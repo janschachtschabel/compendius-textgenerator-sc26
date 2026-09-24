@@ -30,6 +30,7 @@ from app.knowledge.article_choice import (
     HitCheckReport,
     LlmArticleChooser,
     check_hits,
+    choice_used,
 )
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
@@ -374,13 +375,8 @@ class CompendiumService:
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
         # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here
-        choice_requested = request.article_choice or self.settings.llm_article_choice_default
-        choice_note = self.llm_unavailable() if choice_requested == "llm" else None
-        budget: RequestBudget | None = None
-        choice: ArticleChoiceJob | None = None
-        if choice_requested == "llm" and choice_note is None and self.llm is not None:
-            budget = self.llm.open_budget()
-            choice = ArticleChoiceJob(self.llm.client, budget, deadline)
+        choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline)
+        budget = choice.budget if choice is not None else None
         prepared = self.prepare(request, deadline, choice)
         want_world = "world" in request.parts
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
@@ -441,8 +437,7 @@ class CompendiumService:
         # Enrichment only means something where the LLM actually wrote a block
         enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
         hit_check = prepared.hit_check
-        chose = resolution.method == CHOSEN_BY_LLM or (hit_check is not None and hit_check.answered)
-        choice_used = "llm" if chose else "rule-based"
+        article_choice_used = choice_used(resolution.method == CHOSEN_BY_LLM, hit_check)
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
@@ -458,7 +453,7 @@ class CompendiumService:
             generation=drafted,
             matching=world.matching,
             choice_requested=choice_requested,
-            choice_used=choice_used,
+            choice_used=article_choice_used,
             choice=prepared.article_choice,
             choice_chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
             # the model is asked for an unsure article (a chosen one stays unsure) and for full-text hits
@@ -684,6 +679,24 @@ class CompendiumService:
         keep = to_keep(parse_document(request.existing_markdown), request.regenerate_sections)
         content = {slot.id for slot in template.content_slots()}
         return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
+
+    def article_choice_job(
+        self, requested: str | None, deadline: Deadline | None
+    ) -> tuple[str, str | None, ArticleChoiceJob | None]:
+        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D37).
+
+        The default ``llm`` (LLM_ARTICLE_CHOICE_DEFAULT) only applies where an LLM is configured; without one the
+        rules choose and nothing is noted, so a service without a b-api does not report a missing LLM in every
+        answer. A request that asks for ``llm`` itself gets the note.
+        """
+        default = self.settings.llm_article_choice_default if self.llm is not None else "rule-based"
+        wanted = requested or default
+        if wanted != "llm":
+            return wanted, None, None
+        note = self.llm_unavailable()
+        if note is not None or self.llm is None:
+            return wanted, note, None
+        return wanted, None, ArticleChoiceJob(self.llm.client, self.llm.open_budget(), deadline)
 
     def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""

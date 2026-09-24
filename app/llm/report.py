@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
+from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.extraction import ExtractionReport
@@ -14,7 +14,6 @@ NOTHING_CONTRIBUTED = (
     "LLM hat keinen Artikel gewählt, keinen Absatz zugeordnet und keinen Baustein ausgewählt oder geschrieben; "
     "Regelmodus verwendet"
 )
-NAMED_TITLE_MISSING = "genannter Titel ist kein Artikel des Archivs"
 MODEL_KNOWLEDGE_NOTE = (
     "Sätze mit Evidenzgrad=Modellwissen stammen aus dem Wissen des Sprachmodells, nicht aus den "
     "aufgeführten Quellen, und sind nicht belegt."
@@ -66,22 +65,7 @@ def build_llm_report(
         }
     if note is None and extraction_used == generation_used == matching_used == choice_used == "rule-based":
         note = NOTHING_CONTRIBUTED
-    choice_fallback = choice.fallback if choice else None
-    if choice is not None and choice.named and choice_used == "rule-based":
-        choice_fallback = NAMED_TITLE_MISSING
-    choice_block: dict[str, Any] = {
-        "requested": choice_requested,
-        "used": choice_used,
-        "needed": choice_needed,  # the rules were unsure
-        "asked": bool(choice and choice.offered),  # false when the rules were sure or the LLM is not usable
-        "offered": choice.offered if choice else 0,
-        "chosen": choice_chosen,
-        "named": choice.named if choice else None,
-        "fallback": choice_fallback,
-        "hits_checked": hit_check.checked if hit_check else 0,
-        "hits_dropped": list(hit_check.dropped) if hit_check else [],
-        "hits_fallback": hit_check.fallback if hit_check else None,
-    }
+    article_choice = choice_block(choice_requested, choice_used, choice_needed, choice, choice_chosen, hit_check)
     extraction_block: dict[str, Any] = {
         "requested": extraction_requested,
         "used": extraction_used,
@@ -116,7 +100,7 @@ def build_llm_report(
     }
     audit: dict[str, Any] = {
         "note": note,
-        "article_choice": choice_block,
+        "article_choice": article_choice,
         "matching": matching_block,
         "extraction": extraction_block,
         "generation": generation_block,
@@ -137,9 +121,9 @@ def build_llm_report(
         front["matching"] = {
             key: matching_block[key] for key in ("paragraphs", "answered", "fallback_paragraphs", "fallbacks")
         }
-    if choice_block["asked"] or choice_block["hits_checked"]:
+    if article_choice["asked"] or article_choice["hits_checked"]:
         keys = ("offered", "chosen", "fallback", "hits_checked", "hits_dropped", "hits_fallback")
-        front["article_choice"] = {key: choice_block[key] for key in keys}
+        front["article_choice"] = {key: article_choice[key] for key in keys}
     if enrichment_used == "model-knowledge":
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.

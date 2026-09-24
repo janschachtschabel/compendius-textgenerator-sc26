@@ -1444,6 +1444,25 @@ API.
   ohne den Qualitätsgewinn billiger ist. Verworfen: nur die Absätze an das LLM zu geben, bei denen die Policy kein
   sicheres Signal hat (47 % der Absätze, 71.173 Tokens): macro-F1 0,54 und so viele Fehlzuordnungen wie die Regeln,
   weil die Policy auch ihre „sicheren“ Absätze zu 39 % falsch zuordnet. Der Prompt bleibt `paragraph_assignment` v1.
+  **Nachtrag 2026-09-24, zweiter Lauf:** Mit gedrehter Reihenfolge der Absätze, also anderen Stapeln und ohne
+  Zwischenspeicher der b-api, kam 50 und 400 auf 0,694 und 25 und 700 auf 0,727 (micro-F1 0,820 und 0,826, 113 und
+  110 Fehlzuordnungen, 103.368 und 144.758 Tokens). Der Qualitätsgewinn des ersten Laufs war Streuung; die kleinen
+  Bausteine springen zwischen Läufen um bis zu 0,4. Es bleibt bei 50 und 400, weil die Einstellung gleich gut ist und
+  27 bis 29 % weniger Tokens braucht. Teil 1 dauerte mit `matcher=llm` im Median 12,0 statt 1,2 s (fünf Themen ohne
+  Zwischenspeicher). Dabei blieben bei 3 von 5 Themen die letzten Stapel bei der Standard-Strategie: Jeder Stapel
+  reserviert vorab rund 13.000 Tokens (verbraucht rund 8.000), und parallele Stapel erschöpfen
+  `LLM_MAX_TOKENS_PER_REQUEST=60.000`, bevor die ersten abrechnen. Offen; bis dahin das Budget für `matcher=llm`
+  höher setzen.
+- **D37 (2026-09-24)** `article_choice=llm` ist Vorgabe (`LLM_ARTICLE_CHOICE_DEFAULT=llm`), aber nur wo ein LLM
+  konfiguriert ist; ohne LLM wählen die Regeln, und das Audit schweigt, damit ein Dienst ohne b-api nicht in jeder
+  Antwort ein fehlendes LLM meldet. Wer `llm` ausdrücklich anfragt, bekommt den Hinweis weiterhin. Grund: gemessen
+  besser (D35) und billig. Zeit, gemessen an 30 Themen ohne Zwischenspeicher: Teil 1 im Median 1,7 s länger
+  (90. Perzentil 3,4 s), rund 930 Tokens; die Trefferprüfung braucht im Median 1,4 s, eine unsichere Artikelwahl
+  zusätzlich 1 bis 2,6 s. Die schärferen Regeln kosten gegenüber v2.0.0 keine Zeit (1,35 statt 1,37 s im Median,
+  bei warmem Dateicache). `POST /api/v2/knowledge` bekommt denselben Schalter, damit Wissenstexte und Kompendium für
+  ein Thema dieselben Artikel nennen. In `/docs` zeigen `matcher`, `article_choice`, `extraction`, `generation` und
+  `enrichment` ihre erlaubten Werte mit Erklärung, Güte, Zeit und Kosten; `matcher` bleibt dabei ein String mit
+  Werteliste im Schema, damit ein unbekannter Name weiter die deutsche 422 des Dienstes bekommt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

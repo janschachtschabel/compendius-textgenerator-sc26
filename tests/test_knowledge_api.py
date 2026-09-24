@@ -12,6 +12,9 @@ from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.settings import Settings
+from tests.test_article_choice import rating
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 
 
 @pytest.fixture(scope="module")
@@ -54,6 +57,26 @@ def test_the_corpus_can_be_kept_small(client: TestClient) -> None:
     assert {article["origin"] for article in small["articles"]} <= {"primary", "same_topic"}
     wide = client.post("/api/v2/knowledge", json={"topic": "Optik", "max_articles": 12}).json()
     assert len(wide["articles"]) >= len(small["articles"])
+
+
+def test_the_llm_can_drop_the_full_text_hits_that_do_not_fit(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The same article choice as a compendium (D35), so both answers name the same articles for a topic
+    fake = FakeBApi(rating({"Augenoptiker": 0}))
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake, per_request=100_000))  # type: ignore[attr-defined]
+    body = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"}).json()
+
+    titles = [article["title"] for article in body["articles"]]
+    assert "Augenoptiker" not in titles and "Lichtmikroskop" in titles
+    choice = body["article_choice"]
+    assert choice["used"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"] and choice["tokens"] == 24
+
+
+def test_the_rules_choose_unless_the_llm_is_asked_for(client: TestClient) -> None:
+    assert client.post("/api/v2/knowledge", json={"topic": "Optik"}).json()["article_choice"] is None
+    asked = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"}).json()
+    assert asked["article_choice"]["used"] == "rule-based" and "nicht konfiguriert" in asked["article_choice"]["note"]
 
 
 def test_the_text_is_capped_and_says_so(client: TestClient) -> None:

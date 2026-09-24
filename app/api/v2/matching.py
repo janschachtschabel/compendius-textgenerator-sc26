@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
+from app.domain.requests import MatcherName
 from app.matching.eval_runner import DEFAULT_MATCHERS, compare_topic, find_gold
 from app.matching.registry import list_strategies
 from app.service import TopicNotFoundError
@@ -21,7 +22,7 @@ admin = APIRouter(prefix="/api/v2/matching", tags=["matching-admin"], dependenci
 
 class CompareRequest(BaseModel):
     topic: str = Field(..., min_length=1, max_length=300, description="The topic the strategies run on")
-    matchers: list[str] = Field(
+    matchers: list[MatcherName] = Field(
         default_factory=lambda: list(DEFAULT_MATCHERS),
         min_length=1,
         max_length=8,

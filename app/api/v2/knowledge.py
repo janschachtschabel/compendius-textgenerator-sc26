@@ -7,7 +7,7 @@ corpus builder would use, with their sections, optionally limited to single arch
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, Request
 from pydantic import BaseModel, Field
@@ -15,6 +15,7 @@ from pydantic import BaseModel, Field
 from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.limits import rate_limited
 from app.domain.models import Resolution, Source
+from app.domain.requests import ARTICLE_CHOICE_HELP, ArticleChoice
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
@@ -33,6 +34,7 @@ class KnowledgeRequest(BaseModel):
     )
     max_chars: int | None = Field(None, ge=100, description="Cap over all articles; cuts at section borders")
     template_id: str | None = Field(None, description="Its slots steer the full-text search for extra articles")
+    article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
 
 
 class KnowledgeSection(BaseModel):
@@ -61,6 +63,12 @@ class KnowledgeResponse(BaseModel):
     articles: list[KnowledgeArticle]
     chars: int
     truncated: bool = Field(description="True when max_chars ended the answer early")
+    article_choice: dict[str, Any] | None = Field(
+        None,
+        description="What article_choice=llm asked and decided: the article the LLM chose (chosen) or why the "
+        "rules' one stayed (fallback, note), the full-text hits it dropped (hits_dropped) and the tokens; null when "
+        "the rules chose alone",
+    )
 
 
 def _sections(source: Source) -> list[KnowledgeSection]:
@@ -94,10 +102,12 @@ EXAMPLES = {
         "value": {"topic": "Optik"},
     },
     "mit den Schaltern": {
-        "summary": "Gezielt ein Archiv, begrenzte Artikelzahl und ein Zeichendeckel",
+        "summary": "Gezielt ein Archiv, begrenzte Artikelzahl, ein Zeichendeckel und die Artikelwahl durch das LLM",
         "description": (
             "archives fragt einzelne Archive (unbekannte id: 404), max_articles begrenzt die zusätzlichen "
-            "Artikel, max_chars deckelt den Text über alle Artikel und setzt truncated."
+            "Artikel, max_chars deckelt den Text über alle Artikel und setzt truncated. article_choice llm lässt "
+            "das LLM entscheiden, wo die Regeln unsicher sind, und unpassende Volltexttreffer verwerfen; rule-based "
+            "nimmt die Regeln allein. Ohne b-api wählen die Regeln, und article_choice in der Antwort sagt warum."
         ),
         "value": {
             "topic": "Optik",
@@ -105,6 +115,7 @@ EXAMPLES = {
             "max_articles": 6,
             "max_chars": 40000,
             "template_id": "sc26",
+            "article_choice": "llm",
         },
     },
 }
@@ -129,13 +140,22 @@ def knowledge(
     articles and sets ``truncated`` when it bit. ``template_id`` only decides which search queries look
     for the further articles.
 
+    ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
+    ``llm`` the LLM decides where the rules are unsure and drops the full-text hits that do not fit, and
+    ``article_choice`` in the answer says what it did and what it cost.
+
     A topic the archives do not have is a 404 carrying the resolution, so the answer names the
     alternatives instead of coming back empty.
     """
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
-    topic, resolution, sources = corpus_for_topic(
-        service, registry, payload.topic, template_id=payload.template_id, max_articles=payload.max_articles
+    topic, resolution, sources, choice = corpus_for_topic(
+        service,
+        registry,
+        payload.topic,
+        template_id=payload.template_id,
+        max_articles=payload.max_articles,
+        article_choice=payload.article_choice,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []
@@ -160,4 +180,5 @@ def knowledge(
         articles=articles,
         chars=total,
         truncated=truncated,
+        article_choice=choice,
     )

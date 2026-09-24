@@ -2,13 +2,14 @@
 
 Measured against the gold standard on 2026-09-23 (docs/entwicklung/03-matching.md): macro-F1 0.63 against 0.43 for
 hybrid_light with Model2Vec on the same 603 paragraphs, at about 240 tokens per paragraph. On 2026-09-24 batches of
-50 paragraphs cut to 400 characters gave 0.72 against 0.66 for 25 and 700 on the same 597 paragraphs, better or as
-good in every block, at about 177 instead of 241 tokens per paragraph (one run, docs/entwicklung/messung/
-mc_llm_sparvarianten.py); sending only the paragraphs the policy is unsure about gave 0.54. The model sees what a
-labeller sees: the content blocks with their description, what belongs in them and what does not, the template's
-rules for the assignment, and per paragraph the article, its role, the heading path and the text cut to
-``TEXT_CHARS``. It answers per paragraph with a block key or "keiner" and a confidence. Batches of ``BATCH_SIZE``
-paragraphs run in parallel.
+50 paragraphs cut to 400 characters gave 0.72 and 0.69 in two runs on the same 597 paragraphs, 25 and 700 gave 0.66
+and 0.73: as good within the spread of the model, at about 177 instead of 241 tokens per paragraph (D36,
+docs/entwicklung/messung/mc_llm_sparvarianten.py); sending only the paragraphs the policy is unsure about gave 0.54.
+
+The model sees what a labeller sees: the content blocks with their description, what belongs in them and what does
+not, the template's rules for the assignment, and per paragraph the article, its role, the heading path and the text
+cut to ``TEXT_CHARS``. It answers per paragraph with a block key or "keiner" and a confidence. Batches of
+``BATCH_SIZE`` paragraphs run in parallel.
 
 The rule-based assignment runs first and stays the fallback: a paragraph whose batch fails (b-api, budget, time,
 unreadable answer) or that the answer leaves out or gives an unknown block keeps the policy's decision, and the
@@ -35,7 +36,7 @@ from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
 
-BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters beat 25 and 700 on the gold, at 27 % fewer tokens
+BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters match 25 and 700 on the gold at 27 % fewer tokens
 TEXT_CHARS = 400  # per paragraph, as in the measurement of 2026-09-24
 OUTPUT_TOKENS_PER_PARAGRAPH = 40
 NONE_KEY = "keiner"

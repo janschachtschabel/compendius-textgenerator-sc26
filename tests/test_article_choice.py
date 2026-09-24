@@ -11,9 +11,19 @@ import pytest
 
 from app.domain.models import ArticleSection, Paragraph, Source
 from app.domain.requests import GenerateRequest
-from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, LlmArticleChooser, check_hits
+from app.knowledge.article_choice import (
+    NAMED_TITLE_MISSING,
+    UNREADABLE,
+    ArticleChoiceJob,
+    ArticleChoiceReport,
+    HitCheckReport,
+    LlmArticleChooser,
+    check_hits,
+    choice_block,
+)
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
+from app.settings import Settings
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
@@ -130,6 +140,14 @@ def test_an_unreadable_hit_check_keeps_every_hit() -> None:
     assert gone == set() and report.fallback == UNREADABLE and report.calls == 1 and not report.answered
 
 
+def test_a_named_title_the_archive_lacks_is_the_reason_even_when_the_hit_check_answered() -> None:
+    # The hit check answering makes the switch "used"; that must not hide why the article stayed the rules' one
+    choice = ArticleChoiceReport(offered=2, named="Gibt es nicht", calls=1)
+    hits = HitCheckReport(checked=1, rated=3, calls=1, prompts=[HIT_PROMPT])
+    block = choice_block("llm", "llm", True, choice, None, hits)
+    assert block["fallback"] == NAMED_TITLE_MISSING and block["chosen"] is None and block["hits_fallback"] is None
+
+
 def test_an_unsure_resolution_is_decided_by_the_chooser(service: CompendiumService) -> None:
     offered: list[list[str]] = []
 
@@ -221,3 +239,32 @@ def test_article_choice_llm_without_a_usable_llm_keeps_the_rules_choice(service:
 def test_the_rule_based_default_adds_no_llm_block(service: CompendiumService) -> None:
     result = service.generate(GenerateRequest(topic="Geometrische", parts=["world"]))
     assert result.audit.llm is None and result.resolution.method == "suggestion"
+
+
+def test_the_shipped_default_lets_the_llm_choose_the_articles() -> None:
+    assert Settings(_env_file=None).llm_article_choice_default == "llm"  # type: ignore[call-arg]
+
+
+def test_the_llm_default_stays_silent_without_a_configured_llm(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # A default must not put "LLM nicht konfiguriert" into every answer of a service that has no b-api
+    monkeypatch.setattr(service.settings, "llm_article_choice_default", "llm")
+    assert service.llm is None
+    result = service.generate(GenerateRequest(topic="Geometrische", parts=["world"]))
+    assert result.audit.llm is None and result.resolution.method == "suggestion"
+
+
+def test_with_a_configured_llm_the_default_asks_it_and_the_rules_can_still_be_chosen(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(service.settings, "llm_article_choice_default", "llm")
+    fake = FakeBApi(by_prompt({"wahl": 3, "titel": ""}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    chosen = service.generate(GenerateRequest(topic="Geometrische", parts=["world"]))
+    assert chosen.resolution.method == "llm" and chosen.audit.llm is not None
+    assert chosen.audit.llm["article_choice"]["requested"] == "llm"
+
+    calls = len(fake.bodies)
+    ruled = service.generate(GenerateRequest(topic="Geometrische", article_choice="rule-based", parts=["world"]))
+    assert ruled.resolution.method == "suggestion" and len(fake.bodies) == calls

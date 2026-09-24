@@ -34,17 +34,20 @@ EXAMPLES = {
         "value": {"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000},
     },
     "mit den Schaltern": {
-        "summary": "Was sonst noch geht: Template, Matching, die drei KI-Schalter, Facetten",
+        "summary": "Was sonst noch geht: Template, Artikelwahl, Zuordnung, die drei Schreib-Schalter, Facetten",
         "description": (
-            "extraction wählt die Sätze, generation formuliert die Bausteine, enrichment entscheidet, ob das "
-            "Modell eigenes Wissen beisteuern darf. Alle drei fallen auf rule-based zurück, wenn die b-api "
-            "fehlt, und audit sagt hinterher, was wirklich lief."
+            "article_choice wählt die Artikel (rule-based oder llm), matcher ordnet die Absätze den Bausteinen zu "
+            "(hybrid_light, bm25, char_tfidf, lexicon_only oder llm; die Liste mit Güte, Zeit und Kosten steht unter "
+            "GET /api/v2/matching/strategies). extraction wählt die Sätze, generation formuliert die Bausteine, "
+            "enrichment entscheidet, ob das Modell eigenes Wissen beisteuern darf. Jeder LLM-Schalter fällt auf die "
+            "Regeln zurück, wenn die b-api fehlt, und audit sagt hinterher, was wirklich lief."
         ),
         "value": {
             "topic": "Optik",
             "parts": ["world", "curricula"],
             "target_length": 12000,
             "template_id": "sc26",
+            "article_choice": "llm",
             "matcher": "hybrid_light",
             "extraction": "llm",
             "generation": "llm-fast",
@@ -52,6 +55,22 @@ EXAMPLES = {
             "facets_visible": True,
             "max_articles": 12,
             "empty_slot_policy": "note",
+        },
+    },
+    "Artikelwahl und Zuordnung durch das LLM": {
+        "summary": "Das LLM wählt die Artikel und ordnet die Absätze zu; der Text bleibt wörtlich aus den Quellen",
+        "description": (
+            "article_choice llm entscheidet, wo die Regeln unsicher sind - hier das mehrdeutige Wort Linse -, und "
+            "verwirft unpassende Volltexttreffer. matcher llm lässt das LLM jeden Absatz einem Baustein zuordnen. "
+            "Beides fällt ohne b-api auf die Regeln zurück; Güte, Sekunden und Tokens stehen in den Hilfetexten der "
+            "beiden Felder."
+        ),
+        "value": {
+            "topic": "Physik: Linse",
+            "parts": ["world"],
+            "article_choice": "llm",
+            "matcher": "llm",
+            "target_length": 12000,
         },
     },
     "mit einer Sammlung (Teil 3)": {
@@ -97,7 +116,17 @@ def generate_compendium(
     and ``enrichment`` decides whether the model may add knowledge of its own (``sources-only`` or
     ``model-knowledge``, which is marked in the text). ``audit`` says afterwards what really ran.
 
-    **What else.** ``matcher`` picks the strategy (unknown: 422), ``template_id`` the template,
+    **Which articles.** ``article_choice`` decides who picks the articles: ``rule-based`` takes the rules
+    alone, ``llm`` (the default where an LLM is configured) lets the model decide where the rules are unsure
+    and drop the full-text hits that do not fit the topic. ``resolution`` says how the article was found and
+    whether that is sure.
+
+    **Which block.** ``matcher`` decides how the paragraphs find their block: ``hybrid_light`` (default),
+    ``bm25``, ``char_tfidf`` and ``lexicon_only`` run locally, ``llm`` lets the model assign every paragraph.
+    What each does, how good it is and what it costs: the help text of the field and
+    ``GET /api/v2/matching/strategies``. An unknown name is a 422.
+
+    **What else.** ``template_id`` picks the template,
     ``max_articles`` the size of the corpus, ``facets_visible`` and ``empty_slot_policy`` override the
     settings and the template. ``existing_markdown`` with ``regenerate_sections`` makes only the named
     blocks anew and keeps the rest word for word. ``frontmatter_in_markdown: false`` starts the text at

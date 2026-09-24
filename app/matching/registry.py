@@ -48,18 +48,46 @@ class HybridLightMatcher:
         return fused
 
 
+# macro-F1 at the gold standard (eval/gold) and time of the matching per compendium: docs/entwicklung, M4, M12, M13
 STRATEGIES: dict[str, dict[str, Any]] = {
     "hybrid_light": {
         "name": "Hybrid light (Lexikon + BM25 + Char-TF-IDF, optional Model2Vec)",
+        "description": "Standard. Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Vektoren, "
+        "wenn MODEL2VEC_PATH gesetzt ist; die Policy entscheidet dann je Absatz. macro-F1 0,43 am Goldstandard, "
+        "rund 0,3 s je Kompendium, keine Tokens.",
         "cost": "0 €",
         "hardware": "CPU",
         "recommended": True,
     },
-    "bm25": {"name": "Okapi BM25", "cost": "0 €", "hardware": "CPU", "recommended": False},
-    "char_tfidf": {"name": "Zeichen-TF-IDF (Komposita)", "cost": "0 €", "hardware": "CPU", "recommended": False},
-    "lexicon_only": {"name": "Nur Überschriften-Lexikon", "cost": "0 €", "hardware": "CPU", "recommended": False},
+    "bm25": {
+        "name": "Okapi BM25",
+        "description": "Nur Okapi BM25 über Überschriftenpfad und Text gegen die Beschreibung der Bausteine. "
+        "macro-F1 0,36, unter 0,1 s je Kompendium.",
+        "cost": "0 €",
+        "hardware": "CPU",
+        "recommended": False,
+    },
+    "char_tfidf": {
+        "name": "Zeichen-TF-IDF (Komposita)",
+        "description": "Nur Zeichen-TF-IDF; trägt deutsche Komposita, die BM25 als ein Wort sieht. macro-F1 0,40, "
+        "rund 0,25 s je Kompendium.",
+        "cost": "0 €",
+        "hardware": "CPU",
+        "recommended": False,
+    },
+    "lexicon_only": {
+        "name": "Nur Überschriften-Lexikon",
+        "description": "Nur das Überschriften-Lexikon und die Einleitung, kein Ranker: ein Absatz kommt nur in einen "
+        "Baustein, wenn seine Überschrift ihn nennt. macro-F1 0,35, unter 0,1 s je Kompendium.",
+        "cost": "0 €",
+        "hardware": "CPU",
+        "recommended": False,
+    },
     "llm": {
         "name": "LLM ordnet jeden Absatz zu; wo es nicht entscheidet, gilt die Standard-Strategie",
+        "description": "Das LLM der b-api ordnet jeden Absatz einem Baustein zu oder keinem, 50 Absätze zu 400 "
+        "Zeichen je Aufruf; wo es nicht entscheidet, gilt die Standard-Strategie. macro-F1 0,69 und 0,72 in zwei "
+        "Läufen am Goldstandard, rund 29.000 Tokens je Kompendium; Teil 1 dauerte im Median 12,0 statt 1,2 s.",
         "cost": "rund 180 Tokens je Absatz (gemessen 177 am Goldstandard, D36)",
         "hardware": "b-api",
         "recommended": False,

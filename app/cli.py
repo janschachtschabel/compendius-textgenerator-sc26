@@ -14,7 +14,7 @@ from app.cli_common import cli_service
 from app.cli_eval import add_eval_commands
 from app.cli_lehrplan import add_lehrplan_commands
 from app.cli_zim import add_zim_commands
-from app.domain.requests import GenerateRequest
+from app.domain.requests import MATCHERS, GenerateRequest
 from app.logging import configure_logging
 from app.service import TopicNotFoundError
 from app.settings import get_settings
@@ -142,7 +142,13 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--knowledge-collection-id", default=None, help="Sammlung, deren OER-Materialien Teil 1 speisen")
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
     gen.add_argument("--template", default=None)
-    gen.add_argument("--matcher", default=None)
+    gen.add_argument(
+        "--matcher",
+        default=None,
+        choices=list(MATCHERS),
+        help="Wie die Absätze ihren Baustein finden; ohne Angabe MATCHER_DEFAULT (llm braucht LLM_ENABLED und "
+        "B_API_KEY)",
+    )
     gen.add_argument(
         "--article-choice",
         default=None,

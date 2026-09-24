@@ -258,14 +258,19 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 
 ## LLM-Schicht (optional)
 
-Standard ist der Regelmodus ohne LLM. Mit `LLM_ENABLED=true` und `B_API_KEY` lassen sich zwei Schritte von
-Teil 1 unabhängig voneinander an das LLM geben (D33): je Anfrage über `extraction` und `generation`, global
-über `LLM_EXTRACTION_DEFAULT` und `LLM_GENERATION_DEFAULT`. Ein dritter Schalter, `enrichment`, entscheidet,
-ob das schreibende Modell über die Quellen hinausgehen darf. Vor Teil 1 kann das LLM außerdem über eine unsichere
-Artikelwahl entscheiden (`article_choice`, siehe unten).
+Ohne LLM läuft alles im Regelmodus. Mit `LLM_ENABLED=true` und `B_API_KEY` entscheidet das LLM von sich aus nur
+über unsichere Artikel (`article_choice`, Vorgabe `llm`, D37, siehe unten). Die übrigen Schritte von Teil 1 gibt man
+je Anfrage oder global an das LLM (D33): die Zuordnung der Absätze über `matcher`, die Satzauswahl über
+`extraction` (`LLM_EXTRACTION_DEFAULT`) und das Schreiben über `generation` (`LLM_GENERATION_DEFAULT`). Ein weiterer
+Schalter, `enrichment`, entscheidet, ob das schreibende Modell über die Quellen hinausgehen darf. `/docs` zeigt zu
+jedem Schalter die erlaubten Werte, was sie tun und was sie kosten.
 
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
+| `article_choice` | `rule-based` | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
+| | `llm` (Vorgabe mit LLM) | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
+| `matcher` | `hybrid_light` (Standard), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
+| | `llm` | ordnet jeden Absatz einem Baustein zu oder keinem; rund 29.000 Tokens je Kompendium, Teil 1 im Median 12 statt 1,2 s |
 | `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
 | `generation` | `rule-based` (Standard) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
@@ -293,12 +298,17 @@ Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`a
 LLM gilt die Standard-Strategie ganz, und der Vorspann nennt `matcher_requested: llm`. Bausteine mit Absätzen, die
 das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstandard am 2026-09-23: macro-F1 0,66
 statt 0,43, rund 240 Tokens je Absatz mit 25 Absätzen je Aufruf und 700 Zeichen, im Median rund 39.000 je
-Kompendium. Am 2026-09-24 gaben 50 Absätze je Aufruf mit 400 Zeichen auf denselben Absätzen 0,72, in keinem Baustein
-schlechter, bei rund 177 Tokens je Absatz (ein Lauf); das ist seitdem die Einstellung. Nur die Absätze, bei denen die
-Policy unsicher ist, an das LLM zu geben, brachte 0,54. Große Themen stoßen an `LLM_MAX_TOKENS_PER_REQUEST`; für die
-übrigen Absätze entscheidet dann die Standard-Strategie.
+Kompendium. Seit 2026-09-24 sind es 50 Absätze je Aufruf mit 400 Zeichen (D36): In zwei Läufen auf denselben Absätzen
+kam das auf 0,72 und 0,69, die alte Einstellung auf 0,66 und 0,73 - gleich gut im Rahmen der Streuung, aber mit
+27 bis 29 % weniger Tokens, rund 177 je Absatz und 29.000 je Kompendium. Teil 1 dauerte mit `matcher=llm` im Median
+12,0 statt 1,2 s (fünf Themen). Nur die Absätze, bei denen die Policy unsicher ist, an das LLM zu geben, brachte 0,54.
+Große Themen stoßen an `LLM_MAX_TOKENS_PER_REQUEST`: Jeder Stapel reserviert vorab rund 13.000 Tokens, und bei 60.000
+blieben am 2026-09-24 für 3 von 5 Themen die letzten ein bis zwei Stapel bei der Standard-Strategie (18 % der
+Absätze). Wer `matcher=llm` nutzt, setzt das Budget höher, etwa auf 120.000.
 
-**Artikelwahl durch das LLM (`article_choice: llm`, D35).** Die Regeln lösen jedes Thema zuerst selbst auf und
+**Artikelwahl durch das LLM (`article_choice: llm`, D35, D37).** Das ist die Vorgabe, sobald ein LLM konfiguriert
+ist (`LLM_ARTICLE_CHOICE_DEFAULT=llm`); ohne LLM wählen die Regeln, ohne Hinweis im Audit, und `article_choice:
+rule-based` wählt sie je Anfrage. Die Regeln lösen jedes Thema zuerst selbst auf und
 halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
 einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
 und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
@@ -311,7 +321,11 @@ Anfragen. Außerdem prüft das LLM die Volltexttreffer des Korpus: Es benotet al
 Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und die Volltexttreffer mit 0 fallen heraus
 (`hits_dropped`). Gemessen an den blind vergebenen Noten der 20 Themen aus M1: 11 von 16 unpassenden Treffern
 verworfen, kein passender; statt 26 druckte die Standard-Strategie 10 Absätze aus unpassenden Artikeln, rund 890
-Tokens je Thema mit Treffern.
+Tokens je Thema mit Treffern. Zeit, gemessen am 2026-09-24 an 30 Themen, die keine frühere Messung gestellt hatte:
+im Median 1,7 s mehr je Kompendium (90. Perzentil 3,4 s) bei rund 930 Tokens; die Trefferprüfung braucht im Median
+1,4 s, eine unsichere Artikelwahl zusätzlich 1 bis 2,6 s. Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil
+1 im Median 1,35 statt 1,37 s). Derselbe Schalter steht in `POST /api/v2/knowledge`, damit Wissenstexte und
+Kompendium für ein Thema dieselben Artikel nennen.
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
@@ -476,7 +490,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` oder `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35) |
+| `LLM_ARTICLE_CHOICE_DEFAULT` | `llm` | Vorgabe für `article_choice`: `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37) oder `rule-based` |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |

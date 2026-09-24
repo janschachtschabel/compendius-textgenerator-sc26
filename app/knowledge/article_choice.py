@@ -38,6 +38,7 @@ NO_SUBJECT = "nicht angegeben"
 UNREADABLE = "Antwort nicht lesbar"
 INVALID_NUMBER = "Antwort ohne gültige Nummer"
 NOTHING_FITS = "kein Kandidat passt, kein Titel genannt"
+NAMED_TITLE_MISSING = "genannter Titel ist kein Artikel des Archivs"
 HIT_ORIGIN = "search"  # the corpus articles the hit check may drop: full-text hits for a block
 HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
 HIT_OUTPUT_TOKENS_PER_ARTICLE = 12
@@ -177,6 +178,42 @@ def check_hits(job: ArticleChoiceJob, topic: str, sources: Sequence[Source]) -> 
     gone = [s for a, s in alias.items() if s.origin == HIT_ORIGIN and _number(notes.get(a)) == 0]
     report.dropped = [s.title for s in gone]
     return {s.source_id for s in gone}, report
+
+
+def choice_used(chose_article: bool, hit_check: HitCheckReport | None) -> str:
+    """``llm`` when the model's answer decided anything, the article or which full-text hits stay; else the rules."""
+    return "llm" if chose_article or (hit_check is not None and hit_check.answered) else "rule-based"
+
+
+def choice_block(
+    requested: str,
+    used: str,
+    needed: bool,
+    choice: ArticleChoiceReport | None,
+    chosen: str | None,
+    hit_check: HitCheckReport | None,
+) -> dict[str, Any]:
+    """What article_choice asked and decided, for the audit of a compendium and the answer of /knowledge.
+
+    ``used`` is ``llm`` when the model's answer decided anything, the article or the hits; ``needed`` says whether
+    there was anything to ask, ``chosen`` is the article the model decided on.
+    """
+    fallback = choice.fallback if choice else None
+    if choice is not None and choice.named and chosen is None:
+        fallback = NAMED_TITLE_MISSING
+    return {
+        "requested": requested,
+        "used": used,
+        "needed": needed,
+        "asked": bool(choice and choice.offered),  # false when the rules were sure or the LLM is not usable
+        "offered": choice.offered if choice else 0,
+        "chosen": chosen,
+        "named": choice.named if choice else None,
+        "fallback": fallback,
+        "hits_checked": hit_check.checked if hit_check else 0,
+        "hits_dropped": list(hit_check.dropped) if hit_check else [],
+        "hits_fallback": hit_check.fallback if hit_check else None,
+    }
 
 
 def _read_object(text: str) -> dict[str, Any] | None:
