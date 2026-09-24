@@ -678,7 +678,8 @@ richtigen Titel, nutzt der neue Dienst schon: Mit `article_choice=llm` darf das 
 einen Titel nennen, der nur zählt, wenn das Archiv ihn als Artikel hat (D35). Offen ist allein, ob das LLM auch die
 drei sicheren Fehler der Regeln fangen soll; dafür müsste es auch sichere Auflösungen mehrdeutiger Wörter prüfen, und
 das wäre eigens zu messen. Rohdaten: `m17_alte_artikelwahl_gpt41mini.json`, `m17_alte_artikelwahl.json`
-(`gpt-5.6-luna`); nur Titel, kein Artikeltext.
+(`gpt-5.6-luna`); nur Titel, kein Artikeltext. `gpt-4.1-mini` diente hier nur der Nachstellung des alten Dienstes;
+es ist veraltet und teurer und wird sonst nicht verwendet (M19, D44).
 
 ## M18 GND-Nummern aus dem Archiv (24.09.2026)
 
@@ -731,3 +732,38 @@ Index überein. Die eine Abweichung ist keine: Der Artikel *England* ist das Lan
 ist in Wikidata mit dem historischen Königreich verknüpft (Q179876). Die neun Umbenannten ließen sich mit der Tabelle
 `redirect` als drittem Dump auflösen. Rohdaten: `m18_entitaeten_gnd.json` (Kennungen je Entität),
 `m18_gnd_stichprobe.json`; nur Begriffe, Titel und Nummern.
+
+## M19 gpt-6-luna gegen gpt-5.6-luna (24.09.2026)
+
+**Aufbau:** `gpt-6-luna` ist an der b-api der Nachfolger von `gpt-5.6-luna`, nach Angabe zum halben Preis je Token.
+Es ist wie sein Vorgänger ein Reasoning-Modell: `max_tokens` beantwortet es mit HTTP 400 und verlangt
+`max_completion_tokens`. Der Client erkannte es daran bisher nicht, D44 behebt das. Verglichen wurden die drei
+LLM-Entscheidungen des Dienstes an denselben Goldsätzen, mit den Skripten von M9, M10 und M12 und
+`B_API_MODEL=gpt-6-luna`; die Werte von `gpt-5.6-luna` stammen aus diesen Messungen. Zeiten verschiedener Läufe lassen
+sich nicht vergleichen, weil die b-api über den Tag schwankt. Deshalb bekamen beide Modelle dieselben acht frischen
+Prompts abwechselnd in denselben Minuten (`mc_latenz_modelle.py`, zweimal gelaufen).
+
+| | `gpt-5.6-luna` | `gpt-6-luna` |
+|---|---|---|
+| Artikelwahl, 94 Anfragen (18 unsichere entscheidet das LLM) | 91 richtig | 90 richtig |
+| Tokens der Artikelwahl, 18 Aufrufe | 17.116 | 17.642 |
+| Trefferprüfung, 47 Treffer: unpassende verworfen | 11 von 16 | 10 von 16 |
+| dabei passende verworfen | 0 von 31 | 0 von 31 |
+| Tokens der Trefferprüfung | rund 14.200 | 15.924 |
+| LLM-Zuordner, Goldpool: macro-F1 / micro-F1 | 0,720 und 0,694 / 0,820 (zwei Läufe) | 0,703 / 0,814 |
+| falsch zugeordnet | 113 von 550 | 98 von 519 |
+| Tokens des Zuordners | 105.727 und 103.368 | 108.266 |
+| Latenz bei gleichen frischen Prompts, Median | 1,79 s und 1,60 s | 2,43 s und 2,75 s |
+| Ausgabetokens dabei, Median | 88 und 64 | 166 und 178 |
+
+Die eine falsche Artikelwahl mehr ist „Lichtlehre“: `gpt-6-luna` nannte *Hesychasmus*, `gpt-5.6-luna` *Optik*. Bei
+„Musik: Satz“ wählte es *Tonsatz* statt *Satz (Musikstück)*, beide nach dem Gold richtig; die übrigen 92 Anfragen enden
+beim selben Artikel. Der Zuordner brauchte auf dem Goldpool im Median 12,6 s je Thema, `gpt-5.6-luna`
+am Vormittag 6,8 s; der Unterschied ist größer als der im gleichzeitigen Vergleich und wohl zum Teil Tagesschwankung.
+
+**Ergebnis:** Gleichauf in der Güte: je eine Entscheidung weniger bei Artikelwahl und Trefferprüfung, beim Zuordner
+zwischen den beiden Läufen von `gpt-5.6-luna`. Die Tokens der Aufgaben des Dienstes liegen gleich bis 12 % höher, zum
+halben Preis also bei rund 45 % geringeren Kosten. Der Preis ist die Zeit: je Aufruf rund 0,6 bis 1,2 s mehr, ein
+Drittel bis zwei Drittel. Übernommen als Vorgabe (D44). `gpt-4.1-mini`, das Modell des alten Dienstes, wird nicht
+mehr verwendet: veraltet und teurer; es diente nur der Nachstellung in M17. Rohdaten: `m19_aufloesung_gpt6.json`,
+`m19_treffer_gpt6.json`, `m19_zuordnung_gpt6.json`, `m19_latenz.json`.

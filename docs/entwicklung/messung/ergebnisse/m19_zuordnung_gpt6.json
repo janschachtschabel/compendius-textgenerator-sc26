@@ -1,0 +1,83 @@
+{
+ "wege": {
+  "llm": {
+   "macro_f1": 0.7030450275994613,
+   "micro_f1": 0.8135265700483091,
+   "assigned": 519,
+   "misassigned": 98,
+   "tokens": 108266,
+   "llm_paragraphs": 597,
+   "fallback": 0,
+   "seconds": 127.5,
+   "seconds_per_topic": {
+    "Barockliteratur": 16.18,
+    "Bruchrechnung": 9.3,
+    "Demokratie": 15.15,
+    "Französische Revolution": 11.22,
+    "Klimawandel": 12.63,
+    "Optik": 12.48,
+    "Photosynthese": 14.13,
+    "Programmiersprache": 11.84,
+    "Säure-Base-Konzepte": 8.72,
+    "Sinfonie": 15.82
+   },
+   "rotated": false,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.8,
+     "support": 22,
+     "predicted": 23
+    },
+    "systematik": {
+     "f1": 0.7857142857142858,
+     "support": 55,
+     "predicted": 57
+    },
+    "fachinhalte": {
+     "f1": 0.8582089552238806,
+     "support": 276,
+     "predicted": 260
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.7529411764705882,
+     "support": 38,
+     "predicted": 47
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.8295454545454544,
+     "support": 83,
+     "predicted": 93
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.7999999999999999,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.7777777777777777,
+     "support": 8,
+     "predicted": 10
+    },
+    "regularien": {
+     "f1": 0.8,
+     "support": 2,
+     "predicted": 3
+    },
+    "praxis": {
+     "f1": 0.4444444444444444,
+     "support": 18,
+     "predicted": 9
+    },
+    "querschnitt": {
+     "f1": 0.18181818181818182,
+     "support": 3,
+     "predicted": 8
+    }
+   }
+  }
+ },
+ "zweifelsband": {
+  "angeboten": 0,
+  "alle": 0
+ }
+}

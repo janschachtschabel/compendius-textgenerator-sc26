@@ -392,8 +392,9 @@ nichts Brauchbares, bleibt der Baustein regelbasiert. Das Frontmatter nennt die 
 Schalter (`extraction`, `generation`) und, wenn sie abweichen, die angeforderten (`extraction_requested`,
 `generation_requested`); `audit.llm` nennt je Schalter Bausteine und Gründe, `audit.llm_tokens` den
 Verbrauch. `GET /health` zeigt unter `components.llm`
-Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-5.6-luna` beim Provider `openai`
-mit `reasoning_effort=low` und `verbosity=low`; ein Wechsel auf `academiccloud` braucht nur
+Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-6-luna` beim Provider `openai`
+mit `reasoning_effort=low` und `verbosity=low` (D44: gleiche Güte wie `gpt-5.6-luna` zum halben Preis je Token,
+aber rund ein Drittel bis zwei Drittel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück); ein Wechsel auf `academiccloud` braucht nur
 `B_API_PROVIDER` und `B_API_MODEL`.
 
 Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
@@ -539,7 +540,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
-| `B_API_MODEL` | `gpt-5.6-luna` | Modell, das die b-api ansprechen soll |
+| `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`) |
 | `LLM_REASONING_EFFORT` | `low` | Nur GPT-5- und o-Serie |
 | `LLM_VERBOSITY` | `low` | Nur GPT-5- und o-Serie |
 | `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; die GPT-5-Serie nutzt stattdessen die beiden Zeilen darüber |

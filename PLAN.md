@@ -1522,6 +1522,12 @@ API.
   `spacy-entity-linker` (englischlastige Wissensbasis, 1,3 GB) und eine GND-Erkennung direkt aus den DNB-Dumps
   (Personen über den Namen nicht sicher; erst mit eigenem Gold). Offen: Artikel, die seit dem ZIM umbenannt
   wurden (9 von 679), bräuchten die Tabelle `redirect` als dritten Dump.
+- **D44 (2026-09-24)** Vorgabemodell ist `gpt-6-luna` statt `gpt-5.6-luna` (`B_API_MODEL`). M19: gleiche Güte bei
+  Artikelwahl (90 statt 91 von 94), Trefferprüfung (10 statt 11 von 16 unpassenden verworfen, kein passender) und
+  LLM-Zuordner (macro-F1 0,703, zwischen 0,694 und 0,720), Tokens gleich bis 12 % höher, zum halben Preis je Token;
+  dafür je Aufruf ein Drittel bis zwei Drittel länger. Der Client zählt `gpt-6` zu den Reasoning-Modellen
+  (`max_completion_tokens`, `reasoning_effort`, keine Temperatur); ohne das antwortete die b-api mit HTTP 400. Wer die
+  kürzeren Zeiten braucht, setzt `B_API_MODEL=gpt-5.6-luna`. `gpt-4.1-mini` wird nicht mehr verwendet.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

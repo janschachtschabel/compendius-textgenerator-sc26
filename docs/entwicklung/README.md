@@ -121,7 +121,7 @@ Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 | 19.09. | Review-Runden; LLM-Schalter statt fester Modi |
 | 20.–22.09. | Umbau: alte v1-Endpunkte entfernt; neue Endpunkte für Wissen, Entitäten und Fragen; Modelle im Image |
 | 23.09. | Release v2.0.0, Betrieb auf Hostinger; danach die Artikelwahl gemessen und der LLM-Zuordner als `matcher=llm` eingebaut (D34) |
-| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14); Entscheidungsvorlage mit Grafiken (M15); Standard wieder LLM-frei (D40) und der Schalter `preset` (D41); laya gemessen und nicht eingebaut (M16, D42); der alte Weg über Begriffe vom LLM auf dem Gold (M17); GND-Nummern aus dem Archiv (M18) |
+| 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14); Entscheidungsvorlage mit Grafiken (M15); Standard wieder LLM-frei (D40) und der Schalter `preset` (D41); laya gemessen und nicht eingebaut (M16, D42); der alte Weg über Begriffe vom LLM auf dem Gold (M17); GND-Nummern aus dem Archiv (M18); Kennungen GND, Wikidata und DBpedia im Entitäten-Endpunkt (D43); `gpt-6-luna` als Vorgabemodell (M19, D44) |
 
 ## Begriffe
 

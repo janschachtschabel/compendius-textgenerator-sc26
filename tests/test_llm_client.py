@@ -17,6 +17,7 @@ KEY = "secret-key-0123456789"
 OPENAI_MODELS = {
     "object": "list",
     "data": [
+        {"id": "gpt-6-luna", "object": "model", "created": 1, "owned_by": "openai", "shutdown_date": None},
         {"id": "gpt-5.6-luna", "object": "model", "created": 1, "owned_by": "openai", "shutdown_date": None},
         {"id": "gpt-4.1-mini", "object": "model", "created": 1, "owned_by": "openai", "shutdown_date": None},
     ],
@@ -122,6 +123,18 @@ def test_gpt5_request_uses_completion_tokens_reasoning_effort_and_verbosity() ->
     assert body["max_completion_tokens"] == 50
     assert body["reasoning_effort"] == "low" and body["verbosity"] == "low"
     assert "temperature" not in body and "max_tokens" not in body
+
+
+def test_gpt6_models_get_the_same_reasoning_request_as_gpt5() -> None:
+    """Measured 2026-09-24: gpt-6-luna answers max_tokens with HTTP 400 and wants max_completion_tokens (D44)."""
+    fake = FakeBApi()
+    client, _ = make_client(fake, model="gpt-6-luna")
+    client.chat(MESSAGES, max_output_tokens=50)
+    body = fake.bodies[0]
+    assert body["model"] == "gpt-6-luna" and body["max_completion_tokens"] == 50
+    assert body["reasoning_effort"] == "low" and body["verbosity"] == "low"
+    assert "temperature" not in body and "max_tokens" not in body
+    assert client.completion_limit(100) > 100, "its thinking counts in the same limit"
 
 
 def test_classic_models_get_max_tokens_and_temperature_qwen3_without_thinking() -> None:

@@ -1,0 +1,114 @@
+[
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Photosynthese",
+  "s": 2.93,
+  "eingabe": 185,
+  "ausgabe": 175
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Photosynthese",
+  "s": 3.36,
+  "eingabe": 185,
+  "ausgabe": 195
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Optik",
+  "s": 1.91,
+  "eingabe": 180,
+  "ausgabe": 141
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Optik",
+  "s": 1.31,
+  "eingabe": 180,
+  "ausgabe": 64
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Römisches Reich",
+  "s": 0.98,
+  "eingabe": 185,
+  "ausgabe": 64
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Römisches Reich",
+  "s": 2.87,
+  "eingabe": 185,
+  "ausgabe": 162
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Lineare Funktion",
+  "s": 2.23,
+  "eingabe": 182,
+  "ausgabe": 156
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Lineare Funktion",
+  "s": 1.5,
+  "eingabe": 182,
+  "ausgabe": 64
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Klimawandel",
+  "s": 2.05,
+  "eingabe": 183,
+  "ausgabe": 147
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Klimawandel",
+  "s": 3.54,
+  "eingabe": 183,
+  "ausgabe": 201
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Atommodell",
+  "s": 4.72,
+  "eingabe": 183,
+  "ausgabe": 288
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Atommodell",
+  "s": 2.46,
+  "eingabe": 183,
+  "ausgabe": 158
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Sinfonie",
+  "s": 1.05,
+  "eingabe": 182,
+  "ausgabe": 64
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Sinfonie",
+  "s": 2.62,
+  "eingabe": 182,
+  "ausgabe": 155
+ },
+ {
+  "modell": "gpt-6-luna",
+  "thema": "Demokratie",
+  "s": 2.51,
+  "eingabe": 182,
+  "ausgabe": 202
+ },
+ {
+  "modell": "gpt-5.6-luna",
+  "thema": "Demokratie",
+  "s": 1.7,
+  "eingabe": 182,
+  "ausgabe": 64
+ }
+]

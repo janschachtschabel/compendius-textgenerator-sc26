@@ -33,7 +33,7 @@ def test_health_and_ready(client: TestClient) -> None:
     assert health["components"]["llm"] == {
         "enabled": False,
         "provider": "openai",
-        "model": "gpt-5.6-luna",
+        "model": "gpt-6-luna",  # the shipped default since D44
         "available": False,
         "host": "b-api.staging.openeduhub.net",  # derived from the repository, which is staging by default
     }

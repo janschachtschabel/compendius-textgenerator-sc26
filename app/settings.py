@@ -154,7 +154,7 @@ class Settings(BaseSettings):
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
     )
     b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")
-    b_api_model: str = Field("gpt-5.6-luna", description="Model id at the selected provider")
+    b_api_model: str = Field("gpt-6-luna", description="Model id at the selected provider (D44)")
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
     llm_max_concurrency: int = Field(10, ge=1, le=26, description="Parallel LLM requests")
     llm_attempts: int = Field(

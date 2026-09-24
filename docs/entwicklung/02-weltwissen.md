@@ -80,7 +80,8 @@ erster Stelle und 58 bis 78 Mal irgendwo unter den bis zu zehn Artikeln, je nach
    oder llm) und ob sie sicher ist (`confident`). Unsicher sind eine Begriffsklärung, die das Fach nicht entscheidet,
    ein exakter Titel ohne Fachbezug, Varianten und alle Vorschlags- und Suchtreffer.
 6. **Das LLM auf Wunsch** (`article_choice=llm` oder `preset: balanced`, D35; Standard ist seit D40 wieder
-   `rule-based`): Nur bei einer unsicheren Auflösung wählt `gpt-5.6-luna` unter den Kandidaten der Regeln oder nennt
+   `rule-based`): Nur bei einer unsicheren Auflösung wählt das LLM (seit D44 `gpt-6-luna`, gemessen mit `gpt-5.6-luna`)
+   unter den Kandidaten der Regeln oder nennt
    einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
 7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
    im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf

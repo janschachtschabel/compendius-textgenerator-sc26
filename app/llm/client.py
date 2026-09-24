@@ -30,7 +30,8 @@ TRIP_TIMEOUT_S = 30.0  # a call cut short by the request deadline is no outage; 
 BREAKER_S = 60.0  # after a connection failure or a timeout, calls fail fast instead of queueing on the next timeout
 SUSPENDED_MESSAGE = "b-api nach Verbindungsfehlern vorübergehend ausgesetzt"
 _KEY_RE = re.compile(r"^[!-~]+$")  # printable ASCII without spaces; anything else breaks the header
-_REASONING_PREFIXES = ("gpt-5", "o1", "o3", "o4")
+# gpt-6-luna answers max_tokens with HTTP 400 and asks for max_completion_tokens (2026-09-24, D44)
+_REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4")
 # Reasoning models count their thinking in max_completion_tokens; gpt-5.6-luna (reasoning_effort=low) used a
 # block's whole limit of 555 tokens for it and answered with nothing (finish_reason=length, 2026-09-19)
 REASONING_ALLOWANCE = 1000
@@ -76,7 +77,7 @@ class ModelCheck:
 
 
 def is_reasoning_model(model: str) -> bool:
-    """GPT-5 and o-series models: completion-token limit, reasoning effort, verbosity, no temperature."""
+    """GPT-5, GPT-6 and o-series models: completion-token limit, reasoning effort, verbosity, no temperature."""
     return model.lower().startswith(_REASONING_PREFIXES)
 
 

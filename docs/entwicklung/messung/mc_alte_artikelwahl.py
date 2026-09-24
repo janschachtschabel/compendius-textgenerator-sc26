@@ -20,7 +20,8 @@ Usage (project venv, from the project root: the service reads config/ relative t
 config/subjects.yaml the rules lose the subject context - 79 instead of 86):
 python docs/entwicklung/messung/mc_alte_artikelwahl.py <out.json> <token_limit> [<model>]
 Without <model> the service's own model answers; with gpt-4.1-mini the old service's model does, at its
-temperature 0.7 - the way the old service ran in M2.
+temperature 0.7 - the way the old service ran in M2. gpt-4.1-mini is outdated and dearer; it serves this
+replay of the old service only and is used nowhere else (D44).
 """
 
 from __future__ import annotations
