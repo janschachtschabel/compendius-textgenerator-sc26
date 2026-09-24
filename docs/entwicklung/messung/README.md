@@ -24,7 +24,9 @@ geschrieben.
 | M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> [--rotieren] <weg>…` (Wege rules, llm, llm_25x700, llm_50x400, llm_billig, llm_zweifel) | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
 | M13 Laufzeit | `mc_zeit_artikelwahl.py <out.json> <weg>…` mit `PYTHONPATH` auf die Kopie des Standes; `mc_zeit_zuordnung.py <out.json>` | venv dieses Projekts | `gpt-5.6-luna` für `llm`: rund 1.000 Tokens je Thema bei der Artikelwahl, rund 29.000 bei der Zuordnung |
 | M14 Budget ohne Rückfall | `mc_zeit_zuordnung.py <out.json> Relativitätstheorie Völkerwanderung Kreuzzüge Expressionismus Verdauung` mit `PYTHONPATH` auf die Kopie des Standes mit D39; `mc_budget_nachrechnung.py <out.json> 60000 <Thema>…` | venv dieses Projekts | `gpt-5.6-luna`: 172.440 Tokens für die fünf Themen; die Nachrechnung ruft die b-api nicht |
-| Zusammenfassungen von M9 bis M14 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
+| M15 lokale Strategien je Baustein | `mc_varianten.py <out.json> lexicon_only=-:lexicon_only bm25=-:bm25 char_tfidf=-:char_tfidf hybrid_light=-:hybrid_light` | venv dieses Projekts | keins |
+| Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
+| Grafiken der Entscheidungsvorlage | `mc_grafiken.py <ergebnisse-ordner> <bilder-ordner>`, Ziel `docs/entwicklung/bilder` | venv dieses Projekts (liest das Gold aus `eval/artikelwahl`) | keins; reines SVG ohne Bibliothek |
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -98,6 +100,8 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m14_zeit_zuordnung.json` | M14, `matcher=llm` mit D39 gegen `hybrid_light` an fünf neuen Kompendien: Sekunden, Phasen, Tokens, Aufrufe, Rückfälle mit Grund |
 | `ergebnisse/m14_budget_nachrechnung.json` | M14, je Thema aus M13 und M14 die Reservierung jedes Stapels und der Rückfall ohne Warten |
 | `ergebnisse/m14_zuordnung_budget.txt` | M14 lesbar: Nachrechnung gegen die Messungen, `matcher=llm` mit D39 je Thema und im Median |
+| `ergebnisse/m15_bausteine_lokal.json` | M15, die vier lokalen Strategien in beiden Pools: Kennzahlen und F1 je Baustein |
+| `ergebnisse/m15_bausteine_lokal.txt` | M15 lesbar: Kennzahlen je Strategie, F1 je Baustein neben den LLM-Läufen aus M12 |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |
 

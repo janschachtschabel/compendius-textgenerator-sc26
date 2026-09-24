@@ -553,3 +553,30 @@ in M13 (0,51 statt 0,27 s für die Zuordnung). Wo der Verbrauch selbst an die Gr
 nicht mehr hineinpasst: gerechnet ab rund 320 Absätzen, wenn der letzte Stapel seine Reservierung nicht mehr neben
 dem Verbrauch der übrigen unterbringt. Rohdaten: `m14_zeit_zuordnung.json`, `m14_budget_nachrechnung.json`;
 Zusammenfassung: `m14_zuordnung_budget.txt`.
+
+## M15 F1 je Baustein aller lokalen Strategien (24.09.2026)
+
+**Aufbau:** `mc_varianten.py` ohne LLM auf den festen Korpora der zehn Goldthemen, mit `lexicon_only`, `bm25`,
+`char_tfidf` und `hybrid_light` (mit Model2Vec), in beiden Kandidatenpools. Keine Tokens. `hybrid_light` im Goldpool
+trifft die Regeln aus M12 je Baustein genau; die Werte stehen also neben den beiden LLM-Läufen aus M12 auf denselben
+597 Absätzen.
+
+| F1 je Baustein (Gold-Absätze) | `lexicon_only` | `bm25` | `char_tfidf` | `hybrid_light` | `llm`, Lauf 1 | `llm`, Lauf 2 |
+|---|---|---|---|---|---|---|
+| Fachinhalte (276) | 0,70 | 0,69 | 0,69 | 0,70 | 0,86 | 0,86 |
+| Entwicklung & Ausblick (83) | 0,74 | 0,72 | 0,70 | 0,73 | 0,84 | 0,84 |
+| Gliederung & Systematik (55) | 0,58 | 0,60 | 0,57 | 0,60 | 0,78 | 0,76 |
+| Gesellschaftlicher Kontext (38) | 0,43 | 0,37 | 0,40 | 0,41 | 0,80 | 0,78 |
+| Themendefinition (22) | 0,68 | 0,68 | 0,68 | 0,68 | 0,91 | 0,76 |
+| Praxis (18) | 0,21 | 0,20 | 0,15 | 0,19 | 0,58 | 0,69 |
+| Beruf & Wirtschaft (11) | 0,17 | 0,15 | 0,20 | 0,27 | 0,80 | 0,80 |
+| Bildung (8) | 0,00 | 0,20 | 0,43 | 0,50 | 0,78 | 0,78 |
+| Querschnitt & Bezüge (3) | 0,00 | 0,00 | 0,00 | 0,00 | 0,19 | 0,00 |
+| Regularien & Rahmensetzung (2) | 0,00 | 0,00 | 0,17 | 0,25 | 0,67 | 0,67 |
+| **macro-F1** | **0,35** | **0,36** | **0,40** | **0,43** | **0,72** | **0,69** |
+
+Die lokalen Strategien unterscheiden sich nur in drei kleinen Bausteinen: Bildung, Regularien und Beruf & Wirtschaft,
+zusammen 21 Gold-Absätze. Dort liegt der ganze Abstand von 0,35 auf 0,43; in den großen Bausteinen liegen sie
+höchstens 0,04 auseinander, bei Gesellschaftlichem Kontext und Praxis liegt das Lexikon allein leicht vorn. Im vollen
+Pool: 0,350, 0,370, 0,422 und 0,448. Rohdaten: `m15_bausteine_lokal.json`; Zusammenfassung: `m15_bausteine_lokal.txt`.
+Die Grafiken der Entscheidungsvorlage erzeugt `mc_grafiken.py` aus diesen und den übrigen Rohdaten.

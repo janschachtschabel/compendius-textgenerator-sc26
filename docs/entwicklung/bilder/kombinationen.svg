@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die drei empfohlenen Kombinationen"><title>Die drei empfohlenen Kombinationen</title><rect width="760" height="360" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die drei empfohlenen Kombinationen im Vergleich</text>
+<text x="150.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1 je Kompendium</text>
+<text x="380.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Tokens je Kompendium</text>
+<text x="620.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Güte</text>
+<text x="138.0" y="97.0" font-size="13.5" fill="#1f2933" text-anchor="end" font-weight="600">LLM-frei</text>
+<rect x="150.0" y="82.0" width="9.0" height="20.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="165.0" y="97.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">1,35 s</text>
+<rect x="380.0" y="82.0" width="0.0" height="20.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="386.0" y="97.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="380.0" y="118.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: ohne Grenze</text>
+<text x="620.0" y="91.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 86 von 94</text>
+<text x="620.0" y="109.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,43</text>
+<text x="138.0" y="167.0" font-size="13.5" fill="#1f2933" text-anchor="end" font-weight="600">ausgewogen</text>
+<rect x="150.0" y="152.0" width="20.4" height="20.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="176.4" y="167.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">3,07 s</text>
+<rect x="380.0" y="152.0" width="4.6" height="20.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="390.6" y="167.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">927</text>
+<text x="380.0" y="188.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: rund 2.159 je Tag</text>
+<text x="620.0" y="161.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 91 von 94</text>
+<text x="620.0" y="179.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,43</text>
+<text x="138.0" y="237.0" font-size="13.5" fill="#1f2933" text-anchor="end" font-weight="600">beste Qualität</text>
+<rect x="150.0" y="222.0" width="91.2" height="20.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<rect x="241.2" y="222.0" width="71.6" height="20.0" rx="2" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="318.8" y="237.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">14 bis 24 s</text>
+<rect x="380.0" y="222.0" width="177.1" height="20.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="563.1" y="237.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">35.400</text>
+<text x="380.0" y="258.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: rund 56 je Tag</text>
+<text x="620.0" y="231.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 91 von 94</text>
+<text x="620.0" y="249.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,69 bis 0,72</text>
+<text x="24.0" y="310.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Zeit: Mediane auf dem Entwicklungsrechner (M13, M14); beste Qualität als Summe, nicht zusammen gemessen.</text></svg>

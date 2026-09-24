@@ -1,8 +1,9 @@
-"""Readable summaries of the measurements M9 to M14, computed from their raw files in ergebnisse/ (no service, no LLM).
+"""Readable summaries of the measurements M9 to M15, computed from their raw files in ergebnisse/ (no service, no LLM).
 
-Writes m9_artikelwahl.txt, m10_volltexttreffer.txt, m11_zusatzquellen.txt, m12_zuordnung.txt, m13_laufzeit.txt and
-m14_zuordnung_budget.txt next to the raw files, so every number the pages of docs/entwicklung quote can be traced to a file. Rounding half up,
-German number format; the 90th percentile by nearest rank, as mc_zeit_artikelwahl.py computes it.
+Writes m9_artikelwahl.txt, m10_volltexttreffer.txt, m11_zusatzquellen.txt, m12_zuordnung.txt, m13_laufzeit.txt,
+m14_zuordnung_budget.txt and m15_bausteine_lokal.txt next to the raw files, so every number the pages of
+docs/entwicklung quote can be traced to a file. Rounding half up, German number format; the 90th percentile by nearest
+rank, as mc_zeit_artikelwahl.py computes it.
 
 Usage: python mc_zusammenfassung.py <ergebnisse-dir>
 """
@@ -420,5 +421,33 @@ def m14() -> None:
           "m13_zeit_zuordnung.json", lines)
 
 
-for step in (m9, m10, m11, m12, m13, m14):
+def m15() -> None:
+    local = load("m15_bausteine_lokal.json")
+    names = ("lexicon_only", "bm25", "char_tfidf", "hybrid_light")
+    lines = ["## Kennzahlen je lokaler Strategie", ""]
+    lines += table(["Strategie", "Pool", "macro-F1", "micro-F1", "falsch zugeordnet", "richtig unter Top 2",
+                    "belegte Bausteine"],
+                   [[f"`{name}`", pool, de(v["macro_f1"], "0.001"), de(v["micro_f1"], "0.001"),
+                     f"{v['misassigned']} von {v['assigned']}", f"{de(100 * v['top2'])} %", de(v["covered"], "0.1")]
+                    for name in names for pool in ("full", "gold") for v in [local[f"{name}|{pool}"]]])
+    rules = load("m12_sparvarianten.json")["wege"]["rules"]["per_slot"]
+    same = all(local["hybrid_light|gold"]["per_slot"][s]["f1"] == rules[s]["f1"] for s in rules)
+    lines += [f"`hybrid_light` im Goldpool trifft die Regeln aus M12 je Baustein {'genau' if same else 'nicht'}; die "
+              "Werte stehen deshalb neben den beiden LLM-Läufen aus M12 auf denselben Absätzen.", ""]
+    columns = [(f"`{name}`", local[f"{name}|gold"]) for name in names]
+    columns += [("llm, Lauf 1", load("m12_sparvarianten.json")["wege"]["llm_billig"]),
+                ("llm, Lauf 2", load("m12_sparvarianten_rotiert.json")["wege"]["llm_50x400"])]
+    lines += ["## F1 je Baustein, Goldpool", ""]
+    lines += table(["Baustein", "Gold-Absätze", *(label for label, _ in columns), "Spanne der lokalen"],
+                   [[SLOTS[s], columns[0][1]["per_slot"][s]["support"],
+                     *(de(v["per_slot"][s]["f1"], "0.01") for _, v in columns),
+                     de(max(v["per_slot"][s]["f1"] for _, v in columns[:4])
+                        - min(v["per_slot"][s]["f1"] for _, v in columns[:4]), "0.01")] for s in SLOTS])
+    lines += table(["", *(label for label, _ in columns)],
+                   [["macro-F1", *(de(v["macro_f1"], "0.001") for _, v in columns)]])
+    write("m15_bausteine_lokal.txt", "m15_bausteine_lokal.json, m12_sparvarianten.json und "
+          "m12_sparvarianten_rotiert.json", lines)
+
+
+for step in (m9, m10, m11, m12, m13, m14, m15):
     step()

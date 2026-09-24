@@ -101,10 +101,13 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
    in [messung/ergebnisse](messung/ergebnisse/README.md)
 6. [Daten für später: Protokoll, Training, Paket](06-daten-und-training.md): woher Trainingsdaten für ein lokales
    Modell kommen könnten, was ein Paket wäre, Empfehlung
+7. [Entscheidungsvorlage: Verfahren und Schalter von Teil 1](07-entscheidungsvorlage.md): je Schritt die Verfahren,
+   ihre Schalter und Standardwerte, Güte, Zeit und Tokens mit Grafiken, drei empfohlene Kombinationen
 
-Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die sechs übrigen darunter. Die
+Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die sieben übrigen darunter. Die
 Links zwischen ihnen zeigen auf die Markdown-Dateien und müssen nach dem Import auf die Confluence-Seiten umgestellt
-werden. Die Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
+werden. Die Grafiken liegen als SVG unter `docs/entwicklung/bilder/` und kommen beim Import als Anhänge mit. Die
+Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 
 ## Entwicklungsweg
 

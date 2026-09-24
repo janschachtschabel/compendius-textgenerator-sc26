@@ -1,0 +1,35 @@
+Erzeugt von mc_zusammenfassung.py aus m15_bausteine_lokal.json, m12_sparvarianten.json und m12_sparvarianten_rotiert.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Kennzahlen je lokaler Strategie
+
+| Strategie | Pool | macro-F1 | micro-F1 | falsch zugeordnet | richtig unter Top 2 | belegte Bausteine |
+|---|---|---|---|---|---|---|
+| `lexicon_only` | full | 0,350 | 0,649 | 180 von 514 | 64 % | 5,1 |
+| `lexicon_only` | gold | 0,350 | 0,649 | 180 von 514 | 63 % | 4,4 |
+| `bm25` | full | 0,370 | 0,648 | 185 von 521 | 62 % | 5,6 |
+| `bm25` | gold | 0,362 | 0,635 | 199 von 532 | 60 % | 5,1 |
+| `char_tfidf` | full | 0,422 | 0,638 | 199 von 534 | 56 % | 7,1 |
+| `char_tfidf` | gold | 0,398 | 0,617 | 219 von 547 | 51 % | 6,6 |
+| `hybrid_light` | full | 0,448 | 0,658 | 185 von 529 | 67 % | 6,0 |
+| `hybrid_light` | gold | 0,433 | 0,645 | 201 von 542 | 61 % | 5,7 |
+
+`hybrid_light` im Goldpool trifft die Regeln aus M12 je Baustein genau; die Werte stehen deshalb neben den beiden LLM-Läufen aus M12 auf denselben Absätzen.
+
+## F1 je Baustein, Goldpool
+
+| Baustein | Gold-Absätze | `lexicon_only` | `bm25` | `char_tfidf` | `hybrid_light` | llm, Lauf 1 | llm, Lauf 2 | Spanne der lokalen |
+|---|---|---|---|---|---|---|---|---|
+| Themendefinition | 22 | 0,68 | 0,68 | 0,68 | 0,68 | 0,91 | 0,76 | 0,00 |
+| Gliederung & Systematik | 55 | 0,58 | 0,60 | 0,57 | 0,60 | 0,78 | 0,76 | 0,03 |
+| Fachinhalte | 276 | 0,70 | 0,69 | 0,69 | 0,70 | 0,86 | 0,86 | 0,01 |
+| Gesellschaftlicher Kontext | 38 | 0,43 | 0,37 | 0,40 | 0,41 | 0,80 | 0,78 | 0,06 |
+| Entwicklung & Ausblick | 83 | 0,74 | 0,72 | 0,70 | 0,73 | 0,84 | 0,84 | 0,04 |
+| Beruf & Wirtschaft | 11 | 0,17 | 0,15 | 0,20 | 0,27 | 0,80 | 0,80 | 0,11 |
+| Bildung | 8 | 0,00 | 0,20 | 0,43 | 0,50 | 0,78 | 0,78 | 0,50 |
+| Regularien & Rahmensetzung | 2 | 0,00 | 0,00 | 0,17 | 0,25 | 0,67 | 0,67 | 0,25 |
+| Praxis | 18 | 0,21 | 0,20 | 0,15 | 0,19 | 0,58 | 0,69 | 0,06 |
+| Querschnitt & Bezüge | 3 | 0,00 | 0,00 | 0,00 | 0,00 | 0,19 | 0,00 | 0,00 |
+
+|  | `lexicon_only` | `bm25` | `char_tfidf` | `hybrid_light` | llm, Lauf 1 | llm, Lauf 2 |
+|---|---|---|---|---|---|---|
+| macro-F1 | 0,350 | 0,362 | 0,398 | 0,433 | 0,720 | 0,694 |
