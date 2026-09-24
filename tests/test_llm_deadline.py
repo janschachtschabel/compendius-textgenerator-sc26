@@ -42,10 +42,12 @@ def test_deadline_counts_down_and_caps_the_call_timeout() -> None:
     clock = Clock()
     deadline = Deadline(60.0, clock=clock)
     assert deadline.remaining() == 60.0 and deadline.call_timeout(120.0) == 60.0
+    assert deadline.wait_s() == 60.0 - MIN_CALL_S, "a call that waits to start still needs MIN_CALL_S to run"
     clock.now += 50
     assert deadline.call_timeout(8.0) == 8.0 and deadline.call_timeout(120.0) == 10.0
     clock.now += 10 - MIN_CALL_S + 0.5
     assert deadline.call_timeout(120.0) is None, "too little time left to start another call"
+    assert deadline.wait_s() == 0.0
     clock.now += 100
     assert deadline.remaining() == 0.0
 

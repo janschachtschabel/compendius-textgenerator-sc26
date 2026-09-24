@@ -4,7 +4,9 @@ The daily counter lives in a ``DailyStore`` (llm_budget.db in STATE_DIR); only w
 for itself.
 
 Calls reserve their upper-bound estimate before they start and settle to the actual usage afterwards, so parallel
-drafts cannot overshoot a limit between the check and the call.
+drafts cannot overshoot a limit between the check and the call. The estimate is far above the spend (M13: a batch of
+matcher=llm reserved about 13,000 tokens and spent about 8,000), so a call the request budget turns away while other
+calls of the request are in flight may wait for them to settle.
 """
 
 from __future__ import annotations
@@ -122,28 +124,38 @@ class RequestBudget:
         self.limit = limit
         self.used = 0
         self._reserved = 0
-        self._lock = threading.Lock()
+        self._settled = threading.Condition()
 
     @property
     def remaining(self) -> int:
         return max(0, self.limit - self.used - self._reserved)
 
-    def reserve(self, tokens: int) -> str | None:
-        """Reserve ``tokens`` for one call; ``None`` when granted, else the reason for the audit."""
-        with self._lock:
-            if self.used + self._reserved + tokens > self.limit:
+    def reserve(self, tokens: int, wait_s: float | None = 0.0) -> str | None:
+        """Reserve ``tokens`` for one call; ``None`` when granted, else the reason for the audit.
+
+        While reservations of calls in flight stand in the way and their settling could make room, the call waits up
+        to ``wait_s`` seconds for them (``None``: as long as that holds, which the calls' own timeouts bound). The
+        daily budget does not wait: all requests and workers share it, and near its end a call falls back at once.
+        """
+        with self._settled:
+            self._settled.wait_for(lambda: self._fits(tokens) or self.used + tokens > self.limit, timeout=wait_s)
+            if not self._fits(tokens):
                 return f"Token-Budget der Anfrage erschöpft ({tokens} Tokens nötig, {self.remaining} frei)"
             if not self.budget.reserve(tokens):
                 return f"Tagesbudget erschöpft ({tokens} Tokens nötig, {self.budget.remaining_today} frei)"
             self._reserved += tokens
             return None
 
+    def _fits(self, tokens: int) -> bool:
+        return self.used + self._reserved + tokens <= self.limit
+
     def settle(self, reserved: int, actual: int) -> None:
-        """Replace a reservation by what the call actually cost (``usage.total_tokens``)."""
-        with self._lock:
+        """Replace a reservation by what the call actually cost (``usage.total_tokens``); waiting calls try again."""
+        self.budget.settle(reserved, actual)  # first: a call woken below finds the daily budget settled as well
+        with self._settled:
             self._reserved = max(0, self._reserved - reserved)
             self.used += actual
-        self.budget.settle(reserved, actual)
+            self._settled.notify_all()
 
     def release(self, reserved: int) -> None:
         """Give a reservation back: the call failed and cost nothing."""

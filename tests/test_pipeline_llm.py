@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import threading
 import time
 from collections.abc import Iterator
 from typing import Any
@@ -262,13 +263,22 @@ def test_gateway_is_unavailable_while_the_client_is_suspended() -> None:
     assert gateway.available is True
 
 
-def test_budget_running_out_mid_run_with_parallel_drafts(
+def test_parallel_drafts_take_turns_when_the_budget_holds_one_at_a_time(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """While one draft holds its reservation the parallel ones are denied; nothing overshoots the request budget."""
+    """While one draft holds its reservation the parallel ones wait for it to settle instead of falling back (M13);
+    a draft that can never fit falls back, and nothing overshoots the request budget."""
+    in_flight, peak = 0, 0
+    lock = threading.Lock()
 
     def slow_answer(body: dict[str, Any]) -> str:
-        time.sleep(0.3)  # long enough for every other draft to ask for its reservation meanwhile
+        nonlocal in_flight, peak
+        with lock:
+            in_flight += 1
+            peak = max(peak, in_flight)
+        time.sleep(0.1)  # long enough for drafts the budget let through together to overlap
+        with lock:
+            in_flight -= 1
         return answer_from_evidence(body)
 
     fake = FakeBApi(slow_answer)
@@ -276,11 +286,12 @@ def test_budget_running_out_mid_run_with_parallel_drafts(
     result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
     assert result.audit.llm is not None
     written, fallbacks = result.audit.llm["generation"]["sections"], result.audit.llm["generation"]["fallbacks"]
-    assert 1 <= len(written) <= 2 and len(fallbacks) >= 3
+    assert peak == 1, "every draft reserves more than half of the 3,000 tokens: they take turns"
+    assert len(written) >= 3, "the drafts that waited for a reservation were written after all"
     assert all("Budget der Anfrage" in reason for reason in fallbacks.values())
     chat_calls = [r for r in fake.requests if r.url.path.endswith("/chat/completions")]
-    assert len(chat_calls) == len(written), "a denied draft never reaches the b-api"
-    assert result.generation == "llm"
+    assert len(chat_calls) == len(written), "a draft that never fits never reaches the b-api"
+    assert (result.audit.llm_tokens or {})["total"] <= 3_000 and result.generation == "llm"
 
 
 def test_request_timeout_bounds_the_llm_work(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:

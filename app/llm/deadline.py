@@ -26,3 +26,7 @@ class Deadline:
         if remaining < MIN_CALL_S:
             return None
         return min(configured_s, remaining)
+
+    def wait_s(self) -> float:
+        """How long a call may wait to start (for room in the token budget) and still get ``MIN_CALL_S`` to run."""
+        return max(0.0, self.remaining() - MIN_CALL_S)

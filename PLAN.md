@@ -991,7 +991,8 @@ Speicherausfalls verbraucht wurden, trägt der Prozess mit der nächsten erfolgr
 Weiter in `budget.py`: jeder Aufruf reserviert vorab seine Obergrenze (Zeichen / 3 plus Ausgabegrenze) und
 wird nach `usage` abgerechnet, atomar auch bei parallelen Entwürfen (Summe aller Reservierungen je Kompendium
 gemessen: 12.000 bis 17.000 Tokens, unter der Standardgrenze); die Ablehnung nennt, ob die Anfrage- oder die
-Tagesgrenze greift.
+Tagesgrenze greift. Seit D39 wartet ein Aufruf, dem nur Reservierungen laufender Aufrufe derselben Anfrage im Weg
+stehen, auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten kann; das Tagesbudget weist sofort ab.
 Gemessen am 2026-09-18 gegen `b-api.staging.openeduhub.net`: `/models` openai 138 Modelle ohne `status`/`demand`,
 academiccloud 14 Modelle mit `status` und `demand` 0 bis 2; `gpt-5.6-luna` antwortet mit
 `max_completion_tokens`, `reasoning_effort` und `verbosity` in 2,4 s; identische Anfragen beantwortet die b-api aus
@@ -1451,8 +1452,8 @@ API.
   27 bis 29 % weniger Tokens braucht. Teil 1 dauerte mit `matcher=llm` im Median 12,0 statt 1,2 s (fünf Themen ohne
   Zwischenspeicher). Dabei blieben bei 3 von 5 Themen die letzten Stapel bei der Standard-Strategie: Jeder Stapel
   reserviert vorab rund 13.000 Tokens (verbraucht rund 8.000), und parallele Stapel erschöpfen
-  `LLM_MAX_TOKENS_PER_REQUEST=60.000`, bevor die ersten abrechnen. Offen; bis dahin das Budget für `matcher=llm`
-  höher setzen.
+  `LLM_MAX_TOKENS_PER_REQUEST=60.000`, bevor die ersten abrechnen. Behoben mit D39: Ein abgewiesener Stapel wartet
+  auf die laufenden.
 - **D37 (2026-09-24)** `article_choice=llm` ist Vorgabe (`LLM_ARTICLE_CHOICE_DEFAULT=llm`), aber nur wo ein LLM
   konfiguriert ist; ohne LLM wählen die Regeln, und das Audit schweigt, damit ein Dienst ohne b-api nicht in jeder
   Antwort ein fehlendes LLM meldet. Wer `llm` ausdrücklich anfragt, bekommt den Hinweis weiterhin. Grund: gemessen
@@ -1471,6 +1472,26 @@ API.
   Codeänderung: `MATCHER_DEFAULT=llm` verweigert der Dienst ohnehin, weil die Standard-Strategie der Rückfall von `llm`
   ist. Güte, Zeit und Tokens aller Verfahren stehen in `docs/entwicklung/03-matching.md`, die Zusammenfassungen der
   Messungen in `docs/entwicklung/messung/ergebnisse/`.
+- **D39 (2026-09-24)** Ein Aufruf, den das Token-Budget der Anfrage abweist, während andere Aufrufe derselben Anfrage
+  laufen, wartet auf deren Abrechnung und versucht es danach erneut, statt sofort auf die Regeln zurückzufallen
+  (`RequestBudget.reserve(wait_s)`, `budgeted_chat`). Grund (M13): Jeder Stapel von `matcher=llm` reserviert vorab
+  rund 13.000 Tokens (Zeichen / 3 plus Ausgabegrenze samt Denkreserve) und verbraucht rund 8.000; bei 60.000 waren
+  nach vier parallelen Stapeln alle Tokens verplant, und 194 von 1.053 Absätzen fielen zurück, obwohl die Themen nur
+  32.000 bis 38.000 verbrauchten. Das Warten endet, sobald die Reservierung passt, sobald keine Abrechnung mehr Platz
+  schaffen kann (Verbrauch plus Bedarf über der Grenze) oder wenn danach kein Aufruf mehr rechtzeitig starten könnte
+  (`Deadline.wait_s`: Restzeit von `REQUEST_TIMEOUT_S` minus 5 s); ohne Frist, etwa in der Auswertung, begrenzen es
+  die Timeouts der laufenden Aufrufe. Das Tagesbudget wartet nie: Es gehört allen Anfragen und Workern, und an seinem
+  Ende soll ein Aufruf sofort zurückfallen. Keine der beiden Grenzen wird überschritten, weil Prüfen und Reservieren
+  unter einer Sperre bleiben, und jede Reservierung wird abgerechnet, auch wenn das Warten die Zeit aufgebraucht hat.
+  Das gilt für jeden budgetierten Aufruf, also auch für parallele Entwürfe (`generation=llm`) und Satzauswahlen
+  (`extraction=llm`). Verworfen: eine knappere Schätzung, weil 3 Zeichen je Token die sichere Seite ist und selbst
+  mit 4 nur fünf von sechs Stapeln Platz hätten; eine feste, am Budget ausgerichtete Parallelität, weil das Warten
+  jede Abrechnung sofort nutzt. Gemessen an fünf neuen Themen (M14): 0 statt 151 von 1.005 Absätzen im Rückfall (das
+  alte Verfahren nachgerechnet; dieselbe Rechnung ergibt für M13 genau die 194), im Mittel 34.500 Tokens je
+  Kompendium, rund 172 je Absatz wie zuvor. Themen ab fünf Stapeln brauchen eine zweite Runde: 22 bis 25 s für die
+  Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf, an einem Tag, an dem die b-api langsamer antwortete
+  als in M13 (dort 10,8 und 11,7 s bei drei Stapeln). Das Budget muss für `matcher=llm` nicht mehr steigen; ein
+  höheres spart großen Themen die zweite Runde und lässt Platz für `extraction=llm` oder `generation=llm` daneben.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

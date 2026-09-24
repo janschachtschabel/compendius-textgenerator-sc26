@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import sqlite3
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -81,6 +82,83 @@ def test_parallel_reservations_never_exceed_the_limit() -> None:
     with ThreadPoolExecutor(max_workers=8) as pool:
         granted = list(pool.map(lambda _: reserve(), range(8)))
     assert sum(granted) == 1
+
+
+def reserve_in_thread(
+    request: RequestBudget, tokens: int, wait_s: float | None
+) -> tuple[threading.Thread, list[str | None]]:
+    """Reserve from another thread, as a parallel call of the same request does; the list receives the result."""
+    result: list[str | None] = []
+    thread = threading.Thread(target=lambda: result.append(request.reserve(tokens, wait_s=wait_s)), daemon=True)
+    thread.start()
+    return thread, result
+
+
+def test_a_denied_reservation_waits_for_the_calls_of_the_request_in_flight() -> None:
+    """M13: parallel batches of matcher=llm reserved about 13,000 tokens each and spent about 8,000, so a budget of
+    60,000 turned batches away at once that the real spend had room for."""
+    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    assert request.reserve(600) is None  # a call in flight
+    waiting, result = reserve_in_thread(request, 600, wait_s=10)
+    waiting.join(0.2)
+    assert waiting.is_alive() and result == [], "600 more do not fit next to the 600 in flight"
+    request.settle(600, 300)  # the call in flight spent less than it reserved
+    waiting.join(5)
+    assert result == [None] and request.used == 300 and request.remaining == 100
+
+
+def test_the_wait_ends_as_soon_as_no_settlement_can_make_room() -> None:
+    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    assert request.reserve(400) is None and request.reserve(400) is None  # two calls in flight
+    waiting, result = reserve_in_thread(request, 500, wait_s=None)  # no time limit: the calls in flight bound it
+    request.settle(400, 400)
+    waiting.join(0.2)
+    assert waiting.is_alive(), "400 spent and 500 wanted: the other call in flight may still leave room"
+    request.settle(400, 400)
+    waiting.join(5)
+    assert not waiting.is_alive() and result[0] is not None and "Anfrage" in result[0]
+
+    hopeless, result = reserve_in_thread(request, 300, wait_s=None)
+    hopeless.join(1.0)
+    assert not hopeless.is_alive(), "800 spent: 300 more can never fit, so there is nothing to wait for"
+    assert result[0] is not None and "Anfrage" in result[0]
+
+
+def test_waiting_for_the_budget_ends_after_wait_s() -> None:
+    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    assert request.reserve(600) is None  # a call in flight that does not settle in time
+    began = time.monotonic()
+    denial = request.reserve(600, wait_s=0.2)
+    assert denial is not None and "Anfrage" in denial
+    assert 0.15 < time.monotonic() - began < 2.0
+
+
+def test_the_daily_budget_turns_a_call_away_without_waiting() -> None:
+    """The daily cap belongs to all requests and workers; near its end a call falls back instead of queueing."""
+    request = TokenBudget(per_request=10_000, daily=1000).open_request()
+    assert request.reserve(700) is None
+    began = time.monotonic()
+    denial = request.reserve(400, wait_s=5)
+    assert denial is not None and "Tagesbudget" in denial
+    assert time.monotonic() - began < 1.0
+
+
+def test_waiting_reservations_take_turns_within_the_limit() -> None:
+    request = TokenBudget(per_request=6000, daily=1_000_000).open_request()
+    barrier = threading.Barrier(8)
+
+    def call() -> bool:
+        barrier.wait()
+        if request.reserve(2500, wait_s=5) is not None:
+            return False
+        time.sleep(0.01)
+        request.settle(2500, 1000)
+        return True
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        granted = sum(pool.map(lambda _: call(), range(8)))
+    # Two fit at once; each settles at 1,000, and once 4,000 are spent another 2,500 can never fit
+    assert granted == 4 and request.used == 4000 and request.remaining == 2000
 
 
 def test_estimate_tokens_is_positive_and_grows_with_the_text() -> None:

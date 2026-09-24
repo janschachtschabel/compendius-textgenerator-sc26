@@ -39,10 +39,11 @@ MATCHER_HELP = (
     "- **lexicon_only**: the heading lexicon without a ranker; a paragraph only gets a block its heading names. "
     "0.35, under 0.1 s.\n"
     "- **llm**: the LLM of the b-api assigns every paragraph to a block or to none, 50 paragraphs of 400 characters "
-    "per call. 0.69 and 0.72 in two runs, about 180 tokens per paragraph and 29 000 per compendium; part 1 took "
-    "12.0 s instead of 1.2 s in the median. Where the model gives no answer, and without a usable b-api, the default "
-    "strategy decides. At the default LLM_MAX_TOKENS_PER_REQUEST of 60 000, large topics leave their last batches "
-    "to the default strategy.\n\n"
+    "per call. 0.69 and 0.72 in two runs, about 180 tokens per paragraph and 34 500 per compendium; part 1 took "
+    "12.0 and 22.7 s instead of 1.2 and 1.8 s in the median of two measurements, the b-api answering at different "
+    "speeds. Where the model gives no answer, and without a usable b-api, the default strategy decides. At the "
+    "default LLM_MAX_TOKENS_PER_REQUEST of 60 000 four batches run at once and the others wait for them, so topics "
+    "of more than 200 paragraphs take a second round.\n\n"
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
 EXTRACTION_HELP = (

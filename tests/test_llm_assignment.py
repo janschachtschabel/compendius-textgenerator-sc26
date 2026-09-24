@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import re
+import threading
 from collections.abc import Callable
 from typing import Any
 
@@ -13,11 +14,12 @@ import pytest
 
 from app.domain.models import Chunk
 from app.domain.requests import GenerateRequest
-from app.llm.budget import TokenBudget
+from app.llm.budget import RequestBudget, TokenBudget, estimate_tokens
 from app.llm.client import BApiClient
 from app.llm.prompts import get_prompt
 from app.matching.llm_assignment import (
     BATCH_SIZE,
+    OUTPUT_TOKENS_PER_PARAGRAPH,
     TEXT_CHARS,
     AssignmentJob,
     assign_with_llm,
@@ -152,6 +154,48 @@ def test_a_spent_budget_stops_before_any_call(prepared: PreparedTopic, rule_base
     assignment, report = run(prepared, rule_based, make_job(fake, per_request=10))
     assert fake.bodies == [] and report.calls == 0 and report.answered == 0
     assert assignment is rule_based
+
+
+class CountingBudget(RequestBudget):
+    """A request budget that notes every reservation asked for; ``all_asked`` is set once each batch has asked."""
+
+    def __init__(self, limit: int, batches: int) -> None:
+        super().__init__(TokenBudget(per_request=limit, daily=10_000_000), limit)
+        self.asked: list[int] = []
+        self.batches = batches
+        self.all_asked = threading.Event()
+
+    def reserve(self, tokens: int, **kwargs: Any) -> str | None:
+        self.asked.append(tokens)
+        if len(self.asked) >= self.batches:
+            self.all_asked.set()
+        return super().reserve(tokens, **kwargs)
+
+
+def test_batches_the_budget_cannot_hold_at_once_take_turns_instead_of_falling_back(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    """M13: every batch reserved about 13,000 tokens and spent about 8,000; with a budget of 60,000 the batches beyond
+    the fourth fell back to the rules at once, 194 of 1,053 paragraphs in three of five topics."""
+    batches = math.ceil(len(offered) / BATCH_SIZE)
+    first = render_messages(prepared.template, "Optik", offered[:BATCH_SIZE], prepared.sources_by_id)
+    fake = FakeBApi()
+    job = make_job(fake, concurrency=batches)
+    full = estimate_tokens("".join(m["content"] for m in first)) + job.client.completion_limit(
+        OUTPUT_TOKENS_PER_PARAGRAPH * BATCH_SIZE
+    )
+    budget = job.budget = CountingBudget(limit=full * 3 // 2, batches=batches)  # room for one full batch at a time
+
+    def answer_once_every_batch_asked(body: dict[str, Any]) -> str:  # the calls overlap as real ones do
+        budget.all_asked.wait(10)
+        return answer_with("praxis")(body)
+
+    fake.responder = answer_once_every_batch_asked
+    _, report = run(prepared, rule_based, job)
+
+    assert sum(sorted(budget.asked)[-2:]) > budget.limit, "two batches cannot hold their reservations at once"
+    assert report.fallbacks == {} and report.answered == report.paragraphs == len(offered)
+    assert report.calls == len(fake.bodies) == batches and budget.used == 24 * batches
 
 
 def test_a_block_keeps_the_paragraphs_the_model_is_surest_about(

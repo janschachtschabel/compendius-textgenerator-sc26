@@ -9,7 +9,8 @@ docs/entwicklung/messung/mc_llm_sparvarianten.py); sending only the paragraphs t
 The model sees what a labeller sees: the content blocks with their description, what belongs in them and what does
 not, the template's rules for the assignment, and per paragraph the article, its role, the heading path and the text
 cut to ``TEXT_CHARS``. It answers per paragraph with a block key or "keiner" and a confidence. Batches of
-``BATCH_SIZE`` paragraphs run in parallel.
+``BATCH_SIZE`` paragraphs run in parallel; a batch the request budget cannot hold next to the others waits for them
+to settle (``budgeted_chat``, D39): each reserves about 13,000 tokens and spends about 8,000.
 
 The rule-based assignment runs first and stays the fallback: a paragraph whose batch fails (b-api, budget, time,
 unreadable answer) or that the answer leaves out or gives an unknown block keeps the policy's decision, and the

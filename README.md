@@ -270,7 +270,7 @@ jedem Schalter die erlaubten Werte, was sie tun und was sie kosten.
 | `article_choice` | `rule-based` | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
 | | `llm` (Vorgabe mit LLM) | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
 | `matcher` | `hybrid_light` (Standard), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
-| | `llm` | ordnet jeden Absatz einem Baustein zu oder keinem; rund 29.000 Tokens je Kompendium, Teil 1 im Median 12 statt 1,2 s |
+| | `llm` | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
 | `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
 | `generation` | `rule-based` (Standard) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
@@ -300,11 +300,17 @@ das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstan
 statt 0,43, rund 240 Tokens je Absatz mit 25 Absätzen je Aufruf und 700 Zeichen, im Median rund 39.000 je
 Kompendium. Seit 2026-09-24 sind es 50 Absätze je Aufruf mit 400 Zeichen (D36): In zwei Läufen auf denselben Absätzen
 kam das auf 0,72 und 0,69, die alte Einstellung auf 0,66 und 0,73 - gleich gut im Rahmen der Streuung, aber mit
-27 bis 29 % weniger Tokens, rund 177 je Absatz und 29.000 je Kompendium. Teil 1 dauerte mit `matcher=llm` im Median
-12,0 statt 1,2 s (fünf Themen). Nur die Absätze, bei denen die Policy unsicher ist, an das LLM zu geben, brachte 0,54.
-Große Themen stoßen an `LLM_MAX_TOKENS_PER_REQUEST`: Jeder Stapel reserviert vorab rund 13.000 Tokens, und bei 60.000
-blieben am 2026-09-24 für 3 von 5 Themen die letzten ein bis zwei Stapel bei der Standard-Strategie (18 % der
-Absätze). Wer `matcher=llm` nutzt, setzt das Budget höher, etwa auf 120.000.
+27 bis 29 % weniger Tokens, rund 177 je Absatz. Nur die Absätze, bei denen die Policy unsicher ist, an das LLM zu
+geben, brachte 0,54. Jeder Stapel reserviert vorab rund 13.000 Tokens und verbraucht rund 8.000; bei
+`LLM_MAX_TOKENS_PER_REQUEST=60000` laufen vier Stapel gleichzeitig, weitere warten, bis laufende abgerechnet sind
+(D39). Bis dahin fielen sie sofort auf die Standard-Strategie zurück, am 2026-09-24 bei 3 von 5 Themen 18 % der
+Absätze (M13); seither entschied das LLM in fünf neuen Themen alle 1.005 Absätze, für im Mittel 34.500 Tokens je
+Kompendium (18.800 bis 45.900, M14). Teil 1 dauerte mit `matcher=llm` im Median 12,0 s (M13) und 22,7 s (M14) statt
+1,2 und 1,8 s: In M14 antwortete die b-api langsamer, und Themen ab fünf Stapeln (rund 200 Absätze) brauchen eine
+zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf. Das Budget muss für
+`matcher=llm` nicht steigen. Ein höheres, etwa 100.000 (sieben Stapel zugleich), spart großen Themen die zweite Runde
+und lässt Platz, wenn `extraction=llm` oder `generation=llm` dazukommen: Neben einem großen Thema bleiben bei 60.000
+nur rund 14.000 Tokens. Es hebt die Kostengrenze, nicht den Verbrauch eines Themas, das darunter bleibt.
 
 **Artikelwahl durch das LLM (`article_choice: llm`, D35, D37).** Das ist die Vorgabe, sobald ein LLM konfiguriert
 ist (`LLM_ARTICLE_CHOICE_DEFAULT=llm`); ohne LLM wählen die Regeln, ohne Hinweis im Audit, und `article_choice:
@@ -362,8 +368,10 @@ mit `reasoning_effort=low` und `verbosity=low`; ein Wechsel auf `academiccloud` 
 Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
 Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Nach einem Verbindungsfehler oder
 Timeout setzt ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus. Jeder Aufruf
-reserviert sein Token-Budget vorab (`LLM_MAX_TOKENS_PER_REQUEST` je Kompendium, `LLM_DAILY_TOKEN_BUDGET` je Tag);
-der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts.
+reserviert sein Token-Budget vorab (`LLM_MAX_TOKENS_PER_REQUEST` je Kompendium, `LLM_DAILY_TOKEN_BUDGET` je Tag).
+Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch
+ein Aufruf rechtzeitig starten kann (D39); das Tagesbudget weist dagegen sofort ab. Der Tageszähler liegt in
+`STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts.
 `REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen der Materialtexte einer Anfrage: jeder Aufruf
 bekommt höchstens die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper
 der b-api nur im Log.
@@ -507,7 +515,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
 | `LLM_MAX_CONCURRENCY` | `10` | Gleichzeitige LLM-Aufrufe |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
-| `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Kompendium. Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500. Parallele Aufrufe reservieren vorab ihren Höchstbedarf, daher der Abstand |
+| `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Kompendium. Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
 | `LLM_DAILY_TOKEN_BUDGET` | `2000000` | Kostenschutz je Tag. Der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts |
 
 ### Metriken

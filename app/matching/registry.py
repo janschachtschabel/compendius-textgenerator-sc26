@@ -87,7 +87,8 @@ STRATEGIES: dict[str, dict[str, Any]] = {
         "name": "LLM ordnet jeden Absatz zu; wo es nicht entscheidet, gilt die Standard-Strategie",
         "description": "Das LLM der b-api ordnet jeden Absatz einem Baustein zu oder keinem, 50 Absätze zu 400 "
         "Zeichen je Aufruf; wo es nicht entscheidet, gilt die Standard-Strategie. macro-F1 0,69 und 0,72 in zwei "
-        "Läufen am Goldstandard, rund 29.000 Tokens je Kompendium; Teil 1 dauerte im Median 12,0 statt 1,2 s.",
+        "Läufen am Goldstandard, rund 34.500 Tokens je Kompendium; Teil 1 dauerte im Median 12,0 und 22,7 s statt "
+        "1,2 und 1,8 s (zwei Messungen, die b-api antwortete verschieden schnell).",
         "cost": "rund 180 Tokens je Absatz (gemessen 177 am Goldstandard, D36)",
         "hardware": "b-api",
         "recommended": False,

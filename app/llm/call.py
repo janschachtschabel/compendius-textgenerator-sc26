@@ -54,25 +54,29 @@ def budgeted_chat(
     """Reserve the estimated tokens, call within the time left, settle the real cost; ``what`` names the block.
 
     ``max_output_tokens`` is the length of the answer; the reservation and the call add the room a reasoning model
-    needs to think (``BApiClient.completion_limit``).
+    needs to think (``BApiClient.completion_limit``). Calls of one request run in parallel and reserve far more than
+    they spend (M13): one the request budget turns away waits for the others to settle while it could still start in
+    time (``Deadline.wait_s``; without a deadline while they are in flight).
     """
     limit = client.completion_limit(max_output_tokens)
     needed = estimate_tokens("".join(m["content"] for m in messages)) + limit
-    timeout_s: float | None = None
-    if deadline is not None:
-        timeout_s = deadline.call_timeout(client.timeout_s)
-        if timeout_s is None:
-            return LlmSkipped(TIME_UP)
-    denial = budget.reserve(needed)
+    if deadline is not None and deadline.call_timeout(client.timeout_s) is None:
+        return LlmSkipped(TIME_UP)
+    denial = budget.reserve(needed, wait_s=deadline.wait_s() if deadline is not None else None)
     if denial is not None:
         return LlmSkipped(denial)
     spent = 0
     try:
+        timeout_s: float | None = None
+        if deadline is not None:
+            timeout_s = deadline.call_timeout(client.timeout_s)  # what the wait for the budget left
+            if timeout_s is None:
+                return LlmSkipped(TIME_UP)
         answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s)
         spent = answer.total_tokens
     except LlmError as exc:
         log.warning("LLM call for %s failed: %s", what, exc)
         return LlmSkipped(f"b-api: {exc}", calls=1)
     finally:
-        budget.settle(needed, spent)  # also on unexpected errors: a leaked reservation would shrink the day
+        budget.settle(needed, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
     return answer
