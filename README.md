@@ -246,8 +246,9 @@ endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. An 40 echte
 trifft der Titel als Thema 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16 und ein LLM, das den
 Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34, für rund 470 Tokens und 2,8 s. Bis zum Kompendium
 gemessen (M23) wird es mit dem Titel bei 5 von 31 Materialien brauchbar (mindestens die Hälfte der gedruckten
-Absätze passt), mit dem Thema vom LLM bei 17, mit dem Begriff, den eine Lehrkraft eintippen würde, bei 18.
-Welcher Weg eingebaut wird, ist offen (Optionen im Messprotokoll).
+Absätze passt), mit dem Thema vom LLM bei 17, mit dem Begriff, den eine Lehrkraft eintippen würde, bei 18; den
+Hauptartikel trifft das Thema vom LLM so sicher wie der Begriff (F1 0,97 und 0,94, der Titel 0,20). Welcher Weg
+eingebaut wird, ist offen (Optionen im Messprotokoll).
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 

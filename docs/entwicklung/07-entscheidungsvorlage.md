@@ -369,18 +369,24 @@ Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-m
 
 6. **Kompendium aus einem Material (`node_id` ohne `topic`):** Heute wird der Titel des Materials zum Thema. Echte
    Titel nennen oft Format oder Datum, deshalb wird das Kompendium selten brauchbar, das heißt: Mindestens die Hälfte
-   seiner gedruckten Absätze passt zum Material. Brauchbar waren von 31 WLO-Materialien mit klarem Thema (M23):
+   seiner gedruckten Absätze passt zum Material. F1 misst, ob die richtigen Artikel im Kompendium landen: beim
+   Hauptartikel gegen das Gold, bei allen gedruckten Artikeln gegen die, die zum Material gehören. Von 31
+   WLO-Materialien mit klarem Thema (M23):
 
-   | Weg | brauchbar | LLM je Material |
-   |---|---|---|
-   | Begriff, den eine Lehrkraft eintippt | 18 | – |
-   | Titel des Materials (heute) | 5 | – |
-   | Titel, `balanced` | 10 | 600 Tokens, rund 4,6 s |
-   | Thema vom LLM aus den Metadaten | 17 | 440 Tokens, 2,8 s |
-   | Entitäten wie im alten Dienst als Korpus | 11 | 1.680 Tokens, 9,9 s |
+   | Weg | brauchbar | F1 Hauptartikel | F1 Artikel | LLM je Material |
+   |---|---|---|---|---|
+   | Begriff, den eine Lehrkraft eintippt | 18 | 0,94 | 0,45 | – |
+   | Titel des Materials (heute) | 5 | 0,20 | 0,10 | – |
+   | Titel, `balanced` | 10 | 0,45 | 0,22 | 600 Tokens, rund 4,6 s |
+   | Thema vom LLM aus den Metadaten | 17 | 0,97 | 0,50 | 440 Tokens, 2,8 s |
+   | Entitäten wie im alten Dienst als Korpus | 11 | 0,94 | 0,50 | 1.680 Tokens, 9,9 s |
 
-   Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel. Dazu sollte der Dienst kein
-   Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu Materialien ohne Thema eines).
+   Mit dem Thema vom LLM trifft das Material den Hauptartikel so sicher wie ein Begriff, und bei gleichem
+   Hauptartikel entsteht derselbe Text. Unscharf sind bei beiden die Nebenartikel: Rund ein Drittel passt nicht zum
+   Material. Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel. Dazu sollte der Dienst
+   kein Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu Materialien ohne Thema eines). Weitere
+   Verfahren für den Hauptartikel braucht es mit LLM nicht; lohnend wäre als Nächstes eine Messung der Nebenartikel,
+   die Begriffen wie Materialien hilft.
 7. **Lehrplanbezüge (Teil 2, M22):** Rund 60 % der ausgegebenen Lehrplanelemente gehören zum Thema, 13 bis 19 %
    passen nicht. Das Fach kürzt Teil 2 um ein Drittel, hebt die Treffsicherheit aber kaum und verwirft ein Viertel
    der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach

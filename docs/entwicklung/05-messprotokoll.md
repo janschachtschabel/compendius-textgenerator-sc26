@@ -977,13 +977,62 @@ englischen Texten werden einzelne Großbuchstaben zu den Artikeln *A*, *H*, *J*;
 7 unscharfen Materialien (Portale, Methoden, Meinungen) sind alle Wege schwach (brauchbar 1 bis 4 von 7), bei so
 wenigen ohne klare Rangfolge. Zusammen 113.476 Tokens für 40 Materialien, mit `gpt-6-luna`.
 
+**Precision, Recall und F1 (aus denselben Läufen und Noten):** Auf Artikelebene lassen sich die Wege vergleichen
+wie bei TREC: Passend sind je Material die Artikel mit Note 2, die einer der sechs Wege gedruckt hat (im Median 2,
+höchstens 7). Ein Artikel, den kein Weg druckte, bleibt unbekannt; verwandte Artikel (Note 1) zählen als nicht
+passend. Precision ist der Anteil der passenden unter den gedruckten Artikeln eines Kompendiums, Recall der Anteil der
+passenden Artikel, die es gedruckt hat, F1 ihr harmonisches Mittel, je Material gerechnet und über die Materialien
+gemittelt; ein fehlendes Kompendium zählt Recall und F1 0. Für den Hauptartikel gilt das Gold: Precision ist der
+Anteil der richtigen unter den gebauten Kompendien, Recall der unter allen 31 Materialien. Werte der 31 Materialien
+mit klarem Thema, in Klammern mit den zweiten Noten:
+
+| Weg | Hauptartikel P / R / F1 | Artikel P | Artikel R | Artikel F1 | Artikel-F1 gegen B je Material: besser, gleich, schlechter |
+|---|---|---|---|---|---|
+| B Begriff | 0,94 / 0,94 / 0,94 | 0,44 (0,41) | 0,57 (0,58) | 0,45 (0,43) | – |
+| K0 Knoten wie heute | 0,28 / 0,16 / 0,20 | 0,17 (0,15) | 0,12 (0,11) | 0,10 (0,09) | 0, 7, 24 |
+| K0b Knoten, `balanced` | 0,61 / 0,35 / 0,45 | 0,35 (0,32) | 0,27 (0,27) | 0,22 (0,20) | 3, 9, 19 |
+| KL Knoten, Thema vom LLM | 0,97 / 0,97 / 0,97 | 0,47 (0,45) | 0,67 (0,66) | 0,50 (0,47) | 5, 26, 0 |
+| KEl Entitäten, lokal | 0,45 / 0,45 / 0,45 | 0,17 (0,18) | 0,34 (0,35) | 0,22 (0,22) | 2, 13, 16 |
+| KEa Entitäten wie im alten Dienst | 0,94 / 0,94 / 0,94 | 0,39 (0,40) | 0,82 (0,83) | 0,50 (0,50) | 13, 7, 11 |
+
+Zum Vergleich Begriffe ohne Material: Im Gold der Artikelwahl (M9, 94 Anfragen, jede bekommt eine Antwort, also
+Precision = Recall = F1) treffen die Regeln 0,91, mit LLM 0,97. B ist eine günstige Vergleichsgröße, weil derselbe
+Beschrifter Begriff und Gold festlegte.
+
+Den Hauptartikel trifft das Material mit LLM so sicher wie ein Begriff. Wählen KL und B denselben (24 von 31
+Materialien), druckt KL genau dieselben Absätze: Beschreibung und Schlagwörter wirken heute nur über die Wahl des
+Hauptartikels. Von den sieben übrigen ist KL bei fünf um mehr als 0,1 besser (zweimal *Scratch (Programmiersprache)*
+statt *Scratch (Bahnradsport)*, *Galvanische Zelle*, *Division (Mathematik)*, *Getriebe*), bei zwei gleich.
+Artikel-F1 und passender Anteil der Absätze messen Verschiedenes, denn F1 zählt Artikel, nicht Absätze: Zum Zahnrad
+druckt B 22 Absätze, 18 davon aus *Zahnrad* (Artikel-F1 0,25, passend 82 %), KL mit *Getriebe* 26 Absätze aus acht
+Artikeln rund ums Getriebe, 9 davon passend (Artikel-F1 0,50, passend 35 %).
+
+Auf Artikelebene liegt auch der Begriff nur bei F1 0,45: Die Unschärfe sitzt in den Nebenartikeln (allen gedruckten
+Artikeln außer dem Hauptartikel), nicht in der Eingabe. Der Hauptartikel trägt bei KL 31-mal Note 2, bei B 29-mal.
+Von den rund drei Nebenartikeln je Kompendium tragen bei B 16 % Note 2 und 36 % Note 0, bei KL 18 % und 34 %; sie
+liefern 46 und 53 % der gedruckten Absätze. Die Entitäten des alten Linkers (KEa) erreichen dieselbe Artikel-F1 wie
+KL auf anderem Weg: Sie finden die meisten passenden Artikel (Recall 0,82), drucken aber 4,3 Nebenartikel je
+Kompendium, aus denen drei Viertel der Absätze kommen. KL und KEa zusammen, als ein Weg gezählt (eine Abschätzung,
+kein gebautes Kompendium, 8,2 Artikel je Material), kämen auf Recall 0,96, aber Precision 0,30 und F1 0,44: Die
+Entitäten einfach dazuzunehmen, hebt F1 nicht. Bei den 7 unscharfen Materialien liegt KL unter dem Begriff
+(Hauptartikel-F1 0,57 gegen 1,00, Artikel-F1 0,30 gegen 0,42); bei sieben Materialien und einem Begriff vom
+Beschrifter des Golds ist das keine belastbare Aussage.
+
 **Ergebnis und Optionen (zu entscheiden):** Die Metadaten eines Materials tragen ein Kompendium, wenn ein Schritt
 das Thema aus ihnen bestimmt; der Titel allein trägt es nicht. Für Knoten ohne mitgeschicktes `topic`: (A) Das LLM
-nennt das Thema (KL, Option A aus M21): so gut wie der Begriff, 17 statt 18 brauchbar, rund 440 Tokens und 3 s je
-Material. (B) Die Entitäten des alten Linkers werden der Korpus (KEa): breiter, aber seltener brauchbar (11); stark
-bei Ereignissen, Personen und Meinungsbeiträgen, 1.680 Tokens und 10 s. Denkbar ist auch A mit den weiteren
-Entitäten als zusätzlichen Quellen; das ist nicht gemessen. (C) Ohne LLM bleibt der Titel (5 brauchbar); die lokalen
-Entitäten träfen als Hauptartikel 14 von 31, als Korpus sind sie unbrauchbar. (D) Unabhängig davon: Findet keiner
-der Schritte ein Thema, sollte der Dienst kein Kompendium bauen statt eines falschen. Die Messung spricht für A, wo
-ein LLM bereitsteht, und für D. Rohdaten: `m23_material_kompendium.json`, Noten
+nennt das Thema (KL, Option A aus M21): so gut wie der Begriff, 17 statt 18 brauchbar, F1 des Hauptartikels 0,97
+statt 0,94, der Artikel 0,50 statt 0,45, bei keinem Material um mehr als 0,1 schlechter; rund 440 Tokens und 3 s je
+Material. (B) Die Entitäten des alten Linkers werden der Korpus (KEa): breiter (Recall 0,82), aber seltener brauchbar
+(11); stark bei Ereignissen, Personen und Meinungsbeiträgen, 1.680 Tokens und 10 s. A mit den Entitäten als
+zusätzlichen Quellen hebt F1 nach der Abschätzung nicht (0,44); lohnen könnte es nur mit einem Filter gegen
+Plattform- und Formatentitäten wie *YouTube*, das ist nicht gemessen. (C) Ohne LLM bleibt der Titel (5 brauchbar, F1
+des Hauptartikels 0,20); keiner der lokalen Wege aus M21 und M23 trifft mehr als 14 von 31 Hauptartikeln. (D)
+Unabhängig davon: Findet keiner der Schritte ein Thema, sollte der Dienst kein Kompendium bauen statt eines falschen.
+Die Messung spricht für A, wo ein LLM bereitsteht, und für D.
+
+**Weitere Verfahren?** Für den Hauptartikel nicht, wo ein LLM bereitsteht: KL erreicht den Begriff. Ohne LLM müsste
+ein neues Verfahren gemessen werden, falls Knoten ohne `topic` auch in der Stufe `llm-free` ein Kompendium bekommen
+sollen; sonst genügt D. Messen sollte man als Nächstes die Nebenartikel, denn dort geht die Treffsicherheit verloren,
+beim Begriff wie beim Material. Ein Material bringt mit Beschreibung und Schlagwörtern Kontext mit, den der Dienst
+beim Auswählen der Nebenartikel heute nicht nutzt. Rohdaten: `m23_material_kompendium.json`, Noten
 `eval/materialwahl/kompendium_noten.yaml` und `kompendium_noten_zweit.yaml`.
