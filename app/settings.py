@@ -123,7 +123,7 @@ class Settings(BaseSettings):
     edu_sharing_repositories: str = Field(
         "repository.staging.openeduhub.net,redaktion.openeduhub.net",
         description="Comma separated hosts a request may name as repository of its node_id (D45), besides the "
-        "configured one; read anonymously over https",
+        "configured one; over https, and nodes are read without credentials from every repository",
     )
     edu_sharing_user: str = Field("", description="Optional Basic-Auth user; anonymous reads otherwise")
     edu_sharing_password: str = Field("", description="Optional Basic-Auth password")

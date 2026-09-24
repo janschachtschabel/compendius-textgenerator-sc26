@@ -10,10 +10,10 @@ from fastapi import HTTPException, Request
 
 from app.domain.models import Resolution, Source
 from app.knowledge.article_choice import HIT_ORIGIN, LlmArticleChooser, check_hits, choice_block, choice_used
-from app.knowledge.topic import normalize_topic
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, RepositoryUnavailableError
 from app.sources.wlo.client import EduSharingError, NodeNotFoundError
+from app.sources.wlo.part import CollectionTopic, derive_topic
 from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.sources.zim.registry import CHOSEN_BY_LLM, ZimRegistry
 from app.templates.manager import TemplateNotFoundError
@@ -56,13 +56,12 @@ def archives_for(registry: ZimRegistry, archive_ids: Sequence[str]) -> ZimRegist
 def corpus_for_topic(
     service: CompendiumService,
     registry: ZimRegistry,
-    topic: str,
+    topic: str | None,
     *,
     template_id: str | None = None,
     max_articles: int | None = None,
     article_choice: str | None = None,
-    subject: str | None = None,
-    context: Sequence[str] = (),
+    derived: Sequence[CollectionTopic] = (),
 ) -> tuple[str, Resolution, list[Source], dict[str, Any] | None]:
     """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D40).
 
@@ -70,14 +69,13 @@ def corpus_for_topic(
     when the rules chose alone. A topic the archives do not have is a 404 carrying the resolution, so the caller sees
     the alternatives instead of an empty answer.
     """
-    normalized = normalize_topic(topic)
-    # A subject in the topic ("Physik: Optik") wins over one a node brings; the node's words add to the context
-    subject = normalized.subject or subject
+    found = derive_topic(topic, derived)  # as a compendium derives it: a topic sent along wins over the node
+    normalized, subject = found.normalized, found.subject
     requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
     chooser = LlmArticleChooser(job, normalized.topic, subject) if job is not None else None
     resolution = registry.resolve_topic(
         normalized.topic,
-        context=[*normalized.context, *context],
+        context=found.context,
         query=normalized.query,
         terms=service.subjects.context_terms(subject),
         chooser=chooser,

@@ -231,6 +231,9 @@ def build_curricula(settings: Settings) -> CurriculaBuilder:
 
 def close_clients(app: FastAPI) -> None:
     """Close the outbound HTTP clients (Kiwix catalog, edu-sharing, b-api) when the process shuts down."""
+    service = getattr(app.state, "service", None)
+    if service is not None:
+        service.close()  # the clients of other repositories a node was read from (D45)
     collections = getattr(app.state, "collections", None)
     llm = getattr(app.state, "llm", None)
     for client in (

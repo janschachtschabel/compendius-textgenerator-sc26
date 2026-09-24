@@ -172,12 +172,17 @@ def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
         kind="collection" if "ccm:collection" in (node.get("aspects") or []) else "material",
         title=_title(node, props),
         description=_first(props, "cclom:general_description", "cm:description"),
-        keywords=tuple(_values(props, "cclom:general_keyword")),
+        keywords=_keywords(props),
         subject_uris=tuple(_values(props, "ccm:taxonid")),
         subject_labels=_labels(props, "ccm:taxonid"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         url=_first(props, "ccm:wwwurl"),
     )
+
+
+def _keywords(props: Mapping[str, Any]) -> tuple[str, ...]:
+    """The keywords of a node, each on one line and once: they become context words and part of a text."""
+    return tuple(dict.fromkeys(one_line(word) for word in _values(props, "cclom:general_keyword") if word.strip()))
 
 
 def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:

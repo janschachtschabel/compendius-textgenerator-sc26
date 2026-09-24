@@ -38,7 +38,7 @@ from app.knowledge.article_choice import (
     choice_used,
 )
 from app.knowledge.segmentation import segment_source
-from app.knowledge.topic import NormalizedTopic, normalize_topic, topic_stem
+from app.knowledge.topic import NormalizedTopic, topic_stem
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
@@ -60,6 +60,7 @@ from app.sources.wlo.part import (
     CollectionOptions,
     CollectionTopic,
     collection_topic,
+    derive_topic,
     node_input,
     node_topic,
 )
@@ -208,15 +209,13 @@ class CompendiumService:
 
         collection = self._collection_info(request)
         node_info, node = self.read_node(request.node_id, request.repository) if request.node_id else (None, None)
-        # A topic sent along wins; otherwise the node's title, then the collection's (D12, D45)
         derived: list[CollectionTopic] = []
         if node_info is not None:
             derived.append(node_topic(node_info))
         if collection is not None:
             derived.append(collection_topic(collection))
-        normalized = normalize_topic(request.topic or (derived[0].topic if derived else ""))
-        context = [*normalized.context, *(word for found in derived for word in found.context)]
-        subject = request.subject or normalized.subject or next((d.subject for d in derived if d.subject), None)
+        found = derive_topic(request.topic, derived, request.subject)
+        normalized, context, subject = found.normalized, found.context, found.subject
         chooser = LlmArticleChooser(choice, normalized.topic, subject) if choice is not None else None
         resolution = self.registry.resolve_topic(
             normalized.topic,
@@ -296,8 +295,8 @@ class CompendiumService:
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
-            if request.topic:
-                log.warning("collection %s not readable, continuing with the topic: %s", request.collection_id, exc)
+            if request.topic or request.node_id:  # the topic comes from the request or from the node
+                log.warning("collection %s not readable, continuing without it: %s", request.collection_id, exc)
                 return None
             raise
 
@@ -312,9 +311,12 @@ class CompendiumService:
         return info, node_input(info, root)
 
     def _node_repository(self, repository: str | None) -> tuple[str, CollectionBuilder]:
-        """The REST root and the reader of a repository: the configured one as configured, any other anonymously."""
+        """The REST root and the reader of a repository: the configured one, or one without credentials for any other.
+
+        Nodes are read without credentials from either (``EduSharingClient.node``); an empty address names none.
+        """
         base = self.settings.edu_sharing_base_url.rstrip("/")
-        if repository is None:
+        if not repository:
             if self.collections is None or not base:
                 raise RepositoryUnavailableError(
                     "Kein Repository konfiguriert (EDU_SHARING_BASE_URL); repository angeben"
@@ -335,6 +337,13 @@ class CompendiumService:
                 builder = CollectionBuilder(client=client, cache=shared.cache if shared else None, options=options)
                 self._foreign[root] = builder
         return root, builder
+
+    def close(self) -> None:
+        """Close the clients of other repositories; the configured one belongs to the app (``close_clients``)."""
+        with self._foreign_lock:
+            for builder in self._foreign.values():
+                builder.client.close()
+            self._foreign.clear()
 
     def _collections_or_fail(self) -> CollectionBuilder:
         if self.collections is None:

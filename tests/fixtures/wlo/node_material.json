@@ -8,15 +8,41 @@
   },
   "type": "ccm:io",
   "aspects": [
+   "cclom:lifecycle",
+   "cclom:technical",
    "ccm:iometadata",
-   "cclom:general"
+   "cm:versionable",
+   "ccm:tracking",
+   "sys:referenceable",
+   "ccm:basemetadata",
+   "cm:metadataset",
+   "ccm:commonlicenses",
+   "cclom:rights",
+   "cm:thumbnailed",
+   "cm:titled",
+   "ccm:oeh",
+   "cclom:meta-metadata",
+   "cm:auditable",
+   "ccm:workflow",
+   "ccm:educontext",
+   "ccm:eduscope",
+   "ccm:usageaspect",
+   "sys:localized",
+   "cclom:schema",
+   "ccm:licenses",
+   "ccm:lomreplication",
+   "cclom:general",
+   "cm:author"
   ],
-  "name": "Stationsarbeit zur Optik",
+  "name": "Stationsarbeit zur Optik_1707591218967",
   "title": "Stationsarbeit zur Optik",
   "isPublic": true,
   "properties": {
    "cclom:title": [
     "Stationsarbeit zur Optik"
+   ],
+   "cm:name": [
+    "Stationsarbeit zur Optik_1707591218967"
    ],
    "cclom:general_description": [
     "An sechs Stationen untersuchen Lernende Aufbau und Funktion des Auges: Netzhaut, Pupille und Linse, dazu ein Vergleich mit der Lochkamera. (Synthetischer Testtext)"
@@ -26,12 +52,17 @@
     "Netzhaut",
     "Pupille",
     "Linse",
-    "Lochkamera"
+    "Lochkamera",
+    "Stationenlernen",
+    "Stationenarbeit",
+    "Selbstlernstationen"
    ],
    "ccm:taxonid": [
+    "http://w3id.org/openeduhub/vocabs/discipline/080",
     "http://w3id.org/openeduhub/vocabs/discipline/460"
    ],
    "ccm:taxonid_DISPLAYNAME": [
+    "Biologie",
     "Physik"
    ],
    "ccm:educationalcontext": [
@@ -41,7 +72,7 @@
     "Sekundarstufe I"
    ],
    "ccm:wwwurl": [
-    "https://example.org/stationsarbeit-optik"
+    "https://www.tutory.de/entdecken/dokument/stationsarbeit-zur-optik-1"
    ]
   }
  }

@@ -8,7 +8,7 @@ usual ways of writing the REST root: the service always asks ``https://<host>/ed
 
 from __future__ import annotations
 
-from collections.abc import Collection
+from collections.abc import Set as AbstractSet
 from urllib.parse import urlsplit
 
 REST_ROOT = "/edu-sharing/rest"
@@ -19,13 +19,13 @@ class RepositoryNotAllowedError(ValueError):
     """The address names no allowed repository."""
 
 
-def repository_root(value: str, allowed_hosts: Collection[str]) -> str:
+def repository_root(value: str, allowed_hosts: AbstractSet[str]) -> str:
     """The REST root of an allowed repository, from the ways callers write its address."""
-    parts = urlsplit(value.strip())
     try:
+        parts = urlsplit(value.strip())
         port = parts.port
-    except ValueError:  # a port that is no number
-        port = -1
+    except ValueError as exc:  # brackets around no IP address, characters invalid under NFKC, a port that is no number
+        raise _refused(value, allowed_hosts) from exc
     host = parts.hostname or ""
     if (
         parts.scheme.lower() != "https"
@@ -37,7 +37,11 @@ def repository_root(value: str, allowed_hosts: Collection[str]) -> str:
         or parts.fragment
         or parts.path not in _ROOT_PATHS
     ):
-        raise RepositoryNotAllowedError(
-            f"Repository nicht erlaubt: {value!r}; erlaubt sind https-Adressen von {', '.join(sorted(allowed_hosts))}"
-        )
+        raise _refused(value, allowed_hosts)
     return f"https://{host}{REST_ROOT}"
+
+
+def _refused(value: str, allowed_hosts: AbstractSet[str]) -> RepositoryNotAllowedError:
+    return RepositoryNotAllowedError(
+        f"Repository nicht erlaubt: {value!r}; erlaubt sind https-Adressen von {', '.join(sorted(allowed_hosts))}"
+    )

@@ -19,7 +19,8 @@ from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.test_wlo_client import BASE, FakeRepository
 
-STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"]
+STARTING_POINTS = ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa", "/api/v2/entities"]
+STAGING = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 
 
 @pytest.fixture(scope="module")
@@ -140,3 +141,21 @@ def test_every_endpoint_says_what_it_does(client: TestClient) -> None:
         if method in ("get", "post", "put", "delete", "patch") and not (operation.get("description") or "").strip()
     ]
     assert not bare, "endpoints without a description in /docs:\n  " + "\n  ".join(bare)
+
+
+@pytest.mark.parametrize("path", STARTING_POINTS)
+def test_the_templates_name_a_node_of_the_staging_repository(client: TestClient, path: str) -> None:
+    """Named, so Swagger offers them in its chooser; a second entry of a plain list on the schema is never shown."""
+    content = client.get("/openapi.json").json()["paths"][path]["post"]["requestBody"]["content"]["application/json"]
+    named = [entry["value"] for entry in (content.get("examples") or {}).values()]
+    assert any(body.get("node_id") and body.get("repository", STAGING) == STAGING for body in named), path
+
+
+def test_the_node_preview_offers_staging_templates(client: TestClient) -> None:
+    """Parameters take their templates from ``examples`` on the parameter; Swagger ignores a list on the schema."""
+    spec = client.get("/openapi.json").json()
+    parameters = {entry["name"]: entry for entry in spec["paths"]["/api/v2/nodes/{node_id}"]["get"]["parameters"]}
+    node_ids = [entry["value"] for entry in parameters["node_id"].get("examples", {}).values()]
+    repositories = [entry["value"] for entry in parameters["repository"].get("examples", {}).values()]
+    assert "ac66224b-42b0-4676-a53d-71b058dc780b" in node_ids
+    assert STAGING in repositories

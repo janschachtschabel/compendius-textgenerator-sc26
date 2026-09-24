@@ -156,10 +156,11 @@ EXAMPLES = {
     "aus einem Knoten": {
         "summary": "Thema, Fach und Stufe aus einem Knoten des Repositorys (hier eine Sammlung der WLO-Staging)",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung; der Titel wird zum Thema, Fach, Bildungsstufe und "
-            "Schlagwörter lenken die Artikelwahl. repository ist die REST-Adresse des Repositorys, ohne Angabe das "
-            "konfigurierte; erlaubt sind nur die Hosts aus EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor. "
-            "GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."
+            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten; der Titel wird zum Thema, "
+            "das erste Fach zum Fach, Bildungsstufen und Schlagwörter zu Kontextwörtern der Auflösung. repository "
+            "ist die REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur die Hosts aus "
+            "EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor. GET /api/v2/nodes/{node_id} zeigt vorab, was "
+            "gelesen wird."
         ),
         "value": {
             "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
@@ -193,27 +194,28 @@ def knowledge(
     ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the level of a
     compendium would: ``llm-free`` takes ``rule-based``, ``balanced`` and ``best-quality`` take ``llm``.
 
+    ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
+    compendium does; ``repository`` names another allowed one, and a topic sent along wins. Unknown or not
+    public node: 404, refused address: 422, failing repository: 502, no repository at all: 503.
+
     A topic the archives do not have is a 404 carrying the resolution, so the answer names the
     alternatives instead of coming back empty.
     """
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
-    node, subject, context = None, None, []
-    wanted = payload.topic
+    node, derived = None, []
     if payload.node_id:
         with node_errors():
             info, node = service.read_node(payload.node_id, payload.repository)
-        derived = node_topic(info)
-        wanted, subject, context = wanted or derived.topic, derived.subject, derived.context
+        derived.append(node_topic(info))
     topic, resolution, sources, choice = corpus_for_topic(
         service,
         registry,
-        wanted or "",
+        payload.topic,
         template_id=payload.template_id,
         max_articles=payload.max_articles,
         article_choice=payload.article_choice,
-        subject=subject,
-        context=context,
+        derived=derived,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []

@@ -8,10 +8,12 @@ sub-collections 0.2 s, text content 0.1-2.3 s per node.
 
 from __future__ import annotations
 
+import dataclasses
 import logging
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Collection
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -45,7 +47,7 @@ class CollectionNotFoundError(EduSharingError):
 
 
 class NodeNotFoundError(EduSharingError):
-    """No node with this id in the repository, or none the caller may read (HTTP 404)."""
+    """No node with this id in the repository (HTTP 404), or none the public may read (HTTP 403)."""
 
 
 def validate_node_id(value: str) -> str:
@@ -53,6 +55,16 @@ def validate_node_id(value: str) -> str:
     if not _NODE_ID.match(value or ""):
         raise ValueError(f"keine gültige Knoten-ID: {value!r}")
     return value
+
+
+def render_url_for(rest_root: str, node_id: str) -> str:
+    """Public page of a node (``…/edu-sharing/components/render/{id}``) in the repository of ``rest_root``.
+
+    Only the path is cut at ``/edu-sharing``; a host whose name starts with it stays whole.
+    """
+    parts = urlsplit(rest_root)
+    prefix = parts.path.split("/edu-sharing", 1)[0]
+    return f"{parts.scheme}://{parts.netloc}{prefix}/edu-sharing/components/render/{validate_node_id(node_id)}"
 
 
 class EduSharingClient:
@@ -81,8 +93,7 @@ class EduSharingClient:
 
     def render_url(self, node_id: str) -> str:
         """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
-        host = self.base_url.split("/edu-sharing", 1)[0]
-        return f"{host}/edu-sharing/components/render/{validate_node_id(node_id)}"
+        return render_url_for(self.base_url, node_id)
 
     def collection(self, collection_id: str) -> CollectionInfo:
         payload = self._get(f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}")
@@ -136,11 +147,18 @@ class EduSharingClient:
         return refs
 
     def node(self, node_id: str) -> NodeInfo:
-        """Title, description, keywords, subject and level of a material or a collection (D45)."""
-        payload = self._get(f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata", {"propertyFilter": "-all-"})
+        """Title, description, keywords, subject and level of a material or a collection (D45).
+
+        Read without credentials, whatever the client carries: the endpoints that take a node have no login, so they
+        pass on only what the repository shows the public. A node the public may not see counts as not found.
+        """
+        path = f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata"
+        payload = self._get(path, {"propertyFilter": "-all-"}, anonymous=True, missing=(403, 404))
         if payload is None:
-            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden in {self.base_url}")
-        return parse_node(payload)
+            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder nicht öffentlich in {self.base_url}")
+        if not isinstance(payload.get("node"), dict):
+            raise EduSharingError("edu-sharing antwortete ohne Knoten")
+        return dataclasses.replace(parse_node(payload), node_id=node_id)  # the checked id, not the answer's
 
     def text_content(self, node_id: str) -> str:
         """Extracted plain text of a material, or an empty string when the node has none (404)."""
@@ -149,16 +167,27 @@ class EduSharingClient:
             return ""
         return str(payload.get("text") or payload.get("raw") or "").strip()
 
-    def _get(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any] | None:
-        """Parsed JSON, ``None`` for 404; transport failures are retried once, other errors raised."""
+    def _get(
+        self,
+        path: str,
+        params: dict[str, Any] | None = None,
+        *,
+        anonymous: bool = False,
+        missing: Collection[int] = (404,),
+    ) -> dict[str, Any] | None:
+        """Parsed JSON, ``None`` for a status in ``missing``; transport failures are retried once, other errors raised.
+
+        ``anonymous`` leaves the client's credentials out of this one request.
+        """
+        auth = None if anonymous else httpx.USE_CLIENT_DEFAULT
         last_error: Exception | None = None
         for _attempt in range(ATTEMPTS):
             try:
-                response = self._client.get(path, params=params)
+                response = self._client.get(path, params=params, auth=auth)
             except httpx.TransportError as exc:
                 last_error = exc
                 continue
-            if response.status_code == 404:
+            if response.status_code in missing:
                 return None
             if response.status_code >= 400:
                 log.warning(

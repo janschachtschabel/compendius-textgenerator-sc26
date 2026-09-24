@@ -14,6 +14,7 @@ BASE = "https://repo.test/edu-sharing/rest"
 OPTIK = "9e7ae956-e9df-430f-bace-f3db4b910013"
 UNKNOWN = "00000000-0000-4000-8000-000000000000"
 MATERIAL = "ac66224b-42b0-4676-a53d-71b058dc780b"  # a material of the staging repository
+PRIVATE = "22222222-2222-4222-8222-222222222222"
 NODE_FIXTURES = {OPTIK: "node_collection_optik.json", MATERIAL: "node_material.json"}
 
 
@@ -51,6 +52,8 @@ class FakeRepository:
             if entry is None:
                 return httpx.Response(404, json={"error": "missing"})
             return httpx.Response(entry["status"], json=entry["body"])
+        if PRIVATE in path:  # a node the reader may not see
+            return httpx.Response(403, json={"error": "org.edu_sharing.restservices.DAOSecurityException"})
         if path.endswith("/metadata") and "/node/v1/nodes/-home-/" in path:
             name = NODE_FIXTURES.get(path.split("/")[-2])
             if name is None:

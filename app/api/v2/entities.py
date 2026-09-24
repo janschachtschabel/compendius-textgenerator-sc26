@@ -5,8 +5,8 @@ only the Klexikon - or no archive at all - still answers with the names in the t
 archives are loaded and adds the article, its lead and the kind the lead reveals. The answer says which way
 found what, so a caller can tell the difference instead of guessing.
 
-The endpoint deliberately does not use ``get_service``: it needs no compendium service, and a service without
-archives must answer here rather than report 503.
+The endpoint deliberately does not use ``get_service``, which reports 503 until the archives are loaded: recognition
+needs no archive, and a node (``node_id``) is read through the service without one.
 
 The dictionary promises terms that have an article, so a term whose entry turns out to be a disambiguation
 page is left out rather than returned unlinked - measured against the real Wikipedia, that removes about half
@@ -20,10 +20,10 @@ from the title. No live API is asked; without the index the Wikidata number is s
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import archives_for, node_errors
 from app.api.limits import rate_limited
@@ -41,6 +41,23 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 Method = Literal["ner", "dictionary"]
 MAX_TEXT_CHARS = 50_000  # a request body is caller input; recognition is linear in the text length
+EXAMPLES = {
+    "aus einem Text": {
+        "summary": "Namen und Begriffe eines Textes, mit Artikel und Kennungen",
+        "value": {"text": "Alexander von Humboldt reiste 1799 nach Südamerika."},
+    },
+    "aus einem Knoten des Repositorys": {
+        "summary": "Titel, Beschreibung und Schlagwörter eines Materials der WLO-Staging",
+        "description": (
+            "node_id nennt ein Material oder eine Sammlung. Gelesen wird ohne Zugangsdaten, also nur Öffentliches; "
+            "die Antwort gibt den gelesenen Text unter text zurück, start und end zählen darin."
+        ),
+        "value": {
+            "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+        },
+    },
+}
 UNCHECKED_NOTE = (
     "link=false: ohne Nachschlagen lässt sich nicht erkennen, ob hinter einem Begriff ein Artikel oder eine "
     "Begriffsklärungsseite steht; die Treffer des Wörterbuchs sind deshalb ungeprüft"
@@ -52,23 +69,12 @@ def _default_methods() -> list[Method]:
 
 
 class EntitiesRequest(BaseModel):
-    model_config = ConfigDict(
-        json_schema_extra={
-            "examples": [
-                {"text": "Alexander von Humboldt reiste 1799 nach Südamerika."},
-                {
-                    "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
-                    "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
-                },
-            ]
-        }
-    )
-
     text: str | None = Field(
         None,
         min_length=1,
         max_length=MAX_TEXT_CHARS,
-        description="The text the entities are read from; default: title, description and keywords of node_id",
+        description="The text the entities are read from; or node_id instead, whose title, description and keywords "
+        "become the text",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -91,6 +97,8 @@ class EntitiesRequest(BaseModel):
     def _text_or_node(self) -> EntitiesRequest:
         if not self.text and not self.node_id:
             raise ValueError("text oder node_id ist erforderlich")
+        if self.text and self.node_id:
+            raise ValueError("text oder node_id, nicht beides: der Knoten liefert den Text")
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         return self
@@ -215,7 +223,9 @@ def _node_text(info: NodeInfo) -> str:
     dependencies=[Depends(rate_limited)],
     summary="Entitäten in einem Text erkennen",
 )
-def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
+def entities(
+    payload: Annotated[EntitiesRequest, Body(openapi_examples=EXAMPLES)], request: Request
+) -> EntitiesResponse:
     """Recognise the entities of a text and, unless ``link`` is off, name the article behind each.
 
     Two ways, and ``methods`` picks them. ``ner`` reads the spaCy model and needs no archives at all;
@@ -234,6 +244,10 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
     A term of the dictionary whose only article is a disambiguation page is dropped: that way promises
     terms **with** an article. This does not apply to ``ner`` and not with ``link: false``; there ``note``
     says the result is unchecked. When neither way can run - no model and no archives - the answer is 503.
+
+    ``node_id`` instead of ``text`` reads title, description and keywords of a node of an edu-sharing repository,
+    without credentials, and returns that text under ``text``; ``start`` and ``end`` count in it. Not both: 422.
+    Unknown or not public node: 404, refused ``repository``: 422, failing repository: 502, none at all: 503.
     """
     settings = request.app.state.settings
     registry = archives_for(request.app.state.registry, payload.archives)
@@ -241,7 +255,7 @@ def entities(payload: EntitiesRequest, request: Request) -> EntitiesResponse:
     if payload.node_id:  # no archive is needed for this, so the service is asked directly
         with node_errors():
             info, node = request.app.state.service.read_node(payload.node_id, payload.repository)
-        text = text or _node_text(info)
+        text = _node_text(info)
     ran, mentions = _recognise(text or "", payload.methods, registry, settings.spacy_model)
     if not ran:
         raise HTTPException(

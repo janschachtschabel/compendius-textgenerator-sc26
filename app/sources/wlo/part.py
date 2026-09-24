@@ -9,14 +9,15 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urlsplit
 
 from app.domain.models import CollectionPart, NodeInput
+from app.knowledge.topic import NormalizedTopic, normalize_topic
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import EduSharingClient, EduSharingError
+from app.sources.wlo.client import EduSharingClient, EduSharingError, render_url_for
 from app.sources.wlo.knowledge import KnowledgeOptions, KnowledgeResult, material_sources
 from app.sources.wlo.models import CollectionInfo, MaterialRef, NodeInfo, SubCollection
 from app.sources.wlo.overview import (
@@ -61,9 +62,10 @@ def collection_topic(info: CollectionInfo) -> CollectionTopic:
 def node_topic(info: NodeInfo) -> CollectionTopic:
     """What a node contributes to topic resolution (D45): its title, its first subject, levels and keywords.
 
-    The keywords go in as context words, so an ambiguous title leans towards the meaning they share. The title of
-    a material often names its format rather than a lexicon topic („Stationsarbeit zur Optik“); a caller who knows
-    better sends ``topic`` along, which wins.
+    Levels and keywords go in as context words. The rules weigh context words at a disambiguation page only when the
+    subject brings no words of its own, and the LLM choice sees none, so with a known subject they do not steer the
+    choice yet. The title of a material often names its format rather than a lexicon topic („Stationsarbeit zur
+    Optik“); a caller who knows better sends ``topic`` along, which wins.
     """
     return CollectionTopic(
         topic=info.title,
@@ -72,9 +74,30 @@ def node_topic(info: NodeInfo) -> CollectionTopic:
     )
 
 
+@dataclass(frozen=True)
+class DerivedTopic:
+    """The topic a request resolves, with the subject and the context words that go into the resolution."""
+
+    normalized: NormalizedTopic
+    subject: str | None
+    context: list[str]
+
+
+def derive_topic(topic: str | None, derived: Sequence[CollectionTopic], subject: str | None = None) -> DerivedTopic:
+    """One derivation for compendium, knowledge and the node preview (D12, D45).
+
+    The topic: the one sent along, else the first title of ``derived`` (a node before a collection), normalised. The
+    subject: the one sent along, then a subject the topic names („Physik: Optik“), then the first of ``derived``. The
+    context words: the topic's qualifiers, then those of every entry of ``derived``.
+    """
+    normalized = normalize_topic(topic or (derived[0].topic if derived else ""))
+    context = [*normalized.context, *(word for found in derived for word in found.context)]
+    subject = subject or normalized.subject or next((found.subject for found in derived if found.subject), None)
+    return DerivedTopic(normalized=normalized, subject=subject, context=context)
+
+
 def node_input(info: NodeInfo, root: str) -> NodeInput:
     """The node as the answers show it: what was read, from which repository, and where to see it."""
-    host = root.split("/edu-sharing", 1)[0]
     return NodeInput(
         node_id=info.node_id,
         repository=root,
@@ -85,7 +108,7 @@ def node_input(info: NodeInfo, root: str) -> NodeInput:
         subjects=list(info.subject_labels),
         educational_contexts=list(info.educational_contexts),
         url=info.url or None,
-        render_url=f"{host}/edu-sharing/components/render/{info.node_id}",
+        render_url=render_url_for(root, info.node_id),
     )
 
 

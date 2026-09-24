@@ -222,21 +222,25 @@ Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674 (M18 im Messpro
 Statt eines Themas kann eine Anfrage einen Knoten eines edu-sharing-Repositorys nennen (D45): `node_id` und
 optional `repository`, bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`. Der Dienst liest die
 Metadaten des Knotens (`/node/v1/nodes/-home-/{id}/metadata`): Titel, Beschreibung, Schlagwörter, Fach und
-Bildungsstufe. Der Titel wird zum Thema, das Fach lenkt Artikelwahl und Teil 2, Stufe und Schlagwörter gehen als
-Kontextwörter in die Artikelwahl; `/entities` liest Titel, Beschreibung und Schlagwörter als Text. Ein `topic` dazu
-geht vor. Die Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab, was gelesen
-und abgeleitet wird.
+Bildungsstufe. Der Titel wird zum Thema, das erste Fach zum Fach von Artikelwahl und Teil 2. Stufen und Schlagwörter
+gehen als Kontextwörter in die Auflösung; an einer Begriffsklärung zählen sie aber nur, wenn das Fach keine eigenen
+Wörter mitbringt, und die LLM-Artikelwahl sieht sie nicht. `/entities` liest statt eines `text` Titel, Beschreibung
+und Schlagwörter als Text. Ein `topic` dazu geht vor, ebenso ein Fach, das der Titel nennt („Physik: Optik“). Die
+Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fach und
+Kontextwörter, wie eine Anfrage sie ableitet.
 
 `repository` ist die REST-Adresse, etwa `https://repository.staging.openeduhub.net/edu-sharing/rest`; der Host allein
 oder `…/edu-sharing` geht auch. Ohne Angabe gilt `EDU_SHARING_BASE_URL`. Erlaubt sind nur https-Adressen der Hosts aus
-`EDU_SHARING_REPOSITORIES` (Standard: WLO-Staging und WLO-Produktion), sonst 422. Ein anderes als das konfigurierte
-Repository wird anonym gelesen; dessen Zugangsdaten bleiben dort. Unbekannter Knoten: 404, Repository nicht
-erreichbar: 502. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
+`EDU_SHARING_REPOSITORIES` (Standard: WLO-Staging und WLO-Produktion), sonst 422. Knoten liest der Dienst immer ohne
+Zugangsdaten, auch aus dem konfigurierten Repository: Er hat keine Anmeldung und gibt nur weiter, was öffentlich ist.
+Unbekannter oder nicht öffentlicher Knoten: 404, Repository nicht erreichbar: 502, weder `repository` noch ein
+konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
 
 **Grenze (gemessen am 24.09.2026):** Sammlungen tragen ihr Thema als Titel („Optik“), Materialien oft ihr Format:
 „Stationsarbeit zur Optik“ und „Suchgitter Optik“ finden in den Archiven keinen Artikel, „Unterrichtsreihe zum Licht“
-endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. Den Hauptartikel aus Beschreibung und
-Schlagwörtern zu finden, etwa über die Entitäten, ist der nächste Schritt.
+endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. Das erste Fach ist das, welches das Repository
+zuerst nennt; bei der Stationsarbeit ist es Biologie vor Physik. Den Hauptartikel aus Beschreibung und Schlagwörtern
+zu finden, etwa über die Entitäten, ist der nächste Schritt.
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 
@@ -545,7 +549,7 @@ CC0, PDM, CC BY oder CC BY-SA steht.
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` |
-| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Ein anderes als das konfigurierte Repository wird anonym gelesen, die Zugangsdaten bleiben beim konfigurierten |
+| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten |
 | `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |

@@ -107,23 +107,31 @@ def _default_parts() -> list[Part]:
 
 
 NODE_ID_HELP = (
-    "A material or collection of an edu-sharing repository (D45): its title becomes the topic, its subject and its "
-    "educational levels and keywords the context of the article choice. A topic sent along wins; the answer names "
-    "the node under node. Titles of materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic."
+    "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public: "
+    "its title becomes the topic, its first subject the subject, its educational levels and keywords context words. "
+    "A topic or subject sent along wins, and so does a subject the title names ('Physik: Optik'). The rules weigh "
+    "context words at a disambiguation page only when the subject brings no words of its own, and the LLM choice "
+    "sees none. Titles of materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic; "
+    "GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404."
 )
 REPOSITORY_HELP = (
     "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
-    "configured one (EDU_SHARING_BASE_URL). Only allowed hosts over https (EDU_SHARING_REPOSITORIES), anything else "
-    "is a 422; another repository than the configured one is read anonymously."
+    "configured one (EDU_SHARING_BASE_URL), and without one a 503. Only allowed hosts over https "
+    "(EDU_SHARING_REPOSITORIES), anything else is a 422; a repository that fails is a 502."
 )
 
 
 class GenerateRequest(BaseModel):
     """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
 
-    topic: str | None = Field(None, min_length=1, max_length=300, description="Topic; default: the collection title")
+    topic: str | None = Field(
+        None, min_length=1, max_length=300, description="Topic; default: the title of node_id, else of collection_id"
+    )
     collection_id: str | None = Field(
-        None, pattern=NODE_ID_PATTERN, description="edu-sharing collection: topic, subject and context; part 3"
+        None,
+        pattern=NODE_ID_PATTERN,
+        description="edu-sharing collection for part 3; its title is the topic without topic and node_id, its levels "
+        "add context words, its subject counts where no other is given",
     )
     knowledge_collection_id: str | None = Field(
         None, pattern=NODE_ID_PATTERN, description="Collection whose reusable materials feed part 1 as sources"

@@ -7,32 +7,40 @@
    "isHomeRepo": true
   },
   "type": "ccm:map",
+  "aspects": [
+   "ccm:oeh_collection",
+   "ccm:widget",
+   "cclom:technical",
+   "ccm:eduscope",
+   "ccm:permission_history",
+   "ccm:iometadata",
+   "cm:versionable",
+   "ccm:tracking",
+   "ccm:page_ref",
+   "sys:referenceable",
+   "sys:localized",
+   "ccm:mapdata",
+   "cm:metadataset",
+   "ccm:licenses",
+   "cm:titled",
+   "cm:ownable",
+   "ccm:oeh",
+   "ccm:collection",
+   "ccm:collection_ordered",
+   "cm:auditable",
+   "ccm:lomreplication",
+   "cclom:general",
+   "ccm:positionable",
+   "ccm:educontext"
+  ],
   "name": "Optik",
   "title": "Optik",
-  "modifiedAt": "2026-03-04T10:19:41.546Z",
+  "isPublic": true,
   "properties": {
-   "ccm:taxonid_DISPLAYNAME": [
-    "Physik"
-   ],
-   "ccm:educationalcontext_DISPLAYNAME": [
-    "Sekundarstufe I"
-   ],
-   "ccm:taxonid": [
-    "http://w3id.org/openeduhub/vocabs/discipline/460"
-   ],
-   "cm:title": [
+   "cm:name": [
     "Optik"
    ],
-   "ccm:collectiontype": [
-    "EDITORIAL"
-   ],
-   "ccm:educationalcontext": [
-    "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
-   ],
    "cm:description": [
-    "Die Physik des Lichts, die Optik, hält eine ganze Reihe eindrucksvoller Phänomene bereit. Bereits mit Hilfe einfacher Modelle lassen sich die physikalischen Vorgänge beim Sehvorgang, die Funktionweise von Mikroskopen, Fotoapparaten und Lochkameras sowie die Zusammensetzung weißen Lichts aus verschiedenen Spektralfarben verstehen."
-   ],
-   "ccm:collectionshorttitle": [
     ""
    ],
    "cclom:general_keyword": [
@@ -43,18 +51,19 @@
     "Oberflächenphänomene",
     "Linse",
     "Auge"
+   ],
+   "ccm:taxonid": [
+    "http://w3id.org/openeduhub/vocabs/discipline/460"
+   ],
+   "ccm:taxonid_DISPLAYNAME": [
+    "Physik"
+   ],
+   "ccm:educationalcontext": [
+    "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+   ],
+   "ccm:educationalcontext_DISPLAYNAME": [
+    "Sekundarstufe I"
    ]
-  },
-  "mimetype": "application/x-directory",
-  "content": {
-   "url": "https://redaktion.openeduhub.net/edu-sharing/components/render/9e7ae956-e9df-430f-bace-f3db4b910013"
-  },
-  "isPublic": true,
-  "childReferencesCount": null,
-  "childCollectionsCount": null,
-  "aspects": [
-   "ccm:collection",
-   "cm:titled"
-  ]
+  }
  }
 }

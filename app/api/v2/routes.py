@@ -118,10 +118,12 @@ EXAMPLES = {
     "aus einem Knoten des Repositorys": {
         "summary": "Thema, Fach und Stufe aus den Metadaten eines Knotens, hier die Sammlung Optik der WLO-Staging",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung; der Titel wird zum Thema, Fach, Bildungsstufe und "
-            "Schlagwörter lenken die Artikelwahl, die Antwort nennt den Knoten unter node. repository ist die "
-            "REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur Hosts aus "
-            "EDU_SHARING_REPOSITORIES, über https. GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."
+            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten, also nur Öffentliches. Der "
+            "Titel wird zum Thema, das erste Fach zum Fach; Bildungsstufen und Schlagwörter gehen als Kontextwörter "
+            "mit, die bei einer Begriffsklärung nur zählen, wenn das Fach keine eigenen Wörter hat. Die Antwort "
+            "nennt den Knoten unter node. repository ist die REST-Adresse des Repositorys, ohne Angabe das "
+            "konfigurierte; erlaubt sind nur Hosts aus EDU_SHARING_REPOSITORIES, über https. "
+            "GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."
         ),
         "value": {
             "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
@@ -134,7 +136,7 @@ EXAMPLES = {
         "description": (
             "Titel von Materialien nennen oft ihr Format (hier: Stationsarbeit zur Optik) statt eines "
             "Lexikonthemas und finden dann keinen Artikel. Ein topic dazu geht vor; Fach, Stufe und "
-            "Schlagwörter des Materials lenken weiter die Artikelwahl."
+            "Schlagwörter des Materials gehen weiter in die Auflösung ein."
         ),
         "value": {
             "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
@@ -197,8 +199,9 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection or node: 404. Repository unreachable: 502; a ``repository`` outside the allowlist: 422. No requested
-    part can be made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
+    collection, or a node that is unknown or not public: 404. Repository unreachable: 502; a ``repository`` outside
+    the allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can
+    be made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
     """
     service = get_service(request)
     try:
