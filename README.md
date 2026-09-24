@@ -323,7 +323,7 @@ Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und die Volltexttreffer
 verworfen, kein passender; statt 26 druckte die Standard-Strategie 10 Absätze aus unpassenden Artikeln, rund 890
 Tokens je Thema mit Treffern. Zeit, gemessen am 2026-09-24 an 30 Themen, die keine frühere Messung gestellt hatte:
 im Median 1,7 s mehr je Kompendium (90. Perzentil 3,4 s) bei rund 930 Tokens; die Trefferprüfung braucht im Median
-1,4 s, eine unsichere Artikelwahl zusätzlich 1 bis 2,6 s. Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil
+1,4 s, eine unsichere Artikelwahl zusätzlich 1,0 bis 2,7 s. Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil
 1 im Median 1,35 statt 1,37 s). Derselbe Schalter steht in `POST /api/v2/knowledge`, damit Wissenstexte und
 Kompendium für ein Thema dieselben Artikel nennen.
 

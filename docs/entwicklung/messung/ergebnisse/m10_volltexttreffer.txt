@@ -1,0 +1,64 @@
+Erzeugt von mc_zusammenfassung.py aus m10_trefferfilter.json, m10_treffer_llm_allein.json, m10_treffer_llm_korpus.json und m10_treffer_wirkung.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Die Volltexttreffer der 20 Themen nach Gold
+
+47 Treffer: gehört zum Thema 15, verwandt 16, passt nicht 16.
+
+| Filter | behalten: gehört, verwandt, passt nicht | verworfen: gehört, verwandt, passt nicht |
+|---|---|---|
+| heute: Themenstamm in Titel oder Einleitung | 15, 16, 16 | 0, 0, 0 |
+| Themenstamm im Titel oder im ersten Satz | 8, 5, 2 | 7, 11, 14 |
+| alle Themenwörter in Titel und Einleitung | 14, 16, 13 | 1, 0, 3 |
+| Model2Vec-Ähnlichkeit zur Einleitung des Hauptartikels ≥ 0,7 | 14, 12, 10 | 1, 4, 6 |
+| im Hauptartikel verlinkt | 9, 3, 0 | 6, 13, 16 |
+| LLM, Treffer allein benotet: nicht 0 | 15, 16, 10 | 0, 0, 6 |
+| LLM, mit dem ganzen Korpus benotet: nicht 0 | 15, 16, 5 | 0, 0, 11 |
+
+## Note des LLM gegen Gold
+
+Treffer allein benotet: 16 Aufrufe, 6.330 Tokens.
+
+| Gold / LLM | 2 | 1 | 0 |
+|---|---|---|---|
+| 2 | 14 | 1 | 0 |
+| 1 | 10 | 6 | 0 |
+| 0 | 0 | 10 | 6 |
+
+mit dem ganzen Korpus benotet: 16 Aufrufe, 14.240 Tokens.
+
+| Gold / LLM | 2 | 1 | 0 |
+|---|---|---|---|
+| 2 | 12 | 3 | 0 |
+| 1 | 5 | 11 | 0 |
+| 0 | 0 | 5 | 11 |
+
+Mit dem ganzen Korpus mit 0 benotet (11):
+
+- Französische Revolution: Trente Glorieuses (Gold 0, in M8 3 Absätze gedruckt)
+- Ökosystem: Naturvolk (Gold 0, in M8 0 Absätze gedruckt)
+- Atommodell: Kernwaffe (Gold 0, in M8 4 Absätze gedruckt)
+- Industrielle Revolution: Soziokulturelle Evolution (Gold 0, in M8 3 Absätze gedruckt)
+- Römisches Reich: Territorialstaat (Gold 0, in M8 0 Absätze gedruckt)
+- Lineare Funktion: Differenzierbarkeit (Gold 0, in M8 0 Absätze gedruckt)
+- Lineare Funktion: Probit-Modell (Gold 0, in M8 5 Absätze gedruckt)
+- Lineare Funktion: Markow-Operator (Gold 0, in M8 0 Absätze gedruckt)
+- Zelle (Biologie): Evolutionsfaktor (Gold 0, in M8 1 Absatz gedruckt)
+- Zelle (Biologie): Hermaphroditismus (Gold 0, in M8 0 Absätze gedruckt)
+- Gedicht: Cheryl Chapman (Gold 0, in M8 0 Absätze gedruckt)
+
+## Wirkung auf das gedruckte Kompendium, Standard, 20 Themen
+
+|  | Absätze im Korpus | gedruckt aus Artikeln: gehört, verwandt, passt nicht | gefüllte Inhaltsbausteine |
+|---|---|---|---|
+| heute | 3.035 | 252, 80, 26 | 122 |
+| ohne die mit 0 benoteten Treffer | 2.951 | 260, 86, 10 | 120 |
+
+Themen, die sich ändern:
+
+- Französische Revolution: Absätze 189 -> 185, gefüllte Bausteine 6 -> 6, gedruckt aus unpassenden Artikeln 4 -> 2
+- Ökosystem: Absätze 141 -> 126, gefüllte Bausteine 7 -> 7, gedruckt aus unpassenden Artikeln 5 -> 4
+- Atommodell: Absätze 30 -> 23, gefüllte Bausteine 5 -> 3, gedruckt aus unpassenden Artikeln 7 -> 3
+- Industrielle Revolution: Absätze 160 -> 148, gefüllte Bausteine 7 -> 7, gedruckt aus unpassenden Artikeln 3 -> 0
+- Lineare Funktion: Absätze 160 -> 124, gefüllte Bausteine 5 -> 5, gedruckt aus unpassenden Artikeln 5 -> 0
+- Zelle (Biologie): Absätze 145 -> 137, gefüllte Bausteine 6 -> 6, gedruckt aus unpassenden Artikeln 1 -> 0
+- Gedicht: Absätze 82 -> 80, gefüllte Bausteine 7 -> 7, gedruckt aus unpassenden Artikeln 0 -> 0

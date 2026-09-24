@@ -1,6 +1,6 @@
 # Alter und neuer Dienst im Vergleich
 
-[Übersicht](README.md) · Messaufbau und Rohzahlen: [Messprotokoll](05-messprotokoll.md), Abschnitte M1 bis M3
+[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M1 bis M3, M9, M12 und M13
 
 ## Der alte Dienst (v0.2.0)
 
@@ -78,14 +78,14 @@ auf das Warten auf das Modell, im Median 32 s. Seine Endpunktbeschreibung nennt 
 | Problem | Lösung im neuen Dienst |
 |---|---|
 | Wikipedia sperrt, drosselt oder ist nicht erreichbar | Wikipedia und Klexikon liegen als ZIM-Archive beim Dienst; zur Anfragezeit gibt es keinen Wikipedia-Zugriff. Neue Archive holt ein Sidecar mit Prüfsumme und wechselt atomar. |
-| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. |
+| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet ein LLM (`article_choice=llm`, seit D37 Vorgabe, wo eines konfiguriert ist). |
 | nur Einleitungen als Quelle | ganze Artikel, dazu verlinkte Unterartikel und derselbe Artikel aus Klexikon, bis 12 Artikel und 400 Absätze |
 | Text großteils unbelegt, Verweise nicht prüfbar | Absätze werden wörtlich übernommen; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| 35 bis 374 s, rund 7.900 Tokens | 2 bis 3 s, 0 Tokens; ein LLM nur auf Wunsch |
+| 35 bis 374 s, rund 7.900 Tokens | 2 bis 3 s und 0 Tokens ohne LLM; ist eines konfiguriert, prüft es seit D37 die Artikelwahl (rund 1,7 s und 930 Tokens mehr); weitere LLM-Schalter nur auf Wunsch |
 | Aspekte nur als Hinweis | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten, Prüfung der Regeln (Lint) |
 | nur Weltwissen | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
 | Fehler in einer normalen Antwort | passende Statuscodes, `parts_status` je Teil, Request-ID in jeder Antwort, Prometheus-Metriken und Alarme |
-| Tests nur mit Attrappen | 753 Tests (94 % Abdeckung), Linux-CI, Rauchtest des fertigen Images |
+| Tests nur mit Attrappen | 821 Tests (94 % Abdeckung, Stand 24.09.2026), Linux-CI, Rauchtest des fertigen Images |
 
 ## Messvergleich
 
@@ -111,12 +111,29 @@ Der alte Text ist länger, weil das Modell frei schreibt; der neue enthält nur,
 Bausteine ohne passenden Absatz weg. Zweimal dieselbe Anfrage an den neuen Dienst ergab in der Stichprobe
 (Photosynthese) denselben Text.
 
+### Mit den LLM-Schaltern für Artikelwahl und Zuordnung
+
+Nach v2.0.0 kamen zwei Schalter hinzu. Ihre Zeit wurde am 24.09.2026 an 30 anderen Themen im Prozess auf dem
+Entwicklungsrechner gemessen (M13), ihre Güte an den Goldsätzen (M9, M12). Mit der Tabelle oben, gemessen über HTTP
+auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
+
+| Teil 1 je Kompendium | Dauer | Tokens | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
+|---|---|---|---|---|
+| nur Regeln (`article_choice=rule-based`, `hybrid_light`) | Median 1,35 s | 0 | 86 | 0,43 |
+| `article_choice=llm`, Vorgabe, wo ein LLM konfiguriert ist (D37) | im Median 1,7 s mehr | Median 927 | 91 | 0,43 |
+| `matcher=llm`, wählbar (D36, D38) | Median 12,0 s | im Mittel 29.400 | 86 | 0,72 und 0,69 |
+| zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
+
+Mit `matcher=llm` braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und jeder Satz bleibt
+belegt. Beide Schalter zusammen wurden nicht gemessen; sie laufen nacheinander, Zeit und Tokens addieren sich also
+ungefähr. Die Zeile `matcher=llm` lief mit den Regeln für die Artikelwahl.
+
 ## Funktionsumfang des neuen Dienstes
 
 | Endpunkt | Zweck |
 |---|---|
-| `POST /api/v2/compendium` | Kompendium aus den Teilen 1 bis 3; Schalter für Satzauswahl und Umformulierung durch ein LLM, nach v2.0.0 auch für die Zuordnung (`matcher=llm`); Teile gezielt neu erzeugen, geprüfte Bausteine behalten |
-| `POST /api/v2/knowledge` | Wissenstexte zum Thema ohne Template: die Artikel des Korpus mit ihren Abschnitten |
+| `POST /api/v2/compendium` | Kompendium aus den Teilen 1 bis 3; Schalter für Satzauswahl und Umformulierung durch ein LLM, nach v2.0.0 auch für Artikelwahl (`article_choice`) und Zuordnung (`matcher`); Teile gezielt neu erzeugen, geprüfte Bausteine behalten |
+| `POST /api/v2/knowledge` | Wissenstexte zum Thema ohne Template: die Artikel des Korpus mit ihren Abschnitten, gewählt wie beim Kompendium (`article_choice`) |
 | `POST /api/v2/entities` | Begriffe in einem Text, mit dem passenden Artikel und seiner Einleitung verknüpft |
 | `POST /api/v2/qa` | Frage-Antwort-Paare zu einem Text oder Thema in vier Stufen: Vorlagen, Satzanalyse, kleine Modelle im Image, LLM |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 allein |

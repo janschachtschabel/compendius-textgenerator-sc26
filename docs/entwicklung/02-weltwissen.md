@@ -92,7 +92,7 @@ ist, prüft niemand.
 | Hauptartikel des Themas im Korpus | 9 von 10 | 10 von 10 |
 | Begriffsklärungsseiten als Quelle | 10 (in 3 Themen) | 0 von 87 |
 | Umfang der Quellen | Median 10 Einleitungen, rund 12.200 Zeichen | Median 10,5 ganze Artikel |
-| Laufzeitabhängigkeiten | Wikipedia und LLM | keine |
+| Laufzeitabhängigkeiten | Wikipedia und LLM | keine; wo ein LLM konfiguriert ist, fragt der Dienst seit D37 die b-api und bleibt bei ihrem Ausfall bei den Regeln |
 | Gleiche Anfrage, gleiches Ergebnis | nicht zugesichert | ja (Stichprobe Photosynthese) |
 | Artikel, die nicht zum Thema passen (blind bewertet, M8) | 14 % | 6 % |
 
@@ -177,17 +177,25 @@ Validierung und 12 zurückgehaltene, die erst liefen, als die Regeln feststanden
 | Validierung, 23 | 14 | 22 | 23 |
 | zurückgehaltener Test, 12, erster Lauf | 7 | 8 | 9 |
 | zurückgehaltener Test nach zwei Korrekturen | 7 | 9 | 11 |
+| **alle drei Goldsätze, 94 Anfragen** | **66** | **86** | **91** |
+| Teil 1 je Kompendium, Median (M13, 30 andere Themen) | 1,37 s | 1,35 s | 1,7 s mehr für Artikelwahl und Trefferprüfung, im 90. Perzentil 3,4 s |
+| Tokens je Kompendium (M13) | 0 | 0 | im Median 927 |
+| LLM-Aufrufe je Kompendium | 0 | 0 | einer für die Trefferprüfung, wenn der Korpus Volltexttreffer hat (in M13 alle 30 Themen); ein zweiter, wenn die Regeln unsicher sind |
 
 - **Die Regeln** (Schritte 1 bis 5 oben) brachten den größten Teil: Bei mehrdeutigen Wörtern mit Fach stieg die
   Trefferzahl über alle drei Sätze von 19 auf 31 von 38, bei Anfragen ohne gleichnamigen Artikel von 3 auf 9 von 9.
   Unabhängig gemessen ist nur der erste Lauf des Testsatzes, 7 zu 8. Zwei Fehler, die er zeigte, wurden danach
-  behoben; seitdem ist auch er nicht mehr unabhängig.
-- **Das LLM** entscheidet nur, wo die Regeln unsicher sind: 18 von 94 Anfragen, rund 950 Tokens je Aufruf. Es
-  holte „Geschichte: Wende“, „Deutsch: Fall“ (*Kasus*), „Physik: Linse“, „Erdkunde: Delta“ (*Flussdelta*) und
-  „Lichtlehre“ (*Optik*, einen Titel, den es selbst nannte). Einen richtigen Artikel der Regeln hat es nie verworfen.
+  behoben; seitdem ist auch er nicht mehr unabhängig. Schlechter wurde eine Anfrage: „Physik: Strom“ traf der alte
+  Stand mit *Elektrischer Strom*, die Regeln wählen *Strom (Physik)*.
+- **Das LLM** entscheidet nur, wo die Regeln unsicher sind: 18 von 94 Anfragen, rund 950 Tokens je Aufruf. Wo die
+  Regeln sich sicher sind, liegen sie 73 von 76 Mal richtig, bei den unsicheren 13 von 18 Mal; mit dem LLM sind es
+  18 von 18. Es holte „Geschichte: Wende“, „Deutsch: Fall“ (*Kasus*), „Physik: Linse“, „Erdkunde: Delta“
+  (*Flussdelta*) und „Lichtlehre“ (*Optik*, einen Titel, den es selbst nannte). Einen richtigen Artikel der Regeln
+  hat es nie verworfen.
 - **Übrig** sind Fälle, in denen die Regeln sich sicher sind und deshalb nicht fragen: „Physik: Leiter“ und
   „Physik: Strom“ enden bei *Leiter (Physik)* und *Strom (Physik)*, allgemeineren Physikartikeln zum richtigen
-  Begriff, „Informatik: Netzwerk“ bei *Netzwerk* statt *Rechnernetz*.
+  Begriff, „Informatik: Netzwerk“ bei *Netzwerk* statt *Rechnernetz*. Alle Anfragen mit Weg und Titel:
+  `messung/ergebnisse/m9_artikelwahl.txt`.
 
 **Volltexttreffer je Baustein** (M10). Einfache Filter trennen sie nicht: Das Themenwort in Titel oder erstem Satz
 zu verlangen, verwirft 14 der 16 unpassenden Treffer, aber auch 7 der 15 zentralen; die Model2Vec-Ähnlichkeit zur
@@ -199,8 +207,8 @@ passenden oder verwandten. Das ist Teil von `article_choice=llm`, rund 890 Token
 
 **Zeit und Vorgabe** (M13, D37). Gemessen an 30 Themen, die keine frühere Messung gestellt hatte, damit kein Prompt
 aus dem Zwischenspeicher der b-api kommt: `article_choice=llm` verlängert Teil 1 im Median um 1,7 s (90. Perzentil
-3,4 s, höchstens 3,8 s) bei rund 930 Tokens. Die Trefferprüfung braucht im Median 1,4 s und lief bei allen 30 Themen;
-eine unsichere Artikelwahl kam bei 5 Themen hinzu, mit 1,0 bis 2,6 s. Die schärferen Regeln kosten gegenüber v2.0.0
+3,4 s, höchstens 3,9 s) bei rund 930 Tokens. Die Trefferprüfung braucht im Median 1,4 s und lief bei allen 30 Themen;
+eine unsichere Artikelwahl kam bei 5 Themen hinzu, mit 1,0 bis 2,7 s. Die schärferen Regeln kosten gegenüber v2.0.0
 keine Zeit: Teil 1 im Median 1,35 statt 1,37 s bei warmem Dateicache. Seit D37 ist `article_choice=llm` die Vorgabe,
 wo ein LLM konfiguriert ist; ohne LLM wählen die Regeln, ohne Hinweis im Audit. Auf denselben 30 Themen wählten die
 neuen Regeln bei 5 der 9 mehrdeutigen Wörter einen anderen Hauptartikel als v2.0.0, dem Titel nach jedes Mal den
@@ -219,8 +227,8 @@ blieb bei 122. Mit der Volltextsuche beider Archive, drei Treffer je Archiv, kam
 Baustein (mit der LLM-Prüfung 3). Die Suche findet gute Seiten, etwa *Physikunterricht/ Optik* oder den
 Wikiversity-Kurs *Kurs:Optik* mit Versuchen, doch aus keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt
 wurde aus Seiten wie *Arbeiten mit .NET* oder *Kommutative Ringe/Bruchrechnung/Aufgabe*, und das *Ungarisch-Lesebuch*
-belegte bei sieben Themen die Treffer aus Wikibooks. Das deckt sich mit dem gemischten Bild aus der Testapp. Die
-Zusatzsuche wurde deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind.
+lieferte bei fünf Themen Treffer aus Wikibooks, bei zweien alle drei. Das deckt sich mit dem gemischten Bild aus der
+Testapp. Die Zusatzsuche wurde deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind.
 
 **Offen:** ein LLM-Vorschlag, wenn die Regeln gar keinen Artikel finden (bisher ein 404 mit Alternativen); die
 didaktischen Seiten aus Wikibooks und Wikiversity gezielt für Praxis und Bildung nutzen, etwa mit `matcher=llm` (nicht
@@ -236,7 +244,7 @@ Absatz die ersten brauchbaren Sätze wörtlich, mit Belegnummer.
 |---|---|---|
 | Treue zur Quelle | 21 % der Sätze sind durch die zitierte Quelle nachweislich gestützt, der Rest ist nicht belegt | jeder Satz steht wörtlich im zitierten Absatz (458 von 458) |
 | Prüfbarkeit | Verweise auf ganze Artikel, Satzbezug unklar | Belegnummer je Absatz mit Artikel, Abschnitt und Textstelle |
-| Tempo und Kosten | 35 s, rund 7.900 Tokens | 2 s, 0 Tokens |
+| Tempo und Kosten | 35 s, rund 7.900 Tokens | 2 s, 0 Tokens; mit `article_choice=llm`, der Vorgabe bei konfiguriertem LLM, rund 1,7 s und 930 Tokens mehr |
 | Wiederholbarkeit | hängt vom Modell ab (Temperatur 0,7) | gleiche Anfrage, gleicher Text (Stichprobe geprüft) |
 | Lesbarkeit | flüssiger Fließtext aus einem Guss | Auszüge nebeneinander, ohne Überleitungen, mit Stilwechseln zwischen Quellen |
 | Vollständigkeit | füllt jeden Aspekt, notfalls ohne Quelle | Bausteine ohne passenden Absatz bleiben leer |

@@ -1,0 +1,44 @@
+Erzeugt von mc_zusammenfassung.py aus m12_beschreibungen_lokal.json, m12_beschreibungen_llm.json, m12_sparvarianten.json und m12_sparvarianten_rotiert.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Schärfere Bausteinbeschreibungen (V1) gegen sc26 (V0)
+
+| Variante | Pool | macro-F1 | micro-F1 | richtig unter Top 2 | belegte Bausteine | falsch zugeordnet | Sekunden je Thema | Tokens |
+|---|---|---|---|---|---|---|---|---|
+| V0 Standard | full | 0,447 | 0,656 | 67 % | 6,0 | 189 | 0,93 s | 0 |
+| V0 Standard | gold | 0,432 | 0,642 | 61 % | 5,7 | 205 | 0,11 s | 0 |
+| V1 Beschreibungen | full | 0,448 | 0,658 | 63 % | 5,7 | 186 | 0,27 s | 0 |
+| V1 Beschreibungen | gold | 0,431 | 0,648 | 62 % | 5,5 | 200 | 0,11 s | 0 |
+| V0 LLM | gold | 0,665 | 0,794 | 75 % | 5,8 | 125 | 0,72 s | 144.486 |
+| V1 LLM | gold | 0,678 | 0,795 | 81 % | 5,6 | 124 | 6,90 s | 149.910 |
+
+V0 LLM kam überwiegend aus dem Zwischenspeicher der b-api (dieselben Prompts wie M5); seine Sekunden
+sind keine Modellzeit. V1 lief neu.
+
+## LLM-Zuordnung auf dem Goldpool
+
+| Weg | Lauf | macro-F1 | micro-F1 | falsch zugeordnet | Absätze beim LLM | Tokens | Tokens je Absatz | Sekunden, zehn Themen | Sekunden je Thema, Median |
+|---|---|---|---|---|---|---|---|---|---|
+| Regeln (`hybrid_light`) | 1 | 0,433 | 0,645 | 201 von 542 | 0 | 0 | – | 4,3 s | – |
+| Regeln (`hybrid_light`) | 2 | 0,433 | 0,645 | 201 von 542 | 0 | 0 | – | 3,6 s | 0,11 s |
+| 25 Absätze zu 700 Zeichen | 1 | 0,657 | 0,791 | 127 von 548 | 597 | 144.062 | 241 | 4,9 s, Zwischenspeicher | – |
+| 25 Absätze zu 700 Zeichen | 2 | 0,727 | 0,826 | 110 von 550 | 597 | 144.758 | 242 | 78,3 s | 7,52 s |
+| 50 Absätze zu 400 Zeichen (D36) | 1 | 0,720 | 0,820 | 113 von 550 | 597 | 105.727 | 177 | 92,0 s | – |
+| 50 Absätze zu 400 Zeichen (D36) | 2 | 0,694 | 0,820 | 113 von 550 | 597 | 103.368 | 173 | 72,2 s | 6,81 s |
+| nur das Zweifelsband, 25 zu 700 | 1 | 0,543 | 0,686 | 203 von 578 | 278 | 71.173 | 256 | 60,7 s | – |
+
+Lauf 2 dreht jeden Pool zur Hälfte (--rotieren): andere Stapel, kein Zwischenspeicher. Das Zweifelsband umfasst 278 von 597 Absätzen. Die Zeiten sind Wandzeit auf dem Goldpool (rund 60 Absätze je Thema, vier Stapel parallel), nicht die eines ganzen Kompendiums (M13).
+
+## F1 je Baustein
+
+| Baustein | Gold-Absätze | Regeln, Lauf 1 | Regeln, Lauf 2 | 25×700, Lauf 1 | 25×700, Lauf 2 | 50×400, Lauf 1 | 50×400, Lauf 2 | Zweifelsband, Lauf 1 |
+|---|---|---|---|---|---|---|---|---|
+| Themendefinition | 22 | 0,68 | 0,68 | 0,81 | 0,90 | 0,91 | 0,76 | 0,65 |
+| Gliederung & Systematik | 55 | 0,60 | 0,60 | 0,76 | 0,75 | 0,78 | 0,76 | 0,64 |
+| Fachinhalte | 276 | 0,70 | 0,70 | 0,84 | 0,86 | 0,86 | 0,86 | 0,74 |
+| Gesellschaftlicher Kontext | 38 | 0,41 | 0,41 | 0,71 | 0,74 | 0,80 | 0,78 | 0,58 |
+| Entwicklung & Ausblick | 83 | 0,73 | 0,73 | 0,83 | 0,86 | 0,84 | 0,84 | 0,74 |
+| Beruf & Wirtschaft | 11 | 0,27 | 0,27 | 0,80 | 0,80 | 0,80 | 0,80 | 0,50 |
+| Bildung | 8 | 0,50 | 0,50 | 0,74 | 0,67 | 0,78 | 0,78 | 0,63 |
+| Regularien & Rahmensetzung | 2 | 0,25 | 0,25 | 0,57 | 0,80 | 0,67 | 0,67 | 0,22 |
+| Praxis | 18 | 0,19 | 0,19 | 0,34 | 0,73 | 0,58 | 0,69 | 0,51 |
+| Querschnitt & Bezüge | 3 | 0,00 | 0,00 | 0,17 | 0,15 | 0,19 | 0,00 | 0,22 |

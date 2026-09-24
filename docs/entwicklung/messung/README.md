@@ -23,6 +23,7 @@ geschrieben.
 | M11 Wikibooks und Wikiversity | `mc_zusatzquellen.py <out.json> <pool.json>`, `mc_zusatzsuche.py <out.json> <treffer-je-archiv>` | venv dieses Projekts, beide Archive unter `kompendium-test\data` | `mc_zusatzsuche.py`: `gpt-5.6-luna` für die Trefferprüfung |
 | M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> [--rotieren] <weg>…` (Wege rules, llm, llm_25x700, llm_50x400, llm_billig, llm_zweifel) | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
 | M13 Laufzeit | `mc_zeit_artikelwahl.py <out.json> <weg>…` mit `PYTHONPATH` auf die Kopie des Standes; `mc_zeit_zuordnung.py <out.json>` | venv dieses Projekts | `gpt-5.6-luna` für `llm`: rund 1.000 Tokens je Thema bei der Artikelwahl, rund 29.000 bei der Zuordnung |
+| Zusammenfassungen von M9 bis M13 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -60,6 +61,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 
 | Datei | Inhalt |
 |---|---|
+| `ergebnisse/README.md` | alle Messungen auf einen Blick: Frage, Ergebnis, Dateien; Lesehinweise |
 | `ergebnisse/m1_laufzeit_server.json` | M1, alle 47 Anfragen an den Server mit Schrittzeiten |
 | `ergebnisse/m1_laufzeit_entwicklungsrechner.json` | dieselbe Messung im lokalen Container |
 | `ergebnisse/m2_alter_dienst.json` | M2, Auswertung je Lauf: Quellen, Begriffsklärungen, Sätze, Belege |
@@ -79,14 +81,19 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m8_artikel_richter.json` | M8, Note des Richters je Artikel, Aufrufe und Tokens |
 | `ergebnisse/m8_artikelwahl.txt` | M8, alle Tabellen, falsch aufgelöste Anfragen, unpassende Artikel mit Absätzen, Kreuztabelle Gold und Richter |
 | `ergebnisse/m9_aufloesung_alt.json`, `m9_aufloesung_regeln.json`, `m9_aufloesung_llm.json` | M9, Auflösung jeder Anfrage der drei Goldsätze: alter Stand, Regeln, Regeln und LLM, mit Weg, Sicherheit und Alternativen |
+| `ergebnisse/m9_artikelwahl.txt` | M9 lesbar: richtig je Goldsatz und Art der Anfrage, wie sicher die Regeln sind, was das LLM änderte, alle geänderten und falschen Anfragen |
 | `ergebnisse/m10_trefferfilter.json` | M10, die 47 Volltexttreffer mit Note und Filtermerkmalen |
 | `ergebnisse/m10_treffer_llm_allein.json`, `m10_treffer_llm_korpus.json` | M10, Note des LLM je Treffer, allein und mit dem ganzen Korpus benotet |
 | `ergebnisse/m10_treffer_wirkung.json` | M10, gedruckte Absätze nach Note und gefüllte Bausteine je Thema, mit und ohne die mit 0 benoteten Treffer |
+| `ergebnisse/m10_volltexttreffer.txt` | M10 lesbar: jeder Filter mit behaltenen und verworfenen Treffern, Note des LLM gegen Gold, Wirkung auf das gedruckte Kompendium |
 | `ergebnisse/m11_zusatzquellen.json`, `m11_zusatzsuche.json` | M11, Seiten aus Wikibooks und Wikiversity je Thema, ihre gedruckten Absätze und Bausteine, das Urteil der Trefferprüfung |
+| `ergebnisse/m11_zusatzquellen.txt` | M11 lesbar: Überblick der Wege, gefüllte Bausteine je Thema, alle Seiten, aus denen gedruckt wurde |
 | `ergebnisse/m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json` | M12, sc26 gegen schärfere Beschreibungen, lokal und mit `matcher=llm` |
 | `ergebnisse/m12_sparvarianten.json`, `m12_sparvarianten_rotiert.json` | M12, Regeln und die Wege der LLM-Zuordnung mit F1 je Baustein, Tokens und Sekunden je Thema; der zweite Lauf mit gedrehten Pools |
+| `ergebnisse/m12_zuordnung.txt` | M12 lesbar: Beschreibungsvarianten, alle Wege der LLM-Zuordnung mit Tokens und Sekunden, F1 je Baustein in beiden Läufen |
 | `ergebnisse/m13_zeit_alt.json`, `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json` | M13, je Thema und Weg die Sekunden, Phasen, Tokens, Titel und verworfenen Treffer |
 | `ergebnisse/m13_zeit_zuordnung.json` | M13, `matcher=llm` gegen `hybrid_light` an fünf ganzen Kompendien: Sekunden, Phasen, Tokens, Rückfälle |
+| `ergebnisse/m13_laufzeit.txt` | M13 lesbar: Teil 1 je Stand und Weg, Phasen des Audits, alle 30 Themen mit Titel und verworfenen Treffern, `matcher=llm` gegen `hybrid_light` |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |
 

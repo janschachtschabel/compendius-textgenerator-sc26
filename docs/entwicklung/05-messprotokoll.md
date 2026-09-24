@@ -345,11 +345,14 @@ exakter Titel ohne jeden Fachbezug galt als sicher („Erdkunde: Delta“ blieb 
 sind also 7 zu 8 zu 9 auf dem Testsatz.
 
 Übrig: „Physik: Leiter“ und „Physik: Strom“ enden bei *Leiter (Physik)* und *Strom (Physik)*, allgemeineren
-Physikartikeln zum richtigen Begriff; die Regeln sind sich dort sicher, also fragen sie das LLM nicht.
-„Informatik: Netzwerk“ bleibt bei *Netzwerk* statt *Rechnernetz*. Das LLM wurde 18-mal gefragt, rund 950 Tokens je
-Aufruf, zusammen 17.116; der Messlauf mit eigenem Skript und der Lauf über den Schalter des Dienstes ergaben genau
-dieselben Titel und dieselbe Tokenzahl, die b-api erkannte die Prompts als gleich. Rohdaten:
-`m9_aufloesung_alt.json`, `m9_aufloesung_regeln.json`, `m9_aufloesung_llm.json`.
+Physikartikeln zum richtigen Begriff; die Regeln sind sich dort sicher, also fragen sie das LLM nicht. „Informatik:
+Netzwerk“ bleibt bei *Netzwerk* statt *Rechnernetz*. „Physik: Strom“ traf der alte Stand mit *Elektrischer Strom*;
+es ist die einzige Anfrage, die schlechter wurde. Wo die Regeln sich sicher sind, liegen sie 73 von 76 Mal richtig,
+bei den 18 unsicheren 13 Mal, mit dem LLM 18 Mal. Das LLM wurde 18-mal gefragt, rund 950 Tokens je Aufruf, zusammen
+17.116; der Messlauf mit eigenem Skript und der Lauf über den Schalter des Dienstes ergaben genau dieselben Titel
+und dieselbe Tokenzahl, die b-api erkannte die Prompts als gleich. Rohdaten: `m9_aufloesung_alt.json`,
+`m9_aufloesung_regeln.json`, `m9_aufloesung_llm.json`; Zusammenfassung mit allen geänderten und falschen Anfragen:
+`m9_artikelwahl.txt`.
 
 ## M10 Volltexttreffer je Baustein: Filter (24.09.2026)
 
@@ -379,7 +382,7 @@ Tokens). Nebenbefund: Passte der Hauptartikel selbst auf ein Muster der Sperrlis
 nicht; „Atommodell“ leitet auf *Liste der Atommodelle* um und ließ so *Physik* ein. Seit der Korrektur ändern sich
 zwei Korpora: *Liste von Programmiersprachen* weicht *Zeittafel der Programmiersprachen*, *Physik* weicht *Molekül*.
 Rohdaten: `m10_trefferfilter.json`, `m10_treffer_llm_allein.json`, `m10_treffer_llm_korpus.json`,
-`m10_treffer_wirkung.json`.
+`m10_treffer_wirkung.json`; Zusammenfassung: `m10_volltexttreffer.txt`.
 
 ## M11 Wikibooks und Wikiversity als weitere Quellen (24.09.2026)
 
@@ -402,8 +405,9 @@ Korpusplatz belegt. Die Volltextsuche findet Brauchbares, etwa *Physikunterricht
 *Kurs:Optik*, *Anorganische Chemie für Schüler/ Säure-Base-…* oder *Wikijunior Wie Dinge funktionieren/ Elektrischer
 Strom*, aber von keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt wurde aus Seiten wie
 *OpenSource4School/Potenziale digitaler Medien*, *Arbeiten mit .NET*, *SHK-Handwerk in Sachsen* oder *Kommutative
-Ringe/Bruchrechnung/Aufgabe*. Bei sieben Themen belegt das *Ungarisch-Lesebuch* die Wikibooks-Treffer. Ohne die
-Prüfung sinkt „Wasserkreislauf“ von 5 auf 3 gefüllte Bausteine. Tokens der Prüfung: 18.188. Rohdaten:
+Ringe/Bruchrechnung/Aufgabe*. Bei fünf Themen kommen Wikibooks-Treffer aus dem *Ungarisch-Lesebuch*, 9 der 42, bei
+zweien alle drei. Ohne die Prüfung sinkt „Wasserkreislauf“ von 5 auf 3 gefüllte Bausteine. Tokens der Prüfung:
+18.188. Zusammenfassung: `m11_zusatzquellen.txt`; Rohdaten:
 `m11_zusatzquellen.json`, `m11_zusatzsuche.json`; die Textanfänge der Seiten bleiben außerhalb des Repositorys.
 
 ## M12 Zuordnung: schärfere Bausteinbeschreibungen und günstigere LLM-Zuordnung (23. und 24.09.2026)
@@ -438,7 +442,7 @@ Nicht übernommen: lokal kein Gewinn, mit dem LLM +0,013 macro-F1, innerhalb der
 | Themendefinition | 22 | 0,68 | 0,81 | 0,65 | 0,91 |
 | Praxis | 18 | 0,19 | 0,34 | 0,51 | 0,58 |
 | Beruf & Wirtschaft | 11 | 0,27 | 0,80 | 0,50 | 0,80 |
-| Bildung | 8 | 0,50 | 0,74 | 0,62 | 0,78 |
+| Bildung | 8 | 0,50 | 0,74 | 0,63 | 0,78 |
 | Querschnitt & Bezüge | 3 | 0,00 | 0,17 | 0,22 | 0,19 |
 | Regularien & Rahmensetzung | 2 | 0,25 | 0,57 | 0,22 | 0,67 |
 
@@ -457,9 +461,10 @@ anderen Stapeln, und kein Prompt kommt aus dem Zwischenspeicher: eine unabhängi
 Der Vorsprung des ersten Laufs hat sich umgedreht: Der Unterschied liegt in der Streuung des Modells, die bei den
 kleinen Bausteinen am größten ist (Praxis 0,34, 0,58, 0,73 und 0,69; Themendefinition 0,81, 0,91, 0,90 und 0,76),
 während die großen stabil bleiben (Fachinhalte 0,84 bis 0,86). Beide Einstellungen sind gleich gut; 50 und 400 braucht
-27 bis 29 % weniger Tokens und bleibt deshalb (D36). Je Thema brauchte der Gold-Pool im Median 7,8 s, bei beiden
-Einstellungen. Rohdaten: `m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json`, `m12_sparvarianten.json`,
-`m12_sparvarianten_rotiert.json`.
+27 bis 29 % weniger Tokens und bleibt deshalb (D36). Je Thema brauchte der Gold-Pool im Median 7,5 s mit 25 und
+700 und 6,8 s mit 50 und 400. Rohdaten: `m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json`,
+`m12_sparvarianten.json`, `m12_sparvarianten_rotiert.json`; Zusammenfassung mit Tokens und Sekunden je Weg und F1 je
+Baustein in beiden Läufen: `m12_zuordnung.txt`.
 
 ## M13 Laufzeit der LLM-Schalter gegen den vorherigen Standard (24.09.2026)
 
@@ -483,8 +488,8 @@ Audit je Anfrage misst:
 | Phase mit `article_choice=llm` | Median | 90. Perzentil | Maximum |
 |---|---|---|---|
 | Trefferprüfung (alle 30 Themen) | 1,43 s | 3,19 s | 3,84 s |
-| unsichere Artikelwahl (5 Themen) | 1,0 bis 2,6 s | | |
-| beide zusammen je Thema | 1,72 s | 3,37 s | 3,84 s |
+| unsichere Artikelwahl (5 Themen) | 1,45 s | | 2,65 s, kürzeste 1,00 s |
+| beide zusammen je Thema | 1,72 s | 3,37 s | 3,86 s |
 
 Tokens: 34.288 für 30 Themen, im Median 927 je Thema. Die Trefferprüfung verwarf 20 Treffer in 14 Themen, etwa
 *Buchbinder*, *Heraklit* und *Mnemotechnik* bei „Satz des Thales“ oder *Halluzination* bei „Musik: Stimme“; das LLM
@@ -505,4 +510,4 @@ erschöpft“: Jeder Stapel zu 50 Absätzen reserviert vorab rund 12.500 bis 13.
 Antwortgrenze samt Denkreserve) und verbraucht rund 8.000; die Stapel laufen parallel, und so war das Budget von 60.000
 nach vier Stapeln verplant, bevor einer abgerechnet hatte. Rohdaten: `m13_zeit_alt.json`,
 `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json`,
-`m13_zeit_zuordnung.json`.
+`m13_zeit_zuordnung.json`; Zusammenfassung mit allen Themen: `m13_laufzeit.txt`.

@@ -1,0 +1,89 @@
+Erzeugt von mc_zusammenfassung.py aus m9_aufloesung_alt.json, m9_aufloesung_regeln.json und m9_aufloesung_llm.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Hauptartikel richtig
+
+| Goldsatz | Anfragen | alter Stand (c03dafe) | Regeln | Regeln und LLM | LLM gefragt |
+|---|---|---|---|---|---|
+| Hauptgold | 59 | 45 | 55 | 57 | 7 |
+| Validierung | 23 | 14 | 22 | 23 | 5 |
+| zurückgehaltener Test | 12 | 7 | 9 | 11 | 6 |
+| **alle** | **94** | **66** | **86** | **91** | **18** |
+
+Der zurückgehaltene Test lief zuerst mit 7, 8 und 9 richtigen. Die Dateien zeigen den Stand nach den
+zwei Korrekturen, die er anstieß; seitdem ist auch er nicht mehr unabhängig.
+
+## Nach Art der Anfrage, alle drei Goldsätze
+
+| Art der Anfrage | Anfragen | alter Stand | Regeln | Regeln und LLM |
+|---|---|---|---|---|
+| normale Themen | 24 | 24 | 24 | 24 |
+| mit Klassen-, Stufen- oder Fachzusatz | 8 | 8 | 8 | 8 |
+| mehrdeutig, Fach als Kontext | 38 | 19 | 31 | 35 |
+| mehrdeutig, ohne Kontext | 3 | 3 | 3 | 3 |
+| Schreibvariante, Abkürzung, Mehrzahl | 12 | 9 | 11 | 12 |
+| ohne gleichnamigen Artikel zum Thema | 9 | 3 | 9 | 9 |
+
+## Wie die Regeln auflösen und wie sicher sie sind
+
+| Weg der Regeln | sicher: richtig | unsicher: richtig |
+|---|---|---|
+| Titel oder Weiterleitung | 44 von 45 | 0 von 1 |
+| Schreibvariante oder Grundform | 2 von 2 | 3 von 3 |
+| Titelvorschlag des Archivs | 0 von 0 | 1 von 1 |
+| Volltextsuche | 0 von 0 | 2 von 3 |
+| Begriffsklärung, nach Fachwörtern gewählt | 27 von 29 | 7 von 10 |
+| **alle** | **73 von 76** | **13 von 18** |
+
+Mit `article_choice=llm` entscheidet das LLM genau die unsicheren Anfragen.
+
+## Das LLM
+
+18 Aufrufe, 17.116 Tokens, 951 je Aufruf. Das LLM behielt den Artikel der Regeln 13-mal (13 davon richtig) und wählte 5-mal einen anderen:
+
+- Geschichte: Wende: Wende (Einheit) -> Wende und friedliche Revolution in der DDR (richtig, vorher falsch)
+- Lichtlehre: Ernst Adalbert Voretzsch -> Optik (richtig, vorher falsch)
+- Deutsch: Fall: Schlacht an der Sutjeska -> Kasus (richtig, vorher falsch)
+- Physik: Linse: Linse (Botanik) -> Linse (Optik) (richtig, vorher falsch)
+- Erdkunde: Delta: Delta -> Flussdelta (richtig, vorher falsch)
+
+## Durch die Regeln richtig, im alten Stand falsch (21)
+
+- Chemie: Bindung: Binden (Kochen) -> Chemische Bindung
+- Mathematik: Funktion: Funktion (Organisation) -> Funktion (Mathematik)
+- Mathematik: Satz: Theorem -> Satz (Mathematik)
+- Deutsch: Satz: Serie (Briefmarke) -> Satz (Grammatik)
+- Informatik: Baum: Baum -> Baum (Datenstruktur)
+- Informatik: Maus: Gemeine Figur -> Computermaus
+- Informatik: Virus: Viren -> Computervirus
+- Erdkunde: Strom: Wirtschaftskreislauf -> Strom (Gewässerart)
+- Lineare Funktionen: Funktionenraum -> Lineare Funktion
+- Die Französische Revolution: Die Französische Revolution -> Französische Revolution
+- Kreislauf des Wassers: Meereswärmekraftwerk -> Wasserkreislauf
+- Physik: Feld: Elektromagnetisches Feld -> Feld (Physik)
+- Chemie: Lösung: Schweden -> Lösung (Chemie)
+- Mathematik: Menge: Anzahl -> Menge (Mathematik)
+- Informatik: Schleife: Awareness Ribbon -> Schleife (Programmierung)
+- Informatik: Bus: Omnibus -> Bus (Datenverarbeitung)
+- Klimawandels: Forschungsgeschichte des Klimawandels -> Klimawandel
+- Aufbau der Atome: Valenzstrichformel -> Atom
+- Ursachen der Französischen Revolution: Ursachen der Industriellen Revolution -> Französische Revolution
+- Ursachen des Ersten Weltkriegs: Internationales Komitee zur wissenschaftlichen Erforschung der Ursachen und Folgen des Zweiten Weltkriegs -> Erster Weltkrieg
+- Aufbau der Zelle: Pouch-Zelle -> Zelle (Biologie)
+
+## Durch das LLM richtig (5)
+
+- Geschichte: Wende: Wende (Einheit) -> Wende und friedliche Revolution in der DDR
+- Lichtlehre: Ernst Adalbert Voretzsch -> Optik
+- Deutsch: Fall: Schlacht an der Sutjeska -> Kasus
+- Physik: Linse: Linse (Botanik) -> Linse (Optik)
+- Erdkunde: Delta: Delta -> Flussdelta
+
+## Im alten Stand richtig, jetzt falsch (1)
+
+- Physik: Strom: Elektrischer Strom -> Strom (Physik)
+
+## Weiterhin falsch (3)
+
+- Physik: Leiter -> Leiter (Physik) (erwartet: Elektrischer Leiter; Regeln sicher: ja)
+- Physik: Strom -> Strom (Physik) (erwartet: Elektrischer Strom; Regeln sicher: ja)
+- Informatik: Netzwerk -> Netzwerk (erwartet: Rechnernetz; Regeln sicher: ja)

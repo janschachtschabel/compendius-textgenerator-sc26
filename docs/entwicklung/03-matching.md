@@ -147,7 +147,33 @@ abgestimmt wurde, die zwei besten Absätze je Baustein, ohne das Verfahren zu ke
 Goldstandard und kleine Stichproben (38 bis 49 Absätze je Verfahren); Unterschiede unter rund zehn Prozentpunkten
 sind nicht belastbar. Für den LLM-Zuordner entfällt die Gegenprobe, weil Richter und Zuordner dasselbe Modell wären.
 
-## Ergebnisse (Code-Stand 2.0.0, 23.09.2026)
+## Ergebnisse (23. und 24.09.2026)
+
+M4 bis M6 liefen mit dem Code-Stand 2.0.0, M12 und M13 mit dem Stand nach D36. Die Rohdaten und lesbare
+Zusammenfassungen liegen in `messung/ergebnisse/` (Übersicht dort in der README).
+
+### Auf einen Blick: die wählbaren Verfahren
+
+Güte am Goldstandard, Zeit auf dem Entwicklungsrechner, für die fünf Werte von `matcher`:
+
+| `matcher` | macro-F1, gelabelte Absätze | macro-F1, alle Absätze | Zuordnung je Thema | Teil 1 je Kompendium | Tokens je Kompendium |
+|---|---|---|---|---|---|
+| `llm` (D36) | 0,72 und 0,69 (zwei Läufe) | nicht gemessen | 10,8 s | 12,0 s | im Mittel 29.400 (19.000 bis 38.000) |
+| **`hybrid_light` (Standard)** | 0,43 | 0,45 | 0,30 s | 1,20 s | 0 |
+| `char_tfidf` | 0,40 | 0,42 | 0,25 s | – | 0 |
+| `bm25` | 0,36 | 0,37 | 0,03 s | – | 0 |
+| `lexicon_only` | 0,35 | 0,35 | 0,02 s | – | 0 |
+
+- **Zuordnung je Thema:** Die lokalen Verfahren sind im Mittel über die zehn Goldthemen mit allen Absätzen gemessen
+  (M4). Für `llm` gilt der Median über fünf ganze Kompendien (M13); `hybrid_light` brauchte dort 0,27 s.
+- **Teil 1 je Kompendium:** Median über dieselben fünf Kompendien (M13). Ohne die Zuordnung dauert Teil 1 rund
+  0,9 s. Die übrigen lokalen Verfahren liegen deshalb knapp unter `hybrid_light`; eigens gemessen wurden sie nicht.
+- **Tokens bei `llm`:** Gemessen wurde mit dem Budget von 60.000 Tokens je Anfrage. Dabei fielen bei drei der fünf
+  Themen die letzten Stapel auf `hybrid_light` zurück, zusammen 18 % der Absätze. Entscheidet das LLM alle Absätze,
+  sind es hochgerechnet rund 36.000 Tokens je Kompendium.
+- **Abwägung:** `llm` ordnet klar besser zu (113 statt 201 Fehlzuordnungen auf denselben Absätzen), braucht für
+  Teil 1 aber zehnmal so lange und je Kompendium mehr Tokens als der ganze alte Dienst. `hybrid_light` bleibt
+  deshalb Standard, `llm` ist je Anfrage wählbar (D38).
 
 ### Alle Verfahren im Ablauf des Dienstes
 
@@ -187,24 +213,24 @@ Gemessen wurde zweimal auf denselben 603 gelabelten Absätzen: zuerst mit einem 
 `matcher=llm` über `CompendiumService.match` (D34). Die Tabelle zeigt alle Verfahren auf diesen Absätzen; die Zeilen
 für D36 stammen aus M12 und liefen auf 597 davon, weil sich ein Korpus seitdem geändert hat (Sperrliste, M10):
 
-| Verfahren | macro-F1 | micro-F1 | richtig unter Top 2 | falsch zugeordnet |
-|---|---|---|---|---|
-| **`matcher=llm`, 50 Absätze zu 400 Zeichen je Aufruf (D36, M12, zwei Läufe)** | **0,72 und 0,69** | **0,82 und 0,82** | nicht gemessen | 113 von 550 in beiden |
-| `matcher=llm`, 25 Absätze zu 700 Zeichen (M12, zweiter Lauf mit anderen Stapeln) | 0,73 | 0,83 | nicht gemessen | 110 von 550 |
-| `matcher=llm` im Dienst, 25 Absätze zu 700 Zeichen | 0,66 | 0,79 | 75 % | 125 von 547 |
-| `gpt-5.6-luna`, erste Messung mit Skript | 0,63 | 0,79 | 73 % | 128 von 547 |
-| nur Überschriften-Lexikon (`lexicon_only`) | 0,35 | 0,65 | 63 % | 184 von 518 |
-| BM25 (`bm25`) | 0,36 | 0,63 | 60 % | 203 von 536 |
-| Zeichen-TF-IDF (`char_tfidf`) | 0,40 | 0,61 | 51 % | 223 von 551 |
-| Model2Vec allein | 0,41 | 0,57 | 43 % | 260 von 566 |
-| MiniLM-Satzvektoren allein (Modell aus `e5_onnx`) | 0,37 | 0,57 | 42 % | 254 von 562 |
-| Cross-Encoder allein (Modell der Testapp) | 0,29 | 0,45 | 31 % | 327 von 570 |
-| Frage-Antwort-Modell (wie `extractive_qa`, MiniLM-Kandidaten) | 0,37 | 0,64 | 54 % | 196 von 531 |
-| BM25 + Model2Vec | 0,43 | 0,64 | 58 % | 208 von 546 |
-| `hybrid_light` ohne Model2Vec (BM25 + Zeichen-TF-IDF) | 0,38 | 0,63 | 57 % | 207 von 543 |
-| **`hybrid_light` + Model2Vec (Standard)** | 0,43 | 0,64 | 61 % | 205 von 546 |
-| Standard, Kandidaten vom Cross-Encoder umsortiert | 0,32 | 0,43 | 35 % | 345 von 584 |
-| Standard + Cross-Encoder als vierter Ranker | 0,36 | 0,63 | 53 % | 214 von 546 |
+| Verfahren | macro-F1 | micro-F1 | richtig unter Top 2 | falsch zugeordnet | Tokens, zehn Themen | Zeit je Thema |
+|---|---|---|---|---|---|---|
+| **`matcher=llm`, 50 Absätze zu 400 Zeichen je Aufruf (D36, M12, zwei Läufe)** | **0,72 und 0,69** | **0,82 und 0,82** | nicht gemessen | 113 von 550 in beiden | 105.727 und 103.368 | 9,2 und 7,2 s |
+| `matcher=llm`, 25 Absätze zu 700 Zeichen (M12, zweiter Lauf mit anderen Stapeln) | 0,73 | 0,83 | nicht gemessen | 110 von 550 | 144.758 | 7,8 s |
+| `matcher=llm` im Dienst, 25 Absätze zu 700 Zeichen | 0,66 | 0,79 | 75 % | 125 von 547 | 144.486 | Zwischenspeicher |
+| `gpt-5.6-luna`, erste Messung mit Skript | 0,63 | 0,79 | 73 % | 128 von 547 | 144.596 | 7,5 s |
+| nur Überschriften-Lexikon (`lexicon_only`) | 0,35 | 0,65 | 63 % | 184 von 518 | 0 | 0,01 s |
+| BM25 (`bm25`) | 0,36 | 0,63 | 60 % | 203 von 536 | 0 | 0,01 s |
+| Zeichen-TF-IDF (`char_tfidf`) | 0,40 | 0,61 | 51 % | 223 von 551 | 0 | 0,09 s |
+| Model2Vec allein | 0,41 | 0,57 | 43 % | 260 von 566 | 0 | 0,02 s |
+| MiniLM-Satzvektoren allein (Modell aus `e5_onnx`) | 0,37 | 0,57 | 42 % | 254 von 562 | 0 | – |
+| Cross-Encoder allein (Modell der Testapp) | 0,29 | 0,45 | 31 % | 327 von 570 | 0 | – |
+| Frage-Antwort-Modell (wie `extractive_qa`, MiniLM-Kandidaten) | 0,37 | 0,64 | 54 % | 196 von 531 | 0 | – |
+| BM25 + Model2Vec | 0,43 | 0,64 | 58 % | 208 von 546 | 0 | 0,02 s |
+| `hybrid_light` ohne Model2Vec (BM25 + Zeichen-TF-IDF) | 0,38 | 0,63 | 57 % | 207 von 543 | 0 | 0,11 s |
+| **`hybrid_light` + Model2Vec (Standard)** | 0,43 | 0,64 | 61 % | 205 von 546 | 0 | 0,11 s |
+| Standard, Kandidaten vom Cross-Encoder umsortiert | 0,32 | 0,43 | 35 % | 345 von 584 | 0 | – |
+| Standard + Cross-Encoder als vierter Ranker | 0,36 | 0,63 | 53 % | 214 von 546 | 0 | – |
 
 - **Zwei Läufe:** Der Prompt im Dienst ist Zeichen für Zeichen der des ersten Laufs. Für acht Themen beantwortete
   die b-api die wortgleichen Aufrufe aus ihrem Zwischenspeicher. In Optik und Sinfonie antwortete das Modell neu:
@@ -213,6 +239,10 @@ für D36 stammen aus M12 und liefen auf 597 davon, weil sich ein Korpus seitdem 
   Modells ist damit nur an zwei Themen gemessen.
 - **Top 2:** „Richtig unter Top 2“ zählt im Dienst wie bei allen anderen Verfahren nach den Längenbudgets. Der erste
   Lauf kannte keine Budgets.
+- **Zeit je Thema:** Wandzeit der Zuordnung für die rund 60 gelabelten Absätze eines Themas, im Mittel über die zehn
+  Themen; beim LLM laufen vier Aufrufe parallel. Für ein ganzes Kompendium gelten die Werte aus M13 oben. Die Modelle
+  der Testapp bewerten ihre Paare vorab, ihre Zeit ist nur für alle Absätze gemessen (Tabelle davor). Der Lauf im
+  Dienst kam für acht Themen aus dem Zwischenspeicher der b-api; seine Zeit ist keine Modellzeit.
 - **Kosten:** 144.486 Tokens für 601 Absätze laut b-api, rund 240 je Absatz. Im ersten Lauf dauerte ein Aufruf im
   Median 5,5 s, ein Thema 7,5 s. Mit 50 Absätzen zu 400 Zeichen (D36) sind es 105.727 Tokens für 597 Absätze, rund
   177 je Absatz.
@@ -221,8 +251,9 @@ für D36 stammen aus M12 und liefen auf 597 davon, weil sich ein Korpus seitdem 
   Das ist mehr als der ganze alte Dienst mit rund 7.900 Tokens. Je Anfrage erlaubt der Dienst 60.000 Tokens
   (`LLM_MAX_TOKENS_PER_REQUEST`), und das reicht bei großen Themen nicht: Jeder Stapel reserviert vorab rund 13.000
   Tokens und verbraucht rund 8.000, parallele Stapel erschöpfen das Budget, bevor die ersten abrechnen. Bei 3 von 5
-  Themen blieben so die letzten ein bis zwei Stapel bei der Standard-Strategie, 18 % der Absätze. Wer `matcher=llm`
-  nutzt, setzt das Budget höher; die Buchung selbst ist offen.
+  Themen blieben so die letzten ein bis zwei Stapel bei der Standard-Strategie, 18 % der Absätze. Mit 171 Tokens je
+  entschiedenem Absatz kostet ein Kompendium, dessen Absätze das LLM alle entscheidet, hochgerechnet rund 36.000
+  Tokens. Wer `matcher=llm` nutzt, setzt das Budget höher; die Buchung selbst ist offen.
 - **Größere Stapel, kürzere Texte (D36, M12):** Im ersten Lauf ordneten 50 Absätze zu 400 Zeichen in jedem Baustein
   mindestens so gut zu wie 25 zu 700. Ein zweiter Lauf mit gedrehter Reihenfolge, also anderen Stapeln und ohne
   Zwischenspeicher, drehte das Ergebnis um (0,69 gegen 0,73). Die großen Bausteine bleiben zwischen den Läufen stabil
@@ -275,8 +306,10 @@ Bausteine gewinnen, kleine füllt das LLM oft falsch: In Querschnitt landeten 7 
    der Ranker.
 6. **Mögliche Vereinfachung:** BM25 + Model2Vec erreicht fast dasselbe (0,44 und 63 %, beim Richter gleichauf) in
    0,05 statt 0,30 s.
-7. **Das LLM ist besser, aber teuer.** Rund 0,7 statt 0,43 auf den gelabelten Absätzen (0,66 bis 0,73 in vier
-   Läufen), dafür rund 29.000 Tokens und 11 s mehr je Kompendium. Deshalb ist es wählbar, nicht Standard.
+7. **Das LLM ist besser, aber spürbar langsamer und teuer.** Rund 0,7 statt 0,43 auf den gelabelten Absätzen (0,66
+   bis 0,73 in vier Läufen). Dafür dauert Teil 1 im Median 12,0 statt 1,2 s, und ein Kompendium kostet im Mittel
+   29.400 Tokens, ohne Budgetgrenze rund 36.000 (M13). Am 24.09.2026 entschieden: `hybrid_light` bleibt Standard,
+   `matcher=llm` bleibt je Anfrage wählbar (D38).
 
 ## Das LLM als wählbare Strategie
 
@@ -305,8 +338,8 @@ einem Sprachmodell stammen.
 
 ## Grenzen und nächste Hebel
 
-Das Ziel macro-F1 0,70 erreicht nur das LLM, und nur in manchen Läufen (0,66 bis 0,73, M5 und M12); die lokalen Verfahren
-bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kleine kaum:
+Das Ziel macro-F1 0,70 erreicht nur das LLM, und nur in manchen Läufen (0,66 bis 0,73, M5 und M12); die lokalen
+Verfahren bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kleine kaum:
 
 | Baustein | Gold-Absätze | F1 |
 |---|---|---|
@@ -325,8 +358,9 @@ bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kleine kaum:
   redaktionelle Prüfung der Labels steht aus.
 - **Abdeckung statt eines anderen lokalen Rankers.** Enzyklopädische Artikel enthalten zu Beruf, Bildung oder Praxis
   wenig. Mehr versprechen Quellen, die solche Inhalte haben. Wikibooks und Wikiversity über ihre Volltextsuche
-  brachten in M11 fast nichts: +1 gefüllter Baustein in 20 Themen, und aus den didaktischen Seiten druckte der
-  Standard keinen Absatz. Materialien einer Wissens-Sammlung bleiben der aussichtsreichere Weg.
+  brachten in M11 fast nichts: +1 gefüllter Baustein in 20 Themen. Aus guten Unterrichtsseiten wie
+  *Physikunterricht/ Optik* oder *Kurs:Optik* druckte der Standard keinen Absatz, dafür aus Randtreffern wie
+  *Arbeiten mit .NET*. Materialien einer Wissens-Sammlung bleiben der aussichtsreichere Weg.
 - **Schärfere Bausteinbeschreibungen (M12):** lokal kein Gewinn (0,448 statt 0,447), mit dem LLM +0,013 innerhalb der
   Streuung; nicht übernommen.
 - **Schon verworfen, weil gemessen schlechter oder nicht besser:** am 18.09.2026 gelernte Zuordnung per

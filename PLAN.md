@@ -1458,11 +1458,19 @@ API.
   Antwort ein fehlendes LLM meldet. Wer `llm` ausdrücklich anfragt, bekommt den Hinweis weiterhin. Grund: gemessen
   besser (D35) und billig. Zeit, gemessen an 30 Themen ohne Zwischenspeicher: Teil 1 im Median 1,7 s länger
   (90. Perzentil 3,4 s), rund 930 Tokens; die Trefferprüfung braucht im Median 1,4 s, eine unsichere Artikelwahl
-  zusätzlich 1 bis 2,6 s. Die schärferen Regeln kosten gegenüber v2.0.0 keine Zeit (1,35 statt 1,37 s im Median,
+  zusätzlich 1,0 bis 2,7 s. Die schärferen Regeln kosten gegenüber v2.0.0 keine Zeit (1,35 statt 1,37 s im Median,
   bei warmem Dateicache). `POST /api/v2/knowledge` bekommt denselben Schalter, damit Wissenstexte und Kompendium für
   ein Thema dieselben Artikel nennen. In `/docs` zeigen `matcher`, `article_choice`, `extraction`, `generation` und
   `enrichment` ihre erlaubten Werte mit Erklärung, Güte, Zeit und Kosten; `matcher` bleibt dabei ein String mit
   Werteliste im Schema, damit ein unbekannter Name weiter die deutsche 422 des Dienstes bekommt.
+- **D38 (2026-09-24)** `hybrid_light` mit Model2Vec bleibt Standard der Zuordnung (`MATCHER_DEFAULT`), `matcher=llm`
+  bleibt je Anfrage wählbar. `llm` ordnet klar besser zu (macro-F1 0,72 und 0,69 in zwei unabhängigen Läufen gegen
+  0,43, 113 statt 201 Fehlzuordnungen auf denselben Absätzen), ist aber spürbar langsamer und teurer: Teil 1 im Median
+  12,0 statt 1,2 s, die Zuordnung allein 10,8 statt 0,3 s, im Mittel 29.400 Tokens je Kompendium und hochgerechnet
+  rund 36.000, wenn das Budget alle Absätze erlaubt; das ist mehr als der ganze alte Dienst (rund 7.900). Keine
+  Codeänderung: `MATCHER_DEFAULT=llm` verweigert der Dienst ohnehin, weil die Standard-Strategie der Rückfall von `llm`
+  ist. Güte, Zeit und Tokens aller Verfahren stehen in `docs/entwicklung/03-matching.md`, die Zusammenfassungen der
+  Messungen in `docs/entwicklung/messung/ergebnisse/`.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -1,0 +1,67 @@
+Erzeugt von mc_zusammenfassung.py aus m11_zusatzquellen.json und m11_zusatzsuche.json. Aufbau und Deutung: Messprotokoll (docs/entwicklung/05-messprotokoll.md).
+
+## Überblick, 20 Themen, Standard
+
+| Weg | Seiten aus Wikibooks und Wikiversity | davon verworfen | gedruckt | gefüllte Inhaltsbausteine |
+|---|---|---|---|---|
+| nur Wikipedia und Klexikon | 0 |  |  | 122 |
+| heute: gleicher Titel | 2 |  | 2 | 122 |
+| Volltextsuche, 3 je Archiv | 88 |  | 29 | 123 |
+| Volltextsuche mit Trefferprüfung | 88 | 33 | 31 | 125 |
+
+Gleicher Titel: Optik: wikibooks *Optik*, 86 Absätze, 0 gedruckt; Lineare Funktion: wikiversity *Lineare Funktion*, 16 Absätze, 2 gedruckt.
+
+Optik: ohne den Zwilling 26 gedruckte Absätze, mit ihm 27.
+Lineare Funktion: ohne den Zwilling 21 gedruckte Absätze, mit ihm 16.
+
+Treffer: 42 aus Wikibooks, 46 aus Wikiversity. 9 Wikibooks-Treffer stammen aus dem Ungarisch-Lesebuch, in 5 Themen (Französische Revolution, Klimawandel, Plattentektonik, Ökosystem, Wasserkreislauf). Die Trefferprüfung verwarf 33 Seiten und 8 Wikipedia-Treffer; 18.188 Tokens.
+
+## Je Thema
+
+| Thema | gefüllt: ohne, mit, mit Prüfung | gedruckt aus Zusatzseiten: mit, mit Prüfung |
+|---|---|---|
+| Barockliteratur | 4, 4, 4 | 0, 0 |
+| Bruchrechnung | 2, 5, 5 | 6, 6 |
+| Demokratie | 8, 8, 8 | 0, 0 |
+| Französische Revolution | 6, 6, 6 | 1, 0 |
+| Klimawandel | 8, 8, 8 | 2, 2 |
+| Optik | 8, 8, 8 | 0, 0 |
+| Photosynthese | 5, 6, 6 | 3, 3 |
+| Programmiersprache | 9, 8, 8 | 5, 5 |
+| Säure-Base-Konzepte | 3, 3, 3 | 0, 0 |
+| Sinfonie | 7, 7, 7 | 0, 0 |
+| Plattentektonik | 3, 3, 3 | 0, 0 |
+| Ökosystem | 7, 7, 8 | 0, 1 |
+| Atommodell | 5, 5, 5 | 2, 2 |
+| Industrielle Revolution | 7, 8, 8 | 2, 2 |
+| Elektrischer Strom | 8, 7, 7 | 0, 0 |
+| Wasserkreislauf | 5, 3, 6 | 1, 1 |
+| Römisches Reich | 9, 9, 9 | 0, 0 |
+| Lineare Funktion | 5, 6, 5 | 5, 7 |
+| Zelle (Biologie) | 6, 6, 5 | 0, 0 |
+| Gedicht | 7, 6, 6 | 2, 2 |
+
+## Seiten, aus denen gedruckt wurde
+
+- Bruchrechnung: wikiversity *OpenSource4School/Potenziale digitaler Medien/Bruchrechnung - Addition und Subtraktion*, gedruckt ohne Prüfung 5, mit Prüfung 5
+- Bruchrechnung: wikiversity *Kommutative Ringe/Bruchrechnung/Aufgabe*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Französische Revolution: wikiversity *Kurs:OOo Impress/Material/Benutzerdefinierte Animation*, gedruckt ohne Prüfung 1, mit Prüfung 0, von der Prüfung verworfen
+- Klimawandel: wikiversity *Vergleich: Coronaepidemie und Klimawandel*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Klimawandel: wikiversity *Kurs:Mathematische Modellbildung/Themen/Klimawandel*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Photosynthese: wikiversity *Γεωγραφία&Ιστορία/Photosynthese*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Photosynthese: wikibooks *Cyanobakterien: Merkmale der Cyanobakterien*, gedruckt ohne Prüfung 2, mit Prüfung 2
+- Programmiersprache: wikibooks *Strukturierte Programmierung*, gedruckt ohne Prüfung 2, mit Prüfung 2
+- Programmiersprache: wikibooks *Arbeiten mit .NET: Allgemeines/ Einführung/ Lesehinweise*, gedruckt ohne Prüfung 3, mit Prüfung 3
+- Ökosystem: wikiversity *Biodiversität*, gedruckt ohne Prüfung 0, mit Prüfung 1
+- Atommodell: wikiversity *Philosophie und Quantenphysik - Von der Entschlüsselung emergenter Phänomene zur Weltformel*, gedruckt ohne Prüfung 1, mit Prüfung 0, von der Prüfung verworfen
+- Atommodell: wikibooks *Lehrbuch der Biochemie: Grundlagen: Physik*, gedruckt ohne Prüfung 0, mit Prüfung 1
+- Atommodell: wikibooks *Allgemeine und Anorganische Chemie/ Druckversion*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Industrielle Revolution: wikibooks *SHK-Handwerk in Sachsen: 1800 bis 1861: Industrielle Revolution und Gewerbefreiheit*, gedruckt ohne Prüfung 2, mit Prüfung 2
+- Wasserkreislauf: wikiversity *Das Klima-Buch*, gedruckt ohne Prüfung 0, mit Prüfung 1
+- Wasserkreislauf: wikibooks *Ungarisch/Ungarisch-Lesebuch/Thema Geologie*, gedruckt ohne Prüfung 1, mit Prüfung 0, von der Prüfung verworfen
+- Lineare Funktion: wikiversity *Affine Funktion*, gedruckt ohne Prüfung 0, mit Prüfung 3
+- Lineare Funktion: wikiversity *Kurs:Maßtheorie auf topologischen Räumen/Maße als stetige lineare Funktionen*, gedruckt ohne Prüfung 1, mit Prüfung 0, von der Prüfung verworfen
+- Lineare Funktion: wikibooks *Mathematrix: Aufgabensammlung/ Lineare Funktion*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Lineare Funktion: wikibooks *Mathematrix: Aufgabensammlung/ Lineare Funktion und Regression*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Gedicht: wikibooks *A Poem a Day – Gedichte zum Auswendiglernen*, gedruckt ohne Prüfung 1, mit Prüfung 1
+- Gedicht: wikibooks *Die besten Ideen von Joachim Stiller/ Die besten Gedichte von Joachim Stiller*, gedruckt ohne Prüfung 1, mit Prüfung 1
