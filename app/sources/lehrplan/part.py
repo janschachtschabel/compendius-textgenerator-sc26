@@ -60,11 +60,12 @@ class CurriculaBuilder:
         title: str,
         aliases: Sequence[str],
         subtopics: Sequence[str],
-        subject: str | None,
+        subjects: Sequence[str],
         facets_visible: bool,
     ) -> CurriculaPart:
+        """Part 2 for a topic; ``subjects`` narrow the curricula to any of them, all of equal weight."""
         keywords = build_keywords(title, aliases=aliases, subtopics=subtopics)
-        subject_terms = self.subjects.mem_terms(subject)
+        subject_terms = self.subjects.mem_terms_of(subjects)
         state = self.store.state
         if state != "ok":
             return CurriculaPart(

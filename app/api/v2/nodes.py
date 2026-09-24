@@ -27,10 +27,10 @@ STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "O
 
 class NodePreview(NodeInput):
     topic: str = Field(description="The topic a request with this node resolves, unless it sends a topic of its own")
-    subject: str | None = Field(
-        None,
-        description="The subject it brings to the article choice and part 2: one the title names (label), else the "
-        "node's first subject (URI)",
+    topic_subjects: list[str] = Field(
+        default_factory=list,
+        description="The subjects it brings to the article choice and part 2, all of equal weight: one the title "
+        "names (label), else every subject of the node (URIs)",
     )
     context: list[str] = Field(
         default_factory=list,
@@ -78,4 +78,6 @@ def read_node(
     with node_errors():
         info, node = request.app.state.service.read_node(node_id, repository)
     found = derive_topic(None, [node_topic(info)])
-    return NodePreview(**node.model_dump(), topic=found.normalized.topic, subject=found.subject, context=found.context)
+    return NodePreview(
+        **node.model_dump(), topic=found.normalized.topic, topic_subjects=found.subjects, context=found.context
+    )

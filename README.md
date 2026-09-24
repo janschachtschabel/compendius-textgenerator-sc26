@@ -219,14 +219,15 @@ Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674 (M18 im Messpro
 
 ## Knoten als Eingang
 
-Statt eines Themas kann eine Anfrage einen Knoten eines edu-sharing-Repositorys nennen (D45): `node_id` und
-optional `repository`, bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`. Der Dienst liest die
-Metadaten des Knotens (`/node/v1/nodes/-home-/{id}/metadata`): Titel, Beschreibung, Schlagwörter, Fach und
-Bildungsstufe. Der Titel wird zum Thema, das erste Fach zum Fach von Artikelwahl und Teil 2. Stufen und Schlagwörter
-gehen als Kontextwörter in die Auflösung; an einer Begriffsklärung zählen sie aber nur, wenn das Fach keine eigenen
-Wörter mitbringt, und die LLM-Artikelwahl sieht sie nicht. `/entities` liest statt eines `text` Titel, Beschreibung
-und Schlagwörter als Text. Ein `topic` dazu geht vor, ebenso ein Fach, das der Titel nennt („Physik: Optik“). Die
-Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fach und
+Statt eines Themas kann eine Anfrage einen Knoten eines edu-sharing-Repositorys nennen (D45): `node_id` und optional
+`repository`, bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`. Der Dienst liest die Metadaten des
+Knotens (`/node/v1/nodes/-home-/{id}/metadata`): Titel, Beschreibung, Schlagwörter, Fach und Bildungsstufe. Der Titel
+wird zum Thema. Fächer und Stufen sind Mehrfachfelder, jeder Wert zählt gleich, egal an welcher Stelle er steht: Die
+Artikelwahl nimmt die Fachwörter aller Fächer, der LLM-Prompt nennt alle Fächer, Teil 2 sucht in jedem. Stufen und
+Schlagwörter gehen als Kontextwörter in die Auflösung; an einer Begriffsklärung zählen sie aber nur, wenn die Fächer
+keine eigenen Wörter mitbringen, und die LLM-Artikelwahl sieht sie nicht. `/entities` liest statt eines `text` Titel,
+Beschreibung und Schlagwörter als Text. Ein `topic` dazu geht vor, ebenso ein Fach, das der Titel nennt („Physik:
+Optik“). Die Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fächer und
 Kontextwörter, wie eine Anfrage sie ableitet.
 
 `repository` ist die REST-Adresse, etwa `https://repository.staging.openeduhub.net/edu-sharing/rest`; der Host allein
@@ -238,13 +239,12 @@ konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
 
 **Grenze (gemessen am 24.09.2026):** Sammlungen tragen ihr Thema als Titel („Optik“), Materialien oft ihr Format:
 „Stationsarbeit zur Optik“ und „Suchgitter Optik“ finden in den Archiven keinen Artikel, „Unterrichtsreihe zum Licht“
-endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. Das erste Fach ist das, welches das Repository
-zuerst nennt; bei der Stationsarbeit ist es Biologie vor Physik. Den Hauptartikel aus Beschreibung und Schlagwörtern
+endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. Den Hauptartikel aus Beschreibung und Schlagwörtern
 zu finden, etwa über die Entitäten, ist der nächste Schritt.
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 
-`collection_id` (nodeId einer WLO-Sammlung) liefert Thema, Fach und Bildungsstufe für Teil 1
+`collection_id` (nodeId einer WLO-Sammlung) liefert Thema, Fächer und Bildungsstufen für Teil 1
 und 2 sowie Teil 3: Zweck, Kennzahlen (Materialtypen, Bildungsstufen, Fächer, Lizenzen), alle
 Inhalte und die Untersammlungen eine Ebene tief, jeder Block zwischen
 `<!-- f: Sammlung=<id>; Fach=…; Bildungsstufe=… -->` und `<!-- /f -->`. Fehlende Beschreibungen

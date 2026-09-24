@@ -7,6 +7,7 @@ import re
 from collections.abc import Callable, Sequence
 from typing import Any
 
+import httpx
 import pytest
 
 from app.domain.models import ArticleSection, Paragraph, Source
@@ -24,8 +25,11 @@ from app.knowledge.article_choice import (
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.settings import Settings
+from app.sources.wlo.client import EduSharingClient
+from app.sources.wlo.part import CollectionBuilder
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
+from tests.test_wlo_client import BASE, MATERIAL, FakeRepository
 
 CHOICE_PROMPT = get_prompt("article_choice").tag
 HIT_PROMPT = get_prompt("hit_check").tag
@@ -62,9 +66,10 @@ def source(title: str, origin: str, lead: str = "Ein Artikel.") -> Source:
     )
 
 
-def chooser_for(fake: FakeBApi, subject: str | None = "Physik") -> LlmArticleChooser:
+def chooser_for(fake: FakeBApi, subjects: Sequence[str] = ("Physik",)) -> LlmArticleChooser:
     gateway = make_gateway(fake, per_request=100_000)
-    return LlmArticleChooser(ArticleChoiceJob(gateway.client, gateway.open_budget()), topic="Optik", subject=subject)
+    job = ArticleChoiceJob(gateway.client, gateway.open_budget())
+    return LlmArticleChooser(job, topic="Optik", subjects=subjects)
 
 
 def test_the_model_picks_a_candidate_by_its_number() -> None:
@@ -82,8 +87,15 @@ def test_the_model_picks_a_candidate_by_its_number() -> None:
 
 def test_without_a_subject_the_prompt_says_so() -> None:
     fake = FakeBApi(answering({"wahl": 1}))
-    chooser_for(fake, subject=None)(CANDIDATES)
+    chooser_for(fake, subjects=())(CANDIDATES)
     assert "Schulfach: nicht angegeben" in fake.bodies[0]["messages"][1]["content"]
+
+
+def test_several_subjects_are_named_alike() -> None:
+    """A node's subjects weigh the same; the prompt names all of them in the line of the subject."""
+    fake = FakeBApi(answering({"wahl": 1}))
+    chooser_for(fake, subjects=("Biologie", "Physik"))(CANDIDATES)
+    assert "Schulfach: Biologie, Physik" in fake.bodies[0]["messages"][1]["content"]
 
 
 def test_the_model_may_name_a_title_instead() -> None:
@@ -269,3 +281,17 @@ def test_with_a_configured_llm_the_default_asks_it_and_the_rules_can_still_be_ch
     calls = len(fake.bodies)
     ruled = service.generate(GenerateRequest(topic="Geometrische", article_choice="rule-based", parts=["world"]))
     assert ruled.resolution.method == "suggestion" and len(fake.bodies) == calls
+
+
+def test_the_model_hears_every_subject_of_a_node_by_name(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The staging material names Biologie and Physik: both reach the prompt, by name - not the URI, not one alone."""
+    fake = FakeBApi(by_prompt({"wahl": 1, "titel": ""}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
+    monkeypatch.setattr(service, "collections", CollectionBuilder(client=repository, cache=None))
+    service.generate(GenerateRequest(topic="Geometrische", node_id=MATERIAL, article_choice="llm", parts=["world"]))
+    hit_check = get_prompt("hit_check").system
+    choice = next(body for body in fake.bodies if body["messages"][0]["content"] != hit_check)
+    assert "Schulfach: Biologie, Physik" in choice["messages"][1]["content"]

@@ -31,8 +31,8 @@ zu acht Ebenen tief.
 1. **Stichwörter:** das Thema, seine Synonyme aus der Artikeleinleitung und die Titel der Unterartikel, die das
    Themenwort tragen, höchstens zwölf. Für Optik: Optik, Lehre vom Licht, Wellenoptik, Technische Optik,
    Geometrische Optik, Mikrooptik, Augenoptiker, Röntgenoptik.
-2. **Fachfilter:** Das WLO-Fach der Sammlung oder der Anfrage wird über `config/subjects.yaml` auf die Fachnamen in
-   MEM abgebildet. Weil Sachsen bei vielen Lehrplänen Fächer ohne Namen führt, prüft der Filter auch den Titel des
+2. **Fachfilter:** Die WLO-Fächer der Sammlung oder des Knotens, alle gleichwertig, oder das Fach der Anfrage werden
+   über `config/subjects.yaml` auf die Fachnamen in MEM abgebildet; ein Lehrplan passt, wenn er zu einem davon gehört. Weil Sachsen bei vielen Lehrplänen Fächer ohne Namen führt, prüft der Filter auch den Titel des
    Lehrplans.
 3. **Wortgrenzen:** Ein Treffer zählt nur, wenn das Stichwort an einer Wortgrenze steht, zuerst im Text des
    Elements, sonst in dem des übergeordneten Elements. Das hält zufällige Treffer mitten in anderen Wörtern fern.
@@ -61,8 +61,8 @@ Land und Lehrplan; jede Gruppe ist ein Facettenblock:
 
 Teil 2 wird nicht gekürzt. Ohne Fachangabe werden breite Themen sehr lang: Demokratie ergab zusammen mit Teil 1
 318.080 Zeichen, Elektrischer Strom 311.376 (23.09.2026). Mit dem Fach Politik kam Teil 2 für Demokratie am 17.09.
-auf rund 161.000 Zeichen. Das Fach der Sammlung oder der Anfrage und eine einstellbare Obergrenze je Land halten
-den Teil kürzer.
+auf rund 161.000 Zeichen. Die Fächer der Sammlung oder des Knotens, das Fach der Anfrage und eine einstellbare
+Obergrenze je Land halten den Teil kürzer.
 
 ### Grenzen
 

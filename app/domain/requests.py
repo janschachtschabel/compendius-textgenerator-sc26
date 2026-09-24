@@ -111,12 +111,13 @@ def _default_parts() -> list[Part]:
 
 
 NODE_ID_HELP = (
-    "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public: "
-    "its title becomes the topic, its first subject the subject, its educational levels and keywords context words. "
-    "A topic or subject sent along wins, and so does a subject the title names ('Physik: Optik'). The rules weigh "
-    "context words at a disambiguation page only when the subject brings no words of its own, and the LLM choice "
-    "sees none. Titles of materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic; "
-    "GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404."
+    "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public. "
+    "Its title becomes the topic, its subjects count all alike - subjects and levels are multi-valued fields, and no "
+    "value weighs more for coming first - and its levels and keywords become context words. A topic or subject sent "
+    "along wins, and so does a subject the title names ('Physik: Optik'). The rules weigh context words at a "
+    "disambiguation page only when the subjects bring no words of their own, and the LLM choice sees none. Titles of "
+    "materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic; GET /api/v2/nodes/{node_id} "
+    "shows beforehand what a node brings. Unknown or not public: 404."
 )
 REPOSITORY_HELP = (
     "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
@@ -135,7 +136,7 @@ class GenerateRequest(BaseModel):
         None,
         pattern=NODE_ID_PATTERN,
         description="edu-sharing collection for part 3; its title is the topic without topic and node_id, its levels "
-        "add context words, its subject counts where no other is given",
+        "add context words, its subjects count, all alike, where no other is given",
     )
     knowledge_collection_id: str | None = Field(
         None, pattern=NODE_ID_PATTERN, description="Collection whose reusable materials feed part 1 as sources"

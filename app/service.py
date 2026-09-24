@@ -101,7 +101,7 @@ class PreparedTopic:
     sources: list[Source]
     chunks: list[Chunk]
     timings: dict[str, int] = field(default_factory=dict)
-    subject: str | None = None
+    subjects: list[str] = field(default_factory=list)  # all of equal weight (D45)
     collection: CollectionInfo | None = None
     node: NodeInput | None = None  # the node the topic came from (D45)
     knowledge: dict[str, Any] | None = None
@@ -215,13 +215,14 @@ class CompendiumService:
         if collection is not None:
             derived.append(collection_topic(collection))
         found = derive_topic(request.topic, derived, request.subject)
-        normalized, context, subject = found.normalized, found.context, found.subject
-        chooser = LlmArticleChooser(choice, normalized.topic, subject) if choice is not None else None
+        normalized, context, subjects = found.normalized, found.context, found.subjects
+        labels = self.subjects.labels_of(subjects)
+        chooser = LlmArticleChooser(choice, normalized.topic, labels) if choice is not None else None
         resolution = self.registry.resolve_topic(
             normalized.topic,
             context=context,
             query=normalized.query,
-            terms=self.subjects.context_terms(subject),
+            terms=self.subjects.context_terms_of(subjects),
             chooser=chooser,
         )
         # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not
@@ -237,7 +238,7 @@ class CompendiumService:
             sources=[],
             chunks=[],
             timings=timings,
-            subject=subject,
+            subjects=subjects,
             collection=collection,
             node=node,
             article_choice=chooser.report if chooser is not None else None,
@@ -486,7 +487,7 @@ class CompendiumService:
                 title=topic,
                 aliases=list(primary.aliases) if primary else [],
                 subtopics=prepared.subtopics,
-                subject=prepared.subject,
+                subjects=prepared.subjects,
                 facets_visible=facets_visible,
             )
             lap("curricula")

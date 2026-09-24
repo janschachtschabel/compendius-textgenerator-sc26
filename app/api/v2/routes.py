@@ -121,8 +121,9 @@ EXAMPLES = {
         "summary": "Thema, Fach und Stufe aus den Metadaten eines Knotens, hier die Sammlung Optik der WLO-Staging",
         "description": (
             "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten, also nur Öffentliches. Der "
-            "Titel wird zum Thema, das erste Fach zum Fach; Bildungsstufen und Schlagwörter gehen als Kontextwörter "
-            "mit, die bei einer Begriffsklärung nur zählen, wenn das Fach keine eigenen Wörter hat. Die Antwort "
+            "Titel wird zum Thema, alle Fächer zählen gleich; Bildungsstufen und Schlagwörter gehen als "
+            "Kontextwörter mit, die bei einer Begriffsklärung nur zählen, wenn die Fächer keine eigenen Wörter "
+            "haben. Die Antwort "
             "nennt den Knoten unter node. repository ist die REST-Adresse des Repositorys, ohne Angabe das "
             "konfigurierte; erlaubt sind nur Hosts aus EDU_SHARING_REPOSITORIES, über https. "
             "GET /api/v2/nodes/{node_id} zeigt vorab, was gelesen wird."

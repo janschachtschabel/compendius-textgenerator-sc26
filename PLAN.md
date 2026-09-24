@@ -1535,19 +1535,20 @@ API.
 - **D45 (2026-09-24)** Ein Knoten eines edu-sharing-Repositorys ist ein eigener Eingang: `node_id` und `repository`
   bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`, dazu `GET /api/v2/nodes/{node_id}` als Vorschau.
   Gelesen wird `/node/v1/nodes/-home-/{id}/metadata` (Titel, Beschreibung, Schlagwörter, Fach, Bildungsstufe), für
-  Materialien wie für Sammlungen, gecacht wie Sammlungen. Der Titel wird zum Thema, das erste Fach zum Fach von
-  Artikelwahl und Teil 2, Stufen und Schlagwörter zu Kontextwörtern der Auflösung; ein `topic` oder ein Fach, das der
+  Materialien wie für Sammlungen, gecacht wie Sammlungen. Der Titel wird zum Thema. Fächer und Stufen sind
+  Mehrfachfelder, jeder Wert zählt gleich (Jan, 2026-09-24): Artikelwahl, LLM-Prompt und Teil 2 nehmen alle Fächer;
+  Stufen und Schlagwörter werden Kontextwörter der Auflösung; ein `topic` oder ein Fach, das der
   Titel nennt, geht vor. Eine Ableitung (`derive_topic`) gilt für Kompendium, Wissen und Vorschau. Kontextwörter zählen
-  an einer Begriffsklärung nur, wenn das Fach keine eigenen Wörter hat, und die LLM-Artikelwahl sieht sie nicht; mit
-  Fach lenken Stufen und Schlagwörter die Wahl also noch nicht. `repository` ist Eingabe des Aufrufers und damit ein
+  an einer Begriffsklärung nur, wenn die Fächer keine eigenen Wörter haben, und die LLM-Artikelwahl sieht sie nicht; mit
+  Fachwörtern lenken Stufen und Schlagwörter die Wahl also noch nicht. `repository` ist Eingabe des Aufrufers und damit ein
   Ziel serverseitiger Anfragen: nur https, nur Hosts aus `EDU_SHARING_REPOSITORIES` (Standard WLO-Staging und
   -Produktion) und der konfigurierte, keine Zugangsdaten, kein Port, als Pfad nur die REST-Wurzel; eine Adresse, die
   sich nicht zerlegen lässt, ist ebenso 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem
   konfigurierten: Die Endpunkte haben keine Anmeldung und geben nur Öffentliches weiter; ein nicht öffentlicher Knoten
   (403) gilt als nicht gefunden (Review-Korrektur). `/entities` nimmt `text` oder `node_id`, nicht beides. Gemessen an
   echten Staging-Knoten: Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht
-  („Stationsarbeit zur Optik“) oder falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); das erste Fach ist
-  das zuerst genannte, bei der Stationsarbeit Biologie vor Physik. Offen und als Nächstes zu messen: den Hauptartikel
+  („Stationsarbeit zur Optik“) oder falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); die Stationsarbeit
+  trägt Biologie und Physik. Offen und als Nächstes zu messen: den Hauptartikel
   aus Beschreibung und Schlagwörtern finden (Entitäten, Regeln für Formatwörter oder das LLM), an einem Gold aus
   echten WLO-Materialien.
 

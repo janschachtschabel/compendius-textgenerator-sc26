@@ -157,7 +157,7 @@ EXAMPLES = {
         "summary": "Thema, Fach und Stufe aus einem Knoten des Repositorys (hier eine Sammlung der WLO-Staging)",
         "description": (
             "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten; der Titel wird zum Thema, "
-            "das erste Fach zum Fach, Bildungsstufen und Schlagwörter zu Kontextwörtern der Auflösung. repository "
+            "alle Fächer gleichwertig zu Fächern, Stufen und Schlagwörter zu Kontextwörtern der Auflösung. repository "
             "ist die REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur die Hosts aus "
             "EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor. GET /api/v2/nodes/{node_id} zeigt vorab, was "
             "gelesen wird."

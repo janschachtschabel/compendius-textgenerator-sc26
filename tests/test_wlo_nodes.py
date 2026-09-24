@@ -143,7 +143,7 @@ def test_a_node_gives_its_title_as_topic_its_subject_and_levels_and_keywords_as_
     info = _client(FakeRepository()).node(MATERIAL)
     derived = node_topic(info)
     assert derived.topic == "Stationsarbeit zur Optik"
-    assert derived.subject == BIOLOGIE, "the first subject, in the order the repository keeps"
+    assert derived.subjects == [BIOLOGIE, PHYSIK], "every subject of the node, all of equal weight"
     assert derived.context == ["Sekundarstufe I", *info.keywords], "the levels, then the keywords"
 
 
@@ -164,23 +164,23 @@ def test_the_derived_topic_is_normalised_like_a_topic_sent_along() -> None:
     """One derivation for compendium, knowledge and the preview (D45): the preview shows what a request resolves."""
     found = derive_topic(None, [node_topic(PHYSIK_OPTIK)])
     assert found.normalized.topic == "Optik"
-    assert found.subject == "Physik", "a subject named in the title wins over the node's subject"
+    assert found.subjects == ["Physik"], "a subject named in the title wins over the node's subjects"
     assert found.context == ["Fach Physik", "Sekundarstufe I", "Linse"]
 
 
 def test_a_topic_and_a_subject_sent_along_win_over_the_node() -> None:
     found = derive_topic("Linse", [node_topic(PHYSIK_OPTIK)])
-    assert found.normalized.topic == "Linse" and found.subject == PHYSIK
+    assert found.normalized.topic == "Linse" and found.subjects == [PHYSIK]
     assert found.context == ["Sekundarstufe I", "Linse"], "the node still brings its levels and keywords"
-    assert derive_topic("Linse", [node_topic(PHYSIK_OPTIK)], subject="Chemie").subject == "Chemie"
+    assert derive_topic("Linse", [node_topic(PHYSIK_OPTIK)], subject="Chemie").subjects == ["Chemie"]
 
 
 def test_the_node_comes_before_the_collection() -> None:
     collection = CollectionTopic(
-        topic="Optik", subject="http://w3id.org/openeduhub/vocabs/discipline/720", context=["Sekundarstufe II"]
+        topic="Optik", subjects=["http://w3id.org/openeduhub/vocabs/discipline/720"], context=["Sekundarstufe II"]
     )
     found = derive_topic(None, [node_topic(PHYSIK_OPTIK), collection])
-    assert found.normalized.topic == "Optik" and found.subject == "Physik"
+    assert found.normalized.topic == "Optik" and found.subjects == ["Physik"]
     assert found.context == ["Fach Physik", "Sekundarstufe I", "Linse", "Sekundarstufe II"]
 
 
@@ -218,3 +218,10 @@ def test_keywords_come_trimmed_and_once() -> None:
     keywords = [" Licht ", "Licht", "", "  ", "Linse", "Licht" + chr(10) + "strahl"]  # chr(10): a line break
     answer["node"]["properties"]["cclom:general_keyword"] = keywords
     assert parse_node(answer).keywords == ("Licht", "Linse", "Licht strahl")
+
+
+def test_a_node_brings_all_its_subjects_before_those_of_a_collection() -> None:
+    material = _client(FakeRepository()).node(MATERIAL)
+    collection = CollectionTopic(topic="Optik", subjects=[PHYSIK], context=[])
+    assert derive_topic("Linse", [node_topic(material), collection]).subjects == [BIOLOGIE, PHYSIK]
+    assert derive_topic("Linse", [collection]).subjects == [PHYSIK]

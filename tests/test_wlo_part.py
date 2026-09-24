@@ -39,7 +39,7 @@ def test_unknown_collection_raises_and_topic_is_derived_from_the_collection(tmp_
         builder.overview(UNKNOWN)
     topic = collection_topic(builder.info(OPTIK))
     assert topic.topic == "Optik"
-    assert topic.subject == "http://w3id.org/openeduhub/vocabs/discipline/460"
+    assert topic.subjects == ["http://w3id.org/openeduhub/vocabs/discipline/460"]
     assert topic.context == ["Sekundarstufe I"]
 
 

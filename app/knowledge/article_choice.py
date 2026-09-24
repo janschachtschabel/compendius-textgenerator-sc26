@@ -102,10 +102,10 @@ class LlmArticleChooser:
     the rules' article stays; ``report`` says what happened and what it cost.
     """
 
-    def __init__(self, job: ArticleChoiceJob, topic: str, subject: str | None) -> None:
+    def __init__(self, job: ArticleChoiceJob, topic: str, subjects: Sequence[str]) -> None:
         self.job = job
         self.topic = topic
-        self.subject = subject
+        self.subjects = list(subjects)  # names, all of equal weight (a node's subjects are a multi-valued field)
         self.prompt = get_prompt("article_choice")
         self.report = ArticleChoiceReport()
 
@@ -113,7 +113,8 @@ class LlmArticleChooser:
         report = self.report
         report.offered = len(candidates)
         listing = "\n".join(f"{number}. {title}: {opening}" for number, (title, opening) in enumerate(candidates, 1))
-        messages = self.prompt.render(topic=self.topic, subject=self.subject or NO_SUBJECT, candidates=listing)
+        subject = ", ".join(self.subjects) or NO_SUBJECT
+        messages = self.prompt.render(topic=self.topic, subject=subject, candidates=listing)
         answer = budgeted_chat(
             self.job.client,
             messages,

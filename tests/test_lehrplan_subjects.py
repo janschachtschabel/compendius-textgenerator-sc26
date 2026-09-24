@@ -27,3 +27,24 @@ def test_mem_terms_are_lowercase_substrings_and_empty_for_unknown_subjects() -> 
     assert catalog.mem_terms("Xyzzyplomb") == []
     assert catalog.mem_terms(None) == []
     assert SubjectCatalog.empty().mem_terms("Physik") == []
+
+
+DISCIPLINE = "http://w3id.org/openeduhub/vocabs/discipline/"
+
+
+def test_several_subjects_bring_all_their_words_and_none_counts_more() -> None:
+    """Subjects of a node or collection are a multi-valued field: every value weighs the same (Jan, 2026-09-24)."""
+    catalog = SubjectCatalog.load(CONFIG)
+    biologie, physik = DISCIPLINE + "080", DISCIPLINE + "460"
+    joined = catalog.context_terms_of([biologie, physik])
+    assert set(joined) == set(catalog.context_terms(biologie)) | set(catalog.context_terms(physik))
+    assert sorted(joined) == sorted(catalog.context_terms_of([physik, biologie])), "the order changes nothing"
+    mem = catalog.mem_terms_of([biologie, physik])
+    assert {"biologie", "physik"} <= set(mem) and len(mem) == len(set(mem)), "each word once"
+    assert catalog.context_terms_of([]) == [] and catalog.mem_terms_of([]) == []
+
+
+def test_labels_name_known_subjects_keep_typed_names_and_leave_out_unknown_uris() -> None:
+    catalog = SubjectCatalog.load(CONFIG)
+    values = [DISCIPLINE + "080", "mathe", DISCIPLINE + "99999", "Astronomie", DISCIPLINE + "460"]
+    assert catalog.labels_of(values) == ["Biologie", "Mathematik", "Astronomie", "Physik"]

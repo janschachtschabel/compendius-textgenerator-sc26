@@ -70,14 +70,15 @@ def corpus_for_topic(
     the alternatives instead of an empty answer.
     """
     found = derive_topic(topic, derived)  # as a compendium derives it: a topic sent along wins over the node
-    normalized, subject = found.normalized, found.subject
+    normalized, subjects = found.normalized, found.subjects
     requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
-    chooser = LlmArticleChooser(job, normalized.topic, subject) if job is not None else None
+    labels = service.subjects.labels_of(subjects)
+    chooser = LlmArticleChooser(job, normalized.topic, labels) if job is not None else None
     resolution = registry.resolve_topic(
         normalized.topic,
         context=found.context,
         query=normalized.query,
-        terms=service.subjects.context_terms(subject),
+        terms=service.subjects.context_terms_of(subjects),
         chooser=chooser,
     )
     if not resolution.resolved:

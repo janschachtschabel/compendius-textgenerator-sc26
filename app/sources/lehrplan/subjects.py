@@ -76,3 +76,25 @@ class SubjectCatalog:
         if subject is None:
             return []
         return list(subject.context_terms) or [subject.label.casefold(), *(a.casefold() for a in subject.aliases)]
+
+    # The subjects of a node or a collection are a multi-valued field: every value weighs the same, whichever the
+    # repository names first. The three methods below take all of them.
+
+    def context_terms_of(self, values: Sequence[str]) -> list[str]:
+        """The context words of every subject, each once."""
+        return list(dict.fromkeys(term for value in values for term in self.context_terms(value)))
+
+    def mem_terms_of(self, values: Sequence[str]) -> list[str]:
+        """The curriculum words of every subject, each once; the curriculum search takes any of them."""
+        return list(dict.fromkeys(term for value in values for term in self.mem_terms(value)))
+
+    def labels_of(self, values: Sequence[str]) -> list[str]:
+        """Names of the subjects: the catalog's label, a name a caller typed as it is; an unknown URI names nothing."""
+        labels: list[str] = []
+        for value in values:
+            subject = self.resolve(value)
+            if subject is not None:
+                labels.append(subject.label)
+            elif value.strip() and "://" not in value:
+                labels.append(value.strip())
+        return list(dict.fromkeys(labels))

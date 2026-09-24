@@ -58,6 +58,8 @@ def test_the_preview_shows_what_a_node_contributes(client: TestClient) -> None:
     assert body["repository"] == STAGING
     assert body["render_url"] == f"https://repository.staging.openeduhub.net/edu-sharing/components/render/{MATERIAL}"
     assert body["topic"] == "Stationsarbeit zur Optik", "the topic the service would resolve"
+    disciplines = "http://w3id.org/openeduhub/vocabs/discipline/"
+    assert body["topic_subjects"] == [disciplines + "080", disciplines + "460"], "both, of equal weight"
 
 
 def test_without_a_repository_the_configured_one_is_asked(client: TestClient) -> None:
@@ -178,7 +180,7 @@ def test_the_preview_shows_the_topic_a_request_resolves(settings: Settings) -> N
     app.state.collections = app.state.service.collections = builder
     body = TestClient(app).get(f"/api/v2/nodes/{MATERIAL}").json()
     assert body["title"] == "Physik: Optik"
-    assert body["topic"] == "Optik" and body["subject"] == "Physik"
+    assert body["topic"] == "Optik" and body["topic_subjects"] == ["Physik"]
     assert body["context"][:2] == ["Fach Physik", "Sekundarstufe I"]
 
 
@@ -227,3 +229,10 @@ def test_every_endpoint_names_the_failures_of_a_node_alike(
     assert failing.post(path, json={**body, "node_id": MATERIAL}).status_code == 502
     unconfigured = make_settings(sample_zims.values(), tmp_path / "state", edu_sharing_base_url="")
     assert TestClient(create_app(unconfigured)).post(path, json={**body, "node_id": MATERIAL}).status_code == 503
+
+
+def test_part_two_searches_every_subject_of_a_node(client: TestClient) -> None:
+    body = {"node_id": MATERIAL, "topic": "Optik", "parts": ["world", "curricula"]}
+    response = client.post("/api/v2/compendium", json=body)
+    assert response.status_code == 200, response.text[:300]
+    assert {"biologie", "physik"} <= set(response.json()["curricula"]["subject_terms"])
