@@ -1,0 +1,1821 @@
+# Noten für M23 (docs/entwicklung/messung/mc_material_kompendium.py): Gehört ein Wikipedia-Artikel, aus dem ein
+# Kompendium zu einem Material Absätze gedruckt hat, zum Thema dieses Materials? Je Material jeder Artikel einmal,
+# den mindestens einer der sechs Wege gedruckt hat, für die 38 Materialien mit Thema aus materialien.yaml.
+# Beschriftet am 24.09.2026 von Claude aus Titel, Fächern, Schlagwörtern und Beschreibung des Materials und dem
+# Anfang der Artikeleinleitung, ohne zu wissen, welcher Weg den Artikel gedruckt hat.
+# 2: Das Thema des Materials oder ein zentraler Teil davon; eine Lehrkraft würde den Hintergrundtext darauf bauen.
+# 1: Verwandt: Hintergrund, Nachbarthema oder das weitere Fachgebiet.
+# 0: Unpassend: andere Bedeutung, Rauschen aus der Beschreibung (Verlag, Plattform, Format, Ort, Datum), fremdes
+#    Thema.
+# Die Beschreibungen und Artikeltexte stehen nicht hier: Die Messung liest sie aus Repository und Archiv.
+version: 1
+noten:
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Komplexe Zahl
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Mathematische Physik
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Idealisierung (Physik)
+  note: 1
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Ohmsches Gesetz
+  note: 0
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Dannie-Heineman-Preis für mathematische Physik
+  note: 0
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Lineare Algebra
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Differentialgleichung
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Internationales Erwin Schrödinger Institut für Mathematik und Physik
+  note: 0
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Physiker
+  note: 0
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Mathematik
+  note: 1
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Analysis
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Approximation
+  note: 1
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Fourier-Analysis
+  note: 2
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Physik
+  note: 1
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Quantenphysik
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Fahrradverleih
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Getriebe
+  note: 2
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Riemengetriebe
+  note: 2
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Hollandrad
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Schrittgetriebe
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Mechanik
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Fahrradklingel
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Propellergetriebe (Luftfahrt)
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Übersetzung (Technik)
+  note: 2
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Wagen
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Kettengetriebe
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Zahnrad
+  note: 2
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Rad
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: YouTube
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Evolventenverzahnung
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Zahnstange
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: École
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Kronenrad
+  note: 1
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Energiespeicher
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Science
+  note: 0
+- node_id: 19e322f0-afa5-440f-8dc0-fca1dcde71d8
+  artikel: Kurvengetriebe
+  note: 1
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Albert Einstein
+  note: 1
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Drehimpuls
+  note: 0
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Science
+  note: 0
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Quantenmechanik
+  note: 1
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Planck-Konstante
+  note: 2
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: École
+  note: 0
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Photoelektrischer Effekt
+  note: 2
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Photon
+  note: 1
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Max Planck
+  note: 1
+- node_id: 8e4ee58d-c18c-470b-8f84-c3a634a041c3
+  artikel: Licht
+  note: 1
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: École
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Elektromagnetische Wechselwirkung
+  note: 1
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Drehspulmesswerk
+  note: 2
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Galvanometer
+  note: 2
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Strommessgerät
+  note: 1
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Induktionskochfeld
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Geschichte der Physik
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Induktionsschleife
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Science
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Elektromagnetische Induktion
+  note: 1
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Induktionslampe
+  note: 0
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Elektrischer Strom
+  note: 1
+- node_id: c6c569d7-87c3-40d6-be6f-d92ee5409782
+  artikel: Induktivität
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mondfinsternis
+  note: 1
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mondsichel
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mondphase
+  note: 1
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Licht
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mondbahn
+  note: 1
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Astronomie
+  note: 1
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Spiegelteleskop
+  note: 2
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: TEAC (Elektronikunternehmen)
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Teleskop
+  note: 2
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Leuchtdiode
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Softbox
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mond
+  note: 2
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Newtonteleskop
+  note: 2
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Sony
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Laternenbatterie
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Alkali-Mangan-Zelle
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Dingen
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Elektrochemie
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Kupfer
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Woche
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Schwefelsäure
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Flachbatterie
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Zink
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Starterbatterie
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: BAE Batterien
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Batterie
+  note: 2
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Brennstoffzelle
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Zeit
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Frage
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Leuchtdiode
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Zink-Luft-Batterie
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: TEAC (Elektronikunternehmen)
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Galvanische Zelle
+  note: 2
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Kapazität (galvanische Zelle)
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Batterie (Elektrotechnik)
+  note: 2
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Halbzelle
+  note: 2
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Urlaub
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: TEAC (Elektronikunternehmen)
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Polymer
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Wasser
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Licht
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Chemie
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Sony
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Leuchtdiode
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Windel
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Superabsorber
+  note: 2
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Acrylsäure
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Softbox
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Hydrogel
+  note: 2
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Schnee
+  note: 0
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Umida Ahmedova
+  note: 0
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Musik
+  note: 0
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Leuchtende Nachtwolke
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Erde
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Zeitraffer
+  note: 2
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Wolke
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Creative Commons
+  note: 0
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Copyleft
+  note: 0
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Sonnenscheibe
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Sonnenuntergang
+  note: 2
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Astronomische Phänomenologie
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Dämmerung
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Wittig-Reaktion
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: A
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: H
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: D
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Kreuzkupplung
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: G
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: J
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Organische Chemie
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Anorganische Chemie
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Metallorganische Chemie
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Carbanion
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Gilman-Reagenz
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Lithiumorganische Verbindungen
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Boston
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Pearson Education
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Metallorganische Gerüstverbindung
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Grignard-Reaktion
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Biometallorganische Chemie
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Boston
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Nukleophilie
+  note: 2
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Pearson Education
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Pyridin
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Eliminierungsreaktion
+  note: 2
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Organische Chemie
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: J
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Reaktionsvideo
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: S
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: M
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Nukleophile aromatische Substitution
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: 2-Chlornicotinsäure
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Chinolin
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Nukleophile Substitution
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Halogenierung
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Markownikow-Regel
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Elektrophile Addition
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Chemisches Element
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Hank Green
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: H
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Organische Chemie
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Alkine
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Reaktionsvideo
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Alkene
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Regioselektivität
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Y
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: J
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: P
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Elektrophilie
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Stereochemie
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Pyridin
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: K
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: T
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: A
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: H
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Säurekonstante
+  note: 2
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: S
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Y
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Chemisches Element
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: I
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Pyridin
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: J
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Induktiver Effekt
+  note: 2
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Chemisches Gleichgewicht
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Ameisensäure
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Organische Chemie
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Basen (Chemie)
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Boston
+  note: 0
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Name
+  note: 0
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Euro
+  note: 0
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Quotient
+  note: 1
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Proportionalität
+  note: 2
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Anzahl
+  note: 0
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Dreisatz
+  note: 2
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Wertetabelle
+  note: 1
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Brötchen
+  note: 0
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Zweisatz
+  note: 2
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Multiplikation
+  note: 1
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Mathematik
+  note: 1
+- node_id: 5b4d1ccd-2acc-47fa-b0aa-bb13634d1162
+  artikel: Anna
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Schriftliche Division
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Rechenmaschine
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Strecken der Division B der New York City Subway
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Restklassenring
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Teilen
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Name
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Paula Modersohn-Becker
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Mathematik
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Multiplikation
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Grundrechenarten
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Grundschule
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: 44. Infanterie-Division (Wehrmacht)
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Division mit Rest
+  note: 2
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Arithmetik
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Divisionsalgebra
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Käthe, Paula und der ganze Rest
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Ganze Zahl
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Rechenschieber
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Polynomdivision
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Käthe Kollwitz
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Verein der Berliner Künstlerinnen
+  note: 0
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Division (Mathematik)
+  note: 2
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: 'Null'
+  note: 1
+- node_id: 5847dba7-3705-457e-a165-528614d8ebf7
+  artikel: Zahl
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Wort
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Proportionalität
+  note: 2
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Anzahl
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Fabrik
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Umgekehrte Proportionalität
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Zweisatz
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Wort (theoretische Informatik)
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Porto
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Mathematik
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Quotient
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Dreisatz
+  note: 1
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Weimarer Verfassung
+  note: 2
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Weltkrieg
+  note: 1
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Reichsregierung (Weimarer Republik)
+  note: 2
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Reichswahlgesetz (Weimarer Republik)
+  note: 1
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Novemberrevolution
+  note: 1
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Weimar
+  note: 0
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Das Erste
+  note: 0
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Weimarer Republik
+  note: 1
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Reichstag (Weimarer Republik)
+  note: 2
+- node_id: 7be6051e-3e39-404a-9e87-4db77e600737
+  artikel: Deutschland
+  note: 0
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Sozialistische Einheitspartei Deutschlands
+  note: 2
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: DDR-Justiz
+  note: 0
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Sowjetische Besatzungszone
+  note: 1
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Zwangsvereinigung von SPD und KPD zur SED
+  note: 2
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Sozialdemokratische Partei Deutschlands
+  note: 1
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Sowjetunion
+  note: 1
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: April (Joseph Roth)
+  note: 0
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Berlin
+  note: 0
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Besatzungszone
+  note: 1
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: April
+  note: 0
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Kommunistische Partei Deutschlands
+  note: 1
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: '1946'
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Walter Ulbricht
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Mehrheit
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: München
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Marxismus
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: I
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Kommunistische Partei der Sowjetunion
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Generalsekretär
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Liste der Deutschen Meister im Fünfkampf (Leichtathletik)
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Kommunistische Partei Deutschlands
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Hannover
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Entstalinisierung
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Leipzig
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Kominform
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Sozialistische Einheitspartei Westberlins
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Sozialistische Einheitspartei Deutschlands
+  note: 2
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Arbeiterbewegung
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Wolf Biermann
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Eichsfeldplan
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Berlin
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Erfurt
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Sowjetische Besatzungszone
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Parteitag
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Septime
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Zwei-Lager-Theorie
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Die Linke
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Innerer Reichsparteitag
+  note: 0
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Kommunistische Partei
+  note: 1
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Parteitag der SED
+  note: 2
+- node_id: 03476274-616e-4678-9296-4dcce80189bf
+  artikel: Nd
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Bundeswehr
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Südafrika
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Frasier/Episodenliste
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Horst-Wessel-Lied
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: London
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Internationaler Währungsfonds
+  note: 2
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: März 2000
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Eva Luise und Horst Köhler Stiftung
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Südafrikanische Fußballnationalmannschaft/Olympische Spiele
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Entwicklungsbank
+  note: 1
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Horst Köhler
+  note: 2
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Europäische Bank für Wiederaufbau und Entwicklung
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Physische Geographie
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Rheinhessen
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Humangeographie
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Baden-Württemberg
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Zweisprachiger Unterricht
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Ständeversammlung des Großherzogtums Frankfurt
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Erdkunde
+  note: 2
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Apothekenwesen in Hessen-Darmstadt
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Geographie
+  note: 2
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Großherzogtum
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Geographiedidaktik
+  note: 2
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Digitale Medien
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Revolution von 1848 im Großherzogtum Hessen
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Luxemburg
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Verfassung des Großherzogtums Hessen
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Klimawandel
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Großherzogtum Hessen
+  note: 0
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Nachhaltigkeit
+  note: 0
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Kontinentaldrift
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Seismologie
+  note: 1
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Erdkern
+  note: 1
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Vulkan
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Erdkruste
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Plattentektonik
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Erdbeben
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Schule
+  note: 0
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Planet
+  note: 0
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Magma
+  note: 2
+- node_id: 9ba086a0-7f3a-4445-8167-fe9959598525
+  artikel: Erdmantel
+  note: 2
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Webseite
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Exkursion
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Fauna
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Lernen
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Außerschulischer Lernort Wilhelmshaven
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Jüdische Anlernwerkstatt Frankfurt
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Stadtgeographie
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Actionbound
+  note: 2
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Geographiedidaktik
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: E-Learning
+  note: 2
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Eichstätt
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Außerschulischer Lernort
+  note: 2
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Physische Geographie
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Bildungslandschaft
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Lernwerkstatt
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Altmühlsee
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Filmbildung (Bildungswesen)
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Erdkunde
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Geographie
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Humangeographie
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Sachunterricht
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Politische Geographie
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Karte (Kartografie)
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Kontinent
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Doha
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Streitkräfte Katars
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Kartografie
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Erdgas
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Al-Bayt-Stadion
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Katar (Dolch)
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Asien
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Katar
+  note: 2
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Staatsgebiet
+  note: 1
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: UN-Klimakonferenz in Dubai 2023
+  note: 1
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Kyoto-Protokoll
+  note: 1
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Berlin
+  note: 0
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Doha
+  note: 0
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Petersberger Klimadialog
+  note: 2
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Frage
+  note: 0
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: Klimawandel
+  note: 1
+- node_id: bdc8e683-99c0-4f0a-9519-98eef818f610
+  artikel: UN-Klimakonferenz
+  note: 2
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Weinbau in Frankreich
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Finanzen
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Haushaltssaldo
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Ruralisierung
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Staatsfinanzen
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Argentinien
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Gelenkte Volkswirtschaft
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Staatsverschuldung
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Eurozone
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Bildungssystem
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Krise
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Frankreich
+  note: 2
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Finanzierung
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Argentinien-Krise
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Wirtschaft Frankreichs
+  note: 2
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Emmanuel Macron
+  note: 1
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Tierproduktion
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Wirtschaft Albaniens
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Wirtschaftskrise
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Portugal
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Geschichte der Europäischen Union
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Holocaust
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Schulden
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Vermögensverteilung
+  note: 2
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Iran
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Günter Grass
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Europa
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Geldvermögen
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Was gesagt werden muss
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Staatsverschuldung
+  note: 2
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Verdeckte Staatsverschuldung
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Gerechtigkeit
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Eurokrise
+  note: 2
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Wirtschaftswissenschaftler
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Politik
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Waffen-SS
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Susanne
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Staatsverschuldung Deutschlands
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Staat
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Problem
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Weltfinanzkrise 2007–2008
+  note: 1
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Israel
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Journalist
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Politiker
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Stabilitäts- und Wachstumspakt
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Europäische Zentralbank
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Europäische Wirtschafts- und Währungsunion
+  note: 2
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Eurokrise
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Europäische Union
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Zeit
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Euro
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Europäische Kommission
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Michael Hüther
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Europäische Wirtschaftsregierung
+  note: 2
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Dänemark
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Wirtschaftswissenschaftler
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Emmanuel Macron
+  note: 1
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Eurozone
+  note: 2
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Währungsunion
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Liste von Hörspielpreisen
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Hörspielpreis der Kriegsblinden
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Medienpädagogik
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: ARD-Hörspieltage
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Tongestaltung
+  note: 2
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Livehörspiel
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Schüler
+  note: 0
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Frage
+  note: 0
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Audacity
+  note: 1
+- node_id: c4d8c077-ea98-486d-98c0-77ea98886df9
+  artikel: Hörspiel
+  note: 2
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Funk
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube Music
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube (YouTube-Kanal)
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Medienpädagogik
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Influencer-Marketing
+  note: 2
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Filmproduktion
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Rundfunkbeitrag
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Funk (Medienangebot)/Formate
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Öffentlich-rechtlicher Rundfunk
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Lernvideo
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Funk (Medienangebot)
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube
+  note: 2
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube-Partnerprogramm
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Walulis (Websendungen)
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Erklärvideo
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTuber
+  note: 2
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube TV
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Südwestrundfunk
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Berufsbild
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Rundfunkstaatsvertrag
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: YouTube Vanced
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Aspekte
+  note: 0
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Lehrer
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Sensor
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Programmierung
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Visuelle Programmiersprache
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Spiel
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Informatik
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Intro
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Musik
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Bahnradsport-Weltmeisterschaften
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Gestaltung
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Breakout (Computerspiel)
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Bildungsorientierte Programmiersprache
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Bahnradsport
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Scratch (Bahnradsport)
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Scratchen
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Scratch (Programmiersprache)
+  note: 2
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Kindheit
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Scratch (Bahnradsport)
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Technik
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Bahnradsport
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Calliope mini
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Informatik
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Scratchen
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Bahnradsport-Weltmeisterschaften
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Broschüre
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Musik
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Sport
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Projektunterricht
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Massachusetts Institute of Technology
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Bildungsorientierte Programmiersprache
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Scratch (Programmiersprache)
+  note: 2
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Informatikunterricht
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Visuelle Programmiersprache
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Blog
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Muttersprachlicher Deutschunterricht im nicht-deutschsprachigen Raum
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Schreibprozess
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Kreativität
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Mediendidaktik
+  note: 2
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Abitur
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digitalisierung
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Unterricht
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digitale Revolution
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Schreiben
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Medienpädagogik
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Neue Medien
+  note: 2
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: S
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Mooresches Gesetz
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digital Native
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Didaktik
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digitale Medien
+  note: 2
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Zentrale für Unterrichtsmedien im Internet
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digitalrechner
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: High Definition Television
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Unterrichtsmedium
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Digitale Daten
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Computer
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Generative Textproduktion
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Kommunikation
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Medienerziehung
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Deutschunterricht
+  note: 2
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Fidget Spinner
+  note: 2
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Didaktik
+  note: 0
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Sonstiges
+  note: 0
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Lernen
+  note: 1
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Abitur
+  note: 0
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Bildung
+  note: 0
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Fidget Cube
+  note: 1
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Arbeitsblatt
+  note: 0
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Schweden
+  note: 1
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Astrid Lindgren
+  note: 2
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Rasmus und der Vagabund (1981)
+  note: 1
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Webbrowser
+  note: 0
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Kinder- und Jugendliteratur
+  note: 1
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Ihren
+  note: 0
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Rasmus, Pontus und der Schwertschlucker
+  note: 1
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Rasmus und der Vagabund (1955)
+  note: 1
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Rasmus und der Landstreicher
+  note: 2
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: Inhalt
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Amazon
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Existenzgründung
+  note: 2
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Fehler
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Darmstadt
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Buch
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Gesellschaftsrecht
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Finanzmarkt
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Geld
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Unternehmertum
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Szenariotechnik
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Unternehmensgründung
+  note: 2
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Risiken einer Unternehmensgründung
+  note: 2
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Rechtsform
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Wettbewerbsmatrix
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Wirtschaft
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Immobilie
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Rainer Zitelmann
+  note: 2
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Reichtum
+  note: 2
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Unternehmertum
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Immobilie
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Reichtumsgrenze
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Taschenbuch
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Das Kapital. Band I
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Klaus Rainer Röhl
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Bestseller
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Psychologie
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Der plötzliche Reichtum der armen Leute von Kombach
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Erfolg
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Amazon
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Darmstadt
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Reichtumsforschung
+  note: 2
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Reichtumsgrenze
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Börse
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Glück
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Reichtumsforschung
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Vermögensmillionär
+  note: 2
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Euro
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Geldschöpfung
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Reichtum
+  note: 2
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Das Kapital. Band I
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Wirtschaftsinformatik
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Buch
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Geldpolitik
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Unternehmertum
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Pension Groonen
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Macht
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Hochschule für Technik Stuttgart
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Geldtheorie
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Geld
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Aktie
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Chartalismus
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Elektronischer Handel
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Geldfunktion
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Buch
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Rainer
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Automatisierung
+  note: 1
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Online-Marketing
+  note: 2
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Amazon
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Online
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Immobilienwirtschaft
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Hörbuch
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Prozessmanagement
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Marketing
+  note: 1
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Massenbach
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Web-Seminar
+  note: 2
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Unternehmer
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Software
+  note: 0

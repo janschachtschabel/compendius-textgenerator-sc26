@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M22
+# Ergebnisse der Messungen M1 bis M23
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. und 24.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -36,6 +36,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M20 | Hilft eine Genitiv-Regel beim Verknüpfen der Entitäten? | ja: 30 neue Verknüpfungen in 20 Texten, keine falsch; beide Genitivfehler von M18 behoben, Wikidata bei 677 von 682 (D46) | – | `m20_entitaeten_genitiv.json` |
 | M21 | Wie findet der Dienst den Artikel zu einem echten Material? | Titel als Thema 7 von 38, Entitäten 16, LLM aus Titel, Beschreibung und Schlagwörtern 34 (rund 470 Tokens, 2,8 s); Optionen offen | – | `m21_materialwahl.json` |
 | M22 | Gehören die Lehrplanelemente von Teil 2 zum Thema? | rund 60 % passen, 13 bis 19 % gar nicht, mit und ohne Fach fast gleich; das Fach kürzt Teil 2 um ein Drittel und verwirft ein Viertel der passenden Elemente; zwei Beurteiler einig bei 93 % (Kappa 0,89); Optionen offen | – | `m22_lehrplan_treffer.json` |
+| M23 | Wie gut wird ein Kompendium aus den Metadaten eines Materials, verglichen mit einem Begriff? | brauchbar (mindestens die Hälfte der gedruckten Absätze passt) bei 31 Materialien: Begriff 18, Knoten wie heute 5, mit `balanced` 10, Thema vom LLM 17, Entitäten wie im alten Dienst 11, lokale Entitäten 5; zwei Beurteiler einig bei 91 % (Kappa 0,86); Optionen offen | – | `m23_material_kompendium.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

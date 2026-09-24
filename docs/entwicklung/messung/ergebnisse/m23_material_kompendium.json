@@ -1,0 +1,9411 @@
+[
+ {
+  "node_id": "325c399b-dd66-40b3-8182-3baae248f4d6",
+  "titel": "Kurs: Mathematik für Physikbegeisterte 1",
+  "art": "unscharf",
+  "begriff": "Mathematische Physik",
+  "akzeptiert": [
+   "Mathematische Physik"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.34,
+    "hauptartikel": "Mathematische Physik",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematische Physik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Idealisierung (Physik)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ohmsches Gesetz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Quantenphysik",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dannie-Heineman-Preis für mathematische Physik",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Approximation",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Internationales Erwin Schrödinger Institut für Mathematik und Physik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 28022,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.03
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.54,
+    "hauptartikel": "Mathematische Physik",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematische Physik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Idealisierung (Physik)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ohmsches Gesetz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Quantenphysik",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dannie-Heineman-Preis für mathematische Physik",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Approximation",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Internationales Erwin Schrödinger Institut für Mathematik und Physik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 28450,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Mathematische Methoden der Physik",
+    "tokens_frage": 324,
+    "sekunden_frage": 0.27
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.52,
+    "hauptartikel": "Mathematik",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Physik",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Physiker",
+      "absaetze": 7
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 392924,
+    "teil2": 970,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Mathematik",
+     "Physik",
+     "Physiker"
+    ],
+    "sekunden_frage": 0.03
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.83,
+    "hauptartikel": "Physik",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Physik",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Analysis",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Komplexe Zahl",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fourier-Analysis",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Differentialgleichung",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lineare Algebra",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 373661,
+    "teil2": 1176,
+    "tokens_dienst": 0,
+    "labels": [
+     "Physik",
+     "Mathematik",
+     "Mathematische Methoden der Physik",
+     "Analysis",
+     "Lineare Algebra",
+     "Differentialgleichung",
+     "Vektoranalysis",
+     "Komplexe Zahl",
+     "Fourier-Analysis",
+     "Wahrscheinlichkeitstheorie"
+    ],
+    "entitaeten": [
+     "Physik",
+     "Mathematik",
+     "Analysis",
+     "Lineare Algebra",
+     "Differentialgleichung",
+     "Vektoranalysis",
+     "Komplexe Zahl",
+     "Fourier-Analysis",
+     "Wahrscheinlichkeitstheorie"
+    ],
+    "tokens_frage": 1562,
+    "sekunden_frage": 10.36
+   }
+  }
+ },
+ {
+  "node_id": "19e322f0-afa5-440f-8dc0-fca1dcde71d8",
+  "titel": "Zahnrad und Riemen - Experiment:",
+  "art": "klar",
+  "begriff": "Zahnrad",
+  "akzeptiert": [
+   "Getriebe",
+   "Riemengetriebe",
+   "Zahnrad"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.36,
+    "hauptartikel": "Zahnrad",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnrad",
+      "absaetze": 15
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Zahnrad",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnstange",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Evolventenverzahnung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fahrradklingel",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 32566,
+    "teil2": 21,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 2.42,
+    "hauptartikel": "Rad",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Rad",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fahrradverleih",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wagen",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Energiespeicher",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hollandrad",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Rad",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 124890,
+    "teil2": 266,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 7.08,
+    "hauptartikel": "Getriebe",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kronenrad",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Riemengetriebe",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Propellergetriebe (Luftfahrt)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kurvengetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schrittgetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kettengetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Getriebe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Zahnrad",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnrad",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26779,
+    "teil2": 2,
+    "tokens_dienst": 1340
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.56,
+    "hauptartikel": "Getriebe",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kronenrad",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Riemengetriebe",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Propellergetriebe (Luftfahrt)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kurvengetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schrittgetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kettengetriebe",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Getriebe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Zahnrad",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnrad",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26915,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "genannt": "Getriebe",
+    "tokens_frage": 341,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.3,
+    "hauptartikel": "Zahnrad",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnrad",
+      "absaetze": 21
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Science",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "École",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26147,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Zahnrad",
+     "École",
+     "Science"
+    ],
+    "sekunden_frage": 0.07
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.78,
+    "hauptartikel": "Zahnrad",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahnrad",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Riemengetriebe",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mechanik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Übersetzung (Technik)",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 30915,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Zahnrad",
+     "Riemengetriebe",
+     "Getriebe",
+     "Übersetzung (Technik)",
+     "Mechanik",
+     "Physikunterricht",
+     "Open Educational Resources",
+     "YouTube"
+    ],
+    "entitaeten": [
+     "Zahnrad",
+     "Riemengetriebe",
+     "Getriebe",
+     "Übersetzung (Technik)",
+     "Mechanik",
+     "Physikunterricht",
+     "Open Educational Resources",
+     "YouTube"
+    ],
+    "tokens_frage": 1438,
+    "sekunden_frage": 9.11
+   }
+  }
+ },
+ {
+  "node_id": "8e4ee58d-c18c-470b-8f84-c3a634a041c3",
+  "titel": "Bestimmung des Planckschen Wirkungsquantums h (Variante 1) - Experiment",
+  "art": "klar",
+  "begriff": "Plancksches Wirkungsquantum",
+  "akzeptiert": [
+   "Planck-Konstante"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 4.05,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Max Planck",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Drehimpuls",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 99096,
+    "teil2": 158,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 0.62,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Max Planck",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Drehimpuls",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 62370,
+    "teil2": 84,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 3.03,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Max Planck",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Drehimpuls",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 62874,
+    "teil2": 84,
+    "tokens_dienst": 317
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.79,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Max Planck",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Drehimpuls",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 62246,
+    "teil2": 84,
+    "tokens_dienst": 0,
+    "genannt": "Plancksches Wirkungsquantum",
+    "tokens_frage": 219,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.36,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Science",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "École",
+      "absaetze": 4
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 65725,
+    "teil2": 84,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Planck-Konstante",
+     "École",
+     "Science"
+    ],
+    "sekunden_frage": 0.05
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.71,
+    "hauptartikel": "Planck-Konstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Quantenmechanik",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Planck-Konstante",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Photon",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Albert Einstein",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Licht",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Photoelektrischer Effekt",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 70512,
+    "teil2": 84,
+    "tokens_dienst": 0,
+    "labels": [
+     "Plancksches Wirkungsquantum",
+     "Photoelektrischer Effekt",
+     "Photon",
+     "Quantenmechanik",
+     "Planck-Einstein-Beziehung",
+     "Licht",
+     "Albert Einstein",
+     "Robert Andrews Millikan"
+    ],
+    "entitaeten": [
+     "Planck-Konstante",
+     "Photoelektrischer Effekt",
+     "Photon",
+     "Quantenmechanik",
+     "Licht",
+     "Albert Einstein",
+     "Robert Andrews Millikan"
+    ],
+    "tokens_frage": 1547,
+    "sekunden_frage": 10.85
+   }
+  }
+ },
+ {
+  "node_id": "c6c569d7-87c3-40d6-be6f-d92ee5409782",
+  "titel": "Funktionsweise eines Galvanometer - Experiment",
+  "art": "klar",
+  "begriff": "Galvanometer",
+  "akzeptiert": [
+   "Galvanometer"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.43,
+    "hauptartikel": "Galvanometer",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanometer",
+      "absaetze": 15
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 24254,
+    "teil2": 7,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.87,
+    "hauptartikel": "Elektromagnetische Induktion",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektromagnetische Induktion",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Induktivität",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Induktionskochfeld",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geschichte der Physik",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Induktionslampe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Induktionsschleife",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 84621,
+    "teil2": 196,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 2.97,
+    "hauptartikel": "Galvanometer",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanometer",
+      "absaetze": 15
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 19925,
+    "teil2": 0,
+    "tokens_dienst": 368
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.39,
+    "hauptartikel": "Galvanometer",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanometer",
+      "absaetze": 15
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 19476,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Galvanometer",
+    "tokens_frage": 208,
+    "sekunden_frage": 0.15
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.29,
+    "hauptartikel": "Galvanometer",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanometer",
+      "absaetze": 15
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "École",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Science",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 23442,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Galvanometer",
+     "École",
+     "Science"
+    ],
+    "sekunden_frage": 0.04
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.35,
+    "hauptartikel": "Galvanometer",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrischer Strom",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Drehspulmesswerk",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanometer",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Strommessgerät",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektromagnetische Wechselwirkung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 26062,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Galvanometer",
+     "Drehspulmesswerk",
+     "Elektrischer Strom",
+     "Magnetisches Feld",
+     "Lorentzkraft",
+     "Elektromagnetismus",
+     "Elektrischer Stromkreis",
+     "Amperemeter"
+    ],
+    "entitaeten": [
+     "Galvanometer",
+     "Drehspulmesswerk",
+     "Elektrischer Strom",
+     "Magnetisches Feld",
+     "Lorentzkraft",
+     "Elektromagnetische Wechselwirkung",
+     "Stromkreis",
+     "Strommessgerät"
+    ],
+    "tokens_frage": 1471,
+    "sekunden_frage": 9.07
+   }
+  }
+ },
+ {
+  "node_id": "18adeb5f-3f7d-4c32-9a96-3398a756193e",
+  "titel": "Mond durch mein Teleskop - Moon through my telescope (Skywatcher 200/1000)",
+  "art": "klar",
+  "begriff": "Mond",
+  "akzeptiert": [
+   "Mond",
+   "Teleskop"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.83,
+    "hauptartikel": "Mond",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondfinsternis",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mond",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondsichel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondbahn",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Mond",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 57870,
+    "teil2": 92,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.02
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.42,
+    "hauptartikel": "Mond",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondfinsternis",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mond",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondsichel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondbahn",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Mond",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 34272,
+    "teil2": 45,
+    "tokens_dienst": 0,
+    "genannt": "Mond",
+    "tokens_frage": 484,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.45,
+    "hauptartikel": "Teleskop",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Teleskop",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sony",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Leuchtdiode",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Licht",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "TEAC (Elektronikunternehmen)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mond",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Softbox",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 118505,
+    "teil2": 221,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Teleskop",
+     "Sky-Watcher",
+     "Mond",
+     "Licht",
+     "Kamera",
+     "TEAC (Elektronikunternehmen)",
+     "Sony",
+     "Softbox",
+     "Leuchtdiode",
+     "Amazon"
+    ],
+    "sekunden_frage": 0.53
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.73,
+    "hauptartikel": "Mond",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mond",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Newtonteleskop",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Teleskop",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Astronomie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mondphase",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Spiegelteleskop",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 38680,
+    "teil2": 45,
+    "tokens_dienst": 0,
+    "labels": [
+     "Mond",
+     "Teleskop",
+     "Spiegelteleskop",
+     "Newton-Teleskop",
+     "Astronomie",
+     "Mondphase",
+     "Astrofotografie",
+     "Belichtungszeit"
+    ],
+    "entitaeten": [
+     "Mond",
+     "Teleskop",
+     "Spiegelteleskop",
+     "Newtonteleskop",
+     "Astronomie",
+     "Mondphase",
+     "Astrofotografie",
+     "Belichtungszeit"
+    ],
+    "tokens_frage": 1718,
+    "sekunden_frage": 8.42
+   }
+  }
+ },
+ {
+  "node_id": "c09b26a5-bb4d-497e-8def-c8812e64bb9d",
+  "titel": "Eine Batterie \"bauen\"",
+  "art": "klar",
+  "begriff": "Batterie",
+  "akzeptiert": [
+   "Batterie (Elektrotechnik)",
+   "Galvanische Zelle"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.62,
+    "hauptartikel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Batterie (Elektrotechnik)",
+      "absaetze": 15
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Flachbatterie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Starterbatterie",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkali-Mangan-Zelle",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Laternenbatterie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Batterie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zink-Luft-Batterie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 301968,
+    "teil2": 715,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 2.09,
+    "hauptartikel": "BAE Batterien",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "BAE Batterien",
+      "absaetze": 10
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 15252,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 11.16,
+    "hauptartikel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Batterie (Elektrotechnik)",
+      "absaetze": 15
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Flachbatterie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Starterbatterie",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkali-Mangan-Zelle",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Laternenbatterie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Batterie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zink-Luft-Batterie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 111165,
+    "teil2": 214,
+    "tokens_dienst": 1907
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.83,
+    "hauptartikel": "Galvanische Zelle",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kapazität (galvanische Zelle)",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanische Zelle",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Brennstoffzelle",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Halbzelle",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 61845,
+    "teil2": 74,
+    "tokens_dienst": 0,
+    "genannt": "Galvanische Zelle",
+    "tokens_frage": 722,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.82,
+    "hauptartikel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Batterie (Elektrotechnik)",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Urlaub",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dingen",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Woche",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Leuchtdiode",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "TEAC (Elektronikunternehmen)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Frage",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zeit",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 46405,
+    "teil2": 29,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Batterie",
+     "Leuchtdiode",
+     "Kamera",
+     "Dingen",
+     "Ich",
+     "Zeit",
+     "Urlaub",
+     "Woche",
+     "Frage",
+     "TEAC (Elektronikunternehmen)"
+    ],
+    "sekunden_frage": 0.6
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.12,
+    "hauptartikel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kupfer",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Batterie (Elektrotechnik)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrochemie",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Leuchtdiode",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schwefelsäure",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zink",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Galvanische Zelle",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 42189,
+    "teil2": 29,
+    "tokens_dienst": 0,
+    "labels": [
+     "Batterie (Elektrotechnik)",
+     "Galvanisches Element",
+     "Zitronenbatterie",
+     "Elektrochemie",
+     "Zink",
+     "Kupfer",
+     "Schwefelsäure",
+     "Leuchtdiode",
+     "Elektromotor"
+    ],
+    "entitaeten": [
+     "Batterie (Elektrotechnik)",
+     "Galvanische Zelle",
+     "Elektrochemie",
+     "Zink",
+     "Kupfer",
+     "Schwefelsäure",
+     "Leuchtdiode",
+     "Elektromotor"
+    ],
+    "tokens_frage": 1863,
+    "sekunden_frage": 10.31
+   }
+  }
+ },
+ {
+  "node_id": "6c306be9-a5f5-46ae-af83-31fc480fa389",
+  "titel": "\"Blitzeis\" mit Wasser und Windeln",
+  "art": "klar",
+  "begriff": "Superabsorber",
+  "akzeptiert": [
+   "Superabsorber"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.37,
+    "hauptartikel": "Superabsorber",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Superabsorber",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hydrogel",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Acrylsäure",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 15154,
+    "teil2": 1,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.23,
+    "hauptartikel": "Superabsorber",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Superabsorber",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hydrogel",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Acrylsäure",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 15473,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "genannt": "Superabsorber",
+    "tokens_frage": 601,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.31,
+    "hauptartikel": "Wasser",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sony",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wasser",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schnee",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Windel",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "TEAC (Elektronikunternehmen)",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Superabsorber",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Softbox",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Leuchtdiode",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Licht",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 202887,
+    "teil2": 476,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Wasser",
+     "Windel",
+     "Superabsorber",
+     "Schnee",
+     "Kamera",
+     "TEAC (Elektronikunternehmen)",
+     "Sony",
+     "Licht",
+     "Softbox",
+     "Leuchtdiode"
+    ],
+    "sekunden_frage": 0.31
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.56,
+    "hauptartikel": "Superabsorber",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Superabsorber",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chemie",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schnee",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Windel",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Polymer",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wasser",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 29133,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "labels": [
+     "Superabsorber",
+     "Natriumpolyacrylat",
+     "Polymer",
+     "Wasser",
+     "Windel",
+     "Absorption (Chemie)",
+     "Quellung",
+     "Schnee",
+     "Blitzeis",
+     "Chemie"
+    ],
+    "entitaeten": [
+     "Superabsorber",
+     "Polymer",
+     "Wasser",
+     "Windel",
+     "Absorption (Chemie)",
+     "Quellung",
+     "Schnee",
+     "Chemie"
+    ],
+    "tokens_frage": 1928,
+    "sekunden_frage": 10.01
+   }
+  }
+ },
+ {
+  "node_id": "35162ae1-e3d7-4c8e-95e5-d13d6906fb57",
+  "titel": "Sonnenuntergang im Zeitraffer",
+  "art": "klar",
+  "begriff": "Sonnenuntergang",
+  "akzeptiert": [
+   "Sonnenuntergang",
+   "Zeitraffer"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.86,
+    "hauptartikel": "Sonnenuntergang",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenuntergang",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dämmerung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenscheibe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Umida Ahmedova",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Astronomische Phänomenologie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 17867,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.0,
+    "hauptartikel": "Leuchtende Nachtwolke",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Leuchtende Nachtwolke",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wolke",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 13077,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 6.47,
+    "hauptartikel": "Sonnenuntergang",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenuntergang",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dämmerung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenscheibe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Astronomische Phänomenologie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 16447,
+    "teil2": 0,
+    "tokens_dienst": 1475
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.62,
+    "hauptartikel": "Sonnenuntergang",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenuntergang",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dämmerung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenscheibe",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Umida Ahmedova",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Astronomische Phänomenologie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 18018,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Sonnenuntergang",
+    "tokens_frage": 286,
+    "sekunden_frage": 0.15
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.81,
+    "hauptartikel": "Sonnenuntergang",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Creative Commons",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Musik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenuntergang",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zeitraffer",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Copyleft",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 21019,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Sonnenuntergang",
+     "Zeitraffer",
+     "Musik",
+     "Creative Commons",
+     "Copyleft"
+    ],
+    "sekunden_frage": 0.08
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.8,
+    "hauptartikel": "Sonnenuntergang",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Wolke",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dämmerung",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Creative Commons",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonnenuntergang",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zeitraffer",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erde",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Musik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 26049,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Sonnenuntergang",
+     "Zeitraffer",
+     "Sonne",
+     "Wolke",
+     "Himmel",
+     "Erde",
+     "Dämmerung",
+     "Creative Commons",
+     "Musik"
+    ],
+    "entitaeten": [
+     "Sonnenuntergang",
+     "Zeitraffer",
+     "Sonne",
+     "Wolke",
+     "Erde",
+     "Dämmerung",
+     "Creative Commons",
+     "Musik"
+    ],
+    "tokens_frage": 1569,
+    "sekunden_frage": 9.91
+   }
+  }
+ },
+ {
+  "node_id": "21e5be2c-c701-438a-a5be-2cc701f38a47",
+  "titel": "Organometallic Reagents and Carbanions: Crash Course Organic Chemistry #28",
+  "art": "klar",
+  "begriff": "Metallorganische Chemie",
+  "akzeptiert": [
+   "Carbanion",
+   "Metallorganische Chemie"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.24,
+    "hauptartikel": "Metallorganische Chemie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Metallorganische Gerüstverbindung",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Metallorganische Chemie",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Biometallorganische Chemie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Anorganische Chemie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Organische Chemie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25465,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.02
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.73,
+    "hauptartikel": "Metallorganische Chemie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Metallorganische Gerüstverbindung",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Metallorganische Chemie",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Biometallorganische Chemie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Anorganische Chemie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Organische Chemie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25885,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Organometallische Verbindung",
+    "tokens_frage": 688,
+    "sekunden_frage": 0.07
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.94,
+    "hauptartikel": "Carbanion",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Boston",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "H",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Carbanion",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "A",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "J",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "G",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "D",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Pearson Education",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 23898,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Carbanion",
+     "G",
+     "L",
+     "J",
+     "New York",
+     "D",
+     "H",
+     "A",
+     "Boston",
+     "Pearson Education"
+    ],
+    "sekunden_frage": 1.91
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.61,
+    "hauptartikel": "Metallorganische Chemie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Metallorganische Chemie",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lithiumorganische Verbindungen",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kreuzkupplung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Gilman-Reagenz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wittig-Reaktion",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Grignard-Reaktion",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24542,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Organometallchemie",
+     "Carbanion",
+     "Grignard-Reaktion",
+     "Organolithiumverbindung",
+     "Wittig-Reaktion",
+     "Gilman-Reagenz",
+     "Tetraethylblei",
+     "Kreuzkupplung",
+     "Elektronegativität",
+     "Organokupferverbindung"
+    ],
+    "entitaeten": [
+     "Metallorganische Chemie",
+     "Carbanion",
+     "Grignard-Reaktion",
+     "Lithiumorganische Verbindungen",
+     "Wittig-Reaktion",
+     "Gilman-Reagenz",
+     "Tetraethylblei",
+     "Kreuzkupplung",
+     "Elektronegativität"
+    ],
+    "tokens_frage": 2057,
+    "sekunden_frage": 9.96
+   }
+  }
+ },
+ {
+  "node_id": "aff99075-a5b3-49dd-b990-75a5b369dd63",
+  "titel": "Determining SN1, SN2, E1, and E2 Reactions: Crash Course Organic Chemistry #23",
+  "art": "klar",
+  "begriff": "Nukleophile Substitution",
+  "akzeptiert": [
+   "Eliminierungsreaktion",
+   "Nukleophile Substitution"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.2,
+    "hauptartikel": "Nukleophile Substitution",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophile aromatische Substitution",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Pyridin",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophile Substitution",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophilie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "2-Chlornicotinsäure",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chinolin",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 21588,
+    "teil2": 2,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.49,
+    "hauptartikel": "Nukleophile Substitution",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophile aromatische Substitution",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Pyridin",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophile Substitution",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophilie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "2-Chlornicotinsäure",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chinolin",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 22015,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "genannt": "Nukleophile Substitution",
+    "tokens_frage": 936,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.3,
+    "hauptartikel": "SN1",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reaktionsvideo",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Boston",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "S",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "J",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "M",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Pearson Education",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 23474,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "SN1",
+     "SN2",
+     "Reaktionsvideo",
+     "J",
+     "S",
+     "New York",
+     "L",
+     "Boston",
+     "Pearson Education",
+     "M"
+    ],
+    "sekunden_frage": 0.64
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 2.26,
+    "hauptartikel": "Organische Chemie",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Organische Chemie",
+      "absaetze": 16
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophile Substitution",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eliminierungsreaktion",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nukleophilie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24826,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Organische Chemie",
+     "Nukleophil",
+     "SN1-Reaktion",
+     "SN2-Reaktion",
+     "E1-Reaktion",
+     "E2-Reaktion",
+     "Nukleophile Substitution",
+     "Eliminierungsreaktion",
+     "Williamson-Ethersynthese",
+     "Saytzeffsche Regel"
+    ],
+    "entitaeten": [
+     "Organische Chemie",
+     "Nukleophilie",
+     "Nukleophile Substitution",
+     "Eliminierungsreaktion",
+     "Williamson-Ethersynthese"
+    ],
+    "tokens_frage": 2034,
+    "sekunden_frage": 9.59
+   }
+  }
+ },
+ {
+  "node_id": "c5f133d8-22f1-4f87-b133-d822f1cf87f7",
+  "titel": "Alkene Addition Reactions: Crash Course Organic Chemistry #16",
+  "art": "klar",
+  "begriff": "Elektrophile Addition",
+  "akzeptiert": [
+   "Additionsreaktion",
+   "Alkene",
+   "Elektrophile Addition"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.65,
+    "hauptartikel": "Elektrophile Addition",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Pyridin",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrophile Addition",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrophilie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkene",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkine",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 27931,
+    "teil2": 16,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.02
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.38,
+    "hauptartikel": "Elektrophile Addition",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Pyridin",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrophile Addition",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrophilie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkene",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkine",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 28412,
+    "teil2": 16,
+    "tokens_dienst": 0,
+    "genannt": "Elektrophile Addition",
+    "tokens_frage": 788,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 5.15,
+    "hauptartikel": "Chemisches Element",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reaktionsvideo",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chemisches Element",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Y",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Alkene",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "H",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "T",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "P",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "J",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "K",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26415,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "J",
+     "New York",
+     "Alkene",
+     "Addition",
+     "Reaktionsvideo",
+     "H",
+     "T",
+     "Y",
+     "P",
+     "K"
+    ],
+    "sekunden_frage": 1.37
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.87,
+    "hauptartikel": "Elektrophile Addition",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Organische Chemie",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Stereochemie",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Markownikow-Regel",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hank Green",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Halogenierung",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektrophile Addition",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Regioselektivität",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 38610,
+    "teil2": 16,
+    "tokens_dienst": 0,
+    "labels": [
+     "Alken",
+     "Elektrophile Addition",
+     "Markownikow-Regel",
+     "Hydratisierung",
+     "Halogenierung",
+     "Hydroborierung",
+     "Stereochemie",
+     "Regioselektivität",
+     "Organische Chemie",
+     "Hank Green"
+    ],
+    "entitaeten": [
+     "Elektrophile Addition",
+     "Markownikow-Regel",
+     "Hydratisierung",
+     "Halogenierung",
+     "Hydroborierung",
+     "Stereochemie",
+     "Regioselektivität",
+     "Organische Chemie",
+     "Hank Green"
+    ],
+    "tokens_frage": 2142,
+    "sekunden_frage": 11.69
+   }
+  }
+ },
+ {
+  "node_id": "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b",
+  "titel": "Acidity: Crash Course Organic Chemistry #11",
+  "art": "klar",
+  "begriff": "Säurestärke",
+  "akzeptiert": [
+   "Säurekonstante",
+   "Säuren"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.21,
+    "hauptartikel": "Säurekonstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Säurekonstante",
+      "absaetze": 10
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 15101,
+    "teil2": 5,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.02
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.51,
+    "hauptartikel": "Säurekonstante",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Säurekonstante",
+      "absaetze": 10
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 15368,
+    "teil2": 5,
+    "tokens_dienst": 0,
+    "genannt": "Säurestärke",
+    "tokens_frage": 689,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.63,
+    "hauptartikel": "Chemisches Element",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Boston",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chemisches Element",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Y",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "H",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "J",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "A",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "S",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "I",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 30470,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "J",
+     "A",
+     "S",
+     "L",
+     "I",
+     "New York",
+     "Y",
+     "C",
+     "H",
+     "Boston"
+    ],
+    "sekunden_frage": 1.75
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.73,
+    "hauptartikel": "Organische Chemie",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Organische Chemie",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Säurekonstante",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Basen (Chemie)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ameisensäure",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Pyridin",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Induktiver Effekt",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chemisches Gleichgewicht",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25911,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Organische Chemie",
+     "Säure (Chemie)",
+     "Basen (Chemie)",
+     "Säure-Base-Reaktion",
+     "pKs-Wert",
+     "Chemisches Gleichgewicht",
+     "Resonanz (Chemie)",
+     "Induktiver Effekt",
+     "Pyridin",
+     "Ameisensäure"
+    ],
+    "entitaeten": [
+     "Organische Chemie",
+     "Basen (Chemie)",
+     "Säure-Base-Reaktion",
+     "Säurekonstante",
+     "Chemisches Gleichgewicht",
+     "Mesomerie",
+     "Induktiver Effekt",
+     "Pyridin",
+     "Ameisensäure"
+    ],
+    "tokens_frage": 2067,
+    "sekunden_frage": 10.44
+   }
+  }
+ },
+ {
+  "node_id": "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162",
+  "titel": "Schritte des Dreisatzes",
+  "art": "klar",
+  "begriff": "Dreisatz",
+  "akzeptiert": [
+   "Dreisatz"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.3,
+    "hauptartikel": "Dreisatz",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 31976,
+    "teil2": 45,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 0.25,
+    "hauptartikel": "Dreisatz",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 26340,
+    "teil2": 32,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 1.56,
+    "hauptartikel": "Dreisatz",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 26666,
+    "teil2": 32,
+    "tokens_dienst": 447
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.23,
+    "hauptartikel": "Dreisatz",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 26205,
+    "teil2": 32,
+    "tokens_dienst": 0,
+    "genannt": "Dreisatz",
+    "tokens_frage": 477,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.48,
+    "hauptartikel": "Brötchen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Anna",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Euro",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wertetabelle",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Brötchen",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Name",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Anzahl",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24620,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Brötchen",
+     "Dreisatz",
+     "Anzahl",
+     "Reihenfolge",
+     "Mathematik",
+     "Wertetabelle",
+     "Zahl",
+     "Name",
+     "Anna",
+     "Euro"
+    ],
+    "sekunden_frage": 0.51
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.67,
+    "hauptartikel": "Dreisatz",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Euro",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Multiplikation",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Quotient",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 39025,
+    "teil2": 32,
+    "tokens_dienst": 0,
+    "labels": [
+     "Dreisatz",
+     "Proportionalität",
+     "Verhältnis (Mathematik)",
+     "Multiplikation",
+     "Division",
+     "Einheitspreis",
+     "Mathematik",
+     "Euro"
+    ],
+    "entitaeten": [
+     "Dreisatz",
+     "Proportionalität",
+     "Quotient",
+     "Multiplikation",
+     "Einheitspreis",
+     "Mathematik",
+     "Euro"
+    ],
+    "tokens_frage": 1826,
+    "sekunden_frage": 11.24
+   }
+  }
+ },
+ {
+  "node_id": "5847dba7-3705-457e-a165-528614d8ebf7",
+  "titel": "Teilen, mit und ohne Rest",
+  "art": "klar",
+  "begriff": "Division mit Rest",
+  "akzeptiert": [
+   "Division (Mathematik)",
+   "Division mit Rest"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 7.94,
+    "hauptartikel": "Division mit Rest",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Polynomdivision",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "44. Infanterie-Division (Wehrmacht)",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Division mit Rest",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Strecken der Division B der New York City Subway",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ganze Zahl",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Restklassenring",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 34246,
+    "teil2": 13,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 4.09,
+    "hauptartikel": "Käthe, Paula und der ganze Rest",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Käthe, Paula und der ganze Rest",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Käthe Kollwitz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Paula Modersohn-Becker",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Verein der Berliner Künstlerinnen",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 18215,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 10.3,
+    "hauptartikel": "Schriftliche Division",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Schriftliche Division",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahl",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rechenschieber",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Grundschule",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 18355,
+    "teil2": 1,
+    "tokens_dienst": 1388
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 2.74,
+    "hauptartikel": "Division (Mathematik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Polynomdivision",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Null",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Division (Mathematik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Division mit Rest",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Divisionsalgebra",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Multiplikation",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Grundrechenarten",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rechenmaschine",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 156280,
+    "teil2": 311,
+    "tokens_dienst": 0,
+    "genannt": "Division (Mathematik)",
+    "tokens_frage": 738,
+    "sekunden_frage": 0.17
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.34,
+    "hauptartikel": "Teilen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Teilen",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Name",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 96304,
+    "teil2": 157,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Teilen",
+     "Mathematik",
+     "Name"
+    ],
+    "sekunden_frage": 0.09
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.51,
+    "hauptartikel": "Division (Mathematik)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Division (Mathematik)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Division mit Rest",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Multiplikation",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Arithmetik",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ganze Zahl",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 153871,
+    "teil2": 311,
+    "tokens_dienst": 0,
+    "labels": [
+     "Division (Mathematik)",
+     "Division mit Rest",
+     "Rest (Mathematik)",
+     "Arithmetik",
+     "Mathematik",
+     "Multiplikation",
+     "Natürliche Zahl",
+     "Ganze Zahl"
+    ],
+    "entitaeten": [
+     "Division (Mathematik)",
+     "Division mit Rest",
+     "Arithmetik",
+     "Mathematik",
+     "Multiplikation",
+     "Natürliche Zahl",
+     "Ganze Zahl"
+    ],
+    "tokens_frage": 1968,
+    "sekunden_frage": 8.35
+   }
+  }
+ },
+ {
+  "node_id": "a0399b0d-75f6-4388-9d1f-d64cda8e0a73",
+  "titel": "Abschlussarbeit Klasse 8",
+  "art": "keins",
+  "begriff": null,
+  "akzeptiert": [],
+  "wege": {
+   "B": {
+    "status": "kein Begriff"
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.39,
+    "hauptartikel": "Studienabschlussarbeit",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Studienabschlussarbeit",
+      "absaetze": 18
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 16159,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 7.1,
+    "hauptartikel": "Studienabschlussarbeit",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Studienabschlussarbeit",
+      "absaetze": 18
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 16663,
+    "teil2": 0,
+    "tokens_dienst": 696
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 2.13,
+    "hauptartikel": "Bruchrechnung",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Bruchrechnung",
+      "absaetze": 5
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Bruchrechnung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rechnen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kürzen",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 15287,
+    "teil2": 4,
+    "tokens_dienst": 0,
+    "genannt": "Bruchrechnung",
+    "tokens_frage": 573,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.33,
+    "hauptartikel": "Zahl",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reihe (Mathematik)",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zahl",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "H",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "M",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Z",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "T",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 621105,
+    "teil2": 1740,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Zahl",
+     "M",
+     "T",
+     "H",
+     "Mathematik",
+     "Z",
+     "Blatt",
+     "Reihe (Mathematik)",
+     "Name",
+     "Dan Welcher"
+    ],
+    "sekunden_frage": 0.8
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 2.47,
+    "hauptartikel": "Mathematik",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Folge (Mathematik)",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Multiplikation",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Stellenwertsystem",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 390731,
+    "teil2": 970,
+    "tokens_dienst": 0,
+    "labels": [
+     "Mathematik",
+     "Natürliche Zahl",
+     "Stellenwertsystem",
+     "Dezimalsystem",
+     "Bruch (Mathematik)",
+     "Addition",
+     "Subtraktion",
+     "Multiplikation",
+     "Division",
+     "Folge (Mathematik)"
+    ],
+    "entitaeten": [
+     "Mathematik",
+     "Natürliche Zahl",
+     "Stellenwertsystem",
+     "Dezimalsystem",
+     "Addition",
+     "Subtraktion",
+     "Multiplikation",
+     "Folge (Mathematik)"
+    ],
+    "tokens_frage": 1846,
+    "sekunden_frage": 9.29
+   }
+  }
+ },
+ {
+  "node_id": "8ee3a2ab-e9e9-46d5-a420-f543494cdf63",
+  "titel": "Proportionale Zuordnungen beschreiben",
+  "art": "klar",
+  "begriff": "Proportionale Zuordnung",
+  "akzeptiert": [
+   "Proportionalität"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.45,
+    "hauptartikel": "Proportionalität",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 13
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Umgekehrte Proportionalität",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 43720,
+    "teil2": 65,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 0.28,
+    "hauptartikel": "Zweisatz",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 10298,
+    "teil2": 3,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 1.31,
+    "hauptartikel": "Zweisatz",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisatz",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 10624,
+    "teil2": 3,
+    "tokens_dienst": 429
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.31,
+    "hauptartikel": "Proportionalität",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 13
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Umgekehrte Proportionalität",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 29606,
+    "teil2": 43,
+    "tokens_dienst": 0,
+    "genannt": "Proportionalität",
+    "tokens_frage": 510,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.25,
+    "hauptartikel": "Wort (theoretische Informatik)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Wort",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wort (theoretische Informatik)",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Porto",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Anzahl",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fabrik",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 80235,
+    "teil2": 92,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Wort",
+     "Höhe",
+     "Porto",
+     "Arbeit",
+     "Anzahl",
+     "Fabrik",
+     "Mathematik"
+    ],
+    "sekunden_frage": 0.27
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.28,
+    "hauptartikel": "Proportionalität",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Proportionalität",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mathematik",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dreisatz",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Quotient",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 33706,
+    "teil2": 43,
+    "tokens_dienst": 0,
+    "labels": [
+     "Proportionalität",
+     "Direkte Proportionalität",
+     "Dreisatz",
+     "Lineare Funktion",
+     "Verhältnis (Mathematik)",
+     "Mathematik"
+    ],
+    "entitaeten": [
+     "Proportionalität",
+     "Dreisatz",
+     "Lineare Funktion",
+     "Quotient",
+     "Mathematik"
+    ],
+    "tokens_frage": 1566,
+    "sekunden_frage": 8.18
+   }
+  }
+ },
+ {
+  "node_id": "7be6051e-3e39-404a-9e87-4db77e600737",
+  "titel": "Die Weimarer Verfassung",
+  "art": "klar",
+  "begriff": "Weimarer Verfassung",
+  "akzeptiert": [
+   "Weimarer Verfassung"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 5.18,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Republik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichswahlgesetz (Weimarer Republik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimar",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichsregierung (Weimarer Republik)",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichstag (Weimarer Republik)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 124685,
+    "teil2": 256,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.5,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Republik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichswahlgesetz (Weimarer Republik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimar",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichsregierung (Weimarer Republik)",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichstag (Weimarer Republik)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 112395,
+    "teil2": 235,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 4.44,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Republik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichswahlgesetz (Weimarer Republik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimar",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichsregierung (Weimarer Republik)",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichstag (Weimarer Republik)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 112749,
+    "teil2": 235,
+    "tokens_dienst": 1349
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.26,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Republik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichswahlgesetz (Weimarer Republik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimar",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichsregierung (Weimarer Republik)",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichstag (Weimarer Republik)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 112238,
+    "teil2": 235,
+    "tokens_dienst": 0,
+    "genannt": "Weimarer Verfassung",
+    "tokens_frage": 217,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.85,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Das Erste",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Deutschland",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weltkrieg",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 43297,
+    "teil2": 26,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Weimarer Verfassung",
+     "Das Erste",
+     "Weltkrieg",
+     "Deutschland",
+     "Revolution",
+     "Regierung",
+     "Geschichte",
+     "System"
+    ],
+    "sekunden_frage": 0.38
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.11,
+    "hauptartikel": "Weimarer Verfassung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Verfassung",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weimarer Republik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Novemberrevolution",
+      "absaetze": 4
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 42337,
+    "teil2": 26,
+    "tokens_dienst": 0,
+    "labels": [
+     "Weimarer Verfassung",
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Erster Weltkrieg",
+     "Weimarer Nationalversammlung",
+     "Friedrich Ebert",
+     "Parlamentarismus",
+     "Demokratie",
+     "Deutsches Kaiserreich",
+     "Deutschland"
+    ],
+    "entitaeten": [
+     "Weimarer Verfassung",
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Erster Weltkrieg",
+     "Weimarer Nationalversammlung",
+     "Friedrich Ebert",
+     "Parlamentarismus",
+     "Demokratie",
+     "Deutsches Kaiserreich",
+     "Deutschland"
+    ],
+    "tokens_frage": 1592,
+    "sekunden_frage": 9.99
+   }
+  }
+ },
+ {
+  "node_id": "477256df-e20a-491d-9a43-24de02b0f1cc",
+  "titel": "21./22. April 1946",
+  "art": "klar",
+  "begriff": "Zwangsvereinigung von SPD und KPD",
+  "akzeptiert": [
+   "Sozialistische Einheitspartei Deutschlands",
+   "Zwangsvereinigung von SPD und KPD zur SED"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.03,
+    "hauptartikel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "DDR-Justiz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25361,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 4.9,
+    "hauptartikel": "1946",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "1946",
+      "absaetze": 15
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sowjetunion",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Besatzungszone",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 70934,
+    "teil2": 164,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 6.49,
+    "hauptartikel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 24052,
+    "teil2": 0,
+    "tokens_dienst": 1646
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.38,
+    "hauptartikel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "DDR-Justiz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25377,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Zwangsvereinigung von SPD und KPD zur SED",
+    "tokens_frage": 287,
+    "sekunden_frage": 0.15
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.59,
+    "hauptartikel": "April (Joseph Roth)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Berlin",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "April",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sowjetische Besatzungszone",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "April (Joseph Roth)",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26226,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "April",
+     "Sozialistische Einheitspartei Deutschlands",
+     "Sowjetische Besatzungszone",
+     "Berlin",
+     "Kommunistische Partei Deutschlands",
+     "Sozialdemokratische Partei Deutschlands"
+    ],
+    "sekunden_frage": 0.24
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 2.47,
+    "hauptartikel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialdemokratische Partei Deutschlands",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Berlin",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kommunistische Partei Deutschlands",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 90242,
+    "teil2": 185,
+    "tokens_dienst": 0,
+    "labels": [
+     "Sozialistische Einheitspartei Deutschlands",
+     "Kommunistische Partei Deutschlands",
+     "Sozialdemokratische Partei Deutschlands",
+     "Berlin",
+     "Sowjetische Besatzungszone",
+     "Zwangsvereinigung von SPD und KPD",
+     "Wilhelm Pieck",
+     "Otto Grotewohl",
+     "Deutsche Demokratische Republik"
+    ],
+    "entitaeten": [
+     "Sozialistische Einheitspartei Deutschlands",
+     "Kommunistische Partei Deutschlands",
+     "Sozialdemokratische Partei Deutschlands",
+     "Berlin",
+     "Sowjetische Besatzungszone",
+     "Zwangsvereinigung von SPD und KPD zur SED",
+     "Wilhelm Pieck",
+     "Otto Grotewohl",
+     "Deutsche Demokratische Republik"
+    ],
+    "tokens_frage": 1597,
+    "sekunden_frage": 9.9
+   }
+  }
+ },
+ {
+  "node_id": "03476274-616e-4678-9296-4dcce80189bf",
+  "titel": "20. - 24. Sept. 1947",
+  "art": "klar",
+  "begriff": "SED",
+  "akzeptiert": [
+   "Sozialistische Einheitspartei Deutschlands"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.18,
+    "hauptartikel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Westberlins",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wolf Biermann",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Walter Ulbricht",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Die Linke",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kommunistische Partei Deutschlands",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 153045,
+    "teil2": 298,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 5.57,
+    "hauptartikel": "Liste der Deutschen Meister im Fünfkampf (Leichtathletik)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Liste der Deutschen Meister im Fünfkampf (Leichtathletik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Leipzig",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hannover",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erfurt",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "München",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 22735,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 16.6,
+    "hauptartikel": "Kominform",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kominform",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kommunistische Partei",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zwei-Lager-Theorie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 13297,
+    "teil2": 0,
+    "tokens_dienst": 1891
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 3.26,
+    "hauptartikel": "Parteitag der SED",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Innerer Reichsparteitag",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Parteitag der SED",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Entstalinisierung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Generalsekretär",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eichsfeldplan",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nd",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kommunistische Partei der Sowjetunion",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 23621,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "II. Parteitag der SED",
+    "tokens_frage": 389,
+    "sekunden_frage": 1.12
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.33,
+    "hauptartikel": "Septime",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Marxismus",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Septime",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mehrheit",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "I",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Arbeiterbewegung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Parteitag",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 32339,
+    "teil2": 9,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Septime",
+     "Parteitag",
+     "Sozialistische Einheitspartei Deutschlands",
+     "Mehrheit",
+     "Marxismus",
+     "Arbeiterbewegung",
+     "I"
+    ],
+    "sekunden_frage": 0.21
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.75,
+    "hauptartikel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Marxismus",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sozialistische Einheitspartei Deutschlands",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sowjetische Besatzungszone",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Berlin",
+      "absaetze": 4
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 87868,
+    "teil2": 185,
+    "tokens_dienst": 0,
+    "labels": [
+     "Sozialistische Einheitspartei Deutschlands",
+     "Marxismus",
+     "Sowjetische Besatzungszone",
+     "Berlin",
+     "Kommunistische Partei Deutschlands",
+     "Sozialdemokratische Partei Deutschlands",
+     "Wilhelm Pieck",
+     "Otto Grotewohl",
+     "Landtagswahlen in der Sowjetischen Besatzungszone 1946"
+    ],
+    "entitaeten": [
+     "Sozialistische Einheitspartei Deutschlands",
+     "Marxismus",
+     "Sowjetische Besatzungszone",
+     "Berlin",
+     "Kommunistische Partei Deutschlands",
+     "Sozialdemokratische Partei Deutschlands",
+     "Wilhelm Pieck",
+     "Otto Grotewohl"
+    ],
+    "tokens_frage": 1659,
+    "sekunden_frage": 11.54
+   }
+  }
+ },
+ {
+  "node_id": "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc",
+  "titel": "23. März 2000",
+  "art": "klar",
+  "begriff": "Horst Köhler",
+  "akzeptiert": [
+   "Horst Köhler",
+   "Internationaler Währungsfonds"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.5,
+    "hauptartikel": "Horst Köhler",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst-Wessel-Lied",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst Köhler",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eva Luise und Horst Köhler Stiftung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bundeswehr",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 24056,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.25,
+    "hauptartikel": "Südafrikanische Fußballnationalmannschaft/Olympische Spiele",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Südafrika",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Südafrikanische Fußballnationalmannschaft/Olympische Spiele",
+      "absaetze": 7
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 21248,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 8.66,
+    "hauptartikel": "Frasier/Episodenliste",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Frasier/Episodenliste",
+      "absaetze": 5
+     }
+    ],
+    "bausteine": 4,
+    "zeichen": 6812,
+    "teil2": 0,
+    "tokens_dienst": 947
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.71,
+    "hauptartikel": "Horst Köhler",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst-Wessel-Lied",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst Köhler",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eva Luise und Horst Köhler Stiftung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bundeswehr",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 24057,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Horst Köhler",
+    "tokens_frage": 363,
+    "sekunden_frage": 1.77
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.23,
+    "hauptartikel": "März 2000",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "London",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "März 2000",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst Köhler",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Entwicklungsbank",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Bank für Wiederaufbau und Entwicklung",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 70658,
+    "teil2": 166,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "März 2000",
+     "Horst Köhler",
+     "Christlich Demokratische Union Deutschlands",
+     "Entwicklungsbank",
+     "Europäische Bank für Wiederaufbau und Entwicklung",
+     "London",
+     "Deutsche",
+     "Internationalen",
+     "Internationaler Währungsfonds",
+     "Washington"
+    ],
+    "sekunden_frage": 0.22
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.74,
+    "hauptartikel": "Horst Köhler",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Horst Köhler",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Internationaler Währungsfonds",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Bank für Wiederaufbau und Entwicklung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 18546,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Horst Köhler",
+     "Christlich Demokratische Union Deutschlands",
+     "Europäische Bank für Wiederaufbau und Entwicklung",
+     "Internationaler Währungsfonds",
+     "London",
+     "Washington, D.C.",
+     "Deutschland",
+     "Michel Camdessus"
+    ],
+    "entitaeten": [
+     "Horst Köhler",
+     "Christlich Demokratische Union Deutschlands",
+     "Europäische Bank für Wiederaufbau und Entwicklung",
+     "Internationaler Währungsfonds",
+     "London",
+     "Washington, D.C.",
+     "Deutschland",
+     "Michel Camdessus"
+    ],
+    "tokens_frage": 1480,
+    "sekunden_frage": 9.15
+   }
+  }
+ },
+ {
+  "node_id": "a41d9d3f-388b-4938-b3df-2f0c381b601d",
+  "titel": "Fachportal Geographie | Landesbildungsserver Baden-Württemberg",
+  "art": "unscharf",
+  "begriff": "Geographie",
+  "akzeptiert": [
+   "Geographie"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.48,
+    "hauptartikel": "Geographie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Humangeographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Physische Geographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Erdkunde",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographiedidaktik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 259996,
+    "teil2": 622,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 2.37,
+    "hauptartikel": "Großherzogtum Hessen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Großherzogtum Hessen",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Verfassung des Großherzogtums Hessen",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ständeversammlung des Großherzogtums Frankfurt",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Luxemburg",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Großherzogtum",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Revolution von 1848 im Großherzogtum Hessen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rheinhessen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Apothekenwesen in Hessen-Darmstadt",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 36026,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 11.37,
+    "hauptartikel": "Geographie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Humangeographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Physische Geographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Erdkunde",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographiedidaktik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 148034,
+    "teil2": 317,
+    "tokens_dienst": 1712
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.45,
+    "hauptartikel": "Geographie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Humangeographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Physische Geographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Erdkunde",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographiedidaktik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 147561,
+    "teil2": 317,
+    "tokens_dienst": 0,
+    "genannt": "Geographie",
+    "tokens_frage": 269,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.27,
+    "hauptartikel": "Geographie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 13
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 139414,
+    "teil2": 317,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Geographie",
+     "Landesbildungsserver Baden-Württemberg",
+     "Erdkundeunterricht"
+    ],
+    "sekunden_frage": 0.04
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.86,
+    "hauptartikel": "Geographie",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zweisprachiger Unterricht",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Nachhaltigkeit",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Baden-Württemberg",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Klimawandel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Medien",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 148887,
+    "teil2": 317,
+    "tokens_dienst": 0,
+    "labels": [
+     "Geographie",
+     "Baden-Württemberg",
+     "Geographieunterricht",
+     "Klimawandel",
+     "Nachhaltigkeit",
+     "Bilingualer Unterricht",
+     "Digitale Medien",
+     "Kompetenz (Pädagogik)"
+    ],
+    "entitaeten": [
+     "Geographie",
+     "Baden-Württemberg",
+     "Erdkundeunterricht",
+     "Klimawandel",
+     "Nachhaltigkeit",
+     "Zweisprachiger Unterricht",
+     "Digitale Medien",
+     "Kompetenz (Pädagogik)"
+    ],
+    "tokens_frage": 1472,
+    "sekunden_frage": 7.82
+   }
+  }
+ },
+ {
+  "node_id": "9ba086a0-7f3a-4445-8167-fe9959598525",
+  "titel": "Erdbeben, Vulkanismus, Plattentektonik (Schule) ] memucho",
+  "art": "klar",
+  "begriff": "Plattentektonik",
+  "akzeptiert": [
+   "Erdbeben",
+   "Plattentektonik",
+   "Vulkanismus"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.75,
+    "hauptartikel": "Plattentektonik",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Plattentektonik",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kontinentaldrift",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Plattentektonik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 5,
+    "zeichen": 29729,
+    "teil2": 33,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.41,
+    "hauptartikel": "Plattentektonik",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Plattentektonik",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kontinentaldrift",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Plattentektonik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 5,
+    "zeichen": 27924,
+    "teil2": 30,
+    "tokens_dienst": 0,
+    "genannt": "Plattentektonik",
+    "tokens_frage": 240,
+    "sekunden_frage": 0.42
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.16,
+    "hauptartikel": "Erdbeben",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Schule",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdkruste",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdbeben",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Vulkan",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Planet",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 31546,
+    "teil2": 18,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Erdbeben",
+     "Vulkanismus",
+     "Plattentektonik",
+     "Schule",
+     "Vulkan",
+     "Erdkruste",
+     "Planet"
+    ],
+    "sekunden_frage": 0.11
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.51,
+    "hauptartikel": "Erdbeben",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdkern",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdbeben",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Magma",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdmantel",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Seismologie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 30515,
+    "teil2": 18,
+    "tokens_dienst": 0,
+    "labels": [
+     "Erdbeben",
+     "Vulkanismus",
+     "Plattentektonik",
+     "Erdkruste",
+     "Aufbau der Erde",
+     "Lithosphärenplatte",
+     "Magma",
+     "Erdmantel",
+     "Erdkern",
+     "Seismologie"
+    ],
+    "entitaeten": [
+     "Erdbeben",
+     "Vulkanismus",
+     "Plattentektonik",
+     "Erdkruste",
+     "Lithosphärenplatte",
+     "Magma",
+     "Erdmantel",
+     "Erdkern",
+     "Seismologie"
+    ],
+    "tokens_frage": 1636,
+    "sekunden_frage": 9.83
+   }
+  }
+ },
+ {
+  "node_id": "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9",
+  "titel": "Digitales Lernen an außerschulischen Lernorten",
+  "art": "unscharf",
+  "begriff": "Außerschulischer Lernort",
+  "akzeptiert": [
+   "Außerschulischer Lernort"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.59,
+    "hauptartikel": "Außerschulischer Lernort",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Außerschulischer Lernort Wilhelmshaven",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Außerschulischer Lernort",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Filmbildung (Bildungswesen)",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungslandschaft",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 39726,
+    "teil2": 25,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.13,
+    "hauptartikel": "Lernwerkstatt",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Lernwerkstatt",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Jüdische Anlernwerkstatt Frankfurt",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sachunterricht",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 18150,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 3.31,
+    "hauptartikel": "Actionbound",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Actionbound",
+      "absaetze": 16
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 15875,
+    "teil2": 0,
+    "tokens_dienst": 523
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.1,
+    "hauptartikel": "Geographie",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographie",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Humangeographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Physische Geographie",
+      "absaetze": 4
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Erdkunde",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geographiedidaktik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 147414,
+    "teil2": 317,
+    "tokens_dienst": 0,
+    "genannt": "Geographie",
+    "tokens_frage": 495,
+    "sekunden_frage": 1.56
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.66,
+    "hauptartikel": "Lernen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Actionbound",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eichstätt",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fauna",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lernen",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Altmühlsee",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Stadtgeographie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Webseite",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 92375,
+    "teil2": 404,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Lernen",
+     "Actionbound",
+     "Eichstätt",
+     "Altmühlsee",
+     "Webseite",
+     "Ernährung",
+     "Fauna",
+     "Stadtgeographie",
+     "Geomorphologie",
+     "Ingolstadt"
+    ],
+    "sekunden_frage": 0.25
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.88,
+    "hauptartikel": "Actionbound",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Actionbound",
+      "absaetze": 13
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "E-Learning",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eichstätt",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Exkursion",
+      "absaetze": 5
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 30230,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Actionbound",
+     "E-Learning",
+     "Exkursion",
+     "Eichstätt",
+     "Ingolstadt",
+     "Altmühlsee",
+     "Neuburg an der Donau",
+     "Stadtgeographie",
+     "Geomorphologie",
+     "Fauna"
+    ],
+    "entitaeten": [
+     "Actionbound",
+     "E-Learning",
+     "Exkursion",
+     "Eichstätt",
+     "Ingolstadt",
+     "Altmühlsee",
+     "Neuburg an der Donau",
+     "Stadtgeographie",
+     "Geomorphologie",
+     "Fauna"
+    ],
+    "tokens_frage": 1899,
+    "sekunden_frage": 13.44
+   }
+  }
+ },
+ {
+  "node_id": "f19f7f52-eeb2-4345-9b4e-559e486fa2e2",
+  "titel": "Landkarte Katar; GinkgoMaps Landkarten Sammlung Kontinent: Asien; Region: Katar",
+  "art": "klar",
+  "begriff": "Katar",
+  "akzeptiert": [
+   "Katar"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 4.2,
+    "hauptartikel": "Katar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar (Dolch)",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Streitkräfte Katars",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdgas",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Al-Bayt-Stadion",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Katar",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 27217,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.77,
+    "hauptartikel": "Katar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar (Dolch)",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Streitkräfte Katars",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erdgas",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Al-Bayt-Stadion",
+      "absaetze": 2
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Katar",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 27434,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Katar",
+    "tokens_frage": 292,
+    "sekunden_frage": 0.78
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.59,
+    "hauptartikel": "Katar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kontinent",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Asien",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsgebiet",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 28477,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Katar",
+     "Kontinent",
+     "Asien",
+     "Region",
+     "Staatsgebiet",
+     "Politische Grenze",
+     "Hauptstadt"
+    ],
+    "sekunden_frage": 0.14
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.6,
+    "hauptartikel": "Katar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Karte (Kartografie)",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Doha",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Asien",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Politische Geographie",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Katar",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kartografie",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 29830,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Katar",
+     "Doha",
+     "Asien",
+     "Karte (Kartografie)",
+     "Kartografie",
+     "Lambert-Projektion",
+     "Politische Geographie",
+     "Staatsgrenze",
+     "Atlas"
+    ],
+    "entitaeten": [
+     "Katar",
+     "Doha",
+     "Asien",
+     "Karte (Kartografie)",
+     "Kartografie",
+     "Politische Geographie",
+     "Politische Grenze"
+    ],
+    "tokens_frage": 1378,
+    "sekunden_frage": 6.16
+   }
+  }
+ },
+ {
+  "node_id": "bdc8e683-99c0-4f0a-9519-98eef818f610",
+  "titel": "Ehrgeizige Ziele beim 3. Petersberger Klimadialog",
+  "art": "klar",
+  "begriff": "Petersberger Klimadialog",
+  "akzeptiert": [
+   "Klimapolitik",
+   "Petersberger Klimadialog",
+   "UN-Klimakonferenz"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.16,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "UN-Klimakonferenz in Dubai 2023",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 19717,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 0.33,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "UN-Klimakonferenz in Dubai 2023",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 19909,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 2.4,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "UN-Klimakonferenz in Dubai 2023",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 20251,
+    "teil2": 0,
+    "tokens_dienst": 490
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.33,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "UN-Klimakonferenz in Dubai 2023",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 19772,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Petersberger Klimadialog",
+    "tokens_frage": 253,
+    "sekunden_frage": 0.4
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.87,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Berlin",
+      "absaetze": 14
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "UN-Klimakonferenz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Frage",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 26707,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Petersberger Klimadialog",
+     "UN-Klimakonferenz",
+     "Frage",
+     "Juli 2012",
+     "Minister",
+     "Liste der Staaten der Erde",
+     "Berlin",
+     "Katar"
+    ],
+    "sekunden_frage": 0.38
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.07,
+    "hauptartikel": "Petersberger Klimadialog",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Doha",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Klimawandel",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kyoto-Protokoll",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Petersberger Klimadialog",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Berlin",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 27998,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Petersberger Klimadialog",
+     "Klimawandel",
+     "Rahmenübereinkommen der Vereinten Nationen über Klimaänderungen",
+     "Kyoto-Protokoll",
+     "UN-Klimakonferenz in Doha 2012",
+     "Doha",
+     "Berlin",
+     "Katar",
+     "Klimapolitik"
+    ],
+    "entitaeten": [
+     "Petersberger Klimadialog",
+     "Klimawandel",
+     "Rahmenübereinkommen der Vereinten Nationen über Klimaänderungen",
+     "Kyoto-Protokoll",
+     "UN-Klimakonferenz in Doha 2012",
+     "Doha",
+     "Berlin",
+     "Katar",
+     "Klimapolitik"
+    ],
+    "tokens_frage": 1593,
+    "sekunden_frage": 9.82
+   }
+  }
+ },
+ {
+  "node_id": "87704813-c34a-4771-a577-c0c8008cb772",
+  "titel": "Kann sich Frankreich von der Krise erholen?",
+  "art": "klar",
+  "begriff": "Wirtschaft Frankreichs",
+  "akzeptiert": [
+   "Frankreich",
+   "Wirtschaft Frankreichs"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 5.26,
+    "hauptartikel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Gelenkte Volkswirtschaft",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft Frankreichs",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft Albaniens",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Tierproduktion",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ruralisierung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weinbau in Frankreich",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 27480,
+    "teil2": 2,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 4.59,
+    "hauptartikel": "Argentinien-Krise",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Argentinien-Krise",
+      "absaetze": 13
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaftskrise",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Argentinien",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 43338,
+    "teil2": 57,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 9.28,
+    "hauptartikel": "Staatsfinanzen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsfinanzen",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Finanzen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsverschuldung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Finanzierung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 16234,
+    "teil2": 0,
+    "tokens_dienst": 1378
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.28,
+    "hauptartikel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Gelenkte Volkswirtschaft",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft Frankreichs",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft Albaniens",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Tierproduktion",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ruralisierung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weinbau in Frankreich",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 26508,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Wirtschaft Frankreichs",
+    "tokens_frage": 224,
+    "sekunden_frage": 0.2
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 3.0,
+    "hauptartikel": "Frankreich",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Frankreich",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Krise",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Emmanuel Macron",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungssystem",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurozone",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 31476,
+    "teil2": 24,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Frankreich",
+     "Krise",
+     "Arbeitskosten",
+     "Bildungssystem",
+     "Volkswirtschaft",
+     "Eurozone",
+     "Staatspräsident",
+     "Emmanuel Macron"
+    ],
+    "sekunden_frage": 0.36
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.82,
+    "hauptartikel": "Frankreich",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Frankreich",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft Frankreichs",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungssystem",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Emmanuel Macron",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Haushaltssaldo",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 31688,
+    "teil2": 24,
+    "tokens_dienst": 0,
+    "labels": [
+     "Frankreich",
+     "Emmanuel Macron",
+     "Wirtschaft Frankreichs",
+     "Eurozone",
+     "Arbeitskosten",
+     "Bildungssystem",
+     "Haushaltsdefizit",
+     "Wirtschaftsreform"
+    ],
+    "entitaeten": [
+     "Frankreich",
+     "Emmanuel Macron",
+     "Wirtschaft Frankreichs",
+     "Eurozone",
+     "Arbeitskosten",
+     "Bildungssystem",
+     "Haushaltssaldo"
+    ],
+    "tokens_frage": 1409,
+    "sekunden_frage": 8.02
+   }
+  }
+ },
+ {
+  "node_id": "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5",
+  "titel": "Die Politik muss es nur wollen",
+  "art": "klar",
+  "begriff": "Staatsverschuldung",
+  "akzeptiert": [
+   "Eurokrise",
+   "Staatsverschuldung",
+   "Vermögensteuer"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.16,
+    "hauptartikel": "Staatsverschuldung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsverschuldung",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsverschuldung Deutschlands",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Verdeckte Staatsverschuldung",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Staat",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 27888,
+    "teil2": 7,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 3.48,
+    "hauptartikel": "Was gesagt werden muss",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Was gesagt werden muss",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Journalist",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Gerechtigkeit",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Israel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Waffen-SS",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Politiker",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Holocaust",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Iran",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Günter Grass",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 29730,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 9.51,
+    "hauptartikel": "Was gesagt werden muss",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Was gesagt werden muss",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Journalist",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Gerechtigkeit",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Israel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Waffen-SS",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Politiker",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Holocaust",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Iran",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Günter Grass",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 28982,
+    "teil2": 0,
+    "tokens_dienst": 1895
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 2.95,
+    "hauptartikel": "Eurokrise",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurokrise",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geschichte der Europäischen Union",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Portugal",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 151127,
+    "teil2": 408,
+    "tokens_dienst": 0,
+    "genannt": "Eurokrise",
+    "tokens_frage": 593,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.63,
+    "hauptartikel": "Politik",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Schulden",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europa",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Politik",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Susanne",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geldvermögen",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaftswissenschaftler",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Problem",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 325769,
+    "teil2": 894,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Politik",
+     "Schulden",
+     "Europa",
+     "Susanne",
+     "Geldvermögen",
+     "Problem",
+     "Wirtschaftswissenschaftler"
+    ],
+    "sekunden_frage": 0.29
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.01,
+    "hauptartikel": "Staatsverschuldung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Staatsverschuldung",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Vermögensverteilung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurokrise",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Weltfinanzkrise 2007–2008",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 21894,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "labels": [
+     "Susanne Reiner",
+     "Staatsverschuldung",
+     "Eurokrise",
+     "Vermögensteuer",
+     "Vermögensverteilung",
+     "Bankenrettung",
+     "Finanzkrise ab 2007",
+     "Europa"
+    ],
+    "entitaeten": [
+     "Staatsverschuldung",
+     "Eurokrise",
+     "Vermögensteuer",
+     "Vermögensverteilung",
+     "Weltfinanzkrise 2007–2008",
+     "Europa"
+    ],
+    "tokens_frage": 1612,
+    "sekunden_frage": 10.24
+   }
+  }
+ },
+ {
+  "node_id": "f3caa6d3-4750-4fc8-b073-8c8eccf62b40",
+  "titel": "Es ist nicht die Zeit für einen Magier, sondern für handlungsfähige Akteure | bpb",
+  "art": "unscharf",
+  "begriff": "Eurozone",
+  "akzeptiert": [
+   "Europäische Wirtschafts- und Währungsunion",
+   "Eurozone"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 7.9,
+    "hauptartikel": "Eurozone",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurokrise",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurozone",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Euro",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Dänemark",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 556393,
+    "teil2": 1388,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.02
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 4.39,
+    "hauptartikel": "Europäische Wirtschafts- und Währungsunion",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Zentralbank",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Kommission",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Wirtschafts- und Währungsunion",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Euro",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Wirtschaftsregierung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Währungsunion",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 118745,
+    "teil2": 232,
+    "tokens_dienst": 0,
+    "genannt": "Europäische Wirtschafts- und Währungsunion",
+    "tokens_frage": 687,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.44,
+    "hauptartikel": "Zeit",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Zeit",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Michael Hüther",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaftswissenschaftler",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 205570,
+    "teil2": 550,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Zeit",
+     "Projektionsfläche",
+     "Wirtschaftswissenschaftler",
+     "Michael Hüther"
+    ],
+    "sekunden_frage": 0.14
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.49,
+    "hauptartikel": "Eurozone",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Union",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Eurozone",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Europäische Kommission",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Michael Hüther",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Emmanuel Macron",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Stabilitäts- und Wachstumspakt",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 139971,
+    "teil2": 352,
+    "tokens_dienst": 0,
+    "labels": [
+     "Eurozone",
+     "Finanzminister",
+     "Stabilitäts- und Wachstumspakt",
+     "Europäische Union",
+     "Transferunion",
+     "Michael Hüther",
+     "Emmanuel Macron",
+     "Europäische Kommission",
+     "Infrastruktur",
+     "Digitale Infrastruktur"
+    ],
+    "entitaeten": [
+     "Eurozone",
+     "Finanzministerium",
+     "Stabilitäts- und Wachstumspakt",
+     "Europäische Union",
+     "Transferunion",
+     "Michael Hüther",
+     "Emmanuel Macron",
+     "Europäische Kommission",
+     "Infrastruktur",
+     "Digitale Infrastruktur"
+    ],
+    "tokens_frage": 1576,
+    "sekunden_frage": 11.5
+   }
+  }
+ },
+ {
+  "node_id": "c4d8c077-ea98-486d-98c0-77ea98886df9",
+  "titel": "Hörspielfabrik",
+  "art": "klar",
+  "begriff": "Hörspiel",
+  "akzeptiert": [
+   "Hörspiel"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.53,
+    "hauptartikel": "Hörspiel",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspiel",
+      "absaetze": 11
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Hörspiel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "ARD-Hörspieltage",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Livehörspiel",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Liste von Hörspielpreisen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspielpreis der Kriegsblinden",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 119775,
+    "teil2": 194,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.57,
+    "hauptartikel": "Hörspiel",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspiel",
+      "absaetze": 11
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Hörspiel",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "ARD-Hörspieltage",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Livehörspiel",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Liste von Hörspielpreisen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspielpreis der Kriegsblinden",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 28922,
+    "teil2": 8,
+    "tokens_dienst": 0,
+    "genannt": "Hörspiel",
+    "tokens_frage": 231,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.3,
+    "hauptartikel": "Hörspiel",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspiel",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Audacity",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schüler",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Frage",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 25557,
+    "teil2": 8,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Hörspiel",
+     "Schüler",
+     "Frage",
+     "Arbeit",
+     "Text",
+     "Audacity"
+    ],
+    "sekunden_frage": 0.18
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.41,
+    "hauptartikel": "Hörspiel",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörspiel",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Medienpädagogik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Audacity",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Tongestaltung",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 27878,
+    "teil2": 8,
+    "tokens_dienst": 0,
+    "labels": [
+     "Hörspiel",
+     "Audacity",
+     "Tonaufnahme",
+     "Sounddesign",
+     "Foley (Filmtechnik)",
+     "Medienpädagogik"
+    ],
+    "entitaeten": [
+     "Hörspiel",
+     "Audacity",
+     "Tonaufnahme",
+     "Tongestaltung",
+     "Medienpädagogik"
+    ],
+    "tokens_frage": 1383,
+    "sekunden_frage": 8.53
+   }
+  }
+ },
+ {
+  "node_id": "f61cd77c-9a90-41a1-9cd7-7c9a9081a108",
+  "titel": "Arbeitsheft \"Kosmos YouTube\"",
+  "art": "klar",
+  "begriff": "YouTube",
+  "akzeptiert": [
+   "YouTube"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.45,
+    "hauptartikel": "YouTube",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTuber",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Music",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube-Partnerprogramm",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Vanced",
+      "absaetze": 3
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "YouTube",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube TV",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube (YouTube-Kanal)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 30713,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 3.33,
+    "hauptartikel": "Funk (Medienangebot)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Öffentlich-rechtlicher Rundfunk",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Funk (Medienangebot)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Funk",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Südwestrundfunk",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Funk (Medienangebot)/Formate",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rundfunkbeitrag",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rundfunkstaatsvertrag",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Walulis (Websendungen)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 191763,
+    "teil2": 440,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 2.57,
+    "hauptartikel": "YouTube",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTuber",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Music",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube-Partnerprogramm",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Vanced",
+      "absaetze": 3
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "YouTube",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube TV",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube (YouTube-Kanal)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 31294,
+    "teil2": 0,
+    "tokens_dienst": 388
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.72,
+    "hauptartikel": "YouTube",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTuber",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Music",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube-Partnerprogramm",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube Vanced",
+      "absaetze": 3
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "YouTube",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube TV",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube (YouTube-Kanal)",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 30847,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "YouTube",
+    "tokens_frage": 453,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.74,
+    "hauptartikel": "YouTube",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTuber",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lernvideo",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Aspekte",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lehrer",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Berufsbild",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 26390,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "YouTube",
+     "YouTuber",
+     "Lernvideo",
+     "Weltall",
+     "Lehrer",
+     "Schüler",
+     "Aspekte",
+     "Berufsbild",
+     "Kanal",
+     "Ich will"
+    ],
+    "sekunden_frage": 0.47
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.66,
+    "hauptartikel": "YouTube",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTube",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "YouTuber",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erklärvideo",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Filmproduktion",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Influencer-Marketing",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Medienpädagogik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 29657,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "YouTube",
+     "Medienkompetenz",
+     "Medienpädagogik",
+     "YouTuber",
+     "Influencer-Marketing",
+     "Erklärvideo",
+     "Filmproduktion",
+     "YouTube-Kanal",
+     "Praktischer Scherz"
+    ],
+    "entitaeten": [
+     "YouTube",
+     "Medienkompetenz",
+     "Medienpädagogik",
+     "YouTuber",
+     "Influencer-Marketing",
+     "Erklärvideo",
+     "Filmproduktion",
+     "YouTube-Kanal"
+    ],
+    "tokens_frage": 1802,
+    "sekunden_frage": 11.21
+   }
+  }
+ },
+ {
+  "node_id": "aad2eddf-63e7-4a83-92ed-df63e7ba8389",
+  "titel": "Scratch - Gruppenpuzzle (Der Einstieg in kreative Programmierprojekte)",
+  "art": "klar",
+  "begriff": "Scratch",
+  "akzeptiert": [
+   "Scratch (Programmiersprache)"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.76,
+    "hauptartikel": "Scratch (Bahnradsport)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Bahnradsport)",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bahnradsport-Weltmeisterschaften",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bahnradsport",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 22858,
+    "teil2": 4,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.03
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 2.02,
+    "hauptartikel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratchen",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Programmiersprache)",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungsorientierte Programmiersprache",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Visuelle Programmiersprache",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24785,
+    "teil2": 4,
+    "tokens_dienst": 0,
+    "genannt": "Scratch (Programmiersprache)",
+    "tokens_frage": 267,
+    "sekunden_frage": 0.22
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 2.64,
+    "hauptartikel": "Intro",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Intro",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Musik",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Gestaltung",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Spiel",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Programmierung",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 26776,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Intro",
+     "Programmierung",
+     "Gestaltung",
+     "Musik",
+     "Verbot der Vertretung widerstreitender Interessen",
+     "Spiel"
+    ],
+    "sekunden_frage": 0.25
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.54,
+    "hauptartikel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Sensor",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informatik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Programmiersprache)",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Breakout (Computerspiel)",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Programmierung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 23499,
+    "teil2": 4,
+    "tokens_dienst": 0,
+    "labels": [
+     "Scratch (Programmiersprache)",
+     "Programmierung",
+     "Informatik",
+     "Variable (Informatik)",
+     "Breakout (Computerspiel)",
+     "Kollaboratives Lernen",
+     "Sensor",
+     "MIT Media Lab"
+    ],
+    "entitaeten": [
+     "Scratch (Programmiersprache)",
+     "Programmierung",
+     "Informatik",
+     "Breakout (Computerspiel)",
+     "Sensor",
+     "MIT Media Lab"
+    ],
+    "tokens_frage": 1560,
+    "sekunden_frage": 10.87
+   }
+  }
+ },
+ {
+  "node_id": "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932",
+  "titel": "Scratch Projektideen",
+  "art": "klar",
+  "begriff": "Scratch",
+  "akzeptiert": [
+   "Scratch (Programmiersprache)"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 0.62,
+    "hauptartikel": "Scratch (Bahnradsport)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Bahnradsport)",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bahnradsport-Weltmeisterschaften",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bahnradsport",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 22858,
+    "teil2": 4,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.64,
+    "hauptartikel": "Calliope mini",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Calliope mini",
+      "absaetze": 9
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 17470,
+    "teil2": 15,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 3.74,
+    "hauptartikel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratchen",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Programmiersprache)",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungsorientierte Programmiersprache",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Visuelle Programmiersprache",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 25178,
+    "teil2": 4,
+    "tokens_dienst": 501
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.45,
+    "hauptartikel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratchen",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Programmiersprache)",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungsorientierte Programmiersprache",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Visuelle Programmiersprache",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24785,
+    "teil2": 4,
+    "tokens_dienst": 0,
+    "genannt": "Scratch (Programmiersprache)",
+    "tokens_frage": 334,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.17,
+    "hauptartikel": "Broschüre",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kindheit",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informatik",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Technik",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sport",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Broschüre",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Musik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 29759,
+    "teil2": 6,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Broschüre",
+     "Integrierte Entwicklungsumgebung",
+     "Kind",
+     "Jugend",
+     "Medien",
+     "Informatik",
+     "Technik",
+     "Natur und Technik",
+     "Musik",
+     "Sport"
+    ],
+    "sekunden_frage": 0.35
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.48,
+    "hauptartikel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Scratch (Programmiersprache)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Projektunterricht",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Massachusetts Institute of Technology",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informatikunterricht",
+      "absaetze": 5
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 28087,
+    "teil2": 4,
+    "tokens_dienst": 0,
+    "labels": [
+     "Scratch (Programmiersprache)",
+     "Massachusetts Institute of Technology",
+     "MIT Media Lab",
+     "Pädagogische Hochschule Schwyz",
+     "Visuelle Programmiersprache",
+     "Informatikunterricht",
+     "Informatisches Denken",
+     "Projektunterricht"
+    ],
+    "entitaeten": [
+     "Scratch (Programmiersprache)",
+     "Massachusetts Institute of Technology",
+     "MIT Media Lab",
+     "Pädagogische Hochschule Schwyz",
+     "Visuelle Programmiersprache",
+     "Informatikunterricht",
+     "Projektunterricht"
+    ],
+    "tokens_frage": 1706,
+    "sekunden_frage": 10.48
+   }
+  }
+ },
+ {
+  "node_id": "1c748a03-1563-4524-911a-075e225902d4",
+  "titel": "digitale Medien im Deutschunterricht",
+  "art": "unscharf",
+  "begriff": "Digitale Medien",
+  "akzeptiert": [
+   "Deutschunterricht",
+   "Digitale Medien"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.53,
+    "hauptartikel": "Digitale Medien",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitalisierung",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Revolution",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "High Definition Television",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Medien",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitalrechner",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Computer",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Daten",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Neue Medien",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Mooresches Gesetz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 13,
+    "zeichen": 265723,
+    "teil2": 612,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 2.08,
+    "hauptartikel": "Deutschunterricht",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Deutschunterricht",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Muttersprachlicher Deutschunterricht im nicht-deutschsprachigen Raum",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Generative Textproduktion",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 23682,
+    "teil2": 10,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 4.37,
+    "hauptartikel": "Deutschunterricht",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Deutschunterricht",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Muttersprachlicher Deutschunterricht im nicht-deutschsprachigen Raum",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Generative Textproduktion",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 24034,
+    "teil2": 10,
+    "tokens_dienst": 1248
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 1.46,
+    "hauptartikel": "Mediendidaktik",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Mediendidaktik",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unterrichtsmedium",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Didaktik",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Medienerziehung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 26320,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Mediendidaktik",
+    "tokens_frage": 680,
+    "sekunden_frage": 0.13
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.94,
+    "hauptartikel": "Deutschunterricht",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "S",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unterricht",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kommunikation",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Deutschunterricht",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schreiben",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Abitur",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 30458,
+    "teil2": 6,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Deutschunterricht",
+     "Medien",
+     "S",
+     "Schreiben",
+     "Unterricht",
+     "Kommunikation",
+     "Text",
+     "Bieler",
+     "Abitur",
+     "Deutsche Sprache"
+    ],
+    "sekunden_frage": 0.99
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.59,
+    "hauptartikel": "Digitale Medien",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Digital Native",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Blog",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Medienpädagogik",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kreativität",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Medien",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Zentrale für Unterrichtsmedien im Internet",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schreibprozess",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 93638,
+    "teil2": 257,
+    "tokens_dienst": 0,
+    "labels": [
+     "Digitale Medien",
+     "Medienpädagogik",
+     "Kollaboratives Lernen",
+     "Freie Bildungsressourcen",
+     "Blog",
+     "Digital Native",
+     "Schreibprozess",
+     "Kreativität",
+     "Kritisches Denken",
+     "Zentrale für Unterrichtsmedien im Internet"
+    ],
+    "entitaeten": [
+     "Digitale Medien",
+     "Medienpädagogik",
+     "Blog",
+     "Digital Native",
+     "Schreibprozess",
+     "Kreativität",
+     "Kritisches Denken",
+     "Zentrale für Unterrichtsmedien im Internet"
+    ],
+    "tokens_frage": 1926,
+    "sekunden_frage": 10.66
+   }
+  }
+ },
+ {
+  "node_id": "803ebb4d-aa53-4107-922a-85d86bbcd304",
+  "titel": "Lernen mit dem Fidget Spinner",
+  "art": "klar",
+  "begriff": "Fidget Spinner",
+  "akzeptiert": [
+   "Fidget Spinner"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 0.98,
+    "hauptartikel": "Fidget Spinner",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Spinner",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Cube",
+      "absaetze": 4
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 15098,
+    "teil2": 1,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.16,
+    "hauptartikel": "Fidget Spinner",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Spinner",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Cube",
+      "absaetze": 4
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 13340,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Fidget Spinner",
+    "tokens_frage": 275,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.71,
+    "hauptartikel": "Lernen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Lernen",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Spinner",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Sonstiges",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Abitur",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 8,
+    "zeichen": 169130,
+    "teil2": 466,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Lernen",
+     "Fidget Spinner",
+     "Deutsche Sprache",
+     "Abitur",
+     "Sonstiges"
+    ],
+    "sekunden_frage": 0.06
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.04,
+    "hauptartikel": "Fidget Spinner",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Fidget Spinner",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Arbeitsblatt",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Didaktik",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Lernen",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Abitur",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 18875,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Fidget Spinner",
+     "Lernen",
+     "Bildung",
+     "Aufmerksamkeit",
+     "Konzentration",
+     "Didaktik",
+     "Arbeitsblatt",
+     "Abitur"
+    ],
+    "entitaeten": [
+     "Fidget Spinner",
+     "Lernen",
+     "Bildung",
+     "Aufmerksamkeit",
+     "Didaktik",
+     "Arbeitsblatt",
+     "Abitur"
+    ],
+    "tokens_frage": 1378,
+    "sekunden_frage": 8.73
+   }
+  }
+ },
+ {
+  "node_id": "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de",
+  "titel": "Rasmus und der Lanstreicher",
+  "art": "klar",
+  "begriff": "Rasmus und der Landstreicher",
+  "akzeptiert": [
+   "Astrid Lindgren",
+   "Rasmus und der Landstreicher"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.67,
+    "hauptartikel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Landstreicher",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Vagabund (1955)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus, Pontus und der Schwertschlucker",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Vagabund (1981)",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 21840,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.01
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.31,
+    "hauptartikel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Landstreicher",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Vagabund (1955)",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus, Pontus und der Schwertschlucker",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Vagabund (1981)",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 21858,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Rasmus und der Landstreicher",
+    "tokens_frage": 288,
+    "sekunden_frage": 0.05
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.0,
+    "hauptartikel": "Webbrowser",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Webbrowser",
+      "absaetze": 13
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Inhalt",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Ihren",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 20895,
+    "teil2": 2,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Webbrowser",
+     "Rasmus",
+     "Ihren",
+     "Inhalt"
+    ],
+    "sekunden_frage": 0.2
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.89,
+    "hauptartikel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Kinder- und Jugendliteratur",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Schweden",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rasmus und der Landstreicher",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Astrid Lindgren",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 10,
+    "zeichen": 28380,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Rasmus und der Landstreicher",
+     "Astrid Lindgren",
+     "Kinder- und Jugendliteratur",
+     "Schweden",
+     "Olle Hellbom"
+    ],
+    "entitaeten": [
+     "Rasmus und der Landstreicher",
+     "Astrid Lindgren",
+     "Kinder- und Jugendliteratur",
+     "Schweden",
+     "Olle Hellbom"
+    ],
+    "tokens_frage": 1423,
+    "sekunden_frage": 8.58
+   }
+  }
+ },
+ {
+  "node_id": "f8451c14-12cc-465f-8aac-ad9e2a2851f1",
+  "titel": "Kompetenz 1",
+  "art": "keins",
+  "begriff": null,
+  "akzeptiert": [],
+  "wege": {
+   "B": {
+    "status": "kein Begriff"
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 3.65,
+    "hauptartikel": "Digitale Kompetenz",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitalisierung",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Kompetenzen für das Lehramt in den Naturwissenschaften",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digital Lifestyle",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "MBook-Projekt",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digital-vernetzte Wissensgesellschaft",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Kompetenz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Historische Digital Literacy",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informationskompetenz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 13,
+    "zeichen": 36941,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 7.11,
+    "hauptartikel": "Kompetenz (Pädagogik)",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Medienkompetenz",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kompetenz (Pädagogik)",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Soziale Kompetenz",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wissen",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Methodenkompetenz",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Fachkompetenz",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Handlungskompetenz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildungsbenachteiligung in der Bundesrepublik Deutschland",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 142977,
+    "teil2": 356,
+    "tokens_dienst": 1376
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.53,
+    "hauptartikel": "Digitale Kompetenz",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitalisierung",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Kompetenzen für das Lehramt in den Naturwissenschaften",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digital Lifestyle",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "MBook-Projekt",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digital-vernetzte Wissensgesellschaft",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Digitale Kompetenz",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Historische Digital Literacy",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informationskompetenz",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 13,
+    "zeichen": 36853,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "genannt": "Digitale Kompetenz",
+    "tokens_frage": 664,
+    "sekunden_frage": 0.19
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 0.76,
+    "hauptartikel": "Schulform",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Deutsche Sprache",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Liste",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bildung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Inhalt",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Welt",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Emma Ihrer",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Name",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 22142,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Schulform",
+     "Emma Ihrer",
+     "Bieler",
+     "Deutsche Sprache",
+     "Inhalt",
+     "Name",
+     "Bildung",
+     "Welt",
+     "Liste",
+     "Entwicklung"
+    ],
+    "sekunden_frage": 0.88
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.72,
+    "hauptartikel": "Kultusministerkonferenz",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Unterricht",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Suchmaschine",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Kultusministerkonferenz",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Informationskompetenz",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unterrichtsplanung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 32150,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Kultusministerkonferenz",
+     "Informationskompetenz",
+     "Medienkompetenz",
+     "Digitale Kompetenz",
+     "Suchmaschine",
+     "Digitale Medien",
+     "Bildung",
+     "Unterricht",
+     "Unterrichtsplanung"
+    ],
+    "entitaeten": [
+     "Kultusministerkonferenz",
+     "Informationskompetenz",
+     "Medienkompetenz",
+     "Digitale Kompetenz",
+     "Suchmaschine",
+     "Digitale Medien",
+     "Bildung",
+     "Unterricht",
+     "Unterrichtsplanung"
+    ],
+    "tokens_frage": 1937,
+    "sekunden_frage": 12.62
+   }
+  }
+ },
+ {
+  "node_id": "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168",
+  "titel": "Die 5 häufigsten Fehler bei Unternehmensgründungen",
+  "art": "klar",
+  "begriff": "Unternehmensgründung",
+  "akzeptiert": [
+   "Existenzgründung",
+   "Unternehmensgründung"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 1.75,
+    "hauptartikel": "Unternehmensgründung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmensgründung",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Risiken einer Unternehmensgründung",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmertum",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 35106,
+    "teil2": 24,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 0.54,
+    "hauptartikel": "Unternehmensgründung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmensgründung",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Risiken einer Unternehmensgründung",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmertum",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 34176,
+    "teil2": 20,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 3.46,
+    "hauptartikel": "Risiken einer Unternehmensgründung",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Risiken einer Unternehmensgründung",
+      "absaetze": 11
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wettbewerbsmatrix",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Szenariotechnik",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 82954,
+    "teil2": 112,
+    "tokens_dienst": 495
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.42,
+    "hauptartikel": "Unternehmensgründung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmensgründung",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Risiken einer Unternehmensgründung",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmertum",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 34018,
+    "teil2": 20,
+    "tokens_dienst": 0,
+    "genannt": "Unternehmensgründung",
+    "tokens_frage": 678,
+    "sekunden_frage": 0.15
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.66,
+    "hauptartikel": "Immobilie",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Fehler",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geld",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Amazon",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaft",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Immobilie",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Buch",
+      "absaetze": 3
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 35132,
+    "teil2": 8,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Immobilie",
+     "Wirtschaft",
+     "Fehler",
+     "Buch",
+     "Achim Zimmermann",
+     "Geld",
+     "Amazon",
+     "Darmstadt",
+     "Hörbuch",
+     "Neues"
+    ],
+    "sekunden_frage": 0.84
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.56,
+    "hauptartikel": "Existenzgründung",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Darmstadt",
+      "absaetze": 14
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Finanzmarkt",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Existenzgründung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rechtsform",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Immobilie",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Gesellschaftsrecht",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 35606,
+    "teil2": 19,
+    "tokens_dienst": 0,
+    "labels": [
+     "Existenzgründung",
+     "Gesellschaftsrecht",
+     "Rechtsform",
+     "Immobilien",
+     "Immobilieninvestment",
+     "Steuerrecht",
+     "Finanzmarkt",
+     "Darmstadt"
+    ],
+    "entitaeten": [
+     "Existenzgründung",
+     "Gesellschaftsrecht",
+     "Rechtsform",
+     "Immobilie",
+     "Immobilieninvestment",
+     "Steuerrecht",
+     "Finanzmarkt",
+     "Darmstadt"
+    ],
+    "tokens_frage": 1918,
+    "sekunden_frage": 10.27
+   }
+  }
+ },
+ {
+  "node_id": "5494f4c2-100f-4ca0-94f4-c2100f0ca053",
+  "titel": "Psychologie der Super-Reichen - Dr. Dr. Rainer Zitelmann im Interview",
+  "art": "unscharf",
+  "begriff": "Reichtum",
+  "akzeptiert": [
+   "Rainer Zitelmann",
+   "Reichtum"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.3,
+    "hauptartikel": "Reichtum",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtum",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsgrenze",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Das Kapital. Band I",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsforschung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Der plötzliche Reichtum der armen Leute von Kombach",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 54126,
+    "teil2": 71,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 2.63,
+    "hauptartikel": "Rainer Zitelmann",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Rainer Zitelmann",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Klaus Rainer Röhl",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsforschung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 18751,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 3.77,
+    "hauptartikel": "Rainer Zitelmann",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Rainer Zitelmann",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Klaus Rainer Röhl",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsforschung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 19085,
+    "teil2": 0,
+    "tokens_dienst": 472
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.56,
+    "hauptartikel": "Reichtum",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtum",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsgrenze",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Das Kapital. Band I",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsforschung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Der plötzliche Reichtum der armen Leute von Kombach",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 19263,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "genannt": "Reichtum",
+    "tokens_frage": 693,
+    "sekunden_frage": 0.15
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.29,
+    "hauptartikel": "Rainer Zitelmann",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Amazon",
+      "absaetze": 8
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Psychologie",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rainer Zitelmann",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Erfolg",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Bestseller",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Taschenbuch",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Immobilie",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 30390,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Rainer Zitelmann",
+     "Buch",
+     "Psychologie",
+     "Immobilie",
+     "Amazon",
+     "Bestseller",
+     "Erfolg",
+     "Taschenbuch",
+     "Netzwerk",
+     "Börse"
+    ],
+    "sekunden_frage": 0.81
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 1.72,
+    "hauptartikel": "Rainer Zitelmann",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Psychologie",
+      "absaetze": 9
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Darmstadt",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtum",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rainer Zitelmann",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmertum",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 33304,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Rainer Zitelmann",
+     "Darmstadt",
+     "Psychologie",
+     "Reichtum",
+     "Immobilie",
+     "Unternehmertum",
+     "Investition",
+     "Börse",
+     "Millionär"
+    ],
+    "entitaeten": [
+     "Rainer Zitelmann",
+     "Darmstadt",
+     "Psychologie",
+     "Reichtum",
+     "Immobilie",
+     "Unternehmertum",
+     "Investition",
+     "Börse",
+     "Vermögensmillionär"
+    ],
+    "tokens_frage": 1925,
+    "sekunden_frage": 9.16
+   }
+  }
+ },
+ {
+  "node_id": "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc",
+  "titel": "Selfmade Millionär - Macht Geld glücklich?",
+  "art": "unscharf",
+  "begriff": "Millionär",
+  "akzeptiert": [
+   "Reichtum",
+   "Vermögensmillionär"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 3.4,
+    "hauptartikel": "Vermögensmillionär",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Vermögensmillionär",
+      "absaetze": 9
+     }
+    ],
+    "bausteine": 5,
+    "zeichen": 10419,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "ok",
+    "sekunden": 1.6,
+    "hauptartikel": "Pension Groonen",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Pension Groonen",
+      "absaetze": 8
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 11897,
+    "teil2": 0,
+    "tokens_dienst": 0
+   },
+   "K0b": {
+    "status": "ok",
+    "sekunden": 12.61,
+    "hauptartikel": "Reichtum",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtum",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsgrenze",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Reichtumsforschung",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Das Kapital. Band I",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 7,
+    "zeichen": 17341,
+    "teil2": 1,
+    "tokens_dienst": 1864
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 2.93,
+    "hauptartikel": "Geld",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geld",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geldtheorie",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geldfunktion",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geldpolitik",
+      "absaetze": 4
+     },
+     {
+      "projekt": "klexikon",
+      "titel": "Geld",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Chartalismus",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Geldschöpfung",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 122932,
+    "teil2": 289,
+    "tokens_dienst": 0,
+    "genannt": "Geld",
+    "tokens_frage": 696,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 1.61,
+    "hauptartikel": "Geld",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Geld",
+      "absaetze": 12
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Börse",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Euro",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Macht",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Buch",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 9,
+    "zeichen": 117419,
+    "teil2": 289,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Geld",
+     "Vermögensmillionär",
+     "Macht",
+     "Euro",
+     "Börse",
+     "Immobilie",
+     "Buch",
+     "Anne Jahren",
+     "Unternehmen",
+     "Hochschule"
+    ],
+    "sekunden_frage": 1.85
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 2.23,
+    "hauptartikel": "Unternehmertum",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmertum",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Glück",
+      "absaetze": 5
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Börse",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Wirtschaftsinformatik",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Aktie",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hochschule für Technik Stuttgart",
+      "absaetze": 2
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Elektronischer Handel",
+      "absaetze": 2
+     }
+    ],
+    "bausteine": 12,
+    "zeichen": 33448,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "labels": [
+     "Unternehmertum",
+     "E-Commerce",
+     "Immobilie",
+     "Börse",
+     "Aktie",
+     "Finanzielle Unabhängigkeit",
+     "Glück",
+     "Wirtschaftsinformatik",
+     "Hochschule für Technik Stuttgart",
+     "University of London"
+    ],
+    "entitaeten": [
+     "Unternehmertum",
+     "Elektronischer Handel",
+     "Immobilie",
+     "Börse",
+     "Aktie",
+     "Glück",
+     "Wirtschaftsinformatik",
+     "Hochschule für Technik Stuttgart",
+     "University of London"
+    ],
+    "tokens_frage": 1911,
+    "sekunden_frage": 9.54
+   }
+  }
+ },
+ {
+  "node_id": "4041df54-5339-46d7-81df-545339d6d78d",
+  "titel": "Erfolgreich Kunden gewinnen mit Online Seminaren - Rainer von Massenbach im Interview",
+  "art": "klar",
+  "begriff": "Webinar",
+  "akzeptiert": [
+   "Akquise",
+   "Web-Seminar"
+  ],
+  "wege": {
+   "B": {
+    "status": "ok",
+    "sekunden": 2.54,
+    "hauptartikel": "Web-Seminar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Web-Seminar",
+      "absaetze": 7
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 16133,
+    "teil2": 14,
+    "tokens_dienst": 0
+   },
+   "K0": {
+    "status": "kein Artikel",
+    "sekunden": 0.04
+   },
+   "K0b": {
+    "status": "kein Artikel",
+    "sekunden": 0.0
+   },
+   "KL": {
+    "status": "ok",
+    "sekunden": 0.32,
+    "hauptartikel": "Web-Seminar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Web-Seminar",
+      "absaetze": 7
+     }
+    ],
+    "bausteine": 6,
+    "zeichen": 10956,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "genannt": "Webinar",
+    "tokens_frage": 605,
+    "sekunden_frage": 0.14
+   },
+   "KEl": {
+    "status": "ok",
+    "sekunden": 3.4,
+    "hauptartikel": "Rainer",
+    "richtig": false,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Amazon",
+      "absaetze": 10
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Rainer",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Automatisierung",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmer",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Online",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Software",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Buch",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Hörbuch",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Massenbach",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 30729,
+    "teil2": 0,
+    "tokens_dienst": 0,
+    "entitaeten": [
+     "Rainer",
+     "Massenbach",
+     "Online",
+     "Buch",
+     "Software",
+     "Unternehmer",
+     "Amazon",
+     "Hörbuch",
+     "Web-Seminar",
+     "Automatisierung"
+    ],
+    "sekunden_frage": 0.61
+   },
+   "KEa": {
+    "status": "ok",
+    "sekunden": 0.52,
+    "hauptartikel": "Web-Seminar",
+    "richtig": true,
+    "gedruckt": [
+     {
+      "projekt": "wikipedia",
+      "titel": "Software",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Prozessmanagement",
+      "absaetze": 7
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Online-Marketing",
+      "absaetze": 6
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Immobilienwirtschaft",
+      "absaetze": 4
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Web-Seminar",
+      "absaetze": 3
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Unternehmer",
+      "absaetze": 1
+     },
+     {
+      "projekt": "wikipedia",
+      "titel": "Marketing",
+      "absaetze": 1
+     }
+    ],
+    "bausteine": 11,
+    "zeichen": 30142,
+    "teil2": 1,
+    "tokens_dienst": 0,
+    "labels": [
+     "Rainer von Massenbach",
+     "Webinar",
+     "Online-Marketing",
+     "Marketing",
+     "Geschäftsprozessmanagement",
+     "Software",
+     "Unternehmer",
+     "Immobilienwirtschaft",
+     "Geldanlage"
+    ],
+    "entitaeten": [
+     "Web-Seminar",
+     "Online-Marketing",
+     "Marketing",
+     "Prozessmanagement",
+     "Software",
+     "Unternehmer",
+     "Immobilienwirtschaft"
+    ],
+    "tokens_frage": 1803,
+    "sekunden_frage": 8.57
+   }
+  }
+ }
+]

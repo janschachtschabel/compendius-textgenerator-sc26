@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 24.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M19; Rohdaten und
+[Übersicht](README.md) · Stand 24.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M23; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -362,3 +362,27 @@ bleibt.
 5. **Sichere Fehler der Regeln:** ob das LLM mit `article_choice=llm` auch sichere Auflösungen mehrdeutiger Wörter
    prüfen soll. Der alte Weg fand zwei der drei (M17); es kostete einen Aufruf mehr bei jedem solchen Thema und wäre
    vorher am Gold zu messen.
+
+## Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge
+
+Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M23.
+
+6. **Kompendium aus einem Material (`node_id` ohne `topic`):** Heute wird der Titel des Materials zum Thema. Echte
+   Titel nennen oft Format oder Datum, deshalb wird das Kompendium selten brauchbar, das heißt: Mindestens die Hälfte
+   seiner gedruckten Absätze passt zum Material. Brauchbar waren von 31 WLO-Materialien mit klarem Thema (M23):
+
+   | Weg | brauchbar | LLM je Material |
+   |---|---|---|
+   | Begriff, den eine Lehrkraft eintippt | 18 | – |
+   | Titel des Materials (heute) | 5 | – |
+   | Titel, `balanced` | 10 | 600 Tokens, rund 4,6 s |
+   | Thema vom LLM aus den Metadaten | 17 | 440 Tokens, 2,8 s |
+   | Entitäten wie im alten Dienst als Korpus | 11 | 1.680 Tokens, 9,9 s |
+
+   Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel. Dazu sollte der Dienst kein
+   Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu Materialien ohne Thema eines).
+7. **Lehrplanbezüge (Teil 2, M22):** Rund 60 % der ausgegebenen Lehrplanelemente gehören zum Thema, 13 bis 19 %
+   passen nicht. Das Fach kürzt Teil 2 um ein Drittel, hebt die Treffsicherheit aber kaum und verwirft ein Viertel
+   der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach
+   einem Blick auf die Darstellung die Elemente, bei denen nur die Überschrift das Thema nennt, zu ihrem Bereich
+   bündeln.

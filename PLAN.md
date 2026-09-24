@@ -1560,7 +1560,10 @@ API.
   trägt Biologie und Physik. Gemessen an 40 echten WLO-Materialien (M21, Gold `eval/materialwahl`): der Titel
   trifft 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16, ein LLM, das den Artikel aus Titel,
   Beschreibung und Schlagwörtern nennt, 34 (rund 470 Tokens, 2,8 s). Offen, welcher Weg eingebaut wird; M21 empfiehlt
-  das LLM, wo eines bereitsteht, sonst die Entitäten.
+  das LLM, wo eines bereitsteht, sonst die Entitäten. Bis zum Kompendium gemessen (M23, 31 Materialien mit klarem
+  Thema; brauchbar heißt, mindestens die Hälfte der gedruckten Absätze passt): Titel 5, `balanced` 10, Thema vom
+  LLM 17, Begriff 18, die Entitäten des alten Linkers als Korpus 11, die lokalen als Korpus 5; als Hauptartikel
+  allein träfen die lokalen 14. Auch zu Materialien ohne Thema entsteht heute ein Kompendium.
 - **D46 (2026-09-24)** Entitäten: Ein Genitiv nennt seinen Artikel über die Grundform (`title_candidates` in
   `app/knowledge/recognise.py`). Nach einem Genitivartikel (*des*, *eines* …, ein Wort dazwischen) kommt die Grundform
   zuerst, sonst erst, wenn die wörtliche Form kein Titel ist; „-es“ vor „-s“ (*Reiches* → *Reich*). Ohne Artikel

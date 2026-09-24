@@ -244,8 +244,10 @@ konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
 „Stationsarbeit zur Optik“ und „Suchgitter Optik“ finden in den Archiven keinen Artikel, „Unterrichtsreihe zum Licht“
 endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. An 40 echten Materialien der WLO-Produktion (M21)
 trifft der Titel als Thema 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16 und ein LLM, das den
-Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34, für rund 470 Tokens und 2,8 s. Welcher Weg eingebaut
-wird, ist offen (Optionen im Messprotokoll).
+Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34, für rund 470 Tokens und 2,8 s. Bis zum Kompendium
+gemessen (M23) wird es mit dem Titel bei 5 von 31 Materialien brauchbar (mindestens die Hälfte der gedruckten
+Absätze passt), mit dem Thema vom LLM bei 17, mit dem Begriff, den eine Lehrkraft eintippen würde, bei 18.
+Welcher Weg eingebaut wird, ist offen (Optionen im Messprotokoll).
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 

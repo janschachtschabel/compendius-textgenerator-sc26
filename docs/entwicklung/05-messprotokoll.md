@@ -915,3 +915,75 @@ kappt die Elemente; das LLM läse mit Fach im Mittel 158 Elemente je Thema, bei 
 vorher an den 175 Noten zu messen. Die Messung spricht für A und, nach einem Blick auf die Darstellung, für B; C und D
 hängen davon ab, ob Lehrkräfte berufliche Lehrpläne und Nachbarfächer sehen sollen. Rohdaten:
 `m22_lehrplan_treffer.json`, Noten `eval/lehrplan/treffer_noten.yaml` und `treffer_noten_zweit.yaml`.
+
+## M23 Kompendium aus den Metadaten eines Materials (24.09.2026)
+
+**Aufbau:** M21 hat gemessen, wie der Dienst den Hauptartikel eines echten Materials findet; M23 geht bis zum
+Kompendium und fragt, ob es aus den Metadaten eines Materials so gut wird wie aus einem Begriff. Für die 40
+Materialien des Golds `eval/materialwahl/materialien.yaml` (WLO-Produktion, anonym aus dem Repository gelesen)
+entstanden im Ablauf des Dienstes je sechs Kompendien mit Teil 1 und 2 (`mc_material_kompendium.py`):
+
+| Weg | Eingabe |
+|---|---|
+| B | der Begriff, den eine Lehrkraft eintippen würde (`begriff` im Gold, vor dem Lauf festgelegt), ohne Knoten |
+| K0 | der Knoten allein, wie heute: Sein Titel ist das Thema (D45) |
+| K0b | der Knoten allein mit `preset: balanced`: Das LLM entscheidet einen unsicheren Artikel (D35) |
+| KL | der Knoten und dazu das Thema, das ein LLM aus Titel, Fächern, Schlagwörtern und Beschreibung nennt (M21 S4) |
+| KEl | Entitäten aus Titel und Beschreibung, lokal erkannt (Wörterbuch von `/entities`, Rangfolge wie M21 S3); ihre bis zu zehn Artikel sind der Korpus |
+| KEa | Entitäten wie im alten Dienst: dessen Linker-Prompt wortgleich (`alter_linker.py`) auf Titel, Beschreibung und Schlagwörter; ihre bis zu zehn Artikel sind der Korpus |
+
+Die Entitäten-Wege gibt es nur in der Messung: Der Dienst baut seinen Korpus aus einem Artikel; für sie ersetzt das
+Skript diesen Schritt durch die Artikel der Entitäten (die erste als Hauptartikel, ohne Begriffsklärungen), alles
+danach läuft im Dienst. Teil 1 schreiben in allen Wegen die Regeln. Gezählt sind die gedruckten Absätze je
+Quellartikel wie in M10. Jeden der 603 Artikel, aus denen für eines der 38 Materialien mit Thema Absätze gedruckt
+wurden, hat Claude benotet (2 Thema des Materials oder ein zentraler Teil, 1 verwandt, 0 unpassend), ohne den Weg zu
+kennen; ein Claude-Subagent benotete sie ein zweites Mal nach denselben Regeln: gleiche Note bei 91 % (Cohens Kappa
+0,86), einig über „passend“ bei 97 %. Werte der 31 Materialien mit klarem Thema. „Passend“ und „unpassend“ sind
+Anteile der gedruckten Absätze, gemittelt über die Kompendien, die entstanden; „brauchbar“ heißt, dass mindestens die
+Hälfte der Absätze passt (`mc_material_kompendium_auswertung.py`). In Klammern die Werte mit den zweiten Noten:
+
+| Weg | Kompendium | Hauptartikel im Gold | passend | unpassend | brauchbar | Absätze, Median | LLM je Material |
+|---|---|---|---|---|---|---|---|
+| B Begriff | 31 | 29 | 59 % (59 %) | 22 % (23 %) | 18 (18) | 16 | – |
+| K0 Knoten wie heute | 18 | 5 | 23 % (22 %) | 52 % (51 %) | 5 (5) | 14,5 | – |
+| K0b Knoten, `balanced` | 18 | 11 | 48 % (47 %) | 19 % (17 %) | 10 (10) | 14 | 600 Tokens, rund 4,6 s |
+| KL Knoten, Thema vom LLM | 31 | 30 | 60 % (59 %) | 19 % (20 %) | 17 (17) | 17 | 440 Tokens, 2,8 s |
+| KEl Entitäten, lokal | 31 | 14 | 22 % (23 %) | 62 % (61 %) | 5 (6) | 23 | – |
+| KEa Entitäten wie im alten Dienst | 31 | 29 | 42 % (43 %) | 17 % (16 %) | 11 (11) | 23 | 1.680 Tokens, 9,9 s |
+
+Bei den Entitäten-Wegen zählt als Hauptartikel die erste Entität. Die Frage von KL ist wortgleich mit der von M21 und
+kam aus dem Zwischenspeicher der b-api; die 2,8 s sind die aus M21. K0b rechnet zu K0 den Unterschied der
+Erzeugungszeiten im selben Lauf.
+
+**Geht es?** Mit dem Knoten allein, wie der Dienst ihn heute nimmt, selten: Für 13 der 31 Materialien findet der
+Titel keinen Artikel (Antwort 404), für 13 weitere einen falschen; brauchbar sind 5 Kompendien, mit `balanced` 10.
+Für die zwei Materialien ohne Thema baut jeder Knoten-Weg trotzdem ein Kompendium (*Studienabschlussarbeit*,
+*Digitale Kompetenz*, *Kultusministerkonferenz*): Der Dienst erkennt nicht, dass ein Material kein Thema hat.
+
+**Besser oder schlechter als der Begriff?** Nennt ein LLM das Thema aus den Metadaten (KL), wird das Kompendium so gut
+wie aus dem Begriff: Meist ist es derselbe Hauptartikel und damit derselbe Text (24 von 31 Materialien gleich, 4
+besser, 3 schlechter bei mehr als zehn Punkten Unterschied im passenden Anteil). Die Fächer des Knotens helfen, wo
+der Begriff mehrdeutig ist: „Scratch“ endet ohne Fach beim Bahnradsport, mit Informatik und Medienbildung bei der
+Programmiersprache. Schlechter wird es, wo das LLM einen breiteren Artikel nennt als die Lehrkraft (*Getriebe* statt
+*Zahnrad*). Auch der Begriff druckt Unpassendes (22 %), etwa *Fahrradverleih* und *Hollandrad* zum Zahnrad.
+Der Linker des alten Dienstes (KEa) hat den richtigen Artikel fast immer unter seinen Entitäten (31 von 31), mischt
+aber verwandte Artikel dazu: mehr Absätze (23 statt 16) und Bausteine (10 statt 8), am wenigsten Unpassendes (17 %),
+aber auch weniger Passendes (42 %). Das hilft bei Materialien mit mehreren Aspekten (*Horst Köhler* mit IWF und
+Osteuropabank 93 % statt 18 % passend, die Wirtschaftskrise Frankreichs 64 % statt 21 %) und schadet bei Materialien
+mit einem Thema (*Planck-Konstante* 20 % statt 83 %, *Petersberger Klimadialog* 9 % statt 90 %): 9 besser, 16 bis 18
+schlechter. Die lokal erkannten Entitäten (KEl) taugen als Korpus nicht: Beschreibungen tragen Rauschen (der
+Kanalname „Ecole Science“ wird zu *École* und *Science*, Ausrüstungslisten zu *Sony* und *Softbox*), und in
+englischen Texten werden einzelne Großbuchstaben zu den Artikeln *A*, *H*, *J*; 62 % der Absätze passen nicht. Bei den
+7 unscharfen Materialien (Portale, Methoden, Meinungen) sind alle Wege schwach (brauchbar 1 bis 4 von 7), bei so
+wenigen ohne klare Rangfolge. Zusammen 113.476 Tokens für 40 Materialien, mit `gpt-6-luna`.
+
+**Ergebnis und Optionen (zu entscheiden):** Die Metadaten eines Materials tragen ein Kompendium, wenn ein Schritt
+das Thema aus ihnen bestimmt; der Titel allein trägt es nicht. Für Knoten ohne mitgeschicktes `topic`: (A) Das LLM
+nennt das Thema (KL, Option A aus M21): so gut wie der Begriff, 17 statt 18 brauchbar, rund 440 Tokens und 3 s je
+Material. (B) Die Entitäten des alten Linkers werden der Korpus (KEa): breiter, aber seltener brauchbar (11); stark
+bei Ereignissen, Personen und Meinungsbeiträgen, 1.680 Tokens und 10 s. Denkbar ist auch A mit den weiteren
+Entitäten als zusätzlichen Quellen; das ist nicht gemessen. (C) Ohne LLM bleibt der Titel (5 brauchbar); die lokalen
+Entitäten träfen als Hauptartikel 14 von 31, als Korpus sind sie unbrauchbar. (D) Unabhängig davon: Findet keiner
+der Schritte ein Thema, sollte der Dienst kein Kompendium bauen statt eines falschen. Die Messung spricht für A, wo
+ein LLM bereitsteht, und für D. Rohdaten: `m23_material_kompendium.json`, Noten
+`eval/materialwahl/kompendium_noten.yaml` und `kompendium_noten_zweit.yaml`.

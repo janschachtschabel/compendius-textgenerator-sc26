@@ -192,7 +192,14 @@ misst `mc_aufloesung.py`).
 `materialwahl/materialien.yaml` ist das Gold für den Knoten-Eingang (M21): 40 echte Materialien der
 WLO-Produktion mit ID, Titel und Fächern, dazu die Art (klar, unscharf, keins) und die akzeptierten
 Hauptartikel. Ihre Beschreibungen stehen nicht darin; `docs/entwicklung/messung/mc_material_artikelwahl.py`
-liest sie aus dem Repository, `mc_material_stichprobe.py` zieht die Stichprobe neu.
+liest sie aus dem Repository, `mc_material_stichprobe.py` zieht die Stichprobe neu. Seit M23 trägt jedes
+Material auch den `begriff`, den eine Lehrkraft eintippen würde, festgelegt vor dem Lauf.
+
+`materialwahl/kompendium_noten.yaml` hält die Noten für M23: je Material jeder Wikipedia-Artikel, aus dem
+eines der sechs Kompendien Absätze gedruckt hat (603 Paare; 2 Thema des Materials oder ein zentraler Teil,
+1 verwandt, 0 unpassend). `kompendium_noten_zweit.yaml` sind die Noten eines zweiten Beurteilers für
+dieselben Paare. `docs/entwicklung/messung/mc_material_kompendium.py` baut die Kompendien,
+`mc_material_kompendium_auswertung.py` rechnet.
 
 `lehrplan/treffer_noten.yaml` hält die Noten für die Stichprobe von M22: 175 Lehrplanelemente, die Teil 2
 zu den 20 normalen Themen ausgibt, je Element Thema, IRI und Note (2 gehört zum Thema, 1 berührt es,
