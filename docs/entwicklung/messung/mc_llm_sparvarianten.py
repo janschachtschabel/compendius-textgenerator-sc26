@@ -4,15 +4,19 @@ Every gold topic is prepared once through CompendiumService.prepare (archives of
 is the paragraphs the gold labels, as in mc_varianten.py. Four ways, all through CompendiumService.match:
 
 - rules: hybrid_light, the default strategy;
-- llm: matcher=llm as the service runs it (25 paragraphs per call, 700 characters each);
-- llm_billig: 50 paragraphs per call and 400 characters each (the module constants, patched for the run);
+- llm: matcher=llm as the service runs it, with the module constants of the code on PYTHONPATH (until D36 25
+  paragraphs per call of 700 characters each, since D36 50 of 400);
+- llm_billig and llm_50x400: 50 paragraphs per call and 400 characters each; llm_25x700: 25 and 700 (the module
+  constants, patched for the run);
 - llm_zweifel: only the paragraphs the policy decides without a confident signal go to the model - the ones it sends
   to the default block or leaves out as off-topic; a confident paragraph (the lead of an article, a heading of the
   lexicon, a score from POLICY_CONFIDENT_SCORE on) keeps the policy's block.
 
-Metrics as in mc_varianten.py: macro- and micro-F1 of the classification, misassigned paragraphs, tokens.
+Metrics as in mc_varianten.py: macro- and micro-F1 of the classification, misassigned paragraphs, tokens, seconds per
+topic. The b-api answers a prompt it has seen from its cache; --rotieren starts every pool in the middle, so the model
+gets the same paragraphs in other batches - an independent sample of the same setting (D36, second run).
 
-Usage: python mc_llm_sparvarianten.py <out.json> <way>...
+Usage: python mc_llm_sparvarianten.py <out.json> [--rotieren] <way>...
 """
 
 from __future__ import annotations
@@ -50,7 +54,9 @@ GOLD_DIR = Path(r"C:\Users\jan\staging\Windsurf\compendious-text-fastapi\eval\go
 M2V = "JanSchachtschabel/m2v-gte-256-edu"
 TARGET_LENGTH = 12_000
 
-out_path, ways = Path(sys.argv[1]), sys.argv[2:]
+out_path = Path(sys.argv[1])
+ways = [arg for arg in sys.argv[2:] if not arg.startswith("--")]
+ROTATE = "--rotieren" in sys.argv[2:]
 service = cli_service(ZIMS)
 service.settings.model2vec_path = M2V
 assert service.llm is not None, "LLM_ENABLED did not reach the settings"
@@ -97,8 +103,10 @@ def configure(way: str) -> str:
     service_module.assign_with_llm = original_assign
     if way == "rules":
         return "hybrid_light"
-    if way == "llm_billig":
+    if way in ("llm_billig", "llm_50x400"):
         llm_assignment.BATCH_SIZE, llm_assignment.TEXT_CHARS = 50, 400
+    elif way == "llm_25x700":
+        llm_assignment.BATCH_SIZE, llm_assignment.TEXT_CHARS = 25, 700
     elif way == "llm_zweifel":
         service_module.assign_with_llm = doubt_band
     elif way != "llm":
@@ -111,19 +119,24 @@ for path in sorted(GOLD_DIR.glob("*.jsonl")):
     gold = load_gold(path)
     prepared = service.prepare(GenerateRequest(topic=gold.topic, parts=["world"]))
     alignment = align(gold, prepared.chunks)
-    pool = replace(prepared, chunks=[c for c in prepared.chunks if c.chunk_id in alignment.gold_by_chunk])
+    chunks = [c for c in prepared.chunks if c.chunk_id in alignment.gold_by_chunk]
+    if ROTATE:
+        chunks = chunks[len(chunks) // 2 :] + chunks[: len(chunks) // 2]
+    pool = replace(prepared, chunks=chunks)
     prepared_topics.append((gold, alignment, pool))
 
 result: dict[str, dict] = {}
 for way in ways:
     strategy = configure(way)
-    evals, tokens, seconds, fallback, paragraphs = [], 0, 0.0, 0, 0
+    evals, tokens, seconds, fallback, paragraphs, per_topic = [], 0, 0.0, 0, 0, {}
     for gold, alignment, pool in prepared_topics:
         template = pool.template
         slot_keys = [slot.slot for slot in template.content_slots()]
         started = time.perf_counter()
         matched = service.match(pool, strategy, TARGET_LENGTH)
-        seconds += time.perf_counter() - started
+        spent = time.perf_counter() - started
+        seconds += spent
+        per_topic[gold.topic] = round(spent, 2)
         if matched.llm is not None:
             tokens += matched.llm.total_tokens
             fallback += matched.llm.fallback
@@ -134,7 +147,7 @@ for way in ways:
     result[way] = {
         "macro_f1": total.macro_f1, "micro_f1": total.micro_f1, "assigned": total.assigned,
         "misassigned": total.misassigned, "tokens": tokens, "llm_paragraphs": paragraphs, "fallback": fallback,
-        "seconds": round(seconds, 1),
+        "seconds": round(seconds, 1), "seconds_per_topic": per_topic, "rotated": ROTATE,
         "per_slot": {m.slot: {"f1": m.f1, "support": m.support, "predicted": m.predicted} for m in total.slots},
     }
     print(f"{way:12s} macro {total.macro_f1:.3f} micro {total.micro_f1:.3f} falsch {total.misassigned:4d} von "

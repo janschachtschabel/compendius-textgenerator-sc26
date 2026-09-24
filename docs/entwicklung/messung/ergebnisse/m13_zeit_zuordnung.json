@@ -1,0 +1,192 @@
+{
+ "zusammenfassung": {
+  "hybrid_light": {
+   "median_s": 1.2,
+   "median_zuordnung_s": 0.27,
+   "max_s": 1.26,
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0
+  },
+  "llm": {
+   "median_s": 11.97,
+   "median_zuordnung_s": 10.83,
+   "max_s": 13.36,
+   "tokens": 146848,
+   "absaetze": 1053,
+   "rueckfall": 194
+  }
+ },
+ "laeufe": [
+  {
+   "thema": "Evolution",
+   "weg": "hybrid_light",
+   "sekunden": 1.2,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 157,
+    "segment": 12,
+    "match": 442,
+    "synthesize": 583,
+    "assemble": 3
+   },
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Evolution",
+   "weg": "llm",
+   "sekunden": 10.08,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 63,
+    "segment": 14,
+    "match": 9879,
+    "synthesize": 120,
+    "assemble": 3
+   },
+   "tokens": 31995,
+   "absaetze": 294,
+   "rueckfall": 94,
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Reformation",
+   "weg": "llm",
+   "sekunden": 13.36,
+   "phasen_ms": {
+    "resolve": 47,
+    "corpus": 681,
+    "segment": 28,
+    "match": 11622,
+    "synthesize": 977,
+    "assemble": 3
+   },
+   "tokens": 35986,
+   "absaetze": 253,
+   "rueckfall": 50,
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Reformation",
+   "weg": "hybrid_light",
+   "sekunden": 0.86,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 257,
+    "segment": 28,
+    "match": 410,
+    "synthesize": 159,
+    "assemble": 3
+   },
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Nervensystem",
+   "weg": "hybrid_light",
+   "sekunden": 1.25,
+   "phasen_ms": {
+    "resolve": 5,
+    "corpus": 520,
+    "segment": 11,
+    "match": 204,
+    "synthesize": 508,
+    "assemble": 2
+   },
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Nervensystem",
+   "weg": "llm",
+   "sekunden": 11.97,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 109,
+    "segment": 6,
+    "match": 11744,
+    "synthesize": 106,
+    "assemble": 3
+   },
+   "tokens": 18967,
+   "absaetze": 109,
+   "rueckfall": 0,
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Kernspaltung",
+   "weg": "llm",
+   "sekunden": 12.14,
+   "phasen_ms": {
+    "resolve": 21,
+    "corpus": 560,
+    "segment": 24,
+    "match": 10679,
+    "synthesize": 850,
+    "assemble": 3
+   },
+   "tokens": 37688,
+   "absaetze": 258,
+   "rueckfall": 50,
+   "zugeordnet": "llm"
+  },
+  {
+   "thema": "Kernspaltung",
+   "weg": "hybrid_light",
+   "sekunden": 0.51,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 83,
+    "segment": 26,
+    "match": 272,
+    "synthesize": 115,
+    "assemble": 2
+   },
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Impressionismus",
+   "weg": "hybrid_light",
+   "sekunden": 1.26,
+   "phasen_ms": {
+    "resolve": 10,
+    "corpus": 421,
+    "segment": 17,
+    "match": 205,
+    "synthesize": 600,
+    "assemble": 4
+   },
+   "tokens": 0,
+   "absaetze": 0,
+   "rueckfall": 0,
+   "zugeordnet": "hybrid_light"
+  },
+  {
+   "thema": "Impressionismus",
+   "weg": "llm",
+   "sekunden": 11.06,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 78,
+    "segment": 18,
+    "match": 10831,
+    "synthesize": 119,
+    "assemble": 3
+   },
+   "tokens": 22212,
+   "absaetze": 139,
+   "rueckfall": 0,
+   "zugeordnet": "llm"
+  }
+ ]
+}

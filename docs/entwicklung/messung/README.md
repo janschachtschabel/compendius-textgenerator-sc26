@@ -21,7 +21,8 @@ geschrieben.
 | M9 Artikelwahl mit Regeln und LLM | `mc_aufloesung.py <out.json> [--llm] <gold.yaml>…`; den alten Stand mit `PYTHONPATH` auf eine `git archive`-Kopie von `c03dafe` | venv dieses Projekts | mit `--llm` `gpt-5.6-luna` über `article_choice=llm`, rund 950 Tokens je unsicherer Anfrage |
 | M10 Volltexttreffer | `mc_trefferfilter.py <out.json>`, `mc_treffer_llm.py <out.json> [--korpus]`, `mc_treffer_wirkung.py <bewertungen.json> <out.json>` | venv dieses Projekts | `mc_treffer_llm.py`: `gpt-5.6-luna`, rund 900 Tokens je Thema |
 | M11 Wikibooks und Wikiversity | `mc_zusatzquellen.py <out.json> <pool.json>`, `mc_zusatzsuche.py <out.json> <treffer-je-archiv>` | venv dieses Projekts, beide Archive unter `kompendium-test\data` | `mc_zusatzsuche.py`: `gpt-5.6-luna` für die Trefferprüfung |
-| M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> <weg>…` | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
+| M12 Bausteinbeschreibungen und LLM-Zuordnung | `mc_varianten.py <out.json> [--llm] [--llm-pool gold] <label=template:strategie>…` mit `sc26_beschreibungen.json`; `mc_llm_sparvarianten.py <out.json> [--rotieren] <weg>…` (Wege rules, llm, llm_25x700, llm_50x400, llm_billig, llm_zweifel) | venv dieses Projekts | `gpt-5.6-luna`, 70.000 bis 150.000 Tokens je LLM-Variante |
+| M13 Laufzeit | `mc_zeit_artikelwahl.py <out.json> <weg>…` mit `PYTHONPATH` auf die Kopie des Standes; `mc_zeit_zuordnung.py <out.json>` | venv dieses Projekts | `gpt-5.6-luna` für `llm`: rund 1.000 Tokens je Thema bei der Artikelwahl, rund 29.000 bei der Zuordnung |
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -83,7 +84,9 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m10_treffer_wirkung.json` | M10, gedruckte Absätze nach Note und gefüllte Bausteine je Thema, mit und ohne die mit 0 benoteten Treffer |
 | `ergebnisse/m11_zusatzquellen.json`, `m11_zusatzsuche.json` | M11, Seiten aus Wikibooks und Wikiversity je Thema, ihre gedruckten Absätze und Bausteine, das Urteil der Trefferprüfung |
 | `ergebnisse/m12_beschreibungen_lokal.json`, `m12_beschreibungen_llm.json` | M12, sc26 gegen schärfere Beschreibungen, lokal und mit `matcher=llm` |
-| `ergebnisse/m12_sparvarianten.json` | M12, Regeln und drei Wege der LLM-Zuordnung mit F1 je Baustein und Tokens |
+| `ergebnisse/m12_sparvarianten.json`, `m12_sparvarianten_rotiert.json` | M12, Regeln und die Wege der LLM-Zuordnung mit F1 je Baustein, Tokens und Sekunden je Thema; der zweite Lauf mit gedrehten Pools |
+| `ergebnisse/m13_zeit_alt.json`, `m13_zeit_alt_zweiter_lauf.json`, `m13_zeit_neu.json`, `m13_zeit_neu_regeln_zweiter_lauf.json` | M13, je Thema und Weg die Sekunden, Phasen, Tokens, Titel und verworfenen Treffer |
+| `ergebnisse/m13_zeit_zuordnung.json` | M13, `matcher=llm` gegen `hybrid_light` an fünf ganzen Kompendien: Sekunden, Phasen, Tokens, Rückfälle |
 | `ergebnisse/nebenwerte.txt` | Testsuite, Entitätenerkennung, Kiefer-Alternativen, Länge von Teil 2, Knotenzeilen von Teil 3 |
 | `ergebnisse/zim_suche.json` | Suchzeiten des Wikipedia-Archivs |
 

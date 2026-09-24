@@ -1,6 +1,6 @@
 # Bereich 1: Weltwissen
 
-[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M1 bis M3, M7 und M8
+[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M1 bis M3, M7 bis M11 und M13
 
 Teil 1 soll gesichertes Wissen zum Thema liefern, gegliedert nach den Bausteinen des SC26-Templates. Dafür braucht es
 verlässliche Quellen, die richtigen Artikel und ein Verfahren, das aus den Artikeln einen Text macht.
@@ -78,8 +78,9 @@ ist, prüft niemand.
 5. **Sicherheit melden.** Die Auflösung nennt ihren Weg (`method`: title, variant, disambiguation, suggestion, search
    oder llm) und ob sie sicher ist (`confident`). Unsicher sind eine Begriffsklärung, die das Fach nicht entscheidet,
    ein exakter Titel ohne Fachbezug, Varianten und alle Vorschlags- und Suchtreffer.
-6. **Optional das LLM** (`article_choice=llm`, D35): Nur bei einer unsicheren Auflösung wählt `gpt-5.6-luna` unter den
-   Kandidaten der Regeln oder nennt einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
+6. **Das LLM, wo eines konfiguriert ist** (`article_choice=llm`, D35, seit D37 Vorgabe): Nur bei einer unsicheren
+   Auflösung wählt `gpt-5.6-luna` unter den Kandidaten der Regeln oder nennt einen Wikipedia-Titel, der nur zählt, wenn
+   das Archiv ihn als Artikel hat. `article_choice=rule-based` schaltet es je Anfrage ab.
 7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
    im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf
    einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen. Höchstens 12 Artikel und 400 Absätze.
@@ -165,7 +166,7 @@ Gold und Richter uneins: nach Gold liegt der neue Dienst vorn (62 % gegen 51 %),
 oder *Interferenz*, wertete er als passend, weil er den Begriff im Titel beurteilte, nicht die Seite; als Quelle
 taugen sie nicht. Insgesamt stimmen Gold und Richter bei 223 von 288 Artikeln überein (77 %, Cohens Kappa 0,61).
 
-### Was seit M8 besser wurde (M9 bis M11)
+### Was seit M8 besser wurde (M9 bis M11, M13)
 
 Die Hebel aus M8 wurden umgesetzt und gemessen, gegen das Hauptgold und zwei neue Goldsätze: 23 Anfragen zur
 Validierung und 12 zurückgehaltene, die erst liefen, als die Regeln feststanden (M9).
@@ -195,6 +196,17 @@ mit dem Prompt des M8-Richters trennt sie, wenn es alle Korpusartikel eines Them
 unpassenden Treffer bekommen eine 0, keiner der passenden. Die Treffer allein benotet es zu mild (6 von 16). Ohne die
 mit 0 benoteten Treffer druckt der Standard 10 statt 26 Absätze aus unpassenden Artikeln und 346 statt 332 aus
 passenden oder verwandten. Das ist Teil von `article_choice=llm`, rund 890 Tokens je Thema mit Treffern.
+
+**Zeit und Vorgabe** (M13, D37). Gemessen an 30 Themen, die keine frühere Messung gestellt hatte, damit kein Prompt
+aus dem Zwischenspeicher der b-api kommt: `article_choice=llm` verlängert Teil 1 im Median um 1,7 s (90. Perzentil
+3,4 s, höchstens 3,8 s) bei rund 930 Tokens. Die Trefferprüfung braucht im Median 1,4 s und lief bei allen 30 Themen;
+eine unsichere Artikelwahl kam bei 5 Themen hinzu, mit 1,0 bis 2,6 s. Die schärferen Regeln kosten gegenüber v2.0.0
+keine Zeit: Teil 1 im Median 1,35 statt 1,37 s bei warmem Dateicache. Seit D37 ist `article_choice=llm` die Vorgabe,
+wo ein LLM konfiguriert ist; ohne LLM wählen die Regeln, ohne Hinweis im Audit. Auf denselben 30 Themen wählten die
+neuen Regeln bei 5 der 9 mehrdeutigen Wörter einen anderen Hauptartikel als v2.0.0, dem Titel nach jedes Mal den
+besseren (*Blatt (Pflanze)* statt *Keimblatt*, *Körper (Geometrie)* statt *Gegenstand*, *Stimme (Musik)* statt
+*Menschliche Stimme*, *Becken (Geomorphologie)* statt *Einzugsgebiet*, *Salze* statt *Speisesalz*); das ist eine
+Einschätzung ohne Goldsatz, aber an Anfragen, die nicht in die Regeln eingeflossen sind.
 
 **Sperrliste** (M10, Nebenbefund). Passte der Hauptartikel selbst auf ein Muster der Sperrliste für Links, galt die
 ganze Liste nicht: „Programmiersprache“ passt auf das Sprachmuster und ließ *Liste von Programmiersprachen* ein,

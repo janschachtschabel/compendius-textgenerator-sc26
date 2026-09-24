@@ -1,6 +1,6 @@
 # Zuordnung zu den SC26-Bausteinen
 
-[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M4 bis M6
+[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M4 bis M6, M12 und M13
 
 ## Die Aufgabe
 
@@ -184,12 +184,13 @@ dazu die Zuordnungsregeln aus dem Template; sie entsprechen den Labelregeln des 
 Artikel und dessen Rolle, den Überschriftenpfad und den Text, gekürzt auf 700 Zeichen, 25 Absätze je Aufruf; seit
 D36 sind es 400 Zeichen und 50 Absätze. Es antwortet je Absatz mit einem Baustein oder „keiner“ und einer Sicherheit.
 Gemessen wurde zweimal auf denselben 603 gelabelten Absätzen: zuerst mit einem Skript, dann im Dienst als
-`matcher=llm` über `CompendiumService.match` (D34). Die Tabelle zeigt alle Verfahren auf diesen Absätzen; die Zeile
-für D36 stammt aus M12 und lief auf 597 davon, weil sich ein Korpus seitdem geändert hat (Sperrliste, M10):
+`matcher=llm` über `CompendiumService.match` (D34). Die Tabelle zeigt alle Verfahren auf diesen Absätzen; die Zeilen
+für D36 stammen aus M12 und liefen auf 597 davon, weil sich ein Korpus seitdem geändert hat (Sperrliste, M10):
 
 | Verfahren | macro-F1 | micro-F1 | richtig unter Top 2 | falsch zugeordnet |
 |---|---|---|---|---|
-| **`matcher=llm`, 50 Absätze zu 400 Zeichen je Aufruf (D36, M12)** | **0,72** | **0,82** | nicht gemessen | 113 von 550 |
+| **`matcher=llm`, 50 Absätze zu 400 Zeichen je Aufruf (D36, M12, zwei Läufe)** | **0,72 und 0,69** | **0,82 und 0,82** | nicht gemessen | 113 von 550 in beiden |
+| `matcher=llm`, 25 Absätze zu 700 Zeichen (M12, zweiter Lauf mit anderen Stapeln) | 0,73 | 0,83 | nicht gemessen | 110 von 550 |
 | `matcher=llm` im Dienst, 25 Absätze zu 700 Zeichen | 0,66 | 0,79 | 75 % | 125 von 547 |
 | `gpt-5.6-luna`, erste Messung mit Skript | 0,63 | 0,79 | 73 % | 128 von 547 |
 | nur Überschriften-Lexikon (`lexicon_only`) | 0,35 | 0,65 | 63 % | 184 von 518 |
@@ -215,14 +216,18 @@ für D36 stammt aus M12 und lief auf 597 davon, weil sich ein Korpus seitdem ge�
 - **Kosten:** 144.486 Tokens für 601 Absätze laut b-api, rund 240 je Absatz. Im ersten Lauf dauerte ein Aufruf im
   Median 5,5 s, ein Thema 7,5 s. Mit 50 Absätzen zu 400 Zeichen (D36) sind es 105.727 Tokens für 597 Absätze, rund
   177 je Absatz.
-- **Hochgerechnet auf ein ganzes Kompendium:** im Median rund 39.000 Tokens und 11 s, bei großen Themen bis 92.000
-  Tokens und 22 s; mit D36 im selben Verhältnis rund 29.000 und 68.000 Tokens, nicht eigens gemessen. Das ist mehr als
-  der ganze alte Dienst mit rund 7.900 Tokens. Je Anfrage erlaubt der Dienst 60.000 Tokens
-  (`LLM_MAX_TOKENS_PER_REQUEST`); darüber entscheidet für die übrigen Absätze die Standard-Strategie.
-- **Größere Stapel, kürzere Texte (D36, M12):** 50 Absätze zu 400 Zeichen je Aufruf ordneten in jedem Baustein
-  mindestens so gut zu wie 25 zu 700, am deutlichsten in Praxis (0,34 auf 0,58) und Themendefinition (0,81 auf 0,91).
-  Ein Lauf; Wiederholungen derselben Einstellung streuten bisher um etwa 0,03 macro-F1. Übernommen, weil die
-  Einstellung auch ohne den Gewinn billiger ist.
+- **Ganzes Kompendium (M13):** Fünf Themen ohne Zwischenspeicher brauchten mit D36 je Kompendium 19.000 bis 38.000
+  Tokens, im Mittel 29.400, und Teil 1 dauerte im Median 12,0 statt 1,2 s; die Zuordnung selbst 10,8 statt 0,3 s.
+  Das ist mehr als der ganze alte Dienst mit rund 7.900 Tokens. Je Anfrage erlaubt der Dienst 60.000 Tokens
+  (`LLM_MAX_TOKENS_PER_REQUEST`), und das reicht bei großen Themen nicht: Jeder Stapel reserviert vorab rund 13.000
+  Tokens und verbraucht rund 8.000, parallele Stapel erschöpfen das Budget, bevor die ersten abrechnen. Bei 3 von 5
+  Themen blieben so die letzten ein bis zwei Stapel bei der Standard-Strategie, 18 % der Absätze. Wer `matcher=llm`
+  nutzt, setzt das Budget höher; die Buchung selbst ist offen.
+- **Größere Stapel, kürzere Texte (D36, M12):** Im ersten Lauf ordneten 50 Absätze zu 400 Zeichen in jedem Baustein
+  mindestens so gut zu wie 25 zu 700. Ein zweiter Lauf mit gedrehter Reihenfolge, also anderen Stapeln und ohne
+  Zwischenspeicher, drehte das Ergebnis um (0,69 gegen 0,73). Die großen Bausteine bleiben zwischen den Läufen stabil
+  (Fachinhalte 0,84 bis 0,86), die kleinen springen um bis zu 0,4 (Praxis 0,34 bis 0,73). Gleich gut also, aber 27
+  bis 29 % billiger; deshalb gilt 50 und 400.
 - **Vorbehalt:** Die Goldlabels hat ebenfalls ein Sprachmodell vorgeschlagen, Claude. Ein LLM als Zuordner teilt
   womöglich dessen Sicht, und es kennt die Labelregeln. Die Gegenprobe mit dem Richter entfällt, weil Richter und
   Zuordner dasselbe Modell wären.
@@ -270,12 +275,12 @@ Bausteine gewinnen, kleine füllt das LLM oft falsch: In Querschnitt landeten 7 
    der Ranker.
 6. **Mögliche Vereinfachung:** BM25 + Model2Vec erreicht fast dasselbe (0,44 und 63 %, beim Richter gleichauf) in
    0,05 statt 0,30 s.
-7. **Das LLM ist besser, aber teuer.** 0,72 statt 0,43 auf den gelabelten Absätzen (D36), dafür hochgerechnet rund
-   29.000 Tokens je Kompendium. Deshalb ist es wählbar, nicht Standard.
+7. **Das LLM ist besser, aber teuer.** Rund 0,7 statt 0,43 auf den gelabelten Absätzen (0,66 bis 0,73 in vier
+   Läufen), dafür rund 29.000 Tokens und 11 s mehr je Kompendium. Deshalb ist es wählbar, nicht Standard.
 
 ## Das LLM als wählbare Strategie
 
-Das LLM ist das einzige gemessene Verfahren, das klar besser zuordnet: 0,72 statt 0,43 macro-F1 und 113 statt 201
+Das LLM ist das einzige gemessene Verfahren, das klar besser zuordnet: rund 0,7 statt 0,43 macro-F1 und 113 statt 201
 Fehlzuordnungen auf denselben Absätzen (D36, M12). Als Standard kommt es wegen der Kosten nicht in Frage. Seit D34
 steht es je Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und steht noch in keiner Version mit Tag.
 
@@ -300,7 +305,7 @@ einem Sprachmodell stammen.
 
 ## Grenzen und nächste Hebel
 
-Das Ziel macro-F1 0,70 erreicht nur das LLM mit 50 Absätzen je Aufruf (0,72, ein Lauf, M12); die lokalen Verfahren
+Das Ziel macro-F1 0,70 erreicht nur das LLM, und nur in manchen Läufen (0,66 bis 0,73, M5 und M12); die lokalen Verfahren
 bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kleine kaum:
 
 | Baustein | Gold-Absätze | F1 |

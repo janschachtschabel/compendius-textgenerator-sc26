@@ -1,0 +1,645 @@
+{
+ "zusammenfassung": {
+  "rule-based": {
+   "themen": 30,
+   "median_s": 1.35,
+   "p90_s": 1.88,
+   "mittel_s": 1.36,
+   "tokens": 0,
+   "llm_gefragt": 0,
+   "treffer_geprueft": 0
+  }
+ },
+ "laeufe": [
+  {
+   "thema": "Evolution",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.332,
+   "phasen_ms": {
+    "resolve": 19,
+    "corpus": 167,
+    "segment": 14,
+    "match": 510,
+    "synthesize": 616,
+    "assemble": 3
+   },
+   "titel": "Evolution",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Reformation",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 2.132,
+   "phasen_ms": {
+    "resolve": 51,
+    "corpus": 731,
+    "segment": 29,
+    "match": 447,
+    "synthesize": 867,
+    "assemble": 3
+   },
+   "titel": "Reformation",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Absolutismus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.89,
+   "phasen_ms": {
+    "resolve": 23,
+    "corpus": 907,
+    "segment": 28,
+    "match": 160,
+    "synthesize": 767,
+    "assemble": 2
+   },
+   "titel": "Absolutismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Ozonschicht",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.695,
+   "phasen_ms": {
+    "resolve": 8,
+    "corpus": 1100,
+    "segment": 18,
+    "match": 105,
+    "synthesize": 457,
+    "assemble": 3
+   },
+   "titel": "Ozonschicht",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Nervensystem",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.235,
+   "phasen_ms": {
+    "resolve": 5,
+    "corpus": 508,
+    "segment": 6,
+    "match": 163,
+    "synthesize": 548,
+    "assemble": 2
+   },
+   "titel": "Nervensystem",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Vulkanismus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.764,
+   "phasen_ms": {
+    "resolve": 5,
+    "corpus": 611,
+    "segment": 15,
+    "match": 260,
+    "synthesize": 867,
+    "assemble": 2
+   },
+   "titel": "Vulkanismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Menschenrechte",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.132,
+   "phasen_ms": {
+    "resolve": 30,
+    "corpus": 355,
+    "segment": 25,
+    "match": 240,
+    "synthesize": 475,
+    "assemble": 3
+   },
+   "titel": "Menschenrechte",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kalter Krieg",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.645,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 595,
+    "segment": 43,
+    "match": 196,
+    "synthesize": 802,
+    "assemble": 3
+   },
+   "titel": "Kalter Krieg",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Romantik",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.332,
+   "phasen_ms": {
+    "resolve": 25,
+    "corpus": 281,
+    "segment": 12,
+    "match": 241,
+    "synthesize": 768,
+    "assemble": 3
+   },
+   "titel": "Romantik",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Satz des Thales",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.689,
+   "phasen_ms": {
+    "resolve": 31,
+    "corpus": 651,
+    "segment": 24,
+    "match": 198,
+    "synthesize": 779,
+    "assemble": 2
+   },
+   "titel": "Satz des Thales",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Prozentrechnung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.057,
+   "phasen_ms": {
+    "resolve": 20,
+    "corpus": 257,
+    "segment": 7,
+    "match": 116,
+    "synthesize": 650,
+    "assemble": 3
+   },
+   "titel": "Prozent",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Wahrscheinlichkeit",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.49,
+   "phasen_ms": {
+    "resolve": 9,
+    "corpus": 528,
+    "segment": 7,
+    "match": 160,
+    "synthesize": 779,
+    "assemble": 2
+   },
+   "titel": "Wahrscheinlichkeit",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Säugetiere",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.419,
+   "phasen_ms": {
+    "resolve": 28,
+    "corpus": 658,
+    "segment": 14,
+    "match": 226,
+    "synthesize": 487,
+    "assemble": 2
+   },
+   "titel": "Säugetiere",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Periodensystem",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.458,
+   "phasen_ms": {
+    "resolve": 83,
+    "corpus": 444,
+    "segment": 14,
+    "match": 246,
+    "synthesize": 662,
+    "assemble": 5
+   },
+   "titel": "Periodensystem",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kernspaltung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.428,
+   "phasen_ms": {
+    "resolve": 21,
+    "corpus": 434,
+    "segment": 25,
+    "match": 271,
+    "synthesize": 671,
+    "assemble": 2
+   },
+   "titel": "Kernspaltung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Globalisierung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.561,
+   "phasen_ms": {
+    "resolve": 29,
+    "corpus": 355,
+    "segment": 21,
+    "match": 236,
+    "synthesize": 913,
+    "assemble": 2
+   },
+   "titel": "Globalisierung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Dreißigjähriger Krieg",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.733,
+   "phasen_ms": {
+    "resolve": 40,
+    "corpus": 610,
+    "segment": 16,
+    "match": 208,
+    "synthesize": 853,
+    "assemble": 2
+   },
+   "titel": "Dreißigjähriger Krieg",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Impressionismus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.108,
+   "phasen_ms": {
+    "resolve": 14,
+    "corpus": 385,
+    "segment": 16,
+    "match": 213,
+    "synthesize": 472,
+    "assemble": 3
+   },
+   "titel": "Impressionismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Schall",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.952,
+   "phasen_ms": {
+    "resolve": 8,
+    "corpus": 190,
+    "segment": 5,
+    "match": 199,
+    "synthesize": 541,
+    "assemble": 4
+   },
+   "titel": "Schall",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Genetik",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.115,
+   "phasen_ms": {
+    "resolve": 21,
+    "corpus": 204,
+    "segment": 9,
+    "match": 243,
+    "synthesize": 633,
+    "assemble": 3
+   },
+   "titel": "Genetik",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Biologie: Blatt",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.362,
+   "phasen_ms": {
+    "resolve": 335,
+    "corpus": 371,
+    "segment": 15,
+    "match": 242,
+    "synthesize": 394,
+    "assemble": 3
+   },
+   "titel": "Blatt (Pflanze)",
+   "methode": "disambiguation",
+   "sicher": false,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Chemie: Salz",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.109,
+   "phasen_ms": {
+    "resolve": 281,
+    "corpus": 163,
+    "segment": 9,
+    "match": 150,
+    "synthesize": 501,
+    "assemble": 2
+   },
+   "titel": "Salze",
+   "methode": "disambiguation",
+   "sicher": false,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Mathematik: Körper",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.419,
+   "phasen_ms": {
+    "resolve": 285,
+    "corpus": 214,
+    "segment": 9,
+    "match": 83,
+    "synthesize": 821,
+    "assemble": 2
+   },
+   "titel": "Körper (Geometrie)",
+   "methode": "disambiguation",
+   "sicher": false,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Musik: Stimme",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.487,
+   "phasen_ms": {
+    "resolve": 108,
+    "corpus": 61,
+    "segment": 5,
+    "match": 136,
+    "synthesize": 171,
+    "assemble": 3
+   },
+   "titel": "Stimme (Musik)",
+   "methode": "disambiguation",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Physik: Feder",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.293,
+   "phasen_ms": {
+    "resolve": 240,
+    "corpus": 529,
+    "segment": 8,
+    "match": 107,
+    "synthesize": 403,
+    "assemble": 2
+   },
+   "titel": "Feder",
+   "methode": "title",
+   "sicher": false,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Erdkunde: Becken",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.88,
+   "phasen_ms": {
+    "resolve": 136,
+    "corpus": 904,
+    "segment": 9,
+    "match": 234,
+    "synthesize": 589,
+    "assemble": 3
+   },
+   "titel": "Becken (Geomorphologie)",
+   "methode": "disambiguation",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Informatik: Speicher",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.039,
+   "phasen_ms": {
+    "resolve": 6,
+    "corpus": 204,
+    "segment": 7,
+    "match": 202,
+    "synthesize": 614,
+    "assemble": 3
+   },
+   "titel": "Speicher",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kunst: Perspektive",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.934,
+   "phasen_ms": {
+    "resolve": 13,
+    "corpus": 259,
+    "segment": 4,
+    "match": 161,
+    "synthesize": 490,
+    "assemble": 3
+   },
+   "titel": "Perspektive",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Sport: Ausdauer",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.117,
+   "phasen_ms": {
+    "resolve": 11,
+    "corpus": 561,
+    "segment": 12,
+    "match": 94,
+    "synthesize": 433,
+    "assemble": 2
+   },
+   "titel": "Ausdauer",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kreislauf des Blutes",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.026,
+   "phasen_ms": {
+    "resolve": 22,
+    "corpus": 321,
+    "segment": 13,
+    "match": 154,
+    "synthesize": 510,
+    "assemble": 2
+   },
+   "titel": "Blutkreislauf",
+   "methode": "variant",
+   "sicher": false,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  }
+ ]
+}

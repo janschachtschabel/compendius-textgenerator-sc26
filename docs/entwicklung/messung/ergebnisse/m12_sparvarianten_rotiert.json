@@ -1,0 +1,233 @@
+{
+ "wege": {
+  "rules": {
+   "macro_f1": 0.4328574988936452,
+   "micro_f1": 0.6446124763705103,
+   "assigned": 542,
+   "misassigned": 201,
+   "tokens": 0,
+   "llm_paragraphs": 0,
+   "fallback": 0,
+   "seconds": 3.6,
+   "seconds_per_topic": {
+    "Barockliteratur": 2.65,
+    "Bruchrechnung": 0.05,
+    "Demokratie": 0.14,
+    "Französische Revolution": 0.14,
+    "Klimawandel": 0.11,
+    "Optik": 0.1,
+    "Photosynthese": 0.12,
+    "Programmiersprache": 0.14,
+    "Säure-Base-Konzepte": 0.05,
+    "Sinfonie": 0.09
+   },
+   "rotated": true,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.68,
+     "support": 22,
+     "predicted": 28
+    },
+    "systematik": {
+     "f1": 0.6,
+     "support": 55,
+     "predicted": 45
+    },
+    "fachinhalte": {
+     "f1": 0.7012089810017272,
+     "support": 276,
+     "predicted": 303
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.4109589041095891,
+     "support": 38,
+     "predicted": 35
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.7322404371584699,
+     "support": 83,
+     "predicted": 100
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.26666666666666666,
+     "support": 11,
+     "predicted": 4
+    },
+    "bildung": {
+     "f1": 0.5,
+     "support": 8,
+     "predicted": 4
+    },
+    "regularien": {
+     "f1": 0.25,
+     "support": 2,
+     "predicted": 6
+    },
+    "praxis": {
+     "f1": 0.1875,
+     "support": 18,
+     "predicted": 14
+    },
+    "querschnitt": {
+     "f1": 0.0,
+     "support": 3,
+     "predicted": 3
+    }
+   }
+  },
+  "llm_25x700": {
+   "macro_f1": 0.7268667870383962,
+   "micro_f1": 0.8255159474671669,
+   "assigned": 550,
+   "misassigned": 110,
+   "tokens": 144758,
+   "llm_paragraphs": 597,
+   "fallback": 0,
+   "seconds": 78.3,
+   "seconds_per_topic": {
+    "Barockliteratur": 7.1,
+    "Bruchrechnung": 2.82,
+    "Demokratie": 9.03,
+    "Französische Revolution": 8.3,
+    "Klimawandel": 7.82,
+    "Optik": 7.88,
+    "Photosynthese": 13.83,
+    "Programmiersprache": 7.14,
+    "Säure-Base-Konzepte": 7.21,
+    "Sinfonie": 7.21
+   },
+   "rotated": true,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.9047619047619048,
+     "support": 22,
+     "predicted": 20
+    },
+    "systematik": {
+     "f1": 0.7521367521367521,
+     "support": 55,
+     "predicted": 62
+    },
+    "fachinhalte": {
+     "f1": 0.8649635036496351,
+     "support": 276,
+     "predicted": 272
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.735632183908046,
+     "support": 38,
+     "predicted": 49
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.8633879781420766,
+     "support": 83,
+     "predicted": 100
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.7999999999999999,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.6666666666666665,
+     "support": 8,
+     "predicted": 10
+    },
+    "regularien": {
+     "f1": 0.8,
+     "support": 2,
+     "predicted": 3
+    },
+    "praxis": {
+     "f1": 0.7272727272727272,
+     "support": 18,
+     "predicted": 15
+    },
+    "querschnitt": {
+     "f1": 0.15384615384615383,
+     "support": 3,
+     "predicted": 10
+    }
+   }
+  },
+  "llm_50x400": {
+   "macro_f1": 0.6936826555717887,
+   "micro_f1": 0.8198874296435271,
+   "assigned": 550,
+   "misassigned": 113,
+   "tokens": 103368,
+   "llm_paragraphs": 597,
+   "fallback": 0,
+   "seconds": 72.2,
+   "seconds_per_topic": {
+    "Barockliteratur": 7.8,
+    "Bruchrechnung": 4.42,
+    "Demokratie": 5.81,
+    "Französische Revolution": 10.81,
+    "Klimawandel": 4.89,
+    "Optik": 9.11,
+    "Photosynthese": 9.77,
+    "Programmiersprache": 4.88,
+    "Säure-Base-Konzepte": 3.6,
+    "Sinfonie": 11.13
+   },
+   "rotated": true,
+   "per_slot": {
+    "themendefinition": {
+     "f1": 0.76,
+     "support": 22,
+     "predicted": 28
+    },
+    "systematik": {
+     "f1": 0.761904761904762,
+     "support": 55,
+     "predicted": 50
+    },
+    "fachinhalte": {
+     "f1": 0.856637168141593,
+     "support": 276,
+     "predicted": 289
+    },
+    "gesellschaftlicher_kontext": {
+     "f1": 0.7848101265822786,
+     "support": 38,
+     "predicted": 41
+    },
+    "entwicklung_ausblick": {
+     "f1": 0.8415300546448088,
+     "support": 83,
+     "predicted": 100
+    },
+    "beruf_wirtschaft": {
+     "f1": 0.7999999999999999,
+     "support": 11,
+     "predicted": 9
+    },
+    "bildung": {
+     "f1": 0.7777777777777777,
+     "support": 8,
+     "predicted": 10
+    },
+    "regularien": {
+     "f1": 0.6666666666666666,
+     "support": 2,
+     "predicted": 4
+    },
+    "praxis": {
+     "f1": 0.6875000000000001,
+     "support": 18,
+     "predicted": 14
+    },
+    "querschnitt": {
+     "f1": 0.0,
+     "support": 3,
+     "predicted": 5
+    }
+   }
+  }
+ },
+ "zweifelsband": {
+  "angeboten": 0,
+  "alle": 0
+ }
+}

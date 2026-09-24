@@ -2,8 +2,8 @@
 
 Stand 24.09.2026 · neuer Dienst v2.0.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · nach v2.0.0 kamen hinzu: der LLM-Zuordner `matcher=llm` (D34), die
-schärfere Artikelwahl mit `article_choice=llm` (D35) und die günstigere LLM-Zuordnung (D36); eine Version mit Tag gibt
-es dafür noch nicht
+schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36) und `article_choice=llm` als
+Vorgabe, wo ein LLM konfiguriert ist (D37); eine Version mit Tag gibt es dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. und 24.09.2026 stehen mit Aufbau und
@@ -31,13 +31,15 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
   unsicher ist, holt ein LLM (`article_choice=llm`) weitere 5. Auf den zehn Goldthemen passen 6 % der Korpusartikel
   nicht zum Thema, beim alten Dienst 14 %. Die schwächste Quelle sind die Volltexttreffer je Baustein; mit
   `article_choice=llm` fallen die unpassenden heraus, und der Standard druckt 10 statt 26 Absätze aus unpassenden
-  Artikeln.
+  Artikeln. Das kostet im Median 1,7 s und rund 930 Tokens je Kompendium und ist Vorgabe, wo ein LLM konfiguriert
+  ist (D37).
 - **Zuordnung zu den zehn Inhaltsbausteinen des SC26-Templates** über eine Regel-Policy mit einfachen Rankern
   (`hybrid_light` mit Model2Vec). Alle Verfahren wurden im selben Ablauf gegen den Goldstandard des Dienstes
   gemessen. Unter den lokal laufenden erreicht der Standard den besten Wert (macro-F1 0,45, 67 % richtige
   Spitzenabsätze) in 0,3 s. Die schwereren Modelle der Testapp und ein Cross-Encoder als Umsortierung schneiden
-  schlechter ab. Ein LLM als Zuordner (`gpt-5.6-luna`) ist deutlich besser, 0,72 statt 0,43 auf den gelabelten
-  Absätzen, und ist seit D34 als `matcher=llm` wählbar; es kostet seit D36 rund 180 Tokens je Absatz.
+  schlechter ab. Ein LLM als Zuordner (`gpt-5.6-luna`) ist deutlich besser, rund 0,7 statt 0,43 auf den gelabelten
+  Absätzen (0,66 bis 0,73 in vier Läufen), und ist seit D34 als `matcher=llm` wählbar; es kostet seit D36 rund 180
+  Tokens je Absatz, und Teil 1 dauert im Median 12 statt 1,2 s.
 - **Sprachmodell optional.** Schalter lassen ein LLM Sätze auswählen oder Bausteine umformulieren, auf Wunsch auch
   mit eigenem, sichtbar markiertem Wissen; jeder Satz wird gegen seine Quelle geprüft, und ohne LLM läuft der
   Regelmodus weiter.
@@ -74,7 +76,7 @@ Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum
 | Kiwix-ZIM statt Live-API oder XML-Dump | direkt nutzbar, Suchindex eingebaut, keine Sperren, Klexikon und weitere Quellen im selben Format | 15 GB Speicher; Aktualität so, wie Kiwix die Archive baut |
 | Extraktiv als Standard, LLM optional | keine Verfälschung, jeder Satz prüfbar, schnell, ohne Tokens, reproduzierbar | liest sich weniger flüssig |
 | Template SC26 mit Markern | einheitliche Gliederung; Bausteine und Facetten lassen sich maschinell herauslösen | – |
-| Zuordnung über Regel-Policy mit `hybrid_light` und Model2Vec | bester Wert der lokal laufenden Verfahren auf dem Goldstandard, 0,3 s auf der CPU, ohne Tokens; ein LLM ordnet besser zu (0,72), kostet aber je Kompendium hochgerechnet rund 29.000 Tokens und ist deshalb nur wählbar (`matcher=llm`) | Ziel macro-F1 0,70 nicht erreicht |
+| Zuordnung über Regel-Policy mit `hybrid_light` und Model2Vec | bester Wert der lokal laufenden Verfahren auf dem Goldstandard, 0,3 s auf der CPU, ohne Tokens; ein LLM ordnet besser zu (rund 0,7), kostet aber je Kompendium rund 29.000 Tokens und 11 s und ist deshalb nur wählbar (`matcher=llm`) | Ziel macro-F1 0,70 nicht erreicht |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
 | Teil 3 zur Anfragezeit aus edu-sharing | aktuell bis auf einen Zwischenspeicher von einer Stunde, kein eigener Datenbestand | hängt an der Erreichbarkeit des Repositorys |

@@ -4,9 +4,9 @@
 
 ## Ausgangslage
 
-Die lokalen Verfahren der Zuordnung kommen am Goldstandard auf macro-F1 0,43 bis 0,45, das LLM auf 0,72
-([Messprotokoll](05-messprotokoll.md), M12). Bei der Artikelwahl holt das LLM die Fälle, in denen die Regeln unsicher
-sind (M9, M10). Beides kostet je Anfrage Tokens. Ein lokal trainiertes Modell könnte einen Teil dieses Abstands
+Die lokalen Verfahren der Zuordnung kommen am Goldstandard auf macro-F1 0,43 bis 0,45, das LLM auf rund 0,7 (0,66
+bis 0,73 in vier Läufen, [Messprotokoll](05-messprotokoll.md), M5 und M12). Bei der Artikelwahl holt das LLM die
+Fälle, in denen die Regeln unsicher sind (M9, M10). Beides kostet je Anfrage Tokens und Zeit (M13). Ein lokal trainiertes Modell könnte einen Teil dieses Abstands
 schließen, ohne Tokens zur Laufzeit. Dafür braucht es Trainingsdaten, und die fehlen: Der Goldstandard hat 603
 Absätze aus zehn Themen. Eine logistische Regression darauf kam am 18.09.2026 bei Kreuzvalidierung über die Themen auf
 höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gegen die Idee.
@@ -15,7 +15,7 @@ höchstens 0,35 (`03-matching.md`). Das spricht gegen die Datenmenge, nicht gege
 
 | Weg | Was entsteht | Aufwand | Wert |
 |---|---|---|---|
-| **LLM-Entscheidungen offline erzeugen** (Destillation) | Ein Stapellauf ruft den Dienst für eine Themenliste mit `matcher=llm` und `article_choice=llm` auf; die Entscheidungen des Modells sind die Labels. | keine Änderung am Dienst; rund 29.000 Tokens je Thema, 200 Themen also rund 6 Millionen, drei Tage des Tagesbudgets von 2 Millionen | Labels in der Güte des LLM (0,72 am Gold), ohne Nutzerdaten |
+| **LLM-Entscheidungen offline erzeugen** (Destillation) | Ein Stapellauf ruft den Dienst für eine Themenliste mit `matcher=llm` und `article_choice=llm` auf; die Entscheidungen des Modells sind die Labels. | keine Änderung am Dienst; rund 29.000 Tokens je Thema, 200 Themen also rund 6 Millionen, drei Tage des Tagesbudgets von 2 Millionen | Labels in der Güte des LLM (rund 0,7 am Gold), ohne Nutzerdaten |
 | **Protokoll im Betrieb** | je Kompendium die Entscheidungen, die der Dienst ohnehin trifft: Auflösung mit Kandidaten und `method`, Korpus mit Herkunft und Trefferprüfung, je Absatz Regelbaustein mit Score, LLM-Baustein mit Sicherheit, gedruckter Baustein | Schalter, Schreibpfad im `STATE_DIR`, Rotation, Export | nur dort neu, wo LLM-Schalter laufen; im Regelmodus protokolliert es, was die Regeln schon wissen |
 | **Redaktionelle Rückmeldung** | Unterschiede zwischen erzeugtem und redaktionell geprüftem Kompendium: Absatz behalten, gestrichen, verschoben | Absprache mit der Redaktion, wie geprüfte Texte zurückkommen; der Dienst liest `existing_markdown` mit `redaktionell-geprüft` schon heute | die einzigen Labels, die kein Modell liefern kann |
 
@@ -42,8 +42,10 @@ speichert und weitergibt, muss die Lizenz mitführen.
 
 ## Empfehlung
 
-1. **Jetzt kein Protokoll im Betrieb.** Solange die LLM-Schalter selten laufen, sammelt es vor allem
-   Regelentscheidungen.
+1. **Jetzt kein Protokoll der Zuordnung im Betrieb.** Solange `matcher=llm` selten läuft, sammelt es vor allem
+   Regelentscheidungen. Anders die Artikelwahl: Seit D37 benotet das LLM bei fast jeder Anfrage die Korpusartikel
+   und entscheidet unsichere Themen. Ein kleines Protokoll nur dafür (Thema, Fach, Kandidaten, Noten, Wahl) wäre der
+   billigste Anfang eines Datensatzes, mit dem sich die Trefferprüfung später lokal lernen ließe.
 2. **Erst ein Destillationsversuch offline:** 50 bis 100 Themen mit `matcher=llm` (1,5 bis 3 Millionen Tokens), ein
    Schülermodell darauf trainieren und am Goldstandard über die Themen hinweg messen. Erreicht es lokal 0,6 macro-F1
    oder mehr, lohnen Datenpaket, Trainingspaket und ein Protokoll für LLM-Anfragen.
