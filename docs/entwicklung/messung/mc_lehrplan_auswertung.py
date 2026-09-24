@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from noten import agreement
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -117,27 +118,6 @@ def report(topics: list[dict[str, Any]], notes: dict[tuple[str, str], dict[str, 
         )
     for stratum, counts in reasons.items():
         print(f"Gründe der Note 0, Schicht {stratum}: {dict(counts.most_common())}")
-
-
-def agreement(first: dict[tuple[str, str], dict[str, Any]], second: dict[tuple[str, str], dict[str, Any]]) -> None:
-    keys = sorted(first)
-    assert keys == sorted(second), "the two files must note the same elements"
-    pairs = [(first[key]["note"], second[key]["note"]) for key in keys]
-    observed = sum(a == b for a, b in pairs) / len(pairs)
-    first_counts, second_counts = Counter(a for a, _ in pairs), Counter(b for _, b in pairs)
-    expected = sum(first_counts[note] * second_counts[note] for note in (0, 1, 2)) / len(pairs) ** 2
-    kappa = (observed - expected) / (1 - expected)
-    same_fit = sum((a == 2) == (b == 2) for a, b in pairs) / len(pairs)
-    same_zero = sum((a == 0) == (b == 0) for a, b in pairs) / len(pairs)
-    print(
-        f"\nÜbereinstimmung auf {len(pairs)} Elementen: gleiche Note {observed * 100:.0f} % "
-        f"(Cohens Kappa {kappa:.2f}), einig über passend {same_fit * 100:.0f} %, "
-        f"einig über Note 0 {same_zero * 100:.0f} %"
-    )
-    print("Kreuztabelle (Zeile erste, Spalte zweite Note):")
-    table = Counter(pairs)
-    for a in (0, 1, 2):
-        print(f"  {a}: " + "  ".join(f"{table[(a, b)]:3}" for b in (0, 1, 2)))
 
 
 topics = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))

@@ -34,9 +34,10 @@ geschrieben.
 | Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 | Grafiken der Entscheidungsvorlage | `mc_grafiken.py <ergebnisse-ordner> <bilder-ordner>`, Ziel `docs/entwicklung/bilder` | venv dieses Projekts (liest das Gold aus `eval/artikelwahl`) | keins; reines SVG ohne Bibliothek |
 
-`alter_linker.py` (der Linker-Prompt des alten Dienstes, wortgleich) und `materialwege.py` (Entitäten-Rangfolge,
-LLM-Frage nach dem Artikel eines Materials) sind keine Skripte: Die Messungen importieren sie, damit mehrere Skripte
-denselben Prompt und dieselbe Rangfolge nutzen.
+`alter_linker.py` (der Linker-Prompt des alten Dienstes, wortgleich), `materialwege.py` (Entitäten-Rangfolge,
+LLM-Frage nach dem Artikel eines Materials) und `noten.py` (Übereinstimmung zweier Beurteiler) sind keine Skripte:
+Die Messungen importieren sie, damit mehrere Skripte denselben Prompt, dieselbe Rangfolge und dieselbe Rechnung
+nutzen.
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
