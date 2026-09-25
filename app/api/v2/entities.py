@@ -31,14 +31,8 @@ from app.domain.models import NodeInput, Source
 from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP
 from app.knowledge.entities import classify_entity, is_work
 from app.knowledge.identifiers import identifiers
-from app.knowledge.recognise import (
-    Mention,
-    load_spacy,
-    mentions_from_ner,
-    mentions_from_titles,
-    merge,
-    title_candidates,
-)
+from app.knowledge.linking import article_of
+from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
 from app.sources.wikidata.index import WikidataIndex
 from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArchive
@@ -183,27 +177,21 @@ def _ids(title: str, html: str, wikidata: WikidataIndex | None) -> EntityIds:
 
 
 def _link(archives: list[ZimArchive], mention: Mention, wikidata: WikidataIndex | None = None) -> EntityArticle | None:
-    """The article of this name, from the first archive that has it; a disambiguation page is no link.
-
-    A mention of the dictionary names its title already; a name of the model may stand in the genitive
-    ("Abraham Lincolns"), so its base form is tried after the text.
-    """
-    titles = [mention.title] if mention.title else title_candidates(mention.text)
-    for archive in archives:
-        article = next((found for title in titles if (found := archive.read(title)) is not None), None)
-        if article is None or archive.parse(article).is_disambiguation:
-            continue
-        source = archive.to_source(article, is_primary=False)
-        return EntityArticle(
-            title=source.title,
-            archive=archive.id,
-            project=source.project,
-            url=source.url,
-            lead=source.lead_text[:400],
-            kind=_article_kind(source),
-            ids=_ids(article.title, article.html, wikidata) if source.project == "wikipedia" else None,
-        )
-    return None
+    """The article of this name with its lead, kind and identifiers (``article_of``); a disambiguation page is none."""
+    found = article_of(archives, mention)
+    if found is None:
+        return None
+    archive, article = found
+    source = archive.to_source(article, is_primary=False)
+    return EntityArticle(
+        title=source.title,
+        archive=archive.id,
+        project=source.project,
+        url=source.url,
+        lead=source.lead_text[:400],
+        kind=_article_kind(source),
+        ids=_ids(article.title, article.html, wikidata) if source.project == "wikipedia" else None,
+    )
 
 
 def _recognise(

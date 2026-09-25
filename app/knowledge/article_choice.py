@@ -59,7 +59,9 @@ class ArticleChoiceJob:
 
 
 @dataclass
-class _Usage:
+class Usage:
+    """The calls and tokens of one LLM step, and the model and prompt of the call that answered."""
+
     calls: int = 0
     prompt_tokens: int = 0
     completion_tokens: int = 0
@@ -79,14 +81,14 @@ class _Usage:
 
 
 @dataclass
-class ArticleChoiceReport(_Usage):
+class ArticleChoiceReport(Usage):
     offered: int = 0  # candidates shown to the model; 0 when the rules were sure and it was not asked
     named: str | None = None  # a title the model named instead of choosing a candidate
     fallback: str | None = None  # why the model's answer did not decide
 
 
 @dataclass
-class HitCheckReport(_Usage):
+class HitCheckReport(Usage):
     checked: int = 0  # side articles in the corpus; 0 when there were none and the model was not asked
     rated: int = 0  # articles in the call: the whole corpus, so the model can compare
     dropped: list[str] = field(default_factory=list)  # titles of the side articles rated 0
@@ -130,7 +132,7 @@ class LlmArticleChooser:
         if isinstance(answer, LlmSkipped):
             report.fallback = answer.reason
             return None, None
-        data = _read_object(answer.text)
+        data = read_object(answer.text)
         if data is None:
             report.fallback = UNREADABLE
             return None, None
@@ -192,7 +194,7 @@ def rate_articles(
     if isinstance(answer, LlmSkipped):
         report.fallback = answer.reason
         return None
-    notes = _read_object(answer.text)
+    notes = read_object(answer.text)
     if notes is None:
         report.fallback = UNREADABLE
         return None
@@ -235,7 +237,8 @@ def choice_block(
     }
 
 
-def _read_object(text: str) -> dict[str, Any] | None:
+def read_object(text: str) -> dict[str, Any] | None:
+    """The first JSON object in a model's answer, or ``None`` when there is none."""
     match = _JSON.search(text)
     if match is None:
         return None
