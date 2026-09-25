@@ -2,7 +2,9 @@
 
 from pathlib import Path
 
-from app.sources.lehrplan.subjects import SubjectCatalog
+import pytest
+
+from app.sources.lehrplan.subjects import SubjectCatalog, UnknownSubjectError
 
 CONFIG = Path(__file__).resolve().parents[1] / "config" / "subjects.yaml"
 
@@ -48,3 +50,15 @@ def test_labels_name_known_subjects_keep_typed_names_and_leave_out_unknown_uris(
     catalog = SubjectCatalog.load(CONFIG)
     values = [DISCIPLINE + "080", "mathe", DISCIPLINE + "99999", "Astronomie", DISCIPLINE + "460"]
     assert catalog.labels_of(values) == ["Biologie", "Mathematik", "Astronomie", "Physik"]
+
+
+def test_check_refuses_an_unknown_subject_and_names_the_known_ones() -> None:
+    """A typo used to fall back on every subject without a word (review of 2026-09-25); now it is refused."""
+    catalog = SubjectCatalog.load(CONFIG)
+    for known in ("Physik", "physik", "460", DISCIPLINE + "460", "Mathe", None, ""):
+        catalog.check(known)
+    with pytest.raises(UnknownSubjectError) as refused:
+        catalog.check("Pysik")
+    assert refused.value.value == "Pysik" and len(refused.value.known) == len(catalog.subjects)
+    assert "Pysik" in str(refused.value) and "Physik" in str(refused.value)
+    SubjectCatalog.empty().check("Pysik")  # without subjects.yaml there is nothing to check against

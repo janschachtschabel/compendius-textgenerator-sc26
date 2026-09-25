@@ -4,6 +4,8 @@ A request names a subject by WLO discipline id, by the full vocabulary URI (``cc
 collection), by label or by an alias ("Mathe"). The catalog turns that into lowercase substrings
 of MEM's Schulfach labels; an unknown subject yields no terms, and the search then spans all subjects.
 It also names the words by which the topic resolution recognises a meaning of the subject (``kontext``).
+A subject a request names itself has to be in the catalog (``check``); the subjects a node or a collection
+brings may well be unknown and then count for nothing.
 """
 
 from __future__ import annotations
@@ -16,6 +18,17 @@ from typing import Any
 import yaml
 
 DISCIPLINE_PREFIX = "http://w3id.org/openeduhub/vocabs/discipline/"
+
+
+class UnknownSubjectError(ValueError):
+    """A subject the catalog does not know; ``known`` are the labels it does (the API answers 422)."""
+
+    def __init__(self, value: str, known: Sequence[str]) -> None:
+        self.value, self.known = value, list(known)
+        super().__init__(
+            f"Unbekanntes Fach: {value}. Bekannt sind {', '.join(self.known)}, jeweils auch als WLO-Kennung, "
+            "Vokabular-URI oder Kurzform (config/subjects.yaml)"
+        )
 
 
 @dataclass(frozen=True)
@@ -65,6 +78,11 @@ class SubjectCatalog:
         if key.startswith(DISCIPLINE_PREFIX):
             key = key[len(DISCIPLINE_PREFIX) :]
         return self._by_key.get(key.rstrip("/").casefold())
+
+    def check(self, value: str | None) -> None:
+        """Refuse a subject the catalog does not know; without a catalog (no subjects.yaml) nothing is checked."""
+        if value and self.subjects and self.resolve(value) is None:
+            raise UnknownSubjectError(value, [subject.label for subject in self.subjects])
 
     def mem_terms(self, value: str | None) -> list[str]:
         subject = self.resolve(value)

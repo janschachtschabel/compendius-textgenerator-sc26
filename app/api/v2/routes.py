@@ -19,6 +19,7 @@ from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
 from app.observability.metrics import record_compendium
 from app.service import PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
+from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
 from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.templates.manager import TemplateNotFoundError
@@ -206,7 +207,8 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection, or a node that is unknown or not public: 404. Repository unreachable: 502; a ``repository`` outside
+    collection, or a node that is unknown or not public: 404. A ``subject`` outside config/subjects.yaml, or a field
+    the request does not know: 422. Repository unreachable: 502; a ``repository`` outside
     the allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can
     be made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
     """
@@ -227,6 +229,8 @@ def generate_compendium(
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except UnknownMatcherError as exc:
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
+    except UnknownSubjectError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except PartsUnavailableError as exc:
         # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives
         log.warning("compendium request refused: %s", exc)

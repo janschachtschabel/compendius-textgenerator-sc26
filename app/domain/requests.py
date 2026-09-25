@@ -113,6 +113,7 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
     "balanced": {"article_choice": "llm", "matcher": "hybrid_light", **_VERBATIM},
     "best-quality": {"article_choice": "llm", "matcher": "llm", **_VERBATIM},
 }
+UNKNOWN_SUBJECT = "; one outside config/subjects.yaml is a 422 that lists the known subjects"
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 
@@ -170,7 +171,9 @@ class GenerateRequest(BaseModel):
         description="Parts to generate: world (part 1), curricula (part 2), collection (part 3, needs collection_id)",
     )
     subject: str | None = Field(
-        None, max_length=100, description="Subject for part 2: WLO discipline id, vocabulary URI, label or alias"
+        None,
+        max_length=100,
+        description="Subject for part 2: WLO discipline id, vocabulary URI, label or alias" + UNKNOWN_SUBJECT,
     )
     language: str = Field("de", pattern="^de$", description="Only 'de' today; any other value is a 422")
     template_id: str | None = Field(None, description="Template id; default from settings")

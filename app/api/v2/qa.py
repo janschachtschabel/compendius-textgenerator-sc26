@@ -31,6 +31,7 @@ from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.service import CompendiumService, PartsUnavailableError, TopicNotFoundError
+from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.synthesis.citations import without_markers
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.templates.manager import TemplateNotFoundError
@@ -72,6 +73,8 @@ def _part_one(service: CompendiumService, payload: QaRequest) -> Compendium:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except PartsUnavailableError as exc:
         raise HTTPException(status_code=503, detail=f"Teil 1 ist nicht erzeugbar: {exc}") from exc
+    except UnknownSubjectError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 def _text_of_compendium(compendium: Compendium) -> str:

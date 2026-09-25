@@ -12,7 +12,14 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.domain.models import NodeInput, Resolution
-from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP, ArticleChoice, Preset
+from app.domain.requests import (
+    NODE_ID_HELP,
+    NODE_ID_PATTERN,
+    REPOSITORY_HELP,
+    UNKNOWN_SUBJECT,
+    ArticleChoice,
+    Preset,
+)
 
 Method = Literal["rule-based", "parse-based", "models", "llm"]
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
@@ -43,7 +50,7 @@ class QaRequest(BaseModel):
         None,
         max_length=100,
         description="With topic or node_id: the subject that decides the article, as in a compendium request (WLO "
-        "discipline id, vocabulary URI, label or alias)",
+        "discipline id, vocabulary URI, label or alias)" + UNKNOWN_SUBJECT,
     )
     preset: Preset | None = Field(
         None,

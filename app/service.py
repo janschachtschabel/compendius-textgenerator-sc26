@@ -234,6 +234,7 @@ class CompendiumService:
         ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
         time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
         """
+        self.subjects.check(request.subject)  # before any reading: a typo would otherwise count for nothing
         timings: dict[str, int] = {}
         lap = _Stopwatch(timings).lap
 

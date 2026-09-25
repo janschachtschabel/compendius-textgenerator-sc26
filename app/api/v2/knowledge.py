@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Body, Depends, Request
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.api.deps import archives_for, corpus_for_topic, get_service, node_errors
@@ -21,9 +21,11 @@ from app.domain.requests import (
     NODE_ID_PATTERN,
     PRESETS,
     REPOSITORY_HELP,
+    UNKNOWN_SUBJECT,
     ArticleChoice,
     Preset,
 )
+from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.part import node_topic
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -45,7 +47,7 @@ class KnowledgeRequest(BaseModel):
         None,
         max_length=100,
         description="The subject that decides the article, as in a compendium request (WLO discipline id, vocabulary "
-        "URI, label or alias); default: one the topic names, else the subjects of node_id",
+        "URI, label or alias); default: one the topic names, else the subjects of node_id" + UNKNOWN_SUBJECT,
     )
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
     max_articles: int | None = Field(
@@ -224,6 +226,10 @@ def knowledge(
     alternatives instead of coming back empty; for a material without an article it asks for a topic.
     """
     service = get_service(request)
+    try:
+        service.subjects.check(payload.subject)
+    except UnknownSubjectError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     registry = archives_for(service.registry, payload.archives)
     info, node, derived = None, None, []
     if payload.node_id:

@@ -30,3 +30,11 @@ def test_an_unknown_field_is_a_422_that_names_it(client: TestClient, path: str, 
     answer = client.post(path, json={**body, "topik": "Optik"})
     assert answer.status_code == 422, answer.text
     assert [error["loc"] for error in answer.json()["detail"]] == [["body", "topik"]]
+
+
+@pytest.mark.parametrize("path", ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"])
+def test_an_unknown_subject_is_a_422_that_lists_the_known_ones(client: TestClient, path: str) -> None:
+    """Part 2 searched every subject and the article choice went on without one, and nothing said so."""
+    answer = client.post(path, json={"topic": "Optik", "subject": "Pysik"})
+    assert answer.status_code == 422, answer.text
+    assert "Pysik" in answer.json()["detail"] and "Physik" in answer.json()["detail"]
