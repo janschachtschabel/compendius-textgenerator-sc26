@@ -1,6 +1,6 @@
 # Messskripte zur Entwicklungsdokumentation
 
-Die Skripte zu den Messungen vom 23. und 24.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
+Die Skripte zu den Messungen vom 23. bis 25.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
 Entwicklungsrechner geschrieben: Archive unter `kompendium-test\data`, die venv dieses Projekts, die venv der Testapp
 und die venv des alten Dienstes. Pfade stehen am Anfang jedes Skripts. Wer auf dem Server misst, übergibt dessen
 Adresse als Argument; sie steht nicht im Repository. Der b-api-Schlüssel kommt aus `B_API_KEY` und wird nirgends
@@ -32,13 +32,14 @@ geschrieben.
 | M21 Artikelwahl echter Materialien | `mc_material_stichprobe.py <entwurf.yaml>` zieht die Stichprobe für `eval/materialwahl`, `mc_material_artikelwahl.py <out.json> [--ohne-llm]` misst, beide aus dem Projektordner | venv dieses Projekts | S4 mit dem Modell von `B_API_MODEL` (`gpt-6-luna`), rund 470 Tokens je Material; liest die Materialien anonym aus der WLO-Produktion |
 | M22 Lehrplanbezüge von Teil 2 | `mc_lehrplan_treffer.py <out.json> <bogen.json>` zieht die Stichprobe (den Bogen mit den Texten der Elemente außerhalb des Repositorys ablegen), `mc_lehrplan_auswertung.py <m22.json> <noten.yaml> [<zweite noten.yaml>]` rechnet, beide aus dem Projektordner | venv dieses Projekts, `lehrplan.db` in `STATE_DIR` | keins; das LLM bleibt aus |
 | M23 Kompendium aus Material-Metadaten | `mc_material_kompendium.py <out.json> <bogen.json>` baut je Material sechs Kompendien (den Bogen mit Beschreibungen und Artikelanfängen außerhalb des Repositorys ablegen), `mc_material_kompendium_auswertung.py <m23.json> <noten.yaml> [<zweite noten.yaml>]` rechnet Anteile, Precision, Recall und F1, beide aus dem Projektordner | venv dieses Projekts | `gpt-6-luna` für K0b, KL und KEa, zusammen 113.476 Tokens für 40 Materialien; liest die Materialien anonym aus der WLO-Produktion |
+| M24 Artikel eines Materials ohne LLM | `mc_material_embedding.py <modell> <out.json> [<einträge>]` läuft blockweise über alle Einträge der Wikipedia-ZIM, ohne Index auf der Platte (`<modell>`: das Model2Vec-Modell des Dienstes, im Image `/models/m2v`), `mc_material_embedding_auswertung.py <m24.json> <noten.yaml>` rechnet, beide aus dem Projektordner | venv dieses Projekts, rund 1 GB Arbeitsspeicher, ein Lauf rund 15 Minuten | keins; liest die Materialien anonym aus der WLO-Produktion |
 | Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 | Grafiken der Entscheidungsvorlage | `mc_grafiken.py <ergebnisse-ordner> <bilder-ordner>`, Ziel `docs/entwicklung/bilder` | venv dieses Projekts (liest das Gold aus `eval/artikelwahl`) | keins; reines SVG ohne Bibliothek |
 
 `alter_linker.py` (der Linker-Prompt des alten Dienstes, wortgleich), `materialwege.py` (Entitäten-Rangfolge,
-LLM-Frage nach dem Artikel eines Materials) und `noten.py` (Übereinstimmung zweier Beurteiler) sind keine Skripte:
-Die Messungen importieren sie, damit mehrere Skripte denselben Prompt, dieselbe Rangfolge und dieselbe Rechnung
-nutzen.
+LLM-Frage nach dem Artikel eines Materials), `noten.py` (Übereinstimmung zweier Beurteiler) und `artikelmengen.py`
+(Precision, Recall und F1 gedruckter Artikel gegen die passenden) sind keine Skripte: Die Messungen importieren sie,
+damit mehrere Skripte denselben Prompt, dieselbe Rangfolge und dieselbe Rechnung nutzen.
 
 Für den alten Dienst gilt: Mit seinem eigenen User-Agent wird er von Wikipedia abgewiesen (Szenario „wie
 ausgeliefert“). Für den besten Fall setzt man `PROJECT_NAME` auf einen Namen mit Kontaktadresse; der Code bleibt
@@ -120,6 +121,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m19_latenz.json`, `m19_latenz_2.json` | M19, zwei Läufe: je Aufruf Modell, Thema, Sekunden und Tokens des gleichzeitigen Latenzvergleichs |
 | `ergebnisse/m21_materialwahl.json` | M21, je Material die Artikel der fünf Wege und ob sie im Gold stehen; Titel und Entscheidungen, keine Beschreibungen |
 | `ergebnisse/m23_material_kompendium.json` | M23, je Material und Weg Status, Hauptartikel, gedruckte Absätze je Quellartikel, Bausteine, Länge, Teil 2, Sekunden und Tokens, dazu die Entitäten der Entitäten-Wege; Titel und Zahlen, keine Beschreibungen und Artikeltexte |
+| `ergebnisse/m24_material_embedding.json` | M24, je Material und Weg die ersten 20 Artikel mit ihrer Ähnlichkeit, die Ähnlichkeit der in M23 benoteten Artikel, der Hauptartikel von KL als Anker, ob ein Artikel mit ihm verlinkt ist und welche Wege von M23 ihn druckten, dazu die Laufzeiten; Titel und Zahlen, keine Beschreibungen und Artikeltexte |
 | `ergebnisse/m22_lehrplan_treffer.json` | M22, je Thema Stichwörter, Fachwörter und Elementzahlen beider Läufe, je Stichwort und Fundort, dazu die Stichprobe mit IRI, Schicht und Stichwort; keine Texte der Elemente |
 | `ergebnisse/m20_entitaeten_genitiv.json` | M20, dieselbe Form wie `m18_entitaeten_gnd.json`, gerechnet mit der Genitiv-Regel (D46) |
 | `ergebnisse/m15_bausteine_lokal.txt` | M15 lesbar: Kennzahlen je Strategie, F1 je Baustein neben den LLM-Läufen aus M12 |

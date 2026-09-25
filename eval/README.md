@@ -200,7 +200,8 @@ eines der sechs Kompendien Absätze gedruckt hat (603 Paare; 2 Thema des Materia
 1 verwandt, 0 unpassend). `kompendium_noten_zweit.yaml` sind die Noten eines zweiten Beurteilers für
 dieselben Paare. `docs/entwicklung/messung/mc_material_kompendium.py` baut die Kompendien,
 `mc_material_kompendium_auswertung.py` rechnet daraus die Anteile passender Absätze sowie Precision, Recall und F1;
-die Artikel mit Note 2 sind dabei zugleich die passenden, gegen die der Recall zählt.
+die Artikel mit Note 2 sind dabei zugleich die passenden, gegen die der Recall zählt. M24
+(`mc_material_embedding_auswertung.py`) misst an denselben Noten, ob Ähnlichkeit oder Verlinkung sie trennen.
 
 `lehrplan/treffer_noten.yaml` hält die Noten für die Stichprobe von M22: 175 Lehrplanelemente, die Teil 2
 zu den 20 normalen Themen ausgibt, je Element Thema, IRI und Note (2 gehört zum Thema, 1 berührt es,

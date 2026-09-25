@@ -1565,7 +1565,9 @@ API.
   LLM 17, Begriff 18, die Entitäten des alten Linkers als Korpus 11, die lokalen als Korpus 5; als Hauptartikel
   allein träfen die lokalen 14. F1 des Hauptartikels: Titel 0,20, Thema vom LLM 0,97, Begriff 0,94; bei gleichem
   Hauptartikel druckt der Knoten dieselben Absätze wie der Begriff. Auch zu Materialien ohne Thema entsteht heute ein
-  Kompendium.
+  Kompendium. Ohne LLM findet auch ein statisches Embedding den Artikel nicht (M24: Suche mit dem Modell des Dienstes
+  über alle 5,35 Mio. Archiveinträge, F1 höchstens 0,03); die Verlinkung mit dem Hauptartikel des LLM-Themas filtert
+  die Entitäten des alten Linkers (zusammen Recall 0,89 statt 0,67 bei gleichem F1).
 - **D46 (2026-09-24)** Entitäten: Ein Genitiv nennt seinen Artikel über die Grundform (`title_candidates` in
   `app/knowledge/recognise.py`). Nach einem Genitivartikel (*des*, *eines* …, ein Wort dazwischen) kommt die Grundform
   zuerst, sonst erst, wenn die wörtliche Form kein Titel ist; „-es“ vor „-s“ (*Reiches* → *Reich*). Ohne Artikel

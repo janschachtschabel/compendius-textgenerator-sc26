@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 24.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M23; Rohdaten und
+[Übersicht](README.md) · Stand 25.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M24; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -365,7 +365,7 @@ bleibt.
 
 ## Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge
 
-Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M23.
+Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M24.
 
 6. **Kompendium aus einem Material (`node_id` ohne `topic`):** Heute wird der Titel des Materials zum Thema. Echte
    Titel nennen oft Format oder Datum, deshalb wird das Kompendium selten brauchbar, das heißt: Mindestens die Hälfte
@@ -383,10 +383,17 @@ Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-m
 
    Mit dem Thema vom LLM trifft das Material den Hauptartikel so sicher wie ein Begriff, und bei gleichem
    Hauptartikel entsteht derselbe Text. Unscharf sind bei beiden die Nebenartikel: Rund ein Drittel passt nicht zum
-   Material. Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel. Dazu sollte der Dienst
-   kein Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu Materialien ohne Thema eines). Weitere
-   Verfahren für den Hauptartikel braucht es mit LLM nicht; lohnend wäre als Nächstes eine Messung der Nebenartikel,
-   die Begriffen wie Materialien hilft.
+   Material. Ohne LLM hilft auch ein Embedding nicht: Eine Suche mit dem Modell des Dienstes über alle 5,35 Mio.
+   Archiveinträge trifft den Hauptartikel mit F1 höchstens 0,03 (M24). Die Entitäten des alten Dienstes lassen sich
+   dagegen über die Verlinkung mit dem Hauptartikel des LLM-Themas filtern: zusammen Recall 0,89 statt 0,67 bei
+   gleichem F1 (0,51), für rund 1.700 Tokens mehr je Material.
+
+   Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel, oder der Dienst verlangt dort das
+   Thema vom Aufrufer. Dazu sollte der Dienst kein Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu
+   Materialien ohne Thema eines). Weitere Verfahren für den Hauptartikel braucht es mit LLM nicht. Die verlinkten
+   Entitäten des alten Dienstes lohnen nur, wenn mehrteilige Materialien breiter abgedeckt werden sollen. Bei den
+   Nebenartikeln entfernt das Weglassen unverlinkter ein Viertel der unpassenden; für den Rest fehlt noch ein
+   Verfahren.
 7. **Lehrplanbezüge (Teil 2, M22):** Rund 60 % der ausgegebenen Lehrplanelemente gehören zum Thema, 13 bis 19 %
    passen nicht. Das Fach kürzt Teil 2 um ein Drittel, hebt die Treffsicherheit aber kaum und verwirft ein Viertel
    der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach

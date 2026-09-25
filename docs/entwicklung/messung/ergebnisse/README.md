@@ -1,6 +1,6 @@
-# Ergebnisse der Messungen M1 bis M23
+# Ergebnisse der Messungen M1 bis M24
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. und 24.09.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 25.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
 [Entscheidungsvorlage](../../07-entscheidungsvorlage.md) in `docs/entwicklung/bilder/` zeichnet `mc_grafiken.py`:
@@ -37,6 +37,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M21 | Wie findet der Dienst den Artikel zu einem echten Material? | Titel als Thema 7 von 38, Entitäten 16, LLM aus Titel, Beschreibung und Schlagwörtern 34 (rund 470 Tokens, 2,8 s); Optionen offen | – | `m21_materialwahl.json` |
 | M22 | Gehören die Lehrplanelemente von Teil 2 zum Thema? | rund 60 % passen, 13 bis 19 % gar nicht, mit und ohne Fach fast gleich; das Fach kürzt Teil 2 um ein Drittel und verwirft ein Viertel der passenden Elemente; zwei Beurteiler einig bei 93 % (Kappa 0,89); Optionen offen | – | `m22_lehrplan_treffer.json` |
 | M23 | Wie gut wird ein Kompendium aus den Metadaten eines Materials, verglichen mit einem Begriff? | brauchbar (mindestens die Hälfte der gedruckten Absätze passt) bei 31 Materialien: Begriff 18, Knoten wie heute 5, mit `balanced` 10, Thema vom LLM 17, Entitäten wie im alten Dienst 11, lokale Entitäten 5; F1 des Hauptartikels und der Artikel: Begriff 0,94 und 0,45, Thema vom LLM 0,97 und 0,50, Knoten wie heute 0,20 und 0,10; zwei Beurteiler einig bei 91 % (Kappa 0,86); Optionen offen | – | `m23_material_kompendium.json` |
+| M24 | Findet ein statisches Embedding den Artikel eines Materials ohne LLM, und filtern Ähnlichkeit oder Verlinkung die Artikel? | Embedding-Suche mit dem Modell des Dienstes über alle 5,35 Mio. Archiveinträge: Hauptartikel-F1 höchstens 0,03 bei 31 Materialien (derselbe Weg mit dem Begriff 0,87, die Regeln 0,94); die Ähnlichkeit trennt passende von unpassenden Artikeln kaum (AUC 0,63 und 0,66); die Verlinkung mit dem Hauptartikel des LLM-Themas behält 56 bis 65 % der passenden Zusatzartikel der alten Entitäten und entfernt 85 bis 90 % der unpassenden; LLM-Thema mit den verlinkten Entitäten Recall 0,89 statt 0,67 bei F1 0,51 statt 0,50 | – | `m24_material_embedding.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

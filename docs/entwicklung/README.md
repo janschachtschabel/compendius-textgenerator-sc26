@@ -8,8 +8,8 @@ Standard der Zuordnung (D38), `matcher=llm` ohne Rückfall am Budget (D39), der 
 (D41); eine Version mit Tag gibt es dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
-Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. und 24.09.2026 stehen mit Aufbau und
-Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum und Quelle (`PLAN.md`,
+Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 25.09.2026 stehen mit Aufbau
+und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum und Quelle (`PLAN.md`,
 `eval/README.md`).
 
 ## Kurzfassung

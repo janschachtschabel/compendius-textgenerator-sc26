@@ -1,4 +1,4 @@
-# Messprotokoll (23. und 24.09.2026)
+# Messprotokoll (23. bis 25.09.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -1036,3 +1036,98 @@ sollen; sonst genügt D. Messen sollte man als Nächstes die Nebenartikel, denn 
 beim Begriff wie beim Material. Ein Material bringt mit Beschreibung und Schlagwörtern Kontext mit, den der Dienst
 beim Auswählen der Nebenartikel heute nicht nutzt. Rohdaten: `m23_material_kompendium.json`, Noten
 `eval/materialwahl/kompendium_noten.yaml` und `kompendium_noten_zweit.yaml`.
+
+## M24 Artikel eines Materials ohne LLM: statische Embeddings und Verlinkung (25.09.2026)
+
+**Aufbau:** Ohne LLM findet der Knoten-Eingang den Artikel eines Materials bisher schlecht: Hauptartikel-F1 0,20 mit
+dem Titel, höchstens 0,45 mit den lokalen Entitäten (M21, M23). M24 prüft, ob ein statisches Embedding das besser
+kann und ob Ähnlichkeit oder Verlinkung ohne LLM die Artikel der alten Entitäten und die Nebenartikel filtern. Das
+Modell ist das des Dienstes, `m2v-gte-256-edu` mit 256 Dimensionen. Ein Index über alle Artikel passte auf dem
+Entwicklungsrechner weder auf die Platte (4,6 GB frei) noch in den Speicher (2,4 GB frei). Deshalb läuft Stufe 1
+blockweise über alle 5,35 Mio. Einträge der Wikipedia-ZIM, bettet ihre Titel ein (eine Weiterleitung steht für ihr
+Ziel) und behält je Anfrage die nächsten; für diese Anfragen ist das dasselbe Ergebnis wie mit einem vollständigen
+Index (`mc_material_embedding.py`). Stufe 2 bettet Titel und Anfang (600 Zeichen) der 200 nächsten Artikel ein und
+rankt sie neu, ohne Begriffsklärungen. Die Material-Anfrage enthält, was das LLM in M21 und M23 las: Titel, Fächer,
+Schlagwörter und Beschreibung bis 1.500 Zeichen.
+
+| Weg | Anfrage | Kandidaten |
+|---|---|---|
+| D1 | Material | alle Titel des Archivs |
+| D1k | Material ohne Beschreibung | alle Titel des Archivs |
+| D2, D2k | wie D1 und D1k | die 200 nächsten, neu gerankt mit Titel und Anfang |
+| E | Material | die zehn lokalen Entitäten aus M23 (KEl), gerankt mit Titel und Anfang |
+| BD1, BD2 | der Begriff aus M23, zur Gegenprobe | wie D1 und D2 |
+
+Werte der 31 Materialien mit klarem Thema; jeder Weg antwortet, Precision, Recall und F1 sind also gleich
+(`mc_material_embedding_auswertung.py`):
+
+| Weg | Hauptartikel-F1 | akzeptiert unter den ersten 3, 10, 20 | passende Artikel aus M23 unter den ersten 10 |
+|---|---|---|---|
+| D1 Material, Titel | 0,00 | 0, 1, 2 | 3 % |
+| D1k ohne Beschreibung, Titel | 0,03 | 4, 7, 8 | 16 % |
+| D2 Material, Titel und Anfang | 0,03 | 1, 2, 3 | 3 % |
+| D2k ohne Beschreibung, Titel und Anfang | 0,00 | 2, 4, 5 | 10 % |
+| E lokale Entitäten, nach Ähnlichkeit | 0,45 | 19, 21, 21 | 38 % |
+| BD1 Begriff, Titel | 0,87 | 28, 28, 28 | 50 % |
+| BD2 Begriff, Titel und Anfang | 0,06 | 6, 10, 12 | 17 % |
+
+Zum Vergleich (M21, M23): Titel als Thema 0,20, lokale Entitäten nach Häufigkeit 0,42 und 0,45, Thema vom LLM 0,97,
+Begriff mit den Regeln 0,94. Die zweiten Noten ändern die letzte Spalte um höchstens drei Punkte.
+
+**Warum die Suche scheitert:** Ein statisches Embedding mittelt die Vektoren der Wortteile. Bei einem Material
+bestimmen Format- und Allerweltswörter den Mittelwert: „Zahnrad und Riemen - Experiment“ landet bei
+*Experimentalphysik*, ebenso der Versuch zum planckschen Wirkungsquantum. Lange Beschreibungen ziehen Titel mit
+seltenen Wortteilen an (*ProSiebenSat.1 Media* zur Batterie, ein Protein zum Blitzeis mit Windeln). Beim Begriff
+trifft der Titel meist genau, mit Gleichständen: *Mond Mond Mond* hat denselben Vektor wie *Mond*. Mit dem
+Artikelanfang gewinnen kurze Komposita (*Zahnradbremse* statt *Zahnrad*). Als Rangfolge der lokalen Entitäten (E)
+trifft die Ähnlichkeit so oft wie die Häufigkeit (14 von 31), unter den ersten drei steht der akzeptierte Artikel bei
+19. Die Entitäten enthalten ihn bei 21 von 31; mehr als 0,68 erreicht auf diesen Kandidaten auch ein besseres lokales
+Ranking nicht. Die zwei Materialien ohne Thema fallen über die Ähnlichkeit nicht auf: Ihr erster Treffer liegt bei
+0,67 bis 0,80, der Median der klaren bei 0,69 bis 0,76.
+
+**Ähnlichkeit als Filter:** Gemessen sind 599 der 603 in M23 benoteten Artikel; die vier übrigen sind
+Klexikon-Artikel, deren Titel in Wikipedia eine Begriffsklärung ist. Die Ähnlichkeit zum Material liegt im Mittel
+bei 0,49 (Note 0), 0,53 (Note 1) und 0,57 (Note 2); die AUC für passend gegen unpassend ist 0,63, mit den zweiten
+Noten 0,66 (0,5 wäre Zufall). Eine Schwelle, die 90 % der passenden behält, entfernt 22 % der unpassenden. Als
+Filter taugt die Ähnlichkeit nicht.
+
+**Verlinkung als Filter:** Anker ist der Hauptartikel des LLM-Themas (KL). Verlinkt heißt, der Anker verweist auf den
+Artikel oder der Artikel auf den Anker, Weiterleitungen aufgelöst. In Klammern die Werte mit den zweiten Noten:
+
+| Artikel | Anzahl | verlinkt: Note 2, Note 0 | nicht verlinkt: Note 2, Note 0 | nur verlinkte behalten |
+|---|---|---|---|---|
+| Zusatzartikel der alten Entitäten (KEa gedruckt, KL nicht) | 166 | 75: 32 %, 5 % | 91: 14 %, 38 % | behält 65 % (56 %) der passenden, entfernt 90 % (85 %) der unpassenden |
+| Nebenartikel des LLM-Themas (KL, ohne Hauptartikel) | 126 | 111: 19 %, 31 % | 15: 0 %, 73 % | behält alle passenden, entfernt 24 % (25 %) der unpassenden |
+
+Abgeschätzt wie die Vereinigung in M23 (Artikelebene, aus den gedruckten Artikeln, kein gebautes Kompendium), 31
+klare Materialien:
+
+| Artikel | Precision | Recall | F1 |
+|---|---|---|---|
+| Thema vom LLM (KL) | 0,47 (0,45) | 0,67 (0,66) | 0,50 (0,47) |
+| KL und alle Entitäten des alten Dienstes | 0,30 (0,30) | 0,96 (0,95) | 0,44 (0,44) |
+| KL und die mit seinem Hauptartikel verlinkten | 0,39 (0,37) | 0,89 (0,87) | 0,51 (0,48) |
+
+Die Verlinkung hält fast den ganzen Recall der alten Entitäten und kostet weniger Precision als die Vereinigung ohne
+Filter; F1 bleibt gleich. Bei den Nebenartikeln sind die meisten unpassenden verlinkte Unterartikel (31 % der 111
+verlinkten tragen Note 0), die 15 unverlinkten sind zu drei Vierteln unpassend. Unverlinkte wegzulassen entfernt ein
+Viertel der unpassenden Nebenartikel und hier keinen passenden.
+
+**Speicher und Geschwindigkeit:** Stufe 1 las die 5,35 Mio. Einträge (3,51 Mio. Artikel, 1,84 Mio. Weiterleitungen)
+in 36 s, bettete sie in 110 s ein und verglich sie in 14 s; ein Titelindex wäre auf diesem Rechner in rund
+zweieinhalb Minuten gebaut. Bei 256 Dimensionen hätte er 5,5 GB (float32), 2,7 GB (float16) oder 1,4 GB (int8), nur
+die Artikel 3,6, 1,8 oder 0,9 GB, dazu das Modell (322 MB, rund 1 GB im Speicher je Worker). Eine Suche ohne
+Näherungsindex braucht 4,5 ms je 100.000 Vektoren, 0,24 s über alle Einträge. Titel und Anfang zu lesen kostet 33 ms
+je Artikel (Stufe 2: 16.934 Artikel in gut 9 Minuten), für alle Artikel rund 32 Stunden auf einem Kern. Bei den
+gemessenen Trefferquoten lohnt keiner dieser Indizes. Ein Lauf dauerte 14 Minuten.
+
+**Ergebnis und Optionen (zu entscheiden):** Ohne LLM gibt es mit den gemessenen Mitteln keinen Weg, der den Artikel
+eines Materials verlässlich findet: Titel 0,20, lokale Entitäten 0,45, statische Embeddings höchstens 0,03. Ein
+stärkeres lokales Modell könnte höchstens die Kandidaten der lokalen Entitäten besser ordnen und bliebe unter 0,68.
+Für Knoten ohne `topic` in der Stufe `llm-free` bleibt der Titel wie heute (er trifft 5 von 31, nimmt bei 13 einen
+falschen Artikel und findet bei 13 keinen), oder der Dienst verlangt dort das Thema vom Aufrufer. Die Kombination
+aus LLM-Thema und den verlinkten Entitäten des alten Dienstes bringt Breite (Recall 0,89 statt 0,67) bei gleichem F1,
+für den Linker-Aufruf (1.680 Tokens, 10 s); ob sie sich lohnt, hängt davon ab, ob mehrteilige Materialien breiter
+abgedeckt werden sollen, und wäre im Ablauf des Dienstes mit neuen Noten zu messen. Bei den Nebenartikeln ist das
+Weglassen unverlinkter eine lokale Regel ohne Kosten; für die verlinkten Unterartikel braucht es ein stärkeres Signal
+als Ähnlichkeit oder Verlinkung. Rohdaten: `m24_material_embedding.json`.
