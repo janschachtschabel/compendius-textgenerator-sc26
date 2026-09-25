@@ -31,6 +31,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from artikelmengen import f1, set_scores
 from noten import agreement
 
 if sys.platform == "win32":
@@ -71,10 +72,6 @@ def ratio(values: list[float]) -> str:
     return f"{statistics.mean(values):.2f}" if values else "-"
 
 
-def f1(precision: float, recall: float) -> float:
-    return 2 * precision * recall / (precision + recall) if precision + recall else 0.0
-
-
 def pool(material: dict[str, Any], notes: Notes) -> set[str]:
     """The articles with note 2 that any way printed for this material: the fitting ones, as far as known."""
     return {
@@ -88,12 +85,7 @@ def pool(material: dict[str, Any], notes: Notes) -> set[str]:
 
 def article_scores(way: dict[str, Any], fitting: set[str]) -> tuple[float | None, float, float]:
     """Precision (None without a printed article), recall and F1 of the printed articles against the pool."""
-    titles = {row["titel"] for row in way["gedruckt"]} if way["status"] == "ok" else set()
-    if not titles:
-        return None, 0.0, 0.0
-    hits = len(titles & fitting)
-    precision, recall = hits / len(titles), hits / len(fitting)
-    return precision, recall, f1(precision, recall)
+    return set_scores({row["titel"] for row in way["gedruckt"]} if way["status"] == "ok" else set(), fitting)
 
 
 def together(material: dict[str, Any], names: tuple[str, ...]) -> dict[str, Any]:
