@@ -63,3 +63,19 @@ def test_the_harvest_loop_stops_cleanly_on_sigterm(state_dir: Path, monkeypatch:
     monkeypatch.setattr("app.cli_lehrplan.run_periodically", interrupted)
     assert main(["lehrplan", "harvest", "--loop"]) == 0  # a stopped container, not a traceback
     assert installed == ["sigterm"]
+
+
+def test_a_failed_harvest_is_retried_within_the_hour(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Without retry_after a MEM failure waited the whole LEHRPLAN_CHECK_INTERVAL of seven days, also on the first
+    start with no cache; the ZIM loop retries after an hour (review of 2026-09-25)."""
+    from datetime import timedelta
+
+    seen: dict[str, object] = {}
+    monkeypatch.setattr("app.cli_lehrplan.stop_on_sigterm", lambda: None)
+
+    def record(*args: object, **kwargs: object) -> None:
+        seen.update(kwargs)
+
+    monkeypatch.setattr("app.cli_lehrplan.run_periodically", record)
+    assert main(["lehrplan", "harvest", "--loop"]) == 0
+    assert seen["retry_after"] == timedelta(hours=1)

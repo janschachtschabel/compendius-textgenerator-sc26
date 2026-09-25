@@ -6,6 +6,7 @@ import argparse
 import json
 import sys
 from dataclasses import asdict
+from datetime import timedelta
 from pathlib import Path
 
 from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
@@ -19,6 +20,9 @@ from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
 
 POLL_SECONDS = 60
+# A failed harvest (MEM unreachable, also on a first start without a cache) tries again after an hour rather than
+# after LEHRPLAN_CHECK_INTERVAL, as the ZIM loop does
+RETRY_AFTER_FAILURE = timedelta(hours=1)
 
 
 def _harvest(settings: Settings) -> LehrplanHarvest:
@@ -87,6 +91,7 @@ def cmd_harvest(args: argparse.Namespace) -> int:
             run_periodically(
                 task,
                 parse_interval(settings.lehrplan_check_interval),
+                retry_after=RETRY_AFTER_FAILURE,
                 poll_s=POLL_SECONDS,
                 trigger_file=Path(settings.state_dir) / TRIGGER_FILE,
             )
