@@ -13,9 +13,13 @@ from __future__ import annotations
 import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from app.domain.models import Citation, SectionStatus
 from app.synthesis.citations import marker_numbers
+
+if TYPE_CHECKING:
+    from app.templates.schema import Template
 
 SECTION_RE = re.compile(
     r"### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ ]+)"
@@ -27,6 +31,25 @@ ROW_RE = re.compile(
     r"\| (?P<snippet>[^|]*) \|$",
     re.MULTILINE,
 )
+
+
+class UnknownSectionsError(ValueError):
+    """Names in ``regenerate_sections`` that are no block of the template; the API answers 422 with the known ones."""
+
+    def __init__(self, unknown: Sequence[str], known: Sequence[str]) -> None:
+        self.unknown, self.known = list(unknown), list(known)
+        super().__init__(
+            f"Unbekannte Bausteine in regenerate_sections: {', '.join(self.unknown)}. Das Template kennt "
+            f"{', '.join(self.known)}"
+        )
+
+
+def check_names(regenerate_sections: Sequence[str] | None, template: Template) -> None:
+    """Refuse a name that is no block id of the template: it used to change nothing without a word."""
+    ids = {slot.id for slot in template.slots}
+    unknown = [name for name in regenerate_sections or () if name not in ids]
+    if unknown:
+        raise UnknownSectionsError(unknown, [f"{slot.id} ({slot.slot})" for slot in template.slots])
 
 
 @dataclass(frozen=True)

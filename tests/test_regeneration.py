@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import re
 
+import pytest
+
+from app.compose.regeneration import UnknownSectionsError
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 
@@ -57,6 +60,17 @@ def test_regenerate_sections_names_the_blocks_that_change(service: CompendiumSer
     # Blocks the earlier document left out (empty ones) have nothing to keep and are made anew as well
     assert "sc26_3" in second.audit.regenerated
     assert not set(content) & set(second.audit.regenerated)
+
+
+def test_a_name_that_is_no_block_of_the_template_is_refused(service: CompendiumService) -> None:
+    """It used to change nothing, without a word; a slot key is not the id either (review of 2026-09-25)."""
+    request = GenerateRequest(
+        topic="Optik", existing_markdown="# Optik", regenerate_sections=["sc26_3", "themendefinition", "sc26_99"]
+    )
+    with pytest.raises(UnknownSectionsError) as refused:
+        service.generate(request)
+    assert refused.value.unknown == ["themendefinition", "sc26_99"]
+    assert "sc26_1 (themendefinition)" in str(refused.value) and "sc26_13" in str(refused.value)
 
 
 def test_without_a_previous_text_everything_is_new(service: CompendiumService) -> None:

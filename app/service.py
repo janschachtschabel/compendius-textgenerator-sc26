@@ -14,7 +14,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from app.compose.assembler import build_frontmatter, render_markdown
-from app.compose.regeneration import PreservedSection, parse_document, to_keep
+from app.compose.regeneration import PreservedSection, check_names, parse_document, to_keep
 from app.domain.models import (
     AuditReport,
     Chunk,
@@ -239,6 +239,7 @@ class CompendiumService:
         lap = _Stopwatch(timings).lap
 
         template = self.templates.get(request.template_id or self.settings.template_default)
+        check_names(request.regenerate_sections, template)
         if request.empty_slot_policy:
             template = template.model_copy(update={"empty_slot_policy": request.empty_slot_policy})
         lexicon = self.lexicon.with_template(template)

@@ -207,7 +207,9 @@ class GenerateRequest(BaseModel):
     )
     regenerate_sections: list[str] | None = Field(
         None,
-        description="With an earlier compendium: only these blocks are made anew, every other one is kept",
+        description="With an earlier compendium (existing_markdown): only these blocks are made anew, every other "
+        "one is kept. Blocks are named by their id, as the markers of the document name them (sc26_3); a name the "
+        "template does not have is a 422 that lists its blocks, and so is the field without existing_markdown",
     )
     facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
     frontmatter_in_markdown: bool = Field(
@@ -247,6 +249,8 @@ class GenerateRequest(BaseModel):
             raise ValueError("topic, collection_id oder node_id ist erforderlich")
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
+        if self.regenerate_sections is not None and not self.existing_markdown:
+            raise ValueError("regenerate_sections gilt für existing_markdown; ohne den früheren Text bleibt nichts")
         # Without a collection part 3 drops out (as with the default parts); it must not be the only part
         if not self.collection_id and not {"world", "curricula"} & set(self.parts):
             raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")

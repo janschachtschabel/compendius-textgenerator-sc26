@@ -14,6 +14,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.limits import rate_limited
+from app.compose.regeneration import UnknownSectionsError
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
@@ -207,10 +208,11 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection, or a node that is unknown or not public: 404. A ``subject`` outside config/subjects.yaml, or a field
-    the request does not know: 422. Repository unreachable: 502; a ``repository`` outside
-    the allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can
-    be made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
+    collection, or a node that is unknown or not public: 404. A ``subject`` outside
+    config/subjects.yaml, a block in ``regenerate_sections`` the template does not have, or a field the request
+    does not know: 422. Repository unreachable: 502; a ``repository`` outside the allowlist: 422; a ``node_id``
+    with neither ``repository`` nor a configured one: 503. No requested part can be made at all - part 3 without
+    ``EDU_SHARING_BASE_URL``, for instance: 503.
     """
     service = get_service(request)
     try:
@@ -229,7 +231,7 @@ def generate_compendium(
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except UnknownMatcherError as exc:
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
-    except UnknownSubjectError as exc:
+    except (UnknownSubjectError, UnknownSectionsError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except PartsUnavailableError as exc:
         # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives

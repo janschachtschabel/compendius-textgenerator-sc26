@@ -38,3 +38,12 @@ def test_an_unknown_subject_is_a_422_that_lists_the_known_ones(client: TestClien
     answer = client.post(path, json={"topic": "Optik", "subject": "Pysik"})
     assert answer.status_code == 422, answer.text
     assert "Pysik" in answer.json()["detail"] and "Physik" in answer.json()["detail"]
+
+
+def test_blocks_to_make_anew_need_the_earlier_text_and_names_the_template_knows(client: TestClient) -> None:
+    alone = client.post("/api/v2/compendium", json={"topic": "Optik", "regenerate_sections": ["sc26_3"]})
+    assert alone.status_code == 422 and "existing_markdown" in alone.text
+    body = {"topic": "Optik", "existing_markdown": "# Optik", "regenerate_sections": ["themendefinition"]}
+    unknown = client.post("/api/v2/compendium", json=body)
+    assert unknown.status_code == 422, unknown.text
+    assert "themendefinition" in unknown.json()["detail"] and "sc26_1" in unknown.json()["detail"]
