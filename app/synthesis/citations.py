@@ -43,6 +43,9 @@ _COMMENT_RE = re.compile(r"<!--.*?-->|<!--|-->", re.DOTALL)
 # along because the request allowed that (enrichment=model-knowledge, docs/umbau.md U4).
 CONCLUSION = "Schlussfolgerung"
 MODEL_KNOWLEDGE = "Modellwissen"
+# What a reader of the rendered text sees behind a sentence of model knowledge (D56, Jan): the comment around it is
+# invisible once the markdown is rendered, and a sentence without a number looks like any other then
+MODEL_KNOWLEDGE_LABEL = "[Modellwissen]"
 
 
 def opening_marker(grade: str) -> str:
@@ -70,9 +73,10 @@ def without_markers(text: str) -> str:
     The markers belong to the compendium: every sentence of part 1 ends with at least one, and they
     sit inside the block text, not in the markdown around it. Anything built *from* that text reads
     them as words - on 2026-09-21 the question generator built one around a marker, asking what an
-    evidence number consists of. Single and grouped markers go, and the space they leave with them.
+    evidence number consists of. Single and grouped markers go, and the space they leave with them - and so does
+    the label of model knowledge (D56), which is apparatus of the same kind.
     """
-    text = _MULTI_MARKER_RE.sub("", _MARKER_RE.sub("", text))
+    text = _MULTI_MARKER_RE.sub("", _MARKER_RE.sub("", text.replace(MODEL_KNOWLEDGE_LABEL, "")))
     text = re.sub(r"[ \t]+([.,;:!?])", r"\1", text)
     text = re.sub(r"[ \t]{2,}", " ", text)
     return re.sub(r"[ \t]+($|\n)", r"\1", text).strip()
@@ -148,10 +152,14 @@ def _units(paragraph: str) -> list[str]:
 
 
 def _as_marked(sentence: str, grade: str) -> str:
-    """The sentence without its numbers inside a parseable block: a marker that proves nothing must not stay."""
+    """The sentence without its numbers inside a parseable block: a marker that proves nothing must not stay.
+
+    Model knowledge also carries a visible label inside the block (D56); a conclusion does not.
+    """
     # Removing a number can join "-" and "->" into a comment delimiter, so comments are stripped once more.
     plain = re.sub(r"\s+([.!?,;:…])", r"\1", collapse(_COMMENT_RE.sub(" ", _MARKER_RE.sub("", sentence))))
-    return f"{opening_marker(grade)}{plain}{END_MARKER}"
+    label = f" {MODEL_KNOWLEDGE_LABEL}" if grade == MODEL_KNOWLEDGE else ""
+    return f"{opening_marker(grade)}{plain}{label}{END_MARKER}"
 
 
 def _split_claims(text: str) -> list[str]:

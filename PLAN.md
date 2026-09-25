@@ -1666,6 +1666,15 @@ API.
   sich ab, jeder Satz kommt einmal dran, bevor einer zweimal gefragt wird, Glossar-Nachbarn und Akteure füllen nur auf.
   Die Antwort bleibt der ganze Satz. `count` bleibt eine Obergrenze, aber `note` nennt jetzt, wie viele Paare der Text
   hergab. `parse-based` bleibt vorerst wählbar; welche Stufen bleiben, entscheidet Jan nach der Messung (M30).
+- **D56 (2026-09-26)** Modellwissen sichtbar und nur als Sachaussage (Jan: sichtbare Kennzeichnung, „falls dies möglich
+  ist ja“; Schärfung des Prompts freigegeben). Ein Satz mit Modellwissen endet im Text sichtbar mit `[Modellwissen]`,
+  innerhalb des Blocks `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->`, damit wer die Blöcke liest Satz und
+  Kennzeichen zusammen bekommt; der Hinweis im Frontmatter nennt den Zusatz, und `without_markers` (etwa für `/qa`)
+  nimmt ihn wie die Belegnummern heraus. Eine Schlussfolgerung (`LLM_UNSUPPORTED_SENTENCES=mark`) bleibt unsichtbar
+  gekennzeichnet; danach war nicht gefragt. Der Prompt `section_enrichment` v2 verlangt eine konkrete, überprüfbare
+  Sachaussage, die in den Belegen fehlt, und verbietet Sätze über Text, Baustein, Kompendium, Unterricht oder
+  Lehrkräfte, Transfer-, Bedeutungs- und Bewertungsfloskeln sowie Zusammenfassungen; fällt dem Modell keine Sachaussage
+  ein, ergänzt es nichts. Gemessen in M31.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

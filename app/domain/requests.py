@@ -78,8 +78,9 @@ ENRICHMENT_HELP = (
     "Whether the writing LLM may add knowledge of its own beyond the sources. Default: the profile's: "
     "model-knowledge in best-quality-generated, sources-only in the others.\n\n"
     "- **sources-only**: every sentence has to be covered by its evidence; anything else is dropped.\n"
-    "- **model-knowledge**: the model may add knowledge of its own; such sentences carry no citation number, are "
-    "marked in the text as Evidenzgrad=Modellwissen and counted per block.\n\n"
+    "- **model-knowledge**: the model may add knowledge of its own - a checkable fact or nothing (prompt "
+    "section_enrichment v2, D56); such sentences carry no citation number, end with the visible label "
+    "[Modellwissen] (Evidenzgrad=Modellwissen in the markup) and are counted per block.\n\n"
     "Needs generation llm or llm-fast; with rule-based generation, or without a usable b-api, the answer reports "
     "sources-only."
 )
@@ -103,10 +104,10 @@ PRESET_HELP = (
     "about 14 s and 26 000 tokens, about 170 per paragraph. Topics of more than 200 paragraphs take a second round "
     "of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it.\n"
     "- **best-quality-generated**: best-quality plus the LLM writing every block (generation llm), which may add "
-    "knowledge of its own, marked as Evidenzgrad=Modellwissen and without a citation number (enrichment "
-    "model-knowledge). For text people read directly; about 24 s and 35 000 tokens. Two blind judges preferred its "
-    "text in 11 of 12 ratings (readability 4.0 instead of 2.5 of 5), but two thirds of the added model knowledge are "
-    "filler sentences, about 12 per topic (M28).\n\n"
+    "knowledge of its own, labelled [Modellwissen] and without a citation number (enrichment model-knowledge). "
+    "For text people read directly; about 24 s and 35 000 tokens. Two blind judges preferred its text in 11 of 12 "
+    "ratings (readability 4.0 instead of 2.5 of 5); under the first prompt two thirds of the added model knowledge "
+    "were filler sentences (M28), the second asks for a checkable fact or nothing (D56).\n\n"
     "When the b-api is not available for now, the LLM steps fall back to the rules and audit.llm says why."
 )
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)

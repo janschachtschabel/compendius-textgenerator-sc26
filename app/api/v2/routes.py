@@ -73,10 +73,11 @@ EXAMPLES = {
         "summary": "Profil best-quality-generated: alles mit dem LLM, der Text ergänzt und lesbar formuliert",
         "description": (
             "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
-            "ergänzen (enrichment model-knowledge); solche Sätze tragen keine Belegnummer und stehen als "
-            "Evidenzgrad=Modellwissen im Text. Für Texte, die Menschen direkt lesen; rund 24 s und 35.000 Tokens "
-            "(M27). Zwei Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; zwei Drittel des "
-            "ergänzten Modellwissens sind aber Füllsätze (M28). Einzeln gesetzte Schalter gehen dem preset vor."
+            "ergänzen (enrichment model-knowledge); solche Sätze tragen keine Belegnummer und enden sichtbar mit "
+            "[Modellwissen]. Für Texte, die Menschen direkt lesen; rund 24 s und 35.000 Tokens (M27). Zwei "
+            "Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; unter dem ersten Prompt waren zwei "
+            "Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts "
+            "(D56). Einzeln gesetzte Schalter gehen dem preset vor."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "best-quality-generated"},
     },

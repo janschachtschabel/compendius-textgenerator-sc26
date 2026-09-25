@@ -343,7 +343,7 @@ Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.
 | `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 rund 1,6 s, keine Tokens; QA-Paare aus den Regeln über den spaCy-Parse (D55) |
 | `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,45 wie `llm-free`, rund 3,4 s und 900 Tokens; QA-Paare aus den zwei kleinen Modellen im Image, ohne LLM (D55) |
 | `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,70, rund 14 s und 26.000 Tokens, rund 170 je Absatz; QA-Paare vom LLM, 68 bis 74 von 80 mangelfrei (M29) |
-| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, gekennzeichnet als Evidenzgrad=Modellwissen | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; zwei Drittel des Modellwissens sind Füllsätze (M28) |
+| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, sichtbar gekennzeichnet mit `[Modellwissen]` | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; unter dem ersten Prompt waren zwei Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts (D56) |
 
 Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M29; Zeiten für Teil 1 und 2 auf dem
 Entwicklungsrechner). Die Tabelle der Schalter unten nennt noch Messungen mit `gpt-5.6-luna`; mit `gpt-6-luna` ist die
@@ -438,9 +438,13 @@ alles andere wird verworfen und im Audit gezählt (`dropped_sentences`, `unsuppo
 Modellantwort werden entfernt, damit sie keine Marker des Dokuments fälschen kann.
 
 Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte Sätze werden nicht verworfen,
-sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet. Es schreibt dann ein anderer
-Prompt (`section_enrichment`, im Frontmatter unter `llm.prompts` nachlesbar), der eigenes Fachwissen erlaubt,
-aber ohne Belegnummer verlangt und höchstens jeden dritten Satz. Ein Baustein braucht weiterhin mindestens
+sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet und enden sichtbar mit
+`[Modellwissen]` — der Kommentar allein verschwindet, sobald das Markdown gerendert ist (D56). Es schreibt dann
+ein anderer Prompt (`section_enrichment`, im Frontmatter unter `llm.prompts` nachlesbar), der eigenes Fachwissen
+erlaubt, aber ohne Belegnummer verlangt und höchstens jeden dritten Satz. Seit Version 2 nur als prüfbare
+Sachaussage — ein Fakt, ein Zusammenhang, ein Beispiel, eine Zahl — oder gar nicht: Unter Version 1 nannten zwei
+Gutachter zwei Drittel des Modellwissens Füllsätze, Aussagen über den Baustein oder den Unterricht und
+Transferfloskeln (M28). Ein Baustein braucht weiterhin mindestens
 einen belegten Satz, sonst bleibt er regelbasiert. Die Antwort sagt es an drei Stellen: `enrichment` im
 Kompendium und im Frontmatter, `frontmatter.llm.enrichment` mit Satzzahl und Hinweis, `audit.llm.generation`
 mit `enrichment` und `marked_sentences`, je Baustein `sections[].llm.marked_sentences`. Die KI-Kennzeichnung

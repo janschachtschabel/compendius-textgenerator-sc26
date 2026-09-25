@@ -217,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         choices=["sources-only", "model-knowledge"],
         help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze "
-        "stehen im Text als Evidenzgrad=Modellwissen und brauchen --generation llm oder llm-fast",
+        "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast",
     )
     gen.add_argument("--length", type=int, default=12_000)
     gen.add_argument("--facets-visible", action="store_true")

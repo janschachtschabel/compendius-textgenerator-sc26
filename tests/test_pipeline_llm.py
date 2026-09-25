@@ -18,6 +18,7 @@ from app.llm.client import BApiClient, LlmError
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService, LlmNotConfiguredError
+from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from tests.test_llm_client import BASE, KEY, FakeBApi
 
 EVIDENCE_RE = re.compile(r"^\[(\d+)\] \((.+?) › (.+?)\) (.+)$", re.MULTILINE)
@@ -336,6 +337,8 @@ def test_enrichment_marks_model_knowledge_in_the_text_and_reports_it(
     )
     assert result.enrichment == "model-knowledge"
     assert "<!-- f: Evidenzgrad=Modellwissen -->" in result.markdown
+    assert MODEL_KNOWLEDGE_LABEL in result.markdown, "D56: visible in the rendered text, not only in a comment"
+    assert MODEL_KNOWLEDGE_LABEL in result.frontmatter["llm"]["enrichment"]["hinweis"]
     assert "Evidenzgrad=Schlussfolgerung" not in result.markdown
     llm_sections = [s for s in result.sections if s.status is SectionStatus.LLM]
     assert llm_sections and all(s.llm is not None and s.llm["marked_sentences"] >= 1 for s in llm_sections)

@@ -55,16 +55,24 @@ SECTION_SYNTHESIS = Prompt(
 # so the frontmatter says which of the two wrote a block instead of only that the prompt changed.
 SECTION_ENRICHMENT = Prompt(
     id="section_enrichment",
-    version=1,  # v1 (2026-09-20): the model may add its own knowledge, but only without an evidence number
+    # v1 (2026-09-20): the model may add its own knowledge, but only without an evidence number.
+    # v2 (2026-09-26, D56): only a checkable fact or nothing - two blind judges called two thirds of the model
+    # knowledge of v1 fillers, sentences about the block or the lesson and transfer phrases (M28).
+    version=2,
     system=(
         "Du formulierst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Grundlage sind die "
         "nummerierten Belege aus der Anfrage. Jeder Satz, der aus einem Beleg stammt, endet vor dem Satzzeichen mit "
         "mindestens einer Belegnummer in eckigen Klammern, zum Beispiel: Licht breitet sich geradlinig aus [2]. "
-        "Du darfst darüber hinaus gesichertes eigenes Fachwissen ergänzen, wenn es den Baustein verständlicher oder "
-        "vollständiger macht. Solche Sätze schreibst du ohne jede Belegnummer — sie werden im Ergebnis als "
-        "Modellwissen gekennzeichnet. Setze niemals eine Nummer an einen Satz, den der Beleg nicht hergibt, und "
-        "ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt überwiegend belegt: Ergänze höchstens "
-        "einen von drei Sätzen aus eigenem Wissen. Nenne nur Nummern, die in den Belegen vorkommen. "
+        "Du darfst darüber hinaus gesichertes eigenes Fachwissen ergänzen, aber nur als konkrete, überprüfbare "
+        "Sachaussage zum Thema, die in den Belegen fehlt: ein Fakt, ein Zusammenhang, ein Beispiel, eine Zahl, ein "
+        "Fachbegriff. Solche Sätze schreibst du ohne jede Belegnummer — sie werden im Ergebnis als Modellwissen "
+        "gekennzeichnet. Ergänze keine Sätze über den Text, den Baustein, das Kompendium, den Unterricht oder die "
+        "Lehrkräfte (etwa „Der Baustein behandelt …“, „Im Unterricht lässt sich …“), keine Transfer-, Bedeutungs- "
+        "oder Bewertungsfloskeln (etwa „Als Transferprinzip lässt sich ableiten …“, „Das zeigt, wie wichtig …“) und "
+        "keine Zusammenfassungen oder Überleitungen. Fällt dir keine solche Sachaussage ein, ergänze nichts: Ein "
+        "Baustein ohne Modellwissen ist ein guter Baustein. Setze niemals eine Nummer an einen Satz, den der Beleg "
+        "nicht hergibt, und ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt überwiegend belegt: "
+        "Ergänze höchstens einen von drei Sätzen aus eigenem Wissen. Nenne nur Nummern, die in den Belegen vorkommen. "
         "Schreibe zusammenhängende Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine "
         "Einleitungs- oder Schlussfloskeln, keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. "
         "Die Angaben zu Aufgabe, Inhalt und Abgrenzung des Bausteins steuern nur deine Auswahl: Gib sie nicht wieder "

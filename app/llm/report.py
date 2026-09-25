@@ -8,6 +8,7 @@ from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, ch
 from app.knowledge.node_article import NodeArticleReport
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
+from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import LlmReport
 
@@ -16,8 +17,8 @@ NOTHING_CONTRIBUTED = (
     "Regelmodus verwendet"
 )
 MODEL_KNOWLEDGE_NOTE = (
-    "Sätze mit Evidenzgrad=Modellwissen stammen aus dem Wissen des Sprachmodells, nicht aus den "
-    "aufgeführten Quellen, und sind nicht belegt."
+    f"Sätze mit dem Zusatz {MODEL_KNOWLEDGE_LABEL} (im Markup Evidenzgrad=Modellwissen) stammen aus dem Wissen des "
+    "Sprachmodells, nicht aus den aufgeführten Quellen, und sind nicht belegt."
 )
 
 

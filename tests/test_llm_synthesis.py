@@ -15,6 +15,7 @@ from app.synthesis.citations import (
     CONCLUSION,
     CONCLUSION_OPEN,
     MODEL_KNOWLEDGE,
+    MODEL_KNOWLEDGE_LABEL,
     MODEL_KNOWLEDGE_OPEN,
     drop_unsupported,
     opening_marker,
@@ -410,6 +411,38 @@ def test_enrichment_marks_model_knowledge_instead_of_dropping_it() -> None:
     assert result.marked_sentences == 1 and result.prompt == get_prompt("section_enrichment").tag
 
 
+def test_model_knowledge_is_marked_visibly_inside_its_block_and_a_conclusion_is_not() -> None:
+    """D56 (Jan): a reader of the rendered text sees which sentence no source covers - the comment alone hid it.
+
+    The label stands inside the marked block, so whatever parses the blocks keeps the sentence and its label
+    together. A conclusion (LLM_UNSUPPORTED_SENTENCES=mark) stays as it was: nobody asked for it to show.
+    """
+    answer = "Licht breitet sich geradlinig aus [1]. Linsen bündeln Licht an ihren Grenzflächen."
+    for marked, failed in (
+        verify_citations(answer, {1}, mark=MODEL_KNOWLEDGE),
+        drop_unsupported(
+            "Gesellschaftliche Debatten prägen die politische Bewertung [1].", EVIDENCE, mark=MODEL_KNOWLEDGE
+        ),
+    ):
+        assert failed == 1 and f" {MODEL_KNOWLEDGE_LABEL}{END_MARKER}" in marked, marked
+    concluded, _ = verify_citations(answer, {1}, mark=CONCLUSION)
+    assert CONCLUSION_OPEN in concluded and MODEL_KNOWLEDGE_LABEL not in concluded
+
+
+def test_the_enrichment_prompt_asks_for_facts_and_forbids_the_fillers_of_m28() -> None:
+    """D56: two judges called two thirds of the model knowledge of v1 fillers (M28) - sentences about the block,
+    the compendium or the lesson, and transfer phrases. v2 asks for a checkable fact or nothing."""
+    prompt = get_prompt("section_enrichment")
+    assert prompt.version == 2
+    for rule in (
+        "überprüfbare Sachaussage",
+        "Baustein, das Kompendium, den Unterricht",
+        "Transferprinzip",
+        "ergänze nichts",
+    ):
+        assert rule in prompt.system, rule
+
+
 def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> None:
     answer = (
         "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
@@ -448,3 +481,4 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
     )
     assert without_markers("Beides gilt [1, 2] und mehr [3; 4].") == "Beides gilt und mehr."
     assert without_markers("Ohne Nummern bleibt alles.") == "Ohne Nummern bleibt alles."
+    assert without_markers(f"Linsen bündeln Licht. {MODEL_KNOWLEDGE_LABEL} Mehr.") == "Linsen bündeln Licht. Mehr."
