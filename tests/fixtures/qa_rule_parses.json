@@ -678,6 +678,22 @@
     ["m", " ", "NOUN", "NN", "nk", 5, "m", "Gender=Masc"],
     ["ü.", "", "PRON", "PIS", "pd", 2, "ü.", "Case=Dat|Gender=Neut|Number=Sing|PronType=Ind"]
    ]
+  },
+  "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung.": {
+   "ents": [],
+   "tokens": [
+    ["Daneben", " ", "ADV", "PROAV", "mo", 1, "daneben", ""],
+    ["sind", " ", "AUX", "VAFIN", "ROOT", 1, "sein", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 4, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["nichtlineare", " ", "ADJ", "ADJA", "nk", 4, "nichtlinear", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Optik", " ", "NOUN", "NN", "sb", 1, "Optik", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["und", " ", "CCONJ", "KON", "cd", 4, "und", ""],
+    ["die", " ", "DET", "ART", "nk", 7, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Quantenoptik", " ", "NOUN", "NN", "cj", 5, "Quantenoptik", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 7, "von", ""],
+    ["Bedeutung", "", "NOUN", "NN", "nk", 8, "Bedeutung", "Case=Dat|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
   }
  }
 }

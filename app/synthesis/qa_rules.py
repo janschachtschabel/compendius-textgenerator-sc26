@@ -127,7 +127,12 @@ def template_questions(sentence: str, doc: Any) -> list[Question]:
     definition = _DEFINITION.match(sentence)
     if definition and not questions:
         term = definition.group("term")
-        if term.split()[0].lower() not in _FUNCTION_WORDS | _ARTICLES and not unclear(term):
+        named = sentence[: definition.end("term")]  # "Ein Vulkan", or "Daneben", which is no noun at all
+        if (
+            term.split()[0].lower() not in _FUNCTION_WORDS | _ARTICLES
+            and not unclear(term)
+            and _is_noun_phrase(named, doc)
+        ):
             if _names_person(term, doc):
                 verb = definition.group("verb") or "ist"
                 questions.append(Question("Definition", f"Wer {verb} {term}?"))

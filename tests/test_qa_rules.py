@@ -240,6 +240,8 @@ def test_a_person_is_defined_with_wer() -> None:
 
 
 def test_no_definition_without_a_noun_in_front_or_an_article_behind_the_verb() -> None:
+    """The image smoke test caught "Was versteht man unter Daneben?": German capitalises the adverb at the start."""
+    assert templated("Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung.") == []
     assert templated("Das war eine lange Mauer mit einem Graben.") == []
     assert templated("Der Rotor ist leicht und schnell.") == []
     assert templated("Das Konzept beschreibt die Herstellung von Gütern und behandelt die Pflege von Daten.") == []
