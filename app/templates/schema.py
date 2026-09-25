@@ -7,6 +7,7 @@ field here carries its own explanation; ``/docs`` shows nothing else about them.
 
 from __future__ import annotations
 
+import re
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -80,11 +81,27 @@ class TemplateSlot(BaseModel):
     def is_generated(self) -> bool:
         return self.generator != ""
 
+    @field_validator("heading_patterns")
+    @classmethod
+    def _patterns_compile(cls, patterns: list[str]) -> list[str]:
+        # The lexicon compiles them for every compendium; a broken one used to be stored and then answer every
+        # request with the template with a 500 (review 2026-09-25)
+        for pattern in patterns:
+            try:
+                re.compile(pattern, re.IGNORECASE)
+            except re.error as exc:
+                raise ValueError(f"kein gültiger regulärer Ausdruck: {pattern!r} ({exc})") from exc
+        return patterns
+
 
 class Template(BaseModel):
     """The building blocks of part 1, in the order they appear in the finished text."""
 
-    id: str = Field(description="Identifies the template; the same id in the path and in the body when saving")
+    id: str = Field(
+        pattern=r"^[\w-]{1,80}$",
+        description="Identifies the template; the same id in the path and in the body when saving. Letters, digits, "
+        "underscore and hyphen: the id names the file the template is stored in",
+    )
     version: int = Field(1, description="Counted up on every save; not to be set by the caller")
     name: str = Field(description="Readable name, shown in the template list")
     description: str = Field("", description="What this template is for")

@@ -85,3 +85,21 @@ def test_without_the_token_nothing_can_be_written(client: TestClient) -> None:
 
 def test_without_a_configured_token_the_write_paths_do_not_exist(without_token: TestClient) -> None:
     assert without_token.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH).status_code == 404
+
+
+def test_a_heading_pattern_that_is_no_regular_expression_is_refused(client: TestClient) -> None:
+    """It used to be stored, and every compendium with the template answered 500 when the lexicon compiled it."""
+    broken = {**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "heading_patterns": ["Praxis", "("]}]}
+    answer = client.put("/api/v2/templates/mein", json=broken, headers=AUTH)
+    assert answer.status_code == 422 and "heading_patterns" in answer.text
+
+
+def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:
+    from pydantic import ValidationError
+
+    from app.templates.schema import Template
+
+    for bad in ("../x", "a/b", "a.b", ""):
+        with pytest.raises(ValidationError):
+            Template(id=bad, name="x", slots=TEMPLATE["slots"])
+    assert Template(id="mein_Template-2", name="x", slots=TEMPLATE["slots"]).id == "mein_Template-2"
