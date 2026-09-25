@@ -401,10 +401,16 @@ class CompendiumService:
         return self.collections
 
     def _knowledge(self, collection_id: str, sources: list[Source], deadline: Deadline | None) -> dict[str, Any]:
-        """Add the reusable materials of the knowledge collection to the corpus; failures go to the audit."""
+        """Add the reusable materials of the knowledge collection to the corpus.
+
+        An unknown collection is refused as an unknown ``collection_id`` is (404); a repository that fails only goes
+        to the audit, since the compendium stands without the materials.
+        """
         try:
             expired = (lambda: deadline.remaining() <= 0) if deadline is not None else None
             result = self._collections_or_fail().knowledge_sources(collection_id, expired=expired)
+        except CollectionNotFoundError:
+            raise
         except EduSharingError as exc:
             log.warning("knowledge collection %s not readable: %s", collection_id, exc)
             return {"collection_id": collection_id, "error": str(exc), "sources": 0}

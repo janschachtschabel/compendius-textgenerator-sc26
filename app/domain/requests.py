@@ -161,7 +161,10 @@ class GenerateRequest(BaseModel):
         "add context words, its subjects count, all alike, where no other is given",
     )
     knowledge_collection_id: str | None = Field(
-        None, pattern=NODE_ID_PATTERN, description="Collection whose reusable materials feed part 1 as sources"
+        None,
+        pattern=NODE_ID_PATTERN,
+        description="Collection whose reusable materials feed part 1 as sources; an unknown one is a 404, as for "
+        "collection_id, while a failing repository only shows in audit.knowledge",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)

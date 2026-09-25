@@ -62,6 +62,14 @@ def test_unknown_collection_is_reported(with_collections: CompendiumService) -> 
         with_collections.generate(GenerateRequest(collection_id=UNKNOWN))
 
 
+def test_an_unknown_knowledge_collection_is_reported_as_an_unknown_collection_is(
+    with_collections: CompendiumService,
+) -> None:
+    """It gave a compendium without it and the error only in the audit (review of 2026-09-25)."""
+    with pytest.raises(CollectionNotFoundError):
+        with_collections.generate(GenerateRequest(topic="Optik", knowledge_collection_id=UNKNOWN, parts=["world"]))
+
+
 def test_request_needs_a_topic_or_a_valid_collection_id() -> None:
     with pytest.raises(ValidationError):
         GenerateRequest()

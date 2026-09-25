@@ -331,6 +331,12 @@ def test_part_three_alone_asks_the_llm_nothing_about_a_material(
     assert fake.bodies == [], "part 3 needs no article; the rules name the topic"
 
 
+def test_an_unknown_knowledge_collection_is_a_404_as_an_unknown_collection_is(client: TestClient) -> None:
+    body = {"topic": "Optik", "knowledge_collection_id": UNKNOWN, "parts": ["world"]}
+    answer = client.post("/api/v2/compendium", json=body)
+    assert answer.status_code == 404 and UNKNOWN in answer.text
+
+
 def test_a_collection_without_a_configured_repository_is_named_not_hidden(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:
