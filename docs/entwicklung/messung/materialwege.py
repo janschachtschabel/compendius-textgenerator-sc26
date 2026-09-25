@@ -10,8 +10,6 @@ import json
 import re
 from typing import Any
 
-from app.api.v2.entities import _link  # the endpoint's own linking
-from app.knowledge.recognise import mentions_from_titles, merge
 from app.llm.client import BApiClient
 
 TEXT_CHARS = 2000  # of the description, as the entities text of node input caps it far above
@@ -42,6 +40,10 @@ def canonical(archive: Any, titles: list[str]) -> set[str]:
 
 
 def entity_ranking(service: Any, title: str, description: str, keywords: list[str]) -> list[tuple[str, float]]:
+    # imported here: they load the API and the recogniser, which a measurement without entities (M24) does not need
+    from app.api.v2.entities import _link  # the endpoint's own linking
+    from app.knowledge.recognise import mentions_from_titles, merge
+
     text = f"{title}\n{description[:TEXT_CHARS]}"
     keys = {keyword.casefold() for keyword in keywords}
     scores: dict[str, float] = {}
