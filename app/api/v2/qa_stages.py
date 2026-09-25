@@ -15,6 +15,7 @@ from collections.abc import Callable, Sequence
 from fastapi import HTTPException, Request
 
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, MAX_TEXT_CHARS, QaRequest
+from app.domain.models import NodeInput
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.synthesis.facets import bildungsstufe_facet
@@ -23,7 +24,9 @@ from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pai
 from app.synthesis.qa_parse import parse_based_pairs
 
 
-def from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
+def from_models(
+    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+) -> tuple[list[QaPair] | None, str]:
     """The pairs of the two small models, or ``None`` and the reason the templates have to do it."""
     settings = request.app.state.settings
     models = load_qa_models(settings.qg_model_path, settings.qa_model_path)
@@ -41,8 +44,13 @@ def from_models(request: Request, text: str, payload: QaRequest) -> tuple[list[Q
     return pairs, ""
 
 
-def from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
-    """The model's pairs, or ``None`` and the reason the templates have to do it."""
+def from_llm(
+    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+) -> tuple[list[QaPair] | None, str]:
+    """The model's pairs, or ``None`` and the reason the templates have to do it.
+
+    A node's title and keywords point the model at what the material is about (D47).
+    """
     service = request.app.state.service
     llm = service.llm if service is not None else None
     if llm is None:
@@ -58,13 +66,17 @@ def from_llm(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPa
         level_property=LEVEL_PROPERTY if payload.levels else None,
         level_values=payload.levels,
         deadline=Deadline(service.settings.request_timeout_s),
+        focus_title=node.title if node is not None else None,
+        focus_terms=node.keywords if node is not None else (),
     )
     if pairs is None:
         return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"
     return pairs, ""
 
 
-def from_parse(request: Request, text: str, payload: QaRequest) -> tuple[list[QaPair] | None, str]:
+def from_parse(
+    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+) -> tuple[list[QaPair] | None, str]:
     """The pairs of the dependency parse, or ``None`` and the reason the templates have to do it."""
     nlp = load_spacy(request.app.state.settings.spacy_model)
     if nlp is None:
@@ -87,34 +99,55 @@ def levels_from(request: Request, levels: Sequence[str]) -> list[str]:
     They are refused by name rather than bent onto a neighbour, because a made-up level would travel on
     the pairs into a service that does not know it.
     """
-    service = request.app.state.service
-    declaration = service.facets.facets.get(LEVEL_PROPERTY) if service is not None else None
-    if declaration is None or not declaration.values:
+    declared = _declared_levels(request)
+    if not declared:
         raise HTTPException(
             status_code=422,
             detail=f"Stufenvokabular {LEVEL_PROPERTY} ist nicht konfiguriert (config/facets.yaml)",
         )
-    mapped: list[str] = []
-    unknown: list[str] = []
-    for level in levels:
-        value = bildungsstufe_facet(level)
-        if value is not None and value in declaration.values:
-            mapped.append(value)
-        else:
-            unknown.append(level)
+    mapped, unknown = _mapped(levels, declared)
     if unknown:
         raise HTTPException(
             status_code=422,
             detail=(
                 f"Unbekannte Stufen: {', '.join(unknown)}. "
-                f"Erlaubt sind {', '.join(declaration.values)} sowie ihre Bezeichnungen und URIs "
+                f"Erlaubt sind {', '.join(declared)} sowie ihre Bezeichnungen und URIs "
                 f"aus dem Vokabular {LEVEL_PROPERTY}"
             ),
         )
     return list(dict.fromkeys(mapped))
 
 
+def node_levels(request: Request, contexts: Sequence[str]) -> list[str]:
+    """The project's own values for the levels of a node (D47); one without a counterpart is left out, not refused.
+
+    Unlike ``levels_from`` nobody chose these: the node carries them, and "Förderschule" there must not fail the
+    request that did not ask for levels.
+    """
+    declared = _declared_levels(request)
+    return list(dict.fromkeys(_mapped(contexts, declared)[0])) if declared else []
+
+
+def _declared_levels(request: Request) -> list[str]:
+    service = request.app.state.service
+    declaration = service.facets.facets.get(LEVEL_PROPERTY) if service is not None else None
+    return list(declaration.values) if declaration is not None and declaration.values else []
+
+
+def _mapped(levels: Sequence[str], declared: Sequence[str]) -> tuple[list[str], list[str]]:
+    """The levels as the project's own values, and those that have none."""
+    mapped: list[str] = []
+    unknown: list[str] = []
+    for level in levels:
+        value = bildungsstufe_facet(level)
+        if value is not None and value in declared:
+            mapped.append(value)
+        else:
+            unknown.append(level)
+    return mapped, unknown
+
+
 # The stages that can refuse, by the ``method`` that asks for them. rule-based is not here: it is what
-# the endpoint falls back to, so it has no reason to be dispatched.
-Stage = Callable[[Request, str, QaRequest], tuple[list[QaPair] | None, str]]
+# the endpoint falls back to, so it has no reason to be dispatched. Each hears the node the text came from.
+Stage = Callable[[Request, str, QaRequest, NodeInput | None], tuple[list[QaPair] | None, str]]
 STAGES: dict[str, Stage] = {"parse-based": from_parse, "models": from_models, "llm": from_llm}

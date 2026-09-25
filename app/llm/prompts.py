@@ -190,7 +190,9 @@ NODE_TOPIC_WITH_TOPIC = Prompt(
 
 QA_PAIRS = Prompt(
     id="qa_pairs",
-    version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
+    # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
+    # v3 (2026-09-25): an optional focus on the material a node names (D47); without a node the text is v2's
+    version=3,
     system=(
         "Du schreibst Frage-Antwort-Paare zu einem Text für Lehrkräfte auf Deutsch. Stütze jede Antwort "
         "ausschließlich auf den Text und erfinde nichts hinzu. Schreibe je Zeile genau ein Paar in der Form "
@@ -198,7 +200,7 @@ QA_PAIRS = Prompt(
         "Aufzählungszeichen, keine weiteren Zeilen. Die Fragen sollen "
         "unterschiedliche Stellen des Textes abdecken."
     ),
-    user=("Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}"),
+    user="Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}{focus}",
 )
 
 PROMPTS: dict[str, Prompt] = {

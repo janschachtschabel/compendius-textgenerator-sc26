@@ -26,7 +26,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, Method, Pair, QaRequest, QaResponse
-from app.api.v2.qa_stages import STAGES, levels_from
+from app.api.v2.qa_stages import STAGES, levels_from, node_levels
 from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
@@ -182,9 +182,15 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
 
     method: Method = "rule-based"
     notes: list[str] = []
+    if node is not None and payload.method == "llm" and not payload.levels:
+        # Only the llm stage assigns levels; the others would only report the node's levels as lost (D47)
+        inherited = node_levels(request, node.educational_contexts)
+        if inherited:
+            payload = payload.model_copy(update={"levels": inherited})
+            notes.append(f"Stufen aus dem Knoten: {', '.join(inherited)}")
     pairs: list[QaPair] | None = None
     if payload.method in STAGES:
-        pairs, reason = STAGES[payload.method](request, text, payload)
+        pairs, reason = STAGES[payload.method](request, text, payload, node)
         if pairs is None:
             log.info("QA fell back to the templates: %s", reason)
             notes.append(reason)

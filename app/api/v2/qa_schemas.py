@@ -56,7 +56,9 @@ class QaRequest(BaseModel):
         "Written as the Bildungsstufe vocabulary writes it - the label (Sekundarstufe I), an alternative label "
         "(Sekundarstufe 1) or the concept URI - or as config/facets.yaml writes it (Elementar, Primar, Sek I, "
         "Sek II, Hochschule, Berufliche Bildung, Erwachsenenbildung). Only the llm stage can assign one; the "
-        "other stages return the pairs without a level and say so in note",
+        "other stages return the pairs without a level and say so in note. With node_id and the llm stage, the "
+        "levels of the node count when none are sent (those without a counterpart left out), and its title and "
+        "keywords become the focus of the questions (D47); note says so",
     )
 
     @model_validator(mode="after")

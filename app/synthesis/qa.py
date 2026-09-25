@@ -15,6 +15,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
+from app.knowledge.node_article import FORMAT_WORDS
 from app.knowledge.segmentation import split_sentences
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
@@ -25,6 +26,7 @@ from app.llm.prompts import get_prompt
 log = logging.getLogger(__name__)
 
 MIN_SENTENCE_CHARS = 30
+MAX_FOCUS_TERMS = 12  # keywords of a material named as the focus of the pairs
 TOKENS_PER_PAIR = 80
 MIN_OUTPUT_TOKENS, MAX_OUTPUT_TOKENS = 300, 3000
 _ARTICLES = ("Der ", "Die ", "Das ", "Ein ", "Eine ", "Einer ")
@@ -136,7 +138,11 @@ class LlmQaWriter:
         level_property: str | None = None,
         level_values: Sequence[str] = (),
         deadline: Deadline | None = None,
+        focus_title: str | None = None,
+        focus_terms: Sequence[str] = (),
     ) -> list[QaPair] | None:
+        """``focus_title`` and ``focus_terms`` name the material of a node and its keywords (D47): the model asks
+        about them first, as far as the text treats them."""
         levels = list(level_values) if level_property and level_values else []
         prompt = get_prompt("qa_pairs")
         messages = prompt.render(
@@ -149,6 +155,7 @@ class LlmQaWriter:
                 if levels
                 else ""
             ),
+            focus=_focus(focus_title, focus_terms),
         )
         answer = budgeted_chat(
             self.client,
@@ -168,6 +175,18 @@ class LlmQaWriter:
             level_values=levels,
         )
         return pairs[:count] or None
+
+
+def _focus(title: str | None, terms: Sequence[str]) -> str:
+    """The line that points the model at a material; format words name no subject, so they are left out."""
+    if not title:
+        return ""
+    subjects = [term for term in dict.fromkeys(terms) if term.casefold() not in FORMAT_WORDS][:MAX_FOCUS_TERMS]
+    keywords = f" mit den Schlagwörtern {', '.join(subjects)}" if subjects else ""
+    return (
+        f"\nSchwerpunkt: das Unterrichtsmaterial „{title}“{keywords}. Frage bevorzugt danach, soweit der Text es "
+        "behandelt."
+    )
 
 
 def parse_pairs(

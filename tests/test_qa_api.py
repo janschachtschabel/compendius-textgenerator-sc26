@@ -366,3 +366,46 @@ def test_the_generated_blocks_are_no_source_for_questions(client: TestClient, mo
     body = client.post("/api/v2/qa", json={"topic": "Optik", "count": 10}).json()
     assert body["chars"] == len(content), "only the subject matter is asked about"
     assert all("ISBN" not in pair["answer"] for pair in body["pairs"])
+
+
+def _node_app(settings: Settings, monkeypatch: pytest.MonkeyPatch, answer: str) -> tuple[TestClient, FakeBApi]:
+    from app.main import create_app as build
+    from tests.test_nodes_api import with_fake_repository
+
+    app = with_fake_repository(build(settings))
+    api = FakeBApi(lambda body: answer)
+    monkeypatch.setattr(app.state.service, "llm", make_gateway(api, per_request=100_000))
+    return TestClient(app), api
+
+
+def test_the_llm_stage_takes_the_levels_and_the_keywords_of_a_node(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D47: a node's levels become the levels of the pairs, its title and keywords their focus."""
+    from tests.test_wlo_client import MATERIAL
+
+    client, api = _node_app(settings, monkeypatch, "Was ist die Netzhaut?;Die Schicht im Auge.;Sek I")
+    body = client.post("/api/v2/qa", json={"node_id": MATERIAL, "method": "llm"}).json()
+    assert body["method"] == "llm" and body["pairs"][0]["level"] == "Sek I"
+    asked = api.bodies[-1]["messages"][1]["content"]
+    assert "Stufen (Bildungsstufe): Sek I." in asked
+    assert "„Stationsarbeit zur Optik“ mit den Schlagwörtern Auge, Netzhaut, Pupille, Linse, Lochkamera" in asked
+    assert "Stufen aus dem Knoten: Sek I" in (body["note"] or "")
+
+
+def test_levels_sent_along_win_over_those_of_the_node(settings: Settings, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tests.test_wlo_client import MATERIAL
+
+    client, api = _node_app(settings, monkeypatch, "Was ist Licht?;Strahlung.;Primar")
+    body = client.post("/api/v2/qa", json={"node_id": MATERIAL, "method": "llm", "levels": ["Primar"]}).json()
+    assert "Stufen (Bildungsstufe): Primar." in api.bodies[-1]["messages"][1]["content"]
+    assert "Stufen aus dem Knoten" not in (body["note"] or "")
+
+
+def test_other_stages_take_no_levels_from_a_node_and_say_nothing_about_them(client: TestClient) -> None:
+    from tests.test_nodes_api import with_fake_repository
+    from tests.test_wlo_client import MATERIAL
+
+    app = with_fake_repository(create_app(client.app.state.settings))  # type: ignore[attr-defined]
+    body = TestClient(app).post("/api/v2/qa", json={"node_id": MATERIAL, "method": "rule-based"}).json()
+    assert body["method"] == "rule-based" and "Stufen" not in (body["note"] or "")

@@ -175,11 +175,12 @@ def test_the_prompt_does_not_ask_for_two_fields_and_three_at_once() -> None:
     from app.llm.prompts import get_prompt
 
     prompt = get_prompt("qa_pairs")
-    plain = prompt.render(text="Ein Text.", count=3, max_answer_length=100, levels="")
+    plain = prompt.render(text="Ein Text.", count=3, max_answer_length=100, levels="", focus="")
     with_levels = prompt.render(
         text="Ein Text.",
         count=3,
         max_answer_length=100,
+        focus="",
         levels="\nStufen (Bildungsstufe): Primar, Sek I. Verteile die Paare gleichmäßig über die Stufen "
         "und hänge die Stufe als drittes Feld an.",
     )
@@ -187,3 +188,27 @@ def test_the_prompt_does_not_ask_for_two_fields_and_three_at_once() -> None:
     assert system == with_levels[0]["content"], "render fills only the user part; the system text is fixed"
     assert "Frage;Antwort;Stufe" in system, "the fixed system text has to permit the third field"
     assert "Stufe" in with_levels[1]["content"] and "Stufe" not in plain[1]["content"]
+
+
+def test_a_material_focuses_the_llm_on_its_title_and_keywords() -> None:
+    """D47: the pairs of a node's compendium ask first about what the material is about; format words are no focus."""
+    from tests.test_llm_client import FakeBApi
+    from tests.test_pipeline_llm import make_gateway
+
+    fake = FakeBApi(lambda body: "Was ist die Netzhaut?;Die lichtempfindliche Schicht des Auges.")
+    gateway = make_gateway(fake)
+    focused = gateway.qa.pairs(
+        "Ein Text.",
+        count=2,
+        max_answer_length=100,
+        budget=gateway.open_budget(),
+        focus_title="Stationsarbeit zur Optik",
+        focus_terms=["Auge", "Netzhaut", "Stationenlernen"],
+    )
+    gateway.qa.pairs("Ein Text.", count=2, max_answer_length=100, budget=gateway.open_budget())
+    asked, plain = (body["messages"][1]["content"] for body in fake.bodies)
+    assert focused is not None and focused[0].question == "Was ist die Netzhaut?"
+    focus = "Schwerpunkt: das Unterrichtsmaterial „Stationsarbeit zur Optik“ mit den Schlagwörtern Auge, Netzhaut."
+    assert focus in asked
+    assert "Stationenlernen" not in asked, "a format word names no subject to ask about"
+    assert plain == "Text:\nEin Text.\n\nSchreibe 2 Paare, jede Antwort höchstens 100 Zeichen.", "without a node as v2"
