@@ -39,6 +39,12 @@ class KnowledgeRequest(BaseModel):
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
+    subject: str | None = Field(
+        None,
+        max_length=100,
+        description="The subject that decides the article, as in a compendium request (WLO discipline id, vocabulary "
+        "URI, label or alias); default: one the topic names, else the subjects of node_id",
+    )
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
     max_articles: int | None = Field(
         None,
@@ -231,6 +237,7 @@ def knowledge(
         article_choice=payload.article_choice,
         derived=derived,
         node=info,
+        subject=payload.subject,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []

@@ -66,6 +66,7 @@ def corpus_for_topic(
     article_choice: str | None = None,
     derived: Sequence[CollectionTopic] = (),
     node: NodeInfo | None = None,
+    subject: str | None = None,
 ) -> tuple[str, Resolution, list[Source], dict[str, Any] | None, dict[str, Any] | None]:
     """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D40, D47).
 
@@ -75,7 +76,7 @@ def corpus_for_topic(
     answer; a material the rules find no article for says to send a topic.
     """
     requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
-    chosen = choose_main_article(registry, service.subjects, topic, derived, node=node, job=job)
+    chosen = choose_main_article(registry, service.subjects, topic, derived, subject=subject, node=node, job=job)
     resolution, normalized = chosen.resolution, chosen.normalized
     if not resolution.resolved:
         missing = TopicNotFoundError(resolution, chosen.node, from_material=not topic)

@@ -409,3 +409,17 @@ def test_other_stages_take_no_levels_from_a_node_and_say_nothing_about_them(clie
     app = with_fake_repository(create_app(client.app.state.settings))  # type: ignore[attr-defined]
     body = TestClient(app).post("/api/v2/qa", json={"node_id": MATERIAL, "method": "rule-based"}).json()
     assert body["method"] == "rule-based" and "Stufen" not in (body["note"] or "")
+
+
+def test_qa_chooses_the_article_as_the_compendium_does(settings: Settings, monkeypatch: pytest.MonkeyPatch) -> None:
+    """article_choice, preset and subject reach the part 1 the pairs are made from (review of 2026-09-25)."""
+    from tests.test_wlo_client import EXAM
+
+    client, api = _node_app(settings, monkeypatch, '{"titel": "Optik"}')
+    for switch in ({"article_choice": "llm"}, {"preset": "balanced"}):
+        body = client.post("/api/v2/qa", json={"node_id": EXAM, **switch}).json()
+        assert body["topic"] == "Optik", switch
+    assert any("Unterrichtsmaterial" in call["messages"][0]["content"] for call in api.bodies)
+    assert client.post("/api/v2/qa", json={"node_id": EXAM}).status_code == 404, "the rules alone find none"
+    subject = client.post("/api/v2/qa", json={"topic": "Brechung", "subject": "Physik"}).json()
+    assert subject["resolution"]["confident"], "the subject decides the meaning, as in a compendium"

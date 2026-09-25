@@ -12,7 +12,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
 from app.domain.models import NodeInput, Resolution
-from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP
+from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP, ArticleChoice, Preset
 
 Method = Literal["rule-based", "parse-based", "models", "llm"]
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
@@ -37,6 +37,22 @@ class QaRequest(BaseModel):
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
+    subject: str | None = Field(
+        None,
+        max_length=100,
+        description="With topic or node_id: the subject that decides the article, as in a compendium request (WLO "
+        "discipline id, vocabulary URI, label or alias)",
+    )
+    preset: Preset | None = Field(
+        None,
+        description="With topic or node_id: the level of the part 1 the pairs are made from (llm-free, balanced, "
+        "best-quality), as in a compendium request",
+    )
+    article_choice: ArticleChoice | None = Field(
+        None,
+        description="With topic or node_id: who chooses the article, rule-based or llm, as in a compendium request; "
+        "llm also names the article of a material without a topic (D47). A preset sets it",
+    )
     method: Method = Field(
         "rule-based",
         description="rule-based needs nothing and is the default: four question templates over the "

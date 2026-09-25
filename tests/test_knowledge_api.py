@@ -86,3 +86,11 @@ def test_the_text_is_capped_and_says_so(client: TestClient) -> None:
     assert short["truncated"] and short["chars"] <= 500 < full["chars"]
     # An article the cap left nothing of is not worth listing; truncated already says there would be more
     assert all(article["sections"] for article in short["articles"])
+
+
+def test_knowledge_takes_the_subject_as_the_compendium_does(client: TestClient) -> None:
+    """Without it the same topic could be sure in a compendium and unsure here (review of 2026-09-25)."""
+    knowledge = client.post("/api/v2/knowledge", json={"topic": "Brechung", "subject": "Physik"}).json()
+    compendium = client.post("/api/v2/compendium", json={"topic": "Brechung", "subject": "Physik", "parts": ["world"]})
+    assert knowledge["resolution"] == compendium.json()["resolution"]
+    assert knowledge["resolution"]["confident"]

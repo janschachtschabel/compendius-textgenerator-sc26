@@ -44,10 +44,11 @@ NO_TAGGER_NOTE = (
 )
 
 
-def _part_one(
-    service: CompendiumService, topic: str | None, node_id: str | None = None, repository: str | None = None
-) -> Compendium:
-    """Make part 1 of the compendium for the topic; its errors are the ones the compendium endpoint gives.
+def _part_one(service: CompendiumService, payload: QaRequest) -> Compendium:
+    """Make part 1 of the compendium for the topic or node; its errors are the ones the compendium endpoint gives.
+
+    Subject, preset and article choice go along, so the pairs come from the part 1 a compendium request with the same
+    fields would make.
 
     Only ``world`` is asked for: part 2 lists curriculum elements and part 3 lists materials of a
     collection, and neither is prose a question can be built from.
@@ -55,7 +56,15 @@ def _part_one(
     try:
         with node_errors():  # no collection here, so a 404 of the repository can only be the node's
             return service.generate(
-                GenerateRequest(topic=topic, node_id=node_id, repository=repository, parts=["world"])
+                GenerateRequest(
+                    topic=payload.topic,
+                    node_id=payload.node_id,
+                    repository=payload.repository,
+                    subject=payload.subject,
+                    preset=payload.preset,
+                    article_choice=payload.article_choice,
+                    parts=["world"],
+                )
             )
     except TopicNotFoundError as exc:
         raise HTTPException(status_code=404, detail=exc.detail()) from exc
@@ -172,7 +181,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     node = None
     if payload.topic or payload.node_id:
         service = get_service(request)  # a topic needs the archives; a plain text does not
-        compendium = _part_one(service, payload.topic, payload.node_id, payload.repository)
+        compendium = _part_one(service, payload)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
         text = _text_of_compendium(compendium)
     else:
