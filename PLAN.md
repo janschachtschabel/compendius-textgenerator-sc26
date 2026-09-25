@@ -1650,6 +1650,12 @@ API.
   allein braucht kein LLM, es wirkt nur mit `generation`. `audit.preset` nennt das wirksame Profil. Lokale Strategie der
   Profile und Rückfall von `matcher=llm` ist `hybrid_light`. Wie QA und Lehrplanzuordnung den Profilen folgen und was
   jedes Profil misst, halten die folgenden Einträge fest.
+- **D54 (2026-09-25)** `/qa` wählt das Verfahren der Paare nach dem Profil, wenn die Anfrage kein `method` nennt:
+  `llm-free` nimmt `parse-based` (ohne Modell und Netz, rund 4 ms je Satz, 26 von 33 Paaren mangelfrei am 2026-09-22),
+  jedes Profil mit LLM nimmt `llm` (Jan: kostenfrei und schnell gegenüber KI mit besserer Qualität). `preset` geht
+  deshalb auch mit einem `text` allein; `subject` und `article_choice` bleiben an `topic` oder `node_id` gebunden. `llm`
+  ohne konfiguriertes LLM ist ein 503, bei einer gerade nicht erreichbaren b-api fällt die Stufe wie bisher auf die
+  Vorlagen zurück. `rule-based` und `models` bleiben als Einzelschalter wählbar.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

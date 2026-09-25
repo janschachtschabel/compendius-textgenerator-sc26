@@ -78,11 +78,33 @@ def test_the_llm_writes_the_pairs_when_it_is_asked_and_available(with_llm: TestC
     assert [pair["question"] for pair in body["pairs"]] == ["Was ist Licht?", "Was ist Optik?"]
 
 
-def test_without_a_usable_llm_the_answer_says_it_fell_back(client: TestClient) -> None:
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
-    assert body["method"] == "rule-based", "no b-api is configured in the tests"
-    assert body["note"] and "LLM" in body["note"]
-    assert body["pairs"], "the fallback still delivers"
+def test_the_llm_method_without_a_configured_llm_is_a_503(client: TestClient) -> None:
+    """D53: no b-api is configured in the tests; asking for it is refused instead of answered by the templates."""
+    for asked in ({"method": "llm"}, {"preset": "balanced"}):
+        answer = client.post("/api/v2/qa", json={"text": TEXT, **asked})
+        assert answer.status_code == 503 and "method=llm" in answer.json()["detail"], asked
+
+
+def test_the_profile_picks_the_method_and_a_method_the_request_sets_wins(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D53: llm-free takes the spaCy parse - free and fast -, the other profiles the b-api; preset goes with a text."""
+    from tests.test_qa_parse import FakeNlp
+
+    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
+    sentence = {"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes."}
+    assert client.post("/api/v2/qa", json={**sentence, "preset": "llm-free"}).json()["method"] == "parse-based"
+    assert client.post("/api/v2/qa", json=sentence).json()["method"] == "parse-based", "the tests' profile: llm-free"
+    chosen = client.post("/api/v2/qa", json={**sentence, "preset": "llm-free", "method": "rule-based"}).json()
+    assert chosen["method"] == "rule-based"
+
+
+def test_an_llm_profile_lets_the_llm_write_the_pairs(with_llm: TestClient) -> None:
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality"}).json()
+    assert body["method"] == "llm" and [pair["question"] for pair in body["pairs"]] == [
+        "Was ist Licht?",
+        "Was ist Optik?",
+    ]
 
 
 def test_a_model_answer_that_yields_nothing_falls_back_too(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -117,9 +139,8 @@ def test_with_the_tagger_an_adverb_gets_no_question_and_there_is_no_note(
     from tests.test_qa_pairs import fake_nlp
 
     monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: fake_nlp)
-    body = client.post(
-        "/api/v2/qa", json={"text": "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. " + TEXT}
-    ).json()
+    text = "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. " + TEXT
+    body = client.post("/api/v2/qa", json={"text": text, "method": "rule-based"}).json()
     assert body["note"] is None
     assert "Daneben" not in " ".join(pair["question"] for pair in body["pairs"])
     assert "Was versteht man unter Optik?" in [pair["question"] for pair in body["pairs"]]
@@ -239,13 +260,20 @@ def test_levels_without_the_llm_stage_are_said_out_loud(client: TestClient) -> N
     assert "Stufen" in (body["note"] or ""), "silently dropping the levels would be the worse failure"
 
 
-def test_levels_are_also_said_out_loud_when_the_llm_falls_back(client: TestClient) -> None:
+def test_levels_are_also_said_out_loud_when_the_llm_falls_back(
+    with_llm: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """Asking for llm and getting the templates loses the levels; the note has to name both reasons."""
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Primar"]}).json()
+    monkeypatch.setattr(
+        with_llm.app.state.service,
+        "llm_unavailable",
+        lambda: "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet",
+    )  # type: ignore[attr-defined]
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Primar"]}).json()
     assert body["method"] == "rule-based"
     assert all(pair["level"] is None for pair in body["pairs"])
     note = body["note"] or ""
-    assert "LLM nicht konfiguriert" in note, "the reason for the fallback"
+    assert "LLM nicht verfügbar" in note, "the reason for the fallback"
     assert "Stufen" in note, "and that the levels went with it"
 
 
@@ -444,8 +472,9 @@ def test_a_text_goes_alone_or_the_topic_would_replace_it_unsaid(client: TestClie
 
 
 def test_the_switches_of_part_1_need_a_topic_or_a_node(client: TestClient) -> None:
-    """subject, preset and article_choice decide the article of part 1; a text alone has none to decide."""
-    for switch in ({"subject": "Physik"}, {"preset": "balanced"}, {"article_choice": "llm"}):
+    """subject and article_choice decide the article of part 1; a text alone has none to decide. preset goes with a
+    text as well, since it picks the method of the pairs (D53)."""
+    for switch in ({"subject": "Physik"}, {"article_choice": "llm"}):
         answer = client.post("/api/v2/qa", json={"text": TEXT, **switch})
         assert answer.status_code == 422 and next(iter(switch)) in answer.text, switch
 
@@ -487,4 +516,4 @@ def test_an_unavailable_llm_is_named_once(with_llm: TestClient, monkeypatch: pyt
 def test_a_topic_on_a_profile_that_needs_an_llm_is_a_503_without_one(client: TestClient) -> None:
     """D53: part 1 of the pairs follows the profile; without an LLM an LLM profile is refused as a compendium is."""
     answer = client.post("/api/v2/qa", json={"topic": "Optik", "preset": "balanced"})
-    assert answer.status_code == 503 and "article_choice=llm" in answer.json()["detail"]
+    assert answer.status_code == 503 and "LLM_ENABLED" in answer.json()["detail"]

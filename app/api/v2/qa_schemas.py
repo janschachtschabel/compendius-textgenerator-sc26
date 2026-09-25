@@ -22,6 +22,13 @@ from app.domain.requests import (
 )
 
 Method = Literal["rule-based", "parse-based", "models", "llm"]
+# The method of each profile (D53): llm-free the free and fast parse, every profile with an LLM the LLM
+PROFILE_METHODS: dict[str, Method] = {
+    "llm-free": "parse-based",
+    "balanced": "llm",
+    "best-quality": "llm",
+    "best-quality-generated": "llm",
+}
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
 
@@ -54,25 +61,28 @@ class QaRequest(BaseModel):
     )
     preset: Preset | None = Field(
         None,
-        description="With topic or node_id: the level of the part 1 the pairs are made from (llm-free, balanced, "
-        "best-quality), as in a compendium request",
+        description="The profile (D53): it picks the method of the pairs when the request names none - llm-free "
+        "parse-based, every other profile llm -, and with topic or node_id the part 1 they are made from, as in a "
+        "compendium request. Default: PRESET_DEFAULT, shipped balanced",
     )
     article_choice: ArticleChoice | None = Field(
         None,
         description="With topic or node_id: who chooses the article, rule-based or llm, as in a compendium request; "
         "llm also names the article of a material without a topic (D47). A preset sets it",
     )
-    method: Method = Field(
-        "rule-based",
-        description="rule-based needs nothing and is the default: four question templates over the "
+    method: Method | None = Field(
+        None,
+        description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes parse-based, every other "
+        "profile llm (D53). rule-based needs nothing: four question templates over the "
         "sentence openings, and the answer is the whole sentence. parse-based swaps the sentence subject "
         "for a question word using the spaCy parse that is loaded anyway - four times as many sentences "
         "yield a question and the answer is the subject itself, at about 4 ms per sentence once warm. models uses "
         "the two German models baked into the image (question generator plus extractive answers) and is "
         "the most accurate and by far the slowest. llm lets the b-api write the pairs; with a topic or node, part 1 "
         "and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S), so "
-        "a part 1 that spent them leaves the pairs to the templates. All three fall back to rule-based when they "
-        "cannot run, and note says why",
+        "a part 1 that spent them leaves the pairs to the templates. parse-based and models fall back to rule-based "
+        "when they cannot run, and note says why; llm without a configured LLM is a 503, and while the b-api is not "
+        "available it falls back as well",
     )
     count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
@@ -98,8 +108,9 @@ class QaRequest(BaseModel):
             raise ValueError("text oder topic/node_id, nicht beides: ein Thema macht erst Teil 1 und fragt ihn ab")
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
-        # They decide the article of part 1; a text of the caller's is asked as it is
-        for name in ("subject", "preset", "article_choice"):
+        # They decide the article of part 1; a text of the caller's is asked as it is. preset goes with a text as
+        # well: it picks the method of the pairs (D53)
+        for name in ("subject", "article_choice"):
             if getattr(self, name) is not None and not (self.topic or self.node_id):
                 raise ValueError(f"{name} gilt nur mit topic oder node_id; ein text wird abgefragt, wie er ist")
         return self

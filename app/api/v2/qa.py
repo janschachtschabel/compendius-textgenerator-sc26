@@ -9,8 +9,10 @@ rather than a whole sentence. ``models`` runs two small German models instead
 model marks the place that answers it - the most accurate of the four and by far the slowest. ``llm`` lets
 the b-api write them.
 
-The three optional stages fall back to the templates rather than failing; the answer names the stage that
-actually produced the pairs, and why the asked-for one did not.
+Without a method the profile picks one (D53): llm-free the parse, which is free and fast, every other profile the
+LLM. parse-based and models fall back to the templates rather than failing, and so does llm while the b-api is not
+available; llm without a configured LLM is a 503. The answer names the stage that actually produced the pairs, and
+why the asked-for one did not.
 
 This module is the endpoint itself: where the text comes from, which stage is asked, and what the answer
 says. The wire contract lives in qa_schemas.py, the stages that can refuse in qa_stages.py.
@@ -25,7 +27,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
-from app.api.v2.qa_schemas import LEVEL_PROPERTY, Method, Pair, QaRequest, QaResponse
+from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import STAGES, LlmAllowance, levels_from, node_levels
 from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
@@ -57,6 +59,20 @@ def _allowance(request: Request, payload: QaRequest) -> LlmAllowance | None:
     if payload.method != "llm" or llm is None:
         return None
     return LlmAllowance(llm.open_budget(), Deadline(service.settings.request_timeout_s))
+
+
+def _refuse_llm_without_one(request: Request, method: Method | None, profile: str, *, defaulted: bool) -> None:
+    """The llm stage on a server without a configured LLM is a 503 (D53), as the LLM switches of a compendium are.
+
+    Without the archives there is no service to ask; the stage then falls back and says so, as before.
+    """
+    service = request.app.state.service
+    if method != "llm" or service is None:
+        return
+    try:
+        service.refuse_without_llm(["method=llm"], profile, defaulted=defaulted)
+    except LlmNotConfiguredError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 def _part_one(service: CompendiumService, payload: QaRequest, allowance: LlmAllowance | None) -> Compendium:
@@ -118,14 +134,15 @@ def _text_of_compendium(compendium: Compendium) -> str:
 
 
 EXAMPLES = {
-    "1 · regelbasiert (Standard)": {
+    "1 · regelbasiert": {
         "summary": "Fragevorlagen über die Sätze - braucht kein Modell und kein Netz",
         "description": (
             "Ein Thema erzeugt erst Teil 1 des Kompendiums und fragt dessen Bausteine ab. Die Stufe kennt "
             "vier Vorlagen; gemessen am 2026-09-21 greift auf einem Kompendiumtext nur jeder achte Satz, "
-            "und die Hälfte der Fragen fragt nach einer Jahreszahl. Dafür kostet sie nichts."
+            "und die Hälfte der Fragen fragt nach einer Jahreszahl. Dafür kostet sie nichts. Ohne method wählt das "
+            "Profil: llm-free nimmt parse-based, die übrigen llm."
         ),
-        "value": {"topic": "Optik", "count": 20},
+        "value": {"topic": "Optik", "count": 20, "preset": "llm-free", "method": "rule-based"},
     },
     "2 · Satzsubjekte über den Parse": {
         "summary": "Das Satzsubjekt wird zum Fragewort - ohne Modell, aber viermal so ergiebig wie die Vorlagen",
@@ -197,6 +214,10 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         # From here on only the project's own values travel, so the prompt and the pairs speak one
         # vocabulary and _level() can map the model's answer back onto it.
         payload = payload.model_copy(update={"levels": levels_from(request, payload.levels)})
+    profile = payload.preset or request.app.state.settings.preset_default
+    if payload.method is None:
+        payload = payload.model_copy(update={"method": PROFILE_METHODS[profile]})
+    _refuse_llm_without_one(request, payload.method, profile, defaulted=not payload.preset)
     topic: str | None = None
     resolution: Resolution | None = None
     node = None
