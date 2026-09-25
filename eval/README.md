@@ -29,8 +29,7 @@ uv run compendium eval run --gold eval/gold --json eval/reports/lauf.json --zim 
 ```
 
 Den Endpunkt `POST /api/v2/matching/compare` gibt es seit dem 25.09.2026 nicht mehr (D50): Die Metriken liefert
-`compendium eval run`; die Übereinstimmung der Strategien untereinander berechnet `compare_topic` in
-`app/matching/eval_runner.py` weiter, für eigene Skripte.
+`compendium eval run`. Die Übereinstimmung der Strategien untereinander, die nur der Endpunkt ausgab, entfiel mit ihm.
 
 ## Metriken
 

@@ -100,16 +100,6 @@ def test_a_paragraph_the_llm_split_counts_for_the_block_with_most_of_its_sentenc
     assert predictions_from_selection(assigned, template) == {"c0": "fachinhalte", "c1": "fachinhalte"}
 
 
-def test_pairwise_agreement_is_jaccard_over_chunk_slot_pairs() -> None:
-    from app.matching.eval import pairwise_agreement
-
-    predictions = {"a": {"c0": "x", "c1": "y"}, "b": {"c0": "x", "c2": "z"}, "c": {}}
-    agreement = pairwise_agreement(predictions)
-    assert agreement["a|b"] == pytest.approx(1 / 3)
-    assert agreement["a|c"] == 0.0
-    assert set(agreement) == {"a|b", "a|c", "b|c"}
-
-
 def test_confusion_lists_mismatches_and_is_pooled() -> None:
     result = evaluate("Optik", GOLD, PRED, SLOTS)
     assert result.confusion == {"fachinhalte>praxis": 1, "none>praxis": 1}

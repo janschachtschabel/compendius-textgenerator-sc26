@@ -8,13 +8,11 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from tests.conftest import make_settings
 
-AUTH = {"X-Admin-Token": "s3cret"}
-
 
 @pytest.fixture(scope="module")
 def client(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPathFactory) -> TestClient:
-    settings = make_settings(sample_zims.values(), tmp_path_factory.mktemp("state"), admin_token="s3cret")
-    return TestClient(create_app(settings), headers=AUTH)
+    settings = make_settings(sample_zims.values(), tmp_path_factory.mktemp("state"))
+    return TestClient(create_app(settings))
 
 
 def test_strategies_are_listed(client: TestClient) -> None:

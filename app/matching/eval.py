@@ -227,18 +227,6 @@ def predictions_from_selection(assigned: Mapping[str, Sequence[ScoredChunk]], te
     return {chunk_id: key for chunk_id, (_, key) in best.items()}
 
 
-def pairwise_agreement(predictions: Mapping[str, Mapping[str, str]]) -> dict[str, float]:
-    """Jaccard overlap of the (chunk, slot) pairs for every pair of strategies, keyed ``a|b``."""
-    names = list(predictions)
-    pairs = {name: {(chunk, slot) for chunk, slot in predicted.items()} for name, predicted in predictions.items()}
-    agreement: dict[str, float] = {}
-    for i, first in enumerate(names):
-        for second in names[i + 1 :]:
-            union = pairs[first] | pairs[second]
-            agreement[f"{first}|{second}"] = len(pairs[first] & pairs[second]) / len(union) if union else 1.0
-    return agreement
-
-
 def predictions_from_classification(classified: Mapping[str, str], template: Template) -> dict[str, str]:
     """Chunk id -> slot key for the policy decision before the slot budgets cut the selection."""
     key_of = {slot.id: slot.slot for slot in template.slots}

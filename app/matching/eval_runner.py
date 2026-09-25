@@ -10,11 +10,10 @@ from __future__ import annotations
 
 import logging
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from app.domain.models import Resolution
 from app.domain.requests import GenerateRequest
 from app.matching.eval import (
     Alignment,
@@ -22,7 +21,6 @@ from app.matching.eval import (
     aggregate,
     align,
     evaluate,
-    pairwise_agreement,
     predictions_from_assignment,
     predictions_from_classification,
     predictions_from_selection,
@@ -35,27 +33,18 @@ log = logging.getLogger(__name__)
 DEFAULT_MATCHERS: tuple[str, ...] = ("lexicon_only", "bm25", "char_tfidf", "hybrid_light")
 DEFAULT_TARGET_LENGTH = 12_000
 LLM_SUFFIX = "+llm"
-GoldLookup = Callable[..., GoldSet | None]
 
 
 @dataclass
 class MatcherOutcome:
-    assigned: int
-    filled_slots: int
-    duration_ms: int
     metrics: EvalResult | None = None  # classification before the budgets (the quality gate)
     selection: EvalResult | None = None  # what the budgets let through into the text
 
 
 @dataclass
 class CompareResult:
-    topic: str
-    resolution: Resolution
-    chunks: int
-    gold: GoldSet | None
     alignment: Alignment | None
     results: dict[str, MatcherOutcome] = field(default_factory=dict)
-    agreement: dict[str, float] = field(default_factory=dict)
     llm_note: str | None = None  # why the LLM extraction was not evaluated
 
 
@@ -78,23 +67,6 @@ class EvalReport:
     llm_note: str | None = None  # why the LLM extraction was not evaluated
 
 
-def find_gold(gold_dir: Path, *names: str) -> GoldSet | None:
-    """The gold set whose topic equals one of ``names`` (case-insensitive), or ``None``."""
-    wanted = {name.lower() for name in names if name}
-    directory = Path(gold_dir)
-    if not directory.exists():
-        return None
-    for path in sorted(directory.glob("*.jsonl")):
-        try:
-            gold = load_gold(path)
-        except ValueError as exc:
-            log.warning("unreadable gold file %s: %s", path, exc)
-            continue
-        if gold.topic.lower() in wanted:
-            return gold
-    return None
-
-
 def export_topic(
     service: CompendiumService,
     topic: str,
@@ -114,27 +86,22 @@ def compare_topic(
     service: CompendiumService,
     topic: str,
     matchers: Sequence[str] = DEFAULT_MATCHERS,
-    gold_for: GoldLookup | None = None,
+    gold: GoldSet | None = None,
     template_id: str | None = None,
     target_length: int = DEFAULT_TARGET_LENGTH,
     llm_extraction: bool = False,
 ) -> CompareResult:
-    """Prepare the topic once, run every strategy on the same chunks; metrics when gold exists."""
+    """Prepare the topic once and run every strategy on the same chunks; with ``gold`` the metrics of each."""
     prepared = service.prepare(GenerateRequest(topic=topic, template_id=template_id))
     title = prepared.resolution.title or topic
-    gold = gold_for(topic, title) if gold_for is not None else None
     alignment = align(gold, prepared.chunks) if gold is not None else None
     slot_keys = [slot.slot for slot in prepared.template.content_slots()]
-    result = CompareResult(
-        topic=title, resolution=prepared.resolution, chunks=len(prepared.chunks), gold=gold, alignment=alignment
-    )
-    predictions: dict[str, dict[str, str]] = {}
+    result = CompareResult(alignment=alignment)
     matched_by_name = {}
     for name in matchers:
         matched = matched_by_name[name] = service.match(prepared, name, target_length)
         classified = predictions_from_classification(matched.assignment.classified, prepared.template)
         selected = predictions_from_assignment(matched.assignment.assigned, prepared.template)
-        predictions[name] = classified
         metrics: EvalResult | None = None
         selection: EvalResult | None = None
         if alignment is not None:
@@ -142,14 +109,7 @@ def compare_topic(
             metrics.stale_labels = len(alignment.stale)
             metrics.duration_ms = matched.duration_ms
             selection = evaluate(title, alignment.gold_by_chunk, selected, slot_keys, matcher=name)
-        filled = sum(1 for items in matched.assignment.assigned.values() if items)
-        result.results[name] = MatcherOutcome(
-            assigned=len(selected),
-            filled_slots=filled,
-            duration_ms=matched.duration_ms,
-            metrics=metrics,
-            selection=selection,
-        )
+        result.results[name] = MatcherOutcome(metrics=metrics, selection=selection)
     if llm_extraction and matchers:
         base = service.settings.matcher_default if service.settings.matcher_default in matchers else matchers[0]
         result.llm_note = service.llm_unavailable()
@@ -160,7 +120,6 @@ def compare_topic(
             duration_ms = int((time.perf_counter() - started) * 1000)
             if extracted is not None:
                 selected = predictions_from_selection(extracted.assigned, prepared.template)
-                predictions[name] = selected
                 metrics = None
                 if alignment is not None:
                     metrics = evaluate(title, alignment.gold_by_chunk, selected, slot_keys, matcher=name)
@@ -168,16 +127,8 @@ def compare_topic(
                     metrics.duration_ms = duration_ms
                     metrics.llm_tokens = extracted.report.total_tokens
                     metrics.llm_fallbacks = len(extracted.report.fallbacks)
-                filled = sum(1 for items in extracted.assigned.values() if items)
                 # The choice is what the text prints: classification and selection are the same here
-                result.results[name] = MatcherOutcome(
-                    assigned=len(selected),
-                    filled_slots=filled,
-                    duration_ms=duration_ms,
-                    metrics=metrics,
-                    selection=metrics,
-                )
-    result.agreement = pairwise_agreement(predictions)
+                result.results[name] = MatcherOutcome(metrics=metrics, selection=metrics)
     return result
 
 
@@ -194,12 +145,12 @@ def evaluate_topic(
         service,
         gold.topic,
         matchers,
-        gold_for=lambda *_: gold,
+        gold=gold,
         template_id=template_id or gold.template_id,
         target_length=target_length,
         llm_extraction=llm_extraction,
     )
-    assert compared.alignment is not None  # noqa: S101 - gold_for always returns the gold set here
+    assert compared.alignment is not None  # noqa: S101 - there is gold here, so there is an alignment
     # The LLM's choice has no classification before budgets; it is compared with what the rules print
     results = {
         name: outcome.metrics

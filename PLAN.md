@@ -1624,9 +1624,9 @@ API.
 - **D50 (2026-09-25)** `POST /api/v2/matching/compare` entfällt (Jan: kann raus, wenn wir ihn nach den letzten Vorgaben
   nicht mehr produktiv brauchen, aber erst, wenn er für die Entwicklung nicht mehr gebraucht wird). Kein Messskript von
   M1 bis M25 rief ihn; `compendium eval` bewertet die Strategien auf dem Gold mit derselben Funktion `compare_topic`,
-  die bleibt und für eigene Skripte auch die Übereinstimmung der Strategien untereinander rechnet. Mit dem Endpunkt
-  gehen der Admin-Router des Matchings und `CompareRequest`; `GET /api/v2/matching/strategies` bleibt, bis die Profile
-  entscheiden, welche Strategien es noch gibt.
+  die bleibt. Mit dem Endpunkt gehen der Admin-Router des Matchings, `CompareRequest` und die Übereinstimmung der
+  Strategien untereinander, die nur er ausgab (entfernt nach der Durchsicht am selben Tag, mit `find_gold`);
+  `GET /api/v2/matching/strategies` bleibt, bis die Profile entscheiden, welche Strategien es noch gibt.
 - **D51 (2026-09-25)** Ein `subject` wird gegen die beiden Fachvokabulare geprüft, die edu-sharing in `ccm:taxonid`
   nutzt, nicht mehr gegen die 37 Fächer von `config/subjects.yaml` (Jan: die 422 für gültige Fächer war ein Fehler). Die
   Schulfächer (70) und die Hochschulfächer der Destatis-Systematik (344 in drei Ebenen) liegen als Schnappschüsse in

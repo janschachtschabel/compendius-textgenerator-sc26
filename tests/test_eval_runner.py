@@ -62,7 +62,7 @@ def test_compare_reports_classification_and_selection(service: CompendiumService
     from app.matching.eval_runner import compare_topic
 
     gold = _gold_for_optik(service)
-    compared = compare_topic(service, "Optik", ["hybrid_light"], gold_for=lambda *_: gold)
+    compared = compare_topic(service, "Optik", ["hybrid_light"], gold=gold)
     outcome = compared.results["hybrid_light"]
     assert outcome.metrics is not None and outcome.selection is not None
     assert outcome.selection.assigned <= outcome.metrics.assigned  # budgets only remove chunks
@@ -88,7 +88,7 @@ def test_the_llm_extraction_is_evaluated_as_a_strategy_of_its_own(
     fake = FakeBApi(first_sentences)
     monkeypatch.setattr(service, "llm", make_gateway(fake))
     gold = _gold_for_optik(service)
-    compared = compare_topic(service, "Optik", ["hybrid_light"], gold_for=lambda *_: gold, llm_extraction=True)
+    compared = compare_topic(service, "Optik", ["hybrid_light"], gold=gold, llm_extraction=True)
     outcome = compared.results["hybrid_light+llm"]
     assert outcome.metrics is not None and outcome.metrics.matcher == "hybrid_light+llm"
     assert outcome.selection == outcome.metrics  # what the LLM chose is what the text prints
@@ -131,6 +131,6 @@ def test_blocks_that_fell_back_are_named_in_the_measurement(
 
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(one_block_fails)))
     gold = _gold_for_optik(service)
-    compared = compare_topic(service, "Optik", ["hybrid_light"], gold_for=lambda *_: gold, llm_extraction=True)
+    compared = compare_topic(service, "Optik", ["hybrid_light"], gold=gold, llm_extraction=True)
     metrics = compared.results["hybrid_light+llm"].metrics
     assert metrics is not None and metrics.llm_fallbacks == 1  # that block kept the policy's paragraphs
