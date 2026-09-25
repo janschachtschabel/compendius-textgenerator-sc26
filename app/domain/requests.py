@@ -113,7 +113,10 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
     "balanced": {"article_choice": "llm", "matcher": "hybrid_light", **_VERBATIM},
     "best-quality": {"article_choice": "llm", "matcher": "llm", **_VERBATIM},
 }
-UNKNOWN_SUBJECT_HELP = "; one outside config/subjects.yaml is a 422 that lists the known subjects"
+UNKNOWN_SUBJECT_HELP = (
+    "; one outside the two subject vocabularies of edu-sharing (school subjects, Destatis university subjects; "
+    "config/vocabs) is a 422 that lists the school subjects"
+)
 NODE_ID_PATTERN = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 
 

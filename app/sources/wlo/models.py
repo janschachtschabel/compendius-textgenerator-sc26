@@ -133,6 +133,16 @@ def _first(props: Mapping[str, Any], *keys: str) -> str:
     return ""
 
 
+# ccm:taxonid holds school and university subjects alike; the university field repeats the university ones and may
+# name one of its own, which then has no display name (Jan, 2026-09-25)
+SUBJECT_FIELDS = ("ccm:taxonid", "ccm:oeh_taxonid_university")
+
+
+def _subject_uris(props: Mapping[str, Any]) -> tuple[str, ...]:
+    """Every subject of the record, each once: those of ccm:taxonid first."""
+    return tuple(dict.fromkeys(uri for key in SUBJECT_FIELDS for uri in _values(props, key)))
+
+
 def _labels(props: Mapping[str, Any], key: str) -> tuple[str, ...]:
     """Display names where the repository resolves them, else the last URI segment."""
     display = _values(props, f"{key}_DISPLAYNAME")
@@ -154,7 +164,7 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
         title=_title(node, props),
         description=_first(props, "cm:description", "cclom:general_description"),
         keywords=tuple(_values(props, "cclom:general_keyword")),
-        subject_uris=tuple(_values(props, "ccm:taxonid")),
+        subject_uris=_subject_uris(props),
         subject_labels=_labels(props, "ccm:taxonid"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         collection_type=_first(props, "ccm:collectiontype"),
@@ -173,7 +183,7 @@ def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
         title=_title(node, props),
         description=_first(props, "cclom:general_description", "cm:description"),
         keywords=_keywords(props),
-        subject_uris=tuple(_values(props, "ccm:taxonid")),
+        subject_uris=_subject_uris(props),
         subject_labels=_labels(props, "ccm:taxonid"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         url=_first(props, "ccm:wwwurl"),
@@ -215,7 +225,7 @@ def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
         resource_types=_labels(props, "ccm:oeh_lrt"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         subjects=_labels(props, "ccm:taxonid"),
-        subject_uris=tuple(_values(props, "ccm:taxonid")),
+        subject_uris=_subject_uris(props),
         license_version=_first(props, "ccm:commonlicense_cc_version"),
         authors=_authors(props),
     )

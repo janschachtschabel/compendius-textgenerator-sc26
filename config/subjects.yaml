@@ -5,7 +5,8 @@
 # mem: kleingeschriebene Teilstrings, die auf die Schulfach-Labels der MEM-Lehrplaene passen
 #      (Stand der Labels: MEM-Abfrage 2026-09-17, 299 verschiedene Labels; Bayern fuehrt integrierte
 #      Faecher wie "Natur und Technik", Berlin haengt "(KIM-Schulfach)" an).
-# Ohne Treffer in dieser Tabelle wird ueber alle Faecher gesucht.
+# Ohne Treffer in dieser Tabelle wird ueber alle Faecher gesucht. Welche Faecher eine Anfrage nennen darf, bestimmen
+# die Vokabulare von edu-sharing in config/vocabs (D51); diese Tabelle gibt 37 davon Lehrplan- und Kontextwoerter.
 # kontext: Woerter, an denen die Themenaufloesung die Bedeutung eines mehrdeutigen Begriffs im Fach erkennt
 #      ("Informatik: Maus" -> Computermaus). Ohne kontext zaehlen Fachname und Aliase; "Deutsch" steht dort
 #      nicht, weil das Wort in fast jedem Artikel vorkommt. Allgemeines Fachvokabular, keine Themen

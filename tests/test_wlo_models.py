@@ -7,6 +7,7 @@ from app.sources.wlo.models import (
     is_extractive,
     license_label,
     parse_collection,
+    parse_node,
     parse_reference,
     parse_subcollection,
 )
@@ -28,6 +29,27 @@ def test_collection_info_from_the_repository_payload() -> None:
     assert "Wellenoptik" in info.keywords
     assert info.collection_type == "EDITORIAL" and not info.is_topic_page
     assert info.modified_at.startswith("2026-03-04")
+
+
+UNIVERSITY = "http://w3id.org/openeduhub/vocabs/hochschulfaechersystematik/"
+PHYSIK = "http://w3id.org/openeduhub/vocabs/discipline/460"
+
+
+def test_subjects_take_the_university_field_too() -> None:
+    """ccm:taxonid holds school and university subjects; ccm:oeh_taxonid_university repeats the university ones and may
+    name one of its own (Jan, 2026-09-25). Every subject counts once; the labels stay the repository's display names."""
+    payload = _load("collection_optik.json")
+    payload.get("collection", payload)["properties"]["ccm:oeh_taxonid_university"] = [UNIVERSITY + "n5", PHYSIK]
+    info = parse_collection(payload)
+    assert info.subject_uris == (PHYSIK, UNIVERSITY + "n5") and info.subject_labels == ("Physik",)
+    props = {
+        "ccm:taxonid": [UNIVERSITY + "n5"],
+        "ccm:taxonid_DISPLAYNAME": ["Humanmedizin/Gesundheitswissenschaften"],
+        "ccm:oeh_taxonid_university": [UNIVERSITY + "n5", UNIVERSITY + "n9"],
+    }
+    node = parse_node({"node": {"ref": {"id": "x"}, "properties": props}})
+    assert node.subject_uris == (UNIVERSITY + "n5", UNIVERSITY + "n9")
+    assert node.subject_labels == ("Humanmedizin/Gesundheitswissenschaften",)
 
 
 def test_reference_parsing_prefers_display_names_and_the_material_url() -> None:

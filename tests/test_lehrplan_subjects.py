@@ -1,5 +1,6 @@
 """WLO subject vocabulary to MEM subject search terms (config/subjects.yaml)."""
 
+import json
 from pathlib import Path
 
 import pytest
@@ -59,6 +60,37 @@ def test_check_refuses_an_unknown_subject_and_names_the_known_ones() -> None:
         catalog.check(known)
     with pytest.raises(UnknownSubjectError) as refused:
         catalog.check("Pysik")
-    assert refused.value.value == "Pysik" and len(refused.value.known) == len(catalog.subjects)
-    assert "Pysik" in str(refused.value) and "Physik" in str(refused.value)
+    school = json.loads((CONFIG.parent / "vocabs" / "discipline.json").read_text(encoding="utf-8"))["hasTopConcept"]
+    assert refused.value.value == "Pysik" and len(refused.value.known) == len(school), "the school subjects are named"
+    assert "Pysik" in str(refused.value) and "Physik" in str(refused.value) and "Hochschul" in str(refused.value)
     SubjectCatalog.empty().check("Pysik")  # without subjects.yaml there is nothing to check against
+
+
+UNIVERSITY = "http://w3id.org/openeduhub/vocabs/hochschulfaechersystematik/"
+
+
+def test_check_takes_every_subject_of_both_vocabularies_edu_sharing_uses() -> None:
+    """ccm:taxonid holds the school subjects (70) and the Destatis university subjects (344); config/subjects.yaml knows
+    37 of them with curriculum words, and 422 for the others was an error (Jan, 2026-09-25)."""
+    catalog = SubjectCatalog.load(CONFIG)
+    for value in (
+        "Agrarwirtschaft",
+        DISCIPLINE + "04001",
+        "04001",
+        "oeh01",
+        "Sonstiges",
+        UNIVERSITY + "n5",
+        "n5",
+        "Humanmedizin/Gesundheitswissenschaften",
+        "musik, musikwissenschaft",
+        UNIVERSITY + "n5/",
+    ):
+        catalog.check(value)
+    with pytest.raises(UnknownSubjectError):
+        catalog.check("http://example.org/vocabs/discipline/04001")  # a URI of another scheme is not its segment
+
+
+def test_labels_name_subjects_of_the_vocabularies_by_their_label() -> None:
+    catalog = SubjectCatalog.load(CONFIG)
+    values = [UNIVERSITY + "n5", DISCIPLINE + "04001", DISCIPLINE + "460"]
+    assert catalog.labels_of(values) == ["Humanmedizin/Gesundheitswissenschaften", "Agrarwirtschaft", "Physik"]

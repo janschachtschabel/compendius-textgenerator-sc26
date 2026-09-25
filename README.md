@@ -649,8 +649,10 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 
 **Was der Dienst nicht versteht, ist eine 422 (D49).** Früher lief eine Anfrage ohne das, was sie nicht verstand,
 und die Antwort sah richtig aus. Jetzt antwortet der Dienst mit 422 auf ein Feld, das er nicht kennt (`topik`), auf ein
-`subject` außerhalb von `config/subjects.yaml` (die Antwort nennt die bekannten Fächer; die Fächer eines Knotens oder
-einer Sammlung prüft er nicht, dort zählt ein unbekanntes einfach nicht) und auf einen Namen in `regenerate_sections`,
+`subject` außerhalb der beiden Fachvokabulare, die edu-sharing in `ccm:taxonid` nutzt (70 Schulfächer und 344
+Hochschulfächer der Destatis-Systematik, Schnappschüsse in `config/vocabs`, D51; die Antwort nennt die Schulfächer).
+Die Fächer eines Knotens oder einer Sammlung prüft er nicht, dort zählt ein unbekanntes einfach nicht; sie kommen aus
+`ccm:taxonid` und `ccm:oeh_taxonid_university`. Ebenso 422 auf einen Namen in `regenerate_sections`,
 den das Template nicht hat (die Antwort nennt dessen Bausteine als `id (Schlüssel)`). Ebenso auf `regenerate_sections`
 ohne `existing_markdown`, auf `knowledge_collection_id` ohne `world` in `parts` und bei `/qa` auf `text` zusammen mit
 `topic` oder `node_id`. Eine unbekannte `knowledge_collection_id` ist ein 404 wie eine unbekannte `collection_id`,

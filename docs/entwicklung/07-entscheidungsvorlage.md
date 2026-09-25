@@ -419,7 +419,7 @@ Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
      wie bei `/entities`; ebenso `subject`, `preset` und `article_choice` ohne Thema.
    - Ein unbekanntes `subject` („Pysik“) wurde still übergangen, Teil 2 suchte dann in allen Fächern; unbekannte Namen
      in `regenerate_sections` erneuerten nichts; unbekannte Felder aller Anfragen fielen still weg. Umgesetzt (D49):
-     422 mit den erlaubten Werten.
+     422 mit den erlaubten Werten; Fächer seit D51 gegen die beiden Fachvokabulare von edu-sharing.
    - `/lehrplan/search` sucht die Wörter, wie sie kommen, Teil 2 den aufgelösten Artikel, seine Aliase und Unterthemen.
      Vorschlag: ein Themen-Modus, der wie Teil 2 auflöst; zu messen an den 20 Themen von M22.
    - Die CLI kannte keinen Knoten, `/qa` mit der Stufe `llm` öffnete nach dem Kompendium ein zweites Token- und

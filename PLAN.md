@@ -1627,6 +1627,16 @@ API.
   die bleibt und für eigene Skripte auch die Übereinstimmung der Strategien untereinander rechnet. Mit dem Endpunkt
   gehen der Admin-Router des Matchings und `CompareRequest`; `GET /api/v2/matching/strategies` bleibt, bis die Profile
   entscheiden, welche Strategien es noch gibt.
+- **D51 (2026-09-25)** Ein `subject` wird gegen die beiden Fachvokabulare geprüft, die edu-sharing in `ccm:taxonid`
+  nutzt, nicht mehr gegen die 37 Fächer von `config/subjects.yaml` (Jan: die 422 für gültige Fächer war ein Fehler). Die
+  Schulfächer (70) und die Hochschulfächer der Destatis-Systematik (344 in drei Ebenen) liegen als Schnappschüsse in
+  `config/vocabs` (Stand 25.09.2026, Quelle und Auffrischen in der README dort); angenommen werden URI, Kennung,
+  deutsches Label und Alternativlabel, die 422 nennt die Schulfächer. Lehrplan- und Kontextwörter haben weiter nur die
+  37; ein anderes Fach zählt mit seinem Label (für das LLM der Artikelwahl) und lässt Teil 2 in allen Fächern suchen.
+  Knoten und Sammlungen lesen ihre Fächer aus `ccm:taxonid` (Schul- und Hochschulfächer, Label in
+  `ccm:taxonid_DISPLAYNAME`) und `ccm:oeh_taxonid_university` (nur Hochschulfächer); in einer Stichprobe von 13 lesbaren
+  Hochschulmaterialien der Staging wiederholte das zweite Feld nur Fächer des ersten. Für eine Beurteilung durch das LLM
+  taugt die Hochschulsystematik mit 344 Begriffen schlecht (Jan).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -54,3 +54,13 @@ def test_a_knowledge_collection_without_part_1_is_a_422(client: TestClient) -> N
     body = {"topic": "Optik", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "parts": ["curricula"]}
     answer = client.post("/api/v2/compendium", json=body)
     assert answer.status_code == 422 and "knowledge_collection_id" in answer.text
+
+
+@pytest.mark.parametrize(
+    "subject", ["Agrarwirtschaft", "http://w3id.org/openeduhub/vocabs/hochschulfaechersystematik/n5"]
+)
+def test_a_subject_of_the_vocabularies_is_taken_beyond_the_37_with_curriculum_words(
+    client: TestClient, subject: str
+) -> None:
+    answer = client.post("/api/v2/compendium", json={"topic": "Optik", "subject": subject, "parts": ["world"]})
+    assert answer.status_code == 200, answer.text
