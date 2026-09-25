@@ -7,7 +7,11 @@ so archive files and the model are warm and no prompt reaches the b-api early. T
 version: the previous standard (a git archive of c03dafe, which knows no article_choice) or the current one, where
 the ways take turns per topic.
 
-Usage: python mc_zeit_artikelwahl.py <out.json> <way>...   (ways: rule-based, llm)
+M25 measured the current code again after the hit check came to cover the linked sub-articles: --m25 takes 30 other
+topics no measurement had asked before (the first 30 ran in M13 and could come out of the cache), --m2v the path of
+the Model2Vec model when the hub has no copy.
+
+Usage: python mc_zeit_artikelwahl.py <out.json> <way>... [--m25] [--m2v <path>]   (ways: rule-based, llm)
 """
 
 from __future__ import annotations
@@ -19,7 +23,7 @@ import sys
 import time
 from pathlib import Path
 
-WAYS = sys.argv[2:]
+WAYS = [arg for arg in sys.argv[2:] if arg in ("rule-based", "llm")]
 if "llm" in WAYS:
     os.environ["LLM_ENABLED"] = "true"
     os.environ["B_API_BASE_URL"] = "https://b-api.staging.openeduhub.net"
@@ -36,7 +40,7 @@ if sys.platform == "win32":
 
 DATA = Path(r"C:\Users\jan\staging\Windsurf\kompendium-test\data")
 ZIMS = [str(DATA / "wikipedia_de_all_nopic_2026-01.zim"), str(DATA / "klexikon_de_all_maxi_2026-08.zim")]
-M2V = "JanSchachtschabel/m2v-gte-256-edu"
+M2V = sys.argv[sys.argv.index("--m2v") + 1] if "--m2v" in sys.argv else "JanSchachtschabel/m2v-gte-256-edu"
 TOPICS = [
     "Evolution", "Reformation", "Absolutismus", "Ozonschicht", "Nervensystem", "Vulkanismus", "Menschenrechte",
     "Kalter Krieg", "Romantik", "Satz des Thales", "Prozentrechnung", "Wahrscheinlichkeit", "Säugetiere",
@@ -46,6 +50,14 @@ TOPICS = [
     "Informatik: Speicher", "Kunst: Perspektive", "Sport: Ausdauer",
     "Kreislauf des Blutes",
 ]
+TOPICS_M25 = [
+    "Elektromagnetische Induktion", "Kernfusion", "Ottomotor", "Mitose", "Enzym", "Immunsystem", "Hormon",
+    "Quadratische Funktion", "Integralrechnung", "Vektor", "Mittelalter", "Aufklärung", "Monsun", "Gletscher", "Wüste",
+    "Sozialstaat", "Bundestag", "Inflation", "Marktwirtschaft", "Algorithmus", "Datenbank", "Verschlüsselung", "Lyrik",
+    "Kurzgeschichte", "Expressionismus", "Oper", "Chemische Bindung", "Redoxreaktion", "Radioaktivität", "Magnetismus",
+]
+if "--m25" in sys.argv:
+    TOPICS = TOPICS_M25
 
 out_path = Path(sys.argv[1])
 service = cli_service(ZIMS)

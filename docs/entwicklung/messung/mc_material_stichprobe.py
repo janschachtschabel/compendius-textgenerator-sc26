@@ -10,8 +10,12 @@ It writes a draft of eval/materialwahl/materialien.yaml - node id, repository, t
 articles are labelled by hand afterwards - and prints title, keywords and description for that labelling. The
 descriptions stay out of the repository: they are texts of third parties, and the measurement reads them anew.
 
+M25 drew a second sample with another seed to check the rules chosen on the first one, leaving out the materials of
+the first (--ohne).
+
 Usage (project venv, from the project root):
-python docs/entwicklung/messung/mc_material_stichprobe.py <draft.yaml> [<materials per subject>]
+python docs/entwicklung/messung/mc_material_stichprobe.py <draft.yaml> [<materials per subject>] [--saat <seed>]
+    [--ohne <gold.yaml>]
 """
 
 from __future__ import annotations
@@ -63,9 +67,19 @@ def first(props: dict, key: str) -> str:  # type: ignore[type-arg]
     return str(values[0] or "").strip()
 
 
+def option(name: str) -> str | None:
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else None
+
+
 out_path = Path(sys.argv[1])
-per_subject = int(sys.argv[2]) if len(sys.argv) > 2 else 4
-rng = random.Random(SEED)
+per_subject = int(sys.argv[2]) if len(sys.argv) > 2 and not sys.argv[2].startswith("--") else 4
+rng = random.Random(int(option("--saat") or SEED))  # noqa: S311 - a reproducible sample, not a secret
+known = option("--ohne")
+taken_before = (
+    {entry["node_id"] for entry in yaml.safe_load(Path(known).read_text(encoding="utf-8"))["materialien"]}
+    if known
+    else set()
+)
 entries = []
 with httpx.Client(timeout=60, headers={"Accept": "application/json"}) as client:
     for subject, label in SUBJECTS.items():
@@ -79,6 +93,8 @@ with httpx.Client(timeout=60, headers={"Accept": "application/json"}) as client:
                 first(props, "cclom:general_description"),
             )
             if node.get("type") != "ccm:io" or not title or len(description) < MIN_DESCRIPTION:
+                continue
+            if node["ref"]["id"] in taken_before:
                 continue
             entries.append(
                 {

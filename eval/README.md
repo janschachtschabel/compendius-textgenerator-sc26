@@ -195,6 +195,11 @@ Hauptartikel. Ihre Beschreibungen stehen nicht darin; `docs/entwicklung/messung/
 liest sie aus dem Repository, `mc_material_stichprobe.py` zieht die Stichprobe neu. Seit M23 trägt jedes
 Material auch den `begriff`, den eine Lehrkraft eintippen würde, festgelegt vor dem Lauf.
 
+`materialwahl/materialien_m25.yaml` ist das zweite Gold für den Knoten-Eingang (M25), in derselben Form: 40 weitere
+Materialien, gezogen mit der Saat 25 und ohne die des ersten Golds, beschriftet am 25.09.2026, bevor ein Verfahren auf
+ihnen lief. An ihm prüft M25 die Regeln, die auf dem ersten Gold ausgewählt wurden;
+`docs/entwicklung/messung/mc_material_knoten.py` misst an beiden die Artikelwahl des Dienstes.
+
 `materialwahl/kompendium_noten.yaml` hält die Noten für M23: je Material jeder Wikipedia-Artikel, aus dem
 eines der sechs Kompendien Absätze gedruckt hat (603 Paare; 2 Thema des Materials oder ein zentraler Teil,
 1 verwandt, 0 unpassend). `kompendium_noten_zweit.yaml` sind die Noten eines zweiten Beurteilers für

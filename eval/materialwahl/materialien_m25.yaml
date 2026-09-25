@@ -1,0 +1,470 @@
+# Zweite Stichprobe für die Artikelwahl von Knoten-Eingaben (M25): 40 weitere echte Materialien der WLO-Produktion,
+# je Fach 4 mit Beschreibung, gezogen von docs/entwicklung/messung/mc_material_stichprobe.py mit Saat 25 und ohne die
+# Materialien der ersten (materialien.yaml, Saat 21). Sie prüft die Regeln, die auf der ersten ausgewählt wurden, an
+# Materialien, die bei der Auswahl niemand gesehen hat. Beschriftet am 25.09.2026 von Claude aus Titel, Beschreibung und
+# Schlagwörtern, bevor ein Verfahren auf ihnen lief; danach nur gegen das Archiv geprüft, ob die akzeptierten Titel
+# Artikel sind (Filtration, Photosynthesepigment, Einwanderungspolitik, Siddhartha und vier weitere hießen dort anders
+# oder fehlten). Eine Redaktion hat es nicht geprüft. Arten, akzeptiert und begriff wie in materialien.yaml.
+version: 1
+materialien:
+- node_id: 44f4d6bc-b964-4d96-b355-aed174c1fd61
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Warum Computer an Schach scheitern
+  faecher:
+  - Physik
+  akzeptiert:
+  - Computerschach
+  - Schachcomputer
+  art: klar
+  begriff: Computerschach
+- node_id: d747ba0f-1289-422b-93d9-a765b4ab5d32
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Wie uns die Sterne tatsächlich beeinflussen könnten
+  faecher:
+  - Physik
+  akzeptiert:
+  - Stern
+  - Astrologie
+  art: unscharf
+  begriff: Stern
+- node_id: ef03a4ab-c161-4b7c-b071-57f92f9df733
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Wie schwarze Löcher wirklich aussehen
+  faecher:
+  - Physik
+  akzeptiert:
+  - Schwarzes Loch
+  art: klar
+  begriff: Schwarzes Loch
+- node_id: 0f9b031e-8db7-479c-baa2-123d420678c1
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Die Wunder des Nachthimmels
+  faecher:
+  - Physik
+  akzeptiert:
+  - Sternhimmel
+  - Nachthimmel
+  art: klar
+  begriff: Sternhimmel
+- node_id: 33c054c2-6cef-4962-8054-c26cef8962ee
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Wasserfilter | Forschungsidee Tag der kleinen Forscher 2020
+  faecher:
+  - Physik
+  - Mathematik
+  - Biologie
+  - Informatik
+  - Chemie
+  - Nachhaltigkeit
+  akzeptiert:
+  - Wasserfilter
+  - Filtration (Trennverfahren)
+  art: klar
+  begriff: Wasserfilter
+- node_id: 786e9679-5369-41a8-ae96-795369c1a81f
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Gestatten: Aus der Stiftung „Haus der kleinen Forscher“ wird die Stiftung Kinder forschen!'
+  faecher:
+  - Physik
+  - Mathematik
+  - Biologie
+  - Informatik
+  - Chemie
+  - Nachhaltigkeit
+  akzeptiert: []
+  art: keins
+- node_id: dc4cdf89-b8aa-4aee-8cdf-89b8aadaee4b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: About Germany's largest early childhood education initiative (German with English subtitle)
+  faecher:
+  - Physik
+  - Mathematik
+  - Biologie
+  - Informatik
+  - Chemie
+  - Nachhaltigkeit
+  akzeptiert: []
+  art: keins
+- node_id: 5177c8eb-ecff-4a29-b7c8-ebecffaa290b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Livestream Keynote Dr Obama: „What Skills and Abilities Do Children Need for a Worthwhile Future?“'
+  faecher:
+  - Physik
+  - Mathematik
+  - Biologie
+  - Informatik
+  - Chemie
+  - Nachhaltigkeit
+  akzeptiert:
+  - Frühkindliche Bildung
+  - MINT-Fächer
+  art: unscharf
+  begriff: Frühkindliche Bildung
+- node_id: 068036f6-6289-476f-b213-6061e6537ccb
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: DNA-Rekombination - Methoden der künstlichen DNA-Rekombination in der Genetik einfach erklärt
+  faecher:
+  - Biologie
+  akzeptiert:
+  - Rekombinante DNA
+  - Gentechnik
+  art: klar
+  begriff: DNA-Rekombination
+- node_id: ed75698c-4df2-4714-a7ea-fa3fc8cd73e5
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Bau & Funktion von Nervenzellen - Nervensystem einfach erklärt - Neurobiologie
+  faecher:
+  - Biologie
+  akzeptiert:
+  - Nervenzelle
+  - Nervensystem
+  art: klar
+  begriff: Nervenzelle
+- node_id: d94d8e61-4fdb-48cb-a761-db8d4c69620c
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: m RNA-Prozessierung - Genetisches System & Proteinbiosynthese bei Eukaryoten einfach erklärt
+  faecher:
+  - Biologie
+  akzeptiert:
+  - Messenger-RNA
+  - Spleißen (Biologie)
+  - Prä-mRNA
+  - Proteinbiosynthese
+  art: klar
+  begriff: mRNA-Prozessierung
+- node_id: 81c2936e-61a6-426c-9df8-23aa5e1b13c4
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Bunte Vielfalt – Extraktion und Quantifizierung von Photopigmenten aus Mikro-/Makroalgen
+  faecher:
+  - Sachunterricht
+  - Gesundheit
+  - Umweltgefährdung, Umweltschutz
+  - Biologie
+  - Chemie
+  akzeptiert:
+  - Chlorophylle
+  - Phycobiline
+  - Phycobilisom
+  - Photosynthese
+  art: klar
+  begriff: Photosynthesepigmente
+- node_id: 54d76ac6-9656-4b6d-86c9-66c5a3ad53ab
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Aufgabe aus "Aufgaben zum Baumdiagramm"
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Baumdiagramm
+  - Urnenmodell
+  art: klar
+  begriff: Baumdiagramm
+- node_id: 844070b8-b409-478b-a457-7d3dbb0f9b65
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Einführung zum Kreis
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Kreis (Geometrie)
+  - Kreis
+  art: klar
+  begriff: Kreis
+- node_id: c28e20b4-3bf7-4a5f-82d9-1605f16d2253
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Aufgabe aus "Aufgaben zur Kombinatorik im typischen Sinn"
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Kombinatorik
+  - Permutation
+  art: klar
+  begriff: Kombinatorik
+- node_id: 6459e6d9-3019-470e-8c2e-73b89ca3389c
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Aufgabe aus "2016"
+  faecher:
+  - Mathematik
+  akzeptiert:
+  - Planquadrat
+  - Karte (Kartografie)
+  art: unscharf
+  begriff: Planquadrat
+- node_id: 97b0d80b-1c8e-4e35-8408-dc10a1464652
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Demokratie als Lebensform
+  faecher:
+  - Geschichte
+  akzeptiert:
+  - 68er-Bewegung
+  - Demokratie
+  art: klar
+  begriff: 68er-Bewegung
+- node_id: 86fc04de-b343-4b77-801f-a34c5ba6f0bf
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Afghanistan – Geschichte, Politik, Gesellschaft '
+  faecher:
+  - Geschichte
+  akzeptiert:
+  - Afghanistan
+  - Geschichte Afghanistans
+  art: klar
+  begriff: Afghanistan
+- node_id: f9542466-d63a-4c46-bdb2-7138701916a8
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: bpb.de - Indien - Größte Demokratie der Welt - Geschichte, Religion und Gesellschaft
+  faecher:
+  - Geschichte
+  - Religion
+  akzeptiert:
+  - Indien
+  - Geschichte Indiens
+  art: klar
+  begriff: Indien
+- node_id: c12c68fa-098d-4d10-b68d-803d2a4be69b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Der ungewöhnliche Fluss - Der Evros - An die Ufer
+  faecher:
+  - Geschichte
+  akzeptiert:
+  - Mariza
+  art: klar
+  begriff: Evros
+- node_id: 2cff54da-ab29-4a21-aca2-7d4cbbca31a2
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Vier Arten von Dürre
+  faecher:
+  - Geografie
+  akzeptiert:
+  - Dürre
+  art: klar
+  begriff: Dürre
+- node_id: d099152b-8cce-4b02-917d-7d3afe5377e4
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Benin in a Nutshell
+  faecher:
+  - Englisch
+  - Geschichte
+  - Geografie
+  akzeptiert:
+  - Benin
+  art: klar
+  begriff: Benin
+- node_id: b01f63b9-6963-4697-89cf-164590fb3b44
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: So entsteht ein Erdbeben
+  faecher:
+  - Geografie
+  - Sachunterricht
+  akzeptiert:
+  - Erdbeben
+  - Plattentektonik
+  art: klar
+  begriff: Erdbeben
+- node_id: cac13144-a361-44a8-91c9-32fced9594bd
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Wachsende Weltbevölkerung
+  faecher:
+  - Religion
+  - Ethik
+  - Geografie
+  akzeptiert:
+  - Weltbevölkerung
+  - Bevölkerungswachstum
+  art: klar
+  begriff: Weltbevölkerung
+- node_id: d0d190c7-c13b-48cd-9c14-48aadfdfe8cf
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Labour migration
+  faecher:
+  - Politik
+  - Geschichte
+  akzeptiert:
+  - Arbeitsmigration
+  art: klar
+  begriff: Arbeitsmigration
+- node_id: c4e2df8d-71eb-4762-a579-18c573117c1b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Current Developments and Future Challenges
+  faecher:
+  - Politik
+  - Geschichte
+  akzeptiert:
+  - Brain-Drain
+  - Migration (Soziologie)
+  - Emigration
+  art: unscharf
+  begriff: Migration
+- node_id: c1d2d6f7-5db7-4976-9dd7-d3d78740942a
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Immigration policy
+  faecher:
+  - Politik
+  - Geschichte
+  akzeptiert:
+  - Rückkehrgesetz
+  - Alija
+  - Migrationspolitik
+  - Einwanderung
+  art: klar
+  begriff: Einwanderungspolitik
+- node_id: 4dc85074-8564-4bb3-8362-f2a36b324e41
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Bibliography
+  faecher:
+  - Politik
+  - Geschichte
+  akzeptiert: []
+  art: keins
+- node_id: 2567e9c7-202c-47fe-a7e9-c7202c57fe76
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: IdeenSet Robotik
+  faecher:
+  - Mathematik
+  - Informatik
+  - Sachunterricht
+  - Medienbildung
+  akzeptiert:
+  - Robotik
+  art: klar
+  begriff: Robotik
+- node_id: 3a61647f-c1da-47f7-a164-7fc1dae7f77b
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Stadt, Land, Wald– Lebensräume erforschen und mitgestalten | Fortbildung #kita #forschenmitkindern'
+  faecher:
+  - Physik
+  - Mathematik
+  - Biologie
+  - Informatik
+  - Chemie
+  - Nachhaltigkeit
+  akzeptiert:
+  - Habitat
+  art: unscharf
+  begriff: Lebensraum
+- node_id: df9803ba-f63f-4ba7-9803-baf63feba7e6
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Arduino Experimente - Pong, ein altes Videospiel neu entdeckt
+  faecher:
+  - Sachunterricht
+  - MINT
+  - Werken
+  - Medienbildung
+  - Kunst
+  - Textiltechnik und Bekleidung
+  - Informatik
+  akzeptiert:
+  - Pong
+  - Arduino (Plattform)
+  art: klar
+  begriff: Arduino
+- node_id: c42113ad-de6d-48d4-acac-039fea3a8735
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Übersicht OER Multimediatools
+  faecher:
+  - Deutsch
+  - Allgemein
+  - Deutsch als Zweitsprache
+  - Medienbildung
+  - Sachunterricht
+  - Open Educational Resources
+  - Informatik
+  akzeptiert: []
+  art: keins
+- node_id: 86236769-783b-44a5-b6bb-57f1c37b53df
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Multimediales Theaterstück „Der gestiefelte Kater“
+  faecher:
+  - Medienbildung
+  - Deutsch
+  - Sachunterricht
+  akzeptiert:
+  - Der gestiefelte Kater
+  art: klar
+  begriff: Der gestiefelte Kater
+- node_id: 089911f9-9059-419a-bb40-ef39d8164aec
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Hermann Hesse: Siddharta. Eine indische Dichtung'
+  faecher:
+  - Deutsch
+  akzeptiert:
+  - Siddhartha (Hermann Hesse)
+  - Hermann Hesse
+  art: klar
+  begriff: Siddhartha
+- node_id: 88309ec3-709a-4e05-8fa0-df7e6a638ca4
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Anlautübungen – multimedial – Lernen im Netz
+  faecher:
+  - Deutsch
+  - Deutsch als Zweitsprache
+  akzeptiert:
+  - Anlaut
+  - Anlauttabelle
+  art: klar
+  begriff: Anlaut
+- node_id: db853694-e2eb-4565-a488-9194d423c920
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Dos and Don‘ts (nicht nur) für den Deutschunterricht '
+  faecher:
+  - Deutsch
+  - Allgemein
+  akzeptiert:
+  - Deutschunterricht
+  art: unscharf
+  begriff: Deutschunterricht
+- node_id: f55c20de-96f2-489d-b92d-f75d8fcc68f3
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Made in Bangladesh - Film und Begleitmaterial | Portal Globales Lernen
+  faecher:
+  - Politik
+  - Nachhaltigkeit
+  - Religion
+  - Ethik
+  - Wirtschaftskunde
+  akzeptiert:
+  - Textilindustrie in Bangladesch
+  art: klar
+  begriff: Textilindustrie in Bangladesch
+- node_id: 6983d262-a9a9-47fc-bed9-e0f724870fea
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Moderne Sklaverei? Über globale Arbeitsverhältnisse | Portal Globales Lernen
+  faecher:
+  - Politik
+  - Nachhaltigkeit
+  - Religion
+  - Ethik
+  - Wirtschaftskunde
+  akzeptiert:
+  - Moderne Sklaverei
+  - Sklaverei
+  - Zwangsarbeit
+  art: klar
+  begriff: Moderne Sklaverei
+- node_id: 9f0015c8-d15e-4f38-b836-67d090843dfe
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: Steuern und Steuerflucht. Steuergerechtigkeit als Basis für eine solidarische Gesellschaft, funktionierende Wirtschaft
+    und nachhaltige Entwicklung | Portal Globales Lernen
+  faecher:
+  - Politik
+  - Geografie
+  - Religion
+  - Ethik
+  - Nachhaltigkeit
+  - Wirtschaftskunde
+  akzeptiert:
+  - Steuerflucht
+  - Steuergerechtigkeit
+  - Steuer
+  art: klar
+  begriff: Steuerflucht
+- node_id: 0ea5a1fb-8272-486b-b45f-cbf31abc4343
+  repository: https://redaktion.openeduhub.net/edu-sharing/rest
+  titel: 'Palmöl: Fluch oder Segen? | Portal Globales Lernen'
+  faecher:
+  - Allgemein
+  - Geografie
+  - Wirtschaftskunde
+  - Nachhaltigkeit
+  akzeptiert:
+  - Palmöl
+  art: klar
+  begriff: Palmöl

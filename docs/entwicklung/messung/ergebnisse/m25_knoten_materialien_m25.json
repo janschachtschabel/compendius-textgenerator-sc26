@@ -1,0 +1,2430 @@
+[
+ {
+  "node_id": "44f4d6bc-b964-4d96-b355-aed174c1fd61",
+  "titel": "Warum Computer an Schach scheitern",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Schacholympiade 1986",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Schach",
+    "richtig": false,
+    "sekunden": 0.6,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Schachcomputer",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 331,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Schachcomputer"
+   },
+   "B": {
+    "titel": "Computerschach",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Computerschach",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Schach",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Computerschach",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 692,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Computerschach",
+    "material": "Schachcomputer",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "d747ba0f-1289-422b-93d9-a765b4ab5d32",
+  "titel": "Wie uns die Sterne tatsächlich beeinflussen könnten",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Sternoberfläche",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Stern",
+    "richtig": true,
+    "sekunden": 0.79,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Astrologie",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 470,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Astrologie"
+   },
+   "B": {
+    "titel": "Stern",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Stern",
+    "richtig": true,
+    "sekunden": 0.28,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Stern",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 566,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Stern",
+    "material": "Astrologie",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "ef03a4ab-c161-4b7c-b071-57f92f9df733",
+  "titel": "Wie schwarze Löcher wirklich aussehen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Frag den Lesch/Episodenliste",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Schwarzes Loch",
+    "richtig": true,
+    "sekunden": 0.14,
+    "tokens": 320,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Schwarzes Loch"
+   },
+   "B": {
+    "titel": "Schwarzes Loch",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Schwarzes Loch",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Schwarzes Loch",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 515,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Schwarzes Loch",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "0f9b031e-8db7-479c-baa2-123d420678c1",
+  "titel": "Die Wunder des Nachthimmels",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Nationale Woche des dunklen Himmels",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Nachthimmel",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Stern",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 474,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Stern"
+   },
+   "B": {
+    "titel": "Sternenhimmel",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Sternenhimmel",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Nachthimmel",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Sternenhimmel",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 711,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Sternenhimmel",
+    "material": "Stern",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "33c054c2-6cef-4962-8054-c26cef8962ee",
+  "titel": "Wasserfilter | Forschungsidee Tag der kleinen Forscher 2020",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Tag (Informatik)",
+    "richtig": false,
+    "sekunden": 0.7,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Wasserfilter",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 360,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Wasserfilter"
+   },
+   "B": {
+    "titel": "Wasserfilter",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Wasserfilter",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Tag (Informatik)",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Wasserfilter",
+    "richtig": true,
+    "sekunden": 0.2,
+    "tokens": 673,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Wasserfilter",
+    "material": "Filtrierung (Mathematik)",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "786e9679-5369-41a8-ae96-795369c1a81f",
+  "titel": "Gestatten: Aus der Stiftung „Haus der kleinen Forscher“ wird die Stiftung Kinder forschen!",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": "Giordano-Bruno-Stiftung",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Stiftung Kinder forschen",
+    "richtig": false,
+    "sekunden": 0.47,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 571,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": ""
+   }
+  }
+ },
+ {
+  "node_id": "dc4cdf89-b8aa-4aee-8cdf-89b8aadaee4b",
+  "titel": "About Germany's largest early childhood education initiative (German with English subtitle)",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Stiftung Kinder forschen",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 501,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Stiftung Kinder forschen"
+   }
+  }
+ },
+ {
+  "node_id": "5177c8eb-ecff-4a29-b7c8-ebecffaa290b",
+  "titel": "Livestream Keynote Dr Obama: „What Skills and Abilities Do Children Need for a Worthwhile Future?“",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.53,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Bildung für nachhaltige Entwicklung",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 396,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Bildung für nachhaltige Entwicklung"
+   },
+   "B": {
+    "titel": "Frühkindliche Bildung",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Frühkindliche Bildung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Frühkindliche Bildung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 715,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Frühkindliche Bildung",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "068036f6-6289-476f-b213-6061e6537ccb",
+  "titel": "DNA-Rekombination - Methoden der künstlichen DNA-Rekombination in der Genetik einfach erklärt",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Genetik",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Genetik",
+    "richtig": false,
+    "sekunden": 0.65,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Rekombinante DNA",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 781,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Rekombinante DNA"
+   },
+   "B": {
+    "titel": "Rekombination (Genetik)",
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Rekombination (Genetik)",
+    "richtig": false,
+    "sekunden": 0.18,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Genetik",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Rekombination (Genetik)",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 954,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Rekombination (Genetik)",
+    "material": "Rekombinante DNA",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "ed75698c-4df2-4714-a7ea-fa3fc8cd73e5",
+  "titel": "Bau & Funktion von Nervenzellen - Nervensystem einfach erklärt - Neurobiologie",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.04,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Nervenzelle",
+    "richtig": true,
+    "sekunden": 0.86,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Nervenzelle",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 673,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Nervenzelle"
+   },
+   "B": {
+    "titel": "Nervenzelle",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Nervenzelle",
+    "richtig": true,
+    "sekunden": 0.22,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Nervenzelle",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 960,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Nervenzelle",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "d94d8e61-4fdb-48cb-a761-db8d4c69620c",
+  "titel": "m RNA-Prozessierung - Genetisches System & Proteinbiosynthese bei Eukaryoten einfach erklärt",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.36,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "RNA-Prozessierung",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 803,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "RNA-Prozessierung"
+   },
+   "B": {
+    "titel": "Prozessierung",
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Prozessierung",
+    "richtig": false,
+    "sekunden": 0.2,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "RNA-Prozessierung",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 936,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "RNA-Prozessierung",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "81c2936e-61a6-426c-9df8-23aa5e1b13c4",
+  "titel": "Bunte Vielfalt – Extraktion und Quantifizierung von Photopigmenten aus Mikro-/Makroalgen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Makroalgen",
+    "richtig": false,
+    "sekunden": 0.42,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Makroalgen",
+    "richtig": false,
+    "sekunden": 0.23,
+    "tokens": 859,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Photosynthesepigmente"
+   },
+   "B": {
+    "titel": "Engelmannscher Bakterienversuch",
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Engelmannscher Bakterienversuch",
+    "richtig": false,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Makroalgen",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Engelmannscher Bakterienversuch",
+    "richtig": false,
+    "sekunden": 0.29,
+    "tokens": 1748,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Photosynthesepigmente",
+    "material": "Makroalgen",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "54d76ac6-9656-4b6d-86c9-66c5a3ad53ab",
+  "titel": "Aufgabe aus \"Aufgaben zum Baumdiagramm\"",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Generative Theory of Tonal Music",
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Baumdiagramm",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Baumdiagramm",
+    "richtig": true,
+    "sekunden": 0.13,
+    "tokens": 231,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Baumdiagramm"
+   },
+   "B": {
+    "titel": "Baumdiagramm",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Baumdiagramm",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Baumdiagramm",
+    "richtig": true,
+    "sekunden": 0.15,
+    "tokens": 359,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Baumdiagramm",
+    "material": "Urnenmodell",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "844070b8-b409-478b-a457-7d3dbb0f9b65",
+  "titel": "Einführung zum Kreis",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Kreis Guttentag",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Kreis",
+    "richtig": true,
+    "sekunden": 0.56,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Kreis",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 221,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Kreis (Geometrie)"
+   },
+   "B": {
+    "titel": "Kreis",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Kreis",
+    "richtig": true,
+    "sekunden": 0.2,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Kreis",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 326,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Kreis (Geometrie)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c28e20b4-3bf7-4a5f-82d9-1605f16d2253",
+  "titel": "Aufgabe aus \"Aufgaben zur Kombinatorik im typischen Sinn\"",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Schachmathematik",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Kombinatorik",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Permutation",
+    "richtig": true,
+    "sekunden": 0.13,
+    "tokens": 198,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Permutation"
+   },
+   "B": {
+    "titel": "Kombinatorik",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Kombinatorik",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Kombinatorik",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 337,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Kombinatorik",
+    "material": "Permutation",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "6459e6d9-3019-470e-8c2e-73b89ca3389c",
+  "titel": "Aufgabe aus \"2016\"",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Seeaufgabengesetz",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Koordinatensystem",
+    "richtig": false,
+    "sekunden": 0.09,
+    "tokens": 320,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Koordinatensystem"
+   },
+   "B": {
+    "titel": "Gitternetz",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Gitternetz",
+    "richtig": true,
+    "sekunden": 0.04,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Gitternetz",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 622,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Planquadrat",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "97b0d80b-1c8e-4e35-8408-dc10a1464652",
+  "titel": "Demokratie als Lebensform",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "John Dewey",
+    "richtig": false,
+    "sekunden": 0.14,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Demokratie",
+    "richtig": true,
+    "sekunden": 0.2,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "68er-Bewegung",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 268,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "68er-Bewegung"
+   },
+   "B": {
+    "titel": "68er-Bewegung",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "68er-Bewegung",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Demokratie",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "68er-Bewegung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 556,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "68er-Bewegung",
+    "material": "Demokratie",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "86fc04de-b343-4b77-801f-a34c5ba6f0bf",
+  "titel": "Afghanistan – Geschichte, Politik, Gesellschaft ",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Faizabad (Afghanistan)",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Afghanistan",
+    "richtig": true,
+    "sekunden": 0.48,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Geschichte Afghanistans",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 216,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Geschichte Afghanistans"
+   },
+   "B": {
+    "titel": "Afghanistan",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Afghanistan",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Afghanistan",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 426,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Afghanistan",
+    "material": "Geschichte Afghanistans",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f9542466-d63a-4c46-bdb2-7138701916a8",
+  "titel": "bpb.de - Indien - Größte Demokratie der Welt - Geschichte, Religion und Gesellschaft",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Islamischer Staat (Theorie)",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Geschichte Indiens",
+    "richtig": true,
+    "sekunden": 0.57,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Indien",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 240,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Indien"
+   },
+   "B": {
+    "titel": "Indien",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Geschichte Indiens",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Indien",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 493,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Indien",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c12c68fa-098d-4d10-b68d-803d2a4be69b",
+  "titel": "Der ungewöhnliche Fluss - Der Evros - An die Ufer",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Fluss",
+    "richtig": false,
+    "sekunden": 0.18,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Mariza",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 393,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mariza"
+   },
+   "B": {
+    "titel": "Mariza",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Mariza",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Fluss",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Mariza",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 689,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mariza",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "2cff54da-ab29-4a21-aca2-7d4cbbca31a2",
+  "titel": "Vier Arten von Dürre",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Stefan Dürr",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Dürre",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Dürre",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 202,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Dürre"
+   },
+   "B": {
+    "titel": "Dürre",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Dürre",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Dürre",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 337,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Dürre",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "d099152b-8cce-4b02-917d-7d3afe5377e4",
+  "titel": "Benin in a Nutshell",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Afrikanische Union",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Benin",
+    "richtig": true,
+    "sekunden": 1.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Benin",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 497,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Benin"
+   },
+   "B": {
+    "titel": "Benin",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Benin",
+    "richtig": true,
+    "sekunden": 0.18,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Benin",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 654,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Benin",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "b01f63b9-6963-4697-89cf-164590fb3b44",
+  "titel": "So entsteht ein Erdbeben",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Erdbeben vor Sumatra 2012",
+    "richtig": false,
+    "sekunden": 0.04,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 202,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Erdbeben"
+   },
+   "B": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 301,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Erdbeben",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "cac13144-a361-44a8-91c9-32fced9594bd",
+  "titel": "Wachsende Weltbevölkerung",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Peren-Theorem",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Weltbevölkerung",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Weltbevölkerung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 198,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Weltbevölkerung"
+   },
+   "B": {
+    "titel": "Weltbevölkerung",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Weltbevölkerung",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Weltbevölkerung",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 602,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Weltbevölkerung",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "d0d190c7-c13b-48cd-9c14-48aadfdfe8cf",
+  "titel": "Labour migration",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Czarina Wilpert",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Arbeitsmigration",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 247,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Arbeitsmigration"
+   },
+   "B": {
+    "titel": "Arbeitsmigration",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Arbeitsmigration",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Arbeitsmigration",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 738,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Arbeitsmigration",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c4e2df8d-71eb-4762-a579-18c573117c1b",
+  "titel": "Current Developments and Future Challenges",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Inga Holube",
+    "richtig": false,
+    "sekunden": 0.04,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.29,
+    "tokens": 352,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Migration in Polen"
+   },
+   "B": {
+    "titel": "Migration",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Migration",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Migration",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 560,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Migration (Soziologie)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c1d2d6f7-5db7-4976-9dd7-d3d78740942a",
+  "titel": "Immigration policy",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "White Australia Policy",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.14,
+    "tokens": 364,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Einwanderung nach Israel"
+   },
+   "B": {
+    "titel": "Gemeinsame Einwanderungspolitik",
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Gemeinsame Einwanderungspolitik",
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Gemeinsame Einwanderungspolitik",
+    "richtig": false,
+    "sekunden": 5.74,
+    "tokens": 1314,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Einwanderungspolitik",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "4dc85074-8564-4bb3-8362-f2a36b324e41",
+  "titel": "Bibliography",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": "British National Bibliography",
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.19,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Marokko",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 216,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Marokko"
+   }
+  }
+ },
+ {
+  "node_id": "2567e9c7-202c-47fe-a7e9-c7202c57fe76",
+  "titel": "IdeenSet Robotik",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "MBot",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Robotik",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Robotik",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 270,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Robotik"
+   },
+   "B": {
+    "titel": "Robotik",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Robotik",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Robotik",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 457,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Robotik",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "3a61647f-c1da-47f7-a164-7fc1dae7f77b",
+  "titel": "Stadt, Land, Wald– Lebensräume erforschen und mitgestalten | Fortbildung #kita #forschenmitkindern",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Wald",
+    "richtig": false,
+    "sekunden": 0.59,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Wald",
+    "richtig": false,
+    "sekunden": 0.18,
+    "tokens": 671,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Lebensraum (Ökologie)"
+   },
+   "B": {
+    "titel": "Biom",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Standort (Ökologie)",
+    "richtig": false,
+    "sekunden": 0.28,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Wald",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Standort (Ökologie)",
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 795,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Lebensraum",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "df9803ba-f63f-4ba7-9803-baf63feba7e6",
+  "titel": "Arduino Experimente - Pong, ein altes Videospiel neu entdeckt",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Ping (Datenübertragung)",
+    "richtig": false,
+    "sekunden": 0.27,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Pong",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 416,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Pong"
+   },
+   "B": {
+    "titel": "Arduino (Plattform)",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Arduino (Plattform)",
+    "richtig": true,
+    "sekunden": 0.18,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Ping (Datenübertragung)",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Arduino (Plattform)",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 517,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Arduino",
+    "material": "Pong",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c42113ad-de6d-48d4-acac-039fea3a8735",
+  "titel": "Übersicht OER Multimediatools",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.34,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Open Educational Resources",
+    "richtig": false,
+    "sekunden": 0.09,
+    "tokens": 755,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Open Educational Resources"
+   }
+  }
+ },
+ {
+  "node_id": "86236769-783b-44a5-b6bb-57f1c37b53df",
+  "titel": "Multimediales Theaterstück „Der gestiefelte Kater“",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Parviz Mir-Ali",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.2,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Der gestiefelte Kater",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 247,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Der gestiefelte Kater"
+   },
+   "B": {
+    "titel": "Der gestiefelte Kater",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Der gestiefelte Kater",
+    "richtig": true,
+    "sekunden": 0.24,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Der gestiefelte Kater",
+    "richtig": true,
+    "sekunden": 1.38,
+    "tokens": 1360,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Der gestiefelte Kater (Märchen)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "089911f9-9059-419a-bb40-ef39d8164aec",
+  "titel": "Hermann Hesse: Siddharta. Eine indische Dichtung",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Johann Rudel (Buchbinder)",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Hermann Hesse",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Hermann Hesse",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 274,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Siddhartha (Roman)"
+   },
+   "B": {
+    "titel": "Siddhartha Gautama",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Siddhartha Gautama",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Hermann Hesse",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Siddhartha (Hermann Hesse)",
+    "richtig": true,
+    "sekunden": 1.3,
+    "tokens": 980,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Siddhartha (Hesse)",
+    "material": "Hermann Hesse",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "88309ec3-709a-4e05-8fa0-df7e6a638ca4",
+  "titel": "Anlautübungen – multimedial – Lernen im Netz",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Lernen",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Anlaut",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 272,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Anlaut"
+   },
+   "B": {
+    "titel": "Anlaut",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Anlaut",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Lernen",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Anlaut",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 588,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Anlaut",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "db853694-e2eb-4565-a488-9194d423c920",
+  "titel": "Dos and Don‘ts (nicht nur) für den Deutschunterricht ",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 184,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": ""
+   },
+   "B": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 363,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Deutschunterricht",
+    "material": "Unterricht",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f55c20de-96f2-489d-b92d-f75d8fcc68f3",
+  "titel": "Made in Bangladesh - Film und Begleitmaterial | Portal Globales Lernen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.57,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Textilindustrie in Bangladesch",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 395,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Textilindustrie in Bangladesch"
+   },
+   "B": {
+    "titel": "Textilindustrie in Bangladesch",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Textilindustrie in Bangladesch",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Textilindustrie in Bangladesch",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 705,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Textilindustrie in Bangladesch",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "6983d262-a9a9-47fc-bed9-e0f724870fea",
+  "titel": "Moderne Sklaverei? Über globale Arbeitsverhältnisse | Portal Globales Lernen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Moderne Sklaverei",
+    "richtig": true,
+    "sekunden": 0.23,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Moderne Sklaverei",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 439,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Moderne Sklaverei"
+   },
+   "B": {
+    "titel": "Moderne Sklaverei",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Moderne Sklaverei",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Moderne Sklaverei",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 610,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Moderne Sklaverei",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "9f0015c8-d15e-4f38-b836-67d090843dfe",
+  "titel": "Steuern und Steuerflucht. Steuergerechtigkeit als Basis für eine solidarische Gesellschaft, funktionierende Wirtschaft und nachhaltige Entwicklung | Portal Globales Lernen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Steuerflucht",
+    "richtig": true,
+    "sekunden": 0.37,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Steuer",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 387,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Steuer"
+   },
+   "B": {
+    "titel": "Steuerflucht",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Steuerflucht",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Steuerflucht",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 553,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Steuerflucht",
+    "material": "Steuer",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "0ea5a1fb-8272-486b-b45f-cbf31abc4343",
+  "titel": "Palmöl: Fluch oder Segen? | Portal Globales Lernen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Palmöl",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Palmöl",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 296,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Palmöl"
+   },
+   "B": {
+    "titel": "Palmöl",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Palmöl",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Palmöl",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 362,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Palmöl",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ }
+]

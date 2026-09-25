@@ -1,0 +1,2496 @@
+[
+ {
+  "node_id": "325c399b-dd66-40b3-8182-3baae248f4d6",
+  "titel": "Kurs: Mathematik für Physikbegeisterte 1",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.04,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Mathematik",
+    "richtig": false,
+    "sekunden": 0.09,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Mathematik",
+    "richtig": false,
+    "sekunden": 0.33,
+    "tokens": 289,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Mathematische Methoden der Physik"
+   },
+   "B": {
+    "titel": "Mathematische Physik",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Mathematische Physik",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Mathematik",
+    "dazu": true,
+    "note_material": 1
+   },
+   "BL": {
+    "titel": "Mathematische Physik",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 609,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mathematische Physik",
+    "material": "Mathematik",
+    "dazu": true,
+    "note_material": 1
+   }
+  }
+ },
+ {
+  "node_id": "19e322f0-afa5-440f-8dc0-fca1dcde71d8",
+  "titel": "Zahnrad und Riemen - Experiment:",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Rad",
+    "richtig": false,
+    "sekunden": 0.04,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Zahnrad",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Getriebe",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 338,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Getriebe"
+   },
+   "B": {
+    "titel": "Zahnrad",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Zahnrad",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Zahnrad",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 546,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Zahnrad",
+    "material": "Riemengetriebe",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "8e4ee58d-c18c-470b-8f84-c3a634a041c3",
+  "titel": "Bestimmung des Planckschen Wirkungsquantums h (Variante 1) - Experiment",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 275,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Plancksches Wirkungsquantum"
+   },
+   "B": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Planck-Konstante",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 378,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Plancksches Wirkungsquantum",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c6c569d7-87c3-40d6-be6f-d92ee5409782",
+  "titel": "Funktionsweise eines Galvanometer - Experiment",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Elektromagnetische Induktion",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Galvanometer",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Galvanometer",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 204,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Galvanometer"
+   },
+   "B": {
+    "titel": "Galvanometer",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Galvanometer",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Galvanometer",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 367,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Galvanometer",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "18adeb5f-3f7d-4c32-9a96-3398a756193e",
+  "titel": "Mond durch mein Teleskop - Moon through my telescope (Skywatcher 200/1000)",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Teleskop",
+    "richtig": true,
+    "sekunden": 0.52,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Mond",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 459,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mond"
+   },
+   "B": {
+    "titel": "Mond",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Mond",
+    "richtig": true,
+    "sekunden": 0.55,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Teleskop",
+    "dazu": true,
+    "note_material": 2
+   },
+   "BL": {
+    "titel": "Mond",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 595,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mond",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c09b26a5-bb4d-497e-8def-c8812e64bb9d",
+  "titel": "Eine Batterie \"bauen\"",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "BAE Batterien",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "sekunden": 0.59,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 580,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Batterie (Elektrotechnik)"
+   },
+   "B": {
+    "titel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Batterie (Elektrotechnik)",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 886,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Batterie (Elektrotechnik)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "6c306be9-a5f5-46ae-af83-31fc480fa389",
+  "titel": "\"Blitzeis\" mit Wasser und Windeln",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Wasser",
+    "richtig": false,
+    "sekunden": 0.24,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Superabsorber",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 599,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Superabsorber"
+   },
+   "B": {
+    "titel": "Superabsorber",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Superabsorber",
+    "richtig": true,
+    "sekunden": 0.13,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Wasser",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Superabsorber",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 964,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Superabsorber",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "35162ae1-e3d7-4c8e-95e5-d13d6906fb57",
+  "titel": "Sonnenuntergang im Zeitraffer",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Leuchtende Nachtwolke",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Sonnenuntergang",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Sonnenuntergang",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 309,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Sonnenuntergang"
+   },
+   "B": {
+    "titel": "Sonnenuntergang",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Sonnenuntergang",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Sonnenuntergang",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 395,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Sonnenuntergang",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "21e5be2c-c701-438a-a5be-2cc701f38a47",
+  "titel": "Organometallic Reagents and Carbanions: Crash Course Organic Chemistry #28",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Carbanion",
+    "richtig": true,
+    "sekunden": 1.15,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Metallorganische Chemie",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 654,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Organometallische Chemie"
+   },
+   "B": {
+    "titel": "Metallorganische Chemie",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Metallorganische Chemie",
+    "richtig": true,
+    "sekunden": 0.32,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Carbanion",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Metallorganische Chemie",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 1060,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Organometallische Chemie",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "aff99075-a5b3-49dd-b990-75a5b369dd63",
+  "titel": "Determining SN1, SN2, E1, and E2 Reactions: Crash Course Organic Chemistry #23",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "SN1",
+    "richtig": false,
+    "sekunden": 0.52,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Nukleophile Substitution",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 916,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Nukleophile Substitution"
+   },
+   "B": {
+    "titel": "Nukleophile Substitution",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Nukleophile Substitution",
+    "richtig": true,
+    "sekunden": 0.31,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "SN1",
+    "dazu": true,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Nukleophile Substitution",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 995,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Nukleophile Substitution",
+    "material": "Eliminierungsreaktion",
+    "dazu": true,
+    "note_material": 2
+   }
+  }
+ },
+ {
+  "node_id": "c5f133d8-22f1-4f87-b133-d822f1cf87f7",
+  "titel": "Alkene Addition Reactions: Crash Course Organic Chemistry #16",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.6,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Alkene",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 646,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Alkene"
+   },
+   "B": {
+    "titel": "Elektrophile Addition",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Elektrophile Addition",
+    "richtig": true,
+    "sekunden": 0.3,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Elektrophile Addition",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 952,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Elektrophile Addition",
+    "material": "Additionsreaktion",
+    "dazu": true,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b",
+  "titel": "Acidity: Crash Course Organic Chemistry #11",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.51,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Säurekonstante",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 733,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Säurestärke"
+   },
+   "B": {
+    "titel": "Säurekonstante",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Säurekonstante",
+    "richtig": true,
+    "sekunden": 0.34,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Säurekonstante",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 940,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Säurestärke",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162",
+  "titel": "Schritte des Dreisatzes",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.36,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 477,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Dreisatz"
+   },
+   "B": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Dreisatz",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 627,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Dreisatz",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "5847dba7-3705-457e-a165-528614d8ebf7",
+  "titel": "Teilen, mit und ohne Rest",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Käthe, Paula und der ganze Rest",
+    "richtig": false,
+    "sekunden": 0.23,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Teilen",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Division (Mathematik)",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 733,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Division (Mathematik)"
+   },
+   "B": {
+    "titel": "Division mit Rest",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Division mit Rest",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Teilen",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Division mit Rest",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 1014,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "Euklidische Division",
+    "material": "Teilen",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "a0399b0d-75f6-4388-9d1f-d64cda8e0a73",
+  "titel": "Abschlussarbeit Klasse 8",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": "Studienabschlussarbeit",
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.6,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Mathematik",
+    "richtig": false,
+    "sekunden": 0.12,
+    "tokens": 625,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Mathematik"
+   }
+  }
+ },
+ {
+  "node_id": "8ee3a2ab-e9e9-46d5-a420-f543494cdf63",
+  "titel": "Proportionale Zuordnungen beschreiben",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Zweisatz",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.21,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Proportionalität",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 454,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Proportionalität"
+   },
+   "B": {
+    "titel": "Proportionalität",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Proportionalität",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Proportionalität",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 783,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Proportionalität",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "7be6051e-3e39-404a-9e87-4db77e600737",
+  "titel": "Die Weimarer Verfassung",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.27,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 215,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Weimarer Verfassung"
+   },
+   "B": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Weimarer Verfassung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 347,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Weimarer Verfassung",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "477256df-e20a-491d-9a43-24de02b0f1cc",
+  "titel": "21./22. April 1946",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "1946",
+    "richtig": false,
+    "sekunden": 0.16,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "April",
+    "richtig": false,
+    "sekunden": 0.55,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 244,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Sozialistische Einheitspartei Deutschlands"
+   },
+   "B": {
+    "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "April",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Zwangsvereinigung von SPD und KPD zur SED",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 735,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Zwangsvereinigung von SPD und KPD zur SED",
+    "material": "Sozialistische Einheitspartei Deutschlands",
+    "dazu": true,
+    "note_material": 2
+   }
+  }
+ },
+ {
+  "node_id": "03476274-616e-4678-9296-4dcce80189bf",
+  "titel": "20. - 24. Sept. 1947",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Liste der Deutschen Meister im Fünfkampf (Leichtathletik)",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 299,
+    "weg": "rules",
+    "rueckfall": "genannter Titel ist kein Artikel des Archivs",
+    "genannt": "II. Parteitag der SED"
+   },
+   "B": {
+    "titel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Sozialistische Einheitspartei Deutschlands",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 521,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Sozialistische Einheitspartei Deutschlands",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc",
+  "titel": "23. März 2000",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Südafrikanische Fußballnationalmannschaft/Olympische Spiele",
+    "richtig": false,
+    "sekunden": 0.2,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "März 2000",
+    "richtig": false,
+    "sekunden": 0.45,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Horst Köhler",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 423,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Horst Köhler"
+   },
+   "B": {
+    "titel": "Horst Köhler",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Horst Köhler",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "März 2000",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Horst Köhler",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 685,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Horst Köhler",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "a41d9d3f-388b-4938-b3df-2f0c381b601d",
+  "titel": "Fachportal Geographie | Landesbildungsserver Baden-Württemberg",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Großherzogtum Hessen",
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Geographie",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Geographie",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 259,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Geographie"
+   },
+   "B": {
+    "titel": "Geographie",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Geographie",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Geographie",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 399,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Geographie",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "9ba086a0-7f3a-4445-8167-fe9959598525",
+  "titel": "Erdbeben, Vulkanismus, Plattentektonik (Schule) ] memucho",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Erdbeben",
+    "richtig": true,
+    "sekunden": 0.13,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 235,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Plattentektonik"
+   },
+   "B": {
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Erdbeben",
+    "dazu": true,
+    "note_material": 2
+   },
+   "BL": {
+    "titel": "Plattentektonik",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 640,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Plattentektonik",
+    "material": "Erdbeben",
+    "dazu": true,
+    "note_material": 2
+   }
+  }
+ },
+ {
+  "node_id": "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9",
+  "titel": "Digitales Lernen an außerschulischen Lernorten",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Lernwerkstatt",
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Lernen",
+    "richtig": false,
+    "sekunden": 0.28,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Exkursion",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 446,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Exkursion"
+   },
+   "B": {
+    "titel": "Außerschulischer Lernort",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Außerschulischer Lernort",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Lernen",
+    "dazu": true,
+    "note_material": 1
+   },
+   "BL": {
+    "titel": "Außerschulischer Lernort",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 820,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Außerschulischer Lernort",
+    "material": "E-Learning",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f19f7f52-eeb2-4345-9b4e-559e486fa2e2",
+  "titel": "Landkarte Katar; GinkgoMaps Landkarten Sammlung Kontinent: Asien; Region: Katar",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Katar",
+    "richtig": true,
+    "sekunden": 0.32,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Katar",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 298,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Katar"
+   },
+   "B": {
+    "titel": "Katar",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Katar",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Katar",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 435,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Katar",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "bdc8e683-99c0-4f0a-9519-98eef818f610",
+  "titel": "Ehrgeizige Ziele beim 3. Petersberger Klimadialog",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.33,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 246,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Petersberger Klimadialog"
+   },
+   "B": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Petersberger Klimadialog",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 458,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Petersberger Klimadialog",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "87704813-c34a-4771-a577-c0c8008cb772",
+  "titel": "Kann sich Frankreich von der Krise erholen?",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Argentinien-Krise",
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Frankreich",
+    "richtig": true,
+    "sekunden": 0.34,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 240,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Wirtschaft Frankreichs"
+   },
+   "B": {
+    "titel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "sekunden": 0.02,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Frankreich",
+    "dazu": true,
+    "note_material": 2
+   },
+   "BL": {
+    "titel": "Wirtschaft Frankreichs",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 375,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Wirtschaft Frankreichs",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5",
+  "titel": "Die Politik muss es nur wollen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Was gesagt werden muss",
+    "richtig": false,
+    "sekunden": 0.12,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Politik",
+    "richtig": false,
+    "sekunden": 0.19,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Staatsverschuldung",
+    "richtig": true,
+    "sekunden": 0.13,
+    "tokens": 293,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Staatsverschuldung"
+   },
+   "B": {
+    "titel": "Staatsverschuldung",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Staatsverschuldung",
+    "richtig": true,
+    "sekunden": 0.04,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Politik",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Staatsverschuldung",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 624,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Staatsverschuldung",
+    "material": "Eurokrise",
+    "dazu": true,
+    "note_material": 2
+   }
+  }
+ },
+ {
+  "node_id": "f3caa6d3-4750-4fc8-b073-8c8eccf62b40",
+  "titel": "Es ist nicht die Zeit für einen Magier, sondern für handlungsfähige Akteure | bpb",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Zeit",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Transeuropäische Netze",
+    "richtig": false,
+    "sekunden": 0.11,
+    "tokens": 622,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Transeuropäische Netze"
+   },
+   "B": {
+    "titel": "Eurozone",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Eurozone",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Zeit",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Eurozone",
+    "richtig": true,
+    "sekunden": 0.12,
+    "tokens": 497,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Eurozone",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "c4d8c077-ea98-486d-98c0-77ea98886df9",
+  "titel": "Hörspielfabrik",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Hörspiel",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Hörspiel",
+    "richtig": true,
+    "sekunden": 0.11,
+    "tokens": 237,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Hörspiel"
+   },
+   "B": {
+    "titel": "Hörspiel",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Hörspiel",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Hörspiel",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 392,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Hörspiel",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f61cd77c-9a90-41a1-9cd7-7c9a9081a108",
+  "titel": "Arbeitsheft \"Kosmos YouTube\"",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Funk (Medienangebot)",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "YouTube",
+    "richtig": true,
+    "sekunden": 0.32,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "YouTube",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 445,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "YouTube"
+   },
+   "B": {
+    "titel": "YouTube",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "YouTube",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "YouTube",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 578,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "YouTube",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "aad2eddf-63e7-4a83-92ed-df63e7ba8389",
+  "titel": "Scratch - Gruppenpuzzle (Der Einstieg in kreative Programmierprojekte)",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.19,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 271,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Scratch (Programmiersprache)"
+   },
+   "B": {
+    "titel": "Scratch (Bahnradsport)",
+    "richtig": false,
+    "sekunden": 0.03,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Scratch (Computer)",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 402,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Scratch (Programmiersprache)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932",
+  "titel": "Scratch Projektideen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Calliope mini",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.27,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 327,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Scratch (Programmiersprache)"
+   },
+   "B": {
+    "titel": "Scratch (Bahnradsport)",
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Scratch (Computer)",
+    "richtig": false,
+    "sekunden": 0.1,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Scratch (Programmiersprache)",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 448,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Scratch (Programmiersprache)",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "1c748a03-1563-4524-911a-075e225902d4",
+  "titel": "digitale Medien im Deutschunterricht",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.03,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Deutschunterricht",
+    "richtig": true,
+    "sekunden": 0.72,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Digitale Medien",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 574,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Digitale Medien"
+   },
+   "B": {
+    "titel": "Digitale Medien",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Digitale Medien",
+    "richtig": true,
+    "sekunden": 0.17,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Deutschunterricht",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Digitale Medien",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 775,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Digitale Medien",
+    "material": "Deutschunterricht",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "803ebb4d-aa53-4107-922a-85d86bbcd304",
+  "titel": "Lernen mit dem Fidget Spinner",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Lernen",
+    "richtig": false,
+    "sekunden": 0.05,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Fidget Spinner",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 200,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Fidget Spinner"
+   },
+   "B": {
+    "titel": "Fidget Spinner",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Fidget Spinner",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Lernen",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Fidget Spinner",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 365,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Fidget Spinner",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de",
+  "titel": "Rasmus und der Lanstreicher",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.0,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.06,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "sekunden": 0.09,
+    "tokens": 356,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Rasmus und der Landstreicher"
+   },
+   "B": {
+    "titel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "sekunden": 0.01,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Rasmus und der Landstreicher",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 397,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Rasmus und der Landstreicher",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "f8451c14-12cc-465f-8aac-ad9e2a2851f1",
+  "titel": "Kompetenz 1",
+  "art": "keins",
+  "wege": {
+   "K0": {
+    "titel": "Digitale Kompetenz",
+    "richtig": false,
+    "sekunden": 0.08,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.42,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Informationskompetenz",
+    "richtig": false,
+    "sekunden": 0.07,
+    "tokens": 689,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Informationskompetenz"
+   }
+  }
+ },
+ {
+  "node_id": "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168",
+  "titel": "Die 5 häufigsten Fehler bei Unternehmensgründungen",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": "Unternehmensgründung",
+    "richtig": true,
+    "sekunden": 0.05,
+    "tokens": 0
+   },
+   "R": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.66,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Unternehmensgründung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 677,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Unternehmensgründung"
+   },
+   "B": {
+    "titel": "Unternehmensgründung",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Unternehmensgründung",
+    "richtig": true,
+    "sekunden": 0.14,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Unternehmensgründung",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 809,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Unternehmensgründung",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "5494f4c2-100f-4ca0-94f4-c2100f0ca053",
+  "titel": "Psychologie der Super-Reichen - Dr. Dr. Rainer Zitelmann im Interview",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Rainer Zitelmann",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Rainer Zitelmann",
+    "richtig": true,
+    "sekunden": 0.38,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Reichtum",
+    "richtig": true,
+    "sekunden": 0.1,
+    "tokens": 701,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Reichtum"
+   },
+   "B": {
+    "titel": "Reichtum",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Reichtum",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Rainer Zitelmann",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Reichtum",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 801,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Reichtum",
+    "material": "Rainer Zitelmann",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc",
+  "titel": "Selfmade Millionär - Macht Geld glücklich?",
+  "art": "unscharf",
+  "wege": {
+   "K0": {
+    "titel": "Pension Groonen",
+    "richtig": false,
+    "sekunden": 0.02,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Geld",
+    "richtig": false,
+    "sekunden": 0.69,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Reichtum",
+    "richtig": true,
+    "sekunden": 0.06,
+    "tokens": 638,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Reichtum"
+   },
+   "B": {
+    "titel": "Vermögensmillionär",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Vermögensmillionär",
+    "richtig": true,
+    "sekunden": 0.17,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Geld",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Vermögensmillionär",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 860,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Millionär",
+    "material": null,
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ },
+ {
+  "node_id": "4041df54-5339-46d7-81df-545339d6d78d",
+  "titel": "Erfolgreich Kunden gewinnen mit Online Seminaren - Rainer von Massenbach im Interview",
+  "art": "klar",
+  "wege": {
+   "K0": {
+    "titel": null,
+    "richtig": false,
+    "sekunden": 0.01,
+    "tokens": 0
+   },
+   "R": {
+    "titel": "Rainer",
+    "richtig": false,
+    "sekunden": 0.45,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null
+   },
+   "L": {
+    "titel": "Web-Seminar",
+    "richtig": true,
+    "sekunden": 0.07,
+    "tokens": 548,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Webinar"
+   },
+   "B": {
+    "titel": "Web-Seminar",
+    "richtig": true,
+    "sekunden": 0.0,
+    "tokens": 0,
+    "weg": null,
+    "rueckfall": null,
+    "genannt": null
+   },
+   "BR": {
+    "titel": "Web-Seminar",
+    "richtig": true,
+    "sekunden": 0.16,
+    "tokens": 0,
+    "weg": "rules",
+    "rueckfall": null,
+    "genannt": null,
+    "material": "Rainer",
+    "dazu": false,
+    "note_material": null
+   },
+   "BL": {
+    "titel": "Web-Seminar",
+    "richtig": true,
+    "sekunden": 0.08,
+    "tokens": 849,
+    "weg": "llm",
+    "rueckfall": null,
+    "genannt": "Webinar",
+    "material": "Marketing",
+    "dazu": false,
+    "note_material": null
+   }
+  }
+ }
+]

@@ -1,0 +1,1347 @@
+{
+ "zusammenfassung": {
+  "rule-based": {
+   "themen": 30,
+   "median_s": 1.0,
+   "p90_s": 2.44,
+   "mittel_s": 1.08,
+   "tokens": 0,
+   "llm_gefragt": 0,
+   "treffer_geprueft": 0
+  },
+  "llm": {
+   "themen": 30,
+   "median_s": 2.96,
+   "p90_s": 4.8,
+   "mittel_s": 3.17,
+   "tokens": 27931,
+   "llm_gefragt": 0,
+   "treffer_geprueft": 30
+  },
+  "llm_mehr": {
+   "median_s": 2.0,
+   "p90_s": 4.17,
+   "max_s": 4.97
+  }
+ },
+ "laeufe": [
+  {
+   "thema": "Elektromagnetische Induktion",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.012,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 226,
+    "segment": 12,
+    "match": 145,
+    "synthesize": 622,
+    "assemble": 2
+   },
+   "titel": "Elektromagnetische Induktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Elektromagnetische Induktion",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.652,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 76,
+    "hit_check": 2319,
+    "segment": 14,
+    "match": 126,
+    "synthesize": 108,
+    "assemble": 3
+   },
+   "titel": "Elektromagnetische Induktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 945,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kernfusion",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 3.864,
+   "phasen_ms": {
+    "resolve": 16,
+    "corpus": 760,
+    "hit_check": 2093,
+    "segment": 37,
+    "match": 203,
+    "synthesize": 747,
+    "assemble": 3
+   },
+   "titel": "Kernfusion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1067,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kernfusion",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.429,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 96,
+    "segment": 23,
+    "match": 174,
+    "synthesize": 126,
+    "assemble": 2
+   },
+   "titel": "Kernfusion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Ottomotor",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.277,
+   "phasen_ms": {
+    "resolve": 11,
+    "corpus": 406,
+    "segment": 12,
+    "match": 103,
+    "synthesize": 740,
+    "assemble": 2
+   },
+   "titel": "Ottomotor",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Ottomotor",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.398,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 77,
+    "hit_check": 4052,
+    "segment": 14,
+    "match": 135,
+    "synthesize": 111,
+    "assemble": 3
+   },
+   "titel": "Ottomotor",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 892,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Mitose",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.128,
+   "phasen_ms": {
+    "resolve": 12,
+    "corpus": 540,
+    "hit_check": 2930,
+    "segment": 16,
+    "match": 125,
+    "synthesize": 497,
+    "assemble": 3
+   },
+   "titel": "Mitose",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1175,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": [
+    "Embryosack"
+   ]
+  },
+  {
+   "thema": "Mitose",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.353,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 83,
+    "segment": 10,
+    "match": 143,
+    "synthesize": 109,
+    "assemble": 2
+   },
+   "titel": "Mitose",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Enzym",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.328,
+   "phasen_ms": {
+    "resolve": 20,
+    "corpus": 488,
+    "segment": 13,
+    "match": 262,
+    "synthesize": 539,
+    "assemble": 2
+   },
+   "titel": "Enzym",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Enzym",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.687,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 105,
+    "hit_check": 1206,
+    "segment": 11,
+    "match": 251,
+    "synthesize": 105,
+    "assemble": 3
+   },
+   "titel": "Enzym",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 908,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": [
+    "Ion"
+   ]
+  },
+  {
+   "thema": "Immunsystem",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.398,
+   "phasen_ms": {
+    "resolve": 34,
+    "corpus": 338,
+    "hit_check": 1168,
+    "segment": 21,
+    "match": 245,
+    "synthesize": 583,
+    "assemble": 4
+   },
+   "titel": "Immunsystem",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 985,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Immunsystem",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.457,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 92,
+    "segment": 19,
+    "match": 223,
+    "synthesize": 113,
+    "assemble": 2
+   },
+   "titel": "Immunsystem",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Hormon",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.404,
+   "phasen_ms": {
+    "resolve": 21,
+    "corpus": 692,
+    "segment": 7,
+    "match": 291,
+    "synthesize": 385,
+    "assemble": 2
+   },
+   "titel": "Hormon",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Hormon",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.901,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 133,
+    "hit_check": 2392,
+    "segment": 7,
+    "match": 251,
+    "synthesize": 107,
+    "assemble": 4
+   },
+   "titel": "Hormon",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1007,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Quadratische Funktion",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.64,
+   "phasen_ms": {
+    "resolve": 22,
+    "corpus": 1082,
+    "hit_check": 2819,
+    "segment": 16,
+    "match": 92,
+    "synthesize": 601,
+    "assemble": 3
+   },
+   "titel": "Quadratische Funktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 854,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Quadratische Funktion",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.51,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 219,
+    "segment": 22,
+    "match": 184,
+    "synthesize": 74,
+    "assemble": 4
+   },
+   "titel": "Quadratische Funktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Integralrechnung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.893,
+   "phasen_ms": {
+    "resolve": 117,
+    "corpus": 805,
+    "segment": 21,
+    "match": 149,
+    "synthesize": 795,
+    "assemble": 2
+   },
+   "titel": "Integralrechnung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Integralrechnung",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.742,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 86,
+    "hit_check": 1416,
+    "segment": 17,
+    "match": 100,
+    "synthesize": 112,
+    "assemble": 3
+   },
+   "titel": "Integralrechnung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 847,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Vektor",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.186,
+   "phasen_ms": {
+    "resolve": 63,
+    "corpus": 307,
+    "hit_check": 2695,
+    "segment": 15,
+    "match": 211,
+    "synthesize": 887,
+    "assemble": 4
+   },
+   "titel": "Vektor",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 963,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": [
+    "Vertex"
+   ]
+  },
+  {
+   "thema": "Vektor",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.626,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 75,
+    "segment": 15,
+    "match": 323,
+    "synthesize": 200,
+    "assemble": 4
+   },
+   "titel": "Vektor",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Mittelalter",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 3.175,
+   "phasen_ms": {
+    "resolve": 25,
+    "corpus": 451,
+    "segment": 37,
+    "match": 1275,
+    "synthesize": 1379,
+    "assemble": 4
+   },
+   "titel": "Mittelalter",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Mittelalter",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.18,
+   "phasen_ms": {
+    "resolve": 4,
+    "corpus": 137,
+    "hit_check": 2865,
+    "segment": 28,
+    "match": 975,
+    "synthesize": 163,
+    "assemble": 3
+   },
+   "titel": "Mittelalter",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1004,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": [
+    "Topik (Aristoteles)"
+   ]
+  },
+  {
+   "thema": "Aufklärung",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.384,
+   "phasen_ms": {
+    "resolve": 75,
+    "corpus": 1433,
+    "hit_check": 1328,
+    "segment": 22,
+    "match": 699,
+    "synthesize": 819,
+    "assemble": 3
+   },
+   "titel": "Aufklärung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 771,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Aufklärung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.194,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 492,
+    "segment": 20,
+    "match": 539,
+    "synthesize": 133,
+    "assemble": 2
+   },
+   "titel": "Aufklärung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Monsun",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.781,
+   "phasen_ms": {
+    "resolve": 11,
+    "corpus": 1001,
+    "segment": 9,
+    "match": 135,
+    "synthesize": 619,
+    "assemble": 3
+   },
+   "titel": "Monsun",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Monsun",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.736,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 114,
+    "hit_check": 1369,
+    "segment": 9,
+    "match": 124,
+    "synthesize": 113,
+    "assemble": 2
+   },
+   "titel": "Monsun",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 779,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": [
+    "Geschichte"
+   ]
+  },
+  {
+   "thema": "Gletscher",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.927,
+   "phasen_ms": {
+    "resolve": 24,
+    "corpus": 625,
+    "hit_check": 3091,
+    "segment": 14,
+    "match": 143,
+    "synthesize": 1023,
+    "assemble": 3
+   },
+   "titel": "Gletscher",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1009,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": [
+    "Gefahr",
+    "Prokletije"
+   ]
+  },
+  {
+   "thema": "Gletscher",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.466,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 132,
+    "segment": 23,
+    "match": 170,
+    "synthesize": 133,
+    "assemble": 2
+   },
+   "titel": "Gletscher",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Wüste",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.499,
+   "phasen_ms": {
+    "resolve": 15,
+    "corpus": 504,
+    "segment": 7,
+    "match": 309,
+    "synthesize": 656,
+    "assemble": 5
+   },
+   "titel": "Wüste",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Wüste",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 3.023,
+   "phasen_ms": {
+    "resolve": 4,
+    "corpus": 107,
+    "hit_check": 2535,
+    "segment": 7,
+    "match": 264,
+    "synthesize": 99,
+    "assemble": 3
+   },
+   "titel": "Wüste",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1025,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Sozialstaat",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 5.351,
+   "phasen_ms": {
+    "resolve": 10,
+    "corpus": 723,
+    "hit_check": 3667,
+    "segment": 10,
+    "match": 98,
+    "synthesize": 836,
+    "assemble": 4
+   },
+   "titel": "Sozialstaat",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1077,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": [
+    "Revolution"
+   ]
+  },
+  {
+   "thema": "Sozialstaat",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.383,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 107,
+    "segment": 12,
+    "match": 112,
+    "synthesize": 141,
+    "assemble": 4
+   },
+   "titel": "Sozialstaat",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Bundestag",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 2.834,
+   "phasen_ms": {
+    "resolve": 103,
+    "corpus": 830,
+    "segment": 27,
+    "match": 550,
+    "synthesize": 1315,
+    "assemble": 4
+   },
+   "titel": "Deutscher Bundestag",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Bundestag",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 3.262,
+   "phasen_ms": {
+    "resolve": 6,
+    "corpus": 353,
+    "hit_check": 2217,
+    "segment": 20,
+    "match": 529,
+    "synthesize": 129,
+    "assemble": 4
+   },
+   "titel": "Deutscher Bundestag",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 937,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": [
+    "Deutscher Bund",
+    "Sexuelle Denunziation"
+   ]
+  },
+  {
+   "thema": "Inflation",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 3.07,
+   "phasen_ms": {
+    "resolve": 47,
+    "corpus": 813,
+    "hit_check": 1481,
+    "segment": 18,
+    "match": 207,
+    "synthesize": 498,
+    "assemble": 2
+   },
+   "titel": "Inflation",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 791,
+   "gefragt": false,
+   "treffer_geprueft": 9,
+   "treffer_verworfen": [
+    "Steuer"
+   ]
+  },
+  {
+   "thema": "Inflation",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.512,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 168,
+    "segment": 24,
+    "match": 216,
+    "synthesize": 95,
+    "assemble": 2
+   },
+   "titel": "Inflation",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Marktwirtschaft",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.988,
+   "phasen_ms": {
+    "resolve": 19,
+    "corpus": 276,
+    "segment": 18,
+    "match": 299,
+    "synthesize": 370,
+    "assemble": 2
+   },
+   "titel": "Marktwirtschaft",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Marktwirtschaft",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.816,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 62,
+    "hit_check": 1314,
+    "segment": 17,
+    "match": 318,
+    "synthesize": 96,
+    "assemble": 2
+   },
+   "titel": "Marktwirtschaft",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 868,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": [
+    "Modell"
+   ]
+  },
+  {
+   "thema": "Algorithmus",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.373,
+   "phasen_ms": {
+    "resolve": 11,
+    "corpus": 394,
+    "hit_check": 1179,
+    "segment": 15,
+    "match": 122,
+    "synthesize": 644,
+    "assemble": 3
+   },
+   "titel": "Algorithmus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 853,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Algorithmus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.312,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 72,
+    "segment": 12,
+    "match": 129,
+    "synthesize": 92,
+    "assemble": 2
+   },
+   "titel": "Algorithmus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Datenbank",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.102,
+   "phasen_ms": {
+    "resolve": 15,
+    "corpus": 499,
+    "segment": 8,
+    "match": 172,
+    "synthesize": 402,
+    "assemble": 2
+   },
+   "titel": "Datenbank",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Datenbank",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.648,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 142,
+    "hit_check": 1172,
+    "segment": 10,
+    "match": 217,
+    "synthesize": 98,
+    "assemble": 3
+   },
+   "titel": "Datenbank",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 768,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Verschlüsselung",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.585,
+   "phasen_ms": {
+    "resolve": 14,
+    "corpus": 669,
+    "hit_check": 1236,
+    "segment": 7,
+    "match": 163,
+    "synthesize": 489,
+    "assemble": 3
+   },
+   "titel": "Verschlüsselung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 858,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": [
+    "Riemannsche Zeta-Funktion"
+   ]
+  },
+  {
+   "thema": "Verschlüsselung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.38,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 89,
+    "segment": 19,
+    "match": 178,
+    "synthesize": 85,
+    "assemble": 2
+   },
+   "titel": "Verschlüsselung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Lyrik",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.024,
+   "phasen_ms": {
+    "resolve": 23,
+    "corpus": 188,
+    "segment": 11,
+    "match": 256,
+    "synthesize": 541,
+    "assemble": 3
+   },
+   "titel": "Lyrik",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Lyrik",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.696,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 57,
+    "hit_check": 1256,
+    "segment": 13,
+    "match": 251,
+    "synthesize": 107,
+    "assemble": 3
+   },
+   "titel": "Lyrik",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 914,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kurzgeschichte",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.531,
+   "phasen_ms": {
+    "resolve": 15,
+    "corpus": 323,
+    "hit_check": 3297,
+    "segment": 15,
+    "match": 127,
+    "synthesize": 746,
+    "assemble": 4
+   },
+   "titel": "Kurzgeschichte",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1109,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Kurzgeschichte",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.357,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 93,
+    "segment": 11,
+    "match": 128,
+    "synthesize": 116,
+    "assemble": 2
+   },
+   "titel": "Kurzgeschichte",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Expressionismus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.888,
+   "phasen_ms": {
+    "resolve": 10,
+    "corpus": 882,
+    "segment": 8,
+    "match": 271,
+    "synthesize": 710,
+    "assemble": 3
+   },
+   "titel": "Expressionismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Expressionismus",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.921,
+   "phasen_ms": {
+    "resolve": 1,
+    "corpus": 135,
+    "hit_check": 1382,
+    "segment": 8,
+    "match": 271,
+    "synthesize": 115,
+    "assemble": 4
+   },
+   "titel": "Expressionismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 721,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": [
+    "Künstler"
+   ]
+  },
+  {
+   "thema": "Oper",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.801,
+   "phasen_ms": {
+    "resolve": 45,
+    "corpus": 902,
+    "hit_check": 2927,
+    "segment": 10,
+    "match": 472,
+    "synthesize": 437,
+    "assemble": 2
+   },
+   "titel": "Oper",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 939,
+   "gefragt": false,
+   "treffer_geprueft": 8,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Oper",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.887,
+   "phasen_ms": {
+    "resolve": 4,
+    "corpus": 264,
+    "segment": 13,
+    "match": 500,
+    "synthesize": 97,
+    "assemble": 3
+   },
+   "titel": "Oper",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Chemische Bindung",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 1.162,
+   "phasen_ms": {
+    "resolve": 19,
+    "corpus": 289,
+    "segment": 17,
+    "match": 181,
+    "synthesize": 649,
+    "assemble": 4
+   },
+   "titel": "Chemische Bindung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Chemische Bindung",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 1.687,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 64,
+    "hit_check": 1292,
+    "segment": 18,
+    "match": 184,
+    "synthesize": 120,
+    "assemble": 3
+   },
+   "titel": "Chemische Bindung",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 932,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Redoxreaktion",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 4.474,
+   "phasen_ms": {
+    "resolve": 21,
+    "corpus": 486,
+    "hit_check": 2994,
+    "segment": 32,
+    "match": 105,
+    "synthesize": 830,
+    "assemble": 2
+   },
+   "titel": "Redoxreaktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 1122,
+   "gefragt": false,
+   "treffer_geprueft": 11,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Redoxreaktion",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.351,
+   "phasen_ms": {
+    "resolve": 2,
+    "corpus": 85,
+    "segment": 21,
+    "match": 112,
+    "synthesize": 125,
+    "assemble": 2
+   },
+   "titel": "Redoxreaktion",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Radioaktivität",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 2.44,
+   "phasen_ms": {
+    "resolve": 37,
+    "corpus": 1492,
+    "segment": 13,
+    "match": 175,
+    "synthesize": 716,
+    "assemble": 3
+   },
+   "titel": "Radioaktivität",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Radioaktivität",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.352,
+   "phasen_ms": {
+    "resolve": 3,
+    "corpus": 219,
+    "hit_check": 1821,
+    "segment": 13,
+    "match": 182,
+    "synthesize": 107,
+    "assemble": 3
+   },
+   "titel": "Radioaktivität",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 977,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": []
+  },
+  {
+   "thema": "Magnetismus",
+   "weg": "llm",
+   "gefunden": true,
+   "sekunden": 2.578,
+   "phasen_ms": {
+    "resolve": 30,
+    "corpus": 379,
+    "hit_check": 1060,
+    "segment": 15,
+    "match": 198,
+    "synthesize": 889,
+    "assemble": 3
+   },
+   "titel": "Magnetismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 834,
+   "gefragt": false,
+   "treffer_geprueft": 10,
+   "treffer_verworfen": [
+    "Romantische Medizin"
+   ]
+  },
+  {
+   "thema": "Magnetismus",
+   "weg": "rule-based",
+   "gefunden": true,
+   "sekunden": 0.472,
+   "phasen_ms": {
+    "resolve": 4,
+    "corpus": 95,
+    "segment": 18,
+    "match": 207,
+    "synthesize": 143,
+    "assemble": 2
+   },
+   "titel": "Magnetismus",
+   "methode": "title",
+   "sicher": true,
+   "tokens": 0,
+   "gefragt": false,
+   "treffer_geprueft": 0,
+   "treffer_verworfen": []
+  }
+ ]
+}

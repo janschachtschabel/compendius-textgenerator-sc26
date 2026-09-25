@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M24
+# Ergebnisse der Messungen M1 bis M25
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 25.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -38,6 +38,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M22 | Gehören die Lehrplanelemente von Teil 2 zum Thema? | rund 60 % passen, 13 bis 19 % gar nicht, mit und ohne Fach fast gleich; das Fach kürzt Teil 2 um ein Drittel und verwirft ein Viertel der passenden Elemente; zwei Beurteiler einig bei 93 % (Kappa 0,89); Optionen offen | – | `m22_lehrplan_treffer.json` |
 | M23 | Wie gut wird ein Kompendium aus den Metadaten eines Materials, verglichen mit einem Begriff? | brauchbar (mindestens die Hälfte der gedruckten Absätze passt) bei 31 Materialien: Begriff 18, Knoten wie heute 5, mit `balanced` 10, Thema vom LLM 17, Entitäten wie im alten Dienst 11, lokale Entitäten 5; F1 des Hauptartikels und der Artikel: Begriff 0,94 und 0,45, Thema vom LLM 0,97 und 0,50, Knoten wie heute 0,20 und 0,10; zwei Beurteiler einig bei 91 % (Kappa 0,86); Optionen offen | – | `m23_material_kompendium.json` |
 | M24 | Findet ein statisches Embedding den Artikel eines Materials ohne LLM, und filtern Ähnlichkeit oder Verlinkung die Artikel? | Embedding-Suche mit dem Modell des Dienstes über alle 5,35 Mio. Archiveinträge: Hauptartikel-F1 höchstens 0,03 bei 31 Materialien (derselbe Weg mit dem Begriff 0,87, die Regeln 0,94); die Ähnlichkeit trennt passende von unpassenden Artikeln kaum (AUC 0,63 und 0,66); die Verlinkung mit dem Hauptartikel des LLM-Themas behält 56 bis 65 % der passenden Zusatzartikel der alten Entitäten und entfernt 85 bis 90 % der unpassenden; LLM-Thema mit den verlinkten Entitäten Recall 0,89 statt 0,67 bei F1 0,51 statt 0,50 | – | `m24_material_embedding.json` |
+| M25 | Was bringen die nach M21 bis M24 eingebauten Wege (D47, D48) im Ablauf des Dienstes? | Artikel eines Materials mit klarem Thema an zwei Stichproben: Titel als Thema F1 0,20 und 0,00, Regeln ohne LLM 0,56 und 0,63, LLM 0,98 und 0,88 (rund 310 bis 340 Tokens und 1,8 bis 2,0 s je Material); ohne die Volltexttreffer, die nicht mit dem Hauptartikel verlinkt sind, druckt der Standard 12 statt 25 Absätze aus unpassenden Artikeln, mit der LLM-Prüfung der Nebenartikel 5 statt 17; `balanced` auf 30 neuen Themen im Median 2,0 s und 935 Tokens mehr als die Regeln | – | `m25_korpus_verlinkung.json`, `m25_knoten_materialien.json`, `m25_knoten_materialien_m25.json`, `m25_knoten_materialien_m25_vor_korrektur.json`, `m25_zeit_artikelwahl.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise
@@ -45,7 +46,9 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 - **Zwischenspeicher der b-api.** Einen wortgleichen Prompt beantwortet die b-api aus ihrem Zwischenspeicher, mit
   derselben Antwort und denselben gemeldeten Tokens. Zeiten solcher Läufe sind keine Modellzeit; die
   Zusammenfassungen markieren sie. Unabhängige Wiederholungen brauchen geänderte Prompts, etwa andere Stapel
-  (`--rotieren` in M12) oder neue Themen (M13, M14).
+  (`--rotieren` in M12) oder neue Themen (M13, M14, M25). Die Materialien von M25 liefen zweimal; im zweiten Lauf
+  kamen die Antworten großenteils aus dem Zwischenspeicher, Modellzeit sind die Zeiten in
+  `m25_knoten_materialien_m25_vor_korrektur.json`.
 - **Zeiten zwischen Prozessen.** Der Dateicache des Betriebssystems verzerrt Vergleiche zwischen Läufen in
   verschiedenen Prozessen. Belastbar sind die Phasen, die das Audit je Anfrage misst, und Wiederholungen in warmem
   Zustand (M13).

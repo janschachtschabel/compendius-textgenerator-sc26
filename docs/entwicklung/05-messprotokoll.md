@@ -1131,3 +1131,151 @@ für den Linker-Aufruf (1.680 Tokens, 10 s); ob sie sich lohnt, hängt davon ab,
 abgedeckt werden sollen, und wäre im Ablauf des Dienstes mit neuen Noten zu messen. Bei den Nebenartikeln ist das
 Weglassen unverlinkter eine lokale Regel ohne Kosten; für die verlinkten Unterartikel braucht es ein stärkeres Signal
 als Ähnlichkeit oder Verlinkung. Rohdaten: `m24_material_embedding.json`.
+
+## M25 Einbau nach M21 bis M24: Nebenartikel, Knoten-Eingang, QA-Paare (25.09.2026)
+
+M21 bis M24 hatten Optionen gemessen; Jan entschied am 25.09.2026, die empfohlenen einzubauen (D47, D48) und danach
+im Ablauf des Dienstes nachzumessen. Die Regeln, die auf den Materialien von M21 ausgewählt wurden, prüft eine zweite
+Stichprobe, die vor jedem Lauf beschriftet wurde.
+
+### Nebenartikel: Verlinkung und LLM-Prüfung (D48)
+
+**Aufbau:** Für die 20 normalen Themen des Begriffs-Golds baut der Dienst seinen Korpus wie für ein Kompendium; jeder
+Nebenartikel bekommt seine blinde Note aus `eval/artikelwahl/korpus_labels.yaml` (M8) und die Angabe, ob er und der
+Hauptartikel einander verlinken (beide Richtungen, Weiterleitungen aufgelöst, `LinkedTo`). Das LLM (gpt-6-luna)
+benotet mit der Trefferprüfung des Dienstes (`rate_articles`) den ganzen Korpus in einem Aufruf je Thema. Gezählt
+sind die gedruckten Absätze nach Note ihres Artikels, Standardzuordnung `hybrid_light` mit Model2Vec, 12.000 Zeichen
+(`mc_korpus_verlinkung.py`, gemessen am Korpus vor dem Einbau).
+
+| 44 Volltexttreffer | Note 2 | Note 1 | Note 0 |
+|---|---|---|---|
+| mit dem Hauptartikel verlinkt (28) | 13 | 11 | 4 |
+| nicht verlinkt (16) | 2 | 4 | 10 |
+
+Die 104 verlinkten Unterartikel sind zu 5 % unpassend (5 mit Note 0, 59 mit Note 2); anders als bei den Materialien
+in M24 (31 %), deren Hauptartikel breiter oder schiefer sind.
+
+| Korpus | gedruckt: Note 2 | Note 1 | Note 0 | gefüllte Inhaltsbausteine | LLM-Aufrufe (20 Themen) | Tokens je Thema |
+|---|---|---|---|---|---|---|
+| heute ohne LLM | 252 | 80 | 25 | 122 | 0 | 0 |
+| ohne unverlinkte Volltexttreffer | 263 | 77 | 12 | 118 | 0 | 0 |
+| LLM prüft die Volltexttreffer (`balanced` bis M25) | 257 | 81 | 17 | 120 | 15 | 697 |
+| LLM prüft Volltexttreffer und verlinkte Unterartikel | 259 | 80 | 11 | 119 | 20 | 842 |
+| beides: ohne unverlinkte, dann LLM auf Treffer und Unterartikel | 264 | 77 | 5 | 117 | 20 | 752 |
+
+Die unverlinkten Treffer wegzulassen halbiert ohne LLM die unpassenden Absätze; ihre Plätze nehmen passende ein (263
+statt 252). Die Regel verliert zwei passende Treffer (*Klimapolitik*, *Schnittweite*) und vier Bausteine über 20
+Themen. Bei *Lineare Funktion* druckten *Differenzierbarkeit*, *Markow-Operator* und *Probit-Modell* fünf unpassende
+Absätze; das LLM ließ sie stehen, der Filter nimmt sie heraus. Die erweiterte LLM-Prüfung verwirft die unpassenden
+Unterartikel (*System* und *Ökosystemischer Ansatz nach Bronfenbrenner* bei *Ökosystem*, die Verfilmung *Die
+Französische Revolution*); einen passenden oder verwandten Artikel bewertete das LLM nie mit 0. Zusammen bleiben 5
+statt 25 unpassende Absätze, bei 20 statt 15 Aufrufen und rund 55 Tokens mehr je Thema.
+
+**Nebenbefund:** gpt-6-luna erkennt als Trefferprüfer nur 7 der 14 unpassenden Volltexttreffer (6 mit Note 1, einer
+mit 2); in M10 waren es mit gpt-5.6-luna 11 von 16. Die Verlinkung fängt, was das Modell übersieht.
+
+**Kosten der Verlinkung:** Die Links des Hauptartikels werden einmal aufgelöst (60 bis 300 ms kalt, 10 bis 50 ms warm
+je Artikel); die meisten Paare entscheidet schon der wörtliche Linktitel. Je Nebenartikel im Median 0 ms, höchstens
+213 ms, je Thema höchstens 0,5 s über alle Nebenartikel.
+
+**Eingebaut (D48):** `build_corpus` lässt Volltexttreffer ohne Link zum oder vom Hauptartikel weg, in allen Stufen,
+ohne die Plätze nachzufüllen, wie gemessen. Die Trefferprüfung von `article_choice=llm` verwirft Volltexttreffer und
+verlinkte Unterartikel mit Note 0; Hauptartikel, Zwilling, der Artikel des Materials und die Materialien einer
+Sammlung bleiben. Rohdaten: `m25_korpus_verlinkung.json`.
+
+### Knoten-Eingang im Ablauf des Dienstes (D47)
+
+**Aufbau:** `mc_material_knoten.py` ruft für jedes Material die Artikelwahl des Dienstes auf (`choose_main_article`,
+wie Kompendium und `/knowledge`), jedes Material neu und anonym aus seinem Repository gelesen:
+
+| Weg | Eingabe | Stufe |
+|---|---|---|
+| K0 | Material, Titel als Thema (bis D47) | ohne LLM |
+| R | Material allein, Regeln über Titel und Beschreibung | ohne LLM (`llm-free`) |
+| L | Material allein, das LLM nennt den Artikel | `article_choice llm` (`balanced`) |
+| B | der Begriff einer Lehrkraft allein | ohne LLM |
+| BR | Begriff und Material, der Begriff führt | ohne LLM |
+| BL | Begriff und Material in einer Frage an das LLM | `article_choice llm` |
+
+Gold 1 sind die 40 Materialien von M21 (`materialien.yaml`), auf denen die Regel ausgewählt wurde. Gold 2 sind 40
+weitere (`materialien_m25.yaml`, Saat 25, ohne die ersten), am 25.09.2026 aus Titel, Beschreibung und Schlagwörtern
+beschriftet, bevor ein Weg auf ihnen lief; danach wurde nur geprüft, ob die akzeptierten Titel Artikel des Archivs
+sind. Hauptartikel der Materialien mit klarem Thema:
+
+| Weg | Gold 1: richtig, falsch, keins | F1 | Gold 2: richtig, falsch, keins | F1 |
+|---|---|---|---|---|
+| K0 Titel als Thema | 5, 13, 13 | 0,20 | 0, 19, 11 | 0,00 |
+| R Regeln (neu, `llm-free`) | 15, 8, 8 | 0,56 | 17, 7, 6 | 0,63 |
+| L LLM (neu, `balanced`) | 30, 0, 1 | 0,98 | 26, 3, 1 | 0,88 |
+| B Begriff | 29, 2, 0 | 0,94 | 25, 5, 0 | 0,83 |
+| BR Begriff und Material, Regeln | 29, 2, 0 | 0,94 | 25, 5, 0 | 0,83 |
+| BL Begriff und Material, LLM | 31, 0, 0 | 1,00 | 26, 4, 0 | 0,87 |
+
+Die Regel ohne LLM hält auf den neuen Materialien, was sie auf den alten versprach (0,63 gegen 0,56), während der
+Titel dort gar nichts mehr trifft. Materialien ohne Thema (2 und 4): Die Regeln geben bei 5 von 6 keinen Artikel, das
+LLM nennt bei 5 von 6 einen (*Marokko* für eine Literaturliste, *Open Educational Resources* für eine Werkzeugliste)
+und sagt nur einmal "", wie in M21. Unscharfe Materialien (7 und 6): Regeln 3 und 2 richtig, LLM 4 und 1, der Begriff
+7 und 5. Der Begriff selbst trifft auf Gold 2 seltener (0,83): *Siddhartha* führt zum Religionsstifter,
+*DNA-Rekombination* zur natürlichen Rekombination, *Photosynthesepigmente* ist kein Artikel.
+
+**Zwei Fehler, die die zweite Stichprobe aufdeckte:** Im ersten Lauf auf Gold 2 lag das LLM bei 0,80, und die Hälfte
+seiner Fehler lag nicht am LLM:
+
+- Das LLM nannte „Kreis (Geometrie)“ und „Pong“; die Regeln machten mit dem Fach *Soziale Gruppe* und *Ping
+  (Datenübertragung)* daraus. Den genannten Titel prüften die Regeln wie ein Thema, und ein exakter Titel, dessen Anfang
+  das Fach nicht nennt, ging an eine Bedeutung der Begriffsklärung, die das Fach einmal im Text erwähnte. Über alle
+  Golds griff diese Regel dreimal; richtig war sie nur, wo die Bedeutung das Fach im Titel trägt (*Baum
+  (Datenstruktur)*, *Geschichte Indiens*). Seitdem muss sie das (`_meaning_for_subject`); der Begriff „Kreis“ mit dem
+  Fach Mathematik bleibt beim Kreis.
+- Namen, die kein Artikel sind, fanden über die Volltextsuche einen: „Photosynthesepigmente“ wurde *Engelmannscher
+  Bakterienversuch*, „Einwanderung nach Israel“ *Einwanderung der dreihundert Rabbiner*. Ein genannter Titel zählt
+  jetzt wie in der Artikelwahl (D35) nur, wenn das Archiv ihn hat; sonst entscheiden die Regeln.
+
+Beide Korrekturen änderten Gold 1 kaum (L 0,97 → 0,98, BL 0,97 → 1,00) und hoben auf Gold 2 L von 0,80 auf 0,88, R
+von 0,59 auf 0,63, BR von 0,80 auf 0,83 und BL von 0,83 auf 0,87 (Rohdaten vor der Korrektur:
+`m25_knoten_materialien_m25_vor_korrektur.json`).
+
+**Kosten:** Die Regeln brauchen je Material im Median 0,2 bis 0,4 s. Die Frage an das LLM kostete auf den frischen
+Materialien von Gold 2 im Median 308 Tokens und 1,8 s, mit Begriff 554 Tokens und 2,6 s (erster Lauf; im zweiten kamen
+die Antworten aus dem Zwischenspeicher der b-api).
+
+**Begriff und Material zusammen:** Der Artikel des Materials unterschied sich vom Hauptartikel bei 18 (Regeln) und
+12 (LLM) von 38 Materialien in Gold 1 und kam bei je 6 dazu, weil er mit dem Hauptartikel verlinkt ist. Soweit M23
+diese Artikel benotet hat (je 5), passten sie oder waren verwandt (Regeln 3 und 2, LLM 4 und 1), keiner war
+unpassend. In Gold 2 kamen 5 (Regeln) und 9 (LLM) dazu, ohne Noten. Ob die Kompendien dadurch besser werden, ist
+nicht gemessen.
+
+Rohdaten: `m25_knoten_materialien.json`, `m25_knoten_materialien_m25.json`.
+
+### Zeit und Tokens von `balanced` nach D48
+
+Mit `mc_zeit_artikelwahl.py --m25` auf 30 Themen, die keine frühere Messung gestellt hatte (wie M13, gpt-6-luna,
+Model2Vec an, Dateicache warm): Teil 1 im Median 1,0 s mit den Regeln und 2,96 s mit `article_choice llm` (im Median
+2,0 s mehr, 90. Perzentil 4,2 s, höchstens 5,0 s), im Median 935 Tokens (721 bis 1.175). Die Prüfung der
+Nebenartikel lief bei allen 30 Themen, im Median 2,0 s; eine unsichere Artikelwahl kam nicht vor. Verworfen wurden
+bei 13 Themen allgemeine oder fremde Artikel (*Geschichte* bei Monsun, *Modell* bei Marktwirtschaft, *Künstler* bei
+Expressionismus, *Riemannsche Zeta-Funktion* bei Verschlüsselung). Gegen M13 (gpt-5.6-luna, 1,7 s und 930 Tokens mehr)
+kostet `balanced` also gleich viele Tokens und 0,3 s mehr; die längere Zeit je Aufruf von gpt-6-luna kennt M19.
+Rohdaten: `m25_zeit_artikelwahl.json`.
+
+### QA-Paare und die übrigen Funktionen
+
+Die Stufe `llm` von `/qa` übernimmt mit `node_id` die Bildungsstufen des Knotens, wenn die Anfrage keine nennt, und
+fragt bevorzugt nach Titel und Schlagwörtern des Materials (`qa_pairs` v3); getestet, nicht gemessen. Eine Durchsicht
+aller übrigen Endpunkte fand acht Fehler, die behoben sind: ein Template mit kaputtem Muster brach jedes Kompendium mit
+500 ab, seine Kennung konnte über die CLI aus dem Template-Verzeichnis hinaus schreiben, eine Sammlung ohne
+konfiguriertes Repository ergab 404 statt 503, `/qa` nahm Leerraum als Text, `/knowledge` fragte das LLM vor der
+Prüfung des Templates, die CLI stürzte bei unbekanntem Template ab, der Sammlungsüberblick meldete einen Fehler mit
+200, und gleichnamige Untersammlungen überschrieben einander in der Zusammenfassung. Dazu wartet der Lehrplan-Abgleich
+nach einem Fehler eine Stunde statt sieben Tage, und vier Hilfetexte widersprachen dem Code. `/qa` nimmt jetzt
+`subject`, `preset` und `article_choice`, `/knowledge` `subject`, so wie das Kompendium.
+
+**Ergebnis:** Ohne LLM findet der Dienst den Artikel eines Materials mit klarem Thema jetzt bei rund der Hälfte (15
+von 31 und 17 von 30; F1 0,56 und 0,63 statt 0,20 und 0,00); bei den übrigen nimmt er etwa so oft einen falschen
+Artikel (8 und 7) wie keinen (8 und 6), und ohne Artikel sagt der 404, dass ein `topic` fehlt. Mit LLM trifft er
+F1 0,98 und 0,88. Die Nebenartikel ohne Link zum Hauptartikel fallen in allen Stufen weg,
+`balanced` prüft zusätzlich die verlinkten, bei gleichen Tokens. Offen: ob der Artikel eines Materials neben einem
+Thema das Kompendium besser macht (nur auf Artikelebene gemessen), und die Vorschläge der Durchsicht, die Aufrufer
+betreffen (siehe Entscheidungsvorlage, „Zu entscheiden“). Tokens der Messungen von M25 (gpt-6-luna): Nebenartikel
+23.490, Knotenfragen 78.984 im ersten und 81.681 im zweiten Lauf (dieser großenteils aus dem Zwischenspeicher der
+b-api), Zeitmessung 27.931.
