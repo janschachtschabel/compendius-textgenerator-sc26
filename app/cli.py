@@ -145,7 +145,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="compendium", description="Kompendium-API v2 Werkzeuge")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    gen = sub.add_parser("generate", help="Kompendium (Teil 1, Regelmodus) erzeugen")
+    gen = sub.add_parser(
+        "generate", help="Kompendium erzeugen: alle Teile, die sich erzeugen lassen; Stufe und LLM-Schalter wie die API"
+    )
     gen.add_argument("--topic", default=None, help="Thema; ohne Angabe der Titel der Sammlung")
     gen.add_argument("--collection-id", default=None, help="nodeId der Sammlung (Thema, Fach, Teil 3)")
     gen.add_argument("--knowledge-collection-id", default=None, help="Sammlung, deren OER-Materialien Teil 1 speisen")

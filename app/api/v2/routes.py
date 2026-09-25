@@ -107,8 +107,10 @@ EXAMPLES = {
         "summary": "Alle drei Teile: Weltwissen, Lehrpläne und die Materialien einer edu-sharing-Sammlung",
         "description": (
             "collection_id ist die Knoten-ID der Sammlung im Repository, hier eine aus der Staging - für "
-            "eine andere Umgebung ersetzen. Teil 3 braucht EDU_SHARING_BASE_URL; fehlt sie, antwortet der "
-            "Endpunkt 503. Mit collection_id braucht Teil 3 keinen Artikel in den Archiven."
+            "eine andere Umgebung ersetzen. Teil 3 braucht EDU_SHARING_BASE_URL; fehlt sie, bleibt Teil 3 aus und "
+            "parts_status.collection sagt unavailable, und nur wenn kein angefragter Teil erzeugbar ist - oder das "
+            "Thema allein aus der Sammlung käme -, antwortet der Endpunkt 503. Mit collection_id braucht Teil 3 "
+            "keinen Artikel in den Archiven."
         ),
         "value": {
             "topic": "Optik",

@@ -82,7 +82,7 @@ def read_node(
     """Read a material or a collection and say what it would bring to a request with ``node_id``.
 
     Title, description, keywords, subjects and educational levels come from the node's metadata
-    (``/node/v1/nodes/-home-/{id}/metadata``); ``topic``, ``subject`` and ``context`` are what the service
+    (``/node/v1/nodes/-home-/{id}/metadata``); ``topic``, ``topic_subjects`` and ``context`` are what the service
     derives from them, as a request with the node alone would without the LLM. For a material the topic is the
     article the rules find in its title and description, and ``node_article`` shows how (D47). Without
     ``repository`` the configured one is asked; another

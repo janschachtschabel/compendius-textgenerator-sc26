@@ -78,7 +78,8 @@ def lehrplan_search(
     """Curriculum elements for a keyword, out of the local cache - no MEM access, no network.
 
     ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking
-    is the one part 2 uses, so what comes back here is what a compendium would draw on.
+    is the one part 2 uses, but on the words as sent: part 2 searches for the resolved article, its aliases and
+    its sub-topics, so a compendium on the same topic can draw on more than this search finds.
 
     An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
     says which it is.
