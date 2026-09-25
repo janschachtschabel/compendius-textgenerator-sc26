@@ -101,7 +101,8 @@ class KnowledgeResponse(BaseModel):
     article_choice: dict[str, Any] | None = Field(
         None,
         description="What article_choice=llm asked and decided: the article the LLM chose (chosen) or why the "
-        "rules' one stayed (fallback, note), the full-text hits it dropped (hits_dropped) and the tokens; null when "
+        "rules' one stayed (fallback, note), the side articles it dropped (hits_dropped: full-text hits and linked "
+        "sub-articles) and the tokens; null when "
         "the rules chose alone",
     )
 
@@ -141,7 +142,7 @@ EXAMPLES = {
         "description": (
             "archives fragt einzelne Archive (unbekannte id: 404), max_articles begrenzt die zusätzlichen "
             "Artikel, max_chars deckelt den Text über alle Artikel und setzt truncated. article_choice llm lässt "
-            "das LLM entscheiden, wo die Regeln unsicher sind, und unpassende Volltexttreffer verwerfen; rule-based "
+            "das LLM entscheiden, wo die Regeln unsicher sind, und unpassende Nebenartikel verwerfen; rule-based "
             "nimmt die Regeln allein. Ohne b-api wählen die Regeln, und article_choice in der Antwort sagt warum."
         ),
         "value": {
@@ -190,7 +191,7 @@ def knowledge(
     for the further articles.
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
-    ``llm`` the LLM decides where the rules are unsure and drops the full-text hits that do not fit, and
+    ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, and
     ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the level of a
     compendium would: ``llm-free`` takes ``rule-based``, ``balanced`` and ``best-quality`` take ``llm``.
 

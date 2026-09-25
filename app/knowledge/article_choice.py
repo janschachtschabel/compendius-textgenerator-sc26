@@ -7,14 +7,17 @@ Two steps, both measured against the gold of eval/artikelwahl on 2026-09-23 (doc
   94 requests it was asked for. The model sees the topic, the subject and the candidates the rules weighed, each
   with the beginning of its text, and answers with a number; when none fits it may name the title of a German
   Wikipedia article, which counts only when the archive has it.
-- The full-text hits of the corpus. The model rates every article of the corpus on the scale of the gold, with the
-  prompt of the M8 judge, and the hits it rates 0 are dropped: 11 of the 16 hits the gold calls unfit, none that fit,
-  and of the paragraphs the standard strategy printed from unfit articles 10 instead of 26 were left, at about 890
-  tokens for each of the 16 of 20 topics that had hits. Rated alone, without the rest of the corpus to compare, the
-  model let most unfit hits through (6 of 16).
+- The side articles of the corpus. The model rates every article of the corpus on the scale of the gold, with the
+  prompt of the M8 judge, and the full-text hits it rates 0 are dropped: 11 of the 16 hits the gold calls unfit, none
+  that fit, and of the paragraphs the standard strategy printed from unfit articles 10 instead of 26 were left, at
+  about 890 tokens for each of the 16 of 20 topics that had hits. Rated alone, without the rest of the corpus to
+  compare, the model let most unfit hits through (6 of 16). Since M25 (2026-09-25, gpt-6-luna) the linked
+  sub-articles rated 0 go as well: over the same 20 topics, after the hits without a link to the main article are
+  gone (ZimRegistry.build_corpus), 5 instead of 12 printed paragraphs of unfit articles were left, the model rated
+  no fitting or related article 0, and the call ran for 20 instead of 15 topics at about 750 tokens each.
 
 Whatever keeps the model from answering usably - b-api, budget, time, an unreadable answer - leaves the rules'
-article and every hit, and the reason goes to the audit.
+article and every side article, and the reason goes to the audit.
 """
 
 from __future__ import annotations
@@ -39,7 +42,7 @@ UNREADABLE = "Antwort nicht lesbar"
 INVALID_NUMBER = "Antwort ohne gültige Nummer"
 NOTHING_FITS = "kein Kandidat passt, kein Titel genannt"
 NAMED_TITLE_MISSING = "genannter Titel ist kein Artikel des Archivs"
-HIT_ORIGIN = "search"  # the corpus articles the hit check may drop: full-text hits for a block
+CHECKED_ORIGINS = frozenset({"search", "linked"})  # the side articles the hit check may drop (M25)
 HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
 HIT_OUTPUT_TOKENS_PER_ARTICLE = 12
 HIT_SEED = 20260923  # the order of the articles in the call, fixed per topic as measured
@@ -84,14 +87,14 @@ class ArticleChoiceReport(_Usage):
 
 @dataclass
 class HitCheckReport(_Usage):
-    checked: int = 0  # full-text hits in the corpus; 0 when there were none and the model was not asked
+    checked: int = 0  # side articles in the corpus; 0 when there were none and the model was not asked
     rated: int = 0  # articles in the call: the whole corpus, so the model can compare
-    dropped: list[str] = field(default_factory=list)  # titles of the hits rated 0
-    fallback: str | None = None  # why every hit stayed although the model was asked
+    dropped: list[str] = field(default_factory=list)  # titles of the side articles rated 0
+    fallback: str | None = None  # why every side article stayed although the model was asked
 
     @property
     def answered(self) -> bool:
-        """The model rated the hits: its answer decided which stay, also when all of them do."""
+        """The model rated the side articles: its answer decided which stay, also when all of them do."""
         return bool(self.prompts) and self.fallback is None
 
 
@@ -143,14 +146,31 @@ class LlmArticleChooser:
 
 
 def check_hits(job: ArticleChoiceJob, topic: str, sources: Sequence[Source]) -> tuple[set[str], HitCheckReport]:
-    """The ids of the full-text hits the model rates as not fitting the topic, and what the check did and cost.
+    """The ids of the side articles the model rates as not fitting the topic, and what the check did and cost.
 
-    The call holds every article of the corpus, in an order fixed per topic, each with its title and the beginning of
-    its text; only full-text hits can be dropped. Without hits the model is not asked.
+    The call holds every article of the corpus (``rate_articles``); only full-text hits and linked sub-articles can be
+    dropped - the main article, its twin, the node's article and the materials stay. Without side articles the model
+    is not asked.
     """
-    report = HitCheckReport(checked=sum(1 for s in sources if s.origin == HIT_ORIGIN))
+    report = HitCheckReport(checked=sum(1 for s in sources if s.origin in CHECKED_ORIGINS))
     if not report.checked:
         return set(), report
+    notes = rate_articles(job, topic, sources, report)
+    if notes is None:
+        return set(), report
+    gone = [s for s in sources if s.origin in CHECKED_ORIGINS and notes.get(s.source_id) == 0]
+    report.dropped = [s.title for s in gone]
+    return {s.source_id for s in gone}, report
+
+
+def rate_articles(
+    job: ArticleChoiceJob, topic: str, sources: Sequence[Source], report: HitCheckReport
+) -> dict[str, int | None] | None:
+    """The model's note for every article of the corpus by source id - 2 fits, 1 related, 0 does not - in one call.
+
+    The articles go in an order fixed per topic, each with its title and the beginning of its text. ``None`` when
+    the model gave no usable answer; ``report`` gets the cost and the reason.
+    """
     by_key = {f"{s.project}:{s.title}": s for s in sources}
     keys = sorted(by_key)
     random.Random(f"{HIT_SEED}:{topic}").shuffle(keys)  # noqa: S311 - a reproducible order, not a secret
@@ -171,14 +191,12 @@ def check_hits(job: ArticleChoiceJob, topic: str, sources: Sequence[Source]) -> 
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
         report.fallback = answer.reason
-        return set(), report
+        return None
     notes = _read_object(answer.text)
     if notes is None:
         report.fallback = UNREADABLE
-        return set(), report
-    gone = [s for a, s in alias.items() if s.origin == HIT_ORIGIN and _number(notes.get(a)) == 0]
-    report.dropped = [s.title for s in gone]
-    return {s.source_id for s in gone}, report
+        return None
+    return {s.source_id: _number(notes.get(a)) for a, s in alias.items()}
 
 
 def choice_used(chose_article: bool, hit_check: HitCheckReport | None) -> str:

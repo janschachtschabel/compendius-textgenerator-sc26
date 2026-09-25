@@ -29,7 +29,7 @@ from app.domain.models import (
 )
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import (
-    HIT_ORIGIN,
+    CHECKED_ORIGINS,
     ArticleChoiceJob,
     ArticleChoiceReport,
     HitCheckReport,
@@ -108,8 +108,8 @@ class PreparedTopic:
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
     article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
-    hit_check: HitCheckReport | None = None  # article_choice=llm: which full-text hits the model dropped
-    search_hits: int = 0  # full-text hits build_corpus added, before any check
+    hit_check: HitCheckReport | None = None  # article_choice=llm: which side articles the model dropped
+    side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -256,7 +256,7 @@ class CompendiumService:
     ) -> None:
         """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks.
 
-        With ``choice`` the model drops the full-text hits that do not fit the topic (D35).
+        With ``choice`` the model drops the side articles that do not fit the topic (D35, M25).
         """
         lap = _Stopwatch(prepared.timings).lap
         sources = self.registry.build_corpus(
@@ -265,8 +265,8 @@ class CompendiumService:
             max_articles=request.max_articles or self.settings.corpus_max_articles,
         )
         lap("corpus")
-        prepared.search_hits = sum(1 for s in sources if s.origin == HIT_ORIGIN)
-        if choice is not None and prepared.search_hits:
+        prepared.side_articles = sum(1 for s in sources if s.origin in CHECKED_ORIGINS)
+        if choice is not None and prepared.side_articles:
             topic = prepared.resolution.title or prepared.normalized.topic
             gone, prepared.hit_check = check_hits(choice, topic, sources)
             sources = [s for s in sources if s.source_id not in gone]
@@ -529,8 +529,8 @@ class CompendiumService:
             choice_used=article_choice_used,
             choice=prepared.article_choice,
             choice_chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
-            # the model is asked for an unsure article (a chosen one stays unsure) and for full-text hits
-            choice_needed=not resolution.confident or prepared.search_hits > 0,
+            # the model is asked for an unsure article (a chosen one stays unsure) and for side articles
+            choice_needed=not resolution.confident or prepared.side_articles > 0,
             hit_check=hit_check,
         )
         frontmatter = build_frontmatter(

@@ -47,7 +47,7 @@ EXAMPLES = {
         "summary": "Stufe balanced: das LLM wählt die Artikel, alles andere bleibt lokal",
         "description": (
             "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
-            "mehrdeutige Wort Linse -, und verwirft unpassende Volltexttreffer. 91 von 94 Hauptartikeln richtig, "
+            "mehrdeutige Wort Linse -, und verwirft unpassende Nebenartikel. 91 von 94 Hauptartikeln richtig, "
             "rund 1,7 s und 930 Tokens mehr (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna wählte 90 von 94 "
             "und ist je Aufruf langsamer). Ohne b-api wählen die Regeln, und audit.llm sagt warum."
         ),
@@ -91,7 +91,7 @@ EXAMPLES = {
         "summary": "Das LLM wählt die Artikel und ordnet die Absätze zu; der Text bleibt wörtlich aus den Quellen",
         "description": (
             "article_choice llm entscheidet, wo die Regeln unsicher sind - hier das mehrdeutige Wort Linse -, und "
-            "verwirft unpassende Volltexttreffer. matcher llm lässt das LLM jeden Absatz einem Baustein zuordnen. "
+            "verwirft unpassende Nebenartikel. matcher llm lässt das LLM jeden Absatz einem Baustein zuordnen. "
             "Beides fällt ohne b-api auf die Regeln zurück; Güte, Sekunden und Tokens stehen in den Hilfetexten der "
             "beiden Felder."
         ),

@@ -283,12 +283,12 @@ def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: p
 def test_article_choice_llm_counts_as_an_llm_request_where_the_rules_are_unsure(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # "Geometrische" resolves through a title suggestion, so the model is asked; "Geometrische Optik" is sure and has
-    # no full-text hit to check, and never asking must not look like a fallback to the alarms (monitoring/alerts.yml)
+    # "Geometrische" resolves through a title suggestion, so the model is asked; "Programmiersprache" is sure and has
+    # no side article to check, and never asking must not look like a fallback to the alarms (monitoring/alerts.yml)
     service = client.app.state.service  # type: ignore[attr-defined]
     before = scrape(client)
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: '{"wahl": 1}'), per_request=1_000_000))
-    for topic in ("Geometrische", "Geometrische Optik"):
+    for topic in ("Geometrische", "Programmiersprache"):
         payload = {"topic": topic, "article_choice": "llm", "parts": ["world"]}
         assert client.post("/api/v2/compendium", json=payload).status_code == 200
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "weiß nicht"), per_request=1_000_000))

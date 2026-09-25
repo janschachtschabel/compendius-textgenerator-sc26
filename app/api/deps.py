@@ -9,7 +9,7 @@ from typing import Any
 from fastapi import HTTPException, Request
 
 from app.domain.models import Resolution, Source
-from app.knowledge.article_choice import HIT_ORIGIN, LlmArticleChooser, check_hits, choice_block, choice_used
+from app.knowledge.article_choice import CHECKED_ORIGINS, LlmArticleChooser, check_hits, choice_block, choice_used
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, RepositoryUnavailableError
 from app.sources.wlo.client import EduSharingError, NodeNotFoundError
@@ -95,7 +95,7 @@ def corpus_for_topic(
         slots=template.content_slots(),
         max_articles=max_articles or service.settings.corpus_max_articles,
     )
-    search_hits = sum(1 for source in sources if source.origin == HIT_ORIGIN)
+    side_articles = sum(1 for source in sources if source.origin in CHECKED_ORIGINS)
     hit_check = None
     if job is not None:
         gone, hit_check = check_hits(job, resolution.title or normalized.topic, sources)
@@ -107,7 +107,7 @@ def corpus_for_topic(
     info = choice_block(
         requested,
         choice_used(chosen, hit_check),
-        not resolution.confident or search_hits > 0,
+        not resolution.confident or side_articles > 0,
         choice,
         resolution.title if chosen else None,
         hit_check,

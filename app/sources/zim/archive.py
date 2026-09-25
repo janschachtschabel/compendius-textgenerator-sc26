@@ -27,6 +27,7 @@ PROJECT_ROLES: dict[str, SourceRole] = {
     "wikiversity": SourceRole.HOCHSCHULE,
 }
 PARSE_CACHE_SIZE = 256  # parsed articles kept per archive; a corpus reads about 12 plus lookups
+MAX_REDIRECTS = 3  # a chain longer than this is broken, not followed
 PROJECT_PRIORITY = {"wikipedia": 0, "klexikon": 1, "wikiversity": 2, "wikibooks": 3}
 PROJECT_AUTHORITY = {"wikipedia": 0.95, "klexikon": 0.85, "wikibooks": 0.80, "wikiversity": 0.75}
 PROJECT_URLS = {
@@ -131,6 +132,15 @@ class ZimArchive:
     def has(self, identifier: str) -> bool:
         """Whether an article of this name exists, without unpacking it: a title lookup, no content read."""
         return self._entry(identifier) is not None
+
+    def canonical_title(self, identifier: str) -> str | None:
+        """The title of the article a name leads to, redirects followed, without reading its content."""
+        entry = self._entry(identifier)
+        for _ in range(MAX_REDIRECTS):
+            if entry is None or not entry.is_redirect:
+                break
+            entry = entry.get_redirect_entry()
+        return None if entry is None or entry.is_redirect else str(entry.title)
 
     def read(self, identifier: str) -> ZimArticle | None:
         entry = self._entry(identifier)

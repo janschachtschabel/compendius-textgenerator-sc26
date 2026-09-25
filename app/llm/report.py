@@ -46,7 +46,7 @@ def build_llm_report(
 
     ``matching_*`` describe matcher=llm (D34), ``choice_*`` article_choice=llm (D35): ``llm`` or ``rule-based``,
     like the two switches; ``choice_chosen`` is the article the model decided on, ``hit_check`` what it did with the
-    full-text hits, and ``choice_needed`` whether there was anything to ask - an unsure article or hits to check;
+    side articles, and ``choice_needed`` whether there was anything to ask - an unsure article or side articles;
     only then is the model asked, so only then is its absence a fallback.
     """
     if extraction_requested == generation_requested == matching_requested == choice_requested == "rule-based":

@@ -366,6 +366,10 @@ class ZimRegistry:
                     if stem and stem in haystack:
                         hit.origin = "search"
                         sources.append(hit)
+            # M25: of the hits with no link to or from the main article most were unfit; without them the printed
+            # unfit paragraphs of 20 topics fell from 25 to 12. Their places stay empty, as measured.
+            linked_to = LinkedTo(primary_archive, primary)
+            sources = [s for s in sources if s.origin != "search" or linked_to(s)]
         return sources
 
     def _read_source(self, archive: ZimArchive, title: str, seen: set[tuple[str, str]]) -> Source | None:
@@ -400,3 +404,36 @@ class ZimRegistry:
 
 def _text_length(source: Source) -> int:
     return sum(len(p.text) for s in source.sections for p in s.paragraphs)
+
+
+class LinkedTo:
+    """Whether an article and a fixed one - the main article of a corpus - link to one another, either way (M24).
+
+    Links count as the archive names their targets after a redirect. M24 measured this on the corpora of real
+    materials: of the 15 side articles with no link to or from the main article, 11 were unfit and none central.
+    The links as written decide most pairs; only then are redirects looked up, those of the fixed article once.
+    """
+
+    def __init__(self, archive: ZimArchive, anchor: Source) -> None:
+        self.archive = archive
+        self.anchor = anchor
+        self._targets: set[str] | None = None
+
+    def __call__(self, other: Source) -> bool:
+        if _names(self.anchor.links, other.title) or _names(other.links, self.anchor.title):
+            return True
+        if self._targets is None:  # resolving every link costs 10 to 300 ms per article (M25)
+            self._targets = {t for link in self.anchor.links if (t := self.archive.canonical_title(link))}
+        return other.title in self._targets or any(
+            self.archive.canonical_title(link) == self.anchor.title for link in other.links
+        )
+
+
+def are_linked(archive: ZimArchive, first: Source, second: Source) -> bool:
+    """Whether either of two articles of one archive links to the other (``LinkedTo``)."""
+    return LinkedTo(archive, first)(second)
+
+
+def _names(links: Sequence[str], title: str) -> bool:
+    """Whether one of the links names the title as written; a wiki title's first letter is case-free."""
+    return any(link[:1].upper() + link[1:] == title for link in links)

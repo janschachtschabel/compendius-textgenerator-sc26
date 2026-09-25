@@ -21,6 +21,7 @@ from app.knowledge.article_choice import (
     LlmArticleChooser,
     check_hits,
     choice_block,
+    rate_articles,
 )
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
@@ -117,32 +118,59 @@ def test_a_failed_call_leaves_the_rules_decision() -> None:
     assert chooser.report.fallback is not None and chooser.report.fallback.startswith("b-api")
 
 
-def test_the_hit_check_drops_full_text_hits_rated_zero_and_nothing_else() -> None:
+def test_the_hit_check_drops_side_articles_rated_zero_and_nothing_else() -> None:
+    """Full-text hits and linked sub-articles rated 0 go; the main article, its twin and the node's article stay.
+
+    Linked sub-articles used to stay whatever the model said. M25 measured on the term gold that dropping those
+    rated 0 too leaves 11 instead of 17 printed paragraphs of unfit articles, and the model rated no fitting one 0.
+    """
     corpus = [
         source("Optik", "primary"),
+        source("Optik (Kinderlexikon)", "same_topic"),
         source("Brechung (Physik)", "linked"),
+        source("Linse (Optik)", "node"),
         source("Lichtmikroskop", "search"),
         source("Kernwaffe", "search", "Eine Kernwaffe ist eine Waffe."),
     ]
-    fake = FakeBApi(rating({"Kernwaffe": 0, "Brechung (Physik)": 0}))
+    zero = dict.fromkeys(("Optik", "Optik (Kinderlexikon)", "Brechung (Physik)", "Linse (Optik)", "Kernwaffe"), 0)
+    fake = FakeBApi(rating(zero))
     gateway = make_gateway(fake, per_request=100_000)
     gone, report = check_hits(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus)
 
-    assert gone == {"wikipedia:Kernwaffe"}  # a linked article rated 0 stays: only the hits are checked
+    assert gone == {"wikipedia:Brechung (Physik)", "wikipedia:Kernwaffe"}
     user = fake.bodies[0]["messages"][1]["content"]
     assert user.startswith("Thema des Kompendiums: Optik\n\nArtikel:\n")
     assert all(s.title in user for s in corpus)  # the whole corpus, so the model can compare
     assert ": Kernwaffe — Eine Kernwaffe ist eine Waffe." in user
-    assert report.checked == 2 and report.rated == 4 and report.dropped == ["Kernwaffe"] and report.fallback is None
+    assert report.checked == 3 and report.rated == 6 and report.fallback is None
+    assert report.dropped == ["Brechung (Physik)", "Kernwaffe"]
     assert report.calls == 1 and report.prompts == [HIT_PROMPT] and report.answered
 
 
-def test_without_full_text_hits_nothing_is_asked() -> None:
+def test_the_model_rates_every_article_of_the_corpus_in_one_call() -> None:
+    corpus = [source("Optik", "primary"), source("Brechung (Physik)", "linked"), source("Kernwaffe", "search")]
+    fake = FakeBApi(rating({"Kernwaffe": 0, "Brechung (Physik)": 1}))
+    gateway = make_gateway(fake, per_request=100_000)
+    report = HitCheckReport()
+    notes = rate_articles(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus, report)
+    assert notes == {"wikipedia:Optik": 2, "wikipedia:Brechung (Physik)": 1, "wikipedia:Kernwaffe": 0}
+    assert report.rated == 3 and report.calls == 1 and report.fallback is None
+
+
+def test_without_side_articles_nothing_is_asked() -> None:
     fake = FakeBApi(rating({}))
     gateway = make_gateway(fake)
-    corpus = [source("Optik", "primary"), source("Brechung (Physik)", "linked")]
+    corpus = [source("Optik", "primary"), source("Optik (Kinderlexikon)", "same_topic"), source("Linse", "node")]
     gone, report = check_hits(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus)
     assert gone == set() and fake.bodies == [] and report.calls == 0 and not report.answered
+
+
+def test_a_linked_sub_article_alone_is_reason_to_ask() -> None:
+    fake = FakeBApi(rating({"Brechung (Physik)": 0}))
+    gateway = make_gateway(fake, per_request=100_000)
+    corpus = [source("Optik", "primary"), source("Brechung (Physik)", "linked")]
+    gone, report = check_hits(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus)
+    assert gone == {"wikipedia:Brechung (Physik)"} and report.checked == 1 and report.calls == 1
 
 
 def test_an_unreadable_hit_check_keeps_every_hit() -> None:
@@ -220,18 +248,35 @@ def test_article_choice_llm_drops_the_full_text_hits_the_model_rates_zero(
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
     assert choice["used"] == "llm" and choice["needed"] and not choice["asked"]
+    # checked: the side articles the model could drop - four linked sub-articles and the two full-text hits (M25)
     assert (
-        choice["hits_checked"] == 2 and choice["hits_dropped"] == ["Augenoptiker"] and choice["hits_fallback"] is None
+        choice["hits_checked"] == 6 and choice["hits_dropped"] == ["Augenoptiker"] and choice["hits_fallback"] is None
     )
     assert HIT_PROMPT in result.frontmatter["llm"]["prompts"]
     assert result.frontmatter["llm"]["article_choice"]["hits_dropped"] == ["Augenoptiker"]
 
 
-def test_a_sure_topic_without_hits_costs_no_call(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
-    fake = FakeBApi(answering({"wahl": 1}))
-    monkeypatch.setattr(service, "llm", make_gateway(fake))
+def test_article_choice_llm_drops_a_linked_sub_article_the_model_rates_zero(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(by_prompt({"wahl": 1}, {"Technische Optik": 0}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
     result = service.generate(GenerateRequest(topic="Geometrische Optik", article_choice="llm", parts=["world"]))
 
+    assert [s.title for s in result.sources] == ["Geometrische Optik"], "its only linked sub-article was rated 0"
+    assert result.audit.llm is not None
+    choice = result.audit.llm["article_choice"]
+    assert choice["used"] == "llm" and choice["hits_checked"] == 1 and choice["hits_dropped"] == ["Technische Optik"]
+
+
+def test_a_sure_topic_without_side_articles_costs_no_call(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(answering({"wahl": 1}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    result = service.generate(GenerateRequest(topic="Programmiersprache", article_choice="llm", parts=["world"]))
+
+    assert [s.title for s in result.sources] == ["Programmiersprache"]
     assert fake.bodies == [] and result.resolution.method == "title"
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
