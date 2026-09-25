@@ -7,9 +7,14 @@ to "Strahlenoptik" counts as one to "Geometrische Optik".
 
 from __future__ import annotations
 
+import gc
+import weakref
+from pathlib import Path
+
 import pytest
 
 from app.service import CompendiumService
+from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import LinkedTo, ZimRegistry
 
 
@@ -48,6 +53,40 @@ def test_articles_without_a_link_between_them_are_not_linked(registry: ZimRegist
     archive = registry.primary_archive
     assert archive is not None
     assert not LinkedTo(archive, _source(registry, "Optik"))(_source(registry, "Programmiersprache"))
+
+
+def test_a_repeated_topic_takes_the_resolved_links_from_the_archive(
+    registry: ZimRegistry, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Resolving the links of Deutschland took 1.9 s in a first corpus and 0.19 s in a second one on the same topic."""
+    archive = registry.primary_archive
+    assert archive is not None
+    optik, programmiersprache = _source(registry, "Optik"), _source(registry, "Programmiersprache")
+    assert not LinkedTo(archive, optik)(programmiersprache)  # no link either way: the links of both get resolved
+    lookups: list[str] = []
+    entry = archive._entry
+
+    def spy(identifier: str) -> object:
+        lookups.append(identifier)
+        return entry(identifier)
+
+    monkeypatch.setattr(archive, "_entry", spy)
+    assert not LinkedTo(archive, optik)(programmiersprache)
+    assert lookups == [], "a name resolved once, to an article or to nothing, is not looked up again"
+
+
+def test_an_archive_nobody_uses_any_more_is_closed_at_once(sample_zims: dict[str, Path]) -> None:
+    """The ZIM sync opens an archive only to read its metadata and later deletes replaced files: a cache that points
+    back at its archive kept the file open until a garbage collection, and Windows refused to delete it."""
+    archive = ZimArchive(sample_zims["wikipedia"])
+    assert archive.canonical_title("Strahlenoptik") == "Geometrische Optik"
+    alive = weakref.ref(archive)
+    gc.disable()  # a reference cycle must not go unnoticed because a collection happened to run
+    try:
+        del archive
+        assert alive() is None
+    finally:
+        gc.enable()
 
 
 def test_a_full_text_hit_without_a_link_either_way_stays_out_of_the_corpus(

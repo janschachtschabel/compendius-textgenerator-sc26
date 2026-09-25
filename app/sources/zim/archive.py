@@ -28,6 +28,7 @@ PROJECT_ROLES: dict[str, SourceRole] = {
 }
 PARSE_CACHE_SIZE = 256  # parsed articles kept per archive; a corpus reads about 12 plus lookups
 MAX_REDIRECTS = 3  # a chain longer than this is broken, not followed
+LINK_CACHE_SIZE = 20_000  # link names resolved per archive; a corpus asks about 160 to 2,200 (M25)
 PROJECT_PRIORITY = {"wikipedia": 0, "klexikon": 1, "wikiversity": 2, "wikibooks": 3}
 PROJECT_AUTHORITY = {"wikipedia": 0.95, "klexikon": 0.85, "wikibooks": 0.80, "wikiversity": 0.75}
 PROJECT_URLS = {
@@ -93,6 +94,7 @@ class ZimArchive:
         self.article_count = int(self._archive.article_count)
         self._cache: OrderedDict[str, ParsedArticle] = OrderedDict()  # LRU of parsed articles
         self._cache_lock = threading.Lock()  # one archive serves all request threads
+        self._titles: OrderedDict[str, str | None] = OrderedDict()  # LRU of resolved link names
 
     def _meta(self, key: str) -> str:
         try:
@@ -134,13 +136,27 @@ class ZimArchive:
         return self._entry(identifier) is not None
 
     def canonical_title(self, identifier: str) -> str | None:
-        """The title of the article a name leads to, redirects followed, without reading its content."""
+        """The title of the article a name leads to, redirects followed, without reading its content.
+
+        Kept per archive: every corpus on a topic resolves the links of its main article, which took 1.9 s for
+        Deutschland in a first corpus and 0.19 s in a second one on the same topic (M25). The cache holds strings
+        only, so an archive nobody uses closes its file at once.
+        """
+        with self._cache_lock:
+            if identifier in self._titles:
+                self._titles.move_to_end(identifier)
+                return self._titles[identifier]
         entry = self._entry(identifier)
         for _ in range(MAX_REDIRECTS):
             if entry is None or not entry.is_redirect:
                 break
             entry = entry.get_redirect_entry()
-        return None if entry is None or entry.is_redirect else str(entry.title)
+        title = None if entry is None or entry.is_redirect else str(entry.title)
+        with self._cache_lock:
+            self._titles[identifier] = title
+            while len(self._titles) > LINK_CACHE_SIZE:
+                self._titles.popitem(last=False)
+        return title
 
     def read(self, identifier: str) -> ZimArticle | None:
         entry = self._entry(identifier)
