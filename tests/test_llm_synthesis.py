@@ -429,6 +429,17 @@ def test_model_knowledge_is_marked_visibly_inside_its_block_and_a_conclusion_is_
     assert CONCLUSION_OPEN in concluded and MODEL_KNOWLEDGE_LABEL not in concluded
 
 
+def test_a_sentence_the_model_labels_itself_keeps_one_label() -> None:
+    """M31: one sentence in 50 came back as "Modellwissen: In Zellstoffwerken wird Holz …" - with the label the
+    service adds, it read "Modellwissen: … [Modellwissen]"."""
+    answer = "Licht breitet sich geradlinig aus [1]. Modellwissen: Linsen bündeln Licht an ihren Grenzflächen."
+    text, failed = verify_citations(answer, {1}, mark=MODEL_KNOWLEDGE)
+    assert failed == 1
+    assert (
+        f"{MODEL_KNOWLEDGE_OPEN}Linsen bündeln Licht an ihren Grenzflächen. {MODEL_KNOWLEDGE_LABEL}{END_MARKER}" in text
+    )
+
+
 def test_the_enrichment_prompt_asks_for_facts_and_forbids_the_fillers_of_m28() -> None:
     """D56: two judges called two thirds of the model knowledge of v1 fillers (M28) - sentences about the block,
     the compendium or the lesson, and transfer phrases. v2 asks for a checkable fact or nothing."""

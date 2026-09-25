@@ -46,6 +46,7 @@ MODEL_KNOWLEDGE = "Modellwissen"
 # What a reader of the rendered text sees behind a sentence of model knowledge (D56, Jan): the comment around it is
 # invisible once the markdown is rendered, and a sentence without a number looks like any other then
 MODEL_KNOWLEDGE_LABEL = "[Modellwissen]"
+_SELF_LABEL_RE = re.compile(r"^\s*Modellwissen\s*:\s*")
 
 
 def opening_marker(grade: str) -> str:
@@ -158,7 +159,11 @@ def _as_marked(sentence: str, grade: str) -> str:
     """
     # Removing a number can join "-" and "->" into a comment delimiter, so comments are stripped once more.
     plain = re.sub(r"\s+([.!?,;:…])", r"\1", collapse(_COMMENT_RE.sub(" ", _MARKER_RE.sub("", sentence))))
-    label = f" {MODEL_KNOWLEDGE_LABEL}" if grade == MODEL_KNOWLEDGE else ""
+    label = ""
+    if grade == MODEL_KNOWLEDGE:
+        # The model sometimes labels the sentence itself (M31: "Modellwissen: In Zellstoffwerken …"); one label will do
+        plain = _SELF_LABEL_RE.sub("", plain)
+        label = f" {MODEL_KNOWLEDGE_LABEL}"
     return f"{opening_marker(grade)}{plain}{label}{END_MARKER}"
 
 
