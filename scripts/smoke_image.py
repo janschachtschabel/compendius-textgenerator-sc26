@@ -105,14 +105,14 @@ def ask_for_entities(base_url: str, container: str) -> dict[str, object]:
 
 
 def ask_for_pairs(base_url: str, container: str) -> dict[str, object]:
-    """The question templates only check their subjects when the packaged spaCy model really runs."""
+    """The rules ask from the spaCy parse only when the packaged model really runs (D55)."""
     body = {
         "text": (
             "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. "
             "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht."
         ),
-        "method": "rule-based",  # the templates are what checks the subjects; the profile would take the parse
-        "count": 5,
+        "method": "rule-based",  # the stage that reads the parse; the templates are left for a missing model
+        "count": 2,
     }
     try:
         response = httpx.post(f"{base_url}/api/v2/qa", json=body, timeout=REQUEST_TIMEOUT_S)
@@ -124,16 +124,20 @@ def ask_for_pairs(base_url: str, container: str) -> dict[str, object]:
 
 
 def check_pairs(answer: dict[str, object]) -> str:
-    """Return the evidence line, or raise when the subjects went unchecked in the image."""
-    if answer.get("note"):
-        raise SystemExit(f"the image could not check the question subjects: {answer['note']}")
+    """Return the evidence line, or raise when the rules could not read the parse in the image.
+
+    "Was ist die Optik?" takes the sentence's own article, which only the rules of D55 do; without the spaCy model
+    the templates would ask "Was versteht man unter Optik?" and the note would name the missing model.
+    """
+    if "spaCy" in str(answer.get("note") or ""):
+        raise SystemExit(f"the image could not parse: {answer['note']}")
     pairs = answer.get("pairs")
     questions = [str(pair.get("question", "")) for pair in pairs] if isinstance(pairs, list) else []
     if any("Daneben" in question for question in questions):
         raise SystemExit(f"a sentence-initial adverb became a question: {questions}")
-    if "Was versteht man unter Optik?" not in questions:
-        raise SystemExit(f"the real subject lost its question: {questions}")
-    return f"{len(questions)} pairs, no question about an adverb"
+    if "Was ist die Optik?" not in questions:
+        raise SystemExit(f"the rules did not ask from the parse: {questions}")
+    return f"{len(questions)} pairs from the parse, no question about an adverb"
 
 
 def ask_for_model_pairs(base_url: str, container: str) -> dict[str, object]:

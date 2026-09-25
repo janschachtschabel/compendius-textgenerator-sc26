@@ -343,7 +343,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     if payload.method in STAGES:
         pairs, reason = STAGES[payload.method](request, text, payload, node, allowance)
         if pairs is None:
-            log.info("QA fell back to the templates: %s", reason)
+            log.info("QA fell back to the rules: %s", reason)
             notes.append(reason)
         else:
             method = payload.method
