@@ -413,17 +413,20 @@ Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
    der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach
    einem Blick auf die Darstellung die Elemente, bei denen nur die Überschrift das Thema nennt, zu ihrem Bereich
    bündeln.
-8. **Offene Punkte der Durchsicht vom 25.09.2026:** Behoben sind die Fehler (Messprotokoll, M25). Offen sind Punkte,
-   die ändern, was Aufrufer bekommen:
-   - `/qa` mit `text` und zugleich `topic` oder `node_id` nimmt den Text nicht, ohne es zu sagen; `/entities` lehnt
-     Text und Knoten zusammen mit 422 ab. Vorschlag: 422 auch hier.
-   - Ein unbekanntes `subject` („Pysik“) wird still übergangen, Teil 2 sucht dann in allen Fächern; unbekannte Namen
-     in `regenerate_sections` erneuern nichts; unbekannte Felder aller Anfragen fallen still weg. Vorschlag: 422 mit
-     den erlaubten Werten.
+8. **Offene Punkte der Durchsicht vom 25.09.2026:** Behoben sind die Fehler (Messprotokoll, M25). Die Punkte, die
+   ändern, was Aufrufer bekommen, hat Jan am 25.09.2026 zur Umsetzung nach Empfehlung freigegeben:
+   - `/qa` mit `text` und zugleich `topic` oder `node_id` nahm den Text nicht, ohne es zu sagen. Umgesetzt (D49): 422,
+     wie bei `/entities`; ebenso `subject`, `preset` und `article_choice` ohne Thema.
+   - Ein unbekanntes `subject` („Pysik“) wurde still übergangen, Teil 2 suchte dann in allen Fächern; unbekannte Namen
+     in `regenerate_sections` erneuerten nichts; unbekannte Felder aller Anfragen fielen still weg. Umgesetzt (D49):
+     422 mit den erlaubten Werten.
    - `/lehrplan/search` sucht die Wörter, wie sie kommen, Teil 2 den aufgelösten Artikel, seine Aliase und Unterthemen.
      Vorschlag: ein Themen-Modus, der wie Teil 2 auflöst; zu messen an den 20 Themen von M22.
-   - `/matching/compare` wählt die Artikel immer ohne LLM; die CLI kennt keinen Knoten; `/qa` mit der Stufe `llm`
-     öffnet nach dem Kompendium ein zweites Token- und Zeitbudget; eine unbekannte `knowledge_collection_id` ergibt
-     200 mit dem Fehler im Audit, eine unbekannte `collection_id` 404.
+   - Die CLI kannte keinen Knoten, `/qa` mit der Stufe `llm` öffnete nach dem Kompendium ein zweites Token- und
+     Zeitbudget, und eine unbekannte `knowledge_collection_id` ergab 200 mit dem Fehler im Audit, eine unbekannte
+     `collection_id` 404. Umgesetzt (D49): `--node-id` und `--repository`, ein Budget je Anfrage, 404 vor jedem
+     LLM-Aufruf. Zurückgestellt:
+     `/matching/compare` wählt die Artikel weiter ohne LLM, bis entschieden ist, ob Stufen die Einzelschalter
+     ersetzen.
    - Die Links des Hauptartikels werden je Anfrage neu aufgelöst, bei großen Artikeln bis 0,7 s (*Deutschland*); ein
      Zwischenspeicher je Archiv spart das bei Wiederholungen.

@@ -5,8 +5,9 @@ alter Dienst v0.2.0 (`alterCode/compendious`) · nach v2.0.0 kamen hinzu: der LL
 schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36), `hybrid_light` bleibt
 Standard der Zuordnung (D38), `matcher=llm` ohne Rückfall am Budget (D39), der LLM-freie Modus als Standard (D40, statt
 `article_choice=llm` als Vorgabe mit LLM, D37), der Schalter `preset` für die drei Stufen der Entscheidungsvorlage
-(D41), ein Knoten eines Repositorys als Eingang (D45) mit eigener Artikelwahl für Materialien (D47) und die Prüfung der
-Nebenartikel des Korpus (D48); eine Version mit Tag gibt es dafür noch nicht
+(D41), ein Knoten eines Repositorys als Eingang (D45) mit eigener Artikelwahl für Materialien (D47), die Prüfung der
+Nebenartikel des Korpus (D48) und 422 statt stiller Übergehung unverstandener Anfragen (D49); eine Version mit Tag gibt
+es dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 25.09.2026 stehen mit Aufbau

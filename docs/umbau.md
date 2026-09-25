@@ -191,8 +191,7 @@ und die Antwort sagt, welche Archive befragt wurden.
 
 ```
 POST /api/v2/entities
-{"text": "...", "methods": ["ner", "dictionary"], "link": true, "wikidata": false,
- "archives": ["wikipedia_de_all_nopic"]}
+{"text": "...", "methods": ["ner", "dictionary"], "link": true, "archives": ["wikipedia_de_all_nopic"]}
 ```
 
 Die Antwort nennt `methods`, die befragten `archives` und je Entität `source`, `kind`, `linked` und —

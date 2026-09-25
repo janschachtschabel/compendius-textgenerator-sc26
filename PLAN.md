@@ -1609,6 +1609,18 @@ API.
   und 2,0 s mehr als die Regeln (M13 mit gpt-5.6-luna: 930 und 1,7 s). Die Verlinkung kostet je Thema bis 0,5 s, bei
   sehr großen Artikeln mehr (*Deutschland*: 0,74 s); ein Zwischenspeicher der aufgelösten Links wäre der nächste
   Schritt.
+- **D49 (2026-09-25)** Was eine Anfrage nicht versteht, ist eine 422, keine stille Übergehung (Durchsicht vom
+  25.09.2026, Entscheidungsvorlage Punkt 8; Jan: „gemäß Empfehlung fortfahren“). Alle JSON-Anfragen verbieten unbekannte
+  Felder. Ein `subject` außerhalb von `config/subjects.yaml` ist eine 422, die die 37 bekannten Fächer nennt
+  (`SubjectCatalog.check`, vor jedem Lesen); die Fächer eines Knotens oder einer Sammlung prüft der Dienst nicht, dort
+  zählt ein unbekanntes für nichts. `regenerate_sections` braucht `existing_markdown` und Namen, die das Template hat;
+  die 422 nennt dessen Bausteine als `id (Schlüssel)`. `/qa` nimmt `text` nur allein und `subject`, `preset` und
+  `article_choice` nur mit `topic` oder `node_id`. `knowledge_collection_id` braucht `world` in `parts`; eine unbekannte
+  ist ein 404 wie eine unbekannte `collection_id`, geprüft an ihren Metadaten vor jedem LLM-Aufruf. Ein scheiterndes
+  Repository bleibt im Audit und wird nicht ein zweites Mal gefragt. `/qa` mit der Stufe `llm` teilt ein Token- und ein
+  Zeitbudget über Teil 1 und die Paare (vorher je eines, also bis zum Doppelten), und `note` nennt den Grund, wenn der
+  Aufruf entfällt. Die CLI nimmt `--node-id` und `--repository`. Zurückgestellt: `/matching/compare` mit
+  LLM-Artikelwahl, bis entschieden ist, ob Stufen die Einzelschalter ersetzen.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
