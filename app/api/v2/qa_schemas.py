@@ -50,7 +50,7 @@ class QaRequest(BaseModel):
         max_length=300,
         description="Instead of a text: part 1 of the compendium for this topic is made first, without an LLM "
         "whatever the profile (D55), and the pairs are asked about its blocks, its glossary and its actors. That "
-        "costs a compendium generation of 2 to 9 s - hand the text over instead when you already have one",
+        "costs a compendium generation - hand the text over instead when you already have one",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -84,7 +84,9 @@ class QaRequest(BaseModel):
         "of memory per worker from the first request on. llm lets the b-api write the pairs; with a topic or node, "
         "part 1 and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S). "
         "parse-based and models fall back to rule-based when they cannot run, and note says why; llm without a "
-        "configured LLM is a 503, and while the b-api is not available it falls back as well",
+        "configured LLM is a 503, and while the b-api is not available it falls back as well. Over six topics with "
+        "20 pairs asked each, two judges found 48 of 96 rule-based pairs, 25 of 120 models pairs and 99 of 120 llm "
+        "pairs flawless (M30)",
     )
     count: int = Field(
         5,

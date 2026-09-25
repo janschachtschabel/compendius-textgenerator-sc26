@@ -77,7 +77,8 @@ EXAMPLES = {
             "[Modellwissen]. Für Texte, die Menschen direkt lesen; rund 24 s und 35.000 Tokens (M27). Zwei "
             "Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; unter dem ersten Prompt waren zwei "
             "Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts "
-            "(D56). Einzeln gesetzte Schalter gehen dem preset vor."
+            "(D56) und ergänzte an sechs Themen 50 statt 82 solche Sätze, 13 statt 50 davon Füllsätze (M31). "
+            "Einzeln gesetzte Schalter gehen dem preset vor."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "best-quality-generated"},
     },

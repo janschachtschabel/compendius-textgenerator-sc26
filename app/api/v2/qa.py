@@ -219,7 +219,8 @@ EXAMPLES = {
             "Ein Thema erzeugt erst Teil 1 des Kompendiums, immer ohne LLM (D55), und fragt dessen Bausteine, sein "
             "Glossar und seine Akteure ab: Wann, Wo, Wer, Was, Worauf, Wie viele, Warum und Definitionen, die Arten "
             "abwechselnd, die Antwort ist der ganze Satz. Hält der Text weniger Fragen, als count verlangt, sagt note, "
-            "wie viele es sind."
+            "wie viele es sind. Auf sechs Themen mit je 20 verlangten Paaren lieferten die Regeln 96 Paare in 0,3 s "
+            "je Text, die Hälfte nach zwei Gutachtern mangelfrei (M30)."
         ),
         "value": {"topic": "Albert Einstein", "count": 20, "preset": "llm-free"},
     },
@@ -229,7 +230,8 @@ EXAMPLES = {
             "dehio/german-qg-t5-quad schreibt die Frage, gelectra-base-germanquad markiert die Antwort im Text, "
             "darum sind die Antworten kurze Textstellen. Rund 1 s je Paar und 1,3 GB Arbeitsspeicher je Worker ab "
             "der ersten Anfrage. Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced; Teil 1 entsteht auch hier "
-            "ohne LLM."
+            "ohne LLM. Auf sechs Themen kamen immer so viele Paare wie verlangt, nach zwei Gutachtern aber nur 25 "
+            "von 120 mangelfrei (M30): Antworten, die nicht passen, Sachfehler und unklare Fragen."
         ),
         "value": {"topic": "Optik", "count": 10},
     },
@@ -238,7 +240,8 @@ EXAMPLES = {
         "description": (
             "Braucht LLM_ENABLED und B_API_KEY, sonst antwortet der Dienst mit 503. levels nimmt auch die "
             "Schreibweise des Vokabulars (Sekundarstufe I, Sekundarstufe 1 oder die Begriffs-URI). Teil 1 und die "
-            "Paare teilen sich ein Token-Budget und eine Frist."
+            "Paare teilen sich ein Token-Budget und eine Frist. Auf sechs Themen 99 von 120 Paaren mangelfrei, rund "
+            "2.400 Tokens je Text (M30)."
         ),
         "value": {
             "topic": "Optik",
@@ -282,7 +285,8 @@ EXAMPLES = {
         "summary": "Nur das Satzsubjekt wird zum Fragewort; die Antwort ist das Subjekt",
         "description": (
             "Ein einzeln gesetztes method geht dem Profil vor. parse-based war bis D55 das Verfahren von llm-free: "
-            "schnell, aber es fragt nur nach Satzsubjekten und liefert oft weniger Paare als verlangt."
+            "schnell, aber es fragt nur nach Satzsubjekten und liefert oft weniger Paare als verlangt (44 statt 120 "
+            "auf sechs Themen, M30)."
         ),
         "value": {"topic": "Optik", "method": "parse-based", "count": 10},
     },

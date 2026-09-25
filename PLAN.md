@@ -1666,6 +1666,10 @@ API.
   sich ab, jeder Satz kommt einmal dran, bevor einer zweimal gefragt wird, Glossar-Nachbarn und Akteure füllen nur auf.
   Die Antwort bleibt der ganze Satz. `count` bleibt eine Obergrenze, aber `note` nennt jetzt, wie viele Paare der Text
   hergab. `parse-based` bleibt vorerst wählbar; welche Stufen bleiben, entscheidet Jan nach der Messung (M30).
+  M30 (sechs Themen, je 20 Paare verlangt, zwei blinde Gutachter): Die Regeln liefern 96 von 120 Paaren in 0,3 s je
+  Text und fragen zu 9 statt 82 % nach einer Zeit, 48 Paare sind bei beiden mangelfrei; die Modelle liefern 120 in
+  rund 25 s, 25 mangelfrei; das LLM 120 mit rund 2.400 Tokens, 99 mangelfrei; `parse-based` 44, 16 mangelfrei.
+  `balanced` hat damit die schwächste Stufe; die Entscheidungsvorlage legt die Frage Jan vor.
 - **D56 (2026-09-26)** Modellwissen sichtbar und nur als Sachaussage (Jan: sichtbare Kennzeichnung, „falls dies möglich
   ist ja“; Schärfung des Prompts freigegeben). Ein Satz mit Modellwissen endet im Text sichtbar mit `[Modellwissen]`,
   innerhalb des Blocks `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->`, damit wer die Blöcke liest Satz und
@@ -1674,7 +1678,10 @@ API.
   gekennzeichnet; danach war nicht gefragt. Der Prompt `section_enrichment` v2 verlangt eine konkrete, überprüfbare
   Sachaussage, die in den Belegen fehlt, und verbietet Sätze über Text, Baustein, Kompendium, Unterricht oder
   Lehrkräfte, Transfer-, Bedeutungs- und Bewertungsfloskeln sowie Zusammenfassungen; fällt dem Modell keine Sachaussage
-  ein, ergänzt es nichts. Gemessen in M31.
+  ein, ergänzt es nichts. M31 (die sechs Themen von M27, zwei blinde Gutachter): 50 statt 82 Sätze Modellwissen,
+  davon 13 statt 50 Füllsätze und 32 statt 27 fachliche Sätze, keiner falsch (vorher zwei); Lesbarkeit gleich, in 8
+  von 12 Urteilen vorgezogen, rund 3 % mehr Tokens. Die übrigen Füllsätze sind rhetorische Fragen, Zuordnungen zu
+  Fachgebieten und Allgemeinplätze über Berufe; Fragen verbietet der Prompt noch nicht.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
