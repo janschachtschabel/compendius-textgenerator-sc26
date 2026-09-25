@@ -2,7 +2,9 @@
 
 The test suite calls the service in the same process, so it never sees what the image does: the start command,
 the worker setup, the paths, the permissions of the unprivileged user. This script starts the image the way an
-operator does - two workers, a mounted archive directory - and checks that a compendium comes back.
+operator does - two workers, a mounted archive directory - and checks that a compendium comes back. Like an operator
+without an LLM it sets PRESET_DEFAULT=llm-free (D53), and it checks that a profile that needs an LLM is refused with a
+503 that names LLM_ENABLED instead of quietly running the rules.
 
 It also reports a worker the parent process killed (PLAN.md 10), but it cannot guarantee to provoke that: it
 only happens when the machine is busy enough for a worker to stay silent past its healthcheck. The guard
@@ -78,6 +80,18 @@ def ask_for_a_compendium(base_url: str, container: str) -> dict[str, object]:
     return dict(response.json())
 
 
+def check_llm_profile_refused(base_url: str, container: str) -> str:
+    """A profile that needs an LLM is a 503 on a server without one (D53); return the evidence line."""
+    body = {"topic": "Optik", "parts": ["world"], "preset": "balanced"}
+    try:
+        response = httpx.post(f"{base_url}/api/v2/compendium", json=body, timeout=REQUEST_TIMEOUT_S)
+    except httpx.HTTPError as exc:
+        raise SystemExit(f"the balanced request got no answer ({exc}):\n{run('logs', container)}") from exc
+    if response.status_code != 503 or "LLM_ENABLED" not in response.text:
+        raise SystemExit(f"balanced without an LLM answered {response.status_code}: {response.text[:400]}")
+    return "balanced without an LLM is a 503 that names LLM_ENABLED"
+
+
 def ask_for_entities(base_url: str, container: str) -> dict[str, object]:
     """The entity endpoint is the only place the packaged spaCy model is ever executed."""
     body = {"text": "Alexander von Humboldt reiste 1799 nach Südamerika.", "link": False}
@@ -97,6 +111,7 @@ def ask_for_pairs(base_url: str, container: str) -> dict[str, object]:
             "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. "
             "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht."
         ),
+        "method": "rule-based",  # the templates are what checks the subjects; the profile would take the parse
         "count": 5,
     }
     try:
@@ -204,12 +219,14 @@ def main() -> int:
             "-p", f"127.0.0.1:{args.port}:8000",
             "-v", f"{archives.as_posix()}:/data/zim:ro",
             "-e", "ZIM_REQUIRED=wikipedia_de_sample,klexikon_de_sample",
+            "-e", "PRESET_DEFAULT=llm-free",
             args.image,
         )  # fmt: skip
         try:
             wait_until_ready(base_url, container)
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
+            print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
             print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
             model_answer = ask_for_model_pairs(base_url, container)
