@@ -8,12 +8,15 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from app.api.admin import require_admin
+from app.api.deps import get_service
 from app.api.limits import rate_limited
+from app.domain.requests import GenerateRequest
+from app.service import TopicNotFoundError
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
@@ -42,6 +45,20 @@ def _public_harvest(status: dict[str, Any] | None) -> dict[str, Any] | None:
 def _builder(request: Request) -> CurriculaBuilder:
     builder: CurriculaBuilder = request.app.state.curricula
     return builder
+
+
+def _as_part_two(request: Request, q: str, subject: str | None) -> tuple[str, list[str], list[str]]:
+    """The article, keywords and subject terms that part 2 of a compendium on ``q`` searches for, by the rules."""
+    service = get_service(request)
+    try:
+        prepared = service.prepare(GenerateRequest(topic=q, subject=subject, parts=["curricula"]))
+    except TopicNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=exc.detail()) from exc
+    # as CompendiumService.generate hands them to part 2
+    title = prepared.resolution.title or prepared.normalized.topic
+    primary = next((s for s in prepared.sources if s.is_primary), prepared.sources[0] if prepared.sources else None)
+    keywords = build_keywords(title, aliases=list(primary.aliases) if primary else [], subtopics=prepared.subtopics)
+    return title, keywords, _builder(request).subjects.mem_terms_of(prepared.subjects)
 
 
 @router.get("/status")
@@ -74,28 +91,39 @@ def lehrplan_search(
     q: str = Query(..., min_length=3, max_length=200, description="Topic or keyword"),
     subject: str | None = Query(None, max_length=100, description="WLO discipline id, URI, label or alias"),
     limit: int = Query(50, ge=1, le=500),
+    mode: Literal["keyword", "topic"] = Query(
+        "keyword",
+        description="keyword: the words as sent; topic: what part 2 of a compendium on q searches for - the article "
+        "of the topic, its aliases and the sub-topics of its corpus, with the subjects of the topic",
+    ),
 ) -> dict[str, Any]:
-    """Curriculum elements for a keyword, out of the local cache - no MEM access, no network.
+    """Curriculum elements for a keyword or a topic, out of the local cache - no MEM access, no network.
 
-    ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking
-    is the one part 2 uses, but on the words as sent: part 2 searches for the resolved article, its aliases and
-    its sub-topics, so a compendium on the same topic can draw on more than this search finds.
+    ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking is the
+    one part 2 uses. By default it searches the words as sent; ``mode=topic`` resolves ``q`` as part 2 of a
+    compendium does, by the rules and without an LLM, names the article in ``topic`` and answers 404 for a topic
+    the archives do not have.
 
     An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
     says which it is.
     """
     builder = _builder(request)
-    keywords = build_keywords(q, aliases=[], subtopics=[])
-    subject_terms = builder.subjects.mem_terms(subject)
+    if mode == "topic":
+        topic, keywords, subject_terms = _as_part_two(request, q, subject)
+    else:
+        topic, keywords = None, build_keywords(q, aliases=[], subtopics=[])
+        subject_terms = builder.subjects.mem_terms(subject)
+    asked = {"mode": mode, "topic": topic}
     if not builder.store.available:
-        return {"available": False, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
+        return {"available": False, **asked, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
     try:
         result = LehrplanMatcher(builder.store).match(keywords, subject_terms=subject_terms)
     except LehrplanCacheError as exc:
         log.error("%s", exc)
-        return {"available": False, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
+        return {"available": False, **asked, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
     return {
         "available": True,
+        **asked,
         "keywords": result.keywords,
         "subject_terms": result.subject_terms,
         "total_hits": result.total_hits,

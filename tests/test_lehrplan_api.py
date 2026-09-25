@@ -89,6 +89,32 @@ def test_search_reads_the_cache_and_applies_the_subject(sample_zims: dict[str, P
         assert client.get("/api/v2/lehrplan/search", params={"q": "Op"}).status_code == 422
 
 
+def test_the_topic_mode_searches_as_part_2_of_a_compendium_does(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """The search takes the words as sent; mode=topic resolves them as part 2 does, to the article of the topic,
+    its aliases and the sub-topics of its corpus (decision paper, point 8)."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        words = client.get("/api/v2/lehrplan/search", params={"q": "Lichtlehre"}).json()
+        topic = client.get("/api/v2/lehrplan/search", params={"q": "Lichtlehre", "mode": "topic"}).json()
+        compendium = client.post("/api/v2/compendium", json={"topic": "Lichtlehre", "parts": ["curricula"]})
+    part_2 = compendium.json()["curricula"]
+    assert words["mode"] == "keyword" and words["matches"] == [], "no element names the redirect Lichtlehre"
+    assert topic["mode"] == "topic" and topic["topic"] == "Optik"
+    assert topic["keywords"] == part_2["keywords"] and topic["subject_terms"] == part_2["subject_terms"]
+    assert [match["label"] for match in topic["matches"]] == ["Lichtbrechung an Linsen"]
+
+
+def test_the_topic_mode_answers_404_for_a_topic_the_archives_do_not_have(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        response = client.get("/api/v2/lehrplan/search", params={"q": "Xylophonquartett", "mode": "topic"})
+        unknown_mode = client.get("/api/v2/lehrplan/search", params={"q": "Optik", "mode": "thema"})
+    assert response.status_code == 404
+    assert unknown_mode.status_code == 422
+
+
 def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:
