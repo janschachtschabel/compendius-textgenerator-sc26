@@ -69,3 +69,23 @@ def test_the_overview_endpoint_keeps_to_the_request_time_budget(sample_zims: dic
         client.app.state.settings.request_timeout_s = 0  # type: ignore[attr-defined]  # spent at once
         body = client.get(f"/api/v2/collections/{OPTIK}/overview").json()
     assert body["available"] and body["summary"]["incomplete"] is True
+
+
+class ListingFails(FakeRepository):
+    """Reads the collection, then fails at its listing, as a repository under load may."""
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/children/references"):
+            self.requests.append(request)
+            return httpx.Response(503, json={"error": "busy"})
+        return super().__call__(request)
+
+
+def test_the_overview_endpoint_answers_502_when_the_listing_fails(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Its docstring promises 502 for an unreachable repository; it answered 200 with the error inside (review of
+    2026-09-25). Inside a compendium, part 3 still degrades to a hint."""
+    with _client(sample_zims, tmp_path, ListingFails()) as client:
+        response = client.get(f"/api/v2/collections/{OPTIK}/overview")
+        assert response.status_code == 502 and "503" in response.text
+        compendium = client.post("/api/v2/compendium", json={"collection_id": OPTIK, "parts": ["world", "collection"]})
+        assert compendium.status_code == 200 and not compendium.json()["collection"]["available"]

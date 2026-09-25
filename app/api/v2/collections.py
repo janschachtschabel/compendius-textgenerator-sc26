@@ -42,4 +42,6 @@ def collection_overview(collection_id: str, request: Request) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except EduSharingError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc  # the message names the repository
+    if not part.available:  # read, but not listed: inside a compendium a hint, on its own a failed request
+        raise HTTPException(status_code=502, detail=part.error or "Die Sammlung ließ sich nicht auflisten")
     return part.model_dump()
