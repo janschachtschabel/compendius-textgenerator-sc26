@@ -12,9 +12,11 @@ from app.domain.requests import GenerateRequest
 from app.service import CompendiumService, PartsUnavailableError
 from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError
 from app.sources.wlo.part import CollectionBuilder
 from tests.test_lehrplan_api import write_cache
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
@@ -129,15 +131,41 @@ def test_the_request_deadline_stops_material_fetches(
     assert knowledge["timed_out"] == knowledge["considered"] > 0 and knowledge["sources"] == 0
 
 
-def test_the_knowledge_collection_is_read_only_for_part_one(
-    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+def test_the_knowledge_collection_needs_part_one() -> None:
+    """Its materials only feed part 1; without it they were quietly not read (review of 2026-09-25, D49)."""
+    with pytest.raises(ValidationError, match="knowledge_collection_id"):
+        GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["curricula"])
+
+
+def test_an_unknown_knowledge_collection_is_refused_before_the_llm_is_asked(
+    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    repository = FakeRepository()
+    """A typo in the id used to cost the article choice and the check of the side articles first."""
+    fake = FakeBApi(lambda body: "{}")
+    monkeypatch.setattr(with_collections, "llm", make_gateway(fake))
+    with_collections.generate(GenerateRequest(topic="Optik", parts=["world"], article_choice="llm"))
+    asked = len(fake.bodies)
+    assert asked, "the model checks the side articles of this topic"
+    typo = GenerateRequest(topic="Optik", knowledge_collection_id=UNKNOWN, parts=["world"], article_choice="llm")
+    with pytest.raises(CollectionNotFoundError):
+        with_collections.generate(typo)
+    assert len(fake.bodies) == asked
+
+
+def test_a_failing_repository_leaves_the_knowledge_collection_to_the_audit_and_is_asked_once(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The compendium stands without the materials; a slow repository must not be waited for twice."""
+    probe = FakeRepository(fail=True)
+    with pytest.raises(EduSharingError):
+        EduSharingClient(BASE, transport=httpx.MockTransport(probe), page_size=10).collection(OPTIK)
+    repository = FakeRepository(fail=True)
     client = EduSharingClient(BASE, transport=httpx.MockTransport(repository), page_size=10)
-    monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=TtlCache(tmp_path / "c.db")))
-    result = service.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["curricula"]))
-    # The materials only feed part 1: without it, up to REQUEST_TIMEOUT_S of text reads would be thrown away
-    assert result.audit.knowledge is None and repository.requests == []
+    monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=None))
+    result = service.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"]))
+    assert result.audit.knowledge is not None and result.audit.knowledge["sources"] == 0
+    assert "nicht erreichbar" in result.audit.knowledge["error"]
+    assert len(repository.requests) == len(probe.requests), "one failed read, not a second one"
 
 
 def test_a_request_for_part_three_alone_needs_its_collection() -> None:

@@ -245,6 +245,7 @@ class CompendiumService:
         lexicon = self.lexicon.with_template(template)
 
         collection = self._collection_info(request)
+        knowledge_failure = self._probe_knowledge(request.knowledge_collection_id)
         node_info, node = self.read_node(request.node_id, request.repository) if request.node_id else (None, None)
         derived: list[CollectionTopic] = []
         if node_info is not None:
@@ -281,6 +282,7 @@ class CompendiumService:
             article_choice=chosen.choice,
             node_article=chosen.node,
             material=chosen.material,
+            knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
         )
         if needs_corpus:
             self._add_corpus(prepared, request, deadline, choice)
@@ -314,8 +316,9 @@ class CompendiumService:
             gone, prepared.hit_check = check_hits(choice, topic, sources)
             sources = [s for s in sources if s.source_id not in gone]
             lap("hit_check")
-        # The materials are sources of part 1 only; without it their texts would be read and thrown away
-        if request.knowledge_collection_id and "world" in request.parts:
+        # The materials are sources of part 1 only (the request refuses them without it); a failed probe already
+        # put its error in the audit
+        if request.knowledge_collection_id and "world" in request.parts and prepared.knowledge is None:
             if self.collections is None:
                 knowledge_id = request.knowledge_collection_id
                 prepared.knowledge = {"collection_id": knowledge_id, "error": NO_REPOSITORY, "sources": 0}
@@ -399,6 +402,23 @@ class CompendiumService:
         if self.collections is None:
             raise RuntimeError("collections are not configured (EDU_SHARING_BASE_URL)")
         return self.collections
+
+    def _probe_knowledge(self, collection_id: str | None) -> dict[str, Any] | None:
+        """Refuse an unknown knowledge collection before the article choice and the corpus spend LLM calls.
+
+        Reads the collection's metadata only (cached); an unknown one is a 404 as for ``collection_id``. A repository
+        that fails gives the audit entry right away, so the materials are not asked for as well.
+        """
+        if not collection_id or self.collections is None:
+            return None
+        try:
+            self.collections.info(collection_id)
+        except CollectionNotFoundError:
+            raise
+        except EduSharingError as exc:
+            log.warning("knowledge collection %s not readable: %s", collection_id, exc)
+            return {"collection_id": collection_id, "error": str(exc), "sources": 0}
+        return None
 
     def _knowledge(self, collection_id: str, sources: list[Source], deadline: Deadline | None) -> dict[str, Any]:
         """Add the reusable materials of the knowledge collection to the corpus.

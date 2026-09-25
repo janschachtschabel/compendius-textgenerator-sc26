@@ -47,3 +47,10 @@ def test_blocks_to_make_anew_need_the_earlier_text_and_names_the_template_knows(
     unknown = client.post("/api/v2/compendium", json=body)
     assert unknown.status_code == 422, unknown.text
     assert "themendefinition" in unknown.json()["detail"] and "sc26_1" in unknown.json()["detail"]
+
+
+def test_a_knowledge_collection_without_part_1_is_a_422(client: TestClient) -> None:
+    """Its materials only feed part 1; without it they were quietly not read."""
+    body = {"topic": "Optik", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "parts": ["curricula"]}
+    answer = client.post("/api/v2/compendium", json=body)
+    assert answer.status_code == 422 and "knowledge_collection_id" in answer.text

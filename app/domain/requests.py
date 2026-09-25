@@ -163,8 +163,9 @@ class GenerateRequest(BaseModel):
     knowledge_collection_id: str | None = Field(
         None,
         pattern=NODE_ID_PATTERN,
-        description="Collection whose reusable materials feed part 1 as sources; an unknown one is a 404, as for "
-        "collection_id, while a failing repository only shows in audit.knowledge",
+        description="Collection whose reusable materials feed part 1 as sources, so parts has to hold world (else a "
+        "422); an unknown one is a 404, as for collection_id, while a failing repository only shows in "
+        "audit.knowledge",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -254,6 +255,8 @@ class GenerateRequest(BaseModel):
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         if self.regenerate_sections is not None and not self.existing_markdown:
             raise ValueError("regenerate_sections gilt für existing_markdown; ohne den früheren Text bleibt nichts")
+        if self.knowledge_collection_id and "world" not in self.parts:
+            raise ValueError("knowledge_collection_id speist Teil 1; ohne world in parts bliebe sie ungelesen")
         # Without a collection part 3 drops out (as with the default parts); it must not be the only part
         if not self.collection_id and not {"world", "curricula"} & set(self.parts):
             raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")
