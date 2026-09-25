@@ -23,6 +23,7 @@ from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
+from app.sources.lehrplan.subjects import UnknownSubjectError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"])
@@ -102,12 +103,16 @@ def lehrplan_search(
     ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking is the
     one part 2 uses. By default it searches the words as sent; ``mode=topic`` resolves ``q`` as part 2 of a
     compendium does, by the rules and without an LLM, names the article in ``topic`` and answers 404 for a topic
-    the archives do not have.
+    the archives do not have. A subject the catalog does not know is a 422 that lists the known ones.
 
     An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
     says which it is.
     """
     builder = _builder(request)
+    try:
+        builder.subjects.check(subject)
+    except UnknownSubjectError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     if mode == "topic":
         topic, keywords, subject_terms = _as_part_two(request, q, subject)
     else:

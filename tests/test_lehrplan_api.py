@@ -115,6 +115,17 @@ def test_the_topic_mode_answers_404_for_a_topic_the_archives_do_not_have(
     assert unknown_mode.status_code == 422
 
 
+def test_an_unknown_subject_is_a_422_that_names_the_known_ones(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """ "Pysik" used to search every subject without saying so (decision paper, point 8)."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        for mode in ("keyword", "topic"):
+            response = client.get("/api/v2/lehrplan/search", params={"q": "Optik", "subject": "Pysik", "mode": mode})
+            assert response.status_code == 422, mode
+            assert "Pysik" in response.json()["detail"] and "Physik" in response.json()["detail"]
+        assert client.get("/api/v2/lehrplan/search", params={"q": "Optik", "subject": "Physik"}).status_code == 200
+
+
 def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:
