@@ -1,0 +1,2502 @@
+{
+ "Barockliteratur": {
+  "hauptartikel": "Barockliteratur",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Barock",
+    "titel": "Barock",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 9.6
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Barockliteratur": 2,
+   "wikipedia:Barock": 1
+  },
+  "tokens_ganz": 407,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Barockliteratur": 2,
+   "wikipedia:Barock": 1
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 4
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 4
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 4
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 4
+   },
+   "beides": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 4
+   }
+  }
+ },
+ "Bruchrechnung": {
+  "hauptartikel": "Bruchrechnung",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Rechnen",
+    "titel": "Rechnen",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 5.0
+   },
+   {
+    "source_id": "wikipedia:Kürzen",
+    "titel": "Kürzen",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Rationale_Zahl",
+    "titel": "Rationale Zahl",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Rationale_Zahl": 1,
+   "wikipedia:Kürzen": 2,
+   "klexikon:Bruchrechnung": 2,
+   "wikipedia:Bruchrechnung": 2,
+   "wikipedia:Rechnen": 1
+  },
+  "tokens_ganz": 501,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Rationale_Zahl": 1,
+   "wikipedia:Kürzen": 2,
+   "klexikon:Bruchrechnung": 2,
+   "wikipedia:Bruchrechnung": 2,
+   "wikipedia:Rechnen": 1
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 7,
+     "1": 1
+    },
+    "bausteine": 2
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 7,
+     "1": 1
+    },
+    "bausteine": 2
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 7,
+     "1": 1
+    },
+    "bausteine": 2
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 7,
+     "1": 1
+    },
+    "bausteine": 2
+   },
+   "beides": {
+    "nach_note": {
+     "2": 7,
+     "1": 1
+    },
+    "bausteine": 2
+   }
+  }
+ },
+ "Demokratie": {
+  "hauptartikel": "Demokratie",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Demokratisierung",
+    "titel": "Demokratisierung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 51.3
+   },
+   {
+    "source_id": "wikipedia:Repräsentative_Demokratie",
+    "titel": "Repräsentative Demokratie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Demokratietheorie",
+    "titel": "Demokratietheorie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Direkte_Demokratie",
+    "titel": "Direkte Demokratie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Konkordanzdemokratie",
+    "titel": "Konkordanzdemokratie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Defekte_Demokratie",
+    "titel": "Defekte Demokratie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Postdemokratie",
+    "titel": "Postdemokratie",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Souverän",
+    "titel": "Souverän",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Staatsmodell",
+    "titel": "Staatsmodell",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Rechtsstaat",
+    "titel": "Rechtsstaat",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Rechtsstaat": 1,
+   "wikipedia:Demokratietheorie": 2,
+   "wikipedia:Postdemokratie": 2,
+   "wikipedia:Souverän": 2,
+   "wikipedia:Staatsmodell": 1,
+   "wikipedia:Direkte_Demokratie": 2,
+   "wikipedia:Konkordanzdemokratie": 2,
+   "wikipedia:Demokratie": 2,
+   "klexikon:Demokratie": 2,
+   "wikipedia:Defekte_Demokratie": 2,
+   "wikipedia:Repräsentative_Demokratie": 2,
+   "wikipedia:Demokratisierung": 2
+  },
+  "tokens_ganz": 833,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Rechtsstaat": 1,
+   "wikipedia:Demokratietheorie": 2,
+   "wikipedia:Postdemokratie": 2,
+   "wikipedia:Souverän": 2,
+   "wikipedia:Staatsmodell": 1,
+   "wikipedia:Direkte_Demokratie": 2,
+   "wikipedia:Konkordanzdemokratie": 2,
+   "wikipedia:Demokratie": 2,
+   "klexikon:Demokratie": 2,
+   "wikipedia:Defekte_Demokratie": 2,
+   "wikipedia:Repräsentative_Demokratie": 2,
+   "wikipedia:Demokratisierung": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 19,
+     "1": 2
+    },
+    "bausteine": 8
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 19,
+     "1": 2
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 19,
+     "1": 2
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 19,
+     "1": 2
+    },
+    "bausteine": 8
+   },
+   "beides": {
+    "nach_note": {
+     "2": 19,
+     "1": 2
+    },
+    "bausteine": 8
+   }
+  }
+ },
+ "Französische Revolution": {
+  "hauptartikel": "Französische Revolution",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Revolution",
+    "titel": "Revolution",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 40.7
+   },
+   {
+    "source_id": "wikipedia:Die_Französische_Revolution",
+    "titel": "Die Französische Revolution",
+    "herkunft": "linked",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Revolutionstribunal",
+    "titel": "Revolutionstribunal",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Revolutionsexport",
+    "titel": "Revolutionsexport",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Bürger",
+    "titel": "Bürger",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Republik",
+    "titel": "Republik",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Verfassung",
+    "titel": "Verfassung",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Liberalismus",
+    "titel": "Liberalismus",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Trente_Glorieuses",
+    "titel": "Trente Glorieuses",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 4.0
+   },
+   {
+    "source_id": "wikipedia:Revolutionskult",
+    "titel": "Revolutionskult",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Verfassung": 1,
+   "wikipedia:Französische_Revolution": 2,
+   "wikipedia:Revolution": 1,
+   "wikipedia:Republik": 1,
+   "wikipedia:Revolutionsexport": 1,
+   "wikipedia:Revolutionstribunal": 2,
+   "wikipedia:Trente_Glorieuses": 0,
+   "klexikon:Französische_Revolution": 2,
+   "wikipedia:Bürger": 1,
+   "wikipedia:Die_Französische_Revolution": 0,
+   "wikipedia:Liberalismus": 1,
+   "wikipedia:Revolutionskult": 2
+  },
+  "tokens_ganz": 1024,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Republik": 1,
+   "wikipedia:Französische_Revolution": 2,
+   "wikipedia:Revolutionsexport": 1,
+   "wikipedia:Revolution": 1,
+   "wikipedia:Verfassung": 1,
+   "wikipedia:Revolutionstribunal": 2,
+   "klexikon:Französische_Revolution": 2,
+   "wikipedia:Bürger": 1,
+   "wikipedia:Die_Französische_Revolution": 0,
+   "wikipedia:Liberalismus": 1,
+   "wikipedia:Revolutionskult": 2
+  },
+  "tokens_ohne_unverlinkte": 920,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 2,
+     "1": 7,
+     "0": 4
+    },
+    "bausteine": 6
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 7,
+     "1": 7,
+     "0": 2
+    },
+    "bausteine": 6
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 7,
+     "1": 7,
+     "0": 2
+    },
+    "bausteine": 6
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 8,
+     "1": 7
+    },
+    "bausteine": 6
+   },
+   "beides": {
+    "nach_note": {
+     "2": 8,
+     "1": 7
+    },
+    "bausteine": 6
+   }
+  }
+ },
+ "Klimawandel": {
+  "hauptartikel": "Klimawandel",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Klima",
+    "titel": "Klima",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 32.1
+   },
+   {
+    "source_id": "wikipedia:Anthropogen",
+    "titel": "Anthropogen",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Treibhausgas",
+    "titel": "Treibhausgas",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Forschungsgeschichte_des_Klimawandels",
+    "titel": "Forschungsgeschichte des Klimawandels",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Klimapolitik",
+    "titel": "Klimapolitik",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": false,
+    "ms_verlinkung": 30.5
+   },
+   {
+    "source_id": "wikipedia:Gerechtigkeit",
+    "titel": "Gerechtigkeit",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 44.4
+   },
+   {
+    "source_id": "wikipedia:Lea_Dohm",
+    "titel": "Lea Dohm",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 3.1
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Treibhausgas": 2,
+   "wikipedia:Forschungsgeschichte_des_Klimawandels": 2,
+   "wikipedia:Klimapolitik": 2,
+   "wikipedia:Klimawandel": 2,
+   "wikipedia:Gerechtigkeit": 0,
+   "klexikon:Klimawandel": 2,
+   "wikipedia:Lea_Dohm": 2,
+   "wikipedia:Klima": 1,
+   "wikipedia:Anthropogen": 1
+  },
+  "tokens_ganz": 915,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Klima": 1,
+   "wikipedia:Anthropogen": 1,
+   "wikipedia:Klimawandel": 2,
+   "wikipedia:Treibhausgas": 2,
+   "wikipedia:Forschungsgeschichte_des_Klimawandels": 2,
+   "klexikon:Klimawandel": 2
+  },
+  "tokens_ohne_unverlinkte": 565,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 14,
+     "1": 1,
+     "0": 1
+    },
+    "bausteine": 8
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 14,
+     "1": 1,
+     "0": 1
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 14,
+     "1": 1,
+     "0": 1
+    },
+    "bausteine": 8
+   },
+   "beides": {
+    "nach_note": {
+     "2": 14,
+     "1": 1
+    },
+    "bausteine": 7
+   }
+  }
+ },
+ "Optik": {
+  "hauptartikel": "Optik",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Wellenoptik",
+    "titel": "Wellenoptik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 12.1
+   },
+   {
+    "source_id": "wikipedia:Technische_Optik",
+    "titel": "Technische Optik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Geometrische_Optik",
+    "titel": "Geometrische Optik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Auge",
+    "titel": "Auge",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Mikrooptik",
+    "titel": "Mikrooptik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Augenoptiker",
+    "titel": "Augenoptiker",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Röntgenoptik",
+    "titel": "Röntgenoptik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Schnittweite",
+    "titel": "Schnittweite",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": false,
+    "ms_verlinkung": 1.3
+   },
+   {
+    "source_id": "wikipedia:Superposition_(Physik)",
+    "titel": "Superposition (Physik)",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Geschichte_der_Physik",
+    "titel": "Geschichte der Physik",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Superposition_(Physik)": 1,
+   "wikipedia:Augenoptiker": 1,
+   "wikipedia:Auge": 1,
+   "wikipedia:Technische_Optik": 2,
+   "wikipedia:Mikrooptik": 2,
+   "wikipedia:Wellenoptik": 2,
+   "klexikon:Optik": 2,
+   "wikipedia:Geometrische_Optik": 2,
+   "wikipedia:Optik": 2,
+   "wikipedia:Geschichte_der_Physik": 1,
+   "wikipedia:Röntgenoptik": 2,
+   "wikipedia:Schnittweite": 2
+  },
+  "tokens_ganz": 1052,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Geometrische_Optik": 2,
+   "wikipedia:Augenoptiker": 1,
+   "wikipedia:Technische_Optik": 2,
+   "wikipedia:Wellenoptik": 2,
+   "wikipedia:Mikrooptik": 2,
+   "klexikon:Optik": 2,
+   "wikipedia:Auge": 1,
+   "wikipedia:Optik": 2,
+   "wikipedia:Geschichte_der_Physik": 1,
+   "wikipedia:Röntgenoptik": 2,
+   "wikipedia:Superposition_(Physik)": 1
+  },
+  "tokens_ohne_unverlinkte": 988,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 15,
+     "1": 11
+    },
+    "bausteine": 8
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 15,
+     "1": 11
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 15,
+     "1": 11
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 15,
+     "1": 11
+    },
+    "bausteine": 8
+   },
+   "beides": {
+    "nach_note": {
+     "2": 15,
+     "1": 11
+    },
+    "bausteine": 8
+   }
+  }
+ },
+ "Photosynthese": {
+  "hauptartikel": "Photosynthese",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Pflanze",
+    "titel": "Pflanze",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 24.2
+   },
+   {
+    "source_id": "wikipedia:Bakterien",
+    "titel": "Bakterien",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Chlorophylle",
+    "titel": "Chlorophylle",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Kohlenstoffdioxid",
+    "titel": "Kohlenstoffdioxid",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Wasser",
+    "titel": "Wasser",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Sauerstoff",
+    "titel": "Sauerstoff",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Sauerstoff": 1,
+   "wikipedia:Kohlenstoffdioxid": 1,
+   "wikipedia:Pflanze": 1,
+   "klexikon:Photosynthese": 2,
+   "wikipedia:Photosynthese": 2,
+   "wikipedia:Bakterien": 1,
+   "wikipedia:Wasser": 1,
+   "wikipedia:Chlorophylle": 2
+  },
+  "tokens_ganz": 882,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Sauerstoff": 1,
+   "wikipedia:Kohlenstoffdioxid": 1,
+   "wikipedia:Pflanze": 1,
+   "klexikon:Photosynthese": 2,
+   "wikipedia:Photosynthese": 2,
+   "wikipedia:Bakterien": 1,
+   "wikipedia:Wasser": 1,
+   "wikipedia:Chlorophylle": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 11,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 11,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 11,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 11,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "beides": {
+    "nach_note": {
+     "2": 11,
+     "1": 3
+    },
+    "bausteine": 5
+   }
+  }
+ },
+ "Programmiersprache": {
+  "hauptartikel": "Programmiersprache",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Geschichte_der_Programmiersprachen",
+    "titel": "Geschichte der Programmiersprachen",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 12.6
+   },
+   {
+    "source_id": "wikipedia:Deklarative_Programmierung",
+    "titel": "Deklarative Programmierung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Höhere_Programmiersprache",
+    "titel": "Höhere Programmiersprache",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Esoterische_Programmiersprache",
+    "titel": "Esoterische Programmiersprache",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Visuelle_Programmiersprache",
+    "titel": "Visuelle Programmiersprache",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Allzweck-Programmiersprache",
+    "titel": "Allzweck-Programmiersprache",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Logische_Programmierung",
+    "titel": "Logische Programmierung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Zeittafel_der_Programmiersprachen",
+    "titel": "Zeittafel der Programmiersprachen",
+    "herkunft": "linked",
+    "note": null,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Unterprogramm",
+    "titel": "Unterprogramm",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Syntax",
+    "titel": "Syntax",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Selbstübersetzung_(Compiler)",
+    "titel": "Selbstübersetzung (Compiler)",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": false,
+    "ms_verlinkung": 5.9
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Höhere_Programmiersprache": 2,
+   "wikipedia:Syntax": 1,
+   "wikipedia:Allzweck-Programmiersprache": 2,
+   "wikipedia:Deklarative_Programmierung": 2,
+   "wikipedia:Programmiersprache": 2,
+   "wikipedia:Esoterische_Programmiersprache": 2,
+   "wikipedia:Logische_Programmierung": 2,
+   "wikipedia:Selbstübersetzung_(Compiler)": 1,
+   "wikipedia:Visuelle_Programmiersprache": 2,
+   "wikipedia:Unterprogramm": 1,
+   "wikipedia:Zeittafel_der_Programmiersprachen": 1,
+   "wikipedia:Geschichte_der_Programmiersprachen": 2
+  },
+  "tokens_ganz": 872,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Höhere_Programmiersprache": 2,
+   "wikipedia:Unterprogramm": 1,
+   "wikipedia:Allzweck-Programmiersprache": 2,
+   "wikipedia:Deklarative_Programmierung": 2,
+   "wikipedia:Programmiersprache": 2,
+   "wikipedia:Esoterische_Programmiersprache": 2,
+   "wikipedia:Logische_Programmierung": 2,
+   "wikipedia:Syntax": 1,
+   "wikipedia:Visuelle_Programmiersprache": 2,
+   "wikipedia:Zeittafel_der_Programmiersprachen": 1,
+   "wikipedia:Geschichte_der_Programmiersprachen": 2
+  },
+  "tokens_ohne_unverlinkte": 819,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 26,
+     "1": 5
+    },
+    "bausteine": 9
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 26,
+     "1": 4
+    },
+    "bausteine": 9
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 26,
+     "1": 5
+    },
+    "bausteine": 9
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 26,
+     "1": 5
+    },
+    "bausteine": 9
+   },
+   "beides": {
+    "nach_note": {
+     "2": 26,
+     "1": 4
+    },
+    "bausteine": 9
+   }
+  }
+ },
+ "Säure-Base-Konzepte": {
+  "hauptartikel": "Säure-Base-Konzepte",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Säuren",
+    "titel": "Säuren",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 9.7
+   },
+   {
+    "source_id": "wikipedia:Basen_(Chemie)",
+    "titel": "Basen (Chemie)",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Säure-Base-Konzepte": 2,
+   "wikipedia:Basen_(Chemie)": 2,
+   "wikipedia:Säuren": 2
+  },
+  "tokens_ganz": 425,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Säure-Base-Konzepte": 2,
+   "wikipedia:Basen_(Chemie)": 2,
+   "wikipedia:Säuren": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 8
+    },
+    "bausteine": 3
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 8
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 8
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 8
+    },
+    "bausteine": 3
+   },
+   "beides": {
+    "nach_note": {
+     "2": 8
+    },
+    "bausteine": 3
+   }
+  }
+ },
+ "Sinfonie": {
+  "hauptartikel": "Sinfonie",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Sinfonia",
+    "titel": "Sinfonia",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 13.9
+   },
+   {
+    "source_id": "wikipedia:Sinfonik",
+    "titel": "Sinfonik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Manfred-Sinfonie",
+    "titel": "Manfred-Sinfonie",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Programmmusik",
+    "titel": "Programmmusik",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Sinfonische_Dichtung",
+    "titel": "Sinfonische Dichtung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Sinfoniekantate",
+    "titel": "Sinfoniekantate",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Sinfonia_concertante",
+    "titel": "Sinfonia concertante",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Orchester",
+    "titel": "Orchester",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Sonatensatzform",
+    "titel": "Sonatensatzform",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Franz_Schubert",
+    "titel": "Franz Schubert",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:7__Sinfonie_(Bruckner)",
+    "titel": "7. Sinfonie (Bruckner)",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:7__Sinfonie_(Bruckner)": 2,
+   "wikipedia:Sinfonische_Dichtung": 1,
+   "wikipedia:Sinfoniekantate": 2,
+   "wikipedia:Sinfonia_concertante": 1,
+   "wikipedia:Sonatensatzform": 1,
+   "wikipedia:Orchester": 1,
+   "wikipedia:Programmmusik": 1,
+   "wikipedia:Sinfonia": 1,
+   "wikipedia:Sinfonie": 2,
+   "wikipedia:Manfred-Sinfonie": 2,
+   "wikipedia:Sinfonik": 1,
+   "wikipedia:Franz_Schubert": 1
+  },
+  "tokens_ganz": 1006,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:7__Sinfonie_(Bruckner)": 2,
+   "wikipedia:Sinfonische_Dichtung": 1,
+   "wikipedia:Sinfoniekantate": 2,
+   "wikipedia:Sinfonia_concertante": 1,
+   "wikipedia:Sonatensatzform": 1,
+   "wikipedia:Orchester": 1,
+   "wikipedia:Programmmusik": 1,
+   "wikipedia:Sinfonia": 1,
+   "wikipedia:Sinfonie": 2,
+   "wikipedia:Manfred-Sinfonie": 2,
+   "wikipedia:Sinfonik": 1,
+   "wikipedia:Franz_Schubert": 1
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 13,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 13,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 13,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 13,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "beides": {
+    "nach_note": {
+     "2": 13,
+     "1": 7
+    },
+    "bausteine": 7
+   }
+  }
+ },
+ "Plattentektonik": {
+  "hauptartikel": "Plattentektonik",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Tektonik",
+    "titel": "Tektonik",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 17.8
+   },
+   {
+    "source_id": "wikipedia:Lithosphäre",
+    "titel": "Lithosphäre",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Vulkanismus",
+    "titel": "Vulkanismus",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Vulkan",
+    "titel": "Vulkan",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Kontinentaldrift",
+    "titel": "Kontinentaldrift",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Tiefseerinne",
+    "titel": "Tiefseerinne",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Pangaea",
+    "titel": "Pangaea",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Pangaea": 2,
+   "wikipedia:Vulkanismus": 1,
+   "klexikon:Plattentektonik": 2,
+   "wikipedia:Tektonik": 1,
+   "wikipedia:Plattentektonik": 2,
+   "wikipedia:Lithosphäre": 2,
+   "wikipedia:Kontinentaldrift": 2,
+   "wikipedia:Vulkan": 1,
+   "wikipedia:Tiefseerinne": 2
+  },
+  "tokens_ganz": 784,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Pangaea": 2,
+   "wikipedia:Vulkanismus": 1,
+   "klexikon:Plattentektonik": 2,
+   "wikipedia:Tektonik": 1,
+   "wikipedia:Plattentektonik": 2,
+   "wikipedia:Lithosphäre": 2,
+   "wikipedia:Kontinentaldrift": 2,
+   "wikipedia:Vulkan": 1,
+   "wikipedia:Tiefseerinne": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 10
+    },
+    "bausteine": 3
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 10
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 10
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 10
+    },
+    "bausteine": 3
+   },
+   "beides": {
+    "nach_note": {
+     "2": 10
+    },
+    "bausteine": 3
+   }
+  }
+ },
+ "Ökosystem": {
+  "hauptartikel": "Ökosystem",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Ökosystemleistung",
+    "titel": "Ökosystemleistung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 16.5
+   },
+   {
+    "source_id": "wikipedia:Ökologie",
+    "titel": "Ökologie",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:System",
+    "titel": "System",
+    "herkunft": "linked",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ökosystemforschung",
+    "titel": "Ökosystemforschung",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ökosystemfunktion",
+    "titel": "Ökosystemfunktion",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ökosystemverfall",
+    "titel": "Ökosystemverfall",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ökosystemischer_Ansatz_nach_Bronfenbrenner",
+    "titel": "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "herkunft": "linked",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ökologisches_Gleichgewicht",
+    "titel": "Ökologisches Gleichgewicht",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Naturvolk",
+    "titel": "Naturvolk",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Organizismus",
+    "titel": "Organizismus",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:System": 0,
+   "wikipedia:Ökosystemleistung": 2,
+   "wikipedia:Ökosystemfunktion": 2,
+   "wikipedia:Ökosystemverfall": 2,
+   "wikipedia:Ökosystemischer_Ansatz_nach_Bronfenbrenner": 0,
+   "wikipedia:Ökosystem": 2,
+   "wikipedia:Naturvolk": 0,
+   "wikipedia:Ökosystemforschung": 2,
+   "wikipedia:Ökologie": 1,
+   "wikipedia:Organizismus": 1,
+   "klexikon:Ökosystem": 2,
+   "wikipedia:Ökologisches_Gleichgewicht": 2
+  },
+  "tokens_ganz": 1086,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:System": 0,
+   "wikipedia:Ökosystemleistung": 2,
+   "wikipedia:Ökosystemfunktion": 2,
+   "wikipedia:Ökosystemverfall": 2,
+   "wikipedia:Ökosystemischer_Ansatz_nach_Bronfenbrenner": 0,
+   "wikipedia:Ökosystem": 2,
+   "wikipedia:Naturvolk": 0,
+   "wikipedia:Ökosystemforschung": 2,
+   "wikipedia:Ökologie": 1,
+   "wikipedia:Organizismus": 1,
+   "klexikon:Ökosystem": 2,
+   "wikipedia:Ökologisches_Gleichgewicht": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 16,
+     "1": 2,
+     "0": 5
+    },
+    "bausteine": 7
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 16,
+     "1": 2,
+     "0": 5
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 15,
+     "1": 3,
+     "0": 4
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 16,
+     "1": 2
+    },
+    "bausteine": 6
+   },
+   "beides": {
+    "nach_note": {
+     "2": 16,
+     "1": 2
+    },
+    "bausteine": 6
+   }
+  }
+ },
+ "Atommodell": {
+  "hauptartikel": "Liste der Atommodelle",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Atom",
+    "titel": "Atom",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 13.0
+   },
+   {
+    "source_id": "wikipedia:Teilchenmodell",
+    "titel": "Teilchenmodell",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Zeittafel_physikalischer_Entdeckungen",
+    "titel": "Zeittafel physikalischer Entdeckungen",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 128.6
+   },
+   {
+    "source_id": "wikipedia:Kernwaffe",
+    "titel": "Kernwaffe",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 133.4
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Teilchenmodell": 1,
+   "wikipedia:Atom": 2,
+   "wikipedia:Zeittafel_physikalischer_Entdeckungen": 1,
+   "wikipedia:Liste_der_Atommodelle": 2,
+   "wikipedia:Kernwaffe": 0
+  },
+  "tokens_ganz": 638,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Atom": 1,
+   "wikipedia:Zeittafel_physikalischer_Entdeckungen": 1,
+   "wikipedia:Teilchenmodell": 1,
+   "wikipedia:Liste_der_Atommodelle": 2
+  },
+  "tokens_ohne_unverlinkte": 454,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 6,
+     "0": 6,
+     "1": 1
+    },
+    "bausteine": 5
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 6,
+     "1": 1,
+     "0": 2
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 6,
+     "1": 1,
+     "0": 2
+    },
+    "bausteine": 3
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 6,
+     "1": 1,
+     "0": 2
+    },
+    "bausteine": 3
+   },
+   "beides": {
+    "nach_note": {
+     "2": 6,
+     "1": 1,
+     "0": 2
+    },
+    "bausteine": 3
+   }
+  }
+ },
+ "Industrielle Revolution": {
+  "hauptartikel": "Industrielle Revolution",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Revolution",
+    "titel": "Revolution",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 104.4
+   },
+   {
+    "source_id": "wikipedia:Kapitalismus",
+    "titel": "Kapitalismus",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Dampfmaschine",
+    "titel": "Dampfmaschine",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Kohle",
+    "titel": "Kohle",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Eisen",
+    "titel": "Eisen",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Produktion",
+    "titel": "Produktion",
+    "herkunft": "linked",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Soziokulturelle_Evolution",
+    "titel": "Soziokulturelle Evolution",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Proletariat",
+    "titel": "Proletariat",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Hochindustrialisierung_in_Deutschland",
+    "titel": "Hochindustrialisierung in Deutschland",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Dampfmaschine": 2,
+   "wikipedia:Eisen": 1,
+   "wikipedia:Industrielle_Revolution": 2,
+   "wikipedia:Produktion": 1,
+   "wikipedia:Proletariat": 2,
+   "wikipedia:Soziokulturelle_Evolution": 1,
+   "wikipedia:Revolution": 1,
+   "wikipedia:Kohle": 1,
+   "wikipedia:Hochindustrialisierung_in_Deutschland": 1,
+   "klexikon:Industrielle_Revolution": 2,
+   "wikipedia:Kapitalismus": 1
+  },
+  "tokens_ganz": 1002,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Dampfmaschine": 2,
+   "wikipedia:Eisen": 1,
+   "wikipedia:Industrielle_Revolution": 2,
+   "wikipedia:Produktion": 1,
+   "wikipedia:Proletariat": 2,
+   "wikipedia:Soziokulturelle_Evolution": 1,
+   "wikipedia:Revolution": 1,
+   "wikipedia:Kohle": 1,
+   "wikipedia:Hochindustrialisierung_in_Deutschland": 1,
+   "klexikon:Industrielle_Revolution": 2,
+   "wikipedia:Kapitalismus": 1
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 9,
+     "1": 8,
+     "0": 3
+    },
+    "bausteine": 7
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 9,
+     "1": 8,
+     "0": 3
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 9,
+     "1": 8,
+     "0": 3
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 9,
+     "1": 8,
+     "0": 3
+    },
+    "bausteine": 7
+   },
+   "beides": {
+    "nach_note": {
+     "2": 9,
+     "1": 8,
+     "0": 3
+    },
+    "bausteine": 7
+   }
+  }
+ },
+ "Elektrischer Strom": {
+  "hauptartikel": "Elektrischer Strom",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Gleichstrom",
+    "titel": "Gleichstrom",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 49.1
+   },
+   {
+    "source_id": "wikipedia:Wechselstrom",
+    "titel": "Wechselstrom",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Mischstrom",
+    "titel": "Mischstrom",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Gleichstrommaschine",
+    "titel": "Gleichstrommaschine",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Dreiphasenwechselstrom",
+    "titel": "Dreiphasenwechselstrom",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Stromquelle",
+    "titel": "Stromquelle",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Stromnetz",
+    "titel": "Stromnetz",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Stromfluss",
+    "titel": "Stromfluss",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Elektrische_Spannung",
+    "titel": "Elektrische Spannung",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Bidirektionales_Laden",
+    "titel": "Bidirektionales Laden",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": false,
+    "ms_verlinkung": 5.6
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Stromnetz": 1,
+   "wikipedia:Wechselstrom": 2,
+   "wikipedia:Stromfluss": 2,
+   "wikipedia:Bidirektionales_Laden": 1,
+   "wikipedia:Elektrische_Spannung": 2,
+   "klexikon:Strom": 0,
+   "wikipedia:Stromquelle": 2,
+   "wikipedia:Gleichstrom": 2,
+   "wikipedia:Elektrischer_Strom": 2,
+   "wikipedia:Dreiphasenwechselstrom": 2,
+   "wikipedia:Gleichstrommaschine": 1,
+   "wikipedia:Mischstrom": 2
+  },
+  "tokens_ganz": 1037,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Gleichstrommaschine": 1,
+   "wikipedia:Dreiphasenwechselstrom": 2,
+   "wikipedia:Wechselstrom": 2,
+   "wikipedia:Elektrischer_Strom": 2,
+   "klexikon:Strom": 0,
+   "wikipedia:Stromnetz": 1,
+   "wikipedia:Stromquelle": 2,
+   "wikipedia:Gleichstrom": 2,
+   "wikipedia:Elektrische_Spannung": 2,
+   "wikipedia:Mischstrom": 2,
+   "wikipedia:Stromfluss": 0
+  },
+  "tokens_ohne_unverlinkte": 791,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 20,
+     "1": 7
+    },
+    "bausteine": 8
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 20,
+     "1": 7
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 20,
+     "1": 7
+    },
+    "bausteine": 8
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 20,
+     "1": 7
+    },
+    "bausteine": 8
+   },
+   "beides": {
+    "nach_note": {
+     "2": 20,
+     "1": 7
+    },
+    "bausteine": 8
+   }
+  }
+ },
+ "Wasserkreislauf": {
+  "hauptartikel": "Wasserkreislauf",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Wasser",
+    "titel": "Wasser",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 112.2
+   },
+   {
+    "source_id": "wikipedia:Eis",
+    "titel": "Eis",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Niederschlag",
+    "titel": "Niederschlag",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Grundwasser",
+    "titel": "Grundwasser",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Infiltration_(Hydrogeologie)",
+    "titel": "Infiltration (Hydrogeologie)",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Tracer_(Geowissenschaften)",
+    "titel": "Tracer (Geowissenschaften)",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Infiltration_(Hydrogeologie)": 2,
+   "wikipedia:Niederschlag": 2,
+   "klexikon:Wasserkreislauf": 2,
+   "wikipedia:Grundwasser": 2,
+   "wikipedia:Eis": 1,
+   "wikipedia:Wasser": 1,
+   "wikipedia:Wasserkreislauf": 2,
+   "wikipedia:Tracer_(Geowissenschaften)": 1
+  },
+  "tokens_ganz": 788,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Infiltration_(Hydrogeologie)": 2,
+   "wikipedia:Niederschlag": 2,
+   "klexikon:Wasserkreislauf": 2,
+   "wikipedia:Grundwasser": 2,
+   "wikipedia:Eis": 1,
+   "wikipedia:Wasser": 1,
+   "wikipedia:Wasserkreislauf": 2,
+   "wikipedia:Tracer_(Geowissenschaften)": 1
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 10,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 10,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 10,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 10,
+     "1": 3
+    },
+    "bausteine": 5
+   },
+   "beides": {
+    "nach_note": {
+     "2": 10,
+     "1": 3
+    },
+    "bausteine": 5
+   }
+  }
+ },
+ "Römisches Reich": {
+  "hauptartikel": "Römisches Reich",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Römische_Republik",
+    "titel": "Römische Republik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 455.2
+   },
+   {
+    "source_id": "wikipedia:Römische_Königszeit",
+    "titel": "Römische Königszeit",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Wirtschaft_im_Römischen_Reich",
+    "titel": "Wirtschaft im Römischen Reich",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Römisches_Recht",
+    "titel": "Römisches Recht",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Römisches_Verfassungsrecht",
+    "titel": "Römisches Verfassungsrecht",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Römisches_Recht": 2,
+   "wikipedia:Römisches_Verfassungsrecht": 2,
+   "wikipedia:Römisches_Reich": 2,
+   "wikipedia:Römische_Königszeit": 2,
+   "wikipedia:Römische_Republik": 2,
+   "wikipedia:Wirtschaft_im_Römischen_Reich": 2,
+   "klexikon:Römisches_Reich": 2
+  },
+  "tokens_ganz": 687,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Römisches_Recht": 2,
+   "wikipedia:Römisches_Verfassungsrecht": 2,
+   "wikipedia:Römisches_Reich": 2,
+   "wikipedia:Römische_Königszeit": 2,
+   "wikipedia:Römische_Republik": 2,
+   "wikipedia:Wirtschaft_im_Römischen_Reich": 2,
+   "klexikon:Römisches_Reich": 2
+  },
+  "tokens_ohne_unverlinkte": 0,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 26
+    },
+    "bausteine": 9
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 26
+    },
+    "bausteine": 9
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 26
+    },
+    "bausteine": 9
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 26
+    },
+    "bausteine": 9
+   },
+   "beides": {
+    "nach_note": {
+     "2": 26
+    },
+    "bausteine": 9
+   }
+  }
+ },
+ "Lineare Funktion": {
+  "hauptartikel": "Lineare Funktion",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Funktionsgraph",
+    "titel": "Funktionsgraph",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 17.8
+   },
+   {
+    "source_id": "wikipedia:Gerade",
+    "titel": "Gerade",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Ganzrationale_Funktion",
+    "titel": "Ganzrationale Funktion",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Lineare_Abbildung",
+    "titel": "Lineare Abbildung",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Konstante_Funktion",
+    "titel": "Konstante Funktion",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Funktion_(Mathematik)",
+    "titel": "Funktion (Mathematik)",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Lineare_Algebra",
+    "titel": "Lineare Algebra",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Differenzierbarkeit",
+    "titel": "Differenzierbarkeit",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 35.7
+   },
+   {
+    "source_id": "wikipedia:Markow-Operator",
+    "titel": "Markow-Operator",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 9.9
+   },
+   {
+    "source_id": "wikipedia:Probit-Modell",
+    "titel": "Probit-Modell",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 22.7
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Konstante_Funktion": 2,
+   "wikipedia:Lineare_Abbildung": 1,
+   "wikipedia:Funktion_(Mathematik)": 1,
+   "wikipedia:Lineare_Algebra": 1,
+   "wikipedia:Differenzierbarkeit": 1,
+   "wikipedia:Probit-Modell": 1,
+   "wikipedia:Gerade": 1,
+   "wikipedia:Lineare_Funktion": 2,
+   "wikipedia:Funktionsgraph": 2,
+   "wikipedia:Markow-Operator": 0,
+   "wikipedia:Ganzrationale_Funktion": 1
+  },
+  "tokens_ganz": 1016,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Lineare_Algebra": 1,
+   "wikipedia:Funktion_(Mathematik)": 1,
+   "wikipedia:Ganzrationale_Funktion": 1,
+   "wikipedia:Lineare_Funktion": 2,
+   "wikipedia:Lineare_Abbildung": 1,
+   "wikipedia:Funktionsgraph": 2,
+   "wikipedia:Konstante_Funktion": 2,
+   "wikipedia:Gerade": 1
+  },
+  "tokens_ohne_unverlinkte": 806,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 4,
+     "1": 12,
+     "0": 5
+    },
+    "bausteine": 5
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 5,
+     "1": 16
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 4,
+     "1": 12,
+     "0": 5
+    },
+    "bausteine": 5
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 4,
+     "1": 12,
+     "0": 5
+    },
+    "bausteine": 5
+   },
+   "beides": {
+    "nach_note": {
+     "2": 5,
+     "1": 16
+    },
+    "bausteine": 5
+   }
+  }
+ },
+ "Zelle (Biologie)": {
+  "hauptartikel": "Zelle (Biologie)",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Protein",
+    "titel": "Protein",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 36.7
+   },
+   {
+    "source_id": "wikipedia:Zellkern",
+    "titel": "Zellkern",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Tier",
+    "titel": "Tier",
+    "herkunft": "linked",
+    "note": 0,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Plastid",
+    "titel": "Plastid",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Vakuole",
+    "titel": "Vakuole",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Zellmembran",
+    "titel": "Zellmembran",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Membran",
+    "titel": "Membran",
+    "herkunft": "linked",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Organell",
+    "titel": "Organell",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Evolutionsfaktor",
+    "titel": "Evolutionsfaktor",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 5.3
+   },
+   {
+    "source_id": "wikipedia:Hermaphroditismus",
+    "titel": "Hermaphroditismus",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 28.4
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Zellmembran": 2,
+   "wikipedia:Tier": 1,
+   "klexikon:Zelle": 0,
+   "wikipedia:Vakuole": 2,
+   "wikipedia:Zelle_(Biologie)": 2,
+   "wikipedia:Zellkern": 2,
+   "wikipedia:Protein": 1,
+   "wikipedia:Evolutionsfaktor": 0,
+   "wikipedia:Organell": 2,
+   "wikipedia:Plastid": 2,
+   "wikipedia:Hermaphroditismus": 1,
+   "wikipedia:Membran": 1
+  },
+  "tokens_ganz": 1143,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Zellmembran": 2,
+   "wikipedia:Zelle_(Biologie)": 2,
+   "wikipedia:Membran": 1,
+   "klexikon:Zelle": 0,
+   "wikipedia:Zellkern": 2,
+   "wikipedia:Protein": 1,
+   "wikipedia:Vakuole": 2,
+   "wikipedia:Tier": 1,
+   "wikipedia:Organell": 2,
+   "wikipedia:Plastid": 2
+  },
+  "tokens_ohne_unverlinkte": 825,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 14,
+     "1": 2,
+     "0": 1
+    },
+    "bausteine": 6
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 15,
+     "1": 2
+    },
+    "bausteine": 6
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 15,
+     "1": 2
+    },
+    "bausteine": 6
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 15,
+     "1": 2
+    },
+    "bausteine": 6
+   },
+   "beides": {
+    "nach_note": {
+     "2": 15,
+     "1": 2
+    },
+    "bausteine": 6
+   }
+  }
+ },
+ "Gedicht": {
+  "hauptartikel": "Gedicht",
+  "artikel": [
+   {
+    "source_id": "wikipedia:Lyrik",
+    "titel": "Lyrik",
+    "herkunft": "linked",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.5
+   },
+   {
+    "source_id": "wikipedia:Ballade_(Gedicht)",
+    "titel": "Ballade (Gedicht)",
+    "herkunft": "search",
+    "note": 2,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Der_siebente_Ring",
+    "titel": "Der siebente Ring",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": false,
+    "ms_verlinkung": 64.0
+   },
+   {
+    "source_id": "wikipedia:Mein_fremder_Alltag",
+    "titel": "Mein fremder Alltag",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": true,
+    "ms_verlinkung": 0.0
+   },
+   {
+    "source_id": "wikipedia:Das_Eleusische_Fest",
+    "titel": "Das Eleusische Fest",
+    "herkunft": "search",
+    "note": 1,
+    "verlinkt": false,
+    "ms_verlinkung": 25.3
+   },
+   {
+    "source_id": "wikipedia:Cheryl_Chapman",
+    "titel": "Cheryl Chapman",
+    "herkunft": "search",
+    "note": 0,
+    "verlinkt": false,
+    "ms_verlinkung": 5.1
+   }
+  ],
+  "llm_ganz": {
+   "wikipedia:Mein_fremder_Alltag": 1,
+   "wikipedia:Lyrik": 1,
+   "wikipedia:Gedicht": 2,
+   "wikipedia:Das_Eleusische_Fest": 1,
+   "wikipedia:Cheryl_Chapman": 0,
+   "klexikon:Gedicht": 2,
+   "wikipedia:Der_siebente_Ring": 1,
+   "wikipedia:Ballade_(Gedicht)": 2
+  },
+  "tokens_ganz": 752,
+  "llm_ohne_unverlinkte": {
+   "wikipedia:Lyrik": 2,
+   "wikipedia:Gedicht": 2,
+   "wikipedia:Ballade_(Gedicht)": 2,
+   "wikipedia:Mein_fremder_Alltag": 1,
+   "klexikon:Gedicht": 2
+  },
+  "tokens_ohne_unverlinkte": 472,
+  "gedruckt": {
+   "heute": {
+    "nach_note": {
+     "2": 8,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "ohne unverlinkte Treffer": {
+    "nach_note": {
+     "2": 12,
+     "1": 1
+    },
+    "bausteine": 6
+   },
+   "LLM Treffer": {
+    "nach_note": {
+     "2": 8,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "LLM Treffer und verlinkte": {
+    "nach_note": {
+     "2": 8,
+     "1": 7
+    },
+    "bausteine": 7
+   },
+   "beides": {
+    "nach_note": {
+     "2": 12,
+     "1": 1
+    },
+    "bausteine": 6
+   }
+  }
+ }
+}
