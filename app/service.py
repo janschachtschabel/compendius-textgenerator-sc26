@@ -81,7 +81,10 @@ class PartsUnavailableError(RuntimeError):
 
 
 class RepositoryUnavailableError(RuntimeError):
-    """No repository to read a node from: none is configured and the request names none."""
+    """No repository to read a node or a collection from: none is configured and the request names none."""
+
+
+NO_REPOSITORY = "Kein Repository konfiguriert (EDU_SHARING_BASE_URL)"
 
 
 NOT_FOUND = "Thema in den Archiven nicht gefunden"
@@ -310,9 +313,13 @@ class CompendiumService:
             sources = [s for s in sources if s.source_id not in gone]
             lap("hit_check")
         # The materials are sources of part 1 only; without it their texts would be read and thrown away
-        if request.knowledge_collection_id and self.collections is not None and "world" in request.parts:
-            prepared.knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
-            lap("knowledge")
+        if request.knowledge_collection_id and "world" in request.parts:
+            if self.collections is None:
+                knowledge_id = request.knowledge_collection_id
+                prepared.knowledge = {"collection_id": knowledge_id, "error": NO_REPOSITORY, "sources": 0}
+            else:
+                prepared.knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
+                lap("knowledge")
 
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
@@ -327,8 +334,12 @@ class CompendiumService:
 
     def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
         """The collection behind the request; unreachable repositories only matter when the topic depends on it."""
-        if not request.collection_id or self.collections is None:
+        if not request.collection_id:
             return None
+        if self.collections is None:
+            if request.topic or request.node_id:  # part 3 says it is unavailable; the topic comes from elsewhere
+                return None
+            raise RepositoryUnavailableError(NO_REPOSITORY)
         try:
             return self.collections.info(request.collection_id)
         except CollectionNotFoundError:
@@ -357,9 +368,7 @@ class CompendiumService:
         base = self.settings.edu_sharing_base_url.rstrip("/")
         if not repository:
             if self.collections is None or not base:
-                raise RepositoryUnavailableError(
-                    "Kein Repository konfiguriert (EDU_SHARING_BASE_URL); repository angeben"
-                )
+                raise RepositoryUnavailableError(f"{NO_REPOSITORY}; repository angeben")
             return base, self.collections
         root = repository_root(repository, self.settings.edu_sharing_allowed_hosts)
         if self.collections is not None and base and urlsplit(root).hostname == urlsplit(base).hostname:

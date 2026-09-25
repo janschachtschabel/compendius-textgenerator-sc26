@@ -423,3 +423,9 @@ def test_qa_chooses_the_article_as_the_compendium_does(settings: Settings, monke
     assert client.post("/api/v2/qa", json={"node_id": EXAM}).status_code == 404, "the rules alone find none"
     subject = client.post("/api/v2/qa", json={"topic": "Brechung", "subject": "Physik"}).json()
     assert subject["resolution"]["confident"], "the subject decides the meaning, as in a compendium"
+
+
+def test_a_text_of_blanks_is_no_text(client: TestClient) -> None:
+    """It used to pass and come back as a 404 about the archives (review of 2026-09-25)."""
+    answer = client.post("/api/v2/qa", json={"text": "  \n\t "})
+    assert answer.status_code == 422 and "text" in answer.text

@@ -79,6 +79,8 @@ class QaRequest(BaseModel):
 
     @model_validator(mode="after")
     def _text_or_topic(self) -> QaRequest:
+        if self.text is not None and not self.text.strip():
+            raise ValueError("text enthält nur Leerraum; ohne Sätze entstehen keine Paare")
         if not self.text and not self.topic and not self.node_id:
             raise ValueError("text, topic oder node_id ist erforderlich")
         if self.repository and not self.node_id:

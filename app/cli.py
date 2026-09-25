@@ -17,10 +17,10 @@ from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
 from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
 from app.logging import configure_logging
-from app.service import TopicNotFoundError
+from app.service import PartsUnavailableError, TopicNotFoundError
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
-from app.templates.manager import TemplateManager
+from app.templates.manager import TemplateManager, TemplateNotFoundError
 from app.templates.schema import Template
 
 
@@ -53,6 +53,12 @@ def cmd_generate(args: argparse.Namespace) -> int:
         return 1
     except EduSharingError as exc:
         print(str(exc), file=sys.stderr)  # the message names the repository
+        return 1
+    except TemplateNotFoundError as exc:
+        print(f"Template nicht gefunden: {exc.args[0]}", file=sys.stderr)
+        return 1
+    except PartsUnavailableError as exc:
+        print(f"Kein angefragter Teil ist erzeugbar: {exc}", file=sys.stderr)
         return 1
     if args.out:
         Path(args.out).write_text(result.markdown, encoding="utf-8")

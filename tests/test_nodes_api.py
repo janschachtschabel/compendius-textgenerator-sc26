@@ -329,3 +329,16 @@ def test_part_three_alone_asks_the_llm_nothing_about_a_material(
     response = client.post("/api/v2/compendium", json=body)
     assert response.status_code == 200, response.text[:300]
     assert fake.bodies == [], "part 3 needs no article; the rules name the topic"
+
+
+def test_a_collection_without_a_configured_repository_is_named_not_hidden(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """A collection as the only source of the topic was a 404 for the empty topic ""; the knowledge collection
+    vanished without a word (review of 2026-09-25)."""
+    client = TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "state", edu_sharing_base_url="")))
+    alone = client.post("/api/v2/compendium", json={"collection_id": OPTIK, "parts": ["world"]})
+    assert alone.status_code == 503 and "EDU_SHARING_BASE_URL" in alone.text
+    body = {"topic": "Optik", "knowledge_collection_id": OPTIK, "parts": ["world"]}
+    knowledge = client.post("/api/v2/compendium", json=body).json()["audit"]["knowledge"]
+    assert knowledge["sources"] == 0 and "EDU_SHARING_BASE_URL" in knowledge["error"]

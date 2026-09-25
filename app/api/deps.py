@@ -75,16 +75,16 @@ def corpus_for_topic(
     archives do not have is a 404 carrying the resolution, so the caller sees the alternatives instead of an empty
     answer; a material the rules find no article for says to send a topic.
     """
+    try:  # before the article choice, which may ask the LLM
+        template = service.templates.get(template_id or service.settings.template_default)
+    except TemplateNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
     chosen = choose_main_article(registry, service.subjects, topic, derived, subject=subject, node=node, job=job)
     resolution, normalized = chosen.resolution, chosen.normalized
     if not resolution.resolved:
         missing = TopicNotFoundError(resolution, chosen.node, from_material=not topic)
         raise HTTPException(status_code=404, detail=missing.detail())
-    try:
-        template = service.templates.get(template_id or service.settings.template_default)
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     sources = registry.build_corpus(
         resolution,
         slots=template.content_slots(),

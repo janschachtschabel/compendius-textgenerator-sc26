@@ -78,3 +78,11 @@ def test_generate_accepts_the_enrichment_switch_and_reports_sources_only_without
 def test_generate_rejects_an_unknown_enrichment(cli_env: Path) -> None:
     with pytest.raises(SystemExit):
         main(["generate", "--topic", "Optik", "--enrichment", "alles-erfinden"])
+
+
+def test_generate_names_an_unknown_template_instead_of_a_traceback(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    assert main(["generate", "--topic", "Optik", "--template", "nope", *zim_args]) == 1
+    assert "nope" in capsys.readouterr().err

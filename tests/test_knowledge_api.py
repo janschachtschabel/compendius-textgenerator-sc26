@@ -94,3 +94,15 @@ def test_knowledge_takes_the_subject_as_the_compendium_does(client: TestClient) 
     compendium = client.post("/api/v2/compendium", json={"topic": "Brechung", "subject": "Physik", "parts": ["world"]})
     assert knowledge["resolution"] == compendium.json()["resolution"]
     assert knowledge["resolution"]["confident"]
+
+
+def test_an_unknown_template_costs_no_llm_call(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The template is looked up before the article choice may ask the LLM (review of 2026-09-25)."""
+    from tests.test_llm_client import FakeBApi
+    from tests.test_pipeline_llm import make_gateway
+
+    fake = FakeBApi(lambda body: '{"wahl": 1}')
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake))  # type: ignore[attr-defined]
+    body = {"topic": "Brechung", "template_id": "gibt-es-nicht", "article_choice": "llm"}
+    assert client.post("/api/v2/knowledge", json=body).status_code == 404
+    assert fake.bodies == []
