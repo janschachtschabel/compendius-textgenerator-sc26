@@ -527,7 +527,8 @@ class CompendiumService:
         unmakeable = self._unmakeable(request)
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
-        # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here
+        # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here,
+        # unless the caller brought one to share over more than the compendium (/qa)
         choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
         budget = choice.budget if choice is not None else budget
         prepared = self.prepare(request, deadline, choice)
@@ -724,7 +725,7 @@ class CompendiumService:
 
         ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
         the first two run rule-based and nothing is enriched. ``shared_budget`` is the request's budget when the
-        article choice opened it already.
+        article choice opened it already or the caller brought one (/qa).
         """
         extraction_wanted, generation_wanted, enrichment_wanted = requested
         matcher_wanted = request.matcher or self.settings.matcher_default

@@ -21,7 +21,7 @@ from app.domain.requests import (
     NODE_ID_PATTERN,
     PRESETS,
     REPOSITORY_HELP,
-    UNKNOWN_SUBJECT,
+    UNKNOWN_SUBJECT_HELP,
     ArticleChoice,
     Preset,
 )
@@ -47,7 +47,7 @@ class KnowledgeRequest(BaseModel):
         None,
         max_length=100,
         description="The subject that decides the article, as in a compendium request (WLO discipline id, vocabulary "
-        "URI, label or alias); default: one the topic names, else the subjects of node_id" + UNKNOWN_SUBJECT,
+        "URI, label or alias); default: one the topic names, else the subjects of node_id" + UNKNOWN_SUBJECT_HELP,
     )
     archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
     max_articles: int | None = Field(

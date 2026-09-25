@@ -15,6 +15,8 @@ from fastapi.testclient import TestClient
 
 from app.domain.models import AuditReport, Compendium, Resolution, Section, SectionStatus
 from app.llm.budget import RequestBudget
+from app.llm.call import TIME_UP
+from app.llm.deadline import Deadline
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -465,3 +467,18 @@ def test_the_note_says_why_the_llm_call_did_not_happen(with_llm: TestClient, mon
     monkeypatch.setattr(gateway, "open_budget", lambda: RequestBudget(gateway.budget, 10))
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
     assert body["method"] == "rule-based" and "Token-Budget der Anfrage" in body["note"], body["note"]
+
+
+def test_part_1_and_the_pairs_share_one_deadline(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The llm stage opened a deadline of its own after part 1; the time part 1 spent is now gone for the pairs."""
+    monkeypatch.setattr("app.api.v2.qa.Deadline", lambda seconds: Deadline(0))  # the request's time, all spent
+    body = with_llm.post("/api/v2/qa", json={"topic": "Optik", "method": "llm"}).json()
+    assert body["method"] == "rule-based" and TIME_UP in body["note"], body["note"]
+
+
+def test_an_unavailable_llm_is_named_once(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The note read 'LLM nicht verfügbar: LLM nicht verfügbar (...); Regelmodus verwendet; Regelmodus verwendet'."""
+    reason = "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet"
+    monkeypatch.setattr(with_llm.app.state.service, "llm_unavailable", lambda: reason)  # type: ignore[attr-defined]
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
+    assert body["note"].startswith(reason) and body["note"].count("Regelmodus verwendet") == 1, body["note"]

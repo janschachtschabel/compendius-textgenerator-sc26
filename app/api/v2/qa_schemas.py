@@ -16,7 +16,7 @@ from app.domain.requests import (
     NODE_ID_HELP,
     NODE_ID_PATTERN,
     REPOSITORY_HELP,
-    UNKNOWN_SUBJECT,
+    UNKNOWN_SUBJECT_HELP,
     ArticleChoice,
     Preset,
 )
@@ -50,7 +50,7 @@ class QaRequest(BaseModel):
         None,
         max_length=100,
         description="With topic or node_id: the subject that decides the article, as in a compendium request (WLO "
-        "discipline id, vocabulary URI, label or alias)" + UNKNOWN_SUBJECT,
+        "discipline id, vocabulary URI, label or alias)" + UNKNOWN_SUBJECT_HELP,
     )
     preset: Preset | None = Field(
         None,
@@ -69,8 +69,10 @@ class QaRequest(BaseModel):
         "for a question word using the spaCy parse that is loaded anyway - four times as many sentences "
         "yield a question and the answer is the subject itself, at about 4 ms per sentence once warm. models uses "
         "the two German models baked into the image (question generator plus extractive answers) and is "
-        "the most accurate and by far the slowest. llm lets the b-api write the pairs. All three fall "
-        "back to rule-based when they cannot run, and note says why",
+        "the most accurate and by far the slowest. llm lets the b-api write the pairs; with a topic or node, part 1 "
+        "and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S), so "
+        "a part 1 that spent them leaves the pairs to the templates. All three fall back to rule-based when they "
+        "cannot run, and note says why",
     )
     count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")

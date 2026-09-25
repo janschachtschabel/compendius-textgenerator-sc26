@@ -68,8 +68,9 @@ def from_llm(
 ) -> tuple[list[QaPair] | None, str]:
     """The model's pairs, or ``None`` and the reason the templates have to do it.
 
-    A node's title and keywords point the model at what the material is about (D47). ``allowance`` is what the
-    request has left after part 1; without one (a text of the caller's) the pairs get a budget of their own.
+    A node's title and keywords point the model at what the material is about (D47). ``allowance`` is the budget
+    and time the request has left after part 1; the endpoint hands it over whenever an LLM is configured, and a
+    caller without one gets a fresh allowance.
     """
     service = request.app.state.service
     llm = service.llm if service is not None else None
@@ -77,15 +78,17 @@ def from_llm(
         return None, "LLM nicht konfiguriert (LLM_ENABLED/B_API_KEY); Regelmodus verwendet"
     unavailable = service.llm_unavailable()
     if unavailable:
-        return None, f"LLM nicht verfügbar: {unavailable}; Regelmodus verwendet"
+        return None, unavailable  # it names the cause and the fallback itself
+    if allowance is None:
+        allowance = LlmAllowance(llm.open_budget(), Deadline(service.settings.request_timeout_s))
     answer = llm.qa.pairs(
         text,
         count=payload.count,
         max_answer_length=payload.max_answer_length,
-        budget=allowance.budget if allowance is not None else llm.open_budget(),
+        budget=allowance.budget,
         level_property=LEVEL_PROPERTY if payload.levels else None,
         level_values=payload.levels,
-        deadline=allowance.deadline if allowance is not None else Deadline(service.settings.request_timeout_s),
+        deadline=allowance.deadline,
         focus_title=node.title if node is not None else None,
         focus_terms=node.keywords if node is not None else (),
         focus_kind=node.kind if node is not None else "material",
