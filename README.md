@@ -338,16 +338,17 @@ solche Anfrage ein 503, der sagt, welcher Schalter ein LLM braucht, und ein Dien
 `PRESET_DEFAULT=llm-free`. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und `audit.llm` sagt warum.
 Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`):
 
-| `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24 mit `gpt-5.6-luna`) |
+| `preset` | setzt | Güte und Kosten je Kompendium (M25, M27 bis M29, `gpt-6-luna`) |
 |---|---|---|
-| `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
-| `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 2,0 s und 935 Tokens mehr (gpt-6-luna) |
-| `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s, rund 35.400 Tokens |
-| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, gekennzeichnet als Evidenzgrad=Modellwissen | Das Schreiben allein kostete 16 bis 20 s und 10.500 bis 14.500 Tokens (vier Themen, 2026-09-18); als Ganzes noch nicht gemessen |
+| `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 rund 1,6 s, keine Tokens; QA-Paare aus dem Parse, 1 bis 4 von 29 mangelfrei |
+| `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,45 wie `llm-free`, rund 3,4 s und 900 Tokens; QA-Paare vom LLM, 68 bis 74 von 80 mangelfrei |
+| `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,70, rund 14 s und 26.000 Tokens, rund 170 je Absatz |
+| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, gekennzeichnet als Evidenzgrad=Modellwissen | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; zwei Drittel des Modellwissens sind Füllsätze (M28) |
 
-Die LLM-Werte hier und in der Tabelle der Schalter unten stammen von `gpt-5.6-luna`. Mit der Vorgabe `gpt-6-luna`
-(D44) ist die Güte gleich (Artikelwahl 90 statt 91 von 94, Zuordner macro-F1 0,70), jeder LLM-Aufruf dauert aber ein
-Viertel bis drei Viertel länger (M19).
+Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M29; Zeiten für Teil 1 und 2 auf dem
+Entwicklungsrechner). Die Tabelle der Schalter unten nennt noch Messungen mit `gpt-5.6-luna`; mit `gpt-6-luna` ist die
+Güte gleich (Artikelwahl 90 statt 91 von 94, Zuordner macro-F1 0,70), jeder LLM-Aufruf dauert aber ein Viertel bis
+drei Viertel länger (M19).
 
 Ein Schalter, den die Anfrage selbst setzt, geht dem Profil vor; so schreibt etwa `preset: balanced` mit
 `generation: llm-fast` einen lesbaren Einstieg. `audit.preset` nennt das wirksame Profil, `compendium generate

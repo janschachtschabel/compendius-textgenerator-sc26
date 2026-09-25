@@ -78,10 +78,10 @@ auf das Warten auf das Modell, im Median 32 s. Seine Endpunktbeschreibung nennt 
 | Problem | Lösung im neuen Dienst |
 |---|---|
 | Wikipedia sperrt, drosselt oder ist nicht erreichbar | Wikipedia und Klexikon liegen als ZIM-Archive beim Dienst; zur Anfragezeit gibt es keinen Wikipedia-Zugriff. Neue Archive holt ein Sidecar mit Prüfsumme und wechselt atomar. |
-| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet auf Wunsch ein LLM (`article_choice=llm` oder `preset: balanced`). |
+| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet im Standardprofil `balanced` ein LLM (D53); `llm-free` bleibt bei den Regeln. |
 | nur Einleitungen als Quelle | ganze Artikel, dazu verlinkte Unterartikel und derselbe Artikel aus Klexikon, bis 12 Artikel und 400 Absätze |
 | Text großteils unbelegt, Verweise nicht prüfbar | Absätze werden wörtlich übernommen; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| 35 bis 374 s, rund 7.900 Tokens | 2 bis 3 s und 0 Tokens im Standard (D40); LLM-Schalter nur auf Wunsch, etwa die Artikelwahl mit rund 1,7 s und 930 Tokens mehr |
+| 35 bis 374 s, rund 7.900 Tokens | Teil 1 und 2 rund 3,4 s und 905 Tokens im Standardprofil `balanced`, 1,6 s und 0 Tokens mit `llm-free` (M27) |
 | Aspekte nur als Hinweis | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten, Prüfung der Regeln (Lint) |
 | nur Weltwissen | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
 | Fehler in einer normalen Antwort | passende Statuscodes, `parts_status` je Teil, Request-ID in jeder Antwort, Prometheus-Metriken und Alarme |
@@ -113,20 +113,21 @@ Bausteine ohne passenden Absatz weg. Zweimal dieselbe Anfrage an den neuen Diens
 
 ### Mit den LLM-Schaltern für Artikelwahl und Zuordnung
 
-Nach v2.0.0 kamen zwei Schalter hinzu. Ihre Zeit wurde am 24.09.2026 an 30 anderen Themen im Prozess auf dem
-Entwicklungsrechner gemessen (M13), ihre Güte an den Goldsätzen (M9, M12). Mit der Tabelle oben, gemessen über HTTP
-auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
+Nach v2.0.0 kamen LLM-Schritte hinzu, gebündelt in vier Profilen (D53). Gemessen am 25.09.2026 auf dem
+Entwicklungsrechner, Teil 1 und 2 je Kompendium, `gpt-6-luna` (M27, M28); Hauptartikel an den Goldsätzen (M9). Mit der
+Tabelle oben, gemessen über HTTP auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
 
-| Teil 1 je Kompendium | Dauer | Tokens | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
+| Profil | Dauer | Tokens, Median | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
 |---|---|---|---|---|
-| nur Regeln, Stufe `llm-free` (Standard, D40) | Median 1,35 s | 0 | 86 | 0,43 |
-| `article_choice=llm`, Stufe `balanced` | im Median 1,7 s mehr | Median 927 | 91 | 0,43 |
-| `matcher=llm`, wählbar (D36, D38, D39) | Median 12,0 s (M13), 22,7 s (M14) | im Mittel 29.400 (M13), seit D39 34.500 (M14) | 86 | 0,72 und 0,69 |
+| `llm-free` | 1,6 s | 0 | 86 | 0,45 |
+| `balanced` (Standard) | rund 3,4 s | 905 | 91 | 0,45 |
+| `best-quality` | rund 14 s | 26.267 | 91 | 0,70 |
+| `best-quality-generated` (Text vom LLM geschrieben) | rund 24 s | 35.376 | 91 | 0,70 |
 | zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
 
-Mit `matcher=llm` braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und jeder Satz bleibt
-belegt. Beide Schalter zusammen wurden nicht gemessen; sie laufen nacheinander, Zeit und Tokens addieren sich also
-ungefähr. Die Zeile `matcher=llm` lief mit den Regeln für die Artikelwahl.
+Mit der LLM-Zuordnung braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und in den Profilen bis
+`best-quality` bleibt jeder Satz wörtlich belegt. `best-quality-generated` liest sich besser (M28), ergänzt aber
+Modellwissen, das zu zwei Dritteln aus Füllsätzen besteht.
 
 ## Funktionsumfang des neuen Dienstes
 

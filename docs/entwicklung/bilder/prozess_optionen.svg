@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="712" viewBox="0 0 960 712" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Ablauf von Teil 1 mit allen Optionen, ihrer Güte, Zeit und ihren Tokens"><title>Ablauf von Teil 1 mit allen Optionen, ihrer Güte, Zeit und ihren Tokens</title><rect width="960" height="712" fill="#ffffff"/>
 <text x="20.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Teil 1: jeder Schritt mit seinen Optionen</text>
-<text x="20.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Standard ist die Stufe llm-free (D40); preset wählt eine Stufe, einzelne Schalter gehen vor (D41).</text>
+<text x="20.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Standard ist das Profil balanced (PRESET_DEFAULT, D53); preset wählt ein Profil, einzelne Schalter gehen vor.</text>
 <text x="282.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Option</text>
-<text x="488.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Stufe</text>
+<text x="488.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Profil</text>
 <text x="560.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Güte</text>
 <text x="752.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
 <text x="858.0" y="76.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
@@ -11,17 +11,18 @@
 <text x="34.0" y="134.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Thema im Archivindex auflösen</text>
 <line x1="268.0" y1="88.0" x2="952.0" y2="88.0" stroke="#dde2e8" stroke-width="1"/>
 <circle cx="274.0" cy="108.0" r="4" fill="#2f6db5" stroke="none" stroke-width="1"/>
-<text x="282.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">rule-based</text>
-<rect x="361.2" y="101.0" width="52.0" height="15.0" rx="7" fill="#f3f6fa" stroke="#dde2e8" stroke-width="1"/>
-<text x="387.2" y="111.5" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">Standard</text>
+<text x="282.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rule-based</text>
 <rect x="488.0" y="102.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="560.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">86 von 94 richtig</text>
 <text x="752.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0,03 s</text>
 <text x="858.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
 <circle cx="274.0" cy="132.0" r="4" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="282.0" y="136.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">llm</text>
+<text x="282.0" y="136.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm</text>
+<rect x="314.2" y="125.0" width="52.0" height="15.0" rx="7" fill="#f3f6fa" stroke="#dde2e8" stroke-width="1"/>
+<text x="340.2" y="135.5" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">Standard</text>
 <rect x="504.0" y="126.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <rect x="520.0" y="126.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<rect x="536.0" y="126.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="560.0" y="136.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">91 von 94 richtig</text>
 <text x="752.0" y="136.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">+1,0 bis 2,7 s</text>
 <text x="858.0" y="136.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 950</text>
@@ -30,22 +31,24 @@
 <text x="34.0" y="222.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">bis 12 Artikel, 400 Absätze</text>
 <line x1="268.0" y1="152.0" x2="952.0" y2="152.0" stroke="#dde2e8" stroke-width="1"/>
 <circle cx="274.0" cy="172.0" r="4" fill="#2f6db5" stroke="none" stroke-width="1"/>
-<text x="282.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Profil standard</text>
-<rect x="394.8" y="165.0" width="52.0" height="15.0" rx="7" fill="#f3f6fa" stroke="#dde2e8" stroke-width="1"/>
-<text x="420.8" y="175.5" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">Standard</text>
+<text x="282.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">ZIM-Profil standard</text>
 <rect x="488.0" y="166.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <rect x="504.0" y="166.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <rect x="520.0" y="166.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="560.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">26 von 358 unpassend</text>
+<rect x="536.0" y="166.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="560.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">12 von 352 unpassend</text>
 <text x="752.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0,9 s</text>
 <text x="858.0" y="176.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
 <circle cx="274.0" cy="196.0" r="4" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="282.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">Trefferprüfung</text>
+<text x="282.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Trefferprüfung</text>
+<rect x="388.1" y="189.0" width="52.0" height="15.0" rx="7" fill="#f3f6fa" stroke="#dde2e8" stroke-width="1"/>
+<text x="414.1" y="199.5" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">Standard</text>
 <rect x="504.0" y="190.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <rect x="520.0" y="190.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="560.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">10 von 356 unpassend</text>
-<text x="752.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">+1,4 s</text>
-<text x="858.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 890</text>
+<rect x="536.0" y="190.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="560.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">5 von 346 unpassend</text>
+<text x="752.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">+1,5 bis 2,4 s</text>
+<text x="858.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 900</text>
 <circle cx="274.0" cy="220.0" r="4" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="282.0" y="224.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">Profil extended</text>
 <text x="560.0" y="224.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">+1 gefüllter Baustein</text>
@@ -66,7 +69,7 @@
 <text x="400.6" y="287.5" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">Standard</text>
 <rect x="488.0" y="278.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <rect x="504.0" y="278.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
-<text x="560.0" y="288.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">macro-F1 0,43</text>
+<text x="560.0" y="288.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">macro-F1 0,45</text>
 <text x="752.0" y="288.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0,3 s</text>
 <text x="858.0" y="288.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
 <circle cx="274.0" cy="308.0" r="4" fill="#2f6db5" stroke="none" stroke-width="1"/>
@@ -87,9 +90,10 @@
 <circle cx="274.0" cy="380.0" r="4" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="282.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">llm</text>
 <rect x="520.0" y="374.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="560.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">macro-F1 0,69 bis 0,72</text>
-<text x="752.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">10 bis 25 s</text>
-<text x="858.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 34.500</text>
+<rect x="536.0" y="374.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="560.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">macro-F1 0,70</text>
+<text x="752.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 11 s</text>
+<text x="858.0" y="384.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">170 je Absatz</text>
 <rect x="20.0" y="404.0" width="236.0" height="56.0" rx="8" fill="#e8f0fa" stroke="#2f6db5" stroke-width="1.5"/>
 <text x="34.0" y="428.0" font-size="13.5" fill="#1f2933" text-anchor="start" font-weight="600">4  Text bauen</text>
 <text x="34.0" y="446.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Absätze wörtlich, belegt</text>
@@ -101,6 +105,7 @@
 <rect x="488.0" y="414.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <rect x="504.0" y="414.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <rect x="520.0" y="414.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<rect x="536.0" y="414.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="560.0" y="424.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">jeder Satz wörtlich belegt</text>
 <text x="752.0" y="424.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">1,1 s</text>
 <text x="858.0" y="424.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
@@ -130,9 +135,10 @@
 <text x="858.0" y="512.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">2.300–4.000</text>
 <circle cx="274.0" cy="532.0" r="4" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="282.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">generation=llm</text>
-<text x="560.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">alle Bausteine neu, belegt</text>
-<text x="752.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">16 bis 20 s</text>
-<text x="858.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">10.500–14.500</text>
+<rect x="536.0" y="526.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="560.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">alle neu, mit Modellwissen</text>
+<text x="752.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rund 8,8 s</text>
+<text x="858.0" y="536.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">4.300–11.600</text>
 <rect x="20.0" y="556.0" width="236.0" height="56.0" rx="8" fill="#e8f0fa" stroke="#2f6db5" stroke-width="1.5"/>
 <text x="34.0" y="580.0" font-size="13.5" fill="#1f2933" text-anchor="start" font-weight="600">6  Zusammensetzen</text>
 <text x="34.0" y="598.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">mit Teil 2 und Teil 3</text>
@@ -144,6 +150,7 @@
 <rect x="488.0" y="578.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <rect x="504.0" y="578.0" width="11.0" height="11.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <rect x="520.0" y="578.0" width="11.0" height="11.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<rect x="536.0" y="578.0" width="11.0" height="11.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="560.0" y="588.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">kein Schalter</text>
 <text x="752.0" y="588.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0,24 / 0,16 s</text>
 <text x="858.0" y="588.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
@@ -152,11 +159,13 @@
 <text x="38.0" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">lokal, ohne Tokens</text>
 <rect x="175.9" y="636.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="193.9" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">über das LLM der b-api</text>
-<rect x="430.0" y="636.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
-<text x="448.0" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Stufe llm-free</text>
-<rect x="560.2" y="636.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
-<text x="578.2" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Stufe balanced</text>
-<rect x="690.3" y="636.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
-<text x="708.3" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Stufe best-quality</text>
-<text x="20.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in 20 Themen (M10); gefüllte Bausteine (M11);</text>
-<text x="20.0" y="688.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 am Goldstandard (M12, M15); Text (M3, 19.09.). Zeit: Server (M1, M3) oder Entwicklungsrechner (M13, M14). Tokens je Kompendium.</text></svg>
+<rect x="330.0" y="636.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="348.0" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="421.5" y="636.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="439.5" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="513.0" y="636.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="531.0" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="630.3" y="636.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="648.3" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="20.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in 20 Themen (M25); gefüllte Bausteine (M11);</text>
+<text x="20.0" y="688.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 der gelabelten Absätze (M27, LLM-Zuordnung M19); Text (M3, M27). Zeit: Server (M1, M3) oder Entwicklungsrechner (M27). Tokens je Kompendium.</text></svg>

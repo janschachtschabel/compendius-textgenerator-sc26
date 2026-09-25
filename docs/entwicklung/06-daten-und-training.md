@@ -46,8 +46,8 @@ speichert und weitergibt, muss die Lizenz mitführen.
 ## Empfehlung
 
 1. **Jetzt kein Protokoll der Zuordnung im Betrieb.** Solange `matcher=llm` selten läuft, sammelt es vor allem
-   Regelentscheidungen. Anders die Artikelwahl: Mit der Stufe `balanced` benotet das LLM bei fast jeder Anfrage die
-   Korpusartikel und entscheidet unsichere Themen; Standard ist sie seit D40 nicht mehr. Ein kleines Protokoll nur
+   Regelentscheidungen. Anders die Artikelwahl: Im Profil `balanced` benotet das LLM bei fast jeder Anfrage die
+   Korpusartikel und entscheidet unsichere Themen, seit D53 ist es der Standard. Ein kleines Protokoll nur
    dafür (Thema, Fach, Kandidaten, Noten, Wahl) wäre der billigste Anfang eines Datensatzes, mit dem sich die
    Trefferprüfung später lokal lernen ließe.
 2. **Erst ein Destillationsversuch offline:** 50 bis 100 Themen mit `matcher=llm` (1,5 bis 3 Millionen Tokens), ein

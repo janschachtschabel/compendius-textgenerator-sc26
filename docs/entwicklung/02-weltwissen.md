@@ -79,7 +79,7 @@ erster Stelle und 58 bis 78 Mal irgendwo unter den bis zu zehn Artikeln, je nach
 5. **Sicherheit melden.** Die Auflösung nennt ihren Weg (`method`: title, variant, disambiguation, suggestion, search
    oder llm) und ob sie sicher ist (`confident`). Unsicher sind eine Begriffsklärung, die das Fach nicht entscheidet,
    ein exakter Titel ohne Fachbezug, Varianten und alle Vorschlags- und Suchtreffer.
-6. **Das LLM auf Wunsch** (`article_choice=llm` oder `preset: balanced`, D35; Standard ist seit D40 wieder
+6. **Das LLM** (`article_choice=llm`, D35; seit D53 im Standardprofil `balanced`, von D40 bis D53 war der Standard
    `rule-based`): Nur bei einer unsicheren Auflösung wählt das LLM (seit D44 `gpt-6-luna`, gemessen mit `gpt-5.6-luna`)
    unter den Kandidaten der Regeln oder nennt
    einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
@@ -228,8 +228,8 @@ aus dem Zwischenspeicher der b-api kommt: `article_choice=llm` verlängert Teil 
 3,4 s, höchstens 3,9 s) bei rund 930 Tokens. Die Trefferprüfung braucht im Median 1,4 s und lief bei allen 30 Themen;
 eine unsichere Artikelwahl kam bei 5 Themen hinzu, mit 1,0 bis 2,7 s. Die schärferen Regeln kosten gegenüber v2.0.0
 keine Zeit: Teil 1 im Median 1,35 statt 1,37 s bei warmem Dateicache. Von D37 bis D40 war `article_choice=llm` die
-Vorgabe, wo ein LLM konfiguriert ist; seit D40 ist es wieder `rule-based`, und `preset: balanced` schaltet die
-LLM-Artikelwahl je Anfrage ein. Auf denselben 30 Themen wählten die
+Vorgabe, wo ein LLM konfiguriert ist; von D40 bis D53 war es wieder `rule-based`, und seit D53 ist das Profil
+`balanced` mit der LLM-Artikelwahl der Standard. Auf denselben 30 Themen wählten die
 neuen Regeln bei 5 der 9 mehrdeutigen Wörter einen anderen Hauptartikel als v2.0.0, dem Titel nach jedes Mal den
 besseren (*Blatt (Pflanze)* statt *Keimblatt*, *Körper (Geometrie)* statt *Gegenstand*, *Stimme (Musik)* statt
 *Menschliche Stimme*, *Becken (Geomorphologie)* statt *Einzugsgebiet*, *Salze* statt *Speisesalz*); das ist eine
@@ -311,7 +311,7 @@ Lesbarkeit gibt es Schalter, die ein Sprachmodell über die b-api zuschalten:
 | `generation=llm-fast` | schreibt die Bausteine Themendefinition und Querschnitt neu | vier Themen am 18.09.: 2–3 Aufrufe, 2.300–4.000 Tokens, 9–15 s |
 | `generation=llm` | schreibt alle Inhaltsbausteine neu | vier Themen am 18.09.: 8–10 Aufrufe, 10.500–14.500 Tokens, 16–20 s |
 | beide auf `llm` | Satzauswahl und Neuformulierung | Optik am 19.09.: 20 Aufrufe, 27.205 Tokens, 18 s; über die Goldthemen bis rund 37.000 Tokens |
-| `enrichment=model-knowledge` | erlaubt eigenes Modellwissen, sichtbar markiert als `Evidenzgrad=Modellwissen` | – |
+| `enrichment=model-knowledge` | erlaubt eigenes Modellwissen, ohne Belegnummer und im Markdown markiert als `Evidenzgrad=Modellwissen` (ein HTML-Kommentar, im gerenderten Text unsichtbar) | sechs Themen am 25.09. (M28): 3 bis 25 Sätze je Thema, zwei Drittel davon Füllsätze |
 
 **Belegprüfung:** Ein vom LLM geschriebener Satz bleibt nur, wenn er eine gültige Belegnummer trägt und mindestens
 20 % seiner Inhaltswörter im zitierten Absatz vorkommen. Bei 175 geprüften Modellsätzen (18.09.2026) lag dieser

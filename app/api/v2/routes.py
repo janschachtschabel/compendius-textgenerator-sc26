@@ -47,7 +47,7 @@ EXAMPLES = {
             "preset wählt eines der vier Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
             "ausgeliefert balanced. llm-free: die "
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 86 von 94 "
-            "Hauptartikeln richtig, macro-F1 0,43, Teil 1 in rund 1,4 s, keine Tokens (D40)."
+            "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27)."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
     },
@@ -56,17 +56,16 @@ EXAMPLES = {
         "description": (
             "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
             "mehrdeutige Wort Linse -, und verwirft unpassende Nebenartikel. 91 von 94 Hauptartikeln richtig, "
-            "rund 1,7 s und 930 Tokens mehr (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna wählte 90 von 94 "
-            "und ist je Aufruf langsamer). Ohne konfiguriertes LLM ist die Anfrage ein 503."
+            "rund 3,4 s und 900 Tokens je Kompendium (M27). Ohne konfiguriertes LLM ist die Anfrage ein 503."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
     },
     "Profil best-quality": {
         "summary": "Profil best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
         "description": (
-            "Wie balanced, dazu matcher llm: macro-F1 0,69 bis 0,72 statt 0,43, Teil 1 rund 14 bis 24 s und rund "
-            "35.400 Tokens (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna erreichte 0,70 und ist je Aufruf "
-            "langsamer). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil best-quality-generated."
+            "Wie balanced, dazu matcher llm: macro-F1 0,70 statt 0,45, rund 14 s und 26.000 Tokens je "
+            "Kompendium (M19, M27). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
+            "best-quality-generated."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},
     },
@@ -75,8 +74,9 @@ EXAMPLES = {
         "description": (
             "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
             "ergänzen (enrichment model-knowledge); solche Sätze tragen keine Belegnummer und stehen als "
-            "Evidenzgrad=Modellwissen im Text. Für Texte, die Menschen direkt lesen. Einzeln gesetzte Schalter gehen "
-            "dem preset vor."
+            "Evidenzgrad=Modellwissen im Text. Für Texte, die Menschen direkt lesen; rund 24 s und 35.000 Tokens "
+            "(M27). Zwei Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; zwei Drittel des "
+            "ergänzten Modellwissens sind aber Füllsätze (M28). Einzeln gesetzte Schalter gehen dem preset vor."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "best-quality-generated"},
     },

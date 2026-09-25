@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import json
 import math
-import statistics
 import sys
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -108,24 +107,24 @@ def prozess() -> None:
     steps = [
         ("1", "Hauptartikel finden", "Thema bereinigen, im Archivindex auflösen", False,
          ["Schalter article_choice: rule-based oder llm",
-          "Standard: rule-based (D40); llm mit preset balanced oder best-quality",
+          "llm-free: rule-based; die übrigen Profile (Standard balanced): llm",
           "Zeit: rund 0,03 s; LLM nur bei unsicheren Themen, +1,0 bis 2,7 s"]),
         ("2", "Korpus bauen", "bis 12 Artikel, höchstens 400 Absätze", False,
          ["Einstellungen: max_articles (12), ZIM_PROFILE (standard)",
           "Trefferprüfung durch das LLM, wenn article_choice=llm",
-          "Zeit: 0,9 s auf dem Server; Trefferprüfung +1,4 s (Median)"]),
+          "Zeit: 0,9 s auf dem Server; Trefferprüfung +1,5 bis 2,4 s (M27)"]),
         ("3", "Absätze zuordnen", "10 Inhaltsbausteine des Templates SC26", False,
          ["Schalter matcher: hybrid_light, bm25, char_tfidf, lexicon_only, llm",
-          "Standard: hybrid_light; llm mit preset best-quality",
-          "Zeit: 0,3 s; llm 10 bis 25 s und rund 34.500 Tokens"]),
+          "llm-free, balanced: hybrid_light; best-quality und -generated: llm",
+          "Zeit: 0,3 s; llm rund 11 s, rund 170 Tokens je Absatz (M27)"]),
         ("4", "Text bauen", "Absätze wörtlich, mit Belegnummer", False,
          ["Schalter extraction: rule-based oder llm; Länge: target_length",
-          "Standard: rule-based, 12.000 Zeichen",
+          "alle Profile: rule-based, 12.000 Zeichen",
           "Zeit: 1,1 s auf dem Server; llm rund 11 s"]),
         ("5", "Umformulieren (optional)", "LLM schreibt Bausteine neu, Belegprüfung", True,
          ["Schalter generation: rule-based, llm-fast, llm; dazu enrichment",
-          "Standard: rule-based, sources-only",
-          "Zeit: llm-fast 9 bis 15 s, llm 16 bis 20 s"]),
+          "best-quality-generated: llm und model-knowledge; sonst rule-based",
+          "Zeit: llm rund 8,8 s, 4.300 bis 11.600 Tokens mehr (M27)"]),
         ("6", "Zusammensetzen", "mit Teil 2 Lehrpläne und Teil 3 Sammlung", False,
          ["Teil 2: 0,24 s; Teil 3: 0,16 s aus dem Zwischenspeicher",
           "Ergebnis: Markdown und JSON, mit Vorspann und Audit",
@@ -159,36 +158,42 @@ def prozess() -> None:
 
 def prozess_optionen() -> None:
     """The steps of part 1 with every option in a row: quality, time, tokens and the presets that use it (D41)."""
-    presets = [("llm-free", LOCAL, "l"), ("balanced", "#7a5aa6", "b"), ("best-quality", LLM, "q")]
+    presets = [
+        ("llm-free", LOCAL, "l"),
+        ("balanced", "#7a5aa6", "b"),
+        ("best-quality", LLM, "q"),
+        ("best-quality-generated", "#b24c63", "g"),
+    ]
     rows = {  # step: [(option, default, llm, presets, quality, time, tokens)]
         ("1", "Hauptartikel finden", "Thema im Archivindex auflösen"): [
-            ("rule-based", True, False, "l", "86 von 94 richtig", "0,03 s", "0"),
-            ("llm", False, True, "bq", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
+            ("rule-based", False, False, "l", "86 von 94 richtig", "0,03 s", "0"),
+            ("llm", True, True, "bqg", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
         ],
         ("2", "Korpus bauen", "bis 12 Artikel, 400 Absätze"): [
-            ("Profil standard", True, False, "lbq", "26 von 358 unpassend", "0,9 s", "0"),
-            ("Trefferprüfung", False, True, "bq", "10 von 356 unpassend", "+1,4 s", "rund 890"),
+            ("ZIM-Profil standard", False, False, "lbqg", "12 von 352 unpassend", "0,9 s", "0"),
+            ("Trefferprüfung", True, True, "bqg", "5 von 346 unpassend", "+1,5 bis 2,4 s", "rund 900"),
             ("Profil extended", False, False, "", "+1 gefüllter Baustein", "–", "0"),
             ("knowledge_collection_id", False, False, "", "nicht gemessen", "–", "0"),
         ],
         ("3", "Absätze zuordnen", "10 Inhaltsbausteine SC26"): [
-            ("hybrid_light", True, False, "lb", "macro-F1 0,43", "0,3 s", "0"),
+            ("hybrid_light", True, False, "lb", "macro-F1 0,45", "0,3 s", "0"),
             ("char_tfidf", False, False, "", "macro-F1 0,40", "0,25 s", "0"),
             ("bm25", False, False, "", "macro-F1 0,36", "0,03 s", "0"),
             ("lexicon_only", False, False, "", "macro-F1 0,35", "0,02 s", "0"),
-            ("llm", False, True, "q", "macro-F1 0,69 bis 0,72", "10 bis 25 s", "rund 34.500"),
+            ("llm", False, True, "qg", "macro-F1 0,70", "rund 11 s", "170 je Absatz"),
         ],
         ("4", "Text bauen", "Absätze wörtlich, belegt"): [
-            ("rule-based", True, False, "lbq", "jeder Satz wörtlich belegt", "1,1 s", "0"),
+            ("rule-based", True, False, "lbqg", "jeder Satz wörtlich belegt", "1,1 s", "0"),
             ("extraction=llm", False, True, "", "+14 richtige Absätze, 59 %", "rund 11 s", "14.000–22.400"),
         ],
         ("5", "Umformulieren", "optional, mit Belegprüfung"): [
             ("rule-based", True, False, "lbq", "Text bleibt wörtlich", "–", "0"),
             ("generation=llm-fast", False, True, "", "2 Bausteine neu, belegt", "9 bis 15 s", "2.300–4.000"),
-            ("generation=llm", False, True, "", "alle Bausteine neu, belegt", "16 bis 20 s", "10.500–14.500"),
+            ("generation=llm", False, True, "g", "alle neu, mit Modellwissen", "rund 8,8 s",
+             "4.300–11.600"),
         ],
         ("6", "Zusammensetzen", "mit Teil 2 und Teil 3"): [
-            ("Teil 2 und Teil 3", True, False, "lbq", "kein Schalter", "0,24 / 0,16 s", "0"),
+            ("Teil 2 und Teil 3", True, False, "lbqg", "kein Schalter", "0,24 / 0,16 s", "0"),
         ],
     }
     columns = {"option": 282, "stufe": 488, "guete": 560, "zeit": 752, "tokens": 858}
@@ -199,9 +204,9 @@ def prozess_optionen() -> None:
     height = top + sum(block_height(options) for options in rows.values()) + 96
     svg = Svg(960, height, "Ablauf von Teil 1 mit allen Optionen, ihrer Güte, Zeit und ihren Tokens")
     svg.text(20, 30, "Teil 1: jeder Schritt mit seinen Optionen", 17, weight="600")
-    svg.text(20, 52, "Standard ist die Stufe llm-free (D40); preset wählt eine Stufe, einzelne Schalter gehen vor "
-             "(D41).", 12, MUTED, limit=920)
-    for key, head in (("option", "Option"), ("stufe", "Stufe"), ("guete", "Güte"), ("zeit", "Zeit"),
+    svg.text(20, 52, "Standard ist das Profil balanced (PRESET_DEFAULT, D53); preset wählt ein Profil, einzelne "
+             "Schalter gehen vor.", 12, MUTED, limit=920)
+    for key, head in (("option", "Option"), ("stufe", "Profil"), ("guete", "Güte"), ("zeit", "Zeit"),
                       ("tokens", "Tokens")):
         svg.text(columns[key], top - 12, head, 12, MUTED, weight="600")
     y = top
@@ -231,11 +236,11 @@ def prozess_optionen() -> None:
         y += block
     svg.line(268, y, 952, y, GRID)
     svg.legend(20, y + 30, [(LOCAL, "lokal, ohne Tokens"), (LLM, "über das LLM der b-api")], 11.5)
-    svg.legend(430, y + 30, [(color, f"Stufe {tag}") for tag, color, _ in presets], 11.5)
+    svg.legend(330, y + 30, [(color, tag) for tag, color, _ in presets], 11.5)
     svg.text(20, y + 56, "Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in "
-             "20 Themen (M10); gefüllte Bausteine (M11);", 10.5, MUTED, limit=920)
-    svg.text(20, y + 72, "macro-F1 am Goldstandard (M12, M15); Text (M3, 19.09.). Zeit: Server (M1, M3) oder "
-             "Entwicklungsrechner (M13, M14). Tokens je Kompendium.", 10.5, MUTED, limit=920)
+             "20 Themen (M25); gefüllte Bausteine (M11);", 10.5, MUTED, limit=920)
+    svg.text(20, y + 72, "macro-F1 der gelabelten Absätze (M27, LLM-Zuordnung M19); Text (M3, M27). Zeit: Server (M1, "
+             "M3) oder Entwicklungsrechner (M27). Tokens je Kompendium.", 10.5, MUTED, limit=920)
     svg.save("prozess_optionen.svg")
 
 
@@ -467,53 +472,74 @@ def text_schalter() -> None:
     svg.save("text_schalter.svg")
 
 
-def article_choice_cost(timing: dict) -> tuple[float, float]:
-    """Median seconds the LLM adds for the article choice and the side-article check, and median tokens."""
-    runs = [r for r in timing["laeufe"] if r["weg"] == "llm"]
-    seconds = statistics.median((r["phasen_ms"]["hit_check"] + r["phasen_ms"]["resolve"]) / 1000 for r in runs)
-    return seconds, statistics.median(r["tokens"] for r in runs)
+def profile_seconds(timing: dict) -> dict[str, tuple[float, float, float]]:
+    """Median and span of part 1 and 2 per profile (M27): llm-free as measured, every LLM profile as llm-free on the
+    same topic plus the LLM's phases - hit check, and the matching and writing the profile adds. The local steps of
+    some LLM runs were slowed by other work on the machine, the LLM's phases were not."""
+    free = timing["laeufe"]["llm-free"]
+    values = [row["sekunden"] for row in free.values()]
+    result = {"llm-free": (median(values), min(values), max(values))}
+    for profile, topics in timing["saetze"].items():
+        estimates = []
+        for topic in topics:
+            run, base = timing["laeufe"][profile][topic]["phasen_ms"], free[topic]["phasen_ms"]
+            extra = run.get("hit_check", 0) + max(0, run.get("resolve", 0) - base.get("resolve", 0))
+            if profile != "balanced":
+                extra += max(0, run.get("match", 0) - base.get("match", 0))
+            if profile == "best-quality-generated":
+                extra += max(0, run.get("synthesize", 0) - base.get("synthesize", 0))
+            estimates.append(free[topic]["sekunden"] + extra / 1000)
+        result[profile] = (median(estimates), min(estimates), max(estimates))
+    return result
+
+
+def median(values: list[float]) -> float:
+    ordered = sorted(values)
+    middle = len(ordered) // 2
+    return ordered[middle] if len(ordered) % 2 else (ordered[middle - 1] + ordered[middle]) / 2
 
 
 def kombinationen() -> None:
-    """The three recommended combinations: time of part 1, tokens and quality (M9, M12 to M15, M25)."""
-    timing = load("m25_zeit_artikelwahl.json")
-    rules = timing["zusammenfassung"]["rule-based"]["median_s"]
-    extra, article_tokens = article_choice_cost(timing)
-    # Best quality sums steps measured with one model: the LLM matcher ran with gpt-5.6-luna only (M13, M14).
-    extra_m13, article_tokens_m13 = article_choice_cost(load("m13_zeit_neu.json"))
-    matcher = [load(f"{m}_zeit_zuordnung.json")["zusammenfassung"]["llm"]["median_s"] for m in ("m13", "m14")]
-    m14 = load("m14_zeit_zuordnung.json")["laeufe"]
-    matcher_tokens = statistics.mean(r["tokens"] for r in m14 if r["weg"] == "llm")
+    """The four profiles (D53): part 1 and 2 per compendium, tokens and quality (M25, M27, M19)."""
+    zeit = profile_seconds(load("m27_profile_zeit.json"))
+    tokens = load("m27_profile_tokens.json")["zusammenfassung"]
     budget = 2_000_000  # LLM_DAILY_TOKEN_BUDGET
-    combos = [  # label, time low, time high, tokens, articles right of 94, macro-F1, color
-        ("LLM-frei", rules, rules, 0, 86, "0,43", LOCAL),
-        ("ausgewogen", rules + extra, rules + extra, article_tokens, 91, "0,43", "#7a5aa6"),
-        ("beste Qualität", matcher[0] + extra_m13, matcher[1] + extra_m13, matcher_tokens + article_tokens_m13, 91,
-         "0,69 bis 0,72", LLM),
+    profiles = [  # label, articles right of 94, macro-F1 at the gold paragraphs, what the text is, color
+        ("llm-free", 86, "0,45", "wörtlich", LOCAL),
+        ("balanced", 91, "0,45", "wörtlich", "#7a5aa6"),
+        ("best-quality", 91, "0,70", "wörtlich", LLM),
+        ("best-quality-generated", 91, "0,70", "vom LLM geschrieben", "#b24c63"),
     ]
-    x0, width, bar, row = 150, 200, 20, 70
-    svg = Svg(760, 110 + len(combos) * row + 40, "Die drei empfohlenen Kombinationen")
-    svg.text(24, 30, "Die drei empfohlenen Kombinationen im Vergleich", 17, weight="600")
-    heads = [(x0, "Teil 1 je Kompendium"), (x0 + width + 30, "Tokens je Kompendium"), (620, "Güte")]
+    x0, width, bar, row = 200, 180, 20, 70
+    svg = Svg(780, 110 + len(profiles) * row + 72, "Die vier Profile")
+    svg.text(24, 30, "Die vier Profile im Vergleich", 17, weight="600")
+    heads = [(x0, "Teil 1 und 2 je Kompendium"), (x0 + width + 40, "Tokens je Kompendium"), (640, "Güte")]
     for x, head in heads:
         svg.text(x, 64, head, 12, MUTED)
     y = 82
-    for label, low, high, tokens, articles, f1, color in combos:
-        svg.text(x0 - 12, y + 15, label, 13.5, INK, "end", "600")
-        span_bar(svg, x0, y, width / 30, low, high, color, bar)
-        time_label = f"{secs(low)} s" if high == low else f"{secs(low)} bis {secs(high)} s"
-        svg.text(x0 + width * high / 30 + 6, y + 15, time_label, 11.5, MUTED)
-        tx = x0 + width + 30
-        svg.rect(tx, y, width * tokens / 40_000, bar, color, 2)
-        svg.text(tx + width * tokens / 40_000 + 6, y + 15, de(round(tokens, -2) if tokens > 5_000 else tokens), 11.5,
-                 MUTED)
-        daily = "ohne Grenze" if not tokens else f"rund {de(budget / tokens)} je Tag"
+    for label, articles, f1, kind, color in profiles:
+        seconds, low, high = zeit[label]
+        used = tokens[label]["tokens_median"]
+        svg.text(x0 - 12, y + 15, label, 12.5, INK, "end", "600")
+        svg.rect(x0, y, width * seconds / 30, bar, color, 2)
+        svg.text(x0 + width * seconds / 30 + 6, y + 15, f"{de(seconds, '0.1')} s", 11.5, MUTED)
+        svg.text(x0, y + bar + 16, f"{de(low, '0.1')} bis {de(high, '0.1')} s", 11, MUTED)
+        tx = x0 + width + 40
+        svg.rect(tx, y, width * used / 50_000, bar, color, 2)
+        svg.text(tx + width * used / 50_000 + 6, y + 15, de(round(used, -2) if used > 5_000 else used), 11.5, MUTED)
+        daily = "ohne Grenze" if not used else f"rund {de(budget / used)} je Tag"
         svg.text(tx, y + bar + 16, f"Tagesbudget 2 Mio.: {daily}", 11, MUTED)
-        svg.text(620, y + 9, f"Artikel: {articles} von 94", 11.5, INK)
-        svg.text(620, y + 27, f"Zuordnung: {f1}", 11.5, INK)
+        svg.text(640, y + 9, f"Artikel: {articles} von 94", 11.5, INK)
+        svg.text(640, y + 27, f"Zuordnung: {f1}", 11.5, INK)
+        svg.text(640, y + 45, f"Text: {kind}", 11.5, INK)
         y += row
-    svg.text(24, y + 18, "Zeit: Mediane auf dem Entwicklungsrechner (M25); beste Qualität als Summe aus M13 und M14, "
-             "nie zusammen gemessen.", 11, MUTED, limit=712)
+    notes = (
+        "Zeit: Teil 1 und 2, Entwicklungsrechner, jedes LLM-Profil auf eigenen sechs Themen: llm-free plus LLM-Anteil (M27).",
+        "Tokens: Median auf denselben sechs Themen (M27). Zuordnung: macro-F1 der gelabelten Absätze,",
+        "LLM-frei und balanced gemessen in M27, die LLM-Zuordnung in M19 (gpt-6-luna).",
+    )
+    for number, note in enumerate(notes):
+        svg.text(24, y + 18 + 16 * number, note, 11, MUTED, limit=732)
     svg.save("kombinationen.svg")
 
 
