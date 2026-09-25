@@ -425,8 +425,7 @@ Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
    - Die CLI kannte keinen Knoten, `/qa` mit der Stufe `llm` öffnete nach dem Kompendium ein zweites Token- und
      Zeitbudget, und eine unbekannte `knowledge_collection_id` ergab 200 mit dem Fehler im Audit, eine unbekannte
      `collection_id` 404. Umgesetzt (D49): `--node-id` und `--repository`, ein Budget je Anfrage, 404 vor jedem
-     LLM-Aufruf. Zurückgestellt:
-     `/matching/compare` wählt die Artikel weiter ohne LLM, bis entschieden ist, ob Stufen die Einzelschalter
-     ersetzen.
+     LLM-Aufruf. `/matching/compare`, der die Artikel ohne LLM wählte, ist entfallen (D50): Im Betrieb braucht ihn
+     niemand, und `compendium eval` vergleicht die Strategien auf dem Gold.
    - Die Links des Hauptartikels werden je Anfrage neu aufgelöst, bei großen Artikeln bis 0,7 s (*Deutschland*); ein
      Zwischenspeicher je Archiv spart das bei Wiederholungen.

@@ -92,11 +92,6 @@ def test_the_knowledge_endpoint_offers_the_article_choice(spec: dict[str, Any]) 
     assert any("article_choice" in body for body in documented_examples(spec, "/api/v2/knowledge").values())
 
 
-def test_the_comparison_lists_the_strategies_it_takes(spec: dict[str, Any]) -> None:
-    prop = spec["components"]["schemas"]["CompareRequest"]["properties"]["matchers"]
-    assert enum_of(prop["items"]) == list(MATCHERS)
-
-
 def test_every_strategy_says_what_it_does(client: TestClient) -> None:
     strategies = client.get("/api/v2/matching/strategies").json()
     assert [strategy["id"] for strategy in strategies] == list(STRATEGIES)

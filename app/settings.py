@@ -102,7 +102,7 @@ class Settings(BaseSettings):
         description="Extractive answer model of the QA stage `models`; it marks the place in the text, it does "
         "not formulate. Empty turns the stage off together with QG_MODEL_PATH",
     )
-    eval_gold_dir: Path = Field(Path("eval/gold"), description="Gold standard files for eval run and matching/compare")
+    eval_gold_dir: Path = Field(Path("eval/gold"), description="Gold standard files for compendium eval")
 
     # --- Curricula: MEM cache for part 2 (PLAN.md 5, decision D16) -----------------------------
     lehrplan_endpoint: str = Field(

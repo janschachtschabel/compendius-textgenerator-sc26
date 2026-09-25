@@ -527,7 +527,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 |---|---|---|
 | `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates, optional der Wikidata-Index `wikidata.db` |
 | `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `zim_subscriptions.yaml` und den Templates |
-| `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval` und `POST /api/v2/matching/compare` (Admin); im Image nicht enthalten |
+| `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval`; im Image nicht enthalten |
 
 ### Kompendium und Matching
 
@@ -638,7 +638,6 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `PUT /api/v2/templates/{id}` (Admin) | eigenes Template anlegen oder ersetzen; die Version zählt bei jedem Schreiben hoch. Die id im Pfad und im Body müssen übereinstimmen (sonst 422), eingebaute Templates sind schreibgeschützt (409). Den Rumpf beschreibt `/docs` Feld für Feld: `slots` mit `title`, `inclusions`, `exclusions`, `sub_items`, `search_queries`, `facets`, `budget` und `generator`. `default_slot` nennt den Baustein, in den thematische Passagen ohne sichere Zuordnung wandern; `version` und `builtin` setzt der Dienst selbst |
 | `DELETE /api/v2/templates/{id}` (Admin) | eigenes Template löschen (204); eingebaute: 409, unbekannte: 404 |
 | `GET /api/v2/matching/strategies` | Matching-Strategien |
-| `POST /api/v2/matching/compare` (Admin) | Strategien auf einem Thema vergleichen, mit Gold-Metriken, wenn `EVAL_GOLD_DIR` eine Gold-Datei hat; `matchers` wählt die Strategien aus `GET /api/v2/matching/strategies` (unbekannte: 422), `template_id` und `target_length` wirken wie beim Kompendium |
 | `GET /api/v2/lehrplan/status` | Lehrplan-Cache: Stand, Abdeckung, Lehrpläne je Land, letzter Harvest (ob er scheiterte, ohne Fehlertext) |
 | `GET /api/v2/lehrplan/search?q=&subject=&limit=` | Lehrplanelemente zu einem Stichwort aus dem Cache; `limit` begrenzt die Treffer |
 | `POST /api/v2/lehrplan/harvest` (Admin) | Harvest-Prüfung anstoßen (Trigger-Datei für den Sidecar) |

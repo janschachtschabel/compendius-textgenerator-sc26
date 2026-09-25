@@ -28,8 +28,9 @@ uv run compendium eval import eval/export/photosynthese.csv --topic "Photosynthe
 uv run compendium eval run --gold eval/gold --json eval/reports/lauf.json --zim …
 ```
 
-Über die API liefert `POST /api/v2/matching/compare` dieselben Metriken für ein Thema und die
-Übereinstimmung der Strategien untereinander.
+Den Endpunkt `POST /api/v2/matching/compare` gibt es seit dem 25.09.2026 nicht mehr (D50): Die Metriken liefert
+`compendium eval run`; die Übereinstimmung der Strategien untereinander berechnet `compare_topic` in
+`app/matching/eval_runner.py` weiter, für eigene Skripte.
 
 ## Metriken
 

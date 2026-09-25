@@ -1120,7 +1120,7 @@ Weitere: `GET /api/v2/templates`, `GET /api/v2/templates/{id}` (geplant: `PUT|DE
 `GET /api/v2/zim/catalog`, `POST /api/v2/zim/sync`, `GET /api/v2/zim/progress`,
 `DELETE /api/v2/zim/{file}` (Admin); `GET /api/v2/lehrplan/status`,
 `POST /api/v2/lehrplan/harvest` (Admin), `GET /api/v2/lehrplan/search?q=&subject=`;
-`GET /api/v2/matching/strategies`, `POST /api/v2/matching/compare` (Admin, seit dem Audit vom 2026-09-18);
+`GET /api/v2/matching/strategies` (der Comparator `POST /api/v2/matching/compare` entfiel am 2026-09-25, D50);
 `GET /api/v2/collections/{id}/overview` (Teil 3 einzeln).
 
 ### 8.3 Laufzeitverhalten
@@ -1621,6 +1621,12 @@ API.
   Zeitbudget über Teil 1 und die Paare (vorher je eines, also bis zum Doppelten), und `note` nennt den Grund, wenn der
   Aufruf entfällt. Die CLI nimmt `--node-id` und `--repository`. Zurückgestellt: `/matching/compare` mit
   LLM-Artikelwahl, bis entschieden ist, ob Stufen die Einzelschalter ersetzen.
+- **D50 (2026-09-25)** `POST /api/v2/matching/compare` entfällt (Jan: kann raus, wenn wir ihn nach den letzten Vorgaben
+  nicht mehr produktiv brauchen, aber erst, wenn er für die Entwicklung nicht mehr gebraucht wird). Kein Messskript von
+  M1 bis M25 rief ihn; `compendium eval` bewertet die Strategien auf dem Gold mit derselben Funktion `compare_topic`,
+  die bleibt und für eigene Skripte auch die Übereinstimmung der Strategien untereinander rechnet. Mit dem Endpunkt
+  gehen der Admin-Router des Matchings und `CompareRequest`; `GET /api/v2/matching/strategies` bleibt, bis die Profile
+  entscheiden, welche Strategien es noch gibt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
