@@ -95,6 +95,24 @@ def test_a_title_the_archive_lacks_or_an_unusable_model_leaves_it_to_the_rules(s
     assert skipped.resolution.title == "Optik" and skipped.node is not None and skipped.node.fallback is not None
 
 
+def test_a_named_title_only_the_search_reaches_counts_as_missing(service: CompendiumService) -> None:
+    """As for the article choice (D35), the archive has to have the title the model names (M25).
+
+    Resolved like a topic, "Mikroskopie mit Licht" reaches Lichtmikroskop through the full-text search; on the
+    second material sample such names ended at "Engelmannscher Bakterienversuch" and "Polen in Island".
+    """
+    ask, _ = job({"titel": "Mikroskopie mit Licht"})
+    chosen = choose(service, None, STATIONS, job=ask)
+    assert chosen.resolution.title == "Optik" and chosen.node is not None and chosen.node.way == "rules"
+    assert chosen.node.fallback == "genannter Titel ist kein Artikel des Archivs"
+
+
+def test_a_named_redirect_counts_as_its_article(service: CompendiumService) -> None:
+    ask, _ = job({"titel": "Lichtlehre"})
+    chosen = choose(service, None, STATIONS, job=ask)
+    assert chosen.resolution.title == "Optik" and chosen.node is not None and chosen.node.way == "llm"
+
+
 # -- a topic and a material ----------------------------------------------------------------------------------------
 def test_the_topic_leads_and_the_rules_name_the_material_article(service: CompendiumService) -> None:
     chosen = choose(service, "Geometrische Optik", STATIONS)
@@ -108,6 +126,12 @@ def test_with_article_choice_llm_one_question_hears_topic_and_material(service: 
     assert chosen.resolution.title == "Geometrische Optik" and chosen.material == "Optik"
     assert len(fake.bodies) == 1, "the sure topic needs no second call"
     assert fake.bodies[0]["messages"][1]["content"].startswith("Thema der Lehrkraft: Geometrische Optik\n")
+
+
+def test_a_material_article_the_archive_does_not_have_is_none(service: CompendiumService) -> None:
+    ask, _ = job({"titel": "Geometrische Optik", "material": "Mikroskopie mit Licht"})
+    chosen = choose(service, "Geometrische Optik", STATIONS, job=ask)
+    assert chosen.resolution.title == "Geometrische Optik" and chosen.material is None
 
 
 def test_the_model_may_overrule_the_topic(service: CompendiumService) -> None:

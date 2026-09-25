@@ -30,6 +30,8 @@ from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
 from app.sources.zim.registry import ZimRegistry
 
+GUESSED = frozenset({"suggestion", "search"})  # resolution methods that reach an article the name did not name
+
 
 @dataclass
 class MainArticle:
@@ -64,6 +66,14 @@ def choose_main_article(
         context = [*normalized.context, *around]
         return registry.resolve_topic(normalized.topic, context=context, query=found.normalized.query, terms=terms)
 
+    def by_name(title: str) -> Resolution | None:
+        """The article the model named, as the archive has it (D35): its title or a redirect, a disambiguation page
+        decided by the subject. A name that only title suggestions or full-text hits reach counts as missing (M25)."""
+        named = registry.resolve_topic(title, query=found.normalized.query)
+        if named.method == "disambiguation":
+            named = by_rules(title)
+        return named if named.resolved and named.method not in GUESSED else None
+
     def as_found(
         resolution: Resolution,
         choice: ArticleChoiceReport | None = None,
@@ -96,9 +106,10 @@ def choose_main_article(
         named, own = answer
         if not named and not topic:  # the model sees no subject topic in the material
             return as_found(_none(found), report=report)
-        answered = by_rules(named) if named else None
-        if answered is not None and answered.resolved:
-            report.material = by_rules(own).title if own else None
+        answered = by_name(named) if named else None
+        if answered is not None:
+            material = by_name(own) if own else None
+            report.material = material.title if material is not None else None
             return as_found(answered, report=report, material=report.material)
         if named:
             report.fallback = NAMED_TITLE_MISSING
