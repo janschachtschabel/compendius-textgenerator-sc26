@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -21,6 +21,8 @@ admin = APIRouter(prefix="/api/v2/matching", tags=["matching-admin"], dependenci
 
 
 class CompareRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+
     topic: str = Field(..., min_length=1, max_length=300, description="The topic the strategies run on")
     matchers: list[MatcherName] = Field(
         default_factory=lambda: list(DEFAULT_MATCHERS),

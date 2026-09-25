@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic.json_schema import WithJsonSchema
 
 Part = Literal["world", "curricula", "collection"]
@@ -144,6 +144,8 @@ REPOSITORY_HELP = (
 class GenerateRequest(BaseModel):
     """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
 
+    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+
     topic: str | None = Field(
         None,
         min_length=1,
@@ -222,7 +224,7 @@ class GenerateRequest(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def _no_mode(cls, data: Any) -> Any:
-        # Unknown fields are ignored; a request that still asks for a mode must not silently run rule-based
+        # An unknown field is a 422 anyway; the former mode gets its own message, which says what replaced it
         if isinstance(data, dict) and "mode" in data:
             raise ValueError("mode gibt es nicht mehr: extraction und generation ersetzen es (PLAN.md D33)")
         return data

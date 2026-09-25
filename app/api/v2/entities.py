@@ -23,7 +23,7 @@ from __future__ import annotations
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.api.deps import archives_for, node_errors
 from app.api.limits import rate_limited
@@ -70,6 +70,8 @@ def _default_methods() -> list[Method]:
 
 
 class EntitiesRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+
     text: str | None = Field(
         None,
         min_length=1,

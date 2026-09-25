@@ -71,6 +71,11 @@ def test_compare_rejects_unknown_matcher_and_topic(client: TestClient) -> None:
     assert response.json()["detail"]["resolution"]["normalized"] == "Xyzzyplomb"
 
 
+def test_compare_refuses_a_field_it_does_not_know(client: TestClient) -> None:
+    answer = client.post("/api/v2/matching/compare", json={"topic": "Optik", "matcher": "bm25"})
+    assert answer.status_code == 422 and answer.json()["detail"][0]["loc"] == ["body", "matcher"]
+
+
 def test_compare_is_an_admin_tool(client: TestClient) -> None:
     payload = {"topic": "Optik", "matchers": ["bm25"]}
     assert client.post("/api/v2/matching/compare", json=payload, headers={"X-Admin-Token": "wrong"}).status_code == 403

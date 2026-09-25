@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, Request
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.api.deps import archives_for, corpus_for_topic, get_service, node_errors
 from app.api.limits import rate_limited
@@ -30,6 +30,8 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
 class KnowledgeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+
     topic: str | None = Field(
         None,
         min_length=1,

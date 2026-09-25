@@ -429,3 +429,19 @@ def test_a_text_of_blanks_is_no_text(client: TestClient) -> None:
     """It used to pass and come back as a 404 about the archives (review of 2026-09-25)."""
     answer = client.post("/api/v2/qa", json={"text": "  \n\t "})
     assert answer.status_code == 422 and "text" in answer.text
+
+
+def test_a_text_goes_alone_or_the_topic_would_replace_it_unsaid(client: TestClient) -> None:
+    """With a topic or a node, part 1 was made and the text dropped without a word (review of 2026-09-25)."""
+    from tests.test_wlo_client import EXAM
+
+    for other in ({"topic": "Optik"}, {"node_id": EXAM}):
+        answer = client.post("/api/v2/qa", json={"text": TEXT, **other})
+        assert answer.status_code == 422 and "nicht beides" in answer.text, other
+
+
+def test_the_switches_of_part_1_need_a_topic_or_a_node(client: TestClient) -> None:
+    """subject, preset and article_choice decide the article of part 1; a text alone has none to decide."""
+    for switch in ({"subject": "Physik"}, {"preset": "balanced"}, {"article_choice": "llm"}):
+        answer = client.post("/api/v2/qa", json={"text": TEXT, **switch})
+        assert answer.status_code == 422 and next(iter(switch)) in answer.text, switch

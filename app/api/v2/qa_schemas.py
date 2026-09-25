@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.domain.models import NodeInput, Resolution
 from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP, ArticleChoice, Preset
@@ -20,6 +20,8 @@ MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; 
 
 
 class QaRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+
     text: str | None = Field(
         None,
         min_length=1,
@@ -83,8 +85,14 @@ class QaRequest(BaseModel):
             raise ValueError("text enthält nur Leerraum; ohne Sätze entstehen keine Paare")
         if not self.text and not self.topic and not self.node_id:
             raise ValueError("text, topic oder node_id ist erforderlich")
+        if self.text and (self.topic or self.node_id):
+            raise ValueError("text oder topic/node_id, nicht beides: ein Thema macht erst Teil 1 und fragt ihn ab")
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
+        # They decide the article of part 1; a text of the caller's is asked as it is
+        for name in ("subject", "preset", "article_choice"):
+            if getattr(self, name) is not None and not (self.topic or self.node_id):
+                raise ValueError(f"{name} gilt nur mit topic oder node_id; ein text wird abgefragt, wie er ist")
         return self
 
 
