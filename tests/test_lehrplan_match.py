@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
+from app.sources.lehrplan.matcher import LehrplanMatcher, boundary_keyword, build_keywords
 from app.sources.lehrplan.store import LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
 
@@ -125,3 +125,21 @@ def test_buried_label_match_with_a_proper_parent_hit_counts_as_parent_match(tmp_
 def test_the_topic_itself_is_never_dropped_for_length() -> None:
     long_topic = "Elektromagnetische Induktion und Wechselstrom"
     assert build_keywords(long_topic, aliases=["x" * 60], subtopics=[]) == [long_topic]
+
+
+def test_only_the_topic_itself_is_split_at_its_hyphens() -> None:
+    """M22: the part "affin" of the synonym "affin-lineare Funktion" found Paraffin and Affinität."""
+    keywords = build_keywords("Lineare Funktion", aliases=["affin-lineare Funktion"], subtopics=["Säure-Base-Paar"])
+    assert keywords == ["Lineare Funktion", "affin-lineare Funktion", "Säure-Base-Paar"]
+    assert build_keywords("Säure-Base-Konzepte", aliases=[], subtopics=[]) == ["Säure-Base-Konzepte", "Säure", "Base"]
+
+
+def test_a_keyword_counts_at_the_start_of_a_word_or_as_the_end_of_a_compound() -> None:
+    """M22: "Erdplatten" found "Herdplatten", "Lineare Funktion" the heading "NICHT-LINEARE FUNKTIONEN"."""
+    assert boundary_keyword("Lichtbrechung an Linsen", ["Licht"]) == "Licht"
+    assert boundary_keyword("Eizelle und Spermium", ["Zelle"]) == "Zelle", "two letters before it make a compound"
+    assert boundary_keyword("Herdplatten reinigen", ["Erdplatten"]) is None, "one letter before it is no compound"
+    assert boundary_keyword("NICHT-LINEARE FUNKTIONEN", ["Lineare Funktion"]) is None, "negated by nicht-"
+    assert boundary_keyword("nicht lineare Funktionen", ["Lineare Funktion"]) is None
+    assert boundary_keyword("Lineare Funktionen zeichnen", ["Lineare Funktion"]) == "Lineare Funktion"
+    assert boundary_keyword("Wahl\xadpflicht\xadbereich", ["Licht"]) is None, "a soft hyphen does not end a word"

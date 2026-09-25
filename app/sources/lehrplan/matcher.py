@@ -20,9 +20,14 @@ MIN_PART_CHARS = 4
 MAX_KEYWORD_CHARS = 40
 DEFAULT_MAX_KEYWORDS = 12
 DEFAULT_LIMIT = DEFAULT_SEARCH_LIMIT
+MIN_COMPOUND_HEAD = 2  # letters before a keyword that ends a word: "Ei|zelle" is a compound, "H|erdplatten" is not
 _ROLE_WEIGHT = {ROLE_THEMENBEREICH: 3, ROLE_KOMPETENZ: 2, ROLE_INHALT: 1}
 _PARENTHESES = re.compile(r"\s*\([^)]*\)\s*$")
 _WORD = r"[\wäöüÄÖÜß]"
+_WORD_CHAR = re.compile(_WORD)
+_WORD_END = re.compile(rf"{_WORD}+$")
+_NEGATIONS = ("nicht-", "nicht ")  # "NICHT-LINEARE FUNKTIONEN" are not about linear functions
+_SOFT_HYPHEN = "\xad"
 # Parts of hyphenated titles that name a genre rather than a subject ("Säure-Base-Konzepte")
 _GENERIC_PARTS = frozenset(
     {
@@ -71,14 +76,15 @@ def build_keywords(
 ) -> list[str]:
     """Topic first, then aliases and sub-topics; parenthetical qualifiers, duplicates and tiny words dropped.
 
-    Hyphenated titles also contribute their parts ("Säure-Base-Konzepte" -> "Säure", "Base"), except
-    generic ones, because curricula spell such topics as separate words.
+    A hyphenated topic also contributes its parts ("Säure-Base-Konzepte" -> "Säure", "Base"), except generic
+    ones, because curricula spell such topics as separate words. Aliases and sub-topics do not: the part "affin" of
+    the synonym "affin-lineare Funktion" found Paraffin and Affinität (M22).
     """
     keywords: list[str] = []
     seen: set[str] = set()
     for index, raw in enumerate((topic, *aliases, *subtopics)):
         text = _PARENTHESES.sub("", raw).strip()
-        for variant in _variants(text):
+        for variant in _variants(text) if index == 0 else [text]:
             key = variant.casefold()
             # The topic itself is never dropped for length; a long title simply finds nothing.
             too_long = len(variant) > MAX_KEYWORD_CHARS and not (index == 0 and variant == text)
@@ -101,14 +107,29 @@ def _variants(text: str) -> list[str]:
 
 
 def boundary_keyword(text: str, keywords: Sequence[str]) -> str | None:
-    """The first keyword that touches a word boundary in ``text``; ``None`` when every match is buried.
+    """The first keyword that starts a word or ends a compound in ``text``; ``None`` when every match is buried.
 
-    "Licht" in "Lichtbrechung" or "Kernphysik" for "Physik" count, "Licht" in "Wahlpflichtbereich" does not.
+    "Licht" in "Lichtbrechung" or "Kernphysik" for "Physik" count, "Licht" in "Wahlpflichtbereich" does not. At the
+    end of a word two letters must come before the keyword ("Eizelle" for "Zelle", not "Herdplatten" for
+    "Erdplatten"), right after "nicht-" it is negated, and a soft hyphen ends no word (M22).
     """
+    text = text.replace(_SOFT_HYPHEN, "")
     for word in keywords:
-        if word and re.search(rf"(?<!{_WORD}){re.escape(word)}|{re.escape(word)}(?!{_WORD})", text, re.I):
+        if word and any(_stands(text, *found.span()) for found in re.finditer(re.escape(word), text, re.I)):
             return word
     return None
+
+
+def _stands(text: str, start: int, end: int) -> bool:
+    """Whether ``text[start:end]`` starts a word or ends a compound, and is not negated."""
+    if text[max(0, start - len(_NEGATIONS[0])) : start].casefold().endswith(_NEGATIONS):
+        return False
+    if start == 0 or not _WORD_CHAR.match(text, start - 1):
+        return True
+    if end < len(text) and _WORD_CHAR.match(text, end):
+        return False
+    head = _WORD_END.search(text, 0, start)
+    return head is not None and len(head.group(0)) >= MIN_COMPOUND_HEAD
 
 
 def _score(hit: NodeHit, schulstufe: Resolved, klassenstufe: Resolved) -> int:
