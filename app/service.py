@@ -495,16 +495,21 @@ class CompendiumService:
             confident_score=self.settings.policy_confident_score,
         )
 
-    def generate(self, request: GenerateRequest) -> Compendium:
-        deadline = Deadline(self.settings.request_timeout_s)  # bounds the LLM work; the rule-based path needs none
+    def generate(
+        self, request: GenerateRequest, *, deadline: Deadline | None = None, budget: RequestBudget | None = None
+    ) -> Compendium:
+        """The compendium of a request. ``deadline`` and ``budget`` let a caller spend one time and one token budget
+        over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
+        if deadline is None:  # bounds the LLM work; the rule-based path needs none
+            deadline = Deadline(self.settings.request_timeout_s)
         if request.matcher:  # before any work; the configured default was checked at start
             ensure_strategy(request.matcher)
         unmakeable = self._unmakeable(request)
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
         # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here
-        choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline)
-        budget = choice.budget if choice is not None else None
+        choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
+        budget = choice.budget if choice is not None else budget
         prepared = self.prepare(request, deadline, choice)
         want_world = "world" in request.parts
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
@@ -814,14 +819,14 @@ class CompendiumService:
         return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
 
     def article_choice_job(
-        self, requested: str | None, deadline: Deadline | None
+        self, requested: str | None, deadline: Deadline | None, budget: RequestBudget | None = None
     ) -> tuple[str, str | None, ArticleChoiceJob | None]:
         """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D37, D40).
 
         The shipped default is ``rule-based`` (D40). A default of ``llm`` (LLM_ARTICLE_CHOICE_DEFAULT) only applies
         where an LLM is configured; without one the rules choose and nothing is noted, so a service without a b-api
         does not report a missing LLM in every answer. A request that asks for ``llm`` itself, directly or through
-        a preset, gets the note.
+        a preset, gets the note. ``budget`` is the one a caller shares over more than the compendium (/qa).
         """
         default = self.settings.llm_article_choice_default if self.llm is not None else "rule-based"
         wanted = requested or default
@@ -830,7 +835,8 @@ class CompendiumService:
         note = self.llm_unavailable()
         if note is not None or self.llm is None:
             return wanted, note, None
-        return wanted, None, ArticleChoiceJob(self.llm.client, self.llm.open_budget(), deadline)
+        opened = budget if budget is not None else self.llm.open_budget()
+        return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline)
 
     def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""

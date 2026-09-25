@@ -11,12 +11,15 @@ travel on the pairs into a service that does not know it.
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 
 from fastapi import HTTPException, Request
 
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, MAX_TEXT_CHARS, QaRequest
 from app.domain.models import NodeInput
 from app.knowledge.recognise import load_spacy
+from app.llm.budget import RequestBudget
+from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair
@@ -24,8 +27,20 @@ from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pai
 from app.synthesis.qa_parse import parse_based_pairs
 
 
+@dataclass(frozen=True)
+class LlmAllowance:
+    """The token budget and the deadline of one /qa request: part 1 and the pairs spend from the same."""
+
+    budget: RequestBudget
+    deadline: Deadline
+
+
 def from_models(
-    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+    request: Request,
+    text: str,
+    payload: QaRequest,
+    node: NodeInput | None = None,
+    allowance: LlmAllowance | None = None,
 ) -> tuple[list[QaPair] | None, str]:
     """The pairs of the two small models, or ``None`` and the reason the templates have to do it."""
     settings = request.app.state.settings
@@ -45,11 +60,16 @@ def from_models(
 
 
 def from_llm(
-    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+    request: Request,
+    text: str,
+    payload: QaRequest,
+    node: NodeInput | None = None,
+    allowance: LlmAllowance | None = None,
 ) -> tuple[list[QaPair] | None, str]:
     """The model's pairs, or ``None`` and the reason the templates have to do it.
 
-    A node's title and keywords point the model at what the material is about (D47).
+    A node's title and keywords point the model at what the material is about (D47). ``allowance`` is what the
+    request has left after part 1; without one (a text of the caller's) the pairs get a budget of their own.
     """
     service = request.app.state.service
     llm = service.llm if service is not None else None
@@ -58,25 +78,31 @@ def from_llm(
     unavailable = service.llm_unavailable()
     if unavailable:
         return None, f"LLM nicht verfügbar: {unavailable}; Regelmodus verwendet"
-    pairs = llm.qa.pairs(
+    answer = llm.qa.pairs(
         text,
         count=payload.count,
         max_answer_length=payload.max_answer_length,
-        budget=llm.open_budget(),
+        budget=allowance.budget if allowance is not None else llm.open_budget(),
         level_property=LEVEL_PROPERTY if payload.levels else None,
         level_values=payload.levels,
-        deadline=Deadline(service.settings.request_timeout_s),
+        deadline=allowance.deadline if allowance is not None else Deadline(service.settings.request_timeout_s),
         focus_title=node.title if node is not None else None,
         focus_terms=node.keywords if node is not None else (),
         focus_kind=node.kind if node is not None else "material",
     )
-    if pairs is None:
+    if isinstance(answer, LlmSkipped):
+        return None, f"LLM-Aufruf entfiel: {answer.reason}; Regelmodus verwendet"
+    if answer is None:
         return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"
-    return pairs, ""
+    return answer, ""
 
 
 def from_parse(
-    request: Request, text: str, payload: QaRequest, node: NodeInput | None = None
+    request: Request,
+    text: str,
+    payload: QaRequest,
+    node: NodeInput | None = None,
+    allowance: LlmAllowance | None = None,
 ) -> tuple[list[QaPair] | None, str]:
     """The pairs of the dependency parse, or ``None`` and the reason the templates have to do it."""
     nlp = load_spacy(request.app.state.settings.spacy_model)
@@ -149,6 +175,7 @@ def _mapped(levels: Sequence[str], declared: Sequence[str]) -> tuple[list[str], 
 
 
 # The stages that can refuse, by the ``method`` that asks for them. rule-based is not here: it is what
-# the endpoint falls back to, so it has no reason to be dispatched. Each hears the node the text came from.
-Stage = Callable[[Request, str, QaRequest, NodeInput | None], tuple[list[QaPair] | None, str]]
+# the endpoint falls back to, so it has no reason to be dispatched. Each hears the node the text came from, and
+# the llm stage spends what the request has left of its budget and time.
+Stage = Callable[[Request, str, QaRequest, NodeInput | None, LlmAllowance | None], tuple[list[QaPair] | None, str]]
 STAGES: dict[str, Stage] = {"parse-based": from_parse, "models": from_models, "llm": from_llm}

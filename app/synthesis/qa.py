@@ -123,7 +123,11 @@ def cut(text: str, limit: int) -> str:
 
 
 class LlmQaWriter:
-    """The pairs of the old endpoint, written by the model; ``None`` means: use the templates."""
+    """The pairs of the old endpoint, written by the model.
+
+    ``LlmSkipped`` says why no call was made (budget, time, b-api) and ``None`` that the answer held no pair; either
+    way the templates take over.
+    """
 
     def __init__(self, client: BApiClient) -> None:
         self.client = client
@@ -141,7 +145,7 @@ class LlmQaWriter:
         focus_title: str | None = None,
         focus_terms: Sequence[str] = (),
         focus_kind: str = "material",
-    ) -> list[QaPair] | None:
+    ) -> list[QaPair] | LlmSkipped | None:
         """``focus_title`` and ``focus_terms`` name the node - a material or a collection (``focus_kind``) - and its
         keywords (D47): the model asks about them first, as far as the text treats them."""
         levels = list(level_values) if level_property and level_values else []
@@ -168,7 +172,7 @@ class LlmQaWriter:
         )
         if isinstance(answer, LlmSkipped):
             log.warning("QA pairs from the LLM skipped: %s", answer.reason)
-            return None
+            return answer
         pairs = parse_pairs(
             answer.text,
             max_answer_length=max_answer_length,

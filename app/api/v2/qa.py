@@ -26,10 +26,11 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, Method, Pair, QaRequest, QaResponse
-from app.api.v2.qa_stages import STAGES, levels_from, node_levels
+from app.api.v2.qa_stages import STAGES, LlmAllowance, levels_from, node_levels
 from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
+from app.llm.deadline import Deadline
 from app.service import CompendiumService, PartsUnavailableError, TopicNotFoundError
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.synthesis.citations import without_markers
@@ -45,11 +46,24 @@ NO_TAGGER_NOTE = (
 )
 
 
-def _part_one(service: CompendiumService, payload: QaRequest) -> Compendium:
+def _allowance(request: Request, payload: QaRequest) -> LlmAllowance | None:
+    """One token budget and one deadline for the whole request when the llm stage is asked for.
+
+    Part 1 used to open its own and the pairs another after it (review of 2026-09-25), so a request could spend
+    twice LLM_MAX_TOKENS_PER_REQUEST and twice REQUEST_TIMEOUT_S. Without a configured LLM there is nothing to share.
+    """
+    service = request.app.state.service
+    llm = service.llm if service is not None else None
+    if payload.method != "llm" or llm is None:
+        return None
+    return LlmAllowance(llm.open_budget(), Deadline(service.settings.request_timeout_s))
+
+
+def _part_one(service: CompendiumService, payload: QaRequest, allowance: LlmAllowance | None) -> Compendium:
     """Make part 1 of the compendium for the topic or node; its errors are the ones the compendium endpoint gives.
 
     Subject, preset and article choice go along, so the pairs come from the part 1 a compendium request with the same
-    fields would make.
+    fields would make. With ``allowance`` part 1 spends from the budget and time of the whole request.
 
     Only ``world`` is asked for: part 2 lists curriculum elements and part 3 lists materials of a
     collection, and neither is prose a question can be built from.
@@ -65,7 +79,9 @@ def _part_one(service: CompendiumService, payload: QaRequest) -> Compendium:
                     preset=payload.preset,
                     article_choice=payload.article_choice,
                     parts=["world"],
-                )
+                ),
+                deadline=allowance.deadline if allowance is not None else None,
+                budget=allowance.budget if allowance is not None else None,
             )
     except TopicNotFoundError as exc:
         raise HTTPException(status_code=404, detail=exc.detail()) from exc
@@ -182,9 +198,10 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     topic: str | None = None
     resolution: Resolution | None = None
     node = None
+    allowance = _allowance(request, payload)
     if payload.topic or payload.node_id:
         service = get_service(request)  # a topic needs the archives; a plain text does not
-        compendium = _part_one(service, payload)
+        compendium = _part_one(service, payload, allowance)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
         text = _text_of_compendium(compendium)
     else:
@@ -202,7 +219,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
             notes.append(f"Stufen aus dem Knoten: {', '.join(inherited)}")
     pairs: list[QaPair] | None = None
     if payload.method in STAGES:
-        pairs, reason = STAGES[payload.method](request, text, payload, node)
+        pairs, reason = STAGES[payload.method](request, text, payload, node, allowance)
         if pairs is None:
             log.info("QA fell back to the templates: %s", reason)
             notes.append(reason)

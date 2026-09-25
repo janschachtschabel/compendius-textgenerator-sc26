@@ -14,6 +14,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.domain.models import AuditReport, Compendium, Resolution, Section, SectionStatus
+from app.llm.budget import RequestBudget
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -291,7 +292,7 @@ def test_a_topic_asks_the_compendium_it_makes_first(client: TestClient, monkeypa
     block = "Die Brechzahl von Wasser beträgt etwa 1,33 und bestimmt den Winkel des gebrochenen Strahls."
     asked: dict[str, Any] = {}
 
-    def only_part_one(payload: Any) -> Compendium:
+    def only_part_one(payload: Any, **_: Any) -> Compendium:  # deadline and budget, as CompendiumService.generate
         asked["parts"] = list(payload.parts)
         asked["topic"] = payload.topic
         return Compendium(
@@ -339,7 +340,7 @@ def test_the_generated_blocks_are_no_source_for_questions(client: TestClient, mo
     content = "Die Brechzahl von Wasser beträgt etwa 1,33 und bestimmt den Winkel des gebrochenen Strahls."
     apparatus = "Ludwig Bergmann, Clemens Schaefer: Optik. De Gruyter, Berlin 2004, ISBN 3-11-017081-7."
 
-    def with_apparatus(payload: Any) -> Compendium:
+    def with_apparatus(payload: Any, **_: Any) -> Compendium:
         return Compendium(
             topic="Optik",
             resolution=Resolution(query="Optik", normalized="Optik", title="Optik"),
@@ -445,3 +446,22 @@ def test_the_switches_of_part_1_need_a_topic_or_a_node(client: TestClient) -> No
     for switch in ({"subject": "Physik"}, {"preset": "balanced"}, {"article_choice": "llm"}):
         answer = client.post("/api/v2/qa", json={"text": TEXT, **switch})
         assert answer.status_code == 422 and next(iter(switch)) in answer.text, switch
+
+
+def test_part_1_and_the_pairs_spend_one_budget(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The llm stage opened a second token budget and deadline after part 1 (review of 2026-09-25)."""
+    gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
+    opened: list[RequestBudget] = []
+    real = gateway.open_budget
+    monkeypatch.setattr(gateway, "open_budget", lambda: opened.append(real()) or opened[-1])
+    body = with_llm.post("/api/v2/qa", json={"topic": "Optik", "method": "llm", "article_choice": "llm"}).json()
+    assert body["method"] == "llm", body["note"]
+    assert len(opened) == 1, "part 1 and the pairs share one budget"
+
+
+def test_the_note_says_why_the_llm_call_did_not_happen(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """A spent budget used to read as an answer without pairs."""
+    gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
+    monkeypatch.setattr(gateway, "open_budget", lambda: RequestBudget(gateway.budget, 10))
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
+    assert body["method"] == "rule-based" and "Token-Budget der Anfrage" in body["note"], body["note"]
