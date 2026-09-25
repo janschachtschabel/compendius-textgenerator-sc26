@@ -1279,3 +1279,138 @@ Thema das Kompendium besser macht (nur auf Artikelebene gemessen), und die Vorsc
 betreffen (siehe Entscheidungsvorlage, „Zu entscheiden“). Tokens der Messungen von M25 (gpt-6-luna): Nebenartikel
 23.490, Knotenfragen 78.984 im ersten und 81.681 im zweiten Lauf (dieser großenteils aus dem Zwischenspeicher der
 b-api), Zeitmessung 27.931.
+
+## M27 Die vier Profile im Ablauf des Dienstes (25.09.2026)
+
+Jan legte am 25.09.2026 vier Profile fest (D53, D54): `llm-free`, `balanced`, `best-quality` und
+`best-quality-generated`. Diese Messung gibt jedem Profil Werte für Güte, Tokens und Zeit, mit `gpt-6-luna` und dem
+Code nach D54, auf dem Entwicklungsrechner (Model2Vec an, `LLM_MAX_TOKENS_PER_REQUEST` 100.000 wie für
+`best-quality` empfohlen).
+
+### Zuordnung am Goldstandard: LLM-frei und ausgewogen
+
+Die Entscheidungsvorlage nannte für `balanced` dieselbe Zuordnung wie für `llm-free` (0,43), ohne sie gemessen zu
+haben: `compendium eval` bereitet jedes Goldthema ohne LLM-Artikelwahl vor, und `mc_grafiken.py` übernahm den Wert.
+`mc_profile_zuordnung.py` misst beide Profile auf den zehn Goldthemen mit derselben Strategie (`hybrid_light` mit
+Model2Vec), `balanced` mit der Artikelwahl, wie `/compendium` sie öffnet:
+
+| macro-F1 | LLM-frei | ausgewogen |
+|---|---|---|
+| gelabelte Absätze (Goldpool) | 0,447 | 0,450 |
+| alle Absätze des Korpus | 0,459 | 0,460 |
+| bewertete Labels (alle Absätze) | 585 | 581 |
+
+Bei allen zehn Themen wählen Regeln und LLM denselben Hauptartikel. Die Prüfung der Nebenartikel verwarf bei drei
+Themen Artikel, nur bei *Französische Revolution* einen mit Absätzen (*Die Französische Revolution*, 20 Absätze
+weniger; F1 dieses Themas 0,77 statt 0,68). `balanced` kostete im Median 877 Tokens (703 bis 1.006). Die Zuordnung
+bleibt also gleich; `balanced` wirkt vor ihr: bei unsicheren Artikeln (91 statt 86 von 94, M9) und an den
+Nebenartikeln (5 statt 12 gedruckte Absätze aus unpassenden Artikeln, M25). Der Wert 0,43 der Vorlage stammt aus M15;
+dieselbe Rechnung ergibt heute 0,45. Rohdaten: `m27_zuordnung_gold.json`.
+
+### Tokens: alle Profile auf denselben sechs Themen
+
+`mc_profile.py` erzeugt zu sechs Themen, die keine frühere Messung gestellt hatte (Zellatmung, Elektrischer
+Widerstand, Kolonialismus, Lineare Gleichung, Renaissance, Klimazonen), Teil 1 und Teil 2 in allen vier Profilen:
+
+| Profil | Tokens, Median (Spanne) | LLM-Aufrufe | gefüllte Inhaltsbausteine | Sätze mit Modellwissen |
+|---|---|---|---|---|
+| `llm-free` | 0 | 0 | 8 | – |
+| `balanced` | 905 (750 bis 1.103) | 1 | 8 | – |
+| `best-quality` | 26.267 (4.942 bis 54.448) | 5 | 8,5 | – |
+| `best-quality-generated` | 35.376 (9.223 bis 65.975) | 10,5 | 8,5 | 82 in 6 Themen (3 bis 25) |
+
+Die Tokens wachsen mit der Zahl der Absätze: rund 170 je Absatz für die LLM-Zuordnung (18 Absätze bei Zellatmung,
+323 bei Renaissance); das Umformulieren kostet je Thema 4.300 bis 11.600 Tokens mehr. Die LLM-Zuordnung füllt bei
+großen Themen mehr Bausteine (Renaissance 11 statt 9, Klimazonen 10 statt 7), beim kleinen Thema Zellatmung weniger
+(4 statt 7). Der Hauptartikel war in allen Profilen derselbe. Die Zeiten dieses Laufs gelten nicht: Artikelwahl und
+Zuordnung schicken in mehreren Profilen denselben Prompt, und der Zwischenspeicher der b-api beantwortete ihn beim
+zweiten Profil in Zehntelsekunden. Rohdaten: `m27_profile_tokens.json`.
+
+### Zeit: jedes Profil auf eigenen Themen
+
+`mc_profile_zeit.py` gibt deshalb jedem LLM-Profil sechs eigene Themen, 18 weitere, die keine Messung gestellt
+hatte; `llm-free` läuft auf allen 18, weil es keinen Prompt schickt. Teil 1 und Teil 2 je Kompendium:
+
+| Profil | `llm-free` plus LLM-Anteil, Median (Spanne) | gemessen, Median (Spanne) | Tokens, Median (Spanne) | Absätze je Thema |
+|---|---|---|---|---|
+| `llm-free` (18 Themen) | – | 1,6 s (1,1 bis 3,0) | 0 | 152 |
+| `balanced` | 3,4 s (1,4 bis 5,3) | 5,8 s (2,1 bis 6,3) | 833 (767 bis 907) | 225 |
+| `best-quality` | 14,2 s (11,4 bis 15,7) | 14,7 s (12,5 bis 19,6) | 19.484 (11.793 bis 35.447) | 105 |
+| `best-quality-generated` | 23,5 s (18,6 bis 28,1) | 23,8 s (20,2 bis 28,7) | 41.641 (27.566 bis 67.892) | 205 |
+
+Die lokalen Schritte (Korpus, Text, Teil 2) liefen in einigen LLM-Läufen um 0,3 bis 2 s langsamer als im Durchgang
+ohne LLM auf denselben Themen: Während der Messung zog der Rechner ein Image und maß im Container QA-Paare (M29). Die
+belastbarere Zahl ist deshalb die Zeit von `llm-free` auf demselben Thema plus dem LLM-Anteil aus den Phasen des
+Audits (`mc_grafiken.py`, `profile_seconds`); bei `best-quality` und `best-quality-generated` liegen beide nah
+beieinander, bei `balanced` nicht. LLM-Anteil im Median: Prüfung der Nebenartikel 1,5 s (0,1 bis 4,2), mit
+LLM-Zuordnung 12,7 s, mit Umformulieren 21,4 s; M25 maß für `balanced` 2,0 s mehr, hier 1,5 s.
+Die drei Sätze sind verschieden groß; die Tokens vergleicht die Tabelle davor besser. `/knowledge` (Auflösung,
+Korpus, Prüfung der Nebenartikel) braucht danach 0,5 s ohne LLM und rund 2 bis 3 s mit. Rohdaten:
+`m27_profile_zeit.json`.
+
+## M28 Lesefassung: `best-quality-generated` gegen `best-quality` (25.09.2026)
+
+Punkt 3 der Entscheidungsvorlage verlangte vor einer Lesefassung einen Richtervergleich. Die Texte von Teil 1 aus M27
+zu den sechs Themen, einmal wörtlich (`best-quality`) und einmal vom LLM geschrieben und um Modellwissen ergänzt
+(`best-quality-generated`), gingen ohne ihre Kennzeichen (Kommentare entfernt, Belegnummern stehen gelassen) als A und
+B in zufälliger Reihenfolge an zwei Claude-Gutachter. Sie benoteten jeden Text von 1 bis 5 nach Lesbarkeit für eine
+Lehrkraft, Zusammenhang und Themenbezug, zählten Füllsätze (Aussagen über Text, Baustein oder Kompendium,
+Allgemeinplätze, Wiederholungen), listeten Fachfehler und wählten den besseren Einstieg. Danach bewerteten sie jeden
+der 82 Sätze mit Modellwissen nach Richtigkeit und Nutzen.
+
+| je Text, Mittel über beide Gutachter und sechs Themen | `best-quality` (wörtlich) | `best-quality-generated` |
+|---|---|---|
+| Lesbarkeit, 1 bis 5 | 2,5 | 4,0 |
+| Zusammenhang, 1 bis 5 | 2,4 | 4,0 |
+| beim Thema, 1 bis 5 | 3,6 | 3,5 |
+| Füllsätze je Thema | 0,8 | 12,3 |
+| Fachfehler, Summe beider Gutachter | 17 | 14 |
+| als besserer Einstieg gewählt | 1 von 12 | 11 von 12 |
+
+Die wörtliche Fassung verlor vor allem an Bruchstücken: Sätze ohne Bezug („Dabei …“), fehlende Formelzeichen,
+zerbrochene Tabellen, Verweise auf Karten, die es nicht gibt. Die Fachfehler stehen meist schon in den Quellen und
+kommen in beiden Fassungen vor (etwa die Unabhängigkeit der USA „1789“ aus dem Klexikon). Beide Fassungen verloren bei
+*Lineare Gleichung* den Themenbezug (partielle Differentialgleichungen) und bei *Klimazonen* Absätze über
+Winterhärtezonen. Von den 82 Sätzen mit Modellwissen nannten beide Gutachter 52 Füllsätze und 26 fachlich; zwei
+hielten beide für falsch, 7 und 8 für fraglich. Die Füllsätze sind vor allem Aussagen über den Text („Der Baustein
+behandelt …“, „Das Kompendium fragt …“) und Transfer- oder Unterrichtsfloskeln („Als Transferprinzip lässt sich
+daraus ableiten …“), am häufigsten in Praxis (12 der 17 ergänzten Sätze), Gesellschaftlicher Kontext (11 von 13) und
+Themendefinition (7 von 8), jeweils von beiden als Füllsatz gewertet; in Entwicklung & Ausblick waren es nur 4 von 19.
+
+**Ergebnis:** Für Menschen, die den Text direkt lesen, ist die geschriebene Fassung klar besser. Das ergänzte
+Modellwissen trägt dazu wenig bei: zwei Drittel davon sind Füllsätze, die den Text länger, aber nicht reicher machen.
+Die Gutachter sind Sprachmodelle, keine Lehrkräfte; sechs Themen sind eine kleine Stichprobe. Rohdaten:
+`m28_lesefassung.json` (Noten, Zählungen und Urteile je Satz, ohne Texte und Zitate).
+
+## M29 QA-Paare je Profil (25.09.2026)
+
+D54 gibt `llm-free` das Verfahren `parse-based` und den übrigen Profilen `llm`. Für `llm` gab es bis dahin keine
+Messung (M25: „getestet, nicht gemessen“). `mc_qa_profile.py` fragt beide auf den Texten der vier Kompendien der
+Messung vom 22.09.2026 (Optik, Ernst Abbe, Französische Revolution, Photosynthese; Teil 1 von `llm-free`, so wie
+`/qa` ihn abfragt, 5.200 bis 8.600 Zeichen) nach je 20 Paaren: `parse-based` im Image, das das spaCy-Modell hat,
+`llm` (`gpt-6-luna`) auf dem Entwicklungsrechner mit denselben Texten.
+
+| | `parse-based` (`llm-free`) | `llm` (übrige Profile) |
+|---|---|---|
+| Paare, angefragt 4 × 20 | 29 (13, 5, 7, 4) | 80 |
+| Zeit je Text | 0,14 bis 0,31 s | 3,9 bis 5,7 s |
+| Tokens je Text | 0 | 1.972 bis 2.721 |
+| mangelfrei, Gutachter 1 und 2 | 1 und 4 von 29 | 74 und 68 von 80 |
+| mangelfrei bei beiden | 1 | 67 |
+| ohne den Mangel „doppelt“ | 8 und 11 | 75 und 73 |
+| Anfänge der Fragen | 2 (Was, Wer) | 21 |
+
+Zwei Claude-Gutachter bewerteten blind: je Thema die Paare beider Verfahren gemischt in fester Zufallsordnung, ohne
+Angabe des Verfahrens. Mangelfrei heißt, eine Lehrkraft kann das Paar ohne Änderung für eine Wissensabfrage zum Text
+verwenden; sonst nennt das Urteil einen Hauptmangel (Sachfehler, unbelegt, Frage unklar, Antwort passt nicht,
+trivial, doppelt). Die Gutachter waren sich bei 98 von 109 Paaren einig. Die Mängel von `parse-based`: Frage ohne
+den Text unverständlich (10), trivial (5 und 7, etwa „Was ist die Lehre vom Licht? – Die Optik“), doppelt (7),
+Antwort passt nicht (3 und 4). Beim LLM: doppelt oder unklar je 1 bis 5, zwei Antworten passen nicht, ein bis zwei
+triviale; kein Sachfehler und keine unbelegte Antwort. Das Maß ist strenger als am 22.09. (dort 26 von 33 mangelfrei
+für `parse-based`, gezählt nur Wiederholung, Rückverweis und Echo). „Doppelt“ zählt ein Paar, das dasselbe fragt wie
+ein früheres desselben Themas; im gemischten Bogen trifft das auch Paare, deren Inhalt ein Paar des anderen
+Verfahrens schon abfragte, deshalb die Zeile ohne diesen Mangel.
+
+**Ergebnis:** Die LLM-Paare sind fast alle brauchbar, für rund 2.000 bis 2.700 Tokens und 4 bis 6 s je Text. Die
+Paare aus dem Parse kosten nichts und sind schnell, aber nur wenige taugen ohne Nacharbeit. Rohdaten:
+`m29_qa.json` (Zahlen, Verfahren je Paar und die Urteile; ohne Texte und Paare, die aus den Artikeln stammen).

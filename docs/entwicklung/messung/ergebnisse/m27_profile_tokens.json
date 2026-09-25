@@ -1,0 +1,1224 @@
+{
+ "themen": [
+  "Zellatmung",
+  "Elektrischer Widerstand",
+  "Kolonialismus",
+  "Lineare Gleichung",
+  "Renaissance",
+  "Klimazonen"
+ ],
+ "zusammenfassung": {
+  "llm-free": {
+   "sekunden_median": 0.77,
+   "sekunden_min_max": [
+    0.36,
+    2.32
+   ],
+   "tokens_median": 0.0,
+   "tokens_min_max": [
+    0,
+    0
+   ],
+   "aufrufe_median": 0.0,
+   "bausteine_median": 8.0,
+   "modellwissen_saetze_summe": 0,
+   "hinweise": []
+  },
+  "balanced": {
+   "sekunden_median": 2.62,
+   "sekunden_min_max": [
+    0.42,
+    3.86
+   ],
+   "tokens_median": 904.5,
+   "tokens_min_max": [
+    750,
+    1103
+   ],
+   "aufrufe_median": 1.0,
+   "bausteine_median": 8.0,
+   "modellwissen_saetze_summe": 0,
+   "hinweise": []
+  },
+  "best-quality": {
+   "sekunden_median": 12.01,
+   "sekunden_min_max": [
+    0.52,
+    14.91
+   ],
+   "tokens_median": 26267.0,
+   "tokens_min_max": [
+    4942,
+    54448
+   ],
+   "aufrufe_median": 5.0,
+   "bausteine_median": 8.5,
+   "modellwissen_saetze_summe": 0,
+   "hinweise": []
+  },
+  "best-quality-generated": {
+   "sekunden_median": 8.11,
+   "sekunden_min_max": [
+    7.87,
+    24.52
+   ],
+   "tokens_median": 35376.0,
+   "tokens_min_max": [
+    9223,
+    65975
+   ],
+   "aufrufe_median": 10.5,
+   "bausteine_median": 8.5,
+   "modellwissen_saetze_summe": 82,
+   "hinweise": []
+  }
+ },
+ "laeufe": {
+  "Zellatmung": {
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Zellatmung",
+    "sekunden": 1.12,
+    "phasen_ms": {
+     "resolve": 9,
+     "corpus": 411,
+     "segment": 18,
+     "match": 46,
+     "synthesize": 620,
+     "curricula": 11,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 11,
+    "absaetze_gesamt": 18,
+    "lehrplanelemente": 73,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 10633
+   },
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Zellatmung",
+    "sekunden": 3.34,
+    "phasen_ms": {
+     "resolve": 1,
+     "corpus": 62,
+     "hit_check": 3086,
+     "segment": 18,
+     "match": 35,
+     "synthesize": 123,
+     "curricula": 9,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 1002,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 6,
+    "absaetze_zugeordnet": 10,
+    "absaetze_gesamt": 17,
+    "lehrplanelemente": 73,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zyklon B"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 8030
+   },
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Zellatmung",
+    "sekunden": 3.51,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 69,
+     "hit_check": 63,
+     "segment": 21,
+     "match": 3215,
+     "synthesize": 125,
+     "curricula": 11,
+     "assemble": 2
+    },
+    "aufrufe": 2,
+    "tokens": 4942,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 4,
+    "absaetze_zugeordnet": 7,
+    "absaetze_gesamt": 17,
+    "lehrplanelemente": 73,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zyklon B"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 17,
+     "answered": 17,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 5741
+   },
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Zellatmung",
+    "sekunden": 7.87,
+    "phasen_ms": {
+     "resolve": 2,
+     "corpus": 72,
+     "hit_check": 64,
+     "segment": 17,
+     "match": 109,
+     "synthesize": 7591,
+     "curricula": 10,
+     "assemble": 2
+    },
+    "aufrufe": 5,
+    "tokens": 9223,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 5,
+    "absaetze_zugeordnet": 7,
+    "absaetze_gesamt": 17,
+    "lehrplanelemente": 73,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zyklon B"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 17,
+     "answered": 17,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 3,
+    "hinweis": null,
+    "zeichen_teil1": 6958
+   }
+  },
+  "Elektrischer Widerstand": {
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Elektrischer Widerstand",
+    "sekunden": 3.44,
+    "phasen_ms": {
+     "resolve": 31,
+     "corpus": 214,
+     "hit_check": 2284,
+     "segment": 11,
+     "match": 163,
+     "synthesize": 690,
+     "curricula": 42,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 956,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 15,
+    "absaetze_gesamt": 169,
+    "lehrplanelemente": 68,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 20178
+   },
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Elektrischer Widerstand",
+    "sekunden": 12.62,
+    "phasen_ms": {
+     "resolve": 2,
+     "corpus": 52,
+     "hit_check": 62,
+     "segment": 12,
+     "match": 12322,
+     "synthesize": 121,
+     "curricula": 37,
+     "assemble": 3
+    },
+    "aufrufe": 5,
+    "tokens": 25959,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 22,
+    "absaetze_gesamt": 169,
+    "lehrplanelemente": 68,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 169,
+     "answered": 169,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 23228
+   },
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Elektrischer Widerstand",
+    "sekunden": 8.41,
+    "phasen_ms": {
+     "resolve": 2,
+     "corpus": 43,
+     "hit_check": 62,
+     "segment": 11,
+     "match": 335,
+     "synthesize": 7910,
+     "curricula": 37,
+     "assemble": 3
+    },
+    "aufrufe": 11,
+    "tokens": 34903,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 22,
+    "absaetze_gesamt": 169,
+    "lehrplanelemente": 68,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 169,
+     "answered": 169,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_5",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 12,
+    "hinweis": null,
+    "zeichen_teil1": 24257
+   },
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Elektrischer Widerstand",
+    "sekunden": 0.37,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 45,
+     "segment": 11,
+     "match": 159,
+     "synthesize": 107,
+     "curricula": 36,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 15,
+    "absaetze_gesamt": 169,
+    "lehrplanelemente": 68,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 20178
+   }
+  },
+  "Kolonialismus": {
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Kolonialismus",
+    "sekunden": 14.91,
+    "phasen_ms": {
+     "resolve": 34,
+     "corpus": 961,
+     "hit_check": 1063,
+     "segment": 33,
+     "match": 11543,
+     "synthesize": 1260,
+     "curricula": 7,
+     "assemble": 3
+    },
+    "aufrufe": 4,
+    "tokens": 26575,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 143,
+    "lehrplanelemente": 6,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 143,
+     "answered": 143,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21537
+   },
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Kolonialismus",
+    "sekunden": 8.11,
+    "phasen_ms": {
+     "resolve": 2,
+     "corpus": 220,
+     "hit_check": 61,
+     "segment": 31,
+     "match": 346,
+     "synthesize": 7435,
+     "curricula": 9,
+     "assemble": 5
+    },
+    "aufrufe": 10,
+    "tokens": 35849,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 143,
+    "lehrplanelemente": 6,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 143,
+     "answered": 143,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 15,
+    "hinweis": null,
+    "zeichen_teil1": 21970
+   },
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Kolonialismus",
+    "sekunden": 0.76,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 273,
+     "segment": 35,
+     "match": 284,
+     "synthesize": 153,
+     "curricula": 9,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 11,
+    "absaetze_gesamt": 143,
+    "lehrplanelemente": 6,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 15784
+   },
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Kolonialismus",
+    "sekunden": 0.97,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 217,
+     "hit_check": 74,
+     "segment": 43,
+     "match": 305,
+     "synthesize": 312,
+     "curricula": 8,
+     "assemble": 2
+    },
+    "aufrufe": 1,
+    "tokens": 750,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 11,
+    "absaetze_gesamt": 143,
+    "lehrplanelemente": 6,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 15784
+   }
+  },
+  "Lineare Gleichung": {
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Lineare Gleichung",
+    "sekunden": 24.52,
+    "phasen_ms": {
+     "resolve": 71,
+     "corpus": 472,
+     "hit_check": 3529,
+     "segment": 23,
+     "match": 11730,
+     "synthesize": 8428,
+     "curricula": 260,
+     "assemble": 3
+    },
+    "aufrufe": 10,
+    "tokens": 31667,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 190,
+    "lehrplanelemente": 146,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 177,
+     "answered": 177,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 9,
+    "hinweis": null,
+    "zeichen_teil1": 19102
+   },
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Lineare Gleichung",
+    "sekunden": 0.36,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 51,
+     "segment": 14,
+     "match": 134,
+     "synthesize": 108,
+     "curricula": 40,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 6,
+    "absaetze_zugeordnet": 17,
+    "absaetze_gesamt": 190,
+    "lehrplanelemente": 146,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 17606
+   },
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Lineare Gleichung",
+    "sekunden": 0.42,
+    "phasen_ms": {
+     "resolve": 4,
+     "corpus": 49,
+     "hit_check": 66,
+     "segment": 13,
+     "match": 128,
+     "synthesize": 109,
+     "curricula": 40,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 1103,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 6,
+    "absaetze_zugeordnet": 17,
+    "absaetze_gesamt": 190,
+    "lehrplanelemente": 146,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 17606
+   },
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Lineare Gleichung",
+    "sekunden": 0.52,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 47,
+     "hit_check": 67,
+     "segment": 13,
+     "match": 233,
+     "synthesize": 108,
+     "curricula": 39,
+     "assemble": 4
+    },
+    "aufrufe": 5,
+    "tokens": 25232,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 190,
+    "lehrplanelemente": 146,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 177,
+     "answered": 177,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 17347
+   }
+  },
+  "Renaissance": {
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Renaissance",
+    "sekunden": 2.32,
+    "phasen_ms": {
+     "resolve": 35,
+     "corpus": 473,
+     "segment": 22,
+     "match": 503,
+     "synthesize": 1131,
+     "curricula": 149,
+     "assemble": 4
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 21,
+    "absaetze_gesamt": 323,
+    "lehrplanelemente": 91,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 26136
+   },
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Renaissance",
+    "sekunden": 1.91,
+    "phasen_ms": {
+     "resolve": 5,
+     "corpus": 139,
+     "hit_check": 1101,
+     "segment": 16,
+     "match": 483,
+     "synthesize": 135,
+     "curricula": 27,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 853,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 21,
+    "absaetze_gesamt": 322,
+    "lehrplanelemente": 91,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Gebundene Rede"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 25557
+   },
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Renaissance",
+    "sekunden": 14.06,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 121,
+     "hit_check": 69,
+     "segment": 16,
+     "match": 13666,
+     "synthesize": 150,
+     "curricula": 30,
+     "assemble": 4
+    },
+    "aufrufe": 8,
+    "tokens": 54448,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 11,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 322,
+    "lehrplanelemente": 91,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Gebundene Rede"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 314,
+     "answered": 314,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 30039
+   },
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Renaissance",
+    "sekunden": 7.94,
+    "phasen_ms": {
+     "resolve": 5,
+     "corpus": 126,
+     "hit_check": 67,
+     "segment": 17,
+     "match": 671,
+     "synthesize": 6962,
+     "curricula": 79,
+     "assemble": 6
+    },
+    "aufrufe": 16,
+    "tokens": 65975,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 11,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 322,
+    "lehrplanelemente": 91,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Gebundene Rede"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 314,
+     "answered": 314,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_8",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 18,
+    "hinweis": null,
+    "zeichen_teil1": 31184
+   }
+  },
+  "Klimazonen": {
+   "balanced": {
+    "profil": "balanced",
+    "hauptartikel": "Klimazone",
+    "sekunden": 3.86,
+    "phasen_ms": {
+     "resolve": 29,
+     "corpus": 969,
+     "hit_check": 1773,
+     "segment": 22,
+     "match": 423,
+     "synthesize": 493,
+     "curricula": 142,
+     "assemble": 5
+    },
+    "aufrufe": 1,
+    "tokens": 759,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 285,
+    "lehrplanelemente": 20,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zone"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21838
+   },
+   "best-quality": {
+    "profil": "best-quality",
+    "hauptartikel": "Klimazone",
+    "sekunden": 11.4,
+    "phasen_ms": {
+     "resolve": 2,
+     "corpus": 136,
+     "hit_check": 66,
+     "segment": 20,
+     "match": 11013,
+     "synthesize": 126,
+     "curricula": 25,
+     "assemble": 6
+    },
+    "aufrufe": 7,
+    "tokens": 49046,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 285,
+    "lehrplanelemente": 20,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zone"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 285,
+     "answered": 285,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 23875
+   },
+   "best-quality-generated": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Klimazone",
+    "sekunden": 8.11,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 139,
+     "hit_check": 65,
+     "segment": 15,
+     "match": 514,
+     "synthesize": 7340,
+     "curricula": 22,
+     "assemble": 3
+    },
+    "aufrufe": 15,
+    "tokens": 60663,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 285,
+    "lehrplanelemente": 20,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Zone"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 285,
+     "answered": 285,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_7",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 25,
+    "hinweis": null,
+    "zeichen_teil1": 26721
+   },
+   "llm-free": {
+    "profil": "llm-free",
+    "hauptartikel": "Klimazone",
+    "sekunden": 0.77,
+    "phasen_ms": {
+     "resolve": 1,
+     "corpus": 141,
+     "segment": 21,
+     "match": 456,
+     "synthesize": 122,
+     "curricula": 22,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 286,
+    "lehrplanelemente": 20,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 22477
+   }
+  }
+ }
+}

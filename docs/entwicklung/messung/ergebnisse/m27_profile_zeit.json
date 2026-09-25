@@ -1,0 +1,1773 @@
+{
+ "saetze": {
+  "balanced": [
+   "Stochastik",
+   "Nahrungskette",
+   "Erster Weltkrieg",
+   "Rechtsstaat",
+   "Barock",
+   "Magnetfeld"
+  ],
+  "best-quality": [
+   "Hebelgesetz",
+   "Mondphasen",
+   "Industrialisierung",
+   "Blutkreislauf",
+   "Kreiszahl",
+   "Sonett"
+  ],
+  "best-quality-generated": [
+   "Schwerkraft",
+   "Elektromagnet",
+   "Hanse",
+   "Verdauung",
+   "Primzahl",
+   "Kubismus"
+  ]
+ },
+ "llm_free_median_je_satz": {
+  "balanced": 1.62,
+  "best-quality": 1.56,
+  "best-quality-generated": 2.15
+ },
+ "zusammenfassung": {
+  "llm-free": {
+   "themen": 18,
+   "sekunden_median": 1.64,
+   "sekunden_min_max": [
+    1.14,
+    2.96
+   ],
+   "tokens_median": 0.0,
+   "tokens_min_max": [
+    0,
+    0
+   ],
+   "absaetze_median": 151.5,
+   "hinweise": []
+  },
+  "balanced": {
+   "themen": 6,
+   "sekunden_median": 5.75,
+   "sekunden_min_max": [
+    2.12,
+    6.3
+   ],
+   "tokens_median": 832.5,
+   "tokens_min_max": [
+    767,
+    907
+   ],
+   "absaetze_median": 224.5,
+   "hinweise": []
+  },
+  "best-quality": {
+   "themen": 6,
+   "sekunden_median": 14.68,
+   "sekunden_min_max": [
+    12.45,
+    19.61
+   ],
+   "tokens_median": 19484.0,
+   "tokens_min_max": [
+    11793,
+    35447
+   ],
+   "absaetze_median": 105.0,
+   "hinweise": []
+  },
+  "best-quality-generated": {
+   "themen": 6,
+   "sekunden_median": 23.79,
+   "sekunden_min_max": [
+    20.23,
+    28.65
+   ],
+   "tokens_median": 41640.5,
+   "tokens_min_max": [
+    27566,
+    67892
+   ],
+   "absaetze_median": 204.5,
+   "hinweise": []
+  }
+ },
+ "laeufe": {
+  "llm-free": {
+   "Stochastik": {
+    "profil": "llm-free",
+    "hauptartikel": "Stochastik",
+    "sekunden": 1.32,
+    "phasen_ms": {
+     "resolve": 15,
+     "corpus": 291,
+     "segment": 14,
+     "match": 212,
+     "synthesize": 718,
+     "curricula": 58,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 19,
+    "absaetze_gesamt": 148,
+    "lehrplanelemente": 42,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24569
+   },
+   "Nahrungskette": {
+    "profil": "llm-free",
+    "hauptartikel": "Nahrungskette",
+    "sekunden": 1.14,
+    "phasen_ms": {
+     "resolve": 14,
+     "corpus": 479,
+     "segment": 8,
+     "match": 117,
+     "synthesize": 500,
+     "curricula": 17,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 55,
+    "lehrplanelemente": 34,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 16452
+   },
+   "Erster Weltkrieg": {
+    "profil": "llm-free",
+    "hauptartikel": "Erster Weltkrieg",
+    "sekunden": 2.96,
+    "phasen_ms": {
+     "resolve": 6,
+     "corpus": 792,
+     "segment": 37,
+     "match": 821,
+     "synthesize": 1242,
+     "curricula": 55,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 400,
+    "lehrplanelemente": 57,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 18380
+   },
+   "Rechtsstaat": {
+    "profil": "llm-free",
+    "hauptartikel": "Rechtsstaat",
+    "sekunden": 1.92,
+    "phasen_ms": {
+     "resolve": 31,
+     "corpus": 458,
+     "segment": 21,
+     "match": 498,
+     "synthesize": 886,
+     "curricula": 18,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 21,
+    "absaetze_gesamt": 301,
+    "lehrplanelemente": 102,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21868
+   },
+   "Barock": {
+    "profil": "llm-free",
+    "hauptartikel": "Barock",
+    "sekunden": 1.87,
+    "phasen_ms": {
+     "resolve": 31,
+     "corpus": 241,
+     "segment": 19,
+     "match": 638,
+     "synthesize": 900,
+     "curricula": 31,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 383,
+    "lehrplanelemente": 115,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 31915
+   },
+   "Magnetfeld": {
+    "profil": "llm-free",
+    "hauptartikel": "Magnetismus",
+    "sekunden": 1.36,
+    "phasen_ms": {
+     "resolve": 28,
+     "corpus": 329,
+     "segment": 14,
+     "match": 186,
+     "synthesize": 775,
+     "curricula": 22,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 16,
+    "absaetze_gesamt": 140,
+    "lehrplanelemente": 164,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 15835
+   },
+   "Hebelgesetz": {
+    "profil": "llm-free",
+    "hauptartikel": "Hebel (Physik)",
+    "sekunden": 1.77,
+    "phasen_ms": {
+     "resolve": 11,
+     "corpus": 1014,
+     "segment": 10,
+     "match": 90,
+     "synthesize": 614,
+     "curricula": 22,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 65,
+    "lehrplanelemente": 81,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 18438
+   },
+   "Mondphasen": {
+    "profil": "llm-free",
+    "hauptartikel": "Mondphase",
+    "sekunden": 1.57,
+    "phasen_ms": {
+     "resolve": 12,
+     "corpus": 778,
+     "segment": 14,
+     "match": 125,
+     "synthesize": 604,
+     "curricula": 27,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 13,
+    "absaetze_gesamt": 88,
+    "lehrplanelemente": 15,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 15747
+   },
+   "Industrialisierung": {
+    "profil": "llm-free",
+    "hauptartikel": "Industrialisierung",
+    "sekunden": 1.54,
+    "phasen_ms": {
+     "resolve": 12,
+     "corpus": 440,
+     "segment": 17,
+     "match": 318,
+     "synthesize": 673,
+     "curricula": 79,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 11,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 204,
+    "lehrplanelemente": 115,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 27134
+   },
+   "Blutkreislauf": {
+    "profil": "llm-free",
+    "hauptartikel": "Blutkreislauf",
+    "sekunden": 1.54,
+    "phasen_ms": {
+     "resolve": 27,
+     "corpus": 431,
+     "segment": 16,
+     "match": 190,
+     "synthesize": 789,
+     "curricula": 83,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 19,
+    "absaetze_gesamt": 125,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 22866
+   },
+   "Kreiszahl": {
+    "profil": "llm-free",
+    "hauptartikel": "Kreiszahl",
+    "sekunden": 2.65,
+    "phasen_ms": {
+     "resolve": 211,
+     "corpus": 854,
+     "segment": 26,
+     "match": 207,
+     "synthesize": 1042,
+     "curricula": 299,
+     "assemble": 4
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 171,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 23139
+   },
+   "Sonett": {
+    "profil": "llm-free",
+    "hauptartikel": "Sonett",
+    "sekunden": 1.42,
+    "phasen_ms": {
+     "resolve": 19,
+     "corpus": 694,
+     "segment": 11,
+     "match": 210,
+     "synthesize": 461,
+     "curricula": 19,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 21,
+    "absaetze_gesamt": 83,
+    "lehrplanelemente": 4,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 22578
+   },
+   "Schwerkraft": {
+    "profil": "llm-free",
+    "hauptartikel": "Gravitation",
+    "sekunden": 1.68,
+    "phasen_ms": {
+     "resolve": 22,
+     "corpus": 367,
+     "segment": 13,
+     "match": 385,
+     "synthesize": 817,
+     "curricula": 71,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 23,
+    "absaetze_gesamt": 293,
+    "lehrplanelemente": 64,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 28681
+   },
+   "Elektromagnet": {
+    "profil": "llm-free",
+    "hauptartikel": "Elektromagnet",
+    "sekunden": 1.35,
+    "phasen_ms": {
+     "resolve": 12,
+     "corpus": 401,
+     "segment": 22,
+     "match": 263,
+     "synthesize": 598,
+     "curricula": 47,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 15,
+    "absaetze_gesamt": 155,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 17302
+   },
+   "Hanse": {
+    "profil": "llm-free",
+    "hauptartikel": "Hanse",
+    "sekunden": 2.92,
+    "phasen_ms": {
+     "resolve": 25,
+     "corpus": 677,
+     "segment": 23,
+     "match": 617,
+     "synthesize": 1536,
+     "curricula": 35,
+     "assemble": 3
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 23,
+    "absaetze_gesamt": 307,
+    "lehrplanelemente": 5,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24467
+   },
+   "Verdauung": {
+    "profil": "llm-free",
+    "hauptartikel": "Verdauung",
+    "sekunden": 1.6,
+    "phasen_ms": {
+     "resolve": 11,
+     "corpus": 746,
+     "segment": 9,
+     "match": 182,
+     "synthesize": 599,
+     "curricula": 48,
+     "assemble": 2
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 6,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 101,
+    "lehrplanelemente": 177,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 16860
+   },
+   "Primzahl": {
+    "profil": "llm-free",
+    "hauptartikel": "Primzahl",
+    "sekunden": 2.76,
+    "phasen_ms": {
+     "resolve": 69,
+     "corpus": 278,
+     "segment": 10,
+     "match": 370,
+     "synthesize": 1993,
+     "curricula": 27,
+     "assemble": 4
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 254,
+    "lehrplanelemente": 11,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 19291
+   },
+   "Kubismus": {
+    "profil": "llm-free",
+    "hauptartikel": "Kubismus",
+    "sekunden": 2.61,
+    "phasen_ms": {
+     "resolve": 39,
+     "corpus": 785,
+     "segment": 22,
+     "match": 310,
+     "synthesize": 1419,
+     "curricula": 20,
+     "assemble": 6
+    },
+    "aufrufe": 0,
+    "tokens": 0,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 15,
+    "absaetze_gesamt": 118,
+    "lehrplanelemente": 3,
+    "artikelwahl": {
+     "used": null,
+     "asked": null,
+     "chosen": null,
+     "hits_dropped": null
+    },
+    "zuordnung": {
+     "used": null,
+     "paragraphs": null,
+     "answered": null,
+     "fallback_paragraphs": null
+    },
+    "generierung": {
+     "used": null,
+     "sections": null,
+     "fallbacks": null
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 23650
+   }
+  },
+  "balanced": {
+   "Stochastik": {
+    "profil": "balanced",
+    "hauptartikel": "Stochastik",
+    "sekunden": 3.59,
+    "phasen_ms": {
+     "resolve": 25,
+     "corpus": 429,
+     "hit_check": 1484,
+     "segment": 18,
+     "match": 325,
+     "synthesize": 1201,
+     "curricula": 96,
+     "assemble": 5
+    },
+    "aufrufe": 1,
+    "tokens": 831,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 19,
+    "absaetze_gesamt": 148,
+    "lehrplanelemente": 42,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24569
+   },
+   "Nahrungskette": {
+    "profil": "balanced",
+    "hauptartikel": "Nahrungskette",
+    "sekunden": 5.69,
+    "phasen_ms": {
+     "resolve": 27,
+     "corpus": 678,
+     "hit_check": 4168,
+     "segment": 8,
+     "match": 142,
+     "synthesize": 644,
+     "curricula": 18,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 907,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 55,
+    "lehrplanelemente": 34,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Wapiti"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 16452
+   },
+   "Erster Weltkrieg": {
+    "profil": "balanced",
+    "hauptartikel": "Erster Weltkrieg",
+    "sekunden": 6.07,
+    "phasen_ms": {
+     "resolve": 193,
+     "corpus": 1192,
+     "hit_check": 1298,
+     "segment": 53,
+     "match": 1152,
+     "synthesize": 2072,
+     "curricula": 96,
+     "assemble": 5
+    },
+    "aufrufe": 1,
+    "tokens": 820,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 14,
+    "absaetze_gesamt": 400,
+    "lehrplanelemente": 57,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Normalleistung (REFA)"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 18380
+   },
+   "Rechtsstaat": {
+    "profil": "balanced",
+    "hauptartikel": "Rechtsstaat",
+    "sekunden": 5.81,
+    "phasen_ms": {
+     "resolve": 43,
+     "corpus": 594,
+     "hit_check": 1474,
+     "segment": 24,
+     "match": 693,
+     "synthesize": 2892,
+     "curricula": 83,
+     "assemble": 3
+    },
+    "aufrufe": 1,
+    "tokens": 871,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 21,
+    "absaetze_gesamt": 301,
+    "lehrplanelemente": 102,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21868
+   },
+   "Barock": {
+    "profil": "balanced",
+    "hauptartikel": "Barock",
+    "sekunden": 6.3,
+    "phasen_ms": {
+     "resolve": 119,
+     "corpus": 541,
+     "hit_check": 1429,
+     "segment": 27,
+     "match": 727,
+     "synthesize": 2288,
+     "curricula": 1160,
+     "assemble": 4
+    },
+    "aufrufe": 1,
+    "tokens": 767,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 383,
+    "lehrplanelemente": 115,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 31915
+   },
+   "Magnetfeld": {
+    "profil": "balanced",
+    "hauptartikel": "Magnetismus",
+    "sekunden": 2.12,
+    "phasen_ms": {
+     "resolve": 34,
+     "corpus": 625,
+     "hit_check": 67,
+     "segment": 14,
+     "match": 159,
+     "synthesize": 1076,
+     "curricula": 136,
+     "assemble": 4
+    },
+    "aufrufe": 1,
+    "tokens": 834,
+    "matcher": "hybrid_light",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 7,
+    "absaetze_zugeordnet": 16,
+    "absaetze_gesamt": 139,
+    "lehrplanelemente": 164,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Romantische Medizin"
+     ]
+    },
+    "zuordnung": {
+     "used": "rule-based",
+     "paragraphs": 0,
+     "answered": 0,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 15207
+   }
+  },
+  "best-quality": {
+   "Hebelgesetz": {
+    "profil": "best-quality",
+    "hauptartikel": "Hebel (Physik)",
+    "sekunden": 14.07,
+    "phasen_ms": {
+     "resolve": 15,
+     "corpus": 1541,
+     "hit_check": 1215,
+     "segment": 17,
+     "match": 10201,
+     "synthesize": 1047,
+     "curricula": 29,
+     "assemble": 4
+    },
+    "aufrufe": 3,
+    "tokens": 11793,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 24,
+    "absaetze_gesamt": 65,
+    "lehrplanelemente": 81,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 65,
+     "answered": 65,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21800
+   },
+   "Mondphasen": {
+    "profil": "best-quality",
+    "hauptartikel": "Mondphase",
+    "sekunden": 14.83,
+    "phasen_ms": {
+     "resolve": 15,
+     "corpus": 918,
+     "hit_check": 2429,
+     "segment": 18,
+     "match": 10625,
+     "synthesize": 793,
+     "curricula": 26,
+     "assemble": 4
+    },
+    "aufrufe": 3,
+    "tokens": 15074,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 25,
+    "absaetze_gesamt": 85,
+    "lehrplanelemente": 15,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Vier"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 85,
+     "answered": 85,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24383
+   },
+   "Industrialisierung": {
+    "profil": "best-quality",
+    "hauptartikel": "Industrialisierung",
+    "sekunden": 16.14,
+    "phasen_ms": {
+     "resolve": 19,
+     "corpus": 682,
+     "hit_check": 1303,
+     "segment": 23,
+     "match": 13069,
+     "synthesize": 891,
+     "curricula": 139,
+     "assemble": 5
+    },
+    "aufrufe": 6,
+    "tokens": 35447,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 19,
+    "absaetze_gesamt": 204,
+    "lehrplanelemente": 115,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Afrika"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 204,
+     "answered": 204,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24233
+   },
+   "Blutkreislauf": {
+    "profil": "best-quality",
+    "hauptartikel": "Blutkreislauf",
+    "sekunden": 12.45,
+    "phasen_ms": {
+     "resolve": 29,
+     "corpus": 603,
+     "hit_check": 1163,
+     "segment": 21,
+     "match": 8861,
+     "synthesize": 1103,
+     "curricula": 663,
+     "assemble": 4
+    },
+    "aufrufe": 4,
+    "tokens": 23226,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 19,
+    "absaetze_gesamt": 125,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Tier"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 125,
+     "answered": 125,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21501
+   },
+   "Kreiszahl": {
+    "profil": "best-quality",
+    "hauptartikel": "Kreiszahl",
+    "sekunden": 19.61,
+    "phasen_ms": {
+     "resolve": 261,
+     "corpus": 1545,
+     "hit_check": 2678,
+     "segment": 21,
+     "match": 10492,
+     "synthesize": 2126,
+     "curricula": 2481,
+     "assemble": 5
+    },
+    "aufrufe": 5,
+    "tokens": 27243,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 171,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 171,
+     "answered": 171,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 24485
+   },
+   "Sonett": {
+    "profil": "best-quality",
+    "hauptartikel": "Sonett",
+    "sekunden": 14.52,
+    "phasen_ms": {
+     "resolve": 35,
+     "corpus": 1118,
+     "hit_check": 2250,
+     "segment": 11,
+     "match": 10461,
+     "synthesize": 545,
+     "curricula": 90,
+     "assemble": 3
+    },
+    "aufrufe": 3,
+    "tokens": 15742,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 20,
+    "absaetze_gesamt": 83,
+    "lehrplanelemente": 4,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "These"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 82,
+     "answered": 82,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 0,
+    "hinweis": null,
+    "zeichen_teil1": 21622
+   }
+  },
+  "best-quality-generated": {
+   "Schwerkraft": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Gravitation",
+    "sekunden": 20.64,
+    "phasen_ms": {
+     "resolve": 33,
+     "corpus": 440,
+     "hit_check": 1349,
+     "segment": 20,
+     "match": 11011,
+     "synthesize": 7691,
+     "curricula": 84,
+     "assemble": 4
+    },
+    "aufrufe": 14,
+    "tokens": 58177,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 10,
+    "absaetze_zugeordnet": 25,
+    "absaetze_gesamt": 293,
+    "lehrplanelemente": 64,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 293,
+     "answered": 290,
+     "fallback_paragraphs": 3
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 17,
+    "hinweis": null,
+    "zeichen_teil1": 29624
+   },
+   "Elektromagnet": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Elektromagnet",
+    "sekunden": 22.09,
+    "phasen_ms": {
+     "resolve": 14,
+     "corpus": 555,
+     "hit_check": 2673,
+     "segment": 25,
+     "match": 10348,
+     "synthesize": 8379,
+     "curricula": 87,
+     "assemble": 5
+    },
+    "aufrufe": 11,
+    "tokens": 35953,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 15,
+    "absaetze_gesamt": 155,
+    "lehrplanelemente": 200,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Bohrung"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 154,
+     "answered": 154,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_5",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 14,
+    "hinweis": null,
+    "zeichen_teil1": 19044
+   },
+   "Hanse": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Hanse",
+    "sekunden": 28.65,
+    "phasen_ms": {
+     "resolve": 43,
+     "corpus": 975,
+     "hit_check": 2066,
+     "segment": 26,
+     "match": 13439,
+     "synthesize": 11853,
+     "curricula": 233,
+     "assemble": 5
+    },
+    "aufrufe": 17,
+    "tokens": 67892,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 12,
+    "absaetze_zugeordnet": 25,
+    "absaetze_gesamt": 307,
+    "lehrplanelemente": 5,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 307,
+     "answered": 307,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_7",
+      "sc26_9",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 22,
+    "hinweis": null,
+    "zeichen_teil1": 27512
+   },
+   "Verdauung": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Verdauung",
+    "sekunden": 20.23,
+    "phasen_ms": {
+     "resolve": 3,
+     "corpus": 1273,
+     "hit_check": 1402,
+     "segment": 10,
+     "match": 9125,
+     "synthesize": 7258,
+     "curricula": 1153,
+     "assemble": 4
+    },
+    "aufrufe": 10,
+    "tokens": 27566,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 8,
+    "absaetze_zugeordnet": 18,
+    "absaetze_gesamt": 101,
+    "lehrplanelemente": 177,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 101,
+     "answered": 101,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 10,
+    "hinweis": null,
+    "zeichen_teil1": 20049
+   },
+   "Primzahl": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Primzahl",
+    "sekunden": 25.49,
+    "phasen_ms": {
+     "resolve": 65,
+     "corpus": 473,
+     "hit_check": 2767,
+     "segment": 10,
+     "match": 12779,
+     "synthesize": 9144,
+     "curricula": 240,
+     "assemble": 4
+    },
+    "aufrufe": 13,
+    "tokens": 47328,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 27,
+    "absaetze_gesamt": 254,
+    "lehrplanelemente": 11,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": []
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 247,
+     "answered": 247,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_8",
+      "sc26_10"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 18,
+    "hinweis": null,
+    "zeichen_teil1": 25815
+   },
+   "Kubismus": {
+    "profil": "best-quality-generated",
+    "hauptartikel": "Kubismus",
+    "sekunden": 26.06,
+    "phasen_ms": {
+     "resolve": 23,
+     "corpus": 503,
+     "hit_check": 3183,
+     "segment": 16,
+     "match": 12444,
+     "synthesize": 9400,
+     "curricula": 484,
+     "assemble": 5
+    },
+    "aufrufe": 10,
+    "tokens": 31166,
+    "matcher": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge",
+    "bausteine_gefuellt": 9,
+    "absaetze_zugeordnet": 23,
+    "absaetze_gesamt": 117,
+    "lehrplanelemente": 3,
+    "artikelwahl": {
+     "used": "llm",
+     "asked": false,
+     "chosen": null,
+     "hits_dropped": [
+      "Film",
+      "California Scene Painting"
+     ]
+    },
+    "zuordnung": {
+     "used": "llm",
+     "paragraphs": 117,
+     "answered": 117,
+     "fallback_paragraphs": 0
+    },
+    "generierung": {
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_11"
+     ],
+     "fallbacks": {}
+    },
+    "modellwissen_saetze": 12,
+    "hinweis": null,
+    "zeichen_teil1": 27286
+   }
+  }
+ }
+}

@@ -1,0 +1,954 @@
+{
+ "beschreibung": "M28: Teil 1 von best-quality und best-quality-generated zu sechs Themen aus M27, blind als A und B bewertet von zwei Claude-Gutachtern; Noten, Zahl der Füllsätze und Fachfehler, Vorzug; je Satz mit Modellwissen Richtigkeit und Nutzen; ohne Texte und Zitate",
+ "schluessel": {
+  "Zellatmung__A": "best-quality-generated",
+  "Zellatmung__B": "best-quality",
+  "Elektrischer Widerstand__A": "best-quality",
+  "Elektrischer Widerstand__B": "best-quality-generated",
+  "Kolonialismus__A": "best-quality-generated",
+  "Kolonialismus__B": "best-quality",
+  "Lineare Gleichung__A": "best-quality-generated",
+  "Lineare Gleichung__B": "best-quality",
+  "Renaissance__A": "best-quality",
+  "Renaissance__B": "best-quality-generated",
+  "Klimazonen__A": "best-quality",
+  "Klimazonen__B": "best-quality-generated"
+ },
+ "gutachter": [
+  {
+   "themen": {
+    "Zellatmung": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 4,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 0,
+      "fachfehler": 0
+     },
+     "vorzug": "A"
+    },
+    "Elektrischer Widerstand": {
+     "A": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 1,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 10,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    },
+    "Kolonialismus": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 12,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 0,
+      "fachfehler": 2
+     },
+     "vorzug": "A"
+    },
+    "Lineare Gleichung": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 4,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 11,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 1,
+      "fachfehler": 2
+     },
+     "vorzug": "A"
+    },
+    "Renaissance": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 0,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 18,
+      "fachfehler": 2
+     },
+     "vorzug": "B"
+    },
+    "Klimazonen": {
+     "A": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 0,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 19,
+      "fachfehler": 3
+     },
+     "vorzug": "B"
+    }
+   },
+   "modellwissen": {
+    "Zellatmung": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Elektrischer Widerstand": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Kolonialismus": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Lineare Gleichung": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Renaissance": [
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Klimazonen": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ]
+   }
+  },
+  {
+   "themen": {
+    "Zellatmung": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 4,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 0,
+      "fachfehler": 0
+     },
+     "vorzug": "A"
+    },
+    "Elektrischer Widerstand": {
+     "A": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 1,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 5,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 9,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    },
+    "Kolonialismus": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 12,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 2,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 1,
+      "fachfehler": 2
+     },
+     "vorzug": "A"
+    },
+    "Lineare Gleichung": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 9,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 2,
+      "fachfehler": 2
+     },
+     "vorzug": "A"
+    },
+    "Renaissance": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 1,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 18,
+      "fachfehler": 1
+     },
+     "vorzug": "A"
+    },
+    "Klimazonen": {
+     "A": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 3,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 21,
+      "fachfehler": 3
+     },
+     "vorzug": "B"
+    }
+   },
+   "modellwissen": {
+    "Zellatmung": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Elektrischer Widerstand": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Kolonialismus": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Lineare Gleichung": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Renaissance": [
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Klimazonen": [
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ]
+   }
+  }
+ ],
+ "auswertung": {
+  "mittel": {
+   "best-quality-generated": {
+    "lesbarkeit": 4.0,
+    "zusammenhang": 4.0,
+    "passend_zum_thema": 3.5,
+    "fuellsaetze": 12.25
+   },
+   "best-quality": {
+    "lesbarkeit": 2.5,
+    "zusammenhang": 2.42,
+    "passend_zum_thema": 3.58,
+    "fuellsaetze": 0.83
+   }
+  },
+  "fachfehler_summe": {
+   "best-quality-generated": 14,
+   "best-quality": 17
+  },
+  "vorzug": {
+   "best-quality-generated": 11,
+   "best-quality": 1
+  },
+  "modellwissen": {
+   "fraglich/fachlich": 7,
+   "fraglich/fuellsatz": 8,
+   "ja/fachlich": 45,
+   "ja/fuellsatz": 100,
+   "nein/fachlich": 4
+  }
+ },
+ "saetze_mit_modellwissen": {
+  "Zellatmung": 3,
+  "Elektrischer Widerstand": 12,
+  "Kolonialismus": 15,
+  "Lineare Gleichung": 9,
+  "Renaissance": 18,
+  "Klimazonen": 25
+ }
+}

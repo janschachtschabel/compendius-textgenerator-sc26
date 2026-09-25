@@ -1,0 +1,362 @@
+{
+ "strategie": "hybrid_light",
+ "zusammenfassung": {
+  "llm-free": {
+   "macro_f1": 0.4585,
+   "micro_f1": 0.666,
+   "goldpool_macro_f1": 0.4468,
+   "goldpool_micro_f1": 0.6526,
+   "labels_bewertet": 585,
+   "labels_veraltet": 58,
+   "fehlbelegt": 179,
+   "verpasst": 37,
+   "gedruckt_macro_f1": 0.2877,
+   "gedruckt_micro_f1": 0.2197,
+   "je_baustein_f1": {
+    "themendefinition": 0.68,
+    "systematik": 0.606,
+    "fachinhalte": 0.713,
+    "gesellschaftlicher_kontext": 0.441,
+    "entwicklung_ausblick": 0.751,
+    "beruf_wirtschaft": 0.308,
+    "bildung": 0.545,
+    "regularien": 0.333,
+    "praxis": 0.207,
+    "querschnitt": 0.0
+   }
+  },
+  "balanced": {
+   "macro_f1": 0.4598,
+   "micro_f1": 0.6673,
+   "goldpool_macro_f1": 0.4495,
+   "goldpool_micro_f1": 0.6564,
+   "labels_bewertet": 581,
+   "labels_veraltet": 62,
+   "fehlbelegt": 177,
+   "verpasst": 37,
+   "gedruckt_macro_f1": 0.2881,
+   "gedruckt_micro_f1": 0.2201,
+   "je_baustein_f1": {
+    "themendefinition": 0.68,
+    "systematik": 0.612,
+    "fachinhalte": 0.713,
+    "gesellschaftlicher_kontext": 0.448,
+    "entwicklung_ausblick": 0.751,
+    "beruf_wirtschaft": 0.308,
+    "bildung": 0.545,
+    "regularien": 0.333,
+    "praxis": 0.207,
+    "querschnitt": 0.0
+   }
+  }
+ },
+ "themen": {
+  "Barockliteratur": {
+   "llm-free": {
+    "hauptartikel": "Barockliteratur",
+    "chunks": 23,
+    "labels_bewertet": 23,
+    "labels_veraltet": 0,
+    "macro_f1": 0.393,
+    "micro_f1": 0.439,
+    "gedruckt_macro_f1": 0.417,
+    "goldpool_macro_f1": 0.393,
+    "fehlbelegt": 14,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.43
+   },
+   "balanced": {
+    "hauptartikel": "Barockliteratur",
+    "chunks": 23,
+    "labels_bewertet": 23,
+    "labels_veraltet": 0,
+    "macro_f1": 0.393,
+    "micro_f1": 0.439,
+    "gedruckt_macro_f1": 0.417,
+    "goldpool_macro_f1": 0.393,
+    "fehlbelegt": 14,
+    "verworfen_durch_trefferpruefung": [
+     "Trümmerliteratur",
+     "DDR-Literatur"
+    ],
+    "tokens": 703,
+    "sekunden_vorbereitung": 0.13
+   }
+  },
+  "Bruchrechnung": {
+   "llm-free": {
+    "hauptartikel": "Bruchrechnung",
+    "chunks": 67,
+    "labels_bewertet": 44,
+    "labels_veraltet": 5,
+    "macro_f1": 0.632,
+    "micro_f1": 0.857,
+    "gedruckt_macro_f1": 0.366,
+    "goldpool_macro_f1": 0.627,
+    "fehlbelegt": 5,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.99
+   },
+   "balanced": {
+    "hauptartikel": "Bruchrechnung",
+    "chunks": 67,
+    "labels_bewertet": 44,
+    "labels_veraltet": 5,
+    "macro_f1": 0.632,
+    "micro_f1": 0.857,
+    "gedruckt_macro_f1": 0.366,
+    "goldpool_macro_f1": 0.627,
+    "fehlbelegt": 5,
+    "verworfen_durch_trefferpruefung": [
+     "Definitionsmenge"
+    ],
+    "tokens": 723,
+    "sekunden_vorbereitung": 0.17
+   }
+  },
+  "Demokratie": {
+   "llm-free": {
+    "hauptartikel": "Demokratie",
+    "chunks": 383,
+    "labels_bewertet": 80,
+    "labels_veraltet": 1,
+    "macro_f1": 0.549,
+    "micro_f1": 0.64,
+    "gedruckt_macro_f1": 0.134,
+    "goldpool_macro_f1": 0.557,
+    "fehlbelegt": 28,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.37
+   },
+   "balanced": {
+    "hauptartikel": "Demokratie",
+    "chunks": 383,
+    "labels_bewertet": 80,
+    "labels_veraltet": 1,
+    "macro_f1": 0.549,
+    "micro_f1": 0.64,
+    "gedruckt_macro_f1": 0.134,
+    "goldpool_macro_f1": 0.557,
+    "fehlbelegt": 28,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 833,
+    "sekunden_vorbereitung": 0.22
+   }
+  },
+  "Französische Revolution": {
+   "llm-free": {
+    "hauptartikel": "Französische Revolution",
+    "chunks": 185,
+    "labels_bewertet": 70,
+    "labels_veraltet": 5,
+    "macro_f1": 0.683,
+    "micro_f1": 0.817,
+    "gedruckt_macro_f1": 0.504,
+    "goldpool_macro_f1": 0.625,
+    "fehlbelegt": 9,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.39
+   },
+   "balanced": {
+    "hauptartikel": "Französische Revolution",
+    "chunks": 165,
+    "labels_bewertet": 66,
+    "labels_veraltet": 9,
+    "macro_f1": 0.77,
+    "micro_f1": 0.832,
+    "gedruckt_macro_f1": 0.524,
+    "goldpool_macro_f1": 0.713,
+    "fehlbelegt": 7,
+    "verworfen_durch_trefferpruefung": [
+     "Die Französische Revolution"
+    ],
+    "tokens": 920,
+    "sekunden_vorbereitung": 0.2
+   }
+  },
+  "Klimawandel": {
+   "llm-free": {
+    "hauptartikel": "Klimawandel",
+    "chunks": 269,
+    "labels_bewertet": 52,
+    "labels_veraltet": 12,
+    "macro_f1": 0.495,
+    "micro_f1": 0.716,
+    "gedruckt_macro_f1": 0.236,
+    "goldpool_macro_f1": 0.491,
+    "fehlbelegt": 14,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.63
+   },
+   "balanced": {
+    "hauptartikel": "Klimawandel",
+    "chunks": 269,
+    "labels_bewertet": 52,
+    "labels_veraltet": 12,
+    "macro_f1": 0.495,
+    "micro_f1": 0.716,
+    "gedruckt_macro_f1": 0.236,
+    "goldpool_macro_f1": 0.491,
+    "fehlbelegt": 14,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 920,
+    "sekunden_vorbereitung": 0.2
+   }
+  },
+  "Optik": {
+   "llm-free": {
+    "hauptartikel": "Optik",
+    "chunks": 97,
+    "labels_bewertet": 97,
+    "labels_veraltet": 8,
+    "macro_f1": 0.542,
+    "micro_f1": 0.599,
+    "gedruckt_macro_f1": 0.408,
+    "goldpool_macro_f1": 0.542,
+    "fehlbelegt": 40,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.17
+   },
+   "balanced": {
+    "hauptartikel": "Optik",
+    "chunks": 97,
+    "labels_bewertet": 97,
+    "labels_veraltet": 8,
+    "macro_f1": 0.542,
+    "micro_f1": 0.599,
+    "gedruckt_macro_f1": 0.408,
+    "goldpool_macro_f1": 0.542,
+    "fehlbelegt": 40,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 988,
+    "sekunden_vorbereitung": 0.13
+   }
+  },
+  "Photosynthese": {
+   "llm-free": {
+    "hauptartikel": "Photosynthese",
+    "chunks": 154,
+    "labels_bewertet": 60,
+    "labels_veraltet": 3,
+    "macro_f1": 0.476,
+    "micro_f1": 0.701,
+    "gedruckt_macro_f1": 0.209,
+    "goldpool_macro_f1": 0.473,
+    "fehlbelegt": 15,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.72
+   },
+   "balanced": {
+    "hauptartikel": "Photosynthese",
+    "chunks": 154,
+    "labels_bewertet": 60,
+    "labels_veraltet": 3,
+    "macro_f1": 0.476,
+    "micro_f1": 0.701,
+    "gedruckt_macro_f1": 0.209,
+    "goldpool_macro_f1": 0.473,
+    "fehlbelegt": 15,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 948,
+    "sekunden_vorbereitung": 0.22
+   }
+  },
+  "Programmiersprache": {
+   "llm-free": {
+    "hauptartikel": "Programmiersprache",
+    "chunks": 140,
+    "labels_bewertet": 70,
+    "labels_veraltet": 12,
+    "macro_f1": 0.415,
+    "micro_f1": 0.576,
+    "gedruckt_macro_f1": 0.239,
+    "goldpool_macro_f1": 0.394,
+    "fehlbelegt": 26,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.4
+   },
+   "balanced": {
+    "hauptartikel": "Programmiersprache",
+    "chunks": 140,
+    "labels_bewertet": 70,
+    "labels_veraltet": 12,
+    "macro_f1": 0.415,
+    "micro_f1": 0.576,
+    "gedruckt_macro_f1": 0.239,
+    "goldpool_macro_f1": 0.394,
+    "fehlbelegt": 26,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 819,
+    "sekunden_vorbereitung": 0.14
+   }
+  },
+  "Säure-Base-Konzepte": {
+   "llm-free": {
+    "hauptartikel": "Säure-Base-Konzepte",
+    "chunks": 37,
+    "labels_bewertet": 33,
+    "labels_veraltet": 12,
+    "macro_f1": 0.46,
+    "micro_f1": 0.793,
+    "gedruckt_macro_f1": 0.262,
+    "goldpool_macro_f1": 0.46,
+    "fehlbelegt": 7,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.77
+   },
+   "balanced": {
+    "hauptartikel": "Säure-Base-Konzepte",
+    "chunks": 37,
+    "labels_bewertet": 33,
+    "labels_veraltet": 12,
+    "macro_f1": 0.46,
+    "micro_f1": 0.793,
+    "gedruckt_macro_f1": 0.262,
+    "goldpool_macro_f1": 0.46,
+    "fehlbelegt": 7,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 823,
+    "sekunden_vorbereitung": 0.21
+   }
+  },
+  "Sinfonie": {
+   "llm-free": {
+    "hauptartikel": "Sinfonie",
+    "chunks": 185,
+    "labels_bewertet": 56,
+    "labels_veraltet": 0,
+    "macro_f1": 0.419,
+    "micro_f1": 0.514,
+    "gedruckt_macro_f1": 0.243,
+    "goldpool_macro_f1": 0.406,
+    "fehlbelegt": 21,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 0,
+    "sekunden_vorbereitung": 0.41
+   },
+   "balanced": {
+    "hauptartikel": "Sinfonie",
+    "chunks": 185,
+    "labels_bewertet": 56,
+    "labels_veraltet": 0,
+    "macro_f1": 0.419,
+    "micro_f1": 0.514,
+    "gedruckt_macro_f1": 0.243,
+    "goldpool_macro_f1": 0.406,
+    "fehlbelegt": 21,
+    "verworfen_durch_trefferpruefung": [],
+    "tokens": 1006,
+    "sekunden_vorbereitung": 0.14
+   }
+  }
+ }
+}
