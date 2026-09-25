@@ -63,6 +63,22 @@ def test_generate_reports_a_repository_failure_once(
     assert "edu-sharing nicht erreichbar" in err and err.count("edu-sharing") == 1, err
 
 
+def test_generate_takes_a_node_as_the_api_does(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The CLI knew no node (review of 2026-09-25); --node-id and --repository work as node_id and repository."""
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
+    builder = CollectionBuilder(client=client, cache=None)
+    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    out_file = cli_env / "knoten.md"
+    assert main(["generate", "--node-id", OPTIK, "--out", str(out_file), *zim_args]) == 0
+    assert "Thema: Optik" in capsys.readouterr().err and out_file.read_text(encoding="utf-8").strip()
+    refused = ["generate", "--node-id", OPTIK, "--repository", "https://example.org/edu-sharing/rest", *zim_args]
+    assert main(refused) == 1
+    assert "example.org" in capsys.readouterr().err, "a refused address is named, not a traceback"
+
+
 def test_generate_accepts_the_enrichment_switch_and_reports_sources_only_without_an_llm(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:

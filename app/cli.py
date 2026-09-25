@@ -17,9 +17,10 @@ from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
 from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
 from app.logging import configure_logging
-from app.service import PartsUnavailableError, TopicNotFoundError
+from app.service import PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
+from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.templates.manager import TemplateManager, TemplateNotFoundError
 from app.templates.schema import Template
 
@@ -31,6 +32,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
             topic=args.topic,
             collection_id=args.collection_id,
             knowledge_collection_id=args.knowledge_collection_id,
+            node_id=args.node_id,
+            repository=args.repository,
             template_id=args.template,
             preset=args.preset,
             matcher=args.matcher,
@@ -51,7 +54,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         if exc.resolution.alternatives:
             print("Vorschläge: " + ", ".join(exc.resolution.alternatives), file=sys.stderr)
         return 1
-    except EduSharingError as exc:
+    except (EduSharingError, RepositoryNotAllowedError, RepositoryUnavailableError) as exc:
         print(str(exc), file=sys.stderr)  # the message names the repository
         return 1
     except TemplateNotFoundError as exc:
@@ -148,7 +151,19 @@ def main(argv: list[str] | None = None) -> int:
     gen = sub.add_parser(
         "generate", help="Kompendium erzeugen: alle Teile, die sich erzeugen lassen; Stufe und LLM-Schalter wie die API"
     )
-    gen.add_argument("--topic", default=None, help="Thema; ohne Angabe der Titel der Sammlung")
+    gen.add_argument(
+        "--topic",
+        default=None,
+        help="Thema; ohne Angabe der Artikel des Knotens (--node-id) oder der Titel der Sammlung",
+    )
+    gen.add_argument(
+        "--node-id",
+        default=None,
+        help="nodeId eines Materials oder einer Sammlung (D45): Thema, Fächer und Kontext wie bei node_id der API",
+    )
+    gen.add_argument(
+        "--repository", default=None, help="REST-Adresse des Repositorys von --node-id; ohne Angabe das konfigurierte"
+    )
     gen.add_argument("--collection-id", default=None, help="nodeId der Sammlung (Thema, Fach, Teil 3)")
     gen.add_argument("--knowledge-collection-id", default=None, help="Sammlung, deren OER-Materialien Teil 1 speisen")
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
