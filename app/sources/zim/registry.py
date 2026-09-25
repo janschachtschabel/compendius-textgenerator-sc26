@@ -240,7 +240,11 @@ class ZimRegistry:
         return False
 
     def _meaning_for_subject(self, archive: ZimArchive, title: str, stems: set[str], resolution: Resolution) -> bool:
-        """A meaning of "<title> (Begriffsklärung)" that speaks for the subject, when the exact article does not."""
+        """A meaning of "<title> (Begriffsklärung)" that speaks for the subject, when the exact article does not.
+
+        The meaning has to name the subject in its title ("Baum (Datenstruktur)" for Informatik): one mention in its
+        text is too little to overrule an exact title, and turned "Kreis" with Mathematik into "Soziale Gruppe" (M25).
+        """
         page = archive.read(f"{title} (Begriffsklärung)")
         if page is None:
             return False
@@ -250,7 +254,7 @@ class ZimRegistry:
         meanings = listed_meanings(parsed)
         resolution._meanings = meanings[:MAX_MEANINGS]  # an article chooser weighs them against the exact title
         chosen, confident = self._pick_from_disambiguation(archive, meanings, stems)
-        if chosen is None or not confident:
+        if chosen is None or not confident or not context_score(stems, chosen.title, ""):
             return False
         resolution.disambiguation = True
         resolution.alternatives = [title, *(m for m in meanings if m != chosen.title)][:8]
