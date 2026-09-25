@@ -1,0 +1,1720 @@
+{
+ "beschreibung": "M31: Teil 1 von best-quality-generated zu den sechs Themen von M27, einmal mit section_enrichment v1 (M27) und einmal mit v2 (D56), blind als A und B bewertet von zwei Claude-Gutachtern mit dem Auftrag von M28; Noten, Zahl der Füllsätze und Fachfehler, Vorzug; je Satz mit Modellwissen Richtigkeit und Nutzen; ohne Texte und Sätze",
+ "prompt": "section_enrichment@v2",
+ "laeufe": {
+  "Zellatmung": {
+   "v1": {
+    "tokens": 9223,
+    "modellwissen_saetze": 3
+   },
+   "v2": {
+    "tokens": 9795,
+    "modellwissen_saetze": 4,
+    "hauptartikel_gleich": true
+   }
+  },
+  "Elektrischer Widerstand": {
+   "v1": {
+    "tokens": 34903,
+    "modellwissen_saetze": 12
+   },
+   "v2": {
+    "tokens": 35760,
+    "modellwissen_saetze": 11,
+    "hauptartikel_gleich": true
+   }
+  },
+  "Kolonialismus": {
+   "v1": {
+    "tokens": 35849,
+    "modellwissen_saetze": 15
+   },
+   "v2": {
+    "tokens": 37140,
+    "modellwissen_saetze": 10,
+    "hauptartikel_gleich": true
+   }
+  },
+  "Lineare Gleichung": {
+   "v1": {
+    "tokens": 31667,
+    "modellwissen_saetze": 9
+   },
+   "v2": {
+    "tokens": 32137,
+    "modellwissen_saetze": 3,
+    "hauptartikel_gleich": true
+   }
+  },
+  "Renaissance": {
+   "v1": {
+    "tokens": 65975,
+    "modellwissen_saetze": 18
+   },
+   "v2": {
+    "tokens": 66618,
+    "modellwissen_saetze": 11,
+    "hauptartikel_gleich": true
+   }
+  },
+  "Klimazonen": {
+   "v1": {
+    "tokens": 60663,
+    "modellwissen_saetze": 25
+   },
+   "v2": {
+    "tokens": 61888,
+    "modellwissen_saetze": 11,
+    "hauptartikel_gleich": true
+   }
+  }
+ },
+ "schluessel": {
+  "Zellatmung__A": "v1",
+  "Zellatmung__B": "v2",
+  "Elektrischer Widerstand__A": "v1",
+  "Elektrischer Widerstand__B": "v2",
+  "Kolonialismus__A": "v1",
+  "Kolonialismus__B": "v2",
+  "Lineare Gleichung__A": "v2",
+  "Lineare Gleichung__B": "v1",
+  "Renaissance__A": "v2",
+  "Renaissance__B": "v1",
+  "Klimazonen__A": "v1",
+  "Klimazonen__B": "v2"
+ },
+ "gutachter": [
+  {
+   "themen": {
+    "Zellatmung": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 4,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 3,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    },
+    "Elektrischer Widerstand": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 9,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 7,
+      "fachfehler": 0
+     },
+     "vorzug": "A"
+    },
+    "Kolonialismus": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 12,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 3,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 3,
+      "fachfehler": 1
+     },
+     "vorzug": "B"
+    },
+    "Lineare Gleichung": {
+     "A": {
+      "lesbarkeit": 2,
+      "zusammenhang": 2,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 6,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 9,
+      "fachfehler": 1
+     },
+     "vorzug": "B"
+    },
+    "Renaissance": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 6,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 19,
+      "fachfehler": 1
+     },
+     "vorzug": "A"
+    },
+    "Klimazonen": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 14,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 7,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    }
+   },
+   "modellwissen": {
+    "Zellatmung": [
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     }
+    ],
+    "Elektrischer Widerstand": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Kolonialismus": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Lineare Gleichung": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     }
+    ],
+    "Renaissance": [
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Klimazonen": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     }
+    ]
+   }
+  },
+  {
+   "themen": {
+    "Zellatmung": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 4,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 5,
+      "fuellsaetze": 3,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    },
+    "Elektrischer Widerstand": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 10,
+      "fachfehler": 0
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 7,
+      "fachfehler": 0
+     },
+     "vorzug": "A"
+    },
+    "Kolonialismus": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 12,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 5,
+      "fachfehler": 2
+     },
+     "vorzug": "B"
+    },
+    "Lineare Gleichung": {
+     "A": {
+      "lesbarkeit": 3,
+      "zusammenhang": 2,
+      "passend_zum_thema": 2,
+      "fuellsaetze": 6,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 3,
+      "zusammenhang": 3,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 11,
+      "fachfehler": 1
+     },
+     "vorzug": "B"
+    },
+    "Renaissance": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 5,
+      "fachfehler": 1
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 3,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 17,
+      "fachfehler": 1
+     },
+     "vorzug": "A"
+    },
+    "Klimazonen": {
+     "A": {
+      "lesbarkeit": 4,
+      "zusammenhang": 3,
+      "passend_zum_thema": 3,
+      "fuellsaetze": 17,
+      "fachfehler": 2
+     },
+     "B": {
+      "lesbarkeit": 4,
+      "zusammenhang": 4,
+      "passend_zum_thema": 4,
+      "fuellsaetze": 7,
+      "fachfehler": 0
+     },
+     "vorzug": "B"
+    }
+   },
+   "modellwissen": {
+    "Zellatmung": [
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     }
+    ],
+    "Elektrischer Widerstand": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Kolonialismus": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Lineare Gleichung": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     }
+    ],
+    "Renaissance": [
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "fraglich",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     }
+    ],
+    "Klimazonen": [
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "nein",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v2",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fuellsatz"
+     },
+     {
+      "version": "v1",
+      "korrekt": "ja",
+      "nutzen": "fachlich"
+     },
+     {
+      "version": "v1",
+      "korrekt": "fraglich",
+      "nutzen": "fachlich"
+     }
+    ]
+   }
+  }
+ ],
+ "auswertung": {
+  "mittel": {
+   "v1": {
+    "lesbarkeit": 3.67,
+    "zusammenhang": 3.5,
+    "passend_zum_thema": 3.75,
+    "fuellsaetze": 11.5
+   },
+   "v2": {
+    "lesbarkeit": 3.5,
+    "zusammenhang": 3.33,
+    "passend_zum_thema": 3.92,
+    "fuellsaetze": 5.42
+   }
+  },
+  "fachfehler_summe": {
+   "v1": 11,
+   "v2": 10
+  },
+  "vorzug": {
+   "v2": 8,
+   "v1": 4
+  },
+  "modellwissen": {
+   "v1": {
+    "saetze": 164,
+    "g1_korrekt_fraglich": 6,
+    "g1_nutzen_fuellsatz": 51,
+    "g1_korrekt_ja": 74,
+    "g1_nutzen_fachlich": 31,
+    "g1_korrekt_nein": 2,
+    "g2_korrekt_fraglich": 5,
+    "g2_nutzen_fuellsatz": 54,
+    "g2_korrekt_ja": 75,
+    "g2_nutzen_fachlich": 28,
+    "g2_korrekt_nein": 2
+   },
+   "v2": {
+    "saetze": 100,
+    "g1_korrekt_ja": 48,
+    "g1_nutzen_fachlich": 37,
+    "g1_nutzen_fuellsatz": 13,
+    "g1_korrekt_fraglich": 1,
+    "g1_korrekt_nein": 1,
+    "g2_korrekt_ja": 47,
+    "g2_nutzen_fachlich": 32,
+    "g2_nutzen_fuellsatz": 18,
+    "g2_korrekt_fraglich": 3
+   }
+  },
+  "nicht_zugeordnet": 0,
+  "modellwissen_paarweise": {
+   "v1": {
+    "saetze": 82,
+    "fuell_beide": 50,
+    "fachlich_beide": 27,
+    "uneinig_nutzen": 5,
+    "falsch_beide": 2,
+    "falsch_einer": 2,
+    "fraglich_einer": 6
+   },
+   "v2": {
+    "saetze": 50,
+    "fuell_beide": 13,
+    "fachlich_beide": 32,
+    "uneinig_nutzen": 5,
+    "falsch_beide": 0,
+    "falsch_einer": 1,
+    "fraglich_einer": 3
+   }
+  }
+ }
+}

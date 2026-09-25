@@ -1,4 +1,4 @@
-# Messprotokoll (23. bis 25.09.2026)
+# Messprotokoll (23. bis 26.09.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -1414,3 +1414,91 @@ Verfahrens schon abfragte, deshalb die Zeile ohne diesen Mangel.
 **Ergebnis:** Die LLM-Paare sind fast alle brauchbar, für rund 2.000 bis 2.700 Tokens und 4 bis 6 s je Text. Die
 Paare aus dem Parse kosten nichts und sind schnell, aber nur wenige taugen ohne Nacharbeit. Rohdaten:
 `m29_qa.json` (Zahlen, Verfahren je Paar und die Urteile; ohne Texte und Paare, die aus den Artikeln stammen).
+
+## M30 QA-Stufen nach D55 (26.09.2026)
+
+Jan fand die Paare der Standardstufe zu einseitig, fast nur Jahresfragen, und `count` nicht eingehalten: 20 verlangt,
+rund 5 geliefert. D55 lässt `rule-based` aus dem spaCy-Parse fragen statt aus vier Vorlagen, gibt `balanced` die zwei
+kleinen Modelle und macht Teil 1 immer ohne LLM. `mc_qa_stufen.py` fragt alle Stufen auf denselben Texten nach je 20
+Paaren: Teil 1 von `llm-free` zu den vier Themen von M29 (Optik, Ernst Abbe, Französische Revolution, Photosynthese)
+und zu zwei Themen, an denen keine Regel abgestimmt wurde (Zellteilung, Weimarer Republik), 4.900 bis 12.000 Zeichen;
+die Regeln lesen dazu Glossar und Akteure. Die freien Stufen liefen im Image, `llm` (`gpt-6-luna`) auf dem
+Entwicklungsrechner. Die vier Texte aus M29 sind unverändert; die b-api gab ihre LLM-Paare aus dem Cache zurück, es
+sind also die Paare von M29.
+
+| je Stufe, sechs Texte mit je 20 verlangt | `rule-based` neu (`llm-free`) | Vorlagen bis D55 | `parse-based` | `models` (`balanced`) | `llm` (`best-quality`) |
+|---|---|---|---|---|---|
+| Paare von 120 | 96 | 56 | 44 | 120 | 120 |
+| Texte mit 20 von 20 | 3 | 1 | 0 | 6 | 6 |
+| Fragen nach einer Zeit | 9 | 46 | 0 | 6 | 14 |
+| verschiedene Frageanfänge je Text, Median | 5 | 1 | 1 | 7,5 | 8 |
+| Zeit je Text, Median | 0,28 s | 0,02 s | 0,17 s | 25 s (18 bis 36 s) | 4 bis 6 s (M29), neu 7,2 und 7,5 s |
+| Tokens je Text | 0 | 0 | 0 | 0 | 1.972 bis 3.870, Median 2.402 |
+| mangelfrei, Gutachter 1 und 2 | 50 und 52 von 96 | nicht bewertet | 16 und 17 von 44 | 27 und 25 von 120 | 105 und 100 von 120 |
+| mangelfrei bei beiden | 48 (50 %) | – | 16 (36 %) | 25 (21 %) | 99 (83 %) |
+
+Die Regeln liefern 9 bis 20 Paare je Text: 20 bei Optik, Ernst Abbe und Weimarer Republik, 16 bei der Französischen
+Revolution, 11 bei der Photosynthese und 9 bei der Zellteilung, deren Teil 1 mit 4.900 Zeichen der kürzeste ist. Die
+Vorlagen fragten zu 82 % nach einer Zeit („Was geschah im Jahr …?“), die Regeln zu 9 %. Frageanfänge zählen nur das
+erste Wort; bei den Regeln beginnen Definition, Objekt- und Subjektfrage alle mit „Was“, die Arten sind vielfältiger als
+die Anfänge.
+
+Zwei Claude-Gutachter bewerteten blind mit dem Auftrag von M29, je drei Themen auf einem Bogen, die Paare von Regeln,
+Parse, Modellen und LLM je Thema gemischt in fester Zufallsordnung; die Vorlagen nicht, ihre Art zeigen M29 und D55.
+Einig waren sie bei 364 von 380 Paaren. Die Mängel, Gutachter 1 und 2: bei den Regeln Frage ohne den Text
+unverständlich (23 und 24, etwa „Was ist notwendig?“ oder „Wo befinden sich die Kurszentren?“), doppelt (11 und 9),
+Antwort passt nicht (7 und 6), trivial (je 4), ein Sachfehler; bei den Modellen Antwort passt nicht (je 27), Sachfehler
+(je 24, etwa „Wer war seit 1899 Hauptinhaber der Firma Carl Zeiss? – Jenaer Glaswerk Schott & Gen“), Frage unklar
+(24 und 26), doppelt (11 und 10), trivial (5 und 6), unbelegt (je 2); beim LLM doppelt (7 und 6), Antwort passt nicht
+(je 5), trivial (3 und 4), Frage unklar (0 und 5). Drei der 96 Regel-Paare waren Definitionsfragen zu einem Adverb
+oder einer Präposition am Satzanfang („Was versteht man unter Daneben?“); der Smoke-Test des Images fand den Fehler, der
+Fix `2542932` kam nach dieser Messung. Ohne sie sind 48 von 93 Regel-Paaren bei beiden mangelfrei (52 %).
+
+Das Maß schwankt zwischen zwei Läufen: Die 80 LLM-Paare der vier M29-Themen bewerteten die Gutachter wie in M29
+(67 bei beiden mangelfrei, damals 67), die 29 Paare aus dem Parse aber milder (9 statt 1). Es trennt die Stufen, die
+Zahl einer Stufe ist auf einige Paare genau.
+
+**Ergebnis:** Die Regeln von D55 halten `count` bei längeren Texten ein, fragen kaum noch nach Jahren und liefern die
+Hälfte ihrer Paare mangelfrei, ohne Modell und in 0,3 s; ihr häufigster Mangel ist eine Frage, die ohne den Text nicht
+verständlich ist. Die kleinen Modelle halten `count` immer ein und fragen am vielfältigsten, aber nur ein Fünftel ihrer
+Paare ist mangelfrei, und sie brauchen rund 25 s je Text. Das LLM bleibt mit vier von fünf mangelfreien Paaren die
+beste Stufe. Rohdaten: `m30_qa.json` (Zählung je Stufe und Thema, Verfahren je Paar und die Urteile; ohne Texte und
+Paare).
+
+## M31 Modellwissen mit Prompt v2 (26.09.2026)
+
+M28 fand zwei Drittel des Modellwissens von `best-quality-generated` Füllsätze. D56 schärft den Prompt
+`section_enrichment` (v2): eine konkrete, überprüfbare Sachaussage, die in den Belegen fehlt, oder nichts; keine Sätze
+über Text, Baustein, Kompendium oder Unterricht, keine Transferfloskeln. `mc_modellwissen_v2.py` erzeugte die sechs
+Themen von M27 noch einmal in `best-quality-generated`. Artikelwahl und Zuordnung stellten der b-api dieselben Fragen
+wie damals und kamen aus ihrem Cache, alle sechs Hauptartikel sind dieselben; die beiden Fassungen unterscheiden sich
+nur darin, wie die Bausteine geschrieben wurden. Zwei Claude-Gutachter bewerteten v1 (M27) und v2 blind mit dem Auftrag
+von M28: je Thema beide Texte als A und B in fester Zufallsordnung, Kommentare und Kennzeichen entfernt, dann jeden
+der 132 Sätze mit Modellwissen beider Fassungen in einer gemischten Liste.
+
+| je Fassung, sechs Themen | v1 (M27, M28) | v2 (D56) |
+|---|---|---|
+| Sätze mit Modellwissen | 82 | 50 |
+| davon Füllsätze nach beiden Gutachtern | 50 | 13 |
+| davon fachlich nach beiden | 27 | 32 |
+| davon falsch nach beiden | 2 | 0 |
+| Füllsätze je Text, Mittel beider Gutachter | 11,5 | 5,4 |
+| Lesbarkeit, Zusammenhang, beim Thema (1 bis 5) | 3,7; 3,5; 3,8 | 3,5; 3,3; 3,9 |
+| Fachfehler, Summe beider Gutachter | 11 | 10 |
+| als besserer Einstieg gewählt | 4 von 12 | 8 von 12 |
+| Tokens je Kompendium, Median | 35.376 | 36.450 |
+
+Die Sätze von v1 bewerteten die Gutachter fast wie in M28 (50 statt 52 Füllsätze, 27 statt 26 fachlich, dieselben zwei
+falsch); das Maß ist hier stabil. Die 13 Füllsätze von v2 sind drei rhetorische Fragen („Wie wird die gewonnene Energie
+verfügbar gemacht?“), fünf Zuordnungen zu Fachgebieten („Der Gegenstand gehört zur Klimatologie …“) und fünf
+Allgemeinplätze über Berufe und Branchen; Fragen verbietet der Prompt noch nicht. Beim Elektrischen Widerstand und bei
+der Linearen Gleichung zogen beide Gutachter v1 vor: v1 nennt dort Namen und eine Formel (Siemens, Ohm, R = ρ·l/A) oder
+ordnet die Beispiele ein, v2 bleibt näher an den Auszügen. Ein Satz von v2 nannte sich selbst „Modellwissen: …“; der Fix
+`a965dd0` nimmt das Präfix heraus, bevor der Dienst sein sichtbares Kennzeichen setzt. Der längere Prompt kostet rund
+3 % mehr Tokens.
+
+**Ergebnis:** v2 ergänzt weniger, und was es ergänzt, ist öfter Sache: 32 statt 27 fachliche Sätze, 13 statt 50
+Füllsätze, keiner falsch nach beiden Gutachtern. Lesbarkeit und Zusammenhang bleiben gleich, im Vorzug liegt v2 vorn.
+Ganz ohne Füllsätze ist auch v2 nicht: rund fünf je Text, gegen zwölf vorher. Die Gutachter sind Sprachmodelle,
+keine Lehrkräfte, und sechs Themen sind eine kleine Stichprobe. Rohdaten: `m31_modellwissen.json` (Noten, Zählungen,
+Urteile je Satz mit Fassung; ohne Texte und Sätze).

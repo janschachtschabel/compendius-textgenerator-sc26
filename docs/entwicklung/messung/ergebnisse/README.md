@@ -1,6 +1,6 @@
-# Ergebnisse der Messungen M1 bis M29
+# Ergebnisse der Messungen M1 bis M31
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 25.09.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
 [Entscheidungsvorlage](../../07-entscheidungsvorlage.md) in `docs/entwicklung/bilder/` zeichnet `mc_grafiken.py`:
@@ -42,6 +42,8 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M27 | Was leisten und kosten die vier Profile (D53) im Ablauf des Dienstes? | Zuordnung am Gold: `llm-free` 0,447, `balanced` 0,450 (gelabelte Absätze), gleiche Hauptartikel; Tokens je Kompendium auf denselben sechs Themen im Median 0 / 905 / 26.267 / 35.376, rund 170 je Absatz für die LLM-Zuordnung; Teil 1 und 2 als `llm-free` plus LLM-Anteil 1,6 / 3,4 / 14,2 / 23,5 s; 82 Sätze mit Modellwissen in sechs Themen | – | `m27_zuordnung_gold.json`, `m27_profile_tokens.json`, `m27_profile_zeit.json` |
 | M28 | Liest sich der Text von `best-quality-generated` besser als der wörtliche von `best-quality`? | ja: Lesbarkeit 4,0 statt 2,5 von 5, Zusammenhang 4,0 statt 2,4, in 11 von 12 Urteilen vorgezogen, Fachfehler 14 und 17; aber im Mittel 12 Füllsätze je Thema statt einem, von 82 Sätzen mit Modellwissen 52 Füllsätze und 2 falsch nach beiden Gutachtern | – | `m28_lesefassung.json` |
 | M29 | Wie gut sind die QA-Paare der Profile? | `llm` 67 von 80 Paaren bei beiden Gutachtern mangelfrei (74 und 68), 4 bis 6 s und rund 2.000 bis 2.700 Tokens je Text; `parse-based` 1 von 29 (1 und 4), in 0,1 bis 0,3 s ohne Tokens; einig bei 98 von 109 Paaren | – | `m29_qa.json` |
+| M30 | Wie gut sind die QA-Stufen nach D55, und halten sie `count` ein? | je 20 Paare zu sechs Themen verlangt: Regeln 96 von 120, 48 bei beiden Gutachtern mangelfrei, 9 Zeitfragen statt 46 bei den alten Vorlagen, 0,28 s je Text; `parse-based` 44, 16 mangelfrei; Modelle 120, 25 mangelfrei, rund 25 s je Text; LLM 120, 99 mangelfrei, Median 2.402 Tokens; einig bei 364 von 380 Paaren | – | `m30_qa.json` |
+| M31 | Ergänzt `best-quality-generated` mit dem Prompt v2 weniger Füllsätze? | ja: 50 statt 82 Sätze mit Modellwissen, Füllsätze nach beiden Gutachtern 13 statt 50, fachlich 32 statt 27, falsch 0 statt 2; Lesbarkeit gleich, in 8 von 12 Urteilen vorgezogen, rund 3 % mehr Tokens | – | `m31_modellwissen.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise
