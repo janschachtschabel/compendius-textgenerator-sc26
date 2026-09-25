@@ -1,0 +1,683 @@
+{
+ "model": "de_core_news_md",
+ "recorded": "2026-09-25",
+ "parses": {
+  "Im Jahr 1922 erhielt er den Nobelpreis für Physik.": {
+   "ents": [[0, 3, "MISC"], [6, 9, "MISC"]],
+   "tokens": [
+    ["Im", " ", "ADP", "APPRART", "mo", 3, "in", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["Jahr", " ", "NOUN", "NN", "nk", 0, "Jahr", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["1922", " ", "NUM", "CARD", "nk", 1, "1922", ""],
+    ["erhielt", " ", "VERB", "VVFIN", "ROOT", 3, "erhalten", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["er", " ", "PRON", "PPER", "sb", 3, "er", "Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"],
+    ["den", " ", "DET", "ART", "nk", 6, "der", "Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Nobelpreis", " ", "NOUN", "NN", "oa", 3, "Nobelpreis", "Case=Acc|Gender=Masc|Number=Sing"],
+    ["für", " ", "ADP", "APPR", "mnr", 6, "für", ""],
+    ["Physik", "", "NOUN", "NN", "nk", 7, "Physik", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Der erste Elektromotor wurde 1829 von Ányos Jedlik gebaut.": {
+   "ents": [[6, 8, "PER"]],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 2, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["erste", " ", "ADJ", "ADJA", "nk", 2, "erster", "Case=Nom|Degree=Pos|Gender=Masc|Number=Sing"],
+    ["Elektromotor", " ", "NOUN", "NN", "sb", 3, "Elektromotor", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["wurde", " ", "AUX", "VAFIN", "ROOT", 3, "werden", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["1829", " ", "NUM", "CARD", "mo", 8, "1829", ""],
+    ["von", " ", "ADP", "APPR", "sbp", 8, "von", ""],
+    ["Ányos", " ", "PROPN", "NE", "pnc", 7, "Ányos", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["Jedlik", " ", "PROPN", "NE", "nk", 5, "Jedlik", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["gebaut", "", "VERB", "VVPP", "oc", 3, "bauen", "VerbForm=Part"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Seit 1992 verbreitete sich das Leitbild der nachhaltigen Entwicklung in der Politik.": {
+   "ents": [],
+   "tokens": [
+    ["Seit", " ", "ADP", "APPR", "mo", 2, "seit", ""],
+    ["1992", " ", "NUM", "CARD", "nk", 0, "1992", ""],
+    ["verbreitete", " ", "VERB", "VVFIN", "ROOT", 2, "verbreiten", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["sich", " ", "PRON", "PRF", "oa", 2, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["das", " ", "DET", "ART", "nk", 5, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Leitbild", " ", "NOUN", "NN", "sb", 2, "Leitbild", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 8, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["nachhaltigen", " ", "ADJ", "ADJA", "nk", 8, "nachhaltig", "Case=Gen|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Entwicklung", " ", "NOUN", "NN", "ag", 5, "Entwicklung", "Case=Gen|Gender=Fem|Number=Sing"],
+    ["in", " ", "ADP", "APPR", "mnr", 8, "in", ""],
+    ["der", " ", "DET", "ART", "nk", 11, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Politik", "", "NOUN", "NN", "nk", 9, "Politik", "Case=Dat|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Einstein wurde 1879 in Ulm geboren.": {
+   "ents": [[0, 1, "PER"], [4, 5, "LOC"]],
+   "tokens": [
+    ["Einstein", " ", "NOUN", "NN", "sb", 1, "Einstein", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["wurde", " ", "AUX", "VAFIN", "ROOT", 1, "werden", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["1879", " ", "NUM", "CARD", "mo", 5, "1879", ""],
+    ["in", " ", "ADP", "APPR", "mo", 5, "in", ""],
+    ["Ulm", " ", "PROPN", "NE", "nk", 3, "Ulm", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["geboren", "", "VERB", "VVPP", "oc", 1, "gebären", "VerbForm=Part"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Der Mauna Loa liegt auf Hawaii.": {
+   "ents": [[1, 3, "LOC"], [5, 6, "LOC"]],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Mauna", " ", "NOUN", "NN", "sb", 3, "Mauna", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Loa", " ", "PROPN", "NE", "nk", 1, "Loa", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["liegt", " ", "VERB", "VVFIN", "ROOT", 3, "liegen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["auf", " ", "ADP", "APPR", "mo", 3, "auf", ""],
+    ["Hawaii", "", "PROPN", "NE", "nk", 4, "Hawaii", "Case=Dat|Gender=Neut|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Von 1896 bis 1901 war er staatenlos, weil er keinen Militärdienst leisten wollte.": {
+   "ents": [],
+   "tokens": [
+    ["Von", " ", "ADP", "APPR", "mo", 2, "von", ""],
+    ["1896", " ", "NUM", "CARD", "nk", 0, "1896", ""],
+    ["bis", " ", "ADP", "APPR", "mo", 4, "bis", ""],
+    ["1901", " ", "NUM", "CARD", "nk", 2, "1901", ""],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 4, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["er", " ", "PRON", "PPER", "sb", 4, "er", "Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"],
+    ["staatenlos", "", "ADV", "ADJD", "pd", 4, "staatenlos", "Degree=Pos"],
+    [",", " ", "PUNCT", "$,", "punct", 4, "--", ""],
+    ["weil", " ", "SCONJ", "KOUS", "cp", 13, "weil", ""],
+    ["er", " ", "PRON", "PPER", "sb", 13, "er", "Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs"],
+    ["keinen", " ", "DET", "PIAT", "nk", 11, "kein", "Case=Acc|Gender=Masc|Number=Sing|PronType=Ind"],
+    ["Militärdienst", " ", "NOUN", "NN", "oa", 12, "Militärdienst", "Case=Acc|Gender=Masc|Number=Sing"],
+    ["leisten", " ", "VERB", "VVINF", "oc", 13, "leisten", "VerbForm=Inf"],
+    ["wollte", "", "AUX", "VMFIN", "mo", 4, "wollen", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    [".", "", "PUNCT", "$.", "punct", 4, "--", ""]
+   ]
+  },
+  "Christiaan Huygens bemerkte um 1650, dass Licht sich wie eine Welle ausbreitet.": {
+   "ents": [[0, 2, "PER"]],
+   "tokens": [
+    ["Christiaan", " ", "PROPN", "NE", "pnc", 1, "Christiaan", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Huygens", " ", "PROPN", "NE", "sb", 2, "Huygens", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["bemerkte", " ", "VERB", "VVFIN", "ROOT", 2, "bemerken", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["um", " ", "ADP", "APPR", "mo", 2, "um", ""],
+    ["1650", "", "NUM", "CARD", "nk", 3, "1650", ""],
+    [",", " ", "PUNCT", "$,", "punct", 2, "--", ""],
+    ["dass", " ", "SCONJ", "KOUS", "cp", 12, "dass", ""],
+    ["Licht", " ", "NOUN", "NN", "sb", 12, "Licht", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["sich", " ", "PRON", "PRF", "oa", 12, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["wie", " ", "ADP", "KOKOM", "cm", 11, "wie", ""],
+    ["eine", " ", "DET", "ART", "nk", 11, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Welle", " ", "NOUN", "NN", "mo", 12, "Welle", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ausbreitet", "", "VERB", "VVFIN", "oc", 2, "ausbreiten", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Die Nutzung des Stromes begann in der Mitte des 19. Jahrhunderts mit der Telegrafie.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Nutzung", " ", "NOUN", "NN", "sb", 4, "Nutzung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["des", " ", "DET", "ART", "nk", 3, "der", "Case=Gen|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Stromes", " ", "NOUN", "NN", "ag", 1, "Strom", "Case=Gen|Gender=Masc|Number=Sing"],
+    ["begann", " ", "VERB", "VVFIN", "ROOT", 4, "beginnen", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["in", " ", "ADP", "APPR", "mo", 4, "in", ""],
+    ["der", " ", "DET", "ART", "nk", 7, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Mitte", " ", "NOUN", "NN", "nk", 5, "Mitte", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["des", " ", "DET", "ART", "nk", 10, "der", "Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["19.", " ", "ADJ", "ADJA", "nk", 10, "19.", "Case=Gen|Degree=Pos|Gender=Neut|Number=Sing"],
+    ["Jahrhunderts", " ", "NOUN", "NN", "ag", 7, "Jahrhundert", "Case=Gen|Gender=Neut|Number=Sing"],
+    ["mit", " ", "ADP", "APPR", "mo", 4, "mit", ""],
+    ["der", " ", "DET", "ART", "nk", 13, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Telegrafie", "", "NOUN", "NN", "nk", 11, "Telegrafie", "Case=Dat|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 4, "--", ""]
+   ]
+  },
+  "Im Jahr 1832 konstruierte der Franzose Hippolyte Pixii einen Generator.": {
+   "ents": [[0, 3, "MISC"], [5, 6, "LOC"], [6, 8, "PER"]],
+   "tokens": [
+    ["Im", " ", "ADP", "APPRART", "mo", 3, "in", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["Jahr", " ", "NOUN", "NN", "nk", 0, "Jahr", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["1832", " ", "NUM", "CARD", "nk", 1, "1832", ""],
+    ["konstruierte", " ", "VERB", "VVFIN", "ROOT", 3, "konstruieren", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["der", " ", "DET", "ART", "nk", 5, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Franzose", " ", "NOUN", "NN", "sb", 3, "Franzose", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Hippolyte", " ", "PROPN", "NE", "pnc", 7, "Hippolyte", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Pixii", " ", "PROPN", "NE", "nk", 5, "Pixii", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["einen", " ", "DET", "ART", "nk", 9, "ein", "Case=Acc|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Generator", "", "NOUN", "NN", "oa", 3, "Generator", "Case=Acc|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Einstein veröffentlichte 1905 vier bahnbrechende Arbeiten.": {
+   "ents": [[0, 1, "PER"]],
+   "tokens": [
+    ["Einstein", " ", "PROPN", "NN", "sb", 1, "Einstein", "Case=Nom|Number=Sing"],
+    ["veröffentlichte", " ", "VERB", "VVFIN", "ROOT", 1, "veröffentlichen", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["1905", " ", "NUM", "CARD", "mo", 1, "1905", ""],
+    ["vier", " ", "NUM", "CARD", "nk", 5, "vier", ""],
+    ["bahnbrechende", " ", "ADJ", "ADJA", "nk", 5, "bahnbrechend", "Case=Acc|Degree=Pos|Gender=Fem|Number=Plur"],
+    ["Arbeiten", "", "NOUN", "NN", "oa", 1, "Arbeit", "Case=Acc|Gender=Fem|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Das Wort „Vulkan“ leitet sich von der Insel Vulcano ab.": {
+   "ents": [[9, 11, "LOC"]],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Wort", " ", "NOUN", "NN", "sb", 5, "Wort", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["„", "", "PUNCT", "$(", "punct", 3, "--", ""],
+    ["Vulkan", "", "PROPN", "NE", "nk", 1, "Vulkan", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["“", " ", "PUNCT", "$(", "punct", 3, "--", ""],
+    ["leitet", " ", "VERB", "VVFIN", "ROOT", 5, "leiten", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["sich", " ", "PRON", "PRF", "oa", 5, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["von", " ", "ADP", "APPR", "mo", 5, "von", ""],
+    ["der", " ", "DET", "ART", "nk", 9, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Insel", " ", "NOUN", "NN", "nk", 7, "Insel", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["Vulcano", " ", "PROPN", "NE", "nk", 9, "Vulcano", "Case=Nom|Number=Sing"],
+    ["ab", "", "ADP", "PTKVZ", "svp", 5, "ab", ""],
+    [".", "", "PUNCT", "$.", "punct", 5, "--", ""]
+   ]
+  },
+  "Klimaveränderungen beruhen oft auf mehreren Faktoren.": {
+   "ents": [],
+   "tokens": [
+    ["Klimaveränderungen", " ", "NOUN", "NN", "sb", 1, "Klimaveränderung", "Case=Nom|Gender=Fem|Number=Plur"],
+    ["beruhen", " ", "VERB", "VVFIN", "ROOT", 1, "beruhen", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["oft", " ", "ADV", "ADV", "mo", 1, "oft", ""],
+    ["auf", " ", "ADP", "APPR", "op", 1, "auf", ""],
+    ["mehreren", " ", "DET", "PIAT", "nk", 5, "mehrere", "Case=Dat|Gender=Masc|Number=Plur|PronType=Ind"],
+    ["Faktoren", "", "NOUN", "NN", "nk", 3, "Faktor", "Case=Dat|Gender=Masc|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Diese Form des Stroms bezeichnet man auch als Konvektionsstrom.": {
+   "ents": [],
+   "tokens": [
+    ["Diese", " ", "DET", "PDAT", "nk", 1, "dieser", "Case=Nom|Gender=Fem|Number=Sing|PronType=Dem"],
+    ["Form", " ", "NOUN", "NN", "oa", 4, "Form", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["des", " ", "DET", "ART", "nk", 3, "der", "Case=Gen|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Stroms", " ", "NOUN", "NN", "ag", 1, "Strom", "Case=Gen|Gender=Masc|Number=Sing"],
+    ["bezeichnet", " ", "VERB", "VVFIN", "ROOT", 4, "bezeichnen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["man", " ", "PRON", "PIS", "sb", 4, "man", "Case=Nom|Number=Sing|PronType=Ind"],
+    ["auch", " ", "ADV", "ADV", "mo", 7, "auch", ""],
+    ["als", " ", "ADP", "APPR", "mo", 4, "als", ""],
+    ["Konvektionsstrom", "", "NOUN", "NN", "nk", 7, "Konvektionsstrom", "Case=Acc|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 4, "--", ""]
+   ]
+  },
+  "Das Stück erzählt das Privatleben von Albert Einstein.": {
+   "ents": [[6, 8, "PER"]],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Stück", " ", "NOUN", "NN", "sb", 2, "Stück", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["erzählt", " ", "VERB", "VVFIN", "ROOT", 2, "erzählen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["das", " ", "DET", "ART", "nk", 4, "der", "Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Privatleben", " ", "NOUN", "NN", "oa", 2, "Privatleben", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 4, "von", ""],
+    ["Albert", " ", "PROPN", "NE", "pnc", 7, "Albert", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Einstein", "", "PROPN", "NE", "nk", 5, "Einstein", "Case=Dat|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Einstein nannte zwei Gründe: den Krieg und die Politik.": {
+   "ents": [[0, 1, "PER"], [6, 7, "MISC"]],
+   "tokens": [
+    ["Einstein", " ", "PROPN", "NN", "sb", 1, "Einstein", "Case=Nom|Number=Sing"],
+    ["nannte", " ", "VERB", "VVFIN", "ROOT", 1, "nennen", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["zwei", " ", "NUM", "CARD", "nk", 3, "zwei", ""],
+    ["Gründe", "", "NOUN", "NN", "oa", 1, "Grund", "Case=Acc|Gender=Masc|Number=Plur"],
+    [":", " ", "PUNCT", "$.", "punct", 3, "--", ""],
+    ["den", " ", "DET", "ART", "nk", 6, "der", "Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Krieg", " ", "NOUN", "NN", "app", 3, "Krieg", "Case=Acc|Gender=Masc|Number=Sing"],
+    ["und", " ", "CCONJ", "KON", "cd", 6, "und", ""],
+    ["die", " ", "DET", "ART", "nk", 9, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Politik", "", "NOUN", "NN", "cj", 7, "Politik", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Historiker haben die Geschichte der Stadt so rekonstruiert: Zuerst kamen die Könige.": {
+   "ents": [[5, 6, "LOC"]],
+   "tokens": [
+    ["Historiker", " ", "NOUN", "NN", "sb", 1, "Historiker", "Case=Nom|Gender=Masc|Number=Plur"],
+    ["haben", " ", "AUX", "VAFIN", "ROOT", 1, "haben", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 3, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Geschichte", " ", "NOUN", "NN", "oa", 7, "Geschichte", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 5, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Stadt", " ", "NOUN", "NN", "ag", 3, "Stadt", "Case=Gen|Gender=Fem|Number=Sing"],
+    ["so", " ", "ADV", "ADV", "mo", 7, "so", ""],
+    ["rekonstruiert", "", "VERB", "VVPP", "oc", 1, "rekonstruieren", "VerbForm=Part"],
+    [":", " ", "PUNCT", "$.", "punct", 1, "--", ""],
+    ["Zuerst", " ", "ADV", "ADV", "mo", 10, "zuerst", ""],
+    ["kamen", " ", "VERB", "VVFIN", "ROOT", 10, "kommen", "Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 12, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Plur|PronType=Art"],
+    ["Könige", "", "NOUN", "NN", "sb", 10, "König", "Case=Nom|Gender=Masc|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 10, "--", ""]
+   ]
+  },
+  "Wilhelm Wien erweiterte das Strahlungsgesetz im Jahr 1893 .": {
+   "ents": [[0, 2, "PER"]],
+   "tokens": [
+    ["Wilhelm", " ", "PROPN", "NE", "pnc", 1, "Wilhelm", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Wien", " ", "PROPN", "NE", "sb", 2, "Wien", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["erweiterte", " ", "VERB", "VVFIN", "ROOT", 2, "erweitern", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["das", " ", "DET", "ART", "nk", 4, "der", "Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Strahlungsgesetz", " ", "NOUN", "NN", "oa", 2, "Strahlungsgesetz", "Case=Acc|Gender=Neut|Number=Sing"],
+    ["im", " ", "ADP", "APPRART", "mo", 2, "in", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["Jahr", " ", "NOUN", "NN", "nk", 5, "Jahr", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["1893", " ", "NUM", "CARD", "nk", 6, "1893", ""],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Die Staatsform wandelte sich im Laufe der Zeit zur Republik.": {
+   "ents": [[7, 10, "ORG"]],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Staatsform", " ", "NOUN", "NN", "sb", 2, "Staatsform", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["wandelte", " ", "VERB", "VVFIN", "ROOT", 2, "wandeln", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["sich", " ", "PRON", "PRF", "oa", 2, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["im", " ", "ADP", "APPRART", "mo", 2, "in", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["Laufe", " ", "NOUN", "NN", "nk", 4, "Lauf", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 7, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Zeit", " ", "NOUN", "NN", "ag", 5, "Zeit", "Case=Gen|Gender=Fem|Number=Sing"],
+    ["zur", " ", "ADP", "APPRART", "mnr", 7, "zu", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["Republik", "", "NOUN", "NN", "nk", 8, "Republik", "Case=Dat|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Das Römische Reich war ein Staat der Antike.": {
+   "ents": [[1, 3, "LOC"]],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 2, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Römische", " ", "ADJ", "ADJA", "nk", 2, "römisch", "Case=Nom|Degree=Pos|Gender=Neut|Number=Sing"],
+    ["Reich", " ", "NOUN", "NN", "sb", 3, "Reich", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 3, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 5, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Staat", " ", "NOUN", "NN", "pd", 3, "Staat", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 7, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Antike", "", "NOUN", "NN", "ag", 5, "Antike", "Case=Gen|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Das Konzept beschreibt die Herstellung von Gütern und behandelt die Pflege von Daten.": {
+   "ents": [],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Konzept", " ", "NOUN", "NN", "sb", 2, "Konzept", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["beschreibt", " ", "VERB", "VVFIN", "ROOT", 2, "beschreiben", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 4, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Herstellung", " ", "NOUN", "NN", "oa", 2, "Herstellung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 4, "von", ""],
+    ["Gütern", " ", "NOUN", "NN", "nk", 5, "Gut", "Case=Dat|Gender=Neut|Number=Plur"],
+    ["und", " ", "CCONJ", "KON", "cd", 2, "und", ""],
+    ["behandelt", " ", "VERB", "VVFIN", "cj", 7, "behandeln", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 10, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Pflege", " ", "NOUN", "NN", "oa", 8, "Pflege", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 10, "von", ""],
+    ["Daten", "", "NOUN", "NN", "nk", 11, "Datum", "Case=Dat|Gender=Neut|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Gleichströme sind ab 2 mA spürbar.": {
+   "ents": [[0, 1, "LOC"]],
+   "tokens": [
+    ["Gleichströme", " ", "NOUN", "NE", "sb", 1, "Gleichströme", "Case=Nom|Gender=Masc|Number=Plur"],
+    ["sind", " ", "AUX", "VAFIN", "ROOT", 1, "sein", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ab", " ", "ADP", "APPR", "mo", 1, "ab", ""],
+    ["2", " ", "NUM", "CARD", "nk", 2, "2", ""],
+    ["mA", " ", "NOUN", "NN", "mo", 5, "mA", "Gender=Fem"],
+    ["spürbar", "", "ADV", "ADJD", "pd", 1, "spürbar", "Degree=Pos"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Am 1. März 2025 fand im Theater die Uraufführung des Stücks Einstein – Eine Zeitreise statt.": {
+   "ents": [[10, 11, "PER"], [11, 12, "MISC"], [13, 15, "MISC"]],
+   "tokens": [
+    ["Am", " ", "ADP", "APPRART", "mo", 4, "an", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["1.", " ", "ADJ", "ADJA", "nk", 2, "1.", "Case=Dat|Degree=Pos|Gender=Masc|Number=Sing"],
+    ["März", " ", "NOUN", "NN", "nk", 0, "März", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["2025", " ", "NUM", "CARD", "nk", 2, "2025", ""],
+    ["fand", " ", "VERB", "VVFIN", "ROOT", 4, "finden", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["im", " ", "ADP", "APPRART", "mo", 4, "in", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["Theater", " ", "NOUN", "NN", "nk", 5, "Theater", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["die", " ", "DET", "ART", "nk", 8, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Uraufführung", " ", "NOUN", "NN", "oa", 4, "Uraufführung", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["des", " ", "DET", "ART", "nk", 10, "der", "Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Stücks", " ", "NOUN", "NN", "ag", 8, "Stück", "Case=Gen|Gender=Neut|Number=Sing"],
+    ["Einstein", " ", "PROPN", "NN", "nk", 10, "Einstein", "Case=Nom|Number=Sing"],
+    ["–", " ", "PUNCT", "$(", "punct", 4, "--", ""],
+    ["Eine", " ", "DET", "ART", "nk", 14, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Zeitreise", " ", "NOUN", "NN", "sb", 4, "Zeitreise", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["statt", "", "ADV", "PTKVZ", "svp", 4, "statt", ""],
+    [".", "", "PUNCT", "$.", "punct", 4, "--", ""]
+   ]
+  },
+  "Im Gegensatz dazu steht die direkte Demokratie.": {
+   "ents": [],
+   "tokens": [
+    ["Im", " ", "ADP", "APPRART", "mo", 3, "in", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["Gegensatz", " ", "NOUN", "NN", "nk", 0, "Gegensatz", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["dazu", " ", "ADV", "PROAV", "mnr", 1, "dazu", ""],
+    ["steht", " ", "VERB", "VVFIN", "ROOT", 3, "stehen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 6, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["direkte", " ", "ADJ", "ADJA", "nk", 6, "direkt", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Demokratie", "", "NOUN", "NN", "sb", 3, "Demokratie", "Case=Nom|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Die erste Erwähnung findet sich bezogen auf die Attische Demokratie bei Herodot.": {
+   "ents": [[8, 9, "LOC"], [11, 12, "PER"]],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 2, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["erste", " ", "ADJ", "ADJA", "nk", 2, "erster", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Erwähnung", " ", "NOUN", "NN", "sb", 3, "Erwähnung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["findet", " ", "VERB", "VVFIN", "ROOT", 3, "finden", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["sich", " ", "PRON", "PRF", "oa", 5, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["bezogen", " ", "VERB", "VVPP", "oc", 3, "beziehen", "VerbForm=Part"],
+    ["auf", " ", "ADP", "APPR", "op", 5, "auf", ""],
+    ["die", " ", "DET", "ART", "nk", 8, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Attische", " ", "NOUN", "NN", "nk", 6, "Attische", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["Demokratie", " ", "NOUN", "NN", "nk", 8, "Demokratie", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["bei", " ", "ADP", "APPR", "mnr", 9, "bei", ""],
+    ["Herodot", "", "PROPN", "NE", "nk", 10, "Herodot", "Case=Dat|Gender=Neut|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Die Wirkung sei so nicht möglich.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Wirkung", " ", "NOUN", "NN", "sb", 2, "Wirkung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["sei", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["so", " ", "ADV", "ADV", "mo", 2, "so", ""],
+    ["nicht", " ", "PART", "PTKNEG", "ng", 2, "nicht", ""],
+    ["möglich", "", "ADV", "ADJD", "pd", 2, "möglich", "Degree=Pos"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Oft wird die These vertreten, in Deutschland sei das Recht stabil.": {
+   "ents": [[7, 8, "LOC"]],
+   "tokens": [
+    ["Oft", " ", "ADV", "ADV", "mo", 4, "oft", ""],
+    ["wird", " ", "AUX", "VAFIN", "ROOT", 1, "werden", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 3, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["These", " ", "NOUN", "NN", "sb", 1, "These", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["vertreten", "", "VERB", "VVPP", "oc", 1, "vertreten", "VerbForm=Part"],
+    [",", " ", "PUNCT", "$,", "punct", 1, "--", ""],
+    ["in", " ", "ADP", "APPR", "mo", 8, "in", ""],
+    ["Deutschland", " ", "PROPN", "NE", "nk", 6, "Deutschland", "Case=Dat|Gender=Neut|Number=Sing"],
+    ["sei", " ", "AUX", "VAFIN", "cj", 1, "sein", "Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["das", " ", "DET", "ART", "nk", 10, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Recht", " ", "NOUN", "NN", "sb", 8, "Recht", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["stabil", "", "ADV", "ADJD", "pd", 8, "stabil", "Degree=Pos"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Die Wahl obliegt aber einzig der gewählten Vertretung.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Wahl", " ", "NOUN", "NN", "sb", 2, "Wahl", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["obliegt", " ", "VERB", "VVFIN", "ROOT", 2, "obliegen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["aber", " ", "ADV", "ADV", "mo", 2, "aber", ""],
+    ["einzig", " ", "ADV", "ADJD", "mo", 2, "einzig", "Degree=Pos"],
+    ["der", " ", "DET", "ART", "nk", 7, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["gewählten", " ", "ADJ", "ADJA", "nk", 7, "gewählt", "Case=Gen|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Vertretung", "", "NOUN", "NN", "da", 2, "Vertretung", "Case=Gen|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Das Mittelalter liegt also zwischen Antike und Neuzeit.": {
+   "ents": [],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Mittelalter", " ", "NOUN", "NN", "sb", 2, "Mittelalter", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["liegt", " ", "VERB", "VVFIN", "ROOT", 2, "liegen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["also", " ", "ADV", "ADV", "mo", 2, "also", ""],
+    ["zwischen", " ", "ADP", "APPR", "mo", 2, "zwischen", ""],
+    ["Antike", " ", "NOUN", "NN", "nk", 4, "Antike", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["und", " ", "CCONJ", "KON", "cd", 5, "und", ""],
+    ["Neuzeit", "", "NOUN", "NN", "cj", 6, "Neuzeit", "Case=Dat|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Die Definition war wegweisend für den Begriff.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Definition", " ", "NOUN", "NN", "sb", 2, "Definition", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["wegweisend", " ", "ADV", "ADJD", "pd", 2, "wegweisend", "Degree=Pos"],
+    ["für", " ", "ADP", "APPR", "mo", 2, "für", ""],
+    ["den", " ", "DET", "ART", "nk", 6, "der", "Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Begriff", "", "NOUN", "NN", "nk", 4, "Begriff", "Case=Acc|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Jürgen Kaube kritisiert Crouchs normative Herangehensweise.": {
+   "ents": [[0, 2, "PER"], [3, 4, "PER"]],
+   "tokens": [
+    ["Jürgen", " ", "PROPN", "NE", "pnc", 1, "Jürgen", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Kaube", " ", "NOUN", "NE", "oa", 2, "Kaube", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["kritisiert", " ", "VERB", "VVFIN", "ROOT", 2, "kritisieren", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["Crouchs", " ", "PROPN", "NE", "ag", 5, "Crouch", "Case=Gen|Gender=Neut|Number=Sing"],
+    ["normative", " ", "ADJ", "ADJA", "nk", 5, "normativ", "Case=Acc|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Herangehensweise", "", "NOUN", "NN", "ROOT", 5, "Herangehensweise", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 5, "--", ""]
+   ]
+  },
+  "Ein Vulkan ist eine geologische Struktur.": {
+   "ents": [],
+   "tokens": [
+    ["Ein", " ", "DET", "ART", "nk", 1, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Vulkan", " ", "NOUN", "NE", "sb", 2, "Vulkan", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["eine", " ", "DET", "ART", "nk", 5, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["geologische", " ", "ADJ", "ADJA", "nk", 5, "geologisch", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Struktur", "", "NOUN", "NN", "pd", 2, "Struktur", "Case=Nom|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Nachhaltigkeit ist ein Prinzip für den Umgang mit Ressourcen.": {
+   "ents": [],
+   "tokens": [
+    ["Nachhaltigkeit", " ", "NOUN", "NN", "sb", 1, "Nachhaltigkeit", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 1, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 3, "ein", "Case=Nom|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Prinzip", " ", "NOUN", "NN", "pd", 1, "Prinzip", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["für", " ", "ADP", "APPR", "mnr", 3, "für", ""],
+    ["den", " ", "DET", "ART", "nk", 6, "der", "Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Umgang", " ", "NOUN", "NN", "nk", 4, "Umgang", "Case=Acc|Gender=Masc|Number=Sing"],
+    ["mit", " ", "ADP", "APPR", "op", 6, "mit", ""],
+    ["Ressourcen", "", "NOUN", "NN", "nk", 7, "Ressource", "Case=Dat|Gender=Fem|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Als Nachhaltigkeitsstrategie bezeichnet man einen Plan zur Umsetzung von Zielen.": {
+   "ents": [],
+   "tokens": [
+    ["Als", " ", "ADP", "APPR", "mo", 2, "als", ""],
+    ["Nachhaltigkeitsstrategie", " ", "NOUN", "NN", "nk", 0, "Nachhaltigkeitsstrategie", "Case=Acc|Gender=Fem|Number=Sing"],
+    ["bezeichnet", " ", "VERB", "VVFIN", "ROOT", 2, "bezeichnen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["man", " ", "PRON", "PIS", "sb", 2, "man", "Case=Nom|Number=Sing|PronType=Ind"],
+    ["einen", " ", "DET", "ART", "nk", 5, "ein", "Case=Acc|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Plan", " ", "NOUN", "NN", "oa", 2, "Plan", "Case=Acc|Gender=Masc|Number=Sing"],
+    ["zur", " ", "ADP", "APPRART", "mnr", 5, "zu", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["Umsetzung", " ", "NOUN", "NN", "nk", 6, "Umsetzung", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 7, "von", ""],
+    ["Zielen", "", "NOUN", "NN", "nk", 8, "Ziel", "Case=Dat|Gender=Neut|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Das war eine lange Mauer mit einem Graben.": {
+   "ents": [],
+   "tokens": [
+    ["Das", " ", "PRON", "PDS", "sb", 1, "der", "Case=Nom|Gender=Neut|Number=Sing|PronType=Dem"],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 1, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["eine", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["lange", " ", "ADJ", "ADJA", "nk", 4, "lang", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Mauer", " ", "NOUN", "NN", "pd", 1, "Mauer", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["mit", " ", "ADP", "APPR", "mnr", 4, "mit", ""],
+    ["einem", " ", "DET", "ART", "nk", 7, "ein", "Case=Dat|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Graben", "", "NOUN", "NN", "nk", 5, "Graben", "Case=Dat|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Der Rotor ist leicht und schnell.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Rotor", " ", "NOUN", "NN", "sb", 2, "Rotor", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["leicht", " ", "ADV", "ADJD", "pd", 2, "leicht", "Degree=Pos"],
+    ["und", " ", "CCONJ", "KON", "cd", 3, "und", ""],
+    ["schnell", "", "ADV", "ADJD", "cj", 4, "schnell", "Degree=Pos"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Theorien bestehen aus Begriffssystemen und Aussagen.": {
+   "ents": [[3, 4, "MISC"]],
+   "tokens": [
+    ["Theorien", " ", "NOUN", "NN", "sb", 1, "Theorie", "Case=Nom|Gender=Fem|Number=Plur"],
+    ["bestehen", " ", "VERB", "VVFIN", "ROOT", 1, "bestehen", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["aus", " ", "ADP", "APPR", "mo", 1, "aus", ""],
+    ["Begriffssystemen", " ", "NOUN", "NN", "nk", 2, "Begriffssystemen", "Case=Dat|Gender=Neut|Number=Plur"],
+    ["und", " ", "CCONJ", "KON", "cd", 3, "und", ""],
+    ["Aussagen", "", "NOUN", "NN", "cj", 4, "Aussage", "Case=Dat|Gender=Fem|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Eine Sammellinse dient der Bündelung von Lichtstrahlen.": {
+   "ents": [],
+   "tokens": [
+    ["Eine", " ", "DET", "ART", "nk", 1, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Sammellinse", " ", "NOUN", "NN", "sb", 2, "Sammellinse", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["dient", " ", "VERB", "VVFIN", "ROOT", 2, "dienen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["der", " ", "DET", "ART", "nk", 4, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Bündelung", " ", "NOUN", "NN", "da", 2, "Bündelung", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["von", " ", "ADP", "APPR", "pg", 4, "von", ""],
+    ["Lichtstrahlen", "", "NOUN", "NN", "nk", 5, "Lichtstrahle", "Case=Dat|Gender=Fem|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Albert Einstein war ein Physiker und Nobelpreisträger.": {
+   "ents": [[0, 2, "PER"]],
+   "tokens": [
+    ["Albert", " ", "PROPN", "NE", "pnc", 1, "Albert", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Einstein", " ", "PROPN", "NE", "sb", 2, "Einstein", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Physiker", " ", "NOUN", "NN", "pd", 2, "Physiker", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["und", " ", "CCONJ", "KON", "cd", 4, "und", ""],
+    ["Nobelpreisträger", "", "NOUN", "NN", "cj", 5, "Nobelpreisträger", "Case=Nom|Gender=Masc|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Theorien": {
+   "ents": [],
+   "tokens": [
+    ["Theorien", "", "NOUN", "NN", "ROOT", 0, "Theorie", "Case=Nom|Gender=Fem|Number=Plur"]
+   ]
+  },
+  "Eine Sammellinse": {
+   "ents": [],
+   "tokens": [
+    ["Eine", " ", "DET", "ART", "nk", 1, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Sammellinse", "", "NOUN", "NN", "ROOT", 1, "Sammellinse", "Case=Nom|Gender=Fem|Number=Sing"]
+   ]
+  },
+  "Albert Einstein": {
+   "ents": [[0, 2, "PER"]],
+   "tokens": [
+    ["Albert", " ", "PROPN", "NE", "pnc", 1, "Albert", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Einstein", "", "PROPN", "NE", "ROOT", 1, "Einstein", "Case=Nom|Gender=Masc|Number=Sing"]
+   ]
+  },
+  "Vulkan": {
+   "ents": [],
+   "tokens": [
+    ["Vulkan", "", "PROPN", "NE", "ROOT", 0, "Vulkan", "Case=Nom|Gender=Masc|Number=Sing"]
+   ]
+  },
+  "Die Optik ist ein Gebiet der Physik.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Optik", " ", "NOUN", "NN", "sb", 2, "Optik", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Gebiet", " ", "NOUN", "NN", "pd", 2, "Gebiet", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 6, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Physik", "", "NOUN", "NN", "ag", 4, "Physik", "Case=Gen|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Nachhaltigkeit": {
+   "ents": [],
+   "tokens": [
+    ["Nachhaltigkeit", "", "NOUN", "NN", "ROOT", 0, "Nachhaltigkeit", "Case=Nom|Gender=Fem|Number=Sing"]
+   ]
+  },
+  "Optik": {
+   "ents": [],
+   "tokens": [
+    ["Optik", "", "NOUN", "NN", "ROOT", 0, "Optik", "Case=Nom|Gender=Fem|Number=Sing"]
+   ]
+  },
+  "Das Auge ist ein Sinnesorgan für Licht.": {
+   "ents": [[0, 2, "MISC"]],
+   "tokens": [
+    ["Das", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Auge", " ", "NOUN", "NN", "sb", 2, "Auge", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Sinnesorgan", " ", "NOUN", "NN", "pd", 2, "Sinnesorgan", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["für", " ", "ADP", "APPR", "mnr", 4, "für", ""],
+    ["Licht", "", "NOUN", "NN", "nk", 5, "Licht", "Case=Acc|Gender=Neut|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Niels Bohr war ein dänischer Physiker.": {
+   "ents": [[0, 2, "PER"], [4, 5, "MISC"]],
+   "tokens": [
+    ["Niels", " ", "PROPN", "NE", "pnc", 1, "Niels", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["Bohr", " ", "PROPN", "NE", "sb", 2, "Bohr", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["war", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 5, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["dänischer", " ", "ADJ", "ADJA", "nk", 5, "dänisch", "Case=Nom|Degree=Pos|Gender=Masc|Number=Sing"],
+    ["Physiker", "", "NOUN", "NN", "pd", 2, "Physiker", "Case=Nom|Gender=Masc|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Nachhaltige Entwicklung ist eine Entwicklung für heutige und künftige Generationen.": {
+   "ents": [],
+   "tokens": [
+    ["Nachhaltige", " ", "ADJ", "ADJA", "nk", 1, "nachhaltig", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Entwicklung", " ", "NOUN", "NN", "sb", 2, "Entwicklung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["eine", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Entwicklung", " ", "NOUN", "NN", "pd", 2, "Entwicklung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["für", " ", "ADP", "APPR", "mnr", 4, "für", ""],
+    ["heutige", " ", "ADJ", "ADJA", "nk", 9, "heutig", "Case=Acc|Degree=Pos|Gender=Fem|Number=Plur"],
+    ["und", " ", "CCONJ", "KON", "cd", 6, "und", ""],
+    ["künftige", " ", "ADJ", "ADJA", "cj", 7, "künftig", "Case=Acc|Degree=Pos|Gender=Fem|Number=Plur"],
+    ["Generationen", "", "NOUN", "NN", "nk", 5, "Generation", "Case=Acc|Gender=Fem|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Die Vulkaneifel ist ein Mittelgebirge bis 700 m ü.": {
+   "ents": [[1, 2, "LOC"]],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Vulkaneifel", " ", "NOUN", "NE", "sb", 2, "Vulkaneifel", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ein", " ", "DET", "ART", "nk", 4, "ein", "Case=Nom|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Mittelgebirge", " ", "NOUN", "NN", "pd", 2, "Mittelgebirge", "Case=Nom|Gender=Neut|Number=Sing"],
+    ["bis", " ", "ADP", "APPR", "mnr", 4, "bis", ""],
+    ["700", " ", "NUM", "CARD", "nk", 7, "700", ""],
+    ["m", " ", "NOUN", "NN", "nk", 5, "m", "Gender=Masc"],
+    ["ü.", "", "PRON", "PIS", "pd", 2, "ü.", "Case=Dat|Gender=Neut|Number=Sing|PronType=Ind"]
+   ]
+  }
+ }
+}

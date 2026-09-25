@@ -73,14 +73,14 @@ def test_an_unknown_topic_is_a_404_with_the_resolution(client: TestClient) -> No
 
 
 def test_the_llm_writes_the_pairs_when_it_is_asked_and_available(with_llm: TestClient) -> None:
-    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "count": 2}).json()
     assert body["method"] == "llm" and body["note"] is None
     assert [pair["question"] for pair in body["pairs"]] == ["Was ist Licht?", "Was ist Optik?"]
 
 
 def test_the_llm_method_without_a_configured_llm_is_a_503(client: TestClient) -> None:
     """D53: no b-api is configured in the tests; asking for it is refused instead of answered by the templates."""
-    for asked in ({"method": "llm"}, {"preset": "balanced"}):
+    for asked in ({"method": "llm"}, {"preset": "best-quality"}, {"preset": "best-quality-generated"}):
         answer = client.post("/api/v2/qa", json={"text": TEXT, **asked})
         assert answer.status_code == 503 and "method=llm" in answer.json()["detail"], asked
 
@@ -88,15 +88,28 @@ def test_the_llm_method_without_a_configured_llm_is_a_503(client: TestClient) ->
 def test_the_profile_picks_the_method_and_a_method_the_request_sets_wins(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """D53: llm-free takes the spaCy parse - free and fast -, the other profiles the b-api; preset goes with a text."""
+    """D55: llm-free takes the rules, balanced the two small models, the LLM profiles the b-api; a method wins."""
     from tests.test_qa_parse import FakeNlp
 
     monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
     sentence = {"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes."}
-    assert client.post("/api/v2/qa", json={**sentence, "preset": "llm-free"}).json()["method"] == "parse-based"
-    assert client.post("/api/v2/qa", json=sentence).json()["method"] == "parse-based", "the tests' profile: llm-free"
-    chosen = client.post("/api/v2/qa", json={**sentence, "preset": "llm-free", "method": "rule-based"}).json()
-    assert chosen["method"] == "rule-based"
+    assert client.post("/api/v2/qa", json={**sentence, "preset": "llm-free"}).json()["method"] == "rule-based"
+    assert client.post("/api/v2/qa", json=sentence).json()["method"] == "rule-based", "the tests' profile: llm-free"
+    chosen = client.post("/api/v2/qa", json={**sentence, "preset": "llm-free", "method": "parse-based"}).json()
+    assert chosen["method"] == "parse-based"
+
+
+def test_balanced_asks_the_small_models_and_needs_no_llm(client: TestClient) -> None:
+    """D55: the test image carries no model weights, so the rules answer and say why - and no LLM is asked for."""
+    answer = client.post("/api/v2/qa", json={"text": TEXT, "preset": "balanced"})
+    assert answer.status_code == 200
+    assert answer.json()["method"] == "rule-based" and "QA-Modelle" in answer.json()["note"]
+
+
+def test_fewer_pairs_than_asked_for_are_named_in_the_note(client: TestClient) -> None:
+    """Jan, 2026-09-25: 20 asked, about 5 delivered and not a word about it. The count is an upper bound."""
+    body = client.post("/api/v2/qa", json={"text": TEXT, "count": 20}).json()
+    assert len(body["pairs"]) == 3 and "3 statt 20 Paare" in body["note"]
 
 
 def test_an_llm_profile_lets_the_llm_write_the_pairs(with_llm: TestClient) -> None:
@@ -133,17 +146,20 @@ def test_without_the_tagger_the_answer_says_the_questions_are_unchecked(client: 
     assert body["note"] and "spaCy" in body["note"]
 
 
-def test_with_the_tagger_an_adverb_gets_no_question_and_there_is_no_note(
+def test_with_the_parse_the_rules_ask_varied_questions_and_there_is_no_note(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tests.test_qa_pairs import fake_nlp
+    """D55: with the spaCy model the rule stage asks from the parse (app/synthesis/qa_rules.py), not the templates."""
+    from tests.recorded_spacy import RecordedNlp
 
-    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: fake_nlp)
-    text = "Daneben sind die nichtlineare Optik und die Quantenoptik von Bedeutung. " + TEXT
-    body = client.post("/api/v2/qa", json={"text": text, "method": "rule-based"}).json()
-    assert body["note"] is None
-    assert "Daneben" not in " ".join(pair["question"] for pair in body["pairs"])
-    assert "Was versteht man unter Optik?" in [pair["question"] for pair in body["pairs"]]
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: RecordedNlp())
+    text = "Ein Vulkan ist eine geologische Struktur. Einstein wurde 1879 in Ulm geboren."
+    body = client.post("/api/v2/qa", json={"text": text, "method": "rule-based", "count": 2}).json()
+    assert body["method"] == "rule-based" and body["note"] is None
+    assert [pair["question"] for pair in body["pairs"]] == [
+        "Was ist ein Vulkan?",
+        "Wann wurde Einstein in Ulm geboren?",
+    ]
 
 
 def test_the_model_stage_falls_back_when_the_models_are_not_in_the_image(client: TestClient) -> None:
@@ -170,7 +186,7 @@ def test_the_model_stage_uses_the_two_models_when_they_are_there(
             lambda q, c: "ein Teilgebiet der Physik",
         ),
     )
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
+    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models", "count": 1}).json()
     assert body["method"] == "models" and body["note"] is None
     assert body["pairs"] == [
         {"question": "Was ist die Optik?", "answer": "ein Teilgebiet der Physik", "level": None}
@@ -207,7 +223,7 @@ def test_the_parse_stage_swaps_the_subject_for_a_question_word(
     monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
     body = client.post(
         "/api/v2/qa",
-        json={"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes.", "method": "parse-based"},
+        json={"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes.", "method": "parse-based", "count": 1},
     ).json()
     assert body["method"] == "parse-based" and body["note"] is None
     assert body["pairs"] == [
@@ -344,6 +360,72 @@ def test_a_topic_asks_the_compendium_it_makes_first(client: TestClient, monkeypa
     assert body["chars"] == len(block), "the pairs are made from the block, nothing else"
     assert body["topic"] == "Optik" and body["resolution"]["title"] == "Optik"
     assert all(pair["answer"] in block for pair in body["pairs"])
+
+
+def _optik(*sections: Section) -> Compendium:
+    return Compendium(
+        topic="Optik",
+        resolution=Resolution(query="Optik", normalized="Optik", title="Optik"),
+        template_id="sc26",
+        template_version=1,
+        extraction="rule-based",
+        generation="rule-based",
+        generated_at="2026-09-25T00:00:00Z",
+        audit=AuditReport(),
+        sections=list(sections),
+    )
+
+
+BLOCK = Section(
+    slot_id="s1",
+    slot_key="themendefinition",
+    title="Definition",
+    text="Die Brechzahl von Wasser beträgt etwa 1,33 und bestimmt den Winkel des gebrochenen Strahls.",
+)
+
+
+def test_part_one_is_made_without_an_llm_whatever_the_profile(
+    with_llm: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D55 (Jan): the pairs are asked of the compendium the LLM-free procedure makes; the profile picks only the
+    method of the pairs. An article choice the request names still goes along, as every single switch does."""
+    asked: list[tuple[str | None, str | None]] = []
+
+    def capture(payload: Any, **_: Any) -> Compendium:
+        asked.append((payload.preset, payload.article_choice))
+        return _optik(BLOCK)
+
+    service: CompendiumService = with_llm.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "generate", capture)
+    assert with_llm.post("/api/v2/qa", json={"topic": "Optik", "preset": "best-quality"}).json()["method"] == "llm"
+    with_llm.post("/api/v2/qa", json={"topic": "Optik", "preset": "balanced", "article_choice": "llm"})
+    assert asked == [("llm-free", "rule-based"), ("llm-free", "llm")], "the rules choose unless the request says"
+
+
+def test_the_rule_stage_hears_the_glossary_the_actors_and_the_topic(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D55: the glossary and the actor list are generated blocks, no prose to parse, but their definitions and
+    first sentences make questions of their own; the rules read them from the blocks, not from the text."""
+    from tests.recorded_spacy import RecordedNlp
+
+    heard: dict[str, Any] = {}
+
+    def spy(text: str, **kwargs: Any) -> list[Any]:
+        heard.update(text=text, **kwargs)
+        return []
+
+    glossary = Section(
+        slot_id="s2", slot_key="glossar", title="Glossar", text="GLOSSAR", status=SectionStatus.GENERATED
+    )
+    actors = Section(slot_id="s3", slot_key="akteure", title="Akteure", text="AKTEURE", status=SectionStatus.GENERATED)
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "generate", lambda payload, **_: _optik(BLOCK, glossary, actors))
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: RecordedNlp())
+    monkeypatch.setattr("app.api.v2.qa.rule_pairs", spy)
+    client.post("/api/v2/qa", json={"topic": "Optik", "method": "rule-based"})
+    assert heard["text"] == BLOCK.text, "the generated blocks stay out of the prose"
+    assert (heard["glossary"], heard["actors"], heard["topic"]) == ("GLOSSAR", "AKTEURE", "Optik")
 
 
 def test_a_text_is_still_taken_as_it_comes(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -513,7 +595,20 @@ def test_an_unavailable_llm_is_named_once(with_llm: TestClient, monkeypatch: pyt
     assert body["note"].startswith(reason) and body["note"].count("Regelmodus verwendet") == 1, body["note"]
 
 
-def test_a_topic_on_a_profile_that_needs_an_llm_is_a_503_without_one(client: TestClient) -> None:
-    """D53: part 1 of the pairs follows the profile; without an LLM an LLM profile is refused as a compendium is."""
-    answer = client.post("/api/v2/qa", json={"topic": "Optik", "preset": "balanced"})
-    assert answer.status_code == 503 and "LLM_ENABLED" in answer.json()["detail"]
+def test_an_llm_is_asked_for_only_where_the_pairs_or_the_article_of_a_node_need_one(
+    client: TestClient, settings: Settings
+) -> None:
+    """D55: a topic's part 1 needs no LLM, so balanced asks the small models without one and best-quality needs it
+    only for the pairs. A material node needs it for its article in every LLM profile, as a compendium does (D47):
+    the rules find the article of a material in about half of the cases."""
+    from app.main import create_app as build
+    from tests.test_nodes_api import with_fake_repository
+    from tests.test_wlo_client import EXAM
+
+    assert client.post("/api/v2/qa", json={"topic": "Optik", "preset": "balanced"}).status_code == 200
+    refused = client.post("/api/v2/qa", json={"topic": "Optik", "preset": "best-quality"}).json()["detail"]
+    assert "method=llm" in refused and "article_choice" not in refused
+    node = TestClient(with_fake_repository(build(settings)))
+    refused = node.post("/api/v2/qa", json={"node_id": EXAM, "preset": "balanced"})
+    assert refused.status_code == 503
+    assert "article_choice=llm" in refused.json()["detail"] and "Profil balanced" in refused.json()["detail"]

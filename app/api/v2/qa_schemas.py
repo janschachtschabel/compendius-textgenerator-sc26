@@ -22,10 +22,11 @@ from app.domain.requests import (
 )
 
 Method = Literal["rule-based", "parse-based", "models", "llm"]
-# The method of each profile (D53): llm-free the free and fast parse, every profile with an LLM the LLM
+# The method of each profile (D55, Jan): llm-free the rules, balanced the two small models in the image, the
+# profiles that pay for an LLM anyway the LLM
 PROFILE_METHODS: dict[str, Method] = {
-    "llm-free": "parse-based",
-    "balanced": "llm",
+    "llm-free": "rule-based",
+    "balanced": "models",
     "best-quality": "llm",
     "best-quality-generated": "llm",
 }
@@ -47,9 +48,9 @@ class QaRequest(BaseModel):
         None,
         min_length=1,
         max_length=300,
-        description="Instead of a text: part 1 of the compendium for this topic is made first and the "
-        "pairs are asked about it. That costs a compendium generation - hand the text over instead when "
-        "you already have one",
+        description="Instead of a text: part 1 of the compendium for this topic is made first, without an LLM "
+        "whatever the profile (D55), and the pairs are asked about its blocks, its glossary and its actors. That "
+        "costs a compendium generation of 2 to 9 s - hand the text over instead when you already have one",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -61,30 +62,37 @@ class QaRequest(BaseModel):
     )
     preset: Preset | None = Field(
         None,
-        description="The profile (D53): it picks the method of the pairs when the request names none - llm-free "
-        "parse-based, every other profile llm -, and with topic or node_id the part 1 they are made from, as in a "
-        "compendium request. Default: PRESET_DEFAULT, shipped balanced",
+        description="The profile (D55): it picks the method of the pairs when the request names none - llm-free "
+        "rule-based, balanced models, best-quality and best-quality-generated llm. It does not change the part 1 of "
+        "a topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped balanced",
     )
     article_choice: ArticleChoice | None = Field(
         None,
-        description="With topic or node_id: who chooses the article, rule-based or llm, as in a compendium request; "
-        "llm also names the article of a material without a topic (D47). A preset sets it",
+        description="With topic or node_id: who chooses the article of part 1. Default rule-based, whatever the "
+        "profile (D55); llm lets the b-api choose, as in a compendium request, and also names the article of a "
+        "material without a topic (D47) - it needs LLM_ENABLED, else the request is a 503",
     )
     method: Method | None = Field(
         None,
-        description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes parse-based, every other "
-        "profile llm (D53). rule-based needs nothing: four question templates over the "
-        "sentence openings, and the answer is the whole sentence. parse-based swaps the sentence subject "
-        "for a question word using the spaCy parse that is loaded anyway - four times as many sentences "
-        "yield a question and the answer is the subject itself, at about 4 ms per sentence once warm. models uses "
-        "the two German models baked into the image (question generator plus extractive answers) and is "
-        "the most accurate and by far the slowest. llm lets the b-api write the pairs; with a topic or node, part 1 "
-        "and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S), so "
-        "a part 1 that spent them leaves the pairs to the templates. parse-based and models fall back to rule-based "
-        "when they cannot run, and note says why; llm without a configured LLM is a 503, and while the b-api is not "
-        "available it falls back as well",
+        description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free rule-based, balanced models, "
+        "best-quality and best-quality-generated llm (D55). rule-based needs no model beyond the spaCy parse the "
+        "image carries: it asks Wann, Wo, Wer, Was, Worauf, Wie viele, Warum and for definitions from the parse of "
+        "each sentence, then the glossary and the actors of a compendium, and the answer is the whole sentence; "
+        "without the spaCy model it falls back to four templates. parse-based only swaps the sentence subject for a "
+        "question word and answers with the subject. models uses the two German models baked into the image "
+        "(question generator plus extractive answers): varied questions, short answers, about 1 s per pair and 1.3 GB "
+        "of memory per worker from the first request on. llm lets the b-api write the pairs; with a topic or node, "
+        "part 1 and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S). "
+        "parse-based and models fall back to rule-based when they cannot run, and note says why; llm without a "
+        "configured LLM is a 503, and while the b-api is not available it falls back as well",
     )
-    count: int = Field(5, ge=1, le=50, description="Upper bound of the pairs")
+    count: int = Field(
+        5,
+        ge=1,
+        le=50,
+        description="How many pairs. An upper bound: a text holds only so many questions a stage can ask, and when "
+        "it holds fewer, note says how many came instead",
+    )
     max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
     levels: list[str] = Field(
         default_factory=list,

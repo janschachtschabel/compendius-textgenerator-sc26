@@ -1656,6 +1656,16 @@ API.
   deshalb auch mit einem `text` allein; `subject` und `article_choice` bleiben an `topic` oder `node_id` gebunden. `llm`
   ohne konfiguriertes LLM ist ein 503, bei einer gerade nicht erreichbaren b-api fällt die Stufe wie bisher auf die
   Vorlagen zurück. `rule-based` und `models` bleiben als Einzelschalter wählbar.
+- **D55 (2026-09-25)** `/qa` nach Jans Prüfung der Stufen (Standard zu einseitig, fast nur Jahresfragen; `count` nicht
+  eingehalten; `models` die beste Stufe ohne großes LLM). Teil 1 eines Themas entsteht immer ohne LLM (Jan: „über das
+  non-llm Verfahren“), das Profil wählt nur das Verfahren der Paare: `llm-free` die Regeln, `balanced` die zwei kleinen
+  Modelle, `best-quality` und `best-quality-generated` das LLM. Den Artikel eines Material-Knotens wählt in den Profilen
+  mit LLM weiter das LLM, weil die Regeln ihn nur in etwa jedem zweiten Fall finden (D47). `rule-based` fragt neu aus
+  dem spaCy-Parse (`app/synthesis/qa_rules.py`, `qa_questions.py`, `qa_clause.py`, `qa_words.py`): Zeit, Ort, Person,
+  Sache, Präpositionalobjekt, Anzahl, Grund und Definition, dazu Glossar und Akteure des Kompendiums; die Arten wechseln
+  sich ab, jeder Satz kommt einmal dran, bevor einer zweimal gefragt wird, Glossar-Nachbarn und Akteure füllen nur auf.
+  Die Antwort bleibt der ganze Satz. `count` bleibt eine Obergrenze, aber `note` nennt jetzt, wie viele Paare der Text
+  hergab. `parse-based` bleibt vorerst wählbar; welche Stufen bleiben, entscheidet Jan nach der Messung (M30).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
