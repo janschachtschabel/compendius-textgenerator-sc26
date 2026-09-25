@@ -141,9 +141,8 @@ def make_settings(paths: Iterable[Path], state_dir: Path, **overrides: Any) -> S
     # Offline by default: LLM_ENABLED and B_API_KEY from the shell must never reach the real b-api in tests.
     overrides.setdefault("llm_enabled", False)
     overrides.setdefault("rate_limit", 0)  # tests opt in to the limit (tests/test_rate_limit.py)
-    # The shipped default lets a configured LLM choose unsure articles (D37); tests that hand the service a fake
-    # b-api count its calls, so they choose by the rules unless they ask (tests/test_article_choice.py)
-    overrides.setdefault("llm_article_choice_default", "rule-based")
+    # The shipped profile balanced needs an LLM (D53); offline tests run on llm-free unless they ask for another
+    overrides.setdefault("preset_default", "llm-free")
     return Settings(
         _env_file=None,  # type: ignore[call-arg]
         zim_paths=",".join(str(p) for p in paths),

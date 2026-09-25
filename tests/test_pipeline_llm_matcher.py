@@ -14,7 +14,8 @@ from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.prompts import get_prompt
 from app.main import create_app
-from app.service import CompendiumService
+from app.matching.registry import LOCAL_MATCHER
+from app.service import CompendiumService, LlmNotConfiguredError
 from tests.conftest import make_settings
 from tests.test_llm_assignment import PARAGRAPH_RE
 from tests.test_llm_client import FakeBApi
@@ -62,15 +63,27 @@ def test_matcher_llm_writes_the_compendium_from_the_models_assignment(
     assert tokens is not None and tokens["calls"] == len(fake.bodies) and tokens["total"] == 24 * tokens["calls"]
 
 
-def test_matcher_llm_without_a_usable_llm_runs_the_default_strategy(service: CompendiumService) -> None:
+def test_matcher_llm_without_a_configured_llm_is_refused(service: CompendiumService) -> None:
     assert service.llm is None  # the test settings keep the b-api off
+    with pytest.raises(LlmNotConfiguredError, match="matcher=llm"):
+        service.generate(GenerateRequest(topic="Optik", matcher="llm", parts=["world"]))
+
+
+def test_matcher_llm_with_an_llm_not_available_for_now_runs_the_local_strategy(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi()
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    monkeypatch.setattr(
+        service, "llm_unavailable", lambda: "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet"
+    )
     result = service.generate(GenerateRequest(topic="Optik", matcher="llm", parts=["world"]))
     default = service.generate(GenerateRequest(topic="Optik", parts=["world"]))
 
-    assert result.audit.matcher == service.settings.matcher_default == result.frontmatter["matcher"]
+    assert result.audit.matcher == LOCAL_MATCHER == result.frontmatter["matcher"] and fake.bodies == []
     assert result.frontmatter["matcher_requested"] == "llm"
     assert result.frontmatter["review"]["status"] == "maschinell-extraktiv"
-    assert result.audit.llm is not None and "nicht konfiguriert" in result.audit.llm["note"]
+    assert result.audit.llm is not None and "nicht verfügbar" in result.audit.llm["note"]
     assert result.audit.llm["matching"]["requested"] == "llm" and result.audit.llm["matching"]["used"] == "rule-based"
     assert [s.text for s in result.sections] == [s.text for s in default.sections]
 
@@ -80,10 +93,3 @@ def test_the_strategies_list_the_llm_matcher_with_its_cost(sample_zims: dict[str
     strategies = {s["id"]: s for s in client.get("/api/v2/matching/strategies").json()}
     assert strategies["llm"]["hardware"] == "b-api" and not strategies["llm"]["recommended"]
     assert strategies["hybrid_light"]["recommended"]
-
-
-def test_llm_cannot_be_the_default_strategy(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    # The default strategy is what matcher=llm falls back on; it has to run without the b-api
-    settings = make_settings(sample_zims.values(), tmp_path, matcher_default="llm")
-    with pytest.raises(ValueError, match="MATCHER_DEFAULT"):
-        create_app(settings)

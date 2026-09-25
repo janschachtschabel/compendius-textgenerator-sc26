@@ -17,7 +17,7 @@ from app.llm.budget import TokenBudget
 from app.llm.client import BApiClient, LlmError
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.llm.prompts import get_prompt
-from app.service import CompendiumService
+from app.service import CompendiumService, LlmNotConfiguredError
 from tests.test_llm_client import BASE, KEY, FakeBApi
 
 EVIDENCE_RE = re.compile(r"^\[(\d+)\] \((.+?) › (.+?)\) (.+)$", re.MULTILINE)
@@ -154,18 +154,16 @@ def test_exhausted_budget_falls_back_without_calls(service: CompendiumService, m
     assert all(request.url.path.endswith("/models") for request in fake.requests)
 
 
-def test_llm_request_without_configured_llm_falls_back(service: CompendiumService) -> None:
+def test_llm_request_without_configured_llm_is_refused(service: CompendiumService) -> None:
     assert service.llm is None
-    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
-    assert result.generation == "rule-based" and result.frontmatter["generation_requested"] == "llm"
-    assert result.audit.llm is not None and "konfiguriert" in result.audit.llm["note"]
+    with pytest.raises(LlmNotConfiguredError, match="generation=llm"):
+        service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
 
 
-def test_default_generation_comes_from_the_settings(
-    with_llm: CompendiumService, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(with_llm.settings, "llm_generation_default", "llm-fast")
-    result = with_llm.generate(GenerateRequest(topic="Optik", parts=["world"]))
+def test_generation_follows_the_profile(with_llm: CompendiumService) -> None:
+    result = with_llm.generate(GenerateRequest(topic="Optik", parts=["world"], preset="best-quality-generated"))
+    assert (result.generation, result.enrichment) == ("llm", "model-knowledge")
+    result = with_llm.generate(GenerateRequest(topic="Optik", parts=["world"], generation="llm-fast"))
     assert result.generation == "llm-fast"
     result = with_llm.generate(GenerateRequest(topic="Optik", generation="rule-based", parts=["world"]))
     assert result.generation == "rule-based" and result.audit.llm is None

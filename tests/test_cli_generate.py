@@ -21,6 +21,7 @@ def cli_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[Path]:
         "CONFIG_DIR": str(ROOT / "config"),
         "ZIM_PATHS": "",
         "LLM_ENABLED": "false",
+        "PRESET_DEFAULT": "llm-free",  # the shipped balanced needs an LLM (D53)
     }
     for key, value in env.items():
         monkeypatch.setenv(key, value)
@@ -29,20 +30,17 @@ def cli_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[Path]:
     get_settings.cache_clear()
 
 
-def test_generate_accepts_the_llm_switches_and_reports_the_fallback(
+def test_generate_refuses_llm_switches_without_an_llm(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:
+    """D53: what needs an LLM on a server without one is refused, as the API answers it with a 503."""
     out_file = cli_env / "optik.md"
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
     switches = ["--extraction", "llm", "--generation", "llm-fast"]
-    assert main(["generate", "--topic", "Optik", *switches, "--out", str(out_file), *zim_args]) == 0
+    assert main(["generate", "--topic", "Optik", *switches, "--out", str(out_file), *zim_args]) == 1
     err = capsys.readouterr().err
-    assert "Extraktion: rule-based" in err and "Generierung: rule-based" in err
-    assert "Extraktion angefordert llm" in err and "Generierung angefordert llm-fast" in err
-    assert "nicht konfiguriert" in err
-    text = out_file.read_text(encoding="utf-8")
-    assert "generation: rule-based" in text and "generation_requested: llm-fast" in text
-    assert "extraction: rule-based" in text and "extraction_requested: llm" in text
+    assert "LLM_ENABLED" in err and "extraction=llm" in err and "generation=llm-fast" in err
+    assert not out_file.exists()
 
 
 def test_generate_rejects_an_unknown_generation(cli_env: Path) -> None:
@@ -82,10 +80,10 @@ def test_generate_takes_a_node_as_the_api_does(
 def test_generate_accepts_the_enrichment_switch_and_reports_sources_only_without_an_llm(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """docs/umbau.md U4: the switch is reachable from the CLI, and without a usable LLM it cannot take effect."""
+    """docs/umbau.md U4: the switch is reachable from the CLI; without an LLM writing it cannot take effect."""
     out_file = cli_env / "optik.md"
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
-    switches = ["--generation", "llm", "--enrichment", "model-knowledge"]
+    switches = ["--enrichment", "model-knowledge"]
     assert main(["generate", "--topic", "Optik", *switches, "--out", str(out_file), *zim_args]) == 0
     assert "enrichment: sources-only" in out_file.read_text(encoding="utf-8")
     assert "Modellwissen" not in capsys.readouterr().err

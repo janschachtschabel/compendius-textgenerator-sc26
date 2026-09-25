@@ -73,10 +73,10 @@ def test_the_llm_can_drop_the_full_text_hits_that_do_not_fit(
     assert choice["used"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"] and choice["tokens"] == 24
 
 
-def test_the_rules_choose_unless_the_llm_is_asked_for(client: TestClient) -> None:
+def test_the_rules_choose_unless_the_llm_is_asked_for_which_needs_one(client: TestClient) -> None:
     assert client.post("/api/v2/knowledge", json={"topic": "Optik"}).json()["article_choice"] is None
-    asked = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"}).json()
-    assert asked["article_choice"]["used"] == "rule-based" and "nicht konfiguriert" in asked["article_choice"]["note"]
+    asked = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"})
+    assert asked.status_code == 503 and "article_choice=llm" in asked.json()["detail"]
 
 
 def test_the_text_is_capped_and_says_so(client: TestClient) -> None:

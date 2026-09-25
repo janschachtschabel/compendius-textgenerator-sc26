@@ -25,6 +25,7 @@ from app.domain.requests import (
     ArticleChoice,
     Preset,
 )
+from app.service import LlmNotConfiguredError
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.part import node_topic
 
@@ -61,9 +62,9 @@ class KnowledgeRequest(BaseModel):
     template_id: str | None = Field(None, description="Its slots steer the full-text search for extra articles")
     preset: Preset | None = Field(
         None,
-        description="The level of a compendium request (llm-free, balanced, best-quality); here it only sets "
-        "article_choice: llm-free takes rule-based, balanced and best-quality take llm. An article_choice the "
-        "request sets wins.",
+        description="The profile of a compendium request (D53); here it only sets article_choice: llm-free takes "
+        "rule-based, every other profile llm. Default: PRESET_DEFAULT, shipped balanced. An article_choice the "
+        "request sets wins; llm on a server without an LLM is a 503.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
 
@@ -213,8 +214,9 @@ def knowledge(
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
     ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, and
-    ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the level of a
-    compendium would: ``llm-free`` takes ``rule-based``, ``balanced`` and ``best-quality`` take ``llm``.
+    ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the profile of a
+    compendium would: ``llm-free`` takes ``rule-based``, every other profile ``llm``; without ``preset`` the server's
+    profile applies (PRESET_DEFAULT). ``llm`` on a server without an LLM is a 503.
 
     ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
     compendium does: a collection's title, a material's article from its title and description (D47).
@@ -230,6 +232,13 @@ def knowledge(
         service.subjects.check(payload.subject)
     except UnknownSubjectError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    profile = payload.preset or service.settings.preset_default
+    article_choice = payload.article_choice or PRESETS[profile]["article_choice"]
+    try:
+        needed = ["article_choice=llm"] if article_choice == "llm" else []
+        service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
+    except LlmNotConfiguredError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     registry = archives_for(service.registry, payload.archives)
     info, node, derived = None, None, []
     if payload.node_id:
@@ -242,7 +251,7 @@ def knowledge(
         payload.topic,
         template_id=payload.template_id,
         max_articles=payload.max_articles,
-        article_choice=payload.article_choice,
+        article_choice=article_choice,
         derived=derived,
         node=info,
         subject=payload.subject,

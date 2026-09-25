@@ -27,7 +27,7 @@ from app.domain.models import (
     SectionStatus,
     Source,
 )
-from app.domain.requests import GenerateRequest
+from app.domain.requests import GenerateRequest, with_profile
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
@@ -49,7 +49,7 @@ from app.matching.lexicon import HeadingLexicon
 from app.matching.llm_assignment import MATCHER as LLM_ASSIGNED
 from app.matching.llm_assignment import AssignmentJob, LlmAssignmentReport, assign_with_llm
 from app.matching.policy import AssignmentResult, assign
-from app.matching.registry import LLM_MATCHER, STRATEGIES, UnknownMatcherError, ensure_strategy, get_matcher
+from app.matching.registry import LLM_MATCHER, LOCAL_MATCHER, ensure_strategy, get_matcher
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
@@ -82,6 +82,10 @@ class PartsUnavailableError(RuntimeError):
 
 class RepositoryUnavailableError(RuntimeError):
     """No repository to read a node or a collection from: none is configured and the request names none."""
+
+
+class LlmNotConfiguredError(RuntimeError):
+    """A profile or a switch needs an LLM, and this server has none configured (LLM_ENABLED, B_API_KEY; D53)."""
 
 
 NO_REPOSITORY = "Kein Repository konfiguriert (EDU_SHARING_BASE_URL)"
@@ -217,13 +221,6 @@ class CompendiumService:
         self.subjects = (
             SubjectCatalog.load(settings.subjects_path) if settings.subjects_path.exists() else SubjectCatalog.empty()
         )
-        try:  # at start: a wrong default is the operator's error, not a 422 for every request
-            ensure_strategy(settings.matcher_default)
-        except UnknownMatcherError as exc:
-            known = ", ".join(STRATEGIES)
-            raise ValueError(f"MATCHER_DEFAULT={settings.matcher_default!r} is not a strategy ({known})") from exc
-        if settings.matcher_default == LLM_MATCHER:  # matcher=llm falls back on the default, which needs no b-api
-            raise ValueError("MATCHER_DEFAULT=llm is not possible: the default strategy has to run without the b-api")
 
     def prepare(
         self, request: GenerateRequest, deadline: Deadline | None = None, choice: ArticleChoiceJob | None = None
@@ -252,9 +249,7 @@ class CompendiumService:
             derived.append(node_topic(node_info))
         if collection is not None:
             derived.append(collection_topic(collection))
-        # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not, and needs
-        # no LLM to choose an article it will not read
-        needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
+        needs_corpus = self._needs_corpus(request)
         chosen = choose_main_article(
             self.registry,
             self.subjects,
@@ -287,6 +282,25 @@ class CompendiumService:
         if needs_corpus:
             self._add_corpus(prepared, request, deadline, choice)
         return prepared
+
+    def _needs_corpus(self, request: GenerateRequest) -> bool:
+        """Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not, and needs
+        no LLM to choose an article it will not read."""
+        return "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
+
+    def refuse_without_llm(self, needed: Sequence[str], profile: str, defaulted: bool) -> None:
+        """Refuse what needs an LLM when none is configured (D53); one that is only unavailable for now falls back.
+
+        ``needed`` names the switches as name=value, ``profile`` the one in effect, ``defaulted`` whether it came from
+        PRESET_DEFAULT rather than from the request.
+        """
+        if self.llm is not None or not needed:
+            return
+        origin = f"Standardprofil {profile} (PRESET_DEFAULT)" if defaulted else f"Profil {profile}"
+        raise LlmNotConfiguredError(
+            f"LLM_ENABLED ist nicht aktiv, aber {', '.join(needed)} braucht ein LLM ({origin}). Profil llm-free "
+            "wählen, die Schalter auf rule-based setzen oder LLM_ENABLED und B_API_KEY setzen"
+        )
 
     def _add_corpus(
         self,
@@ -469,7 +483,7 @@ class CompendiumService:
         ``llm`` runs the default strategy and lets the model decide on top (D34); ``budget`` and ``deadline`` bound
         its calls, and a budget of its own is opened when none is given (evaluation).
         """
-        name = matcher_name or self.settings.matcher_default
+        name = matcher_name or LOCAL_MATCHER
         if name == LLM_MATCHER:
             return self._match_with_llm(prepared, target_length, budget, deadline)
         started = time.perf_counter()
@@ -483,9 +497,9 @@ class CompendiumService:
     def _match_with_llm(
         self, prepared: PreparedTopic, target_length: int, budget: RequestBudget | None, deadline: Deadline | None
     ) -> Matched:
-        """matcher=llm: the default strategy decides first; without a usable LLM its result is the answer."""
+        """matcher=llm: the local strategy decides first; without a usable LLM its result is the answer."""
         started = time.perf_counter()
-        base = self.match(prepared, self.settings.matcher_default, target_length)
+        base = self.match(prepared, LOCAL_MATCHER, target_length)
         if self.llm is None or self.llm_unavailable() is not None:
             return base
         job = AssignmentJob(
@@ -522,8 +536,12 @@ class CompendiumService:
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
             deadline = Deadline(self.settings.request_timeout_s)
-        if request.matcher:  # before any work; the configured default was checked at start
+        defaulted = request.preset is None
+        profile = request.preset or self.settings.preset_default
+        request = with_profile(request, profile)
+        if request.matcher:  # before any work
             ensure_strategy(request.matcher)
+        self.refuse_without_llm(llm_switches(request, corpus=self._needs_corpus(request)), profile, defaulted)
         unmakeable = self._unmakeable(request)
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
@@ -534,9 +552,9 @@ class CompendiumService:
         prepared = self.prepare(request, deadline, choice)
         want_world = "world" in request.parts
         # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
-        extraction_requested = request.extraction or self.settings.llm_extraction_default
-        generation_requested = request.generation or self.settings.llm_generation_default
-        enrichment_requested = request.enrichment or self.settings.llm_enrichment_default
+        extraction_requested = request.extraction or "rule-based"  # set by the profile (with_profile)
+        generation_requested = request.generation or "rule-based"
+        enrichment_requested = request.enrichment or "sources-only"
         if not want_world:
             extraction_requested = generation_requested = "rule-based"
             enrichment_requested = "sources-only"
@@ -728,7 +746,7 @@ class CompendiumService:
         article choice opened it already or the caller brought one (/qa).
         """
         extraction_wanted, generation_wanted, enrichment_wanted = requested
-        matcher_wanted = request.matcher or self.settings.matcher_default
+        matcher_wanted = request.matcher or LOCAL_MATCHER
         wants_llm = (
             extraction_wanted != "rule-based" or generation_wanted != "rule-based" or matcher_wanted == LLM_MATCHER
         )
@@ -842,15 +860,13 @@ class CompendiumService:
     def article_choice_job(
         self, requested: str | None, deadline: Deadline | None, budget: RequestBudget | None = None
     ) -> tuple[str, str | None, ArticleChoiceJob | None]:
-        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D37, D40).
+        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D53).
 
-        The shipped default is ``rule-based`` (D40). A default of ``llm`` (LLM_ARTICLE_CHOICE_DEFAULT) only applies
-        where an LLM is configured; without one the rules choose and nothing is noted, so a service without a b-api
-        does not report a missing LLM in every answer. A request that asks for ``llm`` itself, directly or through
-        a preset, gets the note. ``budget`` is the one a caller shares over more than the compendium (/qa).
+        ``requested`` is the switch of the request or of its profile. A server without an LLM has refused ``llm``
+        before (refuse_without_llm), so a note here means the b-api is not available for now. ``budget`` is the one
+        a caller shares over more than the compendium (/qa).
         """
-        default = self.settings.llm_article_choice_default if self.llm is not None else "rule-based"
-        wanted = requested or default
+        wanted = requested or "rule-based"
         if wanted != "llm":
             return wanted, None, None
         note = self.llm_unavailable()
@@ -866,6 +882,21 @@ class CompendiumService:
         if not self.llm.available:
             return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
         return None
+
+
+def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:
+    """The switches of a request that need an LLM, as name=value (D53). ``corpus``: whether an article is chosen at
+    all; the switches of part 1 count only when part 1 is asked for. enrichment needs none of its own: it only acts
+    through generation."""
+    needed = ["article_choice=llm"] if corpus and request.article_choice == "llm" else []
+    if "world" in request.parts:
+        if request.matcher == LLM_MATCHER:
+            needed.append("matcher=llm")
+        if request.extraction == "llm":
+            needed.append("extraction=llm")
+        if request.generation not in (None, "rule-based"):
+            needed.append(f"generation={request.generation}")
+    return needed
 
 
 def _parts_status(

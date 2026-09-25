@@ -41,7 +41,7 @@ from app.llm.client import BApiClient
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
-from app.matching.registry import STRATEGIES, active_components
+from app.matching.registry import LOCAL_MATCHER, active_components
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.service import CompendiumService
 from app.settings import Settings, b_api_for, get_settings
@@ -250,8 +250,15 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     close_clients(app)
 
 
-# D33 replaced these; unknown names are ignored, so a stale value would change nothing without a word
+# D33 and D53 replaced these; unknown names are ignored, so a stale value would change nothing without a word
 REMOVED_SETTINGS = ("LLM_MODE_DEFAULT", "LLM_ROUTER_ENABLED", "LLM_ROUTER_MAX_CHUNKS")
+REMOVED_DEFAULTS = (
+    "MATCHER_DEFAULT",
+    "LLM_ARTICLE_CHOICE_DEFAULT",
+    "LLM_EXTRACTION_DEFAULT",
+    "LLM_GENERATION_DEFAULT",
+    "LLM_ENRICHMENT_DEFAULT",
+)
 
 
 def warn_about_removed_settings() -> None:
@@ -259,9 +266,12 @@ def warn_about_removed_settings() -> None:
     stale = [name for name in REMOVED_SETTINGS if os.environ.get(name)]
     if stale:
         log.warning(
-            "%s no longer exist (D33): part 1 follows LLM_EXTRACTION_DEFAULT and LLM_GENERATION_DEFAULT",
+            "%s no longer exist (D33): part 1 follows the profile (PRESET_DEFAULT)",
             ", ".join(stale),
         )
+    defaults = [name for name in REMOVED_DEFAULTS if os.environ.get(name)]
+    if defaults:
+        log.warning("%s no longer exist (D53): the profile decides (PRESET_DEFAULT)", ", ".join(defaults))
 
 
 def describe_matching(settings: Settings) -> dict[str, Any]:
@@ -270,17 +280,14 @@ def describe_matching(settings: Settings) -> dict[str, Any]:
     A Model2Vec model that is configured but does not load leaves the matcher weaker without saying so. The
     check happens here, so the answer costs nothing per request and the model is loaded before the first one.
     """
-    if settings.matcher_default not in STRATEGIES:
-        log.warning("MATCHER_DEFAULT=%r is not a known strategy", settings.matcher_default)
-        return {"matcher": settings.matcher_default, "components": [], "embeddings": False}
-    components = active_components(settings.matcher_default, settings.model2vec_path)
+    components = active_components(LOCAL_MATCHER, settings.model2vec_path)
     if settings.model2vec_path and "model2vec" not in components:
         log.error(
             "MODEL2VEC_PATH=%s holds no usable model; the matcher runs without embeddings and finds less",
             settings.model2vec_path,
         )
     return {
-        "matcher": settings.matcher_default,
+        "matcher": LOCAL_MATCHER,
         "components": components,
         "embeddings": "model2vec" in components,
     }

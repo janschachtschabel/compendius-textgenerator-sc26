@@ -31,7 +31,7 @@ from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
-from app.service import CompendiumService, PartsUnavailableError, TopicNotFoundError
+from app.service import CompendiumService, LlmNotConfiguredError, PartsUnavailableError, TopicNotFoundError
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.synthesis.citations import without_markers
 from app.synthesis.qa import QaPair, rule_based_pairs
@@ -89,6 +89,8 @@ def _part_one(service: CompendiumService, payload: QaRequest, allowance: LlmAllo
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except PartsUnavailableError as exc:
         raise HTTPException(status_code=503, detail=f"Teil 1 ist nicht erzeugbar: {exc}") from exc
+    except LlmNotConfiguredError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except UnknownSubjectError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 

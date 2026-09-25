@@ -1637,6 +1637,19 @@ API.
   `ccm:taxonid_DISPLAYNAME`) und `ccm:oeh_taxonid_university` (nur Hochschulfächer); in einer Stichprobe von 13 lesbaren
   Hochschulmaterialien der Staging wiederholte das zweite Feld nur Fächer des ersten. Für eine Beurteilung durch das LLM
   taugt die Hochschulsystematik mit 344 Begriffen schlecht (Jan).
+- **D53 (2026-09-25)** Profile statt Einzelvorgaben (Jan). Vier Profile (`preset`) wählen die Verfahren: `llm-free`,
+  `balanced` (das LLM findet den Artikel), `best-quality` (es ordnet auch die Absätze zu) und neu
+  `best-quality-generated` (dazu schreibt es jeden Baustein und darf eigenes Wissen ergänzen, gekennzeichnet als
+  Evidenzgrad=Modellwissen; `extraction` bleibt regelbasiert, am Goldstandard ohne Gewinn). Ohne `preset` gilt
+  `PRESET_DEFAULT`, ausgeliefert `balanced` (hebt D40 auf). Es ersetzt `MATCHER_DEFAULT`, `LLM_ARTICLE_CHOICE_DEFAULT`,
+  `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`; damit entfällt der Einwand von D41
+  gegen eine Profilvorgabe, und der Start nennt die alten Namen als veraltet. Ein Schalter der Anfrage geht dem Profil
+  vor. Was ein LLM braucht, braucht ein konfiguriertes (`LLM_ENABLED`, `B_API_KEY`): sonst antworten `/compendium`,
+  `/knowledge` und `/qa` mit 503 und nennen die Schalter, die CLI bricht ab (Jan: kein stiller Rückfall; hebt D37 auf).
+  Ist die b-api nur gerade nicht erreichbar, laufen die Regeln wie bisher, und `audit.llm` sagt warum. `enrichment`
+  allein braucht kein LLM, es wirkt nur mit `generation`. `audit.preset` nennt das wirksame Profil. Lokale Strategie der
+  Profile und Rückfall von `matcher=llm` ist `hybrid_light`. Wie QA und Lehrplanzuordnung den Profilen folgen und was
+  jedes Profil misst, halten die folgenden Einträge fest.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

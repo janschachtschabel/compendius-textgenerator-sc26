@@ -26,6 +26,7 @@ from app.matching.eval import (
     predictions_from_selection,
 )
 from app.matching.gold import GoldSet, export_csv, load_gold
+from app.matching.registry import LOCAL_MATCHER
 from app.service import CompendiumService, TopicNotFoundError
 
 log = logging.getLogger(__name__)
@@ -111,7 +112,7 @@ def compare_topic(
             selection = evaluate(title, alignment.gold_by_chunk, selected, slot_keys, matcher=name)
         result.results[name] = MatcherOutcome(metrics=metrics, selection=selection)
     if llm_extraction and matchers:
-        base = service.settings.matcher_default if service.settings.matcher_default in matchers else matchers[0]
+        base = LOCAL_MATCHER if LOCAL_MATCHER in matchers else matchers[0]
         result.llm_note = service.llm_unavailable()
         if result.llm_note is None:
             name = f"{base}{LLM_SUFFIX}"

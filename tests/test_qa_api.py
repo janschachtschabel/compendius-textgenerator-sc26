@@ -482,3 +482,9 @@ def test_an_unavailable_llm_is_named_once(with_llm: TestClient, monkeypatch: pyt
     monkeypatch.setattr(with_llm.app.state.service, "llm_unavailable", lambda: reason)  # type: ignore[attr-defined]
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
     assert body["note"].startswith(reason) and body["note"].count("Regelmodus verwendet") == 1, body["note"]
+
+
+def test_a_topic_on_a_profile_that_needs_an_llm_is_a_503_without_one(client: TestClient) -> None:
+    """D53: part 1 of the pairs follows the profile; without an LLM an LLM profile is refused as a compendium is."""
+    answer = client.post("/api/v2/qa", json={"topic": "Optik", "preset": "balanced"})
+    assert answer.status_code == 503 and "article_choice=llm" in answer.json()["detail"]

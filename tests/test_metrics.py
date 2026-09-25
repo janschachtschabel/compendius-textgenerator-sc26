@@ -265,10 +265,15 @@ def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: p
 def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
     # A matcher=llm request that falls back to the rules has to reach the fallback alarm like the switches do
     payload = {"topic": "Optik", "matcher": "llm", "parts": ["world"]}
+    service = client.app.state.service  # type: ignore[attr-defined]
     before = scrape(client)
-    assert client.post("/api/v2/compendium", json=payload).status_code == 200  # no LLM configured: the rules
-    gateway = make_gateway(FakeBApi(leads_define_the_rest_is_content), per_request=1_000_000)
-    monkeypatch.setattr(client.app.state.service, "llm", gateway)  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(leads_define_the_rest_is_content), per_request=1_000_000))
+    available = service.llm_unavailable
+    monkeypatch.setattr(
+        service, "llm_unavailable", lambda: "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet"
+    )
+    assert client.post("/api/v2/compendium", json=payload).status_code == 200  # the b-api is down: the rules
+    monkeypatch.setattr(service, "llm_unavailable", available)
     assert client.post("/api/v2/compendium", json=payload).status_code == 200
     after = scrape(client)
 

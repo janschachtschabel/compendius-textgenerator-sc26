@@ -17,7 +17,12 @@ from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
 from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
 from app.logging import configure_logging
-from app.service import PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
+from app.service import (
+    LlmNotConfiguredError,
+    PartsUnavailableError,
+    RepositoryUnavailableError,
+    TopicNotFoundError,
+)
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.repository import RepositoryNotAllowedError
@@ -63,6 +68,9 @@ def cmd_generate(args: argparse.Namespace) -> int:
     except PartsUnavailableError as exc:
         print(f"Kein angefragter Teil ist erzeugbar: {exc}", file=sys.stderr)
         return 1
+    except LlmNotConfiguredError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
     if args.out:
         Path(args.out).write_text(result.markdown, encoding="utf-8")
         print(f"Markdown geschrieben: {args.out}")
@@ -74,7 +82,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"JSON geschrieben: {args.json}")
     audit = result.audit
     veredelt = f"| Veredlung: {result.enrichment} " if result.enrichment != "sources-only" else ""
-    stufe = f"| Stufe: {audit.preset} " if audit.preset else ""
+    stufe = f"| Profil: {audit.preset} " if audit.preset else ""
     print(
         f"Thema: {result.topic} {stufe}| Extraktion: {result.extraction} | Generierung: {result.generation} "
         f"{veredelt}"
@@ -172,42 +180,43 @@ def main(argv: list[str] | None = None) -> int:
         "--preset",
         default=None,
         choices=list(PRESETS),
-        help="Stufe der Entscheidungsvorlage: llm-free (wie ohne Angabe), balanced (LLM wählt die Artikel), "
-        "best-quality (LLM ordnet auch zu); einzeln gesetzte Schalter gehen vor",
+        help="Profil (D53): llm-free (ohne LLM), balanced (LLM findet den Artikel), best-quality (LLM ordnet auch "
+        "zu), best-quality-generated (dazu schreibt das LLM den Text); ohne Angabe PRESET_DEFAULT, ausgeliefert "
+        "balanced. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED und B_API_KEY",
     )
     gen.add_argument(
         "--matcher",
         default=None,
         choices=list(MATCHERS),
-        help="Wie die Absätze ihren Baustein finden; ohne Angabe MATCHER_DEFAULT (llm braucht LLM_ENABLED und "
+        help="Wie die Absätze ihren Baustein finden; ohne Angabe die des Profils (llm braucht LLM_ENABLED und "
         "B_API_KEY)",
     )
     gen.add_argument(
         "--article-choice",
         default=None,
         choices=["rule-based", "llm"],
-        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe LLM_ARTICLE_CHOICE_DEFAULT, ausgeliefert "
-        "rule-based (llm braucht LLM_ENABLED und B_API_KEY)",
+        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe die des Profils (llm braucht LLM_ENABLED "
+        "und B_API_KEY)",
     )
     gen.add_argument(
         "--extraction",
         default=None,
         choices=["rule-based", "llm"],
-        help="Wer die Sätze der Bausteine auswählt; ohne Angabe LLM_EXTRACTION_DEFAULT (llm braucht LLM_ENABLED "
-        "und B_API_KEY)",
+        help="Wer die Sätze der Bausteine auswählt; ohne Angabe die des Profils (llm braucht LLM_ENABLED und "
+        "B_API_KEY)",
     )
     gen.add_argument(
         "--generation",
         default=None,
         choices=["rule-based", "llm-fast", "llm"],
-        help="Wer die Bausteine schreibt; ohne Angabe LLM_GENERATION_DEFAULT (llm-fast und llm brauchen "
-        "LLM_ENABLED und B_API_KEY)",
+        help="Wer die Bausteine schreibt; ohne Angabe die des Profils (llm-fast und llm brauchen LLM_ENABLED und "
+        "B_API_KEY)",
     )
     gen.add_argument(
         "--enrichment",
         default=None,
         choices=["sources-only", "model-knowledge"],
-        help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe LLM_ENRICHMENT_DEFAULT. Ergänzte Sätze "
+        help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze "
         "stehen im Text als Evidenzgrad=Modellwissen und brauchen --generation llm oder llm-fast",
     )
     gen.add_argument("--length", type=int, default=12_000)

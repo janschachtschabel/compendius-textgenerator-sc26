@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.domain.requests import ArticleChoice, Enrichment, Extraction, Generation
+from app.domain.requests import Preset
 
 Provider = Literal["openai", "academiccloud"]
 FacetsLevel = Literal["minimal", "full"]
@@ -67,8 +67,11 @@ class Settings(BaseSettings):
     state_dir: Path = Field(Path("data/state"), description="SQLite databases, custom templates")
     config_dir: Path = Field(Path("config"), description="facets.yaml, heading_lexicon.yaml, ...")
     template_default: str = Field("sc26", description="Default template id")
-    matcher_default: str = Field(
-        "hybrid_light", description="Default matching strategy; a local one, it is also what matcher=llm falls back on"
+    preset_default: Preset = Field(
+        "balanced",
+        description="Profile of a request that names none (D53): llm-free, balanced, best-quality or "
+        "best-quality-generated. Every profile but llm-free needs LLM_ENABLED and B_API_KEY; without them a request "
+        "on such a profile is a 503, so a server without an LLM sets llm-free",
     )
     policy_confident_score: float = Field(
         0.65,
@@ -137,23 +140,10 @@ class Settings(BaseSettings):
 
     # --- LLM (optional, via b-api) -------------------------------------------------------------
     llm_enabled: bool = Field(False, description="Enable b-api usage at all")
-    llm_article_choice_default: ArticleChoice = Field(
-        "rule-based",
-        description="Default of the article_choice switch: rule-based (D40), or llm to let the LLM decide unsure "
-        "topics and drop side articles that do not fit (D35, M25); llm takes effect only where an LLM is configured, "
-        "without one the rules choose (D37)",
-    )
-    llm_extraction_default: Extraction = Field("rule-based", description="Default of the extraction switch")
     llm_extraction_candidates: int = Field(
         8, ge=1, le=20, description="Paragraphs offered per block with extraction=llm (rule-based choice first)"
     )
-    llm_generation_default: Generation = Field("rule-based", description="Default of the generation switch")
     llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
-    llm_enrichment_default: Enrichment = Field(
-        "sources-only",
-        description="Default of the enrichment switch: sources-only, or model-knowledge to let the writing "
-        "LLM add knowledge of its own (marked in the text, counted per block)",
-    )
     b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")
     b_api_base_url: str = Field(
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"

@@ -184,9 +184,9 @@ Start. Eine eigene Matching-Strategie dafuer gibt es nicht: Die vier sind `hybri
 `lexicon_only`, und nur `hybrid_light`, der Standard, nutzt das Modell. Eine andere Strategie in der Anfrage spart
 deshalb nichts, das Modell ist dann schon geladen. Sparen laesst es sich nur mit leerem `MODEL2VEC_PATH`;
 `hybrid_light` rechnet dann ohne Einbettungen und ordnet schlechter zu (Goldstandard macro-F1 0,39 statt 0,45,
-`eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`). Wer stattdessen `MATCHER_DEFAULT`
-umstellt, verschiebt das Laden nur: Die erste Anfrage, die `hybrid_light` verlangt, laedt das Modell in ihrem
-Worker nach.
+`eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`). Alle vier Profile nutzen `hybrid_light`,
+`best-quality` und `best-quality-generated` als Rueckfall der LLM-Zuordnung (D53); das Modell wird also in jedem
+Profil gebraucht.
 
 **Halbe Genauigkeit spart Platte, nicht Speicher.** Die beiden QA-Modelle liegen als float16 im Image
 (das hat es von 3,40 auf 2,74 GB gebracht), werden beim Laden aber bewusst auf float32 zurueckgerechnet:

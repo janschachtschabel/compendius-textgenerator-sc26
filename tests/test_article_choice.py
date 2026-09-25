@@ -24,8 +24,7 @@ from app.knowledge.article_choice import (
     rate_articles,
 )
 from app.llm.prompts import get_prompt
-from app.service import CompendiumService
-from app.settings import Settings
+from app.service import CompendiumService, LlmNotConfiguredError
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.test_llm_client import FakeBApi
@@ -284,13 +283,25 @@ def test_a_sure_topic_without_side_articles_costs_no_call(
     assert not choice["needed"] and not choice["asked"]
 
 
-def test_article_choice_llm_without_a_usable_llm_keeps_the_rules_choice(service: CompendiumService) -> None:
+def test_article_choice_llm_without_a_configured_llm_is_refused(service: CompendiumService) -> None:
     assert service.llm is None  # the test settings keep the b-api off
+    with pytest.raises(LlmNotConfiguredError, match="article_choice=llm"):
+        service.generate(GenerateRequest(topic="Geometrische", article_choice="llm", parts=["world"]))
+
+
+def test_an_llm_that_is_not_available_for_now_leaves_the_rules_choice(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(by_prompt({"wahl": 3, "titel": ""}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    monkeypatch.setattr(
+        service, "llm_unavailable", lambda: "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet"
+    )
     result = service.generate(GenerateRequest(topic="Geometrische", article_choice="llm", parts=["world"]))
 
     assert result.resolution.title == "Geometrische Optik" and result.resolution.method == "suggestion"
-    assert result.audit.llm is not None and "nicht konfiguriert" in result.audit.llm["note"]
-    assert result.audit.llm["article_choice"]["used"] == "rule-based"
+    assert result.audit.llm is not None and "nicht verfügbar" in result.audit.llm["note"]
+    assert result.audit.llm["article_choice"]["used"] == "rule-based" and fake.bodies == []
 
 
 def test_the_rule_based_default_adds_no_llm_block(service: CompendiumService) -> None:
@@ -298,25 +309,10 @@ def test_the_rule_based_default_adds_no_llm_block(service: CompendiumService) ->
     assert result.audit.llm is None and result.resolution.method == "suggestion"
 
 
-def test_the_shipped_default_leaves_the_articles_to_the_rules() -> None:
-    # D40: LLM-free is the default level, even where an LLM is configured; preset or article_choice ask for it
-    assert Settings(_env_file=None).llm_article_choice_default == "rule-based"  # type: ignore[call-arg]
-
-
-def test_the_llm_default_stays_silent_without_a_configured_llm(
+def test_with_a_configured_llm_the_default_profile_asks_it_and_the_rules_can_still_be_chosen(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # A default must not put "LLM nicht konfiguriert" into every answer of a service that has no b-api
-    monkeypatch.setattr(service.settings, "llm_article_choice_default", "llm")
-    assert service.llm is None
-    result = service.generate(GenerateRequest(topic="Geometrische", parts=["world"]))
-    assert result.audit.llm is None and result.resolution.method == "suggestion"
-
-
-def test_with_a_configured_llm_the_default_asks_it_and_the_rules_can_still_be_chosen(
-    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(service.settings, "llm_article_choice_default", "llm")
+    monkeypatch.setattr(service.settings, "preset_default", "balanced")  # the shipped profile (D53)
     fake = FakeBApi(by_prompt({"wahl": 3, "titel": ""}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
     chosen = service.generate(GenerateRequest(topic="Geometrische", parts=["world"]))

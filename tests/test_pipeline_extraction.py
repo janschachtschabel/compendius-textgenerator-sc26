@@ -10,7 +10,7 @@ import pytest
 
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
-from app.service import CompendiumService
+from app.service import CompendiumService, LlmNotConfiguredError
 from app.synthesis.citations import collapse
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import EVIDENCE_RE, answer_from_evidence, make_gateway
@@ -132,22 +132,20 @@ def test_failing_selection_keeps_the_rule_based_passages(
     assert "keinen Baustein" in result.audit.llm["note"]  # type: ignore[index]
 
 
-def test_llm_extraction_without_a_configured_llm_falls_back(service: CompendiumService) -> None:
+def test_llm_extraction_without_a_configured_llm_is_refused(service: CompendiumService) -> None:
     assert service.llm is None
-    result = service.generate(GenerateRequest(topic="Optik", extraction="llm", parts=["world"]))
-    assert result.extraction == "rule-based" and result.frontmatter["extraction_requested"] == "llm"
-    assert result.audit.llm is not None and "konfiguriert" in result.audit.llm["note"]
+    with pytest.raises(LlmNotConfiguredError, match="extraction=llm"):
+        service.generate(GenerateRequest(topic="Optik", extraction="llm", parts=["world"]))
 
 
-def test_the_default_extraction_comes_from_the_settings(
+def test_an_extraction_the_request_sets_overrides_the_profile(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     fake = FakeBApi(first_sentences)
     monkeypatch.setattr(service, "llm", make_gateway(fake))
-    monkeypatch.setattr(service.settings, "llm_extraction_default", "llm")
-    assert service.generate(GenerateRequest(topic="Optik", parts=["world"])).extraction == "llm"
+    assert service.generate(GenerateRequest(topic="Optik", extraction="llm", parts=["world"])).extraction == "llm"
     calls = len(fake.bodies)
-    result = service.generate(GenerateRequest(topic="Optik", extraction="rule-based", parts=["world"]))
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world"]))  # the profile: llm-free (conftest)
     assert result.extraction == "rule-based" and result.audit.llm is None and len(fake.bodies) == calls
 
 

@@ -19,7 +19,12 @@ from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.matching.registry import UnknownMatcherError
 from app.observability.metrics import record_compendium
-from app.service import PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
+from app.service import (
+    LlmNotConfiguredError,
+    PartsUnavailableError,
+    RepositoryUnavailableError,
+    TopicNotFoundError,
+)
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
 from app.sources.wlo.repository import RepositoryNotAllowedError
@@ -36,34 +41,44 @@ EXAMPLES = {
         "summary": "Das Nötigste: ein Thema, zwei Teile, eine Ziellänge",
         "value": {"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000},
     },
-    "Stufe llm-free": {
-        "summary": "Stufe llm-free: ohne Sprachmodell, so arbeitet der Dienst auch ohne preset",
+    "Profil llm-free": {
+        "summary": "Profil llm-free: ohne Sprachmodell, für einen Dienst ohne LLM",
         "description": (
-            "preset bündelt die Schalter von Teil 1 zu den drei Stufen der Entscheidungsvorlage. llm-free: die "
+            "preset wählt eines der vier Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
+            "ausgeliefert balanced. llm-free: die "
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 86 von 94 "
             "Hauptartikeln richtig, macro-F1 0,43, Teil 1 in rund 1,4 s, keine Tokens (D40)."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
     },
-    "Stufe balanced": {
-        "summary": "Stufe balanced: das LLM wählt die Artikel, alles andere bleibt lokal",
+    "Profil balanced": {
+        "summary": "Profil balanced (Standard): das LLM wählt die Artikel, alles andere bleibt lokal",
         "description": (
             "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
             "mehrdeutige Wort Linse -, und verwirft unpassende Nebenartikel. 91 von 94 Hauptartikeln richtig, "
             "rund 1,7 s und 930 Tokens mehr (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna wählte 90 von 94 "
-            "und ist je Aufruf langsamer). Ohne b-api wählen die Regeln, und audit.llm sagt warum."
+            "und ist je Aufruf langsamer). Ohne konfiguriertes LLM ist die Anfrage ein 503."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
     },
-    "Stufe best-quality": {
-        "summary": "Stufe best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
+    "Profil best-quality": {
+        "summary": "Profil best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
         "description": (
             "Wie balanced, dazu matcher llm: macro-F1 0,69 bis 0,72 statt 0,43, Teil 1 rund 14 bis 24 s und rund "
             "35.400 Tokens (gemessen mit gpt-5.6-luna; die Vorgabe gpt-6-luna erreichte 0,70 und ist je Aufruf "
-            "langsamer). Der Text bleibt wörtlich; wer ihn lesbar formuliert haben will, setzt zusätzlich "
-            "generation llm - einzeln gesetzte Schalter gehen dem preset vor."
+            "langsamer). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil best-quality-generated."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},
+    },
+    "Profil best-quality-generated": {
+        "summary": "Profil best-quality-generated: alles mit dem LLM, der Text ergänzt und lesbar formuliert",
+        "description": (
+            "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
+            "ergänzen (enrichment model-knowledge); solche Sätze tragen keine Belegnummer und stehen als "
+            "Evidenzgrad=Modellwissen im Text. Für Texte, die Menschen direkt lesen. Einzeln gesetzte Schalter gehen "
+            "dem preset vor."
+        ),
+        "value": {"topic": "Optik", "parts": ["world"], "preset": "best-quality-generated"},
     },
     "mit den Schaltern": {
         "summary": "Was sonst noch geht: Template, Artikelwahl, Zuordnung, die drei Schreib-Schalter, Facetten",
@@ -71,8 +86,9 @@ EXAMPLES = {
             "article_choice wählt die Artikel (rule-based oder llm), matcher ordnet die Absätze den Bausteinen zu "
             "(hybrid_light, bm25, char_tfidf, lexicon_only oder llm; die Liste mit Güte, Zeit und Kosten steht unter "
             "GET /api/v2/matching/strategies). extraction wählt die Sätze, generation formuliert die Bausteine, "
-            "enrichment entscheidet, ob das Modell eigenes Wissen beisteuern darf. Jeder LLM-Schalter fällt auf die "
-            "Regeln zurück, wenn die b-api fehlt, und audit sagt hinterher, was wirklich lief."
+            "enrichment entscheidet, ob das Modell eigenes Wissen beisteuern darf. Ohne konfiguriertes LLM ist ein "
+            "LLM-Schalter ein 503; ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und audit sagt "
+            "hinterher, was wirklich lief."
         ),
         "value": {
             "topic": "Optik",
@@ -212,7 +228,8 @@ def generate_compendium(
     two subject vocabularies of edu-sharing (config/vocabs), a block in ``regenerate_sections`` the template does
     not have, or a field the request does not know: 422. Repository unreachable: 502; a ``repository`` outside the
     allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can be
-    made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
+    made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503. A profile or a switch that needs
+    an LLM on a server without one (LLM_ENABLED, B_API_KEY): 503.
     """
     service = get_service(request)
     try:
@@ -233,6 +250,8 @@ def generate_compendium(
         raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
     except (UnknownSubjectError, UnknownSectionsError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except LlmNotConfiguredError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     except PartsUnavailableError as exc:
         # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives
         log.warning("compendium request refused: %s", exc)

@@ -332,41 +332,44 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 
 ## LLM-Schicht (optional)
 
-Ohne Angabe läuft alles im Regelmodus, auch wenn ein LLM konfiguriert ist (D40). Ein LLM (`LLM_ENABLED=true` und
-`B_API_KEY`) arbeitet nur, wo eine Anfrage oder eine Vorgabe es verlangt. Am einfachsten wählt `preset` eine der
-drei Stufen der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`, D41):
+Der Dienst arbeitet in vier Profilen (`preset`, D41, D53). Ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert
+`balanced`. Jedes Profil außer `llm-free` braucht ein LLM (`LLM_ENABLED=true` und `B_API_KEY`); ohne LLM ist eine
+solche Anfrage ein 503, der sagt, welcher Schalter ein LLM braucht, und ein Dienst ohne LLM setzt
+`PRESET_DEFAULT=llm-free`. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und `audit.llm` sagt warum.
+Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`):
 
 | `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24 mit `gpt-5.6-luna`) |
 |---|---|---|
-| `llm-free` (so arbeitet der Dienst auch ohne `preset`) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
-| `balanced` | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 2,0 s und 935 Tokens mehr (gpt-6-luna) |
+| `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
+| `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 2,0 s und 935 Tokens mehr (gpt-6-luna) |
 | `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s, rund 35.400 Tokens |
+| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, gekennzeichnet als Evidenzgrad=Modellwissen | Das Schreiben allein kostete 16 bis 20 s und 10.500 bis 14.500 Tokens (vier Themen, 2026-09-18); als Ganzes noch nicht gemessen |
 
 Die LLM-Werte hier und in der Tabelle der Schalter unten stammen von `gpt-5.6-luna`. Mit der Vorgabe `gpt-6-luna`
 (D44) ist die Güte gleich (Artikelwahl 90 statt 91 von 94, Zuordner macro-F1 0,70), jeder LLM-Aufruf dauert aber ein
 Viertel bis drei Viertel länger (M19).
 
-Ein Schalter, den die Anfrage selbst setzt, geht dem `preset` vor; so macht etwa `preset: best-quality` mit
-`generation: llm` den Text zusätzlich lesbar. `audit.preset` nennt die Stufe, `compendium generate --preset` wählt
-sie auf der Kommandozeile. Einzeln gibt man die Schritte von Teil 1 je Anfrage oder global an das LLM (D33): die
-Artikelwahl über `article_choice`, die Zuordnung der Absätze über `matcher`, die Satzauswahl über `extraction`
-(`LLM_EXTRACTION_DEFAULT`) und das Schreiben über `generation` (`LLM_GENERATION_DEFAULT`). Ein weiterer Schalter,
+Ein Schalter, den die Anfrage selbst setzt, geht dem Profil vor; so schreibt etwa `preset: balanced` mit
+`generation: llm-fast` einen lesbaren Einstieg. `audit.preset` nennt das wirksame Profil, `compendium generate
+--preset` wählt es auf der Kommandozeile. Einzeln gibt man die Schritte von Teil 1 je Anfrage an das LLM (D33): die
+Artikelwahl über `article_choice`, die Zuordnung der Absätze über `matcher`, die Satzauswahl über `extraction` und
+das Schreiben über `generation`. Ein weiterer Schalter,
 `enrichment`, entscheidet, ob das schreibende Modell über die Quellen hinausgehen darf. `/docs` zeigt zu jedem
 Schalter die erlaubten Werte, was sie tun und was sie kosten.
 
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
-| `article_choice` | `rule-based` (Standard) | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
-| | `llm` | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
-| `matcher` | `hybrid_light` (Standard), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
-| | `llm` | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
-| `extraction` | `rule-based` (Standard) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
+| `article_choice` | `rule-based` (Profil `llm-free`) | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
+| | `llm` (die übrigen Profile) | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
+| `matcher` | `hybrid_light` (Profile `llm-free`, `balanced`), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
+| | `llm` (Profile `best-quality`, `best-quality-generated`) | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
+| `extraction` | `rule-based` (alle Profile) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
-| `generation` | `rule-based` (Standard) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
+| `generation` | `rule-based` (Profile bis `best-quality`) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
 | | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11) aus ihren Belegen |
-| | `llm` | formuliert jeden Inhaltsbaustein aus seinen Belegen |
-| `enrichment` | `sources-only` (Standard) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
-| | `model-knowledge` | ergänzt gesichertes eigenes Fachwissen; solche Sätze tragen keine Belegnummer und werden im Text gekennzeichnet (braucht `generation` `llm` oder `llm-fast`) |
+| | `llm` (Profil `best-quality-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen |
+| `enrichment` | `sources-only` (Profile bis `best-quality`) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
+| | `model-knowledge` (Profil `best-quality-generated`) | ergänzt gesichertes eigenes Fachwissen; solche Sätze tragen keine Belegnummer und werden im Text gekennzeichnet (braucht `generation` `llm` oder `llm-fast`) |
 
 Gemessen für „Optik“ mit `gpt-5.6-luna` am 2026-09-19: `extraction=llm` 10 Aufrufe, rund 16.500 Tokens und 11 s;
 beide Schalter auf `llm` 20 Aufrufe, rund 27.200 Tokens und 18 s. Das Schreiben allein (Messung vom 2026-09-18,
@@ -379,12 +382,13 @@ wörtliche Quellenauszüge mit KI-gestützter Auswahl. Passt kein angebotener Ab
 Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`).
 
 **Zuordnung durch das LLM (`matcher: llm`, D34).** Statt der Policy kann das LLM jeden Absatz einem Baustein
-zuordnen oder keinem, je Anfrage über `matcher`, nicht als `MATCHER_DEFAULT`. Es sieht die Bausteine mit
+zuordnen oder keinem, über `matcher` oder die Profile `best-quality` und `best-quality-generated`. Es sieht die Bausteine mit
 Beschreibung, „gehört hinein“ und „gehört nicht hinein“, die Zuordnungsregeln des Templates (`assignment_rules`)
 und je Absatz Artikel, Rolle, Überschriftenpfad und Text (bis 400 Zeichen), 50 Absätze je Aufruf. Die
 Standard-Strategie läuft vorher und bleibt der Rückfall: Absätze, für die das LLM nicht entscheidet (b-api, Budget,
-Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`audit.llm.matching`); ohne nutzbares
-LLM gilt die Standard-Strategie ganz, und der Vorspann nennt `matcher_requested: llm`. Bausteine mit Absätzen, die
+Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`audit.llm.matching`); ist die b-api
+gerade nicht erreichbar, gilt `hybrid_light` ganz, und der Vorspann nennt `matcher_requested: llm`. Ohne
+konfiguriertes LLM ist die Anfrage ein 503. Bausteine mit Absätzen, die
 das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstandard am 2026-09-23: macro-F1 0,66
 statt 0,43, rund 240 Tokens je Absatz mit 25 Absätzen je Aufruf und 700 Zeichen, im Median rund 39.000 je
 Kompendium. Seit 2026-09-24 sind es 50 Absätze je Aufruf mit 400 Zeichen (D36): In zwei Läufen auf denselben Absätzen
@@ -401,10 +405,9 @@ zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln 
 und lässt Platz, wenn `extraction=llm` oder `generation=llm` dazukommen: Neben einem großen Thema bleiben bei 60.000
 nur rund 14.000 Tokens. Es hebt die Kostengrenze, nicht den Verbrauch eines Themas, das darunter bleibt.
 
-**Artikelwahl durch das LLM (`article_choice: llm`, D35).** Je Anfrage über `article_choice: llm` oder die Stufen
-`balanced` und `best-quality`, global über `LLM_ARTICLE_CHOICE_DEFAULT=llm`; ausgeliefert wird `rule-based` (D40,
-vorher war `llm` die Vorgabe, D37). Eine Vorgabe `llm` wirkt nur, wo ein LLM konfiguriert ist; ohne LLM wählen dann
-die Regeln, ohne Hinweis im Audit. Die Regeln lösen jedes Thema zuerst selbst auf und
+**Artikelwahl durch das LLM (`article_choice: llm`, D35).** Je Anfrage über `article_choice: llm` oder jedes Profil
+außer `llm-free`, also auch das ausgelieferte `balanced` (D53; bis dahin war `rule-based` die Vorgabe, D40). Ohne
+konfiguriertes LLM ist das ein 503. Die Regeln lösen jedes Thema zuerst selbst auf und
 halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
 einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
 und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
@@ -534,7 +537,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt |
-| `MATCHER_DEFAULT` | `hybrid_light` | Zuordnungsstrategie, wenn die Anfrage keine nennt. Vier stehen zur Wahl, alle laufen lokal auf der CPU und kosten nichts: **`hybrid_light`** (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist) — der Standard; **`bm25`** (Okapi BM25 allein); **`char_tfidf`** (Zeichen-TF-IDF, trägt deutsche Komposita); **`lexicon_only`** (nur das Überschriften-Lexikon, ohne Ranker). Eine unbekannte Strategie beantwortet der Endpunkt mit 422. `llm` (Zuordnung durch das LLM, siehe LLM-Schicht) gibt es nur je Anfrage; als Standard verweigert der Dienst den Start, weil die Standard-Strategie der Rückfall von `llm` ist |
+| `PRESET_DEFAULT` | `balanced` | Profil einer Anfrage, die keins nennt (D53): `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Schalter der Anfrage geht vor. Jedes Profil außer `llm-free` braucht `LLM_ENABLED` und `B_API_KEY`, sonst ist die Anfrage ein 503; ein Dienst ohne LLM setzt `llm-free`. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
 | `POLICY_CONFIDENT_SCORE` | `0.65` | Ab dieser fusionierten Trefferstärke gilt ein Ranker-Treffer als Beleg; darunter greift der Standardbaustein des Templates. Mit Glättung 0,5 auf `eval/gold` gemessen: 0,45 → 0,65 hebt macro-F1 von 0,430 auf 0,447 und senkt falsch gedruckte Absätze um ein Drittel |
 | `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score — Absätze unter einer Überschrift stützen sich gegenseitig; `0` schaltet es ab |
 | `FACETS_LEVEL` | `minimal` | Wie viele Facetten das Frontmatter trägt: `minimal` oder `full` |
@@ -593,10 +596,6 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` (D40) oder `llm` (das LLM entscheidet eine unsichere Artikelwahl, nennt den Artikel eines Materials und verwirft unpassende Nebenartikel, D35, D47, D48; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37). Je Anfrage gehen `article_choice` und `preset` vor |
-| `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
-| `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
-| `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | Bei `extraction=llm` angebotene Absätze je Baustein: erst die der Policy, dann die nächstbesten nach Score |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Welche Bausteine `llm-fast` schreibt |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |

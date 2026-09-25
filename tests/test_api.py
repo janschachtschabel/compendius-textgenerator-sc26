@@ -74,7 +74,8 @@ def test_templates_and_strategies(client: TestClient) -> None:
     assert status["missing_required"] == []
 
 
-def test_llm_request_without_llm_falls_back_and_says_so(client: TestClient) -> None:
+def test_an_llm_switch_without_an_llm_is_a_503_that_names_it(client: TestClient) -> None:
+    """D53: a switch that needs an LLM on a server without one is refused, instead of running the rules unasked."""
     payload = {
         "topic": "Optik",
         "extraction": "llm",
@@ -83,11 +84,9 @@ def test_llm_request_without_llm_falls_back_and_says_so(client: TestClient) -> N
         "target_length": 8000,
     }
     response = client.post("/api/v2/compendium", json=payload)
-    assert response.status_code == 200, response.text
-    body = response.json()
-    assert body["generation"] == "rule-based" and body["frontmatter"]["generation_requested"] == "llm-fast"
-    assert body["extraction"] == "rule-based" and body["frontmatter"]["extraction_requested"] == "llm"
-    assert "konfiguriert" in body["audit"]["llm"]["note"] and body["audit"]["llm_tokens"] is None
+    assert response.status_code == 503
+    detail = response.json()["detail"]
+    assert "LLM_ENABLED" in detail and "extraction=llm" in detail and "generation=llm-fast" in detail
     assert client.post("/api/v2/compendium", json={"topic": "Optik", "generation": "turbo"}).status_code == 422
     assert client.post("/api/v2/compendium", json={"topic": "Optik", "extraction": "turbo"}).status_code == 422
 
@@ -156,13 +155,6 @@ def test_unknown_matcher_is_a_german_422(client: TestClient) -> None:
     response = client.post("/api/v2/compendium", json={"topic": "Optik", "matcher": "gibtsnicht"})
     assert response.status_code == 422
     assert response.json()["detail"] == "Unbekannte Matching-Strategie: gibtsnicht"
-
-
-def test_an_unknown_matcher_default_stops_the_start(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    # A typo in MATCHER_DEFAULT is the operator's error; every request would otherwise get a client error (422)
-    settings = make_settings(sample_zims.values(), tmp_path, matcher_default="gibtsnicht")
-    with pytest.raises(ValueError, match="MATCHER_DEFAULT"):
-        create_app(settings)
 
 
 def test_a_request_whose_parts_this_server_cannot_make_is_503(
@@ -269,11 +261,12 @@ def test_settings_that_no_longer_exist_are_named_at_start(
     # pydantic ignores unknown names, so a service configured with LLM_MODE_DEFAULT would silently run rule-based
     monkeypatch.setenv("LLM_MODE_DEFAULT", "hybrid-quality")
     monkeypatch.setenv("LLM_ROUTER_ENABLED", "true")
+    monkeypatch.setenv("MATCHER_DEFAULT", "bm25")  # D53: the profile decides
     settings = make_settings(sample_zims.values(), tmp_path / "state")
     with caplog.at_level(logging.WARNING):
         create_app(settings)
     assert "LLM_MODE_DEFAULT" in caplog.text and "LLM_ROUTER_ENABLED" in caplog.text
-    assert "LLM_EXTRACTION_DEFAULT" in caplog.text and "LLM_GENERATION_DEFAULT" in caplog.text
+    assert "MATCHER_DEFAULT" in caplog.text and "PRESET_DEFAULT" in caplog.text
 
 
 def test_zim_paths_warns_that_it_bypasses_the_archive_management(

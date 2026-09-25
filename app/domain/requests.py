@@ -15,8 +15,8 @@ MATCHERS = ("hybrid_light", "bm25", "char_tfidf", "lexicon_only", "llm")
 MatcherName = Annotated[str, WithJsonSchema({"type": "string", "enum": list(MATCHERS)})]
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
-    "Who chooses the articles of the topic. Default: LLM_ARTICLE_CHOICE_DEFAULT (rule-based since D40); the presets "
-    "balanced and best-quality set llm.\n\n"
+    "Who chooses the articles of the topic. Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes "
+    "rule-based, every other profile llm.\n\n"
     "- **rule-based**: the rules alone - exact title, the disambiguation page decided by the words of the subject, "
     "inflected forms and genitive phrases, then title suggestions and full-text hits. They say how sure they are "
     "(resolution.method, resolution.confident). No tokens, no extra time.\n"
@@ -32,12 +32,13 @@ ARTICLE_CHOICE_HELP = (
     "750 tokens per call.\n\n"
     "For a material without a topic (node_id), llm lets the LLM name the article from title, subjects, keywords and "
     "description - 30 of 31 materials right at about 440 tokens, against 15 of 31 by the rules (M23, D47). Either "
-    "way, full-text hits without a link to or from the main article stay out of the corpus (M25). Without a usable "
-    "b-api the rules choose, and audit.llm.article_choice says why."
+    "way, full-text hits without a link to or from the main article stay out of the corpus (M25). llm without a "
+    "configured LLM (LLM_ENABLED, B_API_KEY) is a 503; when the b-api is not available for now the rules choose, "
+    "and audit.llm.article_choice says why."
 )
 MATCHER_HELP = (
-    "How the paragraphs find their block of the template. Default: MATCHER_DEFAULT (hybrid_light); the preset "
-    "best-quality sets llm. Quality is the "
+    "How the paragraphs find their block of the template. Default: the profile's: llm-free and balanced take "
+    "hybrid_light, best-quality and best-quality-generated llm. Quality is the "
     "macro-F1 over the ten content blocks at the gold standard (eval/gold); times are for part 1 of one compendium, "
     "measured on 2026-09-24.\n\n"
     "- **hybrid_light** (default): heading lexicon, BM25 and character TF-IDF together, plus Model2Vec vectors when "
@@ -49,31 +50,33 @@ MATCHER_HELP = (
     "- **llm**: the LLM of the b-api assigns every paragraph to a block or to none, 50 paragraphs of 400 characters "
     "per call. 0.69 and 0.72 in two runs, about 180 tokens per paragraph and 34 500 per compendium; part 1 took "
     "12.0 and 22.7 s instead of 1.2 and 1.8 s in the median of two measurements, the b-api answering at different "
-    "speeds. Where the model gives no answer, and without a usable b-api, the default strategy decides. At the "
+    "speeds. Where the model gives no answer, or the b-api is not available for now, hybrid_light decides; "
+    "without a configured LLM the request is a 503. At the "
     "default LLM_MAX_TOKENS_PER_REQUEST of 60 000 four batches run at once and the others wait for them, so topics "
     "of more than 200 paragraphs take a second round. These numbers are gpt-5.6-luna's; the default gpt-6-luna "
     "(D44) reached 0.70 and takes a quarter to three quarters longer per call (M19).\n\n"
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
 EXTRACTION_HELP = (
-    "Who picks the passages of part 1. Default: LLM_EXTRACTION_DEFAULT (rule-based).\n\n"
+    "Who picks the passages of part 1. Default: the profile's, rule-based in all four.\n\n"
     "- **rule-based**: the paragraphs the matching assigned, their first sentences.\n"
     "- **llm**: the LLM chooses sentences by number among the best candidates of every block; the wording stays the "
     "source's. Measured for one topic (Optik) on 2026-09-19: 10 calls, about 16 500 tokens and 11 s.\n\n"
-    "Falls back to rule-based when the b-api is not configured or not available."
+    "llm without a configured LLM is a 503; when the b-api is not available for now it falls back to rule-based."
 )
 GENERATION_HELP = (
-    "Who writes the blocks of part 1. Default: LLM_GENERATION_DEFAULT (rule-based).\n\n"
+    "Who writes the blocks of part 1. Default: the profile's: llm in best-quality-generated, rule-based in the "
+    "others.\n\n"
     "- **rule-based**: verbatim excerpts, every paragraph with its citation number.\n"
     "- **llm-fast**: the LLM writes the blocks of LLM_FAST_SECTIONS from their evidence; measured on 2026-09-18 for "
     "four topics: 2 to 3 calls, 2 300 to 4 000 tokens, 9 to 15 s.\n"
     "- **llm**: the LLM writes every content block; 8 to 10 calls, 10 500 to 14 500 tokens, 16 to 20 s.\n\n"
-    "Every written sentence needs a valid citation. Falls back to rule-based when the b-api is not configured or not "
-    "available."
+    "Every written sentence needs a valid citation. llm-fast and llm without a configured LLM are a 503; when the "
+    "b-api is not available for now it falls back to rule-based."
 )
 ENRICHMENT_HELP = (
-    "Whether the writing LLM may add knowledge of its own beyond the sources. Default: LLM_ENRICHMENT_DEFAULT "
-    "(sources-only).\n\n"
+    "Whether the writing LLM may add knowledge of its own beyond the sources. Default: the profile's: "
+    "model-knowledge in best-quality-generated, sources-only in the others.\n\n"
     "- **sources-only**: every sentence has to be covered by its evidence; anything else is dropped.\n"
     "- **model-knowledge**: the model may add knowledge of its own; such sentences carry no citation number, are "
     "marked in the text as Evidenzgrad=Modellwissen and counted per block.\n\n"
@@ -81,9 +84,11 @@ ENRICHMENT_HELP = (
     "sources-only."
 )
 PRESET_HELP = (
-    "One switch for the three levels of docs/entwicklung/07-entscheidungsvorlage.md. It sets article_choice, "
-    "matcher, extraction, generation and enrichment; a switch the request sets itself wins. Without a preset the "
-    "settings decide, and they ship as llm-free (D40). Numbers: gold standard and measurements of "
+    "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53). It sets article_choice, matcher, "
+    "extraction, generation and enrichment; a switch the request sets itself wins. Without a preset the server's "
+    "profile applies (PRESET_DEFAULT, shipped balanced). Every profile but llm-free needs an LLM (LLM_ENABLED, "
+    "B_API_KEY); on a server without one such a request is a 503 that says so. Numbers: gold standard and "
+    "measurements of "
     "2026-09-24 with gpt-5.6-luna; the default gpt-6-luna (D44) chose 90 of 94 and takes a quarter to "
     "three quarters longer per call (M19).\n\n"
     "- **llm-free**: the rules choose the articles, hybrid_light assigns the paragraphs, the text stays verbatim. "
@@ -97,21 +102,33 @@ PRESET_HELP = (
     "tokens. For a material without a topic the LLM names the article: 30 instead of 15 of 31 right (D47).\n"
     "- **best-quality**: balanced plus the LLM assigning every paragraph (matcher llm). 91 of 94, macro-F1 0.69 "
     "to 0.72; part 1 about 14 to 24 s and about 35 400 tokens. Topics of more than 200 paragraphs take a second "
-    "round of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it.\n\n"
-    "balanced and best-quality need an LLM (LLM_ENABLED, B_API_KEY); without one they fall back to the rules and "
-    "audit.llm says why. For text people read directly, add generation llm-fast or llm to a preset."
+    "round of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it.\n"
+    "- **best-quality-generated**: best-quality plus the LLM writing every block (generation llm), which may add "
+    "knowledge of its own, marked as Evidenzgrad=Modellwissen and without a citation number (enrichment "
+    "model-knowledge). For text people read directly. The writing alone took 16 to 20 s and 10 500 to 14 500 tokens "
+    "with gpt-5.6-luna on four topics (2026-09-18).\n\n"
+    "When the b-api is not available for now, the LLM steps fall back to the rules and audit.llm says why."
 )
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
 Enrichment = Literal["sources-only", "model-knowledge"]
 ArticleChoice = Literal["rule-based", "llm"]  # who decides an unsure article choice (D35)
-Preset = Literal["llm-free", "balanced", "best-quality"]  # the three levels of the decision paper (D41)
+Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated"]  # the four profiles (D41, D53)
 _VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
 PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the order of Preset
     "llm-free": {"article_choice": "rule-based", "matcher": "hybrid_light", **_VERBATIM},
     "balanced": {"article_choice": "llm", "matcher": "hybrid_light", **_VERBATIM},
     "best-quality": {"article_choice": "llm", "matcher": "llm", **_VERBATIM},
+    # Jan, 2026-09-25: everything by the LLM, the text completed from its own knowledge and rewritten to read well;
+    # extraction stays rule-based, which brought no gain at the gold standard (decision paper, step 4)
+    "best-quality-generated": {
+        "article_choice": "llm",
+        "matcher": "llm",
+        "extraction": "rule-based",
+        "generation": "llm",
+        "enrichment": "model-knowledge",
+    },
 }
 UNKNOWN_SUBJECT_HELP = (
     "; one outside the two subject vocabularies of edu-sharing (school subjects, Destatis university subjects; "
@@ -264,3 +281,12 @@ class GenerateRequest(BaseModel):
         if not self.collection_id and not {"world", "curricula"} & set(self.parts):
             raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")
         return self
+
+
+def with_profile(request: GenerateRequest, default: Preset) -> GenerateRequest:
+    """The request with every switch set: by its own preset (the validator did that) or else by the server's
+    profile (PRESET_DEFAULT, D53); a switch the request set itself stays."""
+    if request.preset is not None:
+        return request
+    filled = {name: value for name, value in PRESETS[default].items() if getattr(request, name) is None}
+    return request.model_copy(update={"preset": default, **filled})

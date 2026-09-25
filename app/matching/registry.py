@@ -95,6 +95,7 @@ STRATEGIES: dict[str, dict[str, Any]] = {
     },
 }
 LLM_MATCHER = "llm"  # handled by CompendiumService.match through app/matching/llm_assignment.py (D34)
+LOCAL_MATCHER = "hybrid_light"  # the profiles' local strategy, and what matcher=llm falls back on (D53)
 
 
 def ensure_strategy(name: str) -> str:

@@ -46,25 +46,29 @@ Zeiten: Entwicklungsrechner, Teil 1 im Prozess (M13, M14, M25); auf dem Server �
 Median 2,0 s (M3). „Beste Qualität“ ist die Summe der einzeln gemessenen Schritte; die beiden LLM-Schalter liefen nie
 zusammen, sie arbeiten aber nacheinander, Zeit und Tokens addieren sich also.
 
-## Die Stufen mit einem Schalter: `preset`
+## Die Profile: `preset`
 
-`preset` setzt alle Schalter von Teil 1 auf eine der drei Stufen (D41). Einen Schalter, den die Anfrage selbst setzt,
-lässt es stehen; so gibt `{"preset": "best-quality", "generation": "llm"}` die beste Zuordnung und dazu einen
-umformulierten Text. Ohne `preset` gelten die Vorgaben der Einzelschalter, und die sind ausgeliefert die Stufe
-`llm-free`.
+`preset` setzt alle Schalter von Teil 1 auf eines der vier Profile (D41, D53). Einen Schalter, den die Anfrage selbst
+setzt, lässt es stehen. Ohne `preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced` (D53; bis dahin war `llm-free`
+die Vorgabe, D40); es ersetzt die Vorgaben der Einzelschalter (`MATCHER_DEFAULT`, `LLM_ARTICLE_CHOICE_DEFAULT` und
+die übrigen). Jedes Profil außer `llm-free` braucht ein LLM: Ohne `LLM_ENABLED` und `B_API_KEY` ist eine solche
+Anfrage ein 503, der die Schalter nennt, die ein LLM brauchen; ein Dienst ohne LLM setzt `PRESET_DEFAULT=llm-free`.
 
 | `preset` | `article_choice` | `matcher` | `extraction` | `generation` | `enrichment` |
 |---|---|---|---|---|---|
 | `llm-free` | `rule-based` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
 | `balanced` | `llm` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
 | `best-quality` | `llm` | `llm` | `rule-based` | `rule-based` | `sources-only` |
+| `best-quality-generated` | `llm` | `llm` | `rule-based` | `llm` | `model-knowledge` |
 
-Wo man es findet: in `/docs` am Feld `preset` von `POST /api/v2/compendium` (mit Güte, Zeit und Tokens je Stufe)
-und in drei Beispielen, eines je Stufe; `POST /api/v2/knowledge` nimmt `preset` ebenfalls an und übernimmt daraus nur
-`article_choice`; auf der Kommandozeile `compendium generate --preset balanced`. Die Antwort nennt die Stufe in
-`audit.preset`, was tatsächlich lief in `audit.llm`. Ohne LLM fallen `balanced` und `best-quality` auf die Regeln
-zurück, und `audit.llm` sagt warum. Keine Stufe schaltet `generation` ein: Die Lesbarkeit ist nicht gemessen, das
-Umformulieren bleibt eine bewusste Zusatzwahl.
+Wo man es findet: in `/docs` am Feld `preset` von `POST /api/v2/compendium` (mit Güte, Zeit und Tokens je Profil)
+und in vier Beispielen, eines je Profil; `POST /api/v2/knowledge` und `POST /api/v2/qa` nehmen `preset` ebenfalls an
+(`/knowledge` übernimmt daraus nur `article_choice`); auf der Kommandozeile `compendium generate --preset balanced`.
+Die Antwort nennt das wirksame Profil in `audit.preset`, was tatsächlich lief in `audit.llm`. Ist die b-api nur
+gerade nicht erreichbar, laufen die Regeln, und `audit.llm` sagt warum. `best-quality-generated` schaltet als einziges
+Profil `generation` und `enrichment` ein (Jan, 25.09.2026): Das LLM schreibt jeden Baustein und darf eigenes Wissen
+ergänzen, gekennzeichnet als Evidenzgrad=Modellwissen und ohne Belegnummer; `extraction` bleibt regelbasiert, weil es
+am Goldstandard nichts gewann (Schritt 4). Lesbarkeit und Kosten des ganzen Profils sind noch nicht gemessen.
 
 ## Der Ablauf
 
