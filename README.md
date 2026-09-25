@@ -224,14 +224,25 @@ Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674 (M18 im Messpro
 
 Statt eines Themas kann eine Anfrage einen Knoten eines edu-sharing-Repositorys nennen (D45): `node_id` und optional
 `repository`, bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`. Der Dienst liest die Metadaten des
-Knotens (`/node/v1/nodes/-home-/{id}/metadata`): Titel, Beschreibung, Schlagwörter, Fach und Bildungsstufe. Der Titel
-wird zum Thema. Fächer und Stufen sind Mehrfachfelder, jeder Wert zählt gleich, egal an welcher Stelle er steht: Die
-Artikelwahl nimmt die Fachwörter aller Fächer, der LLM-Prompt nennt alle Fächer, Teil 2 sucht in jedem. Stufen und
-Schlagwörter gehen als Kontextwörter in die Auflösung; an einer Begriffsklärung zählen sie aber nur, wenn die Fächer
-keine eigenen Wörter mitbringen, und die LLM-Artikelwahl sieht sie nicht. `/entities` liest statt eines `text` Titel,
-Beschreibung und Schlagwörter als Text. Ein `topic` dazu geht vor, ebenso ein Fach, das der Titel nennt („Physik:
-Optik“). Die Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fächer und
-Kontextwörter, wie eine Anfrage sie ableitet.
+Knotens (`/node/v1/nodes/-home-/{id}/metadata`): Titel, Beschreibung, Schlagwörter, Fach und Bildungsstufe. Bei einer
+Sammlung wird der Titel zum Thema. Bei einem Material ist der Titel nur der Anfang der Suche (D47), weil er oft ein
+Format nennt („Stationsarbeit zur Optik“): Ohne LLM nehmen die Regeln den Artikel des Titels, wenn die Begriffe aus
+Titel und Beschreibung ihn auch nennen, sonst den ersten Begriff, wenn der Titel ihn nennt, sonst keinen; dann
+antwortet der Dienst mit einem 404, der nach einem `topic` fragt. Mit `article_choice: llm` (oder `preset:
+balanced`) nennt das LLM den Artikel aus Titel, Fächern, Schlagwörtern und Beschreibung; ein genannter Titel zählt
+nur, wenn das Archiv ihn hat. `audit.node_article` (bei `/knowledge` `node_article`) sagt, wie der Artikel gefunden
+wurde.
+
+`topic` und `node_id` lassen sich kombinieren: Das Thema führt, das Material bringt Fächer, Stufen und Schlagwörter
+als Kontext mit, und sein eigener Artikel kommt als weitere Quelle (`origin: node`) dazu, wenn er ein anderer ist und
+mit dem Hauptartikel verlinkt ist. Mit `article_choice: llm` hört eine Frage Thema und Material zusammen und nennt
+beide Artikel; das LLM darf das Thema dabei überstimmen. Fächer und Stufen sind Mehrfachfelder, jeder Wert zählt
+gleich, egal an welcher Stelle er steht: Die Artikelwahl nimmt die Fachwörter aller Fächer, der LLM-Prompt nennt alle
+Fächer, Teil 2 sucht in jedem. Ein `subject` dazu geht vor, ebenso ein Fach, das der Titel nennt („Physik: Optik“).
+`/entities` liest statt eines `text` Titel, Beschreibung und Schlagwörter als Text. `/qa` übernimmt mit der Stufe
+`llm` die Bildungsstufen des Knotens, wenn keine gesendet sind, und fragt bevorzugt nach Titel und Schlagwörtern.
+Die Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fächer
+(`topic_subjects`) und Kontextwörter, wie eine Anfrage sie ohne LLM ableitet.
 
 `repository` ist die REST-Adresse, etwa `https://repository.staging.openeduhub.net/edu-sharing/rest`; der Host allein
 oder `…/edu-sharing` geht auch. Ohne Angabe gilt `EDU_SHARING_BASE_URL`. Erlaubt sind nur https-Adressen der Hosts aus
@@ -240,16 +251,13 @@ Zugangsdaten, auch aus dem konfigurierten Repository: Er hat keine Anmeldung und
 Unbekannter oder nicht öffentlicher Knoten: 404, Repository nicht erreichbar: 502, weder `repository` noch ein
 konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging.
 
-**Grenze (gemessen am 24.09.2026):** Sammlungen tragen ihr Thema als Titel („Optik“), Materialien oft ihr Format:
-„Stationsarbeit zur Optik“ und „Suchgitter Optik“ finden in den Archiven keinen Artikel, „Unterrichtsreihe zum Licht“
-endete bei einem Lied. Wer das Thema kennt, gibt es mit `topic` mit. An 40 echten Materialien der WLO-Produktion (M21)
-trifft der Titel als Thema 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16 und ein LLM, das den
-Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34, für rund 470 Tokens und 2,8 s. Bis zum Kompendium
-gemessen (M23) wird es mit dem Titel bei 5 von 31 Materialien brauchbar (mindestens die Hälfte der gedruckten
-Absätze passt), mit dem Thema vom LLM bei 17, mit dem Begriff, den eine Lehrkraft eintippen würde, bei 18; den
-Hauptartikel trifft das Thema vom LLM so sicher wie der Begriff (F1 0,97 und 0,94, der Titel 0,20). Ohne LLM hilft
-auch eine Embedding-Suche über das ganze Archiv nicht (M24, F1 höchstens 0,03). Welcher Weg eingebaut wird, ist
-offen (Optionen im Messprotokoll).
+**Gemessen (M21 bis M25):** An 31 echten Materialien der WLO-Produktion mit klarem Thema trifft der Titel als Thema
+den Hauptartikel mit F1 0,20, die Regeln über Titel und Beschreibung mit 0,56 und das LLM mit 0,98 (rund 340 Tokens,
+2 s); an 30 weiteren, vor dem Lauf beschrifteten Materialien 0,00, 0,63 und 0,88. Der Begriff, den eine Lehrkraft
+eintippen würde, trifft 0,94 und 0,83, zusammen mit dem Material über das LLM 1,00 und 0,87. Bis zum Kompendium
+gemessen (M23) wurde es mit dem Titel bei 5 von 31 Materialien brauchbar (mindestens die Hälfte der gedruckten Absätze
+passt), mit dem Thema vom LLM bei 17. Ohne LLM hilft auch eine Embedding-Suche über das ganze Archiv nicht (M24, F1
+höchstens 0,03).
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
 
@@ -330,7 +338,7 @@ drei Stufen der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.
 | `preset` | setzt | Güte und Kosten je Kompendium (Messungen vom 2026-09-24 mit `gpt-5.6-luna`) |
 |---|---|---|
 | `llm-free` (so arbeitet der Dienst auch ohne `preset`) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich | 86 von 94 Hauptartikeln richtig, macro-F1 0,43, Teil 1 rund 1,4 s, keine Tokens |
-| `balanced` | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 1,7 s und 930 Tokens mehr |
+| `balanced` | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,43, rund 2,0 s und 935 Tokens mehr (gpt-6-luna) |
 | `best-quality` | `article_choice: llm`, `matcher: llm`, Text wörtlich | 91 von 94, macro-F1 0,69 bis 0,72, Teil 1 rund 14 bis 24 s, rund 35.400 Tokens |
 
 Die LLM-Werte hier und in der Tabelle der Schalter unten stammen von `gpt-5.6-luna`. Mit der Vorgabe `gpt-6-luna`
@@ -400,19 +408,21 @@ halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` 
 einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
 und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
 mit dem Anfang ihres Textes und wählt einen davon oder nennt den Titel eines Wikipedia-Artikels, der nur zählt,
-wenn das Archiv ihn als Artikel hat. Die Auflösung trägt dann `method: llm` und bleibt als unsicher markiert.
+wenn das Archiv ihn als Artikel hat. Die Auflösung trägt dann `method: llm` und bleibt als unsicher markiert. Bei
+einem Material ohne `topic` nennt das LLM den Artikel selbst (D47, siehe „Knoten als Eingang“).
 Scheitert der Aufruf oder nennt die Antwort nichts Brauchbares, bleibt der Artikel der Regeln
 (`audit.llm.article_choice`). Gemessen an den drei Goldsätzen in `eval/artikelwahl` am 2026-09-23: 57 statt 55 von
 59, 23 statt 22 von 23 und 11 statt 9 von 12 Hauptartikeln richtig, rund 950 Tokens je Aufruf bei 18 von 94
-Anfragen. Außerdem prüft das LLM die Volltexttreffer des Korpus: Es benotet alle Korpusartikel eines Themas in einem
-Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und die Volltexttreffer mit 0 fallen heraus
-(`hits_dropped`). Gemessen an den blind vergebenen Noten der 20 Themen aus M1: 11 von 16 unpassenden Treffern
-verworfen, kein passender; statt 26 druckte die Standard-Strategie 10 Absätze aus unpassenden Artikeln, rund 890
-Tokens je Thema mit Treffern. Zeit, gemessen am 2026-09-24 an 30 Themen, die keine frühere Messung gestellt hatte:
-im Median 1,7 s mehr je Kompendium (90. Perzentil 3,4 s) bei rund 930 Tokens; die Trefferprüfung braucht im Median
-1,4 s, eine unsichere Artikelwahl zusätzlich 1,0 bis 2,7 s. Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil
-1 im Median 1,35 statt 1,37 s). Derselbe Schalter steht in `POST /api/v2/knowledge`, damit Wissenstexte und
-Kompendium für ein Thema dieselben Artikel nennen.
+Anfragen. Außerdem prüft das LLM die Nebenartikel des Korpus: Es benotet alle Korpusartikel eines Themas in einem
+Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und Volltexttreffer und verlinkte Unterartikel mit 0 fallen
+heraus (`hits_dropped`, D48). Volltexttreffer ohne Link zum oder vom Hauptartikel lässt der Dienst in jeder Stufe
+weg. Gemessen an den blind vergebenen Noten der 20 Themen aus M1 (M25, gpt-6-luna): statt 25 druckte die
+Standard-Strategie ohne LLM 12 Absätze aus unpassenden Artikeln, mit der Prüfung der Nebenartikel 5; das LLM
+verwarf keinen passenden oder verwandten Artikel. Zeit, gemessen am 2026-09-25 an 30 Themen, die keine frühere
+Messung gestellt hatte: im Median 2,0 s mehr je Kompendium (90. Perzentil 4,2 s) bei rund 935 Tokens; die Prüfung der
+Nebenartikel braucht im Median 2,0 s, eine unsichere Artikelwahl kommt dazu (M13 mit gpt-5.6-luna: 1,0 bis 2,7 s).
+Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil 1 im Median 1,35 statt 1,37 s). Derselbe Schalter steht in
+`POST /api/v2/knowledge`, damit Wissenstexte und Kompendium für ein Thema dieselben Artikel nennen.
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
@@ -489,7 +499,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 |---|---|---|
 | `LOG_LEVEL` | `INFO` | Protokollstufe der Anwendung (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 | `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit und das Lesen der Materialtexte. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`) |
-| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
+| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
@@ -581,7 +591,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` (D40) oder `llm` (das LLM entscheidet eine unsichere Artikelwahl und verwirft unpassende Volltexttreffer, D35; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37). Je Anfrage gehen `article_choice` und `preset` vor |
+| `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based` | Vorgabe für `article_choice`: `rule-based` (D40) oder `llm` (das LLM entscheidet eine unsichere Artikelwahl, nennt den Artikel eines Materials und verwirft unpassende Nebenartikel, D35, D47, D48; wirkt nur mit konfiguriertem LLM, sonst wählen die Regeln, D37). Je Anfrage gehen `article_choice` und `preset` vor |
 | `LLM_EXTRACTION_DEFAULT` | `rule-based` | Vorgabe für `extraction`: `rule-based` oder `llm` (das LLM wählt die Sätze je Baustein, der Wortlaut bleibt der der Quelle) |
 | `LLM_GENERATION_DEFAULT` | `rule-based` | Vorgabe für `generation`: `rule-based`, `llm-fast` (nur die Bausteine aus `LLM_FAST_SECTIONS`) oder `llm` (alle Inhaltsbausteine aus ihren Belegen) |
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | Vorgabe für `enrichment`: `sources-only` (nur die Quellen) oder `model-knowledge` (das Modell darf eigenes Wissen ergänzen). Solche Sätze tragen keine Belegnummer, stehen im Text als Evidenzgrad=Modellwissen und werden je Baustein gezählt. Wirkt nur mit `generation` auf `llm` oder `llm-fast` |
@@ -617,10 +627,10 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Alle Antworten | tragen `X-Request-ID` (die des Aufrufers oder eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
 | `POST /api/v2/compendium` | Kompendium zu `topic`, `collection_id` oder `node_id` (ein Material oder eine Sammlung eines Repositorys, dazu `repository`; siehe „Knoten als Eingang“); `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `preset` wählt eine Stufe (`llm-free`, `balanced`, `best-quality`) und setzt die Schalter, die die Anfrage offen lässt; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`, `enrichment` `sources-only` oder `model-knowledge`; das frühere Feld `mode`: 422; `matcher: llm` lässt das LLM die Absätze zuordnen (siehe LLM-Schicht); unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503; `template_id` wählt ein Template (Standard aus den Einstellungen), `max_articles` begrenzt den Korpus (Standard `CORPUS_MAX_ARTICLES`, Thema und Zwilling sind immer dabei), `empty_slot_policy` und `facets_visible` überschreiben Template bzw. `FACETS_VISIBLE`, `language` kennt heute nur `de` (sonst 422); zur teilweisen Neuerzeugung mit `existing_markdown` und `regenerate_sections` siehe unten; `frontmatter_in_markdown: false` lässt den YAML-Vorspann im Markdown weg und beginnt bei der Überschrift — dieselben Angaben stehen weiter im Feld `frontmatter` |
-| `POST /api/v2/knowledge` | Wissenstexte zu `topic` oder `node_id` (mit `repository`, siehe „Knoten als Eingang“), ohne Template und Synthese: die Artikel des Korpus mit ihren Abschnitten. `archives` fragt gezielt einzelne Archive (unbekannte ID: 404), `max_articles` begrenzt die zusätzlichen Artikel (Thema und Zwilling sind immer dabei), `max_chars` deckelt den Text über alle Artikel und setzt `truncated`; Thema nicht gefunden: 404 mit `resolution` |
+| `POST /api/v2/knowledge` | Wissenstexte zu `topic`, `node_id` oder beidem (mit `repository` und `subject`, siehe „Knoten als Eingang“), ohne Template und Synthese: die Artikel des Korpus mit ihren Abschnitten und ihrer Herkunft (`origin`). `archives` fragt gezielt einzelne Archive (unbekannte ID: 404), `max_articles` begrenzt die zusätzlichen Artikel (Thema und Zwilling sind immer dabei), `max_chars` deckelt den Text über alle Artikel und setzt `truncated`; Thema nicht gefunden: 404 mit `resolution` |
 | `POST /api/v2/entities` | Entitäten in einem Text (`text`, oder Titel, Beschreibung und Schlagwörter von `node_id`; die Antwort gibt den gelesenen Text unter `text` zurück), in zwei Schichten: `methods` wählt `ner` (spaCy-Modell, braucht keine Archive) und `dictionary` (Begriffe, die einen Artikel haben); die Antwort nennt unter `methods`, welche Wege wirklich liefen, und je Entität `source`, `kind`, `linked` und den Artikel mit seinem Lead. `link: false` lässt das Nachschlagen weg, `archives` grenzt ein (unbekannte ID: 404); fällt beides aus — kein Modell und keine Archive —: 503. Steht hinter einem Begriff des Wörterbuchs nur eine Begriffsklärungsseite, entfällt er: die Methode verspricht Begriffe **mit** Artikel. Das gilt nicht für `ner` und nicht bei `link: false` — dort sagt `note`, dass ungeprüft geliefert wurde. `max_entities` greift vor dieser Prüfung, es können also weniger zurückkommen. Jeder mit Wikipedia verknüpfte Artikel trägt `ids` (D43), nur aus lokalen Daten: GND, Art des Datensatzes und VIAF aus seinem Normdaten-Block, die Wikidata-Nummer aus dem Index (siehe „Entitäten und Kennungen“), die DBpedia-URI aus dem Titel gebildet; unter `same_as` alle als URIs |
-| `POST /api/v2/qa` | Frage-Antwort-Paare zu `text`, `topic` oder `node_id` (wie beim Kompendium). **`text`** ist der Text, aus dem die Paare gemacht werden — etwa das Markdown eines Kompendiums, das du schon hast. **`topic`** erzeugt erst Teil 1 des Kompendiums zu diesem Thema und fragt dessen Bausteine ab; beide Schritte also in einem Aufruf, zum Preis einer Erzeugung (404 mit `resolution`, wenn es das Thema nicht gibt, 503 wenn Teil 1 nicht erzeugbar ist). `method` wählt `rule-based` (Fragevorlagen über die Sätze, braucht nichts, Standard), `parse-based` (der spaCy-Parse ersetzt das Satzsubjekt durch ein Fragewort, die Antwort ist dann das Subjekt statt des ganzen Satzes; braucht das spaCy-Modell), `models` (zwei kleine deutsche Modelle im Image: ein Generator schreibt die Frage zu einer Nominalphrase, ein extraktives Modell markiert die antwortende Stelle — rund 1,1 s je Paar auf CPU bei 20 Paaren, bei wenigen Paaren eher 2 s, weil der Generator eine ganze Runde auf einmal erzeugt; die Modelle laden bei der ersten Anfrage) oder `llm` (die b-api schreibt sie); fehlen die Modelle, die b-api oder eine verwertbare Antwort, fällt es auf `rule-based` zurück und `note` sagt warum. `count` und `max_answer_length` begrenzen. **Welche Stufe wofür:** gemessen am 2026-09-21 auf einem Kompendiumtext greift `rule-based` nur bei jedem achten Satz und die Hälfte der Fragen fragt nach einer Jahreszahl (8 von 20 angefragten Paaren, 4 Fragetypen); `parse-based` holt aus denselben Texten viermal so viel wie die Vorlagen — gemessen am 2026-09-22 über 172 Sätze aus vier Kompendien 33 Fragen statt 8, rund 4 ms je Satz (warm; der erste Text eines Prozesses zahlt einmalig das Aufwärmen von spaCy), 26 der 33 mangelfrei — ohne ein Modell zu laden; `models` lieferte aus demselben Text 20 von 20 mit 18 Fragetypen und keiner Jahresfrage, weil die Fragen aus den Nominalphrasen entstehen statt aus Vorlagen, und ist mit 94 % mangelfreien Paaren die genaueste und mit Abstand langsamste Stufe. `/docs` hat je ein Beispiel dafür. Die Fragevorlagen prüfen mit dem spaCy-Modell, ob der Betreff wirklich ein Begriff ist — Deutsch schreibt am Satzanfang groß, sonst entstünde „Was versteht man unter Daneben?“. Fehlt das Modell, entfällt die Prüfung und `note` sagt es |
-| `GET /api/v2/nodes/{node_id}` | Ein Material oder eine Sammlung eines Repositorys, wie der Dienst es liest (D45): Titel, Beschreibung, Schlagwörter, Fächer, Bildungsstufen, Adresse und Repository, dazu das abgeleitete `topic`, `subject` und die Kontextwörter `context`; `repository` wie bei `node_id` (nicht erlaubt: 422, unbekannter Knoten: 404, Repository nicht erreichbar: 502) |
+| `POST /api/v2/qa` | Frage-Antwort-Paare zu `text`, `topic` oder `node_id` (wie beim Kompendium; `subject`, `preset` und `article_choice` wirken auf den Teil 1, aus dem die Paare entstehen). **`text`** ist der Text, aus dem die Paare gemacht werden — etwa das Markdown eines Kompendiums, das du schon hast. **`topic`** erzeugt erst Teil 1 des Kompendiums zu diesem Thema und fragt dessen Bausteine ab; beide Schritte also in einem Aufruf, zum Preis einer Erzeugung (404 mit `resolution`, wenn es das Thema nicht gibt, 503 wenn Teil 1 nicht erzeugbar ist). `method` wählt `rule-based` (Fragevorlagen über die Sätze, braucht nichts, Standard), `parse-based` (der spaCy-Parse ersetzt das Satzsubjekt durch ein Fragewort, die Antwort ist dann das Subjekt statt des ganzen Satzes; braucht das spaCy-Modell), `models` (zwei kleine deutsche Modelle im Image: ein Generator schreibt die Frage zu einer Nominalphrase, ein extraktives Modell markiert die antwortende Stelle — rund 1,1 s je Paar auf CPU bei 20 Paaren, bei wenigen Paaren eher 2 s, weil der Generator eine ganze Runde auf einmal erzeugt; die Modelle laden bei der ersten Anfrage) oder `llm` (die b-api schreibt sie); fehlen die Modelle, die b-api oder eine verwertbare Antwort, fällt es auf `rule-based` zurück und `note` sagt warum. `count` und `max_answer_length` begrenzen. **Welche Stufe wofür:** gemessen am 2026-09-21 auf einem Kompendiumtext greift `rule-based` nur bei jedem achten Satz und die Hälfte der Fragen fragt nach einer Jahreszahl (8 von 20 angefragten Paaren, 4 Fragetypen); `parse-based` holt aus denselben Texten viermal so viel wie die Vorlagen — gemessen am 2026-09-22 über 172 Sätze aus vier Kompendien 33 Fragen statt 8, rund 4 ms je Satz (warm; der erste Text eines Prozesses zahlt einmalig das Aufwärmen von spaCy), 26 der 33 mangelfrei — ohne ein Modell zu laden; `models` lieferte aus demselben Text 20 von 20 mit 18 Fragetypen und keiner Jahresfrage, weil die Fragen aus den Nominalphrasen entstehen statt aus Vorlagen, und ist mit 94 % mangelfreien Paaren die genaueste und mit Abstand langsamste Stufe. `/docs` hat je ein Beispiel dafür. Die Fragevorlagen prüfen mit dem spaCy-Modell, ob der Betreff wirklich ein Begriff ist — Deutsch schreibt am Satzanfang groß, sonst entstünde „Was versteht man unter Daneben?“. Fehlt das Modell, entfällt die Prüfung und `note` sagt es |
+| `GET /api/v2/nodes/{node_id}` | Ein Material oder eine Sammlung eines Repositorys, wie der Dienst es liest (D45): Titel, Beschreibung, Schlagwörter, Fächer, Bildungsstufen, Adresse und Repository, dazu das abgeleitete `topic` (bei einem Material der Artikel, den die Regeln finden, und `node_article`), `topic_subjects` und die Kontextwörter `context`; `repository` wie bei `node_id` (nicht erlaubt: 422, unbekannter Knoten: 404, Repository nicht erreichbar: 502) |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 für eine Sammlung (404 unbekannt, 502 Repository nicht erreichbar); hält sich an `REQUEST_TIMEOUT_S`, danach `summary.incomplete` und ein Hinweis im Text |
 | `GET /api/v2/templates`, `/templates/{id}` | Templates (Bausteine) |
 | `PUT /api/v2/templates/{id}` (Admin) | eigenes Template anlegen oder ersetzen; die Version zählt bei jedem Schreiben hoch. Die id im Pfad und im Body müssen übereinstimmen (sonst 422), eingebaute Templates sind schreibgeschützt (409). Den Rumpf beschreibt `/docs` Feld für Feld: `slots` mit `title`, `inclusions`, `exclusions`, `sub_items`, `search_queries`, `facets`, `budget` und `generator`. `default_slot` nennt den Baustein, in den thematische Passagen ohne sichere Zuordnung wandern; `version` und `builtin` setzt der Dienst selbst |
@@ -647,8 +657,9 @@ gesetztes Token sind sie deaktiviert. Dieselben Schreibwege gibt es in der CLI:
 `compendium templates save datei.json` und `compendium templates delete id`; `compendium templates`
 ohne Verb listet wie bisher.
 
-`POST /api/v2/compendium`, `GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search`
-sind je Client auf `RATE_LIMIT` Anfragen pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
+`POST /api/v2/compendium`, `/knowledge`, `/entities` und `/qa`, `GET /api/v2/nodes/{node_id}`,
+`GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search` sind je Client auf `RATE_LIMIT` Anfragen
+pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
 0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Hinter einem Reverse-Proxy sieht uvicorn die
 Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung für die öffentlichen Endpunkte gibt es nicht;
 der Dienst gehört hinter ein Gateway. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und

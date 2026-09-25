@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 25.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M24; Rohdaten und
+[Übersicht](README.md) · Stand 25.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M25; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -14,32 +14,36 @@ Stufe LLM-frei, auch wo ein LLM konfiguriert ist (D40).
 | | LLM-frei | ausgewogen | beste Qualität |
 |---|---|---|---|
 | Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm` |
-| Korpus | Standard, 12 Artikel | Standard, mit Trefferprüfung | Standard, mit Trefferprüfung |
+| Korpus | Standard, 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | dazu Prüfung der Nebenartikel | dazu Prüfung der Nebenartikel |
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` |
 | Text (`extraction`, `generation`) | `rule-based`, `rule-based` | `rule-based`, `rule-based` | `rule-based`, `rule-based` |
 | Hauptartikel richtig, 94 Goldanfragen | 86 | 91 | 91 |
-| gedruckte Absätze aus unpassenden Artikeln | 26 von 358 | 10 von 356 | nicht gemessen, Korpus wie ausgewogen |
+| Material ohne `topic`: Hauptartikel-F1 bei klarem Thema, zwei Stichproben | 0,56 und 0,63 | 0,98 und 0,88 | wie ausgewogen |
+| gedruckte Absätze aus unpassenden Artikeln, 20 Themen | 12 von 352 | 5 von 346 | nicht gemessen, Korpus wie ausgewogen |
 | Zuordnung, macro-F1 | 0,43 | 0,43 | 0,69 bis 0,72 |
-| Teil 1 je Kompendium | 1,35 s | rund 3,1 s | rund 14 bis 24 s |
-| Tokens je Kompendium | 0 | Median 927 | rund 35.400 |
-| Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.150 | rund 56 |
+| Teil 1 je Kompendium | 1,0 s | 3,0 s | rund 14 bis 24 s |
+| Tokens je Kompendium | 0 | Median 935 | rund 35.400 |
+| Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.140 | rund 56 |
 | so wählt man sie | Standard (D40) oder `preset: llm-free` | `preset: balanced` | `preset: best-quality` |
 
 ![Die drei Kombinationen im Vergleich](bilder/kombinationen.svg)
 
-- **LLM-frei** ist das Beste, was ohne Sprachmodell geht: die geschärften Regeln der Artikelwahl, `hybrid_light` mit
-  Model2Vec als bestes lokales Zuordnungsverfahren, wörtlicher Text. Keine Tokens, keine Abhängigkeit von der b-api.
+- **LLM-frei** ist das Beste, was ohne Sprachmodell geht: die geschärften Regeln der Artikelwahl, für ein Material
+  ohne `topic` die Regeln über Titel und Beschreibung (D47), Volltexttreffer nur mit Link zum Hauptartikel (D48),
+  `hybrid_light` mit Model2Vec als bestes lokales Zuordnungsverfahren, wörtlicher Text. Keine Tokens, keine
+  Abhängigkeit von der b-api.
 - **Ausgewogen** ist die Empfehlung für den Betrieb, sobald er ein LLM nutzen soll. Die LLM-Artikelwahl ist der
-  billigste Hebel mit messbarer Wirkung: fünf richtige Hauptartikel mehr von 94 und 10 statt 26 gedruckte Absätze aus
-  unpassenden Artikeln, für im Median 1,7 s und 927 Tokens. Vorerst ist sie nicht Standard (D40); man schaltet sie je
-  Anfrage mit `preset: balanced` ein oder global mit `LLM_ARTICLE_CHOICE_DEFAULT=llm`.
+  billigste Hebel mit messbarer Wirkung: fünf richtige Hauptartikel mehr von 94, 5 statt 12 gedruckte Absätze aus
+  unpassenden Artikeln und bei einem Material ohne `topic` ein Hauptartikel-F1 von 0,88 bis 0,98 statt 0,56 bis
+  0,63, für im Median 2,0 s und 935 Tokens (M25, gpt-6-luna). Vorerst ist sie nicht Standard (D40); man schaltet
+  sie je Anfrage mit `preset: balanced` ein oder global mit `LLM_ARTICLE_CHOICE_DEFAULT=llm`.
 - **Beste Qualität** nimmt dazu das LLM als Zuordner: 0,69 bis 0,72 statt 0,43 macro-F1, aber Teil 1 dauert
   zehnmal so lange, und ein Kompendium kostet mehr Tokens als der ganze alte Dienst. Sinnvoll, wo Qualität zählt und
   Zeit nicht, etwa beim Vorbereiten eines Kompendiums für die Redaktion. Der Text bleibt wörtlich; soll ihn ein Mensch
   direkt lesen, kommt `generation=llm` dazu (siehe Schritt 4).
 
-Zeiten: Entwicklungsrechner, Teil 1 im Prozess (M13, M14); auf dem Server über HTTP dauert Teil 1 ohne LLM im Median
-2,0 s (M3). „Beste Qualität“ ist die Summe der einzeln gemessenen Schritte; die beiden LLM-Schalter liefen nie
+Zeiten: Entwicklungsrechner, Teil 1 im Prozess (M13, M14, M25); auf dem Server über HTTP dauert Teil 1 ohne LLM im
+Median 2,0 s (M3). „Beste Qualität“ ist die Summe der einzeln gemessenen Schritte; die beiden LLM-Schalter liefen nie
 zusammen, sie arbeiten aber nacheinander, Zeit und Tokens addieren sich also.
 
 ## Die Stufen mit einem Schalter: `preset`
@@ -95,7 +99,7 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 
 | Einstellung | Werte | Standard |
 |---|---|---|
-| Anfrage: `article_choice` (Kompendium und `POST /api/v2/knowledge`) | `rule-based`, `llm` | aus `LLM_ARTICLE_CHOICE_DEFAULT` |
+| Anfrage: `article_choice` (Kompendium, `POST /api/v2/knowledge` und `/qa`) | `rule-based`, `llm` | aus `LLM_ARTICLE_CHOICE_DEFAULT` |
 | Anfrage: `preset` | `llm-free` setzt `rule-based`, `balanced` und `best-quality` setzen `llm` | kein `preset` |
 | Umgebung: `LLM_ARTICLE_CHOICE_DEFAULT` | `rule-based`, `llm` | `rule-based` (D40); `llm` wirkt nur mit konfiguriertem LLM |
 
@@ -128,6 +132,12 @@ sucht dann den Artikel, um den sich der Korpus dreht.
   erster Stelle und 58 bis 78 Mal unter bis zu zehn Artikeln, bei jeder Anfrage für 6 bis 8 s und rund 1.400 Tokens.
   Er fand aber zwei der drei sicheren Fehler der Regeln, *Elektrischer Strom* und *Rechnernetz*.
 
+**Ein Material als Eingang (D47):** Mit `node_id` ohne `topic` ist der Titel eines Materials nur der Anfang der Suche,
+weil er oft ein Format nennt. Ohne LLM nehmen die Regeln den Artikel des Titels, wenn die Begriffe aus Titel und
+Beschreibung ihn auch nennen, sonst den ersten Begriff, wenn der Titel ihn nennt, sonst keinen (404 mit der Bitte um
+ein `topic`); mit `article_choice=llm` nennt das LLM den Artikel. Mit `topic` und `node_id` zusammen führt das Thema,
+und mit `llm` hört eine Frage beides. Zahlen unter 6.
+
 ## Schritt 2: Korpus bauen
 
 Aus dem Hauptartikel wird der Korpus: höchstens 12 Artikel und 400 Absätze, im Median 10,5 Artikel.
@@ -137,12 +147,13 @@ Aus dem Hauptartikel wird der Korpus: höchstens 12 Artikel und 400 Absätze, im
 | Hauptartikel | immer, als erste Quelle |
 | derselbe Artikel aus Klexikon | wenn es ihn gibt, als einfacher Einstieg |
 | verlinkte Unterartikel | Links des Hauptartikels, gereiht nach Themenwort im Titel, Treffern in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder, Maßeinheiten und Listen sind gesperrt; mindestens 350 Zeichen Text |
-| Volltexttreffer je Baustein | drei Plätze sind reserviert: je Baustein eine Suche nach Titel und drei Suchbegriffen des Bausteins, bis zu vier Treffer, die das Thema in Titel oder Einleitung nennen müssen |
+| Volltexttreffer je Baustein | drei Plätze sind reserviert: je Baustein eine Suche nach Titel und drei Suchbegriffen des Bausteins, bis zu vier Treffer, die das Thema in Titel oder Einleitung nennen und mit dem Hauptartikel verlinkt sein müssen (D48) |
+| Artikel eines Materials | mit `topic` und `node_id` zusammen: wenn er ein anderer ist als der Hauptartikel und mit ihm verlinkt, als eigene Quelle ohne Themenfilter (D47) |
 | Materialien einer Sammlung (optional) | `knowledge_collection_id`: bis zu 30 Materialien mit je 20.000 Zeichen, wörtlich nur unter CC0, Public Domain, CC BY oder CC BY-SA; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen. |
 
 Artikel ohne das Themenwort im Titel geben nur die Absätze ab, die das Thema nennen. Mit `article_choice=llm`
-benotet das LLM danach alle Korpusartikel in einem Aufruf (Trefferprüfung), und Volltexttreffer mit der Note 0 fallen
-heraus; ohne Volltexttreffer wird es nicht gefragt.
+benotet das LLM danach alle Korpusartikel in einem Aufruf, und Volltexttreffer und verlinkte Unterartikel mit der
+Note 0 fallen heraus (D48); ohne solche Nebenartikel wird es nicht gefragt.
 
 | Einstellung | Werte | Standard |
 |---|---|---|
@@ -150,26 +161,30 @@ heraus; ohne Volltexttreffer wird es nicht gefragt.
 | Umgebung: `CORPUS_MAX_CHUNKS` | 20 bis 5.000 Absätze | 400 |
 | Umgebung: `ZIM_PROFILE` | `compact` (Top-Artikel, 1,4 GB), `standard` (ganze Wikipedia und Klexikon), `extended` (dazu Wikibooks und Wikiversity) | `standard` |
 | Anfrage: `knowledge_collection_id` | nodeId einer Sammlung | keine |
-| Trefferprüfung | über `article_choice` | an, wo `article_choice=llm` gilt |
+| Prüfung der Nebenartikel | über `article_choice` | an, wo `article_choice=llm` gilt |
 
-| 20 Themen (M8, M10) | ohne Trefferprüfung | mit Trefferprüfung |
-|---|---|---|
-| unpassende Volltexttreffer im Korpus | 16 von 47 | 5 von 36; kein passender verworfen |
-| gedruckte Absätze aus unpassenden Artikeln | 26 von 358 | 10 von 356 |
-| gefüllte Inhaltsbausteine | 122 | 120 |
-| Zeit | 0,9 s auf dem Server | +1,4 s im Median, 90. Perzentil 3,2 s |
-| Tokens | 0 | rund 890 je Thema mit Volltexttreffern |
+| 20 Themen (M25, gpt-6-luna) | gedruckt aus passenden, verwandten, unpassenden Artikeln | gefüllte Inhaltsbausteine | LLM-Aufrufe, Tokens je Thema |
+|---|---|---|---|
+| bis D48 ohne LLM | 252, 80, 25 | 122 | – |
+| **LLM-frei: ohne unverlinkte Volltexttreffer** | 263, 77, 12 | 118 | – |
+| bis D48 mit Trefferprüfung | 257, 81, 17 | 120 | 15, 697 |
+| **ausgewogen: ohne unverlinkte, dann Prüfung der Nebenartikel** | 264, 77, 5 | 117 | 20, 752 |
+
+Auf 30 neuen Themen kostet `balanced` damit im Median 2,0 s und 935 Tokens mehr als die Regeln (M25; M13 mit
+gpt-5.6-luna: 1,7 s und 930).
 
 ![Artikel im Korpus nach Herkunft](bilder/korpus.svg)
 
 **Beobachtungen**
 
-- Hauptartikel und Klexikon passen immer; verlinkte Unterartikel zu 9 % nicht, Volltexttreffer zu 34 %. Die
-  Volltexttreffer sind die schwächste Quelle, und nur sie prüft das LLM.
+- Hauptartikel und Klexikon passen immer; verlinkte Unterartikel zu 9 % nicht, Volltexttreffer zu rund einem
+  Drittel. Unverlinkte Volltexttreffer sind zu 10 von 16 unpassend, verlinkte zu 4 von 28 (M25); seit D48 fallen die
+  unverlinkten weg und prüft das LLM auch die verlinkten Unterartikel.
 - Einfache Filter trennen sie nicht: Das Themenwort in Titel oder erstem Satz zu verlangen verwirft 14 der 16
   unpassenden Treffer, aber auch 7 der 15 zentralen; die Model2Vec-Ähnlichkeit ist bei unpassenden Treffern so hoch
   wie bei guten. Das LLM trennt sie nur, wenn es alle Artikel eines Themas zugleich sieht; die Treffer allein benotet
-  es zu mild (6 von 16).
+  es zu mild (6 von 16). Die Verlinkung mit dem Hauptartikel trennt besser als jeder dieser Filter und fängt, was
+  gpt-6-luna übersieht: Als Prüfer erkennt es nur 7 der 14 unpassenden Treffer (M25; gpt-5.6-luna 11 von 16).
 - Die zwei Bausteine, die mit der Trefferprüfung leer werden, trugen bei „Atommodell“ nur Absätze aus *Kernwaffe*.
 - Wikibooks und Wikiversity (`extended`) bringen nichts: Mit ihrer Volltextsuche kam in 20 Themen ein gefüllter
   Baustein dazu (mit Trefferprüfung drei), und aus guten Unterrichtsseiten wie *Physikunterricht/ Optik* druckte der
@@ -283,7 +298,7 @@ mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er 
 | Kombination | Tokens je Kompendium | Kompendien je Tag bei 2 Mio. Tokens |
 |---|---|---|
 | LLM-frei | 0 | ohne Grenze |
-| ausgewogen | Median 927 | rund 2.150 |
+| ausgewogen | Median 935 | rund 2.140 |
 | ausgewogen mit `generation=llm-fast` | rund 3.200 bis 4.900 | rund 400 bis 620 |
 | beste Qualität | rund 35.400 | rund 56 |
 | beste Qualität mit `generation=llm` | rund 46.000 bis 50.000 | rund 40 bis 44 |
@@ -306,9 +321,10 @@ ZIM_PROFILE=standard
 CORPUS_MAX_ARTICLES=12
 ```
 
-Ergebnis: 86 von 94 Hauptartikeln, 26 von 358 gedruckten Absätzen aus unpassenden Artikeln, macro-F1 0,43, Teil 1
-in 1,35 s ohne Tokens. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
-Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
+Ergebnis: 86 von 94 Hauptartikeln, 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,43,
+Teil 1 in 1,0 bis 1,4 s ohne Tokens. Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis
+0,63; findet sie keinen, fragt der 404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen
+Verfahren verlieren in kleinen Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
 
 ### Ausgewogen: Zeit und Kosten optimiert bei guter Qualität
 
@@ -320,8 +336,9 @@ B_API_KEY=…                             # aus dem Geheimnisspeicher, nie im Re
 LLM_ARTICLE_CHOICE_DEFAULT=llm          # nur wenn die Stufe für jede Anfrage gelten soll
 ```
 
-Ergebnis: 91 von 94 Hauptartikeln, 10 von 356 gedruckten Absätzen aus unpassenden Artikeln, macro-F1 0,43, Teil 1
-im Median 1,7 s länger (90. Perzentil 3,4 s), rund 930 Tokens. Wer einen lesbaren Einstieg braucht, ergänzt
+Ergebnis: 91 von 94 Hauptartikeln, 5 von 346 gedruckten Absätzen aus unpassenden Artikeln (M25), bei einem Material
+ohne `topic` F1 0,88 bis 0,98, macro-F1 0,43, Teil 1 im Median 2,0 s länger (90. Perzentil 4,2 s), rund 935 Tokens
+(gpt-6-luna). Wer einen lesbaren Einstieg braucht, ergänzt
 `"generation": "llm-fast"`: 9 bis 15 s und 2.300 bis 4.000 Tokens mehr für Themendefinition und Querschnitt.
 
 ### Beste Qualität
@@ -348,6 +365,8 @@ bleibt.
   b-api antwortete in M14 langsamer als in M13.
 - Die Text-Schalter wurden an wenigen Themen und vor den Änderungen vom 23. und 24.09. gemessen.
 - LLM-Schalter wurden einzeln gemessen, nicht zusammen.
+- Die Artikel von Materialien (D47) sind an 80 Materialien gemessen, die Claude beschriftet hat; ob der Artikel eines
+  Materials neben einem Thema das Kompendium besser macht, ist nur auf Artikelebene gemessen.
 
 ## Zu entscheiden
 
@@ -365,37 +384,46 @@ bleibt.
 
 ## Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge
 
-Zwei weitere Entscheidungen stehen an; die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M24.
+Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
 
-6. **Kompendium aus einem Material (`node_id` ohne `topic`):** Heute wird der Titel des Materials zum Thema. Echte
-   Titel nennen oft Format oder Datum, deshalb wird das Kompendium selten brauchbar, das heißt: Mindestens die Hälfte
-   seiner gedruckten Absätze passt zum Material. F1 misst, ob die richtigen Artikel im Kompendium landen: beim
-   Hauptartikel gegen das Gold, bei allen gedruckten Artikeln gegen die, die zum Material gehören. Von 31
-   WLO-Materialien mit klarem Thema (M23):
+6. **Kompendium aus einem Material (`node_id` ohne `topic`), eingebaut (D47):** Echte Titel nennen oft Format oder
+   Datum; seit D47 ist der Titel nur der Anfang der Suche. Hauptartikel-F1 der Materialien mit klarem Thema: 31 aus
+   M21 und 30 neue, beschriftet, bevor ein Weg auf ihnen lief (M25):
 
-   | Weg | brauchbar | F1 Hauptartikel | F1 Artikel | LLM je Material |
+   | Weg | Stufe | M21-Materialien | neue Materialien | LLM je Material |
    |---|---|---|---|---|
-   | Begriff, den eine Lehrkraft eintippt | 18 | 0,94 | 0,45 | – |
-   | Titel des Materials (heute) | 5 | 0,20 | 0,10 | – |
-   | Titel, `balanced` | 10 | 0,45 | 0,22 | 600 Tokens, rund 4,6 s |
-   | Thema vom LLM aus den Metadaten | 17 | 0,97 | 0,50 | 440 Tokens, 2,8 s |
-   | Entitäten wie im alten Dienst als Korpus | 11 | 0,94 | 0,50 | 1.680 Tokens, 9,9 s |
+   | Titel als Thema (bis D47) | – | 0,20 | 0,00 | – |
+   | Regeln über Titel und Beschreibung | LLM-frei | 0,56 | 0,63 | – |
+   | Thema vom LLM | ausgewogen | 0,98 | 0,88 | rund 310 bis 340 Tokens, 1,8 bis 2,0 s |
+   | Begriff, den eine Lehrkraft eintippt | – | 0,94 | 0,83 | – |
+   | Begriff und Material, das LLM hört beides | ausgewogen | 1,00 | 0,87 | rund 550 bis 600 Tokens, 2,5 bis 2,6 s |
 
-   Mit dem Thema vom LLM trifft das Material den Hauptartikel so sicher wie ein Begriff, und bei gleichem
-   Hauptartikel entsteht derselbe Text. Unscharf sind bei beiden die Nebenartikel: Rund ein Drittel passt nicht zum
-   Material. Ohne LLM hilft auch ein Embedding nicht: Eine Suche mit dem Modell des Dienstes über alle 5,35 Mio.
-   Archiveinträge trifft den Hauptartikel mit F1 höchstens 0,03 (M24). Die Entitäten des alten Dienstes lassen sich
-   dagegen über die Verlinkung mit dem Hauptartikel des LLM-Themas filtern: zusammen Recall 0,89 statt 0,67 bei
-   gleichem F1 (0,51), für rund 1.700 Tokens mehr je Material.
+   Findet die Regel keinen Artikel, fragt der 404 nach einem `topic`; zu Materialien ohne fachliches Thema baut sie
+   in 5 von 6 Fällen keines, das LLM dagegen in 5 von 6 eines. Bis zum Kompendium gemessen (M23) wurde es mit dem
+   Titel bei 5 von 31 Materialien brauchbar, mit dem Thema vom LLM bei 17; bei gleichem Hauptartikel entsteht
+   derselbe Text wie zum Begriff. Mit `topic` und `node_id` zusammen führt das Thema, und der Artikel des Materials
+   kommt dazu, wenn er mit dem Hauptartikel verlinkt ist; soweit M23 diese Artikel benotet hat (10), passten sie oder
+   waren verwandt. Ohne LLM hilft kein Embedding (M24, F1 höchstens 0,03).
 
-   Empfehlung: das Thema vom LLM, wo eines bereitsteht; ohne LLM bleibt der Titel, oder der Dienst verlangt dort das
-   Thema vom Aufrufer. Dazu sollte der Dienst kein Kompendium bauen, wenn er kein Thema findet (heute entsteht auch zu
-   Materialien ohne Thema eines). Weitere Verfahren für den Hauptartikel braucht es mit LLM nicht. Die verlinkten
-   Entitäten des alten Dienstes lohnen nur, wenn mehrteilige Materialien breiter abgedeckt werden sollen. Bei den
-   Nebenartikeln entfernt das Weglassen unverlinkter ein Viertel der unpassenden; für den Rest fehlt noch ein
-   Verfahren.
+   Offen: ob der Artikel eines Materials neben einem Thema die Kompendien besser macht (nur auf Artikelebene
+   gemessen), und ob das LLM zu Materialien ohne Thema schweigen soll; der Prompt erlaubt es, das Modell nutzt es
+   selten.
 7. **Lehrplanbezüge (Teil 2, M22):** Rund 60 % der ausgegebenen Lehrplanelemente gehören zum Thema, 13 bis 19 %
    passen nicht. Das Fach kürzt Teil 2 um ein Drittel, hebt die Treffsicherheit aber kaum und verwirft ein Viertel
    der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach
    einem Blick auf die Darstellung die Elemente, bei denen nur die Überschrift das Thema nennt, zu ihrem Bereich
    bündeln.
+8. **Offene Punkte der Durchsicht vom 25.09.2026:** Behoben sind die Fehler (Messprotokoll, M25). Offen sind Punkte,
+   die ändern, was Aufrufer bekommen:
+   - `/qa` mit `text` und zugleich `topic` oder `node_id` nimmt den Text nicht, ohne es zu sagen; `/entities` lehnt
+     Text und Knoten zusammen mit 422 ab. Vorschlag: 422 auch hier.
+   - Ein unbekanntes `subject` („Pysik“) wird still übergangen, Teil 2 sucht dann in allen Fächern; unbekannte Namen
+     in `regenerate_sections` erneuern nichts; unbekannte Felder aller Anfragen fallen still weg. Vorschlag: 422 mit
+     den erlaubten Werten.
+   - `/lehrplan/search` sucht die Wörter, wie sie kommen, Teil 2 den aufgelösten Artikel, seine Aliase und Unterthemen.
+     Vorschlag: ein Themen-Modus, der wie Teil 2 auflöst; zu messen an den 20 Themen von M22.
+   - `/matching/compare` wählt die Artikel immer ohne LLM; die CLI kennt keinen Knoten; `/qa` mit der Stufe `llm`
+     öffnet nach dem Kompendium ein zweites Token- und Zeitbudget; eine unbekannte `knowledge_collection_id` ergibt
+     200 mit dem Fehler im Audit, eine unbekannte `collection_id` 404.
+   - Die Links des Hauptartikels werden je Anfrage neu aufgelöst, bei großen Artikeln bis 0,7 s (*Deutschland*); ein
+     Zwischenspeicher je Archiv spart das bei Wiederholungen.

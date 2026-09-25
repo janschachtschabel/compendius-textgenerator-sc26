@@ -1575,6 +1575,40 @@ API.
   behält ihren Text, der Titel steht getrennt (`Mention.title`); Namen des Modells versuchen die Grundform nach dem
   Text. M20 an den 20 Texten von M18: 30 neue Verknüpfungen, keine falsch, beide Genitivfehler von M18 behoben;
   Homonyme ohne Genitiv bleiben offen.
+- **D47 (2026-09-25)** Der Artikel eines Materials (Jan, 2026-09-25: nach M21 bis M24 einbauen, dann messen). Für ein
+  Material ohne `topic` ist der Titel nicht mehr das Thema, sondern der Anfang der Suche
+  (`app/knowledge/main_article.py`, eine Stelle für Kompendium, `/knowledge` und die Vorschau). Ohne LLM nehmen die
+  Regeln den Artikel des Titels, wenn die Begriffe aus Titel und Beschreibung ihn auch nennen, sonst den ersten Begriff,
+  wenn der Titel ihn nennt, sonst keinen: 404, der nach einem `topic` fragt (`app/knowledge/node_article.py`; die
+  Begriffe gewichtet wie M21: Titel 3, Beschreibung 1, Schlagwort 2 dazu, Formatwörter nie). Mit `article_choice llm`
+  nennt das LLM den Artikel mit dem Prompt von M21 wortgleich (`node_topic`); "" heißt kein fachliches Thema, eine
+  unbrauchbare Antwort überlässt es den Regeln. Ein genannter Titel zählt wie in der Artikelwahl nur, wenn das Archiv
+  ihn hat (Weiterleitung eingeschlossen, eine Begriffsklärung entscheidet das Fach); Titelvorschläge und Volltexttreffer
+  zählen nicht. Kommen `topic` und `node_id` zusammen (Jan: „beides als Wissen kombinieren“), führt das Thema; der
+  Artikel des Materials kommt als eigene Quelle `node` dazu, wenn er mit dem Hauptartikel verlinkt ist (ohne
+  Themenfilter auf seine Absätze, nicht in der Trefferprüfung, Priorität wie Materialien). Mit `article_choice llm` hört
+  eine Frage Thema und Material zusammen (`node_topic_with_topic`) und nennt beide Artikel; das LLM darf das Thema
+  überstimmen (Jan). Sammlungen behalten ihren Titel als Thema. `audit.node_article`, `/knowledge` und die Vorschau
+  sagen, wie der Artikel gefunden wurde; die Tokens zählen in `audit.llm_tokens`. `/qa` übernimmt mit der Stufe `llm`
+  die Bildungsstufen des Knotens, wenn keine gesendet sind, und fragt bevorzugt nach Titel und Schlagwörtern (`qa_pairs`
+  v3; Jan: Stufen und Schlagwörter nachnutzen); `/qa` und `/knowledge` nehmen `subject`, `/qa` auch `preset` und
+  `article_choice`. Gemessen (M25) an den Materialien mit klarem Thema, 31 von 40 aus M21 und 30 von 40 neuen, vor dem
+  Lauf beschriftet: Regeln F1 0,56 und 0,63 (der Titel 0,20 und 0,00), LLM 0,98 und 0,88 bei rund 310 bis 340 Tokens und
+  1,8 bis 2,0 s, Begriff mit Material über das LLM 1,00 und 0,87 (Begriff allein 0,94 und 0,83). Die zweite Stichprobe
+  deckte zwei Fehler auf, die behoben sind: Ein exakter Titel ging an eine Bedeutung seiner Begriffsklärung, die das
+  Fach nur im Text erwähnte (*Kreis* mit Mathematik → *Soziale Gruppe*); das tut sie nur noch, wenn die Bedeutung das
+  Fach im Titel trägt (*Baum (Datenstruktur)*). Und genannte Namen fanden über die Volltextsuche Zufallsartikel.
+- **D48 (2026-09-25)** Nebenartikel des Korpus (M24, M25). Volltexttreffer ohne Link zum oder vom Hauptartikel fallen in
+  allen Stufen weg (`LinkedTo`: beide Richtungen, Weiterleitungen aufgelöst; ihre Plätze bleiben leer, wie gemessen).
+  Die Trefferprüfung von `article_choice=llm` benotet weiter den ganzen Korpus und verwirft jetzt Volltexttreffer und
+  verlinkte Unterartikel mit Note 0 (`CHECKED_ORIGINS`). An den 20 Themen des Begriffs-Golds druckte der Standard 12
+  statt 25 Absätze aus unpassenden Artikeln ohne LLM und 5 statt 17 mit `balanced`, bei 263 und 264 statt 252 aus
+  passenden und 118 und 117 statt 122 gefüllten Bausteinen; das LLM benotete keinen passenden oder verwandten Artikel
+  mit 0, erkannte als Prüfer aber nur 7 der 14 unpassenden Treffer (gpt-5.6-luna in M10: 11 von 16). Die Prüfung läuft
+  nun bei jedem Thema mit Nebenartikeln (20 statt 15 von 20); `balanced` kostet auf 30 neuen Themen im Median 935 Tokens
+  und 2,0 s mehr als die Regeln (M13 mit gpt-5.6-luna: 930 und 1,7 s). Die Verlinkung kostet je Thema bis 0,5 s, bei
+  sehr großen Artikeln mehr (*Deutschland*: 0,74 s); ein Zwischenspeicher der aufgelösten Links wäre der nächste
+  Schritt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -1,11 +1,12 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 24.09.2026 · neuer Dienst v2.0.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 25.09.2026 · neuer Dienst v2.0.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · nach v2.0.0 kamen hinzu: der LLM-Zuordner `matcher=llm` (D34), die
 schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36), `hybrid_light` bleibt
 Standard der Zuordnung (D38), `matcher=llm` ohne Rückfall am Budget (D39), der LLM-freie Modus als Standard (D40, statt
-`article_choice=llm` als Vorgabe mit LLM, D37) und der Schalter `preset` für die drei Stufen der Entscheidungsvorlage
-(D41); eine Version mit Tag gibt es dafür noch nicht
+`article_choice=llm` als Vorgabe mit LLM, D37), der Schalter `preset` für die drei Stufen der Entscheidungsvorlage
+(D41), ein Knoten eines Repositorys als Eingang (D45) mit eigener Artikelwahl für Materialien (D47) und die Prüfung der
+Nebenartikel des Korpus (D48); eine Version mit Tag gibt es dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 25.09.2026 stehen mit Aufbau
@@ -31,10 +32,16 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
   Klassenzusätzen immer. Bei mehrdeutigen Wörtern mit Fachangabe waren es in M8 nur 6 von 16; mit den Kontextwörtern
   des Fachs, Wortstämmen und Genitivregeln trifft er über drei Goldsätze 86 statt 66 von 94 Anfragen, und wo er
   unsicher ist, holt ein LLM (`article_choice=llm`) weitere 5. Auf den zehn Goldthemen passen 6 % der Korpusartikel
-  nicht zum Thema, beim alten Dienst 14 %. Die schwächste Quelle sind die Volltexttreffer je Baustein; mit
-  `article_choice=llm` fallen die unpassenden heraus, und der Standard druckt 10 statt 26 Absätze aus unpassenden
-  Artikeln. Das kostet im Median 1,7 s und rund 930 Tokens je Kompendium; man schaltet es mit `preset: balanced`
-  ein, Standard ist der LLM-freie Modus (D40).
+  nicht zum Thema, beim alten Dienst 14 %. Die schwächste Quelle sind die Volltexttreffer je Baustein; die ohne
+  Link zum Hauptartikel fallen seit D48 immer weg, und der Standard druckt 12 statt 25 Absätze aus unpassenden
+  Artikeln. Mit `article_choice=llm` prüft das LLM dazu die verlinkten Unterartikel, dann sind es 5, für im Median
+  2,0 s und rund 935 Tokens je Kompendium; man schaltet es mit `preset: balanced` ein, Standard ist der LLM-freie
+  Modus (D40).
+- **Ein Material als Eingang.** Mit `node_id` liest der Dienst Titel, Beschreibung, Schlagwörter, Fach und Stufe
+  eines Materials. Weil Titel oft ein Format nennen, sucht er den Artikel in Titel und Beschreibung: ohne LLM mit
+  Hauptartikel-F1 0,56 und 0,63 an zwei Stichproben echter Materialien (der Titel allein: 0,20 und 0,00), mit LLM
+  0,98 und 0,88. Thema und Material lassen sich kombinieren; der Artikel des Materials kommt dann als weitere Quelle
+  dazu (M21 bis M25).
 - **Zuordnung zu den zehn Inhaltsbausteinen des SC26-Templates** über eine Regel-Policy mit einfachen Rankern
   (`hybrid_light` mit Model2Vec). Alle Verfahren wurden im selben Ablauf gegen den Goldstandard des Dienstes
   gemessen. Unter den lokal laufenden erreicht der Standard den besten Wert (macro-F1 0,45, 67 % richtige

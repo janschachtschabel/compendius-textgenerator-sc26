@@ -85,9 +85,11 @@ erster Stelle und 58 bis 78 Mal irgendwo unter den bis zu zehn Artikeln, je nach
    einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
 7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
    im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf
-   einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen. Höchstens 12 Artikel und 400 Absätze.
-   Artikel ohne das Themenwort im Titel geben nur Absätze ab, die das Thema nennen. Mit `article_choice=llm` benotet
-   das LLM alle Korpusartikel in einem Aufruf, und Volltexttreffer mit der Note 0 fallen heraus.
+   einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen und mit dem Hauptartikel verlinkt sind
+   (D48). Höchstens 12 Artikel und 400 Absätze. Artikel ohne das Themenwort im Titel geben nur Absätze ab, die das
+   Thema nennen. Mit `article_choice=llm` benotet das LLM alle Korpusartikel in einem Aufruf, und Volltexttreffer und
+   verlinkte Unterartikel mit der Note 0 fallen heraus. Mit `topic` und einem Material (`node_id`) kommt der Artikel
+   des Materials dazu, wenn er mit dem Hauptartikel verlinkt ist (D47).
 
 | Gemessen an zehn Themen | Alter Dienst, bester Fall | Neuer Dienst |
 |---|---|---|
@@ -211,6 +213,15 @@ mit dem Prompt des M8-Richters trennt sie, wenn es alle Korpusartikel eines Them
 unpassenden Treffer bekommen eine 0, keiner der passenden. Die Treffer allein benotet es zu mild (6 von 16). Ohne die
 mit 0 benoteten Treffer druckt der Standard 10 statt 26 Absätze aus unpassenden Artikeln und 346 statt 332 aus
 passenden oder verwandten. Das ist Teil von `article_choice=llm`, rund 890 Tokens je Thema mit Treffern.
+
+**Verlinkung und verlinkte Unterartikel** (M25, D48). Was die einfachen Filter nicht schaffen, schafft die Verlinkung
+mit dem Hauptartikel (beide Richtungen, Weiterleitungen aufgelöst): Von 44 Volltexttreffern der 20 Themen waren die 16
+unverlinkten zu 10 unpassend, die 28 verlinkten zu 4. Ohne die unverlinkten druckt der Standard ohne LLM 12 statt 25
+Absätze aus unpassenden Artikeln und 263 statt 252 aus passenden, bei 118 statt 122 gefüllten Bausteinen. Dieselbe
+LLM-Prüfung verwirft seitdem auch verlinkte Unterartikel mit der Note 0 (*System* und *Ökosystemischer Ansatz nach
+Bronfenbrenner* bei Ökosystem); mit beidem bleiben 5 unpassende Absätze. gpt-6-luna erkennt als Prüfer nur 7 der 14
+unpassenden Treffer (gpt-5.6-luna 11 von 16), benotet aber keinen passenden oder verwandten Artikel mit 0. Auf 30
+neuen Themen kostet die Prüfung der Nebenartikel im Median 2,0 s, `balanced` insgesamt rund 935 Tokens.
 
 **Zeit und Vorgabe** (M13, D37, D40). Gemessen an 30 Themen, die keine frühere Messung gestellt hatte, damit kein Prompt
 aus dem Zwischenspeicher der b-api kommt: `article_choice=llm` verlängert Teil 1 im Median um 1,7 s (90. Perzentil
