@@ -21,7 +21,7 @@ Stufe LLM-frei, auch wo ein LLM konfiguriert ist (D40).
 | Material ohne `topic`: Hauptartikel-F1 bei klarem Thema, zwei Stichproben | 0,56 und 0,63 | 0,98 und 0,88 | wie ausgewogen |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen | 12 von 352 | 5 von 346 | nicht gemessen, Korpus wie ausgewogen |
 | Zuordnung, macro-F1 | 0,43 | 0,43 | 0,69 bis 0,72 |
-| Teil 1 je Kompendium | 1,0 s | 3,0 s | rund 14 bis 24 s |
+| Teil 1 je Kompendium | 1,0 s | rund 3,0 s | rund 14 bis 24 s |
 | Tokens je Kompendium | 0 | Median 935 | rund 35.400 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.140 | rund 56 |
 | so wählt man sie | Standard (D40) oder `preset: llm-free` | `preset: balanced` | `preset: best-quality` |

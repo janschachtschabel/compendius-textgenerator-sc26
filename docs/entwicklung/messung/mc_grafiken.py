@@ -274,7 +274,7 @@ def artikelwahl() -> None:
 
 
 def korpus() -> None:
-    """Relevance of the corpus articles by origin (M8, blind gold) and the effect of the hit check (M10)."""
+    """Relevance of the corpus articles by origin (M8, blind gold) and what links and the LLM check leave (M25)."""
     result = load("m8_artikelwahl.json")
     gold = yaml.safe_load(LABELS.read_text(encoding="utf-8"))["labels"]
     origins = {"primary": "Hauptartikel", "same_topic": "dasselbe Thema aus Klexikon",
@@ -283,9 +283,13 @@ def korpus() -> None:
                 for topic, corpus in result["korpus"].items() for a in corpus["artikel"]]
     groups = [(label, [n for o, n in articles if o == origin]) for origin, label in origins.items()]
     groups.append(("alle gewählten Artikel", [n for _, n in articles]))
-    effect = load("m10_treffer_wirkung.json")
-    printed = {key: [sum(t[key]["gedruckt"].get(str(n), 0) for t in effect.values()) for n in (2, 1, 0)]
-               for key in ("heute", "ohne_0_treffer")}
+    effect = load("m25_korpus_verlinkung.json")
+    variants = (("heute", "bis D48, ohne LLM"), ("ohne unverlinkte Treffer", "LLM-frei (D48)"),
+                ("LLM Treffer", "bis D48, mit Trefferprüfung"), ("beides", "ausgewogen (D48)"))
+    printed = {key: [sum(t["gedruckt"][key]["nach_note"].get(str(n), 0) for t in effect.values()) for n in (2, 1, 0)]
+               for key, _ in variants}
+    unlinked = [a["note"] for t in effect.values() for a in t["artikel"]
+                if a["herkunft"] == "search" and not a["verlinkt"]]
     x0, width, bar = 280, 300, 22
     svg = Svg(760, 470, "Passen die Artikel des Korpus zum Thema?")
     svg.text(24, 30, "Artikel im Korpus nach Herkunft, blind bewertet (M8, 20 Themen)", 17, weight="600")
@@ -304,9 +308,9 @@ def korpus() -> None:
             x += width * share
         y += bar + 12
     y += 22
-    svg.text(24, y, "Gedruckte Absätze nach Artikel, Standard, 20 Themen (M10)", 15, weight="600")
+    svg.text(24, y, "Gedruckte Absätze nach Artikel, Standard, 20 Themen (M25, gpt-6-luna)", 15, weight="600")
     y += 22
-    for key, label in (("heute", "ohne Trefferprüfung"), ("ohne_0_treffer", "mit Trefferprüfung (llm)")):
+    for key, label in variants:
         total = sum(printed[key])
         svg.text(x0 - 12, y + 16, label, 12.5, INK, "end", limit=x0 - 30)
         x = x0
@@ -315,8 +319,8 @@ def korpus() -> None:
             x += width * count / total
         svg.text(x0 + width + 10, y + 16, f"{printed[key][2]} von {total} unpassend", 11.5, MUTED, limit=160)
         y += bar + 12
-    svg.text(24, y + 16, "Unpassend sind vor allem Volltexttreffer; die Trefferprüfung verwirft 11 von 16 davon und "
-             "keinen passenden.", 11.5, MUTED, limit=712)
+    svg.text(24, y + 16, f"Von {len(unlinked)} Volltexttreffern ohne Link zum Hauptartikel passten {unlinked.count(0)} "
+             "nicht; seit D48 fallen sie weg.", 11.5, MUTED, limit=712)
     svg.save("korpus.svg")
 
 
@@ -463,12 +467,20 @@ def text_schalter() -> None:
     svg.save("text_schalter.svg")
 
 
+def article_choice_cost(timing: dict) -> tuple[float, float]:
+    """Median seconds the LLM adds for the article choice and the side-article check, and median tokens."""
+    runs = [r for r in timing["laeufe"] if r["weg"] == "llm"]
+    seconds = statistics.median((r["phasen_ms"]["hit_check"] + r["phasen_ms"]["resolve"]) / 1000 for r in runs)
+    return seconds, statistics.median(r["tokens"] for r in runs)
+
+
 def kombinationen() -> None:
-    """The three recommended combinations: time of part 1, tokens and quality (M9, M12 to M15)."""
-    rules = load("m13_zeit_neu_regeln_zweiter_lauf.json")["zusammenfassung"]["rule-based"]["median_s"]
-    llm_article = [r for r in load("m13_zeit_neu.json")["laeufe"] if r["weg"] == "llm"]
-    extra = statistics.median((r["phasen_ms"]["hit_check"] + r["phasen_ms"]["resolve"]) / 1000 for r in llm_article)
-    article_tokens = statistics.median(r["tokens"] for r in llm_article)
+    """The three recommended combinations: time of part 1, tokens and quality (M9, M12 to M15, M25)."""
+    timing = load("m25_zeit_artikelwahl.json")
+    rules = timing["zusammenfassung"]["rule-based"]["median_s"]
+    extra, article_tokens = article_choice_cost(timing)
+    # Best quality sums steps measured with one model: the LLM matcher ran with gpt-5.6-luna only (M13, M14).
+    extra_m13, article_tokens_m13 = article_choice_cost(load("m13_zeit_neu.json"))
     matcher = [load(f"{m}_zeit_zuordnung.json")["zusammenfassung"]["llm"]["median_s"] for m in ("m13", "m14")]
     m14 = load("m14_zeit_zuordnung.json")["laeufe"]
     matcher_tokens = statistics.mean(r["tokens"] for r in m14 if r["weg"] == "llm")
@@ -476,7 +488,7 @@ def kombinationen() -> None:
     combos = [  # label, time low, time high, tokens, articles right of 94, macro-F1, color
         ("LLM-frei", rules, rules, 0, 86, "0,43", LOCAL),
         ("ausgewogen", rules + extra, rules + extra, article_tokens, 91, "0,43", "#7a5aa6"),
-        ("beste Qualität", matcher[0] + extra, matcher[1] + extra, matcher_tokens + article_tokens, 91,
+        ("beste Qualität", matcher[0] + extra_m13, matcher[1] + extra_m13, matcher_tokens + article_tokens_m13, 91,
          "0,69 bis 0,72", LLM),
     ]
     x0, width, bar, row = 150, 200, 20, 70
@@ -500,8 +512,8 @@ def kombinationen() -> None:
         svg.text(620, y + 9, f"Artikel: {articles} von 94", 11.5, INK)
         svg.text(620, y + 27, f"Zuordnung: {f1}", 11.5, INK)
         y += row
-    svg.text(24, y + 18, "Zeit: Mediane auf dem Entwicklungsrechner (M13, M14); beste Qualität als Summe, "
-             "nicht zusammen gemessen.", 11, MUTED, limit=712)
+    svg.text(24, y + 18, "Zeit: Mediane auf dem Entwicklungsrechner (M25); beste Qualität als Summe aus M13 und M14, "
+             "nie zusammen gemessen.", 11, MUTED, limit=712)
     svg.save("kombinationen.svg")
 
 
