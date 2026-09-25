@@ -68,7 +68,8 @@ def node_topic(info: NodeInfo) -> CollectionTopic:
     Levels and keywords go in as context words. The rules weigh context words at a disambiguation page only when the
     subject brings no words of its own, and the LLM choice sees none, so with a known subject they do not steer the
     choice yet. The title of a material often names its format rather than a lexicon topic („Stationsarbeit zur
-    Optik“); a caller who knows better sends ``topic`` along, which wins.
+    Optik“): for a material it is where the search for the article starts, not the topic itself
+    (app/knowledge/main_article.py, D47); a topic sent along leads.
     """
     return CollectionTopic(
         topic=info.title,

@@ -49,8 +49,8 @@ def build_llm_report(
     ``matching_*`` describe matcher=llm (D34), ``choice_*`` article_choice=llm (D35): ``llm`` or ``rule-based``,
     like the two switches; ``choice_chosen`` is the article the model decided on, ``hit_check`` what it did with the
     side articles, and ``choice_needed`` whether there was anything to ask - an unsure article, side articles or a
-    material without a topic; only then is the model asked, so only then is its absence a fallback. ``node`` is the
-    question about a material (D47): its tokens and prompt count here, its answer is in audit.node_article.
+    material; only then is the model asked, so only then is its absence a fallback. ``node`` is the question about a
+    material (D47): its tokens and prompt count here, its answer and why it did not decide are in audit.node_article.
     """
     if extraction_requested == generation_requested == matching_requested == choice_requested == "rule-based":
         return None, None, None

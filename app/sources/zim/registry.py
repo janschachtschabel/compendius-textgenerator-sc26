@@ -312,7 +312,7 @@ class ZimRegistry:
         """The main article, its twin, linked sub-articles and full-text hits for the blocks, at most ``max_articles``.
 
         ``material`` is the own article of a material sent along with a topic (D47): it joins as a source of its own
-        (origin ``node``) when it links with the main article, beyond ``max_articles`` like the twin.
+        (origin ``node``) when it links with the main article, whatever ``max_articles`` says.
         """
         if resolution.title is None or resolution.project is None:
             return []
@@ -383,25 +383,26 @@ class ZimRegistry:
             # unfit paragraphs of 20 topics fell from 25 to 12. Their places stay empty, as measured.
             sources = [s for s in sources if s.origin != "search" or linked_to(s)]
         if material and material != primary.title:
-            self._add_material(primary_archive, material, sources, seen, linked_to)
+            self._add_material(primary_archive, material, sources, linked_to)
         return sources
 
-    def _add_material(
-        self,
-        archive: ZimArchive,
-        title: str,
-        sources: list[Source],
-        seen: set[tuple[str, str]],
-        linked_to: LinkedTo,
-    ) -> None:
-        """The material's own article as a source of its own; one already in the corpus keeps its place (D47)."""
-        present = next((s for s in sources if s.project == archive.project and s.title == title), None)
+    @staticmethod
+    def _add_material(archive: ZimArchive, title: str, sources: list[Source], linked_to: LinkedTo) -> None:
+        """The material's own article as a source of its own; one already in the corpus keeps its place (D47).
+
+        It is read anew rather than through the articles the search has seen: a hit it dropped for lacking the topic
+        in title and lead may well be the material's article, which needs no such mention.
+        """
+        article = archive.read(title)
+        if article is None or archive.parse(article).is_disambiguation:
+            return
+        present = next((s for s in sources if s.project == archive.project and s.title == article.title), None)
         if present is not None:
             if not present.is_primary and present.origin in {"linked", "search"}:
                 present.origin = NODE_ORIGIN  # asked for: no topic filter on its paragraphs, no hit check
             return
-        own = self._read_source(archive, title, seen)
-        if own is not None and linked_to(own):
+        own = archive.to_source(article, is_primary=False)
+        if linked_to(own):
             own.origin = NODE_ORIGIN
             sources.append(own)
 

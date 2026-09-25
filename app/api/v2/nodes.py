@@ -1,8 +1,9 @@
 """A node of an edu-sharing repository as the service reads it (D45): its metadata and the topic derived from it.
 
 The same reading feeds ``node_id`` in compendium, knowledge, qa and entities; this endpoint shows it before a
-request builds anything, so a caller sees which topic, subject and context words a node would bring. It needs no
-archive, so it reads the service directly instead of waiting for the archives to be ready.
+request builds anything, so a caller sees which topic, subject and context words a node would bring. Reading a node
+needs no archive, so it asks the service directly instead of waiting for the archives to be ready; only the article of
+a material needs them, and without them its topic stays empty.
 """
 
 from __future__ import annotations

@@ -212,3 +212,8 @@ def test_a_material_focuses_the_llm_on_its_title_and_keywords() -> None:
     assert focus in asked
     assert "Stationenlernen" not in asked, "a format word names no subject to ask about"
     assert plain == "Text:\nEin Text.\n\nSchreibe 2 Paare, jede Antwort höchstens 100 Zeichen.", "without a node as v2"
+    budget = gateway.open_budget()
+    gateway.qa.pairs(
+        "Ein Text.", count=2, max_answer_length=100, budget=budget, focus_title="Optik", focus_kind="collection"
+    )
+    assert "Schwerpunkt: die Sammlung „Optik“." in fake.bodies[-1]["messages"][1]["content"]

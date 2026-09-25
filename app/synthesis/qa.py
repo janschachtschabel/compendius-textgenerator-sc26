@@ -140,9 +140,10 @@ class LlmQaWriter:
         deadline: Deadline | None = None,
         focus_title: str | None = None,
         focus_terms: Sequence[str] = (),
+        focus_kind: str = "material",
     ) -> list[QaPair] | None:
-        """``focus_title`` and ``focus_terms`` name the material of a node and its keywords (D47): the model asks
-        about them first, as far as the text treats them."""
+        """``focus_title`` and ``focus_terms`` name the node - a material or a collection (``focus_kind``) - and its
+        keywords (D47): the model asks about them first, as far as the text treats them."""
         levels = list(level_values) if level_property and level_values else []
         prompt = get_prompt("qa_pairs")
         messages = prompt.render(
@@ -155,7 +156,7 @@ class LlmQaWriter:
                 if levels
                 else ""
             ),
-            focus=_focus(focus_title, focus_terms),
+            focus=_focus(focus_title, focus_terms, focus_kind),
         )
         answer = budgeted_chat(
             self.client,
@@ -177,16 +178,14 @@ class LlmQaWriter:
         return pairs[:count] or None
 
 
-def _focus(title: str | None, terms: Sequence[str]) -> str:
-    """The line that points the model at a material; format words name no subject, so they are left out."""
+def _focus(title: str | None, terms: Sequence[str], kind: str) -> str:
+    """The line that points the model at a node; format words name no subject, so they are left out."""
     if not title:
         return ""
     subjects = [term for term in dict.fromkeys(terms) if term.casefold() not in FORMAT_WORDS][:MAX_FOCUS_TERMS]
     keywords = f" mit den Schlagwörtern {', '.join(subjects)}" if subjects else ""
-    return (
-        f"\nSchwerpunkt: das Unterrichtsmaterial „{title}“{keywords}. Frage bevorzugt danach, soweit der Text es "
-        "behandelt."
-    )
+    named = "die Sammlung" if kind == "collection" else "das Unterrichtsmaterial"
+    return f"\nSchwerpunkt: {named} „{title}“{keywords}. Frage bevorzugt danach, soweit der Text es behandelt."
 
 
 def parse_pairs(

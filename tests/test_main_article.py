@@ -150,3 +150,12 @@ def test_a_collection_keeps_its_title_as_the_topic(service: CompendiumService) -
 def test_a_topic_alone_resolves_as_before(service: CompendiumService) -> None:
     chosen = choose_main_article(service.registry, service.subjects, "Physik: Optik", [])
     assert chosen.resolution.title == "Optik" and chosen.subjects == ["Physik"] and chosen.node is None
+
+
+def test_an_article_the_rules_confirm_is_resolved_by_its_own_title(service: CompendiumService) -> None:
+    """The title "Mikroskop" reaches Lichtmikroskop only through the search; the description names it, so the rule
+    takes it - and the resolution then names the article, not the material's title, and is no longer a guess."""
+    microscope = NodeInfo(**{**STATIONS.__dict__, "title": "Mikroskop", "description": "Mit dem Lichtmikroskop."})
+    chosen = choose(service, None, microscope)
+    assert chosen.resolution.title == "Lichtmikroskop" and chosen.resolution.method == "title"
+    assert chosen.normalized.topic == "Lichtmikroskop" and chosen.resolution.normalized == "Lichtmikroskop"

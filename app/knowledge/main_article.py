@@ -39,7 +39,6 @@ class MainArticle:
 
     normalized: NormalizedTopic
     subjects: list[str]  # all of equal weight
-    context: list[str]
     resolution: Resolution
     choice: ArticleChoiceReport | None = None  # the LLM deciding an unsure topic (D35)
     node: NodeArticleReport | None = None  # how a material's article was found (D47)
@@ -83,7 +82,7 @@ def choose_main_article(
         normalized = found.normalized
         if report is not None and not topic and resolution.resolved:  # the material's topic is the article found
             normalized = replace(normalized, topic=resolution.normalized)
-        return MainArticle(normalized, found.subjects, found.context, resolution, choice, report, material)
+        return MainArticle(normalized, found.subjects, resolution, choice, report, material)
 
     def the_topic() -> tuple[Resolution, ArticleChoiceReport | None]:
         chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
@@ -130,9 +129,8 @@ def _by_the_rules(
     report.title_article = titled.title
     report.entities = ranked_entities(registry.archives, node.title, node.description, node.keywords)
     pick = rule_article(titled.title, report.entities, node.title)
-    if pick is None:
-        return None
-    return titled if pick == titled.title else by_rules(pick)
+    # resolved by its own title: the material's title may have reached it only through a search hit (a guess)
+    return by_rules(pick) if pick is not None else None
 
 
 def _none(found: DerivedTopic) -> Resolution:

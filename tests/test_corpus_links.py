@@ -87,3 +87,21 @@ def test_a_material_article_already_linked_in_the_corpus_becomes_the_node_articl
     assert ("Geometrische Optik", "node") in [(source.title, source.origin) for source in corpus]
     keys = [(source.project, source.title) for source in corpus]
     assert len(keys) == len(set(keys)), "it is not added a second time"
+
+
+def test_the_article_of_a_material_joins_even_when_the_search_read_it_first(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The search reads a hit and drops it for lacking the topic in title and lead; the material's article stays due.
+
+    Found in the review of M25 on the real Wikipedia: "Geometrische Optik" with "Linse (Optik)", "Photosynthese"
+    with "Organell" - linked with the main article, yet missing from the corpus.
+    """
+    registry = service.registry
+    archive = registry.primary_archive
+    assert archive is not None
+    monkeypatch.setattr(archive, "search", lambda query, limit=10: ["Brechung (Physik)"])
+    slots = service.templates.get(service.settings.template_default).content_slots()
+    resolution = registry.resolve_topic("Geometrische Optik")
+    corpus = registry.build_corpus(resolution, slots, 30, material="Brechung (Physik)")
+    assert {source.title: source.origin for source in corpus}.get("Brechung (Physik)") == "node"

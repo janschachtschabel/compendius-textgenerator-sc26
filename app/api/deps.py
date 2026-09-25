@@ -78,7 +78,7 @@ def corpus_for_topic(
     chosen = choose_main_article(registry, service.subjects, topic, derived, node=node, job=job)
     resolution, normalized = chosen.resolution, chosen.normalized
     if not resolution.resolved:
-        missing = TopicNotFoundError(resolution, None if topic else chosen.node)
+        missing = TopicNotFoundError(resolution, chosen.node, from_material=not topic)
         raise HTTPException(status_code=404, detail=missing.detail())
     try:
         template = service.templates.get(template_id or service.settings.template_default)

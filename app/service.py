@@ -90,22 +90,33 @@ NO_MATERIAL_ARTICLE = (
     "Zu diesem Material fanden die Regeln keinen Artikel: weder sein Titel noch die Begriffe aus Titel und "
     "Beschreibung führen zu einem; topic angeben, oder article_choice llm lässt das LLM das Thema bestimmen"
 )
+NO_ARTICLE_AFTER_LLM = "Zu diesem Material fanden weder das LLM noch die Regeln einen Artikel; topic angeben"
 
 
 class TopicNotFoundError(LookupError):
-    """No article for the request; ``node`` says how the article of a material without a topic was sought (D47)."""
+    """No article for the request; ``node`` says how the article of a material was sought (D47).
 
-    def __init__(self, resolution: Resolution, node: NodeArticleReport | None = None) -> None:
+    ``from_material``: the material alone was to name the article (no topic came along), so the message says why that
+    failed and what to send instead.
+    """
+
+    def __init__(
+        self, resolution: Resolution, node: NodeArticleReport | None = None, *, from_material: bool = False
+    ) -> None:
         super().__init__(f"topic not found: {resolution.normalized}")
         self.resolution = resolution
         self.node = node
+        self.from_material = from_material
 
     def detail(self) -> dict[str, Any]:
         """The body of the 404, alike for every endpoint: why, the resolution and, for a material, its search."""
         body: dict[str, Any] = {"message": NOT_FOUND, "resolution": self.resolution.model_dump()}
         if self.node is not None:
-            body["message"] = NO_SUBJECT_TOPIC if self.node.named == "" else NO_MATERIAL_ARTICLE
             body["node_article"] = node_block(self.node)
+            if self.from_material and self.node.named == "":
+                body["message"] = NO_SUBJECT_TOPIC
+            elif self.from_material:
+                body["message"] = NO_ARTICLE_AFTER_LLM if self.node.calls else NO_MATERIAL_ARTICLE
         return body
 
 
@@ -235,14 +246,21 @@ class CompendiumService:
             derived.append(node_topic(node_info))
         if collection is not None:
             derived.append(collection_topic(collection))
+        # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not, and needs
+        # no LLM to choose an article it will not read
+        needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
         chosen = choose_main_article(
-            self.registry, self.subjects, request.topic, derived, subject=request.subject, node=node_info, job=choice
+            self.registry,
+            self.subjects,
+            request.topic,
+            derived,
+            subject=request.subject,
+            node=node_info,
+            job=choice if needs_corpus else None,
         )
         resolution = chosen.resolution
-        # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not
-        needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
         if not resolution.resolved and needs_corpus:
-            raise TopicNotFoundError(resolution, None if request.topic else chosen.node)
+            raise TopicNotFoundError(resolution, chosen.node, from_material=not request.topic)
         lap("resolve")
         prepared = PreparedTopic(
             template=template,

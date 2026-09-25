@@ -216,8 +216,8 @@ def choice_block(
 ) -> dict[str, Any]:
     """What article_choice asked and decided, for the audit of a compendium and the answer of /knowledge.
 
-    ``used`` is ``llm`` when the model's answer decided anything, the article or the hits; ``needed`` says whether
-    there was anything to ask, ``chosen`` is the article the model decided on.
+    ``used`` is ``llm`` when the model's answer decided anything, the article or the side articles; ``needed`` says
+    whether there was anything to ask, ``chosen`` is the article the model decided on.
     """
     fallback = choice.fallback if choice else None
     if choice is not None and choice.named and chosen is None:

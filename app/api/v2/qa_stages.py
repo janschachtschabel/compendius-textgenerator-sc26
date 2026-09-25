@@ -68,6 +68,7 @@ def from_llm(
         deadline=Deadline(service.settings.request_timeout_s),
         focus_title=node.title if node is not None else None,
         focus_terms=node.keywords if node is not None else (),
+        focus_kind=node.kind if node is not None else "material",
     )
     if pairs is None:
         return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"

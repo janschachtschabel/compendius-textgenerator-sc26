@@ -297,3 +297,35 @@ def test_with_article_choice_llm_the_model_names_the_article_of_a_material(
     assert body["audit"]["llm"]["article_choice"]["used"] == "llm"
     assert "node_topic@v1" in body["frontmatter"]["llm"]["prompts"]
     assert body["audit"]["llm_tokens"]["calls"] == len(fake.bodies) == 2, "the question and the check of side articles"
+
+
+def _with_llm(settings: Settings, monkeypatch: pytest.MonkeyPatch, answer: dict[str, Any]) -> tuple[TestClient, Any]:
+    app = with_fake_repository(create_app(settings))
+    fake = FakeBApi(lambda body: json.dumps(answer))
+    monkeypatch.setattr(app.state.service, "llm", make_gateway(fake, per_request=100_000))
+    return TestClient(app), fake
+
+
+def test_the_404_says_what_was_tried_for_a_material(settings: Settings, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Asked and found nothing is another message than never asked; a topic that is not found keeps its own."""
+    client, _ = _with_llm(settings, monkeypatch, {"titel": "Qwertzuiopü"})
+    asked = client.post("/api/v2/compendium", json={"node_id": EXAM, "article_choice": "llm", "parts": ["world"]})
+    assert asked.status_code == 404 and "LLM" in asked.json()["detail"]["message"]
+    assert "article_choice" not in asked.json()["detail"]["message"], "it was asked already"
+    client, _ = _with_llm(settings, monkeypatch, {"titel": ""})
+    nothing = client.post("/api/v2/compendium", json={"node_id": EXAM, "article_choice": "llm", "parts": ["world"]})
+    assert nothing.status_code == 404 and "kein fachliches Thema" in nothing.json()["detail"]["message"]
+    topic = client.post("/api/v2/compendium", json={"node_id": EXAM, "topic": "Qwertzuiopü", "parts": ["world"]})
+    detail = topic.json()["detail"]
+    assert topic.status_code == 404 and detail["message"] == "Thema in den Archiven nicht gefunden"
+    assert detail["node_article"]["way"] == "rules", "the material's search is shown with a topic too"
+
+
+def test_part_three_alone_asks_the_llm_nothing_about_a_material(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    client, fake = _with_llm(settings, monkeypatch, {"titel": "Optik"})
+    body = {"node_id": MATERIAL, "collection_id": OPTIK, "parts": ["collection"], "article_choice": "llm"}
+    response = client.post("/api/v2/compendium", json=body)
+    assert response.status_code == 200, response.text[:300]
+    assert fake.bodies == [], "part 3 needs no article; the rules name the topic"
