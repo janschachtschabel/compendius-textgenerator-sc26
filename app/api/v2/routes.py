@@ -208,11 +208,11 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection or knowledge collection, or a node that is unknown or not public: 404. A ``subject`` outside
-    config/subjects.yaml, a block in ``regenerate_sections`` the template does not have, or a field the request
-    does not know: 422. Repository unreachable: 502; a ``repository`` outside the allowlist: 422; a ``node_id``
-    with neither ``repository`` nor a configured one: 503. No requested part can be made at all - part 3 without
-    ``EDU_SHARING_BASE_URL``, for instance: 503.
+    collection or knowledge collection, or a node that is unknown or not public: 404. A ``subject`` outside the
+    two subject vocabularies of edu-sharing (config/vocabs), a block in ``regenerate_sections`` the template does
+    not have, or a field the request does not know: 422. Repository unreachable: 502; a ``repository`` outside the
+    allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can be
+    made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503.
     """
     service = get_service(request)
     try:

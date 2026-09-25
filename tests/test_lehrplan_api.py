@@ -126,6 +126,21 @@ def test_an_unknown_subject_is_a_422_that_names_the_known_ones(sample_zims: dict
         assert client.get("/api/v2/lehrplan/search", params={"q": "Optik", "subject": "Physik"}).status_code == 200
 
 
+def test_a_subject_without_curriculum_words_narrows_nothing_and_says_so(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """Every subject of the two vocabularies is taken (D51), but only the 37 of config/subjects.yaml have curriculum
+    words; any other one searches every subject, which the answer shows by an empty subject_terms and /docs says."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        body = client.get("/api/v2/lehrplan/search", params={"q": "Optik", "subject": "Agrarwirtschaft"}).json()
+        spec = client.get("/openapi.json").json()
+    assert body["subject_terms"] == [] and body["matches"][0]["label"] == "Lichtbrechung an Linsen"
+    parameters = spec["paths"]["/api/v2/lehrplan/search"]["get"]["parameters"]
+    subject = next(parameter for parameter in parameters if parameter["name"] == "subject")
+    assert "subject_terms" in subject["description"] and "vocabularies" in subject["description"]
+
+
 def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:

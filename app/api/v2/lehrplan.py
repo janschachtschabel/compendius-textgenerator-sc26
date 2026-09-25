@@ -15,7 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.limits import rate_limited
-from app.domain.requests import GenerateRequest
+from app.domain.requests import UNKNOWN_SUBJECT_HELP, GenerateRequest
 from app.service import TopicNotFoundError
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
@@ -90,7 +90,12 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
 def lehrplan_search(
     request: Request,
     q: str = Query(..., min_length=3, max_length=200, description="Topic or keyword"),
-    subject: str | None = Query(None, max_length=100, description="WLO discipline id, URI, label or alias"),
+    subject: str | None = Query(
+        None,
+        max_length=100,
+        description="WLO discipline id, URI, label or alias; it narrows the search only when config/subjects.yaml "
+        "gives it curriculum words (37 subjects), any other one leaves subject_terms empty" + UNKNOWN_SUBJECT_HELP,
+    ),
     limit: int = Query(50, ge=1, le=500),
     mode: Literal["keyword", "topic"] = Query(
         "keyword",
@@ -100,10 +105,12 @@ def lehrplan_search(
 ) -> dict[str, Any]:
     """Curriculum elements for a keyword or a topic, out of the local cache - no MEM access, no network.
 
-    ``q`` is the keyword, ``subject`` narrows it to one subject and ``limit`` bounds the hits. The ranking is the
-    one part 2 uses. By default it searches the words as sent; ``mode=topic`` resolves ``q`` as part 2 of a
-    compendium does, by the rules and without an LLM, names the article in ``topic`` and answers 404 for a topic
-    the archives do not have. A subject the catalog does not know is a 422 that lists the known ones.
+    ``q`` is the keyword, ``subject`` narrows it to the curricula of one subject and ``limit`` bounds the hits.
+    The ranking is the one part 2 uses. By default it searches the words as sent; ``mode=topic`` resolves ``q`` as
+    part 2 of a compendium does, by the rules and without an LLM, names the article in ``topic`` and answers 404
+    for a topic the archives do not have. A subject outside the two subject vocabularies of edu-sharing is a 422
+    that lists the school subjects. Only the 37 subjects of config/subjects.yaml have curriculum words; any other
+    one of the vocabularies narrows nothing, and ``subject_terms`` stays empty (D51).
 
     An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
     says which it is.

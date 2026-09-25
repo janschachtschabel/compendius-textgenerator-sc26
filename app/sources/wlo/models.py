@@ -133,8 +133,9 @@ def _first(props: Mapping[str, Any], *keys: str) -> str:
     return ""
 
 
-# ccm:taxonid holds school and university subjects alike; the university field repeats the university ones and may
-# name one of its own, which then has no display name (Jan, 2026-09-25)
+# ccm:taxonid holds school and university subjects alike, ccm:oeh_taxonid_university university ones only (Jan,
+# 2026-09-25); in 13 records it only repeated ccm:taxonid. It is read anyway for a subject ccm:taxonid lacks, which
+# then has no display name.
 SUBJECT_FIELDS = ("ccm:taxonid", "ccm:oeh_taxonid_university")
 
 
