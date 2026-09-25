@@ -162,6 +162,15 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
     return _no_comment(one_line("; ".join(part for part in parts if part))), summary
 
 
+def _materials_per_subcollection(subs: Sequence[SubCollectionContents]) -> dict[str, int]:
+    """Materials per sub-collection by title; a title two sub-collections share carries the node id of each."""
+    titles = Counter(sub.info.title for sub in subs)
+    return {
+        (sub.info.title if titles[sub.info.title] == 1 else f"{sub.info.title} ({sub.info.id})"): len(sub.refs)
+        for sub in subs
+    }
+
+
 def render_collection_overview(
     info: CollectionInfo,
     refs: Sequence[MaterialRef],
@@ -222,7 +231,7 @@ def render_collection_overview(
             "materials": len(refs),
             "subcollections": len(subs),
             "missing_descriptions": sum(1 for ref in refs if not ref.description),
-            "subcollection_materials": {sub.info.title: len(sub.refs) for sub in subs},
+            "subcollection_materials": _materials_per_subcollection(subs),
         }
     )
     return "\n".join(lines).rstrip() + "\n", summary

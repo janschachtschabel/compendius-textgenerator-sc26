@@ -379,3 +379,13 @@ def test_a_facet_value_cannot_split_itself_add_a_pair_or_end_its_marker() -> Non
     }
     assert [ids for _, ids in _blocks(text)] == [ids for _, ids in _blocks(_small_tree({}, {}, {}))]
     assert _only_markers_open_comments(text)
+
+
+def test_subcollections_of_the_same_name_are_counted_apart() -> None:
+    """Keyed by title, a second "Geometrische Optik" overwrote the first (review of 2026-09-25); a title that occurs
+    once stays the key, as callers read it, and one that repeats carries its node id."""
+    twin = replace(SUBS[1], title=SUBS[0].title)
+    contents = [SubCollectionContents(info=SUBS[0], refs=tuple(REFS[:2])), SubCollectionContents(info=twin, refs=())]
+    _, summary = render_collection_overview(INFO, REFS, contents, render_url=_render_url, options=OverviewOptions())
+    counts = summary["subcollection_materials"]
+    assert counts == {f"{SUBS[0].title} ({SUBS[0].id})": 2, f"{twin.title} ({twin.id})": 0}
