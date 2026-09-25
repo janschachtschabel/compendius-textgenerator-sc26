@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 
 from app.service import CompendiumService
-from app.sources.zim.registry import ZimRegistry, are_linked
+from app.sources.zim.registry import LinkedTo, ZimRegistry
 
 
 def _source(registry: ZimRegistry, title: str):  # type: ignore[no-untyped-def]
@@ -33,21 +33,21 @@ def test_two_articles_are_linked_when_either_links_to_the_other(registry: ZimReg
     archive = registry.primary_archive
     assert archive is not None
     optik, brechung = _source(registry, "Optik"), _source(registry, "Brechung (Physik)")
-    assert are_linked(archive, optik, brechung), "Optik links to Brechung (Physik)"
-    assert are_linked(archive, brechung, optik), "the order of the two does not matter"
+    assert LinkedTo(archive, optik)(brechung), "Optik links to Brechung (Physik)"
+    assert LinkedTo(archive, brechung)(optik), "the order of the two does not matter"
 
 
 def test_a_link_through_a_redirect_counts(registry: ZimRegistry) -> None:
     archive = registry.primary_archive
     assert archive is not None
     geometrische, brechung = _source(registry, "Geometrische Optik"), _source(registry, "Brechung (Physik)")
-    assert are_linked(archive, geometrische, brechung), "Brechung (Physik) links to the redirect Strahlenoptik"
+    assert LinkedTo(archive, geometrische)(brechung), "Brechung (Physik) links to the redirect Strahlenoptik"
 
 
 def test_articles_without_a_link_between_them_are_not_linked(registry: ZimRegistry) -> None:
     archive = registry.primary_archive
     assert archive is not None
-    assert not are_linked(archive, _source(registry, "Optik"), _source(registry, "Programmiersprache"))
+    assert not LinkedTo(archive, _source(registry, "Optik"))(_source(registry, "Programmiersprache"))
 
 
 def test_a_full_text_hit_without_a_link_either_way_stays_out_of_the_corpus(
@@ -67,3 +67,23 @@ def test_a_full_text_hit_without_a_link_either_way_stays_out_of_the_corpus(
     origins = {source.title: source.origin for source in corpus}
     assert origins["Lichtmikroskop"] == "search", "it links to Optik"
     assert "Schutz vor optischer Strahlung" not in origins, "neither it nor Optik links to the other"
+
+
+def test_the_article_of_a_material_joins_only_when_it_links_with_the_main_article(service: CompendiumService) -> None:
+    """D47: the material's own article beside a topic sent along; unlinked it stays out, like an unlinked hit."""
+    registry = service.registry
+    slots = service.templates.get(service.settings.template_default).content_slots()
+    unlinked = registry.build_corpus(registry.resolve_topic("Programmiersprache"), slots, 30, material="Optik")
+    assert [source.title for source in unlinked] == ["Programmiersprache"]
+    linked = registry.build_corpus(registry.resolve_topic("Geometrische Optik"), slots, 30, material="Optik")
+    assert {source.title: source.origin for source in linked}["Optik"] == "node"
+
+
+def test_a_material_article_already_linked_in_the_corpus_becomes_the_node_article(service: CompendiumService) -> None:
+    """It keeps its place and loses the topic filter of linked articles: the request asked for it."""
+    registry = service.registry
+    slots = service.templates.get(service.settings.template_default).content_slots()
+    corpus = registry.build_corpus(registry.resolve_topic("Optik"), slots, 30, material="Geometrische Optik")
+    assert ("Geometrische Optik", "node") in [(source.title, source.origin) for source in corpus]
+    keys = [(source.project, source.title) for source in corpus]
+    assert len(keys) == len(set(keys)), "it is not added a second time"

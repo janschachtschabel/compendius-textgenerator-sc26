@@ -72,7 +72,7 @@ class Source(BaseModel):
     language: str = "de"
     authority_score: float = 1.0
     is_primary: bool = False
-    origin: str = Field("primary", description="primary | same_topic | linked | search | lookup")
+    origin: str = Field("primary", description="primary | same_topic | linked | search | node | lookup")
     aliases: list[str] = Field(default_factory=list)
     links: list[str] = Field(default_factory=list)
     reference_lines: list[str] = Field(default_factory=list, description="Lines from Literatur/Weblinks sections")
@@ -234,6 +234,13 @@ class AuditReport(BaseModel):
     )
     knowledge: dict[str, Any] | None = Field(
         None, description="Knowledge collection: materials considered, used, failed"
+    )
+    node_article: dict[str, Any] | None = Field(
+        None,
+        description="How the article of a material node was found (D47): way (rules or llm), the title's article and "
+        "the ranked terms of title and description the rules weighed, the title the LLM named, the material's own "
+        "article beside a topic sent along and whether it joined the corpus (added), why the LLM did not decide "
+        "(fallback) and its tokens; null without a material",
     )
     parts_status: dict[str, str] = Field(
         default_factory=dict, description="Per requested part: ok, empty, incomplete or unavailable"

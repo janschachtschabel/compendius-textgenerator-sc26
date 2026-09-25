@@ -337,6 +337,7 @@ def test_the_model_hears_every_subject_of_a_node_by_name(
     repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
     monkeypatch.setattr(service, "collections", CollectionBuilder(client=repository, cache=None))
     service.generate(GenerateRequest(topic="Geometrische", node_id=MATERIAL, article_choice="llm", parts=["world"]))
-    hit_check = get_prompt("hit_check").system
-    choice = next(body for body in fake.bodies if body["messages"][0]["content"] != hit_check)
-    assert "Schulfach: Biologie, Physik" in choice["messages"][1]["content"]
+    by_system = {body["messages"][0]["content"]: body["messages"][1]["content"] for body in fake.bodies}
+    # topic and material go to one question first (D47); it names no title here, so the rules and the choice decide
+    assert "Fächer: Biologie, Physik\n" in by_system[get_prompt("node_topic_with_topic").system]
+    assert "Schulfach: Biologie, Physik" in by_system[get_prompt("article_choice").system]

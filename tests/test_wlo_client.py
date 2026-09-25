@@ -15,7 +15,12 @@ OPTIK = "9e7ae956-e9df-430f-bace-f3db4b910013"
 UNKNOWN = "00000000-0000-4000-8000-000000000000"
 MATERIAL = "ac66224b-42b0-4676-a53d-71b058dc780b"  # a material of the staging repository
 PRIVATE = "22222222-2222-4222-8222-222222222222"
-NODE_FIXTURES = {OPTIK: "node_collection_optik.json", MATERIAL: "node_material.json"}
+EXAM = "33333333-3333-4333-8333-333333333333"  # a material whose title and description name no article (D47)
+NODE_FIXTURES = {
+    OPTIK: "node_collection_optik.json",
+    MATERIAL: "node_material.json",
+    EXAM: "node_material_ohne_artikel.json",
+}
 
 
 def _fixture(name: str) -> dict:  # type: ignore[type-arg]

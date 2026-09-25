@@ -37,6 +37,7 @@ RELATED_MIN_CHARS = 350
 # ("Schleife") and 26 ("Fall" -> Kasus), and a cap of 12 hid them
 MAX_MEANINGS = 40
 CHOSEN_BY_LLM = "llm"  # resolution method when article_choice=llm decided (D35)
+NODE_ORIGIN = "node"  # the article of a material sent along with a topic (D47)
 # article_choice=llm (D35): gets the (title, opening) candidates of an unsure resolution and answers with the index
 # of one, or with a title of its own, or with neither
 ArticleChooser = Callable[[Sequence[tuple[str, str]]], tuple[int | None, str | None]]
@@ -301,7 +302,14 @@ class ZimRegistry:
         resolution.method, resolution.confident = method, confident
 
     # -- corpus ------------------------------------------------------------------------------------
-    def build_corpus(self, resolution: Resolution, slots: Sequence[TemplateSlot], max_articles: int) -> list[Source]:
+    def build_corpus(
+        self, resolution: Resolution, slots: Sequence[TemplateSlot], max_articles: int, material: str | None = None
+    ) -> list[Source]:
+        """The main article, its twin, linked sub-articles and full-text hits for the blocks, at most ``max_articles``.
+
+        ``material`` is the own article of a material sent along with a topic (D47): it joins as a source of its own
+        (origin ``node``) when it links with the main article, beyond ``max_articles`` like the twin.
+        """
         if resolution.title is None or resolution.project is None:
             return []
         primary_archive = next((a for a in self.archives if a.project == resolution.project), None)
@@ -345,6 +353,7 @@ class ZimRegistry:
                 sources.append(related)
                 budget_related -= 1
 
+        linked_to = LinkedTo(primary_archive, primary)
         # Slot-targeted full-text hits fill blocks the main article rarely covers.
         if primary_archive.has_fulltext:
             stem = topic_stem(primary.title)
@@ -368,9 +377,29 @@ class ZimRegistry:
                         sources.append(hit)
             # M25: of the hits with no link to or from the main article most were unfit; without them the printed
             # unfit paragraphs of 20 topics fell from 25 to 12. Their places stay empty, as measured.
-            linked_to = LinkedTo(primary_archive, primary)
             sources = [s for s in sources if s.origin != "search" or linked_to(s)]
+        if material and material != primary.title:
+            self._add_material(primary_archive, material, sources, seen, linked_to)
         return sources
+
+    def _add_material(
+        self,
+        archive: ZimArchive,
+        title: str,
+        sources: list[Source],
+        seen: set[tuple[str, str]],
+        linked_to: LinkedTo,
+    ) -> None:
+        """The material's own article as a source of its own; one already in the corpus keeps its place (D47)."""
+        present = next((s for s in sources if s.project == archive.project and s.title == title), None)
+        if present is not None:
+            if not present.is_primary and present.origin in {"linked", "search"}:
+                present.origin = NODE_ORIGIN  # asked for: no topic filter on its paragraphs, no hit check
+            return
+        own = self._read_source(archive, title, seen)
+        if own is not None and linked_to(own):
+            own.origin = NODE_ORIGIN
+            sources.append(own)
 
     def _read_source(self, archive: ZimArchive, title: str, seen: set[tuple[str, str]]) -> Source | None:
         key = (archive.project, title.lower())
@@ -427,11 +456,6 @@ class LinkedTo:
         return other.title in self._targets or any(
             self.archive.canonical_title(link) == self.anchor.title for link in other.links
         )
-
-
-def are_linked(archive: ZimArchive, first: Source, second: Source) -> bool:
-    """Whether either of two articles of one archive links to the other (``LinkedTo``)."""
-    return LinkedTo(archive, first)(second)
 
 
 def _names(links: Sequence[str], title: str) -> bool:

@@ -7,7 +7,9 @@ endpoints have no login, so they pass on only what is public.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
@@ -19,7 +21,9 @@ from app.settings import Settings
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import make_settings
-from tests.test_wlo_client import BASE, MATERIAL, OPTIK, PRIVATE, UNKNOWN, FakeRepository, _fixture
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
+from tests.test_wlo_client import BASE, EXAM, MATERIAL, OPTIK, PRIVATE, UNKNOWN, FakeRepository, _fixture
 
 STAGING = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 PRODUCTION = "https://redaktion.openeduhub.net/edu-sharing/rest"
@@ -57,7 +61,8 @@ def test_the_preview_shows_what_a_node_contributes(client: TestClient) -> None:
     assert body["url"] == "https://www.tutory.de/entdecken/dokument/stationsarbeit-zur-optik-1"
     assert body["repository"] == STAGING
     assert body["render_url"] == f"https://repository.staging.openeduhub.net/edu-sharing/components/render/{MATERIAL}"
-    assert body["topic"] == "Stationsarbeit zur Optik", "the topic the service would resolve"
+    assert body["topic"] == "Optik", "the article the rules find in title and description (D47)"
+    assert body["node_article"]["way"] == "rules" and body["node_article"]["entities"][:2] == ["Optik", "Linse"]
     disciplines = "http://w3id.org/openeduhub/vocabs/discipline/"
     assert body["topic_subjects"] == [disciplines + "080", disciplines + "460"], "both, of equal weight"
 
@@ -107,6 +112,41 @@ def test_a_topic_sent_along_wins_over_the_title_of_the_node(client: TestClient) 
     body = client.post("/api/v2/compendium", json={"node_id": MATERIAL, "topic": "Optik", "parts": ["world"]}).json()
     assert body["topic"] == "Optik"
     assert body["node"]["title"] == "Stationsarbeit zur Optik", "the node still contributes subject and levels"
+
+
+def test_a_material_without_a_topic_builds_on_the_article_the_rules_find(client: TestClient) -> None:
+    """Its title names a format; the rules find the article in title and description (D47, M23)."""
+    response = client.post("/api/v2/compendium", json={"node_id": MATERIAL, "repository": STAGING, "parts": ["world"]})
+    assert response.status_code == 200, response.text[:300]
+    body = response.json()
+    assert body["topic"] == "Optik" and body["resolution"]["query"] == "Stationsarbeit zur Optik"
+    node_article = body["audit"]["node_article"]
+    assert node_article["way"] == "rules" and node_article["entities"][:2] == ["Optik", "Linse"]
+    assert node_article["material"] is None and not node_article["added"]
+
+
+def test_a_topic_and_a_material_bring_both_articles(client: TestClient) -> None:
+    """The topic leads; the material's own article joins as a source of its own when the two link (D47)."""
+    response = client.post("/api/v2/knowledge", json={"node_id": MATERIAL, "topic": "Geometrische Optik"})
+    assert response.status_code == 200, response.text[:300]
+    body = response.json()
+    origins = {article["title"]: article["origin"] for article in body["articles"]}
+    assert origins["Geometrische Optik"] == "primary" and origins["Optik"] == "node"
+    assert body["node_article"]["material"] == "Optik" and body["node_article"]["added"]
+    compendium = client.post(
+        "/api/v2/compendium", json={"node_id": MATERIAL, "topic": "Geometrische Optik", "parts": ["world"]}
+    ).json()
+    assert "Optik" in [source["title"] for source in compendium["sources"]]
+
+
+def test_a_material_the_rules_find_no_article_for_asks_for_a_topic(client: TestClient) -> None:
+    response = client.post("/api/v2/compendium", json={"node_id": EXAM, "parts": ["world"]})
+    assert response.status_code == 404
+    detail = response.json()["detail"]
+    assert "topic" in detail["message"] and detail["node_article"]["entities"] == []
+    assert client.post("/api/v2/knowledge", json={"node_id": EXAM}).json()["detail"]["message"] == detail["message"]
+    with_topic = client.post("/api/v2/compendium", json={"node_id": EXAM, "topic": "Optik", "parts": ["world"]})
+    assert with_topic.status_code == 200 and with_topic.json()["topic"] == "Optik", "a topic sent along helps"
 
 
 def test_a_compendium_needs_a_topic_a_collection_or_a_node(client: TestClient) -> None:
@@ -236,3 +276,24 @@ def test_part_two_searches_every_subject_of_a_node(client: TestClient) -> None:
     response = client.post("/api/v2/compendium", json=body)
     assert response.status_code == 200, response.text[:300]
     assert {"biologie", "physik"} <= set(response.json()["curricula"]["subject_terms"])
+
+
+def test_with_article_choice_llm_the_model_names_the_article_of_a_material(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """One question with title, subjects, keywords and description (M21 S4); its tokens count in the audit."""
+    app = with_fake_repository(create_app(settings))
+
+    def answer(body: dict[str, Any]) -> str:
+        asks_for_topic = "Unterrichtsmaterial das fachliche Thema" in body["messages"][0]["content"]
+        return json.dumps({"titel": "Geometrische Optik"} if asks_for_topic else {})
+
+    fake = FakeBApi(answer)
+    monkeypatch.setattr(app.state.service, "llm", make_gateway(fake, per_request=100_000))
+    payload = {"node_id": MATERIAL, "parts": ["world"], "article_choice": "llm"}
+    body = TestClient(app).post("/api/v2/compendium", json=payload).json()
+    assert body["topic"] == "Geometrische Optik"
+    assert body["audit"]["node_article"]["way"] == "llm" and body["audit"]["node_article"]["named"] == body["topic"]
+    assert body["audit"]["llm"]["article_choice"]["used"] == "llm"
+    assert "node_topic@v1" in body["frontmatter"]["llm"]["prompts"]
+    assert body["audit"]["llm_tokens"]["calls"] == len(fake.bodies) == 2, "the question and the check of side articles"

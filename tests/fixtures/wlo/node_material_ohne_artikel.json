@@ -1,0 +1,70 @@
+{
+  "node": {
+    "ref": {
+      "repo": "local",
+      "id": "33333333-3333-4333-8333-333333333333",
+      "archived": false,
+      "isHomeRepo": true
+    },
+    "type": "ccm:io",
+    "aspects": [
+      "cclom:lifecycle",
+      "cclom:technical",
+      "ccm:iometadata",
+      "cm:versionable",
+      "ccm:tracking",
+      "sys:referenceable",
+      "ccm:basemetadata",
+      "cm:metadataset",
+      "ccm:commonlicenses",
+      "cclom:rights",
+      "cm:thumbnailed",
+      "cm:titled",
+      "ccm:oeh",
+      "cclom:meta-metadata",
+      "cm:auditable",
+      "ccm:workflow",
+      "ccm:educontext",
+      "ccm:eduscope",
+      "ccm:usageaspect",
+      "sys:localized",
+      "cclom:schema",
+      "ccm:licenses",
+      "ccm:lomreplication",
+      "cclom:general",
+      "cm:author"
+    ],
+    "name": "Klassenarbeit Nr. 3_1707591218968",
+    "title": "Klassenarbeit Nr. 3",
+    "isPublic": true,
+    "properties": {
+      "cclom:title": [
+        "Klassenarbeit Nr. 3"
+      ],
+      "cm:name": [
+        "Klassenarbeit Nr. 3_1707591218968"
+      ],
+      "cclom:general_description": [
+        "Aufgaben zum Wiederholen vor den Ferien. (Synthetischer Testtext)"
+      ],
+      "cclom:general_keyword": [
+        "Wiederholung"
+      ],
+      "ccm:taxonid": [
+        "http://w3id.org/openeduhub/vocabs/discipline/460"
+      ],
+      "ccm:taxonid_DISPLAYNAME": [
+        "Physik"
+      ],
+      "ccm:educationalcontext": [
+        "http://w3id.org/openeduhub/vocabs/educationalContext/sekundarstufe_1"
+      ],
+      "ccm:educationalcontext_DISPLAYNAME": [
+        "Sekundarstufe I"
+      ],
+      "ccm:wwwurl": [
+        "https://example.org/klassenarbeit-3"
+      ]
+    }
+  }
+}

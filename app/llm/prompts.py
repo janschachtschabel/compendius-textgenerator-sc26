@@ -150,6 +150,44 @@ HIT_CHECK = Prompt(
     user="Thema des Kompendiums: {topic}\n\nArtikel:\n{articles}\n\nGib das JSON-Objekt zurück.",
 )
 
+# article_choice=llm for a material without a topic (D47): the question of M21 S4 and M23 KL word for word
+# (docs/entwicklung/messung/materialwege.py), which found the article of 30 of 31 materials with a clear topic
+NODE_TOPIC = Prompt(
+    id="node_topic",
+    version=1,
+    system=(
+        "Du bestimmst für ein Unterrichtsmaterial das fachliche Thema, zu dem ein Kompendium für Lehrkräfte "
+        'geschrieben werden soll. Antworte ausschließlich mit einem JSON-Objekt wie {"titel": "..."}: dem genauen '
+        'Titel des deutschsprachigen Wikipedia-Artikels zu diesem Thema, oder "", wenn das Material kein fachliches '
+        "Thema hat. Keine Erklärungen."
+    ),
+    user=(
+        "Titel: {title}\nFächer: {subjects}\nSchlagwörter: {keywords}\nBeschreibung: {description}\n\n"
+        "Gib das JSON-Objekt zurück."
+    ),
+)
+
+# article_choice=llm for a topic sent along with a material (D47): the teacher's topic leads, the material says how it
+# is meant, and the model names the material's own article as well, which joins the corpus when it links with the
+# main article
+NODE_TOPIC_WITH_TOPIC = Prompt(
+    id="node_topic_with_topic",
+    version=1,
+    system=(
+        "Du bestimmst für ein Unterrichtsthema, das eine Lehrkraft zu einem Unterrichtsmaterial angegeben hat, den "
+        "Wikipedia-Artikel, auf dem ein Kompendium für Lehrkräfte aufbauen soll. Das Thema der Lehrkraft hat "
+        "Vorrang; Titel, Fächer, Schlagwörter und Beschreibung des Materials zeigen, wie es gemeint ist. Antworte "
+        'ausschließlich mit einem JSON-Objekt wie {"titel": "...", "material": "..."}: unter "titel" der genaue '
+        'Titel des deutschsprachigen Wikipedia-Artikels zum Thema der Lehrkraft, unter "material" der genaue Titel '
+        'des Artikels, von dem das Material selbst handelt, oder "", wenn es derselbe ist oder das Material kein '
+        "fachliches Thema hat. Keine Erklärungen."
+    ),
+    user=(
+        "Thema der Lehrkraft: {topic}\nTitel des Materials: {title}\nFächer: {subjects}\nSchlagwörter: {keywords}\n"
+        "Beschreibung: {description}\n\nGib das JSON-Objekt zurück."
+    ),
+)
+
 QA_PAIRS = Prompt(
     id="qa_pairs",
     version=2,  # v2 (2026-09-21): the fixed system text permits the third field the levels ask for
@@ -172,6 +210,8 @@ PROMPTS: dict[str, Prompt] = {
         PARAGRAPH_ASSIGNMENT,
         ARTICLE_CHOICE,
         HIT_CHECK,
+        NODE_TOPIC,
+        NODE_TOPIC_WITH_TOPIC,
         QA_PAIRS,
     )
 }

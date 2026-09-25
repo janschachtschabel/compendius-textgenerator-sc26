@@ -58,10 +58,7 @@ def _part_one(
                 GenerateRequest(topic=topic, node_id=node_id, repository=repository, parts=["world"])
             )
     except TopicNotFoundError as exc:
-        raise HTTPException(
-            status_code=404,
-            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
-        ) from exc
+        raise HTTPException(status_code=404, detail=exc.detail()) from exc
     except TemplateNotFoundError as exc:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     except PartsUnavailableError as exc:
@@ -140,8 +137,9 @@ EXAMPLES = {
     "5 · Thema aus einem Knoten": {
         "summary": "Paare zum Thema eines Knotens, hier die Sammlung Optik der WLO-Staging",
         "description": (
-            "node_id und repository wie beim Kompendium: der Titel des Knotens wird zum Thema, erst entsteht Teil "
-            "1 des Kompendiums, dann die Paare. repository ohne Angabe: das konfigurierte."
+            "node_id und repository wie beim Kompendium: der Titel einer Sammlung wird zum Thema, bei einem "
+            "Material der Artikel aus Titel und Beschreibung (D47); erst entsteht Teil 1 des Kompendiums, dann "
+            "die Paare. repository ohne Angabe: das konfigurierte."
         ),
         "value": {
             "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",

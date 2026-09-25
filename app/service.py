@@ -33,10 +33,11 @@ from app.knowledge.article_choice import (
     ArticleChoiceJob,
     ArticleChoiceReport,
     HitCheckReport,
-    LlmArticleChooser,
     check_hits,
     choice_used,
 )
+from app.knowledge.main_article import choose_main_article
+from app.knowledge.node_article import NodeArticleReport, node_block
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, topic_stem
 from app.llm.budget import RequestBudget
@@ -60,12 +61,11 @@ from app.sources.wlo.part import (
     CollectionOptions,
     CollectionTopic,
     collection_topic,
-    derive_topic,
     node_input,
     node_topic,
 )
 from app.sources.wlo.repository import repository_root
-from app.sources.zim.registry import CHOSEN_BY_LLM, ZimRegistry
+from app.sources.zim.registry import CHOSEN_BY_LLM, NODE_ORIGIN, ZimRegistry
 from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
@@ -84,10 +84,29 @@ class RepositoryUnavailableError(RuntimeError):
     """No repository to read a node from: none is configured and the request names none."""
 
 
+NOT_FOUND = "Thema in den Archiven nicht gefunden"
+NO_SUBJECT_TOPIC = "Das LLM sieht in diesem Material kein fachliches Thema; topic angeben"
+NO_MATERIAL_ARTICLE = (
+    "Zu diesem Material fanden die Regeln keinen Artikel: weder sein Titel noch die Begriffe aus Titel und "
+    "Beschreibung führen zu einem; topic angeben, oder article_choice llm lässt das LLM das Thema bestimmen"
+)
+
+
 class TopicNotFoundError(LookupError):
-    def __init__(self, resolution: Resolution) -> None:
+    """No article for the request; ``node`` says how the article of a material without a topic was sought (D47)."""
+
+    def __init__(self, resolution: Resolution, node: NodeArticleReport | None = None) -> None:
         super().__init__(f"topic not found: {resolution.normalized}")
         self.resolution = resolution
+        self.node = node
+
+    def detail(self) -> dict[str, Any]:
+        """The body of the 404, alike for every endpoint: why, the resolution and, for a material, its search."""
+        body: dict[str, Any] = {"message": NOT_FOUND, "resolution": self.resolution.model_dump()}
+        if self.node is not None:
+            body["message"] = NO_SUBJECT_TOPIC if self.node.named == "" else NO_MATERIAL_ARTICLE
+            body["node_article"] = node_block(self.node)
+        return body
 
 
 @dataclass
@@ -110,6 +129,8 @@ class PreparedTopic:
     article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
     hit_check: HitCheckReport | None = None  # article_choice=llm: which side articles the model dropped
     side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
+    node_article: NodeArticleReport | None = None  # how the article of a material was found (D47)
+    material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -214,34 +235,29 @@ class CompendiumService:
             derived.append(node_topic(node_info))
         if collection is not None:
             derived.append(collection_topic(collection))
-        found = derive_topic(request.topic, derived, request.subject)
-        normalized, context, subjects = found.normalized, found.context, found.subjects
-        labels = self.subjects.labels_of(subjects)
-        chooser = LlmArticleChooser(choice, normalized.topic, labels) if choice is not None else None
-        resolution = self.registry.resolve_topic(
-            normalized.topic,
-            context=context,
-            query=normalized.query,
-            terms=self.subjects.context_terms_of(subjects),
-            chooser=chooser,
+        chosen = choose_main_article(
+            self.registry, self.subjects, request.topic, derived, subject=request.subject, node=node_info, job=choice
         )
+        resolution = chosen.resolution
         # Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not
         needs_corpus = "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
         if not resolution.resolved and needs_corpus:
-            raise TopicNotFoundError(resolution)
+            raise TopicNotFoundError(resolution, None if request.topic else chosen.node)
         lap("resolve")
         prepared = PreparedTopic(
             template=template,
             lexicon=lexicon,
-            normalized=normalized,
+            normalized=chosen.normalized,
             resolution=resolution,
             sources=[],
             chunks=[],
             timings=timings,
-            subjects=subjects,
+            subjects=chosen.subjects,
             collection=collection,
             node=node,
-            article_choice=chooser.report if chooser is not None else None,
+            article_choice=chosen.choice,
+            node_article=chosen.node,
+            material=chosen.material,
         )
         if needs_corpus:
             self._add_corpus(prepared, request, deadline, choice)
@@ -256,14 +272,18 @@ class CompendiumService:
     ) -> None:
         """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks.
 
-        With ``choice`` the model drops the side articles that do not fit the topic (D35, M25).
+        With ``choice`` the model drops the side articles that do not fit the topic (D35, M25). The article of a
+        material sent along with a topic joins when it links with the main article (D47).
         """
         lap = _Stopwatch(prepared.timings).lap
         sources = self.registry.build_corpus(
             prepared.resolution,
             slots=prepared.template.content_slots(),
             max_articles=request.max_articles or self.settings.corpus_max_articles,
+            material=prepared.material,
         )
+        if prepared.node_article is not None:
+            prepared.node_article.added = any(s.origin == NODE_ORIGIN for s in sources)
         lap("corpus")
         prepared.side_articles = sum(1 for s in sources if s.origin in CHECKED_ORIGINS)
         if choice is not None and prepared.side_articles:
@@ -509,8 +529,9 @@ class CompendiumService:
         generation_used = world.generation if drafted and drafted.sections else "rule-based"
         # Enrichment only means something where the LLM actually wrote a block
         enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-        hit_check = prepared.hit_check
-        article_choice_used = choice_used(resolution.method == CHOSEN_BY_LLM, hit_check)
+        hit_check, node_report = prepared.hit_check, prepared.node_article
+        named_by_llm = node_report is not None and node_report.way == "llm"
+        article_choice_used = choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check)
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
@@ -530,8 +551,9 @@ class CompendiumService:
             choice=prepared.article_choice,
             choice_chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
             # the model is asked for an unsure article (a chosen one stays unsure) and for side articles
-            choice_needed=not resolution.confident or prepared.side_articles > 0,
+            choice_needed=not resolution.confident or prepared.side_articles > 0 or node_report is not None,
             hit_check=hit_check,
+            node=node_report,
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -589,6 +611,7 @@ class CompendiumService:
             llm_tokens=llm_tokens,
             llm=llm_audit,
             knowledge=prepared.knowledge,
+            node_article=node_block(node_report) if node_report is not None else None,
             chunks_truncated=prepared.chunks_truncated,
             parts_status=parts_status,
             regenerated=world.regenerated,
@@ -804,9 +827,9 @@ def _parts_status(
     return status
 
 
-# Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for,
-# then the neighbours found by links and search. Anything else (lookups) comes last.
-ORIGIN_PRIORITY = {"primary": 0, "same_topic": 1, "material": 2, "linked": 3, "search": 4}
+# Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for and
+# the article of its node, then the neighbours found by links and search. Anything else (lookups) comes last.
+ORIGIN_PRIORITY = {"primary": 0, "same_topic": 1, "material": 2, NODE_ORIGIN: 2, "linked": 3, "search": 4}
 
 
 def _segment_corpus(
@@ -860,7 +883,9 @@ def _subtopics(sources: list[Source], primary: Source | None) -> list[str]:
     return [
         source.title
         for source in sources
-        if not source.is_primary and source.origin in {"same_topic", "linked"} and stem in source.title.lower()
+        if not source.is_primary
+        and source.origin in {"same_topic", NODE_ORIGIN, "linked"}
+        and stem in source.title.lower()
     ]
 
 

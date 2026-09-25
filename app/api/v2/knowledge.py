@@ -34,7 +34,8 @@ class KnowledgeRequest(BaseModel):
         None,
         min_length=1,
         max_length=300,
-        description="The topic whose articles are returned; not found is a 404. Default: the title of node_id",
+        description="The topic whose articles are returned; not found is a 404. Default: the article of node_id "
+        "(for a material from its title and description, D47)",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -83,7 +84,10 @@ class KnowledgeArticle(BaseModel):
     project: str
     title: str
     url: str
-    origin: str = Field(description="primary | same_topic | linked | search | lookup")
+    origin: str = Field(
+        description="primary | same_topic | linked | search | node (the article of a material sent along with a "
+        "topic, D47) | lookup"
+    )
     is_primary: bool
     chars: int
     lead: str
@@ -98,6 +102,11 @@ class KnowledgeResponse(BaseModel):
     chars: int
     truncated: bool = Field(description="True when max_chars ended the answer early")
     node: NodeInput | None = Field(None, description="The node the topic, subject and context came from (node_id)")
+    node_article: dict[str, Any] | None = Field(
+        None,
+        description="How the article of a material node was found (D47), as in the audit of a compendium; null "
+        "without a material",
+    )
     article_choice: dict[str, Any] | None = Field(
         None,
         description="What article_choice=llm asked and decided: the article the LLM chose (chosen) or why the "
@@ -157,11 +166,13 @@ EXAMPLES = {
     "aus einem Knoten": {
         "summary": "Thema, Fach und Stufe aus einem Knoten des Repositorys (hier eine Sammlung der WLO-Staging)",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten; der Titel wird zum Thema, "
-            "alle Fächer gleichwertig zu Fächern, Stufen und Schlagwörter zu Kontextwörtern der Auflösung. repository "
-            "ist die REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur die Hosts aus "
-            "EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor. GET /api/v2/nodes/{node_id} zeigt vorab, was "
-            "gelesen wird."
+            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten; der Titel einer Sammlung "
+            "wird zum Thema, bei einem Material der Artikel aus Titel und Beschreibung (D47). Alle Fächer gelten "
+            "gleichwertig, Stufen und Schlagwörter werden zu Kontextwörtern der Auflösung. repository ist die "
+            "REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur die Hosts aus "
+            "EDU_SHARING_REPOSITORIES. Ein topic dazu geht vor, und der Artikel eines Materials kommt dann als "
+            "weitere Quelle dazu, wenn er mit dem Hauptartikel verlinkt ist. GET /api/v2/nodes/{node_id} zeigt "
+            "vorab, was gelesen wird."
         ),
         "value": {
             "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
@@ -196,20 +207,22 @@ def knowledge(
     compendium would: ``llm-free`` takes ``rule-based``, ``balanced`` and ``best-quality`` take ``llm``.
 
     ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
-    compendium does; ``repository`` names another allowed one, and a topic sent along wins. Unknown or not
+    compendium does: a collection's title, a material's article from its title and description (D47).
+    ``repository`` names another allowed one. A topic sent along leads, and a material's own article joins as
+    ``origin`` node when it links with the main article; ``node_article`` says how it was found. Unknown or not
     public node: 404, refused address: 422, failing repository: 502, no repository at all: 503.
 
     A topic the archives do not have is a 404 carrying the resolution, so the answer names the
-    alternatives instead of coming back empty.
+    alternatives instead of coming back empty; for a material without an article it asks for a topic.
     """
     service = get_service(request)
     registry = archives_for(service.registry, payload.archives)
-    node, derived = None, []
+    info, node, derived = None, None, []
     if payload.node_id:
         with node_errors():
             info, node = service.read_node(payload.node_id, payload.repository)
         derived.append(node_topic(info))
-    topic, resolution, sources, choice = corpus_for_topic(
+    topic, resolution, sources, choice, node_article = corpus_for_topic(
         service,
         registry,
         payload.topic,
@@ -217,6 +230,7 @@ def knowledge(
         max_articles=payload.max_articles,
         article_choice=payload.article_choice,
         derived=derived,
+        node=info,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []
@@ -243,4 +257,5 @@ def knowledge(
         truncated=truncated,
         article_choice=choice,
         node=node,
+        node_article=node_article,
     )

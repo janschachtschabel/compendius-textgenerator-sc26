@@ -135,11 +135,13 @@ EXAMPLES = {
         },
     },
     "Material mit eigenem Thema": {
-        "summary": "Ein Material der WLO-Staging, dessen Titel ein Format nennt: das Thema kommt aus der Anfrage",
+        "summary": "Ein Material der WLO-Staging mit einem Thema dazu: beide Artikel kommen in den Korpus",
         "description": (
             "Titel von Materialien nennen oft ihr Format (hier: Stationsarbeit zur Optik) statt eines "
-            "Lexikonthemas und finden dann keinen Artikel. Ein topic dazu geht vor; Fach, Stufe und "
-            "Schlagwörter des Materials gehen weiter in die Auflösung ein."
+            "Lexikonthemas; ohne topic suchen die Regeln den Artikel in Titel und Beschreibung (D47). Ein topic dazu "
+            "geht vor, und der Artikel des Materials kommt als weitere Quelle dazu, wenn er mit dem Hauptartikel "
+            "verlinkt ist; audit.node_article sagt, wie er gefunden wurde. Fach, Stufe und Schlagwörter des "
+            "Materials gehen weiter in die Auflösung ein."
         ),
         "value": {
             "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
@@ -210,10 +212,7 @@ def generate_compendium(
     try:
         compendium = service.generate(payload)
     except TopicNotFoundError as exc:
-        raise HTTPException(
-            status_code=404,
-            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
-        ) from exc
+        raise HTTPException(status_code=404, detail=exc.detail()) from exc
     except (CollectionNotFoundError, NodeNotFoundError) as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc  # the messages name the repository
     except RepositoryNotAllowedError as exc:

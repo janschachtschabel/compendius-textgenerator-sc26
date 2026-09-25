@@ -76,10 +76,7 @@ def compare(payload: CompareRequest, request: Request) -> dict[str, Any]:
             target_length=payload.target_length,
         )
     except TopicNotFoundError as exc:
-        raise HTTPException(
-            status_code=404,
-            detail={"message": "Thema in den Archiven nicht gefunden", "resolution": exc.resolution.model_dump()},
-        ) from exc
+        raise HTTPException(status_code=404, detail=exc.detail()) from exc
     except TemplateNotFoundError as exc:  # as POST /api/v2/compendium answers it
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
     gold: dict[str, Any] | None = None

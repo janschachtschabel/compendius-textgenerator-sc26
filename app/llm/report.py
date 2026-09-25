@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
+from app.knowledge.node_article import NodeArticleReport
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.extraction import ExtractionReport
@@ -41,19 +42,21 @@ def build_llm_report(
     choice_chosen: str | None = None,
     choice_needed: bool = False,
     hit_check: HitCheckReport | None = None,
+    node: NodeArticleReport | None = None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it.
 
     ``matching_*`` describe matcher=llm (D34), ``choice_*`` article_choice=llm (D35): ``llm`` or ``rule-based``,
     like the two switches; ``choice_chosen`` is the article the model decided on, ``hit_check`` what it did with the
-    side articles, and ``choice_needed`` whether there was anything to ask - an unsure article or side articles;
-    only then is the model asked, so only then is its absence a fallback.
+    side articles, and ``choice_needed`` whether there was anything to ask - an unsure article, side articles or a
+    material without a topic; only then is the model asked, so only then is its absence a fallback. ``node`` is the
+    question about a material (D47): its tokens and prompt count here, its answer is in audit.node_article.
     """
     if extraction_requested == generation_requested == matching_requested == choice_requested == "rule-based":
         return None, None, None
-    reports: list[ExtractionReport | LlmReport | LlmAssignmentReport | ArticleChoiceReport | HitCheckReport] = [
-        r for r in (choice, hit_check, matching, extraction, generation) if r is not None
-    ]
+    reports: list[
+        ExtractionReport | LlmReport | LlmAssignmentReport | ArticleChoiceReport | HitCheckReport | NodeArticleReport
+    ] = [r for r in (node, choice, hit_check, matching, extraction, generation) if r is not None]
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
     if calls:
@@ -107,7 +110,9 @@ def build_llm_report(
     }
     front: dict[str, Any] = {}
     if gateway is not None:
-        models = [r.model for r in (generation, extraction, matching, choice, hit_check) if r is not None and r.model]
+        models = [
+            r.model for r in (generation, extraction, matching, choice, hit_check, node) if r is not None and r.model
+        ]
         front["provider"] = gateway.client.provider
         front["model"] = models[0] if models else gateway.client.model
     front["prompts"] = sorted({prompt for r in reports for prompt in r.prompts})

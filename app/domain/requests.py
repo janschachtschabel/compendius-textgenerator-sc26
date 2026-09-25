@@ -30,8 +30,10 @@ ARTICLE_CHOICE_HELP = (
     "sub-articles too: over 20 topics 5 printed paragraphs from unfit articles were left instead of 12 without the "
     "LLM and 17 with the full-text hits checked alone, and it runs for 20 instead of 15 of those topics, at about "
     "750 tokens per call.\n\n"
-    "Either way, full-text hits without a link to or from the main article stay out of the corpus (M25). Without a "
-    "usable b-api the rules choose, and audit.llm.article_choice says why."
+    "For a material without a topic (node_id), llm lets the LLM name the article from title, subjects, keywords and "
+    "description - 30 of 31 materials right at about 440 tokens, against 15 of 31 by the rules (M23, D47). Either "
+    "way, full-text hits without a link to or from the main article stay out of the corpus (M25). Without a usable "
+    "b-api the rules choose, and audit.llm.article_choice says why."
 )
 MATCHER_HELP = (
     "How the paragraphs find their block of the template. Default: MATCHER_DEFAULT (hybrid_light); the preset "
@@ -92,7 +94,7 @@ PRESET_HELP = (
     "side articles that do not fit (article_choice llm). 91 of 94, 5 instead of 12 printed paragraphs from unfit "
     "articles over 20 topics (M25), macro-F1 0.43; about 1.7 s and 930 tokens more when it checked the full-text "
     "hits alone, and the check of the side articles now runs for 20 instead of 15 of those topics at about 750 "
-    "tokens.\n"
+    "tokens. For a material without a topic the LLM names the article: 30 instead of 15 of 31 right (D47).\n"
     "- **best-quality**: balanced plus the LLM assigning every paragraph (matcher llm). 91 of 94, macro-F1 0.69 "
     "to 0.72; part 1 about 14 to 24 s and about 35 400 tokens. Topics of more than 200 paragraphs take a second "
     "round of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it.\n\n"
@@ -120,12 +122,17 @@ def _default_parts() -> list[Part]:
 
 NODE_ID_HELP = (
     "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public. "
-    "Its title becomes the topic, its subjects count all alike - subjects and levels are multi-valued fields, and no "
-    "value weighs more for coming first - and its levels and keywords become context words. A topic or subject sent "
-    "along wins, and so does a subject the title names ('Physik: Optik'). The rules weigh context words at a "
-    "disambiguation page only when the subjects bring no words of their own, and the LLM choice sees none. Titles of "
-    "materials often name a format ('Stationsarbeit zur Optik'), not a lexicon topic; GET /api/v2/nodes/{node_id} "
-    "shows beforehand what a node brings. Unknown or not public: 404."
+    "A collection's title becomes the topic. A material's title often names a format ('Stationsarbeit zur Optik'), "
+    "so its article comes from its title and description (D47): without the LLM the rules take the title's article "
+    "when the terms of title and description name it too, else the first term when the title names it, else none - "
+    "a 404 that asks for a topic. On 31 real materials that was 15 right, 8 wrong and 8 without an article, against "
+    "5, 13 and 13 with the title as the topic (M23). With article_choice llm the LLM names the article from title, "
+    "subjects, keywords and description instead: 30 of 31 right, about 440 tokens. A topic sent along leads: the "
+    "material then adds its own article as a source (origin node) when it links with the main article, and with "
+    "article_choice llm one question hears topic and material together and may overrule the topic. The subjects "
+    "count all alike - subjects and levels are multi-valued fields, and no value weighs more for coming first - and "
+    "levels and keywords become context words; a subject sent along wins, and so does one the title names "
+    "('Physik: Optik'). GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404."
 )
 REPOSITORY_HELP = (
     "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
@@ -138,7 +145,11 @@ class GenerateRequest(BaseModel):
     """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
 
     topic: str | None = Field(
-        None, min_length=1, max_length=300, description="Topic; default: the title of node_id, else of collection_id"
+        None,
+        min_length=1,
+        max_length=300,
+        description="Topic; default: the article of node_id (for a material from its title and description, D47), "
+        "else the title of collection_id",
     )
     collection_id: str | None = Field(
         None,
