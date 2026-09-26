@@ -5,6 +5,9 @@ Französische Revolution, Photosynthese), made by the profile llm-free, as /qa a
 content blocks, without the generated ones). Per text 20 pairs asked of parse-based and of llm (gpt-6-luna), with
 time and, for the LLM, calls and tokens.
 
+Since D57 the service has no stages models and parse-based any more: run this against a checkout of 1ae63db or
+earlier (git archive), as the other scripts of older states are run.
+
 Two steps, since the spaCy model lives in the image and the b-api key in the .env of the host (never printed):
 - in the image: python /tmp/mc_qa_profile.py parse /tmp/m29_parse.json  - makes the texts and the parse pairs
 - on the host (project venv, project root): python docs/entwicklung/messung/mc_qa_profile.py llm <m29_parse.json> <m29_llm.json>

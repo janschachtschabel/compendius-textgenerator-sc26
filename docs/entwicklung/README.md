@@ -8,7 +8,8 @@ eines Repositorys als Eingang (D45) mit eigener Artikelwahl für Materialien (D4
 Korpus (D48), 422 statt stiller Übergehung unverstandener Anfragen (D49), die vier Profile `llm-free`, `balanced`
 (Standard), `best-quality` und `best-quality-generated`, die auch das Verfahren der QA-Paare wählen (D53, D54),
 QA-Paare ohne LLM aus dem Parse jedes Satzes (D55) und sichtbar gekennzeichnetes Modellwissen, nur als Sachaussage
-(D56); eine Version mit Tag gibt es dafür noch nicht
+(D56), der Standard fragt mit den Regeln, die zwei QA-Modelle sind entfernt (D57); eine Version mit Tag gibt es
+dafür noch nicht
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 26.09.2026 stehen mit Aufbau
@@ -79,7 +80,7 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 86 mit den Regeln, 91 mit `article_choice=llm` (M9) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,45 mit `hybrid_light` in 0,3 s je Thema (`llm-free` und `balanced`, M27); 0,70 mit `matcher=llm` (`best-quality`, M19), rund 11 s |
-| QA-Paare, mangelfrei nach zwei Gutachtern | – | sechs Themen, je 20 Paare verlangt: `rule-based` (`llm-free`) 48 von 96 in 0,3 s je Text, `models` (`balanced`) 25 von 120 in rund 25 s, `llm` (`best-quality`, `best-quality-generated`) 99 von 120 mit rund 2.400 Tokens (M30) |
+| QA-Paare, mangelfrei nach zwei Gutachtern | – | sechs Themen, je 20 Paare verlangt: `rule-based` (`llm-free`) 48 von 96 in 0,3 s je Text, `llm` (`best-quality`, `best-quality-generated`) 99 von 120 mit rund 2.400 Tokens (M30); seit D57 fragt auch `balanced` mit den Regeln |
 | Wenn eine Quelle ausfällt | liefert trotzdem eine normale Antwort, ohne Quellen | Archive liegen lokal; ein fehlender Teil steht in `parts_status` |
 
 ## Die wichtigsten Entscheidungen
@@ -95,6 +96,7 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Vier Profile statt Einzelvorgaben, Standard `balanced` (D53, D54) | ein Schalter wählt alle Verfahren, auch das der QA-Paare; das LLM arbeitet dort, wo es am meisten bringt, und ohne konfiguriertes LLM sagt ein 503, was fehlt | der Server braucht ein LLM, sonst `PRESET_DEFAULT=llm-free` |
 | QA-Paare ohne LLM aus dem Parse, Teil 1 von `/qa` immer ohne LLM (D55) | die vier Vorlagen fragten zu 82 % nach einer Zeit und hielten `count` nicht ein; die Regeln fragen nach Zeit, Ort, Person, Sache, Anzahl, Grund und Definition und liefern die Hälfte ihrer Paare mangelfrei, in 0,3 s und ohne Tokens (M30) | ein kurzer Text gibt weniger Paare her als verlangt, `note` sagt es; jedes zweite Paar hat noch einen Mangel, meist eine Frage, die ohne den Text unklar ist |
 | Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56) | der Kommentar allein verschwand beim Rendern; der schärfere Prompt ergänzt 50 statt 82 Sätze, davon 13 statt 50 Füllsätze (M31) | rund 3 % mehr Tokens; einige Füllsätze bleiben |
+| Der Standard fragt mit den Regeln, die zwei QA-Modelle sind entfernt (D57) | in M30 waren die Modelle die schwächste und langsamste Stufe (25 von 120 mangelfrei, rund 25 s je Text, 1,3 GB je Worker); der Standard soll schnell und sparsam fragen (Jan) | im Standard 48 von 96 mangelfrei statt 99 von 120 mit dem LLM; wer mehr will, nimmt `best-quality` |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
 | Teil 3 zur Anfragezeit aus edu-sharing | aktuell bis auf einen Zwischenspeicher von einer Stunde, kein eigener Datenbestand | hängt an der Erreichbarkeit des Repositorys |
@@ -134,7 +136,7 @@ Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 | 23.09. | Release v2.0.0, Betrieb auf Hostinger; danach die Artikelwahl gemessen und der LLM-Zuordner als `matcher=llm` eingebaut (D34) |
 | 24.09. | Artikelwahl mit den Kontextwörtern des Fachs (M9), Trefferprüfung (M10), Wikibooks und Wikiversity verworfen (M11), günstigere LLM-Zuordnung (D36, M12), Laufzeit der LLM-Schalter (M13); `article_choice=llm` Vorgabe, wo ein LLM konfiguriert ist (D37); `hybrid_light` bleibt Standard (D38); `matcher=llm` ohne Rückfall am Budget (D39, M14); Entscheidungsvorlage mit Grafiken (M15); Standard wieder LLM-frei (D40) und der Schalter `preset` (D41); laya gemessen und nicht eingebaut (M16, D42); der alte Weg über Begriffe vom LLM auf dem Gold (M17); GND-Nummern aus dem Archiv (M18); Kennungen GND, Wikidata und DBpedia im Entitäten-Endpunkt (D43); `gpt-6-luna` als Vorgabemodell (M19, D44); Genitiv beim Verknüpfen der Entitäten (M20, D46); Artikelwahl für echte Materialien (M21), Lehrplanbezüge von Teil 2 (M22) und ein Kompendium aus den Metadaten eines Materials (M23); ein Knoten eines Repositorys als Eingang (D45) |
 | 25.09. | Artikel eines Materials ohne LLM (M24) und die eigene Artikelwahl für Materialien (D47); Volltexttreffer ohne Link zum Hauptartikel fallen weg (D48), gemessen mit Knoten-Eingang und QA-Paaren (M25); 422 statt stiller Übergehung (D49); `/matching/compare` entfernt (D50); Fächer nach den Vokabularen von edu-sharing (D51); vier Profile, Standard `balanced`, und das Verfahren der QA-Paare je Profil (D53, D54), gemessen in M27 bis M29 |
-| 26.09. | QA-Paare ohne LLM aus dem Parse jedes Satzes, Teil 1 von `/qa` immer ohne LLM (D55, M30); Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56, M31) |
+| 26.09. | QA-Paare ohne LLM aus dem Parse jedes Satzes, Teil 1 von `/qa` immer ohne LLM (D55, M30); Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56, M31); der Standard fragt mit den Regeln, die Stufen `models` und `parse-based` samt Modellen und torch sind entfernt (D57) |
 
 ## Begriffe
 

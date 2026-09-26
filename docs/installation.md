@@ -10,7 +10,7 @@ einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung steh
 | | Minimum | Empfohlen | warum |
 |---|---|---|---|
 | CPU | 2 Kerne | 4 Kerne | eine Anfrage belegt einen Worker vollständig (`WEB_CONCURRENCY`, im Image 2) |
-| RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Die QA-Stufe `models` lädt bei ihrer ersten Anfrage rund 1,3 GB je Worker nach — wer sie nie anfragt, zahlt das nie. Was auf 2 GB passiert, steht unter Abschnitt 7a |
+| RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Was auf 2 GB passiert, steht unter Abschnitt 7a |
 | Platte | 25 GB | 60 GB | Image rund 2,7 GB (gemessen; davon 0,9 GB Modelle und 0,8 GB torch), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
 | Netz | – | – | der Erststart lädt die Archive; danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
 
@@ -147,17 +147,18 @@ mehr gleichzeitige Anfragen brauchen also mehr Worker (`WEB_CONCURRENCY`) und en
 Gemessen am 2026-09-21 im Image `compendious-text-fastapi:local`, Archive des Profils `standard`
 (13,6 GB Wikipedia plus Klexikon), harte Grenze `--memory 2g --memory-swap 2g --cpus 2`:
 
-| Aufstellung | Start | Kompendium (Teil 1) | QA-Stufe `models` |
-|---|---|---|---|
-| `WEB_CONCURRENCY=2` (Standard im Image) | der Kernel holt **einen der beiden Worker** noch im Start (`oom_kill 1`), der Dienst läuft einspurig weiter | HTTP 200 nach 8 s | **keine Antwort**, zweiter Worker getötet |
-| `WEB_CONCURRENCY=1` | läuft sauber an, 1,40 GiB von 2 GiB | HTTP 200 nach 4 s, danach 1,47 GiB | **Container beendet**, Exit 137 |
+| Aufstellung | Start | Kompendium (Teil 1) |
+|---|---|---|
+| `WEB_CONCURRENCY=2` (Standard im Image) | der Kernel holt **einen der beiden Worker** noch im Start (`oom_kill 1`), der Dienst läuft einspurig weiter | HTTP 200 nach 8 s |
+| `WEB_CONCURRENCY=1` | läuft sauber an, 1,40 GiB von 2 GiB | HTTP 200 nach 4 s, danach 1,47 GiB |
 
-Daraus folgt: 2 GB tragen den Dienst nur mit `WEB_CONCURRENCY=1` und **ohne** die Stufe `models` —
+Daraus folgt: 2 GB tragen den Dienst nur mit `WEB_CONCURRENCY=1` —
 eine Demo-Aufstellung, keine Betriebsaufstellung, denn eine einzige lange Anfrage blockiert dann alles.
-Wer die Modellstufe anbieten will, braucht die 4 GB aus der Tabelle oben. Ein kleineres Archivprofil
-(`compact`) senkt den Grundbedarf, wurde hier aber nicht gemessen.
+Ein kleineres Archivprofil (`compact`) senkt den Grundbedarf, wurde hier aber nicht gemessen.
 
-**Was auf so einer Maschine trotzdem geht:** `method: "parse-based"`. Die Stufe braucht nur das spaCy-Modell, das ohnehin geladen ist, kostet also keinen zusaetzlichen Speicher — und liefert gemessen ueber 172 Saetze vierer Kompendien 33 Fragen statt der 8 der Vorlagen, bei rund 4 ms je Satz. Auf 2 GB ist sie damit der einzige Weg zu mehr als einer Handvoll duenner Paare.
+**QA-Paare auf so einer Maschine:** Die Regeln (`rule-based`, seit D57 in `llm-free` und `balanced`) brauchen
+kein Modell außer dem spaCy-Modell, das ohnehin geladen ist. Die QA-Stufe `models`, die bei diesen Messungen
+2 GB nicht überstand, gibt es seit D57 nicht mehr.
 
 Der Spitzenwert lässt sich im laufenden Container nachlesen:
 

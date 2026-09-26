@@ -92,18 +92,8 @@ class Settings(BaseSettings):
     model2vec_path: str = Field("", description="Local Model2Vec model path; empty disables the embedding matcher")
     spacy_model: str = Field(
         "",
-        description="spaCy model for /api/v2/entities: installed name or path; empty disables the model-based "
-        "recognition and leaves the terms of the archives",
-    )
-    qg_model_path: str = Field(
-        "",
-        description="Question generator of the QA stage `models` (German T5, baked into the image); empty turns "
-        "the stage off and POST /api/v2/qa answers rule-based instead",
-    )
-    qa_model_path: str = Field(
-        "",
-        description="Extractive answer model of the QA stage `models`; it marks the place in the text, it does "
-        "not formulate. Empty turns the stage off together with QG_MODEL_PATH",
+        description="spaCy model for /api/v2/entities and the QA rules: installed name or path; empty disables the "
+        "model-based recognition and leaves the terms of the archives, and the QA rules fall back to four templates",
     )
     eval_gold_dir: Path = Field(Path("eval/gold"), description="Gold standard files for compendium eval")
 

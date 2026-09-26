@@ -155,8 +155,8 @@ später möglich), Bilder, QA-Generierung ohne LLM.
 
 **Nachtrag 2026-09-23:** Z1 gilt nicht mehr. Umbau U1 hat den v1-Vertrag am 2026-09-20 entfernt (Fassung v20);
 es gibt nur noch die Endpunkte unter `/api/v2` sowie `/health`, `/ready` und `/metrics`. Auch das Nicht-Ziel
-„QA-Generierung ohne LLM“ ist überholt: `POST /api/v2/qa` erzeugt Paare ohne LLM (Stufen `rule-based`,
-`parse-based`, `models`), `llm` ist eine Option ([docs/umbau.md](docs/umbau.md), Abschnitt 3).
+„QA-Generierung ohne LLM“ ist überholt: `POST /api/v2/qa` erzeugt Paare ohne LLM (Stufe `rule-based`; die Stufen
+`parse-based` und `models` gab es bis D57), `llm` ist eine Option ([docs/umbau.md](docs/umbau.md), Abschnitt 3).
 
 ---
 
@@ -1682,6 +1682,14 @@ API.
   davon 13 statt 50 Füllsätze und 32 statt 27 fachliche Sätze, keiner falsch (vorher zwei); Lesbarkeit gleich, in 8
   von 12 Urteilen vorgezogen, rund 3 % mehr Tokens. Die übrigen Füllsätze sind rhetorische Fragen, Zuordnungen zu
   Fachgebieten und Allgemeinplätze über Berufe; Fragen verbietet der Prompt noch nicht.
+- **D57 (2026-09-26)** QA-Verfahren je Profil und Bereinigung (Jan nach M30: die Regeln für `llm-free`; der Standard
+  soll schnell und ressourcenschonend fragen; was kein Profil braucht, kommt aus Code und Container). `llm-free` und
+  `balanced` fragen mit den Regeln, `best-quality` und `best-quality-generated` mit dem LLM. Entfernt sind die Stufe
+  `models`, in M30 die schwächste und langsamste (25 von 120 Paaren mangelfrei, rund 25 s je Text, 1,3 GB je
+  Worker), und `parse-based` (16 von 44). `method` kennt nur noch `rule-based` und `llm`, die alten Werte sind eine
+  422. Mit ihnen gehen `QG_MODEL_PATH` und `QA_MODEL_PATH` (der Start nennt sie, wenn sie noch gesetzt sind), die
+  Komponente `qa_models` in `/health`, torch, transformers und die beiden Modelle im Image. Die vier Fragevorlagen
+  bleiben nur als Rückfall, wenn das spaCy-Modell fehlt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

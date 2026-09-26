@@ -60,7 +60,6 @@ from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from app.sources.zim.subscriptions import SubscriptionManifest, load_manifest
 from app.synthesis.facets import FacetCatalog
-from app.synthesis.qa_models import describe as describe_qa_models
 from app.templates.manager import TemplateManager
 
 log = logging.getLogger(__name__)
@@ -250,7 +249,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     close_clients(app)
 
 
-# D33 and D53 replaced these; unknown names are ignored, so a stale value would change nothing without a word
+# D33, D53 and D57 removed these; unknown names are ignored, so a stale value would change nothing without a word
 REMOVED_SETTINGS = ("LLM_MODE_DEFAULT", "LLM_ROUTER_ENABLED", "LLM_ROUTER_MAX_CHUNKS")
 REMOVED_DEFAULTS = (
     "MATCHER_DEFAULT",
@@ -259,6 +258,7 @@ REMOVED_DEFAULTS = (
     "LLM_GENERATION_DEFAULT",
     "LLM_ENRICHMENT_DEFAULT",
 )
+REMOVED_QA_MODELS = ("QG_MODEL_PATH", "QA_MODEL_PATH")
 
 
 def warn_about_removed_settings() -> None:
@@ -272,6 +272,9 @@ def warn_about_removed_settings() -> None:
     defaults = [name for name in REMOVED_DEFAULTS if os.environ.get(name)]
     if defaults:
         log.warning("%s no longer exist (D53): the profile decides (PRESET_DEFAULT)", ", ".join(defaults))
+    models = [name for name in REMOVED_QA_MODELS if os.environ.get(name)]
+    if models:
+        log.warning("%s no longer exist (D57): /api/v2/qa asks with the rules or the LLM", ", ".join(models))
 
 
 def describe_matching(settings: Settings) -> dict[str, Any]:
@@ -355,7 +358,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.matching = describe_matching(settings)
     app.state.wikidata = WikidataIndex(settings.wikidata_db_path)
     app.state.entities = describe_entities(settings, app.state.wikidata)
-    app.state.qa_models = describe_qa_models(settings.qg_model_path, settings.qa_model_path)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)

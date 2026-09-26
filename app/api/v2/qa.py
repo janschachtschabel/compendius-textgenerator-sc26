@@ -1,19 +1,17 @@
-"""Question and answer pairs for a text, a topic or a node (docs/umbau.md, U5; D55).
+"""Question and answer pairs for a text, a topic or a node (docs/umbau.md, U5; D55, D57).
 
-Four stages, in the order of what they cost. ``rule-based`` asks from the spaCy parse of each sentence - Wann,
-Wo, Wer, Was, Worauf, Wie viele, Warum, definitions - and from the glossary and actors of a compendium
-(app/synthesis/qa_rules.py); the answer is the sentence itself, so nothing is invented, and without the spaCy
-model it falls back to four templates. ``parse-based`` only swaps the sentence subject for a question word
-(app/synthesis/qa_parse.py). ``models`` runs two small German models (app/synthesis/qa_models.py): a generator
-writes the question for a noun phrase of the text, an extractive model marks the place that answers it - varied
-and by far the slowest of the free stages. ``llm`` lets the b-api write them.
+Two stages. ``rule-based`` asks from the spaCy parse of each sentence - Wann, Wo, Wer, Was, Worauf, Wie viele,
+Warum, definitions - and from the glossary and actors of a compendium (app/synthesis/qa_rules.py); the answer is
+the sentence itself, so nothing is invented, and without the spaCy model it falls back to four templates.
+``llm`` lets the b-api write them. The two small models and the subject swap of the parse are gone (D57): no
+profile asked for them after M30, where the models were the slowest and weakest stage.
 
 A topic or a node is asked about through part 1 of its compendium, and that part 1 is always made without an LLM
 (D55, Jan): fast, free, and the same knowledge whatever stage asks about it. Without a method the profile picks
-one: llm-free the rules, balanced the small models, the profiles that pay for an LLM anyway the LLM. parse-based
-and models fall back to the rules rather than failing, and so does llm while the b-api is not available; llm
-without a configured LLM is a 503. The answer names the stage that actually produced the pairs, why the asked-for
-one did not, and how many pairs came when the text held fewer than were asked for.
+one: llm-free and balanced the rules, the profiles that pay for an LLM anyway the LLM. llm falls back to the rules
+while the b-api is not available, and without a configured LLM it is a 503. The answer names the stage that
+actually produced the pairs, why the asked-for one did not, and how many pairs came when the text held fewer than
+were asked for.
 
 This module is the endpoint itself: where the text comes from, which stage is asked, and what the answer
 says. The wire contract lives in qa_schemas.py, the stages that can refuse in qa_stages.py.
@@ -30,7 +28,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
-from app.api.v2.qa_stages import STAGES, LlmAllowance, levels_from, node_levels
+from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
 from app.domain.models import Compendium, Resolution, SectionStatus
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest
 from app.knowledge.recognise import load_spacy
@@ -50,7 +48,6 @@ NO_TAGGER_NOTE = (
     "können und unter Umständen nach Adverbien statt nach Begriffen fragen"
 )
 KNOWLEDGE_PROFILE = "llm-free"  # part 1 of a topic or node, whatever profile picks the stage (D55)
-FREE_STAGES = frozenset({"rule-based", "parse-based"})
 
 
 @dataclass(frozen=True)
@@ -208,7 +205,7 @@ def _shortfall(delivered: int, asked: int, method: str) -> str | None:
     """What the answer says when the text held fewer pairs than were asked for (Jan, 2026-09-25)."""
     if delivered >= asked:
         return None
-    more = "; die Modelle (models) und das LLM (llm) fragen freier" if method in FREE_STAGES else ""
+    more = "; das LLM (llm) fragt freier" if method == "rule-based" else ""
     return f"{delivered} statt {asked} Paare: mehr Fragen gibt der Text für {method} nicht her{more}"
 
 
@@ -225,13 +222,11 @@ EXAMPLES = {
         "value": {"topic": "Albert Einstein", "count": 20, "preset": "llm-free"},
     },
     "2 · Thema, Standardprofil balanced": {
-        "summary": "Die zwei kleinen Modelle im Image - vielseitig, langsamer, ohne LLM",
+        "summary": "Dieselben Regeln wie llm-free: schnell, ohne LLM und ohne zusätzliches Modell",
         "description": (
-            "dehio/german-qg-t5-quad schreibt die Frage, gelectra-base-germanquad markiert die Antwort im Text, "
-            "darum sind die Antworten kurze Textstellen. Rund 1 s je Paar und 1,3 GB Arbeitsspeicher je Worker ab "
-            "der ersten Anfrage. Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced; Teil 1 entsteht auch hier "
-            "ohne LLM. Auf sechs Themen kamen immer so viele Paare wie verlangt, nach zwei Gutachtern aber nur 25 "
-            "von 120 mangelfrei (M30): Antworten, die nicht passen, Sachfehler und unklare Fragen."
+            "Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced. Es fragt mit denselben Regeln wie llm-free "
+            "(D57): rund 0,3 s für die Paare, keine Tokens, kein zusätzliches Modell im Speicher. Teil 1 entsteht "
+            "auch hier ohne LLM; nur den Artikel eines Material-Knotens wählt in balanced das LLM (D47)."
         ),
         "value": {"topic": "Optik", "count": 10},
     },
@@ -281,14 +276,14 @@ EXAMPLES = {
             "count": 8,
         },
     },
-    "6 · einzelnes Verfahren: parse-based": {
-        "summary": "Nur das Satzsubjekt wird zum Fragewort; die Antwort ist das Subjekt",
+    "6 · einzelnes Verfahren": {
+        "summary": "Ein einzeln gesetztes method geht dem Profil vor, hier die Regeln im Profil best-quality",
         "description": (
-            "Ein einzeln gesetztes method geht dem Profil vor. parse-based war bis D55 das Verfahren von llm-free: "
-            "schnell, aber es fragt nur nach Satzsubjekten und liefert oft weniger Paare als verlangt (44 statt 120 "
-            "auf sechs Themen, M30)."
+            "method wählt das Verfahren der Paare, rule-based oder llm, welches Profil auch gilt; diese Anfrage "
+            "braucht darum kein LLM. Die Stufen models und parse-based gibt es seit D57 nicht mehr: nach ihnen zu "
+            "fragen ist ein 422."
         ),
-        "value": {"topic": "Optik", "method": "parse-based", "count": 10},
+        "value": {"topic": "Optik", "preset": "best-quality", "method": "rule-based", "count": 10},
     },
 }
 
@@ -338,19 +333,19 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     method: Method = "rule-based"
     notes: list[str] = []
     if node is not None and payload.method == "llm" and not payload.levels:
-        # Only the llm stage assigns levels; the others would only report the node's levels as lost (D47)
+        # Only the llm stage assigns levels; the rules would only report the node's levels as lost (D47)
         inherited = node_levels(request, node.educational_contexts)
         if inherited:
             payload = payload.model_copy(update={"levels": inherited})
             notes.append(f"Stufen aus dem Knoten: {', '.join(inherited)}")
     pairs: list[QaPair] | None = None
-    if payload.method in STAGES:
-        pairs, reason = STAGES[payload.method](request, text, payload, node, allowance)
+    if payload.method == "llm":
+        pairs, reason = from_llm(request, text, payload, node, allowance)
         if pairs is None:
             log.info("QA fell back to the rules: %s", reason)
             notes.append(reason)
         else:
-            method = payload.method
+            method = "llm"
     if pairs is None:
         pairs, missing = _rule_stage(request, knowledge, payload)
         if missing:

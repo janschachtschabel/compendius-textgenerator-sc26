@@ -256,6 +256,10 @@ beantwortet zugleich deine Frage nach „gezielt zu einem oder mehreren ZIM-Arch
 
 ## 3. Frage-Antwort-Paare in vier Stufen
 
+**Nachtrag 2026-09-26 (D57):** `parse-based` und `models` sind wieder entfernt. `llm-free` und `balanced` fragen
+mit den Regeln, die seit D55 aus dem spaCy-Parse fragen (`app/synthesis/qa_rules.py`), die Profile mit LLM mit
+`llm`; die Messung dazu ist M30 in `docs/entwicklung/05-messprotokoll.md`.
+
 | Stufe | Womit | Braucht |
 |---|---|---|
 | `rule-based` (Standard) | Fragevorlagen über die Sätze des Textes — das gibt es heute schon | nichts |
@@ -795,7 +799,7 @@ Entscheidung, die das Image wirklich schwer macht.
 | U3 ✓ | `POST /api/v2/entities` mit spaCy und Auflösung — erledigt am 2026-09-20; Kennungen (GND, Wikidata, DBpedia) am 2026-09-24 (D43) | mittel |
 | U4 ✓ | `enrichment: model-knowledge` samt Kennzeichnung, Bericht und eigenem Prompt; Nebenläufigkeit 10 — erledigt am 2026-09-20 | mittel |
 | U5a ✓ | `POST /api/v2/qa` mit `rule-based` und `llm` — erledigt am 2026-09-20; kein neues Gewicht, kein zweites Image | mittel |
-| U5b ✓ | Stufe `models` (QG- und QA-Modell), torch im Basis-Image statt eines zweiten Profils — erledigt am 2026-09-20 | groß (torch, zwei Modelle) |
+| U5b ✓ | Stufe `models` (QG- und QA-Modell), torch im Basis-Image statt eines zweiten Profils — erledigt am 2026-09-20; mit D57 am 2026-09-26 wieder entfernt | groß (torch, zwei Modelle) |
 | U6 ✓ | Verwaltung: Template-Schreibwege, `ZIM_PATHS`-Warnung — erledigt am 2026-09-20; `/health` je Modell war mit U3 schon da | klein |
 
 U1 bis U4 und U6 halten das Image bei 830 MB. Erst U5 bringt torch.

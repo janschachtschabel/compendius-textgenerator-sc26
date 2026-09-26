@@ -36,11 +36,6 @@ DOCKER = "docker"  # on PATH by intent: the script runs where the image was buil
 READY_TIMEOUT_S = 90
 REQUEST_TIMEOUT_S = 240
 MIN_CHARACTERS = 2000  # a compendium of the sample archives is far longer; this only catches an empty answer
-# A lead with Greek in it: exactly the case where decoding token ids stops being extractive.
-MODEL_TEXT = (
-    "Die Optik (von altgriechisch ὀπτικός optikós) ist ein Teilgebiet der Physik "
-    "und handelt vom Licht. Der Brechungsindex eines Mediums bestimmt, wie stark Licht gebrochen wird."
-)
 
 
 def run(*args: str) -> str:
@@ -140,43 +135,6 @@ def check_pairs(answer: dict[str, object]) -> str:
     return f"{len(questions)} pairs from the parse, no question about an adverb"
 
 
-def ask_for_model_pairs(base_url: str, container: str) -> dict[str, object]:
-    """The only place the two QA models are ever executed; loading them costs about eight seconds."""
-    body = {"text": MODEL_TEXT, "method": "models", "count": 3}
-    try:
-        response = httpx.post(f"{base_url}/api/v2/qa", json=body, timeout=REQUEST_TIMEOUT_S)
-    except httpx.HTTPError as exc:
-        raise SystemExit(f"the model request got no answer ({exc}):\n{run('logs', container)}") from exc
-    if response.status_code != 200:
-        raise SystemExit(f"POST /api/v2/qa (models) answered {response.status_code}: {response.text[:400]}")
-    return dict(response.json())
-
-
-def check_model_pairs(answer: dict[str, object], text: str) -> str:
-    """Return the evidence line, or raise when the packaged models did not run.
-
-    The wording of a generated question is not pinned - a small model varies. What has to hold is that the
-    stage ran at all, that it asked questions, and that every answer really is a span of the text. That last
-    check is here because decoding token ids looks extractive and is not: it silently drops characters the
-    model's vocabulary lacks and respaces the rest.
-    """
-    if answer.get("method") != "models":
-        raise SystemExit(f"the image fell back instead of using its models: {answer.get('note')}")
-    pairs = answer.get("pairs")
-    if not isinstance(pairs, list) or not pairs:
-        raise SystemExit("the models ran but produced no pair")
-    for pair in pairs:
-        if not str(pair.get("question", "")).endswith("?"):
-            raise SystemExit(f"not a question: {pair}")
-        span = str(pair.get("answer", "")).strip()
-        if not span:
-            raise SystemExit(f"empty answer: {pair}")
-        cut = span.rstrip("…").rstrip()  # a long answer is shortened, so compare its beginning
-        if cut not in text:
-            raise SystemExit(f"the answer is no span of the text: {span!r}")
-    return f"{len(pairs)} pairs, every answer a span of the text"
-
-
 def check_entities(answer: dict[str, object]) -> str:
     """Return the evidence line, or raise when the model of the image did not run."""
     methods = answer.get("methods")
@@ -233,8 +191,6 @@ def main() -> int:
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
             print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
-            model_answer = ask_for_model_pairs(base_url, container)
-            print(f"the image asks with models: {check_model_pairs(model_answer, MODEL_TEXT)}")
         finally:
             run("rm", "-f", args.name)
     return 0

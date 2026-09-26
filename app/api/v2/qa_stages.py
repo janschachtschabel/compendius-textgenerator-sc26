@@ -1,30 +1,26 @@
-"""What the endpoint asks for outside the question templates, and what it says when the answer is no.
+"""What the endpoint asks for outside the rules, and what it says when the answer is no.
 
-Everything here can refuse: the two small models may not be in the image, the spaCy model the parse needs
-may be missing, the b-api may be switched off or over budget, and a level the caller names may have no
-counterpart in the project's own vocabulary. The three stages answer with ``None`` and a reason the
-endpoint puts in ``note`` - falling back to the templates is the promise of this endpoint, so a missing
-model is not an error. ``levels_from`` refuses loudly with 422 instead, because a made-up level would
+Both can refuse: the b-api may be switched off or over budget, and a level the caller names may have no
+counterpart in the project's own vocabulary. The llm stage answers with ``None`` and a reason the endpoint
+puts in ``note`` - falling back to the rules is the promise of this endpoint, so a b-api that is not there
+for now is not an error. ``levels_from`` refuses loudly with 422 instead, because a made-up level would
 travel on the pairs into a service that does not know it.
 """
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from fastapi import HTTPException, Request
 
-from app.api.v2.qa_schemas import LEVEL_PROPERTY, MAX_TEXT_CHARS, QaRequest
+from app.api.v2.qa_schemas import LEVEL_PROPERTY, QaRequest
 from app.domain.models import NodeInput
-from app.knowledge.recognise import load_spacy
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair
-from app.synthesis.qa_models import answer_candidates, load_qa_models, model_pairs
-from app.synthesis.qa_parse import parse_based_pairs
 
 
 @dataclass(frozen=True)
@@ -35,30 +31,6 @@ class LlmAllowance:
     deadline: Deadline
 
 
-def from_models(
-    request: Request,
-    text: str,
-    payload: QaRequest,
-    node: NodeInput | None = None,
-    allowance: LlmAllowance | None = None,
-) -> tuple[list[QaPair] | None, str]:
-    """The pairs of the two small models, or ``None`` and the reason the templates have to do it."""
-    settings = request.app.state.settings
-    models = load_qa_models(settings.qg_model_path, settings.qa_model_path)
-    if models is None:
-        return None, "QA-Modelle nicht im Image (QG_MODEL_PATH/QA_MODEL_PATH); Regelmodus verwendet"
-    nlp = load_spacy(settings.spacy_model)
-    if nlp is None:
-        return None, "spaCy-Modell fehlt; ohne seine Nominalphrasen gibt es keine Antwortkandidaten"
-    # Both the model and the splitter have to see the same string, so the offsets line up
-    prepared = " ".join(text[:MAX_TEXT_CHARS].split())
-    candidates = answer_candidates(nlp(prepared), prepared)
-    pairs = model_pairs(candidates, models, count=payload.count, max_answer_length=payload.max_answer_length)
-    if not pairs:
-        return None, "Die Modelle fanden keine beantwortbare Frage; Regelmodus verwendet"
-    return pairs, ""
-
-
 def from_llm(
     request: Request,
     text: str,
@@ -66,7 +38,7 @@ def from_llm(
     node: NodeInput | None = None,
     allowance: LlmAllowance | None = None,
 ) -> tuple[list[QaPair] | None, str]:
-    """The model's pairs, or ``None`` and the reason the templates have to do it.
+    """The model's pairs, or ``None`` and the reason the rules have to do it.
 
     A node's title and keywords point the model at what the material is about (D47). ``allowance`` is the budget
     and time the request has left after part 1; the endpoint hands it over whenever an LLM is configured, and a
@@ -98,25 +70,6 @@ def from_llm(
     if answer is None:
         return None, "LLM lieferte keine verwertbaren Paare; Regelmodus verwendet"
     return answer, ""
-
-
-def from_parse(
-    request: Request,
-    text: str,
-    payload: QaRequest,
-    node: NodeInput | None = None,
-    allowance: LlmAllowance | None = None,
-) -> tuple[list[QaPair] | None, str]:
-    """The pairs of the dependency parse, or ``None`` and the reason the templates have to do it."""
-    nlp = load_spacy(request.app.state.settings.spacy_model)
-    if nlp is None:
-        return None, "spaCy-Modell fehlt; ohne seinen Parse gibt es keine Satzsubjekte"
-    pairs = parse_based_pairs(
-        text[:MAX_TEXT_CHARS], limit=payload.count, max_answer_length=payload.max_answer_length, nlp=nlp
-    )
-    if not pairs:
-        return None, "Der Parse fand kein Satzsubjekt zum Umstellen; Regelmodus verwendet"
-    return pairs, ""
 
 
 def levels_from(request: Request, levels: Sequence[str]) -> list[str]:
@@ -175,10 +128,3 @@ def _mapped(levels: Sequence[str], declared: Sequence[str]) -> tuple[list[str], 
         else:
             unknown.append(level)
     return mapped, unknown
-
-
-# The stages that can refuse, by the ``method`` that asks for them. rule-based is not here: it is what
-# the endpoint falls back to, so it has no reason to be dispatched. Each hears the node the text came from, and
-# the llm stage spends what the request has left of its budget and time.
-Stage = Callable[[Request, str, QaRequest, NodeInput | None, LlmAllowance | None], tuple[list[QaPair] | None, str]]
-STAGES: dict[str, Stage] = {"parse-based": from_parse, "models": from_models, "llm": from_llm}

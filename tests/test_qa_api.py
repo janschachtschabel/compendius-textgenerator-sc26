@@ -85,31 +85,42 @@ def test_the_llm_method_without_a_configured_llm_is_a_503(client: TestClient) ->
         assert answer.status_code == 503 and "method=llm" in answer.json()["detail"], asked
 
 
-def test_the_profile_picks_the_method_and_a_method_the_request_sets_wins(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """D55: llm-free takes the rules, balanced the two small models, the LLM profiles the b-api; a method wins."""
-    from tests.test_qa_parse import FakeNlp
-
-    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
-    sentence = {"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes."}
-    assert client.post("/api/v2/qa", json={**sentence, "preset": "llm-free"}).json()["method"] == "rule-based"
-    assert client.post("/api/v2/qa", json=sentence).json()["method"] == "rule-based", "the tests' profile: llm-free"
-    chosen = client.post("/api/v2/qa", json={**sentence, "preset": "llm-free", "method": "parse-based"}).json()
-    assert chosen["method"] == "parse-based"
+def test_the_profile_picks_the_method_and_a_method_the_request_sets_wins(client: TestClient) -> None:
+    """D57: llm-free and balanced take the rules, the LLM profiles the b-api; a method the request sets wins."""
+    assert client.post("/api/v2/qa", json={"text": TEXT, "preset": "llm-free"}).json()["method"] == "rule-based"
+    assert client.post("/api/v2/qa", json={"text": TEXT}).json()["method"] == "rule-based", "the tests' profile"
+    chosen = client.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality", "method": "rule-based"})
+    assert chosen.status_code == 200 and chosen.json()["method"] == "rule-based", "the method needs no LLM"
 
 
-def test_balanced_asks_the_small_models_and_needs_no_llm(client: TestClient) -> None:
-    """D55: the test image carries no model weights, so the rules answer and say why - and no LLM is asked for."""
-    answer = client.post("/api/v2/qa", json={"text": TEXT, "preset": "balanced"})
-    assert answer.status_code == 200
-    assert answer.json()["method"] == "rule-based" and "QA-Modelle" in answer.json()["note"]
+def test_balanced_asks_with_the_rules_as_llm_free_does(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """D57 (Jan): the default profile asks fast and without extra resources - with the same rules as llm-free."""
+    from tests.recorded_spacy import RecordedNlp
+
+    monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: RecordedNlp())
+    text = "Ein Vulkan ist eine geologische Struktur. Einstein wurde 1879 in Ulm geboren."
+    answers = [
+        client.post("/api/v2/qa", json={"text": text, "preset": preset, "count": 2})
+        for preset in ("balanced", "llm-free")
+    ]
+    assert [answer.status_code for answer in answers] == [200, 200], "a text needs no LLM in balanced"
+    balanced, free = (answer.json() for answer in answers)
+    assert balanced["method"] == "rule-based" and balanced["note"] is None
+    assert balanced["pairs"] == free["pairs"]
+
+
+def test_the_stages_no_profile_uses_are_gone(client: TestClient) -> None:
+    """D57: models and parse-based were removed; asking for one is a 422, not a quiet fallback to the rules."""
+    for method in ("models", "parse-based"):
+        answer = client.post("/api/v2/qa", json={"text": TEXT, "method": method})
+        assert answer.status_code == 422, method
 
 
 def test_fewer_pairs_than_asked_for_are_named_in_the_note(client: TestClient) -> None:
     """Jan, 2026-09-25: 20 asked, about 5 delivered and not a word about it. The count is an upper bound."""
     body = client.post("/api/v2/qa", json={"text": TEXT, "count": 20}).json()
     assert len(body["pairs"]) == 3 and "3 statt 20 Paare" in body["note"]
+    assert "das LLM (llm) fragt freier" in body["note"] and "Modelle" not in body["note"], "D57: no models any more"
 
 
 def test_an_llm_profile_lets_the_llm_write_the_pairs(with_llm: TestClient) -> None:
@@ -162,83 +173,22 @@ def test_with_the_parse_the_rules_ask_varied_questions_and_there_is_no_note(
     ]
 
 
-def test_the_model_stage_falls_back_when_the_models_are_not_in_the_image(client: TestClient) -> None:
-    """docs/umbau.md U5b: the test service carries no weights, so the answer has to say what it did instead."""
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
-    assert body["method"] == "rule-based"
-    assert body["note"] and "Modelle" in body["note"]
-    assert body["pairs"], "the fallback still delivers"
+def test_health_reports_no_qa_models_any_more(client: TestClient) -> None:
+    """D57: the two QA models left the image, and their component left /health with them."""
+    assert "qa_models" not in client.get("/health").json()["components"]
 
 
-def test_the_model_stage_uses_the_two_models_when_they_are_there(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
+def test_a_leftover_model_path_is_named_at_start(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
-    from app.synthesis.qa_models import Candidate, QaModels
+    """D57: the settings are gone, and a stale value in an environment would otherwise change nothing without a word."""
+    from app.main import warn_about_removed_settings
 
-    sentence = "Die Optik ist ein Teilgebiet der Physik."
-    candidate = Candidate(text="Die Optik", sentence=sentence, start=0, end=9)
-    monkeypatch.setattr("app.api.v2.qa_stages.answer_candidates", lambda doc, text: [candidate])
-    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: lambda text: object())
-    monkeypatch.setattr(
-        "app.api.v2.qa_stages.load_qa_models",
-        lambda qg, qa: QaModels(
-            lambda marked: ["Was ist die Optik?"] * len(marked),
-            lambda q, c: "ein Teilgebiet der Physik",
-        ),
-    )
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models", "count": 1}).json()
-    assert body["method"] == "models" and body["note"] is None
-    assert body["pairs"] == [
-        {"question": "Was ist die Optik?", "answer": "ein Teilgebiet der Physik", "level": None}
-    ], "the model stage has no notion of difficulty, so it assigns no level"
-
-
-def test_the_model_stage_needs_the_spacy_model_for_its_candidates(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    from app.synthesis.qa_models import QaModels
-
-    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: None)
-    monkeypatch.setattr(
-        "app.api.v2.qa_stages.load_qa_models", lambda qg, qa: QaModels(lambda m: ["Frage?"] * len(m), lambda q, c: "A")
-    )
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "models"}).json()
-    assert body["method"] == "rule-based" and body["note"] and "spaCy" in body["note"]
-
-
-def test_the_parse_stage_falls_back_without_the_spacy_model(client: TestClient) -> None:
-    """The test service carries no spaCy model, and without a parse there are no sentence subjects."""
-    body = client.post("/api/v2/qa", json={"text": TEXT, "method": "parse-based"}).json()
-    assert body["method"] == "rule-based"
-    assert body["note"] and "spaCy" in body["note"]
-    assert body["pairs"], "the fallback still delivers"
-
-
-def test_the_parse_stage_swaps_the_subject_for_a_question_word(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """The answer is the subject, not the sentence - that is what this stage buys over the templates."""
-    from tests.test_qa_parse import FakeNlp
-
-    monkeypatch.setattr("app.api.v2.qa_stages.load_spacy", lambda model: FakeNlp())
-    body = client.post(
-        "/api/v2/qa",
-        json={"text": "Das Brechungsgesetz beschreibt die Brechung des Lichtes.", "method": "parse-based", "count": 1},
-    ).json()
-    assert body["method"] == "parse-based" and body["note"] is None
-    assert body["pairs"] == [
-        {
-            "question": "Was beschreibt die Brechung des Lichtes?",
-            "answer": "Das Brechungsgesetz",
-            "level": None,
-        }
-    ]
-
-
-def test_health_says_whether_the_qa_models_are_in_the_image(client: TestClient) -> None:
-    """A probe must not pull 1.3 GB into memory, so /health reports presence, not a load."""
-    qa_models = client.get("/health").json()["components"]["qa_models"]
-    assert qa_models == {"question_generator": "", "answer_model": "", "present": False}
+    monkeypatch.setenv("QG_MODEL_PATH", "/models/qg")
+    monkeypatch.setenv("QA_MODEL_PATH", "/models/qa")
+    with caplog.at_level("WARNING"):
+        warn_about_removed_settings()
+    assert "QG_MODEL_PATH, QA_MODEL_PATH" in caplog.text and "D57" in caplog.text
 
 
 LEVELLED = (

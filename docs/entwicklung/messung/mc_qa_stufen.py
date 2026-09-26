@@ -5,6 +5,9 @@ rules the glossary and the actors of the compendium): the four M29 topics (Optik
 Revolution, Photosynthese) and two that no rule was tuned on (Zellteilung, Weimarer Republik). Per text 20 pairs of
 each stage, with time; for the LLM also calls and tokens.
 
+Since D57 the service has no stages models and parse-based any more: run this against a checkout of 1ae63db or
+earlier (git archive), as the other scripts of older states are run.
+
 Four steps, since the spaCy model and the two small models live in the image and the b-api key in the .env of the
 host (never printed):
 - in the image: python /tmp/mc_qa_stufen.py free /tmp/m30_free.json - makes the texts and the pairs of the rules,

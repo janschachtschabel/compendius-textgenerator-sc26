@@ -21,12 +21,12 @@ from app.domain.requests import (
     Preset,
 )
 
-Method = Literal["rule-based", "parse-based", "models", "llm"]
-# The method of each profile (D55, Jan): llm-free the rules, balanced the two small models in the image, the
-# profiles that pay for an LLM anyway the LLM
+Method = Literal["rule-based", "llm"]
+# The method of each profile (D57, Jan): the default asks fast and without extra resources, so llm-free and
+# balanced take the rules; the profiles that pay for an LLM anyway take the LLM
 PROFILE_METHODS: dict[str, Method] = {
     "llm-free": "rule-based",
-    "balanced": "models",
+    "balanced": "rule-based",
     "best-quality": "llm",
     "best-quality-generated": "llm",
 }
@@ -62,9 +62,9 @@ class QaRequest(BaseModel):
     )
     preset: Preset | None = Field(
         None,
-        description="The profile (D55): it picks the method of the pairs when the request names none - llm-free "
-        "rule-based, balanced models, best-quality and best-quality-generated llm. It does not change the part 1 of "
-        "a topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped balanced",
+        description="The profile (D55, D57): it picks the method of the pairs when the request names none - llm-free "
+        "and balanced rule-based, best-quality and best-quality-generated llm. It does not change the part 1 of a "
+        "topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped balanced",
     )
     article_choice: ArticleChoice | None = Field(
         None,
@@ -74,19 +74,16 @@ class QaRequest(BaseModel):
     )
     method: Method | None = Field(
         None,
-        description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free rule-based, balanced models, "
-        "best-quality and best-quality-generated llm (D55). rule-based needs no model beyond the spaCy parse the "
+        description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free and balanced rule-based, "
+        "best-quality and best-quality-generated llm (D57). rule-based needs no model beyond the spaCy parse the "
         "image carries: it asks Wann, Wo, Wer, Was, Worauf, Wie viele, Warum and for definitions from the parse of "
         "each sentence, then the glossary and the actors of a compendium, and the answer is the whole sentence; "
-        "without the spaCy model it falls back to four templates. parse-based only swaps the sentence subject for a "
-        "question word and answers with the subject. models uses the two German models baked into the image "
-        "(question generator plus extractive answers): varied questions, short answers, about 1 s per pair and 1.3 GB "
-        "of memory per worker from the first request on. llm lets the b-api write the pairs; with a topic or node, "
-        "part 1 and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, REQUEST_TIMEOUT_S). "
-        "parse-based and models fall back to rule-based when they cannot run, and note says why; llm without a "
-        "configured LLM is a 503, and while the b-api is not available it falls back as well. Over six topics with "
-        "20 pairs asked each, two judges found 48 of 96 rule-based pairs, 25 of 120 models pairs and 99 of 120 llm "
-        "pairs flawless (M30)",
+        "without the spaCy model it falls back to four templates. llm lets the b-api write the pairs; with a topic "
+        "or node, part 1 and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, "
+        "REQUEST_TIMEOUT_S). llm without a configured LLM is a 503; while the b-api is not available it falls back "
+        "to rule-based, and note says why. Over six topics with 20 pairs asked each, two judges found 48 of 96 "
+        "rule-based pairs and 99 of 120 llm pairs flawless (M30). The stages models and parse-based are gone (D57): "
+        "asking for one is a 422",
     )
     count: int = Field(
         5,
