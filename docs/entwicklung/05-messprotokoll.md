@@ -1747,7 +1747,9 @@ LLM), und `link_check: llm` stellt die Prüfung bereit. `mc_entitaeten_dienst.py
 
 Der erste Lauf fand zwei Abweichungen im eingebauten Weg: Ein Wort, das zuerst in einem längeren stand („schwefel“ in
 „schwefelsäure“, „Sonne“ in „Sonnenuntergang“), zeigte dorthin und fiel beim Zusammenführen überlappender
-Erwähnungen weg. Seitdem gilt die erste Stelle, an der das Wort als ganzes Wort steht. Die zwei übrigen
+Erwähnungen weg. Seitdem gilt die erste Stelle, an der das Wort als ganzes Wort steht, und ein kürzerer Name sucht an
+Stellen, die kein längerer genannter belegt (nach dem Review; ein dritter Lauf danach ergab in allen 40 Texten
+dieselben Artikel und Erwähnungen wie der zweite, dessen Zahlen die Tabelle zeigt). Die zwei übrigen
 Abweichungen sind gewollt: Der Endpunkt verknüpft wie seit D43 mit der Weiterleitung auf einen Abschnitt
 (*Transferunion*, *Organische Verbindung*), M36 mit dem Artikel dahinter; eine davon hat keine Note und zählt als 0.
 

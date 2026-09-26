@@ -1774,7 +1774,12 @@ API.
   Prüfung die Präzision auf 0,94, kostete aber ein Drittel der passenden Entitäten (F1 0,76 statt 0,78); im Versuch von
   M36 sah sie auch den Beifang der Regeln und benotete milder (0,80). Nachgemessen mit den Noten von M36: `llm-free`
   in allen 40 Texten wie vorher (F1 0,38), `llm` F1 0,78 bei Präzision 0,70. Die Schemas des Endpunkts stehen seitdem
-  in `entities_schemas.py`.
+  in `entities_schemas.py`. Nach dem Review (frischer Subagent): Eine Prüf-Antwort ohne lesbare Note lässt alle
+  Verknüpfungen stehen (vorher fielen alle still weg), eine Liste ohne lesbaren Eintrag lässt die Regeln entscheiden,
+  eine von der Ausgabegrenze abgeschnittene Antwort behält ihre vollständigen Einträge, die Grenze wächst mit
+  `max_entities` (24 Tokens je Entität, mindestens 1.200), auf demselben Wort gewinnt der Titel des LLM gegen die
+  Regeln, ein kürzerer Name sucht an Stellen, die kein längerer belegt, und die Suche der Stellen läuft mit
+  `str.find` in linearer Zeit (ein Wort über 100 Zeichen ist kein Name). Die Nachmessung ergab dieselben Artikel.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
