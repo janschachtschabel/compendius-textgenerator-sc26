@@ -17,6 +17,7 @@ from app.synthesis.citations import without_markers
 from app.synthesis.qa_rules import is_actor_block, is_glossary_block
 
 _TITLE = re.compile(r"^# Kompendium: (?P<topic>.+)$", re.MULTILINE)
+_NO_PROSE = frozenset({SectionStatus.GENERATED, SectionStatus.EMPTY})
 
 
 @dataclass(frozen=True)
@@ -72,12 +73,13 @@ def knowledge_of_text(text: str) -> Knowledge:
 
     The markers of its blocks say which block is prose and which is generated; of the generated ones the glossary
     and the actor list are told apart by their rows, and the sources block, which is neither, stays out. The topic
-    is the one the heading names.
+    is the one the heading names. An empty block is no prose, though it may carry a note saying so; a compendium
+    whose blocks all came out empty holds nothing to ask, like a topic without texts (review of D60).
     """
     sections = [section for section in parse_document(text).values() if section.text.strip()]
-    prose = [section.text.strip() for section in sections if section.status is not SectionStatus.GENERATED]
-    if not prose:
+    if not sections:
         return Knowledge(text=text)
+    prose = [section.text.strip() for section in sections if section.status not in _NO_PROSE]
     generated = [section.text for section in sections if section.status is SectionStatus.GENERATED]
     title = _TITLE.search(text)
     return Knowledge(

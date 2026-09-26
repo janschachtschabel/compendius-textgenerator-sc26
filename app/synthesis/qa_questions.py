@@ -28,8 +28,8 @@ from app.synthesis.qa_words import (
     AMOUNT_VERBS,
     ARTICLES,
     CAUSES,
-    COUNTING_VERBS,
     GOVERNED,
+    MEASURING_VERBS,
     NAMING_HEADS,
     NO_OBJECT_VERBS,
     NOUNS,
@@ -76,6 +76,14 @@ def _balanced(text: str) -> bool:
     return (
         text.count("(") == text.count(")") and text.count("[") == text.count("]") and text.count("„") == text.count("“")
     )
+
+
+def _names_an_amount(verb: str, noun: Any) -> bool:
+    """Whether the object of ``verb`` is an amount that "Was" would ask for as a thing: always behind "dauern" or
+    "kosten" (M30, D60), behind "messen", "wiegen" or "zählen" only with a number in it (review of D60)."""
+    if verb in MEASURING_VERBS:
+        return any(token.pos_ == "NUM" for token in noun.subtree)
+    return verb in AMOUNT_VERBS
 
 
 class _Asker:
@@ -170,7 +178,8 @@ class _Asker:
         if (
             child.dep_ == "oa"
             and child.pos_ in NOUNS
-            and clause.lexical not in NO_OBJECT_VERBS | COUNTING_VERBS
+            and clause.lexical not in NO_OBJECT_VERBS
+            and not _names_an_amount(clause.lexical, child)
             and not clause.joined()
         ):
             focus = span(doc, ids)

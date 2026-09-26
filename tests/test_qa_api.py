@@ -72,6 +72,16 @@ def test_an_unknown_topic_is_a_404_with_the_resolution(client: TestClient) -> No
     assert answer.status_code == 404 and "resolution" in answer.json()["detail"]
 
 
+def test_a_compendium_text_without_prose_is_a_404_that_names_the_text(client: TestClient) -> None:
+    """The markdown of a compendium whose blocks all came out empty holds no prose to ask (review of D60); the
+    answer speaks of the text, not of the archives a topic would have searched."""
+    block = "<!-- kompendium:section id=glossar status=maschinell-generiert hash=0 -->"
+    row = "| **Optik** | Die Optik ist ein Teilgebiet. | `skos:related` |"
+    answer = client.post("/api/v2/qa", json={"text": f"# Kompendium: Optik\n\n### Glossar\n{block}\n\n{row}\n"})
+    assert answer.status_code == 404 and "Archiven" not in answer.json()["detail"], answer.json()
+    assert "Fließtext" in answer.json()["detail"]
+
+
 def test_the_llm_writes_the_pairs_when_it_is_asked_and_available(with_llm: TestClient) -> None:
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "count": 2}).json()
     assert body["method"] == "llm" and body["note"] is None

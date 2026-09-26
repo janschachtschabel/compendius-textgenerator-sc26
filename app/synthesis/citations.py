@@ -159,7 +159,7 @@ def _is_question(sentence: str) -> bool:
     Energie verfügbar gemacht? [Modellwissen]" would read as knowledge. In M31 three of 50 model-knowledge
     sentences were such questions, fillers for both judges (D60)."""
     plain = collapse(_COMMENT_RE.sub(" ", _MARKER_RE.sub("", sentence)))
-    return plain.rstrip(' "“”»«)').endswith("?")
+    return plain.rstrip(" )").endswith("?")  # not a title in quotes: „Was ist Aufklärung?“ (review of D60)
 
 
 def _as_marked(sentence: str, grade: str) -> str:

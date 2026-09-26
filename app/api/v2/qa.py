@@ -326,6 +326,10 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     else:
         knowledge = knowledge_of_text(payload.text or "")
     text = knowledge.text
+    if not text.strip() and payload.text is not None:
+        raise HTTPException(
+            status_code=404, detail="Der Text enthält keinen Fließtext, aus dem sich Fragen bilden ließen."
+        )
     if not text.strip():
         raise HTTPException(status_code=404, detail="Zum Thema stehen in den Archiven keine Texte bereit.")
 

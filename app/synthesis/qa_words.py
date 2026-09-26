@@ -80,7 +80,9 @@ NO_OBJECT_VERBS = frozenset({"sein", "werden", "bleiben", "lauten", "heißen", "
 # viel", never "Was" or "Worauf" (M30: "Was dauern Prüfungsvorbereitungskurse … ungefähr?"). "zählen" counts only
 # with an accusative ("zählt 7.645 Betriebe"); "zählt zu" names a membership and stays a question
 AMOUNT_VERBS = frozenset({"dauern", "kosten", "betragen", "wiegen", "messen", "beziffern", "belaufen"})
-COUNTING_VERBS = AMOUNT_VERBS | {"zählen"}
+# "messen die Stromstärke" names a thing, "misst fast 50 Meter" an amount: these verbs name one only with a number in
+# their object (review of D60). The parse takes "misst" for a form of "missen".
+MEASURING_VERBS = frozenset({"messen", "missen", "wiegen", "zählen"})
 WO_PREPOSITIONS = {
     "an": "Woran", "am": "Woran", "auf": "Worauf", "aus": "Woraus", "bei": "Wobei", "beim": "Wobei",
     "durch": "Wodurch", "für": "Wofür", "gegen": "Wogegen", "in": "Worin", "im": "Worin", "mit": "Womit",

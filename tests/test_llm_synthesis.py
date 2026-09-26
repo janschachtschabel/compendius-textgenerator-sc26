@@ -442,6 +442,13 @@ def test_a_question_is_never_kept_marked_whatever_the_grade() -> None:
     assert kept == "Licht breitet sich geradlinig aus und wird an Grenzflächen gebrochen [1]." and failed == 1
 
 
+def test_a_statement_that_quotes_a_question_stays_a_statement() -> None:
+    """A title in quotes may end in a question mark; the sentence around it states a fact (review of D60)."""
+    quoting = "Kant schrieb 1784 den Aufsatz „Beantwortung der Frage: Was ist Aufklärung?“"
+    text, failed = verify_citations(f"Erster Satz [1]. {quoting}", {1}, mark=CONCLUSION)
+    assert text == f"Erster Satz [1]. {CONCLUSION_OPEN}{quoting}{END_MARKER}" and failed == 1
+
+
 def test_model_knowledge_is_marked_visibly_inside_its_block_and_a_conclusion_is_not() -> None:
     """D56 (Jan): a reader of the rendered text sees which sentence no source covers - the comment alone hid it.
 

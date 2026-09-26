@@ -462,6 +462,22 @@ def test_a_definition_that_ends_in_a_number_is_complete() -> None:
     assert [c.question for c in glossary_candidates(markdown, NLP)] == ["Was versteht man unter Sauerstoff?"]
 
 
+def test_a_definition_cut_at_an_ordinal_is_no_answer() -> None:
+    """ "… von 1901 bis 1905 der 16." is cut where an ordinal stands, and the number above let it through (review of
+    D60): behind an article or "am", "im", "vom", "zum" a number starts an ordinal instead of ending the sentence."""
+    primary = _source("Karl Muster", "Karl Muster war von 1901 bis 1905 der 16. Vorsitzende des Vereins.", primary=True)
+    markdown = build_glossary("Karl Muster", primary, [primary], aliases=[])
+    assert glossary_candidates(markdown, _AllPersonDoc) == []
+
+
+def test_a_verb_of_measure_asks_what_it_measures_when_that_is_no_amount() -> None:
+    """ "messen die Stromstärke" names a thing, "misst fast 50 Meter" an amount; for "messen", "wiegen" and "zählen"
+    only a number in the object makes it one (review of D60). The parse takes "misst" for a form of "missen"."""
+    assert ("Objekt", "Was messen Amperemeter?") in asked("Amperemeter messen die elektrische Stromstärke.")
+    assert ("Objekt", "Was misst ein Amperemeter?") in asked("Ein Amperemeter misst die elektrische Stromstärke.")
+    assert not any(text.startswith("Was misst") for _, text in asked("Der Turm misst fast 50 Meter."))
+
+
 def test_a_person_topic_is_recognised_by_its_entity() -> None:
     assert is_person("Albert Einstein", NLP) and not is_person("Vulkan", NLP)
 

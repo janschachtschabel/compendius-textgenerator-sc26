@@ -771,6 +771,41 @@
     ["Jahr", "", "NOUN", "NN", "oa", 2, "Jahr", "Case=Acc|Gender=Neut|Number=Sing"],
     [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
    ]
+  },
+  "Ein Amperemeter misst die elektrische Stromstärke.": {
+   "ents": [],
+   "tokens": [
+    ["Ein", " ", "DET", "ART", "nk", 1, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Amperemeter", " ", "NOUN", "NN", "sb", 2, "Amperemeter", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["misst", " ", "VERB", "VVFIN", "ROOT", 2, "missen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 5, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["elektrische", " ", "ADJ", "ADJA", "nk", 5, "elektrisch", "Case=Acc|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Stromstärke", "", "NOUN", "NN", "oa", 2, "Stromstärke", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Der Turm misst fast 50 Meter.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Turm", " ", "NOUN", "NN", "sb", 2, "Turm", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["misst", " ", "VERB", "VVFIN", "ROOT", 2, "missen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["fast", " ", "ADV", "ADV", "mo", 4, "fast", ""],
+    ["50", " ", "NUM", "CARD", "nk", 5, "50", ""],
+    ["Meter", "", "NOUN", "NN", "oa", 2, "Meter", "Case=Acc|Gender=Masc|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Amperemeter messen die elektrische Stromstärke.": {
+   "ents": [],
+   "tokens": [
+    ["Amperemeter", " ", "NOUN", "NN", "sb", 1, "Amperemeter", "Case=Nom|Gender=Masc|Number=Plur"],
+    ["messen", " ", "VERB", "VVFIN", "ROOT", 1, "messen", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 4, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["elektrische", " ", "ADJ", "ADJA", "nk", 4, "elektrisch", "Case=Acc|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Stromstärke", "", "NOUN", "NN", "oa", 1, "Stromstärke", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
   }
  }
 }

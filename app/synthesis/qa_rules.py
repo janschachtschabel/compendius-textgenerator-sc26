@@ -36,6 +36,8 @@ _FUNCTION_WORDS = frozenset(
     {"als", "im", "in", "bei", "mit", "nach", "von", "auf", "unter", "für", "durch", "zu", "aus", "an", "am"}
 )
 _ARTICLES = frozenset({"der", "die", "das", "ein", "eine"})
+# "der 16." is where a sentence splitter cut "der 16. Präsident"; "Klassen 5 bis 12." ends with its number
+_ORDINAL_LEADS = frozenset({"der", "die", "das", "den", "dem", "des", "am", "im", "vom", "zum", "zur", "beim"})
 _TERM = r"(?P<term>[A-ZÄÖÜ][\wäöüß-]*(?:\s+[A-ZÄÖÜ][\wäöüß-]*)?)"
 # "Ein Vulkan ist eine …", "Nachhaltigkeit ist ein …": an article behind the copula makes it a definition;
 # "Der Rotor ist leicht" is none, and "beschreibt" says what a thing does, not what it is
@@ -203,9 +205,16 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
         # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
         term = re.sub(r"\s*\([^)]*\)$", "", " ".join(row.group("term").split()))
         definition = " ".join(row.group("definition").split())
-        last = definition.rstrip(".").split()[-1] if definition.split() else ""
-        # "… bis 700 m ü." is cut at an abbreviation; "… mit der Ordnungszahl 8." ends with its number (M30)
-        if definition.endswith("…") or (len(last) <= 2 and not last.isdigit()) or ends_with_abbreviation(definition):
+        tokens = definition.rstrip(".").split()
+        last = tokens[-1] if tokens else ""
+        # "… bis 700 m ü." is cut at an abbreviation; "… mit der Ordnungszahl 8." ends with its number (M30),
+        # "… der 16." is cut at an ordinal (review of D60)
+        ordinal = last.isdigit() and len(tokens) > 1 and tokens[-2].lower() in _ORDINAL_LEADS
+        if (
+            definition.endswith("…")
+            or (len(last) <= 2 and (not last.isdigit() or ordinal))
+            or ends_with_abbreviation(definition)
+        ):
             continue
         if not words(term) & set(re.findall(r"[\wäöüß]+", definition.lower())[:6]) or unclear(
             " ".join(definition.split()[:3])
