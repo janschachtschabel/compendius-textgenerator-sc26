@@ -144,7 +144,7 @@ class ZimRegistry:
         candidates: list[tuple[str, str]] = []
         articles: list[ZimArticle] = []
         for title in titles:
-            article = archive.read(title)
+            article = archive.read_article(title)
             if article is None:
                 continue
             parsed = archive.parse(article)
@@ -160,7 +160,7 @@ class ZimRegistry:
             chosen = articles[index]
         elif named and self.primary_archive is not None:
             source = self.primary_archive
-            found = source.read(named)
+            found = source.read_article(named)
             chosen = found if found is not None and not source.parse(found).is_disambiguation else None
         if chosen is None:
             return
@@ -199,7 +199,7 @@ class ZimRegistry:
         ranked = rank_by_query(topic, [*suggestions, *hits])
         candidates = list(dict.fromkeys([*exact, *([ranked] if ranked else []), *suggestions, *hits]))
         for title in candidates:
-            found = lead.read(title)
+            found = lead.read_article(title)
             if found is None or lead.parse(found).is_disambiguation:
                 continue
             resolution.alternatives = [t for t in candidates if t != title][:8]
@@ -211,7 +211,7 @@ class ZimRegistry:
     def _resolve_exact(self, title: str, stems: set[str], resolution: Resolution, *, method: str) -> bool:
         """Resolve through an exact title (redirects followed) in the archives, leading archive first."""
         for archive in self.archives:
-            article = archive.read(title)
+            article = archive.read_article(title)
             if article is None:
                 continue
             parsed = archive.parse(article)
@@ -267,7 +267,7 @@ class ZimRegistry:
         if lead is None:
             return False
         for compound in compound_candidates(head, tail):
-            article = lead.read(compound)
+            article = lead.read_article(compound)
             if article is not None and not lead.parse(article).is_disambiguation:
                 self._take(resolution, article, lead, method="variant", confident=False)
                 return True
@@ -283,7 +283,7 @@ class ZimRegistry:
         articles: list[ZimArticle] = []
         meanings: list[tuple[str, str]] = []
         for title in links[:MAX_MEANINGS]:
-            article = archive.read(title)
+            article = archive.read_article(title)
             if article is None:
                 continue
             parsed = archive.parse(article)

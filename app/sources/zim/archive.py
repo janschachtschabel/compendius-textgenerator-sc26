@@ -9,7 +9,7 @@ from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 import libzim
 from libzim.search import Query, Searcher
@@ -28,6 +28,12 @@ PROJECT_ROLES: dict[str, SourceRole] = {
 }
 PARSE_CACHE_SIZE = 256  # parsed articles kept per archive; a corpus reads about 12 plus lookups
 MAX_REDIRECTS = 3  # a chain longer than this is broken, not followed
+# A redirect to a section of another article is a page of its own in these archives: a meta refresh to
+# "./Bruchrechnung#Nenner", with the title as its only text (M35)
+SECTION_REDIRECT = re.compile(
+    r"""<meta\s+http-equiv=["']refresh["']\s+content=["']\d+;\s*url=['"]?\./([^'"#]+)""", re.IGNORECASE
+)
+REDIRECT_HEAD = 2_000  # the meta refresh stands in the head; an article's body is never searched for it
 LINK_CACHE_SIZE = 20_000  # link names resolved per archive; a corpus asks about 160 to 2,200 (M25)
 PROJECT_PRIORITY = {"wikipedia": 0, "klexikon": 1, "wikiversity": 2, "wikibooks": 3}
 PROJECT_AUTHORITY = {"wikipedia": 0.95, "klexikon": 0.85, "wikibooks": 0.80, "wikiversity": 0.75}
@@ -169,6 +175,21 @@ class ZimArchive:
             return None
         html = bytes(item.content).decode("utf-8", "replace")
         return ZimArticle(title=str(entry.title), path=str(entry.path), html=html)
+
+    def read_article(self, identifier: str) -> ZimArticle | None:
+        """``read``, and a redirect to a section of another article followed to that article (M35).
+
+        ``read`` keeps such a page as it is: Wikidata gives many of them an object of their own, and /entities names
+        it (D43). A resolution needs the article: the page holds nothing but its title.
+        """
+        article = self.read(identifier)
+        for _ in range(MAX_REDIRECTS):
+            found = SECTION_REDIRECT.search(article.html, 0, REDIRECT_HEAD) if article is not None else None
+            target = self.read(unquote(found.group(1))) if found is not None else None
+            if target is None or article is None or target.path == article.path:
+                break
+            article = target
+        return article
 
     def parse(self, article: ZimArticle) -> ParsedArticle:
         with self._cache_lock:
