@@ -1,0 +1,711 @@
+# Noten für die Kontrolle von M37 (docs/entwicklung/messung/mc_sammelthemen.py --normal): Gehört ein Wikipedia-Artikel,
+# aus dem ein Kompendium zu einem der 20 gewöhnlichen Themen von M1 (eval/artikelwahl/korpus_labels.yaml) Absätze
+# gedruckt hat, zum Thema? Je Thema jeder Artikel einmal, den mindestens einer der vier Wege (R, B, A, N) gedruckt hat:
+# 233 Paare. Benotet am 26.09.2026 von einem zweiten Claude-Subagenten, der rückwärts las,
+# aus Thema, Titel und den ersten 400 Zeichen der Einleitung, blind: ohne zu wissen, welcher Weg den Artikel gedruckt
+# hat, die Artikel je Thema gemischt (Saat 371).
+# 2: gehört zum Thema - das Thema selbst, sein Übersichtsartikel oder ein zentraler Teil, Kernbegriff oder Vorgang.
+# 1: verwandt - Hintergrund, Nachbarthema, das weitere Fachgebiet oder ein direkter Oberbegriff, ein einzelnes Beispiel.
+# 0: unpassend - andere Bedeutung, fremdes Thema, Zufallstreffer.
+# Die Artikeltexte stehen nicht hier: Die Messung liest sie aus dem Archiv.
+version: 1
+noten:
+- thema: Barockliteratur
+  artikel: Barockliteratur
+  note: 2
+- thema: Barockliteratur
+  artikel: Dreißigjähriger Krieg
+  note: 1
+- thema: Barockliteratur
+  artikel: Martin Opitz
+  note: 2
+- thema: Barockliteratur
+  artikel: Barock
+  note: 1
+- thema: Barockliteratur
+  artikel: Andreas Gryphius
+  note: 2
+- thema: Barockliteratur
+  artikel: Vanitas
+  note: 2
+- thema: Barockliteratur
+  artikel: Catharina Regina von Greiffenberg
+  note: 2
+- thema: Barockliteratur
+  artikel: Hans Jakob Christoffel von Grimmelshausen
+  note: 2
+- thema: Barockliteratur
+  artikel: Christian Hoffmann von Hoffmannswaldau
+  note: 2
+- thema: Bruchrechnung
+  artikel: Rationale Zahl
+  note: 1
+- thema: Bruchrechnung
+  artikel: Prozent
+  note: 1
+- thema: Bruchrechnung
+  artikel: Dezimalbruch
+  note: 1
+- thema: Bruchrechnung
+  artikel: Bruchrechnung
+  note: 2
+- thema: Bruchrechnung
+  artikel: Kürzen
+  note: 2
+- thema: Bruchrechnung
+  artikel: Bruchgleichung
+  note: 1
+- thema: Bruchrechnung
+  artikel: Kleinstes gemeinsames Vielfaches
+  note: 1
+- thema: Bruchrechnung
+  artikel: Multiplikation
+  note: 1
+- thema: Bruchrechnung
+  artikel: Rechnen
+  note: 1
+- thema: Bruchrechnung
+  artikel: Größter gemeinsamer Teiler
+  note: 1
+- thema: Demokratie
+  artikel: Souverän
+  note: 1
+- thema: Demokratie
+  artikel: Konkordanzdemokratie
+  note: 2
+- thema: Demokratie
+  artikel: Direkte Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Soziale Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Demokratietheorie
+  note: 2
+- thema: Demokratie
+  artikel: Postdemokratie
+  note: 1
+- thema: Demokratie
+  artikel: Defekte Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Gewaltenteilung
+  note: 2
+- thema: Demokratie
+  artikel: Liberale Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Rechtsstaat
+  note: 1
+- thema: Demokratie
+  artikel: Volkssouveränität
+  note: 2
+- thema: Demokratie
+  artikel: Repräsentative Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Demokratisierung
+  note: 2
+- thema: Demokratie
+  artikel: Menschenrechte
+  note: 1
+- thema: Demokratie
+  artikel: Parlamentarismus
+  note: 2
+- thema: Demokratie
+  artikel: Demokratie
+  note: 2
+- thema: Demokratie
+  artikel: Staatsmodell
+  note: 1
+- thema: Französische Revolution
+  artikel: Sturm auf die Bastille
+  note: 2
+- thema: Französische Revolution
+  artikel: Direktorium (Frankreich)
+  note: 2
+- thema: Französische Revolution
+  artikel: Terrorherrschaft
+  note: 2
+- thema: Französische Revolution
+  artikel: Französische Verfassung (1791)
+  note: 2
+- thema: Französische Revolution
+  artikel: Ancien Régime
+  note: 1
+- thema: Französische Revolution
+  artikel: Die Französische Revolution
+  note: 0
+- thema: Französische Revolution
+  artikel: Revolution
+  note: 1
+- thema: Französische Revolution
+  artikel: Französische Revolution
+  note: 2
+- thema: Französische Revolution
+  artikel: Maximilien de Robespierre
+  note: 2
+- thema: Französische Revolution
+  artikel: Liberalismus
+  note: 1
+- thema: Französische Revolution
+  artikel: Erklärung der Menschen- und Bürgerrechte
+  note: 2
+- thema: Französische Revolution
+  artikel: Aufklärung
+  note: 1
+- thema: Französische Revolution
+  artikel: Generalstände von 1789
+  note: 2
+- thema: Klimawandel
+  artikel: Treibhauseffekt
+  note: 2
+- thema: Klimawandel
+  artikel: Klimaschutz
+  note: 2
+- thema: Klimawandel
+  artikel: Anthropogen
+  note: 1
+- thema: Klimawandel
+  artikel: Folgen der globalen Erwärmung
+  note: 2
+- thema: Klimawandel
+  artikel: Forschungsgeschichte des Klimawandels
+  note: 2
+- thema: Klimawandel
+  artikel: Globale Erwärmung
+  note: 2
+- thema: Klimawandel
+  artikel: Kohlenstoffdioxid
+  note: 1
+- thema: Klimawandel
+  artikel: Klimawandel
+  note: 2
+- thema: Optik
+  artikel: Licht
+  note: 2
+- thema: Optik
+  artikel: Geometrische Optik
+  note: 2
+- thema: Optik
+  artikel: Wellenoptik
+  note: 2
+- thema: Optik
+  artikel: Optik
+  note: 2
+- thema: Optik
+  artikel: Elektromagnetische Welle
+  note: 1
+- thema: Optik
+  artikel: Beugung (Physik)
+  note: 2
+- thema: Optik
+  artikel: Geschichte der Physik
+  note: 1
+- thema: Optik
+  artikel: Reflexion (Physik)
+  note: 2
+- thema: Optik
+  artikel: Interferenz (Physik)
+  note: 2
+- thema: Optik
+  artikel: Auge
+  note: 1
+- thema: Optik
+  artikel: Technische Optik
+  note: 1
+- thema: Optik
+  artikel: Quantenoptik
+  note: 2
+- thema: Optik
+  artikel: Augenoptiker
+  note: 1
+- thema: Optik
+  artikel: Brechung (Physik)
+  note: 2
+- thema: Photosynthese
+  artikel: Chloroplast
+  note: 2
+- thema: Photosynthese
+  artikel: Kohlenstoffdioxid
+  note: 1
+- thema: Photosynthese
+  artikel: Wasser
+  note: 1
+- thema: Photosynthese
+  artikel: Photosystem
+  note: 2
+- thema: Photosynthese
+  artikel: Chlorophylle
+  note: 2
+- thema: Photosynthese
+  artikel: Photosynthese
+  note: 2
+- thema: Photosynthese
+  artikel: Bakterien
+  note: 1
+- thema: Photosynthese
+  artikel: Photorespiration
+  note: 2
+- thema: Photosynthese
+  artikel: Pflanze
+  note: 1
+- thema: Photosynthese
+  artikel: C4-Pflanze
+  note: 2
+- thema: Photosynthese
+  artikel: Crassulaceen-Säurestoffwechsel
+  note: 2
+- thema: Programmiersprache
+  artikel: Deklarative Programmierung
+  note: 2
+- thema: Programmiersprache
+  artikel: Logische Programmierung
+  note: 2
+- thema: Programmiersprache
+  artikel: Interpreter
+  note: 2
+- thema: Programmiersprache
+  artikel: Compiler
+  note: 2
+- thema: Programmiersprache
+  artikel: Geschichte der Programmiersprachen
+  note: 2
+- thema: Programmiersprache
+  artikel: Programmiersprache
+  note: 2
+- thema: Programmiersprache
+  artikel: Objektorientierte Programmierung
+  note: 2
+- thema: Programmiersprache
+  artikel: Algorithmus
+  note: 1
+- thema: Programmiersprache
+  artikel: Programmierparadigma
+  note: 2
+- thema: Programmiersprache
+  artikel: Höhere Programmiersprache
+  note: 2
+- thema: Programmiersprache
+  artikel: Software
+  note: 1
+- thema: Programmiersprache
+  artikel: Unterprogramm
+  note: 1
+- thema: Programmiersprache
+  artikel: Quelltext
+  note: 2
+- thema: Programmiersprache
+  artikel: Esoterische Programmiersprache
+  note: 1
+- thema: Programmiersprache
+  artikel: Allzweck-Programmiersprache
+  note: 2
+- thema: Programmiersprache
+  artikel: Visuelle Programmiersprache
+  note: 2
+- thema: Programmiersprache
+  artikel: Python (Programmiersprache)
+  note: 1
+- thema: Programmiersprache
+  artikel: Syntax
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Svante Arrhenius
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Säuren
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: Basen (Chemie)
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: Lewis-Säure-Base-Konzept
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: HSAB-Konzept
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: Säurekonstante
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: Säure-Base-Konzepte
+  note: 2
+- thema: Säure-Base-Konzepte
+  artikel: PH-Wert
+  note: 2
+- thema: Sinfonie
+  artikel: Sonatensatzform
+  note: 2
+- thema: Sinfonie
+  artikel: Orchester
+  note: 1
+- thema: Sinfonie
+  artikel: Sinfonische Dichtung
+  note: 1
+- thema: Sinfonie
+  artikel: Franz Schubert
+  note: 1
+- thema: Sinfonie
+  artikel: Manfred-Sinfonie
+  note: 1
+- thema: Sinfonie
+  artikel: Sinfonia
+  note: 1
+- thema: Sinfonie
+  artikel: Sinfonie
+  note: 2
+- thema: Sinfonie
+  artikel: Sinfonik
+  note: 1
+- thema: Sinfonie
+  artikel: Joseph Haydn
+  note: 2
+- thema: Sinfonie
+  artikel: Sinfonia concertante
+  note: 1
+- thema: Sinfonie
+  artikel: Ludwig van Beethoven
+  note: 2
+- thema: Sinfonie
+  artikel: 7. Sinfonie (Bruckner)
+  note: 1
+- thema: Plattentektonik
+  artikel: Lithosphäre
+  note: 2
+- thema: Plattentektonik
+  artikel: Plattentektonik
+  note: 2
+- thema: Plattentektonik
+  artikel: Erdbeben
+  note: 1
+- thema: Plattentektonik
+  artikel: Kontinentaldrift
+  note: 2
+- thema: Plattentektonik
+  artikel: Transformstörung
+  note: 2
+- thema: Plattentektonik
+  artikel: Ozeanbodenspreizung
+  note: 2
+- thema: Plattentektonik
+  artikel: Asthenosphäre
+  note: 2
+- thema: Ökosystem
+  artikel: Ökosystemverfall
+  note: 1
+- thema: Ökosystem
+  artikel: Ökologisches Gleichgewicht
+  note: 2
+- thema: Ökosystem
+  artikel: Ökosystemleistung
+  note: 2
+- thema: Ökosystem
+  artikel: Organizismus
+  note: 1
+- thema: Ökosystem
+  artikel: System
+  note: 1
+- thema: Ökosystem
+  artikel: Biosphäre
+  note: 1
+- thema: Ökosystem
+  artikel: Stoffkreislauf
+  note: 2
+- thema: Ökosystem
+  artikel: Ökosystem
+  note: 2
+- thema: Ökosystem
+  artikel: Ökologische Nische
+  note: 2
+- thema: Ökosystem
+  artikel: Ökosystemischer Ansatz nach Bronfenbrenner
+  note: 0
+- thema: Ökosystem
+  artikel: Ökologie
+  note: 1
+- thema: Ökosystem
+  artikel: Biodiversität
+  note: 1
+- thema: Ökosystem
+  artikel: Biotop
+  note: 2
+- thema: Atommodell
+  artikel: Atomorbital
+  note: 2
+- thema: Atommodell
+  artikel: Teilchenmodell
+  note: 1
+- thema: Atommodell
+  artikel: Neutron
+  note: 2
+- thema: Atommodell
+  artikel: Bohrsches Atommodell
+  note: 2
+- thema: Atommodell
+  artikel: Liste der Atommodelle
+  note: 2
+- thema: Atommodell
+  artikel: Thomsonsches Atommodell
+  note: 2
+- thema: Atommodell
+  artikel: Proton
+  note: 2
+- thema: Atommodell
+  artikel: Zeittafel physikalischer Entdeckungen
+  note: 1
+- thema: Atommodell
+  artikel: Quantenmechanik
+  note: 1
+- thema: Atommodell
+  artikel: Atom
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Dampfmaschine
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Hochindustrialisierung in Deutschland
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Fabrik
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Revolution
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Urbanisierung
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Eisen
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Zweite industrielle Revolution
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Kohle
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Soziokulturelle Evolution
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Industrialisierung
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Industrielle Revolution in Deutschland
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Eisenbahn
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Kapitalismus
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Textilindustrie
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Soziale Frage
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Industrielle Revolution
+  note: 2
+- thema: Industrielle Revolution
+  artikel: Manchesterkapitalismus
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Wechselstrom
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Ohmsches Gesetz
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Stromnetz
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Gleichstrommaschine
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektrischer Widerstand
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Elektrische Ladung
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Elektrische Spannung
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Strom
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektrischer Strom
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Stromquelle
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Kondensation
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Hydrologie
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Verdunstung
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Eis
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Wolke
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Niederschlag
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Infiltration (Hydrogeologie)
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Grundwasser
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Wasserkreislauf
+  note: 2
+- thema: Wasserkreislauf
+  artikel: Wasser
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Abfluss
+  note: 2
+- thema: Römisches Reich
+  artikel: Römische Kaiserzeit
+  note: 2
+- thema: Römisches Reich
+  artikel: Römisches Recht
+  note: 2
+- thema: Römisches Reich
+  artikel: Römische Königszeit
+  note: 2
+- thema: Römisches Reich
+  artikel: Spätantike
+  note: 2
+- thema: Römisches Reich
+  artikel: Römisches Reich
+  note: 2
+- thema: Römisches Reich
+  artikel: Wirtschaft im Römischen Reich
+  note: 2
+- thema: Römisches Reich
+  artikel: Römische Legion
+  note: 2
+- thema: Römisches Reich
+  artikel: Augustus
+  note: 2
+- thema: Römisches Reich
+  artikel: Römische Republik
+  note: 2
+- thema: Römisches Reich
+  artikel: Römisches Verfassungsrecht
+  note: 2
+- thema: Römisches Reich
+  artikel: Gaius Iulius Caesar
+  note: 2
+- thema: Lineare Funktion
+  artikel: Lineare Gleichung
+  note: 1
+- thema: Lineare Funktion
+  artikel: Funktion (Mathematik)
+  note: 1
+- thema: Lineare Funktion
+  artikel: Lineare Algebra
+  note: 1
+- thema: Lineare Funktion
+  artikel: Funktionsgraph
+  note: 1
+- thema: Lineare Funktion
+  artikel: Lineare Abbildung
+  note: 1
+- thema: Lineare Funktion
+  artikel: Konstante Funktion
+  note: 1
+- thema: Lineare Funktion
+  artikel: Affine Abbildung
+  note: 1
+- thema: Lineare Funktion
+  artikel: Proportionalität
+  note: 2
+- thema: Lineare Funktion
+  artikel: Lineare Funktion
+  note: 2
+- thema: Lineare Funktion
+  artikel: Kartesisches Koordinatensystem
+  note: 1
+- thema: Lineare Funktion
+  artikel: Gerade
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zelle (Biologie)
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zellbiologie
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Plastid
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zellmembran
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zellkern
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Protein
+  note: 1
+- thema: Zelle (Biologie)
+  artikel: Vakuole
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zelle
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Eukaryoten
+  note: 2
+- thema: Gedicht
+  artikel: Sonett
+  note: 2
+- thema: Gedicht
+  artikel: Kanon der neun Lyriker
+  note: 1
+- thema: Gedicht
+  artikel: Gedicht
+  note: 2
+- thema: Gedicht
+  artikel: Wechsel (Lyrik)
+  note: 1
+- thema: Gedicht
+  artikel: Kinderlyrik
+  note: 2
+- thema: Gedicht
+  artikel: Reim
+  note: 2
+- thema: Gedicht
+  artikel: Lyrik
+  note: 2
+- thema: Gedicht
+  artikel: Literatur
+  note: 1
+- thema: Gedicht
+  artikel: Liebeslyrik
+  note: 2
+- thema: Gedicht
+  artikel: Strophe
+  note: 2
+- thema: Gedicht
+  artikel: Naturlyrik
+  note: 2
+- thema: Gedicht
+  artikel: Politische Lyrik
+  note: 2
+- thema: Gedicht
+  artikel: Der siebente Ring
+  note: 1
+- thema: Gedicht
+  artikel: Vers
+  note: 2

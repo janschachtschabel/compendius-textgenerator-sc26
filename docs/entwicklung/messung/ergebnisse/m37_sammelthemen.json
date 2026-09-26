@@ -1,0 +1,5203 @@
+{
+ "themen": [
+  {
+   "thema": "deutsche Dichter",
+   "wege": {
+    "R": {
+     "sekunden": 3.55,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyrikanthologien",
+       "absaetze": 7
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 3
+      },
+      {
+       "titel": "Otto Braun (Lyriker)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Theodor Kramer (Lyriker)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wilhelm Klemm (Lyriker)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Conrad Celtis",
+      "Frauenlob",
+      "Friedrich von Hausen (Minnesänger)",
+      "Hans Folz",
+      "Hugo von Montfort",
+      "Johann Fischart",
+      "Johannes Hadlaub",
+      "Konrad von Würzburg",
+      "Mechthild von Magdeburg",
+      "Michael Beheim",
+      "Mönch von Salzburg",
+      "Nikolaus Herman",
+      "Oswald von Wolkenstein",
+      "Otto Braun (Lyriker)",
+      "Theodor Kramer (Lyriker)",
+      "Ulrich von Liechtenstein",
+      "Wilhelm Klemm (Lyriker)"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.63,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyrikanthologien",
+       "absaetze": 7
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 3
+      },
+      {
+       "titel": "Otto Braun (Lyriker)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Theodor Kramer (Lyriker)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wilhelm Klemm (Lyriker)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Conrad Celtis",
+      "Frauenlob",
+      "Friedrich von Hausen (Minnesänger)",
+      "Hans Folz",
+      "Hugo von Montfort",
+      "Johann Fischart",
+      "Johannes Hadlaub",
+      "Konrad von Würzburg",
+      "Mechthild von Magdeburg",
+      "Michael Beheim",
+      "Mönch von Salzburg",
+      "Nikolaus Herman",
+      "Oswald von Wolkenstein",
+      "Otto Braun (Lyriker)",
+      "Theodor Kramer (Lyriker)",
+      "Ulrich von Liechtenstein",
+      "Wilhelm Klemm (Lyriker)"
+     ],
+     "tokens_dienst": 862
+    },
+    "A": {
+     "sekunden": 2.41,
+     "hauptartikel": "Johann Wolfgang von Goethe",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Johann Wolfgang von Goethe",
+       "absaetze": 8
+      },
+      {
+       "titel": "Friedrich Schiller",
+       "absaetze": 7
+      },
+      {
+       "titel": "Heinrich Heine",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Carl August (Sachsen-Weimar-Eisenach)",
+      "Christiane von Goethe",
+      "Cornelia Schlosser",
+      "Friedrich Schiller",
+      "Heinrich Heine"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Johann Wolfgang von Goethe",
+      "Friedrich Schiller",
+      "Heinrich Heine",
+      "Rainer Maria Rilke",
+      "Friedrich Hölderlin",
+      "Bertolt Brecht",
+      "Annette von Droste-Hülshoff",
+      "Deutsche Literatur"
+     ],
+     "gefunden": [
+      "Johann Wolfgang von Goethe",
+      "Friedrich Schiller",
+      "Heinrich Heine",
+      "Rainer Maria Rilke",
+      "Friedrich Hölderlin",
+      "Bertolt Brecht",
+      "Annette von Droste-Hülshoff",
+      "Deutschsprachige Literatur"
+     ],
+     "tokens_frage": 1353,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 2.03,
+     "hauptartikel": "Deutschsprachige Literatur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Deutschsprachige Literatur",
+       "absaetze": 9
+      },
+      {
+       "titel": "Walther von der Vogelweide",
+       "absaetze": 4
+      },
+      {
+       "titel": "Friedrich Schiller",
+       "absaetze": 4
+      },
+      {
+       "titel": "Johann Wolfgang von Goethe",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Einhard",
+      "Friedrich Schiller",
+      "Johann Wolfgang von Goethe",
+      "Karl der Große",
+      "Martin Opitz",
+      "Otfrid von Weißenburg"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Deutsche Literatur",
+     "genannt": [
+      "Walther von der Vogelweide",
+      "Martin Opitz",
+      "Friedrich Schiller",
+      "Johann Wolfgang von Goethe",
+      "Heinrich Heine",
+      "Annette von Droste-Hülshoff",
+      "Rainer Maria Rilke",
+      "Bertolt Brecht"
+     ],
+     "gefunden": [
+      "Deutschsprachige Literatur",
+      "Walther von der Vogelweide",
+      "Martin Opitz",
+      "Friedrich Schiller",
+      "Johann Wolfgang von Goethe",
+      "Heinrich Heine",
+      "Annette von Droste-Hülshoff",
+      "Rainer Maria Rilke",
+      "Bertolt Brecht"
+     ],
+     "tokens_frage": 462,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "wege": {
+    "R": {
+     "sekunden": 3.87,
+     "hauptartikel": "Englische Romantik",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Englische Romantik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Englisches Parlament",
+       "absaetze": 5
+      },
+      {
+       "titel": "Historischer Roman",
+       "absaetze": 2
+      },
+      {
+       "titel": "Epos",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "August Wilhelm Schlegel",
+      "Charles Darwin",
+      "Edward Young (Dichter)",
+      "Friedrich Engels",
+      "Friedrich Schlegel",
+      "George Gordon Byron",
+      "James Macpherson",
+      "Jane Austen",
+      "John Keats",
+      "Karl Marx",
+      "Leigh Hunt",
+      "Percy Bysshe Shelley",
+      "Samuel Taylor Coleridge",
+      "Thomas Carlyle",
+      "Thomas Gray",
+      "Thomas Paine",
+      "Walter Scott",
+      "William Blake",
+      "William Godwin",
+      "William Hazlitt",
+      "William Wordsworth"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 2.68,
+     "hauptartikel": "Romantik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 7
+      },
+      {
+       "titel": "Frühromantik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Neuromantik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Spätromantik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Achim von Arnim",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Friedrich Schlegel",
+      "Gustav Mahler",
+      "Johann Gottlieb Fichte",
+      "Johann Heinrich Voß",
+      "Johann Wolfgang von Goethe",
+      "Joseph Görres",
+      "Ludwig Tieck",
+      "Napoleon Bonaparte",
+      "Napoleon Bonaparte",
+      "Richard Wagner"
+     ],
+     "tokens_dienst": 1500
+    },
+    "A": {
+     "sekunden": 0.88,
+     "hauptartikel": "Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 11
+      },
+      {
+       "titel": "Novalis",
+       "absaetze": 5
+      },
+      {
+       "titel": "Clemens Brentano",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Achim von Arnim",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Friedrich Schlegel",
+      "Gustav Mahler",
+      "Heinrich Heine",
+      "Johann Gottlieb Fichte",
+      "Johann Heinrich Voß",
+      "Johann Wolfgang von Goethe",
+      "Joseph Görres",
+      "Joseph von Eichendorff",
+      "Ludwig Tieck",
+      "Napoleon Bonaparte",
+      "Napoleon Bonaparte",
+      "Novalis",
+      "Richard Wagner"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Romantik",
+      "Novalis",
+      "Joseph von Eichendorff",
+      "Clemens Brentano",
+      "Achim von Arnim",
+      "Friedrich Schlegel",
+      "Ludwig Tieck",
+      "Heinrich Heine",
+      "William Wordsworth",
+      "Samuel Taylor Coleridge"
+     ],
+     "gefunden": [
+      "Romantik",
+      "Novalis",
+      "Joseph von Eichendorff",
+      "Clemens Brentano",
+      "Achim von Arnim",
+      "Friedrich Schlegel",
+      "Ludwig Tieck",
+      "Heinrich Heine",
+      "William Wordsworth",
+      "Samuel Taylor Coleridge"
+     ],
+     "tokens_frage": 1507,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.75,
+     "hauptartikel": "Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 12
+      },
+      {
+       "titel": "Novalis",
+       "absaetze": 4
+      },
+      {
+       "titel": "Clemens Brentano",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Achim von Arnim",
+      "Adelbert von Chamisso",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Friedrich Schlegel",
+      "Gustav Mahler",
+      "Johann Gottlieb Fichte",
+      "Johann Heinrich Voß",
+      "Johann Wolfgang von Goethe",
+      "Joseph Görres",
+      "Joseph von Eichendorff",
+      "Louis Antoine Henri de Bourbon-Condé, duc d’Enghien",
+      "Ludwig Tieck",
+      "Napoleon Bonaparte",
+      "Napoleon Bonaparte",
+      "Novalis",
+      "Richard Wagner"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Romantik",
+     "genannt": [
+      "Novalis",
+      "Joseph von Eichendorff",
+      "Clemens Brentano",
+      "Achim von Arnim",
+      "Ludwig Tieck",
+      "E. T. A. Hoffmann",
+      "Friedrich Schlegel",
+      "Adelbert von Chamisso"
+     ],
+     "gefunden": [
+      "Romantik",
+      "Novalis",
+      "Joseph von Eichendorff",
+      "Clemens Brentano",
+      "Achim von Arnim",
+      "Ludwig Tieck",
+      "E. T. A. Hoffmann",
+      "Friedrich Schlegel",
+      "Adelbert von Chamisso"
+     ],
+     "tokens_frage": 648,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "wege": {
+    "R": {
+     "sekunden": 4.21,
+     "hauptartikel": "Max Richter (Komponist)",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Max Richter (Komponist)",
+       "absaetze": 7
+      },
+      {
+       "titel": "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+       "absaetze": 6
+      },
+      {
+       "titel": "Ad Astra – Zu den Sternen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Filmmusik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Waltz with Bashir",
+       "absaetze": 1
+      },
+      {
+       "titel": "FatCat Records",
+       "absaetze": 1
+      },
+      {
+       "titel": "Europäischer Filmpreis/Beste Filmmusik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Alexander Bălănescu",
+      "Ari Folman",
+      "Arvo Pärt",
+      "Brian Eno",
+      "Franz Kafka",
+      "Haruki Murakami",
+      "James Gray (Regisseur)",
+      "Julian Opie",
+      "Kelli Ali",
+      "Luciano Berio",
+      "Marina Iwanowna Zwetajewa",
+      "Philip Glass",
+      "Robert Wyatt",
+      "Roni Size",
+      "Steve Reich",
+      "Tilda Swinton",
+      "Vashti Bunyan",
+      "Virginia Woolf",
+      "Wayne McGregor"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 3.38,
+     "hauptartikel": "Wiener Klassik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Wiener Klangstil",
+       "absaetze": 7
+      },
+      {
+       "titel": "Wiener Klassik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Klassik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Instrumentalmusik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Oper",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Carl Dahlhaus",
+      "Carl Friedrich Abel",
+      "Carlo Goldoni",
+      "Charles Burney",
+      "Christian Gottfried Krause",
+      "Christoph Willibald Gluck",
+      "Friedrich Schiller",
+      "Friedrich Wilhelm Marpurg",
+      "Jean-Jacques Rousseau",
+      "Johann Adolf Scheibe",
+      "Johann Christian Bach",
+      "Johann Mattheson",
+      "Johann Nikolaus Forkel",
+      "Johann Peter Salomon",
+      "Johann Schobert",
+      "Joseph Haydn",
+      "Joseph II.",
+      "Karl VI. (HRR)",
+      "Ludwig Finscher",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Marianna von Martines",
+      "Pietro Metastasio",
+      "Raphael Georg Kiesewetter",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 1438
+    },
+    "A": {
+     "sekunden": 1.01,
+     "hauptartikel": "Wiener Klassik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wiener Klassik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 7
+      },
+      {
+       "titel": "Joseph Haydn",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Carl Dahlhaus",
+      "Carl Friedrich Abel",
+      "Carlo Goldoni",
+      "Charles Burney",
+      "Christian Gottfried Krause",
+      "Christoph Willibald Gluck",
+      "Friedrich Schiller",
+      "Friedrich Wilhelm Marpurg",
+      "Jean-Jacques Rousseau",
+      "Johann Adolf Scheibe",
+      "Johann Christian Bach",
+      "Johann Mattheson",
+      "Johann Nikolaus Forkel",
+      "Johann Peter Salomon",
+      "Johann Schobert",
+      "Joseph Haydn",
+      "Joseph II.",
+      "Karl VI. (HRR)",
+      "Ludwig Finscher",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Marianna von Martines",
+      "Pietro Metastasio",
+      "Raphael Georg Kiesewetter",
+      "Rudolph von Österreich (Kardinal)",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Wiener Klassik",
+      "Joseph Haydn",
+      "Wolfgang Amadeus Mozart",
+      "Ludwig van Beethoven",
+      "Christoph Willibald Gluck",
+      "Antonio Salieri",
+      "Muzio Clementi",
+      "Johann Christian Bach"
+     ],
+     "gefunden": [
+      "Wiener Klassik",
+      "Joseph Haydn",
+      "Wolfgang Amadeus Mozart",
+      "Ludwig van Beethoven",
+      "Christoph Willibald Gluck",
+      "Antonio Salieri",
+      "Muzio Clementi",
+      "Johann Christian Bach"
+     ],
+     "tokens_frage": 1449,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.94,
+     "hauptartikel": "Wiener Klassik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wiener Klassik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 7
+      },
+      {
+       "titel": "Joseph Haydn",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Carl Dahlhaus",
+      "Carl Friedrich Abel",
+      "Carlo Goldoni",
+      "Charles Burney",
+      "Christian Gottfried Krause",
+      "Christoph Willibald Gluck",
+      "Friedrich Schiller",
+      "Friedrich Wilhelm Marpurg",
+      "Jean-Jacques Rousseau",
+      "Johann Adolf Scheibe",
+      "Johann Christian Bach",
+      "Johann Mattheson",
+      "Johann Nikolaus Forkel",
+      "Johann Peter Salomon",
+      "Johann Schobert",
+      "Joseph Haydn",
+      "Joseph II.",
+      "Karl VI. (HRR)",
+      "Ludwig Finscher",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Marianna von Martines",
+      "Pietro Metastasio",
+      "Raphael Georg Kiesewetter",
+      "Rudolph von Österreich (Kardinal)",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Wiener Klassik",
+     "genannt": [
+      "Joseph Haydn",
+      "Wolfgang Amadeus Mozart",
+      "Ludwig van Beethoven",
+      "Christoph Willibald Gluck",
+      "Carl Philipp Emanuel Bach",
+      "Antonio Salieri",
+      "Luigi Boccherini",
+      "Muzio Clementi"
+     ],
+     "gefunden": [
+      "Wiener Klassik",
+      "Joseph Haydn",
+      "Wolfgang Amadeus Mozart",
+      "Ludwig van Beethoven",
+      "Christoph Willibald Gluck",
+      "Carl Philipp Emanuel Bach",
+      "Antonio Salieri",
+      "Luigi Boccherini",
+      "Muzio Clementi"
+     ],
+     "tokens_frage": 593,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "wege": {
+    "R": {
+     "sekunden": 2.49,
+     "hauptartikel": "Böse Philosophen",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Böse Philosophen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Aufklärung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Voltaire",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Denis Diderot",
+      "Jean-Jacques Rousseau",
+      "Maximilien de Robespierre",
+      "Paul Henri Thiry d’Holbach",
+      "Philipp Blom",
+      "Voltaire"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.86,
+     "hauptartikel": "Philosophes",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Philosophes",
+       "absaetze": 5
+      },
+      {
+       "titel": "Naturrecht",
+       "absaetze": 3
+      },
+      {
+       "titel": "Aufklärung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Bernard le Bovier de Fontenelle",
+      "David Hume",
+      "Denis Diderot",
+      "Georges-Louis Leclerc de Buffon",
+      "Immanuel Kant",
+      "Jean Antoine Nicolas de Caritat de Condorcet",
+      "Jean-François de La Pérouse",
+      "Jean-Jacques Rousseau",
+      "Neil Postman",
+      "Pierre Bayle",
+      "René Descartes"
+     ],
+     "tokens_dienst": 1242
+    },
+    "A": {
+     "sekunden": 1.91,
+     "hauptartikel": "Aufklärung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Aufklärung",
+       "absaetze": 12
+      },
+      {
+       "titel": "Immanuel Kant",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Denis Diderot",
+      "Immanuel Kant",
+      "Jean Antoine Nicolas de Caritat de Condorcet",
+      "Jean-Baptiste le Rond d’Alembert",
+      "Olympe de Gouges"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Aufklärung",
+      "Immanuel Kant",
+      "Voltaire",
+      "Jean-Jacques Rousseau",
+      "Montesquieu",
+      "John Locke",
+      "David Hume",
+      "Denis Diderot",
+      "Gotthold Ephraim Lessing",
+      "Enzyklopädie"
+     ],
+     "gefunden": [
+      "Aufklärung",
+      "Immanuel Kant",
+      "Voltaire",
+      "Jean-Jacques Rousseau",
+      "Charles de Secondat, Baron de Montesquieu",
+      "John Locke",
+      "David Hume",
+      "Denis Diderot",
+      "Gotthold Ephraim Lessing",
+      "Enzyklopädie"
+     ],
+     "tokens_frage": 1464,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 2.33,
+     "hauptartikel": "John Locke",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "John Locke",
+       "absaetze": 11
+      },
+      {
+       "titel": "Charles de Secondat, Baron de Montesquieu",
+       "absaetze": 2
+      },
+      {
+       "titel": "Jean-Jacques Rousseau",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Aristoteles",
+      "Charles de Secondat, Baron de Montesquieu",
+      "David Hume",
+      "Denis Diderot",
+      "Isaac Newton",
+      "Jean-Jacques Rousseau",
+      "Karl I. (England)",
+      "Thomas Hobbes",
+      "Voltaire"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Philosophie der Aufklärung",
+     "genannt": [
+      "John Locke",
+      "Voltaire",
+      "Montesquieu",
+      "David Hume",
+      "Jean-Jacques Rousseau",
+      "Denis Diderot",
+      "Gotthold Ephraim Lessing",
+      "Immanuel Kant"
+     ],
+     "gefunden": [
+      "John Locke",
+      "Voltaire",
+      "Charles de Secondat, Baron de Montesquieu",
+      "David Hume",
+      "Jean-Jacques Rousseau",
+      "Denis Diderot",
+      "Gotthold Ephraim Lessing",
+      "Immanuel Kant"
+     ],
+     "tokens_frage": 537,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "wege": {
+    "R": {
+     "sekunden": 2.48,
+     "hauptartikel": "Liste der Maler des Impressionismus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Max Liebermann",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liste der Maler des Impressionismus",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Aksel Jørgensen",
+      "Albert Feser",
+      "Alfred Stevens",
+      "Anna Boch",
+      "Arthur Streeton",
+      "August von Brandis",
+      "Bertha Wegmann",
+      "Carl Arp",
+      "Carl Ludvig Thilson Locher",
+      "Charles Conder",
+      "Clara Southern",
+      "E. Phillips Fox",
+      "Emile Claus",
+      "Ferdinand Brütt",
+      "Florence Fuller",
+      "Frederick McCubbin",
+      "Félicien Rops",
+      "Guillaume Vogels",
+      "Hermann Bahner",
+      "Hippolyte Boulenger",
+      "James Ensor",
+      "Jane Sutherland",
+      "Juliette Wytsman",
+      "Karl Buchholz (Maler)",
+      "Lauritz Andersen Ring",
+      "Louis Eysen",
+      "Lovis Corinth",
+      "Marie Krøyer",
+      "Otto Antoine",
+      "Paul Baum",
+      "Peder Severin Krøyer",
+      "Richard Albitz",
+      "Robert Engels",
+      "Rodolphe Wytsman",
+      "Theodor Philipsen",
+      "Tom Roberts",
+      "Viggo Johansen",
+      "Walter Withers",
+      "Wilhelm Claudius",
+      "Évariste Carpentier"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.45,
+     "hauptartikel": "Liste der Maler des Impressionismus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Max Liebermann",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liste der Maler des Impressionismus",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Aksel Jørgensen",
+      "Albert Feser",
+      "Alfred Stevens",
+      "Anna Boch",
+      "Arthur Streeton",
+      "August von Brandis",
+      "Bertha Wegmann",
+      "Carl Arp",
+      "Carl Ludvig Thilson Locher",
+      "Charles Conder",
+      "Clara Southern",
+      "E. Phillips Fox",
+      "Emile Claus",
+      "Ferdinand Brütt",
+      "Florence Fuller",
+      "Frederick McCubbin",
+      "Félicien Rops",
+      "Guillaume Vogels",
+      "Hermann Bahner",
+      "Hippolyte Boulenger",
+      "James Ensor",
+      "Jane Sutherland",
+      "Juliette Wytsman",
+      "Karl Buchholz (Maler)",
+      "Lauritz Andersen Ring",
+      "Louis Eysen",
+      "Lovis Corinth",
+      "Marie Krøyer",
+      "Otto Antoine",
+      "Paul Baum",
+      "Peder Severin Krøyer",
+      "Richard Albitz",
+      "Robert Engels",
+      "Rodolphe Wytsman",
+      "Theodor Philipsen",
+      "Tom Roberts",
+      "Viggo Johansen",
+      "Walter Withers",
+      "Wilhelm Claudius",
+      "Évariste Carpentier"
+     ],
+     "tokens_dienst": 1261
+    },
+    "A": {
+     "sekunden": 1.34,
+     "hauptartikel": "Impressionismus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Edgar Degas",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Édouard Manet",
+       "absaetze": 3
+      },
+      {
+       "titel": "Pierre-Auguste Renoir",
+       "absaetze": 2
+      },
+      {
+       "titel": "Claude Monet",
+       "absaetze": 2
+      },
+      {
+       "titel": "Gustave Caillebotte",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Camille Pissarro",
+      "Charles Conder",
+      "Charles-François Daubigny",
+      "Childe Hassam",
+      "Claude Monet",
+      "Eckart von Sydow",
+      "Edgar Degas",
+      "Eugène Chevreul",
+      "Gustave Caillebotte",
+      "Gustave Courbet",
+      "Jules-Antoine Castagnary",
+      "Karl Lamprecht",
+      "Louis Leroy (Kunstkritiker)",
+      "Lovis Corinth",
+      "Mary Cassatt",
+      "Nadar",
+      "Pierre-Auguste Renoir",
+      "Théophile Gautier",
+      "William Merritt Chase",
+      "Édouard Manet"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Impressionismus",
+      "Claude Monet",
+      "Pierre-Auguste Renoir",
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Édouard Manet",
+      "Mary Cassatt",
+      "Gustave Caillebotte"
+     ],
+     "gefunden": [
+      "Impressionismus",
+      "Claude Monet",
+      "Pierre-Auguste Renoir",
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Édouard Manet",
+      "Mary Cassatt",
+      "Gustave Caillebotte"
+     ],
+     "tokens_frage": 1519,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.55,
+     "hauptartikel": "Impressionismus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Edgar Degas",
+       "absaetze": 4
+      },
+      {
+       "titel": "Claude Monet",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Pierre-Auguste Renoir",
+       "absaetze": 2
+      },
+      {
+       "titel": "Gustave Caillebotte",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Camille Pissarro",
+      "Charles Conder",
+      "Charles-François Daubigny",
+      "Childe Hassam",
+      "Claude Monet",
+      "Eckart von Sydow",
+      "Edgar Degas",
+      "Eugène Chevreul",
+      "Gustave Caillebotte",
+      "Gustave Courbet",
+      "Jules-Antoine Castagnary",
+      "Karl Lamprecht",
+      "Louis Leroy (Kunstkritiker)",
+      "Mary Cassatt",
+      "Nadar",
+      "Pierre-Auguste Renoir",
+      "Théophile Gautier",
+      "William Merritt Chase",
+      "Édouard Manet"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Impressionismus",
+     "genannt": [
+      "Claude Monet",
+      "Pierre-Auguste Renoir",
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Mary Cassatt",
+      "Gustave Caillebotte"
+     ],
+     "gefunden": [
+      "Impressionismus",
+      "Claude Monet",
+      "Pierre-Auguste Renoir",
+      "Edgar Degas",
+      "Camille Pissarro",
+      "Alfred Sisley",
+      "Berthe Morisot",
+      "Mary Cassatt",
+      "Gustave Caillebotte"
+     ],
+     "tokens_frage": 451,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "römische Kaiser",
+   "wege": {
+    "R": {
+     "sekunden": 3.94,
+     "hauptartikel": "Liste der römischen Kaiser der Antike",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liste der römischen Kaiser der Antike",
+       "absaetze": 3
+      },
+      {
+       "titel": "Trier",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der römischen Kaiserinnen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Spätantike",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der römischen Kaiser (800–924)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der byzantinischen Kaiser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kaiser",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Anastasios I.",
+      "Augustus",
+      "Flavius Victor",
+      "Gaius Iulius Caesar",
+      "Herakleios",
+      "Justinian I.",
+      "Konstantin der Große",
+      "Konstantin III. (Byzanz)",
+      "Lucius Verus",
+      "Magnus Maximus",
+      "Maurikios",
+      "Maxentius",
+      "Theodosius I.",
+      "Zenon (Kaiser)"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.03,
+     "hauptartikel": "Liste der römischen Kaiser der Antike",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liste der römischen Kaiser der Antike",
+       "absaetze": 3
+      },
+      {
+       "titel": "Trier",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der römischen Kaiserinnen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Spätantike",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der römischen Kaiser (800–924)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der byzantinischen Kaiser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kaiser",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Anastasios I.",
+      "Augustus",
+      "Flavius Victor",
+      "Gaius Iulius Caesar",
+      "Herakleios",
+      "Justinian I.",
+      "Konstantin der Große",
+      "Konstantin III. (Byzanz)",
+      "Lucius Verus",
+      "Magnus Maximus",
+      "Maurikios",
+      "Maxentius",
+      "Theodosius I.",
+      "Zenon (Kaiser)"
+     ],
+     "tokens_dienst": 1086
+    },
+    "A": {
+     "sekunden": 1.85,
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Gaius Iulius Caesar",
+       "absaetze": 6
+      },
+      {
+       "titel": "Augustus",
+       "absaetze": 5
+      },
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 4
+      },
+      {
+       "titel": "Nero",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Augustus",
+      "Gaius Iulius Caesar",
+      "Konstantin der Große",
+      "Marcus Tullius Cicero",
+      "Nero",
+      "Trajan"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Römischer Kaiser",
+      "Römisches Reich",
+      "Augustus",
+      "Julius Caesar",
+      "Nero",
+      "Trajan",
+      "Konstantin der Große",
+      "Prinzipat",
+      "Römischer Senat",
+      "Tetrarchie"
+     ],
+     "gefunden": [
+      "Römisches Reich",
+      "Augustus",
+      "Gaius Iulius Caesar",
+      "Nero",
+      "Trajan",
+      "Konstantin der Große",
+      "Prinzipat",
+      "Römischer Senat",
+      "Tetrarchie"
+     ],
+     "tokens_frage": 1474,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.75,
+     "hauptartikel": "Augustus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Augustus",
+       "absaetze": 6
+      },
+      {
+       "titel": "Nero",
+       "absaetze": 4
+      },
+      {
+       "titel": "Mark Aurel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hadrian",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Gaius Iulius Caesar",
+      "Gaius Octavius",
+      "Konstantin der Große",
+      "Marcus Tullius Cicero",
+      "Mark Aurel",
+      "Nero",
+      "Sueton",
+      "Tiberius",
+      "Trajan"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Römischer Kaiser",
+     "genannt": [
+      "Augustus",
+      "Tiberius",
+      "Nero",
+      "Trajan",
+      "Hadrian",
+      "Mark Aurel",
+      "Diokletian",
+      "Konstantin der Große"
+     ],
+     "gefunden": [
+      "Augustus",
+      "Tiberius",
+      "Nero",
+      "Trajan",
+      "Hadrian",
+      "Mark Aurel",
+      "Diokletian",
+      "Konstantin der Große"
+     ],
+     "tokens_frage": 388,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "wege": {
+    "R": {
+     "sekunden": 4.36,
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 13
+      },
+      {
+       "titel": "Bundeskanzler",
+       "absaetze": 3
+      },
+      {
+       "titel": "Bundeskanzlerin",
+       "absaetze": 3
+      },
+      {
+       "titel": "Friedrich Merz",
+       "absaetze": 2
+      },
+      {
+       "titel": "Richtlinienkompetenz",
+       "absaetze": 1
+      },
+      {
+       "titel": "Verteidigungsfall (Deutschland)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Friedrich Merz"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.28,
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 13
+      },
+      {
+       "titel": "Bundeskanzler",
+       "absaetze": 3
+      },
+      {
+       "titel": "Bundeskanzlerin",
+       "absaetze": 3
+      },
+      {
+       "titel": "Friedrich Merz",
+       "absaetze": 2
+      },
+      {
+       "titel": "Richtlinienkompetenz",
+       "absaetze": 1
+      },
+      {
+       "titel": "Verteidigungsfall (Deutschland)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Friedrich Merz"
+     ],
+     "tokens_dienst": 1459
+    },
+    "A": {
+     "sekunden": 1.37,
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Deutschland",
+       "absaetze": 17
+      },
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 11
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Friedrich Merz"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Bundeskanzler (Deutschland)",
+      "Deutschland",
+      "Deutscher Bundestag",
+      "Konrad Adenauer",
+      "Willy Brandt",
+      "Helmut Schmidt",
+      "Helmut Kohl",
+      "Gerhard Schröder",
+      "Angela Merkel",
+      "Friedrich Merz"
+     ],
+     "gefunden": [
+      "Bundeskanzler (Deutschland)",
+      "Deutschland",
+      "Deutscher Bundestag",
+      "Konrad Adenauer",
+      "Willy Brandt",
+      "Helmut Schmidt",
+      "Helmut Kohl",
+      "Gerhard Schröder",
+      "Angela Merkel",
+      "Friedrich Merz"
+     ],
+     "tokens_frage": 1650,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.46,
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 15
+      },
+      {
+       "titel": "Konrad Adenauer",
+       "absaetze": 3
+      },
+      {
+       "titel": "Willy Brandt",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ludwig Erhard",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Friedrich Merz",
+      "Konrad Adenauer",
+      "Ludwig Erhard",
+      "Willy Brandt"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Bundeskanzler (Deutschland)",
+     "genannt": [
+      "Konrad Adenauer",
+      "Ludwig Erhard",
+      "Willy Brandt",
+      "Helmut Schmidt",
+      "Helmut Kohl",
+      "Gerhard Schröder",
+      "Angela Merkel",
+      "Friedrich Merz"
+     ],
+     "gefunden": [
+      "Bundeskanzler (Deutschland)",
+      "Konrad Adenauer",
+      "Ludwig Erhard",
+      "Willy Brandt",
+      "Helmut Schmidt",
+      "Helmut Kohl",
+      "Gerhard Schröder",
+      "Angela Merkel",
+      "Friedrich Merz"
+     ],
+     "tokens_frage": 590,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "griechische Götter",
+   "wege": {
+    "R": {
+     "sekunden": 2.55,
+     "hauptartikel": "Griechische Mythologie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Gott",
+       "absaetze": 5
+      },
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Griechische Literatur",
+       "absaetze": 3
+      },
+      {
+       "titel": "Griechische Vasenmalerei",
+       "absaetze": 3
+      },
+      {
+       "titel": "Hermaphroditismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Olymp",
+       "absaetze": 1
+      },
+      {
+       "titel": "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ausführliches Lexikon der griechischen und römischen Mythologie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Eratosthenes",
+      "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+      "Herodot"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.73,
+     "hauptartikel": "Griechische Mythologie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Gott",
+       "absaetze": 5
+      },
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Griechische Literatur",
+       "absaetze": 3
+      },
+      {
+       "titel": "Griechische Vasenmalerei",
+       "absaetze": 3
+      },
+      {
+       "titel": "Olymp",
+       "absaetze": 1
+      },
+      {
+       "titel": "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ausführliches Lexikon der griechischen und römischen Mythologie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Eratosthenes",
+      "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+      "Herodot"
+     ],
+     "tokens_dienst": 1297
+    },
+    "A": {
+     "sekunden": 0.59,
+     "hauptartikel": "Griechische Mythologie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zeus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Artemis",
+       "absaetze": 1
+      },
+      {
+       "titel": "Aphrodite",
+       "absaetze": 1
+      },
+      {
+       "titel": "Athene",
+       "absaetze": 1
+      },
+      {
+       "titel": "Apollon",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Eratosthenes",
+      "Herodot"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Griechische Mythologie",
+      "Olympische Götter",
+      "Zeus",
+      "Hera",
+      "Athene",
+      "Poseidon",
+      "Apollon",
+      "Artemis",
+      "Aphrodite",
+      "Hades"
+     ],
+     "gefunden": [
+      "Griechische Mythologie",
+      "Olympische Götter",
+      "Zeus",
+      "Hera",
+      "Athene",
+      "Poseidon",
+      "Apollon",
+      "Artemis",
+      "Aphrodite",
+      "Hades"
+     ],
+     "tokens_frage": 1451,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.55,
+     "hauptartikel": "Griechische Mythologie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zeus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Artemis",
+       "absaetze": 1
+      },
+      {
+       "titel": "Aphrodite",
+       "absaetze": 1
+      },
+      {
+       "titel": "Athene",
+       "absaetze": 1
+      },
+      {
+       "titel": "Apollon",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Eratosthenes",
+      "Herodot"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Griechische Mythologie",
+     "genannt": [
+      "Zeus",
+      "Hera",
+      "Poseidon",
+      "Athene",
+      "Apollon",
+      "Artemis",
+      "Aphrodite",
+      "Hades"
+     ],
+     "gefunden": [
+      "Griechische Mythologie",
+      "Zeus",
+      "Hera",
+      "Poseidon",
+      "Athene",
+      "Apollon",
+      "Artemis",
+      "Aphrodite",
+      "Hades"
+     ],
+     "tokens_frage": 512,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "wege": {
+    "R": {
+     "sekunden": 5.49,
+     "hauptartikel": "Liste der Planeten des Sonnensystems",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Liste der Planeten des Sonnensystems",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Monde von Planeten und Zwergplaneten",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sonnensystem",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zeittafel Astronomie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Asteroiden",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Zwergplaneten des Sonnensystems",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 3.17,
+     "hauptartikel": "Planet",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Zwergplanet",
+       "absaetze": 6
+      },
+      {
+       "titel": "Planet",
+       "absaetze": 5
+      },
+      {
+       "titel": "Exoplanet",
+       "absaetze": 5
+      },
+      {
+       "titel": "Objekt planetarer Masse",
+       "absaetze": 3
+      },
+      {
+       "titel": "Titius-Bode-Reihe",
+       "absaetze": 3
+      },
+      {
+       "titel": "Sonnensystem",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 1410
+    },
+    "A": {
+     "sekunden": 1.96,
+     "hauptartikel": "Sonnensystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Planet",
+       "absaetze": 6
+      },
+      {
+       "titel": "Merkur (Planet)",
+       "absaetze": 5
+      },
+      {
+       "titel": "Sonnensystem",
+       "absaetze": 4
+      },
+      {
+       "titel": "Erde",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Sonnensystem",
+      "Planet",
+      "Merkur (Planet)",
+      "Venus (Planet)",
+      "Erde",
+      "Mars (Planet)",
+      "Jupiter (Planet)",
+      "Saturn (Planet)",
+      "Uranus (Planet)",
+      "Neptun (Planet)"
+     ],
+     "gefunden": [
+      "Sonnensystem",
+      "Planet",
+      "Merkur (Planet)",
+      "Venus (Planet)",
+      "Erde",
+      "Mars (Planet)",
+      "Jupiter (Planet)",
+      "Saturn (Planet)",
+      "Uranus (Planet)",
+      "Neptun (Planet)"
+     ],
+     "tokens_frage": 1390,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.52,
+     "hauptartikel": "Planet",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Planet",
+       "absaetze": 8
+      },
+      {
+       "titel": "Erde",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Planet",
+     "genannt": [
+      "Merkur",
+      "Venus",
+      "Erde",
+      "Mars",
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptun"
+     ],
+     "gefunden": [
+      "Planet",
+      "Erde"
+     ],
+     "tokens_frage": 415,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Edelgase",
+   "wege": {
+    "R": {
+     "sekunden": 4.31,
+     "hauptartikel": "Edelgase",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 4
+      },
+      {
+       "titel": "Neon",
+       "absaetze": 4
+      },
+      {
+       "titel": "Xenon",
+       "absaetze": 3
+      },
+      {
+       "titel": "Edelgasregel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Q-Phase (Meteoriten)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Edelgasverbindungen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Edelgaskonfiguration",
+       "absaetze": 1
+      },
+      {
+       "titel": "Inertgas",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Henry Cavendish",
+      "Joseph Norman Lockyer",
+      "Jules Janssen",
+      "William Ramsay"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.75,
+     "hauptartikel": "Edelgase",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 4
+      },
+      {
+       "titel": "Neon",
+       "absaetze": 4
+      },
+      {
+       "titel": "Xenon",
+       "absaetze": 3
+      },
+      {
+       "titel": "Edelgasregel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Q-Phase (Meteoriten)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Edelgasverbindungen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Edelgaskonfiguration",
+       "absaetze": 1
+      },
+      {
+       "titel": "Inertgas",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Henry Cavendish",
+      "Joseph Norman Lockyer",
+      "Jules Janssen",
+      "William Ramsay"
+     ],
+     "tokens_dienst": 950
+    },
+    "A": {
+     "sekunden": 0.76,
+     "hauptartikel": "Edelgase",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 4
+      },
+      {
+       "titel": "Neon",
+       "absaetze": 4
+      },
+      {
+       "titel": "Helium",
+       "absaetze": 3
+      },
+      {
+       "titel": "Periodensystem",
+       "absaetze": 2
+      },
+      {
+       "titel": "Chemisches Element",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Henry Cavendish",
+      "Joseph Norman Lockyer",
+      "Jules Janssen",
+      "William Ramsay"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Edelgas",
+      "Periodensystem",
+      "Chemisches Element",
+      "Helium",
+      "Neon",
+      "Argon",
+      "Krypton",
+      "Xenon",
+      "Radon",
+      "Oganesson"
+     ],
+     "gefunden": [
+      "Edelgase",
+      "Periodensystem",
+      "Chemisches Element",
+      "Helium",
+      "Neon",
+      "Argon",
+      "Krypton",
+      "Xenon",
+      "Radon",
+      "Oganesson"
+     ],
+     "tokens_frage": 1447,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.77,
+     "hauptartikel": "Edelgase",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Radon",
+       "absaetze": 8
+      },
+      {
+       "titel": "Argon",
+       "absaetze": 5
+      },
+      {
+       "titel": "Oganesson",
+       "absaetze": 4
+      },
+      {
+       "titel": "Krypton",
+       "absaetze": 3
+      },
+      {
+       "titel": "Edelgase",
+       "absaetze": 1
+      },
+      {
+       "titel": "Edelgasverbindungen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Xenon",
+       "absaetze": 1
+      },
+      {
+       "titel": "Helium",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Edward Frankland",
+      "Henry Cavendish",
+      "Joseph Norman Lockyer",
+      "Jules Janssen",
+      "William Ramsay"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Edelgas",
+     "genannt": [
+      "Helium",
+      "Neon",
+      "Argon",
+      "Krypton",
+      "Xenon",
+      "Radon",
+      "Oganesson",
+      "Edelgasverbindungen"
+     ],
+     "gefunden": [
+      "Edelgase",
+      "Helium",
+      "Neon",
+      "Argon",
+      "Krypton",
+      "Xenon",
+      "Radon",
+      "Oganesson",
+      "Edelgasverbindungen"
+     ],
+     "tokens_frage": 418,
+     "sekunden_frage": 0.06
+    }
+   }
+  },
+  {
+   "thema": "Weltreligionen",
+   "wege": {
+    "R": {
+     "sekunden": 3.82,
+     "hauptartikel": "Weltreligion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Erstes Parlament der Weltreligionen",
+       "absaetze": 7
+      },
+      {
+       "titel": "Weltreligion",
+       "absaetze": 5
+      },
+      {
+       "titel": "Religion",
+       "absaetze": 1
+      },
+      {
+       "titel": "Buddhismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Buchreligion",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Max Weber"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.12,
+     "hauptartikel": "Weltreligion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Erstes Parlament der Weltreligionen",
+       "absaetze": 7
+      },
+      {
+       "titel": "Weltreligion",
+       "absaetze": 5
+      },
+      {
+       "titel": "Religion",
+       "absaetze": 1
+      },
+      {
+       "titel": "Buddhismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Buchreligion",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Max Weber"
+     ],
+     "tokens_dienst": 992
+    },
+    "A": {
+     "sekunden": 1.8,
+     "hauptartikel": "Religion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Christentum",
+       "absaetze": 11
+      },
+      {
+       "titel": "Hinduismus",
+       "absaetze": 4
+      },
+      {
+       "titel": "Religion",
+       "absaetze": 2
+      },
+      {
+       "titel": "Islam",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Religion",
+      "Christentum",
+      "Islam",
+      "Hinduismus",
+      "Buddhismus",
+      "Judentum",
+      "Sikhismus",
+      "Bahaitum",
+      "Daoismus",
+      "Konfuzianismus"
+     ],
+     "gefunden": [
+      "Religion",
+      "Christentum",
+      "Islam",
+      "Hinduismus",
+      "Buddhismus",
+      "Judentum",
+      "Sikhismus",
+      "Bahaitum",
+      "Daoismus",
+      "Konfuzianismus"
+     ],
+     "tokens_frage": 1504,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.98,
+     "hauptartikel": "Weltreligion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Christentum",
+       "absaetze": 7
+      },
+      {
+       "titel": "Weltreligion",
+       "absaetze": 5
+      },
+      {
+       "titel": "Islam",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hinduismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Buddhismus",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 11,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Weltreligion",
+     "genannt": [
+      "Christentum",
+      "Islam",
+      "Hinduismus",
+      "Buddhismus",
+      "Judentum",
+      "Sikhismus",
+      "Bahaitum",
+      "Daoismus"
+     ],
+     "gefunden": [
+      "Weltreligion",
+      "Christentum",
+      "Islam",
+      "Hinduismus",
+      "Buddhismus",
+      "Judentum",
+      "Sikhismus",
+      "Bahaitum",
+      "Daoismus"
+     ],
+     "tokens_frage": 456,
+     "sekunden_frage": 0.15
+    }
+   }
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "wege": {
+    "R": {
+     "sekunden": 3.28,
+     "hauptartikel": "Erneuerbare Energien",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 5
+      },
+      {
+       "titel": "Energiewende",
+       "absaetze": 2
+      },
+      {
+       "titel": "Bioenergie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kostendeckende Vergütung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Windenergie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Photovoltaik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Sonnenenergie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.1,
+     "hauptartikel": "Erneuerbare Energien",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 5
+      },
+      {
+       "titel": "Energiewende",
+       "absaetze": 2
+      },
+      {
+       "titel": "Bioenergie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kostendeckende Vergütung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Windenergie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Photovoltaik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Sonnenenergie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 827
+    },
+    "A": {
+     "sekunden": 1.82,
+     "hauptartikel": "Sonnenenergie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Windenergie",
+       "absaetze": 15
+      },
+      {
+       "titel": "Sonnenenergie",
+       "absaetze": 7
+      },
+      {
+       "titel": "Bioenergie",
+       "absaetze": 7
+      },
+      {
+       "titel": "Geothermie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Wasserkraft",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Solarenergie",
+      "Windenergie",
+      "Wasserkraft",
+      "Bioenergie",
+      "Geothermie",
+      "Energiewende",
+      "Klimawandel",
+      "Energiespeicherung",
+      "Stromnetz",
+      "Internationale Organisation für erneuerbare Energien"
+     ],
+     "gefunden": [
+      "Sonnenenergie",
+      "Windenergie",
+      "Wasserkraft",
+      "Bioenergie",
+      "Geothermie",
+      "Energiewende",
+      "Klimawandel",
+      "Energiespeicher",
+      "Stromnetz",
+      "Internationale Organisation für erneuerbare Energien"
+     ],
+     "tokens_frage": 1467,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.96,
+     "hauptartikel": "Erneuerbare Energien",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Windenergie",
+       "absaetze": 15
+      },
+      {
+       "titel": "Bioenergie",
+       "absaetze": 7
+      },
+      {
+       "titel": "Sonnenenergie",
+       "absaetze": 6
+      },
+      {
+       "titel": "Geothermie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Wasserkraft",
+       "absaetze": 2
+      },
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Erneuerbare Energie",
+     "genannt": [
+      "Windenergie",
+      "Solarenergie",
+      "Wasserkraft",
+      "Bioenergie",
+      "Geothermie",
+      "Photovoltaik",
+      "Solarthermie",
+      "Meeresenergie"
+     ],
+     "gefunden": [
+      "Erneuerbare Energien",
+      "Windenergie",
+      "Sonnenenergie",
+      "Wasserkraft",
+      "Bioenergie",
+      "Geothermie",
+      "Photovoltaik",
+      "Solarthermie",
+      "Meeresenergie"
+     ],
+     "tokens_frage": 542,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "wege": {
+    "R": {
+     "sekunden": 4.48,
+     "hauptartikel": "Industrialisierung",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Deindustrialisierung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Hochindustrialisierung in Deutschland",
+       "absaetze": 5
+      },
+      {
+       "titel": "Industrialisierung der Schweiz",
+       "absaetze": 4
+      },
+      {
+       "titel": "Industrialisierung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 3
+      },
+      {
+       "titel": "Industrialisierung Frankreichs",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Jean Fourastié"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 3.47,
+     "hauptartikel": "Technik in der Industrialisierung",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Eisen",
+       "absaetze": 7
+      },
+      {
+       "titel": "Technik im Mittelalter",
+       "absaetze": 3
+      },
+      {
+       "titel": "Technik in der Industrialisierung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Hochofen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Geschichte der Produktionstechnik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Technik in der Renaissance",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Georges Friedmann",
+      "Richard Arkwright"
+     ],
+     "tokens_dienst": 1301
+    },
+    "A": {
+     "sekunden": 2.35,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Verbrennungsmotor",
+       "absaetze": 12
+      },
+      {
+       "titel": "Eisenbahn",
+       "absaetze": 10
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 4
+      },
+      {
+       "titel": "Telegrafie",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 12,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "James Watt",
+      "Paul J. Crutzen",
+      "Richard Arkwright"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Industrielle Revolution",
+      "Dampfmaschine",
+      "Spinning Jenny",
+      "Mechanischer Webstuhl",
+      "Eisenbahn",
+      "Telegraphie",
+      "James Watt",
+      "Richard Arkwright",
+      "Baumwollentkörnungsmaschine",
+      "Verbrennungsmotor"
+     ],
+     "gefunden": [
+      "Industrielle Revolution",
+      "Dampfmaschine",
+      "Spinning Jenny",
+      "Power Loom",
+      "Eisenbahn",
+      "Telegrafie",
+      "James Watt",
+      "Richard Arkwright",
+      "Egreniermaschine",
+      "Verbrennungsmotor"
+     ],
+     "tokens_frage": 1467,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.3,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Verbrennungsmotor",
+       "absaetze": 11
+      },
+      {
+       "titel": "Eisenbahn",
+       "absaetze": 10
+      },
+      {
+       "titel": "Dampfschiff",
+       "absaetze": 6
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 3
+      },
+      {
+       "titel": "Elektrischer Telegraf",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "Paul J. Crutzen"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Industrielle Revolution",
+     "genannt": [
+      "Dampfmaschine",
+      "Spinning Jenny",
+      "Mechanischer Webstuhl",
+      "Eisenbahn",
+      "Dampfschiff",
+      "Elektrischer Telegraf",
+      "Bessemer-Verfahren",
+      "Verbrennungsmotor"
+     ],
+     "gefunden": [
+      "Industrielle Revolution",
+      "Dampfmaschine",
+      "Spinning Jenny",
+      "Power Loom",
+      "Eisenbahn",
+      "Dampfschiff",
+      "Elektrischer Telegraf",
+      "Bessemer-Verfahren",
+      "Verbrennungsmotor"
+     ],
+     "tokens_frage": 472,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Nobelpreisträger für Physik",
+   "wege": {
+    "R": {
+     "sekunden": 5.63,
+     "hauptartikel": "Liste der Nobelpreisträger für Physik",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Liste der Nobelpreisträger für Physik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der Nobelpreisträgerinnen",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der Nobelpreisträger",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Nobelpreisträger für Chemie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Friedensnobelpreisträger",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Listen der Nobelpreisträger",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Nobelpreisträger für Physiologie oder Medizin",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Albert Abraham Michelson",
+      "Alfred Nobel",
+      "Gabriel Lippmann",
+      "Hendrik Antoon Lorentz",
+      "Henri Becquerel",
+      "John Bardeen",
+      "John Strutt, 3. Baron Rayleigh",
+      "Joseph John Thomson",
+      "Marie Curie",
+      "Philipp Lenard",
+      "Pierre Curie",
+      "Pieter Zeeman",
+      "Wilhelm Conrad Röntgen"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.47,
+     "hauptartikel": "Liste der Nobelpreisträger für Physik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Liste der Nobelpreisträger für Physik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der Nobelpreisträgerinnen",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der Nobelpreisträger",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Nobelpreisträger für Chemie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Friedensnobelpreisträger",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Listen der Nobelpreisträger",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Nobelpreisträger für Physiologie oder Medizin",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Albert Abraham Michelson",
+      "Alfred Nobel",
+      "Gabriel Lippmann",
+      "Hendrik Antoon Lorentz",
+      "Henri Becquerel",
+      "John Bardeen",
+      "John Strutt, 3. Baron Rayleigh",
+      "Joseph John Thomson",
+      "Marie Curie",
+      "Philipp Lenard",
+      "Pierre Curie",
+      "Pieter Zeeman",
+      "Wilhelm Conrad Röntgen"
+     ],
+     "tokens_dienst": 1362
+    },
+    "A": {
+     "sekunden": 1.52,
+     "hauptartikel": "Nobelpreis für Physik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Physik",
+       "absaetze": 11
+      },
+      {
+       "titel": "Nobelpreis für Physik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Nobelpreis",
+       "absaetze": 4
+      },
+      {
+       "titel": "Albert Einstein",
+       "absaetze": 3
+      },
+      {
+       "titel": "Alfred Nobel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Königlich Schwedische Akademie der Wissenschaften",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Aage Niels Bohr",
+      "Albert Einstein",
+      "Alfred Nobel",
+      "Andrea Ghez",
+      "Anne L’Huillier",
+      "Arthur Ashkin",
+      "David Haviland",
+      "Donna Strickland",
+      "Frédéric Joliot-Curie",
+      "George Paget Thomson",
+      "Georges Charpak",
+      "Gunnar Ingelman",
+      "Irène Joliot-Curie",
+      "John Bardeen",
+      "Joseph John Thomson",
+      "Kai Siegbahn",
+      "Manne Siegbahn",
+      "Maria Goeppert-Mayer",
+      "Marie Curie",
+      "Niels Bohr",
+      "Olga Botner",
+      "Pierre Curie",
+      "Thors Hans Hansson",
+      "Wilhelm Conrad Röntgen",
+      "William Henry Bragg",
+      "William Lawrence Bragg"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Nobelpreis für Physik",
+      "Nobelpreis",
+      "Alfred Nobel",
+      "Nobel-Stiftung",
+      "Königlich Schwedische Akademie der Wissenschaften",
+      "Physik",
+      "Albert Einstein",
+      "Marie Curie",
+      "Niels Bohr"
+     ],
+     "gefunden": [
+      "Nobelpreis für Physik",
+      "Nobelpreis",
+      "Alfred Nobel",
+      "Königlich Schwedische Akademie der Wissenschaften",
+      "Physik",
+      "Albert Einstein",
+      "Marie Curie",
+      "Niels Bohr"
+     ],
+     "tokens_frage": 1529,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.32,
+     "hauptartikel": "Nobelpreis für Physik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Nobelpreis für Physik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Albert Einstein",
+       "absaetze": 4
+      },
+      {
+       "titel": "Niels Bohr",
+       "absaetze": 3
+      },
+      {
+       "titel": "Werner Heisenberg",
+       "absaetze": 3
+      },
+      {
+       "titel": "Max Planck",
+       "absaetze": 1
+      },
+      {
+       "titel": "Richard Feynman",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Aage Niels Bohr",
+      "Albert Einstein",
+      "Alfred Nobel",
+      "Andrea Ghez",
+      "Anne L’Huillier",
+      "Arthur Ashkin",
+      "David Haviland",
+      "Donna Strickland",
+      "Frédéric Joliot-Curie",
+      "Gunnar Ingelman",
+      "Irène Joliot-Curie",
+      "John Bardeen",
+      "Joseph John Thomson",
+      "Kai Siegbahn",
+      "Manne Siegbahn",
+      "Maria Goeppert-Mayer",
+      "Marie Curie",
+      "Max Planck",
+      "Niels Bohr",
+      "Olga Botner",
+      "Pierre Curie",
+      "Richard Feynman",
+      "Thors Hans Hansson",
+      "Werner Heisenberg",
+      "Wilhelm Conrad Röntgen",
+      "William Henry Bragg",
+      "William Lawrence Bragg"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Nobelpreis für Physik",
+     "genannt": [
+      "Albert Einstein",
+      "Marie Curie",
+      "Niels Bohr",
+      "Max Planck",
+      "Richard Feynman",
+      "Werner Heisenberg",
+      "Peter Higgs",
+      "Wilhelm Conrad Röntgen"
+     ],
+     "gefunden": [
+      "Nobelpreis für Physik",
+      "Albert Einstein",
+      "Marie Curie",
+      "Niels Bohr",
+      "Max Planck",
+      "Richard Feynman",
+      "Werner Heisenberg",
+      "Peter Higgs",
+      "Wilhelm Conrad Röntgen"
+     ],
+     "tokens_frage": 418,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "wege": {
+    "R": {
+     "sekunden": 3.55,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frau",
+       "absaetze": 5
+      },
+      {
+       "titel": "Frauenbildung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauengeschichte",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 2
+      },
+      {
+       "titel": "Frauenstudium im deutschen Sprachraum",
+       "absaetze": 1
+      },
+      {
+       "titel": "Frauenbewegung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ingenieurwissenschaften",
+       "absaetze": 1
+      },
+      {
+       "titel": "Mikrofeminismus",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.05,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Genie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauenbildung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauengeschichte",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauenstudium im deutschen Sprachraum",
+       "absaetze": 1
+      },
+      {
+       "titel": "Frauenbewegung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ingenieurwissenschaften",
+       "absaetze": 1
+      },
+      {
+       "titel": "Mikrofeminismus",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [],
+     "tokens_dienst": 860
+    },
+    "A": {
+     "sekunden": 0.89,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 6
+      },
+      {
+       "titel": "Hypatia",
+       "absaetze": 5
+      },
+      {
+       "titel": "Rosalind Franklin",
+       "absaetze": 3
+      },
+      {
+       "titel": "Emmy Noether",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Emmy Noether",
+      "Hypatia",
+      "Marie Curie"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Frauen in der Wissenschaft",
+      "Marie Curie",
+      "Lise Meitner",
+      "Emmy Noether",
+      "Rosalind Franklin",
+      "Hypatia",
+      "Matilda-Effekt",
+      "Geschlechtergleichstellung",
+      "MINT-Fächer",
+      "UNESCO"
+     ],
+     "gefunden": [
+      "Frauen in der Wissenschaft",
+      "Marie Curie",
+      "Lise Meitner",
+      "Emmy Noether",
+      "Rosalind Franklin",
+      "Hypatia",
+      "Matilda-Effekt",
+      "Gleichstellung der Geschlechter",
+      "MINT-Fächer",
+      "UNESCO"
+     ],
+     "tokens_frage": 1440,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.84,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 4
+      },
+      {
+       "titel": "Frauenstudium im deutschen Sprachraum",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hypatia",
+       "absaetze": 3
+      },
+      {
+       "titel": "Rosalind Franklin",
+       "absaetze": 2
+      },
+      {
+       "titel": "Emmy Noether",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Emmy Noether",
+      "Hypatia",
+      "Marie Curie"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Frauen in der Wissenschaft",
+     "genannt": [
+      "Frauenstudium",
+      "Matilda-Effekt",
+      "Marie Curie",
+      "Emmy Noether",
+      "Lise Meitner",
+      "Hypatia",
+      "Rosalind Franklin",
+      "Ada Lovelace"
+     ],
+     "gefunden": [
+      "Frauen in der Wissenschaft",
+      "Frauenstudium im deutschen Sprachraum",
+      "Matilda-Effekt",
+      "Marie Curie",
+      "Emmy Noether",
+      "Lise Meitner",
+      "Hypatia",
+      "Rosalind Franklin",
+      "Ada Lovelace"
+     ],
+     "tokens_frage": 511,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "wege": {
+    "R": {
+     "sekunden": 2.22,
+     "hauptartikel": "Brüder Grimm",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Brüder Grimm",
+       "absaetze": 7
+      },
+      {
+       "titel": "Grimms Märchen",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kassel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Rotkäppchen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Jacob Grimm",
+       "absaetze": 1
+      },
+      {
+       "titel": "Märchen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Achim von Arnim",
+      "Annette von Droste-Hülshoff",
+      "August Franz von Haxthausen",
+      "Charlotte Grimm",
+      "Clemens Brentano",
+      "Dorothea Viehmann",
+      "Ferdinand Philipp Grimm",
+      "Friedrich Carl von Savigny",
+      "Friedrich Grimm (Hanau)",
+      "Friedrich Grimm (Steinau)",
+      "Friedrich Schiller",
+      "Georg Friedrich Benecke",
+      "Herman Grimm",
+      "Jacob Grimm",
+      "Jenny von Droste zu Hülshoff",
+      "Johann Gottfried Herder",
+      "Johann Wolfgang von Goethe",
+      "Karl Lachmann",
+      "Ludwig Emil Grimm",
+      "Philipp Wilhelm Grimm",
+      "Werner von Haxthausen",
+      "Wilhelm Grimm"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.51,
+     "hauptartikel": "Grimms Märchen",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Grimms Märchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Brüder Grimm",
+       "absaetze": 4
+      },
+      {
+       "titel": "Grimm (Musical)",
+       "absaetze": 3
+      },
+      {
+       "titel": "Jacob Grimm",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wilhelm Grimm",
+       "absaetze": 1
+      },
+      {
+       "titel": "Rotkäppchen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ludwig Emil Grimm",
+       "absaetze": 1
+      },
+      {
+       "titel": "Märchen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Achim von Arnim",
+      "Clemens Brentano",
+      "Dorothea Viehmann",
+      "Friederike Mannel",
+      "Friedrich Carl von Savigny",
+      "Georg Andreas Reimer",
+      "Heinz Rölleke",
+      "Jacob Grimm",
+      "Johann Friedrich Krause (Wachtmeister)",
+      "Johann Friedrich Reichardt",
+      "Ludwig Emil Grimm",
+      "Martin Bodmer (Privatgelehrter)",
+      "Philipp Otto Runge",
+      "Wilhelm Grimm"
+     ],
+     "tokens_dienst": 1415
+    },
+    "A": {
+     "sekunden": 0.91,
+     "hauptartikel": "Grimms Märchen",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Grimms Märchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Rotkäppchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Jacob Grimm",
+       "absaetze": 3
+      },
+      {
+       "titel": "Romantik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Brüder Grimm",
+       "absaetze": 2
+      },
+      {
+       "titel": "Märchen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Wilhelm Grimm",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Achim von Arnim",
+      "Clemens Brentano",
+      "Dorothea Viehmann",
+      "Friederike Mannel",
+      "Friedrich Carl von Savigny",
+      "Georg Andreas Reimer",
+      "Heinz Rölleke",
+      "Jacob Grimm",
+      "Johann Friedrich Krause (Wachtmeister)",
+      "Johann Friedrich Reichardt",
+      "Ludwig Emil Grimm",
+      "Martin Bodmer (Privatgelehrter)",
+      "Philipp Otto Runge",
+      "Wilhelm Grimm"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Kinder- und Hausmärchen",
+      "Brüder Grimm",
+      "Jacob Grimm",
+      "Wilhelm Grimm",
+      "Märchen",
+      "Deutsche Literatur",
+      "Romantik",
+      "Rotkäppchen",
+      "Hänsel und Gretel"
+     ],
+     "gefunden": [
+      "Grimms Märchen",
+      "Brüder Grimm",
+      "Jacob Grimm",
+      "Wilhelm Grimm",
+      "Märchen",
+      "Deutschsprachige Literatur",
+      "Romantik",
+      "Rotkäppchen",
+      "Hänsel und Gretel"
+     ],
+     "tokens_frage": 1548,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.77,
+     "hauptartikel": "Grimms Märchen",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Grimms Märchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Rotkäppchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Rumpelstilzchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Die Bremer Stadtmusikanten",
+       "absaetze": 3
+      },
+      {
+       "titel": "Dornröschen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Achim von Arnim",
+      "Clemens Brentano",
+      "Dorothea Viehmann",
+      "Friederike Mannel",
+      "Friedrich Carl von Savigny",
+      "Georg Andreas Reimer",
+      "Heinz Rölleke",
+      "Jacob Grimm",
+      "Johann Friedrich Krause (Wachtmeister)",
+      "Johann Friedrich Reichardt",
+      "Martin Bodmer (Privatgelehrter)",
+      "Philipp Otto Runge",
+      "Wilhelm Grimm"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Kinder- und Hausmärchen",
+     "genannt": [
+      "Rotkäppchen",
+      "Hänsel und Gretel",
+      "Schneewittchen",
+      "Aschenputtel",
+      "Der Froschkönig",
+      "Rumpelstilzchen",
+      "Dornröschen",
+      "Die Bremer Stadtmusikanten"
+     ],
+     "gefunden": [
+      "Grimms Märchen",
+      "Rotkäppchen",
+      "Hänsel und Gretel",
+      "Schneewittchen",
+      "Aschenputtel",
+      "Rumpelstilzchen",
+      "Dornröschen",
+      "Die Bremer Stadtmusikanten"
+     ],
+     "tokens_frage": 529,
+     "sekunden_frage": 0.07
+    }
+   }
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "wege": {
+    "R": {
+     "sekunden": 5.39,
+     "hauptartikel": "Liste von Flüssen in Deutschland",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Liste der Flüsse in Nordrhein-Westfalen",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste von Flüssen in Deutschland",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Flüsse in Niedersachsen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Flüsse in Baden-Württemberg",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Flüsse in Rheinland-Pfalz",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.53,
+     "hauptartikel": "Liste von Flüssen in Deutschland",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Liste der Flüsse in Nordrhein-Westfalen",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste von Flüssen in Deutschland",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liste der Flüsse in Niedersachsen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Flüsse in Baden-Württemberg",
+       "absaetze": 1
+      },
+      {
+       "titel": "Liste der Flüsse in Rheinland-Pfalz",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 1231
+    },
+    "A": {
+     "sekunden": 2.89,
+     "hauptartikel": "Deutschland",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Deutschland",
+       "absaetze": 11
+      },
+      {
+       "titel": "Rhein",
+       "absaetze": 11
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Karl der Große"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Deutschland",
+      "Rhein",
+      "Donau",
+      "Elbe",
+      "Oder",
+      "Weser",
+      "Main",
+      "Mosel",
+      "Ems",
+      "Neckar"
+     ],
+     "gefunden": [
+      "Deutschland",
+      "Rhein",
+      "Donau",
+      "Elbe",
+      "Oder",
+      "Weser",
+      "Main",
+      "Mosel",
+      "Ems",
+      "Neckar"
+     ],
+     "tokens_frage": 1454,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.66,
+     "hauptartikel": "Rhein",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Rhein",
+       "absaetze": 10
+      },
+      {
+       "titel": "Donau",
+       "absaetze": 10
+      },
+      {
+       "titel": "Elbe",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Flusssysteme in Deutschland",
+     "genannt": [
+      "Rhein",
+      "Donau",
+      "Elbe",
+      "Oder",
+      "Weser",
+      "Main",
+      "Mosel",
+      "Ems"
+     ],
+     "gefunden": [
+      "Rhein",
+      "Donau",
+      "Elbe",
+      "Oder",
+      "Weser",
+      "Main",
+      "Mosel",
+      "Ems"
+     ],
+     "tokens_frage": 674,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "wege": {
+    "R": {
+     "sekunden": 1.1,
+     "hauptartikel": "Nonnenbruchwald",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Nonnenbruchwald",
+       "absaetze": 5
+      },
+      {
+       "titel": "Rothmoos (Nonnenbruchwald)",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 5,
+     "personen": [],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.42,
+     "hauptartikel": "Nonnenbruchwald",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Nonnenbruchwald",
+       "absaetze": 5
+      },
+      {
+       "titel": "Rothmoos (Nonnenbruchwald)",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 5,
+     "personen": [],
+     "tokens_dienst": 1793
+    },
+    "A": {
+     "sekunden": 1.8,
+     "hauptartikel": "Wald",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wald",
+       "absaetze": 16
+      },
+      {
+       "titel": "Reh",
+       "absaetze": 3
+      },
+      {
+       "titel": "Säugetiere",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Wald",
+      "Säugetiere",
+      "Reh",
+      "Rothirsch",
+      "Wildschwein",
+      "Rotfuchs",
+      "Eurasischer Luchs",
+      "Eichhörnchen",
+      "Dachs",
+      "Wolf"
+     ],
+     "gefunden": [
+      "Wald",
+      "Säugetiere",
+      "Reh",
+      "Rothirsch",
+      "Wildschwein",
+      "Rotfuchs",
+      "Eurasischer Luchs",
+      "Eichhörnchen",
+      "Europäischer Dachs",
+      "Wolf"
+     ],
+     "tokens_frage": 1524,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.82,
+     "hauptartikel": "Wald",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wald",
+       "absaetze": 17
+      },
+      {
+       "titel": "Reh",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Wald",
+     "genannt": [
+      "Reh",
+      "Rothirsch",
+      "Wildschwein",
+      "Rotfuchs",
+      "Dachs",
+      "Eichhörnchen",
+      "Wolf",
+      "Luchs"
+     ],
+     "gefunden": [
+      "Wald",
+      "Reh",
+      "Rothirsch",
+      "Wildschwein",
+      "Rotfuchs",
+      "Europäischer Dachs",
+      "Eichhörnchen",
+      "Wolf"
+     ],
+     "tokens_frage": 607,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Vulkane Europas",
+   "wege": {
+    "R": {
+     "sekunden": 0.62,
+     "hauptartikel": "Marsili (Vulkan)",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Marsili (Vulkan)",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 5,
+     "personen": [
+      "Luigi Ferdinando Marsigli",
+      "Luigi Ferdinando Marsigli"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.37,
+     "hauptartikel": "Marsili (Vulkan)",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Marsili (Vulkan)",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 5,
+     "personen": [
+      "Luigi Ferdinando Marsigli"
+     ],
+     "tokens_dienst": 1687
+    },
+    "A": {
+     "sekunden": 1.51,
+     "hauptartikel": "Vulkanismus",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Vesuv",
+       "absaetze": 5
+      },
+      {
+       "titel": "Stromboli",
+       "absaetze": 4
+      },
+      {
+       "titel": "Eyjafjallajökull",
+       "absaetze": 3
+      },
+      {
+       "titel": "Vulkanismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ätna",
+       "absaetze": 1
+      },
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Hekla",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Vulkanismus",
+      "Plattentektonik",
+      "Ätna",
+      "Vesuv",
+      "Stromboli",
+      "Campi Flegrei",
+      "Hekla",
+      "Eyjafjallajökull",
+      "Santorin",
+      "Laacher See"
+     ],
+     "gefunden": [
+      "Vulkanismus",
+      "Plattentektonik",
+      "Ätna",
+      "Vesuv",
+      "Stromboli",
+      "Hekla",
+      "Eyjafjallajökull",
+      "Santorin",
+      "Laacher See"
+     ],
+     "tokens_frage": 1549,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.16,
+     "hauptartikel": "Ätna",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Vesuv",
+       "absaetze": 6
+      },
+      {
+       "titel": "Stromboli",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ätna",
+       "absaetze": 3
+      },
+      {
+       "titel": "Eyjafjallajökull",
+       "absaetze": 3
+      },
+      {
+       "titel": "Grímsvötn",
+       "absaetze": 2
+      },
+      {
+       "titel": "Katla",
+       "absaetze": 1
+      },
+      {
+       "titel": "Hekla",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [],
+     "tokens_dienst": 0,
+     "uebersicht": "Liste von Vulkanen in Europa",
+     "genannt": [
+      "Ätna",
+      "Vesuv",
+      "Stromboli",
+      "Hekla",
+      "Katla",
+      "Grímsvötn",
+      "Eyjafjallajökull",
+      "Santorin"
+     ],
+     "gefunden": [
+      "Ätna",
+      "Vesuv",
+      "Stromboli",
+      "Hekla",
+      "Katla",
+      "Grímsvötn",
+      "Eyjafjallajökull",
+      "Santorin"
+     ],
+     "tokens_frage": 648,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "wege": {
+    "R": {
+     "sekunden": 1.84,
+     "hauptartikel": "Entdeckung",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Entdeckung Amerikas",
+       "absaetze": 3
+      },
+      {
+       "titel": "Entdeckung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Entdecker",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zeitalter der Entdeckungen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Entdeckung der Radioaktivität",
+       "absaetze": 2
+      },
+      {
+       "titel": "Entdeckungsreise",
+       "absaetze": 2
+      },
+      {
+       "titel": "Erfindung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Entdeckung der Kernspaltung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Christoph Kolumbus",
+      "Isaac Asimov",
+      "Nikolaus Kopernikus",
+      "Peter Weingart"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.54,
+     "hauptartikel": "Zeitalter der Entdeckungen",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Zeitalter",
+       "absaetze": 8
+      },
+      {
+       "titel": "Zeitalter der Entdeckungen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Weltmacht",
+       "absaetze": 3
+      },
+      {
+       "titel": "Handelskompanie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Frühe Neuzeit",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Bartolomeu Dias",
+      "Christoph Kolumbus",
+      "Ferdinand Magellan",
+      "Francis Drake",
+      "Jacques Cartier",
+      "James Cook",
+      "Pedro Fernández de Quirós",
+      "Vasco da Gama"
+     ],
+     "tokens_dienst": 1474
+    },
+    "A": {
+     "sekunden": 0.87,
+     "hauptartikel": "Zeitalter der Entdeckungen",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Portugal",
+       "absaetze": 10
+      },
+      {
+       "titel": "Zeitalter der Entdeckungen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Bartolomeu Dias",
+       "absaetze": 2
+      },
+      {
+       "titel": "Amerigo Vespucci",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "Bartolomeu Dias",
+      "Christoph Kolumbus",
+      "Ferdinand Magellan",
+      "Francis Drake",
+      "Jacques Cartier",
+      "James Cook",
+      "Pedro Fernández de Quirós",
+      "Vasco da Gama"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Zeitalter der Entdeckungen",
+      "Christoph Kolumbus",
+      "Vasco da Gama",
+      "Ferdinand Magellan",
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "James Cook",
+      "Portugal",
+      "Spanien",
+      "Kolonialismus"
+     ],
+     "gefunden": [
+      "Zeitalter der Entdeckungen",
+      "Christoph Kolumbus",
+      "Vasco da Gama",
+      "Ferdinand Magellan",
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "James Cook",
+      "Portugal",
+      "Spanien",
+      "Kolonialismus"
+     ],
+     "tokens_frage": 1492,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.86,
+     "hauptartikel": "Zeitalter der Entdeckungen",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Roald Amundsen",
+       "absaetze": 5
+      },
+      {
+       "titel": "Zeitalter der Entdeckungen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Bartolomeu Dias",
+       "absaetze": 2
+      },
+      {
+       "titel": "Amerigo Vespucci",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Abel Tasman",
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "Bartolomeu Dias",
+      "Christoph Kolumbus",
+      "Ferdinand Magellan",
+      "Francis Drake",
+      "Jacques Cartier",
+      "James Cook",
+      "Pedro Fernández de Quirós",
+      "Roald Amundsen",
+      "Vasco da Gama"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Entdeckungszeitalter",
+     "genannt": [
+      "Christoph Kolumbus",
+      "Vasco da Gama",
+      "Ferdinand Magellan",
+      "James Cook",
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "Abel Tasman",
+      "Roald Amundsen"
+     ],
+     "gefunden": [
+      "Zeitalter der Entdeckungen",
+      "Christoph Kolumbus",
+      "Vasco da Gama",
+      "Ferdinand Magellan",
+      "James Cook",
+      "Amerigo Vespucci",
+      "Bartolomeu Dias",
+      "Abel Tasman",
+      "Roald Amundsen"
+     ],
+     "tokens_frage": 598,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "wege": {
+    "R": {
+     "sekunden": 2.69,
+     "hauptartikel": "American Farm Bureau Federation",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "American Farm Bureau Federation",
+       "absaetze": 5
+      },
+      {
+       "titel": "Klimawandelleugnung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Tom Vilsack"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.5,
+     "hauptartikel": "American Farm Bureau Federation",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "American Farm Bureau Federation",
+       "absaetze": 5
+      },
+      {
+       "titel": "Klimawandelleugnung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Tom Vilsack"
+     ],
+     "tokens_dienst": 1540
+    },
+    "A": {
+     "sekunden": 2.1,
+     "hauptartikel": "Globale Erwärmung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Globale Erwärmung",
+       "absaetze": 6
+      },
+      {
+       "titel": "Nachhaltige Landwirtschaft",
+       "absaetze": 5
+      },
+      {
+       "titel": "Methan",
+       "absaetze": 5
+      },
+      {
+       "titel": "Ernährungssicherung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Bodenerosion",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Globale Erwärmung",
+      "Treibhausgas",
+      "Methan",
+      "Anpassung an den Klimawandel",
+      "Nachhaltige Landwirtschaft",
+      "Ernährungssicherheit",
+      "Bodenerosion",
+      "Bewässerung",
+      "Dürre",
+      "Agroforstwirtschaft"
+     ],
+     "gefunden": [
+      "Globale Erwärmung",
+      "Treibhausgas",
+      "Methan",
+      "Nachhaltige Landwirtschaft",
+      "Ernährungssicherung",
+      "Bodenerosion",
+      "Bewässerung",
+      "Dürre",
+      "Agroforstwirtschaft"
+     ],
+     "tokens_frage": 1517,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.91,
+     "hauptartikel": "Klimawandel",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Klimaschutz",
+       "absaetze": 6
+      },
+      {
+       "titel": "Klimawandel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Landwirtschaft",
+       "absaetze": 4
+      },
+      {
+       "titel": "Folgen der globalen Erwärmung",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Robert Hooke"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel",
+      "Landwirtschaft",
+      "Auswirkungen der globalen Erwärmung",
+      "Anpassung an den Klimawandel",
+      "Klimaschutz",
+      "Treibhausgasemissionen",
+      "Ernährungssicherheit",
+      "Agroforstwirtschaft"
+     ],
+     "gefunden": [
+      "Klimawandel",
+      "Landwirtschaft",
+      "Folgen der globalen Erwärmung",
+      "Klimaschutz",
+      "Treibhausgas",
+      "Ernährungssicherung",
+      "Agroforstwirtschaft"
+     ],
+     "tokens_frage": 701,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "wege": {
+    "R": {
+     "sekunden": 1.5,
+     "hauptartikel": "Karlheinz Schüffler",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Karlheinz Schüffler",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 6,
+     "personen": [
+      "Eberhard Friedrich Walcker"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.5,
+     "hauptartikel": "Karlheinz Schüffler",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Karlheinz Schüffler",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 6,
+     "personen": [
+      "Eberhard Friedrich Walcker"
+     ],
+     "tokens_dienst": 1458
+    },
+    "A": {
+     "sekunden": 1.31,
+     "hauptartikel": "Musiktheorie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Fourier-Transformation",
+       "absaetze": 8
+      },
+      {
+       "titel": "Musiktheorie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Goldener Schnitt",
+       "absaetze": 4
+      },
+      {
+       "titel": "Pythagoreische Stimmung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Akustik",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Johann Friedrich Daube",
+      "Joseph Riepel",
+      "Pythagoras",
+      "Ulrich Kaiser (Musiktheoretiker)"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Mathematik und Musik",
+      "Musiktheorie",
+      "Akustik",
+      "Obertonreihe",
+      "Pythagoreische Stimmung",
+      "Gleichstufige Stimmung",
+      "Fourier-Transformation",
+      "Rhythmus (Musik)",
+      "Intervall (Musik)",
+      "Goldener Schnitt"
+     ],
+     "gefunden": [
+      "Musiktheorie",
+      "Akustik",
+      "Oberton",
+      "Pythagoreische Stimmung",
+      "Gleichstufige Stimmung",
+      "Fourier-Transformation",
+      "Rhythmus (Musik)",
+      "Intervall (Musik)",
+      "Goldener Schnitt"
+     ],
+     "tokens_frage": 1522,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 0.5,
+     "hauptartikel": "Musiktheorie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Goldener Schnitt",
+       "absaetze": 7
+      },
+      {
+       "titel": "Musiktheorie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Harmonielehre",
+       "absaetze": 3
+      },
+      {
+       "titel": "Pythagoreische Stimmung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Quintenzirkel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Akustik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Johann Adolf Scheibe",
+      "Johann Friedrich Daube",
+      "Joseph Riepel",
+      "Pythagoras",
+      "Ulrich Kaiser (Musiktheoretiker)"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Mathematik und Musik",
+     "genannt": [
+      "Musiktheorie",
+      "Harmonielehre",
+      "Akustik",
+      "Musikalische Stimmung",
+      "Pythagoreische Stimmung",
+      "Reine Stimmung",
+      "Quintenzirkel",
+      "Goldener Schnitt"
+     ],
+     "gefunden": [
+      "Musiktheorie",
+      "Harmonielehre",
+      "Akustik",
+      "Pythagoreische Stimmung",
+      "Reine Stimmung",
+      "Quintenzirkel",
+      "Goldener Schnitt"
+     ],
+     "tokens_frage": 656,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "wege": {
+    "R": {
+     "sekunden": 0.96,
+     "hauptartikel": "Chemie in unserer Zeit",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Gesellschaft Deutscher Chemiker",
+       "absaetze": 5
+      },
+      {
+       "titel": "Joachim Rudolph (Chemiker)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Literaturpreis des Fonds der Chemischen Industrie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Chemie in unserer Zeit",
+       "absaetze": 2
+      },
+      {
+       "titel": "Wiley-VCH Verlag",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Joachim Rudolph (Chemiker)"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.41,
+     "hauptartikel": "Chemie in unserer Zeit",
+     "methode": "search",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Gesellschaft Deutscher Chemiker",
+       "absaetze": 5
+      },
+      {
+       "titel": "Joachim Rudolph (Chemiker)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Literaturpreis des Fonds der Chemischen Industrie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Chemie in unserer Zeit",
+       "absaetze": 2
+      },
+      {
+       "titel": "Wiley-VCH Verlag",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Joachim Rudolph (Chemiker)"
+     ],
+     "tokens_dienst": 1515
+    },
+    "A": {
+     "sekunden": 1.52,
+     "hauptartikel": "Chemie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Chemie",
+       "absaetze": 11
+      },
+      {
+       "titel": "Chemische Reaktion",
+       "absaetze": 7
+      },
+      {
+       "titel": "Wasser",
+       "absaetze": 4
+      },
+      {
+       "titel": "Periodensystem",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Antoine Laurent de Lavoisier",
+      "Humphry Davy",
+      "Joseph Louis Gay-Lussac",
+      "Joseph Louis Proust",
+      "Justus von Liebig",
+      "Jöns Jakob Berzelius",
+      "Marie Lavoisier",
+      "Robert Boyle"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Chemie",
+      "Chemische Reaktion",
+      "Periodensystem",
+      "Molekül",
+      "Wasser",
+      "Säure",
+      "Base (Chemie)",
+      "Lebensmittelchemie",
+      "Kunststoff",
+      "Waschmittel"
+     ],
+     "gefunden": [
+      "Chemie",
+      "Chemische Reaktion",
+      "Periodensystem",
+      "Molekül",
+      "Wasser",
+      "Säuren",
+      "Basen (Chemie)",
+      "Lebensmittelchemie",
+      "Kunststoff",
+      "Waschmittel"
+     ],
+     "tokens_frage": 1510,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.2,
+     "hauptartikel": "Lebensmittelchemie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Kosmetik",
+       "absaetze": 15
+      },
+      {
+       "titel": "Seife",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lebensmittelchemie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Waschmittel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Kunststoff",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "personen": [
+      "Alfred Thiel",
+      "Claus Franzke",
+      "Hans-Dieter Belitz",
+      "Harvey W. Wiley",
+      "Humphry Davy",
+      "Josef Schormüller",
+      "Joseph König (Chemiker)",
+      "Peter Schieberle",
+      "Reinhard Matissek",
+      "Werner Baltes",
+      "Werner Grosch (Chemiker)"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Chemie im Alltag",
+     "genannt": [
+      "Lebensmittelchemie",
+      "Waschmittel",
+      "Seife",
+      "Kunststoff",
+      "Kosmetik",
+      "Arzneimittel",
+      "Lebensmittelzusatzstoff",
+      "Batterie"
+     ],
+     "gefunden": [
+      "Lebensmittelchemie",
+      "Waschmittel",
+      "Seife",
+      "Kunststoff",
+      "Kosmetik",
+      "Arzneimittel",
+      "Lebensmittelzusatzstoff"
+     ],
+     "tokens_frage": 634,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Frauen im Mittelalter",
+   "wege": {
+    "R": {
+     "sekunden": 1.92,
+     "hauptartikel": "Schreibende Frauen im Mittelalter",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Schreibende Frauen im Mittelalter",
+       "absaetze": 9
+      },
+      {
+       "titel": "Manuskripte",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Hildegard von Bingen",
+      "Radegunde von Thüringen",
+      "Trota von Salerno"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 0.49,
+     "hauptartikel": "Schreibende Frauen im Mittelalter",
+     "methode": "suggestion",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Schreibende Frauen im Mittelalter",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Radegunde von Thüringen",
+      "Trota von Salerno"
+     ],
+     "tokens_dienst": 1540
+    },
+    "A": {
+     "sekunden": 2.1,
+     "hauptartikel": "Mittelalter",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Mittelalter",
+       "absaetze": 5
+      },
+      {
+       "titel": "Kloster",
+       "absaetze": 4
+      },
+      {
+       "titel": "Jeanne d’Arc",
+       "absaetze": 4
+      },
+      {
+       "titel": "Geschlechterrolle",
+       "absaetze": 3
+      },
+      {
+       "titel": "Frauengeschichte",
+       "absaetze": 3
+      },
+      {
+       "titel": "Eleonore von Aquitanien",
+       "absaetze": 1
+      },
+      {
+       "titel": "Leibeigenschaft",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Christine de Pizan",
+      "Christoph Kolumbus",
+      "Eleonore von Aquitanien",
+      "Hildegard von Bingen",
+      "Jeanne d’Arc"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Mittelalter",
+      "Frauengeschichte",
+      "Geschlechterrolle",
+      "Hildegard von Bingen",
+      "Christine de Pizan",
+      "Eleonore von Aquitanien",
+      "Jeanne d’Arc",
+      "Kloster",
+      "Leibeigenschaft",
+      "Zunft"
+     ],
+     "gefunden": [
+      "Mittelalter",
+      "Frauengeschichte",
+      "Geschlechterrolle",
+      "Hildegard von Bingen",
+      "Christine de Pizan",
+      "Eleonore von Aquitanien",
+      "Jeanne d’Arc",
+      "Kloster",
+      "Leibeigenschaft",
+      "Zunft"
+     ],
+     "tokens_frage": 1562,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 2.44,
+     "hauptartikel": "Frauengeschichte",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frauengeschichte",
+       "absaetze": 4
+      },
+      {
+       "titel": "Kloster",
+       "absaetze": 4
+      },
+      {
+       "titel": "Jeanne d’Arc",
+       "absaetze": 4
+      },
+      {
+       "titel": "Eleonore von Aquitanien",
+       "absaetze": 2
+      },
+      {
+       "titel": "Hildegard von Bingen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Minnesang",
+       "absaetze": 1
+      },
+      {
+       "titel": "Hexenverfolgung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Annette Kuhn (Historikerin)",
+      "Christine de Pizan",
+      "Eleonore von Aquitanien",
+      "Gerda Lerner",
+      "Gerhard Baader",
+      "Hildegard von Bingen",
+      "Ilse Kokula",
+      "Jeanne d’Arc",
+      "Regina Wecker"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Frauen im Mittelalter",
+     "genannt": [
+      "Frauengeschichte",
+      "Hildegard von Bingen",
+      "Eleonore von Aquitanien",
+      "Christine de Pizan",
+      "Jeanne d’Arc",
+      "Hexenverfolgung",
+      "Minnesang",
+      "Kloster"
+     ],
+     "gefunden": [
+      "Frauengeschichte",
+      "Hildegard von Bingen",
+      "Eleonore von Aquitanien",
+      "Christine de Pizan",
+      "Jeanne d’Arc",
+      "Hexenverfolgung",
+      "Minnesang",
+      "Kloster"
+     ],
+     "tokens_frage": 689,
+     "sekunden_frage": 0.05
+    }
+   }
+  },
+  {
+   "thema": "Musik der Romantik",
+   "wege": {
+    "R": {
+     "sekunden": 2.69,
+     "hauptartikel": "Musik der Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Instrumentalmusik",
+       "absaetze": 11
+      },
+      {
+       "titel": "Musik",
+       "absaetze": 10
+      },
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kammermusik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Arthur Schopenhauer",
+      "August Wilhelm Schlegel",
+      "Christoph Martin Wieland",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Friedrich Schiller",
+      "Friedrich Schlegel",
+      "Georg Wilhelm Friedrich Hegel",
+      "Johann Gottfried Herder",
+      "Johann Wolfgang von Goethe",
+      "Joseph Haydn",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Novalis",
+      "Richard Wagner",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 0
+    },
+    "B": {
+     "sekunden": 1.02,
+     "hauptartikel": "Musik der Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Instrumentalmusik",
+       "absaetze": 11
+      },
+      {
+       "titel": "Musik",
+       "absaetze": 10
+      },
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kammermusik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Arthur Schopenhauer",
+      "August Wilhelm Schlegel",
+      "Christoph Martin Wieland",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Friedrich Schiller",
+      "Friedrich Schlegel",
+      "Georg Wilhelm Friedrich Hegel",
+      "Johann Gottfried Herder",
+      "Johann Wolfgang von Goethe",
+      "Joseph Haydn",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Novalis",
+      "Richard Wagner",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 932
+    },
+    "A": {
+     "sekunden": 0.98,
+     "hauptartikel": "Musik der Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frédéric Chopin",
+       "absaetze": 8
+      },
+      {
+       "titel": "Romantik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Lied",
+       "absaetze": 5
+      },
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Programmmusik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Franz Schubert",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Arthur Schopenhauer",
+      "August Wilhelm Schlegel",
+      "Christoph Martin Wieland",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Franz Schubert",
+      "Friedrich Schiller",
+      "Friedrich Schlegel",
+      "Frédéric Chopin",
+      "Georg Wilhelm Friedrich Hegel",
+      "Johann Gottfried Herder",
+      "Johann Wolfgang von Goethe",
+      "Joseph Haydn",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Novalis",
+      "Richard Wagner",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 0,
+     "genannt": [
+      "Romantik (Musik)",
+      "Romantik",
+      "Lied",
+      "Programmmusik",
+      "Sinfonische Dichtung",
+      "Franz Schubert",
+      "Frédéric Chopin",
+      "Robert Schumann",
+      "Richard Wagner",
+      "Johannes Brahms"
+     ],
+     "gefunden": [
+      "Musik der Romantik",
+      "Romantik",
+      "Lied",
+      "Programmmusik",
+      "Sinfonische Dichtung",
+      "Franz Schubert",
+      "Frédéric Chopin",
+      "Robert Schumann",
+      "Richard Wagner",
+      "Johannes Brahms"
+     ],
+     "tokens_frage": 1508,
+     "sekunden_frage": 0.05
+    },
+    "N": {
+     "sekunden": 1.06,
+     "hauptartikel": "Musik der Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Frédéric Chopin",
+       "absaetze": 6
+      },
+      {
+       "titel": "Robert Schumann",
+       "absaetze": 5
+      },
+      {
+       "titel": "Franz Schubert",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Arthur Schopenhauer",
+      "August Wilhelm Schlegel",
+      "Christoph Martin Wieland",
+      "Clemens Brentano",
+      "E. T. A. Hoffmann",
+      "Franz Schubert",
+      "Friedrich Schiller",
+      "Friedrich Schlegel",
+      "Frédéric Chopin",
+      "Georg Wilhelm Friedrich Hegel",
+      "Johann Gottfried Herder",
+      "Johann Wolfgang von Goethe",
+      "Joseph Haydn",
+      "Ludwig Tieck",
+      "Ludwig van Beethoven",
+      "Novalis",
+      "Robert Schumann",
+      "Wilhelm Heinrich Wackenroder",
+      "Wolfgang Amadeus Mozart"
+     ],
+     "tokens_dienst": 0,
+     "uebersicht": "Romantik (Musik)",
+     "genannt": [
+      "Ludwig van Beethoven",
+      "Franz Schubert",
+      "Robert Schumann",
+      "Frédéric Chopin",
+      "Franz Liszt",
+      "Hector Berlioz",
+      "Richard Wagner",
+      "Johannes Brahms"
+     ],
+     "gefunden": [
+      "Musik der Romantik",
+      "Ludwig van Beethoven",
+      "Franz Schubert",
+      "Robert Schumann",
+      "Frédéric Chopin",
+      "Franz Liszt",
+      "Hector Berlioz",
+      "Richard Wagner",
+      "Johannes Brahms"
+     ],
+     "tokens_frage": 431,
+     "sekunden_frage": 0.05
+    }
+   }
+  }
+ ]
+}

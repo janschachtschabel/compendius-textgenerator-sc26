@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M35
+# Ergebnisse der Messungen M1 bis M37
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -48,6 +48,8 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M33 | Welches Budget je Anfrage braucht `best-quality` (D59)? | Demokratie ohne Fach (382 Absätze, 819 Elemente): bei 120.000 prüfte die Lehrplansuche alle 819 Elemente (75.016 Tokens), das Kompendium mit Teil 1 und 2 nur 579 (112.626); ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated`, bei 180.000 prüften beide alle 819 | – | `m33_budget_best_quality.json` |
 | M34 | Was bringen die nachgeschärften QA-Regeln mit Glossar und Akteuren als Füller (D60)? | auf den Texten und Bögen von M30: 58 statt 46 von 95 Regel-Paaren mangelfrei bei beiden Gutachtern, Erstfragen 25 von 49 statt 16 von 52, Füller 22 von 29; die Gutachter urteilen an den unveränderten Paaren etwas strenger als in M30 | – | `m34_qa_regeln.json` |
 | M35 | Soll das LLM auch sichere Auflösungen mehrdeutiger Wörter prüfen (Punkt 5)? | am Gold 93 statt 91 von 94 (nur Begriffsklärungen 92, Regeln 87), keine richtige Auflösung verdorben; das LLM wird bei 64 statt 18 von 94 Anfragen gefragt, je neuer Frage rund 800 Tokens und 1 s; dabei gefunden: Abschnitts-Weiterleitungen als Thema bauten auf eine fast leere Seite (behoben in `20aaca4`) | – | `m35_sichere_aufloesung.json` |
+| M36 | Welche Verfahren taugen für `/api/v2/entities`, welches Profil nimmt welches? | an den Texten von 40 echten Materialien F1 heute (ner + dictionary) 0,38 bei Präzision 0,29; das LLM nennt die Entitäten mit Artikeltitel: 0,78 (rund 800 Tokens, 4 s); nennt und prüft: 0,80 bei Präzision 0,91; nur die Regeln prüfen: 0,51; 654 Paare, zwei blinde Claude-Subagenten | – | `m36_entitaeten.json` |
+| M37 | Trägt ein Hauptartikel ein Sammel- oder Mischthema wie „deutsche Dichter“? | an 25 solchen Themen aus passenden Artikeln gedruckt: heute 43 bis 45 %, Entitäten der alten App 63 %, das LLM nennt Übersicht und Teile 87 % (21 statt 10 bis 11 brauchbar, rund 500 Tokens, 3,5 s); an 20 gewöhnlichen Themen 93 statt 73 %; Verbindungen zweier Themen bleiben schwach; zwei blinde Claude-Subagenten, Kappa 0,94 | – | `m37_sammelthemen.json`, `m37_kontrolle.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

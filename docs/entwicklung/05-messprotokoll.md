@@ -1676,3 +1676,135 @@ beiden `best-quality`-Profilen eingeschaltet, wie vorgeschlagen; `balanced` blei
 eingebauten Wegs über die 94 Anfragen, bei dem ein Platzhalter statt des Modells nur die Kandidaten zählt, fragt bei
 denselben 64 Anfragen mit derselben Zahl von Kandidaten wie B in M35 (94 von 94 gleich). Dieselben Kandidaten ergeben
 denselben Prompt, die Güte von B gilt damit für den eingebauten Weg, ohne dass ein Token ausgegeben wurde.
+
+## M36 Verfahren von `/entities` (26.09.2026)
+
+Jan: den Endpunkt und die Profile der Entitätenerkennung ansehen, die Verfahren bewerten, passende Profile zuordnen.
+`/api/v2/entities` kennt zwei Wege, beide ohne LLM: `ner` (das spaCy-Modell des Images) und `dictionary` (Wörter, die
+ein Artikeltitel sind); jede Erwähnung wird über ihren Titel mit einem Artikel verknüpft, eine Begriffsklärung zählt
+nicht. Ein Profil nimmt der Endpunkt nicht. `mc_entitaeten.py` stellt die Texte der 40 Materialien aus
+`eval/materialwahl/materialien.yaml` - Titel, Beschreibung und Schlagwörter, wie der Endpunkt sie aus einem Knoten
+liest - durch den Endpunkt des Entwicklungscontainers (das spaCy-Modell gibt es nur im Image; er liest dieselben
+Archive) und daneben durch zwei LLM-Wege als Prototypen:
+
+- LLM nennt: Das LLM nennt Personen, Orte, Organisationen, Werke, Ereignisse und Fachbegriffe des Textes mit dem
+  genauen Titel ihres Artikels; ein Titel zählt, wenn das Archiv ihn als Artikel hat (Weiterleitungen gefolgt);
+- LLM prüft: Das LLM benotet in einem Aufruf jede Verknüpfung der anderen Wege (2 Entität oder Fachbegriff, um den es
+  geht, und der Artikel meint genau das; 1 passt, aber nebensächlich oder Allerweltswort; 0 der Artikel meint etwas
+  anderes).
+
+Jeden verknüpften Artikel benoteten zwei Claude-Subagenten blind nach dem Text des Materials, dem Titel und dem Anfang
+der Einleitung (`eval/entitaeten/`, dieselbe Skala): 654 Paare. Richtig ist ein Artikel mit Note 2; der Recall zählt
+gegen alle Artikel mit Note 2, die irgendein Weg für den Text fand (Pooling wie M23). Modell `gpt-6-luna`,
+Staging-b-api.
+
+Gleiche Note bei 97 % der Paare, Cohens Kappa 0,95. In Klammern die Werte mit den zweiten Noten.
+
+| Weg | Artikel | Präzision | Recall | F1 | Note 0 |
+|---|---|---|---|---|---|
+| `ner` | 120 | 0,41 (0,42) | 0,23 (0,24) | 0,30 (0,30) | 19 |
+| `dictionary` | 481 | 0,25 (0,26) | 0,58 (0,59) | 0,35 (0,36) | 116 |
+| `ner` + `dictionary` (heute) | 394 | 0,29 (0,30) | 0,55 (0,56) | 0,38 (0,39) | 65 |
+| heute, das LLM prüft (behält Note 2) | 165 | 0,58 (0,60) | 0,45 (0,47) | 0,51 (0,53) | 1 |
+| LLM nennt | 269 | 0,70 (0,68) | 0,89 (0,87) | 0,78 (0,76) | 1 |
+| LLM nennt, das LLM prüft (behält Note 2) | 165 | 0,91 (0,88) | 0,71 (0,69) | 0,80 (0,77) | 1 |
+| alle zusammen, das LLM prüft (behält Note 2) | 251 | 0,67 (0,67) | 0,80 (0,80) | 0,73 (0,72) | 2 |
+
+Im Median kostet „LLM nennt“ 816 Tokens und 4,2 s je Text, die Prüfung 1.418 Tokens und 3,3 s; die Regeln brauchen
+0,25 s einschließlich des HTTP-Aufrufs. Die Prüfung sah im Versuch alle Verknüpfungen eines Textes zusammen (im Median
+13); prüfte sie nur, was das LLM nannte, wäre sie kürzer.
+
+Die Regeln finden gut die Hälfte dessen, worum es geht, aber mit viel Beifang: Das Wörterbuch verknüpft jedes Wort,
+das ein Artikeltitel ist - „Woche“, „Frage“, „Ich“, „Cool“ oder den Buchstaben „M“ -, und `ner` bringt in englischen
+Texten Verlage und Musiknachweise („Kevin MacLeod“, „Pearson Education“). 65 der 394 Verknüpfungen meinen etwas
+anderes als der Text oder haben nichts mit ihm zu tun. Das LLM nennt, worum es im Text geht, auch Fachbegriffe, die als
+Wort anders dastehen (zu „Eine Batterie bauen“: *Batterie (Elektrotechnik)*, *Zitrone*, *Säuren*, *Kupfer*, *Zink*),
+und verknüpft nur ein einziges Mal falsch. Jedes der 324 Wörter, die es nannte, steht im Text (322 wörtlich, 2 bis auf
+Groß- und Kleinschreibung); seine Stelle ließe sich also wie bei den Regeln angeben. Die Prüfung hebt die Präzision
+auf 0,91, kostet aber Recall; F1 bleibt fast gleich. Sie nur auf die Treffer der Regeln anzuwenden, hilft weniger,
+weil die Regeln vieles gar nicht finden.
+
+**Ergebnis:** Ein Aufruf, in dem das LLM die Entitäten mit ihrem Artikeltitel nennt, verdoppelt F1 gegenüber heute
+(0,78 statt 0,38) für rund 800 Tokens und 4 s. Die zusätzliche Prüfung lohnt sich, wo falsche Kennungen mehr schaden
+als fehlende. Vorschlag in der Entscheidungsvorlage (Punkt 10): `llm-free` wie heute, `balanced` lässt das LLM
+nennen, die `best-quality`-Profile lassen es nennen und prüfen. Grenzen: 40 Materialtexte einer Stichprobe, der Recall
+zählt nur gegen das, was einer der Wege fand, und beide Gutachter sind Claude-Subagenten.
+
+Rohdaten: `m36_entitaeten.json` (je Material und Weg die verknüpften Artikel mit ihren Erwähnungen, die Noten der
+LLM-Prüfung, Tokens und Sekunden; keine Texte).
+
+## M37 Sammel- und Mischthemen (26.09.2026)
+
+Jan: Komplexe oder gemischte Themen wie „deutsche Dichter“ brauchen wohl nicht einen Hauptartikel, sondern mehrere
+passende, kombiniert; die alte App löste das über die Entitäten, die ihr LLM erzeugte. Der Dienst nimmt genau einen
+Hauptartikel und ergänzt ihn um verlinkte Unterartikel und Volltexttreffer; ein Thema als Gruppe oder als Verbindung
+zweier Themen erkennt er nicht, eine Mehrzahl macht er nur zur Einzahl. `mc_sammelthemen.py` stellt 25 solcher Themen
+auf vier Wegen durch den Ablauf des Dienstes (Teil 1, Text wörtlich):
+
+- R: `llm-free` wie heute;
+- B: `balanced` wie heute - das LLM entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Nebenartikel;
+- A: der Weg der alten App - die Entitäten ihres Linkers (Prompt wortgleich, `alter_linker.py`) sind der Korpus, die
+  erste ist der Hauptartikel, wie KEa in M23;
+- N: eine neue Frage - das LLM nennt den Übersichtsartikel und bis zu acht Artikel zu Vertretern, Teilen oder
+  Aspekten des Themas; der Übersichtsartikel ist der Hauptartikel, die anderen kommen ganz in den Korpus.
+
+Jeden Artikel, aus dem ein Weg Absätze druckte, benoteten zwei Claude-Subagenten blind nach Thema, Titel und Anfang der
+Einleitung (2 gehört zum Thema, 1 verwandt, 0 passt nicht; `eval/sammelthemen/`): 289 Paare, gleiche Note bei 97 %,
+Cohens Kappa 0,94. „Brauchbar“ heißt wie in M23: Mindestens die Hälfte der gedruckten Absätze stammt aus Artikeln mit
+Note 2. Modell `gpt-6-luna`, Staging-b-api.
+
+| Weg, 25 Themen | Hauptartikel 2/1/0 | gedruckte Absätze 2/1/0 | aus passenden Artikeln | brauchbar | Tokens je Thema |
+|---|---|---|---|---|---|
+| R `llm-free` heute | 17/4/4 | 150/133/68 | 43 % | 11 | 0 |
+| B `balanced` heute | 21/1/3 | 159/157/41 | 45 % | 10 | 1.362 |
+| A Entitäten der alten App | 16/9/0 | 319/184/0 | 63 % | 16 | 1.504 |
+| N LLM nennt Übersicht und Teile | 21/4/0 | 432/60/2 | 87 % | 21 | 537 |
+
+Mit den zweiten Noten: aus passenden Artikeln 41, 45, 63 und 87 %, brauchbar 10, 10, 16 und 21.
+
+Nach Art des Themas (Anteil aus passenden Artikeln, brauchbar):
+
+| Art | R | B | A | N |
+|---|---|---|---|---|
+| mit eigenem Artikel (7: Edelgase, Weltreligionen, …) | 48 %, 3 | 49 %, 3 | 77 %, 6 | 98 %, 7 |
+| Gruppe ohne eigenen Artikel (14: deutsche Dichter, Komponisten der Klassik, …) | 43 %, 7 | 45 %, 6 | 73 %, 10 | 93 %, 13 |
+| Verbindung zweier Themen (4: Klimawandel und Landwirtschaft, …) | 24 %, 1 | 25 %, 1 | 9 %, 0 | 53 %, 1 |
+
+Heute landen Gruppen oft auf einer Listenseite („deutsche Dichter“ auf *Liste deutschsprachiger Lyriker*, „römische
+Kaiser“, „Nobelpreisträger für Physik“, „deutsche Flüsse“) oder, wo die Regeln unsicher sind, auf einem Zufallstreffer
+(„Philosophen der Aufklärung“ → *Böse Philosophen*, „Komponisten der Klassik“ → *Max Richter (Komponist)*). Das LLM
+von B behebt die unsicheren Gruppen (*Romantik*, *Wiener Klassik*, *Planet*, *Grimms Märchen*, *Zeitalter der
+Entdeckungen*), findet aber für Verbindungen keinen einzelnen Artikel - dann bleibt der Treffer der Regeln
+(„Klimawandel und Landwirtschaft“ → *American Farm Bureau Federation*, „Chemie im Alltag“ → *Chemie in unserer Zeit*).
+Die Liste trägt wenig Fließtext; die Nebenartikel sind oft nur verwandt. N baut „deutsche Dichter“ auf
+*Deutschsprachige Literatur* mit Goethe, Schiller, Heine, Rilke und anderen, „Komponisten der Klassik“ auf *Wiener
+Klassik* mit Haydn, Mozart und Beethoven. A nennt dieselben Vertreter, aber oft ohne Übersicht an erster Stelle: Bei
+„deutsche Dichter“ wird Goethe zum Hauptartikel. Fehlt der Übersichtsartikel, den N nennt, im Archiv („Philosophie der
+Aufklärung“, „Römischer Kaiser“ ist eine Begriffsklärung), wird der erste Vertreter Hauptartikel (*John Locke*,
+*Augustus*). Verbindungen bleiben auf jedem Weg schwach: Ein Artikel über beide Hälften fehlt meist, und die Hälften
+allein sind nur verwandt („Säugetiere des Waldes“: *Wald*; „Klimawandel und Landwirtschaft“: *Klimawandel*).
+
+Die Fragen von A und N kamen im gültigen Lauf aus dem b-api-Cache - ein erster Lauf aus dem Ordner der Skripte stellte
+sie, rechnete aber ohne Lexikon und Fachwörter und zählt nicht. Neu gestellt brauchte die Frage von N im Median 3,5 s
+(2,5 bis 6,0 s) bei 493 Tokens, die des alten Linkers 5,6 s bei 1.516 Tokens (Kontrolle unten). Der Korpus von N kommt
+ohne Volltextsuche aus; Teil 1 selbst lief im Median in 1,1 statt 3,3 s (R) - im selben Prozess nach R und B, also
+mit warmem Dateicache, deshalb nur ein Anhaltspunkt.
+
+**Kontrolle an 20 gewöhnlichen Themen** (die Themen von M1, `--normal`; 233 Paare, gleiche Note bei 93 %, Cohens
+Kappa 0,85; in Klammern die zweiten Noten): N nennt als Übersicht in allen 20 den Artikel, den auch die Regeln nehmen,
+und ändert nur die Nebenartikel. Aus passenden Artikeln gedruckt: R 71 % (69), B 73 % (71), A 70 % (66), N 93 % (92);
+brauchbar 16, 18, 13 (11) und 19. A nimmt meist einen Nachbarbegriff als Hauptartikel (*Barock* statt
+*Barockliteratur*, *Treibhauseffekt* statt *Klimawandel*). Die Frage von N kostete im Median 493 Tokens und 3,5 s (2,5
+bis 6,0 s), die des alten Linkers 1.516 Tokens und 5,6 s; `balanced` gab für seine Prüfung der Nebenartikel dieser
+Themen rund 880 Tokens aus (seine Zeiten kamen aus dem b-api-Cache von M25).
+
+**Ergebnis:** Ein Hauptartikel trägt ein Sammel- oder Mischthema oft nicht. Die Entitäten der alten App helfen; eine
+Frage nach Übersicht und Teilen hilft mehr und kostet ein Drittel davon. Sie hebt auch gewöhnliche Themen, weil die
+genannten Teile die oft nur verwandten Nebenartikel ersetzen. Offen bleiben Verbindungen zweier Themen, für die es selten
+einen Artikel über beide Hälften gibt, und `llm-free`, das ohne LLM nichts nennen kann. Vorschlag in der
+Entscheidungsvorlage (Punkt 9). Grenzen: Die Noten gelten Artikeln, nicht einzelnen Absätzen - ein Artikel mit Note 2
+kann auch Absätze drucken, die nur am Rand zum Thema gehören -, die Themen hat Claude gewählt, und beide Gutachter sind
+Claude-Subagenten.
+
+Rohdaten: `m37_sammelthemen.json` und `m37_kontrolle.json` (je Thema und Weg Hauptartikel, gedruckte Artikel mit
+Absatzzahl, Personen des Akteursblocks, genannte und gefundene Titel, Tokens und Sekunden; keine Artikeltexte).

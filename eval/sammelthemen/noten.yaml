@@ -1,0 +1,879 @@
+# Noten für M37 (docs/entwicklung/messung/mc_sammelthemen.py): Gehört ein Wikipedia-Artikel, aus dem ein Kompendium
+# zu einem Sammel- oder Mischthema ("deutsche Dichter", "Klimawandel und Landwirtschaft") Absätze gedruckt hat, zum
+# Thema? Je Thema jeder Artikel einmal, den mindestens einer der vier Wege (R, B, A, N) gedruckt hat: 289 Paare aus
+# 25 Themen. Benotet am 26.09.2026 von einem Claude-Subagenten,
+# aus Thema, Titel und den ersten 400 Zeichen der Einleitung, blind: ohne zu wissen, welcher Weg den Artikel gedruckt
+# hat, die Artikel je Thema gemischt (Saat 37).
+# 2: gehört zum Thema - das Thema selbst, sein Übersichtsartikel oder ein zentraler Teil, Vertreter oder Aspekt.
+# 1: verwandt - Hintergrund, Nachbarthema, nur eine Hälfte eines verbundenen Themas, das weitere Fachgebiet.
+# 0: unpassend - andere Bedeutung, fremdes Thema, Zufallstreffer.
+# Die Artikeltexte stehen nicht hier: Die Messung liest sie aus dem Archiv.
+version: 1
+noten:
+- thema: deutsche Dichter
+  artikel: Johann Wolfgang von Goethe
+  note: 2
+- thema: deutsche Dichter
+  artikel: Theodor Kramer (Lyriker)
+  note: 1
+- thema: deutsche Dichter
+  artikel: Liste deutschsprachiger Lyriker
+  note: 2
+- thema: deutsche Dichter
+  artikel: Otto Braun (Lyriker)
+  note: 2
+- thema: deutsche Dichter
+  artikel: Heinrich Heine
+  note: 2
+- thema: deutsche Dichter
+  artikel: Gedicht
+  note: 1
+- thema: deutsche Dichter
+  artikel: Liste deutschsprachiger Lyrikanthologien
+  note: 1
+- thema: deutsche Dichter
+  artikel: Deutschsprachige Literatur
+  note: 2
+- thema: deutsche Dichter
+  artikel: Friedrich Schiller
+  note: 2
+- thema: deutsche Dichter
+  artikel: Walther von der Vogelweide
+  note: 2
+- thema: deutsche Dichter
+  artikel: Wilhelm Klemm (Lyriker)
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Englisches Parlament
+  note: 0
+- thema: Dichter der Romantik
+  artikel: Neuromantik
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Historischer Roman
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Spätromantik
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Clemens Brentano
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Englische Romantik
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Epos
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Novalis
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Musik der Romantik
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Frühromantik
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Romantik
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Ludwig van Beethoven
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Filmmusik
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: FatCat Records
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Europäischer Filmpreis/Beste Filmmusik
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Wiener Klassik
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Wiener Klangstil
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: Oper
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: Ad Astra – Zu den Sternen
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Waltz with Bashir
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Klassik
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: 'Recomposed by Max Richter: Vivaldi – The Four Seasons'
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Joseph Haydn
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Instrumentalmusik
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: Max Richter (Komponist)
+  note: 0
+- thema: Philosophen der Aufklärung
+  artikel: Voltaire
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Immanuel Kant
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Naturrecht
+  note: 1
+- thema: Philosophen der Aufklärung
+  artikel: Charles de Secondat, Baron de Montesquieu
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Jean-Jacques Rousseau
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: John Locke
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Philosophes
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Aufklärung
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Böse Philosophen
+  note: 1
+- thema: Maler des Impressionismus
+  artikel: Impressionismus
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Max Liebermann
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Édouard Manet
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Edgar Degas
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Liste der Maler des Impressionismus
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Pierre-Auguste Renoir
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Gustave Caillebotte
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Claude Monet
+  note: 2
+- thema: römische Kaiser
+  artikel: Gaius Iulius Caesar
+  note: 1
+- thema: römische Kaiser
+  artikel: Liste der römischen Kaiser (800–924)
+  note: 1
+- thema: römische Kaiser
+  artikel: Nero
+  note: 2
+- thema: römische Kaiser
+  artikel: Liste der römischen Kaiser der Antike
+  note: 2
+- thema: römische Kaiser
+  artikel: Hadrian
+  note: 0
+- thema: römische Kaiser
+  artikel: Augustus
+  note: 2
+- thema: römische Kaiser
+  artikel: Liste der römischen Kaiserinnen
+  note: 1
+- thema: römische Kaiser
+  artikel: Römisches Reich
+  note: 1
+- thema: römische Kaiser
+  artikel: Mark Aurel
+  note: 2
+- thema: römische Kaiser
+  artikel: Trier
+  note: 1
+- thema: römische Kaiser
+  artikel: Liste der byzantinischen Kaiser
+  note: 1
+- thema: römische Kaiser
+  artikel: Spätantike
+  note: 1
+- thema: römische Kaiser
+  artikel: Kaiser
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Ludwig Erhard
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Konrad Adenauer
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzler (Deutschland)
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Willy Brandt
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzler
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Friedrich Merz
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Verteidigungsfall (Deutschland)
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Deutschland
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzlerin
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Richtlinienkompetenz
+  note: 2
+- thema: griechische Götter
+  artikel: Gott
+  note: 1
+- thema: griechische Götter
+  artikel: Olymp
+  note: 1
+- thema: griechische Götter
+  artikel: Griechische Vasenmalerei
+  note: 1
+- thema: griechische Götter
+  artikel: Artemis
+  note: 2
+- thema: griechische Götter
+  artikel: Griechische Literatur
+  note: 1
+- thema: griechische Götter
+  artikel: Gesamtgenealogie der griechisch-mediterranen Mythologie
+  note: 1
+- thema: griechische Götter
+  artikel: Zeus
+  note: 2
+- thema: griechische Götter
+  artikel: Apollon
+  note: 2
+- thema: griechische Götter
+  artikel: Athene
+  note: 2
+- thema: griechische Götter
+  artikel: Ausführliches Lexikon der griechischen und römischen Mythologie
+  note: 1
+- thema: griechische Götter
+  artikel: Aphrodite
+  note: 2
+- thema: griechische Götter
+  artikel: Hermaphroditismus
+  note: 0
+- thema: griechische Götter
+  artikel: Griechische Mythologie
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Titius-Bode-Reihe
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Liste der Zwergplaneten des Sonnensystems
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Erde
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Objekt planetarer Masse
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Planet
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Liste der Planeten des Sonnensystems
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Merkur (Planet)
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Liste der Monde von Planeten und Zwergplaneten
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Zeittafel Astronomie
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Sonnensystem
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Zwergplanet
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Liste der Asteroiden
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Exoplanet
+  note: 1
+- thema: Edelgase
+  artikel: Oganesson
+  note: 2
+- thema: Edelgase
+  artikel: Edelgasverbindungen
+  note: 2
+- thema: Edelgase
+  artikel: Periodensystem
+  note: 1
+- thema: Edelgase
+  artikel: Radon
+  note: 2
+- thema: Edelgase
+  artikel: Inertgas
+  note: 2
+- thema: Edelgase
+  artikel: Xenon
+  note: 2
+- thema: Edelgase
+  artikel: Neon
+  note: 2
+- thema: Edelgase
+  artikel: Argon
+  note: 2
+- thema: Edelgase
+  artikel: Helium
+  note: 2
+- thema: Edelgase
+  artikel: Q-Phase (Meteoriten)
+  note: 1
+- thema: Edelgase
+  artikel: Chemisches Element
+  note: 1
+- thema: Edelgase
+  artikel: Edelgaskonfiguration
+  note: 2
+- thema: Edelgase
+  artikel: Edelgase
+  note: 2
+- thema: Edelgase
+  artikel: Edelgasregel
+  note: 2
+- thema: Edelgase
+  artikel: Krypton
+  note: 2
+- thema: Weltreligionen
+  artikel: Islam
+  note: 2
+- thema: Weltreligionen
+  artikel: Weltreligion
+  note: 2
+- thema: Weltreligionen
+  artikel: Hinduismus
+  note: 2
+- thema: Weltreligionen
+  artikel: Buddhismus
+  note: 2
+- thema: Weltreligionen
+  artikel: Buchreligion
+  note: 1
+- thema: Weltreligionen
+  artikel: Christentum
+  note: 2
+- thema: Weltreligionen
+  artikel: Erstes Parlament der Weltreligionen
+  note: 1
+- thema: Weltreligionen
+  artikel: Religion
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Windenergie
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Erneuerbare Energien
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Photovoltaik
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Kostendeckende Vergütung
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Wasserkraft
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Energiewende
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Sonnenenergie
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Geothermie
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Bioenergie
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Hochofen
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Telegrafie
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Geschichte der Produktionstechnik
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Verbrennungsmotor
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Eisenbahn
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Industrialisierung Frankreichs
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Eisen
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Technik in der Renaissance
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Industrialisierung
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Technik im Mittelalter
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Dampfschiff
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Industrialisierung der Schweiz
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Elektrischer Telegraf
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Technik in der Industrialisierung
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Industrielle Revolution
+  note: 2
+- thema: Erfindungen der Industrialisierung
+  artikel: Hochindustrialisierung in Deutschland
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Deindustrialisierung
+  note: 0
+- thema: Nobelpreisträger für Physik
+  artikel: Werner Heisenberg
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Max Planck
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Friedensnobelpreisträger
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Nobelpreisträgerinnen
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Albert Einstein
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Listen der Nobelpreisträger
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Nobelpreis
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Königlich Schwedische Akademie der Wissenschaften
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Nobelpreisträger für Physiologie oder Medizin
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Richard Feynman
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Nobelpreis für Physik
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Nobelpreisträger für Physik
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Nobelpreisträger
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Alfred Nobel
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Physik
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Niels Bohr
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Liste der Nobelpreisträger für Chemie
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Ingenieurwissenschaften
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Frauenstudium im deutschen Sprachraum
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Frau
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Hypatia
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Mikrofeminismus
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Frauenbildung
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Frauenbewegung
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Frauengeschichte
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Rosalind Franklin
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Frauen in der Wissenschaft
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Genie
+  note: 0
+- thema: Frauen in der Wissenschaft
+  artikel: Emmy Noether
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Romantik
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Grimms Märchen
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Rotkäppchen
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Kassel
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Brüder Grimm
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Ludwig Emil Grimm
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Die Bremer Stadtmusikanten
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Märchen
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Wilhelm Grimm
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Grimm (Musical)
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Jacob Grimm
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Rumpelstilzchen
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Dornröschen
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Elbe
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Liste der Flüsse in Baden-Württemberg
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Liste der Flüsse in Rheinland-Pfalz
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Rhein
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Liste der Flüsse in Nordrhein-Westfalen
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Deutschland
+  note: 1
+- thema: deutsche Flüsse
+  artikel: Donau
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Liste von Flüssen in Deutschland
+  note: 2
+- thema: deutsche Flüsse
+  artikel: Liste der Flüsse in Niedersachsen
+  note: 2
+- thema: Säugetiere des Waldes
+  artikel: Nonnenbruchwald
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Wald
+  note: 1
+- thema: Säugetiere des Waldes
+  artikel: Säugetiere
+  note: 1
+- thema: Säugetiere des Waldes
+  artikel: Rothmoos (Nonnenbruchwald)
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Reh
+  note: 2
+- thema: Vulkane Europas
+  artikel: Marsili (Vulkan)
+  note: 2
+- thema: Vulkane Europas
+  artikel: Eyjafjallajökull
+  note: 2
+- thema: Vulkane Europas
+  artikel: Stromboli
+  note: 2
+- thema: Vulkane Europas
+  artikel: Plattentektonik
+  note: 1
+- thema: Vulkane Europas
+  artikel: Katla
+  note: 2
+- thema: Vulkane Europas
+  artikel: Vesuv
+  note: 2
+- thema: Vulkane Europas
+  artikel: Hekla
+  note: 2
+- thema: Vulkane Europas
+  artikel: Ätna
+  note: 2
+- thema: Vulkane Europas
+  artikel: Grímsvötn
+  note: 2
+- thema: Vulkane Europas
+  artikel: Vulkanismus
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Entdeckung der Kernspaltung
+  note: 0
+- thema: Entdecker der Neuzeit
+  artikel: Handelskompanie
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Entdeckung
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Frühe Neuzeit
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Bartolomeu Dias
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Portugal
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Entdeckung der Radioaktivität
+  note: 0
+- thema: Entdecker der Neuzeit
+  artikel: Zeitalter
+  note: 0
+- thema: Entdecker der Neuzeit
+  artikel: Amerigo Vespucci
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Erfindung
+  note: 0
+- thema: Entdecker der Neuzeit
+  artikel: Entdecker
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Entdeckung Amerikas
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Roald Amundsen
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Entdeckungsreise
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Zeitalter der Entdeckungen
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Weltmacht
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Folgen der globalen Erwärmung
+  note: 2
+- thema: Klimawandel und Landwirtschaft
+  artikel: Globale Erwärmung
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Ernährungssicherung
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Landwirtschaft
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: American Farm Bureau Federation
+  note: 0
+- thema: Klimawandel und Landwirtschaft
+  artikel: Klimawandel
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Bodenerosion
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Klimaschutz
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Methan
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Nachhaltige Landwirtschaft
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Klimawandelleugnung
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Pythagoreische Stimmung
+  note: 2
+- thema: Mathematik in der Musik
+  artikel: Akustik
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Quintenzirkel
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Fourier-Transformation
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Goldener Schnitt
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Harmonielehre
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Musiktheorie
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Karlheinz Schüffler
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Kunststoff
+  note: 2
+- thema: Chemie im Alltag
+  artikel: Gesellschaft Deutscher Chemiker
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Wiley-VCH Verlag
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Wasser
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Literaturpreis des Fonds der Chemischen Industrie
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Kosmetik
+  note: 2
+- thema: Chemie im Alltag
+  artikel: Joachim Rudolph (Chemiker)
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Waschmittel
+  note: 2
+- thema: Chemie im Alltag
+  artikel: Chemie in unserer Zeit
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Chemie
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Lebensmittelchemie
+  note: 2
+- thema: Chemie im Alltag
+  artikel: Periodensystem
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Seife
+  note: 2
+- thema: Chemie im Alltag
+  artikel: Chemische Reaktion
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Eleonore von Aquitanien
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: Kloster
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Jeanne d’Arc
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: Schreibende Frauen im Mittelalter
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: Geschlechterrolle
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Leibeigenschaft
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Frauengeschichte
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Hexenverfolgung
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Manuskripte
+  note: 0
+- thema: Frauen im Mittelalter
+  artikel: Mittelalter
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Hildegard von Bingen
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: Minnesang
+  note: 1
+- thema: Musik der Romantik
+  artikel: Frédéric Chopin
+  note: 2
+- thema: Musik der Romantik
+  artikel: Kammermusik
+  note: 1
+- thema: Musik der Romantik
+  artikel: Instrumentalmusik
+  note: 1
+- thema: Musik der Romantik
+  artikel: Franz Schubert
+  note: 2
+- thema: Musik der Romantik
+  artikel: Ludwig van Beethoven
+  note: 1
+- thema: Musik der Romantik
+  artikel: Programmmusik
+  note: 2
+- thema: Musik der Romantik
+  artikel: Lied
+  note: 1
+- thema: Musik der Romantik
+  artikel: Musik
+  note: 1
+- thema: Musik der Romantik
+  artikel: Romantik
+  note: 1
+- thema: Musik der Romantik
+  artikel: Robert Schumann
+  note: 2
+- thema: Musik der Romantik
+  artikel: Musik der Romantik
+  note: 2

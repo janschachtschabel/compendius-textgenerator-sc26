@@ -484,6 +484,42 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
    819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
    `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
+9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37), zu entscheiden. Der Dienst nimmt genau einen
+   Hauptartikel. Eine Gruppe landet heute auf einer Listenseite („deutsche Dichter“ → *Liste deutschsprachiger
+   Lyriker*) oder, wo die Regeln unsicher sind, auf einem Zufallstreffer („Philosophen der Aufklärung“ → *Böse
+   Philosophen*); eine Verbindung zweier Themen auch mit LLM („Klimawandel und Landwirtschaft“ → *American Farm Bureau
+   Federation*). Eine neue Frage, in der das LLM den Übersichtsartikel und bis zu acht Artikel zu Vertretern, Teilen
+   oder Aspekten nennt (N), baut den Korpus aus diesen Artikeln: an 25 solchen Themen 87 statt 43 bis 45 % der
+   gedruckten Absätze aus passenden Artikeln, 21 statt 10 bis 11 brauchbare Kompendien; die Entitäten der alten App
+   kommen auf 63 % und 16. Die Frage kostet rund 500 Tokens und 3,5 s. Auch an 20 gewöhnlichen Themen hebt N den
+   Anteil von 73 auf 93 % bei gleichem Hauptartikel: Die genannten Teile ersetzen verlinkte Unterartikel und
+   Volltexttreffer, die oft nur verwandt sind. Verbindungen zweier Themen bleiben schwach (53 %), weil es einen Artikel
+   über beide Hälften selten gibt. Optionen:
+   - A: nichts ändern.
+   - B: N nur, wo die Regeln kein Thema treffen - Titelvorschlag, Volltexttreffer oder Listenseite -, in den
+     LLM-Profilen. Das trifft 19 der 25 Sammelthemen und 5 der 94 Gold-Anfragen, darunter „Lichtlehre“, die einzige,
+     die heute falsch bleibt.
+   - C: N für jedes Thema in den LLM-Profilen; die Frage ersetzt die Prüfung der Nebenartikel (rund 900 Tokens) und
+     kostet rund 2 s mehr.
+   - D: B in `balanced`, C in den beiden `best-quality`-Profilen.
+
+   Vorschlag: D. `balanced` bleibt für gewöhnliche Themen, wie es ist, und fragt nur bei Themen, die es heute verfehlt;
+   die `best-quality`-Profile nehmen die Teile immer, wo 500 Tokens neben 26.000 nicht zählen. `llm-free` bleibt ohne
+   Nennung: Ohne LLM landet eine Gruppe weiter auf einer Liste oder einem Zufallstreffer.
+10. **Profile für `/entities`:** gemessen (M36), zu entscheiden. Der Endpunkt erkennt heute ohne LLM (spaCy und ein
+    Wörterbuch der Artikeltitel) und nimmt kein Profil. An den Texten von 40 echten Materialien kommt er auf F1 0,38
+    bei einer Präzision von 0,29: Das Wörterbuch verknüpft Allerweltswörter („Woche“, „Frage“, „Ich“), und 65 von 394
+    Verknüpfungen meinen etwas anderes als der Text oder haben nichts mit ihm zu tun. Nennt das LLM die Entitäten
+    selbst, mit dem genauen Titel ihres Artikels, sind es F1 0,78 bei einer einzigen unpassenden Verknüpfung (rund 800
+    Tokens, 4 s); prüft ein zweiter Aufruf, was es nannte, 0,80 bei einer Präzision von 0,91 (im Versuch sah die
+    Prüfung alle Verknüpfungen zusammen: rund 2.200 Tokens und 7,5 s für beide Aufrufe, für die genannten allein
+    weniger). Das LLM nur die Treffer der Regeln prüfen zu lassen bringt weniger (0,51). Jedes Wort, das das LLM nannte, steht im Text, seine Stelle lässt
+    sich also wie bisher angeben.
+
+    Vorschlag: `llm-free` wie heute, `balanced` lässt das LLM nennen, die beiden `best-quality`-Profile lassen es
+    nennen und prüfen. Folge: Wie die anderen Endpunkte folgt `/entities` dann PRESET_DEFAULT (`balanced`) und braucht
+    ohne `preset` ein LLM - auf einem Server ohne LLM ein 503, bis der Aufrufer `preset: llm-free` setzt. Alternative:
+    `/entities` behält `llm-free` als eigene Vorgabe, und nur ein gesetztes `preset` ruft das LLM.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
