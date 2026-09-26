@@ -1620,3 +1620,47 @@ alle drei Füllsätze. Seit D60 fallen sie weg; gezählt an den gespeicherten Te
 Fragen, die ohne den Text nicht zu verstehen sind („Wo befinden sich die Kurszentren?“), und Nachbar-Personen. Die
 Gutachter sind Claude, keine Lehrkräfte. Rohdaten: `m34_qa_regeln.json` (Kennungen, Verfahren, Urteile und Zahlen;
 keine Texte und Paare).
+
+Nachtrag nach dem Review von D60 (26.09.2026, `6b39f9c`, `56f2904`): Seit D60 lesen die Regeln auch den Text, den
+ein Aufrufer schickt. Sechs präparierte Texte der Höchstlänge (50.000 Zeichen, lange Leerzeichenfolgen in
+Glossarzeile, Begriff, Definition, Akteursname, Akteurszeile und Prosa) brauchten vorher 3,7 s bis Stunden - die
+Glossarzeile kubisch, 13 s schon bei 3.000 Leerzeichen -, jetzt live 0,01 bis 0,1 s. Beide Korrekturen ändern an den
+Kompendien der sechs Themen kein Paar, weder über `topic` noch über das Markdown als `text` (bis 50 Paare je Thema,
+live im Entwicklungscontainer verglichen); M34 beschreibt also weiter den heutigen Stand.
+
+## M35 Sichere Auflösungen mehrdeutiger Wörter (26.09.2026)
+
+Punkt 5 der Entscheidungsvorlage: Mit `article_choice=llm` entscheidet das LLM nur, wo die Regeln unsicher sind (D35).
+Soll es auch sichere Auflösungen mehrdeutiger Wörter prüfen? `mc_sichere_aufloesung.py` stellt die 94 Anfragen der drei
+Gold-Dateien von `eval/artikelwahl` durch `choose_main_article`, den Auflösungsschritt des Dienstes, in vier Varianten:
+die Regeln allein, das LLM für unsichere Fälle wie heute (`balanced`), dazu A für sichere Auflösungen über eine
+Begriffsklärungsseite und B zusätzlich für sichere exakte Titel, zu denen es „<Titel> (Begriffsklärung)“ gibt. Das LLM
+sieht dieselben Kandidaten wie bei einer unsicheren Auflösung. Modell `gpt-6-luna` an der Staging-b-api.
+
+| Variante | richtig von 94 | Haupt / Validierung / Test | LLM gefragt | Tokens |
+|---|---|---|---|---|
+| Regeln (`llm-free`) | 87 | 56 / 22 / 9 | 0 | 0 |
+| unsichere Fälle (`balanced` heute) | 91 | 57 / 23 / 11 | 18 | 17.707 |
+| A: dazu sichere Begriffsklärungen | 92 | 58 / 23 / 11 | 47 | 49.653 |
+| B: dazu exakte Titel mit Begriffsklärungsseite | 93 | 58 / 23 / 12 | 64 | 60.169 |
+
+A behebt „Physik: Strom“ (*Strom (Physik)* statt *Elektrischer Strom*), B dazu „Informatik: Netzwerk“ (*Netzwerk* statt
+*Rechnernetz*). Keine der 44 richtigen sicheren Auflösungen, die das LLM zusätzlich sah, hat es verdorben. Eine neue
+Frage kostete im Median 818 Tokens (321 bis 2.064) und rund 1 s (0,1 bis 1,8 s, gemessen im ersten Lauf ohne Last
+nebenher); B fragt bei 64 statt 18 von 94 Anfragen. Falsch bleibt nur „Lichtlehre“: Die Regeln finden per Volltext
+eine Person, das LLM wählt aus zwei Kandidaten ebenfalls falsch.
+
+Nebenbefund, behoben in `20aaca4`: Die Archive führen eine Weiterleitung auf einen Abschnitt eines anderen Artikels als
+eigene Seite, mit einem Meta-Refresh auf „./Lyrik#Gedicht“ und dem Titel als einzigem Text. Die Auflösung nahm diese
+Seite als Hauptartikel, sicher: Ein Kompendium zu „Gedicht“ baute auf 7 Zeichen, „Nenner“ auf 6, „Elektrischer Leiter“
+auf 19. Seit `20aaca4` folgt sie der Seite zum Artikel (*Lyrik*, 32.394 Zeichen; *Bruchrechnung*; *Leiter (Physik)*).
+Die Auswertung aller Gold-Messungen folgte solchen Weiterleitungen ebenso wenig; deshalb zählte „Physik: Leiter“ bisher
+falsch, obwohl der Dienst *Leiter (Physik)* nahm, den Artikel, auf den *Elektrischer Leiter* weiterleitet. Mit der
+korrigierten Auswertung stehen die Regeln bei 87 statt 86 und `balanced` bei 91 statt 90 von 94; „Gedicht“ bleibt
+richtig, nun mit *Lyrik*. Der erste Lauf vor dem Fix ergab dieselben Unterschiede zwischen den Varianten.
+
+**Ergebnis:** Die Prüfung sicherer Auflösungen lohnt sich an diesem Gold, ohne etwas zu verderben: B bringt zwei der
+drei übrigen Fehler in Ordnung, kostet dafür 46 zusätzliche Aufrufe auf 94 Anfragen, rund 800 Tokens und 1 s je
+betroffener Anfrage. Zwei Treffer auf 94 sind wenig; das Gold hat noch keine Redaktion gesehen (Punkt 4), und
+Validierung und Test sind nicht unabhängig. Rohdaten: `m35_sichere_aufloesung.json` (Titel, Kennzeichen, Tokens und
+Sekunden je Anfrage und Variante; keine Artikeltexte).

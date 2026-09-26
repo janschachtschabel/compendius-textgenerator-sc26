@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M34
+# Ergebnisse der Messungen M1 bis M35
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -47,6 +47,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M32 | Was bringen B und die LLM-Prüfung der Lehrplanelemente (D58)? | an den 20 Themen von M22, Mittel über die Themen: B zeigt 3.103 von 4.579 Elementen einzeln (mit Fach 1.932 von 3.120), passend 70 bis 72 % ohne und 77 bis 81 % mit Fach statt 62 bis 67 %, unpassend 5 bis 9 % statt 11 bis 17 %, ein Viertel der passenden nur gebündelt; die LLM-Prüfung 74 bis 79 % passend, 5 bis 9 % unpassend, kein passendes Element verworfen, im Median 7.817 bis 9.564 Tokens und 6 s je Anfrage, bei Demokratie ohne Fach reichten 60.000 Tokens nicht; Model2Vec AUC 0,74 bis 0,76 | – | `m32_lehrplan_pruefung.json` |
 | M33 | Welches Budget je Anfrage braucht `best-quality` (D59)? | Demokratie ohne Fach (382 Absätze, 819 Elemente): bei 120.000 prüfte die Lehrplansuche alle 819 Elemente (75.016 Tokens), das Kompendium mit Teil 1 und 2 nur 579 (112.626); ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated`, bei 180.000 prüften beide alle 819 | – | `m33_budget_best_quality.json` |
 | M34 | Was bringen die nachgeschärften QA-Regeln mit Glossar und Akteuren als Füller (D60)? | auf den Texten und Bögen von M30: 58 statt 46 von 95 Regel-Paaren mangelfrei bei beiden Gutachtern, Erstfragen 25 von 49 statt 16 von 52, Füller 22 von 29; die Gutachter urteilen an den unveränderten Paaren etwas strenger als in M30 | – | `m34_qa_regeln.json` |
+| M35 | Soll das LLM auch sichere Auflösungen mehrdeutiger Wörter prüfen (Punkt 5)? | am Gold 93 statt 91 von 94 (nur Begriffsklärungen 92, Regeln 87), keine richtige Auflösung verdorben; das LLM wird bei 64 statt 18 von 94 Anfragen gefragt, je neuer Frage rund 800 Tokens und 1 s; dabei gefunden: Abschnitts-Weiterleitungen als Thema bauten auf eine fast leere Seite (behoben in `20aaca4`) | – | `m35_sichere_aufloesung.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

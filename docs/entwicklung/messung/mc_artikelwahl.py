@@ -59,7 +59,8 @@ def accepted(titles: list[str]) -> list[str]:
     """The expected titles and the redirect targets Wikipedia sets for them."""
     found = list(titles)
     for title in titles:
-        article = wiki.read(title) if wiki is not None else None
+        # read_article: a gold title may be a redirect to a section ("Elektrischer Leiter" -> Leiter (Physik)), M35
+        article = wiki.read_article(title) if wiki is not None else None
         if article is not None and article.title not in found:
             found.append(article.title)
     return found

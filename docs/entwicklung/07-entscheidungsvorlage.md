@@ -377,7 +377,7 @@ ZIM_PROFILE=standard
 CORPUS_MAX_ARTICLES=12
 ```
 
-Ergebnis: 86 von 94 Hauptartikeln, 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,45, Teil 1
+Ergebnis: 87 von 94 Hauptartikeln (M35), 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,45, Teil 1
 und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 58 von 95 mangelfrei in 0,3 s je Text
 (M34). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt der
 404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
@@ -456,9 +456,14 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    Eine Frage ist keine prüfbare Sachaussage, ohne Beleg fällt sie weg statt als Modellwissen markiert zu bleiben -
    in M31 drei der 13 übrigen Füllsätze.
 4. **Goldstandard prüfen lassen:** Alle Gütezahlen hängen an Labels, die eine Redaktion noch nicht gesehen hat.
-5. **Sichere Fehler der Regeln:** ob das LLM mit `article_choice=llm` auch sichere Auflösungen mehrdeutiger Wörter
-   prüfen soll. Der alte Weg fand zwei der drei (M17); es kostete einen Aufruf mehr bei jedem solchen Thema und wäre
-   vorher am Gold zu messen.
+5. **Sichere Fehler der Regeln:** gemessen (M35), zu entscheiden. Mit `article_choice=llm` prüft das LLM bisher nur
+   unsichere Auflösungen. Prüft es auch sichere Auflösungen mehrdeutiger Wörter - über eine Begriffsklärung oder als
+   exakter Titel, zu dem es eine Begriffsklärungsseite gibt -, kommt die Artikelwahl am Gold auf 93 statt 91 von 94
+   (nur Begriffsklärungen: 92), und keine der 44 richtigen Auflösungen, die es zusätzlich sah, wird falsch. Der Preis:
+   Das LLM wird bei 64 statt 18 von 94 Anfragen gefragt, je zusätzlicher Frage rund 800 Tokens und 1 s. Vorschlag:
+   in den beiden `best-quality`-Profilen einschalten, wo 800 Tokens neben 26.000 kaum zählen; in `balanced` hieße es
+   im Mittel rund 450 Tokens und 0,5 s mehr je Anfrage für zwei Treffer auf 94. Dabei behoben (`20aaca4`): Ein Thema,
+   dessen Titel im Archiv auf einen Abschnitt weiterleitet („Gedicht“, „Nenner“), baute auf eine fast leere Seite.
 6. **QA-Verfahren je Profil:** entschieden (D57). `llm-free` und `balanced` fragen mit den Regeln, die beiden
    `best-quality`-Profile mit dem LLM; die zwei kleinen Modelle (in M30 25 von 120 mangelfrei, rund 25 s je Text,
    1,3 GB je Worker) und `parse-based` sind aus Code und Image entfernt. Die vier alten Vorlagen bleiben nur als
@@ -513,20 +518,24 @@ Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
    einzeln gezeigten passend statt 62 bis 67 %, 5 bis 9 % unpassend statt 11 bis 17 %. In den `best-quality`-Profilen
    prüft das LLM jedes Element: 74 bis 79 % passend, ohne ein passendes zu verlieren. Jeder Block nennt Lehrplan,
    Land, Bildungsstufe und Klasse. Model2Vec als Filter (D1) verlöre ein Viertel der passenden und bleibt draußen.
-8. **Offene Punkte der Durchsicht vom 25.09.2026:** Behoben sind die Fehler (Messprotokoll, M25). Die Punkte, die
+8. **Punkte der Durchsicht vom 25.09.2026, alle umgesetzt:** Behoben sind die Fehler (Messprotokoll, M25). Die Punkte, die
    ändern, was Aufrufer bekommen, hat Jan am 25.09.2026 zur Umsetzung nach Empfehlung freigegeben:
    - `/qa` mit `text` und zugleich `topic` oder `node_id` nahm den Text nicht, ohne es zu sagen. Umgesetzt (D49): 422,
      wie bei `/entities`; ebenso `subject`, `preset` und `article_choice` ohne Thema.
    - Ein unbekanntes `subject` („Pysik“) wurde still übergangen, Teil 2 suchte dann in allen Fächern; unbekannte Namen
      in `regenerate_sections` erneuerten nichts; unbekannte Felder aller Anfragen fielen still weg. Umgesetzt (D49):
      422 mit den erlaubten Werten; Fächer seit D51 gegen die beiden Fachvokabulare von edu-sharing.
-   - `/lehrplan/search` sucht die Wörter, wie sie kommen, Teil 2 den aufgelösten Artikel, seine Aliase und Unterthemen.
-     Vorschlag: ein Themen-Modus, der wie Teil 2 auflöst; zu messen an den 20 Themen von M22.
+   - `/lehrplan/search` suchte die Wörter, wie sie kamen, Teil 2 den aufgelösten Artikel, seine Aliase und
+     Unterthemen. Umgesetzt (`ff41a11`): `mode=topic` löst `q` wie Teil 2 auf, nennt den Artikel in `topic` und
+     antwortet 404 für ein Thema, das die Archive nicht haben; Standard bleibt `keyword`. Seit D59 nimmt die Suche
+     die Profile: In `balanced` wählt das LLM den Artikel des Themen-Modus, in den `best-quality`-Profilen prüft es
+     jeden Treffer.
    - Die CLI kannte keinen Knoten, `/qa` mit der Stufe `llm` öffnete nach dem Kompendium ein zweites Token- und
      Zeitbudget, und eine unbekannte `knowledge_collection_id` ergab 200 mit dem Fehler im Audit, eine unbekannte
      `collection_id` 404. Umgesetzt (D49): `--node-id` und `--repository`, ein Budget je Anfrage, 404 vor jedem
      LLM-Aufruf. `/matching/compare` ist entfallen (D50): Im Betrieb braucht ihn niemand, und `compendium eval`
      vergleicht die Strategien auf dem Gold. Wie der Comparator wählt `compendium eval` die Artikel ohne LLM; die
      Zuordnung einer Stufe mit LLM-Artikelwahl braucht deshalb eine eigene Messung.
-   - Die Links des Hauptartikels werden je Anfrage neu aufgelöst, bei großen Artikeln bis 0,7 s (*Deutschland*); ein
-     Zwischenspeicher je Archiv spart das bei Wiederholungen.
+   - Die Links des Hauptartikels wurden je Anfrage neu aufgelöst. Umgesetzt (`267210f`): Ein Archiv behält die
+     aufgelösten Namen (bis 20.000); *Deutschland* braucht im ersten Korpus weiter 1,9 s, im zweiten zum selben Thema
+     0,002 statt 0,19 s.
