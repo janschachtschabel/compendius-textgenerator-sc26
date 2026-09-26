@@ -13,7 +13,7 @@
 <circle cx="274.0" cy="108.0" r="4" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="282.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">rule-based</text>
 <rect x="488.0" y="102.0" width="11.0" height="11.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
-<text x="560.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">86 von 94 richtig</text>
+<text x="560.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">87 von 94 richtig</text>
 <text x="752.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0,03 s</text>
 <text x="858.0" y="112.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
 <circle cx="274.0" cy="132.0" r="4" fill="#d9822b" stroke="none" stroke-width="1"/>
@@ -167,5 +167,5 @@
 <text x="531.0" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
 <rect x="630.3" y="636.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="648.3" y="646.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
-<text x="20.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in 20 Themen (M25); gefüllte Bausteine (M11);</text>
+<text x="20.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel von 94 Goldanfragen (M9, M35); gedruckte Absätze aus unpassenden Artikeln in 20 Themen (M25); gefüllte Bausteine (M11);</text>
 <text x="20.0" y="688.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 der gelabelten Absätze (M27, LLM-Zuordnung M19); Text (M3, M27). Zeit: Server (M1, M3) oder Entwicklungsrechner (M27). Tokens je Kompendium.</text></svg>

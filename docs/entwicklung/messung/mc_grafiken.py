@@ -166,7 +166,7 @@ def prozess_optionen() -> None:
     ]
     rows = {  # step: [(option, default, llm, presets, quality, time, tokens)]
         ("1", "Hauptartikel finden", "Thema im Archivindex auflösen"): [
-            ("rule-based", False, False, "l", "86 von 94 richtig", "0,03 s", "0"),
+            ("rule-based", False, False, "l", "87 von 94 richtig", "0,03 s", "0"),
             ("llm", True, True, "bqg", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
         ],
         ("2", "Korpus bauen", "bis 12 Artikel, 400 Absätze"): [
@@ -237,7 +237,7 @@ def prozess_optionen() -> None:
     svg.line(268, y, 952, y, GRID)
     svg.legend(20, y + 30, [(LOCAL, "lokal, ohne Tokens"), (LLM, "über das LLM der b-api")], 11.5)
     svg.legend(330, y + 30, [(color, tag) for tag, color, _ in presets], 11.5)
-    svg.text(20, y + 56, "Güte: Hauptartikel von 94 Goldanfragen (M9); gedruckte Absätze aus unpassenden Artikeln in "
+    svg.text(20, y + 56, "Güte: Hauptartikel von 94 Goldanfragen (M9, M35); gedruckte Absätze aus unpassenden Artikeln in "
              "20 Themen (M25); gefüllte Bausteine (M11);", 10.5, MUTED, limit=920)
     svg.text(20, y + 72, "macro-F1 der gelabelten Absätze (M27, LLM-Zuordnung M19); Text (M3, M27). Zeit: Server (M1, "
              "M3) oder Entwicklungsrechner (M27). Tokens je Kompendium.", 10.5, MUTED, limit=920)
@@ -505,7 +505,7 @@ def kombinationen() -> None:
     tokens = load("m27_profile_tokens.json")["zusammenfassung"]
     budget = 2_000_000  # LLM_DAILY_TOKEN_BUDGET
     profiles = [  # label, articles right of 94, macro-F1 at the gold paragraphs, what the text is, color
-        ("llm-free", 86, "0,45", "wörtlich", LOCAL),
+        ("llm-free", 87, "0,45", "wörtlich", LOCAL),
         ("balanced", 91, "0,45", "wörtlich", "#7a5aa6"),
         ("best-quality", 91, "0,70", "wörtlich", LLM),
         ("best-quality-generated", 91, "0,70", "vom LLM geschrieben", "#b24c63"),
