@@ -10,17 +10,21 @@ from __future__ import annotations
 from app.domain.models import ArticleSection, Paragraph, Source
 from app.synthesis.actors import Actor, build_actors_section
 from app.synthesis.glossary import build_glossary
+from app.synthesis.qa_clause import Clause
 from app.synthesis.qa_questions import clause_questions
 from app.synthesis.qa_rules import (
     Candidate,
     actor_candidates,
     choose,
     glossary_candidates,
+    is_actor_block,
+    is_glossary_block,
     is_person,
     rule_pairs,
     template_questions,
 )
 from app.synthesis.qa_words import parse_ready
+from app.synthesis.sources_section import build_sources_section
 from tests.recorded_spacy import RecordedNlp
 
 NLP = RecordedNlp()
@@ -200,9 +204,13 @@ def test_reported_speech_in_the_subjunctive_asks_nothing() -> None:
 
 
 def test_a_second_main_clause_behind_a_comma_ends_the_first() -> None:
-    assert asked("Oft wird die These vertreten, in Deutschland sei das Recht stabil.") == {
-        ("Was", "Was wird oft vertreten?")
-    }
+    """The clause stops before ", in Deutschland sei …". The one question the sentence gave, "Was wird oft
+    vertreten?", asks about nothing the reader can see and is no longer asked (M30, D60)."""
+    sentence = "Oft wird die These vertreten, in Deutschland sei das Recht stabil."
+    doc = NLP(parse_ready(sentence))
+    clause = Clause.of(doc)
+    assert clause is not None and doc[clause.end].text == ","
+    assert asked(sentence) == set()
 
 
 def test_a_word_that_answers_an_earlier_sentence_leaves_the_question_unclear() -> None:
@@ -350,6 +358,20 @@ def test_the_actors_ask_who_or_what_they_are_without_brackets_and_cut_summaries(
         ], visible
 
 
+def test_the_sources_block_is_no_actor_list_though_its_rows_look_alike() -> None:
+    """Both list "- **[Titel](link)** — …"; only the actor list stands under headings of its kinds (D60). Read as
+    actors, the sources would ask "Was versteht man unter Optik?" of a licence line."""
+    actors = build_actors_section(
+        [Actor("Niels Bohr", "Person", "Niels Bohr war ein dänischer Physiker.", "u", [], "")], False
+    )
+    sources = build_sources_section([_source("Optik", "Die Optik ist ein Gebiet der Physik.", primary=True)], [], False)
+    glossary = build_glossary(
+        "Optik", _source("Optik", "Die Optik ist ein Gebiet der Physik.", primary=True), [], aliases=[]
+    )
+    assert (is_actor_block(actors), is_actor_block(sources), is_actor_block(glossary)) == (True, False, False)
+    assert (is_glossary_block(glossary), is_glossary_block(sources), is_glossary_block(actors)) == (True, False, False)
+
+
 # --- choosing and the pairs ---------------------------------------------------------------------------------------
 
 
@@ -392,6 +414,52 @@ def test_one_term_is_asked_for_once_whoever_asks_for_it() -> None:
         _candidate("a0", "Person", "Wer war Niels Bohr?"),
     ]
     assert [c.question for c in choose(candidates, 10)] == ["Was versteht man unter Optik?", "Wer war Niels Bohr?"]
+
+
+def test_glossary_terms_and_actors_fill_up_before_a_sentence_is_asked_twice() -> None:
+    """Jan, 2026-09-26: when the text runs out, the glossary and the actors fill up. In M30 20 of 23 of their pairs
+    were flawless for both judges, 2 of 5 second questions of a sentence (D60)."""
+    candidates = [
+        _candidate("s0", "Wann", "Wann A?"),
+        _candidate("s0", "Was", "Was A?"),
+        _candidate("g0", "Begriff", "Was ist das Auge?"),
+        _candidate("a0", "Person", "Wer war Niels Bohr?"),
+    ]
+    assert [c.question for c in choose(candidates, 3)] == ["Wann A?", "Was ist das Auge?", "Wer war Niels Bohr?"]
+    assert [c.question for c in choose(candidates, 4)][-1] == "Was A?", "a second question only when all else is used"
+
+
+# --- sharpened after M30 (D60): the frequent flaws the parse can see ------------------------------------------------
+
+
+def test_a_second_verb_joined_by_und_is_left_out_of_the_question() -> None:
+    """M30: "Seit wann war … Alleininhaber … und war maßgeblich … beteiligt?" asked two things at once. The question
+    ends where the second verb begins; the whole sentence still answers it."""
+    questions = asked("Der Forscher leitete seit 1891 die Firma und war an der Gründung eines Glaswerks beteiligt.")
+    assert ("Wann", "Seit wann leitete der Forscher die Firma?") in questions
+    assert not any(" und " in text for _, text in questions)
+
+
+def test_a_verb_of_measure_is_not_asked_what() -> None:
+    """M30: "Was dauern Prüfungsvorbereitungskurse … ungefähr?", "Worauf beziffert sich der Gesamtumsatz …?"."""
+    lasting = asked("Die Vorbereitungskurse dauern in Vollzeit ungefähr ein Jahr.")
+    assert not any(text.startswith("Was dauern") for _, text in lasting), lasting
+    amount = asked("Der Umsatz der Branche beziffert sich auf sieben Milliarden Euro.")
+    assert not any(text.startswith("Worauf") for _, text in amount), amount
+
+
+def test_a_question_needs_something_to_ask_about() -> None:
+    """M30: "Was ist notwendig?", "Was lautet?" - nothing in them says what they are about."""
+    assert asked("Eine gründliche Vorbereitung ist notwendig.") == set()
+    assert asked("Die Formel lautet: Kraft ist Masse mal Beschleunigung.") == set()
+
+
+def test_a_definition_that_ends_in_a_number_is_complete() -> None:
+    """ "… mit der Ordnungszahl 8." was read as cut at an abbreviation, like "… bis 700 m ü."; a number ends a
+    sentence well (M30: Sauerstoff and Wasser of the Photosynthese glossary were lost)."""
+    primary = _source("Sauerstoff", "Sauerstoff ist ein chemisches Element mit der Ordnungszahl 8.", primary=True)
+    markdown = build_glossary("Sauerstoff", primary, [primary], aliases=[])
+    assert [c.question for c in glossary_candidates(markdown, NLP)] == ["Was versteht man unter Sauerstoff?"]
 
 
 def test_a_person_topic_is_recognised_by_its_entity() -> None:

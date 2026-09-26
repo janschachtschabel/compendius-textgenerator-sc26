@@ -76,6 +76,11 @@ ABSTRACT_HEADS = frozenset(
 NAMING_HEADS = frozenset({"wort", "begriff", "bezeichnung", "name", "ausdruck", "terminus"})
 # An accusative object of these verbs is a predicate or a property, not a thing done: "Was hat der Vulkan?"
 NO_OBJECT_VERBS = frozenset({"sein", "werden", "bleiben", "lauten", "heißen", "gelten", "haben", "geben"})
+# Verbs whose object is an amount: "dauert ein Jahr", "beziffert sich auf sieben Milliarden" ask "Wie lange" or "Wie
+# viel", never "Was" or "Worauf" (M30: "Was dauern Prüfungsvorbereitungskurse … ungefähr?"). "zählen" counts only
+# with an accusative ("zählt 7.645 Betriebe"); "zählt zu" names a membership and stays a question
+AMOUNT_VERBS = frozenset({"dauern", "kosten", "betragen", "wiegen", "messen", "beziffern", "belaufen"})
+COUNTING_VERBS = AMOUNT_VERBS | {"zählen"}
 WO_PREPOSITIONS = {
     "an": "Woran", "am": "Woran", "auf": "Worauf", "aus": "Woraus", "bei": "Wobei", "beim": "Wobei",
     "durch": "Wodurch", "für": "Wofür", "gegen": "Wogegen", "in": "Worin", "im": "Worin", "mit": "Womit",

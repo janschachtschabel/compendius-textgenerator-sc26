@@ -91,7 +91,8 @@ def marker_numbers(text: str) -> list[int]:
 def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str, int]:
     """Keep only sentences with at least one valid marker; return the cleaned text and the number that failed.
 
-    ``mark`` names the Evidenzgrad a failing sentence is kept under instead of being dropped; empty drops it.
+    ``mark`` names the Evidenzgrad a failing sentence is kept under instead of being dropped; empty drops it. A
+    question is dropped either way (_is_question).
     """
     dropped = 0
     paragraphs: list[str] = []
@@ -104,7 +105,7 @@ def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str
                 markers = [int(m) for m in _MARKER_RE.findall(sentence)]
                 if not any(m in valid for m in markers):
                     dropped += 1
-                    if mark:
+                    if mark and not _is_question(sentence):
                         kept.append(_as_marked(sentence, mark))
                     continue
                 clean = _MARKER_RE.sub(lambda m: m.group(0) if int(m.group(1)) in valid else "", sentence)
@@ -150,6 +151,14 @@ def _units(paragraph: str) -> list[str]:
     if prose:
         units.append(" ".join(prose))
     return units
+
+
+def _is_question(sentence: str) -> bool:
+    """A question claims nothing, so it is no model knowledge and no conclusion either: kept marked, "Wie wird die
+    Energie verfügbar gemacht? [Modellwissen]" would read as knowledge. In M31 three of 50 model-knowledge
+    sentences were such questions, fillers for both judges (D60)."""
+    plain = collapse(_COMMENT_RE.sub(" ", _MARKER_RE.sub("", sentence)))
+    return plain.rstrip(' "“”»«)').endswith("?")
 
 
 def _as_marked(sentence: str, grade: str) -> str:
@@ -248,8 +257,8 @@ def _stems(text: str) -> set[str]:
 def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: str = "") -> tuple[str, int]:
     """Drop sentences whose content words barely occur in the chunks they cite; a marker alone proves nothing.
 
-    ``mark`` names the Evidenzgrad such a sentence is kept under instead; empty drops it. Returns the text
-    and the number that failed.
+    ``mark`` names the Evidenzgrad such a sentence is kept under instead; empty drops it, and so does a question.
+    Returns the text and the number that failed.
     """
     stems_by_number = {number: _stems(chunk_text) for number, chunk_text in evidence.items()}
     unsupported = 0
@@ -266,7 +275,7 @@ def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: str = "") 
                 cited |= stems_by_number.get(int(number), set())
             if len(own) >= MIN_CONTENT_STEMS and len(own & cited) / len(own) < MIN_SUPPORT:
                 unsupported += 1
-                if mark:
+                if mark and not _is_question(sentence):
                     kept.append(_as_marked(sentence, mark))
                 continue
             kept.append(sentence)

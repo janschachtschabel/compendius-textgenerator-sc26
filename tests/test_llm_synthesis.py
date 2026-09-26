@@ -411,6 +411,37 @@ def test_enrichment_marks_model_knowledge_instead_of_dropping_it() -> None:
     assert result.marked_sentences == 1 and result.prompt == get_prompt("section_enrichment").tag
 
 
+def test_a_question_without_evidence_is_dropped_not_kept_as_model_knowledge() -> None:
+    """Decision paper, point 3 (D60): model knowledge is a checkable fact or nothing (D56), and a question is no
+    fact. In M31 three of the 50 model-knowledge sentences were questions, fillers for both judges."""
+    answer = (
+        "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
+        "Wie wird die gewonnene Energie verfügbar gemacht? "
+        "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
+    )
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: answer)))
+    result = synthesizer.write_section(
+        _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
+    )
+    assert isinstance(result, LlmSection)
+    assert "?" not in result.text
+    assert result.dropped_sentences == 2, "both fail the citation check; only the statement stays, marked"
+    assert result.text.count(MODEL_KNOWLEDGE_OPEN) == result.marked_sentences == 1
+
+
+def test_a_question_is_never_kept_marked_whatever_the_grade() -> None:
+    text, failed = verify_citations("Erster Satz [1]. Warum ist das so? Zweiter Satz ohne Beleg.", {1}, mark=CONCLUSION)
+    assert text == f"Erster Satz [1]. {CONCLUSION_OPEN}Zweiter Satz ohne Beleg.{END_MARKER}"
+    assert failed == 2
+    unsupported = (
+        "Licht breitet sich geradlinig aus und wird an Grenzflächen gebrochen [1]. "
+        "Prägen gesellschaftliche Debatten die politische Bewertung wirtschaftlicher Interessen [1]?"
+    )
+    kept, failed = drop_unsupported(unsupported, EVIDENCE, mark=MODEL_KNOWLEDGE)
+    assert kept == "Licht breitet sich geradlinig aus und wird an Grenzflächen gebrochen [1]." and failed == 1
+
+
 def test_model_knowledge_is_marked_visibly_inside_its_block_and_a_conclusion_is_not() -> None:
     """D56 (Jan): a reader of the rendered text sees which sentence no source covers - the comment alone hid it.
 

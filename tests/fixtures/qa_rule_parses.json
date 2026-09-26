@@ -1,6 +1,6 @@
 {
  "model": "de_core_news_md",
- "recorded": "2026-09-25",
+ "recorded": "2026-09-26",
  "parses": {
   "Im Jahr 1922 erhielt er den Nobelpreis für Physik.": {
    "ents": [[0, 3, "MISC"], [6, 9, "MISC"]],
@@ -693,6 +693,83 @@
     ["von", " ", "ADP", "APPR", "pg", 7, "von", ""],
     ["Bedeutung", "", "NOUN", "NN", "nk", 8, "Bedeutung", "Case=Dat|Gender=Fem|Number=Sing"],
     [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
+   ]
+  },
+  "Der Forscher leitete seit 1891 die Firma und war an der Gründung eines Glaswerks beteiligt.": {
+   "ents": [[13, 14, "LOC"]],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Forscher", " ", "NOUN", "NN", "sb", 2, "Forscher", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["leitete", " ", "VERB", "VVFIN", "ROOT", 2, "leiten", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["seit", " ", "ADP", "APPR", "mo", 2, "seit", ""],
+    ["1891", " ", "NUM", "CARD", "nk", 3, "1891", ""],
+    ["die", " ", "DET", "ART", "nk", 6, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Firma", " ", "NOUN", "NN", "oa", 2, "Firma", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["und", " ", "CCONJ", "KON", "cd", 2, "und", ""],
+    ["war", " ", "AUX", "VAFIN", "cj", 7, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin"],
+    ["an", " ", "ADP", "APPR", "op", 14, "an", ""],
+    ["der", " ", "DET", "ART", "nk", 11, "der", "Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Gründung", " ", "NOUN", "NN", "nk", 9, "Gründung", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["eines", " ", "DET", "ART", "nk", 13, "ein", "Case=Gen|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Glaswerks", " ", "NOUN", "NN", "ag", 11, "Glaswerk", "Case=Gen|Gender=Neut|Number=Sing"],
+    ["beteiligt", "", "VERB", "VVPP", "pd", 8, "beteiligen", "VerbForm=Part"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Der Umsatz der Branche beziffert sich auf sieben Milliarden Euro.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Umsatz", " ", "NOUN", "NN", "sb", 4, "Umsatz", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["der", " ", "DET", "ART", "nk", 3, "der", "Case=Gen|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Branche", " ", "NOUN", "NN", "ag", 1, "Branche", "Case=Gen|Gender=Fem|Number=Sing"],
+    ["beziffert", " ", "VERB", "VVFIN", "ROOT", 4, "beziffern", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["sich", " ", "PRON", "PRF", "oa", 4, "sich", "Case=Acc|Number=Sing|Person=3|PronType=Prs|Reflex=Yes"],
+    ["auf", " ", "ADP", "APPR", "op", 4, "auf", ""],
+    ["sieben", " ", "NUM", "CARD", "nmc", 8, "sieben", ""],
+    ["Milliarden", " ", "NOUN", "NN", "nk", 6, "Milliarde", "Case=Acc|Gender=Fem|Number=Plur"],
+    ["Euro", "", "NOUN", "NN", "nk", 8, "Euro", "Gender=Masc"],
+    [".", "", "PUNCT", "$.", "punct", 4, "--", ""]
+   ]
+  },
+  "Eine gründliche Vorbereitung ist notwendig.": {
+   "ents": [],
+   "tokens": [
+    ["Eine", " ", "DET", "ART", "nk", 2, "ein", "Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["gründliche", " ", "ADJ", "ADJA", "nk", 2, "gründlich", "Case=Nom|Degree=Pos|Gender=Fem|Number=Sing"],
+    ["Vorbereitung", " ", "NOUN", "NN", "sb", 3, "Vorbereitung", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "ROOT", 3, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["notwendig", "", "ADV", "ADJD", "pd", 3, "notwendig", "Degree=Pos"],
+    [".", "", "PUNCT", "$.", "punct", 3, "--", ""]
+   ]
+  },
+  "Die Formel lautet: Kraft ist Masse mal Beschleunigung.": {
+   "ents": [[4, 5, "PER"]],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Formel", " ", "NOUN", "NN", "sb", 2, "Formel", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["lautet", "", "VERB", "VVFIN", "ROOT", 2, "lauten", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    [":", " ", "PUNCT", "$.", "punct", 2, "--", ""],
+    ["Kraft", " ", "NOUN", "NN", "pd", 5, "Kraft", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["ist", " ", "AUX", "VAFIN", "oc", 2, "sein", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["Masse", " ", "NOUN", "NN", "sb", 5, "Masse", "Case=Nom|Gender=Fem|Number=Sing"],
+    ["mal", " ", "ADV", "ADV", "mo", 5, "mal", ""],
+    ["Beschleunigung", "", "NOUN", "NN", "pd", 5, "Beschleunigung", "Case=Nom|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Die Vorbereitungskurse dauern in Vollzeit ungefähr ein Jahr.": {
+   "ents": [],
+   "tokens": [
+    ["Die", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Vorbereitungskurse", " ", "NOUN", "NN", "sb", 2, "Vorbereitungskurs", "Case=Nom|Gender=Masc|Number=Plur"],
+    ["dauern", " ", "VERB", "VVFIN", "ROOT", 2, "dauern", "Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["in", " ", "ADP", "APPR", "mo", 2, "in", ""],
+    ["Vollzeit", " ", "NOUN", "NN", "nk", 3, "Vollzeit", "Case=Dat|Gender=Fem|Number=Sing"],
+    ["ungefähr", " ", "ADV", "ADJD", "mo", 2, "ungefähr", "Degree=Pos"],
+    ["ein", " ", "DET", "ART", "nk", 7, "ein", "Case=Acc|Definite=Ind|Gender=Neut|Number=Sing|PronType=Art"],
+    ["Jahr", "", "NOUN", "NN", "oa", 2, "Jahr", "Case=Acc|Gender=Neut|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
    ]
   }
  }

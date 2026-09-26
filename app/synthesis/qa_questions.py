@@ -25,8 +25,10 @@ from typing import Any
 
 from app.synthesis.qa_clause import Clause, contiguous, is_person, lowered, place_word, span, subtree, time_word
 from app.synthesis.qa_words import (
+    AMOUNT_VERBS,
     ARTICLES,
     CAUSES,
+    COUNTING_VERBS,
     GOVERNED,
     NAMING_HEADS,
     NO_OBJECT_VERBS,
@@ -95,8 +97,24 @@ class _Asker:
         if self.pronoun:
             text = re.sub(rf"\b{re.escape(self.pronoun)}\b", self.person, text, count=1, flags=re.IGNORECASE)
         question = _question_text(text)
-        if len(question) <= MAX_QUESTION_CHARS and _balanced(question) and not unclear(question) and not unclear(focus):
+        if (
+            len(question) <= MAX_QUESTION_CHARS
+            and _balanced(question)
+            and not unclear(question)
+            and not unclear(focus)
+            and self._about_something(question)
+        ):
             self.questions.append(Question(kind, question))
+
+    def _about_something(self, question: str) -> bool:
+        """Whether a noun, a name or a number of the sentence stands in the question, or the person's name.
+
+        "Was ist notwendig?" or "Was lautet?" asks about nothing the reader can see (M30, D60).
+        """
+        asked = words(question)
+        return bool(self.pronoun) or any(
+            words(token.text) & asked for token in self.doc if token.pos_ in NOUNS or token.pos_ == "NUM"
+        )
 
     def _moved(self, question_word: str, removed: set[int]) -> str | None:
         """The question with ``removed`` in the front field, or taken out of the middle while the subject leads."""
@@ -149,7 +167,12 @@ class _Asker:
             if child.lower_ == "von" and agent is not None and agent.pos_ == "PROPN":
                 return "Von wem", "Von wem", span(doc, ids)
             return None
-        if child.dep_ == "oa" and child.pos_ in NOUNS and clause.lexical not in NO_OBJECT_VERBS and not clause.joined():
+        if (
+            child.dep_ == "oa"
+            and child.pos_ in NOUNS
+            and clause.lexical not in NO_OBJECT_VERBS | COUNTING_VERBS
+            and not clause.joined()
+        ):
             focus = span(doc, ids)
             if words(focus) <= self.topic_words | ARTICLES:
                 return None
@@ -161,6 +184,8 @@ class _Asker:
         preposition = child.lower_
         if child.pos_ != "ADP" or preposition not in WO_PREPOSITIONS or noun is None or noun.pos_ == "PROPN":
             return None  # a person or a name would ask "von wem", "mit wem" - not built
+        if self.clause.lemmas & AMOUNT_VERBS:
+            return None  # "beziffert sich auf …" names an amount: "Worauf" would ask for it as a thing
         if governed_only and not any((lemma, preposition) in GOVERNED for lemma in self.clause.lemmas):
             return None
         return WO_PREPOSITIONS[preposition], "Wo+Präposition", span(self.doc, ids)

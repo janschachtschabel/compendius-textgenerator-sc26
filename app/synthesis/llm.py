@@ -22,6 +22,7 @@ from app.synthesis.citations import (
     collapse,
     drop_unsupported,
     marker_numbers,
+    opening_marker,
     renumber,
     verify_citations,
 )
@@ -156,5 +157,5 @@ class LlmSynthesizer:
             total_tokens=result.total_tokens,
             dropped_sentences=dropped,
             unsupported_sentences=unsupported,
-            marked_sentences=dropped + unsupported if mark else 0,  # what a reader sees marked in the text
+            marked_sentences=text.count(opening_marker(mark)) if mark else 0,  # what a reader sees marked
         )

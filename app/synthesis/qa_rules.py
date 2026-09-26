@@ -201,7 +201,8 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
         term = re.sub(r"\s*\([^)]*\)$", "", row.group("term").strip())
         definition = row.group("definition").strip()
         last = definition.rstrip(".").split()[-1] if definition.split() else ""
-        if definition.endswith("…") or len(last) <= 2 or ends_with_abbreviation(definition):
+        # "… bis 700 m ü." is cut at an abbreviation; "… mit der Ordnungszahl 8." ends with its number (M30)
+        if definition.endswith("…") or (len(last) <= 2 and not last.isdigit()) or ends_with_abbreviation(definition):
             continue
         if not words(term) & set(re.findall(r"[\wäöüß]+", definition.lower())[:6]) or unclear(
             " ".join(definition.split()[:3])
@@ -218,6 +219,18 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
         kind = "Begriff" if relation == "skos:related" else "Definition"
         found.append((_RELATION_ORDER[relation], Candidate(f"g{index}", kind, question, definition)))
     return [candidate for _, candidate in sorted(found, key=lambda item: item[0])]
+
+
+def is_glossary_block(markdown: str) -> bool:
+    """Whether a generated block is the glossary (app/synthesis/glossary.py): it has glossary rows."""
+    return any(_GLOSSARY_ROW.match(line.strip()) for line in markdown.splitlines())
+
+
+def is_actor_block(markdown: str) -> bool:
+    """Whether a generated block is the actor list (app/synthesis/actors.py): actor rows under headings of their
+    kinds ("#### Person"). The sources block lists its articles in rows of the same form, without such headings."""
+    lines = [line.strip() for line in markdown.splitlines()]
+    return any(_KIND_HEADING.match(line) for line in lines) and any(_ACTOR_ROW.match(line) for line in lines)
 
 
 def actor_candidates(markdown: str) -> list[Candidate]:
@@ -254,15 +267,17 @@ def actor_candidates(markdown: str) -> list[Candidate]:
 
 
 def choose(candidates: Sequence[Candidate], count: int) -> list[Candidate]:
-    """Up to ``count`` candidates: the kinds take turns, every origin once before any twice, the fillers last.
+    """Up to ``count`` candidates: the kinds take turns and every origin comes once; when the text runs out the
+    glossary and the actors fill up, and only then is a sentence asked a second time (Jan, D60).
 
-    One term is asked for once, whoever asks for it - the text's own definition of the topic and the glossary's
-    are the same question in other words.
+    In M30 20 of 23 pairs of the glossary and the actors were flawless for both judges, 2 of 5 second questions of a
+    sentence. One term is asked for once, whoever asks for it - the text's own definition of the topic and the
+    glossary's are the same question in other words.
     """
     chosen: list[Candidate] = []
     used: set[str] = set()
     asked: set[str] = set()
-    for kinds, again in ((KINDS, False), (KINDS, True), (FILLER_KINDS, False)):
+    for kinds, again in ((KINDS, False), (FILLER_KINDS, False), (KINDS, True)):
         pools = {kind: [c for c in candidates if c.kind == kind] for kind in kinds}
         progress = True
         while progress and len(chosen) < count:

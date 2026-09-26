@@ -42,7 +42,8 @@ class QaRequest(BaseModel):
         min_length=1,
         max_length=MAX_TEXT_CHARS,
         description="The text the pairs are made from - the markdown of a compendium you already "
-        "have, or any other text",
+        "have, or any other text. The markdown of a compendium is read as one (D60): the prose of its blocks "
+        "is asked, its glossary and actor list fill up when the prose runs out, and its sources stay out",
     )
     topic: str | None = Field(
         None,
@@ -79,13 +80,15 @@ class QaRequest(BaseModel):
         description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free and balanced rule-based, "
         "best-quality and best-quality-generated llm (D57). rule-based needs no model beyond the spaCy parse the "
         "image carries: it asks Wann, Wo, Wer, Was, Worauf, Wie viele, Warum and for definitions from the parse of "
-        "each sentence, then the glossary and the actors of a compendium, and the answer is the whole sentence; "
+        "each sentence, every sentence once; when the text runs out, the glossary and the actors of a compendium "
+        "fill up before a sentence is asked a second time (D60), and the answer is the whole sentence; "
         "without the spaCy model it falls back to four templates. llm lets the b-api write the pairs; with a topic "
         "or node, part 1 and the pairs share one token budget and one deadline (the profile's: "
         "LLM_MAX_TOKENS_PER_REQUEST, in the two best-quality profiles LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59; "
         "REQUEST_TIMEOUT_S). llm without a configured LLM is a 503; while the b-api is not available it falls back "
-        "to rule-based, and note says why. Over six topics with 20 pairs asked each, two judges found 48 of 96 "
-        "rule-based pairs and 99 of 120 llm pairs flawless (M30). The stages models and parse-based are gone (D57): "
+        "to rule-based, and note says why. Over six topics with 20 pairs asked each, two judges found 58 of 95 "
+        "rule-based pairs flawless since D60 (M34; 48 of 96 before) and 99 of 120 llm pairs (M30). The stages models "
+        "and parse-based are gone (D57): "
         "asking for one is a 422",
     )
     count: int = Field(

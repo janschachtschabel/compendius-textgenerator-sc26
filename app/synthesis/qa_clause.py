@@ -115,7 +115,14 @@ def _clause_end(doc: Any, verb: int) -> tuple[int, bool]:
             return token.i, False
         if token.text == "," and _second_main_clause(doc, token.i, verb):
             return token.i, False
+        if token.dep_ == "cd" and token.head.i == verb and _joins_a_finite_verb(token):
+            return token.i, False  # "… leitete die Firma und war an … beteiligt": a second statement (M30, D60)
     return len(doc), False
+
+
+def _joins_a_finite_verb(conjunction: Any) -> bool:
+    """Whether "und" or "oder" joins a second finite verb to the clause's own - a second statement, not a list."""
+    return any(child.dep_ == "cj" and "Fin" in child.morph.get("VerbForm") for child in conjunction.children)
 
 
 def _second_main_clause(doc: Any, comma: int, verb: int) -> bool:

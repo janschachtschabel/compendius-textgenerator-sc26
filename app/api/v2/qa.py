@@ -20,7 +20,6 @@ says. The wire contract lives in qa_schemas.py, the stages that can refuse in qa
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
@@ -29,14 +28,14 @@ from app.api.deps import get_service, node_errors
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
-from app.domain.models import Compendium, Resolution, SectionStatus
+from app.domain.models import Compendium, Resolution
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, LlmNotConfiguredError, PartsUnavailableError, TopicNotFoundError
 from app.sources.lehrplan.subjects import UnknownSubjectError
-from app.synthesis.citations import without_markers
 from app.synthesis.qa import QaPair, rule_based_pairs
+from app.synthesis.qa_knowledge import Knowledge, knowledge_of_compendium, knowledge_of_text
 from app.synthesis.qa_rules import rule_pairs
 from app.templates.manager import TemplateNotFoundError
 
@@ -48,16 +47,6 @@ NO_TAGGER_NOTE = (
     "können und unter Umständen nach Adverbien statt nach Begriffen fragen"
 )
 KNOWLEDGE_PROFILE = "llm-free"  # part 1 of a topic or node, whatever profile picks the stage (D55)
-
-
-@dataclass(frozen=True)
-class Knowledge:
-    """What the pairs are asked about: the prose, and for a compendium its glossary and actors and its topic."""
-
-    text: str
-    glossary: str = ""
-    actors: str = ""
-    topic: str | None = None
 
 
 def _allowance(request: Request, payload: QaRequest, profile: str) -> LlmAllowance | None:
@@ -145,44 +134,6 @@ def _part_one(
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
-def _text_of_compendium(compendium: Compendium) -> str:
-    """The prose of the content blocks, in reading order - not the apparatus around them.
-
-    Two things are left out, and both for the same reason: they are apparatus, not subject matter.
-    The markdown of the finished document carries headings, citation numbers and facet markers, so
-    only the block texts are read. And of those the generated blocks are skipped - the sources block,
-    the glossary and the actor directory are link lists and tables that a question generator turns
-    into nonsense.
-
-    Measured against the running service on 2026-09-21 for one topic: of 27 614 characters of blocks,
-    20 522 were the three generated ones. Asked about, they produced a question about the year 1999
-    answered with a literature line and its ISBN - three quarters of the text taught nothing, and the
-    literature lines are where the flood of year questions came from.
-    """
-    joined = "\n\n".join(
-        section.text.strip()
-        for section in compendium.sections
-        if section.text.strip() and section.status is not SectionStatus.GENERATED
-    )
-    return without_markers(joined)
-
-
-def _knowledge(compendium: Compendium) -> Knowledge:
-    """The prose of part 1, and the two generated blocks the rules can read on their own terms (D55).
-
-    The glossary holds one definition per related article and the actor list the first sentence of each person's
-    article: no prose a parse could ask about, but a definition asks "Was ist …?" and a person "Wer war …?".
-    """
-    blocks = {section.slot_key: section.text for section in compendium.sections if section.text.strip()}
-    title = compendium.resolution.title if compendium.resolution is not None else compendium.topic
-    return Knowledge(
-        text=_text_of_compendium(compendium),
-        glossary=blocks.get("glossar", ""),
-        actors=blocks.get("akteure", ""),
-        topic=title,
-    )
-
-
 def _rule_stage(request: Request, knowledge: Knowledge, payload: QaRequest) -> tuple[list[QaPair], str | None]:
     """The pairs of the rules, and a note when the spaCy model they read is missing.
 
@@ -222,9 +173,10 @@ EXAMPLES = {
         "description": (
             "Ein Thema erzeugt erst Teil 1 des Kompendiums, immer ohne LLM (D55), und fragt dessen Bausteine, sein "
             "Glossar und seine Akteure ab: Wann, Wo, Wer, Was, Worauf, Wie viele, Warum und Definitionen, die Arten "
-            "abwechselnd, die Antwort ist der ganze Satz. Hält der Text weniger Fragen, als count verlangt, sagt note, "
-            "wie viele es sind. Auf sechs Themen mit je 20 verlangten Paaren lieferten die Regeln 96 Paare in 0,3 s "
-            "je Text, die Hälfte nach zwei Gutachtern mangelfrei (M30)."
+            "abwechselnd, die Antwort ist der ganze Satz. Gibt der Text zu wenig her, füllen Glossar und Akteure auf "
+            "(D60); halten alle zusammen weniger Fragen, als count verlangt, sagt note, wie viele es sind. Auf sechs "
+            "Themen mit je 20 verlangten Paaren lieferten die Regeln 95 Paare in 0,3 s je Text, 58 davon nach zwei "
+            "Gutachtern mangelfrei (M34; vor D60 48 von 96, M30)."
         ),
         "value": {"topic": "Albert Einstein", "count": 20, "preset": "llm-free"},
     },
@@ -255,8 +207,10 @@ EXAMPLES = {
     "5 · eigener Text": {
         "summary": "Paare zu einem Text, den Sie schon haben - es entsteht kein Kompendium",
         "description": (
-            "Etwa das Markdown eines Kompendiums, das Sie schon abgerufen haben. preset wählt auch hier das "
-            "Verfahren; subject und article_choice gelten nur mit topic oder node_id."
+            "Etwa das Markdown eines Kompendiums, das Sie schon abgerufen haben: Es wird wie ein Kompendium "
+            "gelesen, die Prosa seiner Bausteine wird gefragt, Glossar und Akteure füllen auf, die Quellen bleiben "
+            "außen vor (D60). preset wählt auch hier das Verfahren; subject und article_choice gelten nur mit "
+            "topic oder node_id."
         ),
         "value": {
             "text": (
@@ -368,9 +322,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         service = get_service(request)  # a topic needs the archives; a plain text does not
         compendium = _part_one(service, payload, allowance, article_choice)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
-        knowledge = _knowledge(compendium)
+        knowledge = knowledge_of_compendium(compendium)
     else:
-        knowledge = Knowledge(text=payload.text or "")
+        knowledge = knowledge_of_text(payload.text or "")
     text = knowledge.text
     if not text.strip():
         raise HTTPException(status_code=404, detail="Zum Thema stehen in den Archiven keine Texte bereit.")
