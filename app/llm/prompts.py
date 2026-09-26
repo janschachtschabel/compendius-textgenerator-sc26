@@ -230,6 +230,43 @@ CURRICULUM_CHECK = Prompt(
     ),
 )
 
+# /entities (D62): the two prompts of M36 word for word - the model names the entities of a text with the title of
+# their article, and it grades the links; measured on the texts of 40 materials with gpt-6-luna
+ENTITY_EXTRACTION = Prompt(
+    id="entity_extraction",
+    version=1,
+    system=(
+        "Du erkennst in deutschen Texten über Unterrichtsmaterial die Entitäten, die einen Artikel in der "
+        "deutschsprachigen Wikipedia haben. Antworte nur mit JSON."
+    ),
+    user=(
+        "Text:\n{text}\n\n"
+        "Nenne die Entitäten dieses Textes: Personen, Orte, Organisationen, Werke, Ereignisse und die Fachbegriffe, um "
+        "die es im Text geht - keine Allerweltswörter wie Schule, Unterricht, Arbeitsblatt, Video oder Aufgabe. Je "
+        "Entität das Wort, wie es im Text steht, und den genauen Titel ihres Artikels in der deutschsprachigen "
+        "Wikipedia.\n"
+        'Antworte so: {{"entitaeten": [{{"text": "<Wort im Text>", "titel": "<Artikeltitel>"}}]}}'
+    ),
+)
+
+ENTITY_CHECK = Prompt(
+    id="entity_check",
+    version=1,
+    system=(
+        "Du prüfst Verknüpfungen zwischen Wörtern eines Textes und Artikeln der deutschsprachigen Wikipedia. Antworte "
+        "nur mit JSON."
+    ),
+    user=(
+        "Text:\n{text}\n\n"
+        "Zu Wörtern dieses Textes steht der Artikel, mit dem sie verknüpft wurden, und der Anfang seiner Einleitung:\n"
+        "{lines}\n\n"
+        "Bewerte jede Verknüpfung: 2 = eine Entität oder ein Fachbegriff, um den es im Text geht, und der Artikel "
+        "meint genau das; 1 = der Artikel passt, aber das Wort ist nebensächlich oder ein Allerweltswort; 0 = der "
+        "Artikel meint etwas anderes als der Text.\n"
+        'Antworte so: {{"a1": 2, "a2": 0}}'
+    ),
+)
+
 PROMPTS: dict[str, Prompt] = {
     p.id: p
     for p in (
@@ -243,6 +280,8 @@ PROMPTS: dict[str, Prompt] = {
         NODE_TOPIC_WITH_TOPIC,
         QA_PAIRS,
         CURRICULUM_CHECK,
+        ENTITY_EXTRACTION,
+        ENTITY_CHECK,
     )
 }
 

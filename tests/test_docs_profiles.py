@@ -24,7 +24,6 @@ from tests.test_docs_examples import _request_models
 PROFILES = get_args(Preset)
 # Endpoints whose work no profile changes; their text has to say so, so nobody looks for a preset there
 WITHOUT_PROFILE = [
-    "POST /api/v2/entities",
     "GET /api/v2/nodes/{node_id}",
     "GET /api/v2/collections/{collection_id}/overview",
 ]
@@ -106,6 +105,7 @@ def test_an_endpoint_that_takes_a_profile_says_what_each_one_does_there(spec: di
         "POST /api/v2/compendium",
         "POST /api/v2/knowledge",
         "POST /api/v2/qa",
+        "POST /api/v2/entities",
         "GET /api/v2/lehrplan/search",
     } <= set(profiled)
 

@@ -1,0 +1,177 @@
+"""POST /api/v2/entities in the four profiles (D62): the ways measured in M36, each where it pays.
+
+llm-free keeps the rules - spaCy and the dictionary of titles, F1 0.38 on the texts of 40 materials. balanced and the
+best-quality profiles let the LLM name the entities with the title of their article (0.78). The check of the links
+(link_check llm) raised the precision to 0.94 but cost a third of the fitting entities, F1 0.76, so no profile sets
+it; a caller who wants it says so. A switch the request sets wins, as everywhere; on a server without an
+LLM what needs one is a 503, and while the b-api is away the rules take over and the answer says why.
+"""
+
+from __future__ import annotations
+
+import json
+from collections.abc import Iterator
+from pathlib import Path
+from typing import Any
+
+import pytest
+from fastapi.testclient import TestClient
+
+from app.main import create_app
+from app.settings import Settings
+from tests.conftest import make_settings
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
+
+TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
+NAMED = {
+    "entitaeten": [
+        {"text": "Ernst Abbe", "titel": "Ernst Abbe"},
+        {"text": "Jena", "titel": "Jena"},  # the sample archive has no article on Jena
+        {"text": "Lichtmikroskop", "titel": "Lichtmikroskop"},
+        {"text": "Geometrische Optik", "titel": "Geometrische Optik"},
+    ]
+}
+GRADES = {"a1": 2, "a2": 1, "a3": 2}  # Ernst Abbe, Lichtmikroskop, Geometrische Optik: the linked ones in text order
+
+
+def model(body: dict[str, Any]) -> str:
+    """Names the entities, or grades the links when it is asked to check."""
+    asked = body["messages"][-1]["content"]
+    return json.dumps(GRADES if "Bewerte jede Verknüpfung" in asked else NAMED)
+
+
+@pytest.fixture(scope="module")
+def client(settings: Settings) -> TestClient:
+    return TestClient(create_app(settings))
+
+
+@pytest.fixture
+def with_llm(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> Iterator[tuple[TestClient, FakeBApi]]:
+    fake = FakeBApi(model)
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake))  # type: ignore[attr-defined]
+    yield client, fake
+
+
+def post(client: TestClient, **fields: Any) -> dict[str, Any]:
+    response = client.post("/api/v2/entities", json={"text": TEXT, **fields})
+    assert response.status_code == 200, response.text
+    body: dict[str, Any] = response.json()
+    return body
+
+
+def texts(body: dict[str, Any]) -> list[str]:
+    return [entity["text"] for entity in body["entities"]]
+
+
+def test_llm_free_finds_with_the_rules_alone_even_where_an_llm_is_configured(
+    with_llm: tuple[TestClient, FakeBApi],
+) -> None:
+    client, fake = with_llm
+    body = post(client, preset="llm-free")
+    assert body["methods"] == ["dictionary"], "ner and dictionary, and the tests carry no spaCy model"
+    assert body["llm"] is None and fake.bodies == []
+
+
+def test_balanced_lets_the_llm_name_the_entities_with_their_article(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, fake = with_llm
+    body = post(client, preset="balanced")
+    assert body["methods"] == ["llm"]
+    assert texts(body) == ["Ernst Abbe", "Lichtmikroskop", "Geometrische Optik"], "a name without an article goes"
+    abbe = body["entities"][0]
+    assert abbe["source"] == "llm" and abbe["kind"] == "" and TEXT[abbe["start"] : abbe["end"]] == "Ernst Abbe"
+    assert abbe["article"]["kind"] == "Person" and abbe["article"]["ids"]["gnd"] == "118646419"
+    assert body["llm"] == {
+        "named": 4,
+        "checked": 0,
+        "dropped": [],
+        "calls": 1,
+        "total_tokens": 24,
+        "model": "gpt-5.6-luna",
+        "prompts": ["entity_extraction@v1"],
+        "fallback": None,
+    }
+    assert len(fake.bodies) == 1, "balanced does not check"
+
+
+@pytest.mark.parametrize("preset", ["best-quality", "best-quality-generated"])
+def test_the_best_quality_profiles_name_as_balanced_does(with_llm: tuple[TestClient, FakeBApi], preset: str) -> None:
+    client, fake = with_llm
+    body = post(client, preset=preset)
+    assert body["methods"] == ["llm"] and texts(body) == ["Ernst Abbe", "Lichtmikroskop", "Geometrische Optik"]
+    assert len(fake.bodies) == 1 and body["llm"]["checked"] == 0, "no profile checks the links"
+
+
+def test_asked_for_the_check_keeps_only_what_it_grades_2(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, fake = with_llm
+    body = post(client, preset="best-quality", link_check="llm")
+    assert texts(body) == ["Ernst Abbe", "Geometrische Optik"]
+    assert body["llm"]["checked"] == 3 and body["llm"]["dropped"] == ["Lichtmikroskop"]
+    assert body["llm"]["prompts"] == ["entity_extraction@v1", "entity_check@v1"] and body["llm"]["calls"] == 2
+    asked = fake.bodies[1]["messages"][-1]["content"]
+    assert "a1: „Ernst Abbe“ → Ernst Abbe: " in asked and "a3: „Geometrische Optik“ → Geometrische Optik: " in asked
+
+
+def test_a_switch_the_request_sets_wins_over_the_profile(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, fake = with_llm
+    body = post(client, preset="best-quality", methods=["dictionary"], link_check="rule-based")
+    assert body["methods"] == ["dictionary"] and body["llm"] is None and fake.bodies == []
+
+
+def test_the_check_takes_the_links_of_the_rules_too(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, _ = with_llm
+    body = post(client, preset="llm-free", link_check="llm")
+    assert body["methods"] == ["dictionary"] and texts(body) == ["Ernst Abbe", "Geometrische Optik"]
+
+
+def test_while_the_llm_is_away_the_rules_take_its_place_and_say_why(
+    with_llm: tuple[TestClient, FakeBApi], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    client, fake = with_llm
+    reason = "LLM nicht verfügbar (Modell fehlt); Regelmodus verwendet"
+    monkeypatch.setattr(client.app.state.service, "llm_unavailable", lambda: reason)  # type: ignore[attr-defined]
+    body = post(client, preset="best-quality", link_check="llm")
+    assert body["methods"] == ["dictionary"] and fake.bodies == []
+    assert all(entity["source"] == "dictionary" for entity in body["entities"])
+    assert reason in body["note"] and body["llm"]["fallback"] == reason and body["llm"]["calls"] == 0
+
+
+def test_an_answer_that_cannot_be_read_leaves_the_rules_to_decide(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(FakeBApi(lambda body: "nichts")))  # type: ignore[attr-defined]
+    body = post(client, preset="balanced")
+    assert body["methods"] == ["dictionary"] and texts(body) == ["Ernst Abbe", "Lichtmikroskop", "Geometrische Optik"]
+    assert body["llm"]["fallback"] == "Antwort nicht lesbar" and body["llm"]["calls"] == 1
+    assert "Antwort nicht lesbar" in body["note"]
+
+
+def test_without_linking_the_names_of_the_llm_come_unchecked(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, fake = with_llm
+    body = post(client, preset="balanced", link=False)
+    assert texts(body) == ["Ernst Abbe", "Jena", "Lichtmikroskop", "Geometrische Optik"]
+    assert all(entity["article"] is None for entity in body["entities"])
+    assert len(fake.bodies) == 1
+    assert "llm" in body["note"] and "ungeprüft" in body["note"]
+
+
+def test_llm_ways_on_a_server_without_an_llm_are_a_503(client: TestClient) -> None:
+    for fields in ({"methods": ["llm"]}, {"link_check": "llm"}, {"preset": "balanced"}):
+        response = client.post("/api/v2/entities", json={"text": TEXT, **fields})
+        assert response.status_code == 503, fields
+        assert "llm-free" in response.json()["detail"]
+
+
+def test_a_check_of_the_links_without_linking_is_refused(client: TestClient) -> None:
+    response = client.post("/api/v2/entities", json={"text": TEXT, "link": False, "link_check": "llm"})
+    assert response.status_code == 422 and "prüft die Verknüpfungen" in response.text
+
+
+def test_without_a_preset_the_profile_of_the_server_decides(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Shipped, PRESET_DEFAULT is balanced: on a server without an LLM a bare request is a 503 that says what to do."""
+    client = TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "state", preset_default="balanced")))
+    refused = client.post("/api/v2/entities", json={"text": TEXT})
+    assert refused.status_code == 503
+    assert "methods=llm" in refused.json()["detail"] and "Standardprofil balanced" in refused.json()["detail"]
+    assert client.post("/api/v2/entities", json={"text": TEXT, "preset": "llm-free"}).status_code == 200
+    assert client.post("/api/v2/entities", json={"text": TEXT, "methods": ["dictionary"]}).status_code == 200
