@@ -53,7 +53,9 @@ _PARTS = re.compile(
 _PURPOSE = re.compile(r"^(?P<subject>.{3,60}?)\s+(?P<verb>dient|dienen|ermöglicht|ermöglichen)\b")
 _PLURAL_VERB = re.compile(r"(?:bestehen|gliedern|umfassen|dienen|ermöglichen)\b")
 _NOT_A_SUBJECT_START = frozenset({"ADV", "ADP"})
-_GLOSSARY_ROW = re.compile(r"^\|\s*\*\*(?P<term>[^|*]+)\*\*\s*\|\s*(?P<definition>[^|]+?)\s*\|\s*`(?P<relation>[^`]+)`")
+# The definition cell is taken whole and trimmed in code: blanks around a lazy cell backtracked cubically on a
+# run of blanks in a text the caller sends (review of D60)
+_GLOSSARY_ROW = re.compile(r"^\|\s*\*\*(?P<term>[^|*]+)\*\*\s*\|(?P<definition>[^|]+)\|\s*`(?P<relation>[^`]+)`")
 _ACTOR_ROW = re.compile(r"^- \*\*\[(?P<name>[^\]]+)\]\([^)]*\)\*\* — (?P<summary>.+)$")
 _KIND_HEADING = re.compile(r"^#### (?P<kind>\w+)")
 _RELATION_ORDER = {"skos:prefLabel": 0, "skos:narrower": 1, "skos:related": 2}
@@ -198,8 +200,9 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
         row = _GLOSSARY_ROW.match(line.strip())
         if row is None or row.group("relation") not in _RELATION_ORDER:
             continue
-        term = re.sub(r"\s*\([^)]*\)$", "", row.group("term").strip())
-        definition = row.group("definition").strip()
+        # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
+        term = re.sub(r"\s*\([^)]*\)$", "", " ".join(row.group("term").split()))
+        definition = " ".join(row.group("definition").split())
         last = definition.rstrip(".").split()[-1] if definition.split() else ""
         # "… bis 700 m ü." is cut at an abbreviation; "… mit der Ordnungszahl 8." ends with its number (M30)
         if definition.endswith("…") or (len(last) <= 2 and not last.isdigit()) or ends_with_abbreviation(definition):
@@ -249,7 +252,9 @@ def actor_candidates(markdown: str) -> list[Candidate]:
         row = _ACTOR_ROW.match(line.strip())
         if row is None:
             continue
-        summary = re.sub(r"\s*\[[^\[\]]*\]", "", re.sub(r"\s*\([^()]*\)", "", row.group("summary")))
+        # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
+        summary = " ".join(row.group("summary").split())
+        summary = re.sub(r"\s*\[[^\[\]]*\]", "", re.sub(r"\s*\([^()]*\)", "", summary))
         summary = " ".join(summary.split())
         if (
             summary.endswith("…")
@@ -257,7 +262,7 @@ def actor_candidates(markdown: str) -> list[Candidate]:
             or not re.search(r"\b(war|ist|waren|sind)\b", summary)
         ):
             continue
-        name = re.sub(r"\s*\([^)]*\)$", "", row.group("name")).strip()
+        name = re.sub(r"\s*\([^)]*\)$", "", " ".join(row.group("name").split()))
         tense = "war" if re.search(r"\bwar\b", summary) else "ist"
         if kind == "Person":
             candidates.append(Candidate(f"a{index}", "Person", f"Wer {tense} {name}?", summary))

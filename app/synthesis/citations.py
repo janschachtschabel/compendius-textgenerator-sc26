@@ -78,8 +78,9 @@ def without_markers(text: str) -> str:
     the label of model knowledge (D56), which is apparatus of the same kind.
     """
     text = _MULTI_MARKER_RE.sub("", _MARKER_RE.sub("", text.replace(MODEL_KNOWLEDGE_LABEL, "")))
-    text = re.sub(r"[ \t]+([.,;:!?])", r"\1", text)
+    # a run of blanks shrinks first: the two patterns behind it backtracked over a long one (review of D60)
     text = re.sub(r"[ \t]{2,}", " ", text)
+    text = re.sub(r"[ \t]+([.,;:!?])", r"\1", text)
     return re.sub(r"[ \t]+($|\n)", r"\1", text).strip()
 
 
