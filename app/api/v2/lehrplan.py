@@ -228,7 +228,8 @@ def lehrplan_search(
 
     - ``/api/v2/lehrplan/search?q=Optik``
     - ``/api/v2/lehrplan/search?q=Optik&subject=Physik&limit=20``
-    - ``/api/v2/lehrplan/search?q=Lichtlehre&mode=topic&preset=balanced``
+    - ``/api/v2/lehrplan/search?q=Linse&subject=Physik&mode=topic&preset=balanced`` - an ambiguous topic whose
+      article the LLM decides in balanced, as in a compendium
     - ``/api/v2/lehrplan/search?q=Optik&subject=Physik&mode=topic&limit=100&preset=best-quality&curriculum_check=llm``
     """
     builder = _builder(request)
