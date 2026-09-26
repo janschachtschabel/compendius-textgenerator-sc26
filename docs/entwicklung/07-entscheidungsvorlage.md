@@ -14,19 +14,21 @@ der QA-Paare (D54, D55, D57).
 
 | | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` |
 |---|---|---|---|---|
-| Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm` | `llm` |
+| Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm-thorough` | `llm-thorough` |
 | Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | dazu Prüfung der Nebenartikel | dazu Prüfung der Nebenartikel | dazu Prüfung der Nebenartikel |
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM geschrieben, ergänzt um Modellwissen |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
-| Hauptartikel richtig, 94 Goldanfragen (M9) | 86 | 91 | 91 | 91 |
+| Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` |
+| Hauptartikel richtig, 94 Goldanfragen (M35) | 87 | 91 | 93 | 93 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 | nicht gemessen | nicht gemessen |
 | Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 | 0,70 | 0,70 |
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96), 0,3 s je Text | wie `llm-free` | 99 von 120, rund 2.400 Tokens | 99 von 120, rund 2.400 Tokens |
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` |
+| Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29, rund 0,25 s | 0,78, Präzision 0,70, rund 800 Tokens und 4 s | wie `balanced` | wie `balanced` |
 | Teil 1 und 2 je Kompendium (M27) | 1,6 s | rund 3,4 s | rund 14 s | rund 24 s |
 | Tokens je Kompendium, Median (M27) | 0 | 905 | 26.267 | 35.376 |
 | Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 |
@@ -39,26 +41,32 @@ der QA-Paare (D54, D55, D57).
   ohne `topic` die Regeln über Titel und Beschreibung (D47), Volltexttreffer nur mit Link zum Hauptartikel (D48),
   `hybrid_light` mit Model2Vec als bestes lokales Zuordnungsverfahren, wörtlicher Text und QA-Paare aus den Regeln über
   den spaCy-Parse (D55), aufgefüllt mit Glossar und Akteuren (D60): 58 von 95 bei beiden Gutachtern mangelfrei, in
-  0,3 s je Text (M34). Keine Tokens, keine Abhängigkeit von der b-api; das Profil für einen Dienst ohne LLM.
+  0,3 s je Text (M34). Entitäten (`/entities`) erkennt es mit spaCy und dem Wörterbuch der Artikeltitel: F1 0,38 an
+  40 Materialtexten, weil das Wörterbuch auch Allerweltswörter verknüpft (M36). Keine Tokens, keine Abhängigkeit von
+  der b-api; das Profil für einen Dienst ohne LLM.
 - **`balanced`** ist der Standard. Die LLM-Artikelwahl ist der billigste Hebel mit messbarer Wirkung: fünf richtige
   Hauptartikel mehr von 94, 5 statt 12 gedruckte Absätze aus unpassenden Artikeln und bei einem Material ohne `topic`
   ein Hauptartikel-F1 von 0,88 bis 0,98 statt 0,56 bis 0,63, für rund 1,5 bis 2 s und 900 Tokens (M25, M27). Die
   Zuordnung bleibt die von `llm-free` (0,45): Das LLM wirkt vor ihr, nicht in ihr (M27). Die QA-Paare kommen seit D57
   aus denselben Regeln wie in `llm-free` (Jan: der Standard fragt schnell und ressourcenschonend): 0,3 s, keine
   Tokens, kein zusätzliches Modell. Die zwei kleinen Modelle, die hier bis D57 fragten, waren in M30 die schwächste
-  und langsamste Stufe (25 von 120 mangelfrei, rund 25 s je Text) und sind entfernt.
+  und langsamste Stufe (25 von 120 mangelfrei, rund 25 s je Text) und sind entfernt. In `/entities` nennt das LLM die
+  Entitäten mit ihrem Artikeltitel (D62): F1 0,78 statt 0,38, von 269 Verknüpfungen meinte eine etwas anderes, rund
+  800 Tokens und 4 s je Text (M36, durch den Endpunkt nachgemessen).
 - **`best-quality`** nimmt dazu das LLM als Zuordner: 0,70 statt 0,45 macro-F1, für rund 14 s und 26.000 Tokens je
   Kompendium, rund 170 je Absatz. Sinnvoll, wo Qualität zählt und Zeit nicht, etwa beim Vorbereiten eines Kompendiums
   für die Redaktion. Der Text bleibt wörtlich und belegt. Die QA-Paare schreibt das LLM: 99 von 120 mangelfrei, rund
   2.400 Tokens und 4 bis 7,5 s je Text (M30). Die Lehrplanelemente von Teil 2 prüft das LLM ebenfalls (D58): 74 bis
-  79 % passend, kein passendes verworfen, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32).
+  79 % passend, kein passendes verworfen, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32). `/entities`
+  arbeitet wie in `balanced`: Eine zweite LLM-Prüfung jeder Verknüpfung hob die Präzision auf 0,94, verwarf aber ein
+  Drittel der passenden Entitäten (F1 0,76 statt 0,78); sie bleibt ein eigener Schalter (`link_check: llm`, D62).
 - **`best-quality-generated`** lässt das LLM zusätzlich jeden Baustein schreiben und eigenes Wissen ergänzen, ohne
   Belegnummer und sichtbar gekennzeichnet mit `[Modellwissen]` (D56): rund 24 s und 35.000 Tokens je Kompendium. Zwei
   blinde Gutachter zogen den geschriebenen Text in 11 von 12 Urteilen dem wörtlichen vor (Lesbarkeit 4,0 statt 2,5 von
   5, Zusammenhang 4,0 statt 2,4), bei ähnlich vielen Fachfehlern, die meist schon in den Quellen stehen (M28). Mit dem
   ersten Prompt bestand das ergänzte Modellwissen zu zwei Dritteln aus Füllsätzen; der zweite verlangt eine prüfbare
   Sachaussage oder nichts: 50 statt 82 ergänzte Sätze, davon 13 statt 50 Füllsätze und 32 statt 27 fachliche, keiner
-  falsch nach beiden Gutachtern (M31).
+  falsch nach beiden Gutachtern (M31). `/entities` wie in `balanced`.
 
 Zeiten: Entwicklungsrechner, Teil 1 und 2 im Prozess, jedes LLM-Profil auf eigenen Themen als `llm-free` plus
 LLM-Anteil (M27); auf dem Server über HTTP dauert Teil 1 ohne LLM im Median 2,0 s (M3). Tokens: dieselben sechs
@@ -382,7 +390,9 @@ Ergebnis: 87 von 94 Hauptartikeln (M35), 12 von 352 gedruckten Absätzen aus unp
 und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 58 von 95 mangelfrei in 0,3 s je Text
 (M34). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt der
 404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
-Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
+Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden. `/entities` erkennt mit `ner`
+(spaCy) und `dictionary` (Artikeltitel der Archive): an 40 Materialtexten F1 0,38 bei einer Präzision von 0,29 und
+einem Recall von 0,55, in rund 0,25 s (M36); allein kommt `ner` auf 0,30, `dictionary` auf 0,35.
 
 ### `balanced`: Zeit und Kosten optimiert bei guter Qualität (Standard)
 
@@ -397,7 +407,10 @@ PRESET_DEFAULT=balanced                 # ausgeliefert
 Ergebnis: 91 von 94 Hauptartikeln, 5 von 346 gedruckten Absätzen aus unpassenden Artikeln (M25), bei einem Material ohne
 `topic` F1 0,88 bis 0,98, macro-F1 0,45 wie `llm-free` (M27), Teil 1 und 2 rund 3,4 s und 905 Tokens (M27; in M25
 kostete Teil 1 im Median 2,0 s mehr als ohne LLM, 90. Perzentil 4,2 s). QA-Paare aus denselben Regeln wie `llm-free`,
-58 von 95 mangelfrei in 0,3 s je Text (M34, D57, D60). Wer einen lesbaren Einstieg braucht, ergänzt
+58 von 95 mangelfrei in 0,3 s je Text (M34, D57, D60). `/entities` lässt das LLM die Entitäten mit ihrem
+Artikeltitel nennen (`methods: llm`, D62): F1 0,78 bei einer Präzision von 0,70 und einem Recall von 0,89, rund 800
+Tokens und 4 s je Text; durch den Endpunkt nachgemessen mit denselben Artikeln wie im Versuch (M36). Ohne `preset`
+gilt auch dort dieses Profil, auf einem Server ohne LLM also ein 503. Wer einen lesbaren Einstieg braucht, ergänzt
 `"generation": "llm-fast"`: 9 bis 15 s und 2.300 bis 4.000 Tokens mehr für Themendefinition und Querschnitt
 (gpt-5.6-luna, 18.09.2026).
 
@@ -415,7 +428,9 @@ LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel 
 Ergebnis: 93 von 94 Hauptartikeln - das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (M35, D61) -,
 macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median 26.267 Tokens, rund 170 je Absatz
 (M27); ein geprüftes Wort kostet rund 800 Tokens und 1 s mehr. Der Text bleibt wörtlich und belegt. QA-Paare vom LLM, 99 von 120 mangelfrei
-(M30).
+(M30). `/entities` wie `balanced` (F1 0,78). Die zusätzliche Prüfung jeder Verknüpfung durch das LLM (`link_check:
+llm`) ist in keinem Profil voreingestellt: Präzision 0,94 statt 0,70, aber Recall 0,64 statt 0,89 und F1 0,76, rund
+820 Tokens und 2 s mehr (D62) - für Aufrufer, die eine kurze, sichere Liste brauchen.
 
 ### `best-quality-generated`
 
@@ -428,7 +443,7 @@ rund 3 % mehr (M31). Zwei blinde Gutachter zogen den geschriebenen Text in 11 vo
 Quellen stehen (M28). Mit dem zweiten Prompt (D56) sind 13 von 50 ergänzten Sätzen Füllsätze statt 50 von 82, 32 statt
 27 fachlich und keiner nach beiden Gutachtern falsch; im Mittel bleiben 5 Füllsätze je Thema statt 12, und v2 wurde in 8
 von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen will, setzt `"enrichment":
-"sources-only"`; dann bleibt jeder Satz belegt.
+"sources-only"`; dann bleibt jeder Satz belegt. `/entities` wie `balanced`.
 
 ## Was die Zahlen nicht sagen
 

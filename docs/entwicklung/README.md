@@ -78,10 +78,11 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
 | Dauer | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | 2,8 s für Teil 1 und 2 (Median, Server, ohne LLM); auf dem Entwicklungsrechner je Profil 1,6 s (`llm-free`), rund 3,4 s (`balanced`, Standard), 14 s (`best-quality`) und 24 s (`best-quality-generated`) (M27) |
 | Tokens je Kompendium | rund 7.900 | Median je Profil 0, 905, 26.267 und 35.376 (M27) |
-| Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 86 mit den Regeln, 91 mit `article_choice=llm` (M9) |
+| Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 87 mit den Regeln (`llm-free`), 91 mit `article_choice=llm` (`balanced`), 93 mit `llm-thorough` (`best-quality`-Profile, M35) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,45 mit `hybrid_light` in 0,3 s je Thema (`llm-free` und `balanced`, M27); 0,70 mit `matcher=llm` (`best-quality`, M19), rund 11 s |
-| QA-Paare, mangelfrei nach zwei Gutachtern | – | sechs Themen, je 20 Paare verlangt: `rule-based` (`llm-free`) 48 von 96 in 0,3 s je Text, `llm` (`best-quality`, `best-quality-generated`) 99 von 120 mit rund 2.400 Tokens (M30); seit D57 fragt auch `balanced` mit den Regeln |
+| QA-Paare, mangelfrei nach zwei Gutachtern | – | sechs Themen, je 20 Paare verlangt: `rule-based` (`llm-free`, seit D57 auch `balanced`) 58 von 95 in 0,3 s je Text (M34, vorher 48 von 96 in M30), `llm` (`best-quality`, `best-quality-generated`) 99 von 120 mit rund 2.400 Tokens (M30) |
+| Entitäten in einem Text (`/entities`), F1 an 40 Materialtexten nach zwei Gutachtern | der Linker ließ ein LLM Begriffe nennen und schlug sie live nach; an diesen Texten nicht gemessen | 0,38 mit spaCy und dem Wörterbuch der Artikeltitel (`llm-free`), 0,78 mit dem LLM, das die Entitäten mit Artikeltitel nennt (`balanced` und `best-quality`-Profile, rund 800 Tokens und 4 s; M36, D62) |
 | Lehrplanelemente von Teil 2, passend nach zwei Gutachtern | – | 20 Themen, Mittel: Regeln mit B (`llm-free`, `balanced`) 70 bis 81 %, LLM-Prüfung (`best-quality`) 74 bis 79 %, vorher 62 bis 67 % (M32) |
 | Wenn eine Quelle ausfällt | liefert trotzdem eine normale Antwort, ohne Quellen | Archive liegen lokal; ein fehlender Teil steht in `parts_status` |
 

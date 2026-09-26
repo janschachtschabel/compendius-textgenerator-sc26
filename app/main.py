@@ -336,8 +336,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         version=__version__,
         description=(
             "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. Vier Profile (preset) "
-            "legen fest, wo ein LLM mitarbeitet: llm-free nie, balanced bei unsicheren Artikeln, best-quality "
-            "zusätzlich bei der Zuordnung der Absätze und der Prüfung der Lehrplanelemente, best-quality-generated "
+            "legen fest, wo ein LLM mitarbeitet: llm-free nie, balanced bei unsicheren Artikeln und beim Erkennen von "
+            "Entitäten, best-quality zusätzlich bei der Zuordnung der Absätze und der Prüfung der Lehrplanelemente "
+            "und bei mehrdeutigen Wörtern, best-quality-generated "
             "schreibt zudem den Text. Ohne preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced). "
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "

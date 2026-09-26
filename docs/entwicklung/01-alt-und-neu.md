@@ -135,7 +135,7 @@ Modellwissen, das zu zwei Dritteln aus Füllsätzen besteht.
 |---|---|
 | `POST /api/v2/compendium` | Kompendium aus den Teilen 1 bis 3; Schalter für Satzauswahl und Umformulierung durch ein LLM, nach v2.0.0 auch für Artikelwahl (`article_choice`) und Zuordnung (`matcher`); Teile gezielt neu erzeugen, geprüfte Bausteine behalten |
 | `POST /api/v2/knowledge` | Wissenstexte zum Thema ohne Template: die Artikel des Korpus mit ihren Abschnitten, gewählt wie beim Kompendium (`article_choice`) |
-| `POST /api/v2/entities` | Begriffe in einem Text, mit dem passenden Artikel und seiner Einleitung verknüpft |
+| `POST /api/v2/entities` | Begriffe in einem Text, mit dem passenden Artikel und seiner Einleitung verknüpft; seit D62 je Profil: Regeln in `llm-free`, das LLM in den anderen |
 | `POST /api/v2/qa` | Frage-Antwort-Paare zu einem Text oder Thema in vier Stufen: Vorlagen, Satzanalyse, kleine Modelle im Image, LLM |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 allein |
 | `GET /api/v2/lehrplan/status`, `/search` | Stand und Suche im Lehrplan-Cache |
@@ -147,12 +147,15 @@ Modellwissen, das zu zwei Dritteln aus Füllsätzen besteht.
 **Weiterverwendet und verbessert:**
 
 - **Entitätenerkennung als Ersatz für den KIDRA-Wikipedia-Linker.** Der alte Linker ließ ein LLM Begriffe nennen
-  und schlug sie live bei Wikipedia nach. `POST /api/v2/entities` arbeitet ohne LLM und ohne Netz in zwei Schichten:
-  Named-Entity-Erkennung mit spaCy (`de_core_news_md`) und ein Wörterbuch aus den Artikeltiteln der Archive.
-  Begriffe, hinter denen nur eine Begriffsklärung steht, fallen heraus. Auf dem Server dauerte ein Beispielsatz
-  0,07 bis 0,15 s. Wie der alte Linker nennt er zu jedem Artikel die Wikidata-Nummer, dazu GND, VIAF und DBpedia,
-  aber aus lokalen Daten statt live (D43, M18). Als Weg zur Artikelwahl ersetzt der alte Linker die Regeln nicht
-  (M17).
+  und schlug sie live bei Wikipedia nach. `POST /api/v2/entities` arbeitete zuerst ohne LLM und ohne Netz in zwei
+  Schichten: Named-Entity-Erkennung mit spaCy (`de_core_news_md`) und ein Wörterbuch aus den Artikeltiteln der
+  Archive. Begriffe, hinter denen nur eine Begriffsklärung steht, fallen heraus. Auf dem Server dauerte ein
+  Beispielsatz 0,07 bis 0,15 s. Wie der alte Linker nennt er zu jedem Artikel die Wikidata-Nummer, dazu GND, VIAF und
+  DBpedia, aber aus lokalen Daten statt live (D43, M18). Als Weg zur Artikelwahl ersetzt der alte Linker die Regeln
+  nicht (M17). Gemessen an den Texten von 40 Materialien kamen die zwei Schichten nur auf F1 0,38, weil das
+  Wörterbuch Allerweltswörter verknüpft (M36). Seit D62 nennt deshalb in `balanced` und den `best-quality`-Profilen
+  wieder ein LLM die Begriffe - aber mit dem Titel ihres Artikels, nachgeschlagen im lokalen Archiv statt live:
+  F1 0,78, rund 800 Tokens und 4 s je Text; `llm-free` behält die zwei Schichten.
 - **Frage-Antwort-Paare.** Der alte Dienst ließ sie ein LLM schreiben. Der neue hat vier Stufen; die Modellstufe
   (deutscher T5-Fragegenerator und ein extraktives Antwortmodell im Image) lieferte in der Messung aus
   `docs/umbau.md` 94 % mangelfreie Paare bei rund 1 s je Paar, ganz ohne b-api.
