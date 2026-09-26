@@ -136,7 +136,7 @@ class LlmArticleChooser:
         if data is None:
             report.fallback = UNREADABLE
             return None, None
-        number = _number(data.get("wahl"))
+        number = read_number(data.get("wahl"))
         if number is not None and 1 <= number <= len(candidates):
             return number - 1, None
         named = str(data.get("titel") or "").strip()
@@ -198,7 +198,7 @@ def rate_articles(
     if notes is None:
         report.fallback = UNREADABLE
         return None
-    return {s.source_id: _number(notes.get(a)) for a, s in alias.items()}
+    return {s.source_id: read_number(notes.get(a)) for a, s in alias.items()}
 
 
 def choice_used(chose_article: bool, hit_check: HitCheckReport | None) -> str:
@@ -249,7 +249,8 @@ def read_object(text: str) -> dict[str, Any] | None:
     return data if isinstance(data, dict) else None
 
 
-def _number(value: Any) -> int | None:
+def read_number(value: Any) -> int | None:
+    """A whole number from a model's JSON value - an int or a string of digits - or ``None``."""
     if isinstance(value, bool):  # JSON true is no number, though Python counts it as 1
         return None
     if isinstance(value, int):

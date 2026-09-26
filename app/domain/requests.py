@@ -74,6 +74,16 @@ GENERATION_HELP = (
     "Every written sentence needs a valid citation. llm-fast and llm without a configured LLM are a 503; when the "
     "b-api is not available for now it falls back to rule-based."
 )
+CURRICULUM_CHECK_HELP = (
+    "Who judges the curriculum elements part 2 found (D58). Default: the profile's: rule-based in llm-free and "
+    "balanced, llm in best-quality and best-quality-generated. Acts only when parts holds curricula.\n\n"
+    "- **rule-based**: the keyword rules alone (M22). An element that names the topic only in its heading is counted "
+    "with its area instead of being listed. No tokens.\n"
+    "- **llm**: the LLM of the b-api reads every element the rules found, with its area and curriculum, and rates it: "
+    "fits, touches the topic, does not fit. What does not fit leaves part 2; an element only its heading names stands "
+    "on its own when the model rates it fitting. Needs LLM_ENABLED, else the request is a 503; while the b-api is not "
+    "available the rules decide and audit.llm.curriculum_check says why."
+)
 ENRICHMENT_HELP = (
     "Whether the writing LLM may add knowledge of its own beyond the sources. Default: the profile's: "
     "model-knowledge in best-quality-generated, sources-only in the others.\n\n"
@@ -119,17 +129,24 @@ Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks o
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
 Enrichment = Literal["sources-only", "model-knowledge"]
 ArticleChoice = Literal["rule-based", "llm"]  # who decides an unsure article choice (D35)
+CurriculumCheck = Literal["rule-based", "llm"]  # who judges the curriculum elements of part 2 (D58)
 Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated"]  # the four profiles (D41, D53)
 _VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
 PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the order of Preset
-    "llm-free": {"article_choice": "rule-based", "matcher": "hybrid_light", **_VERBATIM},
-    "balanced": {"article_choice": "llm", "matcher": "hybrid_light", **_VERBATIM},
-    "best-quality": {"article_choice": "llm", "matcher": "llm", **_VERBATIM},
+    "llm-free": {
+        "article_choice": "rule-based",
+        "matcher": "hybrid_light",
+        "curriculum_check": "rule-based",
+        **_VERBATIM,
+    },
+    "balanced": {"article_choice": "llm", "matcher": "hybrid_light", "curriculum_check": "rule-based", **_VERBATIM},
+    "best-quality": {"article_choice": "llm", "matcher": "llm", "curriculum_check": "llm", **_VERBATIM},
     # Jan, 2026-09-25: everything by the LLM, the text completed from its own knowledge and rewritten to read well;
     # extraction stays rule-based, which brought no gain at the gold standard (decision paper, step 4)
     "best-quality-generated": {
         "article_choice": "llm",
         "matcher": "llm",
+        "curriculum_check": "llm",
         "extraction": "rule-based",
         "generation": "llm",
         "enrichment": "model-knowledge",
@@ -209,6 +226,7 @@ class GenerateRequest(BaseModel):
     preset: Preset | None = Field(None, description=PRESET_HELP)
     matcher: MatcherName | None = Field(None, description=MATCHER_HELP)
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
+    curriculum_check: CurriculumCheck | None = Field(None, description=CURRICULUM_CHECK_HELP)
     extraction: Extraction | None = Field(None, description=EXTRACTION_HELP)
     generation: Generation | None = Field(None, description=GENERATION_HELP)
     enrichment: Enrichment | None = Field(None, description=ENRICHMENT_HELP)

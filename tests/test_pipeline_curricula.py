@@ -1,15 +1,20 @@
 """Part 2 inside a generated compendium: keywords from part 1, cache present or missing, parts selection."""
 
+import json
 from pathlib import Path
+
+import pytest
 
 from app.domain.requests import GenerateRequest
 from app.main import build_service
-from app.service import CompendiumService
+from app.service import CompendiumService, LlmNotConfiguredError
 from app.settings import Settings
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
 from tests.conftest import make_settings
 from tests.test_lehrplan_api import write_broken_cache, write_cache
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 
 
 def test_generate_appends_part_two_from_the_cache(service: CompendiumService, settings: Settings) -> None:
@@ -22,7 +27,13 @@ def test_generate_appends_part_two_from_the_cache(service: CompendiumService, se
     markdown = result.markdown
     assert markdown.index("## Teil 1 · Weltwissen") < markdown.index("## Teil 2 · Lehrplanbezüge")
     assert "<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium;" in markdown
-    assert "„Lichtbrechung an Linsen“ (Kompetenz)" in markdown
+    # "Lichtbrechung an Linsen" names Optik only in its heading "Lernbereich 2: Optik": counted with its area (B, D58),
+    # and the JSON answer still lists it with where it was found
+    assert "- *1 Element dieses Bereichs; das Thema steht nur in der Überschrift*" in markdown
+    assert "„Lichtbrechung an Linsen“" not in markdown and result.curricula.summary["bundled"] == 1
+    assert [(entry["label"], entry["matched_in"]) for entry in result.curricula.entries] == [
+        ("Lichtbrechung an Linsen", "parent")
+    ]
     assert result.audit.timings_ms["curricula"] >= 0
 
 
@@ -114,3 +125,57 @@ def test_unreadable_cache_yields_the_hint_instead_of_an_error(
     assert result.curricula.summary["reason"] == "cache_unreadable"
     assert "## Teil 2 · Lehrplanbezüge" in result.markdown and len(result.sections) > 0
     assert "nicht lesbar" in result.curricula.markdown
+
+
+CHECKED = {"topic": "Optik", "parts": ["world", "curricula"], "subject": "Physik", "preset": "llm-free"}
+
+
+def test_curriculum_check_llm_without_a_configured_llm_is_refused(
+    service: CompendiumService, settings: Settings
+) -> None:
+    """D53, D58: what needs an LLM is refused on a server without one instead of quietly running the rules."""
+    write_cache(settings.state_dir)
+    with pytest.raises(LlmNotConfiguredError, match="curriculum_check=llm"):
+        service.generate(GenerateRequest(**CHECKED, curriculum_check="llm"))
+
+
+def test_the_llm_check_drops_what_does_not_fit_and_says_so(
+    service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_cache(settings.state_dir)
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: json.dumps({"e1": 0}))))
+    result = service.generate(GenerateRequest(**CHECKED, curriculum_check="llm"))
+    assert result.curricula is not None and result.curricula.entries == []
+    assert result.curricula.summary["matches"] == 0
+    assert result.curricula.summary["llm_check"] == {"rated": 1, "answered": 1, "dropped": 1, "fallbacks": {}}
+    audit = result.audit.llm
+    assert audit is not None and audit["curriculum_check"]["used"] == "llm"
+    assert audit["curriculum_check"]["dropped"] == 1
+    assert result.audit.llm_tokens is not None and result.audit.llm_tokens["calls"] == 1
+    assert "curriculum_check@v1" in result.frontmatter["llm"]["prompts"]
+
+
+def test_a_heading_only_element_the_llm_rates_fitting_is_listed_on_its_own(
+    service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_cache(settings.state_dir)
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: json.dumps({"e1": 2}))))
+    result = service.generate(GenerateRequest(**CHECKED, curriculum_check="llm"))
+    assert result.curricula is not None
+    assert "„Lichtbrechung an Linsen“ (Kompetenz)" in result.markdown
+    assert "das Thema steht nur in der Überschrift" not in result.markdown
+    assert [entry["note"] for entry in result.curricula.entries] == [2]
+
+
+def test_while_the_b_api_is_away_the_rules_decide_part_two_and_the_audit_says_why(
+    service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_cache(settings.state_dir)
+    fake = FakeBApi(lambda body: json.dumps({"e1": 0}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    monkeypatch.setattr(service, "llm_unavailable", lambda: "b-api gerade nicht erreichbar (Test)")
+    result = service.generate(GenerateRequest(**CHECKED, curriculum_check="llm"))
+    assert result.curricula is not None and result.curricula.summary["bundled"] == 1 and fake.bodies == []
+    audit = result.audit.llm
+    assert audit is not None and audit["curriculum_check"]["used"] == "rule-based"
+    assert audit["curriculum_check"]["fallback"] == "b-api gerade nicht erreichbar (Test)"

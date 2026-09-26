@@ -228,7 +228,8 @@ def test_all_three_parts_land_in_one_markdown_in_order(with_collections: Compend
     curricula = markdown.index("## Teil 2 · Lehrplanbezüge")
     collection = markdown.index("## Teil 3 · Die Sammlung im Überblick")
     assert world < curricula < collection
-    assert "„Lichtbrechung an Linsen“ (Kompetenz)" in markdown[curricula:collection]
+    # the one element of the test cache names Optik only in its heading, so part 2 counts it with its area (D58)
+    assert "- *1 Element dieses Bereichs; das Thema steht nur in der Überschrift*" in markdown[curricula:collection]
     part_three = markdown[collection:]
     # 16 own materials plus the same 16 under each of the four sub-collections: the repository double answers
     # every children/references path with the same two pages.

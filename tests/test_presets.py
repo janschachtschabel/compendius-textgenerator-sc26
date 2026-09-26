@@ -28,6 +28,7 @@ from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
 SWITCHES = ("article_choice", "matcher", "extraction", "generation", "enrichment")
+PART_2_SWITCHES = ("curriculum_check",)  # D58; its values per profile: tests/test_curriculum_check.py
 
 
 def test_the_shipped_default_profile_is_balanced() -> None:
@@ -43,7 +44,7 @@ def test_an_unknown_default_profile_is_refused_with_the_settings(sample_zims: di
 def test_the_presets_are_the_values_of_the_field() -> None:
     assert list(PRESETS) == list(get_args(Preset))
     assert list(PRESETS) == ["llm-free", "balanced", "best-quality", "best-quality-generated"]
-    assert all(set(values) == set(SWITCHES) for values in PRESETS.values())
+    assert all(set(values) == {*SWITCHES, *PART_2_SWITCHES} for values in PRESETS.values())
 
 
 @pytest.mark.parametrize(

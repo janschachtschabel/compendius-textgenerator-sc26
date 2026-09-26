@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import threading
 import time
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -36,6 +36,7 @@ from app.knowledge.article_choice import (
     check_hits,
     choice_used,
 )
+from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import NodeArticleReport, node_block
 from app.knowledge.segmentation import segment_source
@@ -51,6 +52,7 @@ from app.matching.llm_assignment import AssignmentJob, LlmAssignmentReport, assi
 from app.matching.policy import AssignmentResult, assign
 from app.matching.registry import LLM_MATCHER, LOCAL_MATCHER, ensure_strategy, get_matcher
 from app.settings import Settings
+from app.sources.lehrplan.matcher import CurriculumMatch
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError
@@ -494,6 +496,40 @@ class CompendiumService:
         duration_ms = int((time.perf_counter() - started) * 1000)
         return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
 
+    def _curriculum_check(
+        self,
+        topic: str,
+        prepared: PreparedTopic,
+        budget: RequestBudget | None,
+        deadline: Deadline | None,
+        reports: list[CurriculumCheckReport],
+    ) -> tuple[Callable[[list[CurriculumMatch]], list[CurriculumMatch]] | None, str | None]:
+        """curriculum_check=llm (D58) as part 2 calls it, or ``None`` and why the rules decide instead.
+
+        The check appends what it did to ``reports``; it spends from the request's budget and time like the other LLM
+        steps.
+        """
+        if self.llm is None:  # refused before any work (llm_switches); here only for a caller that skipped that
+            return None, "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
+        unavailable = self.llm_unavailable()
+        if unavailable is not None:
+            return None, unavailable
+        job = CurriculumCheckJob(
+            client=self.llm.client,
+            budget=budget if budget is not None else self.llm.open_budget(),
+            topic=topic,
+            subjects=self.subjects.labels_of(prepared.subjects),
+            concurrency=self.llm.options.concurrency,
+            deadline=deadline,
+        )
+
+        def check(matches: list[CurriculumMatch]) -> list[CurriculumMatch]:
+            kept, report = check_curriculum(job, matches)
+            reports.append(report)
+            return kept
+
+        return check, None
+
     def _match_with_llm(
         self, prepared: PreparedTopic, target_length: int, budget: RequestBudget | None, deadline: Deadline | None
     ) -> Matched:
@@ -581,14 +617,29 @@ class CompendiumService:
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
 
         curricula: CurriculaPart | None = None
+        curriculum_requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
+        checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
+        curriculum_fallback: str | None = None
         if "curricula" in request.parts and self.curricula is not None:
+            check = None
+            if curriculum_requested == "llm":
+                check, curriculum_fallback = self._curriculum_check(topic, prepared, budget, deadline, checked)
             curricula = self.curricula.build(
                 title=topic,
                 aliases=list(primary.aliases) if primary else [],
                 subtopics=prepared.subtopics,
                 subjects=prepared.subjects,
                 facets_visible=facets_visible,
+                check=check,
             )
+            if checked:
+                report = checked[0]
+                curricula.summary["llm_check"] = {
+                    "rated": report.rated,
+                    "answered": report.answered,
+                    "dropped": report.dropped,
+                    "fallbacks": dict(report.fallbacks),
+                }
             lap("curricula")
         collection_part: CollectionPart | None = None
         if "collection" in request.parts and request.collection_id and self.collections is not None:
@@ -633,6 +684,9 @@ class CompendiumService:
             choice_needed=not resolution.confident or prepared.side_articles > 0 or node_report is not None,
             hit_check=hit_check,
             node=node_report,
+            curriculum_requested=curriculum_requested if curricula is not None else "rule-based",
+            curriculum=checked[0] if checked else None,
+            curriculum_fallback=curriculum_fallback,
         )
         frontmatter = build_frontmatter(
             topic=topic,
@@ -886,9 +940,11 @@ class CompendiumService:
 
 def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:
     """The switches of a request that need an LLM, as name=value (D53). ``corpus``: whether an article is chosen at
-    all; the switches of part 1 count only when part 1 is asked for. enrichment needs none of its own: it only acts
-    through generation."""
+    all; the switches of part 1 count only when part 1 is asked for, curriculum_check only with part 2 (D58).
+    enrichment needs none of its own: it only acts through generation."""
     needed = ["article_choice=llm"] if corpus and request.article_choice == "llm" else []
+    if "curricula" in request.parts and request.curriculum_check == "llm":
+        needed.append("curriculum_check=llm")
     if "world" in request.parts:
         if request.matcher == LLM_MATCHER:
             needed.append("matcher=llm")

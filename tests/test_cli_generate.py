@@ -43,6 +43,15 @@ def test_generate_refuses_llm_switches_without_an_llm(
     assert not out_file.exists()
 
 
+def test_generate_takes_the_curriculum_check_and_refuses_it_without_an_llm(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    """D58: the switch of part 2 is on the command line too, and needs an LLM like the switches of part 1."""
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    assert main(["generate", "--topic", "Optik", "--curriculum-check", "llm", *zim_args]) == 1
+    assert "curriculum_check=llm" in capsys.readouterr().err
+
+
 def test_generate_rejects_an_unknown_generation(cli_env: Path) -> None:
     with pytest.raises(SystemExit) as info:
         main(["generate", "--topic", "Optik", "--generation", "turbo"])

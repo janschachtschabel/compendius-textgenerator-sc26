@@ -60,6 +60,8 @@ class CurriculumMatch:
     schulstufe: Resolved
     klassenstufe: Resolved
     score: int
+    # The rating of the LLM check (D58): 2 fits, 1 touches the topic; 0 never reaches the text; None when not rated
+    note: int | None = None
 
 
 @dataclass

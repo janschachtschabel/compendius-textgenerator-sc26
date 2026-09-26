@@ -117,21 +117,25 @@ def _marker(group: _Group) -> str:
     if lehrplan.schularten:
         facets["Schulart"] = [lehrplan.schularten[0]]
     facets["Lehrplan"] = [lehrplan.iri]
+    facets["Lehrplantitel"] = [lehrplan.label]
     return f"<!-- f: {format_marker(facets)} -->"
 
 
 def _lehrplan_line(group: _Group, options: RenderOptions) -> list[str]:
+    """Where the block's snippets come from, whole on one line (Jan, 2026-09-26): curriculum, state, school level,
+    school type and grade, so a snippet read on its own still says so; a level or grade the data do not assert says
+    what it was derived from."""
     lehrplan = group.lead.hit.lehrplan
     land = bundesland_by_code(group.land_code)
-    parts = [f"*{land.terminology}: {lehrplan.label}*"]
+    parts = [f"[*{land.terminology}: {lehrplan.label}*]({lehrplan.iri})", land.name]
+    stufe = group.lead.schulstufe
+    if stufe.value != OHNE_STUFE:
+        parts.append(stufe.value + ("" if stufe.from_data else f" *({stufe.source})*"))
     if lehrplan.schularten:
         parts.append(", ".join(lehrplan.schularten))
     klasse = group.lead.klassenstufe
-    stufe = group.lead.schulstufe
     if klasse.value != OHNE_KLASSE:
         parts.append(klasse.value + ("" if klasse.from_data else f" *({klasse.source})*"))
-    elif stufe.value != OHNE_STUFE and not stufe.from_data:
-        parts.append(f"{stufe.value} *({stufe.source})*")
     lines = [" · ".join(parts)]
     if options.facets_visible:
         visible: dict[str, list[str]] = {"Geltungsebene": ["Land"]}
@@ -147,15 +151,39 @@ def _item_line(match: CurriculumMatch) -> str:
     return f"- „{match.hit.label}“ ({roles}) · [Lehrplanelement]({match.hit.iri})"
 
 
+def _bundled(match: CurriculumMatch) -> bool:
+    """Found only through its heading and not confirmed by the LLM check: counted with its area, not listed (B, M22).
+
+    In M22 such elements fitted less often (46 % against 55 %) and made most of the misses of a request with a
+    subject. A heading-only element the LLM check rated 2 has been read for itself and stands on its own (D58).
+    """
+    return match.hit.matched_in == "parent" and match.note != 2
+
+
+def _bundle_line(bundled: list[CurriculumMatch], *, after_others: bool) -> str:
+    count = len(bundled)
+    if after_others:
+        noun = "weiteres Element" if count == 1 else "weitere Elemente"
+    else:
+        noun = "Element" if count == 1 else "Elemente"
+    line = f"- *{count} {noun} dieses Bereichs; das Thema steht nur in der Überschrift*"
+    area = next((match.hit.parent_iri for match in bundled if match.hit.parent_iri), None)
+    return f"{line} · [Bereich im Lehrplan]({area})" if area else line
+
+
 def _render_group(group: _Group, options: RenderOptions) -> list[str]:
     """One block from the opening marker to ``<!-- /f -->``, so a parser can lift it out with its facets."""
     lines = [*_lehrplan_line(group, options), "", f"**{group.bereich}**", ""]
     items = sorted(group.items, key=lambda match: (-match.score, match.hit.label))
+    listed = [match for match in items if not _bundled(match)]
+    bundled = [match for match in items if _bundled(match)]
     cap = options.max_items_per_group
-    shown = items if cap is None else items[:cap]
+    shown = listed if cap is None else listed[:cap]
     lines.extend(_item_line(match) for match in shown)
-    if len(items) > len(shown):
-        lines.append(f"- *weitere {len(items) - len(shown)} Elemente in diesem Bereich*")
+    if len(listed) > len(shown):
+        lines.append(f"- *weitere {len(listed) - len(shown)} Elemente in diesem Bereich*")
+    if bundled:
+        lines.append(_bundle_line(bundled, after_others=bool(shown)))
     if not items:
         lines.append(f"- *{ROLE_NAMES[ROLE_THEMENBEREICH]}* · [Lehrplanelement]({group.lead.hit.iri})")
     lines.extend([END_MARKER, ""])
@@ -184,6 +212,7 @@ def render_curricula(
     summary: dict[str, Any] = {
         "coverage": info,
         "matches": len(result.matches),
+        "bundled": sum(1 for group in groups for match in group.items if _bundled(match)),
         "total_hits": result.total_hits,
         "excluded_noise": result.excluded_noise,
         "lehrplaene": len({match.hit.lehrplan.iri for match in result.matches}),

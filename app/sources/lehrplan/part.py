@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field, replace
 from typing import Any
 
@@ -43,6 +43,8 @@ def match_entry(match: CurriculumMatch) -> dict[str, Any]:
         "klassenstufe_quelle": match.klassenstufe.source,
         "keyword": match.keyword,
         "score": match.score,
+        "matched_in": match.hit.matched_in,  # label: the element names the topic; parent: only its heading does
+        "note": match.note,  # the LLM check's rating (D58), None without one
     }
 
 
@@ -62,8 +64,13 @@ class CurriculaBuilder:
         subtopics: Sequence[str],
         subjects: Sequence[str],
         facets_visible: bool,
+        check: Callable[[list[CurriculumMatch]], list[CurriculumMatch]] | None = None,
     ) -> CurriculaPart:
-        """Part 2 for a topic; ``subjects`` narrow the curricula to any of them, all of equal weight."""
+        """Part 2 for a topic; ``subjects`` narrow the curricula to any of them, all of equal weight.
+
+        ``check`` judges the elements the rules found before they are rendered - the LLM check of D58 - and returns the
+        ones that stay.
+        """
         keywords = build_keywords(title, aliases=aliases, subtopics=subtopics)
         subject_terms = self.subjects.mem_terms_of(subjects)
         state = self.store.state
@@ -86,6 +93,8 @@ class CurriculaBuilder:
                 summary={"reason": "cache_unreadable"},
                 markdown=render_unreadable_cache(),
             )
+        if check is not None and result.matches:
+            result.matches = check(result.matches)
         markdown, summary = render_curricula(
             result, meta=self.store.meta(), options=replace(self.options, facets_visible=facets_visible)
         )

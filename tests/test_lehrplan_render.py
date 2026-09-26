@@ -37,18 +37,26 @@ BY = LehrplanRecord(
 
 
 def _match(
-    iri: str, label: str, rollen: list[str], lehrplan: LehrplanRecord, parent: str = "", grades: list[str] | None = None
+    iri: str,
+    label: str,
+    rollen: list[str],
+    lehrplan: LehrplanRecord,
+    parent: str = "",
+    grades: list[str] | None = None,
+    *,
+    heading_only: bool = False,
+    note: int | None = None,
 ) -> CurriculumMatch:
     hit = NodeHit(
         iri=iri,
         label=label,
         rollen=rollen,
-        parent_iri=None,
+        parent_iri=f"bereich:{parent}" if heading_only else None,
         parent_label=parent,
         jahrgangsstufen=grades or [],
         depth=1,
         lehrplan=lehrplan,
-        matched_in="label",
+        matched_in="parent" if heading_only else "label",
     )
     return CurriculumMatch(
         hit=hit,
@@ -56,6 +64,7 @@ def _match(
         schulstufe=resolve_schulstufe(hit.jahrgangsstufen, lehrplan),
         klassenstufe=resolve_klassenstufe(hit.jahrgangsstufen, lehrplan),
         score=0,
+        note=note,
     )
 
 
@@ -91,7 +100,7 @@ def test_render_groups_matches_by_level_state_and_curriculum_with_markers() -> N
         < text.index("### Sekundarstufe II")
     )
     assert "*LehrplanPLUS: Natur und Technik 5*" in text and "*Lehrplan: Gymnasium Physik*" in text
-    marker = "<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium; Lehrplan=https://lp-sachsen.org/resource/522 -->"
+    marker = "<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium; Lehrplan=https://lp-sachsen.org/resource/522; Lehrplantitel=Gymnasium Physik -->"
     assert marker in text
     assert "„Lichtbrechung an Linsen“ (Kompetenz, Inhalt) · [Lehrplanelement](sn:k1)" in text
     assert "**Lernbereich 2: Optik**" in text  # the Bereich heads its group and is not repeated as an entry
@@ -139,3 +148,66 @@ def test_default_renders_every_group_and_item_between_parseable_markers() -> Non
     assert facets["Bildungsstufe"] == "Sek I" and facets["Klassenstufe"] == "7" and facets["Schulart"] == "Gymnasium"
     assert "[Lehrplanelement](sn:" in blocks[0][1]
     assert summary["matches"] == 30
+
+
+def test_elements_only_their_heading_names_are_bundled_per_area() -> None:
+    """B (M22, D58): an element found only through its heading fits less often; the area stands once with a count."""
+    bereich = "Lernbereich 2: Optik"
+    result = _result(
+        _match("sn:k1", "Lichtbrechung an Linsen", ["kompetenz"], SN, bereich, ["Klassenstufe 7"]),
+        _match("sn:k2", "Messen mit dem Lineal", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True),
+        _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True),
+    )
+    text, summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert "„Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](sn:k1)" in text
+    assert "Messen mit dem Lineal" not in text and "Protokoll führen" not in text
+    assert (
+        "- *2 weitere Elemente dieses Bereichs; das Thema steht nur in der Überschrift* · "
+        "[Bereich im Lehrplan](bereich:Lernbereich 2: Optik)"
+    ) in text
+    assert summary["matches"] == 3 and summary["bundled"] == 2
+
+
+def test_an_area_found_only_by_its_heading_says_how_many_elements_it_holds() -> None:
+    bereich = "Grundlagen der Optik"
+    result = _result(_match("by:i1", "Schatten", ["inhalt"], BY, bereich, heading_only=True))
+    text, _summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert f"**{bereich}**" in text
+    assert "- *1 Element dieses Bereichs; das Thema steht nur in der Überschrift*" in text and "Schatten" not in text
+
+
+def test_a_heading_only_element_the_llm_rated_fitting_stands_on_its_own() -> None:
+    """D58: the LLM check read the element itself; one it rated 2 is no longer a guess from the heading."""
+    bereich = "Lernbereich 2: Optik"
+    result = _result(
+        _match("sn:k2", "Farben des Lichts", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True, note=2),
+        _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True, note=1),
+    )
+    text, summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert "„Farben des Lichts“ (Inhalt) · [Lehrplanelement](sn:k2)" in text
+    assert "Protokoll führen" not in text and "- *1 weiteres Element dieses Bereichs;" in text
+    assert summary["bundled"] == 1
+
+
+def test_every_block_names_curriculum_state_level_and_grade() -> None:
+    """Jan, 2026-09-26: a snippet has to show which curriculum, state, school level and grade it comes from."""
+    result = _result(
+        _match("sn:k1", "Lichtbrechung an Linsen", ["kompetenz"], SN, "Lernbereich 2: Optik", ["Klassenstufe 7"])
+    )
+    text, _summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert (
+        "[*Lehrplan: Gymnasium Physik*](https://lp-sachsen.org/resource/522) · Sachsen · Sekundarstufe I · "
+        "Gymnasium · Klassenstufe 7"
+    ) in text
+    assert "Lehrplan=https://lp-sachsen.org/resource/522; Lehrplantitel=Gymnasium Physik -->" in text
+
+
+def test_an_entry_carries_its_provenance_and_how_it_was_found() -> None:
+    from app.sources.lehrplan.part import match_entry
+
+    match = _match("sn:k2", "Farben", ["inhalt"], SN, "Lernbereich 2: Optik", ["Klassenstufe 7"], heading_only=True)
+    entry = match_entry(match)
+    assert entry["lehrplan"] == "Gymnasium Physik" and entry["lehrplan_iri"] == SN.iri
+    assert entry["bundesland"] == "Sachsen" and entry["schulstufe"] == "Sekundarstufe I"
+    assert entry["klassenstufe"] == "Klassenstufe 7"
+    assert entry["matched_in"] == "parent" and entry["note"] is None

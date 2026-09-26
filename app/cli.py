@@ -43,6 +43,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             preset=args.preset,
             matcher=args.matcher,
             article_choice=args.article_choice,
+            curriculum_check=args.curriculum_check,
             extraction=args.extraction,
             generation=args.generation,
             enrichment=args.enrichment,
@@ -197,6 +198,13 @@ def main(argv: list[str] | None = None) -> int:
         choices=["rule-based", "llm"],
         help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe die des Profils (llm braucht LLM_ENABLED "
         "und B_API_KEY)",
+    )
+    gen.add_argument(
+        "--curriculum-check",
+        default=None,
+        choices=["rule-based", "llm"],
+        help="Wer die Lehrplanelemente von Teil 2 prüft; ohne Angabe die des Profils (llm braucht LLM_ENABLED und "
+        "B_API_KEY)",
     )
     gen.add_argument(
         "--extraction",

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
+from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
@@ -44,6 +45,9 @@ def build_llm_report(
     choice_needed: bool = False,
     hit_check: HitCheckReport | None = None,
     node: NodeArticleReport | None = None,
+    curriculum_requested: str = "rule-based",
+    curriculum: CurriculumCheckReport | None = None,
+    curriculum_fallback: str | None = None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it.
 
@@ -52,12 +56,22 @@ def build_llm_report(
     side articles, and ``choice_needed`` whether there was anything to ask - an unsure article, side articles or a
     material; only then is the model asked, so only then is its absence a fallback. ``node`` is the question about a
     material (D47): its tokens and prompt count here, its answer and why it did not decide are in audit.node_article.
+    ``curriculum_*`` describe curriculum_check=llm (D58): what the model rated in part 2, and why the rules decided
+    when it was not asked.
     """
-    if extraction_requested == generation_requested == matching_requested == choice_requested == "rule-based":
+    requested = (extraction_requested, generation_requested, matching_requested, choice_requested, curriculum_requested)
+    if all(switch == "rule-based" for switch in requested):
         return None, None, None
     reports: list[
-        ExtractionReport | LlmReport | LlmAssignmentReport | ArticleChoiceReport | HitCheckReport | NodeArticleReport
-    ] = [r for r in (node, choice, hit_check, matching, extraction, generation) if r is not None]
+        ExtractionReport
+        | LlmReport
+        | LlmAssignmentReport
+        | ArticleChoiceReport
+        | HitCheckReport
+        | NodeArticleReport
+        | CurriculumCheckReport
+    ] = [r for r in (node, choice, hit_check, matching, extraction, generation, curriculum) if r is not None]
+    curriculum_used = "llm" if curriculum is not None and curriculum.answered else "rule-based"
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
     if calls:
@@ -67,7 +81,8 @@ def build_llm_report(
             "total": sum(r.total_tokens for r in reports),
             "calls": calls,
         }
-    if note is None and extraction_used == generation_used == matching_used == choice_used == "rule-based":
+    used = (extraction_used, generation_used, matching_used, choice_used, curriculum_used)
+    if note is None and all(switch == "rule-based" for switch in used):
         note = NOTHING_CONTRIBUTED
     article_choice = choice_block(choice_requested, choice_used, choice_needed, choice, choice_chosen, hit_check)
     extraction_block: dict[str, Any] = {
@@ -102,17 +117,29 @@ def build_llm_report(
         "fallbacks": dict(matching.fallbacks) if matching else {},
         "unknown_keys": matching.unknown_keys if matching else 0,
     }
+    curriculum_block: dict[str, Any] = {
+        "requested": curriculum_requested,
+        "used": curriculum_used,
+        "rated": curriculum.rated if curriculum else 0,
+        "answered": curriculum.answered if curriculum else 0,
+        "dropped": curriculum.dropped if curriculum else 0,
+        "fallbacks": dict(curriculum.fallbacks) if curriculum else {},
+        "fallback": curriculum_fallback,  # why the model was not asked at all
+    }
     audit: dict[str, Any] = {
         "note": note,
         "article_choice": article_choice,
         "matching": matching_block,
         "extraction": extraction_block,
         "generation": generation_block,
+        "curriculum_check": curriculum_block,
     }
     front: dict[str, Any] = {}
     if gateway is not None:
         models = [
-            r.model for r in (generation, extraction, matching, choice, hit_check, node) if r is not None and r.model
+            r.model
+            for r in (generation, extraction, matching, choice, hit_check, node, curriculum)
+            if r is not None and r.model
         ]
         front["provider"] = gateway.client.provider
         front["model"] = models[0] if models else gateway.client.model
@@ -127,6 +154,8 @@ def build_llm_report(
         front["matching"] = {
             key: matching_block[key] for key in ("paragraphs", "answered", "fallback_paragraphs", "fallbacks")
         }
+    if curriculum_requested == "llm":
+        front["curriculum_check"] = {key: curriculum_block[key] for key in ("rated", "dropped", "fallback")}
     if article_choice["asked"] or article_choice["hits_checked"]:
         keys = ("offered", "chosen", "fallback", "hits_checked", "hits_dropped", "hits_fallback")
         front["article_choice"] = {key: article_choice[key] for key in keys}

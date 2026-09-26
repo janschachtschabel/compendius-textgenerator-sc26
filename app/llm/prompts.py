@@ -211,6 +211,25 @@ QA_PAIRS = Prompt(
     user="Text:\n{text}\n\nSchreibe {count} Paare, jede Antwort höchstens {max_answer_length} Zeichen.{levels}{focus}",
 )
 
+# curriculum_check=llm (D58): the notes of M22 word for word, so the model's ratings can be measured against them
+CURRICULUM_CHECK = Prompt(
+    id="curriculum_check",
+    version=1,
+    system=(
+        "Du beurteilst, welche Lehrplanelemente in ein Kompendium für Lehrkräfte zu einem Unterrichtsthema gehören. "
+        "Vergib je Element eine Note: 2 = gehört zum Thema (es behandelt das Thema, ein Teilgebiet oder einen "
+        "Kernbegriff davon); 1 = berührt es (das Thema ist nur Beispiel in einer Aufzählung oder Werkzeug, oder die "
+        "Zeile hat keinen eigenen Inhalt, steht aber unter einem passenden Bereich); 0 = passt nicht (anderes Thema, "
+        "eine andere Bedeutung des Wortes, oder nur die Überschrift nennt das Thema und das Element handelt von "
+        "etwas anderem). Antworte ausschließlich mit einem JSON-Objekt, das jede Element-ID auf ihre Note abbildet, "
+        'zum Beispiel {"e1": 2, "e2": 0}.'
+    ),
+    user=(
+        "Thema des Kompendiums: {topic}\n\nLehrplanelemente, je mit dem Bereich, unter dem es steht, und seinem "
+        "Lehrplan:\n{elements}\n\nGib das JSON-Objekt zurück."
+    ),
+)
+
 PROMPTS: dict[str, Prompt] = {
     p.id: p
     for p in (
@@ -223,6 +242,7 @@ PROMPTS: dict[str, Prompt] = {
         NODE_TOPIC,
         NODE_TOPIC_WITH_TOPIC,
         QA_PAIRS,
+        CURRICULUM_CHECK,
     )
 }
 
