@@ -1621,12 +1621,18 @@ Fragen, die ohne den Text nicht zu verstehen sind („Wo befinden sich die Kursz
 Gutachter sind Claude, keine Lehrkräfte. Rohdaten: `m34_qa_regeln.json` (Kennungen, Verfahren, Urteile und Zahlen;
 keine Texte und Paare).
 
-Nachtrag nach dem Review von D60 (26.09.2026, `6b39f9c`, `56f2904`): Seit D60 lesen die Regeln auch den Text, den
-ein Aufrufer schickt. Sechs präparierte Texte der Höchstlänge (50.000 Zeichen, lange Leerzeichenfolgen in
-Glossarzeile, Begriff, Definition, Akteursname, Akteurszeile und Prosa) brauchten vorher 3,7 s bis Stunden - die
-Glossarzeile kubisch, 13 s schon bei 3.000 Leerzeichen -, jetzt live 0,01 bis 0,1 s. Beide Korrekturen ändern an den
-Kompendien der sechs Themen kein Paar, weder über `topic` noch über das Markdown als `text` (bis 50 Paare je Thema,
-live im Entwicklungscontainer verglichen); M34 beschreibt also weiter den heutigen Stand.
+Nachtrag nach zwei Reviews von D60 (26.09.2026, `6b39f9c`, `56f2904` und die Korrekturen des zweiten): Seit D60
+lesen die Regeln auch den Text, den ein Aufrufer schickt. Sechs präparierte Texte der Höchstlänge (50.000 Zeichen,
+lange Leerzeichenfolgen in Glossarzeile, Begriff, Definition, Akteursname, Akteurszeile und Prosa) brauchten vorher
+3,7 s bis Stunden - die Glossarzeile kubisch, 13 s schon bei 3.000 Leerzeichen. Das zweite Review fand weitere Formen:
+Folgen von „(“ in Begriff und Name (1,5 s) und in `parse_document` „### “ über und über (2,3 s bei 50.000, 9,5 s bei
+100.000 Zeichen) oder abgebrochene Zitatzeilen (0,9 s). `parse_document` liest auch `existing_markdown` von
+`/compendium`, bis 2.000.000 Zeichen: rund eine Stunde je Anfrage, eine Lücke älter als D60. Jetzt brauchen alle zwölf
+Eingaben 1 bis 4 ms und 2.000.000 Zeichen Markdown rund 40 ms; `parse_document` liest acht echte Kompendien (Vorlagen,
+Facetten, Hinweise leerer Bausteine, Teil 2) wie zuvor. Keine der Korrekturen ändert an den Kompendien der sechs
+Themen ein Paar, weder über `topic` noch über das Markdown als `text` (bis 50 Paare je Thema, live im
+Entwicklungscontainer verglichen), auch nicht die Mengensperre, die für „wiegen“ und „zählen“ wieder wie in D60 immer
+gilt und für „messen“ nur bei einer eigenen Zahl des Objekts; M34 beschreibt also weiter den heutigen Stand.
 
 ## M35 Sichere Auflösungen mehrdeutiger Wörter (26.09.2026)
 

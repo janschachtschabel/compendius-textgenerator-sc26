@@ -1735,16 +1735,23 @@ API.
   ist, fällt weg, statt markiert zu bleiben - in M31 drei der 50 Sätze, alle Füllsätze. Lehrplansuche und Teil 2
   folgen den Profilen wie empfohlen (D58, D59); die CLI-Suche `compendium lehrplan search` bleibt ein Werkzeug für den
   Cache ohne Profil.
-  Review derselben Sitzung (6b39f9c, 56f2904): Seit D60 lesen die Regeln den Text des Aufrufers vor der Wahl der
-  Stufe und ohne Anmeldung; vier Muster liefen auf einer langen Folge von Leerzeichen quadratisch, die Glossarzeile
-  kubisch (bei 50.000 Zeichen Sekunden bis Stunden) - jetzt linear, sechs Angriffstexte der Höchstlänge brauchen
-  0,01 bis 0,1 s. Ein leerer Baustein ist keine Prosa; ein Kompendium ohne Prosa hat nichts zu fragen (404, die vom
-  Text spricht). Eine Zahl hinter einem Artikel oder „am“, „im“, „vom“, „zum“, „zur“, „beim“ beginnt eine
-  Ordnungszahl, an der ein Satz abgeschnitten wurde. „messen“, „wiegen“ und „zählen“ nennen eine Menge nur mit einer
-  Zahl im Objekt („Was messen Amperemeter?“ bleibt, „misst fast 50 Meter“ fällt - spaCy lemmatisiert „misst“ als
-  „missen“). Ein Satz, der einen Fragetitel zitiert, ist keine Frage. Die Paare der sechs Themen von M30 bleiben
+  Zwei Reviews derselben Sitzung (6b39f9c, 56f2904 und die Korrekturen des zweiten): Seit D60 lesen die Regeln den
+  Text des Aufrufers vor der Wahl der Stufe und ohne Anmeldung. Muster liefen auf präparierten Eingaben quadratisch
+  bis kubisch: lange Folgen von Leerzeichen in Glossar, Akteuren und Prosa, Folgen von „(“ in Begriff und Name, und
+  in `parse_document` „### “ oder abgebrochene Zitatzeilen über und über - das traf auch `existing_markdown` von
+  `/compendium` (bis 2.000.000 Zeichen, rund eine Stunde je Anfrage), das älter ist als D60. Jetzt linear: zwölf
+  präparierte Eingaben der Höchstlänge brauchen 1 bis 4 ms (`/qa`) und rund 40 ms (2.000.000 Zeichen Markdown), in
+  einem eigenen Prozess mit Frist geprüft (tests/test_crafted_inputs.py). Ein leerer Baustein ist keine Prosa; ein
+  Kompendium ohne Prosa, auch aus lauter leeren Bausteinen, hat nichts zu fragen (404, die vom Text spricht). Eine Zahl
+  hinter einem Artikel oder „am“, „im“, „vom“, „zum“, „zur“, „beim“ beginnt eine Ordnungszahl, an der ein Satz
+  abgeschnitten wurde. Das Objekt von „wiegen“ und „zählen“ bleibt immer eine Menge wie in D60 („wiegt ungefähr eine
+  Tonne“, „zählt mehrere Tausend Mitglieder“ - spaCy sieht darin keine Zahl), das von „messen“ nur mit einer eigenen
+  Zahl („Was messen Amperemeter?“ bleibt, „misst fast 50 Meter“ fällt; spaCy lemmatisiert „misst“ als „missen“). Ein
+  Satz, der einen Fragetitel zitiert, ist keine Frage. Die Paare der sechs Themen von M30 bleiben in jedem Schritt
   gleich, M34 gilt weiter. Offen: `joined()` zählt das abgeschnittene „und“ mit (weniger Objektfragen, ungemessen);
-  „zählt über eine Million Einwohner“ fragt „Worüber zählt …?“, weil der Parse „über“ als Präposition liest.
+  ein Block mit unbekanntem Status gilt `parse_document` als redaktionell geprüft und damit als Prosa (echte Kompendien
+  schreiben keinen); „zählt über eine Million Einwohner“ fragt „Worüber zählt …?“, weil der Parse „über“ dort als
+  Präposition liest.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
