@@ -293,7 +293,7 @@ compendious-text-fastapi/
 | `LLM_ENRICHMENT_DEFAULT` | `sources-only` | `model-knowledge` lässt das schreibende LLM eigenes Wissen ergänzen; solche Sätze tragen keine Belegnummer und werden als `Evidenzgrad=Modellwissen` gekennzeichnet (docs/umbau.md U4) |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | Absätze je Baustein, die `extraction=llm` anbietet: die der Policy, dann die nächstbesten nach ihrem Score |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
-| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 2 Mio. | Kostenschutz je Kompendium und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
+| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 180000 / 2 Mio. | Kostenschutz je Anfrage (`llm-free` und `balanced` / die beiden `best-quality`-Profile, D59) und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
 | `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie (D25, D44); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
 | `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `10` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
@@ -1706,6 +1706,22 @@ API.
   Viertel der passenden nur gebündelt; die LLM-Prüfung 74 bis 79 % passend, 5 bis 9 % unpassend, kein passendes
   Element verworfen, im Median rund 8.000 bis 10.000 Tokens und 6 s je Anfrage; bei breiten Themen ohne Fach reicht
   das Budget von 60.000 Tokens nicht für alle Elemente (Entscheidungsvorlage, Zu entscheiden).
+- **D59 (2026-09-26)** Budget je Anfrage nach Profil, Lehrplansuche mit Profilen, `/docs` je Endpunkt (Jan: „bei
+  best qualität auf 120000 heben“, gebraucht für die Lehrplanabrufe in Teil 2 der Kompendium-Endpunkte und in der
+  Lehrplansuche; Punkt 8 der Entscheidungsvorlage). `best-quality` und `best-quality-generated` rechnen je Anfrage mit
+  `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` (180.000, siehe M33), `llm-free` und `balanced` weiter mit
+  `LLM_MAX_TOKENS_PER_REQUEST` (60.000); das Budget folgt dem Profil, nicht den Einzelschaltern, und gilt in jedem
+  Endpunkt des Profils (Kompendium, Lehrplansuche, `/qa`, `/knowledge`). `GET /api/v2/lehrplan/search` nimmt `preset`
+  und `curriculum_check` wie Teil 2: `balanced` wählt mit `mode=topic` den Artikel mit dem LLM, die
+  `best-quality`-Profile lassen jedes Element prüfen, alle Treffer und nicht nur die ersten `limit`; die Antwort nennt
+  `preset`, `llm` und `llm_tokens`, und ein Profil, das ein LLM braucht, ist ohne LLM ein 503. `/docs`: Jeder
+  Endpunkt mit `preset` sagt, was die vier Profile dort bewirken, die anderen, dass keins wirkt; jeder Parameter und
+  jeder Wert hat einen Hilfetext, und die Beispiele reichen von der kürzesten Anfrage bis zu einer mit allen Feldern
+  (`tests/test_docs_profiles.py`). M33 (Demokratie ohne Fach, 382 Absätze, 819 Elemente): Bei 120.000 prüfte die
+  Lehrplansuche alle 819 Elemente (75.016 Tokens), das Kompendium mit Teil 1 und 2 nur 579. Ohne Grenze brauchte
+  es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated`; Jan gab frei, das Budget zu erhöhen
+  („du darfst das token budget erhöhen“). 180.000 lassen 28.000 Tokens Luft, und bei 180.000 prüften beide Profile
+  alle 819 Elemente.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

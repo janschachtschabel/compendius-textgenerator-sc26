@@ -29,6 +29,7 @@ der QA-Paare (D54, D55, D57).
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` |
 | Teil 1 und 2 je Kompendium (M27) | 1,6 s | rund 3,4 s | rund 14 s | rund 24 s |
 | Tokens je Kompendium, Median (M27) | 0 | 905 | 26.267 | 35.376 |
+| Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.200 | rund 76 | rund 57 |
 | so wählt man es | `preset: llm-free`, ohne LLM `PRESET_DEFAULT=llm-free` | Standard, `preset: balanced` | `preset: best-quality` | `preset: best-quality-generated` |
 
@@ -101,15 +102,16 @@ Gutachtern falsch (M31).
 | `POST /api/v2/knowledge` | Regeln; rund 0,5 s | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 2 bis 3 s, rund 900 Tokens | wie `balanced` | wie `balanced` |
 | `POST /api/v2/qa` mit `text` | `rule-based`: rund 0,3 s je Text, 9 bis 20 von 20 Paaren, 48 von 96 mangelfrei | wie `llm-free` (D57) | `llm`: 4 bis 7,5 s und rund 2.400 Tokens für 20 Paare, 99 von 120 mangelfrei | wie `best-quality` |
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab |
-| `GET /api/v2/lehrplan/search` | Regeln, in allen Profilen gleich; `mode=topic` löst wie Teil 2 auf, ohne LLM, 0,5 bis 1,3 s | wie `llm-free` | wie `llm-free` | wie `llm-free` |
+| `GET /api/v2/lehrplan/search` | Regeln finden und bewerten; `mode=topic` löst wie Teil 2 auf, 0,5 bis 1,3 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2 | dazu bewertet das LLM jedes gefundene Element (D59); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` |
 | `GET /api/v2/nodes/{id}` | Regeln, in allen Profilen gleich: zeigt, was ein Knoten mitbringt | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 | `POST /api/v2/entities` | spaCy und Wörterbuch der Archive, ohne LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 | `GET /api/v2/collections/{id}/overview` | Teil 3, ohne LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 
-`/knowledge` und `/qa` nehmen `preset` wie das Kompendium; ohne es gilt `PRESET_DEFAULT`. Bei `/qa` wählt es nur das
-Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55). `/lehrplan/search`, `/nodes`, `/entities` und
-der Sammlungsüberblick kennen kein LLM und kein Profil. Zeiten: M27 (`/compendium`, aus den Phasen für `/knowledge` und
-`/lehrplan/search`) und M30 (`/qa`).
+`/knowledge`, `/qa` und `/lehrplan/search` nehmen `preset` wie das Kompendium; ohne es gilt `PRESET_DEFAULT`. Bei `/qa`
+wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55). `/nodes`, `/entities` und der
+Sammlungsüberblick kennen kein LLM und kein Profil. Die beiden `best-quality`-Profile rechnen in jedem Endpunkt mit
+180.000 Tokens je Anfrage, die anderen mit 60.000 (D59). Zeiten: M27 (`/compendium`, aus den Phasen für
+`/knowledge` und `/lehrplan/search`) und M30 (`/qa`).
 
 ## Der Ablauf
 
@@ -256,7 +258,7 @@ drei übrigen Bausteine (Akteure, Quellen, Glossar) erzeugt der Dienst selbst.
 | Anfrage: `matcher` | `hybrid_light`, `bm25`, `char_tfidf`, `lexicon_only`, `llm` | aus dem Profil |
 | Anfrage: `preset` | `llm-free` und `balanced` setzen `hybrid_light`, `best-quality` und `best-quality-generated` `llm` | `PRESET_DEFAULT` |
 | Umgebung: `MODEL2VEC_PATH` | Pfad des Modells | im Image `/models/m2v`; ohne Model2Vec fällt `hybrid_light` auf 0,38 |
-| Umgebung: `LLM_MAX_TOKENS_PER_REQUEST` | Tokens je Anfrage | 60.000: vier Stapel zugleich, weitere warten (D39); 100.000 erlaubt sieben |
+| Umgebung: `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | Tokens je Anfrage in `llm-free` und `balanced`, in den `best-quality`-Profilen | 60.000: vier Stapel zugleich, weitere warten (D39); 180.000 (D59): rund dreimal so viele |
 
 | Verfahren | macro-F1, gelabelte Absätze | macro-F1, alle Absätze | Zuordnung je Thema | Teil 1 | Tokens |
 |---|---|---|---|---|---|
@@ -314,7 +316,8 @@ drei Schalter auf.
 | `empty_slot_policy` | `omit`, `note` | aus dem Template, bei SC26 `omit` | leere Bausteine weglassen oder mit Hinweis zeigen |
 
 **Kombinierbar:** `extraction` und `generation` lassen sich zusammen einschalten, `enrichment` wirkt nur mit
-`generation`. Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`) und das Tagesbudget
+`generation`. Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`, 60.000, in den
+`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 180.000, D59) und das Tagesbudget
 (`LLM_DAILY_TOKEN_BUDGET`, 2 Mio.). Ein geschriebener Satz bleibt nur, wenn er eine gültige Belegnummer trägt und
 mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er gestrichen
 (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert (`mark`).
@@ -355,8 +358,11 @@ mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er 
 | `best-quality-generated` | 35.376 (9.223 bis 65.975) | rund 57 |
 
 Die Profile maß M27 auf denselben sechs Themen; die Zeile mit `llm-fast` ist addiert. Große Themen kosten mehr: Mit
-323 Absätzen brauchte Renaissance 54.448 und 65.975 Tokens. Das Tagesbudget gilt für alle Anfragen
-und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.
+323 Absätzen brauchte Renaissance 54.448 und 65.975 Tokens, mit Teil 2 kommt die Prüfung der Lehrplanelemente dazu:
+Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `best-quality` und 152.197 in
+`best-quality-generated` (M33). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
+60.000; die Grenze schützt vor Ausreißern, die meisten Anfragen bleiben weit darunter. Das Tagesbudget gilt für alle
+Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.
 
 ## Die Empfehlungen im Einzelnen
 
@@ -396,12 +402,13 @@ kostete Teil 1 im Median 2,0 s mehr als ohne LLM, 90. Perzentil 4,2 s). QA-Paare
 
 ### `best-quality`
 
-Anfrage: `{"topic": "Optik", "preset": "best-quality"}`, mit konfiguriertem LLM wie oben und mehr Budget je Anfrage:
+Anfrage: `{"topic": "Optik", "preset": "best-quality"}`, mit konfiguriertem LLM wie oben. Das Profil rechnet
+mit einem eigenen, größeren Budget je Anfrage (D59), ausgeliefert:
 
 ```
-LLM_MAX_TOKENS_PER_REQUEST=100000       # sieben Stapel zugleich: keine zweite Runde bis 350 Absätze und kein
-                                        # Rückfall bei sehr großen Themen (bei 60.000 ab rund 320 Absätzen);
-                                        # nicht gemessen
+LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel der Zuordnung zugleich wie bei
+                                                 # 60.000 und Platz für die Prüfung aller Lehrplanelemente,
+                                                 # auch beim breitesten Thema (M33)
 ```
 
 Ergebnis: 91 von 94 Hauptartikeln, macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median
@@ -458,11 +465,12 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
 7. **Regeln der QA verbessern:** Ihr häufigster Mangel ist eine Frage, die ohne den Text unverständlich ist (23 und 24
    von 96), etwa „Wo befinden sich die Kurszentren?“. Weitere Sperren gingen ohne Modell (nebengeordnete Sätze,
    Maßverben wie „dauern“, Fragen ohne Inhalt wie „Was ist notwendig?“), wären aber an M30 nachzumessen.
-8. **Budget je Anfrage für `best-quality` mit Teil 2 (D58, M32):** Die LLM-Prüfung der Lehrplanelemente kostet rund
-   75 bis 80 Tokens je Element. Neben der LLM-Zuordnung (rund 26.000 Tokens) reichen die ausgelieferten 60.000
-   Tokens je Anfrage für rund 400 Elemente; breite Themen ohne Fach haben mehr (Demokratie 819, Elektrischer Strom
-   740), dann entscheiden für den Rest die Regeln, und das Audit sagt es. Zu entscheiden: `LLM_MAX_TOKENS_PER_REQUEST`
-   dort, wo `best-quality` mit Teil 2 läuft, auf rund 120.000 heben, oder den Rest bei den Regeln lassen.
+8. **Budget je Anfrage für `best-quality`:** entschieden (D59, Jan): Die beiden `best-quality`-Profile rechnen mit
+   180.000 Tokens je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`), in jedem Endpunkt, auch in der
+   Lehrplansuche, die seither die Profile nimmt; `llm-free` und `balanced` bleiben bei 60.000. Jan wollte zuerst
+   120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
+   819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
+   `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

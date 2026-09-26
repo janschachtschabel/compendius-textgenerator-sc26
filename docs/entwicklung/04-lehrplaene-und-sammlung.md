@@ -47,11 +47,20 @@ zu acht Ebenen tief.
    liest das LLM jedes gefundene Element mit seinem Bereich und seinem Lehrplan und bewertet es nach den Noten von
    M22: passt, berührt das Thema, passt nicht. Was nicht passt, fällt heraus; ein Element, das nur seine
    Überschrift zum Thema macht, steht einzeln da, wenn das LLM es passend nennt. Die Elemente gehen in Stapeln zu
-   60 parallel an die b-api, auf Budget und Frist der Anfrage; ein gescheiterter Stapel behält die Entscheidung der
-   Regeln, und `audit.llm.curriculum_check` sagt, was geprüft, verworfen und warum etwas nicht geprüft wurde.
+   60 parallel an die b-api, auf Budget und Frist der Anfrage - in diesen Profilen 180.000 Tokens (D59); ein
+   gescheiterter Stapel behält die Entscheidung der Regeln, und `audit.llm.curriculum_check` sagt, was geprüft,
+   verworfen und warum etwas nicht geprüft wurde.
 
 Für Optik fand Teil 2 im Test am 23.09.2026 (lokaler Cache vom 20.09.) 145 Lehrplanelemente in 19 Lehrplänen aus
 drei Ländern.
+
+**Die Suche einzeln** (`GET /api/v2/lehrplan/search`, D59): dieselben Schritte ohne Kompendium, zu einem Stichwort
+(`mode=keyword`) oder einem Thema (`mode=topic`, aufgelöst wie für Teil 2). `preset` wirkt wie in Teil 2:
+`llm-free` und `balanced` finden und bewerten mit den Regeln, `balanced` wählt im Themenmodus den Artikel mit dem
+LLM, die `best-quality`-Profile lassen das LLM jedes Element bewerten, alle Treffer und nicht nur die ersten
+`limit`. `curriculum_check` lässt sich auch einzeln setzen. Jedes Element nennt Lehrplan, Land, Schulart, Stufe und
+Klasse, `matched_in` (Text oder nur Überschrift) und die Note des LLM; `llm` und `llm_tokens` sagen, was das LLM
+tat und kostete.
 
 ### Darstellung
 
@@ -91,7 +100,9 @@ Obergrenze je Land halten den Teil kürzer.
   gebündelten Überschriften-Treffern sind von den einzeln gezeigten 70 bis 72 % passend ohne Fach und 77 bis 81 % mit
   Fach, 5 bis 9 % nicht; ein Viertel der passenden steht dann nur in der Bündelzeile. Die LLM-Prüfung zeigt 74 bis
   79 % passende, 5 bis 9 % unpassende und verwirft kein passendes Element, für im Median rund 8.000 bis 10.000
-  Tokens und 6 s je Anfrage; ihr Budget reicht bei breiten Themen ohne Fach nicht für alle Elemente. Das Fach kürzt
+  Tokens und 6 s je Anfrage. Mit den 180.000 Tokens von D59 prüft sie beim breitesten Thema (Demokratie ohne Fach,
+  819 Elemente) alle Elemente, auch im Kompendium neben der Zuordnung von 382 Absätzen und dem Schreiben
+  (M33). Das Fach kürzt
   Teil 2 und verwirft auch passende Elemente aus beruflichen Lehrplänen, dem Sachunterricht und Nachbarfächern.
 
 ## Teil 3: Sammlungsüberblick

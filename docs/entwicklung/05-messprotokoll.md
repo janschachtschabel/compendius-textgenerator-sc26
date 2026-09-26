@@ -1553,3 +1553,34 @@ alle Elemente. D1 wird nicht gebaut: Es verlöre ein Viertel der passenden Eleme
 Lehrkräfte; je Thema und Schicht stehen höchstens fünf Elemente in der Stichprobe. Rohdaten:
 `m32_lehrplan_pruefung.json` (je Anfrage Elemente, Verworfene, Tokens und Sekunden, je Stichprobenelement Fundort,
 Note des LLM, beide Noten und die Ähnlichkeit; ohne Texte).
+
+## M33 Budget von `best-quality` nach D59 (26.09.2026)
+
+Jan hob das Budget je Anfrage der beiden `best-quality`-Profile auf 120.000 Tokens (D59); in M32 reichten 60.000 bei
+Demokratie ohne Fach (819 Elemente) nicht für die Prüfung aller Lehrplanelemente. `mc_budget_best_quality.py` stellt
+dasselbe Thema im Ablauf des Dienstes, über die API (`gpt-6-luna`, Frist 120 s), mit dem Budget der Befehlszeile: als
+Kompendium mit Teil 1 und 2 in beiden `best-quality`-Profilen und im ersten Lauf als Lehrplansuche mit `mode=topic`.
+
+| Demokratie ohne Fach: 382 Absätze, 819 Elemente | Budget | Tokens (Aufrufe) | Elemente geprüft, verworfen | Sekunden |
+|---|---|---|---|---|
+| Lehrplansuche, `best-quality` | 120.000 | 75.016 (15) | 819, 58 | 9,5 |
+| Kompendium, `best-quality` | 120.000 | 112.626 (19) | 579, 40; 240 bei den Regeln | 20,9 |
+| Kompendium, `best-quality` | 200.000 | 137.398 (23) | 819, 58 | 2,6 |
+| Kompendium, `best-quality-generated` | 200.000 | 152.197 (32) | 819, 58 | 8,1 |
+| Kompendium, `best-quality` | 180.000 | 137.398 (23) | 819, 58 | 2,0 |
+| Kompendium, `best-quality-generated` | 180.000 | 152.197 (32) | 819, 58 | 1,5 |
+
+In allen Kompendien ordnete das LLM alle 382 Absätze zu, in `best-quality-generated` schrieb es dazu 9 Bausteine.
+Die Zuordnung eines so großen Themas braucht den größeren Teil des Budgets (im Median von M27 26.267 Tokens je
+Kompendium). Ein Stapel der Prüfung reserviert vorab 8.500 bis 10.400 Tokens und verbraucht rund 5.000; passt die
+Reservierung nicht mehr ins Budget, behält er die Entscheidung der Regeln: Bei 120.000 fanden vier Stapel keinen Platz
+mehr (7.374 Tokens frei). Die Lehrplansuche prüft rund 90 Tokens je Element; ein Kompendium nur mit Teil 2 fragt
+dasselbe. Der Lauf mit 200.000 zeigt den Bedarf ohne Grenze, 137.398 und 152.197 Tokens; Jan gab frei, das Budget zu
+erhöhen, und 180.000 lassen dem schreibenden Profil 28.000 Tokens Luft für Reservierungen und längere Antworten. Die
+b-api beantwortete Aufrufe, die sie schon kannte, aus ihrem Zwischenspeicher - dieselbe Antwort und dieselben Tokens:
+Die Sekunden der späteren Läufe sind deshalb zu kurz, der erste zeigt die Dauer ohne Zwischenspeicher.
+
+**Ergebnis:** Mit 180.000 Tokens je Anfrage prüfen beide `best-quality`-Profile beim breitesten Thema von M32 alle
+Lehrplanelemente, auch neben der Zuordnung von 382 Absätzen und dem Schreiben; 120.000 reichten dafür nur in der
+Lehrplansuche. Rohdaten: `m33_budget_best_quality.json` (je Lauf Budget, Tokens, Sekunden, Zahlen und die Gründe der
+Rückfälle; keine Texte).

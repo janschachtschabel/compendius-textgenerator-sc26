@@ -1,0 +1,271 @@
+{
+  "topic": "Demokratie",
+  "runs": [
+    {
+      "budget_best_quality": 120000,
+      "compendium": {
+        "best-quality": {
+          "status": 200,
+          "seconds": 20.9,
+          "timings_ms": {
+            "match": 9701,
+            "curricula": 9066
+          },
+          "tokens": {
+            "prompt": 97690,
+            "completion": 14936,
+            "total": 112626,
+            "calls": 19
+          },
+          "matching": {
+            "paragraphs": 382,
+            "answered": 382,
+            "fallback_paragraphs": 0,
+            "fallbacks": {}
+          },
+          "curriculum_check": {
+            "requested": "llm",
+            "used": "llm",
+            "rated": 819,
+            "answered": 579,
+            "dropped": 40,
+            "fallbacks": {
+              "Token-Budget der Anfrage erschöpft (10443 Tokens nötig, 7374 frei)": 60,
+              "Token-Budget der Anfrage erschöpft (9700 Tokens nötig, 7374 frei)": 60,
+              "Token-Budget der Anfrage erschöpft (8664 Tokens nötig, 7374 frei)": 60,
+              "Token-Budget der Anfrage erschöpft (8493 Tokens nötig, 7374 frei)": 60
+            },
+            "fallback": null
+          },
+          "part_2": {
+            "matches": 779,
+            "bundled": 236,
+            "llm_check": {
+              "rated": 819,
+              "answered": 579,
+              "dropped": 40,
+              "fallbacks": {
+                "Token-Budget der Anfrage erschöpft (10443 Tokens nötig, 7374 frei)": 60,
+                "Token-Budget der Anfrage erschöpft (9700 Tokens nötig, 7374 frei)": 60,
+                "Token-Budget der Anfrage erschöpft (8664 Tokens nötig, 7374 frei)": 60,
+                "Token-Budget der Anfrage erschöpft (8493 Tokens nötig, 7374 frei)": 60
+              }
+            }
+          }
+        }
+      },
+      "search": {
+        "status": 200,
+        "seconds": 9.5,
+        "total_hits": 819,
+        "returned": 500,
+        "tokens": {
+          "prompt": 64236,
+          "completion": 10780,
+          "total": 75016,
+          "calls": 15
+        },
+        "curriculum_check": {
+          "requested": "llm",
+          "used": "llm",
+          "rated": 819,
+          "answered": 819,
+          "dropped": 58,
+          "fallbacks": {},
+          "fallback": null
+        },
+        "article_choice": {
+          "requested": "llm",
+          "used": "llm",
+          "asked": false
+        }
+      }
+    },
+    {
+      "budget_best_quality": 200000,
+      "compendium": {
+        "best-quality": {
+          "status": 200,
+          "seconds": 2.6,
+          "timings_ms": {
+            "match": 715,
+            "synthesize": 690,
+            "curricula": 630
+          },
+          "tokens": {
+            "prompt": 118727,
+            "completion": 18671,
+            "total": 137398,
+            "calls": 23
+          },
+          "matching": {
+            "paragraphs": 382,
+            "answered": 382,
+            "fallback_paragraphs": 0,
+            "fallbacks": {}
+          },
+          "generation": {
+            "used": "rule-based",
+            "sections": [],
+            "fallbacks": {}
+          },
+          "curriculum_check": {
+            "requested": "llm",
+            "used": "llm",
+            "rated": 819,
+            "answered": 819,
+            "dropped": 58,
+            "fallbacks": {},
+            "fallback": null
+          },
+          "part_2": {
+            "matches": 761,
+            "bundled": 101
+          }
+        },
+        "best-quality-generated": {
+          "status": 200,
+          "seconds": 8.1,
+          "timings_ms": {
+            "match": 558,
+            "synthesize": 6932,
+            "curricula": 331
+          },
+          "tokens": {
+            "prompt": 128684,
+            "completion": 23513,
+            "total": 152197,
+            "calls": 32
+          },
+          "matching": {
+            "paragraphs": 382,
+            "answered": 382,
+            "fallback_paragraphs": 0,
+            "fallbacks": {}
+          },
+          "generation": {
+            "used": "llm",
+            "sections": [
+              "sc26_1",
+              "sc26_2",
+              "sc26_3",
+              "sc26_4",
+              "sc26_5",
+              "sc26_8",
+              "sc26_9",
+              "sc26_10",
+              "sc26_11"
+            ],
+            "fallbacks": {}
+          },
+          "curriculum_check": {
+            "requested": "llm",
+            "used": "llm",
+            "rated": 819,
+            "answered": 819,
+            "dropped": 58,
+            "fallbacks": {},
+            "fallback": null
+          },
+          "part_2": {
+            "matches": 761,
+            "bundled": 101
+          }
+        }
+      }
+    },
+    {
+      "budget_best_quality": 180000,
+      "compendium": {
+        "best-quality": {
+          "status": 200,
+          "seconds": 2.0,
+          "timings_ms": {
+            "match": 654,
+            "synthesize": 553,
+            "curricula": 311
+          },
+          "tokens": {
+            "prompt": 118727,
+            "completion": 18671,
+            "total": 137398,
+            "calls": 23
+          },
+          "matching": {
+            "paragraphs": 382,
+            "answered": 382,
+            "fallback_paragraphs": 0,
+            "fallbacks": {}
+          },
+          "generation": {
+            "used": "rule-based",
+            "sections": [],
+            "fallbacks": {}
+          },
+          "curriculum_check": {
+            "requested": "llm",
+            "used": "llm",
+            "rated": 819,
+            "answered": 819,
+            "dropped": 58,
+            "fallbacks": {},
+            "fallback": null
+          },
+          "part_2": {
+            "matches": 761,
+            "bundled": 101
+          }
+        },
+        "best-quality-generated": {
+          "status": 200,
+          "seconds": 1.5,
+          "timings_ms": {
+            "match": 580,
+            "synthesize": 269,
+            "curricula": 354
+          },
+          "tokens": {
+            "prompt": 128684,
+            "completion": 23513,
+            "total": 152197,
+            "calls": 32
+          },
+          "matching": {
+            "paragraphs": 382,
+            "answered": 382,
+            "fallback_paragraphs": 0,
+            "fallbacks": {}
+          },
+          "generation": {
+            "used": "llm",
+            "sections": [
+              "sc26_1",
+              "sc26_2",
+              "sc26_3",
+              "sc26_4",
+              "sc26_5",
+              "sc26_8",
+              "sc26_9",
+              "sc26_10",
+              "sc26_11"
+            ],
+            "fallbacks": {}
+          },
+          "curriculum_check": {
+            "requested": "llm",
+            "used": "llm",
+            "rated": 819,
+            "answered": 819,
+            "dropped": 58,
+            "fallbacks": {},
+            "fallback": null
+          },
+          "part_2": {
+            "matches": 761,
+            "bundled": 101
+          }
+        }
+      }
+    }
+  ]
+}
