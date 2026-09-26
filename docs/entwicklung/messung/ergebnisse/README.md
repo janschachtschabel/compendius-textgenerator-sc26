@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M33
+# Ergebnisse der Messungen M1 bis M34
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -46,6 +46,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M31 | Ergänzt `best-quality-generated` mit dem Prompt v2 weniger Füllsätze? | ja: 50 statt 82 Sätze mit Modellwissen, Füllsätze nach beiden Gutachtern 13 statt 50, fachlich 32 statt 27, falsch 0 statt 2; Lesbarkeit gleich, in 8 von 12 Urteilen vorgezogen, rund 3 % mehr Tokens | – | `m31_modellwissen.json` |
 | M32 | Was bringen B und die LLM-Prüfung der Lehrplanelemente (D58)? | an den 20 Themen von M22, Mittel über die Themen: B zeigt 3.103 von 4.579 Elementen einzeln (mit Fach 1.932 von 3.120), passend 70 bis 72 % ohne und 77 bis 81 % mit Fach statt 62 bis 67 %, unpassend 5 bis 9 % statt 11 bis 17 %, ein Viertel der passenden nur gebündelt; die LLM-Prüfung 74 bis 79 % passend, 5 bis 9 % unpassend, kein passendes Element verworfen, im Median 7.817 bis 9.564 Tokens und 6 s je Anfrage, bei Demokratie ohne Fach reichten 60.000 Tokens nicht; Model2Vec AUC 0,74 bis 0,76 | – | `m32_lehrplan_pruefung.json` |
 | M33 | Welches Budget je Anfrage braucht `best-quality` (D59)? | Demokratie ohne Fach (382 Absätze, 819 Elemente): bei 120.000 prüfte die Lehrplansuche alle 819 Elemente (75.016 Tokens), das Kompendium mit Teil 1 und 2 nur 579 (112.626); ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated`, bei 180.000 prüften beide alle 819 | – | `m33_budget_best_quality.json` |
+| M34 | Was bringen die nachgeschärften QA-Regeln mit Glossar und Akteuren als Füller (D60)? | auf den Texten und Bögen von M30: 58 statt 46 von 95 Regel-Paaren mangelfrei bei beiden Gutachtern, Erstfragen 25 von 49 statt 16 von 52, Füller 22 von 29; die Gutachter urteilen an den unveränderten Paaren etwas strenger als in M30 | – | `m34_qa_regeln.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

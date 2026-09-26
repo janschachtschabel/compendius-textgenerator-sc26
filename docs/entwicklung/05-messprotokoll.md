@@ -1584,3 +1584,39 @@ Die Sekunden der späteren Läufe sind deshalb zu kurz, der erste zeigt die Daue
 Lehrplanelemente, auch neben der Zuordnung von 382 Absätzen und dem Schreiben; 120.000 reichten dafür nur in der
 Lehrplansuche. Rohdaten: `m33_budget_best_quality.json` (je Lauf Budget, Tokens, Sekunden, Zahlen und die Gründe der
 Rückfälle; keine Texte).
+
+## M34 QA-Regeln nach D60 (26.09.2026)
+
+Jan entschied, dass die Regeln mit Glossar und Akteuren auffüllen, wenn ein Text wenig hergibt (D60); dazu kamen die
+Sperren aus Punkt 7 der Entscheidungsvorlage. `mc_qa_nachschaerfung.py` stellt die Regeln vor und nach D60 auf die
+sechs Texte von M30 mit ihrem Glossar und ihren Akteuren, je 20 Paare, im Image (spaCy). Die Regeln vor D60 erzeugen
+dort fast genau die Paare von M30: 93 von 95 kennen die Urteile von M30. Für die Regeln nach D60 ersetzt das Skript in
+den Bögen von M30 die Paare der Regeln durch die neuen, lässt die der anderen Verfahren an ihrem Platz und nummeriert
+alles neu; zwei blinde Claude-Gutachter bewerten mit dem Auftrag von M30.
+
+| Regeln auf den sechs M30-Texten, je 20 verlangt | vor D60 (Urteile M30) | nach D60 (Urteile M34) |
+|---|---|---|
+| mangelfrei bei beiden Gutachtern | 46 von 95, 2 ohne Urteil | 58 von 95 |
+| Erstfragen aus dem Text | 16 von 52 | 25 von 49 |
+| Glossar-Definitionen | 8 von 13, 2 ohne Urteil | 10 von 15 |
+| Füller aus Glossar und Akteuren | 20 von 23 | 22 von 29 |
+| zweite Frage zu einem Satz | 2 von 5 | 1 von 2 |
+| Mängel, Urteile beider Gutachter | frage_unklar 47, doppelt 20, antwort_passt_nicht 13, trivial 8, sachfehler 2 | frage_unklar 26, trivial 19, doppelt 10, antwort_passt_nicht 8, sachfehler 4 |
+
+Weggefallen sind 13 Paare, 12 davon bemängelt: „Was ist notwendig?“, „Was lautet?“, „Was dauern
+Prüfungsvorbereitungskurse … ungefähr?“, die Fragen mit einem zweiten Verb hinter „und“; eine mangelfreie Wiederholung
+wich einem Füller. Neu kamen unter anderem „Seit wann war Ernst Abbe Alleininhaber der Firma Carl Zeiss?“ und „Was
+versteht man unter Sauerstoff?“. Die Gegenprobe: Dieselben Paare der anderen Verfahren nannten die Gutachter von M34
+etwas seltener mangelfrei als die von M30 (LLM 96 statt 99 von 120, Parse 12 statt 16 von 44, Modelle 24 statt 25 von
+120); der Zuwachs kommt also nicht von milderen Urteilen. Mehr Füller heißt auch mehr Nachbarn: „Wer war Immanuel
+Kant?“ im Kompendium zu Ernst Abbe nannten beide trivial, wie schon in M30, ebenso „Was beziffert sich auf 6,497
+Milliarden Euro?“. Kurze Themen bleiben kurz: Photosynthese 12 statt 11, Zellteilung 8 statt 9 von 20, weil Glossar
+und Akteure dort klein sind.
+
+Modellwissen (Punkt 3): In den Texten von M31 sind 3 der 50 Sätze mit Modellwissen Fragen, nach beiden Gutachtern
+alle drei Füllsätze. Seit D60 fallen sie weg; gezählt an den gespeicherten Texten, ohne neuen Lauf.
+
+**Ergebnis:** 58 statt 46 von 95 Regel-Paaren mangelfrei, ohne Modell und ohne Tokens. Die meisten übrigen Mängel sind
+Fragen, die ohne den Text nicht zu verstehen sind („Wo befinden sich die Kurszentren?“), und Nachbar-Personen. Die
+Gutachter sind Claude, keine Lehrkräfte. Rohdaten: `m34_qa_regeln.json` (Kennungen, Verfahren, Urteile und Zahlen;
+keine Texte und Paare).

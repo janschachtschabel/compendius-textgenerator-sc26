@@ -1722,6 +1722,19 @@ API.
   es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated`; Jan gab frei, das Budget zu erhöhen
   („du darfst das token budget erhöhen“). 180.000 lassen 28.000 Tokens Luft, und bei 180.000 prüften beide Profile
   alle 819 Elemente.
+- **D60 (2026-09-26)** QA-Paare auffüllen und nachschärfen, keine Fragen als Modellwissen (Jan: „wenn ein Text
+  wenig hergibt dann glossar und akteure auffüllen“, „eventuelle weitere todo umsetzen“; Punkte 3 und 7 der
+  Entscheidungsvorlage). Die Regeln von `/qa` fragen jeden Satz einmal, füllen dann mit Glossar und Akteuren auf und
+  fragen erst danach einen Satz ein zweites Mal (M30: 20 von 23 Füller-Paaren mangelfrei, 2 von 5 Wiederholungen).
+  Drei Sperren ohne Modell: Der Satz endet vor einem zweiten, mit „und“ angehängten finiten Verb; ein Maßverb
+  („dauern“, „beziffert sich auf“) fragt nicht „Was“ oder „Worauf“; eine Frage braucht ein Nomen, einen Namen oder
+  eine Zahl ihres Satzes. Ein Glossareintrag mit Zahl am Ende gilt nicht mehr als abgeschnitten. Ein Text, der das
+  Markdown eines Kompendiums ist, wird wie eines gelesen: Prosa der Bausteine, Glossar und Akteure als Füller, keine
+  Quellen (`app/synthesis/qa_knowledge.py`). M34 (Texte und Bögen von M30, zwei blinde Gutachter): 58 statt 46 von
+  95 Paaren mangelfrei bei beiden, bei etwas strengeren Gutachtern. Modellwissen: Ein Satz ohne Beleg, der eine Frage
+  ist, fällt weg, statt markiert zu bleiben - in M31 drei der 50 Sätze, alle Füllsätze. Lehrplansuche und Teil 2
+  folgen den Profilen wie empfohlen (D58, D59); die CLI-Suche `compendium lehrplan search` bleibt ein Werkzeug für den
+  Cache ohne Profil.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

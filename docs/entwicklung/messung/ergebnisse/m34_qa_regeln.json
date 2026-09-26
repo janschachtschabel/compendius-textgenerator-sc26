@@ -1,0 +1,3498 @@
+{
+ "beschreibung": "M34: Regeln nach D60 auf den sechs Texten von M30, je 20 Paare; die Paare der Regeln in den Bögen von M30 ersetzt, zwei blinde Claude-Gutachter; ohne Texte und Paare",
+ "regeln_vorher_urteile_m30": {
+  "paare": 95,
+  "je_herkunft": {
+   "text": {
+    "mangelfrei": 16,
+    "mangel": 36
+   },
+   "alle": {
+    "mangelfrei": 46,
+    "mangel": 47,
+    "unbewertet": 2
+   },
+   "glossar": {
+    "mangelfrei": 8,
+    "mangel": 5,
+    "unbewertet": 2
+   },
+   "wiederholung": {
+    "mangel": 3,
+    "mangelfrei": 2
+   },
+   "fueller": {
+    "mangelfrei": 20,
+    "mangel": 3
+   }
+  }
+ },
+ "regeln_nachher_urteile_m34": {
+  "paare": 95,
+  "je_herkunft": {
+   "text": {
+    "mangelfrei": 25,
+    "mangel": 24
+   },
+   "alle": {
+    "mangelfrei": 58,
+    "mangel": 37
+   },
+   "glossar": {
+    "mangelfrei": 10,
+    "mangel": 5
+   },
+   "fueller": {
+    "mangelfrei": 22,
+    "mangel": 7
+   },
+   "wiederholung": {
+    "mangelfrei": 1,
+    "mangel": 1
+   }
+  }
+ },
+ "maengel_nachher": {
+  "frage_unklar": 26,
+  "doppelt": 10,
+  "trivial": 19,
+  "antwort_passt_nicht": 8,
+  "sachfehler": 4
+ },
+ "abgleich_andere_verfahren": {
+  "llm": {
+   "paare": 120,
+   "mangelfrei_m30": 99,
+   "mangelfrei_m34": 96
+  },
+  "parse": {
+   "paare": 44,
+   "mangelfrei_m30": 16,
+   "mangelfrei_m34": 12
+  },
+  "modelle": {
+   "paare": 120,
+   "mangelfrei_m30": 25,
+   "mangelfrei_m34": 24
+  }
+ },
+ "verfahren_je_id": {
+  "11-01": "llm",
+  "11-02": "parse",
+  "11-03": "modelle",
+  "11-04": "regeln_neu",
+  "11-05": "modelle",
+  "11-06": "regeln_neu",
+  "11-07": "regeln_neu",
+  "11-08": "modelle",
+  "11-09": "parse",
+  "11-10": "llm",
+  "11-11": "modelle",
+  "11-12": "modelle",
+  "11-13": "modelle",
+  "11-14": "parse",
+  "11-15": "modelle",
+  "11-16": "regeln_neu",
+  "11-17": "llm",
+  "11-18": "parse",
+  "11-19": "parse",
+  "11-20": "llm",
+  "11-21": "llm",
+  "11-22": "regeln_neu",
+  "11-23": "modelle",
+  "11-24": "modelle",
+  "11-25": "parse",
+  "11-26": "llm",
+  "11-27": "llm",
+  "11-28": "regeln_neu",
+  "11-29": "modelle",
+  "11-30": "regeln_neu",
+  "11-31": "modelle",
+  "11-32": "modelle",
+  "11-33": "modelle",
+  "11-34": "regeln_neu",
+  "11-35": "llm",
+  "11-36": "modelle",
+  "11-37": "modelle",
+  "11-38": "regeln_neu",
+  "11-39": "llm",
+  "11-40": "parse",
+  "11-41": "modelle",
+  "11-42": "llm",
+  "11-43": "parse",
+  "11-44": "llm",
+  "11-45": "modelle",
+  "11-46": "regeln_neu",
+  "11-47": "llm",
+  "11-48": "regeln_neu",
+  "11-49": "llm",
+  "11-50": "llm",
+  "11-51": "regeln_neu",
+  "11-52": "llm",
+  "11-53": "llm",
+  "11-54": "regeln_neu",
+  "11-55": "regeln_neu",
+  "11-56": "llm",
+  "11-57": "llm",
+  "11-58": "modelle",
+  "11-59": "parse",
+  "11-60": "parse",
+  "11-61": "llm",
+  "11-62": "parse",
+  "11-63": "regeln_neu",
+  "11-64": "parse",
+  "11-65": "regeln_neu",
+  "11-66": "regeln_neu",
+  "11-67": "regeln_neu",
+  "11-68": "llm",
+  "11-69": "modelle",
+  "11-70": "parse",
+  "11-71": "modelle",
+  "11-72": "regeln_neu",
+  "11-73": "regeln_neu",
+  "12-01": "modelle",
+  "12-02": "llm",
+  "12-03": "modelle",
+  "12-04": "regeln_neu",
+  "12-05": "parse",
+  "12-06": "modelle",
+  "12-07": "modelle",
+  "12-08": "regeln_neu",
+  "12-09": "llm",
+  "12-10": "regeln_neu",
+  "12-11": "regeln_neu",
+  "12-12": "modelle",
+  "12-13": "regeln_neu",
+  "12-14": "llm",
+  "12-15": "regeln_neu",
+  "12-16": "llm",
+  "12-17": "modelle",
+  "12-18": "modelle",
+  "12-19": "modelle",
+  "12-20": "llm",
+  "12-21": "llm",
+  "12-22": "modelle",
+  "12-23": "modelle",
+  "12-24": "parse",
+  "12-25": "llm",
+  "12-26": "llm",
+  "12-27": "modelle",
+  "12-28": "llm",
+  "12-29": "regeln_neu",
+  "12-30": "modelle",
+  "12-31": "llm",
+  "12-32": "parse",
+  "12-33": "llm",
+  "12-34": "regeln_neu",
+  "12-35": "regeln_neu",
+  "12-36": "modelle",
+  "12-37": "llm",
+  "12-38": "regeln_neu",
+  "12-39": "regeln_neu",
+  "12-40": "regeln_neu",
+  "12-41": "llm",
+  "12-42": "llm",
+  "12-43": "llm",
+  "12-44": "regeln_neu",
+  "12-45": "modelle",
+  "12-46": "llm",
+  "12-47": "regeln_neu",
+  "12-48": "parse",
+  "12-49": "llm",
+  "12-50": "regeln_neu",
+  "12-51": "llm",
+  "12-52": "regeln_neu",
+  "12-53": "regeln_neu",
+  "12-54": "modelle",
+  "12-55": "regeln_neu",
+  "12-56": "llm",
+  "12-57": "modelle",
+  "12-58": "regeln_neu",
+  "12-59": "regeln_neu",
+  "12-60": "modelle",
+  "12-61": "modelle",
+  "12-62": "parse",
+  "12-63": "modelle",
+  "12-64": "modelle",
+  "12-65": "llm",
+  "13-01": "regeln_neu",
+  "13-02": "parse",
+  "13-03": "modelle",
+  "13-04": "modelle",
+  "13-05": "llm",
+  "13-06": "llm",
+  "13-07": "llm",
+  "13-08": "regeln_neu",
+  "13-09": "llm",
+  "13-10": "modelle",
+  "13-11": "parse",
+  "13-12": "llm",
+  "13-13": "llm",
+  "13-14": "regeln_neu",
+  "13-15": "modelle",
+  "13-16": "llm",
+  "13-17": "regeln_neu",
+  "13-18": "regeln_neu",
+  "13-19": "modelle",
+  "13-20": "llm",
+  "13-21": "modelle",
+  "13-22": "parse",
+  "13-23": "modelle",
+  "13-24": "regeln_neu",
+  "13-25": "modelle",
+  "13-26": "modelle",
+  "13-27": "llm",
+  "13-28": "regeln_neu",
+  "13-29": "regeln_neu",
+  "13-30": "modelle",
+  "13-31": "modelle",
+  "13-32": "modelle",
+  "13-33": "llm",
+  "13-34": "regeln_neu",
+  "13-35": "modelle",
+  "13-36": "parse",
+  "13-37": "regeln_neu",
+  "13-38": "modelle",
+  "13-39": "regeln_neu",
+  "13-40": "regeln_neu",
+  "13-41": "parse",
+  "13-42": "llm",
+  "13-43": "llm",
+  "13-44": "llm",
+  "13-45": "parse",
+  "13-46": "llm",
+  "13-47": "llm",
+  "13-48": "llm",
+  "13-49": "llm",
+  "13-50": "regeln_neu",
+  "13-51": "llm",
+  "13-52": "llm",
+  "13-53": "modelle",
+  "13-54": "regeln_neu",
+  "13-55": "llm",
+  "13-56": "regeln_neu",
+  "13-57": "modelle",
+  "13-58": "parse",
+  "13-59": "modelle",
+  "13-60": "modelle",
+  "13-61": "modelle",
+  "13-62": "modelle",
+  "21-01": "regeln_neu",
+  "21-02": "modelle",
+  "21-03": "regeln_neu",
+  "21-04": "llm",
+  "21-05": "llm",
+  "21-06": "llm",
+  "21-07": "llm",
+  "21-08": "llm",
+  "21-09": "llm",
+  "21-10": "llm",
+  "21-11": "parse",
+  "21-12": "modelle",
+  "21-13": "modelle",
+  "21-14": "regeln_neu",
+  "21-15": "llm",
+  "21-16": "regeln_neu",
+  "21-17": "modelle",
+  "21-18": "llm",
+  "21-19": "llm",
+  "21-20": "regeln_neu",
+  "21-21": "llm",
+  "21-22": "llm",
+  "21-23": "regeln_neu",
+  "21-24": "modelle",
+  "21-25": "parse",
+  "21-26": "modelle",
+  "21-27": "regeln_neu",
+  "21-28": "modelle",
+  "21-29": "parse",
+  "21-30": "modelle",
+  "21-31": "modelle",
+  "21-32": "modelle",
+  "21-33": "modelle",
+  "21-34": "regeln_neu",
+  "21-35": "modelle",
+  "21-36": "modelle",
+  "21-37": "modelle",
+  "21-38": "modelle",
+  "21-39": "llm",
+  "21-40": "llm",
+  "21-41": "modelle",
+  "21-42": "llm",
+  "21-43": "llm",
+  "21-44": "regeln_neu",
+  "21-45": "regeln_neu",
+  "21-46": "parse",
+  "21-47": "llm",
+  "21-48": "modelle",
+  "21-49": "regeln_neu",
+  "21-50": "modelle",
+  "21-51": "llm",
+  "21-52": "modelle",
+  "21-53": "modelle",
+  "21-54": "llm",
+  "21-55": "llm",
+  "21-56": "regeln_neu",
+  "22-01": "llm",
+  "22-02": "regeln_neu",
+  "22-03": "llm",
+  "22-04": "modelle",
+  "22-05": "llm",
+  "22-06": "modelle",
+  "22-07": "llm",
+  "22-08": "modelle",
+  "22-09": "modelle",
+  "22-10": "modelle",
+  "22-11": "llm",
+  "22-12": "parse",
+  "22-13": "parse",
+  "22-14": "llm",
+  "22-15": "llm",
+  "22-16": "regeln_neu",
+  "22-17": "regeln_neu",
+  "22-18": "llm",
+  "22-19": "llm",
+  "22-20": "modelle",
+  "22-21": "regeln_neu",
+  "22-22": "modelle",
+  "22-23": "llm",
+  "22-24": "modelle",
+  "22-25": "regeln_neu",
+  "22-26": "llm",
+  "22-27": "regeln_neu",
+  "22-28": "llm",
+  "22-29": "modelle",
+  "22-30": "llm",
+  "22-31": "regeln_neu",
+  "22-32": "llm",
+  "22-33": "parse",
+  "22-34": "regeln_neu",
+  "22-35": "modelle",
+  "22-36": "modelle",
+  "22-37": "llm",
+  "22-38": "llm",
+  "22-39": "modelle",
+  "22-40": "modelle",
+  "22-41": "llm",
+  "22-42": "llm",
+  "22-43": "modelle",
+  "22-44": "modelle",
+  "22-45": "modelle",
+  "22-46": "modelle",
+  "22-47": "llm",
+  "22-48": "llm",
+  "22-49": "modelle",
+  "22-50": "modelle",
+  "22-51": "modelle",
+  "23-01": "modelle",
+  "23-02": "modelle",
+  "23-03": "regeln_neu",
+  "23-04": "modelle",
+  "23-05": "llm",
+  "23-06": "parse",
+  "23-07": "parse",
+  "23-08": "modelle",
+  "23-09": "parse",
+  "23-10": "modelle",
+  "23-11": "modelle",
+  "23-12": "llm",
+  "23-13": "llm",
+  "23-14": "llm",
+  "23-15": "llm",
+  "23-16": "llm",
+  "23-17": "modelle",
+  "23-18": "parse",
+  "23-19": "regeln_neu",
+  "23-20": "regeln_neu",
+  "23-21": "regeln_neu",
+  "23-22": "regeln_neu",
+  "23-23": "regeln_neu",
+  "23-24": "llm",
+  "23-25": "modelle",
+  "23-26": "parse",
+  "23-27": "modelle",
+  "23-28": "modelle",
+  "23-29": "regeln_neu",
+  "23-30": "modelle",
+  "23-31": "modelle",
+  "23-32": "llm",
+  "23-33": "llm",
+  "23-34": "parse",
+  "23-35": "parse",
+  "23-36": "llm",
+  "23-37": "modelle",
+  "23-38": "parse",
+  "23-39": "modelle",
+  "23-40": "parse",
+  "23-41": "llm",
+  "23-42": "modelle",
+  "23-43": "modelle",
+  "23-44": "regeln_neu",
+  "23-45": "regeln_neu",
+  "23-46": "regeln_neu",
+  "23-47": "llm",
+  "23-48": "parse",
+  "23-49": "regeln_neu",
+  "23-50": "llm",
+  "23-51": "llm",
+  "23-52": "regeln_neu",
+  "23-53": "llm",
+  "23-54": "regeln_neu",
+  "23-55": "regeln_neu",
+  "23-56": "llm",
+  "23-57": "regeln_neu",
+  "23-58": "modelle",
+  "23-59": "regeln_neu",
+  "23-60": "llm",
+  "23-61": "parse",
+  "23-62": "llm",
+  "23-63": "modelle",
+  "23-64": "modelle",
+  "23-65": "llm",
+  "23-66": "regeln_neu",
+  "23-67": "parse",
+  "23-68": "regeln_neu",
+  "23-69": "regeln_neu",
+  "23-70": "regeln_neu",
+  "23-71": "llm",
+  "23-72": "modelle"
+ },
+ "urteile": {
+  "g1": {
+   "11-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-02": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-03": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-05": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-11": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-12": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-13": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-14": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-16": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-17": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-18": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-23": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-24": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-27": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-28": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-30": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-31": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-32": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-33": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-36": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-37": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-38": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-39": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-41": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-43": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-45": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-46": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-48": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-54": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-55": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-57": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-58": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-59": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-60": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-61": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-62": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-63": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-64": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-65": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-66": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-67": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-68": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-69": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-70": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-71": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-72": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-73": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-01": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-02": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-03": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-05": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-07": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-12": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-14": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-16": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-18": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-23": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-24": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-26": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-27": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-30": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-31": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-32": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-36": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-38": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-41": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-43": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-45": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-52": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-55": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-56": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-57": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-58": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-59": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-60": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-61": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-62": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-63": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-64": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-65": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-01": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-02": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-03": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-10": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "13-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-14": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-15": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-16": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-19": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-22": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-23": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-24": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-25": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-27": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-30": {
+    "mangelfrei": false,
+    "mangel": "unbelegt"
+   },
+   "13-31": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-32": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-35": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-36": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-38": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-41": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-43": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-45": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-46": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-51": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-53": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-55": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-57": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-58": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-59": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-60": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-61": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-62": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-02": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-11": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-16": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-20": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-23": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-24": {
+    "mangelfrei": false,
+    "mangel": "unbelegt"
+   },
+   "21-25": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-26": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-27": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-28": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-29": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-30": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-31": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "21-32": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-33": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-35": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-36": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-37": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-38": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-41": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-43": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-45": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-48": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-50": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-51": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-52": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-55": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-56": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-02": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-06": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-08": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-10": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-12": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-16": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-17": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-19": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-21": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-22": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "22-23": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-24": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-27": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-29": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-30": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-31": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-32": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-33": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-35": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-36": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-38": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-39": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-40": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-41": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-43": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-44": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-45": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "22-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-48": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-49": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-50": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-01": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-02": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-04": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-06": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-09": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-10": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-11": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-16": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-17": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-18": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-19": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-23": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-24": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-25": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-26": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-27": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-28": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-29": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-30": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-31": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-32": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-34": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-36": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-37": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-38": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-39": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-41": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-42": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-43": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-45": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-46": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-50": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-51": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-55": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-57": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-58": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-59": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-60": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-61": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-62": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-63": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-64": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-65": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-66": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-67": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-68": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-69": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-70": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-71": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-72": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   }
+  },
+  "g2": {
+   "11-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-02": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-03": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-05": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-06": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-11": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-12": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-13": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-14": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-16": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-17": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-18": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-22": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-23": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-24": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-27": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-28": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-30": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-31": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-32": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-33": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-36": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-37": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-38": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-39": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-41": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-43": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-45": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "11-46": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-48": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-54": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-55": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-57": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-58": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-59": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-60": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-61": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-62": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-63": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "11-64": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-65": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-66": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-67": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-68": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-69": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "11-70": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "11-71": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "11-72": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "11-73": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-01": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-02": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-03": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-05": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-07": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-12": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-14": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-16": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-18": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-23": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-24": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-26": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-27": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-30": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-31": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-32": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-36": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-38": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-41": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-43": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-45": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-52": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-53": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-55": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-56": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-57": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-58": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "12-59": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "12-60": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-61": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "12-62": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "12-63": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "12-64": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "12-65": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-01": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-02": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-03": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "13-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-07": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-10": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "13-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-14": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-15": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-16": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-19": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-21": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-22": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-23": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-24": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-25": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-27": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "13-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-29": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-30": {
+    "mangelfrei": false,
+    "mangel": "unbelegt"
+   },
+   "13-31": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-32": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-35": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "13-36": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-38": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "13-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-41": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-43": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-45": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-46": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-50": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-51": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-53": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-55": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "13-57": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-58": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "13-59": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-60": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-61": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "13-62": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-02": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-06": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-10": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-11": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-16": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-17": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-19": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-20": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-23": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-24": {
+    "mangelfrei": false,
+    "mangel": "unbelegt"
+   },
+   "21-25": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-26": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-27": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-28": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-29": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-30": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-31": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-32": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "21-33": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-34": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-35": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-36": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-37": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-38": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-39": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-41": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "21-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-43": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-45": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-48": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-50": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "21-51": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-52": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "21-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-55": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "21-56": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-01": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-02": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "22-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-04": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-06": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-08": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-09": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-10": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-11": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-12": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-16": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-17": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-18": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-19": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-21": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-22": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "22-23": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-24": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-25": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-26": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-27": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-28": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-29": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-30": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-31": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-32": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-33": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-34": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-35": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-36": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-37": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-38": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-39": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-40": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-41": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-42": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-43": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-44": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "22-45": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "22-46": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "22-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "22-49": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-50": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "22-51": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-01": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-02": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-03": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-04": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-05": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-06": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-07": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-08": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-09": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-10": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-11": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-12": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-13": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-14": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-15": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-16": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-17": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-18": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-19": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-20": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-21": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-22": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-23": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-24": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-25": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-26": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-27": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-28": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-29": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-30": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-31": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-32": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-33": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-34": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-35": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-36": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-37": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-38": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-39": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-40": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-41": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-42": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-43": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-44": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-45": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-46": {
+    "mangelfrei": false,
+    "mangel": "frage_unklar"
+   },
+   "23-47": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-48": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-49": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-50": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-51": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-52": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-53": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-54": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-55": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-56": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-57": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-58": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-59": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-60": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-61": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-62": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-63": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-64": {
+    "mangelfrei": false,
+    "mangel": "sachfehler"
+   },
+   "23-65": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   },
+   "23-66": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-67": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-68": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-69": {
+    "mangelfrei": false,
+    "mangel": "doppelt"
+   },
+   "23-70": {
+    "mangelfrei": true,
+    "mangel": null
+   },
+   "23-71": {
+    "mangelfrei": false,
+    "mangel": "trivial"
+   },
+   "23-72": {
+    "mangelfrei": false,
+    "mangel": "antwort_passt_nicht"
+   }
+  }
+ }
+}

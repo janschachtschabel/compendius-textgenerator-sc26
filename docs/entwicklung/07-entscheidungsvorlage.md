@@ -25,7 +25,7 @@ der QA-Paare (D54, D55, D57).
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 | nicht gemessen | nicht gemessen |
 | Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 | 0,70 | 0,70 |
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) |
-| QA-Paare mangelfrei bei beiden Gutachtern (M30) | 48 von 96, 0,3 s je Text | wie `llm-free` | 99 von 120, rund 2.400 Tokens | 99 von 120, rund 2.400 Tokens |
+| QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96), 0,3 s je Text | wie `llm-free` | 99 von 120, rund 2.400 Tokens | 99 von 120, rund 2.400 Tokens |
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` |
 | Teil 1 und 2 je Kompendium (M27) | 1,6 s | rund 3,4 s | rund 14 s | rund 24 s |
 | Tokens je Kompendium, Median (M27) | 0 | 905 | 26.267 | 35.376 |
@@ -38,8 +38,8 @@ der QA-Paare (D54, D55, D57).
 - **`llm-free`** ist das Beste, was ohne Sprachmodell geht: die geschärften Regeln der Artikelwahl, für ein Material
   ohne `topic` die Regeln über Titel und Beschreibung (D47), Volltexttreffer nur mit Link zum Hauptartikel (D48),
   `hybrid_light` mit Model2Vec als bestes lokales Zuordnungsverfahren, wörtlicher Text und QA-Paare aus den Regeln über
-  den spaCy-Parse (D55): 48 von 96 bei beiden Gutachtern mangelfrei, in 0,3 s je Text (M30). Keine Tokens, keine
-  Abhängigkeit von der b-api; das Profil für einen Dienst ohne LLM.
+  den spaCy-Parse (D55), aufgefüllt mit Glossar und Akteuren (D60): 58 von 95 bei beiden Gutachtern mangelfrei, in
+  0,3 s je Text (M34). Keine Tokens, keine Abhängigkeit von der b-api; das Profil für einen Dienst ohne LLM.
 - **`balanced`** ist der Standard. Die LLM-Artikelwahl ist der billigste Hebel mit messbarer Wirkung: fünf richtige
   Hauptartikel mehr von 94, 5 statt 12 gedruckte Absätze aus unpassenden Artikeln und bei einem Material ohne `topic`
   ein Hauptartikel-F1 von 0,88 bis 0,98 statt 0,56 bis 0,63, für rund 1,5 bis 2 s und 900 Tokens (M25, M27). Die
@@ -100,7 +100,7 @@ Gutachtern falsch (M31).
 |---|---|---|---|---|
 | `POST /api/v2/compendium` | Regeln; 1,6 s, keine Tokens | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 3,4 s, 905 Tokens | dazu LLM-Zuordnung; rund 14 s, 26.267 Tokens; mit Teil 2 prüft das LLM die Lehrplanelemente, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32) | dazu Text vom LLM; rund 24 s, 35.376 Tokens; Teil 2 wie `best-quality` |
 | `POST /api/v2/knowledge` | Regeln; rund 0,5 s | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 2 bis 3 s, rund 900 Tokens | wie `balanced` | wie `balanced` |
-| `POST /api/v2/qa` mit `text` | `rule-based`: rund 0,3 s je Text, 9 bis 20 von 20 Paaren, 48 von 96 mangelfrei | wie `llm-free` (D57) | `llm`: 4 bis 7,5 s und rund 2.400 Tokens für 20 Paare, 99 von 120 mangelfrei | wie `best-quality` |
+| `POST /api/v2/qa` mit `text` | `rule-based`: rund 0,3 s je Text, 8 bis 20 von 20 Paaren, 58 von 95 mangelfrei (M34) | wie `llm-free` (D57) | `llm`: 4 bis 7,5 s und rund 2.400 Tokens für 20 Paare, 99 von 120 mangelfrei | wie `best-quality` |
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab |
 | `GET /api/v2/lehrplan/search` | Regeln finden und bewerten; `mode=topic` löst wie Teil 2 auf, 0,5 bis 1,3 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2 | dazu bewertet das LLM jedes gefundene Element (D59); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` |
 | `GET /api/v2/nodes/{id}` | Regeln, in allen Profilen gleich: zeigt, was ein Knoten mitbringt | wie `llm-free` | wie `llm-free` | wie `llm-free` |
@@ -378,8 +378,8 @@ CORPUS_MAX_ARTICLES=12
 ```
 
 Ergebnis: 86 von 94 Hauptartikeln, 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,45, Teil 1
-und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 48 von 96 mangelfrei in 0,3 s je Text
-(M30). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt der
+und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 58 von 95 mangelfrei in 0,3 s je Text
+(M34). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt der
 404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
 Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
 
@@ -396,7 +396,7 @@ PRESET_DEFAULT=balanced                 # ausgeliefert
 Ergebnis: 91 von 94 Hauptartikeln, 5 von 346 gedruckten Absätzen aus unpassenden Artikeln (M25), bei einem Material ohne
 `topic` F1 0,88 bis 0,98, macro-F1 0,45 wie `llm-free` (M27), Teil 1 und 2 rund 3,4 s und 905 Tokens (M27; in M25
 kostete Teil 1 im Median 2,0 s mehr als ohne LLM, 90. Perzentil 4,2 s). QA-Paare aus denselben Regeln wie `llm-free`,
-48 von 96 mangelfrei in 0,3 s je Text (M30, D57). Wer einen lesbaren Einstieg braucht, ergänzt
+58 von 95 mangelfrei in 0,3 s je Text (M34, D57, D60). Wer einen lesbaren Einstieg braucht, ergänzt
 `"generation": "llm-fast"`: 9 bis 15 s und 2.300 bis 4.000 Tokens mehr für Themendefinition und Querschnitt
 (gpt-5.6-luna, 18.09.2026).
 
@@ -452,8 +452,9 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
 3. **Lesefassung:** entschieden (D53) als Profil `best-quality-generated`; gemessen in M28: Der geschriebene Text liest
    sich besser (4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen). Das Modellwissen ist seit D56 im Text sichtbar
    gekennzeichnet (`[Modellwissen]`, Jan), und der zweite Prompt verlangt eine prüfbare Sachaussage oder nichts: 13
-   statt 50 Füllsätze bei 50 statt 82 ergänzten Sätzen (M31). Offen: ob er auch rhetorische Fragen verbieten soll, drei
-   der 13 übrigen Füllsätze.
+   statt 50 Füllsätze bei 50 statt 82 ergänzten Sätzen (M31). Rhetorische Fragen sind seit D60 raus:
+   Eine Frage ist keine prüfbare Sachaussage, ohne Beleg fällt sie weg statt als Modellwissen markiert zu bleiben -
+   in M31 drei der 13 übrigen Füllsätze.
 4. **Goldstandard prüfen lassen:** Alle Gütezahlen hängen an Labels, die eine Redaktion noch nicht gesehen hat.
 5. **Sichere Fehler der Regeln:** ob das LLM mit `article_choice=llm` auch sichere Auflösungen mehrdeutiger Wörter
    prüfen soll. Der alte Weg fand zwei der drei (M17); es kostete einen Aufruf mehr bei jedem solchen Thema und wäre
@@ -462,9 +463,13 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    `best-quality`-Profile mit dem LLM; die zwei kleinen Modelle (in M30 25 von 120 mangelfrei, rund 25 s je Text,
    1,3 GB je Worker) und `parse-based` sind aus Code und Image entfernt. Die vier alten Vorlagen bleiben nur als
    Rückfall, wenn das spaCy-Modell fehlt.
-7. **Regeln der QA verbessern:** Ihr häufigster Mangel ist eine Frage, die ohne den Text unverständlich ist (23 und 24
-   von 96), etwa „Wo befinden sich die Kurszentren?“. Weitere Sperren gingen ohne Modell (nebengeordnete Sätze,
-   Maßverben wie „dauern“, Fragen ohne Inhalt wie „Was ist notwendig?“), wären aber an M30 nachzumessen.
+7. **Regeln der QA verbessern:** umgesetzt (D60, Jan: gibt ein Text wenig her, füllen Glossar und Akteure auf).
+   Drei Sperren ohne Modell - der Satz endet vor einem zweiten, mit „und“ angehängten Verb, ein Maßverb fragt nicht
+   „Was“ oder „Worauf“, eine Frage braucht ein Nomen, einen Namen oder eine Zahl ihres Satzes -, und Glossar und
+   Akteure füllen auf, bevor ein Satz zweimal gefragt wird. Nachgemessen an den Texten und Bögen von M30 (M34): 58
+   statt 46 von 95 Paaren mangelfrei bei beiden Gutachtern. Die meisten übrigen Mängel sind Fragen, die ohne den Text
+   nicht zu verstehen sind („Wo befinden sich die Kurszentren?“), und Nachbar-Personen, die die Gutachter trivial
+   nennen („Wer war Immanuel Kant?“ zu Ernst Abbe).
 8. **Budget je Anfrage für `best-quality`:** entschieden (D59, Jan): Die beiden `best-quality`-Profile rechnen mit
    180.000 Tokens je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`), in jedem Endpunkt, auch in der
    Lehrplansuche, die seither die Profile nimmt; `llm-free` und `balanced` bleiben bei 60.000. Jan wollte zuerst
