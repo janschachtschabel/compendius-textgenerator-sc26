@@ -51,11 +51,13 @@ _JSON = re.compile(r"\{.*\}", re.DOTALL)
 
 @dataclass
 class ArticleChoiceJob:
-    """What article_choice=llm needs: the client, the budget of the request and its deadline."""
+    """What article_choice=llm needs: the client, the budget of the request and its deadline; ``thorough`` is
+    article_choice=llm-thorough, which also shows the model a sure resolution of a word with several meanings (D61)."""
 
     client: BApiClient
     budget: RequestBudget
     deadline: Deadline | None = None
+    thorough: bool = False
 
 
 @dataclass

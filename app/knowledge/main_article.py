@@ -92,6 +92,7 @@ def choose_main_article(
             query=found.normalized.query,
             terms=terms,
             chooser=chooser,
+            thorough=job is not None and job.thorough,
         )
         return resolution, chooser.report if chooser is not None else None
 

@@ -489,7 +489,12 @@ def test_qa_chooses_the_article_as_the_compendium_does(settings: Settings, monke
     from tests.test_wlo_client import EXAM
 
     client, api = _node_app(settings, monkeypatch, '{"titel": "Optik"}')
-    for switch in ({"article_choice": "llm"}, {"preset": "balanced"}):
+    # best-quality chooses llm-thorough (D61): the LLM still names the article of a material
+    for switch in (
+        {"article_choice": "llm"},
+        {"preset": "balanced"},
+        {"preset": "best-quality", "method": "rule-based"},
+    ):
         body = client.post("/api/v2/qa", json={"node_id": EXAM, **switch}).json()
         assert body["topic"] == "Optik", switch
     assert any("Unterrichtsmaterial" in call["messages"][0]["content"] for call in api.bodies)

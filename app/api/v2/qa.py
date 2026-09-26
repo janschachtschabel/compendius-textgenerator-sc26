@@ -90,7 +90,7 @@ def _article_choice(payload: QaRequest, profile: str) -> ArticleChoice | None:
         return payload.article_choice
     if not payload.node_id:
         return None
-    return "llm" if PRESETS[profile]["article_choice"] == "llm" else "rule-based"
+    return PRESETS[profile]["article_choice"]  # type: ignore[return-value]
 
 
 def _part_one(
@@ -309,9 +309,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         payload = payload.model_copy(update={"method": PROFILE_METHODS[profile]})
     article_choice = _article_choice(payload, profile) if payload.topic or payload.node_id else None
     needed = [
-        f"{name}=llm"
+        f"{name}={value}"
         for name, value in (("method", payload.method), ("article_choice", article_choice))
-        if value == "llm"
+        if value not in (None, "rule-based")
     ]
     _refuse_llm_without_one(request, needed, profile, defaulted=not payload.preset)
     topic: str | None = None

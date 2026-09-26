@@ -52,8 +52,8 @@ def test_the_presets_are_the_values_of_the_field() -> None:
     [
         ("llm-free", ("rule-based", "hybrid_light", "rule-based", "rule-based", "sources-only")),
         ("balanced", ("llm", "hybrid_light", "rule-based", "rule-based", "sources-only")),
-        ("best-quality", ("llm", "llm", "rule-based", "rule-based", "sources-only")),
-        ("best-quality-generated", ("llm", "llm", "rule-based", "llm", "model-knowledge")),
+        ("best-quality", ("llm-thorough", "llm", "rule-based", "rule-based", "sources-only")),
+        ("best-quality-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge")),
     ],
 )
 def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, ...]) -> None:
@@ -63,7 +63,7 @@ def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, 
 
 def test_a_switch_the_request_sets_wins_over_the_preset() -> None:
     request = GenerateRequest(topic="Optik", preset="best-quality", matcher="hybrid_light", generation="llm")
-    assert (request.article_choice, request.matcher, request.generation) == ("llm", "hybrid_light", "llm")
+    assert (request.article_choice, request.matcher, request.generation) == ("llm-thorough", "hybrid_light", "llm")
 
 
 def test_without_a_preset_the_default_profile_fills_the_open_switches(service: CompendiumService) -> None:
@@ -89,7 +89,7 @@ def test_a_profile_that_needs_an_llm_is_refused_without_one(service: CompendiumS
         service.generate(GenerateRequest(topic="Geometrische", parts=["world"], preset="best-quality"))
     message = str(refused.value)
     assert "LLM_ENABLED" in message and "best-quality" in message and "llm-free" in message
-    assert "article_choice=llm" in message and "matcher=llm" in message
+    assert "article_choice=llm-thorough" in message and "matcher=llm" in message
 
 
 def test_a_switch_that_needs_an_llm_is_refused_without_one_as_well(service: CompendiumService) -> None:
@@ -110,6 +110,7 @@ def test_the_default_profile_needs_an_llm_too_and_the_api_answers_503(
 def test_the_knowledge_request_takes_the_article_choice_of_the_preset() -> None:
     assert KnowledgeRequest(topic="Optik", preset="balanced").article_choice == "llm"
     assert KnowledgeRequest(topic="Optik", preset="llm-free").article_choice == "rule-based"
+    assert KnowledgeRequest(topic="Optik", preset="best-quality").article_choice == "llm-thorough"  # D61
     assert KnowledgeRequest(topic="Optik", preset="best-quality", article_choice="rule-based").article_choice == (
         "rule-based"
     )
@@ -122,6 +123,12 @@ def test_the_knowledge_endpoint_refuses_an_llm_profile_without_an_llm(settings: 
         free = client.post("/api/v2/knowledge", json={"topic": "Optik"})
     assert refused.status_code == 503 and "LLM_ENABLED" in refused.json()["detail"]
     assert free.status_code == 200
+
+
+def test_the_knowledge_endpoint_refuses_the_thorough_choice_without_an_llm(settings: Settings) -> None:
+    with TestClient(create_app(settings)) as client:
+        refused = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm-thorough"})
+    assert refused.status_code == 503 and "article_choice=llm-thorough" in refused.json()["detail"]
 
 
 def test_the_cli_takes_the_preset(

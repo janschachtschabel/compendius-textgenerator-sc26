@@ -111,6 +111,8 @@ class ZimRegistry:
         query: str | None = None,
         terms: Sequence[str] = (),
         chooser: ArticleChooser | None = None,
+        *,
+        thorough: bool = False,
     ) -> Resolution:
         """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits.
 
@@ -121,11 +123,37 @@ class ZimRegistry:
         whether that is a guess (``confident``), so a request can show the editor what to check.
 
         A ``chooser`` (article_choice=llm, D35) decides a guess once more, from the candidates the rules weighed.
+        ``thorough`` (article_choice=llm-thorough, D61) lets it check a sure resolution of a word with several
+        meanings as well: a meaning the rules took from a disambiguation page, or an exact title that has a
+        "(Begriffsklärung)" page. On the 94 gold queries that was 93 instead of 91 right, and none of the 44 right
+        sure resolutions it checked turned wrong (M35).
         """
         resolution = self._resolve_by_rules(topic, context, query, terms)
-        if chooser is not None and resolution.resolved and not resolution.confident:
+        if chooser is None or not resolution.resolved:
+            return resolution
+        if not resolution.confident or (thorough and self._has_meanings(resolution)):
             self._let_choose(resolution, chooser)
         return resolution
+
+    def _has_meanings(self, resolution: Resolution) -> bool:
+        """Whether a sure resolution names a word with several meanings, which the chooser then weighs (M35).
+
+        A meaning taken from a disambiguation page has them already; for an exact title they are the meanings of
+        its "(Begriffsklärung)" page, kept for the chooser.
+        """
+        if resolution.disambiguation:
+            return True
+        if resolution.method not in {"title", "variant"}:
+            return False
+        archive = next((a for a in self.archives if a.project == resolution.project), None)
+        page = archive.read(f"{resolution.title} (Begriffsklärung)") if archive is not None else None
+        if archive is None or page is None:
+            return False
+        parsed = archive.parse(page)
+        meanings = listed_meanings(parsed)[:MAX_MEANINGS] if parsed.is_disambiguation else []
+        if meanings:
+            resolution._meanings = meanings
+        return bool(meanings)
 
     def _let_choose(self, resolution: Resolution, chooser: ArticleChooser) -> None:
         """Let the chooser decide an unsure resolution; its answer replaces the rules' article when it is one.

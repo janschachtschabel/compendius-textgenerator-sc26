@@ -16,7 +16,7 @@ MatcherName = Annotated[str, WithJsonSchema({"type": "string", "enum": list(MATC
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
     "Who chooses the articles of the topic. Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes "
-    "rule-based, every other profile llm.\n\n"
+    "rule-based, balanced llm, the best-quality profiles llm-thorough.\n\n"
     "- **rule-based**: the rules alone - exact title, the disambiguation page decided by the words of the subject, "
     "inflected forms and genitive phrases, then title suggestions and full-text hits. They say how sure they are "
     "(resolution.method, resolution.confident). No tokens, no extra time.\n"
@@ -29,7 +29,12 @@ ARTICLE_CHOICE_HELP = (
     "to three quarters longer per call (M19). Since 2026-09-25 (M25, gpt-6-luna) the check covers the linked "
     "sub-articles too: over 20 topics 5 printed paragraphs from unfit articles were left instead of 12 without the "
     "LLM and 17 with the full-text hits checked alone, and it runs for 20 instead of 15 of those topics, at about "
-    "750 tokens per call.\n\n"
+    "750 tokens per call.\n"
+    "- **llm-thorough**: as llm, and the LLM also checks a sure choice of a word with several meanings: a meaning the "
+    "rules took from a disambiguation page, or an exact title that has a '(Begriffsklärung)' page (D61). Measured "
+    "on 2026-09-26 with gpt-6-luna (M35): main article right in 93 instead of 91 of 94 queries, none of the 44 right "
+    "sure choices it checked turned wrong; the model is asked for 64 instead of 18 of the 94, each new question "
+    "about 800 tokens and 1 s.\n\n"
     "For a material without a topic (node_id), llm lets the LLM name the article from title, subjects, keywords and "
     "description - 30 of 31 materials right at about 440 tokens, against 15 of 31 by the rules (M23, D47). Either "
     "way, full-text hits without a link to or from the main article stay out of the corpus (M25). llm without a "
@@ -124,8 +129,10 @@ PRESET_HELP = (
     "from unfit articles (M25), macro-F1 0.45 as llm-free - the LLM acts before the matching; about 3.4 s and 900 "
     "tokens. For a material without a topic the LLM names the article: 30 instead of 15 of 31 right (D47). /qa and "
     "part 2 as llm-free (D57, D58).\n"
-    "- **best-quality**: balanced plus the LLM assigning every paragraph (matcher llm). 91 of 94, macro-F1 0.70; "
-    "about 14 s and 26 000 tokens, about 170 per paragraph. Its requests spend from 180,000 tokens "
+    "- **best-quality**: balanced plus the LLM checking the sure choice of a word with several meanings too "
+    "(article_choice llm-thorough, D61) and assigning every paragraph (matcher llm). 93 of 94 (M35), macro-F1 0.70; "
+    "about 14 s and 26 000 tokens, about 170 per paragraph; a checked word adds about 800 tokens and 1 s. Its "
+    "requests spend from 180,000 tokens "
     "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) instead of the 60,000 of the others, at which topics of more "
     "than 200 paragraphs took a second round of calls. /qa lets the LLM write the pairs: 99 of "
     "120 flawless, about 2 400 tokens per text (M30). The LLM also checks the curriculum elements of part 2 "
@@ -142,7 +149,8 @@ Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
 Enrichment = Literal["sources-only", "model-knowledge"]
-ArticleChoice = Literal["rule-based", "llm"]  # who decides an unsure article choice (D35)
+ArticleChoice = Literal["rule-based", "llm", "llm-thorough"]  # who decides an unsure article choice (D35, D61)
+LLM_ARTICLE_CHOICES = frozenset({"llm", "llm-thorough"})
 CurriculumCheck = Literal["rule-based", "llm"]  # who judges the curriculum elements of part 2 (D58)
 Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated"]  # the four profiles (D41, D53)
 _VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
@@ -154,11 +162,11 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         **_VERBATIM,
     },
     "balanced": {"article_choice": "llm", "matcher": "hybrid_light", "curriculum_check": "rule-based", **_VERBATIM},
-    "best-quality": {"article_choice": "llm", "matcher": "llm", "curriculum_check": "llm", **_VERBATIM},
+    "best-quality": {"article_choice": "llm-thorough", "matcher": "llm", "curriculum_check": "llm", **_VERBATIM},
     # Jan, 2026-09-25: everything by the LLM, the text completed from its own knowledge and rewritten to read well;
     # extraction stays rule-based, which brought no gain at the gold standard (decision paper, step 4)
     "best-quality-generated": {
-        "article_choice": "llm",
+        "article_choice": "llm-thorough",
         "matcher": "llm",
         "curriculum_check": "llm",
         "extraction": "rule-based",

@@ -27,7 +27,7 @@ from app.domain.models import (
     SectionStatus,
     Source,
 )
-from app.domain.requests import BEST_QUALITY_PRESETS, GenerateRequest, with_profile
+from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest, with_profile
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
@@ -915,13 +915,13 @@ class CompendiumService:
         a caller shares over more than the compendium (/qa).
         """
         wanted = requested or "rule-based"
-        if wanted != "llm":
+        if wanted not in LLM_ARTICLE_CHOICES:
             return wanted, None, None
         note = self.llm_unavailable()
         if note is not None or self.llm is None:
             return wanted, note, None
         opened = budget if budget is not None else self.llm.open_budget()
-        return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline)
+        return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline, thorough=wanted == "llm-thorough")
 
     def open_budget(self, profile: str) -> RequestBudget | None:
         """The token budget of one request in ``profile``; ``None`` without a configured LLM.
@@ -965,7 +965,8 @@ def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:
     """The switches of a request that need an LLM, as name=value (D53). ``corpus``: whether an article is chosen at
     all; the switches of part 1 count only when part 1 is asked for, curriculum_check only with part 2 (D58).
     enrichment needs none of its own: it only acts through generation."""
-    needed = ["article_choice=llm"] if corpus and request.article_choice == "llm" else []
+    choice = request.article_choice
+    needed = [f"article_choice={choice}"] if corpus and choice in LLM_ARTICLE_CHOICES else []
     if "curricula" in request.parts and request.curriculum_check == "llm":
         needed.append("curriculum_check=llm")
     if "world" in request.parts:

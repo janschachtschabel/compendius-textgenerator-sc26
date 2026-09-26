@@ -71,9 +71,10 @@ class QaRequest(BaseModel):
         None,
         description="With topic or node_id: who chooses the article of part 1. rule-based: the rules alone; llm: the "
         "b-api where the rules are unsure, as in a compendium request, and for a material without a topic it names "
-        "the article (D47). Default: rule-based for a topic whatever the profile (D55); for a node the profile's - "
-        "llm in balanced, best-quality and best-quality-generated, since the rules find the article of a material "
-        "in only about half of the cases. llm needs LLM_ENABLED, else the request is a 503",
+        "the article (D47); llm-thorough: as llm, and it also checks a sure choice of a word with several meanings "
+        "(D61). Default: rule-based for a topic whatever the profile (D55); for a node the profile's - llm in "
+        "balanced, llm-thorough in best-quality and best-quality-generated, since the rules find the article of a "
+        "material in only about half of the cases. llm and llm-thorough need LLM_ENABLED, else the request is a 503",
     )
     method: Method | None = Field(
         None,

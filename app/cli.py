@@ -6,6 +6,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import get_args
 
 from pydantic import ValidationError
 
@@ -15,7 +16,7 @@ from app.cli_eval import add_eval_commands
 from app.cli_lehrplan import add_lehrplan_commands
 from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
-from app.domain.requests import MATCHERS, PRESETS, GenerateRequest
+from app.domain.requests import MATCHERS, PRESETS, ArticleChoice, GenerateRequest
 from app.logging import configure_logging
 from app.service import (
     LlmNotConfiguredError,
@@ -195,9 +196,9 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument(
         "--article-choice",
         default=None,
-        choices=["rule-based", "llm"],
-        help="Wer bei unsicherer Artikelwahl entscheidet; ohne Angabe die des Profils (llm braucht LLM_ENABLED "
-        "und B_API_KEY)",
+        choices=list(get_args(ArticleChoice)),
+        help="Wer bei unsicherer Artikelwahl entscheidet, llm-thorough prüft auch sichere Wahlen mehrdeutiger Wörter; "
+        "ohne Angabe die des Profils (llm und llm-thorough brauchen LLM_ENABLED und B_API_KEY)",
     )
     gen.add_argument(
         "--curriculum-check",

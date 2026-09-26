@@ -64,8 +64,9 @@ def generate_compendium(
       heading names is counted with its area. No tokens.
     - ``balanced``: as llm-free, but the LLM decides where the rules are unsure about the article and drops the
       side articles that do not fit (``article_choice llm``). Part 2 as in llm-free.
-    - ``best-quality``: balanced, and the LLM assigns every paragraph to its block (``matcher llm``) and rates
-      every curriculum element of part 2, dropping what does not fit (``curriculum_check llm``). The text stays
+    - ``best-quality``: balanced, and the LLM also checks a sure choice of a word with several meanings
+      (``article_choice llm-thorough``), assigns every paragraph to its block (``matcher llm``) and rates every
+      curriculum element of part 2, dropping what does not fit (``curriculum_check llm``). The text stays
       verbatim.
     - ``best-quality-generated``: best-quality, and the LLM writes every block from its evidence (``generation
       llm``) and may add knowledge of its own, marked ``[Modellwissen]`` (``enrichment model-knowledge``).
@@ -79,7 +80,8 @@ def generate_compendium(
     **The switches**, each defaulting to the profile's:
 
     - ``article_choice``: who picks the articles - ``rule-based`` the rules alone, ``llm`` the model where the rules
-      are unsure, and it drops side articles that do not fit. ``resolution`` says how the article was found.
+      are unsure, and it drops side articles that do not fit; ``llm-thorough`` also where they are sure of a word
+      with several meanings. ``resolution`` says how the article was found.
     - ``matcher``: how the paragraphs find their block - ``hybrid_light``, ``bm25``, ``char_tfidf`` and
       ``lexicon_only`` run locally, ``llm`` lets the model assign every paragraph. Quality and cost of each: the
       help text of the field and ``GET /api/v2/matching/strategies``; an unknown name is a 422.

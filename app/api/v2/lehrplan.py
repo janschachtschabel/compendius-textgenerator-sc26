@@ -44,7 +44,8 @@ SEARCH_PRESET_HELP = (
     "- **balanced**: the same for the words as sent; with mode=topic the LLM decides an unsure article and drops the "
     "side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.\n"
     "- **best-quality**: balanced, and the LLM rates every element the rules found and drops what does not fit "
-    "(curriculum_check llm). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
+    "(curriculum_check llm); with mode=topic it also checks a sure article choice of a word with several meanings "
+    "(D61). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
     "- **best-quality-generated**: here the same as best-quality; the two differ only in part 1 of a compendium.\n\n"
     "A profile that needs the LLM for this search - best-quality and best-quality-generated always, balanced with "
     "mode=topic - is a 503 on a server without one (LLM_ENABLED, B_API_KEY)."
@@ -205,7 +206,8 @@ def lehrplan_search(
     - ``balanced``: the same for the words as sent; with ``mode=topic`` the LLM decides an unsure article and drops
       the side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.
     - ``best-quality``: balanced, and the LLM rates every element the rules found and drops what does not fit; the
-      others carry its rating in ``note``. It reads all hits, not only the first ``limit`` ones: 80 to 90 tokens per
+      others carry its rating in ``note``. With ``mode=topic`` it also checks a sure article choice of a word with
+      several meanings (D61). It reads all hits, not only the first ``limit`` ones: 80 to 90 tokens per
       element, from 180,000 tokens per request (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) - Demokratie without a
       subject, 819 hits, took 75,016 tokens (M33). What the budget or the time leaves unrated keeps the rules'
       decision.

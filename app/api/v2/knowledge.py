@@ -17,6 +17,7 @@ from app.api.limits import rate_limited
 from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
     ARTICLE_CHOICE_HELP,
+    LLM_ARTICLE_CHOICES,
     NODE_ID_HELP,
     NODE_ID_PATTERN,
     PRESETS,
@@ -210,7 +211,8 @@ EXAMPLES = {
         "description": (
             "topic geht vor; das Material (node_id, repository) bringt seine Fächer und seinen Artikel als weitere "
             "Quelle, wenn der mit dem Hauptartikel verlinkt ist. subject entscheidet das mehrdeutige Linse mit. preset "
-            "setzt article_choice wie im Kompendium - llm-free rule-based, die anderen drei llm -, ein gesetztes "
+            "setzt article_choice wie im Kompendium - llm-free rule-based, balanced llm, die best-quality-Profile "
+            "llm-thorough -, ein gesetztes "
             "article_choice geht vor. Die Knoten stammen aus der WLO-Staging; für eine andere Umgebung ersetzen. "
             "Braucht LLM_ENABLED, sonst 503."
         ),
@@ -250,8 +252,9 @@ def knowledge(
     for the further articles.
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
-    ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, and
-    ``article_choice`` in the answer says what it did and what it cost. ``subject`` helps decide an ambiguous
+    ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, with
+    ``llm-thorough`` it also checks a sure choice of a word with several meanings, and ``article_choice`` in the
+    answer says what it did and what it cost. ``subject`` helps decide an ambiguous
     topic, as in a compendium.
 
     **What each profile does here.** ``preset`` sets ``article_choice`` as the profile of a compendium would;
@@ -260,11 +263,13 @@ def knowledge(
 
     - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
     - ``balanced``: the LLM decides an unsure article and drops the side articles that do not fit (``llm``).
-    - ``best-quality`` and ``best-quality-generated``: the same as balanced here, from the larger budget of these
-      profiles (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so
-      nothing else of theirs applies.
+    - ``best-quality`` and ``best-quality-generated``: balanced, and the LLM also checks a sure choice of a word
+      with several meanings (``llm-thorough``, D61), from the larger budget of these profiles
+      (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so nothing else of
+      theirs applies.
 
-    ``llm`` on a server without an LLM is a 503. The examples run from a topic alone to one that sets every field.
+    ``llm`` or ``llm-thorough`` on a server without an LLM is a 503. The examples run from a topic alone to one
+    that sets every field.
 
     ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
     compendium does: a collection's title, a material's article from its title and description (D47).
@@ -283,7 +288,7 @@ def knowledge(
     profile = payload.preset or service.settings.preset_default
     article_choice = payload.article_choice or PRESETS[profile]["article_choice"]
     try:
-        needed = ["article_choice=llm"] if article_choice == "llm" else []
+        needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
         service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
     except LlmNotConfiguredError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
