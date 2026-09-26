@@ -28,6 +28,7 @@ from app.synthesis.qa_words import (
     AMOUNT_VERBS,
     ARTICLES,
     CAUSES,
+    COUNTING_VERBS,
     GOVERNED,
     MEASURING_VERBS,
     NAMING_HEADS,
@@ -79,11 +80,12 @@ def _balanced(text: str) -> bool:
 
 
 def _names_an_amount(verb: str, noun: Any) -> bool:
-    """Whether the object of ``verb`` is an amount that "Was" would ask for as a thing: always behind "dauern" or
-    "kosten" (M30, D60), behind "messen", "wiegen" or "zählen" only with a number in it (review of D60)."""
+    """Whether the object of ``verb`` is an amount that "Was" would ask for as a thing: always behind "dauern",
+    "wiegen" or "zählen" (M30, D60), behind "messen" only with a number of its own - "misst fast 50 Meter", not "misst
+    die Temperatur, die im Sommer 30 Grad erreicht" (review of D60)."""
     if verb in MEASURING_VERBS:
-        return any(token.pos_ == "NUM" for token in noun.subtree)
-    return verb in AMOUNT_VERBS
+        return any(child.dep_ == "nk" and child.pos_ == "NUM" for child in noun.children)
+    return verb in COUNTING_VERBS
 
 
 class _Asker:

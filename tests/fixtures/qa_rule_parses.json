@@ -806,6 +806,60 @@
     ["Stromstärke", "", "NOUN", "NN", "oa", 1, "Stromstärke", "Case=Acc|Gender=Fem|Number=Sing"],
     [".", "", "PUNCT", "$.", "punct", 1, "--", ""]
    ]
+  },
+  "Der Elefant wiegt ungefähr eine Tonne.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Elefant", " ", "NOUN", "NN", "sb", 2, "Elefant", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["wiegt", " ", "VERB", "VVFIN", "ROOT", 2, "wiegen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["ungefähr", " ", "ADV", "ADV", "mo", 2, "ungefähr", ""],
+    ["eine", " ", "DET", "ART", "nk", 5, "ein", "Case=Acc|Definite=Ind|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Tonne", "", "NOUN", "NN", "oa", 2, "Tonne", "Case=Acc|Gender=Fem|Number=Sing"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Der Verein zählt mehrere Tausend Mitglieder.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Verein", " ", "NOUN", "NN", "sb", 2, "Verein", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["zählt", " ", "VERB", "VVFIN", "ROOT", 2, "zählen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["mehrere", " ", "DET", "PIAT", "nk", 5, "mehrere", "Case=Acc|Gender=Neut|Number=Plur|PronType=Ind"],
+    ["Tausend", " ", "ADJ", "CARD", "nk", 5, "Tausend", "Case=Acc|Degree=Pos|Gender=Neut|Number=Plur"],
+    ["Mitglieder", "", "NOUN", "NN", "oa", 2, "Mitglied", "Case=Acc|Gender=Neut|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Der Turm misst über 50 Meter.": {
+   "ents": [],
+   "tokens": [
+    ["Der", " ", "DET", "ART", "nk", 1, "der", "Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Turm", " ", "NOUN", "NN", "sb", 2, "Turm", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["misst", " ", "VERB", "VVFIN", "ROOT", 2, "missen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["über", " ", "ADV", "ADV", "mo", 4, "über", ""],
+    ["50", " ", "NUM", "CARD", "nk", 5, "50", ""],
+    ["Meter", "", "NOUN", "NN", "oa", 2, "Meter", "Case=Acc|Gender=Masc|Number=Plur"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
+  },
+  "Ein Thermometer misst die Temperatur, die im Sommer 30 Grad erreicht.": {
+   "ents": [],
+   "tokens": [
+    ["Ein", " ", "DET", "ART", "nk", 1, "ein", "Case=Nom|Definite=Ind|Gender=Masc|Number=Sing|PronType=Art"],
+    ["Thermometer", " ", "NOUN", "NN", "sb", 2, "Thermometer", "Case=Nom|Gender=Masc|Number=Sing"],
+    ["misst", " ", "VERB", "VVFIN", "ROOT", 2, "missen", "Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin"],
+    ["die", " ", "DET", "ART", "nk", 4, "der", "Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Art"],
+    ["Temperatur", "", "NOUN", "NN", "oa", 2, "Temperatur", "Case=Acc|Gender=Fem|Number=Sing"],
+    [",", " ", "PUNCT", "$,", "punct", 4, "--", ""],
+    ["die", " ", "PRON", "PRELS", "sb", 11, "der", "Case=Nom|Gender=Fem|Number=Sing|PronType=Rel"],
+    ["im", " ", "ADP", "APPRART", "mo", 11, "in", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["Sommer", " ", "NOUN", "NN", "nk", 7, "Sommer", "Case=Dat|Gender=Masc|Number=Sing"],
+    ["30", " ", "NUM", "CARD", "nk", 10, "30", ""],
+    ["Grad", " ", "NOUN", "NN", "oa", 11, "Grad", "Gender=Neut"],
+    ["erreicht", "", "VERB", "VVPP", "rc", 4, "erreichen", "VerbForm=Part"],
+    [".", "", "PUNCT", "$.", "punct", 2, "--", ""]
+   ]
   }
  }
 }

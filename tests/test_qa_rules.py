@@ -471,11 +471,22 @@ def test_a_definition_cut_at_an_ordinal_is_no_answer() -> None:
 
 
 def test_a_verb_of_measure_asks_what_it_measures_when_that_is_no_amount() -> None:
-    """ "messen die Stromstärke" names a thing, "misst fast 50 Meter" an amount; for "messen", "wiegen" and "zählen"
-    only a number in the object makes it one (review of D60). The parse takes "misst" for a form of "missen"."""
+    """ "messen die Stromstärke" names a thing, "misst fast 50 Meter" an amount: behind "messen" only a number of the
+    object's own makes it one, not the number of a relative clause behind it (review of D60). The parse takes "misst"
+    for a form of "missen"."""
     assert ("Objekt", "Was messen Amperemeter?") in asked("Amperemeter messen die elektrische Stromstärke.")
     assert ("Objekt", "Was misst ein Amperemeter?") in asked("Ein Amperemeter misst die elektrische Stromstärke.")
-    assert not any(text.startswith("Was misst") for _, text in asked("Der Turm misst fast 50 Meter."))
+    thermometer = asked("Ein Thermometer misst die Temperatur, die im Sommer 30 Grad erreicht.")
+    assert ("Objekt", "Was misst ein Thermometer?") in thermometer
+    for sentence in ("Der Turm misst fast 50 Meter.", "Der Turm misst über 50 Meter."):
+        assert not any(text.startswith(("Was misst", "Worüber")) for _, text in asked(sentence)), sentence
+
+
+def test_the_object_of_wiegen_and_zaehlen_is_an_amount() -> None:
+    """ "wiegt ungefähr eine Tonne", "zählt mehrere Tausend Mitglieder": the parse sees a number in neither, and "Was"
+    would ask for an amount as a thing (M30, D60; the review of D60 found both asked again)."""
+    assert not any(text.startswith("Was wiegt") for _, text in asked("Der Elefant wiegt ungefähr eine Tonne."))
+    assert not any(text.startswith("Was zählt") for _, text in asked("Der Verein zählt mehrere Tausend Mitglieder."))
 
 
 def test_a_person_topic_is_recognised_by_its_entity() -> None:
