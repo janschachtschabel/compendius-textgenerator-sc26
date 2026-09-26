@@ -1,0 +1,3926 @@
+{
+ "themen": [
+  {
+   "thema": "Barockliteratur",
+   "wege": {
+    "R": {
+     "sekunden": 2.82,
+     "hauptartikel": "Barockliteratur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      },
+      {
+       "titel": "Barock",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Caspar Ziegler",
+      "Christian Hoffmann von Hoffmannswaldau",
+      "Daniel Casper von Lohenstein",
+      "Daniel Georg Morhof",
+      "Hans Jakob Christoffel von Grimmelshausen",
+      "Hans Sachs",
+      "Martin Opitz",
+      "Paul Fleming",
+      "Paul Gerhardt",
+      "Sibylla Schwarz"
+     ]
+    },
+    "P": {
+     "sekunden": 2.82,
+     "hauptartikel": "Barockliteratur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      },
+      {
+       "titel": "Barock",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Caspar Ziegler",
+      "Christian Hoffmann von Hoffmannswaldau",
+      "Daniel Casper von Lohenstein",
+      "Daniel Georg Morhof",
+      "Hans Jakob Christoffel von Grimmelshausen",
+      "Hans Sachs",
+      "Martin Opitz",
+      "Paul Fleming",
+      "Paul Gerhardt",
+      "Sibylla Schwarz"
+     ],
+     "verfahren": {
+      "regeln": "Barockliteratur",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Barockliteratur",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.83,
+     "hauptartikel": "Barockliteratur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 4
+      },
+      {
+       "titel": "Barocktheater",
+       "absaetze": 2
+      },
+      {
+       "titel": "Schauspiel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Andreas Gryphius",
+       "absaetze": 2
+      },
+      {
+       "titel": "Johann Rist",
+       "absaetze": 1
+      },
+      {
+       "titel": "Johann Wolfgang von Goethe",
+       "absaetze": 1
+      },
+      {
+       "titel": "Johann Christoph Gottsched",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Caspar Ziegler",
+      "Christian Hoffmann von Hoffmannswaldau",
+      "Christian Reuter (Schriftsteller)",
+      "Daniel Casper von Lohenstein",
+      "Daniel Georg Morhof",
+      "Hans Jakob Christoffel von Grimmelshausen",
+      "Hans Sachs",
+      "Johann Christoph Gottsched",
+      "Johann Rist",
+      "Johann Wolfgang von Goethe",
+      "Martin Opitz",
+      "Paul Fleming",
+      "Paul Gerhardt",
+      "Sibylla Schwarz"
+     ],
+     "uebersicht": "Barockliteratur",
+     "genannt": [
+      "Johann Rist",
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Johann Christoph Gottsched",
+      "Johann Wolfgang von Goethe",
+      "Barocktheater",
+      "Schauspiel",
+      "Literatur des Barock"
+     ],
+     "gefunden": [
+      "Barockliteratur",
+      "Johann Rist",
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Johann Christoph Gottsched",
+      "Johann Wolfgang von Goethe",
+      "Barocktheater",
+      "Schauspiel"
+     ],
+     "tokens_frage": 335,
+     "sekunden_frage": 0.62
+    },
+    "Q30": {
+     "sekunden": 0.43,
+     "hauptartikel": "Barockliteratur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Friedrich von Logau",
+       "absaetze": 8
+      },
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 5
+      },
+      {
+       "titel": "Daniel Casper von Lohenstein",
+       "absaetze": 2
+      },
+      {
+       "titel": "Andreas Gryphius",
+       "absaetze": 2
+      },
+      {
+       "titel": "Barocktheater",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Andreas Gryphius",
+      "Angelus Silesius",
+      "Caspar Ziegler",
+      "Christian Hoffmann von Hoffmannswaldau",
+      "Daniel Casper von Lohenstein",
+      "Daniel Casper von Lohenstein",
+      "Daniel Georg Morhof",
+      "Friedrich von Logau",
+      "Hans Jakob Christoffel von Grimmelshausen",
+      "Hans Sachs",
+      "Martin Opitz",
+      "Paul Fleming",
+      "Paul Gerhardt",
+      "Sibylla Schwarz"
+     ],
+     "uebersicht": "Barockliteratur",
+     "genannt": [
+      "Andreas Gryphius",
+      "Daniel Caspar von Lohenstein",
+      "Johann Christian Günther",
+      "Friedrich von Logau",
+      "Andreas Gryphius",
+      "Barockdichtung",
+      "Barocktheater",
+      "Barocklyrik"
+     ],
+     "gefunden": [
+      "Barockliteratur",
+      "Andreas Gryphius",
+      "Daniel Casper von Lohenstein",
+      "Friedrich von Logau",
+      "Barocktheater"
+     ],
+     "tokens_frage": 314,
+     "sekunden_frage": 0.61
+    }
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "wege": {
+    "R": {
+     "sekunden": 3.92,
+     "hauptartikel": "Bruchrechnung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 8
+      },
+      {
+       "titel": "Rechnen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kürzen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 3.92,
+     "hauptartikel": "Bruchrechnung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 8
+      },
+      {
+       "titel": "Rechnen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kürzen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Bruchrechnung",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Bruchrechnung",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.38,
+     "hauptartikel": "Bruchrechnung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Division mit Rest",
+       "absaetze": 6
+      },
+      {
+       "titel": "Geteiltzeichen",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "uebersicht": "Bruchrechnung",
+     "genannt": [
+      "Bruch",
+      "Bruchrechnung",
+      "Bruchregel",
+      "Bruchstrich",
+      "Bruchzähler",
+      "Bruchnenner",
+      "Divisionsalgorithmus",
+      "Kürzen von Brüchen"
+     ],
+     "gefunden": [
+      "Bruchrechnung",
+      "Geteiltzeichen",
+      "Division mit Rest"
+     ],
+     "tokens_frage": 344,
+     "sekunden_frage": 0.66
+    },
+    "Q30": {
+     "sekunden": 0.33,
+     "hauptartikel": "Bruchrechnung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Dezimalbruch",
+       "absaetze": 7
+      },
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Rationale Zahl",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "uebersicht": "Bruchrechnung",
+     "genannt": [
+      "Bruch (Mathematik)",
+      "Erweitern und Kürzen",
+      "Addition und Subtraktion von Brüchen",
+      "Multiplikation von Brüchen",
+      "Division von Brüchen",
+      "Bruchzahl",
+      "Dezimalbruch",
+      "Gemischte Zahl"
+     ],
+     "gefunden": [
+      "Bruchrechnung",
+      "Rationale Zahl",
+      "Dezimalbruch"
+     ],
+     "tokens_frage": 322,
+     "sekunden_frage": 0.61
+    }
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "wege": {
+    "R": {
+     "sekunden": 3.48,
+     "hauptartikel": "Demokratie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Direkte Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Demokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Defekte Demokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Konkordanzdemokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Staatsmodell",
+       "absaetze": 2
+      },
+      {
+       "titel": "Repräsentative Demokratie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Demokratietheorie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Postdemokratie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Souverän",
+       "absaetze": 1
+      },
+      {
+       "titel": "Demokratisierung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Abraham Lincoln",
+      "Aristoteles",
+      "Herodot"
+     ]
+    },
+    "P": {
+     "sekunden": 3.48,
+     "hauptartikel": "Demokratie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Direkte Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Demokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Defekte Demokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Konkordanzdemokratie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Staatsmodell",
+       "absaetze": 2
+      },
+      {
+       "titel": "Repräsentative Demokratie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Demokratietheorie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Postdemokratie",
+       "absaetze": 1
+      },
+      {
+       "titel": "Souverän",
+       "absaetze": 1
+      },
+      {
+       "titel": "Demokratisierung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Abraham Lincoln",
+      "Aristoteles",
+      "Herodot"
+     ],
+     "verfahren": {
+      "regeln": "Demokratie",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Demokratie",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "status": "keine Artikel",
+     "uebersicht": "",
+     "genannt": [],
+     "gefunden": [],
+     "tokens_frage": 861,
+     "sekunden_frage": 3.69
+    },
+    "Q30": {
+     "sekunden": 0.97,
+     "hauptartikel": "Demokratie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Repräsentative Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Direkte Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Demokratie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Demokratie in der Schweiz",
+       "absaetze": 4
+      },
+      {
+       "titel": "Partizipatorische Demokratie",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Abraham Lincoln",
+      "Aristoteles",
+      "Herodot"
+     ],
+     "uebersicht": "Demokratie",
+     "genannt": [
+      "Repräsentative Demokratie",
+      "Direkte Demokratie",
+      "Partizipative Demokratie",
+      "Demokratietheorie",
+      "Geschichte der Demokratie",
+      "Demokratie in Deutschland",
+      "Demokratie in der Schweiz",
+      "Demokratie und Gerechtigkeit"
+     ],
+     "gefunden": [
+      "Demokratie",
+      "Repräsentative Demokratie",
+      "Direkte Demokratie",
+      "Partizipatorische Demokratie",
+      "Demokratietheorie",
+      "Demokratie in der Schweiz"
+     ],
+     "tokens_frage": 331,
+     "sekunden_frage": 0.61
+    }
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "wege": {
+    "R": {
+     "sekunden": 5.68,
+     "hauptartikel": "Französische Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 7
+      },
+      {
+       "titel": "Revolution",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liberalismus",
+       "absaetze": 2
+      },
+      {
+       "titel": "Die Französische Revolution",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Johannes Willms",
+      "Napoleon Bonaparte"
+     ]
+    },
+    "P": {
+     "sekunden": 5.68,
+     "hauptartikel": "Französische Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 7
+      },
+      {
+       "titel": "Revolution",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liberalismus",
+       "absaetze": 2
+      },
+      {
+       "titel": "Die Französische Revolution",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Johannes Willms",
+      "Napoleon Bonaparte"
+     ],
+     "verfahren": {
+      "regeln": "Französische Revolution",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Revolution",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.14,
+     "hauptartikel": "Französische Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Nationalversammlung (Frankreich)",
+       "absaetze": 7
+      },
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 4
+      },
+      {
+       "titel": "Maximilien de Robespierre",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kanonade von Valmy",
+       "absaetze": 3
+      },
+      {
+       "titel": "Guillotine (1949)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Georg Forster",
+      "Johannes Willms",
+      "Maximilien de Robespierre",
+      "Napoleon Bonaparte"
+     ],
+     "uebersicht": "Französische Revolution",
+     "genannt": [
+      "Nationalversammlung (Frankreich)",
+      "Maximilien Robespierre",
+      "Georg Forster",
+      "König Ludwig XVI. von Frankreich",
+      "Schlacht bei Valmy",
+      "Girondiner",
+      "Jakobiner",
+      "Reign of Terror"
+     ],
+     "gefunden": [
+      "Französische Revolution",
+      "Nationalversammlung (Frankreich)",
+      "Maximilien de Robespierre",
+      "Georg Forster",
+      "Kanonade von Valmy",
+      "Jakobiner",
+      "Guillotine (1949)"
+     ],
+     "tokens_frage": 340,
+     "sekunden_frage": 0.64
+    },
+    "Q30": {
+     "sekunden": 0.8,
+     "hauptartikel": "Französische Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 9
+      },
+      {
+       "titel": "Maximilien de Robespierre",
+       "absaetze": 2
+      },
+      {
+       "titel": "Jean Paul Marat",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Jean Paul Marat",
+      "Johannes Willms",
+      "Maximilien de Robespierre",
+      "Napoleon Bonaparte"
+     ],
+     "uebersicht": "Französische Revolution",
+     "genannt": [
+      "Ausbruch der Französischen Revolution",
+      "König Ludwig XVI.",
+      "Maximilien de Robespierre",
+      "Jean-Paul Marat",
+      "Georg Wilhelm Friedrich Hegel und die Französische Revolution",
+      "Reichsdeputationshauptschluss und die Französische Revolution",
+      "Republikanische Zeit in Frankreich",
+      "Napoleon Bonaparte und die Französische Revolution"
+     ],
+     "gefunden": [
+      "Französische Revolution",
+      "Maximilien de Robespierre",
+      "Jean Paul Marat"
+     ],
+     "tokens_frage": 349,
+     "sekunden_frage": 0.73
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "wege": {
+    "R": {
+     "sekunden": 7.92,
+     "hauptartikel": "Klimawandel",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 8
+      },
+      {
+       "titel": "Forschungsgeschichte des Klimawandels",
+       "absaetze": 4
+      },
+      {
+       "titel": "Anthropogen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "John Tyndall",
+      "Joseph Fourier",
+      "Robert Hooke"
+     ]
+    },
+    "P": {
+     "sekunden": 7.92,
+     "hauptartikel": "Klimawandel",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 8
+      },
+      {
+       "titel": "Forschungsgeschichte des Klimawandels",
+       "absaetze": 4
+      },
+      {
+       "titel": "Anthropogen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "John Tyndall",
+      "Joseph Fourier",
+      "Robert Hooke"
+     ],
+     "verfahren": {
+      "regeln": "Klimawandel",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Klimawandel",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "status": "keine Artikel",
+     "uebersicht": "",
+     "genannt": [],
+     "gefunden": [],
+     "tokens_frage": 862,
+     "sekunden_frage": 3.73
+    },
+    "Q30": {
+     "sekunden": 0.56,
+     "hauptartikel": "Klimawandel",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "personen": [
+      "Robert Hooke"
+     ],
+     "uebersicht": "Klimawandel",
+     "genannt": [
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel und Gesundheit",
+      "Klimawandel und Meeresversauerung",
+      "Klimawandel und Artenvielfalt",
+      "Klimawandel und Extremwetter",
+      "Klimawandel und Energieversorgung",
+      "Klimawandel und Migration",
+      "Klimawandel und Politik"
+     ],
+     "gefunden": [
+      "Klimawandel"
+     ],
+     "tokens_frage": 340,
+     "sekunden_frage": 0.73
+    }
+   }
+  },
+  {
+   "thema": "Optik",
+   "wege": {
+    "R": {
+     "sekunden": 2.97,
+     "hauptartikel": "Optik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 7
+      },
+      {
+       "titel": "Wellenoptik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Augenoptiker",
+       "absaetze": 4
+      },
+      {
+       "titel": "Auge",
+       "absaetze": 3
+      },
+      {
+       "titel": "Geometrische Optik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Geschichte der Physik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Technische Optik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Alhazen",
+      "Antoni van Leeuwenhoek",
+      "August Sonnefeld",
+      "Benjamin Franklin",
+      "Bernhard Schmidt (Optiker)",
+      "Carl Pulfrich",
+      "Christiaan Huygens",
+      "Christoph Scheiner",
+      "Dmitri Dmitrijewitsch Maksutow",
+      "Ernst Abbe",
+      "Hans Lipperhey",
+      "Hans-Joachim Haase (Augenoptiker)",
+      "Hermann Pistor",
+      "Isaac Newton",
+      "Johann Nathanael Lieberkühn",
+      "Johannes Kepler",
+      "John Dollond",
+      "Josef Maximilian Petzval",
+      "Joseph von Fraunhofer",
+      "Laurent Cassegrain",
+      "Peter Dollond",
+      "Philipp Ludwig von Seidel",
+      "Zacharias Janssen"
+     ]
+    },
+    "P": {
+     "sekunden": 2.97,
+     "hauptartikel": "Optik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 7
+      },
+      {
+       "titel": "Wellenoptik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Augenoptiker",
+       "absaetze": 4
+      },
+      {
+       "titel": "Auge",
+       "absaetze": 3
+      },
+      {
+       "titel": "Geometrische Optik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Geschichte der Physik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Technische Optik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Alhazen",
+      "Antoni van Leeuwenhoek",
+      "August Sonnefeld",
+      "Benjamin Franklin",
+      "Bernhard Schmidt (Optiker)",
+      "Carl Pulfrich",
+      "Christiaan Huygens",
+      "Christoph Scheiner",
+      "Dmitri Dmitrijewitsch Maksutow",
+      "Ernst Abbe",
+      "Hans Lipperhey",
+      "Hans-Joachim Haase (Augenoptiker)",
+      "Hermann Pistor",
+      "Isaac Newton",
+      "Johann Nathanael Lieberkühn",
+      "Johannes Kepler",
+      "John Dollond",
+      "Josef Maximilian Petzval",
+      "Joseph von Fraunhofer",
+      "Laurent Cassegrain",
+      "Peter Dollond",
+      "Philipp Ludwig von Seidel",
+      "Zacharias Janssen"
+     ],
+     "verfahren": {
+      "regeln": "Optik",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Optik",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.51,
+     "hauptartikel": "Optik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Linse (Optik)",
+       "absaetze": 7
+      },
+      {
+       "titel": "Optik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Spiegel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Polarisation",
+       "absaetze": 1
+      },
+      {
+       "titel": "Beugung (Physik)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Alhazen",
+      "Antoni van Leeuwenhoek",
+      "August Sonnefeld",
+      "Benjamin Franklin",
+      "Bernhard Schmidt (Optiker)",
+      "Carl Pulfrich",
+      "Christiaan Huygens",
+      "Christoph Scheiner",
+      "Dmitri Dmitrijewitsch Maksutow",
+      "Ernst Abbe",
+      "Hans Lipperhey",
+      "Hans-Joachim Haase (Augenoptiker)",
+      "Hermann Pistor",
+      "Isaac Newton",
+      "Johann Nathanael Lieberkühn",
+      "Johannes Kepler",
+      "John Dollond",
+      "Josef Maximilian Petzval",
+      "Joseph von Fraunhofer",
+      "Laurent Cassegrain",
+      "Peter Dollond",
+      "Philipp Ludwig von Seidel",
+      "Zacharias Janssen"
+     ],
+     "uebersicht": "Optik",
+     "genannt": [
+      "Linsensystem",
+      "Spiegel",
+      "Prisma",
+      "Beugung",
+      "Interferenz",
+      "Diffraktion",
+      "Polarisation",
+      "Huygens-Fresnel-Prinzip"
+     ],
+     "gefunden": [
+      "Optik",
+      "Linse (Optik)",
+      "Spiegel",
+      "Beugung (Physik)",
+      "Polarisation"
+     ],
+     "tokens_frage": 329,
+     "sekunden_frage": 0.53
+    },
+    "Q30": {
+     "sekunden": 0.49,
+     "hauptartikel": "Optik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wellenoptik",
+       "absaetze": 7
+      },
+      {
+       "titel": "Optik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Licht",
+       "absaetze": 3
+      },
+      {
+       "titel": "Polarisation",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Alhazen",
+      "Antoni van Leeuwenhoek",
+      "August Sonnefeld",
+      "Benjamin Franklin",
+      "Bernhard Schmidt (Optiker)",
+      "Carl Pulfrich",
+      "Christiaan Huygens",
+      "Christoph Scheiner",
+      "Dmitri Dmitrijewitsch Maksutow",
+      "Ernst Abbe",
+      "Hans Lipperhey",
+      "Hans-Joachim Haase (Augenoptiker)",
+      "Hermann Pistor",
+      "Isaac Newton",
+      "Johann Nathanael Lieberkühn",
+      "Johannes Kepler",
+      "John Dollond",
+      "Josef Maximilian Petzval",
+      "Joseph von Fraunhofer",
+      "Laurent Cassegrain",
+      "Peter Dollond",
+      "Philipp Ludwig von Seidel",
+      "Zacharias Janssen"
+     ],
+     "uebersicht": "Optik",
+     "genannt": [
+      "Licht",
+      "Brechung",
+      "Reflexion",
+      "Interferenz",
+      "Beugung",
+      "Polarisation",
+      "Optisches Instrument",
+      "Wellenoptik"
+     ],
+     "gefunden": [
+      "Optik",
+      "Licht",
+      "Polarisation",
+      "Wellenoptik"
+     ],
+     "tokens_frage": 292,
+     "sekunden_frage": 0.41
+    }
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "wege": {
+    "R": {
+     "sekunden": 4.45,
+     "hauptartikel": "Photosynthese",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 9
+      },
+      {
+       "titel": "Chlorophylle",
+       "absaetze": 2
+      },
+      {
+       "titel": "Pflanze",
+       "absaetze": 1
+      },
+      {
+       "titel": "Bakterien",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kohlenstoffdioxid",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 4.45,
+     "hauptartikel": "Photosynthese",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 9
+      },
+      {
+       "titel": "Chlorophylle",
+       "absaetze": 2
+      },
+      {
+       "titel": "Pflanze",
+       "absaetze": 1
+      },
+      {
+       "titel": "Bakterien",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kohlenstoffdioxid",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Photosynthese",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Photosynthese",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 2.13,
+     "hauptartikel": "Photosynthese",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Kohlenstoffdioxid",
+       "absaetze": 6
+      },
+      {
+       "titel": "Zucker",
+       "absaetze": 5
+      },
+      {
+       "titel": "Sauerstoff",
+       "absaetze": 5
+      },
+      {
+       "titel": "Photosynthese",
+       "absaetze": 3
+      },
+      {
+       "titel": "Chlorophylle",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "uebersicht": "Photosynthese",
+     "genannt": [
+      "Kohlendioxid",
+      "Sauerstoff",
+      "Chlorophyll",
+      "Zucker",
+      "Stomata",
+      "Assimilationszone",
+      "Kreislauf der Kohlenstoffverbindungen",
+      "Photosyntheseprodukt"
+     ],
+     "gefunden": [
+      "Photosynthese",
+      "Kohlenstoffdioxid",
+      "Sauerstoff",
+      "Chlorophylle",
+      "Zucker",
+      "Stoma (Botanik)"
+     ],
+     "tokens_frage": 338,
+     "sekunden_frage": 0.67,
+     "nachgeholt": "429 im ersten Lauf"
+    },
+    "Q30": {
+     "sekunden": 1.3,
+     "hauptartikel": "Photosynthese",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Crassulaceen-Säurestoffwechsel",
+       "absaetze": 8
+      },
+      {
+       "titel": "Photosystem",
+       "absaetze": 4
+      },
+      {
+       "titel": "Chlorophylle",
+       "absaetze": 4
+      },
+      {
+       "titel": "Chloroplast",
+       "absaetze": 3
+      },
+      {
+       "titel": "Photosynthese",
+       "absaetze": 2
+      },
+      {
+       "titel": "C4-Pflanze",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "uebersicht": "Photosynthese",
+     "genannt": [
+      "Chloroplast",
+      "Chlorophyll",
+      "Calvin-Zyklus",
+      "Lichtreaktion",
+      "C4-Pflanze",
+      "CAM-Pflanze",
+      "Photoinhibition",
+      "Photosystem"
+     ],
+     "gefunden": [
+      "Photosynthese",
+      "Chloroplast",
+      "Chlorophylle",
+      "Calvin-Zyklus",
+      "C4-Pflanze",
+      "Crassulaceen-Säurestoffwechsel",
+      "Photoinhibition",
+      "Photosystem"
+     ],
+     "tokens_frage": 303,
+     "sekunden_frage": 0.64,
+     "nachgeholt": "429 im ersten Lauf"
+    }
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "wege": {
+    "R": {
+     "sekunden": 3.75,
+     "hauptartikel": "Programmiersprache",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Höhere Programmiersprache",
+       "absaetze": 7
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 5
+      },
+      {
+       "titel": "Unterprogramm",
+       "absaetze": 5
+      },
+      {
+       "titel": "Geschichte der Programmiersprachen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Syntax",
+       "absaetze": 3
+      },
+      {
+       "titel": "Esoterische Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Allzweck-Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Visuelle Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Logische Programmierung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 3.75,
+     "hauptartikel": "Programmiersprache",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Höhere Programmiersprache",
+       "absaetze": 7
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 5
+      },
+      {
+       "titel": "Unterprogramm",
+       "absaetze": 5
+      },
+      {
+       "titel": "Geschichte der Programmiersprachen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Syntax",
+       "absaetze": 3
+      },
+      {
+       "titel": "Esoterische Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Allzweck-Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Visuelle Programmiersprache",
+       "absaetze": 2
+      },
+      {
+       "titel": "Logische Programmierung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Programmiersprache",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Programmiersprache",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.45,
+     "hauptartikel": "Programmiersprache",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Objektorientierte Programmierung",
+       "absaetze": 12
+      },
+      {
+       "titel": "Geschichte der Programmiersprachen",
+       "absaetze": 7
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liste von Programmiersprachen",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 11,
+     "personen": [],
+     "uebersicht": "Programmiersprache",
+     "genannt": [
+      "Geschichte der Programmiersprachen",
+      "Liste von Programmiersprachen",
+      "Programmiersprachen-Überblick",
+      "Prozedurale Programmierung",
+      "Objektorientierte Programmierung",
+      "Funktionsprogrammierung",
+      "Declarative Programmierung",
+      "Typsysteme in Programmiersprachen"
+     ],
+     "gefunden": [
+      "Programmiersprache",
+      "Geschichte der Programmiersprachen",
+      "Liste von Programmiersprachen",
+      "Prozedurale Programmierung",
+      "Objektorientierte Programmierung"
+     ],
+     "tokens_frage": 354,
+     "sekunden_frage": 5.39
+    },
+    "Q30": {
+     "sekunden": 0.72,
+     "hauptartikel": "Programmiersprache",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Compiler",
+       "absaetze": 8
+      },
+      {
+       "titel": "Interpreter",
+       "absaetze": 6
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 4
+      },
+      {
+       "titel": "Objektorientierte Programmierung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Liste von Programmiersprachen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "uebersicht": "Programmiersprache",
+     "genannt": [
+      "Liste von Programmiersprachen",
+      "Syntax (Programmierung)",
+      "Semantik (Programmierung)",
+      "Typisierung (Programmierung)",
+      "Compiler",
+      "Interpreter",
+      "Objektorientierte Programmierung",
+      "Funktionale Programmierung"
+     ],
+     "gefunden": [
+      "Programmiersprache",
+      "Liste von Programmiersprachen",
+      "Compiler",
+      "Interpreter",
+      "Objektorientierte Programmierung",
+      "Funktionale Programmierung"
+     ],
+     "tokens_frage": 314,
+     "sekunden_frage": 0.59
+    }
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "wege": {
+    "R": {
+     "sekunden": 3.63,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "personen": [
+      "Gilbert Newton Lewis",
+      "Johannes Nicolaus Brønsted",
+      "Martin Lowry",
+      "Svante Arrhenius"
+     ]
+    },
+    "P": {
+     "sekunden": 0.38,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lewis-Säure-Base-Konzept",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Gilbert Newton Lewis",
+      "Johannes Nicolaus Brønsted",
+      "Martin Lowry",
+      "Svante Arrhenius"
+     ],
+     "verfahren": {
+      "regeln": "Säure-Base-Konzepte",
+      "regeln_methode": "title",
+      "mehrzahl": true,
+      "verbindung": false,
+      "kopf": "Säure-Base-Konzept",
+      "kandidaten": {
+       "Säure-Base-Konzepte": 1
+      },
+      "grund": "Gruppe: der Knoten mit den meisten verlinkten Vertretern",
+      "sekunden": 0.62
+     },
+     "titel": [
+      "Säure-Base-Konzepte",
+      "Lewis-Säure-Base-Konzept"
+     ]
+    },
+    "L8": {
+     "sekunden": 2.04,
+     "hauptartikel": "Säuren",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Indikator (Chemie)",
+       "absaetze": 6
+      },
+      {
+       "titel": "PH-Wert",
+       "absaetze": 5
+      },
+      {
+       "titel": "Säuren",
+       "absaetze": 3
+      },
+      {
+       "titel": "Säure-Base-Titration",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Antoine Laurent de Lavoisier",
+      "Franciscus Sylvius",
+      "Georg Ernst Stahl",
+      "Johan Baptista van Helmont",
+      "Johann Joachim Becher",
+      "Johann Rudolph Glauber",
+      "Johann Rudolph Glauber",
+      "John Mayow",
+      "Nicolas Lémery",
+      "Otto Tachenius",
+      "Robert Boyle"
+     ],
+     "uebersicht": "Säure-Base-Theorie",
+     "genannt": [
+      "Säure",
+      "Base",
+      "pH-Wert",
+      "Säure-Base-Gleichgewicht",
+      "Säure-Base-Equilibrium",
+      "Säure-Base-Empfindlichkeit",
+      "Säure-Base-Indikator",
+      "Säure-Base-Titration"
+     ],
+     "gefunden": [
+      "Säuren",
+      "PH-Wert",
+      "Indikator (Chemie)",
+      "Säure-Base-Titration"
+     ],
+     "tokens_frage": 366,
+     "sekunden_frage": 0.79
+    },
+    "Q30": {
+     "sekunden": 1.26,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Puffer (Chemie)",
+       "absaetze": 8
+      },
+      {
+       "titel": "PH-Wert",
+       "absaetze": 6
+      },
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 5
+      },
+      {
+       "titel": "Lewis-Säure-Base-Konzept",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Gilbert Newton Lewis",
+      "Johannes Nicolaus Brønsted",
+      "Martin Lowry",
+      "Svante Arrhenius"
+     ],
+     "uebersicht": "Säure-Base-Konzepte",
+     "genannt": [
+      "Brønsted-Säure",
+      "Lewis-Säure",
+      "Arrhenius-Säure",
+      "Säure-Base-Reaktion",
+      "pH-Wert",
+      "Pufferlösung",
+      "Säure-Base-Titration",
+      "Protolyse"
+     ],
+     "gefunden": [
+      "Säure-Base-Konzepte",
+      "Lewis-Säure-Base-Konzept",
+      "Säure-Base-Reaktion",
+      "PH-Wert",
+      "Puffer (Chemie)",
+      "Säure-Base-Titration",
+      "Protolyse"
+     ],
+     "tokens_frage": 324,
+     "sekunden_frage": 0.72
+    }
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "wege": {
+    "R": {
+     "sekunden": 9.35,
+     "hauptartikel": "Sinfonie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "7. Sinfonie (Bruckner)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Sinfonie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Sinfonia",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sonatensatzform",
+       "absaetze": 2
+      },
+      {
+       "titel": "Franz Schubert",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonia concertante",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonische Dichtung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Manfred-Sinfonie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Carl Philipp Emanuel Bach",
+      "Franz Schubert",
+      "Georg Christoph Wagenseil",
+      "Giovanni Battista Sammartini",
+      "Johann Baptist Wanhal",
+      "Johann Christian Bach",
+      "Johann Sebastian Bach",
+      "Johann Stamitz",
+      "Matthias Georg Monn"
+     ]
+    },
+    "P": {
+     "sekunden": 9.35,
+     "hauptartikel": "Sinfonie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "7. Sinfonie (Bruckner)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Sinfonie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Sinfonia",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sonatensatzform",
+       "absaetze": 2
+      },
+      {
+       "titel": "Franz Schubert",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonia concertante",
+       "absaetze": 2
+      },
+      {
+       "titel": "Sinfonische Dichtung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Manfred-Sinfonie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Carl Philipp Emanuel Bach",
+      "Franz Schubert",
+      "Georg Christoph Wagenseil",
+      "Giovanni Battista Sammartini",
+      "Johann Baptist Wanhal",
+      "Johann Christian Bach",
+      "Johann Sebastian Bach",
+      "Johann Stamitz",
+      "Matthias Georg Monn"
+     ],
+     "verfahren": {
+      "regeln": "Sinfonie",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Sinfonie",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.38,
+     "hauptartikel": "Sinfonie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 5,
+     "personen": [
+      "Carl Philipp Emanuel Bach",
+      "Georg Christoph Wagenseil",
+      "Giovanni Battista Sammartini",
+      "Johann Baptist Wanhal",
+      "Johann Christian Bach",
+      "Johann Sebastian Bach",
+      "Johann Stamitz",
+      "Matthias Georg Monn"
+     ],
+     "uebersicht": "Sinfonie",
+     "genannt": [
+      "Sinfonie (Begriff)",
+      "Sinfonie (Musik)",
+      "Symphonie (Bach)",
+      "Symphonie (Beethoven)",
+      "Symphonie (Mozart)",
+      "Symphonie (Chopin)",
+      "Symphonie (Bruckner)",
+      "Symphonie (Mahler)"
+     ],
+     "gefunden": [
+      "Sinfonie"
+     ],
+     "tokens_frage": 349,
+     "sekunden_frage": 0.73
+    },
+    "Q30": {
+     "sekunden": 0.3,
+     "hauptartikel": "Sinfonie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 5,
+     "personen": [
+      "Carl Philipp Emanuel Bach",
+      "Georg Christoph Wagenseil",
+      "Giovanni Battista Sammartini",
+      "Johann Baptist Wanhal",
+      "Johann Christian Bach",
+      "Johann Sebastian Bach",
+      "Johann Stamitz",
+      "Matthias Georg Monn"
+     ],
+     "uebersicht": "Sinfonie",
+     "genannt": [
+      "Sinfonie (Gattung)",
+      "Sinfonie in der klassischen Musik",
+      "Sinfonieform",
+      "Sinfonieorchestrierung",
+      "Sinfonie in der Romantik",
+      "Sinfonie im 20. Jahrhundert",
+      "Sinfonie in der Neuen Musik",
+      "Sinfonie in der deutschen Musikgeschichte"
+     ],
+     "gefunden": [
+      "Sinfonie"
+     ],
+     "tokens_frage": 342,
+     "sekunden_frage": 0.68
+    }
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "wege": {
+    "R": {
+     "sekunden": 7.01,
+     "hauptartikel": "Plattentektonik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Kontinentaldrift",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 5,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 7.01,
+     "hauptartikel": "Plattentektonik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Kontinentaldrift",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 5,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Plattentektonik",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Plattentektonik",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.0,
+     "hauptartikel": "Plattentektonik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Subduktion",
+       "absaetze": 4
+      },
+      {
+       "titel": "Geodynamik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Erdmantel",
+       "absaetze": 1
+      },
+      {
+       "titel": "Erdkruste",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "uebersicht": "Plattentektonik",
+     "genannt": [
+      "Erdmantel",
+      "Erdkruste",
+      "Plattenverschiebung",
+      "Subduktion",
+      "Kontinentverschiebung",
+      "Geologische Zeitabschnitte",
+      "Geodynamik",
+      "Seismizität"
+     ],
+     "gefunden": [
+      "Plattentektonik",
+      "Erdmantel",
+      "Erdkruste",
+      "Subduktion",
+      "Geodynamik",
+      "Seismizität"
+     ],
+     "tokens_frage": 341,
+     "sekunden_frage": 0.65
+    },
+    "Q30": {
+     "sekunden": 0.88,
+     "hauptartikel": "Plattentektonik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Transformstörung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kontinentaldrift",
+       "absaetze": 3
+      },
+      {
+       "titel": "Mantel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Ozeanische Erdkruste",
+       "absaetze": 1
+      },
+      {
+       "titel": "Subduktion",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [],
+     "uebersicht": "Plattentektonik",
+     "genannt": [
+      "Erdrinde",
+      "Mantel",
+      "Kontinentaldrift",
+      "Subduktionszone",
+      "Spreadingzentrum",
+      "Transformstörung",
+      "Magnetische Inversion",
+      "Ozeanische Kruste"
+     ],
+     "gefunden": [
+      "Plattentektonik",
+      "Erdkruste",
+      "Mantel",
+      "Kontinentaldrift",
+      "Subduktion",
+      "Transformstörung",
+      "Ozeanische Erdkruste"
+     ],
+     "tokens_frage": 311,
+     "sekunden_frage": 0.57
+    }
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "wege": {
+    "R": {
+     "sekunden": 3.61,
+     "hauptartikel": "Ökosystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 9
+      },
+      {
+       "titel": "Ökosystemleistung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ökosystemischer Ansatz nach Bronfenbrenner",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ökologie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Ökosystemverfall",
+       "absaetze": 2
+      },
+      {
+       "titel": "Organizismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ökologisches Gleichgewicht",
+       "absaetze": 1
+      },
+      {
+       "titel": "System",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Frederic Edward Clements",
+      "Heinrich Walter (Botaniker)",
+      "Kurt Jax",
+      "Matthias Schaefer"
+     ]
+    },
+    "P": {
+     "sekunden": 3.61,
+     "hauptartikel": "Ökosystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 9
+      },
+      {
+       "titel": "Ökosystemleistung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ökosystemischer Ansatz nach Bronfenbrenner",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ökologie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Ökosystemverfall",
+       "absaetze": 2
+      },
+      {
+       "titel": "Organizismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ökologisches Gleichgewicht",
+       "absaetze": 1
+      },
+      {
+       "titel": "System",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Frederic Edward Clements",
+      "Heinrich Walter (Botaniker)",
+      "Kurt Jax",
+      "Matthias Schaefer"
+     ],
+     "verfahren": {
+      "regeln": "Ökosystem",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Ökosystem",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 2.97,
+     "hauptartikel": "Ökosystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 9
+      },
+      {
+       "titel": "Biotop",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ökologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ökologische Nische",
+       "absaetze": 2
+      },
+      {
+       "titel": "Biodiversität",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Frederic Edward Clements",
+      "Heinrich Walter (Botaniker)",
+      "Kurt Jax",
+      "Matthias Schaefer"
+     ],
+     "uebersicht": "Ökosystem",
+     "genannt": [
+      "Ökosystem",
+      "Biodiversität",
+      "Naturraum",
+      "Ökologie",
+      "Biotop",
+      "Artenvielfalt",
+      "Klimawandel",
+      "Ökologische Nische"
+     ],
+     "gefunden": [
+      "Ökosystem",
+      "Biodiversität",
+      "Naturraum",
+      "Ökologie",
+      "Biotop",
+      "Artenvielfalt",
+      "Klimawandel",
+      "Ökologische Nische"
+     ],
+     "tokens_frage": 330,
+     "sekunden_frage": 0.6
+    },
+    "Q30": {
+     "sekunden": 4.03,
+     "hauptartikel": "Ökosystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 11
+      },
+      {
+       "titel": "Ökologie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Stoffkreislauf",
+       "absaetze": 2
+      },
+      {
+       "titel": "Ökologische Nische",
+       "absaetze": 2
+      },
+      {
+       "titel": "Biodiversität",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Frederic Edward Clements",
+      "Heinrich Walter (Botaniker)",
+      "Kurt Jax",
+      "Matthias Schaefer"
+     ],
+     "uebersicht": "Ökosystem",
+     "genannt": [
+      "Ökologie",
+      "Lebensraum",
+      "Nahrungskette",
+      "Stoffkreislauf",
+      "Biodiversität",
+      "Ökologische Nische",
+      "Ökoton",
+      "Energiefluss im Ökosystem"
+     ],
+     "gefunden": [
+      "Ökosystem",
+      "Ökologie",
+      "Nahrungskette",
+      "Stoffkreislauf",
+      "Biodiversität",
+      "Ökologische Nische",
+      "Ökoton"
+     ],
+     "tokens_frage": 307,
+     "sekunden_frage": 0.53
+    }
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "wege": {
+    "R": {
+     "sekunden": 17.93,
+     "hauptartikel": "Liste der Atommodelle",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 5
+      },
+      {
+       "titel": "Zeittafel physikalischer Entdeckungen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Teilchenmodell",
+       "absaetze": 1
+      },
+      {
+       "titel": "Atom",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6,
+     "personen": [
+      "Arthur Erich Haas",
+      "Demokrit",
+      "Isaac Newton",
+      "John Dalton",
+      "Nagaoka Hantarō",
+      "Niels Bohr",
+      "Werner Heisenberg"
+     ]
+    },
+    "P": {
+     "sekunden": 1.93,
+     "hauptartikel": "Bohrsches Atommodell",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Thomas-Fermi-Modell",
+       "absaetze": 4
+      },
+      {
+       "titel": "Bohrsches Atommodell",
+       "absaetze": 3
+      },
+      {
+       "titel": "Thomsonsches Atommodell",
+       "absaetze": 2
+      },
+      {
+       "titel": "Niels Bohr",
+       "absaetze": 2
+      },
+      {
+       "titel": "Schalenmodell (Atomphysik)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Arnold Sommerfeld",
+      "Arthur Erich Haas",
+      "John William Nicholson",
+      "Max Planck",
+      "Niels Bohr"
+     ],
+     "verfahren": {
+      "regeln": "Liste der Atommodelle",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Atommodell",
+      "kandidaten": {
+       "Bohrsches Atommodell": 5,
+       "Bohr-sommerfeldsches Atommodell": 3,
+       "Liste der Atommodelle": 9
+      },
+      "grund": "Gruppe: der Knoten mit den meisten verlinkten Vertretern",
+      "sekunden": 1.85
+     },
+     "titel": [
+      "Bohrsches Atommodell",
+      "Dynamidenmodell",
+      "Thomsonsches Atommodell",
+      "Rutherfordsches Atommodell",
+      "Schalenmodell (Atomphysik)",
+      "Bohrsches Atommodell",
+      "Niels Bohr",
+      "Bohr-sommerfeldsches Atommodell",
+      "Thomas-Fermi-Modell"
+     ]
+    },
+    "L8": {
+     "sekunden": 1.0,
+     "hauptartikel": "Liste der Atommodelle",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Quantenmechanik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Atom",
+       "absaetze": 8
+      },
+      {
+       "titel": "Neutron",
+       "absaetze": 4
+      },
+      {
+       "titel": "Proton",
+       "absaetze": 4
+      },
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 1
+      },
+      {
+       "titel": "Bohrsches Atommodell",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Arthur Erich Haas",
+      "Demokrit",
+      "Isaac Newton",
+      "John Dalton",
+      "Nagaoka Hantarō",
+      "Niels Bohr",
+      "Werner Heisenberg"
+     ],
+     "uebersicht": "Atommodell",
+     "genannt": [
+      "Elektron",
+      "Proton",
+      "Neutron",
+      "Atom",
+      "Molekül",
+      "Elektroschub",
+      "Bohr-Modell",
+      "Quantenmechanik"
+     ],
+     "gefunden": [
+      "Liste der Atommodelle",
+      "Elektron",
+      "Proton",
+      "Neutron",
+      "Atom",
+      "Molekül",
+      "Bohrsches Atommodell",
+      "Quantenmechanik"
+     ],
+     "tokens_frage": 327,
+     "sekunden_frage": 0.67
+    },
+    "Q30": {
+     "sekunden": 1.24,
+     "hauptartikel": "Liste der Atommodelle",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Welle-Teilchen-Dualismus",
+       "absaetze": 6
+      },
+      {
+       "titel": "Heisenbergsche Unschärferelation",
+       "absaetze": 6
+      },
+      {
+       "titel": "Quantenmechanik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 1
+      },
+      {
+       "titel": "Atomhülle",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Arthur Erich Haas",
+      "Demokrit",
+      "Isaac Newton",
+      "John Dalton",
+      "Nagaoka Hantarō",
+      "Niels Bohr",
+      "Werner Heisenberg"
+     ],
+     "uebersicht": "Atommodell",
+     "genannt": [
+      "Quantenmechanik",
+      "Elektronenhülle",
+      "Bohrsches Atommodell",
+      "Schrödinger-Gleichung",
+      "Atomkern",
+      "Welle-Teilchen-Dualismus",
+      "Unschärferelation",
+      "Quantenzahlen"
+     ],
+     "gefunden": [
+      "Liste der Atommodelle",
+      "Quantenmechanik",
+      "Atomhülle",
+      "Bohrsches Atommodell",
+      "Schrödingergleichung",
+      "Atomkern",
+      "Welle-Teilchen-Dualismus",
+      "Heisenbergsche Unschärferelation",
+      "Quantenzahl"
+     ],
+     "tokens_frage": 316,
+     "sekunden_frage": 0.6
+    }
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "wege": {
+    "R": {
+     "sekunden": 5.17,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 5
+      },
+      {
+       "titel": "Revolution",
+       "absaetze": 4
+      },
+      {
+       "titel": "Soziokulturelle Evolution",
+       "absaetze": 3
+      },
+      {
+       "titel": "Hochindustrialisierung in Deutschland",
+       "absaetze": 3
+      },
+      {
+       "titel": "Eisen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kapitalismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kohle",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "Paul J. Crutzen"
+     ]
+    },
+    "P": {
+     "sekunden": 5.17,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 5
+      },
+      {
+       "titel": "Revolution",
+       "absaetze": 4
+      },
+      {
+       "titel": "Soziokulturelle Evolution",
+       "absaetze": 3
+      },
+      {
+       "titel": "Hochindustrialisierung in Deutschland",
+       "absaetze": 3
+      },
+      {
+       "titel": "Eisen",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kapitalismus",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kohle",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "Paul J. Crutzen"
+     ],
+     "verfahren": {
+      "regeln": "Industrielle Revolution",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Revolution",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.36,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Stahl",
+       "absaetze": 12
+      },
+      {
+       "titel": "Textilindustrie",
+       "absaetze": 9
+      },
+      {
+       "titel": "Maschine",
+       "absaetze": 3
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kanalbau",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Friedrich Engels",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "James Watt",
+      "Paul J. Crutzen",
+      "Richard Arkwright"
+     ],
+     "uebersicht": "Industrielle_Revolution",
+     "genannt": [
+      "Maschine",
+      "James_Watt",
+      "Richard_Arkwright",
+      "Textilindustrie",
+      "Kohlebergbau",
+      "Stahl",
+      "Kanalbau",
+      "Friedrich_Engels"
+     ],
+     "gefunden": [
+      "Industrielle Revolution",
+      "Maschine",
+      "James Watt",
+      "Richard Arkwright",
+      "Textilindustrie",
+      "Stahl",
+      "Kanalbau",
+      "Friedrich Engels"
+     ],
+     "tokens_frage": 405,
+     "sekunden_frage": 1.07
+    },
+    "Q30": {
+     "sekunden": 1.11,
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Eisenbahn",
+       "absaetze": 13
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 8
+      },
+      {
+       "titel": "Arbeiterbewegung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Daniel Bell (Soziologe)",
+      "Eugene F. Stoermer",
+      "Georges Friedmann",
+      "Hartmut Hirsch-Kreinsen",
+      "Paul J. Crutzen"
+     ],
+     "uebersicht": "Industrielle Revolution",
+     "genannt": [
+      "Textilindustrie in der Industriellen Revolution",
+      "Dampfmaschine",
+      "Eisenbahn",
+      "Kohlebergbau",
+      "Fabriksystem",
+      "Arbeiterbewegung",
+      "Technologischer Wandel",
+      "Wirtschaftsgeschichte des 19. Jahrhunderts"
+     ],
+     "gefunden": [
+      "Industrielle Revolution",
+      "Dampfmaschine",
+      "Eisenbahn",
+      "Arbeiterbewegung"
+     ],
+     "tokens_frage": 326,
+     "sekunden_frage": 0.67
+    }
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "wege": {
+    "R": {
+     "sekunden": 6.34,
+     "hauptartikel": "Elektrischer Strom",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 12
+      },
+      {
+       "titel": "Elektrische Spannung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Gleichstrommaschine",
+       "absaetze": 4
+      },
+      {
+       "titel": "Stromquelle",
+       "absaetze": 2
+      },
+      {
+       "titel": "Stromnetz",
+       "absaetze": 2
+      },
+      {
+       "titel": "Strom",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wechselstrom",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Thales",
+      "Werner von Siemens"
+     ]
+    },
+    "P": {
+     "sekunden": 6.34,
+     "hauptartikel": "Elektrischer Strom",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 12
+      },
+      {
+       "titel": "Elektrische Spannung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Gleichstrommaschine",
+       "absaetze": 4
+      },
+      {
+       "titel": "Stromquelle",
+       "absaetze": 2
+      },
+      {
+       "titel": "Stromnetz",
+       "absaetze": 2
+      },
+      {
+       "titel": "Strom",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wechselstrom",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Thales",
+      "Werner von Siemens"
+     ],
+     "verfahren": {
+      "regeln": "Elektrischer Strom",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Strom",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.04,
+     "hauptartikel": "Elektrischer Strom",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 6
+      },
+      {
+       "titel": "Elektrischer Widerstand",
+       "absaetze": 6
+      },
+      {
+       "titel": "Elektrische Leitfähigkeit",
+       "absaetze": 5
+      },
+      {
+       "titel": "Elektrische Spannung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Elektrizität",
+       "absaetze": 2
+      },
+      {
+       "titel": "Elektromagnetische Wechselwirkung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Thales",
+      "Werner von Siemens"
+     ],
+     "uebersicht": "Elektrischer Strom",
+     "genannt": [
+      "Elektrodynamik",
+      "Elektromagnetismus",
+      "Elektrizität",
+      "Elektroenergie",
+      "Elektrischer Widerstand",
+      "Elektrische Spannung",
+      "Elektrischer Stromkreis",
+      "Elektrische Leitfähigkeit"
+     ],
+     "gefunden": [
+      "Elektrischer Strom",
+      "Elektrodynamik",
+      "Elektromagnetische Wechselwirkung",
+      "Elektrizität",
+      "Elektrische Energie",
+      "Elektrischer Widerstand",
+      "Elektrische Spannung",
+      "Stromkreis",
+      "Elektrische Leitfähigkeit"
+     ],
+     "tokens_frage": 354,
+     "sekunden_frage": 0.72
+    },
+    "Q30": {
+     "sekunden": 0.6,
+     "hauptartikel": "Elektrischer Strom",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 11
+      },
+      {
+       "titel": "Wechselstrom",
+       "absaetze": 5
+      },
+      {
+       "titel": "Elektrische Spannung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ohmsches Gesetz",
+       "absaetze": 4
+      },
+      {
+       "titel": "Elektrische Leistung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Elektrische Stromstärke",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Thales",
+      "Werner von Siemens"
+     ],
+     "uebersicht": "Elektrischer Strom",
+     "genannt": [
+      "Stromstärke",
+      "Elektrische Spannung",
+      "Widerstand",
+      "Ohmsches Gesetz",
+      "Gleichstrom",
+      "Wechselstrom",
+      "Elektrische Leistung",
+      "Stromkreis"
+     ],
+     "gefunden": [
+      "Elektrischer Strom",
+      "Elektrische Stromstärke",
+      "Elektrische Spannung",
+      "Ohmsches Gesetz",
+      "Gleichstrom",
+      "Wechselstrom",
+      "Elektrische Leistung",
+      "Stromkreis"
+     ],
+     "tokens_frage": 307,
+     "sekunden_frage": 0.59
+    }
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "wege": {
+    "R": {
+     "sekunden": 6.99,
+     "hauptartikel": "Wasserkreislauf",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 5
+      },
+      {
+       "titel": "Infiltration (Hydrogeologie)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Grundwasser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wasser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Eis",
+       "absaetze": 1
+      },
+      {
+       "titel": "Niederschlag",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Diogenes von Apollonia",
+      "Hippokrates von Kos",
+      "Hippon",
+      "Thales",
+      "Xenophanes"
+     ]
+    },
+    "P": {
+     "sekunden": 6.99,
+     "hauptartikel": "Wasserkreislauf",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 5
+      },
+      {
+       "titel": "Infiltration (Hydrogeologie)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Grundwasser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wasser",
+       "absaetze": 1
+      },
+      {
+       "titel": "Eis",
+       "absaetze": 1
+      },
+      {
+       "titel": "Niederschlag",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [
+      "Diogenes von Apollonia",
+      "Hippokrates von Kos",
+      "Hippon",
+      "Thales",
+      "Xenophanes"
+     ],
+     "verfahren": {
+      "regeln": "Wasserkreislauf",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Wasserkreislauf",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.11,
+     "hauptartikel": "Wasserkreislauf",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Abwasser",
+       "absaetze": 8
+      },
+      {
+       "titel": "Wasseraufbereitung",
+       "absaetze": 8
+      },
+      {
+       "titel": "Gewässerverschmutzung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 1
+      },
+      {
+       "titel": "Niederschlag",
+       "absaetze": 1
+      },
+      {
+       "titel": "Eiszeitalter",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Diogenes von Apollonia",
+      "Hippokrates von Kos",
+      "Xenophanes"
+     ],
+     "uebersicht": "Wasserkreislauf",
+     "genannt": [
+      "Hydrosphäre",
+      "Niederschlag",
+      "Eiszeitalter",
+      "Klimawandel",
+      "Wasserverschmutzung",
+      "Abwasser",
+      "Wasseraufbereitung",
+      "Schwemmholz"
+     ],
+     "gefunden": [
+      "Wasserkreislauf",
+      "Hydrosphäre",
+      "Niederschlag",
+      "Eiszeitalter",
+      "Klimawandel",
+      "Gewässerverschmutzung",
+      "Abwasser",
+      "Wasseraufbereitung"
+     ],
+     "tokens_frage": 343,
+     "sekunden_frage": 0.71
+    },
+    "Q30": {
+     "sekunden": 0.51,
+     "hauptartikel": "Wasserkreislauf",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Grundwasser",
+       "absaetze": 8
+      },
+      {
+       "titel": "Kondensation",
+       "absaetze": 6
+      },
+      {
+       "titel": "Abfluss",
+       "absaetze": 5
+      },
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 3
+      },
+      {
+       "titel": "Niederschlag",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Diogenes von Apollonia",
+      "Hippokrates von Kos",
+      "Thales",
+      "Xenophanes"
+     ],
+     "uebersicht": "Wasserkreislauf",
+     "genannt": [
+      "Hydrologischer Kreislauf",
+      "Evaporation",
+      "Kondensation",
+      "Niederschlag",
+      "Oberflächenabfluss",
+      "Untergrundabfluss",
+      "Grundwasser",
+      "Klimawandel und Wasserkreislauf"
+     ],
+     "gefunden": [
+      "Wasserkreislauf",
+      "Evaporation",
+      "Kondensation",
+      "Niederschlag",
+      "Abfluss",
+      "Grundwasser"
+     ],
+     "tokens_frage": 320,
+     "sekunden_frage": 0.56
+    }
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "wege": {
+    "R": {
+     "sekunden": 6.55,
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 10
+      },
+      {
+       "titel": "Wirtschaft im Römischen Reich",
+       "absaetze": 6
+      },
+      {
+       "titel": "Römische Königszeit",
+       "absaetze": 5
+      },
+      {
+       "titel": "Römische Republik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römisches Verfassungsrecht",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römisches Recht",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 13,
+     "personen": [
+      "Augustus",
+      "Marcus Tullius Cicero",
+      "Trajan"
+     ]
+    },
+    "P": {
+     "sekunden": 6.55,
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 10
+      },
+      {
+       "titel": "Wirtschaft im Römischen Reich",
+       "absaetze": 6
+      },
+      {
+       "titel": "Römische Königszeit",
+       "absaetze": 5
+      },
+      {
+       "titel": "Römische Republik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römisches Verfassungsrecht",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römisches Recht",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 13,
+     "personen": [
+      "Augustus",
+      "Marcus Tullius Cicero",
+      "Trajan"
+     ],
+     "verfahren": {
+      "regeln": "Römisches Reich",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Reich",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.93,
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Römische Legion",
+       "absaetze": 11
+      },
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 9
+      },
+      {
+       "titel": "Römisches Recht",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römische Republik",
+       "absaetze": 1
+      },
+      {
+       "titel": "Römische Kaiserzeit",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "personen": [
+      "Augustus",
+      "Marcus Tullius Cicero",
+      "Trajan"
+     ],
+     "uebersicht": "Römisches Reich",
+     "genannt": [
+      "Geschichte des Römischen Reiches",
+      "Römisches Königtum",
+      "Römische Republik",
+      "Römische Kaiserzeit",
+      "Römische Senatsversammlung",
+      "Römische Armee",
+      "Römisches Recht",
+      "Romische Architektur"
+     ],
+     "gefunden": [
+      "Römisches Reich",
+      "Römische Republik",
+      "Römische Kaiserzeit",
+      "Römische Legion",
+      "Römisches Recht"
+     ],
+     "tokens_frage": 361,
+     "sekunden_frage": 0.84
+    },
+    "Q30": {
+     "sekunden": 2.66,
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 9
+      },
+      {
+       "titel": "Spätantike",
+       "absaetze": 7
+      },
+      {
+       "titel": "Römische Republik",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "personen": [
+      "Augustus",
+      "Marcus Tullius Cicero",
+      "Trajan"
+     ],
+     "uebersicht": "Römisches Reich",
+     "genannt": [
+      "Römische Republik",
+      "Imperium Romanum",
+      "Kaiserzeit",
+      "Spätantike",
+      "Römische Armee",
+      "Römisches Recht",
+      "Römische Religion",
+      "Römische Architektur"
+     ],
+     "gefunden": [
+      "Römisches Reich",
+      "Römische Republik",
+      "Spätantike",
+      "Römische Legion",
+      "Römisches Recht",
+      "Römische Religion",
+      "Römische Architektur"
+     ],
+     "tokens_frage": 314,
+     "sekunden_frage": 0.54
+    }
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "wege": {
+    "R": {
+     "sekunden": 17.03,
+     "hauptartikel": "Lineare Funktion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Lineare Algebra",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lineare Abbildung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 4
+      },
+      {
+       "titel": "Konstante Funktion",
+       "absaetze": 1
+      },
+      {
+       "titel": "Funktionsgraph",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 17.03,
+     "hauptartikel": "Lineare Funktion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Lineare Algebra",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lineare Abbildung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 4
+      },
+      {
+       "titel": "Konstante Funktion",
+       "absaetze": 1
+      },
+      {
+       "titel": "Funktionsgraph",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Lineare Funktion",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Funktion",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.22,
+     "hauptartikel": "Lineare Funktion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Funktion (Mathematik)",
+       "absaetze": 12
+      },
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kleinsignalverhalten",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [],
+     "uebersicht": "Lineare Funktion",
+     "genannt": [
+      "Lineare Funktion",
+      "Gleichung (Mathematik)",
+      "Steigende Funktion",
+      "Fall (Mathematik)",
+      "Achsenabschnitt",
+      "Steigung",
+      "Lineare Approximation",
+      "Funktion (Mathematik)"
+     ],
+     "gefunden": [
+      "Lineare Funktion",
+      "Steigung",
+      "Kleinsignalverhalten",
+      "Funktion (Mathematik)"
+     ],
+     "tokens_frage": 327,
+     "sekunden_frage": 0.74
+    },
+    "Q30": {
+     "sekunden": 1.01,
+     "hauptartikel": "Lineare Funktion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Affine Abbildung",
+       "absaetze": 11
+      },
+      {
+       "titel": "Proportionalität",
+       "absaetze": 9
+      },
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 3
+      },
+      {
+       "titel": "Funktion (Mathematik)",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "personen": [],
+     "uebersicht": "Lineare Funktion",
+     "genannt": [
+      "Funktion (Mathematik)",
+      "Gerade (Mathematik)",
+      "Steigung (Mathematik)",
+      "Y-Achsenabschnitt",
+      "Lineare Gleichung",
+      "Proportionalität",
+      "Affine Abbildung",
+      "Graph einer Funktion"
+     ],
+     "gefunden": [
+      "Lineare Funktion",
+      "Funktion (Mathematik)",
+      "Y-Achsenabschnitt",
+      "Lineare Gleichung",
+      "Proportionalität",
+      "Affine Abbildung"
+     ],
+     "tokens_frage": 312,
+     "sekunden_frage": 0.68
+    }
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "wege": {
+    "R": {
+     "sekunden": 3.56,
+     "hauptartikel": "Zelle (Biologie)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Plastid",
+       "absaetze": 4
+      },
+      {
+       "titel": "Zellkern",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zelle",
+       "absaetze": 1
+      },
+      {
+       "titel": "Zellmembran",
+       "absaetze": 1
+      },
+      {
+       "titel": "Vakuole",
+       "absaetze": 1
+      },
+      {
+       "titel": "Protein",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": []
+    },
+    "P": {
+     "sekunden": 3.56,
+     "hauptartikel": "Zelle (Biologie)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Plastid",
+       "absaetze": 4
+      },
+      {
+       "titel": "Zellkern",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zelle",
+       "absaetze": 1
+      },
+      {
+       "titel": "Zellmembran",
+       "absaetze": 1
+      },
+      {
+       "titel": "Vakuole",
+       "absaetze": 1
+      },
+      {
+       "titel": "Protein",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [],
+     "verfahren": {
+      "regeln": "Zelle (Biologie)",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Zelle",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 0.66,
+     "hauptartikel": "Zelle (Biologie)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Eukaryoten",
+       "absaetze": 4
+      },
+      {
+       "titel": "Mitose",
+       "absaetze": 4
+      },
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Meiose",
+       "absaetze": 1
+      },
+      {
+       "titel": "Zellkern",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "personen": [],
+     "uebersicht": "Zelle (Biologie)",
+     "genannt": [
+      "Zellmembran",
+      "Zellkern",
+      "Zytoskelett",
+      "Mitose",
+      "Meiose",
+      "Zellteilung",
+      "Prokaryot",
+      "Eukaryot"
+     ],
+     "gefunden": [
+      "Zelle (Biologie)",
+      "Zellmembran",
+      "Zellkern",
+      "Cytoskelett",
+      "Mitose",
+      "Meiose",
+      "Zellteilung",
+      "Prokaryoten",
+      "Eukaryoten"
+     ],
+     "tokens_frage": 327,
+     "sekunden_frage": 0.58
+    },
+    "Q30": {
+     "sekunden": 0.8,
+     "hauptartikel": "Zelle (Biologie)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 5
+      },
+      {
+       "titel": "Zellkern",
+       "absaetze": 4
+      },
+      {
+       "titel": "Zellzyklus",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zellteilung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zellmembran",
+       "absaetze": 1
+      },
+      {
+       "titel": "Zellatmung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Ribosom",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [],
+     "uebersicht": "Zelle (Biologie)",
+     "genannt": [
+      "Zellmembran",
+      "Zellkern",
+      "Mitochondrien",
+      "Ribosomen",
+      "Zellzyklus",
+      "Zellatmung",
+      "Zellteilung",
+      "Prokaryotische Zelle"
+     ],
+     "gefunden": [
+      "Zelle (Biologie)",
+      "Zellmembran",
+      "Zellkern",
+      "Mitochondrium",
+      "Ribosom",
+      "Zellzyklus",
+      "Zellatmung",
+      "Zellteilung"
+     ],
+     "tokens_frage": 310,
+     "sekunden_frage": 0.55
+    }
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "wege": {
+    "R": {
+     "sekunden": 2.66,
+     "hauptartikel": "Lyrik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Naturlyrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kinderlyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liebeslyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Politische Lyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Der siebente Ring",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kanon der neun Lyriker",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wechsel (Lyrik)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Antonio Machado (Lyriker)",
+      "Aristoteles",
+      "Friedrich Gottlieb Klopstock",
+      "Friedrich Hölderlin",
+      "Johann Wolfgang von Goethe",
+      "Martin Opitz",
+      "Novalis"
+     ]
+    },
+    "P": {
+     "sekunden": 2.66,
+     "hauptartikel": "Lyrik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Naturlyrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 2
+      },
+      {
+       "titel": "Kinderlyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Liebeslyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Politische Lyrik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Der siebente Ring",
+       "absaetze": 1
+      },
+      {
+       "titel": "Kanon der neun Lyriker",
+       "absaetze": 1
+      },
+      {
+       "titel": "Wechsel (Lyrik)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "personen": [
+      "Antonio Machado (Lyriker)",
+      "Aristoteles",
+      "Friedrich Gottlieb Klopstock",
+      "Friedrich Hölderlin",
+      "Johann Wolfgang von Goethe",
+      "Martin Opitz",
+      "Novalis"
+     ],
+     "verfahren": {
+      "regeln": "Lyrik",
+      "regeln_methode": "title",
+      "mehrzahl": false,
+      "verbindung": false,
+      "kopf": "Gedicht",
+      "grund": "Regeln sicher, kein Sammelthema",
+      "sekunden": 0.0
+     },
+     "titel": []
+    },
+    "L8": {
+     "sekunden": 1.16,
+     "hauptartikel": "Lyrik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Metapher",
+       "absaetze": 12
+      },
+      {
+       "titel": "Lyrik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Rainer Maria Rilke",
+       "absaetze": 4
+      },
+      {
+       "titel": "Walter Benjamin",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 10,
+     "personen": [
+      "Aristoteles",
+      "Friedrich Gottlieb Klopstock",
+      "Friedrich Hölderlin",
+      "Johann Wolfgang von Goethe",
+      "Martin Opitz",
+      "Novalis",
+      "Rainer Maria Rilke",
+      "Walter Benjamin"
+     ],
+     "uebersicht": "Gedicht",
+     "genannt": [
+      "Geschichte des Gedichts",
+      "Lyrik",
+      "Dichter",
+      "Gedichtform",
+      "Metapher",
+      "Symbolismus",
+      "Walter Benjamin",
+      "Rainer Maria Rilke"
+     ],
+     "gefunden": [
+      "Lyrik",
+      "Dichter",
+      "Gedichtmaß",
+      "Metapher",
+      "Walter Benjamin",
+      "Rainer Maria Rilke"
+     ],
+     "tokens_frage": 332,
+     "sekunden_frage": 0.58
+    },
+    "Q30": {
+     "sekunden": 0.52,
+     "hauptartikel": "Lyrik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Reim",
+       "absaetze": 4
+      },
+      {
+       "titel": "Vers",
+       "absaetze": 2
+      },
+      {
+       "titel": "Strophe",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "personen": [
+      "Aristoteles",
+      "Friedrich Gottlieb Klopstock",
+      "Friedrich Hölderlin",
+      "Johann Wolfgang von Goethe",
+      "Martin Opitz",
+      "Novalis"
+     ],
+     "uebersicht": "Gedicht",
+     "genannt": [
+      "Lyrik",
+      "Gedichtform",
+      "Reim",
+      "Metrum",
+      "Strophe",
+      "Vers",
+      "Sprache im Gedicht",
+      "Gedichtanalyse"
+     ],
+     "gefunden": [
+      "Lyrik",
+      "Gedichtmaß",
+      "Reim",
+      "Strophe",
+      "Vers",
+      "Gedichtinterpretation"
+     ],
+     "tokens_frage": 292,
+     "sekunden_frage": 0.47
+    }
+   }
+  }
+ ]
+}

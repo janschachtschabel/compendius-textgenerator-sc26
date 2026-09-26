@@ -1841,3 +1841,72 @@ Claude-Subagenten.
 
 Rohdaten: `m37_sammelthemen.json` und `m37_kontrolle.json` (je Thema und Weg Hauptartikel, gedruckte Artikel mit
 Absatzzahl, Personen des Akteursblocks, genannte und gefundene Titel, Tokens und Sekunden; keine Artikeltexte).
+
+## M38 Sammelthemen ohne großes LLM (26.09.2026)
+
+Jan: `llm-free` bleibt ohne LLM, aber kann eine Entitätenerkennung mit spaCy oder ein anderes Verfahren ohne LLM
+mehr passende Artikel zuordnen? Kann ein kleines, schnelles Modell die Lücke schließen, in höchstens 2 bis 3 s? Die
+Frage N von M37 soll ab `balanced` in alle höheren Profile; erst prüfen, ob sie ein großes LLM braucht.
+
+Zuerst zwei Sonden im Entwicklungscontainer, der als einziger das spaCy-Modell hat. Die Entitätenerkennung findet in
+den Themen fast nichts: in „deutsche Dichter“ nur „deutsche“ (MISC), in „Philosophen der Aufklärung“ gar nichts - ein
+Sammelthema ist keine Entität. Der Parse dagegen liefert Kopfnomen und Bezug (*Planeten* → Planet, *des
+Sonnensystems*), und die Links des passenden Artikels tragen die Mitglieder (*Romantik* verlinkt Tieck, Hölderlin,
+Heine). Die Volltextsuche des Archivs findet in 0,2 bis 0,6 s oft eine bessere Übersicht als die Regeln (*Wiener
+Klassik*, *Nobelpreis für Physik*), aber keine Mitglieder. Daraus der Weg P; daneben die Frage N wortgleich an zwei
+kleine Modelle der b-api. `mc_sammelthemen_ohne_llm.py` stellt dieselben 25 Sammelthemen und 20 gewöhnlichen Themen
+wie M37 durch Teil 1, im Container und wie M37 ohne Model2Vec in der Zuordnung:
+
+- R: `llm-free` wie heute - druckt in allen 45 Themen dasselbe wie in M37, die Noten von M37 gelten also weiter;
+- P, ohne LLM: spaCy zerlegt das Thema; Kandidaten für die Übersicht sind der sichere Artikel der Regeln, sonst der
+  Artikel des Bezugsworts, zwei Volltexttreffer ohne Klammerzusatz und die Listenseite der Regeln; gewählt wird der,
+  dessen erste 60 Links die meisten Artikel mit dem Kopfnomen im ersten Absatz tragen (gelesen ohne den ganzen
+  Artikel zu zerlegen), und diese Artikel sind die Teile; bei einer Verbindung zweier Themen die Links, die beide
+  Hälften teilen. P greift nur, wo die Regeln unsicher sind, auf einer Liste landen, das Kopfnomen in der Mehrzahl
+  steht oder zwei Themen verbunden sind;
+- L8 und Q30: die Frage N an `meta-llama-3.1-8b-instruct` und `qwen3-30b-a3b-instruct-2507` (academiccloud über die
+  b-api; Q30 ist ein Mixture-of-Experts-Modell mit rund 3 Mrd. aktiven Parametern); die genannten Titel nachgeschlagen
+  wie in M37. Nennt ein Modell keinen Artikel des Archivs, zählt der Rückfall auf `balanced` von heute.
+
+Die 181 Artikel, die erst diese Wege druckten, benoteten zwei weitere Claude-Subagenten blind mit der Skala von M37
+(`eval/sammelthemen/`, an die Noten von M37 angehängt): bei den Sammelthemen gleiche Note bei 99 % (Cohens Kappa
+0,99), bei den gewöhnlichen Themen bei 76 % (Kappa 0,60; der zweite Gutachter gab neun Artikeln, die der erste zum
+Thema zählte, nur „verwandt“). In Klammern die Werte mit den zweiten Noten.
+
+| Weg | 25 Sammel- und Mischthemen | brauchbar | 20 gewöhnliche Themen | brauchbar | Zeit für die Artikel |
+|---|---|---|---|---|---|
+| R `llm-free` heute | 43 % (41 %) | 11 (10) | 71 % (69 %) | 16 (16) | – |
+| B `balanced` heute (M37) | 45 % (45 %) | 10 (10) | 73 % (71 %) | 18 (18) | – |
+| N `gpt-6-luna` (M37) | 87 % (87 %) | 21 (21) | 93 % (92 %) | 19 (19) | 3,5 s, 493 Tokens |
+| P ohne LLM | 38 % (38 %) | 9 (9) | 71 % (69 %) | 16 (16) | im Median 3,1 s, bis 8,2 s |
+| L8 `meta-llama-3.1-8b-instruct` | 63 % (63 %) | 15 (15) | 63 % (59 %) | 13 (12) | 0,67 s, 337 Tokens |
+| Q30 `qwen3-30b-a3b-instruct-2507` | 88 % (88 %) | 24 (23) | 83 % (75 %) | 17 (15) | 0,60 s, 311 Tokens |
+
+Anteil der gedruckten Absätze aus Artikeln mit Note 2; brauchbar, wo es mindestens die Hälfte ist. Nach Art der
+Sammelthemen (erste Noten): mit eigenem Artikel R 48, N 98, P 38, L8 78, Q30 100 %; Gruppen R 43, N 93, P 51, L8 67,
+Q30 88 %; Verbindungen R 24, N 53, P 8, L8 14, Q30 62 %.
+
+P bleibt unter den Regeln (38 statt 43 %) und über dem Zeitrahmen: Bei 13 der 23 Sammelthemen, bei denen es greift,
+braucht es mehr als 3 s, weil es viele erste Absätze liest. Ohne Wissen darüber, wer wichtig ist, nimmt es die Links in
+der Reihenfolge ihrer Seite - bei „deutsche Dichter“ Minnesänger vor Goethe, bei den Malern des Impressionismus
+australische Maler einer Länderliste -, das Kopfnomen lässt Begriffe durch („philosoph“ steckt in *Philosophie*,
+„Planet“ im ersten Satz jedes Mondes), und die Volltextsuche bevorzugt Titel, die die Wörter tragen (*Deutsches
+Dichter-Album*, *Bundeskanzler-Helmut-Kohl-Stiftung*). Bei gewöhnlichen Themen greift P nur zweimal und ändert fast
+nichts. L8 nennt oft passende Vertreter, aber auch Nebenartikel und bei zwei gewöhnlichen Themen gar kein lesbares
+JSON (3,7 und 5,4 s); an gewöhnlichen Themen liegt es unter heute. Q30 erreicht an den Sammelthemen N, bei 24 statt
+21 brauchbaren Kompendien, in einem Sechstel der Zeit; bei zwei Themen erfand es alle Titel („Vulkanismus in
+Europa“, „Frauen in der mittelalterlichen Gesellschaft“), dort zählt der Rückfall. An den gewöhnlichen Themen liegt
+es zwischen heute und N (83 oder 75 %, je nach Gutachter, gegen 93 %). Einmal antwortete academiccloud im Lauf mit
+429 (Rate-Limit) auf beide kleinen Modelle; die Frage wurde fünf Sekunden später wiederholt (0,65 s).
+
+**Ergebnis:** Ohne LLM lässt sich die Wirkung von N nicht erreichen - weder mit der Entitätenerkennung von spaCy
+noch mit Parse und Archivstruktur; `llm-free` bleibt, wie es ist. Ein kleines, schnelles Modell reicht bei
+Sammelthemen: `qwen3-30b-a3b-instruct-2507` beantwortet die Frage N in 0,6 statt 3,5 s ebenso gut, bei gewöhnlichen
+Themen etwas schwächer als `gpt-6-luna`. Das 8B-Modell reicht nicht. Im Dienst selbst, auf der CPU, wären 2 bis 3 s
+für rund 150 Ausgabetokens bei keinem der beiden zu erwarten (geschätzt, nicht gemessen; Q30 braucht dazu gut 17 GB
+Speicher schon in 4-Bit-Quantisierung) - beide laufen hier auf den Rechnern von academiccloud. Grenzen: Die Themen hat Claude gewählt, die Gutachter sind Claude-Subagenten, die neuen Noten stammen von
+anderen Subagenten als die von M37, und academiccloud ist ein zweiter Anbieter mit eigenem Rate-Limit.
+
+Rohdaten: `m38_sammelthemen.json` und `m38_kontrolle.json` (je Thema und Weg Hauptartikel, gedruckte Artikel mit
+Absatzzahl, für P Kandidaten und gewählte Titel, für die Modelle genannte und gefundene Titel, Tokens und Sekunden;
+keine Artikeltexte).

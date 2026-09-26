@@ -8,6 +8,9 @@
 # 1: verwandt - Hintergrund, Nachbarthema, das weitere Fachgebiet oder ein direkter Oberbegriff, ein einzelnes Beispiel.
 # 0: unpassend - andere Bedeutung, fremdes Thema, Zufallstreffer.
 # Die Artikeltexte stehen nicht hier: Die Messung liest sie aus dem Archiv.
+# Dazu seit M38 (docs/entwicklung/messung/mc_sammelthemen_ohne_llm.py): 59 Paare, die erst die Wege ohne
+# großes LLM druckten (P: Parse und Archiv; L8, Q30: die Frage N an kleine Modelle), benotet am 26.09.2026 von
+# einem weiteren Claude-Subagenten, der rückwärts las, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 38).
 version: 1
 noten:
 - thema: Barockliteratur
@@ -709,3 +712,180 @@ noten:
 - thema: Gedicht
   artikel: Vers
   note: 2
+- thema: Barockliteratur
+  artikel: Johann Christoph Gottsched
+  note: 1
+- thema: Barockliteratur
+  artikel: Johann Wolfgang von Goethe
+  note: 0
+- thema: Barockliteratur
+  artikel: Daniel Casper von Lohenstein
+  note: 1
+- thema: Barockliteratur
+  artikel: Barocktheater
+  note: 1
+- thema: Barockliteratur
+  artikel: Schauspiel
+  note: 1
+- thema: Barockliteratur
+  artikel: Friedrich von Logau
+  note: 1
+- thema: Barockliteratur
+  artikel: Johann Rist
+  note: 1
+- thema: Bruchrechnung
+  artikel: Geteiltzeichen
+  note: 1
+- thema: Bruchrechnung
+  artikel: Division mit Rest
+  note: 1
+- thema: Demokratie
+  artikel: Demokratie in der Schweiz
+  note: 1
+- thema: Demokratie
+  artikel: Partizipatorische Demokratie
+  note: 1
+- thema: Französische Revolution
+  artikel: Guillotine (1949)
+  note: 0
+- thema: Französische Revolution
+  artikel: Jean Paul Marat
+  note: 1
+- thema: Französische Revolution
+  artikel: Nationalversammlung (Frankreich)
+  note: 0
+- thema: Französische Revolution
+  artikel: Kanonade von Valmy
+  note: 1
+- thema: Optik
+  artikel: Linse (Optik)
+  note: 2
+- thema: Optik
+  artikel: Polarisation
+  note: 2
+- thema: Optik
+  artikel: Spiegel
+  note: 2
+- thema: Photosynthese
+  artikel: Sauerstoff
+  note: 1
+- thema: Photosynthese
+  artikel: Zucker
+  note: 1
+- thema: Programmiersprache
+  artikel: Liste von Programmiersprachen
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Säure-Base-Titration
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Puffer (Chemie)
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Indikator (Chemie)
+  note: 1
+- thema: Plattentektonik
+  artikel: Ozeanische Erdkruste
+  note: 2
+- thema: Plattentektonik
+  artikel: Erdmantel
+  note: 2
+- thema: Plattentektonik
+  artikel: Mantel
+  note: 0
+- thema: Plattentektonik
+  artikel: Subduktion
+  note: 2
+- thema: Plattentektonik
+  artikel: Erdkruste
+  note: 2
+- thema: Plattentektonik
+  artikel: Geodynamik
+  note: 1
+- thema: Atommodell
+  artikel: Welle-Teilchen-Dualismus
+  note: 1
+- thema: Atommodell
+  artikel: Schalenmodell (Atomphysik)
+  note: 2
+- thema: Atommodell
+  artikel: Atomhülle
+  note: 2
+- thema: Atommodell
+  artikel: Thomas-Fermi-Modell
+  note: 1
+- thema: Atommodell
+  artikel: Niels Bohr
+  note: 1
+- thema: Atommodell
+  artikel: Heisenbergsche Unschärferelation
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Kanalbau
+  note: 0
+- thema: Industrielle Revolution
+  artikel: Maschine
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Stahl
+  note: 1
+- thema: Industrielle Revolution
+  artikel: Arbeiterbewegung
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Elektrische Leitfähigkeit
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Elektrische Stromstärke
+  note: 2
+- thema: Elektrischer Strom
+  artikel: Elektrische Leistung
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektrizität
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektromagnetische Wechselwirkung
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Wasseraufbereitung
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Eiszeitalter
+  note: 0
+- thema: Wasserkreislauf
+  artikel: Gewässerverschmutzung
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Abwasser
+  note: 1
+- thema: Lineare Funktion
+  artikel: Kleinsignalverhalten
+  note: 0
+- thema: Zelle (Biologie)
+  artikel: Zellatmung
+  note: 1
+- thema: Zelle (Biologie)
+  artikel: Mitose
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Meiose
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Ribosom
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zellzyklus
+  note: 2
+- thema: Zelle (Biologie)
+  artikel: Zellteilung
+  note: 2
+- thema: Gedicht
+  artikel: Metapher
+  note: 1
+- thema: Gedicht
+  artikel: Rainer Maria Rilke
+  note: 1
+- thema: Gedicht
+  artikel: Walter Benjamin
+  note: 0

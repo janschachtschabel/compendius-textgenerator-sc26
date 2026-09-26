@@ -500,7 +500,10 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
    819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
    `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
-9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37), zu entscheiden.
+9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37, M38), im Grundsatz entschieden (Jan, 26.09.2026):
+   `llm-free` bleibt ohne LLM, die neue Frage N kommt ab `balanced` in alle höheren Profile (Option C). Vorher zu
+   prüfen war, ob ihre Wirkung ohne großes LLM erreichbar ist - das Ergebnis steht am Ende dieses Punkts; offen ist
+   nur noch, welches Modell die Frage stellt.
 
    *Was heute geschieht.* Der Dienst sucht zu jedem Thema genau einen Hauptartikel - über den Titel (genau, gebeugt,
    als Weiterleitung, über eine Begriffsklärung), sonst über Titelvorschläge und die Volltextsuche - und baut um ihn
@@ -571,6 +574,33 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    je Kompendium und spart Tokens. Vor dem Bau zu prüfen: die Artikelwahl an den fünf Gold-Anfragen, bei denen N den
    Hauptartikel ersetzen würde, und die Zuordnung am Gold (macro-F1), deren Absätze aus dem heutigen Korpus stammen.
    Sind die 2 s in `balanced` zu viel, bleibt D.
+
+   *Geht es ohne großes LLM? (M38)* Jan entschied C, fragte aber zuerst, ob spaCy, ein anderes Verfahren ohne LLM oder
+   ein kleines, schnelles Modell (höchstens 2 bis 3 s) dieselbe Wirkung erreicht. Gemessen an denselben Themen und mit
+   derselben Skala:
+
+   | Weg | Sammelthemen | gewöhnliche Themen | Zeit für die Artikel |
+   |---|---|---|---|
+   | heute (`llm-free` / `balanced`) | 43 / 45 % | 71 / 73 % | – |
+   | ohne LLM: spaCy-Parse und Links des Archivs | 38 % | 71 % | im Median 3,1 s, bis 8,2 s |
+   | N mit `meta-llama-3.1-8b-instruct` | 63 % | 63 % | 0,7 s |
+   | N mit `qwen3-30b-a3b-instruct-2507` | 88 % | 83 % (zweite Noten 75 %) | 0,6 s |
+   | N mit `gpt-6-luna` (M37) | 87 % | 93 % | 3,5 s |
+
+   Die Entitätenerkennung von spaCy findet in einem Sammelthema fast nichts („deutsche“ in „deutsche Dichter“). Parse
+   und Archivstruktur finden die Teile nicht: Ohne Wissen darüber, wer wichtig ist, nehmen sie die Links in der
+   Reihenfolge der Seite (bei „deutsche Dichter“ Minnesänger vor Goethe), und das Lesen vieler Einleitungen sprengt
+   den Zeitrahmen. `llm-free` bleibt deshalb, wie es ist. Ein kleines Modell reicht bei Sammelthemen:
+   `qwen3-30b-a3b-instruct-2507` (academiccloud über die b-api, rund 3 Mrd. aktive Parameter) beantwortet die Frage in
+   0,6 s ebenso gut wie `gpt-6-luna` in 3,5 s, erfand aber bei zwei Themen alle Titel (dann zählt der Rückfall) und
+   liegt bei gewöhnlichen Themen zwischen heute und `gpt-6-luna`. Das 8B-Modell reicht nicht.
+
+   Offen: Wer stellt die Frage N? (a) das konfigurierte Modell (`gpt-6-luna`) in allen drei Profilen - beste Güte bei
+   gewöhnlichen Themen, ein Anbieter, `balanced` rund 2 s langsamer als heute; (b) `qwen3-30b-a3b-instruct-2507` in
+   `balanced`, `gpt-6-luna` in den `best-quality`-Profilen - `balanced` dann eher schneller als heute (die Frage
+   ersetzt die Prüfung der Nebenartikel), aber ein zweiter Anbieter mit eigenem Rate-Limit (im Lauf einmal 429) und
+   eine zweite Modell-Einstellung. Vorschlag: (a), weil die gewöhnlichen Themen die meisten Anfragen sind und dort
+   `gpt-6-luna` klar vorn liegt; (b) als spätere Beschleunigung, wenn academiccloud die Last trägt.
 10. **Profile für `/entities`:** entschieden und gebaut (D62, Jan: „angemessene Zuordnung der Methoden auf die
     Profile gemäß der Ergebnisse“). Der Endpunkt erkannte ohne LLM (spaCy und ein Wörterbuch der Artikeltitel) und
     nahm kein Profil. An den Texten von 40 echten Materialien kommt das auf F1 0,38 bei einer Präzision von 0,29: Das

@@ -8,6 +8,9 @@
 # 1: verwandt - Hintergrund, Nachbarthema, nur eine Hälfte eines verbundenen Themas, das weitere Fachgebiet.
 # 0: unpassend - andere Bedeutung, fremdes Thema, Zufallstreffer.
 # Die Artikeltexte stehen nicht hier: Die Messung liest sie aus dem Archiv.
+# Dazu seit M38 (docs/entwicklung/messung/mc_sammelthemen_ohne_llm.py): 122 Paare, die erst die Wege ohne
+# großes LLM druckten (P: Parse und Archiv; L8, Q30: die Frage N an kleine Modelle), benotet am 26.09.2026 von
+# einem weiteren Claude-Subagenten, der rückwärts las, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 38).
 version: 1
 noten:
 - thema: deutsche Dichter
@@ -876,4 +879,370 @@ noten:
   note: 2
 - thema: Musik der Romantik
   artikel: Musik der Romantik
+  note: 2
+- thema: deutsche Dichter
+  artikel: Meinloh von Sevelingen
+  note: 2
+- thema: deutsche Dichter
+  artikel: Friedrich von Sonnenburg
+  note: 2
+- thema: deutsche Dichter
+  artikel: Der von Kürenberg
+  note: 2
+- thema: deutsche Dichter
+  artikel: Der Marner
+  note: 2
+- thema: deutsche Dichter
+  artikel: Friedrich Hölderlin
+  note: 2
+- thema: deutsche Dichter
+  artikel: Deutsches Dichter-Album
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Walter Scott
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Friedrich Schiller
+  note: 1
+- thema: Dichter der Romantik
+  artikel: E. T. A. Hoffmann
+  note: 2
+- thema: Dichter der Romantik
+  artikel: Friedrich Hölderlin
+  note: 1
+- thema: Dichter der Romantik
+  artikel: William Wordsworth
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Johann Mattheson
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: Klassische Musik
+  note: 2
+- thema: Komponisten der Klassik
+  artikel: Johann Christian Bach
+  note: 2
+- thema: Philosophen der Aufklärung
+  artikel: Vorurteil
+  note: 1
+- thema: Philosophen der Aufklärung
+  artikel: Toleranz
+  note: 1
+- thema: Maler des Impressionismus
+  artikel: Hippolyte Boulenger
+  note: 1
+- thema: Maler des Impressionismus
+  artikel: Amsterdamer Impressionismus
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Évariste Carpentier
+  note: 1
+- thema: Maler des Impressionismus
+  artikel: Paul Cézanne
+  note: 2
+- thema: Maler des Impressionismus
+  artikel: Charles Conder
+  note: 2
+- thema: römische Kaiser
+  artikel: Vespasian
+  note: 2
+- thema: römische Kaiser
+  artikel: Romulus Augustulus
+  note: 2
+- thema: römische Kaiser
+  artikel: Lucius Verus
+  note: 2
+- thema: römische Kaiser
+  artikel: Caesar (Cognomen)
+  note: 1
+- thema: römische Kaiser
+  artikel: Römisch-deutscher Kaiser
+  note: 0
+- thema: römische Kaiser
+  artikel: Caligula
+  note: 2
+- thema: römische Kaiser
+  artikel: Konstantin der Große
+  note: 2
+- thema: römische Kaiser
+  artikel: Tiberius
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzler-Helmut-Kohl-Stiftung
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Angela Merkel
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Helmut Schmidt
+  note: 2
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzleramt (Berlin)
+  note: 1
+- thema: deutsche Bundeskanzler
+  artikel: Bundeskanzler-Willy-Brandt-Stiftung
+  note: 1
+- thema: griechische Götter
+  artikel: Hera
+  note: 2
+- thema: griechische Götter
+  artikel: Hades
+  note: 2
+- thema: griechische Götter
+  artikel: Hermes
+  note: 2
+- thema: griechische Götter
+  artikel: Ares
+  note: 2
+- thema: griechische Götter
+  artikel: Poseidon
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: Innere und äußere Planeten
+  note: 2
+- thema: Planeten des Sonnensystems
+  artikel: (4) Vesta
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Asteroidengürtel
+  note: 1
+- thema: Planeten des Sonnensystems
+  artikel: Mond
+  note: 1
+- thema: Edelgase
+  artikel: Osmium
+  note: 0
+- thema: Edelgase
+  artikel: Rhenium
+  note: 0
+- thema: Edelgase
+  artikel: Ruthenium
+  note: 0
+- thema: Edelgase
+  artikel: Rhodium
+  note: 0
+- thema: Edelgase
+  artikel: Iridium
+  note: 0
+- thema: Weltreligionen
+  artikel: Judentum
+  note: 2
+- thema: erneuerbare Energien
+  artikel: Fossile Energie
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Energieversorgung
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Energiequelle
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Energiepolitik
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Maschine
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Erfindung
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Maschinenbau
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Stahlerzeugung
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Industriegeschichte
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Kohle
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Stahl
+  note: 1
+- thema: Erfindungen der Industrialisierung
+  artikel: Karl Marx
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Max von Laue
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Warnung der Wissenschaftler an die Menschheit
+  note: 0
+- thema: Nobelpreisträger für Physik
+  artikel: Ferdinand Braun
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Ada Lovelace
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Frauen in der Informatik
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Fraunhofer-Gesellschaft
+  note: 0
+- thema: Frauen in der Wissenschaft
+  artikel: Christiane Nüsslein-Volhard
+  note: 2
+- thema: Frauen in der Wissenschaft
+  artikel: Frauen in der Philosophie
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Von dem Machandelboom
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Vom Fischer und seiner Frau
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Von dem Mäuschen, Vögelchen und der Bratwurst
+  note: 2
+- thema: Märchen der Brüder Grimm
+  artikel: Deutsche Sprache
+  note: 0
+- thema: Märchen der Brüder Grimm
+  artikel: Kinder- und Jugendliteratur
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Volksmärchen
+  note: 1
+- thema: Märchen der Brüder Grimm
+  artikel: Von dem Tode des Hühnchens
+  note: 2
+- thema: deutsche Flüsse
+  artikel: '*þeudiskaz'
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Hyaenodonta
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Oxyaenodonta
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Eichhörnchen
+  note: 2
+- thema: Säugetiere des Waldes
+  artikel: Mesonychia
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Bären
+  note: 2
+- thema: Säugetiere des Waldes
+  artikel: Rothirsch
+  note: 2
+- thema: Säugetiere des Waldes
+  artikel: Waldmaus
+  note: 2
+- thema: Säugetiere des Waldes
+  artikel: Miacis
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Hausschwein
+  note: 1
+- thema: Vulkane Europas
+  artikel: Maar
+  note: 1
+- thema: Vulkane Europas
+  artikel: Schichtvulkan
+  note: 1
+- thema: Vulkane Europas
+  artikel: Schildvulkan
+  note: 1
+- thema: Vulkane Europas
+  artikel: Vulkanausbruch
+  note: 1
+- thema: Vulkane Europas
+  artikel: Lavadom
+  note: 1
+- thema: Vulkane Europas
+  artikel: Vulkan
+  note: 1
+- thema: Vulkane Europas
+  artikel: Santorin
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Vasco da Gama
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Francis Drake
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Hernán Cortés
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Juan Sebastián Elcano
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Alexander von Humboldt
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Francisco Pizarro
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: James Cook
+  note: 2
+- thema: Entdecker der Neuzeit
+  artikel: Diego Velázquez
+  note: 0
+- thema: Klimawandel und Landwirtschaft
+  artikel: Anthropogen
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Treibhausgas
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Mittelalter
+  note: 0
+- thema: Mathematik in der Musik
+  artikel: Harmonik
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Mesopotamien
+  note: 0
+- thema: Mathematik in der Musik
+  artikel: Mathematik
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Altgriechische Sprache
+  note: 0
+- thema: Mathematik in der Musik
+  artikel: Neuzeit
+  note: 0
+- thema: Mathematik in der Musik
+  artikel: Stimmung (Musik)
+  note: 2
+- thema: Mathematik in der Musik
+  artikel: Musik
+  note: 1
+- thema: Mathematik in der Musik
+  artikel: Logik
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Deutsche Nationalbibliothek
+  note: 0
+- thema: Chemie im Alltag
+  artikel: Luftqualität
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Gemeinsame Normdatei
+  note: 0
+- thema: Frauen im Mittelalter
+  artikel: Hortus Deliciarum
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: The Dinner Party
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Kanonissin
+  note: 2
+- thema: Frauen im Mittelalter
+  artikel: Frau
+  note: 1
+- thema: Frauen im Mittelalter
+  artikel: Feminismus
+  note: 1
+- thema: Musik der Romantik
+  artikel: Felix Mendelssohn Bartholdy
+  note: 2
+- thema: Musik der Romantik
+  artikel: Richard Wagner
   note: 2
