@@ -21,14 +21,16 @@ from app.synthesis.citations import marker_numbers
 if TYPE_CHECKING:
     from app.templates.schema import Template
 
+# A heading starts a line and a marker or a row stays on its own: unanchored, "### " over and over, or a row without
+# its closing bracket, made every try read to the end of an earlier compendium sent along (review of D60)
 SECTION_RE = re.compile(
-    r"### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ ]+)"
-    r"(?: facets=\"(?P<facets>[^\"]*)\")? hash=(?P<hash>[0-9a-f]+) -->\n\n(?P<text>.*?)(?=\n### |\n## |\Z)",
-    re.DOTALL,
+    r"^### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ \n]+)"
+    r"(?: facets=\"(?P<facets>[^\"\n]*)\")? hash=(?P<hash>[0-9a-f]+) -->\n\n(?P<text>.*?)(?=\n### |\n## |\Z)",
+    re.DOTALL | re.MULTILINE,
 )
 ROW_RE = re.compile(
-    r"^\| \[(?P<number>\d+)\] \| \[(?P<title>[^\]]*)\]\((?P<url>[^)]*)\) \| (?P<heading>[^|]*) "
-    r"\| (?P<snippet>[^|]*) \|$",
+    r"^\| \[(?P<number>\d+)\] \| \[(?P<title>[^\]\n]*)\]\((?P<url>[^)\n]*)\) \| (?P<heading>[^|\n]*) "
+    r"\| (?P<snippet>[^|\n]*) \|$",
     re.MULTILINE,
 )
 

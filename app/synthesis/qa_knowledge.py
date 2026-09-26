@@ -76,9 +76,10 @@ def knowledge_of_text(text: str) -> Knowledge:
     is the one the heading names. An empty block is no prose, though it may carry a note saying so; a compendium
     whose blocks all came out empty holds nothing to ask, like a topic without texts (review of D60).
     """
-    sections = [section for section in parse_document(text).values() if section.text.strip()]
-    if not sections:
+    parsed = parse_document(text)
+    if not parsed:
         return Knowledge(text=text)
+    sections = [section for section in parsed.values() if section.text.strip()]  # a compendium, blank blocks or not
     prose = [section.text.strip() for section in sections if section.status not in _NO_PROSE]
     generated = [section.text for section in sections if section.status is SectionStatus.GENERATED]
     title = _TITLE.search(text)

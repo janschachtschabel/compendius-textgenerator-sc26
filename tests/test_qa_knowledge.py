@@ -7,22 +7,11 @@ block fed the rules year questions from literature lines, and the glossary and a
 
 from __future__ import annotations
 
-import time
-
-import pytest
-
-from app.api.v2.qa_schemas import MAX_TEXT_CHARS
 from app.compose.assembler import EMPTY_SECTION_TEXT
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.qa_knowledge import knowledge_of_compendium, knowledge_of_text
-from app.synthesis.qa_rules import actor_candidates, glossary_candidates
-
-PROSE = "Die Optik ist ein Teilgebiet der Physik."
-GLOSSARY_ROW = "| **Optik** | Die Optik ist ein Teilgebiet. | `skos:related` |"
-# Reading the longest text a caller may send is linear work of milliseconds; the patterns the review of D60 found
-# backtracked on a long run of blanks - seconds before a bracket or in the prose, hours inside a glossary row
-BUDGET_S = 1.0
+from tests.qa_texts import GLOSSARY_ROW, PROSE, block, compendium_markdown
 
 
 def test_a_compendium_sent_as_text_is_read_as_the_compendium_it_is(service: CompendiumService) -> None:
@@ -40,69 +29,23 @@ def test_any_other_text_is_asked_as_it_is() -> None:
     assert (knowledge.text, knowledge.glossary, knowledge.actors, knowledge.topic) == (text, "", "", None)
 
 
-class _NoEntities:
-    """An nlp stand-in whose doc names no entity, so no glossary term is taken for a person."""
-
-    ents: tuple[()] = ()
-
-    def __call__(self, text: str) -> _NoEntities:
-        return self
-
-
-def _compendium(prose: str, generated: str) -> str:
-    """The markdown of a compendium with one prose block and one generated block, as parse_document reads it."""
-    return (
-        "# Kompendium: Optik\n\n"
-        "### Einstieg\n<!-- kompendium:section id=einstieg status=maschinell-extraktiv hash=0 -->\n\n"
-        f"{prose}\n\n"
-        "### Glossar\n<!-- kompendium:section id=glossar status=maschinell-generiert hash=0 -->\n\n"
-        f"{generated}\n"
-    )
-
-
-def crafted_texts(run: str) -> dict[str, str]:
-    """A compendium for every place a run of blanks reaches a pattern: in a glossary row, its term and its
-    definition, in the name and the summary of an actor, and in the prose."""
-    prose, related = PROSE, "`skos:related`"
-    return {
-        "glossary row": _compendium(prose, f"| **a** |{run}x"),
-        "glossary term": _compendium(prose, f"| **a{run}(x** | Die Optik ist ein Teilgebiet. | {related} |"),
-        "glossary definition": _compendium(prose, f"| **Optik** | Die{run}Optik nennt man Lichtlehre. | {related} |"),
-        "actor summary": _compendium(prose, f"#### Person\n- **[A](u)** — x{run}("),
-        "actor name": _compendium(prose, f"#### Person\n- **[A{run}(x](u)** — Er war ein Physiker und Optiker."),
-        "prose": _compendium(f"a{run}b", GLOSSARY_ROW),
-    }
-
-
-CRAFTED = crafted_texts(" " * (MAX_TEXT_CHARS - 500))
-
-
-@pytest.mark.parametrize("text", CRAFTED.values(), ids=CRAFTED.keys())
-def test_a_crafted_text_is_read_in_linear_time(text: str) -> None:
-    """/qa reads the text of the caller with these rules before it picks a method, and without a login (D60)."""
-    assert len(text) <= MAX_TEXT_CHARS
-    started = time.perf_counter()
-    knowledge = knowledge_of_text(text)
-    glossary_candidates(knowledge.glossary, _NoEntities())
-    actor_candidates(knowledge.actors)
-    seconds = time.perf_counter() - started
-    assert seconds < BUDGET_S
-
-
-def _block(slot: str, status: str, text: str) -> str:
-    return f"### {slot}\n<!-- kompendium:section id={slot} status={status} hash=0 -->\n\n{text}\n\n"
-
-
 def test_the_note_of_an_empty_block_is_no_prose() -> None:
     """With empty_slot_policy note the markdown says where a block found nothing; the prose of the compendium holds
     no such sentence, and asked, the note became a question about the sources (review of D60)."""
-    text = _compendium(PROSE, GLOSSARY_ROW) + _block("geschichte", "leer", EMPTY_SECTION_TEXT)
+    text = compendium_markdown(PROSE, GLOSSARY_ROW) + block("geschichte", "leer", EMPTY_SECTION_TEXT)
     assert knowledge_of_text(text).text == PROSE
 
 
 def test_a_compendium_without_prose_is_not_read_as_plain_text() -> None:
     """With empty_slot_policy omit the markdown may hold generated blocks alone. Read as plain text, their table rows
     and literature lines were asked (review of D60); like a topic without texts, it holds no prose to ask."""
-    text = "# Kompendium: Optik\n\n" + _block("glossar", "maschinell-generiert", GLOSSARY_ROW)
+    text = "# Kompendium: Optik\n\n" + block("glossar", "maschinell-generiert", GLOSSARY_ROW)
     knowledge = knowledge_of_text(text)
     assert (knowledge.text, knowledge.glossary, knowledge.topic) == ("", GLOSSARY_ROW, "Optik")
+
+
+def test_a_compendium_of_blank_blocks_is_no_plain_text() -> None:
+    """A block marker with nothing under it is still a compendium: read as plain text, its marker comment was asked
+    (review of D60)."""
+    knowledge = knowledge_of_text("# Kompendium: Optik\n\n" + block("einstieg", "maschinell-extraktiv", ""))
+    assert (knowledge.text, knowledge.topic) == ("", "Optik")

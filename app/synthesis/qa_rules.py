@@ -203,7 +203,8 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
         if row is None or row.group("relation") not in _RELATION_ORDER:
             continue
         # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
-        term = re.sub(r"\s*\([^)]*\)$", "", " ".join(row.group("term").split()))
+        # "[^()]", not "[^)]": over a run of "(" every try read to the end (review of D60)
+        term = re.sub(r"\s*\([^()]*\)$", "", " ".join(row.group("term").split()))
         definition = " ".join(row.group("definition").split())
         tokens = definition.rstrip(".").split()
         last = tokens[-1] if tokens else ""
@@ -271,7 +272,7 @@ def actor_candidates(markdown: str) -> list[Candidate]:
             or not re.search(r"\b(war|ist|waren|sind)\b", summary)
         ):
             continue
-        name = re.sub(r"\s*\([^)]*\)$", "", " ".join(row.group("name").split()))
+        name = re.sub(r"\s*\([^()]*\)$", "", " ".join(row.group("name").split()))
         tense = "war" if re.search(r"\bwar\b", summary) else "ist"
         if kind == "Person":
             candidates.append(Candidate(f"a{index}", "Person", f"Wer {tense} {name}?", summary))
