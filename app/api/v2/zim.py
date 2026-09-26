@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import Path as PathParameter  # pathlib.Path is taken
 
 from app.api.admin import require_admin
 from app.jobs.zim_sync import TRIGGER_FILE, read_status
@@ -126,7 +127,16 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
 
 
 @admin.delete("/{file_name}")
-def zim_delete(file_name: str, request: Request) -> dict[str, Any]:
+def zim_delete(
+    file_name: Annotated[
+        str,
+        PathParameter(
+            description="The file name of the archive as GET /api/v2/zim/status lists it, e.g. "
+            "wikipedia_de_all_nopic_2026-08.zim; anything but a plain .zim file name - a path, a hidden file - is a 400"
+        ),
+    ],
+    request: Request,
+) -> dict[str, Any]:
     """Delete an archive file that is not in use, together with its ``.part`` leftover.
 
     Meant for a stray download or an archive the profile no longer names. An archive that is active or

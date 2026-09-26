@@ -60,17 +60,20 @@ class Knowledge:
     topic: str | None = None
 
 
-def _allowance(request: Request, payload: QaRequest) -> LlmAllowance | None:
+def _allowance(request: Request, payload: QaRequest, profile: str) -> LlmAllowance | None:
     """One token budget and one deadline for the whole request when the llm stage is asked for.
 
     Part 1 used to open its own and the pairs another after it (review of 2026-09-25), so a request could spend
-    twice LLM_MAX_TOKENS_PER_REQUEST and twice REQUEST_TIMEOUT_S. Without a configured LLM there is nothing to share.
+    twice LLM_MAX_TOKENS_PER_REQUEST and twice REQUEST_TIMEOUT_S. The budget is the profile's (D59). Without a
+    configured LLM there is nothing to share.
     """
     service = request.app.state.service
-    llm = service.llm if service is not None else None
-    if payload.method != "llm" or llm is None:
+    if payload.method != "llm" or service is None:
         return None
-    return LlmAllowance(llm.open_budget(), Deadline(service.settings.request_timeout_s))
+    budget = service.open_budget(profile)
+    if budget is None:
+        return None
+    return LlmAllowance(budget, Deadline(service.settings.request_timeout_s))
 
 
 def _refuse_llm_without_one(request: Request, needed: list[str], profile: str, *, defaulted: bool) -> None:
@@ -210,7 +213,11 @@ def _shortfall(delivered: int, asked: int, method: str) -> str | None:
 
 
 EXAMPLES = {
-    "1 · Thema, Profil llm-free": {
+    "1 · kürzeste Anfrage": {
+        "summary": "Nur ein Thema: fünf Paare im Profil des Servers",
+        "value": {"topic": "Optik"},
+    },
+    "2 · Thema, Profil llm-free": {
         "summary": "Regeln über den spaCy-Parse: vielseitige Fragen ohne Modell und ohne LLM",
         "description": (
             "Ein Thema erzeugt erst Teil 1 des Kompendiums, immer ohne LLM (D55), und fragt dessen Bausteine, sein "
@@ -221,7 +228,7 @@ EXAMPLES = {
         ),
         "value": {"topic": "Albert Einstein", "count": 20, "preset": "llm-free"},
     },
-    "2 · Thema, Standardprofil balanced": {
+    "3 · Thema, Standardprofil balanced": {
         "summary": "Dieselben Regeln wie llm-free: schnell, ohne LLM und ohne zusätzliches Modell",
         "description": (
             "Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced. Es fragt mit denselben Regeln wie llm-free "
@@ -230,7 +237,7 @@ EXAMPLES = {
         ),
         "value": {"topic": "Optik", "count": 10},
     },
-    "3 · Thema, Profil best-quality": {
+    "4 · Thema, Profil best-quality": {
         "summary": "Die b-api schreibt die Paare; als einzige Stufe kann sie Bildungsstufen zuordnen",
         "description": (
             "Braucht LLM_ENABLED und B_API_KEY, sonst antwortet der Dienst mit 503. levels nimmt auch die "
@@ -245,7 +252,7 @@ EXAMPLES = {
             "levels": ["Sekundarstufe I", "Sekundarstufe II"],
         },
     },
-    "4 · eigener Text": {
+    "5 · eigener Text": {
         "summary": "Paare zu einem Text, den Sie schon haben - es entsteht kein Kompendium",
         "description": (
             "Etwa das Markdown eines Kompendiums, das Sie schon abgerufen haben. preset wählt auch hier das "
@@ -261,7 +268,7 @@ EXAMPLES = {
             "count": 5,
         },
     },
-    "5 · Thema aus einem Knoten": {
+    "6 · Thema aus einem Knoten": {
         "summary": "Paare zum Thema eines Knotens, hier die Sammlung Optik der WLO-Staging",
         "description": (
             "node_id und repository wie beim Kompendium: der Titel einer Sammlung wird zum Thema, bei einem "
@@ -276,7 +283,7 @@ EXAMPLES = {
             "count": 8,
         },
     },
-    "6 · einzelnes Verfahren": {
+    "7 · einzelnes Verfahren": {
         "summary": "Ein einzeln gesetztes method geht dem Profil vor, hier die Regeln im Profil best-quality",
         "description": (
             "method wählt das Verfahren der Paare, rule-based oder llm, welches Profil auch gilt; diese Anfrage "
@@ -284,6 +291,29 @@ EXAMPLES = {
             "fragen ist ein 422."
         ),
         "value": {"topic": "Optik", "preset": "best-quality", "method": "rule-based", "count": 10},
+    },
+    "8 · alle Parameter": {
+        "summary": "Jedes Feld einmal gesetzt, außer text, das nur allein geht",
+        "description": (
+            "topic geht vor; das Material (node_id, repository) bringt seinen Artikel als weitere Quelle, und seine "
+            "Stufen, sein Titel und seine Schlagwörter richten die Fragen des LLM aus. subject entscheidet die "
+            "Artikelwahl mit, article_choice llm lässt das LLM den Artikel wählen. preset wählt das Verfahren, method "
+            "geht ihm vor. count ist eine Obergrenze, max_answer_length kürzt die Antworten, levels verteilt die Paare "
+            "auf Bildungsstufen (nur llm). Teil 1 und die Paare teilen sich die 180.000 Tokens je Anfrage von "
+            "best-quality (D59) und eine Frist. Braucht LLM_ENABLED, sonst 503."
+        ),
+        "value": {
+            "topic": "Optik",
+            "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+            "subject": "Physik",
+            "preset": "best-quality",
+            "method": "llm",
+            "article_choice": "llm",
+            "count": 12,
+            "max_answer_length": 400,
+            "levels": ["Sekundarstufe I", "Sekundarstufe II"],
+        },
     },
 }
 
@@ -300,6 +330,21 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     Both steps in one call, or one step with a text of your own: that is the pipeline. A topic makes
     part 1 first, without an LLM, and asks about its blocks - not about the raw articles, which carry far
     more than the compendium ever shows.
+
+    **What each profile does here.** ``preset`` picks the method of the pairs when the request names none;
+    without it the server's profile applies (PRESET_DEFAULT, shipped balanced), and ``method`` wins over it. Part 1
+    of a topic is made without an LLM in every profile (D55); only the article of a material node is the LLM's
+    choice in the profiles that have one (D47).
+
+    - ``llm-free``: the rules ask from the spaCy parse of each sentence, then about the glossary and the actors;
+      the answer is the whole sentence. No LLM, no tokens.
+    - ``balanced``: the same rules (D57); the LLM only names the article of a material node.
+    - ``best-quality`` and ``best-quality-generated``: the LLM writes the pairs and can assign educational levels
+      (``levels``); part 1 and the pairs share one deadline and one budget of 180,000 tokens per request
+      (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59). While the b-api is away the rules ask, and ``note`` says why.
+
+    A profile or ``method`` that needs an LLM on a server without one is a 503. The examples run from a topic
+    alone over one per profile to one that sets every field but ``text``, which only goes alone.
     """
     if payload.levels:
         # From here on only the project's own values travel, so the prompt and the pairs speak one
@@ -318,7 +363,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     topic: str | None = None
     resolution: Resolution | None = None
     node = None
-    allowance = _allowance(request, payload)
+    allowance = _allowance(request, payload, profile)
     if payload.topic or payload.node_id:
         service = get_service(request)  # a topic needs the archives; a plain text does not
         compendium = _part_one(service, payload, allowance, article_choice)

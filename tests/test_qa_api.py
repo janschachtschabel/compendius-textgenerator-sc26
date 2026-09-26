@@ -516,16 +516,29 @@ def test_part_1_and_the_pairs_spend_one_budget(with_llm: TestClient, monkeypatch
     gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
     opened: list[RequestBudget] = []
     real = gateway.open_budget
-    monkeypatch.setattr(gateway, "open_budget", lambda: opened.append(real()) or opened[-1])
+    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: opened.append(real(limit)) or opened[-1])
     body = with_llm.post("/api/v2/qa", json={"topic": "Optik", "method": "llm", "article_choice": "llm"}).json()
     assert body["method"] == "llm", body["note"]
     assert len(opened) == 1, "part 1 and the pairs share one budget"
 
 
+def test_the_best_quality_profiles_ask_from_a_budget_of_their_own(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D59: best-quality spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY; with the other cap far too small only
+    it still gets its pairs from the model."""
+    service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: PAIRS), per_request=100))
+    best = client.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality"}).json()
+    tight = client.post("/api/v2/qa", json={"text": TEXT, "preset": "balanced", "method": "llm"}).json()
+    assert best["method"] == "llm", best["note"]
+    assert tight["method"] == "rule-based" and "Token-Budget der Anfrage" in tight["note"], tight["note"]
+
+
 def test_the_note_says_why_the_llm_call_did_not_happen(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
     """A spent budget used to read as an answer without pairs."""
     gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
-    monkeypatch.setattr(gateway, "open_budget", lambda: RequestBudget(gateway.budget, 10))
+    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(gateway.budget, 10))
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
     assert body["method"] == "rule-based" and "Token-Budget der Anfrage" in body["note"], body["note"]
 

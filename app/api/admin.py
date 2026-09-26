@@ -7,7 +7,14 @@ import hmac
 from fastapi import Header, HTTPException, Request
 
 
-def require_admin(request: Request, x_admin_token: str | None = Header(default=None)) -> None:
+def require_admin(
+    request: Request,
+    x_admin_token: str | None = Header(
+        default=None,
+        description="The value of ADMIN_TOKEN, compared in constant time; missing or wrong: 403. While ADMIN_TOKEN "
+        "is empty every admin endpoint answers 404",
+    ),
+) -> None:
     """Dependency: 404 while no ADMIN_TOKEN is configured, 403 on a missing or wrong token."""
     expected: str = request.app.state.settings.admin_token
     if not expected:

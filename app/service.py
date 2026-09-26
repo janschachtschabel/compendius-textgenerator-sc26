@@ -27,7 +27,7 @@ from app.domain.models import (
     SectionStatus,
     Source,
 )
-from app.domain.requests import GenerateRequest, with_profile
+from app.domain.requests import BEST_QUALITY_PRESETS, GenerateRequest, with_profile
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
@@ -496,18 +496,19 @@ class CompendiumService:
         duration_ms = int((time.perf_counter() - started) * 1000)
         return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
 
-    def _curriculum_check(
+    def curriculum_check(
         self,
         topic: str,
-        prepared: PreparedTopic,
+        subjects: Sequence[str],
         budget: RequestBudget | None,
         deadline: Deadline | None,
         reports: list[CurriculumCheckReport],
     ) -> tuple[Callable[[list[CurriculumMatch]], list[CurriculumMatch]] | None, str | None]:
-        """curriculum_check=llm (D58) as part 2 calls it, or ``None`` and why the rules decide instead.
+        """curriculum_check=llm (D58) as part 2 and the curriculum search call it, or ``None`` and why the rules decide
+        instead.
 
-        The check appends what it did to ``reports``; it spends from the request's budget and time like the other LLM
-        steps.
+        ``subjects`` are the ones the elements were narrowed to, as the request named them. The check appends what it
+        did to ``reports``; it spends from the request's budget and time like the other LLM steps.
         """
         if self.llm is None:  # refused before any work (llm_switches); here only for a caller that skipped that
             return None, "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
@@ -518,7 +519,7 @@ class CompendiumService:
             client=self.llm.client,
             budget=budget if budget is not None else self.llm.open_budget(),
             topic=topic,
-            subjects=self.subjects.labels_of(prepared.subjects),
+            subjects=self.subjects.labels_of(subjects),
             concurrency=self.llm.options.concurrency,
             deadline=deadline,
         )
@@ -581,8 +582,10 @@ class CompendiumService:
         unmakeable = self._unmakeable(request)
         if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
             raise PartsUnavailableError("; ".join(unmakeable.values()))
-        # article_choice=llm (D35) needs the LLM before anything else; then the request's one budget opens here,
-        # unless the caller brought one to share over more than the compendium (/qa)
+        # The request's one budget, the profile's size (D59), unless the caller brought one to share over more than
+        # the compendium (/qa); article_choice=llm (D35) spends from it first
+        if budget is None:
+            budget = self.open_budget(profile)
         choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
         budget = choice.budget if choice is not None else budget
         prepared = self.prepare(request, deadline, choice)
@@ -623,7 +626,7 @@ class CompendiumService:
         if "curricula" in request.parts and self.curricula is not None:
             check = None
             if curriculum_requested == "llm":
-                check, curriculum_fallback = self._curriculum_check(topic, prepared, budget, deadline, checked)
+                check, curriculum_fallback = self.curriculum_check(topic, prepared.subjects, budget, deadline, checked)
             curricula = self.curricula.build(
                 title=topic,
                 aliases=list(primary.aliases) if primary else [],
@@ -659,9 +662,7 @@ class CompendiumService:
         generation_used = world.generation if drafted and drafted.sections else "rule-based"
         # Enrichment only means something where the LLM actually wrote a block
         enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-        hit_check, node_report = prepared.hit_check, prepared.node_article
-        named_by_llm = node_report is not None and node_report.way == "llm"
-        article_choice_used = choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check)
+        node_report = prepared.node_article
         llm_audit, llm_tokens, llm_front = build_llm_report(
             self.llm,
             extraction_requested=extraction_requested,
@@ -676,14 +677,7 @@ class CompendiumService:
             extraction=extracted,
             generation=drafted,
             matching=world.matching,
-            choice_requested=choice_requested,
-            choice_used=article_choice_used,
-            choice=prepared.article_choice,
-            choice_chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
-            # the model is asked for an unsure article (a chosen one stays unsure) and for side articles
-            choice_needed=not resolution.confident or prepared.side_articles > 0 or node_report is not None,
-            hit_check=hit_check,
-            node=node_report,
+            **choice_audit(prepared, choice_requested),
             curriculum_requested=curriculum_requested if curricula is not None else "rule-based",
             curriculum=checked[0] if checked else None,
             curriculum_fallback=curriculum_fallback,
@@ -929,6 +923,18 @@ class CompendiumService:
         opened = budget if budget is not None else self.llm.open_budget()
         return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline)
 
+    def open_budget(self, profile: str) -> RequestBudget | None:
+        """The token budget of one request in ``profile``; ``None`` without a configured LLM.
+
+        The best-quality profiles spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY: their LLM also checks the
+        curriculum elements of part 2, and next to matcher llm the 60,000 tokens of the others covered only about
+        400 of them (D59, M32).
+        """
+        if self.llm is None:
+            return None
+        large = profile in BEST_QUALITY_PRESETS
+        return self.llm.open_budget(self.settings.llm_max_tokens_per_request_best_quality if large else None)
+
     def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""
         if self.llm is None:
@@ -936,6 +942,23 @@ class CompendiumService:
         if not self.llm.available:
             return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
         return None
+
+
+def choice_audit(prepared: PreparedTopic, requested: str) -> dict[str, Any]:
+    """What build_llm_report says about the article choice of a prepared topic (D35, D47), for the audit of a
+    compendium and the answer of the curriculum search."""
+    resolution, hit_check, node_report = prepared.resolution, prepared.hit_check, prepared.node_article
+    named_by_llm = node_report is not None and node_report.way == "llm"
+    return {
+        "choice_requested": requested,
+        "choice_used": choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check),
+        "choice": prepared.article_choice,
+        "choice_chosen": resolution.title if resolution.method == CHOSEN_BY_LLM else None,
+        # the model is asked for an unsure article (a chosen one stays unsure) and for side articles
+        "choice_needed": not resolution.confident or prepared.side_articles > 0 or node_report is not None,
+        "hit_check": hit_check,
+        "node": node_report,
+    }
 
 
 def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:

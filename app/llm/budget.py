@@ -112,8 +112,9 @@ class TokenBudget:
                 pending = actual + self._unsaved
                 self._unsaved = 0 if self._store.add(self._day, pending) else pending
 
-    def open_request(self) -> RequestBudget:
-        return RequestBudget(self, self.per_request)
+    def open_request(self, limit: int | None = None) -> RequestBudget:
+        """The budget of one request: ``limit`` tokens, else ``per_request`` (the best-quality profiles, D59)."""
+        return RequestBudget(self, self.per_request if limit is None else limit)
 
 
 class RequestBudget:

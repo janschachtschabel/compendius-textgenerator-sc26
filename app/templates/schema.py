@@ -71,7 +71,11 @@ class TemplateSlot(BaseModel):
     heading_patterns: list[str] = Field(default_factory=list, description="Regex patterns added to the lexicon")
     facets: FacetSpec = Field(default_factory=FacetSpec, description="Facets of this block, beyond the catalogue's")
     budget: SlotBudget = Field(default_factory=SlotBudget, description="How much material this block gets")
-    generator: Generator = Field("", description="Non-empty for generated slots (sources, glossary, actors)")
+    generator: Generator = Field(
+        "",
+        description="Empty (the default): the block is filled from the sources. sources, glossary or actors: the "
+        "service makes the list of sources, the glossary or the list of actors instead",
+    )
     source_preference: list[str] = Field(
         default_factory=list,
         description="Preferred source projects, best first; a passage from the first one scores highest",

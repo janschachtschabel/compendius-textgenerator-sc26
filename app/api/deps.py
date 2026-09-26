@@ -12,6 +12,7 @@ from app.domain.models import Resolution, Source
 from app.knowledge.article_choice import CHECKED_ORIGINS, check_hits, choice_block, choice_used
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
+from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, RepositoryUnavailableError, TopicNotFoundError
 from app.sources.wlo.client import EduSharingError, NodeNotFoundError
@@ -67,8 +68,11 @@ def corpus_for_topic(
     derived: Sequence[CollectionTopic] = (),
     node: NodeInfo | None = None,
     subject: str | None = None,
+    budget: RequestBudget | None = None,
 ) -> tuple[str, Resolution, list[Source], dict[str, Any] | None, dict[str, Any] | None]:
     """Resolve a topic and build its corpus for /knowledge, with the article choice a compendium makes (D35, D40, D47).
+
+    ``budget`` is the request's, the size of its profile (D59).
 
     Returns the normalised topic, its resolution, the articles, what the article choice asked and decided - None
     when the rules chose alone - and how the article of a material node was found (None without one). A topic the
@@ -79,7 +83,8 @@ def corpus_for_topic(
         template = service.templates.get(template_id or service.settings.template_default)
     except TemplateNotFoundError as exc:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
-    requested, note, job = service.article_choice_job(article_choice, Deadline(service.settings.request_timeout_s))
+    deadline = Deadline(service.settings.request_timeout_s)
+    requested, note, job = service.article_choice_job(article_choice, deadline, budget)
     chosen = choose_main_article(registry, service.subjects, topic, derived, subject=subject, node=node, job=job)
     resolution, normalized = chosen.resolution, chosen.normalized
     if not resolution.resolved:

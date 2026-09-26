@@ -151,8 +151,16 @@ class Settings(BaseSettings):
     llm_max_tokens_per_request: int = Field(
         60_000,
         ge=100,
-        description="Budget guard per request - a compendium, or part 1 and the pairs of /qa together; both "
-        "switches on llm spend up to about 37,000 tokens (D33)",
+        description="Budget guard per request in the profiles llm-free and balanced - a compendium, or part 1 and "
+        "the pairs of /qa together; both switches on llm spend up to about 37,000 tokens (D33)",
+    )
+    llm_max_tokens_per_request_best_quality: int = Field(
+        180_000,
+        ge=100,
+        description="Budget guard per request in the profiles best-quality and best-quality-generated (D59): next to "
+        "matcher llm their LLM checks the curriculum elements of part 2, 80 to 90 tokens each; 60,000 covered about "
+        "400 of them (M32). On the widest topic, Demokratie with 382 paragraphs and 819 elements, a compendium with "
+        "both parts took 137,398 tokens in best-quality and 152,197 in best-quality-generated (M33)",
     )
     llm_daily_token_budget: int = Field(
         2_000_000, ge=0, description="Daily token cap of all workers together (llm_budget.db in STATE_DIR)"

@@ -58,6 +58,22 @@ EXAMPLES = {
             "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
         },
     },
+    "alle Parameter": {
+        "summary": "Jedes Feld zu einem Text: beide Verfahren, Nachschlagen in einem Archiv, eine Obergrenze",
+        "description": (
+            "methods ner (spaCy-Modell) und dictionary (Artikeltitel der Archive), link true schlägt den Artikel "
+            "hinter jedem Treffer nach, archives beschränkt das auf ein Archiv (unbekannte id: 404), max_entities "
+            "begrenzt vor dem Nachschlagen. node_id und repository stehen statt text, nicht daneben: siehe das "
+            "Beispiel mit dem Knoten."
+        ),
+        "value": {
+            "text": "Alexander von Humboldt reiste 1799 nach Südamerika und bestieg den Chimborazo.",
+            "methods": ["ner", "dictionary"],
+            "link": True,
+            "archives": ["wikipedia_de_all_nopic"],
+            "max_entities": 20,
+        },
+    },
 }
 UNCHECKED_NOTE = (
     "link=false: ohne Nachschlagen lässt sich nicht erkennen, ob hinter einem Begriff ein Artikel oder eine "
@@ -84,16 +100,28 @@ class EntitiesRequest(BaseModel):
     methods: list[Method] = Field(
         default_factory=_default_methods,
         min_length=1,
-        description="ner needs the spaCy model, dictionary needs archives; a way that cannot work is left out",
+        description="The ways that recognise entities, one or both (default both): ner - the spaCy model finds "
+        "names of persons, places, organisations and others (PER, LOC, ORG, MISC), and needs the model; dictionary "
+        "- the titles of articles of the archives found in the text, and needs archives. A way that cannot work "
+        "here is left out, and when neither can the answer is a 503",
     )
-    link: bool = Field(True, description="Look up the article behind each entity in the archives")
-    archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks all of them")
+    link: bool = Field(
+        True,
+        description="true (default): look up the article behind each entity in the archives, with its lead, kind "
+        "and identifiers, and drop a dictionary term whose only article is a disambiguation page. false: no "
+        "lookup - faster, and note says the terms of the dictionary are unchecked",
+    )
+    archives: list[str] = Field(
+        default_factory=list,
+        description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
+        "active archive, an unknown id is a 404",
+    )
     max_entities: int = Field(
         50,
         ge=1,
         le=200,
-        description="Upper bound; it applies before the article check, so fewer may come back when terms of the "
-        "dictionary turn out to sit behind a disambiguation page",
+        description="Upper bound, 1 to 200, default 50; it applies before the article check, so fewer may come back "
+        "when terms of the dictionary turn out to sit behind a disambiguation page",
     )
 
     @model_validator(mode="after")
@@ -250,6 +278,10 @@ def entities(
     ``node_id`` instead of ``text`` reads title, description and keywords of a node of an edu-sharing repository,
     without credentials, and returns that text under ``text``; ``start`` and ``end`` count in it. Not both: 422.
     Unknown or not public node: 404, refused ``repository``: 422, failing repository: 502, none at all: 503.
+
+    **Profiles.** No profile changes this endpoint, so it takes no ``preset``: recognition and lookup run without an
+    LLM in llm-free, balanced, best-quality and best-quality-generated alike. The examples go from a text alone to
+    one that sets every field a text goes with.
     """
     settings = request.app.state.settings
     registry = archives_for(request.app.state.registry, payload.archives)

@@ -7,19 +7,24 @@ The API process never talks to MEM. ``POST /harvest`` leaves a request file that
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.limits import rate_limited
-from app.domain.requests import UNKNOWN_SUBJECT_HELP, GenerateRequest
-from app.service import TopicNotFoundError
+from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
+from app.knowledge.curriculum_check import CurriculumCheckReport
+from app.llm.budget import RequestBudget
+from app.llm.deadline import Deadline
+from app.llm.report import build_llm_report
+from app.service import CompendiumService, LlmNotConfiguredError, TopicNotFoundError, choice_audit, llm_switches
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
-from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
+from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
@@ -32,6 +37,30 @@ HARVEST_FAILED = (
     "und `compendium lehrplan status`."
 )
 admin = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan-admin"], dependencies=[Depends(require_admin)])
+SEARCH_PRESET_HELP = (
+    "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "
+    "shipped balanced).\n\n"
+    "- **llm-free**: the keyword rules find and judge the elements; no LLM, no tokens.\n"
+    "- **balanced**: the same for the words as sent; with mode=topic the LLM decides an unsure article and drops the "
+    "side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.\n"
+    "- **best-quality**: balanced, and the LLM rates every element the rules found and drops what does not fit "
+    "(curriculum_check llm). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
+    "- **best-quality-generated**: here the same as best-quality; the two differ only in part 1 of a compendium.\n\n"
+    "A profile that needs the LLM for this search - best-quality and best-quality-generated always, balanced with "
+    "mode=topic - is a 503 on a server without one (LLM_ENABLED, B_API_KEY)."
+)
+SEARCH_CHECK_HELP = (
+    "Who judges the elements the rules found (D58); default: the profile's - rule-based in llm-free and balanced, "
+    "llm in best-quality and best-quality-generated.\n\n"
+    "- **rule-based**: the keyword rules alone. An element that names the topic only in its heading comes back with "
+    "matched_in parent; part 2 of a compendium counts those with their area. Over the 20 topics of M22, 70 to 81 % "
+    "of what part 2 lists fits (M32).\n"
+    "- **llm**: the LLM of the b-api rates every element with its area and curriculum - 2 fits, 1 touches the topic, "
+    "0 does not fit - and what does not fit leaves the answer; the others carry the rating in note. It reads all "
+    "hits, not only the first limit ones: 80 to 90 tokens per element, and total_hits says how many there are. 74 "
+    "to 79 % fit, and no element two raters called fitting was dropped (M32). What the budget or the time leaves "
+    "unrated keeps the rules' decision, and llm.curriculum_check says why. Without a configured LLM a 503."
+)
 
 
 def _public_harvest(status: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -48,18 +77,62 @@ def _builder(request: Request) -> CurriculaBuilder:
     return builder
 
 
-def _as_part_two(request: Request, q: str, subject: str | None) -> tuple[str, list[str], list[str]]:
-    """The article, keywords and subject terms that part 2 of a compendium on ``q`` searches for, by the rules."""
+@dataclass(frozen=True)
+class _Search:
+    """What the search looks for: the words, the subject terms and, with mode=topic, the article and how it came."""
+
+    topic: str | None
+    keywords: list[str]
+    subject_terms: list[str]
+    subjects: list[str]  # as the request or the topic named them, for the LLM check
+    choice: dict[str, Any] = field(default_factory=dict)  # build_llm_report on the article choice (mode=topic)
+    note: str | None = None  # why the LLM could not choose the article
+
+
+def _as_part_two(request: Request, asked: GenerateRequest, budget: RequestBudget | None, deadline: Deadline) -> _Search:
+    """The article, keywords and subject terms that part 2 of a compendium on ``q`` searches for, with the article
+    choice of the profile (D35, D59)."""
     service = get_service(request)
+    requested, note, job = service.article_choice_job(asked.article_choice, deadline, budget)
     try:
-        prepared = service.prepare(GenerateRequest(topic=q, subject=subject, parts=["curricula"]))
+        prepared = service.prepare(asked, deadline, job)
     except TopicNotFoundError as exc:
         raise HTTPException(status_code=404, detail=exc.detail()) from exc
     # as CompendiumService.generate hands them to part 2
     title = prepared.resolution.title or prepared.normalized.topic
     primary = next((s for s in prepared.sources if s.is_primary), prepared.sources[0] if prepared.sources else None)
     keywords = build_keywords(title, aliases=list(primary.aliases) if primary else [], subtopics=prepared.subtopics)
-    return title, keywords, _builder(request).subjects.mem_terms_of(prepared.subjects)
+    subject_terms = _builder(request).subjects.mem_terms_of(prepared.subjects)
+    return _Search(title, keywords, subject_terms, list(prepared.subjects), choice_audit(prepared, requested), note)
+
+
+def _llm_answer(
+    service: CompendiumService,
+    asked: GenerateRequest,
+    search: _Search,
+    reports: list[CurriculumCheckReport],
+    fallback: str | None,
+) -> tuple[dict[str, Any] | None, dict[str, int] | None]:
+    """What the LLM did for the search and what it cost, from the audit of a compendium; ``None`` when not asked."""
+    audit, tokens, _ = build_llm_report(
+        service.llm,
+        extraction_requested="rule-based",
+        extraction_used="rule-based",
+        generation_requested="rule-based",
+        generation_used="rule-based",
+        enrichment_requested="sources-only",
+        enrichment_used="sources-only",
+        note=search.note,
+        extraction=None,
+        generation=None,
+        **search.choice,
+        curriculum_requested=asked.curriculum_check or "rule-based",
+        curriculum=reports[0] if reports else None,
+        curriculum_fallback=fallback,
+    )
+    if audit is None:
+        return None, None
+    return {key: audit[key] for key in ("note", "article_choice", "curriculum_check")}, tokens
 
 
 @router.get("/status")
@@ -89,58 +162,135 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
 @router.get("/search", dependencies=[Depends(rate_limited)])
 def lehrplan_search(
     request: Request,
-    q: str = Query(..., min_length=3, max_length=200, description="Topic or keyword"),
+    q: str = Query(
+        ...,
+        min_length=3,
+        max_length=200,
+        description="The keyword (mode keyword) or the topic (mode topic), 3 to 200 characters",
+    ),
     subject: str | None = Query(
         None,
         max_length=100,
         description="WLO discipline id, URI, label or alias; it narrows the search only when config/subjects.yaml "
         "gives it curriculum words (37 subjects), any other one leaves subject_terms empty" + UNKNOWN_SUBJECT_HELP,
     ),
-    limit: int = Query(50, ge=1, le=500),
+    limit: int = Query(
+        50,
+        ge=1,
+        le=500,
+        description="How many elements come back, the best first: 1 to 500, default 50. It bounds the answer, not the "
+        "search or the LLM check; total_hits says how many the rules found",
+    ),
     mode: Literal["keyword", "topic"] = Query(
         "keyword",
         description="keyword: the words as sent; topic: what part 2 of a compendium on q searches for - the article "
         "of the topic, its aliases and the sub-topics of its corpus, with the subjects of the topic",
     ),
+    preset: Annotated[Preset | None, Query(description=SEARCH_PRESET_HELP)] = None,
+    curriculum_check: Annotated[CurriculumCheck | None, Query(description=SEARCH_CHECK_HELP)] = None,
 ) -> dict[str, Any]:
-    """Curriculum elements for a keyword or a topic, out of the local cache - no MEM access, no network.
+    """Curriculum elements for a keyword or a topic, out of the local cache: the ones part 2 of a compendium lists,
+    found by the same rules and, in the best-quality profiles, judged by the same LLM check. MEM is never asked.
 
-    ``q`` is the keyword, ``subject`` narrows it to the curricula of one subject and ``limit`` bounds the hits.
-    The ranking is the one part 2 uses. By default it searches the words as sent; ``mode=topic`` resolves ``q`` as
-    part 2 of a compendium does, by the rules and without an LLM, names the article in ``topic`` and answers 404
-    for a topic the archives do not have. A subject outside the two subject vocabularies of edu-sharing is a 422
-    that lists the school subjects. Only the 37 subjects of config/subjects.yaml have curriculum words; any other
-    one of the vocabularies narrows nothing, and ``subject_terms`` stays empty (D51).
+    **What it searches.** ``q`` is the keyword, ``subject`` narrows it to the curricula of one subject and ``limit``
+    bounds the answer. By default (``mode=keyword``) it searches the words as sent; ``mode=topic`` resolves ``q`` as
+    part 2 of a compendium does - the article of the topic, its aliases and the sub-topics of its corpus, with the
+    subjects of the topic -, names the article in ``topic`` and answers 404 for a topic the archives do not have.
+    The ranking is the one part 2 uses.
 
-    An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status``
-    says which it is.
+    **What each profile does here.** ``preset`` picks it as for a compendium; without it the server's applies
+    (PRESET_DEFAULT, shipped balanced), and a ``curriculum_check`` of the request wins over the profile's.
+
+    - ``llm-free``: the rules find and judge; no LLM, no tokens.
+    - ``balanced``: the same for the words as sent; with ``mode=topic`` the LLM decides an unsure article and drops
+      the side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.
+    - ``best-quality``: balanced, and the LLM rates every element the rules found and drops what does not fit; the
+      others carry its rating in ``note``. It reads all hits, not only the first ``limit`` ones: 80 to 90 tokens per
+      element, from 180,000 tokens per request (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) - Demokratie without a
+      subject, 819 hits, took 75,016 tokens (M33). What the budget or the time leaves unrated keeps the rules'
+      decision.
+    - ``best-quality-generated``: here the same as best-quality; the two differ only in part 1 of a compendium.
+
+    **What comes back.** Every element with its curriculum and where it stands: federal state, school type, school
+    level and grade, the last two with their source (``schulstufe_quelle``, ``klassenstufe_quelle``), the keyword
+    that found it and ``matched_in`` - ``label`` when the element names the topic, ``parent`` when only its heading
+    does; part 2 counts those with their area unless the LLM rates them fitting. ``preset`` names the profile in
+    effect, ``llm`` what the LLM did (article choice, check) and ``llm_tokens`` what it cost; both are ``null`` when
+    no LLM was asked.
+
+    **When it refuses.** A profile or ``curriculum_check`` that needs an LLM on a server without one: 503. A subject
+    outside the two subject vocabularies of edu-sharing: 422 that lists the school subjects; only the 37 subjects of
+    config/subjects.yaml have curriculum words, any other one narrows nothing and ``subject_terms`` stays empty
+    (D51). An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status`` says
+    which it is.
+
+    **Examples** of ``GET``, from the shortest to every parameter:
+
+    - ``/api/v2/lehrplan/search?q=Optik``
+    - ``/api/v2/lehrplan/search?q=Optik&subject=Physik&limit=20``
+    - ``/api/v2/lehrplan/search?q=Lichtlehre&mode=topic&preset=balanced``
+    - ``/api/v2/lehrplan/search?q=Optik&subject=Physik&mode=topic&limit=100&preset=best-quality&curriculum_check=llm``
     """
     builder = _builder(request)
     try:
         builder.subjects.check(subject)
     except UnknownSubjectError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    service: CompendiumService = request.app.state.service
+    asked = with_profile(
+        GenerateRequest(
+            topic=q, subject=subject, parts=["curricula"], preset=preset, curriculum_check=curriculum_check
+        ),
+        service.settings.preset_default,
+    )
+    profile = asked.preset or service.settings.preset_default
+    try:  # the words alone need no article, so only mode=topic can need the LLM for one
+        service.refuse_without_llm(llm_switches(asked, corpus=mode == "topic"), profile, defaulted=preset is None)
+    except LlmNotConfiguredError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    budget, deadline = service.open_budget(profile), Deadline(service.settings.request_timeout_s)
     if mode == "topic":
-        topic, keywords, subject_terms = _as_part_two(request, q, subject)
+        search = _as_part_two(request, asked, budget, deadline)
     else:
-        topic, keywords = None, build_keywords(q, aliases=[], subtopics=[])
-        subject_terms = builder.subjects.mem_terms(subject)
-    asked = {"mode": mode, "topic": topic}
-    if not builder.store.available:
-        return {"available": False, **asked, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
-    try:
-        result = LehrplanMatcher(builder.store).match(keywords, subject_terms=subject_terms)
-    except LehrplanCacheError as exc:
-        log.error("%s", exc)
-        return {"available": False, **asked, "keywords": keywords, "subject_terms": subject_terms, "matches": []}
+        keywords = build_keywords(q, aliases=[], subtopics=[])
+        search = _Search(None, keywords, builder.subjects.mem_terms(subject), [subject] if subject else [])
+    asked_for = {"mode": mode, "topic": search.topic, "preset": profile}
+    reports: list[CurriculumCheckReport] = []
+    fallback: str | None = None
+    matches: list[CurriculumMatch] = []
+    result = None
+    if builder.store.available:
+        try:
+            result = LehrplanMatcher(builder.store).match(search.keywords, subject_terms=search.subject_terms)
+        except LehrplanCacheError as exc:
+            log.error("%s", exc)
+    if result is not None and result.matches:
+        matches = result.matches
+        if asked.curriculum_check == "llm":  # all of them, as part 2 checks them
+            check, fallback = service.curriculum_check(search.topic or q, search.subjects, budget, deadline, reports)
+            if check is not None:
+                matches = check(matches)
+    llm, tokens = _llm_answer(service, asked, search, reports, fallback)
+    if result is None:
+        return {
+            "available": False,
+            **asked_for,
+            "keywords": search.keywords,
+            "subject_terms": search.subject_terms,
+            "matches": [],
+            "llm": llm,
+            "llm_tokens": tokens,
+        }
     return {
         "available": True,
-        **asked,
+        **asked_for,
         "keywords": result.keywords,
         "subject_terms": result.subject_terms,
         "total_hits": result.total_hits,
         "excluded_noise": result.excluded_noise,
-        "matches": [match_entry(match) for match in result.matches[:limit]],
+        "matches": [match_entry(match) for match in matches[:limit]],
+        "llm": llm,
+        "llm_tokens": tokens,
     }
 
 

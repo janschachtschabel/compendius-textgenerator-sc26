@@ -63,7 +63,7 @@ def read_node(
         str,
         Path(
             pattern=NODE_ID_PATTERN,
-            description="nodeId of a material or collection",
+            description="The node id of a material or a collection, a UUID; anything else is a 422",
             openapi_examples={
                 "Material der WLO-Staging": {"summary": "Stationsarbeit zur Optik", "value": STAGING_MATERIAL},
                 "Sammlung der WLO-Staging": {"summary": "Optik", "value": STAGING_COLLECTION},
@@ -89,6 +89,17 @@ def read_node(
     one must be an allowed host over https (``EDU_SHARING_REPOSITORIES``). Nodes are read without credentials, so
     only public ones come back. Refused address: 422, unknown or not public node: 404, failing repository: 502,
     none configured and none named: 503.
+
+    **Profiles.** No profile changes this preview, so it takes no ``preset``: it always shows what the rules derive.
+    A request with the node is where the profile acts - in llm-free the rules find a material's article as shown
+    here, while in balanced, best-quality and best-quality-generated the LLM names it from title, subjects,
+    keywords and description (30 instead of 15 of 31 right, D47), so ``topic`` can differ there.
+
+    **Examples** of ``GET``, from the shortest to every parameter:
+
+    - ``/api/v2/nodes/ac66224b-42b0-4676-a53d-71b058dc780b`` - a material, in the configured repository
+    - ``/api/v2/nodes/9e7ae956-e9df-430f-bace-f3db4b910013?repository=<root>`` - a collection, in a repository
+      named by its REST root, e.g. ``https://repository.staging.openeduhub.net/edu-sharing/rest``
     """
     service = request.app.state.service
     with node_errors():

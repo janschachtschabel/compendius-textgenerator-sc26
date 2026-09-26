@@ -34,6 +34,15 @@ def test_request_budget_caps_one_compendium_and_settles_to_the_actual_usage() ->
     assert request.reserve(550) is None
 
 
+def test_a_request_may_open_with_a_limit_of_its_own() -> None:
+    """The best-quality profiles spend more per request than the others (D59); the daily budget stays one."""
+    budget = TokenBudget(per_request=1000, daily=1_000_000)
+    assert budget.open_request().limit == 1000
+    larger = budget.open_request(2500)
+    assert larger.limit == 2500 and larger.reserve(2000) is None
+    assert budget.open_request().reserve(2000) is not None
+
+
 def test_reservations_count_until_they_are_settled_or_released() -> None:
     request = TokenBudget(per_request=1000, daily=10_000).open_request()
     assert request.reserve(600) is None

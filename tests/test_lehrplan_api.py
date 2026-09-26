@@ -13,6 +13,9 @@ from app.sources.lehrplan.harvest import TRIGGER_FILE
 from app.sources.lehrplan.store import SCHEMA_VERSION, LehrplanRecord, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
 from tests.conftest import make_settings, strings_in
+from tests.test_article_choice import rating
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 
 AUTH = {"X-Admin-Token": "s3cret"}
 PHYSIK = LehrplanRecord(
@@ -113,6 +116,85 @@ def test_the_topic_mode_answers_404_for_a_topic_the_archives_do_not_have(
         unknown_mode = client.get("/api/v2/lehrplan/search", params={"q": "Optik", "mode": "thema"})
     assert response.status_code == 404
     assert unknown_mode.status_code == 422
+
+
+SEARCH = "/api/v2/lehrplan/search"
+
+
+def test_best_quality_lets_the_llm_judge_what_the_rules_found(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """D58, D59: the search takes the profiles as part 2 does; best-quality drops what the model rates 0, and it
+    spends from a budget of its own - the one of the other profiles is far too small here."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        fake = FakeBApi(lambda body: json.dumps({"e1": 0}))
+        client.app.state.service.llm = make_gateway(fake, per_request=100)  # type: ignore[attr-defined]
+        best = client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"}).json()
+        tight = client.get(SEARCH, params={"q": "Optik", "preset": "balanced", "curriculum_check": "llm"}).json()
+    assert best["preset"] == "best-quality" and best["matches"] == []
+    assert best["llm"]["curriculum_check"] == {
+        "requested": "llm",
+        "used": "llm",
+        "rated": 1,
+        "answered": 1,
+        "dropped": 1,
+        "fallbacks": {},
+        "fallback": None,
+    }
+    assert best["llm_tokens"]["calls"] == 1
+    assert [match["note"] for match in tight["matches"]] == [None], "the rules decide what the budget left unrated"
+    assert any("Token-Budget der Anfrage" in reason for reason in tight["llm"]["curriculum_check"]["fallbacks"])
+
+
+def test_an_element_the_llm_rates_fitting_comes_back_with_its_note(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        fake = FakeBApi(lambda body: json.dumps({"e1": 2}))
+        client.app.state.service.llm = make_gateway(fake)  # type: ignore[attr-defined]
+        body = client.get(SEARCH, params={"q": "Optik", "preset": "best-quality-generated", "limit": 5}).json()
+    assert [(match["label"], match["matched_in"], match["note"]) for match in body["matches"]] == [
+        ("Lichtbrechung an Linsen", "parent", 2)
+    ]
+
+
+def test_a_profile_that_needs_an_llm_is_a_503_on_a_server_without_one(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """As a compendium (D53): refused instead of quietly running the rules. The words alone need no article, so
+    balanced searches them without an LLM."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        free = client.get(SEARCH, params={"q": "Optik"})
+        best = client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"})
+        checked = client.get(SEARCH, params={"q": "Optik", "curriculum_check": "llm"})
+        topic = client.get(SEARCH, params={"q": "Optik", "mode": "topic", "preset": "balanced"})
+        words = client.get(SEARCH, params={"q": "Optik", "preset": "balanced"})
+    assert free.status_code == 200 and free.json()["preset"] == "llm-free" and free.json()["llm"] is None
+    assert best.status_code == 503 and "curriculum_check=llm" in best.json()["detail"]
+    assert checked.status_code == 503 and "curriculum_check=llm" in checked.json()["detail"]
+    assert topic.status_code == 503 and "article_choice=llm" in topic.json()["detail"]
+    assert words.status_code == 200 and words.json()["preset"] == "balanced"
+
+
+def test_the_topic_mode_chooses_the_article_as_part_2_of_the_profile_does(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """In balanced the LLM checks the side articles of the topic, as in a balanced compendium, so both search for
+    the same sub-topics."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        client.app.state.service.llm = make_gateway(  # type: ignore[attr-defined]
+            FakeBApi(rating({"Augenoptiker": 0})), per_request=100_000
+        )
+        body = client.get(SEARCH, params={"q": "Optik", "mode": "topic", "preset": "balanced"}).json()
+        compendium = client.post(
+            "/api/v2/compendium", json={"topic": "Optik", "parts": ["curricula"], "preset": "balanced"}
+        )
+    choice = body["llm"]["article_choice"]
+    assert choice["requested"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"]
+    assert body["keywords"] == compendium.json()["curricula"]["keywords"]
+    assert body["llm"]["curriculum_check"]["requested"] == "rule-based"
 
 
 def test_an_unknown_subject_is_a_422_that_names_the_known_ones(sample_zims: dict[str, Path], tmp_path: Path) -> None:

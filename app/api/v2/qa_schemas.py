@@ -68,9 +68,11 @@ class QaRequest(BaseModel):
     )
     article_choice: ArticleChoice | None = Field(
         None,
-        description="With topic or node_id: who chooses the article of part 1. Default rule-based, whatever the "
-        "profile (D55); llm lets the b-api choose, as in a compendium request, and also names the article of a "
-        "material without a topic (D47) - it needs LLM_ENABLED, else the request is a 503",
+        description="With topic or node_id: who chooses the article of part 1. rule-based: the rules alone; llm: the "
+        "b-api where the rules are unsure, as in a compendium request, and for a material without a topic it names "
+        "the article (D47). Default: rule-based for a topic whatever the profile (D55); for a node the profile's - "
+        "llm in balanced, best-quality and best-quality-generated, since the rules find the article of a material "
+        "in only about half of the cases. llm needs LLM_ENABLED, else the request is a 503",
     )
     method: Method | None = Field(
         None,
@@ -79,7 +81,8 @@ class QaRequest(BaseModel):
         "image carries: it asks Wann, Wo, Wer, Was, Worauf, Wie viele, Warum and for definitions from the parse of "
         "each sentence, then the glossary and the actors of a compendium, and the answer is the whole sentence; "
         "without the spaCy model it falls back to four templates. llm lets the b-api write the pairs; with a topic "
-        "or node, part 1 and the pairs share one token budget and one deadline (LLM_MAX_TOKENS_PER_REQUEST, "
+        "or node, part 1 and the pairs share one token budget and one deadline (the profile's: "
+        "LLM_MAX_TOKENS_PER_REQUEST, in the two best-quality profiles LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59; "
         "REQUEST_TIMEOUT_S). llm without a configured LLM is a 503; while the b-api is not available it falls back "
         "to rule-based, and note says why. Over six topics with 20 pairs asked each, two judges found 48 of 96 "
         "rule-based pairs and 99 of 120 llm pairs flawless (M30). The stages models and parse-based are gone (D57): "
@@ -89,10 +92,12 @@ class QaRequest(BaseModel):
         5,
         ge=1,
         le=50,
-        description="How many pairs. An upper bound: a text holds only so many questions a stage can ask, and when "
-        "it holds fewer, note says how many came instead",
+        description="How many pairs, 1 to 50, default 5. An upper bound: a text holds only so many questions a "
+        "stage can ask, and when it holds fewer, note says how many came instead",
     )
-    max_answer_length: int = Field(300, ge=50, le=2000, description="Characters per answer; longer ones are cut")
+    max_answer_length: int = Field(
+        300, ge=50, le=2000, description="Characters per answer, 50 to 2000, default 300; longer ones are cut"
+    )
     levels: list[str] = Field(
         default_factory=list,
         max_length=12,

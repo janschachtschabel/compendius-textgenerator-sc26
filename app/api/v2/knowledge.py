@@ -50,7 +50,11 @@ class KnowledgeRequest(BaseModel):
         description="The subject that decides the article, as in a compendium request (WLO discipline id, vocabulary "
         "URI, label or alias); default: one the topic names, else the subjects of node_id" + UNKNOWN_SUBJECT_HELP,
     )
-    archives: list[str] = Field(default_factory=list, description="Archive ids to ask; empty asks every active archive")
+    archives: list[str] = Field(
+        default_factory=list,
+        description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
+        "active archive, an unknown id is a 404",
+    )
     max_articles: int | None = Field(
         None,
         ge=1,
@@ -58,13 +62,24 @@ class KnowledgeRequest(BaseModel):
         description="Bound of the extra articles (default CORPUS_MAX_ARTICLES); the topic and its twin in "
         "another archive are always included",
     )
-    max_chars: int | None = Field(None, ge=100, description="Cap over all articles; cuts at section borders")
-    template_id: str | None = Field(None, description="Its slots steer the full-text search for extra articles")
+    max_chars: int | None = Field(
+        None,
+        ge=100,
+        description="Cap on the text over all articles, at least 100, default none; it cuts at section borders "
+        "and sets truncated",
+    )
+    template_id: str | None = Field(
+        None,
+        description="The template whose blocks steer the full-text search for the further articles: sc26 (the "
+        "default), standard or a custom id; an unknown one is a 404",
+    )
     preset: Preset | None = Field(
         None,
-        description="The profile of a compendium request (D53); here it only sets article_choice: llm-free takes "
-        "rule-based, every other profile llm. Default: PRESET_DEFAULT, shipped balanced. An article_choice the "
-        "request sets wins; llm on a server without an LLM is a 503.",
+        description="The profile of a compendium request (D53); here it sets article_choice and the token budget. "
+        "llm-free takes rule-based; balanced, best-quality and best-quality-generated take llm, and the two "
+        "best-quality profiles spend from 180,000 tokens per request instead of 60,000 (D59), which this endpoint "
+        "does not come near. Default: PRESET_DEFAULT, shipped balanced. An article_choice the request sets wins; "
+        "llm on a server without an LLM is a 503.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
 
@@ -190,6 +205,28 @@ EXAMPLES = {
             "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
         },
     },
+    "alle Parameter": {
+        "summary": "Jedes Feld einmal gesetzt: Thema mit Material, Fach, Profil, Archiv, Grenzen und Template",
+        "description": (
+            "topic geht vor; das Material (node_id, repository) bringt seine Fächer und seinen Artikel als weitere "
+            "Quelle, wenn der mit dem Hauptartikel verlinkt ist. subject entscheidet das mehrdeutige Linse mit. preset "
+            "setzt article_choice wie im Kompendium - llm-free rule-based, die anderen drei llm -, ein gesetztes "
+            "article_choice geht vor. Die Knoten stammen aus der WLO-Staging; für eine andere Umgebung ersetzen. "
+            "Braucht LLM_ENABLED, sonst 503."
+        ),
+        "value": {
+            "topic": "Linse",
+            "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+            "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+            "subject": "Physik",
+            "archives": ["wikipedia_de_all_nopic"],
+            "max_articles": 6,
+            "max_chars": 40000,
+            "template_id": "sc26",
+            "preset": "best-quality",
+            "article_choice": "llm",
+        },
+    },
 }
 
 
@@ -214,9 +251,20 @@ def knowledge(
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
     ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, and
-    ``article_choice`` in the answer says what it did and what it cost. ``preset`` sets it as the profile of a
-    compendium would: ``llm-free`` takes ``rule-based``, every other profile ``llm``; without ``preset`` the server's
-    profile applies (PRESET_DEFAULT). ``llm`` on a server without an LLM is a 503.
+    ``article_choice`` in the answer says what it did and what it cost. ``subject`` helps decide an ambiguous
+    topic, as in a compendium.
+
+    **What each profile does here.** ``preset`` sets ``article_choice`` as the profile of a compendium would;
+    without it the server's profile applies (PRESET_DEFAULT, shipped balanced), and an ``article_choice`` of the
+    request wins.
+
+    - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
+    - ``balanced``: the LLM decides an unsure article and drops the side articles that do not fit (``llm``).
+    - ``best-quality`` and ``best-quality-generated``: the same as balanced here, from the larger budget of these
+      profiles (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so
+      nothing else of theirs applies.
+
+    ``llm`` on a server without an LLM is a 503. The examples run from a topic alone to one that sets every field.
 
     ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
     compendium does: a collection's title, a material's article from its title and description (D47).
@@ -255,6 +303,7 @@ def knowledge(
         derived=derived,
         node=info,
         subject=payload.subject,
+        budget=service.open_budget(profile),
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []

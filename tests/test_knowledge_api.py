@@ -73,6 +73,20 @@ def test_the_llm_can_drop_the_full_text_hits_that_do_not_fit(
     assert choice["used"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"] and choice["tokens"] == 24
 
 
+def test_the_best_quality_profiles_choose_from_a_budget_of_their_own(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D59: best-quality spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY; with the other cap far too small only
+    it still lets the model check the full-text hits."""
+    fake = FakeBApi(rating({"Augenoptiker": 0}))
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake, per_request=100))  # type: ignore[attr-defined]
+    best = client.post("/api/v2/knowledge", json={"topic": "Optik", "preset": "best-quality"}).json()
+    tight = client.post("/api/v2/knowledge", json={"topic": "Optik", "preset": "balanced"}).json()
+    assert best["article_choice"]["used"] == "llm" and best["article_choice"]["hits_dropped"] == ["Augenoptiker"]
+    assert tight["article_choice"]["used"] == "rule-based"
+    assert "Token-Budget der Anfrage" in (tight["article_choice"]["hits_fallback"] or "")
+
+
 def test_the_rules_choose_unless_the_llm_is_asked_for_which_needs_one(client: TestClient) -> None:
     assert client.post("/api/v2/knowledge", json={"topic": "Optik"}).json()["article_choice"] is None
     asked = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"})

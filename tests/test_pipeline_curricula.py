@@ -167,6 +167,22 @@ def test_a_heading_only_element_the_llm_rates_fitting_is_listed_on_its_own(
     assert [entry["note"] for entry in result.curricula.entries] == [2]
 
 
+def test_the_best_quality_profiles_check_from_a_budget_of_their_own(
+    service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D59: next to matcher llm the 60,000 tokens of a request cover about 400 elements (M32); best-quality and
+    best-quality-generated spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY. With the other cap far too small,
+    only they still check."""
+    write_cache(settings.state_dir)
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: json.dumps({"e1": 2})), per_request=100))
+    asked = {"topic": "Optik", "parts": ["curricula"], "subject": "Physik"}
+    best = service.generate(GenerateRequest(**asked, preset="best-quality")).audit.llm
+    tight = service.generate(GenerateRequest(**asked, preset="balanced", curriculum_check="llm")).audit.llm
+    assert best is not None and best["curriculum_check"]["answered"] == 1
+    assert tight is not None and tight["curriculum_check"]["answered"] == 0
+    assert any("Token-Budget der Anfrage" in reason for reason in tight["curriculum_check"]["fallbacks"])
+
+
 def test_while_the_b_api_is_away_the_rules_decide_part_two_and_the_audit_says_why(
     service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch
 ) -> None:

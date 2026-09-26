@@ -89,8 +89,8 @@ class LlmGateway:
             return ids & set(self.options.fast_sections)
         return set()
 
-    def open_budget(self) -> RequestBudget:
-        return self.budget.open_request()
+    def open_budget(self, limit: int | None = None) -> RequestBudget:
+        return self.budget.open_request(limit)
 
     def status(self) -> dict[str, Any]:
         """Component status for ``/health``: the last known check, never a call to the b-api."""

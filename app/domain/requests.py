@@ -51,9 +51,10 @@ MATCHER_HELP = (
     "per call. 0.69 and 0.72 in two runs, about 180 tokens per paragraph and 34 500 per compendium; part 1 took "
     "12.0 and 22.7 s instead of 1.2 and 1.8 s in the median of two measurements, the b-api answering at different "
     "speeds. Where the model gives no answer, or the b-api is not available for now, hybrid_light decides; "
-    "without a configured LLM the request is a 503. At the "
-    "default LLM_MAX_TOKENS_PER_REQUEST of 60 000 four batches run at once and the others wait for them, so topics "
-    "of more than 200 paragraphs take a second round. These numbers are gpt-5.6-luna's; the default gpt-6-luna "
+    "without a configured LLM the request is a 503. At LLM_MAX_TOKENS_PER_REQUEST 60 000 four batches run at "
+    "once and the others wait for them, so topics of more than 200 paragraphs take a second round; the "
+    "best-quality profiles, which choose llm, spend from 180,000 (D59) and leave room for about three times as many. "
+    "These numbers are gpt-5.6-luna's; the default gpt-6-luna "
     "(D44) reached 0.70 and takes a quarter to three quarters longer per call (M19).\n\n"
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
@@ -84,9 +85,14 @@ CURRICULUM_CHECK_HELP = (
     "fits, touches the topic, does not fit. What does not fit leaves part 2; an element only its heading names stands "
     "on its own when the model rates it fitting. 74 to 79 % of the listed elements fit, 5 to 9 % do not, and no "
     "element two raters called fitting was dropped (M32). About 75 to 80 tokens per element: in the median 7,800 to "
-    "9,600 tokens and 6 s more per compendium. It spends from LLM_MAX_TOKENS_PER_REQUEST: next to matcher llm the "
-    "shipped 60,000 cover about 400 elements, the rest keeps the rules' decision. Needs LLM_ENABLED, else the request "
-    "is a 503; while the b-api is not available the rules decide and audit.llm.curriculum_check says why."
+    "9,600 tokens and 6 s more per compendium. It spends from the budget of the request: in the best-quality "
+    "profiles 180,000 tokens (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59): on the widest topic of M32, "
+    "Demokratie without a subject, all 819 elements next to matcher llm on its 382 paragraphs and next to the "
+    "writing of best-quality-generated (M33); set on its own in llm-free or balanced it spends from 60,000 "
+    "(LLM_MAX_TOKENS_PER_REQUEST). "
+    "What the budget leaves unrated keeps the rules' decision. Needs LLM_ENABLED, else "
+    "the request is a 503; while the b-api is not available the rules decide and audit.llm.curriculum_check "
+    "says why."
 )
 ENRICHMENT_HELP = (
     "Whether the writing LLM may add knowledge of its own beyond the sources. Default: the profile's: "
@@ -117,8 +123,9 @@ PRESET_HELP = (
     "tokens. For a material without a topic the LLM names the article: 30 instead of 15 of 31 right (D47). /qa and "
     "part 2 as llm-free (D57, D58).\n"
     "- **best-quality**: balanced plus the LLM assigning every paragraph (matcher llm). 91 of 94, macro-F1 0.70; "
-    "about 14 s and 26 000 tokens, about 170 per paragraph. Topics of more than 200 paragraphs take a second round "
-    "of calls at LLM_MAX_TOKENS_PER_REQUEST 60 000; about 100 000 avoids it. /qa lets the LLM write the pairs: 99 of "
+    "about 14 s and 26 000 tokens, about 170 per paragraph. Its requests spend from 180,000 tokens "
+    "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) instead of the 60,000 of the others, at which topics of more "
+    "than 200 paragraphs took a second round of calls. /qa lets the LLM write the pairs: 99 of "
     "120 flawless, about 2 400 tokens per text (M30). The LLM also checks the curriculum elements of part 2 "
     "(curriculum_check llm): 74 to 79 % fit, none fitting dropped, about 6 s and 8,000 to 10,000 tokens more (M32).\n"
     "- **best-quality-generated**: best-quality plus the LLM writing every block (generation llm), which may add "
@@ -157,6 +164,8 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         "enrichment": "model-knowledge",
     },
 }
+# Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
+BEST_QUALITY_PRESETS = frozenset({"best-quality", "best-quality-generated"})
 UNKNOWN_SUBJECT_HELP = (
     "; one outside the two subject vocabularies of edu-sharing (school subjects, Destatis university subjects; "
     "config/vocabs) is a 422 that lists the school subjects"
@@ -219,15 +228,24 @@ class GenerateRequest(BaseModel):
     parts: list[Part] = Field(
         default_factory=_default_parts,
         min_length=1,
-        description="Parts to generate: world (part 1), curricula (part 2), collection (part 3, needs collection_id)",
+        description="Parts to generate, default all three: world (part 1, the compendium text), curricula (part 2, "
+        "the curriculum elements), collection (part 3, the materials of collection_id; without collection_id it "
+        "drops out, and as the only part it is then a 422)",
     )
     subject: str | None = Field(
         None,
         max_length=100,
-        description="Subject for part 2: WLO discipline id, vocabulary URI, label or alias" + UNKNOWN_SUBJECT_HELP,
+        description="The subject: its words decide an ambiguous topic, and it narrows part 2 to its curricula. WLO "
+        "discipline id, vocabulary URI, label or alias; default: one the topic names ('Physik: Optik'), else the "
+        "subjects of node_id or collection_id" + UNKNOWN_SUBJECT_HELP,
     )
     language: str = Field("de", pattern="^de$", description="Only 'de' today; any other value is a 422")
-    template_id: str | None = Field(None, description="Template id; default from settings")
+    template_id: str | None = Field(
+        None,
+        description="The template of part 1: sc26 (13 blocks, the shipped TEMPLATE_DEFAULT) or standard (6 blocks) "
+        "ship with the image, custom ones come from PUT /api/v2/templates/{id}; GET /api/v2/templates lists them, "
+        "an unknown id is a 404",
+    )
     preset: Preset | None = Field(None, description=PRESET_HELP)
     matcher: MatcherName | None = Field(None, description=MATCHER_HELP)
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
@@ -263,7 +281,11 @@ class GenerateRequest(BaseModel):
         "one is kept. Blocks are named by their id, as the markers of the document name them (sc26_3); a name the "
         "template does not have is a 422 that lists its blocks, and so is the field without existing_markdown",
     )
-    facets_visible: bool | None = Field(None, description="Override FACETS_VISIBLE")
+    facets_visible: bool | None = Field(
+        None,
+        description="true: the facets of each block stand in the text as visible [Facette: Wert] labels; false: "
+        "only in the markers of the markup. Default: the server's FACETS_VISIBLE, shipped false",
+    )
     frontmatter_in_markdown: bool = Field(
         True,
         description="Whether the markdown opens with the YAML frontmatter. It carries the AI Act "
