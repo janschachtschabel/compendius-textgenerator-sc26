@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M31
+# Ergebnisse der Messungen M1 bis M32
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -44,6 +44,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M29 | Wie gut sind die QA-Paare der Profile? | `llm` 67 von 80 Paaren bei beiden Gutachtern mangelfrei (74 und 68), 4 bis 6 s und rund 2.000 bis 2.700 Tokens je Text; `parse-based` 1 von 29 (1 und 4), in 0,1 bis 0,3 s ohne Tokens; einig bei 98 von 109 Paaren | – | `m29_qa.json` |
 | M30 | Wie gut sind die QA-Stufen nach D55, und halten sie `count` ein? | je 20 Paare zu sechs Themen verlangt: Regeln 96 von 120, 48 bei beiden Gutachtern mangelfrei, 9 Zeitfragen statt 46 bei den alten Vorlagen, 0,28 s je Text; `parse-based` 44, 16 mangelfrei; Modelle 120, 25 mangelfrei, rund 25 s je Text; LLM 120, 99 mangelfrei, Median 2.402 Tokens; einig bei 364 von 380 Paaren | – | `m30_qa.json` |
 | M31 | Ergänzt `best-quality-generated` mit dem Prompt v2 weniger Füllsätze? | ja: 50 statt 82 Sätze mit Modellwissen, Füllsätze nach beiden Gutachtern 13 statt 50, fachlich 32 statt 27, falsch 0 statt 2; Lesbarkeit gleich, in 8 von 12 Urteilen vorgezogen, rund 3 % mehr Tokens | – | `m31_modellwissen.json` |
+| M32 | Was bringen B und die LLM-Prüfung der Lehrplanelemente (D58)? | an den 20 Themen von M22, Mittel über die Themen: B zeigt 3.103 von 4.579 Elementen einzeln (mit Fach 1.932 von 3.120), passend 70 bis 72 % ohne und 77 bis 81 % mit Fach statt 62 bis 67 %, unpassend 5 bis 9 % statt 11 bis 17 %, ein Viertel der passenden nur gebündelt; die LLM-Prüfung 74 bis 79 % passend, 5 bis 9 % unpassend, kein passendes Element verworfen, im Median 7.817 bis 9.564 Tokens und 6 s je Anfrage, bei Demokratie ohne Fach reichten 60.000 Tokens nicht; Model2Vec AUC 0,74 bis 0,76 | – | `m32_lehrplan_pruefung.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

@@ -1,0 +1,3281 @@
+{
+ "varianten": {
+  "alle": {
+   "ohne_fach": {
+    "elemente": 4579,
+    "passend_1": 0.621,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.885,
+    "passend_2": 0.641,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.834
+   },
+   "mit_fach": {
+    "elemente": 3120,
+    "passend_1": 0.635,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.89,
+    "passend_2": 0.665,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.83
+   }
+  },
+  "B": {
+   "ohne_fach": {
+    "elemente": 3103,
+    "passend_1": 0.696,
+    "themen_1": 19,
+    "mindestens_beruehrt_1": 0.924,
+    "passend_2": 0.72,
+    "themen_2": 19,
+    "mindestens_beruehrt_2": 0.91
+   },
+   "mit_fach": {
+    "elemente": 1932,
+    "passend_1": 0.768,
+    "themen_1": 19,
+    "mindestens_beruehrt_1": 0.953,
+    "passend_2": 0.805,
+    "themen_2": 19,
+    "mindestens_beruehrt_2": 0.942
+   }
+  },
+  "D2 einzeln": {
+   "ohne_fach": {
+    "elemente": 3691,
+    "passend_1": 0.741,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.955,
+    "passend_2": 0.766,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.923
+   },
+   "mit_fach": {
+    "elemente": 2667,
+    "passend_1": 0.755,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.95,
+    "passend_2": 0.792,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.915
+   }
+  },
+  "D2 behalten": {
+   "ohne_fach": {
+    "elemente": 4179,
+    "passend_1": 0.704,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.948,
+    "passend_2": 0.728,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.917
+   },
+   "mit_fach": {
+    "elemente": 2943,
+    "passend_1": 0.715,
+    "themen_1": 20,
+    "mindestens_beruehrt_1": 0.943,
+    "passend_2": 0.752,
+    "themen_2": 20,
+    "mindestens_beruehrt_2": 0.91
+   }
+  }
+ },
+ "stichprobe": {
+  "alle": {
+   "note0_gezeigt_1": 24,
+   "note0_gezeigt_2": 33,
+   "note0_nicht_gezeigt_1": 8,
+   "note0_nicht_gezeigt_2": 8,
+   "note1_gezeigt_1": 51,
+   "note1_gezeigt_2": 39,
+   "note2_gezeigt_1": 92,
+   "note2_gezeigt_2": 95
+  },
+  "B": {
+   "note0_gezeigt_1": 14,
+   "note0_gezeigt_2": 18,
+   "note0_nicht_gezeigt_1": 18,
+   "note0_nicht_gezeigt_2": 23,
+   "note1_gezeigt_1": 36,
+   "note1_gezeigt_2": 30,
+   "note1_nicht_gezeigt_1": 15,
+   "note1_nicht_gezeigt_2": 9,
+   "note2_gezeigt_1": 68,
+   "note2_gezeigt_2": 70,
+   "note2_nicht_gezeigt_1": 24,
+   "note2_nicht_gezeigt_2": 25
+  },
+  "D2 einzeln": {
+   "note0_gezeigt_1": 8,
+   "note0_gezeigt_2": 14,
+   "note0_nicht_gezeigt_1": 24,
+   "note0_nicht_gezeigt_2": 27,
+   "note1_gezeigt_1": 40,
+   "note1_gezeigt_2": 31,
+   "note1_nicht_gezeigt_1": 11,
+   "note1_nicht_gezeigt_2": 8,
+   "note2_gezeigt_1": 91,
+   "note2_gezeigt_2": 94,
+   "note2_nicht_gezeigt_1": 1,
+   "note2_nicht_gezeigt_2": 1
+  },
+  "D2 behalten": {
+   "note0_gezeigt_1": 10,
+   "note0_gezeigt_2": 16,
+   "note0_nicht_gezeigt_1": 22,
+   "note0_nicht_gezeigt_2": 25,
+   "note1_gezeigt_1": 47,
+   "note1_gezeigt_2": 38,
+   "note1_nicht_gezeigt_1": 4,
+   "note1_nicht_gezeigt_2": 1,
+   "note2_gezeigt_1": 92,
+   "note2_gezeigt_2": 95
+  }
+ },
+ "llm_gegen_gutachter": {
+  "gutachter_1": {
+   "gutachter 0 / llm 0": 14,
+   "gutachter 0 / llm 1": 9,
+   "gutachter 0 / llm 2": 1,
+   "gutachter 1 / llm 0": 4,
+   "gutachter 1 / llm 1": 29,
+   "gutachter 1 / llm 2": 17,
+   "gutachter 1 / llm None": 1,
+   "gutachter 2 / llm 1": 3,
+   "gutachter 2 / llm 2": 88,
+   "gutachter 2 / llm None": 1
+  },
+  "gutachter_2": {
+   "gutachter 0 / llm 0": 17,
+   "gutachter 0 / llm 1": 12,
+   "gutachter 0 / llm 2": 4,
+   "gutachter 1 / llm 0": 1,
+   "gutachter 1 / llm 1": 26,
+   "gutachter 1 / llm 2": 11,
+   "gutachter 1 / llm None": 1,
+   "gutachter 2 / llm 1": 3,
+   "gutachter 2 / llm 2": 91,
+   "gutachter 2 / llm None": 1
+  }
+ },
+ "m2v": {
+  "text_1": {
+   "auc_2_gegen_0": 0.738,
+   "auc_2_gegen_0_1": 0.687
+  },
+  "text_2": {
+   "auc_2_gegen_0": 0.749,
+   "auc_2_gegen_0_1": 0.684
+  },
+  "mit_bereich_1": {
+   "auc_2_gegen_0": 0.761,
+   "auc_2_gegen_0_1": 0.662
+  },
+  "mit_bereich_2": {
+   "auc_2_gegen_0": 0.737,
+   "auc_2_gegen_0_1": 0.654
+  }
+ },
+ "kosten": {
+  "ohne_fach": {
+   "tokens_median": 9563.5,
+   "tokens_max": 55599,
+   "tokens_summe": 345964,
+   "sekunden_median": 6.405,
+   "sekunden_max": 26.4,
+   "regeln_sekunden_median": 0.735,
+   "geprueft": 4579,
+   "verworfen": 400,
+   "rueckfall": {
+    "Token-Budget der Anfrage erschöpft (10443 Tokens nötig, 1386 frei)": 60,
+    "Token-Budget der Anfrage erschöpft (9700 Tokens nötig, 4401 frei)": 60,
+    "Token-Budget der Anfrage erschöpft (7588 Tokens nötig, 4401 frei)": 60
+   }
+  },
+  "mit_fach": {
+   "tokens_median": 7816.5,
+   "tokens_max": 47970,
+   "tokens_summe": 246871,
+   "sekunden_median": 6.035,
+   "sekunden_max": 13.44,
+   "regeln_sekunden_median": 0.11,
+   "geprueft": 3120,
+   "verworfen": 177,
+   "rueckfall": {}
+  }
+ },
+ "anfragen": {
+  "Barockliteratur|ohne_fach": {
+   "elemente": 1,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 1,
+   "tokens": 377,
+   "aufrufe": 1,
+   "sekunden": 3.6,
+   "sekunden_regeln": 0.57,
+   "rueckfall": {}
+  },
+  "Barockliteratur|mit_fach": {
+   "elemente": 1,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 1,
+   "tokens": 377,
+   "aufrufe": 1,
+   "sekunden": 2.16,
+   "sekunden_regeln": 0.06,
+   "rueckfall": {}
+  },
+  "Bruchrechnung|ohne_fach": {
+   "elemente": 5,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 5,
+   "tokens": 585,
+   "aufrufe": 1,
+   "sekunden": 3.66,
+   "sekunden_regeln": 1.4,
+   "rueckfall": {}
+  },
+  "Bruchrechnung|mit_fach": {
+   "elemente": 4,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 4,
+   "tokens": 548,
+   "aufrufe": 1,
+   "sekunden": 1.58,
+   "sekunden_regeln": 0.1,
+   "rueckfall": {}
+  },
+  "Demokratie|ohne_fach": {
+   "elemente": 819,
+   "gebuendelt_regeln": 327,
+   "verworfen": 40,
+   "beantwortet": 639,
+   "tokens": 55599,
+   "aufrufe": 11,
+   "sekunden": 26.4,
+   "sekunden_regeln": 0.81,
+   "rueckfall": {
+    "Token-Budget der Anfrage erschöpft (10443 Tokens nötig, 1386 frei)": 60,
+    "Token-Budget der Anfrage erschöpft (9700 Tokens nötig, 4401 frei)": 60,
+    "Token-Budget der Anfrage erschöpft (7588 Tokens nötig, 4401 frei)": 60
+   }
+  },
+  "Demokratie|mit_fach": {
+   "elemente": 531,
+   "gebuendelt_regeln": 251,
+   "verworfen": 16,
+   "beantwortet": 531,
+   "tokens": 47970,
+   "aufrufe": 9,
+   "sekunden": 13.44,
+   "sekunden_regeln": 0.22,
+   "rueckfall": {}
+  },
+  "Französische Revolution|ohne_fach": {
+   "elemente": 40,
+   "gebuendelt_regeln": 19,
+   "verworfen": 6,
+   "beantwortet": 40,
+   "tokens": 3913,
+   "aufrufe": 1,
+   "sekunden": 7.03,
+   "sekunden_regeln": 0.92,
+   "rueckfall": {}
+  },
+  "Französische Revolution|mit_fach": {
+   "elemente": 37,
+   "gebuendelt_regeln": 19,
+   "verworfen": 7,
+   "beantwortet": 37,
+   "tokens": 3590,
+   "aufrufe": 1,
+   "sekunden": 6.84,
+   "sekunden_regeln": 0.15,
+   "rueckfall": {}
+  },
+  "Klimawandel|ohne_fach": {
+   "elemente": 158,
+   "gebuendelt_regeln": 54,
+   "verworfen": 2,
+   "beantwortet": 158,
+   "tokens": 13224,
+   "aufrufe": 3,
+   "sekunden": 8.79,
+   "sekunden_regeln": 1.42,
+   "rueckfall": {}
+  },
+  "Klimawandel|mit_fach": {
+   "elemente": 98,
+   "gebuendelt_regeln": 44,
+   "verworfen": 0,
+   "beantwortet": 98,
+   "tokens": 7087,
+   "aufrufe": 2,
+   "sekunden": 4.69,
+   "sekunden_regeln": 0.27,
+   "rueckfall": {}
+  },
+  "Optik|ohne_fach": {
+   "elemente": 145,
+   "gebuendelt_regeln": 102,
+   "verworfen": 0,
+   "beantwortet": 145,
+   "tokens": 8953,
+   "aufrufe": 3,
+   "sekunden": 2.71,
+   "sekunden_regeln": 0.5,
+   "rueckfall": {}
+  },
+  "Optik|mit_fach": {
+   "elemente": 135,
+   "gebuendelt_regeln": 99,
+   "verworfen": 0,
+   "beantwortet": 135,
+   "tokens": 8832,
+   "aufrufe": 3,
+   "sekunden": 3.89,
+   "sekunden_regeln": 0.11,
+   "rueckfall": {}
+  },
+  "Photosynthese|ohne_fach": {
+   "elemente": 239,
+   "gebuendelt_regeln": 93,
+   "verworfen": 9,
+   "beantwortet": 239,
+   "tokens": 16931,
+   "aufrufe": 4,
+   "sekunden": 6.24,
+   "sekunden_regeln": 0.99,
+   "rueckfall": {}
+  },
+  "Photosynthese|mit_fach": {
+   "elemente": 195,
+   "gebuendelt_regeln": 76,
+   "verworfen": 3,
+   "beantwortet": 195,
+   "tokens": 13459,
+   "aufrufe": 4,
+   "sekunden": 6.05,
+   "sekunden_regeln": 0.18,
+   "rueckfall": {}
+  },
+  "Programmiersprache|ohne_fach": {
+   "elemente": 133,
+   "gebuendelt_regeln": 31,
+   "verworfen": 1,
+   "beantwortet": 133,
+   "tokens": 10174,
+   "aufrufe": 3,
+   "sekunden": 8.89,
+   "sekunden_regeln": 1.02,
+   "rueckfall": {}
+  },
+  "Programmiersprache|mit_fach": {
+   "elemente": 116,
+   "gebuendelt_regeln": 29,
+   "verworfen": 0,
+   "beantwortet": 116,
+   "tokens": 8546,
+   "aufrufe": 2,
+   "sekunden": 8.02,
+   "sekunden_regeln": 0.17,
+   "rueckfall": {}
+  },
+  "Säure-Base-Konzepte|ohne_fach": {
+   "elemente": 607,
+   "gebuendelt_regeln": 146,
+   "verworfen": 76,
+   "beantwortet": 607,
+   "tokens": 48944,
+   "aufrufe": 11,
+   "sekunden": 10.93,
+   "sekunden_regeln": 1.06,
+   "rueckfall": {}
+  },
+  "Säure-Base-Konzepte|mit_fach": {
+   "elemente": 540,
+   "gebuendelt_regeln": 143,
+   "verworfen": 30,
+   "beantwortet": 540,
+   "tokens": 41995,
+   "aufrufe": 9,
+   "sekunden": 7.12,
+   "sekunden_regeln": 0.15,
+   "rueckfall": {}
+  },
+  "Sinfonie|ohne_fach": {
+   "elemente": 34,
+   "gebuendelt_regeln": 0,
+   "verworfen": 2,
+   "beantwortet": 34,
+   "tokens": 3128,
+   "aufrufe": 1,
+   "sekunden": 5.55,
+   "sekunden_regeln": 0.62,
+   "rueckfall": {}
+  },
+  "Sinfonie|mit_fach": {
+   "elemente": 24,
+   "gebuendelt_regeln": 0,
+   "verworfen": 4,
+   "beantwortet": 24,
+   "tokens": 2855,
+   "aufrufe": 1,
+   "sekunden": 6.74,
+   "sekunden_regeln": 0.1,
+   "rueckfall": {}
+  },
+  "Plattentektonik|ohne_fach": {
+   "elemente": 32,
+   "gebuendelt_regeln": 16,
+   "verworfen": 0,
+   "beantwortet": 32,
+   "tokens": 2200,
+   "aufrufe": 1,
+   "sekunden": 6.06,
+   "sekunden_regeln": 0.65,
+   "rueckfall": {}
+  },
+  "Plattentektonik|mit_fach": {
+   "elemente": 30,
+   "gebuendelt_regeln": 16,
+   "verworfen": 0,
+   "beantwortet": 30,
+   "tokens": 2034,
+   "aufrufe": 1,
+   "sekunden": 3.82,
+   "sekunden_regeln": 0.11,
+   "rueckfall": {}
+  },
+  "Ökosystem|ohne_fach": {
+   "elemente": 374,
+   "gebuendelt_regeln": 142,
+   "verworfen": 11,
+   "beantwortet": 374,
+   "tokens": 26032,
+   "aufrufe": 7,
+   "sekunden": 5.31,
+   "sekunden_regeln": 0.28,
+   "rueckfall": {}
+  },
+  "Ökosystem|mit_fach": {
+   "elemente": 286,
+   "gebuendelt_regeln": 119,
+   "verworfen": 7,
+   "beantwortet": 286,
+   "tokens": 20156,
+   "aufrufe": 5,
+   "sekunden": 5.86,
+   "sekunden_regeln": 0.06,
+   "rueckfall": {}
+  },
+  "Atommodell|ohne_fach": {
+   "elemente": 206,
+   "gebuendelt_regeln": 119,
+   "verworfen": 51,
+   "beantwortet": 206,
+   "tokens": 17119,
+   "aufrufe": 4,
+   "sekunden": 8.81,
+   "sekunden_regeln": 0.99,
+   "rueckfall": {}
+  },
+  "Atommodell|mit_fach": {
+   "elemente": 139,
+   "gebuendelt_regeln": 83,
+   "verworfen": 56,
+   "beantwortet": 139,
+   "tokens": 12357,
+   "aufrufe": 3,
+   "sekunden": 7.6,
+   "sekunden_regeln": 0.22,
+   "rueckfall": {}
+  },
+  "Industrielle Revolution|ohne_fach": {
+   "elemente": 13,
+   "gebuendelt_regeln": 3,
+   "verworfen": 0,
+   "beantwortet": 13,
+   "tokens": 1174,
+   "aufrufe": 1,
+   "sekunden": 1.59,
+   "sekunden_regeln": 0.56,
+   "rueckfall": {}
+  },
+  "Industrielle Revolution|mit_fach": {
+   "elemente": 11,
+   "gebuendelt_regeln": 3,
+   "verworfen": 0,
+   "beantwortet": 11,
+   "tokens": 1084,
+   "aufrufe": 1,
+   "sekunden": 2.17,
+   "sekunden_regeln": 0.11,
+   "rueckfall": {}
+  },
+  "Elektrischer Strom|ohne_fach": {
+   "elemente": 740,
+   "gebuendelt_regeln": 107,
+   "verworfen": 48,
+   "beantwortet": 740,
+   "tokens": 53509,
+   "aufrufe": 13,
+   "sekunden": 14.53,
+   "sekunden_regeln": 0.5,
+   "rueckfall": {}
+  },
+  "Elektrischer Strom|mit_fach": {
+   "elemente": 336,
+   "gebuendelt_regeln": 64,
+   "verworfen": 10,
+   "beantwortet": 336,
+   "tokens": 24072,
+   "aufrufe": 6,
+   "sekunden": 6.02,
+   "sekunden_regeln": 0.07,
+   "rueckfall": {}
+  },
+  "Wasserkreislauf|ohne_fach": {
+   "elemente": 19,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 19,
+   "tokens": 1825,
+   "aufrufe": 1,
+   "sekunden": 4.47,
+   "sekunden_regeln": 0.55,
+   "rueckfall": {}
+  },
+  "Wasserkreislauf|mit_fach": {
+   "elemente": 2,
+   "gebuendelt_regeln": 0,
+   "verworfen": 0,
+   "beantwortet": 2,
+   "tokens": 375,
+   "aufrufe": 1,
+   "sekunden": 1.42,
+   "sekunden_regeln": 0.1,
+   "rueckfall": {}
+  },
+  "Römisches Reich|ohne_fach": {
+   "elemente": 75,
+   "gebuendelt_regeln": 36,
+   "verworfen": 3,
+   "beantwortet": 75,
+   "tokens": 6151,
+   "aufrufe": 2,
+   "sekunden": 6.36,
+   "sekunden_regeln": 0.71,
+   "rueckfall": {}
+  },
+  "Römisches Reich|mit_fach": {
+   "elemente": 61,
+   "gebuendelt_regeln": 36,
+   "verworfen": 3,
+   "beantwortet": 61,
+   "tokens": 4699,
+   "aufrufe": 2,
+   "sekunden": 5.2,
+   "sekunden_regeln": 0.14,
+   "rueckfall": {}
+  },
+  "Lineare Funktion|ohne_fach": {
+   "elemente": 66,
+   "gebuendelt_regeln": 32,
+   "verworfen": 3,
+   "beantwortet": 66,
+   "tokens": 5880,
+   "aufrufe": 2,
+   "sekunden": 6.45,
+   "sekunden_regeln": 0.86,
+   "rueckfall": {}
+  },
+  "Lineare Funktion|mit_fach": {
+   "elemente": 66,
+   "gebuendelt_regeln": 32,
+   "verworfen": 2,
+   "beantwortet": 66,
+   "tokens": 6015,
+   "aufrufe": 2,
+   "sekunden": 6.36,
+   "sekunden_regeln": 0.06,
+   "rueckfall": {}
+  },
+  "Zelle (Biologie)|ohne_fach": {
+   "elemente": 461,
+   "gebuendelt_regeln": 96,
+   "verworfen": 117,
+   "beantwortet": 461,
+   "tokens": 32244,
+   "aufrufe": 8,
+   "sekunden": 7.44,
+   "sekunden_regeln": 0.41,
+   "rueckfall": {}
+  },
+  "Zelle (Biologie)|mit_fach": {
+   "elemente": 293,
+   "gebuendelt_regeln": 79,
+   "verworfen": 22,
+   "beantwortet": 293,
+   "tokens": 20130,
+   "aufrufe": 5,
+   "sekunden": 7.19,
+   "sekunden_regeln": 0.05,
+   "rueckfall": {}
+  },
+  "Gedicht|ohne_fach": {
+   "elemente": 412,
+   "gebuendelt_regeln": 50,
+   "verworfen": 31,
+   "beantwortet": 412,
+   "tokens": 38002,
+   "aufrufe": 7,
+   "sekunden": 9.55,
+   "sekunden_regeln": 0.76,
+   "rueckfall": {}
+  },
+  "Gedicht|mit_fach": {
+   "elemente": 215,
+   "gebuendelt_regeln": 46,
+   "verworfen": 17,
+   "beantwortet": 215,
+   "tokens": 20690,
+   "aufrufe": 4,
+   "sekunden": 8.18,
+   "sekunden_regeln": 0.15,
+   "rueckfall": {}
+  }
+ },
+ "stichprobe_zeilen": [
+  {
+   "thema": "Barockliteratur",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-56870-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 1.0000001192092896,
+    "mit_bereich": 0.44251659512519836
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/8738bad1-e58f-4895-9663-72eb75180860",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.42915457487106323,
+    "mit_bereich": 0.4380582869052887
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/37f8ac80-8d11-47ea-9884-0ff98289a80f",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.42915457487106323,
+    "mit_bereich": 0.4331759810447693
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-37715-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5946934223175049,
+    "mit_bereich": 0.6124404668807983
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-rlp.org/resource/kompetenz-12859-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4377083480358124,
+    "mit_bereich": 0.2159723937511444
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-159941-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5762624740600586,
+    "mit_bereich": 0.6100003719329834
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/2868a359-f925-4316-a886-a90b18f6cd8d",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.05308780074119568,
+    "mit_bereich": 0.26903361082077026
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.19771.de",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    2
+   ],
+   "m2v": {
+    "text": 0.3474768102169037,
+    "mit_bereich": 0.42889758944511414
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/8bbd44c8-3fb8-4674-9539-cb9742e11624",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.33307725191116333,
+    "mit_bereich": 0.490541011095047
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-rlp.org/resource/kompetenz-28423-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.5075545310974121,
+    "mit_bereich": 0.45176732540130615
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/26b4b642-4d60-446d-9f14-357afce05d09",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    1,
+    2
+   ],
+   "m2v": {
+    "text": 0.3990757167339325,
+    "mit_bereich": 0.4049723744392395
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/191389ec-b902-4c6f-8372-fba6440c9359",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": null,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.16190868616104126,
+    "mit_bereich": 0.3054746389389038
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.165150.de",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.653386116027832,
+    "mit_bereich": 0.5605365633964539
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.258237.de",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.653386116027832,
+    "mit_bereich": 0.5587132573127747
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-rlp.org/resource/kompetenz-11274-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": null,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.1310976892709732,
+    "mit_bereich": 0.4859815835952759
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/d977bc10-b3a1-4f13-a8df-9e04d27dbf7c",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.08224040269851685,
+    "mit_bereich": 0.09259051829576492
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/d70cc23e-6016-4b1a-a6d4-e4a8941a44ce",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.3229037821292877,
+    "mit_bereich": 0.501207709312439
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/9fcf7af7-0839-4153-849a-16cf3d1d3e15",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.16910691559314728,
+    "mit_bereich": 0.4366387724876404
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/f85155d4-0f6c-4e4b-a217-5ec6f6f984f8",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.17468887567520142,
+    "mit_bereich": 0.4382196068763733
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/574d3350-2c36-4a5b-b2e9-6ba9a7d11789",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.4495656192302704,
+    "mit_bereich": 0.537135899066925
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/9944f707-e9a9-40b1-ad6b-a38e37d0b147",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.39811861515045166,
+    "mit_bereich": 0.4039464592933655
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/82d05424-02a3-48c3-af2a-5469c1fbae11",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.5537505149841309,
+    "mit_bereich": 0.528278112411499
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/36b1ce13-6acd-4671-9814-2b3d24971dfb",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.5537505149841309,
+    "mit_bereich": 0.528278112411499
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/fdc2fc02-faea-42fb-8063-0636dc332cae",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.41838204860687256,
+    "mit_bereich": 0.4200226068496704
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/f7ec3c45-578b-40be-b25c-b9f8e4ed59c5",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.47014129161834717,
+    "mit_bereich": 0.5357271432876587
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/bfef2580-6b3a-4fde-8d65-793c792c0112",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.05993077903985977,
+    "mit_bereich": 0.22089248895645142
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/bb168252-b099-4a24-b77c-49d012901b65",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.47066009044647217,
+    "mit_bereich": 0.48861217498779297
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-4305-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4354337751865387,
+    "mit_bereich": 0.36149436235427856
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/50300829-5fad-470b-848c-3da7ab7d4b49",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.26568150520324707,
+    "mit_bereich": 0.40942278504371643
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/9334527e-bcad-46de-9c37-07009ee97fef",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.40296927094459534,
+    "mit_bereich": 0.4244251251220703
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-rlp.org/resource/kompetenz-16891-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.3122037649154663,
+    "mit_bereich": 0.44763028621673584
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/a26fe08c-d7ec-4e40-946e-00895a358aa8",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.5960027575492859,
+    "mit_bereich": 0.536704421043396
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/a9425fb2-8be6-4966-8d51-89b8c0b062af",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.40296927094459534,
+    "mit_bereich": 0.4244251251220703
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-rlp.org/resource/kompetenz-16892-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4033892750740051,
+    "mit_bereich": 0.502997100353241
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-64018-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": -0.03990701958537102,
+    "mit_bereich": 0.1353425532579422
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.68132.de",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 1.0,
+    "mit_bereich": 0.4665526747703552
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/6c3bee06-3174-4f22-8a93-9ddcdc84a7ce",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.09738107025623322,
+    "mit_bereich": 0.3734443485736847
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-63787-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": -0.03990701958537102,
+    "mit_bereich": 0.714374840259552
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-6098-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.30963778495788574,
+    "mit_bereich": 0.32392045855522156
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27283-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.30017542839050293,
+    "mit_bereich": 0.2580767869949341
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-32295-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": -0.04394129291176796,
+    "mit_bereich": 0.5247219204902649
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179758-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.0482674203813076,
+    "mit_bereich": 0.7338786721229553
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179757-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.10889485478401184,
+    "mit_bereich": 0.509939432144165
+   }
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-89435-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4900253117084503,
+    "mit_bereich": 0.41054898500442505
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/e54dabea-8f43-407b-a1fb-a5d243295a99",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2022876888513565,
+    "mit_bereich": 0.33823859691619873
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/ed17a518-0952-4763-9f1a-067f6bdd8637",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.6358814239501953,
+    "mit_bereich": 0.6012445688247681
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-65051-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5143377780914307,
+    "mit_bereich": 0.6212167143821716
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/7bf61615-1d1a-439f-917d-d3bd08711a53",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.39208391308784485,
+    "mit_bereich": 0.5671625137329102
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-rlp.org/resource/kompetenz-28010-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5326866507530212,
+    "mit_bereich": 0.42580652236938477
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/0eef077d-77b5-49f0-8fe0-39f7cee8053d",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.44409799575805664,
+    "mit_bereich": 0.47609490156173706
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/1c0f840a-a857-422c-bf38-774d29af3e8f",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.27285274863243103,
+    "mit_bereich": 0.36538535356521606
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/fc0f02c5-5c21-4da4-805b-e532ba41c18b",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5978784561157227,
+    "mit_bereich": 0.6148015260696411
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/43c33a82-e282-45fc-9f27-272e720038d6",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.3621538281440735,
+    "mit_bereich": 0.4147123098373413
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-57227-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": -0.07761026918888092,
+    "mit_bereich": 0.23527976870536804
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-bavaria.org/2ab86427-d282-4b12-a146-501479420b4d",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.40695422887802124,
+    "mit_bereich": 0.3852837085723877
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-59579-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.12956491112709045,
+    "mit_bereich": 0.3961297869682312
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-bavaria.org/47b1929f-7337-4796-8983-c6f539581d76",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.2837505042552948,
+    "mit_bereich": 0.3511137068271637
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-bavaria.org/f32605ff-1198-45e3-b59c-fd4d5f9c4d33",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.2837505042552948,
+    "mit_bereich": 0.3511137068271637
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-206495-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.11223369836807251,
+    "mit_bereich": 0.41963422298431396
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-95621-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.43224161863327026,
+    "mit_bereich": 0.3698180317878723
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-bavaria.org/9b12aa70-1153-4375-8633-841d1235e553",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.23251041769981384,
+    "mit_bereich": 0.26452773809432983
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-rlp.org/resource/kompetenz-21172-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.3565797507762909,
+    "mit_bereich": 0.3812111020088196
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-95613-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4773821234703064,
+    "mit_bereich": 0.4850059151649475
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-rlp.org/resource/kompetenz-21220-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.3645021319389343,
+    "mit_bereich": 0.3387802243232727
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/6509d6be-aec1-4b44-b2c2-3be2275e7271",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5727797150611877,
+    "mit_bereich": 0.5573606491088867
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/0deef32f-bce4-4b44-9648-a0764c16604f",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.1916438490152359,
+    "mit_bereich": 0.31171345710754395
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/9270b796-c216-4e52-ad1c-fd10fa48b6f5",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.43709275126457214,
+    "mit_bereich": 0.47693195939064026
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-36691-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.24367986619472504,
+    "mit_bereich": 0.29675987362861633
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-rlp.org/resource/kompetenz-17033-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.22823305428028107,
+    "mit_bereich": 0.2798791229724884
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/3f1e5e56-143f-4a9e-b3b1-4bf2627ff815",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.5247310996055603,
+    "mit_bereich": 0.5106498003005981
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-120104-1",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": -0.10245955735445023,
+    "mit_bereich": 0.3051813840866089
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/4c2cd321-fb89-4527-80ab-4512fc22fd4e",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.1959095001220703,
+    "mit_bereich": 0.17719438672065735
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/758bb01e-24a0-4373-a87e-4061c98b1c87",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.3525683283805847,
+    "mit_bereich": 0.3540877103805542
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-148812-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.47184109687805176,
+    "mit_bereich": 0.30596962571144104
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/d0a5f233-c047-40fe-9a53-a2d513a9762b",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.4397278130054474,
+    "mit_bereich": 0.4563019275665283
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/3365cdad-6a3f-4ba9-995c-14e69a8730a4",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.4233506917953491,
+    "mit_bereich": 0.38207006454467773
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/4f6deada-1797-46e4-a720-26e621a1cf25",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.13775917887687683,
+    "mit_bereich": 0.2003311812877655
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/17d1eba4-9892-431c-8adc-1078e91a9bd4",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.35868585109710693,
+    "mit_bereich": 0.3756689429283142
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/5ef7a392-fed6-4284-a1f9-35ae6342d94d",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    2
+   ],
+   "m2v": {
+    "text": 0.23599548637866974,
+    "mit_bereich": 0.23393835127353668
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144261-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.9187355637550354,
+    "mit_bereich": 0.9102432727813721
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-164743-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.9187355637550354,
+    "mit_bereich": 0.9102432727813721
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144285-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.09620694816112518,
+    "mit_bereich": 0.05688165873289108
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-164757-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.08734403550624847,
+    "mit_bereich": 0.1492057889699936
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-144272-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.08734403550624847,
+    "mit_bereich": 0.1492057889699936
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-82243-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.20322343707084656,
+    "mit_bereich": 0.3894491493701935
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4338-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.13720950484275818,
+    "mit_bereich": 0.12449759989976883
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4344-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2618546485900879,
+    "mit_bereich": 0.23664450645446777
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4334-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.573377251625061,
+    "mit_bereich": 0.4768296480178833
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/7e2da3e6-8c1b-4de4-adb7-753e4af75671",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4530216455459595,
+    "mit_bereich": 0.3368048667907715
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/ee6c654e-19f7-47ce-8a71-6105c523931e",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": -0.13443981111049652,
+    "mit_bereich": -0.13289399445056915
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/7f67ee92-5174-470d-94a4-7ee88fc71842",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5192843079566956,
+    "mit_bereich": 0.26554831862449646
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/46a3fbc0-950f-423a-9929-63f29bb1537e",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.45601198077201843,
+    "mit_bereich": 0.36823418736457825
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/9447c9db-8b85-4bc3-ab45-73bc7ca2aad1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.21181659400463104,
+    "mit_bereich": 0.37805795669555664
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27981-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.34816938638687134,
+    "mit_bereich": 0.5586483478546143
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/22daeb7e-5e99-43d5-a340-81785e72e4ab",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.6352174878120422,
+    "mit_bereich": 0.7745466232299805
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/15b14097-3dce-4695-9235-22960323443c",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.10500997304916382,
+    "mit_bereich": 0.3788975179195404
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7577-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4286302328109741,
+    "mit_bereich": 0.4354957938194275
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/92f80bf1-8316-4381-a852-4e423edaa9d2",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.30968812108039856,
+    "mit_bereich": 0.3295992910861969
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-4148-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4679243266582489,
+    "mit_bereich": 0.46515682339668274
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/ecb9cca0-1cd5-4559-acd4-1a95993f8ff1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.3532934784889221,
+    "mit_bereich": 0.43642979860305786
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/27b36df2-afef-40de-ad18-850f640e13d5",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.40552616119384766,
+    "mit_bereich": 0.3155324161052704
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-rlp.org/resource/kompetenz-16934-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.10250569880008698,
+    "mit_bereich": 0.26989099383354187
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/47e91231-1b68-4a50-8138-e6fc8ee8586b",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.28126150369644165,
+    "mit_bereich": 0.44518983364105225
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/bd6b13f8-ec05-4427-96a9-ebe6ed4fc5d0",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.43422478437423706,
+    "mit_bereich": 0.566811740398407
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/b964c8d0-0d93-43ce-b940-91729eb323ea",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5446832776069641,
+    "mit_bereich": 0.5709235072135925
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/966f189b-c995-41b4-91dc-dc293bb1a4c2",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.382148802280426,
+    "mit_bereich": 0.5377638339996338
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/040e4f9b-bc2e-4583-8341-10318f93c2ca",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.20059187710285187,
+    "mit_bereich": 0.44887542724609375
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27865-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.6246296763420105,
+    "mit_bereich": 0.6547529101371765
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/3c290aaa-4779-490b-86e1-630736e41b46",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5625950694084167,
+    "mit_bereich": 0.6003677248954773
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/84519e30-0bd2-4c15-bd51-ed9717623f94",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5221609473228455,
+    "mit_bereich": 0.46558699011802673
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-rlp.org/resource/kompetenz-26867-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5061282515525818,
+    "mit_bereich": 0.579913318157196
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-rlp.org/resource/kompetenz-19270-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 1.0000001192092896,
+    "mit_bereich": 0.8950191140174866
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-rlp.org/resource/kompetenz-28275-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2477933019399643,
+    "mit_bereich": 0.2855842113494873
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/472a7b17-67ed-47ba-a15d-9b6bc1a8876b",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.671255350112915,
+    "mit_bereich": 0.5900130867958069
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-rlp.org/resource/kompetenz-28276-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.1966775506734848,
+    "mit_bereich": 0.27692148089408875
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/8d5f6c77-82b2-48d8-ba64-7019c1405f38",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.6869511008262634,
+    "mit_bereich": 0.6167587041854858
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-2909-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.42793214321136475,
+    "mit_bereich": 0.46473148465156555
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/de238e75-01c1-492a-9060-f267000bdca3",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.13981667160987854,
+    "mit_bereich": 0.13634814321994781
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/0f34fd55-9947-4571-92c4-489ea5fa132f",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.13981667160987854,
+    "mit_bereich": 0.13634814321994781
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/4a7554d9-384b-4e72-82ab-d1d768450606",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.46521303057670593,
+    "mit_bereich": 0.49209707975387573
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/233d3ba3-3118-4753-91a3-89ae978b3e11",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.41241705417633057,
+    "mit_bereich": 0.4355504810810089
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27811-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.32359084486961365,
+    "mit_bereich": 0.5732731819152832
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenz-13642-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.360140860080719,
+    "mit_bereich": 0.5094228386878967
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/c4e724c7-7a6d-4a2e-b7a1-14948745af74",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4422064423561096,
+    "mit_bereich": 0.5089226961135864
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/3afbf9da-70d4-42d2-8781-6e69dab59bb8",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.3426448404788971,
+    "mit_bereich": 0.3606690466403961
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-192814-1",
+   "schicht": "nur_ohne",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.10166836529970169,
+    "mit_bereich": 0.5281985402107239
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-192913-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5396554470062256,
+    "mit_bereich": 0.3621236979961395
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/b1f7265e-9331-43b8-8737-e4ab0e36834a",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.4507429301738739,
+    "mit_bereich": 0.35886237025260925
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-bavaria.org/f63c70c1-ef2c-4fb7-bfe0-e826ec5fd679",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.25021234154701233,
+    "mit_bereich": 0.2622591555118561
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4113-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 1.0000001192092896,
+    "mit_bereich": 0.4939512610435486
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-8481-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 1.0000001192092896,
+    "mit_bereich": 0.4939512610435486
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/317b1d1e-dd73-40e1-94b7-e1c83815b200",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.7554044127464294,
+    "mit_bereich": 0.6446898579597473
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/62c444de-c8a4-4e5c-9d1b-9fe821429a89",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.8528133034706116,
+    "mit_bereich": 0.8287655711174011
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/3ecf85f9-fa66-42ac-8044-cf863dd1f4a5",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.374729722738266,
+    "mit_bereich": 0.35218581557273865
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/b00dd98b-95a2-4be4-9dcc-53c8c021ef8c",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.5638884902000427,
+    "mit_bereich": 0.5459972023963928
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-185428-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.4104461967945099,
+    "mit_bereich": 0.36432740092277527
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-5982-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5451529622077942,
+    "mit_bereich": 0.543522298336029
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/61cea66d-1d95-4e1a-8242-0d79c11d8960",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.42279306054115295,
+    "mit_bereich": 0.5806912183761597
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-rlp.org/resource/kompetenz-26618-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2844538390636444,
+    "mit_bereich": 0.46160972118377686
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/dbc671ae-1db2-49d3-9b0f-552249f96aa0",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.40902701020240784,
+    "mit_bereich": 0.42339107394218445
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-rlp.org/resource/kompetenz-11392-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.32202211022377014,
+    "mit_bereich": 0.5244929194450378
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/6bbf66f7-1995-40b3-995d-954d923e075c",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.40576013922691345,
+    "mit_bereich": 0.42535528540611267
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/a75ea77c-41fb-4fa3-9ebf-57e6ba72ea31",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.31128188967704773,
+    "mit_bereich": 0.33888640999794006
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/41d146cc-c7bf-4161-a34c-576e0bf388ad",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.5135485529899597,
+    "mit_bereich": 0.5374593138694763
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/100ed30a-6a9f-42eb-81d1-c5bc86a12eff",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.32757654786109924,
+    "mit_bereich": 0.4060957133769989
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/1bc07104-9b6d-4e00-a63a-0588911ae3e7",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.2851544916629791,
+    "mit_bereich": 0.28281718492507935
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-rlp.org/resource/kompetenz-13039-1",
+   "schicht": "mit_fach",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.23235498368740082,
+    "mit_bereich": 0.2537383437156677
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-bavaria.org/eff76568-f48c-4366-8b1f-55de82c346f4",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.3829483389854431,
+    "mit_bereich": 0.45702239871025085
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-bavaria.org/7473e29f-3de5-4590-8920-63c59c88cf63",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2745380103588104,
+    "mit_bereich": 0.35621294379234314
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-bavaria.org/69a7a833-381a-4d38-a8a0-f6cb047e2cac",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.2745380103588104,
+    "mit_bereich": 0.35621294379234314
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-rlp.org/resource/kompetenz-13044-1",
+   "schicht": "mit_fach",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.27053576707839966,
+    "mit_bereich": 0.25111880898475647
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-179352-1",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.17968320846557617,
+    "mit_bereich": 0.19806323945522308
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-106665-1",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.02941594459116459,
+    "mit_bereich": 0.04858558624982834
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-200638-1",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.012317968532443047,
+    "mit_bereich": 0.025382546707987785
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-bavaria.org/f1eec0ab-439d-40ea-bff7-ff6b26550319",
+   "schicht": "nur_ohne",
+   "fundort": null,
+   "llm": null,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.06143847107887268,
+    "mit_bereich": 0.06489256024360657
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/2aa28df7-ce33-4833-b8b8-62b270cc815a",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.18333810567855835,
+    "mit_bereich": 0.15442009270191193
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-55526-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.28804630041122437,
+    "mit_bereich": 0.2845132648944855
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/fa19c433-dab7-4807-83a2-d9c1ba282d7a",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.06379607319831848,
+    "mit_bereich": 0.13075412809848785
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7290-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.0791478157043457,
+    "mit_bereich": 0.1476847231388092
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7834-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 0,
+   "noten": [
+    1,
+    0
+   ],
+   "m2v": {
+    "text": 0.1319660097360611,
+    "mit_bereich": 0.11713855713605881
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/916269a3-b142-44a2-b53f-2712dadc4db2",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.2555237412452698,
+    "mit_bereich": 0.2256663739681244
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/436eabac-aa74-444e-8e56-203b55351904",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.5042798519134521,
+    "mit_bereich": 0.3301606774330139
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/606cd871-d8b6-4765-821e-f6bfe87cf526",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.23782116174697876,
+    "mit_bereich": 0.22714629769325256
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/9cd5b0ca-d8ae-46ce-bc81-67e05e2b3cda",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.3534752428531647,
+    "mit_bereich": 0.31697437167167664
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/ca8a54ae-b1f4-40fe-ba3c-4b57ea1a4dc3",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 0,
+   "noten": [
+    0,
+    0
+   ],
+   "m2v": {
+    "text": 0.05317428708076477,
+    "mit_bereich": 0.07777845859527588
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/d18c898e-75d4-495c-b25f-2fb8824d5901",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.3740861117839813,
+    "mit_bereich": 0.3679119944572449
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-39844-1",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.7317402362823486,
+    "mit_bereich": 0.8540462851524353
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/5e333b4e-bb4a-4e0c-ba24-9b9aef184285",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.22310447692871094,
+    "mit_bereich": 0.23271538317203522
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-rlp.org/resource/kompetenz-9155-1",
+   "schicht": "mit_fach",
+   "fundort": "parent",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.12531006336212158,
+    "mit_bereich": 0.46794500946998596
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/fb729e81-580c-4042-ad2b-25be7607872f",
+   "schicht": "mit_fach",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.48808345198631287,
+    "mit_bereich": 0.4951670467853546
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/22b82ee6-7fd7-4130-93b0-f11732961eca",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.46675905585289,
+    "mit_bereich": 0.4724138677120209
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-20199-1",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    2,
+    2
+   ],
+   "m2v": {
+    "text": 0.38419613242149353,
+    "mit_bereich": 0.4619060456752777
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/af815495-f998-46c5-8516-30871b85c453",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.2664370536804199,
+    "mit_bereich": 0.29178139567375183
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/66d37258-73d1-47a2-a2e2-1869ee29b830",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 1,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.7427994608879089,
+    "mit_bereich": 0.6701725721359253
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/d0d09678-d0cf-44b3-816c-a10e9de40244",
+   "schicht": "nur_ohne",
+   "fundort": "label",
+   "llm": 2,
+   "noten": [
+    1,
+    1
+   ],
+   "m2v": {
+    "text": 0.38028058409690857,
+    "mit_bereich": 0.3322690725326538
+   }
+  }
+ ]
+}

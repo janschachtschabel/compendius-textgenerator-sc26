@@ -38,9 +38,17 @@ zu acht Ebenen tief.
 3. **Wortgrenzen:** Ein Treffer zählt nur, wenn das Stichwort an einer Wortgrenze steht, zuerst im Text des
    Elements, sonst in dem des übergeordneten Elements. Das hält zufällige Treffer mitten in anderen Wörtern fern.
    Am Anfang oder Ende eines längeren Wortes zählt ein Treffer, damit Zusammensetzungen wie „Lichtbrechung“ oder
-   „Kernphysik“ bleiben; so trifft aber auch „Erdplatten“ die „Herdplatten“ und „Zelle“ die „Solarzelle“ (M22).
+   „Kernphysik“ bleiben. Seit der Nachschärfung nach M22 (A, `f5d8297`) braucht ein Treffer am Wortende zwei
+   Buchstaben davor („Eizelle“ ja, „Herdplatten“ für „Erdplatten“ nein), nach „nicht-“ zählt er nicht, und
+   Bindestrich-Teile kommen nur aus dem Thema selbst; andere Bedeutungen kurzer Stichwörter („Solarzelle“) bleiben.
 4. **Stufen:** Schulstufe und Klassenstufe kommen aus den Daten; fehlen sie, leitet der Dienst sie aus der
    Jahrgangsstufe oder dem Titel ab und kennzeichnet sie als abgeleitet.
+5. **Prüfung durch das LLM (nur `best-quality` und `best-quality-generated`, D58):** Mit `curriculum_check=llm`
+   liest das LLM jedes gefundene Element mit seinem Bereich und seinem Lehrplan und bewertet es nach den Noten von
+   M22: passt, berührt das Thema, passt nicht. Was nicht passt, fällt heraus; ein Element, das nur seine
+   Überschrift zum Thema macht, steht einzeln da, wenn das LLM es passend nennt. Die Elemente gehen in Stapeln zu
+   60 parallel an die b-api, auf Budget und Frist der Anfrage; ein gescheiterter Stapel behält die Entscheidung der
+   Regeln, und `audit.llm.curriculum_check` sagt, was geprüft, verworfen und warum etwas nicht geprüft wurde.
 
 Für Optik fand Teil 2 im Test am 23.09.2026 (lokaler Cache vom 20.09.) 145 Lehrplanelemente in 19 Lehrplänen aus
 drei Ländern.
@@ -48,17 +56,21 @@ drei Ländern.
 ### Darstellung
 
 Teil 2 beginnt mit einem Satz zur Abdeckung und einer Tabelle Land mal Stufe. Danach folgen die Treffer nach Stufe,
-Land und Lehrplan; jede Gruppe ist ein Facettenblock:
+Land und Lehrplan; jede Gruppe ist ein Facettenblock. Seine erste Zeile nennt, woher die Schnipsel darunter kommen
+(Jan, D58): Lehrplan mit Link, Land, Bildungsstufe, Schulart und Klasse, eine abgeleitete Stufe oder Klasse mit
+ihrer Quelle; der Marker trägt dasselbe maschinenlesbar, dazu den Titel des Lehrplans. Elemente, die nur ihre
+Überschrift zum Thema macht, stehen als eine Zeile mit ihrer Zahl und einem Link zum Bereich (B aus M22):
 
 ```
 #### Bayern
 
-*LehrplanPLUS: Physik Vorklasse (T, ABU)* · Berufsoberschule · Jahrgangsstufe 10
-<!-- f: Bundesland=Bayern; Bildungsstufe=Sek I; Klassenstufe=10; Schulart=Berufsoberschule; Lehrplan=https://lp-bavaria.org/… -->
+[*LehrplanPLUS: Physik Vorklasse (T, ABU)*](https://lp-bavaria.org/…) · Bayern · Sekundarstufe I · Berufsoberschule · Jahrgangsstufe 10
+<!-- f: Bundesland=Bayern; Bildungsstufe=Sek I; Klassenstufe=10; Schulart=Berufsoberschule; Lehrplan=https://lp-bavaria.org/…; Lehrplantitel=Physik Vorklasse (T, ABU) -->
 
 **Grundlagen der Optik**
 
 - „konstruieren Strahlengänge durch Sammellinsen, …“ (Kompetenz) · [Lehrplanelement](https://lp-bavaria.org/…)
+- *4 weitere Elemente dieses Bereichs; das Thema steht nur in der Überschrift* · [Bereich im Lehrplan](https://lp-bavaria.org/…)
 <!-- /f -->
 ```
 
@@ -72,10 +84,15 @@ Obergrenze je Land halten den Teil kürzer.
 - Vier Länder; weitere kommen hinzu, sobald MEM sie veröffentlicht. Der Text sagt, welche Länder erfasst sind.
 - Inhaltliche Änderungen kommen spätestens nach einem Monat an; neue oder wegfallende Lehrpläne fallen durch die
   wöchentliche Zählung früher auf.
-- Ob die MEM-Daten so weitergegeben werden dürfen, ist noch nicht bestätigt.
-- Treffsicherheit (M22): Rund 60 % der Elemente gehören zum Thema, 13 bis 19 % passen nicht; das Fach
-  kürzt Teil 2, hebt die Treffsicherheit aber kaum und verwirft auch passende Elemente aus beruflichen
-  Lehrplänen, dem Sachunterricht und Nachbarfächern. Die Wege dagegen stehen in `05-messprotokoll.md`.
+- Die MEM-Daten sind frei nutzbar: Die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp), Jan hat die
+  Nutzung am 26.09.2026 ohne Einschränkung freigegeben (D58). Laut mem-mcp führt MEM inzwischen auch Brandenburg;
+  der Abzug fragt alle 16 Länder und holt es mit dem nächsten Lauf.
+- Treffsicherheit (M22, M32): Vor D58 gehörten rund 60 % der Elemente zum Thema, 11 bis 19 % passten nicht. Mit
+  gebündelten Überschriften-Treffern sind von den einzeln gezeigten 70 bis 72 % passend ohne Fach und 77 bis 81 % mit
+  Fach, 5 bis 9 % nicht; ein Viertel der passenden steht dann nur in der Bündelzeile. Die LLM-Prüfung zeigt 74 bis
+  79 % passende, 5 bis 9 % unpassende und verwirft kein passendes Element, für im Median rund 8.000 bis 10.000
+  Tokens und 6 s je Anfrage; ihr Budget reicht bei breiten Themen ohne Fach nicht für alle Elemente. Das Fach kürzt
+  Teil 2 und verwirft auch passende Elemente aus beruflichen Lehrplänen, dem Sachunterricht und Nachbarfächern.
 
 ## Teil 3: Sammlungsüberblick
 

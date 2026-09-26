@@ -1502,3 +1502,54 @@ Füllsätze, keiner falsch nach beiden Gutachtern. Lesbarkeit und Zusammenhang b
 Ganz ohne Füllsätze ist auch v2 nicht: rund fünf je Text, gegen zwölf vorher. Die Gutachter sind Sprachmodelle,
 keine Lehrkräfte, und sechs Themen sind eine kleine Stichprobe. Rohdaten: `m31_modellwissen.json` (Noten, Zählungen,
 Urteile je Satz mit Fassung; ohne Texte und Sätze).
+
+## M32 Lehrplanbezüge nach D58 (26.09.2026)
+
+Jan nahm die Profile für Teil 2 an und gab die MEM-Daten ohne Einschränkung frei (D58): In allen Profilen stehen
+Elemente, die nur ihre Überschrift zum Thema macht, gebündelt bei ihrem Bereich (B aus M22), in den beiden
+`best-quality`-Profilen prüft zusätzlich das LLM jedes Element (`curriculum_check=llm`). `mc_lehrplan_pruefung.py`
+stellt die 40 Anfragen von M22 (20 Themen, ohne und mit dem Fach, das eine Lehrkraft nennen würde) im Ablauf des
+Dienstes, mit dem Profil `llm-free` - die Regeln wählen den Artikel wie in M22 - und `parts=["curricula"]`: einmal nur
+mit den Regeln (A, `f5d8297`, und B), einmal mit der LLM-Prüfung (`gpt-6-luna`, Budget und Frist wie ausgeliefert:
+60.000 Tokens und 120 s je Anfrage). Bewertet wird mit den Noten von M22 (zwei Gutachter, 175 Elemente) und dem
+Schätzer von M22, eingeschränkt auf die Elemente, die Teil 2 einzeln zeigt: je Thema aus beiden Schichten
+hochgerechnet, dann über die Themen gemittelt, Gutachter 1 und 2.
+
+| Mittel über 20 Themen | alles (nach A) | B: einzeln gezeigt (`llm-free`, `balanced`) | LLM-Prüfung: einzeln gezeigt (`best-quality`) |
+|---|---|---|---|
+| Elemente ohne / mit Fach | 4.579 / 3.120 | 3.103 / 1.932 | 3.691 / 2.667 |
+| passend, ohne Fach | 62 und 64 % | 70 und 72 % | 74 und 77 % |
+| passend, mit Fach | 64 und 67 % | 77 und 81 % | 76 und 79 % |
+| passt nicht, ohne Fach | 12 und 17 % | 8 und 9 % | 5 und 8 % |
+| passt nicht, mit Fach | 11 und 17 % | 5 und 6 % | 5 und 9 % |
+| passende Elemente der Stichprobe, die nicht einzeln stehen | 0 | 24 von 92 und 25 von 95 | 1 und 1 |
+| Tokens je Anfrage, Median ohne / mit Fach | 0 | 0 | 9.564 / 7.817 |
+| Sekunden je Anfrage, Median ohne / mit Fach | 0,7 / 0,1 | 0,7 / 0,1 | 6,4 / 6,0 |
+
+B hebt den Anteil passender Elemente unter den einzeln gezeigten ohne Kosten und halbiert die unpassenden; ein Drittel
+der Elemente ohne Fach und zwei Fünftel mit Fach stehen nur noch in der Bündelzeile ihres Bereichs, darunter ein
+Viertel der passenden. Die LLM-Prüfung erreicht einen ähnlichen Anteil passender und unpassender Elemente, zeigt aber
+fast alle passenden einzeln: Kein Element, das ein Gutachter passend nannte, bewertete das LLM mit 0. Von den
+unpassenden der Stichprobe, die A noch findet, verwarf es 14 von 24 und 17 von 33, viele weitere bewertete es mit 1
+(berührt das Thema) und behielt sie; seine Nullen trafen 14 von 18 und 17 von 18 Mal unpassende Elemente, der Rest
+berührte das Thema. Verworfen hat es 400 von 4.579 Elementen ohne Fach und 177 von 3.120 mit Fach.
+
+Die Prüfung kostet rund 75 bis 80 Tokens je Element. Ohne Fach im Median 9.564 Tokens und 6,4 statt 0,7 s je
+Anfrage, höchstens 55.599 Tokens und 26 s (Demokratie, 819 Elemente); mit Fach 7.817 Tokens und 6,0 statt 0,1 s,
+höchstens 47.970 Tokens und 13 s. Bei Demokratie ohne Fach reichte das Budget von 60.000 Tokens nicht: 180 der 819
+Elemente blieben ungeprüft bei den Regeln. In `best-quality` teilt sich die Prüfung das Budget mit der LLM-Zuordnung
+(rund 26.000 Tokens, M27); dann reicht es für rund 400 Elemente, und bei breiten Themen ohne Fach bleibt der Rest bei
+den Regeln. Der ganze Lauf kostete 592.835 Tokens.
+
+D1, die Ähnlichkeit von Thema und Element unter dem Model2Vec-Modell des Dienstes: AUC 0,74 bis 0,76 zwischen
+passenden und unpassenden Elementen, 0,65 bis 0,69 zwischen passenden und dem Rest, mit der Überschrift nicht besser.
+Eine Schwelle, die die Hälfte der unpassenden Elemente entfernt, nähme 25 bis 31 % der passenden mit.
+
+**Ergebnis:** B bringt `llm-free` und `balanced` ohne Kosten von rund 63 auf 71 % passende Elemente ohne Fach und
+auf 79 % mit Fach und halbiert die unpassenden; was es bündelt, ist über den Bereich erreichbar. Die LLM-Prüfung von
+`best-quality` erreicht 74 bis 79 % passend und 5 bis 9 % unpassend, ohne passende Elemente zu verlieren, für rund
+8.000 bis 10.000 Tokens und 6 s je Anfrage; bei breiten Themen ohne Fach reicht das Budget von 60.000 Tokens nicht für
+alle Elemente. D1 wird nicht gebaut: Es verlöre ein Viertel der passenden Elemente. Die Gutachter sind Claude, keine
+Lehrkräfte; je Thema und Schicht stehen höchstens fünf Elemente in der Stichprobe. Rohdaten:
+`m32_lehrplan_pruefung.json` (je Anfrage Elemente, Verworfene, Tokens und Sekunden, je Stichprobenelement Fundort,
+Note des LLM, beide Noten und die Ähnlichkeit; ohne Texte).

@@ -19,13 +19,14 @@ der QA-Paare (D54, D55, D57).
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM geschrieben, ergänzt um Modellwissen |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` |
-| Lehrplanbezüge (Teil 2) | Regeln | Regeln | Regeln | Regeln |
+| Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Hauptartikel richtig, 94 Goldanfragen (M9) | 86 | 91 | 91 | 91 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 | nicht gemessen | nicht gemessen |
 | Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 | 0,70 | 0,70 |
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30) | 48 von 96, 0,3 s je Text | wie `llm-free` | 99 von 120, rund 2.400 Tokens | 99 von 120, rund 2.400 Tokens |
+| Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` |
 | Teil 1 und 2 je Kompendium (M27) | 1,6 s | rund 3,4 s | rund 14 s | rund 24 s |
 | Tokens je Kompendium, Median (M27) | 0 | 905 | 26.267 | 35.376 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.200 | rund 76 | rund 57 |
@@ -48,7 +49,8 @@ der QA-Paare (D54, D55, D57).
 - **`best-quality`** nimmt dazu das LLM als Zuordner: 0,70 statt 0,45 macro-F1, für rund 14 s und 26.000 Tokens je
   Kompendium, rund 170 je Absatz. Sinnvoll, wo Qualität zählt und Zeit nicht, etwa beim Vorbereiten eines Kompendiums
   für die Redaktion. Der Text bleibt wörtlich und belegt. Die QA-Paare schreibt das LLM: 99 von 120 mangelfrei, rund
-  2.400 Tokens und 4 bis 7,5 s je Text (M30).
+  2.400 Tokens und 4 bis 7,5 s je Text (M30). Die Lehrplanelemente von Teil 2 prüft das LLM ebenfalls (D58): 74 bis
+  79 % passend, kein passendes verworfen, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32).
 - **`best-quality-generated`** lässt das LLM zusätzlich jeden Baustein schreiben und eigenes Wissen ergänzen, ohne
   Belegnummer und sichtbar gekennzeichnet mit `[Modellwissen]` (D56): rund 24 s und 35.000 Tokens je Kompendium. Zwei
   blinde Gutachter zogen den geschriebenen Text in 11 von 12 Urteilen dem wörtlichen vor (Lesbarkeit 4,0 statt 2,5 von
@@ -63,18 +65,19 @@ Themen in allen Profilen (M27). Mit `gpt-6-luna`; die LLM-Schritte eines Profils
 
 ## Die Profile: `preset`
 
-`preset` setzt alle Schalter von Teil 1 auf eines der vier Profile (D41, D53). Einen Schalter, den die Anfrage selbst
+`preset` setzt alle Schalter von Teil 1 und die Lehrplanprüfung von Teil 2 auf eines der vier Profile (D41, D53,
+D58). Einen Schalter, den die Anfrage selbst
 setzt, lässt es stehen. Ohne `preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced` (D53; bis dahin war `llm-free`
 die Vorgabe, D40); es ersetzt die Vorgaben der Einzelschalter (`MATCHER_DEFAULT`, `LLM_ARTICLE_CHOICE_DEFAULT` und
 die übrigen). Jedes Profil außer `llm-free` braucht ein LLM: Ohne `LLM_ENABLED` und `B_API_KEY` ist eine solche
 Anfrage ein 503, der die Schalter nennt, die ein LLM brauchen; ein Dienst ohne LLM setzt `PRESET_DEFAULT=llm-free`.
 
-| `preset` | `article_choice` | `matcher` | `extraction` | `generation` | `enrichment` |
-|---|---|---|---|---|---|
-| `llm-free` | `rule-based` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
-| `balanced` | `llm` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` |
-| `best-quality` | `llm` | `llm` | `rule-based` | `rule-based` | `sources-only` |
-| `best-quality-generated` | `llm` | `llm` | `rule-based` | `llm` | `model-knowledge` |
+| `preset` | `article_choice` | `matcher` | `extraction` | `generation` | `enrichment` | `curriculum_check` |
+|---|---|---|---|---|---|---|
+| `llm-free` | `rule-based` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` | `rule-based` |
+| `balanced` | `llm` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` | `rule-based` |
+| `best-quality` | `llm` | `llm` | `rule-based` | `rule-based` | `sources-only` | `llm` |
+| `best-quality-generated` | `llm` | `llm` | `rule-based` | `llm` | `model-knowledge` | `llm` |
 
 Wo man es findet: in `/docs` am Feld `preset` von `POST /api/v2/compendium` (mit Güte, Zeit und Tokens je Profil) und in
 vier Beispielen, eines je Profil; `POST /api/v2/knowledge` und `POST /api/v2/qa` nehmen `preset` ebenfalls an
@@ -94,7 +97,7 @@ Gutachtern falsch (M31).
 
 | Endpunkt | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` |
 |---|---|---|---|---|
-| `POST /api/v2/compendium` | Regeln; 1,6 s, keine Tokens | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 3,4 s, 905 Tokens | dazu LLM-Zuordnung; rund 14 s, 26.267 Tokens | dazu Text vom LLM; rund 24 s, 35.376 Tokens |
+| `POST /api/v2/compendium` | Regeln; 1,6 s, keine Tokens | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 3,4 s, 905 Tokens | dazu LLM-Zuordnung; rund 14 s, 26.267 Tokens; mit Teil 2 prüft das LLM die Lehrplanelemente, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32) | dazu Text vom LLM; rund 24 s, 35.376 Tokens; Teil 2 wie `best-quality` |
 | `POST /api/v2/knowledge` | Regeln; rund 0,5 s | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 2 bis 3 s, rund 900 Tokens | wie `balanced` | wie `balanced` |
 | `POST /api/v2/qa` mit `text` | `rule-based`: rund 0,3 s je Text, 9 bis 20 von 20 Paaren, 48 von 96 mangelfrei | wie `llm-free` (D57) | `llm`: 4 bis 7,5 s und rund 2.400 Tokens für 20 Paare, 99 von 120 mangelfrei | wie `best-quality` |
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab |
@@ -455,13 +458,16 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
 7. **Regeln der QA verbessern:** Ihr häufigster Mangel ist eine Frage, die ohne den Text unverständlich ist (23 und 24
    von 96), etwa „Wo befinden sich die Kurszentren?“. Weitere Sperren gingen ohne Modell (nebengeordnete Sätze,
    Maßverben wie „dauern“, Fragen ohne Inhalt wie „Was ist notwendig?“), wären aber an M30 nachzumessen.
+8. **Budget je Anfrage für `best-quality` mit Teil 2 (D58, M32):** Die LLM-Prüfung der Lehrplanelemente kostet rund
+   75 bis 80 Tokens je Element. Neben der LLM-Zuordnung (rund 26.000 Tokens) reichen die ausgelieferten 60.000
+   Tokens je Anfrage für rund 400 Elemente; breite Themen ohne Fach haben mehr (Demokratie 819, Elektrischer Strom
+   740), dann entscheiden für den Rest die Regeln, und das Audit sagt es. Zu entscheiden: `LLM_MAX_TOKENS_PER_REQUEST`
+   dort, wo `best-quality` mit Teil 2 läuft, auf rund 120.000 heben, oder den Rest bei den Regeln lassen.
 
-Seit D53 offen: eine KI-Prüfung der Lehrplanelemente für die LLM-Profile. Sie ist nicht gebaut, weil sie die Texte der
-Elemente aus dem MEM-Cache an die b-api schicken würde, und ob MEM-Daten weitergegeben werden dürfen, ist nicht geklärt:
-Die Lizenz der MEM-Daten ist unbestätigt (PLAN.md 13.1, Manifest `unconfirmed`) und vor dem Produktivbetrieb mit der FWU
-zu klären; bis dahin zitiert der Dienst nur Bezeichnungen und Links. Die Menge wäre lösbar: Mit Fach läse das LLM im
-Mittel 158 Elemente je Thema, bei breiten Themen über 500 (M22). Bis dahin arbeiten die Lehrplanbezüge in allen Profilen
-mit Regeln.
+Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
+Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
+`best-quality`-Profilen (`curriculum_check=llm`); `llm-free` und `balanced` bleiben bei den Regeln mit gebündelten
+Überschriften-Treffern.
 
 ## Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge
 
@@ -489,11 +495,11 @@ Die Zahlen stehen im [Messprotokoll](05-messprotokoll.md), M21 bis M25.
    Offen: ob der Artikel eines Materials neben einem Thema die Kompendien besser macht (nur auf Artikelebene
    gemessen), und ob das LLM zu Materialien ohne Thema schweigen soll; der Prompt erlaubt es, das Modell nutzt es
    selten.
-7. **Lehrplanbezüge (Teil 2, M22):** Rund 60 % der ausgegebenen Lehrplanelemente gehören zum Thema, 13 bis 19 %
-   passen nicht. Das Fach kürzt Teil 2 um ein Drittel, hebt die Treffsicherheit aber kaum und verwirft ein Viertel
-   der passenden Elemente. Empfehlung: schärfere Stichwortregeln (lokal, verwerfen kein passendes Element) und nach
-   einem Blick auf die Darstellung die Elemente, bei denen nur die Überschrift das Thema nennt, zu ihrem Bereich
-   bündeln.
+7. **Lehrplanbezüge (Teil 2, M22, M32):** entschieden (D58). Alle Profile nutzen die schärferen Stichwortregeln
+   (`f5d8297`) und bündeln Elemente, die nur ihre Überschrift zum Thema macht, bei ihrem Bereich: 70 bis 81 % der
+   einzeln gezeigten passend statt 62 bis 67 %, 5 bis 9 % unpassend statt 11 bis 17 %. In den `best-quality`-Profilen
+   prüft das LLM jedes Element: 74 bis 79 % passend, ohne ein passendes zu verlieren. Jeder Block nennt Lehrplan,
+   Land, Bildungsstufe und Klasse. Model2Vec als Filter (D1) verlöre ein Viertel der passenden und bleibt draußen.
 8. **Offene Punkte der Durchsicht vom 25.09.2026:** Behoben sind die Fehler (Messprotokoll, M25). Die Punkte, die
    ändern, was Aufrufer bekommen, hat Jan am 25.09.2026 zur Umsetzung nach Empfehlung freigegeben:
    - `/qa` mit `text` und zugleich `topic` oder `node_id` nahm den Text nicht, ohne es zu sagen. Umgesetzt (D49): 422,

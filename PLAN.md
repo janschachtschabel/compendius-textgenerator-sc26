@@ -1256,7 +1256,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 | Matching-Qualität bleibt unter Erwartung | dünne oder falsch belegte Bausteine | Überschriften-Lexikon als präzise erste Stufe, Goldstandard-Gate vor Festlegung, optionale LLM-Satzauswahl je Baustein (D33), ehrlich leere Slots |
 | MEM deckt nur 4–5 Länder ab | Teil 2 lückenhaft | Abdeckung im Text nennen; Harvest fragt alle 16 Landesklassen ab und wächst mit, sobald MEM weitere Länder veröffentlicht |
 | SPARQL-Endpoint instabil oder Schema ändert sich | Harvest schlägt fehl | Vollabzug mit Diff, alte Datenbank bleibt aktiv, Regressionstests gegen aufgezeichnete Antworten, Ontologie-Version protokolliert |
-| MEM-Datenlizenz unbestätigt (manifest: `unconfirmed`); Wikipedia CC BY-SA färbt auf den Text (von Jan freigegeben, F6) | rechtliche Unsicherheit bei den Lehrplandaten | BY-SA-Attribution im Frontmatter und Baustein 12; MEM-Lizenz vor Produktivbetrieb bei FWU klären, bis dahin nur Labels und Links zitieren |
+| MEM-Daten: am 2026-09-26 von Jan ohne Einschränkung freigegeben (D58; die FWU stellt den Zugang offen bereit, github.com/FWU-DE/mem-mcp); Wikipedia CC BY-SA färbt auf den Text (von Jan freigegeben, F6) | – | BY-SA-Attribution im Frontmatter und Baustein 12; Teil 2 nennt je Block Lehrplan, Land, Stufe und Klasse |
 | Plattenplatz und I/O für 14 GB | langsame Kaltstarts | Profil `compact` als Rückfall, RAM für Page-Cache, Ergebnis-Cache |
 | Image mit torch zu groß | Deploy-Zeit, Angriffsfläche | `ml` nur bei nachgewiesenem Mehrwert, sonst `base` |
 | Konsumenten hängen an Details des alten Response (Entities) | Bruch beim Tausch | Shim für `linker_output`, Contract-Tests, Vergleichslauf, Rollback-Image; Nachtrag 2026-09-23: Shim und Contract-Tests sind mit Umbau U1 entfallen, bisherige Aufrufer müssen auf `/api/v2` umstellen |
@@ -1273,7 +1273,7 @@ unabhängig von der Matcher-Entscheidung und können vorgezogen werden, wenn das
 | F3 ZIM-Umfang | Zum Start nur deutsche Wikipedia (ca. 13–14 GB) und Klexikon (ca. 130 MB); weitere Archive abonnierbar. | Profil `standard` als Produktionsstandard, `extended` und beliebige Manifest-Einträge zuschaltbar; Volume 32 GB (4.1, 10, D9). |
 | F4 Modus | Standard ohne LLM; schneller Hybridmodus mit wenig LLM; gute Qualität mit LLM. | Drei Modi `rule-based` (Standard), `hybrid-fast`, `hybrid-quality` (4.7, 7, D10), seit D33 zwei Schalter `extraction` und `generation`. Provider und Modell bleiben Konfiguration, Vorschlag in Abschnitt 7. |
 | F5 Facetten | Idee war, später gezielt Absätze zu parsen (z. B. zum Bundesland eines Lehrplans); in Teil 1 nicht kritisch. | Marker je Absatz in Teil 2 verbindlich; Facetten in Teil 1 Best Effort mit `FACETS_LEVEL=minimal`; sichtbare Notation abschaltbar (4.6, 5.4, D13). |
-| F6 Lizenz | CC BY-SA ist ok. | Attribution im Frontmatter und Baustein 12; MEM-Datenlizenz bleibt Prüfpunkt im Runbook (13.1). |
+| F6 Lizenz | CC BY-SA ist ok. | Attribution im Frontmatter und Baustein 12; die MEM-Daten sind seit D58 freigegeben (13.1). |
 | F7 Goldstandard | Begriff unklar; selbst entscheiden; Themen über Schulfächer streuen. | Erklärung in 4.5; zehn Themen quer über Physik, Biologie, Chemie, Mathematik, Deutsch, Geschichte, Geographie, Politik, Informatik, Musik; Erstellung durch das Entwicklungsteam (D17). |
 | F8 Alt-Funktionen | Erhalten und verbessern, da Bedarf unbekannt. | Keine Deprecation; Linker offline über ZIM, QA mit regelbasiertem Rückfall, Synonyme über ZIM, Übersetzung per LLM (8.1, D14). Phase 6 um einen Tag verlängert. Nachtrag 2026-09-23: mit Umbau U1 aufgehoben (D14). |
 | F9 Sprache | Nur deutsche Kompendien. | Englisch gestrichen; der Sprachparameter bleibt im Schema für später (D15). |
@@ -1691,6 +1691,21 @@ API.
   Komponente `qa_models` in `/health`, torch, transformers und die beiden Modelle im Image. Die vier Fragevorlagen
   bleiben nur als Rückfall, wenn das spaCy-Modell fehlt. Gemessen am 2026-09-26 auf dem Entwicklungsrechner: das
   Image 1,1 statt 2,74 GB, ein Worker im Ruhezustand 1.407 statt 1.559 MiB, beide Worker nach 34 statt 54 s bereit.
+- **D58 (2026-09-26)** Lehrplanbezüge je Profil (Jan nimmt den Vorschlag an; er gibt die MEM-Daten ohne
+  Einschränkung frei, die FWU stellt den Zugang offen bereit: github.com/FWU-DE/mem-mcp, Code unter Unlicense; eine
+  Lizenz der Daten nennt das Repository nicht, Grundlage ist Jans Freigabe). Alle Profile: die schärferen
+  Stichwortregeln aus M22 (A, `f5d8297`) und B - ein Element, das nur seine Überschrift zum Thema macht, steht nicht
+  einzeln, sondern als Zahl mit Link bei seinem Bereich. `best-quality` und `best-quality-generated`: neuer Schalter
+  `curriculum_check=llm`; das LLM bewertet jedes Element mit Bereich und Lehrplan nach den Noten von M22 (2 passt,
+  1 berührt, 0 passt nicht), eine 0 fällt heraus, ein Überschriften-Treffer mit 2 steht einzeln; Stapel zu 60
+  parallel auf Budget und Frist der Anfrage, ein gescheiterter Stapel behält die Regeln, `audit.llm.curriculum_check`
+  sagt was und warum; ohne konfiguriertes LLM ein 503 (D53). Herkunft je Schnipsel (Jan): Jeder Block nennt in
+  seiner sichtbaren Zeile Lehrplan mit Link, Land, Bildungsstufe, Schulart und Klasse, sein Marker dazu den
+  Lehrplantitel; die JSON-Einträge tragen dieselben Angaben und `matched_in` und `note`. D1 (Model2Vec) nicht gebaut.
+  M32 (20 Themen von M22): B 70 bis 81 % passend statt 62 bis 67 %, 5 bis 9 % unpassend statt 11 bis 17 %, ein
+  Viertel der passenden nur gebündelt; die LLM-Prüfung 74 bis 79 % passend, 5 bis 9 % unpassend, kein passendes
+  Element verworfen, im Median rund 8.000 bis 10.000 Tokens und 6 s je Anfrage; bei breiten Themen ohne Fach reicht
+  das Budget von 60.000 Tokens nicht für alle Elemente (Entscheidungsvorlage, Zu entscheiden).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
