@@ -53,7 +53,11 @@ EXAMPLES = {
             "passenden Entitäten fällt weg (F1 0,76 statt 0,78; D62). Für eine kurze, sichere Liste. Braucht "
             "LLM_ENABLED und B_API_KEY, sonst 503."
         ),
-        "value": {"text": "Alexander von Humboldt reiste 1799 nach Südamerika.", "link_check": "llm"},
+        "value": {
+            "text": "Alexander von Humboldt reiste 1799 nach Südamerika.",
+            "preset": "balanced",
+            "link_check": "llm",
+        },
     },
     "alle Parameter": {
         "summary": "Jedes Feld zu einem Text: alle drei Wege, geprüft, in einem Archiv, mit Obergrenze",
@@ -92,8 +96,9 @@ METHODS_HELP = (
     "disambiguation page, is left out. F1 0.78 at a precision of 0.70 and a recall of 0.89 - of 269 linked articles "
     "one meant something else -, about 800 tokens and 4 s. Needs an LLM and archives.\n\n"
     "A way that cannot work here is left out, and when none can the answer is a 503. llm on a server without a "
-    "configured LLM (LLM_ENABLED, B_API_KEY) is a 503; while the b-api is not available ner and dictionary take its "
-    "place, and note and llm.fallback say why."
+    "configured LLM (LLM_ENABLED, B_API_KEY) is a 503; while the b-api is not available, or when its answer holds no "
+    "readable entry, ner and dictionary take its place, and note and llm.fallback say why. An answer cut off by the "
+    "limit of the output keeps its complete entries; on a word both the LLM and a rule found, the LLM's title wins."
 )
 LINK_CHECK_HELP = (
     "Who checks the links. Default rule-based, in every profile. Acts only with link true.\n\n"
@@ -106,8 +111,8 @@ LINK_CHECK_HELP = (
     "of the fitting entities, not only minor ones. So no profile sets it; take it where a short list of sure entities "
     "matters more than a complete one. About 820 tokens and 2 s more (0.8 to 4.2 s). On the links of ner and "
     "dictionary it raised the precision from 0.29 to 0.58, F1 0.51 instead of 0.38 (M36).\n\n"
-    "llm on a server without a configured LLM is a 503, and with link false a 422; while the b-api is not available "
-    "every link stays, and note and llm.fallback say why."
+    "llm on a server without a configured LLM is a 503, and with link false a 422; while the b-api is not available, "
+    "or when its answer holds no readable grade, every link stays, and note and llm.fallback say why."
 )
 PRESET_HELP = (
     "The profile (D41, D53, D62); here it sets methods, and a switch the request sets itself wins. "
@@ -152,7 +157,8 @@ class EntitiesRequest(BaseModel):
         ge=1,
         le=200,
         description="Upper bound, 1 to 200, default 50; it applies before the article check, so fewer may come back "
-        "when terms of the dictionary turn out to sit behind a disambiguation page",
+        "when terms of the dictionary turn out to sit behind a disambiguation page. With methods llm it also sets the "
+        "room for the LLM's answer, 24 tokens per entity and at least 1,200",
     )
 
     @model_validator(mode="after")
@@ -221,7 +227,7 @@ class EntitiesLlm(BaseModel):
     prompts: list[str] = Field(description="The prompts that were answered, as id@version")
     fallback: str | None = Field(
         description="Why the LLM did not decide although it was asked: then ner and dictionary found the entities, "
-        "or every link stayed"
+        "or every link stayed. Where naming and check both failed, the first reason; note names each"
     )
 
 

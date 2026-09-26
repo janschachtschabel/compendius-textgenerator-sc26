@@ -127,25 +127,27 @@ def _refuse_without_llm(service: CompendiumService, needed: list[str], profile: 
 
 def _llm_job(service: CompendiumService, profile: str, report: EntitiesLlmReport) -> EntityLlmJob | None:
     """The budget and deadline of the LLM ways; ``None`` while the LLM is not available, and ``report`` says why."""
-    report.fallback = service.llm_unavailable()
+    unavailable = service.llm_unavailable()
+    if unavailable is not None:
+        report.fail(unavailable)
     budget = service.open_budget(profile)
-    if report.fallback is not None or budget is None or service.llm is None:
+    if unavailable is not None or budget is None or service.llm is None:
         return None
     return EntityLlmJob(service.llm.client, budget, Deadline(service.settings.request_timeout_s))
 
 
 def _named(
-    job: EntityLlmJob | None, text: str, registry: ZimRegistry, report: EntitiesLlmReport
+    job: EntityLlmJob | None, text: str, registry: ZimRegistry, report: EntitiesLlmReport, max_entities: int
 ) -> tuple[list[Mention] | None, str | None]:
     """The entities the LLM names; ``None`` and a note when ner and dictionary have to take its place."""
     if job is None:
         return None, report.fallback  # llm_unavailable names the cause and the fallback itself
     if not registry.archives:
-        report.fallback = NO_ARCHIVES
+        report.fail(NO_ARCHIVES)
         return None, f"{NO_ARCHIVES}; {RULES_USED}"
-    named = named_mentions(job, text, report)
+    named = named_mentions(job, text, report, max_entities=max_entities)
     if named is None:
-        return None, f"Entitäten des LLM entfielen: {report.fallback}; {RULES_USED}"
+        return None, f"Entitäten des LLM entfielen: {report.reason}; {RULES_USED}"
     return named, None
 
 
@@ -165,7 +167,7 @@ def _checked(
     links = [Link(word, article.title, article.lead) for word, article in first.values()]
     grades = grade_links(job, text, links, report)
     if grades is None:
-        return entities, f"Prüfung durch das LLM entfiel: {report.fallback}; alle Verknüpfungen bleiben"
+        return entities, f"Prüfung durch das LLM entfiel: {report.reason}; alle Verknüpfungen bleiben"
     kept = {key for key, grade in zip(first, grades, strict=True) if grade == 2}
     report.dropped = [title for (_, title), grade in zip(first, grades, strict=True) if grade != 2]
     return [e for e in entities if e.article is None or (e.article.archive, e.article.title) in kept], None
@@ -269,11 +271,15 @@ def entities(
     notes: list[str | None] = []
     named: list[Mention] | None = None
     if "llm" in methods and report is not None:
-        named, fallback = _named(job, text, registry, report)
+        named, fallback = _named(job, text, registry, report, payload.max_entities)
         notes.append(fallback)
     rules = [method for method in RULE_METHODS if method in methods or ("llm" in methods and named is None)]
     ran, mentions = _recognise(text, rules, registry, settings.spacy_model)
     if named is not None:
+        # on the very word the LLM named, its title wins: the rules would look the word up and may find a
+        # disambiguation page where the LLM named the article (review of D62)
+        places = {(mention.start, mention.end) for mention in named}
+        mentions = [mention for mention in mentions if (mention.start, mention.end) not in places]
         ran.append("llm")
         mentions.extend(named)
     if not ran:

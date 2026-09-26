@@ -175,3 +175,44 @@ def test_without_a_preset_the_profile_of_the_server_decides(sample_zims: dict[st
     assert "methods=llm" in refused.json()["detail"] and "Standardprofil balanced" in refused.json()["detail"]
     assert client.post("/api/v2/entities", json={"text": TEXT, "preset": "llm-free"}).status_code == 200
     assert client.post("/api/v2/entities", json={"text": TEXT, "methods": ["dictionary"]}).status_code == 200
+
+
+# Found by the review of D62
+
+
+def test_on_the_same_word_the_title_the_llm_named_wins(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """With dictionary and llm together the dictionary's "Brechung" took the place; its entry is a disambiguation
+    page, so the word was gone although the LLM had named its article."""
+    answer = json.dumps({"entitaeten": [{"text": "Brechung", "titel": "Brechung (Physik)"}]})
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(FakeBApi(lambda body: answer)))  # type: ignore[attr-defined]
+    body = post(client, text="Die Brechung des Lichts erklärt das Lichtmikroskop.", methods=["dictionary", "llm"])
+    found = {entity["text"]: (entity["source"], entity["article"]["title"]) for entity in body["entities"]}
+    assert found == {
+        "Brechung": ("llm", "Brechung (Physik)"),
+        "Lichts": ("dictionary", "Licht"),  # the genitive, through the Klexikon
+        "Lichtmikroskop": ("dictionary", "Lichtmikroskop"),
+    }
+
+
+def test_a_check_answer_that_cannot_be_read_keeps_every_link_and_says_why(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def unreadable_grades(body: dict[str, Any]) -> str:
+        asked = body["messages"][-1]["content"]
+        return json.dumps({"1": 2, "2": 2, "3": 2} if "Bewerte jede Verknüpfung" in asked else NAMED)
+
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(FakeBApi(unreadable_grades)))  # type: ignore[attr-defined]
+    body = post(client, preset="balanced", link_check="llm")
+    assert texts(body) == ["Ernst Abbe", "Lichtmikroskop", "Geometrische Optik"]
+    assert (
+        body["llm"]["checked"] == 0
+        and body["llm"]["dropped"] == []
+        and body["llm"]["fallback"] == "Antwort nicht lesbar"
+    )
+    assert "Prüfung durch das LLM entfiel: Antwort nicht lesbar" in body["note"]
+
+
+def test_the_room_for_the_names_follows_max_entities(with_llm: tuple[TestClient, FakeBApi]) -> None:
+    client, fake = with_llm
+    post(client, preset="balanced", max_entities=200)
+    assert fake.bodies[0]["max_completion_tokens"] == 5800

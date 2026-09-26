@@ -54,7 +54,7 @@ class Mention:
     start: int
     end: int
     kind: str  # the model's label (PER, LOC, ORG, MISC); empty for a term from the archives
-    source: str  # "ner" | "dictionary"
+    source: str  # "ner" | "dictionary" | "llm" (app/knowledge/entities_llm.py)
     title: str | None = None  # the article's title where it differs from the text: the base of a genitive
 
 

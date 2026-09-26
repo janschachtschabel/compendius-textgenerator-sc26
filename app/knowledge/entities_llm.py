@@ -17,8 +17,9 @@ with the reason in the report: the endpoint then lets the rules decide and says 
 
 from __future__ import annotations
 
+import json
 import re
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
 from typing import NamedTuple
 
@@ -30,11 +31,17 @@ from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 
-EXTRACTION_OUTPUT_TOKENS = 1200  # as measured; a text of a material named about eight entities
+EXTRACTION_OUTPUT_TOKENS = 1200  # as measured in M36, where a text of a material named about eight entities
+EXTRACTION_TOKENS_PER_ENTITY = 24  # 1,200 for the default of 50 entities; a caller who wants more gets more room
 CHECK_OUTPUT_TOKENS_PER_LINK = 20
 CHECK_OUTPUT_TOKENS = 200
 LEAD_CHARS = 180  # what the check sees of an article, as the hit check of the article choice
+MAX_WORD_CHARS = 100  # a longer "word" is no name, and every search for it costs time in its length
+MAX_TRIES = 200  # places of one word looked at, per spelling
+GRADES = frozenset({0, 1, 2})
 UNREADABLE = "Antwort nicht lesbar"
+CUT_OFF = "Antwort vor dem ersten vollständigen Eintrag abgeschnitten (Grenze der Ausgabe)"
+_ENTRY = re.compile(r"\{[^{}]*\}")  # one entry of a list the limit cut off; nothing nests in it, so the scan is linear
 
 
 @dataclass
@@ -49,9 +56,10 @@ class EntityLlmJob:
 @dataclass
 class EntitiesLlmReport(Usage):
     named: int = 0  # entities the model named whose word stands in the text
-    checked: int = 0  # articles the model graded; 0 when it was not asked or gave no usable answer
+    checked: int = 0  # articles the model graded readably; 0 when it was not asked or gave no usable answer
     dropped: list[str] = field(default_factory=list)  # articles the check did not grade 2
-    fallback: str | None = None  # why the model's answer did not decide although it was asked
+    fallback: str | None = None  # the first reason the model's answer did not decide: why the rules decided
+    reason: str | None = None  # the reason of the step that failed last, for its own note
 
     def count(self, answer: ChatResult | LlmSkipped, prompt_tag: str) -> None:
         """As ``Usage.count``, but naming and checking both keep their prompt."""
@@ -59,6 +67,12 @@ class EntitiesLlmReport(Usage):
         super().count(answer, prompt_tag)
         if isinstance(answer, ChatResult):
             self.prompts = [*tags, prompt_tag]
+
+    def fail(self, reason: str) -> None:
+        """A step gave no usable answer; the first reason stays the report's, as naming and checking can both fail."""
+        self.reason = reason
+        if self.fallback is None:
+            self.fallback = reason
 
 
 class Link(NamedTuple):
@@ -69,50 +83,129 @@ class Link(NamedTuple):
     lead: str
 
 
-def named_mentions(job: EntityLlmJob, text: str, report: EntitiesLlmReport) -> list[Mention] | None:
+def named_mentions(
+    job: EntityLlmJob, text: str, report: EntitiesLlmReport, *, max_entities: int = 50
+) -> list[Mention] | None:
     """The entities the model names in ``text``, each with the title it named; ``None`` without a usable answer.
 
-    A word that stands nowhere in the text is left out: the entity would have no place to point to.
+    A word that stands nowhere in the text is left out: the entity would have no place to point to. An answer the
+    limit of the output cut off keeps its complete entries.
     """
     prompt = get_prompt("entity_extraction")
     answer = budgeted_chat(
         job.client,
         prompt.render(text=text),
-        max_output_tokens=EXTRACTION_OUTPUT_TOKENS,
+        max_output_tokens=max(EXTRACTION_OUTPUT_TOKENS, EXTRACTION_TOKENS_PER_ENTITY * max_entities),
         budget=job.budget,
         what="Entitäten",
         deadline=job.deadline,
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
-        report.fallback = answer.reason
+        report.fail(answer.reason)
         return None
-    data = read_object(answer.text)
-    items = data.get("entitaeten") if data is not None else None
-    if not isinstance(items, list):
-        report.fallback = UNREADABLE
+    pairs = _named_pairs(answer.text)
+    if pairs is None:
+        report.fail(CUT_OFF if answer.finish_reason == "length" else UNREADABLE)
         return None
-    mentions: list[Mention] = []
-    for item in items:
-        word = str(item.get("text") or "").strip() if isinstance(item, dict) else ""
-        title = str(item.get("titel") or "").strip() if isinstance(item, dict) else ""
-        place = _place(text, word) if word and title else None
-        if place is not None:
-            start, end = place
-            mentions.append(Mention(text=text[start:end], start=start, end=end, kind="", source="llm", title=title))
+    mentions = _placed(text, pairs)
     report.named = len(mentions)
     return mentions
 
 
-def _place(text: str, word: str) -> tuple[int, int] | None:
+def _named_pairs(answer: str) -> list[tuple[str, str]] | None:
+    """The (word, title) pairs of an answer; ``None`` when it holds none that can be read.
+
+    An empty list is an answer - the text names nothing -, a list of names without titles is not.
+    """
+    data = read_object(answer)
+    items = data.get("entitaeten") if data is not None else None
+    if isinstance(items, list) and not items:
+        return []
+    if not isinstance(items, list):
+        items = [_loads(found.group()) for found in _ENTRY.finditer(answer)]
+    pairs = [pair for pair in map(_pair, items) if pair is not None]
+    return pairs or None
+
+
+def _pair(item: object) -> tuple[str, str] | None:
+    if not isinstance(item, dict):
+        return None
+    word, title = item.get("text"), item.get("titel")
+    if not isinstance(word, str) or not isinstance(title, str) or not word.strip() or not title.strip():
+        return None
+    return word.strip(), title.strip()
+
+
+def _loads(raw: str) -> object:
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+
+
+def _placed(text: str, pairs: list[tuple[str, str]]) -> list[Mention]:
+    """Each named word at its place, in the order of the answer. The longest words are placed first, so a shorter
+    one looks past the places they took: "Optik" stands on its own, not inside "Geometrische Optik"."""
+    lowered = _lower_aligned(text)
+    taken: list[tuple[int, int]] = []
+    placed: dict[int, Mention] = {}
+    for index in sorted(range(len(pairs)), key=lambda i: -len(pairs[i][0])):
+        word, title = pairs[index]
+        place = _place(text, lowered, word, taken)
+        if place is not None:
+            start, end = place
+            taken.append(place)
+            placed[index] = Mention(text=text[start:end], start=start, end=end, kind="", source="llm", title=title)
+    return [placed[index] for index in sorted(placed)]
+
+
+def _lower_aligned(text: str) -> str:
+    """The text in lower case, character for character, so a place in it is a place in the text; a character whose
+    lower case is longer ("İ") stays as it is."""
+    lowered = text.lower()
+    if len(lowered) == len(text):  # lower case never drops a character, so equal length means one for one
+        return lowered
+    return "".join(low if len(low := char.lower()) == 1 else char for char in text)
+
+
+def _place(text: str, lowered: str, word: str, taken: list[tuple[int, int]]) -> tuple[int, int] | None:
     """Where ``word`` first stands in ``text`` as a whole word - as the model wrote it, else in another case - and
-    only then where it first stands inside a longer word ("schwefel" in "schwefelsäure", M36 in the service)."""
-    escaped = re.escape(word)  # an escaped word: linear, whatever the model wrote
-    for pattern in (rf"(?<!\w){escaped}(?!\w)", escaped):
-        found = re.search(pattern, text) or re.search(pattern, text, re.IGNORECASE)
-        if found is not None:
-            return found.start(), found.end()
-    return None
+    only then inside a longer word ("schwefel" in "schwefelsäure"). A place a longer named word took counts only when
+    there is no other; ``None`` when the word stands nowhere or is too long to be a name."""
+    if len(word) > MAX_WORD_CHARS:
+        return None
+    first: tuple[int, int] | None = None
+    for whole in (True, False):
+        for start, end in _found(text, lowered, word):
+            if whole and not _whole_word(text, start, end):
+                continue
+            if not any(start < until and since < end for since, until in taken):
+                return start, end
+            first = first or (start, end)
+    return first
+
+
+def _found(text: str, lowered: str, word: str) -> Iterator[tuple[int, int]]:
+    """The places of ``word``, as written and then in any case. ``str.find`` scans in linear time - a regular
+    expression would cost text length times word length, and the model repeats what the caller's text says."""
+    yield from _occurrences(text, word)
+    yield from _occurrences(lowered, _lower_aligned(word))
+
+
+def _occurrences(haystack: str, needle: str) -> Iterator[tuple[int, int]]:
+    start, tries = haystack.find(needle), 0
+    while start >= 0 and tries < MAX_TRIES:
+        yield start, start + len(needle)
+        start, tries = haystack.find(needle, start + 1), tries + 1
+
+
+def _whole_word(text: str, start: int, end: int) -> bool:
+    return (start == 0 or not _word_char(text[start - 1])) and (end == len(text) or not _word_char(text[end]))
+
+
+def _word_char(char: str) -> bool:
+    return char.isalnum() or char == "_"
 
 
 def grade_links(
@@ -120,7 +213,9 @@ def grade_links(
 ) -> list[int | None] | None:
     """The model's grade for each link, in the order of ``links``, in one call; ``None`` without a usable answer.
 
-    A link the model left out has no grade (``None``).
+    A link the model left out, or graded with something other than 0, 1 or 2, has no grade (``None``); an answer
+    without one readable grade is no answer - otherwise a model that numbered the links its own way would drop them
+    all.
     """
     alias = {f"a{number}": link for number, link in enumerate(links, 1)}
     lines = "\n".join(
@@ -137,11 +232,18 @@ def grade_links(
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
-        report.fallback = answer.reason
+        report.fail(answer.reason)
         return None
-    grades = read_object(answer.text)
-    if grades is None:
-        report.fallback = UNREADABLE
+    data = read_object(answer.text)
+    grades = [_grade(data.get(a)) for a in alias] if data is not None else []
+    readable = sum(1 for grade in grades if grade is not None)
+    if not readable:
+        report.fail(UNREADABLE)
         return None
-    report.checked = len(alias)
-    return [read_number(grades.get(a)) for a in alias]
+    report.checked = readable
+    return grades
+
+
+def _grade(value: object) -> int | None:
+    number = read_number(value)
+    return number if number in GRADES else None
