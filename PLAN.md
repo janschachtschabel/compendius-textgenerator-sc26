@@ -1752,6 +1752,16 @@ API.
   ein Block mit unbekanntem Status gilt `parse_document` als redaktionell geprüft und damit als Prosa (echte Kompendien
   schreiben keinen); „zählt über eine Million Einwohner“ fragt „Worüber zählt …?“, weil der Parse „über“ dort als
   Präposition liest.
+- **D61 (2026-09-26)** Das LLM prüft in den `best-quality`-Profilen auch sichere Auflösungen mehrdeutiger Wörter
+  (Jan: „mehrdeutige Wörter prüfen“; Punkt 5 der Entscheidungsvorlage, M35). `article_choice` hat einen dritten Wert
+  `llm-thorough`: wie `llm`, und das LLM sieht auch eine sichere Auflösung eines Wortes mit mehreren Bedeutungen -
+  eine Bedeutung, die die Regeln einer Begriffsklärung entnahmen, oder einen exakten Titel, zu dem es eine Seite
+  „(Begriffsklärung)“ gibt, deren Bedeutungen es dann zur Wahl bekommt (`ZimRegistry.resolve_topic(thorough=True)`).
+  Beide `best-quality`-Profile setzen ihn, wie mit M35 vorgeschlagen; `balanced` bleibt bei `llm`. Einzeln setzbar
+  im Kompendium, in `/knowledge`, in `/qa` mit Thema oder Knoten, in der Lehrplansuche (`mode=topic`) und in der CLI;
+  ohne LLM wie `llm` ein 503. Am Gold 93 statt 91 von 94, keine der 44 richtigen sicheren Auflösungen verdorben, 64
+  statt 18 Fragen auf 94 Anfragen, je neuer Frage rund 800 Tokens und 1 s. Ein Trockenlauf des eingebauten Wegs fragt
+  bei denselben 64 Anfragen mit derselben Zahl von Kandidaten wie die gemessene Variante.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -411,8 +411,9 @@ LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel 
                                                  # auch beim breitesten Thema (M33)
 ```
 
-Ergebnis: 91 von 94 Hauptartikeln, macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median
-26.267 Tokens, rund 170 je Absatz (M27). Der Text bleibt wörtlich und belegt. QA-Paare vom LLM, 99 von 120 mangelfrei
+Ergebnis: 93 von 94 Hauptartikeln - das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (M35, D61) -,
+macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median 26.267 Tokens, rund 170 je Absatz
+(M27); ein geprüftes Wort kostet rund 800 Tokens und 1 s mehr. Der Text bleibt wörtlich und belegt. QA-Paare vom LLM, 99 von 120 mangelfrei
 (M30).
 
 ### `best-quality-generated`
@@ -456,13 +457,15 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    Eine Frage ist keine prüfbare Sachaussage, ohne Beleg fällt sie weg statt als Modellwissen markiert zu bleiben -
    in M31 drei der 13 übrigen Füllsätze.
 4. **Goldstandard prüfen lassen:** Alle Gütezahlen hängen an Labels, die eine Redaktion noch nicht gesehen hat.
-5. **Sichere Fehler der Regeln:** gemessen (M35), zu entscheiden. Mit `article_choice=llm` prüft das LLM bisher nur
-   unsichere Auflösungen. Prüft es auch sichere Auflösungen mehrdeutiger Wörter - über eine Begriffsklärung oder als
-   exakter Titel, zu dem es eine Begriffsklärungsseite gibt -, kommt die Artikelwahl am Gold auf 93 statt 91 von 94
-   (nur Begriffsklärungen: 92), und keine der 44 richtigen Auflösungen, die es zusätzlich sah, wird falsch. Der Preis:
-   Das LLM wird bei 64 statt 18 von 94 Anfragen gefragt, je zusätzlicher Frage rund 800 Tokens und 1 s. Vorschlag:
-   in den beiden `best-quality`-Profilen einschalten, wo 800 Tokens neben 26.000 kaum zählen; in `balanced` hieße es
-   im Mittel rund 450 Tokens und 0,5 s mehr je Anfrage für zwei Treffer auf 94. Dabei behoben (`20aaca4`): Ein Thema,
+5. **Sichere Fehler der Regeln:** entschieden und gebaut (D61, Jan: „mehrdeutige Wörter prüfen“). Mit
+   `article_choice=llm` prüft das LLM nur unsichere Auflösungen. Prüft es auch sichere Auflösungen mehrdeutiger
+   Wörter - über eine Begriffsklärung oder als exakter Titel, zu dem es eine Begriffsklärungsseite gibt -, kommt die
+   Artikelwahl am Gold auf 93 statt 91 von 94 (nur Begriffsklärungen: 92), und keine der 44 richtigen Auflösungen, die
+   es zusätzlich sah, wird falsch (M35). Der Preis: Das LLM wird bei 64 statt 18 von 94 Anfragen gefragt, je
+   zusätzlicher Frage rund 800 Tokens und 1 s. Eingebaut als `article_choice: llm-thorough`, eingeschaltet wie
+   vorgeschlagen in den beiden `best-quality`-Profilen, wo 800 Tokens neben 26.000 kaum zählen; `balanced` bleibt bei
+   `llm` (dort hieße es im Mittel rund 450 Tokens und 0,5 s mehr je Anfrage für zwei Treffer auf 94), eine Anfrage kann
+   `llm-thorough` einzeln setzen. Dabei behoben (`20aaca4`): Ein Thema,
    dessen Titel im Archiv auf einen Abschnitt weiterleitet („Gedicht“, „Nenner“), baute auf eine fast leere Seite.
 6. **QA-Verfahren je Profil:** entschieden (D57). `llm-free` und `balanced` fragen mit den Regeln, die beiden
    `best-quality`-Profile mit dem LLM; die zwei kleinen Modelle (in M30 25 von 120 mangelfrei, rund 25 s je Text,

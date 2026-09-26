@@ -167,7 +167,8 @@ def prozess_optionen() -> None:
     rows = {  # step: [(option, default, llm, presets, quality, time, tokens)]
         ("1", "Hauptartikel finden", "Thema im Archivindex auflösen"): [
             ("rule-based", False, False, "l", "87 von 94 richtig", "0,03 s", "0"),
-            ("llm", True, True, "bqg", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
+            ("llm", True, True, "b", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
+            ("llm-thorough", False, True, "qg", "93 von 94 richtig", "+1 s je Wort", "rund 800 je Wort"),
         ],
         ("2", "Korpus bauen", "bis 12 Artikel, 400 Absätze"): [
             ("ZIM-Profil standard", False, False, "lbqg", "12 von 352 unpassend", "0,9 s", "0"),
@@ -507,8 +508,8 @@ def kombinationen() -> None:
     profiles = [  # label, articles right of 94, macro-F1 at the gold paragraphs, what the text is, color
         ("llm-free", 87, "0,45", "wörtlich", LOCAL),
         ("balanced", 91, "0,45", "wörtlich", "#7a5aa6"),
-        ("best-quality", 91, "0,70", "wörtlich", LLM),
-        ("best-quality-generated", 91, "0,70", "vom LLM geschrieben", "#b24c63"),
+        ("best-quality", 93, "0,70", "wörtlich", LLM),
+        ("best-quality-generated", 93, "0,70", "vom LLM geschrieben", "#b24c63"),
     ]
     x0, width, bar, row = 200, 180, 20, 70
     svg = Svg(780, 110 + len(profiles) * row + 72, "Die vier Profile")

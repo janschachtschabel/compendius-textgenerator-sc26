@@ -1670,3 +1670,9 @@ drei übrigen Fehler in Ordnung, kostet dafür 46 zusätzliche Aufrufe auf 94 An
 betroffener Anfrage. Zwei Treffer auf 94 sind wenig; das Gold hat noch keine Redaktion gesehen (Punkt 4), und
 Validierung und Test sind nicht unabhängig. Rohdaten: `m35_sichere_aufloesung.json` (Titel, Kennzeichen, Tokens und
 Sekunden je Anfrage und Variante; keine Artikeltexte).
+
+**Umsetzung (D61):** Jan: „mehrdeutige Wörter prüfen“. B ist als `article_choice: llm-thorough` eingebaut und in den
+beiden `best-quality`-Profilen eingeschaltet, wie vorgeschlagen; `balanced` bleibt bei `llm`. Ein Trockenlauf des
+eingebauten Wegs über die 94 Anfragen, bei dem ein Platzhalter statt des Modells nur die Kandidaten zählt, fragt bei
+denselben 64 Anfragen mit derselben Zahl von Kandidaten wie B in M35 (94 von 94 gleich). Dieselben Kandidaten ergeben
+denselben Prompt, die Güte von B gilt damit für den eingebauten Weg, ohne dass ein Token ausgegeben wurde.
