@@ -1762,6 +1762,19 @@ API.
   ohne LLM wie `llm` ein 503. Am Gold 93 statt 91 von 94, keine der 44 richtigen sicheren Auflösungen verdorben, 64
   statt 18 Fragen auf 94 Anfragen, je neuer Frage rund 800 Tokens und 1 s. Ein Trockenlauf des eingebauten Wegs fragt
   bei denselben 64 Anfragen mit derselben Zahl von Kandidaten wie die gemessene Variante.
+- **D62 (2026-09-26)** `/entities` nimmt Profile (Jan: Methoden gemäß den Ergebnissen den Profilen zuordnen; Punkt 10
+  der Entscheidungsvorlage, M36). `methods` hat einen dritten Wert `llm`: das LLM nennt die Entitäten des Textes mit
+  dem Titel ihres Wikipedia-Artikels (Prompt `entity_extraction@v1`, wortgleich der von M36), jede an der ersten
+  Stelle, an der ihr Wort als ganzes Wort steht, sonst in einem längeren; ein Titel ohne Artikel oder mit
+  Begriffsklärung entfällt wie beim Wörterbuch (`app/knowledge/entities_llm.py`). `preset` setzt `methods`: `llm-free`
+  `ner` und `dictionary`, `balanced` und beide `best-quality`-Profile `llm`; ohne `preset` gilt `PRESET_DEFAULT`, auf
+  einem Server ohne LLM also ein 503. Fällt das LLM gerade aus, übernehmen `ner` und `dictionary`, `note` und
+  `llm.fallback` sagen warum; die Antwort nennt unter `llm` Aufrufe und Tokens. `link_check: llm` lässt das LLM jede
+  Verknüpfung benoten (`entity_check@v1`), nur Note 2 bleibt - in keinem Profil: Durch den Endpunkt gemessen hob die
+  Prüfung die Präzision auf 0,94, kostete aber ein Drittel der passenden Entitäten (F1 0,76 statt 0,78); im Versuch von
+  M36 sah sie auch den Beifang der Regeln und benotete milder (0,80). Nachgemessen mit den Noten von M36: `llm-free`
+  in allen 40 Texten wie vorher (F1 0,38), `llm` F1 0,78 bei Präzision 0,70. Die Schemas des Endpunkts stehen seitdem
+  in `entities_schemas.py`.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

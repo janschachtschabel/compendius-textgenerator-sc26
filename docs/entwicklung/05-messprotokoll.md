@@ -1733,6 +1733,37 @@ zählt nur gegen das, was einer der Wege fand, und beide Gutachter sind Claude-S
 Rohdaten: `m36_entitaeten.json` (je Material und Weg die verknüpften Artikel mit ihren Erwähnungen, die Noten der
 LLM-Prüfung, Tokens und Sekunden; keine Texte).
 
+**Umsetzung und Nachmessung im Dienst (D62).** Jan: die Methoden gemäß den Ergebnissen den Profilen zuordnen. Gebaut
+ist `methods: llm` mit der Frage von M36 wortgleich, `preset` setzt `methods` (`llm-free` die Regeln, die anderen das
+LLM), und `link_check: llm` stellt die Prüfung bereit. `mc_entitaeten_dienst.py` stellt die 40 Materialien danach mit
+`node_id` durch den Endpunkt des Entwicklungscontainers, mit LLM (`balanced`, `best-quality`, dazu `balanced` mit
+`link_check: llm`), und `mc_entitaeten_dienst_auswertung.py` rechnet mit den Noten von M36:
+
+| Variante | Artikel | Präzision | Recall | F1 | gleich wie M36 |
+|---|---|---|---|---|---|
+| `llm-free` | 394 | 0,29 (0,30) | 0,55 (0,56) | 0,38 (0,39) | 40 von 40 Texten |
+| `balanced`, `best-quality` | 269 | 0,70 (0,68) | 0,89 (0,87) | 0,78 (0,76) | 38 von 40 |
+| `link_check: llm` | 142 | 0,94 (0,93) | 0,64 (0,63) | 0,76 (0,75) | 15 von 40 |
+
+Der erste Lauf fand zwei Abweichungen im eingebauten Weg: Ein Wort, das zuerst in einem längeren stand („schwefel“ in
+„schwefelsäure“, „Sonne“ in „Sonnenuntergang“), zeigte dorthin und fiel beim Zusammenführen überlappender
+Erwähnungen weg. Seitdem gilt die erste Stelle, an der das Wort als ganzes Wort steht. Die zwei übrigen
+Abweichungen sind gewollt: Der Endpunkt verknüpft wie seit D43 mit der Weiterleitung auf einen Abschnitt
+(*Transferunion*, *Organische Verbindung*), M36 mit dem Artikel dahinter; eine davon hat keine Note und zählt als 0.
+
+Die Prüfung sieht im Endpunkt nur, was das LLM nannte (im Median 6 Artikel), im Versuch sah sie alle Verknüpfungen
+eines Textes, auch den Beifang der Regeln (im Median 13). So benotet sie strenger: Die Präzision steigt auf 0,94, aber
+ein Drittel der passenden Entitäten fällt weg - sie verwirft 53 Artikel mit Note 2 neben 73 mit Note 1, darunter
+Fachbegriffe wie *Polymer*, *Nukleophilie* oder *Erdkruste*.
+Falsch verknüpft das LLM ohnehin fast nie (1 von 269); die Prüfung trennt also vor allem Nebensächliches von
+Zentralem und kostet dabei Zentrales. Sie steht deshalb in keinem Profil. Kosten der Prüfung im ersten Lauf, mit
+echten Aufrufen: im Median 815 Tokens und 2,0 s (0,8 bis 4,2 s). Die Nennung kam im Dienst aus dem b-api-Cache
+(gleiche Frage wie M36, 816 Tokens im Median); ihre echte Dauer ist die von M36, 4,2 s. Der zweite Lauf lief nach
+429-Antworten des Rate-Limits mit Wartezeit.
+
+Rohdaten: `m36_entitaeten_dienst.json` (je Material und Variante die verknüpften Wikipedia-Artikel mit ihren
+Erwähnungen, der Bericht des LLM und die Sekunden; keine Texte).
+
 ## M37 Sammel- und Mischthemen (26.09.2026)
 
 Jan: Komplexe oder gemischte Themen wie „deutsche Dichter“ brauchen wohl nicht einen Hauptartikel, sondern mehrere

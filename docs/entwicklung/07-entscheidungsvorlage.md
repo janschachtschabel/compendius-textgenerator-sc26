@@ -104,14 +104,15 @@ Gutachtern falsch (M31).
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab |
 | `GET /api/v2/lehrplan/search` | Regeln finden und bewerten; `mode=topic` löst wie Teil 2 auf, 0,5 bis 1,3 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2 | dazu bewertet das LLM jedes gefundene Element (D59); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` |
 | `GET /api/v2/nodes/{id}` | Regeln, in allen Profilen gleich: zeigt, was ein Knoten mitbringt | wie `llm-free` | wie `llm-free` | wie `llm-free` |
-| `POST /api/v2/entities` | spaCy und Wörterbuch der Archive, ohne LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` |
+| `POST /api/v2/entities` | spaCy und Wörterbuch der Archive, ohne LLM; F1 0,38, rund 0,25 s (M36) | das LLM nennt die Entitäten mit ihrem Artikeltitel; F1 0,78, rund 800 Tokens und 4 s (D62) | wie `balanced` | wie `balanced` |
 | `GET /api/v2/collections/{id}/overview` | Teil 3, ohne LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 
-`/knowledge`, `/qa` und `/lehrplan/search` nehmen `preset` wie das Kompendium; ohne es gilt `PRESET_DEFAULT`. Bei `/qa`
-wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55). `/nodes`, `/entities` und der
-Sammlungsüberblick kennen kein LLM und kein Profil. Die beiden `best-quality`-Profile rechnen in jedem Endpunkt mit
-180.000 Tokens je Anfrage, die anderen mit 60.000 (D59). Zeiten: M27 (`/compendium`, aus den Phasen für
-`/knowledge` und `/lehrplan/search`) und M30 (`/qa`).
+`/knowledge`, `/qa`, `/lehrplan/search` und seit D62 `/entities` nehmen `preset` wie das Kompendium; ohne es gilt
+`PRESET_DEFAULT`. Bei `/qa` wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55);
+bei `/entities` die Wege der Erkennung (`methods`). `/nodes` und der Sammlungsüberblick kennen kein LLM und kein
+Profil. Die beiden `best-quality`-Profile rechnen in jedem Endpunkt mit 180.000 Tokens je Anfrage, die anderen mit
+60.000 (D59). Zeiten: M27 (`/compendium`, aus den Phasen für `/knowledge` und `/lehrplan/search`), M30 (`/qa`) und
+M36 (`/entities`; die Zeit des LLM aus dem ersten Versuch, im Dienst kamen die Antworten aus dem Cache der b-api).
 
 ## Der Ablauf
 
@@ -484,42 +485,96 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
    819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
    `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
-9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37), zu entscheiden. Der Dienst nimmt genau einen
-   Hauptartikel. Eine Gruppe landet heute auf einer Listenseite („deutsche Dichter“ → *Liste deutschsprachiger
-   Lyriker*) oder, wo die Regeln unsicher sind, auf einem Zufallstreffer („Philosophen der Aufklärung“ → *Böse
-   Philosophen*); eine Verbindung zweier Themen auch mit LLM („Klimawandel und Landwirtschaft“ → *American Farm Bureau
-   Federation*). Eine neue Frage, in der das LLM den Übersichtsartikel und bis zu acht Artikel zu Vertretern, Teilen
-   oder Aspekten nennt (N), baut den Korpus aus diesen Artikeln: an 25 solchen Themen 87 statt 43 bis 45 % der
-   gedruckten Absätze aus passenden Artikeln, 21 statt 10 bis 11 brauchbare Kompendien; die Entitäten der alten App
-   kommen auf 63 % und 16. Die Frage kostet rund 500 Tokens und 3,5 s. Auch an 20 gewöhnlichen Themen hebt N den
-   Anteil von 73 auf 93 % bei gleichem Hauptartikel: Die genannten Teile ersetzen verlinkte Unterartikel und
-   Volltexttreffer, die oft nur verwandt sind. Verbindungen zweier Themen bleiben schwach (53 %), weil es einen Artikel
-   über beide Hälften selten gibt. Optionen:
-   - A: nichts ändern.
-   - B: N nur, wo die Regeln kein Thema treffen - Titelvorschlag, Volltexttreffer oder Listenseite -, in den
-     LLM-Profilen. Das trifft 19 der 25 Sammelthemen und 5 der 94 Gold-Anfragen, darunter „Lichtlehre“, die einzige,
-     die heute falsch bleibt.
-   - C: N für jedes Thema in den LLM-Profilen; die Frage ersetzt die Prüfung der Nebenartikel (rund 900 Tokens) und
-     kostet rund 2 s mehr.
-   - D: B in `balanced`, C in den beiden `best-quality`-Profilen.
+9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37), zu entscheiden.
 
-   Vorschlag: D. `balanced` bleibt für gewöhnliche Themen, wie es ist, und fragt nur bei Themen, die es heute verfehlt;
-   die `best-quality`-Profile nehmen die Teile immer, wo 500 Tokens neben 26.000 nicht zählen. `llm-free` bleibt ohne
-   Nennung: Ohne LLM landet eine Gruppe weiter auf einer Liste oder einem Zufallstreffer.
-10. **Profile für `/entities`:** gemessen (M36), zu entscheiden. Der Endpunkt erkennt heute ohne LLM (spaCy und ein
-    Wörterbuch der Artikeltitel) und nimmt kein Profil. An den Texten von 40 echten Materialien kommt er auf F1 0,38
-    bei einer Präzision von 0,29: Das Wörterbuch verknüpft Allerweltswörter („Woche“, „Frage“, „Ich“), und 65 von 394
-    Verknüpfungen meinen etwas anderes als der Text oder haben nichts mit ihm zu tun. Nennt das LLM die Entitäten
-    selbst, mit dem genauen Titel ihres Artikels, sind es F1 0,78 bei einer einzigen unpassenden Verknüpfung (rund 800
-    Tokens, 4 s); prüft ein zweiter Aufruf, was es nannte, 0,80 bei einer Präzision von 0,91 (im Versuch sah die
-    Prüfung alle Verknüpfungen zusammen: rund 2.200 Tokens und 7,5 s für beide Aufrufe, für die genannten allein
-    weniger). Das LLM nur die Treffer der Regeln prüfen zu lassen bringt weniger (0,51). Jedes Wort, das das LLM nannte, steht im Text, seine Stelle lässt
-    sich also wie bisher angeben.
+   *Was heute geschieht.* Der Dienst sucht zu jedem Thema genau einen Hauptartikel - über den Titel (genau, gebeugt,
+   als Weiterleitung, über eine Begriffsklärung), sonst über Titelvorschläge und die Volltextsuche - und baut um ihn
+   den Korpus: den Klexikon-Zwilling, die Unterartikel, auf die er verlinkt, und die mit ihm verlinkten
+   Volltexttreffer. `balanced` und die `best-quality`-Profile lassen das LLM entscheiden, wo die Regeln unsicher sind,
+   und unpassende Nebenartikel verwerfen. Ein Thema, das kein eigener Artikel ist - eine Gruppe wie „deutsche Dichter“
+   oder die Verbindung zweier Themen wie „Klimawandel und Landwirtschaft“ -, erkennt keiner dieser Schritte als
+   solches.
 
-    Vorschlag: `llm-free` wie heute, `balanced` lässt das LLM nennen, die beiden `best-quality`-Profile lassen es
-    nennen und prüfen. Folge: Wie die anderen Endpunkte folgt `/entities` dann PRESET_DEFAULT (`balanced`) und braucht
-    ohne `preset` ein LLM - auf einem Server ohne LLM ein 503, bis der Aufrufer `preset: llm-free` setzt. Alternative:
-    `/entities` behält `llm-free` als eigene Vorgabe, und nur ein gesetztes `preset` ruft das LLM.
+   *Die vier gemessenen Wege*, je Teil 1 im Ablauf des Dienstes mit wörtlichem Text, am Beispiel „deutsche Dichter“:
+   - R, `llm-free` wie heute: „deutsche Dichter“ ist in der Wikipedia eine Weiterleitung auf *Liste deutschsprachiger
+     Lyriker*, die Regeln halten das für sicher. Gedruckt werden die Liste, eine Liste von Anthologien, *Gedicht* und
+     drei wenig bekannte Lyriker.
+   - B, `balanced` wie heute: dasselbe, denn das LLM wird nur bei unsicheren Treffern gefragt. Bei unsicheren Gruppen
+     hilft es („Philosophen der Aufklärung“: *Philosophes* statt *Böse Philosophen*), bei Verbindungen nicht
+     („Klimawandel und Landwirtschaft“ bleibt bei *American Farm Bureau Federation*).
+   - A, der Weg der alten App: ein Aufruf mit dem Prompt ihres Entitäten-Linkers, wortgleich - bis zu zehn Entitäten
+     mit ihrem genauen Wikipedia-Titel, dazu eine lange Liste von Bildungsaspekten. Die gefundenen Artikel sind der
+     Korpus, der erste ist der Hauptartikel. „deutsche Dichter“: Goethe, Schiller, Heine, Rilke, Hölderlin, Brecht,
+     Droste-Hülshoff und zuletzt *Deutschsprachige Literatur*; Hauptartikel wird Goethe.
+   - N, eine neue Frage: Das LLM nennt zuerst den Übersichtsartikel - bei einer Gruppe die Epoche, Gattung oder den
+     Oberbegriff, ausdrücklich keine Liste - und dann bis zu acht Artikel zu den wichtigsten Vertretern, Teilen oder
+     Aspekten. Der Übersichtsartikel wird Hauptartikel, die anderen kommen ganz in den Korpus, an Stelle der
+     Unterartikel und Volltexttreffer. „deutsche Dichter“: *Deutschsprachige Literatur* mit Walther von der
+     Vogelweide, Opitz, Schiller, Goethe, Heine, Droste-Hülshoff, Rilke und Brecht.
+
+   A und N bauen den Korpus beide aus Artikeln, die das LLM nennt; der Unterschied ist die Frage. A fragt nach
+   Entitäten ohne Rangfolge, und der erste Name wird Hauptartikel - oft ein Vertreter oder ein Nachbarbegriff
+   (*Barock* statt *Barockliteratur*). N fragt nach der Übersicht und ihren Teilen.
+
+   *Gemessen* wurde an 25 Sammel- und Mischthemen und zur Kontrolle an 20 gewöhnlichen Themen (M1). Jeden Artikel, aus
+   dem ein Weg druckte, benoteten zwei Gutachter blind: 2 gehört zum Thema, 1 verwandt, 0 passt nicht. Gezählt wird
+   der Anteil der gedruckten Absätze aus Artikeln mit Note 2; brauchbar ist ein Kompendium, bei dem es mindestens die
+   Hälfte ist.
+
+   | Weg | 25 Sammel- und Mischthemen | 20 gewöhnliche Themen | LLM je Thema |
+   |---|---|---|---|
+   | R `llm-free` heute | 43 %, 11 brauchbar | 71 %, 16 brauchbar | - |
+   | B `balanced` heute | 45 %, 10 | 73 %, 18 | Artikelwahl und Prüfung der Nebenartikel, 900 bis 1.400 Tokens |
+   | A alte App | 63 %, 16 | 70 %, 13 | 1.516 Tokens, 5,6 s |
+   | N neue Frage | 87 %, 21 | 93 %, 19 | 493 Tokens, 3,5 s |
+
+   N füllt dabei nicht weniger Bausteine (9,2 statt 8,5 bei den Sammelthemen, 8,8 statt 8,4 bei den gewöhnlichen).
+   Bei gewöhnlichen Themen nennt N als Übersicht immer den Artikel, den auch die Regeln nehmen; dort kommt der
+   Gewinn allein aus den Teilen, die die oft nur verwandten Unterartikel und Volltexttreffer ersetzen. Verbindungen
+   zweier Themen bleiben auf jedem Weg schwach (N 53 %): Einen Artikel über beide Hälften gibt es selten.
+
+   *Mögliche Änderungen je Profil*, als Anteil passender Absätze bei Sammelthemen / gewöhnlichen Themen. Die Zahlen
+   der Optionen sind aus denselben Läufen nachgerechnet: je Thema der Weg, den die Option nähme.
+
+   | Option | `llm-free` | `balanced` | `best-quality`, `best-quality-generated` |
+   |---|---|---|---|
+   | A: nichts ändern | 43 % / 71 % | 45 % / 73 % | Korpus wie `balanced` |
+   | B: N nur, wo die Regeln kein Thema treffen (Titelvorschlag, Volltexttreffer, Listenseite) | bleibt | 74 % / 74 %; fragt bei 19 von 25 Sammelthemen, 1 von 20 gewöhnlichen und 5 von 94 Gold-Anfragen | wie `balanced` |
+   | C: N bei jedem Thema; den Hauptartikel ersetzt N nur, wo B fragen würde | bleibt | 87 % / 93 %; je Kompendium rund 2 s mehr (3,5 s Frage statt 1,4 s Prüfung der Nebenartikel), rund 500 statt 900 Tokens | wie `balanced` |
+   | D: B in `balanced`, C in den `best-quality`-Profilen | bleibt | 74 % / 74 % | 87 % / 93 % |
+
+   `llm-free` bleibt in jeder Option, wie es ist: Ohne LLM nennt niemand Übersicht und Teile. Denkbar, aber nicht
+   gemessen, wäre eine Regel, die bei einer Listenseite Einträge als Teile nimmt; die Archive kennen allerdings keine
+   Rangfolge, nach der die wichtigen Einträge zu erkennen wären. Wo B nicht fragt, nennt N denselben Hauptartikel wie
+   die Regeln (6 von 6 Sammelthemen, 19 von 19 gewöhnlichen), deshalb reicht es in C, den Hauptartikel nur dort zu
+   ersetzen. Die `best-quality`-Profile wurden an diesen Themen nicht eigens gemessen: Ihr Korpus entsteht wie der
+   von `balanced`, die Zuordnung der Absätze macht dort das LLM.
+
+   Vorschlag, nach dem Nachrechnen geändert: C statt D. B trifft zu wenig - die sechs Sammelthemen mit eigenem Artikel
+   lösen es nicht aus (*Edelgase* druckt dann weiter aus *Q-Phase (Meteoriten)*), und bei gewöhnlichen Themen fragt
+   es fast nie, obwohl N gerade dort die Nebenartikel verbessert. C hebt `balanced` auf 87 und 93 %, kostet rund 2 s
+   je Kompendium und spart Tokens. Vor dem Bau zu prüfen: die Artikelwahl an den fünf Gold-Anfragen, bei denen N den
+   Hauptartikel ersetzen würde, und die Zuordnung am Gold (macro-F1), deren Absätze aus dem heutigen Korpus stammen.
+   Sind die 2 s in `balanced` zu viel, bleibt D.
+10. **Profile für `/entities`:** entschieden und gebaut (D62, Jan: „angemessene Zuordnung der Methoden auf die
+    Profile gemäß der Ergebnisse“). Der Endpunkt erkannte ohne LLM (spaCy und ein Wörterbuch der Artikeltitel) und
+    nahm kein Profil. An den Texten von 40 echten Materialien kommt das auf F1 0,38 bei einer Präzision von 0,29: Das
+    Wörterbuch verknüpft Allerweltswörter („Woche“, „Frage“, „Ich“), und 65 von 394 Verknüpfungen meinen etwas anderes
+    als der Text oder haben nichts mit ihm zu tun. Nennt das LLM die Entitäten selbst, mit dem genauen Titel ihres
+    Artikels, sind es F1 0,78 bei einer einzigen unpassenden Verknüpfung (rund 800 Tokens, 4 s). Jedes Wort, das das
+    LLM nannte, steht im Text, seine Stelle lässt sich also wie bisher angeben.
+
+    Gebaut ist `methods: llm` (dieselbe Frage wortgleich), dazu `preset`: `llm-free` nimmt `ner` und `dictionary`,
+    `balanced` und beide `best-quality`-Profile `llm`. Durch den Endpunkt nachgemessen, mit den Noten von M36: `llm-free`
+    in allen 40 Texten wie vorher, das LLM wieder F1 0,78 (38 von 40 Texten mit denselben Artikeln; die zwei übrigen
+    verknüpft der Endpunkt, wie seit D43, mit der Weiterleitung auf einen Abschnitt statt mit dem Artikel dahinter).
+    Die Prüfung durch einen zweiten Aufruf (`link_check: llm`) war im Versuch vorgeschlagen, weil sie dort F1 0,80 bei
+    einer Präzision von 0,91 erreichte - der Versuch zeigte ihr aber alle Verknüpfungen eines Textes, auch den Beifang
+    der Regeln. Im Endpunkt sieht sie nur, was das LLM nannte, und benotet strenger: Präzision 0,94, aber ein Drittel
+    der passenden Entitäten fällt weg, F1 0,76 statt 0,78; rund 820 Tokens und 2 s mehr. Sie bringt den
+    `best-quality`-Profilen also keinen Gewinn und steht in keinem Profil; wer eine kurze, sichere Liste will, setzt
+    sie selbst. Folge, wie vorgeschlagen: Wie die anderen Endpunkte folgt `/entities` PRESET_DEFAULT (`balanced`) und
+    braucht ohne `preset` ein LLM - auf einem Server ohne LLM ein 503, bis der Aufrufer `preset: llm-free` setzt.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

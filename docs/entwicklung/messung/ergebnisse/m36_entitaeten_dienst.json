@@ -1,0 +1,10831 @@
+{
+ "materialien": [
+  {
+   "node_id": "325c399b-dd66-40b3-8182-3baae248f4d6",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physiker",
+      "Physik"
+     ],
+     "erwaehnungen": [
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Physiker",
+       "Physiker",
+       "dictionary"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "dictionary"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.4
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physik"
+     ],
+     "erwaehnungen": [
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 661,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.24
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physik"
+     ],
+     "erwaehnungen": [
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 661,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.15
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physik"
+     ],
+     "erwaehnungen": [
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ],
+      [
+       "Physik",
+       "Physik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 2,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 1152,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "19e322f0-afa5-440f-8dc0-fca1dcde71d8",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [],
+     "erwaehnungen": [],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.13
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahnrad",
+      "Open Educational Resources"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahnrad",
+       "Zahnrad",
+       "llm"
+      ],
+      [
+       "OER",
+       "Open Educational Resources",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 596,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.19
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahnrad",
+      "Open Educational Resources"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahnrad",
+       "Zahnrad",
+       "llm"
+      ],
+      [
+       "OER",
+       "Open Educational Resources",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 596,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahnrad"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahnrad",
+       "Zahnrad",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 2,
+      "dropped": [
+       "Open Educational Resources"
+      ],
+      "calls": 2,
+      "total_tokens": 1076,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "8e4ee58d-c18c-470b-8f84-c3a634a041c3",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Experiment"
+     ],
+     "erwaehnungen": [
+      [
+       "Experiment",
+       "Experiment",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.1
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Planck-Konstante",
+      "YouTube"
+     ],
+     "erwaehnungen": [
+      [
+       "Planckschen Wirkungsquantums",
+       "Planck-Konstante",
+       "llm"
+      ],
+      [
+       "Youtube",
+       "YouTube",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 387,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.15
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Planck-Konstante",
+      "YouTube"
+     ],
+     "erwaehnungen": [
+      [
+       "Planckschen Wirkungsquantums",
+       "Planck-Konstante",
+       "llm"
+      ],
+      [
+       "Youtube",
+       "YouTube",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 387,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.13
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Planck-Konstante"
+     ],
+     "erwaehnungen": [
+      [
+       "Planckschen Wirkungsquantums",
+       "Planck-Konstante",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 2,
+      "dropped": [
+       "YouTube"
+      ],
+      "calls": 2,
+      "total_tokens": 811,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.34
+    }
+   }
+  },
+  {
+   "node_id": "c6c569d7-87c3-40d6-be6f-d92ee5409782",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Galvanometer",
+      "Experiment"
+     ],
+     "erwaehnungen": [
+      [
+       "Galvanometer",
+       "Galvanometer",
+       "dictionary"
+      ],
+      [
+       "Experiment",
+       "Experiment",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.12
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Galvanometer",
+      "YouTube"
+     ],
+     "erwaehnungen": [
+      [
+       "Galvanometer",
+       "Galvanometer",
+       "llm"
+      ],
+      [
+       "Youtube",
+       "YouTube",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 400,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Galvanometer",
+      "YouTube"
+     ],
+     "erwaehnungen": [
+      [
+       "Galvanometer",
+       "Galvanometer",
+       "llm"
+      ],
+      [
+       "Youtube",
+       "YouTube",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 400,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Galvanometer"
+     ],
+     "erwaehnungen": [
+      [
+       "Galvanometer",
+       "Galvanometer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 2,
+      "dropped": [
+       "YouTube"
+      ],
+      "calls": 2,
+      "total_tokens": 797,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.22
+    }
+   }
+  },
+  {
+   "node_id": "18adeb5f-3f7d-4c32-9a96-3398a756193e",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Teleskop",
+      "Sky-Watcher",
+      "Kamera",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Spiegelreflexkamera",
+      "Commons",
+      "Vollmond",
+      "Neumond"
+     ],
+     "erwaehnungen": [
+      [
+       "Teleskop",
+       "Teleskop",
+       "dictionary"
+      ],
+      [
+       "Skywatcher",
+       "Sky-Watcher",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Licht",
+       "Licht",
+       "dictionary"
+      ],
+      [
+       "Softbox",
+       "Softbox",
+       "dictionary"
+      ],
+      [
+       "LED",
+       "Leuchtdiode",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Kaufentscheidung",
+       "Kaufentscheidung",
+       "dictionary"
+      ],
+      [
+       "Provision",
+       "Provision",
+       "dictionary"
+      ],
+      [
+       "teleskop",
+       "Teleskop",
+       "ner"
+      ],
+      [
+       "spiegelreflex",
+       "Spiegelreflexkamera",
+       "ner"
+      ],
+      [
+       "commons",
+       "Commons",
+       "ner"
+      ],
+      [
+       "vollmond",
+       "Vollmond",
+       "ner"
+      ],
+      [
+       "neumond",
+       "Neumond",
+       "ner"
+      ],
+      [
+       "licht",
+       "Licht",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.03
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Teleskop",
+      "Mond",
+      "Sky-Watcher",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Newtonteleskop",
+      "Spiegelteleskop",
+      "Spiegelreflexkamera",
+      "Belichtung (Fotografie)",
+      "Full HD",
+      "Creative Commons",
+      "Vollmond",
+      "Neumond",
+      "Sonne"
+     ],
+     "erwaehnungen": [
+      [
+       "Teleskop",
+       "Teleskop",
+       "llm"
+      ],
+      [
+       "Moon",
+       "Mond",
+       "llm"
+      ],
+      [
+       "Skywatcher",
+       "Sky-Watcher",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "newton",
+       "Newtonteleskop",
+       "llm"
+      ],
+      [
+       "reflektor",
+       "Spiegelteleskop",
+       "llm"
+      ],
+      [
+       "spiegelreflex",
+       "Spiegelreflexkamera",
+       "llm"
+      ],
+      [
+       "belichtung",
+       "Belichtung (Fotografie)",
+       "llm"
+      ],
+      [
+       "full, hd",
+       "Full HD",
+       "llm"
+      ],
+      [
+       "creative, commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "vollmond",
+       "Vollmond",
+       "llm"
+      ],
+      [
+       "neumond",
+       "Neumond",
+       "llm"
+      ],
+      [
+       "sonne",
+       "Sonne",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 17,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1245,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.48
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Teleskop",
+      "Mond",
+      "Sky-Watcher",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Newtonteleskop",
+      "Spiegelteleskop",
+      "Spiegelreflexkamera",
+      "Belichtung (Fotografie)",
+      "Full HD",
+      "Creative Commons",
+      "Vollmond",
+      "Neumond",
+      "Sonne"
+     ],
+     "erwaehnungen": [
+      [
+       "Teleskop",
+       "Teleskop",
+       "llm"
+      ],
+      [
+       "Moon",
+       "Mond",
+       "llm"
+      ],
+      [
+       "Skywatcher",
+       "Sky-Watcher",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "newton",
+       "Newtonteleskop",
+       "llm"
+      ],
+      [
+       "reflektor",
+       "Spiegelteleskop",
+       "llm"
+      ],
+      [
+       "spiegelreflex",
+       "Spiegelreflexkamera",
+       "llm"
+      ],
+      [
+       "belichtung",
+       "Belichtung (Fotografie)",
+       "llm"
+      ],
+      [
+       "full, hd",
+       "Full HD",
+       "llm"
+      ],
+      [
+       "creative, commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "vollmond",
+       "Vollmond",
+       "llm"
+      ],
+      [
+       "neumond",
+       "Neumond",
+       "llm"
+      ],
+      [
+       "sonne",
+       "Sonne",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 17,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1245,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.14
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Teleskop",
+      "Mond",
+      "Sky-Watcher",
+      "Sony",
+      "Newtonteleskop",
+      "Spiegelteleskop"
+     ],
+     "erwaehnungen": [
+      [
+       "Teleskop",
+       "Teleskop",
+       "llm"
+      ],
+      [
+       "Moon",
+       "Mond",
+       "llm"
+      ],
+      [
+       "Skywatcher",
+       "Sky-Watcher",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "newton",
+       "Newtonteleskop",
+       "llm"
+      ],
+      [
+       "reflektor",
+       "Spiegelteleskop",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 17,
+      "checked": 14,
+      "dropped": [
+       "TEAC (Elektronikunternehmen)",
+       "Spiegelreflexkamera",
+       "Belichtung (Fotografie)",
+       "Full HD",
+       "Creative Commons",
+       "Vollmond",
+       "Neumond",
+       "Sonne"
+      ],
+      "calls": 2,
+      "total_tokens": 3088,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.31
+    }
+   }
+  },
+  {
+   "node_id": "c09b26a5-bb4d-497e-8def-c8812e64bb9d",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Dingen",
+      "Ich",
+      "Woche",
+      "Frage",
+      "Kamera",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Musik",
+      "Creative Commons",
+      "Outro",
+      "Cool",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision"
+     ],
+     "erwaehnungen": [
+      [
+       "Dingen",
+       "Dingen",
+       "dictionary"
+      ],
+      [
+       "Ich",
+       "Ich",
+       "dictionary"
+      ],
+      [
+       "Woche",
+       "Woche",
+       "dictionary"
+      ],
+      [
+       "Frage",
+       "Frage",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Licht",
+       "Licht",
+       "dictionary"
+      ],
+      [
+       "Softbox",
+       "Softbox",
+       "dictionary"
+      ],
+      [
+       "LED",
+       "Leuchtdiode",
+       "dictionary"
+      ],
+      [
+       "Musik",
+       "Musik",
+       "dictionary"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "ner"
+      ],
+      [
+       "Outro",
+       "Outro",
+       "dictionary"
+      ],
+      [
+       "Cool",
+       "Cool",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Kaufentscheidung",
+       "Kaufentscheidung",
+       "dictionary"
+      ],
+      [
+       "Provision",
+       "Provision",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.89
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Batterie (Elektrotechnik)",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Creative Commons",
+      "Amazon",
+      "Zitrone",
+      "Säuren",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Motor",
+      "Leuchtdiode",
+      "Akkumulator"
+     ],
+     "erwaehnungen": [
+      [
+       "Batterie",
+       "Batterie (Elektrotechnik)",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "llm"
+      ],
+      [
+       "zitronen",
+       "Zitrone",
+       "llm"
+      ],
+      [
+       "säure",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "schwefelsäure",
+       "Schwefelsäure",
+       "llm"
+      ],
+      [
+       "schwefel",
+       "Schwefel",
+       "llm"
+      ],
+      [
+       "kupfer",
+       "Kupfer",
+       "llm"
+      ],
+      [
+       "zink",
+       "Zink",
+       "llm"
+      ],
+      [
+       "motor",
+       "Motor",
+       "llm"
+      ],
+      [
+       "led",
+       "Leuchtdiode",
+       "llm"
+      ],
+      [
+       "akku",
+       "Akkumulator",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 14,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1088,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.66
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Batterie (Elektrotechnik)",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Creative Commons",
+      "Amazon",
+      "Zitrone",
+      "Säuren",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Motor",
+      "Leuchtdiode",
+      "Akkumulator"
+     ],
+     "erwaehnungen": [
+      [
+       "Batterie",
+       "Batterie (Elektrotechnik)",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "llm"
+      ],
+      [
+       "zitronen",
+       "Zitrone",
+       "llm"
+      ],
+      [
+       "säure",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "schwefelsäure",
+       "Schwefelsäure",
+       "llm"
+      ],
+      [
+       "schwefel",
+       "Schwefel",
+       "llm"
+      ],
+      [
+       "kupfer",
+       "Kupfer",
+       "llm"
+      ],
+      [
+       "zink",
+       "Zink",
+       "llm"
+      ],
+      [
+       "motor",
+       "Motor",
+       "llm"
+      ],
+      [
+       "led",
+       "Leuchtdiode",
+       "llm"
+      ],
+      [
+       "akku",
+       "Akkumulator",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 14,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1088,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.15
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Batterie (Elektrotechnik)",
+      "Zitrone",
+      "Säuren",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Motor",
+      "Leuchtdiode",
+      "Akkumulator"
+     ],
+     "erwaehnungen": [
+      [
+       "Batterie",
+       "Batterie (Elektrotechnik)",
+       "llm"
+      ],
+      [
+       "zitronen",
+       "Zitrone",
+       "llm"
+      ],
+      [
+       "säure",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "schwefelsäure",
+       "Schwefelsäure",
+       "llm"
+      ],
+      [
+       "schwefel",
+       "Schwefel",
+       "llm"
+      ],
+      [
+       "kupfer",
+       "Kupfer",
+       "llm"
+      ],
+      [
+       "zink",
+       "Zink",
+       "llm"
+      ],
+      [
+       "motor",
+       "Motor",
+       "llm"
+      ],
+      [
+       "led",
+       "Leuchtdiode",
+       "llm"
+      ],
+      [
+       "akku",
+       "Akkumulator",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 14,
+      "checked": 14,
+      "dropped": [
+       "TEAC (Elektronikunternehmen)",
+       "Sony",
+       "Creative Commons",
+       "Amazon"
+      ],
+      "calls": 2,
+      "total_tokens": 3043,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.22
+    }
+   }
+  },
+  {
+   "node_id": "6c306be9-a5f5-46ae-af83-31fc480fa389",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Wasser",
+      "Windel",
+      "Superabsorber",
+      "Schnee",
+      "Kamera",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Musik",
+      "Creative Commons",
+      "Outro",
+      "Cool",
+      "Hintergrundmusik",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Eis"
+     ],
+     "erwaehnungen": [
+      [
+       "Wasser",
+       "Wasser",
+       "dictionary"
+      ],
+      [
+       "Windeln",
+       "Windel",
+       "dictionary"
+      ],
+      [
+       "Windeln",
+       "Windel",
+       "dictionary"
+      ],
+      [
+       "Superabsorber",
+       "Superabsorber",
+       "dictionary"
+      ],
+      [
+       "Wasser",
+       "Wasser",
+       "dictionary"
+      ],
+      [
+       "Schnee",
+       "Schnee",
+       "dictionary"
+      ],
+      [
+       "Superabsorber",
+       "Superabsorber",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Kamera",
+       "Kamera",
+       "dictionary"
+      ],
+      [
+       "Licht",
+       "Licht",
+       "dictionary"
+      ],
+      [
+       "Softbox",
+       "Softbox",
+       "dictionary"
+      ],
+      [
+       "LED",
+       "Leuchtdiode",
+       "dictionary"
+      ],
+      [
+       "Musik",
+       "Musik",
+       "dictionary"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "ner"
+      ],
+      [
+       "Outro",
+       "Outro",
+       "dictionary"
+      ],
+      [
+       "Cool",
+       "Cool",
+       "dictionary"
+      ],
+      [
+       "Hintergrundmusik",
+       "Hintergrundmusik",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Kaufentscheidung",
+       "Kaufentscheidung",
+       "dictionary"
+      ],
+      [
+       "Provision",
+       "Provision",
+       "dictionary"
+      ],
+      [
+       "eis",
+       "Eis",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.83
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Windel",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Creative Commons",
+      "Polymer"
+     ],
+     "erwaehnungen": [
+      [
+       "Windeln",
+       "Windel",
+       "llm"
+      ],
+      [
+       "Superabsorber",
+       "Superabsorber",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "polymer",
+       "Polymer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1288,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Windel",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Creative Commons",
+      "Polymer"
+     ],
+     "erwaehnungen": [
+      [
+       "Windeln",
+       "Windel",
+       "llm"
+      ],
+      [
+       "Superabsorber",
+       "Superabsorber",
+       "llm"
+      ],
+      [
+       "Tascam",
+       "TEAC (Elektronikunternehmen)",
+       "llm"
+      ],
+      [
+       "Sony",
+       "Sony",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "polymer",
+       "Polymer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1288,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.12
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Windel",
+      "Superabsorber"
+     ],
+     "erwaehnungen": [
+      [
+       "Windeln",
+       "Windel",
+       "llm"
+      ],
+      [
+       "Superabsorber",
+       "Superabsorber",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 6,
+      "dropped": [
+       "TEAC (Elektronikunternehmen)",
+       "Sony",
+       "Creative Commons",
+       "Polymer"
+      ],
+      "calls": 2,
+      "total_tokens": 2493,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "35162ae1-e3d7-4c8e-95e5-d13d6906fb57",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Musik",
+      "Copyleft",
+      "Time"
+     ],
+     "erwaehnungen": [
+      [
+       "Sonnenuntergang",
+       "Sonnenuntergang",
+       "dictionary"
+      ],
+      [
+       "Zeitraffer",
+       "Zeitraffer",
+       "dictionary"
+      ],
+      [
+       "Musik",
+       "Musik",
+       "dictionary"
+      ],
+      [
+       "ShareAlike",
+       "Copyleft",
+       "ner"
+      ],
+      [
+       "time",
+       "Time",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.18
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Creative Commons",
+      "Sonne",
+      "Wolke"
+     ],
+     "erwaehnungen": [
+      [
+       "Sonnenuntergang",
+       "Sonnenuntergang",
+       "llm"
+      ],
+      [
+       "Zeitraffer",
+       "Zeitraffer",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "sonne",
+       "Sonne",
+       "llm"
+      ],
+      [
+       "wolken",
+       "Wolke",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 724,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.16
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Creative Commons",
+      "Sonne",
+      "Wolke"
+     ],
+     "erwaehnungen": [
+      [
+       "Sonnenuntergang",
+       "Sonnenuntergang",
+       "llm"
+      ],
+      [
+       "Zeitraffer",
+       "Zeitraffer",
+       "llm"
+      ],
+      [
+       "Creative Commons",
+       "Creative Commons",
+       "llm"
+      ],
+      [
+       "sonne",
+       "Sonne",
+       "llm"
+      ],
+      [
+       "wolken",
+       "Wolke",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 724,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Sonne",
+      "Wolke"
+     ],
+     "erwaehnungen": [
+      [
+       "Sonnenuntergang",
+       "Sonnenuntergang",
+       "llm"
+      ],
+      [
+       "Zeitraffer",
+       "Zeitraffer",
+       "llm"
+      ],
+      [
+       "sonne",
+       "Sonne",
+       "llm"
+      ],
+      [
+       "wolken",
+       "Wolke",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 6,
+      "dropped": [
+       "Creative Commons"
+      ],
+      "calls": 2,
+      "total_tokens": 1565,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    }
+   }
+  },
+  {
+   "node_id": "21e5be2c-c701-438a-a5be-2cc701f38a47",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "This",
+      "D",
+      "Pipeline",
+      "November 2020",
+      "Los Angeles",
+      "The Journal of Organic Chemistry",
+      "C",
+      "Boston",
+      "Thomas C. Bruice",
+      "Pearson Education"
+     ],
+     "erwaehnungen": [
+      [
+       "This",
+       "This",
+       "dictionary"
+      ],
+      [
+       "D",
+       "D",
+       "dictionary"
+      ],
+      [
+       "Pipeline",
+       "Pipeline",
+       "dictionary"
+      ],
+      [
+       "November 2020",
+       "November 2020",
+       "dictionary"
+      ],
+      [
+       "L.A.",
+       "Los Angeles",
+       "ner"
+      ],
+      [
+       "The Journal of Organic Chemistry",
+       "The Journal of Organic Chemistry",
+       "ner"
+      ],
+      [
+       "C",
+       "C",
+       "dictionary"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "ner"
+      ],
+      [
+       "Bruice",
+       "Thomas C. Bruice",
+       "dictionary"
+      ],
+      [
+       "Pearson Education",
+       "Pearson Education",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.77
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Metallorganische Chemie",
+      "Organische Chemie",
+      "Tetraethylblei",
+      "Organische Verbindung",
+      "Chemische Bindung",
+      "Dimethylzink",
+      "Boston",
+      "Vereinigte Staaten",
+      "Colorado",
+      "Patreon",
+      "Hank Green",
+      "Carbanion",
+      "Elektronegativität",
+      "Grignard-Verbindungen",
+      "Lithiumorganische Verbindungen",
+      "Wittig-Reaktion",
+      "Gilman-Reagenz",
+      "Transmetallierung",
+      "Kreuzkupplung"
+     ],
+     "erwaehnungen": [
+      [
+       "Organometallic Reagents and Carbanions",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "Crash Course Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "tetraethyl lead",
+       "Tetraethylblei",
+       "llm"
+      ],
+      [
+       "organometallic compound",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "organic compound",
+       "Organische Verbindung",
+       "llm"
+      ],
+      [
+       "carbon-metal bond",
+       "Chemische Bindung",
+       "llm"
+      ],
+      [
+       "Dimethyl Zinc",
+       "Dimethylzink",
+       "llm"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "llm"
+      ],
+      [
+       "United States",
+       "Vereinigte Staaten",
+       "llm"
+      ],
+      [
+       "Colorado",
+       "Colorado",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "carbanions",
+       "Carbanion",
+       "llm"
+      ],
+      [
+       "electronegativity",
+       "Elektronegativität",
+       "llm"
+      ],
+      [
+       "Grignard reagents",
+       "Grignard-Verbindungen",
+       "llm"
+      ],
+      [
+       "organolithium compounds",
+       "Lithiumorganische Verbindungen",
+       "llm"
+      ],
+      [
+       "Wittig reagents",
+       "Wittig-Reaktion",
+       "llm"
+      ],
+      [
+       "Gilman reagents",
+       "Gilman-Reagenz",
+       "llm"
+      ],
+      [
+       "transmetallation",
+       "Transmetallierung",
+       "llm"
+      ],
+      [
+       "cross coupling reactions",
+       "Kreuzkupplung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 2248,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.82
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Metallorganische Chemie",
+      "Organische Chemie",
+      "Tetraethylblei",
+      "Organische Verbindung",
+      "Chemische Bindung",
+      "Dimethylzink",
+      "Boston",
+      "Vereinigte Staaten",
+      "Colorado",
+      "Patreon",
+      "Hank Green",
+      "Carbanion",
+      "Elektronegativität",
+      "Grignard-Verbindungen",
+      "Lithiumorganische Verbindungen",
+      "Wittig-Reaktion",
+      "Gilman-Reagenz",
+      "Transmetallierung",
+      "Kreuzkupplung"
+     ],
+     "erwaehnungen": [
+      [
+       "Organometallic Reagents and Carbanions",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "Crash Course Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "tetraethyl lead",
+       "Tetraethylblei",
+       "llm"
+      ],
+      [
+       "organometallic compound",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "organic compound",
+       "Organische Verbindung",
+       "llm"
+      ],
+      [
+       "carbon-metal bond",
+       "Chemische Bindung",
+       "llm"
+      ],
+      [
+       "Dimethyl Zinc",
+       "Dimethylzink",
+       "llm"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "llm"
+      ],
+      [
+       "United States",
+       "Vereinigte Staaten",
+       "llm"
+      ],
+      [
+       "Colorado",
+       "Colorado",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "carbanions",
+       "Carbanion",
+       "llm"
+      ],
+      [
+       "electronegativity",
+       "Elektronegativität",
+       "llm"
+      ],
+      [
+       "Grignard reagents",
+       "Grignard-Verbindungen",
+       "llm"
+      ],
+      [
+       "organolithium compounds",
+       "Lithiumorganische Verbindungen",
+       "llm"
+      ],
+      [
+       "Wittig reagents",
+       "Wittig-Reaktion",
+       "llm"
+      ],
+      [
+       "Gilman reagents",
+       "Gilman-Reagenz",
+       "llm"
+      ],
+      [
+       "transmetallation",
+       "Transmetallierung",
+       "llm"
+      ],
+      [
+       "cross coupling reactions",
+       "Kreuzkupplung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 2248,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Metallorganische Chemie",
+      "Organische Chemie",
+      "Tetraethylblei",
+      "Carbanion",
+      "Elektronegativität",
+      "Grignard-Verbindungen",
+      "Lithiumorganische Verbindungen",
+      "Gilman-Reagenz",
+      "Transmetallierung",
+      "Kreuzkupplung"
+     ],
+     "erwaehnungen": [
+      [
+       "Organometallic Reagents and Carbanions",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "Crash Course Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "tetraethyl lead",
+       "Tetraethylblei",
+       "llm"
+      ],
+      [
+       "organometallic compound",
+       "Metallorganische Chemie",
+       "llm"
+      ],
+      [
+       "carbanions",
+       "Carbanion",
+       "llm"
+      ],
+      [
+       "electronegativity",
+       "Elektronegativität",
+       "llm"
+      ],
+      [
+       "Grignard reagents",
+       "Grignard-Verbindungen",
+       "llm"
+      ],
+      [
+       "organolithium compounds",
+       "Lithiumorganische Verbindungen",
+       "llm"
+      ],
+      [
+       "Gilman reagents",
+       "Gilman-Reagenz",
+       "llm"
+      ],
+      [
+       "transmetallation",
+       "Transmetallierung",
+       "llm"
+      ],
+      [
+       "cross coupling reactions",
+       "Kreuzkupplung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 20,
+      "dropped": [
+       "Organische Verbindung",
+       "Chemische Bindung",
+       "Dimethylzink",
+       "Boston",
+       "Vereinigte Staaten",
+       "New York",
+       "Colorado",
+       "Patreon",
+       "Hank Green",
+       "Wittig-Reaktion"
+      ],
+      "calls": 2,
+      "total_tokens": 5020,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.26
+    }
+   }
+  },
+  {
+   "node_id": "aff99075-a5b3-49dd-b990-75a5b369dd63",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "SN2",
+      "Kevin MacLeod",
+      "License",
+      "C",
+      "Boston",
+      "Thomas C. Bruice",
+      "Pearson Education",
+      "Jonathan Clayden",
+      "Stevie J.",
+      "Oxford University Press",
+      "M"
+     ],
+     "erwaehnungen": [
+      [
+       "SN2",
+       "SN2",
+       "ner"
+      ],
+      [
+       "Kevin MacLeod",
+       "Kevin MacLeod",
+       "ner"
+      ],
+      [
+       "License",
+       "License",
+       "dictionary"
+      ],
+      [
+       "C",
+       "C",
+       "dictionary"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "ner"
+      ],
+      [
+       "Bruice",
+       "Thomas C. Bruice",
+       "dictionary"
+      ],
+      [
+       "Pearson Education",
+       "Pearson Education",
+       "ner"
+      ],
+      [
+       "Clayden",
+       "Jonathan Clayden",
+       "dictionary"
+      ],
+      [
+       "J.",
+       "Stevie J.",
+       "ner"
+      ],
+      [
+       "Oxford University Press",
+       "Oxford University Press",
+       "ner"
+      ],
+      [
+       "M",
+       "M",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.99
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Nukleophile Substitution",
+      "Eliminierungsreaktion",
+      "Organische Chemie",
+      "Nukleophilie",
+      "Kevin MacLeod",
+      "Boston",
+      "Vereinigte Staaten",
+      "New York City",
+      "Colorado",
+      "Patreon",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "YouTube",
+      "Hank Green",
+      "Substitutionsreaktion",
+      "Williamson-Ethersynthese",
+      "Saytzeff-Regel"
+     ],
+     "erwaehnungen": [
+      [
+       "SN1",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "SN2",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "E1",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "E2",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "Organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "nucleophile",
+       "Nukleophilie",
+       "llm"
+      ],
+      [
+       "Kevin MacLeod",
+       "Kevin MacLeod",
+       "llm"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "llm"
+      ],
+      [
+       "United States",
+       "Vereinigte Staaten",
+       "llm"
+      ],
+      [
+       "New York",
+       "New York City",
+       "llm"
+      ],
+      [
+       "Colorado",
+       "Colorado",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Twitter",
+       "X (soziales Netzwerk)",
+       "llm"
+      ],
+      [
+       "Tumblr",
+       "Tumblr",
+       "llm"
+      ],
+      [
+       "youtube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "substitution reactions",
+       "Substitutionsreaktion",
+       "llm"
+      ],
+      [
+       "elimination reactions",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "Williamson etherification",
+       "Williamson-Ethersynthese",
+       "llm"
+      ],
+      [
+       "Zaitsev's rule",
+       "Saytzeff-Regel",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 23,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1666,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.57
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Nukleophile Substitution",
+      "Eliminierungsreaktion",
+      "Organische Chemie",
+      "Nukleophilie",
+      "Kevin MacLeod",
+      "Boston",
+      "Vereinigte Staaten",
+      "New York City",
+      "Colorado",
+      "Patreon",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "YouTube",
+      "Hank Green",
+      "Substitutionsreaktion",
+      "Williamson-Ethersynthese",
+      "Saytzeff-Regel"
+     ],
+     "erwaehnungen": [
+      [
+       "SN1",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "SN2",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "E1",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "E2",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "Organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "nucleophile",
+       "Nukleophilie",
+       "llm"
+      ],
+      [
+       "Kevin MacLeod",
+       "Kevin MacLeod",
+       "llm"
+      ],
+      [
+       "Boston",
+       "Boston",
+       "llm"
+      ],
+      [
+       "United States",
+       "Vereinigte Staaten",
+       "llm"
+      ],
+      [
+       "New York",
+       "New York City",
+       "llm"
+      ],
+      [
+       "Colorado",
+       "Colorado",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Twitter",
+       "X (soziales Netzwerk)",
+       "llm"
+      ],
+      [
+       "Tumblr",
+       "Tumblr",
+       "llm"
+      ],
+      [
+       "youtube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "substitution reactions",
+       "Substitutionsreaktion",
+       "llm"
+      ],
+      [
+       "elimination reactions",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "Williamson etherification",
+       "Williamson-Ethersynthese",
+       "llm"
+      ],
+      [
+       "Zaitsev's rule",
+       "Saytzeff-Regel",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 23,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1666,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Nukleophile Substitution",
+      "Eliminierungsreaktion",
+      "Organische Chemie",
+      "Substitutionsreaktion"
+     ],
+     "erwaehnungen": [
+      [
+       "SN1",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "SN2",
+       "Nukleophile Substitution",
+       "llm"
+      ],
+      [
+       "E1",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "E2",
+       "Eliminierungsreaktion",
+       "llm"
+      ],
+      [
+       "Organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "substitution reactions",
+       "Substitutionsreaktion",
+       "llm"
+      ],
+      [
+       "elimination reactions",
+       "Eliminierungsreaktion",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 23,
+      "checked": 18,
+      "dropped": [
+       "Nukleophilie",
+       "Kevin MacLeod",
+       "Boston",
+       "Vereinigte Staaten",
+       "New York City",
+       "Colorado",
+       "Patreon",
+       "Facebook",
+       "X (soziales Netzwerk)",
+       "Tumblr",
+       "YouTube",
+       "Hank Green",
+       "Williamson-Ethersynthese",
+       "Saytzeff-Regel"
+      ],
+      "calls": 2,
+      "total_tokens": 4169,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.26
+    }
+   }
+  },
+  {
+   "node_id": "c5f133d8-22f1-4f87-b133-d822f1cf87f7",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Alkene",
+      "Addition",
+      "Reaktionsvideo",
+      "P",
+      "Martha",
+      "K",
+      "Yaoi",
+      "Cholmsk",
+      "Inci Y.",
+      "Y"
+     ],
+     "erwaehnungen": [
+      [
+       "Alkene",
+       "Alkene",
+       "dictionary"
+      ],
+      [
+       "Addition",
+       "Addition",
+       "dictionary"
+      ],
+      [
+       "Reactions",
+       "Reaktionsvideo",
+       "dictionary"
+      ],
+      [
+       "P",
+       "P",
+       "ner"
+      ],
+      [
+       "Martha",
+       "Martha",
+       "ner"
+      ],
+      [
+       "K",
+       "K",
+       "dictionary"
+      ],
+      [
+       "Yaoi",
+       "Yaoi",
+       "dictionary"
+      ],
+      [
+       "Maoka",
+       "Cholmsk",
+       "ner"
+      ],
+      [
+       "Y.",
+       "Inci Y.",
+       "ner"
+      ],
+      [
+       "Y",
+       "Y",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.37
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Alkene",
+      "Organische Chemie",
+      "Additionsreaktion",
+      "Penguin Books",
+      "New York City",
+      "Food Science and Technology International",
+      "Oxford University Press",
+      "Chemie",
+      "Hank Green",
+      "Hydratisierung",
+      "Markownikow-Regel",
+      "Regioselektivität",
+      "Halogenierung",
+      "Oxymercurierung",
+      "Hydroborierung",
+      "Konzertierte Reaktion",
+      "Oxidation"
+     ],
+     "erwaehnungen": [
+      [
+       "Alkene",
+       "Alkene",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "alkene addition reactions",
+       "Additionsreaktion",
+       "llm"
+      ],
+      [
+       "Penguin",
+       "Penguin Books",
+       "llm"
+      ],
+      [
+       "New York",
+       "New York City",
+       "llm"
+      ],
+      [
+       "Food Sci. Technol.",
+       "Food Science and Technology International",
+       "llm"
+      ],
+      [
+       "Oxford University Press",
+       "Oxford University Press",
+       "llm"
+      ],
+      [
+       "chemistry",
+       "Chemie",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "hydration",
+       "Hydratisierung",
+       "llm"
+      ],
+      [
+       "Markovnikov's rule",
+       "Markownikow-Regel",
+       "llm"
+      ],
+      [
+       "regioselectivity",
+       "Regioselektivität",
+       "llm"
+      ],
+      [
+       "halogenation",
+       "Halogenierung",
+       "llm"
+      ],
+      [
+       "oxymercuration/reduction",
+       "Oxymercurierung",
+       "llm"
+      ],
+      [
+       "hydroboration",
+       "Hydroborierung",
+       "llm"
+      ],
+      [
+       "concerted reaction",
+       "Konzertierte Reaktion",
+       "llm"
+      ],
+      [
+       "oxidation",
+       "Oxidation",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1987,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.38
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Alkene",
+      "Organische Chemie",
+      "Additionsreaktion",
+      "Penguin Books",
+      "New York City",
+      "Food Science and Technology International",
+      "Oxford University Press",
+      "Chemie",
+      "Hank Green",
+      "Hydratisierung",
+      "Markownikow-Regel",
+      "Regioselektivität",
+      "Halogenierung",
+      "Oxymercurierung",
+      "Hydroborierung",
+      "Konzertierte Reaktion",
+      "Oxidation"
+     ],
+     "erwaehnungen": [
+      [
+       "Alkene",
+       "Alkene",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "alkene addition reactions",
+       "Additionsreaktion",
+       "llm"
+      ],
+      [
+       "Penguin",
+       "Penguin Books",
+       "llm"
+      ],
+      [
+       "New York",
+       "New York City",
+       "llm"
+      ],
+      [
+       "Food Sci. Technol.",
+       "Food Science and Technology International",
+       "llm"
+      ],
+      [
+       "Oxford University Press",
+       "Oxford University Press",
+       "llm"
+      ],
+      [
+       "chemistry",
+       "Chemie",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ],
+      [
+       "organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "hydration",
+       "Hydratisierung",
+       "llm"
+      ],
+      [
+       "Markovnikov's rule",
+       "Markownikow-Regel",
+       "llm"
+      ],
+      [
+       "regioselectivity",
+       "Regioselektivität",
+       "llm"
+      ],
+      [
+       "halogenation",
+       "Halogenierung",
+       "llm"
+      ],
+      [
+       "oxymercuration/reduction",
+       "Oxymercurierung",
+       "llm"
+      ],
+      [
+       "hydroboration",
+       "Hydroborierung",
+       "llm"
+      ],
+      [
+       "concerted reaction",
+       "Konzertierte Reaktion",
+       "llm"
+      ],
+      [
+       "oxidation",
+       "Oxidation",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1987,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Alkene",
+      "Organische Chemie",
+      "Additionsreaktion",
+      "Hydratisierung",
+      "Markownikow-Regel",
+      "Regioselektivität",
+      "Halogenierung",
+      "Oxymercurierung",
+      "Hydroborierung",
+      "Konzertierte Reaktion",
+      "Oxidation"
+     ],
+     "erwaehnungen": [
+      [
+       "Alkene",
+       "Alkene",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "alkene addition reactions",
+       "Additionsreaktion",
+       "llm"
+      ],
+      [
+       "organic chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "hydration",
+       "Hydratisierung",
+       "llm"
+      ],
+      [
+       "Markovnikov's rule",
+       "Markownikow-Regel",
+       "llm"
+      ],
+      [
+       "regioselectivity",
+       "Regioselektivität",
+       "llm"
+      ],
+      [
+       "halogenation",
+       "Halogenierung",
+       "llm"
+      ],
+      [
+       "oxymercuration/reduction",
+       "Oxymercurierung",
+       "llm"
+      ],
+      [
+       "hydroboration",
+       "Hydroborierung",
+       "llm"
+      ],
+      [
+       "concerted reaction",
+       "Konzertierte Reaktion",
+       "llm"
+      ],
+      [
+       "oxidation",
+       "Oxidation",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 17,
+      "dropped": [
+       "Penguin Books",
+       "New York City",
+       "Food Science and Technology International",
+       "Oxford University Press",
+       "Chemie",
+       "Hank Green"
+      ],
+      "calls": 2,
+      "total_tokens": 4608,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.24
+    }
+   }
+  },
+  {
+   "node_id": "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Stevie J.",
+      "Inci Y.",
+      "Journal of Agricultural and Food Chemistry",
+      "Chemical & Engineering News",
+      "Alexander Lipping",
+      "Carl von Linné",
+      "I",
+      "A",
+      "The Journal of Physical Chemistry A"
+     ],
+     "erwaehnungen": [
+      [
+       "J.",
+       "Stevie J.",
+       "ner"
+      ],
+      [
+       "Y.",
+       "Inci Y.",
+       "ner"
+      ],
+      [
+       "Journal of agricultural and food chemistry",
+       "Journal of Agricultural and Food Chemistry",
+       "ner"
+      ],
+      [
+       "Chemical and Engineering News",
+       "Chemical & Engineering News",
+       "dictionary"
+      ],
+      [
+       "Lipping",
+       "Alexander Lipping",
+       "ner"
+      ],
+      [
+       "L.",
+       "Carl von Linné",
+       "ner"
+      ],
+      [
+       "I",
+       "I",
+       "dictionary"
+      ],
+      [
+       "I",
+       "I",
+       "dictionary"
+      ],
+      [
+       "A",
+       "A",
+       "dictionary"
+      ],
+      [
+       "The Journal of Physical Chemistry A",
+       "The Journal of Physical Chemistry A",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.53
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Säuren",
+      "Organische Chemie",
+      "Basen (Chemie)",
+      "Chemische Reaktion",
+      "Pyridin",
+      "Alkaloide",
+      "Feuerameisen",
+      "Wasser",
+      "Dimethylsulfoxid",
+      "Oxford University Press",
+      "John Wiley & Sons",
+      "McGraw-Hill",
+      "Apple",
+      "Patreon",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "YouTube",
+      "Hank Green"
+     ],
+     "erwaehnungen": [
+      [
+       "Acidity",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "acids",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "bases",
+       "Basen (Chemie)",
+       "llm"
+      ],
+      [
+       "chemical reactions",
+       "Chemische Reaktion",
+       "llm"
+      ],
+      [
+       "Pyridine",
+       "Pyridin",
+       "llm"
+      ],
+      [
+       "alkaloids",
+       "Alkaloide",
+       "llm"
+      ],
+      [
+       "fire ants",
+       "Feuerameisen",
+       "llm"
+      ],
+      [
+       "water",
+       "Wasser",
+       "llm"
+      ],
+      [
+       "dimethyl sulfoxide",
+       "Dimethylsulfoxid",
+       "llm"
+      ],
+      [
+       "Oxford University Press",
+       "Oxford University Press",
+       "llm"
+      ],
+      [
+       "John Wiley & Sons",
+       "John Wiley & Sons",
+       "llm"
+      ],
+      [
+       "McGraw-Hill Education",
+       "McGraw-Hill",
+       "llm"
+      ],
+      [
+       "Apple Devices",
+       "Apple",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Twitter",
+       "X (soziales Netzwerk)",
+       "llm"
+      ],
+      [
+       "Tumblr",
+       "Tumblr",
+       "llm"
+      ],
+      [
+       "youtube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1875,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.69
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Säuren",
+      "Organische Chemie",
+      "Basen (Chemie)",
+      "Chemische Reaktion",
+      "Pyridin",
+      "Alkaloide",
+      "Feuerameisen",
+      "Wasser",
+      "Dimethylsulfoxid",
+      "Oxford University Press",
+      "John Wiley & Sons",
+      "McGraw-Hill",
+      "Apple",
+      "Patreon",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "YouTube",
+      "Hank Green"
+     ],
+     "erwaehnungen": [
+      [
+       "Acidity",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "acids",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "bases",
+       "Basen (Chemie)",
+       "llm"
+      ],
+      [
+       "chemical reactions",
+       "Chemische Reaktion",
+       "llm"
+      ],
+      [
+       "Pyridine",
+       "Pyridin",
+       "llm"
+      ],
+      [
+       "alkaloids",
+       "Alkaloide",
+       "llm"
+      ],
+      [
+       "fire ants",
+       "Feuerameisen",
+       "llm"
+      ],
+      [
+       "water",
+       "Wasser",
+       "llm"
+      ],
+      [
+       "dimethyl sulfoxide",
+       "Dimethylsulfoxid",
+       "llm"
+      ],
+      [
+       "Oxford University Press",
+       "Oxford University Press",
+       "llm"
+      ],
+      [
+       "John Wiley & Sons",
+       "John Wiley & Sons",
+       "llm"
+      ],
+      [
+       "McGraw-Hill Education",
+       "McGraw-Hill",
+       "llm"
+      ],
+      [
+       "Apple Devices",
+       "Apple",
+       "llm"
+      ],
+      [
+       "Patreon",
+       "Patreon",
+       "llm"
+      ],
+      [
+       "Facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Twitter",
+       "X (soziales Netzwerk)",
+       "llm"
+      ],
+      [
+       "Tumblr",
+       "Tumblr",
+       "llm"
+      ],
+      [
+       "youtube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "Hank Green",
+       "Hank Green",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1875,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.2
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Säuren",
+      "Organische Chemie",
+      "Basen (Chemie)",
+      "Chemische Reaktion"
+     ],
+     "erwaehnungen": [
+      [
+       "Acidity",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "Organic Chemistry",
+       "Organische Chemie",
+       "llm"
+      ],
+      [
+       "acids",
+       "Säuren",
+       "llm"
+      ],
+      [
+       "bases",
+       "Basen (Chemie)",
+       "llm"
+      ],
+      [
+       "chemical reactions",
+       "Chemische Reaktion",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 25,
+      "checked": 20,
+      "dropped": [
+       "Pyridin",
+       "Alkaloide",
+       "Feuerameisen",
+       "Wasser",
+       "Dimethylsulfoxid",
+       "Oxford University Press",
+       "John Wiley & Sons",
+       "McGraw-Hill",
+       "Apple",
+       "Android",
+       "Patreon",
+       "Facebook",
+       "X (soziales Netzwerk)",
+       "Tumblr",
+       "YouTube",
+       "Hank Green"
+      ],
+      "calls": 2,
+      "total_tokens": 4482,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.28
+    }
+   }
+  },
+  {
+   "node_id": "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Dreisatz",
+      "Reihenfolge",
+      "Wertetabelle",
+      "Zahl",
+      "Anzahl",
+      "Brötchen",
+      "Mathematik",
+      "Name",
+      "Anna",
+      "Euro"
+     ],
+     "erwaehnungen": [
+      [
+       "Dreisatzes",
+       "Dreisatz",
+       "ner"
+      ],
+      [
+       "Dreisatzes",
+       "Dreisatz",
+       "ner"
+      ],
+      [
+       "Reihenfolge",
+       "Reihenfolge",
+       "dictionary"
+      ],
+      [
+       "Wertetabelle",
+       "Wertetabelle",
+       "dictionary"
+      ],
+      [
+       "Reihenfolge",
+       "Reihenfolge",
+       "dictionary"
+      ],
+      [
+       "Zahlen",
+       "Zahl",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Name",
+       "Name",
+       "dictionary"
+      ],
+      [
+       "Dreisatzes",
+       "Dreisatz",
+       "ner"
+      ],
+      [
+       "Dreisatzes",
+       "Dreisatz",
+       "ner"
+      ],
+      [
+       "Anna",
+       "Anna",
+       "ner"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.73
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Dreisatz",
+      "Brötchen",
+      "Mathematik",
+      "Euro"
+     ],
+     "erwaehnungen": [
+      [
+       "Dreisatz",
+       "Dreisatz",
+       "llm"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 840,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Dreisatz",
+      "Brötchen",
+      "Mathematik",
+      "Euro"
+     ],
+     "erwaehnungen": [
+      [
+       "Dreisatz",
+       "Dreisatz",
+       "llm"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 840,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Dreisatz",
+      "Brötchen"
+     ],
+     "erwaehnungen": [
+      [
+       "Dreisatz",
+       "Dreisatz",
+       "llm"
+      ],
+      [
+       "Brötchen",
+       "Brötchen",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 4,
+      "dropped": [
+       "Mathematik",
+       "Euro"
+      ],
+      "calls": 2,
+      "total_tokens": 1632,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "5847dba7-3705-457e-a165-528614d8ebf7",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Teilen",
+      "Mathematik",
+      "Name"
+     ],
+     "erwaehnungen": [
+      [
+       "Teilen",
+       "Teilen",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Name",
+       "Name",
+       "dictionary"
+      ],
+      [
+       "Teilen",
+       "Teilen",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.18
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Division (Mathematik)",
+      "Division mit Rest",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Teilen",
+       "Division (Mathematik)",
+       "llm"
+      ],
+      [
+       "Rest",
+       "Division mit Rest",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1087,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.27
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Division (Mathematik)",
+      "Division mit Rest",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Teilen",
+       "Division (Mathematik)",
+       "llm"
+      ],
+      [
+       "Rest",
+       "Division mit Rest",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1087,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.13
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Division (Mathematik)",
+      "Division mit Rest",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Teilen",
+       "Division (Mathematik)",
+       "llm"
+      ],
+      [
+       "Rest",
+       "Division mit Rest",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 3,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 2037,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.21
+    }
+   }
+  },
+  {
+   "node_id": "a0399b0d-75f6-4388-9d1f-d64cda8e0a73",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Studienabschlussarbeit",
+      "Zahl",
+      "T",
+      "H",
+      "M",
+      "Reihe (Mathematik)",
+      "Mathematik",
+      "Name",
+      "Dan Welcher",
+      "Bruchrechnung",
+      "Rechnung"
+     ],
+     "erwaehnungen": [
+      [
+       "Abschlussarbeit",
+       "Studienabschlussarbeit",
+       "dictionary"
+      ],
+      [
+       "Zahlen",
+       "Zahl",
+       "dictionary"
+      ],
+      [
+       "Zahlen",
+       "Zahl",
+       "dictionary"
+      ],
+      [
+       "T",
+       "T",
+       "dictionary"
+      ],
+      [
+       "H",
+       "H",
+       "dictionary"
+      ],
+      [
+       "M",
+       "M",
+       "dictionary"
+      ],
+      [
+       "Zahlenreihe",
+       "Reihe (Mathematik)",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ],
+      [
+       "Name",
+       "Name",
+       "dictionary"
+      ],
+      [
+       "Abschlussarbeit",
+       "Studienabschlussarbeit",
+       "dictionary"
+      ],
+      [
+       "Welcher",
+       "Dan Welcher",
+       "dictionary"
+      ],
+      [
+       "Bruchteil",
+       "Bruchrechnung",
+       "dictionary"
+      ],
+      [
+       "Rechnung",
+       "Rechnung",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.62
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahl",
+      "Folge (Mathematik)",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahlen",
+       "Zahl",
+       "llm"
+      ],
+      [
+       "Zahlenreihe",
+       "Folge (Mathematik)",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 873,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.2
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahl",
+      "Folge (Mathematik)",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahlen",
+       "Zahl",
+       "llm"
+      ],
+      [
+       "Zahlenreihe",
+       "Folge (Mathematik)",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 873,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Zahl",
+      "Folge (Mathematik)",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Zahlen",
+       "Zahl",
+       "llm"
+      ],
+      [
+       "Zahlenreihe",
+       "Folge (Mathematik)",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 3,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 1683,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "8ee3a2ab-e9e9-46d5-a420-f543494cdf63",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Wort",
+      "Höhe",
+      "Porto",
+      "Anzahl",
+      "Fabrik",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Wörter",
+       "Wort",
+       "dictionary"
+      ],
+      [
+       "Wörter",
+       "Wort",
+       "dictionary"
+      ],
+      [
+       "Höhe",
+       "Höhe",
+       "dictionary"
+      ],
+      [
+       "Portos",
+       "Porto",
+       "ner"
+      ],
+      [
+       "Anzahl",
+       "Anzahl",
+       "dictionary"
+      ],
+      [
+       "Fabrik",
+       "Fabrik",
+       "dictionary"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.52
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Proportionalität",
+      "Schulnote",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Proportionale Zuordnungen",
+       "Proportionalität",
+       "llm"
+      ],
+      [
+       "Note",
+       "Schulnote",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 800,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.28
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Proportionalität",
+      "Schulnote",
+      "Mathematik"
+     ],
+     "erwaehnungen": [
+      [
+       "Proportionale Zuordnungen",
+       "Proportionalität",
+       "llm"
+      ],
+      [
+       "Note",
+       "Schulnote",
+       "llm"
+      ],
+      [
+       "Mathematik",
+       "Mathematik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 800,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Proportionalität"
+     ],
+     "erwaehnungen": [
+      [
+       "Proportionale Zuordnungen",
+       "Proportionalität",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 3,
+      "dropped": [
+       "Schulnote",
+       "Mathematik"
+      ],
+      "calls": 2,
+      "total_tokens": 1585,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "7be6051e-3e39-404a-9e87-4db77e600737",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Deutschland",
+      "Revolution",
+      "Regierung",
+      "Geschichte",
+      "System",
+      "Verfassung",
+      "Weimar"
+     ],
+     "erwaehnungen": [
+      [
+       "Weimarer Verfassung",
+       "Weimarer Verfassung",
+       "ner"
+      ],
+      [
+       "Deutschland",
+       "Deutschland",
+       "ner"
+      ],
+      [
+       "Revolution",
+       "Revolution",
+       "dictionary"
+      ],
+      [
+       "Regierung",
+       "Regierung",
+       "dictionary"
+      ],
+      [
+       "Geschichte",
+       "Geschichte",
+       "dictionary"
+      ],
+      [
+       "System",
+       "System",
+       "dictionary"
+      ],
+      [
+       "Weimarer Verfassung",
+       "Weimarer Verfassung",
+       "ner"
+      ],
+      [
+       "Verfassung",
+       "Verfassung",
+       "dictionary"
+      ],
+      [
+       "Weimar",
+       "Weimar",
+       "ner"
+      ],
+      [
+       "Weimar",
+       "Weimar",
+       "ner"
+      ],
+      [
+       "Regierung",
+       "Regierung",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.77
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Novemberrevolution",
+      "Parlamentarisches Regierungssystem"
+     ],
+     "erwaehnungen": [
+      [
+       "Weimarer Verfassung",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Ersten Weltkrieg",
+       "Erster Weltkrieg",
+       "llm"
+      ],
+      [
+       "Deutschland",
+       "Deutschland",
+       "llm"
+      ],
+      [
+       "Revolution",
+       "Novemberrevolution",
+       "llm"
+      ],
+      [
+       "erste parlamentarische Regierung",
+       "Parlamentarisches Regierungssystem",
+       "llm"
+      ],
+      [
+       "Verfassung von Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Verfassungsprinzipien in Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 778,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.42
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Novemberrevolution",
+      "Parlamentarisches Regierungssystem"
+     ],
+     "erwaehnungen": [
+      [
+       "Weimarer Verfassung",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Ersten Weltkrieg",
+       "Erster Weltkrieg",
+       "llm"
+      ],
+      [
+       "Deutschland",
+       "Deutschland",
+       "llm"
+      ],
+      [
+       "Revolution",
+       "Novemberrevolution",
+       "llm"
+      ],
+      [
+       "erste parlamentarische Regierung",
+       "Parlamentarisches Regierungssystem",
+       "llm"
+      ],
+      [
+       "Verfassung von Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Verfassungsprinzipien in Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 778,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Novemberrevolution"
+     ],
+     "erwaehnungen": [
+      [
+       "Weimarer Verfassung",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Ersten Weltkrieg",
+       "Erster Weltkrieg",
+       "llm"
+      ],
+      [
+       "Revolution",
+       "Novemberrevolution",
+       "llm"
+      ],
+      [
+       "Verfassung von Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ],
+      [
+       "Verfassungsprinzipien in Weimar",
+       "Weimarer Verfassung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 5,
+      "dropped": [
+       "Deutschland",
+       "Parlamentarisches Regierungssystem"
+      ],
+      "calls": 2,
+      "total_tokens": 1638,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.21
+    }
+   }
+  },
+  {
+   "node_id": "477256df-e20a-491d-9a43-24de02b0f1cc",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "April",
+      "Sozialistische Einheitspartei Deutschlands",
+      "Berlin",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "erwaehnungen": [
+      [
+       "April",
+       "April",
+       "dictionary"
+      ],
+      [
+       "Sozialistische Einheitspartei Deutschlands",
+       "Sozialistische Einheitspartei Deutschlands",
+       "ner"
+      ],
+      [
+       "SED",
+       "Sozialistische Einheitspartei Deutschlands",
+       "ner"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "ner"
+      ],
+      [
+       "KPD",
+       "Kommunistische Partei Deutschlands",
+       "ner"
+      ],
+      [
+       "SPD",
+       "Sozialdemokratische Partei Deutschlands",
+       "ner"
+      ],
+      [
+       "SBZ",
+       "Sowjetische Besatzungszone",
+       "ner"
+      ],
+      [
+       "SBZ",
+       "Sowjetische Besatzungszone",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.7
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Berlin",
+      "Zwangsvereinigung von SPD und KPD zur SED",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "erwaehnungen": [
+      [
+       "Sozialistische Einheitspartei Deutschlands (SED)",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "llm"
+      ],
+      [
+       "Zwangsvereinigung",
+       "Zwangsvereinigung von SPD und KPD zur SED",
+       "llm"
+      ],
+      [
+       "KPD",
+       "Kommunistische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SPD",
+       "Sozialdemokratische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SBZ",
+       "Sowjetische Besatzungszone",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 743,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.14
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Berlin",
+      "Zwangsvereinigung von SPD und KPD zur SED",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "erwaehnungen": [
+      [
+       "Sozialistische Einheitspartei Deutschlands (SED)",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "llm"
+      ],
+      [
+       "Zwangsvereinigung",
+       "Zwangsvereinigung von SPD und KPD zur SED",
+       "llm"
+      ],
+      [
+       "KPD",
+       "Kommunistische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SPD",
+       "Sozialdemokratische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SBZ",
+       "Sowjetische Besatzungszone",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 743,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Zwangsvereinigung von SPD und KPD zur SED",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "erwaehnungen": [
+      [
+       "Sozialistische Einheitspartei Deutschlands (SED)",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Zwangsvereinigung",
+       "Zwangsvereinigung von SPD und KPD zur SED",
+       "llm"
+      ],
+      [
+       "KPD",
+       "Kommunistische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SPD",
+       "Sozialdemokratische Partei Deutschlands",
+       "llm"
+      ],
+      [
+       "SBZ",
+       "Sowjetische Besatzungszone",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 6,
+      "dropped": [
+       "Berlin"
+      ],
+      "calls": 2,
+      "total_tokens": 1388,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    }
+   }
+  },
+  {
+   "node_id": "03476274-616e-4678-9296-4dcce80189bf",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Septime",
+      "Parteitag",
+      "Sozialistische Einheitspartei Deutschlands",
+      "Mehrheit",
+      "Marxismus",
+      "Arbeiterbewegung",
+      "I"
+     ],
+     "erwaehnungen": [
+      [
+       "Sept",
+       "Septime",
+       "dictionary"
+      ],
+      [
+       "Parteitag",
+       "Parteitag",
+       "dictionary"
+      ],
+      [
+       "SED",
+       "Sozialistische Einheitspartei Deutschlands",
+       "ner"
+      ],
+      [
+       "Mehrheit",
+       "Mehrheit",
+       "dictionary"
+      ],
+      [
+       "Marxismus",
+       "Marxismus",
+       "dictionary"
+      ],
+      [
+       "Arbeiterbewegung",
+       "Arbeiterbewegung",
+       "dictionary"
+      ],
+      [
+       "I",
+       "I",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.21
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "erwaehnungen": [
+      [
+       "SED",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Marxismus",
+       "Marxismus",
+       "llm"
+      ],
+      [
+       "Arbeiterbewegung",
+       "Arbeiterbewegung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 607,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "erwaehnungen": [
+      [
+       "SED",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Marxismus",
+       "Marxismus",
+       "llm"
+      ],
+      [
+       "Arbeiterbewegung",
+       "Arbeiterbewegung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 607,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "erwaehnungen": [
+      [
+       "SED",
+       "Sozialistische Einheitspartei Deutschlands",
+       "llm"
+      ],
+      [
+       "Marxismus",
+       "Marxismus",
+       "llm"
+      ],
+      [
+       "Arbeiterbewegung",
+       "Arbeiterbewegung",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 3,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 1093,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.19
+    }
+   }
+  },
+  {
+   "node_id": "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "März 2000",
+      "Horst Köhler",
+      "Christlich Demokratische Union Deutschlands",
+      "Europäische Bank für Wiederaufbau und Entwicklung",
+      "London",
+      "Deutsche",
+      "Internationaler Währungsfonds"
+     ],
+     "erwaehnungen": [
+      [
+       "März 2000",
+       "März 2000",
+       "dictionary"
+      ],
+      [
+       "Horst Köhler",
+       "Horst Köhler",
+       "ner"
+      ],
+      [
+       "CDU",
+       "Christlich Demokratische Union Deutschlands",
+       "ner"
+      ],
+      [
+       "Osteuropabank",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "dictionary"
+      ],
+      [
+       "London",
+       "London",
+       "ner"
+      ],
+      [
+       "Deutscher",
+       "Deutsche",
+       "ner"
+      ],
+      [
+       "IWF",
+       "Internationaler Währungsfonds",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.57
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Horst Köhler",
+      "Christlich Demokratische Union Deutschlands",
+      "Europäische Bank für Wiederaufbau und Entwicklung",
+      "London",
+      "Internationaler Währungsfonds",
+      "Washington, D.C."
+     ],
+     "erwaehnungen": [
+      [
+       "Horst Köhler",
+       "Horst Köhler",
+       "llm"
+      ],
+      [
+       "CDU",
+       "Christlich Demokratische Union Deutschlands",
+       "llm"
+      ],
+      [
+       "europäischen Wiederaufbau- und Entwicklungsbank",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "llm"
+      ],
+      [
+       "Osteuropabank",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "llm"
+      ],
+      [
+       "London",
+       "London",
+       "llm"
+      ],
+      [
+       "Internationalen Währungsfonds",
+       "Internationaler Währungsfonds",
+       "llm"
+      ],
+      [
+       "IWF",
+       "Internationaler Währungsfonds",
+       "llm"
+      ],
+      [
+       "Washington",
+       "Washington, D.C.",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 746,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.21
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Horst Köhler",
+      "Christlich Demokratische Union Deutschlands",
+      "Europäische Bank für Wiederaufbau und Entwicklung",
+      "London",
+      "Internationaler Währungsfonds",
+      "Washington, D.C."
+     ],
+     "erwaehnungen": [
+      [
+       "Horst Köhler",
+       "Horst Köhler",
+       "llm"
+      ],
+      [
+       "CDU",
+       "Christlich Demokratische Union Deutschlands",
+       "llm"
+      ],
+      [
+       "europäischen Wiederaufbau- und Entwicklungsbank",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "llm"
+      ],
+      [
+       "Osteuropabank",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "llm"
+      ],
+      [
+       "London",
+       "London",
+       "llm"
+      ],
+      [
+       "Internationalen Währungsfonds",
+       "Internationaler Währungsfonds",
+       "llm"
+      ],
+      [
+       "IWF",
+       "Internationaler Währungsfonds",
+       "llm"
+      ],
+      [
+       "Washington",
+       "Washington, D.C.",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 746,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Horst Köhler",
+      "Internationaler Währungsfonds"
+     ],
+     "erwaehnungen": [
+      [
+       "Horst Köhler",
+       "Horst Köhler",
+       "llm"
+      ],
+      [
+       "Internationalen Währungsfonds",
+       "Internationaler Währungsfonds",
+       "llm"
+      ],
+      [
+       "IWF",
+       "Internationaler Währungsfonds",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 6,
+      "dropped": [
+       "Christlich Demokratische Union Deutschlands",
+       "Europäische Bank für Wiederaufbau und Entwicklung",
+       "London",
+       "Washington, D.C."
+      ],
+      "calls": 2,
+      "total_tokens": 1548,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.19
+    }
+   }
+  },
+  {
+   "node_id": "a41d9d3f-388b-4938-b3df-2f0c381b601d",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Geographie",
+      "Landesbildungsserver Baden-Württemberg",
+      "Erdkundeunterricht",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz"
+     ],
+     "erwaehnungen": [
+      [
+       "Geographie",
+       "Geographie",
+       "dictionary"
+      ],
+      [
+       "Landesbildungsserver Baden-Württemberg",
+       "Landesbildungsserver Baden-Württemberg",
+       "dictionary"
+      ],
+      [
+       "Geographie",
+       "Geographie",
+       "dictionary"
+      ],
+      [
+       "Landesbildungsserver Baden-Württemberg",
+       "Landesbildungsserver Baden-Württemberg",
+       "dictionary"
+      ],
+      [
+       "Geographieunterricht",
+       "Erdkundeunterricht",
+       "dictionary"
+      ],
+      [
+       "Geographie",
+       "Geographie",
+       "dictionary"
+      ],
+      [
+       "Geographie",
+       "Geographie",
+       "dictionary"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "dictionary"
+      ],
+      [
+       "Nachhaltigkeit",
+       "Nachhaltigkeit",
+       "dictionary"
+      ],
+      [
+       "Handlungskompetenz",
+       "Handlungskompetenz",
+       "dictionary"
+      ],
+      [
+       "Methodenkompetenz",
+       "Methodenkompetenz",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.34
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Geographie",
+      "Baden-Württemberg",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Digitale Medien"
+     ],
+     "erwaehnungen": [
+      [
+       "Geographie",
+       "Geographie",
+       "llm"
+      ],
+      [
+       "Baden-Württemberg",
+       "Baden-Württemberg",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ],
+      [
+       "Nachhaltigkeit",
+       "Nachhaltigkeit",
+       "llm"
+      ],
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 745,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 2.01
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Geographie",
+      "Baden-Württemberg",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Digitale Medien"
+     ],
+     "erwaehnungen": [
+      [
+       "Geographie",
+       "Geographie",
+       "llm"
+      ],
+      [
+       "Baden-Württemberg",
+       "Baden-Württemberg",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ],
+      [
+       "Nachhaltigkeit",
+       "Nachhaltigkeit",
+       "llm"
+      ],
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 745,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Geographie",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Digitale Medien"
+     ],
+     "erwaehnungen": [
+      [
+       "Geographie",
+       "Geographie",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ],
+      [
+       "Nachhaltigkeit",
+       "Nachhaltigkeit",
+       "llm"
+      ],
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 5,
+      "checked": 5,
+      "dropped": [
+       "Baden-Württemberg"
+      ],
+      "calls": 2,
+      "total_tokens": 1466,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "9ba086a0-7f3a-4445-8167-fe9959598525",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Schule",
+      "Vulkan",
+      "Erdkruste",
+      "Planet"
+     ],
+     "erwaehnungen": [
+      [
+       "Erdbeben",
+       "Erdbeben",
+       "dictionary"
+      ],
+      [
+       "Vulkanismus",
+       "Vulkanismus",
+       "dictionary"
+      ],
+      [
+       "Plattentektonik",
+       "Plattentektonik",
+       "dictionary"
+      ],
+      [
+       "Schule",
+       "Schule",
+       "dictionary"
+      ],
+      [
+       "Erdbeben",
+       "Erdbeben",
+       "dictionary"
+      ],
+      [
+       "Vulkane",
+       "Vulkan",
+       "dictionary"
+      ],
+      [
+       "Erdkruste",
+       "Erdkruste",
+       "dictionary"
+      ],
+      [
+       "Planeten",
+       "Planet",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.25
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ],
+     "erwaehnungen": [
+      [
+       "Erdbeben",
+       "Erdbeben",
+       "llm"
+      ],
+      [
+       "Vulkanismus",
+       "Vulkanismus",
+       "llm"
+      ],
+      [
+       "Plattentektonik",
+       "Plattentektonik",
+       "llm"
+      ],
+      [
+       "Erdkruste",
+       "Erdkruste",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 577,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ],
+     "erwaehnungen": [
+      [
+       "Erdbeben",
+       "Erdbeben",
+       "llm"
+      ],
+      [
+       "Vulkanismus",
+       "Vulkanismus",
+       "llm"
+      ],
+      [
+       "Plattentektonik",
+       "Plattentektonik",
+       "llm"
+      ],
+      [
+       "Erdkruste",
+       "Erdkruste",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 577,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik"
+     ],
+     "erwaehnungen": [
+      [
+       "Erdbeben",
+       "Erdbeben",
+       "llm"
+      ],
+      [
+       "Vulkanismus",
+       "Vulkanismus",
+       "llm"
+      ],
+      [
+       "Plattentektonik",
+       "Plattentektonik",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 4,
+      "dropped": [
+       "Erdkruste"
+      ],
+      "calls": 2,
+      "total_tokens": 1165,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.14
+    }
+   }
+  },
+  {
+   "node_id": "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Lernen",
+      "Webseite",
+      "Ernährung",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Eichstätt",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Actionbound",
+      "Exkursion"
+     ],
+     "erwaehnungen": [
+      [
+       "Lernen",
+       "Lernen",
+       "dictionary"
+      ],
+      [
+       "Webseite",
+       "Webseite",
+       "dictionary"
+      ],
+      [
+       "Lernen",
+       "Lernen",
+       "dictionary"
+      ],
+      [
+       "Ernährung",
+       "Ernährung",
+       "dictionary"
+      ],
+      [
+       "Fauna",
+       "Fauna",
+       "dictionary"
+      ],
+      [
+       "Stadtgeographie",
+       "Stadtgeographie",
+       "dictionary"
+      ],
+      [
+       "Geomorphologie",
+       "Geomorphologie",
+       "dictionary"
+      ],
+      [
+       "Eichstätt",
+       "Eichstätt",
+       "ner"
+      ],
+      [
+       "Ingolstadt",
+       "Ingolstadt",
+       "ner"
+      ],
+      [
+       "Altmühlsee",
+       "Altmühlsee",
+       "ner"
+      ],
+      [
+       "Actionbound",
+       "Actionbound",
+       "dictionary"
+      ],
+      [
+       "Lernen",
+       "Lernen",
+       "dictionary"
+      ],
+      [
+       "Exkursion",
+       "Exkursion",
+       "dictionary"
+      ],
+      [
+       "Eichstätt",
+       "Eichstätt",
+       "ner"
+      ],
+      [
+       "Altmühlsee",
+       "Altmühlsee",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.53
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Actionbound",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Eichstätt",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Exkursion"
+     ],
+     "erwaehnungen": [
+      [
+       "Actionbound",
+       "Actionbound",
+       "llm"
+      ],
+      [
+       "Fauna",
+       "Fauna",
+       "llm"
+      ],
+      [
+       "Stadtgeographie",
+       "Stadtgeographie",
+       "llm"
+      ],
+      [
+       "Geomorphologie",
+       "Geomorphologie",
+       "llm"
+      ],
+      [
+       "Eichstätt",
+       "Eichstätt",
+       "llm"
+      ],
+      [
+       "Ingolstadt",
+       "Ingolstadt",
+       "llm"
+      ],
+      [
+       "Altmühlsee",
+       "Altmühlsee",
+       "llm"
+      ],
+      [
+       "Exkursion",
+       "Exkursion",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 832,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Actionbound",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Eichstätt",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Exkursion"
+     ],
+     "erwaehnungen": [
+      [
+       "Actionbound",
+       "Actionbound",
+       "llm"
+      ],
+      [
+       "Fauna",
+       "Fauna",
+       "llm"
+      ],
+      [
+       "Stadtgeographie",
+       "Stadtgeographie",
+       "llm"
+      ],
+      [
+       "Geomorphologie",
+       "Geomorphologie",
+       "llm"
+      ],
+      [
+       "Eichstätt",
+       "Eichstätt",
+       "llm"
+      ],
+      [
+       "Ingolstadt",
+       "Ingolstadt",
+       "llm"
+      ],
+      [
+       "Altmühlsee",
+       "Altmühlsee",
+       "llm"
+      ],
+      [
+       "Exkursion",
+       "Exkursion",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 832,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Actionbound",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Eichstätt",
+      "Ingolstadt",
+      "Altmühlsee"
+     ],
+     "erwaehnungen": [
+      [
+       "Actionbound",
+       "Actionbound",
+       "llm"
+      ],
+      [
+       "Fauna",
+       "Fauna",
+       "llm"
+      ],
+      [
+       "Stadtgeographie",
+       "Stadtgeographie",
+       "llm"
+      ],
+      [
+       "Geomorphologie",
+       "Geomorphologie",
+       "llm"
+      ],
+      [
+       "Eichstätt",
+       "Eichstätt",
+       "llm"
+      ],
+      [
+       "Ingolstadt",
+       "Ingolstadt",
+       "llm"
+      ],
+      [
+       "Altmühlsee",
+       "Altmühlsee",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 8,
+      "checked": 8,
+      "dropped": [
+       "Exkursion"
+      ],
+      "calls": 2,
+      "total_tokens": 1847,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.15
+    }
+   }
+  },
+  {
+   "node_id": "f19f7f52-eeb2-4345-9b4e-559e486fa2e2",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Karte (Kartografie)",
+      "Katar",
+      "Kontinent",
+      "Asien",
+      "Region",
+      "Staatsgebiet",
+      "Flächentreue",
+      "Politische Grenze",
+      "Hauptstadt"
+     ],
+     "erwaehnungen": [
+      [
+       "Landkarte",
+       "Karte (Kartografie)",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Kontinent",
+       "Kontinent",
+       "dictionary"
+      ],
+      [
+       "Asien",
+       "Asien",
+       "ner"
+      ],
+      [
+       "Region",
+       "Region",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Landkarte",
+       "Karte (Kartografie)",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Staatsgebiet",
+       "Staatsgebiet",
+       "dictionary"
+      ],
+      [
+       "flächentreu",
+       "Flächentreue",
+       "ner"
+      ],
+      [
+       "Staatsgrenzen",
+       "Politische Grenze",
+       "dictionary"
+      ],
+      [
+       "Landkarte",
+       "Karte (Kartografie)",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Staatsgebiet",
+       "Staatsgebiet",
+       "dictionary"
+      ],
+      [
+       "flächentreu",
+       "Flächentreue",
+       "ner"
+      ],
+      [
+       "Staatsgrenzen",
+       "Politische Grenze",
+       "dictionary"
+      ],
+      [
+       "Hauptstadt",
+       "Hauptstadt",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Landkarte",
+       "Karte (Kartografie)",
+       "dictionary"
+      ],
+      [
+       "Landkarte",
+       "Karte (Kartografie)",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.53
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Katar",
+      "Asien"
+     ],
+     "erwaehnungen": [
+      [
+       "Katar",
+       "Katar",
+       "llm"
+      ],
+      [
+       "Asien",
+       "Asien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 624,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Katar",
+      "Asien"
+     ],
+     "erwaehnungen": [
+      [
+       "Katar",
+       "Katar",
+       "llm"
+      ],
+      [
+       "Asien",
+       "Asien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 624,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Katar"
+     ],
+     "erwaehnungen": [
+      [
+       "Katar",
+       "Katar",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 2,
+      "dropped": [
+       "Asien"
+      ],
+      "calls": 2,
+      "total_tokens": 1159,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "bdc8e683-99c0-4f0a-9519-98eef818f610",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Frage",
+      "Juli 2012",
+      "Minister",
+      "Liste der Staaten der Erde",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "erwaehnungen": [
+      [
+       "Frage",
+       "Frage",
+       "dictionary"
+      ],
+      [
+       "Juli 2012",
+       "Juli 2012",
+       "dictionary"
+      ],
+      [
+       "Minister",
+       "Minister",
+       "dictionary"
+      ],
+      [
+       "Staaten",
+       "Liste der Staaten der Erde",
+       "ner"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "ner"
+      ],
+      [
+       "UN-Klimakonferenz",
+       "UN-Klimakonferenz",
+       "dictionary"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "ner"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "dictionary"
+      ],
+      [
+       "UN-Klimakonferenz",
+       "UN-Klimakonferenz",
+       "dictionary"
+      ],
+      [
+       "Kyoto-Protokoll",
+       "Kyoto-Protokoll",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.49
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "erwaehnungen": [
+      [
+       "3. Petersberger Klimadialog",
+       "Petersberger Klimadialog",
+       "llm"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "llm"
+      ],
+      [
+       "UN-Klimakonferenz",
+       "UN-Klimakonferenz",
+       "llm"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ],
+      [
+       "Kyoto-Protokoll",
+       "Kyoto-Protokoll",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 590,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 2.39
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "erwaehnungen": [
+      [
+       "3. Petersberger Klimadialog",
+       "Petersberger Klimadialog",
+       "llm"
+      ],
+      [
+       "Berlin",
+       "Berlin",
+       "llm"
+      ],
+      [
+       "UN-Klimakonferenz",
+       "UN-Klimakonferenz",
+       "llm"
+      ],
+      [
+       "Katar",
+       "Katar",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ],
+      [
+       "Kyoto-Protokoll",
+       "Kyoto-Protokoll",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 590,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "UN-Klimakonferenz",
+      "Klimawandel"
+     ],
+     "erwaehnungen": [
+      [
+       "3. Petersberger Klimadialog",
+       "Petersberger Klimadialog",
+       "llm"
+      ],
+      [
+       "UN-Klimakonferenz",
+       "UN-Klimakonferenz",
+       "llm"
+      ],
+      [
+       "Klimawandel",
+       "Klimawandel",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 6,
+      "dropped": [
+       "Berlin",
+       "Katar",
+       "Kyoto-Protokoll"
+      ],
+      "calls": 2,
+      "total_tokens": 1558,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.26
+    }
+   }
+  },
+  {
+   "node_id": "87704813-c34a-4771-a577-c0c8008cb772",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Krise",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Staatspräsident",
+      "Emmanuel Macron"
+     ],
+     "erwaehnungen": [
+      [
+       "Frankreich",
+       "Frankreich",
+       "ner"
+      ],
+      [
+       "Krise",
+       "Krise",
+       "dictionary"
+      ],
+      [
+       "Arbeitskosten",
+       "Arbeitskosten",
+       "dictionary"
+      ],
+      [
+       "Bildungssystem",
+       "Bildungssystem",
+       "dictionary"
+      ],
+      [
+       "Volkswirtschaft",
+       "Volkswirtschaft",
+       "dictionary"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "ner"
+      ],
+      [
+       "Staatspräsident",
+       "Staatspräsident",
+       "dictionary"
+      ],
+      [
+       "Emmanuel Macron",
+       "Emmanuel Macron",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.32
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Haushaltssaldo",
+      "Eurozone",
+      "Emmanuel Macron"
+     ],
+     "erwaehnungen": [
+      [
+       "Frankreich",
+       "Frankreich",
+       "llm"
+      ],
+      [
+       "Arbeitskosten",
+       "Arbeitskosten",
+       "llm"
+      ],
+      [
+       "Bildungssystem",
+       "Bildungssystem",
+       "llm"
+      ],
+      [
+       "Etatdefizit",
+       "Haushaltssaldo",
+       "llm"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "llm"
+      ],
+      [
+       "Emmanuel Macron",
+       "Emmanuel Macron",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 538,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.15
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Haushaltssaldo",
+      "Eurozone",
+      "Emmanuel Macron"
+     ],
+     "erwaehnungen": [
+      [
+       "Frankreich",
+       "Frankreich",
+       "llm"
+      ],
+      [
+       "Arbeitskosten",
+       "Arbeitskosten",
+       "llm"
+      ],
+      [
+       "Bildungssystem",
+       "Bildungssystem",
+       "llm"
+      ],
+      [
+       "Etatdefizit",
+       "Haushaltssaldo",
+       "llm"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "llm"
+      ],
+      [
+       "Emmanuel Macron",
+       "Emmanuel Macron",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 538,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Haushaltssaldo",
+      "Emmanuel Macron"
+     ],
+     "erwaehnungen": [
+      [
+       "Frankreich",
+       "Frankreich",
+       "llm"
+      ],
+      [
+       "Arbeitskosten",
+       "Arbeitskosten",
+       "llm"
+      ],
+      [
+       "Bildungssystem",
+       "Bildungssystem",
+       "llm"
+      ],
+      [
+       "Etatdefizit",
+       "Haushaltssaldo",
+       "llm"
+      ],
+      [
+       "Emmanuel Macron",
+       "Emmanuel Macron",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 6,
+      "checked": 6,
+      "dropped": [
+       "Eurozone"
+      ],
+      "calls": 2,
+      "total_tokens": 1290,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.19
+    }
+   }
+  },
+  {
+   "node_id": "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Politik",
+      "Europa",
+      "Schulden",
+      "Geldvermögen",
+      "Problem",
+      "Wirtschaftswissenschaftler",
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Wirtschaftskrise",
+      "Staatsbankrott"
+     ],
+     "erwaehnungen": [
+      [
+       "Politik",
+       "Politik",
+       "dictionary"
+      ],
+      [
+       "Europa",
+       "Europa",
+       "ner"
+      ],
+      [
+       "Schulden",
+       "Schulden",
+       "dictionary"
+      ],
+      [
+       "Geldvermögen",
+       "Geldvermögen",
+       "dictionary"
+      ],
+      [
+       "Verschuldung",
+       "Schulden",
+       "dictionary"
+      ],
+      [
+       "Problem",
+       "Problem",
+       "dictionary"
+      ],
+      [
+       "Ökonomin",
+       "Wirtschaftswissenschaftler",
+       "dictionary"
+      ],
+      [
+       "Staatsverschuldung",
+       "Staatsverschuldung",
+       "dictionary"
+      ],
+      [
+       "Vermögensteuer",
+       "Vermögensteuer",
+       "dictionary"
+      ],
+      [
+       "Wirtschaftskrise",
+       "Wirtschaftskrise",
+       "dictionary"
+      ],
+      [
+       "Staatsschuldenkrise",
+       "Staatsbankrott",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 3.55
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Europa",
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Eurokrise",
+      "Weltfinanzkrise 2007–2008",
+      "Staatsbankrott"
+     ],
+     "erwaehnungen": [
+      [
+       "Europa",
+       "Europa",
+       "llm"
+      ],
+      [
+       "Staatsverschuldung",
+       "Staatsverschuldung",
+       "llm"
+      ],
+      [
+       "Vermögensteuer",
+       "Vermögensteuer",
+       "llm"
+      ],
+      [
+       "europäische Schuldenkrise",
+       "Eurokrise",
+       "llm"
+      ],
+      [
+       "Finanz- und Wirtschaftskrise",
+       "Weltfinanzkrise 2007–2008",
+       "llm"
+      ],
+      [
+       "Staatsschuldenkrise",
+       "Staatsbankrott",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1075,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 1.22
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Europa",
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Eurokrise",
+      "Weltfinanzkrise 2007–2008",
+      "Staatsbankrott"
+     ],
+     "erwaehnungen": [
+      [
+       "Europa",
+       "Europa",
+       "llm"
+      ],
+      [
+       "Staatsverschuldung",
+       "Staatsverschuldung",
+       "llm"
+      ],
+      [
+       "Vermögensteuer",
+       "Vermögensteuer",
+       "llm"
+      ],
+      [
+       "europäische Schuldenkrise",
+       "Eurokrise",
+       "llm"
+      ],
+      [
+       "Finanz- und Wirtschaftskrise",
+       "Weltfinanzkrise 2007–2008",
+       "llm"
+      ],
+      [
+       "Staatsschuldenkrise",
+       "Staatsbankrott",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1075,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Eurokrise",
+      "Weltfinanzkrise 2007–2008"
+     ],
+     "erwaehnungen": [
+      [
+       "Staatsverschuldung",
+       "Staatsverschuldung",
+       "llm"
+      ],
+      [
+       "Vermögensteuer",
+       "Vermögensteuer",
+       "llm"
+      ],
+      [
+       "europäische Schuldenkrise",
+       "Eurokrise",
+       "llm"
+      ],
+      [
+       "Finanz- und Wirtschaftskrise",
+       "Weltfinanzkrise 2007–2008",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 6,
+      "dropped": [
+       "Europa",
+       "Staatsbankrott"
+      ],
+      "calls": 2,
+      "total_tokens": 2261,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.26
+    }
+   }
+  },
+  {
+   "node_id": "f3caa6d3-4750-4fc8-b073-8c8eccf62b40",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Zeit",
+      "Projektionsfläche",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Eurozone",
+      "Finanzministerium",
+      "Stabilitäts- und Wachstumspakt",
+      "Europäische Union",
+      "Transferunion",
+      "Emmanuel Macron",
+      "Infrastruktur",
+      "Digitale Infrastruktur"
+     ],
+     "erwaehnungen": [
+      [
+       "Zeit",
+       "Zeit",
+       "ner"
+      ],
+      [
+       "Projektionsfläche",
+       "Projektionsfläche",
+       "dictionary"
+      ],
+      [
+       "Ökonom",
+       "Wirtschaftswissenschaftler",
+       "dictionary"
+      ],
+      [
+       "Michael Hüther",
+       "Michael Hüther",
+       "ner"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "ner"
+      ],
+      [
+       "Finanzminister",
+       "Finanzministerium",
+       "ner"
+      ],
+      [
+       "Stabilitäts- und Wachstumspakt",
+       "Stabilitäts- und Wachstumspakt",
+       "dictionary"
+      ],
+      [
+       "EU",
+       "Europäische Union",
+       "ner"
+      ],
+      [
+       "Transferunion",
+       "Transferunion",
+       "ner"
+      ],
+      [
+       "Macron",
+       "Emmanuel Macron",
+       "ner"
+      ],
+      [
+       "Infrastruktur",
+       "Infrastruktur",
+       "dictionary"
+      ],
+      [
+       "Digitale Infrastruktur",
+       "Digitale Infrastruktur",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.08
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Bundeszentrale für politische Bildung",
+      "Euro",
+      "Finanzministerium",
+      "Europäische Union",
+      "Köln",
+      "Michael Hüther",
+      "Eurozone",
+      "Stabilitäts- und Wachstumspakt",
+      "Transferunion",
+      "Emmanuel Macron",
+      "Infrastruktur",
+      "Digitale Infrastruktur"
+     ],
+     "erwaehnungen": [
+      [
+       "bpb",
+       "Bundeszentrale für politische Bildung",
+       "llm"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "llm"
+      ],
+      [
+       "Finanzminister",
+       "Finanzministerium",
+       "llm"
+      ],
+      [
+       "EU",
+       "Europäische Union",
+       "llm"
+      ],
+      [
+       "Kölner",
+       "Köln",
+       "llm"
+      ],
+      [
+       "Michael Hüther",
+       "Michael Hüther",
+       "llm"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "llm"
+      ],
+      [
+       "Europäischer Stabilitäts- und Wachstumspakt",
+       "Stabilitäts- und Wachstumspakt",
+       "llm"
+      ],
+      [
+       "Transferunion",
+       "Transferunion",
+       "llm"
+      ],
+      [
+       "Macron",
+       "Emmanuel Macron",
+       "llm"
+      ],
+      [
+       "Infrastruktur",
+       "Infrastruktur",
+       "llm"
+      ],
+      [
+       "Digitale Infrastruktur",
+       "Digitale Infrastruktur",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 848,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.94
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Bundeszentrale für politische Bildung",
+      "Euro",
+      "Finanzministerium",
+      "Europäische Union",
+      "Köln",
+      "Michael Hüther",
+      "Eurozone",
+      "Stabilitäts- und Wachstumspakt",
+      "Transferunion",
+      "Emmanuel Macron",
+      "Infrastruktur",
+      "Digitale Infrastruktur"
+     ],
+     "erwaehnungen": [
+      [
+       "bpb",
+       "Bundeszentrale für politische Bildung",
+       "llm"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "llm"
+      ],
+      [
+       "Finanzminister",
+       "Finanzministerium",
+       "llm"
+      ],
+      [
+       "EU",
+       "Europäische Union",
+       "llm"
+      ],
+      [
+       "Kölner",
+       "Köln",
+       "llm"
+      ],
+      [
+       "Michael Hüther",
+       "Michael Hüther",
+       "llm"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "llm"
+      ],
+      [
+       "Europäischer Stabilitäts- und Wachstumspakt",
+       "Stabilitäts- und Wachstumspakt",
+       "llm"
+      ],
+      [
+       "Transferunion",
+       "Transferunion",
+       "llm"
+      ],
+      [
+       "Macron",
+       "Emmanuel Macron",
+       "llm"
+      ],
+      [
+       "Infrastruktur",
+       "Infrastruktur",
+       "llm"
+      ],
+      [
+       "Digitale Infrastruktur",
+       "Digitale Infrastruktur",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 848,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Euro",
+      "Europäische Union",
+      "Michael Hüther",
+      "Eurozone",
+      "Stabilitäts- und Wachstumspakt",
+      "Transferunion",
+      "Emmanuel Macron",
+      "Infrastruktur",
+      "Digitale Infrastruktur"
+     ],
+     "erwaehnungen": [
+      [
+       "Euro",
+       "Euro",
+       "llm"
+      ],
+      [
+       "EU",
+       "Europäische Union",
+       "llm"
+      ],
+      [
+       "Michael Hüther",
+       "Michael Hüther",
+       "llm"
+      ],
+      [
+       "Eurozone",
+       "Eurozone",
+       "llm"
+      ],
+      [
+       "Europäischer Stabilitäts- und Wachstumspakt",
+       "Stabilitäts- und Wachstumspakt",
+       "llm"
+      ],
+      [
+       "Transferunion",
+       "Transferunion",
+       "llm"
+      ],
+      [
+       "Macron",
+       "Emmanuel Macron",
+       "llm"
+      ],
+      [
+       "Infrastruktur",
+       "Infrastruktur",
+       "llm"
+      ],
+      [
+       "Digitale Infrastruktur",
+       "Digitale Infrastruktur",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 12,
+      "dropped": [
+       "Bundeszentrale für politische Bildung",
+       "Finanzministerium",
+       "Köln"
+      ],
+      "calls": 2,
+      "total_tokens": 2127,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.32
+    }
+   }
+  },
+  {
+   "node_id": "c4d8c077-ea98-486d-98c0-77ea98886df9",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Frage",
+      "Hörspiel",
+      "Text",
+      "Audacity",
+      "Informatik"
+     ],
+     "erwaehnungen": [
+      [
+       "Frage",
+       "Frage",
+       "dictionary"
+      ],
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "dictionary"
+      ],
+      [
+       "Text",
+       "Text",
+       "dictionary"
+      ],
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "dictionary"
+      ],
+      [
+       "Audacity",
+       "Audacity",
+       "ner"
+      ],
+      [
+       "Informatik",
+       "Informatik",
+       "dictionary"
+      ],
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.37
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Hörspiel",
+      "Audacity"
+     ],
+     "erwaehnungen": [
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "llm"
+      ],
+      [
+       "Audacity",
+       "Audacity",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 478,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.16
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Hörspiel",
+      "Audacity"
+     ],
+     "erwaehnungen": [
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "llm"
+      ],
+      [
+       "Audacity",
+       "Audacity",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 478,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.27
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Hörspiel"
+     ],
+     "erwaehnungen": [
+      [
+       "Hörspiel",
+       "Hörspiel",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 2,
+      "checked": 2,
+      "dropped": [
+       "Audacity"
+      ],
+      "calls": 2,
+      "total_tokens": 913,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.5
+    }
+   }
+  },
+  {
+   "node_id": "f61cd77c-9a90-41a1-9cd7-7c9a9081a108",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Arbeitsheft",
+      "Lehrer",
+      "Schüler",
+      "Aspekte",
+      "YouTube",
+      "YouTuber",
+      "Berufsbild",
+      "Ich will",
+      "Lernvideo",
+      "Produktion",
+      "Erfahrung",
+      "Unterricht",
+      "Projekt",
+      "Verfügung",
+      "Informatik",
+      "Influencer",
+      "YouTube-Kanal"
+     ],
+     "erwaehnungen": [
+      [
+       "Arbeitsheft",
+       "Arbeitsheft",
+       "dictionary"
+      ],
+      [
+       "Arbeitsheft",
+       "Arbeitsheft",
+       "dictionary"
+      ],
+      [
+       "Lehrperson",
+       "Lehrer",
+       "dictionary"
+      ],
+      [
+       "Schüler",
+       "Schüler",
+       "dictionary"
+      ],
+      [
+       "Aspekte",
+       "Aspekte",
+       "dictionary"
+      ],
+      [
+       "YouTube",
+       "YouTube",
+       "ner"
+      ],
+      [
+       "YouTube",
+       "YouTube",
+       "ner"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "dictionary"
+      ],
+      [
+       "Berufsbild",
+       "Berufsbild",
+       "dictionary"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "dictionary"
+      ],
+      [
+       "Ich will",
+       "Ich will",
+       "dictionary"
+      ],
+      [
+       "Lernvideos",
+       "Lernvideo",
+       "dictionary"
+      ],
+      [
+       "Lernvideo",
+       "Lernvideo",
+       "dictionary"
+      ],
+      [
+       "Produktion",
+       "Produktion",
+       "dictionary"
+      ],
+      [
+       "Lernvideos",
+       "Lernvideo",
+       "dictionary"
+      ],
+      [
+       "Lehrperson",
+       "Lehrer",
+       "dictionary"
+      ],
+      [
+       "Erfahrung",
+       "Erfahrung",
+       "dictionary"
+      ],
+      [
+       "Unterricht",
+       "Unterricht",
+       "dictionary"
+      ],
+      [
+       "Projekt",
+       "Projekt",
+       "dictionary"
+      ],
+      [
+       "Verfügung",
+       "Verfügung",
+       "dictionary"
+      ],
+      [
+       "Informatik",
+       "Informatik",
+       "dictionary"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "dictionary"
+      ],
+      [
+       "Influencer",
+       "Influencer",
+       "dictionary"
+      ],
+      [
+       "Lernvideo",
+       "Lernvideo",
+       "dictionary"
+      ],
+      [
+       "Youtube",
+       "YouTube",
+       "ner"
+      ],
+      [
+       "YouTube-Kanal",
+       "YouTube-Kanal",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 5.17
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "YouTube",
+      "YouTuber",
+      "Influencer"
+     ],
+     "erwaehnungen": [
+      [
+       "YouTube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "llm"
+      ],
+      [
+       "Influencer",
+       "Influencer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 951,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.23
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "YouTube",
+      "YouTuber",
+      "Influencer"
+     ],
+     "erwaehnungen": [
+      [
+       "YouTube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "llm"
+      ],
+      [
+       "Influencer",
+       "Influencer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 951,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "YouTube",
+      "YouTuber",
+      "Influencer"
+     ],
+     "erwaehnungen": [
+      [
+       "YouTube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "YouTuber",
+       "YouTuber",
+       "llm"
+      ],
+      [
+       "Influencer",
+       "Influencer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 3,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 1599,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "aad2eddf-63e7-4a83-92ed-df63e7ba8389",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Gruppenpuzzle",
+      "Intro",
+      "Programmierung",
+      "Gestaltung",
+      "Musik",
+      "Verbot der Vertretung widerstreitender Interessen",
+      "Spiel",
+      "Informatik"
+     ],
+     "erwaehnungen": [
+      [
+       "Gruppenpuzzle",
+       "Gruppenpuzzle",
+       "dictionary"
+      ],
+      [
+       "Einführung",
+       "Intro",
+       "dictionary"
+      ],
+      [
+       "Programmieren",
+       "Programmierung",
+       "dictionary"
+      ],
+      [
+       "Gestaltung",
+       "Gestaltung",
+       "dictionary"
+      ],
+      [
+       "Musik",
+       "Musik",
+       "dictionary"
+      ],
+      [
+       "Kollisionsprüfung",
+       "Verbot der Vertretung widerstreitender Interessen",
+       "dictionary"
+      ],
+      [
+       "Spiel",
+       "Spiel",
+       "dictionary"
+      ],
+      [
+       "Informatik",
+       "Informatik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 3.65
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)",
+      "Gruppenpuzzle",
+      "Programmierung",
+      "Sensor",
+      "Variable (Programmierung)",
+      "Operator (Mathematik)",
+      "Breakout (Computerspiel)"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ],
+      [
+       "Gruppenpuzzle",
+       "Gruppenpuzzle",
+       "llm"
+      ],
+      [
+       "Programmieren",
+       "Programmierung",
+       "llm"
+      ],
+      [
+       "Sensoren",
+       "Sensor",
+       "llm"
+      ],
+      [
+       "Variablen",
+       "Variable (Programmierung)",
+       "llm"
+      ],
+      [
+       "Operatoren",
+       "Operator (Mathematik)",
+       "llm"
+      ],
+      [
+       "Breakout",
+       "Breakout (Computerspiel)",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 639,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.72
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)",
+      "Gruppenpuzzle",
+      "Programmierung",
+      "Sensor",
+      "Variable (Programmierung)",
+      "Operator (Mathematik)",
+      "Breakout (Computerspiel)"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ],
+      [
+       "Gruppenpuzzle",
+       "Gruppenpuzzle",
+       "llm"
+      ],
+      [
+       "Programmieren",
+       "Programmierung",
+       "llm"
+      ],
+      [
+       "Sensoren",
+       "Sensor",
+       "llm"
+      ],
+      [
+       "Variablen",
+       "Variable (Programmierung)",
+       "llm"
+      ],
+      [
+       "Operatoren",
+       "Operator (Mathematik)",
+       "llm"
+      ],
+      [
+       "Breakout",
+       "Breakout (Computerspiel)",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 639,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.11
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)",
+      "Gruppenpuzzle",
+      "Programmierung",
+      "Sensor",
+      "Variable (Programmierung)",
+      "Breakout (Computerspiel)"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ],
+      [
+       "Gruppenpuzzle",
+       "Gruppenpuzzle",
+       "llm"
+      ],
+      [
+       "Programmieren",
+       "Programmierung",
+       "llm"
+      ],
+      [
+       "Sensoren",
+       "Sensor",
+       "llm"
+      ],
+      [
+       "Variablen",
+       "Variable (Programmierung)",
+       "llm"
+      ],
+      [
+       "Breakout",
+       "Breakout (Computerspiel)",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 7,
+      "dropped": [
+       "Operator (Mathematik)"
+      ],
+      "calls": 2,
+      "total_tokens": 1501,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Massachusetts Institute of Technology",
+      "Integrierte Entwicklungsumgebung",
+      "Jugend",
+      "Informatik",
+      "Technik",
+      "Natur und Technik",
+      "Musik",
+      "Sport",
+      "Teamfähigkeit",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz",
+      "Broschüre",
+      "Erfolg",
+      "Starthilfe",
+      "Gestaltung"
+     ],
+     "erwaehnungen": [
+      [
+       "MIT",
+       "Massachusetts Institute of Technology",
+       "ner"
+      ],
+      [
+       "Programmierumgebung",
+       "Integrierte Entwicklungsumgebung",
+       "dictionary"
+      ],
+      [
+       "Jugendliche",
+       "Jugend",
+       "dictionary"
+      ],
+      [
+       "Informatik",
+       "Informatik",
+       "dictionary"
+      ],
+      [
+       "Technisches",
+       "Technik",
+       "dictionary"
+      ],
+      [
+       "Natur und Technik",
+       "Natur und Technik",
+       "dictionary"
+      ],
+      [
+       "Musik",
+       "Musik",
+       "dictionary"
+      ],
+      [
+       "Sport",
+       "Sport",
+       "dictionary"
+      ],
+      [
+       "Teamfähigkeit",
+       "Teamfähigkeit",
+       "dictionary"
+      ],
+      [
+       "Sozialkompetenz",
+       "Soziale Kompetenz",
+       "dictionary"
+      ],
+      [
+       "Pädagogische Hochschule Schwyz",
+       "Pädagogische Hochschule Schwyz",
+       "ner"
+      ],
+      [
+       "Broschüre",
+       "Broschüre",
+       "dictionary"
+      ],
+      [
+       "Erfolgserlebnis",
+       "Erfolg",
+       "dictionary"
+      ],
+      [
+       "Starthilfe",
+       "Starthilfe",
+       "dictionary"
+      ],
+      [
+       "Gestaltung",
+       "Gestaltung",
+       "dictionary"
+      ],
+      [
+       "Broschüre",
+       "Broschüre",
+       "ner"
+      ],
+      [
+       "Informatik",
+       "Informatik",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.2
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)",
+      "Massachusetts Institute of Technology",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ],
+      [
+       "MIT",
+       "Massachusetts Institute of Technology",
+       "llm"
+      ],
+      [
+       "Sozialkompetenz",
+       "Soziale Kompetenz",
+       "llm"
+      ],
+      [
+       "Pädagogische Hochschule Schwyz",
+       "Pädagogische Hochschule Schwyz",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 753,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)",
+      "Massachusetts Institute of Technology",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ],
+      [
+       "MIT",
+       "Massachusetts Institute of Technology",
+       "llm"
+      ],
+      [
+       "Sozialkompetenz",
+       "Soziale Kompetenz",
+       "llm"
+      ],
+      [
+       "Pädagogische Hochschule Schwyz",
+       "Pädagogische Hochschule Schwyz",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 753,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.09
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Scratch (Programmiersprache)"
+     ],
+     "erwaehnungen": [
+      [
+       "Scratch",
+       "Scratch (Programmiersprache)",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 4,
+      "checked": 4,
+      "dropped": [
+       "Massachusetts Institute of Technology",
+       "Soziale Kompetenz",
+       "Pädagogische Hochschule Schwyz"
+      ],
+      "calls": 2,
+      "total_tokens": 1448,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    }
+   }
+  },
+  {
+   "node_id": "1c748a03-1563-4524-911a-075e225902d4",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Deutschunterricht",
+      "Abitur",
+      "Digitale Transformation",
+      "Schule",
+      "Leben",
+      "Unterricht",
+      "Lerner",
+      "Lehrer",
+      "Digitale Medien",
+      "Buch",
+      "Leitmedium",
+      "Schreiben",
+      "Literatur",
+      "Kommunikation",
+      "Interaktion",
+      "Autor",
+      "Blog",
+      "Publikum",
+      "Text",
+      "Gestaltung",
+      "Umsetzung",
+      "Anwendungssoftware",
+      "Veröffentlichung"
+     ],
+     "erwaehnungen": [
+      [
+       "Deutschunterricht",
+       "Deutschunterricht",
+       "dictionary"
+      ],
+      [
+       "Deutschunterricht",
+       "Deutschunterricht",
+       "dictionary"
+      ],
+      [
+       "Allgemeine Hochschulreife",
+       "Abitur",
+       "dictionary"
+      ],
+      [
+       "Digitale Transformation",
+       "Digitale Transformation",
+       "dictionary"
+      ],
+      [
+       "Schule",
+       "Schule",
+       "dictionary"
+      ],
+      [
+       "Leben",
+       "Leben",
+       "dictionary"
+      ],
+      [
+       "Unterricht",
+       "Unterricht",
+       "dictionary"
+      ],
+      [
+       "Lerner",
+       "Lerner",
+       "dictionary"
+      ],
+      [
+       "Lehrperson",
+       "Lehrer",
+       "dictionary"
+      ],
+      [
+       "Digitale Medien",
+       "Digitale Medien",
+       "dictionary"
+      ],
+      [
+       "Deutschunterricht",
+       "Deutschunterricht",
+       "dictionary"
+      ],
+      [
+       "Deutschunterricht",
+       "Deutschunterricht",
+       "dictionary"
+      ],
+      [
+       "Buch",
+       "Buch",
+       "dictionary"
+      ],
+      [
+       "Leitmedium",
+       "Leitmedium",
+       "dictionary"
+      ],
+      [
+       "Schreiben",
+       "Schreiben",
+       "dictionary"
+      ],
+      [
+       "Literatur",
+       "Literatur",
+       "dictionary"
+      ],
+      [
+       "Kommunikation",
+       "Kommunikation",
+       "dictionary"
+      ],
+      [
+       "Interaktion",
+       "Interaktion",
+       "dictionary"
+      ],
+      [
+       "Autor",
+       "Autor",
+       "dictionary"
+      ],
+      [
+       "Blog",
+       "Blog",
+       "dictionary"
+      ],
+      [
+       "Schreiben",
+       "Schreiben",
+       "dictionary"
+      ],
+      [
+       "Publikum",
+       "Publikum",
+       "dictionary"
+      ],
+      [
+       "Text",
+       "Text",
+       "dictionary"
+      ],
+      [
+       "Gestaltung",
+       "Gestaltung",
+       "dictionary"
+      ],
+      [
+       "Text",
+       "Text",
+       "dictionary"
+      ],
+      [
+       "Umsetzung",
+       "Umsetzung",
+       "dictionary"
+      ],
+      [
+       "Apps",
+       "Anwendungssoftware",
+       "dictionary"
+      ],
+      [
+       "Veröffentlichung",
+       "Veröffentlichung",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 3.5
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Digitale Medien",
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Blog",
+      "Chat",
+      "Open Educational Resources"
+     ],
+     "erwaehnungen": [
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ],
+      [
+       "Allgemeine Hochschulreife",
+       "Abitur",
+       "llm"
+      ],
+      [
+       "Digitale Transformation",
+       "Digitale Transformation",
+       "llm"
+      ],
+      [
+       "digital native",
+       "Digital Native",
+       "llm"
+      ],
+      [
+       "Blog",
+       "Blog",
+       "llm"
+      ],
+      [
+       "Chatverläufe",
+       "Chat",
+       "llm"
+      ],
+      [
+       "OER",
+       "Open Educational Resources",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1075,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.32
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Digitale Medien",
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Blog",
+      "Chat",
+      "Open Educational Resources"
+     ],
+     "erwaehnungen": [
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ],
+      [
+       "Allgemeine Hochschulreife",
+       "Abitur",
+       "llm"
+      ],
+      [
+       "Digitale Transformation",
+       "Digitale Transformation",
+       "llm"
+      ],
+      [
+       "digital native",
+       "Digital Native",
+       "llm"
+      ],
+      [
+       "Blog",
+       "Blog",
+       "llm"
+      ],
+      [
+       "Chatverläufe",
+       "Chat",
+       "llm"
+      ],
+      [
+       "OER",
+       "Open Educational Resources",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1075,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Digitale Medien"
+     ],
+     "erwaehnungen": [
+      [
+       "digitale Medien",
+       "Digitale Medien",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 7,
+      "checked": 7,
+      "dropped": [
+       "Abitur",
+       "Digitale Transformation",
+       "Digital Native",
+       "Blog",
+       "Chat",
+       "Open Educational Resources"
+      ],
+      "calls": 2,
+      "total_tokens": 2256,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "803ebb4d-aa53-4107-922a-85d86bbcd304",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Lernen"
+     ],
+     "erwaehnungen": [
+      [
+       "Lernen",
+       "Lernen",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.1
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Fidget Spinner"
+     ],
+     "erwaehnungen": [
+      [
+       "Fidget Spinner",
+       "Fidget Spinner",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 367,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.12
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Fidget Spinner"
+     ],
+     "erwaehnungen": [
+      [
+       "Fidget Spinner",
+       "Fidget Spinner",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 367,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Fidget Spinner"
+     ],
+     "erwaehnungen": [
+      [
+       "Fidget Spinner",
+       "Fidget Spinner",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 1,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 628,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Inhalt",
+      "Webbrowser",
+      "Ihren"
+     ],
+     "erwaehnungen": [
+      [
+       "Inhalt",
+       "Inhalt",
+       "dictionary"
+      ],
+      [
+       "Browser",
+       "Webbrowser",
+       "ner"
+      ],
+      [
+       "Ihren",
+       "Ihren",
+       "dictionary"
+      ],
+      [
+       "Browser",
+       "Webbrowser",
+       "ner"
+      ],
+      [
+       "Browsers",
+       "Webbrowser",
+       "ner"
+      ],
+      [
+       "Ihren",
+       "Ihren",
+       "dictionary"
+      ],
+      [
+       "Browser",
+       "Webbrowser",
+       "ner"
+      ],
+      [
+       "Browser",
+       "Webbrowser",
+       "ner"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 0.58
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Rasmus und der Landstreicher"
+     ],
+     "erwaehnungen": [
+      [
+       "Rasmus und der Lanstreicher",
+       "Rasmus und der Landstreicher",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 359,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.14
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Rasmus und der Landstreicher"
+     ],
+     "erwaehnungen": [
+      [
+       "Rasmus und der Lanstreicher",
+       "Rasmus und der Landstreicher",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 359,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Rasmus und der Landstreicher"
+     ],
+     "erwaehnungen": [
+      [
+       "Rasmus und der Lanstreicher",
+       "Rasmus und der Landstreicher",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 1,
+      "checked": 1,
+      "dropped": [],
+      "calls": 2,
+      "total_tokens": 742,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "f8451c14-12cc-465f-8aac-ad9e2a2851f1",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Inhalt",
+      "Name",
+      "Bildung",
+      "Liste",
+      "Entwicklung",
+      "Schule",
+      "Sammeln",
+      "Emma Ihrer",
+      "Umsetzung",
+      "Unterricht",
+      "Fächer",
+      "Schulform",
+      "Entwerfen",
+      "Plenum",
+      "Schüler",
+      "Unterrichtsstunde"
+     ],
+     "erwaehnungen": [
+      [
+       "Inhalt",
+       "Inhalt",
+       "dictionary"
+      ],
+      [
+       "Name",
+       "Name",
+       "dictionary"
+      ],
+      [
+       "Bildung",
+       "Bildung",
+       "dictionary"
+      ],
+      [
+       "Liste",
+       "Liste",
+       "dictionary"
+      ],
+      [
+       "Entwicklung",
+       "Entwicklung",
+       "dictionary"
+      ],
+      [
+       "Schule",
+       "Schule",
+       "dictionary"
+      ],
+      [
+       "Sammeln",
+       "Sammeln",
+       "dictionary"
+      ],
+      [
+       "Ihrer",
+       "Emma Ihrer",
+       "dictionary"
+      ],
+      [
+       "Umsetzung",
+       "Umsetzung",
+       "dictionary"
+      ],
+      [
+       "Unterricht",
+       "Unterricht",
+       "dictionary"
+      ],
+      [
+       "Ihrer",
+       "Emma Ihrer",
+       "dictionary"
+      ],
+      [
+       "Fächer",
+       "Fächer",
+       "dictionary"
+      ],
+      [
+       "Schulform",
+       "Schulform",
+       "dictionary"
+      ],
+      [
+       "Schulform",
+       "Schulform",
+       "dictionary"
+      ],
+      [
+       "Entwurf",
+       "Entwerfen",
+       "dictionary"
+      ],
+      [
+       "Plenum",
+       "Plenum",
+       "ner"
+      ],
+      [
+       "Schulform",
+       "Schulform",
+       "dictionary"
+      ],
+      [
+       "Schüler",
+       "Schüler",
+       "dictionary"
+      ],
+      [
+       "Unterrichtsstunde",
+       "Unterrichtsstunde",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.25
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Deutsche Sprache",
+      "Kultusministerkonferenz"
+     ],
+     "erwaehnungen": [
+      [
+       "Deutsch",
+       "Deutsche Sprache",
+       "llm"
+      ],
+      [
+       "KMK-Konferenz",
+       "Kultusministerkonferenz",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 958,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.35
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Deutsche Sprache",
+      "Kultusministerkonferenz"
+     ],
+     "erwaehnungen": [
+      [
+       "Deutsch",
+       "Deutsche Sprache",
+       "llm"
+      ],
+      [
+       "KMK-Konferenz",
+       "Kultusministerkonferenz",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 3,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 958,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.12
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [],
+     "erwaehnungen": [],
+     "llm": {
+      "named": 3,
+      "checked": 2,
+      "dropped": [
+       "Deutsche Sprache",
+       "Kultusministerkonferenz"
+      ],
+      "calls": 2,
+      "total_tokens": 1724,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.16
+    }
+   }
+  },
+  {
+   "node_id": "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Fehler",
+      "Buch",
+      "Amazon",
+      "Börse",
+      "Achim Zimmermann",
+      "Gesellschaftsrecht",
+      "Darmstadt",
+      "Unternehmensgründung",
+      "E-Book",
+      "Immobilie",
+      "Seminar",
+      "Termin",
+      "Erfolg",
+      "Wohnimmobilie",
+      "Hörbuch",
+      "System",
+      "Geld"
+     ],
+     "erwaehnungen": [
+      [
+       "Fehler",
+       "Fehler",
+       "dictionary"
+      ],
+      [
+       "Buch",
+       "Buch",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Achim Zimmermann",
+       "Achim Zimmermann",
+       "dictionary"
+      ],
+      [
+       "Gesellschaftsrecht",
+       "Gesellschaftsrecht",
+       "dictionary"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "ner"
+      ],
+      [
+       "Unternehmensgründung",
+       "Unternehmensgründung",
+       "dictionary"
+      ],
+      [
+       "Achim Zimmermann",
+       "Achim Zimmermann",
+       "ner"
+      ],
+      [
+       "Fehler",
+       "Fehler",
+       "dictionary"
+      ],
+      [
+       "E-Book",
+       "E-Book",
+       "dictionary"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "dictionary"
+      ],
+      [
+       "Seminar",
+       "Seminar",
+       "dictionary"
+      ],
+      [
+       "Termin",
+       "Termin",
+       "dictionary"
+      ],
+      [
+       "Erfolg",
+       "Erfolg",
+       "dictionary"
+      ],
+      [
+       "Wohnimmobilien",
+       "Wohnimmobilie",
+       "dictionary"
+      ],
+      [
+       "Hörbuch",
+       "Hörbuch",
+       "ner"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "dictionary"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "ner"
+      ],
+      [
+       "System",
+       "System",
+       "dictionary"
+      ],
+      [
+       "Immobilie",
+       "Immobilie",
+       "dictionary"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 4.1
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Immobilie",
+      "Amazon",
+      "Börse",
+      "Gesellschaftsrecht",
+      "Darmstadt",
+      "Unternehmensgründung",
+      "YouTube",
+      "Facebook",
+      "Recht",
+      "Finanzwesen",
+      "Rechtsanwalt",
+      "Steuer"
+     ],
+     "erwaehnungen": [
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Gesellschaftsrecht",
+       "Gesellschaftsrecht",
+       "llm"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "llm"
+      ],
+      [
+       "Unternehmensgründung",
+       "Unternehmensgründung",
+       "llm"
+      ],
+      [
+       "YouTube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Recht",
+       "Recht",
+       "llm"
+      ],
+      [
+       "Finanzen",
+       "Finanzwesen",
+       "llm"
+      ],
+      [
+       "Rechtsanwalt",
+       "Rechtsanwalt",
+       "llm"
+      ],
+      [
+       "Steuern",
+       "Steuer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1473,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.78
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Immobilie",
+      "Amazon",
+      "Börse",
+      "Gesellschaftsrecht",
+      "Darmstadt",
+      "Unternehmensgründung",
+      "YouTube",
+      "Facebook",
+      "Recht",
+      "Finanzwesen",
+      "Rechtsanwalt",
+      "Steuer"
+     ],
+     "erwaehnungen": [
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Gesellschaftsrecht",
+       "Gesellschaftsrecht",
+       "llm"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "llm"
+      ],
+      [
+       "Unternehmensgründung",
+       "Unternehmensgründung",
+       "llm"
+      ],
+      [
+       "YouTube",
+       "YouTube",
+       "llm"
+      ],
+      [
+       "facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Recht",
+       "Recht",
+       "llm"
+      ],
+      [
+       "Finanzen",
+       "Finanzwesen",
+       "llm"
+      ],
+      [
+       "Rechtsanwalt",
+       "Rechtsanwalt",
+       "llm"
+      ],
+      [
+       "Steuern",
+       "Steuer",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1473,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.13
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Immobilie",
+      "Börse",
+      "Gesellschaftsrecht",
+      "Unternehmensgründung",
+      "Recht"
+     ],
+     "erwaehnungen": [
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Gesellschaftsrecht",
+       "Gesellschaftsrecht",
+       "llm"
+      ],
+      [
+       "Unternehmensgründung",
+       "Unternehmensgründung",
+       "llm"
+      ],
+      [
+       "Recht",
+       "Recht",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 13,
+      "checked": 12,
+      "dropped": [
+       "Amazon",
+       "Darmstadt",
+       "YouTube",
+       "Facebook",
+       "Finanzwesen",
+       "Rechtsanwalt",
+       "Steuer"
+      ],
+      "calls": 2,
+      "total_tokens": 3338,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 4.09
+    }
+   }
+  },
+  {
+   "node_id": "5494f4c2-100f-4ca0-94f4-c2100f0ca053",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Interview",
+      "Buch",
+      "Amazon",
+      "Börse",
+      "Historiker",
+      "Soziologe",
+      "Bestseller",
+      "Unternehmer",
+      "Geduld",
+      "Verstand",
+      "Einzelsprache",
+      "Popularität",
+      "Ich",
+      "Gelegenheit",
+      "Darmstadt",
+      "Biografie",
+      "Welche",
+      "Die Rudi Carrell Show – Laß Dich überraschen"
+     ],
+     "erwaehnungen": [
+      [
+       "Psychologie",
+       "Psychologie",
+       "dictionary"
+      ],
+      [
+       "Rainer Zitelmann",
+       "Rainer Zitelmann",
+       "ner"
+      ],
+      [
+       "Interview",
+       "Interview",
+       "dictionary"
+      ],
+      [
+       "Buch",
+       "Buch",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Rainer Zitelmann",
+       "Rainer Zitelmann",
+       "ner"
+      ],
+      [
+       "Historiker",
+       "Historiker",
+       "dictionary"
+      ],
+      [
+       "Soziologe",
+       "Soziologe",
+       "dictionary"
+      ],
+      [
+       "Bestsellerautor",
+       "Bestseller",
+       "dictionary"
+      ],
+      [
+       "Unternehmer",
+       "Unternehmer",
+       "dictionary"
+      ],
+      [
+       "Geduld",
+       "Geduld",
+       "dictionary"
+      ],
+      [
+       "Verstand",
+       "Verstand",
+       "dictionary"
+      ],
+      [
+       "Bestsellerautor",
+       "Bestseller",
+       "dictionary"
+      ],
+      [
+       "Sprachen",
+       "Einzelsprache",
+       "dictionary"
+      ],
+      [
+       "Beliebtheit",
+       "Popularität",
+       "dictionary"
+      ],
+      [
+       "Ich",
+       "Ich",
+       "dictionary"
+      ],
+      [
+       "Gelegenheit",
+       "Gelegenheit",
+       "dictionary"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "ner"
+      ],
+      [
+       "Interview",
+       "Interview",
+       "dictionary"
+      ],
+      [
+       "Buch",
+       "Buch",
+       "dictionary"
+      ],
+      [
+       "Biografie",
+       "Biografie",
+       "dictionary"
+      ],
+      [
+       "Psychologie",
+       "Psychologie",
+       "dictionary"
+      ],
+      [
+       "Welche",
+       "Welche",
+       "dictionary"
+      ],
+      [
+       "Lass Dich überraschen",
+       "Die Rudi Carrell Show – Laß Dich überraschen",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 2.39
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Immobilie",
+      "Börse",
+      "Soziologie",
+      "Darmstadt",
+      "Vermögensmillionär",
+      "Reichtum",
+      "Finanzwesen"
+     ],
+     "erwaehnungen": [
+      [
+       "Psychologie",
+       "Psychologie",
+       "llm"
+      ],
+      [
+       "Rainer Zitelmann",
+       "Rainer Zitelmann",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Soziologe",
+       "Soziologie",
+       "llm"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "llm"
+      ],
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "llm"
+      ],
+      [
+       "Reichtum",
+       "Reichtum",
+       "llm"
+      ],
+      [
+       "Finanzen",
+       "Finanzwesen",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1716,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.3
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Immobilie",
+      "Börse",
+      "Soziologie",
+      "Darmstadt",
+      "Vermögensmillionär",
+      "Reichtum",
+      "Finanzwesen"
+     ],
+     "erwaehnungen": [
+      [
+       "Psychologie",
+       "Psychologie",
+       "llm"
+      ],
+      [
+       "Rainer Zitelmann",
+       "Rainer Zitelmann",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Soziologe",
+       "Soziologie",
+       "llm"
+      ],
+      [
+       "Darmstadt",
+       "Darmstadt",
+       "llm"
+      ],
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "llm"
+      ],
+      [
+       "Reichtum",
+       "Reichtum",
+       "llm"
+      ],
+      [
+       "Finanzen",
+       "Finanzwesen",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1716,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.1
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Immobilie",
+      "Reichtum"
+     ],
+     "erwaehnungen": [
+      [
+       "Psychologie",
+       "Psychologie",
+       "llm"
+      ],
+      [
+       "Rainer Zitelmann",
+       "Rainer Zitelmann",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Reichtum",
+       "Reichtum",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 9,
+      "dropped": [
+       "Börse",
+       "Soziologie",
+       "Darmstadt",
+       "Vermögensmillionär",
+       "Finanzwesen"
+      ],
+      "calls": 2,
+      "total_tokens": 3593,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.18
+    }
+   }
+  },
+  {
+   "node_id": "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Vermögensmillionär",
+      "Macht",
+      "Geld",
+      "Euro",
+      "Börse",
+      "Amazon",
+      "Erfolg",
+      "Wohnimmobilie",
+      "Hörbuch",
+      "Anne Jahren",
+      "Website",
+      "Schule",
+      "Abitur",
+      "Studium",
+      "Unternehmen",
+      "Diplom",
+      "Wirtschaftsinformatik",
+      "The Bachelors",
+      "University of London",
+      "Anleger (Finanzmarkt)",
+      "Gesellschafter",
+      "Beratung",
+      "Elektronischer Handel"
+     ],
+     "erwaehnungen": [
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "dictionary"
+      ],
+      [
+       "Macht",
+       "Macht",
+       "dictionary"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "dictionary"
+      ],
+      [
+       "Euro",
+       "Euro",
+       "dictionary"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Erfolg",
+       "Erfolg",
+       "dictionary"
+      ],
+      [
+       "Wohnimmobilien",
+       "Wohnimmobilie",
+       "dictionary"
+      ],
+      [
+       "Hörbuch",
+       "Hörbuch",
+       "dictionary"
+      ],
+      [
+       "Jahren",
+       "Anne Jahren",
+       "dictionary"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "dictionary"
+      ],
+      [
+       "Websites",
+       "Website",
+       "dictionary"
+      ],
+      [
+       "Jahren",
+       "Anne Jahren",
+       "dictionary"
+      ],
+      [
+       "Schule",
+       "Schule",
+       "dictionary"
+      ],
+      [
+       "Abitur",
+       "Abitur",
+       "dictionary"
+      ],
+      [
+       "Studium",
+       "Studium",
+       "dictionary"
+      ],
+      [
+       "Unternehmen",
+       "Unternehmen",
+       "dictionary"
+      ],
+      [
+       "Diploms",
+       "Diplom",
+       "dictionary"
+      ],
+      [
+       "Wirtschaftsinformatiker",
+       "Wirtschaftsinformatik",
+       "dictionary"
+      ],
+      [
+       "Bachelors",
+       "The Bachelors",
+       "dictionary"
+      ],
+      [
+       "Universität London",
+       "University of London",
+       "ner"
+      ],
+      [
+       "Investor",
+       "Anleger (Finanzmarkt)",
+       "dictionary"
+      ],
+      [
+       "Gesellschafter",
+       "Gesellschafter",
+       "dictionary"
+      ],
+      [
+       "Berater",
+       "Beratung",
+       "dictionary"
+      ],
+      [
+       "Unternehmen",
+       "Unternehmen",
+       "dictionary"
+      ],
+      [
+       "Online-Shopping",
+       "Elektronischer Handel",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 4.35
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Vermögensmillionär",
+      "Geld",
+      "Immobilie",
+      "Börse",
+      "Hochschule für Technik Stuttgart",
+      "University of London",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Gerald Hörhan",
+      "Aktie",
+      "Porsche"
+     ],
+     "erwaehnungen": [
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "llm"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Hochschule Stuttgart",
+       "Hochschule für Technik Stuttgart",
+       "llm"
+      ],
+      [
+       "Universität London",
+       "University of London",
+       "llm"
+      ],
+      [
+       "Deutschland",
+       "Deutschland",
+       "llm"
+      ],
+      [
+       "Thailand",
+       "Thailand",
+       "llm"
+      ],
+      [
+       "Bali",
+       "Bali",
+       "llm"
+      ],
+      [
+       "Australien",
+       "Australien",
+       "llm"
+      ],
+      [
+       "Gerald Hörhan",
+       "Gerald Hörhan",
+       "llm"
+      ],
+      [
+       "Aktie",
+       "Aktie",
+       "llm"
+      ],
+      [
+       "Porsche",
+       "Porsche",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 16,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1677,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 1.5
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Vermögensmillionär",
+      "Geld",
+      "Immobilie",
+      "Börse",
+      "Hochschule für Technik Stuttgart",
+      "University of London",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Gerald Hörhan",
+      "Aktie",
+      "Porsche"
+     ],
+     "erwaehnungen": [
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "llm"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "Hochschule Stuttgart",
+       "Hochschule für Technik Stuttgart",
+       "llm"
+      ],
+      [
+       "Universität London",
+       "University of London",
+       "llm"
+      ],
+      [
+       "Deutschland",
+       "Deutschland",
+       "llm"
+      ],
+      [
+       "Thailand",
+       "Thailand",
+       "llm"
+      ],
+      [
+       "Bali",
+       "Bali",
+       "llm"
+      ],
+      [
+       "Australien",
+       "Australien",
+       "llm"
+      ],
+      [
+       "Gerald Hörhan",
+       "Gerald Hörhan",
+       "llm"
+      ],
+      [
+       "Aktie",
+       "Aktie",
+       "llm"
+      ],
+      [
+       "Porsche",
+       "Porsche",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 16,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1677,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.17
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Vermögensmillionär",
+      "Geld",
+      "Immobilie"
+     ],
+     "erwaehnungen": [
+      [
+       "Millionär",
+       "Vermögensmillionär",
+       "llm"
+      ],
+      [
+       "Geld",
+       "Geld",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 16,
+      "checked": 13,
+      "dropped": [
+       "Börse",
+       "Hochschule für Technik Stuttgart",
+       "University of London",
+       "Deutschland",
+       "Thailand",
+       "Bali",
+       "Australien",
+       "Gerald Hörhan",
+       "Aktie",
+       "Porsche"
+      ],
+      "calls": 2,
+      "total_tokens": 3901,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.2
+    }
+   }
+  },
+  {
+   "node_id": "4041df54-5339-46d7-81df-545339d6d78d",
+   "profile": {
+    "llm-free": {
+     "methods": [
+      "ner",
+      "dictionary"
+     ],
+     "artikel": [
+      "Online",
+      "Interview",
+      "Web-Seminar",
+      "Automatisierung",
+      "Leben",
+      "Software",
+      "Seminar",
+      "Unternehmer",
+      "Verlust (Militär)",
+      "Tipp",
+      "Tricks",
+      "E-Book",
+      "Buch",
+      "Amazon",
+      "Börse",
+      "Investition",
+      "Immobilie",
+      "Hörbuch",
+      "Erfolg"
+     ],
+     "erwaehnungen": [
+      [
+       "Online",
+       "Online",
+       "dictionary"
+      ],
+      [
+       "Interview",
+       "Interview",
+       "dictionary"
+      ],
+      [
+       "Webinar",
+       "Web-Seminar",
+       "dictionary"
+      ],
+      [
+       "Automatisierung",
+       "Automatisierung",
+       "dictionary"
+      ],
+      [
+       "Leben",
+       "Leben",
+       "dictionary"
+      ],
+      [
+       "Software",
+       "Software",
+       "dictionary"
+      ],
+      [
+       "Online",
+       "Online",
+       "dictionary"
+      ],
+      [
+       "Seminare",
+       "Seminar",
+       "dictionary"
+      ],
+      [
+       "Software",
+       "Software",
+       "dictionary"
+      ],
+      [
+       "Unternehmer",
+       "Unternehmer",
+       "dictionary"
+      ],
+      [
+       "Verluste",
+       "Verlust (Militär)",
+       "dictionary"
+      ],
+      [
+       "Tipps",
+       "Tipp",
+       "dictionary"
+      ],
+      [
+       "Tricks",
+       "Tricks",
+       "dictionary"
+      ],
+      [
+       "Unternehmer",
+       "Unternehmer",
+       "dictionary"
+      ],
+      [
+       "Interview",
+       "Interview",
+       "dictionary"
+      ],
+      [
+       "E-Book",
+       "E-Book",
+       "dictionary"
+      ],
+      [
+       "Buch",
+       "Buch",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "dictionary"
+      ],
+      [
+       "Amazon",
+       "Amazon",
+       "ner"
+      ],
+      [
+       "Investieren",
+       "Investition",
+       "dictionary"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "dictionary"
+      ],
+      [
+       "Hörbuch",
+       "Hörbuch",
+       "dictionary"
+      ],
+      [
+       "Erfolg",
+       "Erfolg",
+       "dictionary"
+      ]
+     ],
+     "llm": null,
+     "note": null,
+     "sekunden": 1.81
+    },
+    "balanced": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Software",
+      "Web-Seminar",
+      "Immobilie",
+      "Börse",
+      "Facebook",
+      "Marketing"
+     ],
+     "erwaehnungen": [
+      [
+       "Software",
+       "Software",
+       "llm"
+      ],
+      [
+       "Webinare",
+       "Web-Seminar",
+       "llm"
+      ],
+      [
+       "Online Seminare",
+       "Web-Seminar",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Marketing",
+       "Marketing",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1391,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.16
+    },
+    "best-quality": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Software",
+      "Web-Seminar",
+      "Immobilie",
+      "Börse",
+      "Facebook",
+      "Marketing"
+     ],
+     "erwaehnungen": [
+      [
+       "Software",
+       "Software",
+       "llm"
+      ],
+      [
+       "Webinare",
+       "Web-Seminar",
+       "llm"
+      ],
+      [
+       "Online Seminare",
+       "Web-Seminar",
+       "llm"
+      ],
+      [
+       "Immobilien",
+       "Immobilie",
+       "llm"
+      ],
+      [
+       "Börse",
+       "Börse",
+       "llm"
+      ],
+      [
+       "facebook",
+       "Facebook",
+       "llm"
+      ],
+      [
+       "Marketing",
+       "Marketing",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 0,
+      "dropped": [],
+      "calls": 1,
+      "total_tokens": 1391,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 0.08
+    },
+    "mit Prüfung": {
+     "methods": [
+      "llm"
+     ],
+     "artikel": [
+      "Software",
+      "Web-Seminar"
+     ],
+     "erwaehnungen": [
+      [
+       "Software",
+       "Software",
+       "llm"
+      ],
+      [
+       "Webinare",
+       "Web-Seminar",
+       "llm"
+      ],
+      [
+       "Online Seminare",
+       "Web-Seminar",
+       "llm"
+      ]
+     ],
+     "llm": {
+      "named": 10,
+      "checked": 6,
+      "dropped": [
+       "Immobilie",
+       "Börse",
+       "Facebook",
+       "Marketing"
+      ],
+      "calls": 2,
+      "total_tokens": 2787,
+      "model": "gpt-6-luna",
+      "prompts": [
+       "entity_extraction@v1",
+       "entity_check@v1"
+      ],
+      "fallback": null
+     },
+     "note": null,
+     "sekunden": 3.4
+    }
+   }
+  }
+ ]
+}
