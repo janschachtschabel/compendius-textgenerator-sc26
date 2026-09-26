@@ -10,8 +10,8 @@ einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung steh
 | | Minimum | Empfohlen | warum |
 |---|---|---|---|
 | CPU | 2 Kerne | 4 Kerne | eine Anfrage belegt einen Worker vollständig (`WEB_CONCURRENCY`, im Image 2) |
-| RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Was auf 2 GB passiert, steht unter Abschnitt 7a |
-| Platte | 25 GB | 60 GB | Image rund 2,7 GB (gemessen; davon 0,9 GB Modelle und 0,8 GB torch), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
+| RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Seit D57 fehlt torch: am 2026-09-26 auf dem Entwicklungsrechner im Ruhezustand 1.407 statt 1.559 MiB je Worker. Was auf 2 GB passiert, steht unter Abschnitt 7a |
+| Platte | 25 GB | 60 GB | Image rund 1,1 GB (gemessen am 2026-09-26; davon 0,3 GB Model2Vec; bis D57 mit torch und den QA-Modellen 2,7 GB), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
 | Netz | – | – | der Erststart lädt die Archive; danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
 
 Die Archivgröße bestimmt das Profil (`ZIM_PROFILE`, Manifest in `config/zim_subscriptions.yaml`):
@@ -107,7 +107,7 @@ sudo -u kompendium docker login ghcr.io -u <GitHub-Konto> --password-stdin   # T
 ```
 
 Der Bau auf der Zielmaschine dauert länger und braucht Platz für die Zwischenschichten; das Ziehen kostet
-einmalig 2,74 GB. Wer eine eigene Registry nutzt, setzt `IMAGE` auf deren Adresse.
+einmalig rund 1,1 GB. Wer eine eigene Registry nutzt, setzt `IMAGE` auf deren Adresse.
 
 ## 6. Erster Start
 
@@ -168,31 +168,23 @@ docker exec <container> sh -c 'cat /sys/fs/cgroup/memory/memory.max_usage_in_byt
 
 ## 7b. Welche Modelle wie viel Speicher kosten
 
-Im Image stecken vier Modelle. Gemessen am 2026-09-21, jedes allein in einem frischen Prozess im
-laufenden Container (`VmRSS` vorher/nachher), damit die Reihenfolge nichts verfaelscht:
+Im Image stecken zwei Modelle; torch und die beiden QA-Modelle sind mit D57 entfallen. Gemessen am 2026-09-21, jedes
+allein in einem frischen Prozess im laufenden Container (`VmRSS` vorher/nachher), damit die Reihenfolge nichts
+verfaelscht:
 
 | Modell | auf der Platte | im Speicher | wann geladen |
 |---|---|---|---|
-| torch (nur die Bibliothek) | 0,8 GB | +209 MiB | sobald irgendein Modell kommt |
 | die Anwendung selbst | — | +138 MiB | immer |
-| spaCy `de_core_news_md` | 60 MB | **+580 MiB** | immer: Entitaeten und die Antwortkandidaten der Stufe `models` |
+| spaCy `de_core_news_md` | 60 MB | **+580 MiB** | immer: Entitaeten und die QA-Regeln |
 | Model2Vec `m2v-gte-256-edu` | 322 MB | **+1012 MiB** | beim Start je Worker: `hybrid_light` (Standard) laedt es, sobald `MODEL2VEC_PATH` gesetzt ist — im Image `/models/m2v` |
-| `dehio/german-qg-t5-quad` + `deepset/gelectra-base-germanquad` | 637 MB | **+1728 MiB** | nur bei `method: "models"` am QA-Endpunkt, faul und je Worker |
-| dieselben beim Erzeugen | — | **+190 MiB** Spitze | zusaetzlich waehrend der Anfrage: acht Saetze zu je vier Strahlen rechnen gleichzeitig (`BATCH_SIZE` in `app/synthesis/qa_models.py`) |
 
-Wer `method: "models"` nie anfragt, zahlt dessen 1,7 GB nie. Model2Vec dagegen kostet seine 1,0 GB schon beim
-Start. Eine eigene Matching-Strategie dafuer gibt es nicht: Die vier sind `hybrid_light`, `bm25`, `char_tfidf` und
-`lexicon_only`, und nur `hybrid_light`, der Standard, nutzt das Modell. Eine andere Strategie in der Anfrage spart
-deshalb nichts, das Modell ist dann schon geladen. Sparen laesst es sich nur mit leerem `MODEL2VEC_PATH`;
-`hybrid_light` rechnet dann ohne Einbettungen und ordnet schlechter zu (Goldstandard macro-F1 0,39 statt 0,45,
-`eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`). Alle vier Profile nutzen `hybrid_light`,
-`best-quality` und `best-quality-generated` als Rueckfall der LLM-Zuordnung (D53); das Modell wird also in jedem
-Profil gebraucht.
-
-**Halbe Genauigkeit spart Platte, nicht Speicher.** Die beiden QA-Modelle liegen als float16 im Image
-(das hat es von 3,40 auf 2,74 GB gebracht), werden beim Laden aber bewusst auf float32 zurueckgerechnet:
-halbe Genauigkeit rechnet auf einer CPU teils gar nicht und teils falsch. Aus 637 MB auf der Platte
-werden so rund 1,3 GB Gewichte im Speicher. Wer nach dem Image-Umfang plant, plant den Speicher zu klein.
+Model2Vec kostet seine 1,0 GB schon beim Start. Eine eigene Matching-Strategie dafuer gibt es nicht: Die vier sind
+`hybrid_light`, `bm25`, `char_tfidf` und `lexicon_only`, und nur `hybrid_light`, der Standard, nutzt das Modell.
+Eine andere Strategie in der Anfrage spart deshalb nichts, das Modell ist dann schon geladen. Sparen laesst es sich
+nur mit leerem `MODEL2VEC_PATH`; `hybrid_light` rechnet dann ohne Einbettungen und ordnet schlechter zu
+(Goldstandard macro-F1 0,39 statt 0,45, `eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`).
+Alle vier Profile nutzen `hybrid_light`, `best-quality` und `best-quality-generated` als Rueckfall der LLM-Zuordnung
+(D53); das Modell wird also in jedem Profil gebraucht.
 
 ## 8. Von außen erreichbar machen
 

@@ -1689,7 +1689,8 @@ API.
   Worker), und `parse-based` (16 von 44). `method` kennt nur noch `rule-based` und `llm`, die alten Werte sind eine
   422. Mit ihnen gehen `QG_MODEL_PATH` und `QA_MODEL_PATH` (der Start nennt sie, wenn sie noch gesetzt sind), die
   Komponente `qa_models` in `/health`, torch, transformers und die beiden Modelle im Image. Die vier Fragevorlagen
-  bleiben nur als Rückfall, wenn das spaCy-Modell fehlt.
+  bleiben nur als Rückfall, wenn das spaCy-Modell fehlt. Gemessen am 2026-09-26 auf dem Entwicklungsrechner: das
+  Image 1,1 statt 2,74 GB, ein Worker im Ruhezustand 1.407 statt 1.559 MiB, beide Worker nach 34 statt 54 s bereit.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

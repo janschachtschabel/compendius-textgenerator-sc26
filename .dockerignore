@@ -13,7 +13,6 @@ tests
 scripts
 # Ausnahme: der Builder laedt damit die QA-Modelle (U5b). Die Laufzeit kopiert nur .venv, /models und config,
 # das Skript landet also nie im fertigen Image.
-!scripts/fetch_qa_models.py
 docs
 *.zim
 *.zim.part
