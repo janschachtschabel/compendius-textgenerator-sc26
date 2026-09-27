@@ -37,7 +37,7 @@ _SUBJECT_RE = re.compile(r"^<https://d-nb\.info/gnd/([0-9X-]+)>\s+(.*)$")
 _STRING_RE = re.compile('"((?:[^"' + BACKSLASH * 2 + "]|" + BACKSLASH * 2 + '.)*)"')
 _ESCAPE_RE = re.compile(BACKSLASH * 2 + "(u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8}|.)")
 _ECHARS = {"t": chr(9), "b": chr(8), "n": chr(10), "r": chr(13), "f": chr(12)}  # any other escaped sign is itself
-_WIKIDATA_RE = re.compile(r"<http://www\.wikidata\.org/entity/(Q\d+)>")
+_WIKIDATA_RE = re.compile(r"<https?://www\.wikidata\.org/entity/(Q\d+)>")
 _VERSION_RE = re.compile(r"_(\d{4})(\d{2})(\d{2})\.ttl\.gz$")
 NAME_PREDICATES = ("gndo:preferredNameFor", "gndo:variantNameFor")
 
@@ -67,19 +67,23 @@ def _pairs(path: Path) -> Iterator[tuple[str, str | None, str | None]]:
     """(GND number, name, item) for every record of a dump, read line by line as the DNB writes its Turtle.
 
     A record's statements start at its subject or on an indented line, and a list of objects that ends a line with a
-    comma goes on at the next: the DNB wraps long lists of variant names. Any other subject - the record's ``/about``
-    block, a blank node - ends the record; its blocks may be apart. simplify: a string over several lines (a long
-    string in triple quotes) is not read; the DNB's dumps of 2026-02 have none.
+    comma goes on at the next: the DNB wraps long lists of variant names. Blank lines and comments are passed over,
+    even between a wrapped list and its next line. Any other subject - the record's ``/about`` block, a blank node -
+    ends the record; its blocks may be apart. simplify: a string over several lines (a long string in triple quotes)
+    is not read; the DNB's dumps of 2026-02 have none.
     """
     number: str | None = None
     predicate = ""
     continued = False  # the line before ended with a comma: this one carries more objects of the same predicate
     with gzip.open(path, "rt", encoding="utf-8") as handle:
         for line in handle:
-            if line[:1].isspace():  # a statement of the record, more objects, or a blank line
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            if line[:1].isspace():  # a statement of the record, or more objects
                 if number is None:
                     continue
-                rest = line.strip()
+                rest = stripped
             elif (subject := _SUBJECT_RE.match(line)) is not None:
                 number, rest, continued = subject.group(1), subject.group(2).strip(), False
                 yield number, None, None
@@ -136,8 +140,10 @@ def _write(target: Path, dumps: Sequence[tuple[Path, str]]) -> dict[str, Any]:
         sources = ", ".join(path.name for path, _ in dumps)
         if not counts["records"]:
             raise ValueError(f"no GND record in {sources}")
-        if not counts["items"] and not counts["names"]:
-            raise ValueError(f"no name and no Wikidata item of a GND record in {sources}")
+        if not counts["names"]:  # every record has a preferred name: none at all means the names were not read
+            raise ValueError(f"no name of a GND record in {sources}")
+        if not counts["items"]:  # a hand build from a small file may have none; the DNB's releases have 120,000
+            log.warning("no GND record in %s names a Wikidata item: the index finds records by name only", sources)
         meta = {
             "schema": SCHEMA_VERSION,
             **{key: str(value) for key, value in counts.items()},
@@ -193,16 +199,23 @@ class GndIndex(LocalIndex):
     def read_meta(self, rows: dict[str, str]) -> dict[str, Any]:
         return _read_meta(rows)
 
-    def find(self, title: str, qid: str | None) -> GndHit | None:
+    def find(self, title: str, qid: str | None, kind: str | None = None) -> GndHit | None:
         """The GND record of the article ``title`` with the Wikidata item ``qid``: the record that names the item,
-        else the one record that carries the title as a name; ``None`` when nothing leads to exactly one."""
+        else the one record that carries the title as a name; ``None`` when nothing leads to exactly one.
+
+        ``kind`` is the kind of record the article's Normdaten block names, if it names one: then only a record of that
+        kind counts, and a person or a work finds nothing here (the index holds subject headings and places)."""
         if qid:
             row = self._first(
-                "SELECT items.gnd, records.kind FROM items JOIN records USING (gnd) WHERE items.qid = ?", [(qid,)]
+                "SELECT items.gnd, records.kind FROM items JOIN records USING (gnd)"
+                " WHERE items.qid = ? AND (? IS NULL OR records.kind = ?)",
+                [(qid, kind, kind)],
             )
             if row:
                 return GndHit(str(row[0]), str(row[1]), "wikidata")
         row = self._first(
-            "SELECT names.gnd, records.kind FROM names JOIN records USING (gnd) WHERE names.name = ?", _names(title)
+            "SELECT names.gnd, records.kind FROM names JOIN records USING (gnd)"
+            " WHERE names.name = ? AND (? IS NULL OR records.kind = ?)",
+            [(name, kind, kind) for (name,) in _names(title)],
         )
         return GndHit(str(row[0]), str(row[1]), "name") if row else None

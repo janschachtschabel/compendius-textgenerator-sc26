@@ -2,8 +2,9 @@
 
 * GND and VIAF come from the article's Normdaten block, which the Kiwix dump keeps (docs/entwicklung, M18). An
   article without a GND there gets one from the local GND index, built from the DNB's dumps (D65): the record that
-  names its Wikidata item, else the one record that carries its title, and only when the block names no other kind
-  of record (a person, a work: the index holds subject headings and places). ``gnd_source`` says which;
+  names its Wikidata item, else the one record that carries its title, and when the block names a kind of record,
+  only a record of that kind (a person or a work finds none: the index holds subject headings and places).
+  ``gnd_source`` says which;
 * the Wikidata number comes from the local index built from dewiki dumps (``compendium wikidata sync``, D64);
 * the DBpedia URI names the resource of the article's English counterpart, which the same index knows from the
   dewiki table ``langlinks``: ``de.dbpedia.org`` no longer answers, and DBpedia names its live resources after the
@@ -65,9 +66,9 @@ def identifiers(title: str, html: str, wikidata: WikidataIndex | None, gnd: GndI
     number = normdaten.gnd if normdaten else None
     kind = normdaten.kind if normdaten else None
     source = "normdaten" if number else None
-    hit = gnd.find(title, qid) if number is None and gnd is not None else None
     # A record of another kind than the block names - the article is a person, a work - is not the article's
-    if hit is not None and kind in (None, hit.kind):
+    hit = gnd.find(title, qid, kind) if number is None and gnd is not None else None
+    if hit is not None:
         number, kind, source = hit.number, hit.kind, hit.source
     return Identifiers(
         gnd=number,

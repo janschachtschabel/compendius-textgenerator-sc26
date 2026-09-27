@@ -201,13 +201,54 @@ def test_escapes_in_names_are_read_as_turtle_defines_them(tmp_path: Path) -> Non
     assert index.find("X" + beyond, qid=None) is not None
 
 
-def test_a_build_that_reads_records_but_no_name_or_item_fails(tmp_path: Path) -> None:
-    """A layout the reader no longer knows - here other name predicates - must not end as an index that answers nothing."""
-    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [SUBJECTS[1]])
+def test_a_build_that_reads_records_but_no_name_fails(tmp_path: Path) -> None:
+    """A layout the reader no longer knows - here other name predicates - must not end as an index that answers nothing:
+    every record has a preferred name, and this one's Wikidata item alone does not make up for that."""
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [SUBJECTS[0]])
     with gzip.open(dump, "rt", encoding="utf-8") as handle:
         text = handle.read().replace("NameForThe", "LabelForThe")
     with gzip.open(dump, "wt", encoding="utf-8") as handle:
         handle.write(text)
-    with pytest.raises(ValueError, match="no name and no Wikidata item"):
+    with pytest.raises(ValueError, match="no name"):
         build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
     assert not (tmp_path / "gnd.db").exists()
+
+
+def test_a_blank_line_or_a_comment_does_not_break_a_record(tmp_path: Path) -> None:
+    """Valid Turtle the DNB does not write today: a change of layout must not lose names silently again."""
+    record = (
+        "<https://d-nb.info/gnd/4000011-4> a gndo:SubjectHeadingSensoStricto;\n"
+        '  gndo:variantNameForTheSubjectHeading "Erstname", "Zweitname",\n'
+        "\n"
+        "    # ein Kommentar\n"
+        '    "Drittname";\n'
+        "# ein Kommentar in Spalte 0\n"
+        '  gndo:preferredNameForTheSubjectHeading "Vorzugsname" .\n'
+    )
+    dump = tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz"
+    with gzip.open(dump, "wt", encoding="utf-8") as handle:
+        handle.write(PREFIX + record)
+    build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    index = GndIndex(tmp_path / "gnd.db")
+    assert index.find("Drittname", qid=None) is not None, "the list goes on after the blank line and the comment"
+    assert index.find("Vorzugsname", qid=None) is not None, "a comment in column 0 does not end the record"
+
+
+def test_a_wikidata_link_over_https_counts_too(tmp_path: Path) -> None:
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", SUBJECTS[:1])
+    with gzip.open(dump, "rt", encoding="utf-8") as handle:
+        text = handle.read().replace("<http://www.wikidata.org/", "<https://www.wikidata.org/")
+    with gzip.open(dump, "wt", encoding="utf-8") as handle:
+        handle.write(text)
+    build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    hit = GndIndex(tmp_path / "gnd.db").find("", qid="Q11563")
+    assert hit is not None and hit.source == "wikidata"
+
+
+def test_a_kind_asks_only_for_records_of_that_kind(index: GndIndex) -> None:
+    """The Normdaten block names the kind: the item's record of another kind gives way to the name's of that kind."""
+    hit = index.find("Berlin", qid="Q11563", kind="Geografikum")
+    assert hit is not None and (hit.number, hit.source) == ("4005728-8", "name")
+    first = index.find("Berlin", qid="Q11563")
+    assert first is not None and first.number == "4067271-2", "without a kind the item goes first"
+    assert index.find("Zahl", qid="Q11563", kind="Person") is None, "the index holds no persons"
