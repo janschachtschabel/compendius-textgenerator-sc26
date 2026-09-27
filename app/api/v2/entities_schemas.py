@@ -184,7 +184,7 @@ class EntityIds(BaseModel):
     )
     viaf: str | None = Field(description="VIAF number from the same block; URI https://viaf.org/viaf/<viaf>")
     wikidata: str | None = Field(
-        description="Wikidata number from the local index (compendium wikidata build); missing without the index "
+        description="Wikidata number from the local index (the Wikidata sync, D64); missing without the index "
         "or for an article the dump does not know; URI http://www.wikidata.org/entity/<wikidata>"
     )
     dbpedia: str = Field(description="DBpedia URI built from the title, not checked against DBpedia")

@@ -110,8 +110,9 @@ groups:
           summary: Der Wikidata-Index fehlt oder ist nicht lesbar
           description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
       - alert: KompendiumWikidataSyncFailed
+        # Länger als die Wiederholung nach einer Stunde samt Lauf: ein Fehler, den sie behebt, meldet sich nicht
         expr: kompendium_wikidata_sync_failed == 1
-        for: 1h
+        for: 2h
         labels:
           severity: warning
         annotations:

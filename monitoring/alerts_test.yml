@@ -292,6 +292,8 @@ tests:
         values: "1x150"
       - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="sauber"}'
         values: "0x150"
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="erholt"}'
+        values: "1x80 0x70"
     alert_rule_test:
       - eval_time: 90m
         alertname: KompendiumWikidataIndexMissing
@@ -303,10 +305,10 @@ tests:
             exp_annotations:
               summary: Der Wikidata-Index fehlt oder ist nicht lesbar
               description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
-      - eval_time: 30m
+      - eval_time: 90m
         alertname: KompendiumWikidataSyncFailed
         exp_alerts: []
-      - eval_time: 70m
+      - eval_time: 130m
         alertname: KompendiumWikidataSyncFailed
         exp_alerts:
           - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }

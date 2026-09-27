@@ -12,8 +12,8 @@ import pytest
 
 from app.cli import main
 from app.settings import Settings, get_settings
-from app.sources.wikidata.index import WikidataIndex
-from app.sources.wikidata.sync import WikidataSync
+from app.sources.wikidata.index import WikidataIndex, build_index
+from app.sources.wikidata.sync import LOCK_FILE, WikidataSync, WikidataSyncError
 from tests.conftest import ROOT
 from tests.test_wikidata_index import write_dumps
 from tests.test_wikidata_sync import FakeDumps
@@ -134,11 +134,54 @@ def test_sync_leaves_a_current_index_and_force_rebuilds_it(
 def test_a_failed_sync_keeps_the_old_index_and_says_why(
     state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    build_index(*write_dumps(tmp_path / "old"), state_dir / "wikidata.db")
     site = FakeDumps(tmp_path / "site")
     site.add("20260901", "2026-09-04 18:02:11", page_done=False)
     _fake_sync(monkeypatch, site)
-    assert main(["wikidata", "sync"]) == 1
+    assert main(["wikidata", "sync", "--force"]) == 1
     assert "nicht gebaut" in capsys.readouterr().err
+    assert WikidataIndex(state_dir / "wikidata.db").qid("Ernst Abbe") == "Q999001"
+
+
+def _loop_task(monkeypatch: pytest.MonkeyPatch) -> list[Callable[[], object]]:
+    tasks: list[Callable[[], object]] = []
+    monkeypatch.setattr("app.cli_wikidata.run_periodically", lambda task, interval, **options: tasks.append(task))
+    monkeypatch.setattr("app.cli_wikidata.stop_on_sigterm", lambda: None)
+    return tasks
+
+
+def test_in_the_loop_a_checksum_that_does_not_match_waits_for_the_next_check(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-07 16:21:03", wrong_sha1=True)
+    _fake_sync(monkeypatch, site)
+    tasks = _loop_task(monkeypatch)
+    assert main(["wikidata", "sync", "--loop"]) == 0
+    assert tasks[0]() is not False  # no early retry: the same run would fail the same way, 420 MB each hour
+    assert "SHA-1 mismatch" in capsys.readouterr().err
+
+
+def test_in_the_loop_a_dump_site_without_a_finished_run_is_asked_again_soon(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-04 18:02:11", page_done=False)
+    _fake_sync(monkeypatch, site)
+    tasks = _loop_task(monkeypatch)
+    assert main(["wikidata", "sync", "--loop"]) == 0
+    with pytest.raises(WikidataSyncError):  # the loop logs it and tries again after an hour
+        tasks[0]()
+
+
+def test_a_build_by_hand_does_not_start_while_the_sync_runs(
+    state_dir: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    state_dir.mkdir(parents=True, exist_ok=True)
+    (state_dir / LOCK_FILE).write_text("pid 1\n", encoding="utf-8")
+    page_props, page = write_dumps(tmp_path / "dumps")
+    assert main(["wikidata", "build", "--page-props", str(page_props), "--page", str(page)]) == 1
+    assert "läuft" in capsys.readouterr().err
     assert not (state_dir / "wikidata.db").exists()
 
 

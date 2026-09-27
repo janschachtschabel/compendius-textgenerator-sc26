@@ -26,7 +26,7 @@ from typing import Any
 
 import httpx
 
-from app.jobs.lock import acquire_lock
+from app.jobs.lock import HeldLock, acquire_lock
 from app.settings import Settings
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.active import atomic_write_text, read_active
@@ -70,16 +70,21 @@ class DumpRun:
 def find_run(client: httpx.Client, base_url: str = DUMPS_URL) -> DumpRun:
     """The newest run of the German Wikipedia whose ``page_props`` and ``page`` tables are done."""
     base = base_url.rstrip("/")
-    # The run list and dumpstatus.json carry the checksums the downloads are held to: https and one host, as for them
+    # The run list and dumpstatus.json carry the checksums the downloads are held to: https, one host, and no
+    # redirect to another (a redirect is an error here; the downloads may follow one, their hash anchors them)
     check_download_url(f"{base}/{WIKI}/", (httpx.URL(base).host,))
-    listing = client.get(f"{base}/{WIKI}/")
+    listing = client.get(f"{base}/{WIKI}/", follow_redirects=False)
     listing.raise_for_status()
     for run_id in sorted(set(_RUN_RE.findall(listing.text)), reverse=True)[:RUNS_ASKED]:
-        response = client.get(f"{base}/{WIKI}/{run_id}/dumpstatus.json")
+        response = client.get(f"{base}/{WIKI}/{run_id}/dumpstatus.json", follow_redirects=False)
         if response.status_code == 404:  # a run that has only just been started
             continue
         response.raise_for_status()
-        files = _done_files(response.json(), base, run_id)
+        try:
+            status = response.json()
+        except ValueError as exc:  # a garbled answer is the site's hiccup, not a dump the build cannot read
+            raise WikidataSyncError(f"dumpstatus.json of run {run_id} is unreadable: {exc}") from exc
+        files = _done_files(status, base, run_id)
         if files is not None:
             return DumpRun(run_id, datetime.strptime(run_id, "%Y%m%d").date(), *files)
     raise WikidataSyncError(f"no run of {WIKI} on {base} has page_props and page done")
@@ -155,8 +160,8 @@ class WikidataSync:
         self.index_path = Path(index_path)
         self._dir = self.index_path.parent
         self._client = client
-        self._base_url = base_url
-        self._archive_date = archive_date
+        self.base_url = base_url
+        self.archive_date = archive_date
         host = httpx.URL(base_url).host
         self._downloader = Downloader(client=client, allowed_hosts=(host,), suffixes=(".sql.gz",), hash_name="sha1")
 
@@ -173,39 +178,57 @@ class WikidataSync:
             built_from = _day(index.meta().get("dump"))
         finally:
             index.close()
-        archive = self._archive_date()
+        archive = self.archive_date()
         if archive is None or built_from is None or archive <= built_from:
             return None
-        # The archive has articles the index may lack; only a run after the index's dump can bring them
-        newest = find_run(self._client, self._base_url)
-        return "archive newer than the index" if newest.date > built_from else None
+        # The archive has articles the index may lack; only a run after the index's dump can bring them. A check that
+        # fails goes to the status like a failed run: the index falls behind the archive until it succeeds
+        reason = "archive newer than the index"
+        try:
+            newest = find_run(self._client, self.base_url)
+        except Exception as exc:
+            now = _now()
+            outcome = {"started_at": now, "reason": reason, "ok": False, "run": None, "finished_at": now}
+            self._write_status({"state": "idle", "last_run": {**outcome, "error": f"check: {exc}"}})
+            raise
+        return reason if newest.date > built_from else None
 
     def run(self, reason: str = "") -> dict[str, Any]:
-        """Download the newest finished run, build the index and swap it in; the old index stays on any failure."""
+        """Download the newest finished run, build the index and swap it in; the old index stays on any failure.
+
+        One run at a time: the lock is held until the dumps are gone and the status is written."""
         lock = acquire_lock(
             self._dir / LOCK_FILE, stale_s=LOCK_STALE_S, now=time.time, owner=f"pid {os.getpid()}\nstarted {_now()}\n"
         )
+        try:
+            return self._run(reason, lock)
+        finally:
+            lock.release()
+
+    def _run(self, reason: str, lock: HeldLock) -> dict[str, Any]:
         started = _now()
-        previous = (read_status(self._dir) or {}).get("last_run")
-        self._write_status({"state": "running", "started_at": started, "reason": reason, "last_run": previous})
         outcome: dict[str, Any] = {"started_at": started, "reason": reason, "ok": False, "run": None}
         try:
-            run = find_run(self._client, self._base_url)
+            previous = (read_status(self._dir) or {}).get("last_run")
+            self._write_status({"state": "running", "started_at": started, "reason": reason, "last_run": previous})
+            run = find_run(self._client, self.base_url)
             outcome["run"] = run.id
             dumps = self._dir / DUMP_DIR
             self._drop_other_runs(dumps, run)
             page_props, page = (
-                self._downloader.download(dump.url, dumps, digest=dump.sha1, size=dump.size)
+                self._downloader.download(
+                    dump.url, dumps, digest=dump.sha1, size=dump.size, progress=lambda _: lock.refresh()
+                )
                 for dump in (run.page_props, run.page)
             )
             meta = build_index(page_props, page, self.index_path)
-        except Exception as exc:
-            self._write_status({"state": "idle", "last_run": {**outcome, "finished_at": _now(), "error": str(exc)}})
+            for path in (page_props, page):  # a verified dump could be reused, but 420 MB are not worth keeping
+                path.unlink(missing_ok=True)
+        except BaseException as exc:
+            # A stopped container (KeyboardInterrupt from stop_on_sigterm) is no failure of the dump site: ok stays open
+            failed = {"ok": False if isinstance(exc, Exception) else None, "error": str(exc) or type(exc).__name__}
+            self._write_status({"state": "idle", "last_run": {**outcome, **failed, "finished_at": _now()}})
             raise
-        finally:
-            lock.release()
-        for path in (page_props, page):  # a verified dump could be reused, but 420 MB are not worth keeping
-            path.unlink(missing_ok=True)
         last = {**outcome, "ok": True, "finished_at": _now(), "dump": meta["dump"], "articles": meta["articles"]}
         self._write_status({"state": "idle", "last_run": {**last, "error": None}})
         log.info("Wikidata index built from run %s (%s): %d articles", run.id, reason or "asked", meta["articles"])

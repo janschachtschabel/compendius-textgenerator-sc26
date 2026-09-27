@@ -17,6 +17,7 @@ import httpx
 import pytest
 
 from app.jobs.lock import LockHeldError
+from app.settings import Settings
 from app.sources.wikidata.index import WikidataIndex
 from app.sources.wikidata.sync import (
     DUMP_DIR,
@@ -24,6 +25,7 @@ from app.sources.wikidata.sync import (
     WikidataSync,
     WikidataSyncError,
     active_wikipedia_date,
+    build_sync,
     find_run,
     read_status,
 )
@@ -170,6 +172,7 @@ def test_a_dump_with_the_wrong_checksum_keeps_the_index_there_is(tmp_path: Path,
     site.add("20260901", "2026-09-07 16:21:03", props=OTHER_ABBE, wrong_sha1=True)
     with pytest.raises(DownloadError, match="SHA-1 mismatch"):
         _sync(tmp_path / "state", site, archive=date(2026, 9, 15)).run()
+    assert not (tmp_path / "state" / LOCK_FILE).exists()
     index = WikidataIndex(tmp_path / "state" / "wikidata.db")
     assert index.meta()["dump"] == "2026-08-04" and index.qid("Ernst Abbe") == "Q999001"
     status = read_status(tmp_path / "state")
@@ -225,3 +228,82 @@ def test_the_dump_site_is_asked_over_https_only(tmp_path: Path, site: FakeDumps)
     with pytest.raises(DownloadError, match="https"):
         find_run(httpx.Client(transport=httpx.MockTransport(site.handler)), "http://dumps.wikimedia.org")
     assert site.calls == []
+
+
+def test_a_redirect_of_the_dump_status_to_another_host_is_not_followed(tmp_path: Path, site: FakeDumps) -> None:
+    # dumpstatus.json holds the checksums the downloads are held to; it must come from the host asked, nowhere else
+    site.add("20260901", "2026-09-07 16:21:03")
+    hosts: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        hosts.append(request.url.host)
+        if request.url.path.endswith("dumpstatus.json"):
+            return httpx.Response(302, headers={"Location": "https://elsewhere.example/dumpstatus.json"})
+        return site.handler(request)
+
+    with pytest.raises(httpx.HTTPStatusError):
+        find_run(httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True), DUMPS)
+    assert "elsewhere.example" not in hosts
+
+
+def test_an_interrupted_run_says_so_releases_the_lock_and_counts_as_no_failure(
+    tmp_path: Path, site: FakeDumps, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    site.add("20260901", "2026-09-07 16:21:03")
+
+    def stopped(*args: Any, **kwargs: Any) -> None:
+        raise KeyboardInterrupt  # what stop_on_sigterm raises when the container stops
+
+    monkeypatch.setattr("app.sources.wikidata.sync.build_index", stopped)
+    with pytest.raises(KeyboardInterrupt):
+        _sync(tmp_path / "state", site).run("no index")
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["state"] == "idle"
+    assert status["last_run"]["ok"] is None and status["last_run"]["error"] == "KeyboardInterrupt"
+    assert not (tmp_path / "state" / LOCK_FILE).exists()
+
+
+def test_what_an_older_run_left_behind_is_removed(tmp_path: Path, site: FakeDumps) -> None:
+    site.add("20260901", "2026-09-07 16:21:03")
+    dumps = tmp_path / "state" / DUMP_DIR
+    dumps.mkdir(parents=True)
+    (dumps / "dewiki-20260801-page.sql.gz.part").write_bytes(b"x" * 100)  # a run cut short a month ago
+    _sync(tmp_path / "state", site).run()
+    assert list(dumps.iterdir()) == []
+
+
+def test_a_check_that_cannot_reach_the_dump_site_is_recorded(tmp_path: Path, site: FakeDumps) -> None:
+    site.add("20260801", "2026-08-04 18:13:34")
+    _sync(tmp_path / "state", site).run()
+
+    def down(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(503)
+
+    sync = WikidataSync(
+        tmp_path / "state" / "wikidata.db",
+        client=httpx.Client(transport=httpx.MockTransport(down)),
+        base_url=DUMPS,
+        archive_date=lambda: date(2026, 9, 15),
+    )
+    with pytest.raises(httpx.HTTPStatusError):
+        sync.due()
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["last_run"]["ok"] is False  # the gauge and its alert see it
+    assert status["last_run"]["error"].startswith("check:")
+
+
+def test_the_sync_of_an_installation_reads_its_settings(tmp_path: Path) -> None:
+    wikipedia = ActiveArchive(
+        id="wikipedia_de_all_nopic", file="wikipedia_de_all_nopic_2026-10.zim", date="2026-10-15", project="wikipedia"
+    )
+    write_active(tmp_path / "zim", ActiveState(archives={"wikipedia_de_all_nopic": wikipedia}))
+    settings = Settings(
+        _env_file=None,  # type: ignore[call-arg]
+        state_dir=tmp_path / "state",
+        zim_dir=tmp_path / "zim",
+        zim_paths="",
+        wikidata_dumps_url="https://mirror.example/dumps",
+    )
+    sync = build_sync(settings)
+    assert sync.index_path == settings.wikidata_db_path
+    assert sync.base_url == "https://mirror.example/dumps" and sync.archive_date() == date(2026, 10, 15)

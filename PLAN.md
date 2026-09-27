@@ -1821,8 +1821,10 @@ API.
   neu, wenn das aktive Wikipedia-Archiv jünger ist als der Dump des Index und dumps.wikimedia.org einen neueren
   fertigen Lauf hat - sonst lüde er täglich dieselben Dateien. Ein Lauf nimmt den neuesten Lauf, dessen Tabellen
   `page_props` und `page` fertig sind (`dumpstatus.json`), lädt beide mit dem Downloader der ZIM-Archive
-  (fortsetzbar, nur vom Host aus `WIKIDATA_DUMPS_URL`, SHA-1 wie veröffentlicht), baut, tauscht, löscht die Dumps und
-  schreibt `wikidata_status.json`; eine Sperrdatei hält einen zweiten Lauf fern. Der Dienst sieht höchstens einmal je
+  (fortsetzbar, SHA-1 wie veröffentlicht; Laufliste und Prüfsummen nur über https vom Host aus `WIKIDATA_DUMPS_URL`,
+  ohne Umleitung), baut, tauscht, löscht die Dumps und schreibt `wikidata_status.json`; eine Sperrdatei hält einen
+  zweiten Lauf fern, auch `compendium wikidata build` von Hand. Scheitert ein Lauf so, dass derselbe Lauf wieder
+  scheitern würde (Prüfsumme, unlesbarer Dump), wartet die Schleife bis zur nächsten Prüfung statt einer Stunde. Der Dienst sieht höchstens einmal je
   Minute nach, ob die Datei eine andere ist, und öffnet sie ohne Neustart; `/health` liest den Index bei jedem Aufruf.
   Alarme `KompendiumWikidataIndexMissing` (zwei Stunden ohne Index) und `KompendiumWikidataSyncFailed`. Verworfen:
   den Index ins Image legen (er altert mit dem Image statt mit dem Archiv, das Image wüchse um 107 MB) und ihn beim

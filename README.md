@@ -633,7 +633,7 @@ danach, `wikidata_status.json` hält den Lauf fest.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
-| `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Woher der Sync die Dumps lädt; ein Spiegel mit demselben Aufbau (`/dewiki/<Lauf>/dumpstatus.json`) geht auch. Geladen wird nur von diesem Host |
+| `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Woher der Sync die Dumps lädt; ein Spiegel mit demselben Aufbau (`/dewiki/<Lauf>/dumpstatus.json`) geht auch. Laufliste und Prüfsummen kommen nur von diesem Host über https, ohne Umleitung |
 | `WIKIDATA_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder ein neueres Archiv einen neueren Dump braucht |
 
 ### Lehrpläne (Teil 2)

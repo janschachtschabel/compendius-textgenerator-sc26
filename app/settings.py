@@ -226,7 +226,7 @@ class Settings(BaseSettings):
 
     @property
     def wikidata_db_path(self) -> Path:
-        """The local Wikidata index (D43), written by ``compendium wikidata build``."""
+        """The local Wikidata index (D43), written by ``compendium wikidata sync`` (D64) or ``build``."""
         return Path(self.state_dir) / "wikidata.db"
 
     @property
