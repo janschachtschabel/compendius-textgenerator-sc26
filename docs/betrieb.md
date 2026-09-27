@@ -63,6 +63,7 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 | LLM-Anfragen kommen mit `extraction: rule-based` oder `generation: rule-based` und dem Feld `*_requested` zurück | b-api nicht erreichbar, Modell fehlt in `/models`, Tagesbudget erschöpft oder Schutzschalter aktiv (60 s nach einem Verbindungsfehler) | `components.llm` in `/health` und `audit.llm.note` lesen; die Modellprüfung wiederholt sich höchstens alle zehn Minuten von selbst |
 | Teil 3 meldet, dass der Sammlungsüberblick nicht erstellt werden konnte | edu-sharing antwortet nicht oder mit Fehler; Details stehen im Log, nicht in der Antwort | Repository prüfen; `GET /api/v2/collections/{id}/overview` antwortet 502, wenn schon die Sammlung nicht lesbar ist, sonst 200 mit `available: false` |
 | Teil 2 enthält nur den Hinweistext | `lehrplan.db` fehlt (`reason: cache_missing`) oder ist beschädigt oder von einer anderen Schemaversion (`cache_unreadable`) | `POST /api/v2/lehrplan/harvest` (Admin) oder `compendium lehrplan harvest --force` im Sidecar |
+| `KompendiumLehrplanHarvestFailed`, `lehrplan_status.json` nennt `HarvestRefusedError` | Der Harvest fand weit weniger, als der Cache hält: keinen Lehrplan, ein Land fehlt oder behält weniger als die Hälfte seiner Lehrpläne. So antwortet MEM, während es einen Graphen neu lädt; der alte Cache bleibt in Betrieb, und der Updater versucht es nach einer Stunde wieder | Abwarten. Hat MEM wirklich Lehrpläne zurückgezogen (Zählung in `compendium lehrplan check`), das Ergebnis übernehmen: `docker compose run --rm --no-deps lehrplan-updater compendium lehrplan harvest --force` |
 | 503 „Kein angefragter Teil ist erzeugbar“ | Die Anfrage verlangt nur Teile, die der Dienst nicht eingerichtet hat (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`); das Log meldet `compendium request refused` mit dem Grund. Eine Wiederholung ändert nichts | Konfiguration ergänzen oder den Teil nicht anfragen |
 | 429 mit `Retry-After` | `RATE_LIMIT` je Client und Minute überschritten | hinter einem Proxy `FORWARDED_ALLOW_IPS` setzen, sonst teilen sich alle Clients ein Fenster |
 | `/ready` bleibt 503 | Pflichtarchive fehlen oder `active.json` ist beschädigt (steht im Log) | `compendium zim status`; Sync anstoßen (`POST /api/v2/zim/sync`, Admin) |
@@ -80,7 +81,8 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
   laufenden Syncs frischt sie auf; nach einer Stunde ohne Lebenszeichen gilt sie als verwaist und wird
   übernommen. Einen Lauf stößt man über `POST /api/v2/zim/sync` (Admin) oder die Trigger-Datei an. Ein
   `docker stop` (SIGTERM) beendet einen laufenden Sync oder Harvest sauber: Endstatus geschrieben, Sperre frei, der
-  nächste Start setzt die `.part` fort.
+  nächste Start setzt die `.part` fort. Der Lehrplan-Harvest hat seine eigene Sperre (`lehrplan.harvest.lock`),
+  frischt sie vor jeder Abfrage an MEM auf; nach vier Stunden ohne Lebenszeichen gilt sie als verwaist.
 - Der Dienst hat keine Anmeldung für die öffentlichen Endpunkte; er gehört hinter ein Gateway. Admin-Endpunkte
   sind nur mit `ADMIN_TOKEN` aktiv.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.

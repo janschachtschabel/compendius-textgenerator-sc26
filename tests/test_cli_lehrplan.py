@@ -79,3 +79,42 @@ def test_a_failed_harvest_is_retried_within_the_hour(state_dir: Path, monkeypatc
     monkeypatch.setattr("app.cli_lehrplan.run_periodically", record)
     assert main(["lehrplan", "harvest", "--loop"]) == 0
     assert seen["retry_after"] == timedelta(hours=1)
+
+
+class FakeHarvest:
+    """Stands in for the harvest the CLI builds; records how each run was asked for."""
+
+    def __init__(self, *, due: bool = False, refuse: bool = False) -> None:
+        self.is_due, self.refuse = due, refuse
+        self.forced: list[bool] = []
+
+    def due(self, *, max_age: object) -> bool:
+        return self.is_due
+
+    def run(self, *, force: bool = False) -> object:
+        from app.sources.lehrplan.harvest import HarvestRefusedError, HarvestReport
+
+        self.forced.append(force)
+        if self.refuse and not force:
+            raise HarvestRefusedError("MEM listet keinen Lehrplan; der bisherige Cache bleibt")
+        return HarvestReport(started_at="2026-09-27T00:00:00+00:00", finished_at="2026-09-27T00:15:00+00:00")
+
+
+def test_force_reaches_the_harvest(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """--force also takes a result the harvest would refuse as a loss (audit 2026-09-27, KO-01)."""
+    fake = FakeHarvest()
+    monkeypatch.setattr("app.cli_lehrplan._harvest", lambda settings: fake)
+
+    assert main(["lehrplan", "harvest", "--force"]) == 0
+    assert main(["lehrplan", "harvest"]) == 0  # not due: no run
+
+    assert fake.forced == [True]
+
+
+def test_a_refused_harvest_ends_with_a_message_instead_of_a_traceback(
+    state_dir: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("app.cli_lehrplan._harvest", lambda settings: FakeHarvest(due=True, refuse=True))
+
+    assert main(["lehrplan", "harvest"]) == 1
+    assert "Harvest verworfen: MEM listet keinen Lehrplan" in capsys.readouterr().err

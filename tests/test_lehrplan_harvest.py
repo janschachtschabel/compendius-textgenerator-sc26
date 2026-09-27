@@ -1,12 +1,22 @@
 """Full harvest into the SQLite cache with a fake endpoint: all states asked, roles resolved, atomic swap."""
 
 import json
+import os
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
 
-from app.sources.lehrplan.harvest import STATUS_FILE, LehrplanHarvest, read_status
+from app.sources.lehrplan.harvest import (
+    LOCK_FILE,
+    LOCK_STALE_S,
+    STATUS_FILE,
+    HarvestRefusedError,
+    LehrplanHarvest,
+    lost_states,
+    read_status,
+)
 from app.sources.lehrplan.sparql import SparqlError
 from app.sources.lehrplan.store import LehrplanStore
 from app.sources.lehrplan.vocab import ONTOLOGY, bundesland_by_code
@@ -234,3 +244,81 @@ def test_html_entities_in_labels_are_unescaped(tmp_path: Path, monkeypatch: pyte
 def test_a_status_file_without_a_json_object_counts_as_missing(tmp_path: Path, content: str) -> None:
     (tmp_path / STATUS_FILE).write_text(content, encoding="utf-8")
     assert read_status(tmp_path) is None
+
+
+def test_a_run_that_lists_nothing_keeps_the_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    # MEM's Virtuoso answers with HTTP 200 and no rows while it reloads a graph (audit 2026-09-27, KO-01)
+    _harvest(tmp_path, FakeEndpoint()).run()
+    monkeypatch.setitem(LISTS, SN.iri, [])
+    monkeypatch.setitem(LISTS, BE.iri, [])
+
+    with pytest.raises(HarvestRefusedError, match="keinen Lehrplan"):
+        _harvest(tmp_path, FakeEndpoint(), when=T0 + timedelta(days=1)).run()
+
+    assert LehrplanStore(tmp_path / "lehrplan.db").counts() == {"lehrplaene": {"SN": 1, "BE": 1}, "nodes": 5}
+    assert not (tmp_path / "lehrplan.db.tmp").exists()
+    status = read_status(tmp_path)
+    assert status is not None and status["state"] == "error" and "HarvestRefusedError" in status["error"]
+
+
+def test_a_run_that_loses_a_state_keeps_the_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    monkeypatch.setitem(LISTS, SN.iri, [])
+
+    with pytest.raises(HarvestRefusedError, match="SN"):
+        _harvest(tmp_path, FakeEndpoint(), when=T0 + timedelta(days=1)).run()
+
+    assert LehrplanStore(tmp_path / "lehrplan.db").counts()["lehrplaene"] == {"SN": 1, "BE": 1}
+
+
+def test_a_forced_run_takes_a_smaller_result(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    monkeypatch.setitem(LISTS, SN.iri, [])
+
+    report = _harvest(tmp_path, FakeEndpoint(), when=T0 + timedelta(days=1)).run(force=True)
+
+    assert report.lehrplaene == {"BE": 1}
+    assert LehrplanStore(tmp_path / "lehrplan.db").counts()["lehrplaene"] == {"BE": 1}
+
+
+def test_a_first_run_has_no_counts_to_keep(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setitem(LISTS, SN.iri, [])
+
+    report = _harvest(tmp_path, FakeEndpoint()).run()
+
+    assert report.lehrplaene == {"BE": 1}
+
+
+@pytest.mark.parametrize(
+    ("before", "after", "lost"),
+    [
+        ({"SN": 10, "BY": 4}, {"SN": 10, "BY": 4}, []),
+        ({"SN": 10, "BY": 4}, {"SN": 12, "BY": 4, "BE": 3}, []),  # growth and a new state: MEM publishes more
+        ({"SN": 10, "BY": 4}, {"SN": 5, "BY": 2}, []),  # half is left: a revision, not a failed answer
+        ({"SN": 10, "BY": 4}, {"SN": 4, "BY": 4}, ["SN"]),
+        ({"SN": 10, "BY": 4}, {"SN": 10}, ["BY"]),
+    ],
+)
+def test_lost_states_names_a_state_that_vanished_or_kept_less_than_half(
+    before: dict[str, int], after: dict[str, int], lost: list[str]
+) -> None:
+    assert lost_states(before, after) == lost
+
+
+def test_the_lock_shows_a_sign_of_life_before_every_query(tmp_path: Path) -> None:
+    """A slow harvest must not look like a crashed one to a second run (audit 2026-09-27, KO-18)."""
+    ages: list[float] = []
+    lock = tmp_path / LOCK_FILE
+
+    class Slow(FakeEndpoint):
+        def select(self, query: str) -> list[dict[str, str]]:
+            if lock.exists():
+                ages.append(time.time() - lock.stat().st_mtime)
+                long_ago = time.time() - LOCK_STALE_S - 60  # as if this query had run for hours
+                os.utime(lock, (long_ago, long_ago))
+            return super().select(query)
+
+    _harvest(tmp_path, Slow()).run()
+
+    assert len(ages) > 10
+    assert max(ages) < 60  # each query found the lock refreshed after the one before

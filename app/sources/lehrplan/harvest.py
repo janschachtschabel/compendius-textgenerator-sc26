@@ -64,6 +64,21 @@ class HarvestRunningError(RuntimeError):
     """Another harvest holds the lock file; two writers would corrupt the cache."""
 
 
+class HarvestRefusedError(RuntimeError):
+    """The run found far less than the cache holds; the cache stays, ``force`` takes the result anyway."""
+
+
+def lost_states(before: dict[str, int], after: dict[str, int]) -> list[str]:
+    """States of ``before`` that ``after`` lacks or keeps less than half the curricula of.
+
+    MEM's Virtuoso answers with HTTP 200 and no rows while it reloads a graph, and ``due`` starts a harvest exactly
+    when MEM's counts change; a run during a reload lists a state as empty or short (audit 2026-09-27, KO-01).
+    simplify: half is no measured bound - MEM has not yet withdrawn a large share of a state's curricula; an operator
+    who sees it happen takes the result with ``compendium lehrplan harvest --force``.
+    """
+    return sorted(code for code, count in before.items() if after.get(code, 0) * 2 < count)
+
+
 @dataclass
 class HarvestReport:
     started_at: str
@@ -130,6 +145,7 @@ class LehrplanHarvest:
         self._states = tuple(states)
         self._queries = 0
         self._skipped: list[str] = []
+        self._lock: HeldLock | None = None
 
     @property
     def store(self) -> LehrplanStore:
@@ -170,16 +186,19 @@ class LehrplanHarvest:
 
     # --- the harvest -----------------------------------------------------------------------------
 
-    def run(self) -> HarvestReport:
+    def run(self, *, force: bool = False) -> HarvestReport:
         """Harvest all states into a fresh cache file; on any error the previous file stays.
 
-        Only one harvest may run per state directory (``HarvestRunningError`` otherwise).
+        Only one harvest may run per state directory (``HarvestRunningError`` otherwise). A run that lists no
+        curriculum at all, or loses a state of the cache (``lost_states``), keeps the previous file and raises
+        ``HarvestRefusedError``, unless it is forced.
         """
-        lock = self._acquire_lock()
+        self._lock = self._acquire_lock()
         try:
-            return self._run()
+            return self._run(force=force)
         finally:
-            lock.release()
+            self._lock.release()
+            self._lock = None
 
     def _acquire_lock(self) -> HeldLock:
         try:
@@ -192,7 +211,7 @@ class LehrplanHarvest:
         except LockHeldError as exc:
             raise HarvestRunningError(f"Ein Harvest läuft bereits ({exc.path}, seit {exc.age_s:.0f} s)") from None
 
-    def _run(self) -> HarvestReport:
+    def _run(self, *, force: bool) -> HarvestReport:
         started = self._clock()
         wall = time.perf_counter()
         self._queries = 0
@@ -255,6 +274,8 @@ class LehrplanHarvest:
                             },
                         )
                 log.info("harvested %s: %d curricula, %d nodes so far", land.code, len(listed), nodes_total)
+            if not force:
+                self._refuse_a_loss(per_state)
             finished = self._clock()
             writer.set_meta(
                 {
@@ -287,7 +308,25 @@ class LehrplanHarvest:
         self._write_status("idle", last_run=asdict(report))
         return report
 
+    def _refuse_a_loss(self, harvested: dict[str, int]) -> None:
+        if not harvested:
+            raise HarvestRefusedError(
+                "MEM listet keinen Lehrplan; der bisherige Cache bleibt "
+                "(übernehmen: compendium lehrplan harvest --force)"
+            )
+        before = self.local_counts() if self.store.available else {}
+        lost = lost_states(before, harvested)
+        if lost:
+            detail = ", ".join(f"{code} {harvested.get(code, 0)} statt {before[code]}" for code in lost)
+            raise HarvestRefusedError(
+                f"MEM listet deutlich weniger Lehrpläne als der Cache hält ({detail}); der bisherige Cache bleibt "
+                "(übernehmen: compendium lehrplan harvest --force)"
+            )
+
     def _select(self, query: str) -> list[dict[str, str]]:
+        if self._lock is not None:
+            # A sign of life before each query: a slow run must not look crashed to a second one (audit KO-18)
+            self._lock.refresh()
         self._queries += 1
         return self._client.select(query)
 

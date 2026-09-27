@@ -173,7 +173,10 @@ alle Lehrpläne aller Bundesländer, die MEM veröffentlicht (Stand 2026-09-17: 
 Rheinland-Pfalz, Berlin; laut mem-mcp führt MEM inzwischen auch Brandenburg), samt Knoten, Rollen und
 Stufenangaben in `STATE_DIR/lehrplan.db`
 (SQLite mit FTS5-Trigram-Index) und tauscht die Datei atomar aus; ein Vollabzug dauert rund 25
-Minuten (2.514 Lehrpläne, 295.000 Knoten, 278 MB). Die API liest nur den Cache; ohne Cache enthält
+Minuten (2.514 Lehrpläne, 295.000 Knoten, 278 MB). Listet MEM gar keinen Lehrplan, fehlt ein Land des Caches
+oder behält eines weniger als die Hälfte seiner Lehrpläne, verwirft der Harvest sein Ergebnis und der alte
+Cache bleibt: MEM antwortet während eines Neuladens mit leeren Listen. `compendium lehrplan harvest --force`
+übernimmt ein solches Ergebnis trotzdem. Die API liest nur den Cache; ohne Cache enthält
 Teil 2 einen Hinweistext. Das Fach kommt aus der Anfrage (`subject`) oder
 aus einem Präfix wie „Physik: Optik“ und wird über `config/subjects.yaml` auf MEM-Schulfächer
 abgebildet; ohne Fach wird über alle Fächer gesucht. Teil 2 enthält alle Treffer (Kompendialtexte

@@ -11,7 +11,13 @@ from pathlib import Path
 
 from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
 from app.settings import Settings, get_settings
-from app.sources.lehrplan.harvest import TRIGGER_FILE, HarvestRunningError, LehrplanHarvest, read_status
+from app.sources.lehrplan.harvest import (
+    TRIGGER_FILE,
+    HarvestRefusedError,
+    HarvestRunningError,
+    LehrplanHarvest,
+    read_status,
+)
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import match_entry
 from app.sources.lehrplan.render import coverage
@@ -78,9 +84,9 @@ def cmd_harvest(args: argparse.Namespace) -> int:
 
     def task() -> None:
         nonlocal force
-        if force or harvest.due(max_age=max_age):
-            force = False
-            report = harvest.run()
+        forced, force = force, False  # --force counts for the first run of a loop only
+        if forced or harvest.due(max_age=max_age):
+            report = harvest.run(force=forced)
             print(json.dumps(asdict(report), ensure_ascii=False, indent=2))
         else:
             print("Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE")
@@ -102,6 +108,9 @@ def cmd_harvest(args: argparse.Namespace) -> int:
         task()
     except HarvestRunningError as exc:
         print(f"{exc}", file=sys.stderr)
+        return 1
+    except HarvestRefusedError as exc:
+        print(f"Harvest verworfen: {exc}", file=sys.stderr)
         return 1
     except SparqlError as exc:
         print(f"Harvest abgebrochen, alter Cache bleibt: {exc}", file=sys.stderr)
