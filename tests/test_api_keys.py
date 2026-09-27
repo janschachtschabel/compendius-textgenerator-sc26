@@ -8,13 +8,13 @@ the refusal never repeats the value.
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
-from fastapi.routing import APIRoute
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from app.api.keys import API_KEY_HEADER, require_api_key
-from app.api.limits import rate_limited
+from app.api.keys import API_KEY_HEADER
 from app.main import create_app
 from app.settings import Settings
 from tests.conftest import make_settings
@@ -68,16 +68,40 @@ def test_without_keys_the_profiles_stay_open(settings: Settings) -> None:
     assert response.status_code == 200
 
 
-def test_every_rate_limited_route_wants_the_key_and_no_other_route_does(settings: Settings) -> None:
-    """A new profile endpoint gets both dependencies or the test names it."""
-    app = create_app(settings)
-    for route in app.routes:
-        if not isinstance(route, APIRoute):
-            continue
-        calls = [dependency.call for dependency in route.dependant.dependencies]
-        assert (rate_limited in calls) == (require_api_key in calls), route.path
-        if require_api_key in calls:
-            assert calls.index(rate_limited) < calls.index(require_api_key), "a failed key counts as a request"
+def operations(schema: dict[str, Any]) -> list[tuple[str, str, list[str]]]:
+    """(method, path with a placeholder for every parameter, tags) of every operation /docs lists."""
+    found = []
+    for path, methods in schema["paths"].items():
+        concrete = "/".join(NODE if part.startswith("{") else part for part in path.split("/"))
+        found += [(method.upper(), concrete, operation.get("tags", [])) for method, operation in methods.items()]
+    return found
+
+
+def test_the_key_and_the_rate_limit_guard_exactly_the_profile_endpoints(settings: Settings) -> None:
+    """Every endpoint /docs lists, asked twice without a key and from a client of its own: the seven profile endpoints
+    answer 401 and then 429, the admin endpoints - off without ADMIN_TOKEN - 404 and then 429, every other one
+    neither. Both answers come from the dependencies, so no handler runs and nothing leaves the process.
+
+    A structural check over ``app.routes`` passed without looking at a single route: FastAPI 0.141 keeps included
+    routers there as wrappers, not as their routes (review of 2026-09-28)."""
+    app = create_app(settings.model_copy(update={"api_keys": KEY_A, "rate_limit": 1}))
+    schema = TestClient(app).get("/openapi.json").json()
+    profile_seen = set()
+    for number, (method, path, tags) in enumerate(operations(schema), start=1):
+        client = TestClient(app, client=(f"10.0.0.{number}", 50000))  # a window of its own for every endpoint
+        body = {} if method in ("POST", "PUT") else None
+        answers = (
+            client.request(method, path, json=body).status_code,
+            client.request(method, path, json=body).status_code,
+        )
+        if (method, path) in PROFILE_ROUTES:
+            assert answers == (401, 429), (method, path, answers)
+            profile_seen.add((method, path))
+        elif any(tag.endswith("-admin") for tag in tags):
+            assert answers == (404, 429), (method, path, answers)
+        else:
+            assert not {401, 429} & set(answers), (method, path, answers)
+    assert profile_seen == set(PROFILE_ROUTES)
 
 
 def test_the_docs_offer_the_key(settings: Settings) -> None:
