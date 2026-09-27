@@ -1963,6 +1963,17 @@ Volltexttreffern stammen, die N ersetzt. An den 400 übrigen kommt die Standard-
 Absätze ohne Label den Platz füllen. Vergleichbar ist beides nicht mehr: Das Gold deckt den Korpus mit N nur zu zwei
 Dritteln ab. Wer die Zuordnung unter N messen will, braucht Labels für die genannten Artikel.
 
+**Nach dem Review** (frischer Subagent, vier schwere Befunde, behoben in D63): N hörte das Fach einer Anfrage nicht,
+und seine Teile ersetzen die fachgerechten Nebenartikel. Seitdem hört es das Fach mit. Eine Stichprobe an sechs
+mehrdeutigen Gold-Anfragen mit Fach, nicht benotet: „Informatik: Baum“ bringt *Binärbaum*, *Suchbaum* und *AVL-Baum*,
+„Physik: Linse“ *Sammellinse*, *Brennweite* und *Optische Abbildung*, „Biologie: Zelle“ *Zellkern*, *Zellmembran* und
+*Organell*, „Informatik: Netzwerk“ *Rechnernetz*, *Internet* und *OSI-Modell* - dort bleibt der Hauptartikel der sichere
+Fehler *Netzwerk* der Regeln -, je Frage 424 bis 765 Tokens. Außerdem blieb der Korpus nicht wie vorher, wenn N außer
+dem Hauptartikel keinen Artikel des Archivs nannte; mit Thema und Material wurde N nicht gefragt; und bei 8 der 19
+ersetzten Hauptartikel sprang ein Teil für die fehlende Übersicht ein (*John Locke*, *Augustus*, bei allen vier
+Verbindungen). Das Letzte bleibt, wie gemessen, steht aber im Audit. Nach den Korrekturen druckt der Dienst in allen 45
+Themen dasselbe wie vorher.
+
 **Ergebnis:** Eingebaut wirkt N wie gemessen: 87 statt 45 % passende Absätze bei Sammelthemen und 93 statt 73 % bei
 gewöhnlichen, dieselben Hauptartikel wie der Prototyp, die Artikelwahl am Gold unverändert. Die Frage kostet rund 3,6 s
 und 480 Tokens, die entfallene Prüfung der Nebenartikel spart 1,4 bis 2 s und 750 bis 900 Tokens. Grenzen: Die

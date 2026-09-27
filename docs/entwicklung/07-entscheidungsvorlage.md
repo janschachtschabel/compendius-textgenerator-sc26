@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 26.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M31; Rohdaten und
+[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M40; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
