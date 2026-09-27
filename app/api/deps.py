@@ -12,6 +12,7 @@ from app.domain.models import Resolution, Source
 from app.knowledge.article_choice import CHECKED_ORIGINS, check_hits, choice_block, choice_used
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
+from app.knowledge.topic_articles import settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, RepositoryUnavailableError, TopicNotFoundError
@@ -97,6 +98,8 @@ def corpus_for_topic(
         material=chosen.material,
         named=chosen.articles.found if chosen.articles is not None else (),
     )
+    if chosen.articles is not None:
+        settle(chosen.articles, sources)
     if chosen.node is not None:
         chosen.node.added = any(source.origin == NODE_ORIGIN for source in sources)
     side_articles = sum(1 for source in sources if source.origin in CHECKED_ORIGINS)

@@ -41,7 +41,7 @@ from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import NodeArticleReport, node_block
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, topic_stem
-from app.knowledge.topic_articles import TopicArticlesReport
+from app.knowledge.topic_articles import TopicArticlesReport, settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
@@ -328,6 +328,8 @@ class CompendiumService:
             material=prepared.material,
             named=prepared.articles.found if prepared.articles is not None else (),
         )
+        if prepared.articles is not None:
+            settle(prepared.articles, sources)
         if prepared.node_article is not None:
             prepared.node_article.added = any(s.origin == NODE_ORIGIN for s in sources)
         lap("corpus")

@@ -196,7 +196,7 @@ class Resolution(BaseModel):
     alternatives: list[str] = Field(default_factory=list)
     disambiguation: bool = False
     # title (exact or redirect), variant (inflected form, compound, aspect), disambiguation, suggestion, search,
-    # or llm (article_choice=llm decided an unsure resolution, D35)
+    # or llm (article_choice=llm decided an unsure resolution, D35, or the LLM's overview replaced a missed topic, D63)
     method: str | None = None
     confident: bool = Field(
         False, description="False for guesses: title suggestions, full-text hits and meanings nothing spoke for"

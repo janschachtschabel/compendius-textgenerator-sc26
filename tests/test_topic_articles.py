@@ -23,16 +23,19 @@ from libzim.writer import Creator, Hint
 from app.domain.models import Resolution
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
-from app.knowledge.topic_articles import NONE_FOUND, ask_topic_articles
+from app.knowledge.main_article import choose_main_article
+from app.knowledge.topic_articles import NO_PARTS, NONE_FOUND, ask_topic_articles
 from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
+from app.sources.wlo.part import node_topic
 from app.sources.zim.registry import NAMED_ORIGIN, ZimRegistry, misses_topic
 from tests.conftest import HtmlItem
 from tests.test_article_choice import by_prompt
 from tests.test_article_choice_thorough import LIST, refuse
 from tests.test_llm_client import FakeBApi
+from tests.test_main_article import STATIONS
 from tests.test_pipeline_llm import make_gateway
 
 ARTICLES_PROMPT = get_prompt("topic_articles")
@@ -197,6 +200,7 @@ def test_balanced_builds_the_corpus_from_the_articles_n_names(
     assert choice["used"] == "llm" and choice["needed"] and choice["articles_asked"]
     assert choice["articles_found"] == ["Optik", "Geometrische Optik", "Lichtmikroskop"]
     assert not choice["articles_main"] and choice["articles_fallback"] is None and choice["hits_checked"] == 0
+    assert choice["articles_overview"] == "Optik", "the overview the model named, as the archive has it"
     assert ARTICLES_PROMPT.tag in result.frontmatter["llm"]["prompts"]
     assert result.audit.llm_tokens == {"prompt": 20, "completion": 4, "total": 24, "calls": 1}
 
@@ -278,3 +282,133 @@ def test_knowledge_names_the_articles_a_compendium_builds_on(
     choice = body["article_choice"]
     assert choice["used"] == "llm" and choice["articles_found"] == ["Optik", "Geometrische Optik", "Lichtmikroskop"]
     assert choice["tokens"] == 24 and choice["hits_checked"] == 0
+
+
+# -- after the review of D63 ---------------------------------------------------------------------------------------
+
+
+def test_n_hears_the_subject_of_the_request(sets: ZimRegistry) -> None:
+    # "Informatik: Baum" is a data structure, "Baum" alone a plant: the subject has to decide the parts as well
+    fake = FakeBApi(asking({"uebersicht": "", "artikel": []}))
+    archive = sets.primary_archive
+    assert archive is not None
+    ask_topic_articles(job_for(fake), archive, "Baum", subjects=["Informatik", "Mathematik"])
+    assert fake.bodies[0]["messages"][1]["content"].splitlines()[0] == "Thema: Baum (Fach: Informatik, Mathematik)"
+
+
+def test_a_compendium_passes_its_subject_to_n(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": []}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    request = GenerateRequest(topic="Optik", subject="Physik", preset="balanced", parts=["world"])  # type: ignore[arg-type]
+    service.generate(request)
+    asked = [body for body in fake.bodies if body["messages"][0]["content"] == ARTICLES_PROMPT.system]
+    assert asked[0]["messages"][1]["content"].splitlines()[0] == "Thema: Optik (Fach: Physik)"
+
+
+def test_without_the_overview_in_the_archive_the_first_part_stands_in(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # As measured in M37 and M39 ("Philosophen der Aufklärung" -> John Locke), and the audit says so
+    fake = FakeBApi(asking({"uebersicht": "Geometrische Lehre", "artikel": ["Technische Optik", "Lichtmikroskop"]}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    result = service.generate(GenerateRequest(topic="Geometrische", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+
+    assert result.resolution.title == "Technische Optik" and result.resolution.method == "llm"
+    assert result.audit.llm is not None
+    choice = result.audit.llm["article_choice"]
+    assert choice["articles_main"] and choice["articles_overview"] is None
+
+
+def test_n_without_a_part_of_the_archive_leaves_the_side_articles_of_before(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Gibt es nicht"]}, notes={"Augenoptiker": 0}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+
+    assert result.audit.llm is not None
+    choice = result.audit.llm["article_choice"]
+    assert choice["articles_found"] == ["Optik"] and choice["articles_fallback"] == NO_PARTS
+    assert choice["hits_checked"] == 6 and choice["hits_dropped"] == ["Augenoptiker"], "linked and hits as before"
+    assert len(fake.bodies) == 2
+
+
+def test_the_corpus_keeps_its_side_articles_when_no_named_article_is_new(registry: ZimRegistry) -> None:
+    sources = registry.build_corpus(registry.resolve_topic("Optik"), slots=[], max_articles=8, named=["Optik"])
+    origins = {s.origin for s in sources}
+    assert "linked" in origins and NAMED_ORIGIN not in origins
+
+
+def test_with_a_topic_and_a_material_n_is_asked_too(service: CompendiumService) -> None:
+    node_question = get_prompt("node_topic_with_topic").system
+
+    def answer(body: dict[str, Any]) -> str:
+        system = body["messages"][0]["content"]
+        if system == ARTICLES_PROMPT.system:
+            return json.dumps({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]})
+        return json.dumps({"titel": "Optik", "material": ""} if system == node_question else {"wahl": 1})
+
+    chosen = choose_main_article(
+        service.registry,
+        service.subjects,
+        "Optik",
+        [node_topic(STATIONS)],
+        node=STATIONS,
+        job=job_for(FakeBApi(answer)),
+    )
+    assert chosen.resolution.title == "Optik", "the question on topic and material decides the article"
+    assert chosen.articles is not None and chosen.articles.found == ["Optik", "Lichtmikroskop"]
+    assert not chosen.articles.main
+
+
+def test_named_articles_come_from_the_archive_they_were_found_in(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # "Licht" is an article of the Klexikon sample only: its main article comes from there, N's titles from Wikipedia
+    fake = FakeBApi(asking({"uebersicht": "Licht", "artikel": ["Optik", "Lichtmikroskop"]}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    _, _, job = service.article_choice_job("llm", None)
+    prepared = service.prepare(GenerateRequest(topic="Licht", parts=["world"], article_choice="llm"), None, job)
+
+    leading = service.registry.primary_archive
+    assert leading is not None and prepared.resolution.project != leading.project
+    named = [(s.title, s.project) for s in prepared.sources if s.origin == NAMED_ORIGIN]
+    assert named == [("Optik", leading.project), ("Lichtmikroskop", leading.project)]
+
+
+def test_a_failing_b_api_leaves_the_corpus_of_before(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}), statuses=[500])
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+
+    assert result.audit.llm is not None
+    choice = result.audit.llm["article_choice"]
+    assert (choice["articles_fallback"] or "").startswith("b-api") and choice["articles_found"] == []
+    assert choice["articles_asked"] and choice["hits_checked"] == 6, "the side articles of before, checked as before"
+
+
+def test_best_quality_asks_n_and_checks_a_sure_word_with_meanings(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}, choice={"wahl": 1}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    request = GenerateRequest(topic="Optik", preset="best-quality", matcher="hybrid_light", parts=["world"])  # type: ignore[arg-type]
+    result = service.generate(request)
+
+    assert result.resolution.title == "Optik" and len(fake.bodies) == 2, "N, then the check of the sure word"
+    assert result.audit.llm is not None
+    choice = result.audit.llm["article_choice"]
+    assert choice["asked"] and choice["articles_asked"] and not choice["articles_main"]
+    assert "Lichtmikroskop" in [s.title for s in result.sources]
+
+
+def test_knowledge_names_the_corpus_of_the_compendium(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    service = client.app.state.service  # type: ignore[attr-defined]
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik", "Lichtmikroskop"]}))
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    body = client.post("/api/v2/knowledge", json={"topic": "Optik", "preset": "balanced"}).json()
+    _, _, job = service.article_choice_job("llm", None)
+    prepared = service.prepare(GenerateRequest(topic="Optik", parts=["world"], article_choice="llm"), None, job)
+    assert [(a["title"], a["origin"]) for a in body["articles"]] == [(s.title, s.origin) for s in prepared.sources]

@@ -215,7 +215,7 @@ def choice_used(
 ) -> str:
     """``llm`` when the model's answer decided anything - the article, the articles of the topic (D63) or which side
     articles stay; else the rules."""
-    named = articles is not None and bool(articles.found)
+    named = articles is not None and (articles.main or articles.parts > 0)
     return "llm" if chose_article or named or (hit_check is not None and hit_check.answered) else "rule-based"
 
 
@@ -251,6 +251,7 @@ def choice_block(
         "hits_fallback": hit_check.fallback if hit_check else None,
         "articles_asked": bool(articles and articles.calls),  # false for a material, or when budget or time were short
         "articles_found": list(articles.found) if articles else [],  # the overview (when found) first
+        "articles_overview": articles.overview_title if articles else None,  # None: a part stood in for it
         "articles_main": bool(articles and articles.main),  # the overview replaced the rules' article
         "articles_fallback": articles.fallback if articles else None,
     }

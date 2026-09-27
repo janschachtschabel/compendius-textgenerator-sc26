@@ -1799,7 +1799,14 @@ API.
   Absätze aus passenden Artikeln bei den Sammelthemen und 93 % bei den gewöhnlichen, wie in M37; die Frage im Median
   3,6 s und 480 Tokens, `balanced` mit Teil 1 und 2 4,2 s. Das Gold der Zuordnung deckt den neuen Korpus nicht mehr
   ab: 243 statt 62 der 643 Labels veralten, an den übrigen macro-F1 0,50 statt 0,45. Vier Tests nahmen an, ein
-  sicheres Thema ohne Nebenartikel koste keinen Aufruf; sie prüfen jetzt, dass N gefragt wird.
+  sicheres Thema ohne Nebenartikel koste keinen Aufruf; sie prüfen jetzt, dass N gefragt wird. Nach dem Review
+  (frischer Subagent, vier schwere Befunde): N hört das Fach der Anfrage („Baum (Fach: Informatik)“), sonst hätten
+  seine Teile die fachgerechten Nebenartikel ersetzt; findet N keinen Teil außer dem Hauptartikel, bleibt der Korpus
+  wie vorher samt Trefferprüfung (vorher fielen die Nebenartikel still weg, `articles_fallback` sagt es jetzt); mit
+  Thema und Material wird N auch gefragt, wenn die Frage zu beiden den Artikel nennt; die genannten Titel werden aus
+  dem Archiv gelesen, in dem sie nachgeschlagen wurden. Dass bei fehlender Übersicht der erste Teil einspringt, bleibt
+  wie gemessen (M37, M39: bei 8 der 19 ersetzten Hauptartikel, etwa *John Locke*, *Augustus* und bei allen vier
+  Verbindungen zweier Themen), steht aber im Audit (`articles_overview` leer).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

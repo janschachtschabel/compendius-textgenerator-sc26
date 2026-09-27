@@ -41,8 +41,9 @@ SEARCH_PRESET_HELP = (
     "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "
     "shipped balanced).\n\n"
     "- **llm-free**: the keyword rules find and judge the elements; no LLM, no tokens.\n"
-    "- **balanced**: the same for the words as sent; with mode=topic the LLM decides an unsure article and drops the "
-    "side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.\n"
+    "- **balanced**: the same for the words as sent; with mode=topic the LLM names the overview and the parts of the "
+    "topic and decides an unsure article, as in a balanced compendium (D63), so both search for the same sub-topics; "
+    "the question costs about 3.6 s and 480 tokens (M39).\n"
     "- **best-quality**: balanced, and the LLM rates every element the rules found and drops what does not fit "
     "(curriculum_check llm); with mode=topic it also checks a sure article choice of a word with several meanings "
     "(D61). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
@@ -203,8 +204,9 @@ def lehrplan_search(
     (PRESET_DEFAULT, shipped balanced), and a ``curriculum_check`` of the request wins over the profile's.
 
     - ``llm-free``: the rules find and judge; no LLM, no tokens.
-    - ``balanced``: the same for the words as sent; with ``mode=topic`` the LLM decides an unsure article and drops
-      the side articles that do not fit, as in a balanced compendium, so both search for the same sub-topics.
+    - ``balanced``: the same for the words as sent; with ``mode=topic`` the LLM names the overview and the parts of
+      the topic and decides an unsure article, as in a balanced compendium (D63), so both search for the same
+      sub-topics; the question costs about 3.6 s and 480 tokens (M39).
     - ``best-quality``: balanced, and the LLM rates every element the rules found and drops what does not fit; the
       others carry its rating in ``note``. With ``mode=topic`` it also checks a sure article choice of a word with
       several meanings (D61). It reads all hits, not only the first ``limit`` ones: 80 to 90 tokens per

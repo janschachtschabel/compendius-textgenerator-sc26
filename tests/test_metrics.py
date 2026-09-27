@@ -287,11 +287,12 @@ def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: p
 
 
 def naming_the_topic(body: dict[str, Any]) -> str:
-    """N (D63) names the topic itself as its overview; every other question gets the first candidate."""
+    """N (D63) names the topic itself as its overview, and for "Programmiersprache" one more article of the sample
+    archive as its part; every other question gets the first candidate."""
     if body["messages"][0]["content"] != get_prompt("topic_articles").system:
         return '{"wahl": 1}'
     topic = body["messages"][1]["content"].splitlines()[0].removeprefix("Thema: ")
-    return json.dumps({"uebersicht": topic, "artikel": []})
+    return json.dumps({"uebersicht": topic, "artikel": ["Sinfonie"] if topic == "Programmiersprache" else []})
 
 
 def test_article_choice_llm_counts_as_an_llm_request_where_the_model_has_something_to_answer(

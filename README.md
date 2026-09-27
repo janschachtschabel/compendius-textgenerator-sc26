@@ -467,14 +467,18 @@ Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil 1 im Median 1,35 sta
 **Übersicht und Teile eines Themas (D63).** Mit `article_choice: llm` oder `llm-thorough` fragt der Dienst bei jedem
 Thema zuerst nach seinen Artikeln: Das LLM nennt den Übersichtsartikel - bei einer Gruppe wie „deutsche Dichter“ die
 Epoche, Gattung oder den Oberbegriff, keine Liste - und bis zu acht Artikel zu den wichtigsten Vertretern, Teilen oder
-Aspekten (Prompt `topic_articles@v1`, wortgleich der Frage N aus M37). Was davon ein Artikel des Archivs ist
-(eine Weiterleitung gilt als ihr Ziel, eine Begriffsklärung entfällt), kommt nach Hauptartikel und Klexikon-Zwilling in
-den Korpus (`origin: named`), an die Stelle der verlinkten Unterartikel und Volltexttreffer; die Prüfung der
-Nebenartikel entfällt dann. Die Übersicht ersetzt den Artikel der Regeln nur, wo diese das Thema verfehlen: bei einem
-Titelvorschlag, einem Volltexttreffer, einer Listenseite oder ohne jeden Treffer. Sonst bleibt er, und das LLM
-entscheidet unsichere Fälle wie oben. Ohne brauchbare Antwort bleibt der Korpus wie vorher, samt Prüfung der
-Nebenartikel; `audit.llm.article_choice` nennt die gefundenen Titel (`articles_found`), ob die Übersicht Hauptartikel
-wurde (`articles_main`) und warum nicht (`articles_fallback`). Ein Material ohne `topic` behält seinen Weg (D47).
+Aspekten (Prompt `topic_articles@v1`, wortgleich der Frage N aus M37); ein Fach der Anfrage hört es mit („Baum (Fach:
+Informatik)“). Was davon ein Artikel des Archivs ist (eine Weiterleitung gilt als ihr Ziel, eine Begriffsklärung
+entfällt), kommt nach Hauptartikel und Klexikon-Zwilling in den Korpus (`origin: named`), an die Stelle der verlinkten
+Unterartikel und Volltexttreffer; die Prüfung der Nebenartikel entfällt dann. Die Übersicht ersetzt den Artikel der
+Regeln nur, wo diese das Thema verfehlen: bei einem Titelvorschlag, einem Volltexttreffer, einer Listenseite oder ohne
+jeden Treffer. Fehlt die Übersicht im Archiv, steht wie gemessen der erste gefundene Teil für sie ein („Philosophen der
+Aufklärung“: *John Locke*). Sonst bleibt der Artikel der Regeln, und das LLM entscheidet unsichere Fälle wie oben. Ohne
+brauchbare Antwort oder ohne einen Teil, den das Archiv hat, bleibt der Korpus wie vorher, samt Prüfung der
+Nebenartikel; `audit.llm.article_choice` nennt die gefundenen Titel (`articles_found`), die Übersicht, wie das Archiv
+sie führt (`articles_overview`, leer, wenn ein Teil einsprang), ob der erste davon Hauptartikel wurde
+(`articles_main`) und warum der Korpus blieb (`articles_fallback`). Ein Material ohne `topic` behält seinen Weg (D47);
+mit `topic` und Material nennt die Frage zu beiden den Artikel und N die Teile.
 Gemessen mit `gpt-6-luna` (M37, durch den Dienst nachgemessen in M39): Bei 25 Sammel- und Mischthemen stammen 87 statt
 45 % der gedruckten Absätze aus passenden Artikeln (21 statt 10 brauchbare Kompendien), bei 20 gewöhnlichen Themen 93
 statt 73 %; am Gold der Artikelwahl bleiben es 91 von 94 („Lichtlehre“ wird *Optik*, „Ursachen des Ersten

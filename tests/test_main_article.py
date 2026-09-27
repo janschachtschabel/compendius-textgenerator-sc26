@@ -124,7 +124,8 @@ def test_with_article_choice_llm_one_question_hears_topic_and_material(service: 
     ask, fake = job({"titel": "Geometrische Optik", "material": "Optik"})
     chosen = choose(service, "Geometrische Optik", STATIONS, job=ask)
     assert chosen.resolution.title == "Geometrische Optik" and chosen.material == "Optik"
-    assert len(fake.bodies) == 1, "the sure topic needs no second call"
+    # the question on topic and material, then the topic's parts (D63); the sure topic is not chosen again
+    assert len(fake.bodies) == 2
     assert fake.bodies[0]["messages"][1]["content"].startswith("Thema der Lehrkraft: Geometrische Optik\n")
 
 

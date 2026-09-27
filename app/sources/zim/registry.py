@@ -410,11 +410,13 @@ class ZimRegistry:
                 sources.append(twin)
                 break
 
-        if named:
-            self._add_named(primary_archive, named, sources, seen, max_articles)
-            if material and material != primary.title:
-                self._add_material(primary_archive, material, sources, LinkedTo(primary_archive, primary))
-            return sources
+        if named:  # read where they were looked up, the leading archive; without a new one the corpus stays as before
+            before = len(sources)
+            self._add_named(self.primary_archive or primary_archive, named, sources, seen, max_articles)
+            if len(sources) > before:
+                if material and material != primary.title:
+                    self._add_material(primary_archive, material, sources, LinkedTo(primary_archive, primary))
+                return sources
 
         # Related sub-articles via ranked internal links of the primary article.
         budget_related = max(0, max_articles - len(sources) - SEARCH_RESERVE)

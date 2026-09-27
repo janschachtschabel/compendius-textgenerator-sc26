@@ -87,11 +87,20 @@ def choose_main_article(
             normalized = replace(normalized, topic=resolution.normalized)
         return MainArticle(normalized, found.subjects, resolution, choice, report, material, articles)
 
-    def the_topic() -> tuple[Resolution, ArticleChoiceReport | None, TopicArticlesReport | None]:
-        """The rules, and with a job the question N (D63) and the choice among the rules' candidates (D35)."""
-        chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
+    def the_articles() -> TopicArticlesReport | None:
+        """With a job, the question N for the request's topic (D63), which hears its subjects too."""
         leading = registry.primary_archive
-        articles = ask_topic_articles(job, leading, found.normalized.topic) if job and leading is not None else None
+        if job is None or leading is None:
+            return None
+        return ask_topic_articles(job, leading, found.normalized.topic, catalog.labels_of(found.subjects))
+
+    def the_topic() -> tuple[Resolution, ArticleChoiceReport | None, TopicArticlesReport | None]:
+        """The rules, and with a job the question N (D63) and the choice among the rules' candidates (D35).
+
+        Where the rules missed the topic the first title N found replaces their article: the overview, or the first
+        part when the archive lacks the overview, as measured (M37, M39)."""
+        chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
+        articles = the_articles()
         overview = articles.found[0] if articles is not None and articles.found else None
         resolution = registry.resolve_topic(
             found.normalized.topic,
@@ -121,7 +130,9 @@ def choose_main_article(
         if answered is not None:
             material = by_name(own) if own else None
             report.material = material.title if material is not None else None
-            return as_found(answered, report=report, material=report.material)
+            # A topic sent along gets its parts as well; the article stays the one this question named
+            articles = the_articles() if topic else None
+            return as_found(answered, report=report, material=report.material, articles=articles)
         if named:
             report.fallback = NAMED_TITLE_MISSING
     report.way = "rules"
