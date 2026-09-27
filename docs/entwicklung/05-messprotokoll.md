@@ -2252,6 +2252,10 @@ Ereignisse, Produkte und Einrichtungen, die in der GND fehlen oder anders heiße
 Materialtexte, Recall gegen den Pool, alle Gutachter Claude-Subagenten; die Sätze aus dem Index an 46 Paaren
 geprüft.
 
+Nach dem zweiten Review (Leerzeilen und Kommentare im Abzug, die Art des Normdaten-Blocks in beiden Abfragen des
+Index) lief M43 mit dem endgültigen Code noch einmal, auf einem neu gebauten GND-Index: dieselben Kennungen und
+dieselben Zahlen.
+
 Rohdaten: `m43_kennungen.json` (je Notenfassung und Profil die Zählung je Kennung und die Herkunft der GND, die
 Gegenprobe, je Artikel die Kennungen mit Herkunft, die vom Index gefüllten GND mit ihren Noten; keine Texte). Die
 Bewertungsbögen mit den Einleitungen blieben außerhalb des Repositorys; die GND-Sätze für die Bögen kamen aus dem
