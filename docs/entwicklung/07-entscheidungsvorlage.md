@@ -85,8 +85,8 @@ Anfrage ein 503, der die Schalter nennt, die ein LLM brauchen; ein Dienst ohne L
 |---|---|---|---|---|---|---|
 | `llm-free` | `rule-based` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` | `rule-based` |
 | `balanced` | `llm` | `hybrid_light` | `rule-based` | `rule-based` | `sources-only` | `rule-based` |
-| `best-quality` | `llm` | `llm` | `rule-based` | `rule-based` | `sources-only` | `llm` |
-| `best-quality-generated` | `llm` | `llm` | `rule-based` | `llm` | `model-knowledge` | `llm` |
+| `best-quality` | `llm-thorough` | `llm` | `rule-based` | `rule-based` | `sources-only` | `llm` |
+| `best-quality-generated` | `llm-thorough` | `llm` | `rule-based` | `llm` | `model-knowledge` | `llm` |
 
 Wo man es findet: in `/docs` am Feld `preset` von `POST /api/v2/compendium` (mit Güte, Zeit und Tokens je Profil) und in
 vier Beispielen, eines je Profil; `POST /api/v2/knowledge` und `POST /api/v2/qa` nehmen `preset` ebenfalls an
@@ -148,15 +148,17 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 | v2.0.0 (nur zum Vergleich) | exakter Titel oder Weiterleitung; bei einer Begriffsklärung zählt, wie oft die Wörter der Anfrage wörtlich im Anfang jeder Bedeutung stehen; sonst Titelvorschläge und Volltextsuche. Nicht mehr wählbar. |
 | **Regeln** (`rule-based`) | wie v2.0.0, aber mit den Kontextwörtern des Fachs aus `config/subjects.yaml`, Wortanfängen statt ganzer Wörter, dreifach gewertetem Titel, Personen und Werken erst zuletzt und Regeln für gebeugte Formen und Genitivwendungen. Sie melden, ob sie sich sicher sind (`method`, `confident`). |
 | **Regeln und LLM** (`llm`) | erst die Regeln; nur wenn sie unsicher sind, wählt das LLM unter ihren Kandidaten oder nennt einen Titel, der nur zählt, wenn das Archiv ihn als Artikel hat. |
+| **Regeln und LLM, gründlich** (`llm-thorough`) | wie `llm`, und das LLM prüft auch eine sichere Auflösung eines Wortes mit mehreren Bedeutungen (D61, Punkt 5). |
 | laya (nur zum Vergleich) | ein kleines lokales Entscheidungsmodell (mmBERT-base, 322 Mio. Parameter) wählt an der Stelle des LLM unter den Kandidaten der Regeln. Ohne Nachtraining gemessen; nicht eingebaut (D42). |
 | alter Weg (v0.2.0, nur zum Vergleich) | ein LLM nennt bei jeder Anfrage bis zu zehn Begriffe mit vermutetem Wikipedia-Titel, jeder wird nachgeschlagen; einen Hauptartikel wählt er nicht. Nicht eingebaut. |
 
-**Profile:** `llm-free` nimmt `rule-based`, die übrigen `llm`, also auch der Standard `balanced` (D53).
+**Profile:** `llm-free` nimmt `rule-based`, der Standard `balanced` `llm` (D53), die beiden `best-quality`-Profile
+`llm-thorough` (D61).
 
 | Einstellung | Werte | Standard |
 |---|---|---|
-| Anfrage: `article_choice` (Kompendium, `POST /api/v2/knowledge` und `/qa`) | `rule-based`, `llm` | aus dem Profil; bei `/qa` mit `topic` `rule-based` in allen Profilen (D55) |
-| Anfrage: `preset` | `llm-free` setzt `rule-based`, die übrigen Profile `llm` | `PRESET_DEFAULT` |
+| Anfrage: `article_choice` (Kompendium, `POST /api/v2/knowledge` und `/qa`) | `rule-based`, `llm`, `llm-thorough` | aus dem Profil; bei `/qa` mit `topic` `rule-based` in allen Profilen (D55) |
+| Anfrage: `preset` | `llm-free` setzt `rule-based`, `balanced` `llm`, die `best-quality`-Profile `llm-thorough` | `PRESET_DEFAULT` |
 | Umgebung: `PRESET_DEFAULT` | die vier Profile | `balanced` (D53); ein Dienst ohne LLM setzt `llm-free` |
 
 | 94 Anfragen in drei Goldsätzen (M9, M16, M17) | v2.0.0 | Regeln | Regeln und LLM | Regeln und laya | alter Weg |
@@ -180,6 +182,9 @@ sucht dann den Artikel, um den sich der Korpus dreht.
   v2.0.0 noch, es ist die einzige Anfrage, die schlechter wurde.
 - Validierungs- und Testsatz sind nicht mehr unabhängig; unabhängig gemessen ist nur der erste Lauf des Testsatzes,
   7, 8 und 9 von 12.
+- Neuere Läufe am selben Gold (M35): Die Regeln treffen 87, `llm` 91 und `llm-thorough` 93 von 94. Behoben wurde
+  dazwischen ein Thema, dessen Titel auf einen Abschnitt weiterleitet; `llm-thorough` prüft auch sichere Auflösungen
+  mehrdeutiger Wörter (Punkt 5).
 - Ein kleines lokales Entscheidungsmodell statt des LLM hilft nicht: laya-multilingual traf ohne Nachtraining 8 der
   18 unsicheren Anfragen, weniger als die Regeln (mit ihnen 81 von 94), und trennte die Volltexttreffer nicht besser
   als Zufall; auf der CPU braucht es 1,7 GB und rund 0,5 s je Entscheidung (M16). Es müsste erst auf unsere
