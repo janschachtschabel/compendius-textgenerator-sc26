@@ -363,11 +363,11 @@ Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.
 | `preset` | setzt | Güte und Kosten je Kompendium (M25, M27 bis M31, `gpt-6-luna`) |
 |---|---|---|
 | `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich, `curriculum_check: rule-based` | 87 von 94 Hauptartikeln richtig (M35), macro-F1 0,45, Teil 1 und 2 rund 1,6 s, keine Tokens; QA-Paare aus den Regeln über den spaCy-Parse (D55), Glossar und Akteure füllen auf (D60): 95 von 120 verlangten, 58 davon mangelfrei (M34; vorher 48 von 96, M30), 0,3 s je Text; Lehrplanelemente aus den Regeln, Überschriften-Treffer gebündelt, 70 bis 81 % der einzeln gezeigten passend (M32) |
-| `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm` | 91 von 94, macro-F1 0,45 wie `llm-free`, rund 3,4 s und 900 Tokens; QA-Paare aus denselben Regeln wie `llm-free` (D57) |
-| `best-quality` | `article_choice: llm-thorough`, `matcher: llm`, Text wörtlich, `curriculum_check: llm`; 180.000 Tokens je Anfrage (D59) | 93 von 94 (M35, D61), macro-F1 0,70, rund 14 s und 26.000 Tokens, rund 170 je Absatz; QA-Paare vom LLM, 99 von 120 mangelfrei, rund 2.400 Tokens je Text (M30); Lehrplanelemente vom LLM geprüft, 74 bis 79 % passend, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr mit Teil 2 (M32) |
+| `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm`: das LLM nennt Übersicht und Teile jedes Themas (D63) und entscheidet unsichere Artikel | 91 von 94; aus passenden Artikeln gedruckt 87 statt 43 % bei 25 Sammelthemen, 93 statt 71 % bei 20 gewöhnlichen Themen (M39); rund 4,2 s und 480 Tokens; das Gold der Zuordnung deckt den neuen Korpus nicht mehr ab (vorher macro-F1 0,45 wie `llm-free`); QA-Paare aus denselben Regeln wie `llm-free` (D57) |
+| `best-quality` | `article_choice: llm-thorough` (Übersicht und Teile wie `balanced`), `matcher: llm`, Text wörtlich, `curriculum_check: llm`; 180.000 Tokens je Anfrage (D59) | 93 von 94 (M35, D61; mit D63 unverändert, M39), macro-F1 0,70 vor D63, rund 14 s und 26.000 Tokens, rund 170 je Absatz; QA-Paare vom LLM, 99 von 120 mangelfrei, rund 2.400 Tokens je Text (M30); Lehrplanelemente vom LLM geprüft, 74 bis 79 % passend, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr mit Teil 2 (M32) |
 | `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, sichtbar gekennzeichnet mit `[Modellwissen]` | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; unter dem ersten Prompt waren zwei Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts (D56): 50 statt 82 Sätze Modellwissen, 13 statt 50 Füllsätze (M31); eine Frage ohne Beleg fällt seit D60 weg, drei dieser Füllsätze |
 
-Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M31; Zeiten für Teil 1 und 2 auf dem
+Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M31, M39; Zeiten für Teil 1 und 2 auf dem
 Entwicklungsrechner). Die Tabelle der Schalter unten nennt noch Messungen mit `gpt-5.6-luna`; mit `gpt-6-luna` ist die
 Güte gleich (Artikelwahl 90 statt 91 von 94, Zuordner macro-F1 0,70), jeder LLM-Aufruf dauert aber ein Viertel bis
 drei Viertel länger (M19).
@@ -385,7 +385,7 @@ ihm bewirken, und seine Beispiele reichen von der kürzesten Anfrage bis zu eine
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
 | `article_choice` | `rule-based` (Profil `llm-free`) | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
-| | `llm` (Profil `balanced`) | entscheidet, wo die Regeln unsicher sind, und verwirft unpassende Volltexttreffer; im Median rund 930 Tokens und 1,7 s mehr je Kompendium |
+| | `llm` (Profil `balanced`) | nennt Übersicht und Teile jedes Themas, die statt der verlinkten Unterartikel und Volltexttreffer in den Korpus kommen; die Übersicht ersetzt den Artikel der Regeln, wo diese das Thema verfehlen (D63); entscheidet, wo die Regeln sonst unsicher sind; im Median rund 480 Tokens und 3,6 s für die Frage (M39) |
 | | `llm-thorough` (Profile `best-quality`, `best-quality-generated`) | wie `llm`, und es prüft auch eine sichere Wahl eines mehrdeutigen Wortes (D61); je geprüftem Wort rund 800 Tokens und 1 s mehr |
 | `curriculum_check` | `rule-based` (Profile `llm-free`, `balanced`) | nichts: die Stichwortregeln finden die Elemente von Teil 2; eines, das nur seine Überschrift zum Thema macht, steht gebündelt bei seinem Bereich |
 | | `llm` (Profile `best-quality`, `best-quality-generated`) | bewertet jedes gefundene Element mit Bereich und Lehrplan und verwirft, was nicht passt; im Median rund 6 s und 8.000 bis 10.000 Tokens je Kompendium mit Teil 2, rund 75 bis 80 Tokens je Element (M32) |
@@ -452,7 +452,8 @@ Anfragen. Mit `article_choice: llm-thorough` (D61, die beiden `best-quality`-Pro
 sichere Wahl eines Wortes mit mehreren Bedeutungen: eine Bedeutung, die die Regeln einer Begriffsklärung entnahmen,
 oder einen exakten Titel, zu dem es eine Seite „(Begriffsklärung)“ gibt. Am Gold (M35, gpt-6-luna): 93 statt 91
 von 94, keine der 44 richtigen sicheren Wahlen, die es zusätzlich sah, wurde falsch; gefragt wird bei 64 statt 18
-der 94 Anfragen, je neuer Frage rund 800 Tokens und 1 s. Außerdem prüft das LLM die Nebenartikel des Korpus: Es benotet alle Korpusartikel eines Themas in einem
+der 94 Anfragen, je neuer Frage rund 800 Tokens und 1 s. Außerdem prüft das LLM die Nebenartikel des Korpus, wenn
+die Frage nach den Artikeln des Themas (unten, D63) keine brauchbare Antwort gab: Es benotet alle Korpusartikel eines Themas in einem
 Aufruf (2 gehört zum Thema, 1 verwandt, 0 passt nicht), und Volltexttreffer und verlinkte Unterartikel mit 0 fallen
 heraus (`hits_dropped`, D48). Volltexttreffer ohne Link zum oder vom Hauptartikel lässt der Dienst in jeder Stufe
 weg. Gemessen an den blind vergebenen Noten der 20 Themen aus M1 (M25, gpt-6-luna): statt 25 druckte die
@@ -462,6 +463,24 @@ Messung gestellt hatte: im Median 2,0 s mehr je Kompendium (90. Perzentil 4,2 s)
 Nebenartikel braucht im Median 2,0 s, eine unsichere Artikelwahl kommt dazu (M13 mit gpt-5.6-luna: 1,0 bis 2,7 s).
 Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil 1 im Median 1,35 statt 1,37 s). Derselbe Schalter steht in
 `POST /api/v2/knowledge`, damit Wissenstexte und Kompendium für ein Thema dieselben Artikel nennen.
+
+**Übersicht und Teile eines Themas (D63).** Mit `article_choice: llm` oder `llm-thorough` fragt der Dienst bei jedem
+Thema zuerst nach seinen Artikeln: Das LLM nennt den Übersichtsartikel - bei einer Gruppe wie „deutsche Dichter“ die
+Epoche, Gattung oder den Oberbegriff, keine Liste - und bis zu acht Artikel zu den wichtigsten Vertretern, Teilen oder
+Aspekten (Prompt `topic_articles@v1`, wortgleich der Frage N aus M37). Was davon ein Artikel des Archivs ist
+(eine Weiterleitung gilt als ihr Ziel, eine Begriffsklärung entfällt), kommt nach Hauptartikel und Klexikon-Zwilling in
+den Korpus (`origin: named`), an die Stelle der verlinkten Unterartikel und Volltexttreffer; die Prüfung der
+Nebenartikel entfällt dann. Die Übersicht ersetzt den Artikel der Regeln nur, wo diese das Thema verfehlen: bei einem
+Titelvorschlag, einem Volltexttreffer, einer Listenseite oder ohne jeden Treffer. Sonst bleibt er, und das LLM
+entscheidet unsichere Fälle wie oben. Ohne brauchbare Antwort bleibt der Korpus wie vorher, samt Prüfung der
+Nebenartikel; `audit.llm.article_choice` nennt die gefundenen Titel (`articles_found`), ob die Übersicht Hauptartikel
+wurde (`articles_main`) und warum nicht (`articles_fallback`). Ein Material ohne `topic` behält seinen Weg (D47).
+Gemessen mit `gpt-6-luna` (M37, durch den Dienst nachgemessen in M39): Bei 25 Sammel- und Mischthemen stammen 87 statt
+45 % der gedruckten Absätze aus passenden Artikeln (21 statt 10 brauchbare Kompendien), bei 20 gewöhnlichen Themen 93
+statt 73 %; am Gold der Artikelwahl bleiben es 91 von 94 („Lichtlehre“ wird *Optik*, „Ursachen des Ersten
+Weltkriegs“ *Julikrise*). Die Frage kostet im Median 3,6 s und 480 Tokens; ein Kompendium mit Teil 1 und 2 brauchte in
+`balanced` 4,2 s. `llm-free` bleibt ohne LLM: Weder spaCy noch der Aufbau des Archivs (M38) noch kleine lokale Modelle
+(M40) erreichen diese Wirkung.
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur

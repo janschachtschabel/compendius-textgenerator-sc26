@@ -95,6 +95,7 @@ def corpus_for_topic(
         slots=template.content_slots(),
         max_articles=max_articles or service.settings.corpus_max_articles,
         material=chosen.material,
+        named=chosen.articles.found if chosen.articles is not None else (),
     )
     if chosen.node is not None:
         chosen.node.added = any(source.origin == NODE_ORIGIN for source in sources)
@@ -108,15 +109,17 @@ def corpus_for_topic(
         return normalized.topic, resolution, list(sources), None, node_info
     by_llm = resolution.method == CHOSEN_BY_LLM
     named = chosen.node is not None and chosen.node.way == "llm"
+    articles = chosen.articles
     info = choice_block(
         requested,
-        choice_used(by_llm or named, hit_check),
-        not resolution.confident or side_articles > 0 or chosen.node is not None,
+        choice_used(by_llm or named, hit_check, articles),
+        not resolution.confident or side_articles > 0 or chosen.node is not None or articles is not None,
         chosen.choice,
         resolution.title if by_llm else None,
         hit_check,
+        articles,
     )
-    reports = (chosen.choice, hit_check, chosen.node)
+    reports = (chosen.choice, hit_check, chosen.node, articles)
     info["tokens"] = sum(report.total_tokens for report in reports if report is not None)
     info["note"] = note
     return normalized.topic, resolution, list(sources), info, node_info

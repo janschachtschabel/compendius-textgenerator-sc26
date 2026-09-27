@@ -70,7 +70,8 @@ def test_the_llm_can_drop_the_full_text_hits_that_do_not_fit(
     titles = [article["title"] for article in body["articles"]]
     assert "Augenoptiker" not in titles and "Lichtmikroskop" in titles
     choice = body["article_choice"]
-    assert choice["used"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"] and choice["tokens"] == 24
+    # 48: N (D63), whose answer here names no article, and the hit check
+    assert choice["used"] == "llm" and choice["hits_dropped"] == ["Augenoptiker"] and choice["tokens"] == 48
 
 
 def test_the_best_quality_profiles_choose_from_a_budget_of_their_own(

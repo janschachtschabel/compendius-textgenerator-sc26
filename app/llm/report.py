@@ -7,6 +7,7 @@ from typing import Any
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
+from app.knowledge.topic_articles import TopicArticlesReport
 from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
@@ -45,6 +46,7 @@ def build_llm_report(
     choice_needed: bool = False,
     hit_check: HitCheckReport | None = None,
     node: NodeArticleReport | None = None,
+    articles: TopicArticlesReport | None = None,
     curriculum_requested: str = "rule-based",
     curriculum: CurriculumCheckReport | None = None,
     curriculum_fallback: str | None = None,
@@ -56,6 +58,7 @@ def build_llm_report(
     side articles, and ``choice_needed`` whether there was anything to ask - an unsure article, side articles or a
     material; only then is the model asked, so only then is its absence a fallback. ``node`` is the question about a
     material (D47): its tokens and prompt count here, its answer and why it did not decide are in audit.node_article.
+    ``articles`` is the question for the overview and the parts of a topic (D63).
     ``curriculum_*`` describe curriculum_check=llm (D58): what the model rated in part 2, and why the rules decided
     when it was not asked.
     """
@@ -69,8 +72,9 @@ def build_llm_report(
         | ArticleChoiceReport
         | HitCheckReport
         | NodeArticleReport
+        | TopicArticlesReport
         | CurriculumCheckReport
-    ] = [r for r in (node, choice, hit_check, matching, extraction, generation, curriculum) if r is not None]
+    ] = [r for r in (node, articles, choice, hit_check, matching, extraction, generation, curriculum) if r is not None]
     curriculum_used = "llm" if curriculum is not None and curriculum.answered else "rule-based"
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
@@ -84,7 +88,9 @@ def build_llm_report(
     used = (extraction_used, generation_used, matching_used, choice_used, curriculum_used)
     if note is None and all(switch == "rule-based" for switch in used):
         note = NOTHING_CONTRIBUTED
-    article_choice = choice_block(choice_requested, choice_used, choice_needed, choice, choice_chosen, hit_check)
+    article_choice = choice_block(
+        choice_requested, choice_used, choice_needed, choice, choice_chosen, hit_check, articles
+    )
     extraction_block: dict[str, Any] = {
         "requested": extraction_requested,
         "used": extraction_used,
@@ -138,7 +144,7 @@ def build_llm_report(
     if gateway is not None:
         models = [
             r.model
-            for r in (generation, extraction, matching, choice, hit_check, node, curriculum)
+            for r in (generation, extraction, matching, choice, hit_check, node, articles, curriculum)
             if r is not None and r.model
         ]
         front["provider"] = gateway.client.provider
@@ -156,8 +162,17 @@ def build_llm_report(
         }
     if curriculum_requested == "llm":
         front["curriculum_check"] = {key: curriculum_block[key] for key in ("rated", "dropped", "fallback")}
-    if article_choice["asked"] or article_choice["hits_checked"]:
-        keys = ("offered", "chosen", "fallback", "hits_checked", "hits_dropped", "hits_fallback")
+    if article_choice["asked"] or article_choice["hits_checked"] or article_choice["articles_asked"]:
+        keys = (
+            "offered",
+            "chosen",
+            "fallback",
+            "hits_checked",
+            "hits_dropped",
+            "hits_fallback",
+            "articles_found",
+            "articles_fallback",
+        )
         front["article_choice"] = {key: article_choice[key] for key in keys}
     if enrichment_used == "model-knowledge":
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note

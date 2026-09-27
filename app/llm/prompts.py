@@ -267,6 +267,27 @@ ENTITY_CHECK = Prompt(
     ),
 )
 
+# The question N of M37 word for word (docs/entwicklung/messung/mc_sammelthemen.py, D63): the model names the
+# overview article of a topic and the articles on its most important members, parts or aspects
+TOPIC_ARTICLES = Prompt(
+    id="topic_articles",
+    version=1,
+    system=(
+        "Du hilfst, für ein Unterrichtsthema die Artikel der deutschsprachigen Wikipedia auszuwählen, aus denen ein "
+        "Kompendium entsteht. Antworte nur mit JSON."
+    ),
+    user=(
+        "Thema: {topic}\n\n"
+        "Das Thema kann ein einzelner Begriff sein, eine Gruppe (etwa „deutsche Dichter“) oder die Verbindung zweier "
+        "Themen (etwa „Klimawandel und Landwirtschaft“). Nenne die Artikel, die es zusammen abdecken:\n"
+        "- zuerst den Übersichtsartikel, der das Thema als Ganzes behandelt - bei einer Gruppe die Epoche, Gattung "
+        "oder den Oberbegriff, keine Liste;\n"
+        "- dann bis zu {count} Artikel zu den wichtigsten Vertretern, Teilen oder Aspekten des Themas.\n"
+        "Nenne nur Titel, die es in der deutschsprachigen Wikipedia gibt, in ihrer genauen Schreibweise.\n"
+        'Antworte so: {{"uebersicht": "<Titel>", "artikel": ["<Titel>", ...]}}'
+    ),
+)
+
 PROMPTS: dict[str, Prompt] = {
     p.id: p
     for p in (
@@ -276,6 +297,7 @@ PROMPTS: dict[str, Prompt] = {
         PARAGRAPH_ASSIGNMENT,
         ARTICLE_CHOICE,
         HIT_CHECK,
+        TOPIC_ARTICLES,
         NODE_TOPIC,
         NODE_TOPIC_WITH_TOPIC,
         QA_PAIRS,

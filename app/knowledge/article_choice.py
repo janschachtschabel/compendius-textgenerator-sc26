@@ -18,6 +18,10 @@ Two steps, both measured against the gold of eval/artikelwahl on 2026-09-23 (doc
 
 Whatever keeps the model from answering usably - b-api, budget, time, an unreadable answer - leaves the rules'
 article and every side article, and the reason goes to the audit.
+
+Since D63 the model first names the overview and the parts of a topic (app/knowledge/topic_articles.py, M37): the
+articles of the archive among them replace the linked sub-articles and the full-text hits, so the hit check has
+nothing left to rate, and the overview replaces the rules' article where they missed the topic.
 """
 
 from __future__ import annotations
@@ -27,7 +31,7 @@ import random
 import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from app.domain.models import Source
 from app.llm.budget import RequestBudget
@@ -35,6 +39,9 @@ from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+
+if TYPE_CHECKING:  # topic_articles builds on this module
+    from app.knowledge.topic_articles import TopicArticlesReport
 
 OUTPUT_TOKENS = 60
 NO_SUBJECT = "nicht angegeben"
@@ -203,9 +210,13 @@ def rate_articles(
     return {s.source_id: read_number(notes.get(a)) for a, s in alias.items()}
 
 
-def choice_used(chose_article: bool, hit_check: HitCheckReport | None) -> str:
-    """``llm`` when the model's answer decided anything, the article or which full-text hits stay; else the rules."""
-    return "llm" if chose_article or (hit_check is not None and hit_check.answered) else "rule-based"
+def choice_used(
+    chose_article: bool, hit_check: HitCheckReport | None, articles: TopicArticlesReport | None = None
+) -> str:
+    """``llm`` when the model's answer decided anything - the article, the articles of the topic (D63) or which side
+    articles stay; else the rules."""
+    named = articles is not None and bool(articles.found)
+    return "llm" if chose_article or named or (hit_check is not None and hit_check.answered) else "rule-based"
 
 
 def choice_block(
@@ -215,11 +226,13 @@ def choice_block(
     choice: ArticleChoiceReport | None,
     chosen: str | None,
     hit_check: HitCheckReport | None,
+    articles: TopicArticlesReport | None = None,
 ) -> dict[str, Any]:
     """What article_choice asked and decided, for the audit of a compendium and the answer of /knowledge.
 
     ``used`` is ``llm`` when the model's answer decided anything, the article or the side articles; ``needed`` says
-    whether there was anything to ask, ``chosen`` is the article the model decided on.
+    whether there was anything to ask, ``chosen`` is the article the model decided on, ``articles`` what it named for
+    the topic (D63).
     """
     fallback = choice.fallback if choice else None
     if choice is not None and choice.named and chosen is None:
@@ -236,6 +249,10 @@ def choice_block(
         "hits_checked": hit_check.checked if hit_check else 0,
         "hits_dropped": list(hit_check.dropped) if hit_check else [],
         "hits_fallback": hit_check.fallback if hit_check else None,
+        "articles_asked": bool(articles and articles.calls),  # false for a material, or when budget or time were short
+        "articles_found": list(articles.found) if articles else [],  # the overview (when found) first
+        "articles_main": bool(articles and articles.main),  # the overview replaced the rules' article
+        "articles_fallback": articles.fallback if articles else None,
     }
 
 

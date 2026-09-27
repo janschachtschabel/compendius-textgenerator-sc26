@@ -72,7 +72,7 @@ class Source(BaseModel):
     language: str = "de"
     authority_score: float = 1.0
     is_primary: bool = False
-    origin: str = Field("primary", description="primary | same_topic | linked | search | node | lookup")
+    origin: str = Field("primary", description="primary | same_topic | linked | search | named | node | lookup")
     aliases: list[str] = Field(default_factory=list)
     links: list[str] = Field(default_factory=list)
     reference_lines: list[str] = Field(default_factory=list, description="Lines from Literatur/Weblinks sections")

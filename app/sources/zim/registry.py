@@ -37,10 +37,23 @@ RELATED_MIN_CHARS = 350
 # ("Schleife") and 26 ("Fall" -> Kasus), and a cap of 12 hid them
 MAX_MEANINGS = 40
 CHOSEN_BY_LLM = "llm"  # resolution method when article_choice=llm decided (D35)
+GUESSED = frozenset({"suggestion", "search"})  # resolution methods that reach an article the name did not name
 NODE_ORIGIN = "node"  # the article of a material sent along with a topic (D47)
+NAMED_ORIGIN = "named"  # an article the LLM named for the topic with its overview (D63)
 # article_choice=llm (D35): gets the (title, opening) candidates of an unsure resolution and answers with the index
 # of one, or with a title of its own, or with neither
 ArticleChooser = Callable[[Sequence[tuple[str, str]]], tuple[int | None, str | None]]
+
+
+def misses_topic(resolution: Resolution) -> bool:
+    """Whether the rules missed the topic: nothing found, a title suggestion or full-text hit, or a list page.
+
+    There the overview the LLM names replaces their article (D63, option C of the decision paper). A list page is
+    reached surely, as the redirect of a group ("deutsche Dichter" -> Liste deutschsprachiger Lyriker), but carries
+    little text; on the 94 gold queries these cases are 5 (M39).
+    """
+    title = resolution.title
+    return title is None or resolution.method in GUESSED or title.startswith("Liste ")
 
 
 class ZimRegistry:
@@ -113,6 +126,7 @@ class ZimRegistry:
         chooser: ArticleChooser | None = None,
         *,
         thorough: bool = False,
+        overview: str | None = None,
     ) -> Resolution:
         """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits.
 
@@ -127,8 +141,13 @@ class ZimRegistry:
         meanings as well: a meaning the rules took from a disambiguation page, or an exact title that has a
         "(Begriffsklärung)" page. On the 94 gold queries that was 93 instead of 91 right, and none of the 44 right
         sure resolutions it checked turned wrong (M35).
+
+        ``overview`` is the overview article the LLM named for the topic (D63): it replaces the rules' article where
+        they missed the topic (``misses_topic``), and then the chooser is not asked.
         """
         resolution = self._resolve_by_rules(topic, context, query, terms)
+        if overview is not None and misses_topic(resolution) and self._take_overview(resolution, overview):
+            return resolution
         if chooser is None or not resolution.resolved:
             return resolution
         if not resolution.confident or (thorough and self._has_meanings(resolution)):
@@ -154,6 +173,19 @@ class ZimRegistry:
         if meanings:
             resolution._meanings = meanings
         return bool(meanings)
+
+    def _take_overview(self, resolution: Resolution, title: str) -> bool:
+        """Put the overview article in place of the rules' article, which leads the alternatives; ``False`` when the
+        leading archive does not have it as an article."""
+        archive = self.primary_archive
+        article = archive.read_article(title) if archive is not None else None
+        if archive is None or article is None or archive.parse(article).is_disambiguation:
+            return False
+        if resolution.title is not None and resolution.title != article.title:
+            others = [t for t in resolution.alternatives if t != article.title]
+            resolution.alternatives = [resolution.title, *others][:8]
+        self._take(resolution, article, archive, method=CHOSEN_BY_LLM, confident=False)
+        return True
 
     def _let_choose(self, resolution: Resolution, chooser: ArticleChooser) -> None:
         """Let the chooser decide an unsure resolution; its answer replaces the rules' article when it is one.
@@ -335,12 +367,18 @@ class ZimRegistry:
 
     # -- corpus ------------------------------------------------------------------------------------
     def build_corpus(
-        self, resolution: Resolution, slots: Sequence[TemplateSlot], max_articles: int, material: str | None = None
+        self,
+        resolution: Resolution,
+        slots: Sequence[TemplateSlot],
+        max_articles: int,
+        material: str | None = None,
+        named: Sequence[str] = (),
     ) -> list[Source]:
         """The main article, its twin, linked sub-articles and full-text hits for the blocks, at most ``max_articles``.
 
         ``material`` is the own article of a material sent along with a topic (D47): it joins as a source of its own
-        (origin ``node``) when it links with the main article, whatever ``max_articles`` says.
+        (origin ``node``) when it links with the main article, whatever ``max_articles`` says. ``named`` are the
+        articles the LLM named for the topic (D63): they take the places of the linked sub-articles and the hits.
         """
         if resolution.title is None or resolution.project is None:
             return []
@@ -371,6 +409,12 @@ class ZimRegistry:
                 twin.origin = "same_topic"
                 sources.append(twin)
                 break
+
+        if named:
+            self._add_named(primary_archive, named, sources, seen, max_articles)
+            if material and material != primary.title:
+                self._add_material(primary_archive, material, sources, LinkedTo(primary_archive, primary))
+            return sources
 
         # Related sub-articles via ranked internal links of the primary article.
         budget_related = max(0, max_articles - len(sources) - SEARCH_RESERVE)
@@ -414,6 +458,22 @@ class ZimRegistry:
             self._add_material(primary_archive, material, sources, linked_to)
         return sources
 
+    def _add_named(
+        self, archive: ZimArchive, titles: Sequence[str], sources: list[Source], seen: set[tuple[str, str]], cap: int
+    ) -> None:
+        """The articles the LLM named, in its order, until the corpus holds ``cap`` articles (D63).
+
+        Unlike linked sub-articles and hits they need no length, no mention of the topic in their paragraphs and no
+        hit check: the model named them for the topic, and so they were measured (M37).
+        """
+        for title in titles:
+            if len(sources) >= cap:
+                return
+            part = self._read_source(archive, title, seen)
+            if part is not None:
+                part.origin = NAMED_ORIGIN
+                sources.append(part)
+
     @staticmethod
     def _add_material(archive: ZimArchive, title: str, sources: list[Source], linked_to: LinkedTo) -> None:
         """The material's own article as a source of its own; one already in the corpus keeps its place (D47).
@@ -426,7 +486,7 @@ class ZimRegistry:
             return
         present = next((s for s in sources if s.project == archive.project and s.title == article.title), None)
         if present is not None:
-            if not present.is_primary and present.origin in {"linked", "search"}:
+            if not present.is_primary and present.origin in {"linked", "search", NAMED_ORIGIN}:
                 present.origin = NODE_ORIGIN  # asked for: no topic filter on its paragraphs, no hit check
             return
         own = archive.to_source(article, is_primary=False)

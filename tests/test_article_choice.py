@@ -23,6 +23,7 @@ from app.knowledge.article_choice import (
     choice_block,
     rate_articles,
 )
+from app.knowledge.topic_articles import NONE_FOUND
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService, LlmNotConfiguredError
 from app.sources.wlo.client import EduSharingClient
@@ -243,7 +244,9 @@ def test_article_choice_llm_drops_the_full_text_hits_the_model_rates_zero(
 
     titles = [s.title for s in result.sources]
     assert "Augenoptiker" not in titles and "Lichtmikroskop" in titles  # the other hit stays
-    assert len(fake.bodies) == 1  # "Optik" is sure: the only call is the hit check
+    # "Optik" is sure, so its article is not chosen; N (D63) is asked first, its answer here names no article of
+    # the archive, and the side articles of before come to the hit check
+    assert len(fake.bodies) == 2
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
     assert choice["used"] == "llm" and choice["needed"] and not choice["asked"]
@@ -268,19 +271,21 @@ def test_article_choice_llm_drops_a_linked_sub_article_the_model_rates_zero(
     assert choice["used"] == "llm" and choice["hits_checked"] == 1 and choice["hits_dropped"] == ["Technische Optik"]
 
 
-def test_a_sure_topic_without_side_articles_costs_no_call(
+def test_a_sure_topic_without_side_articles_asks_only_for_its_articles(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     fake = FakeBApi(answering({"wahl": 1}))
     monkeypatch.setattr(service, "llm", make_gateway(fake))
     result = service.generate(GenerateRequest(topic="Programmiersprache", article_choice="llm", parts=["world"]))
 
+    # Since D63 every topic asks for its overview and parts (N); the answer here names no article, so the rules decide
     assert [s.title for s in result.sources] == ["Programmiersprache"]
-    assert fake.bodies == [] and result.resolution.method == "title"
+    assert len(fake.bodies) == 1 and result.resolution.method == "title"
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
     assert choice["requested"] == "llm" and choice["used"] == "rule-based"
-    assert not choice["needed"] and not choice["asked"]
+    assert choice["needed"] and not choice["asked"] and choice["articles_asked"]
+    assert choice["articles_fallback"] == NONE_FOUND and choice["hits_checked"] == 0
 
 
 def test_article_choice_llm_without_a_configured_llm_is_refused(service: CompendiumService) -> None:

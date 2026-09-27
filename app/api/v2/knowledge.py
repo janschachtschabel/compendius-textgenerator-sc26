@@ -112,7 +112,8 @@ class KnowledgeArticle(BaseModel):
     title: str
     url: str
     origin: str = Field(
-        description="primary | same_topic | linked | search | node (the article of a material sent along with a "
+        description="primary | same_topic | linked | search | named (an article the LLM named for the topic, in "
+        "place of linked sub-articles and full-text hits, D63) | node (the article of a material sent along with a "
         "topic, D47) | lookup"
     )
     is_primary: bool
@@ -178,8 +179,9 @@ EXAMPLES = {
         "description": (
             "archives fragt einzelne Archive (unbekannte id: 404), max_articles begrenzt die zusätzlichen "
             "Artikel, max_chars deckelt den Text über alle Artikel und setzt truncated. article_choice llm lässt "
-            "das LLM entscheiden, wo die Regeln unsicher sind, und unpassende Nebenartikel verwerfen; rule-based "
-            "nimmt die Regeln allein. Ohne b-api wählen die Regeln, und article_choice in der Antwort sagt warum."
+            "das LLM den Übersichtsartikel und die Artikel zu den Teilen des Themas nennen (origin named) und "
+            "entscheiden, wo die Regeln unsicher sind; rule-based nimmt die Regeln allein. Ohne b-api wählen die "
+            "Regeln, und article_choice in der Antwort sagt warum."
         ),
         "value": {
             "topic": "Optik",
@@ -252,17 +254,19 @@ def knowledge(
     for the further articles.
 
     ``article_choice`` works as in a compendium request, so both name the same articles for a topic: with
-    ``llm`` the LLM decides where the rules are unsure and drops the side articles that do not fit, with
-    ``llm-thorough`` it also checks a sure choice of a word with several meanings, and ``article_choice`` in the
-    answer says what it did and what it cost. ``subject`` helps decide an ambiguous
-    topic, as in a compendium.
+    ``llm`` the LLM names the topic's overview article and the articles on its parts (origin ``named``, D63),
+    which replace the linked sub-articles and full-text hits, and the overview replaces the rules' article where
+    they missed the topic; it decides where the rules are unsure, and without a usable answer it drops the side
+    articles of before that do not fit. With ``llm-thorough`` it also checks a sure choice of a word with several
+    meanings, and ``article_choice`` in the answer says what it did and what it cost. ``subject`` helps decide an
+    ambiguous topic, as in a compendium.
 
     **What each profile does here.** ``preset`` sets ``article_choice`` as the profile of a compendium would;
     without it the server's profile applies (PRESET_DEFAULT, shipped balanced), and an ``article_choice`` of the
     request wins.
 
     - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
-    - ``balanced``: the LLM decides an unsure article and drops the side articles that do not fit (``llm``).
+    - ``balanced``: the LLM names the overview and the parts of the topic and decides an unsure article (``llm``).
     - ``best-quality`` and ``best-quality-generated``: balanced, and the LLM also checks a sure choice of a word
       with several meanings (``llm-thorough``, D61), from the larger budget of these profiles
       (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so nothing else of

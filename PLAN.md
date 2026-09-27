@@ -1780,6 +1780,26 @@ API.
   `max_entities` (24 Tokens je Entität, mindestens 1.200), auf demselben Wort gewinnt der Titel des LLM gegen die
   Regeln, ein kürzerer Name sucht an Stellen, die kein längerer belegt, und die Suche der Stellen läuft mit
   `str.find` in linearer Zeit (ein Wort über 100 Zeichen ist kein Name). Die Nachmessung ergab dieselben Artikel.
+- **D63 (2026-09-27)** Die Frage N kommt in `balanced` und beide `best-quality`-Profile (Jan: „am balanced sollte
+  gpt-6-luna die fragen stellen nach dem neuen verfahren“; Punkt 9 der Entscheidungsvorlage, Option C; M37, M39).
+  Mit `article_choice` `llm` oder `llm-thorough` nennt das LLM bei jedem Thema den Übersichtsartikel und bis zu acht
+  Artikel zu den wichtigsten Vertretern, Teilen oder Aspekten (Prompt `topic_articles@v1`, wortgleich M37;
+  `app/knowledge/topic_articles.py`). Nachgeschlagen wie gemessen: im führenden Archiv, eine Weiterleitung als ihr
+  Ziel, sonst in den Schreibvarianten des alten Dienstes; Begriffsklärungen und Doppelte entfallen. Die gefundenen
+  Artikel ersetzen im Korpus die verlinkten Unterartikel und Volltexttreffer (`origin: named`: ohne Themenfilter der
+  Absätze, im Rang und als Unterthemen für Teil 2 wie verlinkte); Hauptartikel und Klexikon-Zwilling bleiben, die
+  Trefferprüfung entfällt. Die Übersicht ersetzt den Artikel der Regeln nur, wo diese das Thema verfehlen
+  (`misses_topic`: Titelvorschlag, Volltexttreffer, Listenseite, kein Treffer), und dann wählt das LLM nicht mehr unter
+  den Kandidaten der Regeln. Ohne brauchbare Antwort bleibt der Korpus wie vorher, mit Trefferprüfung;
+  `audit.llm.article_choice` nennt `articles_found`, `articles_main` und `articles_fallback`. Ein Material ohne Thema
+  behält seinen Weg (D47); `/knowledge` nennt dieselben Artikel wie das Kompendium, die Lehrplansuche nimmt die
+  Unterthemen des neuen Korpus. Vor dem Bau geprüft: 5 der 94 Gold-Anfragen lösen die Übersicht aus, „Lichtlehre“
+  wird richtig (*Optik*), „Ursachen des Ersten Weltkriegs“ falsch (*Julikrise*), die Artikelwahl bleibt bei 91 und 93
+  von 94. Durch den Dienst nachgemessen (M39): in allen 45 Themen derselbe Hauptartikel wie der Prototyp, 87 % der
+  Absätze aus passenden Artikeln bei den Sammelthemen und 93 % bei den gewöhnlichen, wie in M37; die Frage im Median
+  3,6 s und 480 Tokens, `balanced` mit Teil 1 und 2 4,2 s. Das Gold der Zuordnung deckt den neuen Korpus nicht mehr
+  ab: 243 statt 62 der 643 Labels veralten, an den übrigen macro-F1 0,50 statt 0,45. Vier Tests nahmen an, ein
+  sicheres Thema ohne Nebenartikel koste keinen Aufruf; sie prüfen jetzt, dass N gefragt wird.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

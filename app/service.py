@@ -41,6 +41,7 @@ from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import NodeArticleReport, node_block
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import NormalizedTopic, topic_stem
+from app.knowledge.topic_articles import TopicArticlesReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
@@ -67,7 +68,7 @@ from app.sources.wlo.part import (
     node_topic,
 )
 from app.sources.wlo.repository import repository_root
-from app.sources.zim.registry import CHOSEN_BY_LLM, NODE_ORIGIN, ZimRegistry
+from app.sources.zim.registry import CHOSEN_BY_LLM, NAMED_ORIGIN, NODE_ORIGIN, ZimRegistry
 from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
@@ -148,6 +149,7 @@ class PreparedTopic:
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
     article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
     hit_check: HitCheckReport | None = None  # article_choice=llm: which side articles the model dropped
+    articles: TopicArticlesReport | None = None  # article_choice=llm: the overview and parts the model named (D63)
     side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
     node_article: NodeArticleReport | None = None  # how the article of a material was found (D47)
     material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
@@ -277,6 +279,7 @@ class CompendiumService:
             collection=collection,
             node=node,
             article_choice=chosen.choice,
+            articles=chosen.articles,
             node_article=chosen.node,
             material=chosen.material,
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
@@ -313,8 +316,9 @@ class CompendiumService:
     ) -> None:
         """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks.
 
-        With ``choice`` the model drops the side articles that do not fit the topic (D35, M25). The article of a
-        material sent along with a topic joins when it links with the main article (D47).
+        With ``choice`` the articles the model named for the topic are the side articles (D63); without them it drops
+        the side articles that do not fit the topic (D35, M25). The article of a material sent along with a topic
+        joins when it links with the main article (D47).
         """
         lap = _Stopwatch(prepared.timings).lap
         sources = self.registry.build_corpus(
@@ -322,6 +326,7 @@ class CompendiumService:
             slots=prepared.template.content_slots(),
             max_articles=request.max_articles or self.settings.corpus_max_articles,
             material=prepared.material,
+            named=prepared.articles.found if prepared.articles is not None else (),
         )
         if prepared.node_article is not None:
             prepared.node_article.added = any(s.origin == NODE_ORIGIN for s in sources)
@@ -948,16 +953,21 @@ def choice_audit(prepared: PreparedTopic, requested: str) -> dict[str, Any]:
     """What build_llm_report says about the article choice of a prepared topic (D35, D47), for the audit of a
     compendium and the answer of the curriculum search."""
     resolution, hit_check, node_report = prepared.resolution, prepared.hit_check, prepared.node_article
+    articles = prepared.articles
     named_by_llm = node_report is not None and node_report.way == "llm"
     return {
         "choice_requested": requested,
-        "choice_used": choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check),
+        "choice_used": choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check, articles),
         "choice": prepared.article_choice,
         "choice_chosen": resolution.title if resolution.method == CHOSEN_BY_LLM else None,
-        # the model is asked for an unsure article (a chosen one stays unsure) and for side articles
-        "choice_needed": not resolution.confident or prepared.side_articles > 0 or node_report is not None,
+        # the model is asked for an unsure article (a chosen one stays unsure), for side articles and, with a topic,
+        # for its articles (D63)
+        "choice_needed": (
+            not resolution.confident or prepared.side_articles > 0 or node_report is not None or articles is not None
+        ),
         "hit_check": hit_check,
         "node": node_report,
+        "articles": articles,
     }
 
 
@@ -1001,8 +1011,16 @@ def _parts_status(
 
 
 # Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for and
-# the article of its node, then the neighbours found by links and search. Anything else (lookups) comes last.
-ORIGIN_PRIORITY = {"primary": 0, "same_topic": 1, "material": 2, NODE_ORIGIN: 2, "linked": 3, "search": 4}
+# the article of its node, then the neighbours the LLM named or links and search found. Anything else (lookups) last.
+ORIGIN_PRIORITY = {
+    "primary": 0,
+    "same_topic": 1,
+    "material": 2,
+    NODE_ORIGIN: 2,
+    NAMED_ORIGIN: 3,  # the LLM's articles on the parts of the topic, in place of linked ones (D63)
+    "linked": 3,
+    "search": 4,
+}
 
 
 def _segment_corpus(
@@ -1057,7 +1075,7 @@ def _subtopics(sources: list[Source], primary: Source | None) -> list[str]:
         source.title
         for source in sources
         if not source.is_primary
-        and source.origin in {"same_topic", NODE_ORIGIN, "linked"}
+        and source.origin in {"same_topic", NODE_ORIGIN, "linked", NAMED_ORIGIN}
         and stem in source.title.lower()
     ]
 

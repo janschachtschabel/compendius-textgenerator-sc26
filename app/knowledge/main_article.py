@@ -3,7 +3,9 @@
 One place for the compendium and /knowledge, so both name the same article for the same request:
 
 - a topic, or a collection whose title serves as one: the rules resolve it, and with article_choice llm the LLM
-  decides where they are unsure (D35);
+  decides where they are unsure (D35). Before that the LLM names the topic's overview article and the articles on its
+  parts (D63, ``ask_topic_articles``); the overview replaces the rules' article where they missed the topic, and the
+  parts are the side articles of the corpus;
 - a material without a topic: its title is often a format, not a subject, so the article comes from the rules over
   its title and description (``rule_article``) or, with article_choice llm, from the LLM (``ask_topic``);
 - a topic and a material: the topic leads. The rules resolve it and name the material's own article; with
@@ -25,12 +27,11 @@ from app.knowledge.article_choice import (
 )
 from app.knowledge.node_article import NodeArticleReport, ask_topic, ranked_entities, rule_article
 from app.knowledge.topic import NormalizedTopic, normalize_topic
+from app.knowledge.topic_articles import TopicArticlesReport, ask_topic_articles
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
-from app.sources.zim.registry import ZimRegistry
-
-GUESSED = frozenset({"suggestion", "search"})  # resolution methods that reach an article the name did not name
+from app.sources.zim.registry import CHOSEN_BY_LLM, GUESSED, ZimRegistry
 
 
 @dataclass
@@ -43,6 +44,7 @@ class MainArticle:
     choice: ArticleChoiceReport | None = None  # the LLM deciding an unsure topic (D35)
     node: NodeArticleReport | None = None  # how a material's article was found (D47)
     material: str | None = None  # the material's own article beside the topic's, for the corpus
+    articles: TopicArticlesReport | None = None  # the overview and the parts the LLM named for a topic (D63)
 
 
 def choose_main_article(
@@ -78,14 +80,19 @@ def choose_main_article(
         choice: ArticleChoiceReport | None = None,
         report: NodeArticleReport | None = None,
         material: str | None = None,
+        articles: TopicArticlesReport | None = None,
     ) -> MainArticle:
         normalized = found.normalized
         if report is not None and not topic and resolution.resolved:  # the material's topic is the article found
             normalized = replace(normalized, topic=resolution.normalized)
-        return MainArticle(normalized, found.subjects, resolution, choice, report, material)
+        return MainArticle(normalized, found.subjects, resolution, choice, report, material, articles)
 
-    def the_topic() -> tuple[Resolution, ArticleChoiceReport | None]:
+    def the_topic() -> tuple[Resolution, ArticleChoiceReport | None, TopicArticlesReport | None]:
+        """The rules, and with a job the question N (D63) and the choice among the rules' candidates (D35)."""
         chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
+        leading = registry.primary_archive
+        articles = ask_topic_articles(job, leading, found.normalized.topic) if job and leading is not None else None
+        overview = articles.found[0] if articles is not None and articles.found else None
         resolution = registry.resolve_topic(
             found.normalized.topic,
             context=found.context,
@@ -93,12 +100,16 @@ def choose_main_article(
             terms=terms,
             chooser=chooser,
             thorough=job is not None and job.thorough,
+            overview=overview,
         )
-        return resolution, chooser.report if chooser is not None else None
+        if articles is not None and overview is not None:
+            asked = chooser is not None and chooser.report.offered > 0
+            articles.main = resolution.title == overview and resolution.method == CHOSEN_BY_LLM and not asked
+        return resolution, chooser.report if chooser is not None else None, articles
 
     if node is None or node.kind != "material":
-        resolution, choice = the_topic()
-        return as_found(resolution, choice=choice)
+        resolution, choice, articles = the_topic()
+        return as_found(resolution, choice=choice, articles=articles)
 
     report = NodeArticleReport()
     answer = ask_topic(job, node, report, topic=topic) if job is not None else None
@@ -117,9 +128,9 @@ def choose_main_article(
     rules = _by_the_rules(registry, node, by_rules, report)
     if not topic:
         return as_found(rules or _none(found), report=report)
-    resolution, choice = the_topic()
+    resolution, choice, articles = the_topic()
     report.material = rules.title if rules is not None else None
-    return as_found(resolution, choice, report, report.material)
+    return as_found(resolution, choice, report, report.material, articles)
 
 
 def _by_the_rules(

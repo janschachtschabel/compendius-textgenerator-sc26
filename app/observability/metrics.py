@@ -76,8 +76,9 @@ def record_compendium(compendium: Compendium) -> None:
     """Count one generated compendium from its audit: LLM switches, phases, parts, LLM usage, materials."""
     audit = compendium.audit
     front = compendium.frontmatter
-    # article_choice=llm (D35) counts like a switch where the rules were unsure: a sure topic never asks the model,
-    # and counting it as a fallback would set off the LLM alarms for every such request
+    # article_choice=llm (D35) counts like a switch where the model had something to answer - an unsure article, side
+    # articles, a material, since D63 the articles of every topic; a request with nothing to ask counted as a
+    # fallback would set off the LLM alarms
     choice = (audit.llm or {}).get("article_choice") or {}
     requested = (
         front.get("extraction_requested", compendium.extraction),

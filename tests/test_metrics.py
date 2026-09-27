@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 from prometheus_client.parser import text_string_to_metric_families
 
 from app import __version__
+from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
@@ -285,27 +286,38 @@ def test_matcher_llm_counts_as_an_llm_request(client: TestClient, monkeypatch: p
     assert delta(llm_requested="true", llm_used="true") == 1
 
 
-def test_article_choice_llm_counts_as_an_llm_request_where_the_rules_are_unsure(
+def naming_the_topic(body: dict[str, Any]) -> str:
+    """N (D63) names the topic itself as its overview; every other question gets the first candidate."""
+    if body["messages"][0]["content"] != get_prompt("topic_articles").system:
+        return '{"wahl": 1}'
+    topic = body["messages"][1]["content"].splitlines()[0].removeprefix("Thema: ")
+    return json.dumps({"uebersicht": topic, "artikel": []})
+
+
+def test_article_choice_llm_counts_as_an_llm_request_where_the_model_has_something_to_answer(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # "Geometrische" resolves through a title suggestion, so the model is asked; "Programmiersprache" is sure and has
-    # no side article to check, and never asking must not look like a fallback to the alarms (monitoring/alerts.yml)
+    # Since D63 every topic asks the model for its overview and parts (N): "Programmiersprache" is such an article,
+    # "Geometrische" is none, and then the model chooses among the rules' candidates. An answer that decides nothing
+    # is a fallback the alarms (monitoring/alerts.yml) should see; llm-free asks nothing and counts as the rules.
     service = client.app.state.service  # type: ignore[attr-defined]
     before = scrape(client)
-    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: '{"wahl": 1}'), per_request=1_000_000))
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(naming_the_topic), per_request=1_000_000))
     for topic in ("Geometrische", "Programmiersprache"):
         payload = {"topic": topic, "article_choice": "llm", "parts": ["world"]}
         assert client.post("/api/v2/compendium", json=payload).status_code == 200
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "weiß nicht"), per_request=1_000_000))
     payload = {"topic": "Geometrische", "article_choice": "llm", "parts": ["world"]}
     assert client.post("/api/v2/compendium", json=payload).status_code == 200  # unreadable: the rules' article
+    payload = {"topic": "Programmiersprache", "preset": "llm-free", "parts": ["world"]}
+    assert client.post("/api/v2/compendium", json=payload).status_code == 200
     after = scrape(client)
 
     def delta(**labels: str) -> float:
         name = "kompendium_compendium_requests_total"
         return value(after, name, **labels) - value(before, name, **labels)
 
-    assert delta(llm_requested="true", llm_used="true") == 1
+    assert delta(llm_requested="true", llm_used="true") == 2
     assert delta(llm_requested="true", llm_used="false") == 1
     assert delta(llm_requested="false", llm_used="false") == 1
 
