@@ -177,7 +177,8 @@ class EntitiesRequest(BaseModel):
 class EntityIds(BaseModel):
     gnd: str | None = Field(
         description="GND number: from the article's Normdaten block, else from the local GND index built from the "
-        "DNB's dumps (D65); URI https://d-nb.info/gnd/<gnd>"
+        "DNB's dumps (D65), whose record must be of the kind the block names, if it names one (an article the block "
+        "calls a person gets no subject heading); URI https://d-nb.info/gnd/<gnd>"
     )
     gnd_kind: str | None = Field(
         description="Kind of the GND record as the Normdaten block names it: Person, Sachbegriff, Geografikum, "
