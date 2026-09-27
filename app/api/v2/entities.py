@@ -20,9 +20,10 @@ a request asks for it (``link_check``): measured through this endpoint, the chec
 removed minor ones.
 
 A linked Wikipedia article also names its identifiers (D43), all from local data: GND and VIAF from the Normdaten
-block the dump keeps, the Wikidata number from the index the Wikidata sync builds (D64), the DBpedia URI of the
-English article that index knows (D65; else the German chapter's IRI). No live API is asked; without the index the
-Wikidata number is simply missing and the DBpedia URI stays German.
+block the dump keeps - an article without a GND there gets one from the GND index the GND sync builds from the DNB's
+dumps (D65), and ``gnd_source`` says which way -, the Wikidata number from the index the Wikidata sync builds (D64),
+the DBpedia URI of the English article that index knows (D65; else the German chapter's IRI). No live API is asked;
+without an index its part is simply missing: no Wikidata number, no GND beyond the block, a German DBpedia URI.
 """
 
 from __future__ import annotations
@@ -231,11 +232,13 @@ def entities(
     and the article with its lead. ``link_check: llm`` lets the LLM grade every link as well, and only what it
     grades 2 stays; ``llm`` in the answer says what the LLM did and cost.
 
-    A linked Wikipedia article carries ``ids``: GND, its kind and VIAF from the Normdaten block of the archive,
-    the Wikidata number from the local index (built by the ``wikidata-updater`` sidecar; ``/health`` says whether
-    it is there) and the DBpedia URI of its English article - http://dbpedia.org/resource/…, else the German
-    chapter's IRI, which no longer answers -, all as URIs again under ``same_as``. Nothing is asked
-    online. Articles of other archives carry no ``ids``.
+    A linked Wikipedia article carries ``ids``: GND, its kind and VIAF from the Normdaten block of the archive -
+    without a GND there the local GND index gives the subject heading or place that names the article's Wikidata
+    item, else the one record with its title; ``gnd_source`` says ``normdaten``, ``wikidata`` or ``name`` -, the
+    Wikidata number from the local index and the DBpedia URI of its English article - http://dbpedia.org/resource/…,
+    else the German chapter's IRI, which no longer answers -, all as URIs again under ``same_as``. The sidecars
+    ``wikidata-updater`` and ``gnd-updater`` build the indexes, ``/health`` says whether they are there. Nothing is
+    asked online. Articles of other archives carry no ``ids``.
 
     ``link: false`` skips the lookup, ``archives`` narrows it to single archives (unknown id: 404).
     ``max_entities`` bounds the result, and it bites before the lookup - so fewer may come back.

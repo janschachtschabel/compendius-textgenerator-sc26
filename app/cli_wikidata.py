@@ -1,9 +1,10 @@
 """``compendium wikidata …``: build the local Wikidata index, keep it in step, and report its state (D43, D64).
 
-The index maps article titles of the German Wikipedia to Wikidata numbers. It is built from ``page_props`` and
-``page`` of dumps.wikimedia.org/dewiki: ``build`` reads two dump files on disk and asks nothing online, ``sync``
-downloads them itself when the index is missing or a newer Wikipedia archive needs a newer one - with ``--loop`` as
-the ``wikidata-updater`` sidecar. A running service opens a new index by itself within a minute.
+The index maps article titles of the German Wikipedia to Wikidata numbers and, for the DBpedia URI, to the title of
+the English article (D65). It is built from ``page_props``, ``page`` and ``langlinks`` of dumps.wikimedia.org/dewiki:
+``build`` reads the dump files on disk and asks nothing online, ``sync`` downloads all three itself when the index is
+missing or a newer Wikipedia archive needs a newer one - with ``--loop`` as the ``wikidata-updater`` sidecar. A
+running service opens a new index by itself within a minute.
 """
 
 from __future__ import annotations
