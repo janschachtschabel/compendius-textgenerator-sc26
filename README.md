@@ -567,7 +567,11 @@ reserviert sein Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_
 `LLM_DAILY_TOKEN_BUDGET` je Tag).
 Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch
 ein Aufruf rechtzeitig starten kann (D39); das Tagesbudget weist dagegen sofort ab. Der Tageszähler liegt in
-`STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts.
+`STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts; dort liegen auch die Reservierungen
+laufender Aufrufe, geprüft und geschrieben in einem Schritt, sodass zwei Worker nicht beide die letzten Tokens des Tages
+bekommen. Die Reservierung eines abgestürzten Workers zählt nach zehn Minuten nicht mehr. Die Schätzung vor einem
+Aufruf rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen (gemessen mit
+`gpt-6-luna`: Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28).
 `REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen der Materialtexte einer Anfrage: jeder Aufruf
 bekommt höchstens die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper
 der b-api nur im Log.
@@ -739,7 +743,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality` und `best-quality-generated` (D59): Neben der Zuordnung durch das LLM (im Median rund 26.000 Tokens) prüft das LLM dort jedes Lehrplanelement von Teil 2, 80 bis 90 Tokens je Element; 60.000 reichten für rund 400 Elemente (M32). Das breiteste Thema, Demokratie ohne Fach mit 382 Absätzen und 819 Elementen, brauchte mit Teil 1 und 2 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
-| `LLM_DAILY_TOKEN_BUDGET` | `2000000` | Kostenschutz je Tag. Der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts |
+| `LLM_DAILY_TOKEN_BUDGET` | `2000000` | Kostenschutz je Tag. Der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt samt den Reservierungen laufender Aufrufe für alle Worker gemeinsam und übersteht Neustarts. `KompendiumLlmBudgetBurnsFast` meldet, wenn ein Viertel davon in einer Stunde verbraucht wird |
 
 ### Metriken
 

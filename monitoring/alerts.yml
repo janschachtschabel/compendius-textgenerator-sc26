@@ -158,6 +158,16 @@ groups:
         annotations:
           summary: Mehr als 90 % des LLM-Tagesbudgets verbraucht
           description: Danach laufen LLM-Anfragen bis Mitternacht (UTC) im Regelmodus.
+      - alert: KompendiumLlmBudgetBurnsFast
+        # Gleichmaessig verteilt braucht ein Tag rund 4 % des Budgets je Stunde; ein Viertel in einer Stunde leert es in
+        # vier Stunden. So viel schafft ein einzelner Aufrufer mit best-quality-generated (Audit 2026-09-27, SE-03).
+        # Ueber den Tageswechsel um Mitternacht (UTC) ist delta negativ und loest nichts aus.
+        expr: delta(kompendium_llm_tokens_used_today[1h]) > 0.25 * kompendium_llm_daily_budget_tokens
+        labels:
+          severity: warning
+        annotations:
+          summary: Ein Viertel des LLM-Tagesbudgets in einer Stunde verbraucht
+          description: Hält das an, ist das Budget in wenigen Stunden aufgebraucht und alle Aufrufer bekommen bis Mitternacht (UTC) nur Regelergebnisse. Ohne API_KEYS kann das ein einzelner anonymer Aufrufer sein; das Log der API nennt die Anfragen mit ihren Profilen.
       - alert: KompendiumLlmFallbacks
         expr: |
           sum(rate(kompendium_compendium_requests_total{llm_requested="true", llm_used="false"}[30m])) > 0

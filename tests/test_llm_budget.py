@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from app.llm.budget import RequestBudget, TokenBudget, estimate_tokens
-from app.llm.budget_store import SqliteDailyStore
+from app.llm.budget_store import RESERVATION_STALE_S, SqliteDailyStore
 
 
 class Clock:
@@ -224,11 +224,17 @@ class FlakyStore:
     def used(self, day: int) -> int | None:
         return None if self.fail else self.days.get(day, 0)
 
-    def add(self, day: int, tokens: int) -> bool:
+    def reserve(self, owner: str, held: int, tokens: int, day: int, limit: int, now: float) -> bool | None:
+        return None  # a store that keeps no reservations: the process decides alone
+
+    def settle(self, owner: str, held: int, day: int, tokens: int, now: float) -> bool:
         if self.fail:
             return False
         self.days[day] = self.days.get(day, 0) + tokens
         return True
+
+    def held_elsewhere(self, owner: str, now: float) -> int | None:
+        return None if self.fail else 0
 
 
 def test_tokens_spent_during_a_store_outage_are_neither_lost_nor_hidden_by_other_workers() -> None:
@@ -250,3 +256,70 @@ def test_tokens_spent_during_a_store_outage_are_neither_lost_nor_hidden_by_other
     assert budget.used_today == 800
     clock.now += 86_400
     assert budget.used_today == 0
+
+
+def two_workers(path: Path, clock: Clock, daily: int = 1000) -> tuple[TokenBudget, TokenBudget]:
+    return (
+        TokenBudget(per_request=10_000, daily=daily, clock=clock, store=SqliteDailyStore(path)),
+        TokenBudget(per_request=10_000, daily=daily, clock=clock, store=SqliteDailyStore(path)),
+    )
+
+
+def test_a_reservation_of_one_worker_counts_for_the_other(tmp_path: Path) -> None:
+    """Reservations stayed in their process: two workers each reserved 700 of 1,000 and spent 1,400 (audit
+    2026-09-27, KO-06)."""
+    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100))
+
+    assert worker_a.open_request().reserve(700) is None
+    denial = worker_b.open_request().reserve(700)
+
+    assert denial is not None and "Tagesbudget" in denial and "300 frei" in denial
+    assert worker_b.remaining_today == 300
+
+
+def test_a_settled_reservation_frees_what_the_call_did_not_spend(tmp_path: Path) -> None:
+    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100))
+    request = worker_a.open_request()
+    assert request.reserve(700) is None
+
+    request.settle(700, 500)
+
+    assert worker_b.open_request().reserve(501) is not None
+    assert worker_b.open_request().reserve(500) is None
+
+
+def test_the_reservation_of_a_crashed_worker_stops_counting(tmp_path: Path) -> None:
+    clock = Clock(now=86_400 * 20_000 + 100)
+    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", clock)
+    assert worker_a.open_request().reserve(700) is None  # never settled: the worker died with its call
+
+    clock.now += RESERVATION_STALE_S + 1
+
+    assert worker_b.open_request().reserve(700) is None
+
+
+def test_parallel_workers_never_reserve_more_than_the_day(tmp_path: Path) -> None:
+    path = tmp_path / "llm_budget.db"
+    clock = Clock(now=86_400 * 20_000 + 100)
+    workers = [TokenBudget(per_request=10_000, daily=1000, clock=clock, store=SqliteDailyStore(path)) for _ in range(4)]
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        granted = list(pool.map(lambda i: workers[i % 4].open_request().reserve(100) is None, range(40)))
+
+    assert sum(granted) == 10
+
+
+@pytest.mark.parametrize(
+    ("text", "characters_per_token"),
+    [
+        ("Licht wird an der Grenzfläche zweier Medien gebrochen. " * 40, 4.62),
+        ("Свет преломляется на границе двух сред. " * 40, 3.96),
+        ("ينكسر الضوء عند الحد الفاصل بين وسطين. " * 40, 3.27),
+        ("光在两种介质的界面上发生折射。" * 80, 1.28),
+    ],
+    ids=["german", "russian", "arabic", "chinese"],
+)
+def test_the_estimate_stays_above_what_the_model_counts(text: str, characters_per_token: float) -> None:
+    """Rates measured on 2026-09-27 with gpt-6-luna through the b-api, about 2,400 characters each. Three characters
+    per token held for German, Russian and Arabic; Chinese needs more than twice that (audit 2026-09-27, SE-14)."""
+    assert estimate_tokens(text) >= len(text) / characters_per_token

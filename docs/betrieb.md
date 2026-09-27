@@ -70,7 +70,8 @@ Update daher:
 `KompendiumZimSyncHangs`,
 `KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
 `KompendiumWikidataIndexMissing`, `KompendiumWikidataSyncFailed`, `KompendiumGndIndexMissing`, `KompendiumGndSyncFailed`,
-`KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmFallbacks`. Nach einer Änderung
+`KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent`, `KompendiumLlmBudgetBurnsFast` (ein Viertel des
+Tagesbudgets in einer Stunde) und `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
 will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`).

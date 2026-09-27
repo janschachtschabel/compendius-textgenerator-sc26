@@ -11,37 +11,59 @@ calls of the request are in flight may wait for them to settle.
 
 from __future__ import annotations
 
+import re
 import threading
 import time
+import uuid
 from collections.abc import Callable
 from typing import Protocol
 
 SECONDS_PER_DAY = 86_400
 CHARS_PER_TOKEN = 3  # German prose with citation markers runs at 3 to 5 characters per token; 3 is the safe side
+# From U+0800 on - Chinese, Japanese, Korean, but also the typographic quotes and dashes - a character counts as a
+# token of its own
+_WIDE = re.compile(f"[{chr(0x800)}-{chr(0x10FFFF)}]")
 
 
 def estimate_tokens(text: str) -> int:
-    """Upper-bound estimate used before a call; the API's ``usage`` replaces it afterwards."""
-    return len(text) // CHARS_PER_TOKEN + 1
+    """Upper-bound estimate used before a call; the API's ``usage`` replaces it afterwards.
+
+    Measured on 2026-09-27 with gpt-6-luna through the b-api, about 2,400 characters each: German 4.62 characters
+    per token, Russian 3.96, Arabic 3.27 - three per token is the safe side for all of them -, but Chinese 1.28:
+    three per token undercounted it by a factor of 2.35, and a caller's Chinese text could spend a multiple of its
+    reservation (audit 2026-09-27, SE-14). Counted as a token each, Chinese comes out 1.28 times its real count.
+    """
+    _, wide = _WIDE.subn("", text)
+    return (len(text) - wide) // CHARS_PER_TOKEN + wide + 1
 
 
 class DailyStore(Protocol):
-    """Spent tokens per UTC day, shared between API workers (``budget_store.SqliteDailyStore``)."""
+    """Spent tokens per UTC day and the reservations of calls in flight, shared between API workers
+    (``budget_store.SqliteDailyStore``). ``owner`` names one worker's budget."""
 
     def used(self, day: int) -> int | None:
         """Tokens spent on that day by all workers; ``None`` when the store cannot be read."""
         ...
 
-    def add(self, day: int, tokens: int) -> bool:
-        """Add spent tokens; ``False`` when they could not be saved."""
+    def held_elsewhere(self, owner: str, now: float) -> int | None:
+        """What the other workers hold in calls in flight; ``None`` when the store cannot be read."""
+        ...
+
+    def reserve(self, owner: str, held: int, tokens: int, day: int, limit: int, now: float) -> bool | None:
+        """Grant ``tokens`` when spent, held elsewhere and ``held + tokens`` fit into ``limit``, and record
+        ``held + tokens`` for ``owner``, in one step for all workers; ``None`` when the store cannot decide."""
+        ...
+
+    def settle(self, owner: str, held: int, day: int, tokens: int, now: float) -> bool:
+        """Add ``tokens`` spent on ``day`` and record ``held`` for ``owner``; ``False`` when not saved."""
         ...
 
 
 class TokenBudget:
     """Daily token cap; resets at the UTC day boundary.
 
-    With a ``store`` the spent tokens are shared by all API workers and survive restarts; without one (tests) the
-    counter lives in this process. Reservations of calls in flight always stay in the process.
+    With a ``store`` the spent tokens and the reservations of calls in flight are shared by all API workers, and the
+    spent tokens survive restarts; without one (tests), or while it fails, the process counts for itself.
     """
 
     def __init__(
@@ -60,6 +82,7 @@ class TokenBudget:
         self._used = 0
         self._reserved = 0
         self._unsaved = 0  # spent during a store outage; written with the next successful update
+        self._owner = uuid.uuid4().hex  # this process's row among the reservations of all workers
 
     def _today(self) -> int:
         return int(self._clock() // SECONDS_PER_DAY)
@@ -85,11 +108,17 @@ class TokenBudget:
             self._roll()
             return self._spent()
 
+    def _elsewhere(self) -> int:
+        """What the other workers hold in calls in flight (lock held by the caller)."""
+        if self._store is None:
+            return 0
+        return self._store.held_elsewhere(self._owner, self._clock()) or 0
+
     @property
     def remaining_today(self) -> int:
         with self._lock:
             self._roll()
-            return max(0, self.daily - self._spent() - self._reserved)
+            return max(0, self.daily - self._spent() - self._reserved - self._elsewhere())
 
     @property
     def exhausted(self) -> bool:
@@ -98,6 +127,14 @@ class TokenBudget:
     def reserve(self, tokens: int) -> bool:
         with self._lock:
             self._roll()
+            if self._store is not None:
+                # One step for all workers; what this process could not save yet counts against the day as well
+                limit = self.daily - self._unsaved
+                granted = self._store.reserve(self._owner, self._reserved, tokens, self._day, limit, self._clock())
+                if granted is not None:
+                    if granted:
+                        self._reserved += tokens
+                    return granted
             if self._spent() + self._reserved + tokens > self.daily:
                 return False
             self._reserved += tokens
@@ -108,9 +145,10 @@ class TokenBudget:
             self._roll()
             self._reserved = max(0, self._reserved - reserved)
             self._used += actual
-            if self._store is not None and (actual or self._unsaved):
+            if self._store is not None:
                 pending = actual + self._unsaved
-                self._unsaved = 0 if self._store.add(self._day, pending) else pending
+                saved = self._store.settle(self._owner, self._reserved, self._day, pending, self._clock())
+                self._unsaved = 0 if saved else pending
 
     def open_request(self, limit: int | None = None) -> RequestBudget:
         """The budget of one request: ``limit`` tokens, else ``per_request`` (the best-quality profiles, D59)."""
