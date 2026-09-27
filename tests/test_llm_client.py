@@ -101,7 +101,14 @@ def make_client(fake: FakeBApi, **kwargs: Any) -> tuple[BApiClient, list[float]]
     options: dict[str, Any] = {"provider": "openai", "model": "gpt-5.6-luna", "timeout_s": 30.0}
     options.update(kwargs)
     client = BApiClient(
-        BASE, KEY, transport=httpx.MockTransport(fake), sleep=sleeps.append, backoff_s=1.5, attempts=3, **options
+        BASE,
+        KEY,
+        transport=httpx.MockTransport(fake),
+        sleep=sleeps.append,
+        backoff_s=1.5,
+        attempts=3,
+        jitter=lambda: 0.5,  # the backoff without its spread: 1.5 s, 3 s
+        **options,
     )
     return client, sleeps
 

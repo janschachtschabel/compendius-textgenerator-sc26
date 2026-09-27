@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import logging
 import math
+import random
 import re
 import threading
 import time
@@ -21,15 +22,26 @@ from typing import Any
 import httpx
 
 from app.llm.budget import estimate_tokens
+from app.llm.deadline import MIN_CALL_S
 
 log = logging.getLogger(__name__)
 
 RETRY_STATUSES = frozenset({429, 502, 503, 504})
+# Behind a 502 or 504 the gateway gave up waiting for the model, which may have read the prompt; a 429 or 503 turned
+# the request away before (audit 2026-09-27, KO-06)
+REACHED_STATUSES = frozenset({502, 504})
+# A refused key, permission or model does not fix itself within a request: calls stop for as long as an unavailable
+# model waits for its re-check (gateway.RECHECK_S), and /health says why (audit 2026-09-27, BE-04)
+REFUSED_STATUSES = frozenset({401, 403, 404})
+AUTH_SUSPEND_S = 600.0
 HIGH_DEMAND = 3  # academiccloud reported demand 0 to 2 in normal operation (2026-09-17)
 MODEL_CHECK_TIMEOUT_S = 10.0  # the model list is a probe (start-up, health): one short attempt, no retries
 TRIP_TIMEOUT_S = 30.0  # a call cut short by the request deadline is no outage; half a minute of silence is
-BREAKER_S = 60.0  # after a connection failure or a timeout, calls fail fast instead of queueing on the next timeout
-SUSPENDED_MESSAGE = "b-api nach Verbindungsfehlern vorübergehend ausgesetzt"
+# After a timeout, or after as many failed attempts in a row as a call may make (connection errors, 429 and 5xx, over
+# all calls), calls fail fast instead of queueing on the next failure; then a single call probes (audit KO-05)
+BREAKER_S = 60.0
+SUSPENDED_MESSAGE = "b-api nach wiederholten Fehlern vorübergehend ausgesetzt"
+_RETRY_AFTER_RE = re.compile("[0-9]{1,5}")  # Retry-After in seconds; a date is ignored and the backoff applies
 _KEY_RE = re.compile(r"^[!-~]+$")  # printable ASCII without spaces; anything else breaks the header
 # gpt-6-luna answers max_tokens with HTTP 400 and asks for max_completion_tokens (2026-09-24, D44)
 _REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4")
@@ -41,11 +53,13 @@ Message = Mapping[str, str]
 
 
 class LlmError(RuntimeError):
-    """The b-api did not deliver a usable answer; ``status`` is the HTTP status when there was one."""
+    """The b-api did not deliver a usable answer; ``status`` is the HTTP status when there was one, ``reached`` the
+    number of attempts that may have reached the model and so may have cost the prompt's tokens."""
 
-    def __init__(self, message: str, status: int | None = None) -> None:
+    def __init__(self, message: str, status: int | None = None, reached: int = 0) -> None:
         super().__init__(message)
         self.status = status
+        self.reached = reached
 
 
 @dataclass(frozen=True)
@@ -87,7 +101,8 @@ def needs_thinking_off(model: str) -> bool:
 
 
 class BApiClient:
-    """Synchronous client with a concurrency semaphore and exponential backoff on 429/502/503/504."""
+    """Synchronous client with a concurrency semaphore, exponential backoff on 429/502/503/504 within one deadline
+    for all attempts, and a circuit breaker."""
 
     def __init__(
         self,
@@ -106,6 +121,7 @@ class BApiClient:
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
+        jitter: Callable[[], float] = random.random,
     ) -> None:
         api_key = api_key.strip()  # secret files usually end with a newline
         if not api_key:
@@ -114,7 +130,12 @@ class BApiClient:
             raise ValueError("B_API_KEY contains whitespace or non-printable characters")
         self._key = api_key
         self._clock = clock
-        self._open_until = 0.0
+        self._jitter = jitter  # a draw in [0, 1): spreads a backoff between half and one and a half times its value
+        self._state = threading.Lock()
+        self._open_until = 0.0  # the breaker opens until then; after a break it stays in the past until a probe
+        self._suspension = SUSPENDED_MESSAGE  # why calls fail fast
+        self._probing = False
+        self._failures = 0  # failed attempts in a row over all calls
         self.base_url = base_url.rstrip("/")
         self.provider = provider
         self.model = model
@@ -135,8 +156,12 @@ class BApiClient:
 
     @property
     def suspended(self) -> bool:
-        """True while the circuit breaker is open after a connection failure or a timeout."""
+        """True while the circuit breaker is open: after a timeout, repeated failures or a refused key or model."""
         return self._clock() < self._open_until
+
+    @property
+    def suspension_reason(self) -> str:
+        return self._suspension
 
     @property
     def chat_url(self) -> str:
@@ -221,40 +246,83 @@ class BApiClient:
         attempts: int | None = None,
         timeout_s: float | None = None,
     ) -> Any:
-        attempts = attempts or self.attempts
-        limit = timeout_s if timeout_s is not None else self.timeout_s
-        if self.suspended:
-            raise LlmError(SUSPENDED_MESSAGE)
+        """One call: attempts until an answer, all of them within one deadline. Every retry used to get the whole
+        limit again, so a call outlived the deadline of its request (audit 2026-09-27, KO-04)."""
+        ends = self._clock() + (timeout_s if timeout_s is not None else self.timeout_s)
+        probe = self._admit()
+        try:
+            # After a break a single attempt decides whether the b-api is back
+            return self._attempts(method, url, json_body, 1 if probe else attempts or self.attempts, ends)
+        finally:
+            if probe:
+                with self._state:
+                    self._probing = False  # a probe that neither closed nor tripped the breaker lets the next one try
+
+    def _attempts(self, method: str, url: str, json_body: Mapping[str, Any] | None, attempts: int, ends: float) -> Any:
         last_error = ""
         status: int | None = None
+        reached = 0
         for attempt in range(attempts):
+            limit = ends - self._clock()
             try:
                 response = self._send(method, url, json_body, limit)
             except httpx.TimeoutException as exc:
                 # A request that timed out once will not answer in time on a retry within a synchronous request.
+                reached += isinstance(exc, httpx.ReadTimeout | httpx.WriteTimeout)
                 if limit >= min(self.timeout_s, TRIP_TIMEOUT_S):
                     self._trip()
-                raise LlmError(f"b-api antwortete nicht rechtzeitig ({type(exc).__name__})") from exc
+                raise LlmError(f"b-api antwortete nicht rechtzeitig ({type(exc).__name__})", reached=reached) from exc
             except httpx.HTTPError as exc:
                 # httpx quotes illegal header values (the key) in its messages: redact before the text travels on.
                 last_error, status = self._redact(f"{type(exc).__name__}: {exc}"), None
+                wait = self._backoff(attempt)
             else:
                 status = response.status_code
                 if status == 200:
+                    self._close()
                     try:
                         return response.json()
                     except ValueError as exc:
                         raise LlmError("b-api antwortete ohne gültiges JSON", status) from exc
                 if status not in RETRY_STATUSES:
-                    # The upstream body stays in the log: messages reach /health, the audit and the frontmatter.
-                    log.warning("b-api answered HTTP %s: %s", status, self._redact(response.text[:200]))
-                    raise LlmError(f"b-api antwortete HTTP {status}", status)
+                    # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
+                    # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
+                    log.warning("b-api answered HTTP %s: %s", status, self._redact(response.text)[:200])
+                    if status in REFUSED_STATUSES:
+                        self._refused(status)
+                    else:
+                        self._close()  # the b-api answers; the request was wrong
+                    raise LlmError(f"b-api antwortete HTTP {status}", status, reached=reached)
                 last_error = f"HTTP {status}"
-            if attempt + 1 < attempts:
-                self._sleep(self.backoff_s * 2**attempt)
-        if status is None:
+                reached += status in REACHED_STATUSES
+                wait = _retry_after(response) or self._backoff(attempt)
+            with self._state:
+                self._failures += 1
+            if attempt + 1 >= attempts or ends - self._clock() - wait < MIN_CALL_S:
+                break
+            self._sleep(wait)
+        if self._failures >= self.attempts:
             self._trip()
-        raise LlmError(f"b-api nach {attempts} Versuchen nicht erreichbar ({last_error})", status)
+        raise LlmError(f"b-api nach {attempt + 1} Versuchen nicht erreichbar ({last_error})", status, reached=reached)
+
+    def _backoff(self, attempt: int) -> float:
+        """Exponential, spread around its value: calls that failed together should not all come back together."""
+        return float(self.backoff_s * 2**attempt * (0.5 + self._jitter()))
+
+    def _admit(self) -> bool:
+        """Raise while the breaker is open; ``True`` when this call is the one probe after a break."""
+        with self._state:
+            if self._clock() < self._open_until or self._probing:
+                raise LlmError(self._suspension)
+            if self._open_until:
+                self._probing = True
+                return True
+            return False
+
+    def _refused(self, status: int) -> None:
+        minutes = round(AUTH_SUSPEND_S / 60)
+        reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
+        self._trip(AUTH_SUSPEND_S, reason)
 
     def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
         """One HTTP attempt; waiting for a free call slot counts against ``limit`` like the request itself."""
@@ -267,11 +335,27 @@ class BApiClient:
         finally:
             self._semaphore.release()
 
-    def _trip(self) -> None:
-        self._open_until = self._clock() + BREAKER_S
+    def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE) -> None:
+        with self._state:
+            self._open_until = self._clock() + seconds
+            self._suspension = reason
+            self._probing = False
+
+    def _close(self) -> None:
+        """The b-api answered: the breaker closes and the failures in a row start again at zero."""
+        with self._state:
+            self._open_until = 0.0
+            self._probing = False
+            self._failures = 0
 
     def _redact(self, text: str) -> str:
         return text.replace(self._key, "***")
+
+
+def _retry_after(response: httpx.Response) -> float | None:
+    """The seconds a 429 or 503 asks to wait, when it says so as a number."""
+    value = response.headers.get("retry-after", "").strip()
+    return float(value) if _RETRY_AFTER_RE.fullmatch(value) else None
 
 
 def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:

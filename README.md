@@ -560,8 +560,14 @@ aber je Aufruf ein Viertel bis drei Viertel langsamer; `B_API_MODEL=gpt-5.6-luna
 auf `academiccloud` braucht nur `B_API_PROVIDER` und `B_API_MODEL`.
 
 Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
-Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Nach einem Verbindungsfehler oder
-Timeout setzt ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus. Jeder Aufruf
+Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Alle Versuche eines Aufrufs teilen sich
+seine Frist; eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hälfte und dem
+Anderthalbfachen, oder so lange, wie `Retry-After` verlangt, wenn das noch in die Frist passt. Nach einem Timeout oder
+drei Fehlversuchen in Folge (Verbindungsfehler, 429 oder 5xx, über alle Aufrufe) setzt ein Schutzschalter die b-api
+60 s aus, Anfragen laufen dann sofort im Regelmodus; danach probiert ein einzelner Aufruf, ob sie wieder antwortet.
+Ein 401, 403 oder 404 setzt sie zehn Minuten aus, `/health` nennt den Grund (Schlüssel, Berechtigung oder Modell).
+Ein Versuch, der das Modell erreicht haben kann (Timeout nach dem Senden, 502 oder 504), belastet das Budget mit den
+Tokens seiner Eingabe. Jeder Aufruf
 reserviert sein Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den
 `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa` für Teil 1 und die Paare zusammen;
 `LLM_DAILY_TOKEN_BUDGET` je Tag).
@@ -829,8 +835,8 @@ Betrieb, Störungen und Wiederherstellung: [docs/betrieb.md](docs/betrieb.md).
 `GET /metrics` liefert Metriken im Prometheus-Format (Textformat 0.0.4 oder OpenMetrics, je nach `Accept`).
 Zustandswerte liest der Endpunkt bei jedem Abruf aus Registry, Cache und den Statusdateien der Sidecars; sie
 sind in jedem Worker gleich, bis auf `kompendium_llm_available`: Das ist der Stand des Workers, der den Abruf
-beantwortet (letzte Modellprüfung, Schutzschalter), und er sieht Antworten mit 401 oder 5xx nicht. Der Alarm
-`KompendiumLlmUnavailable` stützt sich deshalb auf die über alle Worker summierten Kompendium-Zähler. Unbekannte
+beantwortet (letzte Modellprüfung, Schutzschalter, ein abgelehnter Schlüssel oder ein abgelehntes Modell). Der
+Alarm `KompendiumLlmUnavailable` stützt sich deshalb auf die über alle Worker summierten Kompendium-Zähler. Unbekannte
 Werte (noch kein Sync, kein Cache) fehlen, statt als 0 zu erscheinen.
 Laufzeitmetriken summiert der Endpunkt über alle Worker: Im Image legt jeder Worker seine Werte in
 `PROMETHEUS_MULTIPROC_DIR` ab (`/tmp/prometheus`; der Start löscht dort nur die Metrik-Dateien eines früheren

@@ -250,7 +250,13 @@ def test_gateway_is_unavailable_while_the_client_is_suspended() -> None:
     now = [0.0]
     fake = FakeBApi()
     client = BApiClient(
-        BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake), clock=lambda: now[0]
+        BASE,
+        KEY,
+        provider="openai",
+        model="gpt-5.6-luna",
+        transport=httpx.MockTransport(fake),
+        clock=lambda: now[0],
+        sleep=lambda seconds: None,  # the backoff of the three attempts waited 4.5 s for real (audit TE-10)
     )
     gateway = LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), LlmOptions(), clock=lambda: now[0])
     assert gateway.available is True

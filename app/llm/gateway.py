@@ -15,7 +15,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from app.llm.budget import RequestBudget, TokenBudget
-from app.llm.client import SUSPENDED_MESSAGE, BApiClient, ModelCheck
+from app.llm.client import BApiClient, ModelCheck
 from app.synthesis.llm import LlmSynthesizer
 from app.synthesis.qa import LlmQaWriter
 from app.synthesis.selection import LlmSelector
@@ -77,7 +77,7 @@ class LlmGateway:
         if self.check is not None and not self.check.ok:
             return self.check.message  # names the cause (model missing, status, connection error)
         if self.client.suspended:
-            return SUSPENDED_MESSAGE
+            return self.client.suspension_reason
         return "Modellprüfung steht aus"
 
     def generation_slots(self, generation: str, content_slot_ids: Iterable[str]) -> set[str]:

@@ -59,7 +59,8 @@ def budgeted_chat(
     time (``Deadline.wait_s``; without a deadline while they are in flight).
     """
     limit = client.completion_limit(max_output_tokens)
-    needed = estimate_tokens("".join(m["content"] for m in messages)) + limit
+    prompt_tokens = estimate_tokens("".join(m["content"] for m in messages))
+    needed = prompt_tokens + limit
     if deadline is not None and deadline.call_timeout(client.timeout_s) is None:
         return LlmSkipped(TIME_UP)
     denial = budget.reserve(needed, wait_s=deadline.wait_s() if deadline is not None else None)
@@ -76,7 +77,10 @@ def budgeted_chat(
         spent = answer.total_tokens
     except LlmError as exc:
         log.warning("LLM call for %s failed: %s", what, exc)
-        return LlmSkipped(f"b-api: {exc}", calls=1)
+        # An attempt that may have reached the model may have cost its prompt: a timeout or a 502/504 counted no
+        # token before, however often it happened (audit 2026-09-27, KO-06)
+        spent = prompt_tokens * exc.reached
+        return LlmSkipped(f"b-api: {exc}", calls=1, prompt_tokens=spent, total_tokens=spent)
     finally:
         budget.settle(needed, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
     return answer
