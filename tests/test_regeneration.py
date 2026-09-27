@@ -6,9 +6,10 @@ import re
 
 import pytest
 
-from app.compose.regeneration import UnknownSectionsError
+from app.compose.regeneration import UnknownSectionsError, parse_document
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
+from app.synthesis.citations import marker_numbers
 
 SECTION_RE = re.compile(
     r"### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ ]+)(?P<rest>[^>]*)-->\n\n"
@@ -76,3 +77,96 @@ def test_a_name_that_is_no_block_of_the_template_is_refused(service: CompendiumS
 def test_without_a_previous_text_everything_is_new(service: CompendiumService) -> None:
     result = service.generate(GenerateRequest(topic="Optik", parts=["world"]))
     assert result.audit.regenerated == []
+
+
+MERKUR = "https://de.wikipedia.org/wiki/Merkur_(Planet)"
+
+
+def document(rows: list[str]) -> str:
+    """A compendium in the shape the service writes: one reviewed block citing [1] and [2], then the table."""
+    return "\n".join(
+        [
+            "## Teil 1",
+            "",
+            "### Aufbau",
+            "<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft hash=0a1b -->",
+            "",
+            "Der Merkur ist der sonnennächste Planet. [1] Licht wird an Linsen gebrochen. [2]",
+            "",
+            "### Quellen",
+            "<!-- kompendium:section id=sc26_12 status=generiert hash=0c2d -->",
+            "",
+            "| Beleg | Quelle | Abschnitt | Textauszug |",
+            "| :---: | :--- | :--- | :--- |",
+            *rows,
+        ]
+    )
+
+
+def test_a_row_whose_link_holds_parentheses_is_read() -> None:
+    """url_for leaves parentheses unencoded, and many titles carry a qualifier (audit 2026-09-27, KO-02)."""
+    parsed = parse_document(
+        document(
+            [
+                f"| [1] | [Merkur (Planet)]({MERKUR}) | Aufbau | Der Merkur ist der sonnennächste Planet. |",
+                "| [2] | [Optik](https://de.wikipedia.org/wiki/Optik) | Brechung | Licht wird an Linsen gebrochen. |",
+            ]
+        )
+    )
+
+    citations = {citation.number: citation for citation in parsed["sc26_3"].citations}
+    assert citations[1].source_url == MERKUR
+    assert citations[1].source_title == "Merkur (Planet)"
+    assert citations[1].section_heading == "Aufbau"
+    assert citations[2].source_url == "https://de.wikipedia.org/wiki/Optik"
+
+
+def test_a_number_with_thousands_of_digits_is_no_row() -> None:
+    # Python refuses to read a number of more than 4,300 digits; the row pattern used to hand it such a number
+    parsed = parse_document(
+        document(["| [" + "9" * 5000 + "] | [Optik](https://de.wikipedia.org/wiki/Optik) | a | b |"])
+    )
+
+    assert parsed["sc26_3"].citations == []
+
+
+def test_the_rows_of_a_kept_block_survive_with_links_in_parentheses(service: CompendiumService) -> None:
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+    kept = marker_numbers(blocks(reviewed)["sc26_3"])
+    assert kept
+    # Every source the kept block cites now has a qualifier in its link, as "Merkur_(Planet)" has
+    lines = reviewed.splitlines()
+    for index, line in enumerate(lines):
+        if any(line.startswith(f"| [{number}] | [") for number in kept):
+            lines[index] = re.sub(r"\]\((https://[^ ]*?)\) \|", r"](\1_(Planet)) |", line, count=1)
+    rewritten = "\n".join(lines)
+    assert rewritten.count("_(Planet)) |") == len(kept)
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=rewritten)
+    )
+
+    for number in kept:
+        row = next(line for line in rewritten.splitlines() if line.startswith(f"| [{number}] | ["))
+        assert row in second.markdown, f"the row of [{number}] is lost"
+    new = {c.number for section in second.sections if section.slot_id != "sc26_3" for c in section.citations}
+    assert not new & set(kept), "a new block took a number the kept block still cites"
+
+
+def test_new_blocks_count_on_past_every_marker_of_a_kept_block(service: CompendiumService) -> None:
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+    kept = marker_numbers(blocks(reviewed)["sc26_3"])
+    # The rows of those numbers are gone, as when a tool rewrote the table; the markers still hold them
+    stripped = "\n".join(
+        line for line in reviewed.splitlines() if not any(line.startswith(f"| [{number}] |") for number in kept)
+    )
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=stripped)
+    )
+
+    new = {c.number for section in second.sections if section.slot_id != "sc26_3" for c in section.citations}
+    assert kept and new
+    assert min(new) > max(kept)

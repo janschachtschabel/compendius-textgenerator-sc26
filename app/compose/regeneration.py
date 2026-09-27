@@ -28,8 +28,11 @@ SECTION_RE = re.compile(
     r"(?: facets=\"(?P<facets>[^\"\n]*)\")? hash=(?P<hash>[0-9a-f]+) -->\n\n(?P<text>.*?)(?=\n### |\n## |\Z)",
     re.DOTALL | re.MULTILINE,
 )
+# A link runs to the last closing parenthesis before its cell ends: url_for leaves parentheses unencoded, and a
+# title such as "Merkur (Planet)" puts them into the link (audit 2026-09-27, KO-02). A link holds no whitespace,
+# so the scan stays linear. Four digits are more than a compendium numbers; int() refuses over 4,300 (KO-08).
 ROW_RE = re.compile(
-    r"^\| \[(?P<number>\d+)\] \| \[(?P<title>[^\]\n]*)\]\((?P<url>[^)\n]*)\) \| (?P<heading>[^|\n]*) "
+    r"^\| \[(?P<number>\d{1,4})\] \| \[(?P<title>[^\]\n]*)\]\((?P<url>\S*)\) \| (?P<heading>[^|\n]*) "
     r"\| (?P<snippet>[^|\n]*) \|$",
     re.MULTILINE,
 )

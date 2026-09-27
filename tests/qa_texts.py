@@ -52,7 +52,12 @@ def compendium_markdown(prose: str, generated: str) -> str:
 
 def crafted_markdown(length: int = MARKDOWN_CHARS) -> dict[str, str]:
     """What parse_document meets in an earlier compendium sent along: a heading and a citation row over and over."""
-    return {"headings": "### " * (length // 4), "citation rows": "| [1] | [t](\n" * (length // 13)}
+    return {
+        "headings": "### " * (length // 4),
+        "citation rows": "| [1] | [t](\n" * (length // 13),
+        # A link runs to the last parenthesis before its cell ends (KO-02); a run of them must not backtrack
+        "parentheses in a citation link": "| [1] | [t](" + ")" * (length - 12),
+    }
 
 
 def crafted_texts(length: int = MAX_TEXT_CHARS) -> dict[str, str]:

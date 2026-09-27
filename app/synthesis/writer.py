@@ -26,7 +26,7 @@ from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
 from app.synthesis.actors import build_actors_section, collect_actors
-from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE
+from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE, marker_numbers
 from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
@@ -101,7 +101,10 @@ class SectionWriter:
         report = LlmReport() if llm is not None else None
         sections: list[Section] = []
         all_citations: list[Citation] = [c for block in kept.values() for c in block.citations]
-        highest = max((c.number for c in all_citations), default=0)  # the new blocks count on from here
+        # The new blocks count on from the highest number a kept block cites, read from its markers: a row the
+        # parser cannot read would otherwise lower it, and a new block would take a number the kept one still
+        # uses (audit 2026-09-27, KO-02)
+        highest = max((number for block in kept.values() for number in marker_numbers(block.text)), default=0)
         seen_sentences: set[str] = set()
         for slot in template.slots:
             block = kept.get(slot.id)
