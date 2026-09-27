@@ -35,6 +35,7 @@ def write_atomically(target: Path, write: Callable[[Path], dict[str, Any]]) -> d
     partial.unlink(missing_ok=True)
     try:
         meta = write(partial)
+        _to_disk(partial)
     except BaseException:
         partial.unlink(missing_ok=True)
         raise
@@ -46,6 +47,13 @@ def write_atomically(target: Path, write: Callable[[Path], dict[str, Any]]) -> d
             f"stop the service and rename it to {target.name}"
         ) from exc
     return meta
+
+
+def _to_disk(path: Path) -> None:
+    """The builds write without journal and without synchronous: their pages go to the disk before the rename makes
+    them the index, or a crash right after it could leave a whole-looking file with broken pages (audit DB-01)."""
+    with path.open("r+b") as handle:  # Windows flushes a file only through a handle that may write
+        os.fsync(handle.fileno())
 
 
 class LocalIndex:
@@ -138,11 +146,44 @@ class LocalIndex:
             connection: sqlite3.Connection | None = self._connection
             if connection is None:
                 return None
-            for params in candidates:
-                row = connection.execute(sql, params).fetchone()
-                if row:
-                    return tuple(row)
+            try:
+                for params in candidates:
+                    row = connection.execute(sql, params).fetchone()
+                    if row:
+                        return tuple(row)
+            except sqlite3.Error as exc:
+                # A broken page raised into every request that met it (a 500) while the file looked usable (audit
+                # DB-01): the index answers nothing now, until the sync puts another file in its place
+                log.error("%s %s is not usable: %s", self.label, self.path, exc)
+                self._drop()
         return None
+
+    def intact(self) -> bool:
+        """Whether ``PRAGMA quick_check`` finds the whole file sound - pages a crash or a disk broke, which
+        ``available`` does not see as it reads the meta rows only. It reads every page, which takes seconds - 6.5 s
+        for the 139 MB Wikidata index, 3.1 s for the 55 MB GND index (2026-09-28, development container) - so it is
+        for the sync's daily look, not for a request."""
+        self._recheck()
+        with self._lock:
+            connection = self._connection
+            if connection is None:
+                return False
+            try:
+                found = connection.execute("PRAGMA quick_check").fetchall()
+            except sqlite3.Error as exc:
+                log.error("%s %s is not usable: %s", self.label, self.path, exc)
+                self._drop()
+                return False
+        if found != [("ok",)]:
+            log.error("%s %s failed its check: %s", self.label, self.path, found[:3])
+            return False
+        return True
+
+    def _drop(self) -> None:
+        """Stop reading a broken file (lock held by the caller); its identity stays, so it is not opened again."""
+        if self._connection is not None:
+            self._connection.close()
+        self._connection, self._meta = None, {}
 
     def close(self) -> None:
         if self._connection is not None:

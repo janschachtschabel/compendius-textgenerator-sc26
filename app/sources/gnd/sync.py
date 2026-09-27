@@ -112,7 +112,7 @@ class GndSync(DumpSync):
             return "no index"
         index = GndIndex(self.index_path)
         try:
-            if not index.available:
+            if not index.available or not index.intact():  # a broken page is found here, not by a request
                 return "index unusable"
             built_from = _day(index.meta().get("release"))
         finally:

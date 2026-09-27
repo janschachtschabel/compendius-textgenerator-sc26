@@ -171,7 +171,7 @@ class WikidataSync(DumpSync):
             return "no index"
         index = WikidataIndex(self.index_path)
         try:
-            if not index.available:
+            if not index.available or not index.intact():  # a broken page is found here, not by a request
                 return "index unusable"
             built_from = _day(index.meta().get("dump"))
         finally:
