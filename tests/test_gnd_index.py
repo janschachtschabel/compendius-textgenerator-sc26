@@ -45,6 +45,12 @@ def _string(value: str) -> str:
     return '"' + value.replace(BACKSLASH, BACKSLASH * 2).replace('"', BACKSLASH + '"') + '"'
 
 
+def _objects(values: list[str]) -> str:
+    """A list of objects as the DNB writes it: three to a line, the rest on indented lines after a trailing comma."""
+    lines = [", ".join(values[start : start + 3]) for start in range(0, len(values), 3)]
+    return ",\n    ".join(lines)
+
+
 def write_gnd(path: Path, records: list[dict[str, Any]], predicate: str = "SubjectHeading") -> Path:
     """A dump shaped like the DNB's: a type block, an ``/about`` block and a block with names and links per record."""
     blocks = []
@@ -55,12 +61,14 @@ def write_gnd(path: Path, records: list[dict[str, Any]], predicate: str = "Subje
         blocks.append(f"{uri} a gndo:{record['type']};\n  wdrs:describedby {about} .\n")
         blocks.append(f"{about} dcterms:license <http://creativecommons.org/publicdomain/zero/1.0/> .\n")
         lines = [f'{uri} gndo:gndIdentifier "{record["gnd"]}";']
-        lines.append(f"  gndo:preferredNameForThe{name} " + ", ".join(_string(n) for n in record["names"]) + ";")
+        lines.append(f"  gndo:preferredNameForThe{name} " + _objects([_string(n) for n in record["names"]]) + ";")
         if record.get("variants"):
-            lines.append(f"  gndo:variantNameForThe{name} " + ", ".join(_string(v) for v in record["variants"]) + ";")
+            lines.append(f"  gndo:variantNameForThe{name} " + _objects([_string(v) for v in record["variants"]]) + ";")
         if record.get("items"):
             links = [f"<http://www.wikidata.org/entity/{item}>" for item in record["items"]]
-            lines.append("  owl:sameAs " + ", ".join([*links, "<https://viaf.org/viaf/1>"]) + ";")
+            lines.append(
+                "  owl:sameAs " + _objects([*record.get("links", []), *links, "<https://viaf.org/viaf/1>"]) + ";"
+            )
         lines.append(f"  wdrs:describedby {about} .")
         blocks.append("\n".join(lines) + "\n")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -144,3 +152,62 @@ def test_the_index_is_read_only_and_holds_only_unambiguous_pairs(index: GndIndex
     with sqlite3.connect(tmp_path / "gnd.db") as connection:
         names = dict(connection.execute("SELECT name, gnd FROM names").fetchall())
     assert "chat" not in names and names["zahlen"] == "4067271-2"
+
+
+def test_names_and_links_the_dnb_wraps_onto_the_next_line_are_read(tmp_path: Path) -> None:
+    """The DNB breaks long lists of objects after a comma (2026-02: 482 lines of variants in the first 6,267 records)."""
+    record = {
+        "gnd": "4000009-6",
+        "type": "SubjectHeadingSensoStricto",
+        "names": ["Abfallbeseitigung"],
+        "variants": ["Abfallentsorgung", "Hausmüllentsorgung", "Müllbeseitigung", "Müllentsorgung"],
+        "links": ["<http://id.loc.gov/1>", "<http://id.ndl.go.jp/2>", "<http://www.idref.fr/3>"],
+        "items": ["Q999555"],
+    }
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [record])
+    with gzip.open(dump, "rt", encoding="utf-8") as handle:
+        assert ',\n    "Müllentsorgung";' in handle.read(), "the dump wraps the list as the DNB does"
+    build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    index = GndIndex(tmp_path / "gnd.db")
+    wrapped = index.find("Müllentsorgung", qid=None)
+    assert wrapped is not None and wrapped.number == "4000009-6"
+    linked = index.find("Irgendwas", qid="Q999555")
+    assert linked is not None and linked.source == "wikidata"
+
+
+def test_lines_of_another_subject_are_no_part_of_the_record_before(tmp_path: Path) -> None:
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", SUBJECTS[:1])
+    with gzip.open(dump, "at", encoding="utf-8") as handle:
+        handle.write('\n_:b1 a gndo:SubjectHeading;\n  gndo:variantNameForTheSubjectHeading "Fremdname" .\n')
+    build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    assert GndIndex(tmp_path / "gnd.db").find("Fremdname", qid=None) is None
+
+
+def test_escapes_in_names_are_read_as_turtle_defines_them(tmp_path: Path) -> None:
+    umlaut = BACKSLASH + "u00e4"  # the GND writes UTF-8, a UCHAR must still read as the letter
+    beyond = BACKSLASH + "U0011FFFF"  # no code point: stays as written instead of failing the build
+    names = f'"K{umlaut}se", "Tab{BACKSLASH}tstopp", "X{beyond}"'
+    record = (
+        "<https://d-nb.info/gnd/4000010-2> a gndo:SubjectHeadingSensoStricto;\n"
+        f"  gndo:preferredNameForTheSubjectHeading {names} .\n"
+    )
+    dump = tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz"
+    with gzip.open(dump, "wt", encoding="utf-8") as handle:
+        handle.write(PREFIX + record)
+    build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    index = GndIndex(tmp_path / "gnd.db")
+    assert index.find("Käse", qid=None) is not None
+    assert index.find("Tab" + chr(9) + "stopp", qid=None) is not None
+    assert index.find("X" + beyond, qid=None) is not None
+
+
+def test_a_build_that_reads_records_but_no_name_or_item_fails(tmp_path: Path) -> None:
+    """A layout the reader no longer knows - here other name predicates - must not end as an index that answers nothing."""
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [SUBJECTS[1]])
+    with gzip.open(dump, "rt", encoding="utf-8") as handle:
+        text = handle.read().replace("NameForThe", "LabelForThe")
+    with gzip.open(dump, "wt", encoding="utf-8") as handle:
+        handle.write(text)
+    with pytest.raises(ValueError, match="no name and no Wikidata item"):
+        build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
+    assert not (tmp_path / "gnd.db").exists()

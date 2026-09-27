@@ -35,7 +35,8 @@ SCHEMA_VERSION = "1"
 BACKSLASH = chr(92)
 _SUBJECT_RE = re.compile(r"^<https://d-nb\.info/gnd/([0-9X-]+)>\s+(.*)$")
 _STRING_RE = re.compile('"((?:[^"' + BACKSLASH * 2 + "]|" + BACKSLASH * 2 + '.)*)"')
-_ESCAPE_RE = re.compile(BACKSLASH * 2 + "(.)")
+_ESCAPE_RE = re.compile(BACKSLASH * 2 + "(u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8}|.)")
+_ECHARS = {"t": chr(9), "b": chr(8), "n": chr(10), "r": chr(13), "f": chr(12)}  # any other escaped sign is itself
 _WIKIDATA_RE = re.compile(r"<http://www\.wikidata\.org/entity/(Q\d+)>")
 _VERSION_RE = re.compile(r"_(\d{4})(\d{2})(\d{2})\.ttl\.gz$")
 NAME_PREDICATES = ("gndo:preferredNameFor", "gndo:variantNameFor")
@@ -48,29 +49,51 @@ class GndHit:
     source: str  # "wikidata": the record names the article's item; "name": the one record with the article's title
 
 
+def _unescape(text: str) -> str:
+    """The content of a Turtle string with its escapes read (ECHAR and UCHAR)."""
+
+    def one(match: re.Match[str]) -> str:
+        code = match.group(1)
+        if len(code) == 1:
+            return _ECHARS.get(code, code)
+        value = int(code[1:], 16)
+        # A number no string can hold (half a surrogate pair, beyond U+10FFFF) stays as written, not failing the build
+        return chr(value) if value <= 0x10FFFF and not 0xD800 <= value <= 0xDFFF else match.group(0)
+
+    return _ESCAPE_RE.sub(one, text)
+
+
 def _pairs(path: Path) -> Iterator[tuple[str, str | None, str | None]]:
-    """(GND number, name, item) for every record of a dump, read line by line; a record's blocks may be apart."""
+    """(GND number, name, item) for every record of a dump, read line by line as the DNB writes its Turtle.
+
+    A record's statements start at its subject or on an indented line, and a list of objects that ends a line with a
+    comma goes on at the next: the DNB wraps long lists of variant names. Any other subject - the record's ``/about``
+    block, a blank node - ends the record; its blocks may be apart. simplify: a string over several lines (a long
+    string in triple quotes) is not read; the DNB's dumps of 2026-02 have none.
+    """
     number: str | None = None
+    predicate = ""
+    continued = False  # the line before ended with a comma: this one carries more objects of the same predicate
     with gzip.open(path, "rt", encoding="utf-8") as handle:
         for line in handle:
-            if line.startswith("<"):
-                subject = _SUBJECT_RE.match(line)  # an ".../about>" block describes the record, it is none
-                if subject is None:
-                    number = None
+            if line[:1].isspace():  # a statement of the record, more objects, or a blank line
+                if number is None:
                     continue
-                number = subject.group(1)
-                yield number, None, None
-                rest = subject.group(2)
-            elif number is not None and line.startswith("  "):
                 rest = line.strip()
+            elif (subject := _SUBJECT_RE.match(line)) is not None:
+                number, rest, continued = subject.group(1), subject.group(2).strip(), False
+                yield number, None, None
             else:
+                number = None
                 continue
-            predicate, _, objects = rest.partition(" ")
+            if not continued:
+                predicate, _, rest = rest.partition(" ")
+            continued = rest.endswith(",")
             if predicate.startswith(NAME_PREDICATES):
-                for name in _STRING_RE.findall(objects):
-                    yield number, _ESCAPE_RE.sub(r"\1", name), None
+                for name in _STRING_RE.findall(rest):
+                    yield number, _unescape(name), None
             elif predicate == "owl:sameAs":
-                for item in _WIKIDATA_RE.findall(objects):
+                for item in _WIKIDATA_RE.findall(rest):
                     yield number, None, item
 
 
@@ -109,8 +132,12 @@ def _write(target: Path, dumps: Sequence[tuple[Path, str]]) -> dict[str, Any]:
         )
         counts = {table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]  # noqa: S608 - own names
                   for table in ("records", "items", "names")}  # fmt: skip
-        if not counts["records"]:  # a layout the reader does not know must not end as an index that answers nothing
-            raise ValueError(f"no GND record in {', '.join(path.name for path, _ in dumps)}")
+        # A layout the reader does not know must not end as an index that answers nothing
+        sources = ", ".join(path.name for path, _ in dumps)
+        if not counts["records"]:
+            raise ValueError(f"no GND record in {sources}")
+        if not counts["items"] and not counts["names"]:
+            raise ValueError(f"no name and no Wikidata item of a GND record in {sources}")
         meta = {
             "schema": SCHEMA_VERSION,
             **{key: str(value) for key, value in counts.items()},
