@@ -76,13 +76,14 @@ sudo -u kompendium git clone https://github.com/janschachtschabel/compendius-tex
 cd /srv/kompendium && sudo -u kompendium cp .env.example .env && sudo -u kompendium chmod 600 .env
 ```
 
-Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein Blick auf vier Zeilen:
+Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein Blick auf diese Zeilen:
 
 | Zeile | Bedeutung |
 |---|---|
 | `ZIM_PROFILE` | welche Archive geladen werden (Tabelle oben) |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | in der Vorlage `true`: der Updater lädt beim ersten Start die fehlenden Pflichtarchive |
-| `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden |
+| `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden, dann mit mindestens 32 Zeichen (`openssl rand -hex 32`) |
+| `API_KEYS`, `METRICS_TOKEN` | auf einem öffentlichen Server setzen, je mindestens 32 Zeichen: ohne sie antworten die Endpunkte mit einem Profil und `/metrics` jedem (Abschnitt 8) |
 | `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, Produktion steht auskommentiert daneben. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
 
@@ -196,16 +197,34 @@ Alle vier Profile nutzen `hybrid_light`, `best-quality` und `best-quality-genera
 
 Compose bindet den Port an alle Schnittstellen (`API_BIND`, Vorgabe `0.0.0.0:8000`). Das ist nötig, damit
 eine Hosting-Umgebung ihn erreicht: deren Proxy läuft in der Regel nicht im selben Netz-Namensraum und
-käme an eine Loopback-Bindung nicht heran. **Der Schutz ist damit die Firewall des Hosts** — der Dienst
-selbst kennt weder Anmeldung noch CORS.
+käme an eine Loopback-Bindung nicht heran. **Die Firewall des Hosts schützt diesen Port nicht.** Docker
+veröffentlicht Ports über eigene NAT-Regeln, an denen ufw und die INPUT-Kette nicht vorbeikommen: Ein Port, den
+ufw sperrt, ist trotzdem offen. Firewall-Regeln für veröffentlichte Ports gehören in die Kette `DOCKER-USER`.
+
+Der Dienst kennt keine Anmeldung, aber auf einem öffentlichen Server gehören zwei Variablen in die `.env` (oder
+in die Variablen des Hosting-Panels):
+
+- `API_KEYS`: ein oder mehrere Schlüssel, kommagetrennt, je mindestens 32 Zeichen (`openssl rand -hex 32`). Dann
+  verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`,
+  `/lehrplan/search`, `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne
+  Schlüssel kann jeder das gemeinsame LLM-Tagesbudget in Minuten aufbrauchen. `/health`, `/ready`, `/docs`, die
+  Templates und die Statusendpunkte bleiben offen. Ein eigener Schlüssel je aufrufender Anwendung lässt sich
+  einzeln zurückziehen.
+- `METRICS_TOKEN`, ebenfalls mindestens 32 Zeichen: sonst liest jeder `/metrics`.
+
+`ADMIN_TOKEN`, `METRICS_TOKEN` und `API_KEYS` mit weniger als 32 Zeichen lehnt der Dienst beim Start ab; die
+Meldung nennt die Variable, nicht ihren Wert.
 
 Auf einer Maschine, die nur selbst zugreifen soll, gehört die alte Bindung zurück:
 `API_BIND=127.0.0.1:8000`.
 
-Für Zugriff von außen gehört ein Reverse-Proxy davor, der TLS beendet. Dann gehört zwingend auch
-`FORWARDED_ALLOW_IPS` auf das Netz dieses Proxys gesetzt — sonst sehen alle Aufrufer dieselbe Adresse und
-teilen sich ein Rate-Limit-Fenster. Steht der Proxy in einem eigenen Container, ist seine Adresse die des
-Docker-Netzes (meist `172.16.0.0/12`), nicht `127.0.0.1`.
+Für Zugriff von außen gehört ein Reverse-Proxy davor, der TLS beendet. Steht nginx auf dem Host, bindet
+`API_BIND=127.0.0.1:8000` den Port nur an Loopback; ohne diese Zeile bleibt Port 8000 neben dem Proxy offen. Dann
+gehört zwingend auch `FORWARDED_ALLOW_IPS` auf die Adresse gesetzt, von der der Proxy im Container ankommt —
+sonst sehen alle Aufrufer dieselbe Adresse und teilen sich ein Rate-Limit-Fenster. Das ist nicht `127.0.0.1`:
+Auch ein Proxy auf dem Host kommt über den veröffentlichten Port vom Gateway des Compose-Netzes (am 27.09.
+gemessen: `172.23.0.1`). `docker network inspect kompendium_default --format '{{(index .IPAM.Config 0).Gateway}}'`
+nennt es; ein Proxy in einem eigenen Container hat eine Adresse aus dem Docker-Netz (meist `172.16.0.0/12`).
 
 ```nginx
 location / {
@@ -217,9 +236,10 @@ location / {
 }
 ```
 
-Zwei Zeilen in `.env` gehören dann dazu:
+Drei Zeilen in `.env` gehören dann dazu:
 
-- `FORWARDED_ALLOW_IPS` auf die Adresse des Proxys setzen. Sonst sieht der Dienst nur dessen Adresse, und
+- `API_BIND=127.0.0.1:8000`, damit Port 8000 nur über den Proxy erreichbar ist.
+- `FORWARDED_ALLOW_IPS` auf die Gateway-Adresse von oben setzen. Sonst sieht der Dienst nur diese Adresse, und
   alle Aufrufer teilen sich **ein** Rate-Limit-Fenster.
 - `RATE_LIMIT` prüfen (Standard 60 Anfragen je Minute und Aufrufer, je Worker).
 

@@ -22,8 +22,10 @@ services:
       # An alle Schnittstellen, damit der Port auch in einer Hosting-Umgebung erreichbar ist: deren
       # Proxy laeuft in der Regel nicht im selben Netz-Namensraum und kaeme an eine Loopback-Bindung
       # nicht heran. API_BIND=127.0.0.1:8000 holt die alte, nur lokale Bindung zurueck - auf einem
-      # Arbeitsrechner ist das die richtige Wahl. Wer veroeffentlicht, stellt einen Reverse-Proxy
-      # davor und setzt FORWARDED_ALLOW_IPS auf dessen Netz; der Dienst kennt keine Anmeldung.
+      # Arbeitsrechner ist das die richtige Wahl. Die Firewall des Hosts (ufw) schuetzt einen
+      # veroeffentlichten Port nicht: Docker leitet an ihr vorbei. Oeffentlich also API_KEYS und
+      # METRICS_TOKEN setzen (docs/installation.md, Abschnitt 8); ein Reverse-Proxy auf dem Host
+      # braucht API_BIND=127.0.0.1:8000 und FORWARDED_ALLOW_IPS auf das Gateway des Compose-Netzes.
       - "${API_BIND:-0.0.0.0:8000}:8000"
     restart: unless-stopped
 

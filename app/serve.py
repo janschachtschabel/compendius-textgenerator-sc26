@@ -15,7 +15,7 @@ from app.settings import get_settings
 
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
 METRIC_FILES = ("counter_*.db", "gauge_*.db", "histogram_*.db", "summary_*.db")  # prometheus_client's file names
-# All interfaces inside the container; compose publishes the port on 127.0.0.1 only
+# All interfaces inside the container; compose publishes the port on API_BIND, all interfaces unless set otherwise
 UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]  # noqa: S104
 # A worker busy with one compendium answers the parent process late or not at all: the work happens in C code
 # (ZIM reads, matching) that holds the interpreter lock, measured at 26 seconds without a break for one request.

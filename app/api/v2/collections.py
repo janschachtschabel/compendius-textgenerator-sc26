@@ -6,6 +6,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Request
 
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.llm.deadline import Deadline
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, validate_node_id
@@ -15,7 +16,7 @@ router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
 STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "Optik" of the WLO staging
 
 
-@router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited)])
+@router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited), Depends(require_api_key)])
 def collection_overview(
     collection_id: Annotated[
         str,

@@ -594,7 +594,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorgabe | Bedeutung |
 |---|---|---|
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image die drei Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
-| `API_BIND` | `0.0.0.0:8000` | Woran der Port der API gebunden wird. Die Vorgabe bindet an **alle** Schnittstellen, damit der Dienst in einer Hosting-Umgebung überhaupt erreichbar ist — deren Proxy läuft meist nicht im selben Netz-Namensraum und käme an eine Loopback-Bindung nicht heran. Der Schutz ist dann die Firewall des Hosts und ein Reverse-Proxy davor, denn der Dienst kennt keine Anmeldung. Auf einem Arbeitsrechner gehört `API_BIND=127.0.0.1:8000` gesetzt |
+| `API_BIND` | `0.0.0.0:8000` | Woran der Port der API gebunden wird. Die Vorgabe bindet an **alle** Schnittstellen, damit der Dienst in einer Hosting-Umgebung überhaupt erreichbar ist — deren Proxy läuft meist nicht im selben Netz-Namensraum und käme an eine Loopback-Bindung nicht heran. Die Firewall des Hosts schützt einen veröffentlichten Docker-Port nicht (Docker leitet an ufw und der INPUT-Kette vorbei); öffentlich gehören `API_KEYS` und `METRICS_TOKEN` gesetzt (docs/installation.md, Abschnitt 8). Auf einem Arbeitsrechner und hinter einem Reverse-Proxy auf dem Host gehört `API_BIND=127.0.0.1:8000` gesetzt |
 
 ### Betrieb
 
@@ -603,10 +603,11 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `LOG_LEVEL` | `INFO` | Protokollstufe der Anwendung (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 | `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit und das Lesen der Materialtexte. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`) |
 | `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
-| `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus |
+| `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus. Im Container kommt auch ein Proxy auf dem Host nicht von `127.0.0.1`, sondern vom Gateway des Compose-Netzes (siehe docs/installation.md, Abschnitt 8) |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
-| `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Matching-Vergleich) nur mit diesem Token; leer schaltet sie ab |
+| `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Templates schreiben und löschen) nur mit diesem Token, mindestens 32 Zeichen (kürzer: der Dienst startet nicht); leer schaltet sie ab |
+| `API_KEYS` | leer | Schlüssel, kommagetrennt, je mindestens 32 Zeichen (`openssl rand -hex 32`). Gesetzt, verlangen alle Endpunkte mit einem Profil — `compendium`, `knowledge`, `qa`, `entities`, `lehrplan/search`, `nodes/{id}` und `collections/overview` — einen davon im Header `X-API-Key`, sonst 401; `/health`, `/ready`, `/docs`, Templates und Statusendpunkte bleiben offen. Leer: Die Endpunkte antworten jedem. Auf einem öffentlichen Server setzen |
 
 ### ZIM-Archive
 
@@ -744,7 +745,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `METRICS_ENABLED` | `true` | `GET /metrics` ausliefern |
-| `METRICS_TOKEN` | leer | Verlangt `Authorization: Bearer <Token>`; leer heißt ohne Token |
+| `METRICS_TOKEN` | leer | Verlangt `Authorization: Bearer <Token>`, mindestens 32 Zeichen; leer heißt ohne Token. Auf einem öffentlichen Server setzen |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | Wo die Worker ihre Werte ablegen, damit `/metrics` sie summiert. Leer nimmt den Standard `/tmp/prometheus`, den der API-Befehl des Images selbst setzt — **in der Regel leer lassen**, denn diese Datei gilt auch für die Sidecars, die keine Metriken schreiben. Ein eigener Pfad muss je Container leer und beschreibbar sein und darf niemals das Zustandsvolume sein |
 
 ## Endpunkte
@@ -806,8 +807,10 @@ ohne Verb listet wie bisher.
 `GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search` sind je Client auf `RATE_LIMIT` Anfragen
 pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
 0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Hinter einem Reverse-Proxy sieht uvicorn die
-Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung für die öffentlichen Endpunkte gibt es nicht;
-der Dienst gehört hinter ein Gateway. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und
+Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung gibt es nicht, aber `API_KEYS` macht einen
+Schlüssel im Header `X-API-Key` zur Bedingung für diese sieben Endpunkte; die Prüfung läuft nach dem Rate-Limit,
+ein Fehlversuch zählt also als Anfrage. `/docs` bietet den Schlüssel unter „Authorize“ an. Admin-Endpunkte
+zählen ebenfalls gegen `RATE_LIMIT`. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und
 `/openapi.json` ab. `GET /health` meldet `zim`, `lehrplan_cache`, `edu_sharing` und `llm`; Fehlermeldungen
 nennen keine Serverpfade und keine Antworttexte des Repositorys (die stehen im Log).
 

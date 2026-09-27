@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
 
-from pydantic import Field
+from pydantic import Field, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.domain.requests import Preset
@@ -31,6 +31,11 @@ def b_api_for(repository_url: str) -> str:
     return B_API_BY_REPOSITORY.get(urlparse(repository_url).hostname or "", "")
 
 
+# Admin and metrics tokens and the API keys: 32 characters (openssl rand -hex 16) put guessing out of reach, while a
+# token of one character was accepted (audit 2026-09-27, SE-08)
+MIN_SECRET_CHARS = 32
+
+
 def _split_csv(value: str) -> list[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
 
@@ -38,7 +43,10 @@ def _split_csv(value: str) -> list[str]:
 class Settings(BaseSettings):
     """Project-wide settings, loaded once (see ``get_settings``)."""
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore")
+    # hide_input_in_errors: a setting the service refuses must not reach the log with its value - it may be a secret
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore", hide_input_in_errors=True
+    )
 
     log_level: str = Field("INFO", description="Python log level name")
 
@@ -193,9 +201,29 @@ class Settings(BaseSettings):
         60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
     )
     admin_token: str = Field("", description="Token for admin endpoints; empty disables them")
+    api_keys: str = Field(
+        "",
+        description="Comma-separated keys; once set, every endpoint that works under a profile wants one of them "
+        "in X-API-Key (401 otherwise). Empty: those endpoints answer everyone",
+    )
     api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
     metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
     metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
+
+    @field_validator("admin_token", "metrics_token", "api_keys")
+    @classmethod
+    def _long_enough(cls, value: str, info: ValidationInfo) -> str:
+        secrets = _split_csv(value) if info.field_name == "api_keys" else [value] if value else []
+        if any(len(secret) < MIN_SECRET_CHARS for secret in secrets):
+            name = (info.field_name or "").upper()
+            raise ValueError(
+                f"{name} braucht mindestens {MIN_SECRET_CHARS} Zeichen je Wert, etwa aus openssl rand -hex 32"
+            )
+        return value
+
+    @property
+    def api_key_list(self) -> list[str]:
+        return _split_csv(self.api_keys)
 
     @property
     def b_api_url(self) -> str:

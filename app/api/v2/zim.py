@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi import Path as PathParameter  # pathlib.Path is taken
 
 from app.api.admin import require_admin
+from app.api.limits import rate_limited
 from app.jobs.zim_sync import TRIGGER_FILE, read_status
 from app.settings import Settings
 from app.sources.zim.active import ActiveState, read_active
@@ -22,7 +23,9 @@ from app.sources.zim.downloader import PART_SUFFIX, validate_file_name
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/zim", tags=["zim"])
 PUBLIC_RUN_FIELDS = ("profile", "started_at", "finished_at", "adopted", "downloaded", "skipped", "missing", "pruned")
-admin = APIRouter(prefix="/api/v2/zim", tags=["zim-admin"], dependencies=[Depends(require_admin)])
+admin = APIRouter(
+    prefix="/api/v2/zim", tags=["zim-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)]
+)
 
 
 def _active(settings: Settings) -> ActiveState:

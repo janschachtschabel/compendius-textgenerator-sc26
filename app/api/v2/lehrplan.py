@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
 from app.knowledge.curriculum_check import CurriculumCheckReport
@@ -36,7 +37,9 @@ HARVEST_FAILED = (
     "Der letzte Harvest ist gescheitert; den Grund nennen das Log des Harvest-Sidecars "
     "und `compendium lehrplan status`."
 )
-admin = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan-admin"], dependencies=[Depends(require_admin)])
+admin = APIRouter(
+    prefix="/api/v2/lehrplan", tags=["lehrplan-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)]
+)
 SEARCH_PRESET_HELP = (
     "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "
     "shipped balanced).\n\n"
@@ -161,7 +164,7 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
     }
 
 
-@router.get("/search", dependencies=[Depends(rate_limited)])
+@router.get("/search", dependencies=[Depends(rate_limited), Depends(require_api_key)])
 def lehrplan_search(
     request: Request,
     q: str = Query(

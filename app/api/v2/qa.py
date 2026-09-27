@@ -25,6 +25,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.deps import get_service, node_errors
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
@@ -275,7 +276,7 @@ EXAMPLES = {
 @router.post(
     "/qa",
     response_model=QaResponse,
-    dependencies=[Depends(rate_limited)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
     summary="Frage-Antwort-Paare zu einem Text oder Thema",
 )
 def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: Request) -> QaResponse:

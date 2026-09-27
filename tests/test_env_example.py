@@ -15,7 +15,7 @@ EXAMPLE = Path(__file__).resolve().parents[1] / ".env.example"
 # Read by the processes themselves, not by Settings: uvicorn takes the first two, app/serve.py the third
 PROCESS_VARIABLES = {"WEB_CONCURRENCY", "FORWARDED_ALLOW_IPS", "PROMETHEUS_MULTIPROC_DIR"}
 # The example is committed, so everything that would be a credential stays empty in it
-SECRETS = ("B_API_KEY", "EDU_SHARING_USER", "EDU_SHARING_PASSWORD", "ADMIN_TOKEN", "METRICS_TOKEN")
+SECRETS = ("B_API_KEY", "EDU_SHARING_USER", "EDU_SHARING_PASSWORD", "ADMIN_TOKEN", "METRICS_TOKEN", "API_KEYS")
 
 _LINE = re.compile(r"^#?\s*([A-Z][A-Z0-9_]*)=(.*)$", re.M)
 

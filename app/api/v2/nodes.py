@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, Path, Query, Request
 from pydantic import Field
 
 from app.api.deps import node_errors
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.domain.models import NodeInput
 from app.domain.requests import NODE_ID_PATTERN, REPOSITORY_HELP
@@ -54,7 +55,7 @@ class NodePreview(NodeInput):
 @router.get(
     "/nodes/{node_id}",
     response_model=NodePreview,
-    dependencies=[Depends(rate_limited)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
     summary="Knoten eines Repositorys lesen: Metadaten und abgeleitetes Thema",
 )
 def read_node(

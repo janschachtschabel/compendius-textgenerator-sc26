@@ -17,7 +17,8 @@ from tests.test_article_choice import rating
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
-AUTH = {"X-Admin-Token": "s3cret"}
+ADMIN_TOKEN = "s3cret" * 6  # the service refuses a token under 32 characters (audit 2026-09-27, SE-08)
+AUTH = {"X-Admin-Token": ADMIN_TOKEN}
 PHYSIK = LehrplanRecord(
     iri="https://lp-sachsen.org/resource/522",
     label="Gymnasium Physik",
@@ -228,7 +229,7 @@ def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
 ) -> None:
     with _client(sample_zims, tmp_path) as client:
         assert client.post("/api/v2/lehrplan/harvest").status_code == 404
-    with _client(sample_zims, tmp_path, admin_token="s3cret") as client:
+    with _client(sample_zims, tmp_path, admin_token=ADMIN_TOKEN) as client:
         assert client.post("/api/v2/lehrplan/harvest").status_code == 403
         assert client.post("/api/v2/lehrplan/harvest", headers=AUTH).status_code == 202
         assert (tmp_path / "state" / TRIGGER_FILE).exists()

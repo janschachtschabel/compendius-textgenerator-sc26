@@ -13,6 +13,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.api.deps import archives_for, corpus_for_topic, get_service, node_errors
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
@@ -238,7 +239,7 @@ EXAMPLES = {
 @router.post(
     "/knowledge",
     response_model=KnowledgeResponse,
-    dependencies=[Depends(rate_limited)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
     summary="Wissenstexte zu einem Thema",
 )
 def knowledge(

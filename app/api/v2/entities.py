@@ -34,6 +34,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.deps import archives_for, node_errors
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.entities_schemas import (
     EXAMPLES,
@@ -218,7 +219,7 @@ def _node_text(info: NodeInfo) -> str:
 @router.post(
     "/entities",
     response_model=EntitiesResponse,
-    dependencies=[Depends(rate_limited)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
     summary="Entitäten in einem Text erkennen",
 )
 def entities(

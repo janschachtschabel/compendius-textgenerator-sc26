@@ -13,6 +13,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Path, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
+from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.routes_examples import BUILTIN_TEMPLATES, EXAMPLES, TEMPLATE_EXAMPLES, TEMPLATE_ID_HELP
 from app.compose.regeneration import UnknownSectionsError
@@ -34,13 +35,13 @@ from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
-admin = APIRouter(prefix="/api/v2", tags=["v2-admin"], dependencies=[Depends(require_admin)])
+admin = APIRouter(prefix="/api/v2", tags=["v2-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)])
 
 
 @router.post(
     "/compendium",
     response_model=Compendium,
-    dependencies=[Depends(rate_limited)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
     summary="Kompendium erzeugen",
 )
 def generate_compendium(

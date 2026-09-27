@@ -16,7 +16,8 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from tests.conftest import make_settings
 
-AUTH = {"X-Admin-Token": "s3cret"}
+ADMIN_TOKEN = "s3cret" * 6  # the service refuses a token under 32 characters (audit 2026-09-27, SE-08)
+AUTH = {"X-Admin-Token": ADMIN_TOKEN}
 TEMPLATE = {
     "id": "mein",
     "name": "Mein Template",
@@ -26,7 +27,7 @@ TEMPLATE = {
 
 @pytest.fixture
 def client(sample_zims: dict[str, Path], tmp_path: Path) -> Iterator[TestClient]:
-    settings = make_settings(sample_zims.values(), tmp_path, admin_token="s3cret")
+    settings = make_settings(sample_zims.values(), tmp_path, admin_token=ADMIN_TOKEN)
     with TestClient(create_app(settings)) as started:
         yield started
 

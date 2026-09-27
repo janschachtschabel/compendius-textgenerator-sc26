@@ -65,6 +65,8 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 | Teil 2 enthält nur den Hinweistext | `lehrplan.db` fehlt (`reason: cache_missing`) oder ist beschädigt oder von einer anderen Schemaversion (`cache_unreadable`) | `POST /api/v2/lehrplan/harvest` (Admin) oder `compendium lehrplan harvest --force` im Sidecar |
 | `KompendiumLehrplanHarvestFailed`, `lehrplan_status.json` nennt `HarvestRefusedError` | Der Harvest fand weit weniger, als der Cache hält: keinen Lehrplan, ein Land fehlt oder behält weniger als die Hälfte seiner Lehrpläne. So antwortet MEM, während es einen Graphen neu lädt; der alte Cache bleibt in Betrieb, und der Updater versucht es nach einer Stunde wieder | Abwarten. Hat MEM wirklich Lehrpläne zurückgezogen (Zählung in `compendium lehrplan check`), das Ergebnis übernehmen: `docker compose run --rm --no-deps lehrplan-updater compendium lehrplan harvest --force` |
 | 503 „Kein angefragter Teil ist erzeugbar“ | Die Anfrage verlangt nur Teile, die der Dienst nicht eingerichtet hat (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`); das Log meldet `compendium request refused` mit dem Grund. Eine Wiederholung ändert nichts | Konfiguration ergänzen oder den Teil nicht anfragen |
+| 401 „verlangt einen gültigen API-Schlüssel“ | Der Server setzt `API_KEYS`, und die Anfrage trug keinen der Schlüssel im Header `X-API-Key` | Schlüssel im Header mitschicken; in `/docs` unter „Authorize“ eintragen |
+| Nach einem Update starten die Container nicht, das Log nennt `ADMIN_TOKEN`, `METRICS_TOKEN` oder `API_KEYS` „braucht mindestens 32 Zeichen“ | Seit dem 27.09.2026 lehnt der Dienst kürzere Token und Schlüssel ab, auch die Sidecars, die dieselbe `.env` lesen | Neuen Wert erzeugen (`openssl rand -hex 32`), eintragen, neu starten; Prometheus und aufrufende Anwendungen bekommen ihn mit |
 | 429 mit `Retry-After` | `RATE_LIMIT` je Client und Minute überschritten | hinter einem Proxy `FORWARDED_ALLOW_IPS` setzen, sonst teilen sich alle Clients ein Fenster |
 | `/ready` bleibt 503 | Pflichtarchive fehlen oder `active.json` ist beschädigt (steht im Log) | `compendium zim status`; Sync anstoßen (`POST /api/v2/zim/sync`, Admin) |
 | ZIM-Volume läuft voll | abgelöste Dumps bleiben `ZIM_RETENTION_HOURS` liegen; `.part`-Dateien älterer Dumps räumt der Sync weg | `DELETE /api/v2/zim/{datei}` (Admin) für nicht aktive Dateien; Volume für zwei Generationen des Profils auslegen (Profil `standard`: rund 2 × 14 GB) |
@@ -83,8 +85,10 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
   `docker stop` (SIGTERM) beendet einen laufenden Sync oder Harvest sauber: Endstatus geschrieben, Sperre frei, der
   nächste Start setzt die `.part` fort. Der Lehrplan-Harvest hat seine eigene Sperre (`lehrplan.harvest.lock`),
   frischt sie vor jeder Abfrage an MEM auf; nach vier Stunden ohne Lebenszeichen gilt sie als verwaist.
-- Der Dienst hat keine Anmeldung für die öffentlichen Endpunkte; er gehört hinter ein Gateway. Admin-Endpunkte
-  sind nur mit `ADMIN_TOKEN` aktiv.
+- Der Dienst hat keine Anmeldung. Auf einem öffentlichen Server verlangt `API_KEYS` einen Schlüssel für alle
+  Endpunkte mit einem Profil und `METRICS_TOKEN` ein Token für `/metrics`; die Firewall des Hosts schützt einen
+  veröffentlichten Docker-Port nicht (docs/installation.md, Abschnitt 8). Admin-Endpunkte sind nur mit
+  `ADMIN_TOKEN` aktiv. Token und Schlüssel unter 32 Zeichen lehnt der Dienst beim Start ab.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
 - Zurück auf eine frühere Fassung: Jeder Commit auf `main`, dessen Prüfungen grün waren, liegt als Image mit
   seiner kurzen Commit-Sha in der Registry, jedes Versions-Tag `vX.Y.Z` als `X.Y.Z`. Also
