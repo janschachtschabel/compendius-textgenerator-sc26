@@ -17,7 +17,7 @@ from typing import Any
 from prometheus_client.core import GaugeMetricFamily
 from prometheus_client.metrics_core import Metric
 
-from app import __version__
+from app import __version__, revision
 from app.jobs.zim_sync import read_status as read_zim_status
 from app.sources.gnd.sync import read_status as read_gnd_status
 from app.sources.lehrplan.harvest import read_status as read_harvest_status
@@ -68,8 +68,10 @@ class StatusCollector:
         self._state = state
 
     def collect(self) -> Iterator[Metric]:
-        build = GaugeMetricFamily("kompendium_build_info", "Version of the service", labels=["version"])
-        build.add_metric([__version__], 1)
+        build = GaugeMetricFamily(
+            "kompendium_build_info", "Version and commit of the service", labels=["version", "revision"]
+        )
+        build.add_metric([__version__, revision() or ""], 1)
         yield build
         # A failing section is left out of the scrape, and the alerts on its gauges then stay silent: the failure
         # itself is a gauge of its own (KompendiumStatusIncomplete)

@@ -83,4 +83,9 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \
 # Herunterfahren). Die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst); /metrics
 # summiert die Werte aller Worker. Die Sidecars laden die Metriken nicht.
 # Der Updater nutzt dasselbe Image mit: compendium zim sync --loop
+# Der Commit, aus dem das Image entstand (der Job publish in ci.yml setzt ihn): /health und kompendium_build_info
+# nennen ihn als revision, denn die Version aendert sich nur mit einem Release (Audit 2026-09-27, BE-03). Ganz am
+# Ende, damit ein neuer Commit keine Schicht davor ungueltig macht.
+ARG GIT_REVISION=""
+ENV GIT_REVISION=$GIT_REVISION
 CMD ["python", "-m", "app.serve"]

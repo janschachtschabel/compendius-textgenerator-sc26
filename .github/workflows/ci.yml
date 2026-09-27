@@ -48,10 +48,10 @@ jobs:
           docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool "$image" check config /m/prometheus.yml
           docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool "$image" test rules /m/alerts_test.yml
       - name: Image builds (without the embedding model, to stay fast)
-        run: docker build --build-arg MODEL2VEC_ID= -t compendious-text-fastapi:ci .
+        run: docker build --build-arg MODEL2VEC_ID= --build-arg GIT_REVISION="$GITHUB_SHA" -t compendious-text-fastapi:ci .
       - name: Image answers with a compendium
         # The suite calls the service in the same process, so only this step sees the packaged service run
-        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:ci
+        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:ci --revision "$GITHUB_SHA"
       - name: Known vulnerabilities in the runtime dependencies
         # dependency-audit.yml runs the same once a week, for advisories published between two pushes
         run: |
@@ -89,10 +89,11 @@ jobs:
           context: .
           load: true
           tags: compendious-text-fastapi:publish
+          build-args: GIT_REVISION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Image answers with a compendium
-        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:publish
+        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:publish --revision "$GITHUB_SHA"
       - name: Still the newest commit of main
         # A run whose checks took longer must not overwrite the :latest of a newer commit: only the commit main
         # points to now gets it. A version tag never does (the flavor below keeps the action from adding it).
@@ -126,6 +127,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GIT_REVISION=${{ github.sha }}
           cache-from: type=gha
       # A host pulls the image without a login (README). When the package is not public, the pull fails with
       # "unauthorized", Compose keeps the image the host already has, and the host's update still reports success -

@@ -79,7 +79,7 @@ def test_status_gauges_describe_archives_caches_and_sidecars(sample_zims: dict[s
     )
     with _app(sample_zims, tmp_path) as client:
         samples = scrape(client)
-    assert value(samples, "kompendium_build_info", version=__version__) == 1
+    assert value(samples, "kompendium_build_info", revision="", version=__version__) == 1  # a local build
     assert value(samples, "kompendium_zim_archives") == 2 and value(samples, "kompendium_zim_ready") == 1
     assert value(samples, "kompendium_zim_required_missing") == 0
     assert value(samples, "kompendium_zim_archive_articles", archive="wikipedia_de_sample") > 0

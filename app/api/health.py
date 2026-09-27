@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
-from app import __version__
+from app import __version__, revision
 from app.api.system_threads import run_system
 from app.sources.gnd.index import GndIndex
 from app.sources.wikidata.index import WikidataIndex
@@ -86,6 +86,7 @@ async def health(request: Request) -> dict[str, Any]:
         "status": "healthy",
         "service": "compendious-text-fastapi",
         "version": __version__,
+        "revision": revision(),
         "timestamp": datetime.now(UTC).isoformat(),
         "components": components,
     }

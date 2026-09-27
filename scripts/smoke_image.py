@@ -147,6 +147,14 @@ def check_entities(answer: dict[str, object]) -> str:
     return f"{found} entities, ways: {', '.join(str(m) for m in methods)}"
 
 
+def check_revision(base_url: str, expected: str) -> str:
+    """Return the evidence line, or raise when the image reports another commit than the one it was built from."""
+    reported = httpx.get(f"{base_url}/health", timeout=10).json().get("revision")
+    if expected and reported != expected:
+        raise SystemExit(f"/health reports revision {reported!r}, the build was {expected!r}")
+    return f"revision {reported}"
+
+
 def check(compendium: dict[str, object], logs: str) -> str:
     """Return the evidence line, or raise with what is wrong."""
     markdown = str(compendium.get("markdown", ""))
@@ -167,6 +175,7 @@ def main() -> int:
     parser.add_argument("--image", default="compendious-text-fastapi:local")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--name", default="compendium-smoke")
+    parser.add_argument("--revision", default="", help="the commit the image was built from; /health must name it")
     args = parser.parse_args()
 
     base_url = f"http://127.0.0.1:{args.port}"
@@ -186,6 +195,7 @@ def main() -> int:
         )  # fmt: skip
         try:
             wait_until_ready(base_url, container)
+            print(f"the image is: {check_revision(base_url, args.revision)}")
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
