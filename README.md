@@ -141,8 +141,8 @@ Profils selbst (Profil `standard` rund 14,1 GB). Alternativ werden die Dateien e
 `ZIM_DIR` kopiert; der nächste Sync übernimmt sie. `GET /ready` antwortet erst mit 200, wenn
 alle Pflichtarchive vorliegen.
 
-Container: `docker-compose.yml` startet `api`, `zim-updater` und `lehrplan-updater` aus demselben
-Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und `state`.
+Container: `docker-compose.yml` startet `api`, `zim-updater`, `lehrplan-updater` und `wikidata-updater` aus
+demselben Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und `state`.
 
 ```bash
 docker compose up --build
@@ -211,32 +211,36 @@ Wunsch prüft das LLM zusätzlich jede Verknüpfung (`link_check: llm`, in keine
 
 Zu jedem verknüpften Wikipedia-Artikel nennt der Endpunkt GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
 Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. Die Wikidata-Nummer kommt aus
-`STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia, ohne Live-Abfrage. Fehlt der Index, fehlt
-nur die Wikidata-Nummer; `/health` meldet ihn unter `entities.wikidata`. Ein Genitiv findet seinen Artikel über
-die Grundform: „des Wassers“ → *Wasser*, „Abraham Lincolns“ → *Abraham Lincoln* (D46, M20).
+`STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia (`page_props` und `page`); gefragt wird dabei
+nichts online. Die Kiwix-Archive tragen die Nummern nicht: Von 188 geprüften Artikeln verlinken 14 ihr
+Wikidata-Objekt (M41). Den Index baut der Sidecar `wikidata-updater` (`compendium wikidata sync --loop`, D64): bei
+einer neuen Installation sofort, später neu, wenn das aktive Wikipedia-Archiv jünger ist als der Dump des Index und
+dumps.wikimedia.org einen neueren fertigen Lauf hat. Ein Lauf lädt die beiden Dateien (rund 420 MB, geprüft gegen die
+SHA-1, die Wikimedia veröffentlicht), baut den Index neben dem alten, tauscht ihn und löscht die Dumps; der laufende
+Dienst öffnet den neuen Index binnen einer Minute, ohne Neustart. Fehlt der Index, fehlt nur die Wikidata-Nummer;
+`/health` meldet ihn unter `entities.wikidata`. Ein Genitiv findet seinen Artikel über die Grundform: „des
+Wassers“ → *Wasser*, „Abraham Lincolns“ → *Abraham Lincoln* (D46, M20).
 
 ```bash
-# einmal laden (105 MB und 320 MB), dann bauen: 3,2 Mio. Titel, 107 MB, fünf bis acht Minuten
-curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page_props.sql.gz
-curl -LO https://dumps.wikimedia.org/dewiki/latest/dewiki-latest-page.sql.gz
-uv run compendium wikidata build --page-props dewiki-latest-page_props.sql.gz --page dewiki-latest-page.sql.gz
-uv run compendium wikidata status   # Artikel, Datum des Dumps, Quelldateien
+uv run compendium wikidata sync          # bauen, wenn der Index fehlt oder ein neueres Archiv einen neueren Dump braucht
+uv run compendium wikidata sync --force  # auch einen aktuellen Index neu bauen
+uv run compendium wikidata status        # Artikel, Datum des Dumps, Quelldateien
+# ohne Netz aus zwei Dumps auf der Platte: 3,2 Mio. Titel, 107 MB, fünf bis acht Minuten
+uv run compendium wikidata build --page-props dewiki-…-page_props.sql.gz --page dewiki-…-page.sql.gz
 ```
 
-Im Docker-Betrieb liest der Dienst das Volume `state`, nicht `./data/state` des Hosts. Dort baut ihn ein einmaliger
-Container desselben Images, der die Dumps nur lesend einhängt; `uv` braucht der Server dafür nicht:
+Im Docker-Betrieb baut der Sidecar in das Volume `state`. Von Hand stößt ihn dieser Befehl an; läuft gerade ein
+Bau, wartet er nicht, sondern meldet ihn:
 
 ```bash
-docker compose run --rm --no-deps -v "$PWD:/dumps:ro" api compendium wikidata build \
-  --page-props /dumps/dewiki-latest-page_props.sql.gz --page /dumps/dewiki-latest-page.sql.gz
-docker compose restart api
+docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force
 ```
 
-Der Dienst öffnet den Index beim Start; nach einem neuen Bau neu starten. Unter Windows lässt sich ein Index, den ein
-laufender Dienst offen hält, nicht ersetzen: Der Bau lässt den neuen Index dann als `wikidata.db.part` daneben liegen
-und sagt, dass er nach dem Beenden des Dienstes umbenannt werden muss. Weiterleitungen zählen mit, wenn Wikidata ihnen
-ein eigenes Objekt gibt (*Nenner* führt in *Bruchrechnung*, ist aber Q3044574). Gemessen an den Entitäten von 20
-Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674 (M18 im Messprotokoll).
+Unter Windows lässt sich ein Index, den ein laufender Dienst offen hält, nicht ersetzen: Der Bau lässt den neuen
+Index dann als `wikidata.db.part` daneben liegen und sagt, dass er nach dem Beenden des Dienstes umbenannt werden
+muss. Weiterleitungen zählen mit, wenn Wikidata ihnen ein eigenes Objekt gibt (*Nenner* führt in *Bruchrechnung*,
+ist aber Q3044574). Gemessen an den Entitäten von 20 Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674
+(M18 im Messprotokoll); je Profil an den Texten von 40 Materialien in M41.
 
 ## Knoten als Eingang
 
@@ -619,6 +623,19 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 `QG_MODEL_PATH` und `QA_MODEL_PATH` gibt es seit D57 nicht mehr: Die beiden QA-Modelle sind mit ihrer Stufe
 aus dem Image entfernt. Sind die Variablen noch gesetzt, nennt der Start sie im Log.
 
+### Wikidata-Index (Kennungen von `/api/v2/entities`)
+
+Der Sidecar `wikidata-updater` (`compendium wikidata sync --loop`) baut `STATE_DIR/wikidata.db` aus den Dumps
+`page_props` und `page` der deutschen Wikipedia (D64): bei einer neuen Installation sofort, später neu, wenn das
+aktive Wikipedia-Archiv jünger ist als der Dump des Index und ein neuerer Lauf fertig ist. Ein Lauf lädt rund 420 MB,
+baut fünf bis fünfzehn Minuten und braucht dabei rund 1 GB freien Platz im Volume `state`; die Dumps löscht er
+danach, `wikidata_status.json` hält den Lauf fest.
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Woher der Sync die Dumps lädt; ein Spiegel mit demselben Aufbau (`/dewiki/<Lauf>/dumpstatus.json`) geht auch. Geladen wird nur von diesem Host |
+| `WIKIDATA_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder ein neueres Archiv einen neueren Dump braucht |
+
 ### Lehrpläne (Teil 2)
 
 Vollabzug aus MEM in `STATE_DIR/lehrplan.db` durch den Harvest-Sidecar (`compendium lehrplan harvest --loop`);
@@ -765,6 +782,7 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_zim_ready`, `kompendium_zim_archives`, `kompendium_zim_required_missing`, `kompendium_zim_archive_articles{archive}` | Archive, wie `/ready` sie sieht |
 | `kompendium_zim_sync_running`, `kompendium_zim_sync_status_updated_timestamp_seconds`, `kompendium_zim_sync_last_run_timestamp_seconds`, `kompendium_zim_sync_last_run_errors` | Updater-Sidecar (`sync_status.json`); ein abgebrochener Lauf endet mit `state: error`; während eines Laufs gelten Ende und Fehler des letzten abgeschlossenen |
 | `kompendium_lehrplan_cache_available`, `kompendium_lehrplan_cache_harvested_timestamp_seconds`, `kompendium_lehrplan_harvest_failed`, `kompendium_lehrplan_harvest_last_run_timestamp_seconds` | Lehrplan-Cache und Harvest-Sidecar |
+| `kompendium_wikidata_index_available`, `kompendium_wikidata_index_dump_timestamp_seconds`, `kompendium_wikidata_sync_failed` | Wikidata-Index (`wikidata.db`, Datum seines Dumps) und Wikidata-Sidecar (`wikidata_status.json`) |
 | `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget; `_available` ist der Stand des antwortenden Workers |
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version}` | Konfiguration und Version |
 | `kompendium_status_section_failed{section}` | 1, wenn ein Abschnitt dieser Zustandswerte nicht gelesen werden konnte (seine Werte fehlen dann) |

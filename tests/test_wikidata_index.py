@@ -11,12 +11,13 @@ from __future__ import annotations
 import gzip
 import re
 import sqlite3
+import sys
 from collections.abc import Iterable
 from pathlib import Path
 
 import pytest
 
-from app.sources.wikidata.index import IndexInUseError, WikidataIndex, build_index
+from app.sources.wikidata.index import RECHECK_S, IndexInUseError, WikidataIndex, build_index
 
 BACKSLASH = chr(92)
 PAGE_COLUMNS = (
@@ -259,3 +260,33 @@ def test_a_title_is_asked_as_written_before_its_capitalised_form(tmp_path: Path)
     index = WikidataIndex(tmp_path / "wikidata.db")
     assert index.qid("ß (Begriffsklärung)") == "Q1"
     assert index.qid("ernst Abbe") == "Q3", "a lower-case first letter still finds the article"
+
+
+def test_an_index_built_after_the_start_is_opened_at_the_next_look(tmp_path: Path) -> None:
+    now = [0.0]
+    index = WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])  # a new installation: no index yet
+    assert not index.available
+    page_props, page = write_dumps(tmp_path / "dumps")
+    build_index(page_props, page, tmp_path / "wikidata.db")
+    assert not index.available  # the file is looked at once a minute, not at every lookup
+    now[0] = RECHECK_S + 1
+    assert index.available and index.qid("Ernst Abbe") == "Q999001"
+    assert index.meta()["dump"] == "2026-09-07"
+
+
+@pytest.mark.skipif(
+    sys.platform == "win32", reason="Windows cannot replace a file SQLite holds open; the sync runs on Linux"
+)
+def test_a_running_service_takes_a_rebuilt_index_without_a_restart(tmp_path: Path) -> None:
+    build_index(*write_dumps(tmp_path / "first"), tmp_path / "wikidata.db")
+    now = [0.0]
+    index = WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])
+    assert index.qid("Ernst Abbe") == "Q999001"
+    later = [(1, "wikibase_item", "Q999101"), *PROPS[1:]]
+    build_index(
+        *write_dumps(tmp_path / "second", props=later, completed="2026-10-04 10:00:00"), tmp_path / "wikidata.db"
+    )
+    assert index.qid("Ernst Abbe") == "Q999001"  # not looked again yet
+    now[0] = RECHECK_S + 1
+    assert index.qid("Ernst Abbe") == "Q999101"
+    assert index.meta()["dump"] == "2026-10-04"

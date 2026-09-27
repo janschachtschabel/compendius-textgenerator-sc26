@@ -12,7 +12,7 @@ einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung steh
 | CPU | 2 Kerne | 4 Kerne | eine Anfrage belegt einen Worker vollständig (`WEB_CONCURRENCY`, im Image 2) |
 | RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Seit D57 fehlt torch: am 2026-09-26 auf dem Entwicklungsrechner im Ruhezustand 1.407 statt 1.559 MiB je Worker. Was auf 2 GB passiert, steht unter Abschnitt 7a |
 | Platte | 25 GB | 60 GB | Image rund 1,1 GB (gemessen am 2026-09-26; davon 0,3 GB Model2Vec; bis D57 mit torch und den QA-Modellen 2,7 GB), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
-| Netz | – | – | der Erststart lädt die Archive; danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
+| Netz | – | – | der Erststart lädt die Archive und zwei Dumps der deutschen Wikipedia (rund 420 MB, für den Wikidata-Index); danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
 
 Die Archivgröße bestimmt das Profil (`ZIM_PROFILE`, Manifest in `config/zim_subscriptions.yaml`):
 
@@ -115,8 +115,8 @@ einmalig rund 1,1 GB. Wer eine eigene Registry nutzt, setzt `IMAGE` auf deren Ad
 sudo -u kompendium docker compose up -d
 ```
 
-Drei Container laufen an: die API, der ZIM-Updater und der Lehrplan-Updater. Der Updater lädt jetzt die
-Archive des Profils; bei `standard` dauert das je nach Anbindung eine halbe Stunde bis mehrere Stunden.
+Vier Container laufen an: die API, der ZIM-Updater, der Lehrplan-Updater und der Wikidata-Updater. Der
+ZIM-Updater lädt jetzt die Archive des Profils; bei `standard` dauert das je nach Anbindung eine halbe Stunde bis mehrere Stunden.
 
 ```bash
 sudo -u kompendium docker compose logs -f zim-updater
@@ -131,6 +131,9 @@ curl -fsS http://127.0.0.1:8000/ready
 
 Parallel zieht der Lehrplan-Updater die Lehrpläne aus dem MEM-Endpunkt in den Zustand (`lehrplan.db`,
 rund 25 Minuten). Teil 2 eines Kompendiums bleibt bis dahin leer, Teil 1 funktioniert davon unabhängig.
+Der Wikidata-Updater lädt zwei Dumps der deutschen Wikipedia und baut daraus den Wikidata-Index (`wikidata.db`,
+10 bis 20 Minuten, die Dumps löscht er danach); bis dahin nennt `/api/v2/entities` keine Wikidata-Nummern, und
+`/health` meldet unter `entities.wikidata` noch `"available": false`.
 
 ## 7. Prüfen, dass wirklich etwas herauskommt
 
@@ -226,7 +229,7 @@ cd /srv/kompendium && sudo -u kompendium git pull && sudo -u kompendium docker c
 Die Archive bleiben dabei im Volume; der Updater tauscht sie eigenständig gegen neue Ausgaben.
 
 Sichern muss man nur das Volume `state` — und dort genau genommen nur eigene Templates: `lehrplan.db` baut
-ein Harvest neu auf, `wlo_cache.db` und `llm_budget.db` sind verzichtbar.
+ein Harvest neu auf, `wikidata.db` der Wikidata-Updater, `wlo_cache.db` und `llm_budget.db` sind verzichtbar.
 
 ```bash
 sudo -u kompendium docker run --rm -v kompendium_state:/state -v "$PWD":/backup alpine tar czf /backup/state.tar.gz -C /state .

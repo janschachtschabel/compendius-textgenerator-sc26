@@ -47,7 +47,7 @@ def test_fresh_download_verifies_hash_and_reports_progress(tmp_path: Path) -> No
     calls: list[httpx.Request] = []
     progress: list[DownloadProgress] = []
     path = _downloader(_server(BLOB, calls)).download(
-        URL, tmp_path, sha256=SHA, size=len(BLOB), progress=progress.append
+        URL, tmp_path, digest=SHA, size=len(BLOB), progress=progress.append
     )
     assert path == tmp_path / FILE
     assert path.read_bytes() == BLOB
@@ -63,7 +63,7 @@ def test_resume_continues_partial_file(tmp_path: Path) -> None:
     (tmp_path / f"{FILE}.part").write_bytes(BLOB[:4000])
     progress: list[DownloadProgress] = []
     path = _downloader(_server(BLOB, calls)).download(
-        URL, tmp_path, sha256=SHA, size=len(BLOB), progress=progress.append
+        URL, tmp_path, digest=SHA, size=len(BLOB), progress=progress.append
     )
     assert calls[0].headers["Range"] == "bytes=4000-"
     assert path.read_bytes() == BLOB
@@ -73,33 +73,33 @@ def test_resume_continues_partial_file(tmp_path: Path) -> None:
 def test_server_ignoring_range_restarts_from_zero(tmp_path: Path) -> None:
     calls: list[httpx.Request] = []
     (tmp_path / f"{FILE}.part").write_bytes(b"garbage")
-    path = _downloader(_server(BLOB, calls, honor_range=False)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    path = _downloader(_server(BLOB, calls, honor_range=False)).download(URL, tmp_path, digest=SHA, size=len(BLOB))
     assert path.read_bytes() == BLOB
 
 
 def test_complete_part_is_verified_without_transfer(tmp_path: Path) -> None:
     calls: list[httpx.Request] = []
     (tmp_path / f"{FILE}.part").write_bytes(BLOB)
-    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, digest=SHA, size=len(BLOB))
     assert calls == []
     assert path.read_bytes() == BLOB
 
 
 def test_hash_mismatch_removes_part_and_raises(tmp_path: Path) -> None:
     with pytest.raises(DownloadError, match="SHA-256"):
-        _downloader(_server(BLOB, [])).download(URL, tmp_path, sha256="00" * 32, size=len(BLOB))
+        _downloader(_server(BLOB, [])).download(URL, tmp_path, digest="00" * 32, size=len(BLOB))
     assert list(tmp_path.iterdir()) == []
 
 
 def test_short_download_keeps_part_for_resume(tmp_path: Path) -> None:
     with pytest.raises(DownloadError, match="incomplete"):
-        _downloader(_server(BLOB, [])).download(URL, tmp_path, sha256=SHA, size=len(BLOB) + 1)
+        _downloader(_server(BLOB, [])).download(URL, tmp_path, digest=SHA, size=len(BLOB) + 1)
     assert (tmp_path / f"{FILE}.part").stat().st_size == len(BLOB)
 
 
 def test_oversized_part_is_discarded(tmp_path: Path) -> None:
     (tmp_path / f"{FILE}.part").write_bytes(BLOB + b"x")
-    path = _downloader(_server(BLOB, [])).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    path = _downloader(_server(BLOB, [])).download(URL, tmp_path, digest=SHA, size=len(BLOB))
     assert path.read_bytes() == BLOB
 
 
@@ -107,14 +107,14 @@ def test_disallowed_host_is_rejected_before_any_request(tmp_path: Path) -> None:
     calls: list[httpx.Request] = []
     with pytest.raises(DownloadError, match="host"):
         _downloader(_server(BLOB, calls)).download(
-            "https://evil.example/zim/x_de_all_2026-01.zim", tmp_path, sha256=SHA, size=1
+            "https://evil.example/zim/x_de_all_2026-01.zim", tmp_path, digest=SHA, size=1
         )
     assert calls == []
 
 
 def test_http_error_is_reported(tmp_path: Path) -> None:
     with pytest.raises(DownloadError, match="404"):
-        _downloader(_server(BLOB, [], status=404)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+        _downloader(_server(BLOB, [], status=404)).download(URL, tmp_path, digest=SHA, size=len(BLOB))
 
 
 def test_transport_errors_keep_part_and_raise(tmp_path: Path) -> None:
@@ -122,7 +122,7 @@ def test_transport_errors_keep_part_and_raise(tmp_path: Path) -> None:
         raise httpx.ConnectError("boom", request=request)
 
     with pytest.raises(DownloadError, match="boom"):
-        _downloader(handler).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+        _downloader(handler).download(URL, tmp_path, digest=SHA, size=len(BLOB))
 
 
 def test_file_name_validation() -> None:
@@ -135,7 +135,7 @@ def test_file_name_validation() -> None:
 def test_plain_http_is_rejected_before_any_request(tmp_path: Path) -> None:
     calls: list[httpx.Request] = []
     with pytest.raises(DownloadError, match="https"):
-        _downloader(_server(BLOB, calls)).download(URL.replace("https://", "http://"), tmp_path, sha256=SHA, size=1)
+        _downloader(_server(BLOB, calls)).download(URL.replace("https://", "http://"), tmp_path, digest=SHA, size=1)
     assert calls == []
 
 
@@ -143,7 +143,7 @@ def test_a_stream_longer_than_announced_is_aborted(tmp_path: Path) -> None:
     calls: list[httpx.Request] = []
     announced = len(BLOB) // 4
     with pytest.raises(DownloadError, match="more than the expected"):
-        _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=announced)
+        _downloader(_server(BLOB, calls)).download(URL, tmp_path, digest=SHA, size=announced)
     assert list(tmp_path.glob("*")) == []  # nothing is kept from a source that ignores the announced size
 
 
@@ -171,7 +171,7 @@ def test_a_stream_longer_than_announced_is_cut_as_soon_as_it_passes_the_size(tmp
     pieces = Pieces(BLOB, 1024)  # ten pieces; announced are two and a half
     client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, stream=pieces)))
     with pytest.raises(DownloadError, match="more than the expected"):
-        Downloader(client=client, chunk_size=1024).download(URL, tmp_path, sha256=SHA, size=2560)
+        Downloader(client=client, chunk_size=1024).download(URL, tmp_path, digest=SHA, size=2560)
     assert pieces.pulled == 3  # cut in the middle: a mirror cannot make it read the rest first
     assert list(tmp_path.glob("*")) == []
 
@@ -184,12 +184,51 @@ def test_a_host_that_is_no_valid_idna_name_is_a_download_error() -> None:
 def test_a_complete_verified_target_is_not_downloaded_again(tmp_path: Path) -> None:
     (tmp_path / FILE).write_bytes(BLOB)  # an earlier run finished the download but could not activate it
     calls: list[httpx.Request] = []
-    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, digest=SHA, size=len(BLOB))
     assert path == tmp_path / FILE and calls == []  # size and SHA-256 match: 14 GB are not fetched twice
 
 
 def test_a_target_that_does_not_match_is_downloaded_again(tmp_path: Path) -> None:
     (tmp_path / FILE).write_bytes(BLOB[:-1] + b"x")  # same size, other content
     calls: list[httpx.Request] = []
-    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, sha256=SHA, size=len(BLOB))
+    path = _downloader(_server(BLOB, calls)).download(URL, tmp_path, digest=SHA, size=len(BLOB))
     assert len(calls) == 1 and path.read_bytes() == BLOB
+
+
+DUMP_URL = "https://dumps.wikimedia.org/dewiki/20260901/dewiki-20260901-page_props.sql.gz"
+DUMP_SHA1 = hashlib.sha1(BLOB).hexdigest()  # noqa: S324 - Wikimedia publishes SHA-1 and MD5, no SHA-256
+
+
+def _dump_downloader(handler: Handler) -> Downloader:
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    return Downloader(client=client, allowed_hosts=("dumps.wikimedia.org",), suffixes=(".sql.gz",), hash_name="sha1")
+
+
+def test_a_dump_of_wikimedia_is_fetched_and_checked_with_its_sha1(tmp_path: Path) -> None:
+    calls: list[httpx.Request] = []
+    path = _dump_downloader(_server(BLOB, calls)).download(DUMP_URL, tmp_path, digest=DUMP_SHA1, size=len(BLOB))
+    assert path == tmp_path / "dewiki-20260901-page_props.sql.gz"
+    assert path.read_bytes() == BLOB and len(calls) == 1
+
+
+def test_a_sha1_mismatch_is_named_as_such_and_drops_the_part(tmp_path: Path) -> None:
+    with pytest.raises(DownloadError, match="SHA-1 mismatch"):
+        _dump_downloader(_server(BLOB, [])).download(DUMP_URL, tmp_path, digest="00" * 20, size=len(BLOB))
+    assert list(tmp_path.glob("*")) == []
+
+
+def test_the_zim_downloader_still_takes_zim_files_only(tmp_path: Path) -> None:
+    calls: list[httpx.Request] = []
+    with pytest.raises(DownloadError, match="file name"):
+        Downloader(
+            client=httpx.Client(transport=httpx.MockTransport(_server(BLOB, calls))),
+            allowed_hosts=("dumps.wikimedia.org",),
+        ).download(DUMP_URL, tmp_path, digest=SHA, size=len(BLOB))
+    assert calls == []
+
+
+def test_file_names_with_other_suffixes() -> None:
+    assert validate_file_name("dewiki-20260901-page.sql.gz", (".sql.gz",)) == "dewiki-20260901-page.sql.gz"
+    for bad in ("dewiki-20260901-page.sql.gz.part", "../x.sql.gz", "x.zim", ".x.sql.gz"):
+        with pytest.raises(ValueError):
+            validate_file_name(bad, (".sql.gz",))

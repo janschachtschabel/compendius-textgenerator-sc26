@@ -68,7 +68,7 @@ class DownloaderLike(Protocol):
         url: str,
         target_dir: Path,
         *,
-        sha256: str,
+        digest: str,
         size: int,
         progress: Callable[[DownloadProgress], None] | None = None,
     ) -> Path: ...
@@ -269,7 +269,7 @@ class ZimSync:
             path = self._downloader.download(
                 remote.download_url,
                 self._zim_dir,
-                sha256=metalink.sha256,
+                digest=metalink.sha256,
                 size=metalink.size,
                 progress=self._on_progress,
             )

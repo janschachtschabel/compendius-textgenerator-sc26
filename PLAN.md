@@ -309,6 +309,8 @@ compendious-text-fastapi/
 | `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Vollabzug bei geänderter Zählung oder spätestens nach diesem Alter |
 | `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen SPARQL-Anfragen im Harvest |
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` (= alle) | optionale Kappung von Teil 2 je Bundesland und Bildungsstufe; Standard ohne Kappung (D23) |
+| `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Quelle der dewiki-Dumps für den Wikidata-Index (`compendium wikidata sync`, D64); nur dieser Host |
+| `WIKIDATA_CHECK_INTERVAL` | `1d` | Prüfintervall des Sidecars `wikidata-updater`: Index fehlt, oder ein jüngeres Wikipedia-Archiv braucht einen neueren Dump |
 | ~~`LEHRPLAN_LIVE_FALLBACK`~~ | – | gestrichen (D22): ohne Cache Hinweistext, nie SPARQL zur Inferenzzeit |
 | `RESULT_CACHE_TTL_H` | `168` | geplant, nicht umgesetzt: Ergebnis-Cache (8.3) |
 | `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest-Anstoß, Matching-Vergleich; Templates schreiben ist geplant) |
@@ -1168,8 +1170,9 @@ torch (CPU, 507 MB), transformers, sentence-transformers, Cross-Encoder und Elec
 (rund 1 GB Modelle), geschätzt 2,5–3 GB. Modelle werden im Build ins Image geladen; zur
 Laufzeit findet kein Download statt (`HF_HUB_OFFLINE=1`).
 
-**Compose/Kubernetes.** Dienst `api` (1 Replica, 2–4 Uvicorn-Worker), Sidecar `zim-updater`
-(gleiches Image, `compendium jobs run --loop`), Volumes `zim` (40 GB, Entscheidung D18) und
+**Compose/Kubernetes.** Dienst `api` (1 Replica, 2–4 Uvicorn-Worker), Sidecars `zim-updater`
+(`compendium zim sync --loop`), `lehrplan-updater` (`compendium lehrplan harvest --loop`) und `wikidata-updater`
+(`compendium wikidata sync --loop`, D64), alle aus demselben Image, Volumes `zim` (40 GB, Entscheidung D18) und
 `state` (2 GB). Ressourcen: 2 CPU, 2 GB RAM (`base`) bzw. 4 GB (`ml`); libzim nutzt mmap, der
 Betriebssystem-Cache profitiert von zusätzlichem RAM.
 
@@ -1809,6 +1812,21 @@ API.
   Verbindungen zweier Themen), steht aber im Audit (`articles_overview` leer). Nach M40 bleibt `llm-free`, wie es
   ist (Jan, 27.09.2026, Weg (a) von Punkt 9): kein kleines lokales Modell, kein kleinerer Korpus; wer Sammelthemen
   braucht, nimmt `balanced`.
+- **D64 (2026-09-27)** Neue Installationen bekommen den Wikidata-Index selbst (Jan: „stell sicher das
+  neu-installationen diese daten auch bekommen oder syncen müssen“). Bis dahin lud ein Betreiber zwei Dumps von Hand
+  und baute den Index (D43); ohne ihn fehlte jede Wikidata-Nummer, und der Dienst sah einen neuen Index erst nach
+  einem Neustart. Das Kiwix-Archiv ersetzt die Dumps nicht (Jan fragte danach): Von den 188 richtigen Artikeln aus M41
+  verlinken 14 ihr Wikidata-Objekt, keiner hat Sprachlinks. Der Sidecar `wikidata-updater`
+  (`compendium wikidata sync --loop`, wie `lehrplan-updater`) baut den Index, wenn er fehlt oder unbrauchbar ist, und
+  neu, wenn das aktive Wikipedia-Archiv jünger ist als der Dump des Index und dumps.wikimedia.org einen neueren
+  fertigen Lauf hat - sonst lüde er täglich dieselben Dateien. Ein Lauf nimmt den neuesten Lauf, dessen Tabellen
+  `page_props` und `page` fertig sind (`dumpstatus.json`), lädt beide mit dem Downloader der ZIM-Archive
+  (fortsetzbar, nur vom Host aus `WIKIDATA_DUMPS_URL`, SHA-1 wie veröffentlicht), baut, tauscht, löscht die Dumps und
+  schreibt `wikidata_status.json`; eine Sperrdatei hält einen zweiten Lauf fern. Der Dienst sieht höchstens einmal je
+  Minute nach, ob die Datei eine andere ist, und öffnet sie ohne Neustart; `/health` liest den Index bei jedem Aufruf.
+  Alarme `KompendiumWikidataIndexMissing` (zwei Stunden ohne Index) und `KompendiumWikidataSyncFailed`. Verworfen:
+  den Index ins Image legen (er altert mit dem Image statt mit dem Archiv, das Image wüchse um 107 MB) und ihn beim
+  Start der API bauen (die API lädt nie selbst, zwei Worker bauten doppelt).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

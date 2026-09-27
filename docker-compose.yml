@@ -61,6 +61,26 @@ services:
       - state:/data/state
     restart: unless-stopped
 
+  wikidata-updater:
+    image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
+    build: .
+    # Wikidata-Index fuer /entities (D43, D64): baut ihn beim Erststart aus zwei Dumps der deutschen Wikipedia
+    # (rund 420 MB, danach geloescht) und neu, wenn ein neueres Wikipedia-Archiv einen neueren Dump braucht.
+    # Liest das ZIM-Volume nur, um das Datum des aktiven Archivs zu kennen.
+    command: ["compendium", "wikidata", "sync", "--loop"]
+    healthcheck:
+      disable: true
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ZIM_DIR: /data/zim
+      STATE_DIR: /data/state
+    volumes:
+      - zim:/data/zim:ro
+      - state:/data/state
+    restart: unless-stopped
+
   # Ueberwachung (PLAN.md D31): docker compose --profile monitoring up -d api prometheus
   prometheus:
     image: prom/prometheus:v3.14.0

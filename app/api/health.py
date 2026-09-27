@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 
 from app import __version__
 from app.api.system_threads import run_system
+from app.sources.wikidata.index import WikidataIndex
 
 router = APIRouter(tags=["system"])
 
@@ -23,6 +24,13 @@ router = APIRouter(tags=["system"])
 def _host(url: str) -> str:
     """Only the host of a configured address; the path adds nothing a reader of /health needs."""
     return urlparse(url).hostname or ""
+
+
+def _wikidata(index: WikidataIndex) -> dict[str, Any]:
+    """The Wikidata index as it is now, not as at start: the sync builds or replaces it while the service runs
+    (D64); without it the linked articles carry no Wikidata number (D43)."""
+    meta = index.meta()
+    return {"available": index.available, "articles": meta.get("articles"), "dump": meta.get("dump")}
 
 
 def _components(request: Request) -> dict[str, Any]:
@@ -45,7 +53,7 @@ def _components(request: Request) -> dict[str, Any]:
             "harvested_at": meta.get("harvested_at"),
         },
         "matching": request.app.state.matching,
-        "entities": request.app.state.entities,
+        "entities": {**request.app.state.entities, "wikidata": _wikidata(request.app.state.wikidata)},
         "edu_sharing": {
             "enabled": getattr(request.app.state, "collections", None) is not None,
             # Which repository the collections come from, and which b-api belongs to it: an operator has to be

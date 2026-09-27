@@ -1,8 +1,10 @@
-"""Verified transfer of one ZIM file: range resume into a ``.part`` file, SHA-256 check, allowlist.
+"""Verified transfer of one file: range resume into a ``.part`` file, hash check, allowlist.
 
 The downloader knows nothing about the catalog; the sync job hands it the URL plus the exact size
 and hash from the metalink. Kiwix redirects to mirrors (verified 2026-09-17: 301 -> 302 -> 206),
-so the allowlist applies to the URL we start from while integrity rests on the hash.
+so the allowlist applies to the URL we start from while integrity rests on the hash. By default it
+takes ZIM files checked with SHA-256; the Wikidata sync fetches Wikipedia dumps (``.sql.gz``), for
+which Wikimedia publishes SHA-1 and MD5 only.
 """
 
 from __future__ import annotations
@@ -25,7 +27,8 @@ log = logging.getLogger(__name__)
 
 DEFAULT_ALLOWED_HOSTS: tuple[str, ...] = ("download.kiwix.org", "lb.download.kiwix.org", "mirror.download.kiwix.org")
 PART_SUFFIX = ".part"
-_FILE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.zim$")
+_FILE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+_HASH_LABELS = {"sha256": "SHA-256", "sha1": "SHA-1"}
 
 
 class DownloadError(RuntimeError):
@@ -54,10 +57,10 @@ def check_download_url(url: str, allowed_hosts: Collection[str]) -> None:
         raise DownloadError(f"download host {host!r} is not in the allowlist {sorted(allowed_hosts)}")
 
 
-def validate_file_name(name: str) -> str:
-    """Accept plain ZIM file names only: no path parts, no hidden files, no other suffixes."""
-    if not _FILE_NAME_RE.fullmatch(name) or ".." in name:
-        raise ValueError(f"not a plain ZIM file name: {name!r}")
+def validate_file_name(name: str, suffixes: Sequence[str] = (".zim",)) -> str:
+    """Accept plain file names with one of ``suffixes`` only: no path parts, no hidden files, no other suffixes."""
+    if not _FILE_NAME_RE.fullmatch(name) or ".." in name or not name.endswith(tuple(suffixes)):
+        raise ValueError(f"not a plain {' or '.join(suffixes)} file name: {name!r}")
     return name
 
 
@@ -103,8 +106,13 @@ class Downloader:
         chunk_size: int = 1 << 20,
         timeout: float = 60.0,
         progress_interval_s: float = 1.0,
+        *,
+        suffixes: Sequence[str] = (".zim",),
+        hash_name: str = "sha256",
     ) -> None:
         self.allowed_hosts = {host.lower() for host in allowed_hosts}
+        self.suffixes = tuple(suffixes)
+        self.hash_name = hash_name  # a hashlib name; the digest a download is checked against is of this kind
         self.chunk_size = chunk_size
         self.progress_interval_s = progress_interval_s
         self._client = client or httpx.Client(
@@ -115,19 +123,21 @@ class Downloader:
         self._client.close()
 
     def download(
-        self, url: str, target_dir: Path, *, sha256: str, size: int, progress: ProgressCallback | None = None
+        self, url: str, target_dir: Path, *, digest: str, size: int, progress: ProgressCallback | None = None
     ) -> Path:
-        """Fetch ``url`` into ``target_dir``, resuming a ``.part`` file; return the verified file path."""
+        """Fetch ``url`` into ``target_dir``, resuming a ``.part`` file; return the verified file path.
+
+        ``digest`` is the hex digest of the file with the downloader's ``hash_name``."""
         check_download_url(url, self.allowed_hosts)
         try:
-            file_name = validate_file_name(url.rsplit("/", 1)[-1])
+            file_name = validate_file_name(url.rsplit("/", 1)[-1], self.suffixes)
         except ValueError as exc:
             raise DownloadError(str(exc)) from exc
         directory = Path(target_dir)
         directory.mkdir(parents=True, exist_ok=True)
         target = directory / file_name
         part = directory / f"{file_name}{PART_SUFFIX}"
-        if self._already_complete(target, sha256=sha256, size=size):
+        if self._already_complete(target, digest=digest, size=size):
             log.info("%s is already complete and verified; not downloading it again", target.name)
             return target
 
@@ -137,7 +147,7 @@ class Downloader:
             part.unlink()
             existing = 0
         transfer = _Transfer(
-            part, DownloadProgress(file_name, existing, size, existing, time.monotonic()), hashlib.sha256()
+            part, DownloadProgress(file_name, existing, size, existing, time.monotonic()), hashlib.new(self.hash_name)
         )
         if existing:
             log.info("%s: resuming at %d of %d bytes", part.name, existing, size)
@@ -151,23 +161,24 @@ class Downloader:
         if done > size:
             part.unlink()
             raise DownloadError(f"size mismatch for {file_name}: got {done}, expected {size} bytes; .part removed")
-        digest = transfer.hasher.hexdigest()
-        if digest != sha256.lower():
+        got = transfer.hasher.hexdigest()
+        if got != digest.lower():
             part.unlink()
-            raise DownloadError(f"SHA-256 mismatch for {file_name}: expected {sha256}, got {digest}; .part removed")
+            label = _HASH_LABELS.get(self.hash_name, self.hash_name)
+            raise DownloadError(f"{label} mismatch for {file_name}: expected {digest}, got {got}; .part removed")
         os.replace(part, target)
         if progress:
             progress(transfer.progress)
         return target
 
-    def _already_complete(self, target: Path, *, sha256: str, size: int) -> bool:
+    def _already_complete(self, target: Path, *, digest: str, size: int) -> bool:
         """A target of an earlier run with the announced size and hash: a run that downloaded it but could not
         activate it must not fetch it again."""
         if not target.is_file() or target.stat().st_size != size:
             return False
-        hasher = hashlib.sha256()
+        hasher = hashlib.new(self.hash_name)
         _hash_file(target, hasher, self.chunk_size)
-        return hasher.hexdigest() == sha256.lower()
+        return hasher.hexdigest() == digest.lower()
 
     def _transfer(self, url: str, transfer: _Transfer, progress: ProgressCallback | None) -> None:
         state = transfer.progress
@@ -181,7 +192,7 @@ class Downloader:
                     mode = "wb"
                     if state.bytes_done:
                         log.info("%s: server ignored the range request; restarting from zero", transfer.part.name)
-                        transfer.hasher = hashlib.sha256()
+                        transfer.hasher = hashlib.new(self.hash_name)
                         state.bytes_done = state.resumed_from = 0
                 else:
                     raise TransferError(f"HTTP {response.status_code} for {url}")

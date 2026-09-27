@@ -12,11 +12,12 @@ mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfi
 | `api` | `uvicorn app.main:create_app --factory` (Worker: `WEB_CONCURRENCY`, im Image 2) | beantwortet Anfragen, lädt nie Archive herunter |
 | `zim-updater` | `compendium zim sync --loop` | Kiwix-Katalog prüfen, Dumps laden, `active.json` umschalten, alte Dateien löschen |
 | `lehrplan-updater` | `compendium lehrplan harvest --loop` | MEM-Lehrpläne in `lehrplan.db` ziehen und atomar tauschen |
+| `wikidata-updater` | `compendium wikidata sync --loop` | Wikidata-Index `wikidata.db` bauen, wenn er fehlt, und neu nach einem jüngeren Wikipedia-Archiv (D64); lädt zwei Dumps von dumps.wikimedia.org und löscht sie nach dem Bau |
 
 | Volume | Inhalt | Wiederherstellung |
 |---|---|---|
 | `zim` (`ZIM_DIR`) | ZIM-Archive, `active.json`, `sync_status.json` | neu laden lassen (`ZIM_BOOTSTRAP_DOWNLOAD=true`) oder Dateien hineinkopieren; der nächste Sync übernimmt sie |
-| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/`, optional `wikidata.db` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` mit `compendium wikidata build` aus zwei Wikipedia-Dumps, im Docker-Betrieb über `docker compose run` in dieses Volume (rund 8 Minuten, siehe README „Entitäten und Kennungen“); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
+| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/`, `wikidata.db` mit `wikidata_status.json` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` baut der Sidecar `wikidata-updater` selbst neu (rund 420 MB Download, 10 bis 20 Minuten, dabei rund 1 GB frei im Volume), von Hand `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force` (README „Entitäten und Kennungen“); `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
 
 **`ZIM_PATHS` umgeht dieses Volume.** Sind dort Pfade eingetragen, liest der Dienst genau diese Dateien:
 `active.json` wird nicht gelesen, der Sync-Job verwaltet die Archive nicht, und ein Wechsel braucht einen
@@ -44,6 +45,7 @@ verwenden; `ZIM_PATHS` ist für Entwicklung und Tests gedacht.
 `KompendiumZimSyncStale`,
 `KompendiumZimSyncHangs`,
 `KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
+`KompendiumWikidataIndexMissing`, `KompendiumWikidataSyncFailed`,
 `KompendiumLlmUnavailable`, `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen

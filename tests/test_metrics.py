@@ -19,6 +19,7 @@ from app import __version__
 from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.settings import Settings
+from app.sources.wikidata.index import build_index
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
@@ -28,6 +29,7 @@ from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_extraction import first_sentences
 from tests.test_pipeline_llm import answer_from_evidence, make_gateway
 from tests.test_pipeline_llm_matcher import leads_define_the_rest_is_content
+from tests.test_wikidata_index import write_dumps
 from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 Samples = dict[tuple[str, tuple[tuple[str, str], ...]], float]
@@ -167,6 +169,27 @@ def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path
     assert "kompendium_zim_sync_last_run_timestamp_seconds" not in names  # never synced: no fake zero timestamp
     assert "kompendium_lehrplan_cache_harvested_timestamp_seconds" not in names
     assert value(samples, "kompendium_lehrplan_cache_available") == 0
+
+
+def test_the_wikidata_index_and_its_sync_are_gauges(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "state" / "wikidata.db")
+    (tmp_path / "state" / "wikidata_status.json").write_text(
+        json.dumps({"state": "idle", "last_run": {"ok": False, "error": "SHA-1 mismatch"}}), encoding="utf-8"
+    )
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    assert value(samples, "kompendium_wikidata_index_available") == 1
+    assert value(samples, "kompendium_wikidata_index_dump_timestamp_seconds") == epoch("2026-09-07T00:00:00+00:00")
+    assert value(samples, "kompendium_wikidata_sync_failed") == 1
+
+
+def test_a_new_installation_without_the_index_reports_it_missing(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    names = {name for name, _labels in samples}
+    assert samples[("kompendium_wikidata_index_available", ())] == 0  # present, so the alert can see it
+    assert "kompendium_wikidata_index_dump_timestamp_seconds" not in names  # no index: no fake zero date
+    assert "kompendium_wikidata_sync_failed" not in names  # the sidecar has not run yet
 
 
 def test_llm_gauges_show_availability_and_the_daily_budget(sample_zims: dict[str, Path], tmp_path: Path) -> None:
@@ -368,6 +391,9 @@ def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Pat
     finished = {"finished_at": "2026-09-18T03:00:00+00:00", "errors": []}
     (tmp_path / "state" / "lehrplan_status.json").write_text(
         json.dumps({"state": "idle", "last_run": finished}), encoding="utf-8"
+    )
+    (tmp_path / "state" / "wikidata_status.json").write_text(
+        json.dumps({"state": "idle", "last_run": {**finished, "ok": True}}), encoding="utf-8"
     )
     (tmp_path / "zim").mkdir()
     (tmp_path / "zim" / "sync_status.json").write_text(

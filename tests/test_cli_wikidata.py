@@ -3,15 +3,20 @@
 from __future__ import annotations
 
 import zlib
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+from datetime import timedelta
 from pathlib import Path
 
+import httpx
 import pytest
 
 from app.cli import main
-from app.settings import get_settings
+from app.settings import Settings, get_settings
+from app.sources.wikidata.index import WikidataIndex
+from app.sources.wikidata.sync import WikidataSync
 from tests.conftest import ROOT
 from tests.test_wikidata_index import write_dumps
+from tests.test_wikidata_sync import FakeDumps
 
 
 @pytest.fixture
@@ -90,3 +95,67 @@ def test_an_index_in_use_is_kept_and_the_new_one_waits_beside_it(
     err = capsys.readouterr().err
     assert "nicht übernommen" in err and "wikidata.db.part" in err
     assert (state_dir / "wikidata.db.part").is_file()
+
+
+def _fake_sync(monkeypatch: pytest.MonkeyPatch, site: FakeDumps) -> None:
+    def build(settings: Settings) -> WikidataSync:
+        client = httpx.Client(transport=httpx.MockTransport(site.handler))
+        return WikidataSync(settings.wikidata_db_path, client=client, base_url="https://dumps.wikimedia.org")
+
+    monkeypatch.setattr("app.cli_wikidata.build_sync", build)
+
+
+def test_sync_builds_a_missing_index_from_the_newest_run(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-07 16:21:03")
+    _fake_sync(monkeypatch, site)
+    assert main(["wikidata", "sync"]) == 0
+    out = capsys.readouterr().out
+    assert "kein Index vorhanden" in out and "Dump vom 2026-09-07" in out
+    assert WikidataIndex(state_dir / "wikidata.db").qid("Ernst Abbe") == "Q999001"
+
+
+def test_sync_leaves_a_current_index_and_force_rebuilds_it(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-07 16:21:03")
+    _fake_sync(monkeypatch, site)
+    assert main(["wikidata", "sync"]) == 0
+    site.calls.clear()
+    assert main(["wikidata", "sync"]) == 0
+    assert "aktuell" in capsys.readouterr().out and site.downloads() == []
+    assert main(["wikidata", "sync", "--force"]) == 0
+    assert "erzwungen" in capsys.readouterr().out and len(site.downloads()) == 2
+
+
+def test_a_failed_sync_keeps_the_old_index_and_says_why(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-04 18:02:11", page_done=False)
+    _fake_sync(monkeypatch, site)
+    assert main(["wikidata", "sync"]) == 1
+    assert "nicht gebaut" in capsys.readouterr().err
+    assert not (state_dir / "wikidata.db").exists()
+
+
+def test_the_sync_loop_checks_at_the_interval_of_the_settings(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-07 16:21:03")
+    _fake_sync(monkeypatch, site)
+    seen: dict[str, object] = {}
+
+    def once(task: Callable[[], object], interval: timedelta, **options: object) -> None:
+        seen.update(interval=interval, **options)
+        task()
+
+    monkeypatch.setattr("app.cli_wikidata.run_periodically", once)
+    monkeypatch.setattr("app.cli_wikidata.stop_on_sigterm", lambda: None)
+    assert main(["wikidata", "sync", "--loop"]) == 0
+    assert seen["interval"] == timedelta(days=1) and seen["retry_after"] == timedelta(hours=1)
+    assert (state_dir / "wikidata.db").exists()

@@ -17,7 +17,7 @@ from app.api.v2.entities import _link
 from app.knowledge.recognise import Mention
 from app.main import create_app
 from app.settings import Settings
-from app.sources.wikidata.index import build_index
+from app.sources.wikidata.index import RECHECK_S, WikidataIndex, build_index
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
 from tests.test_wikidata_index import write_dumps
@@ -221,3 +221,21 @@ def test_a_name_the_model_gives_in_the_genitive_links_its_article(registry: ZimR
     mention = Mention(text="Ernst Abbes", start=0, end=11, kind="PER", source="ner")
     article = _link(registry.archives, mention)
     assert article is not None and article.title == "Ernst Abbe"
+
+
+def test_an_index_the_sync_builds_while_the_service_runs_is_used_without_a_restart(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """A new installation starts without the index; the sidecar builds it minutes later (D64)."""
+    settings = make_settings(sample_zims.values(), tmp_path / "state")
+    app = create_app(settings)
+    now = [0.0]
+    app.state.wikidata = WikidataIndex(settings.wikidata_db_path, clock=lambda: now[0])
+    client = TestClient(app)
+    assert client.get("/health").json()["components"]["entities"]["wikidata"]["available"] is False
+    build_index(*write_dumps(tmp_path / "dumps"), settings.wikidata_db_path)
+    now[0] = RECHECK_S + 1
+    wikidata = client.get("/health").json()["components"]["entities"]["wikidata"]
+    assert wikidata == {"available": True, "articles": 5, "dump": "2026-09-07"}
+    found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
+    assert found["Ernst Abbe"]["article"]["ids"]["wikidata"] == "Q999001"

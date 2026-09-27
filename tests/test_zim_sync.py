@@ -78,12 +78,12 @@ class FakeDownloader:
         self.sources, self.fail = sources, fail
         self.calls: list[str] = []
 
-    def download(self, url: str, target_dir: Path, *, sha256: str, size: int, progress: Any = None) -> Path:
+    def download(self, url: str, target_dir: Path, *, digest: str, size: int, progress: Any = None) -> Path:
         self.calls.append(url)
         if self.fail:
             raise DownloadError("network down")
         file_name = url.rsplit("/", 1)[-1]
-        assert hashlib.sha256(self.sources[file_name].read_bytes()).hexdigest() == sha256
+        assert hashlib.sha256(self.sources[file_name].read_bytes()).hexdigest() == digest
         return Path(shutil.copy(self.sources[file_name], Path(target_dir) / file_name))
 
 
@@ -276,13 +276,13 @@ def test_a_long_download_keeps_its_lock_alive(tmp_path: Path, sources: dict[str,
     ages: list[float] = []
 
     class SlowDownloader(FakeDownloader):
-        def download(self, url: str, target_dir: Path, *, sha256: str, size: int, progress: Any = None) -> Path:
+        def download(self, url: str, target_dir: Path, *, digest: str, size: int, progress: Any = None) -> Path:
             lock = Path(target_dir) / LOCK_FILE
             quiet = time.time() - 7200
             os.utime(lock, (quiet, quiet))  # two hours into the download
             progress(DownloadProgress("x.zim", 1, 2, 0, time.monotonic()))
             ages.append(time.time() - lock.stat().st_mtime)
-            return super().download(url, target_dir, sha256=sha256, size=size, progress=progress)
+            return super().download(url, target_dir, digest=digest, size=size, progress=progress)
 
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
     _sync(tmp_path, FakeCatalog(offers, sources), SlowDownloader(sources)).run(BOOTSTRAP)
@@ -349,7 +349,7 @@ def test_only_failures_a_next_run_resumes_ask_for_an_early_retry(
     tmp_path: Path, sources: dict[str, Path], failure: Exception, retry_soon: bool
 ) -> None:
     class Failing(FakeDownloader):
-        def download(self, url: str, target_dir: Path, *, sha256: str, size: int, progress: Any = None) -> Path:
+        def download(self, url: str, target_dir: Path, *, digest: str, size: int, progress: Any = None) -> Path:
             raise failure
 
     offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}

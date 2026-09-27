@@ -97,6 +97,14 @@ class Settings(BaseSettings):
     )
     eval_gold_dir: Path = Field(Path("eval/gold"), description="Gold standard files for compendium eval")
 
+    # --- Wikidata index of /entities: title to Wikidata number from two dewiki dumps (D43, D64) ---------------
+    wikidata_dumps_url: str = Field(
+        "https://dumps.wikimedia.org", description="Where the Wikidata sync reads the dewiki dumps; a mirror works too"
+    )
+    wikidata_check_interval: str = Field(
+        "1d", description="Wikidata sync loop: build a missing index, a newer one after a newer Wikipedia archive"
+    )
+
     # --- Curricula: MEM cache for part 2 (PLAN.md 5, decision D16) -----------------------------
     lehrplan_endpoint: str = Field(
         "https://sparql.mem.edufeed.org/sparql/", description="MEM SPARQL endpoint, used by the harvest only"

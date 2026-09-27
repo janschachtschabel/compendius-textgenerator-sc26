@@ -100,6 +100,23 @@ groups:
         annotations:
           summary: Der letzte Lehrplan-Harvest ist gescheitert
           description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
+      - alert: KompendiumWikidataIndexMissing
+        # Eine neue Installation hat noch keinen Index; der Sidecar lädt zwei Dumps und baut ihn in 10 bis 20 Minuten
+        expr: kompendium_wikidata_index_available == 0
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Index fehlt oder ist nicht lesbar
+          description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
+      - alert: KompendiumWikidataSyncFailed
+        expr: kompendium_wikidata_sync_failed == 1
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte Wikidata-Sync ist gescheitert
+          description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
 
   - name: kompendium-llm
     rules:

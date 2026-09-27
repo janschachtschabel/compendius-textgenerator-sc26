@@ -281,6 +281,39 @@ tests:
               summary: Der letzte Lehrplan-Harvest ist gescheitert
               description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
 
+  - name: Wikidata-Index fehlt, Wikidata-Sync gescheitert
+    interval: 1m
+    input_series:
+      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "0x150"
+      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "1x150"
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "1x150"
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "0x150"
+    alert_rule_test:
+      - eval_time: 90m
+        alertname: KompendiumWikidataIndexMissing
+        exp_alerts: []
+      - eval_time: 130m
+        alertname: KompendiumWikidataIndexMissing
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der Wikidata-Index fehlt oder ist nicht lesbar
+              description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
+      - eval_time: 30m
+        alertname: KompendiumWikidataSyncFailed
+        exp_alerts: []
+      - eval_time: 70m
+        alertname: KompendiumWikidataSyncFailed
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der letzte Wikidata-Sync ist gescheitert
+              description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+
   - name: Tagesbudget knapp und frei
     interval: 1m
     input_series:

@@ -21,7 +21,8 @@ import os
 import re
 import sqlite3
 import threading
-from collections.abc import Iterator
+import time
+from collections.abc import Callable, Iterator
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,7 @@ SCHEMA_VERSION = "1"
 PROPERTY = "wikibase_item"
 ARTICLE_NAMESPACE = "0"
 PART_SUFFIX = ".part"
+RECHECK_S = 60.0  # how often a lookup looks whether the sync replaced the file; one stat a minute costs nothing
 
 # The dumps escape quotes and backslashes with a backslash; it is spelled chr(92) to keep the patterns readable.
 BACKSLASH = chr(92)
@@ -192,15 +194,51 @@ def _read_meta(rows: dict[str, str]) -> dict[str, Any]:
 
 
 class WikidataIndex:
-    """Read-only lookups in the index; a missing or foreign file answers nothing instead of failing."""
+    """Read-only lookups in the index; a missing or foreign file answers nothing instead of failing.
 
-    def __init__(self, path: Path) -> None:
+    The sync (``compendium wikidata sync``, D64) writes the file while the service runs - the first one after a new
+    installation, a newer one after a newer Wikipedia archive. A lookup notices another file (inode, size or
+    modification time) at most ``recheck_s`` seconds later and opens it, without a restart.
+    """
+
+    def __init__(
+        self, path: Path, *, recheck_s: float = RECHECK_S, clock: Callable[[], float] = time.monotonic
+    ) -> None:
         self.path = Path(path)
         self._lock = threading.Lock()  # one connection serves all request threads of a worker
         self._connection: sqlite3.Connection | None = None
         self._meta: dict[str, Any] = {}
-        if self.path.is_file():
+        self._recheck_s, self._clock = recheck_s, clock
+        self._checked_at = clock()
+        self._identity: tuple[int, int, int] | None = None
+        self._reopen(self._file_identity())
+
+    def _file_identity(self) -> tuple[int, int, int] | None:
+        try:
+            stat = self.path.stat()
+        except OSError:
+            return None
+        return stat.st_ino, stat.st_size, stat.st_mtime_ns
+
+    def _reopen(self, identity: tuple[int, int, int] | None) -> None:
+        if self._connection is not None:
+            self._connection.close()
+        self._connection, self._meta, self._identity = None, {}, identity
+        if identity is not None:
             self._open()
+
+    def _recheck(self) -> None:
+        now = self._clock()
+        if now - self._checked_at < self._recheck_s:
+            return
+        self._checked_at = now
+        identity = self._file_identity()
+        if identity == self._identity:
+            return
+        with self._lock:
+            if identity != self._identity:  # another request thread may have opened it meanwhile
+                log.info("Wikidata index %s changed; opening it again", self.path)
+                self._reopen(identity)
 
     def _open(self) -> None:
         # absolute(), not resolve(): on a mapped drive resolve() yields a UNC path, and SQLite refuses its URI
@@ -224,9 +262,11 @@ class WikidataIndex:
 
     @property
     def available(self) -> bool:
+        self._recheck()
         return self._connection is not None
 
     def meta(self) -> dict[str, Any]:
+        self._recheck()
         return dict(self._meta)
 
     def qid(self, title: str) -> str | None:
@@ -235,6 +275,7 @@ class WikidataIndex:
         The title is asked as written, then with a capital first letter as Wikipedia writes titles - but only where
         that capital is a single letter: MediaWiki keeps "ß" as it is, and "SS" is another page.
         """
+        self._recheck()
         name = title.replace("_", " ").strip()
         if self._connection is None or not name:
             return None
@@ -243,8 +284,12 @@ class WikidataIndex:
         if len(capital) == 1 and capital != name[0]:
             names.append(capital + name[1:])
         with self._lock:
+            # Another request thread may have opened a new file since the look above, and a file that failed leaves none
+            connection: sqlite3.Connection | None = self._connection
+            if connection is None:
+                return None
             for candidate in names:
-                row = self._connection.execute("SELECT qid FROM titles WHERE title = ?", (candidate,)).fetchone()
+                row = connection.execute("SELECT qid FROM titles WHERE title = ?", (candidate,)).fetchone()
                 if row:
                     return str(row[0])
         return None

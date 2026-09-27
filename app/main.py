@@ -296,22 +296,17 @@ def describe_matching(settings: Settings) -> dict[str, Any]:
     }
 
 
-def describe_entities(settings: Settings, wikidata: WikidataIndex) -> dict[str, Any]:
-    """Whether the recognition model and the Wikidata index are there, decided once at start; /health reports it.
+def describe_entities(settings: Settings) -> dict[str, Any]:
+    """Whether the recognition model is there, decided once at start; /health reports it with the Wikidata index.
 
-    Both are optional: without the model /api/v2/entities answers with the terms of the archives alone, without
-    the index its linked articles carry no Wikidata number (D43). That is a weaker answer, not an error, so it has
-    to be visible rather than silent.
+    The model is optional: without it /api/v2/entities answers with the terms of the archives alone. That is a
+    weaker answer, not an error, so it has to be visible rather than silent. The index is read at every /health
+    call instead (``app.api.health``): the sync builds or replaces it while the service runs (D64).
     """
     ready = load_spacy(settings.spacy_model) is not None
     if settings.spacy_model and not ready:
         log.error("SPACY_MODEL=%r is not usable; entity recognition runs without it", settings.spacy_model)
-    meta = wikidata.meta()
-    return {
-        "ner": ready,
-        "model": settings.spacy_model,
-        "wikidata": {"available": wikidata.available, "articles": meta.get("articles"), "dump": meta.get("dump")},
-    }
+    return {"ner": ready, "model": settings.spacy_model}
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -363,7 +358,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.matching = describe_matching(settings)
     app.state.wikidata = WikidataIndex(settings.wikidata_db_path)
-    app.state.entities = describe_entities(settings, app.state.wikidata)
+    app.state.entities = describe_entities(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router)
