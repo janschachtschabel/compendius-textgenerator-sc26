@@ -90,3 +90,102 @@ noten:
     gnd: "4020219-7"
     note: 2
     grund: "Geografieunterricht ist Synonym zu Erdkundeunterricht"
+  # M43 (docs/entwicklung/05-messprotokoll.md): GND, die der Index nach D65 verknüpften Artikeln gab und die M42
+  # nicht benotet hatte, blind wie oben nach Artikeltitel, Einleitung und GND-Satz (Name, Varianten, Art,
+  # Definition). Zweiter Gutachter (Claude-Subagent), unabhängig vom anderen.
+  - artikel: "Alkaloide"
+    gnd: "4068543-3"
+    note: 2
+    grund: "Der GND-Satz Alkaloide meint dieselbe Stoffklasse stickstoffhaltiger Naturstoffe wie der Artikel."
+  - artikel: "Arbeitsheft"
+    gnd: "4259386-4"
+    note: 2
+    grund: "Arbeitsbuch führt Arbeitsheft und Workbook als Varianten und meint dasselbe Übungsmaterial zum direkten Bearbeiten."
+  - artikel: "C"
+    gnd: "4825072-7"
+    note: 2
+    grund: "Der GND-Satz c (Schriftzeichen) ist der Buchstabe C des lateinischen Alphabets."
+  - artikel: "D"
+    gnd: "4686523-8"
+    note: 2
+    grund: "Der GND-Satz d (Schriftzeichen) ist der Buchstabe D des lateinischen Alphabets."
+  - artikel: "Entwicklung"
+    gnd: "4113450-3"
+    note: 2
+    grund: "Allgemeiner Begriff Entwicklung mit Varianten wie Entwicklungsstadium, wie im Artikel als Wandel über Stadien beschrieben."
+  - artikel: "Finanzwesen"
+    gnd: "4017214-4"
+    note: 1
+    grund: "Finanzwirtschaft zielt mit Varianten wie Staatsfinanzen auf öffentliche Finanzen, der Artikel nennt Finanzwesen einen Teil der Finanzwirtschaft, also verwandt, nicht deckungsgleich."
+  - artikel: "Gestaltung"
+    gnd: "4157139-3"
+    note: 2
+    grund: "Derselbe allgemeine Begriff Gestaltung bzw. Gestalten."
+  - artikel: "Hintergrundmusik"
+    gnd: "4744431-9"
+    note: 2
+    grund: "Background <Musik> führt Hintergrundmusik und Background music als Varianten, also dieselbe Musikform."
+  - artikel: "I"
+    gnd: "4616648-8"
+    note: 2
+    grund: "Der GND-Satz i (Schriftzeichen) ist der Buchstabe I des lateinischen Alphabets."
+  - artikel: "Integrierte Entwicklungsumgebung"
+    gnd: "4138444-1"
+    note: 2
+    grund: "Softwareproduktionsumgebung führt Integrierte Entwicklungsumgebung als Variante und beschreibt dasselbe integrierte Werkzeugsystem für die Softwareentwicklung."
+  - artikel: "K"
+    gnd: "4581657-8"
+    note: 2
+    grund: "Der GND-Satz k (Schriftzeichen) ist der Buchstabe K des lateinischen Alphabets."
+  - artikel: "Licht"
+    gnd: "4035596-2"
+    note: 2
+    grund: "Licht als sichtbarer Teil der optischen Strahlung entspricht dem Lichtbegriff des Artikels im engeren Sinn."
+  - artikel: "Liste"
+    gnd: "4167829-1"
+    note: 2
+    grund: "Der Sachbegriff Liste meint die Zusammenstellung selbst (nicht als Formschlagwort), wie der Artikel."
+  - artikel: "M"
+    gnd: "4239193-3"
+    note: 2
+    grund: "Der GND-Satz m (Schriftzeichen) ist der Buchstabe M des lateinischen Alphabets."
+  - artikel: "Martha"
+    gnd: "1231553-9"
+    note: 0
+    grund: "Der GND-Satz ist eine Gebietskörperschaft namens Martha, der Artikel ein Vorname; nur Namensgleichheit."
+  - artikel: "Natur und Technik"
+    gnd: "4586697-1"
+    note: 2
+    grund: "Beide meinen das Unterrichtsfach Natur und Technik; die GND nennt nur die Länder, in denen es eingeführt wurde."
+  - artikel: "Open Educational Resources"
+    gnd: "105237154X"
+    note: 2
+    grund: "Derselbe Begriff frei lizenzierter Lehr- und Lernmaterialien, mit den Varianten OER und Offene Bildungsressourcen."
+  - artikel: "Popularität"
+    gnd: "4144439-5"
+    note: 1
+    grund: "Beliebtheit ist nur eine Bedeutung von Popularität (daneben Bekanntheit und Gemeinverständlichkeit), also enger bzw. Quasi-Synonym."
+  - artikel: "Reihe (Mathematik)"
+    gnd: "4049197-3"
+    note: 2
+    grund: "Reihe mit den Varianten Unendliche Reihe und Progression <Mathematik> ist die mathematische Reihe des Artikels."
+  - artikel: "T"
+    gnd: "4452286-1"
+    note: 2
+    grund: "Der GND-Satz t (Schriftzeichen) ist der Buchstabe T des lateinischen Alphabets."
+  - artikel: "Teilen"
+    gnd: "1027514626"
+    note: 2
+    grund: "Gleichnamiger Sachbegriff ohne Qualifikator und Definition; nichts deutet auf eine andere Bedeutung (etwa Dividieren) hin."
+  - artikel: "Umsetzung"
+    gnd: "4451062-7"
+    note: 0
+    grund: "Umsetzung ist hier nur Variante von Transformation (Umwandlung), der Artikel meint die beamtenrechtliche Übertragung eines anderen Dienstpostens."
+  - artikel: "Unterrichtsstunde"
+    gnd: "4187087-6"
+    note: 2
+    grund: "Derselbe Begriff, mit der Variante Schulstunde."
+  - artikel: "Welche"
+    gnd: "1162855509"
+    note: 2
+    grund: "Der Sprachsatz Welche (Variante Welsche) ist der galloromanische Dialekt der Vogesen aus dem Artikel."

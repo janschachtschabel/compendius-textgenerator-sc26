@@ -90,3 +90,102 @@ noten:
     gnd: "4020219-7"
     note: 2
     grund: "Synonym: Geografieunterricht, Artikel nennt Geographie als Namen"
+  # M43 (docs/entwicklung/05-messprotokoll.md): GND, die der Index nach D65 verknüpften Artikeln gab und die M42
+  # nicht benotet hatte, blind wie oben nach Artikeltitel, Einleitung und GND-Satz (Name, Varianten, Art,
+  # Definition). Erster Gutachter (Claude-Subagent), unabhängig vom anderen.
+  - artikel: "Alkaloide"
+    gnd: "4068543-3"
+    note: 2
+    grund: "Gleicher Name und dieselbe chemische Stoffklasse; Pflanzenalkaloide ist nur eine Namensvariante."
+  - artikel: "Arbeitsheft"
+    gnd: "4259386-4"
+    note: 2
+    grund: "Die GND führt Arbeitsheft als Synonym des Arbeitsbuchs (Workbook), also dieselbe Art Übungsheft."
+  - artikel: "C"
+    gnd: "4825072-7"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen c, derselbe Buchstabe wie im Artikel."
+  - artikel: "D"
+    gnd: "4686523-8"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen d, derselbe Buchstabe wie im Artikel."
+  - artikel: "Entwicklung"
+    gnd: "4113450-3"
+    note: 2
+    grund: "Allgemeiner Begriff Entwicklung (Varianten Ursprung, Entwicklungsstadium) wie im Artikel."
+  - artikel: "Finanzwesen"
+    gnd: "4017214-4"
+    note: 1
+    grund: "Der GND-Satz meint die Finanzwirtschaft mit Schwerpunkt Staatsfinanzen, der Artikel das allgemeine Finanzwesen als Teil der Finanzwirtschaft; verwandt, nicht deckungsgleich."
+  - artikel: "Gestaltung"
+    gnd: "4157139-3"
+    note: 2
+    grund: "Derselbe allgemeine Begriff Gestaltung bzw. Gestalten."
+  - artikel: "Hintergrundmusik"
+    gnd: "4744431-9"
+    note: 2
+    grund: "Die GND führt Hintergrundmusik und Background music als Varianten, also derselbe Begriff."
+  - artikel: "I"
+    gnd: "4616648-8"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen i, derselbe Buchstabe wie im Artikel."
+  - artikel: "Integrierte Entwicklungsumgebung"
+    gnd: "4138444-1"
+    note: 2
+    grund: "Die GND führt Integrierte Entwicklungsumgebung als Synonym, und ihre Definition (integriertes System zur Unterstützung der Softwareentwicklung) passt zum Artikel."
+  - artikel: "K"
+    gnd: "4581657-8"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen k, derselbe Buchstabe wie im Artikel."
+  - artikel: "Licht"
+    gnd: "4035596-2"
+    note: 2
+    grund: "Die GND definiert Licht als sichtbaren Teil der optischen Strahlung, den engeren Sinn des Artikels."
+  - artikel: "Liste"
+    gnd: "4167829-1"
+    note: 2
+    grund: "Derselbe Begriff Liste als Zusammenstellung; die GND-Bemerkung regelt nur die Verwendung als Formschlagwort."
+  - artikel: "M"
+    gnd: "4239193-3"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen m, derselbe Buchstabe wie im Artikel."
+  - artikel: "Martha"
+    gnd: "1231553-9"
+    note: 0
+    grund: "Der Artikel behandelt einen Vornamen, der GND-Satz ist eine Gebietskörperschaft bzw. Verwaltungseinheit gleichen Namens."
+  - artikel: "Natur und Technik"
+    gnd: "4586697-1"
+    note: 2
+    grund: "Beide meinen das Unterrichtsfach Natur und Technik; die GND-Definition nennt nur konkrete Länder und Schularten."
+  - artikel: "Open Educational Resources"
+    gnd: "105237154X"
+    note: 2
+    grund: "Derselbe Begriff mit Kurzform OER und übereinstimmender Definition offen lizenzierter Bildungsmaterialien."
+  - artikel: "Popularität"
+    gnd: "4144439-5"
+    note: 1
+    grund: "Beliebtheit deckt nur einen Teil der Popularität ab (nicht Bekanntheit oder Gemeinverständlichkeit); Quasi-Synonym, enger."
+  - artikel: "Reihe (Mathematik)"
+    gnd: "4049197-3"
+    note: 2
+    grund: "Der GND-Satz ist die mathematische Reihe (Varianten Unendliche Reihe, Progression <Mathematik>)."
+  - artikel: "T"
+    gnd: "4452286-1"
+    note: 2
+    grund: "Der GND-Satz ist das Schriftzeichen t, derselbe Buchstabe wie im Artikel."
+  - artikel: "Teilen"
+    gnd: "1027514626"
+    note: 2
+    grund: "Gleichnamiges Sachschlagwort ohne Homonymzusatz; die naheliegende Lesart ist das Teilen als gemeinsame Nutzung wie im Artikel."
+  - artikel: "Umsetzung"
+    gnd: "4451062-7"
+    note: 0
+    grund: "Der Artikel meint die beamtenrechtliche Umsetzung auf einen anderen Dienstposten, der GND-Satz die allgemeine Transformation mit Umsetzung nur als Namensvariante."
+  - artikel: "Unterrichtsstunde"
+    gnd: "4187087-6"
+    note: 2
+    grund: "Derselbe Begriff; die GND führt auch Schulstunde als Variante."
+  - artikel: "Welche"
+    gnd: "1162855509"
+    note: 2
+    grund: "Der GND-Sprachsatz Welche (Welsche) ist derselbe galloromanische Dialekt der Vogesen."

@@ -1,7 +1,8 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M42; Rohdaten und
-Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
+[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M43; Rohdaten und
+Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
+[Entitäten und Kennungen](08-entitaeten-und-kennungen.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
 zuschalten. Diese Vorlage zeigt je Schritt, welche Verfahren es gibt, wie man sie im Dienst wählt, was sie leisten und
@@ -21,7 +22,7 @@ der QA-Paare (D54, D55, D57).
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` |
-| Kennungen der Entitäten (Wikidata, GND, DBpedia; M41) | aus lokalen Daten zum verknüpften Artikel; Präzision 0,29, Recall 0,55 | ebenso, auf den Artikeln des LLM: Präzision 0,70, Recall 0,89 | wie `balanced` | wie `balanced` |
+| Kennungen der Entitäten (Wikidata, GND, DBpedia; M43) | aus lokalen Daten zum verknüpften Artikel, in allen Profilen gleich (D65): Wikidata Präzision 0,29, Recall 0,55; GND 0,31 und 0,57; DBpedia über den englischen Artikel bei 88 % | ebenso, auf den Artikeln des LLM: Wikidata 0,70 und 0,89; GND 0,70 und 0,88; englischer Artikel bei 96 % | wie `balanced` | wie `balanced` |
 | Hauptartikel richtig, 94 Goldanfragen (M35) | 87 | 91 | 93 | 93 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen |
@@ -670,7 +671,9 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
     `best-quality`-Profilen also keinen Gewinn und steht in keinem Profil; wer eine kurze, sichere Liste will, setzt
     sie selbst. Folge, wie vorgeschlagen: Wie die anderen Endpunkte folgt `/entities` PRESET_DEFAULT (`balanced`) und
     braucht ohne `preset` ein LLM - auf einem Server ohne LLM ein 503, bis der Aufrufer `preset: llm-free` setzt.
-11. **Kennungen für Wikidata, DBpedia und die GND (M41, M42, D64):** Jan: `/entities` soll neben Wikipedia möglichst
+11. **Kennungen für Wikidata, DBpedia und die GND (M41 bis M43, D64, D65):** entschieden und gebaut, (a) und (b)
+    (D65; Jan: „wenn de.dbpedia.org dauerhaft nicht antwortet dann sollten wir dbpedia.org nehmen“, die GND-Abzüge für
+    den Container freigegeben). Jan: `/entities` soll neben Wikipedia möglichst
     genau und treffsicher auch Wikidata-, DBpedia- und DNB-Entitäten vorhersagen, möglichst lokal ohne API, mit den
     Profilen, gemessen, und neue Installationen sollen die Daten bekommen. Seit D43 nennt der Endpunkt zu jedem
     verknüpften Wikipedia-Artikel dessen Kennungen, alle aus lokalen Daten: GND, Art und VIAF aus dem Normdaten-Block
@@ -722,6 +725,28 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
     Vorschlag: (a) und (b). Beide machen die Kennungen treffsicherer, ohne ein Profil langsamer oder teurer zu machen;
     der Sidecar lädt dann statt 420 MB rund 1 GB, wenn ein neues Archiv kommt. (b) ändert, was Aufrufer im Feld
     `dbpedia` bekommen.
+
+    Entschieden: (a) und (b), in allen Profilen gleich (Jan, 27.09.2026). Gebaut (D65): Der Wikidata-Sync lädt
+    `langlinks` mit (zusammen rund 750 MB), `dbpedia` ist `http://dbpedia.org/resource/<englischer Titel>` und ohne
+    englischen Artikel weiter die deutsche IRI; der Sidecar `gnd-updater` baut den GND-Index aus Sachbegriffen und
+    Geografika (rund 65 MB; die Körperschaften brachten in M42 keinen Vorschlag), der Endpunkt nimmt die GND aus dem
+    Normdaten-Block, sonst aus dem Index, und sagt unter `gnd_source`, woher. Nennt der Block eine Art (Person, Werk),
+    muss der Satz aus dem Index sie haben. Im Dienst nachgemessen (M43), nachdem ein Blick in den echten Abzug zeigte,
+    dass die DNB lange Namenslisten umbricht und der Leser diese Namen verlor (behoben, 1.072.074 statt 933.131
+    eindeutige Namen):
+
+    | Profil | Wikidata: Präzision / Recall / F1 | GND: Präzision / Recall / F1 | englischer Artikel für DBpedia |
+    |---|---|---|---|
+    | `llm-free` | 0,29 / 0,55 / 0,38 | 0,31 / 0,57 / 0,40 (M41: 0,43) | 348 von 394 (88 %) |
+    | `balanced`, `best-quality` | 0,70 / 0,89 / 0,78 | 0,70 / 0,88 / 0,78 (M41: 0,77) | 259 von 269 (96 %) |
+    | mit `link_check: llm` | 0,94 / 0,64 / 0,76 | 0,93 / 0,62 / 0,75 (M41: 0,72) | 139 von 142 (98 %) |
+
+    160 statt 139 der 188 richtigen Artikel tragen eine richtige GND. An den 139 bekannten Nummern führten der
+    Wikidata-Weg in 107 von 109 und der Namensweg in 90 von 91 Fällen zur selben Nummer. In `llm-free` sinkt die
+    GND-F1 leicht, weil der Index auch dem Beifang der Regeln eine GND gibt (die Buchstaben „C“ und „M“, „Liste“):
+    Die Kennungen folgen der Verknüpfung. Der Wikidata-Sync braucht mit einem Vorfilter für `langlinks` 619 statt
+    1.271 s, der GND-Sync 78 s. Methoden und Werte aller Profile stehen auf der Seite
+    [Entitäten und Kennungen](08-entitaeten-und-kennungen.md).
 
     Quellen der Recherche (27.09.2026): data.dnb.de/opendata (GND-Abzüge und ihre Größen), dumps.wikimedia.org
     (Läufe und Tabellen der deutschen Wikipedia), databus.dbpedia.org und downloads.dbpedia.org (Releases, Modell von

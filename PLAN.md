@@ -1851,6 +1851,13 @@ API.
   Entity Facts, SPARQL der DNB) beruhen auf denselben GND-Daten; sie brächten vor allem eine unscharfe Suche, und der
   Dienst fragt nichts online (D43). Der Ablauf beider Syncs, der Leser, der eine neue Datei ohne Neustart öffnet, und
   die Befehle sind gemeinsame Teile (`app/jobs/dump_sync.py`, `app/sources/local_index.py`, `app/cli_sync.py`).
+  Nach dem Review: Eine Prüfung ohne Neues hebt einen gescheiterten Lauf im Status auf (sonst hätte ein einziger
+  503 den Alarm bis zur nächsten Ausgabe der DNB gehalten); ein Satz aus dem Index muss die Art haben, die der
+  Normdaten-Block nennt, wenn er eine nennt; der Leser setzt Objektlisten fort, die die DNB nach einem Komma
+  umbricht, und liest Turtle-Escapes (1.072.074 statt 933.131 eindeutige Namen); der Wikidata-Bau parst von
+  `langlinks` nur die englischen Zeilen (Sync 619 statt 1.271 s, dieselben Zahlen). Im Dienst nachgemessen (M43):
+  GND-F1 0,78 in `balanced` (M41: 0,77), 160 statt 139 der 188 richtigen Artikel mit richtiger GND, an bekannten
+  Nummern 107 von 109 und 90 von 91 gleich, ein englischer Artikel für 96 % der Artikel von `balanced`.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

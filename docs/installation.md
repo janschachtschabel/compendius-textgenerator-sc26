@@ -132,10 +132,10 @@ curl -fsS http://127.0.0.1:8000/ready
 Parallel zieht der Lehrplan-Updater die Lehrpläne aus dem MEM-Endpunkt in den Zustand (`lehrplan.db`,
 rund 25 Minuten). Teil 2 eines Kompendiums bleibt bis dahin leer, Teil 1 funktioniert davon unabhängig.
 Der Wikidata-Updater lädt drei Dumps der deutschen Wikipedia und baut daraus den Wikidata-Index (`wikidata.db`,
-10 bis 20 Minuten, die Dumps löscht er danach); bis dahin nennt `/api/v2/entities` keine Wikidata-Nummern, und
-`/health` meldet unter `entities.wikidata` noch `"available": false`. Der GND-Updater lädt die Abzüge der DNB
-(Sachbegriffe und Geografika) und baut den GND-Index (`gnd.db`); bis dahin tragen Artikel ohne Normdaten-Block
-keine GND.
+rund zehn Minuten, gemessen 619 s auf dem Entwicklungsrechner, davon gut drei Minuten Download; die Dumps löscht er
+danach); bis dahin nennt `/api/v2/entities` keine Wikidata-Nummern, und `/health` meldet unter `entities.wikidata`
+noch `"available": false`. Der GND-Updater lädt die Abzüge der DNB (Sachbegriffe und Geografika) und baut den
+GND-Index (`gnd.db`, gemessen 78 s); bis dahin tragen Artikel ohne Normdaten-Block keine GND.
 
 ## 7. Prüfen, dass wirklich etwas herauskommt
 

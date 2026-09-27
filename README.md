@@ -248,12 +248,14 @@ ist aber Q3044574). Gemessen an den Entitäten von 20 Themen: GND bei 503 von 67
 Hat ein Artikel keinen Normdaten-Block mit GND - ein Viertel der richtigen Artikel in M41 -, nimmt der Endpunkt sie
 aus dem lokalen GND-Index `STATE_DIR/gnd.db` (D65): zuerst den GND-Satz, der das Wikidata-Objekt des Artikels nennt
 (`owl:sameAs`), sonst den einen Satz, der den Titel als Namen trägt („Folge (Mathematik)“ auch als „Folge
-<Mathematik>“, wie die GND schreibt); was zwei Sätze teilen, zählt nicht. `gnd_source` sagt, woher die Nummer
-stammt: `normdaten`, `wikidata` oder `name`. Den Index baut der Sidecar `gnd-updater` (`compendium gnd sync --loop`)
+<Mathematik>“, wie die GND schreibt); was zwei Sätze teilen, zählt nicht, und nennt der Normdaten-Block eine Art
+(Person, Werk), muss der Satz sie haben. `gnd_source` sagt, woher die Nummer stammt: `normdaten`, `wikidata` oder
+`name`. Den Index baut der Sidecar `gnd-updater` (`compendium gnd sync --loop`)
 aus den Abzügen der DNB, Sachbegriffe und Geografika (rund 65 MB, CC0, geprüft gegen die SHA-256 der DNB), neu bei
-jeder neueren Ausgabe; auch hier fragt der Dienst nichts online. Gemessen an den richtigen Artikeln aus M36 (M42):
-Wo der Normdaten-Block die GND nennt, führten Wikidata-Objekt und Name in 104 von 106 und 88 von 89 Fällen zu
-derselben Nummer; von den 49 Artikeln ohne Block bekamen 22 einen Vorschlag, 21 davon richtig. Lebende Abfragen
+jeder neueren Ausgabe; auch hier fragt der Dienst nichts online. Im Dienst gemessen an den richtigen Artikeln aus
+M36 (M43): Wo der Normdaten-Block die GND nennt, führten Wikidata-Objekt und Name in 107 von 109 und 90 von 91 Fällen
+zu derselben Nummer; von den 49 Artikeln ohne Block bekamen 22 eine GND, 21 davon die richtige, und über alle
+verknüpften Artikel meinen 41 von 46 Sätzen aus dem Index denselben Begriff wie ihr Artikel. Lebende Abfragen
 (lobid-gnd, Entity Facts, SPARQL der DNB) beruhen auf denselben GND-Daten; sie brächten vor allem eine unscharfe
 Suche dazu, und der Dienst fragt nichts online.
 

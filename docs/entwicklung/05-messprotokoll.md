@@ -1,4 +1,4 @@
-# Messprotokoll (23. bis 26.09.2026)
+# Messprotokoll (23. bis 27.09.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -2174,3 +2174,85 @@ Rohdaten: `m42_gnd.json` (je Weg die Treffer an bekannten Nummern und die Vorsch
 Definition, CC0), `m42_dbpedia.json` (je Profil die Zählung, je Titel der englische), `m42_spotlight.json` (je
 Schwelle und Material die DBpedia-Titel und Artikel, mit den ersten Noten gezählt); keine Artikeltexte. Die
 GND-Abzüge, `langlinks` und das Spotlight-Modell sind nach der Messung gelöscht.
+
+## M43 Kennungen nach D65: GND-Index und DBpedia im Dienst (27.09.2026)
+
+Jan: die Profile für Entitäten wie empfohlen umsetzen, Werte und Methoden in der Entwicklerdoku festhalten,
+`dbpedia.org` statt `de.dbpedia.org` nehmen; die GND-Abzüge sind für den Container freigegeben. Dazu seine Frage, ob
+die GND-Abrufe gut genug sind oder Dienste wie lobid-gnd, Entity Facts oder SPARQL der DNB nötig wären. Gebaut ist
+D65: Der Wikidata-Index kennt den englischen Titel jedes Artikels (`langlinks`), und ein GND-Index aus den Abzügen der
+DNB füllt die GND, wo der Normdaten-Block keine nennt. M43 misst beides im Dienst mit `mc_kennungen.py` wie M41, jetzt
+mit der Funktion des Endpunkts nach D65 und den Indexen, die die Sidecars im Entwicklungscontainer gebaut haben
+(Wikidata aus dem Lauf 20260901, GND-Ausgabe vom 17.02.2026). Eine GND aus dem Index zählt nur als richtig, wenn ihr
+Artikel die Note 2 hat und zwei Gutachter auch das Paar aus Artikel und GND-Satz mit 2 benoteten (derselbe Begriff).
+In Klammern die Werte mit den zweiten Noten.
+
+**Der Leser am echten Abzug.** Vor der Messung zeigten die ersten 400 KB des Sachbegriff-Abzugs, dass die DNB lange
+Objektlisten nach einem Komma auf der nächsten, tiefer eingerückten Zeile fortsetzt: 482 solche Zeilen mit
+Variantennamen in den ersten 6.267 Sätzen. Der Leser des Index nahm jede eingerückte Zeile als neue Aussage und verlor
+diese Namen („Abfallbeseitigung“ verlor „Müllentsorgung“); das Skript von M42 las die Abzüge mit derselben
+Zeilenlogik. Seit dem Fix setzt eine Zeile, die mit einem Komma endet, ihr Prädikat in der nächsten fort. Der Index
+hat nun 1.072.074 statt 933.131 eindeutige Namen und 121.196 statt 120.075 Wikidata-Objekte.
+
+**Gegenprobe an bekannten Nummern** (die 139 richtigen Artikel, deren Normdaten-Block die GND nennt, wie M42 a):
+
+| Weg | eindeutig gefunden | dieselbe Nummer | M42 |
+|---|---|---|---|
+| Wikidata-`sameAs` | 109 | 107 (98 %) | 106 und 104 |
+| Name | 91 | 90 (99 %) | 89 und 88 |
+
+Abweichend sind wie in M42 nur *YouTube* und *YouTube-Kanal*: Über `sameAs` führen beide zu einem zweiten Satz
+„YouTube“.
+
+**Kennungen je Profil:**
+
+| Profil | Kennung | Kennungen | Präzision | Recall | F1 | M41 F1 |
+|---|---|---|---|---|---|---|
+| `llm-free` | Wikidata | 394 | 0,29 (0,30) | 0,55 (0,56) | 0,38 (0,39) | 0,38 |
+| `llm-free` | GND | 332 | 0,31 (0,31) | 0,57 (0,58) | 0,40 (0,41) | 0,43 |
+| `llm-free` | DBpedia, englischer Artikel | 348 | 0,30 (0,30) | 0,52 (0,53) | 0,38 (0,38) | – |
+| `balanced`, `best-quality` | Wikidata | 269 | 0,70 (0,68) | 0,89 (0,87) | 0,78 (0,76) | 0,78 |
+| `balanced`, `best-quality` | GND | 230 | 0,70 (0,68) | 0,88 (0,87) | 0,78 (0,77) | 0,77 |
+| `balanced`, `best-quality` | DBpedia, englischer Artikel | 259 | 0,70 (0,69) | 0,92 (0,90) | 0,80 (0,78) | – |
+| `link_check: llm` | Wikidata | 142 | 0,94 (0,93) | 0,64 (0,63) | 0,76 (0,75) | 0,76 |
+| `link_check: llm` | GND | 121 | 0,93 (0,92) | 0,62 (0,62) | 0,75 (0,74) | 0,72 |
+| `link_check: llm` | DBpedia, englischer Artikel | 139 | 0,94 (0,93) | 0,66 (0,65) | 0,78 (0,77) | – |
+
+Pool: 211 Paare aus Material und Artikel mit Note 2, 188 verschiedene Artikel. Eine richtige GND tragen 182 statt 161
+Paare (86 statt 76 %) und 160 statt 139 der 188 Artikel; unter den GND-Sätzen sind nun 130 Sachbegriffe (vorher 108),
+28 Geografika, 17 Körperschaften, 5 Personen und 3 Werke. Einen englischen Artikel und damit eine DBpedia-URI, die
+antwortet, haben 198 der 211 Paare (94 %).
+
+In `balanced` kommen 26 der 230 GND aus dem Index (16 über den Namen, 10 über Wikidata), und die Treffsicherheit
+bleibt: F1 0,78 statt 0,77. In `llm-free` sinkt sie leicht, 0,40 statt 0,43: Der Index gibt auch dem Beifang der
+Regeln eine GND, etwa den Buchstaben „C“, „M“ und „T“ oder der „Liste“, deren Artikel nicht zum Text passen, und der
+Pool wächst um die gefüllten GND richtiger Artikel, die die Regeln nur zum Teil verknüpfen. Die Kennungen folgen der
+Verknüpfung.
+
+**Stimmt der Satz aus dem Index?** Unabhängig davon, ob der Artikel zum Text passt: Allen 46 GND, die der Index einem
+der verknüpften Artikel gab, stellten zwei Claude-Subagenten blind Titel und Einleitung des Artikels und den GND-Satz
+gegenüber (Name, Varianten, Art, Definition). 22 Paare hatte M42 benotet, 24 kamen neu dazu
+(`eval/kennungen/noten_gnd*.yaml`, gleiche Note bei 24 von 24). 41 meinen denselben Begriff, 3 einen verwandten
+(*Digitale Transformation* als „Digitalisierung“, *Finanzwesen* als „Finanzwirtschaft“, *Popularität* als
+„Beliebtheit“) und 2 etwas anderes: der Vorname *Martha* als gleichnamiger Ort und die beamtenrechtliche *Umsetzung*
+als „Transformation“, die „Umsetzung“ als Variante führt. Über das Wikidata-Objekt kamen 15 GND, 14 davon derselbe
+Begriff; über den Namen 31, davon 27. Beide Fehlgriffe kamen über den Namen.
+
+**Zeit.** Der Wikidata-Sync lief im Entwicklungscontainer 619 statt 1.271 s: gut drei Minuten Download und ein Bau
+von rund 6,5 statt 18 min, weil von `langlinks` nur noch Zeilen mit einem englischen Link geparst werden. Der Index
+blieb gleich (3.177.984 Artikel, 1.609.287 englische Titel). Der GND-Sync brauchte 78 s mit Download; sein Index ist
+55 MB groß.
+
+**Ergebnis:** D65 wirkt wie gemessen. In `balanced` tragen die Artikel eine GND so treffsicher wie eine
+Wikidata-Nummer (F1 0,78). 21 der 49 Lücken sind richtig geschlossen, an bekannten Nummern stimmen 98 und 99 %, und
+96 % der Artikel bekommen eine DBpedia-URI, die antwortet. Lebende Dienste brächten hier wenig: lobid-gnd, Entity
+Facts und SPARQL der DNB lesen dieselben GND-Daten, und Entity Facts braucht die Nummer schon. Offen bleiben
+Ereignisse, Produkte und Einrichtungen, die in der GND fehlen oder anders heißen (*Eurokrise*, *Fidget Spinner*,
+*Landesbildungsserver Baden-Württemberg*); dafür bräuchte es andere Daten, keine Abfrage. Grenzen wie M41: 40
+Materialtexte, Recall gegen den Pool, alle Gutachter Claude-Subagenten; die Sätze aus dem Index an 46 Paaren
+geprüft.
+
+Rohdaten: `m43_kennungen.json` (je Notenfassung und Profil die Zählung je Kennung und die Herkunft der GND, die
+Gegenprobe, je Artikel die Kennungen mit Herkunft, die vom Index gefüllten GND mit ihren Noten; keine Texte). Die
+Bewertungsbögen mit den Einleitungen blieben außerhalb des Repositorys; die GND-Sätze für die Bögen kamen aus dem
+gestreamten Abzug, gespeichert wurde davon nichts.
