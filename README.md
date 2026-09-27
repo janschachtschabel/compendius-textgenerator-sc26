@@ -212,7 +212,8 @@ Materialien gegen zwei blinde Gutachter, durch den Endpunkt (M36): Regeln F1 0,3
 LLM F1 0,78 bei 0,70 - von 269 verknüpften Artikeln meinte einer etwas anderes -, rund 800 Tokens und 4 s. Auf
 Wunsch prüft das LLM zusätzlich jede Verknüpfung (`link_check: llm`, in keinem Profil voreingestellt): Präzision
 0,94, aber ein Drittel der passenden Entitäten fällt weg (F1 0,76), rund 820 Tokens und 2 s mehr. Ohne `preset` gilt
-`PRESET_DEFAULT`; auf einem Server ohne LLM ist eine Anfrage ohne `preset: llm-free` deshalb ein 503.
+`PRESET_DEFAULT`; auf einem Server ohne LLM, der die Vorgabe `balanced` behält, ist eine Anfrage ohne
+`preset: llm-free` deshalb ein 503.
 
 Zu jedem verknüpften Wikipedia-Artikel nennt der Endpunkt GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
 Archivs. Die DBpedia-URI ist die Ressource des englischen Artikels, `http://dbpedia.org/resource/<englischer Titel>`
@@ -593,7 +594,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 
 | Variable | Vorgabe | Bedeutung |
 |---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image die drei Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image alle fünf Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
 | `API_BIND` | `0.0.0.0:8000` | Woran der Port der API gebunden wird. Die Vorgabe bindet an **alle** Schnittstellen, damit der Dienst in einer Hosting-Umgebung überhaupt erreichbar ist — deren Proxy läuft meist nicht im selben Netz-Namensraum und käme an eine Loopback-Bindung nicht heran. Die Firewall des Hosts schützt einen veröffentlichten Docker-Port nicht (Docker leitet an ufw und der INPUT-Kette vorbei); öffentlich gehören `API_KEYS` und `METRICS_TOKEN` gesetzt (docs/installation.md, Abschnitt 8). Auf einem Arbeitsrechner und hinter einem Reverse-Proxy auf dem Host gehört `API_BIND=127.0.0.1:8000` gesetzt |
 
 ### Betrieb
@@ -628,7 +629,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates, optional der Wikidata-Index `wikidata.db` |
-| `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `zim_subscriptions.yaml` und den Templates |
+| `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `heading_lexicon.yaml`, `subjects.yaml`, `zim_subscriptions.yaml` und den Fachvokabularen (`vocabs/`). Die Templates liegen nicht hier: die eingebauten in `app/templates/builtin`, eigene in `STATE_DIR/templates` |
 | `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval`; im Image nicht enthalten |
 
 ### Kompendium und Matching
@@ -636,7 +637,7 @@ Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt |
-| `PRESET_DEFAULT` | `balanced` | Profil einer Anfrage, die keins nennt (D53): `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Schalter der Anfrage geht vor. Jedes Profil außer `llm-free` braucht `LLM_ENABLED` und `B_API_KEY`, sonst ist die Anfrage ein 503; ein Dienst ohne LLM setzt `llm-free`. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
+| `PRESET_DEFAULT` | `llm-free` | Profil einer Anfrage, die keins nennt (D53). Ohne `.env` gilt die Vorgabe des Codes, `balanced`, die ein LLM braucht: Auf einem Server ohne LLM ist dann jede Anfrage ohne `preset` ein 503, darum setzt die Vorlage `llm-free`. Werte: `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Schalter der Anfrage geht vor. Jedes Profil außer `llm-free` braucht `LLM_ENABLED` und `B_API_KEY`, sonst ist die Anfrage ein 503; ein Dienst ohne LLM setzt `llm-free`. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
 | `POLICY_CONFIDENT_SCORE` | `0.65` | Ab dieser fusionierten Trefferstärke gilt ein Ranker-Treffer als Beleg; darunter greift der Standardbaustein des Templates. Mit Glättung 0,5 auf `eval/gold` gemessen: 0,45 → 0,65 hebt macro-F1 von 0,430 auf 0,447 und senkt falsch gedruckte Absätze um ein Drittel |
 | `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score — Absätze unter einer Überschrift stützen sich gegenseitig; `0` schaltet es ab |
 | `FACETS_LEVEL` | `minimal` | Wie viele Facetten das Frontmatter trägt: `minimal` oder `full` |

@@ -25,7 +25,7 @@ dependencies = [
 # huggingface-hub: the image build downloads the model with snapshot_download (Dockerfile, MODEL2VEC_REVISION)
 embeddings = ["model2vec>=0.9", "huggingface-hub>=1.31"]
 # spaCy brings the German NER for /api/v2/entities; the model itself is baked into the image (Dockerfile,
-# SPACY_MODEL_REVISION). Without the extra the endpoint still answers - with the terms from the archives only.
+# SPACY_MODEL_VERSION). Without the extra the endpoint still answers - with the terms from the archives only.
 entities = ["spacy>=3.8"]
 
 [project.scripts]
@@ -50,7 +50,9 @@ packages = ["app"]
 [tool.ruff]
 line-length = 120
 target-version = "py313"
-extend-exclude = ["alterCode"]
+# The measurement scripts are evidence, kept as they ran, not production code; CI checks app, tests and scripts,
+# and without this line the commands of CLAUDE.md failed on them alone (audit 2026-09-27, DO-01)
+extend-exclude = ["alterCode", "docs/entwicklung/messung"]
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "C4", "UP", "N", "S", "T20", "RUF"]

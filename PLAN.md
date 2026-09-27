@@ -1166,17 +1166,18 @@ Regeneration mit `existing_markdown` erneuert nur ungeprüfte Abschnitte.
 
 ## 10. Container, Deployment, Betrieb
 
-**Image-Profile.** `base`: Python 3.13, libzim, numpy, scikit-learn, model2vec mit eingebautem
-Modell (`JanSchachtschabel/m2v-gte-256-edu`, ~300 MB), geschätzt 700–900 MB. `ml`: zusätzlich
-torch (CPU, 507 MB), transformers, sentence-transformers, Cross-Encoder und Electra-QA
-(rund 1 GB Modelle), geschätzt 2,5–3 GB. Modelle werden im Build ins Image geladen; zur
-Laufzeit findet kein Download statt (`HF_HUB_OFFLINE=1`).
+**Image.** Geplant waren zwei Profile, `base` und `ml` (mit torch, Cross-Encoder und Electra-QA). Gebaut ist seit
+der Entscheidung vom 2026-09-20 ein einziges Image, seit D57 ohne torch und die QA-Modelle: Python 3.13, libzim,
+numpy, scikit-learn, Model2Vec mit eingebautem Modell (`JanSchachtschabel/m2v-gte-256-edu`) und spaCy
+`de_core_news_md`, 1,1 GB. Modelle werden im Build ins Image geladen; zur Laufzeit findet kein Download statt
+(`HF_HUB_OFFLINE=1`).
 
 **Compose/Kubernetes.** Dienst `api` (1 Replica, 2–4 Uvicorn-Worker), Sidecars `zim-updater`
 (`compendium zim sync --loop`), `lehrplan-updater` (`compendium lehrplan harvest --loop`), `wikidata-updater`
 (`compendium wikidata sync --loop`, D64) und `gnd-updater` (`compendium gnd sync --loop`, D65), alle aus demselben
 Image, Volumes `zim` (40 GB, Entscheidung D18) und
-`state` (2 GB). Ressourcen: 2 CPU, 2 GB RAM (`base`) bzw. 4 GB (`ml`); libzim nutzt mmap, der
+`state` (2 GB). Ressourcen: 2 CPU und 4 GB RAM für die zwei Worker des Images; gemessen rund 1,4 GB je Worker, 2 GB
+tragen den Dienst nur mit einem (docs/installation.md, Abschnitt 7a). libzim nutzt mmap, der
 Betriebssystem-Cache profitiert von zusätzlichem RAM.
 
 **Worker und Healthcheck (Fund vom 2026-09-20).** Der Elternprozess von uvicorn pingt jedes Kind und tötet

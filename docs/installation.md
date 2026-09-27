@@ -84,7 +84,7 @@ Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein B
 | `ZIM_BOOTSTRAP_DOWNLOAD` | in der Vorlage `true`: der Updater lädt beim ersten Start die fehlenden Pflichtarchive |
 | `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden, dann mit mindestens 32 Zeichen (`openssl rand -hex 32`) |
 | `API_KEYS`, `METRICS_TOKEN` | auf einem öffentlichen Server setzen, je mindestens 32 Zeichen: ohne sie antworten die Endpunkte mit einem Profil und `/metrics` jedem (Abschnitt 8) |
-| `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, Produktion steht auskommentiert daneben. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
+| `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` eintragen. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
 
 `.env` enthält Zugangsdaten und gehört niemals ins Repository — `.gitignore` hält sie schon draußen.
@@ -170,8 +170,12 @@ kein Modell außer dem spaCy-Modell, das ohnehin geladen ist. Die QA-Stufe `mode
 Der Spitzenwert lässt sich im laufenden Container nachlesen:
 
 ```bash
-docker exec <container> sh -c 'cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes /sys/fs/cgroup/memory/memory.oom_control'
+docker exec <container> sh -c 'cat /sys/fs/cgroup/memory.peak /sys/fs/cgroup/memory.events'
 ```
+
+Das gilt für cgroup v2, die Debian 13 verwendet: `memory.peak` ist der Spitzenwert, `oom_kill` in `memory.events`
+zählt die Abbrüche. Unter cgroup v1, etwa in Docker Desktop, heißen die Dateien
+`/sys/fs/cgroup/memory/memory.max_usage_in_bytes` und `/sys/fs/cgroup/memory/memory.oom_control`.
 
 ## 7b. Welche Modelle wie viel Speicher kosten
 
@@ -249,13 +253,27 @@ Drei Zeilen in `.env` gehören dann dazu:
 cd /srv/kompendium && sudo -u kompendium git pull && sudo -u kompendium docker compose build && sudo -u kompendium docker compose up -d
 ```
 
-Die Archive bleiben dabei im Volume; der Updater tauscht sie eigenständig gegen neue Ausgaben.
+Wer das fertige Image zieht, statt zu bauen: `git pull`, dann `docker compose pull && docker compose up -d`. Die
+Archive bleiben dabei im Volume; der Updater tauscht sie eigenständig gegen neue Ausgaben. Was ein Update für den
+Betrieb ändert — neue Dienste, geänderte Vorgaben —, steht in [betrieb.md](betrieb.md) unter „Updates“. Ein
+Hosting-Panel übernimmt eine neue `docker-compose.yml` nicht von selbst, wenn es nur das Image neu zieht.
 
 Sichern muss man nur das Volume `state` — und dort genau genommen nur eigene Templates: `lehrplan.db` baut
 ein Harvest neu auf, `wikidata.db` der Wikidata-Updater, `gnd.db` der GND-Updater, `wlo_cache.db` und `llm_budget.db` sind verzichtbar.
 
+Das Archiv gehört neben den Checkout, nicht hinein: dort landete es in `git status` und im Build-Kontext.
+
 ```bash
-sudo -u kompendium docker run --rm -v kompendium_state:/state -v "$PWD":/backup alpine tar czf /backup/state.tar.gz -C /state .
+sudo install -d -o kompendium -g kompendium /srv/kompendium-backup
+sudo -u kompendium docker run --rm -v kompendium_state:/state -v /srv/kompendium-backup:/backup alpine tar czf /backup/state.tar.gz -C /state .
+```
+
+Zurückspielen bei angehaltenen Diensten; `tar` stellt die Eigentümer wieder her, der Dienst läuft als UID 10001:
+
+```bash
+cd /srv/kompendium && sudo -u kompendium docker compose stop
+sudo -u kompendium docker run --rm -v kompendium_state:/state -v /srv/kompendium-backup:/backup alpine tar xzf /backup/state.tar.gz -C /state
+sudo -u kompendium docker compose start
 ```
 
 Compose benennt die Volumes nach dem Verzeichnis: aus `/srv/kompendium` wird `kompendium_state`. `docker volume ls` zeigt die tatsächlichen Namen.
