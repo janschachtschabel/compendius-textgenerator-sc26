@@ -48,6 +48,8 @@ Update daher:
 | 2026-09-27 (D64, D65) | Zwei neue Dienste in `docker-compose.yml`: `wikidata-updater` baut `wikidata.db` (rund 750 MB Download, dabei 1,5 GB frei im Volume `state`), `gnd-updater` baut `gnd.db` (rund 65 MB). Ohne sie tragen Entitäten keine Wikidata-Nummer und keine GND aus dem Index, und DBpedia-Adressen zeigen auf das stillgelegte `de.dbpedia.org` |
 | 2026-09-27 (Audit) | `ADMIN_TOKEN`, `METRICS_TOKEN` und das neue `API_KEYS` brauchen je mindestens 32 Zeichen, sonst startet kein Container. Auf einem öffentlichen Server `API_KEYS` und `METRICS_TOKEN` setzen (installation.md, Abschnitt 8). `:latest` entsteht erst nach grüner CI; jeder geprüfte Commit liegt zusätzlich als `:<sha>` bereit (Rückweg siehe Regeln) |
 
+Alle Zeilen der Tabelle kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
+
 ## Zustand prüfen
 
 - `GET /health`: Prozess lebt; `components` zeigt `zim`, `lehrplan_cache`, `edu_sharing` und `llm`
