@@ -811,7 +811,9 @@ ohne Verb listet wie bisher.
 `POST /api/v2/compendium`, `/knowledge`, `/entities` und `/qa`, `GET /api/v2/nodes/{node_id}`,
 `GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search` sind je Client auf `RATE_LIMIT` Anfragen
 pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
-0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Hinter einem Reverse-Proxy sieht uvicorn die
+0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Eine IPv6-Adresse zählt mit ihrem ganzen /64, und je
+Worker bleiben höchstens 10.000 Fenster; darüber fällt der am längsten nicht gesehene Client heraus und beginnt
+neu. Hinter einem Reverse-Proxy sieht uvicorn die
 Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung gibt es nicht, aber `API_KEYS` macht einen
 Schlüssel im Header `X-API-Key` zur Bedingung für diese sieben Endpunkte; die Prüfung läuft nach dem Rate-Limit,
 ein Fehlversuch zählt also als Anfrage. `/docs` bietet den Schlüssel unter „Authorize“ an. Admin-Endpunkte
