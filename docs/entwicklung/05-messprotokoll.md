@@ -2039,3 +2039,6 @@ des Entwicklungsrechners (Ryzen 7 7730U) stehen für einen Server, dessen CPU ni
 Rohdaten: `m40_sammelthemen.json`, `m40_kontrolle.json` (je Thema und Modell genannte und gefundene Titel, gedruckte
 Artikel mit Absatzzahl, Sekunden), `m40_nur_haupt.json`, `m40_nur_haupt_kontrolle.json` (R2) und `m40_zeiten.json`
 (Sekunden und Tokens je Frage); keine Artikeltexte.
+
+**Entscheidung (27.09.2026):** Jan folgt dem Vorschlag (a) der Entscheidungsvorlage: `llm-free` bleibt, wie es ist;
+wer Sammelthemen braucht, nimmt `balanced`.

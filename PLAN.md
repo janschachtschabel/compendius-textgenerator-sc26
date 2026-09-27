@@ -1806,7 +1806,9 @@ API.
   Thema und Material wird N auch gefragt, wenn die Frage zu beiden den Artikel nennt; die genannten Titel werden aus
   dem Archiv gelesen, in dem sie nachgeschlagen wurden. Dass bei fehlender Übersicht der erste Teil einspringt, bleibt
   wie gemessen (M37, M39: bei 8 der 19 ersetzten Hauptartikel, etwa *John Locke*, *Augustus* und bei allen vier
-  Verbindungen zweier Themen), steht aber im Audit (`articles_overview` leer).
+  Verbindungen zweier Themen), steht aber im Audit (`articles_overview` leer). Nach M40 bleibt `llm-free`, wie es
+  ist (Jan, 27.09.2026, Weg (a) von Punkt 9): kein kleines lokales Modell, kein kleinerer Korpus; wer Sammelthemen
+  braucht, nimmt `balanced`.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

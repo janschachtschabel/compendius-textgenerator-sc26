@@ -515,8 +515,8 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
 9. **Sammel- und Mischthemen („deutsche Dichter“):** entschieden und gebaut (D63; Jan, 26. und 27.09.2026): `llm-free`
    bleibt ohne LLM, die neue Frage N stellt das konfigurierte Modell (`gpt-6-luna`) ab `balanced` in allen höheren
    Profilen (Option C), nachgemessen in M39. Ohne großes LLM ist ihre Wirkung nicht erreichbar, weder mit spaCy und
-   dem Archiv (M38) noch mit kleinen lokalen Modellen (M40); offen ist nur, ob `llm-free` anders besser werden soll
-   (am Ende dieses Punkts).
+   dem Archiv (M38) noch mit kleinen lokalen Modellen (M40), und `llm-free` bleibt, wie es ist (Jan nach M40, Weg (a)
+   am Ende dieses Punkts).
 
    *Ausgangslage vor D63.* Der Dienst sucht zu jedem Thema genau einen Hauptartikel - über den Titel (genau, gebeugt,
    als Weiterleitung, über eine Begriffsklärung), sonst über Titelvorschläge und die Volltextsuche - und baut um ihn
@@ -637,7 +637,7 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    für ein Drittel weniger Absätze und rund zwei gefüllte Bausteine weniger. In 2 bis 3 s blieben 2 der 135 Fragen.
    Kleine lokale Modelle verbessern `llm-free` also nicht.
 
-   Mögliche Wege für `llm-free`, keiner gebaut:
+   Wege für `llm-free` nach M40:
    - (a) nichts ändern: `llm-free` bleibt der schnelle, freie Weg; wer Sammelthemen braucht, nimmt `balanced`.
    - (b) ein kleinerer Korpus in `llm-free`, etwa `max_articles` 2 oder ohne Volltexttreffer: mehr passende Absätze
      (76 statt 43 % und 94 statt 71 %), aber weniger Text und Bausteine, und die Vertreter einer Gruppe fehlen weiter
@@ -648,8 +648,8 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
      ohne ein LLM zu rufen. Für diese Themen die Wirkung von N, für freie Eingaben nichts; die Liste muss mit neuen
      Archiven erneuert werden, und es wären Daten eines LLM in einem Profil ohne LLM. Nicht gemessen.
 
-   Vorschlag: (a). (b) ändert, was ein Kompendium in `llm-free` ist, und hilft den Sammelthemen nicht; (c) lohnt sich,
-   wenn die meisten Anfragen aus WLO-Sammlungen kommen, und das wäre zuerst an echten Anfragen zu prüfen.
+   Entschieden: (a) (Jan, 27.09.2026). (b) ändert, was ein Kompendium in `llm-free` ist, und hilft den Sammelthemen
+   nicht; (c) lohnte sich erst, wenn die meisten Anfragen aus WLO-Sammlungen kämen. Beide sind nicht gebaut.
 10. **Profile für `/entities`:** entschieden und gebaut (D62, Jan: „angemessene Zuordnung der Methoden auf die
     Profile gemäß der Ergebnisse“). Der Endpunkt erkannte ohne LLM (spaCy und ein Wörterbuch der Artikeltitel) und
     nahm kein Profil. An den Texten von 40 echten Materialien kommt das auf F1 0,38 bei einer Präzision von 0,29: Das
