@@ -141,8 +141,8 @@ Profils selbst (Profil `standard` rund 14,1 GB). Alternativ werden die Dateien e
 `ZIM_DIR` kopiert; der nächste Sync übernimmt sie. `GET /ready` antwortet erst mit 200, wenn
 alle Pflichtarchive vorliegen.
 
-Container: `docker-compose.yml` startet `api`, `zim-updater`, `lehrplan-updater` und `wikidata-updater` aus
-demselben Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und `state`.
+Container: `docker-compose.yml` startet `api`, `zim-updater`, `lehrplan-updater`, `wikidata-updater` und
+`gnd-updater` aus demselben Image mit den Volumes `zim` (geplant 40 GB, in Kubernetes ein PVC mit 40Gi) und `state`.
 
 ```bash
 docker compose up --build
@@ -244,6 +244,26 @@ Index dann als `wikidata.db.part` daneben liegen und sagt, dass er nach dem Been
 muss. Weiterleitungen zählen mit, wenn Wikidata ihnen ein eigenes Objekt gibt (*Nenner* führt in *Bruchrechnung*,
 ist aber Q3044574). Gemessen an den Entitäten von 20 Themen: GND bei 503 von 679 Wikipedia-Artikeln, Wikidata bei 674
 (M18 im Messprotokoll); je Profil an den Texten von 40 Materialien in M41.
+
+Hat ein Artikel keinen Normdaten-Block mit GND - ein Viertel der richtigen Artikel in M41 -, nimmt der Endpunkt sie
+aus dem lokalen GND-Index `STATE_DIR/gnd.db` (D65): zuerst den GND-Satz, der das Wikidata-Objekt des Artikels nennt
+(`owl:sameAs`), sonst den einen Satz, der den Titel als Namen trägt („Folge (Mathematik)“ auch als „Folge
+<Mathematik>“, wie die GND schreibt); was zwei Sätze teilen, zählt nicht. `gnd_source` sagt, woher die Nummer
+stammt: `normdaten`, `wikidata` oder `name`. Den Index baut der Sidecar `gnd-updater` (`compendium gnd sync --loop`)
+aus den Abzügen der DNB, Sachbegriffe und Geografika (rund 65 MB, CC0, geprüft gegen die SHA-256 der DNB), neu bei
+jeder neueren Ausgabe; auch hier fragt der Dienst nichts online. Gemessen an den richtigen Artikeln aus M36 (M42):
+Wo der Normdaten-Block die GND nennt, führten Wikidata-Objekt und Name in 104 von 106 und 88 von 89 Fällen zu
+derselben Nummer; von den 49 Artikeln ohne Block bekamen 22 einen Vorschlag, 21 davon richtig. Lebende Abfragen
+(lobid-gnd, Entity Facts, SPARQL der DNB) beruhen auf denselben GND-Daten; sie brächten vor allem eine unscharfe
+Suche dazu, und der Dienst fragt nichts online.
+
+```bash
+uv run compendium gnd sync          # bauen, wenn der Index fehlt oder die DNB eine neuere Ausgabe hat
+uv run compendium gnd status        # Datensätze, Release, eindeutige Wikidata-Objekte und Namen
+# ohne Netz aus den Abzügen auf der Platte
+uv run compendium gnd build --sachbegriff authorities-gnd-sachbegriff_lds_….ttl.gz \
+  --geografikum authorities-gnd-geografikum_lds_….ttl.gz
+```
 
 ## Knoten als Eingang
 
@@ -640,6 +660,19 @@ und wird neu gebaut.
 | `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Woher der Sync die Dumps lädt; ein Spiegel mit demselben Aufbau (`/dewiki/<Lauf>/dumpstatus.json`) geht auch. Laufliste und Prüfsummen kommen nur von diesem Host über https, ohne Umleitung |
 | `WIKIDATA_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder ein neueres Archiv einen neueren Dump braucht |
 
+### GND-Index (Kennungen von `/api/v2/entities`)
+
+Der Sidecar `gnd-updater` (`compendium gnd sync --loop`) baut `STATE_DIR/gnd.db` aus den Abzügen der DNB (D65):
+bei einer neuen Installation sofort, später neu, sobald die DNB eine neuere Ausgabe mit beiden Abzügen
+(Sachbegriffe, Geografika) veröffentlicht; sie erscheinen etwa zweimal im Jahr. Die Ausgabe, ihre SHA-256 und die
+Dateinamen stehen in `001_Pruefsumme_Checksum.txt`. Ein Lauf lädt rund 65 MB, die Dumps löscht er danach,
+`gnd_status.json` hält den Lauf fest.
+
+| Variable | Vorlage | Bedeutung |
+|---|---|---|
+| `GND_DUMPS_URL` | `https://data.dnb.de/opendata` | Woher der Sync die Abzüge und ihre Prüfsummen lädt; Prüfsummen und Größen kommen nur von diesem Host über https, ohne Umleitung |
+| `GND_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder eine neuere Ausgabe da ist |
+
 ### Lehrpläne (Teil 2)
 
 Vollabzug aus MEM in `STATE_DIR/lehrplan.db` durch den Harvest-Sidecar (`compendium lehrplan harvest --loop`);
@@ -787,6 +820,7 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_zim_sync_running`, `kompendium_zim_sync_status_updated_timestamp_seconds`, `kompendium_zim_sync_last_run_timestamp_seconds`, `kompendium_zim_sync_last_run_errors` | Updater-Sidecar (`sync_status.json`); ein abgebrochener Lauf endet mit `state: error`; während eines Laufs gelten Ende und Fehler des letzten abgeschlossenen |
 | `kompendium_lehrplan_cache_available`, `kompendium_lehrplan_cache_harvested_timestamp_seconds`, `kompendium_lehrplan_harvest_failed`, `kompendium_lehrplan_harvest_last_run_timestamp_seconds` | Lehrplan-Cache und Harvest-Sidecar |
 | `kompendium_wikidata_index_available`, `kompendium_wikidata_index_dump_timestamp_seconds`, `kompendium_wikidata_sync_failed` | Wikidata-Index (`wikidata.db`, Datum seines Dumps) und Wikidata-Sidecar (`wikidata_status.json`) |
+| `kompendium_gnd_index_available`, `kompendium_gnd_index_release_timestamp_seconds`, `kompendium_gnd_sync_failed` | GND-Index (`gnd.db`, Datum der Ausgabe der DNB) und GND-Sidecar (`gnd_status.json`) |
 | `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget; `_available` ist der Stand des antwortenden Workers |
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version}` | Konfiguration und Version |
 | `kompendium_status_section_failed{section}` | 1, wenn ein Abschnitt dieser Zustandswerte nicht gelesen werden konnte (seine Werte fehlen dann) |

@@ -118,6 +118,23 @@ groups:
         annotations:
           summary: Der letzte Wikidata-Sync ist gescheitert
           description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+      - alert: KompendiumGndIndexMissing
+        # Eine neue Installation hat noch keinen Index; der Sidecar lädt zwei Abzüge der DNB und baut ihn in Minuten
+        expr: kompendium_gnd_index_available == 0
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Index fehlt oder ist nicht lesbar
+          description: Artikel ohne Normdaten-Block bekommen keine GND-Nummer; Sidecar gnd-updater und gnd_status.json prüfen.
+      - alert: KompendiumGndSyncFailed
+        expr: kompendium_gnd_sync_failed == 1
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte GND-Sync ist gescheitert
+          description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
 
   - name: kompendium-llm
     rules:

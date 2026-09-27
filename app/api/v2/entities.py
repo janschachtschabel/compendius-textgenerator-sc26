@@ -53,6 +53,7 @@ from app.knowledge.linking import article_of
 from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
 from app.llm.deadline import Deadline
 from app.service import CompendiumService, LlmNotConfiguredError
+from app.sources.gnd.index import GndIndex
 from app.sources.wikidata.index import WikidataIndex
 from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArchive
@@ -71,11 +72,12 @@ def _article_kind(source: Source) -> str | None:
     return classify_entity(source) or ("Werk" if is_work(source) else None)
 
 
-def _ids(title: str, html: str, wikidata: WikidataIndex | None) -> EntityIds:
-    found = identifiers(title, html, wikidata)
+def _ids(title: str, html: str, wikidata: WikidataIndex | None, gnd: GndIndex | None) -> EntityIds:
+    found = identifiers(title, html, wikidata, gnd)
     return EntityIds(
         gnd=found.gnd,
         gnd_kind=found.gnd_kind,
+        gnd_source=found.gnd_source,
         viaf=found.viaf,
         wikidata=found.wikidata,
         dbpedia=found.dbpedia,
@@ -83,7 +85,12 @@ def _ids(title: str, html: str, wikidata: WikidataIndex | None) -> EntityIds:
     )
 
 
-def _link(archives: list[ZimArchive], mention: Mention, wikidata: WikidataIndex | None = None) -> EntityArticle | None:
+def _link(
+    archives: list[ZimArchive],
+    mention: Mention,
+    wikidata: WikidataIndex | None = None,
+    gnd: GndIndex | None = None,
+) -> EntityArticle | None:
     """The article of this name with its lead, kind and identifiers (``article_of``); a disambiguation page is none."""
     found = article_of(archives, mention)
     if found is None:
@@ -97,7 +104,7 @@ def _link(archives: list[ZimArchive], mention: Mention, wikidata: WikidataIndex 
         url=source.url,
         lead=source.lead_text[:400],
         kind=_article_kind(source),
-        ids=_ids(article.title, article.html, wikidata) if source.project == "wikipedia" else None,
+        ids=_ids(article.title, article.html, wikidata, gnd) if source.project == "wikipedia" else None,
     )
 
 
@@ -292,7 +299,8 @@ def entities(
         )
     found = merge(mentions)[: payload.max_entities]
     wikidata = getattr(request.app.state, "wikidata", None)
-    linked = [_link(registry.archives, mention, wikidata) if payload.link else None for mention in found]
+    gnd = getattr(request.app.state, "gnd", None)
+    linked = [_link(registry.archives, mention, wikidata, gnd) if payload.link else None for mention in found]
     entities = [
         Entity(
             text=mention.text,

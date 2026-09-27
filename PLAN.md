@@ -311,6 +311,8 @@ compendious-text-fastapi/
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` (= alle) | optionale Kappung von Teil 2 je Bundesland und Bildungsstufe; Standard ohne Kappung (D23) |
 | `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Quelle der dewiki-Dumps für den Wikidata-Index (`compendium wikidata sync`, D64); nur dieser Host |
 | `WIKIDATA_CHECK_INTERVAL` | `1d` | Prüfintervall des Sidecars `wikidata-updater`: Index fehlt, oder ein jüngeres Wikipedia-Archiv braucht einen neueren Dump |
+| `GND_DUMPS_URL` | `https://data.dnb.de/opendata` | Quelle der GND-Abzüge und ihrer Prüfsummen (`compendium gnd sync`, D65); nur dieser Host |
+| `GND_CHECK_INTERVAL` | `1d` | Prüfintervall des Sidecars `gnd-updater`: Index fehlt, oder die DNB hat eine neuere Ausgabe |
 | ~~`LEHRPLAN_LIVE_FALLBACK`~~ | – | gestrichen (D22): ohne Cache Hinweistext, nie SPARQL zur Inferenzzeit |
 | `RESULT_CACHE_TTL_H` | `168` | geplant, nicht umgesetzt: Ergebnis-Cache (8.3) |
 | `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest-Anstoß, Matching-Vergleich; Templates schreiben ist geplant) |
@@ -1171,8 +1173,9 @@ torch (CPU, 507 MB), transformers, sentence-transformers, Cross-Encoder und Elec
 Laufzeit findet kein Download statt (`HF_HUB_OFFLINE=1`).
 
 **Compose/Kubernetes.** Dienst `api` (1 Replica, 2–4 Uvicorn-Worker), Sidecars `zim-updater`
-(`compendium zim sync --loop`), `lehrplan-updater` (`compendium lehrplan harvest --loop`) und `wikidata-updater`
-(`compendium wikidata sync --loop`, D64), alle aus demselben Image, Volumes `zim` (40 GB, Entscheidung D18) und
+(`compendium zim sync --loop`), `lehrplan-updater` (`compendium lehrplan harvest --loop`), `wikidata-updater`
+(`compendium wikidata sync --loop`, D64) und `gnd-updater` (`compendium gnd sync --loop`, D65), alle aus demselben
+Image, Volumes `zim` (40 GB, Entscheidung D18) und
 `state` (2 GB). Ressourcen: 2 CPU, 2 GB RAM (`base`) bzw. 4 GB (`ml`); libzim nutzt mmap, der
 Betriebssystem-Cache profitiert von zusätzlichem RAM.
 
@@ -1837,7 +1840,17 @@ API.
   Titel liefert die dewiki-Tabelle `langlinks` aus demselben Lauf wie `page_props` und `page`: Der Wikidata-Index
   (Schema 2) führt ihn je Titel, der Sync lädt `langlinks` mit (zusammen rund 750 MB), ein Index des Schemas 1 gilt als
   unbrauchbar und wird neu gebaut. Das ZIM hat keine Sprachlinks (M41). Gemessen: 96 % der Artikel, die `balanced`
-  verknüpft, haben einen englischen Artikel (M42).
+  verknüpft, haben einen englischen Artikel (M42). *GND:* Jan gab die GND-Abzüge für den Container frei. Hat ein
+  Artikel keinen Normdaten-Block mit GND (ein Viertel der richtigen in M41), nimmt der Endpunkt sie aus dem lokalen
+  GND-Index: zuerst den Satz, der das Wikidata-Objekt des Artikels mit `owl:sameAs` nennt, sonst den einen Satz, der
+  den Titel als Namen trägt; was zwei Sätze teilen, zählt nicht (wie M42 gemessen: an bekannten Nummern 104 von 106
+  und 88 von 89 gleich, von 49 Lücken 22 Vorschläge, 21 richtig). `gnd_source` nennt die Herkunft. Nur Sachbegriffe
+  und Geografika (rund 65 MB): Alle Vorschläge der Lücke kamen aus den Sachbegriffen, die Körperschaften (205 MB,
+  1,6 Mio. Namen) brachten keinen. Der Sidecar `gnd-updater` liest die Ausgabe samt SHA-256 aus
+  `001_Pruefsumme_Checksum.txt` und baut neu, sobald eine neuere Ausgabe beide Abzüge hat. Lebende Dienste (lobid-gnd,
+  Entity Facts, SPARQL der DNB) beruhen auf denselben GND-Daten; sie brächten vor allem eine unscharfe Suche, und der
+  Dienst fragt nichts online (D43). Der Ablauf beider Syncs, der Leser, der eine neue Datei ohne Neustart öffnet, und
+  die Befehle sind gemeinsame Teile (`app/jobs/dump_sync.py`, `app/sources/local_index.py`, `app/cli_sync.py`).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

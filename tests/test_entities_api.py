@@ -17,10 +17,12 @@ from app.api.v2.entities import _link
 from app.knowledge.recognise import Mention
 from app.main import create_app
 from app.settings import Settings
+from app.sources.gnd.index import build_gnd_index
 from app.sources.local_index import RECHECK_S
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
+from tests.test_gnd_index import write_gnd
 from tests.test_wikidata_index import write_dumps, write_langlinks
 
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
@@ -120,7 +122,12 @@ def test_health_says_whether_the_model_and_the_wikidata_index_are_there(
     client: TestClient, sample_zims: dict[str, Path]
 ) -> None:
     entities = client.get("/health").json()["components"]["entities"]
-    assert entities == {"ner": False, "model": "", "wikidata": {"available": False, "articles": None, "dump": None}}
+    assert entities == {
+        "ner": False,
+        "model": "",
+        "wikidata": {"available": False, "articles": None, "dump": None},
+        "gnd": {"available": False, "records": None, "release": None},
+    }
 
 
 DISAMBIGUATION_TEXT = "Die Brechung des Lichts erklärt das Lichtmikroskop und die Geometrische Optik."
@@ -255,3 +262,22 @@ def test_the_dbpedia_uri_names_the_resource_of_the_english_article(
     assert abbe["same_as"][-1] == "http://dbpedia.org/resource/Ernst_Abbe"
     mikroskop = found["Lichtmikroskop"]["article"]["ids"]
     assert mikroskop["dbpedia"] == "http://de.dbpedia.org/resource/Lichtmikroskop", "no English title in this index"
+
+
+def test_an_article_without_normdaten_gets_its_gnd_from_the_local_gnd_index(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """The DNB's dumps close the GND gap in every profile (D65); gnd_source says where a number comes from."""
+    settings = make_settings(sample_zims.values(), tmp_path / "state")
+    record = {"gnd": "4180001-2", "type": "SubjectHeadingSensoStricto", "names": ["Schutz vor optischer Strahlung"]}
+    dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [record])
+    build_gnd_index([(dump, "Sachbegriff")], settings.gnd_db_path)
+    client = TestClient(create_app(settings))
+    text = "Der Schutz vor optischer Strahlung beschäftigte Ernst Abbe."
+    found = by_text(client.post("/api/v2/entities", json={"text": text}).json())
+    schutz = found["Schutz vor optischer Strahlung"]["article"]["ids"]
+    assert (schutz["gnd"], schutz["gnd_kind"], schutz["gnd_source"]) == ("4180001-2", "Sachbegriff", "name")
+    abbe = found["Ernst Abbe"]["article"]["ids"]
+    assert (abbe["gnd"], abbe["gnd_source"]) == ("118646419", "normdaten"), "the Normdaten block goes first"
+    gnd = client.get("/health").json()["components"]["entities"]["gnd"]
+    assert gnd == {"available": True, "records": 1, "release": "2026-02-17"}

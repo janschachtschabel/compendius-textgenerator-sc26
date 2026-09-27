@@ -104,6 +104,10 @@ class Settings(BaseSettings):
     wikidata_check_interval: str = Field(
         "1d", description="Wikidata sync loop: build a missing index, a newer one after a newer Wikipedia archive"
     )
+    gnd_dumps_url: str = Field(
+        "https://data.dnb.de/opendata", description="Where the GND sync reads the DNB's dumps and their checksums (D65)"
+    )
+    gnd_check_interval: str = Field("1d", description="GND sync loop: build a missing index, a newer one per release")
 
     # --- Curricula: MEM cache for part 2 (PLAN.md 5, decision D16) -----------------------------
     lehrplan_endpoint: str = Field(
@@ -228,6 +232,11 @@ class Settings(BaseSettings):
     def wikidata_db_path(self) -> Path:
         """The local Wikidata index (D43), written by ``compendium wikidata sync`` (D64) or ``build``."""
         return Path(self.state_dir) / "wikidata.db"
+
+    @property
+    def gnd_db_path(self) -> Path:
+        """The local GND index (D65), written by ``compendium gnd sync`` or ``build``."""
+        return Path(self.state_dir) / "gnd.db"
 
     @property
     def subjects_path(self) -> Path:

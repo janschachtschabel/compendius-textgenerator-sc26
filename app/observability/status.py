@@ -1,4 +1,4 @@
-"""Status gauges read at scrape time: archives, sidecar runs, curriculum cache, Wikidata index, repository, LLM.
+"""Status gauges read at scrape time: archives, sidecar runs, curriculum cache, Wikidata and GND index, LLM.
 
 Everything here is read from the application state and the files the sidecars write, not counted in the
 process, so every worker answers the same and nothing needs to be shared between workers. A value that is
@@ -19,6 +19,7 @@ from prometheus_client.metrics_core import Metric
 
 from app import __version__
 from app.jobs.zim_sync import read_status as read_zim_status
+from app.sources.gnd.sync import read_status as read_gnd_status
 from app.sources.lehrplan.harvest import read_status as read_harvest_status
 from app.sources.wikidata.sync import read_status as read_wikidata_status
 
@@ -44,6 +45,22 @@ def _last_run(status: Mapping[str, Any] | None) -> Mapping[str, Any]:
     return run if isinstance(run, dict) else {}
 
 
+def _index_gauges(name: str, index: Any, dated: str, status: Mapping[str, Any] | None) -> Iterator[Metric]:
+    """A local index a sidecar keeps (D64, D65): there and readable, the date of what it was built from (the meta
+    key ``dated``), and whether the sidecar's last run failed - left out before its first run."""
+    available = index is not None and index.available
+    yield _gauge(f"kompendium_{name}_index_available", f"1 when {name}.db is present and readable", int(available))
+    if index is not None and available and (day := index.meta().get(dated)):
+        stamp = _timestamp(f"{day}T00:00:00+00:00")
+        if stamp is not None:
+            yield _gauge(
+                f"kompendium_{name}_index_{dated}_timestamp_seconds", f"Date of the {dated} behind the index", stamp
+            )
+    if status is not None:
+        failed = _last_run(status).get("ok") is False
+        yield _gauge(f"kompendium_{name}_sync_failed", f"1 when the last {name} sync run failed", int(failed))
+
+
 class StatusCollector:
     """One scrape's view of the service state; ``state`` is the FastAPI ``app.state``."""
 
@@ -64,6 +81,7 @@ class StatusCollector:
             ("zim_sync", self._zim_sync),
             ("curricula", self._curricula),
             ("wikidata", self._wikidata),
+            ("gnd", self._gnd),
             ("edu_sharing", self._edu_sharing),
             ("llm", self._llm),
         )
@@ -150,21 +168,12 @@ class StatusCollector:
             )
 
     def _wikidata(self) -> Iterator[Metric]:
-        index = getattr(self._state, "wikidata", None)
-        available = index is not None and index.available
-        yield _gauge(
-            "kompendium_wikidata_index_available", "1 when wikidata.db is present and readable", int(available)
-        )
-        if index is not None and available and (dump := index.meta().get("dump")):
-            day = _timestamp(f"{dump}T00:00:00+00:00")
-            if day is not None:
-                yield _gauge(
-                    "kompendium_wikidata_index_dump_timestamp_seconds", "Date of the dump behind the index", day
-                )
         status = read_wikidata_status(Path(self._state.settings.state_dir))
-        if status is not None:
-            failed = _last_run(status).get("ok") is False
-            yield _gauge("kompendium_wikidata_sync_failed", "1 when the last Wikidata sync run failed", int(failed))
+        yield from _index_gauges("wikidata", getattr(self._state, "wikidata", None), "dump", status)
+
+    def _gnd(self) -> Iterator[Metric]:
+        status = read_gnd_status(Path(self._state.settings.state_dir))
+        yield from _index_gauges("gnd", getattr(self._state, "gnd", None), "release", status)
 
     def _edu_sharing(self) -> Iterator[Metric]:
         yield _gauge(

@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 
 from app import __version__
 from app.api.system_threads import run_system
+from app.sources.gnd.index import GndIndex
 from app.sources.wikidata.index import WikidataIndex
 
 router = APIRouter(tags=["system"])
@@ -31,6 +32,13 @@ def _wikidata(index: WikidataIndex) -> dict[str, Any]:
     (D64); without it the linked articles carry no Wikidata number (D43)."""
     meta = index.meta()
     return {"available": index.available, "articles": meta.get("articles"), "dump": meta.get("dump")}
+
+
+def _gnd(index: GndIndex | None) -> dict[str, Any]:
+    """The GND index as it is now (D65); without it an article lacking a Normdaten block has no GND."""
+    meta = index.meta() if index is not None else {}
+    available = index is not None and index.available
+    return {"available": available, "records": meta.get("records"), "release": meta.get("release")}
 
 
 def _components(request: Request) -> dict[str, Any]:
@@ -53,7 +61,11 @@ def _components(request: Request) -> dict[str, Any]:
             "harvested_at": meta.get("harvested_at"),
         },
         "matching": request.app.state.matching,
-        "entities": {**request.app.state.entities, "wikidata": _wikidata(request.app.state.wikidata)},
+        "entities": {
+            **request.app.state.entities,
+            "wikidata": _wikidata(request.app.state.wikidata),
+            "gnd": _gnd(getattr(request.app.state, "gnd", None)),
+        },
         "edu_sharing": {
             "enabled": getattr(request.app.state, "collections", None) is not None,
             # Which repository the collections come from, and which b-api belongs to it: an operator has to be

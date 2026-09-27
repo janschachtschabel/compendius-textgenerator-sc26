@@ -316,6 +316,39 @@ tests:
               summary: Der letzte Wikidata-Sync ist gescheitert
               description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
 
+  - name: GND-Index fehlt, GND-Sync gescheitert
+    interval: 1m
+    input_series:
+      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "0x150"
+      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:8000", fall="sauber"}'
+        values: "1x150"
+      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+        values: "1x150"
+      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:8000", fall="erholt"}'
+        values: "1x80 0x70"
+    alert_rule_test:
+      - eval_time: 90m
+        alertname: KompendiumGndIndexMissing
+        exp_alerts: []
+      - eval_time: 130m
+        alertname: KompendiumGndIndexMissing
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der GND-Index fehlt oder ist nicht lesbar
+              description: Artikel ohne Normdaten-Block bekommen keine GND-Nummer; Sidecar gnd-updater und gnd_status.json prüfen.
+      - eval_time: 90m
+        alertname: KompendiumGndSyncFailed
+        exp_alerts: []
+      - eval_time: 130m
+        alertname: KompendiumGndSyncFailed
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+            exp_annotations:
+              summary: Der letzte GND-Sync ist gescheitert
+              description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+
   - name: Tagesbudget knapp und frei
     interval: 1m
     input_series:

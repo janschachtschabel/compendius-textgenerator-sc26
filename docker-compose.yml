@@ -81,6 +81,23 @@ services:
       - state:/data/state
     restart: unless-stopped
 
+  gnd-updater:
+    image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
+    build: .
+    # GND-Index fuer /entities (D65): baut ihn beim Erststart aus den Abzuegen der DNB (Sachbegriffe und Geografika,
+    # rund 65 MB, danach geloescht) und neu, wenn die DNB eine neuere Ausgabe veroeffentlicht.
+    command: ["compendium", "gnd", "sync", "--loop"]
+    healthcheck:
+      disable: true
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      STATE_DIR: /data/state
+    volumes:
+      - state:/data/state
+    restart: unless-stopped
+
   # Ueberwachung (PLAN.md D31): docker compose --profile monitoring up -d api prometheus
   prometheus:
     image: prom/prometheus:v3.14.0

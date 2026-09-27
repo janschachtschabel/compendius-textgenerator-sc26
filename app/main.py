@@ -45,6 +45,7 @@ from app.matching.registry import LOCAL_MATCHER, active_components
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.service import CompendiumService
 from app.settings import Settings, b_api_for, get_settings
+from app.sources.gnd.index import GndIndex
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.render import RenderOptions
 from app.sources.lehrplan.store import LehrplanStore
@@ -358,6 +359,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.matching = describe_matching(settings)
     app.state.wikidata = WikidataIndex(settings.wikidata_db_path)
+    app.state.gnd = GndIndex(settings.gnd_db_path)
     app.state.entities = describe_entities(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()

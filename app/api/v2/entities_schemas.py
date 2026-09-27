@@ -176,11 +176,17 @@ class EntitiesRequest(BaseModel):
 
 class EntityIds(BaseModel):
     gnd: str | None = Field(
-        description="GND number from the article's Normdaten block; URI https://d-nb.info/gnd/<gnd>"
+        description="GND number: from the article's Normdaten block, else from the local GND index built from the "
+        "DNB's dumps (D65); URI https://d-nb.info/gnd/<gnd>"
     )
     gnd_kind: str | None = Field(
         description="Kind of the GND record as the Normdaten block names it: Person, Sachbegriff, Geografikum, "
-        "Körperschaft, Werk, ..."
+        "Körperschaft, Werk, ...; from the GND index Sachbegriff or Geografikum"
+    )
+    gnd_source: str | None = Field(
+        description="Where the GND number comes from: normdaten (the article's Normdaten block), wikidata (the one "
+        "GND record that names the article's Wikidata item), name (the one GND record that carries the article's "
+        "title as a name); null without a GND"
     )
     viaf: str | None = Field(description="VIAF number from the same block; URI https://viaf.org/viaf/<viaf>")
     wikidata: str | None = Field(
