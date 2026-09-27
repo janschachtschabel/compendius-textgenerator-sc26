@@ -10,6 +10,7 @@ the o-series - take ``max_completion_tokens``, ``reasoning_effort`` and ``verbos
 from __future__ import annotations
 
 import logging
+import math
 import re
 import threading
 import time
@@ -170,7 +171,7 @@ class BApiClient:
                 ModelInfo(
                     id=str(entry["id"]),
                     status=str(entry["status"]) if entry.get("status") is not None else None,
-                    demand=int(demand) if isinstance(demand, int | float) else None,
+                    demand=_whole(demand),
                 )
             )
         return infos
@@ -306,14 +307,24 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
     )
 
 
+def _whole(value: Any) -> int | None:
+    """A JSON number as an int; ``None`` for anything else. json.loads reads Infinity and NaN, and int() refuses
+    both (audit 2026-09-27, KO-03)."""
+    if isinstance(value, bool) or not isinstance(value, int | float):
+        return None
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    return int(value)
+
+
 def _usage(usage: Any) -> tuple[int, int, int]:
     """Prompt, completion and total tokens; zeros when the field is missing or malformed."""
     if not isinstance(usage, dict):
         return 0, 0, 0
 
     def number(key: str) -> int:
-        value = usage.get(key)
-        return int(value) if isinstance(value, int | float) and value > 0 else 0
+        value = _whole(usage.get(key))
+        return value if value is not None and value > 0 else 0
 
     prompt_tokens, completion_tokens = number("prompt_tokens"), number("completion_tokens")
     return prompt_tokens, completion_tokens, number("total_tokens") or prompt_tokens + completion_tokens

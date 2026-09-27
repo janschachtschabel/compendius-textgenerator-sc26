@@ -140,7 +140,7 @@ def _pair(item: object) -> tuple[str, str] | None:
 def _loads(raw: str) -> object:
     try:
         return json.loads(raw)
-    except json.JSONDecodeError:
+    except (ValueError, RecursionError):  # also a number of over 4,300 digits and a nesting too deep to read
         return None
 
 

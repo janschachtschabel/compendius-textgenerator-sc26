@@ -114,7 +114,7 @@ def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
         return None
     try:
         data = json.loads(text[start : end + 1])
-    except ValueError:
+    except (ValueError, RecursionError):  # also a number of over 4,300 digits and a nesting too deep to read
         return None
     if not isinstance(data, dict):
         return None
@@ -124,7 +124,7 @@ def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
             continue
         try:
             confidence = float(value[1])
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):  # an integer of 400 digits is no float
             continue
         parsed[str(alias)] = (value[0].strip().lower(), min(1.0, max(0.0, confidence)))
     return parsed

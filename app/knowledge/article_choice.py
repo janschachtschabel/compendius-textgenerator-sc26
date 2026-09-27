@@ -54,6 +54,9 @@ HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
 HIT_OUTPUT_TOKENS_PER_ARTICLE = 12
 HIT_SEED = 20260923  # the order of the articles in the call, fixed per topic as measured
 _JSON = re.compile(r"\{.*\}", re.DOTALL)
+# A number in an answer: "²" and "①" are digits to str.isdigit, and int() refuses them (audit 2026-09-27,
+# KO-03)
+_NUMBER = re.compile("[0-9]{1,3}")
 
 
 @dataclass
@@ -264,17 +267,17 @@ def read_object(text: str) -> dict[str, Any] | None:
         return None
     try:
         data = json.loads(match.group(0))
-    except json.JSONDecodeError:
+    except (ValueError, RecursionError):  # also a number of over 4,300 digits and a nesting too deep to read
         return None
     return data if isinstance(data, dict) else None
 
 
 def read_number(value: Any) -> int | None:
-    """A whole number from a model's JSON value - an int or a string of digits - or ``None``."""
+    """A whole number from a model's JSON value - an int or up to three ASCII digits - or ``None``."""
     if isinstance(value, bool):  # JSON true is no number, though Python counts it as 1
         return None
     if isinstance(value, int):
         return value
-    if isinstance(value, str) and value.strip().isdigit():
+    if isinstance(value, str) and _NUMBER.fullmatch(value.strip()):
         return int(value)
     return None

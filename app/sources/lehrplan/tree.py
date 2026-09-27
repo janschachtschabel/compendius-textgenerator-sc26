@@ -9,6 +9,7 @@ query), and from a small override table for classes the ontology leaves unplaced
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
@@ -21,6 +22,8 @@ from app.sources.lehrplan.vocab import (
     ROLE_OVERRIDES,
     ROLE_UNBEKANNT,
 )
+
+_POSITION = re.compile("[0-9]{1,9}")
 
 
 @dataclass
@@ -147,7 +150,8 @@ def _split(concatenated: str) -> tuple[str, ...]:
 
 
 def _integer(value: str | None) -> int | None:
-    return int(value) if value and value.strip().isdigit() else None
+    # ASCII digits only: "²" is a digit to str.isdigit, and int() refuses it, which failed the whole harvest
+    return int(value) if value and _POSITION.fullmatch(value.strip()) else None
 
 
 def _tail(iri: str) -> str:
