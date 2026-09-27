@@ -210,14 +210,14 @@ Wunsch prüft das LLM zusätzlich jede Verknüpfung (`link_check: llm`, in keine
 `PRESET_DEFAULT`; auf einem Server ohne LLM ist eine Anfrage ohne `preset: llm-free` deshalb ein 503.
 
 Zu jedem verknüpften Wikipedia-Artikel nennt der Endpunkt GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
-Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. `de.dbpedia.org` antwortet derzeit
-allerdings nicht (M42); ob die URI künftig über den englischen Artikel auf `dbpedia.org` zeigt, ist offen
-(Entscheidungsvorlage, Punkt 11). Die Wikidata-Nummer kommt aus
-`STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia (`page_props` und `page`); gefragt wird dabei
-nichts online. Die Kiwix-Archive tragen die Nummern nicht: Von 188 geprüften Artikeln verlinken 14 ihr
+Archivs. Die DBpedia-URI ist die Ressource des englischen Artikels, `http://dbpedia.org/resource/<englischer Titel>`
+(D65): `de.dbpedia.org` antwortet nicht mehr (M42), und DBpedia benennt seine Ressourcen nach dem englischen Artikel.
+Ohne englischen Artikel bleibt die deutsche IRI `http://de.dbpedia.org/resource/<Titel>`. Den englischen Titel und die
+Wikidata-Nummer liefert `STATE_DIR/wikidata.db`, gebaut aus drei Dumps der deutschen Wikipedia (`page_props`, `page`
+und `langlinks`); gefragt wird dabei nichts online. Die Kiwix-Archive tragen die Nummern nicht: Von 188 geprüften Artikeln verlinken 14 ihr
 Wikidata-Objekt (M41). Den Index baut der Sidecar `wikidata-updater` (`compendium wikidata sync --loop`, D64): bei
 einer neuen Installation sofort, später neu, wenn das aktive Wikipedia-Archiv jünger ist als der Dump des Index und
-dumps.wikimedia.org einen neueren fertigen Lauf hat. Ein Lauf lädt die beiden Dateien (rund 420 MB, geprüft gegen die
+dumps.wikimedia.org einen neueren fertigen Lauf hat. Ein Lauf lädt die drei Dateien (rund 750 MB, geprüft gegen die
 SHA-1, die Wikimedia veröffentlicht), baut den Index neben dem alten, tauscht ihn und löscht die Dumps; der laufende
 Dienst öffnet den neuen Index binnen einer Minute, ohne Neustart. Fehlt der Index, fehlt nur die Wikidata-Nummer;
 `/health` meldet ihn unter `entities.wikidata`. Ein Genitiv findet seinen Artikel über die Grundform: „des
@@ -227,8 +227,9 @@ Wassers“ → *Wasser*, „Abraham Lincolns“ → *Abraham Lincoln* (D46, M20)
 uv run compendium wikidata sync          # bauen, wenn der Index fehlt oder ein neueres Archiv einen neueren Dump braucht
 uv run compendium wikidata sync --force  # auch einen aktuellen Index neu bauen
 uv run compendium wikidata status        # Artikel, Datum des Dumps, Quelldateien
-# ohne Netz aus zwei Dumps auf der Platte: 3,2 Mio. Titel, 107 MB, fünf bis acht Minuten
-uv run compendium wikidata build --page-props dewiki-…-page_props.sql.gz --page dewiki-…-page.sql.gz
+# ohne Netz aus den Dumps auf der Platte; ohne --langlinks bleiben die DBpedia-URIs deutsch
+uv run compendium wikidata build --page-props dewiki-…-page_props.sql.gz --page dewiki-…-page.sql.gz \
+  --langlinks dewiki-…-langlinks.sql.gz
 ```
 
 Im Docker-Betrieb baut der Sidecar in das Volume `state`. Von Hand stößt ihn dieser Befehl an; läuft gerade ein
@@ -628,10 +629,11 @@ aus dem Image entfernt. Sind die Variablen noch gesetzt, nennt der Start sie im 
 ### Wikidata-Index (Kennungen von `/api/v2/entities`)
 
 Der Sidecar `wikidata-updater` (`compendium wikidata sync --loop`) baut `STATE_DIR/wikidata.db` aus den Dumps
-`page_props` und `page` der deutschen Wikipedia (D64): bei einer neuen Installation sofort, später neu, wenn das
-aktive Wikipedia-Archiv jünger ist als der Dump des Index und ein neuerer Lauf fertig ist. Ein Lauf lädt rund 420 MB,
-baut fünf bis fünfzehn Minuten und braucht dabei rund 1 GB freien Platz im Volume `state`; die Dumps löscht er
-danach, `wikidata_status.json` hält den Lauf fest.
+`page_props`, `page` und `langlinks` der deutschen Wikipedia (D64, D65): bei einer neuen Installation sofort, später
+neu, wenn das aktive Wikipedia-Archiv jünger ist als der Dump des Index und ein neuerer Lauf fertig ist. Ein Lauf lädt
+rund 750 MB und braucht dabei rund 1,5 GB freien Platz im Volume `state`; die Dumps löscht er danach,
+`wikidata_status.json` hält den Lauf fest. Ein Index des alten Schemas 1 (ohne englische Titel) gilt als unbrauchbar
+und wird neu gebaut.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|

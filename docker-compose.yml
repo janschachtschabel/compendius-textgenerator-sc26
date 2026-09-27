@@ -64,8 +64,8 @@ services:
   wikidata-updater:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
-    # Wikidata-Index fuer /entities (D43, D64): baut ihn beim Erststart aus zwei Dumps der deutschen Wikipedia
-    # (rund 420 MB, danach geloescht) und neu, wenn ein neueres Wikipedia-Archiv einen neueren Dump braucht.
+    # Wikidata-Index fuer /entities (D43, D64, D65): baut ihn beim Erststart aus drei Dumps der deutschen Wikipedia
+    # (rund 750 MB, danach geloescht) und neu, wenn ein neueres Wikipedia-Archiv einen neueren Dump braucht.
     # Liest das ZIM-Volume nur, um das Datum des aktiven Archivs zu kennen.
     command: ["compendium", "wikidata", "sync", "--loop"]
     healthcheck:

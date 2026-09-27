@@ -74,7 +74,7 @@ def test_a_truncated_dump_fails_with_a_message(
 def test_a_damaged_dump_fails_with_a_message(
     state_dir: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    def damaged(*args: object) -> None:
+    def damaged(*args: object, **kwargs: object) -> None:
         raise zlib.error("Error -3 while decompressing data: invalid distance too far back")
 
     monkeypatch.setattr("app.cli_wikidata.build_index", damaged)
@@ -128,7 +128,7 @@ def test_sync_leaves_a_current_index_and_force_rebuilds_it(
     assert main(["wikidata", "sync"]) == 0
     assert "aktuell" in capsys.readouterr().out and site.downloads() == []
     assert main(["wikidata", "sync", "--force"]) == 0
-    assert "erzwungen" in capsys.readouterr().out and len(site.downloads()) == 2
+    assert "erzwungen" in capsys.readouterr().out and len(site.downloads()) == 3  # page_props, page, langlinks
 
 
 def test_a_failed_sync_keeps_the_old_index_and_says_why(

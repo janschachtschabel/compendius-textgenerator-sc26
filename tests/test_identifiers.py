@@ -22,3 +22,16 @@ def test_umlauts_and_brackets_stay_as_in_the_title() -> None:
 def test_characters_with_a_meaning_in_a_uri_are_escaped() -> None:
     assert dbpedia_uri("Was ist Aufklärung?") == BASE + "Was_ist_Aufklärung%3F"
     assert dbpedia_uri("100 % Wolle") == BASE + "100_%25_Wolle"
+
+
+LIVE = "http://dbpedia.org/resource/"
+
+
+def test_with_an_english_article_the_uri_is_the_live_dbpedia_resource() -> None:
+    """de.dbpedia.org no longer answers (M42); DBpedia names its live resources after the English article (D65)."""
+    assert dbpedia_uri("Römisches Reich", english="Roman Empire") == LIVE + "Roman_Empire"
+    assert dbpedia_uri("Was ist Aufklärung?", english="What Is Enlightenment?") == LIVE + "What_Is_Enlightenment%3F"
+
+
+def test_without_an_english_article_the_german_iri_stays() -> None:
+    assert dbpedia_uri("Deutschunterricht", english=None) == BASE + "Deutschunterricht"

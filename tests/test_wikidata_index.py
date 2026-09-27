@@ -291,3 +291,52 @@ def test_a_running_service_takes_a_rebuilt_index_without_a_restart(tmp_path: Pat
     now[0] = RECHECK_S + 1
     assert index.qid("Ernst Abbe") == "Q999101"
     assert index.meta()["dump"] == "2026-10-04"
+
+
+LANGLINK_COLUMNS = ("ll_from", "ll_lang", "ll_title")
+# page id, language, title of the article in that language, as the dewiki table langlinks keeps them
+LANGLINKS = [
+    (1, "en", "Ernst Abbe"),
+    (1, "fr", "Ernst Abbe"),
+    (5, "en", "Roman Empire"),
+    (5, "it", "Impero romano"),
+    (2, "en", "O'Brien"),
+]
+
+
+def write_langlinks(
+    directory: Path, rows: list[tuple[int, str, str]] = LANGLINKS, completed: str = "2026-09-07 16:25:40"
+) -> Path:
+    """A ``langlinks`` dump of the given rows, shaped like the other dumps."""
+    directory.mkdir(parents=True, exist_ok=True)
+    lines = [f"({pid},{sql_string(lang)},{sql_string(title)})" for pid, lang, title in rows]
+    return _dump(directory / "dewiki-latest-langlinks.sql.gz", "langlinks", LANGLINK_COLUMNS, lines, completed, False)
+
+
+def test_the_index_knows_the_english_article_of_a_title(tmp_path: Path) -> None:
+    """DBpedia names its live resources after the English article; langlinks gives its title (D65, M42)."""
+    build_index(
+        *write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db", langlinks=write_langlinks(tmp_path / "dumps")
+    )
+    index = WikidataIndex(tmp_path / "wikidata.db")
+    assert index.english("Ernst Abbe") == "Ernst Abbe"
+    assert index.english("Römisches Reich") == "Roman Empire", "the English title, not the Italian or French"
+    assert index.english("ernst Abbe") == "Ernst Abbe", "asked like qid: as written, then capitalised"
+    assert index.english("Abbe") is None, "the redirect has an item of its own but no English article"
+    assert index.qid("Römisches Reich") == "Q999005"
+    assert index.meta()["english"] == 3
+    assert index.meta()["sources"][-1] == "dewiki-latest-langlinks.sql.gz"
+
+
+def test_without_langlinks_the_index_has_numbers_but_no_english_titles(index: WikidataIndex) -> None:
+    assert index.qid("Ernst Abbe") == "Q999001"
+    assert index.english("Ernst Abbe") is None
+    assert index.meta()["english"] == 0
+
+
+def test_an_index_of_the_first_schema_is_not_read(tmp_path: Path) -> None:
+    """Schema 1 has no English titles; the sync sees it as unusable and builds schema 2 (D65)."""
+    build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db")
+    with sqlite3.connect(tmp_path / "wikidata.db") as connection:
+        connection.execute("UPDATE meta SET value = '1' WHERE key = 'schema'")
+    assert not WikidataIndex(tmp_path / "wikidata.db").available

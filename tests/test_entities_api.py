@@ -21,7 +21,7 @@ from app.sources.local_index import RECHECK_S
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
-from tests.test_wikidata_index import write_dumps
+from tests.test_wikidata_index import write_dumps, write_langlinks
 
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
 
@@ -240,3 +240,18 @@ def test_an_index_the_sync_builds_while_the_service_runs_is_used_without_a_resta
     assert wikidata == {"available": True, "articles": 5, "dump": "2026-09-07"}
     found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
     assert found["Ernst Abbe"]["article"]["ids"]["wikidata"] == "Q999001"
+
+
+def test_the_dbpedia_uri_names_the_resource_of_the_english_article(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """de.dbpedia.org no longer answers (M42): an article with an English one gets DBpedia's live resource (D65)."""
+    settings = make_settings(sample_zims.values(), tmp_path / "state")
+    dumps = tmp_path / "dumps"
+    build_index(*write_dumps(dumps), settings.wikidata_db_path, langlinks=write_langlinks(dumps))
+    found = by_text(TestClient(create_app(settings)).post("/api/v2/entities", json={"text": TEXT}).json())
+    abbe = found["Ernst Abbe"]["article"]["ids"]
+    assert abbe["dbpedia"] == "http://dbpedia.org/resource/Ernst_Abbe"
+    assert abbe["same_as"][-1] == "http://dbpedia.org/resource/Ernst_Abbe"
+    mikroskop = found["Lichtmikroskop"]["article"]["ids"]
+    assert mikroskop["dbpedia"] == "http://de.dbpedia.org/resource/Lichtmikroskop", "no English title in this index"

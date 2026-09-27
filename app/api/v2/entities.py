@@ -20,8 +20,9 @@ a request asks for it (``link_check``): measured through this endpoint, the chec
 removed minor ones.
 
 A linked Wikipedia article also names its identifiers (D43), all from local data: GND and VIAF from the Normdaten
-block the dump keeps, the Wikidata number from the index the Wikidata sync builds (D64), the DBpedia URI built
-from the title. No live API is asked; without the index the Wikidata number is simply missing.
+block the dump keeps, the Wikidata number from the index the Wikidata sync builds (D64), the DBpedia URI of the
+English article that index knows (D65; else the German chapter's IRI). No live API is asked; without the index the
+Wikidata number is simply missing and the DBpedia URI stays German.
 """
 
 from __future__ import annotations
@@ -225,7 +226,8 @@ def entities(
 
     A linked Wikipedia article carries ``ids``: GND, its kind and VIAF from the Normdaten block of the archive,
     the Wikidata number from the local index (built by the ``wikidata-updater`` sidecar; ``/health`` says whether
-    it is there) and the DBpedia URI built from the title, all as URIs again under ``same_as``. Nothing is asked
+    it is there) and the DBpedia URI of its English article - http://dbpedia.org/resource/…, else the German
+    chapter's IRI, which no longer answers -, all as URIs again under ``same_as``. Nothing is asked
     online. Articles of other archives carry no ``ids``.
 
     ``link: false`` skips the lookup, ``archives`` narrows it to single archives (unknown id: 404).

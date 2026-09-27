@@ -3,9 +3,10 @@
 A new installation has no index, and an index older than the active Wikipedia archive lacks the numbers of the
 archive's new articles (D64). The ``wikidata-updater`` sidecar (``compendium wikidata sync --loop``) builds the index
 when it is missing or unusable, when the active Wikipedia archive is dated after the dump the index was built from
-and dumps.wikimedia.org has a newer run, or when forced. A run takes the newest run of dewiki whose ``page_props``
-and ``page`` tables are done, downloads both (about 420 MB, checked against the SHA-1 Wikimedia publishes), builds the
-index next to the old one and swaps it (``DumpSync``); the service opens the new file by itself (``WikidataIndex``).
+and dumps.wikimedia.org has a newer run, or when forced. A run takes the newest run of dewiki whose ``page_props``,
+``page`` and ``langlinks`` tables are done, downloads them (about 750 MB, checked against the SHA-1 Wikimedia
+publishes), builds the index next to the old one and swaps it (``DumpSync``); the service opens the new file by itself
+(``WikidataIndex``). ``langlinks`` gives each article's English title, which names its DBpedia resource (D65).
 
 Only the dump files are fetched, nothing is asked of Wikidata itself: the service still looks nothing up online.
 """
@@ -40,7 +41,7 @@ STATUS_FILE = "wikidata_status.json"
 LOCK_FILE = "wikidata_sync.lock"
 RUNS_ASKED = 4  # the newest runs whose status is read; a run older than that is not worth an index
 _RUN_RE = re.compile(r'href="(\d{8})/"')
-_JOBS = (("page_props", "pagepropstable"), ("page", "pagetable"))
+_JOBS = (("page_props", "pagepropstable"), ("page", "pagetable"), ("langlinks", "langlinkstable"))
 
 
 class WikidataSyncError(ReleaseNotFoundError):
@@ -49,7 +50,7 @@ class WikidataSyncError(ReleaseNotFoundError):
 
 @dataclass(frozen=True)
 class DumpRun(Release):
-    """A run of the German Wikipedia's dumps: its files are ``page_props`` and ``page``, in this order."""
+    """A run of the German Wikipedia's dumps, its files in this order: ``page_props``, ``page``, ``langlinks``."""
 
     @property
     def page_props(self) -> DumpFile:
@@ -59,9 +60,13 @@ class DumpRun(Release):
     def page(self) -> DumpFile:
         return self.files[1]
 
+    @property
+    def langlinks(self) -> DumpFile:
+        return self.files[2]
+
 
 def find_run(client: httpx.Client, base_url: str = DUMPS_URL) -> DumpRun:
-    """The newest run of the German Wikipedia whose ``page_props`` and ``page`` tables are done."""
+    """The newest run of the German Wikipedia whose ``page_props``, ``page`` and ``langlinks`` tables are done."""
     base = base_url.rstrip("/")
     # The run list and dumpstatus.json carry the checksums the downloads are held to: https, one host, and no
     # redirect to another (a redirect is an error here; the downloads may follow one, their hash anchors them)
@@ -80,7 +85,7 @@ def find_run(client: httpx.Client, base_url: str = DUMPS_URL) -> DumpRun:
         files = _done_files(status, base, run_id)
         if files is not None:
             return DumpRun(run_id, datetime.strptime(run_id, "%Y%m%d").date(), files)
-    raise WikidataSyncError(f"no run of {WIKI} on {base} has page_props and page done")
+    raise WikidataSyncError(f"no run of {WIKI} on {base} has page_props, page and langlinks done")
 
 
 def _done_files(status: Any, base: str, run_id: str) -> tuple[DumpFile, ...] | None:
@@ -152,11 +157,11 @@ class WikidataSync(DumpSync):
         return find_run(self._client, self.base_url)
 
     def build(self, files: list[Path]) -> dict[str, Any]:
-        page_props, page = files
-        return build_index(page_props, page, self.index_path)
+        page_props, page, langlinks = files
+        return build_index(page_props, page, self.index_path, langlinks=langlinks)
 
     def summary(self, meta: dict[str, Any]) -> dict[str, Any]:
-        return {"dump": meta["dump"], "articles": meta["articles"]}
+        return {"dump": meta["dump"], "articles": meta["articles"], "english": meta["english"]}
 
     def due(self, *, force: bool = False) -> str | None:
         """Why the index has to be built, or ``None``; asks dumps.wikimedia.org only when the archive is newer."""

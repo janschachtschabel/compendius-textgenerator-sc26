@@ -47,7 +47,9 @@ def cmd_build(args: argparse.Namespace) -> int:
         target,
         lock_file=LOCK_FILE,
         name="Wikidata-Index",
-        build=lambda: build_index(Path(args.page_props), Path(args.page), target),
+        build=lambda: build_index(
+            Path(args.page_props), Path(args.page), target, langlinks=Path(args.langlinks) if args.langlinks else None
+        ),
         describe=lambda meta: f"{meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}",
     )
 
@@ -64,7 +66,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         if reason is None:
             print("Wikidata-Index ist aktuell: vorhanden, und kein neueres Wikipedia-Archiv braucht einen neueren Dump")
             return
-        print(f"Wikidata-Index wird gebaut ({REASONS.get(reason, reason)}): zwei Dumps laden, rund 420 MB")
+        print(f"Wikidata-Index wird gebaut ({REASONS.get(reason, reason)}): drei Dumps laden, rund 750 MB")
         meta = sync.run(reason)
         print(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
 
@@ -78,9 +80,10 @@ def add_wikidata_commands(sub: argparse._SubParsersAction[argparse.ArgumentParse
     status = commands.add_parser("status", help="Stand des Index: Artikel, Datum des Dumps, Quelldateien")
     status.set_defaults(func=cmd_status)
 
-    build = commands.add_parser("build", help="Index aus page_props und page bauen (lokale Dateien, kein Netz)")
+    build = commands.add_parser("build", help="Index aus page_props, page und langlinks bauen (lokale Dateien)")
     build.add_argument("--page-props", required=True, help="dewiki-…-page_props.sql.gz")
     build.add_argument("--page", required=True, help="dewiki-…-page.sql.gz")
+    build.add_argument("--langlinks", help="dewiki-…-langlinks.sql.gz: englische Titel für die DBpedia-URIs (D65)")
     build.set_defaults(func=cmd_build)
 
     sync = commands.add_parser(

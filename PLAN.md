@@ -1829,6 +1829,15 @@ API.
   Alarme `KompendiumWikidataIndexMissing` (zwei Stunden ohne Index) und `KompendiumWikidataSyncFailed`. Verworfen:
   den Index ins Image legen (er altert mit dem Image statt mit dem Archiv, das Image wüchse um 107 MB) und ihn beim
   Start der API bauen (die API lädt nie selbst, zwei Worker bauten doppelt).
+- **D65 (2026-09-27)** Kennungen wie empfohlen (Punkt 11 der Entscheidungsvorlage; Jan: „wenn de.dbpedia.org
+  dauerhaft nicht antwortet dann sollten wir dbpedia.org nehmen oder dies zumindest als fallback integrieren“), in
+  allen Profilen gleich, weil lokal. *DBpedia:* `de.dbpedia.org` antwortet nicht mehr (M42; letzter deutscher Release
+  2022), DBpedia benennt seine lebenden Ressourcen nach dem englischen Artikel. `dbpedia` ist deshalb
+  `http://dbpedia.org/resource/<englischer Titel>`, ohne englischen Artikel weiter die deutsche IRI. Den englischen
+  Titel liefert die dewiki-Tabelle `langlinks` aus demselben Lauf wie `page_props` und `page`: Der Wikidata-Index
+  (Schema 2) führt ihn je Titel, der Sync lädt `langlinks` mit (zusammen rund 750 MB), ein Index des Schemas 1 gilt als
+  unbrauchbar und wird neu gebaut. Das ZIM hat keine Sprachlinks (M41). Gemessen: 96 % der Artikel, die `balanced`
+  verknüpft, haben einen englischen Artikel (M42).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

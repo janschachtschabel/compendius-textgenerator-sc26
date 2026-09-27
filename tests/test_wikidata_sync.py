@@ -1,7 +1,8 @@
 """The Wikidata sync: a new installation gets the index, a newer Wikipedia archive a newer one (D64).
 
 dumps.wikimedia.org is simulated with MockTransport: the list of runs of the German Wikipedia, each run's
-dumpstatus.json with size and SHA-1 of its files, and the files themselves, written like the real dumps.
+dumpstatus.json with size and SHA-1 of its files, and the files themselves, written like the real dumps: page_props,
+page and, for the English titles behind the DBpedia URIs (D65), langlinks.
 """
 
 from __future__ import annotations
@@ -31,7 +32,7 @@ from app.sources.wikidata.sync import (
 )
 from app.sources.zim.active import ActiveArchive, ActiveState, write_active
 from app.sources.zim.downloader import DownloadError
-from tests.test_wikidata_index import PAGES, PROPS, write_dumps
+from tests.test_wikidata_index import PAGES, PROPS, write_dumps, write_langlinks
 
 DUMPS = "https://dumps.wikimedia.org"
 OTHER_ABBE = [(1, "wikibase_item", "Q999101"), *PROPS[1:]]  # a later run: Ernst Abbe's number differs
@@ -52,14 +53,17 @@ class FakeDumps:
         completed: str,
         *,
         page_done: bool = True,
+        langlinks_done: bool = True,
         props: list[tuple[int, str, str]] = PROPS,
         wrong_sha1: bool = False,
     ) -> None:
         page_props, page = write_dumps(self.directory / run, pages=PAGES, props=props, completed=completed)
+        langlinks = write_langlinks(self.directory / run, completed=completed)
         jobs = {}
         for job, table, path, done in (
             ("pagepropstable", "page_props", page_props, True),
             ("pagetable", "page", page, page_done),
+            ("langlinkstable", "langlinks", langlinks, langlinks_done),
         ):
             name = f"dewiki-{run}-{table}.sql.gz"
             body = path.read_bytes()
@@ -105,6 +109,13 @@ def test_the_newest_run_whose_two_tables_are_done_is_taken(tmp_path: Path, site:
     assert run.page.size == len(site.files["/dewiki/20260801/dewiki-20260801-page.sql.gz"])
 
 
+def test_a_run_whose_langlinks_are_not_done_is_passed_over(tmp_path: Path, site: FakeDumps) -> None:
+    site.add("20260801", "2026-08-04 18:13:34")
+    site.add("20260901", "2026-09-04 18:02:11", langlinks_done=False)
+    run = find_run(httpx.Client(transport=httpx.MockTransport(site.handler)), DUMPS)
+    assert run.id == "20260801" and run.langlinks.name == "dewiki-20260801-langlinks.sql.gz"
+
+
 def test_without_a_finished_run_the_sync_says_so(tmp_path: Path, site: FakeDumps) -> None:
     site.add("20260901", "2026-09-04 18:02:11", page_done=False)
     with pytest.raises(WikidataSyncError, match="no run"):
@@ -118,8 +129,9 @@ def test_a_new_installation_gets_the_index_and_keeps_no_dump(tmp_path: Path, sit
     assert reason == "no index"
     meta = sync.run(reason)
     assert meta["dump"] == "2026-09-07" and meta["articles"] > 0
-    assert WikidataIndex(tmp_path / "state" / "wikidata.db").qid("Ernst Abbe") == "Q999001"
-    assert list((tmp_path / "state" / DUMP_DIR).glob("*")) == []  # 420 MB of dumps do not stay behind
+    index = WikidataIndex(tmp_path / "state" / "wikidata.db")
+    assert index.qid("Ernst Abbe") == "Q999001" and index.english("Römisches Reich") == "Roman Empire"
+    assert list((tmp_path / "state" / DUMP_DIR).glob("*")) == []  # 750 MB of dumps do not stay behind
     status = read_status(tmp_path / "state")
     assert status is not None and status["last_run"]["ok"] is True
     assert status["last_run"]["run"] == "20260901" and status["last_run"]["reason"] == "no index"

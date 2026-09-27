@@ -28,7 +28,7 @@ from app.sources.local_index import LocalIndex, write_atomically
 
 log = logging.getLogger(__name__)
 
-SCHEMA_VERSION = "1"
+SCHEMA_VERSION = "2"  # 2 adds the English title of each article (D65); an index of schema 1 is built anew
 PROPERTY = "wikibase_item"
 ARTICLE_NAMESPACE = "0"
 
@@ -103,7 +103,7 @@ def _rows(path: Path, table: str, wanted: tuple[str, ...], info: dict[str, str])
         raise ValueError(f"{path.name} holds no table `{table}`; is it the {table} dump?")
 
 
-def _write(target: Path, page_props: Path, page: Path) -> dict[str, Any]:
+def _write(target: Path, page_props: Path, page: Path, langlinks: Path | None) -> dict[str, Any]:
     info: dict[str, str] = {}
     connection = sqlite3.connect(target)
     try:
@@ -111,6 +111,7 @@ def _write(target: Path, page_props: Path, page: Path) -> dict[str, Any]:
             "PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF;"
             "CREATE TABLE props (page_id INTEGER PRIMARY KEY, qid TEXT NOT NULL);"
             "CREATE TABLE pages (page_id INTEGER PRIMARY KEY, title TEXT NOT NULL);"
+            "CREATE TABLE english (page_id INTEGER PRIMARY KEY, title TEXT NOT NULL);"
         )
         connection.executemany(
             "INSERT OR IGNORE INTO props VALUES (?, ?)",
@@ -128,21 +129,33 @@ def _write(target: Path, page_props: Path, page: Path) -> dict[str, Any]:
                 if namespace == ARTICLE_NAMESPACE and page_id and title
             ),
         )
+        if langlinks is not None:  # the English article of each page, whose title names its DBpedia resource
+            connection.executemany(
+                "INSERT OR IGNORE INTO english VALUES (?, ?)",
+                (
+                    (int(page_id), title.replace("_", " "))
+                    for page_id, lang, title in _rows(langlinks, "langlinks", ("ll_from", "ll_lang", "ll_title"), info)
+                    if lang == "en" and page_id and title
+                ),
+            )
         connection.executescript(
-            "CREATE TABLE titles (title TEXT PRIMARY KEY, qid TEXT NOT NULL) WITHOUT ROWID;"
-            "INSERT OR IGNORE INTO titles SELECT pages.title, props.qid FROM pages JOIN props USING (page_id);"
-            "DROP TABLE pages; DROP TABLE props;"
+            "CREATE TABLE titles (title TEXT PRIMARY KEY, qid TEXT NOT NULL, en TEXT) WITHOUT ROWID;"
+            "INSERT OR IGNORE INTO titles SELECT pages.title, props.qid, english.title"
+            " FROM pages JOIN props USING (page_id) LEFT JOIN english USING (page_id);"
+            "DROP TABLE pages; DROP TABLE props; DROP TABLE english;"
             "CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);"
         )
         articles = connection.execute("SELECT COUNT(*) FROM titles").fetchone()[0]
+        english = connection.execute("SELECT COUNT(*) FROM titles WHERE en IS NOT NULL").fetchone()[0]
         if not articles:  # a layout the reader does not know must not end as an index that answers nothing
             raise ValueError(f"no article with a Wikidata number in {page_props.name} and {page.name}")
         meta = {
             "schema": SCHEMA_VERSION,
             "articles": str(articles),
+            "english": str(english),
             "dump": info.get("dump", ""),
             "built_at": datetime.now(UTC).isoformat(timespec="seconds"),
-            "sources": json.dumps([page_props.name, page.name]),
+            "sources": json.dumps([dump.name for dump in (page_props, page, langlinks) if dump is not None]),
         }
         connection.executemany("INSERT INTO meta VALUES (?, ?)", meta.items())
         connection.commit()
@@ -152,13 +165,16 @@ def _write(target: Path, page_props: Path, page: Path) -> dict[str, Any]:
     return _read_meta(meta)
 
 
-def build_index(page_props: Path, page: Path, target: Path) -> dict[str, Any]:
-    """Build the index from the two dumps; an index already at ``target`` stays until the new one is complete."""
+def build_index(page_props: Path, page: Path, target: Path, *, langlinks: Path | None = None) -> dict[str, Any]:
+    """Build the index from the dumps; an index already at ``target`` stays until the new one is complete.
+
+    Without ``langlinks`` the index has the Wikidata numbers but no English titles, and DBpedia URIs stay German."""
     page_props, page, target = Path(page_props), Path(page), Path(target)
-    for dump in (page_props, page):
-        if not dump.is_file():
+    english = Path(langlinks) if langlinks is not None else None
+    for dump in (page_props, page, english):
+        if dump is not None and not dump.is_file():
             raise FileNotFoundError(f"dump not found: {dump}")
-    meta = write_atomically(target, lambda partial: _write(partial, page_props, page))
+    meta = write_atomically(target, lambda partial: _write(partial, page_props, page, english))
     log.info("Wikidata index %s: %d articles from the dump of %s", target, meta["articles"], meta["dump"] or "?")
     return meta
 
@@ -166,6 +182,7 @@ def build_index(page_props: Path, page: Path, target: Path) -> dict[str, Any]:
 def _read_meta(rows: dict[str, str]) -> dict[str, Any]:
     return {
         "articles": int(rows.get("articles", "0")),
+        "english": int(rows.get("english", "0")),
         "dump": rows.get("dump") or None,
         "built_at": rows.get("built_at"),
         "sources": json.loads(rows.get("sources", "[]")),
@@ -191,12 +208,22 @@ class WikidataIndex(LocalIndex):
         The title is asked as written, then with a capital first letter as Wikipedia writes titles - but only where
         that capital is a single letter: MediaWiki keeps "ß" as it is, and "SS" is another page.
         """
-        name = title.replace("_", " ").strip()
-        if not name:
-            return None
-        names = [name]
-        capital = name[0].upper()
-        if len(capital) == 1 and capital != name[0]:
-            names.append(capital + name[1:])
-        row = self._first("SELECT qid FROM titles WHERE title = ?", [(candidate,) for candidate in names])
+        row = self._first("SELECT qid FROM titles WHERE title = ?", _forms(title))
         return str(row[0]) if row else None
+
+    def english(self, title: str) -> str | None:
+        """The title of the English article of the article with this title, asked as ``qid`` asks, or ``None``."""
+        row = self._first("SELECT en FROM titles WHERE title = ?", _forms(title))
+        return str(row[0]) if row and row[0] else None
+
+
+def _forms(title: str) -> list[tuple[str]]:
+    """A title as written and with the capital first letter Wikipedia gives it, as query parameters."""
+    name = title.replace("_", " ").strip()
+    if not name:
+        return []
+    names = [name]
+    capital = name[0].upper()
+    if len(capital) == 1 and capital != name[0]:
+        names.append(capital + name[1:])
+    return [(candidate,) for candidate in names]

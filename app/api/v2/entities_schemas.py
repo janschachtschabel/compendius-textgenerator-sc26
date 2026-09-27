@@ -187,7 +187,11 @@ class EntityIds(BaseModel):
         description="Wikidata number from the local index (the Wikidata sync, D64); missing without the index "
         "or for an article the dump does not know; URI http://www.wikidata.org/entity/<wikidata>"
     )
-    dbpedia: str = Field(description="DBpedia URI built from the title, not checked against DBpedia")
+    dbpedia: str = Field(
+        description="DBpedia URI: http://dbpedia.org/resource/<title of the English article> when the local index "
+        "knows one (D65), else the German chapter's IRI http://de.dbpedia.org/resource/<title>, which no longer "
+        "answers (M42); built, not checked against DBpedia"
+    )
     same_as: list[str] = Field(description="Every identifier above as a URI, in the order GND, VIAF, Wikidata, DBpedia")
 
 

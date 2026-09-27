@@ -12,7 +12,7 @@ einen Benutzer mit `sudo` voraus. Betrieb, Störungen und Wiederherstellung steh
 | CPU | 2 Kerne | 4 Kerne | eine Anfrage belegt einen Worker vollständig (`WEB_CONCURRENCY`, im Image 2) |
 | RAM | 4 GB | 8 GB | gemessen am 2026-09-21 mit dem Profil `standard`: rund **1,4 GB je Worker** im Ruhezustand und rund 1,5 GB nach einer Anfrage. Dazu kommt der Seiten-Cache für die Archive, den das System bei Speicherdruck wieder freigibt. Seit D57 fehlt torch: am 2026-09-26 auf dem Entwicklungsrechner im Ruhezustand 1.407 statt 1.559 MiB je Worker. Was auf 2 GB passiert, steht unter Abschnitt 7a |
 | Platte | 25 GB | 60 GB | Image rund 1,1 GB (gemessen am 2026-09-26; davon 0,3 GB Model2Vec; bis D57 mit torch und den QA-Modellen 2,7 GB), Archive je nach Profil (siehe unten), Zustand wenige hundert MB, dazu Reserve für den Wechsel auf ein neues Archiv |
-| Netz | – | – | der Erststart lädt die Archive und zwei Dumps der deutschen Wikipedia (rund 420 MB, für den Wikidata-Index); danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
+| Netz | – | – | der Erststart lädt die Archive und drei Dumps der deutschen Wikipedia (rund 750 MB, für die Wikidata-Nummern und die DBpedia-URIs); danach nur Updates, der Lehrplan-Abzug und optional edu-sharing und die b-api |
 
 Die Archivgröße bestimmt das Profil (`ZIM_PROFILE`, Manifest in `config/zim_subscriptions.yaml`):
 
@@ -131,7 +131,7 @@ curl -fsS http://127.0.0.1:8000/ready
 
 Parallel zieht der Lehrplan-Updater die Lehrpläne aus dem MEM-Endpunkt in den Zustand (`lehrplan.db`,
 rund 25 Minuten). Teil 2 eines Kompendiums bleibt bis dahin leer, Teil 1 funktioniert davon unabhängig.
-Der Wikidata-Updater lädt zwei Dumps der deutschen Wikipedia und baut daraus den Wikidata-Index (`wikidata.db`,
+Der Wikidata-Updater lädt drei Dumps der deutschen Wikipedia und baut daraus den Wikidata-Index (`wikidata.db`,
 10 bis 20 Minuten, die Dumps löscht er danach); bis dahin nennt `/api/v2/entities` keine Wikidata-Nummern, und
 `/health` meldet unter `entities.wikidata` noch `"available": false`.
 
