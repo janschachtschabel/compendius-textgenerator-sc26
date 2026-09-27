@@ -295,9 +295,10 @@ def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: p
         return value(after, name, **labels) - value(before, name, **labels)
 
     assert audit["llm_tokens"]["calls"] > 0
-    assert delta("kompendium_llm_tokens_total", type="prompt") == audit["llm_tokens"]["prompt"]
-    assert delta("kompendium_llm_tokens_total", type="completion") == audit["llm_tokens"]["completion"]
-    assert delta("kompendium_llm_calls_total") == audit["llm_tokens"]["calls"]
+    route = "/api/v2/compendium"
+    assert delta("kompendium_llm_tokens_total", endpoint=route, type="prompt") == audit["llm_tokens"]["prompt"]
+    assert delta("kompendium_llm_tokens_total", endpoint=route, type="completion") == audit["llm_tokens"]["completion"]
+    assert delta("kompendium_llm_calls_total", endpoint=route, outcome="answered") == audit["llm_tokens"]["calls"]
     generation, extraction = audit["llm"]["generation"], audit["llm"]["extraction"]
     chosen = len(extraction["sections"]) - len(extraction["emptied"])
     assert chosen > 0 and delta("kompendium_llm_selections_total", outcome="chosen") == chosen
@@ -485,3 +486,28 @@ def test_the_sidecar_commands_start_with_the_api_metrics_variable_set(tmp_path: 
     environment = {**os.environ, "PROMETHEUS_MULTIPROC_DIR": str(tmp_path / "gibt-es-nicht")}
     script = "import sys\nimport app.cli\nassert 'app.main' not in sys.modules\n"
     subprocess.run([sys.executable, "-c", script], env=environment, cwd=ROOT, check=True, timeout=120)  # noqa: S603
+
+
+def test_every_endpoint_counts_its_llm_calls(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Only POST /compendium counted LLM tokens and calls; /entities, /qa, /knowledge and the curriculum search
+    called the LLM unseen (audit 2026-09-27, BE-04). budgeted_chat now counts every call by route and outcome."""
+    from tests.test_entities_profiles import TEXT
+    from tests.test_entities_profiles import model as naming_the_entities
+
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(FakeBApi(naming_the_entities)))  # type: ignore[attr-defined]
+    before = scrape(client)
+    response = client.post("/api/v2/entities", json={"text": TEXT, "preset": "balanced"})
+    assert response.status_code == 200, response.text
+    failing = FakeBApi(statuses=[400])
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(failing))  # type: ignore[attr-defined]
+    assert client.post("/api/v2/entities", json={"text": TEXT, "preset": "balanced"}).status_code == 200
+    after = scrape(client)
+
+    def delta(name: str, **labels: str) -> float:
+        return value(after, name, **labels) - value(before, name, **labels)
+
+    route = "/api/v2/entities"
+    assert delta("kompendium_llm_calls_total", endpoint=route, outcome="answered") == 1
+    assert delta("kompendium_llm_calls_total", endpoint=route, outcome="failed") == 1
+    assert delta("kompendium_llm_tokens_total", endpoint=route, type="prompt") > 0
+    assert delta("kompendium_llm_tokens_total", endpoint=route, type="completion") > 0

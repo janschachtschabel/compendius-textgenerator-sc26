@@ -20,22 +20,19 @@ reason goes to the audit. The blocks are cut to their budgets like the policy's,
 from __future__ import annotations
 
 import json
-import logging
 from collections import Counter
 from collections.abc import Mapping, Sequence
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
+from app.concurrency import map_in_threads
 from app.domain.models import Chunk, ScoredChunk, Source
 from app.llm.budget import RequestBudget
-from app.llm.call import LlmSkipped, budgeted_chat
+from app.llm.call import LlmSkipped, budgeted_chat, skipped_on_error
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.matching.policy import MIN_SCORE, AssignmentResult, cut_to_budgets
 from app.templates.schema import Template
-
-log = logging.getLogger(__name__)
 
 BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters match 25 and 700 on the gold at 27 % fewer tokens
 TEXT_CHARS = 400  # per paragraph, as in the measurement of 2026-09-24
@@ -146,22 +143,17 @@ def assign_with_llm(
         return rule_based, report
 
     def ask(batch: Sequence[Chunk]) -> ChatResult | LlmSkipped:
-        try:
-            return budgeted_chat(
-                job.client,
-                render_messages(template, job.topic, batch, sources),
-                max_output_tokens=OUTPUT_TOKENS_PER_PARAGRAPH * len(batch),
-                budget=job.budget,
-                what="Zuordnung",
-                deadline=job.deadline,
-            )
-        except Exception as exc:
-            # The LLM layer must never break the rule-based path (PLAN.md 4.7): log it, keep the policy's decision.
-            log.exception("LLM assignment of a batch failed unexpectedly")
-            return LlmSkipped(f"unerwarteter Fehler ({type(exc).__name__})")
+        return budgeted_chat(
+            job.client,
+            render_messages(template, job.topic, batch, sources),
+            max_output_tokens=OUTPUT_TOKENS_PER_PARAGRAPH * len(batch),
+            budget=job.budget,
+            what="Zuordnung",
+            deadline=job.deadline,
+        )
 
-    with ThreadPoolExecutor(max_workers=max(1, min(job.concurrency, len(batches)))) as pool:
-        answers = list(pool.map(ask, batches))
+    # An unexpected error keeps the policy's decision for that batch
+    answers = map_in_threads(skipped_on_error(ask, lambda batch: "LLM assignment of a batch"), batches, job.concurrency)
 
     key_to_id = {slot.slot: slot.id for slot in template.content_slots()}
     decided: dict[str, tuple[str | None, float]] = {}  # chunk id -> (slot id or None for "keiner", confidence)

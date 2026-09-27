@@ -369,6 +369,34 @@ tests:
               summary: Mehr als 90 % des LLM-Tagesbudgets verbraucht
               description: Danach laufen LLM-Anfragen bis Mitternacht (UTC) im Regelmodus.
 
+  - name: LLM-Aufrufe scheitern
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/entities", outcome="failed"}'
+        values: "0+2x40"
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/entities", outcome="answered"}'
+        values: "5x40"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: KompendiumLlmCallsFailing
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Kein LLM-Aufruf bekommt eine Antwort
+              description: Seit 15 Minuten scheitert jeder Aufruf an die b-api, über alle Endpunkte; die Anfragen laufen im Regelmodus. Das Log der API nennt den Status - 401, 403 oder 404 setzen das LLM zehn Minuten aus, 429 und 5xx den Schutzschalter.
+
+  - name: LLM-Aufrufe teils beantwortet
+    interval: 1m
+    input_series:
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/qa", outcome="failed"}'
+        values: "0+2x40"
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/qa", outcome="answered"}'
+        values: "0+1x40"
+    alert_rule_test:
+      - eval_time: 30m
+        alertname: KompendiumLlmCallsFailing
+        exp_alerts: []
+
   - name: Tagesbudget schnell verbraucht
     interval: 5m
     input_series:

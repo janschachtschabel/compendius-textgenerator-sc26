@@ -9,6 +9,8 @@ fixed sets (route templates, switches, phases), never from user input, to keep t
 
 from __future__ import annotations
 
+from contextvars import ContextVar
+
 from prometheus_client import Counter, Histogram
 
 from app.domain.models import Compendium
@@ -47,8 +49,15 @@ PARTS = Counter(
     "Curricula, collection and knowledge collection per compendium, by availability",
     ["part", "available"],
 )
-LLM_TOKENS = Counter("kompendium_llm_tokens_total", "LLM tokens by type", ["type"])
-LLM_CALLS = Counter("kompendium_llm_calls_total", "LLM calls for choosing sentences and writing blocks")
+# Every LLM call of every endpoint, counted where all of them pass (app.llm.call.budgeted_chat): only POST
+# /compendium counted before, from its audit (audit 2026-09-27, BE-04)
+LLM_TOKENS = Counter("kompendium_llm_tokens_total", "LLM tokens by route and type", ["endpoint", "type"])
+LLM_CALLS = Counter(
+    "kompendium_llm_calls_total",
+    "LLM calls by route and outcome: answered, failed (no usable answer), skipped (no budget or time left)",
+    ["endpoint", "outcome"],
+)
+_llm_endpoint: ContextVar[str] = ContextVar("llm_endpoint", default="none")  # "none": no request, the CLI
 LLM_SECTIONS = Counter("kompendium_llm_sections_total", "Blocks the LLM was asked to write, by outcome", ["outcome"])
 LLM_SELECTIONS = Counter(
     "kompendium_llm_selections_total",
@@ -64,6 +73,20 @@ KNOWLEDGE_MATERIALS = Counter(
     "kompendium_knowledge_materials_total", "Materials of knowledge collections by outcome", ["outcome"]
 )
 CHUNKS_TRUNCATED = Counter("kompendium_corpus_chunks_truncated_total", "Paragraphs left out by CORPUS_MAX_CHUNKS")
+
+
+def set_llm_endpoint(route: str) -> None:
+    """The route of the request being handled, as the label of the LLM calls it makes."""
+    _llm_endpoint.set(route)
+
+
+def record_llm_call(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0) -> None:
+    endpoint = _llm_endpoint.get()
+    LLM_CALLS.labels(endpoint, outcome).inc()
+    if prompt_tokens:
+        LLM_TOKENS.labels(endpoint, "prompt").inc(prompt_tokens)
+    if completion_tokens:
+        LLM_TOKENS.labels(endpoint, "completion").inc(completion_tokens)
 
 
 def observe_request(method: str, route: str, status: int, seconds: float) -> None:
@@ -97,10 +120,6 @@ def record_compendium(compendium: Compendium) -> None:
         _record_knowledge(audit.knowledge)
     if audit.chunks_truncated:
         CHUNKS_TRUNCATED.inc(audit.chunks_truncated)
-    if audit.llm_tokens:
-        LLM_TOKENS.labels("prompt").inc(audit.llm_tokens.get("prompt", 0))
-        LLM_TOKENS.labels("completion").inc(audit.llm_tokens.get("completion", 0))
-        LLM_CALLS.inc(audit.llm_tokens.get("calls", 0))
     if audit.llm:
         extraction = audit.llm.get("extraction") or {}
         emptied = len(extraction.get("emptied") or [])

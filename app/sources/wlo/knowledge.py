@@ -10,10 +10,10 @@ from __future__ import annotations
 import logging
 import re
 from collections.abc import Callable
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Protocol
 
+from app.concurrency import map_in_threads
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
@@ -128,8 +128,7 @@ def material_sources(
             cache.set(key, text, ttl_s=options.text_ttl_s)
         return ref, text, None
 
-    with ThreadPoolExecutor(max_workers=max(1, options.concurrency)) as pool:
-        outcomes = list(pool.map(fetch, chosen))
+    outcomes = map_in_threads(fetch, chosen, options.concurrency)  # the log lines keep the request id
     for ref, text, error in outcomes:
         if error is TIME_UP:
             result.timed_out += 1

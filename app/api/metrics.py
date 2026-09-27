@@ -21,11 +21,19 @@ from prometheus_client.metrics_core import Metric
 from prometheus_client.multiprocess import MultiProcessCollector
 
 from app.api.system_threads import run_system
+from app.observability.metrics import UNMATCHED_ROUTE, set_llm_endpoint
 from app.observability.status import StatusCollector
 
 METRICS_PATH = "/metrics"
 
 router = APIRouter(tags=["system"])
+
+
+async def name_the_route(request: Request) -> None:
+    """App-wide dependency: the route template of the request labels the LLM calls it makes (audit 2026-09-27,
+    BE-04). ``async``, so it runs in the request's own context, which its threads inherit (app/concurrency.py)."""
+    route = request.scope.get("route")
+    set_llm_endpoint(getattr(route, "path", UNMATCHED_ROUTE))
 
 
 class _Forward:

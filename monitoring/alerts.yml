@@ -151,6 +151,19 @@ groups:
         annotations:
           summary: Keine LLM-Anfrage erreicht das LLM, alle laufen im Regelmodus
           description: Seit 15 Minuten fällt jede LLM-Anfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
+      - alert: KompendiumLlmCallsFailing
+        # Ueber alle Endpunkte: kompendium_llm_calls_total zaehlt jeden Aufruf an die b-api, auch die von /entities,
+        # /qa, /knowledge und der Lehrplansuche, die kompendium_compendium_requests_total nicht sieht (Audit
+        # 2026-09-27, BE-04)
+        expr: |
+          sum(increase(kompendium_llm_calls_total{outcome="failed"}[15m])) > 0
+            and (sum(increase(kompendium_llm_calls_total{outcome="answered"}[15m])) or vector(0)) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Kein LLM-Aufruf bekommt eine Antwort
+          description: Seit 15 Minuten scheitert jeder Aufruf an die b-api, über alle Endpunkte; die Anfragen laufen im Regelmodus. Das Log der API nennt den Status - 401, 403 oder 404 setzen das LLM zehn Minuten aus, 429 und 5xx den Schutzschalter.
       - alert: KompendiumLlmBudgetNearlySpent
         expr: kompendium_llm_tokens_used_today / kompendium_llm_daily_budget_tokens > 0.9
         labels:

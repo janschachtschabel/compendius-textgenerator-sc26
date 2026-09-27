@@ -13,22 +13,19 @@ elements run in parallel, as the batches of the LLM assignment do (app/matching/
 
 from __future__ import annotations
 
-import logging
 from collections import Counter
 from collections.abc import Sequence
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field, replace
 from typing import Any
 
+from app.concurrency import map_in_threads
 from app.knowledge.article_choice import UNREADABLE, Usage, read_number, read_object
 from app.llm.budget import RequestBudget
-from app.llm.call import LlmSkipped, budgeted_chat
+from app.llm.call import LlmSkipped, budgeted_chat, skipped_on_error
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.sources.lehrplan.matcher import CurriculumMatch
-
-log = logging.getLogger(__name__)
 
 BATCH_SIZE = 60  # elements per call: about 2,700 tokens of listing
 ELEMENT_CHARS = 300  # an element is cut beyond this; nine in ten of the cache are shorter than 201 characters
@@ -69,22 +66,18 @@ def check_curriculum(
     topic = f"{job.topic} (Fach: {', '.join(job.subjects)})" if job.subjects else job.topic
 
     def ask(batch: Sequence[CurriculumMatch]) -> ChatResult | LlmSkipped:
-        try:
-            return budgeted_chat(
-                job.client,
-                prompt.render(topic=topic, elements=_listing(batch)),
-                max_output_tokens=OUTPUT_TOKENS_PER_ELEMENT * len(batch),
-                budget=job.budget,
-                what="Lehrplanprüfung",
-                deadline=job.deadline,
-            )
-        except Exception as exc:
-            # The LLM layer must never break the rule-based path (PLAN.md 4.7): log it, keep the rules' elements.
-            log.exception("LLM check of a batch of curriculum elements failed unexpectedly")
-            return LlmSkipped(f"unerwarteter Fehler ({type(exc).__name__})")
+        return budgeted_chat(
+            job.client,
+            prompt.render(topic=topic, elements=_listing(batch)),
+            max_output_tokens=OUTPUT_TOKENS_PER_ELEMENT * len(batch),
+            budget=job.budget,
+            what="Lehrplanprüfung",
+            deadline=job.deadline,
+        )
 
-    with ThreadPoolExecutor(max_workers=max(1, min(job.concurrency, len(batches)))) as pool:
-        answers = list(pool.map(ask, batches))
+    # An unexpected error keeps the rules' elements of that batch
+    guarded = skipped_on_error(ask, lambda batch: "LLM check of a batch of curriculum elements")
+    answers = map_in_threads(guarded, batches, job.concurrency)
 
     notes: dict[int, int] = {}  # position in ``matches`` -> the model's note
     fallbacks: Counter[str] = Counter()

@@ -856,7 +856,7 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_http_requests_total{method,route,status}`, `kompendium_http_request_duration_seconds{method,route}` | Anfragen je Routen-Template (unbekannte Pfade als `unmatched`) |
 | `kompendium_compendium_requests_total{llm_requested,llm_used}`, `kompendium_compendium_phase_seconds{phase}` | Kompendien, Rückfall auf den Regelmodus (ein LLM-Schalter oder `matcher: llm` verlangt, nichts vom LLM), Dauer der Phasen |
 | `kompendium_parts_total{part,available}`, `kompendium_knowledge_materials_total{outcome}`, `kompendium_corpus_chunks_truncated_total` | Teile 2 und 3, Wissens-Sammlung, Kappung des Korpus |
-| `kompendium_llm_tokens_total{type}`, `kompendium_llm_calls_total`, `kompendium_llm_selections_total{outcome}`, `kompendium_llm_sections_total{outcome}`, `kompendium_llm_sentences_total{outcome}` | LLM-Verbrauch, Satzauswahl (`chosen`, `emptied`, `fallback`) und Belegprüfung |
+| `kompendium_llm_tokens_total{endpoint,type}`, `kompendium_llm_calls_total{endpoint,outcome}`, `kompendium_llm_selections_total{outcome}`, `kompendium_llm_sections_total{outcome}`, `kompendium_llm_sentences_total{outcome}` | LLM-Verbrauch jedes Aufrufs, nach Route (`/api/v2/entities` …) und Ausgang (`answered`, `failed`, `skipped` ohne Budget oder Zeit), Satzauswahl (`chosen`, `emptied`, `fallback`) und Belegprüfung |
 
 `METRICS_TOKEN` verlangt `Authorization: Bearer …`, `METRICS_ENABLED=false` schaltet den Endpunkt ab.
 Alarmregeln liegen in [monitoring/alerts.yml](monitoring/alerts.yml), ihre Tests in `monitoring/alerts_test.yml`:

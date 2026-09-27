@@ -2,7 +2,9 @@
 
 Every answer carries ``X-Request-ID``: the one the caller sent (shortened to what a log line can hold) or a new
 one. The id lives in a context variable, so every log line written while the request runs names it — also from
-the threads the service uses, because they inherit the context. Outside a request the field is ``-``.
+the threads the service uses: anyio's threads inherit the context, and the pools of the LLM stages and the material
+reads run in a copy of it (app/concurrency.py; a plain ThreadPoolExecutor does not, audit 2026-09-27, TE-03).
+Outside a request the field is ``-``.
 """
 
 from __future__ import annotations

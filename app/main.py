@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, Request, Response
+from fastapi import Depends, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.routing import APIRoute
 from starlette.exceptions import HTTPException
@@ -22,7 +22,7 @@ from app.api.body_limit import BodySizeLimit
 from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
-from app.api.metrics import METRICS_PATH
+from app.api.metrics import METRICS_PATH, name_the_route
 from app.api.metrics import router as metrics_router
 from app.api.system_threads import run_system, system_limiter
 from app.api.v2.collections import router as collections_router
@@ -40,12 +40,13 @@ from app.api.v2.zim import router as zim_router
 from app.knowledge.recognise import load_spacy
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
+from app.llm.call import listen_to_calls
 from app.llm.client import BApiClient
 from app.llm.gateway import LlmGateway, LlmOptions
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import LOCAL_MATCHER, active_components
-from app.observability.metrics import UNMATCHED_ROUTE, observe_request
+from app.observability.metrics import UNMATCHED_ROUTE, observe_request, record_llm_call
 from app.service import CompendiumService
 from app.settings import Settings, b_api_for, get_settings
 from app.sources.gnd.index import GndIndex
@@ -346,11 +347,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ),
         lifespan=lifespan,
         default_response_class=JsonResponse,
+        dependencies=[Depends(name_the_route)],
         docs_url="/docs" if settings.api_docs_enabled else None,
         redoc_url="/redoc" if settings.api_docs_enabled else None,
         openapi_url="/openapi.json" if settings.api_docs_enabled else None,
     )
     app.state.settings = settings
+    listen_to_calls(record_llm_call)  # every LLM call, by route and outcome (BE-04)
     app.state.registry = registry
     app.state.templates = templates
     app.state.service = service

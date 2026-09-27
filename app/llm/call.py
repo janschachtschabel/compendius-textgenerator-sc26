@@ -8,7 +8,7 @@ audit. A reservation is always settled, also when the call fails, so a failed ca
 from __future__ import annotations
 
 import logging
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 
 from app.llm.budget import RequestBudget, estimate_tokens
@@ -18,6 +18,22 @@ from app.llm.deadline import Deadline
 log = logging.getLogger(__name__)
 
 TIME_UP = "Zeitbudget der Anfrage erschöpft (REQUEST_TIMEOUT_S)"
+# Who hears of every call - outcome, prompt and completion tokens: the API counts them for its metrics
+# (create_app wires app.observability.metrics in). The sidecars and the CLI import this module without them: the
+# metrics open files in a directory only the API's command creates (audit 2026-09-27, BE-04).
+CallListener = Callable[[str, int, int], None]
+_listeners: list[CallListener] = []
+
+
+def listen_to_calls(listener: CallListener) -> None:
+    """Have ``listener`` hear of every call from now on; the same one twice is heard once."""
+    if listener not in _listeners:
+        _listeners.append(listener)
+
+
+def _heard(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0) -> None:
+    for listener in _listeners:
+        listener(outcome, prompt_tokens, completion_tokens)
 
 
 @dataclass(frozen=True)
@@ -62,9 +78,11 @@ def budgeted_chat(
     prompt_tokens = estimate_tokens("".join(m["content"] for m in messages))
     needed = prompt_tokens + limit
     if deadline is not None and deadline.call_timeout(client.timeout_s) is None:
+        _heard("skipped")
         return LlmSkipped(TIME_UP)
     denial = budget.reserve(needed, wait_s=deadline.wait_s() if deadline is not None else None)
     if denial is not None:
+        _heard("skipped")
         return LlmSkipped(denial)
     spent = 0
     try:
@@ -72,6 +90,7 @@ def budgeted_chat(
         if deadline is not None:
             timeout_s = deadline.call_timeout(client.timeout_s)  # what the wait for the budget left
             if timeout_s is None:
+                _heard("skipped")
                 return LlmSkipped(TIME_UP)
         answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s)
         spent = answer.total_tokens
@@ -80,7 +99,23 @@ def budgeted_chat(
         # An attempt that may have reached the model may have cost its prompt: a timeout or a 502/504 counted no
         # token before, however often it happened (audit 2026-09-27, KO-06)
         spent = prompt_tokens * exc.reached
+        _heard("failed", prompt_tokens=spent)
         return LlmSkipped(f"b-api: {exc}", calls=1, prompt_tokens=spent, total_tokens=spent)
     finally:
         budget.settle(needed, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
+    _heard("answered", prompt_tokens=answer.prompt_tokens, completion_tokens=answer.completion_tokens)
     return answer
+
+
+def skipped_on_error[T, R](fn: Callable[[T], R], what: Callable[[T], str]) -> Callable[[T], R | LlmSkipped]:
+    """``fn``, with an unexpected error logged and turned into an ``LlmSkipped``: the LLM layer must never break the
+    rule-based path (PLAN.md 4.7). ``what`` names the item in the log line."""
+
+    def guarded(item: T) -> R | LlmSkipped:
+        try:
+            return fn(item)
+        except Exception as exc:
+            log.exception("%s failed unexpectedly", what(item))
+            return LlmSkipped(f"unerwarteter Fehler ({type(exc).__name__})")
+
+    return guarded

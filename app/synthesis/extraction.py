@@ -11,20 +11,17 @@ order afterwards: a sentence an earlier block prints is dropped from the later o
 
 from __future__ import annotations
 
-import logging
 from collections.abc import Mapping, Sequence
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field, replace
 
+from app.concurrency import map_in_threads
 from app.domain.models import Chunk, ScoredChunk, Source
 from app.llm.budget import RequestBudget
-from app.llm.call import LlmSkipped
+from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.matching.policy import AssignmentResult
 from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts
 from app.templates.schema import Template, TemplateSlot
-
-log = logging.getLogger(__name__)
 
 RUNNER_UP_REASON = "Kandidat nach Policy-Score"
 
@@ -101,17 +98,13 @@ def extract_with_llm(
         return extracted
 
     def choose(slot: TemplateSlot) -> Selection | LlmSkipped:
-        try:
-            return job.selector.select(
-                slot, offers[slot.id], sources, topic=job.topic, budget=job.budget, deadline=job.deadline
-            )
-        except Exception as exc:
-            # The LLM layer must never break the rule-based path (PLAN.md 4.7): log it, keep the policy's paragraphs.
-            log.exception("LLM passage selection for %s failed unexpectedly", slot.id)
-            return LlmSkipped(f"unerwarteter Fehler ({type(exc).__name__})")
+        return job.selector.select(
+            slot, offers[slot.id], sources, topic=job.topic, budget=job.budget, deadline=job.deadline
+        )
 
-    with ThreadPoolExecutor(max_workers=max(1, min(job.concurrency, len(work)))) as pool:
-        results = list(pool.map(choose, work))
+    # An unexpected error keeps the policy's paragraphs of that block
+    guarded = skipped_on_error(choose, lambda slot: f"LLM passage selection for {slot.id}")
+    results = map_in_threads(guarded, work, job.concurrency)
     used: set[tuple[str, int]] = set()  # (chunk id, sentence) already printed by an earlier block
     for slot, result in zip(work, results, strict=True):
         if isinstance(result, Selection):

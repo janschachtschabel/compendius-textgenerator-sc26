@@ -13,15 +13,14 @@ an AI, but keep the first sentences of each paragraph.
 
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable, Collection, Mapping, Sequence
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from app.compose.regeneration import PreservedSection
+from app.concurrency import map_in_threads
 from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Source
 from app.llm.budget import RequestBudget
-from app.llm.call import LlmSkipped
+from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
@@ -33,8 +32,6 @@ from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import Template, TemplateSlot
-
-log = logging.getLogger(__name__)
 
 ACTOR_SLOT_KEY = "akteure"
 
@@ -233,24 +230,19 @@ def _draft_with_llm(
         return {}
 
     def draft(slot: TemplateSlot) -> LlmSection | LlmSkipped:
-        try:
-            return job.synthesizer.write_section(
-                slot,
-                assigned[slot.id],
-                sources_by_id,
-                topic=job.topic,
-                citation_start=0,
-                budget=job.budget,
-                deadline=job.deadline,
-                enrich=job.enrich,
-            )
-        except Exception as exc:
-            # The LLM layer must never break the rule-based path (PLAN.md 4.7): log it, write the block extractively.
-            log.exception("LLM draft for %s failed unexpectedly", slot.id)
-            return LlmSkipped(f"unerwarteter Fehler ({type(exc).__name__})")
+        return job.synthesizer.write_section(
+            slot,
+            assigned[slot.id],
+            sources_by_id,
+            topic=job.topic,
+            citation_start=0,
+            budget=job.budget,
+            deadline=job.deadline,
+            enrich=job.enrich,
+        )
 
-    with ThreadPoolExecutor(max_workers=max(1, min(job.concurrency, len(slots)))) as pool:
-        results = list(pool.map(draft, slots))
+    # An unexpected error writes that block extractively
+    results = map_in_threads(skipped_on_error(draft, lambda slot: f"LLM draft for {slot.id}"), slots, job.concurrency)
     return {slot.id: result for slot, result in zip(slots, results, strict=True)}
 
 
