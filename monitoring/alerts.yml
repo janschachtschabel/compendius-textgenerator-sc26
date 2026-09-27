@@ -1,5 +1,7 @@
 # Alarmregeln für die Kompendium-API (Metriken siehe README, Abschnitt „Überwachung“; Maßnahmen in docs/betrieb.md).
-# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, REQUEST_TIMEOUT_S 120.
+# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, REQUEST_TIMEOUT_S 120,
+# WIKIDATA_CHECK_INTERVAL und GND_CHECK_INTERVAL 1d. Jemanden erreichen die Alarme erst über einen Alertmanager
+# (monitoring/prometheus.yml).
 groups:
   - name: kompendium-verfuegbarkeit
     rules:
@@ -39,6 +41,17 @@ groups:
         annotations:
           summary: Ein Teil der Zustandswerte fehlt in /metrics
           description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).
+      - alert: KompendiumVolumeFull
+        # Ein Wikidata-Lauf braucht rund 1,5 GB im Volume state, ein ZIM-Update den Platz des neuen Archivs neben dem
+        # alten; bei vollem Volume scheitern die Syncs und zuletzt selbst ihre Statusdateien (Audit 2026-09-27, BE-07).
+        # Die 30 Minuten überbrücken den Platz, den ein Wikidata-Lauf nur während des Baus belegt.
+        expr: kompendium_volume_free_bytes < 2 * 1024 * 1024 * 1024
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Auf einem Volume sind weniger als 2 GiB frei
+          description: Das Label volume nennt es (zim oder state); liegen beide auf derselben Platte, wie bei Docker üblich, melden sich beide. Platz auf der Platte schaffen oder das Volume vergrößern (docs/betrieb.md, Störungen).
       - alert: KompendiumSlowCompendia
         expr: |
           histogram_quantile(0.95,
@@ -135,6 +148,24 @@ groups:
         annotations:
           summary: Der letzte GND-Sync ist gescheitert
           description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+      - alert: KompendiumWikidataSyncStale
+        # Der Sidecar prüft täglich und schreibt jede Prüfung in wikidata_status.json, auch eine ohne Neubau: drei Tage
+        # ohne sind drei ausgefallene Prüfungen (Audit 2026-09-27, BE-07). Das Datum des Index taugt dafür nicht, er
+        # wird erst neu gebaut, wenn ein neueres Wikipedia-Archiv es verlangt.
+        expr: time() - kompendium_wikidata_sync_last_run_timestamp_seconds > 3 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Sidecar hat seit drei Tagen nicht geprüft
+          description: Der Dienst wikidata-updater läuft nicht oder hängt (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, ein neueres Wikipedia-Archiv bekommt aber keinen passenden.
+      - alert: KompendiumGndSyncStale
+        # Wie beim Wikidata-Sidecar; der GND-Index wird erst neu gebaut, wenn die DNB eine neuere Ausgabe veröffentlicht
+        expr: time() - kompendium_gnd_sync_last_run_timestamp_seconds > 3 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Sidecar hat seit drei Tagen nicht geprüft
+          description: Der Dienst gnd-updater läuft nicht oder hängt (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, eine neue Ausgabe der DNB kommt aber nicht an.
 
   - name: kompendium-llm
     rules:

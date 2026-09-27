@@ -853,8 +853,9 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_zim_ready`, `kompendium_zim_archives`, `kompendium_zim_required_missing`, `kompendium_zim_archive_articles{archive}` | Archive, wie `/ready` sie sieht |
 | `kompendium_zim_sync_running`, `kompendium_zim_sync_status_updated_timestamp_seconds`, `kompendium_zim_sync_last_run_timestamp_seconds`, `kompendium_zim_sync_last_run_errors` | Updater-Sidecar (`sync_status.json`); ein abgebrochener Lauf endet mit `state: error`; während eines Laufs gelten Ende und Fehler des letzten abgeschlossenen |
 | `kompendium_lehrplan_cache_available`, `kompendium_lehrplan_cache_harvested_timestamp_seconds`, `kompendium_lehrplan_harvest_failed`, `kompendium_lehrplan_harvest_last_run_timestamp_seconds` | Lehrplan-Cache und Harvest-Sidecar |
-| `kompendium_wikidata_index_available`, `kompendium_wikidata_index_dump_timestamp_seconds`, `kompendium_wikidata_sync_failed` | Wikidata-Index (`wikidata.db`, Datum seines Dumps) und Wikidata-Sidecar (`wikidata_status.json`) |
-| `kompendium_gnd_index_available`, `kompendium_gnd_index_release_timestamp_seconds`, `kompendium_gnd_sync_failed` | GND-Index (`gnd.db`, Datum der Ausgabe der DNB) und GND-Sidecar (`gnd_status.json`) |
+| `kompendium_wikidata_index_available`, `kompendium_wikidata_index_dump_timestamp_seconds`, `kompendium_wikidata_sync_failed`, `kompendium_wikidata_sync_last_run_timestamp_seconds` | Wikidata-Index (`wikidata.db`, Datum seines Dumps) und Wikidata-Sidecar (`wikidata_status.json`; Ende des letzten Laufs oder der täglichen Prüfung) |
+| `kompendium_gnd_index_available`, `kompendium_gnd_index_release_timestamp_seconds`, `kompendium_gnd_sync_failed`, `kompendium_gnd_sync_last_run_timestamp_seconds` | GND-Index (`gnd.db`, Datum der Ausgabe der DNB) und GND-Sidecar (`gnd_status.json`; Ende des letzten Laufs oder der täglichen Prüfung) |
+| `kompendium_volume_free_bytes{volume}` | Freier Platz auf der Platte der Volumes `zim` und `state`; ohne das Verzeichnis kein Wert |
 | `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget; `_available` ist der Stand des antwortenden Workers |
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version,revision}` | Konfiguration, Version und Commit |
 | `kompendium_status_section_failed{section}` | 1, wenn ein Abschnitt dieser Zustandswerte nicht gelesen werden konnte (seine Werte fehlen dann) |
@@ -871,7 +872,8 @@ docker run --rm -v "$PWD/monitoring:/m" --entrypoint promtool prom/prometheus:v3
 docker compose --profile monitoring up -d api prometheus   # Prometheus lokal auf 127.0.0.1:9090
 ```
 
-Benachrichtigungen braucht einen Alertmanager; er ist nicht Teil des Repos.
+Jemanden erreichen die Alarme erst über einen Alertmanager; er ist nicht Teil des Repos, `monitoring/prometheus.yml`
+zeigt, wo er eingetragen wird. Ohne ihn zeigt nur Prometheus selbst sie an (`/alerts`).
 
 ## Lizenz
 

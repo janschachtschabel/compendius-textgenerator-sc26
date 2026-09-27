@@ -1,4 +1,5 @@
-"""Status gauges read at scrape time: archives, sidecar runs, curriculum cache, Wikidata and GND index, LLM.
+"""Status gauges read at scrape time: archives, sidecar runs, curriculum cache, Wikidata and GND index, free space
+of the volumes, LLM.
 
 Everything here is read from the application state and the files the sidecars write, not counted in the
 process, so every worker answers the same and nothing needs to be shared between workers. A value that is
@@ -9,6 +10,7 @@ a zero timestamp would look like a 56-year-old cache.
 from __future__ import annotations
 
 import logging
+import shutil
 from collections.abc import Iterator, Mapping
 from datetime import datetime
 from pathlib import Path
@@ -47,7 +49,10 @@ def _last_run(status: Mapping[str, Any] | None) -> Mapping[str, Any]:
 
 def _index_gauges(name: str, index: Any, dated: str, status: Mapping[str, Any] | None) -> Iterator[Metric]:
     """A local index a sidecar keeps (D64, D65): there and readable, the date of what it was built from (the meta
-    key ``dated``), and whether the sidecar's last run failed - left out before its first run."""
+    key ``dated``), and whether the sidecar's last run failed and when it ended - left out before its first run.
+
+    Every daily check writes its end, one without a build too, so an old end means a sidecar that stopped (audit
+    2026-09-27, BE-07); the date of the index says nothing about that, as it changes only with a newer source."""
     available = index is not None and index.available
     yield _gauge(f"kompendium_{name}_index_available", f"1 when {name}.db is present and readable", int(available))
     if index is not None and available and (day := index.meta().get(dated)):
@@ -57,8 +62,17 @@ def _index_gauges(name: str, index: Any, dated: str, status: Mapping[str, Any] |
                 f"kompendium_{name}_index_{dated}_timestamp_seconds", f"Date of the {dated} behind the index", stamp
             )
     if status is not None:
-        failed = _last_run(status).get("ok") is False
-        yield _gauge(f"kompendium_{name}_sync_failed", f"1 when the last {name} sync run failed", int(failed))
+        run = _last_run(status)
+        yield _gauge(
+            f"kompendium_{name}_sync_failed", f"1 when the last {name} sync run failed", int(run.get("ok") is False)
+        )
+        finished = _timestamp(run.get("finished_at"))
+        if finished is not None:  # a build under way keeps the run before it in the status
+            yield _gauge(
+                f"kompendium_{name}_sync_last_run_timestamp_seconds",
+                f"End of the last {name} sync run or check",
+                finished,
+            )
 
 
 class StatusCollector:
@@ -84,6 +98,7 @@ class StatusCollector:
             ("curricula", self._curricula),
             ("wikidata", self._wikidata),
             ("gnd", self._gnd),
+            ("volumes", self._volumes),
             ("edu_sharing", self._edu_sharing),
             ("llm", self._llm),
         )
@@ -176,6 +191,18 @@ class StatusCollector:
     def _gnd(self) -> Iterator[Metric]:
         status = read_gnd_status(Path(self._state.settings.state_dir))
         yield from _index_gauges("gnd", getattr(self._state, "gnd", None), "release", status)
+
+    def _volumes(self) -> Iterator[Metric]:
+        # A full volume stops the syncs and at last even their status files (audit 2026-09-27, BE-07)
+        free = GaugeMetricFamily(
+            "kompendium_volume_free_bytes", "Bytes free for the service on the disk of a volume", labels=["volume"]
+        )
+        settings = self._state.settings
+        for volume, directory in (("zim", settings.zim_dir), ("state", settings.state_dir)):
+            # Without the directory (development with ZIM_PATHS) a parent's free space would pass for the volume's
+            if Path(directory).is_dir():
+                free.add_metric([volume], shutil.disk_usage(directory).free)
+        yield free
 
     def _edu_sharing(self) -> Iterator[Metric]:
         yield _gauge(

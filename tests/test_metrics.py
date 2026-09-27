@@ -3,6 +3,7 @@
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -175,14 +176,17 @@ def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path
 
 def test_the_wikidata_index_and_its_sync_are_gauges(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "state" / "wikidata.db")
+    run = {"ok": False, "error": "SHA-1 mismatch", "finished_at": "2026-09-27T04:00:00+00:00"}
     (tmp_path / "state" / "wikidata_status.json").write_text(
-        json.dumps({"state": "idle", "last_run": {"ok": False, "error": "SHA-1 mismatch"}}), encoding="utf-8"
+        json.dumps({"state": "idle", "last_run": run}), encoding="utf-8"
     )
     with _app(sample_zims, tmp_path) as client:
         samples = scrape(client)
     assert value(samples, "kompendium_wikidata_index_available") == 1
     assert value(samples, "kompendium_wikidata_index_dump_timestamp_seconds") == epoch("2026-09-07T00:00:00+00:00")
     assert value(samples, "kompendium_wikidata_sync_failed") == 1
+    # Every daily check writes its end, one without a build too: a sidecar that stopped shows as an old time (BE-07)
+    assert value(samples, "kompendium_wikidata_sync_last_run_timestamp_seconds") == epoch("2026-09-27T04:00:00+00:00")
 
 
 def test_a_new_installation_without_the_index_reports_it_missing(sample_zims: dict[str, Path], tmp_path: Path) -> None:
@@ -192,18 +196,61 @@ def test_a_new_installation_without_the_index_reports_it_missing(sample_zims: di
     assert samples[("kompendium_wikidata_index_available", ())] == 0  # present, so the alert can see it
     assert "kompendium_wikidata_index_dump_timestamp_seconds" not in names  # no index: no fake zero date
     assert "kompendium_wikidata_sync_failed" not in names  # the sidecar has not run yet
+    assert "kompendium_wikidata_sync_last_run_timestamp_seconds" not in names  # no fake zero time either
 
 
 def test_the_gnd_index_and_its_sync_are_gauges(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     build_gnd_index(write_gnd_dumps(tmp_path / "gnd"), tmp_path / "state" / "gnd.db")
+    run = {"ok": False, "error": "SHA-256 mismatch", "finished_at": "2026-09-27T05:00:00+00:00"}
     (tmp_path / "state" / "gnd_status.json").write_text(
-        json.dumps({"state": "idle", "last_run": {"ok": False, "error": "SHA-256 mismatch"}}), encoding="utf-8"
+        json.dumps({"state": "idle", "last_run": run}), encoding="utf-8"
     )
     with _app(sample_zims, tmp_path) as client:
         samples = scrape(client)
     assert value(samples, "kompendium_gnd_index_available") == 1
     assert value(samples, "kompendium_gnd_index_release_timestamp_seconds") == epoch("2026-02-17T00:00:00+00:00")
     assert value(samples, "kompendium_gnd_sync_failed") == 1
+    assert value(samples, "kompendium_gnd_sync_last_run_timestamp_seconds") == epoch("2026-09-27T05:00:00+00:00")
+
+
+def test_a_running_sync_reports_the_end_of_the_run_before(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """A build keeps the last run in its status while it runs: the time stays the last end, not a missing value."""
+    (tmp_path / "state").mkdir()
+    (tmp_path / "state" / "gnd_status.json").write_text(
+        json.dumps(
+            {
+                "state": "running",
+                "started_at": "2026-09-28T04:00:00+00:00",
+                "last_run": {"ok": True, "finished_at": "2026-09-27T04:00:00+00:00"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    assert value(samples, "kompendium_gnd_sync_last_run_timestamp_seconds") == epoch("2026-09-27T04:00:00+00:00")
+
+
+def test_the_free_space_of_each_volume_is_a_gauge(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """A full volume stops the syncs and at last even their status files, and no gauge showed it (audit 2026-09-27,
+    BE-07)."""
+    (tmp_path / "zim").mkdir()
+    (tmp_path / "state").mkdir()
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    free = shutil.disk_usage(tmp_path).free
+    for volume in ("zim", "state"):
+        key = ("kompendium_volume_free_bytes", (("volume", volume),))
+        assert key in samples, volume
+        assert abs(samples[key] - free) < 1 << 30  # other programs write to the same disk meanwhile
+
+
+def test_a_volume_that_is_not_there_has_no_free_space_gauge(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """The development setup reads its archives from ZIM_PATHS and may have no ZIM_DIR: the free space of some parent
+    directory would pass for the volume's."""
+    with _app(sample_zims, tmp_path) as client:
+        samples = scrape(client)
+    assert ("kompendium_volume_free_bytes", (("volume", "zim"),)) not in samples
 
 
 def test_without_the_gnd_index_its_gauge_says_so(sample_zims: dict[str, Path], tmp_path: Path) -> None:

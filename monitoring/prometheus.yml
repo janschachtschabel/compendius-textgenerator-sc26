@@ -1,12 +1,19 @@
 # Prometheus für die Kompendium-API: lokal mit `docker compose --profile monitoring up -d api prometheus`,
 # sonst als Vorlage für den eigenen Scrape-Job. Alarmregeln in alerts.yml, ihre Tests in alerts_test.yml
-# (`promtool test rules monitoring/alerts_test.yml`). Benachrichtigungen braucht einen Alertmanager.
+# (`promtool test rules monitoring/alerts_test.yml`).
 global:
   scrape_interval: 30s
   evaluation_interval: 30s
 
 rule_files:
   - alerts.yml
+
+# Ohne Alertmanager erreichen die Alarme niemanden: Prometheus zeigt sie nur unter /alerts an (Audit 2026-09-27,
+# BE-07). Er ist nicht Teil des Repos; einer, der Mail, Chat oder Pager bedient, wird so eingetragen:
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ["alertmanager:9093"]
 
 scrape_configs:
   - job_name: kompendium

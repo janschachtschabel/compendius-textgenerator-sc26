@@ -349,6 +349,64 @@ tests:
               summary: Der letzte GND-Sync ist gescheitert
               description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
 
+  - name: Stehende Index-Sidecars
+    interval: 1d
+    input_series:
+      # steht: der Sidecar prüft nicht mehr, das Ende seiner letzten Prüfung bleibt stehen
+      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x5"
+      # prueft: jede tägliche Prüfung schreibt ihr Ende, auch ohne Neubau
+      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="prueft"}'
+        values: "0+86400x5"
+      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x5"
+      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="prueft"}'
+        values: "0+86400x5"
+    alert_rule_test:
+      - eval_time: 3d
+        alertname: KompendiumWikidataSyncStale
+        exp_alerts: []
+      - eval_time: 4d
+        alertname: KompendiumWikidataSyncStale
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der Wikidata-Sidecar hat seit drei Tagen nicht geprüft
+              description: Der Dienst wikidata-updater läuft nicht oder hängt (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, ein neueres Wikipedia-Archiv bekommt aber keinen passenden.
+      - eval_time: 3d
+        alertname: KompendiumGndSyncStale
+        exp_alerts: []
+      - eval_time: 4d
+        alertname: KompendiumGndSyncStale
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der GND-Sidecar hat seit drei Tagen nicht geprüft
+              description: Der Dienst gnd-updater läuft nicht oder hängt (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, eine neue Ausgabe der DNB kommt aber nicht an.
+
+  - name: Volume voll
+    interval: 1m
+    input_series:
+      # voll: dauerhaft 1 GiB frei
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="state", fall="voll"}'
+        values: "1073741824x40"
+      # bau: ein Wikidata-Lauf belegt den Platz nur, während er baut (hier 21 Minuten)
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="state", fall="bau"}'
+        values: "10737418240x10 1073741824x20 10737418240x9"
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="zim", fall="frei"}'
+        values: "10737418240x40"
+    alert_rule_test:
+      - eval_time: 29m
+        alertname: KompendiumVolumeFull
+        exp_alerts: []
+      - eval_time: 31m
+        alertname: KompendiumVolumeFull
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", volume: state, fall: voll }
+            exp_annotations:
+              summary: Auf einem Volume sind weniger als 2 GiB frei
+              description: Das Label volume nennt es (zim oder state); liegen beide auf derselben Platte, wie bei Docker üblich, melden sich beide. Platz auf der Platte schaffen oder das Volume vergrößern (docs/betrieb.md, Störungen).
+
   - name: Tagesbudget knapp und frei
     interval: 1m
     input_series:

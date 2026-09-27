@@ -48,6 +48,7 @@ Update daher:
 | 2026-09-27 (D64, D65) | Zwei neue Dienste in `docker-compose.yml`: `wikidata-updater` baut `wikidata.db` (rund 750 MB Download, dabei 1,5 GB frei im Volume `state`), `gnd-updater` baut `gnd.db` (rund 65 MB). Ohne sie tragen Entitäten keine Wikidata-Nummer und keine GND aus dem Index, und DBpedia-Adressen zeigen auf das stillgelegte `de.dbpedia.org` |
 | 2026-09-27 (Audit) | `ADMIN_TOKEN`, `METRICS_TOKEN` und das neue `API_KEYS` brauchen je mindestens 32 Zeichen, sonst startet kein Container. Auf einem öffentlichen Server `API_KEYS` und `METRICS_TOKEN` setzen (installation.md, Abschnitt 8). `:latest` entsteht erst nach grüner CI; jeder geprüfte Commit liegt zusätzlich als `:<sha>` bereit (Rückweg siehe Regeln) |
 | 2026-09-28 (Audit) | `docker-compose.yml` härtet die Dienste: keine Linux-Capabilities und keine neuen Rechte für alle fünf, bei der API zudem ein nur lesbares Dateisystem außer den Volumes und `/tmp`; Code und Modelle gehören im Image `root`. Jedes Protokoll rotiert bei 10 MB (fünf Dateien). Die API hat 4 GiB Speicher (`API_MEMORY`) und 150 s, um laufende Anfragen bei einem Update zu beenden; die Sidecars bekommen keine Geheimnisse der `.env` mehr. Wirkt erst, wenn das Panel die neue Compose-Datei übernimmt |
+| 2026-09-28 (Audit, Überwachung) | Neue Messwerte und Alarme: freier Platz der Volumes (`kompendium_volume_free_bytes`, `KompendiumVolumeFull`) und das Ende der letzten Prüfung der Index-Sidecars (`kompendium_{wikidata,gnd}_sync_last_run_timestamp_seconds`, `KompendiumWikidataSyncStale`, `KompendiumGndSyncStale`). Ein eigener Prometheus übernimmt die Alarme mit der neuen `monitoring/alerts.yml` |
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 
@@ -68,17 +69,21 @@ Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Relea
 
 `GET /metrics` liefert Zustand und Laufzeitmetriken für Prometheus (Liste im README). Die Alarmregeln in
 `monitoring/alerts.yml` decken die Störungen unten ab: `KompendiumDown`, `KompendiumNotReady`,
-`KompendiumHighErrorRate`, `KompendiumStatusIncomplete`, `KompendiumSlowCompendia`, `KompendiumZimSyncErrors`,
+`KompendiumHighErrorRate`, `KompendiumStatusIncomplete`, `KompendiumVolumeFull` (weniger als 2 GiB frei),
+`KompendiumSlowCompendia`, `KompendiumZimSyncErrors`,
 `KompendiumZimSyncStale`,
 `KompendiumZimSyncHangs`,
 `KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
 `KompendiumWikidataIndexMissing`, `KompendiumWikidataSyncFailed`, `KompendiumGndIndexMissing`, `KompendiumGndSyncFailed`,
+`KompendiumWikidataSyncStale`, `KompendiumGndSyncStale` (ein Sidecar hat drei Tage nicht geprüft),
 `KompendiumLlmUnavailable`, `KompendiumLlmCallsFailing` (jeder LLM-Aufruf scheitert, über alle Endpunkte),
 `KompendiumLlmBudgetNearlySpent`, `KompendiumLlmBudgetBurnsFast` (ein Viertel des Tagesbudgets in einer Stunde) und
 `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
-will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`).
+will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`). Die Regeln lösen in
+Prometheus aus; jemanden erreichen sie erst über einen Alertmanager, den das Repo nicht mitbringt (Eintrag `alerting`
+in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der Oberfläche von Prometheus.
 
 ## Störungen
 
@@ -97,7 +102,9 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 | Nach einem Update starten die Container nicht, das Log nennt `ADMIN_TOKEN`, `METRICS_TOKEN` oder `API_KEYS` „braucht mindestens 32 Zeichen“ | Seit dem 27.09.2026 lehnt der Dienst kürzere Token und Schlüssel ab, auch die Sidecars, die dieselbe `.env` lesen | Neuen Wert erzeugen (`openssl rand -hex 32`), eintragen, neu starten; Prometheus und aufrufende Anwendungen bekommen ihn mit |
 | 429 mit `Retry-After` | `RATE_LIMIT` je Client und Minute überschritten | hinter einem Proxy `FORWARDED_ALLOW_IPS` setzen, sonst teilen sich alle Clients ein Fenster |
 | `/ready` bleibt 503 | Pflichtarchive fehlen oder `active.json` ist beschädigt (steht im Log) | `compendium zim status`; Sync anstoßen (`POST /api/v2/zim/sync`, Admin) |
-| ZIM-Volume läuft voll | abgelöste Dumps bleiben `ZIM_RETENTION_HOURS` liegen; `.part`-Dateien älterer Dumps räumt der Sync weg | `DELETE /api/v2/zim/{datei}` (Admin) für nicht aktive Dateien; Volume für zwei Generationen des Profils auslegen (Profil `standard`: rund 2 × 14 GB) |
+| ZIM-Volume läuft voll (`KompendiumVolumeFull` mit `volume="zim"`) | abgelöste Dumps bleiben `ZIM_RETENTION_HOURS` liegen; `.part`-Dateien älterer Dumps räumt der Sync weg | `DELETE /api/v2/zim/{datei}` (Admin) für nicht aktive Dateien; Volume für zwei Generationen des Profils auslegen (Profil `standard`: rund 2 × 14 GB) |
+| Das Volume `state` läuft voll (`KompendiumVolumeFull` mit `volume="state"`) | Ein Wikidata-Lauf braucht dort rund 1,5 GB und scheitert darunter (`KompendiumWikidataSyncFailed`); zuletzt scheitert jedes Schreiben, auch das von Tagesbudget, Lehrplan-Cache und Statusdateien. Liegen beide Volumes auf derselben Platte, wie bei Docker üblich, melden sich beide | Platz auf der Platte des Hosts schaffen: `docker system df` zeigt, was Docker belegt; die Images früherer Updates, die beim Ziehen ihren Tag verloren haben, entfernt `docker image prune` |
+| `KompendiumWikidataSyncStale` oder `KompendiumGndSyncStale`: ein Sidecar hat drei Tage nicht geprüft | Der Dienst `wikidata-updater` oder `gnd-updater` läuft nicht (etwa gestoppt) oder hängt; jede tägliche Prüfung schreibt ihr Ende in die Statusdatei, auch eine ohne Neubau. Der vorhandene Index bleibt in Betrieb | `docker compose ps`; `docker compose logs wikidata-updater` bzw. `gnd-updater`; `docker compose up -d wikidata-updater gnd-updater` |
 | `KompendiumZimSyncHangs`: Sync läuft laut Statusdatei, schreibt aber seit sechs Stunden nicht mehr | Updater abgestürzt (OOM, `docker kill`) oder Volume voll, sodass nicht einmal die Statusdatei geschrieben werden kann; ein Lauf, der mit einer Ausnahme abbricht, endet dagegen mit `state: error`, löst `KompendiumZimSyncErrors` aus und wird nach einer Stunde wiederholt | Log des Updaters; Platz schaffen, Sidecar neu starten |
 | Download bricht ab | `.part` bleibt für den nächsten Lauf; ein Spiegel, der mehr als die angekündigte Größe schickt, wird abgebrochen und die `.part` gelöscht | Log des Updaters; nach einer Stunde setzt der nächste Lauf fort (auch bei vollem Volume, sobald Platz ist). Nach einem Hash- oder Größenfehler oder einem Archiv, das libzim nicht öffnen kann, wartet der Updater das normale Intervall ab; eine schon vollständige, geprüfte Datei lädt er nicht noch einmal |
 | Entitäten tragen keine Wikidata-Nummer, `/health` meldet `entities.wikidata.available: false` (`KompendiumWikidataIndexMissing`) | Der Index fehlt oder ist beschädigt (das Log der API nennt ihn dann „not usable“; der Sidecar findet eine beschädigte Seite bei seiner täglichen Prüfung mit `quick_check` und baut neu): Der Dienst `wikidata-updater` fehlt im Compose-Projekt — ein Hosting-Panel, das nur das Image neu zieht, übernimmt keine neuen Dienste (siehe Updates) —, oder bei einer neuen Installation lädt und baut der Sidecar `wikidata-updater` noch (rund zehn Minuten), oder sein Lauf scheiterte (`wikidata_status.json`, `KompendiumWikidataSyncFailed`): dumps.wikimedia.org nicht erreichbar, Prüfsumme falsch, Volume voll (ein Lauf braucht rund 1,5 GB). Ein Fehler, den derselbe Lauf wiederholen würde, wartet bis zur nächsten täglichen Prüfung, ein Netzfehler eine Stunde | `docker compose logs wikidata-updater` lesen; nach der Behebung `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force`. Die API übernimmt den neuen Index binnen einer Minute, ohne Neustart |
