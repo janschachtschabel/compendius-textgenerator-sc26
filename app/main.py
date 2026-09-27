@@ -12,11 +12,14 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from fastapi.routing import APIRoute
+from starlette.exceptions import HTTPException
 from starlette.routing import Route
 
 from app import __version__
+from app.api.body_limit import BodySizeLimit
+from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
 from app.api.metrics import METRICS_PATH
@@ -342,6 +345,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "Status, nie als Text mit HTTP 200."
         ),
         lifespan=lifespan,
+        default_response_class=JsonResponse,
         docs_url="/docs" if settings.api_docs_enabled else None,
         redoc_url="/redoc" if settings.api_docs_enabled else None,
         openapi_url="/openapi.json" if settings.api_docs_enabled else None,
@@ -378,6 +382,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(collections_router)
     if settings.metrics_enabled:
         app.include_router(metrics_router)
+    app.add_exception_handler(HTTPException, http_error)
+    app.add_exception_handler(RequestValidationError, validation_error)
+    # Added first, so it runs innermost: the refusal of a body too large still gets its request id and its metric
+    app.add_middleware(BodySizeLimit)
 
     if not settings.zim_path_list:
         refresher = RegistryRefresher(registry, settings.zim_dir)
@@ -422,11 +430,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return response
 
     @app.exception_handler(Exception)
-    async def report_unexpected(request: Request, exc: Exception) -> JSONResponse:
+    async def report_unexpected(request: Request, exc: Exception) -> JsonResponse:
         """An error nobody planned for: the log holds the cause, the caller gets the id to quote (audit OPS-03)."""
         request_id = current_request_id()
         log.exception("unhandled error in %s %s (request %s)", request.method, request.url.path, request_id)
-        return JSONResponse(
+        return JsonResponse(
             status_code=500,
             content={"detail": "Interner Fehler; bitte die Anfrage-ID melden", "request_id": request_id},
             headers={REQUEST_ID_HEADER: request_id},

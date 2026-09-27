@@ -782,6 +782,11 @@ ohne `existing_markdown`, auf `knowledge_collection_id` ohne `world` in `parts` 
 noch bevor ein LLM gefragt wird; ein Repository, das scheitert, steht weiter nur in `audit.knowledge`, denn das
 Kompendium kommt ohne die Materialien aus.
 
+Ein 422 nennt je Fehler Ort (`loc`), Art (`type`), Grund (`msg`) und die verletzte Grenze (`ctx`), nicht aber den
+abgelehnten Wert: Früher kam ein 5-MB-Feld als 5-MB-Fehler zurück. Ein Anfragekörper über 13.000.000 Byte ist ein
+413, bevor der Dienst ihn liest; so viel braucht höchstens `existing_markdown` mit 2 Mio. Zeichen, jedes als
+JSON-Escape geschrieben.
+
 **Teilweise neu erzeugen.** `existing_markdown` nimmt ein früheres Kompendium entgegen. Bausteine, die dort
 als `redaktionell-geprüft` markiert sind, bleiben wortgleich stehen; mit `regenerate_sections` werden nur die
 genannten Bausteine neu gemacht und alle übrigen behalten. Sie heißen wie in den Markierungen des Dokuments

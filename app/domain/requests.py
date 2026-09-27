@@ -12,6 +12,7 @@ Part = Literal["world", "curricula", "collection"]
 # plain string with the list as its schema: /docs shows the values, and the service still answers an unknown name
 # with its own German 422 instead of the validator's English one.
 MATCHERS = ("hybrid_light", "bm25", "char_tfidf", "lexicon_only", "llm")
+EXISTING_MARKDOWN_MAX_CHARS = 2_000_000  # the largest field of any request; app/api/body_limit.py sizes to it
 MatcherName = Annotated[str, WithJsonSchema({"type": "string", "enum": list(MATCHERS)})]
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
@@ -295,7 +296,7 @@ class GenerateRequest(BaseModel):
     )
     existing_markdown: str | None = Field(
         None,
-        max_length=2_000_000,
+        max_length=EXISTING_MARKDOWN_MAX_CHARS,
         description="An earlier compendium: blocks marked redaktionell-geprüft are kept word for word",
     )
     regenerate_sections: list[str] | None = Field(
