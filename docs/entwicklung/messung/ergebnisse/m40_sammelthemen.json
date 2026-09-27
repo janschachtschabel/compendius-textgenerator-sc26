@@ -1,0 +1,1946 @@
+{
+ "threads": 4,
+ "modelle": {
+  "LF7": "LFM2-700M-Q4_K_M.gguf",
+  "LF12": "LFM2.5-1.2B-Instruct-Q4_K_M.gguf",
+  "Q06": "Qwen3-0.6B-Q8_0.gguf"
+ },
+ "themen": [
+  {
+   "thema": "deutsche Dichter",
+   "wege": {
+    "LF7": {
+     "sekunden": 3.51,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Deutsche Dichter",
+     "genannt": [
+      "Die deutsche Dichtung von der Antike bis zur Moderne",
+      "Die deutsche Dichtung im 19. Jahrhundert",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Ein Überblick",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Eine Auswahl",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Eine Einführung",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Eine kritische Betrachtung",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Eine thematische Übersicht",
+      "Die deutsche Dichtung des 20. Jahrhunderts: Eine Auswahl aus den Hauptwerken"
+     ],
+     "gefunden": [
+      "Liste deutschsprachiger Lyriker"
+     ],
+     "tokens_aus": 157,
+     "sekunden_frage": 4.8
+    },
+    "LF12": {
+     "sekunden": 1.31,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Deutsche Dichter",
+     "genannt": [
+      "Deutsche Dichter",
+      "Dichter der deutschen Literatur",
+      "Klassiker der deutschen Dichtung",
+      "Romantik und deutsche Dichter",
+      "Moderne deutsche Dichter",
+      "Briefgeschichte deutscher Dichter",
+      "Dichter im 19. Jahrhundert",
+      "Sprache und Dichtung in Deutschland"
+     ],
+     "gefunden": [
+      "Liste deutschsprachiger Lyriker"
+     ],
+     "tokens_aus": 95,
+     "sekunden_frage": 4.96
+    },
+    "Q06": {
+     "sekunden": 3.32,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Deutsche Dichter",
+     "genannt": [
+      "Deutsche Dichter",
+      "Deutsche Dichterkunst",
+      "Deutsche Dichterkunstbewegungen",
+      "Deutsche Dichterkunstbewegung",
+      "Deutsche Dichterkunstbewegung",
+      "Deutsche Dichterkunstbewegung",
+      "Deutsche Dichterkunstbewegung"
+     ],
+     "gefunden": [
+      "Liste deutschsprachiger Lyriker"
+     ],
+     "tokens_aus": 93,
+     "sekunden_frage": 4.22
+    }
+   }
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "wege": {
+    "LF7": {
+     "sekunden": 3.77,
+     "hauptartikel": "Romantik",
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Romantiker",
+     "genannt": [
+      "Die Romantik in Deutschland: Eine kurze Einführung",
+      "Die Romantik und ihre Themen: Natur, Emotion und Individualismus",
+      "Die deutsche Romantik: Eine historische Übersicht",
+      "Die Romantiker: Eine Auswahl ihrer wichtigsten Werke",
+      "Die Romantik und die deutsche Literatur: Eine historische Betrachtung",
+      "Die Romantiker und ihre Gedichte: Eine Auswahl",
+      "Die Romantik in Deutschland: Von Novelle bis Lyrik",
+      "Die deutsche Romantik: Eine kritische Auseinandersetzung"
+     ],
+     "gefunden": [
+      "Romantik"
+     ],
+     "tokens_aus": 150,
+     "sekunden_frage": 4.69
+    },
+    "LF12": {
+     "sekunden": 1.88,
+     "hauptartikel": "Romantik",
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 10
+      },
+      {
+       "titel": "Biedermeier",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Dichter der Romantik",
+     "genannt": [
+      "Romantik",
+      "Deutsche Dichter",
+      "Klimawandel und Landwirtschaft",
+      "Romantische Dichtung",
+      "Romantische Bewegung",
+      "Biedermeier",
+      "Romantische Literatur",
+      "Literatur der Romantik"
+     ],
+     "gefunden": [
+      "Romantik",
+      "Liste deutschsprachiger Lyriker",
+      "Biedermeier"
+     ],
+     "tokens_aus": 84,
+     "sekunden_frage": 4.97
+    },
+    "Q06": {
+     "sekunden": 1.78,
+     "hauptartikel": "Romantik",
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Dichter der Romantik",
+     "genannt": [
+      "Dichter der Romantik",
+      "Die Romantik",
+      "Die Romantik in der deutschen Literatur",
+      "Die Romantik und die deutsche Kultur",
+      "Die Romantik und die Kultur der Deutschen",
+      "Die Romantik und die Philosophie der Deutschen",
+      "Die Romantik und die Literatur der Deutschen"
+     ],
+     "gefunden": [
+      "Romantik"
+     ],
+     "tokens_aus": 95,
+     "sekunden_frage": 4.42
+    }
+   }
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Komponisten der Klassik",
+     "genannt": [
+      "**Bach, Johann**",
+      "**Cleber, Johann**",
+      "**Cavalli-Sforza, Francesco**",
+      "**Dürer, Martin**",
+      "**Ebner, Johann**",
+      "**Felix Mendelssohn**",
+      "**Mozart, Wolfgang**",
+      "**Rachel, Johanna**"
+     ],
+     "gefunden": [],
+     "tokens_aus": 112,
+     "sekunden_frage": 3.7
+    },
+    "LF12": {
+     "sekunden": 2.0,
+     "hauptartikel": "Klassische Musik",
+     "gedruckt": [
+      {
+       "titel": "Klassische Musik",
+       "absaetze": 10
+      },
+      {
+       "titel": "Renaissance",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Komponisten der Klassik",
+     "genannt": [
+      "Klassische Musik",
+      "Komponisten der Klassik",
+      "Baroque",
+      "Renaissance",
+      "Klassische Epoche",
+      "Klassische Gattungen",
+      "Klassische Musiktheorie",
+      "Historische Komponisten"
+     ],
+     "gefunden": [
+      "Klassische Musik",
+      "Baroque",
+      "Renaissance"
+     ],
+     "tokens_aus": 85,
+     "sekunden_frage": 5.43
+    },
+    "Q06": {
+     "sekunden": 0.46,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Komponisten der Klassik",
+     "genannt": [
+      "Komponisten der Klassik",
+      "Deutsche Dichter",
+      "Klassik",
+      "Klassik und Kultur",
+      "Klassik und Kultur",
+      "Klassik und Kultur",
+      "Klassik und Kultur",
+      "Klassik und Kultur"
+     ],
+     "gefunden": [
+      "Liste deutschsprachiger Lyriker"
+     ],
+     "tokens_aus": 99,
+     "sekunden_frage": 5.07
+    }
+   }
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Philosophen der Aufklärung",
+     "genannt": [
+      "Aufklärung: Eine kurze Einführung",
+      "Die Philosophie der Aufklärung",
+      "Die Ideen der Aufklärung",
+      "Die Philosophie der Aufklärung in Deutschland",
+      "Die Aufklärung und die Naturphilosophie",
+      "Die Aufklärung und die Wissenschaft",
+      "Die Aufklärung und die Ethik",
+      "Die Aufklärung und die Politik"
+     ],
+     "gefunden": [],
+     "tokens_aus": 98,
+     "sekunden_frage": 3.68
+    },
+    "LF12": {
+     "status": "keine Artikel",
+     "uebersicht": "Philosophen der Aufklärung",
+     "genannt": [
+      "Die Philosophie der Aufklärung",
+      "Immanuel Kant: Kritik der Urteilskraft",
+      "Johann Gottlieb Fichte: Uniformität der Vernunft",
+      "Johann Gottfried Herder: Philosophie der Natur",
+      "Georg Wilhelm Friedrich Hegel: Philosophie der Geschichte",
+      "Friedrich Schiller: Die Erziehung des Menschen",
+      "Johann Gottlieb Fichte: Anleitung zur philosophischen Reflexion",
+      "Georg Wilhelm Friedrich Hegel: Wissenschaft des Logiks"
+     ],
+     "gefunden": [],
+     "tokens_aus": 124,
+     "sekunden_frage": 6.84
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Philosophen der Aufklärung",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_europäischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Nationalstaaten",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Kreisen_Europas",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Kreisen_Europas",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Kreisen_Europas",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Kreisen_Europas",
+      "https://de.wikipedia.org/wiki/Aufklärungsphilosophie_in_den_Kreisen_Europas"
+     ],
+     "gefunden": [],
+     "tokens_aus": 219,
+     "sekunden_frage": 9.91
+    }
+   }
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "",
+     "genannt": [],
+     "gefunden": [],
+     "tokens_aus": 400,
+     "sekunden_frage": 11.23
+    },
+    "LF12": {
+     "sekunden": 2.2,
+     "hauptartikel": "Liste der Maler des Impressionismus",
+     "gedruckt": [
+      {
+       "titel": "Liste der Maler des Impressionismus",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Maler des Impressionismus",
+     "genannt": [
+      "Maler des Impressionismus",
+      "Impressionismus",
+      "Impressionistische Malerei",
+      "Klimawandel und Landwirtschaft",
+      "Landschaftsmalerei im 19. Jahrhundert",
+      "Künstler der Moderne",
+      "Deutsche Impressionisten",
+      "Malerei und Umwelt"
+     ],
+     "gefunden": [
+      "Liste der Maler des Impressionismus",
+      "Impressionismus"
+     ],
+     "tokens_aus": 93,
+     "sekunden_frage": 4.66
+    },
+    "Q06": {
+     "sekunden": 1.58,
+     "hauptartikel": "Liste der Maler des Impressionismus",
+     "gedruckt": [
+      {
+       "titel": "Liste der Maler des Impressionismus",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Maler des Impressionismus",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Maler_des_Impressionismus",
+      "https://de.wikipedia.org/wiki/Impressionismus",
+      "https://de.wikipedia.org/wiki/Impressionismus-Verfasser",
+      "https://de.wikipedia.org/wiki/Impressionismus-Genre",
+      "https://de.wikipedia.org/wiki/Impressionismus-Technik",
+      "https://de.wikipedia.org/wiki/Impressionismus-Deutsche_Kunst",
+      "https://de.wikipedia.org/wiki/Impressionismus-Deutsche_Kunst-Verfasser",
+      "https://de.wikipedia.org/wiki/Impressionismus-Deutsche_Kunst-Genre"
+     ],
+     "gefunden": [
+      "Liste der Maler des Impressionismus"
+     ],
+     "tokens_aus": 174,
+     "sekunden_frage": 9.84
+    }
+   }
+  },
+  {
+   "thema": "römische Kaiser",
+   "wege": {
+    "LF7": {
+     "sekunden": 3.97,
+     "hauptartikel": "Liste der römischen Kaiser der Antike",
+     "gedruckt": [
+      {
+       "titel": "Liste der römischen Kaiser der Antike",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Römische Kaiser",
+     "genannt": [
+      "Römische Kaiser - Eine kurze Einführung",
+      "Kaiser des Römischen Reiches",
+      "Kaiser des Weströmischen Reiches",
+      "Kaiser des Oströmischen Reiches",
+      "Kaiser des Römischen Reiches im 3. Jahrhundert",
+      "Kaiser des Römischen Reiches im 4. Jahrhundert",
+      "Kaiser des Römischen Reiches im 5. Jahrhundert",
+      "Kaiser des Römischen Reiches im 6. Jahrhundert"
+     ],
+     "gefunden": [
+      "Liste der römischen Kaiser der Antike"
+     ],
+     "tokens_aus": 138,
+     "sekunden_frage": 4.02
+    },
+    "LF12": {
+     "sekunden": 2.27,
+     "hauptartikel": "Liste der römischen Kaiser der Antike",
+     "gedruckt": [
+      {
+       "titel": "Liste der römischen Kaiser der Antike",
+       "absaetze": 7
+      },
+      {
+       "titel": "Römische Kaiserzeit",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Römische Kaiser",
+     "genannt": [
+      "Die römischen Kaiser",
+      "Römische Geschichte",
+      "Kaiser im antiken Rom",
+      "Politik der römischen Kaiser",
+      "Römische Kaiserzeit",
+      "Kaiser und Macht",
+      "Antike Geschichte",
+      "Deutsche Dichter und Geschichte"
+     ],
+     "gefunden": [
+      "Liste der römischen Kaiser der Antike",
+      "Römische Kaiserzeit"
+     ],
+     "tokens_aus": 85,
+     "sekunden_frage": 4.53
+    },
+    "Q06": {
+     "sekunden": 4.94,
+     "hauptartikel": "Römisches Bürgerrecht",
+     "gedruckt": [
+      {
+       "titel": "Römisches Bürgerrecht",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Römer",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Römer",
+      "https://de.wikipedia.org/wiki/Römer_Kaiser",
+      "https://de.wikipedia.org/wiki/Römer_Kaiser-Liste",
+      "https://de.wikipedia.org/wiki/Römer-Religionsfamilien",
+      "https://de.wikipedia.org/wiki/Römer-Religionsfamilien-Liste",
+      "https://de.wikipedia.org/wiki/Römer-Religionsfamilien-Liste",
+      "https://de.wikipedia.org/wiki/Römer-Religionsfamilien-Liste",
+      "https://de.wikipedia.org/wiki/Römer-Religionsfamilien-Liste"
+     ],
+     "gefunden": [
+      "Römisches Bürgerrecht"
+     ],
+     "tokens_aus": 176,
+     "sekunden_frage": 9.24
+    }
+   }
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die deutsche Wirtschaft und Gesellschaft",
+      "Landwirtschaft im Kontext des Klimawandels: Chancen und Herausforderungen",
+      "Der Klimawandel und die Landwirtschaft: Eine enge Verknüpfung",
+      "Landwirtschaftliche Anpassung an den Klimawandel: Strategien und Erfolge",
+      "Der Klimawandel und die Ernährungssicherheit: Eine doppelte Herausforderung",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Der Klimawandel und die Wasserressourcen der Landwirtschaft",
+      "Die Rolle der Landwirtschaft im Klimaschutz: Chancen und Hindernisse"
+     ],
+     "gefunden": [],
+     "tokens_aus": 178,
+     "sekunden_frage": 5.28
+    },
+    "LF12": {
+     "status": "keine Artikel",
+     "uebersicht": "deutsche Bundeskanzler",
+     "genannt": [
+      "deutsche Bundeskanzler: Eine historische Perspektive",
+      "Bundeskanzler und Politik: Aktuelle Debatten",
+      "Klimawandel und Landwirtschaft in Deutschland",
+      "Führungsrolle der Bundeskanzlerin",
+      "Politische Entscheidungsfindung im Amt des Bundeskanzlers",
+      "Verfassungsrechtliche Grundlagen der Bundeskanzleramtsführung",
+      "Internationale Stellung der Bundeskanzlerin",
+      "Wahlen und Wahlzyklen des Bundeskanzlers"
+     ],
+     "gefunden": [],
+     "tokens_aus": 144,
+     "sekunden_frage": 6.56
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "deutsche Bundeskanzler",
+     "genannt": [
+      "deutsche Bundeskanzler",
+      "Bundeskanzler: Die Rolle und Funktion",
+      "Bundeskanzler: Die Geschichte",
+      "Bundeskanzler: Die politische Ausrichtung",
+      "Bundeskanzler: Die Wahlen und die Wahlkampf",
+      "Bundeskanzler: Die politische Ausrichtung und die Wahlen",
+      "Bundeskanzler: Die politische Ausrichtung und die Wahlen",
+      "Bundeskanzler: Die politische Ausrichtung und die Wahlen"
+     ],
+     "gefunden": [],
+     "tokens_aus": 156,
+     "sekunden_frage": 7.27
+    }
+   }
+  },
+  {
+   "thema": "griechische Götter",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.43,
+     "hauptartikel": "Griechische Mythologie",
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Griechische Götter",
+     "genannt": [
+      "Griechische Götter und Mythologie",
+      "Die griechische Götter: Eine Einführung",
+      "Griechische Götter und ihre Mythen",
+      "Die griechische Götter: Eine Übersicht",
+      "Griechische Götter und ihre Attribute",
+      "Griechische Götter und ihre Beziehungen",
+      "Griechische Götter und ihre Bedeutung im Alltag",
+      "Griechische Götter und ihre Darstellung in der Kunst"
+     ],
+     "gefunden": [
+      "Griechische Mythologie"
+     ],
+     "tokens_aus": 141,
+     "sekunden_frage": 4.73
+    },
+    "LF12": {
+     "sekunden": 1.68,
+     "hauptartikel": "Griechische Mythologie",
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Griechische Götter",
+     "genannt": [
+      "Die Götter der Antike",
+      "Götter in der griechischen Mythologie",
+      "Götter und ihre Rollen",
+      "Klimawandel und griechische Mythologie",
+      "Die Rolle der Götter in der Antike",
+      "Götter in der Literatur",
+      "Götter und Religion",
+      "Götter in der modernen Wissenschaft"
+     ],
+     "gefunden": [
+      "Griechische Mythologie"
+     ],
+     "tokens_aus": 100,
+     "sekunden_frage": 5.46
+    },
+    "Q06": {
+     "sekunden": 1.44,
+     "hauptartikel": "Griechische Mythologie",
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Griechische Götter",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Griechische_Götter",
+      "https://de.wikipedia.org/wiki/Griechische_Götter_in_den_europäischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Griechische_Götter_in_den_Amerikanischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Griechische_Götter",
+      "https://de.wikipedia.org/wiki/Griechische_Götter",
+      "https://de.wikipedia.org/wiki/Griechische_Götter",
+      "https://de.wikipedia.org/wiki/Griechische_Götter",
+      "https://de.wikipedia.org/wiki/Griechische_Götter"
+     ],
+     "gefunden": [
+      "Griechische Mythologie"
+     ],
+     "tokens_aus": 177,
+     "sekunden_frage": 8.63
+    }
+   }
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Planeten des Sonnensystems",
+     "genannt": [
+      "Planeten des Sonnensystems",
+      "Planeten des Sonnensystems: Überblick",
+      "Planeten des Sonnensystems: Geschichte und Entdeckung",
+      "Planeten des Sonnensystems: Klassifikation",
+      "Planeten des Sonnensystems: Atmosphäre und Klima",
+      "Planeten des Sonnensystems: Geologie und Geomorphologie",
+      "Planeten des Sonnensystems: Ozeane und Eis",
+      "Planeten des Sonnensystems: Vulkanismus und tektonische Aktivität"
+     ],
+     "gefunden": [],
+     "tokens_aus": 142,
+     "sekunden_frage": 5.2
+    },
+    "LF12": {
+     "sekunden": 3.48,
+     "hauptartikel": "Sonnensystem",
+     "gedruckt": [
+      {
+       "titel": "Sonnensystem",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Planeten des Sonnensystems",
+     "genannt": [
+      "Die Entstehung des Sonnensystems",
+      "Die Planeten des Sonnensystems",
+      "Die Erde im Sonnensystem",
+      "Mars: Die rote Planete",
+      "Jupiter: Der Riese",
+      "Saturn: Der Ringplanet",
+      "Uranus: Der Eisige",
+      "Neptun: Der Sturm"
+     ],
+     "gefunden": [
+      "Sonnensystem"
+     ],
+     "tokens_aus": 103,
+     "sekunden_frage": 5.53
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Planeten des Sonnensystems",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems",
+      "https://de.wikipedia.org/wiki/Planeten_des_Sonnensystems"
+     ],
+     "gefunden": [],
+     "tokens_aus": 157,
+     "sekunden_frage": 7.26
+    }
+   }
+  },
+  {
+   "thema": "Edelgase",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.01,
+     "hauptartikel": "Edelgase",
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Edelgase",
+     "genannt": [
+      "Edelgase: Grundlagen und Eigenschaften",
+      "Edelgase in der Atmosphäre",
+      "Edelgase und ihre Anwendungen",
+      "Edelgase in der Medizin",
+      "Edelgase in der Industrie",
+      "Edelgase und Klimawandel",
+      "Edelgase in der Umwelt",
+      "Edelgase in der Lebensmittelindustrie"
+     ],
+     "gefunden": [
+      "Edelgase"
+     ],
+     "tokens_aus": 116,
+     "sekunden_frage": 3.42
+    },
+    "LF12": {
+     "sekunden": 2.82,
+     "hauptartikel": "Edelgase",
+     "gedruckt": [
+      {
+       "titel": "Nachhaltigkeit",
+       "absaetze": 6
+      },
+      {
+       "titel": "Methan",
+       "absaetze": 5
+      },
+      {
+       "titel": "Wasserstoff",
+       "absaetze": 5
+      },
+      {
+       "titel": "Edelgase",
+       "absaetze": 4
+      },
+      {
+       "titel": "Energieversorgung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 10,
+     "uebersicht": "Edelgase",
+     "genannt": [
+      "Edelgase",
+      "Klimawandel und Landwirtschaft",
+      "Wasserstoff",
+      "Methan",
+      "CO2-Emissionen",
+      "Energieversorgung",
+      "Atmosphärische Chemie",
+      "Nachhaltigkeit"
+     ],
+     "gefunden": [
+      "Edelgase",
+      "Wasserstoff",
+      "Methan",
+      "Kohlenstoffdioxid in der Erdatmosphäre",
+      "Energieversorgung",
+      "Nachhaltigkeit"
+     ],
+     "tokens_aus": 82,
+     "sekunden_frage": 4.51
+    },
+    "Q06": {
+     "sekunden": 1.94,
+     "hauptartikel": "Edelgase",
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Edelgase",
+     "genannt": [
+      "Edelgas",
+      "Edelgas-Verwendung",
+      "Edelgas-Verwendung in der Luftfahrt",
+      "Edelgas-Verwendung in der Industrie",
+      "Edelgas-Verwendung in der Landwirtschaft",
+      "Edelgas-Verwendung in der Luftfahrzeugindustrie",
+      "Edelgas-Verwendung in der Luftfahrt",
+      "Edelgas-Verwendung in der Landwirtschaft"
+     ],
+     "gefunden": [
+      "Edelgase"
+     ],
+     "tokens_aus": 112,
+     "sekunden_frage": 5.28
+    }
+   }
+  },
+  {
+   "thema": "Weltreligionen",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die Ernährungssicherheit",
+      "Der Klimawandel und seine Auswirkungen auf die Landwirtschaft",
+      "Landwirtschaft im Kontext des Klimawandels: Herausforderungen und Chancen",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Der Klimawandel und die Ernährungssicherheit: Eine doppelte Herausforderung",
+      "Auswirkungen des Klimawandels auf die landwirtschaftliche Produktion",
+      "Anpassungsstrategien in der Landwirtschaft angesichts des Klimawandels",
+      "Der Klimawandel und die Ernährungssicherheit: Eine kritische Diskussion"
+     ],
+     "gefunden": [],
+     "tokens_aus": 176,
+     "sekunden_frage": 5.75
+    },
+    "LF12": {
+     "sekunden": 4.71,
+     "hauptartikel": "Weltreligion",
+     "gedruckt": [
+      {
+       "titel": "Christentum",
+       "absaetze": 7
+      },
+      {
+       "titel": "Weltreligion",
+       "absaetze": 5
+      },
+      {
+       "titel": "Islam",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hinduismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Buddhismus",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 11,
+     "uebersicht": "Weltreligionen",
+     "genannt": [
+      "Religionen",
+      "Klimawandel und Religion",
+      "Islam",
+      "Buddhismus",
+      "Hinduismus",
+      "Christentum",
+      "Judentum",
+      "Sikhismus"
+     ],
+     "gefunden": [
+      "Weltreligion",
+      "Islam",
+      "Buddhismus",
+      "Hinduismus",
+      "Christentum",
+      "Judentum",
+      "Sikhismus"
+     ],
+     "tokens_aus": 74,
+     "sekunden_frage": 7.64
+    },
+    "Q06": {
+     "sekunden": 1.96,
+     "hauptartikel": "Weltreligion",
+     "gedruckt": [
+      {
+       "titel": "Weltreligion",
+       "absaetze": 7
+      },
+      {
+       "titel": "Religionsgeschichte",
+       "absaetze": 4
+      },
+      {
+       "titel": "Religionswissenschaft",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Weltreligionen",
+     "genannt": [
+      "Weltreligionen",
+      "Deutsche Dichter",
+      "Klimawandel und Landwirtschaft",
+      "Religionsgeschichte",
+      "Religionsbewegungen",
+      "Religionsforschung",
+      "Religionskultur",
+      "Religionsgeschichte in der Zeit des Christus"
+     ],
+     "gefunden": [
+      "Weltreligion",
+      "Liste deutschsprachiger Lyriker",
+      "Religionsgeschichte",
+      "Religionswissenschaft"
+     ],
+     "tokens_aus": 103,
+     "sekunden_frage": 4.78
+    }
+   }
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine neue Herausforderung für die Ernährungssicherheit",
+      "Der Klimawandel und die Landwirtschaft: Eine enge Verknüpfung",
+      "Erneuerbare Energien und Klimaschutz: Die Rolle der Landwirtschaft",
+      "Landwirtschaft und Klimawandel: Herausforderungen und Chancen",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Erneuerbare Energien im Agrarsektor: Innovationen und Potenziale",
+      "Klimafolgenforschung und Landwirtschaft: Anpassungsstrategien",
+      "Die Rolle der Landwirtschaft im Klimaschutz: Chancen und Hindernisse"
+     ],
+     "gefunden": [],
+     "tokens_aus": 175,
+     "sekunden_frage": 4.71
+    },
+    "LF12": {
+     "sekunden": 3.3,
+     "hauptartikel": "Erneuerbare Energien",
+     "gedruckt": [
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 8
+      },
+      {
+       "titel": "Erneuerbare Energien in Deutschland",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Erneuerbare Energien",
+     "genannt": [
+      "Klimawandel und Landwirtschaft",
+      "Erneuerbare Energien",
+      "Nachhaltige Energiequellen",
+      "Klimaschutz durch erneuerbare Energien",
+      "Erneuerbare Energien in der Landwirtschaft",
+      "Energiewende und ihre Auswirkungen",
+      "Erneuerbare Energien in Deutschland",
+      "Klimawandel und seine Folgen"
+     ],
+     "gefunden": [
+      "Erneuerbare Energien",
+      "Erneuerbare Energien in Deutschland"
+     ],
+     "tokens_aus": 110,
+     "sekunden_frage": 6.16
+    },
+    "Q06": {
+     "sekunden": 1.99,
+     "hauptartikel": "Erneuerbare Energien",
+     "gedruckt": [
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 8
+      },
+      {
+       "titel": "Erneuerbare Energien in Deutschland",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Erneuerbare Energien",
+     "genannt": [
+      "Erneuerbare Energien",
+      "Erneuerbare Energien in Deutschland",
+      "Erneuerbare Energien und Umwelt",
+      "Erneuerbare Energien und Landwirtschaft",
+      "Erneuerbare Energien und Klimawandel",
+      "Erneuerbare Energien und Nachhaltigkeit",
+      "Erneuerbare Energien und Technologie"
+     ],
+     "gefunden": [
+      "Erneuerbare Energien",
+      "Erneuerbare Energien in Deutschland"
+     ],
+     "tokens_aus": 96,
+     "sekunden_frage": 5.34
+    }
+   }
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Industrielle Erfindungen",
+     "genannt": [
+      "Industrielle Revolution und ihre Auswirkungen auf die Gesellschaft",
+      "Die Entwicklung der Dampfmaschine und ihre industriellen Anwendungen",
+      "Die mechanisierte Textilindustrie und ihre Innovationen",
+      "Die Eisenbahn und ihre Rolle in der industriellen Expansion",
+      "Die chemische Industrie und die Entwicklung von synthetischen Materialien",
+      "Die Elektrifizierung und ihre Auswirkungen auf die Produktionsprozesse",
+      "Die Automobilindustrie und ihre industriellen Innovationen",
+      "Die Entwicklung der Fertigungstechnologien und die Fabrikkultur"
+     ],
+     "gefunden": [],
+     "tokens_aus": 153,
+     "sekunden_frage": 4.25
+    },
+    "LF12": {
+     "sekunden": 1.76,
+     "hauptartikel": "Industrialisierung",
+     "gedruckt": [
+      {
+       "titel": "Industrialisierung",
+       "absaetze": 11
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Erfindungen der Industrialisierung",
+     "genannt": [
+      "Die Industrialisierung",
+      "Technische Innovationen der Industrialisierung",
+      "Die Rolle der Erfindungen in der Industrialisierung",
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel und Landwirtschaft",
+      "Industrielle Revolution",
+      "Wirtschaftliche Auswirkungen der Industrialisierung",
+      "Soziale Veränderungen durch die Industrialisierung"
+     ],
+     "gefunden": [
+      "Industrialisierung",
+      "Industrielle Revolution"
+     ],
+     "tokens_aus": 102,
+     "sekunden_frage": 6.08
+    },
+    "Q06": {
+     "sekunden": 1.49,
+     "hauptartikel": "Industrialisierung",
+     "gedruckt": [
+      {
+       "titel": "Industrialisierung",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Industrialisierung",
+     "genannt": [
+      "Industrialisierung",
+      "Deutsche Industrialisierung",
+      "Industrialisierung in der Deutschen Geschichte",
+      "Industrialisierung und Landwirtschaft",
+      "Industrialisierung und Klimawandel",
+      "Industrialisierung und Technologie",
+      "Industrialisierung und Wirtschaftsstruktur"
+     ],
+     "gefunden": [
+      "Industrialisierung"
+     ],
+     "tokens_aus": 75,
+     "sekunden_frage": 3.95
+    }
+   }
+  },
+  {
+   "thema": "Nobelpreisträger für Physik",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Nobelpreisträger für Physik",
+     "genannt": [
+      "Nobelpreis für Physik 1901: Max Planck",
+      "Nobelpreis für Physik 1918: Werner Heisenberg",
+      "Nobelpreis für Physik 1932: Erwin Schrödinger",
+      "Nobelpreis für Physik 1932: Paul Dirac",
+      "Nobelpreis für Physik 1939: Enrico Fermi",
+      "Nobelpreis für Physik 1944: Robert Oppenheimer",
+      "Nobelpreis für Physik 1949: Arthur Compton",
+      "Nobelpreis für Physik 1962: Robert Wilson"
+     ],
+     "gefunden": [],
+     "tokens_aus": 160,
+     "sekunden_frage": 4.58
+    },
+    "LF12": {
+     "sekunden": 10.8,
+     "hauptartikel": "Nobelpreis für Physik",
+     "gedruckt": [
+      {
+       "titel": "Quantenmechanik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Geschichte der Physik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Nobelpreis für Physik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Relativitätstheorie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Nobelpreis für Physik 1901",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Nobelpreisträger für Physik",
+     "genannt": [
+      "Nobelpreis für Physik",
+      "Geschichte der Physik",
+      "Quantenmechanik",
+      "Relativitätstheorie",
+      "Nobelpreis für Physik 1901",
+      "Nobelpreis für Physik 1918",
+      "Nobelpreis für Physik 1921",
+      "Nobelpreis für Physik 1925"
+     ],
+     "gefunden": [
+      "Nobelpreis für Physik",
+      "Geschichte der Physik",
+      "Quantenmechanik",
+      "Relativitätstheorie",
+      "Nobelpreis für Physik 1901"
+     ],
+     "tokens_aus": 96,
+     "sekunden_frage": 5.49
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Nobelpreisträger für Physik",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_1945",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_1964",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_1984",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_2004",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_2014",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_2024",
+      "https://de.wikipedia.org/wiki/Nobelpreisträger_fuer_Physik_2025"
+     ],
+     "gefunden": [],
+     "tokens_aus": 244,
+     "sekunden_frage": 11.04
+    }
+   }
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.9,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Frauen in der Wissenschaft",
+     "genannt": [
+      "Frauen in der Wissenschaft: Eine Geschichte",
+      "Die Geschichte der Frauen in der Wissenschaft",
+      "Frauen in der Wissenschaft: Eine Übersicht",
+      "Frauen in der Wissenschaft: Eine neue Generation",
+      "Frauen in der Wissenschaft: Herausforderungen und Erfolge",
+      "Frauen in der Wissenschaft: Von der Tradition zur Modernität",
+      "Frauen in der Wissenschaft: Innovationen und Beiträge",
+      "Frauen in der Wissenschaft: Persönliche Türen und Karrierewege"
+     ],
+     "gefunden": [
+      "Frauen in der Wissenschaft"
+     ],
+     "tokens_aus": 125,
+     "sekunden_frage": 4.28
+    },
+    "LF12": {
+     "sekunden": 3.65,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Frauen in der Wissenschaft",
+     "genannt": [
+      "Die Rolle der Frauen in der Wissenschaft",
+      "Frauen in der Forschung: Herausforderungen und Chancen",
+      "Geschlechtergerechtigkeit in der Wissenschaft",
+      "Historische Perspektiven auf weibliche Wissenschaftler:innen",
+      "Moderne Initiativen für Frauen in MINT",
+      "Frauen in der Akademie: Chancen und Barrieren",
+      "Weibliche Führungskräfte in der Wissenschaft",
+      "Die Bedeutung von Mentoring für junge Frauen in der Wissenschaft"
+     ],
+     "gefunden": [
+      "Frauen in der Wissenschaft"
+     ],
+     "tokens_aus": 119,
+     "sekunden_frage": 5.91
+    },
+    "Q06": {
+     "sekunden": 2.94,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "gedruckt": [
+      {
+       "titel": "Wissenschaft",
+       "absaetze": 13
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 6
+      },
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Frauen in der Wissenschaft",
+     "genannt": [
+      "Deutsche Dichter",
+      "Klimawandel und Landwirtschaft",
+      "Wissenschaftliche Forschung",
+      "Wissenschaftliche Medizin",
+      "Wissenschaftliche Technik",
+      "Wissenschaftliche Philosophie",
+      "Wissenschaftliche Kultur"
+     ],
+     "gefunden": [
+      "Frauen in der Wissenschaft",
+      "Liste deutschsprachiger Lyriker",
+      "Wissenschaft"
+     ],
+     "tokens_aus": 70,
+     "sekunden_frage": 4.19
+    }
+   }
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Märchen der Brüder Grimm",
+     "genannt": [
+      "Die Brüder Grimm und ihre Sammlung von Märchen",
+      "Die Geschichte der Brüder Grimm",
+      "Die Sammlung von Märchen der Brüder Grimm",
+      "Die Märchen der Brüder Grimm: Ein Überblick",
+      "Die Märchen der Brüder Grimm: Eine Einführung",
+      "Die Märchen der Brüder Grimm: Eine Auswahl",
+      "Die Märchen der Brüder Grimm: Eine kritische Analyse",
+      "Die Märchen der Brüder Grimm: Eine historische Betrachtung"
+     ],
+     "gefunden": [],
+     "tokens_aus": 145,
+     "sekunden_frage": 5.45
+    },
+    "LF12": {
+     "sekunden": 4.82,
+     "hauptartikel": "Brüder Grimm",
+     "gedruckt": [
+      {
+       "titel": "Brüder Grimm",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Märchen der Brüder Grimm",
+     "genannt": [
+      "Die Brüder Grimm",
+      "Märchen der Brüder Grimm: Eine Einführung",
+      "Klimawandel und Märchen",
+      "Traditionelle Märchen und Umwelt",
+      "Folklore und Nachhaltigkeit",
+      "Die Rolle der deutschen Dichter",
+      "Historische Epoche der Märchen",
+      "Moderne Interpretationen der Brüder Grimm"
+     ],
+     "gefunden": [
+      "Brüder Grimm"
+     ],
+     "tokens_aus": 99,
+     "sekunden_frage": 5.6
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Märchen der Brüder Grimm",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Märchen_der_Brüder_Grimm",
+      "https://de.wikipedia.org/wiki/Brunder-Grimm",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung",
+      "https://de.wikipedia.org/wiki/Grimm-Verfilmung"
+     ],
+     "gefunden": [],
+     "tokens_aus": 157,
+     "sekunden_frage": 6.74
+    }
+   }
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die deutsche Landwirtschaft",
+      "Der Klimawandel und seine Auswirkungen auf die deutsche Landwirtschaft",
+      "Landwirtschaft im Kontext des Klimawandels: Herausforderungen und Chancen",
+      "Der Klimawandel und die Landwirtschaft: Eine enge Verknüpfung",
+      "Auswirkungen des Klimawandels auf die deutsche Landwirtschaft: Ein Überblick",
+      "Anpassungsstrategien der deutschen Landwirtschaft an den Klimawandel",
+      "Der Klimawandel und die Wasserwirtschaft in der deutschen Landwirtschaft",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels"
+     ],
+     "gefunden": [],
+     "tokens_aus": 166,
+     "sekunden_frage": 6.4
+    },
+    "LF12": {
+     "sekunden": 3.29,
+     "hauptartikel": "Liste von Flüssen in Deutschland",
+     "gedruckt": [
+      {
+       "titel": "Liste von Flüssen in Deutschland",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Deutsche Flüsse",
+     "genannt": [
+      "Deutsche Flüsse",
+      "Flüsse in Deutschland",
+      "Geschichte der deutschen Flüsse",
+      "Natürliche Landschaft in Deutschland",
+      "Klimawandel und Flüsse",
+      "Flussökologie",
+      "Wassermanagement in Deutschland",
+      "Bekannte deutsche Flüsse"
+     ],
+     "gefunden": [
+      "Liste von Flüssen in Deutschland"
+     ],
+     "tokens_aus": 89,
+     "sekunden_frage": 5.14
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Deutsche Flüsse",
+     "genannt": [
+      "Flüsse der Deutschen Inseln",
+      "Deutsche Flüsse und ihre Bedeutung",
+      "Deutsche Flüsse und ihre Geschichte",
+      "Deutsche Flüsse und ihre Wirtschaft",
+      "Deutsche Flüsse und ihre Kultur",
+      "Deutsche Flüsse und ihre Umwelt",
+      "Deutsche Flüsse und ihre Bedeutung in der Geschichte",
+      "Deutsche Flüsse und ihre Bedeutung in der Kultur"
+     ],
+     "gefunden": [],
+     "tokens_aus": 115,
+     "sekunden_frage": 5.59
+    }
+   }
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Säugetiere des Waldes",
+     "genannt": [
+      "Säugetiere des Waldes: Eine Einführung",
+      "Säugetiere der deutschen Forstwirtschaft",
+      "Waldsäugetiere: Ein Überblick",
+      "Waldsäugetiere: Arten und Lebensraum",
+      "Waldsäugetiere: Anatomie und Physiologie",
+      "Waldsäugetiere: Fortpflanzung und Lebenszyklus",
+      "Waldsäugetiere: Verhalten und Ökologie",
+      "Waldsäugetiere: Bedrohungen und Schutzmaßnahmen"
+     ],
+     "gefunden": [],
+     "tokens_aus": 156,
+     "sekunden_frage": 5.11
+    },
+    "LF12": {
+     "sekunden": 3.51,
+     "hauptartikel": "Waldökologie",
+     "gedruckt": [
+      {
+       "titel": "Waldökologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Biodiversität",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Säugetiere des Waldes",
+     "genannt": [
+      "Säugetiere im Wald",
+      "Waldökologie",
+      "Biodiversität",
+      "Tierwelt im Wald",
+      "Schutz von Waldtieren",
+      "Wald als Lebensraum",
+      "Waldökosysteme",
+      "Tierarten im deutschen Wald"
+     ],
+     "gefunden": [
+      "Waldökologie",
+      "Biodiversität"
+     ],
+     "tokens_aus": 87,
+     "sekunden_frage": 5.78
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Säugetiere des Waldes",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Säugetiere",
+      "https://de.wikipedia.org/wiki/Deutsche_Dichter",
+      "https://de.wikipedia.org/wiki/Klimawandel",
+      "https://de.wikipedia.org/wiki/Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Waldwirtschaft",
+      "https://de.wikipedia.org/wiki/Waldkulturgewohnheit",
+      "https://de.wikipedia.org/wiki/Waldkulturgewohnheit",
+      "https://de.wikipedia.org/wiki/Waldkulturgewohnheit"
+     ],
+     "gefunden": [],
+     "tokens_aus": 129,
+     "sekunden_frage": 5.43
+    }
+   }
+  },
+  {
+   "thema": "Vulkane Europas",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Vulkane Europas",
+     "genannt": [
+      "Vulkanismus in Europa: Ein Überblick",
+      "Europäische Vulkangebiete",
+      "Vulkanismus in Italien",
+      "Vulkanismus in Spanien",
+      "Vulkanismus in Portugal",
+      "Vulkanismus in Griechenland",
+      "Vulkanismus in Kroatien",
+      "Vulkanismus in Slowakei"
+     ],
+     "gefunden": [],
+     "tokens_aus": 105,
+     "sekunden_frage": 3.71
+    },
+    "LF12": {
+     "status": "keine Artikel",
+     "uebersicht": "Vulkane Europas",
+     "genannt": [
+      "Vulkane Europas",
+      "Vulkanismus in Europa",
+      "Vulkanische Aktivität in der Geschichte",
+      "Vulkanische Gefahren",
+      "Vulkanische Landschaften Europas",
+      "Vulkanische Geschichte",
+      "Vulkanische Bildung",
+      "Vulkanische Auswirkungen auf das Klima"
+     ],
+     "gefunden": [],
+     "tokens_aus": 102,
+     "sekunden_frage": 5.74
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Vulkane Europas",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Vulkane_Europas",
+      "https://de.wikipedia.org/wiki/Deutsche_Dichter",
+      "https://de.wikipedia.org/wiki/Klimawandel",
+      "https://de.wikipedia.org/wiki/Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunst",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunstbewegung",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunstbewegung_1900",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunstbewegung_2000"
+     ],
+     "gefunden": [],
+     "tokens_aus": 164,
+     "sekunden_frage": 7.13
+    }
+   }
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Entdecker der Neuzeit",
+     "genannt": [
+      "Entdecker der Neuzeit",
+      "Die Entdeckungsreisen der Renaissance",
+      "Die Entdeckungsreisen des 16. Jahrhunderts",
+      "Die Entdeckungsreisen des 17. Jahrhunderts",
+      "Die Entdeckungsreisen des 18. Jahrhunderts",
+      "Die Entdeckungsreisen des 19. Jahrhunderts",
+      "Die Entdecker der Neuzeit: Die Ärzte und Naturforscher",
+      "Die Entdecker der Neuzeit: Die Pioniere der Erkundung"
+     ],
+     "gefunden": [],
+     "tokens_aus": 143,
+     "sekunden_frage": 6.85
+    },
+    "LF12": {
+     "sekunden": 20.48,
+     "hauptartikel": "Geschichte der Naturwissenschaften",
+     "gedruckt": [
+      {
+       "titel": "Geschichte der Naturwissenschaften",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Entdecker der Neuzeit",
+     "genannt": [
+      "Die Entdeckung der Neuzeit",
+      "Die Entstehung der Neuzeit",
+      "Klimawandel und Landwirtschaft",
+      "Die Rolle der Entdeckungen",
+      "Technologischer Fortschritt in der Neuzeit",
+      "Kulturelle Veränderungen",
+      "Wissenschaftliche Revolution",
+      "Handelsnetzwerke der Neuzeit"
+     ],
+     "gefunden": [
+      "Geschichte der Naturwissenschaften"
+     ],
+     "tokens_aus": 91,
+     "sekunden_frage": 6.97
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Entdecker der Neuzeit",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Entdecker_der_Neuzeit",
+      "https://de.wikipedia.org/wiki/Deutsche_Dichter",
+      "https://de.wikipedia.org/wiki/Klimawandel",
+      "https://de.wikipedia.org/wiki/Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Deutsche_Dichterkunst",
+      "https://de.wikipedia.org/wiki/Neue_Kunst",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunst",
+      "https://de.wikipedia.org/wiki/Neue_Kunstbewegung"
+     ],
+     "gefunden": [],
+     "tokens_aus": 152,
+     "sekunden_frage": 7.47
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine neue Herausforderung für die deutsche Landwirtschaft",
+      "Der Klimawandel und die Landwirtschaft: Eine komplexe Beziehung",
+      "Landwirtschaft im Kontext des Klimawandels: Herausforderungen und Chancen",
+      "Der Klimawandel und die Landwirtschaft: Auswirkungen auf Ernährungssicherheit und Nachhaltigkeit",
+      "Klimawandel und Landwirtschaft: Anpassungsstrategien und Innovationen",
+      "Der Klimawandel und die Landwirtschaft: Eine doppelte Herausforderung",
+      "Landwirtschaftliche Anpassung an den Klimawandel: Chancen und Hindernisse",
+      "Klimawandel und Landwirtschaft: Auswirkungen auf Wasserressourcen und Bodenqualität"
+     ],
+     "gefunden": [],
+     "tokens_aus": 185,
+     "sekunden_frage": 6.06
+    },
+    "LF12": {
+     "sekunden": 4.03,
+     "hauptartikel": "Klimawandel",
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 5
+      },
+      {
+       "titel": "Landwirtschaft",
+       "absaetze": 5
+      },
+      {
+       "titel": "Nachhaltige Landwirtschaft",
+       "absaetze": 5
+      },
+      {
+       "titel": "Klimapolitik",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel",
+      "Landwirtschaft",
+      "Klimawandel und Landwirtschaft",
+      "Nachhaltige Landwirtschaft",
+      "Klimapolitik",
+      "Umweltbelastung durch Landwirtschaft",
+      "Klimawandel in der Landwirtschaft",
+      "Klimawandel und Ernährung"
+     ],
+     "gefunden": [
+      "Klimawandel",
+      "Landwirtschaft",
+      "Nachhaltige Landwirtschaft",
+      "Klimapolitik"
+     ],
+     "tokens_aus": 91,
+     "sekunden_frage": 8.55
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel und Landwirtschaft in der deutschen Landwirtschaft",
+      "Klimawandel und Landwirtschaft in der Landwirtschaft der Deutschen Bundesrepublik",
+      "Klimawandel und Landwirtschaft in der Landwirtschaft der Deutschen Bundesrepublik",
+      "Klimawandel und Landwirtschaft in der Landwirtschaft der Deutschen Bundesrepublik",
+      "Klimawandel und Landwirtschaft in der Landwirtschaft der Deutschen Bundesrepublik",
+      "Klimawandel und Landwirtschaft in der Landwirtschaft der Deutschen Bundesrepublik"
+     ],
+     "gefunden": [],
+     "tokens_aus": 156,
+     "sekunden_frage": 7.35
+    }
+   }
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Mathematik in der Musik",
+     "genannt": [
+      "Mathematik in der Musik: Eine Einführung",
+      "Die Rolle der Harmonielehre in der Musik",
+      "Wahrnehmung musikalischer Strukturen durch mathematische Modelle",
+      "Die mathematische Grundlage der Musiktheorie",
+      "Symmetrie und Transformationen in der Musik",
+      "Fibonacci-Folgen und musikalische Komposition",
+      "Wahrscheinlichkeitsrechnung und musikalische Entscheidungen",
+      "Die Anwendung von Fourier-Analyse in der Klanganalyse und -synthese"
+     ],
+     "gefunden": [],
+     "tokens_aus": 141,
+     "sekunden_frage": 4.39
+    },
+    "LF12": {
+     "status": "keine Artikel",
+     "uebersicht": "Mathematik in der Musik",
+     "genannt": [
+      "Mathematik in der Musik",
+      "Mathematik und Komposition",
+      "Mathematische Strukturen in der Musiktheorie",
+      "Anwendungen der Mathematik in der Musikwissenschaft",
+      "Mathematische Analyse musikalischer Muster",
+      "Fraktale in der Musik",
+      "Rhythmus und Zahlen in der Musik",
+      "Klangtheorie und Geometrie"
+     ],
+     "gefunden": [],
+     "tokens_aus": 113,
+     "sekunden_frage": 7.62
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Mathematik in der Musik",
+     "genannt": [
+      "Mathematik in der Musik",
+      "Mathematik und Musik",
+      "Mathematik in der Musikgeschichte",
+      "Mathematik und Musik",
+      "Mathematik in der Musiktheorie",
+      "Mathematik und Musik",
+      "Mathematik in der Musik",
+      "Mathematik und Musik"
+     ],
+     "gefunden": [],
+     "tokens_aus": 82,
+     "sekunden_frage": 6.05
+    }
+   }
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Chemie im Alltag",
+     "genannt": [
+      "Chemie im Alltag: Grundlagen und Anwendungen",
+      "Chemie der Lebensmittel",
+      "Chemie der Umwelt: Abfallmanagement",
+      "Chemie der Energie: Stromerzeugung und -verbrauch",
+      "Chemie der Medizin: Arzneimittel und Diagnostik",
+      "Chemie der Materialien: Kunststoffe und Verbundwerkstoffe",
+      "Chemie der Atmosphäre: Klimawandel und Luftqualität",
+      "Chemie der Landwirtschaft: Düngemittel und Pestizide"
+     ],
+     "gefunden": [],
+     "tokens_aus": 142,
+     "sekunden_frage": 4.51
+    },
+    "LF12": {
+     "sekunden": 1.0,
+     "hauptartikel": "Klimawandel",
+     "gedruckt": [
+      {
+       "titel": "Grüne Chemie",
+       "absaetze": 11
+      },
+      {
+       "titel": "Umweltchemie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Klimawandel",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "uebersicht": "Chemie im Alltag",
+     "genannt": [
+      "Chemie im Alltag",
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel",
+      "Umweltchemie",
+      "Chemische Prozesse im Alltag",
+      "Umwelttechnik",
+      "Nachhaltige Chemie",
+      "Chemikalien in der Ernährung"
+     ],
+     "gefunden": [
+      "Klimawandel",
+      "Umweltchemie",
+      "Umwelttechnik",
+      "Grüne Chemie"
+     ],
+     "tokens_aus": 90,
+     "sekunden_frage": 16.41
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Chemie im Alltag",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Chemie_im_Alltag",
+      "https://de.wikipedia.org/wiki/Klimawandel",
+      "https://de.wikipedia.org/wiki/Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Chemische_Aktivitäten_in_der_Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Chemische_Forschung",
+      "https://de.wikipedia.org/wiki/Chemische_Bildung",
+      "https://de.wikipedia.org/wiki/Chemische_Kraftstoffe",
+      "https://de.wikipedia.org/wiki/Chemische_Kraftstoffe_in_der_Landwirtschaft"
+     ],
+     "gefunden": [],
+     "tokens_aus": 160,
+     "sekunden_frage": 7.33
+    }
+   }
+  },
+  {
+   "thema": "Frauen im Mittelalter",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Frauen im Mittelalter",
+     "genannt": [
+      "Frauen im Mittelalter: Eine Einführung",
+      "Die Rolle der Frauen in der mittelalterlichen Gesellschaft",
+      "Frauen und Religion im Mittelalter",
+      "Frauen in der mittelalterlichen Literatur",
+      "Frauen in der mittelalterlichen Kunst",
+      "Frauen und Wirtschaft im Mittelalter",
+      "Frauen und Familie im Mittelalter",
+      "Frauen im mittelalterlichen Recht"
+     ],
+     "gefunden": [],
+     "tokens_aus": 107,
+     "sekunden_frage": 3.54
+    },
+    "LF12": {
+     "status": "keine Artikel",
+     "uebersicht": "Frauen im Mittelalter",
+     "genannt": [
+      "Frauen im Mittelalter",
+      "Die Rolle der Frauen im Mittelalter",
+      "Frauen und Macht im Mittelalter",
+      "Frauen in mittelalterlichen Literaturwerken",
+      "Klimawandel und Landwirtschaft im Mittelalter",
+      "Gesellschaftliche Strukturen und Frauen",
+      "Religiöse Einflüsse auf Frauen im Mittelalter",
+      "Frauen in mittelalterlichen Rechtscodes"
+     ],
+     "gefunden": [],
+     "tokens_aus": 113,
+     "sekunden_frage": 7.07
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Frauen im Mittelalter",
+     "genannt": [
+      "Frauen im Mittelalter",
+      "Frauen im Mittelalter: Kultur und Gesellschaft",
+      "Frauen im Mittelalter: Dichter und Schriftsteller",
+      "Frauen im Mittelalter: Landwirtschaft und Klimawandel",
+      "Frauen im Mittelalter: Frauen im Reiche",
+      "Frauen im Mittelalter: Frauen im Reiche und Kultur",
+      "Frauen im Mittelalter: Frauen im Reiche und Kultur",
+      "Frauen im Mittelalter: Frauen im Reiche und Kultur"
+     ],
+     "gefunden": [],
+     "tokens_aus": 125,
+     "sekunden_frage": 6.73
+    }
+   }
+  },
+  {
+   "thema": "Musik der Romantik",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.5,
+     "hauptartikel": "Musik der Romantik",
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Musik der Romantik",
+     "genannt": [
+      "Die Romantik in der Musik",
+      "Romantische Musik",
+      "Die Musik der Romantik",
+      "Romantische Musik: Eine kurze Einführung",
+      "Romantische Musik: Die deutsche Dichter- und Musiktradition",
+      "Die Musik der Romantik: Eine Übersicht",
+      "Romantische Musik: Die deutsche Dichter- und Musiktradition",
+      "Romantische Musik: Die deutsche Dichter- und Musiktradition"
+     ],
+     "gefunden": [
+      "Musik der Romantik"
+     ],
+     "tokens_aus": 130,
+     "sekunden_frage": 4.23
+    },
+    "LF12": {
+     "sekunden": 2.17,
+     "hauptartikel": "Musik der Romantik",
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Musik der Romantik",
+     "genannt": [
+      "Musik der Romantik",
+      "Romantik in der Musik",
+      "Die Romantik in der deutschen Literatur",
+      "Klimawandel und Musik",
+      "Klimawandel und Landwirtschaft",
+      "Romantik und Natur",
+      "Deutsche Dichter und Musik",
+      "Musik als Ausdruck der Romantik"
+     ],
+     "gefunden": [
+      "Musik der Romantik"
+     ],
+     "tokens_aus": 98,
+     "sekunden_frage": 5.86
+    },
+    "Q06": {
+     "sekunden": 2.56,
+     "hauptartikel": "Musik der Romantik",
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Deutsche Romantik",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Musik der Romantik",
+     "genannt": [
+      "Musik der Romantik",
+      "Deutsche Romantik",
+      "Romantik in der deutschen Literatur",
+      "Romantik und die deutsche Kultur",
+      "Romantik und die deutsche Musik",
+      "Romantik und die deutsche Kultur",
+      "Romantik und die deutsche Musik",
+      "Romantik und die deutsche Kultur"
+     ],
+     "gefunden": [
+      "Musik der Romantik",
+      "Deutsche Romantik"
+     ],
+     "tokens_aus": 110,
+     "sekunden_frage": 6.5
+    }
+   }
+  }
+ ]
+}

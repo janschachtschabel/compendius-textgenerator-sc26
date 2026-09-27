@@ -11,6 +11,9 @@
 # Dazu seit M38 (docs/entwicklung/messung/mc_sammelthemen_ohne_llm.py): 59 Paare, die erst die Wege ohne
 # großes LLM druckten (P: Parse und Archiv; L8, Q30: die Frage N an kleine Modelle), benotet am 26.09.2026 von
 # einem weiteren Claude-Subagenten, der rückwärts las, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 38).
+# Dazu seit M40 (docs/entwicklung/messung/mc_sammelthemen_lokal.py): 19 Paare, die erst die Frage N an kleine
+# lokale Modelle druckte (LFM2-700M, LFM2.5-1.2B, Qwen3-0.6B über llama.cpp), benotet am 27.09.2026 von einem
+# weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 40).
 version: 1
 noten:
 - thema: Barockliteratur
@@ -889,3 +892,60 @@ noten:
 - thema: Gedicht
   artikel: Walter Benjamin
   note: 0
+- thema: Klimawandel
+  artikel: Folgen der globalen Erwärmung in Deutschland
+  note: 2
+- thema: Optik
+  artikel: Fotografie
+  note: 1
+- thema: Photosynthese
+  artikel: Energiewandler
+  note: 1
+- thema: Photosynthese
+  artikel: Botanik
+  note: 1
+- thema: Photosynthese
+  artikel: Pflanzenphysiologie
+  note: 1
+- thema: Programmiersprache
+  artikel: C++
+  note: 1
+- thema: Programmiersprache
+  artikel: JavaScript
+  note: 1
+- thema: Säure-Base-Konzepte
+  artikel: Titration
+  note: 1
+- thema: Ökosystem
+  artikel: Liste deutschsprachiger Lyriker
+  note: 0
+- thema: Ökosystem
+  artikel: Energie
+  note: 0
+- thema: Atommodell
+  artikel: Ernst Mach
+  note: 0
+- thema: Atommodell
+  artikel: Max Planck
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Erneuerbare Energien
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektromotor
+  note: 1
+- thema: Elektrischer Strom
+  artikel: Elektrotechnik
+  note: 1
+- thema: Wasserkreislauf
+  artikel: Wasserwirtschaft
+  note: 1
+- thema: Römisches Reich
+  artikel: Quelle (Geschichtswissenschaft)
+  note: 1
+- thema: Römisches Reich
+  artikel: Liste deutschsprachiger Lyriker
+  note: 0
+- thema: Zelle (Biologie)
+  artikel: Transport (Biologie)
+  note: 1

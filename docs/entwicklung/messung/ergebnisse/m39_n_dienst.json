@@ -1,0 +1,1660 @@
+{
+ "themen": [
+  {
+   "thema": "deutsche Dichter",
+   "wege": {
+    "C": {
+     "hauptartikel": "Deutschsprachige Literatur",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Deutschsprachige Literatur",
+       "absaetze": 9
+      },
+      {
+       "titel": "Walther von der Vogelweide",
+       "absaetze": 4
+      },
+      {
+       "titel": "Friedrich Schiller",
+       "absaetze": 4
+      },
+      {
+       "titel": "Johann Wolfgang von Goethe",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Deutschsprachige Literatur",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Deutschsprachige Literatur",
+       "Walther von der Vogelweide",
+       "Martin Opitz",
+       "Friedrich Schiller",
+       "Johann Wolfgang von Goethe",
+       "Heinrich Heine",
+       "Annette von Droste-Hülshoff",
+       "Rainer Maria Rilke",
+       "Bertolt Brecht"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 261,
+      "total": 462,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 1032,
+      "corpus": 19,
+      "segment": 41,
+      "match": 933,
+      "synthesize": 2148,
+      "assemble": 7
+     }
+    }
+   }
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Romantik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Romantik",
+       "absaetze": 13
+      },
+      {
+       "titel": "Novalis",
+       "absaetze": 4
+      },
+      {
+       "titel": "Clemens Brentano",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Romantik",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Romantik",
+       "Novalis",
+       "Joseph von Eichendorff",
+       "Clemens Brentano",
+       "Achim von Arnim",
+       "Ludwig Tieck",
+       "E. T. A. Hoffmann",
+       "Friedrich Schlegel",
+       "Adelbert von Chamisso"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 445,
+      "total": 648,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 738,
+      "corpus": 34,
+      "segment": 26,
+      "match": 660,
+      "synthesize": 1833,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Wiener Klassik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Wiener Klassik",
+       "absaetze": 7
+      },
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 7
+      },
+      {
+       "titel": "Joseph Haydn",
+       "absaetze": 6
+      },
+      {
+       "titel": "Klassik",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Wiener Klassik",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Wiener Klassik",
+       "Joseph Haydn",
+       "Wolfgang Amadeus Mozart",
+       "Ludwig van Beethoven",
+       "Christoph Willibald Gluck",
+       "Carl Philipp Emanuel Bach",
+       "Antonio Salieri",
+       "Luigi Boccherini",
+       "Muzio Clementi"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 389,
+      "total": 593,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 831,
+      "corpus": 30,
+      "segment": 33,
+      "match": 834,
+      "synthesize": 1896,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "wege": {
+    "C": {
+     "hauptartikel": "John Locke",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "John Locke",
+       "absaetze": 11
+      },
+      {
+       "titel": "Charles de Secondat, Baron de Montesquieu",
+       "absaetze": 2
+      },
+      {
+       "titel": "Jean-Jacques Rousseau",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "John Locke",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "John Locke",
+       "Voltaire",
+       "Charles de Secondat, Baron de Montesquieu",
+       "David Hume",
+       "Jean-Jacques Rousseau",
+       "Denis Diderot",
+       "Gotthold Ephraim Lessing",
+       "Immanuel Kant"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 334,
+      "total": 537,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 1075,
+      "corpus": 35,
+      "segment": 53,
+      "match": 846,
+      "synthesize": 2033,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "wege": {
+    "C": {
+     "hauptartikel": "Impressionismus",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Edgar Degas",
+       "absaetze": 4
+      },
+      {
+       "titel": "Claude Monet",
+       "absaetze": 4
+      },
+      {
+       "titel": "Impressionismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Pierre-Auguste Renoir",
+       "absaetze": 2
+      },
+      {
+       "titel": "Gustave Caillebotte",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Impressionismus",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Impressionismus",
+       "Claude Monet",
+       "Pierre-Auguste Renoir",
+       "Edgar Degas",
+       "Camille Pissarro",
+       "Alfred Sisley",
+       "Berthe Morisot",
+       "Mary Cassatt",
+       "Gustave Caillebotte"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 248,
+      "total": 451,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 495,
+      "corpus": 18,
+      "segment": 16,
+      "match": 543,
+      "synthesize": 1594,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "römische Kaiser",
+   "wege": {
+    "C": {
+     "hauptartikel": "Augustus",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Augustus",
+       "absaetze": 7
+      },
+      {
+       "titel": "Nero",
+       "absaetze": 4
+      },
+      {
+       "titel": "Mark Aurel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hadrian",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Augustus",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Augustus",
+       "Tiberius",
+       "Nero",
+       "Trajan",
+       "Hadrian",
+       "Mark Aurel",
+       "Diokletian",
+       "Konstantin der Große"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 186,
+      "total": 388,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 724,
+      "corpus": 71,
+      "segment": 72,
+      "match": 1335,
+      "synthesize": 1742,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "wege": {
+    "C": {
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 13
+      },
+      {
+       "titel": "Bundeskanzler",
+       "absaetze": 3
+      },
+      {
+       "titel": "Konrad Adenauer",
+       "absaetze": 3
+      },
+      {
+       "titel": "Willy Brandt",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ludwig Erhard",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Bundeskanzler (Deutschland)",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Bundeskanzler (Deutschland)",
+       "Konrad Adenauer",
+       "Ludwig Erhard",
+       "Willy Brandt",
+       "Helmut Schmidt",
+       "Helmut Kohl",
+       "Gerhard Schröder",
+       "Angela Merkel",
+       "Friedrich Merz"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 387,
+      "total": 590,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 2286,
+      "corpus": 76,
+      "segment": 102,
+      "match": 867,
+      "synthesize": 3090,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "griechische Götter",
+   "wege": {
+    "C": {
+     "hauptartikel": "Griechische Mythologie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zeus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Artemis",
+       "absaetze": 1
+      },
+      {
+       "titel": "Aphrodite",
+       "absaetze": 1
+      },
+      {
+       "titel": "Athene",
+       "absaetze": 1
+      },
+      {
+       "titel": "Apollon",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Griechische Mythologie",
+       "Zeus",
+       "Hera",
+       "Poseidon",
+       "Athene",
+       "Apollon",
+       "Artemis",
+       "Aphrodite",
+       "Hades"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 308,
+      "total": 512,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 658,
+      "corpus": 18,
+      "segment": 12,
+      "match": 308,
+      "synthesize": 1351,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "wege": {
+    "C": {
+     "hauptartikel": "Planet",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Planet",
+       "absaetze": 9
+      },
+      {
+       "titel": "Erde",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 6,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Planet",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Planet",
+       "Erde"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 211,
+      "total": 415,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 574,
+      "corpus": 23,
+      "segment": 8,
+      "match": 232,
+      "synthesize": 3478,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Edelgase",
+   "wege": {
+    "C": {
+     "hauptartikel": "Edelgase",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Radon",
+       "absaetze": 8
+      },
+      {
+       "titel": "Argon",
+       "absaetze": 5
+      },
+      {
+       "titel": "Oganesson",
+       "absaetze": 4
+      },
+      {
+       "titel": "Krypton",
+       "absaetze": 3
+      },
+      {
+       "titel": "Edelgase",
+       "absaetze": 1
+      },
+      {
+       "titel": "Edelgasverbindungen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Xenon",
+       "absaetze": 1
+      },
+      {
+       "titel": "Helium",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Edelgase",
+       "Helium",
+       "Neon",
+       "Argon",
+       "Krypton",
+       "Xenon",
+       "Radon",
+       "Oganesson",
+       "Edelgasverbindungen"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 217,
+      "total": 418,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 650,
+      "corpus": 6,
+      "segment": 12,
+      "match": 407,
+      "synthesize": 1155,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Weltreligionen",
+   "wege": {
+    "C": {
+     "hauptartikel": "Weltreligion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Christentum",
+       "absaetze": 7
+      },
+      {
+       "titel": "Weltreligion",
+       "absaetze": 5
+      },
+      {
+       "titel": "Islam",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hinduismus",
+       "absaetze": 3
+      },
+      {
+       "titel": "Buddhismus",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 11,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Weltreligion",
+       "Christentum",
+       "Islam",
+       "Hinduismus",
+       "Buddhismus",
+       "Judentum",
+       "Sikhismus",
+       "Bahaitum",
+       "Daoismus"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 254,
+      "total": 456,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 589,
+      "corpus": 8,
+      "segment": 28,
+      "match": 605,
+      "synthesize": 1588,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "wege": {
+    "C": {
+     "hauptartikel": "Erneuerbare Energien",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Windenergie",
+       "absaetze": 15
+      },
+      {
+       "titel": "Bioenergie",
+       "absaetze": 7
+      },
+      {
+       "titel": "Sonnenenergie",
+       "absaetze": 6
+      },
+      {
+       "titel": "Geothermie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Wasserkraft",
+       "absaetze": 2
+      },
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 11,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Erneuerbare Energien",
+       "Windenergie",
+       "Sonnenenergie",
+       "Wasserkraft",
+       "Bioenergie",
+       "Geothermie",
+       "Photovoltaik",
+       "Solarthermie",
+       "Meeresenergie"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 339,
+      "total": 542,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 925,
+      "corpus": 19,
+      "segment": 39,
+      "match": 604,
+      "synthesize": 1770,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "wege": {
+    "C": {
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Eisenbahn",
+       "absaetze": 11
+      },
+      {
+       "titel": "Verbrennungsmotor",
+       "absaetze": 10
+      },
+      {
+       "titel": "Dampfschiff",
+       "absaetze": 6
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 4
+      },
+      {
+       "titel": "Elektrischer Telegraf",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Industrielle Revolution",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Industrielle Revolution",
+       "Dampfmaschine",
+       "Spinning Jenny",
+       "Power Loom",
+       "Eisenbahn",
+       "Dampfschiff",
+       "Elektrischer Telegraf",
+       "Bessemer-Verfahren",
+       "Verbrennungsmotor"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 205,
+      "completion": 267,
+      "total": 472,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 448,
+      "corpus": 34,
+      "segment": 25,
+      "match": 930,
+      "synthesize": 10388,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Nobelpreisträger für Physik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Nobelpreis für Physik",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Nobelpreis für Physik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Albert Einstein",
+       "absaetze": 4
+      },
+      {
+       "titel": "Niels Bohr",
+       "absaetze": 3
+      },
+      {
+       "titel": "Werner Heisenberg",
+       "absaetze": 3
+      },
+      {
+       "titel": "Max Planck",
+       "absaetze": 1
+      },
+      {
+       "titel": "Richard Feynman",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Nobelpreis für Physik",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Nobelpreis für Physik",
+       "Albert Einstein",
+       "Marie Curie",
+       "Niels Bohr",
+       "Max Planck",
+       "Richard Feynman",
+       "Werner Heisenberg",
+       "Peter Higgs",
+       "Wilhelm Conrad Röntgen"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 205,
+      "completion": 213,
+      "total": 418,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 711,
+      "corpus": 12,
+      "segment": 27,
+      "match": 750,
+      "synthesize": 1395,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "wege": {
+    "C": {
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 4
+      },
+      {
+       "titel": "Frauenstudium im deutschen Sprachraum",
+       "absaetze": 4
+      },
+      {
+       "titel": "Hypatia",
+       "absaetze": 3
+      },
+      {
+       "titel": "Rosalind Franklin",
+       "absaetze": 2
+      },
+      {
+       "titel": "Emmy Noether",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Frauen in der Wissenschaft",
+       "Frauenstudium im deutschen Sprachraum",
+       "Matilda-Effekt",
+       "Marie Curie",
+       "Emmy Noether",
+       "Lise Meitner",
+       "Hypatia",
+       "Rosalind Franklin",
+       "Ada Lovelace"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 309,
+      "total": 511,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 502,
+      "corpus": 14,
+      "segment": 22,
+      "match": 912,
+      "synthesize": 1669,
+      "assemble": 7
+     }
+    }
+   }
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "wege": {
+    "C": {
+     "hauptartikel": "Grimms Märchen",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Grimms Märchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Rotkäppchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Rumpelstilzchen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Die Bremer Stadtmusikanten",
+       "absaetze": 3
+      },
+      {
+       "titel": "Dornröschen",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Grimms Märchen",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Grimms Märchen",
+       "Rotkäppchen",
+       "Hänsel und Gretel",
+       "Schneewittchen",
+       "Aschenputtel",
+       "Rumpelstilzchen",
+       "Dornröschen",
+       "Die Bremer Stadtmusikanten"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 325,
+      "total": 529,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 576,
+      "corpus": 10,
+      "segment": 22,
+      "match": 732,
+      "synthesize": 863,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "wege": {
+    "C": {
+     "hauptartikel": "Rhein",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Rhein",
+       "absaetze": 11
+      },
+      {
+       "titel": "Donau",
+       "absaetze": 10
+      },
+      {
+       "titel": "Elbe",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Rhein",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Rhein",
+       "Donau",
+       "Elbe",
+       "Oder",
+       "Weser",
+       "Main",
+       "Mosel",
+       "Ems"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 473,
+      "total": 674,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 999,
+      "corpus": 34,
+      "segment": 68,
+      "match": 784,
+      "synthesize": 5230,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "wege": {
+    "C": {
+     "hauptartikel": "Wald",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Wald",
+       "absaetze": 18
+      },
+      {
+       "titel": "Reh",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Wald",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Wald",
+       "Reh",
+       "Rothirsch",
+       "Wildschwein",
+       "Rotfuchs",
+       "Europäischer Dachs",
+       "Eichhörnchen",
+       "Wolf"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 205,
+      "completion": 402,
+      "total": 607,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 5311,
+      "corpus": 25,
+      "segment": 44,
+      "match": 863,
+      "synthesize": 1631,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Vulkane Europas",
+   "wege": {
+    "C": {
+     "hauptartikel": "Ätna",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Vesuv",
+       "absaetze": 6
+      },
+      {
+       "titel": "Stromboli",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ätna",
+       "absaetze": 3
+      },
+      {
+       "titel": "Eyjafjallajökull",
+       "absaetze": 3
+      },
+      {
+       "titel": "Grímsvötn",
+       "absaetze": 2
+      },
+      {
+       "titel": "Katla",
+       "absaetze": 1
+      },
+      {
+       "titel": "Hekla",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Ätna",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Ätna",
+       "Vesuv",
+       "Stromboli",
+       "Hekla",
+       "Katla",
+       "Grímsvötn",
+       "Eyjafjallajökull",
+       "Santorin"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 446,
+      "total": 648,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 565,
+      "corpus": 12,
+      "segment": 35,
+      "match": 623,
+      "synthesize": 1163,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "wege": {
+    "C": {
+     "hauptartikel": "Zeitalter der Entdeckungen",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Roald Amundsen",
+       "absaetze": 5
+      },
+      {
+       "titel": "Zeitalter der Entdeckungen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Bartolomeu Dias",
+       "absaetze": 2
+      },
+      {
+       "titel": "Amerigo Vespucci",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Zeitalter der Entdeckungen",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Zeitalter der Entdeckungen",
+       "Christoph Kolumbus",
+       "Vasco da Gama",
+       "Ferdinand Magellan",
+       "James Cook",
+       "Amerigo Vespucci",
+       "Bartolomeu Dias",
+       "Abel Tasman",
+       "Roald Amundsen"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 394,
+      "total": 598,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 402,
+      "corpus": 8,
+      "segment": 17,
+      "match": 569,
+      "synthesize": 1238,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "wege": {
+    "C": {
+     "hauptartikel": "Klimawandel",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Klimaschutz",
+       "absaetze": 6
+      },
+      {
+       "titel": "Klimawandel",
+       "absaetze": 5
+      },
+      {
+       "titel": "Landwirtschaft",
+       "absaetze": 4
+      },
+      {
+       "titel": "Folgen der globalen Erwärmung",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Klimawandel",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Klimawandel",
+       "Landwirtschaft",
+       "Folgen der globalen Erwärmung",
+       "Klimaschutz",
+       "Treibhausgas",
+       "Ernährungssicherung",
+       "Agroforstwirtschaft"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 498,
+      "total": 701,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 549,
+      "corpus": 30,
+      "segment": 26,
+      "match": 802,
+      "synthesize": 1694,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Musiktheorie",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Goldener Schnitt",
+       "absaetze": 7
+      },
+      {
+       "titel": "Musiktheorie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Harmonielehre",
+       "absaetze": 3
+      },
+      {
+       "titel": "Pythagoreische Stimmung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Quintenzirkel",
+       "absaetze": 2
+      },
+      {
+       "titel": "Akustik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Musiktheorie",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Musiktheorie",
+       "Harmonielehre",
+       "Akustik",
+       "Pythagoreische Stimmung",
+       "Reine Stimmung",
+       "Quintenzirkel",
+       "Goldener Schnitt"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 453,
+      "total": 656,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 842,
+      "corpus": 11,
+      "segment": 17,
+      "match": 420,
+      "synthesize": 1304,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "wege": {
+    "C": {
+     "hauptartikel": "Lebensmittelchemie",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Kosmetik",
+       "absaetze": 15
+      },
+      {
+       "titel": "Seife",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lebensmittelchemie",
+       "absaetze": 4
+      },
+      {
+       "titel": "Waschmittel",
+       "absaetze": 4
+      },
+      {
+       "titel": "Kunststoff",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Lebensmittelchemie",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Lebensmittelchemie",
+       "Waschmittel",
+       "Seife",
+       "Kunststoff",
+       "Kosmetik",
+       "Arzneimittel",
+       "Lebensmittelzusatzstoff"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 432,
+      "total": 634,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 497,
+      "corpus": 23,
+      "segment": 26,
+      "match": 885,
+      "synthesize": 1255,
+      "assemble": 7
+     }
+    }
+   }
+  },
+  {
+   "thema": "Frauen im Mittelalter",
+   "wege": {
+    "C": {
+     "hauptartikel": "Frauengeschichte",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Frauengeschichte",
+       "absaetze": 4
+      },
+      {
+       "titel": "Kloster",
+       "absaetze": 4
+      },
+      {
+       "titel": "Jeanne d’Arc",
+       "absaetze": 4
+      },
+      {
+       "titel": "Eleonore von Aquitanien",
+       "absaetze": 2
+      },
+      {
+       "titel": "Hildegard von Bingen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Minnesang",
+       "absaetze": 1
+      },
+      {
+       "titel": "Hexenverfolgung",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Frauengeschichte",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Frauengeschichte",
+       "Hildegard von Bingen",
+       "Eleonore von Aquitanien",
+       "Christine de Pizan",
+       "Jeanne d’Arc",
+       "Hexenverfolgung",
+       "Minnesang",
+       "Kloster"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 487,
+      "total": 689,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 595,
+      "corpus": 16,
+      "segment": 34,
+      "match": 832,
+      "synthesize": 1693,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Musik der Romantik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Musik der Romantik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Frédéric Chopin",
+       "absaetze": 6
+      },
+      {
+       "titel": "Robert Schumann",
+       "absaetze": 5
+      },
+      {
+       "titel": "Franz Schubert",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Musik der Romantik",
+       "Ludwig van Beethoven",
+       "Franz Schubert",
+       "Robert Schumann",
+       "Frédéric Chopin",
+       "Franz Liszt",
+       "Hector Berlioz",
+       "Richard Wagner",
+       "Johannes Brahms"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 229,
+      "total": 431,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 891,
+      "corpus": 26,
+      "segment": 69,
+      "match": 785,
+      "synthesize": 1741,
+      "assemble": 6
+     }
+    }
+   }
+  }
+ ]
+}

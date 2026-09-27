@@ -1,0 +1,197 @@
+{
+ "anfragen": 94,
+ "n_ersetzt": [
+  {
+   "anfrage": "Atommodell",
+   "art": "normal",
+   "erwartet": [
+    "Atommodell"
+   ],
+   "regeln": {
+    "titel": "Liste der Atommodelle",
+    "methode": "title",
+    "richtig": true
+   },
+   "n": {
+    "uebersicht": "Atommodell",
+    "genannt": [
+     "Daltonsches Atommodell",
+     "Thomsonsches Atommodell",
+     "Rutherfordsches Atommodell",
+     "Bohrsches Atommodell",
+     "Sommerfeldsches Atommodell",
+     "Orbitalmodell"
+    ],
+    "gefunden": [
+     "Liste der Atommodelle",
+     "Thomsonsches Atommodell",
+     "Rutherfordsches Atommodell",
+     "Bohrsches Atommodell",
+     "Bohr-sommerfeldsches Atommodell",
+     "Atomorbital"
+    ],
+    "tokens": 530,
+    "sekunden": 0.23,
+    "hauptartikel": "Liste der Atommodelle",
+    "richtig": true
+   }
+  },
+  {
+   "anfrage": "Lichtlehre",
+   "art": "variante",
+   "erwartet": [
+    "Optik"
+   ],
+   "regeln": {
+    "titel": "Ernst Adalbert Voretzsch",
+    "methode": "search",
+    "richtig": false
+   },
+   "n": {
+    "uebersicht": "Optik",
+    "genannt": [
+     "Licht",
+     "Geometrische Optik",
+     "Wellenoptik",
+     "Quantenoptik",
+     "Photometrie",
+     "Brechung (Physik)",
+     "Reflexion (Physik)",
+     "Beugung (Physik)"
+    ],
+    "gefunden": [
+     "Optik",
+     "Licht",
+     "Geometrische Optik",
+     "Wellenoptik",
+     "Quantenoptik",
+     "Photometrie",
+     "Brechung (Physik)",
+     "Reflexion (Physik)",
+     "Beugung (Physik)"
+    ],
+    "tokens": 415,
+    "sekunden": 3.0,
+    "hauptartikel": "Optik",
+    "richtig": true
+   }
+  },
+  {
+   "anfrage": "Gewaltenteilung in Deutschland",
+   "art": "ohne_eigenen_artikel",
+   "erwartet": [
+    "Gewaltenteilung"
+   ],
+   "regeln": {
+    "titel": "Gewaltenteilung",
+    "methode": "search",
+    "richtig": true
+   },
+   "n": {
+    "uebersicht": "Gewaltenteilung",
+    "genannt": [
+     "Legislative",
+     "Exekutive",
+     "Judikative",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Föderalismus in Deutschland"
+    ],
+    "gefunden": [
+     "Gewaltenteilung",
+     "Legislative",
+     "Exekutive",
+     "Judikative",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Föderalismus in Deutschland"
+    ],
+    "tokens": 548,
+    "sekunden": 3.53,
+    "hauptartikel": "Gewaltenteilung",
+    "richtig": true
+   }
+  },
+  {
+   "anfrage": "Photosynthese bei Pflanzen",
+   "art": "ohne_eigenen_artikel",
+   "erwartet": [
+    "Photosynthese"
+   ],
+   "regeln": {
+    "titel": "Photosynthese",
+    "methode": "search",
+    "richtig": true
+   },
+   "n": {
+    "uebersicht": "Photosynthese",
+    "genannt": [
+     "Chloroplast",
+     "Chlorophyll",
+     "Photosystem",
+     "Lichtreaktion",
+     "Calvin-Zyklus",
+     "Photorespiration",
+     "C4-Pflanze",
+     "CAM-Pflanze"
+    ],
+    "gefunden": [
+     "Photosynthese",
+     "Chloroplast",
+     "Chlorophylle",
+     "Photosystem",
+     "Calvin-Zyklus",
+     "Photorespiration",
+     "C4-Pflanze",
+     "Crassulaceen-Säurestoffwechsel"
+    ],
+    "tokens": 459,
+    "sekunden": 2.7,
+    "hauptartikel": "Photosynthese",
+    "richtig": true
+   }
+  },
+  {
+   "anfrage": "Ursachen des Ersten Weltkriegs",
+   "art": "ohne_eigenen_artikel",
+   "erwartet": [
+    "Erster Weltkrieg"
+   ],
+   "regeln": {
+    "titel": "Erster Weltkrieg",
+    "methode": "suggestion",
+    "richtig": true
+   },
+   "n": {
+    "uebersicht": "Ursachen des Ersten Weltkriegs",
+    "genannt": [
+     "Julikrise",
+     "Imperialismus",
+     "Nationalismus",
+     "Militarismus",
+     "Wettrüsten",
+     "Bündnispolitik",
+     "Attentat von Sarajevo",
+     "Balkankriege"
+    ],
+    "gefunden": [
+     "Julikrise",
+     "Imperialismus",
+     "Nationalismus",
+     "Militarismus",
+     "Wettrüsten",
+     "Attentat von Sarajevo",
+     "Balkankriege"
+    ],
+    "tokens": 590,
+    "sekunden": 3.21,
+    "hauptartikel": "Julikrise",
+    "richtig": false
+   }
+  }
+ ]
+}

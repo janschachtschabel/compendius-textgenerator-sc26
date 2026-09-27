@@ -1,0 +1,1374 @@
+{
+ "themen": [
+  {
+   "thema": "Barockliteratur",
+   "wege": {
+    "C": {
+     "hauptartikel": "Barockliteratur",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 4
+      },
+      {
+       "titel": "Martin Opitz",
+       "absaetze": 3
+      },
+      {
+       "titel": "Christian Hoffmann von Hoffmannswaldau",
+       "absaetze": 3
+      },
+      {
+       "titel": "Andreas Gryphius",
+       "absaetze": 2
+      },
+      {
+       "titel": "Hans Jakob Christoffel von Grimmelshausen",
+       "absaetze": 1
+      },
+      {
+       "titel": "Catharina Regina von Greiffenberg",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Barockliteratur",
+       "Martin Opitz",
+       "Andreas Gryphius",
+       "Hans Jakob Christoffel von Grimmelshausen",
+       "Paul Fleming",
+       "Angelus Silesius",
+       "Daniel Casper von Lohenstein",
+       "Christian Hoffmann von Hoffmannswaldau",
+       "Catharina Regina von Greiffenberg"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 363,
+      "total": 565,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 241,
+      "corpus": 3,
+      "segment": 8,
+      "match": 252,
+      "synthesize": 1321,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "wege": {
+    "C": {
+     "hauptartikel": "Bruchrechnung",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Prozent",
+       "absaetze": 6
+      },
+      {
+       "titel": "Dezimalbruch",
+       "absaetze": 5
+      },
+      {
+       "titel": "Bruchgleichung",
+       "absaetze": 5
+      },
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Rationale Zahl",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Bruchrechnung",
+       "Rationale Zahl",
+       "Dezimalbruch",
+       "Prozent",
+       "Bruchgleichung"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 423,
+      "total": 624,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 342,
+      "corpus": 13,
+      "segment": 14,
+      "match": 244,
+      "synthesize": 1703,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "wege": {
+    "C": {
+     "hauptartikel": "Demokratie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Liberale Demokratie",
+       "absaetze": 7
+      },
+      {
+       "titel": "Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Direkte Demokratie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Demokratisierung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Demokratietheorie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Repräsentative Demokratie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Soziale Demokratie",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Demokratie",
+       "Demokratietheorie",
+       "Direkte Demokratie",
+       "Repräsentative Demokratie",
+       "Liberale Demokratie",
+       "Soziale Demokratie",
+       "Demokratisierung",
+       "Demokratiemessung"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 199,
+      "completion": 190,
+      "total": 389,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 423,
+      "corpus": 23,
+      "segment": 31,
+      "match": 1253,
+      "synthesize": 10244,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "wege": {
+    "C": {
+     "hauptartikel": "Französische Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Terrorherrschaft",
+       "absaetze": 4
+      },
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 3
+      },
+      {
+       "titel": "Sturm auf die Bastille",
+       "absaetze": 3
+      },
+      {
+       "titel": "Maximilien de Robespierre",
+       "absaetze": 2
+      },
+      {
+       "titel": "Erklärung der Menschen- und Bürgerrechte",
+       "absaetze": 2
+      },
+      {
+       "titel": "Französische Verfassung (1791)",
+       "absaetze": 1
+      },
+      {
+       "titel": "Direktorium (Frankreich)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Französische Revolution",
+       "Sturm auf die Bastille",
+       "Erklärung der Menschen- und Bürgerrechte",
+       "Französische Verfassung (1791)",
+       "Jakobiner",
+       "Terrorherrschaft",
+       "Maximilien de Robespierre",
+       "Direktorium (Frankreich)"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 402,
+      "total": 603,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 517,
+      "corpus": 36,
+      "segment": 14,
+      "match": 520,
+      "synthesize": 1540,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "wege": {
+    "C": {
+     "hauptartikel": "Klimawandel",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Klimaschutz",
+       "absaetze": 6
+      },
+      {
+       "titel": "Treibhauseffekt",
+       "absaetze": 6
+      },
+      {
+       "titel": "Folgen der globalen Erwärmung",
+       "absaetze": 5
+      },
+      {
+       "titel": "Klimawandel",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Klimawandel",
+       "Treibhauseffekt",
+       "Klimaschutz",
+       "Folgen der globalen Erwärmung",
+       "Übereinkommen von Paris",
+       "Kyoto-Protokoll",
+       "Klimawandelleugnung"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 474,
+      "total": 675,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 571,
+      "corpus": 27,
+      "segment": 42,
+      "match": 708,
+      "synthesize": 1134,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Optik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Optik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Interferenz (Physik)",
+       "absaetze": 5
+      },
+      {
+       "titel": "Wellenoptik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Quantenoptik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Geometrische Optik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Brechung (Physik)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Beugung (Physik)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Optik",
+       "Geometrische Optik",
+       "Wellenoptik",
+       "Quantenoptik",
+       "Brechung (Physik)",
+       "Reflexion (Physik)",
+       "Beugung (Physik)",
+       "Interferenz (Physik)"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 200,
+      "completion": 263,
+      "total": 463,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 215,
+      "corpus": 21,
+      "segment": 9,
+      "match": 245,
+      "synthesize": 1398,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "wege": {
+    "C": {
+     "hauptartikel": "Photosynthese",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Crassulaceen-Säurestoffwechsel",
+       "absaetze": 8
+      },
+      {
+       "titel": "Photosystem",
+       "absaetze": 4
+      },
+      {
+       "titel": "Chlorophylle",
+       "absaetze": 4
+      },
+      {
+       "titel": "Photosynthese",
+       "absaetze": 3
+      },
+      {
+       "titel": "Chloroplast",
+       "absaetze": 3
+      },
+      {
+       "titel": "Photorespiration",
+       "absaetze": 2
+      },
+      {
+       "titel": "C4-Pflanze",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Photosynthese",
+       "Chloroplast",
+       "Chlorophylle",
+       "Calvin-Zyklus",
+       "Photosystem",
+       "C4-Pflanze",
+       "Crassulaceen-Säurestoffwechsel",
+       "Photorespiration"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 281,
+      "total": 482,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 496,
+      "corpus": 54,
+      "segment": 23,
+      "match": 574,
+      "synthesize": 1620,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "wege": {
+    "C": {
+     "hauptartikel": "Programmiersprache",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Compiler",
+       "absaetze": 8
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 4
+      },
+      {
+       "titel": "Objektorientierte Programmierung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Interpreter",
+       "absaetze": 3
+      },
+      {
+       "titel": "Deklarative Programmierung",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Programmiersprache",
+       "Imperative Programmierung",
+       "Deklarative Programmierung",
+       "Objektorientierte Programmierung",
+       "Funktionale Programmierung",
+       "Compiler",
+       "Interpreter"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 289,
+      "total": 491,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 378,
+      "corpus": 10,
+      "segment": 13,
+      "match": 412,
+      "synthesize": 1017,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "wege": {
+    "C": {
+     "hauptartikel": "Säure-Base-Konzepte",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      },
+      {
+       "titel": "PH-Wert",
+       "absaetze": 5
+      },
+      {
+       "titel": "Basen (Chemie)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Lewis-Säure-Base-Konzept",
+       "absaetze": 3
+      },
+      {
+       "titel": "HSAB-Konzept",
+       "absaetze": 2
+      },
+      {
+       "titel": "Säuren",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Säure-Base-Konzepte",
+       "Säure-Base-Reaktion",
+       "Säuren",
+       "Basen (Chemie)",
+       "PH-Wert",
+       "Indikator (Chemie)",
+       "Lewis-Säure-Base-Konzept",
+       "HSAB-Konzept"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 205,
+      "completion": 529,
+      "total": 734,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 419,
+      "corpus": 5,
+      "segment": 11,
+      "match": 242,
+      "synthesize": 1341,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "wege": {
+    "C": {
+     "hauptartikel": "Sinfonie",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 7
+      },
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Joseph Haydn",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Sinfonie",
+       "Orchester",
+       "Joseph Haydn",
+       "Wolfgang Amadeus Mozart",
+       "Ludwig van Beethoven",
+       "Franz Schubert",
+       "Johannes Brahms",
+       "Gustav Mahler",
+       "Dmitri Dmitrijewitsch Schostakowitsch"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 585,
+      "total": 786,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 589,
+      "corpus": 27,
+      "segment": 46,
+      "match": 714,
+      "synthesize": 783,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "wege": {
+    "C": {
+     "hauptartikel": "Plattentektonik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Transformstörung",
+       "absaetze": 6
+      },
+      {
+       "titel": "Ozeanbodenspreizung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Kontinentaldrift",
+       "absaetze": 3
+      },
+      {
+       "titel": "Erdbeben",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Plattentektonik",
+       "Kontinentaldrift",
+       "Ozeanbodenspreizung",
+       "Subduktion",
+       "Mittelozeanischer Rücken",
+       "Transformstörung",
+       "Wilson-Zyklus",
+       "Erdbeben"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 204,
+      "completion": 237,
+      "total": 441,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 196,
+      "corpus": 20,
+      "segment": 8,
+      "match": 318,
+      "synthesize": 692,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "wege": {
+    "C": {
+     "hauptartikel": "Ökosystem",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 10
+      },
+      {
+       "titel": "Biotop",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ökosystemleistung",
+       "absaetze": 3
+      },
+      {
+       "titel": "Ökologische Nische",
+       "absaetze": 3
+      },
+      {
+       "titel": "Stoffkreislauf",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Ökosystem",
+       "Biotop",
+       "Biozönose",
+       "Nahrungskette",
+       "Stoffkreislauf",
+       "Ökologische Nische",
+       "Biom",
+       "Ökosystemleistung"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 356,
+      "total": 557,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 228,
+      "corpus": 16,
+      "segment": 9,
+      "match": 645,
+      "synthesize": 1353,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "wege": {
+    "C": {
+     "hauptartikel": "Liste der Atommodelle",
+     "methode": "llm",
+     "sicher": false,
+     "gedruckt": [
+      {
+       "titel": "Atomorbital",
+       "absaetze": 9
+      },
+      {
+       "titel": "Bohrsches Atommodell",
+       "absaetze": 3
+      },
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 2
+      },
+      {
+       "titel": "Thomsonsches Atommodell",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": "Liste der Atommodelle",
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Liste der Atommodelle",
+       "Thomsonsches Atommodell",
+       "Rutherfordsches Atommodell",
+       "Bohrsches Atommodell",
+       "Bohr-sommerfeldsches Atommodell",
+       "Atomorbital"
+      ],
+      "articles_main": true,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 200,
+      "completion": 330,
+      "total": 530,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 393,
+      "corpus": 10,
+      "segment": 3,
+      "match": 156,
+      "synthesize": 1356,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "wege": {
+    "C": {
+     "hauptartikel": "Industrielle Revolution",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Eisenbahn",
+       "absaetze": 9
+      },
+      {
+       "titel": "Soziale Frage",
+       "absaetze": 5
+      },
+      {
+       "titel": "Manchesterkapitalismus",
+       "absaetze": 4
+      },
+      {
+       "titel": "Fabrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 2
+      },
+      {
+       "titel": "Industrielle Revolution in Deutschland",
+       "absaetze": 2
+      },
+      {
+       "titel": "Industrialisierung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 11,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Industrielle Revolution",
+       "Industrialisierung",
+       "Dampfmaschine",
+       "Spinning Jenny",
+       "Eisenbahn",
+       "Fabrik",
+       "Soziale Frage",
+       "Manchesterkapitalismus",
+       "Industrielle Revolution in Deutschland"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 294,
+      "total": 495,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 377,
+      "corpus": 25,
+      "segment": 26,
+      "match": 706,
+      "synthesize": 1367,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "wege": {
+    "C": {
+     "hauptartikel": "Elektrischer Strom",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 13
+      },
+      {
+       "titel": "Wechselstrom",
+       "absaetze": 5
+      },
+      {
+       "titel": "Elektrische Spannung",
+       "absaetze": 4
+      },
+      {
+       "titel": "Ohmsches Gesetz",
+       "absaetze": 3
+      },
+      {
+       "titel": "Elektrische Ladung",
+       "absaetze": 2
+      },
+      {
+       "titel": "Strom",
+       "absaetze": 1
+      },
+      {
+       "titel": "Elektrischer Widerstand",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Elektrischer Strom",
+       "Elektrische Stromstärke",
+       "Elektrische Spannung",
+       "Elektrischer Widerstand",
+       "Stromkreis",
+       "Gleichstrom",
+       "Wechselstrom",
+       "Elektrische Ladung",
+       "Ohmsches Gesetz"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 223,
+      "total": 424,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 332,
+      "corpus": 29,
+      "segment": 9,
+      "match": 332,
+      "synthesize": 1128,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "wege": {
+    "C": {
+     "hauptartikel": "Wasserkreislauf",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Grundwasser",
+       "absaetze": 13
+      },
+      {
+       "titel": "Kondensation",
+       "absaetze": 6
+      },
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 4
+      },
+      {
+       "titel": "Niederschlag",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Wasserkreislauf",
+       "Verdunstung",
+       "Kondensation",
+       "Niederschlag",
+       "Transpiration",
+       "Evapotranspiration",
+       "Grundwasser"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 336,
+      "total": 539,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 193,
+      "corpus": 19,
+      "segment": 11,
+      "match": 250,
+      "synthesize": 1127,
+      "assemble": 5
+     }
+    }
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "wege": {
+    "C": {
+     "hauptartikel": "Römisches Reich",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 11
+      },
+      {
+       "titel": "Spätantike",
+       "absaetze": 5
+      },
+      {
+       "titel": "Römische Republik",
+       "absaetze": 2
+      },
+      {
+       "titel": "Römische Kaiserzeit",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 12,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Römisches Reich",
+       "Römische Republik",
+       "Römische Kaiserzeit",
+       "Spätantike",
+       "Römische Provinz",
+       "Römische Legion",
+       "Römisches Recht",
+       "Liste der römischen Kaiser der Antike",
+       "Romanisierung"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 202,
+      "completion": 269,
+      "total": 471,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 558,
+      "corpus": 52,
+      "segment": 24,
+      "match": 754,
+      "synthesize": 1864,
+      "assemble": 6
+     }
+    }
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "wege": {
+    "C": {
+     "hauptartikel": "Lineare Funktion",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Proportionalität",
+       "absaetze": 8
+      },
+      {
+       "titel": "Funktion (Mathematik)",
+       "absaetze": 4
+      },
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 3
+      },
+      {
+       "titel": "Lineare Gleichung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Gerade",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Lineare Funktion",
+       "Funktion (Mathematik)",
+       "Lineare Gleichung",
+       "Gerade",
+       "Proportionalität",
+       "Koordinatensystem"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 201,
+      "completion": 270,
+      "total": 471,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 664,
+      "corpus": 22,
+      "segment": 9,
+      "match": 251,
+      "synthesize": 1281,
+      "assemble": 3
+     }
+    }
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "wege": {
+    "C": {
+     "hauptartikel": "Zelle (Biologie)",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Eukaryoten",
+       "absaetze": 5
+      },
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zellbiologie",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zelle",
+       "absaetze": 1
+      },
+      {
+       "titel": "Zellkern",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Zelle (Biologie)",
+       "Zellbiologie",
+       "Zellmembran",
+       "Zellkern",
+       "Cytoplasma",
+       "Organell",
+       "Eukaryoten",
+       "Prokaryoten",
+       "Mitose"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 203,
+      "completion": 182,
+      "total": 385,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 273,
+      "corpus": 8,
+      "segment": 9,
+      "match": 311,
+      "synthesize": 1233,
+      "assemble": 4
+     }
+    }
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "wege": {
+    "C": {
+     "hauptartikel": "Lyrik",
+     "methode": "title",
+     "sicher": true,
+     "gedruckt": [
+      {
+       "titel": "Sonett",
+       "absaetze": 8
+      },
+      {
+       "titel": "Lyrik",
+       "absaetze": 3
+      },
+      {
+       "titel": "Vers",
+       "absaetze": 2
+      },
+      {
+       "titel": "Strophe",
+       "absaetze": 2
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 1
+      },
+      {
+       "titel": "Reim",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "chosen": null,
+      "hits_checked": 0,
+      "hits_dropped": [],
+      "articles_asked": true,
+      "articles_found": [
+       "Lyrik",
+       "Vers",
+       "Strophe",
+       "Reim",
+       "Sonett",
+       "Ode"
+      ],
+      "articles_main": false,
+      "articles_fallback": null
+     },
+     "tokens": {
+      "prompt": 200,
+      "completion": 283,
+      "total": 483,
+      "calls": 1
+     },
+     "ms": {
+      "resolve": 345,
+      "corpus": 10,
+      "segment": 14,
+      "match": 260,
+      "synthesize": 1093,
+      "assemble": 5
+     }
+    }
+   }
+  }
+ ]
+}

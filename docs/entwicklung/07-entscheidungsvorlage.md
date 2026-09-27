@@ -15,7 +15,7 @@ der QA-Paare (D54, D55, D57).
 | | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` |
 |---|---|---|---|---|
 | Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm-thorough` | `llm-thorough` |
-| Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | dazu Prüfung der Nebenartikel | dazu Prüfung der Nebenartikel | dazu Prüfung der Nebenartikel |
+| Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | statt verlinkter Unterartikel und Volltexttreffer die Artikel, die das LLM als Übersicht und Teile nennt (D63); ohne Antwort wie `llm-free` mit Prüfung der Nebenartikel | wie `balanced` | wie `balanced` |
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM geschrieben, ergänzt um Modellwissen |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` |
@@ -23,14 +23,15 @@ der QA-Paare (D54, D55, D57).
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` |
 | Hauptartikel richtig, 94 Goldanfragen (M35) | 87 | 91 | 93 | 93 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` |
-| gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 | nicht gemessen | nicht gemessen |
-| Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 | 0,70 | 0,70 |
+| gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen |
+| gedruckte Absätze aus passenden Artikeln, 25 Sammel- und 20 gewöhnliche Themen (M37, M39) | 43 % und 71 % | 87 % und 93 % seit D63 (vorher 45 und 73 %) | wie `balanced` (derselbe Korpus, nicht eigens gemessen) | wie `balanced` |
+| Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht mehr ab (M39) | 0,70 vor D63 | 0,70 vor D63 |
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96), 0,3 s je Text | wie `llm-free` | 99 von 120, rund 2.400 Tokens | 99 von 120, rund 2.400 Tokens |
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` |
 | Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29, rund 0,25 s | 0,78, Präzision 0,70, rund 800 Tokens und 4 s | wie `balanced` | wie `balanced` |
-| Teil 1 und 2 je Kompendium (M27) | 1,6 s | rund 3,4 s | rund 14 s | rund 24 s |
-| Tokens je Kompendium, Median (M27) | 0 | 905 | 26.267 | 35.376 |
+| Teil 1 und 2 je Kompendium (M27, M39) | 1,6 s | rund 4,2 s mit N (vorher 3,4 s) | rund 14 s vor D63 | rund 24 s vor D63 |
+| Tokens je Kompendium, Median (M27, M39) | 0 | rund 480 mit N (vorher 905) | 26.267 vor D63 | 35.376 vor D63 |
 | Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 2.200 | rund 76 | rund 57 |
 | so wählt man es | `preset: llm-free`, ohne LLM `PRESET_DEFAULT=llm-free` | Standard, `preset: balanced` | `preset: best-quality` | `preset: best-quality-generated` |
@@ -106,8 +107,8 @@ Gutachtern falsch (M31).
 
 | Endpunkt | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` |
 |---|---|---|---|---|
-| `POST /api/v2/compendium` | Regeln; 1,6 s, keine Tokens | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 3,4 s, 905 Tokens | dazu LLM-Zuordnung; rund 14 s, 26.267 Tokens; mit Teil 2 prüft das LLM die Lehrplanelemente, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32) | dazu Text vom LLM; rund 24 s, 35.376 Tokens; Teil 2 wie `best-quality` |
-| `POST /api/v2/knowledge` | Regeln; rund 0,5 s | LLM-Artikelwahl und Prüfung der Nebenartikel; rund 2 bis 3 s, rund 900 Tokens | wie `balanced` | wie `balanced` |
+| `POST /api/v2/compendium` | Regeln; 1,6 s, keine Tokens | das LLM nennt Übersicht und Teile des Themas (D63) und entscheidet unsichere Artikel; rund 4,2 s, 480 Tokens (M39) | dazu LLM-Zuordnung; rund 14 s, 26.267 Tokens; mit Teil 2 prüft das LLM die Lehrplanelemente, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32) | dazu Text vom LLM; rund 24 s, 35.376 Tokens; Teil 2 wie `best-quality` |
+| `POST /api/v2/knowledge` | Regeln; rund 0,5 s | dieselben Artikel wie das Kompendium: Übersicht und Teile vom LLM (D63); die Frage rund 3,6 s und 480 Tokens | wie `balanced` | wie `balanced` |
 | `POST /api/v2/qa` mit `text` | `rule-based`: rund 0,3 s je Text, 8 bis 20 von 20 Paaren, 58 von 95 mangelfrei (M34) | wie `llm-free` (D57) | `llm`: 4 bis 7,5 s und rund 2.400 Tokens für 20 Paare, 99 von 120 mangelfrei | wie `best-quality` |
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab |
 | `GET /api/v2/lehrplan/search` | Regeln finden und bewerten; `mode=topic` löst wie Teil 2 auf, 0,5 bis 1,3 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2 | dazu bewertet das LLM jedes gefundene Element (D59); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` |
@@ -212,9 +213,12 @@ Aus dem Hauptartikel wird der Korpus: höchstens 12 Artikel und 400 Absätze, im
 | Artikel eines Materials | mit `topic` und `node_id` zusammen: wenn er ein anderer ist als der Hauptartikel und mit ihm verlinkt, als eigene Quelle ohne Themenfilter (D47) |
 | Materialien einer Sammlung (optional) | `knowledge_collection_id`: bis zu 30 Materialien mit je 20.000 Zeichen, wörtlich nur unter CC0, Public Domain, CC BY oder CC BY-SA; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen. |
 
-Artikel ohne das Themenwort im Titel geben nur die Absätze ab, die das Thema nennen. Mit `article_choice=llm`
-benotet das LLM danach alle Korpusartikel in einem Aufruf, und Volltexttreffer und verlinkte Unterartikel mit der
-Note 0 fallen heraus (D48); ohne solche Nebenartikel wird es nicht gefragt.
+Artikel ohne das Themenwort im Titel geben nur die Absätze ab, die das Thema nennen. Mit `article_choice=llm` nennt
+das LLM seit D63 zuerst den Übersichtsartikel des Themas und bis zu acht Artikel zu seinen Teilen; die davon im Archiv
+stehen, kommen an die Stelle der verlinkten Unterartikel und Volltexttreffer, ohne Themenfilter (Punkt 9, M39). Nur
+ohne brauchbare Antwort bleibt der Korpus wie oben, und dann benotet das LLM alle Korpusartikel in einem Aufruf, und
+Volltexttreffer und verlinkte Unterartikel mit der Note 0 fallen heraus (D48); ohne solche Nebenartikel wird es nicht
+gefragt.
 
 | Einstellung | Werte | Standard |
 |---|---|---|
@@ -222,7 +226,7 @@ Note 0 fallen heraus (D48); ohne solche Nebenartikel wird es nicht gefragt.
 | Umgebung: `CORPUS_MAX_CHUNKS` | 20 bis 5.000 Absätze | 400 |
 | Umgebung: `ZIM_PROFILE` | `compact` (Top-Artikel, 1,4 GB), `standard` (ganze Wikipedia und Klexikon), `extended` (dazu Wikibooks und Wikiversity) | `standard` |
 | Anfrage: `knowledge_collection_id` | nodeId einer Sammlung | keine |
-| Prüfung der Nebenartikel | über `article_choice` | an, wo `article_choice=llm` gilt |
+| Übersicht und Teile vom LLM, sonst Prüfung der Nebenartikel | über `article_choice` | an, wo `article_choice` `llm` oder `llm-thorough` gilt (D63) |
 
 | 20 Themen (M25, gpt-6-luna) | gedruckt aus passenden, verwandten, unpassenden Artikeln | gefüllte Inhaltsbausteine | LLM-Aufrufe, Tokens je Thema |
 |---|---|---|---|
@@ -409,9 +413,11 @@ B_API_KEY=…                             # aus dem Geheimnisspeicher, nie im Re
 PRESET_DEFAULT=balanced                 # ausgeliefert
 ```
 
-Ergebnis: 91 von 94 Hauptartikeln, 5 von 346 gedruckten Absätzen aus unpassenden Artikeln (M25), bei einem Material ohne
-`topic` F1 0,88 bis 0,98, macro-F1 0,45 wie `llm-free` (M27), Teil 1 und 2 rund 3,4 s und 905 Tokens (M27; in M25
-kostete Teil 1 im Median 2,0 s mehr als ohne LLM, 90. Perzentil 4,2 s). QA-Paare aus denselben Regeln wie `llm-free`,
+Ergebnis: 91 von 94 Hauptartikeln. Seit D63 nennt das LLM den Übersichtsartikel und die Teile jedes Themas: 87 statt
+45 % der gedruckten Absätze aus passenden Artikeln bei 25 Sammelthemen wie „deutsche Dichter“, 93 statt 73 % bei 20
+gewöhnlichen Themen (M39); Teil 1 und 2 rund 4,2 s und 480 Tokens (M39; vorher 3,4 s und 905 Tokens, M27). Bei einem
+Material ohne `topic` F1 0,88 bis 0,98. Die Zuordnung maß vor D63 macro-F1 0,45 wie `llm-free` (M27); den Korpus mit
+N deckt das Gold nicht mehr ab (M39). QA-Paare aus denselben Regeln wie `llm-free`,
 58 von 95 mangelfrei in 0,3 s je Text (M34, D57, D60). `/entities` lässt das LLM die Entitäten mit ihrem
 Artikeltitel nennen (`methods: llm`, D62): F1 0,78 bei einer Präzision von 0,70 und einem Recall von 0,89, rund 800
 Tokens und 4 s je Text; durch den Endpunkt nachgemessen mit denselben Artikeln wie im Versuch (M36). Ohne `preset`
@@ -432,7 +438,8 @@ LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel 
 
 Ergebnis: 93 von 94 Hauptartikeln - das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (M35, D61) -,
 macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median 26.267 Tokens, rund 170 je Absatz
-(M27); ein geprüftes Wort kostet rund 800 Tokens und 1 s mehr. Der Text bleibt wörtlich und belegt. QA-Paare vom LLM, 99 von 120 mangelfrei
+(M27); ein geprüftes Wort kostet rund 800 Tokens und 1 s mehr. Seit D63 nennt das LLM auch hier Übersicht und Teile
+jedes Themas wie in `balanced`; Zuordnung, Zeit und Tokens dieses Profils sind vorher gemessen. Der Text bleibt wörtlich und belegt. QA-Paare vom LLM, 99 von 120 mangelfrei
 (M30). `/entities` wie `balanced` (F1 0,78). Die zusätzliche Prüfung jeder Verknüpfung durch das LLM (`link_check:
 llm`) ist in keinem Profil voreingestellt: Präzision 0,94 statt 0,70, aber Recall 0,64 statt 0,89 und F1 0,76, rund
 820 Tokens und 2 s mehr (D62) - für Aufrufer, die eine kurze, sichere Liste brauchen.
@@ -505,12 +512,13 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
    819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
    `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
-9. **Sammel- und Mischthemen („deutsche Dichter“):** gemessen (M37, M38), im Grundsatz entschieden (Jan, 26.09.2026):
-   `llm-free` bleibt ohne LLM, die neue Frage N kommt ab `balanced` in alle höheren Profile (Option C). Vorher zu
-   prüfen war, ob ihre Wirkung ohne großes LLM erreichbar ist - das Ergebnis steht am Ende dieses Punkts; offen ist
-   nur noch, welches Modell die Frage stellt.
+9. **Sammel- und Mischthemen („deutsche Dichter“):** entschieden und gebaut (D63; Jan, 26. und 27.09.2026): `llm-free`
+   bleibt ohne LLM, die neue Frage N stellt das konfigurierte Modell (`gpt-6-luna`) ab `balanced` in allen höheren
+   Profilen (Option C), nachgemessen in M39. Ohne großes LLM ist ihre Wirkung nicht erreichbar, weder mit spaCy und
+   dem Archiv (M38) noch mit kleinen lokalen Modellen (M40); offen ist nur, ob `llm-free` anders besser werden soll
+   (am Ende dieses Punkts).
 
-   *Was heute geschieht.* Der Dienst sucht zu jedem Thema genau einen Hauptartikel - über den Titel (genau, gebeugt,
+   *Ausgangslage vor D63.* Der Dienst sucht zu jedem Thema genau einen Hauptartikel - über den Titel (genau, gebeugt,
    als Weiterleitung, über eine Begriffsklärung), sonst über Titelvorschläge und die Volltextsuche - und baut um ihn
    den Korpus: den Klexikon-Zwilling, die Unterartikel, auf die er verlinkt, und die mit ihm verlinkten
    Volltexttreffer. `balanced` und die `best-quality`-Profile lassen das LLM entscheiden, wo die Regeln unsicher sind,
@@ -600,12 +608,48 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
    0,6 s ebenso gut wie `gpt-6-luna` in 3,5 s, erfand aber bei zwei Themen alle Titel (dann zählt der Rückfall) und
    liegt bei gewöhnlichen Themen zwischen heute und `gpt-6-luna`. Das 8B-Modell reicht nicht.
 
-   Offen: Wer stellt die Frage N? (a) das konfigurierte Modell (`gpt-6-luna`) in allen drei Profilen - beste Güte bei
-   gewöhnlichen Themen, ein Anbieter, `balanced` rund 2 s langsamer als heute; (b) `qwen3-30b-a3b-instruct-2507` in
-   `balanced`, `gpt-6-luna` in den `best-quality`-Profilen - `balanced` dann eher schneller als heute (die Frage
-   ersetzt die Prüfung der Nebenartikel), aber ein zweiter Anbieter mit eigenem Rate-Limit (im Lauf einmal 429) und
-   eine zweite Modell-Einstellung. Vorschlag: (a), weil die gewöhnlichen Themen die meisten Anfragen sind und dort
-   `gpt-6-luna` klar vorn liegt; (b) als spätere Beschleunigung, wenn academiccloud die Last trägt.
+   *Entschieden (Jan, 27.09.2026):* Die Frage stellt das konfigurierte Modell (`gpt-6-luna`) in `balanced` und den
+   `best-quality`-Profilen; die kleineren Modelle der b-api waren nicht gemeint. Gebaut als D63 (Option C), durch den
+   Dienst nachgemessen (M39): in allen 45 Themen derselbe Hauptartikel wie beim Prototyp, 87 statt 45 % passende
+   Absätze bei Sammelthemen und 93 statt 73 % bei gewöhnlichen, die Artikelwahl am Gold unverändert bei 91 und 93 von
+   94 („Lichtlehre“ wird *Optik*, „Ursachen des Ersten Weltkriegs“ *Julikrise*). Die Frage kostet im Median 3,6 s und
+   480 Tokens, ein Kompendium mit Teil 1 und 2 brauchte in `balanced` 4,2 s. Das Gold der Zuordnung deckt den neuen
+   Korpus nicht mehr ab: 243 statt 62 der 643 Labels veralten, weil ihre Absätze in den ersetzten Nebenartikeln stehen.
+
+   *Kann `llm-free` besser werden? (M40)* Jan: mit Modellen, die im Dienst selbst laufen - extrahierenden wie GLiNER,
+   Flair oder GBERT-Feintunes, generativen wie LFM2, LFM2.5 und Qwen3 0.6B -, in höchstens 2 bis 3 s. Gemessen wurden
+   die generativen (Jan gab nur sie frei; die extrahierenden finden Namen in einem Text, wissen aber nicht, welche zu
+   einem Sammelthema gehören), mit derselben Frage, denselben Themen und derselben Skala:
+
+   | Weg | Sammelthemen: passend | Absätze | gewöhnliche Themen: passend | Frage auf 4 Threads, Median |
+   |---|---|---|---|---|
+   | `llm-free` heute | 43 % | 351 | 71 % | – |
+   | nur Hauptartikel und Zwilling (`max_articles: 2`) | 76 % | 214 | 94 % | – |
+   | N mit LFM2-700M | 59 % | 290 | 92 % | 4,4 s |
+   | N mit LFM2.5-1.2B | 61 % | 285 | 74 % | 4,8 s |
+   | N mit Qwen3-0.6B | 55 % | 277 | 94 % | 6,3 s |
+   | N mit `gpt-6-luna` (`balanced` seit D63) | 87 % | 504 | 93 % | 3,6 s über die b-api |
+
+   Die kleinen Modelle kennen die Vertreter nicht: Von rund neun genannten Titeln hatte das Archiv im Mittel 0,3 bis 2,
+   bei 5 bis 18 der 25 Sammelthemen keinen; meist nannten sie das Thema selbst als Übersicht und erfanden den Rest
+   („Dichter der deutschen Literatur“, als Komponisten der Klassik „Bach, Johann“ und „Dürer, Martin“). Ihr Gewinn
+   kommt aus dem kleineren Korpus, und ohne Modell ist er größer: Nur Hauptartikel und Zwilling bringen 76 und 94 % -
+   für ein Drittel weniger Absätze und rund zwei gefüllte Bausteine weniger. In 2 bis 3 s blieben 2 der 135 Fragen.
+   Kleine lokale Modelle verbessern `llm-free` also nicht.
+
+   Mögliche Wege für `llm-free`, keiner gebaut:
+   - (a) nichts ändern: `llm-free` bleibt der schnelle, freie Weg; wer Sammelthemen braucht, nimmt `balanced`.
+   - (b) ein kleinerer Korpus in `llm-free`, etwa `max_articles` 2 oder ohne Volltexttreffer: mehr passende Absätze
+     (76 statt 43 % und 94 statt 71 %), aber weniger Text und Bausteine, und die Vertreter einer Gruppe fehlen weiter
+     („deutsche Dichter“ bleibt auf der Liste). Gemessen ist nur die Grenze 2; eine Anfrage kann sie schon heute mit
+     `max_articles` setzen.
+   - (c) N vorab: `gpt-6-luna` beantwortet die Frage einmal für bekannte Themen - die Sammlungen und Themenseiten der
+     WLO, die Themen der Lehrpläne -, der Dienst liefert die Antworten als Daten mit, und `llm-free` schlägt dort nach,
+     ohne ein LLM zu rufen. Für diese Themen die Wirkung von N, für freie Eingaben nichts; die Liste muss mit neuen
+     Archiven erneuert werden, und es wären Daten eines LLM in einem Profil ohne LLM. Nicht gemessen.
+
+   Vorschlag: (a). (b) ändert, was ein Kompendium in `llm-free` ist, und hilft den Sammelthemen nicht; (c) lohnt sich,
+   wenn die meisten Anfragen aus WLO-Sammlungen kommen, und das wäre zuerst an echten Anfragen zu prüfen.
 10. **Profile für `/entities`:** entschieden und gebaut (D62, Jan: „angemessene Zuordnung der Methoden auf die
     Profile gemäß der Ergebnisse“). Der Endpunkt erkannte ohne LLM (spaCy und ein Wörterbuch der Artikeltitel) und
     nahm kein Profil. An den Texten von 40 echten Materialien kommt das auf F1 0,38 bei einer Präzision von 0,29: Das

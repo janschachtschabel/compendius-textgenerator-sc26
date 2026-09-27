@@ -81,7 +81,7 @@ auf das Warten auf das Modell, im Median 32 s. Seine Endpunktbeschreibung nennt 
 | LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet im Standardprofil `balanced` ein LLM (D53); `llm-free` bleibt bei den Regeln. |
 | nur Einleitungen als Quelle | ganze Artikel, dazu verlinkte Unterartikel und derselbe Artikel aus Klexikon, bis 12 Artikel und 400 Absätze |
 | Text großteils unbelegt, Verweise nicht prüfbar | Absätze werden wörtlich übernommen; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| 35 bis 374 s, rund 7.900 Tokens | Teil 1 und 2 rund 3,4 s und 905 Tokens im Standardprofil `balanced`, 1,6 s und 0 Tokens mit `llm-free` (M27) |
+| 35 bis 374 s, rund 7.900 Tokens | Teil 1 und 2 rund 4,2 s und 480 Tokens im Standardprofil `balanced` seit D63 (M39), 1,6 s und 0 Tokens mit `llm-free` (M27) |
 | Aspekte nur als Hinweis | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten, Prüfung der Regeln (Lint) |
 | nur Weltwissen | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
 | Fehler in einer normalen Antwort | passende Statuscodes, `parts_status` je Teil, Request-ID in jeder Antwort, Prometheus-Metriken und Alarme |
@@ -114,15 +114,16 @@ Bausteine ohne passenden Absatz weg. Zweimal dieselbe Anfrage an den neuen Diens
 ### Mit den LLM-Schaltern für Artikelwahl und Zuordnung
 
 Nach v2.0.0 kamen LLM-Schritte hinzu, gebündelt in vier Profilen (D53). Gemessen am 25.09.2026 auf dem
-Entwicklungsrechner, Teil 1 und 2 je Kompendium, `gpt-6-luna` (M27, M28); Hauptartikel an den Goldsätzen (M9). Mit der
-Tabelle oben, gemessen über HTTP auf dem Server, ist die Dauer nur der Größenordnung nach vergleichbar.
+Entwicklungsrechner, Teil 1 und 2 je Kompendium, `gpt-6-luna` (M27, M28), `balanced` nach D63 am 27.09.2026 (M39);
+Hauptartikel an den Goldsätzen (M35). Mit der Tabelle oben, gemessen über HTTP auf dem Server, ist die Dauer nur der
+Größenordnung nach vergleichbar.
 
 | Profil | Dauer | Tokens, Median | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
 |---|---|---|---|---|
-| `llm-free` | 1,6 s | 0 | 86 | 0,45 |
-| `balanced` (Standard) | rund 3,4 s | 905 | 91 | 0,45 |
-| `best-quality` | rund 14 s | 26.267 | 91 | 0,70 |
-| `best-quality-generated` (Text vom LLM geschrieben) | rund 24 s | 35.376 | 91 | 0,70 |
+| `llm-free` | 1,6 s | 0 | 87 | 0,45 |
+| `balanced` (Standard) | rund 4,2 s | rund 480 | 91 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht ab |
+| `best-quality` | rund 14 s | 26.267 | 93 | 0,70 |
+| `best-quality-generated` (Text vom LLM geschrieben) | rund 24 s | 35.376 | 93 | 0,70 |
 | zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
 
 Mit der LLM-Zuordnung braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und in den Profilen bis
@@ -156,6 +157,12 @@ Modellwissen, das zu zwei Dritteln aus Füllsätzen besteht.
   Wörterbuch Allerweltswörter verknüpft (M36). Seit D62 nennt deshalb in `balanced` und den `best-quality`-Profilen
   wieder ein LLM die Begriffe - aber mit dem Titel ihres Artikels, nachgeschlagen im lokalen Archiv statt live:
   F1 0,78, rund 800 Tokens und 4 s je Text; `llm-free` behält die zwei Schichten.
+- **Sammel- und Mischthemen.** Der alte Dienst baute jedes Thema aus den Begriffen, die sein LLM nannte: „deutsche
+  Dichter“ bekam Goethe, Schiller und Heine, aber keinen Übersichtsartikel, und oft wurde ein Vertreter oder ein
+  Nachbarbegriff zum Hauptartikel. Der neue suchte genau einen Hauptartikel und landete bei einer Gruppe oft auf einer
+  Liste. Seit D63 fragt `balanced` das LLM nach dem Übersichtsartikel und den wichtigsten Teilen eines Themas: 87 %
+  der gedruckten Absätze stammen aus passenden Artikeln, mit den Begriffen des alten Linkers 63 %, mit den Regeln 43 %
+  (M37, M39). `llm-free` bleibt bei den Regeln; kleine lokale Modelle erreichen die Wirkung nicht (M40).
 - **Frage-Antwort-Paare.** Der alte Dienst ließ sie ein LLM schreiben. Der neue hat vier Stufen; die Modellstufe
   (deutscher T5-Fragegenerator und ein extraktives Antwortmodell im Image) lieferte in der Messung aus
   `docs/umbau.md` 94 % mangelfreie Paare bei rund 1 s je Paar, ganz ohne b-api.

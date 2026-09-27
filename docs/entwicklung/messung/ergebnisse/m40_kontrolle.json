@@ -1,0 +1,1832 @@
+{
+ "threads": 4,
+ "modelle": {
+  "LF7": "LFM2-700M-Q4_K_M.gguf",
+  "LF12": "LFM2.5-1.2B-Instruct-Q4_K_M.gguf",
+  "Q06": "Qwen3-0.6B-Q8_0.gguf"
+ },
+ "themen": [
+  {
+   "thema": "Barockliteratur",
+   "wege": {
+    "LF7": {
+     "sekunden": 4.7,
+     "hauptartikel": "Barockliteratur",
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Barockliteratur",
+     "genannt": [
+      "Barockliteratur: Eine kurze Einführung",
+      "Barock: Eine kurze Einführung",
+      "Die Barockzeit: Eine kurze Einführung",
+      "Barocke Literatur: Eine kurze Einführung",
+      "Die deutsche Literatur des Barock: Eine kurze Einführung",
+      "Barocke Dichtung: Eine kurze Einführung",
+      "Barocke Dramatik: Eine kurze Einführung",
+      "Die deutsche Literatur des 17. Jahrhunderts: Eine kurze Einführung"
+     ],
+     "gefunden": [
+      "Barockliteratur"
+     ],
+     "tokens_aus": 126,
+     "sekunden_frage": 5.02
+    },
+    "LF12": {
+     "sekunden": 1.81,
+     "hauptartikel": "Barockliteratur",
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Barockliteratur",
+     "genannt": [
+      "Die Epoche des Barock",
+      "Barockliteratur in Deutschland",
+      "Klimawandel und Literatur",
+      "Natur in barocker Dichtung",
+      "Sturm und Drang und Barock",
+      "Barock und Landschaftsbeschreibung",
+      "Literatur und Umwelt im 17. Jh.",
+      "Barock als Reaktion auf Naturveränderungen"
+     ],
+     "gefunden": [
+      "Barockliteratur"
+     ],
+     "tokens_aus": 106,
+     "sekunden_frage": 6.32
+    },
+    "Q06": {
+     "sekunden": 2.29,
+     "hauptartikel": "Barockliteratur",
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Barockliteratur",
+     "genannt": [
+      "Barockliteratur",
+      "Barockliteratur: Epoche und Gattung",
+      "Barockliteratur: Verbindung zwischen Kultur und Kultur",
+      "Barockliteratur: Entwicklung und Wandel",
+      "Barockliteratur: Dichter und ihre Rolle",
+      "Barockliteratur: Klassische und zeitgenössische Dichter",
+      "Barockliteratur: Kultur und Kultur im Barock",
+      "Barockliteratur: Barock und moderne Literatur"
+     ],
+     "gefunden": [
+      "Barockliteratur"
+     ],
+     "tokens_aus": 142,
+     "sekunden_frage": 6.01
+    }
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "wege": {
+    "LF7": {
+     "sekunden": 3.41,
+     "hauptartikel": "Bruchrechnung",
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Bruchrechnung",
+     "genannt": [
+      "Bruchrechnung: Grundlagen und Methoden",
+      "Bruchrechnung in der Architektur",
+      "Bruchrechnung in der Kunstgeschichte",
+      "Bruchrechnung in der Architekturtheorie",
+      "Bruchrechnung in der Textanalyse",
+      "Bruchrechnung in der Literaturkritik",
+      "Bruchrechnung in der Musiktheorie",
+      "Bruchrechnung in der Geometrie"
+     ],
+     "gefunden": [
+      "Bruchrechnung"
+     ],
+     "tokens_aus": 122,
+     "sekunden_frage": 3.95
+    },
+    "LF12": {
+     "sekunden": 9.99,
+     "hauptartikel": "Bruchrechnung",
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Bruchrechnung",
+     "genannt": [
+      "Grundlagen der Bruchrechnung",
+      "Arithmetik mit Brüchen",
+      "Umrechnung von Maßeinheiten",
+      "Mathematische Grundlagen",
+      "Praktische Anwendungen",
+      "Schulrechnung",
+      "Mathematische Konzepte",
+      "Rechnen mit Dezimalzahlen"
+     ],
+     "gefunden": [
+      "Bruchrechnung"
+     ],
+     "tokens_aus": 87,
+     "sekunden_frage": 8.77
+    },
+    "Q06": {
+     "sekunden": 2.02,
+     "hauptartikel": "Bruchrechnung",
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Bruchrechnung",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung",
+      "https://de.wikipedia.org/wiki/Bruchrechnung"
+     ],
+     "gefunden": [
+      "Bruchrechnung"
+     ],
+     "tokens_aus": 129,
+     "sekunden_frage": 5.29
+    }
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "wege": {
+    "LF7": {
+     "sekunden": 4.86,
+     "hauptartikel": "Demokratie",
+     "gedruckt": [
+      {
+       "titel": "Demokratie",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Demokratie",
+     "genannt": [
+      "Demokratie im 20. Jahrhundert",
+      "Die Demokratie in Deutschland",
+      "Die Entwicklung der Demokratie in Europa",
+      "Demokratie und Bürgerbeteiligung",
+      "Die Rolle der Demokratie in der modernen Gesellschaft",
+      "Demokratie und Menschenrechte",
+      "Die Herausforderungen der Demokratie",
+      "Demokratie und Globalisierung"
+     ],
+     "gefunden": [
+      "Demokratie"
+     ],
+     "tokens_aus": 99,
+     "sekunden_frage": 3.2
+    },
+    "LF12": {
+     "sekunden": 6.2,
+     "hauptartikel": "Demokratie",
+     "gedruckt": [
+      {
+       "titel": "Demokratie",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Demokratie",
+     "genannt": [
+      "Demokratie in der modernen Gesellschaft",
+      "Die Rolle der Demokratie in der Politik",
+      "Demokratische Grundlagen und Werte",
+      "Kritik an der Demokratie",
+      "Demokratie und Demokratiebildung",
+      "Demokratie in der digitalen Ära",
+      "Demokratische Partizipation",
+      "Demokratie und Gesellschaft"
+     ],
+     "gefunden": [
+      "Demokratie"
+     ],
+     "tokens_aus": 104,
+     "sekunden_frage": 7.86
+    },
+    "Q06": {
+     "sekunden": 3.21,
+     "hauptartikel": "Demokratie",
+     "gedruckt": [
+      {
+       "titel": "Demokratie",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Demokratie",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Demokratie",
+      "https://de.wikipedia.org/wiki/Demokratische_Konstitution",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_europäischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_Nationen",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_europäischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_Nationen",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_europäischen_Kreisen",
+      "https://de.wikipedia.org/wiki/Demokratie_in_den_Nationen"
+     ],
+     "gefunden": [
+      "Demokratie"
+     ],
+     "tokens_aus": 187,
+     "sekunden_frage": 7.49
+    }
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "wege": {
+    "LF7": {
+     "sekunden": 3.14,
+     "hauptartikel": "Französische Revolution",
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Französische Revolution",
+     "genannt": [
+      "Die Französische Revolution (Wikipedia)",
+      "Die Französische Revolution: Eine kurze Geschichte",
+      "Die Französische Revolution: Die Revolution von 1789",
+      "Die Französische Revolution: Die Revolution von 1792",
+      "Die Französische Revolution: Die Revolution von 1793",
+      "Die Französische Revolution: Die Revolution von 1794",
+      "Die Französische Revolution: Die Revolution von 1795",
+      "Die Französische Revolution: Die Revolution von 1799"
+     ],
+     "gefunden": [
+      "Französische Revolution"
+     ],
+     "tokens_aus": 144,
+     "sekunden_frage": 4.35
+    },
+    "LF12": {
+     "sekunden": 3.27,
+     "hauptartikel": "Französische Revolution",
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 11
+      },
+      {
+       "titel": "Die Französische Revolution",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Französische Revolution",
+     "genannt": [
+      "Die Französische Revolution",
+      "Die Französische Revolution – Übersicht",
+      "Französische Revolution – Epoche",
+      "Französische Revolution – politische Entwicklung",
+      "Französische Revolution – gesellschaftliche Auswirkungen",
+      "Französische Revolution – Literatur und Dichter",
+      "Französische Revolution – Schlüsselereignisse",
+      "Französische Revolution – internationale Reaktionen"
+     ],
+     "gefunden": [
+      "Französische Revolution",
+      "Die Französische Revolution"
+     ],
+     "tokens_aus": 112,
+     "sekunden_frage": 7.34
+    },
+    "Q06": {
+     "sekunden": 2.81,
+     "hauptartikel": "Französische Revolution",
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Französische Revolution",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Französische_Revolution",
+      "https://de.wikipedia.org/wiki/Französische_Epoche",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt",
+      "https://de.wikipedia.org/wiki/Französisches_Konflikt"
+     ],
+     "gefunden": [
+      "Französische Revolution"
+     ],
+     "tokens_aus": 183,
+     "sekunden_frage": 7.95
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine neue Herausforderung für die deutsche Landwirtschaft",
+      "Landwirtschaft und Klimawandel: Eine komplexe Beziehung",
+      "Der Klimawandel und seine Auswirkungen auf die deutsche Landwirtschaft",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Klimafolgenforschung und -anpassung in der deutschen Landwirtschaft",
+      "Der Klimawandel und die Ernährungssicherheit in Deutschland",
+      "Landwirtschaftliche Treibhausgasemissionen: Ein Überblick",
+      "Klimaschutz in der Landwirtschaft: Innovationen und Herausforderungen"
+     ],
+     "gefunden": [],
+     "tokens_aus": 155,
+     "sekunden_frage": 4.87
+    },
+    "LF12": {
+     "sekunden": 2.86,
+     "hauptartikel": "Klimawandel",
+     "gedruckt": [
+      {
+       "titel": "Folgen der globalen Erwärmung in Deutschland",
+       "absaetze": 6
+      },
+      {
+       "titel": "Klimawandel",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Klimawandel",
+     "genannt": [
+      "Klimawandel",
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel in der deutschen Literatur",
+      "Klimawandel in der deutschen Wissenschaft",
+      "Klimawandel und Umweltgeschichte",
+      "Klimawandel und Gesellschaft",
+      "Klimawandel in Deutschland",
+      "Klimawandel und Politik"
+     ],
+     "gefunden": [
+      "Klimawandel",
+      "Folgen der globalen Erwärmung in Deutschland"
+     ],
+     "tokens_aus": 98,
+     "sekunden_frage": 6.1
+    },
+    "Q06": {
+     "sekunden": 2.63,
+     "hauptartikel": "Klimawandel",
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Klimawandel",
+     "genannt": [
+      "Klimawandel",
+      "Klimawandel und Landwirtschaft",
+      "Klimawandel und Umwelt",
+      "Klimawandel und Nachhaltigkeit",
+      "Klimawandel und Klimasysteme",
+      "Klimawandel und Klimasysteme",
+      "Klimawandel und Klimasysteme",
+      "Klimawandel und Klimasysteme"
+     ],
+     "gefunden": [
+      "Klimawandel"
+     ],
+     "tokens_aus": 119,
+     "sekunden_frage": 8.34
+    }
+   }
+  },
+  {
+   "thema": "Optik",
+   "wege": {
+    "LF7": {
+     "sekunden": 16.08,
+     "hauptartikel": "Optik",
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Optik",
+     "genannt": [
+      "Optik: Grundlagen und Prinzipien",
+      "Optik der Natur: Licht und Farben",
+      "Optik der menschlichen Wahrnehmung",
+      "Optische Instrumente",
+      "Optische Phänomene",
+      "Optische Illusionen",
+      "Optische Psychologie",
+      "Optische Technologie und Anwendungen"
+     ],
+     "gefunden": [
+      "Optik"
+     ],
+     "tokens_aus": 101,
+     "sekunden_frage": 3.41
+    },
+    "LF12": {
+     "sekunden": 1.81,
+     "hauptartikel": "Optik",
+     "gedruckt": [
+      {
+       "titel": "Licht",
+       "absaetze": 8
+      },
+      {
+       "titel": "Optik",
+       "absaetze": 5
+      },
+      {
+       "titel": "Fotografie",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Optik",
+     "genannt": [
+      "Optik",
+      "Licht",
+      "Sicht",
+      "Optische Theorie",
+      "Fotografie",
+      "Optische Instrumente",
+      "Wissenschaftliche Optik",
+      "Kunst und Optik"
+     ],
+     "gefunden": [
+      "Optik",
+      "Licht",
+      "Fotografie"
+     ],
+     "tokens_aus": 71,
+     "sekunden_frage": 5.4
+    },
+    "Q06": {
+     "sekunden": 1.73,
+     "hauptartikel": "Optik",
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 13
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Optik",
+     "genannt": [
+      "Optik",
+      "Optik in der Kunst",
+      "Optik in der Medizin",
+      "Optik und Technologie",
+      "Optik in der Bildgebung",
+      "Optik und Bildgebung",
+      "Optik und Optik",
+      "Optik und Optik"
+     ],
+     "gefunden": [
+      "Optik"
+     ],
+     "tokens_aus": 88,
+     "sekunden_frage": 5.27
+    }
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.28,
+     "hauptartikel": "Photosynthese",
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 16
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Photosynthese",
+     "genannt": [
+      "Photosynthese: Grundprinzip und Bedeutung",
+      "Die Photosynthese: Ein Überblick",
+      "Die Grundlagen der Photosynthese",
+      "Die Rolle der Chloroplasten in der Photosynthese",
+      "Die Lichtabhängigen und Lichtunabhängigen Reaktionen der Photosynthese",
+      "Die Photosynthese bei Pflanzen und Algen",
+      "Photosynthese bei C3-Pflanzen",
+      "Photosynthese bei C4-Pflanzen und CAM-Pflanzen"
+     ],
+     "gefunden": [
+      "Photosynthese"
+     ],
+     "tokens_aus": 135,
+     "sekunden_frage": 5.92
+    },
+    "LF12": {
+     "sekunden": 3.25,
+     "hauptartikel": "Photosynthese",
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 9
+      },
+      {
+       "titel": "Energiewandler",
+       "absaetze": 6
+      },
+      {
+       "titel": "Botanik",
+       "absaetze": 4
+      },
+      {
+       "titel": "Pflanzenphysiologie",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Photosynthese",
+     "genannt": [
+      "Photosynthese",
+      "Pflanzenbiologie",
+      "Energieumwandlung",
+      "Klimawandel und Landwirtschaft",
+      "Pflanzenphysiologie",
+      "Pflanzenwachstum",
+      "Pflanzenentwicklung",
+      "Ökologische Prozesse"
+     ],
+     "gefunden": [
+      "Photosynthese",
+      "Botanik",
+      "Energiewandler",
+      "Pflanzenphysiologie",
+      "Pflanzenwachstum"
+     ],
+     "tokens_aus": 84,
+     "sekunden_frage": 6.61
+    },
+    "Q06": {
+     "sekunden": 1.91,
+     "hauptartikel": "Photosynthese",
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 16
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Photosynthese",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Photosynthese",
+      "https://de.wikipedia.org/wiki/Photosynthese_in_den_Klimawandel",
+      "https://de.wikipedia.org/wiki/Photosynthese_in_den_Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Photosynthese_und_Klimawandel",
+      "https://de.wikipedia.org/wiki/Photosynthese_und_Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Photosynthese_und_Klimawandel",
+      "https://de.wikipedia.org/wiki/Photosynthese_und_Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Photosynthese_und_Klimawandel"
+     ],
+     "gefunden": [
+      "Photosynthese"
+     ],
+     "tokens_aus": 172,
+     "sekunden_frage": 8.9
+    }
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die Ernährungssicherheit",
+      "Landwirtschaft im Kontext des Klimawandels",
+      "Der Klimawandel und seine Auswirkungen auf die Landwirtschaft: Eine globale Perspektive",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Klimafolgenforschung und Landwirtschaft: Herausforderungen und Chancen",
+      "Der Klimawandel und die Ernährungssicherheit: Eine enge Verknüpfung",
+      "Anpassungsstrategien in der Landwirtschaft angesichts des Klimawandels",
+      "Klimafreundliche Landwirtschaft: Innovationen und Praktiken zur Reduktion von Emissionen"
+     ],
+     "gefunden": [],
+     "tokens_aus": 183,
+     "sekunden_frage": 12.95
+    },
+    "LF12": {
+     "sekunden": 3.52,
+     "hauptartikel": "Programmiersprache",
+     "gedruckt": [
+      {
+       "titel": "C++",
+       "absaetze": 12
+      },
+      {
+       "titel": "JavaScript",
+       "absaetze": 9
+      },
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 4
+      },
+      {
+       "titel": "Geschichte der Programmiersprachen",
+       "absaetze": 4
+      },
+      {
+       "titel": "Objektorientierte Programmierung",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 11,
+     "uebersicht": "Programmiersprache",
+     "genannt": [
+      "Programmiersprachen",
+      "Geschichte der Programmiersprachen",
+      "Objektorientierte Programmierung",
+      "Funktionale Programmierung",
+      "Python",
+      "JavaScript",
+      "Java",
+      "C++"
+     ],
+     "gefunden": [
+      "Programmiersprache",
+      "Geschichte der Programmiersprachen",
+      "Objektorientierte Programmierung",
+      "Funktionale Programmierung",
+      "JavaScript",
+      "C++"
+     ],
+     "tokens_aus": 77,
+     "sekunden_frage": 5.77
+    },
+    "Q06": {
+     "sekunden": 1.44,
+     "hauptartikel": "Programmiersprache",
+     "gedruckt": [
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 16
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Programmiersprache",
+     "genannt": [
+      "Programmiersprache",
+      "Programmierbare Computer",
+      "Programmierbare Computer",
+      "Programmierbare Computer",
+      "Programmierbare Computer",
+      "Programmierbare Computer",
+      "Programmierbare Computer"
+     ],
+     "gefunden": [
+      "Programmiersprache"
+     ],
+     "tokens_aus": 66,
+     "sekunden_frage": 5.54
+    }
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.19,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Säure-Base-Konzepte",
+     "genannt": [
+      "Säuren und Basen: Grundlagen und Beispiele",
+      "Säure-Base-Reaktionen: Katalysatoren und Mechanismen",
+      "pH-Skala und ihre Bedeutung in chemischen Reaktionen",
+      "Säure-Base-Sättigung: pH-Werte und ihre Messung",
+      "Säure-Base-Härte: Bedeutung und Anwendungen",
+      "Säure-Base-Wechselwirkungen in biologischen Systemen",
+      "Säure-Base-Homöostase im menschlichen Körper",
+      "Säure-Base-Behandlungen in der Umweltchemie"
+     ],
+     "gefunden": [
+      "Säure-Base-Konzepte"
+     ],
+     "tokens_aus": 170,
+     "sekunden_frage": 5.36
+    },
+    "LF12": {
+     "sekunden": 8.04,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      },
+      {
+       "titel": "Titration",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Säure-Base-Konzepte",
+     "genannt": [
+      "Grundlegende Säure-Base-Theorie",
+      "Wasserstoffionen und pH-Wert",
+      "Stärke- und Säuretheorie",
+      "pH-Skalen",
+      "Titration",
+      "pH-Wert-Berechnung",
+      "praktische Anwendungen",
+      "Historische Entwicklung der Säure-Base-Konzeptualisierung"
+     ],
+     "gefunden": [
+      "Säure-Base-Konzepte",
+      "Titration"
+     ],
+     "tokens_aus": 101,
+     "sekunden_frage": 6.28
+    },
+    "Q06": {
+     "sekunden": 1.87,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6,
+     "uebersicht": "Säure-Base-Konzepte",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte",
+      "https://de.wikipedia.org/wiki/Konzepte_der_Säure-Base",
+      "https://de.wikipedia.org/wiki/Säure-Base",
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte_in_den_kulturellen_Kulturwörtern",
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte_in_den_wissenschaftlichen_Konzepten",
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte_in_den_biologischen_Konzepten",
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte_in_den_wirtschaftlichen_Konzepten",
+      "https://de.wikipedia.org/wiki/Säure-Base-Konzepte_in_den_biologischen_Konzepten"
+     ],
+     "gefunden": [
+      "Säure-Base-Konzepte"
+     ],
+     "tokens_aus": 200,
+     "sekunden_frage": 11.28
+    }
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "wege": {
+    "LF7": {
+     "sekunden": 1.95,
+     "hauptartikel": "Sinfonie",
+     "gedruckt": [
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Sinfonie",
+     "genannt": [
+      "Sinfonie: Eine historische und musikalische Untersuchung",
+      "Die Sinfonie: Von Beethoven bis zur Gegenwart",
+      "Sinfonien: Eine Einführung in die Struktur und die Geschichte",
+      "Die Entwicklung der Sinfonie im 19. Jahrhundert",
+      "Sinfonienform: Grundlagen und Variationen",
+      "Die Sinfonie in der klassischen Musik: Beethoven und Wagner",
+      "Sinfonien in der modernen Musik: Struktur und Themen",
+      "Sinfonien als kulturelles Phänomen: Soziale und politische Aspekte"
+     ],
+     "gefunden": [
+      "Sinfonie"
+     ],
+     "tokens_aus": 150,
+     "sekunden_frage": 5.24
+    },
+    "LF12": {
+     "sekunden": 4.39,
+     "hauptartikel": "Sinfonie",
+     "gedruckt": [
+      {
+       "titel": "Ludwig van Beethoven",
+       "absaetze": 7
+      },
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 7,
+     "uebersicht": "Sinfonie",
+     "genannt": [
+      "Sinfonie",
+      "Klaviersymphonie",
+      "Beethoven",
+      "Beethoven: Die Sinfonien",
+      "Symphonie im 19. Jahrhundert",
+      "Symphonie als Kunstform",
+      "Beethoven und die Sinfonien",
+      "Sinfoniekompositionen"
+     ],
+     "gefunden": [
+      "Sinfonie",
+      "Ludwig van Beethoven"
+     ],
+     "tokens_aus": 90,
+     "sekunden_frage": 6.95
+    },
+    "Q06": {
+     "sekunden": 1.57,
+     "hauptartikel": "Sinfonie",
+     "gedruckt": [
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Sinfonie",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Sinfonie",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung",
+      "https://de.wikipedia.org/wiki/Sinfonie_der_Kantenerneuerung"
+     ],
+     "gefunden": [
+      "Sinfonie"
+     ],
+     "tokens_aus": 161,
+     "sekunden_frage": 8.57
+    }
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "wege": {
+    "LF7": {
+     "sekunden": 4.33,
+     "hauptartikel": "Plattentektonik",
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Plattentektonik",
+     "genannt": [
+      "Plattentektonik: Grundlagen und Entwicklung",
+      "Plattentektonik: Eine neue Sicht auf die Erde",
+      "Die Entstehung von Gebirgszonen durch Plattentektonik",
+      "Plattentektonik und Erdbeben",
+      "Plattentektonik und die Entstehung von Kontinenten",
+      "Plattentektonik und die Entstehung von Ozeanbecken",
+      "Plattentektonik und die Entstehung von Vulkanen",
+      "Plattentektonik und die Entstehung von Gebirgsketten wie den Himalaya und den Andes"
+     ],
+     "gefunden": [
+      "Plattentektonik"
+     ],
+     "tokens_aus": 168,
+     "sekunden_frage": 6.03
+    },
+    "LF12": {
+     "sekunden": 3.8,
+     "hauptartikel": "Plattentektonik",
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Plattentektonik",
+     "genannt": [
+      "Plattentektonik",
+      "Plattentektonik in der Geologie",
+      "Plattentektonik und Erdgeschichte",
+      "Plattentektonik und Naturkatastrophen",
+      "Plattentektonik: Grundlagen",
+      "Plattentektonik und Kontinentaldrift",
+      "Plattentektonik im Vergleich zu anderen geologischen Prozessen",
+      "Plattentektonik und ihre Auswirkungen auf die Erdoberfläche"
+     ],
+     "gefunden": [
+      "Plattentektonik"
+     ],
+     "tokens_aus": 125,
+     "sekunden_frage": 7.47
+    },
+    "Q06": {
+     "sekunden": 1.46,
+     "hauptartikel": "Plattentektonik",
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Plattentektonik",
+     "genannt": [
+      "Plattentektonik",
+      "Plattentektonik und Kultur",
+      "Plattentektonik und Geschichte",
+      "Plattentektonik und Landwirtschaft",
+      "Plattentektonik und Klimawandel",
+      "Plattentektonik und Technologie",
+      "Plattentektonik und Kommunikation",
+      "Plattentektonik und Medien"
+     ],
+     "gefunden": [
+      "Plattentektonik"
+     ],
+     "tokens_aus": 106,
+     "sekunden_frage": 5.83
+    }
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine neue Herausforderung für die Nahrungsmittelproduktion",
+      "Der Klimawandel und seine Auswirkungen auf die Landwirtschaft",
+      "Landwirtschaft und Klimawandel: Eine wechselseitige Beziehung",
+      "Auswirkungen des Klimawandels auf die landwirtschaftliche Produktion",
+      "Anpassungsstrategien in der Landwirtschaft im Kontext des Klimawandels",
+      "Klimafolgenforschung und ihre Relevanz für die Landwirtschaft",
+      "Nachhaltige Landwirtschaft und der Klimaschutz",
+      "Der Klimawandel und die Ernährungssicherheit"
+     ],
+     "gefunden": [],
+     "tokens_aus": 161,
+     "sekunden_frage": 5.31
+    },
+    "LF12": {
+     "sekunden": 3.09,
+     "hauptartikel": "Ökosystem",
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 18
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Ökosystem",
+     "genannt": [
+      "Ökosysteme in der deutschen Literatur",
+      "Ökologie und Natur in der deutschen Umweltgeschichte",
+      "Die Rolle von Ökosystemen in der deutschen Gesellschaft",
+      "Klimawandel und seine Auswirkungen auf deutsche Ökosysteme",
+      "Biodiversität in deutschen Naturschutzprojekten",
+      "Ökosysteme in der deutschen Landwirtschaft",
+      "Umweltbewusstsein und Ökosystemverstandnis",
+      "Wissenschaftliche Grundlagen zum Ökosystem"
+     ],
+     "gefunden": [
+      "Ökosystem"
+     ],
+     "tokens_aus": 128,
+     "sekunden_frage": 9.61
+    },
+    "Q06": {
+     "sekunden": 2.63,
+     "hauptartikel": "Ökosystem",
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 13
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 5
+      },
+      {
+       "titel": "Energie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Biodiversität",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 10,
+     "uebersicht": "Ökosystem",
+     "genannt": [
+      "Ökosystem",
+      "Klimawandel und Landwirtschaft",
+      "Deutsche Dichter",
+      "Biodiversität",
+      "Energie",
+      "Wetter und Ökosystem",
+      "Klimawandel und Umwelt",
+      "Ökosystem und Umwelt"
+     ],
+     "gefunden": [
+      "Ökosystem",
+      "Liste deutschsprachiger Lyriker",
+      "Biodiversität",
+      "Energie"
+     ],
+     "tokens_aus": 74,
+     "sekunden_frage": 5.18
+    }
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.74,
+     "hauptartikel": "Liste der Atommodelle",
+     "gedruckt": [
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Atommodell",
+     "genannt": [
+      "Atommodell",
+      "Atommodell erklären",
+      "Atommodell Grundlagen",
+      "Atommodell Aufbau",
+      "Atommodell Elektronen",
+      "Atommodell Kern",
+      "Atommodell Elektronenorbital",
+      "Atommodell Elektronenkonfigurationen"
+     ],
+     "gefunden": [
+      "Liste der Atommodelle"
+     ],
+     "tokens_aus": 98,
+     "sekunden_frage": 3.9
+    },
+    "LF12": {
+     "sekunden": 3.1,
+     "hauptartikel": "Liste der Atommodelle",
+     "gedruckt": [
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 6
+      },
+      {
+       "titel": "Ernst Mach",
+       "absaetze": 4
+      },
+      {
+       "titel": "Niels Bohr",
+       "absaetze": 3
+      },
+      {
+       "titel": "Max Planck",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Atommodell",
+     "genannt": [
+      "Das Atommodell",
+      "Ernst Mach",
+      "Max Planck",
+      "Niels Bohr",
+      "Rudolf Peierls",
+      "Hans Geiger",
+      "Ernst Korzykowski",
+      "Hans Bethe"
+     ],
+     "gefunden": [
+      "Liste der Atommodelle",
+      "Ernst Mach",
+      "Max Planck",
+      "Niels Bohr",
+      "Rudolf Peierls",
+      "Hans Bethe"
+     ],
+     "tokens_aus": 77,
+     "sekunden_frage": 5.15
+    },
+    "Q06": {
+     "sekunden": 2.12,
+     "hauptartikel": "Liste der Atommodelle",
+     "gedruckt": [
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Atommodell",
+     "genannt": [
+      "Atommodell",
+      "Atommodell und Quantenmechanik",
+      "Atommodell und Quantenphysik",
+      "Atommodell und Quantenfeldtheorie",
+      "Atommodell und Quantenmechanik",
+      "Atommodell und Quantenphysik",
+      "Atommodell und Quantenfeldtheorie",
+      "Atommodell und Quantenmechanik"
+     ],
+     "gefunden": [
+      "Liste der Atommodelle"
+     ],
+     "tokens_aus": 95,
+     "sekunden_frage": 4.87
+    }
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.61,
+     "hauptartikel": "Industrielle Revolution",
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 15
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Industrielle Revolution",
+     "genannt": [
+      "Industrielle Revolution - Eine globale Transformation der Wirtschaft und Gesellschaft",
+      "Die industrielle Revolution: Von der Landwirtschaft zur Industrie",
+      "Die industrielle Revolution: Eine neue Ära der menschlichen Entwicklung",
+      "Die industrielle Revolution: Ursachen, Folgen und Auswirkungen",
+      "Die industrielle Revolution: Eine Revolution der Produktion und Technologie",
+      "Die industrielle Revolution: Von der Handwerksindustrie zur Massenproduktion",
+      "Die industrielle Revolution: Soziale und ökonomische Veränderungen",
+      "Die industrielle Revolution: Umweltfolgen und Herausforderungen"
+     ],
+     "gefunden": [
+      "Industrielle Revolution"
+     ],
+     "tokens_aus": 151,
+     "sekunden_frage": 4.66
+    },
+    "LF12": {
+     "sekunden": 2.48,
+     "hauptartikel": "Industrielle Revolution",
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 15
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Industrielle Revolution",
+     "genannt": [
+      "Die Industrielle Revolution",
+      "Die industrielle Revolution",
+      "Technische Innovationen im 18. Jahrhundert",
+      "Die Rolle der Dampfmaschine",
+      "Soziale Veränderungen durch die Industrialisierung",
+      "Die Entwicklung der Massenproduktion",
+      "Wirtschaftliche Transformation im 19. Jahrhundert",
+      "Die Auswirkungen auf die Landbevölkerung"
+     ],
+     "gefunden": [
+      "Industrielle Revolution"
+     ],
+     "tokens_aus": 107,
+     "sekunden_frage": 6.15
+    },
+    "Q06": {
+     "sekunden": 6.84,
+     "hauptartikel": "Industrielle Revolution",
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 15
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Industrielle Revolution",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Industrielle_Revolution",
+      "https://de.wikipedia.org/wiki/Deutsche_Dichter",
+      "https://de.wikipedia.org/wiki/Klimawandel",
+      "https://de.wikipedia.org/wiki/Landwirtschaft",
+      "https://de.wikipedia.org/wiki/Deutsche_Kunst",
+      "https://de.wikipedia.org/wiki/Deutsche_Sprache",
+      "https://de.wikipedia.org/wiki/Deutsche_Economie",
+      "https://de.wikipedia.org/wiki/Deutsche_Kultur"
+     ],
+     "gefunden": [
+      "Industrielle Revolution"
+     ],
+     "tokens_aus": 141,
+     "sekunden_frage": 6.64
+    }
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.53,
+     "hauptartikel": "Elektrischer Strom",
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 20
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Elektrischer Strom",
+     "genannt": [
+      "Elektrischer Strom: Grundlagen und Eigenschaften",
+      "Elektrische Energie und Stromerzeugung",
+      "Elektrische Leitungen und -verteilungen",
+      "Elektrische Geräte und Anwendungen",
+      "Elektromagnetismus und seine Auswirkungen auf den Stromfluss",
+      "Elektrische Speicherung und -übertragung",
+      "Elektrische Sicherheit und Schutzmaßnahmen",
+      "Elektrische Technologien für die Zukunft"
+     ],
+     "gefunden": [
+      "Elektrischer Strom"
+     ],
+     "tokens_aus": 137,
+     "sekunden_frage": 4.13
+    },
+    "LF12": {
+     "sekunden": 3.19,
+     "hauptartikel": "Elektrischer Strom",
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 13
+      },
+      {
+       "titel": "Elektrotechnik",
+       "absaetze": 8
+      },
+      {
+       "titel": "Elektrizität",
+       "absaetze": 3
+      },
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 3
+      },
+      {
+       "titel": "Stromnetz",
+       "absaetze": 3
+      },
+      {
+       "titel": "Elektromotor",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 12,
+     "uebersicht": "Elektrischer Strom",
+     "genannt": [
+      "Elektrizität",
+      "Geschichte der Elektrizität",
+      "Elektrotechnik",
+      "Energieversorgung",
+      "Stromnetz",
+      "Erneuerbare Energien",
+      "Elektromotor",
+      "Elektrische Fahrzeuge"
+     ],
+     "gefunden": [
+      "Elektrischer Strom",
+      "Elektrizität",
+      "Elektrotechnik",
+      "Energieversorgung",
+      "Stromnetz",
+      "Erneuerbare Energien",
+      "Elektromotor"
+     ],
+     "tokens_aus": 74,
+     "sekunden_frage": 4.47
+    },
+    "Q06": {
+     "sekunden": 2.18,
+     "hauptartikel": "Elektrischer Strom",
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 20
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Elektrischer Strom",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Elektrischer_Schutz",
+      "https://de.wikipedia.org/wiki/Elektrische_Energie",
+      "https://de.wikipedia.org/wiki/Elektrische_Energietransformation",
+      "https://de.wikipedia.org/wiki/Elektrische_Schutztechnik",
+      "https://de.wikipedia.org/wiki/Elektrische_Schule",
+      "https://de.wikipedia.org/wiki/Elektrische_Kraft",
+      "https://de.wikipedia.org/wiki/Elektrische_Energietransformation",
+      "https://de.wikipedia.org/wiki/Elektrische_Energie"
+     ],
+     "gefunden": [
+      "Elektrischer Strom"
+     ],
+     "tokens_aus": 140,
+     "sekunden_frage": 7.11
+    }
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.3,
+     "hauptartikel": "Wasserkreislauf",
+     "gedruckt": [
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Wasserkreislauf",
+     "genannt": [
+      "Der Wasserkreislauf",
+      "Der Kreislauf der Wasserressourcen",
+      "Der Wasserkreislauf im Ökosystem",
+      "Der Wasserkreislauf und die Biodiversität",
+      "Der Einfluss des Wasserkreislaufs auf das Klima",
+      "Der Wasserkreislauf und die menschliche Gesellschaft",
+      "Der Wasserkreislauf und die Landwirtschaft",
+      "Der Wasserkreislauf und die Wasserwirtschaft"
+     ],
+     "gefunden": [
+      "Wasserkreislauf"
+     ],
+     "tokens_aus": 132,
+     "sekunden_frage": 4.4
+    },
+    "LF12": {
+     "sekunden": 7.97,
+     "hauptartikel": "Wasserkreislauf",
+     "gedruckt": [
+      {
+       "titel": "Wasserwirtschaft",
+       "absaetze": 8
+      },
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Wasserkreislauf",
+     "genannt": [
+      "Der Wasserkreislauf",
+      "Wasserkreislauf in der Natur",
+      "Klimawandel und Wasser",
+      "Wasserressourcen und Landwirtschaft",
+      "Wassermanagement",
+      "Wasserkreislauf und Umwelt",
+      "Wasserzyklus",
+      "Wasserkreislauf in der Erde"
+     ],
+     "gefunden": [
+      "Wasserkreislauf",
+      "Wasserwirtschaft"
+     ],
+     "tokens_aus": 91,
+     "sekunden_frage": 4.84
+    },
+    "Q06": {
+     "sekunden": 15.52,
+     "hauptartikel": "Wasserkreislauf",
+     "gedruckt": [
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Wasserkreislauf",
+     "genannt": [
+      "https://de.wikipedia.org/wiki/Wasserkreislauf",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Deutschland)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Klimawandel)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Landwirtschaft)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Klimawandel)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Klimawandel)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Klimawandel)",
+      "https://de.wikipedia.org/wiki/Wasserkreislauf_(Klimawandel)"
+     ],
+     "gefunden": [
+      "Wasserkreislauf"
+     ],
+     "tokens_aus": 182,
+     "sekunden_frage": 7.9
+    }
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die Ernährungssicherheit der Zukunft",
+      "Der Klimawandel und seine Auswirkungen auf die Landwirtschaft: Ein Überblick",
+      "Landwirtschaft und Klimawandel: Eine komplexe Beziehung",
+      "Der Klimawandel und seine Folgen für die Nahrungsmittelproduktion",
+      "Anpassung der Landwirtschaft am Klimawandel: Herausforderungen und Chancen",
+      "Klimafolgenforschung und Landwirtschaft: Innovationen und Strategien",
+      "Der Einfluss des Klimawandels auf die Ernährungssicherheit",
+      "Nachhaltige Landwirtschaft im Kontext des Klimawandels"
+     ],
+     "gefunden": [],
+     "tokens_aus": 171,
+     "sekunden_frage": 6.71
+    },
+    "LF12": {
+     "sekunden": 7.47,
+     "hauptartikel": "Römisches Reich",
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 10
+      },
+      {
+       "titel": "Quelle (Geschichtswissenschaft)",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 10,
+     "uebersicht": "Römisches Reich",
+     "genannt": [
+      "Das Römische Reich",
+      "Antike Geschichte",
+      "Klassische Literatur",
+      "Römische Epoche",
+      "Klimawandel und Landwirtschaft",
+      "Historische Quellen",
+      "Römische Gesellschaft",
+      "Archäologie des Römischen Westens"
+     ],
+     "gefunden": [
+      "Römisches Reich",
+      "Quelle (Geschichtswissenschaft)"
+     ],
+     "tokens_aus": 86,
+     "sekunden_frage": 5.3
+    },
+    "Q06": {
+     "sekunden": 4.11,
+     "hauptartikel": "Römisches Reich",
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 9
+      },
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Römisches Reich",
+     "genannt": [
+      "Deutsche Dichter",
+      "Römisches Reich",
+      "Römisches Reich und Kultur",
+      "Römisches Reich und Landwirtschaft",
+      "Römisches Reich und Krieg",
+      "Römisches Reich und Klimawandel",
+      "Römisches Reich und Philosophie",
+      "Römisches Reich und Geschichte"
+     ],
+     "gefunden": [
+      "Römisches Reich",
+      "Liste deutschsprachiger Lyriker"
+     ],
+     "tokens_aus": 93,
+     "sekunden_frage": 5.74
+    }
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "wege": {
+    "LF7": {
+     "sekunden": 5.4,
+     "hauptartikel": "Lineare Funktion",
+     "gedruckt": [
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Lineare Funktion",
+     "genannt": [
+      "Lineare Funktion: Grundlagen und Beispiele",
+      "Was ist eine lineare Funktion?",
+      "Definition und Eigenschaften linearer Funktionen",
+      "Lineare Funktionen in der Mathematik",
+      "Lineare Gleichungen und Ungleichungen",
+      "Lineare Transformationen und ihre Anwendungen",
+      "Lineare Programmierung und Optimierung",
+      "Lineare Funktionen in der Wirtschaft und Finanzmathematik"
+     ],
+     "gefunden": [
+      "Lineare Funktion"
+     ],
+     "tokens_aus": 116,
+     "sekunden_frage": 3.64
+    },
+    "LF12": {
+     "sekunden": 2.04,
+     "hauptartikel": "Lineare Funktion",
+     "gedruckt": [
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Lineare Funktion",
+     "genannt": [
+      "Lineare Funktionen",
+      "Lineare Funktionen in der Mathematik",
+      "Lineare Funktionen in der Physik",
+      "Lineare Funktionen in der Wirtschaft",
+      "Lineare Funktionen in der Informatik",
+      "Lineare Funktionen in der Ökonomie",
+      "Lineare Funktionen in der Datenanalyse",
+      "Lineare Funktionen in der Statistik"
+     ],
+     "gefunden": [
+      "Lineare Funktion"
+     ],
+     "tokens_aus": 99,
+     "sekunden_frage": 5.74
+    },
+    "Q06": {
+     "sekunden": 1.87,
+     "hauptartikel": "Lineare Funktion",
+     "gedruckt": [
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5,
+     "uebersicht": "Lineare Funktion",
+     "genannt": [
+      "Lineare Funktion",
+      "Lineare Funktion und Funktionen",
+      "Lineare Funktion und Funktionen in der Mathematik",
+      "Lineare Funktion und ihre Eigenschaften",
+      "Lineare Funktion und ihre Anwendung",
+      "Lineare Funktion und ihre Bedeutung",
+      "Lineare Funktion und ihre Rolle in der Mathematik"
+     ],
+     "gefunden": [
+      "Lineare Funktion"
+     ],
+     "tokens_aus": 84,
+     "sekunden_frage": 4.19
+    }
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "wege": {
+    "LF7": {
+     "sekunden": 2.54,
+     "hauptartikel": "Zelle (Biologie)",
+     "gedruckt": [
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 7
+      },
+      {
+       "titel": "Zellmembran",
+       "absaetze": 2
+      },
+      {
+       "titel": "Zellatmung",
+       "absaetze": 1
+      },
+      {
+       "titel": "Transport (Biologie)",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Zelle (Biologie)",
+     "genannt": [
+      "Zelle: Grundlagen und Funktionen",
+      "Zellstruktur und -funktion",
+      "Zellteilung und Zellteilung",
+      "Zellkommunikation",
+      "Zellmembran",
+      "Zellatmung",
+      "Zelltransport",
+      "Zellteilung und Wachstum"
+     ],
+     "gefunden": [
+      "Zelle (Biologie)",
+      "Zellmembran",
+      "Zellatmung",
+      "Transport (Biologie)"
+     ],
+     "tokens_aus": 100,
+     "sekunden_frage": 3.6
+    },
+    "LF12": {
+     "sekunden": 1.82,
+     "hauptartikel": "Zelle (Biologie)",
+     "gedruckt": [
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 8
+      },
+      {
+       "titel": "Zellbiologie",
+       "absaetze": 3
+      },
+      {
+       "titel": "Zellteilung",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 9,
+     "uebersicht": "Zelle (Biologie)",
+     "genannt": [
+      "Die Zelle",
+      "Zellbiologie",
+      "Zellstruktur",
+      "Zellteilung",
+      "Zelluläre Kommunikation",
+      "Zelluläre Energie",
+      "Zelluläre Kommunikation",
+      "Zelluläre Differenzierung"
+     ],
+     "gefunden": [
+      "Zelle (Biologie)",
+      "Zellbiologie",
+      "Zellteilung"
+     ],
+     "tokens_aus": 76,
+     "sekunden_frage": 4.88
+    },
+    "Q06": {
+     "status": "keine Artikel",
+     "uebersicht": "Zelle",
+     "genannt": [
+      "Zelle",
+      "Zellentwicklung",
+      "Zellentwicklung und Zellfunktion",
+      "Zellfunktion und Zellkraft",
+      "Zellkraft und Zellkraftstoff",
+      "Zellkraftstoff und Zellkraftstoffe",
+      "Zellkraftstoffe und Zellkraftstoffe",
+      "Zellkraftstoffe und Zellkraftstoffe"
+     ],
+     "gefunden": [],
+     "tokens_aus": 104,
+     "sekunden_frage": 5.29
+    }
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "wege": {
+    "LF7": {
+     "status": "keine Artikel",
+     "uebersicht": "Klimawandel und Landwirtschaft",
+     "genannt": [
+      "Klimawandel und Landwirtschaft: Eine Herausforderung für die Ernährungssicherheit",
+      "Der Klimawandel und seine Auswirkungen auf die Landwirtschaft",
+      "Landwirtschaft im Kontext des Klimawandels",
+      "Klimafolgenforschung und Landwirtschaft: Herausforderungen und Chancen",
+      "Nachhaltige Landwirtschaft im Zeitalter des Klimawandels",
+      "Der Klimawandel und die Ernährungssicherheit: Eine doppelte Herausforderung",
+      "Landwirtschaftliche Anpassung an den Klimawandel: Strategien und Erfolge",
+      "Klimawandel und Ernährungssysteme: Veränderungen und Anpassungen"
+     ],
+     "gefunden": [],
+     "tokens_aus": 171,
+     "sekunden_frage": 4.95
+    },
+    "LF12": {
+     "sekunden": 2.31,
+     "hauptartikel": "Lyrik",
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Gedicht",
+     "genannt": [
+      "Gedichte der deutschen Literatur",
+      "Das Gedicht im Mittelalter",
+      "Romantik und das Gedicht",
+      "Moderne Gedichte und Sprache",
+      "Klimawandel und Natur in der Lyrik",
+      "Deutsche Dichter im 20. Jahrhundert",
+      "Die Rolle des Gedichts in der Gesellschaft",
+      "Vergleichende Studien zu deutschen Gedichten"
+     ],
+     "gefunden": [
+      "Lyrik"
+     ],
+     "tokens_aus": 107,
+     "sekunden_frage": 5.34
+    },
+    "Q06": {
+     "sekunden": 1.9,
+     "hauptartikel": "Lyrik",
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 8,
+     "uebersicht": "Gedicht",
+     "genannt": [
+      "Gedicht",
+      "Gedichterkunst",
+      "Gedichterkunstbewertung",
+      "Gedichterkunstbewertung",
+      "Gedichterkunstbewertung",
+      "Gedichterkunstbewertung",
+      "Gedichterkunstbewertung"
+     ],
+     "gefunden": [
+      "Lyrik"
+     ],
+     "tokens_aus": 83,
+     "sekunden_frage": 3.86
+    }
+   }
+  }
+ ]
+}

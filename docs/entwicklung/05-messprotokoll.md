@@ -1910,3 +1910,121 @@ anderen Subagenten als die von M37, und academiccloud ist ein zweiter Anbieter m
 Rohdaten: `m38_sammelthemen.json` und `m38_kontrolle.json` (je Thema und Weg Hauptartikel, gedruckte Artikel mit
 Absatzzahl, für P Kandidaten und gewählte Titel, für die Modelle genannte und gefundene Titel, Tokens und Sekunden;
 keine Artikeltexte).
+
+## M39 Die Frage N im Dienst (27.09.2026)
+
+Jan: „am balanced sollte gpt-6-luna die fragen stellen nach dem neuen verfahren“ - Option C von Punkt 9, gebaut als
+D63. Vor dem Bau zu prüfen waren die Artikelwahl an den Gold-Anfragen, bei denen N den Hauptartikel ersetzt, und die
+Zuordnung am Gold, dessen Absätze aus dem heutigen Korpus stammen; danach die Wirkung durch den Dienst und die Zeit.
+
+**Artikelwahl am Gold** (`mc_n_artikelwahl.py`, vor dem Bau, Prompt von M37 wortgleich): Bei 5 der 94 Anfragen
+verfehlen die Regeln das Thema im Sinn von Option C (Titelvorschlag, Volltexttreffer, Listenseite):
+
+| Anfrage | Regeln | `balanced` bisher | mit N | erwartet |
+|---|---|---|---|---|
+| Atommodell | *Liste der Atommodelle* (Weiterleitung) | dieselbe | dieselbe | Atommodell, Weiterleitung auf die Liste |
+| Lichtlehre | *Ernst Adalbert Voretzsch* (Volltexttreffer) | *Hesychasmus* | *Optik* | Optik |
+| Gewaltenteilung in Deutschland | *Gewaltenteilung* (Volltexttreffer) | dieselbe | dieselbe | Gewaltenteilung |
+| Photosynthese bei Pflanzen | *Photosynthese* (Volltexttreffer) | dieselbe | dieselbe | Photosynthese |
+| Ursachen des Ersten Weltkriegs | *Erster Weltkrieg* (Titelvorschlag) | dieselbe | *Julikrise* | Erster Weltkrieg |
+
+N macht „Lichtlehre“ richtig und „Ursachen des Ersten Weltkriegs“ falsch; die Artikelwahl bleibt bei 91 (`balanced`)
+und 93 von 94 (`best-quality`). Die zweite Anfrage stammt aus dem Testsatz; eine Regel auf sie zuzuschneiden wäre
+Überanpassung. *Julikrise* ist auch kein Zufallstreffer, sondern der engere Artikel zu den Ursachen.
+
+**Durch den Dienst** (`mc_n_dienst.py`, nach dem Bau): die 25 Sammelthemen und 20 gewöhnlichen Themen von M37 durch Teil
+1 von `balanced`, wie eine Anfrage. Die b-api beantwortete die Frage wie in M37 aus ihrem Cache, mit denselben Titeln;
+gemessen ist also, was der Einbau ändert: Er ersetzt den Hauptartikel nur, wo die Regeln das Thema verfehlen, behält
+den Klexikon-Zwilling und füllt bis `CORPUS_MAX_ARTICLES`. Jeder gedruckte Artikel hatte schon eine Note (die Zwillinge
+tragen den Titel ihres Hauptartikels), die Noten von M37 gelten. In Klammern die zweiten Noten:
+
+| Weg | Sammelthemen: passend | brauchbar | Absätze | Bausteine | gewöhnliche Themen: passend | brauchbar |
+|---|---|---|---|---|---|---|
+| R `llm-free` (M37) | 43 % (41 %) | 11 | 351 | 8,5 | 71 % (69 %) | 16 |
+| B `balanced` vor D63 (M37) | 45 % (45 %) | 10 | 357 | 8,5 | 73 % (71 %) | 18 |
+| N als Prototyp (M37) | 87 % (87 %) | 21 | 494 | 9,2 | 93 % (92 %) | 19 |
+| C `balanced` mit N (D63) | 87 % (86 %) | 21 | 504 | 9,2 | 93 % (92 %) | 19 |
+
+In allen 45 Themen derselbe Hauptartikel wie beim Prototyp. Die Übersicht ersetzte den Artikel der Regeln bei 19 der
+25 Sammelthemen und bei einem der 20 gewöhnlichen (Atommodell); die Wahl unter den Kandidaten der Regeln war nie mehr
+nötig, und kein Thema fiel zurück. Im Median 537 und 493 Tokens je Thema.
+
+**Zeit** (`mc_n_zeit.py`): zehn Themen, erst `llm-free`, dann `balanced`, Teil 1 und 2 wie M27b. Zwei davon
+(„Wasserkreislauf“, „Ökosystem“) waren Kontrollthemen von M37 und kamen aus dem Cache. An den acht übrigen dauerte die
+Frage (Phase `resolve`) im Median 3,6 s (3,0 bis 4,5 s) bei 481 Tokens, ein Kompendium in `balanced` 4,2 s (3,9 bis
+5,0 s), mit `llm-free` auf denselben Themen 3,2 s (ohne den ersten Lauf, der das Archiv aufwärmte). `balanced` lief
+jeweils nach `llm-free` mit warmem Archiv; der Abstand unterschätzt den Preis der Frage also etwas. Die Prüfung der
+Nebenartikel (M25: im Median 1,4 bis 2,0 s) läuft nicht mehr.
+
+**Zuordnung am Gold** (`mc_profile_zuordnung.py` wie M27, jetzt mit N in `balanced`): Die zehn Goldthemen verlieren
+ihre Nebenartikel. 243 statt 62 der 643 Labels veralten, weil ihre Absätze aus verlinkten Unterartikeln und
+Volltexttreffern stammen, die N ersetzt. An den 400 übrigen kommt die Standard-Strategie auf macro-F1 0,50 statt 0,45
+(Gold-Pool), `llm-free` bleibt bei 0,45. Auf die gedruckten Absätze gerechnet sind es 0,19 statt 0,29, weil nun
+Absätze ohne Label den Platz füllen. Vergleichbar ist beides nicht mehr: Das Gold deckt den Korpus mit N nur zu zwei
+Dritteln ab. Wer die Zuordnung unter N messen will, braucht Labels für die genannten Artikel.
+
+**Ergebnis:** Eingebaut wirkt N wie gemessen: 87 statt 45 % passende Absätze bei Sammelthemen und 93 statt 73 % bei
+gewöhnlichen, dieselben Hauptartikel wie der Prototyp, die Artikelwahl am Gold unverändert. Die Frage kostet rund 3,6 s
+und 480 Tokens, die entfallene Prüfung der Nebenartikel spart 1,4 bis 2 s und 750 bis 900 Tokens. Grenzen: Die
+Titel kamen aus dem Cache der b-api, also dieselben wie in M37; die Zeit stammt von acht Themen; die Gutachter sind
+Claude-Subagenten.
+
+Rohdaten: `m39_n_artikelwahl.json`, `m39_n_dienst.json`, `m39_n_dienst_kontrolle.json`, `m39_n_zeit.json`,
+`m39_zuordnung_gold.json` (Titel, Absatzzahlen, Tokens, Millisekunden und F1-Werte; keine Artikeltexte).
+
+## M40 Kleine lokale Modelle für `llm-free` (27.09.2026)
+
+Jan: M38 hätte keine kleineren Modelle der b-api testen sollen, sondern Modelle, die im Dienst selbst laufen; offen ist
+nur noch, wie `llm-free` bei Sammel- und Mischthemen besser werden kann, in höchstens 2 bis 3 s. Genannt waren
+extrahierende Modelle (GLiNER small multilingual, Flair ner-german, XLM-RoBERTa- und GBERT-Feintunes) und generative
+(LFM2, LFM2.5, Qwen3 0.6B). Mit Jans Freigabe heruntergeladen wurden nur die generativen: llama.cpp b11206 als CPU-Build
+und drei GGUF-Dateien von Hugging Face, zusammen 1,9 GB, jede mit ihrer SHA-256 geprüft. Die extrahierenden entfielen
+nach Jans Wahl: Sie finden Namen in einem Text, die die Links des Archivs schon genau markieren, und wissen nicht,
+welche davon zu einem Sammelthema gehören; im Thema selbst steht meist keine Entität (M38).
+
+`mc_sammelthemen_lokal.py` stellt die Frage N wortgleich an drei Modelle, jedes in `llama-server` im
+Entwicklungscontainer mit 4 Threads, mit einem JSON-Schema, dem die Antwort folgen muss, und ohne den Denkmodus von
+Qwen3: LF7 LFM2-700M (Q4_K_M, 469 MB), LF12 LFM2.5-1.2B-Instruct (Q4_K_M, 731 MB), Q06 Qwen3-0.6B (Q8_0, 639 MB). Die
+gefundenen Titel laufen wie L8 und Q30 in M38 durch Teil 1; nennt ein Modell keinen Artikel des Archivs, zählt der
+Rückfall auf `llm-free` von heute. Dazu R2 (`mc_sammelthemen_nur_haupt.py`): `llm-free` mit `max_articles: 2`, also
+nur Hauptartikel und Zwilling - was ein kleinerer Korpus allein bewirkt. Die 46 Artikel, die erst diese Wege druckten,
+benoteten zwei weitere Claude-Subagenten blind mit der Skala von M37 (gleiche Note bei 45 von 46; `eval/sammelthemen/`).
+In Klammern die zweiten Noten:
+
+| Weg | Sammelthemen: passend | brauchbar | Absätze | Bausteine | gewöhnliche: passend | brauchbar | Bausteine | Frage, Median (höchstens) |
+|---|---|---|---|---|---|---|---|---|
+| R `llm-free` heute | 43 % (41 %) | 11 | 351 | 8,5 | 71 % (69 %) | 16 | 8,4 | – |
+| R2 nur Hauptartikel und Zwilling | 76 % (73 %) | 19 | 214 | 6,6 | 94 % (94 %) | 20 | 7,3 | – |
+| LF7 LFM2-700M | 59 % (57 %) | 16 | 290 | 7,5 | 92 % (91 %) | 20 | 7,7 | 4,4 s (16,9 s) |
+| LF12 LFM2.5-1.2B | 61 % (61 %) | 17 | 285 | 7,4 | 74 % (74 %) | 15 | 8,0 | 4,8 s (12,5 s) |
+| Q06 Qwen3-0.6B | 55 % (53 %) | 14 | 277 | 7,2 | 94 % (94 %) | 20 | 7,0 | 6,3 s (27,7 s) |
+| N `gpt-6-luna` (M37) | 87 % (87 %) | 21 | 494 | 9,2 | 93 % (92 %) | 19 | 8,8 | 3,6 s (b-api) |
+
+Die Modelle kennen die Vertreter der Themen nicht. Von rund neun genannten Titeln hatte das Archiv bei den
+Sammelthemen im Mittel 0,3 (LF7), 2,0 (LF12) und 0,8 (Q06); bei 18, 5 und 13 der 25 Themen keinen einzigen. Als
+Übersicht nannten sie meist das Thema selbst (18, 25 und 23 Mal). Zu „Komponisten der Klassik“ nannte LF7 „Bach,
+Johann“, „Cleber, Johann“ und „Dürer, Martin“ neben „Mozart, Wolfgang“, alle in Sternchen und in einer Form, die kein
+Titel ist; LF12 „Klassische Musik“, „Baroque“ und „Renaissance“, Q06 „Deutsche Dichter“ und fünfmal „Klassik und
+Kultur“. Zu „deutsche Dichter“ erfanden alle drei Titel wie „Dichter der deutschen
+Literatur“ oder „Deutsche Dichterkunstbewegung“. Q06 nannte bei „Planeten des Sonnensystems“ Wikipedia-Adressen statt
+Titeln. Bei gewöhnlichen Themen trafen sie 0,9, 2,5 und 1,1 von neun.
+
+Der Anteil passender Absätze steigt trotzdem - weil der Korpus kleiner wird, nicht weil die Modelle etwas wissen: Wo
+nur das Thema selbst ein Artikel ist, druckt der Weg den Hauptartikel allein, ohne die oft nur verwandten Nebenartikel
+von `llm-free`. R2 zeigt das ohne jedes Modell und liegt über allen dreien (76 statt 55 bis 61 % bei Sammelthemen).
+Der Preis: ein Drittel weniger Absätze und rund zwei Bausteine weniger gefüllt, und die Vertreter einer Gruppe fehlen
+weiter - „deutsche Dichter“ bleibt auf der *Liste deutschsprachiger Lyriker*.
+
+**Zeit** (`mc_sammelthemen_lokal_zeit.py`, die Frage allein, 45 Themen, 4 Threads, nichts sonst auf der CPU): im
+Median 4,4 s (LF7), 4,8 s (LF12) und 6,3 s (Q06); in höchstens 3 s blieben 2, 0 und 0 der 45 Fragen. Schon das Lesen
+des Prompts kostet 1,0 bis 1,9 s, das Schreiben von rund 100 bis 140 Tokens 2,9 bis 4,7 s; wo ein Modell sich
+wiederholt, bis die 400 Tokens voll sind, dauert eine Frage bis 28 s.
+
+**Ergebnis:** Kleine lokale Modelle verbessern `llm-free` nicht: Sie wissen nicht, wer zu einer Gruppe gehört, ihr
+scheinbarer Gewinn kommt aus dem kleineren Korpus und ist ohne Modell höher, und keines bleibt in 2 bis 3 s. Größere
+Modelle wären noch langsamer. Grenzen: Die Themen hat Claude gewählt, die Gutachter sind Claude-Subagenten; 4 Threads
+des Entwicklungsrechners (Ryzen 7 7730U) stehen für einen Server, dessen CPU nicht gemessen ist.
+
+Rohdaten: `m40_sammelthemen.json`, `m40_kontrolle.json` (je Thema und Modell genannte und gefundene Titel, gedruckte
+Artikel mit Absatzzahl, Sekunden), `m40_nur_haupt.json`, `m40_nur_haupt_kontrolle.json` (R2) und `m40_zeiten.json`
+(Sekunden und Tokens je Frage); keine Artikeltexte.

@@ -11,6 +11,9 @@
 # Dazu seit M38 (docs/entwicklung/messung/mc_sammelthemen_ohne_llm.py): 122 Paare, die erst die Wege ohne
 # großes LLM druckten (P: Parse und Archiv; L8, Q30: die Frage N an kleine Modelle), benotet am 26.09.2026 von
 # einem weiteren Claude-Subagenten, der rückwärts las, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 38).
+# Dazu seit M40 (docs/entwicklung/messung/mc_sammelthemen_lokal.py): 27 Paare, die erst die Frage N an kleine
+# lokale Modelle druckte (LFM2-700M, LFM2.5-1.2B, Qwen3-0.6B über llama.cpp), benotet am 27.09.2026 von einem
+# weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 40).
 version: 1
 noten:
 - thema: deutsche Dichter
@@ -1246,3 +1249,84 @@ noten:
 - thema: Musik der Romantik
   artikel: Richard Wagner
   note: 2
+- thema: Dichter der Romantik
+  artikel: Biedermeier
+  note: 1
+- thema: Dichter der Romantik
+  artikel: Liste deutschsprachiger Lyriker
+  note: 1
+- thema: Komponisten der Klassik
+  artikel: Renaissance
+  note: 0
+- thema: Komponisten der Klassik
+  artikel: Liste deutschsprachiger Lyriker
+  note: 0
+- thema: römische Kaiser
+  artikel: Römisches Bürgerrecht
+  note: 1
+- thema: römische Kaiser
+  artikel: Römische Kaiserzeit
+  note: 2
+- thema: Edelgase
+  artikel: Wasserstoff
+  note: 1
+- thema: Edelgase
+  artikel: Energieversorgung
+  note: 0
+- thema: Edelgase
+  artikel: Nachhaltigkeit
+  note: 0
+- thema: Edelgase
+  artikel: Methan
+  note: 0
+- thema: Weltreligionen
+  artikel: Religionswissenschaft
+  note: 1
+- thema: Weltreligionen
+  artikel: Religionsgeschichte
+  note: 1
+- thema: erneuerbare Energien
+  artikel: Erneuerbare Energien in Deutschland
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Geschichte der Physik
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Nobelpreis für Physik 1901
+  note: 2
+- thema: Nobelpreisträger für Physik
+  artikel: Relativitätstheorie
+  note: 1
+- thema: Nobelpreisträger für Physik
+  artikel: Quantenmechanik
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Wissenschaft
+  note: 1
+- thema: Frauen in der Wissenschaft
+  artikel: Liste deutschsprachiger Lyriker
+  note: 0
+- thema: Säugetiere des Waldes
+  artikel: Biodiversität
+  note: 1
+- thema: Säugetiere des Waldes
+  artikel: Waldökologie
+  note: 1
+- thema: Entdecker der Neuzeit
+  artikel: Geschichte der Naturwissenschaften
+  note: 1
+- thema: Klimawandel und Landwirtschaft
+  artikel: Klimapolitik
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Grüne Chemie
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Umweltchemie
+  note: 1
+- thema: Chemie im Alltag
+  artikel: Klimawandel
+  note: 0
+- thema: Musik der Romantik
+  artikel: Deutsche Romantik
+  note: 1

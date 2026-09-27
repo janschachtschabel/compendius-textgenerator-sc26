@@ -1,0 +1,444 @@
+{
+ "themen": [
+  {
+   "thema": "deutsche Dichter",
+   "wege": {
+    "R2": {
+     "sekunden": 4.07,
+     "hauptartikel": "Liste deutschsprachiger Lyriker",
+     "gedruckt": [
+      {
+       "titel": "Liste deutschsprachiger Lyriker",
+       "absaetze": 7
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "wege": {
+    "R2": {
+     "sekunden": 12.7,
+     "hauptartikel": "Englische Romantik",
+     "gedruckt": [
+      {
+       "titel": "Englische Romantik",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "wege": {
+    "R2": {
+     "sekunden": 15.68,
+     "hauptartikel": "Max Richter (Komponist)",
+     "gedruckt": [
+      {
+       "titel": "Max Richter (Komponist)",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "wege": {
+    "R2": {
+     "sekunden": 8.45,
+     "hauptartikel": "Böse Philosophen",
+     "gedruckt": [
+      {
+       "titel": "Böse Philosophen",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "wege": {
+    "R2": {
+     "sekunden": 5.19,
+     "hauptartikel": "Liste der Maler des Impressionismus",
+     "gedruckt": [
+      {
+       "titel": "Max Liebermann",
+       "absaetze": 5
+      },
+      {
+       "titel": "Liste der Maler des Impressionismus",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "römische Kaiser",
+   "wege": {
+    "R2": {
+     "sekunden": 8.11,
+     "hauptartikel": "Liste der römischen Kaiser der Antike",
+     "gedruckt": [
+      {
+       "titel": "Liste der römischen Kaiser der Antike",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "wege": {
+    "R2": {
+     "sekunden": 13.44,
+     "hauptartikel": "Bundeskanzler (Deutschland)",
+     "gedruckt": [
+      {
+       "titel": "Bundeskanzler (Deutschland)",
+       "absaetze": 14
+      },
+      {
+       "titel": "Bundeskanzler",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 9
+    }
+   }
+  },
+  {
+   "thema": "griechische Götter",
+   "wege": {
+    "R2": {
+     "sekunden": 2.06,
+     "hauptartikel": "Griechische Mythologie",
+     "gedruckt": [
+      {
+       "titel": "Griechische Mythologie",
+       "absaetze": 9
+      },
+      {
+       "titel": "Hermaphroditismus",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "wege": {
+    "R2": {
+     "sekunden": 9.06,
+     "hauptartikel": "Liste der Planeten des Sonnensystems",
+     "gedruckt": [
+      {
+       "titel": "Liste der Planeten des Sonnensystems",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 4
+    }
+   }
+  },
+  {
+   "thema": "Edelgase",
+   "wege": {
+    "R2": {
+     "sekunden": 12.77,
+     "hauptartikel": "Edelgase",
+     "gedruckt": [
+      {
+       "titel": "Edelgase",
+       "absaetze": 12
+      },
+      {
+       "titel": "Q-Phase (Meteoriten)",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 8
+    }
+   }
+  },
+  {
+   "thema": "Weltreligionen",
+   "wege": {
+    "R2": {
+     "sekunden": 2.47,
+     "hauptartikel": "Weltreligion",
+     "gedruckt": [
+      {
+       "titel": "Weltreligion",
+       "absaetze": 10
+      },
+      {
+       "titel": "Religion",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "wege": {
+    "R2": {
+     "sekunden": 2.95,
+     "hauptartikel": "Erneuerbare Energien",
+     "gedruckt": [
+      {
+       "titel": "Erneuerbare Energien",
+       "absaetze": 8
+      },
+      {
+       "titel": "Energiewende",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 8
+    }
+   }
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "wege": {
+    "R2": {
+     "sekunden": 2.26,
+     "hauptartikel": "Industrialisierung",
+     "gedruckt": [
+      {
+       "titel": "Industrialisierung",
+       "absaetze": 7
+      },
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 9
+    }
+   }
+  },
+  {
+   "thema": "Nobelpreisträger für Physik",
+   "wege": {
+    "R2": {
+     "sekunden": 6.32,
+     "hauptartikel": "Liste der Nobelpreisträger für Physik",
+     "gedruckt": [
+      {
+       "titel": "Liste der Nobelpreisträger für Physik",
+       "absaetze": 6
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "wege": {
+    "R2": {
+     "sekunden": 5.55,
+     "hauptartikel": "Frauen in der Wissenschaft",
+     "gedruckt": [
+      {
+       "titel": "Frauen in der Wissenschaft",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "wege": {
+    "R2": {
+     "sekunden": 3.56,
+     "hauptartikel": "Brüder Grimm",
+     "gedruckt": [
+      {
+       "titel": "Brüder Grimm",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "wege": {
+    "R2": {
+     "sekunden": 19.02,
+     "hauptartikel": "Liste von Flüssen in Deutschland",
+     "gedruckt": [
+      {
+       "titel": "Liste von Flüssen in Deutschland",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "wege": {
+    "R2": {
+     "sekunden": 6.85,
+     "hauptartikel": "Nonnenbruchwald",
+     "gedruckt": [
+      {
+       "titel": "Nonnenbruchwald",
+       "absaetze": 7
+      }
+     ],
+     "bausteine": 4
+    }
+   }
+  },
+  {
+   "thema": "Vulkane Europas",
+   "wege": {
+    "R2": {
+     "sekunden": 1.34,
+     "hauptartikel": "Marsili (Vulkan)",
+     "gedruckt": [
+      {
+       "titel": "Marsili (Vulkan)",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 5
+    }
+   }
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "wege": {
+    "R2": {
+     "sekunden": 2.85,
+     "hauptartikel": "Entdeckung",
+     "gedruckt": [
+      {
+       "titel": "Entdecker",
+       "absaetze": 6
+      },
+      {
+       "titel": "Entdeckung",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "wege": {
+    "R2": {
+     "sekunden": 7.46,
+     "hauptartikel": "American Farm Bureau Federation",
+     "gedruckt": [
+      {
+       "titel": "American Farm Bureau Federation",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "wege": {
+    "R2": {
+     "sekunden": 2.83,
+     "hauptartikel": "Karlheinz Schüffler",
+     "gedruckt": [
+      {
+       "titel": "Karlheinz Schüffler",
+       "absaetze": 5
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "wege": {
+    "R2": {
+     "sekunden": 2.26,
+     "hauptartikel": "Chemie in unserer Zeit",
+     "gedruckt": [
+      {
+       "titel": "Chemie in unserer Zeit",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 5
+    }
+   }
+  },
+  {
+   "thema": "Frauen im Mittelalter",
+   "wege": {
+    "R2": {
+     "sekunden": 5.3,
+     "hauptartikel": "Schreibende Frauen im Mittelalter",
+     "gedruckt": [
+      {
+       "titel": "Schreibende Frauen im Mittelalter",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Musik der Romantik",
+   "wege": {
+    "R2": {
+     "sekunden": 2.76,
+     "hauptartikel": "Musik der Romantik",
+     "gedruckt": [
+      {
+       "titel": "Musik der Romantik",
+       "absaetze": 6
+      },
+      {
+       "titel": "Kammermusik",
+       "absaetze": 1
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  }
+ ]
+}

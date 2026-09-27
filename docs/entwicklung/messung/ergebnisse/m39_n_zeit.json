@@ -1,0 +1,408 @@
+{
+ "zusammenfassung": {
+  "llm-free": {
+   "sekunden_median": 2.9050000000000002,
+   "sekunden_max": 8.34,
+   "tokens_median": 0.0,
+   "resolve_ms_median": 27.5
+  },
+  "balanced": {
+   "sekunden_median": 4.140000000000001,
+   "sekunden_max": 5.03,
+   "tokens_median": 510.0,
+   "resolve_ms_median": 3496.5
+  }
+ },
+ "themen": [
+  {
+   "thema": "Kontinentaldrift",
+   "llm-free": {
+    "hauptartikel": "Kontinentaldrift",
+    "sekunden": 8.34,
+    "phasen_ms": {
+     "resolve": 24,
+     "corpus": 1344,
+     "segment": 51,
+     "match": 5010,
+     "synthesize": 1234,
+     "curricula": 664,
+     "assemble": 8
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Kontinentaldrift",
+    "sekunden": 4.28,
+    "phasen_ms": {
+     "resolve": 3775,
+     "corpus": 6,
+     "segment": 10,
+     "match": 341,
+     "synthesize": 120,
+     "curricula": 19,
+     "assemble": 3
+    },
+    "tokens": 475,
+    "aufrufe": 1,
+    "n_gefunden": 7,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Zellteilung",
+   "llm-free": {
+    "hauptartikel": "Zellteilung",
+    "sekunden": 2.6,
+    "phasen_ms": {
+     "resolve": 18,
+     "corpus": 1091,
+     "segment": 14,
+     "match": 74,
+     "synthesize": 1214,
+     "curricula": 182,
+     "assemble": 2
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Zellteilung",
+    "sekunden": 4.09,
+    "phasen_ms": {
+     "resolve": 3596,
+     "corpus": 3,
+     "segment": 6,
+     "match": 274,
+     "synthesize": 169,
+     "curricula": 34,
+     "assemble": 5
+    },
+    "tokens": 481,
+    "aufrufe": 1,
+    "n_gefunden": 6,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Reformation",
+   "llm-free": {
+    "hauptartikel": "Reformation",
+    "sekunden": 5.08,
+    "phasen_ms": {
+     "resolve": 109,
+     "corpus": 2114,
+     "segment": 48,
+     "match": 944,
+     "synthesize": 1581,
+     "curricula": 282,
+     "assemble": 2
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Reformation",
+    "sekunden": 4.19,
+    "phasen_ms": {
+     "resolve": 3103,
+     "corpus": 13,
+     "segment": 27,
+     "match": 850,
+     "synthesize": 154,
+     "curricula": 36,
+     "assemble": 3
+    },
+    "tokens": 481,
+    "aufrufe": 1,
+    "n_gefunden": 7,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Satz des Pythagoras",
+   "llm-free": {
+    "hauptartikel": "Satz des Pythagoras",
+    "sekunden": 3.24,
+    "phasen_ms": {
+     "resolve": 87,
+     "corpus": 1594,
+     "segment": 23,
+     "match": 129,
+     "synthesize": 1276,
+     "curricula": 127,
+     "assemble": 3
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Satz des Pythagoras",
+    "sekunden": 5.03,
+    "phasen_ms": {
+     "resolve": 4544,
+     "corpus": 4,
+     "segment": 9,
+     "match": 297,
+     "synthesize": 154,
+     "curricula": 11,
+     "assemble": 5
+    },
+    "tokens": 651,
+    "aufrufe": 1,
+    "n_gefunden": 4,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "llm-free": {
+    "hauptartikel": "Wasserkreislauf",
+    "sekunden": 2.66,
+    "phasen_ms": {
+     "resolve": 9,
+     "corpus": 1217,
+     "segment": 14,
+     "match": 59,
+     "synthesize": 1241,
+     "curricula": 117,
+     "assemble": 3
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Wasserkreislauf",
+    "sekunden": 0.51,
+    "phasen_ms": {
+     "resolve": 110,
+     "corpus": 8,
+     "segment": 8,
+     "match": 237,
+     "synthesize": 130,
+     "curricula": 13,
+     "assemble": 4
+    },
+    "tokens": 539,
+    "aufrufe": 1,
+    "n_gefunden": 7,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Stromkreis",
+   "llm-free": {
+    "hauptartikel": "Stromkreis",
+    "sekunden": 1.91,
+    "phasen_ms": {
+     "resolve": 27,
+     "corpus": 635,
+     "segment": 18,
+     "match": 85,
+     "synthesize": 768,
+     "curricula": 368,
+     "assemble": 2
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Stromkreis",
+    "sekunden": 3.89,
+    "phasen_ms": {
+     "resolve": 3402,
+     "corpus": 7,
+     "segment": 9,
+     "match": 306,
+     "synthesize": 134,
+     "curricula": 26,
+     "assemble": 3
+    },
+    "tokens": 475,
+    "aufrufe": 1,
+    "n_gefunden": 8,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Expressionismus",
+   "llm-free": {
+    "hauptartikel": "Expressionismus",
+    "sekunden": 3.15,
+    "phasen_ms": {
+     "resolve": 15,
+     "corpus": 1468,
+     "segment": 13,
+     "match": 332,
+     "synthesize": 1124,
+     "curricula": 189,
+     "assemble": 3
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Expressionismus",
+    "sekunden": 4.88,
+    "phasen_ms": {
+     "resolve": 3978,
+     "corpus": 6,
+     "segment": 19,
+     "match": 703,
+     "synthesize": 155,
+     "curricula": 10,
+     "assemble": 4
+    },
+    "tokens": 591,
+    "aufrufe": 1,
+    "n_gefunden": 8,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Kalter Krieg",
+   "llm-free": {
+    "hauptartikel": "Kalter Krieg",
+    "sekunden": 3.34,
+    "phasen_ms": {
+     "resolve": 29,
+     "corpus": 1172,
+     "segment": 46,
+     "match": 278,
+     "synthesize": 1688,
+     "curricula": 123,
+     "assemble": 2
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Kalter Krieg",
+    "sekunden": 4.05,
+    "phasen_ms": {
+     "resolve": 2990,
+     "corpus": 27,
+     "segment": 48,
+     "match": 809,
+     "synthesize": 142,
+     "curricula": 26,
+     "assemble": 3
+    },
+    "tokens": 433,
+    "aufrufe": 1,
+    "n_gefunden": 9,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "llm-free": {
+    "hauptartikel": "Ökosystem",
+    "sekunden": 2.31,
+    "phasen_ms": {
+     "resolve": 28,
+     "corpus": 494,
+     "segment": 15,
+     "match": 339,
+     "synthesize": 1254,
+     "curricula": 172,
+     "assemble": 3
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Ökosystem",
+    "sekunden": 0.78,
+    "phasen_ms": {
+     "resolve": 135,
+     "corpus": 7,
+     "segment": 18,
+     "match": 422,
+     "synthesize": 141,
+     "curricula": 49,
+     "assemble": 3
+    },
+    "tokens": 557,
+    "aufrufe": 1,
+    "n_gefunden": 8,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  },
+  {
+   "thema": "Säuren und Basen",
+   "llm-free": {
+    "hauptartikel": "Säure-Base-Konzepte",
+    "sekunden": 2.39,
+    "phasen_ms": {
+     "resolve": 116,
+     "corpus": 1058,
+     "segment": 9,
+     "match": 83,
+     "synthesize": 922,
+     "curricula": 192,
+     "assemble": 4
+    },
+    "tokens": 0,
+    "aufrufe": 0,
+    "n_gefunden": 0,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": null
+   },
+   "balanced": {
+    "hauptartikel": "Säure-Base-Konzepte",
+    "sekunden": 4.32,
+    "phasen_ms": {
+     "resolve": 3591,
+     "corpus": 3,
+     "segment": 11,
+     "match": 230,
+     "synthesize": 269,
+     "curricula": 212,
+     "assemble": 3
+    },
+    "tokens": 587,
+    "aufrufe": 1,
+    "n_gefunden": 9,
+    "n_rueckfall": null,
+    "artikelwahl_gefragt": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,348 @@
+{
+ "themen": [
+  {
+   "thema": "Barockliteratur",
+   "wege": {
+    "R2": {
+     "sekunden": 4.26,
+     "hauptartikel": "Barockliteratur",
+     "gedruckt": [
+      {
+       "titel": "Barockliteratur",
+       "absaetze": 12
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Bruchrechnung",
+   "wege": {
+    "R2": {
+     "sekunden": 2.02,
+     "hauptartikel": "Bruchrechnung",
+     "gedruckt": [
+      {
+       "titel": "Bruchrechnung",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 5
+    }
+   }
+  },
+  {
+   "thema": "Demokratie",
+   "wege": {
+    "R2": {
+     "sekunden": 2.19,
+     "hauptartikel": "Demokratie",
+     "gedruckt": [
+      {
+       "titel": "Demokratie",
+       "absaetze": 15
+      }
+     ],
+     "bausteine": 8
+    }
+   }
+  },
+  {
+   "thema": "Französische Revolution",
+   "wege": {
+    "R2": {
+     "sekunden": 1.96,
+     "hauptartikel": "Französische Revolution",
+     "gedruckt": [
+      {
+       "titel": "Französische Revolution",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Klimawandel",
+   "wege": {
+    "R2": {
+     "sekunden": 2.06,
+     "hauptartikel": "Klimawandel",
+     "gedruckt": [
+      {
+       "titel": "Klimawandel",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Optik",
+   "wege": {
+    "R2": {
+     "sekunden": 1.17,
+     "hauptartikel": "Optik",
+     "gedruckt": [
+      {
+       "titel": "Optik",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Photosynthese",
+   "wege": {
+    "R2": {
+     "sekunden": 1.49,
+     "hauptartikel": "Photosynthese",
+     "gedruckt": [
+      {
+       "titel": "Photosynthese",
+       "absaetze": 17
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Programmiersprache",
+   "wege": {
+    "R2": {
+     "sekunden": 1.44,
+     "hauptartikel": "Programmiersprache",
+     "gedruckt": [
+      {
+       "titel": "Programmiersprache",
+       "absaetze": 11
+      },
+      {
+       "titel": "Unterprogramm",
+       "absaetze": 9
+      }
+     ],
+     "bausteine": 10
+    }
+   }
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "wege": {
+    "R2": {
+     "sekunden": 3.02,
+     "hauptartikel": "Säure-Base-Konzepte",
+     "gedruckt": [
+      {
+       "titel": "Säure-Base-Konzepte",
+       "absaetze": 8
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Sinfonie",
+   "wege": {
+    "R2": {
+     "sekunden": 1.89,
+     "hauptartikel": "Sinfonie",
+     "gedruckt": [
+      {
+       "titel": "Sinfonie",
+       "absaetze": 5
+      },
+      {
+       "titel": "Sonatensatzform",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Plattentektonik",
+   "wege": {
+    "R2": {
+     "sekunden": 1.57,
+     "hauptartikel": "Plattentektonik",
+     "gedruckt": [
+      {
+       "titel": "Plattentektonik",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5
+    }
+   }
+  },
+  {
+   "thema": "Ökosystem",
+   "wege": {
+    "R2": {
+     "sekunden": 2.13,
+     "hauptartikel": "Ökosystem",
+     "gedruckt": [
+      {
+       "titel": "Ökosystem",
+       "absaetze": 18
+      }
+     ],
+     "bausteine": 9
+    }
+   }
+  },
+  {
+   "thema": "Atommodell",
+   "wege": {
+    "R2": {
+     "sekunden": 4.92,
+     "hauptartikel": "Liste der Atommodelle",
+     "gedruckt": [
+      {
+       "titel": "Liste der Atommodelle",
+       "absaetze": 7
+      },
+      {
+       "titel": "Zeittafel physikalischer Entdeckungen",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 6
+    }
+   }
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "wege": {
+    "R2": {
+     "sekunden": 11.75,
+     "hauptartikel": "Industrielle Revolution",
+     "gedruckt": [
+      {
+       "titel": "Industrielle Revolution",
+       "absaetze": 17
+      }
+     ],
+     "bausteine": 9
+    }
+   }
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "wege": {
+    "R2": {
+     "sekunden": 16.73,
+     "hauptartikel": "Elektrischer Strom",
+     "gedruckt": [
+      {
+       "titel": "Elektrischer Strom",
+       "absaetze": 17
+      },
+      {
+       "titel": "Strom",
+       "absaetze": 4
+      }
+     ],
+     "bausteine": 8
+    }
+   }
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "wege": {
+    "R2": {
+     "sekunden": 3.36,
+     "hauptartikel": "Wasserkreislauf",
+     "gedruckt": [
+      {
+       "titel": "Wasserkreislauf",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 9
+    }
+   }
+  },
+  {
+   "thema": "Römisches Reich",
+   "wege": {
+    "R2": {
+     "sekunden": 5.13,
+     "hauptartikel": "Römisches Reich",
+     "gedruckt": [
+      {
+       "titel": "Römisches Reich",
+       "absaetze": 14
+      }
+     ],
+     "bausteine": 10
+    }
+   }
+  },
+  {
+   "thema": "Lineare Funktion",
+   "wege": {
+    "R2": {
+     "sekunden": 4.9,
+     "hauptartikel": "Lineare Funktion",
+     "gedruckt": [
+      {
+       "titel": "Lineare Funktion",
+       "absaetze": 10
+      }
+     ],
+     "bausteine": 5
+    }
+   }
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "wege": {
+    "R2": {
+     "sekunden": 2.97,
+     "hauptartikel": "Zelle (Biologie)",
+     "gedruckt": [
+      {
+       "titel": "Zelle (Biologie)",
+       "absaetze": 8
+      },
+      {
+       "titel": "Zelle",
+       "absaetze": 2
+      }
+     ],
+     "bausteine": 7
+    }
+   }
+  },
+  {
+   "thema": "Gedicht",
+   "wege": {
+    "R2": {
+     "sekunden": 2.49,
+     "hauptartikel": "Lyrik",
+     "gedruckt": [
+      {
+       "titel": "Lyrik",
+       "absaetze": 9
+      },
+      {
+       "titel": "Gedicht",
+       "absaetze": 3
+      }
+     ],
+     "bausteine": 8
+    }
+   }
+  }
+ ]
+}

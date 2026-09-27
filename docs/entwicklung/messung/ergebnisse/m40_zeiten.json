@@ -1,0 +1,971 @@
+{
+ "threads": 4,
+ "modelle": {
+  "LFM2-700M-Q4_K_M.gguf": {
+   "median": 4.4,
+   "max": 16.88,
+   "unter_3s": 2,
+   "fragen": [
+    {
+     "thema": "deutsche Dichter",
+     "sekunden": 5.13,
+     "tokens_aus": 157,
+     "prompt_ms": 1109,
+     "erzeugung_ms": 3955
+    },
+    {
+     "thema": "Dichter der Romantik",
+     "sekunden": 4.44,
+     "tokens_aus": 150,
+     "prompt_ms": 1142,
+     "erzeugung_ms": 3252
+    },
+    {
+     "thema": "Komponisten der Klassik",
+     "sekunden": 2.93,
+     "tokens_aus": 112,
+     "prompt_ms": 881,
+     "erzeugung_ms": 2019
+    },
+    {
+     "thema": "Philosophen der Aufklärung",
+     "sekunden": 3.21,
+     "tokens_aus": 98,
+     "prompt_ms": 852,
+     "erzeugung_ms": 1897
+    },
+    {
+     "thema": "Maler des Impressionismus",
+     "sekunden": 11.19,
+     "tokens_aus": 400,
+     "prompt_ms": 954,
+     "erzeugung_ms": 10196
+    },
+    {
+     "thema": "römische Kaiser",
+     "sekunden": 4.4,
+     "tokens_aus": 138,
+     "prompt_ms": 1098,
+     "erzeugung_ms": 3174
+    },
+    {
+     "thema": "deutsche Bundeskanzler",
+     "sekunden": 5.01,
+     "tokens_aus": 178,
+     "prompt_ms": 965,
+     "erzeugung_ms": 4007
+    },
+    {
+     "thema": "griechische Götter",
+     "sekunden": 4.42,
+     "tokens_aus": 141,
+     "prompt_ms": 970,
+     "erzeugung_ms": 3413
+    },
+    {
+     "thema": "Planeten des Sonnensystems",
+     "sekunden": 4.5,
+     "tokens_aus": 142,
+     "prompt_ms": 1071,
+     "erzeugung_ms": 3385
+    },
+    {
+     "thema": "Edelgase",
+     "sekunden": 3.57,
+     "tokens_aus": 116,
+     "prompt_ms": 1031,
+     "erzeugung_ms": 2502
+    },
+    {
+     "thema": "Weltreligionen",
+     "sekunden": 5.06,
+     "tokens_aus": 176,
+     "prompt_ms": 983,
+     "erzeugung_ms": 4038
+    },
+    {
+     "thema": "erneuerbare Energien",
+     "sekunden": 4.75,
+     "tokens_aus": 175,
+     "prompt_ms": 994,
+     "erzeugung_ms": 3723
+    },
+    {
+     "thema": "Erfindungen der Industrialisierung",
+     "sekunden": 4.74,
+     "tokens_aus": 153,
+     "prompt_ms": 1076,
+     "erzeugung_ms": 3623
+    },
+    {
+     "thema": "Nobelpreisträger für Physik",
+     "sekunden": 5.52,
+     "tokens_aus": 160,
+     "prompt_ms": 1204,
+     "erzeugung_ms": 4272
+    },
+    {
+     "thema": "Frauen in der Wissenschaft",
+     "sekunden": 4.33,
+     "tokens_aus": 125,
+     "prompt_ms": 1078,
+     "erzeugung_ms": 3202
+    },
+    {
+     "thema": "Märchen der Brüder Grimm",
+     "sekunden": 4.14,
+     "tokens_aus": 145,
+     "prompt_ms": 1123,
+     "erzeugung_ms": 2970
+    },
+    {
+     "thema": "deutsche Flüsse",
+     "sekunden": 4.61,
+     "tokens_aus": 166,
+     "prompt_ms": 1104,
+     "erzeugung_ms": 3465
+    },
+    {
+     "thema": "Säugetiere des Waldes",
+     "sekunden": 4.11,
+     "tokens_aus": 156,
+     "prompt_ms": 935,
+     "erzeugung_ms": 3138
+    },
+    {
+     "thema": "Vulkane Europas",
+     "sekunden": 3.2,
+     "tokens_aus": 105,
+     "prompt_ms": 995,
+     "erzeugung_ms": 2170
+    },
+    {
+     "thema": "Entdecker der Neuzeit",
+     "sekunden": 16.88,
+     "tokens_aus": 143,
+     "prompt_ms": 1005,
+     "erzeugung_ms": 15838
+    },
+    {
+     "thema": "Klimawandel und Landwirtschaft",
+     "sekunden": 5.5,
+     "tokens_aus": 185,
+     "prompt_ms": 1005,
+     "erzeugung_ms": 4440
+    },
+    {
+     "thema": "Mathematik in der Musik",
+     "sekunden": 4.28,
+     "tokens_aus": 141,
+     "prompt_ms": 1096,
+     "erzeugung_ms": 3133
+    },
+    {
+     "thema": "Chemie im Alltag",
+     "sekunden": 4.02,
+     "tokens_aus": 142,
+     "prompt_ms": 919,
+     "erzeugung_ms": 3070
+    },
+    {
+     "thema": "Frauen im Mittelalter",
+     "sekunden": 3.52,
+     "tokens_aus": 107,
+     "prompt_ms": 1196,
+     "erzeugung_ms": 2280
+    },
+    {
+     "thema": "Musik der Romantik",
+     "sekunden": 4.11,
+     "tokens_aus": 130,
+     "prompt_ms": 1015,
+     "erzeugung_ms": 3060
+    },
+    {
+     "thema": "Barockliteratur",
+     "sekunden": 3.72,
+     "tokens_aus": 126,
+     "prompt_ms": 1042,
+     "erzeugung_ms": 2636
+    },
+    {
+     "thema": "Bruchrechnung",
+     "sekunden": 3.9,
+     "tokens_aus": 122,
+     "prompt_ms": 871,
+     "erzeugung_ms": 2991
+    },
+    {
+     "thema": "Demokratie",
+     "sekunden": 2.93,
+     "tokens_aus": 99,
+     "prompt_ms": 958,
+     "erzeugung_ms": 1923
+    },
+    {
+     "thema": "Französische Revolution",
+     "sekunden": 4.0,
+     "tokens_aus": 144,
+     "prompt_ms": 898,
+     "erzeugung_ms": 3069
+    },
+    {
+     "thema": "Klimawandel",
+     "sekunden": 4.32,
+     "tokens_aus": 155,
+     "prompt_ms": 870,
+     "erzeugung_ms": 3416
+    },
+    {
+     "thema": "Optik",
+     "sekunden": 3.19,
+     "tokens_aus": 101,
+     "prompt_ms": 984,
+     "erzeugung_ms": 2171
+    },
+    {
+     "thema": "Photosynthese",
+     "sekunden": 4.52,
+     "tokens_aus": 135,
+     "prompt_ms": 1031,
+     "erzeugung_ms": 3455
+    },
+    {
+     "thema": "Programmiersprache",
+     "sekunden": 5.24,
+     "tokens_aus": 183,
+     "prompt_ms": 1066,
+     "erzeugung_ms": 4132
+    },
+    {
+     "thema": "Säure-Base-Konzepte",
+     "sekunden": 5.25,
+     "tokens_aus": 170,
+     "prompt_ms": 1156,
+     "erzeugung_ms": 4047
+    },
+    {
+     "thema": "Sinfonie",
+     "sekunden": 4.96,
+     "tokens_aus": 150,
+     "prompt_ms": 1199,
+     "erzeugung_ms": 3720
+    },
+    {
+     "thema": "Plattentektonik",
+     "sekunden": 4.96,
+     "tokens_aus": 168,
+     "prompt_ms": 1088,
+     "erzeugung_ms": 3833
+    },
+    {
+     "thema": "Ökosystem",
+     "sekunden": 4.52,
+     "tokens_aus": 161,
+     "prompt_ms": 989,
+     "erzeugung_ms": 3498
+    },
+    {
+     "thema": "Atommodell",
+     "sekunden": 4.02,
+     "tokens_aus": 98,
+     "prompt_ms": 1059,
+     "erzeugung_ms": 2927
+    },
+    {
+     "thema": "Industrielle Revolution",
+     "sekunden": 3.87,
+     "tokens_aus": 151,
+     "prompt_ms": 904,
+     "erzeugung_ms": 2935
+    },
+    {
+     "thema": "Elektrischer Strom",
+     "sekunden": 3.75,
+     "tokens_aus": 137,
+     "prompt_ms": 927,
+     "erzeugung_ms": 2798
+    },
+    {
+     "thema": "Wasserkreislauf",
+     "sekunden": 4.57,
+     "tokens_aus": 132,
+     "prompt_ms": 1033,
+     "erzeugung_ms": 3506
+    },
+    {
+     "thema": "Römisches Reich",
+     "sekunden": 4.7,
+     "tokens_aus": 171,
+     "prompt_ms": 1089,
+     "erzeugung_ms": 3575
+    },
+    {
+     "thema": "Lineare Funktion",
+     "sekunden": 3.9,
+     "tokens_aus": 116,
+     "prompt_ms": 1036,
+     "erzeugung_ms": 2752
+    },
+    {
+     "thema": "Zelle (Biologie)",
+     "sekunden": 3.07,
+     "tokens_aus": 100,
+     "prompt_ms": 1020,
+     "erzeugung_ms": 2012
+    },
+    {
+     "thema": "Gedicht",
+     "sekunden": 4.65,
+     "tokens_aus": 171,
+     "prompt_ms": 936,
+     "erzeugung_ms": 3676
+    }
+   ]
+  },
+  "LFM2.5-1.2B-Instruct-Q4_K_M.gguf": {
+   "median": 4.82,
+   "max": 12.49,
+   "unter_3s": 0,
+   "fragen": [
+    {
+     "thema": "deutsche Dichter",
+     "sekunden": 4.92,
+     "tokens_aus": 95,
+     "prompt_ms": 2218,
+     "erzeugung_ms": 2661
+    },
+    {
+     "thema": "Dichter der Romantik",
+     "sekunden": 4.24,
+     "tokens_aus": 84,
+     "prompt_ms": 1821,
+     "erzeugung_ms": 2389
+    },
+    {
+     "thema": "Komponisten der Klassik",
+     "sekunden": 4.47,
+     "tokens_aus": 85,
+     "prompt_ms": 1811,
+     "erzeugung_ms": 2632
+    },
+    {
+     "thema": "Philosophen der Aufklärung",
+     "sekunden": 6.05,
+     "tokens_aus": 124,
+     "prompt_ms": 1918,
+     "erzeugung_ms": 4102
+    },
+    {
+     "thema": "Maler des Impressionismus",
+     "sekunden": 4.75,
+     "tokens_aus": 93,
+     "prompt_ms": 1939,
+     "erzeugung_ms": 2777
+    },
+    {
+     "thema": "römische Kaiser",
+     "sekunden": 4.78,
+     "tokens_aus": 85,
+     "prompt_ms": 2019,
+     "erzeugung_ms": 2724
+    },
+    {
+     "thema": "deutsche Bundeskanzler",
+     "sekunden": 6.22,
+     "tokens_aus": 144,
+     "prompt_ms": 1885,
+     "erzeugung_ms": 4307
+    },
+    {
+     "thema": "griechische Götter",
+     "sekunden": 4.95,
+     "tokens_aus": 100,
+     "prompt_ms": 1923,
+     "erzeugung_ms": 2991
+    },
+    {
+     "thema": "Planeten des Sonnensystems",
+     "sekunden": 5.17,
+     "tokens_aus": 103,
+     "prompt_ms": 1907,
+     "erzeugung_ms": 3230
+    },
+    {
+     "thema": "Edelgase",
+     "sekunden": 4.39,
+     "tokens_aus": 82,
+     "prompt_ms": 2028,
+     "erzeugung_ms": 2335
+    },
+    {
+     "thema": "Weltreligionen",
+     "sekunden": 4.86,
+     "tokens_aus": 74,
+     "prompt_ms": 1966,
+     "erzeugung_ms": 2856
+    },
+    {
+     "thema": "erneuerbare Energien",
+     "sekunden": 5.33,
+     "tokens_aus": 110,
+     "prompt_ms": 2039,
+     "erzeugung_ms": 3248
+    },
+    {
+     "thema": "Erfindungen der Industrialisierung",
+     "sekunden": 5.41,
+     "tokens_aus": 102,
+     "prompt_ms": 1888,
+     "erzeugung_ms": 3481
+    },
+    {
+     "thema": "Nobelpreisträger für Physik",
+     "sekunden": 5.54,
+     "tokens_aus": 96,
+     "prompt_ms": 2048,
+     "erzeugung_ms": 3449
+    },
+    {
+     "thema": "Frauen in der Wissenschaft",
+     "sekunden": 5.17,
+     "tokens_aus": 119,
+     "prompt_ms": 1798,
+     "erzeugung_ms": 3340
+    },
+    {
+     "thema": "Märchen der Brüder Grimm",
+     "sekunden": 4.53,
+     "tokens_aus": 99,
+     "prompt_ms": 1742,
+     "erzeugung_ms": 2757
+    },
+    {
+     "thema": "deutsche Flüsse",
+     "sekunden": 4.21,
+     "tokens_aus": 89,
+     "prompt_ms": 1754,
+     "erzeugung_ms": 2409
+    },
+    {
+     "thema": "Säugetiere des Waldes",
+     "sekunden": 4.13,
+     "tokens_aus": 87,
+     "prompt_ms": 1742,
+     "erzeugung_ms": 2360
+    },
+    {
+     "thema": "Vulkane Europas",
+     "sekunden": 4.61,
+     "tokens_aus": 102,
+     "prompt_ms": 1745,
+     "erzeugung_ms": 2833
+    },
+    {
+     "thema": "Entdecker der Neuzeit",
+     "sekunden": 4.3,
+     "tokens_aus": 91,
+     "prompt_ms": 1769,
+     "erzeugung_ms": 2501
+    },
+    {
+     "thema": "Klimawandel und Landwirtschaft",
+     "sekunden": 4.28,
+     "tokens_aus": 91,
+     "prompt_ms": 1769,
+     "erzeugung_ms": 2481
+    },
+    {
+     "thema": "Mathematik in der Musik",
+     "sekunden": 5.14,
+     "tokens_aus": 113,
+     "prompt_ms": 1814,
+     "erzeugung_ms": 3234
+    },
+    {
+     "thema": "Chemie im Alltag",
+     "sekunden": 4.46,
+     "tokens_aus": 90,
+     "prompt_ms": 1864,
+     "erzeugung_ms": 2566
+    },
+    {
+     "thema": "Frauen im Mittelalter",
+     "sekunden": 5.31,
+     "tokens_aus": 113,
+     "prompt_ms": 1864,
+     "erzeugung_ms": 3407
+    },
+    {
+     "thema": "Musik der Romantik",
+     "sekunden": 4.86,
+     "tokens_aus": 98,
+     "prompt_ms": 1856,
+     "erzeugung_ms": 2971
+    },
+    {
+     "thema": "Barockliteratur",
+     "sekunden": 5.36,
+     "tokens_aus": 106,
+     "prompt_ms": 2006,
+     "erzeugung_ms": 3311
+    },
+    {
+     "thema": "Bruchrechnung",
+     "sekunden": 6.77,
+     "tokens_aus": 87,
+     "prompt_ms": 1873,
+     "erzeugung_ms": 4861
+    },
+    {
+     "thema": "Demokratie",
+     "sekunden": 5.43,
+     "tokens_aus": 104,
+     "prompt_ms": 2290,
+     "erzeugung_ms": 3105
+    },
+    {
+     "thema": "Französische Revolution",
+     "sekunden": 10.74,
+     "tokens_aus": 112,
+     "prompt_ms": 1835,
+     "erzeugung_ms": 8864
+    },
+    {
+     "thema": "Klimawandel",
+     "sekunden": 6.51,
+     "tokens_aus": 98,
+     "prompt_ms": 2283,
+     "erzeugung_ms": 4182
+    },
+    {
+     "thema": "Optik",
+     "sekunden": 4.34,
+     "tokens_aus": 71,
+     "prompt_ms": 2017,
+     "erzeugung_ms": 2281
+    },
+    {
+     "thema": "Photosynthese",
+     "sekunden": 4.22,
+     "tokens_aus": 84,
+     "prompt_ms": 1788,
+     "erzeugung_ms": 2405
+    },
+    {
+     "thema": "Programmiersprache",
+     "sekunden": 4.02,
+     "tokens_aus": 77,
+     "prompt_ms": 1839,
+     "erzeugung_ms": 2137
+    },
+    {
+     "thema": "Säure-Base-Konzepte",
+     "sekunden": 4.77,
+     "tokens_aus": 101,
+     "prompt_ms": 1859,
+     "erzeugung_ms": 2873
+    },
+    {
+     "thema": "Sinfonie",
+     "sekunden": 4.56,
+     "tokens_aus": 90,
+     "prompt_ms": 1882,
+     "erzeugung_ms": 2643
+    },
+    {
+     "thema": "Plattentektonik",
+     "sekunden": 5.53,
+     "tokens_aus": 125,
+     "prompt_ms": 2038,
+     "erzeugung_ms": 3455
+    },
+    {
+     "thema": "Ökosystem",
+     "sekunden": 5.31,
+     "tokens_aus": 128,
+     "prompt_ms": 1751,
+     "erzeugung_ms": 3534
+    },
+    {
+     "thema": "Atommodell",
+     "sekunden": 3.9,
+     "tokens_aus": 77,
+     "prompt_ms": 1722,
+     "erzeugung_ms": 2149
+    },
+    {
+     "thema": "Industrielle Revolution",
+     "sekunden": 4.7,
+     "tokens_aus": 107,
+     "prompt_ms": 1705,
+     "erzeugung_ms": 2960
+    },
+    {
+     "thema": "Elektrischer Strom",
+     "sekunden": 3.77,
+     "tokens_aus": 74,
+     "prompt_ms": 1766,
+     "erzeugung_ms": 1972
+    },
+    {
+     "thema": "Wasserkreislauf",
+     "sekunden": 4.39,
+     "tokens_aus": 91,
+     "prompt_ms": 1776,
+     "erzeugung_ms": 2587
+    },
+    {
+     "thema": "Römisches Reich",
+     "sekunden": 12.49,
+     "tokens_aus": 86,
+     "prompt_ms": 4575,
+     "erzeugung_ms": 7881
+    },
+    {
+     "thema": "Lineare Funktion",
+     "sekunden": 5.84,
+     "tokens_aus": 99,
+     "prompt_ms": 2022,
+     "erzeugung_ms": 3775
+    },
+    {
+     "thema": "Zelle (Biologie)",
+     "sekunden": 4.11,
+     "tokens_aus": 76,
+     "prompt_ms": 1893,
+     "erzeugung_ms": 2173
+    },
+    {
+     "thema": "Gedicht",
+     "sekunden": 4.82,
+     "tokens_aus": 107,
+     "prompt_ms": 1697,
+     "erzeugung_ms": 3090
+    }
+   ]
+  },
+  "Qwen3-0.6B-Q8_0.gguf": {
+   "median": 6.25,
+   "max": 27.73,
+   "unter_3s": 0,
+   "fragen": [
+    {
+     "thema": "deutsche Dichter",
+     "sekunden": 12.98,
+     "tokens_aus": 93,
+     "prompt_ms": 1967,
+     "erzeugung_ms": 10838
+    },
+    {
+     "thema": "Dichter der Romantik",
+     "sekunden": 5.48,
+     "tokens_aus": 95,
+     "prompt_ms": 1278,
+     "erzeugung_ms": 3163
+    },
+    {
+     "thema": "Komponisten der Klassik",
+     "sekunden": 4.35,
+     "tokens_aus": 99,
+     "prompt_ms": 1131,
+     "erzeugung_ms": 3156
+    },
+    {
+     "thema": "Philosophen der Aufklärung",
+     "sekunden": 8.58,
+     "tokens_aus": 219,
+     "prompt_ms": 1124,
+     "erzeugung_ms": 7373
+    },
+    {
+     "thema": "Maler des Impressionismus",
+     "sekunden": 6.72,
+     "tokens_aus": 174,
+     "prompt_ms": 1254,
+     "erzeugung_ms": 5359
+    },
+    {
+     "thema": "römische Kaiser",
+     "sekunden": 7.1,
+     "tokens_aus": 176,
+     "prompt_ms": 1131,
+     "erzeugung_ms": 5898
+    },
+    {
+     "thema": "deutsche Bundeskanzler",
+     "sekunden": 6.43,
+     "tokens_aus": 156,
+     "prompt_ms": 1089,
+     "erzeugung_ms": 5273
+    },
+    {
+     "thema": "griechische Götter",
+     "sekunden": 6.64,
+     "tokens_aus": 177,
+     "prompt_ms": 1009,
+     "erzeugung_ms": 5511
+    },
+    {
+     "thema": "Planeten des Sonnensystems",
+     "sekunden": 6.84,
+     "tokens_aus": 157,
+     "prompt_ms": 1366,
+     "erzeugung_ms": 5383
+    },
+    {
+     "thema": "Edelgase",
+     "sekunden": 4.74,
+     "tokens_aus": 112,
+     "prompt_ms": 1065,
+     "erzeugung_ms": 3596
+    },
+    {
+     "thema": "Weltreligionen",
+     "sekunden": 4.65,
+     "tokens_aus": 103,
+     "prompt_ms": 1049,
+     "erzeugung_ms": 3380
+    },
+    {
+     "thema": "erneuerbare Energien",
+     "sekunden": 4.77,
+     "tokens_aus": 96,
+     "prompt_ms": 1135,
+     "erzeugung_ms": 3241
+    },
+    {
+     "thema": "Erfindungen der Industrialisierung",
+     "sekunden": 4.95,
+     "tokens_aus": 75,
+     "prompt_ms": 1141,
+     "erzeugung_ms": 3019
+    },
+    {
+     "thema": "Nobelpreisträger für Physik",
+     "sekunden": 10.27,
+     "tokens_aus": 244,
+     "prompt_ms": 1151,
+     "erzeugung_ms": 8410
+    },
+    {
+     "thema": "Frauen in der Wissenschaft",
+     "sekunden": 3.98,
+     "tokens_aus": 70,
+     "prompt_ms": 1147,
+     "erzeugung_ms": 2307
+    },
+    {
+     "thema": "Märchen der Brüder Grimm",
+     "sekunden": 6.15,
+     "tokens_aus": 157,
+     "prompt_ms": 1163,
+     "erzeugung_ms": 4909
+    },
+    {
+     "thema": "deutsche Flüsse",
+     "sekunden": 4.96,
+     "tokens_aus": 115,
+     "prompt_ms": 1056,
+     "erzeugung_ms": 3822
+    },
+    {
+     "thema": "Säugetiere des Waldes",
+     "sekunden": 4.99,
+     "tokens_aus": 129,
+     "prompt_ms": 1163,
+     "erzeugung_ms": 3755
+    },
+    {
+     "thema": "Vulkane Europas",
+     "sekunden": 6.25,
+     "tokens_aus": 164,
+     "prompt_ms": 1375,
+     "erzeugung_ms": 4798
+    },
+    {
+     "thema": "Entdecker der Neuzeit",
+     "sekunden": 5.76,
+     "tokens_aus": 152,
+     "prompt_ms": 1043,
+     "erzeugung_ms": 4621
+    },
+    {
+     "thema": "Klimawandel und Landwirtschaft",
+     "sekunden": 5.84,
+     "tokens_aus": 156,
+     "prompt_ms": 1098,
+     "erzeugung_ms": 4660
+    },
+    {
+     "thema": "Mathematik in der Musik",
+     "sekunden": 3.69,
+     "tokens_aus": 82,
+     "prompt_ms": 1071,
+     "erzeugung_ms": 2518
+    },
+    {
+     "thema": "Chemie im Alltag",
+     "sekunden": 6.1,
+     "tokens_aus": 160,
+     "prompt_ms": 1178,
+     "erzeugung_ms": 4842
+    },
+    {
+     "thema": "Frauen im Mittelalter",
+     "sekunden": 5.17,
+     "tokens_aus": 125,
+     "prompt_ms": 1088,
+     "erzeugung_ms": 3955
+    },
+    {
+     "thema": "Musik der Romantik",
+     "sekunden": 5.58,
+     "tokens_aus": 110,
+     "prompt_ms": 1062,
+     "erzeugung_ms": 3495
+    },
+    {
+     "thema": "Barockliteratur",
+     "sekunden": 10.2,
+     "tokens_aus": 142,
+     "prompt_ms": 1226,
+     "erzeugung_ms": 4773
+    },
+    {
+     "thema": "Bruchrechnung",
+     "sekunden": 9.5,
+     "tokens_aus": 129,
+     "prompt_ms": 1628,
+     "erzeugung_ms": 6616
+    },
+    {
+     "thema": "Demokratie",
+     "sekunden": 27.73,
+     "tokens_aus": 187,
+     "prompt_ms": 1544,
+     "erzeugung_ms": 6366
+    },
+    {
+     "thema": "Französische Revolution",
+     "sekunden": 8.96,
+     "tokens_aus": 183,
+     "prompt_ms": 1134,
+     "erzeugung_ms": 6147
+    },
+    {
+     "thema": "Klimawandel",
+     "sekunden": 8.0,
+     "tokens_aus": 119,
+     "prompt_ms": 1065,
+     "erzeugung_ms": 5287
+    },
+    {
+     "thema": "Optik",
+     "sekunden": 5.94,
+     "tokens_aus": 88,
+     "prompt_ms": 1172,
+     "erzeugung_ms": 2922
+    },
+    {
+     "thema": "Photosynthese",
+     "sekunden": 9.33,
+     "tokens_aus": 172,
+     "prompt_ms": 1114,
+     "erzeugung_ms": 6651
+    },
+    {
+     "thema": "Programmiersprache",
+     "sekunden": 4.28,
+     "tokens_aus": 66,
+     "prompt_ms": 1076,
+     "erzeugung_ms": 2135
+    },
+    {
+     "thema": "Säure-Base-Konzepte",
+     "sekunden": 10.34,
+     "tokens_aus": 200,
+     "prompt_ms": 1213,
+     "erzeugung_ms": 8137
+    },
+    {
+     "thema": "Sinfonie",
+     "sekunden": 6.3,
+     "tokens_aus": 161,
+     "prompt_ms": 1133,
+     "erzeugung_ms": 5010
+    },
+    {
+     "thema": "Plattentektonik",
+     "sekunden": 6.86,
+     "tokens_aus": 106,
+     "prompt_ms": 1083,
+     "erzeugung_ms": 3286
+    },
+    {
+     "thema": "Ökosystem",
+     "sekunden": 5.72,
+     "tokens_aus": 74,
+     "prompt_ms": 1043,
+     "erzeugung_ms": 2204
+    },
+    {
+     "thema": "Atommodell",
+     "sekunden": 7.59,
+     "tokens_aus": 95,
+     "prompt_ms": 1088,
+     "erzeugung_ms": 2926
+    },
+    {
+     "thema": "Industrielle Revolution",
+     "sekunden": 9.65,
+     "tokens_aus": 141,
+     "prompt_ms": 1042,
+     "erzeugung_ms": 4733
+    },
+    {
+     "thema": "Elektrischer Strom",
+     "sekunden": 18.93,
+     "tokens_aus": 140,
+     "prompt_ms": 2579,
+     "erzeugung_ms": 5244
+    },
+    {
+     "thema": "Wasserkreislauf",
+     "sekunden": 9.51,
+     "tokens_aus": 182,
+     "prompt_ms": 1103,
+     "erzeugung_ms": 5971
+    },
+    {
+     "thema": "Römisches Reich",
+     "sekunden": 5.69,
+     "tokens_aus": 93,
+     "prompt_ms": 1071,
+     "erzeugung_ms": 2810
+    },
+    {
+     "thema": "Lineare Funktion",
+     "sekunden": 5.98,
+     "tokens_aus": 84,
+     "prompt_ms": 999,
+     "erzeugung_ms": 2483
+    },
+    {
+     "thema": "Zelle (Biologie)",
+     "sekunden": 7.15,
+     "tokens_aus": 104,
+     "prompt_ms": 1066,
+     "erzeugung_ms": 4291
+    },
+    {
+     "thema": "Gedicht",
+     "sekunden": 4.16,
+     "tokens_aus": 83,
+     "prompt_ms": 1088,
+     "erzeugung_ms": 2657
+    }
+   ]
+  }
+ }
+}
