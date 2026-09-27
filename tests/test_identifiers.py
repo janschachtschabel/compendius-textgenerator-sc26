@@ -82,3 +82,11 @@ def test_without_any_hint_there_is_no_gnd(indexes: tuple[WikidataIndex, GndIndex
     found = identifiers("Windelwechsel", "<p>kein Block</p>", *indexes)
     assert (found.gnd, found.gnd_kind, found.gnd_source) == (None, None, None)
     assert identifiers("Zahl", "<p>kein Block</p>", indexes[0]).gnd is None, "without the GND index nothing is filled"
+
+
+def test_a_record_of_another_kind_than_the_block_names_is_not_the_articles(
+    indexes: tuple[WikidataIndex, GndIndex],
+) -> None:
+    """The block calls the article a person: the subject heading the item or the title leads to is another thing."""
+    found = identifiers("Zahl", _normdaten("Person", None), *indexes)
+    assert (found.gnd, found.gnd_kind, found.gnd_source) == (None, "Person", None)
