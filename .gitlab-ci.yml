@@ -35,12 +35,13 @@ dependency-audit:
   stage: lint
   script:
     - uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
-    - uvx pip-audit --requirement requirements.txt --disable-pip --no-deps
+    - uvx pip-audit==2.10.1 --requirement requirements.txt --disable-pip --no-deps
 
 alert-rules:
   stage: lint
   image:
-    name: prom/prometheus:v3.14.0
+    # Dasselbe Image wie der Prometheus-Dienst in docker-compose.yml, per Digest gepinnt
+    name: prom/prometheus:v3.14.0@sha256:5ce7540c3c00ef4ab0c9d2c995c6a5b9c421f44b4a115d97a2c7af3b1c21cbb0
     entrypoint: [""]
   cache: []
   before_script: []
@@ -61,8 +62,10 @@ pytest:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_COMMIT_BRANCH == "develop"
+    # Ein Tag baut ein Image (docker image (tag)); ohne diese Regel liefe der Bau ohne Tests
+    - if: $CI_COMMIT_TAG
 
-# Image build and push (Profil base, siehe Dockerfile). Variablen wie in der alten Pipeline:
+# Image build and push (ein einziges Image, siehe Dockerfile). Variablen wie in der alten Pipeline:
 # $DIND_IMAGE, $DIND_HOST, $DIND_DRIVER, $DIND_TLS_CERTDIR, $DOCKER_REGISTRY, $DOCKER_USERNAME, $DOCKER_PASSWORD.
 .docker-build:
   stage: deploy

@@ -149,8 +149,10 @@ docker compose up --build
 ```
 
 Ohne eigenen Bau zieht Compose das fertige Image aus der GitHub Container Registry; dorthin
-veröffentlicht es `.github/workflows/publish.yml` bei jedem Push auf `main` (Tags `latest`, `main` und
-die Commit-Sha):
+veröffentlicht es der Job `publish` in `.github/workflows/ci.yml`, und zwar erst, wenn die Prüfungen
+desselben Laufs grün sind und das fertige Image im Rauchtest ein Kompendium geliefert hat. Tags: die
+kurze Commit-Sha und `main` für jeden Push auf `main`, `latest` nur für den Commit, auf dem `main` gerade
+steht, und für ein Versions-Tag `vX.Y.Z` die Tags `X.Y.Z` und `X.Y`:
 
 ```bash
 docker compose up -d
@@ -160,7 +162,7 @@ docker compose up -d
 Sichtbarkeit nicht vom Repository: Ein neues Paket ist erst einmal privat und wird in seinen
 Einstellungen umgestellt. Öffentlich muss es bleiben, denn bei einem privaten Paket scheitert der Pull
 mit `unauthorized`, Compose startet die Container mit dem Image, das schon auf dem Host liegt, und das
-Update meldet trotzdem Erfolg. `publish.yml` prüft deshalb nach jedem Push, dass das Image ohne
+Update meldet trotzdem Erfolg. Der Job `publish` prüft deshalb nach jedem Push, dass das Image ohne
 Anmeldung ziehbar ist. Ein privater Fork braucht auf dem Host einmalig `docker login ghcr.io` mit einem
 Zugriffstoken mit `read:packages`.
 

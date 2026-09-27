@@ -1,19 +1,43 @@
-# Dependabot: woechentliche Pull Requests fuer die gepinnten Basis-Images im Dockerfile (neue Digests bringen
-# Debian- und CPython-Sicherheitskorrekturen) und fuer die Actions der CI. Die Python-Pakete bleiben beim Lockfile
-# (uv 0.7.13 in CI und Image); bekannte Schwachstellen meldet pip-audit in jeder Pipeline.
+# Dependabot: Pull Requests fuer die gepinnten Basis-Images im Dockerfile (neue Digests bringen Debian- und
+# CPython-Sicherheitskorrekturen), fuer Prometheus in docker-compose.yml, fuer die per Commit gepinnten Actions der
+# CI und fuer die Python-Pakete im Lockfile. Je Oekosystem und Termin ein einziger Pull Request (groups), damit
+# nichts liegen bleibt. Bekannte Schwachstellen meldet pip-audit bei jedem Push und woechentlich
+# (dependency-audit.yml).
 version: 2
 updates:
   - package-ecosystem: docker
     directory: "/"
     schedule:
       interval: weekly
+    groups:
+      base-images:
+        patterns: ["*"]
     ignore:
       # Neue Digests desselben Tags ja, aber kein Python 3.14: requires-python erlaubt nur 3.13 (uv.lock)
       - dependency-name: "python"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
       # uv bleibt bei der Version von CI und Lockfile (0.7.13); ein Wechsel gilt fuer alle drei zugleich
       - dependency-name: "*astral-sh/uv"
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      compose-images:
+        patterns: ["*"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+  # Dependabot schreibt das Lockfile mit uv 0.11 (Revision 3); uv 0.7.13 liest es (am 2026-09-27 geprueft:
+  # lock --check und sync --locked gelingen). Monatlich, weil jede Aenderung die ganze Suite durchlaufen muss.
+  - package-ecosystem: uv
+    directory: "/"
+    schedule:
+      interval: monthly
+    groups:
+      python-packages:
+        patterns: ["*"]

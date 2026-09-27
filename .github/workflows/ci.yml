@@ -1,10 +1,15 @@
-# Checks for every push to main and every pull request: the same commands as the GitLab pipeline.
+# Checks for every push to main, every version tag and every pull request (the same commands as the GitLab
+# pipeline), then the image a host pulls. Publishing is a job of this workflow and waits for the checks: only a
+# tested commit becomes an image, and :latest only the commit main points to (audit 2026-09-27, BE-01).
+# Actions are pinned to commits; Dependabot updates the pins together with the version comments.
 name: CI
 
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           version: "0.7.13"
           python-version: "3.13"
@@ -36,15 +41,103 @@ jobs:
           POLICY_CONFIDENT_SCORE: "0.1"
         run: uv run pytest -m "not live" --cov
       - name: Prometheus configuration and alert rules
+        # The image of the Prometheus service in docker-compose.yml, so that an update there reaches this check
         run: |
-          docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool prom/prometheus:v3.14.0 check config /m/prometheus.yml
-          docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool prom/prometheus:v3.14.0 test rules /m/alerts_test.yml
+          image="$(grep -m1 -o 'prom/prometheus:[^ "]*' docker-compose.yml)"
+          test -n "$image"
+          docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool "$image" check config /m/prometheus.yml
+          docker run --rm -v "$PWD/monitoring:/m:ro" --entrypoint promtool "$image" test rules /m/alerts_test.yml
       - name: Image builds (without the embedding model, to stay fast)
         run: docker build --build-arg MODEL2VEC_ID= -t compendious-text-fastapi:ci .
       - name: Image answers with a compendium
         # The suite calls the service in the same process, so only this step sees the packaged service run
         run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:ci
       - name: Known vulnerabilities in the runtime dependencies
+        # dependency-audit.yml runs the same once a week, for advisories published between two pushes
         run: |
           uv export --frozen --no-dev --all-extras --no-emit-project --format requirements-txt -o requirements.txt
-          uvx pip-audit --requirement requirements.txt --disable-pip --no-deps
+          uvx pip-audit==2.10.1 --requirement requirements.txt --disable-pip --no-deps
+
+  publish:
+    # The image a host pulls, models included (1.1 GB): built, started and asked for a compendium like the reduced
+    # image above, and only then pushed to GHCR. A pull request never publishes, and neither does another branch.
+    needs: checks
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    # One publish of a ref at a time, so that two runs cannot push :latest at once
+    concurrency:
+      group: publish-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.7.13"
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install
+        # The smoke test builds its sample archives with the helpers of the test suite
+        run: uv sync --frozen --all-extras
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Build
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          load: true
+          tags: compendious-text-fastapi:publish
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Image answers with a compendium
+        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:publish
+      - name: Still the newest commit of main
+        # A run whose checks took longer must not overwrite the :latest of a newer commit: only the commit main
+        # points to now gets it. A version tag never does (the flavor below keeps the action from adding it).
+        id: tip
+        run: |
+          tip="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$GITHUB_REF" = refs/heads/main ] && [ "$tip" = "$GITHUB_SHA" ]; then latest=true; else latest=false; fi
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "main is at $tip, this run built $GITHUB_SHA: latest=$latest"
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+          flavor: latest=false
+          tags: |
+            type=raw,value=latest,enable=${{ steps.tip.outputs.latest }}
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=
+      - name: Push
+        # The same build again: every layer comes from the cache of the build that was just tested
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+      # A host pulls the image without a login (README). When the package is not public, the pull fails with
+      # "unauthorized", Compose keeps the image the host already has, and the host's update still reports success -
+      # so this run turns red instead. The visibility belongs to the package, so the commit's own tag is checked.
+      - name: Pullable without a login
+        shell: bash
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          token="$(curl -sf "https://ghcr.io/token?scope=repository:${REPO}:pull&service=ghcr.io" \
+            | sed -n 's/.*"token":"\([^"]*\)".*/\1/p')"
+          test -n "$token"
+          curl -sf -o /dev/null -H "Authorization: Bearer ${token}" \
+            -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json" \
+            "https://ghcr.io/v2/${REPO}/manifests/${GITHUB_SHA::7}"

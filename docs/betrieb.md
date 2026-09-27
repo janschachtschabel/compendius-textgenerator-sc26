@@ -84,8 +84,12 @@ will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.cred
 - Der Dienst hat keine Anmeldung für die öffentlichen Endpunkte; er gehört hinter ein Gateway. Admin-Endpunkte
   sind nur mit `ADMIN_TOKEN` aktiv.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
-- Zurück auf eine frühere Fassung: Das Image entsteht aus dem Quelltext, also `git checkout <Commit>` und
-  `docker compose build && docker compose up -d`. Die Volumes bleiben, wie sie sind. Findet die ältere Fassung
+- Zurück auf eine frühere Fassung: Jeder Commit auf `main`, dessen Prüfungen grün waren, liegt als Image mit
+  seiner kurzen Commit-Sha in der Registry, jedes Versions-Tag `vX.Y.Z` als `X.Y.Z`. Also
+  `IMAGE=ghcr.io/janschachtschabel/compendius-textgenerator-sc26:<sha>` setzen (in der `.env` oder den Variablen
+  des Hosting-Panels) und `docker compose up -d`; zurück auf den neuesten Stand geht es, indem man `IMAGE` wieder
+  entfernt. Wer selbst baut: `git checkout <Commit>` und `docker compose build && docker compose up -d`. Die
+  Volumes bleiben, wie sie sind. Findet die ältere Fassung
   einen neueren Zustand vor — etwa `lehrplan.db` mit einer anderen Schemaversion —, meldet sie das als
   `cache_unreadable` und ein Harvest baut den Cache neu auf (siehe Störungen); die Archive sind davon nicht
   betroffen.
