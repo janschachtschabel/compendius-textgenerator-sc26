@@ -1,0 +1,3412 @@
+{
+ "confidence": {
+  "0.5": {
+   "artikel": 621,
+   "richtig": 143,
+   "note0": 233,
+   "ohne_note": 0,
+   "pool_note2": 219,
+   "p": 0.2303,
+   "r": 0.653,
+   "f1": 0.3405,
+   "sekunden_median": 0.113,
+   "materialien": {
+    "325c399b-dd66-40b3-8182-3baae248f4d6": {
+     "dbpedia": [
+      "Mathematik",
+      "Physiker",
+      "Physik",
+      "Lehramtsstudium"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physiker",
+      "Physik",
+      "Lehramtsstudium"
+     ]
+    },
+    "19e322f0-afa5-440f-8dc0-fca1dcde71d8": {
+     "dbpedia": [
+      "Zahnrad",
+      "Experiment",
+      "Open Educational Resources"
+     ],
+     "artikel": [
+      "Zahnrad",
+      "Experiment",
+      "Open Educational Resources"
+     ]
+    },
+    "8e4ee58d-c18c-470b-8f84-c3a634a041c3": {
+     "dbpedia": [
+      "Plancksches Wirkungsquantum",
+      "Experiment"
+     ],
+     "artikel": [
+      "Planck-Konstante",
+      "Experiment"
+     ]
+    },
+    "c6c569d7-87c3-40d6-be6f-d92ee5409782": {
+     "dbpedia": [
+      "Galvanometer",
+      "Experiment"
+     ],
+     "artikel": [
+      "Galvanometer",
+      "Experiment"
+     ]
+    },
+    "18adeb5f-3f7d-4c32-9a96-3398a756193e": {
+     "dbpedia": [
+      "Mond",
+      "Teleskop",
+      "Schall",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Parabolspiegel",
+      "Spiegelreflexkamera",
+      "Belichtungszeit",
+      "Full HD",
+      "Mondsichel",
+      "Vollmond",
+      "Neumond",
+      "Sonne"
+     ],
+     "artikel": [
+      "Mond",
+      "Teleskop",
+      "Schall",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Parabolspiegel",
+      "Spiegelreflexkamera",
+      "Belichtungszeit",
+      "Full HD",
+      "Mondsichel",
+      "Vollmond",
+      "Neumond",
+      "Sonne"
+     ]
+    },
+    "c09b26a5-bb4d-497e-8def-c8812e64bb9d": {
+     "dbpedia": [
+      "Akkumulator",
+      "Tonminerale",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Magnetresonanztomographie",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Säuren",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ],
+     "artikel": [
+      "Akkumulator",
+      "Tonminerale",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Magnetresonanztomographie",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Säuren",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ]
+    },
+    "6c306be9-a5f5-46ae-af83-31fc480fa389": {
+     "dbpedia": [
+      "Eisregen",
+      "Superabsorber",
+      "Schnee",
+      "Tonminerale",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Magnetresonanztomographie",
+      "Lustral",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Sonnenkollektor",
+      "Polymer",
+      "Blitz"
+     ],
+     "artikel": [
+      "Eisregen",
+      "Superabsorber",
+      "Schnee",
+      "Tonminerale",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Licht",
+      "Softbox",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Magnetresonanztomographie",
+      "Lustral",
+      "Affiliate-Marketing",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Thermischer Solarkollektor",
+      "Polymer",
+      "Blitz"
+     ]
+    },
+    "35162ae1-e3d7-4c8e-95e5-d13d6906fb57": {
+     "dbpedia": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Creative Commons",
+      "Sonne",
+      "Time",
+      "Sky Deutschland"
+     ],
+     "artikel": [
+      "Sonnenuntergang",
+      "Zeitraffer",
+      "Creative Commons",
+      "Sonne",
+      "Time",
+      "Sky Deutschland"
+     ]
+    },
+    "21e5be2c-c701-438a-a5be-2cc701f38a47": {
+     "dbpedia": [
+      "Carbanion",
+      "Crashtest",
+      "Chemie",
+      "Erdgas",
+      "The Answer",
+      "Verbundwerkstoff",
+      "Them",
+      "Pipeline",
+      "10",
+      "Los Angeles",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Keep",
+      "Alexis Mdivani",
+      "Humburg (Düren)",
+      "David (Zeitschrift)",
+      "Hudson River",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Todesfall Michael Brown",
+      "Wai",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen",
+      "Paul Wittig"
+     ],
+     "artikel": [
+      "Carbanion",
+      "Crashtest",
+      "Chemie",
+      "Erdgas",
+      "The Answer",
+      "Verbundwerkstoff",
+      "Them",
+      "Pipeline",
+      "10",
+      "Los Angeles",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Keep",
+      "Alexis Mdivani",
+      "Humburg (Düren)",
+      "David (Zeitschrift)",
+      "Hudson River",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Todesfall Michael Brown",
+      "Wai",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen",
+      "Paul Wittig"
+     ]
+    },
+    "aff99075-a5b3-49dd-b990-75a5b369dd63": {
+     "dbpedia": [
+      "Nukleophile Substitution",
+      "Eliminierungsreaktion",
+      "Crashtest",
+      "Chemie",
+      "Adventure",
+      "Nukleophilie",
+      "Transformation der United States Army",
+      "Bedruckstoff",
+      "Go On",
+      "Kevin MacLeod",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Keep",
+      "Christine",
+      "David (Zeitschrift)",
+      "Hudson River",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Substitutionsreaktion"
+     ],
+     "artikel": [
+      "Nukleophile Substitution",
+      "Eliminierungsreaktion",
+      "Crashtest",
+      "Chemie",
+      "Adventure",
+      "Nukleophilie",
+      "Transformation der United States Army",
+      "Bedruckstoff",
+      "Go On",
+      "Kevin MacLeod",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Keep",
+      "Christine",
+      "David (Zeitschrift)",
+      "Hudson River",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Substitutionsreaktion"
+     ]
+    },
+    "c5f133d8-22f1-4f87-b133-d822f1cf87f7": {
+     "dbpedia": [
+      "Alkene",
+      "Additionsreaktion",
+      "Crashtest",
+      "Chemie",
+      "Datenflusssteuerung",
+      "Organic Reactions",
+      "Billboard Hot 100",
+      "HIStory World Tour",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "British Broadcasting Corporation",
+      "Bahnhof Hashimoto",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Stockelsdorf",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Keep",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "The Thomson Corporation",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Todesfall Michael Brown",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Die Simpsons (Familie)",
+      "Robert Edward Lee",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Kompaktkassette",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Hydratation",
+      "Oxidation"
+     ],
+     "artikel": [
+      "Alkene",
+      "Additionsreaktion",
+      "Crashtest",
+      "Chemie",
+      "Datenflusssteuerung",
+      "Organic Reactions",
+      "Billboard Hot 100",
+      "HIStory World Tour",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "British Broadcasting Corporation",
+      "Bahnhof Hashimoto",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Stockelsdorf",
+      "Clifford Brown",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Keep",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "The Thomson Corporation",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Todesfall Michael Brown",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Die Simpsons (Familie)",
+      "Robert Edward Lee",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Kompaktkassette",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Hydratation",
+      "Oxidation"
+     ]
+    },
+    "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b": {
+     "dbpedia": [
+      "Crashtest",
+      "Chemie",
+      "Billboard 200",
+      "Zhao Ermi",
+      "Lithium",
+      "Alkaloide",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "LSD",
+      "Antidote (Lied)",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Brown University",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Keep",
+      "Die Simpsons (Familie)",
+      "Leonora",
+      "Facundo Muñoz",
+      "Saar",
+      "Robert Edward Lee",
+      "The Thomson Corporation",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Todesfall Michael Brown",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Tomtom",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ],
+     "artikel": [
+      "Crashtest",
+      "Chemie",
+      "Billboard 200",
+      "Zhao Ermi",
+      "Lithium",
+      "Alkaloide",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "LSD",
+      "Antidote (Lied)",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Brown University",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Our",
+      "Mobile App",
+      "Download",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Keep",
+      "Die Simpsons (Familie)",
+      "Leonora",
+      "Facundo Muñoz",
+      "Saar",
+      "Robert Edward Lee",
+      "The Thomson Corporation",
+      "Deutsche Mark",
+      "Zhu (Musiker)",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Nathan der Weise",
+      "Duke of Hamilton",
+      "Westmorland",
+      "Todesfall Michael Brown",
+      "Mitschurinsk",
+      "Indika",
+      "Cheb Khaled",
+      "Tomtom",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ]
+    },
+    "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162": {
+     "dbpedia": [
+      "Wertetabelle",
+      "Brötchen",
+      "Mathematik",
+      "Anna",
+      "Euro"
+     ],
+     "artikel": [
+      "Wertetabelle",
+      "Brötchen",
+      "Mathematik",
+      "Anna",
+      "Euro"
+     ]
+    },
+    "5847dba7-3705-457e-a165-528614d8ebf7": {
+     "dbpedia": [
+      "Mathematik"
+     ],
+     "artikel": [
+      "Mathematik"
+     ]
+    },
+    "a0399b0d-75f6-4388-9d1f-d64cda8e0a73": {
+     "dbpedia": [
+      "Halbton",
+      "Ziviltechniker",
+      "Preußische T 3",
+      "Mathematik"
+     ],
+     "artikel": [
+      "Halbton",
+      "Ziviltechniker",
+      "Preußische T 3",
+      "Mathematik"
+     ]
+    },
+    "8ee3a2ab-e9e9-46d5-a420-f543494cdf63": {
+     "dbpedia": [
+      "Lückentexttest",
+      "CFL-Zahl",
+      "Mathematik"
+     ],
+     "artikel": [
+      "Lückentexttest",
+      "CFL-Zahl",
+      "Mathematik"
+     ]
+    },
+    "7be6051e-3e39-404a-9e87-4db77e600737": {
+     "dbpedia": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Revolution",
+      "Verfassung"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Revolution",
+      "Verfassung"
+     ]
+    },
+    "477256df-e20a-491d-9a43-24de02b0f1cc": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Ost-Berlin",
+      "Zwangsvereinigung von SPD und KPD zur SED",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Ost-Berlin",
+      "Zwangsvereinigung von SPD und KPD zur SED",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ]
+    },
+    "03476274-616e-4678-9296-4dcce80189bf": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Mehrheit",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Mehrheit",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ]
+    },
+    "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc": {
+     "dbpedia": [
+      "Guildo Horn",
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation",
+      "European Remote Sensing Satellite"
+     ],
+     "artikel": [
+      "Guildo Horn",
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation",
+      "European Remote Sensing Satellite"
+     ]
+    },
+    "a41d9d3f-388b-4938-b3df-2f0c381b601d": {
+     "dbpedia": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz",
+      "Digitale Medien"
+     ],
+     "artikel": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz",
+      "Digitale Medien"
+     ]
+    },
+    "9ba086a0-7f3a-4445-8167-fe9959598525": {
+     "dbpedia": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ]
+    },
+    "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9": {
+     "dbpedia": [
+      "Lernen",
+      "Außerschulischer Lernort",
+      "Mobile App",
+      "Actionbound",
+      "Ernährung",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Exkursion",
+      "Historischer Stadtkern",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ],
+     "artikel": [
+      "Lernen",
+      "Außerschulischer Lernort",
+      "Mobile App",
+      "Actionbound",
+      "Ernährung",
+      "Fauna",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Exkursion",
+      "Historischer Stadtkern",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ]
+    },
+    "f19f7f52-eeb2-4345-9b4e-559e486fa2e2": {
+     "dbpedia": [
+      "Franzisco-Josephinische Landesaufnahme",
+      "Katar",
+      "Kontinent",
+      "Asien",
+      "Region",
+      "Staatsgebiet",
+      "Johann Heinrich Lambert",
+      "Kartennetzentwurf",
+      "Flächentreue",
+      "Atlas Guadalajara",
+      "Nachschlagewerk"
+     ],
+     "artikel": [
+      "Franzisco-Josephinische Landesaufnahme",
+      "Katar",
+      "Kontinent",
+      "Asien",
+      "Region",
+      "Staatsgebiet",
+      "Johann Heinrich Lambert",
+      "Kartennetzentwurf",
+      "Flächentreue",
+      "Atlas Guadalajara",
+      "Nachschlagewerk"
+     ]
+    },
+    "bdc8e683-99c0-4f0a-9519-98eef818f610": {
+     "dbpedia": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ]
+    },
+    "87704813-c34a-4771-a577-c0c8008cb772": {
+     "dbpedia": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Krankheitsverlauf",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Staatspräsident",
+      "Emmanuel Macron",
+      "Ange"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Bildungssystem",
+      "Krankheitsverlauf",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Staatspräsident",
+      "Emmanuel Macron",
+      "Ange"
+     ]
+    },
+    "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5": {
+     "dbpedia": [
+      "Europa",
+      "Susanne Klatten",
+      "Geldvermögen",
+      "Wirtschaftswissenschaftler",
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Eurokrise",
+      "Weltfinanzkrise"
+     ],
+     "artikel": [
+      "Europa",
+      "Susanne Klatten",
+      "Geldvermögen",
+      "Wirtschaftswissenschaftler",
+      "Staatsverschuldung",
+      "Vermögensteuer",
+      "Eurokrise",
+      "Weltfinanzkrise 2007–2008"
+     ]
+    },
+    "f3caa6d3-4750-4fc8-b073-8c8eccf62b40": {
+     "dbpedia": [
+      "Zauberer",
+      "Bundeszentrale für politische Bildung",
+      "EU-Skepsis",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Supranationalität",
+      "Eurozone",
+      "Finanzministerium",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron",
+      "Digitale Infrastruktur"
+     ],
+     "artikel": [
+      "Zauberer",
+      "Bundeszentrale für politische Bildung",
+      "EU-Skepsis",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Supranationalität",
+      "Eurozone",
+      "Finanzministerium",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron",
+      "Digitale Infrastruktur"
+     ]
+    },
+    "c4d8c077-ea98-486d-98c0-77ea98886df9": {
+     "dbpedia": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ],
+     "artikel": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ]
+    },
+    "f61cd77c-9a90-41a1-9cd7-7c9a9081a108": {
+     "dbpedia": [
+      "Universum",
+      "YouTube",
+      "Lernvideo",
+      "Kompakter Raum",
+      "Streich",
+      "Informatik",
+      "Influencer"
+     ],
+     "artikel": [
+      "Universum",
+      "YouTube",
+      "Lernvideo",
+      "Kompakter Raum",
+      "Streich",
+      "Informatik",
+      "Influencer"
+     ]
+    },
+    "aad2eddf-63e7-4a83-92ed-df63e7ba8389": {
+     "dbpedia": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Programmierung",
+      "Kollisionserkennung (algorithmische Geometrie)",
+      "Statistische Variable",
+      "Breakout (Computerspiel)",
+      "Informatik"
+     ],
+     "artikel": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Programmierung",
+      "Kollisionserkennung (algorithmische Geometrie)",
+      "Statistische Variable",
+      "Breakout (Computerspiel)",
+      "Informatik"
+     ]
+    },
+    "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932": {
+     "dbpedia": [
+      "Bildungsorientierte Programmiersprachen",
+      "Massachusetts Institute of Technology",
+      "Integrierte Entwicklungsumgebung",
+      "Informatik",
+      "Team",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz",
+      "Starthilfe"
+     ],
+     "artikel": [
+      "Bildungsorientierte Programmiersprache",
+      "Massachusetts Institute of Technology",
+      "Integrierte Entwicklungsumgebung",
+      "Informatik",
+      "Team",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz",
+      "Starthilfe"
+     ]
+    },
+    "1c748a03-1563-4524-911a-075e225902d4": {
+     "dbpedia": [
+      "Digitale Medien",
+      "Deutschunterricht",
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Massenmedien",
+      "Didaktik",
+      "Leitmedium",
+      "Auditive Wahrnehmung",
+      "Kommunikation",
+      "Interaktion",
+      "Autor",
+      "Blog",
+      "Anwendungssoftware",
+      "Aktiebolag",
+      "Open Educational Resources",
+      "Kollaboratives Schreiben",
+      "Lernen",
+      "Kreativität",
+      "Pinnwand",
+      "Erzählung",
+      "Padlet"
+     ],
+     "artikel": [
+      "Digitale Medien",
+      "Deutschunterricht",
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Massenmedien",
+      "Didaktik",
+      "Leitmedium",
+      "Auditive Wahrnehmung",
+      "Kommunikation",
+      "Interaktion",
+      "Autor",
+      "Blog",
+      "Anwendungssoftware",
+      "Aktiebolag",
+      "Open Educational Resources",
+      "Kollaboratives Schreiben",
+      "Lernen",
+      "Kreativität",
+      "Pinnwand",
+      "Erzählung",
+      "Padlet"
+     ]
+    },
+    "803ebb4d-aa53-4107-922a-85d86bbcd304": {
+     "dbpedia": [
+      "Lernen",
+      "Fidget Spinner",
+      "Deutsche Sprache",
+      "Abitur"
+     ],
+     "artikel": [
+      "Lernen",
+      "Fidget Spinner",
+      "Deutsche Sprache",
+      "Abitur"
+     ]
+    },
+    "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de": {
+     "dbpedia": [
+      "The Rasmus",
+      "Webbrowser"
+     ],
+     "artikel": [
+      "The Rasmus",
+      "Webbrowser"
+     ]
+    },
+    "f8451c14-12cc-465f-8aac-ad9e2a2851f1": {
+     "dbpedia": [
+      "Deutschunterricht",
+      "Besoldungsordnung C",
+      "Digitale Welt",
+      "Byte",
+      "Fuerza Aérea de Chile",
+      "Schule",
+      "Plenum",
+      "Max Weber",
+      "Selbstreflexion",
+      "Evaluation",
+      "Unterrichtsstunde"
+     ],
+     "artikel": [
+      "Deutschunterricht",
+      "Besoldungsordnung C",
+      "Digitale Welt",
+      "Byte",
+      "Fuerza Aérea de Chile",
+      "Schule",
+      "Plenum",
+      "Max Weber",
+      "Selbstreflexion",
+      "Unterrichtsstunde"
+     ]
+    },
+    "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168": {
+     "dbpedia": [
+      "Netzwerk",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "Unternehmensgründung",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Euro",
+      "Information",
+      "Verpflichtetsein",
+      "Lehrvideo",
+      "Düsseldorf",
+      "Rechtsanwalt"
+     ],
+     "artikel": [
+      "Netzwerk",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "Unternehmensgründung",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Euro",
+      "Information",
+      "Verpflichtung",
+      "Lehrvideo",
+      "Düsseldorf",
+      "Rechtsanwalt"
+     ]
+    },
+    "5494f4c2-100f-4ca0-94f4-c2100f0ca053": {
+     "dbpedia": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Taschenbuch",
+      "Netzwerk",
+      "Amazon",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Unternehmen",
+      "Verstand",
+      "Tagung",
+      "Darmstadt",
+      "Die Rudi Carrell Show – Laß Dich überraschen",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Dollar",
+      "Information",
+      "Verpflichtetsein",
+      "Lehrvideo",
+      "Vermögensmillionär"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Taschenbuch",
+      "Netzwerk",
+      "Amazon",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Unternehmen",
+      "Verstand",
+      "Tagung",
+      "Darmstadt",
+      "Die Rudi Carrell Show – Laß Dich überraschen",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Dollar",
+      "Information",
+      "Verpflichtung",
+      "Lehrvideo",
+      "Vermögensmillionär"
+     ]
+    },
+    "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc": {
+     "dbpedia": [
+      "Vermögensmillionär",
+      "Euro",
+      "Scheiße",
+      "Taschenbuch",
+      "E-Book",
+      "New York Stock Exchange",
+      "Amazon",
+      "Hörbuch",
+      "Videotechnik",
+      "Blaise Pascal",
+      "Benjamin Wegner (Industrieller)",
+      "Abitur",
+      "Wirtschaftsinformatik",
+      "Hochschule",
+      "Stuttgart",
+      "University College London",
+      "Unternehmer",
+      "Gesellschafter",
+      "Elektronischer Handel",
+      "Immobilieninvestment",
+      "Dozent",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Luftfahrt",
+      "Tauchen",
+      "Gerald Hörhan",
+      "Raub",
+      "Kunst",
+      "Facebook",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Dollar",
+      "Information",
+      "Verpflichtetsein",
+      "Lehrvideo",
+      "Immobilie",
+      "Aktie",
+      "Freiheit",
+      "Porsche"
+     ],
+     "artikel": [
+      "Vermögensmillionär",
+      "Euro",
+      "Scheiße",
+      "Taschenbuch",
+      "E-Book",
+      "New York Stock Exchange",
+      "Amazon",
+      "Hörbuch",
+      "Videotechnik",
+      "Blaise Pascal",
+      "Benjamin Wegner (Industrieller)",
+      "Abitur",
+      "Wirtschaftsinformatik",
+      "Hochschule",
+      "Stuttgart",
+      "University College London",
+      "Unternehmer",
+      "Gesellschafter",
+      "Elektronischer Handel",
+      "Immobilieninvestment",
+      "Dozent",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Luftfahrt",
+      "Tauchen",
+      "Gerald Hörhan",
+      "Raub",
+      "Kunst",
+      "Facebook",
+      "Download",
+      "YouTube",
+      "Podcast",
+      "Affiliate-Marketing",
+      "Dollar",
+      "Information",
+      "Verpflichtung",
+      "Lehrvideo",
+      "Immobilie",
+      "Aktie",
+      "Freiheit",
+      "Porsche"
+     ]
+    },
+    "4041df54-5339-46d7-81df-545339d6d78d": {
+     "dbpedia": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "Automatisierung",
+      "Software",
+      "Unternehmen",
+      "Finanzprodukt",
+      "E-Book",
+      "Netzwerk",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Hörbuch",
+      "Podcast",
+      "Affiliate-Marketing",
+      "YouTube",
+      "Euro",
+      "Information",
+      "Verpflichtetsein",
+      "Lehrvideo",
+      "Akquise",
+      "Marketing"
+     ],
+     "artikel": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "Automatisierung",
+      "Software",
+      "Unternehmen",
+      "Finanzprodukt",
+      "E-Book",
+      "Netzwerk",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Hörbuch",
+      "Podcast",
+      "Affiliate-Marketing",
+      "YouTube",
+      "Euro",
+      "Information",
+      "Verpflichtung",
+      "Lehrvideo",
+      "Akquise",
+      "Marketing"
+     ]
+    }
+   },
+   "vergleich_llm-free": {
+    "artikel": 394,
+    "p": 0.2944,
+    "r": 0.5297,
+    "f1": 0.3785
+   },
+   "vergleich_balanced": {
+    "artikel": 269,
+    "p": 0.6952,
+    "r": 0.8539,
+    "f1": 0.7664
+   }
+  },
+  "0.7": {
+   "artikel": 399,
+   "richtig": 113,
+   "note0": 140,
+   "ohne_note": 0,
+   "pool_note2": 213,
+   "p": 0.2832,
+   "r": 0.5305,
+   "f1": 0.3693,
+   "sekunden_median": 0.02,
+   "materialien": {
+    "325c399b-dd66-40b3-8182-3baae248f4d6": {
+     "dbpedia": [
+      "Mathematik",
+      "Physik",
+      "Lehramtsstudium",
+      "Physiker"
+     ],
+     "artikel": [
+      "Mathematik",
+      "Physik",
+      "Lehramtsstudium",
+      "Physiker"
+     ]
+    },
+    "19e322f0-afa5-440f-8dc0-fca1dcde71d8": {
+     "dbpedia": [
+      "Zahnrad"
+     ],
+     "artikel": [
+      "Zahnrad"
+     ]
+    },
+    "8e4ee58d-c18c-470b-8f84-c3a634a041c3": {
+     "dbpedia": [
+      "Plancksches Wirkungsquantum"
+     ],
+     "artikel": [
+      "Planck-Konstante"
+     ]
+    },
+    "c6c569d7-87c3-40d6-be6f-d92ee5409782": {
+     "dbpedia": [
+      "Galvanometer"
+     ],
+     "artikel": [
+      "Galvanometer"
+     ]
+    },
+    "18adeb5f-3f7d-4c32-9a96-3398a756193e": {
+     "dbpedia": [
+      "Mond",
+      "Teleskop",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Spiegelreflexkamera",
+      "Vollmond",
+      "Neumond"
+     ],
+     "artikel": [
+      "Mond",
+      "Teleskop",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Spiegelreflexkamera",
+      "Vollmond",
+      "Neumond"
+     ]
+    },
+    "c09b26a5-bb4d-497e-8def-c8812e64bb9d": {
+     "dbpedia": [
+      "Akkumulator",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ],
+     "artikel": [
+      "Akkumulator",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ]
+    },
+    "6c306be9-a5f5-46ae-af83-31fc480fa389": {
+     "dbpedia": [
+      "Eisregen",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Polymer"
+     ],
+     "artikel": [
+      "Eisregen",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Intro",
+      "Amazon",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Polymer"
+     ]
+    },
+    "35162ae1-e3d7-4c8e-95e5-d13d6906fb57": {
+     "dbpedia": [
+      "Zeitraffer",
+      "Creative Commons"
+     ],
+     "artikel": [
+      "Zeitraffer",
+      "Creative Commons"
+     ]
+    },
+    "21e5be2c-c701-438a-a5be-2cc701f38a47": {
+     "dbpedia": [
+      "Pipeline",
+      "Los Angeles",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Alexis Mdivani",
+      "Humburg (Düren)",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen"
+     ],
+     "artikel": [
+      "Pipeline",
+      "Los Angeles",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Alexis Mdivani",
+      "Humburg (Düren)",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen"
+     ]
+    },
+    "aff99075-a5b3-49dd-b990-75a5b369dd63": {
+     "dbpedia": [
+      "Nukleophile Substitution",
+      "Adventure",
+      "Nukleophilie",
+      "Go On",
+      "Kevin MacLeod",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Christine",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ],
+     "artikel": [
+      "Nukleophile Substitution",
+      "Adventure",
+      "Nukleophilie",
+      "Go On",
+      "Kevin MacLeod",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Christine",
+      "Lee Perry",
+      "James Joyce",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ]
+    },
+    "c5f133d8-22f1-4f87-b133-d822f1cf87f7": {
+     "dbpedia": [
+      "Alkene",
+      "Datenflusssteuerung",
+      "Organic Reactions",
+      "Billboard Hot 100",
+      "HIStory World Tour",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Stockelsdorf",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Kompaktkassette",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Oxidation"
+     ],
+     "artikel": [
+      "Alkene",
+      "Datenflusssteuerung",
+      "Organic Reactions",
+      "Billboard Hot 100",
+      "HIStory World Tour",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Stockelsdorf",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Kompaktkassette",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Oxidation"
+     ]
+    },
+    "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b": {
+     "dbpedia": [
+      "Billboard 200",
+      "Zhao Ermi",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "LSD",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Tomtom",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ],
+     "artikel": [
+      "Billboard 200",
+      "Zhao Ermi",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "LSD",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Boston",
+      "Pearson Education",
+      "Greeves Motorcycles",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "East Japan Railway Company",
+      "Norton Motorcycles",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw Hill Education",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Westmorland",
+      "Indika",
+      "Cheb Khaled",
+      "Tomtom",
+      "Siobhán",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Jessica Simpson",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "Creative Commons",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ]
+    },
+    "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162": {
+     "dbpedia": [
+      "Brötchen",
+      "Mathematik"
+     ],
+     "artikel": [
+      "Brötchen",
+      "Mathematik"
+     ]
+    },
+    "5847dba7-3705-457e-a165-528614d8ebf7": {
+     "dbpedia": [
+      "Mathematik"
+     ],
+     "artikel": [
+      "Mathematik"
+     ]
+    },
+    "a0399b0d-75f6-4388-9d1f-d64cda8e0a73": {
+     "dbpedia": [
+      "Preußische T 3",
+      "Mathematik"
+     ],
+     "artikel": [
+      "Preußische T 3",
+      "Mathematik"
+     ]
+    },
+    "8ee3a2ab-e9e9-46d5-a420-f543494cdf63": {
+     "dbpedia": [
+      "Lückentexttest",
+      "Mathematik"
+     ],
+     "artikel": [
+      "Lückentexttest",
+      "Mathematik"
+     ]
+    },
+    "7be6051e-3e39-404a-9e87-4db77e600737": {
+     "dbpedia": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Revolution",
+      "Verfassung"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg",
+      "Deutschland",
+      "Revolution",
+      "Verfassung"
+     ]
+    },
+    "477256df-e20a-491d-9a43-24de02b0f1cc": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ]
+    },
+    "03476274-616e-4678-9296-4dcce80189bf": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ]
+    },
+    "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc": {
+     "dbpedia": [
+      "Guildo Horn",
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation"
+     ],
+     "artikel": [
+      "Guildo Horn",
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation"
+     ]
+    },
+    "a41d9d3f-388b-4938-b3df-2f0c381b601d": {
+     "dbpedia": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz"
+     ],
+     "artikel": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz"
+     ]
+    },
+    "9ba086a0-7f3a-4445-8167-fe9959598525": {
+     "dbpedia": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ]
+    },
+    "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9": {
+     "dbpedia": [
+      "Lernen",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ],
+     "artikel": [
+      "Lernen",
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ]
+    },
+    "f19f7f52-eeb2-4345-9b4e-559e486fa2e2": {
+     "dbpedia": [
+      "Katar",
+      "Asien",
+      "Flächentreue",
+      "Atlas Guadalajara"
+     ],
+     "artikel": [
+      "Katar",
+      "Asien",
+      "Flächentreue",
+      "Atlas Guadalajara"
+     ]
+    },
+    "bdc8e683-99c0-4f0a-9519-98eef818f610": {
+     "dbpedia": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ]
+    },
+    "87704813-c34a-4771-a577-c0c8008cb772": {
+     "dbpedia": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Krankheitsverlauf",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Staatspräsident",
+      "Emmanuel Macron"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Arbeitskosten",
+      "Krankheitsverlauf",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Staatspräsident",
+      "Emmanuel Macron"
+     ]
+    },
+    "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5": {
+     "dbpedia": [
+      "Europa",
+      "Susanne Klatten",
+      "Geldvermögen",
+      "Staatsverschuldung",
+      "Vermögensteuer"
+     ],
+     "artikel": [
+      "Europa",
+      "Susanne Klatten",
+      "Geldvermögen",
+      "Staatsverschuldung",
+      "Vermögensteuer"
+     ]
+    },
+    "f3caa6d3-4750-4fc8-b073-8c8eccf62b40": {
+     "dbpedia": [
+      "Bundeszentrale für politische Bildung",
+      "EU-Skepsis",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Eurozone",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron"
+     ],
+     "artikel": [
+      "Bundeszentrale für politische Bildung",
+      "EU-Skepsis",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Eurozone",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron"
+     ]
+    },
+    "c4d8c077-ea98-486d-98c0-77ea98886df9": {
+     "dbpedia": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ],
+     "artikel": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ]
+    },
+    "f61cd77c-9a90-41a1-9cd7-7c9a9081a108": {
+     "dbpedia": [
+      "Universum",
+      "YouTube",
+      "Lernvideo",
+      "Informatik",
+      "Influencer"
+     ],
+     "artikel": [
+      "Universum",
+      "YouTube",
+      "Lernvideo",
+      "Informatik",
+      "Influencer"
+     ]
+    },
+    "aad2eddf-63e7-4a83-92ed-df63e7ba8389": {
+     "dbpedia": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Breakout (Computerspiel)",
+      "Informatik"
+     ],
+     "artikel": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Breakout (Computerspiel)",
+      "Informatik"
+     ]
+    },
+    "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932": {
+     "dbpedia": [
+      "Bildungsorientierte Programmiersprachen",
+      "Massachusetts Institute of Technology",
+      "Integrierte Entwicklungsumgebung",
+      "Informatik",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz"
+     ],
+     "artikel": [
+      "Bildungsorientierte Programmiersprache",
+      "Massachusetts Institute of Technology",
+      "Integrierte Entwicklungsumgebung",
+      "Informatik",
+      "Soziale Kompetenz",
+      "Pädagogische Hochschule Schwyz"
+     ]
+    },
+    "1c748a03-1563-4524-911a-075e225902d4": {
+     "dbpedia": [
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Digitale Medien",
+      "Leitmedium",
+      "Blog",
+      "Aktiebolag",
+      "Kollaboratives Schreiben",
+      "Lernen",
+      "Pinnwand"
+     ],
+     "artikel": [
+      "Abitur",
+      "Digitale Transformation",
+      "Digital Native",
+      "Digitale Medien",
+      "Leitmedium",
+      "Blog",
+      "Aktiebolag",
+      "Kollaboratives Schreiben",
+      "Lernen",
+      "Pinnwand"
+     ]
+    },
+    "803ebb4d-aa53-4107-922a-85d86bbcd304": {
+     "dbpedia": [
+      "Lernen",
+      "Fidget Spinner"
+     ],
+     "artikel": [
+      "Lernen",
+      "Fidget Spinner"
+     ]
+    },
+    "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "f8451c14-12cc-465f-8aac-ad9e2a2851f1": {
+     "dbpedia": [
+      "Byte",
+      "Max Weber",
+      "Evaluation"
+     ],
+     "artikel": [
+      "Byte",
+      "Max Weber"
+     ]
+    },
+    "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168": {
+     "dbpedia": [
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "YouTube",
+      "Podcast",
+      "Düsseldorf",
+      "Rechtsanwalt"
+     ],
+     "artikel": [
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "YouTube",
+      "Podcast",
+      "Düsseldorf",
+      "Rechtsanwalt"
+     ]
+    },
+    "5494f4c2-100f-4ca0-94f4-c2100f0ca053": {
+     "dbpedia": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Taschenbuch",
+      "Amazon",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Tagung",
+      "Darmstadt",
+      "Die Rudi Carrell Show – Laß Dich überraschen",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "YouTube",
+      "Podcast"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Taschenbuch",
+      "Amazon",
+      "New York Stock Exchange",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Tagung",
+      "Darmstadt",
+      "Die Rudi Carrell Show – Laß Dich überraschen",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "YouTube",
+      "Podcast"
+     ]
+    },
+    "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc": {
+     "dbpedia": [
+      "Scheiße",
+      "Taschenbuch",
+      "E-Book",
+      "New York Stock Exchange",
+      "Amazon",
+      "Hörbuch",
+      "Videotechnik",
+      "Blaise Pascal",
+      "Benjamin Wegner (Industrieller)",
+      "Stuttgart",
+      "University College London",
+      "Elektronischer Handel",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Luftfahrt",
+      "Tauchen",
+      "Gerald Hörhan",
+      "Facebook",
+      "YouTube",
+      "Podcast",
+      "Immobilie",
+      "Aktie",
+      "Porsche"
+     ],
+     "artikel": [
+      "Scheiße",
+      "Taschenbuch",
+      "E-Book",
+      "New York Stock Exchange",
+      "Amazon",
+      "Hörbuch",
+      "Videotechnik",
+      "Blaise Pascal",
+      "Benjamin Wegner (Industrieller)",
+      "Stuttgart",
+      "University College London",
+      "Elektronischer Handel",
+      "Deutschland",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Luftfahrt",
+      "Tauchen",
+      "Gerald Hörhan",
+      "Facebook",
+      "YouTube",
+      "Podcast",
+      "Immobilie",
+      "Aktie",
+      "Porsche"
+     ]
+    },
+    "4041df54-5339-46d7-81df-545339d6d78d": {
+     "dbpedia": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "Automatisierung",
+      "E-Book",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Hörbuch",
+      "Podcast",
+      "Marketing"
+     ],
+     "artikel": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "Automatisierung",
+      "E-Book",
+      "Amazon",
+      "Taschenbuch",
+      "New York Stock Exchange",
+      "Hörbuch",
+      "Podcast",
+      "Marketing"
+     ]
+    }
+   },
+   "vergleich_llm-free": {
+    "artikel": 394,
+    "p": 0.2944,
+    "r": 0.5446,
+    "f1": 0.3822
+   },
+   "vergleich_balanced": {
+    "artikel": 269,
+    "p": 0.6952,
+    "r": 0.8779,
+    "f1": 0.7759
+   }
+  },
+  "0.9": {
+   "artikel": 292,
+   "richtig": 93,
+   "note0": 83,
+   "ohne_note": 0,
+   "pool_note2": 212,
+   "p": 0.3185,
+   "r": 0.4387,
+   "f1": 0.369,
+   "sekunden_median": 0.014,
+   "materialien": {
+    "325c399b-dd66-40b3-8182-3baae248f4d6": {
+     "dbpedia": [
+      "Physik",
+      "Physiker"
+     ],
+     "artikel": [
+      "Physik",
+      "Physiker"
+     ]
+    },
+    "19e322f0-afa5-440f-8dc0-fca1dcde71d8": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "8e4ee58d-c18c-470b-8f84-c3a634a041c3": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "c6c569d7-87c3-40d6-be6f-d92ee5409782": {
+     "dbpedia": [
+      "Galvanometer"
+     ],
+     "artikel": [
+      "Galvanometer"
+     ]
+    },
+    "18adeb5f-3f7d-4c32-9a96-3398a756193e": {
+     "dbpedia": [
+      "Mond",
+      "Teleskop",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Vollmond",
+      "Neumond"
+     ],
+     "artikel": [
+      "Mond",
+      "Teleskop",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Kaufentscheidung",
+      "Provision",
+      "Newton (Einheit)",
+      "Vollmond",
+      "Neumond"
+     ]
+    },
+    "c09b26a5-bb4d-497e-8def-c8812e64bb9d": {
+     "dbpedia": [
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ],
+     "artikel": [
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Kaufentscheidung",
+      "Provision",
+      "Batterie (Militär)",
+      "Zitrone",
+      "Schwefelsäure",
+      "Schwefel",
+      "Kupfer",
+      "Zink",
+      "Do it yourself"
+     ]
+    },
+    "6c306be9-a5f5-46ae-af83-31fc480fa389": {
+     "dbpedia": [
+      "Eisregen",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Polymer"
+     ],
+     "artikel": [
+      "Eisregen",
+      "Superabsorber",
+      "TEAC (Elektronikunternehmen)",
+      "Sony",
+      "Leuchtdiode",
+      "Creative Commons",
+      "Kaufentscheidung",
+      "Provision",
+      "Destilliertes Wasser",
+      "Polymer"
+     ]
+    },
+    "35162ae1-e3d7-4c8e-95e5-d13d6906fb57": {
+     "dbpedia": [
+      "Zeitraffer",
+      "Creative Commons"
+     ],
+     "artikel": [
+      "Zeitraffer",
+      "Creative Commons"
+     ]
+    },
+    "21e5be2c-c701-438a-a5be-2cc701f38a47": {
+     "dbpedia": [
+      "Pipeline",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Lee Perry",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen"
+     ],
+     "artikel": [
+      "Pipeline",
+      "The Journal of Organic Chemistry",
+      "Digital Object Identifier",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "Billboard Hot 100",
+      "The Following",
+      "Lee Perry",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Organometallics",
+      "Grignard-Verbindungen"
+     ]
+    },
+    "aff99075-a5b3-49dd-b990-75a5b369dd63": {
+     "dbpedia": [
+      "Nukleophilie",
+      "Kevin MacLeod",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Lee Perry",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ],
+     "artikel": [
+      "Nukleophilie",
+      "Kevin MacLeod",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Cyborg",
+      "Patreon",
+      "Billboard 200",
+      "The Following",
+      "Lee Perry",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Jason Donovan",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ]
+    },
+    "c5f133d8-22f1-4f87-b133-d822f1cf87f7": {
+     "dbpedia": [
+      "Alkene",
+      "Organic Reactions",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Oxidation"
+     ],
+     "artikel": [
+      "Alkene",
+      "Organic Reactions",
+      "New York City",
+      "Begriffe der Dune-Zyklen",
+      "Yaoi",
+      "Cholmsk",
+      "Fujiwara (Familie)",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Vincent van Gogh",
+      "Scott Harrison",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "William Taylor (Schriftsteller, 1765)",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers",
+      "Oxidation"
+     ]
+    },
+    "f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b": {
+     "dbpedia": [
+      "Billboard 200",
+      "Zhao Ermi",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "Tomtom",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Facebook",
+      "Twitter",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ],
+     "artikel": [
+      "Billboard 200",
+      "Zhao Ermi",
+      "Figuren aus dem Marvel-Universum",
+      "Journal of Agricultural and Food Chemistry",
+      "Chemical & Engineering News",
+      "Koppelgetriebe",
+      "Sulfoxide",
+      "The Journal of Physical Chemistry A",
+      "Boston",
+      "Pearson Education",
+      "Earl Warren",
+      "Oxford University Press",
+      "New York City",
+      "Wiley-Blackwell",
+      "Colorado",
+      "McGraw-Hill",
+      "Apple",
+      "Androide",
+      "Patreon",
+      "The Following",
+      "Deutsche Mark",
+      "Matt Smith (Schauspieler)",
+      "Jonathan Nolan",
+      "Indika",
+      "Tomtom",
+      "William Taylor (Schriftsteller, 1765)",
+      "Zingsheim",
+      "Sveriges Radio",
+      "Jason Donovan",
+      "Facebook",
+      "X (soziales Netzwerk)",
+      "Tumblr",
+      "John Green (Schriftsteller)",
+      "Hank Green",
+      "Vlogbrothers"
+     ]
+    },
+    "5b4d1ccd-2acc-47fa-b0aa-bb13634d1162": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "5847dba7-3705-457e-a165-528614d8ebf7": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "a0399b0d-75f6-4388-9d1f-d64cda8e0a73": {
+     "dbpedia": [
+      "Preußische T 3"
+     ],
+     "artikel": [
+      "Preußische T 3"
+     ]
+    },
+    "8ee3a2ab-e9e9-46d5-a420-f543494cdf63": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "7be6051e-3e39-404a-9e87-4db77e600737": {
+     "dbpedia": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg"
+     ],
+     "artikel": [
+      "Weimarer Verfassung",
+      "Erster Weltkrieg"
+     ]
+    },
+    "477256df-e20a-491d-9a43-24de02b0f1cc": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Kommunistische Partei Deutschlands",
+      "Sozialdemokratische Partei Deutschlands",
+      "Sowjetische Besatzungszone"
+     ]
+    },
+    "03476274-616e-4678-9296-4dcce80189bf": {
+     "dbpedia": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ],
+     "artikel": [
+      "Sozialistische Einheitspartei Deutschlands",
+      "Marxismus",
+      "Arbeiterbewegung"
+     ]
+    },
+    "5b9c3c14-7ff5-46ac-9628-e5bd399d7acc": {
+     "dbpedia": [
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation"
+     ],
+     "artikel": [
+      "Christlich Demokratische Union Deutschlands",
+      "Entwicklungsbank",
+      "London",
+      "Internationaler Währungsfonds",
+      "International Weightlifting Federation"
+     ]
+    },
+    "a41d9d3f-388b-4938-b3df-2f0c381b601d": {
+     "dbpedia": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz"
+     ],
+     "artikel": [
+      "Landesbildungsserver Baden-Württemberg",
+      "Bilingualismus",
+      "Klimawandel",
+      "Nachhaltigkeit",
+      "Handlungskompetenz",
+      "Methodenkompetenz"
+     ]
+    },
+    "9ba086a0-7f3a-4445-8167-fe9959598525": {
+     "dbpedia": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ],
+     "artikel": [
+      "Erdbeben",
+      "Vulkanismus",
+      "Plattentektonik",
+      "Erdkruste"
+     ]
+    },
+    "2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9": {
+     "dbpedia": [
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ],
+     "artikel": [
+      "Stadtgeographie",
+      "Geomorphologie",
+      "Kloster St. Walburg",
+      "Ingolstadt",
+      "Altmühlsee",
+      "Beltershausen-Frauenberg",
+      "Nordstadt-Schunteraue"
+     ]
+    },
+    "f19f7f52-eeb2-4345-9b4e-559e486fa2e2": {
+     "dbpedia": [
+      "Katar",
+      "Flächentreue",
+      "Atlas Guadalajara"
+     ],
+     "artikel": [
+      "Katar",
+      "Flächentreue",
+      "Atlas Guadalajara"
+     ]
+    },
+    "bdc8e683-99c0-4f0a-9519-98eef818f610": {
+     "dbpedia": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ],
+     "artikel": [
+      "Petersberger Klimadialog",
+      "Berlin",
+      "UN-Klimakonferenz",
+      "Katar",
+      "Klimawandel",
+      "Kyoto-Protokoll"
+     ]
+    },
+    "87704813-c34a-4771-a577-c0c8008cb772": {
+     "dbpedia": [
+      "Frankreich",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Emmanuel Macron"
+     ],
+     "artikel": [
+      "Frankreich",
+      "Volkswirtschaft",
+      "Eurozone",
+      "Emmanuel Macron"
+     ]
+    },
+    "31dc4d87-9dae-4a61-a6b1-f84f5e9311e5": {
+     "dbpedia": [
+      "Europa",
+      "Susanne Klatten",
+      "Staatsverschuldung",
+      "Vermögensteuer"
+     ],
+     "artikel": [
+      "Europa",
+      "Susanne Klatten",
+      "Staatsverschuldung",
+      "Vermögensteuer"
+     ]
+    },
+    "f3caa6d3-4750-4fc8-b073-8c8eccf62b40": {
+     "dbpedia": [
+      "Bundeszentrale für politische Bildung",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Eurozone",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron"
+     ],
+     "artikel": [
+      "Bundeszentrale für politische Bildung",
+      "Wirtschaftswissenschaftler",
+      "Michael Hüther",
+      "Eurozone",
+      "Europäische Union",
+      "Europäische Wirtschafts- und Währungsunion",
+      "Emmanuel Macron"
+     ]
+    },
+    "c4d8c077-ea98-486d-98c0-77ea98886df9": {
+     "dbpedia": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ],
+     "artikel": [
+      "Hörspiel",
+      "Audacity",
+      "Informatik"
+     ]
+    },
+    "f61cd77c-9a90-41a1-9cd7-7c9a9081a108": {
+     "dbpedia": [
+      "YouTube",
+      "Lernvideo",
+      "Informatik",
+      "Influencer"
+     ],
+     "artikel": [
+      "YouTube",
+      "Lernvideo",
+      "Informatik",
+      "Influencer"
+     ]
+    },
+    "aad2eddf-63e7-4a83-92ed-df63e7ba8389": {
+     "dbpedia": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Informatik"
+     ],
+     "artikel": [
+      "Scratchen",
+      "Gruppenpuzzle",
+      "Informatik"
+     ]
+    },
+    "cafe5ebd-c94c-4a49-be5e-bdc94c6a4932": {
+     "dbpedia": [
+      "Bildungsorientierte Programmiersprachen",
+      "Massachusetts Institute of Technology",
+      "Informatik",
+      "Pädagogische Hochschule Schwyz"
+     ],
+     "artikel": [
+      "Bildungsorientierte Programmiersprache",
+      "Massachusetts Institute of Technology",
+      "Informatik",
+      "Pädagogische Hochschule Schwyz"
+     ]
+    },
+    "1c748a03-1563-4524-911a-075e225902d4": {
+     "dbpedia": [
+      "Digitale Transformation",
+      "Digital Native",
+      "Kollaboratives Schreiben"
+     ],
+     "artikel": [
+      "Digitale Transformation",
+      "Digital Native",
+      "Kollaboratives Schreiben"
+     ]
+    },
+    "803ebb4d-aa53-4107-922a-85d86bbcd304": {
+     "dbpedia": [
+      "Fidget Spinner"
+     ],
+     "artikel": [
+      "Fidget Spinner"
+     ]
+    },
+    "0a55ee4e-e68a-4d70-bbc2-3a2836dba6de": {
+     "dbpedia": [],
+     "artikel": []
+    },
+    "f8451c14-12cc-465f-8aac-ad9e2a2851f1": {
+     "dbpedia": [
+      "Max Weber"
+     ],
+     "artikel": [
+      "Max Weber"
+     ]
+    },
+    "c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168": {
+     "dbpedia": [
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "YouTube",
+      "Podcast",
+      "Düsseldorf"
+     ],
+     "artikel": [
+      "Scheiße",
+      "Achim Zimmermann",
+      "Fachanwalt (Deutschland)",
+      "Gesellschaftsrecht",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "YouTube",
+      "Podcast",
+      "Düsseldorf"
+     ]
+    },
+    "5494f4c2-100f-4ca0-94f4-c2100f0ca053": {
+     "dbpedia": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "YouTube",
+      "Podcast"
+     ],
+     "artikel": [
+      "Psychologie",
+      "Rainer Zitelmann",
+      "Scheiße",
+      "Historiker",
+      "Soziologie",
+      "Tagung",
+      "Darmstadt",
+      "E-Book",
+      "Hörbuch",
+      "Immobilie",
+      "Rendite",
+      "YouTube",
+      "Podcast"
+     ]
+    },
+    "066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc": {
+     "dbpedia": [
+      "Scheiße",
+      "Hörbuch",
+      "Blaise Pascal",
+      "Stuttgart",
+      "University College London",
+      "Elektronischer Handel",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Tauchen",
+      "Gerald Hörhan",
+      "E-Book",
+      "Facebook",
+      "YouTube",
+      "Podcast",
+      "Immobilie",
+      "Aktie",
+      "Porsche"
+     ],
+     "artikel": [
+      "Scheiße",
+      "Hörbuch",
+      "Blaise Pascal",
+      "Stuttgart",
+      "University College London",
+      "Elektronischer Handel",
+      "Thailand",
+      "Bali",
+      "Australien",
+      "Tauchen",
+      "Gerald Hörhan",
+      "E-Book",
+      "Facebook",
+      "YouTube",
+      "Podcast",
+      "Immobilie",
+      "Aktie",
+      "Porsche"
+     ]
+    },
+    "4041df54-5339-46d7-81df-545339d6d78d": {
+     "dbpedia": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "E-Book",
+      "Hörbuch",
+      "Podcast"
+     ],
+     "artikel": [
+      "Massenbach",
+      "Web-Seminar",
+      "Scheiße",
+      "E-Book",
+      "Hörbuch",
+      "Podcast"
+     ]
+    }
+   },
+   "vergleich_llm-free": {
+    "artikel": 394,
+    "p": 0.2944,
+    "r": 0.5472,
+    "f1": 0.3828
+   },
+   "vergleich_balanced": {
+    "artikel": 269,
+    "p": 0.6952,
+    "r": 0.8821,
+    "f1": 0.7775
+   }
+  }
+ },
+ "ohne_note": []
+}

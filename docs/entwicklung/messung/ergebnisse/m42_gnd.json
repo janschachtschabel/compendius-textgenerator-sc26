@@ -1,0 +1,452 @@
+{
+ "gnd_saetze": 2115309,
+ "richtige_artikel": 188,
+ "wege": {
+  "A_wikidata": {
+   "bekannt": {
+    "artikel": 139,
+    "gefunden": 108,
+    "eindeutig": 106,
+    "gleich": 104,
+    "anders": [
+     [
+      "YouTube",
+      "1085984737",
+      [
+       "7597411-3"
+      ]
+     ],
+     [
+      "YouTube-Kanal",
+      "1085984737",
+      [
+       "7597411-3"
+      ]
+     ]
+    ],
+    "mehrdeutig": [
+     [
+      "Influencer",
+      [
+       "1164030825",
+       "1198893397"
+      ]
+     ],
+     [
+      "YouTuber",
+      [
+       "1188069527",
+       "1225303257"
+      ]
+     ]
+    ]
+   },
+   "luecke": {
+    "artikel": 49,
+    "gefunden": 9,
+    "eindeutig": 9,
+    "vorschlaege": {
+     "Belichtung (Fotografie)": [
+      {
+       "gnd": "4005413-5",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Belichtung"
+       ],
+       "definition": ""
+      }
+     ],
+     "Carbanion": [
+      {
+       "gnd": "4147276-7",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Carbanion"
+       ],
+       "definition": ""
+      }
+     ],
+     "Folge (Mathematik)": [
+      {
+       "gnd": "4017790-7",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Folge <Mathematik>"
+       ],
+       "definition": ""
+      }
+     ],
+     "Konzertierte Reaktion": [
+      {
+       "gnd": "4167162-4",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Konzertierte Reaktion"
+       ],
+       "definition": ""
+      }
+     ],
+     "Planck-Konstante": [
+      {
+       "gnd": "4174790-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Plancksches Wirkungsquantum"
+       ],
+       "definition": ""
+      }
+     ],
+     "Saytzeff-Regel": [
+      {
+       "gnd": "1178711579",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Saytzeff-Regel"
+       ],
+       "definition": "Reaktionsregel"
+      }
+     ],
+     "Superabsorber": [
+      {
+       "gnd": "1231923725",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Superabsorber"
+       ],
+       "definition": ""
+      }
+     ],
+     "Windel": [
+      {
+       "gnd": "4263050-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Windel"
+       ],
+       "definition": ""
+      }
+     ],
+     "Zahl": [
+      {
+       "gnd": "4067271-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Zahl"
+       ],
+       "definition": ""
+      }
+     ]
+    }
+   }
+  },
+  "B_name": {
+   "bekannt": {
+    "artikel": 139,
+    "gefunden": 99,
+    "eindeutig": 89,
+    "gleich": 88,
+    "anders": [
+     [
+      "Chat",
+      "4500079-7",
+      [
+       "102528898X"
+      ]
+     ]
+    ],
+    "mehrdeutig": [
+     [
+      "Berlin",
+      [
+       "16040576-2",
+       "4005728-8"
+      ]
+     ],
+     [
+      "Kommunistische Partei Deutschlands",
+      [
+       "16119023-6",
+       "4139580-3"
+      ]
+     ],
+     [
+      "Mond",
+      [
+       "1085673251",
+       "1218034122"
+      ]
+     ],
+     [
+      "Neumond",
+      [
+       "10342282-1",
+       "4376010-7"
+      ]
+     ],
+     [
+      "Psychologie",
+      [
+       "4047704-6",
+       "5273399-3"
+      ]
+     ],
+     [
+      "Schwefel",
+      [
+       "10111798-X",
+       "10295600-5",
+       "4180380-2"
+      ]
+     ],
+     [
+      "Sozialdemokratische Partei Deutschlands",
+      [
+       "2022139-3",
+       "4128225-5",
+       "4192561-0",
+       "4295276-1"
+      ]
+     ],
+     [
+      "Vollmond",
+      [
+       "10275740-9",
+       "4396432-1"
+      ]
+     ],
+     [
+      "Wolke",
+      [
+       "10341553-1",
+       "4125270-6"
+      ]
+     ],
+     [
+      "YouTube",
+      [
+       "1085984737",
+       "7597411-3"
+      ]
+     ]
+    ]
+   },
+   "luecke": {
+    "artikel": 49,
+    "gefunden": 21,
+    "eindeutig": 21,
+    "vorschlaege": {
+     "Carbanion": [
+      {
+       "gnd": "4147276-7",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Carbanion"
+       ],
+       "definition": ""
+      }
+     ],
+     "Digital Native": [
+      {
+       "gnd": "1283032309",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Digital Native"
+       ],
+       "definition": "Bezeichnet eine Person der gesellschaftlichen Generation, die in der digitalen Welt aufgewachsen ist."
+      }
+     ],
+     "Digitale Transformation": [
+      {
+       "gnd": "4123065-6",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Digitalisierung"
+       ],
+       "definition": ""
+      }
+     ],
+     "Division mit Rest": [
+      {
+       "gnd": "4150322-3",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Division mit Rest"
+       ],
+       "definition": ""
+      }
+     ],
+     "Erdkundeunterricht": [
+      {
+       "gnd": "4020219-7",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Geografieunterricht"
+       ],
+       "definition": ""
+      }
+     ],
+     "Folge (Mathematik)": [
+      {
+       "gnd": "4017790-7",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Folge <Mathematik>"
+       ],
+       "definition": ""
+      }
+     ],
+     "Gesellschaftsrecht": [
+      {
+       "gnd": "4020646-4",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Gesellschaftsrecht"
+       ],
+       "definition": ""
+      }
+     ],
+     "Hydratisierung": [
+      {
+       "gnd": "4251344-3",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Hydratisierung"
+       ],
+       "definition": "Addition von Wasser an organische Substrate unter Anlagerung eines H-Atoms und einer Hydroxy-Gruppe an benachbarte Atome"
+      }
+     ],
+     "Hydroborierung": [
+      {
+       "gnd": "4160898-7",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Hydroborierung"
+       ],
+       "definition": ""
+      }
+     ],
+     "Konzertierte Reaktion": [
+      {
+       "gnd": "4167162-4",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Konzertierte Reaktion"
+       ],
+       "definition": ""
+      }
+     ],
+     "Lithiumorganische Verbindungen": [
+      {
+       "gnd": "4132581-3",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Lithiumorganische Verbindungen"
+       ],
+       "definition": ""
+      }
+     ],
+     "Motor": [
+      {
+       "gnd": "4128006-4",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Motor"
+       ],
+       "definition": ""
+      }
+     ],
+     "Oxymercurierung": [
+      {
+       "gnd": "4307658-0",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Oxymercurierung"
+       ],
+       "definition": ""
+      }
+     ],
+     "Planck-Konstante": [
+      {
+       "gnd": "4174790-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Plancksches Wirkungsquantum"
+       ],
+       "definition": ""
+      }
+     ],
+     "Saytzeff-Regel": [
+      {
+       "gnd": "1178711579",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Saytzeff-Regel"
+       ],
+       "definition": "Reaktionsregel"
+      }
+     ],
+     "Superabsorber": [
+      {
+       "gnd": "1231923725",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Superabsorber"
+       ],
+       "definition": ""
+      }
+     ],
+     "Tetraethylblei": [
+      {
+       "gnd": "4145940-4",
+       "art": "NomenclatureInBiologyOrChemistry",
+       "namen": [
+        "Bleitetraethyl"
+       ],
+       "definition": ""
+      }
+     ],
+     "Transmetallierung": [
+      {
+       "gnd": "4185913-3",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Transmetallierung"
+       ],
+       "definition": ""
+      }
+     ],
+     "Windel": [
+      {
+       "gnd": "4263050-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Windel"
+       ],
+       "definition": ""
+      }
+     ],
+     "Zahl": [
+      {
+       "gnd": "4067271-2",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Zahl"
+       ],
+       "definition": ""
+      }
+     ],
+     "Zeitraffer": [
+      {
+       "gnd": "4793443-8",
+       "art": "SubjectHeadingSensoStricto",
+       "namen": [
+        "Zeitraffer"
+       ],
+       "definition": ""
+      }
+     ]
+    }
+   }
+  }
+ }
+}

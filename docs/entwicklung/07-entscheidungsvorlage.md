@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M40; Rohdaten und
+[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M42; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -21,6 +21,7 @@ der QA-Paare (D54, D55, D57).
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` |
+| Kennungen der Entitäten (Wikidata, GND, DBpedia; M41) | aus lokalen Daten zum verknüpften Artikel; Präzision 0,29, Recall 0,55 | ebenso, auf den Artikeln des LLM: Präzision 0,70, Recall 0,89 | wie `balanced` | wie `balanced` |
 | Hauptartikel richtig, 94 Goldanfragen (M35) | 87 | 91 | 93 | 93 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen |
@@ -669,6 +670,63 @@ von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen w
     `best-quality`-Profilen also keinen Gewinn und steht in keinem Profil; wer eine kurze, sichere Liste will, setzt
     sie selbst. Folge, wie vorgeschlagen: Wie die anderen Endpunkte folgt `/entities` PRESET_DEFAULT (`balanced`) und
     braucht ohne `preset` ein LLM - auf einem Server ohne LLM ein 503, bis der Aufrufer `preset: llm-free` setzt.
+11. **Kennungen für Wikidata, DBpedia und die GND (M41, M42, D64):** Jan: `/entities` soll neben Wikipedia möglichst
+    genau und treffsicher auch Wikidata-, DBpedia- und DNB-Entitäten vorhersagen, möglichst lokal ohne API, mit den
+    Profilen, gemessen, und neue Installationen sollen die Daten bekommen. Seit D43 nennt der Endpunkt zu jedem
+    verknüpften Wikipedia-Artikel dessen Kennungen, alle aus lokalen Daten: GND, Art und VIAF aus dem Normdaten-Block
+    im ZIM, die Wikidata-Nummer aus dem lokalen Index, die DBpedia-URI aus dem Titel gebildet. Die Kennungen folgen also
+    der Verknüpfung, und die wählt das Profil (D62). Gemessen an den Texten der 40 Materialien aus M36 (M41):
+
+    | Profil | Wikidata, DBpedia: Präzision / Recall / F1 | GND: Präzision / Recall / F1 |
+    |---|---|---|
+    | `llm-free` (Regeln) | 0,29 / 0,55 / 0,38 | 0,33 / 0,61 / 0,43 |
+    | `balanced`, `best-quality` (LLM nennt) | 0,70 / 0,89 / 0,78 | 0,69 / 0,88 / 0,77 |
+    | mit `link_check: llm` | 0,94 / 0,64 / 0,76 | 0,92 / 0,60 / 0,72 |
+
+    Falsch ist dabei der Artikel, nie die Nummer (M18: 30 von 30 GND-, 29 von 30 Wikidata-Nummern gehören zu ihrem
+    Artikel). Das Vorgehen passt also für Wikidata (alle 188 richtigen Artikel haben eine Nummer) und im Kern für die
+    GND. Drei Stellen passen nicht oder nur teilweise:
+
+    - *Neue Installationen:* Der Wikidata-Index war Handarbeit. Seit D64 baut ihn der Sidecar `wikidata-updater`
+      selbst (echter Lauf auf frischen Volumes: 6 min 16 s, davon rund 2 min Download, danach die Dumps gelöscht), und
+      die API übernimmt ihn ohne Neustart. Das ZIM kann die Wikipedia-Dumps nicht ersetzen: 14 der 188 Seiten verlinken
+      ihr Wikidata-Objekt, keine hat Sprachlinks.
+    - *GND-Lücke:* 49 der 188 richtigen Artikel haben keinen Normdaten-Block. Aus den GND-Abzügen der DNB (CC0,
+      270 MB, zweimal im Jahr) bekommen 22 einen Vorschlag, 21 davon richtig (M42 a); 160 statt 139 trügen eine GND.
+    - *DBpedia:* `de.dbpedia.org` antwortet nicht mehr, die gebildeten URIs führen ins Leere. DBpedia vergibt seine
+      lebenden Kennungen nach dem englischen Artikel; den nennt `langlinks` (329 MB, derselbe Lauf wie der Index) für
+      96 % der Artikel, die `balanced` verknüpft (M42 b).
+
+    *Ein lokaler Verknüpfer für `llm-free`?* DBpedia Spotlight (lokal in Docker, Modell von 2022, 4,4 GB RAM)
+    verknüpfte dieselben Texte nicht besser als die Regeln: bei gleicher Menge F1 0,37 statt 0,38, aber doppelt so
+    oft etwas ganz anderes, meist Namensvettern (140 statt 65, M42 c). `llm-free` bleibt bei den Regeln; wer genaue
+    Kennungen braucht, nimmt `balanced` oder setzt zusätzlich `link_check: llm` (Präzision 0,94).
+
+    Nicht lokal machbar oder nicht lohnend: Entitäten ohne Artikel in der deutschen Wikipedia bräuchten die deutschen
+    Namen aus Wikidata (Dump 71,6 GB, 17 Mio. deutsche Namen, viele mehrdeutig) oder die ganze GND als Namensliste
+    (1,8 GB, 10 Mio. Sätze); fertige Verknüpfer für Wikidata auf Deutsch sind groß, alt oder nicht frei (mGENRE
+    CC-BY-NC, BELA 22 GB und archiviert, entity-fishing 11 GB ohne deutsche Messwerte). GND-Schlagwörter für einen
+    ganzen Text, wie die DNB sie vergibt, wären eine eigene Aufgabe: Annif mit freien GND-Modellen der finnischen
+    Nationalbibliothek (1,8 GB, trainiert auf Titeln und Abstracts der TIB; die DNB erreicht mit eigenen
+    Annif-Modellen F1 0,47), nicht gemessen.
+
+    Mögliche Schritte, alle lokal und in allen Profilen gleich, weil keiner ein LLM braucht:
+    - (a) GND-Lücke schließen: der Sidecar lädt auch die GND-Abzüge (Sachbegriffe, Geografika, Körperschaften), der
+      Endpunkt nimmt die GND aus dem Normdaten-Block und sonst aus dem Abzug, zuerst über Wikidata-`sameAs`, dann über
+      den eindeutigen Namen, und sagt, woher sie stammt (`gnd_source`).
+    - (b) DBpedia-URI über den englischen Artikel: der Sidecar lädt auch `langlinks`, der Index kennt den englischen
+      Titel, `dbpedia` wird `http://dbpedia.org/resource/<englischer Titel>`; ohne englischen Artikel keine URI
+      (oder, als Variante, weiter die nicht erreichbare deutsche).
+    - (c) nichts ändern.
+
+    Vorschlag: (a) und (b). Beide machen die Kennungen treffsicherer, ohne ein Profil langsamer oder teurer zu machen;
+    der Sidecar lädt dann statt 420 MB rund 1 GB, wenn ein neues Archiv kommt. (b) ändert, was Aufrufer im Feld
+    `dbpedia` bekommen.
+
+    Quellen der Recherche (27.09.2026): data.dnb.de/opendata (GND-Abzüge und ihre Größen), dumps.wikimedia.org
+    (Läufe und Tabellen der deutschen Wikipedia), databus.dbpedia.org und downloads.dbpedia.org (Releases, Modell von
+    Spotlight), wikidata.org (Statistik der Namen und von P227), huggingface.co/NatLibFi (Annif-Modelle),
+    liberquarterly.eu/article/view/19422 (Erschließungsmaschine der DNB).
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

@@ -1,6 +1,6 @@
-# Ergebnisse der Messungen M1 bis M40
+# Ergebnisse der Messungen M1 bis M42
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 26.09.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 27.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
 [Entscheidungsvorlage](../../07-entscheidungsvorlage.md) in `docs/entwicklung/bilder/` zeichnet `mc_grafiken.py`:
@@ -53,6 +53,8 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M37 | Trägt ein Hauptartikel ein Sammel- oder Mischthema wie „deutsche Dichter“? | an 25 solchen Themen aus passenden Artikeln gedruckt: heute 43 bis 45 %, Entitäten der alten App 63 %, das LLM nennt Übersicht und Teile 87 % (21 statt 10 bis 11 brauchbar, rund 500 Tokens, 3,5 s); an 20 gewöhnlichen Themen 93 statt 73 %; Verbindungen zweier Themen bleiben schwach; zwei blinde Claude-Subagenten, Kappa 0,94 | – | `m37_sammelthemen.json`, `m37_kontrolle.json` |
 | M39 | Wirkt die Frage N eingebaut wie gemessen (D63)? | ja: an den 25 Sammelthemen von M37 87 % der Absätze aus passenden Artikeln wie der Prototyp (`balanced` vorher 45 %), an 20 gewöhnlichen 93 % (vorher 73 %), in allen 45 Themen derselbe Hauptartikel; am Gold der Artikelwahl 91 und 93 von 94 wie vorher; die Frage 3,6 s und 480 Tokens, `balanced` mit Teil 1 und 2 4,2 s; im Gold der Zuordnung veralten 243 von 643 Labels | – | `m39_n_artikelwahl.json`, `m39_n_dienst.json`, `m39_n_dienst_kontrolle.json`, `m39_n_zeit.json`, `m39_zuordnung_gold.json` |
 | M40 | Verbessern kleine lokale Modelle `llm-free`? | nein: LFM2-700M, LFM2.5-1.2B und Qwen3-0.6B fanden von rund neun genannten Titeln im Mittel 0,3 bis 2 im Archiv; 55 bis 61 % der Absätze aus passenden Artikeln bei Sammelthemen, weil der Korpus kleiner wird - nur Hauptartikel und Zwilling ohne Modell 76 % (heute 43 %, N 87 %); die Frage auf 4 Threads im Median 4,4 bis 6,3 s; zwei weitere blinde Claude-Subagenten, gleiche Note bei 45 von 46 | – | `m40_sammelthemen.json`, `m40_kontrolle.json`, `m40_nur_haupt.json`, `m40_nur_haupt_kontrolle.json`, `m40_zeiten.json` |
+| M41 | Wie treffsicher sind die Kennungen von `/entities` je Profil, und stehen die Wikidata-Nummern auch im ZIM? | so treffsicher wie die Verknüpfung: Wikidata und DBpedia Präzision 0,29 (`llm-free`), 0,70 (`balanced`), 0,94 (`link_check: llm`), GND 0,33, 0,69 und 0,92; alle 188 richtigen Artikel haben eine Wikidata-Nummer, 139 eine GND; das ZIM verlinkt bei 14 von 188 das Wikidata-Objekt, Sprachlinks keine | – | `m41_kennungen.json` |
+| M42 | Lässt sich die GND-Lücke lokal schließen, bekommen die Artikel eine DBpedia-URI, die antwortet, und verknüpft DBpedia Spotlight besser als die Regeln? | GND-Abzüge der DNB: 22 Vorschläge für 49 Lücken, 21 richtig (zwei blinde Gutachter, 22 von 22 gleich), an bekannten Nummern 98 und 99 % gleich; `de.dbpedia.org` antwortet nicht, einen englischen Artikel für `dbpedia.org` haben 96 % der Artikel von `balanced`; Spotlight F1 0,34 bis 0,37 statt 0,38, doppelt so viele Namensvettern (340 Paare, zwei Gutachter, 339 gleich) | – | `m42_gnd.json`, `m42_dbpedia.json`, `m42_spotlight.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

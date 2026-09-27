@@ -1,0 +1,1027 @@
+# M42 c (docs/entwicklung/05-messprotokoll.md): Artikel, die DBpedia Spotlight (Modell de 2022.03.01, Schwellen
+# 0,5, 0,7 und 0,9) zu den Texten der 40 Materialien aus M36 verknüpfte und M36 nicht benotet hatte: 340 Paare,
+# benotet am 27.09.2026 von einem zweiten Claude-Subagenten, unabhängig, blind und gemischt wie M36 (Text des Materials, Titel, 400 Zeichen Einleitung).
+# Skala wie eval/entitaeten/noten.yaml: 2 worum es im Text geht und der Artikel meint genau das; 1 richtig, aber
+# nebensächlich, Allerweltswort oder nur das Fachgebiet; 0 etwas anderes oder nichts mit dem Text zu tun.
+version: 1
+noten:
+- node_id: 477256df-e20a-491d-9a43-24de02b0f1cc
+  artikel: Ost-Berlin
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: John Green (Schriftsteller)
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Sveriges Radio
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Unternehmen
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: The Thomson Corporation
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Vlogbrothers
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Beltershausen-Frauenberg
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Rendite
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Crashtest
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Wai
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Crashtest
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Hydratation
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Download
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Siobhán
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Keep
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Tagung
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Lehrvideo
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: John Green (Schriftsteller)
+  note: 1
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Selbstreflexion
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Chemie
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Destilliertes Wasser
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Zhu (Musiker)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Cheb Khaled
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Kunst
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Zhao Ermi
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Verpflichtung
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Podcast
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Wiley-Blackwell
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Podcast
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Dollar
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Keep
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Information
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Scratchen
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Cyborg
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Mitschurinsk
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: McGraw Hill Education
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: New York City
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Wiley-Blackwell
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Lithium
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Zauberer
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Humburg (Düren)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Vincent van Gogh
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: The Following
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Atlas Guadalajara
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: East Japan Railway Company
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Creative Commons
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Tauchen
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: a0399b0d-75f6-4388-9d1f-d64cda8e0a73
+  artikel: Preußische T 3
+  note: 0
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Deutschunterricht
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Scott Harrison
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Jessica Simpson
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Verpflichtung
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Nordstadt-Schunteraue
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Immobilieninvestment
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Erdgas
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Billboard 200
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Unternehmer
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: East Japan Railway Company
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: X (soziales Netzwerk)
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: The Answer
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Siobhán
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Batterie (Militär)
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Schall
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Our
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: E-Book
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Nachschlagewerk
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Zhu (Musiker)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Billboard Hot 100
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Duke of Hamilton
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: The Following
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Jason Donovan
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Jonathan Nolan
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Krankheitsverlauf
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Matt Smith (Schauspieler)
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Download
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Download
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Nathan der Weise
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Mobile App
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Dollar
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Androide
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Robert Edward Lee
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Organic Reactions
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Keep
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Auditive Wahrnehmung
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Pinnwand
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Creative Commons
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Mondsichel
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Duke of Hamilton
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Hudson River
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Johann Heinrich Lambert
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Koppelgetriebe
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Zhu (Musiker)
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Greeves Motorcycles
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Jonathan Nolan
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Zingsheim
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Chemie
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Lehrvideo
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Deutsche Mark
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Lee Perry
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Clifford Brown
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Westmorland
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Matt Smith (Schauspieler)
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: John Green (Schriftsteller)
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Sveriges Radio
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Greeves Motorcycles
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Facebook
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: LSD
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Cheb Khaled
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Earl Warren
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: EU-Skepsis
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Norton Motorcycles
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Todesfall Michael Brown
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Die Simpsons (Familie)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Scott Harrison
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: New York Stock Exchange
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Lernen
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Indika
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Intro
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Die Simpsons (Familie)
+  note: 0
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Tonminerale
+  note: 0
+- node_id: 31dc4d87-9dae-4a61-a6b1-f84f5e9311e5
+  artikel: Susanne Klatten
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Mobile App
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Magnetresonanztomographie
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: X (soziales Netzwerk)
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Vlogbrothers
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Nathan der Weise
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Belichtungszeit
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: East Japan Railway Company
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Duke of Hamilton
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: McGraw-Hill
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Kreativität
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Digital Object Identifier
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Jason Donovan
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Earl Warren
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Aktiebolag
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Scheiße
+  note: 0
+- node_id: a0399b0d-75f6-4388-9d1f-d64cda8e0a73
+  artikel: Ziviltechniker
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Videotechnik
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Scheiße
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Kompaktkassette
+  note: 0
+- node_id: 87704813-c34a-4771-a577-c0c8008cb772
+  artikel: Ange
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Todesfall Michael Brown
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Tumblr
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Verpflichtung
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Apple
+  note: 1
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Akquise
+  note: 2
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Datenflusssteuerung
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Matt Smith (Schauspieler)
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Greeves Motorcycles
+  note: 0
+- node_id: 0a55ee4e-e68a-4d70-bbc2-3a2836dba6de
+  artikel: The Rasmus
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Lustral
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: HIStory World Tour
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Blitz
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Thermischer Solarkollektor
+  note: 0
+- node_id: f3caa6d3-4750-4fc8-b073-8c8eccf62b40
+  artikel: Supranationalität
+  note: 2
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Figuren aus dem Marvel-Universum
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Tonminerale
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Indika
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Chemie
+  note: 1
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Kartennetzentwurf
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Androide
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Parabolspiegel
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Erzählung
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Go On
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Nathan der Weise
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: New York City
+  note: 1
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Statistische Variable
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Kollaboratives Schreiben
+  note: 2
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Download
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: The Following
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Siobhán
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Hudson River
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Westmorland
+  note: 0
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Besoldungsordnung C
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Jason Donovan
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Paul Wittig
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: University College London
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Verbundwerkstoff
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Stockelsdorf
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: The Following
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Fujiwara (Familie)
+  note: 0
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Max Weber
+  note: 0
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Fuerza Aérea de Chile
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Leonora
+  note: 0
+- node_id: 325c399b-dd66-40b3-8182-3baae248f4d6
+  artikel: Lehramtsstudium
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Podcast
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Cheb Khaled
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Freiheit
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Organometallics
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: William Taylor (Schriftsteller, 1765)
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Padlet
+  note: 2
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Universum
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Jessica Simpson
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: McGraw Hill Education
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Kompakter Raum
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Facundo Muñoz
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: '10'
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Brown University
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Mitschurinsk
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Apple
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: William Taylor (Schriftsteller, 1765)
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Download
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Fachanwalt (Deutschland)
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Westmorland
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Christine
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Team
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Jonathan Nolan
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Duke of Hamilton
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Information
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Saar
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Düsseldorf
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: William Taylor (Schriftsteller, 1765)
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Our
+  note: 0
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Didaktik
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: McGraw-Hill
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Scheiße
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: British Broadcasting Corporation
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Clifford Brown
+  note: 0
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Mobile App
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Matt Smith (Schauspieler)
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Apple
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Scott Harrison
+  note: 0
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: CFL-Zahl
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Westmorland
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Deutsche Mark
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Colorado
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Kloster St. Walburg
+  note: 0
+- node_id: aad2eddf-63e7-4a83-92ed-df63e7ba8389
+  artikel: Kollisionserkennung (algorithmische Geometrie)
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Patreon
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Wiley-Blackwell
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Unternehmen
+  note: 1
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Euro
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Jason Donovan
+  note: 0
+- node_id: 803ebb4d-aa53-4107-922a-85d86bbcd304
+  artikel: Deutsche Sprache
+  note: 1
+- node_id: 1c748a03-1563-4524-911a-075e225902d4
+  artikel: Massenmedien
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Jessica Simpson
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: European Remote Sensing Satellite
+  note: 0
+- node_id: a0399b0d-75f6-4388-9d1f-d64cda8e0a73
+  artikel: Halbton
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Podcast
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Bahnhof Hashimoto
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Facebook
+  note: 1
+- node_id: f61cd77c-9a90-41a1-9cd7-7c9a9081a108
+  artikel: Streich
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Transformation der United States Army
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Affiliate-Marketing
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: John Green (Schriftsteller)
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Keep
+  note: 0
+- node_id: f19f7f52-eeb2-4345-9b4e-559e486fa2e2
+  artikel: Franzisco-Josephinische Landesaufnahme
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: International Weightlifting Federation
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Deutsche Mark
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Earl Warren
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: McGraw Hill Education
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Deutsche Mark
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Todesfall Michael Brown
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: McGraw-Hill
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Creative Commons
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Them
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Robert Edward Lee
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Raub
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Our
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Download
+  note: 1
+- node_id: 2e4b4fe6-205f-4cae-8fc7-1e0ce2a140b9
+  artikel: Außerschulischer Lernort
+  note: 2
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Byte
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Lehrvideo
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Norton Motorcycles
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Norton Motorcycles
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Colorado
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Nathan der Weise
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Antidote (Lied)
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Norton Motorcycles
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Clifford Brown
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Earl Warren
+  note: 0
+- node_id: 5b9c3c14-7ff5-46ac-9628-e5bd399d7acc
+  artikel: Guildo Horn
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Blaise Pascal
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Luftfahrt
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Lee Perry
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Lehrvideo
+  note: 1
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: New York Stock Exchange
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: The Thomson Corporation
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Jessica Simpson
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Crashtest
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: East Japan Railway Company
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: David (Zeitschrift)
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Greeves Motorcycles
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Zhu (Musiker)
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Tagung
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Mobile App
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Our
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Siobhán
+  note: 0
+- node_id: f8451c14-12cc-465f-8aac-ad9e2a2851f1
+  artikel: Digitale Welt
+  note: 1
+- node_id: a41d9d3f-388b-4938-b3df-2f0c381b601d
+  artikel: Bilingualismus
+  note: 1
+- node_id: 35162ae1-e3d7-4c8e-95e5-d13d6906fb57
+  artikel: Sky Deutschland
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Wiley-Blackwell
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Billboard 200
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Sulfoxide
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: David (Zeitschrift)
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Mobile App
+  note: 1
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Scheiße
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Euro
+  note: 1
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Vlogbrothers
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Mitschurinsk
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Adventure
+  note: 1
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Dozent
+  note: 1
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Crashtest
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: New York Stock Exchange
+  note: 0
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Bedruckstoff
+  note: 0
+- node_id: 18adeb5f-3f7d-4c32-9a96-3398a756193e
+  artikel: Newton (Einheit)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Androide
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Information
+  note: 1
+- node_id: 8ee3a2ab-e9e9-46d5-a420-f543494cdf63
+  artikel: Lückentexttest
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Cheb Khaled
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Indika
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: YouTube
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: James Joyce
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: Information
+  note: 1
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Eisregen
+  note: 0
+- node_id: 066a0f5b-d21a-4abc-aa0f-5bd21a0abcbc
+  artikel: Benjamin Wegner (Industrieller)
+  note: 0
+- node_id: cafe5ebd-c94c-4a49-be5e-bdc94c6a4932
+  artikel: Bildungsorientierte Programmiersprache
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Vlogbrothers
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: Indika
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Alexis Mdivani
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Intro
+  note: 0
+- node_id: 6c306be9-a5f5-46ae-af83-31fc480fa389
+  artikel: Magnetresonanztomographie
+  note: 0
+- node_id: f8d997a2-fff6-4d0b-9997-a2fff6ad0b8b
+  artikel: Tomtom
+  note: 0
+- node_id: 5494f4c2-100f-4ca0-94f4-c2100f0ca053
+  artikel: Verpflichtung
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Billboard Hot 100
+  note: 0
+- node_id: c9e0fa1a-c2ab-4a81-a0fa-1ac2ab1a8168
+  artikel: New York Stock Exchange
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: James Joyce
+  note: 0
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Tumblr
+  note: 1
+- node_id: aff99075-a5b3-49dd-b990-75a5b369dd63
+  artikel: William Taylor (Schriftsteller, 1765)
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Begriffe der Dune-Zyklen
+  note: 0
+- node_id: c5f133d8-22f1-4f87-b133-d822f1cf87f7
+  artikel: Download
+  note: 1
+- node_id: c09b26a5-bb4d-497e-8def-c8812e64bb9d
+  artikel: Do it yourself
+  note: 1
+- node_id: 21e5be2c-c701-438a-a5be-2cc701f38a47
+  artikel: Jonathan Nolan
+  note: 0
+- node_id: 4041df54-5339-46d7-81df-545339d6d78d
+  artikel: Finanzprodukt
+  note: 1

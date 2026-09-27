@@ -1,0 +1,92 @@
+# M42 a (docs/entwicklung/05-messprotokoll.md): GND-Vorschläge für richtige Artikel ohne Normdaten-Block,
+# je Paar blind benotet nach Artikeltitel, Einleitung und GND-Satz (Name, Art, Definition); Skala: 2 derselbe
+# Begriff, 1 verwandt (weiter, enger, Quasi-Synonym), 0 etwas anderes. Zweiter Gutachter (Claude-Subagent), unabhängig vom ersten.
+noten:
+  - artikel: "Planck-Konstante"
+    gnd: "4174790-2"
+    note: 2
+    grund: "Plancksches Wirkungsquantum ist Synonym der Planck-Konstante"
+  - artikel: "Hydroborierung"
+    gnd: "4160898-7"
+    note: 2
+    grund: "Gleiche Reaktion, gleicher Name"
+  - artikel: "Motor"
+    gnd: "4128006-4"
+    note: 2
+    grund: "Allgemeiner Sachbegriff Motor als Kraftmaschine"
+  - artikel: "Oxymercurierung"
+    gnd: "4307658-0"
+    note: 2
+    grund: "Gleiche Reaktion, gleicher Name"
+  - artikel: "Folge (Mathematik)"
+    gnd: "4017790-7"
+    note: 2
+    grund: "Gleicher Begriff, GND-Form des Klammerzusatzes"
+  - artikel: "Hydratisierung"
+    gnd: "4251344-3"
+    note: 2
+    grund: "Definition deckt sich: Wasseraddition an organische Substrate"
+  - artikel: "Carbanion"
+    gnd: "4147276-7"
+    note: 2
+    grund: "Gleicher chemischer Begriff"
+  - artikel: "Tetraethylblei"
+    gnd: "4145940-4"
+    note: 2
+    grund: "Bleitetraethyl ist Namensvariante derselben Verbindung"
+  - artikel: "Transmetallierung"
+    gnd: "4185913-3"
+    note: 2
+    grund: "Gleiche Reaktion, gleicher Name"
+  - artikel: "Konzertierte Reaktion"
+    gnd: "4167162-4"
+    note: 2
+    grund: "Gleicher Begriff der Reaktionsmechanik"
+  - artikel: "Belichtung (Fotografie)"
+    gnd: "4005413-5"
+    note: 2
+    grund: "Belichtung ohne Zusatz meint die fotografische Belichtung"
+  - artikel: "Lithiumorganische Verbindungen"
+    gnd: "4132581-3"
+    note: 2
+    grund: "Gleiche Stoffklasse, gleicher Name"
+  - artikel: "Division mit Rest"
+    gnd: "4150322-3"
+    note: 2
+    grund: "Gleicher mathematischer Begriff"
+  - artikel: "Gesellschaftsrecht"
+    gnd: "4020646-4"
+    note: 2
+    grund: "Gleiches Rechtsgebiet, Artikel behandelt es allgemein"
+  - artikel: "Superabsorber"
+    gnd: "1231923725"
+    note: 2
+    grund: "Gleiche Werkstoffklasse, gleicher Name"
+  - artikel: "Zahl"
+    gnd: "4067271-2"
+    note: 2
+    grund: "Allgemeiner Zahlbegriff"
+  - artikel: "Digital Native"
+    gnd: "1283032309"
+    note: 2
+    grund: "Definition entspricht wörtlich der Einleitung"
+  - artikel: "Zeitraffer"
+    gnd: "4793443-8"
+    note: 2
+    grund: "Gleiche filmische Technik"
+  - artikel: "Saytzeff-Regel"
+    gnd: "1178711579"
+    note: 2
+    grund: "Gleiche Reaktionsregel"
+  - artikel: "Windel"
+    gnd: "4263050-2"
+    note: 2
+    grund: "Gleicher Gegenstand"
+  - artikel: "Digitale Transformation"
+    gnd: "4123065-6"
+    note: 1
+    grund: "Digitalisierung ist Oberbegriff/Quasi-Synonym, nicht derselbe Wandlungsprozess"
+  - artikel: "Erdkundeunterricht"
+    gnd: "4020219-7"
+    note: 2
+    grund: "Geografieunterricht ist Synonym zu Erdkundeunterricht"

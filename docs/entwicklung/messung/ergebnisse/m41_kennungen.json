@@ -1,0 +1,3234 @@
+{
+ "zim": "wikipedia_de_all_nopic",
+ "wikidata_index": {
+  "articles": 3177984,
+  "dump": "2026-09-07",
+  "built_at": "2026-09-24T14:12:34+00:00",
+  "sources": [
+   "dewiki-latest-page_props.sql.gz",
+   "dewiki-latest-page.sql.gz"
+  ]
+ },
+ "materialtexte": 40,
+ "noten": {
+  "noten.yaml": {
+   "pool": {
+    "Wikipedia/DBpedia": 211,
+    "Wikidata": 211,
+    "GND": 161
+   },
+   "gnd_arten": {
+    "Sachbegriff": 108,
+    "Geografikum": 28,
+    "Körperschaft": 17,
+    "Person": 5,
+    "Werk": 3
+   },
+   "profile": {
+    "llm-free": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 394,
+      "richtig": 116,
+      "note0": 65,
+      "p": 0.2944,
+      "r": 0.5498,
+      "f1": 0.3835
+     },
+     "Wikidata": {
+      "anzahl": 394,
+      "richtig": 116,
+      "note0": 65,
+      "p": 0.2944,
+      "r": 0.5498,
+      "f1": 0.3835
+     },
+     "GND": {
+      "anzahl": 295,
+      "richtig": 98,
+      "note0": 21,
+      "p": 0.3322,
+      "r": 0.6087,
+      "f1": 0.4298
+     }
+    },
+    "balanced": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 269,
+      "richtig": 187,
+      "note0": 2,
+      "p": 0.6952,
+      "r": 0.8863,
+      "f1": 0.7792
+     },
+     "Wikidata": {
+      "anzahl": 269,
+      "richtig": 187,
+      "note0": 2,
+      "p": 0.6952,
+      "r": 0.8863,
+      "f1": 0.7792
+     },
+     "GND": {
+      "anzahl": 204,
+      "richtig": 141,
+      "note0": 2,
+      "p": 0.6912,
+      "r": 0.8758,
+      "f1": 0.7726
+     }
+    },
+    "mit Prüfung": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 142,
+      "richtig": 134,
+      "note0": 1,
+      "p": 0.9437,
+      "r": 0.6351,
+      "f1": 0.7592
+     },
+     "Wikidata": {
+      "anzahl": 142,
+      "richtig": 134,
+      "note0": 1,
+      "p": 0.9437,
+      "r": 0.6351,
+      "f1": 0.7592
+     },
+     "GND": {
+      "anzahl": 104,
+      "richtig": 96,
+      "note0": 1,
+      "p": 0.9231,
+      "r": 0.5963,
+      "f1": 0.7245
+     }
+    }
+   },
+   "richtig_ohne_gnd": [
+    "Actionbound",
+    "Belichtung (Fotografie)",
+    "Blog",
+    "Breakout (Computerspiel)",
+    "Carbanion",
+    "Digital Native",
+    "Digitale Infrastruktur",
+    "Digitale Transformation",
+    "Division mit Rest",
+    "Erdkundeunterricht",
+    "Eurokrise",
+    "Fidget Spinner",
+    "Folge (Mathematik)",
+    "Gesellschaftsrecht",
+    "Gilman-Reagenz",
+    "Gruppenpuzzle",
+    "Haushaltssaldo",
+    "Hydratisierung",
+    "Hydroborierung",
+    "Konzertierte Reaktion",
+    "Kreuzkupplung",
+    "Landesbildungsserver Baden-Württemberg",
+    "Lernvideo",
+    "Lithiumorganische Verbindungen",
+    "Markownikow-Regel",
+    "Motor",
+    "Newtonteleskop",
+    "Nukleophilie",
+    "Oxymercurierung",
+    "Petersberger Klimadialog",
+    "Planck-Konstante",
+    "Proportionalität",
+    "Regioselektivität",
+    "Saytzeff-Regel",
+    "Sky-Watcher",
+    "Stabilitäts- und Wachstumspakt",
+    "Superabsorber",
+    "Tetraethylblei",
+    "Transmetallierung",
+    "UN-Klimakonferenz",
+    "Variable (Programmierung)",
+    "Vermögensmillionär",
+    "Weltfinanzkrise 2007–2008",
+    "Wertetabelle",
+    "Williamson-Ethersynthese",
+    "Windel",
+    "Zahl",
+    "Zeitraffer",
+    "Zwangsvereinigung von SPD und KPD zur SED"
+   ]
+  },
+  "noten_zweit.yaml": {
+   "pool": {
+    "Wikipedia/DBpedia": 210,
+    "Wikidata": 210,
+    "GND": 159
+   },
+   "gnd_arten": {
+    "Sachbegriff": 108,
+    "Geografikum": 28,
+    "Körperschaft": 15,
+    "Person": 5,
+    "Werk": 3
+   },
+   "profile": {
+    "llm-free": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 394,
+      "richtig": 117,
+      "note0": 67,
+      "p": 0.297,
+      "r": 0.5571,
+      "f1": 0.3874
+     },
+     "Wikidata": {
+      "anzahl": 394,
+      "richtig": 117,
+      "note0": 67,
+      "p": 0.297,
+      "r": 0.5571,
+      "f1": 0.3874
+     },
+     "GND": {
+      "anzahl": 295,
+      "richtig": 98,
+      "note0": 23,
+      "p": 0.3322,
+      "r": 0.6164,
+      "f1": 0.4317
+     }
+    },
+    "balanced": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 269,
+      "richtig": 183,
+      "note0": 2,
+      "p": 0.6803,
+      "r": 0.8714,
+      "f1": 0.7641
+     },
+     "Wikidata": {
+      "anzahl": 269,
+      "richtig": 183,
+      "note0": 2,
+      "p": 0.6803,
+      "r": 0.8714,
+      "f1": 0.7641
+     },
+     "GND": {
+      "anzahl": 204,
+      "richtig": 138,
+      "note0": 2,
+      "p": 0.6765,
+      "r": 0.8679,
+      "f1": 0.7603
+     }
+    },
+    "mit Prüfung": {
+     "Wikipedia/DBpedia": {
+      "anzahl": 142,
+      "richtig": 132,
+      "note0": 1,
+      "p": 0.9296,
+      "r": 0.6286,
+      "f1": 0.75
+     },
+     "Wikidata": {
+      "anzahl": 142,
+      "richtig": 132,
+      "note0": 1,
+      "p": 0.9296,
+      "r": 0.6286,
+      "f1": 0.75
+     },
+     "GND": {
+      "anzahl": 104,
+      "richtig": 96,
+      "note0": 1,
+      "p": 0.9231,
+      "r": 0.6038,
+      "f1": 0.73
+     }
+    }
+   },
+   "richtig_ohne_gnd": [
+    "Actionbound",
+    "Belichtung (Fotografie)",
+    "Blog",
+    "Breakout (Computerspiel)",
+    "Carbanion",
+    "Digital Native",
+    "Digitale Infrastruktur",
+    "Digitale Transformation",
+    "Division mit Rest",
+    "Erdkundeunterricht",
+    "Eurokrise",
+    "Fidget Spinner",
+    "Gesellschaftsrecht",
+    "Gilman-Reagenz",
+    "Gruppenpuzzle",
+    "Haushaltssaldo",
+    "Hydratisierung",
+    "Hydroborierung",
+    "Konzertierte Reaktion",
+    "Kreuzkupplung",
+    "Landesbildungsserver Baden-Württemberg",
+    "Leitmedium",
+    "Lernvideo",
+    "Lithiumorganische Verbindungen",
+    "Markownikow-Regel",
+    "Motor",
+    "Natur und Technik",
+    "Newtonteleskop",
+    "Nukleophilie",
+    "Open Educational Resources",
+    "Oxymercurierung",
+    "Petersberger Klimadialog",
+    "Planck-Konstante",
+    "Proportionalität",
+    "Regioselektivität",
+    "Saytzeff-Regel",
+    "Sky-Watcher",
+    "Stabilitäts- und Wachstumspakt",
+    "Superabsorber",
+    "Tetraethylblei",
+    "Transmetallierung",
+    "UN-Klimakonferenz",
+    "Variable (Programmierung)",
+    "Vermögensmillionär",
+    "Weltfinanzkrise 2007–2008",
+    "Wertetabelle",
+    "Williamson-Ethersynthese",
+    "Windel",
+    "Zeitraffer",
+    "Zwangsvereinigung von SPD und KPD zur SED"
+   ]
+  }
+ },
+ "kennungen": {
+  "A": {
+   "wikidata": "Q9659",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/A"
+  },
+  "Abitur": {
+   "wikidata": "Q708387",
+   "gnd": "4049194-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Abitur"
+  },
+  "Achim Zimmermann": {
+   "wikidata": "Q18018152",
+   "gnd": "13474215X",
+   "gnd_art": "Person",
+   "viaf": "39139136",
+   "dbpedia": "http://de.dbpedia.org/resource/Achim_Zimmermann"
+  },
+  "Actionbound": {
+   "wikidata": "Q26772422",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Actionbound"
+  },
+  "Addition": {
+   "wikidata": "Q32043",
+   "gnd": "4296282-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Addition"
+  },
+  "Additionsreaktion": {
+   "wikidata": "Q212745",
+   "gnd": "4141380-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Additionsreaktion"
+  },
+  "Akkumulator": {
+   "wikidata": "Q187510",
+   "gnd": "4068497-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Akkumulator"
+  },
+  "Aktie": {
+   "wikidata": "Q11692",
+   "gnd": "4000932-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Aktie"
+  },
+  "Alexander Lipping": {
+   "wikidata": "Q133010418",
+   "gnd": "134446100",
+   "gnd_art": "Person",
+   "viaf": "268050708",
+   "dbpedia": "http://de.dbpedia.org/resource/Alexander_Lipping"
+  },
+  "Alkaloide": {
+   "wikidata": "Q70702",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Alkaloide"
+  },
+  "Alkene": {
+   "wikidata": "Q81406",
+   "gnd": "4001207-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Alkene"
+  },
+  "Altmühlsee": {
+   "wikidata": "Q49407",
+   "gnd": "4477764-4",
+   "gnd_art": "Geografikum",
+   "viaf": "240078169",
+   "dbpedia": "http://de.dbpedia.org/resource/Altmühlsee"
+  },
+  "Amazon": {
+   "wikidata": "Q3884",
+   "gnd": "10177530-1",
+   "gnd_art": "Körperschaft",
+   "viaf": "173278077",
+   "dbpedia": "http://de.dbpedia.org/resource/Amazon"
+  },
+  "Anleger (Finanzmarkt)": {
+   "wikidata": "Q557880",
+   "gnd": "4163258-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Anleger_(Finanzmarkt)"
+  },
+  "Anna": {
+   "wikidata": "Q666578",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Anna"
+  },
+  "Anne Jahren": {
+   "wikidata": "Q256757",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Anne_Jahren"
+  },
+  "Anwendungssoftware": {
+   "wikidata": "Q166142",
+   "gnd": "4120906-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Anwendungssoftware"
+  },
+  "Anzahl": {
+   "wikidata": "Q614112",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Anzahl"
+  },
+  "Apple": {
+   "wikidata": "Q312",
+   "gnd": "1095305-X",
+   "gnd_art": "Körperschaft",
+   "viaf": "154701873",
+   "dbpedia": "http://de.dbpedia.org/resource/Apple"
+  },
+  "April": {
+   "wikidata": "Q118",
+   "gnd": "4334965-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/April"
+  },
+  "Arbeiterbewegung": {
+   "wikidata": "Q208701",
+   "gnd": "4002581-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Arbeiterbewegung"
+  },
+  "Arbeitsheft": {
+   "wikidata": "Q8034663",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Arbeitsheft"
+  },
+  "Arbeitskosten": {
+   "wikidata": "Q628221",
+   "gnd": "4127578-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Arbeitskosten"
+  },
+  "Asien": {
+   "wikidata": "Q48",
+   "gnd": "4003217-6",
+   "gnd_art": "Geografikum",
+   "viaf": "234112718",
+   "dbpedia": "http://de.dbpedia.org/resource/Asien"
+  },
+  "Aspekte": {
+   "wikidata": "Q735758",
+   "gnd": "4353948-8",
+   "gnd_art": "Werk",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Aspekte"
+  },
+  "Audacity": {
+   "wikidata": "Q191782",
+   "gnd": "7661733-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Audacity"
+  },
+  "Australien": {
+   "wikidata": "Q408",
+   "gnd": "4003900-6",
+   "gnd_art": "Geografikum",
+   "viaf": "128919823",
+   "dbpedia": "http://de.dbpedia.org/resource/Australien"
+  },
+  "Automatisierung": {
+   "wikidata": "Q184199",
+   "gnd": "4003957-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Automatisierung"
+  },
+  "Autor": {
+   "wikidata": "Q482980",
+   "gnd": "4003982-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Autor"
+  },
+  "Baden-Württemberg": {
+   "wikidata": "Q985",
+   "gnd": "4004176-1",
+   "gnd_art": "Geografikum",
+   "viaf": "154758959",
+   "dbpedia": "http://de.dbpedia.org/resource/Baden-Württemberg"
+  },
+  "Bali": {
+   "wikidata": "Q3125978",
+   "gnd": "4004327-7",
+   "gnd_art": "Geografikum",
+   "viaf": "161907619",
+   "dbpedia": "http://de.dbpedia.org/resource/Bali"
+  },
+  "Basen (Chemie)": {
+   "wikidata": "Q11193",
+   "gnd": "4144090-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Basen_(Chemie)"
+  },
+  "Batterie (Elektrotechnik)": {
+   "wikidata": "Q267298",
+   "gnd": "4004687-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Batterie_(Elektrotechnik)"
+  },
+  "Belichtung (Fotografie)": {
+   "wikidata": "Q271960",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Belichtung_(Fotografie)"
+  },
+  "Beratung": {
+   "wikidata": "Q268626",
+   "gnd": "4005565-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Beratung"
+  },
+  "Berlin": {
+   "wikidata": "Q64",
+   "gnd": "4005728-8",
+   "gnd_art": "Geografikum",
+   "viaf": "122530980",
+   "dbpedia": "http://de.dbpedia.org/resource/Berlin"
+  },
+  "Berufsbild": {
+   "wikidata": "Q19275164",
+   "gnd": "4069340-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Berufsbild"
+  },
+  "Bestseller": {
+   "wikidata": "Q273610",
+   "gnd": "4006077-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Bestseller"
+  },
+  "Bildung": {
+   "wikidata": "Q2653450",
+   "gnd": "4006650-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Bildung"
+  },
+  "Bildungssystem": {
+   "wikidata": "Q446760",
+   "gnd": "4069467-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Bildungssystem"
+  },
+  "Biografie": {
+   "wikidata": "Q36279",
+   "gnd": "4006804-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Biografie"
+  },
+  "Blog": {
+   "wikidata": "Q30849",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Blog"
+  },
+  "Boston": {
+   "wikidata": "Q100",
+   "gnd": "4007840-1",
+   "gnd_art": "Geografikum",
+   "viaf": "133676669",
+   "dbpedia": "http://de.dbpedia.org/resource/Boston"
+  },
+  "Breakout (Computerspiel)": {
+   "wikidata": "Q177491",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Breakout_(Computerspiel)"
+  },
+  "Broschüre": {
+   "wikidata": "Q5173771",
+   "gnd": "4146704-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Broschüre"
+  },
+  "Bruchrechnung": {
+   "wikidata": "Q66055",
+   "gnd": "4008387-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Bruchrechnung"
+  },
+  "Brötchen": {
+   "wikidata": "Q23004",
+   "gnd": "4364727-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Brötchen"
+  },
+  "Buch": {
+   "wikidata": "Q571",
+   "gnd": "4008570-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Buch"
+  },
+  "Bundeszentrale für politische Bildung": {
+   "wikidata": "Q520524",
+   "gnd": "2006663-6",
+   "gnd_art": "Körperschaft",
+   "viaf": "136679031",
+   "dbpedia": "http://de.dbpedia.org/resource/Bundeszentrale_für_politische_Bildung"
+  },
+  "Börse": {
+   "wikidata": "Q179076",
+   "gnd": "4007502-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Börse"
+  },
+  "C": {
+   "wikidata": "Q9820",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/C"
+  },
+  "Carbanion": {
+   "wikidata": "Q898552",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Carbanion"
+  },
+  "Carl von Linné": {
+   "wikidata": "Q1043",
+   "gnd": "118573349",
+   "gnd_art": "Person",
+   "viaf": "34594730",
+   "dbpedia": "http://de.dbpedia.org/resource/Carl_von_Linné"
+  },
+  "Chat": {
+   "wikidata": "Q287198",
+   "gnd": "4500079-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chat"
+  },
+  "Chemical & Engineering News": {
+   "wikidata": "Q1003168",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chemical_&_Engineering_News"
+  },
+  "Chemie": {
+   "wikidata": "Q2329",
+   "gnd": "4009816-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chemie"
+  },
+  "Chemische Bindung": {
+   "wikidata": "Q44424",
+   "gnd": "4009843-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chemische_Bindung"
+  },
+  "Chemische Reaktion": {
+   "wikidata": "Q36534",
+   "gnd": "4009853-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chemische_Reaktion"
+  },
+  "Cholmsk": {
+   "wikidata": "Q197609",
+   "gnd": "7854828-7",
+   "gnd_art": "Geografikum",
+   "viaf": "158415193",
+   "dbpedia": "http://de.dbpedia.org/resource/Cholmsk"
+  },
+  "Christlich Demokratische Union Deutschlands": {
+   "wikidata": "Q49762",
+   "gnd": "7230-8",
+   "gnd_art": "Körperschaft",
+   "viaf": "140382436",
+   "dbpedia": "http://de.dbpedia.org/resource/Christlich_Demokratische_Union_Deutschlands"
+  },
+  "Colorado": {
+   "wikidata": "Q1261",
+   "gnd": "4010406-0",
+   "gnd_art": "Geografikum",
+   "viaf": "387145858087723021805",
+   "dbpedia": "http://de.dbpedia.org/resource/Colorado"
+  },
+  "Commons": {
+   "wikidata": "Q9828451",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Commons"
+  },
+  "Cool": {
+   "wikidata": "Q687900",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Cool"
+  },
+  "Copyleft": {
+   "wikidata": "Q133475",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Copyleft"
+  },
+  "Creative Commons": {
+   "wikidata": "Q43449",
+   "gnd": "7565402-7",
+   "gnd_art": "Körperschaft",
+   "viaf": "152808990",
+   "dbpedia": "http://de.dbpedia.org/resource/Creative_Commons"
+  },
+  "D": {
+   "wikidata": "Q9884",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/D"
+  },
+  "Dan Welcher": {
+   "wikidata": "Q3424329",
+   "gnd": "103788247",
+   "gnd_art": "Person",
+   "viaf": "94040767",
+   "dbpedia": "http://de.dbpedia.org/resource/Dan_Welcher"
+  },
+  "Darmstadt": {
+   "wikidata": "Q2973",
+   "gnd": "4011077-1",
+   "gnd_art": "Geografikum",
+   "viaf": "121971493",
+   "dbpedia": "http://de.dbpedia.org/resource/Darmstadt"
+  },
+  "Deutsche": {
+   "wikidata": "Q42884",
+   "gnd": "4070334-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Deutsche"
+  },
+  "Deutsche Sprache": {
+   "wikidata": "Q188",
+   "gnd": "4113292-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Deutsche_Sprache"
+  },
+  "Deutschland": {
+   "wikidata": "Q183",
+   "gnd": "4011882-4",
+   "gnd_art": "Geografikum",
+   "viaf": "1168897875656720002",
+   "dbpedia": "http://de.dbpedia.org/resource/Deutschland"
+  },
+  "Deutschunterricht": {
+   "wikidata": "Q1206520",
+   "gnd": "4011975-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Deutschunterricht"
+  },
+  "Die Rudi Carrell Show – Laß Dich überraschen": {
+   "wikidata": "Q16061597",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Die_Rudi_Carrell_Show_–_Laß_Dich_überraschen"
+  },
+  "Digital Native": {
+   "wikidata": "Q780705",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Digital_Native"
+  },
+  "Digitale Infrastruktur": {
+   "wikidata": "Q1224901",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Digitale_Infrastruktur"
+  },
+  "Digitale Medien": {
+   "wikidata": "Q1076968",
+   "gnd": "4196910-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Digitale_Medien"
+  },
+  "Digitale Transformation": {
+   "wikidata": "Q4252370",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Digitale_Transformation"
+  },
+  "Dimethylsulfoxid": {
+   "wikidata": "Q407927",
+   "gnd": "4070482-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Dimethylsulfoxid"
+  },
+  "Dimethylzink": {
+   "wikidata": "Q414430",
+   "gnd": "4346795-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Dimethylzink"
+  },
+  "Dingen": {
+   "wikidata": "Q551686",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Dingen"
+  },
+  "Diplom": {
+   "wikidata": "Q217577",
+   "gnd": "4012398-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Diplom"
+  },
+  "Division (Mathematik)": {
+   "wikidata": "Q1226939",
+   "gnd": "4150319-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Division_(Mathematik)"
+  },
+  "Division mit Rest": {
+   "wikidata": "Q181054",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Division_mit_Rest"
+  },
+  "Dreisatz": {
+   "wikidata": "Q1340162",
+   "gnd": "4207136-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Dreisatz"
+  },
+  "E-Book": {
+   "wikidata": "Q128093",
+   "gnd": "4195060-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/E-Book"
+  },
+  "Eichstätt": {
+   "wikidata": "Q252772",
+   "gnd": "4013725-9",
+   "gnd_art": "Geografikum",
+   "viaf": "244961412",
+   "dbpedia": "http://de.dbpedia.org/resource/Eichstätt"
+  },
+  "Einzelsprache": {
+   "wikidata": "Q34770",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Einzelsprache"
+  },
+  "Eis": {
+   "wikidata": "Q23392",
+   "gnd": "4013994-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Eis"
+  },
+  "Elektronegativität": {
+   "wikidata": "Q78974",
+   "gnd": "4192165-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Elektronegativität"
+  },
+  "Elektronischer Handel": {
+   "wikidata": "Q484847",
+   "gnd": "4592128-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Elektronischer_Handel"
+  },
+  "Eliminierungsreaktion": {
+   "wikidata": "Q725979",
+   "gnd": "4125628-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Eliminierungsreaktion"
+  },
+  "Emma Ihrer": {
+   "wikidata": "Q108635",
+   "gnd": "123631041",
+   "gnd_art": "Person",
+   "viaf": "13221878",
+   "dbpedia": "http://de.dbpedia.org/resource/Emma_Ihrer"
+  },
+  "Emmanuel Macron": {
+   "wikidata": "Q3052772",
+   "gnd": "1089164025",
+   "gnd_art": "Person",
+   "viaf": "310657401",
+   "dbpedia": "http://de.dbpedia.org/resource/Emmanuel_Macron"
+  },
+  "Entwerfen": {
+   "wikidata": "Q15808187",
+   "gnd": "4121208-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Entwerfen"
+  },
+  "Entwicklung": {
+   "wikidata": "Q340724",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Entwicklung"
+  },
+  "Erdbeben": {
+   "wikidata": "Q7944",
+   "gnd": "4015134-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erdbeben"
+  },
+  "Erdkruste": {
+   "wikidata": "Q15316",
+   "gnd": "4015169-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erdkruste"
+  },
+  "Erdkundeunterricht": {
+   "wikidata": "Q11424632",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erdkundeunterricht"
+  },
+  "Erfahrung": {
+   "wikidata": "Q164359",
+   "gnd": "4015217-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erfahrung"
+  },
+  "Erfolg": {
+   "wikidata": "Q7632586",
+   "gnd": "4015224-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erfolg"
+  },
+  "Ernährung": {
+   "wikidata": "Q2138622",
+   "gnd": "4015332-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Ernährung"
+  },
+  "Erster Weltkrieg": {
+   "wikidata": "Q361",
+   "gnd": "4079163-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Erster_Weltkrieg"
+  },
+  "Euro": {
+   "wikidata": "Q4916",
+   "gnd": "4408931-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Euro"
+  },
+  "Eurokrise": {
+   "wikidata": "Q217197",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Eurokrise"
+  },
+  "Europa": {
+   "wikidata": "Q46",
+   "gnd": "4015701-5",
+   "gnd_art": "Geografikum",
+   "viaf": "173367061",
+   "dbpedia": "http://de.dbpedia.org/resource/Europa"
+  },
+  "Europäische Bank für Wiederaufbau und Entwicklung": {
+   "wikidata": "Q488981",
+   "gnd": "5096423-9",
+   "gnd_art": "Körperschaft",
+   "viaf": "140176484",
+   "dbpedia": "http://de.dbpedia.org/resource/Europäische_Bank_für_Wiederaufbau_und_Entwicklung"
+  },
+  "Europäische Union": {
+   "wikidata": "Q458",
+   "gnd": "5098525-5",
+   "gnd_art": "Körperschaft",
+   "viaf": "207634635",
+   "dbpedia": "http://de.dbpedia.org/resource/Europäische_Union"
+  },
+  "Europäische Wirtschafts- und Währungsunion": {
+   "wikidata": "Q212141",
+   "gnd": "4309802-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Europäische_Wirtschafts-_und_Währungsunion"
+  },
+  "Eurozone": {
+   "wikidata": "Q8268",
+   "gnd": "7553526-9",
+   "gnd_art": "Geografikum",
+   "viaf": "130623777",
+   "dbpedia": "http://de.dbpedia.org/resource/Eurozone"
+  },
+  "Exkursion": {
+   "wikidata": "Q1156976",
+   "gnd": "4121233-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Exkursion"
+  },
+  "Experiment": {
+   "wikidata": "Q101965",
+   "gnd": "4015999-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Experiment"
+  },
+  "Fabrik": {
+   "wikidata": "Q83405",
+   "gnd": "4250288-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Fabrik"
+  },
+  "Facebook": {
+   "wikidata": "Q355",
+   "gnd": "7679337-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": "186061244",
+   "dbpedia": "http://de.dbpedia.org/resource/Facebook"
+  },
+  "Fauna": {
+   "wikidata": "Q104021",
+   "gnd": "4060087-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Fauna"
+  },
+  "Fehler": {
+   "wikidata": "Q29485",
+   "gnd": "4016606-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Fehler"
+  },
+  "Feuerameisen": {
+   "wikidata": "Q1075697",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Feuerameisen"
+  },
+  "Fidget Spinner": {
+   "wikidata": "Q29279406",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Fidget_Spinner"
+  },
+  "Finanzministerium": {
+   "wikidata": "Q15711797",
+   "gnd": "4154422-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Finanzministerium"
+  },
+  "Finanzwesen": {
+   "wikidata": "Q57774188",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Finanzwesen"
+  },
+  "Flächentreue": {
+   "wikidata": "Q761699",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Flächentreue"
+  },
+  "Folge (Mathematik)": {
+   "wikidata": "Q133250",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Folge_(Mathematik)"
+  },
+  "Food Science and Technology International": {
+   "wikidata": "Q5465386",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Food_Science_and_Technology_International"
+  },
+  "Frage": {
+   "wikidata": "Q189756",
+   "gnd": "4018041-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Frage"
+  },
+  "Frankreich": {
+   "wikidata": "Q142",
+   "gnd": "4018145-5",
+   "gnd_art": "Geografikum",
+   "viaf": "235459504",
+   "dbpedia": "http://de.dbpedia.org/resource/Frankreich"
+  },
+  "Full HD": {
+   "wikidata": "Q1784429",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Full_HD"
+  },
+  "Fächer": {
+   "wikidata": "Q193220",
+   "gnd": "4153515-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Fächer"
+  },
+  "Galvanometer": {
+   "wikidata": "Q179472",
+   "gnd": "4155912-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Galvanometer"
+  },
+  "Geduld": {
+   "wikidata": "Q12846123",
+   "gnd": "4156206-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geduld"
+  },
+  "Geld": {
+   "wikidata": "Q1368",
+   "gnd": "4019889-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geld"
+  },
+  "Geldvermögen": {
+   "wikidata": "Q1499542",
+   "gnd": "4113693-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geldvermögen"
+  },
+  "Gelegenheit": {
+   "wikidata": "Q1499569",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gelegenheit"
+  },
+  "Geographie": {
+   "wikidata": "Q1071",
+   "gnd": "4020216-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geographie"
+  },
+  "Geomorphologie": {
+   "wikidata": "Q52109",
+   "gnd": "4130684-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geomorphologie"
+  },
+  "Gerald Hörhan": {
+   "wikidata": "Q1509920",
+   "gnd": "120075733",
+   "gnd_art": "Person",
+   "viaf": "47583388",
+   "dbpedia": "http://de.dbpedia.org/resource/Gerald_Hörhan"
+  },
+  "Geschichte": {
+   "wikidata": "Q309",
+   "gnd": "4020517-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Geschichte"
+  },
+  "Gesellschafter": {
+   "wikidata": "Q9378427",
+   "gnd": "4020616-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gesellschafter"
+  },
+  "Gesellschaftsrecht": {
+   "wikidata": "Q2609670",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gesellschaftsrecht"
+  },
+  "Gestaltung": {
+   "wikidata": "Q1519454",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gestaltung"
+  },
+  "Gilman-Reagenz": {
+   "wikidata": "Q516741",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gilman-Reagenz"
+  },
+  "Grignard-Verbindungen": {
+   "wikidata": "Q1238028",
+   "gnd": "4158201-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Grignard-Verbindungen"
+  },
+  "Gruppenpuzzle": {
+   "wikidata": "Q356040",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Gruppenpuzzle"
+  },
+  "H": {
+   "wikidata": "Q9914",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/H"
+  },
+  "Halogenierung": {
+   "wikidata": "Q888529",
+   "gnd": "4292867-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Halogenierung"
+  },
+  "Handlungskompetenz": {
+   "wikidata": "Q121308384",
+   "gnd": "4125926-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Handlungskompetenz"
+  },
+  "Hank Green": {
+   "wikidata": "Q550996",
+   "gnd": "1179967488",
+   "gnd_art": "Person",
+   "viaf": "58528793",
+   "dbpedia": "http://de.dbpedia.org/resource/Hank_Green"
+  },
+  "Hauptstadt": {
+   "wikidata": "Q5119",
+   "gnd": "4127960-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hauptstadt"
+  },
+  "Haushaltssaldo": {
+   "wikidata": "Q2598003",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Haushaltssaldo"
+  },
+  "Hintergrundmusik": {
+   "wikidata": "Q1353390",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hintergrundmusik"
+  },
+  "Historiker": {
+   "wikidata": "Q201788",
+   "gnd": "4025098-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Historiker"
+  },
+  "Hochschule für Technik Stuttgart": {
+   "wikidata": "Q1540704",
+   "gnd": "10122879-X",
+   "gnd_art": "Körperschaft",
+   "viaf": "122983246",
+   "dbpedia": "http://de.dbpedia.org/resource/Hochschule_für_Technik_Stuttgart"
+  },
+  "Horst Köhler": {
+   "wikidata": "Q2542",
+   "gnd": "129105163",
+   "gnd_art": "Person",
+   "viaf": "52759003",
+   "dbpedia": "http://de.dbpedia.org/resource/Horst_Köhler"
+  },
+  "Hydratisierung": {
+   "wikidata": "Q13107540",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hydratisierung"
+  },
+  "Hydroborierung": {
+   "wikidata": "Q259212",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hydroborierung"
+  },
+  "Höhe": {
+   "wikidata": "Q208826",
+   "gnd": "4229619-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Höhe"
+  },
+  "Hörbuch": {
+   "wikidata": "Q106833",
+   "gnd": "4329497-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hörbuch"
+  },
+  "Hörspiel": {
+   "wikidata": "Q2635894",
+   "gnd": "4025435-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Hörspiel"
+  },
+  "I": {
+   "wikidata": "Q9893",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/I"
+  },
+  "Ich": {
+   "wikidata": "Q49404",
+   "gnd": "4026453-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Ich"
+  },
+  "Ich will": {
+   "wikidata": "Q116803",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Ich_will"
+  },
+  "Ihren": {
+   "wikidata": "Q139370",
+   "gnd": "4616712-2",
+   "gnd_art": "Geografikum",
+   "viaf": "241217238",
+   "dbpedia": "http://de.dbpedia.org/resource/Ihren"
+  },
+  "Immobilie": {
+   "wikidata": "Q684740",
+   "gnd": "4186834-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Immobilie"
+  },
+  "Inci Y.": {
+   "wikidata": "Q1660958",
+   "gnd": "130017353",
+   "gnd_art": "Person",
+   "viaf": "30633468",
+   "dbpedia": "http://de.dbpedia.org/resource/Inci_Y."
+  },
+  "Influencer": {
+   "wikidata": "Q2906862",
+   "gnd": "1164030825",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Influencer"
+  },
+  "Informatik": {
+   "wikidata": "Q21198",
+   "gnd": "4026894-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Informatik"
+  },
+  "Infrastruktur": {
+   "wikidata": "Q121359",
+   "gnd": "4026944-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Infrastruktur"
+  },
+  "Ingolstadt": {
+   "wikidata": "Q3004",
+   "gnd": "4026991-7",
+   "gnd_art": "Geografikum",
+   "viaf": "132524888",
+   "dbpedia": "http://de.dbpedia.org/resource/Ingolstadt"
+  },
+  "Inhalt": {
+   "wikidata": "Q12488383",
+   "gnd": "4161729-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Inhalt"
+  },
+  "Integrierte Entwicklungsumgebung": {
+   "wikidata": "Q13741",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Integrierte_Entwicklungsumgebung"
+  },
+  "Interaktion": {
+   "wikidata": "Q52948",
+   "gnd": "4027266-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Interaktion"
+  },
+  "Internationaler Währungsfonds": {
+   "wikidata": "Q7804",
+   "gnd": "1013082-2",
+   "gnd_art": "Körperschaft",
+   "viaf": "147860995",
+   "dbpedia": "http://de.dbpedia.org/resource/Internationaler_Währungsfonds"
+  },
+  "Interview": {
+   "wikidata": "Q178651",
+   "gnd": "4027503-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Interview"
+  },
+  "Intro": {
+   "wikidata": "Q3800792",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Intro"
+  },
+  "Investition": {
+   "wikidata": "Q4290",
+   "gnd": "4027556-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Investition"
+  },
+  "John Wiley & Sons": {
+   "wikidata": "Q1479654",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/John_Wiley_&_Sons"
+  },
+  "Jonathan Clayden": {
+   "wikidata": "Q6272783",
+   "gnd": "131877593",
+   "gnd_art": "Person",
+   "viaf": "77513424",
+   "dbpedia": "http://de.dbpedia.org/resource/Jonathan_Clayden"
+  },
+  "Journal of Agricultural and Food Chemistry": {
+   "wikidata": "Q1024905",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Journal_of_Agricultural_and_Food_Chemistry"
+  },
+  "Jugend": {
+   "wikidata": "Q190007",
+   "gnd": "4028859-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Jugend"
+  },
+  "Juli 2012": {
+   "wikidata": "Q628497",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Juli_2012"
+  },
+  "K": {
+   "wikidata": "Q9922",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/K"
+  },
+  "Kamera": {
+   "wikidata": "Q15328",
+   "gnd": "4366655-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kamera"
+  },
+  "Karte (Kartografie)": {
+   "wikidata": "Q4006",
+   "gnd": "4029783-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Karte_(Kartografie)"
+  },
+  "Katar": {
+   "wikidata": "Q846",
+   "gnd": "4029924-7",
+   "gnd_art": "Geografikum",
+   "viaf": "130142909",
+   "dbpedia": "http://de.dbpedia.org/resource/Katar"
+  },
+  "Kaufentscheidung": {
+   "wikidata": "Q838126",
+   "gnd": "4073328-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kaufentscheidung"
+  },
+  "Kevin MacLeod": {
+   "wikidata": "Q16731782",
+   "gnd": "1061416496",
+   "gnd_art": "Person",
+   "viaf": "168988324",
+   "dbpedia": "http://de.dbpedia.org/resource/Kevin_MacLeod"
+  },
+  "Klimawandel": {
+   "wikidata": "Q125928",
+   "gnd": "4164199-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Klimawandel"
+  },
+  "Kommunikation": {
+   "wikidata": "Q11024",
+   "gnd": "4031883-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kommunikation"
+  },
+  "Kommunistische Partei Deutschlands": {
+   "wikidata": "Q153401",
+   "gnd": "2016052-5",
+   "gnd_art": "Körperschaft",
+   "viaf": "149577119",
+   "dbpedia": "http://de.dbpedia.org/resource/Kommunistische_Partei_Deutschlands"
+  },
+  "Kontinent": {
+   "wikidata": "Q5107",
+   "gnd": "4165153-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kontinent"
+  },
+  "Konzertierte Reaktion": {
+   "wikidata": "Q2733609",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Konzertierte_Reaktion"
+  },
+  "Kreuzkupplung": {
+   "wikidata": "Q7127709",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kreuzkupplung"
+  },
+  "Krise": {
+   "wikidata": "Q381072",
+   "gnd": "4033203-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Krise"
+  },
+  "Kultusministerkonferenz": {
+   "wikidata": "Q896483",
+   "gnd": "2000588-X",
+   "gnd_art": "Körperschaft",
+   "viaf": "133243378",
+   "dbpedia": "http://de.dbpedia.org/resource/Kultusministerkonferenz"
+  },
+  "Kupfer": {
+   "wikidata": "Q753",
+   "gnd": "4033734-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Kupfer"
+  },
+  "Kyoto-Protokoll": {
+   "wikidata": "Q47359",
+   "gnd": "4576278-8",
+   "gnd_art": "Werk",
+   "viaf": "182081870",
+   "dbpedia": "http://de.dbpedia.org/resource/Kyoto-Protokoll"
+  },
+  "Köln": {
+   "wikidata": "Q365",
+   "gnd": "4031483-2",
+   "gnd_art": "Geografikum",
+   "viaf": "157037914",
+   "dbpedia": "http://de.dbpedia.org/resource/Köln"
+  },
+  "Landesbildungsserver Baden-Württemberg": {
+   "wikidata": "Q1351324",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Landesbildungsserver_Baden-Württemberg"
+  },
+  "Leben": {
+   "wikidata": "Q3",
+   "gnd": "4034831-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Leben"
+  },
+  "Lehrer": {
+   "wikidata": "Q37226",
+   "gnd": "4035088-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Lehrer"
+  },
+  "Leitmedium": {
+   "wikidata": "Q1416653",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Leitmedium"
+  },
+  "Lernen": {
+   "wikidata": "Q133500",
+   "gnd": "4035408-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Lernen"
+  },
+  "Lerner": {
+   "wikidata": "Q27037241",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Lerner"
+  },
+  "Lernvideo": {
+   "wikidata": "Q55517496",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Lernvideo"
+  },
+  "Leuchtdiode": {
+   "wikidata": "Q25504",
+   "gnd": "4125154-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Leuchtdiode"
+  },
+  "License": {
+   "wikidata": "Q96400301",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Property_law_(Vereinigte_Staaten)"
+  },
+  "Licht": {
+   "wikidata": "Q9128",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Licht"
+  },
+  "Liste": {
+   "wikidata": "Q12139612",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Liste"
+  },
+  "Liste der Staaten der Erde": {
+   "wikidata": "Q11750",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Liste_der_Staaten_der_Erde"
+  },
+  "Literatur": {
+   "wikidata": "Q8242",
+   "gnd": "4035964-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Literatur"
+  },
+  "Lithiumorganische Verbindungen": {
+   "wikidata": "Q420460",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Lithiumorganische_Verbindungen"
+  },
+  "London": {
+   "wikidata": "Q84",
+   "gnd": "4074335-4",
+   "gnd_art": "Geografikum",
+   "viaf": "263459123",
+   "dbpedia": "http://de.dbpedia.org/resource/London"
+  },
+  "Los Angeles": {
+   "wikidata": "Q65",
+   "gnd": "4036361-2",
+   "gnd_art": "Geografikum",
+   "viaf": "233013566",
+   "dbpedia": "http://de.dbpedia.org/resource/Los_Angeles"
+  },
+  "M": {
+   "wikidata": "Q9933",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/M"
+  },
+  "Macht": {
+   "wikidata": "Q25107",
+   "gnd": "4036824-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Macht"
+  },
+  "Marketing": {
+   "wikidata": "Q39809",
+   "gnd": "4037589-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Marketing"
+  },
+  "Markownikow-Regel": {
+   "wikidata": "Q392622",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Markownikow-Regel"
+  },
+  "Martha": {
+   "wikidata": "Q16279062",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Martha"
+  },
+  "Marxismus": {
+   "wikidata": "Q7264",
+   "gnd": "4037764-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Marxismus"
+  },
+  "Massachusetts Institute of Technology": {
+   "wikidata": "Q49108",
+   "gnd": "2179-9",
+   "gnd_art": "Körperschaft",
+   "viaf": "150025207",
+   "dbpedia": "http://de.dbpedia.org/resource/Massachusetts_Institute_of_Technology"
+  },
+  "Mathematik": {
+   "wikidata": "Q395",
+   "gnd": "4037944-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Mathematik"
+  },
+  "McGraw-Hill": {
+   "wikidata": "Q32859451",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/McGraw-Hill"
+  },
+  "Mehrheit": {
+   "wikidata": "Q7382648",
+   "gnd": "4169298-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Mehrheit"
+  },
+  "Metallorganische Chemie": {
+   "wikidata": "Q237200",
+   "gnd": "4602390-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Metallorganische_Chemie"
+  },
+  "Methodenkompetenz": {
+   "wikidata": "Q1925422",
+   "gnd": "1058748890",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Methodenkompetenz"
+  },
+  "Michael Hüther": {
+   "wikidata": "Q110667",
+   "gnd": "11173374X",
+   "gnd_art": "Person",
+   "viaf": "20312867",
+   "dbpedia": "http://de.dbpedia.org/resource/Michael_Hüther"
+  },
+  "Minister": {
+   "wikidata": "Q83307",
+   "gnd": "4130305-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Minister"
+  },
+  "Mond": {
+   "wikidata": "Q405",
+   "gnd": "1085673251",
+   "gnd_art": "Geografikum",
+   "viaf": "311490648",
+   "dbpedia": "http://de.dbpedia.org/resource/Mond"
+  },
+  "Motor": {
+   "wikidata": "Q44167",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Motor"
+  },
+  "Musik": {
+   "wikidata": "Q638",
+   "gnd": "4040802-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Musik"
+  },
+  "März 2000": {
+   "wikidata": "Q1616972",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/März_2000"
+  },
+  "Nachhaltigkeit": {
+   "wikidata": "Q219416",
+   "gnd": "4326464-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Nachhaltigkeit"
+  },
+  "Name": {
+   "wikidata": "Q82799",
+   "gnd": "4127959-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Name"
+  },
+  "Natur und Technik": {
+   "wikidata": "Q1278142",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Natur_und_Technik"
+  },
+  "Neumond": {
+   "wikidata": "Q108566",
+   "gnd": "4376010-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Neumond"
+  },
+  "New York City": {
+   "wikidata": "Q60",
+   "gnd": "4042011-5",
+   "gnd_art": "Geografikum",
+   "viaf": "266415900",
+   "dbpedia": "http://de.dbpedia.org/resource/New_York_City"
+  },
+  "Newtonteleskop": {
+   "wikidata": "Q1055065",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Newtonteleskop"
+  },
+  "November 2020": {
+   "wikidata": "Q38575003",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/November_2020"
+  },
+  "Novemberrevolution": {
+   "wikidata": "Q170306",
+   "gnd": "4042707-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Novemberrevolution"
+  },
+  "Nukleophile Substitution": {
+   "wikidata": "Q658656",
+   "gnd": "4271538-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Nukleophile_Substitution"
+  },
+  "Nukleophilie": {
+   "wikidata": "Q745930",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Nukleophilie"
+  },
+  "Online": {
+   "wikidata": "Q73368",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Online"
+  },
+  "Open Educational Resources": {
+   "wikidata": "Q116781",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Open_Educational_Resources"
+  },
+  "Operator (Mathematik)": {
+   "wikidata": "Q131030",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Operator_(Mathematik)"
+  },
+  "Organische Chemie": {
+   "wikidata": "Q11351",
+   "gnd": "4043793-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Organische_Chemie"
+  },
+  "Organische Verbindung": {
+   "wikidata": "Q11173",
+   "gnd": "4137599-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Chemische_Verbindung"
+  },
+  "Outro": {
+   "wikidata": "Q3800792",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Intro"
+  },
+  "Oxford University Press": {
+   "wikidata": "Q217595",
+   "gnd": "812629-X",
+   "gnd_art": "Körperschaft",
+   "viaf": "140705396",
+   "dbpedia": "http://de.dbpedia.org/resource/Oxford_University_Press"
+  },
+  "Oxidation": {
+   "wikidata": "Q1786087",
+   "gnd": "4137187-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Oxidation"
+  },
+  "Oxymercurierung": {
+   "wikidata": "Q901329",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Oxymercurierung"
+  },
+  "P": {
+   "wikidata": "Q9946",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/P"
+  },
+  "Parlamentarisches Regierungssystem": {
+   "wikidata": "Q166747",
+   "gnd": "4044696-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Parlamentarisches_Regierungssystem"
+  },
+  "Parteitag": {
+   "wikidata": "Q2288051",
+   "gnd": "4044766-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Parteitag"
+  },
+  "Patreon": {
+   "wikidata": "Q15861362",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Patreon"
+  },
+  "Pearson Education": {
+   "wikidata": "Q6420723",
+   "gnd": "1087609933",
+   "gnd_art": "Körperschaft",
+   "viaf": "150329074",
+   "dbpedia": "http://de.dbpedia.org/resource/Pearson_Education"
+  },
+  "Penguin Books": {
+   "wikidata": "Q1336200",
+   "gnd": "128644-4",
+   "gnd_art": "Körperschaft",
+   "viaf": "134443168",
+   "dbpedia": "http://de.dbpedia.org/resource/Penguin_Books"
+  },
+  "Petersberger Klimadialog": {
+   "wikidata": "Q17590984",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Petersberger_Klimadialog"
+  },
+  "Physik": {
+   "wikidata": "Q413",
+   "gnd": "4045956-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Physik"
+  },
+  "Physiker": {
+   "wikidata": "Q169470",
+   "gnd": "4045968-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Physiker"
+  },
+  "Pipeline": {
+   "wikidata": "Q25471856",
+   "gnd": "4125984-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Pipeline"
+  },
+  "Planck-Konstante": {
+   "wikidata": "Q122894",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Planck-Konstante"
+  },
+  "Planet": {
+   "wikidata": "Q634",
+   "gnd": "4046212-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Planet"
+  },
+  "Plattentektonik": {
+   "wikidata": "Q7950",
+   "gnd": "4046317-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Plattentektonik"
+  },
+  "Plenum": {
+   "wikidata": "Q13147896",
+   "gnd": "4280463-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Plenum"
+  },
+  "Politik": {
+   "wikidata": "Q7163",
+   "gnd": "4046514-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Politik"
+  },
+  "Politische Grenze": {
+   "wikidata": "Q1292279",
+   "gnd": "4077781-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Politische_Grenze"
+  },
+  "Polymer": {
+   "wikidata": "Q81163",
+   "gnd": "4046699-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Polymer"
+  },
+  "Popularität": {
+   "wikidata": "Q1357284",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Popularität"
+  },
+  "Porsche": {
+   "wikidata": "Q40993",
+   "gnd": "32015-8",
+   "gnd_art": "Körperschaft",
+   "viaf": "146781503",
+   "dbpedia": "http://de.dbpedia.org/resource/Porsche"
+  },
+  "Porto": {
+   "wikidata": "Q36433",
+   "gnd": "4046838-0",
+   "gnd_art": "Geografikum",
+   "viaf": "139521806",
+   "dbpedia": "http://de.dbpedia.org/resource/Porto"
+  },
+  "Problem": {
+   "wikidata": "Q621184",
+   "gnd": "4175771-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Problem"
+  },
+  "Produktion": {
+   "wikidata": "Q739302",
+   "gnd": "4047347-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Produktion"
+  },
+  "Programmierung": {
+   "wikidata": "Q80006",
+   "gnd": "4076370-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Programmierung"
+  },
+  "Projekt": {
+   "wikidata": "Q170584",
+   "gnd": "4115645-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Projekt"
+  },
+  "Projektionsfläche": {
+   "wikidata": "Q2112441",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Projektionsfläche"
+  },
+  "Proportionalität": {
+   "wikidata": "Q51379",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Proportionalität"
+  },
+  "Provision": {
+   "wikidata": "Q1509347",
+   "gnd": "4134287-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Provision"
+  },
+  "Psychologie": {
+   "wikidata": "Q9418",
+   "gnd": "4047704-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Psychologie"
+  },
+  "Publikum": {
+   "wikidata": "Q211198",
+   "gnd": "4047764-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Publikum"
+  },
+  "Pyridin": {
+   "wikidata": "Q210385",
+   "gnd": "4176469-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Pyridin"
+  },
+  "Pädagogische Hochschule Schwyz": {
+   "wikidata": "Q2044172",
+   "gnd": "1076780083",
+   "gnd_art": "Körperschaft",
+   "viaf": "78144648385721094358",
+   "dbpedia": "http://de.dbpedia.org/resource/Pädagogische_Hochschule_Schwyz"
+  },
+  "Rainer Zitelmann": {
+   "wikidata": "Q90744",
+   "gnd": "119505541",
+   "gnd_art": "Person",
+   "viaf": "61575279",
+   "dbpedia": "http://de.dbpedia.org/resource/Rainer_Zitelmann"
+  },
+  "Rasmus und der Landstreicher": {
+   "wikidata": "Q3742778",
+   "gnd": "1088061877",
+   "gnd_art": "Werk",
+   "viaf": "1494145424628986831356",
+   "dbpedia": "http://de.dbpedia.org/resource/Rasmus_und_der_Landstreicher"
+  },
+  "Reaktionsvideo": {
+   "wikidata": "Q22908155",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Reaktionsvideo"
+  },
+  "Rechnung": {
+   "wikidata": "Q190581",
+   "gnd": "4246502-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Rechnung"
+  },
+  "Recht": {
+   "wikidata": "Q7748",
+   "gnd": "4048737-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Recht"
+  },
+  "Rechtsanwalt": {
+   "wikidata": "Q40348",
+   "gnd": "4048755-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Rechtsanwalt"
+  },
+  "Regierung": {
+   "wikidata": "Q7188",
+   "gnd": "4049012-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Regierung"
+  },
+  "Region": {
+   "wikidata": "Q82794",
+   "gnd": "4049029-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Region"
+  },
+  "Regioselektivität": {
+   "wikidata": "Q2275927",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Regioselektivität"
+  },
+  "Reichtum": {
+   "wikidata": "Q200535",
+   "gnd": "4049185-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Reichtum"
+  },
+  "Reihe (Mathematik)": {
+   "wikidata": "Q170198",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Reihe_(Mathematik)"
+  },
+  "Reihenfolge": {
+   "wikidata": "Q20820279",
+   "gnd": "4507704-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Reihenfolge"
+  },
+  "Revolution": {
+   "wikidata": "Q10931",
+   "gnd": "4049680-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Revolution"
+  },
+  "SN1": {
+   "wikidata": "Q658656",
+   "gnd": "4271538-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Nukleophile_Substitution"
+  },
+  "SN2": {
+   "wikidata": "Q658656",
+   "gnd": "4271538-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Nukleophile_Substitution"
+  },
+  "Sammeln": {
+   "wikidata": "Q208165",
+   "gnd": "4051494-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sammeln"
+  },
+  "Saytzeff-Regel": {
+   "wikidata": "Q140282",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Saytzeff-Regel"
+  },
+  "Schnee": {
+   "wikidata": "Q7561",
+   "gnd": "4133053-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schnee"
+  },
+  "Schreiben": {
+   "wikidata": "Q37260",
+   "gnd": "4116418-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schreiben"
+  },
+  "Schulden": {
+   "wikidata": "Q3196867",
+   "gnd": "4053461-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schulden"
+  },
+  "Schule": {
+   "wikidata": "Q3914",
+   "gnd": "4053474-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schule"
+  },
+  "Schulform": {
+   "wikidata": "Q3914",
+   "gnd": "4053474-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schule"
+  },
+  "Schulnote": {
+   "wikidata": "Q18185",
+   "gnd": "4075504-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schulnote"
+  },
+  "Schwefel": {
+   "wikidata": "Q682",
+   "gnd": "4180380-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schwefel"
+  },
+  "Schwefelsäure": {
+   "wikidata": "Q4118",
+   "gnd": "4180424-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schwefelsäure"
+  },
+  "Schüler": {
+   "wikidata": "Q48942",
+   "gnd": "4053369-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Schüler"
+  },
+  "Scratch (Programmiersprache)": {
+   "wikidata": "Q275131",
+   "gnd": "7860906-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Scratch_(Programmiersprache)"
+  },
+  "Seminar": {
+   "wikidata": "Q504703",
+   "gnd": "4166215-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Seminar"
+  },
+  "Sensor": {
+   "wikidata": "Q167676",
+   "gnd": "4038824-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sensor"
+  },
+  "Septime": {
+   "wikidata": "Q899412",
+   "gnd": "4278381-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Septime"
+  },
+  "Sky-Watcher": {
+   "wikidata": "Q1142452",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sky-Watcher"
+  },
+  "Softbox": {
+   "wikidata": "Q1823582",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Softbox"
+  },
+  "Software": {
+   "wikidata": "Q7397",
+   "gnd": "4055382-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Software"
+  },
+  "Sonne": {
+   "wikidata": "Q525",
+   "gnd": "1236963652",
+   "gnd_art": "Geografikum",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sonne"
+  },
+  "Sonnenuntergang": {
+   "wikidata": "Q166564",
+   "gnd": "7508745-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sonnenuntergang"
+  },
+  "Sony": {
+   "wikidata": "Q41187",
+   "gnd": "272457-1",
+   "gnd_art": "Körperschaft",
+   "viaf": "126331139",
+   "dbpedia": "http://de.dbpedia.org/resource/Sony"
+  },
+  "Sowjetische Besatzungszone": {
+   "wikidata": "Q55300",
+   "gnd": "35102-7",
+   "gnd_art": "Geografikum",
+   "viaf": "240340402",
+   "dbpedia": "http://de.dbpedia.org/resource/Sowjetische_Besatzungszone"
+  },
+  "Sozialdemokratische Partei Deutschlands": {
+   "wikidata": "Q49768",
+   "gnd": "2022139-3",
+   "gnd_art": "Körperschaft",
+   "viaf": "151021191",
+   "dbpedia": "http://de.dbpedia.org/resource/Sozialdemokratische_Partei_Deutschlands"
+  },
+  "Soziale Kompetenz": {
+   "wikidata": "Q304904",
+   "gnd": "4077606-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Soziale_Kompetenz"
+  },
+  "Sozialistische Einheitspartei Deutschlands": {
+   "wikidata": "Q49750",
+   "gnd": "2022204-X",
+   "gnd_art": "Körperschaft",
+   "viaf": "140268441",
+   "dbpedia": "http://de.dbpedia.org/resource/Sozialistische_Einheitspartei_Deutschlands"
+  },
+  "Soziologe": {
+   "wikidata": "Q2306091",
+   "gnd": "4055930-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Soziologe"
+  },
+  "Soziologie": {
+   "wikidata": "Q21201",
+   "gnd": "4077624-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Soziologie"
+  },
+  "Spiegelreflexkamera": {
+   "wikidata": "Q196353",
+   "gnd": "4056212-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Spiegelreflexkamera"
+  },
+  "Spiegelteleskop": {
+   "wikidata": "Q35221",
+   "gnd": "4182256-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Spiegelteleskop"
+  },
+  "Spiel": {
+   "wikidata": "Q11410",
+   "gnd": "4056218-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Spiel"
+  },
+  "Sport": {
+   "wikidata": "Q349",
+   "gnd": "4056366-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Sport"
+  },
+  "Staatsbankrott": {
+   "wikidata": "Q1092023",
+   "gnd": "4056637-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Staatsbankrott"
+  },
+  "Staatsgebiet": {
+   "wikidata": "Q28692710",
+   "gnd": "4182646-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Staatsgebiet"
+  },
+  "Staatspräsident": {
+   "wikidata": "Q30461",
+   "gnd": "4182662-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Staatspräsident"
+  },
+  "Staatsverschuldung": {
+   "wikidata": "Q3024789",
+   "gnd": "4043153-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Staatsverschuldung"
+  },
+  "Stabilitäts- und Wachstumspakt": {
+   "wikidata": "Q832661",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Stabilitäts-_und_Wachstumspakt"
+  },
+  "Stadtgeographie": {
+   "wikidata": "Q690068",
+   "gnd": "4056733-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Stadtgeographie"
+  },
+  "Starthilfe": {
+   "wikidata": "Q1362842",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Starthilfe"
+  },
+  "Steuer": {
+   "wikidata": "Q8161",
+   "gnd": "4057399-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Steuer"
+  },
+  "Stevie J.": {
+   "wikidata": "Q3499312",
+   "gnd": null,
+   "gnd_art": "Person",
+   "viaf": "58912255",
+   "dbpedia": "http://de.dbpedia.org/resource/Stevie_J."
+  },
+  "Studienabschlussarbeit": {
+   "wikidata": "Q1266946",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Studienabschlussarbeit"
+  },
+  "Studium": {
+   "wikidata": "Q9347372",
+   "gnd": "4058216-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Studium"
+  },
+  "Stuttgart": {
+   "wikidata": "Q1022",
+   "gnd": "4058282-6",
+   "gnd_art": "Geografikum",
+   "viaf": "286152140015811100006",
+   "dbpedia": "http://de.dbpedia.org/resource/Stuttgart"
+  },
+  "Substitutionsreaktion": {
+   "wikidata": "Q503396",
+   "gnd": "4183927-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Substitutionsreaktion"
+  },
+  "Superabsorber": {
+   "wikidata": "Q631266",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Superabsorber"
+  },
+  "System": {
+   "wikidata": "Q58778",
+   "gnd": "4058801-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/System"
+  },
+  "Säuren": {
+   "wikidata": "Q11158",
+   "gnd": "4051266-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Säuren"
+  },
+  "T": {
+   "wikidata": "Q9813",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/T"
+  },
+  "TEAC (Elektronikunternehmen)": {
+   "wikidata": "Q1549408",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/TEAC_(Elektronikunternehmen)"
+  },
+  "Teamfähigkeit": {
+   "wikidata": "Q327245",
+   "gnd": "4124562-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Team"
+  },
+  "Technik": {
+   "wikidata": "Q2695280",
+   "gnd": "4059205-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Technik"
+  },
+  "Teilen": {
+   "wikidata": "Q459221",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Teilen"
+  },
+  "Teleskop": {
+   "wikidata": "Q4213",
+   "gnd": "4139973-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Teleskop"
+  },
+  "Termin": {
+   "wikidata": "Q2404808",
+   "gnd": "4184755-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Termin"
+  },
+  "Tetraethylblei": {
+   "wikidata": "Q266210",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Tetraethylblei"
+  },
+  "Text": {
+   "wikidata": "Q234460",
+   "gnd": "4059596-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Text"
+  },
+  "Thailand": {
+   "wikidata": "Q869",
+   "gnd": "4078228-1",
+   "gnd_art": "Geografikum",
+   "viaf": "138308059",
+   "dbpedia": "http://de.dbpedia.org/resource/Thailand"
+  },
+  "The Bachelors": {
+   "wikidata": "Q1759049",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/The_Bachelors"
+  },
+  "The Journal of Organic Chemistry": {
+   "wikidata": "Q898967",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/The_Journal_of_Organic_Chemistry"
+  },
+  "The Journal of Physical Chemistry A": {
+   "wikidata": "Q745688",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/The_Journal_of_Physical_Chemistry_A"
+  },
+  "This": {
+   "wikidata": "Q254046",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/This"
+  },
+  "Thomas C. Bruice": {
+   "wikidata": "Q7787980",
+   "gnd": null,
+   "gnd_art": "Person",
+   "viaf": "26215599",
+   "dbpedia": "http://de.dbpedia.org/resource/Thomas_C._Bruice"
+  },
+  "Time": {
+   "wikidata": "Q43297",
+   "gnd": "4185521-8",
+   "gnd_art": "Werk",
+   "viaf": "185601895",
+   "dbpedia": "http://de.dbpedia.org/resource/Time"
+  },
+  "Tipp": {
+   "wikidata": "Q1145228",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Tipp"
+  },
+  "Transferunion": {
+   "wikidata": "Q212141",
+   "gnd": "4309802-2",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Europäische_Wirtschafts-_und_Währungsunion"
+  },
+  "Transmetallierung": {
+   "wikidata": "Q900742",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Transmetallierung"
+  },
+  "Tricks": {
+   "wikidata": "Q4536",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Tricks"
+  },
+  "Tumblr": {
+   "wikidata": "Q384060",
+   "gnd": null,
+   "gnd_art": "Körperschaft",
+   "viaf": "12149366300085602151",
+   "dbpedia": "http://de.dbpedia.org/resource/Tumblr"
+  },
+  "UN-Klimakonferenz": {
+   "wikidata": "Q7888355",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/UN-Klimakonferenz"
+  },
+  "Umsetzung": {
+   "wikidata": "Q2478679",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Umsetzung"
+  },
+  "University of London": {
+   "wikidata": "Q170027",
+   "gnd": "35654-2",
+   "gnd_art": "Körperschaft",
+   "viaf": "132683760",
+   "dbpedia": "http://de.dbpedia.org/resource/University_of_London"
+  },
+  "Unternehmen": {
+   "wikidata": "Q6881511",
+   "gnd": "4061963-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Unternehmen"
+  },
+  "Unternehmensgründung": {
+   "wikidata": "Q3178478",
+   "gnd": "4078599-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Unternehmensgründung"
+  },
+  "Unternehmer": {
+   "wikidata": "Q131524",
+   "gnd": "4061949-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Unternehmer"
+  },
+  "Unterricht": {
+   "wikidata": "Q1782301",
+   "gnd": "4062005-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Unterricht"
+  },
+  "Unterrichtsstunde": {
+   "wikidata": "Q2498802",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Unterrichtsstunde"
+  },
+  "Variable (Programmierung)": {
+   "wikidata": "Q877977",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Variable_(Programmierung)"
+  },
+  "Verbot der Vertretung widerstreitender Interessen": {
+   "wikidata": "Q1728335",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Verbot_der_Vertretung_widerstreitender_Interessen"
+  },
+  "Vereinigte Staaten": {
+   "wikidata": "Q30",
+   "gnd": "4078704-7",
+   "gnd_art": "Geografikum",
+   "viaf": "130168302",
+   "dbpedia": "http://de.dbpedia.org/resource/Vereinigte_Staaten"
+  },
+  "Verfassung": {
+   "wikidata": "Q7755",
+   "gnd": "4062787-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Verfassung"
+  },
+  "Verfügung": {
+   "wikidata": "Q6495575",
+   "gnd": "4062818-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Verfügung"
+  },
+  "Verlust (Militär)": {
+   "wikidata": "Q1056901",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Verlust_(Militär)"
+  },
+  "Vermögensmillionär": {
+   "wikidata": "Q1075912",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Vermögensmillionär"
+  },
+  "Vermögensteuer": {
+   "wikidata": "Q967719",
+   "gnd": "4063083-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Vermögensteuer"
+  },
+  "Verstand": {
+   "wikidata": "Q450",
+   "gnd": "4188037-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Verstand"
+  },
+  "Veröffentlichung": {
+   "wikidata": "Q15852766",
+   "gnd": "4187925-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Veröffentlichung"
+  },
+  "Volkswirtschaft": {
+   "wikidata": "Q6456916",
+   "gnd": "4063885-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Volkswirtschaft"
+  },
+  "Vollmond": {
+   "wikidata": "Q104641",
+   "gnd": "4396432-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Vollmond"
+  },
+  "Vulkan": {
+   "wikidata": "Q8072",
+   "gnd": "4128339-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Vulkan"
+  },
+  "Vulkanismus": {
+   "wikidata": "Q505748",
+   "gnd": "4064081-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Vulkanismus"
+  },
+  "Washington, D.C.": {
+   "wikidata": "Q61",
+   "gnd": "4064682-8",
+   "gnd_art": "Geografikum",
+   "viaf": "312739635",
+   "dbpedia": "http://de.dbpedia.org/resource/Washington,_D.C."
+  },
+  "Wasser": {
+   "wikidata": "Q283",
+   "gnd": "4064689-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wasser"
+  },
+  "Web-Seminar": {
+   "wikidata": "Q442781",
+   "gnd": "1079480048",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Web-Seminar"
+  },
+  "Webbrowser": {
+   "wikidata": "Q6368",
+   "gnd": "4423006-0",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Webbrowser"
+  },
+  "Webseite": {
+   "wikidata": "Q36774",
+   "gnd": "4356308-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Webseite"
+  },
+  "Website": {
+   "wikidata": "Q35127",
+   "gnd": "4596172-4",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Website"
+  },
+  "Weimar": {
+   "wikidata": "Q3955",
+   "gnd": "4065105-8",
+   "gnd_art": "Geografikum",
+   "viaf": "136822898",
+   "dbpedia": "http://de.dbpedia.org/resource/Weimar"
+  },
+  "Weimarer Verfassung": {
+   "wikidata": "Q156003",
+   "gnd": "4149364-3",
+   "gnd_art": "Werk",
+   "viaf": "213095936",
+   "dbpedia": "http://de.dbpedia.org/resource/Weimarer_Verfassung"
+  },
+  "Welche": {
+   "wikidata": "Q1401655",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Welche"
+  },
+  "Weltfinanzkrise 2007–2008": {
+   "wikidata": "Q896666",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Weltfinanzkrise_2007–2008"
+  },
+  "Wertetabelle": {
+   "wikidata": "Q2563451",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wertetabelle"
+  },
+  "Williamson-Ethersynthese": {
+   "wikidata": "Q898790",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Williamson-Ethersynthese"
+  },
+  "Windel": {
+   "wikidata": "Q187359",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Windel"
+  },
+  "Wirtschaftsinformatik": {
+   "wikidata": "Q126552",
+   "gnd": "4112736-5",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wirtschaftsinformatik"
+  },
+  "Wirtschaftskrise": {
+   "wikidata": "Q290178",
+   "gnd": "4066466-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wirtschaftskrise"
+  },
+  "Wirtschaftswissenschaftler": {
+   "wikidata": "Q188094",
+   "gnd": "4066533-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wirtschaftswissenschaftler"
+  },
+  "Wittig-Reaktion": {
+   "wikidata": "Q909735",
+   "gnd": "4190125-3",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wittig-Reaktion"
+  },
+  "Woche": {
+   "wikidata": "Q23387",
+   "gnd": "4480313-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Woche"
+  },
+  "Wohnimmobilie": {
+   "wikidata": "Q1403389",
+   "gnd": "4412410-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wohnimmobilie"
+  },
+  "Wolke": {
+   "wikidata": "Q8074",
+   "gnd": "4125270-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wolke"
+  },
+  "Wort": {
+   "wikidata": "Q8171",
+   "gnd": "4066951-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Wort"
+  },
+  "X (soziales Netzwerk)": {
+   "wikidata": "Q918",
+   "gnd": "7660487-1",
+   "gnd_art": "Sachbegriff",
+   "viaf": "176777970",
+   "dbpedia": "http://de.dbpedia.org/resource/X_(soziales_Netzwerk)"
+  },
+  "Y": {
+   "wikidata": "Q9973",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Y"
+  },
+  "Yaoi": {
+   "wikidata": "Q242488",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Yaoi"
+  },
+  "YouTube": {
+   "wikidata": "Q866",
+   "gnd": "1085984737",
+   "gnd_art": "Körperschaft",
+   "viaf": "144469555",
+   "dbpedia": "http://de.dbpedia.org/resource/YouTube"
+  },
+  "YouTube-Kanal": {
+   "wikidata": "Q866",
+   "gnd": "1085984737",
+   "gnd_art": "Körperschaft",
+   "viaf": "144469555",
+   "dbpedia": "http://de.dbpedia.org/resource/YouTube"
+  },
+  "YouTuber": {
+   "wikidata": "Q17125263",
+   "gnd": "1188069527",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/YouTuber"
+  },
+  "Zahl": {
+   "wikidata": "Q11563",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zahl"
+  },
+  "Zahnrad": {
+   "wikidata": "Q143873",
+   "gnd": "4067333-9",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zahnrad"
+  },
+  "Zeit": {
+   "wikidata": "Q11471",
+   "gnd": "4067461-7",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zeit"
+  },
+  "Zeitraffer": {
+   "wikidata": "Q186563",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zeitraffer"
+  },
+  "Zink": {
+   "wikidata": "Q758",
+   "gnd": "4137453-8",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zink"
+  },
+  "Zitrone": {
+   "wikidata": "Q500",
+   "gnd": "4190975-6",
+   "gnd_art": "Sachbegriff",
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zitrone"
+  },
+  "Zwangsvereinigung von SPD und KPD zur SED": {
+   "wikidata": "Q231678",
+   "gnd": null,
+   "gnd_art": null,
+   "viaf": null,
+   "dbpedia": "http://de.dbpedia.org/resource/Zwangsvereinigung_von_SPD_und_KPD_zur_SED"
+  }
+ }
+}

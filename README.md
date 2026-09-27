@@ -210,7 +210,9 @@ Wunsch prüft das LLM zusätzlich jede Verknüpfung (`link_check: llm`, in keine
 `PRESET_DEFAULT`; auf einem Server ohne LLM ist eine Anfrage ohne `preset: llm-free` deshalb ein 503.
 
 Zu jedem verknüpften Wikipedia-Artikel nennt der Endpunkt GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
-Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. Die Wikidata-Nummer kommt aus
+Archivs, die DBpedia-URI wird aus dem Titel gebildet; beides braucht nichts weiter. `de.dbpedia.org` antwortet derzeit
+allerdings nicht (M42); ob die URI künftig über den englischen Artikel auf `dbpedia.org` zeigt, ist offen
+(Entscheidungsvorlage, Punkt 11). Die Wikidata-Nummer kommt aus
 `STATE_DIR/wikidata.db`, gebaut aus zwei Dumps der deutschen Wikipedia (`page_props` und `page`); gefragt wird dabei
 nichts online. Die Kiwix-Archive tragen die Nummern nicht: Von 188 geprüften Artikeln verlinken 14 ihr
 Wikidata-Objekt (M41). Den Index baut der Sidecar `wikidata-updater` (`compendium wikidata sync --loop`, D64): bei

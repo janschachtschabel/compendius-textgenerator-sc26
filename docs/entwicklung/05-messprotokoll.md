@@ -2042,3 +2042,135 @@ Artikel mit Absatzzahl, Sekunden), `m40_nur_haupt.json`, `m40_nur_haupt_kontroll
 
 **Entscheidung (27.09.2026):** Jan folgt dem Vorschlag (a) der Entscheidungsvorlage: `llm-free` bleibt, wie es ist;
 wer Sammelthemen braucht, nimmt `balanced`.
+
+## M41 Kennungen je Profil: Wikidata, DBpedia, GND (27.09.2026)
+
+Jan: `/entities` soll neben Wikipedia möglichst genau und treffsicher auch Wikidata-, DBpedia- und DNB-Entitäten
+vorhersagen, möglichst lokal ohne API - mit den Profilen, gemessen, und so, dass neue Installationen die Daten
+bekommen. Seit D43 nennt der Endpunkt zu jedem verknüpften Wikipedia-Artikel dessen Kennungen, alle aus lokalen Daten:
+GND, Art des Normdatensatzes und VIAF aus dem Normdaten-Block der Seite im ZIM, die Wikidata-Nummer aus dem lokalen
+Index (M18), die DBpedia-URI aus dem Titel gebildet. Die Kennungen folgen also der Verknüpfung, und die wählt das
+Profil (D62).
+
+**Aufbau:** Kein neuer Lauf. `mc_kennungen.py` nimmt die Artikel, die der Endpunkt nach D62 je Profil für die Texte
+der 40 Materialien aus M36 verknüpfte (`m36_entitaeten_dienst.json`), liest ihre Kennungen mit der Funktion des
+Endpunkts im Entwicklungscontainer (ZIM vom Januar 2026, Index aus den Dumps vom 07.09.2026) und rechnet mit den
+Noten von M36: Eine Kennung ist richtig, wenn ihr Artikel die Note 2 hat; der Recall zählt gegen die Artikel mit
+Note 2 aus dem Pool, die diese Kennung tragen. Kein Netz; die Präzisionen von D62 kommen auf zwei Stellen wieder
+heraus. In Klammern die Werte mit den zweiten Noten.
+
+Pool: 211 Paare aus Material und Artikel mit Note 2, 188 verschiedene Artikel. Alle 211 haben eine Wikidata-Nummer,
+161 (76 %) eine GND: 108 Sachbegriffe, 28 Geografika, 17 Körperschaften, 5 Personen, 3 Werke.
+
+| Profil | Kennung | Kennungen | Präzision | Recall | F1 | Note 0 |
+|---|---|---|---|---|---|---|
+| `llm-free` | Wikidata, DBpedia | 394 | 0,29 (0,30) | 0,55 (0,56) | 0,38 (0,39) | 65 |
+| `llm-free` | GND | 295 | 0,33 (0,33) | 0,61 (0,62) | 0,43 (0,43) | 21 |
+| `balanced`, `best-quality` | Wikidata, DBpedia | 269 | 0,70 (0,68) | 0,89 (0,87) | 0,78 (0,76) | 2 |
+| `balanced`, `best-quality` | GND | 204 | 0,69 (0,68) | 0,88 (0,87) | 0,77 (0,76) | 2 |
+| `link_check: llm` | Wikidata, DBpedia | 142 | 0,94 (0,93) | 0,64 (0,63) | 0,76 (0,75) | 1 |
+| `link_check: llm` | GND | 104 | 0,92 (0,92) | 0,60 (0,60) | 0,72 (0,73) | 1 |
+
+Jeder verknüpfte Artikel hatte eine Wikidata-Nummer; die Zeile gleicht also der Verknüpfung selbst. Die DBpedia-URI
+wird für jeden Artikel gebildet. Die GND fehlt 49 der 188 richtigen Artikel, und keiner von ihnen hat einen
+Normdaten-Block: Fachbegriffe (*Hydroborierung*, *Proportionalität*, *Zahl*, *Motor*), Ereignisse (*Eurokrise*,
+*UN-Klimakonferenz*), Produkte und Einrichtungen (*Fidget Spinner*, *Landesbildungsserver Baden-Württemberg*).
+
+**Stehen die Nummern auch im ZIM?** Jan fragte, ob die vorhandenen Kiwix-Archive die Wikipedia-Dumps ersetzen können.
+In den Seiten der 188 richtigen Artikel verlinken 14 ihr Wikidata-Objekt (etwa *Berlin* im Kasten zu den
+Schwesterprojekten), alle 14 mit der Nummer des Index; Sprachlinks, aus denen sich ein englischer Titel ergäbe, hat
+keine Seite. Das ZIM ersetzt die Dumps also nicht: Der Index deckt 188 der 188 Artikel ab, das ZIM 14.
+
+**Ergebnis:** Die Kennungen sind genau so treffsicher wie die Verknüpfung mit Wikipedia. Mit dem LLM (`balanced`,
+`best-quality`) sind sieben von zehn Wikidata-, DBpedia- und GND-Kennungen richtig, und fast neun von zehn passenden
+Entitäten bekommen eine; ohne LLM ist knapp ein Drittel richtig. Falsch ist dabei der Artikel, nicht die Nummer (M18:
+30 von 30 GND- und 29 von 30 Wikidata-Nummern gehören zu ihrem Artikel). Offen sind die GND eines Viertels der
+richtigen Artikel, Entitäten ohne Artikel in der deutschen Wikipedia und die DBpedia-URI: Sie wird unter
+`de.dbpedia.org` gebildet, und dieser Dienst antwortet nicht mehr (M42). Grenzen wie M36: 40 Materialtexte, Recall
+gegen den Pool, Gutachter Claude-Subagenten.
+
+Rohdaten: `m41_kennungen.json` (je Notenfassung und Profil die Zählung, je Artikel die Kennungen; keine Texte).
+
+## M42 Kennungen verbessern: GND-Lücke, DBpedia-URIs, DBpedia Spotlight (27.09.2026)
+
+Jan: prüfen, ob unser Vorgehen passt, möglichst lokal; freigegeben sind die GND-Abzüge und DBpedia Spotlight,
+Wikipedia-Dumps nur, wo das ZIM nicht reicht, und danach wieder löschen. Zwei Subagenten recherchierten vorher, was
+es lokal gibt (Quellen unter Punkt 11 der Entscheidungsvorlage).
+
+**a) GND für richtige Artikel ohne Normdaten-Block.** `mc_kennungen_gnd.py` liest die GND-Abzüge der DNB
+(Sachbegriffe 207.505, Geografika 334.696, Körperschaften 1.573.108 Datensätze, Stand 17.02.2026, CC0, Turtle,
+zusammen 270 MB) und prüft zwei lokale Wege: (A) die Wikidata-Nummer des Artikels aus dem Index zum GND-Satz, der
+dieses Objekt mit `owl:sameAs` nennt (das tun 37.841 der Sachbegriffe); (B) den Titel des Artikels zum GND-Satz,
+dessen Vorzugs- oder Variantenname er ist, ohne Groß- und Kleinschreibung („Folge (Mathematik)“ auch als
+„Folge <Mathematik>“, die Form der GND). Erst gegen die 139 richtigen Artikel, deren GND der Normdaten-Block schon
+nennt, dann auf die 49 ohne:
+
+| Weg | bekannte GND: gefunden | eindeutig | dieselbe Nummer | Lücke: Vorschläge | davon Note 2 |
+|---|---|---|---|---|---|
+| A: Wikidata-`sameAs` | 108 von 139 | 106 | 104 (98 %) | 9 | 9 |
+| B: Name | 99 von 139 | 89 | 88 (99 %) | 21 | 20 |
+| A oder B | | | | 22 | 21 |
+
+Schlagen beide etwas vor (8 Artikel), ist es dieselbe Nummer. Die Abweichungen an den bekannten: *YouTube* und
+*YouTube-Kanal* führen über `sameAs` zu einem zweiten Satz „YouTube“, *Chat* über den Namen zu einem anderen Satz
+„CHAT“. Die 22 Vorschläge der Lücke benoteten zwei Claude-Subagenten blind nach Titel, Einleitung und GND-Satz
+(`eval/kennungen/noten_gnd*.yaml`, gleiche Note bei 22 von 22): 21 meinen denselben Begriff (*Zahl*, *Windel*,
+*Planck-Konstante* als „Plancksches Wirkungsquantum“, *Tetraethylblei* als „Bleitetraethyl“, *Erdkundeunterricht*
+als „Geografieunterricht“), einer einen verwandten (*Digitale Transformation* als „Digitalisierung“). Damit trügen
+160 statt 139 der 188 richtigen Artikel eine GND, 85 statt 74 %. Ohne Vorschlag bleiben Ereignisse, Produkte und
+Einrichtungen (*Eurokrise*, *Fidget Spinner*, *Landesbildungsserver Baden-Württemberg*) und einige Fachbegriffe
+(*Proportionalität*, *Nukleophilie*): Sie fehlen in der GND oder stehen dort unter anderem Namen.
+
+**b) DBpedia-URIs, die antworten.** Die URI, die der Endpunkt bildet, liegt unter `de.dbpedia.org`, und dieser
+Dienst antwortet nicht mehr: HTTP wird zurückgesetzt, HTTPS zeigt ein fremdes Zertifikat (geprüft am 27.09.2026);
+laut Recherche stammt der letzte deutsche Release von 2022 und der Stand des Servers von 2016. Es antwortet
+`dbpedia.org/resource/<englischer Titel>` (303 auf die Seite); dort vergibt DBpedia seine Kennungen, nach den
+englischen Artikeln. Den englischen Titel nennt die Tabelle `langlinks` der deutschen Wikipedia, und das ZIM führt
+keine Sprachlinks (M41). `mc_kennungen_dbpedia.py` liest `langlinks` und `page` aus demselben Lauf (20260901, 329 und
+320 MB):
+
+| Verknüpfte Artikel | mit englischem Artikel |
+|---|---|
+| `llm-free` (394) | 341 (87 %) |
+| `balanced`, `best-quality` (269) | 258 (96 %) |
+| `link_check: llm` (142) | 138 (97 %) |
+| richtige Artikel des Pools (211 Paare) | 196 (93 %) |
+
+Ohne englischen Artikel bleiben vor allem deutsche Besonderheiten (*Deutschunterricht*, *Erdkundeunterricht*,
+*Landesbildungsserver Baden-Württemberg*, *Pädagogische Hochschule Schwyz*).
+
+**c) DBpedia Spotlight als lokaler Verknüpfer für `llm-free`.** Die Recherche nannte DBpedia Spotlight als den
+einzigen deutschsprachigen Verknüpfer, der lokal, frei und klein genug läuft (VoxEL deutsch F1 0,60; mGENRE ist nicht
+frei, BELA 22 GB groß und archiviert, entity-fishing ohne deutsche Messwerte). `mc_kennungen_spotlight.py` stellt
+dieselben 40 Materialtexte wie M36 durch Spotlight in Docker (Modell de 2022.03.01; das Image von 2023 findet sein
+Modell im Databus nicht mehr, es kam direkt von downloads.dbpedia.org) und liest jeden Titel wie der Endpunkt:
+Weiterleitung zum Ziel, Begriffsklärung fällt weg. Von den Artikeln bei den Schwellen 0,5, 0,7 und 0,9 hatte M36 340
+nie benotet; zwei weitere Claude-Subagenten benoteten sie blind wie M36 (`eval/kennungen/noten_spotlight*.yaml`,
+gleiche Note bei 339 von 340, Kappa 0,99; ein Hilfsskript im gemeinsamen Ordner, das nur einen Materialtext zeigte,
+überschrieb einer, Noten sahen sie nicht voneinander). 8 der 340 bekamen eine 2, 109 eine 1, 223 eine 0. Gegen
+denselben, um diese Noten gewachsenen Pool:
+
+| Weg | Artikel | Präzision | Recall | F1 | Note 0 |
+|---|---|---|---|---|---|
+| Spotlight, Schwelle 0,5 | 621 | 0,23 (0,23) | 0,65 (0,66) | 0,34 (0,34) | 233 |
+| Spotlight, Schwelle 0,7 | 399 | 0,28 (0,28) | 0,53 (0,52) | 0,37 (0,36) | 140 |
+| Spotlight, Schwelle 0,9 | 292 | 0,32 (0,32) | 0,44 (0,44) | 0,37 (0,37) | 83 |
+| `llm-free` (Regeln) | 394 | 0,29 (0,30) | 0,54 (0,55) | 0,38 (0,39) | 65 |
+| `balanced` (LLM nennt) | 269 | 0,70 (0,68) | 0,88 (0,86) | 0,78 (0,76) | 2 |
+
+Spotlight ist nicht besser als die Regeln: gleich groß (0,7) trifft es gleich oft, meint aber doppelt so oft etwas
+anderes, meist Namensvettern - Stifter und Autoren englischer Kurse als Namensvettern, der IWF als
+Gewichtheberverband, „Börse“ als New York Stock Exchange. Für Kennungen ist das schlimmer als eine fehlende. Dazu
+kommen 4,4 GB Arbeitsspeicher und ein Java-Dienst mit einem Modell von 2022. Mit 0,01 bis 0,1 s je Text ist er schnell.
+
+**Ergebnis:** Das Vorgehen passt: Die Kennungen folgen der Verknüpfung, und die ist im Profil festgelegt; ein lokaler
+Verknüpfer wie Spotlight macht `llm-free` nicht besser. Zwei Stellen lassen sich lokal verbessern, in allen Profilen
+gleich: Die GND-Abzüge der DNB schließen 21 der 49 GND-Lücken richtig (einer verwandt, keiner falsch), und über den
+englischen Artikel bekäme `balanced` für 96 % seiner Artikel eine DBpedia-URI, die antwortet, statt einer unter
+`de.dbpedia.org`, die ins Leere führt. Grenzen: dieselben 40 Materialtexte wie M36, Recall gegen den Pool, alle
+Gutachter Claude-Subagenten; die GND-Wege sind an 139 bekannten Nummern und 22 benoteten Vorschlägen gemessen.
+
+Rohdaten: `m42_gnd.json` (je Weg die Treffer an bekannten Nummern und die Vorschläge der Lücke mit GND-Name, Art und
+Definition, CC0), `m42_dbpedia.json` (je Profil die Zählung, je Titel der englische), `m42_spotlight.json` (je
+Schwelle und Material die DBpedia-Titel und Artikel, mit den ersten Noten gezählt); keine Artikeltexte. Die
+GND-Abzüge, `langlinks` und das Spotlight-Modell sind nach der Messung gelöscht.
