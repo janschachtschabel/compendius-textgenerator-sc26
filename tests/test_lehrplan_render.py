@@ -2,6 +2,9 @@
 
 import json
 import re
+from dataclasses import replace
+
+import pytest
 
 from app.sources.lehrplan.matcher import CurriculumMatch, MatchResult
 from app.sources.lehrplan.render import RenderOptions, render_curricula, render_missing_cache
@@ -36,6 +39,9 @@ BY = LehrplanRecord(
 )
 
 
+MEM = "https://lp.test/"  # the IRIs of MEM are web addresses; only such a one becomes a link target (SE-05)
+
+
 def _match(
     iri: str,
     label: str,
@@ -48,10 +54,10 @@ def _match(
     note: int | None = None,
 ) -> CurriculumMatch:
     hit = NodeHit(
-        iri=iri,
+        iri=MEM + iri,
         label=label,
         rollen=rollen,
-        parent_iri=f"bereich:{parent}" if heading_only else None,
+        parent_iri=f"{MEM}bereich/{parent}" if heading_only else None,
         parent_label=parent,
         jahrgangsstufen=grades or [],
         depth=1,
@@ -102,7 +108,7 @@ def test_render_groups_matches_by_level_state_and_curriculum_with_markers() -> N
     assert "*LehrplanPLUS: Natur und Technik 5*" in text and "*Lehrplan: Gymnasium Physik*" in text
     marker = "<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium; Lehrplan=https://lp-sachsen.org/resource/522; Lehrplantitel=Gymnasium Physik -->"
     assert marker in text
-    assert "„Lichtbrechung an Linsen“ (Kompetenz, Inhalt) · [Lehrplanelement](sn:k1)" in text
+    assert "„Lichtbrechung an Linsen“ (Kompetenz, Inhalt) · [Lehrplanelement](https://lp.test/sn:k1)" in text
     assert "**Lernbereich 2: Optik**" in text  # the Bereich heads its group and is not repeated as an entry
     assert "*(abgeleitet aus Lehrplantitel)*" in text  # RP level comes from the title, not the data
     assert "[Bildungsstufe:" not in text
@@ -146,7 +152,7 @@ def test_default_renders_every_group_and_item_between_parseable_markers() -> Non
     facets = dict(pair.split("=", 1) for pair in blocks[0][0].split("; "))
     assert facets["Bundesland"] == "Sachsen" and facets["Lehrplan"] == SN.iri
     assert facets["Bildungsstufe"] == "Sek I" and facets["Klassenstufe"] == "7" and facets["Schulart"] == "Gymnasium"
-    assert "[Lehrplanelement](sn:" in blocks[0][1]
+    assert "[Lehrplanelement](https://lp.test/sn:" in blocks[0][1]
     assert summary["matches"] == 30
 
 
@@ -159,11 +165,11 @@ def test_elements_only_their_heading_names_are_bundled_per_area() -> None:
         _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True),
     )
     text, summary = render_curricula(result, meta=META, options=RenderOptions())
-    assert "„Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](sn:k1)" in text
+    assert "„Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](https://lp.test/sn:k1)" in text
     assert "Messen mit dem Lineal" not in text and "Protokoll führen" not in text
     assert (
         "- *2 weitere Elemente dieses Bereichs; das Thema steht nur in der Überschrift* · "
-        "[Bereich im Lehrplan](bereich:Lernbereich 2: Optik)"
+        "[Bereich im Lehrplan](<https://lp.test/bereich/Lernbereich 2: Optik>)"
     ) in text
     assert summary["matches"] == 3 and summary["bundled"] == 2
 
@@ -184,7 +190,7 @@ def test_a_heading_only_element_the_llm_rated_fitting_stands_on_its_own() -> Non
         _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True, note=1),
     )
     text, summary = render_curricula(result, meta=META, options=RenderOptions())
-    assert "„Farben des Lichts“ (Inhalt) · [Lehrplanelement](sn:k2)" in text
+    assert "„Farben des Lichts“ (Inhalt) · [Lehrplanelement](https://lp.test/sn:k2)" in text
     assert "Protokoll führen" not in text and "- *1 weiteres Element dieses Bereichs;" in text
     assert summary["bundled"] == 1
 
@@ -211,3 +217,45 @@ def test_an_entry_carries_its_provenance_and_how_it_was_found() -> None:
     assert entry["bundesland"] == "Sachsen" and entry["schulstufe"] == "Sekundarstufe I"
     assert entry["klassenstufe"] == "Klassenstufe 7"
     assert entry["matched_in"] == "parent" and entry["note"] is None
+
+
+BACKSLASH, NEWLINE = chr(92), chr(10)  # spelled out: tools on the way turn escapes in test text into other signs
+ESCAPED_COMMENT = "<" + BACKSLASH + "!--"  # CommonMark shows the escaped "!" as typed
+
+
+def test_mem_text_can_neither_open_a_comment_nor_break_its_line_or_link() -> None:
+    """Part 2 put MEM's labels in unfiltered: the harvest turns "&lt;!--" into "<!--", and a comment opened there hid
+    the rest of the document; a line break or a bracket broke the line or the link (audit 2026-09-27, SE-05)."""
+    curriculum = LehrplanRecord(
+        iri="https://lp-sachsen.org/resource/523",
+        label="Physik ]( <!-- Gymnasium" + NEWLINE + "Sekundarstufe",
+        bundesland_code="SN",
+        bundesland="Sachsen",
+        schulfaecher=["Physik"],
+    )
+    label = "Optik <!-- im Alltag" + NEWLINE + "- [Zeile](javascript:x)"
+    result = _result(_match("sn:k9", label, ["inhalt"], curriculum, "Lernbereich 9"))
+
+    text, _summary = render_curricula(result, meta=META, options=RenderOptions())
+
+    assert "<!-- im Alltag" not in text and "<!-- Gymnasium" not in text
+    item = f"Optik {ESCAPED_COMMENT} im Alltag - {BACKSLASH}[Zeile{BACKSLASH}](javascript:x)"
+    assert f"„{item}“ (Inhalt)" in text  # on one line, no comment, no link
+    title = f"Physik {BACKSLASH}]( {ESCAPED_COMMENT} Gymnasium Sekundarstufe"
+    assert f"[*Lehrplan: {title}*](https://lp-sachsen.org/resource/523)" in text
+
+
+@pytest.mark.parametrize("iri", ["javascript:alert(1)", "data:text/html,x", "sn:k9", ""])
+def test_only_a_web_address_of_mem_becomes_a_link(iri: str) -> None:
+    """The IRIs of nodes and areas were never checked, only those of curricula (validate_iri); a
+    "javascript:alert(…)" was rendered as a link target (audit 2026-09-27, SE-05)."""
+    element = _match("sn:k9", "Lichtbrechung", ["inhalt"], SN, "Lernbereich 9")
+    element = replace(element, hit=replace(element.hit, iri=iri))
+    area = _match("sn:k8", "Schatten", ["inhalt"], SN, "Lernbereich 9", heading_only=True)
+    area = replace(area, hit=replace(area.hit, parent_iri=iri))
+
+    text, _summary = render_curricula(_result(element, area), meta=META, options=RenderOptions())
+
+    assert "„Lichtbrechung“ (Inhalt)" in text and "das Thema steht nur in der Überschrift*" in text
+    assert "[Lehrplanelement](" not in text and "[Bereich im Lehrplan](" not in text
+    assert "javascript:" not in text and "data:" not in text

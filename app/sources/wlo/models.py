@@ -11,6 +11,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from app.synthesis.safe_markdown import one_line
+
 # ccm:commonlicense_key values that allow verbatim (extractive) reuse in the compendium (PLAN.md 6.3).
 # COPYRIGHT_FREE means "freely accessible", not "free to reuse", and stays out.
 EXTRACTIVE_LICENSES = frozenset({"CC_0", "PDM", "CC_BY", "CC_BY_SA"})
@@ -203,12 +205,6 @@ def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:
     if not names:
         names = [one_line(name) for name in _values(props, "ccm:author_freetext") if name.strip()]
     return tuple(dict.fromkeys(names))
-
-
-def one_line(text: str) -> str:
-    """Free text as it was typed, on one line: a line break would break the line it goes into - the TULLU line
-    of the sources, a line of a material block in part 3."""
-    return " ".join(text.split())
 
 
 def parse_reference(node: Mapping[str, Any]) -> MaterialRef:

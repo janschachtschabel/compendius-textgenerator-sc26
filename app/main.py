@@ -197,6 +197,12 @@ def build_collections(settings: Settings) -> CollectionBuilder | None:
         password=settings.edu_sharing_password,
         timeout_s=settings.edu_sharing_timeout_s,
     )
+    if settings.edu_sharing_user and not settings.api_key_list:
+        # Every collection a caller names is read with these credentials, and the cache hands the result to all
+        log.warning(
+            "EDU_SHARING_USER is set but API_KEYS is not: every caller reads what that account may read in the "
+            "repository, collections that are not public and the texts of their materials included (audit SE-06)"
+        )
     options = CollectionOptions(
         ttl_s=settings.collection_cache_ttl_s,
         overview=OverviewOptions(max_items=settings.collection_max_items or None),

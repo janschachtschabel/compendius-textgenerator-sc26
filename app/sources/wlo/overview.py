@@ -17,8 +17,9 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection, one_line
+from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
 from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
+from app.synthesis.safe_markdown import LINK_TEXT_ESCAPE, link_target, no_comment, one_line
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
 NO_DESCRIPTION = "*Für diese Sammlung ist keine Beschreibung hinterlegt.*"
@@ -34,7 +35,6 @@ COLLECTION_TYPES = {
 MAX_KEYWORDS = 5
 MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
-_LINK_TEXT_ESCAPE = str.maketrans({"[": r"\[", "]": r"\]"})
 _LEADING_DASH = re.compile(r"^(\s*)-")
 
 
@@ -60,18 +60,12 @@ def first_sentence(text: str) -> str:
     return sentence
 
 
-def _no_comment(text: str) -> str:
-    """``text`` without ``<!--``: a value from the repository must not open a facet marker, close a block or hide what
-    follows in an HTML comment. The ``!`` after the ``<`` is escaped, which CommonMark shows as typed."""
-    return text.replace("<!--", r"<\!--")
-
-
 def _description(text: str) -> str:
     """The collection's description as its editors wrote it, with their lines and paragraphs, but without a line that
     reads as a node: every line break becomes a plain one - CommonMark also breaks at CR, ``str.splitlines`` at
     U+2028 and more - and a dash that starts a line is escaped, which CommonMark shows as the dash it is. A list the
     editors typed therefore reads as running text."""
-    return _no_comment("\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines()))
+    return no_comment("\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines()))
 
 
 def _marker(facets: dict[str, list[str]]) -> str:
@@ -88,28 +82,19 @@ def _collection_facets(info: CollectionInfo) -> dict[str, list[str]]:
     return facets
 
 
-def _link_target(url: str) -> str:
-    """``url`` as a markdown link target that cannot end early: with spaces or parentheses it goes in angle
-    brackets - ``…/wiki/Linse_(Optik)`` is a real material URL, which a parser reading up to the first ``)``
-    would cut - and angle brackets inside it are percent-encoded."""
-    if any(char in url for char in " ()<>"):
-        return f"<{url.replace('<', '%3C').replace('>', '%3E')}>"
-    return url
-
-
 def _node_line(kind: str, title: str, url: str, fields: Sequence[str], node_id: str) -> str:
     """One node of the collection tree on one line: ``- <kind>: <title> · <fields> · nodeId: <id>``.
 
     The title is the link where the node has a URL, its brackets escaped so it stays one link. Every value comes
     from the repository, where an editor can type anything, so the whole line is collapsed: a line break would
     otherwise split the node or start a line that reads as another one. The URL is collapsed first, so that a
-    line break in it turns into a space before its target is chosen. No value opens a comment (``_no_comment``).
+    line break in it turns into a space before its target is chosen. No value opens a comment (``no_comment``).
     """
     heading = f"**{title or 'ohne Titel'}**"
     target = one_line(url)
     if target:
-        heading = f"[{heading.translate(_LINK_TEXT_ESCAPE)}]({_link_target(target)})"
-    return _no_comment(
+        heading = f"[{heading.translate(LINK_TEXT_ESCAPE)}]({link_target(target)})"
+    return no_comment(
         "- " + one_line(" · ".join([f"{kind}: {heading}", *(field for field in fields if field), f"nodeId: {node_id}"]))
     )
 
@@ -159,7 +144,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
         "subjects": dict(subjects),
         "licenses": dict(licenses),
     }
-    return _no_comment(one_line("; ".join(part for part in parts if part))), summary
+    return no_comment(one_line("; ".join(part for part in parts if part))), summary
 
 
 def _materials_per_subcollection(subs: Sequence[SubCollectionContents]) -> dict[str, int]:

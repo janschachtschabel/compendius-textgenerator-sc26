@@ -9,7 +9,7 @@ from typing import Any
 from app.domain.requests import PRESETS
 from app.knowledge.curriculum_check import BATCH_SIZE, LEFT_OUT, CurriculumCheckJob, check_curriculum
 from app.llm.prompts import get_prompt
-from tests.test_lehrplan_render import SN, _match
+from tests.test_lehrplan_render import MEM, SN, _match
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
@@ -32,7 +32,7 @@ def job_for(fake: FakeBApi, per_request: int = 20_000) -> CurriculumCheckJob:
 def test_the_model_drops_what_it_rates_0_and_the_rest_carries_its_note() -> None:
     fake = FakeBApi(rating({"e1": 2, "e2": 0, "e3": 1}))
     kept, report = check_curriculum(job_for(fake), ELEMENTS)
-    assert [(match.hit.iri, match.note) for match in kept] == [("sn:k1", 2), ("sn:k3", 1)]
+    assert [(match.hit.iri, match.note) for match in kept] == [(MEM + "sn:k1", 2), (MEM + "sn:k3", 1)]
     assert report.rated == 3 and report.answered == 3 and report.dropped == 1 and report.calls == 1
     assert report.total_tokens > 0 and report.prompts == [get_prompt("curriculum_check").tag]
 
@@ -50,7 +50,7 @@ def test_the_prompt_names_topic_and_subject_and_each_element_with_its_area_and_c
 def test_an_element_the_answer_leaves_out_stays_unrated() -> None:
     fake = FakeBApi(rating({"e1": 0, "e3": 2}))
     kept, report = check_curriculum(job_for(fake), ELEMENTS)
-    assert [(match.hit.iri, match.note) for match in kept] == [("sn:k2", None), ("sn:k3", 2)]
+    assert [(match.hit.iri, match.note) for match in kept] == [(MEM + "sn:k2", None), (MEM + "sn:k3", 2)]
     assert report.answered == 2 and report.fallbacks == {LEFT_OUT: 1}
 
 

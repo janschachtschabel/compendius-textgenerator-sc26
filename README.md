@@ -184,7 +184,9 @@ dürfen lang sein); ein Element, das nur seine Überschrift zum Thema macht, ste
 Bereich, als eine Zeile mit der Zahl und einem Link (D58). Jede Gruppe nennt in ihrer ersten Zeile
 Lehrplan mit Link, Land, Bildungsstufe, Schulart und Klasse und steht zwischen `<!-- f: Bundesland=…;
 Bildungsstufe=…; Klassenstufe=…; Schulart=…; Lehrplan=<IRI>; Lehrplantitel=… -->` und `<!-- /f -->`,
-lässt sich also samt Herkunft herausparsen; die JSON-Einträge tragen dieselben Angaben je Element.
+lässt sich also samt Herkunft herausparsen; die JSON-Einträge tragen dieselben Angaben je Element. Bezeichnungen
+aus MEM stehen wie Repository-Text in Teil 3 als Text auf einer Zeile, ohne Kommentar und ohne Link; nur eine
+http(s)-IRI wird zum Linkziel.
 `LEHRPLAN_MAX_GROUPS_PER_LAND` kappt optional. Von den einzeln gezeigten Elementen passen 70 bis
 81 %, 5 bis 9 % nicht; in den `best-quality`-Profilen prüft zusätzlich das LLM jedes Element
 (`curriculum_check=llm`): 74 bis 79 % passend, ohne ein passendes zu verlieren (M32, 20 Themen).
@@ -527,7 +529,9 @@ stehen, wenn er eine gültige Belegnummer trägt und seine Inhaltswörter im zit
 alles andere wird verworfen und im Audit gezählt (`dropped_sentences`, `unsupported_sentences`). Mit
 `LLM_UNSUPPORTED_SENTENCES=mark` bleiben solche Sätze ohne Nummer stehen, eingefasst in
 `<!-- f: Evidenzgrad=Schlussfolgerung -->` und `<!-- /f -->` (`marked_sentences`). HTML-Kommentare in der
-Modellantwort werden entfernt, damit sie keine Marker des Dokuments fälschen kann.
+Modellantwort werden entfernt, damit sie keine Marker des Dokuments fälschen kann, ebenso Bilder, Linkziele,
+HTML-Tags und nackte Adressen: Die Belege enthalten fremden Text, und eine Anweisung darin könnte das Modell einen
+Link schreiben lassen, den keine Quelle enthält. Die Wörter eines Links bleiben stehen.
 
 Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte Sätze werden nicht verworfen,
 sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet und enden sichtbar mit
@@ -716,7 +720,7 @@ CC0, PDM, CC BY oder CC BY-SA steht.
 |---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` |
 | `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten |
-| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym |
+| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter. Knoten (`node_id`) liest der Dienst immer ohne Zugangsdaten. Nur zusammen mit `API_KEYS` setzen; sonst warnt der Start |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |
 | `COLLECTION_CACHE_TTL_S` | `3600` | Wie lange eine Sammlung im Cache gilt |

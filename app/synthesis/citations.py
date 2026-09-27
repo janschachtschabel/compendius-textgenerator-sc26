@@ -38,6 +38,14 @@ MIN_SENTENCE_END_WORD = 5
 _HEADING_RE = re.compile(r"^\s*#{1,6}\s")
 # The compendium is parsed by its comment markers (sections, facet blocks): nothing the model writes may look like one.
 _COMMENT_RE = re.compile(r"<!--.*?-->|<!--|-->", re.DOTALL)
+# What the model writes goes into a document to publish, and its prompts carry foreign text: an instruction placed
+# there could make it write a link, an image or markup no source contains (audit 2026-09-27, SE-04). The words of a
+# link stay; its target, images, tags and bare addresses go. Every pattern ends at a line end, its closing sign or
+# the next opening bracket, so a run of them costs no more than its length.
+_IMAGE_RE = re.compile(r"!\[[^\[\]\n]*\]\([^)\s]*\)?")
+_LINK_RE = re.compile(r"\[([^\[\]\n]*)\]\([^)\s]*\)?")
+_TAG_RE = re.compile(r"</?[A-Za-z][^<>\n]*>")
+_ADDRESS_RE = re.compile(r"(?:https?://|www\.)\S+", re.IGNORECASE)
 # A sentence that fails a check can stay instead of being dropped: without numbers, inside such a block. The grade
 # says why it is unsupported - a conclusion of the model (LLM_UNSUPPORTED_SENTENCES=mark), or knowledge it brought
 # along because the request allowed that (enrichment=model-knowledge, docs/umbau.md U4).
@@ -97,7 +105,7 @@ def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str
     """
     dropped = 0
     paragraphs: list[str] = []
-    for paragraph in re.split(r"\n\s*\n", _expand_markers(_COMMENT_RE.sub(" ", text))):
+    for paragraph in re.split(r"\n\s*\n", _expand_markers(_neutralized(text))):
         kept: list[str] = []
         for unit in _units(paragraph):
             for sentence in _cited_sentences(unit):
@@ -115,6 +123,13 @@ def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str
         if kept:
             paragraphs.append(" ".join(kept))
     return "\n\n".join(paragraphs), dropped
+
+
+def _neutralized(text: str) -> str:
+    """Model text without comments, images, link targets, tags and bare addresses (SE-04)."""
+    text = _IMAGE_RE.sub(" ", _COMMENT_RE.sub(" ", text))
+    text = _LINK_RE.sub(lambda match: match.group(1), text)
+    return _ADDRESS_RE.sub(" ", _TAG_RE.sub(" ", text))
 
 
 def _expand_markers(text: str) -> str:

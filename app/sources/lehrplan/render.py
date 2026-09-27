@@ -18,6 +18,7 @@ from app.sources.lehrplan.matcher import CurriculumMatch, MatchResult
 from app.sources.lehrplan.stufen import OHNE_KLASSE, OHNE_STUFE, PRIMAR, SEK_I, SEK_II, STUFEN_ORDER, grades_in
 from app.sources.lehrplan.vocab import ROLE_INHALT, ROLE_KOMPETENZ, ROLE_THEMENBEREICH, bundesland_by_code
 from app.synthesis.facets import END_MARKER, format_marker, format_visible
+from app.synthesis.safe_markdown import plain_label, web_target
 
 PART_HEADING = "## Teil 2 · Lehrplanbezüge"
 FACET_STUFE = {PRIMAR: "Primar", SEK_I: "Sek I", SEK_II: "Sek II"}
@@ -127,7 +128,9 @@ def _lehrplan_line(group: _Group, options: RenderOptions) -> list[str]:
     what it was derived from."""
     lehrplan = group.lead.hit.lehrplan
     land = bundesland_by_code(group.land_code)
-    parts = [f"[*{land.terminology}: {lehrplan.label}*]({lehrplan.iri})", land.name]
+    title = f"*{land.terminology}: {plain_label(lehrplan.label)}*"
+    target = web_target(lehrplan.iri)
+    parts = [f"[{title}]({target})" if target else title, land.name]
     stufe = group.lead.schulstufe
     if stufe.value != OHNE_STUFE:
         parts.append(stufe.value + ("" if stufe.from_data else f" *({stufe.source})*"))
@@ -148,7 +151,9 @@ def _lehrplan_line(group: _Group, options: RenderOptions) -> list[str]:
 
 def _item_line(match: CurriculumMatch) -> str:
     roles = ", ".join(ROLE_NAMES[role] for role in match.hit.rollen if role in ROLE_NAMES) or "Element"
-    return f"- „{match.hit.label}“ ({roles}) · [Lehrplanelement]({match.hit.iri})"
+    line = f"- „{plain_label(match.hit.label)}“ ({roles})"
+    target = web_target(match.hit.iri)
+    return f"{line} · [Lehrplanelement]({target})" if target else line
 
 
 def _bundled(match: CurriculumMatch) -> bool:
@@ -167,13 +172,13 @@ def _bundle_line(bundled: list[CurriculumMatch], *, after_others: bool) -> str:
     else:
         noun = "Element" if count == 1 else "Elemente"
     line = f"- *{count} {noun} dieses Bereichs; das Thema steht nur in der Überschrift*"
-    area = next((match.hit.parent_iri for match in bundled if match.hit.parent_iri), None)
+    area = next((target for match in bundled if (target := web_target(match.hit.parent_iri))), None)
     return f"{line} · [Bereich im Lehrplan]({area})" if area else line
 
 
 def _render_group(group: _Group, options: RenderOptions) -> list[str]:
     """One block from the opening marker to ``<!-- /f -->``, so a parser can lift it out with its facets."""
-    lines = [*_lehrplan_line(group, options), "", f"**{group.bereich}**", ""]
+    lines = [*_lehrplan_line(group, options), "", f"**{plain_label(group.bereich)}**", ""]
     items = sorted(group.items, key=lambda match: (-match.score, match.hit.label))
     listed = [match for match in items if not _bundled(match)]
     bundled = [match for match in items if _bundled(match)]
@@ -185,7 +190,9 @@ def _render_group(group: _Group, options: RenderOptions) -> list[str]:
     if bundled:
         lines.append(_bundle_line(bundled, after_others=bool(shown)))
     if not items:
-        lines.append(f"- *{ROLE_NAMES[ROLE_THEMENBEREICH]}* · [Lehrplanelement]({group.lead.hit.iri})")
+        target = web_target(group.lead.hit.iri)
+        entry = f"- *{ROLE_NAMES[ROLE_THEMENBEREICH]}*"
+        lines.append(f"{entry} · [Lehrplanelement]({target})" if target else entry)
     lines.extend([END_MARKER, ""])
     return lines
 

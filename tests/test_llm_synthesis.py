@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 import httpx
+import pytest
 
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.llm.budget import TokenBudget
@@ -330,6 +332,45 @@ def test_html_comments_in_the_answer_never_reach_the_document() -> None:
     text, dropped = verify_citations(answer, {1})
     assert text == "Ein Satz [1]. Noch ein Satz [1]."
     assert dropped == 1, "the word after the unterminated comment is an uncited fragment"
+
+
+def test_links_images_tags_and_addresses_of_the_model_never_reach_the_document() -> None:
+    """A sentence with a valid marker kept every link, image and tag the model wrote, and an instruction in the
+    evidence could plant them (audit 2026-09-27, SE-04). The words of a link stay, its target goes."""
+    answer = (
+        "Licht wird gebrochen [1]. Siehe das [Arbeitsblatt](https://evil.example/x) [1]. "
+        "![Bild](https://evil.example/i.png) Linsen bündeln Licht [1]. "
+        "Das zeigt <img src=x onerror=alert(1)> die Brechung [1]. Mehr steht unter https://evil.example/y [1]."
+    )
+
+    text, dropped = verify_citations(answer, {1})
+
+    assert "evil.example" not in text and "<img" not in text and "onerror" not in text and "](" not in text
+    assert "Siehe das Arbeitsblatt [1]." in text and "Linsen bündeln Licht [1]." in text
+    assert "Das zeigt die Brechung [1]." in text
+    assert dropped == 0
+
+
+def test_model_knowledge_keeps_no_link_either() -> None:
+    answer = "Licht wird gebrochen [1]. Eine Übung steht auf [dieser Seite](https://evil.example/uebung)."
+
+    text, _dropped = verify_citations(answer, {1}, mark=MODEL_KNOWLEDGE)
+
+    assert "evil.example" not in text
+    assert f"{MODEL_KNOWLEDGE_OPEN}Eine Übung steht auf dieser Seite. {MODEL_KNOWLEDGE_LABEL}{END_MARKER}" in text
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["![" * 10_000, "[" * 20_000 + "]" * 20_000, "<a" * 10_000, "[x](" * 5_000],
+    ids=["image openers", "brackets", "tag openers", "link openers"],
+)
+def test_the_neutralisation_reads_crafted_model_text_in_linear_time(text: str) -> None:
+    """The first link patterns ran past every opening bracket: 0.45 s for 8,000 characters, four times that for
+    twice as many. Linear, 20,000 take milliseconds; the quadratic ones took about three seconds."""
+    started = time.perf_counter()
+    verify_citations(text, {1})
+    assert time.perf_counter() - started < 1.0
 
 
 def test_mark_mode_keeps_uncited_sentences_as_conclusions() -> None:

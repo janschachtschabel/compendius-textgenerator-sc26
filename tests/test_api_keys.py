@@ -134,3 +134,19 @@ def test_blanks_around_the_keys_are_no_part_of_them(settings: Settings) -> None:
     configured = make_settings([], settings.state_dir, api_keys=f" {KEY_A} , {KEY_B} ,")
 
     assert configured.api_key_list == [KEY_A, KEY_B]
+
+
+@pytest.mark.parametrize(("keys", "warned"), [("", True), (KEY_A, False)])
+def test_repository_credentials_without_keys_are_named_at_start(
+    settings: Settings, caplog: pytest.LogCaptureFixture, keys: str, warned: bool
+) -> None:
+    """With EDU_SHARING_USER every caller reads what that account may read - collections that are not public, the
+    texts of their materials - and the cache hands it on to all (audit 2026-09-27, SE-06)."""
+    configured = settings.model_copy(
+        update={"edu_sharing_user": "redaktion", "edu_sharing_password": "geheim", "api_keys": keys}
+    )
+
+    with caplog.at_level("WARNING"):
+        create_app(configured)
+
+    assert ("EDU_SHARING_USER" in caplog.text and "API_KEYS" in caplog.text) is warned
