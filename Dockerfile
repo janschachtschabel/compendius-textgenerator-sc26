@@ -30,12 +30,20 @@ RUN mkdir -p /models/m2v && if [ -n "$MODEL2VEC_ID" ]; then \
 # Build dasselbe Modell enthaelt; das Rad liegt bei den spacy-models-Releases, nicht auf PyPI. SPACY_MODEL=""
 # baut ohne Modell - der Endpunkt antwortet dann nur mit den Begriffen, die einen Artikel in den Archiven haben.
 # Der Projekt-Sync danach laeuft mit --inexact, sonst raeumt er das Modellrad wieder weg.
+# Das Rad kommt nicht aus dem Lockfile; seine Pruefsumme steht in den Release-Notes des Modells, und ein Rad mit
+# einer anderen wird nicht installiert (Audit 2026-09-27, SE-13). Eine neue Fassung aendert Version und Pruefsumme.
 ARG SPACY_MODEL=de_core_news_md
 ARG SPACY_MODEL_VERSION=3.8.0
+ARG SPACY_MODEL_SHA256=b903f59220f1e76dd672acdaa7fa454d6703fe056c5ccd6457820e70874116d0
 RUN --mount=type=cache,target=/root/.cache/uv \
     if [ -n "$SPACY_MODEL" ]; then \
-      uv pip install --python /app/.venv/bin/python --no-deps \
-        "https://github.com/explosion/spacy-models/releases/download/${SPACY_MODEL}-${SPACY_MODEL_VERSION}/${SPACY_MODEL}-${SPACY_MODEL_VERSION}-py3-none-any.whl" \
+      wheel="${SPACY_MODEL}-${SPACY_MODEL_VERSION}-py3-none-any.whl" \
+      && python -c "import sys, urllib.request; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" \
+        "https://github.com/explosion/spacy-models/releases/download/${SPACY_MODEL}-${SPACY_MODEL_VERSION}/${wheel}" \
+        "/tmp/${wheel}" \
+      && echo "${SPACY_MODEL_SHA256}  /tmp/${wheel}" | sha256sum -c - \
+      && uv pip install --python /app/.venv/bin/python --no-deps "/tmp/${wheel}" \
+      && rm "/tmp/${wheel}" \
       && /app/.venv/bin/python -c "import spacy, sys; spacy.load(sys.argv[1])" "$SPACY_MODEL"; \
     fi
 
@@ -66,9 +74,11 @@ ENV PATH="/app/.venv/bin:$PATH" \
 RUN useradd --create-home --uid 10001 app \
     && mkdir -p /data/zim /data/state \
     && chown -R app:app /data
-COPY --from=builder --chown=app:app /app/.venv /app/.venv
-COPY --from=builder --chown=app:app /models /models
-COPY --chown=app:app config ./config
+# Code, Modelle und Konfiguration gehoeren root: der Dienst liest sie, aendern kann er sie nicht (Audit 2026-09-27,
+# SE-12). Schreiben darf er nur in /data und, mit read_only in Compose, nach /tmp.
+COPY --from=builder /app/.venv /app/.venv
+COPY --from=builder /models /models
+COPY config ./config
 USER app
 VOLUME ["/data/zim", "/data/state"]
 EXPOSE 8000

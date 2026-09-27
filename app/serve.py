@@ -22,6 +22,9 @@ UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "
 # The parent kills a worker that stays silent longer than its healthcheck timeout - uvicorn allows five seconds -
 # and the caller sees a broken connection instead of an answer. So the grace has to outlast a whole request.
 HEALTHCHECK_MARGIN_S = 60
+# After SIGTERM uvicorn lets the requests in flight finish for their budget plus this; Docker killed them after 10 s
+# (audit 2026-09-27, BE-06), and docker-compose.yml waits 150 s, longer than this with the shipped budget
+GRACEFUL_MARGIN_S = 15
 
 
 def clear_metric_files(directory: Path) -> None:
@@ -33,8 +36,15 @@ def clear_metric_files(directory: Path) -> None:
 
 
 def uvicorn_command(request_timeout_s: int) -> list[str]:
-    """The uvicorn call; a worker keeps its healthcheck grace until well past the request budget."""
-    return [*UVICORN, "--timeout-worker-healthcheck", str(request_timeout_s + HEALTHCHECK_MARGIN_S)]
+    """The uvicorn call; a worker keeps its healthcheck grace until well past the request budget, and a stop waits
+    for the requests in flight."""
+    return [
+        *UVICORN,
+        "--timeout-worker-healthcheck",
+        str(request_timeout_s + HEALTHCHECK_MARGIN_S),
+        "--timeout-graceful-shutdown",
+        str(request_timeout_s + GRACEFUL_MARGIN_S),
+    ]
 
 
 def main() -> None:

@@ -47,8 +47,9 @@ Update daher:
 | 2026-09-24 (D44) | Vorgabe von `B_API_MODEL` ist `gpt-6-luna`. Eine `.env` aus der Vorlage davor trägt noch `B_API_MODEL=gpt-5.6-luna` und hält den Dienst beim alten Modell: die Zeile löschen. `components.llm.model` in `/health` zeigt das wirksame Modell |
 | 2026-09-27 (D64, D65) | Zwei neue Dienste in `docker-compose.yml`: `wikidata-updater` baut `wikidata.db` (rund 750 MB Download, dabei 1,5 GB frei im Volume `state`), `gnd-updater` baut `gnd.db` (rund 65 MB). Ohne sie tragen Entitäten keine Wikidata-Nummer und keine GND aus dem Index, und DBpedia-Adressen zeigen auf das stillgelegte `de.dbpedia.org` |
 | 2026-09-27 (Audit) | `ADMIN_TOKEN`, `METRICS_TOKEN` und das neue `API_KEYS` brauchen je mindestens 32 Zeichen, sonst startet kein Container. Auf einem öffentlichen Server `API_KEYS` und `METRICS_TOKEN` setzen (installation.md, Abschnitt 8). `:latest` entsteht erst nach grüner CI; jeder geprüfte Commit liegt zusätzlich als `:<sha>` bereit (Rückweg siehe Regeln) |
+| 2026-09-28 (Audit) | `docker-compose.yml` härtet die Dienste: keine Linux-Capabilities und keine neuen Rechte für alle fünf, bei der API zudem ein nur lesbares Dateisystem außer den Volumes und `/tmp`; Code und Modelle gehören im Image `root`. Jedes Protokoll rotiert bei 10 MB (fünf Dateien). Die API hat 4 GiB Speicher (`API_MEMORY`) und 150 s, um laufende Anfragen bei einem Update zu beenden; die Sidecars bekommen keine Geheimnisse der `.env` mehr. Wirkt erst, wenn das Panel die neue Compose-Datei übernimmt |
 
-Alle Zeilen der Tabelle kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
+Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 
 ## Zustand prüfen
 

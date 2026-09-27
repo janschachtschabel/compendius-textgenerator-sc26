@@ -603,13 +603,14 @@ Die angegebenen Werte sind die der Vorlage. Wer eine Zeile wegnimmt, bekommt die
 
 ### Compose-Variablen
 
-Diese zwei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen deshalb **nicht** in
+Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen deshalb **nicht** in
 `.env.example`, sondern werden beim Aufruf gesetzt oder in die `.env` geschrieben.
 
 | Variable | Vorgabe | Bedeutung |
 |---|---|---|
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | Welches Image alle fünf Dienste nutzen. Eine eigene Registry, ein Sha-Tag oder ein lokal gebautes Image tragen sich hier ein |
 | `API_BIND` | `0.0.0.0:8000` | Woran der Port der API gebunden wird. Die Vorgabe bindet an **alle** Schnittstellen, damit der Dienst in einer Hosting-Umgebung überhaupt erreichbar ist — deren Proxy läuft meist nicht im selben Netz-Namensraum und käme an eine Loopback-Bindung nicht heran. Die Firewall des Hosts schützt einen veröffentlichten Docker-Port nicht (Docker leitet an ufw und der INPUT-Kette vorbei); öffentlich gehören `API_KEYS` und `METRICS_TOKEN` gesetzt (docs/installation.md, Abschnitt 8). Auf einem Arbeitsrechner und hinter einem Reverse-Proxy auf dem Host gehört `API_BIND=127.0.0.1:8000` gesetzt |
+| `API_MEMORY` | `4g` | Speichergrenze der API. Gemessen rund 1,4 GiB je Worker im Ruhezustand und 1,5 GiB nach einer Anfrage: 4 GiB tragen die zwei Worker des Images (`WEB_CONCURRENCY`); mit mehr Workern je Worker rund 1,5 GiB dazurechnen. Die Sidecars haben keine Grenze, ihr Bedarf ist nicht gemessen |
 
 ### Betrieb
 

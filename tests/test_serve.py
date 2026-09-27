@@ -5,8 +5,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 from app import serve
+from tests.conftest import ROOT
 
 
 def test_only_the_metric_files_of_an_earlier_run_are_removed(tmp_path: Path) -> None:
@@ -55,3 +57,21 @@ def test_a_worker_outlives_the_longest_request_it_may_serve(budget: int) -> None
     command = serve.uvicorn_command(budget)
     timeout = int(command[command.index("--timeout-worker-healthcheck") + 1])
     assert timeout > budget
+
+
+@pytest.mark.parametrize("budget", [120, 300])
+def test_a_stop_lets_the_requests_in_flight_finish(budget: int) -> None:
+    """Docker killed every running compendium 10 s after the SIGTERM of an update, while a request may take its whole
+    budget (audit 2026-09-27, BE-06): uvicorn now waits for the requests in flight."""
+    command = serve.uvicorn_command(budget)
+    grace = int(command[command.index("--timeout-graceful-shutdown") + 1])
+    assert grace > budget
+
+
+def test_compose_waits_longer_for_the_api_than_uvicorn_waits_for_its_requests() -> None:
+    """With the shipped REQUEST_TIMEOUT_S; an operator who raises it raises stop_grace_period with it."""
+    command = serve.uvicorn_command(120)
+    grace = int(command[command.index("--timeout-graceful-shutdown") + 1])
+    compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
+    stop = compose["services"]["api"]["stop_grace_period"]
+    assert stop.endswith("s") and int(stop[:-1]) > grace

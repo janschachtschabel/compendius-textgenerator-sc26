@@ -36,6 +36,16 @@ DOCKER = "docker"  # on PATH by intent: the script runs where the image was buil
 READY_TIMEOUT_S = 90
 REQUEST_TIMEOUT_S = 240
 MIN_CHARACTERS = 2000  # a compendium of the sample archives is far longer; this only catches an empty answer
+# What docker-compose.yml sets for every service (x-hardening): the image must run under it
+HARDENING = (
+    "--read-only",
+    "--tmpfs",
+    "/tmp",  # noqa: S108 - the mount point of a tmpfs inside the container, no file here
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges:true",
+)
 
 
 def run(*args: str) -> str:
@@ -176,6 +186,9 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--name", default="compendium-smoke")
     parser.add_argument("--revision", default="", help="the commit the image was built from; /health must name it")
+    parser.add_argument(
+        "--hardened", action="store_true", help="run as docker-compose.yml does: read-only, no capabilities"
+    )
     args = parser.parse_args()
 
     base_url = f"http://127.0.0.1:{args.port}"
@@ -191,6 +204,7 @@ def main() -> int:
             "-v", f"{archives.as_posix()}:/data/zim:ro",
             "-e", "ZIM_REQUIRED=wikipedia_de_sample,klexikon_de_sample",
             "-e", "PRESET_DEFAULT=llm-free",
+            *(HARDENING if args.hardened else ()),
             args.image,
         )  # fmt: skip
         try:

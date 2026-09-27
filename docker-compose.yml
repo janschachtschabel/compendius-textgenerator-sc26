@@ -5,10 +5,44 @@
 # .env.example llm-free. Was ein Update am Betrieb aendert, steht in docs/betrieb.md unter "Updates".
 # Das Volume "zim" ist fuer 40 GB geplant (Entscheidung D18). Docker begrenzt Volumes nicht;
 # in Kubernetes entspricht das einem PersistentVolumeClaim mit 40Gi.
+
+# Jeder Dienst begrenzt sein Protokoll: ohne max-size waechst die Datei, bis die Platte voll ist (Audit
+# 2026-09-27, BE-06).
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+# Code und Modelle gehoeren im Image root (Dockerfile); kein Dienst hat Linux-Capabilities oder bekommt neue Rechte
+# (Audit 2026-09-27, SE-12). Nur lesbar ist das Dateisystem der API, die von aussen erreichbar ist: Die Index-
+# Sidecars bauen mit SQLite und schreiben dessen Sortier-Dateien nach /var/tmp; mit read_only laegen sie im tmpfs
+# /tmp, also im Arbeitsspeicher des Hosts, beim Wikidata-Index Hunderte MB.
+x-hardening: &hardening
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+# Die Sidecars brauchen keines der Geheimnisse aus der .env; environment geht env_file vor (Audit 2026-09-27,
+# SE-11).
+x-no-secrets: &no-secrets
+  B_API_KEY: ""
+  EDU_SHARING_USER: ""
+  EDU_SHARING_PASSWORD: ""
+  ADMIN_TOKEN: ""
+  METRICS_TOKEN: ""
+  API_KEYS: ""
+
 services:
   api:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
+    <<: *hardening
+    # Schreiben nur in die Volumes und nach /tmp (Metrik-Dateien der Worker)
+    read_only: true
+    tmpfs:
+      - /tmp
     env_file:
       # Lange Schreibweise mit Absicht: ohne required: false bricht Compose ab, wenn keine .env da
       # ist - und beim Import aus einer URL ist genau das der Normalfall. Braucht Compose 2.24+.
@@ -29,11 +63,19 @@ services:
       # METRICS_TOKEN setzen (docs/installation.md, Abschnitt 8); ein Reverse-Proxy auf dem Host
       # braucht API_BIND=127.0.0.1:8000 und FORWARDED_ALLOW_IPS auf das Gateway des Compose-Netzes.
       - "${API_BIND:-0.0.0.0:8000}:8000"
+    # Ein Update beendet die API mit SIGTERM; uvicorn laesst laufende Anfragen bis REQUEST_TIMEOUT_S plus 15 s zu
+    # Ende laufen (app/serve.py), Docker toetete sie sonst nach 10 s. Wer REQUEST_TIMEOUT_S hebt, hebt dies mit.
+    stop_grace_period: 150s
+    # Gemessen rund 1,4 GiB je Worker im Ruhezustand und 1,5 GiB nach einer Anfrage (docs/installation.md): 4 GiB
+    # tragen die zwei Worker des Images. Mit mehr Workern API_MEMORY heben, je Worker rund 1,5 GiB.
+    mem_limit: ${API_MEMORY:-4g}
+    logging: *logging
     restart: unless-stopped
 
   zim-updater:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
+    <<: *hardening
     command: ["compendium", "zim", "sync", "--loop"]
     # Kein HTTP-Server: der Healthcheck des Images (GET /health) gilt nur fuer die API
     healthcheck:
@@ -42,16 +84,19 @@ services:
       - path: .env
         required: false
     environment:
+      <<: *no-secrets
       ZIM_DIR: /data/zim
       # Erststart: fehlende Pflichtarchive des Profils laden (Profil standard: ca. 14,1 GB)
       ZIM_BOOTSTRAP_DOWNLOAD: ${ZIM_BOOTSTRAP_DOWNLOAD:-true}
     volumes:
       - zim:/data/zim
+    logging: *logging
     restart: unless-stopped
 
   lehrplan-updater:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
+    <<: *hardening
     # Woechentliche Zaehlpruefung gegen MEM, Vollabzug bei Aenderung oder Alter (PLAN.md 5.2, D16)
     command: ["compendium", "lehrplan", "harvest", "--loop"]
     healthcheck:
@@ -60,14 +105,17 @@ services:
       - path: .env
         required: false
     environment:
+      <<: *no-secrets
       STATE_DIR: /data/state
     volumes:
       - state:/data/state
+    logging: *logging
     restart: unless-stopped
 
   wikidata-updater:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
+    <<: *hardening
     # Wikidata-Index fuer /entities (D43, D64, D65): baut ihn beim Erststart aus drei Dumps der deutschen Wikipedia
     # (rund 750 MB, danach geloescht) und neu, wenn ein neueres Wikipedia-Archiv einen neueren Dump braucht.
     # Liest das ZIM-Volume nur, um das Datum des aktiven Archivs zu kennen.
@@ -78,16 +126,19 @@ services:
       - path: .env
         required: false
     environment:
+      <<: *no-secrets
       ZIM_DIR: /data/zim
       STATE_DIR: /data/state
     volumes:
       - zim:/data/zim:ro
       - state:/data/state
+    logging: *logging
     restart: unless-stopped
 
   gnd-updater:
     image: ${IMAGE:-ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest}
     build: .
+    <<: *hardening
     # GND-Index fuer /entities (D65): baut ihn beim Erststart aus den Abzuegen der DNB (Sachbegriffe und Geografika,
     # rund 65 MB, danach geloescht) und neu, wenn die DNB eine neuere Ausgabe veroeffentlicht.
     command: ["compendium", "gnd", "sync", "--loop"]
@@ -97,9 +148,11 @@ services:
       - path: .env
         required: false
     environment:
+      <<: *no-secrets
       STATE_DIR: /data/state
     volumes:
       - state:/data/state
+    logging: *logging
     restart: unless-stopped
 
   # Ueberwachung (PLAN.md D31): docker compose --profile monitoring up -d api prometheus
@@ -114,6 +167,7 @@ services:
       - prometheus:/prometheus
     ports:
       - "127.0.0.1:9090:9090"
+    logging: *logging
     restart: unless-stopped
 
 volumes:
