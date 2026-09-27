@@ -1,9 +1,11 @@
-"""The local Wikidata index (D43): article title to Wikidata number, from two dumps of the German Wikipedia.
+"""The local Wikidata index (D43): article title to Wikidata number and English title, from dumps of the German
+Wikipedia.
 
 The Kiwix dump carries no Wikidata numbers (docs/umbau.md), so they come from the dump tables ``page_props`` (the
 property ``wikibase_item`` per page id) and ``page`` (id, namespace, title), both published at
-dumps.wikimedia.org/dewiki. ``compendium wikidata build`` reads them from disk - no network, no live API - and writes
-one SQLite file into the state directory; the service only reads it.
+dumps.wikimedia.org/dewiki; the table ``langlinks`` adds the title of the English article, which names the DBpedia
+resource (D65). ``compendium wikidata build`` reads them from disk - no network, no live API - and writes one SQLite
+file into the state directory; the service only reads it.
 
 Every page of namespace 0 with an item goes in, redirects included: Wikidata links some items to a redirect on purpose
 (badge "sitelink to redirect"), and the ZIM keeps redirects as pages of their own - "Nenner" leads into a section of
@@ -62,13 +64,16 @@ def _fields(body: str, count: int) -> list[str | None]:
     return values
 
 
-def _rows(path: Path, table: str, wanted: tuple[str, ...], info: dict[str, str]) -> Iterator[tuple[str | None, ...]]:
+def _rows(
+    path: Path, table: str, wanted: tuple[str, ...], info: dict[str, str], *, keep: str | None = None
+) -> Iterator[tuple[str | None, ...]]:
     """The ``wanted`` columns of every row of ``table`` in a gzipped MySQL dump, read as a stream.
 
     The column order comes from the dump's own CREATE TABLE, so a reordered schema does not shift the values.
     The dumps of 2026 put ``INSERT INTO … VALUES`` alone on its line and then one tuple per line up to the ``;``;
     older ones wrote all tuples of a statement on its line. Both are read. The closing line of the dump gives its
-    date, which lands in ``info["dump"]``.
+    date, which lands in ``info["dump"]``. A line of rows without the text ``keep`` holds none of the rows the caller
+    wants and is passed over before the costly parsing - it still ends its statement.
     """
     # A prefix that recognises the lines of the dump; nothing here is ever executed as SQL
     create, insert = f"CREATE TABLE `{table}` (", f"INSERT INTO `{table}` VALUES"
@@ -91,6 +96,8 @@ def _rows(path: Path, table: str, wanted: tuple[str, ...], info: dict[str, str])
                     raise ValueError(f"{path.name}: rows of `{table}` before its CREATE TABLE")
                 start = 0 if inserting else len(insert)
                 inserting = not line.rstrip().endswith(";")  # the statement ends with the line that closes it
+                if keep is not None and keep not in line:
+                    continue
                 needed = max(positions) + 1
                 for match in _TUPLE_RE.finditer(line, start):
                     values = _fields(match.group(1), needed)
@@ -134,7 +141,10 @@ def _write(target: Path, page_props: Path, page: Path, langlinks: Path | None) -
                 "INSERT OR IGNORE INTO english VALUES (?, ?)",
                 (
                     (int(page_id), title.replace("_", " "))
-                    for page_id, lang, title in _rows(langlinks, "langlinks", ("ll_from", "ll_lang", "ll_title"), info)
+                    # 96 % of the rows link other languages: only lines that name English are parsed at all
+                    for page_id, lang, title in _rows(
+                        langlinks, "langlinks", ("ll_from", "ll_lang", "ll_title"), info, keep="'en'"
+                    )
                     if lang == "en" and page_id and title
                 ),
             )

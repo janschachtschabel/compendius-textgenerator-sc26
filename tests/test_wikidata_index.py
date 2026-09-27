@@ -340,3 +340,15 @@ def test_an_index_of_the_first_schema_is_not_read(tmp_path: Path) -> None:
     with sqlite3.connect(tmp_path / "wikidata.db") as connection:
         connection.execute("UPDATE meta SET value = '1' WHERE key = 'schema'")
     assert not WikidataIndex(tmp_path / "wikidata.db").available
+
+
+def test_rows_of_other_languages_are_passed_over_without_losing_the_end_of_a_statement(tmp_path: Path) -> None:
+    """The build reads only the English rows of langlinks (the rest is 96 % of the dump); a statement whose last row
+    is of another language still ends there, and the closing line still gives the date."""
+    rows = [(1, "en", "Ernst Abbe"), (1, "fr", "Ernst Abbe"), (5, "en", "Roman Empire"), (2, "en", "O'Brien"),
+            (5, "it", "Impero romano")]  # fmt: skip
+    langlinks = write_langlinks(tmp_path / "dumps", rows=rows, completed="2026-09-08 02:10:00")
+    build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db", langlinks=langlinks)
+    index = WikidataIndex(tmp_path / "wikidata.db")
+    assert index.english("Römisches Reich") == "Roman Empire" and index.meta()["english"] == 3
+    assert index.meta()["dump"] == "2026-09-08", "the langlinks dump is read last and gives the date"
