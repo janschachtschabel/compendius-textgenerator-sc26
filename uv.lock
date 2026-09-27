@@ -204,6 +204,7 @@ name = "compendious-text-fastapi"
 version = "2.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "anyio" },
     { name = "fastapi" },
     { name = "httpx" },
     { name = "libzim" },
@@ -213,6 +214,7 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "pyyaml" },
     { name = "scikit-learn" },
+    { name = "starlette" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -236,6 +238,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "anyio", specifier = ">=4.0" },
     { name = "fastapi", specifier = ">=0.116" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "huggingface-hub", marker = "extra == 'embeddings'", specifier = ">=1.31" },
@@ -248,6 +251,7 @@ requires-dist = [
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "scikit-learn", specifier = ">=1.6" },
     { name = "spacy", marker = "extra == 'entities'", specifier = ">=3.8" },
+    { name = "starlette", specifier = ">=0.46" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.35" },
 ]
 provides-extras = ["embeddings", "entities"]

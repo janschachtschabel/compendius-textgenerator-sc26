@@ -10,6 +10,9 @@ requires-python = ">=3.13,<3.14"
 keywords = ["compendium", "kiwix", "zim", "wikipedia", "fastapi", "wirlernenonline"]
 dependencies = [
     "fastapi>=0.116",
+    # The service imports both itself (app/main.py, app/api/); fastapi brings them now, which it need not keep doing
+    "starlette>=0.46",
+    "anyio>=4.0",
     "uvicorn[standard]>=0.35",
     "pydantic>=2.11",
     "pydantic-settings>=2.10",
