@@ -9,25 +9,13 @@ the ``wikidata-updater`` sidecar. A running service opens a new index by itself 
 from __future__ import annotations
 
 import argparse
-import os
-import sqlite3
-import sys
-import time
-import zlib
-from datetime import timedelta
 from pathlib import Path
 
-import httpx
-
-from app.jobs.lock import LockHeldError, acquire_lock
-from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
+from app.cli_sync import run_build, run_sync
 from app.settings import get_settings
-from app.sources.wikidata.index import IndexInUseError, WikidataIndex, build_index
-from app.sources.wikidata.sync import LOCK_FILE, LOCK_STALE_S, WikidataSyncError, build_sync
-from app.sources.zim.downloader import DownloadError, TransferError
+from app.sources.wikidata.index import WikidataIndex, build_index
+from app.sources.wikidata.sync import LOCK_FILE, build_sync
 
-POLL_SECONDS = 60
-RETRY_AFTER_FAILURE = timedelta(hours=1)
 REASONS = {
     "no index": "kein Index vorhanden",
     "index unusable": "Index unbrauchbar",
@@ -55,38 +43,13 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 def cmd_build(args: argparse.Namespace) -> int:
     target = get_settings().wikidata_db_path
-    started = time.monotonic()
-    try:  # the sync's lock: two builds would write the same .part file, and one could swap in the other's half
-        lock = acquire_lock(
-            target.parent / LOCK_FILE, stale_s=LOCK_STALE_S, now=time.time, owner=f"pid {os.getpid()} wikidata build"
-        )
-    except LockHeldError as exc:
-        print(f"Wikidata-Index nicht gebaut: ein anderer Bau läuft ({exc})", file=sys.stderr)
-        return 1
-    try:
-        meta = build_index(Path(args.page_props), Path(args.page), target)
-    except IndexInUseError as exc:
-        print(f"Wikidata-Index gebaut, aber nicht übernommen: {exc}", file=sys.stderr)
-        return 1
-    except (OSError, EOFError, zlib.error, ValueError, sqlite3.Error) as exc:  # EOFError: a dump cut short
-        print(f"Wikidata-Index nicht gebaut: {exc}", file=sys.stderr)
-        return 1
-    finally:
-        lock.release()
-    print(
-        f"Wikidata-Index {target}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}, "
-        f"{time.monotonic() - started:.0f} s; der Dienst übernimmt ihn binnen einer Minute"
+    return run_build(
+        target,
+        lock_file=LOCK_FILE,
+        name="Wikidata-Index",
+        build=lambda: build_index(Path(args.page_props), Path(args.page), target),
+        describe=lambda meta: f"{meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}",
     )
-    return 0
-
-
-def _repeats(exc: BaseException) -> bool:
-    """A failure the same run would repeat: a checksum or size that does not match, a dump the build cannot read, an
-    index a running service holds open (Windows). The loop then waits for its next check, not RETRY_AFTER_FAILURE:
-    an hourly retry would fetch the same 420 MB again and again."""
-    if isinstance(exc, TransferError):  # cut short on the way: the next run resumes the .part
-        return False
-    return isinstance(exc, (DownloadError, IndexInUseError, EOFError, zlib.error, ValueError, sqlite3.Error))
 
 
 def cmd_sync(args: argparse.Namespace) -> int:
@@ -105,35 +68,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         meta = sync.run(reason)
         print(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
 
-    def checked() -> None:
-        try:
-            task()
-        except Exception as exc:
-            if not _repeats(exc):
-                raise  # the loop logs it and tries again after RETRY_AFTER_FAILURE
-            print(f"Wikidata-Index nicht gebaut, der alte bleibt bis zur nächsten Prüfung: {exc}", file=sys.stderr)
-
-    if args.loop:
-        stop_on_sigterm()
-        try:
-            run_periodically(
-                checked,
-                parse_interval(settings.wikidata_check_interval),
-                retry_after=RETRY_AFTER_FAILURE,
-                poll_s=POLL_SECONDS,
-            )
-        except KeyboardInterrupt:  # Ctrl+C or a container stop; a run has written its status
-            print("Wikidata-Schleife beendet.")
-        return 0
-    try:
-        task()
-    except (
-        WikidataSyncError, DownloadError, LockHeldError, httpx.HTTPError,  # the dump site or another run
-        OSError, EOFError, zlib.error, ValueError, sqlite3.Error,  # the build, as cmd_build names them
-    ) as exc:  # fmt: skip
-        print(f"Wikidata-Index nicht gebaut, der vorhandene bleibt: {exc}", file=sys.stderr)
-        return 1
-    return 0
+    return run_sync(task, loop=bool(args.loop), interval=settings.wikidata_check_interval, name="Wikidata-Index")
 
 
 def add_wikidata_commands(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:

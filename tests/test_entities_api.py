@@ -17,7 +17,8 @@ from app.api.v2.entities import _link
 from app.knowledge.recognise import Mention
 from app.main import create_app
 from app.settings import Settings
-from app.sources.wikidata.index import RECHECK_S, WikidataIndex, build_index
+from app.sources.local_index import RECHECK_S
+from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
 from tests.test_wikidata_index import write_dumps

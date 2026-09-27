@@ -89,7 +89,7 @@ def test_an_index_in_use_is_kept_and_the_new_one_waits_beside_it(
     def refuse(source: object, destination: object) -> None:
         raise PermissionError(13, "Zugriff verweigert")
 
-    monkeypatch.setattr("app.sources.wikidata.index.os.replace", refuse)
+    monkeypatch.setattr("app.sources.local_index.os.replace", refuse)
     page_props, page = write_dumps(tmp_path / "dumps")
     assert main(["wikidata", "build", "--page-props", str(page_props), "--page", str(page)]) == 1
     err = capsys.readouterr().err
@@ -145,8 +145,8 @@ def test_a_failed_sync_keeps_the_old_index_and_says_why(
 
 def _loop_task(monkeypatch: pytest.MonkeyPatch) -> list[Callable[[], object]]:
     tasks: list[Callable[[], object]] = []
-    monkeypatch.setattr("app.cli_wikidata.run_periodically", lambda task, interval, **options: tasks.append(task))
-    monkeypatch.setattr("app.cli_wikidata.stop_on_sigterm", lambda: None)
+    monkeypatch.setattr("app.cli_sync.run_periodically", lambda task, interval, **options: tasks.append(task))
+    monkeypatch.setattr("app.cli_sync.stop_on_sigterm", lambda: None)
     return tasks
 
 
@@ -197,8 +197,8 @@ def test_the_sync_loop_checks_at_the_interval_of_the_settings(
         seen.update(interval=interval, **options)
         task()
 
-    monkeypatch.setattr("app.cli_wikidata.run_periodically", once)
-    monkeypatch.setattr("app.cli_wikidata.stop_on_sigterm", lambda: None)
+    monkeypatch.setattr("app.cli_sync.run_periodically", once)
+    monkeypatch.setattr("app.cli_sync.stop_on_sigterm", lambda: None)
     assert main(["wikidata", "sync", "--loop"]) == 0
     assert seen["interval"] == timedelta(days=1) and seen["retry_after"] == timedelta(hours=1)
     assert (state_dir / "wikidata.db").exists()

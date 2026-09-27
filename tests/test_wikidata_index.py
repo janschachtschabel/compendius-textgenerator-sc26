@@ -17,7 +17,8 @@ from pathlib import Path
 
 import pytest
 
-from app.sources.wikidata.index import RECHECK_S, IndexInUseError, WikidataIndex, build_index
+from app.sources.local_index import RECHECK_S, IndexInUseError
+from app.sources.wikidata.index import WikidataIndex, build_index
 
 BACKSLASH = chr(92)
 PAGE_COLUMNS = (
@@ -244,7 +245,7 @@ def test_a_build_that_cannot_replace_the_index_in_use_keeps_both(
     def refuse(source: object, destination: object) -> None:
         raise PermissionError(13, "Zugriff verweigert")
 
-    monkeypatch.setattr("app.sources.wikidata.index.os.replace", refuse)
+    monkeypatch.setattr("app.sources.local_index.os.replace", refuse)
     with pytest.raises(IndexInUseError, match=re.escape("wikidata.db.part")):
         build_index(page_props, page, target)
     assert WikidataIndex(target).qid("Ernst Abbe") == "Q999001", "the index in use stays"
