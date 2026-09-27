@@ -1,4 +1,4 @@
-"""Keep the local Wikidata index (D43) in step with the archives: fetch two dumps of the German Wikipedia, build it.
+"""Keep the local Wikidata index (D43) in step with the archives: fetch three dumps of the German Wikipedia, build it.
 
 A new installation has no index, and an index older than the active Wikipedia archive lacks the numbers of the
 archive's new articles (D64). The ``wikidata-updater`` sidecar (``compendium wikidata sync --loop``) builds the index
@@ -178,16 +178,19 @@ class WikidataSync(DumpSync):
             index.close()
         archive = self.archive_date()
         if archive is None or built_from is None or archive <= built_from:
+            self.record_check()
             return None
         # The archive has articles the index may lack; only a run after the index's dump can bring them. A check that
         # fails goes to the status like a failed run: the index falls behind the archive until it succeeds
-        reason = "archive newer than the index"
         try:
             newest = find_run(self._client, self.base_url)
         except Exception as exc:
-            self.record_check_failure(reason, exc)
+            self.record_check(error=exc)
             raise
-        return reason if newest.date > built_from else None
+        if newest.date > built_from:
+            return "archive newer than the index"
+        self.record_check(newest)
+        return None
 
 
 def build_sync(settings: Settings) -> WikidataSync:

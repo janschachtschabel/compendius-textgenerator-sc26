@@ -139,11 +139,14 @@ class DumpSync:
         log.info("%s index built from release %s (%s): %s", self.label, release.id, reason or "asked", summary)
         return meta
 
-    def record_check_failure(self, reason: str, exc: BaseException) -> None:
-        """A check of the source that failed goes to the status like a failed run, so the gauge and its alert see it."""
+    def record_check(self, newest: Release | None = None, error: BaseException | None = None) -> None:
+        """A check that found nothing to build, or failed, goes to the status like a run (reason ``check``): a failed
+        one so the gauge and its alert see it, a good one so that an earlier failure no longer counts. ``newest`` is
+        the release the source offered, when it was asked."""
         stamp = now()
-        outcome = {"started_at": stamp, "reason": reason, "ok": False, "run": None, "finished_at": stamp}
-        self._write_status({"state": "idle", "last_run": {**outcome, "error": f"check: {exc}"}})
+        outcome = {"started_at": stamp, "reason": "check", "ok": error is None, "run": newest.id if newest else None}
+        failure = None if error is None else f"check: {error}"
+        self._write_status({"state": "idle", "last_run": {**outcome, "finished_at": stamp, "error": failure}})
 
     def _drop_other_releases(self, dumps: Path, release: Release) -> None:
         """Remove what an older release left behind (a ``.part`` it never finished); the files of ``release`` resume."""

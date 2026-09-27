@@ -65,7 +65,7 @@ def _dump_file(client: httpx.Client, base: str, name: str, digest: str) -> DumpF
     head = client.head(f"{base}/{name}", follow_redirects=False)
     head.raise_for_status()
     size = head.headers.get("content-length", "")
-    if not size.isdigit():
+    if not size.isdigit() or int(size) == 0:
         raise GndSyncError(f"{name}: the server announces no size")
     return DumpFile(name, f"{base}/{name}", int(size), digest)
 
@@ -117,14 +117,16 @@ class GndSync(DumpSync):
             built_from = _day(index.meta().get("release"))
         finally:
             index.close()
-        reason = "newer release"
         try:
             newest = self.find_release()
         except Exception as exc:  # recorded like a failed run, so the gauge and its alert see it
-            self.record_check_failure(reason, exc)
+            self.record_check(error=exc)
             raise
         # An index built by hand from undated files has no release: the newest one replaces it
-        return reason if built_from is None or newest.date > built_from else None
+        if built_from is None or newest.date > built_from:
+            return "newer release"
+        self.record_check(newest)
+        return None
 
 
 def build_gnd_sync(settings: Settings) -> GndSync:

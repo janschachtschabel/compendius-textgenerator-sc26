@@ -14,7 +14,7 @@ import httpx
 import pytest
 
 from app.settings import Settings
-from app.sources.gnd.index import GndIndex
+from app.sources.gnd.index import GndIndex, build_gnd_index
 from app.sources.gnd.sync import (
     DUMP_DIR,
     LOCK_FILE,
@@ -188,3 +188,78 @@ def test_the_sync_of_an_installation_reads_its_settings(tmp_path: Path) -> None:
     )
     sync = build_gnd_sync(settings)
     assert sync.index_path == settings.gnd_db_path and sync.base_url == "https://mirror.example/gnd"
+
+
+def test_a_good_check_after_a_failed_one_clears_the_failure(tmp_path: Path, dnb: FakeDnb) -> None:
+    """One unreachable check must not leave the alert on until the next release, half a year later."""
+    dnb.add("20260217")
+    _sync(tmp_path / "state", dnb).run("no index")
+    down = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(503)))
+    with pytest.raises(httpx.HTTPStatusError):
+        GndSync(tmp_path / "state" / "gnd.db", client=down, base_url=DNB).due()
+    assert _sync(tmp_path / "state", dnb).due() is None
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["last_run"]["ok"] is True and status["last_run"]["error"] is None
+    assert status["last_run"]["reason"] == "check" and status["last_run"]["run"] == "20260217"
+
+
+def test_an_index_built_by_hand_from_undated_files_gives_way_to_a_release(tmp_path: Path, dnb: FakeDnb) -> None:
+    subjects = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds.ttl.gz", SUBJECTS)
+    build_gnd_index([(subjects, "Sachbegriff")], tmp_path / "state" / "gnd.db")
+    dnb.add("20260217")
+    assert _sync(tmp_path / "state", dnb).due() == "newer release"
+
+
+@pytest.mark.parametrize("headers", [{"Content-Length": "0"}, {}])
+def test_a_dump_without_a_size_is_no_release(dnb: FakeDnb, headers: dict[str, str]) -> None:
+    dnb.add("20260217")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.method == "HEAD":
+            return httpx.Response(200, headers=headers)
+        return dnb.handler(request)
+
+    with pytest.raises(GndSyncError, match="no size"):
+        find_release(httpx.Client(transport=httpx.MockTransport(handler)), DNB)
+
+
+def test_a_redirect_on_the_size_of_a_dump_is_not_followed(dnb: FakeDnb) -> None:
+    dnb.add("20260217")
+    hosts: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        hosts.append(request.url.host)
+        if request.method == "HEAD":
+            return httpx.Response(302, headers={"Location": "https://elsewhere.example/dump.ttl.gz"})
+        return dnb.handler(request)
+
+    with pytest.raises(httpx.HTTPStatusError):
+        find_release(httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True), DNB)
+    assert "elsewhere.example" not in hosts
+
+
+def test_the_checksum_file_as_the_dnb_writes_it(dnb: FakeDnb) -> None:
+    """Lines from the real 001_Pruefsumme_Checksum.txt of 2026-09: SHA-256, one space, the file name."""
+    real = (
+        "a9b83b5fd9cffc11ef08e8248437be83c75b2f0153fb46bc117b294b8ea90592 002_ReadMe.txt\r\n"
+        "4c1140ab846541cbedd6590b5b61bd3e16f9217e7be8557488d62859e97a816a "
+        "authorities-gnd-geografikum_lds_20260217.jsonld.gz\r\n"
+        "f0db9b1da48835beb7914d53b7db90c5fc76beca13ed79add629832ad5722de1 "
+        "authorities-gnd-geografikum_lds_20260217.ttl.gz\r\n"
+        "8a037bafd7a19d0f817aeb8ad0c62826d1b7d2edc95e52b699f38a08077e09fd "
+        "authorities-gnd-koerperschaft_lds_20260217.ttl.gz\r\n"
+        "fa220da1be0f05824348e6a237bd1f38307d8738e9ec02b31ff2c67527f36e53 "
+        "authorities-gnd-sachbegriff_lds_20260217.ttl.gz\r\n"
+    )
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("001_Pruefsumme_Checksum.txt"):
+            return httpx.Response(200, text=real)
+        return httpx.Response(200, headers={"Content-Length": "1000"})
+
+    release = find_release(httpx.Client(transport=httpx.MockTransport(handler)), DNB)
+    assert release.id == "20260217"
+    assert [(dump.name, dump.digest[:8]) for dump in release.files] == [
+        ("authorities-gnd-sachbegriff_lds_20260217.ttl.gz", "fa220da1"),
+        ("authorities-gnd-geografikum_lds_20260217.ttl.gz", "f0db9b1d"),
+    ]

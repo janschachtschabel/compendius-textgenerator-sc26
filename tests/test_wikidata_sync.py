@@ -19,7 +19,7 @@ import pytest
 
 from app.jobs.lock import LockHeldError
 from app.settings import Settings
-from app.sources.wikidata.index import WikidataIndex
+from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.wikidata.sync import (
     DUMP_DIR,
     LOCK_FILE,
@@ -319,3 +319,37 @@ def test_the_sync_of_an_installation_reads_its_settings(tmp_path: Path) -> None:
     sync = build_sync(settings)
     assert sync.index_path == settings.wikidata_db_path
     assert sync.base_url == "https://mirror.example/dumps" and sync.archive_date() == date(2026, 10, 15)
+
+
+def test_a_good_check_after_a_failed_one_clears_the_failure(tmp_path: Path, site: FakeDumps) -> None:
+    site.add("20260901", "2026-09-07 16:21:03")
+    _sync(tmp_path / "state", site).run("no index")
+    down = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(503)))
+    late = WikidataSync(
+        tmp_path / "state" / "wikidata.db", client=down, base_url=DUMPS, archive_date=lambda: date(2026, 9, 20)
+    )
+    with pytest.raises(httpx.HTTPStatusError):
+        late.due()
+    # The site answers again and has nothing newer than the index's run: the failure is over
+    assert _sync(tmp_path / "state", site, archive=date(2026, 9, 20)).due() is None
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["last_run"]["ok"] is True and status["last_run"]["error"] is None
+    assert status["last_run"]["reason"] == "check" and status["last_run"]["run"] == "20260901"
+
+
+def test_an_index_built_by_hand_after_a_failed_check_clears_the_failure(tmp_path: Path, site: FakeDumps) -> None:
+    site.add("20260801", "2026-08-04 18:13:34")
+    _sync(tmp_path / "state", site).run()
+    down = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(503)))
+    sync = WikidataSync(
+        tmp_path / "state" / "wikidata.db", client=down, base_url=DUMPS, archive_date=lambda: date(2026, 9, 15)
+    )
+    with pytest.raises(httpx.HTTPStatusError):
+        sync.due()
+    page_props, page = write_dumps(tmp_path / "hand", completed="2026-09-17 16:21:03")
+    langlinks = write_langlinks(tmp_path / "hand", completed="2026-09-17 16:25:40")
+    build_index(page_props, page, tmp_path / "state" / "wikidata.db", langlinks=langlinks)
+    # The index covers the archive now: nothing is asked of the site, and the failed check no longer counts
+    assert sync.due() is None
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["last_run"]["ok"] is True and status["last_run"]["run"] is None
