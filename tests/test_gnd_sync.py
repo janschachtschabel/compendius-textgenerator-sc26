@@ -263,3 +263,27 @@ def test_the_checksum_file_as_the_dnb_writes_it(dnb: FakeDnb) -> None:
         ("authorities-gnd-sachbegriff_lds_20260217.ttl.gz", "fa220da1"),
         ("authorities-gnd-geografikum_lds_20260217.ttl.gz", "f0db9b1d"),
     ]
+
+
+def test_a_check_while_a_run_holds_the_lock_leaves_the_status_to_the_run(tmp_path: Path, dnb: FakeDnb) -> None:
+    dnb.add("20260217")
+    _sync(tmp_path / "state", dnb).run()
+    status_file = tmp_path / "state" / "gnd_status.json"
+    before = status_file.read_text(encoding="utf-8")
+    (tmp_path / "state" / LOCK_FILE).write_text("pid 1", encoding="utf-8")  # a build by hand is under way
+    assert _sync(tmp_path / "state", dnb).due() is None
+    assert status_file.read_text(encoding="utf-8") == before, "the run writes its own outcome"
+
+
+def test_a_check_that_fails_without_a_message_names_the_error(tmp_path: Path, dnb: FakeDnb) -> None:
+    dnb.add("20260217")
+    _sync(tmp_path / "state", dnb).run()
+
+    def refuse(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("")
+
+    client = httpx.Client(transport=httpx.MockTransport(refuse))
+    with pytest.raises(httpx.ConnectError):
+        GndSync(tmp_path / "state" / "gnd.db", client=client, base_url=DNB).due()
+    status = read_status(tmp_path / "state")
+    assert status is not None and status["last_run"]["error"] == "check: ConnectError"

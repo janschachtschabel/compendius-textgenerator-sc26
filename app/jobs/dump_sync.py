@@ -21,7 +21,7 @@ from typing import Any, ClassVar
 
 import httpx
 
-from app.jobs.lock import HeldLock, acquire_lock
+from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
 from app.sources.zim.active import atomic_write_text
 from app.sources.zim.downloader import PART_SUFFIX, Downloader
 
@@ -142,11 +142,26 @@ class DumpSync:
     def record_check(self, newest: Release | None = None, error: BaseException | None = None) -> None:
         """A check that found nothing to build, or failed, goes to the status like a run (reason ``check``): a failed
         one so the gauge and its alert see it, a good one so that an earlier failure no longer counts. ``newest`` is
-        the release the source offered, when it was asked."""
-        stamp = now()
-        outcome = {"started_at": stamp, "reason": "check", "ok": error is None, "run": newest.id if newest else None}
-        failure = None if error is None else f"check: {error}"
-        self._write_status({"state": "idle", "last_run": {**outcome, "finished_at": stamp, "error": failure}})
+        the release the source offered, when it was asked. While a run holds the lock the check writes nothing: the
+        run is under way and writes its own outcome."""
+        try:
+            lock = acquire_lock(
+                self._dir / self.lock_file, stale_s=LOCK_STALE_S, now=time.time, owner=f"pid {os.getpid()}\ncheck\n"
+            )
+        except LockHeldError:
+            return
+        try:
+            stamp = now()
+            outcome = {
+                "started_at": stamp,
+                "reason": "check",
+                "ok": error is None,
+                "run": newest.id if newest else None,
+            }
+            failure = None if error is None else f"check: {str(error) or type(error).__name__}"
+            self._write_status({"state": "idle", "last_run": {**outcome, "finished_at": stamp, "error": failure}})
+        finally:
+            lock.release()
 
     def _drop_other_releases(self, dumps: Path, release: Release) -> None:
         """Remove what an older release left behind (a ``.part`` it never finished); the files of ``release`` resume."""
