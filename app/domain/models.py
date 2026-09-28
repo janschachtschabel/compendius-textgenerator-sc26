@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from enum import StrEnum
 from typing import Any
 
@@ -101,6 +102,17 @@ class Source(BaseModel):
             authority_score=self.authority_score,
             is_primary=self.is_primary,
         )
+
+
+def primary_of(sources: Iterable[Source]) -> Source | None:
+    """The main article of a corpus: the source marked primary, or the first one where none is.
+
+    Every corpus the service builds marks it (ZimRegistry.build_corpus puts it first). Four places picked it apart,
+    two with the first source standing in and two without, and there the topic stem went missing and linked articles
+    entered the corpus unfiltered (audit 2026-09-28, WA-05).
+    """
+    listed = list(sources)
+    return next((source for source in listed if source.is_primary), listed[0] if listed else None)
 
 
 class SourceRef(BaseModel):

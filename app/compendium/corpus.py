@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from app.domain.models import Chunk, Source
+from app.domain.models import Chunk, Source, primary_of
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import TopicMention
 from app.matching.lexicon import HeadingLexicon
@@ -35,7 +35,7 @@ def segment_corpus(
     that mention the topic. The cap is filled in ``ORIGIN_PRIORITY`` order while chunks keep the corpus order; a
     source left without chunks is not listed (the primary article always is).
     """
-    primary = next((s for s in sources if s.is_primary), None)
+    primary = primary_of(sources)
     topic = TopicMention.of(primary.title if primary else "")
     segmented: list[list[Chunk]] = []
     for source in sources:

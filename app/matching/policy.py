@@ -11,7 +11,7 @@ import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
-from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
+from app.domain.models import Chunk, ScoredChunk, Source, SourceRole, primary_of
 from app.knowledge.entities import is_subject
 from app.knowledge.topic import TopicMention
 from app.matching.base import tokenize
@@ -209,7 +209,7 @@ def assign(
         slot_id: {sc.chunk.chunk_id: sc for sc in scored} for slot_id, scored in fused.items()
     }
     exclusions = {slot.id: exclusion_terms(slot) for slot in content_slots}
-    primary = next((s for s in sources.values() if s.is_primary), None)
+    primary = primary_of(sources.values())
     topic = TopicMention.of(primary.title if primary else "")
 
     context = _Context.of(template, topic, confident_score)

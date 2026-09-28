@@ -27,6 +27,7 @@ from app.compose.regeneration import check_names
 from app.domain.models import (
     CollectionPart,
     Compendium,
+    primary_of,
 )
 from app.domain.requests import GenerateRequest, with_profile
 from app.knowledge.article_choice import (
@@ -212,7 +213,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
                 lap("knowledge")
 
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
-        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        primary = primary_of(sources)
         prepared.subtopics = subtopics(sources, primary)
         if "world" not in request.parts or not segment:  # paragraphs and their cap serve part 1 only
             prepared.sources = sources

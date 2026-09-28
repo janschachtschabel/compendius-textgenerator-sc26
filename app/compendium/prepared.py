@@ -6,7 +6,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, Resolution, Source
+from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, Resolution, Source, primary_of
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
 from app.knowledge.curriculum_check import CurriculumCheckReport
@@ -58,7 +58,7 @@ class PreparedTopic:
     @property
     def primary(self) -> Source | None:
         """The main article of the corpus, or its first source."""
-        return next((s for s in self.sources if s.is_primary), self.sources[0] if self.sources else None)
+        return primary_of(self.sources)
 
     @property
     def aliases(self) -> list[str]:

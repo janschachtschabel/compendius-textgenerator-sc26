@@ -9,7 +9,7 @@ German Wikipedia it found the topic Ei 862 times, Eis 313, Rad 93 and Ton 62 tim
 from __future__ import annotations
 
 from app.compendium.corpus import segment_corpus, subtopics
-from app.domain.models import ArticleSection, Paragraph, Source
+from app.domain.models import ArticleSection, Paragraph, Source, primary_of
 from app.knowledge.topic import TopicMention
 from app.matching.lexicon import HeadingLexicon
 
@@ -71,3 +71,24 @@ def test_the_subtopics_of_a_short_topic_name_it_as_a_word() -> None:
     ]
 
     assert subtopics([primary, *neighbours], primary) == ["Eier (Lebensmittel)"]
+
+
+def test_a_corpus_names_its_main_article_in_one_way() -> None:
+    """WA-05 (audit 2026-09-28): four places picked the main article, two of them the first source when none was
+    marked and two nothing; then the topic stem was missing, and linked articles went into the corpus unfiltered."""
+    first = _source("Ei", ["Ein Ei ist eine Keimzelle mit Schale und Dotter, gelegt von Vögeln und Reptilien."])
+    bird = _source(
+        "Vogel",
+        [
+            "Ein Vogel fliegt bei Tag über das Land und singt dabei sein Lied, meist in einem Baum.",
+            "Das Weibchen legt zwei Eier in das Nest und brütet sie zwei Wochen lang aus.",
+        ],
+    )
+    main = _source("Ei", ["Ein Ei ist eine Keimzelle."], "primary")
+
+    chunks, _, _ = segment_corpus([first, bird], HeadingLexicon.empty(), 100)
+
+    assert (primary_of([bird, main]), primary_of([first, bird]), primary_of([])) == (main, first, None)
+    assert [chunk.text for chunk in chunks if chunk.source_id == bird.source_id] == [
+        bird.sections[0].paragraphs[1].text
+    ]
