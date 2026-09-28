@@ -37,7 +37,7 @@ def stop_on_sigterm() -> None:
 
 
 def run_periodically(
-    task: Callable[[], bool | None],
+    task: Callable[[], bool | timedelta | None],
     interval: timedelta,
     *,
     retry_after: timedelta | None = None,
@@ -51,7 +51,8 @@ def run_periodically(
 
     The loop wakes every ``poll_s`` seconds to look for the trigger file and the stop event.
     A task that raises (logged) or returns ``False`` runs again after ``retry_after`` when that is shorter than
-    the interval; the loop returns once ``stop`` is set.
+    the interval; one that returns a ``timedelta`` runs again after it when that is shorter - the ZIM sync, when a
+    retired archive may go (audit 2026-09-28, BE-12). The loop returns once ``stop`` is set.
     """
     stop = stop or threading.Event()
     next_run = clock()
@@ -63,7 +64,13 @@ def run_periodically(
                 log.info("run requested via %s", trigger_file.name)
             early = min(interval, retry_after) if retry_after is not None else interval
             try:
-                wait = interval if task() is not False else early
+                result = task()
+                if result is False:
+                    wait = early
+                elif isinstance(result, timedelta):
+                    wait = min(interval, max(result, timedelta(0)))
+                else:
+                    wait = interval
             except Exception:
                 wait = early
                 log.exception("job failed; next attempt in %s", wait)

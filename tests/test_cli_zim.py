@@ -87,6 +87,9 @@ def test_one_loop_run_asks_for_an_early_retry_when_its_report_says_so() -> None:
         def run(self, options: SyncOptions) -> SyncReport:
             return self.report
 
+        def due_in(self, report: SyncReport) -> None:
+            return None  # no retired archive waits
+
     options = SyncOptions(profile="compact")
     assert _run_once(OneRun(SyncReport("compact", "t0", retry_soon=True)), options) is False  # type: ignore[arg-type]
     assert _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), options) is True  # type: ignore[arg-type]

@@ -119,11 +119,15 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return 0
 
 
-def _run_once(sync: ZimSync, options: SyncOptions) -> bool:
-    """One loop run; ``False`` asks the loop for the early retry."""
+def _run_once(sync: ZimSync, options: SyncOptions) -> bool | timedelta:
+    """One loop run; ``False`` asks the loop for the early retry, a ``timedelta`` for a run once a retired archive may
+    go - the next run would otherwise come after ZIM_SYNC_INTERVAL, 30 days (audit 2026-09-28, BE-12)."""
     report = sync.run(options)
     _print_report(report)
-    return not report.retry_soon
+    if report.retry_soon:
+        return False
+    due = sync.due_in(report)
+    return due if due is not None else True
 
 
 def _print_report(report: SyncReport) -> None:

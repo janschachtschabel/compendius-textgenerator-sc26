@@ -128,6 +128,23 @@ def test_a_task_that_asks_for_an_early_retry_gets_it() -> None:
     assert runs == [1000.0, 1030.0, 2030.0]
 
 
+def test_a_task_that_names_its_next_run_gets_it_before_the_interval() -> None:
+    """A sync that retired an archive runs again when its retention ends, not after ZIM_SYNC_INTERVAL (audit
+    2026-09-28, BE-12); a wait longer than the interval changes nothing."""
+    clock = FakeClock()
+    stop = threading.Event()
+    runs: list[float] = []
+
+    def task() -> timedelta | None:
+        runs.append(clock.now)
+        if len(runs) == 3:
+            stop.set()
+        return {1: timedelta(seconds=240), 2: timedelta(seconds=5000)}.get(len(runs))
+
+    run_periodically(task, timedelta(seconds=1000), poll_s=10, stop=stop, clock=clock, sleep=clock.sleep)
+    assert runs == [1000.0, 1240.0, 2240.0]
+
+
 def test_a_container_stop_reaches_the_job_as_a_keyboard_interrupt() -> None:
     # docker stop sends SIGTERM to PID 1 and kills it ten seconds later; as KeyboardInterrupt the running job still
     # writes its final status and releases its lock

@@ -125,8 +125,14 @@ Die Archiv-ID ist Katalogname plus Flavour, zum Beispiel `wikipedia_de_all_nopic
 Der Sync-Job pflegt das Verzeichnis `ZIM_DIR`: Er übernimmt vorhandene Dateien, lädt
 neue Dumps aus dem Kiwix-Katalog (Range-Resume in eine `.part`-Datei, SHA-256 aus dem
 Metalink), schaltet `active.json` atomar um und löscht abgelöste Dateien nach
-`ZIM_RETENTION_HOURS`. Die API-Prozesse prüfen `active.json` bei jeder Anfrage und öffnen
-neue Archive ohne Neustart. Zur Inferenzzeit wird nichts heruntergeladen.
+`ZIM_RETENTION_HOURS`: in einem Lauf, den er für das Ende der Frist ansetzt, und vor jedem Download.
+Ein Download beginnt nur, wenn das Volume ihn und 1 GB darüber fasst. Nach einem Wechsel von
+`ZIM_PROFILE` löst er die Archive des alten Profils ab, sobald die Pflichtarchive des neuen aktiv sind.
+Ein geladenes, geprüftes Archiv, das libzim nicht öffnen kann, löscht er und lädt diesen Dump nicht
+noch einmal (`unreadable` in `active.json`), erst einen neueren. Die API-Prozesse prüfen `active.json`
+bei jeder Anfrage und öffnen neue Archive ohne Neustart; der Sync schreibt die Datei nur, wenn sich
+etwas ändert, denn dann öffnet jeder Worker alle Archive neu und verliert seine Caches. Zur
+Inferenzzeit wird nichts heruntergeladen.
 
 ```bash
 uv run compendium zim status                       # aktive Archive, fehlende Pflichtarchive, letzter Sync
@@ -643,7 +649,7 @@ Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `ZIM_REQUIRED` | leer | Pflichtarchive für `/ready`; leer leitet sie aus `config/zim_subscriptions.yaml` für `ZIM_PROFILE` ab |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | Lädt beim ersten Start die fehlenden Pflichtarchive des Profils — `compact` rund 1,4 GB, `standard` rund 14,1 GB, `extended` rund 18,1 GB. Erst danach meldet `/ready` den Dienst bereit. `false` lässt das Volume, wie es ist; dann müssen die Archive von Hand hinein |
 | `ZIM_SYNC_INTERVAL` | `30d` | Wie oft der Sync-Job (`compendium zim sync --loop` im Updater-Sidecar) den Katalog prüft |
-| `ZIM_RETENTION_HOURS` | `24` | Wie lange ein ersetztes Archiv nach dem Umschalten liegen bleibt, bevor es gelöscht wird |
+| `ZIM_RETENTION_HOURS` | `24` | Wie lange ein ersetztes Archiv nach dem Umschalten liegen bleibt, bevor es gelöscht wird; für das Ende der Frist setzt der Sync-Job einen Lauf an |
 | `ZIM_CATALOG_URL` | leer | OPDS-Katalog für den Sync-Job; leer nimmt den eingebauten Kiwix-Katalog (`https://opds.library.kiwix.org/catalog/v2/entries`) |
 | `ZIM_DOWNLOAD_HOSTS` | `download.kiwix.org,lb.download.kiwix.org,mirror.download.kiwix.org` | Von welchen Hosts der Sync-Job laden darf. Ein Katalogeintrag, der woanders hinzeigt, wird abgelehnt |
 

@@ -37,6 +37,9 @@ class ActiveState(BaseModel):
     updated_at: str = ""
     archives: dict[str, ActiveArchive] = Field(default_factory=dict, description="subscription id -> archive")
     retired: list[RetiredArchive] = Field(default_factory=list)
+    unreadable: list[str] = Field(
+        default_factory=list, description="downloaded dumps libzim could not open: deleted, and not fetched again"
+    )
 
     def paths(self, zim_dir: Path) -> list[Path]:
         return [Path(zim_dir) / archive.file for archive in self.archives.values()]

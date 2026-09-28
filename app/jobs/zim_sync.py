@@ -1,9 +1,15 @@
-"""ZIM sync job (PLAN.md 4.1): adopt local files, download updates, switch ``active.json``, prune.
+"""ZIM sync job (PLAN.md 4.1): adopt local files, prune, download updates, switch ``active.json``, prune.
 
 Runs in the updater sidecar (``compendium zim sync --loop``) or by hand; the API never downloads.
 Every successful activation is written at once, so an interrupted run leaves a valid state and
 the next run continues where it stopped (the downloader resumes ``.part`` files). One run at a time:
 two would download into the same ``.part`` file and overwrite each other's ``active.json``.
+
+What may go goes before anything comes, and a download waits for room (audit 2026-09-28, BE-12): a retired archive
+was deleted only by a run after its retention, the loop ran next after ZIM_SYNC_INTERVAL and downloaded first, and
+the next update put three Wikipedia generations, about 41 GB, on a volume sized for two. A run that retires an
+archive names when it may go, and the loop comes back then. ``active.json`` is written only when it changes: every
+write made every API worker reopen every archive and lose its caches (PE-08).
 """
 
 from __future__ import annotations
@@ -11,6 +17,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import shutil
 from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime, timedelta
@@ -22,6 +29,7 @@ import httpx
 from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
 from app.settings import Settings
 from app.sources.zim.active import (
+    ACTIVE_FILE,
     ActiveArchive,
     ActiveState,
     RetiredArchive,
@@ -50,6 +58,10 @@ LOCK_FILE = "sync.lock"
 # A run writes its status at every step and every second of a download, and each write refreshes the lock;
 # an hour without a sign of life means the run crashed.
 LOCK_STALE_S = 3600
+# Room a download leaves besides the archive: on a small host state, Prometheus and the logs share the volume's disk
+FREE_SPACE_MARGIN = 1_000_000_000
+# A retired archive that could not go when due (a file Windows keeps open) is tried again after this, not at once
+PRUNE_RETRY = timedelta(hours=1)
 
 
 class SyncRunningError(RuntimeError):
@@ -90,10 +102,12 @@ class SyncReport:
     skipped: list[str] = field(default_factory=list)
     missing: list[str] = field(default_factory=list)
     pruned: list[str] = field(default_factory=list)
+    retired: list[str] = field(default_factory=list)  # files this run retired: replaced, or of another profile (KO-21)
     errors: list[str] = field(default_factory=list)
     # An error a run soon after can fix cheaply: resume a .part, reach the catalog again (not a hash mismatch)
     retry_soon: bool = False
     stopped: bool = False  # the container stopped the run; the next start resumes it (no error, audit KO-13)
+    next_prune_at: str = ""  # when the first retired archive may go; the loop runs again then (BE-12)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -130,6 +144,10 @@ def _utcnow() -> datetime:
     return datetime.now(UTC)
 
 
+def _free_bytes(directory: Path) -> int:
+    return shutil.disk_usage(directory).free
+
+
 class ZimSync:
     """One sync run over the subscriptions of a profile; state lives in the ZIM directory."""
 
@@ -143,6 +161,7 @@ class ZimSync:
         clock: Callable[[], datetime] = _utcnow,
         retention: timedelta = timedelta(hours=24),
         allowed_hosts: Sequence[str] = DEFAULT_ALLOWED_HOSTS,
+        free_bytes: Callable[[Path], int] = _free_bytes,
     ) -> None:
         self._zim_dir = Path(zim_dir)
         self._manifest = manifest
@@ -151,6 +170,8 @@ class ZimSync:
         self._clock = clock
         self._retention = retention
         self._allowed_hosts = tuple(allowed_hosts)
+        self._free_bytes = free_bytes
+        self._written: dict[str, Any] | None = None  # the state as active.json holds it, without its time stamp
         self._report: SyncReport | None = None
         self._last_finished: dict[str, Any] | None = None
         self._lock: HeldLock | None = None
@@ -186,12 +207,16 @@ class ZimSync:
             subscriptions = self._manifest.for_profile(options.profile)
             for sub in subscriptions:
                 self._adopt(sub, state, report)
+            self._prune(state, report)  # before any download: a retired archive past its retention goes first
+            self._prune_partials(subscriptions, state, report)
             for sub in subscriptions:
                 self._update(sub, state, options, report)
-            self._prune(state, report)
+            self._retire_other_profiles(subscriptions, state, report)
+            self._prune(state, report)  # what this run retired, with a retention of 0 at once
             self._prune_partials(subscriptions, state, report)
-            state.updated_at = self._clock().isoformat()
-            write_active(self._zim_dir, state)
+            report.next_prune_at = self._next_prune(state)
+            if state.model_dump(exclude={"updated_at"}) != self._written or not (self._zim_dir / ACTIVE_FILE).exists():
+                self._save(state)
         except BaseException as exc:  # also a full volume or Ctrl+C: the status must not stay "running"
             report.finished_at = self._clock().isoformat()
             if isinstance(exc, Exception):
@@ -224,6 +249,7 @@ class ZimSync:
         except ValueError as exc:
             log.error("%s; rebuilding the state from local files", exc)
             state = None
+        self._written = state.model_dump(exclude={"updated_at"}) if state is not None else None
         state = state or ActiveState()
         state.profile = profile
         return state
@@ -237,16 +263,16 @@ class ZimSync:
             log.warning("%s listed in active.json but missing on disk; dropping it", current.file)
             del state.archives[sub.id]
         candidates = [p for p in self._zim_dir.glob("*.zim") if sub.matches_file(p.name)]
-        if not candidates:
+        # the newest that opens: a newest file libzim cannot read decided alone and left none (audit 2026-09-28, KO-24)
+        for path in sorted(candidates, key=lambda p: dump_date(p.name), reverse=True):
+            try:
+                state.archives[sub.id] = self._describe(path, sub)
+            except Exception as exc:  # unreadable file: report it, try the next older one
+                report.errors.append(f"{sub.id}: cannot open {path.name}: {exc}")
+                continue
+            self._save(state)
+            report.adopted.append(sub.id)
             return
-        path = max(candidates, key=lambda p: dump_date(p.name))
-        try:
-            state.archives[sub.id] = self._describe(path, sub)
-        except Exception as exc:  # unreadable file: report it, keep going
-            report.errors.append(f"{sub.id}: cannot open {path.name}: {exc}")
-            return
-        write_active(self._zim_dir, state)
-        report.adopted.append(sub.id)
 
     def _update(self, sub: Subscription, state: ActiveState, options: SyncOptions, report: SyncReport) -> None:
         local = state.archives.get(sub.id)
@@ -269,10 +295,18 @@ class ZimSync:
         if local is None and not options.download_missing:
             report.missing.append(sub.id)
             return
+        if remote.file_name in state.unreadable:  # hash-checked and still unreadable: fetching it again changes nothing
+            report.errors.append(f"{sub.id}: {remote.file_name} could not be opened; waiting for a newer dump")
+            return
         try:
             check_download_url(remote.metalink_url, self._allowed_hosts)  # the hash must come from Kiwix too
             metalink = self._catalog.metalink(remote.metalink_url, check=self._check_url)
             check_download_url(metalink.source_url, self._allowed_hosts)  # also after redirects
+            cramped = self._no_room_for(remote.download_url, metalink.size)
+            if cramped:
+                report.errors.append(f"{sub.id}: {cramped}")
+                self._write_status("running")
+                return
             path = self._downloader.download(
                 remote.download_url,
                 self._zim_dir,
@@ -292,13 +326,19 @@ class ZimSync:
         try:
             archive = self._describe(path, sub)
         except Exception as exc:  # libzim raises RuntimeError for a file it cannot read, e.g. a newer version
-            report.errors.append(f"{sub.id}: cannot open the downloaded {path.name}: {exc}")
+            # the hash matched, so every run would fetch the same unreadable file again (13.6 GB each, KO-24)
+            report.errors.append(f"{sub.id}: cannot open the downloaded {path.name}, deleted it: {exc}")
+            self._delete(path)
+            state.unreadable.append(path.name)
+            self._save(state)
             self._write_status("running")
             return
         if local is not None and local.file != archive.file:
             state.retired.append(RetiredArchive(file=local.file, retired_at=self._clock().isoformat()))
+            report.retired.append(local.file)
         state.archives[sub.id] = archive
-        write_active(self._zim_dir, state)
+        state.unreadable = [name for name in state.unreadable if not sub.matches_file(name)]
+        self._save(state)
         report.downloaded.append(sub.id)
         self._write_status("running")
 
@@ -340,7 +380,55 @@ class ZimSync:
                 continue
             report.pruned.append(part.name)
 
+    def _retire_other_profiles(
+        self, subscriptions: Sequence[Subscription], state: ActiveState, report: SyncReport
+    ) -> None:
+        """Retire the archives no subscription of this profile names, once its required ones are active.
+
+        After a change of ZIM_PROFILE they stayed active for good: the full Wikipedia went on leading after standard ->
+        compact, and its 13.6 GB never went (audit 2026-09-28, KO-21). Until the new profile has its required
+        archives, the old ones serve.
+        """
+        if not {sub.id for sub in subscriptions if sub.required} <= set(state.archives):
+            return
+        wanted = {sub.id for sub in subscriptions}
+        for archive_id in [archive_id for archive_id in state.archives if archive_id not in wanted]:
+            archive = state.archives.pop(archive_id)
+            state.retired.append(RetiredArchive(file=archive.file, retired_at=self._clock().isoformat()))
+            report.retired.append(archive.file)
+
+    def due_in(self, report: SyncReport) -> timedelta | None:
+        """How long until a retired archive of the run may go, at least ``PRUNE_RETRY``; ``None`` when none waits."""
+        if not report.next_prune_at:
+            return None
+        return max(datetime.fromisoformat(report.next_prune_at) - self._clock(), PRUNE_RETRY)
+
     # -- helpers ---------------------------------------------------------------------------------
+    def _next_prune(self, state: ActiveState) -> str:
+        due = [datetime.fromisoformat(retired.retired_at) + self._retention for retired in state.retired]
+        return min(due).isoformat() if due else ""
+
+    def _no_room_for(self, url: str, size: int) -> str:
+        """Why the download of ``url`` would not fit, or "": what its ``.part`` already holds counts."""
+        part = self._zim_dir / f"{url.rsplit('/', 1)[-1]}{PART_SUFFIX}"
+        needed = size - (part.stat().st_size if part.exists() else 0) + FREE_SPACE_MARGIN
+        free = self._free_bytes(self._zim_dir)
+        if free >= needed:
+            return ""
+        return f"{free / 1e9:.1f} GB free, {needed / 1e9:.1f} GB needed for {part.name.removesuffix(PART_SUFFIX)}"
+
+    def _save(self, state: ActiveState) -> None:
+        state.updated_at = self._clock().isoformat()
+        write_active(self._zim_dir, state)
+        self._written = state.model_dump(exclude={"updated_at"})
+
+    @staticmethod
+    def _delete(path: Path) -> None:
+        try:
+            path.unlink(missing_ok=True)
+        except OSError as exc:  # the next adoption skips it as unreadable; an operator removes it
+            log.warning("cannot delete %s: %s", path.name, exc)
+
     def _check_url(self, url: str) -> None:
         check_download_url(url, self._allowed_hosts)
 
