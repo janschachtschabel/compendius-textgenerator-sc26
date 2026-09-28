@@ -13,6 +13,17 @@ from typing import Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 Generator = Literal["", "sources", "glossary", "actors"]
+Role = Literal["", "definition", "systematik", "context"]
+
+# The keys of the shared heading lexicon (config/heading_lexicon.yaml) that stand for a role. A template that names
+# no role takes its roles from them, as the built-in templates were read before roles (audit 2026-09-27, AR-04).
+ROLE_KEYS: dict[str, Role] = {
+    "themendefinition": "definition",
+    "definition": "definition",
+    "systematik": "systematik",
+    "gesellschaftlicher_kontext": "context",
+}
+ACTORS_KEY = "akteure"  # where the shared lexicon files the sections on persons: material of the actors block
 
 
 class FacetSpec(BaseModel):
@@ -86,6 +97,13 @@ class TemplateSlot(BaseModel):
         default_factory=list,
         description="Preferred source projects, best first; a passage from the first one scores highest",
     )
+    role: Role = Field(
+        "",
+        description="What the block is to the rules beyond its text. definition: the lead of the main article and "
+        "the definitions of the topic go here; systematik: the introductions of the sub-areas; context: where "
+        "statements of relevance belong. Empty: none of these. A template that names no role at all takes them from "
+        "the keys themendefinition, systematik and gesellschaftlicher_kontext, as sc26 names its blocks",
+    )
 
     @property
     def is_generated(self) -> bool:
@@ -147,6 +165,18 @@ class Template(BaseModel):
         if not slots:
             raise ValueError("a template needs at least one slot")
         return slots
+
+    @model_validator(mode="after")
+    def _roles_from_keys(self) -> Template:
+        # A template written before roles keeps working as it did; one that names a role says all of them
+        if not any(slot.role for slot in self.slots):
+            self.slots = [
+                slot.model_copy(update={"role": ROLE_KEYS[slot.slot]})
+                if slot.slot in ROLE_KEYS and not slot.is_generated
+                else slot
+                for slot in self.slots
+            ]
+        return self
 
     @model_validator(mode="after")
     def _default_slot_is_a_content_slot(self) -> Template:

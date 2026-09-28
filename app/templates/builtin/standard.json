@@ -10,6 +10,7 @@
     {
       "id": "std_1",
       "slot": "themendefinition",
+      "role": "definition",
       "title": "1. Definition und zentrale Grundbegriffe",
       "description": "Grundlegende Begriffsklärung, Definition des Gegenstands und Einordnung des Themas.",
       "inclusions": "Definition, Gegenstandsbereich, Leitfragen, wesentliche Grundbegriffe",
@@ -51,6 +52,7 @@
     {
       "id": "std_5",
       "slot": "gesellschaftlicher_kontext",
+      "role": "context",
       "title": "5. Grenzen, Herausforderungen und Kontroversen",
       "description": "Kritische Einordnung, offene Probleme, Grenzen, ethische Fragen und Debatten.",
       "inclusions": "Grenzen, Probleme, Risiken, Debatten, Kritik",

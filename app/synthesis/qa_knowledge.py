@@ -58,12 +58,13 @@ def knowledge_of_compendium(compendium: Compendium) -> Knowledge:
     The glossary holds one definition per related article and the actor list the first sentence of each person's
     article: no prose a parse could ask about, but a definition asks "Was ist …?" and a person "Wer war …?".
     """
-    blocks = {section.slot_key: section.text for section in compendium.sections if section.text.strip()}
+    # Told apart by their rows, as in a text (knowledge_of_text): the keys are the template's to choose (AR-04)
+    generated = [s.text for s in compendium.sections if s.status is SectionStatus.GENERATED and s.text.strip()]
     title = compendium.resolution.title if compendium.resolution is not None else compendium.topic
     return Knowledge(
         text=text_of_compendium(compendium),
-        glossary=blocks.get("glossar", ""),
-        actors=blocks.get("akteure", ""),
+        glossary="\n\n".join(block for block in generated if is_glossary_block(block)),
+        actors="\n\n".join(block for block in generated if is_actor_block(block)),
         topic=title,
     )
 

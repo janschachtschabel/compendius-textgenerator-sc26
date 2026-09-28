@@ -21,6 +21,12 @@ _RELEVANCE_RE = re.compile(
 def lint_sections(template: Template, sections: Sequence[Section], catalog: FacetCatalog) -> list[LintFinding]:
     findings: list[LintFinding] = []
     slots = {slot.id: slot for slot in template.slots}
+    # The blocks the rules below speak of, as this template has them - sc26's numbers were wrong for any other
+    # (audit 2026-09-27, AR-04)
+    number = {slot.id: n for n, slot in enumerate(template.slots, 1)}
+    glossary = any(slot.generator == "glossary" for slot in template.slots)
+    actors = next((slot for slot in template.slots if slot.generator == "actors"), None)
+    context = next((slot for slot in template.slots if slot.role == "context"), None)
     for section in sections:
         slot = slots.get(section.slot_id)
         if slot is None or section.status is SectionStatus.EMPTY:
@@ -44,7 +50,8 @@ def lint_sections(template: Template, sections: Sequence[Section], catalog: Face
                         message=f"Facette „{name}“ ist in {slot.title} nicht deklariert",
                     )
                 )
-        if slot.slot not in {"glossar", "themendefinition", "fachinhalte"} and not slot.is_generated:
+        defines = slot.role == "definition" or slot.slot == template.default_slot or slot.is_generated
+        if glossary and not defines:
             hits = _DEFINITION_RE.findall(section.text)
             if len(hits) >= 2:
                 findings.append(
@@ -55,21 +62,21 @@ def lint_sections(template: Template, sections: Sequence[Section], catalog: Face
                         message=f"{len(hits)} Definitionssätze außerhalb des Glossars",
                     )
                 )
-        if slot.slot != "akteure" and _PERSON_HEADING_RE.search(section.text):
+        if actors is not None and slot.id != actors.id and _PERSON_HEADING_RE.search(section.text):
             findings.append(
                 LintFinding(
                     rule="person-heading-outside-actors",
                     section_id=section.slot_id,
-                    message="Personenname als Überschrift außerhalb von Baustein 6",
+                    message=f"Personenname als Überschrift außerhalb von Baustein {number[actors.id]}",
                 )
             )
-        if slot.slot not in {"gesellschaftlicher_kontext"} and _RELEVANCE_RE.search(section.text):
+        if context is not None and slot.id != context.id and _RELEVANCE_RE.search(section.text):
             findings.append(
                 LintFinding(
                     rule="relevance-outside-context",
                     severity="info",
                     section_id=section.slot_id,
-                    message="Relevanzaussage außerhalb von Baustein 4",
+                    message=f"Relevanzaussage außerhalb von Baustein {number[context.id]}",
                 )
             )
     return findings

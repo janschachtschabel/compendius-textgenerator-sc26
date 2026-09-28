@@ -90,9 +90,11 @@ def build_frontmatter(
         "sources_snapshot": [dict(s) for s in zim_snapshot],
     }
     if "world" in parts:  # the licence note speaks about part 1 only
+        # the number of the template's sources block: 12 in sc26, 6 in standard (audit 2026-09-27, AR-04)
+        number = next((n for n, slot in enumerate(template.slots, 1) if slot.generator == "sources"), None)
+        per_source = f"; TULLU je Quelle in Baustein {number}" if number is not None else ""
         frontmatter["license"] = (
-            "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0); "
-            "TULLU je Quelle in Baustein 12"
+            "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0)" + per_source
         )
     if extraction_requested is not None and extraction_requested != extraction:
         frontmatter["extraction_requested"] = extraction_requested

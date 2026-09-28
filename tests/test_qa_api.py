@@ -20,6 +20,7 @@ from app.llm.deadline import Deadline
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
+from tests.qa_texts import GLOSSARY_ROW
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
@@ -375,17 +376,23 @@ def test_the_rule_stage_hears_the_glossary_the_actors_and_the_topic(
         heard.update(text=text, **kwargs)
         return []
 
-    glossary = Section(
-        slot_id="s2", slot_key="glossar", title="Glossar", text="GLOSSAR", status=SectionStatus.GENERATED
+    # Told apart by their rows, whatever the template calls them (audit 2026-09-27, AR-04)
+    actor_block = (
+        "#### Person" + chr(10) + "- **[Isaac Newton](https://de.wikipedia.org/wiki/Isaac_Newton)** — Physiker"
     )
-    actors = Section(slot_id="s3", slot_key="akteure", title="Akteure", text="AKTEURE", status=SectionStatus.GENERATED)
+    glossary = Section(
+        slot_id="s2", slot_key="glossar", title="Glossar", text=GLOSSARY_ROW, status=SectionStatus.GENERATED
+    )
+    actors = Section(
+        slot_id="s3", slot_key="akteure", title="Akteure", text=actor_block, status=SectionStatus.GENERATED
+    )
     service: CompendiumService = client.app.state.service  # type: ignore[attr-defined]
     monkeypatch.setattr(service, "generate", lambda payload, **_: _optik(BLOCK, glossary, actors))
     monkeypatch.setattr("app.api.v2.qa.load_spacy", lambda model: RecordedNlp())
     monkeypatch.setattr("app.api.v2.qa.rule_pairs", spy)
     client.post("/api/v2/qa", json={"topic": "Optik", "method": "rule-based"})
     assert heard["text"] == BLOCK.text, "the generated blocks stay out of the prose"
-    assert (heard["glossary"], heard["actors"], heard["topic"]) == ("GLOSSAR", "AKTEURE", "Optik")
+    assert (heard["glossary"], heard["actors"], heard["topic"]) == (GLOSSARY_ROW, actor_block, "Optik")
 
 
 def test_a_text_is_still_taken_as_it_comes(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:

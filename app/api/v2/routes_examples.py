@@ -232,7 +232,11 @@ TEMPLATE_EXAMPLES: dict[str, dict[str, Any]] = {
             "assignment_rules gilt für matcher llm. heading_patterns sind reguläre Ausdrücke für Überschriften der "
             "Quellen, facets die Facetten des Bausteins über den Katalog config/facets.yaml hinaus, budget seine "
             "Menge, source_preference die bevorzugten Projekte. generator sources, glossary oder actors erzeugt "
-            "Quellenliste, Glossar oder Akteursverzeichnis. version und builtin setzt der Dienst."
+            "Quellenliste, Glossar oder Akteursverzeichnis. role (definition, systematik, context) setzt nur ein "
+            "Template mit eigenem Definitions-, Gliederungs- oder Kontextbaustein: definition nimmt die Einleitung und "
+            "die Definitionen des Hauptartikels auf und sonst nichts; ohne Rollen gelten die Schlüssel "
+            "themendefinition, systematik und gesellschaftlicher_kontext. Die Schlüssel (slot) müssen verschieden "
+            "sein, auch ohne Rücksicht auf die Schreibweise. version und builtin setzt der Dienst."
         ),
         "value": {
             "id": "optik-unterricht",
@@ -260,6 +264,7 @@ TEMPLATE_EXAMPLES: dict[str, dict[str, Any]] = {
                     "budget": {"min_chunks": 1, "max_chunks": 6, "target_chars": 2400, "weight": 1.4},
                     "generator": "",
                     "source_preference": ["wikipedia", "wikibooks"],
+                    "role": "",
                 },
                 {
                     "id": "u2",

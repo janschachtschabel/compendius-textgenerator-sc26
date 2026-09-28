@@ -15,7 +15,7 @@ from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.knowledge.entities import is_subject
 from app.knowledge.topic import topic_stem
 from app.matching.base import tokenize
-from app.templates.schema import Template, TemplateSlot
+from app.templates.schema import ACTORS_KEY, ROLE_KEYS, Template, TemplateSlot
 
 LEXICON_SCORE = 0.9
 LEAD_SCORE = 2.0
@@ -24,8 +24,6 @@ SUBTOPIC_LEAD_SCORE = 0.9
 CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks then take the default slot
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
 MATERIAL_SCORE = CONFIDENT_SCORE  # a curated OER material starts at the confidence threshold (PLAN.md 6.3, D24)
-DEFINITION_SLOT_KEYS = ("themendefinition", "definition")
-SYSTEMATIK_SLOT_KEYS = ("systematik",)
 
 
 @dataclass
@@ -44,20 +42,36 @@ def exclusion_terms(slot: TemplateSlot) -> set[str]:
     return {t for t in tokenize(text) if len(t) >= 5}
 
 
+@dataclass(frozen=True)
+class _Context:
+    """What a paragraph's score for a block depends on beyond the two: the topic and the template's roles."""
+
+    primary_stem: str
+    confident_score: float
+    # the lexicon keys that mark a definition: the shared lexicon's and the template's definition block
+    definition_keys: frozenset[str]
+
+    @classmethod
+    def of(cls, template: Template, primary_stem: str, confident_score: float) -> _Context:
+        shared = {key for key, role in ROLE_KEYS.items() if role == "definition"}
+        own = {slot.slot for slot in template.slots if slot.role == "definition"}
+        return cls(primary_stem, confident_score, frozenset(shared | own))
+
+
 def _score_candidate(
     slot: TemplateSlot,
     chunk: Chunk,
     fused_score: float,
     source: Source | None,
     exclusions: set[str],
-    primary_stem: str,
-    confident_score: float = CONFIDENT_SCORE,
+    context: _Context,
 ) -> tuple[float, list[str]]:
     score = fused_score
     reasons: list[str] = []
+    primary_stem = context.primary_stem
 
     if chunk.is_lead:
-        if slot.slot in DEFINITION_SLOT_KEYS:
+        if slot.role == "definition":
             return LEAD_SCORE, ["Lead-Absatz des Hauptartikels"]
         return 0.0, ["Lead gehört in die Themendefinition"]
 
@@ -69,10 +83,10 @@ def _score_candidate(
 
     # Block 1 defines the topic. Its material is the lead of the main article, explicit definition
     # sections of the main article and the plain-language lead of the same topic in another archive.
-    if slot.slot in DEFINITION_SLOT_KEYS:
+    if slot.role == "definition":
         if is_twin_lead:
             return TWIN_LEAD_SCORE, ["Einstiegsdefinition aus einem zweiten Archiv"]
-        if is_secondary or lexicon_slot not in DEFINITION_SLOT_KEYS:
+        if is_secondary or lexicon_slot not in context.definition_keys:
             return 0.0, ["Themendefinition nur aus dem Hauptartikel"]
     elif is_twin_lead:
         return 0.0, ["Zwillings-Lead gehört in die Themendefinition"]
@@ -88,17 +102,17 @@ def _score_candidate(
         and primary_stem
         and primary_stem in source.title.lower()
     ):
-        if slot.slot in SYSTEMATIK_SLOT_KEYS:
+        if slot.role == "systematik":
             return SUBTOPIC_LEAD_SCORE, ["Einleitung eines Teilgebiets"]
         return 0.0, ["Teilgebiets-Einleitung gehört in die Systematik"]
 
     # Other introductions of related articles (a heading like "Allgemeines") define sub-topics;
     # those that carry the topic in their title lean towards block 2.
-    is_intro = chunk.heading_level == 0 or lexicon_slot in DEFINITION_SLOT_KEYS
+    is_intro = chunk.heading_level == 0 or lexicon_slot in context.definition_keys
     if is_secondary and is_intro and source is not None:
-        if lexicon_slot in DEFINITION_SLOT_KEYS:
+        if lexicon_slot in context.definition_keys:
             lexicon_slot = None
-        if slot.slot in SYSTEMATIK_SLOT_KEYS and primary_stem and primary_stem in source.title.lower():
+        if slot.role == "systematik" and primary_stem and primary_stem in source.title.lower():
             score *= 1.25
             reasons.append("Teilgebiet des Themas")
 
@@ -110,7 +124,7 @@ def _score_candidate(
             score *= 0.5
             reasons.append(f"Überschrift spricht für {lexicon_slot}")
 
-    if slot.slot in SYSTEMATIK_SLOT_KEYS and chunk.is_section_lead:
+    if slot.role == "systematik" and chunk.is_section_lead:
         score *= 1.3
         reasons.append("Abschnittseinleitung (H2)")
 
@@ -131,7 +145,7 @@ def _score_candidate(
         # A paragraph of a reusable collection material counts as evidence for the blocks that want
         # materials (Bildung, Praxis in sc26); the ranker still orders those blocks among themselves. The
         # score starts at the confidence threshold, so the rule holds whatever threshold is configured.
-        score = confident_score + (1 - confident_score) * min(score, 1.0)
+        score = context.confident_score + (1 - context.confident_score) * min(score, 1.0)
         reasons.append("Material der Wissens-Sammlung")
 
     return score, reasons
@@ -170,7 +184,10 @@ def assign(
     primary = next((s for s in sources.values() if s.is_primary), None)
     primary_stem = topic_stem(primary.title) if primary else ""
 
+    context = _Context.of(template, primary_stem, confident_score)
     generated_keys = {slot.slot for slot in template.slots if slot.is_generated}
+    if any(slot.generator == "actors" for slot in template.slots):
+        generated_keys.add(ACTORS_KEY)  # the shared lexicon's persons, whatever the template calls its actors block
     best: dict[str, tuple[str, float, list[str]]] = {}
     slot_scores: dict[str, dict[str, float]] = {slot.id: {} for slot in content_slots}
     skipped = 0
@@ -183,9 +200,7 @@ def assign(
         for slot in content_slots:
             fused_item = fused_lookup.get(slot.id, {}).get(chunk.chunk_id)
             fused_score = fused_item.score if fused_item else 0.0
-            score, reasons = _score_candidate(
-                slot, chunk, fused_score, source, exclusions[slot.id], primary_stem, confident_score
-            )
+            score, reasons = _score_candidate(slot, chunk, fused_score, source, exclusions[slot.id], context)
             if fused_item:
                 reasons = [*fused_item.reasons[:3], *reasons]
             candidates.append((slot.id, score, reasons))

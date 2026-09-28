@@ -31,9 +31,7 @@ from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
 from app.synthesis.sources_section import build_sources_section
-from app.templates.schema import Template, TemplateSlot
-
-ACTOR_SLOT_KEY = "akteure"
+from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
 
 Lookup = Callable[[str], Source | None]
 
@@ -192,7 +190,8 @@ class SectionWriter:
         if slot.generator == "actors":
             preferred = set()
             if primary is not None:
-                preferred = {s.heading for s in primary.sections if lexicon.classify(s.path) == ACTOR_SLOT_KEY}
+                persons = {ACTORS_KEY, slot.slot}  # the shared lexicon's key and the template's own (AR-04)
+                preferred = {s.heading for s in primary.sections if lexicon.classify(s.path) in persons}
             actors = collect_actors(primary, sources, self.lookup, preferred_headings=preferred)
             functions = list(dict.fromkeys(f for a in actors for f in a.functions))
             facets = {"Akteursfunktion": functions} if functions else {}

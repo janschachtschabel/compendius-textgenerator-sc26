@@ -11,6 +11,7 @@
     {
       "id": "sc26_1",
       "slot": "themendefinition",
+      "role": "definition",
       "title": "1 · Themendefinition",
       "description": "Was das Thema ist, in einem Satz; die Leitfragen des Kompendiums; die Abgrenzung dessen, was nicht dazugehört, mit Angabe des zuständigen Fachs. Keine Relevanzaussage, die steht nur in Baustein 4.",
       "inclusions": "Kerndefinition, Gegenstandsbereich, Leitfragen, disziplinäre Zuordnung, Abgrenzung",
@@ -24,6 +25,7 @@
     {
       "id": "sc26_2",
       "slot": "systematik",
+      "role": "systematik",
       "title": "2 · Gliederung & Systematik",
       "description": "Ordnungsprinzip des Fachgebiets und die einzige Aufzählung seiner Teilgebiete und Fachrichtungen; Gegenstandsbereiche, zentrale Kategorien und die Beziehungen der Teilgebiete zueinander.",
       "inclusions": "Teilgebiete, Teilbereiche, Fachrichtungen, Disziplinen, Ober- und Unterbegriffe, Gegenstandsbereiche, Ordnungsprinzip, Klassifikation des Fachs",
@@ -50,6 +52,7 @@
     {
       "id": "sc26_4",
       "slot": "gesellschaftlicher_kontext",
+      "role": "context",
       "title": "4 · Gesellschaftlicher Kontext",
       "description": "Relevanz für Gesellschaft, Alltag und Praxis (einzige Stelle im Kompendium); Debatten mit Positionen und Argumenten; politische Rahmensetzungen und Förderentscheidungen; soziale Auswirkungen; Alltag, Haushalt, Natur und Hobby; Ethik mit Dual-Use und Missbrauchspotenzial.",
       "inclusions": "gesellschaftliche Bedeutung, Alltag, Hobby, Debatte, Kritik, Politik, Förderung, Soziales, Ethik, Dual-Use, Risiken, Umwelt, Kultur",
