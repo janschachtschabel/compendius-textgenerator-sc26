@@ -1,5 +1,5 @@
 # Tests der Alarmregeln: promtool test rules monitoring/alerts_test.yml
-# (im Container: docker run --rm -v "$PWD/monitoring:/m" --entrypoint promtool prom/prometheus:v3.14.0 test rules /m/alerts_test.yml)
+# (im Container: docker run --rm -v "$PWD/monitoring:/m" --entrypoint promtool prom/prometheus:v3.15.0 test rules /m/alerts_test.yml)
 rule_files:
   - alerts.yml
 

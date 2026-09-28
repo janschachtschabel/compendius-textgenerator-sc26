@@ -907,7 +907,7 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 Alarmregeln liegen in [monitoring/alerts.yml](monitoring/alerts.yml), ihre Tests in `monitoring/alerts_test.yml`:
 
 ```bash
-docker run --rm -v "$PWD/monitoring:/m" --entrypoint promtool prom/prometheus:v3.14.0 test rules /m/alerts_test.yml
+docker run --rm -v "$PWD/monitoring:/m" --entrypoint promtool prom/prometheus:v3.15.0 test rules /m/alerts_test.yml
 docker compose --profile monitoring up -d api prometheus   # Prometheus lokal auf 127.0.0.1:9090
 ```
 
