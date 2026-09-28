@@ -12,11 +12,13 @@ FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e2
 COPY --from=uv /uv /uvx /bin/
 WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
-# Abhaengigkeiten zuerst (eigene Layer, aendern sich selten)
+# Abhaengigkeiten zuerst (eigene Layer, aendern sich selten). Die Gruppe build bringt hatchling aus dem Lockfile, mit
+# Pruefsumme: Das Projekt baut ohne Isolation daraus, statt es beim Bau ungeprueft von PyPI zu holen (pyproject.toml;
+# Audit 2026-09-28, AB-05).
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev --extra embeddings --extra entities
+    uv sync --locked --no-install-project --no-dev --group build --extra embeddings --extra entities
 # Embedding-Modell zur Bauzeit laden, damit die Laufzeit den Hugging-Face-Hub nie anspricht. Die Revision ist
 # festgelegt, damit jeder Build dasselbe Modell enthaelt (neue Revision: Eval neu messen, dann hier eintragen).
 # MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF.
@@ -58,7 +60,7 @@ COPY app ./app
 # while every layer reported DONE. --reinstall-package rebuilds it, and the comparison afterwards proves
 # the venv carries what was copied - a silently old image is worse than a failed build.
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --inexact --no-dev --no-editable --reinstall-package compendious-text-fastapi \
+    uv sync --locked --inexact --no-dev --group build --no-editable --reinstall-package compendious-text-fastapi \
       --extra embeddings --extra entities \
     && ! find app -name __pycache__ -print -quit | grep -q . \
     && installed=$(/app/.venv/bin/python -c "import app, pathlib; print(pathlib.Path(app.__file__).parent)") \

@@ -46,10 +46,19 @@ dev = [
     # fallback would break every test that uses it (audit 2026-09-28, AB-04)
     "httpx2>=2.13",
 ]
+# The build backend, locked with its hashes like every other package. The project builds from this group without
+# isolation; isolated, uv fetched hatchling from PyPI at every image build, unhashed, and a bad release could have
+# written into the image's environment unseen (audit 2026-09-28, AB-05). editables: hatchling's editable install,
+# which uv sync makes outside the image
+build = ["hatchling>=1.27", "editables>=0.5"]
 
 [build-system]
 requires = ["hatchling>=1.27"]  # PEP 639 licence metadata
 build-backend = "hatchling.build"
+
+[tool.uv]
+default-groups = ["dev", "build"]
+no-build-isolation-package = ["compendious-text-fastapi"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
