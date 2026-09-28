@@ -29,6 +29,7 @@ DEFAULT_ALLOWED_HOSTS: tuple[str, ...] = ("download.kiwix.org", "lb.download.kiw
 PART_SUFFIX = ".part"
 _FILE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _HASH_LABELS = {"sha256": "SHA-256", "sha1": "SHA-1"}
+_CONTENT_RANGE = re.compile(r"^bytes (\d+)-\d+/(?:\d+|\*)$")
 
 
 class DownloadError(RuntimeError):
@@ -96,6 +97,12 @@ def _hash_file(path: Path, hasher: Any, chunk_size: int) -> None:
     with path.open("rb") as fh:
         while chunk := fh.read(chunk_size):
             hasher.update(chunk)
+
+
+def _range_start(response: httpx.Response) -> int | None:
+    """The first byte a 206 answer carries, from its Content-Range; ``None`` when it names none."""
+    match = _CONTENT_RANGE.match(response.headers.get("content-range", ""))
+    return int(match.group(1)) if match else None
 
 
 class Downloader:
@@ -182,11 +189,23 @@ class Downloader:
 
     def _transfer(self, url: str, transfer: _Transfer, progress: ProgressCallback | None) -> None:
         state = transfer.progress
-        headers = {"Range": f"bytes={state.bytes_done}-"} if state.bytes_done else {}
+        # The bytes as the server holds them: httpx asked for gzip and unpacked it, so a .gz file served with
+        # Content-Encoding: gzip outgrew its size, and a range counted the encoded body (audit 2026-09-27, KO-17)
+        headers = {"Accept-Encoding": "identity"}
+        if state.bytes_done:
+            headers["Range"] = f"bytes={state.bytes_done}-"
         last_report = time.monotonic()
         try:
             with self._client.stream("GET", url, headers=headers) as response:
                 if response.status_code == 206:
+                    if _range_start(response) != state.bytes_done:
+                        # The body would not continue the .part; it failed at the hash, and the next attempt came a
+                        # sync interval later. Start over on the next one, which asks for no range (audit KO-14)
+                        transfer.part.unlink(missing_ok=True)
+                        raise TransferError(
+                            f"{transfer.part.name}: the server answered another range than bytes={state.bytes_done}-; "
+                            ".part removed, the next attempt starts over"
+                        )
                     mode = "ab"
                 elif response.status_code == 200:
                     mode = "wb"
@@ -197,7 +216,7 @@ class Downloader:
                 else:
                     raise TransferError(f"HTTP {response.status_code} for {url}")
                 with transfer.part.open(mode) as fh:
-                    for chunk in response.iter_bytes(self.chunk_size):
+                    for chunk in response.iter_raw(self.chunk_size):
                         fh.write(chunk)
                         transfer.hasher.update(chunk)
                         state.bytes_done += len(chunk)

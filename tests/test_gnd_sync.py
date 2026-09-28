@@ -60,7 +60,7 @@ class FakeDnb:
             body = self.files[name]
             if request.method == "HEAD":
                 return httpx.Response(200, headers={"Content-Length": str(len(body))})
-            return httpx.Response(200, content=body)
+            return httpx.Response(200, stream=httpx.ByteStream(body))  # streamed, as the network does
         return httpx.Response(404)
 
     def downloads(self) -> list[str]:

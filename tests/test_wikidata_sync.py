@@ -82,7 +82,7 @@ class FakeDumps:
         if match := re.fullmatch(r"/dewiki/(\d{8})/dumpstatus\.json", path):
             return httpx.Response(200, json=self.status[match.group(1)])
         if path in self.files:
-            return httpx.Response(200, content=self.files[path])
+            return httpx.Response(200, stream=httpx.ByteStream(self.files[path]))  # streamed, as the network does
         return httpx.Response(404)
 
     def downloads(self) -> list[str]:

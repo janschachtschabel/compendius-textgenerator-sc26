@@ -1,5 +1,6 @@
 """Downloader: range resume, hash verification, host allowlist; server simulated with MockTransport."""
 
+import gzip
 import hashlib
 from collections.abc import Callable, Iterator
 from pathlib import Path
@@ -12,11 +13,13 @@ from app.sources.zim.downloader import (
     Downloader,
     DownloadError,
     DownloadProgress,
+    TransferError,
     check_download_url,
     validate_file_name,
 )
 
 BLOB = bytes(range(256)) * 40  # 10240 bytes
+GZIPPED = gzip.compress(b"INSERT INTO page_props VALUES (1);" * 200)  # a dump as the server holds it
 SHA = hashlib.sha256(BLOB).hexdigest()
 URL = "https://lb.download.kiwix.org/zim/other/test_de_all_maxi_2026-08.zim"
 FILE = "test_de_all_maxi_2026-08.zim"
@@ -33,8 +36,8 @@ def _server(blob: bytes, calls: list[httpx.Request], *, honor_range: bool = True
             start = int(range_header.removeprefix("bytes=").split("-")[0])
             body = blob[start:]
             headers = {"Content-Range": f"bytes {start}-{len(blob) - 1}/{len(blob)}", "Content-Length": str(len(body))}
-            return httpx.Response(206, content=body, headers=headers)
-        return httpx.Response(200, content=blob, headers={"Content-Length": str(len(blob))})
+            return httpx.Response(206, stream=httpx.ByteStream(body), headers=headers)
+        return httpx.Response(200, stream=httpx.ByteStream(blob), headers={"Content-Length": str(len(blob))})
 
     return handler
 
@@ -197,6 +200,7 @@ def test_a_target_that_does_not_match_is_downloaded_again(tmp_path: Path) -> Non
 
 DUMP_URL = "https://dumps.wikimedia.org/dewiki/20260901/dewiki-20260901-page_props.sql.gz"
 DUMP_SHA1 = hashlib.sha1(BLOB).hexdigest()  # noqa: S324 - Wikimedia publishes SHA-1 and MD5, no SHA-256
+GZIPPED_SHA1 = hashlib.sha1(GZIPPED).hexdigest()  # noqa: S324 - as above
 
 
 def _dump_downloader(handler: Handler) -> Downloader:
@@ -232,3 +236,33 @@ def test_file_names_with_other_suffixes() -> None:
     for bad in ("dewiki-20260901-page.sql.gz.part", "../x.sql.gz", "x.zim", ".x.sql.gz"):
         with pytest.raises(ValueError):
             validate_file_name(bad, (".sql.gz",))
+
+
+def test_a_resume_answered_with_another_range_starts_over(tmp_path: Path) -> None:
+    """KO-14: any 206 was taken; a range that does not start where the .part ends failed at the hash, the .part (up to
+    14 GB) was removed and the next attempt came after ZIM_SYNC_INTERVAL. Now it is caught at once."""
+    (tmp_path / f"{FILE}.part").write_bytes(BLOB[:4000])
+
+    def wrong_range(request: httpx.Request) -> httpx.Response:
+        body = BLOB[5000:]  # asked for bytes=4000-, sent from 5000
+        headers = {"Content-Range": f"bytes 5000-{len(BLOB) - 1}/{len(BLOB)}", "Content-Length": str(len(body))}
+        return httpx.Response(206, stream=httpx.ByteStream(body), headers=headers)
+
+    with pytest.raises(TransferError, match="range"):
+        _downloader(wrong_range).download(URL, tmp_path, digest=SHA, size=len(BLOB))
+    assert not (tmp_path / f"{FILE}.part").exists()  # the next attempt starts over, without a Range header
+
+
+def test_a_dump_sent_with_a_content_encoding_arrives_as_it_is_on_the_server(tmp_path: Path) -> None:
+    """KO-17: httpx asked for gzip and unpacked what came; a host that serves a .gz file with Content-Encoding: gzip
+    would make every dump too large, and a range would count the encoded body."""
+    calls: list[httpx.Request] = []
+
+    def gzip_encoded(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        headers = {"Content-Encoding": "gzip", "Content-Length": str(len(GZIPPED))}
+        return httpx.Response(200, stream=httpx.ByteStream(GZIPPED), headers=headers)
+
+    path = _dump_downloader(gzip_encoded).download(DUMP_URL, tmp_path, digest=GZIPPED_SHA1, size=len(GZIPPED))
+    assert path.read_bytes() == GZIPPED
+    assert calls[0].headers["Accept-Encoding"] == "identity"
