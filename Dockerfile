@@ -25,6 +25,10 @@ ARG MODEL2VEC_REVISION=4e332ba73cd6e3551541163139e3cfa189398a41
 RUN mkdir -p /models/m2v && if [ -n "$MODEL2VEC_ID" ]; then \
       /app/.venv/bin/python -c "import sys; from huggingface_hub import snapshot_download; from model2vec import StaticModel; StaticModel.from_pretrained(snapshot_download(sys.argv[1], revision=sys.argv[2])).save_pretrained('/models/m2v')" "$MODEL2VEC_ID" "$MODEL2VEC_REVISION"; \
     fi
+# save_pretrained schreibt die Gewichte mit 0600; die Laufzeitkopie gehoert root (SE-12), der Dienst konnte sie nicht
+# lesen, und der Matcher lief ohne Embeddings (seit f167a9f, gefunden 2026-09-28). Ein eigener Schritt, damit der
+# Download oben im Cache bleibt; die Laufzeit kopiert nur den fertigen Stand.
+RUN chmod -R a+rX /models
 
 # spaCy-Modell fuer die Entitaetserkennung (POST /api/v2/entities). Die Fassung ist festgelegt, damit jeder
 # Build dasselbe Modell enthaelt; das Rad liegt bei den spacy-models-Releases, nicht auf PyPI. SPACY_MODEL=""

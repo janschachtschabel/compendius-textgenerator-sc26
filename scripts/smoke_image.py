@@ -165,6 +165,15 @@ def check_revision(base_url: str, expected: str) -> str:
     return f"revision {reported}"
 
 
+def check_embeddings(base_url: str) -> str:
+    """The image ships its Model2Vec model, and the profiles' matcher must load it. A model the service cannot read
+    left it out without a failure: after f167a9f the weights were root's with mode 0600 (found 2026-09-28)."""
+    matching = httpx.get(f"{base_url}/health", timeout=10).json()["components"]["matching"]
+    if not matching.get("embeddings"):
+        raise SystemExit(f"the matcher runs without its Model2Vec model: {matching}")
+    return f"{matching['matcher']} with {', '.join(matching['components'])}"
+
+
 def check(compendium: dict[str, object], logs: str) -> str:
     """Return the evidence line, or raise with what is wrong."""
     markdown = str(compendium.get("markdown", ""))
@@ -210,6 +219,7 @@ def main() -> int:
         try:
             wait_until_ready(base_url, container)
             print(f"the image is: {check_revision(base_url, args.revision)}")
+            print(f"the image matches: {check_embeddings(base_url)}")
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
