@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from collections.abc import Mapping, Sequence
 from typing import Any
 
@@ -39,9 +40,11 @@ def section_marker(section: Section) -> str:
 
 
 # A value of the frontmatter may come from a source - a collection's title is the topic - and a renderer that does not
-# know frontmatter reads the block as markdown. Such strings are written double-quoted with "<", ">" and "&" as
-# escapes: YAML reads the value back unchanged, a renderer sees no tag (audit 2026-09-28, SE-16).
-_INERT = {"<": "\\u003C", ">": "\\u003E", "&": "\\u0026"}
+# know frontmatter reads the block as markdown. Such strings are written double-quoted with "<", ">", "&" and the
+# brackets as escapes: YAML reads the value back unchanged, a renderer sees no tag and no link (audit 2026-09-28,
+# SE-16). Only inside the quotes: YAML itself writes an empty list as []
+_INERT = {"<": "\\u003C", ">": "\\u003E", "&": "\\u0026", "[": "\\u005B", "]": "\\u005D"}
+_QUOTED = re.compile(r'"(?:[^"\\]|\\[\s\S])*"')  # an escape may end a folded line
 
 
 class _InertDumper(yaml.SafeDumper):
@@ -60,7 +63,7 @@ _InertDumper.add_representer(str, _string)
 def inert_yaml(data: Mapping[str, Any]) -> str:
     """``data`` as YAML in which no markdown renderer finds a tag."""
     text = yaml.dump(dict(data), Dumper=_InertDumper, allow_unicode=True, sort_keys=False).rstrip()
-    return "".join(_INERT.get(sign, sign) for sign in text)
+    return _QUOTED.sub(lambda quoted: "".join(_INERT.get(sign, sign) for sign in quoted.group(0)), text)
 
 
 EMPTY_SECTION_TEXT = (

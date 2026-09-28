@@ -294,13 +294,16 @@ def test_part_2_prints_school_types_and_grades_as_typed() -> None:
     assert unsafe(markdown) == []
 
 
+LONG = "[Blatt](javascript:alert(4)) " * 20  # long enough that YAML folds it
+
+
 def test_the_topic_is_printed_as_typed_in_the_heading_and_kept_exactly_in_the_frontmatter() -> None:
     topic = "<img src=x onerror=alert(1)> & [Optik](javascript:alert(2))"
     template = TemplateManager().get("sc26")
 
     markdown = render_markdown(
         topic=topic,
-        frontmatter={"topic": topic, "sources_snapshot": [{"title": "<script>alert(3)</script>"}]},
+        frontmatter={"topic": topic, "sources_snapshot": [{"title": "<script>alert(3)</script>", "note": LONG}]},
         template=template,
         sections=[],
         sources=[],
@@ -311,6 +314,7 @@ def test_the_topic_is_printed_as_typed_in_the_heading_and_kept_exactly_in_the_fr
     block = markdown.split("---")[1]
     assert yaml.safe_load(block)["topic"] == topic  # the frontmatter keeps the value, only its spelling is inert
     assert yaml.safe_load(block)["sources_snapshot"][0]["title"] == "<script>alert(3)</script>"
+    assert yaml.safe_load(block)["sources_snapshot"][0]["note"] == LONG  # folded over lines by the dumper
 
 
 def test_a_whole_compendium_on_an_article_that_quotes_code_runs_nothing(tmp_path: Path) -> None:

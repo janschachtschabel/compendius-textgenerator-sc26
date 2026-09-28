@@ -1,7 +1,7 @@
 """What a reader's renderer makes of the markdown the service writes (audit 2026-09-28, SE-16, SE-17 and SE-21).
 
-markdown-it renders CommonMark with tables and lets raw HTML through, as the most permissive renderer a consumer may
-use would. ``unsafe`` lists everything in the resulting HTML that markdown syntax alone does not produce: a tag of its
+markdown-it renders CommonMark with tables, lets raw HTML through and takes every link target, as the most permissive
+renderer a consumer may use would. ``unsafe`` lists everything in the resulting HTML that markdown syntax alone does not produce: a tag of its
 own, an attribute that runs code or loads something, a link that is not a web address, a comment that is none of the
 service's markers.
 """
@@ -14,6 +14,8 @@ from html.parser import HTMLParser
 from markdown_it import MarkdownIt
 
 _RENDERER = MarkdownIt("commonmark", {"html": True}).enable("table")
+# markdown-it refuses javascript: and similar targets itself; a consumer's renderer may not, so none is refused here
+_RENDERER.validateLink = lambda url: True  # type: ignore[method-assign]
 MARKDOWN_TAGS = frozenset(
     "p h1 h2 h3 h4 h5 h6 ul ol li strong em a code pre table thead tbody tr th td hr br blockquote".split()
 )
