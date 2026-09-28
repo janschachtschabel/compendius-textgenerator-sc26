@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
-from app.knowledge.segmentation import segment_source, split_sentences
+from app.knowledge.segmentation import ends_with_abbreviation, segment_source, split_sentences
 from app.matching.lexicon import HeadingLexicon
 from app.sources.zim.html import parse_article
 from tests.conftest import ROOT
@@ -145,3 +145,30 @@ def test_formula_intros_captions_and_figure_references_are_dropped() -> None:
         body,
     )
     assert [c.text for c in segment_source(source, _lexicon())] == [body]
+
+
+def test_a_word_that_ends_like_an_abbreviation_still_ends_its_sentence() -> None:
+    """KO-10: "Hauptstadt." ends in "dt.", "Kapital." in "ital.", "GPS." in "S."; none ended its sentence (2 of
+    1,423 sentences of the fixtures)."""
+    assert split_sentences("Berlin ist die Hauptstadt. Sie liegt an der Spree.") == [
+        "Berlin ist die Hauptstadt.",
+        "Sie liegt an der Spree.",
+    ]
+    assert split_sentences("Er brauchte Kapital. Die Bank lehnte ab.") == [
+        "Er brauchte Kapital.",
+        "Die Bank lehnte ab.",
+    ]
+    assert split_sentences("Das Gerät nutzt GPS. Es misst genau.") == ["Das Gerät nutzt GPS.", "Es misst genau."]
+    assert not ends_with_abbreviation("die Hauptstadt.")
+
+
+def test_an_abbreviation_after_a_space_or_at_the_start_is_still_one() -> None:
+    assert split_sentences("Das gilt z. B. für Linsen. Prismen brechen auch.") == [
+        "Das gilt z. B. für Linsen.",
+        "Prismen brechen auch.",
+    ]
+    assert split_sentences("Dr. Abbe forschte in Jena. Er lehrte dort.") == [
+        "Dr. Abbe forschte in Jena.",
+        "Er lehrte dort.",
+    ]
+    assert ends_with_abbreviation("siehe S.") and ends_with_abbreviation("bzw.")

@@ -41,6 +41,14 @@ _ABBREVIATIONS = (
     "Kap.", "Tab.", "zzt.", "sogen.", "ausschl.", "urspr.", "entspr.", "zuzügl.", "abzügl.",
 )  # fmt: skip
 # Not listed on purpose: "vs." and "Art." also end ordinary words at a sentence end ("des Objektivs.", "eine Art.").
+# An abbreviation only where no letter stands before it: "Hauptstadt." ends in "dt.", "Kapital." in "ital." and
+# "GPS." in "S.", and none of them ended its sentence (audit 2026-09-27, KO-10). The longest first, so "u. a."
+# wins over any shorter one at the same place.
+_ABBREVIATION_RE = re.compile(
+    r"(?<![^\W\d_])(?:" + "|".join(re.escape(a) for a in sorted(_ABBREVIATIONS, key=len, reverse=True)) + ")"
+)
+_ABBREVIATION_END_RE = re.compile(_ABBREVIATION_RE.pattern + r"\Z")
+_ABBREVIATION_TAIL = 1 + max(len(a) for a in _ABBREVIATIONS)  # the longest one and the character before it
 _ORDINAL_FOLLOWERS = (
     r"Jahrhundert|Jahrhunderts|Jh\.|Jahrtausend|Jahrtausends|Klasse|Auflage|Kapitel|Band|Teil|Buch|Akt|Satz|"
     r"Sinfonie|Symphonie|Legion|Armee|Dynastie|Konzil|Weltkrieg|Lebensjahr|Platz|Rang|Stelle|Mal|Tag|Monat|Woche|"
@@ -66,14 +74,13 @@ def _protect_initial(match: re.Match[str]) -> str:
 
 def ends_with_abbreviation(text: str) -> bool:
     """True when the text ends with a known abbreviation, so the full stop is not a sentence end."""
-    return text.rstrip().endswith(_ABBREVIATIONS)
+    return _ABBREVIATION_END_RE.search(text.rstrip()[-_ABBREVIATION_TAIL:]) is not None
 
 
 def split_sentences(text: str) -> list[str]:
     """Split German prose into sentences while protecting abbreviations and ordinal numbers."""
     protected = re.sub(r"\s+", " ", text).strip()
-    for abbr in _ABBREVIATIONS:
-        protected = protected.replace(abbr, abbr.replace(".", _PLACEHOLDER))
+    protected = _ABBREVIATION_RE.sub(lambda m: m.group(0).replace(".", _PLACEHOLDER), protected)
     protected = _ORDINAL_RE.sub(lambda m: f"{m.group(1)}{_PLACEHOLDER}", protected)
     protected = _INITIAL_RE.sub(_protect_initial, protected)
     protected = re.sub(r"(\d)\.(\d)", rf"\1{_PLACEHOLDER}\2", protected)
