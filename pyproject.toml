@@ -42,6 +42,9 @@ dev = [
     "types-PyYAML>=6.0",
     "pytest-cov>=6.0",
     "markdown-it-py>=4.2",  # renders the markdown in the tests as a reader would (tests/markdown_safety.py)
+    # the client starlette's TestClient takes; with plain httpx it warns and falls back, and a starlette without the
+    # fallback would break every test that uses it (audit 2026-09-28, AB-04)
+    "httpx2>=2.13",
 ]
 
 [build-system]
@@ -96,3 +99,10 @@ testpaths = ["tests"]
 # No test is marked: b-api, edu-sharing, Kiwix and MEM are covered through fakes and recorded answers (audit
 # 2026-09-27, TE-11 - the marker live selected none of them)
 addopts = ["--strict-markers", "-q"]
+# starlette's and FastAPI's own deprecations fail the tests instead of passing unseen: a release that drops what they
+# warn about would otherwise break every test with a TestClient at once. Both warn with UserWarning subclasses of
+# their own (audit 2026-09-28, AB-04)
+filterwarnings = [
+    "error::starlette.exceptions.StarletteDeprecationWarning",
+    "error::fastapi.exceptions.FastAPIDeprecationWarning",
+]
