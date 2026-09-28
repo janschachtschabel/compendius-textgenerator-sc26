@@ -131,7 +131,7 @@ def assign_with_llm(
     job: AssignmentJob,
 ) -> tuple[AssignmentResult, LlmAssignmentReport]:
     """Let the model assign the paragraphs; see the module docstring. Without a single answer: ``rule_based``."""
-    generated = {slot.slot for slot in template.slots if slot.is_generated}
+    generated = template.generated_keys()
     offered = [chunk for chunk in chunks if chunk.lexicon_slot not in generated]  # the policy skips those too
     batches = [offered[i : i + BATCH_SIZE] for i in range(0, len(offered), BATCH_SIZE)]
     report = LlmAssignmentReport(paragraphs=len(offered))

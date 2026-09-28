@@ -213,3 +213,13 @@ class Template(OneSpelling):
 
     def content_slots(self) -> list[TemplateSlot]:
         return [s for s in self.slots if not s.is_generated]
+
+    def generated_keys(self) -> frozenset[str]:
+        """The lexicon keys whose paragraphs are material of a generated block rather than of a content block: each
+        generated block's key, and the shared lexicon's persons when an actors block takes them, whatever the template
+        calls it. The rules and matcher=llm leave these paragraphs out alike; matcher=llm offered the persons to the
+        model when the actors block had another name (audit 2026-09-28, WA-07)."""
+        keys = {slot.slot for slot in self.slots if slot.is_generated}
+        if any(slot.generator == "actors" for slot in self.slots):
+            keys.add(ACTORS_KEY)
+        return frozenset(keys)

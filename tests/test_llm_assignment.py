@@ -31,6 +31,7 @@ from app.matching.llm_assignment import (
 )
 from app.matching.policy import AssignmentResult
 from app.service import CompendiumService
+from app.templates.schema import ACTORS_KEY
 from tests.test_llm_client import BASE, KEY, FakeBApi
 
 PARAGRAPH_RE = re.compile(r"^(p\d+) \(Artikel: (.+?), (.+?); Abschnitt: (.+?)\):$", re.MULTILINE)
@@ -78,7 +79,7 @@ def rule_based(service: CompendiumService, prepared: PreparedTopic) -> Assignmen
 @pytest.fixture(scope="module")
 def offered(prepared: PreparedTopic) -> list[Chunk]:
     """The paragraphs the model gets: all except material of generated blocks, which the policy skips as well."""
-    generated = {slot.slot for slot in prepared.template.slots if slot.is_generated}
+    generated = prepared.template.generated_keys()
     return [chunk for chunk in prepared.chunks if chunk.lexicon_slot not in generated]
 
 
@@ -295,3 +296,37 @@ def test_a_paragraph_the_rules_kept_does_not_push_out_the_models_choice() -> Non
     )
     result = _combine(template, [chosen, kept_by_rules], {chosen.chunk_id: ("s", 0.6)}, rules, skipped=0)
     assert [item.chunk.chunk_id for item in result.assigned["s"]] == [chosen.chunk_id]
+
+
+def test_person_paragraphs_stay_with_an_actors_block_of_any_name(
+    prepared: PreparedTopic, rule_based: AssignmentResult
+) -> None:
+    """WA-07 (audit 2026-09-28): the rules keep the shared lexicon's persons for the actors block whatever the
+    template calls it; matcher=llm offered them to the model when the block had another name, and they cost tokens
+    and landed in a content block."""
+    slots = [
+        slot.model_copy(update={"slot": "persoenlichkeiten"}) if slot.generator == "actors" else slot
+        for slot in prepared.template.slots
+    ]
+    template = prepared.template.model_copy(update={"slots": slots})
+    primary = prepared.primary
+    assert primary is not None
+    person = Chunk(
+        chunk_id=f"{primary.source_id}:c900",
+        source_id=primary.source_id,
+        heading="Bekannte Vertreter",
+        heading_path=["Bekannte Vertreter"],
+        heading_level=2,
+        text="Ernst Abbe entwickelte die Theorie der Bildentstehung im Mikroskop und gründete eine Stiftung.",
+        position=900,
+        lexicon_slot=ACTORS_KEY,
+    )
+    fake = FakeBApi(answer_with("fachinhalte"))
+
+    result, report = assign_with_llm(
+        template, [*prepared.chunks, person], prepared.sources_by_id, rule_based, make_job(fake)
+    )
+
+    assert all(person.text not in json.dumps(body, ensure_ascii=False) for body in fake.bodies)
+    assert person.chunk_id not in result.classified
+    assert report.paragraphs == len([c for c in prepared.chunks if c.lexicon_slot not in template.generated_keys()])

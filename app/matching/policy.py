@@ -15,7 +15,7 @@ from app.domain.models import Chunk, ScoredChunk, Source, SourceRole, primary_of
 from app.knowledge.entities import is_subject
 from app.knowledge.topic import TopicMention
 from app.matching.base import tokenize
-from app.templates.schema import ACTORS_KEY, ROLE_KEYS, Template, TemplateSlot
+from app.templates.schema import ROLE_KEYS, Template, TemplateSlot
 
 LEXICON_SCORE = 0.9
 LEAD_SCORE = 2.0
@@ -213,9 +213,7 @@ def assign(
     topic = TopicMention.of(primary.title if primary else "")
 
     context = _Context.of(template, topic, confident_score)
-    generated_keys = {slot.slot for slot in template.slots if slot.is_generated}
-    if any(slot.generator == "actors" for slot in template.slots):
-        generated_keys.add(ACTORS_KEY)  # the shared lexicon's persons, whatever the template calls its actors block
+    generated_keys = template.generated_keys()
     best: dict[str, tuple[str, float, list[str]]] = {}
     slot_scores: dict[str, dict[str, float]] = {slot.id: {} for slot in content_slots}
     skipped = 0
