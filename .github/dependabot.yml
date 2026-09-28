@@ -16,8 +16,11 @@ updates:
       # Neue Digests desselben Tags ja, aber kein Python 3.14: requires-python erlaubt nur 3.13 (uv.lock)
       - dependency-name: "python"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
-      # uv bleibt bei der Version von CI und Lockfile (0.7.13); ein Wechsel gilt fuer alle drei zugleich
+      # uv: eine neue Minor-Version im Monatsrhythmus ihrer Releases, keine Patch-Flut und kein Major. Der Pull
+      # Request hebt nur das Dockerfile; tests/test_ci_pins.py bleibt rot, bis dieselbe Version auch in ci.yml
+      # (zweimal), dependency-audit.yml und .gitlab-ci.yml (Tag und Digest) steht (Audit 2026-09-28, AB-06)
       - dependency-name: "*astral-sh/uv"
+        update-types: ["version-update:semver-major", "version-update:semver-patch"]
   - package-ecosystem: docker-compose
     directory: "/"
     schedule:
@@ -32,8 +35,8 @@ updates:
     groups:
       actions:
         patterns: ["*"]
-  # Dependabot schreibt das Lockfile mit uv 0.11 (Revision 3); uv 0.7.13 liest es (am 2026-09-27 geprueft:
-  # lock --check und sync --locked gelingen). Monatlich, weil jede Aenderung die ganze Suite durchlaufen muss.
+  # Dependabot schreibt das Lockfile in Revision 3, wie uv 0.12.19 in CI und Image (am 2026-09-28 geprueft: lock
+  # --check gelingt). Monatlich, weil jede Aenderung die ganze Suite durchlaufen muss.
   - package-ecosystem: uv
     directory: "/"
     schedule:
