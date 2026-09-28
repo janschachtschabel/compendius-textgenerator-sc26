@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -204,6 +205,21 @@ def check_sidecars(image: str, archives: Path, state: Path, *, hardened: bool) -
     return "compendium " + ", ".join(SIDECARS) + " status"
 
 
+def check_review_page(base_url: str) -> str:
+    """The review page is in the image (D66): the wheel has to carry the files of app/ui/static, which only a built
+    image shows - the tests read them from the checkout."""
+    page = httpx.get(f"{base_url}/ui/", timeout=10)
+    if page.status_code != 200 or httpx.get(f"{base_url}/ui/options.json", timeout=10).status_code != 200:
+        raise SystemExit(f"/ui/ answered {page.status_code}; the page or its options are missing")
+    names = set(re.findall(r'(?:src|href)="([a-z_]+\.(?:mjs|css))"', page.text))
+    main = httpx.get(f"{base_url}/ui/main.mjs", timeout=10).text
+    names |= set(re.findall(r"from '\./([a-z_]+\.mjs)'", main))
+    missing = sorted(name for name in names if httpx.get(f"{base_url}/ui/{name}", timeout=10).status_code != 200)
+    if missing or "main.mjs" not in names:
+        raise SystemExit(f"files of the review page missing from the image: {missing or ['main.mjs']}")
+    return f"the review page with {len(names)} files"
+
+
 def check(compendium: dict[str, object], logs: str) -> str:
     """Return the evidence line, or raise with what is wrong."""
     markdown = str(compendium.get("markdown", ""))
@@ -254,6 +270,7 @@ def main() -> int:
             "-v", f"{archives.as_posix()}:/data/zim:ro",
             "-e", "ZIM_REQUIRED=wikipedia_de_sample,klexikon_de_sample",
             "-e", "PRESET_DEFAULT=llm-free",
+            "-e", "UI_ENABLED=true",
             *(HARDENING if args.hardened else ()),
             args.image,
         )  # fmt: skip
@@ -267,6 +284,7 @@ def main() -> int:
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
             print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
+            print(f"the image shows: {check_review_page(base_url)}")
         finally:
             run("rm", "-f", args.name)
     return 0
