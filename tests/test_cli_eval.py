@@ -95,3 +95,19 @@ def test_run_with_llm_extraction_but_no_llm_says_so_and_evaluates_the_rules(
     captured = capsys.readouterr()
     assert "hybrid_light" in captured.out and "hybrid_light+llm" not in captured.out
     assert "LLM-Extraktion nicht bewertet" in captured.err and "konfiguriert" in captured.err
+
+
+def test_the_report_is_written_in_utf_8(cli_env: Path) -> None:
+    """DO-06 (audit 2026-09-28): the report went out in the encoding of the machine; on Windows the six phase 2
+    reports became cp1252, and under Linux json.loads failed on the references eval/README.md names."""
+    topic = "Deutsche Gesellschaft für angewandte Optik"
+    csv_path = cli_env / "dgao.csv"
+    assert main(["eval", "export", "--topic", topic, "--out", str(csv_path)]) == 0
+    _accept_suggestions(csv_path)
+    gold = cli_env / "gold"
+    assert main(["eval", "import", str(csv_path), "--topic", topic, "--out", str(gold / "dgao.jsonl")]) == 0
+    report_path = cli_env / "report.json"
+
+    assert main(["eval", "run", "--gold", str(gold), "--matcher", "lexicon_only", "--json", str(report_path)]) == 0
+
+    assert json.loads(report_path.read_bytes().decode("utf-8"))["runs"][0]["topic"] == topic

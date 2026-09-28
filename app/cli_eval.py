@@ -133,7 +133,9 @@ def cmd_run(args: argparse.Namespace) -> int:
         cells = "  ".join(f"{name} {run.printed[name].macro_f1:.2f}" for name in names if name in run.printed)
         print(f"  {run.topic:24s} {cells}")
     if args.json:
-        Path(args.json).write_text(json.dumps(_report_dict(report, gold_dir, names), ensure_ascii=False, indent=2))
+        # in UTF-8 whatever the machine's encoding: on Windows the reports became cp1252 (audit 2026-09-28, DO-06)
+        report_text = json.dumps(_report_dict(report, gold_dir, names), ensure_ascii=False, indent=2)
+        Path(args.json).write_text(report_text, encoding="utf-8")
         print(f"Bericht: {args.json}")
     if args.min_f1 is not None and best is not None and best.macro_f1 < args.min_f1:
         print(

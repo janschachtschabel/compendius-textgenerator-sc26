@@ -1770,14 +1770,14 @@
       }
     },
     {
-      "topic": "Französische Revolution",
+      "topic": "FranzÃ¶sische Revolution",
       "labeled": 75,
       "stale": 0,
       "results": {
         "lexicon_only": {
-          "topic": "Französische Revolution",
+          "topic": "FranzÃ¶sische Revolution",
           "topics": [
-            "Französische Revolution"
+            "FranzÃ¶sische Revolution"
           ],
           "matcher": "lexicon_only",
           "slots": [
@@ -1915,9 +1915,9 @@
           "micro_f1": 0.18918918918918917
         },
         "bm25": {
-          "topic": "Französische Revolution",
+          "topic": "FranzÃ¶sische Revolution",
           "topics": [
-            "Französische Revolution"
+            "FranzÃ¶sische Revolution"
           ],
           "matcher": "bm25",
           "slots": [
@@ -2056,9 +2056,9 @@
           "micro_f1": 0.17073170731707318
         },
         "char_tfidf": {
-          "topic": "Französische Revolution",
+          "topic": "FranzÃ¶sische Revolution",
           "topics": [
-            "Französische Revolution"
+            "FranzÃ¶sische Revolution"
           ],
           "matcher": "char_tfidf",
           "slots": [
@@ -2203,9 +2203,9 @@
           "micro_f1": 0.21276595744680848
         },
         "hybrid_light": {
-          "topic": "Französische Revolution",
+          "topic": "FranzÃ¶sische Revolution",
           "topics": [
-            "Französische Revolution"
+            "FranzÃ¶sische Revolution"
           ],
           "matcher": "hybrid_light",
           "slots": [
@@ -4718,14 +4718,14 @@
       }
     },
     {
-      "topic": "Säure-Base-Konzepte",
+      "topic": "SÃ¤ure-Base-Konzepte",
       "labeled": 45,
       "stale": 0,
       "results": {
         "lexicon_only": {
-          "topic": "Säure-Base-Konzepte",
+          "topic": "SÃ¤ure-Base-Konzepte",
           "topics": [
-            "Säure-Base-Konzepte"
+            "SÃ¤ure-Base-Konzepte"
           ],
           "matcher": "lexicon_only",
           "slots": [
@@ -4864,9 +4864,9 @@
           "micro_f1": 0.05263157894736842
         },
         "bm25": {
-          "topic": "Säure-Base-Konzepte",
+          "topic": "SÃ¤ure-Base-Konzepte",
           "topics": [
-            "Säure-Base-Konzepte"
+            "SÃ¤ure-Base-Konzepte"
           ],
           "matcher": "bm25",
           "slots": [
@@ -5013,9 +5013,9 @@
           "micro_f1": 0.19672131147540983
         },
         "char_tfidf": {
-          "topic": "Säure-Base-Konzepte",
+          "topic": "SÃ¤ure-Base-Konzepte",
           "topics": [
-            "Säure-Base-Konzepte"
+            "SÃ¤ure-Base-Konzepte"
           ],
           "matcher": "char_tfidf",
           "slots": [
@@ -5165,9 +5165,9 @@
           "micro_f1": 0.2222222222222222
         },
         "hybrid_light": {
-          "topic": "Säure-Base-Konzepte",
+          "topic": "SÃ¤ure-Base-Konzepte",
           "topics": [
-            "Säure-Base-Konzepte"
+            "SÃ¤ure-Base-Konzepte"
           ],
           "matcher": "hybrid_light",
           "slots": [
@@ -5910,12 +5910,12 @@
         "Barockliteratur",
         "Bruchrechnung",
         "Demokratie",
-        "Französische Revolution",
+        "FranzÃ¶sische Revolution",
         "Klimawandel",
         "Optik",
         "Photosynthese",
         "Programmiersprache",
-        "Säure-Base-Konzepte",
+        "SÃ¤ure-Base-Konzepte",
         "Sinfonie"
       ],
       "matcher": "lexicon_only",
@@ -6071,12 +6071,12 @@
         "Barockliteratur",
         "Bruchrechnung",
         "Demokratie",
-        "Französische Revolution",
+        "FranzÃ¶sische Revolution",
         "Klimawandel",
         "Optik",
         "Photosynthese",
         "Programmiersprache",
-        "Säure-Base-Konzepte",
+        "SÃ¤ure-Base-Konzepte",
         "Sinfonie"
       ],
       "matcher": "bm25",
@@ -6263,12 +6263,12 @@
         "Barockliteratur",
         "Bruchrechnung",
         "Demokratie",
-        "Französische Revolution",
+        "FranzÃ¶sische Revolution",
         "Klimawandel",
         "Optik",
         "Photosynthese",
         "Programmiersprache",
-        "Säure-Base-Konzepte",
+        "SÃ¤ure-Base-Konzepte",
         "Sinfonie"
       ],
       "matcher": "char_tfidf",
@@ -6460,12 +6460,12 @@
         "Barockliteratur",
         "Bruchrechnung",
         "Demokratie",
-        "Französische Revolution",
+        "FranzÃ¶sische Revolution",
         "Klimawandel",
         "Optik",
         "Photosynthese",
         "Programmiersprache",
-        "Säure-Base-Konzepte",
+        "SÃ¤ure-Base-Konzepte",
         "Sinfonie"
       ],
       "matcher": "hybrid_light",

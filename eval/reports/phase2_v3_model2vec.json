@@ -469,14 +469,14 @@
       }
     },
     {
-      "topic": "Französische Revolution",
+      "topic": "FranzÃ¶sische Revolution",
       "labeled": 74,
       "stale": 1,
       "results": {
         "hybrid_light": {
-          "topic": "Französische Revolution",
+          "topic": "FranzÃ¶sische Revolution",
           "topics": [
-            "Französische Revolution"
+            "FranzÃ¶sische Revolution"
           ],
           "matcher": "hybrid_light",
           "slots": [
@@ -1247,14 +1247,14 @@
       }
     },
     {
-      "topic": "Säure-Base-Konzepte",
+      "topic": "SÃ¤ure-Base-Konzepte",
       "labeled": 33,
       "stale": 12,
       "results": {
         "hybrid_light": {
-          "topic": "Säure-Base-Konzepte",
+          "topic": "SÃ¤ure-Base-Konzepte",
           "topics": [
-            "Säure-Base-Konzepte"
+            "SÃ¤ure-Base-Konzepte"
           ],
           "matcher": "hybrid_light",
           "slots": [
@@ -1561,12 +1561,12 @@
         "Barockliteratur",
         "Bruchrechnung",
         "Demokratie",
-        "Französische Revolution",
+        "FranzÃ¶sische Revolution",
         "Klimawandel",
         "Optik",
         "Photosynthese",
         "Programmiersprache",
-        "Säure-Base-Konzepte",
+        "SÃ¤ure-Base-Konzepte",
         "Sinfonie"
       ],
       "matcher": "hybrid_light",
