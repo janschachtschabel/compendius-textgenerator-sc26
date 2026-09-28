@@ -13,6 +13,7 @@ from fastapi import APIRouter, Body, Depends, Request
 from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import archives_for, get_service
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
@@ -39,7 +40,7 @@ from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
 from app.templates.schema import TEMPLATE_ID_PATTERN
 
-router = APIRouter(prefix="/api/v2", tags=["v2"])
+router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
 
 class KnowledgeRequest(RequestModel):

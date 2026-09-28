@@ -25,6 +25,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.deps import get_service
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
@@ -40,7 +41,7 @@ from app.synthesis.qa_knowledge import Knowledge, knowledge_of_compendium, knowl
 from app.synthesis.qa_rules import rule_pairs
 
 log = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/v2", tags=["v2"])
+router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
 NO_TAGGER_NOTE = (
     "spaCy-Modell nicht geladen; die Regeln fallen auf vier Fragevorlagen zurück, die Satzanfänge nicht prüfen "

@@ -10,9 +10,10 @@ from typing import Any
 
 from fastapi import APIRouter
 
+from app.api.gates import GatedRoute
 from app.matching.registry import list_strategies
 
-router = APIRouter(prefix="/api/v2/matching", tags=["matching"])
+router = APIRouter(prefix="/api/v2/matching", tags=["matching"], route_class=GatedRoute)
 
 
 @router.get("/strategies")

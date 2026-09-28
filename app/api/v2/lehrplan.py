@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, Query, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
@@ -33,7 +34,7 @@ from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
 
 log = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"])
+router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"], route_class=GatedRoute)
 HARVEST_FAILED = (
     "Der letzte Harvest ist gescheitert; den Grund nennen das Log des Harvest-Sidecars "
     "und `compendium lehrplan status`."
@@ -43,6 +44,7 @@ admin = APIRouter(
     tags=["lehrplan-admin"],
     dependencies=[Depends(rate_limited), Depends(require_admin)],
     responses=ADMIN_REFUSALS,
+    route_class=GatedRoute,
 )
 SEARCH_PRESET_HELP = (
     "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "

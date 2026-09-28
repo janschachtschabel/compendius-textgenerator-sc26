@@ -397,7 +397,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     for error, answer in DOMAIN_ERRORS.items():
         app.add_exception_handler(error, answer)
     # Added first, so it runs innermost: the refusal of a body too large still gets its request id and its metric
-    app.add_middleware(BodySizeLimit)
+    app.add_middleware(BodySizeLimit, max_bytes=settings.request_body_max_bytes)
 
     if not settings.zim_path_list:
         refresher = RegistryRefresher(registry, settings.zim_dir)

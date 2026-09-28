@@ -16,6 +16,8 @@ from collections.abc import Callable
 
 from fastapi import HTTPException, Request
 
+from app.api.gates import EARLY, first_time
+
 # Windows kept at most. Beyond it the least recently seen client is forgotten, at constant cost per request: a scan
 # over all windows on every request dropped only idle ones, cost 6.8 ms with 30,000 active clients and bounded
 # nothing (audit 2026-09-27, SE-07). A forgotten client starts afresh.
@@ -67,9 +69,10 @@ class RateLimiter:
 
 
 async def rate_limited(request: Request) -> None:
-    """Route dependency; ``async`` so it runs on the event loop and needs no lock around the counters."""
+    """Route dependency; ``async`` so it runs on the event loop and needs no lock around the counters. A gated route
+    asks it before the body is read (``app.api.gates``), and the request counts once."""
     limiter: RateLimiter | None = getattr(request.app.state, "rate_limiter", None)
-    if limiter is None:
+    if limiter is None or not first_time(request, "rate_limit"):
         return
     client = client_key(request.client.host) if request.client else "unbekannt"
     retry = limiter.retry_after(client)
@@ -79,3 +82,6 @@ async def rate_limited(request: Request) -> None:
             detail="Zu viele Anfragen; bitte später erneut versuchen.",
             headers={"Retry-After": str(retry)},
         )
+
+
+EARLY[rate_limited] = rate_limited

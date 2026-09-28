@@ -13,6 +13,8 @@ import hmac
 from fastapi import HTTPException, Request, Security
 from fastapi.security import APIKeyHeader
 
+from app.api.gates import EARLY, first_time
+
 API_KEY_HEADER = "X-API-Key"
 _SCHEME = APIKeyHeader(
     name=API_KEY_HEADER,
@@ -26,7 +28,7 @@ _SCHEME = APIKeyHeader(
 async def require_api_key(request: Request, key: str | None = Security(_SCHEME)) -> None:
     """Route dependency: 401 without a valid key while API_KEYS names any; ``async``, so no thread is spent on it."""
     keys: list[str] = request.app.state.settings.api_key_list
-    if not keys:
+    if not keys or not first_time(request, "api_key"):
         return
     offered = (key or "").encode()
     # Every key is compared, so the time taken does not tell which one came close
@@ -37,3 +39,10 @@ async def require_api_key(request: Request, key: str | None = Security(_SCHEME))
             detail=f"Dieser Endpunkt verlangt einen gültigen API-Schlüssel im Header {API_KEY_HEADER}.",
             headers={"WWW-Authenticate": "APIKey"},
         )
+
+
+async def _key_before_body(request: Request) -> None:
+    await require_api_key(request, request.headers.get(API_KEY_HEADER))
+
+
+EARLY[require_api_key] = _key_before_body

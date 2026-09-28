@@ -10,7 +10,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from app.api.body_limit import MAX_BODY_BYTES, BodySizeLimit
+from app.api.body_limit import LARGE_BODY_BYTES, BodySizeLimit
 from app.api.v2.qa_schemas import MAX_TEXT_CHARS
 from app.main import create_app
 from app.settings import Settings
@@ -49,17 +49,17 @@ def chunks(total: int) -> Iterator[bytes]:
 
 
 def test_a_body_over_the_limit_is_refused_with_413(client: TestClient) -> None:
-    response = client.post("/api/v2/compendium", content=b" " * (MAX_BODY_BYTES + 1), headers=JSON)
+    response = client.post("/api/v2/compendium", content=b" " * (LARGE_BODY_BYTES + 1), headers=JSON)
 
     assert response.status_code == 413
-    assert str(MAX_BODY_BYTES) in response.json()["detail"]
+    assert str(LARGE_BODY_BYTES) in response.json()["detail"]
     assert response.headers["x-request-id"]  # the refusal is a request of the service like any other
     assert response.headers["connection"] == "close"  # the unread body must not be taken for the next request
 
 
 def test_the_limit_leaves_room_for_the_largest_field_escaped_throughout() -> None:
     # existing_markdown takes 2,000,000 characters, and a client may spell each as a six-byte escape
-    assert MAX_BODY_BYTES >= 6 * 2_000_000
+    assert LARGE_BODY_BYTES >= 6 * 2_000_000
 
 
 def test_a_chunked_body_is_counted_while_it_arrives() -> None:

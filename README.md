@@ -619,6 +619,7 @@ Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `LOG_LEVEL` | `INFO` | Protokollstufe der Anwendung (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
 | `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit und das Lesen der Materialtexte. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`) |
 | `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
+| `REQUEST_BODY_MAX_BYTES` | `1000000` | Obergrenze eines Anfragekörpers, mindestens 10.000; ein größerer ist ein 413, bevor der Dienst ihn liest. `POST /api/v2/compendium` und `PUT /api/v2/templates/{id}` nehmen bis 13.000.000 Byte (`existing_markdown`, ein ganzes Template) |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus. Im Container kommt auch ein Proxy auf dem Host nicht von `127.0.0.1`, sondern vom Gateway des Compose-Netzes (siehe docs/installation.md, Abschnitt 8) |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
@@ -804,9 +805,13 @@ noch bevor ein LLM gefragt wird; ein Repository, das scheitert, steht weiter nur
 Kompendium kommt ohne die Materialien aus.
 
 Ein 422 nennt je Fehler Ort (`loc`), Art (`type`), Grund (`msg`) und die verletzte Grenze (`ctx`), nicht aber den
-abgelehnten Wert: Früher kam ein 5-MB-Feld als 5-MB-Fehler zurück. Ein Anfragekörper über 13.000.000 Byte ist ein
-413, bevor der Dienst ihn liest; so viel braucht höchstens `existing_markdown` mit 2 Mio. Zeichen, jedes als
-JSON-Escape geschrieben.
+abgelehnten Wert: Früher kam ein 5-MB-Feld als 5-MB-Fehler zurück. Er nennt höchstens 20 Fehler, ein letzter Eintrag
+(`too_many_errors`) zählt den Rest; mehr als drei unbekannte Felder sind ein einziger Fehler, der drei nennt. Listen
+und Kennungen haben Obergrenzen (`archives` 20 zu je 100 Zeichen, `regenerate_sections` 60 zu je 80, `template_id`
+wie im Pfad). Ein Anfragekörper über `REQUEST_BODY_MAX_BYTES` (Vorgabe 1.000.000 Byte) ist ein 413, bevor der Dienst
+ihn liest; nur `POST /api/v2/compendium` und `PUT /api/v2/templates/{id}` nehmen bis 13.000.000 Byte, so viel braucht
+höchstens `existing_markdown` mit 2 Mio. Zeichen, jedes als JSON-Escape geschrieben. Rate-Limit, `API_KEYS` und
+Admin-Token prüft der Dienst, bevor er einen Körper liest.
 
 **Teilweise neu erzeugen.** `existing_markdown` nimmt ein früheres Kompendium entgegen. Bausteine, die dort
 als `redaktionell-geprüft` markiert sind, bleiben wortgleich stehen; mit `regenerate_sections` werden nur die

@@ -6,6 +6,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Request
 
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS
@@ -13,7 +14,7 @@ from app.domain.requests import NODE_ID_PATTERN
 from app.llm.deadline import Deadline
 from app.sources.wlo.part import CollectionBuilder
 
-router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
+router = APIRouter(prefix="/api/v2/collections", tags=["collections"], route_class=GatedRoute)
 STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "Optik" of the WLO staging
 
 

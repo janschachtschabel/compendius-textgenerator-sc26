@@ -13,6 +13,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, Path, Query, Request
 from pydantic import Field
 
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS
@@ -22,7 +23,7 @@ from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
 from app.sources.wlo.part import derive_topic, node_topic
 
-router = APIRouter(prefix="/api/v2", tags=["v2"])
+router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
 STAGING_REPOSITORY = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 STAGING_MATERIAL = "ac66224b-42b0-4676-a53d-71b058dc780b"  # "Stationsarbeit zur Optik" in the staging repository

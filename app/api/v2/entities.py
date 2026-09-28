@@ -34,6 +34,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
 from app.api.deps import archives_for
+from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
@@ -64,7 +65,7 @@ from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
 
-router = APIRouter(prefix="/api/v2", tags=["v2"])
+router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
 RULE_METHODS: tuple[Method, ...] = ("ner", "dictionary")
 WITH_ARTICLE = frozenset({"dictionary", "llm"})  # the ways that promise terms with an article

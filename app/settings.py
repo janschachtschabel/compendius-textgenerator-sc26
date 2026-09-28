@@ -206,6 +206,12 @@ class Settings(BaseSettings):
     rate_limit: int = Field(
         60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
     )
+    request_body_max_bytes: int = Field(
+        1_000_000,
+        ge=10_000,
+        description="Bound of a request body; a larger one is a 413 before it is read. POST /api/v2/compendium and "
+        "PUT /api/v2/templates/{id} take up to 13,000,000 bytes (existing_markdown, a whole template)",
+    )
     admin_token: str = Field("", description="Token for admin endpoints; empty disables them")
     api_keys: str = Field(
         "",
