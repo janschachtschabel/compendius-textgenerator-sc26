@@ -964,7 +964,7 @@ Einsatzorte (alle einzeln abschaltbar): Satzauswahl (`extraction=llm`, D33), Abs
 Akteurs-Klassifikation, Glossar-Politur, Template-Kurztexte (Admin), QA-Endpunkt.
 Jeder Prompt hat eine ID und Version in `llm/prompt_registry.py`; beide landen im Frontmatter.
 
-Kostenmodell (Schätzung der Planung je Kompendium, Modellklasse gpt-4.1-mini; Messwerte unten und in 4.7): `rule-based` 0;
+Kostenmodell (Schätzung der Planung je Kompendium, historisch für die Modellklasse gpt-4.1-mini, die der Dienst nicht nutzt; Messwerte unten und in 4.7): `rule-based` 0;
 `hybrid-fast` 2–3 Aufrufe × (1.500 Eingabe- + 400 Ausgabe-Tokens) ≈ 4.500/1.200;
 `hybrid-quality` 13–15 Aufrufe ≈ 20.000/5.500. Zum Vergleich alt: ~1.500 Eingabe- + bis 4.000
 Ausgabe-Tokens für den Text, plus 1–2 Linker-Aufrufe. Kostenschutz über

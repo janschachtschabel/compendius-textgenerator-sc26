@@ -4,8 +4,9 @@ The old service chose no main article. Its linker asked an LLM for up to ten ent
 article titles" (mode generate, educational mode on, alterCode/compendious/app/core/openai_wrapper.py) and looked
 every title up live: directly with redirects, then with simple spelling variants, then with three LLM synonyms. The
 leads of what it found were the sources of the text. Here the same prompt, word for word, goes to the model of the
-new service (in M17 gpt-5.6-luna instead of gpt-4.1-mini, no temperature), and the titles are looked up in the Wikipedia
-archive the new service reads, directly and with the old variants; the synonym step is left out and counted instead.
+new service - gpt-6-luna since D44, in M17 gpt-5.6-luna; the old service's gpt-4.1-mini is not asked -, and the titles
+are looked up in the Wikipedia archive the new service reads, directly and with the old variants; the synonym step is
+left out and counted instead.
 
 Per query of the three gold sets in eval/artikelwahl:
 - first: the article behind the first entity is an accepted main article;
@@ -18,10 +19,10 @@ Writes titles and numbers, no article text. A hard token limit stops the run.
 
 Usage (project venv, from the project root: the service reads config/ relative to it, and without
 config/subjects.yaml the rules lose the subject context - 79 instead of 86):
-python docs/entwicklung/messung/mc_alte_artikelwahl.py <out.json> <token_limit> [<model>]
-Without <model> the service's own model answers; with gpt-4.1-mini the old service's model does, at its
-temperature 0.7 - the way the old service ran in M2. gpt-4.1-mini is outdated and dearer; it serves this
-replay of the old service only and is used nowhere else (D44).
+python docs/entwicklung/messung/mc_alte_artikelwahl.py <out.json> <token_limit>
+The service's own model answers (B_API_MODEL, gpt-6-luna). A third argument named another model until 2026-09-28,
+gpt-4.1-mini to replay the old service at its temperature 0.7; that model is outdated, and the script asks it no more
+(audit 2026-09-28, DO-07).
 """
 
 from __future__ import annotations
@@ -46,7 +47,7 @@ from alter_linker import MAX_ENTITIES, SYSTEM, labels_of, user_prompt, variation
 
 from app.cli_common import cli_service
 from app.domain.requests import GenerateRequest
-from app.llm.client import BApiClient, LlmError
+from app.llm.client import LlmError
 from app.service import TopicNotFoundError
 
 if sys.platform == "win32":
@@ -74,20 +75,9 @@ def normdaten(html: str) -> tuple[str | None, str | None]:
 
 
 out_path, token_limit = Path(sys.argv[1]), int(sys.argv[2])
-OLD_MODEL = sys.argv[3] if len(sys.argv) > 3 else None
 service = cli_service(ZIMS)
 assert service.llm is not None, "LLM_ENABLED did not reach the settings"
 client = service.llm.client
-if OLD_MODEL:  # the old service's model and temperature; the key stays in the settings
-    settings = service.settings
-    client = BApiClient(
-        client.base_url,
-        settings.b_api_key,
-        provider=settings.b_api_provider,
-        model=OLD_MODEL,
-        temperature=0.7,
-        max_concurrency=PARALLEL,
-    )
 wiki = service.registry.primary_archive
 assert wiki is not None
 spent = {"tokens": 0, "calls": 0, "failed": 0, "stopped": False}
