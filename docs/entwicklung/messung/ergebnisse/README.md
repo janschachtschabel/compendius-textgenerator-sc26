@@ -1,9 +1,10 @@
-# Ergebnisse der Messungen M1 bis M43
+# Ergebnisse der Messungen M1 bis M45
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 27.09.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23. bis 28.09.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
-[Entscheidungsvorlage](../../07-entscheidungsvorlage.md) in `docs/entwicklung/bilder/` zeichnet `mc_grafiken.py`:
+[Entscheidungsvorlage](../../07-entscheidungsvorlage.md), von [Alt und neu](../../01-alt-und-neu.md) und von
+[Methoden, Messwerte und Profile](../../09-methoden-und-profile.md) in `docs/entwicklung/bilder/` zeichnet `mc_grafiken.py`:
 
 ```
 python docs/entwicklung/messung/mc_zusammenfassung.py docs/entwicklung/messung/ergebnisse
@@ -56,6 +57,8 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M41 | Wie treffsicher sind die Kennungen von `/entities` je Profil, und stehen die Wikidata-Nummern auch im ZIM? | so treffsicher wie die Verknüpfung: Wikidata und DBpedia Präzision 0,29 (`llm-free`), 0,70 (`balanced`), 0,94 (`link_check: llm`), GND 0,33, 0,69 und 0,92; alle 188 richtigen Artikel haben eine Wikidata-Nummer, 139 eine GND; das ZIM verlinkt bei 14 von 188 das Wikidata-Objekt, Sprachlinks keine | – | `m41_kennungen.json` |
 | M42 | Lässt sich die GND-Lücke lokal schließen, bekommen die Artikel eine DBpedia-URI, die antwortet, und verknüpft DBpedia Spotlight besser als die Regeln? | GND-Abzüge der DNB: 22 Vorschläge für 49 Lücken, 21 richtig (zwei blinde Gutachter, 22 von 22 gleich), an bekannten Nummern 98 und 99 % gleich; `de.dbpedia.org` antwortet nicht, einen englischen Artikel für `dbpedia.org` haben 96 % der Artikel von `balanced`; Spotlight F1 0,34 bis 0,37 statt 0,38, doppelt so viele Namensvettern (340 Paare, zwei Gutachter, 339 gleich) | – | `m42_gnd.json`, `m42_dbpedia.json`, `m42_spotlight.json` |
 | M43 | Wirken der GND-Index und die DBpedia-URI über den englischen Artikel im Dienst wie gemessen (D65)? | ja: GND-F1 in `balanced` 0,78 (M41 0,77), 160 statt 139 der 188 richtigen Artikel mit richtiger GND, an bekannten Nummern 107 von 109 und 90 von 91 gleich; von 46 GND, die der Index verknüpften Artikeln gab, 41 derselbe Begriff (zwei blinde Gutachter, 24 von 24 gleich); ein englischer Artikel für 96 % der Artikel von `balanced`; der Leser verlor umbrochene Namenslisten (behoben, 1.072.074 statt 933.131 Namen); Wikidata-Sync 619 statt 1.271 s | – | `m43_kennungen.json` |
+| M44 | Tragen die sechs Faktoren der Zuordnungsregeln, die das Audit ohne Messung fand (WA-02)? | drei ja: ohne den Vorzug des bevorzugten Projekts fällt macro-F1 um 0,047, ohne den Abschlag für eine fremde Überschrift um 0,020, ohne den Zuschlag für Abschnittseinleitungen um 0,003; zwei wirken auf dem Gold nicht, der Abschlag für Ausschlusswörter kostet 0,007; die Werte bleiben, bis Jan entscheidet | – | `m44_faktoren.json` |
+| M45 | Was kosten die vier Profile an allen Endpunkten mit Release 2.2.2? | ein Kompendium mit Teil 1 und 2 auf dem Server, Median: `llm-free` 2,3 s und keine Tokens, `balanced` rund 6,9 s und 576, `best-quality` 26 s und 49.019, `best-quality-generated` 36 s und 60.357; dazu `/knowledge`, `/lehrplan/search`, `/qa` und `/entities` | – | `m45_profile_endpunkte.json`, `m45_server_llm_free.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

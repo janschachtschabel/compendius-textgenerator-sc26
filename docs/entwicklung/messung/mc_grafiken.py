@@ -1,8 +1,10 @@
-"""Charts of the decision paper (docs/entwicklung/07-entscheidungsvorlage.md) as plain SVG (project venv, no LLM).
+"""Charts of the development docs as plain SVG (project venv, no LLM): the decision paper (07-entscheidungsvorlage.md),
+old and new service (01-alt-und-neu.md), and methods, measurements and profiles (09-methoden-und-profile.md).
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg and kombinationen.svg. Numbers no raw file holds are written here with their source: the text
+text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), and
+profile_matrix.svg and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
 switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
 05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
@@ -833,7 +835,55 @@ def verfahren_charts() -> None:
         "Wikidata-Präzision 0,29 und 0,70, GND 0,31 und 0,70 (M43). Zeit und Tokens: M45 an 1.500 Zeichen (Regeln auf dem Server)."))
 
 
+def verfahren_text() -> None:
+    """Step 4 (text of part 1): the ways the text comes about, readability where it was graded (M28, M31, M45)."""
+    verfahren("verfahren_text.svg", "Text von Teil 1: wörtlich oder geschrieben", "Lesbarkeit für Lehrkräfte, 1 bis 5", [
+        ("wörtlich, jeder Satz mit Belegnummer", 2.5 / 5, "2,5", "lokal", "0", ("llm-free", "balanced", "best-quality")),
+        ("LLM wählt die Sätze aus (extraction=llm)", None, "am Goldstandard kein Gewinn", "+11 s", "14.000 bis 22.400",
+         "in keinem Profil"),
+        ("LLM schreibt jeden Baustein neu", 4.0 / 5, "4,0; 11 von 12 vorgezogen", "+8,7 s",
+         "+4.300 bis 11.600", ("best-quality-generated",)),
+    ], ("Lesbarkeit: zwei Claude-Gutachter, sechs Themen (M28); Modellwissen mit Prompt v2 sichtbar markiert: 50 Sätze, 13 Füllsätze,",
+        "keiner falsch (M31). Zeit des Schreibens M45; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md)."))
+
+
+def alt_neu_teile() -> None:
+    """What the old and the new service deliver for the three parts of the compendium and beside it (01-alt-und-neu.md);
+    the numbers as on that page, each with its measurement."""
+    missing, old_fill, new_fill = "#f6e1dc", "#eceef1", "#e3edf8"
+    rows = [  # part, old service, new service
+        ("Teil 1 · Weltwissen", ("LLM nennt Begriffe und schreibt frei aus", "Wikipedia-Einleitungen; 21 % der Sätze gestützt"),
+         ("ZIM-Archive, Hauptartikel, Korpus, Zuordnung zu", "10 Bausteinen; jeder Satz wörtlich belegt")),
+        ("Teil 2 · Lehrplanbezüge", None, ("MEM-Lehrpläne aus 4 Ländern, lokal gepuffert;", "70 bis 81 % der Schnipsel passend")),
+        ("Teil 3 · Sammlungsüberblick", None, ("WLO-Sammlung aus edu-sharing zur Anfragezeit;", "je Inhalt eine Zeile mit nodeId")),
+        ("Daneben", ("Linker (Begriffe live bei Wikipedia), QA-Paare", "vom LLM, Hilfsendpunkte für Textteilung u. a."),
+         ("Profile, Entitäten mit Wikidata und GND, QA-Paare,", "Wissenstexte, Lehrplansuche, Material als Eingang")),
+    ]
+    label_w, cell_w, row_h, top = 220, 360, 62, 86
+    width = 24 + label_w + 2 * cell_w + 24
+    svg = Svg(width, top + len(rows) * row_h + 58, "Die drei Teile: alter und neuer Dienst")
+    svg.text(24, 30, "Die drei Teile des Kompendiums: alter und neuer Dienst", 17, weight="600")
+    for index, head in enumerate(("alter Dienst v0.2.0", "neuer Dienst 2.2.2")):
+        svg.text(24 + label_w + index * cell_w + 8, top - 14, head, 12.5, MUTED, weight="600")
+    for number, (part, old, new) in enumerate(rows):
+        y = top + number * row_h
+        svg.text(24 + label_w - 14, y + 34, part, 12.5, INK, "end", "600", limit=label_w - 16)
+        for index, cell in enumerate((old, new)):
+            x = 24 + label_w + index * cell_w
+            svg.rect(x + 4, y + 4, cell_w - 8, row_h - 8, missing if cell is None else (old_fill if index == 0 else new_fill), 6)
+            if cell is None:
+                svg.text(x + 18, y + 36, "fehlte", 12, "#a2402f", weight="600")
+            else:
+                svg.text(x + 18, y + 27, cell[0], 11.5, INK, limit=cell_w - 30)
+                svg.text(x + 18, y + 44, cell[1], 11.5, INK, limit=cell_w - 30)
+    svg.text(24, top + len(rows) * row_h + 22, "Gestützte Sätze: M2; Lehrplanschnipsel: M32 (einzeln gezeigt, 20 Themen, zwei Gutachter).",
+             10.5, MUTED, limit=width - 48)
+    svg.text(24, top + len(rows) * row_h + 38, "Einzelheiten und Zahlen: 01-alt-und-neu.md und 09-methoden-und-profile.md.",
+             10.5, MUTED, limit=width - 48)
+    svg.save("alt_neu_teile.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
-              kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts):
+              kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile):
     chart()

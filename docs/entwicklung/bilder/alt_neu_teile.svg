@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="988" height="392" viewBox="0 0 988 392" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die drei Teile: alter und neuer Dienst"><title>Die drei Teile: alter und neuer Dienst</title><rect width="988" height="392" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die drei Teile des Kompendiums: alter und neuer Dienst</text>
+<text x="252.0" y="72.0" font-size="12.5" fill="#52606d" text-anchor="start" font-weight="600">alter Dienst v0.2.0</text>
+<text x="612.0" y="72.0" font-size="12.5" fill="#52606d" text-anchor="start" font-weight="600">neuer Dienst 2.2.2</text>
+<text x="230.0" y="120.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="600">Teil 1 · Weltwissen</text>
+<rect x="248.0" y="90.0" width="352.0" height="54.0" rx="6" fill="#eceef1" stroke="none" stroke-width="1"/>
+<text x="262.0" y="113.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">LLM nennt Begriffe und schreibt frei aus</text>
+<text x="262.0" y="130.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wikipedia-Einleitungen; 21 % der Sätze gestützt</text>
+<rect x="608.0" y="90.0" width="352.0" height="54.0" rx="6" fill="#e3edf8" stroke="none" stroke-width="1"/>
+<text x="622.0" y="113.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">ZIM-Archive, Hauptartikel, Korpus, Zuordnung zu</text>
+<text x="622.0" y="130.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">10 Bausteinen; jeder Satz wörtlich belegt</text>
+<text x="230.0" y="182.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="600">Teil 2 · Lehrplanbezüge</text>
+<rect x="248.0" y="152.0" width="352.0" height="54.0" rx="6" fill="#f6e1dc" stroke="none" stroke-width="1"/>
+<text x="262.0" y="184.0" font-size="12" fill="#a2402f" text-anchor="start" font-weight="600">fehlte</text>
+<rect x="608.0" y="152.0" width="352.0" height="54.0" rx="6" fill="#e3edf8" stroke="none" stroke-width="1"/>
+<text x="622.0" y="175.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">MEM-Lehrpläne aus 4 Ländern, lokal gepuffert;</text>
+<text x="622.0" y="192.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">70 bis 81 % der Schnipsel passend</text>
+<text x="230.0" y="244.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="600">Teil 3 · Sammlungsüberblick</text>
+<rect x="248.0" y="214.0" width="352.0" height="54.0" rx="6" fill="#f6e1dc" stroke="none" stroke-width="1"/>
+<text x="262.0" y="246.0" font-size="12" fill="#a2402f" text-anchor="start" font-weight="600">fehlte</text>
+<rect x="608.0" y="214.0" width="352.0" height="54.0" rx="6" fill="#e3edf8" stroke="none" stroke-width="1"/>
+<text x="622.0" y="237.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">WLO-Sammlung aus edu-sharing zur Anfragezeit;</text>
+<text x="622.0" y="254.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">je Inhalt eine Zeile mit nodeId</text>
+<text x="230.0" y="306.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="600">Daneben</text>
+<rect x="248.0" y="276.0" width="352.0" height="54.0" rx="6" fill="#eceef1" stroke="none" stroke-width="1"/>
+<text x="262.0" y="299.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Linker (Begriffe live bei Wikipedia), QA-Paare</text>
+<text x="262.0" y="316.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">vom LLM, Hilfsendpunkte für Textteilung u. a.</text>
+<rect x="608.0" y="276.0" width="352.0" height="54.0" rx="6" fill="#e3edf8" stroke="none" stroke-width="1"/>
+<text x="622.0" y="299.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Profile, Entitäten mit Wikidata und GND, QA-Paare,</text>
+<text x="622.0" y="316.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wissenstexte, Lehrplansuche, Material als Eingang</text>
+<text x="24.0" y="356.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gestützte Sätze: M2; Lehrplanschnipsel: M32 (einzeln gezeigt, 20 Themen, zwei Gutachter).</text>
+<text x="24.0" y="372.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Einzelheiten und Zahlen: 01-alt-und-neu.md und 09-methoden-und-profile.md.</text></svg>

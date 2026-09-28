@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1110" height="240" viewBox="0 0 1110 240" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Text von Teil 1: wörtlich oder geschrieben"><title>Text von Teil 1: wörtlich oder geschrieben</title><rect width="1110" height="240" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Text von Teil 1: wörtlich oder geschrieben</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="115.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="133.5" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="207.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="225.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="324.3" y="46.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="342.3" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="324.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Lesbarkeit für Lehrkräfte, 1 bis 5</text>
+<text x="644.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="780.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="910.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Profile</text>
+<rect x="20.0" y="90.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="109.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">wörtlich, jeder Satz mit Belegnummer</text>
+<rect x="324.0" y="98.0" width="85.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="415.0" y="109.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<text x="644.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">lokal</text>
+<text x="780.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<rect x="910.0" y="97.0" width="40.0" height="16.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="930.0" y="109.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<rect x="954.0" y="97.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="974.0" y="109.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
+<rect x="998.0" y="97.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="1018.0" y="109.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
+<text x="24.0" y="139.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">LLM wählt die Sätze aus (extraction=llm)</text>
+<text x="324.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">am Goldstandard kein Gewinn</text>
+<text x="644.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+11 s</text>
+<text x="780.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">14.000 bis 22.400</text>
+<text x="910.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">in keinem Profil</text>
+<rect x="20.0" y="150.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="169.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM schreibt jeden Baustein neu</text>
+<rect x="324.0" y="158.0" width="136.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="466.0" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,0; 11 von 12 vorgezogen</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+8,7 s</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+4.300 bis 11.600</text>
+<rect x="1042.0" y="157.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="1062.0" y="169.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
+<text x="24.0" y="202.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Lesbarkeit: zwei Claude-Gutachter, sechs Themen (M28); Modellwissen mit Prompt v2 sichtbar markiert: 50 Sätze, 13 Füllsätze,</text>
+<text x="24.0" y="218.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">keiner falsch (M31). Zeit des Schreibens M45; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md).</text></svg>

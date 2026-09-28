@@ -12,6 +12,8 @@ Profil es vorsieht.
 
 ## Die drei Teile: Soll, alter und neuer Dienst
 
+![Die drei Teile des Kompendiums im alten und im neuen Dienst](bilder/alt_neu_teile.svg)
+
 | Teil | Soll | alter Dienst v0.2.0 | neuer Dienst 2.2.2 |
 |---|---|---|---|
 | **1 · Weltwissen** | gesichertes Wissen zum Thema, gegliedert nach dem Template SC26 in 13 Bausteine: zehn aus den Quellen, dazu Akteure, Quellen und Glossar; jede Aussage belegt | ein LLM nennt bis zu zehn Begriffe; je Begriff holt der Dienst live die Einleitung des Wikipedia-Artikels; ein zweiter LLM-Aufruf schreibt daraus einen freien Text. Die 15 Aspekte des damaligen Templates stehen nur als Hinweis im Prompt | Wikipedia und Klexikon als ZIM-Archive beim Dienst. Ein Hauptartikel, ein Korpus aus bis zu 12 ganzen Artikeln, jeder Absatz einem der zehn Inhaltsbausteine zugeordnet und wörtlich mit Belegnummer übernommen; Akteure, Quellen und Glossar aus denselben Artikeln. Je Profil helfen LLM-Schritte bei Artikelwahl, Korpus, Zuordnung und Text |

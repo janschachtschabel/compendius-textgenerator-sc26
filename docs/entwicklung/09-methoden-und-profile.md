@@ -145,6 +145,8 @@ am Goldstandard (zehn Themen, gelabelte Absätze).
 
 ## 4. Text von Teil 1: wörtlich oder geschrieben
 
+![Text von Teil 1: Methoden und Profile](bilder/verfahren_text.svg)
+
 | Methode | Güte | Zeit | Tokens | genutzt in | Messung |
 |---|---|---|---|---|---|
 | **wörtlich:** die zugeordneten Absätze, jeder Satz mit Belegnummer | jeder Satz steht wörtlich im zitierten Absatz; Lesbarkeit 2,5 von 5 | lokal | 0 | `llm-free`, `balanced`, `best-quality` | M3, M28 |
