@@ -29,8 +29,9 @@ def current_request_id() -> str:
 
 
 def set_request_id(value: str | None) -> str:
-    """Take the caller's id (trimmed) or make one; the value is what the answer reports."""
-    cleaned = " ".join((value or "").split())[:MAX_REQUEST_ID_CHARS]
+    """Take the caller's id (trimmed) or make one; the value is what the answer reports. The header is cut before it
+    is split: split whole, 12 MB cost 0.25 s and 219 MB of the event loop (audit 2026-09-28, SE-19)."""
+    cleaned = " ".join((value or "")[: 4 * MAX_REQUEST_ID_CHARS].split())[:MAX_REQUEST_ID_CHARS]
     request_id = cleaned or uuid.uuid4().hex[:12]
     _request_id.set(request_id)
     return request_id

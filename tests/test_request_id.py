@@ -9,7 +9,7 @@ import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
-from app.logging import REQUEST_ID_HEADER, current_request_id
+from app.logging import MAX_REQUEST_ID_CHARS, REQUEST_ID_HEADER, current_request_id, set_request_id
 from app.main import create_app
 from tests.conftest import make_settings
 
@@ -62,3 +62,15 @@ def test_a_refusal_keeps_its_status_and_detail(client: TestClient) -> None:
 
 def test_outside_a_request_there_is_no_id() -> None:
     assert current_request_id() == "-"
+
+
+def test_a_long_request_id_is_cut_before_it_is_split() -> None:
+    """The whole header was split into words before the cut to 64 characters: 12 MB cost 0.25 s and 219 MB on the
+    event loop (audit 2026-09-28, SE-19)."""
+
+    class WholeHeader(str):
+        def split(self, *args: object, **kwargs: object) -> list[str]:
+            raise AssertionError("the whole header value was split")
+
+    assert set_request_id(WholeHeader("a" * 1_000_000)) == "a" * MAX_REQUEST_ID_CHARS
+    assert set_request_id("  zwei\n\t Wörter ") == "zwei Wörter"

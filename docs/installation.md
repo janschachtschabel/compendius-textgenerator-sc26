@@ -250,6 +250,13 @@ Drei Zeilen in `.env` gehören dann dazu:
   alle Aufrufer teilen sich **ein** Rate-Limit-Fenster.
 - `RATE_LIMIT` prüfen (Standard 60 Anfragen je Minute und Aufrufer, je Worker).
 
+Der Proxy begrenzt auch, was uvicorn nicht begrenzt: die Zeit, in der eine Verbindung ihre Kopfzeilen schicken darf
+(`client_header_timeout`, `client_body_timeout`, `send_timeout` in nginx, die Vorgabe von 60 s passt), und die Zahl
+offener Verbindungen je Aufrufer (`limit_conn`). uvicorn nimmt mit h11 (Vorgabe, `UVICORN_HTTP`) Anfragezeile und
+Kopfzeilen bis etwa 16 KB an und antwortet darüber mit 400; eine Frist für langsame Verbindungen kennt es nicht.
+`UVICORN_LIMIT_CONCURRENCY` ist dafür kein Ersatz: uvicorn zählt dabei auch Verbindungen, die ihre Kopfzeilen nie
+beenden, und am 28.09. genügten acht solche bei einer Grenze von 8, damit jede weitere Anfrage ein 503 bekam.
+
 ## 9. Updates und Sicherung
 
 ```bash

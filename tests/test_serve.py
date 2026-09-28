@@ -75,3 +75,23 @@ def test_compose_waits_longer_for_the_api_than_uvicorn_waits_for_its_requests() 
     compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
     stop = compose["services"]["api"]["stop_grace_period"]
     assert stop.endswith("s") and int(stop[:-1]) > grace
+
+
+@pytest.mark.parametrize(("configured", "expected"), [(None, "h11"), ("", "h11"), ("httptools", "httptools")])
+def test_uvicorn_parses_with_h11_unless_the_operator_chose_otherwise(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, configured: str | None, expected: str
+) -> None:
+    """httptools bounds neither the URL nor the headers, and uvicorn collected a long URL in quadratic time; h11
+    refuses a request line with headers over 16 KB (audit 2026-09-28, SE-19). An empty entry is the default."""
+    monkeypatch.delenv("PROMETHEUS_MULTIPROC_DIR", raising=False)
+    monkeypatch.setattr(serve, "DEFAULT_DIR", str(tmp_path / "metrics"))
+    if configured is None:
+        monkeypatch.delenv("UVICORN_HTTP", raising=False)
+    else:
+        monkeypatch.setenv("UVICORN_HTTP", configured)
+    handed: list[dict[str, str]] = []
+    monkeypatch.setattr(os, "execvpe", lambda file, args, env: handed.append(env))
+
+    serve.main()
+
+    assert handed[0]["UVICORN_HTTP"] == expected
