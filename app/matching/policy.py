@@ -301,5 +301,8 @@ def cut_to_budgets(
         if dropped:
             notes.append(f"{slot.id}: {dropped} Kandidaten über Budget verworfen")
             dropped_total += dropped
+        # Only the main article's first lead paragraph is marked as the lead (knowledge/segmentation.py), so "lead
+        # first" keeps the defining paragraph at the head of its block and moves nothing else: a side article's lead
+        # keeps its place in reading order (checked in audit 2026-09-28, KO-30)
         kept_per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, reading[sc.chunk.chunk_id]))
     return kept_per_slot, notes, dropped_total

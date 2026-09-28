@@ -1,6 +1,8 @@
-from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
+from app.domain.models import ArticleSection, Chunk, Paragraph, ScoredChunk, Source, SourceRole
+from app.knowledge.segmentation import segment_source
 from app.matching.fusion import fuse_rankings, smooth_sections
 from app.matching.lexical import BM25Matcher, CharTfidfMatcher
+from app.matching.lexicon import HeadingLexicon
 from app.matching.policy import assign, cut_to_budgets, exclusion_terms
 from app.matching.registry import get_matcher, list_strategies
 from app.templates.manager import TemplateManager
@@ -391,3 +393,37 @@ def test_a_block_reads_the_main_article_before_the_others() -> None:
     in_corpus_order = [scored("wikipedia:Optik", 1), scored("wikipedia:Optik", 2), scored("wikipedia:Linse", 0)]
     kept, _notes, _dropped = cut_to_budgets(template, {slot.id: in_corpus_order})
     assert [item.chunk.chunk_id for item in kept[slot.id]] == [item.chunk.chunk_id for item in in_corpus_order]
+
+
+def test_only_the_main_articles_lead_goes_first_in_a_block() -> None:
+    """KO-30 (audit 2026-09-28): a block keeps "lead first", and that moves no side article's lead ahead of the main
+    article's body, because segmentation marks only the main article's first lead paragraph as the lead."""
+    slot = TemplateSlot(id="s", slot="themendefinition", title="Themendefinition")
+    template = Template(id="t", name="t", slots=[slot])
+    text = "Ein Absatz, der lang genug ist, um als eigener Abschnitt des Artikels zu zählen."
+
+    def source(title: str, *, primary: bool) -> Source:
+        lead = ArticleSection(heading="", path=[], level=0, paragraphs=[Paragraph(text=f"{title}: {text}")])
+        body = ArticleSection(heading="Grundlagen", path=["Grundlagen"], level=2, paragraphs=[Paragraph(text=text)])
+        return Source(
+            source_id=f"wikipedia:{title}",
+            project="wikipedia",
+            title=title,
+            url=f"https://de.wikipedia.org/wiki/{title}",
+            is_primary=primary,
+            origin="primary" if primary else "linked",
+            sections=[lead, body],
+        )
+
+    chunks = [
+        chunk
+        for item in (source("Optik", primary=True), source("Linse", primary=False))
+        for chunk in segment_source(item, HeadingLexicon.empty())
+    ]
+    in_corpus_order = [chunks[0], chunks[1], chunks[2]]  # main lead, main body, side lead
+    scored = [ScoredChunk(chunk=chunk, score=0.8, matcher="policy") for chunk in in_corpus_order]
+
+    kept, _notes, _dropped = cut_to_budgets(template, {slot.id: scored})
+
+    assert [chunk.is_lead for chunk in in_corpus_order] == [True, False, False]
+    assert [item.chunk.chunk_id for item in kept[slot.id]] == [chunk.chunk_id for chunk in in_corpus_order]
