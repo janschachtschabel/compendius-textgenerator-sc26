@@ -87,8 +87,9 @@ COPY config ./config
 USER app
 VOLUME ["/data/zim", "/data/state"]
 EXPOSE 8000
-# Anlaufzeit gemessen am 2026-09-23 (Docker Desktop, zwei Worker): 144 s bis "Application startup complete",
-# davon rund 100 s Modelle laden. 600 s lassen einem langsameren Host das Vierfache. Kosten hat der Wert nicht:
+# Anlaufzeit gemessen am 2026-09-28 (Docker Desktop, zwei Worker, gehaertet wie in docker-compose.yml, die
+# Beispielarchive): 22 bis 31 s bis /ready; vor D57 (torch und die QA-Modelle) waren es 144 s. Die 600 s stammen aus
+# jener Zeit und lassen einem langsamen Host mit grossen Archiven viel Luft. Kosten hat der Wert nicht:
 # Gelingt eine Probe frueher, gilt der Container sofort als healthy; die Frist verschiebt nur das Urteil
 # unhealthy fuer einen Container, der nie hochkommt. Mit 30 s stand er nach jedem Start minutenlang auf unhealthy.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \

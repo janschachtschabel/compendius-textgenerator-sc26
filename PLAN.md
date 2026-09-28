@@ -263,63 +263,14 @@ compendious-text-fastapi/
 - **Compendium**: `topic` (aufgelöst), `resolution` (Alternativen), `frontmatter`, `parts`
   (world, curricula, collection), `sources`, `audit` (matching, lint, timings, tokens).
 
-### 3.5 Konfiguration (Auszug)
+### 3.5 Konfiguration
 
-| Variable | Standard | Bedeutung |
-|---|---|---|
-| `ZIM_DIR` | `/data/zim` | Archive und `active.json` |
-| `ZIM_PROFILE` | `standard` | `compact`, `standard` oder `extended` (siehe 4.1) |
-| `ZIM_REQUIRED` | leer (aus Manifest und `ZIM_PROFILE` abgeleitet) | Readiness-Bedingung, übersteuert das Manifest |
-| `ZIM_BOOTSTRAP_DOWNLOAD` | `false` | Updater lädt fehlende Pflicht-Archive beim ersten Start |
-| `ZIM_SYNC_INTERVAL` | `30d` | Katalogprüfung und Update der abonnierten Archive (monatlich) |
-| `ZIM_CATALOG_URL` | leer (= `https://opds.library.kiwix.org/catalog/v2/entries`) | Kiwix-OPDS-Katalog |
-| `ZIM_DOWNLOAD_HOSTS` | `download.kiwix.org,lb.download.kiwix.org,mirror.download.kiwix.org` | Allowlist für Download-Start-URLs |
-| `ZIM_RETENTION_HOURS` | `24` | Karenz vor dem Löschen abgelöster Archive |
-| `STATE_DIR` | `/data/state` | SQLite-Datenbanken, Templates |
-| `TEMPLATE_DEFAULT` | `sc26` | Standard-Template |
-| `FACETS_LEVEL` | `minimal` | `minimal` (Zeitbezug, Bildungsstufe, Evidenzgrad) oder `full` (alle elf), siehe 4.6 |
-| `FACETS_VISIBLE` | `false` | sichtbare Kurzform `[Facette: Wert]` zusätzlich zu den Markern |
-| `MATCHER_DEFAULT` | `hybrid_light` | festgelegt nach Evaluation (4.5): Lexikon + BM25 + Char-TF-IDF + Model2Vec + Policy |
-| `MODEL2VEC_PATH` | `/models/m2v` im Image, sonst leer | statisches Embedding-Modell für `hybrid_light` (D20) |
-| `POLICY_CONFIDENT_SCORE` | `0.65` | Trefferstärke, ab der ein Ranker-Treffer zählt; darunter Standardbaustein (bis 2026-09-18: 0,45, siehe D28) |
-| `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score; 0 schaltet die Glättung ab (D28) |
-| `LLM_ENABLED` | `false` | b-api-Nutzung insgesamt |
-| `B_API_KEY` | – | Schlüssel, Header `X-API-KEY` |
-| `B_API_BASE_URL` | `https://b-api.staging.openeduhub.net` | nur der Host; der Pfad `/api/v1/llm/{provider}/…` wird aus dem Provider gebildet |
-| `B_API_PROVIDER` | `openai` | `openai` oder `academiccloud`, zur Laufzeit umschaltbar (Entscheidung D19) |
-| `B_API_MODEL` | `gpt-6-luna` | Modell-ID beim gewählten Provider; wird beim Start gegen `/models` geprüft (D44, vorher `gpt-5.6-luna`) |
-| `LLM_EXTRACTION_DEFAULT` | `rule-based` | `rule-based` oder `llm` (siehe 4.7, D33) |
-| `LLM_GENERATION_DEFAULT` | `rule-based` | `rule-based`, `llm-fast` oder `llm` (siehe 4.7, D33) |
-| `LLM_ENRICHMENT_DEFAULT` | `sources-only` | `model-knowledge` lässt das schreibende LLM eigenes Wissen ergänzen; solche Sätze tragen keine Belegnummer und werden als `Evidenzgrad=Modellwissen` gekennzeichnet (docs/umbau.md U4) |
-| `LLM_EXTRACTION_CANDIDATES` | `8` | Absätze je Baustein, die `extraction=llm` anbietet: die der Policy, dann die nächstbesten nach ihrem Score |
-| `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Abschnitte, die `generation=llm-fast` per LLM formuliert |
-| `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, `LLM_DAILY_TOKEN_BUDGET` | 60000 / 180000 / 2 Mio. | Kostenschutz je Anfrage (`llm-free` und `balanced` / die beiden `best-quality`-Profile, D59) und je Tag; der Tageszähler liegt in `STATE_DIR/llm_budget.db`, gilt für alle Worker und übersteht Neustarts |
-| `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg verwerfen oder mit `mark` als Schlussfolgerung kennzeichnen (4.7) |
-| `LLM_REASONING_EFFORT`, `LLM_VERBOSITY` | `low` / `low` | Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie (D25, D44); klassische Modelle nutzen `LLM_TEMPERATURE` (`0.2`) |
-| `LLM_TIMEOUT_S`, `LLM_MAX_CONCURRENCY`, `LLM_ATTEMPTS` | `120` / `10` / `3` | Timeout, parallele Aufrufe (Semaphore), Versuche bei 429/502/503/504 und Verbindungsfehlern |
-| `EDU_SHARING_BASE_URL` | `https://redaktion.openeduhub.net/edu-sharing/rest` | Repository für Teil 3 und Wissens-Sammlung; leer = aus |
-| `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | – | optional Basic-Auth; ohne Zugangsdaten anonym (öffentliche Sammlungen) |
-| `EDU_SHARING_TIMEOUT_S` | `30` | Timeout je Repository-Anfrage |
-| `COLLECTION_CACHE_TTL_S` | `3600` | Cache für Sammlungsmetadaten und Listen (`STATE_DIR/wlo_cache.db`) |
-| `COLLECTION_MAX_ITEMS` | `0` (= alle) | optionale Kappung der Inhaltslisten in Teil 3 (D23) |
-| `MATERIAL_TEXT_CACHE_TTL_S` | `604800` | Cache der extrahierten Materialtexte (7 Tage) |
-| `KNOWLEDGE_MAX_MATERIALS`, `KNOWLEDGE_MAX_CHARS`, `KNOWLEDGE_CONCURRENCY` | `30` / `20000` / `4` | Budget der Wissens-Sammlung |
-| `LEHRPLAN_ENDPOINT` | `https://sparql.mem.edufeed.org/sparql/` | MEM-SPARQL-Endpunkt, nur vom Harvest genutzt |
-| `LEHRPLAN_CHECK_INTERVAL` | `7d` | wöchentliche Zählprüfung gegen MEM (`compendium lehrplan harvest --loop`) |
-| `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Vollabzug bei geänderter Zählung oder spätestens nach diesem Alter |
-| `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen SPARQL-Anfragen im Harvest |
-| `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` (= alle) | optionale Kappung von Teil 2 je Bundesland und Bildungsstufe; Standard ohne Kappung (D23) |
-| `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Quelle der dewiki-Dumps für den Wikidata-Index (`compendium wikidata sync`, D64); nur dieser Host |
-| `WIKIDATA_CHECK_INTERVAL` | `1d` | Prüfintervall des Sidecars `wikidata-updater`: Index fehlt, oder ein jüngeres Wikipedia-Archiv braucht einen neueren Dump |
-| `GND_DUMPS_URL` | `https://data.dnb.de/opendata` | Quelle der GND-Abzüge und ihrer Prüfsummen (`compendium gnd sync`, D65); nur dieser Host |
-| `GND_CHECK_INTERVAL` | `1d` | Prüfintervall des Sidecars `gnd-updater`: Index fehlt, oder die DNB hat eine neuere Ausgabe |
-| ~~`LEHRPLAN_LIVE_FALLBACK`~~ | – | gestrichen (D22): ohne Cache Hinweistext, nie SPARQL zur Inferenzzeit |
-| `RESULT_CACHE_TTL_H` | `168` | geplant, nicht umgesetzt: Ergebnis-Cache (8.3) |
-| `ADMIN_TOKEN` | – | Admin-Endpunkte (ZIM, Harvest-Anstoß, Matching-Vergleich; Templates schreiben ist geplant) |
-| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf den erzeugenden Endpunkten, je Worker; 0 = aus (D30) |
-| `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc`, `/openapi.json` ausliefern |
-| `METRICS_ENABLED`, `METRICS_TOKEN` | `true` / – | Prometheus-Endpunkt `/metrics`, optional nur mit Bearer-Token (D31) |
-| `REQUEST_TIMEOUT_S` | `120` | Frist je Anfrage für die LLM-Arbeit (jeder Aufruf bekommt höchstens die Restzeit, unter 5 s Rest entsteht der Baustein extraktiv) und das Lesen der Materialtexte und der Listen von Teil 3 (dann `summary.incomplete` mit Hinweis); keine harte Gesamtfrist (geplant: 504, 8.1) |
+Die gültige Konfiguration mit Vorgaben und Bedeutung steht im README (Abschnitt „Konfiguration“) und in
+`.env.example`; die Testsuite prüft, dass `.env.example` jede Einstellung aus `app/settings.py` nennt und das README
+oder `docs/` jede erklärt (`tests/test_env_example.py`). Hier stand bis
+2026-09-28 ein Auszug, der veraltet war: Er führte die mit D53 entfernten `MATCHER_DEFAULT` und `LLM_*_DEFAULT`,
+andere Vorgaben für `B_API_BASE_URL` und `EDU_SHARING_BASE_URL` und weder `PRESET_DEFAULT` noch `API_KEYS`
+(Audit 2026-09-28, DO-05).
 
 ---
 
