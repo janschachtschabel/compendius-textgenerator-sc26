@@ -326,11 +326,11 @@ class BApiClient:
 
     def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
         """One HTTP attempt; waiting for a free call slot counts against ``limit`` like the request itself."""
-        began = time.monotonic()
+        began = self._clock()  # the client's one clock: the real one mixed in drifted from an injected one
         if not self._semaphore.acquire(timeout=limit):
             raise LlmError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
         try:
-            remaining = max(1.0, limit - (time.monotonic() - began))
+            remaining = max(1.0, limit - (self._clock() - began))
             return self._client.request(method, url, json=json_body, timeout=remaining)
         finally:
             self._semaphore.release()
