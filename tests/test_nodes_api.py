@@ -263,12 +263,31 @@ def test_every_endpoint_names_the_failures_of_a_node_alike(
     working = TestClient(with_fake_repository(create_app(settings)))
     refused = working.post(path, json={**body, "node_id": MATERIAL, "repository": "https://example.org"})
     assert refused.status_code == 422
-    assert working.post(path, json={**body, "repository": STAGING}).status_code == 422, "repository needs node_id"
     assert working.post(path, json={**body, "node_id": UNKNOWN}).status_code == 404
     failing = TestClient(with_fake_repository(create_app(settings), FakeRepository(fail=True)))
     assert failing.post(path, json={**body, "node_id": MATERIAL}).status_code == 502
     unconfigured = make_settings(sample_zims.values(), tmp_path / "state", edu_sharing_base_url="")
     assert TestClient(create_app(unconfigured)).post(path, json={**body, "node_id": MATERIAL}).status_code == 503
+
+
+# What each endpoint takes besides a node: a repository alone must be refused for its own reason
+REPOSITORY_ALONE = {
+    "/api/v2/compendium": {"topic": "Optik", "parts": ["world"]},
+    "/api/v2/knowledge": {"topic": "Optik"},
+    "/api/v2/qa": {"topic": "Optik"},
+    "/api/v2/entities": {"text": "Die Optik ist die Lehre vom Licht."},
+}
+
+
+@pytest.mark.parametrize("path", list(REPOSITORY_ALONE))
+def test_a_repository_without_a_node_is_refused_for_that_reason(client: TestClient, path: str) -> None:
+    """TE-02: the check sent neither topic nor text, so its 422 came from "topic ... oder node_id ist erforderlich";
+    all four repository rules could go and the suite stayed green."""
+    response = client.post(path, json={**REPOSITORY_ALONE[path], "repository": STAGING})
+    assert response.status_code == 422
+    assert [error["msg"] for error in response.json()["detail"]] == [
+        "repository gilt für node_id; ohne node_id fehlt der Knoten"
+    ]
 
 
 def test_part_two_searches_every_subject_of_a_node(client: TestClient) -> None:

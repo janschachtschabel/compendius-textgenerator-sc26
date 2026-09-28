@@ -6,10 +6,12 @@ from pathlib import Path
 
 import httpx
 import pytest
+from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from app.compendium.errors import PartsUnavailableError
 from app.domain.requests import GenerateRequest
+from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
@@ -29,6 +31,14 @@ def with_collections(
     builder = CollectionBuilder(client=client, cache=TtlCache(tmp_path / "wlo_cache.db"))
     monkeypatch.setattr(service, "collections", builder)
     yield service
+
+
+@pytest.fixture(autouse=True)
+def _no_cache_left_behind(settings: Settings) -> Iterator[None]:
+    """The session's state_dir is shared: a cache a test here wrote into it changed what later tests saw - the
+    status of a part without its cache passed only because its file sorts first (audit 2026-09-27, TE-01)."""
+    yield
+    (settings.state_dir / "lehrplan.db").unlink(missing_ok=True)
 
 
 def test_collection_gives_topic_subject_and_part_three(with_collections: CompendiumService) -> None:
@@ -254,3 +264,32 @@ def test_the_order_of_the_parts_is_the_documents_not_the_requests(
         < markdown.index("## Teil 2 · Lehrplanbezüge")
         < markdown.index("## Teil 3 · Die Sammlung im Überblick")
     )
+
+
+class FailsAfterTheCollection(FakeRepository):
+    """Answers the collection itself and fails on its lists: the repository going down in the middle of a request."""
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if "/children/" in request.url.path:
+            self.requests.append(request)
+            raise httpx.ConnectError("boom")
+        return super().__call__(request)
+
+
+def test_a_repository_failing_mid_request_leaves_part_three_unavailable_and_the_rest_answered(
+    settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """TE-05: part 3 says it is not available and the request still ends with 200; the path had no test."""
+    client = TestClient(create_app(settings))
+    repository = EduSharingClient(BASE, transport=httpx.MockTransport(FailsAfterTheCollection()), page_size=10)
+    builder = CollectionBuilder(client=repository, cache=TtlCache(tmp_path / "wlo_cache.db"))
+    monkeypatch.setattr(client.app.state.service, "collections", builder)  # type: ignore[attr-defined]
+
+    body = {"topic": "Optik", "collection_id": OPTIK, "parts": ["world", "collection"], "preset": "llm-free"}
+    response = client.post("/api/v2/compendium", json=body)
+
+    assert response.status_code == 200, response.text[:300]
+    answer = response.json()
+    assert answer["parts_status"] == {"world": "ok", "collection": "unavailable"}
+    assert answer["collection"]["available"] is False
+    assert "Der Sammlungsüberblick konnte nicht erstellt werden" in answer["markdown"]

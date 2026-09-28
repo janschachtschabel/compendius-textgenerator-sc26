@@ -1,6 +1,7 @@
 """Part 2 inside a generated compendium: keywords from part 1, cache present or missing, parts selection."""
 
 import json
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,14 @@ from tests.conftest import make_settings
 from tests.test_lehrplan_api import write_broken_cache, write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
+
+
+@pytest.fixture(autouse=True)
+def _no_cache_left_behind(settings: Settings) -> Iterator[None]:
+    """The session's state_dir is shared: a cache a test here wrote into it changed what later tests saw - the
+    status of a part without its cache passed only because its file sorts first (audit 2026-09-27, TE-01)."""
+    yield
+    (settings.state_dir / "lehrplan.db").unlink(missing_ok=True)
 
 
 def test_generate_appends_part_two_from_the_cache(service: CompendiumService, settings: Settings) -> None:

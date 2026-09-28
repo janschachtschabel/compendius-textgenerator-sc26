@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import httpx
@@ -9,6 +10,7 @@ import pytest
 
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
+from app.sources.lehrplan.store import LehrplanStore
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
@@ -21,10 +23,16 @@ def test_a_plain_compendium_reports_every_requested_part(service: CompendiumServ
     assert result.audit.parts_status == result.parts_status
 
 
-def test_a_part_without_its_source_says_unavailable(service: CompendiumService) -> None:
+def test_a_part_without_its_source_says_unavailable(
+    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # A cache of its own that is not there: other tests write one into the session's state_dir (audit TE-01)
+    assert service.curricula is not None
+    missing = replace(service.curricula, store=LehrplanStore(tmp_path / "lehrplan.db"))
+    monkeypatch.setattr(service, "curricula", missing)
     result = service.generate(GenerateRequest(topic="Optik", parts=["world", "curricula"]))
     assert result.parts_status["world"] == "ok"
-    assert result.parts_status["curricula"] == "unavailable"  # no harvested curriculum cache in the tests
+    assert result.parts_status["curricula"] == "unavailable"
 
 
 def test_a_listing_cut_short_by_the_time_budget_is_incomplete(
