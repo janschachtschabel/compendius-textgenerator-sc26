@@ -32,7 +32,7 @@ from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.matching.policy import MIN_SCORE, AssignmentResult, cut_to_budgets
-from app.templates.schema import Template
+from app.templates.schema import Template, block_key
 
 BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters match 25 and 700 on the gold at 27 % fewer tokens
 TEXT_CHARS = 400  # per paragraph, as in the measurement of 2026-09-24
@@ -123,7 +123,7 @@ def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
             confidence = float(value[1])
         except (TypeError, ValueError, OverflowError):  # an integer of 400 digits is no float
             continue
-        parsed[str(alias)] = (value[0].strip().lower(), min(1.0, max(0.0, confidence)))
+        parsed[str(alias)] = (block_key(value[0]), min(1.0, max(0.0, confidence)))
     return parsed
 
 
@@ -155,7 +155,7 @@ def assign_with_llm(
     # An unexpected error keeps the policy's decision for that batch
     answers = map_in_threads(skipped_on_error(ask, lambda batch: "LLM assignment of a batch"), batches, job.concurrency)
 
-    key_to_id = {slot.slot: slot.id for slot in template.content_slots()}
+    key_to_id = {block_key(slot.slot): slot.id for slot in template.content_slots()}
     decided: dict[str, tuple[str | None, float]] = {}  # chunk id -> (slot id or None for "keiner", confidence)
     fallbacks: Counter[str] = Counter()
     for batch, answer in zip(batches, answers, strict=True):

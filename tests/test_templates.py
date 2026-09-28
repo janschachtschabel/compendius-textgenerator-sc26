@@ -74,6 +74,16 @@ def test_duplicate_slot_ids_are_rejected() -> None:
         )
 
 
+def test_two_blocks_may_not_share_a_key_in_any_spelling() -> None:
+    """KO-07: the model answers keys in lower case, so "Praxis" and "praxis" would be one block to it."""
+    with pytest.raises(ValueError, match="slot keys"):
+        Template(
+            id="x",
+            name="x",
+            slots=[TemplateSlot(id="a", slot="praxis", title="A"), TemplateSlot(id="b", slot="Praxis", title="B")],
+        )
+
+
 def test_a_broken_custom_template_does_not_take_the_others_down(
     tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:

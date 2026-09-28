@@ -47,6 +47,12 @@ class SlotBudget(BaseModel):
     )
 
 
+def block_key(key: str) -> str:
+    """A block key as the answer and the template are compared: a custom template's "Praxis" was unknown to
+    every answer, which the model gives in lower case (audit 2026-09-27, KO-07)."""
+    return key.strip().lower()
+
+
 class TemplateSlot(BaseModel):
     """One building block of part 1."""
 
@@ -135,6 +141,9 @@ class Template(BaseModel):
         ids = [s.id for s in slots]
         if len(ids) != len(set(ids)):
             raise ValueError("slot ids must be unique")
+        keys = [block_key(s.slot) for s in slots]  # "Praxis" and "praxis" would be one block to matcher=llm
+        if len(keys) != len(set(keys)):
+            raise ValueError("slot keys must be unique, in whatever case")
         if not slots:
             raise ValueError("a template needs at least one slot")
         return slots

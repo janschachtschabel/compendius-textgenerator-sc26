@@ -7,6 +7,7 @@ import math
 import re
 import threading
 from collections.abc import Callable
+from dataclasses import replace
 from typing import Any
 
 import httpx
@@ -255,3 +256,18 @@ def test_parse_assignment_reads_blocks_and_confidences() -> None:
     assert parse_assignment('["p1", "p2"]') is None
     assert parse_assignment('{"p1": ["praxis", 0.8],}') is None  # not JSON
     assert parse_assignment('{"p1": ["praxis", "sicher"]}') == {}
+
+
+def test_a_block_key_in_capitals_is_understood(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    """KO-07: the answer was compared in lower case and the keys of a template as written, so a block of a custom
+    template named "Praxis" was unknown to every answer - its tokens bought nothing and the rules decided."""
+    slots = [s.model_copy(update={"slot": "Praxis"}) if s.slot == "praxis" else s for s in prepared.template.slots]
+    capital = replace(prepared, template=prepared.template.model_copy(update={"slots": slots}))
+    assignment, report = run(capital, rule_based, make_job(FakeBApi(answer_with("praxis", 0.9))))
+
+    praxis = capital.template.slot_by_key("Praxis")
+    assert praxis is not None
+    assert report.unknown_keys == 0 and report.answered == len(offered)
+    assert assignment.classified == {chunk.chunk_id: praxis.id for chunk in offered}
