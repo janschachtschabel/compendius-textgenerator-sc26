@@ -57,7 +57,10 @@ _ORDINAL_FOLLOWERS = (
 )
 _ORDINAL_RE = re.compile(rf"\b(\d{{1,2}})\.(?=\s+(?:{_ORDINAL_FOLLOWERS})\b)")
 _SPLIT_RE = re.compile(r"(?<=[.!?…])\s+(?=[A-ZÄÖÜ„\"(\[0-9])")
-_PLACEHOLDER = "․"  # one dot leader, restored after splitting
+# A protected full stop while the text is split, restored afterwards: a sign of the private use area, which prose
+# does not hold. It was a dot leader (U+2024), and one the paragraph held became a full stop as well (audit
+# 2026-09-28, TE-12).
+_PLACEHOLDER = chr(0xE000)
 # An initial in a name ("Max M. Mustermann", "M. M. Mustermann"): a single capital before another initial or a
 # content word.
 # A function word after it ("Vitamin C. Die …") marks a real sentence end; ``tokenize`` drops those. The next

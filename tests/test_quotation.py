@@ -33,13 +33,21 @@ TOPICS = (
 
 
 def _quotes(body: str, paragraph: str) -> bool:
-    """Whether ``body`` is whole sentences of ``paragraph``, word for word and in its order - some may be left out."""
+    """Whether ``body`` is whole sentences of ``paragraph``, word for word and in its order - some may be left out.
+
+    The sentences come from the service's own splitter, so each quoted one is also looked up in the paragraph as it
+    stands: a change the splitter made to the words passed unseen (audit 2026-09-28, TE-12).
+    """
+    raw = " ".join(paragraph.split())
     rest = body
     for sentence in usable_sentences(paragraph):
+        if rest != sentence and not rest.startswith(sentence + " "):
+            continue
+        if sentence not in raw:
+            return False
         if rest == sentence:
             return True
-        if rest.startswith(sentence + " "):
-            rest = rest[len(sentence) + 1 :]
+        rest = rest[len(sentence) + 1 :]
     return False
 
 

@@ -172,3 +172,15 @@ def test_an_abbreviation_after_a_space_or_at_the_start_is_still_one() -> None:
         "Er lehrte dort.",
     ]
     assert ends_with_abbreviation("siehe S.") and ends_with_abbreviation("bzw.")
+
+
+def test_the_splitter_gives_back_the_text_it_was_given() -> None:
+    """TE-12 (audit 2026-09-28): the dots it protects wore a dot leader (U+2024) while the text was split, and every
+    dot leader became a full stop afterwards - also one the paragraph held, so "1․2․3" was quoted as "1.2.3"."""
+    leader = chr(0x2024)
+    text = f"Die Folge 1{leader}2{leader}3 steigt z. B. am 3. Tag an. Danach fällt sie wieder."
+
+    assert split_sentences(text) == [
+        f"Die Folge 1{leader}2{leader}3 steigt z. B. am 3. Tag an.",
+        "Danach fällt sie wieder.",
+    ]
