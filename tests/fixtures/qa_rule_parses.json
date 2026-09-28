@@ -1,5 +1,6 @@
 {
  "model": "de_core_news_md",
+ "version": "3.8.0",
  "recorded": "2026-09-26",
  "parses": {
   "Im Jahr 1922 erhielt er den Nobelpreis für Physik.": {

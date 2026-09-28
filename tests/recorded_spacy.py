@@ -2,7 +2,8 @@
 
 The rule stage reads the dependency parse of de_core_news_md: word classes, dependency labels, heads,
 morphology and named entities. The model lives in the image, not in the test environment, so the parses of the
-test inputs were recorded there once (tests/fixtures/qa_rule_parses.json, 2026-09-25) and are replayed here.
+test inputs were recorded there once (tests/fixtures/qa_rule_parses.json, 2026-09-25) and are replayed here; the
+recording names the model and its version, and tests/test_recorded_parses.py holds them to the image's.
 What the tests pin is how the rules read a real parse; whether the parse itself is right is the model's business.
 
 Only what the rules touch is rebuilt: a token's text, whitespace, word class, tag, dependency label, head,

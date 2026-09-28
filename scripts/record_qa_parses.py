@@ -33,7 +33,7 @@ def recorded(doc: Any) -> dict[str, Any]:
 
 def dump(fixture: dict[str, Any]) -> str:
     """One token per line, so a diff of the fixture shows what changed."""
-    lines = ["{", f' "model": {json.dumps(fixture["model"])},', f' "recorded": {json.dumps(fixture["recorded"])},']
+    lines = ["{", *(f" {json.dumps(key)}: {json.dumps(fixture[key])}," for key in ("model", "version", "recorded"))]
     lines.append(' "parses": {')
     items = list(fixture["parses"].items())
     for number, (text, parse) in enumerate(items):
@@ -51,8 +51,14 @@ def main(source: str, target: str, inputs: list[str]) -> None:
     if nlp is None:
         raise SystemExit(f"spaCy model {model!r} is not installed here; run this in the image")
     fixture = json.loads(Path(source).read_text(encoding="utf-8")) if Path(source).exists() else {"parses": {}}
+    version = nlp.meta["version"]
+    if fixture["parses"] and (fixture.get("model"), fixture.get("version")) != (model, version):
+        # parses of two models do not mix: another model or version reads every recorded input anew (the keys are
+        # already as parse_ready leaves them, and it leaves them so)
+        inputs = [*fixture["parses"], *inputs]
+        fixture["parses"] = {}
     if inputs:
-        fixture.update(model=model, recorded=date.today().isoformat())
+        fixture.update(model=model, version=version, recorded=date.today().isoformat())
     for text in inputs:
         prepared = parse_ready(text)
         fixture["parses"][prepared] = recorded(nlp(prepared))
