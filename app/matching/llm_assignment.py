@@ -31,7 +31,7 @@ from app.llm.call import LlmSkipped, budgeted_chat, skipped_on_error
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
-from app.matching.policy import MIN_SCORE, AssignmentResult, cut_to_budgets
+from app.matching.policy import LEAD_SCORE, MIN_SCORE, AssignmentResult, cut_to_budgets
 from app.templates.schema import Template, block_key
 
 BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters match 25 and 700 on the gold at 27 % fewer tokens
@@ -217,7 +217,9 @@ def _combine(
             if fallback_slot is None:
                 continue
             slot_id = fallback_slot
-            score = rule_based.slot_scores.get(slot_id, {}).get(chunk.chunk_id, MIN_SCORE)
+            # The policy scores up to LEAD_SCORE, the model to 1: on one scale a paragraph the rules kept, because its
+            # batch failed, no longer pushes out what the model chose; among themselves they keep their order (KO-12)
+            score = rule_based.slot_scores.get(slot_id, {}).get(chunk.chunk_id, MIN_SCORE) / LEAD_SCORE
             reason = "Regelzuordnung: das LLM hat für diesen Absatz nicht entschieden"
             per_slot[slot_id].append(ScoredChunk(chunk=chunk, score=score, matcher="policy", reasons=[reason]))
         classified[chunk.chunk_id] = slot_id

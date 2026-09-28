@@ -23,7 +23,6 @@ TWIN_LEAD_SCORE = 1.5
 SUBTOPIC_LEAD_SCORE = 0.9
 CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks then take the default slot
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
-MATERIAL_SCORE = CONFIDENT_SCORE  # a curated OER material starts at the confidence threshold (PLAN.md 6.3, D24)
 
 
 @dataclass
@@ -255,6 +254,10 @@ def cut_to_budgets(
     notes: list[str] = []
     dropped_total = 0
     for slot in template.content_slots():
+        # The candidates arrive in corpus order - the main article first, then the others, each in its own order.
+        # That is the reading order; the position alone starts at 0 in every article, and sorting by it put the first
+        # paragraph of a side article before the second of the main one (audit 2026-09-27, KO-09)
+        reading = {item.chunk.chunk_id: index for index, item in enumerate(kept_per_slot[slot.id])}
         items = sorted(kept_per_slot[slot.id], key=lambda sc: (-sc.score, sc.chunk.position))
         kept: list[ScoredChunk] = []
         chars = 0
@@ -269,5 +272,5 @@ def cut_to_budgets(
         if dropped:
             notes.append(f"{slot.id}: {dropped} Kandidaten über Budget verworfen")
             dropped_total += dropped
-        kept_per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, sc.chunk.position))
+        kept_per_slot[slot.id] = sorted(kept, key=lambda sc: (0 if sc.chunk.is_lead else 1, reading[sc.chunk.chunk_id]))
     return kept_per_slot, notes, dropped_total

@@ -1,9 +1,10 @@
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.matching.fusion import fuse_rankings, smooth_sections
 from app.matching.lexical import BM25Matcher, CharTfidfMatcher
-from app.matching.policy import assign, exclusion_terms
+from app.matching.policy import assign, cut_to_budgets, exclusion_terms
 from app.matching.registry import get_matcher, list_strategies
 from app.templates.manager import TemplateManager
+from app.templates.schema import Template, TemplateSlot
 
 
 def _chunk(cid: str, heading: str, text: str, **kwargs: object) -> Chunk:
@@ -293,7 +294,7 @@ def test_default_slot_skips_person_and_work_articles() -> None:
 
 def test_material_chunks_are_evidence_for_the_slots_that_prefer_materials() -> None:
     """PLAN.md 6.3: paragraphs of reusable collection materials feed Bildung and Praxis even without a strong ranker hit."""
-    from app.matching.policy import MATERIAL_SCORE
+    from app.matching.policy import CONFIDENT_SCORE
     from app.sources.wlo.knowledge import TEXT_HEADING
 
     template, ids = TemplateManager().get("sc26"), _ids()
@@ -321,7 +322,8 @@ def test_material_chunks_are_evidence_for_the_slots_that_prefer_materials() -> N
     }
     result = assign(template, [chunk], weak, sources)
     assert result.classified == {"m1": ids["praxis"]}
-    assert result.assigned[ids["praxis"]][0].score >= MATERIAL_SCORE
+    # a curated OER material starts at the confidence threshold (PLAN.md 6.3, D24)
+    assert result.assigned[ids["praxis"]][0].score >= CONFIDENT_SCORE
     strict = assign(template, [chunk], weak, sources, confident_score=0.8)
     assert strict.classified == {"m1": ids["praxis"]}, "a material stays evidence whatever threshold is configured"
     assert strict.assigned[ids["praxis"]][0].score >= 0.8
@@ -366,3 +368,26 @@ def test_below_the_confidence_threshold_a_topical_paragraph_takes_the_default_bl
     result = assign(template, [chunk], fused, SOURCES, confident_score=0.65)
     assert result.classified == {"z1": ids["fachinhalte"]}, "by rule it stays in the default block"
     assert result.slot_scores[ids["praxis"]]["z1"] > 0, "a candidate of the block for extraction=llm"
+
+
+def test_a_block_reads_the_main_article_before_the_others() -> None:
+    """KO-09: the reading order sorted by the position inside an article, which starts at 0 in each, so the first
+    paragraph of a side article came before the second of the main article."""
+    slot = TemplateSlot(id="s", slot="fachinhalte", title="Fachinhalte")
+    template = Template(id="t", name="t", slots=[slot])
+
+    def scored(source_id: str, position: int) -> ScoredChunk:
+        chunk = Chunk(
+            chunk_id=f"{source_id}:c{position:03d}",
+            source_id=source_id,
+            heading="Grundlagen",
+            heading_path=["Grundlagen"],
+            heading_level=2,
+            text="Ein Absatz über das Thema.",
+            position=position,
+        )
+        return ScoredChunk(chunk=chunk, score=0.8, matcher="policy")
+
+    in_corpus_order = [scored("wikipedia:Optik", 1), scored("wikipedia:Optik", 2), scored("wikipedia:Linse", 0)]
+    kept, _notes, _dropped = cut_to_budgets(template, {slot.id: in_corpus_order})
+    assert [item.chunk.chunk_id for item in kept[slot.id]] == [item.chunk.chunk_id for item in in_corpus_order]

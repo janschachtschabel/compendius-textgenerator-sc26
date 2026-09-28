@@ -24,6 +24,7 @@ from app.matching.llm_assignment import (
     OUTPUT_TOKENS_PER_PARAGRAPH,
     TEXT_CHARS,
     AssignmentJob,
+    _combine,
     assign_with_llm,
     parse_assignment,
     render_messages,
@@ -271,3 +272,26 @@ def test_a_block_key_in_capitals_is_understood(
     assert praxis is not None
     assert report.unknown_keys == 0 and report.answered == len(offered)
     assert assignment.classified == {chunk.chunk_id: praxis.id for chunk in offered}
+
+
+def test_a_paragraph_the_rules_kept_does_not_push_out_the_models_choice() -> None:
+    """KO-12: the model's confidence runs from 0 to 1, the policy's score up to 2.0; where a batch failed, its
+    paragraphs kept the policy's score and won the budget cut over what the model chose."""
+    from app.domain.models import Chunk
+    from app.templates.schema import SlotBudget, Template, TemplateSlot
+
+    slot = TemplateSlot(id="s", slot="praxis", title="Praxis", budget=SlotBudget(min_chunks=1, max_chunks=1))
+    template = Template(id="t", name="t", slots=[slot])
+    chosen, kept_by_rules = (
+        Chunk(chunk_id=f"wikipedia:Optik:c00{n}", source_id="wikipedia:Optik", heading="H", heading_path=["H"],
+              heading_level=2, text="Ein Absatz.", position=n)
+        for n in (1, 2)
+    )  # fmt: skip
+    rules = AssignmentResult(
+        assigned={},
+        unassigned=0,
+        classified={kept_by_rules.chunk_id: "s"},
+        slot_scores={"s": {kept_by_rules.chunk_id: 1.2}},
+    )
+    result = _combine(template, [chosen, kept_by_rules], {chosen.chunk_id: ("s", 0.6)}, rules, skipped=0)
+    assert [item.chunk.chunk_id for item in result.assigned["s"]] == [chosen.chunk_id]
