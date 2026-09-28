@@ -4,43 +4,36 @@ from __future__ import annotations
 
 import logging
 import threading
-import time
-from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
-from typing import Any
-from urllib.parse import urlsplit
 
 import httpx
 
 from app.compendium.corpus import segment_corpus, subtopics
 from app.compendium.errors import (
     NO_REPOSITORY,
-    LlmNotConfiguredError,
     PartsUnavailableError,
-    RepositoryUnavailableError,
     TopicNotFoundError,
 )
-from app.compendium.prepared import Matched, PreparedTopic, Stopwatch, WorldPart
+from app.compendium.llm_policy import choice_audit, llm_switches
+from app.compendium.prepared import PreparedTopic, Stopwatch, WorldPart
+from app.compendium.repository import RepositoryReading
+from app.compendium.world import WorldBuilding
 from app.compose.assembler import build_frontmatter, render_markdown
-from app.compose.regeneration import PreservedSection, check_names, parse_document, to_keep
+from app.compose.regeneration import check_names
 from app.domain.models import (
     AuditReport,
     CollectionPart,
     Compendium,
     CurriculaPart,
-    NodeInput,
-    ScoredChunk,
     SectionStatus,
-    Source,
 )
-from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest, with_profile
+from app.domain.requests import GenerateRequest, with_profile
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
     check_hits,
-    choice_used,
 )
-from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
+from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
 from app.knowledge.topic_articles import settle
@@ -48,40 +41,31 @@ from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
 from app.llm.report import build_llm_report
-from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
-from app.matching.llm_assignment import MATCHER as LLM_ASSIGNED
-from app.matching.llm_assignment import AssignmentJob, assign_with_llm
-from app.matching.policy import AssignmentResult, assign
-from app.matching.registry import LLM_MATCHER, LOCAL_MATCHER, ensure_strategy, get_matcher
+from app.matching.registry import LLM_MATCHER, ensure_strategy
 from app.settings import Settings
-from app.sources.lehrplan.matcher import CurriculumMatch
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError
-from app.sources.wlo.models import CollectionInfo, NodeInfo
-from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import (
     CollectionBuilder,
-    CollectionOptions,
     CollectionTopic,
     collection_topic,
-    node_input,
     node_topic,
 )
-from app.sources.wlo.repository import repository_root
-from app.sources.zim.registry import CHOSEN_BY_LLM, NODE_ORIGIN, ZimRegistry
-from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
+from app.sources.zim.registry import NODE_ORIGIN, ZimRegistry
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
-from app.synthesis.writer import LlmJob, SectionWriter
+from app.synthesis.writer import SectionWriter
 from app.templates.manager import TemplateManager
-from app.templates.schema import Template, TemplateSlot
 
 log = logging.getLogger(__name__)
 
 
-class CompendiumService:
+class CompendiumService(RepositoryReading, WorldBuilding):
+    """A compendium from a request (PLAN.md 3.1): prepare the topic and its corpus, make the requested parts and
+    assemble them. Reading the repositories, the LLM's policy and part 1 are its mixins in app/compendium/.
+    """
+
     def __init__(
         self,
         registry: ZimRegistry,
@@ -187,20 +171,6 @@ class CompendiumService:
         no LLM to choose an article it will not read."""
         return "world" in request.parts or ("curricula" in request.parts and self.curricula is not None)
 
-    def refuse_without_llm(self, needed: Sequence[str], profile: str, defaulted: bool) -> None:
-        """Refuse what needs an LLM when none is configured (D53); one that is only unavailable for now falls back.
-
-        ``needed`` names the switches as name=value, ``profile`` the one in effect, ``defaulted`` whether it came from
-        PRESET_DEFAULT rather than from the request.
-        """
-        if self.llm is not None or not needed:
-            return
-        origin = f"Standardprofil {profile} (PRESET_DEFAULT)" if defaulted else f"Profil {profile}"
-        raise LlmNotConfiguredError(
-            f"LLM_ENABLED ist nicht aktiv, aber {', '.join(needed)} braucht ein LLM ({origin}). Profil llm-free "
-            "wählen, die Schalter auf rule-based setzen oder LLM_ENABLED und B_API_KEY setzen"
-        )
-
     def _add_corpus(
         self,
         prepared: PreparedTopic,
@@ -254,219 +224,6 @@ class CompendiumService:
             sources, prepared.lexicon, self.settings.corpus_max_chunks
         )
         lap("segment")
-
-    def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
-        """The collection behind the request; unreachable repositories only matter when the topic depends on it."""
-        if not request.collection_id:
-            return None
-        if self.collections is None:
-            if request.topic or request.node_id:  # part 3 says it is unavailable; the topic comes from elsewhere
-                return None
-            raise RepositoryUnavailableError(NO_REPOSITORY)
-        try:
-            return self.collections.info(request.collection_id)
-        except CollectionNotFoundError:
-            raise
-        except EduSharingError as exc:
-            if request.topic or request.node_id:  # the topic comes from the request or from the node
-                log.warning("collection %s not readable, continuing without it: %s", request.collection_id, exc)
-                return None
-            raise
-
-    def read_node(self, node_id: str, repository: str | None = None) -> tuple[NodeInfo, NodeInput]:
-        """The metadata of a material or a collection (D45), from the configured repository or another allowed one.
-
-        Raises ``RepositoryNotAllowedError`` for an address outside the allowlist, ``NodeNotFoundError`` for an
-        unknown node, ``EduSharingError`` when the repository fails, ``RepositoryUnavailableError`` without one.
-        """
-        root, builder = self._node_repository(repository)
-        info = builder.node(node_id)
-        return info, node_input(info, root)
-
-    def _node_repository(self, repository: str | None) -> tuple[str, CollectionBuilder]:
-        """The REST root and the reader of a repository: the configured one, or one without credentials for any other.
-
-        Nodes are read without credentials from either (``EduSharingClient.node``); an empty address names none.
-        """
-        base = self.settings.edu_sharing_base_url.rstrip("/")
-        if not repository:
-            if self.collections is None or not base:
-                raise RepositoryUnavailableError(f"{NO_REPOSITORY}; repository angeben")
-            return base, self.collections
-        root = repository_root(repository, self.settings.edu_sharing_allowed_hosts)
-        if self.collections is not None and base and urlsplit(root).hostname == urlsplit(base).hostname:
-            return root, self.collections
-        with self._foreign_lock:
-            builder = self._foreign.get(root)
-            if builder is None:
-                # No credentials: those of the configured repository must never travel to another one
-                client = EduSharingClient(
-                    root, timeout_s=self.settings.edu_sharing_timeout_s, transport=self.repository_transport
-                )
-                shared = self.collections  # the same cache and cache time as the configured repository
-                options = shared.options if shared is not None else CollectionOptions()
-                builder = CollectionBuilder(client=client, cache=shared.cache if shared else None, options=options)
-                self._foreign[root] = builder
-        return root, builder
-
-    def close(self) -> None:
-        """Close the clients of other repositories; the configured one belongs to the app (``close_clients``)."""
-        with self._foreign_lock:
-            for builder in self._foreign.values():
-                builder.client.close()
-            self._foreign.clear()
-
-    def _collections_or_fail(self) -> CollectionBuilder:
-        if self.collections is None:
-            raise RuntimeError("collections are not configured (EDU_SHARING_BASE_URL)")
-        return self.collections
-
-    def _probe_knowledge(self, collection_id: str | None) -> dict[str, Any] | None:
-        """Refuse an unknown knowledge collection before the article choice and the corpus spend LLM calls.
-
-        Reads the collection's metadata only (cached); an unknown one is a 404 as for ``collection_id``. A repository
-        that fails gives the audit entry right away, so the materials are not asked for as well.
-        """
-        if not collection_id or self.collections is None:
-            return None
-        try:
-            self.collections.info(collection_id)
-        except CollectionNotFoundError:
-            raise
-        except EduSharingError as exc:
-            log.warning("knowledge collection %s not readable: %s", collection_id, exc)
-            return {"collection_id": collection_id, "error": str(exc), "sources": 0}
-        return None
-
-    def _knowledge(self, collection_id: str, sources: list[Source], deadline: Deadline | None) -> dict[str, Any]:
-        """Add the reusable materials of the knowledge collection to the corpus.
-
-        An unknown collection is refused as an unknown ``collection_id`` is (404); a repository that fails only goes
-        to the audit, since the compendium stands without the materials.
-        """
-        try:
-            expired = (lambda: deadline.remaining() <= 0) if deadline is not None else None
-            result = self._collections_or_fail().knowledge_sources(collection_id, expired=expired)
-        except CollectionNotFoundError:
-            raise
-        except EduSharingError as exc:
-            log.warning("knowledge collection %s not readable: %s", collection_id, exc)
-            return {"collection_id": collection_id, "error": str(exc), "sources": 0}
-        sources.extend(result.sources)
-        return {
-            "collection_id": collection_id,
-            "considered": result.considered,
-            "sources": len(result.sources),
-            "skipped_license": result.skipped_license,
-            "empty": result.empty,
-            "failed": result.failed,
-            "timed_out": result.timed_out,
-        }
-
-    def _collection_part(self, collection_id: str, deadline: Deadline) -> CollectionPart:
-        try:
-            return self._collections_or_fail().overview(collection_id, expired=lambda: deadline.remaining() <= 0)
-        except CollectionNotFoundError:
-            raise
-        except EduSharingError as exc:
-            log.warning("collection %s overview failed: %s", collection_id, exc)
-            markdown = f"{COLLECTION_HEADING}\n\n*Der Sammlungsüberblick ist nicht verfügbar: {exc}*\n"
-            return CollectionPart(available=False, collection_id=collection_id, markdown=markdown, error=str(exc))
-
-    def match(
-        self,
-        prepared: PreparedTopic,
-        matcher_name: str | None,
-        target_length: int,
-        *,
-        budget: RequestBudget | None = None,
-        deadline: Deadline | None = None,
-    ) -> Matched:
-        """Score and assign the prepared chunks with one matching strategy.
-
-        ``llm`` runs the default strategy and lets the model decide on top (D34); ``budget`` and ``deadline`` bound
-        its calls, and a budget of its own is opened when none is given (evaluation).
-        """
-        name = matcher_name or LOCAL_MATCHER
-        if name == LLM_MATCHER:
-            return self._match_with_llm(prepared, target_length, budget, deadline)
-        started = time.perf_counter()
-        matcher = get_matcher(name, self.settings.model2vec_path)
-        fused = matcher.score(prepared.template.slots, prepared.chunks)
-        fused = smooth_sections(fused, prepared.chunks, self.settings.policy_section_smoothing)
-        assignment = self._assign(prepared, fused, target_length)
-        duration_ms = int((time.perf_counter() - started) * 1000)
-        return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
-
-    def curriculum_check(
-        self,
-        topic: str,
-        subjects: Sequence[str],
-        budget: RequestBudget | None,
-        deadline: Deadline | None,
-        reports: list[CurriculumCheckReport],
-    ) -> tuple[Callable[[list[CurriculumMatch]], list[CurriculumMatch]] | None, str | None]:
-        """curriculum_check=llm (D58) as part 2 and the curriculum search call it, or ``None`` and why the rules decide
-        instead.
-
-        ``subjects`` are the ones the elements were narrowed to, as the request named them. The check appends what it
-        did to ``reports``; it spends from the request's budget and time like the other LLM steps.
-        """
-        if self.llm is None:  # refused before any work (llm_switches); here only for a caller that skipped that
-            return None, "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
-        unavailable = self.llm_unavailable()
-        if unavailable is not None:
-            return None, unavailable
-        job = CurriculumCheckJob(
-            client=self.llm.client,
-            budget=budget if budget is not None else self.llm.open_budget(),
-            topic=topic,
-            subjects=self.subjects.labels_of(subjects),
-            concurrency=self.llm.options.concurrency,
-            deadline=deadline,
-        )
-
-        def check(matches: list[CurriculumMatch]) -> list[CurriculumMatch]:
-            kept, report = check_curriculum(job, matches)
-            reports.append(report)
-            return kept
-
-        return check, None
-
-    def _match_with_llm(
-        self, prepared: PreparedTopic, target_length: int, budget: RequestBudget | None, deadline: Deadline | None
-    ) -> Matched:
-        """matcher=llm: the local strategy decides first; without a usable LLM its result is the answer."""
-        started = time.perf_counter()
-        base = self.match(prepared, LOCAL_MATCHER, target_length)
-        if self.llm is None or self.llm_unavailable() is not None:
-            return base
-        job = AssignmentJob(
-            client=self.llm.client,
-            budget=budget if budget is not None else self.llm.open_budget(),
-            topic=prepared.title,
-            concurrency=self.llm.options.concurrency,
-            deadline=deadline,
-        )
-        template = _scale_budgets(prepared.template, target_length)
-        assignment, report = assign_with_llm(template, prepared.chunks, prepared.sources_by_id, base.assignment, job)
-        duration_ms = int((time.perf_counter() - started) * 1000)
-        matcher = LLM_MATCHER if report.answered else base.matcher
-        return Matched(matcher=matcher, assignment=assignment, duration_ms=duration_ms, llm=report)
-
-    def _assign(
-        self,
-        prepared: PreparedTopic,
-        scores: dict[str, list[ScoredChunk]],
-        target_length: int,
-    ) -> AssignmentResult:
-        return assign(
-            _scale_budgets(prepared.template, target_length),
-            prepared.chunks,
-            scores,
-            prepared.sources_by_id,
-            confident_score=self.settings.policy_confident_score,
-        )
 
     def generate(
         self, request: GenerateRequest, *, deadline: Deadline | None = None, budget: RequestBudget | None = None
@@ -675,214 +432,6 @@ class CompendiumService:
             reasons["collection"] = "Teil 3 braucht collection_id"
         return reasons
 
-    def _facets_visible(self, request: GenerateRequest) -> bool:
-        return self.settings.facets_visible if request.facets_visible is None else request.facets_visible
-
-    def _world_part(
-        self,
-        prepared: PreparedTopic,
-        request: GenerateRequest,
-        requested: tuple[str, str, str],
-        deadline: Deadline,
-        timings: dict[str, int],
-        shared_budget: RequestBudget | None = None,
-    ) -> WorldPart:
-        """Part 1: match the chunks (with matcher=llm the model assigns them, D34), let the LLM choose sentences and
-        write blocks as the switches ask (D33).
-
-        ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
-        the first two run rule-based and nothing is enriched. ``shared_budget`` is the request's budget when the
-        article choice opened it already or the caller brought one (/qa).
-        """
-        extraction_wanted, generation_wanted, enrichment_wanted = requested
-        matcher_wanted = request.matcher or LOCAL_MATCHER
-        wants_llm = (
-            extraction_wanted != "rule-based" or generation_wanted != "rule-based" or matcher_wanted == LLM_MATCHER
-        )
-        llm_note = self.llm_unavailable() if wants_llm else None
-        extraction, generation = ("rule-based", "rule-based") if llm_note else (extraction_wanted, generation_wanted)
-        enrichment = "sources-only" if generation == "rule-based" else enrichment_wanted
-        llm = self.llm if wants_llm and llm_note is None else None
-        # one budget for all LLM work of the request
-        budget = (shared_budget or llm.open_budget()) if llm is not None else None
-        matched = self.match(prepared, request.matcher, request.target_length, budget=budget, deadline=deadline)
-        timings["match"] = matched.duration_ms
-        lap = Stopwatch(timings).lap
-
-        # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
-        template = _scale_budgets(prepared.template, request.target_length)
-        topic = prepared.title
-        assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
-        selected: set[str] = set()
-        extracted: ExtractionReport | None = None
-        if extraction == "llm" and budget is not None:
-            result = self.extract(prepared, matched, request.target_length, budget=budget, deadline=deadline)
-            if result is not None:
-                assigned, selected, extracted = result.assigned, result.selected, result.report
-            lap("extract")
-
-        sources, primary = prepared.sources, prepared.primary
-        llm_job: LlmJob | None = None
-        if generation != "rule-based" and llm is not None and budget is not None:
-            llm_job = LlmJob(
-                synthesizer=llm.synthesizer,
-                budget=budget,
-                slots=llm.generation_slots(generation, (slot.id for slot in template.content_slots())),
-                topic=topic,
-                concurrency=llm.options.concurrency,
-                deadline=deadline,
-                enrich=enrichment == "model-knowledge",
-            )
-        preserved = self._preserved(request, template)
-        ai_assigned = {  # blocks holding paragraphs the model assigned: marked as chosen by an AI
-            slot_id
-            for slot_id, items in matched.assignment.assigned.items()
-            if any(item.matcher == LLM_ASSIGNED for item in items)
-        }
-        written = self.writer.write(
-            template,
-            assigned,
-            sources,
-            prepared.sources_by_id,
-            self._facets_visible(request),
-            primary,
-            prepared.lexicon,
-            llm=llm_job,
-            selected=selected,
-            ai_assigned=ai_assigned,
-            preserved=preserved,
-        )
-        lap("synthesize")
-        return WorldPart(
-            matcher=matched.matcher,
-            matcher_requested=matcher_wanted,
-            extraction=extraction,
-            generation=generation,
-            enrichment=enrichment,
-            llm_note=llm_note,
-            chunks_assigned=sum(len(v) for v in assigned.values()),
-            extracted=extracted,
-            written=written,
-            matching=matched.llm,
-            regenerated=(
-                [slot.id for slot in template.content_slots() if slot.id not in preserved]
-                if request.existing_markdown
-                else []
-            ),
-        )
-
-    def extract(
-        self,
-        prepared: PreparedTopic,
-        matched: Matched,
-        target_length: int,
-        *,
-        budget: RequestBudget | None = None,
-        deadline: Deadline | None = None,
-    ) -> Extracted | None:
-        """extraction=llm on matched chunks (D33): the LLM's choice per block; ``None`` without a configured LLM.
-
-        The caller checks ``llm_unavailable`` first; a budget of its own is opened when none is given (evaluation).
-        """
-        if self.llm is None:
-            return None
-        job = ExtractionJob(
-            selector=self.llm.selector,
-            budget=budget if budget is not None else self.llm.open_budget(),
-            topic=prepared.title,
-            candidates=self.llm.options.extraction_candidates,
-            concurrency=self.llm.options.concurrency,
-            deadline=deadline,
-        )
-        template = _scale_budgets(prepared.template, target_length)  # the prompts name the target length
-        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
-
-    def _preserved(self, request: GenerateRequest, template: Template) -> dict[str, PreservedSection]:
-        """Blocks of an earlier compendium that stay word for word (PLAN.md 4.6); generated blocks never do."""
-        if not request.existing_markdown:
-            return {}
-        keep = to_keep(parse_document(request.existing_markdown), request.regenerate_sections)
-        content = {slot.id for slot in template.content_slots()}
-        return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
-
-    def article_choice_job(
-        self, requested: str | None, deadline: Deadline | None, budget: RequestBudget | None = None
-    ) -> tuple[str, str | None, ArticleChoiceJob | None]:
-        """The article choice in effect, why the LLM cannot make it, and the job when it can (D35, D53).
-
-        ``requested`` is the switch of the request or of its profile. A server without an LLM has refused ``llm``
-        before (refuse_without_llm), so a note here means the b-api is not available for now. ``budget`` is the one
-        a caller shares over more than the compendium (/qa).
-        """
-        wanted = requested or "rule-based"
-        if wanted not in LLM_ARTICLE_CHOICES:
-            return wanted, None, None
-        note = self.llm_unavailable()
-        if note is not None or self.llm is None:
-            return wanted, note, None
-        opened = budget if budget is not None else self.llm.open_budget()
-        return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline, thorough=wanted == "llm-thorough")
-
-    def open_budget(self, profile: str) -> RequestBudget | None:
-        """The token budget of one request in ``profile``; ``None`` without a configured LLM.
-
-        The best-quality profiles spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY: their LLM also checks the
-        curriculum elements of part 2, and next to matcher llm the 60,000 tokens of the others covered only about
-        400 of them (D59, M32).
-        """
-        if self.llm is None:
-            return None
-        large = profile in BEST_QUALITY_PRESETS
-        return self.llm.open_budget(self.settings.llm_max_tokens_per_request_best_quality if large else None)
-
-    def llm_unavailable(self) -> str | None:
-        """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""
-        if self.llm is None:
-            return "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"
-        if not self.llm.available:
-            return f"LLM nicht verfügbar ({self.llm.unavailable_reason}); Regelmodus verwendet"
-        return None
-
-
-def choice_audit(prepared: PreparedTopic, requested: str) -> dict[str, Any]:
-    """What build_llm_report says about the article choice of a prepared topic (D35, D47), for the audit of a
-    compendium and the answer of the curriculum search."""
-    resolution, hit_check, node_report = prepared.resolution, prepared.hit_check, prepared.node_article
-    articles = prepared.articles
-    named_by_llm = node_report is not None and node_report.way == "llm"
-    return {
-        "choice_requested": requested,
-        "choice_used": choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check, articles),
-        "choice": prepared.article_choice,
-        "choice_chosen": resolution.title if resolution.method == CHOSEN_BY_LLM else None,
-        # the model is asked for an unsure article (a chosen one stays unsure), for side articles and, with a topic,
-        # for its articles (D63)
-        "choice_needed": (
-            not resolution.confident or prepared.side_articles > 0 or node_report is not None or articles is not None
-        ),
-        "hit_check": hit_check,
-        "node": node_report,
-        "articles": articles,
-    }
-
-
-def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:
-    """The switches of a request that need an LLM, as name=value (D53). ``corpus``: whether an article is chosen at
-    all; the switches of part 1 count only when part 1 is asked for, curriculum_check only with part 2 (D58).
-    enrichment needs none of its own: it only acts through generation."""
-    choice = request.article_choice
-    needed = [f"article_choice={choice}"] if corpus and choice in LLM_ARTICLE_CHOICES else []
-    if "curricula" in request.parts and request.curriculum_check == "llm":
-        needed.append("curriculum_check=llm")
-    if "world" in request.parts:
-        if request.matcher == LLM_MATCHER:
-            needed.append("matcher=llm")
-        if request.extraction == "llm":
-            needed.append("extraction=llm")
-        if request.generation not in (None, "rule-based"):
-            needed.append(f"generation={request.generation}")
-    return needed
-
 
 def _parts_status(
     request: GenerateRequest,
@@ -903,18 +452,3 @@ def _parts_status(
         else:
             status["collection"] = "incomplete" if collection.summary.get("incomplete") else "ok"
     return status
-
-
-def _scale_budgets(template: Template, target_length: int) -> Template:
-    """Distribute the requested total length over the content slots by weight."""
-    content = template.content_slots()
-    total_weight = sum(s.budget.weight for s in content) or 1.0
-    scaled: list[TemplateSlot] = []
-    for slot in template.slots:
-        if slot.is_generated:
-            scaled.append(slot)
-            continue
-        share = int(target_length * slot.budget.weight / total_weight)
-        budget = slot.budget.model_copy(update={"target_chars": max(300, share)})
-        scaled.append(slot.model_copy(update={"budget": budget}))
-    return template.model_copy(update={"slots": scaled})

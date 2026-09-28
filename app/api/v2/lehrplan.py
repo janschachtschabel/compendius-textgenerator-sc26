@@ -18,12 +18,13 @@ from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
+from app.compendium.llm_policy import choice_audit, llm_switches
 from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.report import build_llm_report
-from app.service import CompendiumService, choice_audit, llm_switches
+from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
 from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
