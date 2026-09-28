@@ -15,9 +15,14 @@ from typing import Any, cast
 from fastapi import Request, Response
 
 from app.api.errors import JsonResponse
+from app.compendium.errors import (
+    LlmNotConfiguredError,
+    PartsUnavailableError,
+    RepositoryUnavailableError,
+    TopicNotFoundError,
+)
 from app.compose.regeneration import UnknownSectionsError
 from app.matching.registry import UnknownMatcherError
-from app.service import LlmNotConfiguredError, PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
 from app.sources.wlo.repository import RepositoryNotAllowedError

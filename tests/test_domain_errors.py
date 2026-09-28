@@ -12,11 +12,16 @@ import pytest
 from fastapi import APIRouter
 from fastapi.testclient import TestClient
 
+from app.compendium.errors import (
+    LlmNotConfiguredError,
+    PartsUnavailableError,
+    RepositoryUnavailableError,
+    TopicNotFoundError,
+)
 from app.compose.regeneration import UnknownSectionsError
 from app.domain.models import Resolution
 from app.main import create_app
 from app.matching.registry import UnknownMatcherError
-from app.service import LlmNotConfiguredError, PartsUnavailableError, RepositoryUnavailableError, TopicNotFoundError
 from app.settings import Settings
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError

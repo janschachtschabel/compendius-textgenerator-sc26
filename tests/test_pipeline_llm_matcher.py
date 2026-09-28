@@ -9,13 +9,14 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
+from app.compendium.errors import LlmNotConfiguredError
 from app.compose.assembler import AI_SELECTED_DISCLOSURE
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.matching.registry import LOCAL_MATCHER
-from app.service import CompendiumService, LlmNotConfiguredError
+from app.service import CompendiumService
 from tests.conftest import make_settings
 from tests.test_llm_assignment import PARAGRAPH_RE
 from tests.test_llm_client import FakeBApi

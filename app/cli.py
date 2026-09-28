@@ -17,14 +17,14 @@ from app.cli_gnd import add_gnd_commands
 from app.cli_lehrplan import add_lehrplan_commands
 from app.cli_wikidata import add_wikidata_commands
 from app.cli_zim import add_zim_commands
-from app.domain.requests import MATCHERS, PRESETS, ArticleChoice, GenerateRequest
-from app.logging import configure_logging
-from app.service import (
+from app.compendium.errors import (
     LlmNotConfiguredError,
     PartsUnavailableError,
     RepositoryUnavailableError,
     TopicNotFoundError,
 )
+from app.domain.requests import MATCHERS, PRESETS, ArticleChoice, GenerateRequest
+from app.logging import configure_logging
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.repository import RepositoryNotAllowedError

@@ -8,8 +8,9 @@ import httpx
 import pytest
 from pydantic import ValidationError
 
+from app.compendium.errors import PartsUnavailableError
 from app.domain.requests import GenerateRequest
-from app.service import CompendiumService, PartsUnavailableError
+from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError

@@ -6,9 +6,10 @@ from typing import Any
 
 import pytest
 
+from app.compendium.errors import TopicNotFoundError
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
-from app.service import CompendiumService, TopicNotFoundError
+from app.service import CompendiumService
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.html import ParsedArticle

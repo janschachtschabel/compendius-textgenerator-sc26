@@ -12,6 +12,7 @@ from typing import Any
 import httpx
 import pytest
 
+from app.compendium.prepared import PreparedTopic
 from app.domain.models import Chunk
 from app.domain.requests import GenerateRequest
 from app.llm.budget import RequestBudget, TokenBudget, estimate_tokens
@@ -27,7 +28,7 @@ from app.matching.llm_assignment import (
     render_messages,
 )
 from app.matching.policy import AssignmentResult
-from app.service import CompendiumService, PreparedTopic
+from app.service import CompendiumService
 from tests.test_llm_client import BASE, KEY, FakeBApi
 
 PARAGRAPH_RE = re.compile(r"^(p\d+) \(Artikel: (.+?), (.+?); Abschnitt: (.+?)\):$", re.MULTILINE)

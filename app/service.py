@@ -6,23 +6,29 @@ import logging
 import threading
 import time
 from collections.abc import Callable, Mapping, Sequence
-from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urlsplit
 
 import httpx
 
+from app.compendium.corpus import segment_corpus, subtopics
+from app.compendium.errors import (
+    NO_REPOSITORY,
+    LlmNotConfiguredError,
+    PartsUnavailableError,
+    RepositoryUnavailableError,
+    TopicNotFoundError,
+)
+from app.compendium.prepared import Matched, PreparedTopic, Stopwatch, WorldPart
 from app.compose.assembler import build_frontmatter, render_markdown
 from app.compose.regeneration import PreservedSection, check_names, parse_document, to_keep
 from app.domain.models import (
     AuditReport,
-    Chunk,
     CollectionPart,
     Compendium,
     CurriculaPart,
     NodeInput,
-    Resolution,
     ScoredChunk,
     SectionStatus,
     Source,
@@ -31,17 +37,13 @@ from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, Gener
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
-    ArticleChoiceReport,
-    HitCheckReport,
     check_hits,
     choice_used,
 )
 from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
 from app.knowledge.main_article import choose_main_article
-from app.knowledge.node_article import NodeArticleReport, node_block
-from app.knowledge.segmentation import segment_source
-from app.knowledge.topic import NormalizedTopic, topic_stem
-from app.knowledge.topic_articles import TopicArticlesReport, settle
+from app.knowledge.node_article import node_block
+from app.knowledge.topic_articles import settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
@@ -49,7 +51,7 @@ from app.llm.report import build_llm_report
 from app.matching.fusion import smooth_sections
 from app.matching.lexicon import HeadingLexicon
 from app.matching.llm_assignment import MATCHER as LLM_ASSIGNED
-from app.matching.llm_assignment import AssignmentJob, LlmAssignmentReport, assign_with_llm
+from app.matching.llm_assignment import AssignmentJob, assign_with_llm
 from app.matching.policy import AssignmentResult, assign
 from app.matching.registry import LLM_MATCHER, LOCAL_MATCHER, ensure_strategy, get_matcher
 from app.settings import Settings
@@ -68,149 +70,15 @@ from app.sources.wlo.part import (
     node_topic,
 )
 from app.sources.wlo.repository import repository_root
-from app.sources.zim.registry import CHOSEN_BY_LLM, NAMED_ORIGIN, NODE_ORIGIN, ZimRegistry
+from app.sources.zim.registry import CHOSEN_BY_LLM, NODE_ORIGIN, ZimRegistry
 from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport, extract_with_llm
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
-from app.synthesis.writer import LlmJob, SectionWriter, WrittenSections
+from app.synthesis.writer import LlmJob, SectionWriter
 from app.templates.manager import TemplateManager
 from app.templates.schema import Template, TemplateSlot
 
 log = logging.getLogger(__name__)
-
-
-class PartsUnavailableError(RuntimeError):
-    """None of the requested parts can be generated with the configuration of this server."""
-
-
-class RepositoryUnavailableError(RuntimeError):
-    """No repository to read a node or a collection from: none is configured and the request names none."""
-
-
-class LlmNotConfiguredError(RuntimeError):
-    """A profile or a switch needs an LLM, and this server has none configured (LLM_ENABLED, B_API_KEY; D53)."""
-
-
-NO_REPOSITORY = "Kein Repository konfiguriert (EDU_SHARING_BASE_URL)"
-
-
-NOT_FOUND = "Thema in den Archiven nicht gefunden"
-NO_SUBJECT_TOPIC = "Das LLM sieht in diesem Material kein fachliches Thema; topic angeben"
-NO_MATERIAL_ARTICLE = (
-    "Zu diesem Material fanden die Regeln keinen Artikel: weder sein Titel noch die Begriffe aus Titel und "
-    "Beschreibung führen zu einem; topic angeben, oder article_choice llm lässt das LLM das Thema bestimmen"
-)
-NO_ARTICLE_AFTER_LLM = "Zu diesem Material fanden weder das LLM noch die Regeln einen Artikel; topic angeben"
-
-
-class TopicNotFoundError(LookupError):
-    """No article for the request; ``node`` says how the article of a material was sought (D47).
-
-    ``from_material``: the material alone was to name the article (no topic came along), so the message says why that
-    failed and what to send instead.
-    """
-
-    def __init__(
-        self, resolution: Resolution, node: NodeArticleReport | None = None, *, from_material: bool = False
-    ) -> None:
-        super().__init__(f"topic not found: {resolution.normalized}")
-        self.resolution = resolution
-        self.node = node
-        self.from_material = from_material
-
-    def detail(self) -> dict[str, Any]:
-        """The body of the 404, alike for every endpoint: why, the resolution and, for a material, its search."""
-        body: dict[str, Any] = {"message": NOT_FOUND, "resolution": self.resolution.model_dump()}
-        if self.node is not None:
-            body["node_article"] = node_block(self.node)
-            if self.from_material and self.node.named == "":
-                body["message"] = NO_SUBJECT_TOPIC
-            elif self.from_material:
-                body["message"] = NO_ARTICLE_AFTER_LLM if self.node.calls else NO_MATERIAL_ARTICLE
-        return body
-
-
-@dataclass
-class PreparedTopic:
-    """Everything before matching: template, resolved topic, corpus and its chunks."""
-
-    template: Template
-    lexicon: HeadingLexicon
-    normalized: NormalizedTopic
-    resolution: Resolution
-    sources: list[Source]
-    chunks: list[Chunk]
-    timings: dict[str, int] = field(default_factory=dict)
-    subjects: list[str] = field(default_factory=list)  # all of equal weight (D45)
-    collection: CollectionInfo | None = None
-    node: NodeInput | None = None  # the node the topic came from (D45)
-    knowledge: dict[str, Any] | None = None
-    chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
-    subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
-    article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered
-    hit_check: HitCheckReport | None = None  # article_choice=llm: which side articles the model dropped
-    articles: TopicArticlesReport | None = None  # article_choice=llm: the overview and parts the model named (D63)
-    side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
-    node_article: NodeArticleReport | None = None  # how the article of a material was found (D47)
-    material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
-
-    @property
-    def sources_by_id(self) -> dict[str, Source]:
-        return {s.source_id: s for s in self.sources}
-
-    @property
-    def title(self) -> str:
-        """The article the topic resolved to, or the normalized topic where none was needed (part 3 alone)."""
-        return self.resolution.title or self.normalized.topic
-
-    @property
-    def primary(self) -> Source | None:
-        """The main article of the corpus, or its first source."""
-        return next((s for s in self.sources if s.is_primary), self.sources[0] if self.sources else None)
-
-    @property
-    def aliases(self) -> list[str]:
-        """The other names of the main article, which part 2 searches for as well."""
-        primary = self.primary
-        return list(primary.aliases) if primary else []
-
-
-@dataclass
-class Matched:
-    matcher: str  # the strategy that decided: llm only when the model answered for at least one paragraph
-    assignment: AssignmentResult
-    duration_ms: int
-    llm: LlmAssignmentReport | None = None  # matcher=llm: what the model decided and what it cost
-
-
-@dataclass
-class WorldPart:
-    """Part 1 of one request: what was written, how, and what the audit reports about it."""
-
-    matcher: str | None  # None when part 1 was not requested: no strategy ran
-    matcher_requested: str | None  # the strategy the request asked for (or the default)
-    extraction: str  # the switches in effect: rule-based when the LLM cannot be used
-    generation: str
-    enrichment: str  # sources-only unless an LLM actually writes blocks and the request allowed more
-    llm_note: str | None
-    chunks_assigned: int = 0
-    extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
-    regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text
-    written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
-    matching: LlmAssignmentReport | None = None  # matcher=llm: what the model decided
-
-
-class _Stopwatch:
-    """Writes the milliseconds since the previous lap into ``timings``."""
-
-    def __init__(self, timings: dict[str, int]) -> None:
-        self._timings = timings
-        self._started = time.perf_counter()
-
-    def lap(self, name: str) -> None:
-        now = time.perf_counter()
-        self._timings[name] = int((now - self._started) * 1000)
-        self._started = now
 
 
 class CompendiumService:
@@ -262,7 +130,7 @@ class CompendiumService:
         """
         self.subjects.check(request.subject)  # before any reading: a typo would otherwise count for nothing
         timings: dict[str, int] = {}
-        lap = _Stopwatch(timings).lap
+        lap = Stopwatch(timings).lap
 
         template = self.templates.get(request.template_id or self.settings.template_default)
         check_names(request.regenerate_sections, template)
@@ -348,7 +216,7 @@ class CompendiumService:
         the side articles that do not fit the topic (D35, M25). The article of a material sent along with a topic
         joins when it links with the main article (D47).
         """
-        lap = _Stopwatch(prepared.timings).lap
+        lap = Stopwatch(prepared.timings).lap
         sources = registry.build_corpus(
             prepared.resolution,
             slots=prepared.template.content_slots(),
@@ -378,11 +246,11 @@ class CompendiumService:
 
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
-        prepared.subtopics = _subtopics(sources, primary)
+        prepared.subtopics = subtopics(sources, primary)
         if "world" not in request.parts or not segment:  # paragraphs and their cap serve part 1 only
             prepared.sources = sources
             return
-        prepared.chunks, prepared.sources, prepared.chunks_truncated = _segment_corpus(
+        prepared.chunks, prepared.sources, prepared.chunks_truncated = segment_corpus(
             sources, prepared.lexicon, self.settings.corpus_max_chunks
         )
         lap("segment")
@@ -644,7 +512,7 @@ class CompendiumService:
                 enrichment="sources-only",
                 llm_note=None,
             )
-        lap = _Stopwatch(timings).lap
+        lap = Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
         resolution = prepared.resolution
@@ -839,7 +707,7 @@ class CompendiumService:
         budget = (shared_budget or llm.open_budget()) if llm is not None else None
         matched = self.match(prepared, request.matcher, request.target_length, budget=budget, deadline=deadline)
         timings["match"] = matched.duration_ms
-        lap = _Stopwatch(timings).lap
+        lap = Stopwatch(timings).lap
 
         # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
         template = _scale_budgets(prepared.template, request.target_length)
@@ -1035,76 +903,6 @@ def _parts_status(
         else:
             status["collection"] = "incomplete" if collection.summary.get("incomplete") else "ok"
     return status
-
-
-# Which paragraphs survive CORPUS_MAX_CHUNKS: the topic's own articles, then the materials the request asked for and
-# the article of its node, then the neighbours the LLM named or links and search found. Anything else (lookups) last.
-ORIGIN_PRIORITY = {
-    "primary": 0,
-    "same_topic": 1,
-    "material": 2,
-    NODE_ORIGIN: 2,
-    NAMED_ORIGIN: 3,  # the LLM's articles on the parts of the topic, in place of linked ones (D63)
-    "linked": 3,
-    "search": 4,
-}
-
-
-def _segment_corpus(
-    sources: list[Source], lexicon: HeadingLexicon, max_chunks: int
-) -> tuple[list[Chunk], list[Source], int]:
-    """Segment all sources and apply the chunk cap; return chunks, the sources that kept a chunk, and the cut count.
-
-    Articles pulled in by search or by a link that does not carry the topic in its title contribute only paragraphs
-    that mention the topic. The cap is filled in ``ORIGIN_PRIORITY`` order while chunks keep the corpus order; a
-    source left without chunks is not listed (the primary article always is).
-    """
-    primary = next((s for s in sources if s.is_primary), None)
-    stem = topic_stem(primary.title) if primary else ""
-    segmented: list[list[Chunk]] = []
-    for source in sources:
-        source_chunks = segment_source(source, lexicon)
-        needs_filter = source.origin in {"linked", "search"} and stem and stem not in source.title.lower()
-        if needs_filter:
-            source_chunks = [c for c in source_chunks if stem in f"{c.full_heading} {c.text}".lower()]
-        segmented.append(source_chunks)
-
-    allowed = [0] * len(sources)
-    budget = max_chunks
-    by_priority = sorted(
-        range(len(sources)), key=lambda i: (ORIGIN_PRIORITY.get(sources[i].origin, len(ORIGIN_PRIORITY)), i)
-    )
-    for index in by_priority:
-        allowed[index] = min(len(segmented[index]), budget)
-        budget -= allowed[index]
-
-    chunks: list[Chunk] = []
-    kept: list[Source] = []
-    for source, source_chunks, take in zip(sources, segmented, allowed, strict=True):
-        if not take and not source.is_primary:
-            continue
-        kept.append(source)
-        chunks.extend(source_chunks[:take])
-    truncated = sum(len(source_chunks) for source_chunks in segmented) - len(chunks)
-    if truncated:
-        log.info("corpus capped at %d chunks; %d left out", max_chunks, truncated)
-    return chunks, kept, truncated
-
-
-def _subtopics(sources: list[Source], primary: Source | None) -> list[str]:
-    """Titles of neighbouring articles that carry the topic stem: the sub-topics part 2 searches for."""
-    if primary is None:
-        return []
-    stem = topic_stem(primary.title)
-    if not stem:
-        return []
-    return [
-        source.title
-        for source in sources
-        if not source.is_primary
-        and source.origin in {"same_topic", NODE_ORIGIN, "linked", NAMED_ORIGIN}
-        and stem in source.title.lower()
-    ]
 
 
 def _scale_budgets(template: Template, target_length: int) -> Template:

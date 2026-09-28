@@ -8,9 +8,10 @@ from typing import Any
 
 import pytest
 
+from app.compendium.errors import LlmNotConfiguredError
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
-from app.service import CompendiumService, LlmNotConfiguredError
+from app.service import CompendiumService
 from app.synthesis.citations import collapse
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import EVIDENCE_RE, answer_from_evidence, make_gateway

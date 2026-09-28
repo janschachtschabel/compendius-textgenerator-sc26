@@ -9,10 +9,10 @@ from pathlib import Path
 from typing import Any
 
 from app.cli_common import cli_service
+from app.compendium.errors import TopicNotFoundError
 from app.matching.eval import EvalResult
 from app.matching.eval_runner import DEFAULT_MATCHERS, EvalReport, evaluate_gold_dir, export_topic
 from app.matching.gold import import_csv, save_gold
-from app.service import TopicNotFoundError
 from app.settings import get_settings
 from app.templates.manager import TemplateManager
 

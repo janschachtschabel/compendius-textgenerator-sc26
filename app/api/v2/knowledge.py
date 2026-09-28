@@ -16,6 +16,7 @@ from app.api.deps import archives_for, get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
+from app.compendium.prepared import PreparedTopic
 from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
     ARTICLE_CHOICE_HELP,
@@ -32,7 +33,7 @@ from app.domain.requests import (
 from app.knowledge.article_choice import choice_block
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
-from app.service import PreparedTopic, choice_audit
+from app.service import choice_audit
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 

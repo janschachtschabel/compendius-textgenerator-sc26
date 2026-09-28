@@ -17,9 +17,10 @@ from fastapi.testclient import TestClient
 
 from app.api.v2.knowledge import KnowledgeRequest
 from app.cli import main
+from app.compendium.errors import LlmNotConfiguredError
 from app.domain.requests import PRESETS, GenerateRequest, Preset
 from app.main import create_app
-from app.service import CompendiumService, LlmNotConfiguredError
+from app.service import CompendiumService
 from app.settings import Settings
 from tests.conftest import make_settings
 from tests.test_article_choice import by_prompt

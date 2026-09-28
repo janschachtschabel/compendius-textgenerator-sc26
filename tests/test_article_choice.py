@@ -10,6 +10,7 @@ from typing import Any
 import httpx
 import pytest
 
+from app.compendium.errors import LlmNotConfiguredError
 from app.domain.models import ArticleSection, Paragraph, Source
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import (
@@ -25,7 +26,7 @@ from app.knowledge.article_choice import (
 )
 from app.knowledge.topic_articles import NONE_FOUND
 from app.llm.prompts import get_prompt
-from app.service import CompendiumService, LlmNotConfiguredError
+from app.service import CompendiumService
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.test_llm_client import FakeBApi

@@ -14,6 +14,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from app.compendium.errors import TopicNotFoundError
 from app.domain.requests import GenerateRequest
 from app.matching.eval import (
     Alignment,
@@ -27,7 +28,7 @@ from app.matching.eval import (
 )
 from app.matching.gold import GoldSet, export_csv, load_gold
 from app.matching.registry import LOCAL_MATCHER
-from app.service import CompendiumService, TopicNotFoundError
+from app.service import CompendiumService
 
 log = logging.getLogger(__name__)
 
