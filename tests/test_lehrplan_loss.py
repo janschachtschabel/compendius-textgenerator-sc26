@@ -1,0 +1,183 @@
+"""A harvest that would lose curricula or their elements keeps the cache and says so, without pulling MEM every hour
+(audit 2026-09-28, KO-20, BE-11 and DB-02).
+
+KO-01 refused a harvest that lost a state, but only after the whole run - about 2,600 SPARQL queries in 25 minutes -
+and as an error the loop retried after an hour: while MEM listed less, the harvest pulled it 17 times a day, and the
+alert saw the error only in the second after it. Empty answers to the element queries went unseen and emptied the
+curricula they came for. A crash right after the swap could leave a cache with broken pages that no check noticed.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import threading
+from datetime import timedelta
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from app.cli_lehrplan import loop_task
+from app.jobs.runner import run_periodically
+from app.sources.lehrplan.harvest import STATUS_FILE, HarvestRefusedError, read_status
+from app.sources.lehrplan.sparql import SparqlError, SparqlRefusedError
+from app.sources.lehrplan.store import LehrplanStore
+from tests.test_lehrplan_harvest import BE, T0, FakeEndpoint, _harvest
+from tests.test_metrics import _app, scrape, value
+from tests.test_runner import FakeClock
+
+SAXONY = "https://lp-sachsen.org/resource/522"  # four elements in the fake endpoint, Berlin's curriculum one
+ELEMENTS = "SELECT DISTINCT ?n WHERE"
+
+
+def test_a_loss_the_counts_show_is_refused_before_anything_is_pulled(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    endpoint = FakeEndpoint(counts={BE.iri: 1})  # MEM counts no curriculum of Saxony, as while it reloads a graph
+
+    with pytest.raises(HarvestRefusedError, match="SN"):
+        _harvest(tmp_path, endpoint, when=T0 + timedelta(days=1)).run()
+
+    assert len(endpoint.queries) == 1 and "COUNT(DISTINCT ?lp)" in endpoint.queries[0]
+
+
+class ReloadingEndpoint(FakeEndpoint):
+    """Answers the element query of Saxony's curriculum with no rows the first ``empty`` times, as Virtuoso does while
+    it reloads a graph."""
+
+    def __init__(self, empty: int) -> None:
+        super().__init__()
+        self.empty = empty
+
+    def select(self, query: str) -> list[dict[str, str]]:
+        if ELEMENTS in query and f"<{SAXONY}>" in query and self.empty > 0:
+            self.queries.append(query)
+            self.empty -= 1
+            return []
+        return super().select(query)
+
+
+def test_an_empty_answer_for_a_curriculum_that_had_elements_is_asked_again(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    endpoint = ReloadingEndpoint(empty=1)
+
+    report = _harvest(tmp_path, endpoint, when=T0 + timedelta(days=1)).run()
+
+    assert len([query for query in endpoint.queries if ELEMENTS in query and f"<{SAXONY}>" in query]) == 2
+    assert report.nodes == 5 and report.emptied == []
+
+
+def test_a_run_that_empties_the_elements_of_a_state_keeps_the_cache(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+
+    with pytest.raises(HarvestRefusedError, match="SN"):
+        _harvest(tmp_path, ReloadingEndpoint(empty=2), when=T0 + timedelta(days=1)).run()
+
+    assert LehrplanStore(tmp_path / "lehrplan.db").counts()["nodes"] == 5
+
+
+def test_the_elements_per_state_are_kept_with_the_cache(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+
+    assert json.loads(LehrplanStore(tmp_path / "lehrplan.db").meta()["nodes_per_state"]) == {"SN": 4, "BE": 1}
+
+
+@pytest.mark.parametrize(
+    ("failure", "runs"),
+    [
+        (HarvestRefusedError("MEM listet deutlich weniger Lehrpläne als der Cache hält"), 1),
+        (SparqlRefusedError("HTTP 500 von https://sparql.test/sparql/: transitive temp memory"), 1),
+        (SparqlError("MEM-Endpunkt https://sparql.test/sparql/ nicht erreichbar"), 24),  # this one a retry may help
+    ],
+)
+def test_a_harvest_a_retry_cannot_help_waits_for_the_next_check(failure: Exception, runs: int) -> None:
+    clock, stop, started = FakeClock(), threading.Event(), []
+    end = clock.now + 24 * 3600 - 1
+
+    class Failing:
+        def due(self, *, max_age: timedelta) -> bool:
+            return True
+
+        def run(self, *, force: bool = False) -> Any:
+            started.append(clock.now)
+            raise failure
+
+    def sleep(seconds: float) -> None:
+        clock.sleep(seconds)
+        if clock.now >= end:
+            stop.set()
+
+    task = loop_task(Failing(), max_age=timedelta(days=30), force=False)  # type: ignore[arg-type]
+    run_periodically(
+        task, timedelta(days=7), retry_after=timedelta(hours=1), poll_s=60, stop=stop, clock=clock, sleep=sleep
+    )
+
+    assert len(started) == runs  # a day: one run, not 17 full pulls of MEM
+
+
+class PeekingEndpoint(FakeEndpoint):
+    """Reads the status file when the run lists its first state."""
+
+    def __init__(self, state_dir: Path) -> None:
+        super().__init__()
+        self.state_dir = state_dir
+        self.seen: dict[str, Any] | None = None
+
+    def select(self, query: str) -> list[dict[str, str]]:
+        if "OFFSET 0" in query and self.seen is None:
+            self.seen = read_status(self.state_dir)
+        return super().select(query)
+
+
+def test_a_failed_harvest_stays_failed_until_one_succeeds(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    with pytest.raises(HarvestRefusedError):
+        _harvest(tmp_path, FakeEndpoint(counts={BE.iri: 1}), when=T0 + timedelta(days=1)).run()
+    peeking = PeekingEndpoint(tmp_path)
+
+    _harvest(tmp_path, peeking, when=T0 + timedelta(days=2)).run()
+
+    assert peeking.seen is not None and peeking.seen["state"] == "running"
+    assert "HarvestRefusedError" in peeking.seen["last_error"]  # while the next run runs, for the alert
+    status = read_status(tmp_path)
+    assert status is not None and status["last_error"] is None
+
+
+def test_the_gauge_reads_the_last_finished_harvest(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    state = tmp_path / "state"
+    state.mkdir()
+    (state / STATUS_FILE).write_text(
+        json.dumps({"state": "running", "last_error": "HarvestRefusedError: MEM listet weniger"}), encoding="utf-8"
+    )
+
+    with _app(sample_zims, tmp_path) as client:
+        assert value(scrape(client), "kompendium_lehrplan_harvest_failed") == 1
+
+
+def test_the_cache_is_on_disk_before_it_replaces_the_old_one(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    events: list[tuple[str, str]] = []
+    replace = os.replace
+    monkeypatch.setattr("app.sources.lehrplan.store.to_disk", lambda path: events.append(("to_disk", path.name)))
+
+    def recorded_replace(source: Any, target: Any) -> None:
+        events.append(("replace", Path(source).name))
+        replace(source, target)
+
+    monkeypatch.setattr("app.sources.lehrplan.store.os.replace", recorded_replace)
+
+    _harvest(tmp_path, FakeEndpoint()).run()
+
+    # os.replace is the module's everywhere: the status file is swapped in the same way
+    cache = [event for event in events if event[1].startswith("lehrplan.db")]
+    assert cache == [("to_disk", "lehrplan.db.tmp"), ("replace", "lehrplan.db.tmp")]
+
+
+def test_a_cache_with_broken_pages_is_due_for_a_new_harvest(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    path = tmp_path / "lehrplan.db"
+    data = bytearray(path.read_bytes())
+    data[-4096:] = b"\xff" * 4096  # the last page, as a crash right after the swap may leave it
+    path.write_bytes(bytes(data))
+
+    assert LehrplanStore(path).available  # its meta rows still read
+    assert _harvest(tmp_path, FakeEndpoint(), when=T0 + timedelta(hours=1)).due(max_age=timedelta(days=30))

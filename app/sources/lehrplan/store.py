@@ -22,6 +22,7 @@ from typing import Any
 
 from app.sources.lehrplan.tree import HarvestedNode
 from app.sources.lehrplan.vocab import MATCHABLE_ROLES
+from app.sources.local_index import to_disk
 
 log = logging.getLogger(__name__)
 
@@ -156,6 +157,34 @@ class LehrplanStore:
         connection = sqlite3.connect(f"{self.path.resolve().as_uri()}?mode=ro", uri=True)
         connection.row_factory = sqlite3.Row
         return connection
+
+    def intact(self) -> bool:
+        """Whether ``PRAGMA quick_check`` finds every page sound - broken pages ``available`` does not see, as it reads
+        the meta rows only. It reads the whole file, so it is for the harvest loop's look, not for a request."""
+        if not self.available:
+            return False
+        try:
+            with closing(self._connect()) as connection:
+                found = connection.execute("PRAGMA quick_check").fetchall()
+        except sqlite3.Error as exc:
+            log.error("lehrplan cache %s is not usable: %s", self.path, exc)
+            return False
+        if [tuple(row) for row in found] != [("ok",)]:
+            log.error("lehrplan cache %s failed its check: %s", self.path, [tuple(row) for row in found[:3]])
+            return False
+        return True
+
+    def nodes_per_lehrplan(self) -> dict[str, int]:
+        """Elements per curriculum IRI, for the harvest that replaces this cache."""
+        if not self.available:
+            return {}
+        try:
+            with closing(self._connect()) as connection:
+                rows = connection.execute("SELECT lehrplan_iri, COUNT(*) FROM node GROUP BY lehrplan_iri").fetchall()
+        except sqlite3.Error as exc:
+            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            return {}
+        return {row[0]: row[1] for row in rows}
 
     def meta(self) -> dict[str, str]:
         if not self.exists:
@@ -314,6 +343,9 @@ class LehrplanWriter:
         connection.commit()
         connection.close()
         self._connection = None
+        # written without journal and synchronous: the pages go to the disk before the swap makes them the cache, or a
+        # crash right after it could leave a whole-looking file with broken pages (audit 2026-09-28, DB-02; DB-01)
+        to_disk(self._tmp)
         for attempt in range(_REPLACE_ATTEMPTS):
             try:
                 os.replace(self._tmp, self._path)

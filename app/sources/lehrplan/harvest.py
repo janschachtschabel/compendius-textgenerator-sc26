@@ -47,6 +47,10 @@ LOCK_STALE_S = 4 * 3600  # a harvest takes about 15 minutes; an older lock belon
 CHUNK_SIZE = 40
 PAGE_SIZE = 500
 PROGRESS_EVERY = 20
+# Curricula whose element query came back empty twice although the cache held elements for them, taken without
+# a refusal (audit 2026-09-28, KO-20). simplify: no measured bound - MEM has not yet emptied a curriculum on
+# purpose; more such curricula in one run point to a reload, and an operator who knows better forces the run.
+EMPTIED_TOLERATED = 2
 
 # Alternate grade labels such as "jg5" beside "Jahrgangsstufe 5" (RP, BY)
 _SHORT_GRADE = re.compile(r"^jg\d+$", re.IGNORECASE)
@@ -89,6 +93,7 @@ class HarvestReport:
     skipped: list[str] = field(default_factory=list)
     max_depth: int = 0
     queries: int = 0
+    emptied: list[str] = field(default_factory=list)  # curricula without elements now, with some in the cache before
     duration_s: float = 0.0
 
 
@@ -173,8 +178,10 @@ class LehrplanHarvest:
         return {"changed": remote != local, "remote": remote, "local": local}
 
     def due(self, *, max_age: timedelta) -> bool:
-        """A harvest is due without a usable cache, with a cache older than ``max_age`` or when MEM changed."""
-        if not self.store.available:
+        """A harvest is due without a usable cache, with broken pages in it, with a cache older than ``max_age`` or
+        when MEM changed. A crash right after a swap could leave broken pages behind readable meta rows: every search
+        failed, and nothing harvested again for up to 30 days (audit 2026-09-28, DB-02)."""
+        if not self.store.available or not self.store.intact():
             return True
         harvested_at = self.store.meta().get("harvested_at")
         if not harvested_at:
@@ -224,7 +231,12 @@ class LehrplanHarvest:
         asked_types: set[str] = set()
         self._write_status("running", started_at=started.isoformat(), progress={})
         writer: LehrplanWriter | None = None
+        nodes_per_state: Counter[str] = Counter()
+        emptied: list[str] = []
         try:
+            if not force:
+                self._refuse_a_counted_loss()
+            before = self.store.nodes_per_lehrplan()
             writer = LehrplanWriter(self._db_path)
             for land in self._states:
                 listed = self._list(land.iri)
@@ -247,6 +259,12 @@ class LehrplanHarvest:
                         )
                     )
                     rows = self._select(queries.closure(iri))
+                    if not rows and before.get(iri):
+                        # Virtuoso answers with no rows while it reloads, and the reload may begin after the list of
+                        # the state: asked once more, and still empty it is counted (audit 2026-09-28, KO-20)
+                        rows = self._select(queries.closure(iri))
+                        if not rows:
+                            emptied.append(iri)
                     for row in rows:
                         if row.get("label"):
                             row["label"] = _tidy(row["label"])
@@ -262,6 +280,7 @@ class LehrplanHarvest:
                     max_depth = max(max_depth, deepest)
                     writer.add_nodes(iri, nodes)
                     nodes_total += len(nodes)
+                    nodes_per_state[land.code] += len(nodes)
                     if done % PROGRESS_EVERY == 0:
                         self._write_status(
                             "running",
@@ -275,7 +294,9 @@ class LehrplanHarvest:
                         )
                 log.info("harvested %s: %d curricula, %d nodes so far", land.code, len(listed), nodes_total)
             if not force:
-                self._refuse_a_loss(per_state)
+                self._refuse_a_loss(per_state, dict(nodes_per_state), emptied)
+            elif emptied:
+                log.warning("forced harvest takes %d curricula without their elements: %s", len(emptied), emptied)
             finished = self._clock()
             writer.set_meta(
                 {
@@ -285,6 +306,7 @@ class LehrplanHarvest:
                     "ontology_version": ONTOLOGY_VERSION,
                     "counts": json.dumps(per_state),
                     "nodes": str(nodes_total),
+                    "nodes_per_state": json.dumps(dict(nodes_per_state)),
                     "max_depth": str(max_depth),
                 }
             )
@@ -304,11 +326,27 @@ class LehrplanHarvest:
             max_depth=max_depth,
             queries=self._queries,
             duration_s=round(time.perf_counter() - wall, 1),
+            emptied=emptied,
         )
         self._write_status("idle", last_run=asdict(report))
         return report
 
-    def _refuse_a_loss(self, harvested: dict[str, int]) -> None:
+    def _refuse_a_counted_loss(self) -> None:
+        """Refuse before anything is pulled when MEM's own count already shows a loss: the check after the run came
+        after about 2,600 queries in 25 minutes, and a loop that retried hourly pulled MEM 17 times a day while it
+        listed less (audit 2026-09-28, BE-11). One query; the check after the run stays."""
+        if not self.store.available:
+            return
+        before, remote = self.local_counts(), self.remote_counts()
+        lost = lost_states(before, remote)
+        if before and (not remote or lost):
+            detail = ", ".join(f"{code} {remote.get(code, 0)} statt {before[code]}" for code in lost) or "keinen"
+            raise HarvestRefusedError(
+                f"MEM zählt deutlich weniger Lehrpläne als der Cache hält ({detail}); der bisherige Cache bleibt, "
+                "nichts wurde abgerufen (übernehmen: compendium lehrplan harvest --force)"
+            )
+
+    def _refuse_a_loss(self, harvested: dict[str, int], nodes: dict[str, int], emptied: list[str]) -> None:
         if not harvested:
             raise HarvestRefusedError(
                 "MEM listet keinen Lehrplan; der bisherige Cache bleibt "
@@ -322,6 +360,21 @@ class LehrplanHarvest:
                 f"MEM listet deutlich weniger Lehrpläne als der Cache hält ({detail}); der bisherige Cache bleibt "
                 "(übernehmen: compendium lehrplan harvest --force)"
             )
+        before_nodes = json.loads(self.store.meta().get("nodes_per_state") or "{}") if self.store.available else {}
+        lost_nodes = lost_states(before_nodes, nodes)
+        if lost_nodes:
+            detail = ", ".join(f"{code} {nodes.get(code, 0)} statt {before_nodes[code]}" for code in lost_nodes)
+            raise HarvestRefusedError(
+                f"MEM liefert deutlich weniger Lehrplanelemente als der Cache hält ({detail}); der bisherige Cache "
+                "bleibt (übernehmen: compendium lehrplan harvest --force)"
+            )
+        if len(emptied) > EMPTIED_TOLERATED:
+            raise HarvestRefusedError(
+                f"{len(emptied)} Lehrpläne kamen zweimal ohne Elemente zurück, die der Cache hat; der bisherige Cache "
+                "bleibt (übernehmen: compendium lehrplan harvest --force)"
+            )
+        if emptied:
+            log.warning("%d curricula came back without elements they had: %s", len(emptied), emptied)
 
     def _select(self, query: str) -> list[dict[str, str]]:
         if self._lock is not None:
@@ -382,6 +435,13 @@ class LehrplanHarvest:
             "progress": fields.get("progress", previous.get("progress")),
             "last_run": fields.get("last_run", previous.get("last_run")),
             "error": fields.get("error"),
+            # the error of the last finished run: it stays while the next one runs and goes with a run that succeeds, so
+            # the gauge and its alert see a failure for longer than the second after it (audit 2026-09-28, BE-11)
+            "last_error": fields["error"]
+            if state == "error"
+            else None
+            if "last_run" in fields
+            else previous.get("last_error"),
         }
         try:
             atomic_write_text(self._state_dir / STATUS_FILE, json.dumps(payload, ensure_ascii=False, indent=2))

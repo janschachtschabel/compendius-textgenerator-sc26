@@ -35,7 +35,7 @@ def write_atomically(target: Path, write: Callable[[Path], dict[str, Any]]) -> d
     partial.unlink(missing_ok=True)
     try:
         meta = write(partial)
-        _to_disk(partial)
+        to_disk(partial)
     except BaseException:
         partial.unlink(missing_ok=True)
         raise
@@ -49,7 +49,7 @@ def write_atomically(target: Path, write: Callable[[Path], dict[str, Any]]) -> d
     return meta
 
 
-def _to_disk(path: Path) -> None:
+def to_disk(path: Path) -> None:
     """The builds write without journal and without synchronous: their pages go to the disk before the rename makes
     them the index, or a crash right after it could leave a whole-looking file with broken pages (audit DB-01)."""
     with path.open("r+b") as handle:  # Windows flushes a file only through a handle that may write

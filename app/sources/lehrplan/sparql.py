@@ -32,6 +32,10 @@ class SparqlError(RuntimeError):
     """The endpoint could not be reached, refused the query or answered something unusable."""
 
 
+class SparqlRefusedError(SparqlError):
+    """The endpoint refused the query (HTTP 400 or 500): the same query fails again, a person has to look."""
+
+
 class SparqlClient:
     """Executes SELECT queries; ``transport``, ``sleep`` and ``clock`` are test seams."""
 
@@ -96,7 +100,7 @@ class SparqlClient:
                     )
                 elif response.status_code >= 400:
                     body = response.text[:_BODY_EXCERPT]
-                    raise SparqlError(f"HTTP {response.status_code} von {self.endpoint}: {body}")
+                    raise SparqlRefusedError(f"HTTP {response.status_code} von {self.endpoint}: {body}")
                 else:
                     try:
                         return response.json()

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections.abc import Callable
 from dataclasses import asdict
 from datetime import timedelta
 from pathlib import Path
@@ -21,7 +22,7 @@ from app.sources.lehrplan.harvest import (
 from app.sources.lehrplan.matcher import LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import match_entry
 from app.sources.lehrplan.render import coverage
-from app.sources.lehrplan.sparql import SparqlClient, SparqlError
+from app.sources.lehrplan.sparql import SparqlClient, SparqlError, SparqlRefusedError
 from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
 
@@ -76,26 +77,44 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 0
 
 
+def harvest_once(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> None:
+    """A harvest when one is due or forced, with its report printed; errors rise to the caller."""
+    if force or harvest.due(max_age=max_age):
+        report = harvest.run(force=force)
+        print(json.dumps(asdict(report), ensure_ascii=False, indent=2))
+    else:
+        print("Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE")
+
+
+def loop_task(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> Callable[[], bool | None]:
+    """One run of the harvest loop; ``--force`` counts for the first run only. A refusal or a refused query waits
+    for the next check, an unreachable MEM for the early retry."""
+
+    def task() -> bool | None:
+        nonlocal force
+        forced, force = force, False
+        try:
+            harvest_once(harvest, max_age=max_age, force=forced)
+        except (HarvestRefusedError, SparqlRefusedError) as exc:
+            # A person, not a loop: an hour later MEM lists as little, and a refused query fails again. The next try
+            # is the next check; the status keeps the error for the alert (audit 2026-09-28, BE-11)
+            print(f"Harvest verworfen, nächster Versuch mit der nächsten Prüfung: {exc}", file=sys.stderr)
+            return True
+        return None
+
+    return task
+
+
 def cmd_harvest(args: argparse.Namespace) -> int:
     settings = get_settings()
     harvest = _harvest(settings)
     max_age = parse_interval(settings.lehrplan_harvest_max_age)
-    force = bool(args.force)
-
-    def task() -> None:
-        nonlocal force
-        forced, force = force, False  # --force counts for the first run of a loop only
-        if forced or harvest.due(max_age=max_age):
-            report = harvest.run(force=forced)
-            print(json.dumps(asdict(report), ensure_ascii=False, indent=2))
-        else:
-            print("Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE")
 
     if args.loop:
         stop_on_sigterm()
         try:
             run_periodically(
-                task,
+                loop_task(harvest, max_age=max_age, force=bool(args.force)),
                 parse_interval(settings.lehrplan_check_interval),
                 retry_after=RETRY_AFTER_FAILURE,
                 poll_s=POLL_SECONDS,
@@ -105,7 +124,7 @@ def cmd_harvest(args: argparse.Namespace) -> int:
             print("Harvest-Schleife beendet.")
         return 0
     try:
-        task()
+        harvest_once(harvest, max_age=max_age, force=bool(args.force))
     except HarvestRunningError as exc:
         print(f"{exc}", file=sys.stderr)
         return 1
