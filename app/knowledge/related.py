@@ -70,7 +70,9 @@ def rank_related_candidates(main: Source, candidates: list[str]) -> list[str]:
         if any(key == h or key in h or h in key for h in headings):
             score += 7.0
         if len(link) >= 3:
-            mentions = len(re.findall(re.escape(key), content_lower))
+            # str.count counts the non-overlapping matches re.findall found, without a pattern per link: 8,000 links
+            # compiled 8,000 patterns, past re's cache of 512, and took 2 s (audit 2026-09-28, PE-06)
+            mentions = content_lower.count(key)
             score += min(mentions, 8) * 1.5
         if 4 <= len(link) <= 40:
             score += 1.0

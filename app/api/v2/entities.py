@@ -102,7 +102,7 @@ def _link(
     if found is None:
         return None
     archive, article = found
-    source = archive.to_source(article, is_primary=False)
+    source = archive.lead_source(article)
     return EntityArticle(
         title=source.title,
         archive=archive.id,
@@ -138,7 +138,9 @@ def _recognise(
     return ran, mentions, note
 
 
-def _llm_job(service: CompendiumService, profile: str, report: EntitiesLlmReport) -> EntityLlmJob | None:
+def _llm_job(
+    service: CompendiumService, profile: str, report: EntitiesLlmReport, deadline: Deadline
+) -> EntityLlmJob | None:
     """The budget and deadline of the LLM ways; ``None`` while the LLM is not available, and ``report`` says why."""
     unavailable = service.llm_unavailable()
     if unavailable is not None:
@@ -146,7 +148,7 @@ def _llm_job(service: CompendiumService, profile: str, report: EntitiesLlmReport
     budget = service.open_budget(profile)
     if unavailable is not None or budget is None or service.llm is None:
         return None
-    return EntityLlmJob(service.llm.client, budget, Deadline(service.settings.request_timeout_s))
+    return EntityLlmJob(service.llm.client, budget, deadline)
 
 
 def _named(
@@ -284,8 +286,11 @@ def entities(
     if payload.node_id:  # no archive is needed for this, so the service is asked directly
         info, node = service.read_node(payload.node_id, payload.repository)
         text = _node_text(info)
+    # one deadline for the whole request: the LLM ways and the linking, which read up to 200 articles without one
+    # and took 6 to 19 s of CPU without an LLM (audit 2026-09-28, PE-04)
+    deadline = Deadline(settings.request_timeout_s)
     report = EntitiesLlmReport() if needed else None
-    job = _llm_job(service, profile, report) if report is not None else None
+    job = _llm_job(service, profile, report, deadline) if report is not None else None
     notes: list[str | None] = []
     named: list[Mention] | None = None
     if "llm" in methods and report is not None:
@@ -310,7 +315,15 @@ def entities(
     found = merge(mentions)[: payload.max_entities]
     wikidata = getattr(request.app.state, "wikidata", None)
     gnd = getattr(request.app.state, "gnd", None)
-    linked = [_link(registry.archives, mention, wikidata, gnd) if payload.link else None for mention in found]
+    linked: list[EntityArticle | None] = []
+    for mention in found if payload.link else []:
+        if deadline.remaining() <= 0:
+            notes.append(
+                f"Verknüpft wurden {len(linked)} von {len(found)} Entitäten, dann war das Zeitbudget der Anfrage "
+                "(REQUEST_TIMEOUT_S) erschöpft; die übrigen stehen unverknüpft da"
+            )
+            break
+        linked.append(_link(registry.archives, mention, wikidata, gnd))
     entities = [
         Entity(
             text=mention.text,
@@ -321,8 +334,10 @@ def entities(
             linked=article is not None,
             article=article,
         )
-        for mention, article in zip(found, linked, strict=True)
-        if article is not None or mention.source not in WITH_ARTICLE or not payload.link
+        for index, mention in enumerate(found)
+        for article in [linked[index] if index < len(linked) else None]
+        # a term without an article went (a disambiguation page); one the time left unlinked stays
+        if article is not None or mention.source not in WITH_ARTICLE or not payload.link or index >= len(linked)
     ]
     if check and report is not None:
         entities, fallback = _checked(job, text, entities, report)

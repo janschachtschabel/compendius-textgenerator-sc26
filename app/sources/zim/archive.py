@@ -27,6 +27,9 @@ PROJECT_ROLES: dict[str, SourceRole] = {
     "wikiversity": SourceRole.HOCHSCHULE,
 }
 PARSE_CACHE_SIZE = 256  # parsed articles kept per archive; a corpus reads about 12 plus lookups
+# and HTML characters of the articles kept: a list page of 2.7 MB HTML holds 3.3 MB parsed, so 256 of them came to
+# about 830 MB per archive and worker; the newest article stays whatever its size (audit 2026-09-28, PE-07)
+PARSE_CACHE_CHARS = 50_000_000
 MAX_REDIRECTS = 3  # a chain longer than this is broken, not followed
 # A redirect to a section of another article is a page of its own in these archives: a meta refresh to
 # "./Bruchrechnung#Nenner", with the title as its only text (M35)
@@ -99,6 +102,7 @@ class ZimArchive:
         self.has_fulltext = bool(self._archive.has_fulltext_index)
         self.article_count = int(self._archive.article_count)
         self._cache: OrderedDict[str, ParsedArticle] = OrderedDict()  # LRU of parsed articles
+        self._cache_chars: dict[str, int] = {}  # HTML characters of each cached article
         self._cache_lock = threading.Lock()  # one archive serves all request threads
         self._titles: OrderedDict[str, str | None] = OrderedDict()  # LRU of resolved link names
 
@@ -201,8 +205,12 @@ class ZimArchive:
         with self._cache_lock:
             self._cache[article.path] = parsed
             self._cache.move_to_end(article.path)
-            while len(self._cache) > PARSE_CACHE_SIZE:
-                self._cache.popitem(last=False)
+            self._cache_chars[article.path] = len(article.html)
+            while len(self._cache) > 1 and (
+                len(self._cache) > PARSE_CACHE_SIZE or sum(self._cache_chars.values()) > PARSE_CACHE_CHARS
+            ):
+                oldest, _ = self._cache.popitem(last=False)
+                self._cache_chars.pop(oldest, None)
         return parsed
 
     def suggest(self, prefix: str, limit: int = 8) -> list[str]:
@@ -232,12 +240,32 @@ class ZimArchive:
             return base + quote(path.replace(" ", "_"), safe="()_,-.:")
         return f"zim://{self.file_name}/{quote(path)}"
 
+    def _source_id(self, article: ZimArticle) -> str:
+        slug = re.sub(r"[^\w()-]+", "_", article.path)
+        return f"{self.project}:{slug}"
+
+    def lead_source(self, article: ZimArticle) -> Source:
+        """The article with its lead only, shared with the parse cache rather than copied: what /entities shows of a
+        linked article and reads its kind from. The whole copy of every section cost it for up to 200 articles a
+        request (audit 2026-09-28, PE-04)."""
+        parsed = self.parse(article)
+        lead = [section for section in parsed.sections[:1] if section.level == 0]
+        return Source(
+            source_id=self._source_id(article),
+            project=self.project,
+            role=self.role,
+            title=article.title,
+            url=self.url_for(article.path),
+            zim_file=self.file_name,
+            entry_path=article.path,
+            sections=lead,
+        )
+
     def to_source(self, article: ZimArticle, *, is_primary: bool) -> Source:
         parsed = self.parse(article)
-        slug = re.sub(r"[^\w()-]+", "_", article.path)
         authority = self.authority if is_primary else round(self.authority * 0.85, 2)
         return Source(
-            source_id=f"{self.project}:{slug}",
+            source_id=self._source_id(article),
             project=self.project,
             role=self.role,
             title=article.title,
