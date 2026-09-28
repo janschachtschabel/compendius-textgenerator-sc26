@@ -159,23 +159,20 @@ def prozess() -> None:
 
 
 def prozess_optionen() -> None:
-    """The steps of part 1 with every option in a row: quality, time, tokens and the presets that use it (D41)."""
-    presets = [
-        ("llm-free", LOCAL, "l"),
-        ("balanced", "#7a5aa6", "b"),
-        ("best-quality", LLM, "q"),
-        ("best-quality-generated", "#b24c63", "g"),
-    ]
-    rows = {  # step: [(option, default, llm, presets, quality, time, tokens)]
+    """Every step of the compendium with its options in a row: quality, time, tokens and the profiles that use it
+    (D41, D53). Numbers as on page 09; times of the steps without LLM from the server (M45), an LLM step as surcharge."""
+    presets = [(profile, PROFILE_COLOR[profile], code) for profile, code in zip(PROFILES, "lbqg", strict=True)]
+    rows = {  # step: [(option, default, llm, profiles, quality, time, tokens)]
         ("1", "Hauptartikel finden", "Thema im Archivindex auflösen"): [
             ("rule-based", False, False, "l", "87 von 94 richtig", "0,03 s", "0"),
-            ("llm", True, True, "b", "91 von 94 richtig", "+1,0 bis 2,7 s", "rund 950"),
-            ("llm-thorough", False, True, "qg", "93 von 94 richtig", "+1 s je Wort", "rund 800 je Wort"),
+            ("llm", True, True, "b", "91 von 94 richtig", "+1 s je Frage", "800 je Frage"),
+            ("llm-thorough", False, True, "qg", "93 von 94 richtig", "+1 s je Frage", "800 je Frage"),
         ],
         ("2", "Korpus bauen", "bis 12 Artikel, 400 Absätze"): [
-            ("ZIM-Profil standard", False, False, "lbqg", "12 von 352 unpassend", "0,9 s", "0"),
-            ("Trefferprüfung", True, True, "bqg", "5 von 346 unpassend", "+1,5 bis 2,4 s", "rund 900"),
-            ("Profil extended", False, False, "", "+1 gefüllter Baustein", "–", "0"),
+            ("Regeln: Links, Volltexttreffer", False, False, "l", "43 % / 71 % passend", "0,9 s", "0"),
+            ("N: Übersicht und Teile vom LLM", True, True, "bqg", "87 % / 93 % passend", "+5 s", "rund 500"),
+            ("Rückfall: LLM prüft Nebenartikel", False, True, "", "45 % / 73 % passend", "+1,4 bis 2 s", "750–1.400"),
+            ("ZIM_PROFILE=extended", False, False, "", "+1 gefüllter Baustein", "–", "0"),
             ("knowledge_collection_id", False, False, "", "nicht gemessen", "–", "0"),
         ],
         ("3", "Absätze zuordnen", "10 Inhaltsbausteine SC26"): [
@@ -183,32 +180,35 @@ def prozess_optionen() -> None:
             ("char_tfidf", False, False, "", "macro-F1 0,40", "0,25 s", "0"),
             ("bm25", False, False, "", "macro-F1 0,36", "0,03 s", "0"),
             ("lexicon_only", False, False, "", "macro-F1 0,35", "0,02 s", "0"),
-            ("llm", False, True, "qg", "macro-F1 0,70", "rund 11 s", "170 je Absatz"),
+            ("llm", False, True, "qg", "macro-F1 0,70", "+12,7 s", "170 je Absatz"),
         ],
         ("4", "Text bauen", "Absätze wörtlich, belegt"): [
-            ("rule-based", True, False, "lbqg", "jeder Satz wörtlich belegt", "1,1 s", "0"),
-            ("extraction=llm", False, True, "", "+14 richtige Absätze, 59 %", "rund 11 s", "14.000–22.400"),
+            ("rule-based", True, False, "lbqg", "jeder Satz wörtlich belegt", "0,8 s", "0"),
+            ("extraction=llm", False, True, "", "am Gold kein Gewinn", "+11 s", "14.000–22.400"),
         ],
         ("5", "Umformulieren", "optional, mit Belegprüfung"): [
-            ("rule-based", True, False, "lbq", "Text bleibt wörtlich", "–", "0"),
+            ("rule-based", True, False, "lbq", "wörtlich, Lesbarkeit 2,5", "–", "0"),
             ("generation=llm-fast", False, True, "", "2 Bausteine neu, belegt", "9 bis 15 s", "2.300–4.000"),
-            ("generation=llm", False, True, "g", "alle neu, mit Modellwissen", "rund 8,8 s",
-             "4.300–11.600"),
+            ("generation=llm", False, True, "g", "alle neu, Lesbarkeit 4,0", "+8,7 s", "4.300–11.600"),
         ],
-        ("6", "Zusammensetzen", "mit Teil 2 und Teil 3"): [
-            ("Teil 2 und Teil 3", True, False, "lbqg", "kein Schalter", "0,24 / 0,16 s", "0"),
+        ("6", "Teil 2 und 3", "Lehrplanbezüge, Sammlung"): [
+            ("Teil 2: Regeln, gebündelt", True, False, "lb", "70 bis 81 % passend", "0,03 s", "0"),
+            ("Teil 2: curriculum_check=llm", False, True, "qg", "74 bis 79 % passend", "+6 bis 8 s", "5.100–9.600"),
+            ("Teil 3: Sammlung", False, False, "lbqg", "kein Schalter", "0,16 s", "0"),
         ],
     }
-    columns = {"option": 282, "stufe": 488, "guete": 560, "zeit": 752, "tokens": 858}
-    line_h, pad, top = 24, 8, 88
+    columns = {"option": 282, "stufe": 580, "guete": 656, "zeit": 868, "tokens": 980}
+    width, line_h, pad, top = 1100, 24, 8, 88
+    option_w = columns["stufe"] - columns["option"] - 12
+
     def block_height(options: list[tuple[str, bool, bool, str, str, str, str]]) -> int:
         return max(len(options) * line_h + 2 * pad, 64)  # room for the two lines of the step box
 
-    height = top + sum(block_height(options) for options in rows.values()) + 96
-    svg = Svg(960, height, "Ablauf von Teil 1 mit allen Optionen, ihrer Güte, Zeit und ihren Tokens")
-    svg.text(20, 30, "Teil 1: jeder Schritt mit seinen Optionen", 17, weight="600")
+    height = top + sum(block_height(options) for options in rows.values()) + 124
+    svg = Svg(width, height, "Ablauf des Kompendiums mit allen Optionen, ihrer Güte, Zeit und ihren Tokens")
+    svg.text(20, 30, "Das Kompendium: jeder Schritt mit seinen Optionen", 17, weight="600")
     svg.text(20, 52, "Standard ist das Profil balanced (PRESET_DEFAULT, D53); preset wählt ein Profil, einzelne "
-             "Schalter gehen vor.", 12, MUTED, limit=920)
+             "Schalter gehen vor. Stand: Release 2.2.2, 28.09.2026.", 12, MUTED, limit=width - 40)
     for key, head in (("option", "Option"), ("stufe", "Profil"), ("guete", "Güte"), ("zeit", "Zeit"),
                       ("tokens", "Tokens")):
         svg.text(columns[key], top - 12, head, 12, MUTED, weight="600")
@@ -220,30 +220,36 @@ def prozess_optionen() -> None:
         middle = y + block / 2
         svg.text(34, middle - 4, f"{number}  {title}", 13.5, weight="600", limit=210)
         svg.text(34, middle + 14, detail, 11, MUTED, limit=214)
-        svg.line(268, y, 952, y, GRID)
+        svg.line(268, y, width - 8, y, GRID)
         for index, (option, default, llm, uses, quality, time, tokens) in enumerate(options):
             base = y + (block - len(options) * line_h) / 2 + index * line_h + 16
             svg.circle(columns["option"] - 8, base - 4, 4, LLM if llm else LOCAL)
             svg.text(columns["option"], base, option, 12, INK, weight="600" if default else "normal",
-                     limit=140 if default else 196)
+                     limit=option_w - 60 if default else option_w)
             if default:
-                width = len(option) * 12 * CHAR_WIDTH + (8 if default else 0)
-                svg.rect(columns["option"] + width + 4, base - 11, 52, 15, PANEL, 7, GRID)
-                svg.text(columns["option"] + width + 30, base - 0.5, "Standard", 9.5, MUTED, "middle")
+                label_w = len(option) * 12 * CHAR_WIDTH + 8
+                svg.rect(columns["option"] + label_w + 4, base - 11, 52, 15, PANEL, 7, GRID)
+                svg.text(columns["option"] + label_w + 30, base - 0.5, "Standard", 9.5, MUTED, "middle")
             for slot, (_, color, code) in enumerate(presets):
                 if code in uses:
                     svg.rect(columns["stufe"] + slot * 16, base - 10, 11, 11, color, 2)
-            svg.text(columns["guete"], base, quality, 12, INK, limit=186)
-            svg.text(columns["zeit"], base, time, 12, INK, limit=100)
-            svg.text(columns["tokens"], base, tokens, 12, INK, limit=94)
+            svg.text(columns["guete"], base, quality, 12, INK, limit=columns["zeit"] - columns["guete"] - 12)
+            svg.text(columns["zeit"], base, time, 12, INK, limit=columns["tokens"] - columns["zeit"] - 10)
+            svg.text(columns["tokens"], base, tokens, 12, INK, limit=width - columns["tokens"] - 12)
         y += block
-    svg.line(268, y, 952, y, GRID)
+    svg.line(268, y, width - 8, y, GRID)
     svg.legend(20, y + 30, [(LOCAL, "lokal, ohne Tokens"), (LLM, "über das LLM der b-api")], 11.5)
     svg.legend(330, y + 30, [(color, tag) for tag, color, _ in presets], 11.5)
-    svg.text(20, y + 56, "Güte: Hauptartikel von 94 Goldanfragen (M9, M35); gedruckte Absätze aus unpassenden Artikeln in "
-             "20 Themen (M25); gefüllte Bausteine (M11);", 10.5, MUTED, limit=920)
-    svg.text(20, y + 72, "macro-F1 der gelabelten Absätze (M27, LLM-Zuordnung M19); Text (M3, M27). Zeit: Server (M1, "
-             "M3) oder Entwicklungsrechner (M27). Tokens je Kompendium.", 10.5, MUTED, limit=920)
+    for number, note in enumerate((
+        "Güte: Hauptartikel von 94 Goldanfragen (M35); gedruckte Absätze aus passenden Artikeln, Sammel- / gewöhnliche "
+        "Themen (M37, M39); gefüllte Bausteine (M11);",
+        "macro-F1 der gelabelten Absätze (M27, M19); Lesbarkeit für Lehrkräfte, 1 bis 5 (M28); Lehrplanelemente, "
+        "einzeln gezeigt (M32).",
+        "Zeit: Server ohne LLM (M45; Teil 3 M1, die wählbaren Zuordner M15); mit + der Zuschlag des LLM (M35, M45; "
+        "extraction=llm und llm-fast vom 18./19.09.2026).",
+        "Tokens je Kompendium, bei der Artikelwahl je Frage an das LLM.",
+    )):
+        svg.text(20, y + 56 + 16 * number, note, 10.5, MUTED, limit=width - 40)
     svg.save("prozess_optionen.svg")
 
 

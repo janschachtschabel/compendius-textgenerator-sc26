@@ -133,17 +133,19 @@ Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.
 
 ![Ablauf von Teil 1](bilder/prozess.svg)
 
-Dieselben Schritte mit allen Optionen, ihrer Güte, Zeit und ihren Tokens; die Quadrate zeigen, welche Stufe welche
+Dieselben Schritte mit allen Optionen, ihrer Güte, Zeit und ihren Tokens; die Quadrate zeigen, welches Profil welche
 Option nutzt:
 
 ![Jeder Schritt mit seinen Optionen](bilder/prozess_optionen.svg)
 
-Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben und brauchen kein LLM. Die Schritte 1 bis 4
-laufen bei jeder Anfrage, Schritt 5 nur auf Wunsch. Ein LLM steht nur bereit, wenn es konfiguriert ist:
-`LLM_ENABLED=true` und `B_API_KEY`, Modell `gpt-6-luna` (`B_API_MODEL`, seit D44). Die Zahlen dieser Vorlage stammen
-von `gpt-5.6-luna`; `gpt-6-luna` erreicht dieselbe Güte mit gleich bis 12 % mehr Tokens zum halben Preis je Token,
-antwortet aber je Aufruf ein Viertel bis drei Viertel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api
-laufen alle Schritte regelbasiert, und das Audit der Antwort nennt den tatsächlich genutzten Weg.
+Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben; ein LLM prüft nur in den
+`best-quality`-Profilen die Lehrplanelemente von Teil 2 (D58). Die Schritte 1 bis 4 laufen bei jeder Anfrage,
+Schritt 5 nur auf Wunsch. Ein LLM steht nur bereit, wenn es konfiguriert ist: `LLM_ENABLED=true` und `B_API_KEY`,
+Modell `gpt-6-luna` (`B_API_MODEL`, seit D44). Die LLM-Zahlen seit M19 stammen, wo nicht anders genannt, von
+`gpt-6-luna`, ältere wie die der Text-Schalter vom 18. und 19.09.2026 von `gpt-5.6-luna`; `gpt-6-luna` erreicht
+dieselbe Güte mit gleich bis 12 % mehr Tokens zum halben Preis je Token, antwortet aber je Aufruf ein Viertel bis drei
+Viertel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api laufen alle Schritte regelbasiert, und das Audit
+der Antwort nennt den tatsächlich genutzten Weg.
 
 ## Schritt 1: Hauptartikel finden
 
