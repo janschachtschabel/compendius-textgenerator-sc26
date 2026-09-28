@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from app.domain.models import Source
 from app.knowledge.entities import classify_entity
 from app.knowledge.segmentation import split_sentences
+from app.synthesis.safe_markdown import plain_label, web_link
 
 Lookup = Callable[[str], Source | None]
 
@@ -139,11 +140,11 @@ def build_actors_section(actors: Sequence[Actor], facets_visible: bool) -> str:
         lines.append(f"#### {kind}")
         lines.append("")
         for actor in group:
+            functions = ", ".join(plain_label(function) for function in actor.functions)
             facet = (
-                f" [Akteursfunktion: {', '.join(actor.functions)}] [Zeitbezug: {actor.zeitbezug}]"
-                if facets_visible
-                else ""
+                f" [Akteursfunktion: {functions}] [Zeitbezug: {plain_label(actor.zeitbezug)}]" if facets_visible else ""
             )
-            lines.append(f"- **[{actor.name}]({actor.url})** — {actor.summary}{facet}")
+            name = web_link(plain_label(actor.name), actor.url)
+            lines.append(f"- **{name}** — {plain_label(actor.summary)}{facet}")
         lines.append("")
     return "\n".join(lines).rstrip()

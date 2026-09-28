@@ -13,6 +13,7 @@ from app.domain.models import Chunk, ChunkKind, ScoredChunk, SectionStatus, Sour
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.extractive import TABLE_ROWS_MAX, _render_table, synthesize, usable_sentences
+from app.synthesis.safe_markdown import unescape
 
 # The topics of the sample archives (tests/fixtures/zim_html)
 TOPICS = (
@@ -53,7 +54,7 @@ def test_every_rule_based_block_quotes_the_paragraphs_it_cites(service: Compendi
         if section.status is not SectionStatus.EXTRACTIVE:  # the generated blocks: sources, glossary, actors
             continue
         for line, citation in zip(section.text.split("\n\n"), section.citations, strict=True):
-            body = line.rsplit(" [", 1)[0]
+            body = unescape(line.rsplit(" [", 1)[0])  # the words as typed, without the escapes of the markdown
             if body.startswith(("- ", "| ")):  # a list or a table is taken whole
                 continue
             assert _quotes(body, paragraphs[citation.chunk_id]), (topic, section.slot_id, body[:120])

@@ -19,7 +19,7 @@ from typing import Any
 
 from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
 from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
-from app.synthesis.safe_markdown import LINK_TEXT_ESCAPE, link_target, no_comment, one_line
+from app.synthesis.safe_markdown import defuse, escape_text, one_line, plain_label, web_link
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
 NO_DESCRIPTION = "*Für diese Sammlung ist keine Beschreibung hinterlegt.*"
@@ -35,7 +35,6 @@ COLLECTION_TYPES = {
 MAX_KEYWORDS = 5
 MAX_SENTENCE_CHARS = 240
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
-_LEADING_DASH = re.compile(r"^(\s*)-")
 
 
 @dataclass(frozen=True)
@@ -61,11 +60,11 @@ def first_sentence(text: str) -> str:
 
 
 def _description(text: str) -> str:
-    """The collection's description as its editors wrote it, with their lines and paragraphs, but without a line that
-    reads as a node: every line break becomes a plain one - CommonMark also breaks at CR, ``str.splitlines`` at
-    U+2028 and more - and a dash that starts a line is escaped, which CommonMark shows as the dash it is. A list the
-    editors typed therefore reads as running text."""
-    return no_comment("\n".join(_LEADING_DASH.sub(lambda match: match[1] + r"\-", line) for line in text.splitlines()))
+    """The collection's description as its editors wrote it, with their lines and paragraphs, shown as typed: every
+    line break becomes a plain one - CommonMark also breaks at CR, ``str.splitlines`` at U+2028 and more - and no line
+    reads as a node, a heading or a list, nor does anything in it open a tag or a link (audit 2026-09-28, SE-16). A
+    list the editors typed therefore reads as running text."""
+    return escape_text("\n".join(text.splitlines()))
 
 
 def _marker(facets: dict[str, list[str]]) -> str:
@@ -85,18 +84,14 @@ def _collection_facets(info: CollectionInfo) -> dict[str, list[str]]:
 def _node_line(kind: str, title: str, url: str, fields: Sequence[str], node_id: str) -> str:
     """One node of the collection tree on one line: ``- <kind>: <title> · <fields> · nodeId: <id>``.
 
-    The title is the link where the node has a URL, its brackets escaped so it stays one link. Every value comes
-    from the repository, where an editor can type anything, so the whole line is collapsed: a line break would
-    otherwise split the node or start a line that reads as another one. The URL is collapsed first, so that a
-    line break in it turns into a space before its target is chosen. No value opens a comment (``no_comment``).
+    The title is the link where the node has a web address. Every value comes from the repository, where an editor
+    can type anything, so each is one line shown as typed (``plain_label``): a line break would split the node or
+    start a line that reads as another one, and a tag, a comment or a link in it would act (audit 2026-09-28,
+    SE-16). An address that is no web address is no link.
     """
-    heading = f"**{title or 'ohne Titel'}**"
-    target = one_line(url)
-    if target:
-        heading = f"[{heading.translate(LINK_TEXT_ESCAPE)}]({link_target(target)})"
-    return no_comment(
-        "- " + one_line(" · ".join([f"{kind}: {heading}", *(field for field in fields if field), f"nodeId: {node_id}"]))
-    )
+    heading = web_link(f"**{plain_label(title) or 'ohne Titel'}**", url)
+    values = [plain_label(field) for field in fields if field.strip()]
+    return "- " + one_line(" · ".join([f"{kind}: {heading}", *values, f"nodeId: {node_id}"]))
 
 
 def _item_line(ref: MaterialRef) -> str:
@@ -121,7 +116,7 @@ def _item_lines(refs: Sequence[MaterialRef], options: OverviewOptions, indent: s
 def _counts(label: str, counter: Counter[str]) -> str:
     if not counter:
         return ""
-    return f"{label}: " + ", ".join(f"{name} ({count})" for name, count in counter.most_common())
+    return f"{label}: " + ", ".join(f"{plain_label(name)} ({count})" for name, count in counter.most_common())
 
 
 def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionContents]) -> tuple[str, dict[str, Any]]:
@@ -144,7 +139,7 @@ def _key_figures(refs: Sequence[MaterialRef], subs: Sequence[SubCollectionConten
         "subjects": dict(subjects),
         "licenses": dict(licenses),
     }
-    return no_comment(one_line("; ".join(part for part in parts if part))), summary
+    return one_line("; ".join(part for part in parts if part)), summary
 
 
 def _materials_per_subcollection(subs: Sequence[SubCollectionContents]) -> dict[str, int]:
@@ -219,4 +214,4 @@ def render_collection_overview(
             "subcollection_materials": _materials_per_subcollection(subs),
         }
     )
-    return "\n".join(lines).rstrip() + "\n", summary
+    return defuse("\n".join(lines).rstrip() + "\n"), summary

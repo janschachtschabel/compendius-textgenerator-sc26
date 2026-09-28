@@ -18,7 +18,7 @@ from app.sources.lehrplan.matcher import CurriculumMatch, MatchResult
 from app.sources.lehrplan.stufen import OHNE_KLASSE, OHNE_STUFE, PRIMAR, SEK_I, SEK_II, STUFEN_ORDER, grades_in
 from app.sources.lehrplan.vocab import ROLE_INHALT, ROLE_KOMPETENZ, ROLE_THEMENBEREICH, bundesland_by_code
 from app.synthesis.facets import END_MARKER, format_marker, format_visible
-from app.synthesis.safe_markdown import plain_label, web_target
+from app.synthesis.safe_markdown import defuse, plain_label, table_cell, web_target
 
 PART_HEADING = "## Teil 2 · Lehrplanbezüge"
 FACET_STUFE = {PRIMAR: "Primar", SEK_I: "Sek I", SEK_II: "Sek II"}
@@ -132,13 +132,14 @@ def _lehrplan_line(group: _Group, options: RenderOptions) -> list[str]:
     target = web_target(lehrplan.iri)
     parts = [f"[{title}]({target})" if target else title, land.name]
     stufe = group.lead.schulstufe
+    # school types, level and grade come from MEM like the title: shown as typed (audit 2026-09-28, SE-21)
     if stufe.value != OHNE_STUFE:
-        parts.append(stufe.value + ("" if stufe.from_data else f" *({stufe.source})*"))
+        parts.append(plain_label(stufe.value) + ("" if stufe.from_data else f" *({plain_label(stufe.source)})*"))
     if lehrplan.schularten:
-        parts.append(", ".join(lehrplan.schularten))
+        parts.append(", ".join(plain_label(schulart) for schulart in lehrplan.schularten))
     klasse = group.lead.klassenstufe
     if klasse.value != OHNE_KLASSE:
-        parts.append(klasse.value + ("" if klasse.from_data else f" *({klasse.source})*"))
+        parts.append(plain_label(klasse.value) + ("" if klasse.from_data else f" *({plain_label(klasse.source)})*"))
     lines = [" · ".join(parts)]
     if options.facets_visible:
         visible: dict[str, list[str]] = {"Geltungsebene": ["Land"]}
@@ -203,7 +204,8 @@ def _table(by_land: Mapping[str, Counter[str]]) -> list[str]:
         columns.append(OHNE_STUFE)
     lines = ["| Bundesland | " + " | ".join(columns) + " |", "|---|" + "---:|" * len(columns)]
     for land in sorted(by_land):
-        lines.append(f"| {land} | " + " | ".join(str(by_land[land].get(column, 0)) for column in columns) + " |")
+        counts = " | ".join(str(by_land[land].get(column, 0)) for column in columns)
+        lines.append(f"| {table_cell(land)} | {counts} |")
     return lines
 
 
@@ -235,17 +237,18 @@ def render_curricula(
 
     lines = [PART_HEADING, "", _coverage_sentence(info), ""]
     if not result.matches:
-        keywords = ", ".join(result.keywords) or "keine"
+        keywords = ", ".join(plain_label(keyword) for keyword in result.keywords) or "keine"
         lines.append(
             f"*Zu diesem Thema wurden in den vorliegenden Lehrplänen keine Lehrplanbezüge gefunden "
             f"(Stichwörter: {keywords}).*"
         )
-        return "\n".join(lines) + "\n", summary
+        return defuse("\n".join(lines) + "\n"), summary
 
-    subject = f"; Fach: {', '.join(result.subject_terms)}" if result.subject_terms else ""
+    terms = ", ".join(plain_label(term) for term in result.subject_terms)
+    subject = f"; Fach: {terms}" if terms else ""
     lines.append(
         f"{summary['matches']} Lehrplanelemente in {summary['lehrplaene']} Lehrplänen aus "
-        f"{summary['laender']} Ländern; Stichwörter: {', '.join(result.keywords)}{subject}."
+        f"{summary['laender']} Ländern; Stichwörter: {', '.join(plain_label(k) for k in result.keywords)}{subject}."
     )
     lines.append("")
     lines.extend(_table(by_land))
@@ -276,4 +279,4 @@ def render_curricula(
             if remaining > 0:
                 noun = "weiterer 1 Eintrag" if remaining == 1 else f"weitere {remaining} Einträge"
                 lines.extend([f"*{noun} in {bundesland_by_code(code).name} nicht aufgeführt (Längenbudget).*", ""])
-    return "\n".join(lines).rstrip() + "\n", summary
+    return defuse("\n".join(lines).rstrip() + "\n"), summary

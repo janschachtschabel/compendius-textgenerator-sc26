@@ -6,7 +6,7 @@ import re
 
 import pytest
 
-from app.compose.regeneration import UnknownSectionsError, parse_document
+from app.compose.regeneration import UnknownSectionsError, _citation_rows, parse_document
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.citations import marker_numbers
@@ -16,6 +16,9 @@ SECTION_RE = re.compile(
     r"(?P<text>.*?)(?=\n### |\n## |\Z)",
     re.DOTALL,
 )
+
+
+ESCAPED_BRACKET = chr(92) + "["  # spelled out: tools on the way turn escapes in test text into other signs
 
 
 def blocks(markdown: str) -> dict[str, str]:
@@ -147,11 +150,35 @@ def test_the_rows_of_a_kept_block_survive_with_links_in_parentheses(service: Com
         GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=rewritten)
     )
 
+    # the sources block writes an address with parentheses in angle brackets now (audit 2026-09-28, SE-16): the
+    # row keeps its title, address, heading and snippet, not its spelling
+    before, after = _citation_rows(rewritten), _citation_rows(second.markdown)
     for number in kept:
-        row = next(line for line in rewritten.splitlines() if line.startswith(f"| [{number}] | ["))
-        assert row in second.markdown, f"the row of [{number}] is lost"
+        assert number in after, f"the row of [{number}] is lost"
+        assert after[number] == before[number]
+        assert after[number].source_url.endswith("_(Planet)")
     new = {c.number for section in second.sections if section.slot_id != "sc26_3" for c in section.citations}
     assert not new & set(kept), "a new block took a number the kept block still cites"
+
+
+def test_the_rows_of_a_kept_block_stay_word_for_word_over_two_regenerations(service: CompendiumService) -> None:
+    """The table escapes titles and snippets, and its rows are read back as typed; an escape read as text would be
+    escaped again at every regeneration and the backslashes would pile up (audit 2026-09-28, SE-16)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_1")
+    kept = marker_numbers(blocks(reviewed)["sc26_1"])
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=reviewed)
+    )
+    third = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=second.markdown)
+    )
+
+    def rows(markdown: str) -> list[str]:
+        return [line for line in markdown.splitlines() for n in kept if line.startswith(f"| [{n}] |")]
+
+    assert rows(first.markdown) and rows(first.markdown) == rows(second.markdown) == rows(third.markdown)
+    assert any(ESCAPED_BRACKET in row for row in rows(first.markdown))  # the lead of Optik quotes "[τέχνη]"
 
 
 def test_new_blocks_count_on_past_every_marker_of_a_kept_block(service: CompendiumService) -> None:

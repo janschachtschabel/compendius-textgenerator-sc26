@@ -31,6 +31,7 @@ from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
+from app.synthesis.safe_markdown import defuse
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
 
@@ -163,6 +164,10 @@ class SectionWriter:
             section.text = text
             section.facets = facets if text else {}
             section.status = SectionStatus.GENERATED if text else SectionStatus.EMPTY
+        # The net behind every writer of part 1 (audit 2026-09-28, SE-16): a kept block stays word for word
+        for section in sections:
+            if section.slot_id not in kept or _is_generated(template, section.slot_id):
+                section.text = defuse(section.text)
         return WrittenSections(sections=sections, citations=all_citations, llm=report)
 
     def _generate(
@@ -253,6 +258,11 @@ def _account(report: LlmReport, slot_id: str, draft: LlmSection) -> None:
 
 def _account_skipped(report: LlmReport, skipped: LlmSkipped) -> None:
     report.add(skipped, skipped.calls)
+
+
+def _is_generated(template: Template, slot_id: str) -> bool:
+    slot = _slot(template, slot_id)
+    return slot is not None and slot.is_generated
 
 
 def _slot(template: Template, slot_id: str) -> TemplateSlot | None:

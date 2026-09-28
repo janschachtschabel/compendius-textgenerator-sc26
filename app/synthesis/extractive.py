@@ -1,4 +1,9 @@
-"""Extractive synthesis: verbatim sentences with citation markers, no generation."""
+"""Extractive synthesis: verbatim sentences with citation markers, no generation.
+
+The sentences are the sources' own words, so they go into the markdown through ``escape_text``: a sentence that
+quotes a tag or a link shows it as typed and runs nothing (audit 2026-09-28, SE-16). A citation's snippet stays
+plain text; the table of the sources block escapes it where it prints it.
+"""
 
 from __future__ import annotations
 
@@ -7,6 +12,7 @@ from collections.abc import Mapping, Sequence
 
 from app.domain.models import Chunk, ChunkKind, Citation, ScoredChunk, Source
 from app.knowledge.segmentation import split_sentences
+from app.synthesis.safe_markdown import escape_text, unescape
 
 SENTENCES_PER_CHUNK = 3
 MIN_SENTENCE_CHARS = 25
@@ -47,14 +53,14 @@ def _select_sentences(text: str, seen: set[str], limit: int | None) -> list[str]
 
 def _render_list(text: str) -> str:
     items = [line.strip(" -•*") for line in text.splitlines() if line.strip()]
-    return "\n".join(f"- {item}" for item in items[:LIST_ITEMS_MAX])
+    return "\n".join(f"- {escape_text(item)}" for item in items[:LIST_ITEMS_MAX])
 
 
 def _render_table(text: str) -> str:
     rows = [line for line in text.splitlines() if "|" in line][:TABLE_ROWS_MAX]
     if not rows:
-        return text
-    cells = [[c.strip() for c in row.split("|")] for row in rows]
+        return escape_text(text)
+    cells = [[escape_text(c.strip()) for c in row.split("|")] for row in rows]
     width = max(len(r) for r in cells)
     cells = [r + [""] * (width - len(r)) for r in cells]
     header = "| " + " | ".join(cells[0]) + " |"
@@ -94,7 +100,7 @@ def synthesize(
             sentences = _select_sentences(chunk.text, seen_sentences, limit)
             if not sentences:
                 continue
-            body = " ".join(sentences)
+            body = escape_text(" ".join(sentences))
         number += 1
         citations.append(
             Citation(
@@ -104,7 +110,7 @@ def synthesize(
                 source_title=source.title,
                 source_url=source.url,
                 section_heading=chunk.full_heading,
-                snippet=body[:220],
+                snippet=unescape(body)[:220],
             )
         )
         paragraphs.append(f"{body} [{number}]")

@@ -328,23 +328,27 @@ def test_a_single_word_term_is_no_person_whatever_the_parse_says() -> None:
     ]
 
 
+# An actor's link goes to its article; only a web address becomes one (audit 2026-09-28, SE-16)
+WIKI = "https://de.wikipedia.org/wiki/X"
+
+
 def test_the_actors_ask_who_or_what_they_are_without_brackets_and_cut_summaries() -> None:
     actors = [
         Actor(
             "Niels Bohr",
             "Person",
             "Niels Bohr (* 7. Oktober 1885 in Kopenhagen) war ein dänischer Physiker.",
-            "u",
+            WIKI,
             [],
             "",
         ),
-        Actor("Benjamin Franklin", "Person", "Benjamin Franklin (* 6.", "u", [], ""),
-        Actor("Club of Rome", "Organisation", "Der Club of Rome ist ein Zusammenschluss von Fachleuten.", "u", [], ""),
+        Actor("Benjamin Franklin", "Person", "Benjamin Franklin (* 6.", WIKI, [], ""),
+        Actor("Club of Rome", "Organisation", "Der Club of Rome ist ein Zusammenschluss von Fachleuten.", WIKI, [], ""),
         Actor(
             "Politische Partei",
             "Organisation",
             "Eine politische Partei ist eine Vereinigung von Menschen.",
-            "u",
+            WIKI,
             [],
             "",
         ),
@@ -362,7 +366,7 @@ def test_the_sources_block_is_no_actor_list_though_its_rows_look_alike() -> None
     """Both list "- **[Titel](link)** — …"; only the actor list stands under headings of its kinds (D60). Read as
     actors, the sources would ask "Was versteht man unter Optik?" of a licence line."""
     actors = build_actors_section(
-        [Actor("Niels Bohr", "Person", "Niels Bohr war ein dänischer Physiker.", "u", [], "")], False
+        [Actor("Niels Bohr", "Person", "Niels Bohr war ein dänischer Physiker.", WIKI, [], "")], False
     )
     sources = build_sources_section([_source("Optik", "Die Optik ist ein Gebiet der Physik.", primary=True)], [], False)
     glossary = build_glossary(

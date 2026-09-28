@@ -24,6 +24,7 @@ from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.synthesis.qa import MIN_SENTENCE_CHARS, QaPair, cut
 from app.synthesis.qa_questions import Question, clause_questions
 from app.synthesis.qa_words import parse_ready, unclear, words
+from app.synthesis.safe_markdown import unescape
 
 # The order in which the kinds take turns; a definition of the topic is the natural first question
 KINDS = (
@@ -204,8 +205,8 @@ def glossary_candidates(markdown: str, nlp: Any) -> list[Candidate]:
             continue
         # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
         # "[^()]", not "[^)]": over a run of "(" every try read to the end (review of D60)
-        term = re.sub(r"\s*\([^()]*\)$", "", " ".join(row.group("term").split()))
-        definition = " ".join(row.group("definition").split())
+        term = re.sub(r"\s*\([^()]*\)$", "", " ".join(unescape(row.group("term")).split()))
+        definition = " ".join(unescape(row.group("definition")).split())
         tokens = definition.rstrip(".").split()
         last = tokens[-1] if tokens else ""
         # "… bis 700 m ü." is cut at an abbreviation; "… mit der Ordnungszahl 8." ends with its number (M30),
@@ -263,7 +264,7 @@ def actor_candidates(markdown: str) -> list[Candidate]:
         if row is None:
             continue
         # blanks collapsed first: the patterns below backtrack over a long run of them (review of D60)
-        summary = " ".join(row.group("summary").split())
+        summary = " ".join(unescape(row.group("summary")).split())
         summary = re.sub(r"\s*\[[^\[\]]*\]", "", re.sub(r"\s*\([^()]*\)", "", summary))
         summary = " ".join(summary.split())
         if (
@@ -272,7 +273,7 @@ def actor_candidates(markdown: str) -> list[Candidate]:
             or not re.search(r"\b(war|ist|waren|sind)\b", summary)
         ):
             continue
-        name = re.sub(r"\s*\([^()]*\)$", "", " ".join(row.group("name").split()))
+        name = re.sub(r"\s*\([^()]*\)$", "", " ".join(unescape(row.group("name")).split()))
         tense = "war" if re.search(r"\bwar\b", summary) else "ist"
         if kind == "Person":
             candidates.append(Candidate(f"a{index}", "Person", f"Wer {tense} {name}?", summary))

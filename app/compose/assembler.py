@@ -10,6 +10,7 @@ import yaml
 
 from app.domain.models import Section, SectionStatus, SourceRef
 from app.synthesis.facets import format_marker, format_visible
+from app.synthesis.safe_markdown import plain_label
 from app.templates.schema import Template
 
 AI_DISCLOSURE = {  # by the generation switch actually used
@@ -35,6 +36,31 @@ def section_marker(section: Section) -> str:
     facets = format_marker(section.facets)
     facet_part = f' facets="{facets}"' if facets else ""
     return f"<!-- kompendium:section id={section.slot_id} status={section.status.value}{facet_part} hash={digest} -->"
+
+
+# A value of the frontmatter may come from a source - a collection's title is the topic - and a renderer that does not
+# know frontmatter reads the block as markdown. Such strings are written double-quoted with "<", ">" and "&" as
+# escapes: YAML reads the value back unchanged, a renderer sees no tag (audit 2026-09-28, SE-16).
+_INERT = {"<": "\\u003C", ">": "\\u003E", "&": "\\u0026"}
+
+
+class _InertDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data: Any) -> bool:
+        return True  # no anchors: "&" then only stands inside quoted strings
+
+
+def _string(dumper: yaml.SafeDumper, value: str) -> yaml.ScalarNode:
+    style = '"' if any(sign in value for sign in _INERT) else None
+    return dumper.represent_scalar("tag:yaml.org,2002:str", value, style=style)
+
+
+_InertDumper.add_representer(str, _string)
+
+
+def inert_yaml(data: Mapping[str, Any]) -> str:
+    """``data`` as YAML in which no markdown renderer finds a tag."""
+    text = yaml.dump(dict(data), Dumper=_InertDumper, allow_unicode=True, sort_keys=False).rstrip()
+    return "".join(_INERT.get(sign, sign) for sign in text)
 
 
 EMPTY_SECTION_TEXT = (
@@ -129,11 +155,11 @@ def render_markdown(
     if include_frontmatter:
         lines += [
             "---",
-            yaml.safe_dump(dict(frontmatter), allow_unicode=True, sort_keys=False).rstrip(),
+            inert_yaml(frontmatter),
             "---",
             "",
         ]
-    lines.append(f"# Kompendium: {topic}")
+    lines.append(f"# Kompendium: {plain_label(topic)}")
     lines.append("")
     if include_world:
         lines.append("## Teil 1 · Weltwissen")
@@ -141,7 +167,7 @@ def render_markdown(
         for section in sections:
             if section.status is SectionStatus.EMPTY and template.empty_slot_policy == "omit":
                 continue
-            title = section.title
+            title = plain_label(section.title)
             if facets_visible and section.facets:
                 title = f"{title} {format_visible(section.facets)}"
             lines.append(f"### {title}")

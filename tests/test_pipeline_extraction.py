@@ -13,6 +13,7 @@ from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.citations import collapse
+from app.synthesis.safe_markdown import unescape
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import EVIDENCE_RE, answer_from_evidence, make_gateway
 
@@ -62,7 +63,7 @@ def test_llm_extraction_fills_the_blocks_with_sentences_it_chose_verbatim(
     assert filled and all(s.status is SectionStatus.LLM_SELECTED for s in filled)
     for section in filled:  # every paragraph is the first sentence of the paragraph it cites
         for paragraph, citation in zip(section.text.split("\n\n"), section.citations, strict=True):
-            body = paragraph.rsplit(" [", 1)[0]
+            body = unescape(paragraph.rsplit(" [", 1)[0])  # the words as typed, without the escapes
             if body.startswith(("- ", "| ")):  # a list or table is taken whole and rendered as such
                 continue
             assert body in chunks[citation.chunk_id], (section.slot_id, body)

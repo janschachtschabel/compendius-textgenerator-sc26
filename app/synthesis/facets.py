@@ -17,6 +17,7 @@ import yaml
 from pydantic import BaseModel, Field
 
 from app.domain.models import Chunk, Source
+from app.synthesis.safe_markdown import plain_label
 from app.templates.schema import TemplateSlot
 
 
@@ -222,8 +223,10 @@ def annotate(
 
 
 def format_visible(facets: Mapping[str, Sequence[str]]) -> str:
-    """Visible short form used only when FACETS_VISIBLE is enabled."""
-    return " ".join(f"[{name}: {', '.join(values)}]" for name, values in facets.items() if values)
+    """Visible short form used only when FACETS_VISIBLE is enabled; a value from a source shows as typed."""
+    return " ".join(
+        f"[{name}: {', '.join(plain_label(value) for value in values)}]" for name, values in facets.items() if values
+    )
 
 
 # the marker's own syntax - pair, name and value separators, the ends of its HTML comment - as a value holds it

@@ -357,17 +357,20 @@ Repository nachschlagen (`…/edu-sharing/components/render/<id>`). Ein Parser b
 gehört zur Untersammlung in der Zeile über seiner Gruppe.
 
 Jeder Wert kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird jede Knotenzeile
-auf eine Zeile gebracht, ebenso die Kennzahlenzeile und jeder Facettenmarker; `[` und `]` im Titel
-werden maskiert, URLs mit Leerzeichen oder Klammern stehen in `<…>`. Die Beschreibung der Sammlung
-behält die Zeilen und Absätze der Redaktion, doch jeder Zeilenumbruch darin wird ein
-gewöhnlicher, und ein Bindestrich am Zeilenanfang wird als `\-` maskiert, den CommonMark als
-Bindestrich zeigt; eine Aufzählung in der Beschreibung liest sich deshalb als Fließtext. So kann kein
-Wert aus dem Repository eine Zeile teilen oder einen Knoten vortäuschen, auch nicht für einen Leser,
-der wie `str.splitlines()` an `\r`, U+2028 und den übrigen Unicode-Zeilenumbrüchen trennt, und eine
-nodeId mitten in einem Wert liest der Ausdruck nie, weil er die am Zeilenende nimmt. Ebenso bringt
-kein Wert `<!--` in den Teil: Es steht als `<\!--` da, das CommonMark genauso zeigt. Jedes `<!--` in
-Teil 3 ist also einer seiner Marker, und kein Wert kann einen Block vorzeitig schließen oder einen
-eigenen öffnen.
+auf eine Zeile gebracht, ebenso die Kennzahlenzeile und jeder Facettenmarker, und jeder Wert steht so da, wie er
+getippt wurde: Ein Backslash maskiert `\`, Backticks, `[` und `]`, ein `<` vor einem Buchstaben, `/` oder `?`, ein
+`&` vor einer Entität und das erste Zeichen einer Zeile, das sie zur Überschrift, zum Zitat, zur Liste, zur Linie,
+zum Codeblock oder zur Tabellenzeile machte; `<!--` steht als `<\!--` da. CommonMark zeigt jedes davon als das
+Zeichen, das es war; wer die Werte als Text braucht, entfernt den Backslash vor einem ASCII-Satzzeichen. Nur eine
+Webadresse wird ein Link, mit Leerzeichen oder Klammern in `<…>`. Die Beschreibung der Sammlung behält die Zeilen und
+Absätze der Redaktion, doch jeder Zeilenumbruch darin wird ein gewöhnlicher; eine Aufzählung in der Beschreibung liest
+sich deshalb als Fließtext. So kann kein Wert aus dem Repository eine Zeile teilen, einen Knoten vortäuschen, ein
+Tag, einen Kommentar oder ein Bild einschleusen, auch nicht für einen Leser, der wie `str.splitlines()` an `\r`,
+U+2028 und den übrigen Unicode-Zeilenumbrüchen trennt, und eine nodeId mitten in einem Wert liest der Ausdruck nie,
+weil er die am Zeilenende nimmt. Jedes `<!--` in Teil 3 ist also einer seiner Marker, und kein Wert kann einen Block
+vorzeitig schließen oder einen eigenen öffnen. Dieselbe Maskierung gilt für jeden fremden Text im Kompendium: die
+wörtlichen Sätze von Teil 1, Quellenblock, Belegtabelle, Glossar, Akteure und die Bezeichnungen von Teil 2
+(Audit 2026-09-28, SE-16).
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
 Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht

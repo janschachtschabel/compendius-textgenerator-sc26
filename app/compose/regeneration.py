@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 from app.domain.caller_values import listed
 from app.domain.models import Citation, SectionStatus
 from app.synthesis.citations import marker_numbers
+from app.synthesis.safe_markdown import unescape
 
 if TYPE_CHECKING:
     from app.templates.schema import Template
@@ -29,12 +30,15 @@ SECTION_RE = re.compile(
     r"(?: facets=\"(?P<facets>[^\"\n]*)\")? hash=(?P<hash>[0-9a-f]+) -->\n\n(?P<text>.*?)(?=\n### |\n## |\Z)",
     re.DOTALL | re.MULTILINE,
 )
-# A link runs to the last closing parenthesis before its cell ends: url_for leaves parentheses unencoded, and a
-# title such as "Merkur (Planet)" puts them into the link (audit 2026-09-27, KO-02). A link holds no whitespace,
-# so the scan stays linear. Four digits are more than a compendium numbers; int() refuses over 4,300 (KO-08).
+# A row of the citation table as the sources block writes it: the title escaped, as a link where the source had a web
+# address, else alone (audit 2026-09-28, SE-16). A link in angle brackets holds spaces or parentheses; a link without
+# them runs to the last closing parenthesis before its cell ends, as earlier documents wrote "Merkur (Planet)" (audit
+# 2026-09-27, KO-02). Every part stays on its line, so the scan stays linear. Four digits are more than a compendium
+# numbers; int() refuses over 4,300 (KO-08).
 ROW_RE = re.compile(
-    r"^\| \[(?P<number>\d{1,4})\] \| \[(?P<title>[^\]\n]*)\]\((?P<url>\S*)\) \| (?P<heading>[^|\n]*) "
-    r"\| (?P<snippet>[^|\n]*) \|$",
+    r"^\| \[(?P<number>\d{1,4})\] \| "
+    r"(?:\[(?P<title>(?:\\.|[^\\\]\n])*)\]\((?:<(?P<pointed>[^>\n]*)>|(?P<url>\S*))\)|(?P<plain>[^|\n]*?)) "
+    r"\| (?P<heading>[^|\n]*) \| (?P<snippet>[^|\n]*) \|$",
     re.MULTILINE,
 )
 
@@ -105,14 +109,16 @@ def _citation_rows(markdown: str) -> dict[int, Citation]:
     rows: dict[int, Citation] = {}
     for match in ROW_RE.finditer(markdown):
         number = int(match.group("number"))
+        title = match.group("title") if match.group("title") is not None else match.group("plain")
+        # read back as typed: the sources block escapes them again, and an escape read as text would double
         rows[number] = Citation(
             number=number,
             source_id="",
             chunk_id="",
-            source_title=match.group("title").strip(),
-            source_url=match.group("url").strip(),
-            section_heading=match.group("heading").strip(),
-            snippet=match.group("snippet").strip(),
+            source_title=unescape(title.strip()),
+            source_url=(match.group("pointed") or match.group("url") or "").strip(),
+            section_heading=unescape(match.group("heading").strip()),
+            snippet=unescape(match.group("snippet").strip()),
         )
     return rows
 

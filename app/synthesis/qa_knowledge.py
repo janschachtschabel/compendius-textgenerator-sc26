@@ -15,6 +15,7 @@ from app.compose.regeneration import parse_document
 from app.domain.models import Compendium, SectionStatus
 from app.synthesis.citations import without_markers
 from app.synthesis.qa_rules import is_actor_block, is_glossary_block
+from app.synthesis.safe_markdown import unescape
 
 _TITLE = re.compile(r"^# Kompendium: (?P<topic>.+)$", re.MULTILINE)
 _NO_PROSE = frozenset({SectionStatus.GENERATED, SectionStatus.EMPTY})
@@ -28,6 +29,12 @@ class Knowledge:
     glossary: str = ""
     actors: str = ""
     topic: str | None = None
+
+
+def _prose(markdown: str) -> str:
+    """Block text as the pairs read it: without evidence numbers, and with the escapes that keep a source's words
+    from acting as markdown read back as the words (audit 2026-09-28, SE-16)."""
+    return unescape(without_markers(markdown))
 
 
 def text_of_compendium(compendium: Compendium) -> str:
@@ -49,7 +56,7 @@ def text_of_compendium(compendium: Compendium) -> str:
         for section in compendium.sections
         if section.text.strip() and section.status is not SectionStatus.GENERATED
     )
-    return without_markers(joined)
+    return _prose(joined)
 
 
 def knowledge_of_compendium(compendium: Compendium) -> Knowledge:
@@ -85,8 +92,8 @@ def knowledge_of_text(text: str) -> Knowledge:
     generated = [section.text for section in sections if section.status is SectionStatus.GENERATED]
     title = _TITLE.search(text)
     return Knowledge(
-        text=without_markers("\n\n".join(prose)),
+        text=_prose("\n\n".join(prose)),
         glossary="\n\n".join(block for block in generated if is_glossary_block(block)),
         actors="\n\n".join(block for block in generated if is_actor_block(block)),
-        topic=title.group("topic").strip() if title else None,
+        topic=unescape(title.group("topic").strip()) if title else None,
     )

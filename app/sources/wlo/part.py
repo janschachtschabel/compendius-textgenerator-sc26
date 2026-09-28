@@ -26,6 +26,7 @@ from app.sources.wlo.overview import (
     SubCollectionContents,
     render_collection_overview,
 )
+from app.synthesis.safe_markdown import plain_label
 
 log = logging.getLogger(__name__)
 
@@ -188,7 +189,7 @@ class CollectionBuilder:
             subs = self.subcollections(collection_id)
         except EduSharingError as exc:
             log.warning("collection %s could not be listed: %s", collection_id, exc)
-            markdown = f"{PART_HEADING}\n\n{UNAVAILABLE_TEXT.format(error=exc)}\n"
+            markdown = f"{PART_HEADING}\n\n{UNAVAILABLE_TEXT.format(error=plain_label(str(exc)))}\n"
             return CollectionPart(
                 available=False, collection_id=collection_id, title=info.title, markdown=markdown, error=str(exc)
             )
