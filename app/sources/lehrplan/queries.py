@@ -79,6 +79,11 @@ LIMIT {int(limit)}
 OFFSET {int(offset)}"""
 
 
+# The specific properties carry every head field MEM has. Berlin also states the generic super-property LP_0000024
+# ("beschrieben von"), for title, description, state and subject, and for grades and school level in the three of
+# its 46 curricula that have them - which state the specific properties as well. No Berlin curriculum names a school
+# type, and 8 of its 5,928 elements a Berlin-Brandenburg level ("Niveaustufe") instead of grades (MEM, 2026-09-28;
+# audit 2026-09-28, KO-31).
 HEAD_FIELDS = {
     "schulart": PROP_SCHULART,
     "schulfach": PROP_SCHULFACH,

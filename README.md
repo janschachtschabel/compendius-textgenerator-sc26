@@ -177,8 +177,10 @@ Zugriffstoken mit `read:packages`.
 Einzige Quelle ist der MEM-Triplestore der FWU (`LEHRPLAN_ENDPOINT`). Der Harvest-Job zieht
 alle Lehrpläne aller Bundesländer, die MEM veröffentlicht (Stand 2026-09-17: Bayern, Sachsen,
 Rheinland-Pfalz, Berlin; laut mem-mcp führt MEM inzwischen auch Brandenburg), samt Knoten, Rollen und
-Stufenangaben in `STATE_DIR/lehrplan.db`
-(SQLite mit FTS5-Trigram-Index) und tauscht die Datei atomar aus; ein Vollabzug dauert rund 25
+Stufenangaben in `STATE_DIR/lehrplan.db`. Berlin nennt in MEM zu keinem seiner 46 Lehrpläne eine Schulart und nur zu
+dreien Jahrgangs- und Schulstufe, seine Elemente keine Klasse (8 von 5.928 eine Berlin-Brandenburger Niveaustufe;
+geprüft am 28.09.2026); Teil 2 nennt für Berlin darum meist nur Land, Fach und Lehrplan. Der Cache liegt
+als SQLite mit FTS5-Trigram-Index vor, der Harvest tauscht die Datei atomar aus; ein Vollabzug dauert rund 25
 Minuten (2.514 Lehrpläne, 295.000 Knoten, 278 MB). Listet MEM gar keinen Lehrplan, fehlt ein Land des Caches
 oder behält eines weniger als die Hälfte seiner Lehrpläne, verwirft der Harvest sein Ergebnis und der alte
 Cache bleibt: MEM antwortet während eines Neuladens mit leeren Listen. `compendium lehrplan harvest --force`
