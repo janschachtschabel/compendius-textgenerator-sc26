@@ -223,6 +223,7 @@ def render_curricula(
         "matches": len(result.matches),
         "bundled": sum(1 for group in groups for match in group.items if _bundled(match)),
         "total_hits": result.total_hits,
+        "cut_hits": result.cut_hits,
         "excluded_noise": result.excluded_noise,
         "lehrplaene": len({match.hit.lehrplan.iri for match in result.matches}),
         "laender": len(by_land),

@@ -193,7 +193,9 @@ def lehrplan_search(
         ge=1,
         le=500,
         description="How many elements come back, the best first: 1 to 500, default 50. It bounds the answer, not the "
-        "search or the LLM check; total_hits says how many the rules found",
+        "search or the LLM check; total_hits says how many elements the search found. It ranks 20,000 of them at "
+        "most: cut_hits says how many lay beyond, and the ones of the strongest roles stay (Themenbereich, Kompetenz, "
+        "Inhalt)",
     ),
     mode: Literal["keyword", "topic"] = Query(
         "keyword",
@@ -299,6 +301,7 @@ def lehrplan_search(
         "keywords": result.keywords,
         "subject_terms": result.subject_terms,
         "total_hits": result.total_hits,
+        "cut_hits": result.cut_hits,
         "excluded_noise": result.excluded_noise,
         "matches": [match_entry(match) for match in matches[:limit]],
         "llm": llm,

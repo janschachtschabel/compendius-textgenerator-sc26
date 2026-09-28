@@ -205,6 +205,9 @@ http(s)-IRI wird zum Linkziel.
 Dieselbe Suche gibt es einzeln, `GET /api/v2/lehrplan/search`, und sie nimmt die Profile wie Teil 2 (D59):
 `llm-free` und `balanced` finden und bewerten mit den Regeln, `balanced` wählt im Themenmodus den Artikel mit
 dem LLM, die `best-quality`-Profile lassen zusätzlich das LLM jedes Element prüfen, aus 180.000 Tokens je Anfrage.
+Ein sehr allgemeines Stichwort findet mehr Elemente, als die Suche bewertet (20.000): `total_hits` zählt alle, `cut_hits`
+die jenseits der Grenze, und es bleiben die mit den stärksten Rollen (Themenbereich, Kompetenz, Inhalt); vorher blieben
+die zuerst geschriebenen, also die Länder, die der Harvest zuerst abrief, und `total_hits` nannte die Grenze.
 Die MEM-Daten sind frei nutzbar: Die FWU stellt den Zugang offen bereit
 (github.com/FWU-DE/mem-mcp), Jan hat die Nutzung ohne Einschränkung freigegeben (D58).
 

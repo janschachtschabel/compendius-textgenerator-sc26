@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from app.sources.lehrplan.matcher import LehrplanMatcher
 from app.sources.lehrplan.store import LehrplanCacheError, LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import HarvestedNode
 
@@ -158,3 +159,25 @@ def test_a_control_character_in_a_word_is_left_out_not_a_broken_cache(tmp_path: 
     store = _write(tmp_path / "lehrplan.db")
 
     assert {hit.iri for hit in store.search(["Op\x00tik\x1f"])} == {hit.iri for hit in store.search(["Optik"])}
+
+
+def test_a_cut_search_keeps_the_strongest_roles_and_counts_every_hit(tmp_path: Path) -> None:
+    """PE-05 (audit 2026-09-28): past the search limit the rows went in the order they were written, the states
+    harvested last out first, and total_hits named the limit instead of the hits."""
+    writer = LehrplanWriter(tmp_path / "lehrplan.db")
+    writer.add_lehrplan(PHYSIK)
+    writer.add_nodes(
+        PHYSIK.iri,
+        [
+            _node("n:1", "Optik im Alltag", ["inhalt"]),
+            _node("n:2", "Farben und Optik", ["inhalt"]),
+            _node("n:3", "Lernbereich 2: Optik", ["themenbereich"]),
+        ],
+    )
+    writer.set_meta({"harvested_at": "2026-09-28T10:00:00+00:00", "endpoint": "https://sparql.test/"})
+    writer.commit()
+
+    result = LehrplanMatcher(LehrplanStore(tmp_path / "lehrplan.db"), limit=2).match(["Optik"])
+
+    assert result.matches[0].hit.iri == "n:3"  # the themenbereich survives the cut
+    assert (result.total_hits, result.cut_hits, len(result.matches)) == (3, 1, 2)

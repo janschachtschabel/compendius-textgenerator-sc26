@@ -225,14 +225,57 @@ class LehrplanStore:
         return {"lehrplaene": per_state, "nodes": nodes}
 
     def search(
-        self, keywords: Sequence[str], *, subject_terms: Sequence[str] = (), limit: int = DEFAULT_SEARCH_LIMIT
+        self,
+        keywords: Sequence[str],
+        *,
+        subject_terms: Sequence[str] = (),
+        limit: int = DEFAULT_SEARCH_LIMIT,
+        role_order: Sequence[str] = (),
     ) -> list[NodeHit]:
         """Content nodes whose label or parent label contains one of ``keywords`` (case-insensitive).
 
         ``subject_terms`` are lowercase substrings of the curriculum's subject labels and title
-        ("physik", "natur und technik"); with none given all subjects are searched. A cache SQLite cannot
-        read raises ``LehrplanCacheError``, so callers can say so instead of reporting zero matches.
+        ("physik", "natur und technik"); with none given all subjects are searched. Past ``limit`` the nodes of the
+        roles ``role_order`` names first stay; they went in the order they were written before, the states harvested
+        last out first (audit 2026-09-28, PE-05). A cache SQLite cannot read raises ``LehrplanCacheError``, so callers
+        can say so instead of reporting zero matches.
         """
+        words = self._searchable(keywords)
+        if not words:
+            return []
+        where, params = self._where(words, subject_terms)
+        ranks = "".join(" WHEN instr(',' || node.rollen || ',', ?) > 0 THEN ?" for _ in role_order)
+        order = f"CASE{ranks} ELSE {len(role_order)} END, node.id" if role_order else "node.id"
+        sql = (
+            "SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label, node.jahrgangsstufen,"
+            " node.depth, lehrplan.iri AS lp_iri, lehrplan.label AS lp_label, lehrplan.bundesland_code,"
+            " lehrplan.bundesland, lehrplan.schularten, lehrplan.schulfaecher,"
+            " lehrplan.jahrgangsstufen AS lp_jahrgangsstufen, lehrplan.schulstufen"
+            + where
+            + f" ORDER BY {order} LIMIT ?"
+        )
+        params += [value for rank, role in enumerate(role_order) for value in (f",{role},", rank)]
+        params.append(int(limit))
+        folded = [word.casefold() for word in words]
+        try:
+            return self._hits(sql, params, folded)
+        except sqlite3.Error as exc:
+            raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable: {exc}") from exc
+
+    def count(self, keywords: Sequence[str], *, subject_terms: Sequence[str] = ()) -> int:
+        """How many content nodes ``search`` finds for ``keywords`` without a limit (audit 2026-09-28, PE-05)."""
+        words = self._searchable(keywords)
+        if not words:
+            return 0
+        where, params = self._where(words, subject_terms)
+        try:
+            with closing(self._connect()) as connection:
+                return int(connection.execute("SELECT COUNT(*)" + where, params).fetchone()[0])
+        except sqlite3.Error as exc:
+            raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable: {exc}") from exc
+
+    def _searchable(self, keywords: Sequence[str]) -> list[str]:
+        """The words of ``keywords`` a search can use; none while the cache is missing, an error while it is broken."""
         cleaned = (CONTROL_CHARS.sub("", word).strip() for word in keywords)
         words = [word for word in cleaned if len(word) >= MIN_KEYWORD_CHARS]
         state = self.state
@@ -240,29 +283,23 @@ class LehrplanStore:
             return []
         if state != "ok":  # checked again here: the file may have changed since the caller looked
             raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable or of another schema version")
-        # Each word a quoted phrase, its quotes doubled: without control characters every other one is a literal to
-        # FTS5, so the expression is always well-formed and an error below is one of the cache
-        match = " OR ".join('"' + word.replace('"', '""') + '"' for word in words)
-        sql = (
-            "SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label, node.jahrgangsstufen,"
-            " node.depth, lehrplan.iri AS lp_iri, lehrplan.label AS lp_label, lehrplan.bundesland_code,"
-            " lehrplan.bundesland, lehrplan.schularten, lehrplan.schulfaecher,"
-            " lehrplan.jahrgangsstufen AS lp_jahrgangsstufen, lehrplan.schulstufen"
+        return words
+
+    @staticmethod
+    def _where(words: Sequence[str], subject_terms: Sequence[str]) -> tuple[str, list[Any]]:
+        """FROM and WHERE of a search, with its parameters. Each word is a quoted phrase, its quotes doubled: without
+        control characters every other one is a literal to FTS5, so the expression is always well-formed and an error
+        of the search is one of the cache."""
+        where = (
             " FROM node_fts JOIN node ON node.id = node_fts.rowid JOIN lehrplan ON lehrplan.iri = node.lehrplan_iri"
             " WHERE node_fts MATCH ? AND node.matchable = 1"
         )
-        params: list[Any] = [match]
+        params: list[Any] = [" OR ".join('"' + word.replace('"', '""') + '"' for word in words)]
         terms = [term.strip().casefold() for term in subject_terms if term.strip()]
         if terms:
-            sql += " AND (" + " OR ".join("instr(lehrplan.schulfaecher_lc, ?) > 0" for _ in terms) + ")"
+            where += " AND (" + " OR ".join("instr(lehrplan.schulfaecher_lc, ?) > 0" for _ in terms) + ")"
             params.extend(terms)
-        sql += " ORDER BY node.id LIMIT ?"
-        params.append(int(limit))
-        folded = [word.casefold() for word in words]
-        try:
-            return self._hits(sql, params, folded)
-        except sqlite3.Error as exc:
-            raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable: {exc}") from exc
+        return where, params
 
     def _hits(self, sql: str, params: Sequence[Any], folded: Sequence[str]) -> list[NodeHit]:
         hits: list[NodeHit] = []

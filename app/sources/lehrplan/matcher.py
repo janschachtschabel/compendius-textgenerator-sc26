@@ -28,6 +28,7 @@ DEFAULT_MAX_KEYWORDS = 12
 DEFAULT_LIMIT = DEFAULT_SEARCH_LIMIT
 MIN_COMPOUND_HEAD = 2  # letters before a keyword that ends a word: "Ei|zelle" is a compound, "H|erdplatten" is not
 _ROLE_WEIGHT = {ROLE_THEMENBEREICH: 3, ROLE_KOMPETENZ: 2, ROLE_INHALT: 1}
+ROLE_ORDER = tuple(sorted(_ROLE_WEIGHT, key=_ROLE_WEIGHT.__getitem__, reverse=True))  # what a cut search keeps first
 _PARENTHESES = re.compile(r"\s*\([^)]*\)\s*$")
 _WORD = r"[\wäöüÄÖÜß]"
 _WORD_CHAR = re.compile(_WORD)
@@ -75,7 +76,8 @@ class MatchResult:
     keywords: list[str]
     subject_terms: list[str]
     matches: list[CurriculumMatch] = field(default_factory=list)
-    total_hits: int = 0
+    total_hits: int = 0  # every element the search found, also past its limit
+    cut_hits: int = 0  # of them past the limit and not ranked: the elements of the strongest roles stay
     excluded_noise: int = 0
 
 
@@ -158,8 +160,11 @@ class LehrplanMatcher:
         result = MatchResult(keywords=words, subject_terms=list(subject_terms))
         if not words:
             return result
-        hits = self._store.search(words, subject_terms=subject_terms, limit=self._limit)
+        hits = self._store.search(words, subject_terms=subject_terms, limit=self._limit, role_order=ROLE_ORDER)
         result.total_hits = len(hits)
+        if len(hits) >= self._limit:  # total_hits named the limit instead of the hits (audit 2026-09-28, PE-05)
+            result.total_hits = self._store.count(words, subject_terms=subject_terms)
+            result.cut_hits = result.total_hits - len(hits)
         for found in hits:
             # The store reports substring hits; only a keyword touching a word boundary is a real hit,
             # in the node's own label first, else in its parent label. Everything else is noise.
