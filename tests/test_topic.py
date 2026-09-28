@@ -43,3 +43,12 @@ def test_topic_stem_matches_derived_words() -> None:
     assert topic_stem("Photosynthese") == "photosynthes"
     assert topic_stem("Brechung (Physik)") == "brechun"
     assert topic_stem("Auge") == "auge"
+
+
+def test_a_title_that_opens_with_an_article_is_stemmed_from_its_noun() -> None:
+    """KO-11: "Die Zauberflöte" gave the stem "die", which nearly every German paragraph holds, so the checks that a
+    side article's paragraph is about the topic let everything through."""
+    assert topic_stem("Die Zauberflöte") == "zauberflöt"
+    assert topic_stem("Der Prozess (Roman)") == "prozes"
+    assert topic_stem("Das Kapital") == "kapita"
+    assert topic_stem("Die") == "die"  # nothing but the article: it stays the stem

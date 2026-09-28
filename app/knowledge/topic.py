@@ -119,10 +119,16 @@ def normalize_topic(raw: str) -> NormalizedTopic:
     return NormalizedTopic(query=query, topic=text, context=context, subject=subject)
 
 
-def topic_stem(title: str) -> str:
-    """Short lowercase stem of the first title word, used for cheap topicality checks.
+# An article that opens a title is no stem: "die" from "Die Zauberflöte" is in nearly every German paragraph, and the
+# checks that a side article's paragraph is about the topic let everything through (audit 2026-09-27, KO-11)
+_LEADING_ARTICLES = frozenset({"der", "die", "das", "des", "dem", "den", "ein", "eine", "einer", "eines", "einem"})
 
-    "Optik" -> "opti" (matches "optisch", "Optiker"), "Demokratie" -> "demokrati".
+
+def topic_stem(title: str) -> str:
+    """Short lowercase stem of the first title word after a leading article, used for cheap topicality checks.
+
+    "Optik" -> "opti" (matches "optisch", "Optiker"), "Demokratie" -> "demokrati", "Die Zauberflöte" -> "zauberflöt".
     """
-    word = re.sub(r"\s*\(.*\)$", "", title).strip().split(" ")[0].lower()
+    words = re.sub(r"\s*\(.*\)$", "", title).strip().lower().split(" ")
+    word = words[1] if len(words) > 1 and words[0] in _LEADING_ARTICLES else words[0]
     return word[:-1] if len(word) >= 5 else word
