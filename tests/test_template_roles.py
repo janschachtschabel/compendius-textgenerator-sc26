@@ -49,6 +49,28 @@ def test_a_definition_block_of_another_name_gets_the_lead(service: CompendiumSer
     assert scored[lead.chunk_id].score == LEAD_SCORE
 
 
+def test_a_block_key_in_capitals_is_the_key_the_rules_know(service: CompendiumService) -> None:
+    """KO-07 took "Praxis" into matcher=llm only: the roles, the lexicon, the facets and the actors compared the keys
+    exactly, and a "Themendefinition" lost its role and the lead (0.0 instead of 2.0; audit 2026-09-28, KO-22)."""
+    prepared: PreparedTopic = service.prepare(GenerateRequest(topic="Optik", parts=["world"]))
+    data = prepared.template.model_dump()
+    for slot in data["slots"]:
+        slot.update({"slot": slot["slot"].capitalize(), "role": ""})
+    default = data.get("default_slot")
+    template = Template.model_validate(
+        {**data, "id": "eigen", "builtin": False, "default_slot": default.upper() if default else None}
+    )
+    lead = next(chunk for chunk in prepared.chunks if chunk.is_lead)
+
+    result = assign(template, prepared.chunks, {}, prepared.sources_by_id)
+
+    block = template.slot_by_key("Themendefinition")
+    assert block is not None and block.slot == "themendefinition" and block.role == "definition"
+    scored = {item.chunk.chunk_id: item for item in result.assigned[block.id]}
+    assert scored[lead.chunk_id].score == LEAD_SCORE
+    assert template.default_slot == (default or None)
+
+
 def test_a_template_without_roles_takes_them_from_the_keys() -> None:
     """A custom template written before roles, like a copy of sc26, keeps working as it did."""
     template = Template(

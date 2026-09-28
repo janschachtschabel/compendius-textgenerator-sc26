@@ -129,6 +129,13 @@ class TemplateSlot(BaseModel):
                 raise ValueError(f"kein gültiger regulärer Ausdruck: {pattern!r} ({exc})") from exc
         return patterns
 
+    @field_validator("slot")
+    @classmethod
+    def _one_spelling(cls, value: str) -> str:
+        # KO-07 took "Praxis" into matcher=llm only; the roles, the lexicon, the facets and the actors compared keys
+        # exactly and lost such a block's role and the lead (audit 2026-09-28, KO-22). One spelling from the start.
+        return block_key(value)
+
 
 class Template(BaseModel):
     """The building blocks of part 1, in the order they appear in the finished text."""
@@ -186,6 +193,11 @@ class Template(BaseModel):
             ]
         return self
 
+    @field_validator("default_slot")
+    @classmethod
+    def _default_in_one_spelling(cls, value: str | None) -> str | None:
+        return block_key(value) if value is not None else None
+
     @model_validator(mode="after")
     def _default_slot_is_a_content_slot(self) -> Template:
         if self.default_slot is not None:
@@ -195,7 +207,7 @@ class Template(BaseModel):
         return self
 
     def slot_by_key(self, key: str) -> TemplateSlot | None:
-        return next((s for s in self.slots if s.slot == key), None)
+        return next((s for s in self.slots if block_key(s.slot) == block_key(key)), None)
 
     def content_slots(self) -> list[TemplateSlot]:
         return [s for s in self.slots if not s.is_generated]
