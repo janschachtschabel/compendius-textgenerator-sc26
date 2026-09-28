@@ -38,9 +38,9 @@ Update daher:
    `lehrplan-updater`, `wikidata-updater`, `gnd-updater`.
 2. Die Variablen des Servers mit der Tabelle unten abgleichen: Werte löschen, die nur eine alte Vorgabe
    wiederholen, neue setzen.
-3. `GET /health` lesen: `version` und `revision`, `components.llm.model`, `entities.wikidata.available` und
-   `entities.gnd.available`. Die beiden Indexe brauchen nach einem ersten Start einige Minuten (GND) bis rund
-   zehn Minuten (Wikidata).
+3. `GET /health` lesen: `version` und `revision`, `components.llm.model`, `components.matching.embeddings`
+   (muss `true` sein), `entities.wikidata.available` und `entities.gnd.available`. Die beiden Indexe brauchen
+   nach einem ersten Start einige Minuten (GND) bis rund zehn Minuten (Wikidata).
 
 | Stand | Was sich für den Betrieb ändert |
 |---|---|
@@ -50,8 +50,10 @@ Update daher:
 | 2026-09-28 (Audit) | `docker-compose.yml` härtet die Dienste: keine Linux-Capabilities und keine neuen Rechte für alle fünf, bei der API zudem ein nur lesbares Dateisystem außer den Volumes und `/tmp`; Code und Modelle gehören im Image `root`. Jedes Protokoll rotiert bei 10 MB (fünf Dateien). Die API hat 4 GiB Speicher (`API_MEMORY`) und 150 s, um laufende Anfragen bei einem Update zu beenden; die Sidecars bekommen keine Geheimnisse der `.env` mehr. Wirkt erst, wenn das Panel die neue Compose-Datei übernimmt |
 | 2026-09-28 (Audit, Überwachung) | Neue Messwerte und Alarme: freier Platz der Volumes (`kompendium_volume_free_bytes`, `KompendiumVolumeFull`) und das Ende der letzten Prüfung der Index-Sidecars (`kompendium_{wikidata,gnd}_sync_last_run_timestamp_seconds`, `KompendiumWikidataSyncStale`, `KompendiumGndSyncStale`). Ein eigener Prometheus übernimmt die Alarme mit der neuen `monitoring/alerts.yml` |
 | 2026-09-28 (Audit, Templates) | Bausteine haben das Feld `role` (`definition`, `systematik`, `context`); eigene Templates ohne Rollen erhalten sie aus den bisherigen Schlüsseln und verhalten sich wie zuvor. Abgelehnt wird jetzt ein eigenes Template, dessen Bausteine sich einen Schlüssel teilen, auch nur in anderer Schreibweise: ein gespeichertes überspringt der Dienst beim Laden (Log „custom template … skipped“), Anfragen darauf antworten 404. `matcher: llm` versteht Schlüssel mit Großbuchstaben. Das Template `standard` nennt im Lizenzhinweis und im Lint seine eigenen Bausteine (Quellen in Baustein 6) |
+| 2026-09-28 (Model2Vec) | `:latest` von `f167a9f` bis vor `9c94d43` konnte sein Model2Vec-Modell nicht lesen und ordnete ohne Embeddings zu (auf dem Gold macro-F1 0,396 statt 0,459). Wer in dieser Zeit aktualisiert hat, braucht das neue Image; danach zeigt `/health` unter `components.matching` `"embeddings": true` und `model2vec` in `components` |
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
+Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`).
 
 ## Zustand prüfen
 
