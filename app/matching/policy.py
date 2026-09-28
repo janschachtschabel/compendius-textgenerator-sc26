@@ -73,16 +73,30 @@ def _score_candidate(
     exclusions: set[str],
     context: _Context,
 ) -> tuple[float, list[str]]:
-    score = fused_score
-    reasons: list[str] = []
-    primary_stem = context.primary_stem
+    """A paragraph's score for a block: a fixed one where a rule decides, else the ranker's, weighed in turn by the
+    headings, the block's exclusions and the source. Split in three by these steps (audit 2026-09-27, WA-01)."""
+    decided = _decided(slot, chunk, source, context)
+    if decided is not None:
+        return decided
+    score, reasons = _by_headings(slot, chunk, fused_score, source, context)
+    if exclusions:
+        haystack = f"{chunk.full_heading} {chunk.text}".lower()
+        hits = [term for term in exclusions if term in haystack]
+        if hits:
+            score *= EXCLUSION_FACTOR
+            reasons.append("Ausschlusssignal: " + ", ".join(sorted(hits)[:3]))
+    return _by_source(slot, source, score, reasons, context)
 
+
+def _decided(
+    slot: TemplateSlot, chunk: Chunk, source: Source | None, context: _Context
+) -> tuple[float, list[str]] | None:
+    """The rules that set a score outright: the leads, the definition block and the introductions of sub-areas."""
     if chunk.is_lead:
         if slot.role == "definition":
             return LEAD_SCORE, ["Lead-Absatz des Hauptartikels"]
         return 0.0, ["Lead gehört in die Themendefinition"]
 
-    lexicon_slot = chunk.lexicon_slot
     is_secondary = source is not None and not source.is_primary
     is_twin_lead = (
         source is not None and source.origin == "same_topic" and chunk.heading_level == 0 and chunk.position == 0
@@ -93,7 +107,7 @@ def _score_candidate(
     if slot.role == "definition":
         if is_twin_lead:
             return TWIN_LEAD_SCORE, ["Einstiegsdefinition aus einem zweiten Archiv"]
-        if is_secondary or lexicon_slot not in context.definition_keys:
+        if is_secondary or chunk.lexicon_slot not in context.definition_keys:
             return 0.0, ["Themendefinition nur aus dem Hauptartikel"]
     elif is_twin_lead:
         return 0.0, ["Zwillings-Lead gehört in die Themendefinition"]
@@ -106,20 +120,30 @@ def _score_candidate(
         and source.origin != "same_topic"
         and chunk.heading_level == 0
         and chunk.position == 0
-        and primary_stem
-        and primary_stem in source.title.lower()
+        and context.primary_stem
+        and context.primary_stem in source.title.lower()
     ):
         if slot.role == "systematik":
             return SUBTOPIC_LEAD_SCORE, ["Einleitung eines Teilgebiets"]
         return 0.0, ["Teilgebiets-Einleitung gehört in die Systematik"]
+    return None
 
+
+def _by_headings(
+    slot: TemplateSlot, chunk: Chunk, score: float, source: Source | None, context: _Context
+) -> tuple[float, list[str]]:
+    """The ranker's score weighed by what the headings say: the introductions of related articles, the lexicon, the
+    first paragraph of a section."""
+    reasons: list[str] = []
+    lexicon_slot = chunk.lexicon_slot
+    is_secondary = source is not None and not source.is_primary
     # Other introductions of related articles (a heading like "Allgemeines") define sub-topics;
     # those that carry the topic in their title lean towards block 2.
     is_intro = chunk.heading_level == 0 or lexicon_slot in context.definition_keys
     if is_secondary and is_intro and source is not None:
         if lexicon_slot in context.definition_keys:
             lexicon_slot = None
-        if slot.role == "systematik" and primary_stem and primary_stem in source.title.lower():
+        if slot.role == "systematik" and context.primary_stem and context.primary_stem in source.title.lower():
             score *= SUBAREA_BOOST
             reasons.append("Teilgebiet des Themas")
 
@@ -134,14 +158,13 @@ def _score_candidate(
     if slot.role == "systematik" and chunk.is_section_lead:
         score *= SECTION_LEAD_BOOST
         reasons.append("Abschnittseinleitung (H2)")
+    return score, reasons
 
-    if exclusions:
-        haystack = f"{chunk.full_heading} {chunk.text}".lower()
-        hits = [term for term in exclusions if term in haystack]
-        if hits:
-            score *= EXCLUSION_FACTOR
-            reasons.append("Ausschlusssignal: " + ", ".join(sorted(hits)[:3]))
 
+def _by_source(
+    slot: TemplateSlot, source: Source | None, score: float, reasons: list[str], context: _Context
+) -> tuple[float, list[str]]:
+    """The score weighed by the source: the projects the block prefers, and the materials of a collection."""
     if source is not None and slot.source_preference:
         if source.project == slot.source_preference[0]:
             score *= FIRST_SOURCE_BOOST
@@ -154,7 +177,6 @@ def _score_candidate(
         # score starts at the confidence threshold, so the rule holds whatever threshold is configured.
         score = context.confident_score + (1 - context.confident_score) * min(score, 1.0)
         reasons.append("Material der Wissens-Sammlung")
-
     return score, reasons
 
 
