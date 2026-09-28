@@ -22,6 +22,7 @@ from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.synthesis.citations import neutralize
 
 log = logging.getLogger(__name__)
 
@@ -201,14 +202,15 @@ def parse_pairs(
         parts = [part.strip() for part in line.split(";")]
         if len(parts) < 2 or not parts[0] or not parts[1]:
             continue
-        question = _NUMBERING.sub("", parts[0])
+        # an instruction in the text the pairs are made from could make the model write markup (audit 2026-09-28, SE-17)
+        question = neutralize(_NUMBERING.sub("", parts[0]))
         # An unmappable label stays empty. It used to become level_values[0], which turned a level the
         # model named into one it never named - a wrong label instead of a missing one (docs/umbau.md U5).
         level = _level(parts[2], level_values) if len(parts) > 2 and level_values else None
         pairs.append(
             QaPair(
                 question=question,
-                answer=cut(parts[1], max_answer_length),
+                answer=cut(neutralize(parts[1]), max_answer_length),
                 level_property=level_property,
                 level_value=level,
             )

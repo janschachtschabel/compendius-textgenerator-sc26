@@ -13,6 +13,7 @@ from collections.abc import Mapping
 from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.matching.base import tokenize
 from app.synthesis.facets import END_MARKER
+from app.synthesis.safe_markdown import escape_text
 
 # Support check: share of a sentence's content stems that occur in the chunks it cites. Measured with
 # gpt-5.6-luna on 2026-09-18 (175 sentences): median 0.73; inference sentences that only carry a marker
@@ -40,11 +41,15 @@ _HEADING_RE = re.compile(r"^\s*#{1,6}\s")
 _COMMENT_RE = re.compile(r"<!--.*?-->|<!--|-->", re.DOTALL)
 # What the model writes goes into a document to publish, and its prompts carry foreign text: an instruction placed
 # there could make it write a link, an image or markup no source contains (audit 2026-09-27, SE-04). The words of a
-# link stay; its target, images, tags and bare addresses go. Every pattern ends at a line end, its closing sign or
-# the next opening bracket, so a run of them costs no more than its length.
-_IMAGE_RE = re.compile(r"!\[[^\[\]\n]*\]\([^)\s]*\)?")
-_LINK_RE = re.compile(r"\[([^\[\]\n]*)\]\([^)\s]*\)?")
-_TAG_RE = re.compile(r"</?[A-Za-z][^<>\n]*>")
+# link stay; its target, images, tags and bare addresses go. The patterns run on a unit whose lines are joined: on
+# the raw text a tag, a link or an image over two lines was whole again after the join (audit 2026-09-28, SE-17).
+# A tag runs to its first ">", whatever "<" stands in it (_without_tags); a target left behind nested brackets goes on
+# its own. A target may hold one level of parentheses, as CommonMark allows balanced ones. Each pattern ends at a line
+# end or its closing sign, so a run of them costs no more than its length.
+_IMAGE_RE = re.compile(r"!\[[^\[\]\n]*\]\((?:[^()\s]|\([^()\s]*\))*\)?")
+_LINK_RE = re.compile(r"\[([^\[\]\n]*)\]\((?:[^()\s]|\([^()\s]*\))*\)?")
+_TARGET_RE = re.compile(r"\]\((?:[^()\s]|\([^()\s]*\))*\)?")
+_TAG_START_RE = re.compile(r"<[A-Za-z/!?]")
 _ADDRESS_RE = re.compile(r"(?:https?://|www\.)\S+", re.IGNORECASE)
 # A sentence that fails a check can stay instead of being dropped: without numbers, inside such a block. The grade
 # says why it is unsupported - a conclusion of the model (LLM_UNSUPPORTED_SENTENCES=mark), or knowledge it brought
@@ -55,6 +60,8 @@ MODEL_KNOWLEDGE = "Modellwissen"
 # invisible once the markdown is rendered, and a sentence without a number looks like any other then
 MODEL_KNOWLEDGE_LABEL = "[Modellwissen]"
 _SELF_LABEL_RE = re.compile(r"^\s*Modellwissen\s*:\s*")
+# "[5]: //evil.example/x" defines the target of every marker 5 in the document, text and citation table alike
+_DEFINITION_RE = re.compile(r"^\s*\[\d{1,4}\]\s*:")
 
 
 def opening_marker(grade: str) -> str:
@@ -67,6 +74,10 @@ MODEL_KNOWLEDGE_OPEN = opening_marker(MODEL_KNOWLEDGE)
 _OPENERS = (CONCLUSION_OPEN, MODEL_KNOWLEDGE_OPEN)
 _MARKED_RE = re.compile(
     "(?:" + "|".join(re.escape(opener) for opener in _OPENERS) + ")" + r".*?" + re.escape(END_MARKER), re.DOTALL
+)
+# What stays markup in a block the model wrote: evidence numbers, the comments around a marked sentence, the label
+_SERVICE_TOKEN_RE = re.compile(
+    "|".join([r"\[\d{1,4}\]", *(re.escape(token) for token in (*_OPENERS, END_MARKER, MODEL_KNOWLEDGE_LABEL))])
 )
 _BULLET_RE = re.compile(r"^\s*[-*•–]\s+")
 _NUMBERED_RE = re.compile(r"^\s*\d{1,2}[.)]\s+")
@@ -105,12 +116,15 @@ def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str
     """
     dropped = 0
     paragraphs: list[str] = []
-    for paragraph in re.split(r"\n\s*\n", _expand_markers(_neutralized(text))):
+    for paragraph in re.split(r"\n\s*\n", _expand_markers(_COMMENT_RE.sub(" ", text))):
         kept: list[str] = []
         for unit in _units(paragraph):
-            for sentence in _cited_sentences(unit):
+            for sentence in _cited_sentences(_neutralized(unit)):
                 if not _MARKER_RE.sub("", sentence).strip(" .;:,!?…()0123456789"):
                     continue  # a marker-only fragment or a list number is noise, not a claim
+                if _DEFINITION_RE.match(sentence):
+                    dropped += 1  # no claim, and it would turn every marker of its number into a link (SE-17)
+                    continue
                 markers = [int(m) for m in _MARKER_RE.findall(sentence)]
                 if not any(m in valid for m in markers):
                     dropped += 1
@@ -126,10 +140,44 @@ def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str
 
 
 def _neutralized(text: str) -> str:
-    """Model text without comments, images, link targets, tags and bare addresses (SE-04)."""
+    """Model text without comments, images, link targets, tags and bare addresses (SE-04, SE-17)."""
     text = _IMAGE_RE.sub(" ", _COMMENT_RE.sub(" ", text))
-    text = _LINK_RE.sub(lambda match: match.group(1), text)
-    return _ADDRESS_RE.sub(" ", _TAG_RE.sub(" ", text))
+    text = _TARGET_RE.sub("]", _LINK_RE.sub(lambda match: match.group(1), text))
+    return _ADDRESS_RE.sub(" ", _without_tags(text))
+
+
+def _without_tags(text: str) -> str:
+    """``text`` without tags: from each "<" that opens one to the next ">", whatever "<" stands between - an attribute
+    may hold one (SE-17). Linear: a start with no ">" after it leaves the rest as it is, as every later one would."""
+    pieces: list[str] = []
+    position = 0
+    while (start := _TAG_START_RE.search(text, position)) is not None:
+        end = text.find(">", start.start())
+        if end < 0:
+            break
+        pieces.extend((text[position : start.start()], " "))
+        position = end + 1
+    pieces.append(text[position:])
+    return "".join(pieces)
+
+
+def neutralize(text: str) -> str:
+    """Model text that is no markdown - a pair of /qa - on one line, without comments, images, link targets, tags and
+    bare addresses (audit 2026-09-28, SE-17)."""
+    return collapse(_neutralized(" ".join(text.split())))
+
+
+def escape_model_text(text: str) -> str:
+    """A block the model wrote, as markdown that shows its words as typed: only the checked evidence numbers, the
+    comments that mark a sentence and the label of model knowledge stay markup (audit 2026-09-28, SE-17). What the
+    patterns above missed - nested or escaped brackets, a sign they do not know - shows as text."""
+    pieces: list[str] = []
+    position = 0
+    for token in _SERVICE_TOKEN_RE.finditer(text):
+        pieces.extend((escape_text(text[position : token.start()]), token.group(0)))
+        position = token.end()
+    pieces.append(escape_text(text[position:]))
+    return "".join(pieces)
 
 
 def _expand_markers(text: str) -> str:

@@ -21,6 +21,7 @@ from app.synthesis.citations import (
     MODEL_KNOWLEDGE,
     collapse,
     drop_unsupported,
+    escape_model_text,
     marker_numbers,
     opening_marker,
     renumber,
@@ -148,7 +149,7 @@ class LlmSynthesizer:
             for chunk, source in (items[local - 1],)
         ]
         return LlmSection(
-            text=renumber(text, mapping),
+            text=escape_model_text(renumber(text, mapping)),
             citations=citations,
             prompt=prompt.tag,
             model=result.model,
