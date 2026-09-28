@@ -104,3 +104,16 @@ def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:
         with pytest.raises(ValidationError):
             Template(id=bad, name="x", slots=TEMPLATE["slots"])
     assert Template(id="mein_Template-2", name="x", slots=TEMPLATE["slots"]).id == "mein_Template-2"
+
+
+@pytest.mark.parametrize("method", ["GET", "DELETE"])
+def test_an_id_that_is_no_template_id_is_refused_before_it_names_a_file(
+    client: TestClient, tmp_path: Path, method: str
+) -> None:
+    """SE-09: PUT checked the id, GET and DELETE did not. DELETE built STATE_DIR/templates/<id>.json, and on a
+    Windows host an id with a backslash reached a JSON file above that directory."""
+    victim = tmp_path / "ziel.json"  # one level above tmp_path/templates
+    victim.write_text("{}", encoding="utf-8")
+    response = client.request(method, "/api/v2/templates/..%5Cziel", headers=AUTH)
+    assert response.status_code == 422
+    assert victim.exists()

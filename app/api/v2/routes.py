@@ -20,7 +20,7 @@ from app.api.v2.routes_examples import BUILTIN_TEMPLATES, EXAMPLES, TEMPLATE_EXA
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.observability.metrics import record_compendium
-from app.templates.schema import Template
+from app.templates.schema import TEMPLATE_ID_PATTERN, Template
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -141,7 +141,9 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
 
 @router.get("/templates/{template_id}", responses=refusals(404))
 def get_template(
-    template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)],
+    template_id: Annotated[
+        str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)
+    ],
     request: Request,
 ) -> dict[str, Any]:
     """One template in full: every block with its budget, facets, search queries and generator.
@@ -157,7 +159,7 @@ def get_template(
 
 @admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen", responses=refusals(409, 413, 422))
 def put_template(
-    template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP)],
+    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
     payload: Annotated[Template, Body(openapi_examples=TEMPLATE_EXAMPLES)],
     request: Request,
 ) -> dict[str, Any]:
@@ -184,7 +186,9 @@ def put_template(
 
 
 @admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409))
-def delete_template(template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP)], request: Request) -> None:
+def delete_template(
+    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)], request: Request
+) -> None:
     """Delete a custom template (204).
 
     Built-in templates ship with the image and are refused (409); an unknown id is a 404. A compendium

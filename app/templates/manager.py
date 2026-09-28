@@ -9,17 +9,21 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from pathlib import Path
 
 from pydantic import ValidationError
 
-from app.templates.schema import Template
+from app.templates.schema import TEMPLATE_ID_PATTERN, Template
 
 log = logging.getLogger(__name__)
 
 BUILTIN_DIR = Path(__file__).parent / "builtin"
 
 _Signature = tuple[tuple[str, int, int], ...]
+
+
+_TEMPLATE_ID = re.compile(TEMPLATE_ID_PATTERN)
 
 
 class TemplateNotFoundError(KeyError):
@@ -106,7 +110,7 @@ class TemplateManager:
     def delete(self, template_id: str) -> bool:
         if template_id in self._builtin:
             raise ValueError(f"built-in template '{template_id}' cannot be deleted")
-        if self.custom_dir is None:
+        if self.custom_dir is None or not _TEMPLATE_ID.fullmatch(template_id):  # no file outside custom_dir (SE-09)
             return False
         path = self.custom_dir / f"{template_id}.json"
         if not path.exists():

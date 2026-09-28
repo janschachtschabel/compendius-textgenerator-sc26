@@ -174,3 +174,13 @@ def test_custom_templates_are_read_again_only_after_a_change(tmp_path: Path, mon
     assert reads.count("mein.json") <= 1  # every compendium request asks for its template
     manager.save(manager.get("mein"))
     assert manager.get("mein").version == 2
+
+
+def test_the_manager_names_no_file_for_an_id_that_is_no_template_id(tmp_path: Path) -> None:
+    """SE-09, behind the routes' own check: an id with a path separator deletes nothing outside the directory."""
+    victim = tmp_path / "ziel.json"
+    victim.write_text("{}", encoding="utf-8")
+    manager = TemplateManager(custom_dir=tmp_path / "templates")
+    assert manager.delete(".." + chr(92) + "ziel") is False  # a Windows path separator
+    assert manager.delete("../ziel") is False
+    assert victim.exists()

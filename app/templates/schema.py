@@ -14,6 +14,9 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 Generator = Literal["", "sources", "glossary", "actors"]
 Role = Literal["", "definition", "systematik", "context"]
+# A template id names the file it is stored in: letters, digits, underscore and hyphen, nothing that leads out of
+# the directory (audit 2026-09-27, SE-09)
+TEMPLATE_ID_PATTERN = r"^[\w-]{1,80}$"
 
 # The keys of the shared heading lexicon (config/heading_lexicon.yaml) that stand for a role. A template that names
 # no role takes its roles from them, as the built-in templates were read before roles (audit 2026-09-27, AR-04).
@@ -126,7 +129,7 @@ class Template(BaseModel):
     """The building blocks of part 1, in the order they appear in the finished text."""
 
     id: str = Field(
-        pattern=r"^[\w-]{1,80}$",
+        pattern=TEMPLATE_ID_PATTERN,
         description="Identifies the template; the same id in the path and in the body when saving. Letters, digits, "
         "underscore and hyphen: the id names the file the template is stored in",
     )
