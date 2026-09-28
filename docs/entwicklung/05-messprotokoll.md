@@ -2260,3 +2260,40 @@ Rohdaten: `m43_kennungen.json` (je Notenfassung und Profil die Zählung je Kennu
 Gegenprobe, je Artikel die Kennungen mit Herkunft, die vom Index gefüllten GND mit ihren Noten; keine Texte). Die
 Bewertungsbögen mit den Einleitungen blieben außerhalb des Repositorys; die GND-Sätze für die Bögen kamen aus dem
 gestreamten Abzug, gespeichert wurde davon nichts.
+
+## M44 Faktoren der Zuordnungsregeln (28.09.2026)
+
+Das Audit vom 27.09.2026 (WA-02) fand in `_score_candidate` sechs Faktoren ohne Messung, gegen die Regel des
+Projekts. M44 misst jeden am Gold, im Ablauf des Dienstes: die zehn Themen von `eval/gold`, das Korpus von `llm-free`
+wie `compendium eval`, die Strategie der Profile `hybrid_light` samt Model2Vec, `target_length` 12.000. Jeder Faktor
+läuft einmal mit seinem Wert und einmal mit 1,0; jedes Thema wird einmal vorbereitet, nur die Zuordnung läuft neu.
+Skript `mc_policy_faktoren.py`, im Einmal-Container des Images mit den Archiven des Entwicklungscontainers
+(Wikipedia 2026-01-15, Klexikon 2026-08-07, dieselben wie beim Gold), rund 22 s.
+
+| Faktor | Wert | macro-F1 vor Budget ohne ihn | gedruckt ohne ihn | Themen, die sich bewegen |
+|---|---|---|---|---|
+| ausgeliefert | | 0,459 (micro 0,666) | 0,288 | |
+| `FIRST_SOURCE_BOOST`: bevorzugtes Projekt des Bausteins | 1,15 | 0,412 (−0,047) | 0,244 (−0,044) | Optik −0,098, Barockliteratur +0,022, Photosynthese +0,011 |
+| `OTHER_HEADING_FACTOR`: Überschrift nennt einen anderen Baustein | 0,5 | 0,438 (−0,020) | 0,268 (−0,019) | Programmiersprache −0,026, Optik −0,016, Barockliteratur +0,004 |
+| `SECTION_LEAD_BOOST`: Abschnittseinleitung für die Gliederung | 1,3 | 0,455 (−0,003) | 0,288 (±0) | Programmiersprache −0,013, Optik −0,005 |
+| `SUBAREA_BOOST`: Einleitung eines Nebenartikels mit dem Thema | 1,25 | 0,459 (±0) | 0,288 (±0) | keins |
+| `PREFERRED_SOURCE_BOOST`: weiteres bevorzugtes Projekt | 1,08 | 0,459 (±0) | 0,288 (±0) | keins |
+| `EXCLUSION_FACTOR`: Ausschlusswort des Bausteins | 0,6 | 0,466 (+0,007) | 0,295 (+0,007) | Barockliteratur +0,026, Optik +0,012, Programmiersprache −0,005 |
+
+**Ergebnis:** Drei Faktoren tragen: ohne den Vorzug des bevorzugten Projekts, ohne den Abschlag für eine fremde
+Überschrift und ohne den Zuschlag für Abschnittseinleitungen fällt die Zuordnung. Zwei wirken auf dem Gold nicht, und
+der Abschlag für Ausschlusswörter kostet etwas. Jeder Faktor bewegt zwei bis drei der zehn Themen; der Gewinn des
+bevorzugten Projekts hängt fast ganz an Optik. Zehn Themen sind wenig, und ein Faktor, der auf ihnen nichts ändert,
+kann auf anderen wirken. Die Werte bleiben, bis Jan entscheidet; zur Wahl stehen `SUBAREA_BOOST` und
+`PREFERRED_SOURCE_BOOST` zu streichen und `EXCLUSION_FACTOR` auf 1,0 zu setzen, also die Ausschlusswörter nicht mehr
+zu werten.
+
+**Nebenbefund: Model2Vec fehlte.** Der erste Lauf maß ohne Model2Vec (macro-F1 0,396, gedruckt 0,225): Seit
+`f167a9f` gehört die Laufzeitkopie der Modelle root, und `save_pretrained` schreibt die Gewichte mit 0600. Der Dienst
+konnte sie nicht lesen, meldete das beim Start im Log und unter `/health` mit `embeddings: false`, und die
+Smoke-Probe prüfte es nicht. Jedes seither veröffentlichte Image ordnete ohne Embeddings zu. Behoben in `d82fb72`; die
+Smoke-Probe verlangt jetzt `model2vec` im Matcher. Derselbe Lauf ohne Model2Vec nach der Teilung von
+`_score_candidate` (WA-01) gibt alle sieben Werte je Thema gleich: die Teilung ändert nichts.
+
+Rohdaten: `m44_faktoren.json` (je Einstellung macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu der Lauf
+ohne Model2Vec nach der Teilung; keine Texte).

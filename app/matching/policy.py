@@ -23,14 +23,14 @@ TWIN_LEAD_SCORE = 1.5
 SUBTOPIC_LEAD_SCORE = 0.9
 CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks then take the default slot
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
-# The factors of _score_candidate, named so a measurement can set each to 1.0 (audit 2026-09-27, WA-02; the
-# measurement on the gold standard is M44 in docs/entwicklung/05-messprotokoll.md)
-SUBAREA_BOOST = 1.25  # an introduction of a side article that carries the topic, for the overview block
-OTHER_HEADING_FACTOR = 0.5  # the heading names another block in the lexicon
-SECTION_LEAD_BOOST = 1.3  # the first paragraph of an H2 section, for the overview block
-EXCLUSION_FACTOR = 0.6  # a word of the block's exclusions in heading or text
-FIRST_SOURCE_BOOST = 1.15  # the block's most preferred source project
-PREFERRED_SOURCE_BOOST = 1.08  # one of its further preferred projects
+# The factors of _score_candidate (audit 2026-09-27, WA-02). M44 (docs/entwicklung/05-messprotokoll.md) set each
+# to 1.0 on the ten gold topics: macro-F1 before the budgets was 0.459 with all of them, and without one as noted.
+SUBAREA_BOOST = 1.25  # a side article's introduction that carries the topic, for the overview block; M44: 0.459
+OTHER_HEADING_FACTOR = 0.5  # the heading names another block in the lexicon; M44: 0.438 without it
+SECTION_LEAD_BOOST = 1.3  # the first paragraph of an H2 section, for the overview block; M44: 0.455
+EXCLUSION_FACTOR = 0.6  # a word of the block's exclusions in heading or text; M44: 0.466 without it - Jan decides
+FIRST_SOURCE_BOOST = 1.15  # the block's most preferred source project; M44: 0.412 without it
+PREFERRED_SOURCE_BOOST = 1.08  # one of its further preferred projects; M44: 0.459
 
 
 @dataclass
