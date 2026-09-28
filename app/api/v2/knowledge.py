@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, Request
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from app.api.deps import archives_for, get_service
 from app.api.keys import require_api_key
@@ -22,25 +22,27 @@ from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
     ARTICLE_CHOICE_HELP,
     LLM_ARTICLE_CHOICES,
+    MAX_ARCHIVES,
     NODE_ID_HELP,
     NODE_ID_PATTERN,
     PRESETS,
     REPOSITORY_HELP,
     UNKNOWN_SUBJECT_HELP,
+    ArchiveId,
     ArticleChoice,
     GenerateRequest,
     Preset,
+    RequestModel,
 )
 from app.knowledge.article_choice import choice_block
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
+from app.templates.schema import TEMPLATE_ID_PATTERN
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
-class KnowledgeRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
-
+class KnowledgeRequest(RequestModel):
     topic: str | None = Field(
         None,
         min_length=1,
@@ -56,8 +58,9 @@ class KnowledgeRequest(BaseModel):
         description="The subject that decides the article, as in a compendium request (WLO discipline id, vocabulary "
         "URI, label or alias); default: one the topic names, else the subjects of node_id" + UNKNOWN_SUBJECT_HELP,
     )
-    archives: list[str] = Field(
+    archives: list[ArchiveId] = Field(
         default_factory=list,
+        max_length=MAX_ARCHIVES,
         description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
         "active archive, an unknown id is a 404",
     )
@@ -76,6 +79,7 @@ class KnowledgeRequest(BaseModel):
     )
     template_id: str | None = Field(
         None,
+        pattern=TEMPLATE_ID_PATTERN,
         description="The template whose blocks steer the full-text search for the further articles: sc26 (the "
         "default), standard or a custom id; an unknown one is a 404",
     )

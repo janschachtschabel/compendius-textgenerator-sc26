@@ -17,6 +17,10 @@ Role = Literal["", "definition", "systematik", "context"]
 # A template id names the file it is stored in: letters, digits, underscore and hyphen, nothing that leads out of
 # the directory (audit 2026-09-27, SE-09)
 TEMPLATE_ID_PATTERN = r"^[\w-]{1,80}$"
+# Bounds of a template's blocks, and of the names regenerate_sections may send (audit 2026-09-28, SE-15): sc26
+# has 13 blocks, and a block id is as short as a template id
+MAX_SLOTS = 60
+SLOT_ID_MAX_CHARS = 80
 
 # The keys of the shared heading lexicon (config/heading_lexicon.yaml) that stand for a role. A template that names
 # no role takes its roles from them, as the built-in templates were read before roles (audit 2026-09-27, AR-04).

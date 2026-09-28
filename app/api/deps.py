@@ -6,6 +6,7 @@ from collections.abc import Sequence
 
 from fastapi import HTTPException, Request
 
+from app.domain.caller_values import listed
 from app.service import CompendiumService
 from app.sources.zim.registry import ZimRegistry
 
@@ -22,7 +23,8 @@ def archives_for(registry: ZimRegistry, archive_ids: Sequence[str]) -> ZimRegist
     """The registry narrowed to the named archives; an unknown id is a 404 rather than a silent miss."""
     if not archive_ids:
         return registry
-    unknown = [name for name in archive_ids if name not in {archive.id for archive in registry.archives}]
+    known = {archive.id for archive in registry.archives}
+    unknown = [name for name in archive_ids if name not in known]
     if unknown:
-        raise HTTPException(status_code=404, detail=f"Unbekannte Archive: {', '.join(unknown)}")
+        raise HTTPException(status_code=404, detail=f"Unbekannte Archive: {listed(unknown)}")
     return registry.only(archive_ids)

@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from fastapi import HTTPException, Request
 
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, QaRequest
+from app.domain.caller_values import listed
 from app.domain.models import NodeInput
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
@@ -93,7 +94,7 @@ def levels_from(request: Request, levels: Sequence[str]) -> list[str]:
         raise HTTPException(
             status_code=422,
             detail=(
-                f"Unbekannte Stufen: {', '.join(unknown)}. "
+                f"Unbekannte Stufen: {listed(unknown)}. "
                 f"Erlaubt sind {', '.join(declared)} sowie ihre Bezeichnungen und URIs "
                 f"aus dem Vokabular {LEVEL_PROPERTY}"
             ),

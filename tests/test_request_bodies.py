@@ -103,11 +103,12 @@ def test_a_lone_surrogate_in_an_invalid_request_is_a_422(client: TestClient) -> 
     assert failed == {("body", "topic"): "string_unicode", ("body", "preset"): "literal_error"}
 
 
-def test_an_answer_that_repeats_a_lone_surrogate_is_still_sent(client: TestClient) -> None:
-    # The 404 names the template the caller asked for, surrogate included; UTF-8 cannot encode it
+def test_a_lone_surrogate_in_a_template_id_is_refused_not_repeated(client: TestClient) -> None:
+    # The 404 named the template the caller asked for, surrogate included, and failed to encode. Since SE-15 the id
+    # has the pattern of the path; the answer class that still encodes such a text: tests/test_request_bounds.py
     body = '{"topic": "Optik", "template_id": "fehlt' + LONE_SURROGATE + '"}'
 
     response = client.post("/api/v2/compendium", content=body.encode(), headers=JSON)
 
-    assert response.status_code == 404
-    assert json.loads(response.content)["detail"] == "Template nicht gefunden: fehlt" + chr(0xD800)
+    assert response.status_code == 422
+    assert [error["loc"] for error in json.loads(response.content)["detail"]] == [["body", "template_id"]]

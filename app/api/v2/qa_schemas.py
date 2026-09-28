@@ -7,9 +7,9 @@ with which stage produced the pairs, which is why the two live apart.
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from app.domain.models import NodeInput, Resolution
 from app.domain.requests import (
@@ -19,6 +19,7 @@ from app.domain.requests import (
     UNKNOWN_SUBJECT_HELP,
     ArticleChoice,
     Preset,
+    RequestModel,
 )
 
 Method = Literal["rule-based", "llm"]
@@ -31,12 +32,12 @@ PROFILE_METHODS: dict[str, Method] = {
     "best-quality-generated": "llm",
 }
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
+# A level as a caller may write it; the concept URIs of the OpenEduHub vocabularies have under 70 characters
+LEVEL_MAX_CHARS = 200
 MAX_TEXT_CHARS = 50_000  # bounds the request body and the text a topic yields; both end up in the same code
 
 
-class QaRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
-
+class QaRequest(RequestModel):
     text: str | None = Field(
         None,
         min_length=1,
@@ -102,7 +103,7 @@ class QaRequest(BaseModel):
     max_answer_length: int = Field(
         300, ge=50, le=2000, description="Characters per answer, 50 to 2000, default 300; longer ones are cut"
     )
-    levels: list[str] = Field(
+    levels: list[Annotated[str, Field(max_length=LEVEL_MAX_CHARS)]] = Field(
         default_factory=list,
         max_length=12,
         description="Educational levels to spread the pairs over. Optional; without them nothing changes. "

@@ -5,12 +5,20 @@ The endpoint itself - which ways run, the lookup and the identifiers - lives in 
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, get_args
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from app.domain.models import NodeInput
-from app.domain.requests import NODE_ID_HELP, NODE_ID_PATTERN, REPOSITORY_HELP, Preset
+from app.domain.requests import (
+    MAX_ARCHIVES,
+    NODE_ID_HELP,
+    NODE_ID_PATTERN,
+    REPOSITORY_HELP,
+    ArchiveId,
+    Preset,
+    RequestModel,
+)
 
 Method = Literal["ner", "dictionary", "llm"]
 LinkCheck = Literal["rule-based", "llm"]
@@ -126,9 +134,7 @@ PRESET_HELP = (
 )
 
 
-class EntitiesRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
-
+class EntitiesRequest(RequestModel):
     text: str | None = Field(
         None,
         min_length=1,
@@ -139,7 +145,7 @@ class EntitiesRequest(BaseModel):
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
     preset: Preset | None = Field(None, description=PRESET_HELP)
-    methods: list[Method] | None = Field(None, min_length=1, description=METHODS_HELP)
+    methods: list[Method] | None = Field(None, min_length=1, max_length=len(get_args(Method)), description=METHODS_HELP)
     link_check: LinkCheck = Field("rule-based", description=LINK_CHECK_HELP)
     link: bool = Field(
         True,
@@ -147,8 +153,9 @@ class EntitiesRequest(BaseModel):
         "and identifiers, and drop a term of dictionary or llm whose only article is a disambiguation page. false: no "
         "lookup - faster, and note says the terms of dictionary and llm are unchecked",
     )
-    archives: list[str] = Field(
+    archives: list[ArchiveId] = Field(
         default_factory=list,
+        max_length=MAX_ARCHIVES,
         description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
         "active archive, an unknown id is a 404",
     )

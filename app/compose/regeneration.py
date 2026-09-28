@@ -15,6 +15,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+from app.domain.caller_values import listed
 from app.domain.models import Citation, SectionStatus
 from app.synthesis.citations import marker_numbers
 
@@ -44,7 +45,7 @@ class UnknownSectionsError(ValueError):
     def __init__(self, unknown: Sequence[str], known: Sequence[str]) -> None:
         self.unknown, self.known = list(unknown), list(known)
         super().__init__(
-            f"Unbekannte Bausteine in regenerate_sections: {', '.join(self.unknown)}. Das Template kennt "
+            f"Unbekannte Bausteine in regenerate_sections: {listed(self.unknown)}. Das Template kennt "
             f"{', '.join(self.known)}"
         )
 

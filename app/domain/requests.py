@@ -2,18 +2,30 @@
 
 from __future__ import annotations
 
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, get_args
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic.json_schema import WithJsonSchema
+
+from app.domain.caller_values import NAMED, listed
+from app.templates.schema import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
 
 Part = Literal["world", "curricula", "collection"]
 # The matching strategies of app/matching/registry.py (STRATEGIES; a test keeps both lists equal). The field stays a
 # plain string with the list as its schema: /docs shows the values, and the service still answers an unknown name
 # with its own German 422 instead of the validator's English one.
 MATCHERS = ("hybrid_light", "bm25", "char_tfidf", "lexicon_only", "llm")
+# Archives a request may name, and the length of one name (audit 2026-09-28, SE-15): the largest ZIM profile
+# subscribes four, and an id is the stem of a Kiwix file name such as wikipedia_de_all_nopic_2026-01
+MAX_ARCHIVES = 20
+ARCHIVE_ID_MAX_CHARS = 100
+MATCHER_MAX_CHARS = 40  # the longest strategy name has 12 characters
 EXISTING_MARKDOWN_MAX_CHARS = 2_000_000  # the largest field of any request; app/api/body_limit.py sizes to it
-MatcherName = Annotated[str, WithJsonSchema({"type": "string", "enum": list(MATCHERS)})]
+MatcherName = Annotated[
+    str, Field(max_length=MATCHER_MAX_CHARS), WithJsonSchema({"type": "string", "enum": list(MATCHERS)})
+]
+ArchiveId = Annotated[str, Field(max_length=ARCHIVE_ID_MAX_CHARS)]
+BlockId = Annotated[str, Field(max_length=SLOT_ID_MAX_CHARS)]
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
     "Who chooses the articles of the topic. Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes "
@@ -222,10 +234,28 @@ REPOSITORY_HELP = (
 )
 
 
-class GenerateRequest(BaseModel):
-    """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
+class RequestModel(BaseModel):
+    """The body of a request: a field the service does not know is a 422, not a silent miss.
 
-    model_config = ConfigDict(extra="forbid")  # a field the service does not know is a 422, not a silent miss
+    Up to three unknown fields are named one problem each, where they stand. More are one problem that names three:
+    pydantic reported every one on its own, and 1.3 million of them held a worker for 19 s (audit 2026-09-28, SE-15).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    @model_validator(mode="before")
+    @classmethod
+    def _few_unknown_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            known = cls.model_fields  # a class property of 0.3 us: over a million keys a third of a second
+            unknown = [str(key) for key in data if key not in known]
+            if len(unknown) > NAMED:
+                raise ValueError(f"Unbekannte Felder: {listed(unknown)}")
+        return data
+
+
+class GenerateRequest(RequestModel):
+    """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
 
     topic: str | None = Field(
         None,
@@ -252,6 +282,7 @@ class GenerateRequest(BaseModel):
     parts: list[Part] = Field(
         default_factory=_default_parts,
         min_length=1,
+        max_length=len(get_args(Part)),
         description="Parts to generate, default all three: world (part 1, the compendium text), curricula (part 2, "
         "the curriculum elements), collection (part 3, the materials of collection_id; without collection_id it "
         "drops out, and as the only part it is then a 422)",
@@ -266,6 +297,7 @@ class GenerateRequest(BaseModel):
     language: str = Field("de", pattern="^de$", description="Only 'de' today; any other value is a 422")
     template_id: str | None = Field(
         None,
+        pattern=TEMPLATE_ID_PATTERN,
         description="The template of part 1: sc26 (13 blocks, the shipped TEMPLATE_DEFAULT) or standard (6 blocks) "
         "ship with the image, custom ones come from PUT /api/v2/templates/{id}; GET /api/v2/templates lists them, "
         "an unknown id is a 404",
@@ -299,8 +331,9 @@ class GenerateRequest(BaseModel):
         max_length=EXISTING_MARKDOWN_MAX_CHARS,
         description="An earlier compendium: blocks marked redaktionell-geprüft are kept word for word",
     )
-    regenerate_sections: list[str] | None = Field(
+    regenerate_sections: list[BlockId] | None = Field(
         None,
+        max_length=MAX_SLOTS,
         description="With an earlier compendium (existing_markdown): only these blocks are made anew, every other "
         "one is kept. Blocks are named by their id, as the markers of the document name them (sc26_3); a name the "
         "template does not have is a 422 that lists its blocks, and so is the field without existing_markdown",
