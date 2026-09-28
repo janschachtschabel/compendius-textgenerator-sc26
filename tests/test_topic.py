@@ -1,4 +1,11 @@
+import pytest
+
 from app.knowledge.topic import normalize_topic, topic_stem
+from app.sources.lehrplan.subjects import SubjectCatalog
+from tests.conftest import ROOT
+
+# the catalogue the service loads: what counts as a subject in "Physik: Optik"
+SUBJECTS = SubjectCatalog.load(ROOT / "config" / "subjects.yaml")
 
 
 def test_grade_qualifier_becomes_context() -> None:
@@ -8,7 +15,7 @@ def test_grade_qualifier_becomes_context() -> None:
 
 
 def test_subject_prefix_and_level_in_parentheses() -> None:
-    result = normalize_topic("Physik: Optik (Sek I)")
+    result = normalize_topic("Physik: Optik (Sek I)", is_subject=SUBJECTS.knows)
     assert result.topic == "Optik"
     assert result.subject == "Physik"
     assert "Fach Physik" in result.context
@@ -52,3 +59,19 @@ def test_a_title_that_opens_with_an_article_is_stemmed_from_its_noun() -> None:
     assert topic_stem("Der Prozess (Roman)") == "prozes"
     assert topic_stem("Das Kapital") == "kapita"
     assert topic_stem("Die") == "die"  # nothing but the article: it stays the stem
+
+
+@pytest.mark.parametrize(
+    "prefix", ["Bio", "Theater", "DaZ", "Russisch", "Italienisch", "Werken", "Gesundheit", "Technik", "NaWi"]
+)
+def test_every_subject_of_the_catalogue_is_a_subject_prefix(prefix: str) -> None:
+    """A fixed list of 32 subjects knew 33 of the 63 labels and aliases in config/subjects.yaml not: "Bio: Zelle"
+    became "Bio-Brennstoffzelle", and the subject was lost for part 2 and the disambiguation (audit 2026-09-28,
+    KO-23)."""
+    result = normalize_topic(f"{prefix}: Zelle", is_subject=SUBJECTS.knows)
+
+    assert result.topic == "Zelle" and result.subject == prefix
+
+
+def test_a_prefix_no_catalogue_knows_stays_in_the_topic() -> None:
+    assert normalize_topic("Kapitel: Zelle", is_subject=SUBJECTS.knows).topic == "Kapitel: Zelle"

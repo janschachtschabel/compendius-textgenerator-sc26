@@ -8,43 +8,8 @@ and subject qualifiers are stripped from the input and kept only as context:
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
-
-_SUBJECTS = {
-    "physik",
-    "chemie",
-    "biologie",
-    "mathematik",
-    "mathe",
-    "deutsch",
-    "englisch",
-    "geschichte",
-    "geographie",
-    "geografie",
-    "erdkunde",
-    "politik",
-    "sozialkunde",
-    "gemeinschaftskunde",
-    "informatik",
-    "musik",
-    "kunst",
-    "sport",
-    "religion",
-    "ethik",
-    "philosophie",
-    "wirtschaft",
-    "technik",
-    "latein",
-    "französisch",
-    "spanisch",
-    "sachunterricht",
-    "medienbildung",
-    "pädagogik",
-    "psychologie",
-    "astronomie",
-    "nawi",
-    "naturwissenschaften",
-}
 
 _LEVEL = (
     r"(?:Grundschule|Primarstufe|Primarbereich|Unterstufe|Mittelstufe|Oberstufe|"
@@ -71,6 +36,9 @@ _QUALIFIERS: list[re.Pattern[str]] = [
 _LEAD_IN_RE = re.compile(rf"^{_LEAD_IN}", re.IGNORECASE)
 _PREFIX_RE = re.compile(r"^\s*([A-Za-zÄÖÜäöüß][\wÄÖÜäöüß\- ]{1,30}?)\s*:\s*(.+)$")
 _GENERIC_PREFIXES = {"thema", "sammlung", "themenseite", "kompendium", "titel", "topic"}
+# Two school subjects of the former fixed list that neither the catalogue nor the vocabularies of edu-sharing name
+# (D51): a prefix with them still counts as a subject, as it did, so the topic loses it
+_SUBJECTS_OUTSIDE_THE_VOCABULARIES = frozenset({"technik", "nawi"})
 
 
 @dataclass
@@ -87,8 +55,14 @@ def _clean_context(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def normalize_topic(raw: str) -> NormalizedTopic:
-    """Strip level, grade, audience and subject qualifiers; keep them as context."""
+def normalize_topic(raw: str, *, is_subject: Callable[[str], bool] | None = None) -> NormalizedTopic:
+    """Strip level, grade, audience and subject qualifiers; keep them as context.
+
+    ``is_subject`` says whether the prefix of "Physik: Optik" names a subject - the service passes its subject
+    catalogue (``SubjectCatalog.knows``); without it no prefix counts as one. A list of its own knew 32 subjects and
+    missed 33 of the 63 labels and aliases the catalogue names: "Bio: Zelle" became "Bio-Brennstoffzelle" and lost its
+    subject (audit 2026-09-28, KO-23).
+    """
     query = raw.strip()
     text = query
     context: list[str] = []
@@ -99,7 +73,7 @@ def normalize_topic(raw: str) -> NormalizedTopic:
         prefix, rest = prefix_match.group(1).strip(), prefix_match.group(2).strip()
         if prefix.lower() in _GENERIC_PREFIXES:
             text = rest
-        elif prefix.lower() in _SUBJECTS:
+        elif prefix.lower() in _SUBJECTS_OUTSIDE_THE_VOCABULARIES or (is_subject is not None and is_subject(prefix)):
             subject = prefix
             context.append(f"Fach {prefix}")
             text = rest

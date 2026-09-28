@@ -106,6 +106,10 @@ class SubjectCatalog:
             key = key[len(DISCIPLINE_PREFIX) :]
         return self._by_key.get(key.rstrip("/").casefold())
 
+    def knows(self, value: str) -> bool:
+        """Whether ``value`` names a subject: the catalogue's id, label or alias, or a term of its vocabularies."""
+        return self.resolve(value) is not None or self.term(value) is not None
+
     def term(self, value: str | None) -> Term | None:
         """The vocabulary concept of a URI, an id (the URI's last segment), a German label or an alternative label."""
         if not value or not value.strip():

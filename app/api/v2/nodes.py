@@ -106,7 +106,7 @@ def read_node(
     """
     service = request.app.state.service
     info, node = service.read_node(node_id, repository)
-    found = derive_topic(None, [node_topic(info)])
+    found = derive_topic(None, [node_topic(info)], is_subject=service.subjects.knows)
     topic: str | None = found.normalized.topic
     node_article: dict[str, Any] | None = None
     if info.kind == "material":  # its title is often a format; the rules look for the article (D47)

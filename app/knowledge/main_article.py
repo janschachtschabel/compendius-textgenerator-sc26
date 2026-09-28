@@ -58,12 +58,12 @@ def choose_main_article(
     job: ArticleChoiceJob | None = None,
 ) -> MainArticle:
     """The article for the topic, the node and the collection of a request; ``job`` is article_choice=llm."""
-    found = derive_topic(topic, derived, subject)
+    found = derive_topic(topic, derived, subject, is_subject=catalog.knows)
     terms = catalog.context_terms_of(found.subjects)
     around = [word for entry in derived for word in entry.context]  # the words the node and the collection bring
 
     def by_rules(title: str) -> Resolution:
-        normalized = normalize_topic(title)
+        normalized = normalize_topic(title, is_subject=catalog.knows)
         context = [*normalized.context, *around]
         return registry.resolve_topic(normalized.topic, context=context, query=found.normalized.query, terms=terms)
 

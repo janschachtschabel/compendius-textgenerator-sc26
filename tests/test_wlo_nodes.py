@@ -15,12 +15,17 @@ from pathlib import Path
 import httpx
 import pytest
 
+from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient, EduSharingError, NodeNotFoundError
 from app.sources.wlo.models import NodeInfo, parse_node
 from app.sources.wlo.part import CollectionBuilder, CollectionTopic, derive_topic, node_input, node_topic
 from app.sources.wlo.repository import RepositoryNotAllowedError, repository_root
+from tests.conftest import ROOT
 from tests.test_wlo_client import BASE, MATERIAL, OPTIK, PRIVATE, UNKNOWN, FakeRepository, _client, _fixture
+
+# what counts as a subject in "Physik: Optik": the catalogue the service loads (audit 2026-09-28, KO-23)
+KNOWS = SubjectCatalog.load(ROOT / "config" / "subjects.yaml").knows
 
 STAGING = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 ALLOWED = frozenset({"repository.staging.openeduhub.net", "redaktion.openeduhub.net"})
@@ -162,24 +167,24 @@ PHYSIK_OPTIK = NodeInfo(
 
 def test_the_derived_topic_is_normalised_like_a_topic_sent_along() -> None:
     """One derivation for compendium, knowledge and the preview (D45): the preview shows what a request resolves."""
-    found = derive_topic(None, [node_topic(PHYSIK_OPTIK)])
+    found = derive_topic(None, [node_topic(PHYSIK_OPTIK)], is_subject=KNOWS)
     assert found.normalized.topic == "Optik"
     assert found.subjects == ["Physik"], "a subject named in the title wins over the node's subjects"
     assert found.context == ["Fach Physik", "Sekundarstufe I", "Linse"]
 
 
 def test_a_topic_and_a_subject_sent_along_win_over_the_node() -> None:
-    found = derive_topic("Linse", [node_topic(PHYSIK_OPTIK)])
+    found = derive_topic("Linse", [node_topic(PHYSIK_OPTIK)], is_subject=KNOWS)
     assert found.normalized.topic == "Linse" and found.subjects == [PHYSIK]
     assert found.context == ["Sekundarstufe I", "Linse"], "the node still brings its levels and keywords"
-    assert derive_topic("Linse", [node_topic(PHYSIK_OPTIK)], subject="Chemie").subjects == ["Chemie"]
+    assert derive_topic("Linse", [node_topic(PHYSIK_OPTIK)], subject="Chemie", is_subject=KNOWS).subjects == ["Chemie"]
 
 
 def test_the_node_comes_before_the_collection() -> None:
     collection = CollectionTopic(
         topic="Optik", subjects=["http://w3id.org/openeduhub/vocabs/discipline/720"], context=["Sekundarstufe II"]
     )
-    found = derive_topic(None, [node_topic(PHYSIK_OPTIK), collection])
+    found = derive_topic(None, [node_topic(PHYSIK_OPTIK), collection], is_subject=KNOWS)
     assert found.normalized.topic == "Optik" and found.subjects == ["Physik"]
     assert found.context == ["Fach Physik", "Sekundarstufe I", "Linse", "Sekundarstufe II"]
 
@@ -223,5 +228,5 @@ def test_keywords_come_trimmed_and_once() -> None:
 def test_a_node_brings_all_its_subjects_before_those_of_a_collection() -> None:
     material = _client(FakeRepository()).node(MATERIAL)
     collection = CollectionTopic(topic="Optik", subjects=[PHYSIK], context=[])
-    assert derive_topic("Linse", [node_topic(material), collection]).subjects == [BIOLOGIE, PHYSIK]
-    assert derive_topic("Linse", [collection]).subjects == [PHYSIK]
+    assert derive_topic("Linse", [node_topic(material), collection], is_subject=KNOWS).subjects == [BIOLOGIE, PHYSIK]
+    assert derive_topic("Linse", [collection], is_subject=KNOWS).subjects == [PHYSIK]

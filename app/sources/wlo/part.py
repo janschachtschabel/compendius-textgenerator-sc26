@@ -88,7 +88,13 @@ class DerivedTopic:
     context: list[str]
 
 
-def derive_topic(topic: str | None, derived: Sequence[CollectionTopic], subject: str | None = None) -> DerivedTopic:
+def derive_topic(
+    topic: str | None,
+    derived: Sequence[CollectionTopic],
+    subject: str | None = None,
+    *,
+    is_subject: Callable[[str], bool],
+) -> DerivedTopic:
     """One derivation for compendium, knowledge and the node preview (D12, D45).
 
     The topic: the one sent along, else the first title of ``derived`` (a node before a collection), normalised. The
@@ -96,7 +102,7 @@ def derive_topic(topic: str | None, derived: Sequence[CollectionTopic], subject:
     ``derived`` that has any - every one of equal weight. The context words: the topic's qualifiers, then those of
     every entry of ``derived``.
     """
-    normalized = normalize_topic(topic or (derived[0].topic if derived else ""))
+    normalized = normalize_topic(topic or (derived[0].topic if derived else ""), is_subject=is_subject)
     context = [*normalized.context, *(word for found in derived for word in found.context)]
     named = subject or normalized.subject
     subjects = [named] if named else next((list(found.subjects) for found in derived if found.subjects), [])
