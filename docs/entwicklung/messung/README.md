@@ -171,7 +171,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m42_dbpedia.json` | M42 b, je Profil die Artikel mit englischem Artikel, je Titel der englische |
 | `ergebnisse/m42_spotlight.json` | M42 c, je Schwelle und Material die Titel, die Spotlight nannte, und die Artikel des Archivs, mit den ersten Noten gezählt; keine Texte |
 | `ergebnisse/m43_kennungen.json` | M43, je Notenfassung und Profil die Zählung je Kennung und die Herkunft der GND, die Gegenprobe an bekannten Nummern, je Artikel Wikidata-Nummer, GND mit Art und Herkunft, VIAF und DBpedia-URI, die vom Index gefüllten GND mit ihren Noten; keine Texte |
-| `ergebnisse/m44_faktoren.json` | M44, je Faktor von `_score_candidate` mit Wert und mit 1,0 macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu der Lauf ohne Model2Vec nach der Teilung; keine Texte |
+| `ergebnisse/m44_faktoren.json` | M44, je Faktor von `_score_candidate` mit Wert und mit 1,0 macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu die Läufe ohne und mit Model2Vec nach der Teilung; keine Texte |
 | `ergebnisse/m37_sammelthemen.json`, `ergebnisse/m37_kontrolle.json` | M37 und seine Kontrolle, je Thema und Weg Hauptartikel, gedruckte Artikel mit Absatzzahl, Personen des Akteursblocks, genannte und gefundene Titel, Tokens und Sekunden; keine Artikeltexte |
 | `ergebnisse/m22_lehrplan_treffer.json` | M22, je Thema Stichwörter, Fachwörter und Elementzahlen beider Läufe, je Stichwort und Fundort, dazu die Stichprobe mit IRI, Schicht und Stichwort; keine Texte der Elemente |
 | `ergebnisse/m20_entitaeten_genitiv.json` | M20, dieselbe Form wie `m18_entitaeten_gnd.json`, gerechnet mit der Genitiv-Regel (D46) |

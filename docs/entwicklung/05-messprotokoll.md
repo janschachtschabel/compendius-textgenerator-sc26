@@ -2292,8 +2292,9 @@ zu werten.
 `f167a9f` gehört die Laufzeitkopie der Modelle root, und `save_pretrained` schreibt die Gewichte mit 0600. Der Dienst
 konnte sie nicht lesen, meldete das beim Start im Log und unter `/health` mit `embeddings: false`, und die
 Smoke-Probe prüfte es nicht. Jedes seither veröffentlichte Image ordnete ohne Embeddings zu. Behoben in `d82fb72`; die
-Smoke-Probe verlangt jetzt `model2vec` im Matcher. Derselbe Lauf ohne Model2Vec nach der Teilung von
-`_score_candidate` (WA-01) gibt alle sieben Werte je Thema gleich: die Teilung ändert nichts.
+Smoke-Probe verlangt seit `9c94d43` vom veröffentlichten Image `model2vec` im Matcher. Nach der Teilung von
+`_score_candidate` (WA-01) gibt M44 alle sieben Werte je Thema gleich, ohne Model2Vec und mit ihm (Image von
+`9c94d43`): die Teilung ändert nichts.
 
-Rohdaten: `m44_faktoren.json` (je Einstellung macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu der Lauf
-ohne Model2Vec nach der Teilung; keine Texte).
+Rohdaten: `m44_faktoren.json` (je Einstellung macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu die Läufe
+ohne und mit Model2Vec nach der Teilung; keine Texte).
