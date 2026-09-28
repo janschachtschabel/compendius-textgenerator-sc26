@@ -599,7 +599,10 @@ Datei Zeile für Zeile und stolpern über Kommentare oder halten `# FOO=bar` fü
 `# FOO`. Die Erklärungen stehen deshalb hier und in `docs/`; ein Test hält beides zusammen.
 
 Die angegebenen Werte sind die der Vorlage. Wer eine Zeile wegnimmt, bekommt die Vorgabe aus
-`app/settings.py` — bei den meisten ist das derselbe Wert.
+`app/settings.py` — bei den meisten ist das derselbe Wert. Ein leerer Eintrag `NAME=`, wie ihn ein Panel für ein leer
+gelassenes Feld schreibt, gilt wie keine Zeile; das gilt auch für `WEB_CONCURRENCY`, `FORWARDED_ALLOW_IPS` und
+`UVICORN_HTTP`. Nur zwei Einstellungen geben „leer“ eine eigene Bedeutung: `EDU_SHARING_BASE_URL` (keine
+Sammlungen) und `EDU_SHARING_REPOSITORIES` (nur das konfigurierte Repository).
 
 ### Compose-Variablen
 
@@ -721,8 +724,8 @@ CC0, PDM, CC BY oder CC BY-SA steht.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
-| `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` |
-| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten |
+| `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`. Leer schaltet die Sammlungen ab |
+| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten. Leer lässt nur das konfigurierte zu |
 | `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter. Knoten (`node_id`) liest der Dienst immer ohne Zugangsdaten. Nur zusammen mit `API_KEYS` setzen; sonst warnt der Start |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |

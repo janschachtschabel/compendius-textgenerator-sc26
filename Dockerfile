@@ -73,8 +73,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
     CONFIG_DIR=/app/config \
     MODEL2VEC_PATH=/models/m2v \
     SPACY_MODEL=de_core_news_md \
-    HF_HUB_OFFLINE=1 \
-    WEB_CONCURRENCY=2
+    HF_HUB_OFFLINE=1
 RUN useradd --create-home --uid 10001 app \
     && mkdir -p /data/zim /data/state \
     && chown -R app:app /data
@@ -94,8 +93,9 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \
     CMD ["python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
 # API-Prozess (app/serve.py): legt PROMETHEUS_MULTIPROC_DIR an (Standard /tmp/prometheus), loescht darin nur die
 # Metrik-Dateien eines frueheren Laufs und uebergibt per exec an uvicorn, das so die Signale bekommt (sauberes
-# Herunterfahren). Die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst); /metrics
-# summiert die Werte aller Worker. Die Sidecars laden die Metriken nicht.
+# Herunterfahren). Die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst, app/serve.py gibt
+# ihr die Vorgabe 2, auch bei leerem Eintrag); /metrics summiert die Werte aller Worker. Die Sidecars laden die
+# Metriken nicht.
 # Der Updater nutzt dasselbe Image mit: compendium zim sync --loop
 # Der Commit, aus dem das Image entstand (der Job publish in ci.yml setzt ihn): /health und kompendium_build_info
 # nennen ihn als revision, denn die Version aendert sich nur mit einem Release (Audit 2026-09-27, BE-03). Ganz am

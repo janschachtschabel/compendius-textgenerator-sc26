@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 from urllib.parse import urlparse
 
-from pydantic import Field, ValidationInfo, field_validator
+from pydantic import Field, ValidationInfo, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.domain.requests import Preset
@@ -38,6 +38,9 @@ MIN_SECRET_CHARS = 16
 
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"
+# The settings whose empty value is documented as a choice of its own: no collections, only the configured repository.
+# Every other setting left empty is its default (BE-13).
+EMPTY_IS_A_CHOICE = frozenset({"edu_sharing_base_url", "edu_sharing_repositories"})
 
 
 def _split_csv(value: str) -> list[str]:
@@ -233,12 +236,20 @@ class Settings(BaseSettings):
             )
         return value
 
-    @field_validator("b_api_model", mode="before")
+    @model_validator(mode="before")
     @classmethod
-    def _default_model_when_empty(cls, value: object) -> object:
-        # A panel or a .env writes an entry left empty as B_API_MODEL=, which named a model "" and left the service
-        # without an LLM; whoever enters nothing gets the default (Jan, 2026-09-28)
-        return DEFAULT_B_API_MODEL if isinstance(value, str) and not value.strip() else value
+    def _empty_is_the_default(cls, data: Any) -> Any:
+        # A panel or a .env writes an entry left blank as VAR=, and whoever enters nothing gets the default (Jan,
+        # 2026-09-28). Read as "", 34 of 67 settings refused it and stopped all five containers, 20 took it for their
+        # value (audit 2026-09-28, BE-13). Not env_ignore_empty: that falls through to the .env file, and a secret
+        # compose empties for the sidecars would come back from there.
+        if not isinstance(data, dict):
+            return data
+        return {
+            name: value
+            for name, value in data.items()
+            if name in EMPTY_IS_A_CHOICE or not (isinstance(value, str) and not value.strip())
+        }
 
     @property
     def api_key_list(self) -> list[str]:

@@ -29,9 +29,9 @@ HEALTHCHECK_MARGIN_S = 60
 # After SIGTERM uvicorn lets the requests in flight finish for their budget plus this; Docker killed them after 10 s
 # (audit 2026-09-27, BE-06), and docker-compose.yml waits 150 s, longer than this with the shipped budget
 GRACEFUL_MARGIN_S = 15
-# uvicorn reads its options from UVICORN_* variables too; these are the service's defaults, and a value the operator
-# sets wins - an empty entry, as a panel writes one left blank, counts as none
-UVICORN_DEFAULTS = {"UVICORN_HTTP": "h11"}
+# Variables uvicorn reads itself, with the service's defaults. A value the operator sets wins; an empty entry, as a
+# panel writes one left blank, counts as none - uvicorn read WEB_CONCURRENCY= with int() and stopped (BE-13)
+UVICORN_DEFAULTS = {"UVICORN_HTTP": "h11", "WEB_CONCURRENCY": "2", "FORWARDED_ALLOW_IPS": "127.0.0.1,::1"}
 
 
 def clear_metric_files(directory: Path) -> None:
