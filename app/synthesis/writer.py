@@ -22,6 +22,7 @@ from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Sou
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
+from app.llm.usage import Tokens
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
 from app.synthesis.actors import build_actors_section, collect_actors
@@ -50,15 +51,10 @@ class LlmJob:
 
 
 @dataclass
-class LlmReport:
+class LlmReport(Tokens):
     sections: list[str] = field(default_factory=list)  # slot ids the LLM wrote
     fallbacks: dict[str, str] = field(default_factory=dict)  # slot id -> why the extractive text was used
     prompts: set[str] = field(default_factory=set)
-    model: str | None = None
-    calls: int = 0
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
     dropped_sentences: int = 0
     unsupported_sentences: int = 0
     marked_sentences: int = 0
@@ -249,20 +245,14 @@ def _account(report: LlmReport, slot_id: str, draft: LlmSection) -> None:
     report.sections.append(slot_id)
     report.prompts.add(draft.prompt)
     report.model = draft.model
-    report.calls += 1
-    report.prompt_tokens += draft.prompt_tokens
-    report.completion_tokens += draft.completion_tokens
-    report.total_tokens += draft.total_tokens
+    report.add(draft)
     report.dropped_sentences += draft.dropped_sentences
     report.unsupported_sentences += draft.unsupported_sentences
     report.marked_sentences += draft.marked_sentences
 
 
 def _account_skipped(report: LlmReport, skipped: LlmSkipped) -> None:
-    report.calls += skipped.calls
-    report.prompt_tokens += skipped.prompt_tokens
-    report.completion_tokens += skipped.completion_tokens
-    report.total_tokens += skipped.total_tokens
+    report.add(skipped, skipped.calls)
 
 
 def _slot(template: Template, slot_id: str) -> TemplateSlot | None:

@@ -18,6 +18,7 @@ from app.compendium.errors import (
     PartsUnavailableError,
     TopicNotFoundError,
 )
+from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import llm_switches
 from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart
 from app.compendium.repository import RepositoryReading
@@ -38,7 +39,6 @@ from app.knowledge.main_article import choose_main_article
 from app.knowledge.topic_articles import settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
-from app.llm.gateway import LlmGateway
 from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import ensure_strategy
 from app.settings import Settings

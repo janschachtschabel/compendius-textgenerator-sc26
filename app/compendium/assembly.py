@@ -7,14 +7,14 @@ from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
 from typing import Any
 
+from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import choice_audit
+from app.compendium.llm_report import build_llm_report
 from app.compendium.prepared import Made
 from app.compose.assembler import build_frontmatter, render_markdown
 from app.domain.models import AuditReport, CollectionPart, Compendium, CurriculaPart, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.node_article import node_block
-from app.llm.gateway import LlmGateway
-from app.llm.report import build_llm_report
 from app.matching.registry import LLM_MATCHER
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections

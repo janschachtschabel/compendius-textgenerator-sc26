@@ -38,12 +38,12 @@ from app.api.v2.routes import admin as v2_admin_router
 from app.api.v2.routes import router as v2_router
 from app.api.v2.zim import admin as zim_admin_router
 from app.api.v2.zim import router as zim_router
+from app.compendium.gateway import LlmGateway, LlmOptions
 from app.knowledge.recognise import load_spacy
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.call import listen_to_calls
 from app.llm.client import BApiClient
-from app.llm.gateway import LlmGateway, LlmOptions
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import LOCAL_MATCHER, active_components

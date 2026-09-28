@@ -23,13 +23,14 @@ from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
 from typing import NamedTuple
 
-from app.knowledge.article_choice import Usage, read_number, read_object
+from app.knowledge.article_choice import read_number, read_object
 from app.knowledge.recognise import Mention
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 
 EXTRACTION_OUTPUT_TOKENS = 1200  # as measured in M36, where a text of a material named about eight entities
 EXTRACTION_TOKENS_PER_ENTITY = 24  # 1,200 for the default of 50 entities; a caller who wants more gets more room

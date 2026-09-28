@@ -20,9 +20,10 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 
 from app.domain.models import Source
-from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, Usage, read_object
+from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, read_object
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import NAMED_ORIGIN
 

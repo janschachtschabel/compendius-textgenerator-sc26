@@ -12,11 +12,11 @@ import httpx
 import pytest
 
 from app.compendium.errors import LlmNotConfiguredError
+from app.compendium.gateway import LlmGateway, LlmOptions
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.budget import TokenBudget
 from app.llm.client import BApiClient, LlmError
-from app.llm.gateway import LlmGateway, LlmOptions
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL

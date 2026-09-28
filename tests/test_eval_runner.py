@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 
 from app.domain.requests import GenerateRequest
-from app.matching.eval_runner import evaluate_gold_dir, evaluate_topic, export_topic
+from app.eval_runner import evaluate_gold_dir, evaluate_topic, export_topic
 from app.matching.gold import GoldLabel, GoldSet, save_gold, text_hash
 from app.service import CompendiumService
 from tests.test_llm_client import FakeBApi
@@ -59,7 +59,7 @@ def test_evaluate_topic_runs_several_matchers(service: CompendiumService) -> Non
 
 
 def test_compare_reports_classification_and_selection(service: CompendiumService) -> None:
-    from app.matching.eval_runner import compare_topic
+    from app.eval_runner import compare_topic
 
     gold = _gold_for_optik(service)
     compared = compare_topic(service, "Optik", ["hybrid_light"], gold=gold)
@@ -83,7 +83,7 @@ def test_evaluate_gold_dir_skips_unknown_topics(service: CompendiumService, tmp_
 def test_the_llm_extraction_is_evaluated_as_a_strategy_of_its_own(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from app.matching.eval_runner import compare_topic
+    from app.eval_runner import compare_topic
 
     fake = FakeBApi(first_sentences)
     monkeypatch.setattr(service, "llm", make_gateway(fake))
@@ -123,7 +123,7 @@ def test_the_gold_directory_pools_the_llm_extraction(
 def test_blocks_that_fell_back_are_named_in_the_measurement(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from app.matching.eval_runner import compare_topic
+    from app.eval_runner import compare_topic
 
     def one_block_fails(body: dict[str, Any]) -> str:
         user = body["messages"][1]["content"]

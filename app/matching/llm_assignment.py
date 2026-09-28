@@ -31,6 +31,7 @@ from app.llm.call import LlmSkipped, budgeted_chat, skipped_on_error
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.llm.usage import Tokens
 from app.matching.policy import LEAD_SCORE, MIN_SCORE, AssignmentResult, cut_to_budgets
 from app.templates.schema import Template, block_key
 
@@ -55,18 +56,13 @@ class AssignmentJob:
 
 
 @dataclass
-class LlmAssignmentReport:
+class LlmAssignmentReport(Tokens):
     paragraphs: int = 0  # paragraphs offered to the model
     answered: int = 0  # of those: the model's decision counts (a block or none)
     fallback: int = 0  # of those: the rule-based decision stays
     fallbacks: dict[str, int] = field(default_factory=dict)  # reason -> paragraphs
     unknown_keys: int = 0  # answers naming a block the template does not have
     prompts: set[str] = field(default_factory=set)
-    model: str | None = None
-    calls: int = 0
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
 
 
 def render_messages(
@@ -234,7 +230,4 @@ def _combine(
 
 
 def _account(report: LlmAssignmentReport, answer: ChatResult | LlmSkipped) -> None:
-    report.calls += answer.calls if isinstance(answer, LlmSkipped) else 1
-    report.prompt_tokens += answer.prompt_tokens
-    report.completion_tokens += answer.completion_tokens
-    report.total_tokens += answer.total_tokens
+    report.add(answer, answer.calls if isinstance(answer, LlmSkipped) else 1)

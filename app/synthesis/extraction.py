@@ -19,6 +19,7 @@ from app.domain.models import Chunk, ScoredChunk, Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
+from app.llm.usage import Tokens
 from app.matching.policy import AssignmentResult
 from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts
 from app.templates.schema import Template, TemplateSlot
@@ -39,17 +40,12 @@ class ExtractionJob:
 
 
 @dataclass
-class ExtractionReport:
+class ExtractionReport(Tokens):
     slots: list[str] = field(default_factory=list)  # blocks whose sentences the LLM chose
     offered: int = 0  # paragraphs offered over all blocks
     emptied: list[str] = field(default_factory=list)  # of those: no offered paragraph fit, the block stays empty
     fallbacks: dict[str, str] = field(default_factory=dict)  # slot id -> why the policy's paragraphs stayed
     prompts: set[str] = field(default_factory=set)
-    model: str | None = None
-    calls: int = 0
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
     sentences: int = 0
     invalid: int = 0  # numbers in answers that were not offered
     deduped: int = 0  # chosen sentences an earlier block already prints
@@ -147,10 +143,7 @@ def _account(report: ExtractionReport, slot_id: str, selection: Selection) -> No
         report.emptied.append(slot_id)
     report.prompts.add(selection.prompt)
     report.model = selection.model
-    report.calls += 1
-    report.prompt_tokens += selection.prompt_tokens
-    report.completion_tokens += selection.completion_tokens
-    report.total_tokens += selection.total_tokens
+    report.add(selection)
     report.sentences += selection.sentences
     report.offered += selection.offered
     report.invalid += selection.invalid
@@ -159,7 +152,4 @@ def _account(report: ExtractionReport, slot_id: str, selection: Selection) -> No
 
 
 def _account_skipped(report: ExtractionReport, skipped: LlmSkipped) -> None:
-    report.calls += skipped.calls
-    report.prompt_tokens += skipped.prompt_tokens
-    report.completion_tokens += skipped.completion_tokens
-    report.total_tokens += skipped.total_tokens
+    report.add(skipped, skipped.calls)

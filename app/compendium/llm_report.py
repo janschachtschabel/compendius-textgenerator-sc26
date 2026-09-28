@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.compendium.gateway import LlmGateway
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic_articles import TopicArticlesReport
-from app.llm.gateway import LlmGateway
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.synthesis.extraction import ExtractionReport

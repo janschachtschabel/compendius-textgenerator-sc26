@@ -19,12 +19,13 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from app.concurrency import map_in_threads
-from app.knowledge.article_choice import UNREADABLE, Usage, read_number, read_object
+from app.knowledge.article_choice import UNREADABLE, read_number, read_object
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat, skipped_on_error
 from app.llm.client import BApiClient, ChatResult
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 from app.sources.lehrplan.matcher import CurriculumMatch
 
 BATCH_SIZE = 60  # elements per call: about 2,700 tokens of listing

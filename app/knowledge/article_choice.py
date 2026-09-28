@@ -36,9 +36,10 @@ from typing import TYPE_CHECKING, Any
 from app.domain.models import Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
-from app.llm.client import BApiClient, ChatResult
+from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 
 if TYPE_CHECKING:  # topic_articles builds on this module
     from app.knowledge.topic_articles import TopicArticlesReport
@@ -68,28 +69,6 @@ class ArticleChoiceJob:
     budget: RequestBudget
     deadline: Deadline | None = None
     thorough: bool = False
-
-
-@dataclass
-class Usage:
-    """The calls and tokens of one LLM step, and the model and prompt of the call that answered."""
-
-    calls: int = 0
-    prompt_tokens: int = 0
-    completion_tokens: int = 0
-    total_tokens: int = 0
-    model: str | None = None
-    prompts: list[str] = field(default_factory=list)
-
-    def count(self, answer: ChatResult | LlmSkipped, prompt_tag: str) -> None:
-        """Add the cost of a call; a call that answered also names its model and prompt."""
-        self.calls += answer.calls if isinstance(answer, LlmSkipped) else 1
-        self.prompt_tokens += answer.prompt_tokens
-        self.completion_tokens += answer.completion_tokens
-        self.total_tokens += answer.total_tokens
-        if isinstance(answer, ChatResult):
-            self.model = answer.model
-            self.prompts = [prompt_tag]
 
 
 @dataclass

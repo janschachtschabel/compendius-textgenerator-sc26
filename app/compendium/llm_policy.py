@@ -11,13 +11,13 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from app.compendium.errors import LlmNotConfiguredError
+from app.compendium.gateway import LlmGateway
 from app.compendium.prepared import PreparedTopic
 from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceJob, choice_used
 from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
-from app.llm.gateway import LlmGateway
 from app.matching.registry import LLM_MATCHER
 from app.settings import Settings
 from app.sources.lehrplan.matcher import CurriculumMatch

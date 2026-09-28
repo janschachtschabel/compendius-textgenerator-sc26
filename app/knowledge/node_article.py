@@ -19,11 +19,12 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
-from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, Usage, read_object
+from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, read_object
 from app.knowledge.linking import article_of
 from app.knowledge.recognise import mentions_from_titles, merge
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArchive
 

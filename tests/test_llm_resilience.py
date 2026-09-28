@@ -11,10 +11,10 @@ from typing import Any
 import httpx
 import pytest
 
+from app.compendium.gateway import LlmGateway, LlmOptions
 from app.llm.budget import TokenBudget, estimate_tokens
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import AUTH_SUSPEND_S, BREAKER_S, BApiClient, LlmError
-from app.llm.gateway import LlmGateway, LlmOptions
 from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi
 
 
