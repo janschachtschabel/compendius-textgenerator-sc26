@@ -56,6 +56,13 @@ class CurriculaBuilder:
     subjects: SubjectCatalog
     options: RenderOptions = field(default_factory=RenderOptions)
 
+    def search_terms(
+        self, title: str, aliases: Sequence[str], subtopics: Sequence[str], subjects: Sequence[str]
+    ) -> tuple[list[str], list[str]]:
+        """The keywords part 2 looks for in the curricula and the curriculum words of the subjects it narrows them to;
+        the curriculum search with mode=topic looks for the same."""
+        return build_keywords(title, aliases=aliases, subtopics=subtopics), self.subjects.mem_terms_of(subjects)
+
     def build(
         self,
         *,
@@ -71,8 +78,7 @@ class CurriculaBuilder:
         ``check`` judges the elements the rules found before they are rendered - the LLM check of D58 - and returns the
         ones that stay.
         """
-        keywords = build_keywords(title, aliases=aliases, subtopics=subtopics)
-        subject_terms = self.subjects.mem_terms_of(subjects)
+        keywords, subject_terms = self.search_terms(title, aliases, subtopics, subjects)
         state = self.store.state
         if state != "ok":
             return CurriculaPart(

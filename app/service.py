@@ -158,6 +158,22 @@ class PreparedTopic:
     def sources_by_id(self) -> dict[str, Source]:
         return {s.source_id: s for s in self.sources}
 
+    @property
+    def title(self) -> str:
+        """The article the topic resolved to, or the normalized topic where none was needed (part 3 alone)."""
+        return self.resolution.title or self.normalized.topic
+
+    @property
+    def primary(self) -> Source | None:
+        """The main article of the corpus, or its first source."""
+        return next((s for s in self.sources if s.is_primary), self.sources[0] if self.sources else None)
+
+    @property
+    def aliases(self) -> list[str]:
+        """The other names of the main article, which part 2 searches for as well."""
+        primary = self.primary
+        return list(primary.aliases) if primary else []
+
 
 @dataclass
 class Matched:
@@ -227,13 +243,22 @@ class CompendiumService:
         )
 
     def prepare(
-        self, request: GenerateRequest, deadline: Deadline | None = None, choice: ArticleChoiceJob | None = None
+        self,
+        request: GenerateRequest,
+        deadline: Deadline | None = None,
+        choice: ArticleChoiceJob | None = None,
+        *,
+        registry: ZimRegistry | None = None,
+        segment: bool = True,
     ) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
 
         Part 3 alone needs the collection only: its topic is resolved where possible, and no corpus is built.
         ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
         time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
+        ``registry`` narrows the archives (/knowledge asks some of them); ``segment=False`` keeps the articles whole,
+        as /knowledge returns them - the one way to a topic's corpus for a compendium, the curriculum search and
+        /knowledge (audit 2026-09-27, AR-02).
         """
         self.subjects.check(request.subject)  # before any reading: a typo would otherwise count for nothing
         timings: dict[str, int] = {}
@@ -254,8 +279,9 @@ class CompendiumService:
         if collection is not None:
             derived.append(collection_topic(collection))
         needs_corpus = self._needs_corpus(request)
+        registry = registry or self.registry
         chosen = choose_main_article(
-            self.registry,
+            registry,
             self.subjects,
             request.topic,
             derived,
@@ -285,7 +311,7 @@ class CompendiumService:
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
         )
         if needs_corpus:
-            self._add_corpus(prepared, request, deadline, choice)
+            self._add_corpus(prepared, request, deadline, choice, registry, segment)
         return prepared
 
     def _needs_corpus(self, request: GenerateRequest) -> bool:
@@ -312,7 +338,9 @@ class CompendiumService:
         prepared: PreparedTopic,
         request: GenerateRequest,
         deadline: Deadline | None,
-        choice: ArticleChoiceJob | None = None,
+        choice: ArticleChoiceJob | None,
+        registry: ZimRegistry,
+        segment: bool,
     ) -> None:
         """The articles of the topic, the sub-topics and, for part 1, the knowledge collection and the capped chunks.
 
@@ -321,7 +349,7 @@ class CompendiumService:
         joins when it links with the main article (D47).
         """
         lap = _Stopwatch(prepared.timings).lap
-        sources = self.registry.build_corpus(
+        sources = registry.build_corpus(
             prepared.resolution,
             slots=prepared.template.content_slots(),
             max_articles=request.max_articles or self.settings.corpus_max_articles,
@@ -335,8 +363,7 @@ class CompendiumService:
         lap("corpus")
         prepared.side_articles = sum(1 for s in sources if s.origin in CHECKED_ORIGINS)
         if choice is not None and prepared.side_articles:
-            topic = prepared.resolution.title or prepared.normalized.topic
-            gone, prepared.hit_check = check_hits(choice, topic, sources)
+            gone, prepared.hit_check = check_hits(choice, prepared.title, sources)
             sources = [s for s in sources if s.source_id not in gone]
             lap("hit_check")
         # The materials are sources of part 1 only (the request refuses them without it); a failed probe already
@@ -352,7 +379,7 @@ class CompendiumService:
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
         primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
         prepared.subtopics = _subtopics(sources, primary)
-        if "world" not in request.parts:  # paragraphs and their cap serve part 1 only
+        if "world" not in request.parts or not segment:  # paragraphs and their cap serve part 1 only
             prepared.sources = sources
             return
         prepared.chunks, prepared.sources, prepared.chunks_truncated = _segment_corpus(
@@ -549,7 +576,7 @@ class CompendiumService:
         job = AssignmentJob(
             client=self.llm.client,
             budget=budget if budget is not None else self.llm.open_budget(),
-            topic=prepared.resolution.title or prepared.normalized.topic,
+            topic=prepared.title,
             concurrency=self.llm.options.concurrency,
             deadline=deadline,
         )
@@ -620,11 +647,10 @@ class CompendiumService:
         lap = _Stopwatch(timings).lap
 
         template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
-        normalized, resolution = prepared.normalized, prepared.resolution
+        resolution = prepared.resolution
         sections, citations, matcher_name = world.written.sections, world.written.citations, world.matcher
         facets_visible = self._facets_visible(request)
-        topic = resolution.title or normalized.topic
-        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        topic = prepared.title
 
         curricula: CurriculaPart | None = None
         curriculum_requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
@@ -636,7 +662,7 @@ class CompendiumService:
                 check, curriculum_fallback = self.curriculum_check(topic, prepared.subjects, budget, deadline, checked)
             curricula = self.curricula.build(
                 title=topic,
-                aliases=list(primary.aliases) if primary else [],
+                aliases=prepared.aliases,
                 subtopics=prepared.subtopics,
                 subjects=prepared.subjects,
                 facets_visible=facets_visible,
@@ -817,7 +843,7 @@ class CompendiumService:
 
         # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
         template = _scale_budgets(prepared.template, request.target_length)
-        topic = prepared.resolution.title or prepared.normalized.topic
+        topic = prepared.title
         assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
         selected: set[str] = set()
         extracted: ExtractionReport | None = None
@@ -827,8 +853,7 @@ class CompendiumService:
                 assigned, selected, extracted = result.assigned, result.selected, result.report
             lap("extract")
 
-        sources = prepared.sources
-        primary = next((s for s in sources if s.is_primary), sources[0] if sources else None)
+        sources, primary = prepared.sources, prepared.primary
         llm_job: LlmJob | None = None
         if generation != "rule-based" and llm is not None and budget is not None:
             llm_job = LlmJob(
@@ -896,7 +921,7 @@ class CompendiumService:
         job = ExtractionJob(
             selector=self.llm.selector,
             budget=budget if budget is not None else self.llm.open_budget(),
-            topic=prepared.resolution.title or prepared.normalized.topic,
+            topic=prepared.title,
             candidates=self.llm.options.extraction_candidates,
             concurrency=self.llm.options.concurrency,
             deadline=deadline,

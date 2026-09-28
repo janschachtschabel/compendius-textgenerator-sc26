@@ -12,7 +12,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Body, Depends, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.api.deps import archives_for, corpus_for_topic, get_service
+from app.api.deps import archives_for, get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
@@ -26,9 +26,13 @@ from app.domain.requests import (
     REPOSITORY_HELP,
     UNKNOWN_SUBJECT_HELP,
     ArticleChoice,
+    GenerateRequest,
     Preset,
 )
-from app.sources.wlo.part import node_topic
+from app.knowledge.article_choice import choice_block
+from app.knowledge.node_article import node_block
+from app.llm.deadline import Deadline
+from app.service import PreparedTopic, choice_audit
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
 
@@ -293,26 +297,29 @@ def knowledge(
     needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
     service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
     registry = archives_for(service.registry, payload.archives)
-    info, node, derived = None, None, []
-    if payload.node_id:
-        info, node = service.read_node(payload.node_id, payload.repository)
-        derived.append(node_topic(info))
-    topic, resolution, sources, choice, node_article = corpus_for_topic(
-        service,
-        registry,
-        payload.topic,
-        template_id=payload.template_id,
-        max_articles=payload.max_articles,
-        article_choice=article_choice,
-        derived=derived,
-        node=info,
-        subject=payload.subject,
-        budget=service.open_budget(profile),
+    deadline = Deadline(service.settings.request_timeout_s)
+    requested, note, job = service.article_choice_job(article_choice, deadline, service.open_budget(profile))
+    # The article and its corpus as a compendium chooses them (D35, D40, D47), the articles left whole
+    prepared = service.prepare(
+        GenerateRequest(
+            topic=payload.topic,
+            node_id=payload.node_id,
+            repository=payload.repository,
+            subject=payload.subject,
+            template_id=payload.template_id,
+            max_articles=payload.max_articles,
+            article_choice=article_choice,
+            parts=["world"],
+        ),
+        deadline,
+        job,
+        registry=registry,
+        segment=False,
     )
     by_file = {archive.file_name: archive.id for archive in registry.archives}
     articles: list[KnowledgeArticle] = []
     total, truncated = 0, False
-    for source in sources:
+    for source in prepared.sources:
         kept: list[KnowledgeSection] = []
         for section in _sections(source):
             if payload.max_chars is not None and total + len(section.text) > payload.max_chars:
@@ -326,13 +333,34 @@ def knowledge(
         if truncated:
             break
     return KnowledgeResponse(
-        topic=topic,
-        resolution=resolution,
+        topic=prepared.normalized.topic,
+        resolution=prepared.resolution,
         archives=[archive.id for archive in registry.archives],
         articles=articles,
         chars=total,
         truncated=truncated,
-        article_choice=choice,
-        node=node,
-        node_article=node_article,
+        article_choice=_choice(prepared, requested, note),
+        node=prepared.node,
+        node_article=node_block(prepared.node_article) if prepared.node_article is not None else None,
     )
+
+
+def _choice(prepared: PreparedTopic, requested: str, note: str | None) -> dict[str, Any] | None:
+    """What the article choice asked and decided, as the audit of a compendium says it (D35, D63); ``None`` when the
+    rules chose alone."""
+    if requested == "rule-based":
+        return None
+    audit = choice_audit(prepared, requested)
+    info = choice_block(
+        requested,
+        audit["choice_used"],
+        audit["choice_needed"],
+        audit["choice"],
+        audit["choice_chosen"],
+        audit["hit_check"],
+        audit["articles"],
+    )
+    reports = (prepared.article_choice, prepared.hit_check, prepared.node_article, prepared.articles)
+    info["tokens"] = sum(report.total_tokens for report in reports if report is not None)
+    info["note"] = note
+    return info

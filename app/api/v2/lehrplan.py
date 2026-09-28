@@ -103,12 +103,12 @@ def _as_part_two(request: Request, asked: GenerateRequest, budget: RequestBudget
     service = get_service(request)
     requested, note, job = service.article_choice_job(asked.article_choice, deadline, budget)
     prepared = service.prepare(asked, deadline, job)
-    # as CompendiumService.generate hands them to part 2
-    title = prepared.resolution.title or prepared.normalized.topic
-    primary = next((s for s in prepared.sources if s.is_primary), prepared.sources[0] if prepared.sources else None)
-    keywords = build_keywords(title, aliases=list(primary.aliases) if primary else [], subtopics=prepared.subtopics)
-    subject_terms = _builder(request).subjects.mem_terms_of(prepared.subjects)
-    return _Search(title, keywords, subject_terms, list(prepared.subjects), choice_audit(prepared, requested), note)
+    # the same inputs CompendiumService.generate hands to part 2
+    keywords, subject_terms = _builder(request).search_terms(
+        prepared.title, prepared.aliases, prepared.subtopics, prepared.subjects
+    )
+    subjects = list(prepared.subjects)
+    return _Search(prepared.title, keywords, subject_terms, subjects, choice_audit(prepared, requested), note)
 
 
 def _llm_answer(
