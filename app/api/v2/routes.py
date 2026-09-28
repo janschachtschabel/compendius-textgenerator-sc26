@@ -15,6 +15,7 @@ from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import ADMIN_REFUSALS, PROFILE_REFUSALS, refusals
 from app.api.v2.routes_examples import BUILTIN_TEMPLATES, EXAMPLES, TEMPLATE_EXAMPLES, TEMPLATE_ID_HELP
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
@@ -23,13 +24,19 @@ from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
-admin = APIRouter(prefix="/api/v2", tags=["v2-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)])
+admin = APIRouter(
+    prefix="/api/v2",
+    tags=["v2-admin"],
+    dependencies=[Depends(rate_limited), Depends(require_admin)],
+    responses=ADMIN_REFUSALS,
+)
 
 
 @router.post(
     "/compendium",
     response_model=Compendium,
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses={**PROFILE_REFUSALS, **refusals(413)},
     summary="Kompendium erzeugen",
 )
 def generate_compendium(
@@ -132,7 +139,7 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
     ]
 
 
-@router.get("/templates/{template_id}")
+@router.get("/templates/{template_id}", responses=refusals(404))
 def get_template(
     template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)],
     request: Request,
@@ -148,7 +155,7 @@ def get_template(
     return data
 
 
-@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen")
+@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen", responses=refusals(409, 413, 422))
 def put_template(
     template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP)],
     payload: Annotated[Template, Body(openapi_examples=TEMPLATE_EXAMPLES)],
@@ -176,7 +183,7 @@ def put_template(
     return data
 
 
-@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen")
+@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409))
 def delete_template(template_id: Annotated[str, Path(description=TEMPLATE_ID_HELP)], request: Request) -> None:
     """Delete a custom template (204).
 

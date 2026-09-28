@@ -36,6 +36,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import archives_for
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import PROFILE_REFUSALS, refusals
 from app.api.v2.entities_schemas import (
     EXAMPLES,
     MAX_TEXT_CHARS,
@@ -212,6 +213,7 @@ def _node_text(info: NodeInfo) -> str:
     "/entities",
     response_model=EntitiesResponse,
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses={**PROFILE_REFUSALS, **refusals(413)},
     summary="Entitäten in einem Text erkennen",
 )
 def entities(

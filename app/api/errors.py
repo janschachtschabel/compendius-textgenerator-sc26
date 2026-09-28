@@ -3,12 +3,14 @@
 FastAPI's own handlers answer a 422 with every value that failed validation, so a 5 MB field came back as a 5 MB
 error. And any answer that repeats caller text - a 422, the 404 that names an unknown template - failed to encode
 when that text held a lone surrogate, which is legal in a JSON string but not in UTF-8: the 4xx became a 500. The
-handlers here are FastAPI's with those two things changed.
+handlers here are FastAPI's with those two things changed, and a validator's reason stands without pydantic's
+English prefix (AP-01).
 """
 
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from typing import Any, cast
 
 from fastapi import Request, Response
@@ -21,6 +23,9 @@ from starlette.exceptions import HTTPException
 # What a validation error keeps: where the value was (loc), why it failed (type, msg) and the limits it broke
 # (ctx) - never the value itself (input)
 VALIDATION_KEYS = ("type", "loc", "msg", "ctx")
+# pydantic puts this before the reason a validator raises, and the exception itself into ctx, where it encodes as {}
+# (audit 2026-09-27, AP-01): the reasons are German sentences of their own
+VALUE_ERROR_PREFIX = "Value error, "
 
 
 class JsonResponse(JSONResponse):
@@ -45,5 +50,15 @@ async def http_error(request: Request, exc: Exception) -> Response:
 async def validation_error(request: Request, exc: Exception) -> Response:
     """422 with where and why each value failed, without the value."""
     errors = cast(RequestValidationError, exc).errors()  # registered for RequestValidationError only
-    kept = [{key: error[key] for key in VALIDATION_KEYS if key in error} for error in errors]
+    kept = [_problem(error) for error in errors]
     return JsonResponse({"detail": jsonable_encoder(kept)}, status_code=422)
+
+
+def _problem(error: Mapping[str, Any]) -> dict[str, Any]:
+    problem = {key: error[key] for key in VALIDATION_KEYS if key in error}
+    if problem.get("type") == "value_error":
+        problem["msg"] = str(problem.get("msg", "")).removeprefix(VALUE_ERROR_PREFIX)
+        ctx = {key: value for key, value in (problem.pop("ctx", None) or {}).items() if key != "error"}
+        if ctx:
+            problem["ctx"] = ctx
+    return problem

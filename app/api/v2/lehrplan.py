@@ -17,6 +17,7 @@ from app.api.admin import require_admin
 from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import ADMIN_REFUSALS, refusals
 from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
@@ -37,7 +38,10 @@ HARVEST_FAILED = (
     "und `compendium lehrplan status`."
 )
 admin = APIRouter(
-    prefix="/api/v2/lehrplan", tags=["lehrplan-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)]
+    prefix="/api/v2/lehrplan",
+    tags=["lehrplan-admin"],
+    dependencies=[Depends(rate_limited), Depends(require_admin)],
+    responses=ADMIN_REFUSALS,
 )
 SEARCH_PRESET_HELP = (
     "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "
@@ -160,7 +164,11 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
     }
 
 
-@router.get("/search", dependencies=[Depends(rate_limited), Depends(require_api_key)])
+@router.get(
+    "/search",
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses=refusals(401, 404, 422, 429, 503),  # no repository behind it: no 502
+)
 def lehrplan_search(
     request: Request,
     q: str = Query(

@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import PROFILE_REFUSALS, refusals
 from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
     ARTICLE_CHOICE_HELP,
@@ -238,6 +239,7 @@ EXAMPLES = {
     "/knowledge",
     response_model=KnowledgeResponse,
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses={**PROFILE_REFUSALS, **refusals(413)},
     summary="Wissenstexte zu einem Thema",
 )
 def knowledge(

@@ -15,6 +15,7 @@ from fastapi import Path as PathParameter  # pathlib.Path is taken
 
 from app.api.admin import require_admin
 from app.api.limits import rate_limited
+from app.api.responses import ADMIN_REFUSALS, refusals
 from app.jobs.zim_sync import TRIGGER_FILE, read_status
 from app.settings import Settings
 from app.sources.zim.active import ActiveState, read_active
@@ -24,7 +25,10 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/zim", tags=["zim"])
 PUBLIC_RUN_FIELDS = ("profile", "started_at", "finished_at", "adopted", "downloaded", "skipped", "missing", "pruned")
 admin = APIRouter(
-    prefix="/api/v2/zim", tags=["zim-admin"], dependencies=[Depends(rate_limited), Depends(require_admin)]
+    prefix="/api/v2/zim",
+    tags=["zim-admin"],
+    dependencies=[Depends(rate_limited), Depends(require_admin)],
+    responses=ADMIN_REFUSALS,
 )
 
 
@@ -72,7 +76,7 @@ def zim_status(request: Request) -> dict[str, Any]:
     }
 
 
-@admin.get("/catalog")
+@admin.get("/catalog", responses=refusals(502))
 def zim_catalog(request: Request) -> list[dict[str, Any]]:
     """The German archives Kiwix offers, each marked as subscribed and installed.
 
@@ -129,7 +133,7 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
     }
 
 
-@admin.delete("/{file_name}")
+@admin.delete("/{file_name}", responses=refusals(400, 409))
 def zim_delete(
     file_name: Annotated[
         str,

@@ -15,6 +15,7 @@ from pydantic import Field
 
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import PROFILE_REFUSALS
 from app.domain.models import NodeInput
 from app.domain.requests import NODE_ID_PATTERN, REPOSITORY_HELP
 from app.knowledge.main_article import choose_main_article
@@ -55,6 +56,7 @@ class NodePreview(NodeInput):
     "/nodes/{node_id}",
     response_model=NodePreview,
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses={**PROFILE_REFUSALS},
     summary="Knoten eines Repositorys lesen: Metadaten und abgeleitetes Thema",
 )
 def read_node(

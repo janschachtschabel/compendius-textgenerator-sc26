@@ -8,19 +8,25 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Request
 
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import PROFILE_REFUSALS
+from app.domain.requests import NODE_ID_PATTERN
 from app.llm.deadline import Deadline
-from app.sources.wlo.client import validate_node_id
 from app.sources.wlo.part import CollectionBuilder
 
 router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
 STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "Optik" of the WLO staging
 
 
-@router.get("/{collection_id}/overview", dependencies=[Depends(rate_limited), Depends(require_api_key)])
+@router.get(
+    "/{collection_id}/overview",
+    dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses=PROFILE_REFUSALS,
+)
 def collection_overview(
     collection_id: Annotated[
         str,
         Path(
+            pattern=NODE_ID_PATTERN,
             description="The node id of the collection in the configured repository (EDU_SHARING_BASE_URL), a UUID; "
             "anything else is a 422",
             openapi_examples={"Sammlung der WLO-Staging": {"summary": "Optik", "value": STAGING_COLLECTION}},
@@ -49,10 +55,6 @@ def collection_overview(
     builder: CollectionBuilder | None = request.app.state.collections
     if builder is None:
         raise HTTPException(status_code=503, detail="Kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL).")
-    try:
-        validate_node_id(collection_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
     deadline = Deadline(request.app.state.settings.request_timeout_s)  # the same budget as a compendium's part 3
     part = builder.overview(collection_id, expired=lambda: deadline.remaining() <= 0)
     if not part.available:  # read, but not listed: inside a compendium a hint, on its own a failed request

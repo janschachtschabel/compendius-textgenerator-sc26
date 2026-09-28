@@ -27,6 +27,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
+from app.api.responses import PROFILE_REFUSALS, refusals
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
 from app.domain.models import Compendium, Resolution
@@ -260,6 +261,7 @@ EXAMPLES = {
     "/qa",
     response_model=QaResponse,
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    responses={**PROFILE_REFUSALS, **refusals(413)},
     summary="Frage-Antwort-Paare zu einem Text oder Thema",
 )
 def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: Request) -> QaResponse:
