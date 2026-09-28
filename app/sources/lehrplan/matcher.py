@@ -12,7 +12,13 @@ import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
 
-from app.sources.lehrplan.store import DEFAULT_SEARCH_LIMIT, MIN_KEYWORD_CHARS, LehrplanStore, NodeHit
+from app.sources.lehrplan.store import (
+    CONTROL_CHARS,
+    DEFAULT_SEARCH_LIMIT,
+    MIN_KEYWORD_CHARS,
+    LehrplanStore,
+    NodeHit,
+)
 from app.sources.lehrplan.stufen import Resolved, resolve_klassenstufe, resolve_schulstufe
 from app.sources.lehrplan.vocab import ROLE_INHALT, ROLE_KOMPETENZ, ROLE_THEMENBEREICH
 
@@ -85,7 +91,7 @@ def build_keywords(
     keywords: list[str] = []
     seen: set[str] = set()
     for index, raw in enumerate((topic, *aliases, *subtopics)):
-        text = _PARENTHESES.sub("", raw).strip()
+        text = _PARENTHESES.sub("", CONTROL_CHARS.sub("", raw)).strip()  # the keywords the answer names
         for variant in _variants(text) if index == 0 else [text]:
             key = variant.casefold()
             # The topic itself is never dropped for length; a long title simply finds nothing.

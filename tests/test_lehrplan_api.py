@@ -1,11 +1,13 @@
 """Lehrplan endpoints: public status and search from the local cache, admin harvest request."""
 
 import json
+import logging
 import sqlite3
 from contextlib import closing
 from pathlib import Path
 from typing import Any
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
@@ -267,3 +269,17 @@ def test_the_public_status_leaves_the_error_text_of_the_harvest_to_the_log(
         harvest = client.get("/api/v2/lehrplan/status").json()["harvest"]
     assert harvest["state"] == "error" and harvest["error"]  # that it failed stays visible
     assert not any(str(tmp_path) in text or "OperationalError" in text for text in strings_in(harvest))
+
+
+def test_a_control_character_in_the_words_is_no_broken_cache(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """AP-03 (audit 2026-09-28): a NUL ended the FTS5 string, and the failed query was reported as an unreadable
+    cache - an ERROR line and available false, which invites a 25-minute harvest with --force."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client, caplog.at_level(logging.ERROR):
+        body = client.get("/api/v2/lehrplan/search", params={"q": "Lin\x00sen\x07"}).json()
+
+    assert body["available"] is True and body["keywords"] == ["Linsen"]
+    assert [match["label"] for match in body["matches"]] == ["Lichtbrechung an Linsen"]
+    assert not [record for record in caplog.records if record.levelno >= logging.ERROR]

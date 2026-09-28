@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import sqlite3
 import time
 from collections.abc import Mapping, Sequence
@@ -31,6 +32,9 @@ log = logging.getLogger(__name__)
 SCHEMA_VERSION = "1"
 TMP_SUFFIX = ".tmp"
 MIN_KEYWORD_CHARS = 3  # the trigram tokenizer cannot match anything shorter
+# Control characters leave a search word: a NUL ended the FTS5 string, and the failed query read as an unreadable
+# cache - an ERROR line and available false (audit 2026-09-28, AP-03)
+CONTROL_CHARS = re.compile(r"[\x00-\x1f\x7f-\x9f]")
 # Broad keywords without a subject filter hit thousands of nodes; ranking happens after the fetch,
 # so the fetch must not cut them off in insertion order.
 DEFAULT_SEARCH_LIMIT = 20_000
@@ -229,12 +233,15 @@ class LehrplanStore:
         ("physik", "natur und technik"); with none given all subjects are searched. A cache SQLite cannot
         read raises ``LehrplanCacheError``, so callers can say so instead of reporting zero matches.
         """
-        words = [word.strip() for word in keywords if len(word.strip()) >= MIN_KEYWORD_CHARS]
+        cleaned = (CONTROL_CHARS.sub("", word).strip() for word in keywords)
+        words = [word for word in cleaned if len(word) >= MIN_KEYWORD_CHARS]
         state = self.state
         if not words or state == "missing":
             return []
         if state != "ok":  # checked again here: the file may have changed since the caller looked
             raise LehrplanCacheError(f"lehrplan cache {self.path.name} is unreadable or of another schema version")
+        # Each word a quoted phrase, its quotes doubled: without control characters every other one is a literal to
+        # FTS5, so the expression is always well-formed and an error below is one of the cache
         match = " OR ".join('"' + word.replace('"', '""') + '"' for word in words)
         sql = (
             "SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label, node.jahrgangsstufen,"

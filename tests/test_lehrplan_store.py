@@ -151,3 +151,10 @@ def test_the_state_tells_a_missing_from_an_unreadable_cache(tmp_path: Path) -> N
     assert store.state == "unreadable" and not store.available
     _write(store.path)
     assert store.state == "ok" and store.available
+
+
+def test_a_control_character_in_a_word_is_left_out_not_a_broken_cache(tmp_path: Path) -> None:
+    """AP-03 (audit 2026-09-28): a NUL ended the FTS5 string, and the search raised LehrplanCacheError."""
+    store = _write(tmp_path / "lehrplan.db")
+
+    assert {hit.iri for hit in store.search(["Op\x00tik\x1f"])} == {hit.iri for hit in store.search(["Optik"])}
