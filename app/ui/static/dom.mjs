@@ -1,6 +1,8 @@
 // Building elements for the review page (D66). Text always goes in as text nodes and attributes through
 // setAttribute, never through innerHTML: the answers carry text of sources and callers, and none of it may become
-// markup. Links only lead to web addresses (markdown.mjs checks each target).
+// markup. A link only leads to a web address: link() checks every target, as markdown.mjs does.
+
+import { webAddress } from './markdown.mjs';
 
 /** An element with attributes and children; a string child becomes a text node, null and false are skipped.
  * Attribute values of false or null leave the attribute out; `on` maps event names to listeners. */
@@ -25,9 +27,13 @@ export function append(parent, children) {
   return parent;
 }
 
-/** A link to a web address, opened apart from the page. */
+/** A link to a web address, opened apart from the page; any other target leaves the words without a link. The
+ * service filters the addresses in its markdown, not in the fields of its answers (a material's ccm:wwwurl). */
 export function link(href, ...children) {
-  return h('a', { href, target: '_blank', rel: 'noopener noreferrer' }, ...children);
+  const target = webAddress(href);
+  return target
+    ? h('a', { href: target, target: '_blank', rel: 'noopener noreferrer' }, ...children)
+    : h('span', {}, ...children);
 }
 
 /** Copy text to the clipboard; false when the browser refuses (no secure context, no permission). */

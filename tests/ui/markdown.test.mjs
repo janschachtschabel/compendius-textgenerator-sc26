@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { inlineText, parseInline, parseMarkdown, sectionize } from '../../app/ui/static/markdown.mjs';
+import { inlineText, parseInline, parseMarkdown, sectionize, webAddress } from '../../app/ui/static/markdown.mjs';
 
 const text = (value) => ({ type: 'text', value });
 
@@ -56,6 +56,14 @@ test('a balanced pair of parentheses stays in a plain link target', () => {
 test('a link to anything but a web address keeps only its words', () => {
   for (const target of ['javascript:alert(1)', 'data:text/html,x', '//evil.example/x', 'JaVaScRiPt:alert(1)']) {
     assert.deepEqual(parseInline(`[klick](${target})`), [text('klick')], target);
+  }
+});
+
+test('a web address is the only link target the page lets through, in markdown and in the fields of an answer', () => {
+  assert.equal(webAddress('https://de.wikipedia.org/wiki/Optik'), 'https://de.wikipedia.org/wiki/Optik');
+  assert.equal(webAddress(' http://example.org/a b '), 'http://example.org/a%20b');
+  for (const target of ['javascript:alert(1)', 'data:text/html,x', 'file:///etc/passwd', 'ms-settings:privacy', 'vbscript:x', '//host/x', '', null]) {
+    assert.equal(webAddress(target), null, String(target));
   }
 });
 

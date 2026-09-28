@@ -113,7 +113,7 @@ export function defaults(mode, options) {
         collection_id: '',
         knowledge_collection_id: '',
         parts: ['world', 'curricula'],
-        facets_visible: false,
+        facets_visible: Boolean(options.facets_visible), // FACETS_VISIBLE of the server, as a request without it
         empty_note: false,
         ...Object.fromEntries(COMPENDIUM_STEPS.map((step) => [step, ''])),
         target_length: '',

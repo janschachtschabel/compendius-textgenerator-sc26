@@ -113,7 +113,7 @@ export const RESOLUTION = {
 
 export const STAGES = {
   resolve: 'Thema auflösen',
-  extract: 'Material lesen',
+  extract: 'Sätze auswählen (KI)',
   corpus: 'Artikel laden',
   hit_check: 'Treffer prüfen',
   knowledge: 'Wissens-Sammlung lesen',

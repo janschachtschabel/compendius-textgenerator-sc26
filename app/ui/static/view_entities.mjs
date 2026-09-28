@@ -43,17 +43,27 @@ export function renderEntities(answer, run) {
   return { body, info };
 }
 
-// The text with the entities marked; an entity overlapping one before it is left unmarked in the text
-function marked(text, entities) {
+/** The text in pieces, each entity one of them. start and end count code points, as the service (Python) does,
+ * not the UTF-16 units of a JavaScript string: after an emoji those would be off. An entity overlapping one before
+ * it, or reaching past the text, stays unmarked. */
+export function segments(text, entities) {
+  const chars = Array.from(String(text ?? ''));
   const parts = [];
   let at = 0;
   for (const entity of [...entities].sort((a, b) => a.start - b.start)) {
-    if (entity.start < at || entity.end > text.length) continue;
-    parts.push(text.slice(at, entity.start), h('mark', { class: `entity kind-${entity.kind || 'term'}` }, text.slice(entity.start, entity.end)));
+    if (entity.start < at || entity.end > chars.length || entity.end <= entity.start) continue;
+    if (entity.start > at) parts.push({ text: chars.slice(at, entity.start).join('') });
+    parts.push({ text: chars.slice(entity.start, entity.end).join(''), entity });
     at = entity.end;
   }
-  parts.push(text.slice(at));
+  if (at < chars.length) parts.push({ text: chars.slice(at).join('') });
   return parts;
+}
+
+function marked(text, entities) {
+  return segments(text, entities).map((part) =>
+    part.entity ? h('mark', { class: `entity kind-${part.entity.kind || 'term'}` }, part.text) : part.text,
+  );
 }
 
 function table(entities) {

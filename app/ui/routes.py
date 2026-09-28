@@ -8,12 +8,14 @@ the page's own files.
 
 from __future__ import annotations
 
+from functools import partial
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 
 from app.api.errors import JsonResponse
+from app.api.system_threads import run_system
 from app.ui.options import ui_options
 
 STATIC_DIR = Path(__file__).parent / "static"
@@ -49,10 +51,12 @@ def ui_router(static_dir: Path = STATIC_DIR) -> APIRouter:
         return Response(page, media_type="text/html; charset=utf-8", headers=HEADERS)
 
     @router.get("/ui/options.json")
-    def the_options(request: Request) -> JsonResponse:
+    async def the_options(request: Request) -> JsonResponse:
+        # The custom templates are read from disk, so off the event loop - but in the threads of the monitoring
+        # path, which compendium requests cannot fill (app/api/system_threads.py)
         state = request.app.state
-        options = ui_options(state.settings, state.templates, state.service.subjects, llm=state.llm is not None)
-        return JsonResponse(options, headers=HEADERS)
+        build = partial(ui_options, state.settings, state.templates, state.service.subjects, llm=state.llm is not None)
+        return JsonResponse(await run_system(request, build), headers=HEADERS)
 
     @router.get("/ui/{name}")
     async def an_asset(name: str) -> Response:

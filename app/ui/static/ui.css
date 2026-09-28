@@ -175,7 +175,8 @@ button.quiet:hover, .pop-close:hover { border-color: var(--field-border); }
 .metric-label { margin-inline-end: 0.3rem; color: var(--muted); }
 .metric-value { font-weight: 650; font-variant-numeric: tabular-nums; }
 
-.compare-wrap { margin-bottom: 1.25rem; }
+.compare-wrap { margin-bottom: 0.4rem; }
+.compare-note { margin-bottom: 1.25rem; }
 table.compare { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
 table.compare caption { text-align: start; font-weight: 700; padding-bottom: 0.4rem; }
 table.compare th, table.compare td { padding: 0.45rem 0.8rem; text-align: start; border-bottom: 1px solid var(--line); vertical-align: top; }

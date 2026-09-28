@@ -387,9 +387,13 @@ function destination(s, start) {
   return { url: url.replace(/\\([!-/:-@[-`{-~])/g, '$1'), next: k + rest[0].length };
 }
 
-function webAddress(url) {
+/** The address as a link target when it is a web address (http, https), else null: dom.mjs checks every link
+ * with it, since fields of an answer such as the ccm:wwwurl of a material are typed by editors. */
+export function webAddress(url) {
+  const text = String(url ?? '').trim();
+  if (!text) return null;
   try {
-    const parsed = new URL(url.trim());
+    const parsed = new URL(text);
     return WEB_SCHEMES.has(parsed.protocol) ? parsed.href : null;
   } catch {
     return null; // no absolute address at all, as "//host/x" or "javascript" without a scheme separator

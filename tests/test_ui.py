@@ -157,6 +157,7 @@ def test_the_options_name_the_profiles_and_their_switches_as_the_requests_define
     assert options["preset_default"] == settings.preset_default
     assert options["keys_required"] is False
     assert options["llm_configured"] is False
+    assert options["facets_visible"] is settings.facets_visible
 
 
 def test_the_options_offer_every_value_of_every_switch(options: dict[str, Any]) -> None:

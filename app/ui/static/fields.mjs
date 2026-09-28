@@ -21,6 +21,7 @@ export function buildForm(mode, options, { onSubmit, onExample }) {
     (field.advanced ? advanced : field.option ? small : basic).push(node);
   }
   const submit = h('button', { type: 'submit', class: 'primary' }, FORMS[mode].submit);
+  let hadFocus = false;
   const element = h(
     'form',
     {
@@ -63,12 +64,19 @@ export function buildForm(mode, options, { onSubmit, onExample }) {
         else control.focus.removeAttribute('aria-invalid');
         first ??= message ? control.focus : null;
       }
-      first?.focus();
+      if (first) {
+        const folded = first.closest('details');
+        if (folded) folded.open = true; // a field under "Erweitert" takes the focus only when it shows
+        first.focus();
+      }
       return Boolean(first);
     },
     busy(on) {
+      if (on) hadFocus = document.activeElement === submit;
       submit.disabled = on;
       element.setAttribute('aria-busy', String(on));
+      // A disabled button drops the focus to the page; a keyboard user gets it back where it was
+      if (!on && hadFocus && document.activeElement === document.body) submit.focus();
     },
   };
 }
@@ -82,9 +90,9 @@ function examples(mode, options, onExample) {
     {
       id,
       on: {
+        // It keeps the choice: reset to the prompt, every arrow key on the closed list loaded the first example again
         change: () => {
           const example = select.value === '' ? null : list[Number(select.value)];
-          select.value = ''; // back to the prompt, so the same example can be loaded again
           if (example) onExample(example);
         },
       },

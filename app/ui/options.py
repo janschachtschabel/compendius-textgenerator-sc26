@@ -144,6 +144,7 @@ def ui_options(
         "preset_default": settings.preset_default,
         "keys_required": bool(settings.api_key_list),
         "llm_configured": llm,  # without an LLM every profile but llm-free is a 503 (D53)
+        "facets_visible": settings.facets_visible,
         "presets": [{"id": preset, "switches": switches} for preset, switches in PRESETS.items()],
         "switches": SWITCHES,
         "parts": list(get_args(Part)),

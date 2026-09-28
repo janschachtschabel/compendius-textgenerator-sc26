@@ -163,6 +163,13 @@ test('an example fills its fields and leaves the others at their defaults', () =
   assert.equal(values.preset, 'balanced');
 });
 
+test('the facets start as the server shows them and are always sent as chosen', () => {
+  assert.equal(defaults('compendium', { ...options, facets_visible: true }).facets_visible, true);
+  const [run] = buildRequests('compendium', form('compendium', { topic: 'Optik', facets_visible: false }), { ...options, facets_visible: true });
+
+  assert.equal(run.request.body.facets_visible, false);
+});
+
 test('without an LLM on the server the forms start with the profile that needs none', () => {
   assert.equal(defaults('compendium', { ...options, llm_configured: false }).preset, 'llm-free');
   assert.notEqual(defaults('compendium', options).preset_b, defaults('compendium', options).preset);

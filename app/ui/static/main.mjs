@@ -130,9 +130,20 @@ async function run(mode) {
   const planned = buildRequests(mode, values, page.options);
   const key = byId('api-key').value.trim();
   form.busy(true);
-  const stopClock = waiting(mode, planned, controller);
-  const settled = await Promise.allSettled(planned.map((plan) => send(plan.request, key, controller.signal).then((answer) => ({ ...plan, ...answer }))));
-  stopClock();
+  const progress = waiting(mode, planned, controller);
+  // One after the other: side by side the two requests shared the workers, the CPU and the LLM gateway, and each
+  // time would have held some of the other's
+  const runs = [];
+  for (const [index, plan] of planned.entries()) {
+    progress.at(index);
+    try {
+      runs.push({ ...plan, ...(await send(plan.request, key, controller.signal)) });
+    } catch (error) {
+      if (controller.signal.aborted) break;
+      runs.push({ ...plan, error });
+    }
+  }
+  progress.stop();
   if (page.controllers.get(mode) !== controller) return; // a newer run of this mode took over the page and the form
   form.busy(false);
   if (controller.signal.aborted) {
@@ -140,7 +151,6 @@ async function run(mode) {
     announce('Abgebrochen.');
     return;
   }
-  const runs = settled.map((outcome, index) => (outcome.status === 'fulfilled' ? outcome.value : { ...planned[index], error: outcome.reason }));
   place(mode, results(mode, runs));
   announce(summary(mode, runs));
   if (runs.some((one) => one.error?.status === 401)) byId('api-key').focus();
@@ -153,10 +163,11 @@ function place(mode, element) {
   if (page.mode === mode) byId('results').replaceChildren(element);
 }
 
+// The waiting panel: which profile runs, for how long, and a way to stop
 function waiting(mode, planned, controller) {
-  const started = performance.now();
+  let started = performance.now();
   const clock = h('span', { class: 'clock' }, formatDuration(0));
-  const names = planned.map((plan) => label(PROFILE_NAMES, plan.preset)).join(' und ');
+  const now = h('span', {});
   const slow = planned.some((plan) => SLOW.test(plan.preset));
   place(
     mode,
@@ -164,14 +175,22 @@ function waiting(mode, planned, controller) {
       'div',
       { class: 'waiting' },
       h('div', { class: 'spinner', 'aria-hidden': 'true' }),
-      h('p', {}, `Wird erstellt mit ${names} … `, clock),
+      h('p', {}, now, ' ', clock),
+      planned.length > 1 ? h('p', { class: 'help' }, 'Die beiden Profile laufen nacheinander, damit jede Dauer für ihr Profil allein gilt.') : null,
       slow ? h('p', { class: 'help' }, 'Die Profile best-quality fragen die KI bei vielen Schritten; das dauert oft eine halbe Minute.') : null,
       h('button', { type: 'button', class: 'quiet', on: { click: () => controller.abort() } }, 'Abbrechen'),
     ),
   );
   announce(`${MODES[mode]}: wird erstellt …`);
   const timer = setInterval(() => (clock.textContent = formatDuration(performance.now() - started)), 250);
-  return () => clearInterval(timer);
+  return {
+    at(index) {
+      const name = label(PROFILE_NAMES, planned[index].preset);
+      now.textContent = planned.length > 1 ? `Wird erstellt mit ${name} (${index + 1} von ${planned.length}) …` : `Wird erstellt mit ${name} …`;
+      started = performance.now();
+    },
+    stop: () => clearInterval(timer),
+  };
 }
 
 function results(mode, runs) {
@@ -180,7 +199,10 @@ function results(mode, runs) {
   if (mode === 'compendium' && runs.some((one) => !one.error)) container.append(toolbar(container));
   if (runs.length > 1) {
     const lists = runs.map((one) => (one.error ? [] : metrics(mode, one.data, one.elapsedMs)));
-    container.append(compareTable(runs.map((one) => label(PROFILE_NAMES, one.preset)), lists));
+    container.append(
+      compareTable(runs.map((one) => label(PROFILE_NAMES, one.preset)), lists),
+      h('p', { class: 'help compare-note' }, 'Die Anfragen liefen nacheinander; jede Dauer gilt für ihr Profil allein.'),
+    );
   }
   container.append(h('div', { class: 'columns' }, runs.map((one) => column(mode, one))));
   return container;
