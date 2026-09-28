@@ -93,6 +93,7 @@ class SyncReport:
     errors: list[str] = field(default_factory=list)
     # An error a run soon after can fix cheaply: resume a .part, reach the catalog again (not a hash mismatch)
     retry_soon: bool = False
+    stopped: bool = False  # the container stopped the run; the next start resumes it (no error, audit KO-13)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -192,9 +193,15 @@ class ZimSync:
             state.updated_at = self._clock().isoformat()
             write_active(self._zim_dir, state)
         except BaseException as exc:  # also a full volume or Ctrl+C: the status must not stay "running"
-            report.errors.append(f"Lauf abgebrochen: {type(exc).__name__}: {exc}")
             report.finished_at = self._clock().isoformat()
-            self._write_status("error")
+            if isinstance(exc, Exception):
+                report.errors.append(f"Lauf abgebrochen: {type(exc).__name__}: {exc}")
+                self._write_status("error")
+            else:
+                # A stopped container (KeyboardInterrupt from stop_on_sigterm) is no failure of the run: as in
+                # DumpSync, it leaves the errors - and KompendiumZimSyncErrors - to what went wrong
+                report.stopped = True
+                self._write_status("idle")
             raise
         report.finished_at = self._clock().isoformat()
         self._write_status("idle")

@@ -196,3 +196,14 @@ def test_a_metalink_without_a_sha256_is_refused() -> None:
     )
     with pytest.raises(ValueError, match="carries no sha-256 hash"):
         parse_metalink(body.encode())
+
+
+def test_a_metalink_without_a_size_is_refused() -> None:
+    """KO-16: a size of 0 had the download look for a .part it never made; FileNotFoundError counts as resumable, so
+    the sync tried again every hour, without end."""
+    body = (
+        f'<metalink xmlns="{METALINK_NS}"><file name="klexikon_de_all_maxi_2026-08.zim">'
+        '<hash type="sha-256">ab12</hash><url priority="1">https://mirror.test/k.zim</url></file></metalink>'
+    )
+    with pytest.raises(ValueError, match="no size"):
+        parse_metalink(body.encode())

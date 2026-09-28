@@ -148,9 +148,12 @@ def parse_metalink(xml: bytes) -> Metalink:
         ((int(u.get("priority", "999")), (u.text or "").strip()) for u in file_el.findall(f"{METALINK}url")),
         key=lambda item: item[0],
     )
+    size = _int(file_el, f"{METALINK}size")
+    if size <= 0:  # the download would wait for a .part it never makes, and retry every hour (audit KO-16)
+        raise ValueError(f"metalink for {file_el.get('name')!r} gives no size")
     return Metalink(
         file_name=file_el.get("name", ""),
-        size=_int(file_el, f"{METALINK}size"),
+        size=size,
         sha256=sha256.strip().lower(),
         urls=[url for _, url in mirrors if url],
     )

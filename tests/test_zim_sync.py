@@ -252,6 +252,27 @@ def test_an_aborted_run_leaves_a_final_status(
     assert any("Lauf abgebrochen" in error and "OSError" in error for error in status["last_run"]["errors"])
 
 
+def test_a_stopped_container_is_no_error_of_the_run(
+    tmp_path: Path, sources: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """KO-13: the KeyboardInterrupt a SIGTERM raises went into errors, and KompendiumZimSyncErrors fired for the
+    hours of the download the next start resumed; DumpSync already kept a stop apart from a failure."""
+
+    def stopped(*_args: Any, **_kwargs: Any) -> None:
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr("app.jobs.zim_sync.write_active", stopped)
+    offers = {"wikipedia_de_sample": "wikipedia_de_sample_2026-01.zim"}
+    sync = _sync(tmp_path, FakeCatalog(offers, sources), FakeDownloader(sources))
+    with pytest.raises(KeyboardInterrupt):
+        sync.run(BOOTSTRAP)
+    status = read_status(tmp_path)
+    assert status is not None
+    assert status["state"] == "idle"
+    assert status["last_run"]["errors"] == [] and status["last_run"]["stopped"] is True
+    assert status["last_run"]["finished_at"]
+
+
 def test_a_second_sync_is_refused_while_a_run_holds_the_lock(tmp_path: Path, sources: dict[str, Path]) -> None:
     from app.jobs.zim_sync import LOCK_FILE, LOCK_STALE_S, SyncRunningError
 
