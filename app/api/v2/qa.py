@@ -24,7 +24,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
-from app.api.deps import get_service, node_errors
+from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
@@ -33,12 +33,10 @@ from app.domain.models import Compendium, Resolution
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
-from app.service import CompendiumService, LlmNotConfiguredError, PartsUnavailableError, TopicNotFoundError
-from app.sources.lehrplan.subjects import UnknownSubjectError
+from app.service import CompendiumService
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_knowledge import Knowledge, knowledge_of_compendium, knowledge_of_text
 from app.synthesis.qa_rules import rule_pairs
-from app.templates.manager import TemplateNotFoundError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -74,10 +72,7 @@ def _refuse_llm_without_one(request: Request, needed: list[str], profile: str, *
     service = request.app.state.service
     if not needed or service is None:
         return
-    try:
-        service.refuse_without_llm(needed, profile, defaulted=defaulted)
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    service.refuse_without_llm(needed, profile, defaulted=defaulted)
 
 
 def _article_choice(payload: QaRequest, profile: str) -> ArticleChoice | None:
@@ -108,31 +103,19 @@ def _part_one(
     Only ``world`` is asked for: part 2 lists curriculum elements and part 3 lists materials of a
     collection, and neither is prose a question can be built from.
     """
-    try:
-        with node_errors():  # no collection here, so a 404 of the repository can only be the node's
-            return service.generate(
-                GenerateRequest(
-                    topic=payload.topic,
-                    node_id=payload.node_id,
-                    repository=payload.repository,
-                    subject=payload.subject,
-                    preset=KNOWLEDGE_PROFILE,
-                    article_choice=article_choice,
-                    parts=["world"],
-                ),
-                deadline=allowance.deadline if allowance is not None else None,
-                budget=allowance.budget if allowance is not None else None,
-            )
-    except TopicNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=exc.detail()) from exc
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
-    except PartsUnavailableError as exc:
-        raise HTTPException(status_code=503, detail=f"Teil 1 ist nicht erzeugbar: {exc}") from exc
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
-    except UnknownSubjectError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return service.generate(
+        GenerateRequest(
+            topic=payload.topic,
+            node_id=payload.node_id,
+            repository=payload.repository,
+            subject=payload.subject,
+            preset=KNOWLEDGE_PROFILE,
+            article_choice=article_choice,
+            parts=["world"],
+        ),
+        deadline=allowance.deadline if allowance is not None else None,
+        budget=allowance.budget if allowance is not None else None,
+    )
 
 
 def _rule_stage(request: Request, knowledge: Knowledge, payload: QaRequest) -> tuple[list[QaPair], str | None]:

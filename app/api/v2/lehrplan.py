@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, Query, Request
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -22,14 +22,13 @@ from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.report import build_llm_report
-from app.service import CompendiumService, LlmNotConfiguredError, TopicNotFoundError, choice_audit, llm_switches
+from app.service import CompendiumService, choice_audit, llm_switches
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
 from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
-from app.sources.lehrplan.subjects import UnknownSubjectError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"])
@@ -99,10 +98,7 @@ def _as_part_two(request: Request, asked: GenerateRequest, budget: RequestBudget
     choice of the profile (D35, D59)."""
     service = get_service(request)
     requested, note, job = service.article_choice_job(asked.article_choice, deadline, budget)
-    try:
-        prepared = service.prepare(asked, deadline, job)
-    except TopicNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=exc.detail()) from exc
+    prepared = service.prepare(asked, deadline, job)
     # as CompendiumService.generate hands them to part 2
     title = prepared.resolution.title or prepared.normalized.topic
     primary = next((s for s in prepared.sources if s.is_primary), prepared.sources[0] if prepared.sources else None)
@@ -240,10 +236,7 @@ def lehrplan_search(
     - ``/api/v2/lehrplan/search?q=Optik&subject=Physik&mode=topic&limit=100&preset=best-quality&curriculum_check=llm``
     """
     builder = _builder(request)
-    try:
-        builder.subjects.check(subject)
-    except UnknownSubjectError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    builder.subjects.check(subject)
     service: CompendiumService = request.app.state.service
     asked = with_profile(
         GenerateRequest(
@@ -252,10 +245,8 @@ def lehrplan_search(
         service.settings.preset_default,
     )
     profile = asked.preset or service.settings.preset_default
-    try:  # the words alone need no article, so only mode=topic can need the LLM for one
-        service.refuse_without_llm(llm_switches(asked, corpus=mode == "topic"), profile, defaulted=preset is None)
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    # the words alone need no article, so only mode=topic can need the LLM for one
+    service.refuse_without_llm(llm_switches(asked, corpus=mode == "topic"), profile, defaulted=preset is None)
     budget, deadline = service.open_budget(profile), Deadline(service.settings.request_timeout_s)
     if mode == "topic":
         search = _as_part_two(request, asked, budget, deadline)

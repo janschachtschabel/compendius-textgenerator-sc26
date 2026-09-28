@@ -13,7 +13,6 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, Path, Query, Request
 from pydantic import Field
 
-from app.api.deps import node_errors
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.domain.models import NodeInput
@@ -103,8 +102,7 @@ def read_node(
       named by its REST root, e.g. ``https://repository.staging.openeduhub.net/edu-sharing/rest``
     """
     service = request.app.state.service
-    with node_errors():
-        info, node = service.read_node(node_id, repository)
+    info, node = service.read_node(node_id, repository)
     found = derive_topic(None, [node_topic(info)])
     topic: str | None = found.normalized.topic
     node_article: dict[str, Any] | None = None

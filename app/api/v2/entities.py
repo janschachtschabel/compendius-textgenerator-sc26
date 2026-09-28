@@ -33,7 +33,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
-from app.api.deps import archives_for, node_errors
+from app.api.deps import archives_for
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.entities_schemas import (
@@ -55,7 +55,7 @@ from app.knowledge.identifiers import identifiers
 from app.knowledge.linking import article_of
 from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
 from app.llm.deadline import Deadline
-from app.service import CompendiumService, LlmNotConfiguredError
+from app.service import CompendiumService
 from app.sources.gnd.index import GndIndex
 from app.sources.wikidata.index import WikidataIndex
 from app.sources.wlo.models import NodeInfo
@@ -126,14 +126,6 @@ def _recognise(
         ran.append("dictionary")
         mentions.extend(mentions_from_titles(registry.archives, text))
     return ran, mentions
-
-
-def _refuse_without_llm(service: CompendiumService, needed: list[str], profile: str, *, defaulted: bool) -> None:
-    """What needs an LLM on a server without one is a 503 (D53), as everywhere else."""
-    try:
-        service.refuse_without_llm(needed, profile, defaulted=defaulted)
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 def _llm_job(service: CompendiumService, profile: str, report: EntitiesLlmReport) -> EntityLlmJob | None:
@@ -274,11 +266,10 @@ def entities(
     methods = payload.methods or PROFILE_METHODS[profile]
     check = payload.link and payload.link_check == "llm"
     needed = (["methods=llm"] if "llm" in methods else []) + (["link_check=llm"] if check else [])
-    _refuse_without_llm(service, needed, profile, defaulted=not payload.preset)
+    service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
     node, text = None, payload.text or ""
     if payload.node_id:  # no archive is needed for this, so the service is asked directly
-        with node_errors():
-            info, node = service.read_node(payload.node_id, payload.repository)
+        info, node = service.read_node(payload.node_id, payload.repository)
         text = _node_text(info)
     report = EntitiesLlmReport() if needed else None
     job = _llm_job(service, profile, report) if report is not None else None

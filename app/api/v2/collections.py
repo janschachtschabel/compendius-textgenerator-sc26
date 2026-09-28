@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Request
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.llm.deadline import Deadline
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, validate_node_id
+from app.sources.wlo.client import validate_node_id
 from app.sources.wlo.part import CollectionBuilder
 
 router = APIRouter(prefix="/api/v2/collections", tags=["collections"])
@@ -54,12 +54,7 @@ def collection_overview(
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     deadline = Deadline(request.app.state.settings.request_timeout_s)  # the same budget as a compendium's part 3
-    try:
-        part = builder.overview(collection_id, expired=lambda: deadline.remaining() <= 0)
-    except CollectionNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    except EduSharingError as exc:
-        raise HTTPException(status_code=502, detail=str(exc)) from exc  # the message names the repository
+    part = builder.overview(collection_id, expired=lambda: deadline.remaining() <= 0)
     if not part.available:  # read, but not listed: inside a compendium a hint, on its own a failed request
         raise HTTPException(status_code=502, detail=part.error or "Die Sammlung ließ sich nicht auflisten")
     return part.model_dump()

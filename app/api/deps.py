@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator, Sequence
-from contextlib import contextmanager
+from collections.abc import Sequence
 from typing import Any
 
 from fastapi import HTTPException, Request
@@ -15,13 +14,10 @@ from app.knowledge.node_article import node_block
 from app.knowledge.topic_articles import settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
-from app.service import CompendiumService, RepositoryUnavailableError, TopicNotFoundError
-from app.sources.wlo.client import EduSharingError, NodeNotFoundError
+from app.service import CompendiumService, TopicNotFoundError
 from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic
-from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.sources.zim.registry import CHOSEN_BY_LLM, NODE_ORIGIN, ZimRegistry
-from app.templates.manager import TemplateNotFoundError
 
 
 def get_service(request: Request) -> CompendiumService:
@@ -30,22 +26,6 @@ def get_service(request: Request) -> CompendiumService:
     if service is None or not request.app.state.registry.ready:
         raise HTTPException(status_code=503, detail="Keine ZIM-Archive geladen; Dienst nicht bereit.")
     return service
-
-
-@contextmanager
-def node_errors() -> Iterator[None]:
-    """The answers when a node cannot be read (D45): an address outside the allowlist is a 422, an unknown node a
-    404, a failing repository a 502 and none at all a 503. The messages name the repository."""
-    try:
-        yield
-    except RepositoryNotAllowedError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
-    except NodeNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    except RepositoryUnavailableError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
-    except EduSharingError as exc:
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
 def archives_for(registry: ZimRegistry, archive_ids: Sequence[str]) -> ZimRegistry:
@@ -80,17 +60,14 @@ def corpus_for_topic(
     archives do not have is a 404 carrying the resolution, so the caller sees the alternatives instead of an empty
     answer; a material the rules find no article for says to send a topic.
     """
-    try:  # before the article choice, which may ask the LLM
-        template = service.templates.get(template_id or service.settings.template_default)
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
+    # before the article choice, which may ask the LLM
+    template = service.templates.get(template_id or service.settings.template_default)
     deadline = Deadline(service.settings.request_timeout_s)
     requested, note, job = service.article_choice_job(article_choice, deadline, budget)
     chosen = choose_main_article(registry, service.subjects, topic, derived, subject=subject, node=node, job=job)
     resolution, normalized = chosen.resolution, chosen.normalized
     if not resolution.resolved:
-        missing = TopicNotFoundError(resolution, chosen.node, from_material=not topic)
-        raise HTTPException(status_code=404, detail=missing.detail())
+        raise TopicNotFoundError(resolution, chosen.node, from_material=not topic)
     sources = registry.build_corpus(
         resolution,
         slots=template.content_slots(),

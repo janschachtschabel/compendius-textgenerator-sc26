@@ -19,6 +19,7 @@ from starlette.routing import Route
 
 from app import __version__
 from app.api.body_limit import BodySizeLimit
+from app.api.domain_errors import DOMAIN_ERRORS
 from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
@@ -393,6 +394,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.include_router(metrics_router)
     app.add_exception_handler(HTTPException, http_error)
     app.add_exception_handler(RequestValidationError, validation_error)
+    for error, answer in DOMAIN_ERRORS.items():
+        app.add_exception_handler(error, answer)
     # Added first, so it runs innermost: the refusal of a body too large still gets its request id and its metric
     app.add_middleware(BodySizeLimit)
 

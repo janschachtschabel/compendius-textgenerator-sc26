@@ -16,21 +16,9 @@ from app.api.deps import get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.v2.routes_examples import BUILTIN_TEMPLATES, EXAMPLES, TEMPLATE_EXAMPLES, TEMPLATE_ID_HELP
-from app.compose.regeneration import UnknownSectionsError
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
-from app.matching.registry import UnknownMatcherError
 from app.observability.metrics import record_compendium
-from app.service import (
-    LlmNotConfiguredError,
-    PartsUnavailableError,
-    RepositoryUnavailableError,
-    TopicNotFoundError,
-)
-from app.sources.lehrplan.subjects import UnknownSubjectError
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
-from app.sources.wlo.repository import RepositoryNotAllowedError
-from app.templates.manager import TemplateNotFoundError
 from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
@@ -118,30 +106,7 @@ def generate_compendium(
     The examples run from the shortest request over one per profile to one that sets every field.
     """
     service = get_service(request)
-    try:
-        compendium = service.generate(payload)
-    except TopicNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=exc.detail()) from exc
-    except (CollectionNotFoundError, NodeNotFoundError) as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc  # the messages name the repository
-    except RepositoryNotAllowedError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
-    except RepositoryUnavailableError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
-    except EduSharingError as exc:
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {exc.args[0]}") from exc
-    except UnknownMatcherError as exc:
-        raise HTTPException(status_code=422, detail=f"Unbekannte Matching-Strategie: {exc}") from exc
-    except (UnknownSubjectError, UnknownSectionsError) as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
-    except PartsUnavailableError as exc:
-        # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives
-        log.warning("compendium request refused: %s", exc)
-        raise HTTPException(status_code=503, detail=f"Kein angefragter Teil ist erzeugbar: {exc}") from exc
+    compendium = service.generate(payload)  # a refusal rises to its answer in app.api.domain_errors
     record_compendium(compendium)
     return compendium
 
@@ -178,10 +143,7 @@ def get_template(
     template - read a built-in one, change what you need, write it under your own id. An unknown id is a
     404.
     """
-    try:
-        template = request.app.state.templates.get(template_id)
-    except TemplateNotFoundError as exc:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}") from exc
+    template = request.app.state.templates.get(template_id)
     data: dict[str, Any] = template.model_dump()
     return data
 

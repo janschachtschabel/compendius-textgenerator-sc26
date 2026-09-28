@@ -9,10 +9,10 @@ from __future__ import annotations
 
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from fastapi import APIRouter, Body, Depends, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from app.api.deps import archives_for, corpus_for_topic, get_service, node_errors
+from app.api.deps import archives_for, corpus_for_topic, get_service
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.domain.models import NodeInput, Resolution, Source
@@ -27,8 +27,6 @@ from app.domain.requests import (
     ArticleChoice,
     Preset,
 )
-from app.service import LlmNotConfiguredError
-from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.part import node_topic
 
 router = APIRouter(prefix="/api/v2", tags=["v2"])
@@ -287,22 +285,15 @@ def knowledge(
     alternatives instead of coming back empty; for a material without an article it asks for a topic.
     """
     service = get_service(request)
-    try:
-        service.subjects.check(payload.subject)
-    except UnknownSubjectError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    service.subjects.check(payload.subject)
     profile = payload.preset or service.settings.preset_default
     article_choice = payload.article_choice or PRESETS[profile]["article_choice"]
-    try:
-        needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
-        service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
-    except LlmNotConfiguredError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
+    service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
     registry = archives_for(service.registry, payload.archives)
     info, node, derived = None, None, []
     if payload.node_id:
-        with node_errors():
-            info, node = service.read_node(payload.node_id, payload.repository)
+        info, node = service.read_node(payload.node_id, payload.repository)
         derived.append(node_topic(info))
     topic, resolution, sources, choice, node_article = corpus_for_topic(
         service,
