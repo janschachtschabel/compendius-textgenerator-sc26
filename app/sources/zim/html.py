@@ -126,6 +126,8 @@ class _ArticleParser(HTMLParser):
         self._bold_text: list[str] = []
         self._path_stack: list[str] = []
         self._seen_links: set[str] = set()
+        # the links of the current section in lower case; rebuilt per link it made 8,000 links take 4.25 s (PE-02)
+        self._section_links: set[str] = set()
 
     # -- helpers ------------------------------------------------------------------------------
     @property
@@ -309,6 +311,7 @@ class _ArticleParser(HTMLParser):
         self._path_stack = self._path_stack[:depth]
         self._path_stack.append(heading)
         self.sections.append(ArticleSection(heading=heading, path=list(self._path_stack), level=level))
+        self._section_links = set()
 
     def _record_link(self, attrs: dict[str, str | None]) -> None:
         href = attrs.get("href") or ""
@@ -318,7 +321,8 @@ class _ArticleParser(HTMLParser):
         title = title.strip()
         if not title or title.startswith(_NAMESPACES):
             return
-        if title.lower() not in {t.lower() for t in self._current.links}:
+        if title.lower() not in self._section_links:
+            self._section_links.add(title.lower())
             self._current.links.append(title)
         if title.lower() in self._seen_links:
             return

@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 from app.sources.zim.html import parse_article
@@ -100,3 +101,22 @@ def test_a_link_inside_a_list_is_marked_as_one() -> None:
     parsed = parse_article(html, "Punkt")
     assert parsed.links == ["Latein", "Punkt (Geometrie)", "Punktewertung"]
     assert parsed.list_links == ["Punkt (Geometrie)", "Punktewertung"]
+
+
+def test_a_section_lists_each_link_once_and_the_article_once_over_all() -> None:
+    html = (
+        '<p><a href="Linse">Linse</a> <a href="linse">linse</a> <a href="Prisma">Prisma</a></p>'
+        '<h2>Geschichte</h2><p><a href="Linse">Linse</a></p>'
+    )
+    parsed = parse_article(html, "Optik")
+    assert [section.links for section in parsed.sections] == [["Linse", "Prisma"], ["Linse"]]
+    assert parsed.links == ["Linse", "Prisma"]
+
+
+def test_many_links_in_one_section_parse_in_linear_time() -> None:
+    """PE-02: every link rebuilt the set of its section's links; 8,000 links took 4.25 s."""
+    html = "<p>" + " ".join(f'<a href="Begriff_{i}">B{i}</a>' for i in range(8000)) + "</p>"
+    started = time.perf_counter()
+    parsed = parse_article(html, "X")
+    assert time.perf_counter() - started < 1.0
+    assert len(parsed.sections[0].links) == 8000
