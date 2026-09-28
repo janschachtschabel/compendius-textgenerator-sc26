@@ -15,7 +15,7 @@ import pytest
 
 from app.concurrency import map_in_threads
 from app.llm.call import LlmSkipped, skipped_on_error
-from app.logging import _RequestIdFilter, current_request_id, set_request_id
+from app.logging import _RequestIdFilter, configure_logging, current_request_id, set_request_id
 
 
 def in_a_request[T](request_id: str, work: Callable[[], T]) -> T:
@@ -63,3 +63,26 @@ def test_an_unexpected_error_is_a_fallback_and_a_log_line_that_names_the_request
     [record] = [record for record in caplog.records if "failed unexpectedly" in record.getMessage()]
     assert record.getMessage() == "Probe 1 failed unexpectedly"
     assert record.request_id == "rid-10"  # type: ignore[attr-defined]
+
+
+def test_the_services_log_line_names_the_request_of_a_worker_thread(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """TE-13 (audit 2026-09-28): under pytest the root logger has handlers already, so configure_logging never set
+    the service's format and its request-id filter here. Without the filter every line in production became
+    "--- Logging error ---", and suite and smoke probe stayed green."""
+    root, httpx_logger = logging.getLogger(), logging.getLogger("httpx")
+    levels = root.level, httpx_logger.level
+    monkeypatch.setattr(root, "handlers", [])  # as in production; the test's own handlers come back afterwards
+    try:
+        configure_logging("INFO")
+        in_a_request(
+            "rid-13",
+            lambda: map_in_threads(lambda item: logging.getLogger("app.probe").info("Probe %s", item), [1], workers=1),
+        )
+    finally:
+        root.setLevel(levels[0])
+        httpx_logger.setLevel(levels[1])
+
+    [line] = [line for line in capsys.readouterr().out.splitlines() if "Probe 1" in line]
+    assert line.split(" | ")[1:] == ["INFO    ", "app.probe", "rid-13", "Probe 1"]
