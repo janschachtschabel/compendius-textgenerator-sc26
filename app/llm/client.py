@@ -16,7 +16,7 @@ import re
 import threading
 import time
 from collections.abc import Callable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 import httpx
@@ -26,7 +26,9 @@ from app.llm.deadline import MIN_CALL_S
 
 log = logging.getLogger(__name__)
 
-RETRY_STATUSES = frozenset({429, 502, 503, 504})
+# A gateway may pass an outage of the provider on as 500 (audit 2026-09-28, BE-14): it is retried and counts towards
+# the breaker like 502 to 504; 501 says the gateway lacks the call, which no retry changes
+RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 # Behind a 502 or 504 the gateway gave up waiting for the model, which may have read the prompt; a 429 or 503 turned
 # the request away before (audit 2026-09-27, KO-06)
 REACHED_STATUSES = frozenset({502, 504})
@@ -48,6 +50,9 @@ _REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4")
 # Reasoning models count their thinking in max_completion_tokens; gpt-5.6-luna (reasoning_effort=low) used a
 # block's whole limit of 555 tokens for it and answered with nothing (finish_reason=length, 2026-09-19)
 REASONING_ALLOWANCE = 1000
+# No call spends more: the largest windows hold about a million tokens. A broken or hostile gateway's usage of 2^63
+# raised out of the budget store and stood in the day's counter until midnight (audit 2026-09-28, KO-26)
+MAX_USAGE = 10_000_000
 
 Message = Mapping[str, str]
 
@@ -70,6 +75,8 @@ class ChatResult:
     total_tokens: int
     model: str
     finish_reason: str
+    # attempts before the answer that may have reached the model: a 502 or 504 (audit 2026-09-28, KO-27)
+    reached_before: int = 0
 
 
 @dataclass(frozen=True)
@@ -179,11 +186,12 @@ class BApiClient:
         ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline.
         """
         body = self._body(messages, max_output_tokens)
-        data = self._request("POST", self.chat_url, json_body=body, timeout_s=timeout_s)
-        return _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
+        data, reached = self._request("POST", self.chat_url, json_body=body, timeout_s=timeout_s)
+        result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
+        return replace(result, reached_before=reached) if reached else result
 
     def models(self) -> list[ModelInfo]:
-        data = self._request("GET", self.models_url, attempts=1, timeout_s=MODEL_CHECK_TIMEOUT_S)
+        data, _ = self._request("GET", self.models_url, attempts=1, timeout_s=MODEL_CHECK_TIMEOUT_S)
         entries = data.get("data") if isinstance(data, dict) else None
         if not isinstance(entries, list):
             raise LlmError("/models answered without a model list")
@@ -245,8 +253,9 @@ class BApiClient:
         *,
         attempts: int | None = None,
         timeout_s: float | None = None,
-    ) -> Any:
-        """One call: attempts until an answer, all of them within one deadline. Every retry used to get the whole
+    ) -> tuple[Any, int]:
+        """One call: attempts until an answer, all of them within one deadline; with the answer, how many attempts
+        before it may have reached the model. Every retry used to get the whole
         limit again, so a call outlived the deadline of its request (audit 2026-09-27, KO-04)."""
         ends = self._clock() + (timeout_s if timeout_s is not None else self.timeout_s)
         probe = self._admit()
@@ -258,7 +267,9 @@ class BApiClient:
                 with self._state:
                     self._probing = False  # a probe that neither closed nor tripped the breaker lets the next one try
 
-    def _attempts(self, method: str, url: str, json_body: Mapping[str, Any] | None, attempts: int, ends: float) -> Any:
+    def _attempts(
+        self, method: str, url: str, json_body: Mapping[str, Any] | None, attempts: int, ends: float
+    ) -> tuple[Any, int]:
         last_error = ""
         status: int | None = None
         reached = 0
@@ -281,8 +292,8 @@ class BApiClient:
                 if status == 200:
                     self._close()
                     try:
-                        return response.json()
-                    except ValueError as exc:
+                        return response.json(), reached
+                    except (ValueError, RecursionError) as exc:  # also a nesting too deep to read
                         raise LlmError("b-api antwortete ohne gültiges JSON", status) from exc
                 if status not in RETRY_STATUSES:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
@@ -290,7 +301,7 @@ class BApiClient:
                     log.warning("b-api answered HTTP %s: %s", status, self._redact(response.text)[:200])
                     if status in REFUSED_STATUSES:
                         self._refused(status)
-                    else:
+                    elif status < 500:
                         self._close()  # the b-api answers; the request was wrong
                     raise LlmError(f"b-api antwortete HTTP {status}", status, reached=reached)
                 last_error = f"HTTP {status}"
@@ -408,7 +419,7 @@ def _usage(usage: Any) -> tuple[int, int, int]:
 
     def number(key: str) -> int:
         value = _whole(usage.get(key))
-        return value if value is not None and value > 0 else 0
+        return min(value, MAX_USAGE) if value is not None and value > 0 else 0
 
     prompt_tokens, completion_tokens = number("prompt_tokens"), number("completion_tokens")
     return prompt_tokens, completion_tokens, number("total_tokens") or prompt_tokens + completion_tokens

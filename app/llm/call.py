@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from app.llm.budget import RequestBudget, estimate_tokens
 from app.llm.client import BApiClient, ChatResult, LlmError, Message
@@ -101,6 +101,13 @@ def budgeted_chat(
                 _heard("skipped")
                 return LlmSkipped(TIME_UP)
         answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s)
+        if answer.reached_before:
+            # an attempt that reached the model before this answer may have cost its prompt too; only a call that
+            # failed as a whole counted it (audit 2026-09-28, KO-27)
+            earlier = prompt_tokens * answer.reached_before
+            answer = replace(
+                answer, prompt_tokens=answer.prompt_tokens + earlier, total_tokens=answer.total_tokens + earlier
+            )
         spent = answer.total_tokens
     except LlmError as exc:
         log.warning("LLM call for %s failed: %s", what, exc)

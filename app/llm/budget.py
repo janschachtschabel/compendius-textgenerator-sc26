@@ -189,12 +189,16 @@ class RequestBudget:
         return self.used + self._reserved + tokens <= self.limit
 
     def settle(self, reserved: int, actual: int) -> None:
-        """Replace a reservation by what the call actually cost (``usage.total_tokens``); waiting calls try again."""
-        self.budget.settle(reserved, actual)  # first: a call woken below finds the daily budget settled as well
-        with self._settled:
-            self._reserved = max(0, self._reserved - reserved)
-            self.used += actual
-            self._settled.notify_all()
+        """Replace a reservation by what the call actually cost (``usage.total_tokens``); waiting calls try again. The
+        request lets go of the reservation whatever the day's settling does: an error there left it standing and
+        blocked the rest of the request (audit 2026-09-28, KO-26)."""
+        try:
+            self.budget.settle(reserved, actual)  # first: a call woken below finds the daily budget settled as well
+        finally:
+            with self._settled:
+                self._reserved = max(0, self._reserved - reserved)
+                self.used += actual
+                self._settled.notify_all()
 
     def release(self, reserved: int) -> None:
         """Give a reservation back: the call failed and cost nothing."""

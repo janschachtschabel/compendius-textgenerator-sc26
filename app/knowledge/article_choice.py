@@ -258,5 +258,5 @@ def read_number(value: Any) -> int | None:
     if isinstance(value, int):
         return value
     if isinstance(value, str) and _NUMBER.fullmatch(value.strip()):
-        return int(value)
+        return int(value.strip())  # str.strip takes U+001C to U+001F for blanks, int() does not (KO-25)
     return None

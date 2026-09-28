@@ -98,7 +98,7 @@ def parse_selection(text: str) -> list[str] | None:
         return None
     try:
         data = json.loads(text[start : end + 1], parse_float=str, parse_int=str)
-    except ValueError:
+    except (ValueError, RecursionError):  # also a nesting too deep to read (audit 2026-09-28, KO-25)
         return None
     if not isinstance(data, dict):
         return None

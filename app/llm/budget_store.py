@@ -47,7 +47,7 @@ class SqliteDailyStore:
         try:
             with closing(self._connect()) as connection:
                 row = connection.execute("SELECT used FROM daily_tokens WHERE day = ?", (day,)).fetchone()
-        except sqlite3.Error as exc:
+        except (sqlite3.Error, OverflowError, ValueError) as exc:  # also a number SQLite cannot hold (KO-26)
             log.warning("LLM budget store not readable, counting in this process only: %s", exc)
             return None
         return int(row[0]) if row is not None else 0
@@ -57,7 +57,7 @@ class SqliteDailyStore:
         try:
             with closing(self._connect()) as connection:
                 row = connection.execute(_HELD_ELSEWHERE, (owner, now - RESERVATION_STALE_S)).fetchone()
-        except sqlite3.Error as exc:
+        except (sqlite3.Error, OverflowError, ValueError) as exc:  # also a number SQLite cannot hold (KO-26)
             log.warning("LLM budget store not readable, counting in this process only: %s", exc)
             return None
         return int(row[0])
@@ -82,7 +82,7 @@ class SqliteDailyStore:
                 except BaseException:
                     connection.execute("ROLLBACK")
                     raise
-        except sqlite3.Error as exc:
+        except (sqlite3.Error, OverflowError, ValueError) as exc:  # also a number SQLite cannot hold (KO-26)
             log.warning("LLM budget store not usable, reserving in this process only: %s", exc)
             return None
         return granted
@@ -102,7 +102,7 @@ class SqliteDailyStore:
                 connection.execute("DELETE FROM daily_tokens WHERE day < ?", (day - KEEP_DAYS,))
                 connection.execute("DELETE FROM reservations WHERE updated_at < ?", (now - RESERVATION_STALE_S,))
                 connection.commit()
-        except sqlite3.Error as exc:
+        except (sqlite3.Error, OverflowError, ValueError) as exc:  # also a number SQLite cannot hold (KO-26)
             log.warning("LLM budget store not writable, counting in this process only: %s", exc)
             return False
         return True

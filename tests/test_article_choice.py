@@ -114,7 +114,7 @@ def test_an_answer_that_names_nothing_leaves_the_rules_decision(answer: Any) -> 
 
 
 def test_a_failed_call_leaves_the_rules_decision() -> None:
-    chooser = chooser_for(FakeBApi(statuses=[500]))
+    chooser = chooser_for(FakeBApi(statuses=[500, 500, 500]))  # a 500 is tried again, three times (BE-14)
     assert chooser(CANDIDATES) == (None, None)
     assert chooser.report.fallback is not None and chooser.report.fallback.startswith("b-api")
 

@@ -379,7 +379,7 @@ def test_named_articles_come_from_the_archive_they_were_found_in(
 def test_a_failing_b_api_leaves_the_corpus_of_before(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}), statuses=[500])
+    fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}), statuses=[500, 500, 500])
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
     result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
 
