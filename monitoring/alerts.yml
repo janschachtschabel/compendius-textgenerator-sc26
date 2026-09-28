@@ -90,6 +90,21 @@ groups:
         annotations:
           summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
           description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
+      - alert: KompendiumZimSyncSilent
+        # Die Sync-Schleife schreibt beim Start und stündlich, während sie wartet, ein Lebenszeichen, auch in den 30
+        # Tagen zwischen zwei Prüfungen; ein laufender Sync schreibt stattdessen seinen Status, einen hängenden meldet
+        # KompendiumZimSyncHangs. Fehlt das Lebenszeichen, lief der Sidecar nie: Am 27.09.2026 fehlten die Sidecars
+        # auf dem Server unbemerkt, und KompendiumZimSyncStale hätte erst nach 35 Tagen gemeldet (Audit 2026-09-28,
+        # BE-15).
+        expr: >-
+          (time() - kompendium_zim_sync_alive_timestamp_seconds > 3 * 3600 unless kompendium_zim_sync_running == 1)
+          or (absent(kompendium_zim_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sidecar gibt kein Lebenszeichen
+          description: sync_alive ist älter als drei Stunden oder fehlt; der Dienst zim-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs zim-updater). Neue Archive kommen nicht an.
       - alert: KompendiumLehrplanCacheMissing
         expr: kompendium_lehrplan_cache_available == 0
         for: 1h
@@ -113,6 +128,19 @@ groups:
         annotations:
           summary: Der letzte Lehrplan-Harvest ist gescheitert
           description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
+      - alert: KompendiumLehrplanHarvestSilent
+        # Wie beim ZIM-Sidecar: Die Harvest-Schleife schreibt stündlich ein Lebenszeichen, auch zwischen den
+        # wöchentlichen Prüfungen, die ohne Abzug sonst nichts schreiben. Ein Vollabzug dauert rund 25 Minuten; einer
+        # über drei Stunden hängt (Audit 2026-09-28, BE-15).
+        expr: >-
+          time() - kompendium_lehrplan_harvest_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_lehrplan_harvest_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
+          description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.
       - alert: KompendiumWikidataIndexMissing
         # Eine neue Installation hat noch keinen Index; der Sidecar lädt zwei Dumps und baut ihn in 10 bis 20 Minuten
         expr: kompendium_wikidata_index_available == 0

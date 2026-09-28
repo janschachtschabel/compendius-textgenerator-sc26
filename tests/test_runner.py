@@ -154,3 +154,40 @@ def test_a_container_stop_reaches_the_job_as_a_keyboard_interrupt() -> None:
         assert signal.getsignal(signal.SIGTERM) is signal.default_int_handler
     finally:
         signal.signal(signal.SIGTERM, previous)
+
+
+def test_a_waiting_loop_signs_life_at_its_start_and_every_hour() -> None:
+    """BE-15 (audit 2026-09-28): the ZIM loop checks every 30 days and the curriculum loop every seven, and a check
+    without a pull wrote nothing, so a stopped sidecar showed after weeks. The loop signs life while it waits."""
+    clock = FakeClock()
+    stop = threading.Event()
+    signs: list[float] = []
+
+    def alive() -> None:
+        signs.append(clock.now)
+        if len(signs) == 4:
+            stop.set()
+
+    run_periodically(
+        lambda: None, timedelta(days=30), poll_s=600, stop=stop, clock=clock, sleep=clock.sleep, alive=alive
+    )
+
+    assert signs == [1000.0, 4600.0, 8200.0, 11800.0]
+
+
+def test_a_sign_of_life_that_cannot_be_written_stops_nothing() -> None:
+    clock = FakeClock()
+    stop = threading.Event()
+    runs: list[float] = []
+
+    def alive() -> None:
+        raise OSError("volume full")
+
+    def task() -> None:
+        runs.append(clock.now)
+        if len(runs) == 2:
+            stop.set()
+
+    run_periodically(task, timedelta(hours=2), poll_s=600, stop=stop, clock=clock, sleep=clock.sleep, alive=alive)
+
+    assert runs == [1000.0, 8200.0]

@@ -9,6 +9,8 @@ from typing import Any
 import pytest
 
 from app.cli import main
+from app.jobs.runner import last_alive
+from app.jobs.zim_sync import ALIVE_FILE
 from app.settings import get_settings
 from app.sources.zim.active import read_active
 
@@ -101,3 +103,13 @@ def test_the_sync_loop_stops_cleanly_on_sigterm(zim_env: Path, monkeypatch: pyte
     monkeypatch.setattr("app.cli_zim.run_periodically", lambda *args, **kwargs: None)
     assert main(["zim", "sync", "--offline", "--loop"]) == 0
     assert installed == ["sigterm"]
+
+
+def test_the_sync_loop_signs_life_into_the_zim_directory(zim_env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+    monkeypatch.setattr("app.cli_zim.run_periodically", lambda task, interval, **kwargs: captured.update(kwargs))
+    assert main(["zim", "sync", "--offline", "--loop"]) == 0
+
+    captured["alive"]()
+
+    assert last_alive(zim_env / ALIVE_FILE) is not None  # what the API reports (kompendium_zim_sync_alive_...)

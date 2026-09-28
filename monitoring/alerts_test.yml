@@ -528,3 +528,73 @@ tests:
             exp_annotations:
               summary: Ein Teil der Zustandswerte fehlt in /metrics
               description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).
+
+  - name: Lebenszeichen der ZIM- und Lehrplan-Sidecars
+    interval: 1m
+    input_series:
+      - series: 'up{job="kompendium", instance="api:8000"}'
+        values: "1x300"
+      # steht: die Schleife schreibt nach dem Start kein Lebenszeichen mehr
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x300"
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x300"
+      # wartet: eine wartende Schleife schreibt laufend ein neues
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+        values: "0+60x300"
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="wartet"}'
+        values: "0x300"
+      # laedt: ein langer Download, die Schleife steckt im Lauf; ob er hängt, sagt KompendiumZimSyncHangs
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="laedt"}'
+        values: "0x300"
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="laedt"}'
+        values: "1x300"
+      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x300"
+      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+        values: "0+60x300"
+    alert_rule_test:
+      - eval_time: 3h
+        alertname: KompendiumZimSyncSilent
+        exp_alerts: []
+      - eval_time: 3h35m
+        alertname: KompendiumZimSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der ZIM-Sidecar gibt kein Lebenszeichen
+              description: sync_alive ist älter als drei Stunden oder fehlt; der Dienst zim-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs zim-updater). Neue Archive kommen nicht an.
+      - eval_time: 3h
+        alertname: KompendiumLehrplanHarvestSilent
+        exp_alerts: []
+      - eval_time: 3h35m
+        alertname: KompendiumLehrplanHarvestSilent
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
+              description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.
+
+  - name: Sidecars, die nie ein Lebenszeichen gaben
+    interval: 1m
+    input_series:
+      - series: 'up{job="kompendium", instance="api:8000"}'
+        values: "1x60"
+    alert_rule_test:
+      - eval_time: 29m
+        alertname: KompendiumZimSyncSilent
+        exp_alerts: []
+      - eval_time: 35m
+        alertname: KompendiumZimSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Der ZIM-Sidecar gibt kein Lebenszeichen
+              description: sync_alive ist älter als drei Stunden oder fehlt; der Dienst zim-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs zim-updater). Neue Archive kommen nicht an.
+      - eval_time: 35m
+        alertname: KompendiumLehrplanHarvestSilent
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
+              description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.

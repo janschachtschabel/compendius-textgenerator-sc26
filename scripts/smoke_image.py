@@ -46,6 +46,18 @@ HARDENING = (
     "--security-opt",
     "no-new-privileges:true",
 )
+# What it sets for the four sidecars: no capabilities and no new privileges, but a writable file system - SQLite puts
+# its sort files in /var/tmp
+SIDECAR_HARDENING = ("--cap-drop", "ALL", "--security-opt", "no-new-privileges:true")
+# The command of each sidecar, as "status", and the first words of its answer. A broken entry point or a start
+# failure under the hardening let them restart endlessly while CI stayed green; on 2026-09-27 they were missing on
+# the server unnoticed (audit 2026-09-28, BE-15)
+SIDECARS = {
+    "zim": "ZIM-Verzeichnis:",
+    "lehrplan": "Lehrplan-Cache:",
+    "wikidata": "Wikidata-Index:",
+    "gnd": "GND-Index:",
+}
 
 
 def run(*args: str) -> str:
@@ -174,6 +186,24 @@ def check_embeddings(base_url: str) -> str:
     return f"{matching['matcher']} with {', '.join(matching['components'])}"
 
 
+def check_sidecars(image: str, archives: Path, state: Path, *, hardened: bool) -> str:
+    """The status command of each sidecar in the image, with the volumes and the hardening docker-compose.yml gives it;
+    a failing one fails the probe with its own message."""
+    for command, first_words in SIDECARS.items():
+        answer = run(
+            "run", "--rm",
+            "-v", f"{archives.as_posix()}:/data/zim:ro",
+            "-v", f"{state.as_posix()}:/data/state",
+            "-e", "ZIM_DIR=/data/zim",
+            "-e", "STATE_DIR=/data/state",
+            *(SIDECAR_HARDENING if hardened else ()),
+            image, "compendium", command, "status",
+        )  # fmt: skip
+        if not answer.startswith(first_words):
+            raise SystemExit(f"compendium {command} status did not answer as expected: {answer[:300]}")
+    return "compendium " + ", ".join(SIDECARS) + " status"
+
+
 def check(compendium: dict[str, object], logs: str) -> str:
     """Return the evidence line, or raise with what is wrong."""
     markdown = str(compendium.get("markdown", ""))
@@ -206,11 +236,17 @@ def main() -> int:
     args = parser.parse_args()
 
     base_url = f"http://127.0.0.1:{args.port}"
-    with tempfile.TemporaryDirectory(prefix="smoke-zim-") as directory:
-        archives = Path(directory)
-        # tempfile keeps the directory to its owner (0700); the image runs as an unprivileged user of its own
+    with (
+        tempfile.TemporaryDirectory(prefix="smoke-zim-") as directory,
+        tempfile.TemporaryDirectory(prefix="smoke-state-") as state_directory,
+    ):
+        archives, state = Path(directory), Path(state_directory)
+        # tempfile keeps the directories to their owner (0700); the image runs as an unprivileged user of its own, and
+        # a sidecar writes into its state volume
         archives.chmod(0o755)
+        state.chmod(0o777)
         build_archives(archives)
+        print(f"the sidecars start: {check_sidecars(args.image, archives, state, hardened=args.hardened)}")
         subprocess.run([DOCKER, "rm", "-f", args.name], capture_output=True, check=False)  # noqa: S603
         container = run(
             "run", "-d", "--name", args.name,

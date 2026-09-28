@@ -17,10 +17,13 @@ from fastapi.testclient import TestClient
 from prometheus_client.parser import text_string_to_metric_families
 
 from app import __version__
+from app.jobs.runner import mark_alive
+from app.jobs.zim_sync import ALIVE_FILE as ZIM_ALIVE_FILE
 from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.settings import Settings
 from app.sources.gnd.index import build_gnd_index
+from app.sources.lehrplan.harvest import ALIVE_FILE as LEHRPLAN_ALIVE_FILE
 from app.sources.wikidata.index import build_index
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
@@ -54,6 +57,23 @@ def value(samples: Samples, name: str, **labels: str) -> float:
 
 def epoch(iso: str) -> float:
     return datetime.fromisoformat(iso).timestamp()
+
+
+def test_the_sync_and_harvest_loops_report_their_sign_of_life(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """BE-15 (audit 2026-09-28): the loops write the time into a file of their volume at least once an hour, and
+    the API reports it; before the first one there is no series and no made-up zero."""
+    client = _app(sample_zims, tmp_path)
+    before = {name for name, _ in scrape(client)}
+    (tmp_path / "zim").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "zim" / ZIM_ALIVE_FILE).write_text("2026-09-28T10:00:00+00:00", encoding="utf-8")
+    (tmp_path / "state" / LEHRPLAN_ALIVE_FILE).write_text("2026-09-28T11:00:00+00:00", encoding="utf-8")
+
+    samples = scrape(client)
+
+    assert "kompendium_zim_sync_alive_timestamp_seconds" not in before
+    assert "kompendium_lehrplan_harvest_alive_timestamp_seconds" not in before
+    assert value(samples, "kompendium_zim_sync_alive_timestamp_seconds") == epoch("2026-09-28T10:00:00+00:00")
+    assert value(samples, "kompendium_lehrplan_harvest_alive_timestamp_seconds") == epoch("2026-09-28T11:00:00+00:00")
 
 
 def _app(sample_zims: dict[str, Path], tmp_path: Path, **overrides: Any) -> TestClient:
@@ -472,6 +492,8 @@ def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Pat
     (tmp_path / "zim" / "sync_status.json").write_text(
         json.dumps({"state": "idle", "updated_at": "2026-09-18T03:00:00+00:00", "last_run": finished}), encoding="utf-8"
     )
+    mark_alive(tmp_path / "zim" / ZIM_ALIVE_FILE)
+    mark_alive(tmp_path / "state" / LEHRPLAN_ALIVE_FILE)
     with _app(sample_zims, tmp_path) as client:
         gateway = make_gateway(FakeBApi(answer_from_evidence))
         gateway.check_model()

@@ -8,11 +8,13 @@ import sys
 from collections.abc import Callable
 from dataclasses import asdict
 from datetime import timedelta
+from functools import partial
 from pathlib import Path
 
-from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
+from app.jobs.runner import mark_alive, parse_interval, run_periodically, stop_on_sigterm
 from app.settings import Settings, get_settings
 from app.sources.lehrplan.harvest import (
+    ALIVE_FILE,
     TRIGGER_FILE,
     HarvestRefusedError,
     HarvestRunningError,
@@ -119,6 +121,7 @@ def cmd_harvest(args: argparse.Namespace) -> int:
                 retry_after=RETRY_AFTER_FAILURE,
                 poll_s=POLL_SECONDS,
                 trigger_file=Path(settings.state_dir) / TRIGGER_FILE,
+                alive=partial(mark_alive, Path(settings.state_dir) / ALIVE_FILE),
             )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; the harvest has written its status
             print("Harvest-Schleife beendet.")

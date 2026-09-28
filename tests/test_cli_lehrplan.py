@@ -2,6 +2,7 @@
 
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -118,3 +119,17 @@ def test_a_refused_harvest_ends_with_a_message_instead_of_a_traceback(
 
     assert main(["lehrplan", "harvest"]) == 1
     assert "Harvest verworfen: MEM listet keinen Lehrplan" in capsys.readouterr().err
+
+
+def test_the_harvest_loop_signs_life_into_the_state_directory(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.jobs.runner import last_alive
+    from app.sources.lehrplan.harvest import ALIVE_FILE
+
+    seen: dict[str, Any] = {}
+    monkeypatch.setattr("app.cli_lehrplan.stop_on_sigterm", lambda: None)
+    monkeypatch.setattr("app.cli_lehrplan.run_periodically", lambda *args, **kwargs: seen.update(kwargs))
+    assert main(["lehrplan", "harvest", "--loop"]) == 0
+
+    seen["alive"]()
+
+    assert last_alive(state_dir / ALIVE_FILE) is not None  # what the API reports (kompendium_lehrplan_harvest_...)

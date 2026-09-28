@@ -54,6 +54,7 @@ log = logging.getLogger(__name__)
 
 STATUS_FILE = "sync_status.json"
 TRIGGER_FILE = "sync.request"
+ALIVE_FILE = "sync_alive"  # the sign of life of the updater loop (app/jobs/runner.py)
 LOCK_FILE = "sync.lock"
 # A run writes its status at every step and every second of a download, and each write refreshes the lock;
 # an hour without a sign of life means the run crashed.

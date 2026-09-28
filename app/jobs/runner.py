@@ -8,10 +8,17 @@ import signal
 import threading
 import time
 from collections.abc import Callable
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from app.sources.zim.active import atomic_write_text
+
 log = logging.getLogger(__name__)
+
+# A waiting loop signs life at least this often. The ZIM loop checks every 30 days (D16) and the curriculum loop
+# every seven, and a check without a pull wrote nothing: a stopped sidecar showed only after weeks, and on
+# 2026-09-27 the sidecars were missing on the server unnoticed (audit 2026-09-28, BE-15).
+ALIVE_EVERY = timedelta(hours=1)
 
 _INTERVAL_RE = re.compile(r"^\s*(\d+)\s*([smhd])\s*$", re.IGNORECASE)
 _UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400}
@@ -23,6 +30,19 @@ def parse_interval(text: str) -> timedelta:
     if not match:
         raise ValueError(f"invalid interval {text!r}; use <number><s|m|h|d>, e.g. 30d")
     return timedelta(seconds=int(match.group(1)) * _UNITS[match.group(2).lower()])
+
+
+def mark_alive(path: Path) -> None:
+    """Write the time into ``path``: the sign of life of a job loop, which the API reports as a metric."""
+    atomic_write_text(path, datetime.now(UTC).isoformat())
+
+
+def last_alive(path: Path) -> datetime | None:
+    """The last sign of life written into ``path``; ``None`` before the first one or for a file that is no time."""
+    try:
+        return datetime.fromisoformat(path.read_text(encoding="utf-8").strip())
+    except (OSError, ValueError):
+        return None
 
 
 def stop_on_sigterm() -> None:
@@ -46,17 +66,26 @@ def run_periodically(
     stop: threading.Event | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleep: Callable[[float], None] = time.sleep,
+    alive: Callable[[], None] | None = None,
 ) -> None:
     """Run ``task`` now and then every ``interval``; a trigger file runs it early and is removed.
 
     The loop wakes every ``poll_s`` seconds to look for the trigger file and the stop event.
     A task that raises (logged) or returns ``False`` runs again after ``retry_after`` when that is shorter than
     the interval; one that returns a ``timedelta`` runs again after it when that is shorter - the ZIM sync, when a
-    retired archive may go (audit 2026-09-28, BE-12). The loop returns once ``stop`` is set.
+    retired archive may go (audit 2026-09-28, BE-12). ``alive`` is called when the loop starts and at least every
+    ``ALIVE_EVERY`` while it waits; one that fails is logged and tried again an hour later. The loop returns once
+    ``stop`` is set.
     """
     stop = stop or threading.Event()
-    next_run = clock()
+    next_run = next_alive = clock()
     while not stop.is_set():
+        if alive is not None and clock() >= next_alive:
+            try:
+                alive()
+            except OSError as exc:  # a full or read-only volume: the job itself may still run
+                log.warning("cannot write the sign of life: %s", exc)
+            next_alive = clock() + ALIVE_EVERY.total_seconds()
         triggered = trigger_file is not None and trigger_file.exists()
         if triggered or clock() >= next_run:
             if triggered and trigger_file is not None:
@@ -77,4 +106,5 @@ def run_periodically(
             next_run = clock() + wait.total_seconds()
         if stop.is_set():
             break
-        sleep(min(poll_s, max(next_run - clock(), 0.0)))
+        wake = min(next_run, next_alive) if alive is not None else next_run
+        sleep(min(poll_s, max(wake - clock(), 0.0)))

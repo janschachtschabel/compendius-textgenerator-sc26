@@ -6,10 +6,12 @@ import argparse
 import json
 import sys
 from datetime import timedelta
+from functools import partial
 from pathlib import Path
 
-from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
+from app.jobs.runner import mark_alive, parse_interval, run_periodically, stop_on_sigterm
 from app.jobs.zim_sync import (
+    ALIVE_FILE,
     TRIGGER_FILE,
     SyncOptions,
     SyncReport,
@@ -113,6 +115,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
             retry_after=RETRY_AFTER_FAILURE,
             poll_s=POLL_SECONDS,
             trigger_file=trigger,
+            alive=partial(mark_alive, Path(settings.zim_dir) / ALIVE_FILE),
         )
     except KeyboardInterrupt:
         print("Sync-Schleife beendet.")

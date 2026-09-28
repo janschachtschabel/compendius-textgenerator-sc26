@@ -42,6 +42,7 @@ log = logging.getLogger(__name__)
 
 STATUS_FILE = "lehrplan_status.json"
 TRIGGER_FILE = "lehrplan.request"
+ALIVE_FILE = "lehrplan_alive"  # the sign of life of the harvest loop (app/jobs/runner.py)
 LOCK_FILE = "lehrplan.harvest.lock"
 LOCK_STALE_S = 4 * 3600  # a harvest takes about 15 minutes; an older lock belongs to a crashed run
 CHUNK_SIZE = 40

@@ -20,8 +20,11 @@ from prometheus_client.core import GaugeMetricFamily
 from prometheus_client.metrics_core import Metric
 
 from app import __version__, revision
+from app.jobs.runner import last_alive
+from app.jobs.zim_sync import ALIVE_FILE as ZIM_ALIVE_FILE
 from app.jobs.zim_sync import read_status as read_zim_status
 from app.sources.gnd.sync import read_status as read_gnd_status
+from app.sources.lehrplan.harvest import ALIVE_FILE as LEHRPLAN_ALIVE_FILE
 from app.sources.lehrplan.harvest import read_status as read_harvest_status
 from app.sources.wikidata.sync import read_status as read_wikidata_status
 
@@ -73,6 +76,17 @@ def _index_gauges(name: str, index: Any, dated: str, status: Mapping[str, Any] |
                 f"End of the last {name} sync run or check",
                 finished,
             )
+
+
+def _alive_gauge(job: str, path: Path) -> Iterator[Metric]:
+    """The last sign of life of a job loop (app/jobs/runner.py), left out before the first one."""
+    alive = last_alive(path)
+    if alive is not None:
+        yield _gauge(
+            f"kompendium_{job}_alive_timestamp_seconds",
+            "Last sign of life of the loop; it writes one at least hourly while it waits",
+            alive.timestamp(),
+        )
 
 
 class StatusCollector:
@@ -129,6 +143,7 @@ class StatusCollector:
         yield articles
 
     def _zim_sync(self) -> Iterator[Metric]:
+        yield from _alive_gauge("zim_sync", Path(self._state.settings.zim_dir) / ZIM_ALIVE_FILE)
         status = read_zim_status(Path(self._state.settings.zim_dir))
         if status is None:
             return
@@ -170,6 +185,7 @@ class StatusCollector:
                     "Start of the harvest behind the cache",
                     harvested,
                 )
+        yield from _alive_gauge("lehrplan_harvest", Path(self._state.settings.state_dir) / LEHRPLAN_ALIVE_FILE)
         status = read_harvest_status(Path(self._state.settings.state_dir))
         if status is None:
             return
