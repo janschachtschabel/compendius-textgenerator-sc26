@@ -79,6 +79,9 @@ bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`).
   Ruft keinen fremden Dienst auf.
 - `GET /ready`: 200 erst, wenn alle Pflichtarchive des Profils vorliegen, sonst 503.
 - `GET /api/v2/zim/status`, `GET /api/v2/lehrplan/status`: Archive, letzter Sync, Cache-Stand.
+- `/ui/` mit `UI_ENABLED=true` (README, „Prüfansicht“): eine Stichprobe nach einem Update im Browser, ein
+  Kompendium je Profil mit der Herkunft jedes Absatzes, Zeit und Tokens. Auf einem öffentlichen Server nur mit
+  `API_KEYS`, wie die Endpunkte selbst.
 - Die Sidecars haben keinen HTTP-Server und keinen Healthcheck; ihren Stand zeigen `sync_status.json` und
   `GET /api/v2/zim/progress` (Admin) sowie die Logs.
 

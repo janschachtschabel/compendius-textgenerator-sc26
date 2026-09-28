@@ -610,6 +610,35 @@ der b-api nur im Log.
 LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
 ```
 
+## Prüfansicht
+
+Menschen ohne Kenntnis der API prüfen die Texte im Browser (D66): `UI_ENABLED=true` setzen, dann steht unter
+`http://<host>:8000/ui/` eine Seite bereit. Links wählt man, was geprüft wird — Kompendium, Wissenstexte,
+Lehrplan, Entitäten oder Fragen und Antworten —, gibt Thema, Sammlung, Sammlung als Quelle oder ein Material ein
+oder lädt ein Beispiel (Staging), wählt Teile und Profil und auf Wunsch ein zweites Profil zum Vergleich. Unter
+„Erweitert“ lassen sich die Methoden einzelner Schritte setzen, die sonst das Profil wählt. Rechts steht der Text
+gerendert:
+
+- **Herkunft je Absatz** (abschaltbar, ebenso die Belegnummern): Jeder Baustein von Teil 1 sagt, wie sein Text
+  entstand — wörtlich aus den Quellen, von der KI ausgewählt, von der KI formuliert oder automatisch
+  zusammengestellt —, jeder Absatz, aus welchem Artikel und Abschnitt er stammt („Wörtlich aus „Optik“
+  (Wikipedia, Einleitung)“). Sätze aus dem Modellwissen der KI sind hervorgehoben. Eine Belegnummer öffnet
+  Artikel, Abschnitt, Textauszug und den Grund der Zuordnung.
+- **Qualität, Zeit, Kosten** in einer Zeile über jedem Ergebnis, beim Vergleich zweier Profile alle Kennzahlen
+  nebeneinander. Kosten sind Tokens und Aufrufe; `/api/v2/qa` meldet die Tokens des LLM nicht.
+- **„Wie entstand dieser Text?“** unter dem Kompendium: Thema und Artikel, Anteile nach Herkunft, Methode je
+  Schritt (angefragt und verwendet, mit Rückfällen), Zeit je Schritt, Kosten, Quellen, Hinweise der Prüfung
+  und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Antwort speichern“ legt Anfrage und
+  Antwort als JSON ab.
+
+Die Seite ist statisch — HTML, CSS und JavaScript-Module in `app/ui/static`, ohne Build-Schritt und ohne fremde
+Bibliothek — und schickt ihre Anfragen vom Browser an die Endpunkte desselben Servers. Verlangt der Server
+Schlüssel, trägt man einen links unten ein; er bleibt nur im Tab. Sie setzt jeden Text der Antworten als Text,
+nie als Markup, und ihre Content-Security-Policy lässt nur die eigenen Dateien zu. Ohne LLM auf dem Server bietet
+sie nur `llm-free` an. Auswahllisten, Grenzen und Beispiele kommen aus `/ui/options.json`, also aus denselben
+Modellen wie die Endpunkte (`app/ui/options.py`); `tests/test_ui.py` prüft jedes Beispiel gegen sein Modell,
+`tests/ui/*.test.mjs` prüfen die Skripte mit dem Testläufer von Node, den `tests/test_ui_scripts.py` startet.
+
 ## Konfiguration
 
 Alle Einstellungen kommen aus Umgebungsvariablen (`app/settings.py`). `.env.example` ist die Vorlage:
@@ -648,6 +677,7 @@ Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `UVICORN_HTTP` | `h11` | Der HTTP-Parser von uvicorn; `app/serve.py` setzt h11, wenn die Variable fehlt oder leer ist. h11 antwortet auf Anfragezeile und Kopfzeilen über etwa 16 KB mit 400; `httptools`, sonst uvicorns Wahl, nahm einen `X-Request-ID` von 12 MB an. Weitere Optionen liest uvicorn als `UVICORN_*` selbst; `UVICORN_LIMIT_CONCURRENCY` zählt auch Verbindungen, die ihre Kopfzeilen nie beenden, und hilft darum nicht gegen langsame Aufrufer (siehe docs/installation.md, Abschnitt 8) |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
+| `UI_ENABLED` | `false` | Die Prüfansicht unter `/ui/` ausliefern (siehe „Prüfansicht“). Sie besteht nur aus Seite und Skripten und fragt die Endpunkte mit dem Schlüssel, den der Leser einträgt; `API_KEYS` schützt sie also wie die API |
 | `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Templates schreiben und löschen) nur mit diesem Token, mindestens 16 Zeichen (kürzer: der Dienst startet nicht; länger ist besser, etwa `openssl rand -hex 32`); leer schaltet sie ab |
 | `API_KEYS` | leer | Schlüssel, kommagetrennt, je mindestens 16 Zeichen, am besten erzeugt (`openssl rand -hex 32`). Gesetzt, verlangen alle Endpunkte mit einem Profil — `compendium`, `knowledge`, `qa`, `entities`, `lehrplan/search`, `nodes/{id}` und `collections/overview` — einen davon im Header `X-API-Key`, sonst 401; `/health`, `/ready`, `/docs`, Templates und Statusendpunkte bleiben offen. Leer: Die Endpunkte antworten jedem. Auf einem öffentlichen Server setzen |
 
@@ -797,6 +827,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
 | Alle Antworten | tragen `X-Request-ID` (die des Aufrufers oder eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
 | Alle Fehlerantworten | nennen den Grund in `detail`: als deutschen Text; bei einer 422 der Prüfung als Liste mit Stelle (`loc`), Art (`type`) und Grund (`msg`) je Wert, ohne den Wert selbst; bei der 404 eines Themas, das die Archive nicht haben, als Objekt mit `message`, der Auflösung samt Alternativen und bei einem Material `node_article`. `/docs` nennt je Endpunkt die möglichen Fehler |
+| `GET /ui/` (mit `UI_ENABLED`) | Die Prüfansicht im Browser (siehe „Prüfansicht“); `GET /ui/options.json` liefert ihr Profile, Schalter, Grenzen und Beispiele aus den Modellen der Endpunkte. Ohne `UI_ENABLED`: 404 |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
 | `POST /api/v2/compendium` | Kompendium zu `topic`, `collection_id` oder `node_id` (ein Material oder eine Sammlung eines Repositorys, dazu `repository`; siehe „Knoten als Eingang“); `parts` wählt `world`, `curricula`, `collection` (ohne `world` entfallen Teil 1, seine Quellen, das Matching und die Wissens-Sammlung; `extraction`, `generation` und `matcher` betreffen nur Teil 1, ohne ihn ist das Kompendium regelbasiert und `audit.matcher` leer); `subject`, `knowledge_collection_id`; `preset` wählt eine Stufe (`llm-free`, `balanced`, `best-quality`, `best-quality-generated`) und setzt die Schalter, die die Anfrage offen lässt; `extraction` wählt `rule-based` oder `llm`, `generation` `rule-based`, `llm-fast` oder `llm`, `enrichment` `sources-only` oder `model-knowledge`, `curriculum_check` `rule-based` oder `llm` (prüft die Lehrplanelemente von Teil 2, D58); das frühere Feld `mode`: 422; `matcher: llm` lässt das LLM die Absätze zuordnen (siehe LLM-Schicht); unbekannte Strategie in `matcher`: 422; nur `collection` ohne `collection_id`: 422 (mit ihr braucht Teil 3 keinen Artikel in den Archiven); kein angefragter Teil erzeugbar (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`): 503; `template_id` wählt ein Template (Standard aus den Einstellungen), `max_articles` begrenzt den Korpus (Standard `CORPUS_MAX_ARTICLES`, Thema und Zwilling sind immer dabei), `empty_slot_policy` und `facets_visible` überschreiben Template bzw. `FACETS_VISIBLE`, `language` kennt heute nur `de` (sonst 422); zur teilweisen Neuerzeugung mit `existing_markdown` und `regenerate_sections` siehe unten; `frontmatter_in_markdown: false` lässt den YAML-Vorspann im Markdown weg und beginnt bei der Überschrift — dieselben Angaben stehen weiter im Feld `frontmatter` |
 | `POST /api/v2/knowledge` | Wissenstexte zu `topic`, `node_id` oder beidem (mit `repository` und `subject`, siehe „Knoten als Eingang“), ohne Template und Synthese: die Artikel des Korpus mit ihren Abschnitten und ihrer Herkunft (`origin`). `archives` fragt gezielt einzelne Archive (unbekannte ID: 404), `max_articles` begrenzt die zusätzlichen Artikel (Thema und Zwilling sind immer dabei), `max_chars` deckelt den Text über alle Artikel und setzt `truncated`; Thema nicht gefunden: 404 mit `resolution` |

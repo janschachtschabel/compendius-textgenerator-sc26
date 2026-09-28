@@ -1810,6 +1810,20 @@ API.
   `langlinks` nur die englischen Zeilen (Sync 619 statt 1.271 s, dieselben Zahlen). Im Dienst nachgemessen (M43):
   GND-F1 0,78 in `balanced` (M41: 0,77), 160 statt 139 der 188 richtigen Artikel mit richtiger GND, an bekannten
   Nummern 107 von 109 und 90 von 91 gleich, ein englischer Artikel für 96 % der Artikel von `balanced`.
+- **D66 (2026-09-29)** Prüfansicht (Jan: „Die mit der API erzeugten kompendialen Texte müssen menschlich getestet
+  werden … vielleicht als optional aktivierbares Sidecar. Alternativ eine Lösung die via env aktivierbar oder
+  deaktivierbar ist“). Umgesetzt als Seite der API selbst, zugeschaltet mit `UI_ENABLED` (Vorgabe aus): Sie besteht
+  nur aus Dateien (`app/ui/static`) und fragt die Endpunkte vom Browser aus mit dem Schlüssel des Lesers. Ein
+  Sidecar hätte ein weiteres Image, einen Port und CORS oder einen Proxy gebraucht, für nichts, was die Seite so
+  nicht auch kann. Kein Build-Schritt und keine Bibliothek: Das Markdown des Dienstes ist eine bekannte Teilmenge;
+  ein eigener Leser (`markdown.mjs`) setzt jeden Text als Text und Links nur zu Webadressen, die
+  Content-Security-Policy lässt nur die eigenen Dateien zu. Die Herkunft je Absatz kommt aus dem, was die Antwort
+  schon trägt — Status in der Markierung jedes Bausteins, Belege mit Artikel, Abschnitt und Auszug, die Markierung
+  `Evidenzgrad=Modellwissen` —, ohne neue Angabe der API. Auswahllisten, Grenzen und Beispiele liefert
+  `/ui/options.json` aus den Modellen der Endpunkte, damit die Seite nie einen Wert anbietet, den sie ablehnen. Ein
+  Vergleich stellt zwei Profile mit denselben Eingaben nebeneinander; die Methoden einzelner Schritte gelten dann
+  nicht, damit sich die beiden Antworten nur im Profil unterscheiden. Kosten sind Tokens und Aufrufe, Preise kennt
+  der Dienst nicht; `/api/v2/qa` meldet die Tokens des LLM nicht (offen).
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
