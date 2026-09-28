@@ -1,0 +1,2391 @@
+{
+ "messung": "M45, 28.09.2026: die vier Profile an allen Endpunkten, Release 2.2.2, Entwicklungscontainer über HTTP",
+ "stand": {
+  "version": "2.2.2",
+  "revision": "febb8358c066ac8c180c6a8ad8c427c3c3f50349",
+  "modell": "gpt-6-luna",
+  "matching": {
+   "matcher": "hybrid_light",
+   "components": [
+    "bm25",
+    "char_tfidf",
+    "model2vec"
+   ],
+   "embeddings": true
+  },
+  "entities": {
+   "ner": true,
+   "model": "de_core_news_md",
+   "wikidata": true,
+   "gnd": true
+  }
+ },
+ "themen": {
+  "compendium": {
+   "balanced": [
+    "Bienen",
+    "Gezeiten",
+    "Seidenstraße",
+    "Logarithmus",
+    "Fabel",
+    "Katalysator"
+   ],
+   "best-quality": [
+    "Hormone",
+    "Korallenriff",
+    "Wikinger",
+    "Zinsrechnung",
+    "Urheberrecht",
+    "Kompass"
+   ],
+   "best-quality-generated": [
+    "Amphibien",
+    "Regenwald",
+    "Ritter",
+    "Alphabet",
+    "Recycling",
+    "Transistor"
+   ]
+  },
+  "knowledge": {
+   "balanced": [
+    "Dinosaurier",
+    "Tsunami",
+    "Burg"
+   ],
+   "best-quality": [
+    "Savanne",
+    "Münze",
+    "Impfung"
+   ]
+  },
+  "lehrplan": [
+   "Pilze",
+   "Insekten",
+   "Kläranlage",
+   "Trinkwasser",
+   "Lautsprecher",
+   "Glas"
+  ]
+ },
+ "compendium": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 19.68,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 57,
+      "corpus": 2382,
+      "segment": 15,
+      "match": 1442,
+      "synthesize": 15224,
+      "curricula": 531,
+      "assemble": 6
+     },
+     "hauptartikel": "Bienen",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 281,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 6,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 36591
+    },
+    "Gezeiten": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.94,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 75,
+      "corpus": 2157,
+      "segment": 42,
+      "match": 351,
+      "synthesize": 1252,
+      "curricula": 43,
+      "assemble": 4
+     },
+     "hauptartikel": "Gezeiten",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 168,
+     "absaetze_zugeordnet": 16,
+     "lehrplanelemente": 32,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 16932
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 5.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 60,
+      "corpus": 2602,
+      "segment": 24,
+      "match": 426,
+      "synthesize": 1817,
+      "curricula": 57,
+      "assemble": 4
+     },
+     "hauptartikel": "Seidenstraße",
+     "bausteine_gefuellt": 12,
+     "absaetze_gesamt": 173,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 7,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 30116
+    },
+    "Logarithmus": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.09,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 154,
+      "corpus": 2066,
+      "segment": 43,
+      "match": 370,
+      "synthesize": 1398,
+      "curricula": 34,
+      "assemble": 5
+     },
+     "hauptartikel": "Logarithmus",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 164,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 76,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22482
+    },
+    "Fabel": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.5,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 42,
+      "corpus": 1196,
+      "segment": 7,
+      "match": 338,
+      "synthesize": 833,
+      "curricula": 64,
+      "assemble": 5
+     },
+     "hauptartikel": "Fabel",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 127,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 116,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22333
+    },
+    "Katalysator": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.13,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 21,
+      "corpus": 1839,
+      "segment": 25,
+      "match": 336,
+      "synthesize": 1832,
+      "curricula": 51,
+      "assemble": 7
+     },
+     "hauptartikel": "Katalysator",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 158,
+     "absaetze_zugeordnet": 26,
+     "lehrplanelemente": 70,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 24100
+    },
+    "Hormone": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 13.19,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 36,
+      "corpus": 7905,
+      "segment": 11,
+      "match": 344,
+      "synthesize": 4793,
+      "curricula": 64,
+      "assemble": 5
+     },
+     "hauptartikel": "Hormon",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 189,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 184,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 21828
+    },
+    "Korallenriff": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.08,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 89,
+      "corpus": 2548,
+      "segment": 25,
+      "match": 290,
+      "synthesize": 1085,
+      "curricula": 22,
+      "assemble": 4
+     },
+     "hauptartikel": "Korallenriff",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 90,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 0,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 20285
+    },
+    "Wikinger": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 5.95,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 91,
+      "corpus": 2776,
+      "segment": 58,
+      "match": 1700,
+      "synthesize": 1292,
+      "curricula": 14,
+      "assemble": 3
+     },
+     "hauptartikel": "Wikinger",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 400,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 2,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 17012
+    },
+    "Zinsrechnung": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.59,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 57,
+      "corpus": 573,
+      "segment": 18,
+      "match": 94,
+      "synthesize": 3758,
+      "curricula": 19,
+      "assemble": 3
+     },
+     "hauptartikel": "Zinsrechnung",
+     "bausteine_gefuellt": 7,
+     "absaetze_gesamt": 59,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 71,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 15154
+    },
+    "Urheberrecht": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 5.71,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 537,
+      "corpus": 3209,
+      "segment": 28,
+      "match": 618,
+      "synthesize": 1091,
+      "curricula": 150,
+      "assemble": 4
+     },
+     "hauptartikel": "Urheberrecht",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 400,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 188,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 23118
+    },
+    "Kompass": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.64,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 58,
+      "corpus": 1940,
+      "segment": 16,
+      "match": 443,
+      "synthesize": 2121,
+      "curricula": 41,
+      "assemble": 3
+     },
+     "hauptartikel": "Kompass",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 226,
+     "absaetze_zugeordnet": 18,
+     "lehrplanelemente": 29,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22267
+    },
+    "Amphibien": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.14,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 73,
+      "corpus": 2734,
+      "segment": 12,
+      "match": 298,
+      "synthesize": 985,
+      "curricula": 26,
+      "assemble": 4
+     },
+     "hauptartikel": "Amphibien",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 100,
+     "absaetze_zugeordnet": 20,
+     "lehrplanelemente": 28,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 20570
+    },
+    "Regenwald": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.27,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 13,
+      "corpus": 2198,
+      "segment": 28,
+      "match": 268,
+      "synthesize": 1708,
+      "curricula": 35,
+      "assemble": 3
+     },
+     "hauptartikel": "Regenwald",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 135,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 15,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 21934
+    },
+    "Ritter": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.15,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 39,
+      "corpus": 1957,
+      "segment": 23,
+      "match": 681,
+      "synthesize": 1384,
+      "curricula": 51,
+      "assemble": 5
+     },
+     "hauptartikel": "Ritter",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 169,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 16,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 24058
+    },
+    "Alphabet": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.96,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 33,
+      "corpus": 2434,
+      "segment": 16,
+      "match": 437,
+      "synthesize": 959,
+      "curricula": 50,
+      "assemble": 5
+     },
+     "hauptartikel": "Alphabet",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 236,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 153,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 23038
+    },
+    "Recycling": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.95,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 79,
+      "corpus": 1027,
+      "segment": 17,
+      "match": 541,
+      "synthesize": 1224,
+      "curricula": 41,
+      "assemble": 5
+     },
+     "hauptartikel": "Recycling",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 278,
+     "absaetze_zugeordnet": 31,
+     "lehrplanelemente": 95,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 27864
+    },
+    "Transistor": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.52,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 28,
+      "corpus": 1142,
+      "segment": 26,
+      "match": 612,
+      "synthesize": 2002,
+      "curricula": 612,
+      "assemble": 5
+     },
+     "hauptartikel": "Transistor",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 372,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 200,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 30048
+    }
+   },
+   "balanced": {
+    "Bienen": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 8.98,
+     "tokens": 663,
+     "prompt": 200,
+     "completion": 463,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 663,
+     "phasen_ms": {
+      "resolve": 6596,
+      "corpus": 22,
+      "segment": 22,
+      "match": 1225,
+      "synthesize": 1036,
+      "curricula": 65,
+      "assemble": 5
+     },
+     "hauptartikel": "Bienen",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 370,
+     "absaetze_zugeordnet": 27,
+     "lehrplanelemente": 6,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 24351
+    },
+    "Gezeiten": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 5.0,
+     "tokens": 495,
+     "prompt": 200,
+     "completion": 295,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 495,
+     "phasen_ms": {
+      "resolve": 3382,
+      "corpus": 8,
+      "segment": 7,
+      "match": 313,
+      "synthesize": 1240,
+      "curricula": 34,
+      "assemble": 4
+     },
+     "hauptartikel": "Gezeiten",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 155,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 32,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 18061
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 8.8,
+     "tokens": 662,
+     "prompt": 201,
+     "completion": 461,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 662,
+     "phasen_ms": {
+      "resolve": 6144,
+      "corpus": 18,
+      "segment": 14,
+      "match": 1038,
+      "synthesize": 1558,
+      "curricula": 13,
+      "assemble": 4
+     },
+     "hauptartikel": "Seidenstraße",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 290,
+     "absaetze_zugeordnet": 20,
+     "lehrplanelemente": 7,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 25604
+    },
+    "Logarithmus": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 27.43,
+     "tokens": 517,
+     "prompt": 201,
+     "completion": 316,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 517,
+     "phasen_ms": {
+      "resolve": 4522,
+      "corpus": 22,
+      "segment": 18,
+      "match": 20035,
+      "synthesize": 2780,
+      "curricula": 24,
+      "assemble": 4
+     },
+     "hauptartikel": "Logarithmus",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 281,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 76,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 17556
+    },
+    "Fabel": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 8.81,
+     "tokens": 604,
+     "prompt": 200,
+     "completion": 404,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 604,
+     "phasen_ms": {
+      "resolve": 5824,
+      "corpus": 17,
+      "segment": 22,
+      "match": 1767,
+      "synthesize": 1120,
+      "curricula": 34,
+      "assemble": 5
+     },
+     "hauptartikel": "Fabel",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 357,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 116,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 22162
+    },
+    "Katalysator": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 8.1,
+     "tokens": 547,
+     "prompt": 202,
+     "completion": 345,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_audit": 547,
+     "phasen_ms": {
+      "resolve": 4245,
+      "corpus": 26,
+      "segment": 21,
+      "match": 1307,
+      "synthesize": 2415,
+      "curricula": 51,
+      "assemble": 6
+     },
+     "hauptartikel": "Katalysator",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 399,
+     "absaetze_zugeordnet": 28,
+     "lehrplanelemente": 82,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 26184
+    }
+   },
+   "best-quality": {
+    "Hormone": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 28.11,
+     "tokens": 50943,
+     "prompt": 43146,
+     "completion": 7797,
+     "aufrufe": {
+      "answered": 10
+     },
+     "tokens_audit": 50943,
+     "phasen_ms": {
+      "resolve": 4885,
+      "corpus": 19,
+      "segment": 10,
+      "match": 13812,
+      "synthesize": 821,
+      "curricula": 8524,
+      "assemble": 6
+     },
+     "hauptartikel": "Hormon",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 239,
+     "absaetze_zugeordnet": 29,
+     "lehrplanelemente": 174,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 25003
+    },
+    "Korallenriff": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 18.06,
+     "tokens": 26378,
+     "prompt": 22822,
+     "completion": 3556,
+     "aufrufe": {
+      "answered": 5
+     },
+     "tokens_audit": 26378,
+     "phasen_ms": {
+      "resolve": 3940,
+      "corpus": 6,
+      "segment": 8,
+      "match": 12969,
+      "synthesize": 1116,
+      "curricula": 4,
+      "assemble": 6
+     },
+     "hauptartikel": "Korallenriff",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 152,
+     "absaetze_zugeordnet": 29,
+     "lehrplanelemente": 0,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 23028
+    },
+    "Wikinger": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 23.15,
+     "tokens": 65116,
+     "prompt": 56073,
+     "completion": 9043,
+     "aufrufe": {
+      "answered": 11
+     },
+     "tokens_audit": 65116,
+     "phasen_ms": {
+      "resolve": 6624,
+      "corpus": 47,
+      "segment": 37,
+      "match": 13507,
+      "synthesize": 1131,
+      "curricula": 1786,
+      "assemble": 7
+     },
+     "hauptartikel": "Wikinger",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 400,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 2,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 16375
+    },
+    "Zinsrechnung": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 25.76,
+     "tokens": 47094,
+     "prompt": 40366,
+     "completion": 6728,
+     "aufrufe": {
+      "answered": 9
+     },
+     "tokens_audit": 47094,
+     "phasen_ms": {
+      "resolve": 4637,
+      "corpus": 18,
+      "segment": 15,
+      "match": 12763,
+      "synthesize": 606,
+      "curricula": 7697,
+      "assemble": 7
+     },
+     "hauptartikel": "Zinsrechnung",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 270,
+     "absaetze_zugeordnet": 28,
+     "lehrplanelemente": 62,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 21056
+    },
+    "Urheberrecht": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 28.47,
+     "tokens": 58912,
+     "prompt": 49731,
+     "completion": 9181,
+     "aufrufe": {
+      "answered": 11
+     },
+     "tokens_audit": 58912,
+     "phasen_ms": {
+      "resolve": 4401,
+      "corpus": 19,
+      "segment": 28,
+      "match": 14091,
+      "synthesize": 957,
+      "curricula": 8930,
+      "assemble": 7
+     },
+     "hauptartikel": "Urheberrecht",
+     "bausteine_gefuellt": 12,
+     "absaetze_gesamt": 272,
+     "absaetze_zugeordnet": 33,
+     "lehrplanelemente": 179,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 29641
+    },
+    "Kompass": {
+     "status": 200,
+     "profil": "best-quality",
+     "sekunden": 25.99,
+     "tokens": 17357,
+     "prompt": 14493,
+     "completion": 2864,
+     "aufrufe": {
+      "answered": 5
+     },
+     "tokens_audit": 17357,
+     "phasen_ms": {
+      "resolve": 7555,
+      "corpus": 13,
+      "segment": 5,
+      "match": 10360,
+      "synthesize": 1768,
+      "curricula": 6269,
+      "assemble": 5
+     },
+     "hauptartikel": "Kompass",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 82,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 21,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 21429
+    }
+   },
+   "best-quality-generated": {
+    "Amphibien": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 29.74,
+     "tokens": 44639,
+     "prompt": 36087,
+     "completion": 8552,
+     "aufrufe": {
+      "answered": 13
+     },
+     "tokens_audit": 44639,
+     "phasen_ms": {
+      "resolve": 5358,
+      "corpus": 8,
+      "segment": 9,
+      "match": 10946,
+      "synthesize": 9689,
+      "curricula": 3707,
+      "assemble": 7
+     },
+     "hauptartikel": "Amphibien",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 189,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 28,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 21894
+    },
+    "Regenwald": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 32.07,
+     "tokens": 51147,
+     "prompt": 41138,
+     "completion": 10009,
+     "aufrufe": {
+      "answered": 14
+     },
+     "tokens_audit": 51147,
+     "phasen_ms": {
+      "resolve": 4866,
+      "corpus": 25,
+      "segment": 27,
+      "match": 14083,
+      "synthesize": 9749,
+      "curricula": 3302,
+      "assemble": 6
+     },
+     "hauptartikel": "Regenwald",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 219,
+     "absaetze_zugeordnet": 24,
+     "lehrplanelemente": 15,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 22520
+    },
+    "Ritter": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 32.7,
+     "tokens": 49441,
+     "prompt": 40215,
+     "completion": 9226,
+     "aufrufe": {
+      "answered": 15
+     },
+     "tokens_audit": 49441,
+     "phasen_ms": {
+      "resolve": 7360,
+      "corpus": 46,
+      "segment": 16,
+      "match": 12618,
+      "synthesize": 10105,
+      "curricula": 2539,
+      "assemble": 5
+     },
+     "hauptartikel": "Ritter",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 193,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 10,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 22045
+    },
+    "Alphabet": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 38.36,
+     "tokens": 85757,
+     "prompt": 71917,
+     "completion": 13840,
+     "aufrufe": {
+      "answered": 20
+     },
+     "tokens_audit": 85757,
+     "phasen_ms": {
+      "resolve": 6515,
+      "corpus": 36,
+      "segment": 19,
+      "match": 14439,
+      "synthesize": 8679,
+      "curricula": 8598,
+      "assemble": 8
+     },
+     "hauptartikel": "Alphabet",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 322,
+     "absaetze_zugeordnet": 33,
+     "lehrplanelemente": 98,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 29319
+    },
+    "Recycling": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 45.25,
+     "tokens": 69567,
+     "prompt": 56672,
+     "completion": 12895,
+     "aufrufe": {
+      "answered": 18
+     },
+     "tokens_audit": 69567,
+     "phasen_ms": {
+      "resolve": 4193,
+      "corpus": 25,
+      "segment": 17,
+      "match": 14213,
+      "synthesize": 15520,
+      "curricula": 11238,
+      "assemble": 7
+     },
+     "hauptartikel": "Recycling",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 274,
+     "absaetze_zugeordnet": 31,
+     "lehrplanelemente": 95,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 30048
+    },
+    "Transistor": {
+     "status": 200,
+     "profil": "best-quality-generated",
+     "sekunden": 38.52,
+     "tokens": 134766,
+     "prompt": 117560,
+     "completion": 17206,
+     "aufrufe": {
+      "answered": 33
+     },
+     "tokens_audit": 134766,
+     "phasen_ms": {
+      "resolve": 4600,
+      "corpus": 23,
+      "segment": 22,
+      "match": 13228,
+      "synthesize": 10734,
+      "curricula": 9896,
+      "assemble": 7
+     },
+     "hauptartikel": "Transistor",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 264,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 63,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "llm",
+      "extraction": "rule-based",
+      "generation": "llm",
+      "curriculum_check": "llm"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 26908
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 18,
+    "ok": 18,
+    "sekunden": {
+     "median": 4.21,
+     "min": 2.5,
+     "max": 19.68
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "absaetze_gesamt": {
+     "median": 171.0,
+     "min": 59,
+     "max": 400
+    },
+    "bausteine_gefuellt": {
+     "median": 10.0,
+     "min": 7,
+     "max": 12
+    }
+   },
+   "balanced": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 8.805,
+     "min": 5.0,
+     "max": 27.43
+    },
+    "tokens": {
+     "median": 575.5,
+     "min": 495,
+     "max": 663
+    },
+    "absaetze_gesamt": {
+     "median": 323.5,
+     "min": 155,
+     "max": 399
+    },
+    "bausteine_gefuellt": {
+     "median": 10.0,
+     "min": 10,
+     "max": 11
+    }
+   },
+   "best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 25.875,
+     "min": 18.06,
+     "max": 28.47
+    },
+    "tokens": {
+     "median": 49018.5,
+     "min": 17357,
+     "max": 65116
+    },
+    "absaetze_gesamt": {
+     "median": 254.5,
+     "min": 82,
+     "max": 400
+    },
+    "bausteine_gefuellt": {
+     "median": 10.5,
+     "min": 9,
+     "max": 12
+    }
+   },
+   "best-quality-generated": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 35.53,
+     "min": 29.74,
+     "max": 45.25
+    },
+    "tokens": {
+     "median": 60357.0,
+     "min": 44639,
+     "max": 134766
+    },
+    "absaetze_gesamt": {
+     "median": 241.5,
+     "min": 189,
+     "max": 322
+    },
+    "bausteine_gefuellt": {
+     "median": 10.0,
+     "min": 9,
+     "max": 11
+    }
+   }
+  },
+  "llm_free_je_satz": {
+   "balanced": 4.109999999999999,
+   "best-quality": 5.175,
+   "best-quality-generated": 4.145
+  }
+ },
+ "knowledge": {
+  "laeufe": {
+   "llm-free": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 0.61,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 205396,
+     "artikelwahl": {}
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 0.57,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 245270,
+     "artikelwahl": {}
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 1.89,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 135767,
+     "artikelwahl": {}
+    },
+    "Savanne": {
+     "status": 200,
+     "sekunden": 0.34,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 173962,
+     "artikelwahl": {}
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 0.81,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 134553,
+     "artikelwahl": {}
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 0.42,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 12,
+     "zeichen": 704565,
+     "artikelwahl": {}
+    }
+   },
+   "balanced": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 4.62,
+     "tokens": 494,
+     "prompt": 200,
+     "completion": 294,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 8,
+     "zeichen": 257294,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false
+     }
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 8.09,
+     "tokens": 893,
+     "prompt": 200,
+     "completion": 693,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 6,
+     "zeichen": 243005,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false
+     }
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 3.97,
+     "tokens": 465,
+     "prompt": 199,
+     "completion": 266,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 10,
+     "zeichen": 162179,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false
+     }
+    }
+   },
+   "best-quality": {
+    "Savanne": {
+     "status": 200,
+     "sekunden": 5.05,
+     "tokens": 510,
+     "prompt": 200,
+     "completion": 310,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 10,
+     "zeichen": 99493,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false
+     }
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 5.95,
+     "tokens": 998,
+     "prompt": 619,
+     "completion": 379,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 9,
+     "zeichen": 123396,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true
+     }
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 5.68,
+     "tokens": 903,
+     "prompt": 617,
+     "completion": 286,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 7,
+     "zeichen": 223336,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true
+     }
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.59,
+     "min": 0.34,
+     "max": 1.89
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "artikel": {
+     "median": 10.0,
+     "min": 9,
+     "max": 12
+    }
+   },
+   "balanced": {
+    "anfragen": 3,
+    "ok": 3,
+    "sekunden": {
+     "median": 4.62,
+     "min": 3.97,
+     "max": 8.09
+    },
+    "tokens": {
+     "median": 494,
+     "min": 465,
+     "max": 893
+    },
+    "artikel": {
+     "median": 8,
+     "min": 6,
+     "max": 10
+    }
+   },
+   "best-quality": {
+    "anfragen": 3,
+    "ok": 3,
+    "sekunden": {
+     "median": 5.68,
+     "min": 5.05,
+     "max": 5.95
+    },
+    "tokens": {
+     "median": 903,
+     "min": 510,
+     "max": 998
+    },
+    "artikel": {
+     "median": 9,
+     "min": 7,
+     "max": 10
+    }
+   }
+  }
+ },
+ "lehrplan_suche": {
+  "laeufe": {
+   "llm-free": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 45,
+     "llm": {}
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 16,
+     "llm": {}
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 0.02,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 19,
+     "llm": {}
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 0.03,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    }
+   },
+   "best-quality": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 8.49,
+     "tokens": 6154,
+     "prompt": 4979,
+     "completion": 1175,
+     "aufrufe": {
+      "answered": 2
+     },
+     "tokens_antwort": {
+      "prompt": 4979,
+      "completion": 1175,
+      "total": 6154,
+      "calls": 2
+     },
+     "treffer": 50,
+     "llm": {
+      "note": null
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 6.65,
+     "tokens": 4016,
+     "prompt": 3440,
+     "completion": 576,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": {
+      "prompt": 3440,
+      "completion": 576,
+      "total": 4016,
+      "calls": 1
+     },
+     "treffer": 41,
+     "llm": {
+      "note": null
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 1.51,
+     "tokens": 1448,
+     "prompt": 1364,
+     "completion": 84,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": {
+      "prompt": 1364,
+      "completion": 84,
+      "total": 1448,
+      "calls": 1
+     },
+     "treffer": 16,
+     "llm": {
+      "note": null
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 10.63,
+     "tokens": 6879,
+     "prompt": 5555,
+     "completion": 1324,
+     "aufrufe": {
+      "answered": 2
+     },
+     "tokens_antwort": {
+      "prompt": 5555,
+      "completion": 1324,
+      "total": 6879,
+      "calls": 2
+     },
+     "treffer": 50,
+     "llm": {
+      "note": null
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 8.14,
+     "tokens": 2344,
+     "prompt": 1826,
+     "completion": 518,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": {
+      "prompt": 1826,
+      "completion": 518,
+      "total": 2344,
+      "calls": 1
+     },
+     "treffer": 13,
+     "llm": {
+      "note": null
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 9.44,
+     "tokens": 18633,
+     "prompt": 15739,
+     "completion": 2894,
+     "aufrufe": {
+      "answered": 5
+     },
+     "tokens_antwort": {
+      "prompt": 15739,
+      "completion": 2894,
+      "total": 18633,
+      "calls": 5
+     },
+     "treffer": 50,
+     "llm": {
+      "note": null
+     }
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.01,
+     "min": 0.01,
+     "max": 0.03
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "treffer": {
+     "median": 47.5,
+     "min": 16,
+     "max": 50
+    }
+   },
+   "best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 8.315000000000001,
+     "min": 1.51,
+     "max": 10.63
+    },
+    "tokens": {
+     "median": 5085.0,
+     "min": 1448,
+     "max": 18633
+    },
+    "treffer": {
+     "median": 45.5,
+     "min": 13,
+     "max": 50
+    }
+   }
+  }
+ },
+ "qa": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 1.7,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 11,
+     "zeichen": 36413
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 2.14,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 9,
+     "zeichen": 16814
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 2.11,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 29928
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 0.96,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 9,
+     "zeichen": 22304
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 1.0,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 17,
+     "zeichen": 22165
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 0.8,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 23892
+    }
+   },
+   "best-quality": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 6.52,
+     "tokens": 12742,
+     "prompt": 12214,
+     "completion": 528,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 36413
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 6.34,
+     "tokens": 5313,
+     "prompt": 4741,
+     "completion": 572,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 16814
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 6.27,
+     "tokens": 8805,
+     "prompt": 8183,
+     "completion": 622,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 29928
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 5.57,
+     "tokens": 6803,
+     "prompt": 6244,
+     "completion": 559,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 22304
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 6.21,
+     "tokens": 6998,
+     "prompt": 6402,
+     "completion": 596,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 22165
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 7.34,
+     "tokens": 7276,
+     "prompt": 6459,
+     "completion": 817,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 23892
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 1.35,
+     "min": 0.8,
+     "max": 2.14
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "paare": {
+     "median": 14.0,
+     "min": 9,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 23098.0,
+     "min": 16814,
+     "max": 36413
+    }
+   },
+   "best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 6.305,
+     "min": 5.57,
+     "max": 7.34
+    },
+    "tokens": {
+     "median": 7137.0,
+     "min": 5313,
+     "max": 12742
+    },
+    "paare": {
+     "median": 20.0,
+     "min": 20,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 23098.0,
+     "min": 16814,
+     "max": 36413
+    }
+   }
+  }
+ },
+ "entities": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 0.59,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 45,
+     "mit_wikidata": 35,
+     "mit_gnd": 26,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 1.9,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 48,
+     "mit_wikidata": 35,
+     "mit_gnd": 32,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 2.15,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 44,
+     "mit_wikidata": 27,
+     "mit_gnd": 26,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 1.89,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 39,
+     "mit_wikidata": 34,
+     "mit_gnd": 31,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 3.0,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 43,
+     "mit_wikidata": 39,
+     "mit_gnd": 34,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 2.07,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 26,
+     "mit_wikidata": 22,
+     "mit_gnd": 21,
+     "zeichen": 1500
+    }
+   },
+   "balanced": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 8.0,
+     "tokens": 1373,
+     "prompt": 563,
+     "completion": 810,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 1373,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 13,
+     "mit_wikidata": 13,
+     "mit_gnd": 10,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 6.72,
+     "tokens": 1216,
+     "prompt": 532,
+     "completion": 684,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 1216,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 16,
+     "mit_wikidata": 15,
+     "mit_gnd": 11,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 6.83,
+     "tokens": 1365,
+     "prompt": 593,
+     "completion": 772,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 1365,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 16,
+     "mit_wikidata": 16,
+     "mit_gnd": 14,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 4.73,
+     "tokens": 990,
+     "prompt": 516,
+     "completion": 474,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 990,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 6,
+     "mit_wikidata": 6,
+     "mit_gnd": 6,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 7.39,
+     "tokens": 1351,
+     "prompt": 529,
+     "completion": 822,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 1351,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 10,
+     "mit_wikidata": 10,
+     "mit_gnd": 8,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 5.0,
+     "tokens": 1023,
+     "prompt": 507,
+     "completion": 516,
+     "aufrufe": {
+      "answered": 1
+     },
+     "tokens_antwort": 1023,
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 13,
+     "mit_wikidata": 13,
+     "mit_gnd": 12,
+     "zeichen": 1500
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 1.9849999999999999,
+     "min": 0.59,
+     "max": 3.0
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "entitaeten": {
+     "median": 43.5,
+     "min": 26,
+     "max": 48
+    },
+    "mit_wikidata": {
+     "median": 34.5,
+     "min": 22,
+     "max": 39
+    },
+    "mit_gnd": {
+     "median": 28.5,
+     "min": 21,
+     "max": 34
+    }
+   },
+   "balanced": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 6.775,
+     "min": 4.73,
+     "max": 8.0
+    },
+    "tokens": {
+     "median": 1283.5,
+     "min": 990,
+     "max": 1373
+    },
+    "entitaeten": {
+     "median": 13.0,
+     "min": 6,
+     "max": 16
+    },
+    "mit_wikidata": {
+     "median": 13.0,
+     "min": 6,
+     "max": 16
+    },
+    "mit_gnd": {
+     "median": 10.5,
+     "min": 6,
+     "max": 14
+    }
+   }
+  }
+ }
+}

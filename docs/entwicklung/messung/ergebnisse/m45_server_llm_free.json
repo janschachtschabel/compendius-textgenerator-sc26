@@ -1,0 +1,1085 @@
+{
+ "messung": "M45, 28.09.2026: dieselben Anfragen nur mit llm-free auf dem Server (Release 2.2.2, über HTTP), die lokalen Schritte ohne Tokens",
+ "stand": {
+  "version": "2.2.2",
+  "revision": "4a5f433558c96747f5b5598a3c9048bbb7de7b5d",
+  "modell": "gpt-6-luna",
+  "matching": {
+   "matcher": "hybrid_light",
+   "components": [
+    "bm25",
+    "char_tfidf",
+    "model2vec"
+   ],
+   "embeddings": true
+  },
+  "entities": {
+   "ner": true,
+   "model": "de_core_news_md",
+   "wikidata": true,
+   "gnd": true
+  }
+ },
+ "themen": {
+  "compendium": {
+   "balanced": [
+    "Bienen",
+    "Gezeiten",
+    "Seidenstraße",
+    "Logarithmus",
+    "Fabel",
+    "Katalysator"
+   ],
+   "best-quality": [
+    "Hormone",
+    "Korallenriff",
+    "Wikinger",
+    "Zinsrechnung",
+    "Urheberrecht",
+    "Kompass"
+   ],
+   "best-quality-generated": [
+    "Amphibien",
+    "Regenwald",
+    "Ritter",
+    "Alphabet",
+    "Recycling",
+    "Transistor"
+   ]
+  },
+  "knowledge": {
+   "balanced": [
+    "Dinosaurier",
+    "Tsunami",
+    "Burg"
+   ],
+   "best-quality": [
+    "Savanne",
+    "Münze",
+    "Impfung"
+   ]
+  },
+  "lehrplan": [
+   "Pilze",
+   "Insekten",
+   "Kläranlage",
+   "Trinkwasser",
+   "Lautsprecher",
+   "Glas"
+  ]
+ },
+ "compendium": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.05,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 26,
+      "corpus": 757,
+      "segment": 15,
+      "match": 527,
+      "synthesize": 581,
+      "curricula": 20,
+      "assemble": 4
+     },
+     "hauptartikel": "Bienen",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 281,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 6,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 36591
+    },
+    "Gezeiten": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.25,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 48,
+      "corpus": 930,
+      "segment": 27,
+      "match": 258,
+      "synthesize": 833,
+      "curricula": 36,
+      "assemble": 3
+     },
+     "hauptartikel": "Gezeiten",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 168,
+     "absaetze_zugeordnet": 16,
+     "lehrplanelemente": 32,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 16932
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.42,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 32,
+      "corpus": 1567,
+      "segment": 21,
+      "match": 326,
+      "synthesize": 1321,
+      "curricula": 29,
+      "assemble": 4
+     },
+     "hauptartikel": "Seidenstraße",
+     "bausteine_gefuellt": 12,
+     "absaetze_gesamt": 173,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 7,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 30116
+    },
+    "Logarithmus": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.35,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 101,
+      "corpus": 981,
+      "segment": 26,
+      "match": 186,
+      "synthesize": 903,
+      "curricula": 25,
+      "assemble": 4
+     },
+     "hauptartikel": "Logarithmus",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 164,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 76,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22482
+    },
+    "Fabel": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.25,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 23,
+      "corpus": 406,
+      "segment": 7,
+      "match": 226,
+      "synthesize": 406,
+      "curricula": 30,
+      "assemble": 3
+     },
+     "hauptartikel": "Fabel",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 127,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 116,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22333
+    },
+    "Katalysator": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.58,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 19,
+      "corpus": 872,
+      "segment": 23,
+      "match": 279,
+      "synthesize": 1240,
+      "curricula": 20,
+      "assemble": 4
+     },
+     "hauptartikel": "Katalysator",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 158,
+     "absaetze_zugeordnet": 26,
+     "lehrplanelemente": 70,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 24100
+    },
+    "Hormone": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.0,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 22,
+      "corpus": 921,
+      "segment": 10,
+      "match": 302,
+      "synthesize": 545,
+      "curricula": 40,
+      "assemble": 4
+     },
+     "hauptartikel": "Hormon",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 189,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 184,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 21828
+    },
+    "Korallenriff": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.09,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 21,
+      "corpus": 1111,
+      "segment": 14,
+      "match": 178,
+      "synthesize": 655,
+      "curricula": 19,
+      "assemble": 3
+     },
+     "hauptartikel": "Korallenriff",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 90,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 0,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 20285
+    },
+    "Wikinger": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.15,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 69,
+      "corpus": 1437,
+      "segment": 37,
+      "match": 726,
+      "synthesize": 773,
+      "curricula": 9,
+      "assemble": 6
+     },
+     "hauptartikel": "Wikinger",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 400,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 2,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 17012
+    },
+    "Zinsrechnung": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.17,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 48,
+      "corpus": 398,
+      "segment": 18,
+      "match": 75,
+      "synthesize": 489,
+      "curricula": 15,
+      "assemble": 3
+     },
+     "hauptartikel": "Zinsrechnung",
+     "bausteine_gefuellt": 7,
+     "absaetze_gesamt": 59,
+     "absaetze_zugeordnet": 19,
+     "lehrplanelemente": 71,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 15154
+    },
+    "Urheberrecht": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.86,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 26,
+      "corpus": 542,
+      "segment": 27,
+      "match": 542,
+      "synthesize": 475,
+      "curricula": 66,
+      "assemble": 3
+     },
+     "hauptartikel": "Urheberrecht",
+     "bausteine_gefuellt": 9,
+     "absaetze_gesamt": 400,
+     "absaetze_zugeordnet": 25,
+     "lehrplanelemente": 188,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 23118
+    },
+    "Kompass": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.27,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 22,
+      "corpus": 778,
+      "segment": 13,
+      "match": 312,
+      "synthesize": 1007,
+      "curricula": 24,
+      "assemble": 3
+     },
+     "hauptartikel": "Kompass",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 226,
+     "absaetze_zugeordnet": 18,
+     "lehrplanelemente": 29,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 22267
+    },
+    "Amphibien": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.17,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 45,
+      "corpus": 1058,
+      "segment": 15,
+      "match": 266,
+      "synthesize": 649,
+      "curricula": 14,
+      "assemble": 3
+     },
+     "hauptartikel": "Amphibien",
+     "bausteine_gefuellt": 8,
+     "absaetze_gesamt": 100,
+     "absaetze_zugeordnet": 20,
+     "lehrplanelemente": 28,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 20570
+    },
+    "Regenwald": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.11,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 9,
+      "corpus": 1186,
+      "segment": 23,
+      "match": 276,
+      "synthesize": 1475,
+      "curricula": 21,
+      "assemble": 4
+     },
+     "hauptartikel": "Regenwald",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 135,
+     "absaetze_zugeordnet": 21,
+     "lehrplanelemente": 15,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 21934
+    },
+    "Ritter": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.14,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 37,
+      "corpus": 551,
+      "segment": 21,
+      "match": 405,
+      "synthesize": 961,
+      "curricula": 37,
+      "assemble": 3
+     },
+     "hauptartikel": "Ritter",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 169,
+     "absaetze_zugeordnet": 22,
+     "lehrplanelemente": 16,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 24058
+    },
+    "Alphabet": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.54,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 18,
+      "corpus": 1265,
+      "segment": 11,
+      "match": 382,
+      "synthesize": 645,
+      "curricula": 57,
+      "assemble": 4
+     },
+     "hauptartikel": "Alphabet",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 236,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 153,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 23038
+    },
+    "Recycling": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 2.29,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 68,
+      "corpus": 544,
+      "segment": 16,
+      "match": 512,
+      "synthesize": 952,
+      "curricula": 41,
+      "assemble": 3
+     },
+     "hauptartikel": "Recycling",
+     "bausteine_gefuellt": 11,
+     "absaetze_gesamt": 278,
+     "absaetze_zugeordnet": 31,
+     "lehrplanelemente": 95,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 27864
+    },
+    "Transistor": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.18,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_audit": 0,
+     "phasen_ms": {
+      "resolve": 48,
+      "corpus": 753,
+      "segment": 28,
+      "match": 554,
+      "synthesize": 1091,
+      "curricula": 449,
+      "assemble": 4
+     },
+     "hauptartikel": "Transistor",
+     "bausteine_gefuellt": 10,
+     "absaetze_gesamt": 372,
+     "absaetze_zugeordnet": 23,
+     "lehrplanelemente": 200,
+     "teile": {
+      "world": "ok",
+      "curricula": "ok"
+     },
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 30048
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 18,
+    "ok": 18,
+    "sekunden": {
+     "median": 2.26,
+     "min": 1.17,
+     "max": 3.42
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "absaetze_gesamt": {
+     "median": 171.0,
+     "min": 59,
+     "max": 400
+    },
+    "bausteine_gefuellt": {
+     "median": 10.0,
+     "min": 7,
+     "max": 12
+    }
+   }
+  },
+  "llm_free_je_satz": {}
+ },
+ "knowledge": {
+  "laeufe": {
+   "llm-free": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 0.29,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 205396,
+     "artikelwahl": {}
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 0.26,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 245270,
+     "artikelwahl": {}
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 0.42,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 135767,
+     "artikelwahl": {}
+    },
+    "Savanne": {
+     "status": 200,
+     "sekunden": 0.16,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 173962,
+     "artikelwahl": {}
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 0.46,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 134553,
+     "artikelwahl": {}
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 0.37,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 12,
+     "zeichen": 704565,
+     "artikelwahl": {}
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.32999999999999996,
+     "min": 0.16,
+     "max": 0.46
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "artikel": {
+     "median": 10.0,
+     "min": 9,
+     "max": 12
+    }
+   }
+  }
+ },
+ "lehrplan_suche": {
+  "laeufe": {
+   "llm-free": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 0.09,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 0.05,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 45,
+     "llm": {}
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 0.04,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 16,
+     "llm": {}
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 0.05,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 0.05,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 19,
+     "llm": {}
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 0.06,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "treffer": 50,
+     "llm": {}
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.05,
+     "min": 0.04,
+     "max": 0.09
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "treffer": {
+     "median": 47.5,
+     "min": 16,
+     "max": 50
+    }
+   }
+  }
+ },
+ "qa": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 0.93,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 11,
+     "zeichen": 36413
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 0.36,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 9,
+     "zeichen": 16814
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 0.66,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 29928
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 0.45,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 9,
+     "zeichen": 22304
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 0.51,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 17,
+     "zeichen": 22165
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 0.53,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 23892
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.52,
+     "min": 0.36,
+     "max": 0.93
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "paare": {
+     "median": 14.0,
+     "min": 9,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 23098.0,
+     "min": 16814,
+     "max": 36413
+    }
+   }
+  }
+ },
+ "entities": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 0.25,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 45,
+     "mit_wikidata": 35,
+     "mit_gnd": 26,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 0.88,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 48,
+     "mit_wikidata": 35,
+     "mit_gnd": 32,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 1.07,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 44,
+     "mit_wikidata": 27,
+     "mit_gnd": 26,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 1.07,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 39,
+     "mit_wikidata": 34,
+     "mit_gnd": 31,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 1.49,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 43,
+     "mit_wikidata": 39,
+     "mit_gnd": 34,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 1.02,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "tokens_antwort": null,
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 26,
+     "mit_wikidata": 22,
+     "mit_gnd": 21,
+     "zeichen": 1500
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 1.045,
+     "min": 0.25,
+     "max": 1.49
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "entitaeten": {
+     "median": 43.5,
+     "min": 26,
+     "max": 48
+    },
+    "mit_wikidata": {
+     "median": 34.5,
+     "min": 22,
+     "max": 39
+    },
+    "mit_gnd": {
+     "median": 28.5,
+     "min": 21,
+     "max": 34
+    }
+   }
+  }
+ }
+}

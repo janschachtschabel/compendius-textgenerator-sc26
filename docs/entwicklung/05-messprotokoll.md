@@ -1,4 +1,4 @@
-# Messprotokoll (23. bis 27.09.2026)
+# Messprotokoll (23. bis 28.09.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -2298,3 +2298,58 @@ Smoke-Probe verlangt seit `9c94d43` vom veröffentlichten Image `model2vec` im M
 
 Rohdaten: `m44_faktoren.json` (je Einstellung macro- und micro-F1 vor Budget und gedruckt, je Thema; dazu die Läufe
 ohne und mit Model2Vec nach der Teilung; keine Texte).
+
+## M45 Die vier Profile an allen Endpunkten nach dem Audit (28.09.2026)
+
+Für Präsentation und Abnahme fehlten aktuelle Werte: Die Profile waren zuletzt in M27 gemessen, vor D58 und D63, nur
+`balanced` in M39 nachgemessen, die Zeiten teils auf dem Entwicklungsrechner, teils auf dem Server. M45 misst Release
+2.2.2 an allen Endpunkten, an denen sich die Profile unterscheiden: `/compendium` mit Teil 1 und 2, `/knowledge`,
+`/lehrplan/search`, `/qa` und `/entities`.
+
+**Aufbau:** `mc_profile_endpunkte.py` fragt den Entwicklungscontainer über HTTP, mit `gpt-6-luna` über die b-api
+(Staging); eine Zusatzdatei für Compose schaltet das LLM an und bleibt außerhalb des Repositorys. Weil die b-api eine
+wiederholte Frage aus ihrem Zwischenspeicher beantwortet, stellt M45 nur Themen, die kein früherer Messsatz nennt
+(gegen `messung/` und `eval/` geprüft): 18 Themen für das Kompendium, je LLM-Profil sechs eigene (Methode von M27b);
+`llm-free` läuft auf allen, nach einem Aufwärmdurchgang, der nicht zählt. `/knowledge` bekommt je LLM-Profil drei
+eigene Themen, die Lehrplansuche sechs Suchbegriffe mit 16 bis 50 Treffern, `/qa` und `/entities` Teil 1 der
+`llm-free`-Kompendien der sechs `balanced`-Themen (`/entities` davon die ersten 1.500 Zeichen, so lang wie ein
+Materialtext). Die Tokens liest das Skript aus den Zählern des Dienstes in `/metrics`, je Route vor und nach jeder
+Anfrage. Derselbe Lauf mit `--nur-llm-free` gegen den Server misst dort die Schritte ohne LLM, ohne Tokens.
+
+**Kompendium, Teil 1 und 2:**
+
+| Profil | Entwicklungscontainer, Median (Spanne) | Server ohne LLM, Median | Schritte des LLM, Median | Server mit LLM, Median (Spanne) | Tokens, Median (Spanne) | Absätze, Median |
+|---|---|---|---|---|---|---|
+| `llm-free` (18 Themen) | 4,21 s (2,50 bis 19,68) | 2,26 s (1,17 bis 3,42) | – | 2,26 s | 0 | 171 |
+| `balanced` | 8,81 s (5,00 bis 27,43) | 2,30 s | 5,1 s: Artikelwahl und N | 6,9 s (5,6 bis 9,5) | 576 (495 bis 663) | 324 |
+| `best-quality` | 25,88 s (18,06 bis 28,47) | 2,04 s | 24,3 s: Artikelwahl 4,7, Zuordnung 12,7, Lehrplanprüfung 7,0 | 26,0 s (18,6 bis 28,8) | 49.019 (17.357 bis 65.116) | 255 |
+| `best-quality-generated` | 35,53 s (29,74 bis 45,25) | 2,42 s | 32,8 s: dazu Schreiben 8,7 | 35,7 s (30,5 bis 45,6) | 60.357 (44.639 bis 134.766) | 242 |
+
+„Server mit LLM“ ist die Zeit von `llm-free` auf dem Server für dasselbe Thema plus die Schritte, in denen das LLM des
+Profils arbeitet (Phasen `resolve`, `match`, `synthesize`, `curricula` gegen `llm-free` im Container); das LLM spricht
+von beiden Rechnern dieselbe b-api an. Die lokalen Schritte dauern im Container rund doppelt so lange wie auf dem
+Server, weil er die Archive von einem Windows-Laufwerk liest. Drei Ausreißer im Container (`llm-free` Bienen 19,7 s
+und Hormone 13,2 s, `balanced` Logarithmus 27,4 s mit 19,7 s für die Zuordnung ohne LLM) kamen aus lokalen
+Schritten; die Serverzahl zählt davon nur die Schritte des LLM. Der Korpus ist in den LLM-Profilen rund 2 s schneller
+fertig, weil N die Volltextsuche ersetzt; die Serverzahl zieht das nicht ab und liegt damit eher etwas zu hoch.
+
+**Die übrigen Endpunkte**, Median (Spanne):
+
+| Endpunkt | `llm-free`, Server | `llm-free`, Container | mit LLM, Container |
+|---|---|---|---|
+| `/knowledge` | 0,33 s (0,16 bis 0,46), 10 Artikel | 0,59 s | `balanced` 4,62 s (3,97 bis 8,09) und 494 Tokens (465 bis 893); `best-quality` 5,68 s (5,05 bis 5,95) und 903 Tokens (510 bis 998), zweimal auch die Artikelwahl gefragt |
+| `/lehrplan/search` | 0,05 s (0,04 bis 0,09), 47,5 Treffer | 0,01 s | `best-quality` 8,32 s (1,51 bis 10,63) und 5.085 Tokens (1.448 bis 18.633), 45,5 Treffer nach der Prüfung |
+| `/qa` mit `text`, 20 verlangt | 0,52 s (0,36 bis 0,93), 14 Paare (9 bis 20) | 1,35 s | `best-quality` 6,31 s (5,57 bis 7,34) und 7.137 Tokens (5.313 bis 12.742), 20 Paare |
+| `/entities`, 1.500 Zeichen | 1,05 s (0,25 bis 1,49), 43,5 Entitäten | 1,98 s | `balanced` 6,78 s (4,73 bis 8,00) und 1.284 Tokens (990 bis 1.373), 13 Entitäten, 73 von 74 mit Wikidata-Nummer |
+
+**Ergebnis:** Die beiden `best-quality`-Profile kosten heute rund das Doppelte von M27 (26.267 und 35.376 Tokens, 14
+und 24 s): Seit D58 prüft das LLM die Lehrplanelemente (im Median 7 s), und seit D63 bringt N mehr Artikel in den
+Korpus, im Median 255 statt 105 Absätze für die LLM-Zuordnung. `balanced` braucht rund 7 s und 580 Tokens; die Frage N
+dauerte heute 5,1 statt 3,6 s (M39), bei gleichen Tokens. Die Tokens von `/qa` wachsen mit dem Text (7.137 an 23.000
+Zeichen, 2.402 an 5.000 bis 12.000 in M30), die von `/entities` an dichter Prosa ebenso (1.284 statt rund 800 an
+Materialtexten in M36). Auf dem Server dauern die Schritte ohne LLM etwa halb so lange wie im Container. Die Güte misst
+M45 nicht; sie steht je Methode auf [Methoden, Messwerte und Profile](09-methoden-und-profile.md). Grenzen: sechs Themen
+je LLM-Profil, die Antwortzeit der b-api an einem Tag, das Kompendium auf dem Server nur ohne LLM gemessen.
+
+Rohdaten: `m45_profile_endpunkte.json` (Entwicklungscontainer) und `m45_server_llm_free.json` (Server, nur
+`llm-free`): je Anfrage Sekunden, Tokens, Aufrufe, Phasen, Hauptartikel und Zählungen; keine Texte.
