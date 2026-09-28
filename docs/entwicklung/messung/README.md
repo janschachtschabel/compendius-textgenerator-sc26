@@ -1,6 +1,6 @@
 # Messskripte zur Entwicklungsdokumentation
 
-Die Skripte zu den Messungen vom 23. bis 27.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
+Die Skripte zu den Messungen vom 23. bis 28.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
 Entwicklungsrechner geschrieben: Archive unter `kompendium-test\data`, die venv dieses Projekts, die venv der Testapp
 und die venv des alten Dienstes. Pfade stehen am Anfang jedes Skripts. Wer auf dem Server misst, übergibt dessen
 Adresse als Argument; sie steht nicht im Repository. Der b-api-Schlüssel kommt aus `B_API_KEY` und wird nirgends
@@ -54,6 +54,7 @@ geschrieben.
 | M45 Profile an allen Endpunkten | `mc_profile_endpunkte.py <out.json> [<basis-url>] [--nur-llm-free]` aus der Projekt-venv gegen den Entwicklungscontainer mit LLM (eine Zusatzdatei für Compose mit `LLM_ENABLED: "true"` und `B_API_KEY: ${B_API_KEY}`, nicht eingecheckt); mit `--nur-llm-free` gegen den Server, ohne Tokens | Entwicklungscontainer, Server | `gpt-6-luna` |
 | M37 Sammel- und Mischthemen | `mc_sammelthemen.py <out.json> <bogen.json> [--normal]` stellt 25 Sammel- und Mischthemen (mit `--normal` die 20 Themen von M1) auf vier Wegen durch Teil 1: `llm-free`, `balanced`, die Entitäten der alten App als Korpus, das LLM nennt Übersicht und Teile; `mc_sammelthemen_auswertung.py <lauf.json> <noten.yaml> [<zweit.yaml>] [--normal]` rechnet die gedruckten Absätze nach Noten | venv dieses Projekts; aus dem Projektordner mit `PYTHONPATH=.;docs/entwicklung/messung` | `gpt-6-luna`, Staging-b-api; rund 125.000 Tokens neu ausgegeben (Probe `balanced` 32.432, alter Linker 67.954, N 24.188), dazu 17.875 für B der Kontrolle, überwiegend aus dem b-api-Cache |
 | Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
+| Präsentationsseite (Seiten 01, 09 und 07 als eine HTML-Seite) | `mc_praesentation.py [<ziel.html>] [--fragment]`, Ziel `docs/entwicklung/praesentation.html`; `--fragment` ohne Dokumentgerüst für ein Claude-Artifact | venv dieses Projekts (markdown-it-py kommt mit rich) | keins |
 | Grafiken der Entwicklungsdoku (Seiten 01, 07 und 09) | `mc_grafiken.py <ergebnisse-ordner> <bilder-ordner>`, Ziel `docs/entwicklung/bilder` | venv dieses Projekts (liest das Gold aus `eval/artikelwahl`) | keins; reines SVG ohne Bibliothek |
 
 `alter_linker.py` (der Linker-Prompt des alten Dienstes, wortgleich), `materialwege.py` (Entitäten-Rangfolge,

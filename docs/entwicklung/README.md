@@ -143,6 +143,11 @@ Links zwischen ihnen zeigen auf die Markdown-Dateien und müssen nach dem Import
 werden. Die Grafiken liegen als SVG unter `docs/entwicklung/bilder/` und kommen beim Import als Anhänge mit. Die
 Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 
+Für die Präsentation gibt es die Seiten 01, 09 und 07 auch als eine HTML-Seite: [praesentation.html](praesentation.html),
+mit Inhaltsverzeichnis und allen Grafiken eingebettet. Sie braucht keine weiteren Dateien und öffnet sich nach dem
+Herunterladen in jedem Browser; GitHub selbst zeigt nur ihren Quelltext. `messung/mc_praesentation.py` erzeugt sie
+neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und nennt den Commit ihrer Quellen.
+
 ## Entwicklungsweg
 
 | Zeitraum | Schritt |
