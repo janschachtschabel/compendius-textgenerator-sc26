@@ -281,3 +281,13 @@ def test_an_article_without_normdaten_gets_its_gnd_from_the_local_gnd_index(
     assert (abbe["gnd"], abbe["gnd_source"]) == ("118646419", "normdaten"), "the Normdaten block goes first"
     gnd = client.get("/health").json()["components"]["entities"]["gnd"]
     assert gnd == {"available": True, "records": 1, "release": "2026-02-17"}
+
+
+def test_a_dictionary_that_stops_early_says_how_far_it_read(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """PE-01: the answer names the character the dictionary stopped at, so a caller knows the rest went unchecked."""
+    monkeypatch.setattr("app.knowledge.recognise.MAX_TITLES", 2)
+    body = client.post("/api/v2/entities", json={"text": TEXT, "methods": ["dictionary"]}).json()
+    assert "dictionary" in body["methods"]
+    assert "dictionary las den Text bis Zeichen" in (body["note"] or "")

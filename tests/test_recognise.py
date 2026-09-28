@@ -9,7 +9,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
+from app.knowledge.recognise import (
+    MAX_TERM_WORDS,
+    Mention,
+    find_titles,
+    load_spacy,
+    mentions_from_ner,
+    mentions_from_titles,
+    merge,
+)
 from app.sources.zim.registry import ZimRegistry
 
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
@@ -136,3 +144,37 @@ def test_an_adverb_in_s_opens_no_term_even_before_a_name() -> None:
     """M18: "Bereits Thales von Milet soll ..." linked the person Johann Bereit through the base form Bereit."""
     assert titles_in("Bereits Thales von Milet soll es entdeckt haben.") == {"Thales von Milet": None}
     assert titles_in("Die Lösung des Falls war einfach.") == {"Falls": "Fall"}, "after an article it is a genitive"
+
+
+@dataclass
+class CountingArchive:
+    """Counts what the dictionary asks: every question is a libzim lookup in a real archive."""
+
+    titles: frozenset[str]
+    asked: int = 0
+
+    def has(self, title: str) -> bool:
+        self.asked += 1
+        return title in self.titles
+
+
+def test_a_word_the_text_repeats_is_looked_up_once() -> None:
+    """PE-01: the same word, 8,334 times in 50,000 characters, cost 58,326 libzim lookups on the real archives."""
+    archive = CountingArchive(frozenset({"Optik"}))
+    found = find_titles([archive], "Optik " * 200)
+    assert len(found.mentions) == 200 and found.read_until == len("Optik " * 200)
+    # "Optik Optik Optik Optik" down to "Optik": the runs of up to MAX_TERM_WORDS words, once each
+    assert archive.asked == MAX_TERM_WORDS
+
+
+def test_the_dictionary_stops_after_its_titles_and_says_where() -> None:
+    """PE-01: 50,000 characters of distinct capitalised words took 35 s on the real archives, and anyone may send
+    them (llm-free needs no LLM); the lookups stop after ``max_titles`` distinct titles."""
+    words = [f"Wort{letter}" for letter in "ABCDEFGHIJ"]
+    text = " und ".join(words)
+    archive = CountingArchive(frozenset(words))
+    # every word opens runs of four, three, two and one words: four titles, the last one its own
+    found = find_titles([archive], text, max_titles=3 * MAX_TERM_WORDS)
+    assert found.read_until == text.index("WortD")
+    assert [mention.text for mention in found.mentions] == words[:3]
+    assert archive.asked == 3 * MAX_TERM_WORDS

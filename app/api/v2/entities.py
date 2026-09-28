@@ -50,11 +50,12 @@ from app.api.v2.entities_schemas import (
     Method,
 )
 from app.domain.models import Source
+from app.knowledge import recognise
 from app.knowledge.entities import classify_entity, is_work
 from app.knowledge.entities_llm import EntitiesLlmReport, EntityLlmJob, Link, grade_links, named_mentions
 from app.knowledge.identifiers import identifiers
 from app.knowledge.linking import article_of
-from app.knowledge.recognise import Mention, load_spacy, mentions_from_ner, mentions_from_titles, merge
+from app.knowledge.recognise import Mention, find_titles, load_spacy, mentions_from_ner, merge
 from app.llm.deadline import Deadline
 from app.service import CompendiumService
 from app.sources.gnd.index import GndIndex
@@ -114,10 +115,11 @@ def _link(
 
 def _recognise(
     text: str, methods: list[Method], registry: ZimRegistry, model_path: str
-) -> tuple[list[Method], list[Mention]]:
-    """Run the ways that can work here, and say which those were."""
+) -> tuple[list[Method], list[Mention], str | None]:
+    """Run the ways that can work here, and say which those were - and how far the dictionary read (PE-01)."""
     ran: list[Method] = []
     mentions: list[Mention] = []
+    note = None
     if "ner" in methods:
         nlp = load_spacy(model_path)
         if nlp is not None:
@@ -125,8 +127,14 @@ def _recognise(
             mentions.extend(mentions_from_ner(nlp, text))
     if "dictionary" in methods and registry.archives:
         ran.append("dictionary")
-        mentions.extend(mentions_from_titles(registry.archives, text))
-    return ran, mentions
+        found = find_titles(registry.archives, text)
+        mentions.extend(found.mentions)
+        if found.read_until < len(text):
+            note = (
+                f"dictionary las den Text bis Zeichen {found.read_until} von {len(text)}: je Anfrage schlägt es "
+                f"höchstens {recognise.MAX_TITLES} Titel nach; der Rest ist ungeprüft"
+            )
+    return ran, mentions, note
 
 
 def _llm_job(service: CompendiumService, profile: str, report: EntitiesLlmReport) -> EntityLlmJob | None:
@@ -237,7 +245,9 @@ def entities(
     says whether they are there. Nothing is asked online. Articles of other archives carry no ``ids``.
 
     ``link: false`` skips the lookup, ``archives`` narrows it to single archives (unknown id: 404).
-    ``max_entities`` bounds the result, and it bites before the lookup - so fewer may come back.
+    ``max_entities`` bounds the result, and it bites before the lookup - so fewer may come back. ``dictionary``
+    looks up at most 4,000 distinct terms per text, about 25,000 characters of running text; where it stopped,
+    ``note`` says.
 
     A term of dictionary or llm whose only article is a disambiguation page, or that has none, is dropped: these
     ways promise terms **with** an article. This does not apply to ``ner`` and not with ``link: false``; there
@@ -281,7 +291,8 @@ def entities(
         named, fallback = _named(job, text, registry, report, payload.max_entities)
         notes.append(fallback)
     rules = [method for method in RULE_METHODS if method in methods or ("llm" in methods and named is None)]
-    ran, mentions = _recognise(text, rules, registry, settings.spacy_model)
+    ran, mentions, cut = _recognise(text, rules, registry, settings.spacy_model)
+    notes.append(cut)
     if named is not None:
         # on the very word the LLM named, its title wins: the rules would look the word up and may find a
         # disambiguation page where the LLM named the article (review of D62)

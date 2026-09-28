@@ -22,6 +22,7 @@ from typing import Any
 log = logging.getLogger(__name__)
 
 MAX_TERM_WORDS = 4  # longest term looked up in the archives; "Deutsche Gesellschaft für angewandte Optik" is rarer
+MAX_TITLES = 4_000  # distinct titles one text may look up (find_titles): about 6 s at most
 _WORD = re.compile(r"\w[\w-]*", re.UNICODE)
 # German writes every noun with a capital, so a lower-case word starts no term. Words that do start a sentence
 # and are no noun would otherwise be looked up, and a few of them really are article titles ("Die", "Was").
@@ -124,20 +125,50 @@ def _candidates(text: str) -> Iterable[tuple[str, int, int, bool, bool]]:
             yield text[start:end], start, end, after_article, may_be_genitive
 
 
-def mentions_from_titles(archives: Sequence[Any], text: str) -> list[Mention]:
-    """Terms of the text that name an article in one of the archives; the longest match at a position wins."""
+@dataclass(frozen=True)
+class TitleMentions:
+    """The terms of a text that name an article, and how far the lookups read it."""
+
+    mentions: list[Mention]
+    read_until: int  # where the lookups stopped; the length of the text when they read all of it
+
+
+def find_titles(archives: Sequence[Any], text: str, *, max_titles: int | None = None) -> TitleMentions:
+    """Terms of the text that name an article in one of the archives; the longest match at a position wins.
+
+    Each title is looked up once per text, and after ``max_titles`` distinct titles (default MAX_TITLES) the lookups
+    stop at the next position. Measured on the Wikipedia archive on 2026-09-28: a title costs 1.1 to 1.5 ms, a real
+    text needs 150 to 190 titles per 1,000 characters, and 50,000 characters of distinct capitalised words - 595 per
+    1,000 - took 34 s, which anyone could ask for, as llm-free needs no LLM (audit 2026-09-27, PE-01). 4,000 titles
+    read about 25,000 characters of real text.
+    """
+    limit = MAX_TITLES if max_titles is None else max_titles
+    known: dict[str, bool] = {}
+
+    def names_an_article(title: str) -> bool:
+        if title not in known:
+            known[title] = any(archive.has(title) for archive in archives)
+        return known[title]
+
     found: list[Mention] = []
     taken_until = 0
     for candidate, start, end, after_article, may_be_genitive in _candidates(text):
         if start < taken_until:
             continue
+        if len(known) >= limit:
+            return TitleMentions(found, start)
         titles = title_candidates(candidate, after_genitive_article=after_article, may_be_genitive=may_be_genitive)
-        title = next((title for title in titles if any(archive.has(title) for archive in archives)), None)
+        title = next((title for title in titles if names_an_article(title)), None)
         if title is not None:
             named = None if title == candidate else title
             found.append(Mention(text=candidate, start=start, end=end, kind="", source="dictionary", title=named))
             taken_until = end
-    return found
+    return TitleMentions(found, len(text))
+
+
+def mentions_from_titles(archives: Sequence[Any], text: str) -> list[Mention]:
+    """Terms of the text that name an article in one of the archives (``find_titles`` without where it stopped)."""
+    return find_titles(archives, text).mentions
 
 
 def merge(mentions: Iterable[Mention]) -> list[Mention]:
