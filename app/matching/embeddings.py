@@ -17,12 +17,22 @@ from app.templates.schema import TemplateSlot
 log = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=2)
 def _load_model(model_path: str) -> Any:
-    """Load a static model once per process; matchers are created per request."""
     from model2vec import StaticModel
 
     return StaticModel.from_pretrained(model_path)
+
+
+@lru_cache(maxsize=2)
+def _model_or_none(model_path: str) -> Any | None:
+    """The static model, loaded once per process as matchers are created per request - or ``None`` when it cannot
+    be, remembered as well: lru_cache keeps no exceptions, so a wrong MODEL2VEC_PATH was tried and warned about on
+    every request, over the network for a path that looks like a Hub repository (audit 2026-09-27, PE-03)."""
+    try:
+        return _load_model(model_path)
+    except Exception as exc:  # optional dependency, degrade gracefully
+        log.warning("Model2Vec model %s not available, not tried again until a restart: %s", model_path, exc)
+        return None
 
 
 class Model2VecMatcher:
@@ -35,11 +45,8 @@ class Model2VecMatcher:
         self._model: Any | None = None
         self.available = False
         if model_path:
-            try:
-                self._model = _load_model(model_path)
-                self.available = True
-            except Exception as exc:  # optional dependency, degrade gracefully
-                log.warning("Model2Vec model %s not available: %s", model_path, exc)
+            self._model = _model_or_none(model_path)
+            self.available = self._model is not None
 
     @staticmethod
     def _normalize(matrix: np.ndarray[Any, Any]) -> np.ndarray[Any, Any]:

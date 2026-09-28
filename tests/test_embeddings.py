@@ -1,5 +1,6 @@
 """Model2Vec ranker with an injected static model: the production default path without the real model."""
 
+from collections.abc import Iterator
 from typing import Any
 
 import numpy as np
@@ -33,6 +34,14 @@ CHUNKS = [
     # mostly light, one mention of a job: cosine 0.035 with the job block, below the 0.1 floor
     _chunk("c_nebenbei", "Lampen", "Licht " * 20 + "und ein Beruf."),
 ]
+
+
+@pytest.fixture(autouse=True)
+def _forget_loaded_models() -> Iterator[None]:
+    """A model or a failure is remembered per process; each test here patches the loader for its own."""
+    embeddings._model_or_none.cache_clear()
+    yield
+    embeddings._model_or_none.cache_clear()
 
 
 @pytest.fixture
@@ -70,3 +79,22 @@ def test_a_model_that_cannot_be_loaded_leaves_the_lexical_rankers(
     assert [component.name for component in matcher.components] == ["bm25", "char_tfidf"]
     assert "no model at fehlt" in caplog.text
     assert Model2VecMatcher("fehlt").score(SLOTS, CHUNKS) == {slot.id: [] for slot in SLOTS}
+
+
+def test_a_model_that_failed_is_not_tried_again(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """PE-03: lru_cache keeps no exceptions, so a wrong MODEL2VEC_PATH was loaded - and warned about - on every
+    request, and a path that looks like a Hub repository went to the network each time without HF_HUB_OFFLINE."""
+    tried: list[str] = []
+
+    def missing(path: str) -> Any:
+        tried.append(path)
+        raise OSError(f"no model at {path}")
+
+    monkeypatch.setattr(embeddings, "_load_model", missing)
+    with caplog.at_level("WARNING"):
+        first, second = Model2VecMatcher("kaputt"), Model2VecMatcher("kaputt")
+    assert not first.available and not second.available
+    assert tried == ["kaputt"]
+    assert caplog.text.count("no model at kaputt") == 1
