@@ -35,6 +35,9 @@ def b_api_for(repository_url: str) -> str:
 # token of one character was accepted (audit 2026-09-27, SE-08)
 MIN_SECRET_CHARS = 32
 
+# The model the service asks when B_API_MODEL names none (D44)
+DEFAULT_B_API_MODEL = "gpt-6-luna"
+
 
 def _split_csv(value: str) -> list[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
@@ -159,7 +162,9 @@ class Settings(BaseSettings):
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
     )
     b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")
-    b_api_model: str = Field("gpt-6-luna", description="Model id at the selected provider (D44)")
+    b_api_model: str = Field(
+        DEFAULT_B_API_MODEL, description="Model id at the selected provider (D44); empty takes the default"
+    )
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
     llm_max_concurrency: int = Field(10, ge=1, le=26, description="Parallel LLM requests")
     llm_attempts: int = Field(
@@ -220,6 +225,13 @@ class Settings(BaseSettings):
                 f"{name} braucht mindestens {MIN_SECRET_CHARS} Zeichen je Wert, etwa aus openssl rand -hex 32"
             )
         return value
+
+    @field_validator("b_api_model", mode="before")
+    @classmethod
+    def _default_model_when_empty(cls, value: object) -> object:
+        # A panel or a .env writes an entry left empty as B_API_MODEL=, which named a model "" and left the service
+        # without an LLM; whoever enters nothing gets the default (Jan, 2026-09-28)
+        return DEFAULT_B_API_MODEL if isinstance(value, str) and not value.strip() else value
 
     @property
     def api_key_list(self) -> list[str]:

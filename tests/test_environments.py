@@ -8,6 +8,7 @@ possible, but it is said out loud in the log.
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 import pytest
 
@@ -60,3 +61,23 @@ def test_an_unknown_repository_without_a_b_api_leaves_it_empty(caplog: pytest.Lo
         resolved = resolve_b_api(settings(edu_sharing_base_url="https://own.example.org/rest", b_api_base_url=""))
     assert resolved == ""
     assert "B_API_BASE_URL" in caplog.text
+
+
+# B_API_MODEL stays a setting; whoever enters nothing gets the default (Jan, 2026-09-28). A panel or a .env writes
+# "nothing" as an empty entry, which pydantic reads as a model named "" - a service without an LLM.
+@pytest.mark.parametrize("entered", ["", "   "])
+def test_a_model_left_empty_is_the_default(monkeypatch: pytest.MonkeyPatch, entered: str) -> None:
+    monkeypatch.setenv("B_API_MODEL", entered)
+    assert settings().b_api_model == "gpt-6-luna"
+
+
+def test_a_model_left_empty_in_the_env_file_is_the_default(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("B_API_MODEL", raising=False)
+    env_file = tmp_path / ".env"
+    env_file.write_text("B_API_MODEL=\n", encoding="utf-8")
+    assert Settings(_env_file=env_file).b_api_model == "gpt-6-luna"  # type: ignore[call-arg]
+
+
+def test_a_model_entered_is_the_one_used(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("B_API_MODEL", "gpt-5.6-luna")
+    assert settings().b_api_model == "gpt-5.6-luna"
