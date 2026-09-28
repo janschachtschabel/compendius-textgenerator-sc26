@@ -15,6 +15,7 @@ from typing import Protocol
 
 from app.concurrency import map_in_threads
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
+from app.domain.spelling import readable
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.models import MaterialRef, is_extractive
@@ -56,11 +57,12 @@ class KnowledgeResult:
 
 
 def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
-    """Paragraphs worth citing: one per line, long enough to be a sentence, no consent boilerplate."""
+    """Paragraphs worth citing: one per line, long enough to be a sentence, no consent boilerplate; in one spelling,
+    as the archives write theirs (app/domain/spelling.py)."""
     paragraphs: list[str] = []
     total = 0
     for raw in text.splitlines():
-        line = " ".join(raw.split())
+        line = readable(" ".join(raw.split()))
         if len(line) < MIN_PARAGRAPH_CHARS or _CONSENT.search(line):
             continue
         if paragraphs and total + len(line) > max_chars:

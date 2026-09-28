@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from typing import Annotated, Any, Literal, get_args
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import ConfigDict, Field, model_validator
 from pydantic.json_schema import WithJsonSchema
 
 from app.domain.caller_values import NAMED, listed
+from app.domain.spelling import OneSpelling
 from app.templates.schema import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
 
 Part = Literal["world", "curricula", "collection"]
@@ -234,8 +235,9 @@ REPOSITORY_HELP = (
 )
 
 
-class RequestModel(BaseModel):
-    """The body of a request: a field the service does not know is a 422, not a silent miss.
+class RequestModel(OneSpelling):
+    """The body of a request: a field the service does not know is a 422, not a silent miss, and its text is read in
+    one spelling - umlauts composed, invisible format signs gone (app/domain/spelling.py).
 
     Up to three unknown fields are named one problem each, where they stand. More are one problem that names three:
     pydantic reported every one on its own, and 1.3 million of them held a worker for 19 s (audit 2026-09-28, SE-15).
@@ -256,6 +258,8 @@ class RequestModel(BaseModel):
 
 class GenerateRequest(RequestModel):
     """``topic``, ``collection_id`` or ``node_id`` is required; a topic sent along wins (PLAN.md 4.2, D12, D45)."""
+
+    VERBATIM_FIELDS = frozenset({"existing_markdown"})  # an earlier compendium keeps its reviewed blocks as they are
 
     topic: str | None = Field(
         None,

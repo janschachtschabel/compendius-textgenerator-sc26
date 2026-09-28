@@ -12,6 +12,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from app.domain.spelling import OneSpelling
+
 Generator = Literal["", "sources", "glossary", "actors"]
 Role = Literal["", "definition", "systematik", "context"]
 # A template id names the file it is stored in: letters, digits, underscore and hyphen, nothing that leads out of
@@ -72,8 +74,8 @@ def block_key(key: str) -> str:
     return key.strip().lower()
 
 
-class TemplateSlot(BaseModel):
-    """One building block of part 1."""
+class TemplateSlot(OneSpelling):
+    """One building block of part 1; its text in one spelling, as the archives write theirs (app/domain/spelling.py)."""
 
     id: str = Field(description="Unique within the template; identifies the block in the answer and in audits")
     slot: str = Field(description="Stable slot key, e.g. 'entwicklung_ausblick'")
@@ -137,7 +139,7 @@ class TemplateSlot(BaseModel):
         return block_key(value)
 
 
-class Template(BaseModel):
+class Template(OneSpelling):
     """The building blocks of part 1, in the order they appear in the finished text."""
 
     id: str = Field(

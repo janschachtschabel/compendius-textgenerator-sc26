@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, Query, Request
+from pydantic import BeforeValidator
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -22,6 +23,7 @@ from app.api.responses import ADMIN_REFUSALS, refusals
 from app.compendium.llm_policy import choice_audit, llm_switches
 from app.compendium.llm_report import build_llm_report
 from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
+from app.domain.spelling import readable_value
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
@@ -174,18 +176,25 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
 )
 def lehrplan_search(
     request: Request,
-    q: str = Query(
-        ...,
-        min_length=3,
-        max_length=200,
-        description="The keyword (mode keyword) or the topic (mode topic), 3 to 200 characters",
-    ),
-    subject: str | None = Query(
-        None,
-        max_length=100,
-        description="WLO discipline id, URI, label or alias; it narrows the search only when config/subjects.yaml "
-        "gives it curriculum words (37 subjects), any other one leaves subject_terms empty" + UNKNOWN_SUBJECT_HELP,
-    ),
+    # both in one spelling before their bounds, which then count what is searched (app/domain/spelling.py)
+    q: Annotated[
+        str,
+        BeforeValidator(readable_value),
+        Query(
+            min_length=3,
+            max_length=200,
+            description="The keyword (mode keyword) or the topic (mode topic), 3 to 200 characters",
+        ),
+    ],
+    subject: Annotated[
+        str | None,
+        BeforeValidator(readable_value),
+        Query(
+            max_length=100,
+            description="WLO discipline id, URI, label or alias; it narrows the search only when config/subjects.yaml "
+            "gives it curriculum words (37 subjects), any other one leaves subject_terms empty" + UNKNOWN_SUBJECT_HELP,
+        ),
+    ] = None,
     limit: int = Query(
         50,
         ge=1,

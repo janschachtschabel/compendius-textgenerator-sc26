@@ -11,6 +11,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from app.domain.spelling import readable
 from app.synthesis.safe_markdown import one_line
 
 # ccm:commonlicense_key values that allow verbatim (extractive) reuse in the compendium (PLAN.md 6.3).
@@ -118,18 +119,22 @@ class NodeInfo:
     url: str  # the material's own address (ccm:wwwurl); empty for a collection
 
 
-def _values(props: Mapping[str, Any], key: str) -> list[str]:
+def _values(props: Mapping[str, Any], key: str, *, verbatim: bool = False) -> list[str]:
+    """The values of a property as a reader sees them, in one spelling (app/domain/spelling.py); ``verbatim`` keeps
+    an address as the repository holds it, since composing it could change where it leads."""
     value = props.get(key)
     if isinstance(value, list):
-        return [str(item) for item in value if item not in (None, "")]
-    if value in (None, ""):
-        return []
-    return [str(value)]
+        values = [str(item) for item in value if item not in (None, "")]
+    elif value in (None, ""):
+        values = []
+    else:
+        values = [str(value)]
+    return values if verbatim else [text for text in map(readable, values) if text]
 
 
-def _first(props: Mapping[str, Any], *keys: str) -> str:
+def _first(props: Mapping[str, Any], *keys: str, verbatim: bool = False) -> str:
     for key in keys:
-        values = _values(props, key)
+        values = _values(props, key, verbatim=verbatim)
         if values:
             return values[0].strip()
     return ""
@@ -155,8 +160,8 @@ def _labels(props: Mapping[str, Any], key: str) -> tuple[str, ...]:
 
 
 def _title(node: Mapping[str, Any], props: Mapping[str, Any]) -> str:
-    title = str(node.get("title") or "").strip()
-    return one_line(title or _first(props, "cclom:title", "cm:title") or str(node.get("name") or ""))
+    title = readable(str(node.get("title") or "")).strip()
+    return one_line(title or _first(props, "cclom:title", "cm:title") or readable(str(node.get("name") or "")))
 
 
 def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
@@ -189,7 +194,7 @@ def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
         subject_uris=_subject_uris(props),
         subject_labels=_labels(props, "ccm:taxonid"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
-        url=_first(props, "ccm:wwwurl"),
+        url=_first(props, "ccm:wwwurl", verbatim=True),
     )
 
 
@@ -209,7 +214,7 @@ def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:
 
 def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
     props: Mapping[str, Any] = node.get("properties") or {}
-    url = _first(props, "ccm:wwwurl") or str((node.get("content") or {}).get("url") or "")
+    url = _first(props, "ccm:wwwurl", verbatim=True) or str((node.get("content") or {}).get("url") or "")
     return MaterialRef(
         id=str((node.get("ref") or {}).get("id") or ""),
         title=_title(node, props),

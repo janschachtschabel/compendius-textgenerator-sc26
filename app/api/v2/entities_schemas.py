@@ -135,6 +135,10 @@ PRESET_HELP = (
 
 
 class EntitiesRequest(RequestModel):
+    # start and end count in the text: the endpoint reads it in one spelling itself and answers with it when that
+    # changed it (see EntitiesResponse.text)
+    VERBATIM_FIELDS = frozenset({"text"})
+
     text: str | None = Field(
         None,
         min_length=1,
@@ -266,5 +270,8 @@ class EntitiesResponse(BaseModel):
     )
     node: NodeInput | None = Field(None, description="The node whose title, description and keywords were read")
     text: str | None = Field(
-        None, description="The text read from node_id - start and end count in it; null when the request sent one"
+        None,
+        description="The text start and end count in, when it is not the one the request sent: the text read from "
+        "node_id, or the sent text in one spelling - umlauts composed (NFC), invisible format signs such as soft "
+        "hyphens and zero-width spaces removed; null when start and end count in the text as sent",
     )

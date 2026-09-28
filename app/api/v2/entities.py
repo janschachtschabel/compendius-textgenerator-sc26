@@ -51,6 +51,7 @@ from app.api.v2.entities_schemas import (
     Method,
 )
 from app.domain.models import Source
+from app.domain.spelling import readable
 from app.knowledge import recognise
 from app.knowledge.entities import classify_entity, is_work
 from app.knowledge.entities_llm import EntitiesLlmReport, EntityLlmJob, Link, grade_links, named_mentions
@@ -282,7 +283,7 @@ def entities(
     check = payload.link and payload.link_check == "llm"
     needed = (["methods=llm"] if "llm" in methods else []) + (["link_check=llm"] if check else [])
     service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
-    node, text = None, payload.text or ""
+    node, text = None, readable(payload.text or "")
     if payload.node_id:  # no archive is needed for this, so the service is asked directly
         info, node = service.read_node(payload.node_id, payload.repository)
         text = _node_text(info)
@@ -350,5 +351,5 @@ def entities(
         note="; ".join(dict.fromkeys(note for note in notes if note)) or None,
         llm=_llm_answer(report),
         node=node,
-        text=text if payload.text is None else None,
+        text=None if text == payload.text else text,
     )
