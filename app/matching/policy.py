@@ -23,6 +23,14 @@ TWIN_LEAD_SCORE = 1.5
 SUBTOPIC_LEAD_SCORE = 0.9
 CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks then take the default slot
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
+# The factors of _score_candidate, named so a measurement can set each to 1.0 (audit 2026-09-27, WA-02; the
+# measurement on the gold standard is M44 in docs/entwicklung/05-messprotokoll.md)
+SUBAREA_BOOST = 1.25  # an introduction of a side article that carries the topic, for the overview block
+OTHER_HEADING_FACTOR = 0.5  # the heading names another block in the lexicon
+SECTION_LEAD_BOOST = 1.3  # the first paragraph of an H2 section, for the overview block
+EXCLUSION_FACTOR = 0.6  # a word of the block's exclusions in heading or text
+FIRST_SOURCE_BOOST = 1.15  # the block's most preferred source project
+PREFERRED_SOURCE_BOOST = 1.08  # one of its further preferred projects
 
 
 @dataclass
@@ -112,7 +120,7 @@ def _score_candidate(
         if lexicon_slot in context.definition_keys:
             lexicon_slot = None
         if slot.role == "systematik" and primary_stem and primary_stem in source.title.lower():
-            score *= 1.25
+            score *= SUBAREA_BOOST
             reasons.append("Teilgebiet des Themas")
 
     if lexicon_slot:
@@ -120,25 +128,25 @@ def _score_candidate(
             score = max(score, LEXICON_SCORE)
             reasons.append(f"Überschrift „{chunk.heading}“ im Lexikon")
         else:
-            score *= 0.5
+            score *= OTHER_HEADING_FACTOR
             reasons.append(f"Überschrift spricht für {lexicon_slot}")
 
     if slot.role == "systematik" and chunk.is_section_lead:
-        score *= 1.3
+        score *= SECTION_LEAD_BOOST
         reasons.append("Abschnittseinleitung (H2)")
 
     if exclusions:
         haystack = f"{chunk.full_heading} {chunk.text}".lower()
         hits = [term for term in exclusions if term in haystack]
         if hits:
-            score *= 0.6
+            score *= EXCLUSION_FACTOR
             reasons.append("Ausschlusssignal: " + ", ".join(sorted(hits)[:3]))
 
     if source is not None and slot.source_preference:
         if source.project == slot.source_preference[0]:
-            score *= 1.15
+            score *= FIRST_SOURCE_BOOST
         elif source.project in slot.source_preference:
-            score *= 1.08
+            score *= PREFERRED_SOURCE_BOOST
 
     if source is not None and source.role is SourceRole.MATERIAL and source.project in slot.source_preference:
         # A paragraph of a reusable collection material counts as evidence for the blocks that want
