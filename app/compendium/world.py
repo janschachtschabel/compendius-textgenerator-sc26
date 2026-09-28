@@ -11,7 +11,7 @@ import time
 from collections.abc import Mapping, Sequence
 
 from app.compendium.llm_policy import LlmPolicy
-from app.compendium.prepared import Matched, PreparedTopic, Stopwatch, WorldPart
+from app.compendium.prepared import Matched, PreparedTopic, Requested, Stopwatch, WorldPart
 from app.compose.regeneration import PreservedSection, parse_document, to_keep
 from app.domain.models import ScoredChunk
 from app.domain.requests import GenerateRequest
@@ -97,7 +97,7 @@ class WorldBuilding(LlmPolicy):
         self,
         prepared: PreparedTopic,
         request: GenerateRequest,
-        requested: tuple[str, str, str],
+        requested: Requested,
         deadline: Deadline,
         timings: dict[str, int],
         shared_budget: RequestBudget | None = None,
@@ -109,7 +109,8 @@ class WorldBuilding(LlmPolicy):
         the first two run rule-based and nothing is enriched. ``shared_budget`` is the request's budget when the
         article choice opened it already or the caller brought one (/qa).
         """
-        extraction_wanted, generation_wanted, enrichment_wanted = requested
+        extraction_wanted, generation_wanted = requested.extraction, requested.generation
+        enrichment_wanted = requested.enrichment
         matcher_wanted = request.matcher or LOCAL_MATCHER
         wants_llm = (
             extraction_wanted != "rule-based" or generation_wanted != "rule-based" or matcher_wanted == LLM_MATCHER

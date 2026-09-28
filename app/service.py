@@ -1,31 +1,31 @@
-"""Orchestrator for part 1 (PLAN.md 3.1): resolve, corpus, segment, match, synthesise, assemble."""
+"""The compendium service (PLAN.md 3.1): prepare the topic and its corpus, make the requested parts, assemble them.
+
+Its parts live in app/compendium/: the refusals, what the steps hand on, the corpus rules, the LLM's policy, the
+repository reading, part 1 and the assembly (audit 2026-09-27, AR-01).
+"""
 
 from __future__ import annotations
 
 import logging
 import threading
-from datetime import UTC, datetime
 
 import httpx
 
+from app.compendium.assembly import assemble
 from app.compendium.corpus import segment_corpus, subtopics
 from app.compendium.errors import (
     NO_REPOSITORY,
     PartsUnavailableError,
     TopicNotFoundError,
 )
-from app.compendium.llm_policy import choice_audit, llm_switches
-from app.compendium.prepared import PreparedTopic, Stopwatch, WorldPart
+from app.compendium.llm_policy import llm_switches
+from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart
 from app.compendium.repository import RepositoryReading
 from app.compendium.world import WorldBuilding
-from app.compose.assembler import build_frontmatter, render_markdown
 from app.compose.regeneration import check_names
 from app.domain.models import (
-    AuditReport,
     CollectionPart,
     Compendium,
-    CurriculaPart,
-    SectionStatus,
 )
 from app.domain.requests import GenerateRequest, with_profile
 from app.knowledge.article_choice import (
@@ -35,14 +35,12 @@ from app.knowledge.article_choice import (
 )
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.main_article import choose_main_article
-from app.knowledge.node_article import node_block
 from app.knowledge.topic_articles import settle
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.llm.gateway import LlmGateway
-from app.llm.report import build_llm_report
 from app.matching.lexicon import HeadingLexicon
-from app.matching.registry import LLM_MATCHER, ensure_strategy
+from app.matching.registry import ensure_strategy
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
@@ -54,7 +52,6 @@ from app.sources.wlo.part import (
 )
 from app.sources.zim.registry import NODE_ORIGIN, ZimRegistry
 from app.synthesis.facets import FacetCatalog
-from app.synthesis.lint import lint_sections
 from app.synthesis.writer import SectionWriter
 from app.templates.manager import TemplateManager
 
@@ -232,15 +229,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
             deadline = Deadline(self.settings.request_timeout_s)
-        defaulted = request.preset is None
-        profile = request.preset or self.settings.preset_default
-        request = with_profile(request, profile)
-        if request.matcher:  # before any work
-            ensure_strategy(request.matcher)
-        self.refuse_without_llm(llm_switches(request, corpus=self._needs_corpus(request)), profile, defaulted)
-        unmakeable = self._unmakeable(request)
-        if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
-            raise PartsUnavailableError("; ".join(unmakeable.values()))
+        request, profile = self._admit(request)
         # The request's one budget, the profile's size (D59), unless the caller brought one to share over more than
         # the compendium (/qa); article_choice=llm (D35) spends from it first
         if budget is None:
@@ -248,178 +237,76 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
         budget = choice.budget if choice is not None else budget
         prepared = self.prepare(request, deadline, choice)
-        want_world = "world" in request.parts
-        # The switches and the matcher describe how part 1 is made; parts 2 and 3 alone are rule-based by definition
-        extraction_requested = request.extraction or "rule-based"  # set by the profile (with_profile)
-        generation_requested = request.generation or "rule-based"
-        enrichment_requested = request.enrichment or "sources-only"
-        if not want_world:
-            extraction_requested = generation_requested = "rule-based"
-            enrichment_requested = "sources-only"
+        requested = Requested.of(request)
         timings = dict(prepared.timings)
-        if want_world:
-            switches = (extraction_requested, generation_requested, enrichment_requested)
-            world = self._world_part(prepared, request, switches, deadline, timings, budget)
+        if "world" in request.parts:
+            world = self._world_part(prepared, request, requested, deadline, timings, budget)
         else:  # no matching, no synthesis, no LLM work
-            world = WorldPart(
-                matcher=None,
-                matcher_requested=None,
-                extraction="rule-based",
-                generation="rule-based",
-                enrichment="sources-only",
-                llm_note=None,
-            )
+            world = WorldPart.skipped()
         lap = Stopwatch(timings).lap
-
-        template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
-        resolution = prepared.resolution
-        sections, citations, matcher_name = world.written.sections, world.written.citations, world.matcher
-        facets_visible = self._facets_visible(request)
-        topic = prepared.title
-
-        curricula: CurriculaPart | None = None
-        curriculum_requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
-        checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
-        curriculum_fallback: str | None = None
-        if "curricula" in request.parts and self.curricula is not None:
-            check = None
-            if curriculum_requested == "llm":
-                check, curriculum_fallback = self.curriculum_check(topic, prepared.subjects, budget, deadline, checked)
-            curricula = self.curricula.build(
-                title=topic,
-                aliases=prepared.aliases,
-                subtopics=prepared.subtopics,
-                subjects=prepared.subjects,
-                facets_visible=facets_visible,
-                check=check,
-            )
-            if checked:
-                report = checked[0]
-                curricula.summary["llm_check"] = {
-                    "rated": report.rated,
-                    "answered": report.answered,
-                    "dropped": report.dropped,
-                    "fallbacks": dict(report.fallbacks),
-                }
+        curricula = self._curricula_part(prepared, request, budget, deadline)
+        if curricula.part is not None:
             lap("curricula")
-        collection_part: CollectionPart | None = None
+        collection: CollectionPart | None = None
         if "collection" in request.parts and request.collection_id and self.collections is not None:
-            collection_part = self._collection_part(request.collection_id, deadline)
+            collection = self._collection_part(request.collection_id, deadline)
             lap("collection")
-        parts = ["world"] if want_world else []
-        if curricula is not None:
-            parts.append("curricula")
-        if collection_part is not None:
-            parts.append("collection")
-
-        findings = lint_sections(template, sections, self.facets)
-        generated_at = datetime.now(UTC).replace(microsecond=0).isoformat()
-        # The switches actually used: a switch without any LLM contribution is rule-based in the compendium.
-        extracted, drafted = world.extracted, world.written.llm
-        extraction_used = world.extraction if extracted and extracted.slots else "rule-based"
-        generation_used = world.generation if drafted and drafted.sections else "rule-based"
-        # Enrichment only means something where the LLM actually wrote a block
-        enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-        node_report = prepared.node_article
-        llm_audit, llm_tokens, llm_front = build_llm_report(
-            self.llm,
-            extraction_requested=extraction_requested,
-            extraction_used=extraction_used,
-            generation_requested=generation_requested,
-            generation_used=generation_used,
-            enrichment_requested=enrichment_requested,
-            enrichment_used=enrichment_used,
-            matching_requested="llm" if world.matcher_requested == LLM_MATCHER else "rule-based",
-            matching_used="llm" if matcher_name == LLM_MATCHER else "rule-based",
-            note=world.llm_note or choice_note,
-            extraction=extracted,
-            generation=drafted,
-            matching=world.matching,
-            **choice_audit(prepared, choice_requested),
-            curriculum_requested=curriculum_requested if curricula is not None else "rule-based",
-            curriculum=checked[0] if checked else None,
-            curriculum_fallback=curriculum_fallback,
-        )
-        frontmatter = build_frontmatter(
-            topic=topic,
-            resolution={
-                "query": resolution.query,
-                "normalized": resolution.normalized,
-                "context": resolution.context,
-                "title": resolution.title,
-                "path": resolution.path,
-                "project": resolution.project,
-                "alternatives": resolution.alternatives,
-                "method": resolution.method,
-                "confident": resolution.confident,
-            },
-            template=template,
-            extraction=extraction_used,
-            extraction_requested=extraction_requested,
-            generation=generation_used,
-            generation_requested=generation_requested,
-            enrichment=enrichment_used,
-            enriched_sentences=drafted.marked_sentences if drafted else 0,
-            llm=llm_front,
-            generated_at=generated_at,
-            zim_snapshot=self.registry.snapshot(),
-            matcher=matcher_name,
-            matcher_requested=world.matcher_requested,
-            parts=parts,
-        )
-        source_refs = [s.to_ref() for s in sources] if want_world else []  # the sources belong to part 1
-        markdown = render_markdown(
-            topic=topic,
-            frontmatter=frontmatter,
-            template=template,
-            sections=sections,
-            sources=source_refs,
-            facets_visible=facets_visible,
-            extra_parts=[part.markdown for part in (curricula, collection_part) if part is not None],
-            include_world=want_world,
-            include_frontmatter=request.frontmatter_in_markdown,
-        )
-        lap("assemble")
-
-        filled = sum(1 for s in sections if s.status is not SectionStatus.EMPTY)
-        parts_status = _parts_status(request, want_world, filled, curricula, collection_part)
-        audit = AuditReport(
-            preset=request.preset,
-            matcher=matcher_name,
-            timings_ms=timings,
-            lint=findings,
-            chunks_total=len(chunks),
-            chunks_assigned=world.chunks_assigned,
-            sections_filled=filled,
-            sections_empty=len(sections) - filled,
-            citations=len(citations),
-            llm_tokens=llm_tokens,
-            llm=llm_audit,
-            knowledge=prepared.knowledge,
-            node_article=node_block(node_report) if node_report is not None else None,
-            chunks_truncated=prepared.chunks_truncated,
-            parts_status=parts_status,
-            regenerated=world.regenerated,
-        )
-        return Compendium(
-            topic=topic,
-            resolution=resolution,
-            template_id=template.id,
-            template_version=template.version,
-            extraction=extraction_used,
-            generation=generation_used,
-            enrichment=enrichment_used,
-            generated_at=generated_at,
-            frontmatter=frontmatter,
-            sections=sections,
+        made = Made(
+            prepared=prepared,
+            world=world,
+            requested=requested,
+            choice_requested=choice_requested,
+            choice_note=choice_note,
             curricula=curricula,
-            collection=collection_part,
-            node=prepared.node,
-            sources=source_refs,
-            markdown=markdown,
-            parts_status=parts_status,
-            audit=audit,
+            collection=collection,
+            facets_visible=self._facets_visible(request),
+            timings=timings,
         )
+        return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=self.registry.snapshot())
+
+    def _admit(self, request: GenerateRequest) -> tuple[GenerateRequest, str]:
+        """The request with the switches of its profile (D41) and the profile; refuses before any work what this
+        server cannot make: an unknown strategy, a switch that needs an LLM it lacks (D53), no makeable part."""
+        defaulted = request.preset is None
+        profile = request.preset or self.settings.preset_default
+        request = with_profile(request, profile)
+        if request.matcher:
+            ensure_strategy(request.matcher)
+        self.refuse_without_llm(llm_switches(request, corpus=self._needs_corpus(request)), profile, defaulted)
+        unmakeable = self._unmakeable(request)
+        if len(unmakeable) == len(set(request.parts)):  # an empty compendium would look like a success
+            raise PartsUnavailableError("; ".join(unmakeable.values()))
+        return request, profile
+
+    def _curricula_part(
+        self, prepared: PreparedTopic, request: GenerateRequest, budget: RequestBudget | None, deadline: Deadline
+    ) -> CurriculaResult:
+        """Part 2 when requested and set up here, the curriculum elements checked by the LLM when curriculum_check
+        asks for it (D58)."""
+        requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
+        if "curricula" not in request.parts or self.curricula is None:
+            return CurriculaResult(part=None, requested=requested)
+        checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
+        check, fallback = None, None
+        if requested == "llm":
+            check, fallback = self.curriculum_check(prepared.title, prepared.subjects, budget, deadline, checked)
+        part = self.curricula.build(
+            title=prepared.title,
+            aliases=prepared.aliases,
+            subtopics=prepared.subtopics,
+            subjects=prepared.subjects,
+            facets_visible=self._facets_visible(request),
+            check=check,
+        )
+        report = checked[0] if checked else None
+        if report is not None:
+            part.summary["llm_check"] = {
+                "rated": report.rated,
+                "answered": report.answered,
+                "dropped": report.dropped,
+                "fallbacks": dict(report.fallbacks),
+            }
+        return CurriculaResult(part=part, requested=requested, report=report, fallback=fallback)
 
     def _unmakeable(self, request: GenerateRequest) -> dict[str, str]:
         """Requested parts this request cannot get from this server, with the reason."""
@@ -431,24 +318,3 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         elif "collection" in request.parts and not request.collection_id:
             reasons["collection"] = "Teil 3 braucht collection_id"
         return reasons
-
-
-def _parts_status(
-    request: GenerateRequest,
-    want_world: bool,
-    filled: int,
-    curricula: CurriculaPart | None,
-    collection: CollectionPart | None,
-) -> dict[str, str]:
-    """What became of every requested part (PLAN.md 8.1): whole, empty, cut short or not available here."""
-    status: dict[str, str] = {}
-    if want_world:
-        status["world"] = "ok" if filled else "empty"
-    if "curricula" in request.parts:
-        status["curricula"] = "unavailable" if curricula is None or not curricula.available else "ok"
-    if "collection" in request.parts:
-        if collection is None or not collection.available:
-            status["collection"] = "unavailable"
-        else:
-            status["collection"] = "incomplete" if collection.summary.get("incomplete") else "ok"
-    return status

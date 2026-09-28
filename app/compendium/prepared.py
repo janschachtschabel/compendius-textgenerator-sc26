@@ -1,4 +1,4 @@
-"""What the steps of a compendium hand on: the prepared topic, the matching, part 1 (PLAN.md 3.1)."""
+"""What the steps of a compendium hand on: the prepared topic, the matching, the parts (PLAN.md 3.1)."""
 
 from __future__ import annotations
 
@@ -6,8 +6,10 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from app.domain.models import Chunk, NodeInput, Resolution, Source
+from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, Resolution, Source
+from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
+from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic import NormalizedTopic
 from app.knowledge.topic_articles import TopicArticlesReport
@@ -88,6 +90,61 @@ class WorldPart:
     regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text
     written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
     matching: LlmAssignmentReport | None = None  # matcher=llm: what the model decided
+
+    @classmethod
+    def skipped(cls) -> WorldPart:
+        """Part 1 not requested: no matching, no synthesis, no LLM work."""
+        return cls(
+            matcher=None,
+            matcher_requested=None,
+            extraction="rule-based",
+            generation="rule-based",
+            enrichment="sources-only",
+            llm_note=None,
+        )
+
+
+@dataclass(frozen=True)
+class Requested:
+    """The switches of part 1 as the request or its profile set them (with_profile), before the LLM had its say."""
+
+    extraction: str
+    generation: str
+    enrichment: str
+
+    @classmethod
+    def of(cls, request: GenerateRequest) -> Requested:
+        """The switches describe how part 1 is made; parts 2 and 3 alone are rule-based by definition."""
+        if "world" not in request.parts:
+            return cls("rule-based", "rule-based", "sources-only")
+        return cls(
+            request.extraction or "rule-based", request.generation or "rule-based", request.enrichment or "sources-only"
+        )
+
+
+@dataclass
+class CurriculaResult:
+    """Part 2 of one request, and what the LLM check of D58 did for it."""
+
+    part: CurriculaPart | None  # None when not requested or not set up here
+    requested: str  # curriculum_check as the request or its profile set it
+    report: CurriculumCheckReport | None = None  # what the check did, once it ran
+    fallback: str | None = None  # why the rules decided instead of the LLM
+
+
+@dataclass
+class Made:
+    """What a request made, handed to the assembly: the topic, the parts and how the article was chosen."""
+
+    prepared: PreparedTopic
+    world: WorldPart
+    requested: Requested
+    choice_requested: str  # article_choice as asked (D35)
+    choice_note: str | None  # why the LLM could not choose
+    curricula: CurriculaResult
+    collection: CollectionPart | None
+    facets_visible: bool
+    timings: dict[str, int]
 
 
 class Stopwatch:
