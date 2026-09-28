@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 
 from app import __version__, revision
 from app.api.system_threads import run_system
@@ -92,7 +93,19 @@ async def health(request: Request) -> dict[str, Any]:
     }
 
 
-@router.get("/ready")
+class Readiness(BaseModel):
+    """The answer of /ready, alike for 200 and 503."""
+
+    ready: bool = Field(description="Whether the archives are loaded and none of the required ones is missing")
+    components: dict[str, Any] = Field(description="The components as /health names them: a failing probe says why")
+
+
+@router.get(
+    "/ready",
+    response_model=Readiness,
+    # the 503 was the answer OpenAPI did not name (audit 2026-09-28, AP-05)
+    responses={503: {"model": Readiness, "description": "Not ready: archives still loading or a required one missing"}},
+)
 async def ready(request: Request) -> JSONResponse:
     """Whether the service can work: 200 when the archives are loaded and none of the required ones is
     missing, 503 otherwise. The same components as /health come along, so a probe that fails says why.

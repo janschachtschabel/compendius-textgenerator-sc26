@@ -26,6 +26,8 @@ REFUSALS = {
     ("delete", "/api/v2/zim/{file_name}"): {"400", "403", "404", "409", "429"},
     ("post", "/api/v2/zim/sync"): {"403", "404", "429"},
     ("post", "/api/v2/lehrplan/harvest"): {"403", "404", "429"},
+    # not ready while required archives are missing; the body is the one of 200 (audit 2026-09-28, AP-05)
+    ("get", "/ready"): {"503"},
 }
 
 
