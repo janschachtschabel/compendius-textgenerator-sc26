@@ -7,6 +7,8 @@ import time
 from collections.abc import Callable
 from typing import Any
 
+import pytest
+
 from app.llm.budget import TokenBudget
 from app.llm.call import TIME_UP, LlmSkipped, budgeted_chat
 from app.llm.client import REASONING_ALLOWANCE, ChatResult
@@ -154,3 +156,72 @@ def test_a_call_whose_wait_for_the_budget_took_the_time_releases_its_reservation
     assert waiting, "the second call waits for the first to settle"
     assert results == [LlmSkipped(TIME_UP)]
     assert len(fake.bodies) == 1 and budget.used == 24 and budget.remaining == ONE_AT_A_TIME - 24
+
+
+# Combining marks, one after each "a": 4.30 tokens per estimated one at gpt-6-luna on 2026-09-28, 0.96 per byte
+SHAPED = "".join(chr(0x300 + n % 0x70) if n % 2 else "a" for n in range(2_000))
+
+
+def test_text_a_caller_shapes_is_reserved_by_its_bytes() -> None:
+    """The estimate took random signs, Latin-1 or combining marks for 2.05 to 4.30 times fewer tokens than the b-api
+    counted, so a request spent past its cap (audit 2026-09-28, SE-20). A byte-level BPE token holds a byte at least."""
+    messages = [{"role": "user", "content": SHAPED}]
+    size = len(SHAPED.encode("utf-8"))
+    client, _ = make_client(FakeBApi(lambda body: "OK"))
+    room = client.completion_limit(100)
+
+    def call(per_request: int, **kwargs: Any) -> Any:
+        budget = TokenBudget(per_request=per_request, daily=2_000_000).open_request()
+        return budgeted_chat(client, messages, max_output_tokens=100, budget=budget, what="test", **kwargs)
+
+    assert isinstance(call(size + room - 1), ChatResult)  # the estimate alone takes it for far less
+    assert isinstance(call(size + room - 1, caller_text=SHAPED), LlmSkipped)
+    assert isinstance(call(size + room, caller_text=SHAPED), ChatResult)
+
+
+def test_every_call_with_a_callers_text_reserves_it_by_its_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.knowledge import entities_llm
+    from app.llm.budget import TokenBudget as Budget
+    from app.synthesis import qa
+
+    seen: list[str] = []
+
+    def record(*args: Any, caller_text: str = "", **kwargs: Any) -> LlmSkipped:
+        seen.append(caller_text)
+        return LlmSkipped("recorded")
+
+    monkeypatch.setattr(entities_llm, "budgeted_chat", record)
+    monkeypatch.setattr(qa, "budgeted_chat", record)
+    client, _ = make_client(FakeBApi())
+    job = entities_llm.EntityLlmJob(client=client, budget=Budget(per_request=10_000, daily=100_000).open_request())
+
+    entities_llm.named_mentions(job, SHAPED, entities_llm.EntitiesLlmReport())
+    entities_llm.grade_links(job, SHAPED, [], entities_llm.EntitiesLlmReport())
+    qa.LlmQaWriter(client).pairs(SHAPED, count=3, max_answer_length=300, budget=job.budget)
+
+    assert seen == [SHAPED, SHAPED, SHAPED]
+
+
+def test_the_longest_text_a_caller_may_send_still_fits_the_cap_of_balanced() -> None:
+    """German prose came to 0.23 tokens per byte: reserved by its bytes, the 50,000 characters /entities takes and the
+    room for 200 entities stay under the 60,000 tokens of a request in llm-free and balanced."""
+    from app.api.v2.entities_schemas import MAX_TEXT_CHARS
+    from app.knowledge.entities_llm import EXTRACTION_OUTPUT_TOKENS, EXTRACTION_TOKENS_PER_ENTITY
+    from app.llm.prompts import get_prompt
+
+    prose = ("Die Optik ist die Lehre vom Licht, über Linsen, Spiegel und die Brechung an Wasserflächen. " * 600)[
+        :MAX_TEXT_CHARS
+    ]
+    client, _ = make_client(FakeBApi(lambda body: "OK"))
+    budget = TokenBudget(per_request=60_000, daily=2_000_000).open_request()
+
+    answer = budgeted_chat(
+        client,
+        get_prompt("entity_extraction").render(text=prose),
+        max_output_tokens=max(EXTRACTION_OUTPUT_TOKENS, EXTRACTION_TOKENS_PER_ENTITY * 200),
+        budget=budget,
+        what="test",
+        caller_text=prose,
+    )
+
+    assert isinstance(answer, ChatResult)

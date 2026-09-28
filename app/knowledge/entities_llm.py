@@ -100,6 +100,7 @@ def named_mentions(
         budget=job.budget,
         what="Entitäten",
         deadline=job.deadline,
+        caller_text=text,
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
@@ -230,6 +231,7 @@ def grade_links(
         budget=job.budget,
         what="Prüfung der Entitäten",
         deadline=job.deadline,
+        caller_text=text,
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):

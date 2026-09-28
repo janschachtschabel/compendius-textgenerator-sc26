@@ -66,8 +66,14 @@ def budgeted_chat(
     budget: RequestBudget,
     what: str,
     deadline: Deadline | None = None,
+    caller_text: str = "",
 ) -> ChatResult | LlmSkipped:
     """Reserve the estimated tokens, call within the time left, settle the real cost; ``what`` names the block.
+
+    ``caller_text`` is the part of the prompt a caller shapes, reserved by its UTF-8 bytes: the estimate took random
+    signs, Latin-1 or combining marks for 2.05 to 4.30 times fewer tokens than gpt-6-luna counted on 2026-09-28, and a
+    request spent past its cap (audit 2026-09-28, SE-20). A token of byte-level BPE holds a byte at least; the same
+    texts came to 0.38 to 0.96 tokens per byte, German prose to 0.23.
 
     ``max_output_tokens`` is the length of the answer; the reservation and the call add the room a reasoning model
     needs to think (``BApiClient.completion_limit``). Calls of one request run in parallel and reserve far more than
@@ -76,6 +82,8 @@ def budgeted_chat(
     """
     limit = client.completion_limit(max_output_tokens)
     prompt_tokens = estimate_tokens("".join(m["content"] for m in messages))
+    if caller_text:
+        prompt_tokens += max(0, len(caller_text.encode("utf-8")) - estimate_tokens(caller_text))
     needed = prompt_tokens + limit
     if deadline is not None and deadline.call_timeout(client.timeout_s) is None:
         _heard("skipped")

@@ -170,6 +170,7 @@ class LlmQaWriter:
             budget=budget,
             what="qa",
             deadline=deadline,
+            caller_text=text,
         )
         if isinstance(answer, LlmSkipped):
             log.warning("QA pairs from the LLM skipped: %s", answer.reason)
