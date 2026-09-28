@@ -67,6 +67,7 @@ from app.sources.zim.registry import ZimRegistry
 from app.sources.zim.subscriptions import SubscriptionManifest, load_manifest
 from app.synthesis.facets import FacetCatalog
 from app.templates.manager import TemplateManager
+from app.ui.routes import ui_router
 
 log = logging.getLogger(__name__)
 
@@ -392,6 +393,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(collections_router)
     if settings.metrics_enabled:
         app.include_router(metrics_router)
+    if settings.ui_enabled:
+        app.include_router(ui_router())
     app.add_exception_handler(HTTPException, http_error)
     app.add_exception_handler(RequestValidationError, validation_error)
     for error, answer in DOMAIN_ERRORS.items():

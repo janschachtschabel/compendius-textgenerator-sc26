@@ -120,9 +120,13 @@ class SubjectCatalog:
         """Refuse a subject neither the catalog nor the vocabularies know; without either nothing is checked."""
         if not value or not (self.subjects or self.vocabulary) or self.resolve(value) or self.term(value):
             return
-        school = [term.label for term in self.vocabulary if term.uri.startswith(DISCIPLINE_PREFIX)]
+        school = self.school_subjects()
         known = school or [subject.label for subject in self.subjects]
         raise UnknownSubjectError(value, known, university=len(school) < len(self.vocabulary))
+
+    def school_subjects(self) -> list[str]:
+        """The school subjects of the vocabulary edu-sharing uses in ccm:taxonid, by their German labels."""
+        return [term.label for term in self.vocabulary if term.uri.startswith(DISCIPLINE_PREFIX)]
 
     def mem_terms(self, value: str | None) -> list[str]:
         subject = self.resolve(value)

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Kompendium prüfen</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f6b6f'/%3E%3Cpath d='M9 8h11a3 3 0 0 1 3 3v13H12a3 3 0 0 1-3-3z' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M13 14h6M13 18h4' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="ui.css">
+    <script type="module" src="main.mjs"></script>
+  </head>
+  <body>
+    <a class="skip" href="#ergebnis">Zum Ergebnis springen</a>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Eingaben">
+        <header class="brand">
+          <h1>Kompendium prüfen</h1>
+          <p id="server-note" class="server-note">Einstellungen des Servers werden geladen …</p>
+        </header>
+        <fieldset class="modes" id="modes">
+          <legend>Was prüfen?</legend>
+        </fieldset>
+        <div id="form-slot"></div>
+        <div class="key-box" id="key-box" hidden>
+          <label for="api-key">API-Schlüssel</label>
+          <input id="api-key" type="password" autocomplete="off" spellcheck="false" aria-describedby="api-key-hilfe">
+          <p class="help" id="api-key-hilfe">Dieser Server verlangt einen Schlüssel. Er bleibt nur in diesem Tab gespeichert.</p>
+        </div>
+        <noscript><p class="note">Die Prüfansicht braucht JavaScript.</p></noscript>
+      </aside>
+      <main class="main" id="ergebnis" tabindex="-1">
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div id="results"></div>
+      </main>
+    </div>
+  </body>
+</html>

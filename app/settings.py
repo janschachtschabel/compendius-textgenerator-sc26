@@ -222,6 +222,11 @@ class Settings(BaseSettings):
         "in X-API-Key (401 otherwise). Empty: those endpoints answer everyone",
     )
     api_docs_enabled: bool = Field(True, description="Serve /docs, /redoc and /openapi.json")
+    ui_enabled: bool = Field(
+        False,
+        description="Serve the review page at /ui/ (D66), where people check the answers of every endpoint in the "
+        "browser. It calls the endpoints with the key its reader enters, so API_KEYS guards it as it guards them",
+    )
     metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
     metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
 
