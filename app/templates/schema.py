@@ -52,9 +52,10 @@ class SlotBudget(BaseModel):
     target_chars: int = Field(
         1500,
         ge=100,
-        description="Characters aimed at. Collecting stops at a paragraph boundary once one and a half times "
-        "this is reached, and the LLM prompts name it as the target length. A request's target_length "
-        "replaces it, shared over the content blocks by weight",
+        description="Characters aimed at: collecting stops at a paragraph boundary once one and a half times this "
+        "is reached, and the LLM prompts name it as the target length. For a content block the request sets it: "
+        "its target_length (12,000 unless it names another) is shared over the content blocks by weight, so in a "
+        "template weight is what steers a block's length, not this number",
     )
     weight: float = Field(
         1.0, gt=0, description="This block's share when a request's target_length is distributed over the blocks"

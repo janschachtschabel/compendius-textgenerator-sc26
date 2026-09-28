@@ -7,7 +7,6 @@ from app.sources.lehrplan.stufen import (
     PRIMAR,
     SEK_I,
     SEK_II,
-    is_noise,
     klassenstufe_sort_key,
     resolve_klassenstufe,
     resolve_schulstufe,
@@ -16,15 +15,6 @@ from app.sources.lehrplan.stufen import (
 
 def _lehrplan(label: str, **fields: list[str]) -> LehrplanRecord:
     return LehrplanRecord(iri="https://lp/1", label=label, bundesland_code="SN", bundesland="Sachsen", **fields)
-
-
-def test_word_internal_matches_are_noise_compounds_are_not() -> None:
-    assert is_noise("Wahlpflichtlernbereich 9: Astrophysik", ["Licht"])
-    assert is_noise("Waermestrahlung", ["Strahl"])
-    assert not is_noise("Lichtbrechung an Linsen", ["Licht"])
-    assert not is_noise("Strahlengang am Spiegel", ["Strahl"])
-    assert not is_noise("Lernbereich 4: Wellenoptik", ["Optik"])  # keyword at the end of a compound
-    assert not is_noise("Mechanische Schwingungen", ["Licht"])  # no keyword at all: nothing to judge
 
 
 def test_schulstufe_ladder_prefers_data_over_derivation() -> None:

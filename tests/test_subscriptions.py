@@ -30,7 +30,6 @@ def test_by_id_and_file_matching() -> None:
     manifest = load_manifest(MANIFEST)
     sub = manifest.by_id("klexikon_de_all_maxi")
     assert sub is not None
-    assert sub.file_prefix == "klexikon_de_all_maxi_"
     assert sub.matches_file("klexikon_de_all_maxi_2026-08.zim")
     assert not sub.matches_file("klexikon_de_all_nopic_2026-08.zim")
     assert manifest.by_id("nope") is None
@@ -40,7 +39,7 @@ def test_id_must_match_name_and_flavour() -> None:
     with pytest.raises(ValueError, match="id"):
         Subscription(id="klexikon_de_all", name="klexikon_de_all", flavour="maxi", project="klexikon", profiles=["a"])
     plain = Subscription(id="freecodecamp_de_all", name="freecodecamp_de_all", project="other", profiles=["a"])
-    assert plain.file_prefix == "freecodecamp_de_all_"
+    assert plain.matches_file("freecodecamp_de_all_2026-08.zim")
 
 
 def test_manifest_rejects_unknown_profile_and_duplicates() -> None:

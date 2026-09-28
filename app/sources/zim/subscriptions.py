@@ -33,10 +33,6 @@ class Subscription(BaseModel):
             raise ValueError(f"id {self.id!r} must be name_flavour, i.e. {expected!r}")
         return self
 
-    @property
-    def file_prefix(self) -> str:
-        return f"{self.id}_"
-
     def matches_file(self, file_name: str) -> bool:
         return archive_id(file_name) == self.id
 

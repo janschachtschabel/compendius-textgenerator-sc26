@@ -46,7 +46,6 @@ _TITEL_SEK_I = re.compile(
 _TITEL_PRIMAR = re.compile(r"grundschule|primarstufe", re.I)
 # Any standalone one- or two-digit number in 1..13 counts as a grade ("Physik 7-9/10" -> 7, 9, 10).
 _GRADE = re.compile(r"\b(\d{1,2})\b")
-_WORD = r"[\wäöüÄÖÜß]"
 
 
 @dataclass(frozen=True)
@@ -57,21 +56,6 @@ class Resolved:
     @property
     def from_data(self) -> bool:
         return self.source.startswith("Daten")
-
-
-def is_noise(label: str, keywords: Sequence[str]) -> bool:
-    """True when every matching keyword sits buried inside a longer word.
-
-    German compounds carry the topic word at either end ("Lichtbrechung", "Kernphysik") and are on
-    topic. Only a keyword with word material on both sides is noise: "Licht" in
-    "Wahlpflichtlernbereich", "Strahl" in "Wärmestrahlung".
-    """
-    contained = [word for word in keywords if word and re.search(re.escape(word), label, re.I)]
-    if not contained:
-        return False
-    return not any(
-        re.search(rf"(?<!{_WORD}){re.escape(word)}|{re.escape(word)}(?!{_WORD})", label, re.I) for word in contained
-    )
 
 
 def grades_in(text: str) -> list[int]:
