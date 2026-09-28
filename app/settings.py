@@ -31,9 +31,10 @@ def b_api_for(repository_url: str) -> str:
     return B_API_BY_REPOSITORY.get(urlparse(repository_url).hostname or "", "")
 
 
-# Admin and metrics tokens and the API keys: 32 characters (openssl rand -hex 16) put guessing out of reach, while a
-# token of one character was accepted (audit 2026-09-27, SE-08)
-MIN_SECRET_CHARS = 32
+# Admin and metrics tokens and the API keys: a token of one character was accepted (audit 2026-09-27, SE-08). The
+# minimum is 16 characters (Jan, 2026-09-28; the audit asked for 32): generated, that is 64 bits and more, out of
+# reach of guessing under the rate limit, and it keeps an invented word like "geheim12" out. Longer stays welcome.
+MIN_SECRET_CHARS = 16
 
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"

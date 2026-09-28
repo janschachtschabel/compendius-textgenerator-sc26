@@ -2,7 +2,7 @@
 
 Without API_KEYS the service answers everyone, as before. With it, every endpoint that works under a profile - the
 ones that spend the day's LLM budget or the workers' time - wants one of the keys in ``X-API-Key``; health, readiness,
-templates and the status endpoints stay open. Tokens and keys shorter than 32 characters are refused at start, and
+templates and the status endpoints stay open. Tokens and keys shorter than 16 characters are refused at start, and
 the refusal never repeats the value.
 """
 
@@ -114,15 +114,25 @@ def test_the_docs_offer_the_key(settings: Settings) -> None:
 
 
 @pytest.mark.parametrize("field", ["api_keys", "admin_token", "metrics_token"])
-def test_a_secret_shorter_than_32_characters_is_refused_without_repeating_it(settings: Settings, field: str) -> None:
-    short = "kurz-und-geheim"
+def test_a_secret_shorter_than_16_characters_is_refused_without_repeating_it(settings: Settings, field: str) -> None:
+    short = "kurz-und-geheim"  # 15 characters
 
     with pytest.raises(ValidationError) as refused:
         make_settings([], settings.state_dir, **{field: short})
 
     message = str(refused.value)
-    assert field.upper() in message and "32" in message
+    assert field.upper() in message and "16" in message
     assert short not in message
+
+
+@pytest.mark.parametrize("field", ["api_keys", "admin_token", "metrics_token"])
+def test_a_secret_of_16_characters_is_taken(settings: Settings, field: str) -> None:
+    """16 is the minimum (Jan, 2026-09-28; the audit's SE-08 asked for 32); longer ones stay welcome."""
+    sixteen = "0123456789abcdef"
+
+    configured = make_settings([], settings.state_dir, **{field: sixteen})
+
+    assert getattr(configured, field) == sixteen
 
 
 def test_one_short_key_among_long_ones_is_refused(settings: Settings) -> None:

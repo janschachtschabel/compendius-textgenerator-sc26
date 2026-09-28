@@ -82,8 +82,8 @@ Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein B
 |---|---|
 | `ZIM_PROFILE` | welche Archive geladen werden (Tabelle oben) |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | in der Vorlage `true`: der Updater lädt beim ersten Start die fehlenden Pflichtarchive |
-| `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden, dann mit mindestens 32 Zeichen (`openssl rand -hex 32`) |
-| `API_KEYS`, `METRICS_TOKEN` | auf einem öffentlichen Server setzen, je mindestens 32 Zeichen: ohne sie antworten die Endpunkte mit einem Profil und `/metrics` jedem (Abschnitt 8) |
+| `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden, dann mit mindestens 16 Zeichen, am besten erzeugt (`openssl rand -hex 32`) |
+| `API_KEYS`, `METRICS_TOKEN` | auf einem öffentlichen Server setzen, je mindestens 16 Zeichen: ohne sie antworten die Endpunkte mit einem Profil und `/metrics` jedem (Abschnitt 8) |
 | `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` eintragen. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
 
@@ -208,16 +208,18 @@ ufw sperrt, ist trotzdem offen. Firewall-Regeln für veröffentlichte Ports geh�
 Der Dienst kennt keine Anmeldung, aber auf einem öffentlichen Server gehören zwei Variablen in die `.env` (oder
 in die Variablen des Hosting-Panels):
 
-- `API_KEYS`: ein oder mehrere Schlüssel, kommagetrennt, je mindestens 32 Zeichen (`openssl rand -hex 32`). Dann
+- `API_KEYS`: ein oder mehrere Schlüssel, kommagetrennt, je mindestens 16 Zeichen (`openssl rand -hex 32`). Dann
   verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`,
   `/lehrplan/search`, `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne
   Schlüssel kann jeder das gemeinsame LLM-Tagesbudget in Minuten aufbrauchen. `/health`, `/ready`, `/docs`, die
   Templates und die Statusendpunkte bleiben offen. Ein eigener Schlüssel je aufrufender Anwendung lässt sich
   einzeln zurückziehen.
-- `METRICS_TOKEN`, ebenfalls mindestens 32 Zeichen: sonst liest jeder `/metrics`.
+- `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`.
 
-`ADMIN_TOKEN`, `METRICS_TOKEN` und `API_KEYS` mit weniger als 32 Zeichen lehnt der Dienst beim Start ab; die
-Meldung nennt die Variable, nicht ihren Wert.
+`ADMIN_TOKEN`, `METRICS_TOKEN` und `API_KEYS` mit weniger als 16 Zeichen lehnt der Dienst beim Start ab; die
+Meldung nennt die Variable, nicht ihren Wert. 16 ist das Minimum: 16 zufällige Hex-Zeichen sind 64 Bit und unter
+dem Rate-Limit nicht zu erraten. Die Prüfung misst nur die Länge; ein ausgedachter Wert ist auch mit 16 Zeichen
+schwächer als ein erzeugter. Länger ist besser, `openssl rand -hex 32` erzeugt 64 Zeichen.
 
 Auf einer Maschine, die nur selbst zugreifen soll, gehört die alte Bindung zurück:
 `API_BIND=127.0.0.1:8000`.

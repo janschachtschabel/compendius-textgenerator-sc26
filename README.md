@@ -622,8 +622,8 @@ Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus. Im Container kommt auch ein Proxy auf dem Host nicht von `127.0.0.1`, sondern vom Gateway des Compose-Netzes (siehe docs/installation.md, Abschnitt 8) |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Jede Anfrage belegt einen Worker für ihre ganze Laufzeit, und jeder Worker kostet eigenen Speicher (siehe `docs/installation.md`) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern |
-| `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Templates schreiben und löschen) nur mit diesem Token, mindestens 32 Zeichen (kürzer: der Dienst startet nicht); leer schaltet sie ab |
-| `API_KEYS` | leer | Schlüssel, kommagetrennt, je mindestens 32 Zeichen (`openssl rand -hex 32`). Gesetzt, verlangen alle Endpunkte mit einem Profil — `compendium`, `knowledge`, `qa`, `entities`, `lehrplan/search`, `nodes/{id}` und `collections/overview` — einen davon im Header `X-API-Key`, sonst 401; `/health`, `/ready`, `/docs`, Templates und Statusendpunkte bleiben offen. Leer: Die Endpunkte antworten jedem. Auf einem öffentlichen Server setzen |
+| `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Templates schreiben und löschen) nur mit diesem Token, mindestens 16 Zeichen (kürzer: der Dienst startet nicht; länger ist besser, etwa `openssl rand -hex 32`); leer schaltet sie ab |
+| `API_KEYS` | leer | Schlüssel, kommagetrennt, je mindestens 16 Zeichen, am besten erzeugt (`openssl rand -hex 32`). Gesetzt, verlangen alle Endpunkte mit einem Profil — `compendium`, `knowledge`, `qa`, `entities`, `lehrplan/search`, `nodes/{id}` und `collections/overview` — einen davon im Header `X-API-Key`, sonst 401; `/health`, `/ready`, `/docs`, Templates und Statusendpunkte bleiben offen. Leer: Die Endpunkte antworten jedem. Auf einem öffentlichen Server setzen |
 
 ### ZIM-Archive
 
@@ -761,7 +761,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `METRICS_ENABLED` | `true` | `GET /metrics` ausliefern |
-| `METRICS_TOKEN` | leer | Verlangt `Authorization: Bearer <Token>`, mindestens 32 Zeichen; leer heißt ohne Token. Auf einem öffentlichen Server setzen |
+| `METRICS_TOKEN` | leer | Verlangt `Authorization: Bearer <Token>`, mindestens 16 Zeichen; leer heißt ohne Token. Auf einem öffentlichen Server setzen |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | Wo die Worker ihre Werte ablegen, damit `/metrics` sie summiert. Leer nimmt den Standard `/tmp/prometheus`, den der API-Befehl des Images selbst setzt — **in der Regel leer lassen**, denn diese Datei gilt auch für die Sidecars, die keine Metriken schreiben. Ein eigener Pfad muss je Container leer und beschreibbar sein und darf niemals das Zustandsvolume sein |
 
 ## Endpunkte

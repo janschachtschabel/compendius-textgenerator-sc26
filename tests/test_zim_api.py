@@ -16,7 +16,7 @@ from app.sources.zim.catalog import KiwixCatalog
 from tests.conftest import make_settings, strings_in
 
 OPDS = Path(__file__).parent / "fixtures" / "opds"
-ADMIN_TOKEN = "s3cret" * 6  # the service refuses a token under 32 characters (audit 2026-09-27, SE-08)
+ADMIN_TOKEN = "s3cret" * 6  # the service refuses a token under 16 characters (audit 2026-09-27, SE-08)
 AUTH = {"X-Admin-Token": ADMIN_TOKEN}
 
 

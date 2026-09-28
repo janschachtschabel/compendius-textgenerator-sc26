@@ -416,7 +416,7 @@ def test_article_choice_llm_counts_as_an_llm_request_where_the_model_has_somethi
 
 
 def test_metrics_can_require_a_token_or_be_switched_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    token = "geheim" * 6  # the service refuses a token under 32 characters (audit 2026-09-27, SE-08)
+    token = "geheim" * 6  # the service refuses a token under 16 characters (audit 2026-09-27, SE-08)
     with _app(sample_zims, tmp_path / "a", metrics_token=token) as client:
         assert client.get("/metrics").status_code == 401
         assert client.get("/metrics", headers={"Authorization": "Bearer falsch"}).status_code == 401
