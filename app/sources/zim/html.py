@@ -17,7 +17,27 @@ from urllib.parse import unquote
 
 from app.domain.models import ArticleSection, ChunkKind, Paragraph
 
-_VOID = frozenset({"br", "img", "hr", "meta", "link", "input", "wbr", "source", "col", "area", "base"})
+# Every HTML5 element without an end tag (keygen, param obsolete); one missing stayed on the stack of skipped tags
+# inside a skipped video or figure, and the rest of the article was lost (audit 2026-09-27, KO-15)
+_VOID = frozenset(
+    {
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "keygen",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr",
+    }
+)
 _SKIP_TAGS = frozenset(
     {"head", "title", "script", "style", "nav", "noscript", "figure", "iframe", "svg", "audio", "video", "h1"}
 )

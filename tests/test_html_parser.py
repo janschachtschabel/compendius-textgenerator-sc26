@@ -120,3 +120,14 @@ def test_many_links_in_one_section_parse_in_linear_time() -> None:
     parsed = parse_article(html, "X")
     assert time.perf_counter() - started < 1.0
     assert len(parsed.sections[0].links) == 8000
+
+
+def test_a_void_element_inside_a_skipped_part_does_not_swallow_the_rest() -> None:
+    """KO-15: track, embed and param have no end tag; inside a skipped video or figure they stayed on the stack of
+    skipped tags, and every paragraph after them was lost."""
+    html = (
+        '<p>Vorher.</p><video><source src="a.webm"><track kind="captions" src="a.vtt"></video>'
+        '<p>Nach dem Video.</p><figure><embed src="b.svg"><param name="p" value="1"></figure><p>Nach der Abbildung.</p>'
+    )
+    texts = [paragraph.text for section in parse_article(html, "Licht").sections for paragraph in section.paragraphs]
+    assert texts == ["Vorher.", "Nach dem Video.", "Nach der Abbildung."]
