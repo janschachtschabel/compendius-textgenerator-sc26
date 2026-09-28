@@ -9,9 +9,9 @@ from typing import Any
 
 from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import choice_audit
-from app.compendium.llm_report import build_llm_report
+from app.compendium.llm_report import LlmWork, build_llm_report
 from app.compendium.prepared import Made
-from app.compose.assembler import build_frontmatter, render_markdown
+from app.compose.assembler import Switches, build_frontmatter, render_markdown
 from app.domain.models import AuditReport, CollectionPart, Compendium, CurriculaPart, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.node_article import node_block
@@ -51,25 +51,25 @@ def assemble(
     # Enrichment only means something where the LLM actually wrote a block
     enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
     node_report = prepared.node_article
-    llm_audit, llm_tokens, llm_front = build_llm_report(
-        llm,
+    work = LlmWork(
+        note=world.llm_note or made.choice_note,
         extraction_requested=requested.extraction,
         extraction_used=extraction_used,
+        extraction=extracted,
         generation_requested=requested.generation,
         generation_used=generation_used,
+        generation=drafted,
         enrichment_requested=requested.enrichment,
         enrichment_used=enrichment_used,
         matching_requested="llm" if world.matcher_requested == LLM_MATCHER else "rule-based",
         matching_used="llm" if matcher_name == LLM_MATCHER else "rule-based",
-        note=world.llm_note or made.choice_note,
-        extraction=extracted,
-        generation=drafted,
         matching=world.matching,
-        **choice_audit(prepared, made.choice_requested),
+        choice=choice_audit(prepared, made.choice_requested),
         curriculum_requested=made.curricula.requested if curricula is not None else "rule-based",
         curriculum=made.curricula.report,
         curriculum_fallback=made.curricula.fallback,
     )
+    llm_audit, llm_tokens, llm_front = build_llm_report(llm, work)
     frontmatter = build_frontmatter(
         topic=topic,
         resolution={
@@ -84,17 +84,19 @@ def assemble(
             "confident": resolution.confident,
         },
         template=template,
-        extraction=extraction_used,
-        extraction_requested=requested.extraction,
-        generation=generation_used,
-        generation_requested=requested.generation,
-        enrichment=enrichment_used,
-        enriched_sentences=drafted.marked_sentences if drafted else 0,
+        switches=Switches(
+            extraction=extraction_used,
+            generation=generation_used,
+            enrichment=enrichment_used,
+            enriched_sentences=drafted.marked_sentences if drafted else 0,
+            matcher=matcher_name,
+            extraction_requested=requested.extraction,
+            generation_requested=requested.generation,
+            matcher_requested=world.matcher_requested,
+        ),
         llm=llm_front,
         generated_at=generated_at,
         zim_snapshot=zim_snapshot,
-        matcher=matcher_name,
-        matcher_requested=world.matcher_requested,
         parts=parts,
     )
     source_refs = [s.to_ref() for s in sources] if want_world else []  # the sources belong to part 1

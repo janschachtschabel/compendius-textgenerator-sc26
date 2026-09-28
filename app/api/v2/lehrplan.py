@@ -21,9 +21,10 @@ from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
 from app.compendium.llm_policy import choice_audit, llm_switches
-from app.compendium.llm_report import build_llm_report
+from app.compendium.llm_report import LlmWork, build_llm_report
 from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
 from app.domain.spelling import readable_value
+from app.knowledge.article_choice import ChoiceAudit
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
@@ -98,7 +99,7 @@ class _Search:
     keywords: list[str]
     subject_terms: list[str]
     subjects: list[str]  # as the request or the topic named them, for the LLM check
-    choice: dict[str, Any] = field(default_factory=dict)  # build_llm_report on the article choice (mode=topic)
+    choice: ChoiceAudit = field(default_factory=ChoiceAudit)  # the article choice (mode=topic)
     note: str | None = None  # why the LLM could not choose the article
 
 
@@ -124,22 +125,14 @@ def _llm_answer(
     fallback: str | None,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None]:
     """What the LLM did for the search and what it cost, from the audit of a compendium; ``None`` when not asked."""
-    audit, tokens, _ = build_llm_report(
-        service.llm,
-        extraction_requested="rule-based",
-        extraction_used="rule-based",
-        generation_requested="rule-based",
-        generation_used="rule-based",
-        enrichment_requested="sources-only",
-        enrichment_used="sources-only",
+    work = LlmWork(
         note=search.note,
-        extraction=None,
-        generation=None,
-        **search.choice,
+        choice=search.choice,
         curriculum_requested=asked.curriculum_check or "rule-based",
         curriculum=reports[0] if reports else None,
         curriculum_fallback=fallback,
     )
+    audit, tokens, _ = build_llm_report(service.llm, work)
     if audit is None:
         return None, None
     return {key: audit[key] for key in ("note", "article_choice", "curriculum_check")}, tokens

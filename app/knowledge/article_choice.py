@@ -41,7 +41,8 @@ from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
 
-if TYPE_CHECKING:  # topic_articles builds on this module
+if TYPE_CHECKING:  # node_article and topic_articles build on this module
+    from app.knowledge.node_article import NodeArticleReport
     from app.knowledge.topic_articles import TopicArticlesReport
 
 OUTPUT_TOKENS = 60
@@ -201,28 +202,38 @@ def choice_used(
     return "llm" if chose_article or named or (hit_check is not None and hit_check.answered) else "rule-based"
 
 
-def choice_block(
-    requested: str,
-    used: str,
-    needed: bool,
-    choice: ArticleChoiceReport | None,
-    chosen: str | None,
-    hit_check: HitCheckReport | None,
-    articles: TopicArticlesReport | None = None,
-) -> dict[str, Any]:
-    """What article_choice asked and decided, for the audit of a compendium and the answer of /knowledge.
+@dataclass(frozen=True)
+class ChoiceAudit:
+    """What the article choice of a request asked and decided (D35, D47, D61, D63), for the LLM report of a
+    compendium and the answers of /knowledge and the curriculum search.
 
-    ``used`` is ``llm`` when the model's answer decided anything, the article or the side articles; ``needed`` says
-    whether there was anything to ask, ``chosen`` is the article the model decided on, ``articles`` what it named for
-    the topic (D63).
+    ``requested`` and ``used`` read as the switch does, ``llm`` or ``rule-based``: ``used`` is ``llm`` when the model's
+    answer decided anything, the article or the side articles. ``needed`` says whether there was anything to ask (an
+    unsure article, side articles, a material or the articles of a topic), ``chosen`` is the article the model decided
+    on, ``hit_check`` its check of the side articles, ``node`` its question about a material and ``articles`` what it
+    named for the topic. It was a dict spread into the parameters of the report (audit 2026-09-28, WA-06).
     """
+
+    requested: str = "rule-based"
+    used: str = "rule-based"
+    report: ArticleChoiceReport | None = None
+    chosen: str | None = None
+    needed: bool = False
+    hit_check: HitCheckReport | None = None
+    node: NodeArticleReport | None = None
+    articles: TopicArticlesReport | None = None
+
+
+def choice_block(audit: ChoiceAudit) -> dict[str, Any]:
+    """What article_choice asked and decided, for the audit of a compendium and the answer of /knowledge."""
+    choice, chosen, hit_check, articles = audit.report, audit.chosen, audit.hit_check, audit.articles
     fallback = choice.fallback if choice else None
     if choice is not None and choice.named and chosen is None:
         fallback = NAMED_TITLE_MISSING
     return {
-        "requested": requested,
-        "used": used,
-        "needed": needed,
+        "requested": audit.requested,
+        "used": audit.used,
+        "needed": audit.needed,
         "asked": bool(choice and choice.offered),  # false when the rules were sure or the LLM is not usable
         "offered": choice.offered if choice else 0,
         "chosen": chosen,

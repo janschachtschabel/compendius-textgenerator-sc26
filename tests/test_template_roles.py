@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.compendium.prepared import PreparedTopic
-from app.compose.assembler import build_frontmatter
+from app.compose.assembler import Switches, build_frontmatter
 from app.domain.models import Section, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.matching.policy import LEAD_SCORE, assign
@@ -117,11 +117,9 @@ def _licence(template: Template) -> str:
         topic="Optik",
         resolution={},
         template=template,
-        extraction="rule-based",
-        generation="rule-based",
+        switches=Switches(),
         generated_at="2026-09-28T00:00:00+00:00",
         zim_snapshot=[],
-        matcher=None,
         parts=["world"],
     )
     licence: str = front["license"]

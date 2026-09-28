@@ -8,13 +8,12 @@ caller that swaps the gateway on the service swaps it here too.
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
-from typing import Any
 
 from app.compendium.errors import LlmNotConfiguredError
 from app.compendium.gateway import LlmGateway
 from app.compendium.prepared import PreparedTopic
 from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest
-from app.knowledge.article_choice import ArticleChoiceJob, choice_used
+from app.knowledge.article_choice import ArticleChoiceJob, ChoiceAudit, choice_used
 from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
@@ -118,26 +117,26 @@ class LlmPolicy:
         return None
 
 
-def choice_audit(prepared: PreparedTopic, requested: str) -> dict[str, Any]:
-    """What build_llm_report says about the article choice of a prepared topic (D35, D47), for the audit of a
-    compendium and the answer of the curriculum search."""
+def choice_audit(prepared: PreparedTopic, requested: str) -> ChoiceAudit:
+    """What the article choice of a prepared topic asked and decided (D35, D47), for the audit of a compendium and
+    the answers of /knowledge and the curriculum search."""
     resolution, hit_check, node_report = prepared.resolution, prepared.hit_check, prepared.node_article
     articles = prepared.articles
     named_by_llm = node_report is not None and node_report.way == "llm"
-    return {
-        "choice_requested": requested,
-        "choice_used": choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check, articles),
-        "choice": prepared.article_choice,
-        "choice_chosen": resolution.title if resolution.method == CHOSEN_BY_LLM else None,
+    return ChoiceAudit(
+        requested=requested,
+        used=choice_used(resolution.method == CHOSEN_BY_LLM or named_by_llm, hit_check, articles),
+        report=prepared.article_choice,
+        chosen=resolution.title if resolution.method == CHOSEN_BY_LLM else None,
         # the model is asked for an unsure article (a chosen one stays unsure), for side articles and, with a topic,
         # for its articles (D63)
-        "choice_needed": (
+        needed=(
             not resolution.confident or prepared.side_articles > 0 or node_report is not None or articles is not None
         ),
-        "hit_check": hit_check,
-        "node": node_report,
-        "articles": articles,
-    }
+        hit_check=hit_check,
+        node=node_report,
+        articles=articles,
+    )
 
 
 def llm_switches(request: GenerateRequest, *, corpus: bool) -> list[str]:

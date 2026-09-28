@@ -18,6 +18,7 @@ from app.knowledge.article_choice import (
     UNREADABLE,
     ArticleChoiceJob,
     ArticleChoiceReport,
+    ChoiceAudit,
     HitCheckReport,
     LlmArticleChooser,
     check_hits,
@@ -185,7 +186,7 @@ def test_a_named_title_the_archive_lacks_is_the_reason_even_when_the_hit_check_a
     # The hit check answering makes the switch "used"; that must not hide why the article stayed the rules' one
     choice = ArticleChoiceReport(offered=2, named="Gibt es nicht", calls=1)
     hits = HitCheckReport(checked=1, rated=3, calls=1, prompts=[HIT_PROMPT])
-    block = choice_block("llm", "llm", True, choice, None, hits)
+    block = choice_block(ChoiceAudit(requested="llm", used="llm", report=choice, needed=True, hit_check=hits))
     assert block["fallback"] == NAMED_TITLE_MISSING and block["chosen"] is None and block["hits_fallback"] is None
 
 

@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Any
 
 from app.compendium.gateway import LlmGateway
-from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport, choice_block
+from app.knowledge.article_choice import ArticleChoiceReport, ChoiceAudit, HitCheckReport, choice_block
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic_articles import TopicArticlesReport
@@ -24,45 +25,56 @@ MODEL_KNOWLEDGE_NOTE = (
 )
 
 
-def build_llm_report(
-    gateway: LlmGateway | None,
-    *,
-    extraction_requested: str,
-    extraction_used: str,
-    generation_requested: str,
-    generation_used: str,
-    enrichment_requested: str,
-    enrichment_used: str,
-    note: str | None,
-    extraction: ExtractionReport | None,
-    generation: LlmReport | None,
-    matching_requested: str = "rule-based",
-    matching_used: str = "rule-based",
-    matching: LlmAssignmentReport | None = None,
-    choice_requested: str = "rule-based",
-    choice_used: str = "rule-based",
-    choice: ArticleChoiceReport | None = None,
-    choice_chosen: str | None = None,
-    choice_needed: bool = False,
-    hit_check: HitCheckReport | None = None,
-    node: NodeArticleReport | None = None,
-    articles: TopicArticlesReport | None = None,
-    curriculum_requested: str = "rule-based",
-    curriculum: CurriculumCheckReport | None = None,
-    curriculum_fallback: str | None = None,
-) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
-    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it.
+@dataclass(frozen=True)
+class LlmWork:
+    """What the LLM layer of one request was asked for and did: each switch as requested and as used (``llm`` or
+    ``rule-based``; enrichment ``sources-only`` or ``model-knowledge``), and the report of each stage that ran.
+    build_llm_report took these as 24 parameters, the article choice spread in from a dict (audit 2026-09-28, WA-06).
 
-    ``matching_*`` describe matcher=llm (D34), ``choice_*`` article_choice=llm (D35): ``llm`` or ``rule-based``,
-    like the two switches; ``choice_chosen`` is the article the model decided on, ``hit_check`` what it did with the
-    side articles, and ``choice_needed`` whether there was anything to ask - an unsure article, side articles or a
-    material; only then is the model asked, so only then is its absence a fallback. ``node`` is the question about a
-    material (D47): its tokens and prompt count here, its answer and why it did not decide are in audit.node_article.
-    ``articles`` is the question for the overview and the parts of a topic (D63).
+    ``matching_*`` describe matcher=llm (D34) and ``choice`` the article choice (D35, D47, D63): the model is asked
+    only when ``choice.needed``, so only then is its absence a fallback; the question about a material (``choice.node``)
+    counts its tokens and prompt here, its answer and why it did not decide are in audit.node_article.
     ``curriculum_*`` describe curriculum_check=llm (D58): what the model rated in part 2, and why the rules decided
     when it was not asked.
     """
-    requested = (extraction_requested, generation_requested, matching_requested, choice_requested, curriculum_requested)
+
+    note: str | None = None
+    extraction_requested: str = "rule-based"
+    extraction_used: str = "rule-based"
+    extraction: ExtractionReport | None = None
+    generation_requested: str = "rule-based"
+    generation_used: str = "rule-based"
+    generation: LlmReport | None = None
+    enrichment_requested: str = "sources-only"
+    enrichment_used: str = "sources-only"
+    matching_requested: str = "rule-based"
+    matching_used: str = "rule-based"
+    matching: LlmAssignmentReport | None = None
+    choice: ChoiceAudit = field(default_factory=ChoiceAudit)
+    curriculum_requested: str = "rule-based"
+    curriculum: CurriculumCheckReport | None = None
+    curriculum_fallback: str | None = None
+
+
+def build_llm_report(
+    gateway: LlmGateway | None, work: LlmWork
+) -> tuple[dict[str, Any] | None, dict[str, int] | None, dict[str, Any] | None]:
+    """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it."""
+    choice_audit = work.choice
+    extraction, generation, matching, curriculum = work.extraction, work.generation, work.matching, work.curriculum
+    choice, hit_check, node, articles = (
+        choice_audit.report,
+        choice_audit.hit_check,
+        choice_audit.node,
+        choice_audit.articles,
+    )
+    requested = (
+        work.extraction_requested,
+        work.generation_requested,
+        work.matching_requested,
+        choice_audit.requested,
+        work.curriculum_requested,
+    )
     if all(switch == "rule-based" for switch in requested):
         return None, None, None
     reports: list[
@@ -85,15 +97,14 @@ def build_llm_report(
             "total": sum(r.total_tokens for r in reports),
             "calls": calls,
         }
-    used = (extraction_used, generation_used, matching_used, choice_used, curriculum_used)
+    used = (work.extraction_used, work.generation_used, work.matching_used, choice_audit.used, curriculum_used)
+    note = work.note
     if note is None and all(switch == "rule-based" for switch in used):
         note = NOTHING_CONTRIBUTED
-    article_choice = choice_block(
-        choice_requested, choice_used, choice_needed, choice, choice_chosen, hit_check, articles
-    )
+    article_choice = choice_block(choice_audit)
     extraction_block: dict[str, Any] = {
-        "requested": extraction_requested,
-        "used": extraction_used,
+        "requested": work.extraction_requested,
+        "used": work.extraction_used,
         "sections": list(extraction.slots) if extraction else [],
         "emptied": list(extraction.emptied) if extraction else [],
         "fallbacks": dict(extraction.fallbacks) if extraction else {},
@@ -104,19 +115,19 @@ def build_llm_report(
         "cut_sentences": extraction.cut if extraction else 0,
     }
     generation_block: dict[str, Any] = {
-        "requested": generation_requested,
-        "used": generation_used,
+        "requested": work.generation_requested,
+        "used": work.generation_used,
         "sections": list(generation.sections) if generation else [],
         "fallbacks": dict(generation.fallbacks) if generation else {},
         "dropped_sentences": generation.dropped_sentences if generation else 0,
         "unsupported_sentences": generation.unsupported_sentences if generation else 0,
         "marked_sentences": generation.marked_sentences if generation else 0,
-        "enrichment": enrichment_used,
-        "enrichment_requested": enrichment_requested,
+        "enrichment": work.enrichment_used,
+        "enrichment_requested": work.enrichment_requested,
     }
     matching_block: dict[str, Any] = {
-        "requested": matching_requested,
-        "used": matching_used,
+        "requested": work.matching_requested,
+        "used": work.matching_used,
         "paragraphs": matching.paragraphs if matching else 0,
         "answered": matching.answered if matching else 0,
         "fallback_paragraphs": matching.fallback if matching else 0,
@@ -124,13 +135,13 @@ def build_llm_report(
         "unknown_keys": matching.unknown_keys if matching else 0,
     }
     curriculum_block: dict[str, Any] = {
-        "requested": curriculum_requested,
+        "requested": work.curriculum_requested,
         "used": curriculum_used,
         "rated": curriculum.rated if curriculum else 0,
         "answered": curriculum.answered if curriculum else 0,
         "dropped": curriculum.dropped if curriculum else 0,
         "fallbacks": dict(curriculum.fallbacks) if curriculum else {},
-        "fallback": curriculum_fallback,  # why the model was not asked at all
+        "fallback": work.curriculum_fallback,  # why the model was not asked at all
     }
     audit: dict[str, Any] = {
         "note": note,
@@ -156,11 +167,11 @@ def build_llm_report(
         "fallbacks": extraction_block["fallbacks"],
     }
     front["generation"] = {"sections": generation_block["sections"], "fallbacks": generation_block["fallbacks"]}
-    if matching_requested == "llm":
+    if work.matching_requested == "llm":
         front["matching"] = {
             key: matching_block[key] for key in ("paragraphs", "answered", "fallback_paragraphs", "fallbacks")
         }
-    if curriculum_requested == "llm":
+    if work.curriculum_requested == "llm":
         front["curriculum_check"] = {key: curriculum_block[key] for key in ("rated", "dropped", "fallback")}
     if article_choice["asked"] or article_choice["hits_checked"] or article_choice["articles_asked"]:
         keys = (
@@ -174,11 +185,11 @@ def build_llm_report(
             "articles_fallback",
         )
         front["article_choice"] = {key: article_choice[key] for key in keys}
-    if enrichment_used == "model-knowledge":
+    if work.enrichment_used == "model-knowledge":
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.
         marked = generation_block["marked_sentences"]
-        front["enrichment"] = {"mode": enrichment_used, "marked_sentences": marked}
+        front["enrichment"] = {"mode": work.enrichment_used, "marked_sentences": marked}
         if marked:
             front["enrichment"]["hinweis"] = MODEL_KNOWLEDGE_NOTE
     if note:

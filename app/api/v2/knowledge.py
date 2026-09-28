@@ -356,16 +356,7 @@ def _choice(prepared: PreparedTopic, requested: str, note: str | None) -> dict[s
     rules chose alone."""
     if requested == "rule-based":
         return None
-    audit = choice_audit(prepared, requested)
-    info = choice_block(
-        requested,
-        audit["choice_used"],
-        audit["choice_needed"],
-        audit["choice"],
-        audit["choice_chosen"],
-        audit["hit_check"],
-        audit["articles"],
-    )
+    info = choice_block(choice_audit(prepared, requested))
     reports = (prepared.article_choice, prepared.hit_check, prepared.node_article, prepared.articles)
     info["tokens"] = sum(report.total_tokens for report in reports if report is not None)
     info["note"] = note

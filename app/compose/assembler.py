@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import re
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from typing import Any
 
 import yaml
@@ -71,30 +72,47 @@ EMPTY_SECTION_TEXT = (
 )
 
 
+@dataclass(frozen=True)
+class Switches:
+    """How part 1 came about, for the frontmatter and its disclosure: eight of the fifteen parameters of
+    build_frontmatter (audit 2026-09-28, WA-06).
+
+    ``extraction``, ``generation`` and ``matcher`` are what was actually used; ``*_requested`` appears only when a
+    switch or matcher=llm fell back to the rules, and ``matcher`` only when part 1 was generated. ``enrichment`` is the
+    mode the request was granted, ``enriched_sentences`` what the text really carries: the disclosure follows the
+    text, and a permission the model did not use must not be declared as model knowledge.
+    """
+
+    extraction: str = "rule-based"
+    generation: str = "rule-based"
+    enrichment: str = "sources-only"
+    enriched_sentences: int = 0
+    matcher: str | None = None
+    extraction_requested: str | None = None
+    generation_requested: str | None = None
+    matcher_requested: str | None = None
+
+
 def build_frontmatter(
     *,
     topic: str,
     resolution: Mapping[str, Any],
     template: Template,
-    extraction: str,
-    generation: str,
+    switches: Switches,
     generated_at: str,
-    enrichment: str = "sources-only",
-    enriched_sentences: int = 0,
     zim_snapshot: Sequence[Mapping[str, Any]],
-    matcher: str | None,
     parts: Sequence[str],
-    matcher_requested: str | None = None,
-    extraction_requested: str | None = None,
-    generation_requested: str | None = None,
     llm: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``extraction``, ``generation`` and ``matcher`` are what was actually used; ``*_requested`` appears only when
-    a switch or matcher=llm fell back to the rules, and ``matcher`` only when part 1 was generated.
-
-    ``enrichment`` is the mode the request was granted; ``enriched_sentences`` is what the text really carries.
-    The disclosure follows the text: a permission the model did not use must not be declared as model knowledge.
-    """
+    """The YAML frontmatter of a compendium: topic and its resolution, template, parts, how part 1 came about
+    (``switches``) with its disclosure, the archives it read and what the LLM did (``llm``)."""
+    extraction, generation, enrichment, matcher = (
+        switches.extraction,
+        switches.generation,
+        switches.enrichment,
+        switches.matcher,
+    )
+    enriched_sentences = switches.enriched_sentences
     if generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences:
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
     elif generation != "rule-based":
@@ -125,12 +143,12 @@ def build_frontmatter(
         frontmatter["license"] = (
             "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0)" + per_source
         )
-    if extraction_requested is not None and extraction_requested != extraction:
-        frontmatter["extraction_requested"] = extraction_requested
-    if generation_requested is not None and generation_requested != generation:
-        frontmatter["generation_requested"] = generation_requested
-    if matcher_requested is not None and matcher_requested != matcher:
-        frontmatter["matcher_requested"] = matcher_requested
+    if switches.extraction_requested is not None and switches.extraction_requested != extraction:
+        frontmatter["extraction_requested"] = switches.extraction_requested
+    if switches.generation_requested is not None and switches.generation_requested != generation:
+        frontmatter["generation_requested"] = switches.generation_requested
+    if switches.matcher_requested is not None and switches.matcher_requested != matcher:
+        frontmatter["matcher_requested"] = switches.matcher_requested
     if llm is not None:
         frontmatter["llm"] = dict(llm)
     return frontmatter
