@@ -85,7 +85,16 @@ pytest:
     - docker --version
     - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USERNAME" --password-stdin
   script:
-    - docker buildx build --tag $IMAGE_NAME:$IMAGE_TAG .
+    # Der Commit steht im Image, /health meldet ihn (Audit 2026-09-27, BE-01; auf GitLab 2026-09-28, BE-16)
+    - docker buildx build --build-arg GIT_REVISION=$CI_COMMIT_SHA --tag $IMAGE_NAME:$IMAGE_TAG .
+    # Smoke-Probe vor dem Push (BE-16): Das Image startet gehärtet wie in docker-compose.yml und nennt in /health seinen
+    # Commit, und die Befehle der vier Sidecars laufen unter deren Härtung. Ohne Archive bleibt /ready 503; den
+    # Durchlauf mit den Beispielarchiven macht die GitHub-Pipeline (scripts/smoke_image.py).
+    - docker run -d --name smoke -p 8000:8000 --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges:true $IMAGE_NAME:$IMAGE_TAG
+    - for attempt in $(seq 150); do wget -q -O health.json http://docker:8000/health && break; sleep 2; done
+    - grep -q "$CI_COMMIT_SHA" health.json || { docker logs smoke; exit 1; }
+    - for sidecar in zim lehrplan wikidata gnd; do docker run --rm --cap-drop ALL --security-opt no-new-privileges:true $IMAGE_NAME:$IMAGE_TAG compendium $sidecar status || exit 1; done
+    - docker rm -f smoke
     - docker image push $IMAGE_NAME:$IMAGE_TAG
 
 docker image (main, develop):
