@@ -66,7 +66,8 @@ Update daher:
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`), die Zeile „2026-09-28 (`B_API_MODEL`
-leer)“ erst 2.2.1, die Zeile „2026-09-28 (Token-Länge)“ erst 2.2.2.
+leer)“ erst 2.2.1, die Zeile „2026-09-28 (Token-Länge)“ erst 2.2.2, die Zeilen von „2026-09-28 (Anfragegrenzen)“
+bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`).
 
 ## Zustand prüfen
 
