@@ -144,9 +144,11 @@ werden. Die Grafiken liegen als SVG unter `docs/entwicklung/bilder/` und kommen 
 Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 
 Für die Präsentation gibt es die Seiten 01, 09 und 07 auch als eine HTML-Seite: [praesentation.html](praesentation.html),
-mit Inhaltsverzeichnis und allen Grafiken eingebettet. Sie braucht keine weiteren Dateien und öffnet sich nach dem
-Herunterladen in jedem Browser; GitHub selbst zeigt nur ihren Quelltext. `messung/mc_praesentation.py` erzeugt sie
-neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und nennt den Commit ihrer Quellen.
+mit Inhaltsverzeichnis und allen Grafiken eingebettet. Im Browser liegt sie unter
+https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/praesentation.html (GitHub Pages aus
+dem Ordner `docs/`; `docs/.nojekyll` sorgt dafür, dass GitHub die Dateien unverändert ausliefert). Sie braucht keine
+weiteren Dateien und öffnet sich auch nach dem Herunterladen in jedem Browser. `messung/mc_praesentation.py` erzeugt
+sie neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und nennt den Commit ihrer Quellen.
 
 ## Entwicklungsweg
 
