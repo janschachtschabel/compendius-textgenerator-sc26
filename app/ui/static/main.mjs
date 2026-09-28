@@ -166,7 +166,7 @@ function waiting(mode, planned, controller) {
       h('div', { class: 'spinner', 'aria-hidden': 'true' }),
       h('p', {}, `Wird erstellt mit ${names} … `, clock),
       slow ? h('p', { class: 'help' }, 'Die Profile best-quality fragen die KI bei vielen Schritten; das dauert oft eine halbe Minute.') : null,
-      h('button', { type: 'button', on: { click: () => controller.abort() } }, 'Abbrechen'),
+      h('button', { type: 'button', class: 'quiet', on: { click: () => controller.abort() } }, 'Abbrechen'),
     ),
   );
   announce(`${MODES[mode]}: wird erstellt …`);
@@ -229,7 +229,7 @@ function column(mode, one) {
     return frame;
   }
   head.append(actions(mode, one, view));
-  append(frame, [metricsBar(metrics(mode, one.data, one.elapsedMs)), contents(view.headings), view.body, view.info]);
+  append(frame, [metricsBar(metrics(mode, one.data, one.elapsedMs)), unsure(mode, one.data.resolution), contents(view.headings), view.body, view.info]);
   return frame;
 }
 
@@ -240,6 +240,19 @@ function actions(mode, one, view) {
   const stamp = new Date().toISOString().slice(0, 19).replaceAll(':', '-');
   const save = h('button', { type: 'button', class: 'quiet', on: { click: () => download(`${mode}-${one.preset}-${stamp}.json`, JSON.stringify({ request: one.request, answer: one.data }, null, 2)) } }, 'Antwort speichern');
   return h('div', { class: 'actions' }, copy, save);
+}
+
+// A guess of the rules - a title suggestion, a full-text hit - is worth a look before the text: the other
+// candidates the resolution weighed can be taken over with one click
+function unsure(mode, resolution) {
+  const others = (resolution?.alternatives ?? []).filter((title) => title !== resolution.title).slice(0, 6);
+  if (!resolution?.title || resolution.confident || !others.length) return null;
+  return h(
+    'div',
+    { class: 'unsure' },
+    h('p', {}, `Der Artikel „${resolution.title}“ ist ein unsicherer Treffer. Andere Kandidaten:`),
+    h('ul', { class: 'suggestions' }, others.map((title) => h('li', {}, h('button', { type: 'button', class: 'link-button', on: { click: () => suggest(mode, title) } }, title)))),
+  );
 }
 
 // A table of contents for a long document: its title, its parts and the blocks of part 1

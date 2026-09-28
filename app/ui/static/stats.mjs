@@ -15,6 +15,11 @@ export function formatNumber(value) {
   return NUMBER.format(value);
 }
 
+/** A number with its noun: the singular for one, else the plural. */
+export function formatCount(n, one, many) {
+  return `${NUMBER.format(n)} ${n === 1 ? one : many}`;
+}
+
 /** A duration as a reader takes it in: milliseconds under a second, else seconds with one decimal. */
 export function formatDuration(ms) {
   return ms < 1000 ? `${NUMBER.format(Math.round(ms))} ms` : `${SECONDS.format(ms / 1000)} s`;

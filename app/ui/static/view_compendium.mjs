@@ -5,7 +5,7 @@ import { h } from './dom.mjs';
 import { parseMarkdown, sectionize } from './markdown.mjs';
 import { blockOrigin, citationIndex, originCaption, sourceIndex, statusKind } from './provenance.mjs';
 import { heading, renderBlock, renderContext } from './render.mjs';
-import { formatNumber } from './stats.mjs';
+import { formatCount, formatNumber } from './stats.mjs';
 import { KINDS } from './texts.mjs';
 
 // A block assembled from the articles (actors, sources, glossary) or left empty tells its origin once, above it
@@ -44,7 +44,7 @@ function block(item, data, ctx) {
 function writing(llm) {
   if (!llm) return null;
   const parts = [llm.model, llm.tokens ? `${formatNumber(llm.tokens)} Tokens` : null];
-  if (llm.dropped_sentences) parts.push(`${llm.dropped_sentences} Sätze ohne gültigen Beleg verworfen`);
+  if (llm.dropped_sentences) parts.push(`${formatCount(llm.dropped_sentences, 'Satz', 'Sätze')} ohne gültigen Beleg verworfen`);
   return ` · ${parts.filter(Boolean).join(', ')}`;
 }
 

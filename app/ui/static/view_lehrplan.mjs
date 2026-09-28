@@ -4,7 +4,7 @@
 import { h, link } from './dom.mjs';
 import { facts, infoPart, technical } from './panels.mjs';
 import { formatNumber } from './stats.mjs';
-import { label, MATCHED_IN, STEPS } from './texts.mjs';
+import { label, MATCHED_IN, RATINGS, STEPS } from './texts.mjs';
 
 export function renderLehrplan(answer, run) {
   const matches = answer.matches ?? [];
@@ -61,7 +61,7 @@ function element(match) {
       { class: 'element-flags' },
       // Only the exception is flagged: most elements name the topic themselves
       match.matched_in === 'parent' ? h('span', { class: 'flag' }, label(MATCHED_IN, match.matched_in)) : null,
-      match.note ? h('span', { class: 'flag rating' }, `Bewertung der KI: ${match.note}`) : null,
+      match.note !== null && match.note !== undefined ? h('span', { class: 'flag rating' }, `KI: ${label(RATINGS, match.note)}`) : null,
     ),
   );
 }

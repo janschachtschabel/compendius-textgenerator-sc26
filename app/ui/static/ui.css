@@ -312,6 +312,9 @@ ol.sources { margin: 0; padding-inline-start: 1.3rem; font-size: 0.9rem; }
 .tech-label { margin: 0.9rem 0 0.3rem !important; font-weight: 650; }
 pre.json { max-height: 22rem; margin: 0; padding: 0.75rem; overflow: auto; font-size: 0.8rem; line-height: 1.45; background: var(--ground); border-radius: 6px; }
 
+.unsure { margin-bottom: 1rem; padding: 0.7rem 1rem; font-size: 0.9rem; background: var(--model-soft); border: 1px solid var(--model); border-radius: var(--radius); }
+.unsure p { margin: 0; }
+
 /* ---- Errors ------------------------------------------------------------------------------------------------- */
 
 .error { padding: 1rem 1.25rem; background: var(--error-soft); border: 1px solid var(--error); border-radius: var(--radius); }

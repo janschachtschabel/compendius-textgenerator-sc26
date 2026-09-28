@@ -5,7 +5,7 @@
 import { h, link } from './dom.mjs';
 import { facts, infoPart, technical } from './panels.mjs';
 import { shares } from './provenance.mjs';
-import { COMPENDIUM_STEPS } from './forms.mjs';
+import { stepsAccount } from './steps.mjs';
 import { formatDuration, formatNumber } from './stats.mjs';
 import { KINDS, label, ORIGINS, PARTS, PROJECTS, RESOLUTION, STAGES, STEPS } from './texts.mjs';
 
@@ -79,52 +79,26 @@ function origins(answer) {
 }
 
 function methods(answer, run, options) {
-  const llm = answer.audit?.llm ?? {};
-  const switches = options.presets.find((preset) => preset.id === run.preset)?.switches ?? {};
-  const asked = (step) => run.request.body?.[step] ?? switches[step];
-  const used = {
-    article_choice: llm.article_choice?.used ?? asked('article_choice'),
-    // Where the model assigned nothing, hybrid_light decided (the help of matcher in app/domain/requests.py)
-    matcher: llm.matching?.requested === 'llm' && llm.matching.used !== 'llm' ? 'hybrid_light' : asked('matcher'),
-    extraction: answer.extraction,
-    generation: answer.generation,
-    enrichment: answer.enrichment,
-    curriculum_check: llm.curriculum_check?.used ?? asked('curriculum_check'),
-  };
-  const notes = {
-    article_choice: choiceNote(llm.article_choice),
-    matcher: llm.matching?.requested === 'llm' ? `${llm.matching.answered ?? 0} von ${llm.matching.paragraphs ?? 0} Absätzen von der KI zugeordnet` : null,
-    generation: llm.generation?.sections?.length ? `${llm.generation.sections.length} Bausteine geschrieben, ${llm.generation.dropped_sentences ?? 0} Sätze verworfen` : null,
-    enrichment: llm.generation?.marked_sentences ? `${llm.generation.marked_sentences} Sätze gekennzeichnet` : null,
-    curriculum_check: llm.curriculum_check?.requested === 'llm' ? `${llm.curriculum_check.rated ?? 0} bewertet, ${llm.curriculum_check.dropped ?? 0} entfernt${llm.curriculum_check.fallback ? `; ${llm.curriculum_check.fallback}` : ''}` : null,
-  };
-  const rows = COMPENDIUM_STEPS.map((step) => {
-    const fellBack = used[step] && asked(step) && used[step] !== asked(step);
+  const rows = stepsAccount(answer, run.request.body, run.preset, options).map((row) => {
+    const values = STEPS[row.step].values;
+    const used = row.applies
+      ? [label(values, row.used), row.fellBack ? h('span', { class: 'flag' }, ' Rückfall auf die Regeln') : null]
+      : `– läuft nur mit ${label(PARTS, row.part)}`;
     return h(
       'tr',
-      { class: fellBack ? 'fell-back' : null },
-      h('th', { scope: 'row' }, STEPS[step].name),
-      h('td', {}, label(STEPS[step].values, asked(step))),
-      h('td', {}, label(STEPS[step].values, used[step]), fellBack ? h('span', { class: 'flag' }, ' Rückfall auf die Regeln') : null),
-      h('td', {}, notes[step] ?? ''),
+      { class: row.fellBack ? 'fell-back' : null },
+      h('th', { scope: 'row' }, STEPS[row.step].name),
+      h('td', {}, label(values, row.asked)),
+      h('td', {}, used),
+      h('td', {}, row.note ?? ''),
     );
   });
+  const note = answer.audit?.llm?.note;
   return infoPart(
     'Methoden je Schritt',
     h('div', { class: 'table-wrap' }, h('table', { class: 'steps' }, h('thead', {}, h('tr', {}, ['Schritt', 'Angefragt', 'Verwendet', 'Hinweis'].map((name) => h('th', { scope: 'col' }, name)))), h('tbody', {}, rows))),
-    llm.note ? h('p', { class: 'note' }, llm.note) : null,
+    note ? h('p', { class: 'note' }, note) : null,
   );
-}
-
-function choiceNote(block) {
-  if (!block) return null;
-  const parts = [];
-  if (block.articles_found?.length) parts.push(`KI nannte: ${block.articles_found.join(', ')}`);
-  if (block.chosen) parts.push(`gewählt: ${block.chosen}`);
-  if (block.hits_dropped?.length) parts.push(`verworfen: ${block.hits_dropped.join(', ')}`);
-  if (block.fallback) parts.push(`Regeln, weil: ${block.fallback}`);
-  if (!parts.length && block.requested !== 'rule-based' && !block.needed) parts.push('die Regeln waren sicher');
-  return parts.join('; ') || null;
 }
 
 function time(timings, elapsedMs) {

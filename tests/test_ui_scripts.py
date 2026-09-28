@@ -21,7 +21,7 @@ NODE = shutil.which("node")
 def test_every_module_of_the_page_with_logic_has_its_tests() -> None:
     tested = {path.name.removesuffix(".test.mjs") for path in TESTS}
 
-    assert {"markdown", "provenance", "forms", "stats"} <= tested
+    assert {"markdown", "provenance", "forms", "stats", "steps"} <= tested
 
 
 @pytest.mark.skipif(NODE is None, reason="Node is not installed; tests/ui needs its test runner")
