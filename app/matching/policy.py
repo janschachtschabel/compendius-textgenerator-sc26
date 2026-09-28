@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole
 from app.knowledge.entities import is_subject
-from app.knowledge.topic import topic_stem
+from app.knowledge.topic import TopicMention
 from app.matching.base import tokenize
 from app.templates.schema import ACTORS_KEY, ROLE_KEYS, Template, TemplateSlot
 
@@ -53,16 +53,16 @@ def exclusion_terms(slot: TemplateSlot) -> set[str]:
 class _Context:
     """What a paragraph's score for a block depends on beyond the two: the topic and the template's roles."""
 
-    primary_stem: str
+    topic: TopicMention
     confident_score: float
     # the lexicon keys that mark a definition: the shared lexicon's and the template's definition block
     definition_keys: frozenset[str]
 
     @classmethod
-    def of(cls, template: Template, primary_stem: str, confident_score: float) -> _Context:
+    def of(cls, template: Template, topic: TopicMention, confident_score: float) -> _Context:
         shared = {key for key, role in ROLE_KEYS.items() if role == "definition"}
         own = {slot.slot for slot in template.slots if slot.role == "definition"}
-        return cls(primary_stem, confident_score, frozenset(shared | own))
+        return cls(topic, confident_score, frozenset(shared | own))
 
 
 def _score_candidate(
@@ -120,8 +120,7 @@ def _decided(
         and source.origin != "same_topic"
         and chunk.heading_level == 0
         and chunk.position == 0
-        and context.primary_stem
-        and context.primary_stem in source.title.lower()
+        and context.topic.found_in(source.title)
     ):
         if slot.role == "systematik":
             return SUBTOPIC_LEAD_SCORE, ["Einleitung eines Teilgebiets"]
@@ -143,7 +142,7 @@ def _by_headings(
     if is_secondary and is_intro and source is not None:
         if lexicon_slot in context.definition_keys:
             lexicon_slot = None
-        if slot.role == "systematik" and context.primary_stem and context.primary_stem in source.title.lower():
+        if slot.role == "systematik" and context.topic.found_in(source.title):
             score *= SUBAREA_BOOST
             reasons.append("Teilgebiet des Themas")
 
@@ -180,7 +179,7 @@ def _by_source(
     return score, reasons
 
 
-def _is_topical(source: Source | None, primary_stem: str) -> bool:
+def _is_topical(source: Source | None, topic: TopicMention) -> bool:
     """Main article, its twin in another archive, or a subject article whose title carries the topic.
 
     Articles about a person, an organisation or a single work (a composer, a film about the
@@ -190,7 +189,7 @@ def _is_topical(source: Source | None, primary_stem: str) -> bool:
         return False
     if source.is_primary or source.origin == "same_topic":
         return True
-    return bool(primary_stem) and primary_stem in source.title.lower() and is_subject(source)
+    return topic.found_in(source.title) and is_subject(source)
 
 
 def assign(
@@ -211,9 +210,9 @@ def assign(
     }
     exclusions = {slot.id: exclusion_terms(slot) for slot in content_slots}
     primary = next((s for s in sources.values() if s.is_primary), None)
-    primary_stem = topic_stem(primary.title) if primary else ""
+    topic = TopicMention.of(primary.title if primary else "")
 
-    context = _Context.of(template, primary_stem, confident_score)
+    context = _Context.of(template, topic, confident_score)
     generated_keys = {slot.slot for slot in template.slots if slot.is_generated}
     if any(slot.generator == "actors" for slot in template.slots):
         generated_keys.add(ACTORS_KEY)  # the shared lexicon's persons, whatever the template calls its actors block
@@ -253,7 +252,7 @@ def assign(
         if not confident:
             # Body text of the topic without a confident signal is subject knowledge (block 3 in
             # sc26); chunks from articles that only mention the topic stay out instead of guessing.
-            if default_slot is None or not _is_topical(sources.get(chunk.source_id), primary_stem):
+            if default_slot is None or not _is_topical(sources.get(chunk.source_id), topic):
                 unassigned += 1
                 continue
             slot_id, score = default_slot.id, MIN_SCORE

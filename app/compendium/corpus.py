@@ -6,7 +6,7 @@ import logging
 
 from app.domain.models import Chunk, Source
 from app.knowledge.segmentation import segment_source
-from app.knowledge.topic import topic_stem
+from app.knowledge.topic import TopicMention
 from app.matching.lexicon import HeadingLexicon
 from app.sources.zim.registry import NAMED_ORIGIN, NODE_ORIGIN
 
@@ -36,13 +36,13 @@ def segment_corpus(
     source left without chunks is not listed (the primary article always is).
     """
     primary = next((s for s in sources if s.is_primary), None)
-    stem = topic_stem(primary.title) if primary else ""
+    topic = TopicMention.of(primary.title if primary else "")
     segmented: list[list[Chunk]] = []
     for source in sources:
         source_chunks = segment_source(source, lexicon)
-        needs_filter = source.origin in {"linked", "search"} and stem and stem not in source.title.lower()
+        needs_filter = source.origin in {"linked", "search"} and topic.stem and not topic.found_in(source.title)
         if needs_filter:
-            source_chunks = [c for c in source_chunks if stem in f"{c.full_heading} {c.text}".lower()]
+            source_chunks = [c for c in source_chunks if topic.found_in(f"{c.full_heading} {c.text}")]
         segmented.append(source_chunks)
 
     allowed = [0] * len(sources)
@@ -71,13 +71,13 @@ def subtopics(sources: list[Source], primary: Source | None) -> list[str]:
     """Titles of neighbouring articles that carry the topic stem: the sub-topics part 2 searches for."""
     if primary is None:
         return []
-    stem = topic_stem(primary.title)
-    if not stem:
+    topic = TopicMention.of(primary.title)
+    if not topic.stem:
         return []
     return [
         source.title
         for source in sources
         if not source.is_primary
         and source.origin in {"same_topic", NODE_ORIGIN, "linked", NAMED_ORIGIN}
-        and stem in source.title.lower()
+        and topic.found_in(source.title)
     ]

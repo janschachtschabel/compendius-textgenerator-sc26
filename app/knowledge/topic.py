@@ -98,11 +98,54 @@ def normalize_topic(raw: str, *, is_subject: Callable[[str], bool] | None = None
 _LEADING_ARTICLES = frozenset({"der", "die", "das", "des", "dem", "den", "ein", "eine", "einer", "eines", "einem"})
 
 
+def _title_word(title: str) -> str:
+    """The first title word after a leading article, lower case, without a qualifier in parentheses."""
+    words = re.sub(r"\s*\(.*\)$", "", title).strip().lower().split(" ")
+    return words[1] if len(words) > 1 and words[0] in _LEADING_ARTICLES else words[0]
+
+
 def topic_stem(title: str) -> str:
     """Short lowercase stem of the first title word after a leading article, used for cheap topicality checks.
 
     "Optik" -> "opti" (matches "optisch", "Optiker"), "Demokratie" -> "demokrati", "Die Zauberflöte" -> "zauberflöt".
     """
-    words = re.sub(r"\s*\(.*\)$", "", title).strip().lower().split(" ")
-    word = words[1] if len(words) > 1 and words[0] in _LEADING_ARTICLES else words[0]
+    word = _title_word(title)
     return word[:-1] if len(word) >= 5 else word
+
+
+# A title word of at most four letters is its own stem, and a stem that short sits inside common words: "ei" in "ein"
+# and "bei". In 979 paragraphs of five foreign Wikipedia articles the stem found the topic Ei 862 times, Eis 313, Rad
+# 93 and Ton 62 times; as a word with its endings 0, 10 ("Eisen"), 0 and 0 times. In the topic's own article it still
+# finds most paragraphs that name it: 28 of 35 for Ei (34 as a stem), 33 of 69 for Auge (54), 146 of 214 for Mond
+# (188); a compound such as "Hühnerei" or "Kochsalz" no longer counts (audit 2026-09-28, KO-29).
+SHORT_WORD_CHARS = 4
+_ENDINGS = ("e", "en", "er", "ern", "es")  # Eier, Eiern, Eies, Monde, Monden, Rades
+_VOWELS = frozenset("aeiouyäöü")
+
+
+@dataclass(frozen=True)
+class TopicMention:
+    """How a text mentions a topic, for the cheap checks that a side article or a paragraph is about it: the stem
+    inside any word ("demokrati" in "Basisdemokratie"), or a short title word as a word of its own with an ending."""
+
+    stem: str
+    word: re.Pattern[str] | None = None  # set for a title word of at most SHORT_WORD_CHARS letters
+
+    @classmethod
+    def of(cls, title: str) -> TopicMention:
+        word = _title_word(title)
+        if not word or len(word) > SHORT_WORD_CHARS:
+            return cls(topic_stem(title))
+        endings = list(_ENDINGS)
+        if word.endswith("e"):
+            endings += ["n", "s"]  # Augen, Auges, Seen
+        elif word[-1] not in _VOWELS:
+            endings.append("s")  # Rads, Tons; not after a vowel, where "ei" with an s is Eis
+        return cls(word, re.compile(rf"(?<!\w){re.escape(word)}(?:{'|'.join(endings)})?(?!\w)"))
+
+    def found_in(self, text: str) -> bool:
+        """Whether ``text`` mentions the topic; never for a title without a word."""
+        if not self.stem:
+            return False
+        lowered = text.lower()
+        return self.stem in lowered if self.word is None else self.word.search(lowered) is not None

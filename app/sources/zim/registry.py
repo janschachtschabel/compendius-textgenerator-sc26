@@ -9,7 +9,7 @@ from typing import Any
 
 from app.domain.models import Resolution, Source
 from app.knowledge.related import is_blacklisted, rank_related_candidates
-from app.knowledge.topic import topic_stem
+from app.knowledge.topic import TopicMention
 from app.sources.zim.active import read_active
 from app.sources.zim.archive import ZimArchive, ZimArticle
 from app.sources.zim.topic_rules import (
@@ -434,7 +434,7 @@ class ZimRegistry:
         linked_to = LinkedTo(primary_archive, primary)
         # Slot-targeted full-text hits fill blocks the main article rarely covers.
         if primary_archive.has_fulltext:
-            stem = topic_stem(primary.title)
+            topic = TopicMention.of(primary.title)
             for slot in slots:
                 if len(sources) >= max_articles:
                     break
@@ -449,8 +449,7 @@ class ZimRegistry:
                     hit = self._read_source(primary_archive, title, seen)
                     if hit is None:
                         continue
-                    haystack = f"{hit.title} {hit.lead_text}".lower()
-                    if stem and stem in haystack:
+                    if topic.found_in(f"{hit.title} {hit.lead_text}"):
                         hit.origin = "search"
                         sources.append(hit)
             # M25: of the hits with no link to or from the main article most were unfit; without them the printed
