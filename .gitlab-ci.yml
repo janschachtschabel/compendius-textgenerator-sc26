@@ -57,7 +57,7 @@ pytest:
     B_API_KEY: ci-dummy-not-a-key
     POLICY_CONFIDENT_SCORE: "0.1"
   script:
-    - uv run pytest -m "not live" --cov
+    - uv run pytest --cov
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"

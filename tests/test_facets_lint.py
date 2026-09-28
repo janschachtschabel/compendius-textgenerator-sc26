@@ -113,3 +113,23 @@ def test_a_marker_value_cannot_add_a_pair_split_itself_or_end_the_comment() -> N
     """``;``, ``=`` and ``|`` are the marker's own separators and ``<!--``/``-->`` the ends of the HTML comment it
     stands in; inside a value they are percent-encoded."""
     assert format_marker({"Fach": ["a; b=c|d <!-- e -->"]}) == "Fach=a%3B b%3Dc%7Cd %3C!-- e --%3E"
+
+
+def test_a_facet_the_block_does_not_declare_is_reported() -> None:
+    """TE-08: of five lint rules only facet-required fired in a test; the three about blocks are pinned in
+    tests/test_template_roles.py."""
+    template = TemplateManager().get("sc26")
+    slot = template.slot_by_key("themendefinition")
+    assert slot is not None
+    section = Section(
+        slot_id=slot.id,
+        slot_key=slot.slot,
+        title=slot.title,
+        text="Die Optik ist die Lehre vom Licht.",
+        facets={"Zeitbezug": ["historisch"], "Bildungsstufe": ["Sek I"]},
+        status=SectionStatus.EXTRACTIVE,
+    )
+    found = [
+        (f.rule, f.message) for f in lint_sections(template, [section], _catalog()) if f.rule == "facet-not-allowed"
+    ]
+    assert found == [("facet-not-allowed", f"Facette „Zeitbezug“ ist in {slot.title} nicht deklariert")]

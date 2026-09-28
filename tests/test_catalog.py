@@ -178,3 +178,21 @@ def test_a_redirect_to_a_foreign_host_is_refused_before_the_body_is_read() -> No
     with pytest.raises(DownloadError, match=r"evil\.example"):
         catalog.metalink(KIWIX_METALINK, check=lambda url: check_download_url(url, DEFAULT_ALLOWED_HOSTS))
     assert pieces.pulled == 0  # nothing from the foreign host reaches the XML parser
+
+
+METALINK_NS = "urn:ietf:params:xml:ns:metalink"
+
+
+def test_a_metalink_without_a_file_is_refused() -> None:
+    """TE-09: the hash is the anchor that lets a download come from a mirror outside the allowlist."""
+    with pytest.raises(ValueError, match="without <file>"):
+        parse_metalink(f'<metalink xmlns="{METALINK_NS}"></metalink>'.encode())
+
+
+def test_a_metalink_without_a_sha256_is_refused() -> None:
+    body = (
+        f'<metalink xmlns="{METALINK_NS}"><file name="klexikon_de_all_maxi_2026-08.zim">'
+        '<hash type="md5">0123</hash><url priority="1">https://mirror.test/k.zim</url></file></metalink>'
+    )
+    with pytest.raises(ValueError, match="carries no sha-256 hash"):
+        parse_metalink(body.encode())

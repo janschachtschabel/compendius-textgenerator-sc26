@@ -39,7 +39,7 @@ jobs:
           LLM_ENABLED: "true"
           B_API_KEY: ci-dummy-not-a-key
           POLICY_CONFIDENT_SCORE: "0.1"
-        run: uv run pytest -m "not live" --cov
+        run: uv run pytest --cov
       - name: Prometheus configuration and alert rules
         # The image of the Prometheus service in docker-compose.yml, so that an update there reaches this check
         run: |

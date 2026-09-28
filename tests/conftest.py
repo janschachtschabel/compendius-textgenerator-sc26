@@ -143,10 +143,11 @@ def make_settings(paths: Iterable[Path], state_dir: Path, **overrides: Any) -> S
     overrides.setdefault("rate_limit", 0)  # tests opt in to the limit (tests/test_rate_limit.py)
     # The shipped profile balanced needs an LLM (D53); offline tests run on llm-free unless they ask for another
     overrides.setdefault("preset_default", "llm-free")
+    # The sample archives; a test of the production default sets it empty (tests/test_readiness_defaults.py)
+    overrides.setdefault("zim_required", "wikipedia_de_sample,klexikon_de_sample")
     return Settings(
         _env_file=None,  # type: ignore[call-arg]
         zim_paths=",".join(str(p) for p in paths),
-        zim_required="wikipedia_de_sample,klexikon_de_sample",
         config_dir=ROOT / "config",
         state_dir=state_dir,
         **overrides,

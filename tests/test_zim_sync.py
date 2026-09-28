@@ -12,7 +12,7 @@ import httpx
 import pytest
 
 from app.jobs.zim_sync import STATUS_FILE, SyncOptions, ZimSync, read_status
-from app.sources.zim.active import read_active
+from app.sources.zim.active import ACTIVE_FILE, read_active
 from app.sources.zim.catalog import CatalogEntry, Metalink
 from app.sources.zim.downloader import DownloadError, DownloadProgress, TransferError
 from app.sources.zim.subscriptions import Subscription, SubscriptionManifest
@@ -379,3 +379,33 @@ def test_the_last_finished_run_stays_in_the_status_while_the_next_one_runs(
     # The errors and the end of the finished run stay visible, so the error and age alerts keep their series
     assert status["last_finished"]["finished_at"] == first.finished_at
     assert status["last_finished"]["errors"] == first.errors
+
+
+def test_a_corrupt_state_is_rebuilt_from_the_local_files(
+    tmp_path: Path, sources: dict[str, Path], caplog: pytest.LogCaptureFixture
+) -> None:
+    """TE-07: an unreadable active.json is logged and rebuilt from the files on disk; the run goes on."""
+    _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    (tmp_path / ACTIVE_FILE).write_text("{kaputt", encoding="utf-8")
+    with caplog.at_level("ERROR"):
+        report = _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    assert "rebuilding the state from local files" in caplog.text
+    assert report.adopted == ["klexikon_de_sample"]
+    state = read_active(tmp_path)
+    assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-08.zim"
+
+
+def test_a_listed_file_gone_from_disk_gives_way_to_the_one_there(
+    tmp_path: Path, sources: dict[str, Path], caplog: pytest.LogCaptureFixture
+) -> None:
+    """TE-07: active.json names a file someone deleted; the sync drops it and takes the dump that is on disk."""
+    listed = _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    listed.unlink()
+    _install(tmp_path, sources, "klexikon_de_sample_2026-01.zim")
+    with caplog.at_level("WARNING"):
+        report = _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    assert "klexikon_de_sample_2026-08.zim listed in active.json but missing on disk" in caplog.text
+    assert report.adopted == ["klexikon_de_sample"]
+    state = read_active(tmp_path)
+    assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-01.zim"

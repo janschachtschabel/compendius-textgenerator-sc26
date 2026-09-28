@@ -92,7 +92,6 @@ show_missing = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# No test is marked: b-api, edu-sharing, Kiwix and MEM are covered through fakes and recorded answers (audit
+# 2026-09-27, TE-11 - the marker live selected none of them)
 addopts = ["--strict-markers", "-q"]
-markers = [
-    "live: benötigt echte ZIM-Dumps, Netz oder externe Dienste (deselektieren mit -m 'not live')",
-]

@@ -3,6 +3,7 @@
 import shutil
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
@@ -82,3 +83,14 @@ def test_ready_flips_without_restart(sample_zims: dict[str, Path], tmp_path: Pat
         assert status["active"]["profile"] == "compact"
         assert {a["id"] for a in status["archives"]} == {"wikipedia_de_sample", "klexikon_de_sample"}
         assert client.post("/api/v2/compendium", json={"topic": "Optik"}).status_code == 200
+
+
+def test_a_corrupt_state_file_leaves_the_registry_empty_instead_of_crashing(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """TE-07: /ready then shows the problem, where a crash would loop until the sync rewrites the file."""
+    (tmp_path / ACTIVE_FILE).write_text("{broken", encoding="utf-8")
+    with caplog.at_level("ERROR"):
+        registry = ZimRegistry.from_active(tmp_path)
+    assert not registry.ready and registry.archives == []
+    assert any(record.levelname == "ERROR" for record in caplog.records)
