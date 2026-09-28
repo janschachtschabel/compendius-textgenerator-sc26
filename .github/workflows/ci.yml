@@ -93,7 +93,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Image answers with a compendium
-        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:publish --revision "$GITHUB_SHA" --hardened
+        # --embeddings: this image carries the Model2Vec model, and the service has to be able to read it
+        run: uv run python scripts/smoke_image.py --image compendious-text-fastapi:publish --revision "$GITHUB_SHA" --hardened --embeddings
       - name: Still the newest commit of main
         # A run whose checks took longer must not overwrite the :latest of a newer commit: only the commit main
         # points to now gets it. A version tag never does (the flavor below keeps the action from adding it).

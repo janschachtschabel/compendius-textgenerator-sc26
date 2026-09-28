@@ -198,6 +198,11 @@ def main() -> int:
     parser.add_argument(
         "--hardened", action="store_true", help="run as docker-compose.yml does: read-only, no capabilities"
     )
+    parser.add_argument(
+        "--embeddings",
+        action="store_true",
+        help="the image was built with its Model2Vec model (the published one is), and the matcher must use it",
+    )
     args = parser.parse_args()
 
     base_url = f"http://127.0.0.1:{args.port}"
@@ -219,7 +224,8 @@ def main() -> int:
         try:
             wait_until_ready(base_url, container)
             print(f"the image is: {check_revision(base_url, args.revision)}")
-            print(f"the image matches: {check_embeddings(base_url)}")
+            if args.embeddings:
+                print(f"the image matches: {check_embeddings(base_url)}")
             compendium = ask_for_a_compendium(base_url, container)
             print(f"the image answers: {check(compendium, run('logs', args.name))}")
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
