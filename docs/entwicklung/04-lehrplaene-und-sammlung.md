@@ -140,7 +140,7 @@ dauerte 1,3 bis 5,5 s.
 Optional kann eine zweite Sammlung (`knowledge_collection_id`) Material als zusätzliche Quelle für Teil 1 liefern.
 Wörtlich übernommen werden nur Materialien unter CC0, Public Domain, CC BY oder CC BY-SA, höchstens 30 Materialien
 mit je 20.000 Zeichen. Im Release 2.0.0 erreichten nur die Kurzbeschreibungen der Materialien Teil 1, ihre Texte
-wurden als Literaturangaben einsortiert. Behoben am 23.09.2026 in Commit `8955312`, noch in keinem Release.
+wurden als Literaturangaben einsortiert. Behoben am 23.09.2026 in Commit `8955312`, enthalten seit Release 2.1.0.
 
 ## Vorschlag: Teil 3 live
 

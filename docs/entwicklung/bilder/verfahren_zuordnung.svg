@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1110" height="390" viewBox="0 0 1110 390" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Zuordnung: Absätze auf die Bausteine verteilen"><title>Zuordnung: Absätze auf die Bausteine verteilen</title><rect width="1110" height="390" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Zuordnung: Absätze auf die Bausteine verteilen</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="115.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="133.5" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="207.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="225.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="324.3" y="46.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="342.3" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="324.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">macro-F1, gelabelte Absätze</text>
+<text x="644.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="780.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="910.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Profile</text>
+<rect x="20.0" y="90.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="109.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">nur Überschriften-Lexikon</text>
+<rect x="324.0" y="98.0" width="59.5" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="389.5" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,35</text>
+<text x="644.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,02 s</text>
+<text x="780.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">wählbar</text>
+<text x="24.0" y="139.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">BM25</text>
+<rect x="324.0" y="128.0" width="61.2" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="391.2" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,36</text>
+<text x="644.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,03 s</text>
+<text x="780.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">wählbar</text>
+<rect x="20.0" y="150.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="169.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Zeichen-TF-IDF</text>
+<rect x="324.0" y="158.0" width="68.0" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="398.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,40</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,25 s</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">wählbar</text>
+<text x="24.0" y="199.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Satzvektoren und Cross-Encoder der Testapp</text>
+<rect x="324.0" y="188.0" width="62.9" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="392.9" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,29 bis 0,37</text>
+<text x="644.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">4 bis 73 s</text>
+<text x="780.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">nicht eingebaut</text>
+<rect x="20.0" y="210.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="229.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">hybrid_light ohne Model2Vec</text>
+<rect x="324.0" y="218.0" width="64.6" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="394.6" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,38</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,3 s</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Rückfall ohne Modell</text>
+<text x="24.0" y="259.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">hybrid_light mit Model2Vec</text>
+<rect x="324.0" y="248.0" width="76.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="406.5" y="259.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,45</text>
+<text x="644.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,3 s</text>
+<text x="780.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<rect x="910.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="930.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<rect x="954.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="974.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
+<rect x="20.0" y="270.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="289.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">LLM nur für unsichere Absätze</text>
+<rect x="324.0" y="278.0" width="91.8" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="421.8" y="289.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,54</text>
+<text x="644.0" y="289.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">halbe LLM-Zeit</text>
+<text x="780.0" y="289.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">halbe Tokens</text>
+<text x="910.0" y="289.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">verworfen (M12)</text>
+<text x="24.0" y="319.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM ordnet jeden Absatz zu</text>
+<rect x="324.0" y="308.0" width="119.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="449.0" y="319.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,70</text>
+<text x="644.0" y="319.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+12,7 s</text>
+<text x="780.0" y="319.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 170 je Absatz</text>
+<rect x="998.0" y="307.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="1018.0" y="319.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
+<rect x="1042.0" y="307.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="1062.0" y="319.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
+<text x="24.0" y="352.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 am Goldstandard, gelabelte Absätze (M4, M5, M12, M15, M19, M27; ohne Model2Vec M44: 0,40 auf allen Absätzen).</text>
+<text x="24.0" y="368.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit je Kompendium; die LLM-Zuordnung in M45 (Phase match), rund 170 Tokens je Absatz (M27).</text></svg>

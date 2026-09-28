@@ -501,13 +501,14 @@ def median(values: list[float]) -> float:
 
 
 def kombinationen() -> None:
-    """The four profiles (D53): part 1 and 2 per compendium, tokens and quality (M25, M27, M19)."""
-    zeit = profile_seconds(load("m27_profile_zeit.json"))
-    tokens = load("m27_profile_tokens.json")["zusammenfassung"]
+    """The four profiles (D53): part 1 and 2 per compendium on the server, tokens (M45) and quality (M35, M27, M39,
+    M19)."""
+    zeit = server_seconds()
+    tokens = load("m45_profile_endpunkte.json")["compendium"]["zusammenfassung"]
     budget = 2_000_000  # LLM_DAILY_TOKEN_BUDGET
     profiles = [  # label, articles right of 94, macro-F1 at the gold paragraphs, what the text is, color
         ("llm-free", 87, "0,45", "wörtlich", LOCAL),
-        ("balanced", 91, "0,45", "wörtlich", "#7a5aa6"),
+        ("balanced", 91, "0,50²", "wörtlich", "#7a5aa6"),
         ("best-quality", 93, "0,70", "wörtlich", LLM),
         ("best-quality-generated", 93, "0,70", "vom LLM geschrieben", "#b24c63"),
     ]
@@ -520,14 +521,14 @@ def kombinationen() -> None:
     y = 82
     for label, articles, f1, kind, color in profiles:
         seconds, low, high = zeit[label]
-        used = tokens[label]["tokens_median"]
+        used = tokens[label]["tokens"]["median"]
         svg.text(x0 - 12, y + 15, label, 12.5, INK, "end", "600")
-        svg.rect(x0, y, width * seconds / 30, bar, color, 2)
-        svg.text(x0 + width * seconds / 30 + 6, y + 15, f"{de(seconds, '0.1')} s", 11.5, MUTED)
+        svg.rect(x0, y, width * seconds / 40, bar, color, 2)
+        svg.text(x0 + width * seconds / 40 + 6, y + 15, f"{de(seconds, '0.1')} s", 11.5, MUTED)
         svg.text(x0, y + bar + 16, f"{de(low, '0.1')} bis {de(high, '0.1')} s", 11, MUTED)
         tx = x0 + width + 40
-        svg.rect(tx, y, width * used / 50_000, bar, color, 2)
-        svg.text(tx + width * used / 50_000 + 6, y + 15, de(round(used, -2) if used > 5_000 else used), 11.5, MUTED)
+        svg.rect(tx, y, width * used / 70_000, bar, color, 2)
+        svg.text(tx + width * used / 70_000 + 6, y + 15, de(round(used, -2) if used > 5_000 else used), 11.5, MUTED)
         daily = "ohne Grenze" if not used else f"rund {de(budget / used)} je Tag"
         svg.text(tx, y + bar + 16, f"Tagesbudget 2 Mio.: {daily}", 11, MUTED)
         svg.text(640, y + 9, f"Artikel: {articles} von 94", 11.5, INK)
@@ -535,16 +536,304 @@ def kombinationen() -> None:
         svg.text(640, y + 45, f"Text: {kind}", 11.5, INK)
         y += row
     notes = (
-        "Zeit: Teil 1 und 2, Entwicklungsrechner, jedes LLM-Profil auf eigenen sechs Themen: llm-free plus LLM-Anteil (M27).",
-        "Tokens: Median auf denselben sechs Themen (M27). Zuordnung: macro-F1 der gelabelten Absätze,",
-        "LLM-frei und balanced gemessen in M27, die LLM-Zuordnung in M19 (gpt-6-luna).",
+        "Zeit: Teil 1 und 2 auf dem Server (M45): ohne LLM gemessen, dazu die LLM-Schritte des Profils, gpt-6-luna.",
+        "Tokens: Median, je LLM-Profil sechs eigene Themen (M45). Zuordnung: macro-F1 der gelabelten Absätze,",
+        "llm-free M27, balanced M39 (² das Gold deckt den Korpus mit N zu zwei Dritteln), die LLM-Zuordnung M19.",
     )
     for number, note in enumerate(notes):
         svg.text(24, y + 18 + 16 * number, note, 11, MUTED, limit=732)
     svg.save("kombinationen.svg")
 
 
+BALANCED, GENERATED = "#7a5aa6", "#b24c63"
+PROFILES = ("llm-free", "balanced", "best-quality", "best-quality-generated")
+PROFILE_COLOR = {"llm-free": LOCAL, "balanced": BALANCED, "best-quality": LLM, "best-quality-generated": GENERATED}
+
+
+def m45(section: str, profile: str, field: str) -> float:
+    """Median of a field of M45 (28.09.2026, release 2.2.2): one endpoint, one profile."""
+    return load("m45_profile_endpunkte.json")[section]["zusammenfassung"][profile][field]["median"]
+
+
+LLM_PHASES = {"balanced": ("resolve",), "best-quality": ("resolve", "match", "curricula"),
+              "best-quality-generated": ("resolve", "match", "synthesize", "curricula")}
+
+
+def server_seconds() -> dict[str, tuple[float, float, float]]:
+    """Part 1 and 2 per profile on the server (M45): llm-free as the server measured it; an LLM profile as the
+    server's llm-free time on the same topic plus the phases its LLM works in, measured in the development container
+    against llm-free there (the LLM dominates and is the same b-api). Median, lowest, highest."""
+    dev, server = load("m45_profile_endpunkte.json"), load("m45_server_llm_free.json")
+    local = server["compendium"]["laeufe"]["llm-free"]
+    free = dev["compendium"]["laeufe"]["llm-free"]
+    values = [row["sekunden"] for row in local.values()]
+    result = {"llm-free": (median(values), min(values), max(values))}
+    for profile, phases in LLM_PHASES.items():
+        estimates = []
+        for topic, row in dev["compendium"]["laeufe"][profile].items():
+            run, base = row["phasen_ms"], free[topic]["phasen_ms"]
+            extra = sum(max(0, run.get(phase, 0) - base.get(phase, 0)) for phase in phases)
+            estimates.append(local[topic]["sekunden"] + extra / 1000)
+        result[profile] = (median(estimates), min(estimates), max(estimates))
+    return result
+
+
+def tokens_text(value: float) -> str:
+    return "0" if not value else de(round(value, -2) if value >= 5_000 else round(value, -1), "1")
+
+
+def qualitaet_zeit_kosten() -> None:
+    """The old service against the four profiles (01-alt-und-neu.md): time and tokens per compendium beside the
+    quality measures that exist for them. Time and tokens: M45 and, for the old service, M2 (best case: Wikipedia
+    answers). The quality numbers come from their measurements, written here with the source."""
+    zeit = server_seconds()
+    rows = [  # label, color, seconds, tokens, main article right of 94, macro-F1, backed sentences, readability
+        ("alter Dienst, bester Fall", OLD, 35.0, 7_913, 55, None, (21, "21 %"), None),  # M2; M17 first term
+        ("llm-free", LOCAL, zeit["llm-free"][0], m45("compendium", "llm-free", "tokens"),
+         87, (0.45, "0,45"), (100, "100 %"), (2.5, "2,5¹")),  # M35; M27 (gold pool); M3; M28
+        ("balanced (Standard)", BALANCED, zeit["balanced"][0],
+         m45("compendium", "balanced", "tokens"), 91, (0.50, "0,50²"), (100, "100 %"), (2.5, "2,5¹")),  # M35/M39
+        ("best-quality", LLM, zeit["best-quality"][0],
+         m45("compendium", "best-quality", "tokens"), 93, (0.70, "0,70"), (100, "100 %"), (2.5, "2,5")),  # M19; M28
+        ("best-quality-generated", GENERATED, zeit["best-quality-generated"][0],
+         m45("compendium", "best-quality-generated", "tokens"), 93, (0.70, "0,70"), None, (4.0, "4,0")),
+    ]
+    label_w, panel_w, gap, bar, row_h = 190, 238, 22, 15, 24
+    width = 24 + label_w + 3 * panel_w + 2 * gap + 24
+    panel_h = 34 + len(rows) * row_h
+    svg = Svg(width, 70 + 2 * panel_h + 30 + 7 * 16, "Güte, Zeit und Kosten: alter Dienst und Profile")
+    svg.text(24, 30, "Güte, Zeit und Kosten: alter Dienst und die vier Profile", 17, weight="600")
+    svg.text(24, 50, "je Kompendium; ein längerer Balken ist bei Zeit und Tokens teurer, bei der Güte besser", 12, MUTED)
+    panels = [  # title, value of a row, scale maximum, text of a row's value
+        ("Zeit je Kompendium, Teil 1 und 2", lambda r: r[2], 40, lambda r: f"{secs(r[2], '0.1')} s"),
+        ("Tokens je Kompendium, Median", lambda r: r[3], 45_000, lambda r: tokens_text(r[3])),
+        ("Hauptartikel richtig, 94 Anfragen", lambda r: r[4], 94, lambda r: f"{r[4]} von 94"),
+        ("Zuordnung, macro-F1", lambda r: r[5] and r[5][0], 1, lambda r: r[5][1] if r[5] else "keine Bausteine"),
+        ("Sätze von ihrer Quelle gestützt", lambda r: r[6] and r[6][0], 100,
+         lambda r: r[6][1] if r[6] else "geprüft, Modellwissen markiert"),
+        ("Lesbarkeit für Lehrkräfte, 1 bis 5", lambda r: r[7] and r[7][0], 5, lambda r: r[7][1] if r[7] else "nicht benotet"),
+    ]
+    for index, (title, value, maximum, label) in enumerate(panels):
+        column, line = index % 3, index // 3
+        x = 24 + label_w + column * (panel_w + gap)
+        y = 70 + line * (panel_h + 14)
+        svg.rect(x - 8, y - 4, panel_w + 12, panel_h, PANEL, 4)
+        svg.text(x, y + 14, title, 12, INK, weight="600", limit=panel_w)
+        for number, row in enumerate(rows):
+            ry = y + 28 + number * row_h
+            if column == 0:
+                svg.text(24 + label_w - 14, ry + 12, row[0], 12, INK, "end", "600", limit=label_w - 16)
+            amount = value(row)
+            length = (panel_w - 70) * min(amount, maximum) / maximum if amount else 0
+            if length:
+                svg.rect(x, ry, length, bar, row[1], 2)
+            svg.text(x + length + (6 if length else 0), ry + 12, label(row), 11, MUTED if amount else INK,
+                     limit=panel_w - length - 6)
+    notes = (
+        "Zeit: Server, Median (M45: ohne LLM gemessen, dazu die LLM-Schritte, gpt-6-luna). Tokens: Median, "
+        "je LLM-Profil sechs eigene Themen (M45).",
+        "Alter Dienst: M2 (Wikipedia antwortet; wie ausgeliefert wies Wikipedia ihn ab: 374 s, ein Text ohne Quelle).",
+        "Hauptartikel: M17 (alter Weg: der Artikel des ersten Begriffs) und M35. Zuordnung am Goldpool: M27, M19;",
+        "² nur auf den Absätzen mit Label, das Gold deckt den Korpus mit N zu zwei Dritteln (M39).",
+        "Gestützt: M2 und M3; im wörtlichen Text steht jeder Satz im zitierten Absatz. Lesbarkeit: M28, zwei Claude-Gutachter;",
+        "¹ der wörtliche Text wie bei best-quality, nicht eigens benotet.",
+    )
+    for number, note in enumerate(notes):
+        svg.text(24, 70 + 2 * panel_h + 14 + 26 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("qualitaet_zeit_kosten.svg")
+
+
+def profile_matrix() -> None:
+    """What each profile does in every step and endpoint, with quality, time and tokens (09-profile-und-messwerte.md).
+    Time and tokens of the endpoints: M45; the other numbers: their measurements, named in the page's table."""
+    zeit = server_seconds()
+
+    def endpoint(section: str, profile: str) -> str:
+        seconds = zeit[profile][0] if section == "compendium" else (
+            load("m45_server_llm_free.json")[section]["zusammenfassung"]["llm-free"]["sekunden"]["median"]
+            if profile == "llm-free" else m45(section, profile, "sekunden"))
+        used = m45(section, profile, "tokens")
+        shown = de(seconds, "0.01") if seconds < 1 else secs(seconds, "0.1")
+        return f"{shown} s · {tokens_text(used)} Tokens"
+
+    free = "Regeln, ohne LLM"
+    rows = [  # step or endpoint, then per profile: (what it does, what it achieves, whether an LLM works)
+        ("Hauptartikel", [("Regeln", "87 von 94 richtig", False), ("LLM entscheidet unsichere", "91 von 94", True),
+                          ("LLM prüft auch sichere", "93 von 94", True), ("wie best-quality", "93 von 94", True)]),
+        ("Korpus (Nebenartikel)", [("verlinkte und Volltexttreffer", "passend 43 / 71 %", False),
+                                   ("LLM nennt Übersicht und Teile", "passend 87 / 93 %", True),
+                                   ("wie balanced", "wie balanced", True), ("wie balanced", "wie balanced", True)]),
+        ("Zuordnung", [("hybrid_light mit Model2Vec", "macro-F1 0,45", False),
+                       ("wie llm-free", "macro-F1 0,50 auf 2/3 des Korpus", False),
+                       ("LLM ordnet jeden Absatz zu", "macro-F1 0,70", True), ("wie best-quality", "macro-F1 0,70", True)]),
+        ("Text von Teil 1", [("wörtlich, jeder Satz belegt", "Lesbarkeit 2,5", False), ("wie llm-free", "", False),
+                             ("wie llm-free", "Lesbarkeit 2,5", False),
+                             ("LLM schreibt, mit Modellwissen", "Lesbarkeit 4,0", True)]),
+        ("Kompendium, Teil 1 und 2", [(free, endpoint("compendium", "llm-free"), False),
+                                      ("LLM für Artikel und Korpus", endpoint("compendium", "balanced"), True),
+                                      ("dazu Zuordnung, Teil-2-Prüfung", endpoint("compendium", "best-quality"), True),
+                                      ("dazu Text", endpoint("compendium", "best-quality-generated"), True)]),
+        ("Teil 2: Lehrplanbezüge", [("Regeln, Überschriften gebündelt", "passend 70 bis 81 %", False),
+                                    ("wie llm-free", "passend 70 bis 81 %", False),
+                                    ("LLM prüft jedes Element", "passend 74 bis 79 %", True),
+                                    ("wie best-quality", "passend 74 bis 79 %", True)]),
+        ("Lehrplansuche", [(free, endpoint("lehrplan_suche", "llm-free"), False), ("wie llm-free", "", False),
+                           ("LLM prüft jedes Element", endpoint("lehrplan_suche", "best-quality"), True),
+                           ("wie best-quality", "", True)]),
+        ("Teil 3: Sammlung", [("edu-sharing, ohne LLM", "0,16 bis 3,5 s", False), ("wie llm-free", "", False),
+                              ("wie llm-free", "", False), ("wie llm-free", "", False)]),
+        ("Wissenstexte (/knowledge)", [(free, endpoint("knowledge", "llm-free"), False),
+                                       ("Artikel und Korpus vom LLM", endpoint("knowledge", "balanced"), True),
+                                       ("dazu sichere Artikel geprüft", endpoint("knowledge", "best-quality"), True),
+                                       ("wie best-quality", "", True)]),
+        ("Entitäten (/entities)", [("spaCy und Artikeltitel", "F1 0,38 · " + endpoint("entities", "llm-free"), False),
+                                   ("LLM nennt sie mit Artikel", "F1 0,78 · " + endpoint("entities", "balanced"), True),
+                                   ("wie balanced", "F1 0,78", True), ("wie balanced", "F1 0,78", True)]),
+        ("Kennungen (Wikidata, GND)", [("lokale Indexe", "Wikidata-Präzision 0,29", False),
+                                       ("lokale Indexe", "Wikidata-Präzision 0,70", False),
+                                       ("wie balanced", "", False), ("wie balanced", "", False)]),
+        ("QA-Paare (/qa)", [("Regeln aus dem Parse", "61 % mangelfrei · " + endpoint("qa", "llm-free").replace(" · 0 Tokens", ""), False),
+                            ("wie llm-free", "61 % mangelfrei", False),
+                            ("LLM schreibt die Paare", "83 % · " + endpoint("qa", "best-quality"), True),
+                            ("wie best-quality", "83 % mangelfrei", True)]),
+        ("Material als Eingang", [("Regeln über Titel und Text", "Artikel-F1 0,56 / 0,63", False),
+                                  ("LLM wählt den Artikel", "Artikel-F1 0,98 / 0,88", True),
+                                  ("wie balanced", "", True), ("wie balanced", "", True)]),
+    ]
+    label_w, cell_w, row_h, top = 190, 214, 40, 96
+    width = 24 + label_w + 4 * cell_w + 24
+    svg = Svg(width, top + len(rows) * row_h + 92, "Die vier Profile je Verfahren und Endpunkt")
+    svg.text(24, 30, "Die vier Profile je Verfahren und Endpunkt", 17, weight="600")
+    svg.legend(24, 56, [(TINT[LOCAL], "Regeln, ohne LLM"), (TINT[LLM], "ein LLM arbeitet")], 12)
+    for index, profile in enumerate(PROFILES):
+        x = 24 + label_w + index * cell_w
+        svg.rect(x + 2, top - 26, cell_w - 4, 20, PROFILE_COLOR[profile], 3)
+        svg.text(x + cell_w / 2, top - 12, profile + (" (Standard)" if profile == "balanced" else ""), 12, PAPER,
+                 "middle", "600")
+    for number, (step, cells) in enumerate(rows):
+        y = top + number * row_h
+        svg.text(24 + label_w - 12, y + 24, step, 12, INK, "end", "600", limit=label_w - 14)
+        for index, (does, achieves, llm) in enumerate(cells):
+            x = 24 + label_w + index * cell_w
+            svg.rect(x + 2, y + 2, cell_w - 4, row_h - 4, TINT[LLM] if llm else TINT[LOCAL], 3)
+            svg.text(x + 9, y + 17, does, 11, INK, limit=cell_w - 14)
+            if achieves:
+                svg.text(x + 9, y + 32, achieves, 10.5, MUTED, limit=cell_w - 14)
+    notes = (
+        "Zeit und Tokens: M45, Median je Anfrage; ohne LLM auf dem Server gemessen, mit LLM im Entwicklungscontainer (das LLM "
+        "überwiegt), das Kompendium als Server plus LLM-Schritte.",
+        "Güte: Hauptartikel M35, Korpus M37/M39 (Sammel- / gewöhnliche Themen), Zuordnung M27/M39/M19, Lesbarkeit M28, Teil 2 M32,",
+        "Entitäten M36, Kennungen M43, QA M34/M30, Material M25. Teil 3: M1 und Server. Einzelheiten: Seite 09.",
+    )
+    for number, note in enumerate(notes):
+        svg.text(24, top + len(rows) * row_h + 24 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("profile_matrix.svg")
+
+
+SHORT = {"llm-free": "llm-free", "balanced": "balanced", "best-quality": "best-q.", "best-quality-generated": "gen."}
+
+
+def verfahren(name: str, title: str, measure: str, rows: list[tuple], notes: tuple[str, ...]) -> None:
+    """One step of the service (09-methoden-und-profile.md): every measured method with its quality as a bar, time and
+    tokens as numbers, and the profiles that use it. A row: label, quality 0..1 or None, quality text, time, tokens,
+    and either the profiles using the method or a status such as "nicht eingebaut"."""
+    label_w, bar_w, time_x, token_x, profile_x, row_h = 300, 170, 644, 780, 910, 30
+    width = profile_x + 4 * 44 + 24
+    top = 92
+    svg = Svg(width, top + len(rows) * row_h + 26 + 16 * len(notes), title)
+    svg.text(24, 30, title, 17, weight="600")
+    svg.legend(24, 56, [(PROFILE_COLOR[p], p) for p in PROFILES], 11.5)
+    for x, head in ((24 + label_w, measure), (time_x, "Zeit"), (token_x, "Tokens"), (profile_x, "Profile")):
+        svg.text(x, top - 10, head, 11.5, MUTED, weight="600")
+    for number, (label, quality, quality_text, seconds, tokens, used) in enumerate(rows):
+        y = top + number * row_h
+        in_use = isinstance(used, tuple)
+        if number % 2 == 0:
+            svg.rect(20, y - 2, width - 40, row_h, PANEL, 3)
+        svg.text(24, y + 17, label, 12, INK if in_use else MUTED, weight="600" if in_use else "normal", limit=label_w - 12)
+        x = 24 + label_w
+        length = bar_w * quality if quality else 0
+        if length:
+            svg.rect(x, y + 6, length, 14, LOCAL if in_use else OLD, 2)
+        svg.text(x + length + (6 if length else 0), y + 17, quality_text, 11, INK if in_use else MUTED,
+                 limit=time_x - x - length - 12)
+        svg.text(time_x, y + 17, seconds, 11, MUTED, limit=token_x - time_x - 10)
+        svg.text(token_x, y + 17, tokens, 11, MUTED, limit=profile_x - token_x - 10)
+        if in_use:
+            for index, profile in enumerate(PROFILES):
+                if profile in used:
+                    svg.rect(profile_x + index * 44, y + 5, 40, 16, PROFILE_COLOR[profile], 3)
+                    svg.text(profile_x + index * 44 + 20, y + 17, SHORT[profile], 9.5, PAPER, "middle", "600")
+        else:
+            svg.text(profile_x, y + 17, used, 11, MUTED, limit=width - profile_x - 24)
+    for number, note in enumerate(notes):
+        svg.text(24, top + len(rows) * row_h + 20 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save(name)
+
+
+def verfahren_charts() -> None:
+    """The six steps with their methods; numbers as on page 09, each with its measurement."""
+    verfahren("verfahren_artikelwahl.svg", "Artikelwahl: den Hauptartikel finden", "richtig bei 94 Goldanfragen", [
+        ("alter Weg: LLM nennt Begriffe", 55 / 94, "55 (erster Begriff)", "6 bis 8 s", "1.300 bis 1.500", "alter Dienst"),
+        ("v2.0.0: Titel, Weiterleitung, Wortzählung", 66 / 94, "66", "rund 0,03 s", "0", "abgelöst"),
+        ("Regeln mit Kontextwörtern des Fachs", 87 / 94, "87", "rund 0,03 s", "0", ("llm-free",)),
+        ("Regeln und laya (lokales Modell)", 81 / 94, "81", "+0,45 s; 1,7 GB", "0", "nicht eingebaut (D42)"),
+        ("LLM entscheidet unsichere (llm)", 91 / 94, "91", "+1 s bei 18 von 94", "rund 800 je Frage", ("balanced",)),
+        ("LLM prüft auch sichere (llm-thorough)", 93 / 94, "93", "+1 s bei 64 von 94", "rund 800 je Frage",
+         ("best-quality", "best-quality-generated")),
+    ], ("Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M35, nach D63 unverändert, M39).",
+        "Zeit und Tokens je Frage an das LLM (M35); die Regeln fragen es nur, wo sie unsicher sind."))
+    verfahren("verfahren_korpus.svg", "Korpusbau: welche Artikel neben dem Hauptartikel", "gedruckt aus passenden Artikeln", [
+        ("alter Weg: Begriffe vom LLM", 0.63, "63 % Sammelthemen", "6 bis 8 s", "rund 1.500", "alter Dienst"),
+        ("Regeln: Links, verlinkte Volltexttreffer", 0.43, "43 % / 71 %", "lokal", "0", ("llm-free",)),
+        ("dazu LLM prüft die Nebenartikel", 0.45, "45 % / 73 %", "+1,4 bis 2 s", "750 bis 1.400",
+         "bis D63 in balanced"),
+        ("kleine lokale Modelle für N (LFM2, Qwen3)", None, "kein Gewinn", "4,4 bis 6,3 s", "0", "nicht eingebaut (M40)"),
+        ("LLM nennt Übersicht und Teile (N)", 0.87, "87 % / 93 %", "+5 s", "rund 500",
+         ("balanced", "best-quality", "best-quality-generated")),
+    ], ("Gedruckte Absätze aus passenden Artikeln, zwei Gutachter: 25 Sammel- und Mischthemen / 20 gewöhnliche Themen (M37, M39).",
+        "Zeit und Tokens des LLM je Thema: N in M45 (Phase resolve), die Prüfung der Nebenartikel M25 und M37, der alte Weg M17."))
+    verfahren("verfahren_zuordnung.svg", "Zuordnung: Absätze auf die Bausteine verteilen", "macro-F1, gelabelte Absätze", [
+        ("nur Überschriften-Lexikon", 0.35, "0,35", "0,02 s", "0", "wählbar"),
+        ("BM25", 0.36, "0,36", "0,03 s", "0", "wählbar"),
+        ("Zeichen-TF-IDF", 0.40, "0,40", "0,25 s", "0", "wählbar"),
+        ("Satzvektoren und Cross-Encoder der Testapp", 0.37, "0,29 bis 0,37", "4 bis 73 s", "0", "nicht eingebaut"),
+        ("hybrid_light ohne Model2Vec", 0.38, "0,38", "0,3 s", "0", "Rückfall ohne Modell"),
+        ("hybrid_light mit Model2Vec", 0.45, "0,45", "0,3 s", "0", ("llm-free", "balanced")),
+        ("LLM nur für unsichere Absätze", 0.54, "0,54", "halbe LLM-Zeit", "halbe Tokens", "verworfen (M12)"),
+        ("LLM ordnet jeden Absatz zu", 0.70, "0,70", "+12,7 s", "rund 170 je Absatz",
+         ("best-quality", "best-quality-generated")),
+    ], ("macro-F1 am Goldstandard, gelabelte Absätze (M4, M5, M12, M15, M19, M27; ohne Model2Vec M44: 0,40 auf allen Absätzen).",
+        "Zeit je Kompendium; die LLM-Zuordnung in M45 (Phase match), rund 170 Tokens je Absatz (M27)."))
+    verfahren("verfahren_lehrplan.svg", "Lehrplanschnipsel auswählen (Teil 2)", "passend, einzeln gezeigt", [
+        ("alle Treffer einzeln", 0.63, "62–67 %, 11–17 % unpassend", "0,1 bis 0,7 s", "0", "abgelöst (D58)"),
+        ("Überschriften-Treffer gebündelt", 0.71, "70–81 %, 5–9 % unpassend", "0,1 bis 0,7 s", "0",
+         ("llm-free", "balanced")),
+        ("dazu LLM prüft jedes Element", 0.755, "74–79 %, 5–9 % unpassend", "+6 bis 8 s", "5.100 bis 9.600",
+         ("best-quality", "best-quality-generated")),
+    ], ("Anteil der einzeln gezeigten Elemente, zwei Gutachter, 20 Themen ohne und mit Fach (M22, M32). Gebündelt steht ein Viertel",
+        "der passenden nur in einer Sammelzeile; die LLM-Prüfung verwirft keines. Zeit und Tokens: M32 und M45 (Suche und Teil 2)."))
+    verfahren("verfahren_qa.svg", "QA-Paare erzeugen", "mangelfrei bei beiden Gutachtern", [
+        ("vier Vorlagen (bis D55)", None, "nicht bewertet, 82 % Jahresfragen", "0,02 s", "0", "abgelöst (D55)"),
+        ("Satzanalyse (parse-based)", 0.36, "36 %", "0,17 s", "0", "entfernt (D57)"),
+        ("kleine Modelle im Image", 0.21, "21 %", "25 s je Text", "0; 1,3 GB", "entfernt (D57)"),
+        ("Regeln aus dem Parse, aufgefüllt", 0.61, "61 % (58 von 95)", "0,5 s", "0", ("llm-free", "balanced")),
+        ("LLM schreibt die Paare", 0.83, "83 % (99 von 120)", "6,3 s", "2.400 bis 7.100",
+         ("best-quality", "best-quality-generated")),
+    ], ("Je 20 verlangte Paare zu sechs Texten, zwei Gutachter (M30, die Regeln nach D60 in M34). Zeit und Tokens: M45 an Texten",
+        "von rund 23.000 Zeichen (Regeln auf dem Server); das LLM brauchte bei 5.000 bis 12.000 Zeichen rund 2.400 Tokens (M30)."))
+    verfahren("verfahren_entitaeten.svg", "Entitäten ermitteln (/entities)", "F1 an 40 Materialtexten", [
+        ("spaCy allein", 0.30, "0,30", "lokal", "0", "Teil von llm-free"),
+        ("Wörterbuch der Artikeltitel allein", 0.35, "0,35", "lokal", "0", "Teil von llm-free"),
+        ("spaCy und Wörterbuch", 0.38, "0,38 (Präzision 0,29)", "1,0 s", "0", ("llm-free",)),
+        ("LLM nennt sie mit Artikeltitel", 0.78, "0,78 (Präzision 0,70)", "6,8 s", "rund 1.300",
+         ("balanced", "best-quality", "best-quality-generated")),
+        ("dazu LLM prüft jede Verknüpfung", 0.76, "0,76 (Präzision 0,94)", "+2 s", "+820", "Schalter link_check"),
+    ], ("F1 der verknüpften Artikel, zwei Gutachter, 40 Materialtexte, durch den Endpunkt (M36). Die Kennungen folgen dem Artikel:",
+        "Wikidata-Präzision 0,29 und 0,70, GND 0,31 und 0,70 (M43). Zeit und Tokens: M45 an 1.500 Zeichen (Regeln auf dem Server)."))
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
-              kombinationen):
+              kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts):
     chart()

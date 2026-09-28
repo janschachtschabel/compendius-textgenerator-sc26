@@ -1,98 +1,86 @@
 # Alter und neuer Dienst im Vergleich
 
-[Übersicht](README.md) · Messaufbau: [Messprotokoll](05-messprotokoll.md), Abschnitte M1 bis M3, M9, M12 und M13
+[Übersicht](README.md) · Stand 28.09.2026 · neuer Dienst: Release 2.2.2 · alter Dienst: v0.2.0
+(`alterCode/compendious`) · Messungen: [Messprotokoll](05-messprotokoll.md), vor allem M1 bis M3, M17, M37 und M45 ·
+Methoden je Schritt: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
-## Der alte Dienst (v0.2.0)
+Ein Kompendium hat nach dem neuen Soll drei Teile: Weltwissen, Lehrplanbezüge und einen Überblick über die
+WLO-Sammlung zum Thema. Der alte Dienst, nach seinem README ein weitgehend KI-generierter Proof of Concept, erzeugte
+davon nur das Weltwissen, als freien Text eines LLM-Aufrufs. Der neue Dienst erzeugt alle drei Teile. Das Weltwissen
+übernimmt er wörtlich und belegt aus Wikipedia und Klexikon; ein Sprachmodell arbeitet nur dort, wo das gewählte
+Profil es vorsieht.
 
-Der alte Dienst liegt als Referenz unter `alterCode/compendious`; sein README nennt ihn einen weitgehend
-KI-generierten Proof of Concept. Er erzeugte nur das Weltwissen. Der Weg vom Thema zum Text
-(`POST /api/v1/pipeline-compendium-only`):
+## Die drei Teile: Soll, alter und neuer Dienst
 
-1. **Begriffe:** Ein LLM-Aufruf nennt bis zu zehn Begriffe zum Thema, jeweils mit dem vermuteten exakten
-   Wikipedia-Titel (`app/core/openai_wrapper.py`, Modus `generate`, Temperatur 0,7).
-2. **Wikipedia:** Je Begriff fragt der Dienst die MediaWiki-API mit genau diesem Titel ab und holt nur den
-   Einleitungsabschnitt als Klartext. Findet er nichts, probiert er bis zu acht Schreibvarianten und lässt ein LLM
-   bis zu drei Synonyme vorschlagen. Die Begriffe laufen nacheinander (`app/services/wikipedia/`).
-3. **Text:** Ein einziger LLM-Aufruf schreibt das ganze Kompendium: Ziel 6.000 Zeichen, höchstens 4.000
-   Ausgabetokens, Temperatur 0,7 (`app/core/compendium.py`). Im Prompt stehen die Einleitungen, die 15 Aspekte des
-   damaligen Kategorien-Templates als Liste von Überschriften und die Anweisung, mit „(1)“, „(2)“ auf die
-   URL-Liste zu verweisen (`app/core/compendium_prompts.py`).
+| Teil | Soll | alter Dienst v0.2.0 | neuer Dienst 2.2.2 |
+|---|---|---|---|
+| **1 · Weltwissen** | gesichertes Wissen zum Thema, gegliedert nach dem Template SC26 in 13 Bausteine: zehn aus den Quellen, dazu Akteure, Quellen und Glossar; jede Aussage belegt | ein LLM nennt bis zu zehn Begriffe; je Begriff holt der Dienst live die Einleitung des Wikipedia-Artikels; ein zweiter LLM-Aufruf schreibt daraus einen freien Text. Die 15 Aspekte des damaligen Templates stehen nur als Hinweis im Prompt | Wikipedia und Klexikon als ZIM-Archive beim Dienst. Ein Hauptartikel, ein Korpus aus bis zu 12 ganzen Artikeln, jeder Absatz einem der zehn Inhaltsbausteine zugeordnet und wörtlich mit Belegnummer übernommen; Akteure, Quellen und Glossar aus denselben Artikeln. Je Profil helfen LLM-Schritte bei Artikelwahl, Korpus, Zuordnung und Text |
+| **2 · Lehrplanbezüge** | was Lehrpläne aller Bildungsstufen zum Thema vorsehen, nach Stufe, Land und Lehrplan | fehlte | die MEM-Lehrpläne aus vier Ländern (2.514 Lehrpläne, 295.184 Elemente) als lokaler Cache; Suche mit Fach- und Wortgrenzenfilter, nach Stufe, Land und Lehrplan gruppiert, die Herkunft je Block genannt; in den `best-quality`-Profilen prüft ein LLM jedes Element |
+| **3 · Sammlungsüberblick** | was die WLO-Sammlung zum Thema enthält, für Menschen lesbar und für Maschinen auswertbar | fehlte | die Sammlung aus edu-sharing zur Anfragezeit: Kopf mit Kennzahlen, je Inhalt eine Zeile mit Art, Stufe, Lizenz und nodeId, Untersammlungen eine Ebene tief; optional eine zweite Sammlung als Quelle für Teil 1 |
 
-Die 15 Aspekte sind eine Empfehlung im Prompt. Das Modell hält sie meist ein (im Median 14,5 von 15 als
-Überschrift), der Code prüft sie aber nicht, und es gibt keinen eigenen Schritt je Aspekt.
+## Güte, Zeit und Kosten
 
-## Problemlagen
+![Güte, Zeit und Kosten: alter Dienst und die vier Profile](bilder/qualitaet_zeit_kosten.svg)
 
-### Unzuverlässiger Wikipedia-Abruf
+- **Alter Dienst:**
+  - Im besten Fall, also wenn Wikipedia antwortete, brauchte er je Kompendium 35 s und rund 7.900 Tokens.
+  - Den Hauptartikel nannte er an erster Stelle bei 55 von 94 Goldanfragen.
+  - Nur 21 % seiner Sätze stützt der zitierte Text.
+- **`llm-free`:** ist auf dem Server in 2,3 s fertig und braucht keine Tokens. Den Hauptartikel trifft es bei 87 von 94, und jeder Satz steht wörtlich im zitierten Absatz.
+- **`balanced` (Standard):** fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.
+- **`best-quality`:** lässt das LLM zusätzlich die Absätze zuordnen und die Lehrplanschnipsel prüfen. Die Zuordnung steigt auf macro-F1 0,70 statt 0,45, für 26 s und rund 49.000 Tokens.
+- **`best-quality-generated`:** lässt das LLM auch den Text schreiben. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
 
-Am 23.09.2026 mit dem unveränderten alten Code nachgestellt:
+**Was man bekommt:**
+- `llm-free` ist schnell und kostet nichts.
+- Der Standard verdoppelt etwa die Zeit, für den deutlich besseren Korpus und die treffsicherere Artikelwahl.
+- Die beiden `best-quality`-Profile sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40 beziehungsweise 33 Kompendien.
 
-- **Wikipedia weist den Dienst ab.** Sein Client meldet sich als `compendious-text-fastapi v0.2.0`, ohne
-  Kontaktangabe. Wikipedia beantwortet seine Anfragen mit 403 und verweist auf die Robot-Policy; mit einer
-  Kontaktadresse im User-Agent gehen dieselben Anfragen durch. Über `curl` kam auch der alte User-Agent durch,
-  Wikimedia wertet also vermutlich Client und User-Agent zusammen aus. Im Lauf zu „Optik“ kamen auf 240 Anfragen
-  240 Ablehnungen.
-- **Abgelehnte Anfragen werden wiederholt statt gemeldet.** Der Client versucht auch ein 403 viermal mit wachsender
-  Pause, obwohl sein eigener Kommentar das ausschließt. Der Lauf dauerte deshalb 374 s, davon rund fünf Minuten
-  Warten.
-- **Der Ausfall bleibt unsichtbar.** Der Dienst lieferte trotzdem eine normale Antwort (über HTTP ein 200) mit
-  11.906 Zeichen Text ohne eine einzige Quelle. Darin stehen 15 Verweise „(1)“, das Literaturverzeichnis sagt
-  „Keine Referenzen verfügbar“.
-- **Titel werden geraten statt gesucht.** Die Artikelwahl hängt davon ab, dass das LLM exakte Titel trifft.
-  Begriffsklärungsseiten erkennt der Dienst nicht: In drei von zehn Themen waren zusammen zehn der „Quellen“
-  Begriffsklärungen. Bei „Optik“ bekam das Modell unter „Brechung“ den Text „Brechen … steht für: Erbrechen, …“.
-  Über Ausweichtitel landete „Emblem (Literatur)“ beim Artikel *Symbol*, und zu „Barockliteratur“ fehlte der
-  Hauptartikel selbst.
+## Teil 1: Weltwissen
 
-### Schwache Quellenbindung
+### Der alte Dienst
 
-Selbst wenn Wikipedia antwortet, bekommt das Modell nur die Einleitungen der gefundenen Artikel, im Median rund
-12.200 Zeichen, und schreibt daraus einen Text von im Median 13.200 Zeichen. Über zehn Themen tragen 220 von 916
-Sätzen (24 %) eine Quellenangabe, und nur 192 (21 %) werden vom zitierten Text nachweislich gestützt. Geprüft wurde
-mit derselben Regel, die der neue Dienst für LLM-Text anwendet: Mindestens 20 % der Inhaltswörter eines Satzes
-müssen im zitierten Text vorkommen. Die übrigen Sätze sind nicht belegt; woher ihr Inhalt stammt, lässt sich am
-Text nicht prüfen. Die Verweise zeigen auf ganze Artikel-URLs, nicht auf eine Textstelle.
+Der Weg vom Thema zum Text (`POST /api/v1/pipeline-compendium-only`):
 
-### Dauer und Kosten
+1. **Begriffe:**
+   - Ein LLM-Aufruf nennt bis zu zehn Begriffe zum Thema, jeweils mit dem vermuteten exakten Wikipedia-Titel (`app/core/openai_wrapper.py`, Temperatur 0,7).
+2. **Wikipedia:**
+   - Je Begriff fragt der Dienst die MediaWiki-API mit genau diesem Titel ab und holt nur den Einleitungsabschnitt.
+   - Findet er nichts, probiert er bis zu acht Schreibvarianten und lässt ein LLM bis zu drei Synonyme vorschlagen.
+   - Die Begriffe laufen nacheinander.
+3. **Text:**
+   - Ein einziger LLM-Aufruf schreibt das ganze Kompendium: Ziel 6.000 Zeichen, höchstens 4.000 Ausgabetokens (`app/core/compendium.py`).
+   - Im Prompt stehen die Einleitungen, die 15 Aspekte als Liste von Überschriften und die Anweisung, mit „(1)“, „(2)“ auf die URL-Liste zu verweisen.
 
-Im besten Fall, also mit erreichbarem Wikipedia, brauchte der alte Dienst im Median 35 s (29 bis 62 s) und
-7.900 Tokens (7.200 bis 11.000) je Kompendium. Gemessen wurde mit `gpt-4.1-mini`, das seine Beispielkonfiguration
-nennt; das Standardmodell im Code, `deepseek-r1`, bietet die b-api nicht mehr an. Fast die ganze Zeit entfällt
-auf das Warten auf das Modell, im Median 32 s. Seine Endpunktbeschreibung nennt 45 bis 90 s.
+Die 15 Aspekte hält das Modell meist ein, im Median 14,5 als Überschrift. Der Code prüft sie aber nicht, und es gibt keinen eigenen Schritt je Aspekt.
 
-### Struktur und fehlende Bereiche
+### Der neue Dienst
 
-- keine festen Bausteine, keine maschinenlesbaren Abschnitte oder Facetten
-- keine Lehrplanbezüge und kein Sammlungsüberblick; beides hätte eigene Quellen, Abfragen und Darstellungen
-  gebraucht
-- kein Weg, einzelne Abschnitte neu zu erzeugen oder redaktionell geprüfte Teile zu behalten
+Teil 1 entsteht in fünf Schritten; die Methoden und ihre Messwerte stehen auf
+[Methoden, Messwerte und Profile](09-methoden-und-profile.md):
 
-### Fehlerverhalten und Betrieb
+1. **Hauptartikel:**
+   - Den Hauptartikel findet der Index des Archivs: exakter Titel, Weiterleitung, Begriffsklärung nach den Fachwörtern, Titelvorschläge, Volltextsuche.
+   - Ab `balanced` entscheidet ein LLM die unsicheren Fälle.
+2. **Korpus:** Der Hauptartikel, sein Klexikon-Zwilling und weitere Artikel bilden den Korpus. Welche weiteren Artikel es sind, hängt vom Profil ab:
+   - `llm-free`: verlinkte Unterartikel und verlinkte Volltexttreffer.
+   - ab `balanced`: die Artikel, die das LLM als Übersicht und Teile des Themas nennt.
+3. **Zuordnung:**
+   - Jeder Absatz kommt in höchstens einen der zehn Inhaltsbausteine.
+   - Die Regel-Policy mit Model2Vec ordnet zu, in `best-quality` das LLM.
+4. **Text:**
+   - Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.
+   - In `best-quality-generated` schreibt das LLM jeden Baustein und markiert Modellwissen sichtbar.
+5. **Neu erzeugen, auf Wunsch:**
+   - Mit `existing_markdown` bleiben redaktionell geprüfte Bausteine wörtlich stehen.
+   - Mit `regenerate_sections` entstehen nur die genannten Bausteine neu.
 
-- Fehler der Erzeugung kommen als Markdown in einer normalen Antwort zurück („# Fehler bei der Generierung …“).
-- Der synchrone LLM-Client blockiert die Event-Loop des Servers.
-- Die Tests ersetzen jeden LLM- und Wikipedia-Aufruf durch Attrappen; keiner prüft das echte Zusammenspiel.
+### Messvergleich vom 23.09.2026
 
-## Was der neue Dienst dagegen setzt
+Dieselben zehn Themen aus zehn Schulfächern. Der alte Dienst lief unverändert über die b-api, der neue auf dem Server
+ohne Sprachmodell; das war damals der Standard und ist heute das Profil `llm-free`.
 
-| Problem | Lösung im neuen Dienst |
-|---|---|
-| Wikipedia sperrt, drosselt oder ist nicht erreichbar | Wikipedia und Klexikon liegen als ZIM-Archive beim Dienst; zur Anfragezeit gibt es keinen Wikipedia-Zugriff. Neue Archive holt ein Sidecar mit Prüfsumme und wechselt atomar. |
-| LLM rät Titel; Begriffsklärungen und Fehlgriffe | Auflösung über den Index des Archivs: exakter Titel, Weiterleitung, erkannte Begriffsklärung, Titelvorschläge, Volltextsuche. Alternativen stehen in der Antwort. Wo die Regeln unsicher sind, entscheidet im Standardprofil `balanced` ein LLM (D53); `llm-free` bleibt bei den Regeln. |
-| nur Einleitungen als Quelle | ganze Artikel, dazu verlinkte Unterartikel und derselbe Artikel aus Klexikon, bis 12 Artikel und 400 Absätze |
-| Text großteils unbelegt, Verweise nicht prüfbar | Absätze werden wörtlich übernommen; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| 35 bis 374 s, rund 7.900 Tokens | Teil 1 und 2 rund 4,2 s und 480 Tokens im Standardprofil `balanced` seit D63 (M39), 1,6 s und 0 Tokens mit `llm-free` (M27) |
-| Aspekte nur als Hinweis | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten, Prüfung der Regeln (Lint) |
-| nur Weltwissen | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
-| Fehler in einer normalen Antwort | passende Statuscodes, `parts_status` je Teil, Request-ID in jeder Antwort, Prometheus-Metriken und Alarme |
-| Tests nur mit Attrappen | 821 Tests (94 % Abdeckung, Stand 24.09.2026), Linux-CI, Rauchtest des fertigen Images |
-
-## Messvergleich
-
-Dieselben zehn Themen aus zehn Schulfächern, gemessen am 23.09.2026. Der alte Dienst lief unverändert über die
-b-api, der neue auf dem Server im Standardmodus ohne Sprachmodell.
-
-| | Alt, wie ausgeliefert | Alt, bester Fall | Neu, Standard |
+| | Alt, wie ausgeliefert | Alt, bester Fall | Neu, ohne LLM |
 |---|---|---|---|
 | Themen | 1 (Optik) | 10 | 10 |
 | Dauer | 374 s | Median 35 s (29–62 s) | Teil 1: Median 2,0 s (1,1–2,5 s) |
@@ -106,66 +94,78 @@ b-api, der neue auf dem Server im Standardmodus ohne Sprachmodell.
 | Sätze durch ihre Quelle gestützt | 0 % | 21 % | 100 %: jeder Satz steht wörtlich im zitierten Absatz |
 | Umfang | 11.906 Zeichen | Median 13.200 Zeichen | Median 7.600 Zeichen Bausteintext, 25.200 mit Akteuren, Quellen und Glossar |
 
-„Bester Fall“ heißt: Nur über die Konfiguration steht eine Kontaktadresse im User-Agent, sodass Wikipedia antwortet.
-Der alte Text ist länger, weil das Modell frei schreibt; der neue enthält nur, was die Quellen hergeben, und lässt
-Bausteine ohne passenden Absatz weg. Zweimal dieselbe Anfrage an den neuen Dienst ergab in der Stichprobe
-(Photosynthese) denselben Text.
+- **Bester Fall:** Nur über die Konfiguration steht eine Kontaktadresse im User-Agent, sodass Wikipedia antwortet.
+- **Umfang:** Der alte Text ist länger, weil das Modell frei schreibt. Der neue enthält nur, was die Quellen hergeben, und lässt Bausteine ohne passenden Absatz weg.
+- **Wiederholbarkeit:** Zweimal dieselbe Anfrage an den neuen Dienst ergab in der Stichprobe denselben Text.
 
-### Mit den LLM-Schaltern für Artikelwahl und Zuordnung
+Die aktuellen Werte je Profil zeigen die Grafik oben und M45.
 
-Nach v2.0.0 kamen LLM-Schritte hinzu, gebündelt in vier Profilen (D53). Gemessen am 25.09.2026 auf dem
-Entwicklungsrechner, Teil 1 und 2 je Kompendium, `gpt-6-luna` (M27, M28), `balanced` nach D63 am 27.09.2026 (M39);
-Hauptartikel an den Goldsätzen (M35). Mit der Tabelle oben, gemessen über HTTP auf dem Server, ist die Dauer nur der
-Größenordnung nach vergleichbar.
+## Teil 2: Lehrplanbezüge
 
-| Profil | Dauer | Tokens, Median | Hauptartikel richtig, 94 Anfragen | Zuordnung, macro-F1 |
-|---|---|---|---|---|
-| `llm-free` | 1,6 s | 0 | 87 | 0,45 |
-| `balanced` (Standard) | rund 4,2 s | rund 480 | 91 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht ab |
-| `best-quality` | rund 14 s | 26.267 | 93 | 0,70 |
-| `best-quality-generated` (Text vom LLM geschrieben) | rund 24 s | 35.376 | 93 | 0,70 |
-| zum Vergleich: alter Dienst, bester Fall | Median 35 s | Median 7.913 | – | – |
+**Alter Dienst:** Teil 2 gab es nicht.
 
-Mit der LLM-Zuordnung braucht der neue Dienst mehr Tokens als der alte, bleibt aber schneller, und in den Profilen bis
-`best-quality` bleibt jeder Satz wörtlich belegt. `best-quality-generated` liest sich besser (M28), ergänzt aber
-Modellwissen, das zu zwei Dritteln aus Füllsätzen besteht.
+**Neuer Dienst:**
+- **Daten:**
+  - Maschinenlesbar liegen Lehrpläne nur in MEM vor, dem Triplestore der FWU.
+  - Ein Sidecar holt alle Lehrpläne in einen lokalen Cache: 2.514 Lehrpläne aus Bayern, Sachsen, Rheinland-Pfalz und Berlin.
+  - Er prüft wöchentlich und holt spätestens nach einem Monat alles neu.
+  - Zur Anfragezeit fragt der Dienst MEM nicht.
+- **Zeit:** Teil 2 kostet auf dem Server im Median 240 ms.
+- **Suche:**
+  - Gesucht wird mit dem Thema, seinen Synonymen und passenden Unterartikeln, gefiltert nach Fach und Wortgrenzen.
+  - Treffer, die nur in einer Überschrift stehen, stehen gebündelt in einer Zeile.
+  - Mit dieser Bündelung sind 70 bis 81 % der einzeln gezeigten Elemente passend (M32).
+  - In den `best-quality`-Profilen prüft das LLM jedes Element: 74 bis 79 % passend, keines der passenden verworfen.
+- **Darstellung:** Der Text gruppiert nach Stufe, Land und Lehrplan und nennt je Block die Herkunft, lesbar und als Facettenmarker.
+- **Einzeln:** Die Suche gibt es auch als eigenen Endpunkt, `GET /api/v2/lehrplan/search`.
 
-## Funktionsumfang des neuen Dienstes
+## Teil 3: Sammlungsüberblick
 
-| Endpunkt | Zweck |
-|---|---|
-| `POST /api/v2/compendium` | Kompendium aus den Teilen 1 bis 3; Schalter für Satzauswahl und Umformulierung durch ein LLM, nach v2.0.0 auch für Artikelwahl (`article_choice`) und Zuordnung (`matcher`); Teile gezielt neu erzeugen, geprüfte Bausteine behalten |
-| `POST /api/v2/knowledge` | Wissenstexte zum Thema ohne Template: die Artikel des Korpus mit ihren Abschnitten, gewählt wie beim Kompendium (`article_choice`) |
-| `POST /api/v2/entities` | Begriffe in einem Text, mit dem passenden Artikel und seiner Einleitung verknüpft; seit D62 je Profil: Regeln in `llm-free`, das LLM in den anderen |
-| `POST /api/v2/qa` | Frage-Antwort-Paare zu einem Text oder Thema in vier Stufen: Vorlagen, Satzanalyse, kleine Modelle im Image, LLM |
-| `GET /api/v2/collections/{id}/overview` | Teil 3 allein |
-| `GET /api/v2/lehrplan/status`, `/search` | Stand und Suche im Lehrplan-Cache |
-| `/api/v2/templates` | Templates lesen; eigene anlegen und löschen (Admin-Token) |
-| `/api/v2/matching/strategies`, `/compare` | Zuordnungsverfahren auflisten und auf einem Thema vergleichen, mit Gold-Metriken (Vergleich mit Admin-Token) |
-| `/api/v2/zim/…` | Archive: Stand; Kiwix-Katalog und Aktualisierung mit Admin-Token |
-| `/health`, `/ready`, `/metrics` | Betrieb und Überwachung |
+**Alter Dienst:** Teil 3 gab es nicht.
 
-**Weiterverwendet und verbessert:**
+**Neuer Dienst:**
+- **Quelle:** Teil 3 entsteht zur Anfragezeit aus edu-sharing.
+- **Inhalt:**
+  - Kopf der Sammlung mit Kennzahlen.
+  - Je Inhalt eine Zeile mit Titel, Art, Stufe, Lizenz und nodeId, die ein regulärer Ausdruck auslesen kann.
+  - Die Untersammlungen eine Ebene tief.
+- **Zeit:** Aus dem Zwischenspeicher dauert Teil 3 höchstens 0,16 s, beim ersten Abruf bis 3,5 s.
+- **Teil 1 aus Material:** Optional liefert eine zweite Sammlung Material als Quelle für Teil 1. Wörtlich übernommen wird es nur unter freien Lizenzen.
+- **Einzeln:** Teil 3 allein gibt es als `GET /api/v2/collections/{id}/overview`.
 
-- **Entitätenerkennung als Ersatz für den KIDRA-Wikipedia-Linker.** Der alte Linker ließ ein LLM Begriffe nennen
-  und schlug sie live bei Wikipedia nach. `POST /api/v2/entities` arbeitete zuerst ohne LLM und ohne Netz in zwei
-  Schichten: Named-Entity-Erkennung mit spaCy (`de_core_news_md`) und ein Wörterbuch aus den Artikeltiteln der
-  Archive. Begriffe, hinter denen nur eine Begriffsklärung steht, fallen heraus. Auf dem Server dauerte ein
-  Beispielsatz 0,07 bis 0,15 s. Wie der alte Linker nennt er zu jedem Artikel die Wikidata-Nummer, dazu GND, VIAF und
-  DBpedia, aber aus lokalen Daten statt live (D43, M18). Als Weg zur Artikelwahl ersetzt der alte Linker die Regeln
-  nicht (M17). Gemessen an den Texten von 40 Materialien kamen die zwei Schichten nur auf F1 0,38, weil das
-  Wörterbuch Allerweltswörter verknüpft (M36). Seit D62 nennt deshalb in `balanced` und den `best-quality`-Profilen
-  wieder ein LLM die Begriffe - aber mit dem Titel ihres Artikels, nachgeschlagen im lokalen Archiv statt live:
-  F1 0,78, rund 800 Tokens und 4 s je Text; `llm-free` behält die zwei Schichten.
-- **Sammel- und Mischthemen.** Der alte Dienst baute jedes Thema aus den Begriffen, die sein LLM nannte: „deutsche
-  Dichter“ bekam Goethe, Schiller und Heine, aber keinen Übersichtsartikel, und oft wurde ein Vertreter oder ein
-  Nachbarbegriff zum Hauptartikel. Der neue suchte genau einen Hauptartikel und landete bei einer Gruppe oft auf einer
-  Liste. Seit D63 fragt `balanced` das LLM nach dem Übersichtsartikel und den wichtigsten Teilen eines Themas: 87 %
-  der gedruckten Absätze stammen aus passenden Artikeln, mit den Begriffen des alten Linkers 63 %, mit den Regeln 43 %
-  (M37, M39). `llm-free` bleibt bei den Regeln; kleine lokale Modelle erreichen die Wirkung nicht (M40).
-- **Frage-Antwort-Paare.** Der alte Dienst ließ sie ein LLM schreiben. Der neue hat vier Stufen; die Modellstufe
-  (deutscher T5-Fragegenerator und ein extraktives Antwortmodell im Image) lieferte in der Messung aus
-  `docs/umbau.md` 94 % mangelfreie Paare bei rund 1 s je Paar, ganz ohne b-api.
-- **Aus der Testapp** kamen der ZIM-Zugriff, die Segmentierung, die Ranker BM25, Zeichen-TF-IDF und Model2Vec, die
-  extraktive Synthese und die Idee, jeden Satz gegen seine Quelle zu prüfen.
-- **Entfallen** sind die alten Hilfsendpunkte für Textteilung, Synonyme und Übersetzung.
+## Zusatzfunktionen des neuen Dienstes
+
+| Funktion | alter Dienst v0.2.0 | neuer Dienst 2.2.2 |
+|---|---|---|
+| Profile (`preset`) | – | vier Profile; ein Schalter wählt die Methoden aller Schritte (D53) |
+| Ein Material als Eingang (`node_id`, `GET /api/v2/nodes/{id}`) | – | Titel, Beschreibung, Schlagwörter, Fach und Stufe eines Materials; eine eigene Artikelwahl dafür, mit Thema kombinierbar (D45, D47) |
+| Wissenstexte ohne Template (`POST /api/v2/knowledge`) | – | die Artikel des Korpus mit ihren Abschnitten, gewählt wie für das Kompendium |
+| Entitäten in einem Text (`POST /api/v2/entities`) | `/api/v1/linker`: ein LLM nennt Begriffe, jeder live bei Wikipedia nachgeschlagen | je Profil die Regeln (spaCy und die Artikeltitel des Archivs) oder das LLM, das die Entitäten mit ihrem Artikel nennt: F1 0,38 und 0,78 (M36); ohne Live-Abfrage |
+| Kennungen der Entitäten | Wikidata-Nummer live | Wikidata, GND, VIAF und DBpedia aus lokalen Indexen, die zwei Sidecars bauen (D64, D65) |
+| QA-Paare (`POST /api/v2/qa`) | `/api/v1/qa`: ein LLM schreibt die Paare, auch nach Bildungsstufen | je Profil die Regeln aus dem Satzbau oder das LLM, zu einem Text, einem Thema oder einem Material, auf Wunsch über Bildungsstufen verteilt (`levels`); 61 und 83 % mangelfrei (M34, M30) |
+| Lehrplansuche (`GET /api/v2/lehrplan/search`) | – | Teil 2 ohne Kompendium, zu einem Stichwort oder Thema |
+| Sammlungsüberblick allein (`GET /api/v2/collections/{id}/overview`) | – | Teil 3 ohne Kompendium |
+| Templates (`/api/v2/templates`) | 15 Aspekte im Prompt | SC26 und `standard`; eigene Templates mit Rollen je Baustein anlegen und löschen (Admin-Token) |
+| Geprüfte Bausteine behalten, Teile neu erzeugen | – | `existing_markdown`, `regenerate_sections` |
+| Archive und Indexe aktuell halten | – | Sidecars für ZIM-Archive, Lehrplan-Cache, Wikidata- und GND-Index; Archive wechseln atomar nach Prüfsumme |
+| Betrieb | `/health` | `/health`, `/ready`, Prometheus-Metriken und Alarme, optionaler API-Schlüssel, Rate-Limit, `parts_status` je Teil, Request-ID in jeder Antwort |
+| Hilfsendpunkte für Textteilung, Synonyme, Übersetzung (`/api/v1/utils`) und die Kette `/api/v1/pipeline` | vorhanden | entfallen: Das Kompendium und `/qa` decken die Kette ab |
+
+Aus der Testapp `kompendium-test` kamen der ZIM-Zugriff, die Segmentierung, die Ranker BM25, Zeichen-TF-IDF und
+Model2Vec, die extraktive Synthese und die Idee, jeden Satz gegen seine Quelle zu prüfen.
+
+## Probleme des alten Dienstes und was der neue dagegen setzt
+
+| Problem des alten Dienstes | Beleg | Lösung im neuen Dienst |
+|---|---|---|
+| Wikipedia weist ihn ab | Sein Client meldet sich ohne Kontaktangabe. Im Lauf zu „Optik“ kamen auf 240 Anfragen 240 Ablehnungen (403); er wiederholte sie viermal und brauchte 374 s | Wikipedia und Klexikon liegen als ZIM-Archive beim Dienst; zur Anfragezeit gibt es keinen Wikipedia-Zugriff. Neue Archive holt ein Sidecar mit Prüfsumme |
+| Der Ausfall bleibt unsichtbar | Antwort mit HTTP 200 und 11.906 Zeichen Text ohne eine einzige Quelle, darin 15 Verweise „(1)“ ins Leere | passende Statuscodes, `parts_status` je Teil, Metriken und Alarme |
+| Titel werden geraten statt gesucht | In drei von zehn Themen waren zehn der „Quellen“ Begriffsklärungen; an 94 Goldanfragen stand der richtige Artikel 55 Mal an erster Stelle (M17) | Auflösung über den Index des Archivs, Begriffsklärungen erkannt: 87 von 94 mit den Regeln, 91 und 93 mit dem LLM |
+| Nur Einleitungen als Quelle | im Median rund 12.200 Zeichen Einleitung für 13.200 Zeichen Text | ganze Artikel, bis 12 Artikel und 400 Absätze |
+| Text großteils unbelegt | 24 % der Sätze mit Quellenangabe, 21 % von ihr gestützt; Verweise zeigen auf ganze Artikel | jeder Satz steht wörtlich im zitierten Absatz; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
+| Dauer und Kosten | im besten Fall 35 s und 7.900 Tokens, fast die ganze Zeit Warten auf das Modell | 2,3 s ohne Tokens (`llm-free`), rund 7 s und 580 Tokens im Standard (M45) |
+| Keine Struktur | 15 Aspekte als Hinweis im Prompt, vom Code nicht geprüft | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten und maschinenlesbaren Markern |
+| Nur Weltwissen | – | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
+| Fehler als normale Antwort | „# Fehler bei der Generierung …“ als Markdown in einer normalen Antwort | Fehlerantworten mit einem Fehlermodell in OpenAPI |
+| Betrieb | der synchrone LLM-Client blockiert die Event-Loop des Servers | LLM-Aufrufe in Threads, mit Frist, Budget und Schutzschalter |
+| Tests nur mit Attrappen | jeder LLM- und Wikipedia-Aufruf ersetzt | 1.528 Tests (Stand 28.09.2026), CI mit Rauchtest des fertigen Images, Messungen am Goldstandard |

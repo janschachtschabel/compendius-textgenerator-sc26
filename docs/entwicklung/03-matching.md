@@ -324,7 +324,7 @@ Bausteine gewinnen, kleine füllt das LLM oft falsch: In Querschnitt landeten 7 
 
 Das LLM ist das einzige gemessene Verfahren, das klar besser zuordnet: rund 0,7 statt 0,43 macro-F1 und 113 statt 201
 Fehlzuordnungen auf denselben Absätzen (D36, M12). Als Standard kommt es wegen der Kosten nicht in Frage. Seit D34
-steht es je Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und steht noch in keiner Version mit Tag.
+steht es je Anfrage als `matcher=llm` bereit; das kam nach v2.0.0 hinzu und ist seit Release 2.1.0 enthalten.
 
 - **Wie gemessen:** Das Modell ordnet jeden Absatz zu, mit demselben Prompt.
 - **Rückfall je Absatz:** Die Standard-Strategie läuft vorher. Absätze, für die das Modell nicht entscheidet (b-api,

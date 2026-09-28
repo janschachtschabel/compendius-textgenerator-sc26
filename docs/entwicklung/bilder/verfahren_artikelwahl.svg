@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1110" height="330" viewBox="0 0 1110 330" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Artikelwahl: den Hauptartikel finden"><title>Artikelwahl: den Hauptartikel finden</title><rect width="1110" height="330" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Artikelwahl: den Hauptartikel finden</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="115.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="133.5" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="207.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="225.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="324.3" y="46.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="342.3" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="324.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">richtig bei 94 Goldanfragen</text>
+<text x="644.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="780.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="910.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Profile</text>
+<rect x="20.0" y="90.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="109.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">alter Weg: LLM nennt Begriffe</text>
+<rect x="324.0" y="98.0" width="99.5" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="429.5" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">55 (erster Begriff)</text>
+<text x="644.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">6 bis 8 s</text>
+<text x="780.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1.300 bis 1.500</text>
+<text x="910.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">alter Dienst</text>
+<text x="24.0" y="139.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">v2.0.0: Titel, Weiterleitung, Wortzählung</text>
+<rect x="324.0" y="128.0" width="119.4" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="449.4" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">66</text>
+<text x="644.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 0,03 s</text>
+<text x="780.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">abgelöst</text>
+<rect x="20.0" y="150.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="169.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Regeln mit Kontextwörtern des Fachs</text>
+<rect x="324.0" y="158.0" width="157.3" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="487.3" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">87</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 0,03 s</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<rect x="910.0" y="157.0" width="40.0" height="16.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="930.0" y="169.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<text x="24.0" y="199.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Regeln und laya (lokales Modell)</text>
+<rect x="324.0" y="188.0" width="146.5" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="476.5" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">81</text>
+<text x="644.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+0,45 s; 1,7 GB</text>
+<text x="780.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">nicht eingebaut (D42)</text>
+<rect x="20.0" y="210.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="229.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM entscheidet unsichere (llm)</text>
+<rect x="324.0" y="218.0" width="164.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="494.6" y="229.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">91</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+1 s bei 18 von 94</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 800 je Frage</text>
+<rect x="954.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="974.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
+<text x="24.0" y="259.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM prüft auch sichere (llm-thorough)</text>
+<rect x="324.0" y="248.0" width="168.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="498.2" y="259.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">93</text>
+<text x="644.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+1 s bei 64 von 94</text>
+<text x="780.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 800 je Frage</text>
+<rect x="998.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="1018.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
+<rect x="1042.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="1062.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
+<text x="24.0" y="292.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M35, nach D63 unverändert, M39).</text>
+<text x="24.0" y="308.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens je Frage an das LLM (M35); die Regeln fragen es nur, wo sie unsicher sind.</text></svg>

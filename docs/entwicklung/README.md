@@ -1,19 +1,11 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 27.09.2026 · neuer Dienst v2.0.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
-alter Dienst v0.2.0 (`alterCode/compendious`) · nach v2.0.0 kamen hinzu: der LLM-Zuordner `matcher=llm` (D34), die
-schärfere Artikelwahl mit `article_choice=llm` (D35), die günstigere LLM-Zuordnung (D36), `hybrid_light` bleibt
-Standard der Zuordnung (D38), `matcher=llm` ohne Rückfall am Budget (D39), der Schalter `preset` (D41), ein Knoten
-eines Repositorys als Eingang (D45) mit eigener Artikelwahl für Materialien (D47), die Prüfung der Nebenartikel des
-Korpus (D48), 422 statt stiller Übergehung unverstandener Anfragen (D49), die vier Profile `llm-free`, `balanced`
-(Standard), `best-quality` und `best-quality-generated`, die auch das Verfahren der QA-Paare wählen (D53, D54),
-QA-Paare ohne LLM aus dem Parse jedes Satzes (D55) und sichtbar gekennzeichnetes Modellwissen, nur als Sachaussage
-(D56), der Standard fragt mit den Regeln, die zwei QA-Modelle sind entfernt (D57), und Teil 2 bündelt
-Überschriften-Treffer, nennt je Block die Herkunft und lässt in `best-quality` das LLM die Elemente prüfen (D58);
-eine Version mit Tag gibt es dafür noch nicht
+Stand 28.09.2026 · neuer Dienst Release 2.2.2 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
+Entscheidungen“ und im Entwicklungsweg; die Releases 2.1.0 bis 2.2.2 enthalten alles bis zum 28.09.2026
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
-Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 27.09.2026 stehen mit Aufbau
+Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 28.09.2026 stehen mit Aufbau
 und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen Datum und Quelle (`PLAN.md`,
 `eval/README.md`).
 
@@ -27,7 +19,7 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
   Testthemen, dazu 26 Listenpunkte, deren Liste als Ganzes belegt ist. Beim alten Dienst tragen 24 % der Sätze eine
   Quellenangabe, nachweislich gestützt sind 21 %; der Rest ist nicht belegt.
 - **Schneller, ohne Tokens.** Weltwissen und Lehrplanbezüge brauchen ohne LLM-Schalter auf dem Server im Median
-  2,8 s und kein Sprachmodell. Der alte Dienst brauchte im besten Fall 35 s und rund 7.900 Tokens. So wie er
+  2,3 s und kein Sprachmodell (M45). Der alte Dienst brauchte im besten Fall 35 s und rund 7.900 Tokens. So wie er
   ausgeliefert ist, weist Wikipedia seine Anfragen ab: Er lief dann 374 s und lieferte einen Text ohne eine einzige
   Quelle, aber mit Belegnummern.
 - **Quellen offline.** Wikipedia und Klexikon liegen als Kiwix-ZIM-Archive beim Dienst: direkt lesbar, mit
@@ -37,9 +29,10 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
   des Fachs, Wortstämmen und Genitivregeln trifft er über drei Goldsätze 86 statt 66 von 94 Anfragen, und wo er
   unsicher ist, holt ein LLM (`article_choice=llm`) weitere 5. Auf den zehn Goldthemen passen 6 % der Korpusartikel
   nicht zum Thema, beim alten Dienst 14 %. Die schwächste Quelle sind die Volltexttreffer je Baustein; die ohne
-  Link zum Hauptartikel fallen seit D48 immer weg, und der Standard druckt 12 statt 25 Absätze aus unpassenden
-  Artikeln. Mit `article_choice=llm` prüft das LLM dazu die verlinkten Unterartikel, dann sind es 5, für im Median
-  1,5 bis 2 s und rund 900 Tokens je Kompendium; das Standardprofil `balanced` tut das (D53), `llm-free` nicht.
+  Link zum Hauptartikel fallen seit D48 immer weg, und `llm-free` druckt 12 statt 25 Absätze aus unpassenden
+  Artikeln. Seit D63 nennt das LLM im Standardprofil `balanced` Übersicht und Teile des Themas: Bei Sammel- und
+  Mischthemen stammen dann 87 statt 43 % der gedruckten Absätze aus passenden Artikeln, für rund 5 s und 500 Tokens
+  je Kompendium (M39, M45); `llm-free` bleibt bei den Regeln.
 - **Ein Material als Eingang.** Mit `node_id` liest der Dienst Titel, Beschreibung, Schlagwörter, Fach und Stufe
   eines Materials. Weil Titel oft ein Format nennen, sucht er den Artikel in Titel und Beschreibung: ohne LLM mit
   Hauptartikel-F1 0,56 und 0,63 an zwei Stichproben echter Materialien (der Titel allein: 0,20 und 0,00), mit LLM
@@ -49,12 +42,16 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
   (`hybrid_light` mit Model2Vec). Alle Verfahren wurden im selben Ablauf gegen den Goldstandard des Dienstes
   gemessen. Unter den lokal laufenden erreicht der Standard den besten Wert (macro-F1 0,45, 67 % richtige
   Spitzenabsätze) in 0,3 s. Die schwereren Modelle der Testapp und ein Cross-Encoder als Umsortierung schneiden
-  schlechter ab. Ein LLM als Zuordner (`gpt-5.6-luna`) ist deutlich besser, rund 0,7 statt 0,43 auf den gelabelten
-  Absätzen (0,66 bis 0,73 in vier Läufen), und ist seit D34 als `matcher=llm` wählbar; es kostet seit D36 rund 180
-  Tokens je Absatz, und Teil 1 dauert im Median 12 statt 1,2 s. Standard bleibt deshalb `hybrid_light` (D38).
+  schlechter ab. Ein LLM als Zuordner ist deutlich besser, macro-F1 0,70 statt 0,45 auf den gelabelten Absätzen (M19),
+  und steht als `matcher=llm` in den `best-quality`-Profilen; es kostet rund 170 Tokens je Absatz und rund 13 s je
+  Kompendium (M27, M45). Standard bleibt deshalb `hybrid_light` (D38).
 - **Sprachmodell optional.** Schalter lassen ein LLM Sätze auswählen oder Bausteine umformulieren, auf Wunsch auch
   mit eigenem, sichtbar markiertem Wissen; jeder Satz wird gegen seine Quelle geprüft, und ohne LLM läuft der
   Regelmodus weiter.
+- **Vier Profile.** `preset` wählt die Methoden aller Schritte. Ein Kompendium mit Teil 1 und 2 braucht auf dem
+  Server mit `llm-free` 2,3 s und keine Tokens, mit dem Standard `balanced` rund 7 s und 580 Tokens, mit
+  `best-quality` rund 26 s und 49.000, mit `best-quality-generated` rund 36 s und 60.000 (M45). Welche Methode in
+  welchem Profil steckt, wie gut sie ist und warum: [Methoden, Messwerte und Profile](09-methoden-und-profile.md).
 - **Der Preis:** Der Text liest sich wie eine geordnete Sammlung von Auszügen. Für KI und Weiterverarbeitung ist das
   ideal, für Menschen weniger; kleine Bausteine bleiben oft leer.
 
@@ -68,7 +65,7 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 
 ## Alt und neu auf einen Blick
 
-| | Alter Dienst v0.2.0 | Neuer Dienst v2.0.0 |
+| | Alter Dienst v0.2.0 | Neuer Dienst 2.2.2 |
 |---|---|---|
 | Bereiche | Weltwissen | Weltwissen, Lehrplanbezüge, Sammlungsüberblick |
 | Quelle des Weltwissens | Wikipedia-Live-API, je Begriff nur die Einleitung | Wikipedia und Klexikon als ZIM-Archive, ganze Artikel |
@@ -76,18 +73,22 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Entstehung des Textes | ein LLM-Aufruf schreibt alles | Absätze werden zugeordnet und wörtlich übernommen, LLM optional |
 | Gliederung | 15 Aspekte als Hinweis im Prompt | Template SC26 mit 13 Bausteinen, maschinenlesbar markiert |
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
-| Dauer | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | 2,8 s für Teil 1 und 2 (Median, Server, ohne LLM); auf dem Entwicklungsrechner je Profil 1,6 s (`llm-free`), rund 4,2 s (`balanced`, Standard, seit D63; M39), 14 s (`best-quality`) und 24 s (`best-quality-generated`) (M27) |
-| Tokens je Kompendium | rund 7.900 | Median je Profil 0, rund 480 (`balanced` seit D63, M39; vorher 905), 26.267 und 35.376 (M27) |
+| Dauer je Kompendium | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | Teil 1 und 2 auf dem Server: 2,3 s (`llm-free`), rund 6,9 s (`balanced`, Standard), 26 s (`best-quality`) und 36 s (`best-quality-generated`) (M45) |
+| Tokens je Kompendium | rund 7.900 | Median je Profil 0, 576, 49.019 und 60.357 (M45) |
 | Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 87 mit den Regeln (`llm-free`), 91 mit `article_choice=llm` (`balanced`), 93 mit `llm-thorough` (`best-quality`-Profile, M35) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Sammel- und Mischthemen wie „deutsche Dichter“: gedruckte Absätze aus passenden Artikeln, 25 Themen, zwei Gutachter | mit den Entitäten des alten Linkers als Korpus 63 % (M37) | `llm-free` 43 %; `balanced` seit D63 87 %, das LLM nennt Übersicht und Teile; bei 20 gewöhnlichen Themen 71 und 93 % (M37, M39) |
 | Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,45 mit `hybrid_light` in 0,3 s je Thema (`llm-free`, und `balanced` vor D63, M27); 0,70 mit `matcher=llm` (`best-quality`, M19), rund 11 s |
 | QA-Paare, mangelfrei nach zwei Gutachtern | – | sechs Themen, je 20 Paare verlangt: `rule-based` (`llm-free`, seit D57 auch `balanced`) 58 von 95 in 0,3 s je Text (M34, vorher 48 von 96 in M30), `llm` (`best-quality`, `best-quality-generated`) 99 von 120 mit rund 2.400 Tokens (M30) |
-| Entitäten in einem Text (`/entities`), F1 an 40 Materialtexten nach zwei Gutachtern | der Linker ließ ein LLM Begriffe nennen und schlug sie live nach; an diesen Texten nicht gemessen | 0,38 mit spaCy und dem Wörterbuch der Artikeltitel (`llm-free`), 0,78 mit dem LLM, das die Entitäten mit Artikeltitel nennt (`balanced` und `best-quality`-Profile, rund 800 Tokens und 4 s; M36, D62) |
+| Entitäten in einem Text (`/entities`), F1 an 40 Materialtexten nach zwei Gutachtern | der Linker ließ ein LLM Begriffe nennen und schlug sie live nach; an diesen Texten nicht gemessen | 0,38 mit spaCy und dem Wörterbuch der Artikeltitel (`llm-free`), 0,78 mit dem LLM, das die Entitäten mit Artikeltitel nennt (`balanced` und `best-quality`-Profile; an 1.500 Zeichen rund 1.300 Tokens und 7 s; M36, M45, D62) |
 | Lehrplanelemente von Teil 2, passend nach zwei Gutachtern | – | 20 Themen, Mittel: Regeln mit B (`llm-free`, `balanced`) 70 bis 81 %, LLM-Prüfung (`best-quality`) 74 bis 79 %, vorher 62 bis 67 % (M32) |
 | Wenn eine Quelle ausfällt | liefert trotzdem eine normale Antwort, ohne Quellen | Archive liegen lokal; ein fehlender Teil steht in `parts_status` |
 
 ## Die wichtigsten Entscheidungen
+
+Der Preis gilt zur Zeit der Entscheidung; die heutigen Werte je Profil stehen auf
+[Methoden, Messwerte und Profile](09-methoden-und-profile.md) (M45). Je Teil ausführlich: [Alter und neuer Dienst im
+Vergleich](01-alt-und-neu.md).
 
 | Entscheidung | Warum | Preis |
 |---|---|---|
@@ -117,8 +118,8 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 
 ## Die Seiten
 
-1. [Alter und neuer Dienst im Vergleich](01-alt-und-neu.md): Problemlagen des alten Dienstes, was der neue dagegen
-   setzt, Funktionsumfang, Messvergleich
+1. [Alter und neuer Dienst im Vergleich](01-alt-und-neu.md): die drei Teile im Soll und was der alte und der neue
+   Dienst liefern; Güte, Zeit und Kosten in einer Grafik; Zusatzfunktionen; Probleme des alten Dienstes
 2. [Bereich 1: Weltwissen](02-weltwissen.md): Quellen (ZIM, API, XML-Dump), Artikelwahl und ihre Güte, extraktiv
    oder generativ, Wege zu besserer Lesbarkeit
 3. [Zuordnung zu den SC26-Bausteinen](03-matching.md): welche Daten eingehen, Verfahren aus Dienst und Testapp im
@@ -133,8 +134,11 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
    ihre Schalter und Standardwerte, Güte, Zeit und Tokens mit Grafiken, die vier Profile und ihre Werte je Endpunkt
 8. [Entitäten und Kennungen](08-entitaeten-und-kennungen.md): wie `/entities` erkennt, verknüpft und GND, VIAF,
    Wikidata und DBpedia liest, Methoden und Werte je Profil, die Daten im Container und was nicht gebaut ist
+9. [Methoden, Messwerte und Profile](09-methoden-und-profile.md): die vier Profile mit ihren Methoden als Grafik und
+   Tabelle; je Schritt (Artikelwahl, Korpus, Zuordnung, Text, Lehrplanschnipsel, QA-Paare, Entitäten) die gemessenen
+   Methoden mit Güte, Zeit und Tokens und warum welches Profil welche nutzt; Kosten je Profil und Endpunkt (M45)
 
-Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die acht übrigen darunter. Die
+Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die neun übrigen darunter. Die
 Links zwischen ihnen zeigen auf die Markdown-Dateien und müssen nach dem Import auf die Confluence-Seiten umgestellt
 werden. Die Grafiken liegen als SVG unter `docs/entwicklung/bilder/` und kommen beim Import als Anhänge mit. Die
 Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
@@ -153,6 +157,7 @@ Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.
 | 25.09. | Artikel eines Materials ohne LLM (M24) und die eigene Artikelwahl für Materialien (D47); Volltexttreffer ohne Link zum Hauptartikel fallen weg (D48), gemessen mit Knoten-Eingang und QA-Paaren (M25); 422 statt stiller Übergehung (D49); `/matching/compare` entfernt (D50); Fächer nach den Vokabularen von edu-sharing (D51); vier Profile, Standard `balanced`, und das Verfahren der QA-Paare je Profil (D53, D54), gemessen in M27 bis M29 |
 | 26.09. | QA-Paare ohne LLM aus dem Parse jedes Satzes, Teil 1 von `/qa` immer ohne LLM (D55, M30); Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56, M31); der Standard fragt mit den Regeln, die Stufen `models` und `parse-based` samt Modellen und torch sind entfernt (D57); Lehrplanbezüge je Profil mit gebündelten Überschriften-Treffern, LLM-Prüfung in `best-quality` und Herkunft je Block (D58, M32); 180.000 Tokens je Anfrage für die `best-quality`-Profile, die Lehrplansuche mit Profilen und `/docs` je Endpunkt mit Beispielen bis zu allen Parametern (D59, M33); QA-Paare aufgefüllt und nachgeschärft, keine Fragen als Modellwissen (D60, M34); im Review davon präparierte Texte in linearer Zeit gelesen und vier kleinere Fehler behoben; ein Thema, das auf einen Abschnitt weiterleitet, führt zum Artikel, und die Prüfung sicherer Auflösungen ist am Gold gemessen (M35) und in den `best-quality`-Profilen eingeschaltet (D61); die Verfahren von `/entities` (M36) und Sammel- und Mischthemen wie „deutsche Dichter“ (M37) sind gemessen; `/entities` nimmt Profile, das LLM nennt die Entitäten in `balanced` und den `best-quality`-Profilen (D62); Sammelthemen: `llm-free` bleibt, die neue Frage kommt ab `balanced` (Jan), ohne großes LLM geht sie nicht, ein kleines Modell reicht bei Sammelthemen (M38) |
 | 27.09. | Die Frage N ab `balanced`: das LLM nennt Übersicht und Teile jedes Themas (D63), vorher an den Gold-Anfragen geprüft und danach durch den Dienst nachgemessen (M39); kleine lokale Modelle für `llm-free` gemessen, LFM2-700M, LFM2.5-1.2B und Qwen3-0.6B: kein Gewinn, 4,4 bis 6,3 s je Frage (M40), `llm-free` bleibt, wie es ist (Jan); die Kennungen von `/entities` je Profil gemessen (M41), der Wikidata-Index kommt über einen Sidecar in jede neue Installation (D64), GND-Lücke, DBpedia-URIs und DBpedia Spotlight gemessen (M42); der GND-Index und die DBpedia-URI über den englischen Artikel gebaut (D65), der Leser der GND-Abzüge am echten Abzug nachgebessert und alles im Dienst nachgemessen (M43), Methoden und Werte je Profil auf einer eigenen Seite |
+| 28.09. | Das Audit vom 27.09. mit 73 Befunden abgearbeitet, Releases 2.1.0 bis 2.2.2; Model2Vec wieder im Image; die Faktoren der Zuordnungsregeln gemessen (M44); alle vier Profile an allen Endpunkten mit Release 2.2.2 nachgemessen (M45); Seite 01 nach den drei Teilen neu gegliedert, Methoden, Messwerte und Profile auf einer eigenen Seite (09) |
 
 ## Begriffe
 

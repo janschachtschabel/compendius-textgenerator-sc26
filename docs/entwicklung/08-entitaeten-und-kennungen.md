@@ -1,7 +1,8 @@
 # Entitäten und Kennungen: Methoden und Werte je Profil
 
-[Übersicht](README.md) · Stand 27.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M18, M20, M36 und M41 bis
-M43; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md)
+[Übersicht](README.md) · Stand 28.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M18, M20, M36, M41 bis
+M43 und M45; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); alle Schritte im
+Vergleich: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
 `POST /api/v2/entities` findet in einem Text die Entitäten - Personen, Orte, Organisationen, Werke, Ereignisse und
 Fachbegriffe -, verknüpft jede mit einem Artikel der geladenen Archive und nennt zu jedem Wikipedia-Artikel seine
@@ -28,7 +29,7 @@ Anfragezeit fragt der Dienst nichts online außer der b-api für das LLM.
 | Wikidata-Nummer: Präzision / Recall / F1 (M43) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` |
 | GND: Präzision / Recall / F1 (M43) | 0,31 / 0,57 / 0,40 | 0,70 / 0,88 / 0,78 | wie `balanced` | wie `balanced` |
 | DBpedia-URI über den englischen Artikel (M43) | 348 von 394 Artikeln (88 %) | 259 von 269 (96 %) | wie `balanced` | wie `balanced` |
-| Tokens und Zeit je Text (M36) | keine, 0,25 s | rund 800, rund 4 s | wie `balanced` | wie `balanced` |
+| Tokens und Zeit je Text | keine; rund 0,25 s an den Materialtexten (M36), 1,0 s an 1.500 Zeichen Kompendiumtext auf dem Server (M45) | rund 800 Tokens und 4 s an den Materialtexten (M36); 1.284 Tokens und 6,8 s an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` |
 
 `best-quality` und `best-quality-generated` erkennen wie `balanced`. Sie unterscheiden sich nur in Teil 1 des
 Kompendiums, nicht in `/entities`. Die Werte gelten für die Texte von 40 echten Materialien (M36), benotet von zwei

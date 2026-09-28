@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1094" height="708" viewBox="0 0 1094 708" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile je Verfahren und Endpunkt"><title>Die vier Profile je Verfahren und Endpunkt</title><rect width="1094" height="708" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die vier Profile je Verfahren und Endpunkt</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Regeln, ohne LLM</text>
+<rect x="171.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="189.5" y="56.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">ein LLM arbeitet</text>
+<rect x="216.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="321.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<rect x="430.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="535.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">balanced (Standard)</text>
+<rect x="644.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="749.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">best-quality</text>
+<rect x="858.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="963.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">best-quality-generated</text>
+<text x="202.0" y="120.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Hauptartikel</text>
+<rect x="216.0" y="98.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="113.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln</text>
+<text x="223.0" y="128.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">87 von 94 richtig</text>
+<rect x="430.0" y="98.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="113.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM entscheidet unsichere</text>
+<text x="437.0" y="128.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">91 von 94</text>
+<rect x="644.0" y="98.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="113.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM prüft auch sichere</text>
+<text x="651.0" y="128.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">93 von 94</text>
+<rect x="858.0" y="98.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="113.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="865.0" y="128.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">93 von 94</text>
+<text x="202.0" y="160.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Korpus (Nebenartikel)</text>
+<rect x="216.0" y="138.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="153.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">verlinkte und Volltexttreffer</text>
+<text x="223.0" y="168.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 43 / 71 %</text>
+<rect x="430.0" y="138.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="153.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM nennt Übersicht und Teile</text>
+<text x="437.0" y="168.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 87 / 93 %</text>
+<rect x="644.0" y="138.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="153.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="651.0" y="168.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">wie balanced</text>
+<rect x="858.0" y="138.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="153.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="865.0" y="168.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="202.0" y="200.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Zuordnung</text>
+<rect x="216.0" y="178.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="193.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">hybrid_light mit Model2Vec</text>
+<text x="223.0" y="208.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 0,45</text>
+<rect x="430.0" y="178.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="193.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<text x="437.0" y="208.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 0,50 auf 2/3 des Korpus</text>
+<rect x="644.0" y="178.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="193.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM ordnet jeden Absatz zu</text>
+<text x="651.0" y="208.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 0,70</text>
+<rect x="858.0" y="178.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="193.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="865.0" y="208.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">macro-F1 0,70</text>
+<text x="202.0" y="240.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Text von Teil 1</text>
+<rect x="216.0" y="218.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="233.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wörtlich, jeder Satz belegt</text>
+<text x="223.0" y="248.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Lesbarkeit 2,5</text>
+<rect x="430.0" y="218.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="233.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<rect x="644.0" y="218.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="651.0" y="233.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<text x="651.0" y="248.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Lesbarkeit 2,5</text>
+<rect x="858.0" y="218.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="233.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM schreibt, mit Modellwissen</text>
+<text x="865.0" y="248.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Lesbarkeit 4,0</text>
+<text x="202.0" y="280.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Kompendium, Teil 1 und 2</text>
+<rect x="216.0" y="258.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="273.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln, ohne LLM</text>
+<text x="223.0" y="288.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">2,3 s · 0 Tokens</text>
+<rect x="430.0" y="258.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="273.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM für Artikel und Korpus</text>
+<text x="437.0" y="288.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">7 s · 580 Tokens</text>
+<rect x="644.0" y="258.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="273.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">dazu Zuordnung, Teil-2-Prüfung</text>
+<text x="651.0" y="288.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">26 s · 49.000 Tokens</text>
+<rect x="858.0" y="258.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="273.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">dazu Text</text>
+<text x="865.0" y="288.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">36 s · 60.400 Tokens</text>
+<text x="202.0" y="320.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Teil 2: Lehrplanbezüge</text>
+<rect x="216.0" y="298.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="313.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln, Überschriften gebündelt</text>
+<text x="223.0" y="328.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 70 bis 81 %</text>
+<rect x="430.0" y="298.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="313.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<text x="437.0" y="328.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 70 bis 81 %</text>
+<rect x="644.0" y="298.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="313.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM prüft jedes Element</text>
+<text x="651.0" y="328.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 74 bis 79 %</text>
+<rect x="858.0" y="298.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="313.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="865.0" y="328.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">passend 74 bis 79 %</text>
+<text x="202.0" y="360.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Lehrplansuche</text>
+<rect x="216.0" y="338.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln, ohne LLM</text>
+<text x="223.0" y="368.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">0,05 s · 0 Tokens</text>
+<rect x="430.0" y="338.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<rect x="644.0" y="338.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM prüft jedes Element</text>
+<text x="651.0" y="368.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">8 s · 5.100 Tokens</text>
+<rect x="858.0" y="338.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="202.0" y="400.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Teil 3: Sammlung</text>
+<rect x="216.0" y="378.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="393.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">edu-sharing, ohne LLM</text>
+<text x="223.0" y="408.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">0,16 bis 3,5 s</text>
+<rect x="430.0" y="378.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="393.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<rect x="644.0" y="378.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="651.0" y="393.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<rect x="858.0" y="378.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="865.0" y="393.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<text x="202.0" y="440.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Wissenstexte (/knowledge)</text>
+<rect x="216.0" y="418.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="433.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln, ohne LLM</text>
+<text x="223.0" y="448.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">0,33 s · 0 Tokens</text>
+<rect x="430.0" y="418.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="433.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel und Korpus vom LLM</text>
+<text x="437.0" y="448.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">4,6 s · 490 Tokens</text>
+<rect x="644.0" y="418.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="433.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">dazu sichere Artikel geprüft</text>
+<text x="651.0" y="448.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">6 s · 900 Tokens</text>
+<rect x="858.0" y="418.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="433.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="202.0" y="480.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Entitäten (/entities)</text>
+<rect x="216.0" y="458.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="473.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">spaCy und Artikeltitel</text>
+<text x="223.0" y="488.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">F1 0,38 · 1,0 s · 0 Tokens</text>
+<rect x="430.0" y="458.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="473.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM nennt sie mit Artikel</text>
+<text x="437.0" y="488.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">F1 0,78 · 7 s · 1.280 Tokens</text>
+<rect x="644.0" y="458.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="473.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="651.0" y="488.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">F1 0,78</text>
+<rect x="858.0" y="458.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="473.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="865.0" y="488.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">F1 0,78</text>
+<text x="202.0" y="520.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Kennungen (Wikidata, GND)</text>
+<rect x="216.0" y="498.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="513.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">lokale Indexe</text>
+<text x="223.0" y="528.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Wikidata-Präzision 0,29</text>
+<rect x="430.0" y="498.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="513.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">lokale Indexe</text>
+<text x="437.0" y="528.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Wikidata-Präzision 0,70</text>
+<rect x="644.0" y="498.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="651.0" y="513.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<rect x="858.0" y="498.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="865.0" y="513.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="202.0" y="560.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">QA-Paare (/qa)</text>
+<rect x="216.0" y="538.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="553.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln aus dem Parse</text>
+<text x="223.0" y="568.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">61 % mangelfrei · 0,52 s</text>
+<rect x="430.0" y="538.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="437.0" y="553.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie llm-free</text>
+<text x="437.0" y="568.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">61 % mangelfrei</text>
+<rect x="644.0" y="538.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="553.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM schreibt die Paare</text>
+<text x="651.0" y="568.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">83 % · 6 s · 7.100 Tokens</text>
+<rect x="858.0" y="538.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="553.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie best-quality</text>
+<text x="865.0" y="568.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">83 % mangelfrei</text>
+<text x="202.0" y="600.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Material als Eingang</text>
+<rect x="216.0" y="578.0" width="210.0" height="36.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="223.0" y="593.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Regeln über Titel und Text</text>
+<text x="223.0" y="608.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Artikel-F1 0,56 / 0,63</text>
+<rect x="430.0" y="578.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="437.0" y="593.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">LLM wählt den Artikel</text>
+<text x="437.0" y="608.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Artikel-F1 0,98 / 0,88</text>
+<rect x="644.0" y="578.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="651.0" y="593.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<rect x="858.0" y="578.0" width="210.0" height="36.0" rx="3" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="865.0" y="593.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
+<text x="24.0" y="640.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens: M45, Median je Anfrage; ohne LLM auf dem Server gemessen, mit LLM im Entwicklungscontainer (das LLM überwiegt), das Kompendium als Server plus LLM-Schritte.</text>
+<text x="24.0" y="656.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel M35, Korpus M37/M39 (Sammel- / gewöhnliche Themen), Zuordnung M27/M39/M19, Lesbarkeit M28, Teil 2 M32,</text>
+<text x="24.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Entitäten M36, Kennungen M43, QA M34/M30, Material M25. Teil 3: M1 und Server. Einzelheiten: Seite 09.</text></svg>

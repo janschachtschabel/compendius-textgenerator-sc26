@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1110" height="300" viewBox="0 0 1110 300" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="QA-Paare erzeugen"><title>QA-Paare erzeugen</title><rect width="1110" height="300" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">QA-Paare erzeugen</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="115.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="133.5" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="207.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="225.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="324.3" y="46.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="342.3" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="324.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">mangelfrei bei beiden Gutachtern</text>
+<text x="644.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="780.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="910.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Profile</text>
+<rect x="20.0" y="90.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="109.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">vier Vorlagen (bis D55)</text>
+<text x="324.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">nicht bewertet, 82 % Jahresfragen</text>
+<text x="644.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,02 s</text>
+<text x="780.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">abgelöst (D55)</text>
+<text x="24.0" y="139.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Satzanalyse (parse-based)</text>
+<rect x="324.0" y="128.0" width="61.2" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="391.2" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">36 %</text>
+<text x="644.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,17 s</text>
+<text x="780.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">entfernt (D57)</text>
+<rect x="20.0" y="150.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="169.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">kleine Modelle im Image</text>
+<rect x="324.0" y="158.0" width="35.7" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="365.7" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">21 %</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">25 s je Text</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0; 1,3 GB</text>
+<text x="910.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">entfernt (D57)</text>
+<text x="24.0" y="199.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Regeln aus dem Parse, aufgefüllt</text>
+<rect x="324.0" y="188.0" width="103.7" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="433.7" y="199.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">61 % (58 von 95)</text>
+<text x="644.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,5 s</text>
+<text x="780.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<rect x="910.0" y="187.0" width="40.0" height="16.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="930.0" y="199.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<rect x="954.0" y="187.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="974.0" y="199.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
+<rect x="20.0" y="210.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="229.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM schreibt die Paare</text>
+<rect x="324.0" y="218.0" width="141.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="471.1" y="229.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">83 % (99 von 120)</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">6,3 s</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">2.400 bis 7.100</text>
+<rect x="998.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="1018.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
+<rect x="1042.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="1062.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
+<text x="24.0" y="262.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Je 20 verlangte Paare zu sechs Texten, zwei Gutachter (M30, die Regeln nach D60 in M34). Zeit und Tokens: M45 an Texten</text>
+<text x="24.0" y="278.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">von rund 23.000 Zeichen (Regeln auf dem Server); das LLM brauchte bei 5.000 bis 12.000 Zeichen rund 2.400 Tokens (M30).</text></svg>

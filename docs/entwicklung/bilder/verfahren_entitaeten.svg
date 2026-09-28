@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1110" height="300" viewBox="0 0 1110 300" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Entitäten ermitteln (/entities)"><title>Entitäten ermitteln (/entities)</title><rect width="1110" height="300" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Entitäten ermitteln (/entities)</text>
+<rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="115.5" y="46.0" width="12.0" height="12.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="133.5" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="207.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="225.0" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="324.3" y="46.0" width="12.0" height="12.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="342.3" y="56.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">best-quality-generated</text>
+<text x="324.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">F1 an 40 Materialtexten</text>
+<text x="644.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="780.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="910.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Profile</text>
+<rect x="20.0" y="90.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="109.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">spaCy allein</text>
+<rect x="324.0" y="98.0" width="51.0" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="381.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,30</text>
+<text x="644.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">lokal</text>
+<text x="780.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="109.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Teil von llm-free</text>
+<text x="24.0" y="139.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Wörterbuch der Artikeltitel allein</text>
+<rect x="324.0" y="128.0" width="59.5" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="389.5" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,35</text>
+<text x="644.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">lokal</text>
+<text x="780.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<text x="910.0" y="139.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Teil von llm-free</text>
+<rect x="20.0" y="150.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="169.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">spaCy und Wörterbuch</text>
+<rect x="324.0" y="158.0" width="64.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="394.6" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,38 (Präzision 0,29)</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1,0 s</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
+<rect x="910.0" y="157.0" width="40.0" height="16.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="930.0" y="169.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
+<text x="24.0" y="199.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM nennt sie mit Artikeltitel</text>
+<rect x="324.0" y="188.0" width="132.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="462.6" y="199.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,78 (Präzision 0,70)</text>
+<text x="644.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">6,8 s</text>
+<text x="780.0" y="199.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 1.300</text>
+<rect x="954.0" y="187.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
+<text x="974.0" y="199.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
+<rect x="998.0" y="187.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="1018.0" y="199.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
+<rect x="1042.0" y="187.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
+<text x="1062.0" y="199.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
+<rect x="20.0" y="210.0" width="1070.0" height="30.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="229.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">dazu LLM prüft jede Verknüpfung</text>
+<rect x="324.0" y="218.0" width="129.2" height="14.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1"/>
+<text x="459.2" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0,76 (Präzision 0,94)</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+2 s</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+820</text>
+<text x="910.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Schalter link_check</text>
+<text x="24.0" y="262.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">F1 der verknüpften Artikel, zwei Gutachter, 40 Materialtexte, durch den Endpunkt (M36). Die Kennungen folgen dem Artikel:</text>
+<text x="24.0" y="278.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Wikidata-Präzision 0,29 und 0,70, GND 0,31 und 0,70 (M43). Zeit und Tokens: M45 an 1.500 Zeichen (Regeln auf dem Server).</text></svg>
