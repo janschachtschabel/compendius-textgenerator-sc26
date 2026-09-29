@@ -7,7 +7,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
-from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, write_active
+from app.sources.zim import refresh as refresh_module
+from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, ActiveWatcher, write_active
 from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
@@ -109,3 +110,60 @@ def test_a_corrupt_state_file_leaves_the_registry_empty_instead_of_crashing(
         registry = ZimRegistry.from_active(tmp_path)
     assert not registry.ready and registry.archives == []
     assert any(record.levelname == "ERROR" for record in caplog.records)
+
+
+def test_a_state_file_that_cannot_be_looked_at_fails_no_request(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Every request looks at active.json first; an I/O error there (EIO, EACCES, ESTALE) answered every route with a
+    500, /health and /metrics included, and the alert took the service for down (audit 2026-09-29, S3)."""
+    local = _copy_samples(sample_zims, tmp_path)
+    write_active(tmp_path, _state(local, "wikipedia", "klexikon"))
+    with TestClient(create_app(make_settings([], tmp_path / "state", zim_dir=tmp_path))) as client:
+
+        def refused(self: ActiveWatcher) -> None:
+            raise PermissionError(13, "Permission denied", str(self.path))
+
+        monkeypatch.setattr(ActiveWatcher, "_signature", refused)
+
+        assert client.get("/health").status_code == 200
+        assert client.get("/ready").status_code == 200, "the archives open before stay in use"
+
+
+def test_a_state_file_that_could_not_be_read_is_read_again(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The change counted as seen before the file was read, so one failed read kept the old archives until active.json
+    changed again - a month with the ZIM sync (audit 2026-09-29, S3)."""
+    local = _copy_samples(sample_zims, tmp_path)
+    write_active(tmp_path, _state(local, "klexikon"))
+    registry = ZimRegistry.from_active(tmp_path)
+    refresher = RegistryRefresher(registry, tmp_path)
+    write_active(tmp_path, _state(local, "wikipedia", "klexikon"))
+    read = refresh_module.read_active
+
+    def failing(zim_dir: Path) -> ActiveState | None:
+        raise OSError(5, "Input/output error")
+
+    monkeypatch.setattr(refresh_module, "read_active", failing)
+    assert refresher.refresh() is False
+    monkeypatch.setattr(refresh_module, "read_active", read)
+
+    assert refresher.refresh() is True
+    assert [a.project for a in registry.archives] == ["wikipedia", "klexikon"]
+
+
+def test_without_a_state_file_a_reload_opens_the_newest_dump_of_an_archive(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """Without active.json the refresher opened every *.zim, both generations of an archive, as discover did before
+    (audit 2026-09-29, Q2)."""
+    local = _copy_samples(sample_zims, tmp_path)
+    newer = Path(shutil.copy(local["wikipedia"], tmp_path / "wikipedia_de_sample_2026-09.zim"))
+    write_active(tmp_path, _state(local, "klexikon"))
+    registry = ZimRegistry.from_active(tmp_path)
+    refresher = RegistryRefresher(registry, tmp_path)
+    (tmp_path / ACTIVE_FILE).unlink()
+
+    assert refresher.refresh() is True
+    assert sorted(a.file_name for a in registry.archives) == sorted([newer.name, local["klexikon"].name])

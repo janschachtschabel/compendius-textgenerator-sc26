@@ -56,6 +56,18 @@ def misses_topic(resolution: Resolution) -> bool:
     return title is None or resolution.method in GUESSED or title.startswith("Liste ")
 
 
+def newest_dumps(directory: Path) -> list[Path]:
+    """The ``*.zim`` files of ``directory``, of each archive only its newest dump: both generations of an archive
+    opened, and the older one led, as it sorts first (audit 2026-09-29, Q2)."""
+    paths = sorted(p for p in directory.glob("*.zim")) if directory.exists() else []
+    newest: dict[str, Path] = {}
+    for path in paths:
+        known = newest.get(archive_id(path.name))
+        if known is None or dump_date(path.name) > dump_date(known.name):
+            newest[archive_id(path.name)] = path
+    return sorted(newest.values())
+
+
 class ZimRegistry:
     """Holds the open archives (leading source first) and answers topic questions."""
 
@@ -82,15 +94,8 @@ class ZimRegistry:
 
     @classmethod
     def discover(cls, directory: Path) -> ZimRegistry:
-        """The archives of ``directory``, of each archive only its newest dump: both generations of an archive opened,
-        and the older one led, as it sorts first (audit 2026-09-29, Q2)."""
-        paths = sorted(p for p in Path(directory).glob("*.zim")) if Path(directory).exists() else []
-        newest: dict[str, Path] = {}
-        for path in paths:
-            known = newest.get(archive_id(path.name))
-            if known is None or dump_date(path.name) > dump_date(known.name):
-                newest[archive_id(path.name)] = path
-        return cls(sorted(newest.values()))
+        """The archives of ``directory``, of each archive only its newest dump (``newest_dumps``)."""
+        return cls(newest_dumps(Path(directory)))
 
     @classmethod
     def from_active(cls, zim_dir: Path) -> ZimRegistry:

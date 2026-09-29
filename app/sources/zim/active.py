@@ -78,12 +78,18 @@ def write_active(zim_dir: Path, state: ActiveState) -> Path:
     return atomic_write_text(Path(zim_dir) / ACTIVE_FILE, state.model_dump_json(indent=2))
 
 
+_UNSEEN = (-1, -1)  # the signature of a file not looked at, which no file has
+
+
 class ActiveWatcher:
     """Detects changes of ``active.json`` with one ``stat`` call per check (mtime and size)."""
 
     def __init__(self, zim_dir: Path) -> None:
         self.path = Path(zim_dir) / ACTIVE_FILE
-        self._seen = self._signature()
+        try:
+            self._seen: tuple[int, int] | None = self._signature()
+        except OSError:  # looked at again with the first request
+            self._seen = _UNSEEN
 
     def _signature(self) -> tuple[int, int] | None:
         try:
@@ -93,8 +99,13 @@ class ActiveWatcher:
         return (stat.st_mtime_ns, stat.st_size)
 
     def changed(self) -> bool:
+        """Whether the file changed since the last look; an error looking at it (``OSError``) goes to the caller."""
         current = self._signature()
         if current == self._seen:
             return False
         self._seen = current
         return True
+
+    def forget(self) -> None:
+        """Take the file as unseen: the next look counts it as changed, after a read of it failed."""
+        self._seen = _UNSEEN
