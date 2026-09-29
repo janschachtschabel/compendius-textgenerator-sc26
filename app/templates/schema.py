@@ -7,15 +7,14 @@ field here carries its own explanation; ``/docs`` shows nothing else about them.
 
 from __future__ import annotations
 
-import importlib
 import re
-from functools import lru_cache
 from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
 from app.domain.caller_values import NAMED, listed
 from app.domain.spelling import OneSpelling
+from app.templates.pattern_cost import HEADING_MAX_CHARS, STEPS_CAP, nested_quantifier, pattern_steps
 
 Generator = Literal["", "sources", "glossary", "actors"]
 Role = Literal["", "definition", "systematik", "context"]
@@ -39,11 +38,8 @@ RULES_MAX_CHARS = 8_000
 ITEMS_MAX = 30
 ITEM_MAX_CHARS = 300
 PATTERNS_MAX = 20
-# A heading pattern reads the first HEADING_MAX_CHARS characters of a heading (app/matching/lexicon.py), so its work has
-# a bound: the longest of the 390 headings of eval/gold has 91 characters, the longest of the 1,000 most frequent ones
-# in eval/headings_top.csv 52. The bounds on that work are counted as pattern_steps counts, for one pattern and for all
-# patterns of a template: every heading runs through all of them (audit 2026-09-29, A08).
-HEADING_MAX_CHARS = 120
+# The bounds on the work of heading patterns, counted as pattern_steps counts (app/templates/pattern_cost.py), for one
+# pattern and for all patterns of a template: every heading runs through all of them (audit 2026-09-29, A08).
 PATTERN_STEPS_MAX = 20_000
 TEMPLATE_PATTERN_STEPS_MAX = 50_000
 # A block's share of the length is its weight over the sum of all; the built-in templates weigh 0.5 to 1.4, so 100
@@ -60,10 +56,6 @@ FACET_NAME_MAX_CHARS = 60
 FACET_VALUE_MAX_CHARS = 100
 FacetName = Annotated[str, Field(max_length=FACET_NAME_MAX_CHARS, pattern=FACET_NAME_PATTERN)]
 FacetValue = Annotated[str, Field(max_length=FACET_VALUE_MAX_CHARS, pattern=ONE_LINE)]
-# The standard library's own parser of patterns, private but in every CPython since 3.11 (tests/test_template_bounds.py
-# holds what it is used for); mypy has no stubs for it
-_PARSER: Any = importlib.import_module("re._parser")
-_CODES: Any = importlib.import_module("re._constants")
 
 # The keys of the shared heading lexicon (config/heading_lexicon.yaml) that stand for a role. A template that names
 # no role takes its roles from them, as the built-in templates were read before roles (audit 2026-09-27, AR-04).
@@ -151,138 +143,6 @@ class SlotBudget(KnownFields):
         description="This block's share when a request's target_length is distributed over the blocks: its weight "
         f"over the sum of all weights, a finite number above 0 and at most {WEIGHT_MAX:g}",
     )
-
-
-def nested_quantifier(pattern: str) -> bool:
-    """Whether a repeat of ``pattern`` that has no upper bound holds another repeat of more than one pass, as (a+)+ or
-    (a*)* or a repeated group of words do. Such a pattern tries every way to split a heading that nearly matches: its
-    time grows exponentially with the length of the heading."""
-    repeats = {_CODES.MAX_REPEAT, _CODES.MIN_REPEAT, _CODES.POSSESSIVE_REPEAT}
-
-    def within(items: Any, unbounded_around: bool) -> bool:
-        for code, value in items:
-            if code in repeats:
-                _low, high, inner = value
-                if unbounded_around and high > 1:
-                    return True
-                parts = [(inner, unbounded_around or high == _CODES.MAXREPEAT)]
-            elif code == _CODES.SUBPATTERN:
-                parts = [(value[-1], unbounded_around)]
-            elif code == _CODES.BRANCH:
-                parts = [(branch, unbounded_around) for branch in value[1]]
-            elif code in (_CODES.ASSERT, _CODES.ASSERT_NOT):
-                parts = [(value[1], unbounded_around)]
-            elif code == _CODES.ATOMIC_GROUP:
-                parts = [(value, unbounded_around)]
-            elif code == _CODES.GROUPREF_EXISTS:
-                parts = [(branch, unbounded_around) for branch in value[1:] if branch is not None]
-            else:
-                continue
-            if any(within(part, around) for part, around in parts):
-                return True
-        return False
-
-    return within(_PARSER.parse(pattern), False)
-
-
-_STEPS_CAP = 10**12  # counting stops here, far beyond every bound
-_REPEATS = frozenset({_CODES.MAX_REPEAT, _CODES.MIN_REPEAT, _CODES.POSSESSIVE_REPEAT})
-_ONE_CHARACTER = frozenset({_CODES.LITERAL, _CODES.NOT_LITERAL, _CODES.ANY, _CODES.IN})
-
-
-class _UnboundedGroupError(Exception):
-    """An unbounded repeat of more than one character: the ways it can split a heading have no small bound."""
-
-
-def _one_character(items: Any) -> bool:
-    """Whether ``items`` match exactly one character, in one way: a letter, a class such as [ab], or a group of one."""
-    if len(items) != 1:
-        return False
-    code, value = items[0]
-    if code == _CODES.SUBPATTERN:
-        return _one_character(value[-1])
-    return code in _ONE_CHARACTER
-
-
-def _repeat_ways(body: int, low: int, high: int) -> int:
-    """The ways of ``low`` to ``high`` passes of what matches in ``body`` ways: body**low + ... + body**high."""
-    if body == 1:
-        return min(high - low + 1, _STEPS_CAP)
-    total, power = 0, 1
-    for passes in range(high + 1):
-        if passes >= low:
-            total += power
-        if total >= _STEPS_CAP or power >= _STEPS_CAP:
-            return _STEPS_CAP
-        power *= body
-    return total
-
-
-def _ways(items: Any) -> int:
-    """At most how many ways ``items`` can match at one position of a heading of HEADING_MAX_CHARS characters."""
-    total = 1
-    for code, value in items:
-        if code in _REPEATS:
-            low, high, inner = value
-            if _one_character(inner):
-                count = max(1, min(high, HEADING_MAX_CHARS) - low + 1)
-            elif high == _CODES.MAXREPEAT:
-                raise _UnboundedGroupError
-            else:
-                count = _repeat_ways(_ways(inner), low, high)
-        elif code in (_CODES.BRANCH, _CODES.GROUPREF_EXISTS):
-            branches = value[1] if code == _CODES.BRANCH else [branch for branch in value[1:] if branch is not None]
-            count = sum(_ways(branch) for branch in branches)
-        elif code == _CODES.SUBPATTERN:
-            count = _ways(value[-1])
-        elif code in (_CODES.ASSERT, _CODES.ASSERT_NOT):
-            count = _ways(value[1])
-        elif code == _CODES.ATOMIC_GROUP:
-            count = _ways(value)
-        elif code == _CODES.GROUPREF:
-            count = HEADING_MAX_CHARS + 1  # compares up to a whole heading, on every way that reaches it
-        else:
-            count = 1
-        total = min(total * count, _STEPS_CAP)
-    return total
-
-
-def _anchored(parsed: Any) -> bool:
-    """Whether ``parsed`` can match only at the start of a heading, so that search tries one position, not every one."""
-    if not len(parsed):
-        return False
-    code, value = parsed[0]
-    if code != _CODES.AT:
-        return False
-    if value == _CODES.AT_BEGINNING_STRING:
-        return True
-    return value == _CODES.AT_BEGINNING and not parsed.state.flags & _CODES.SRE_FLAG_MULTILINE
-
-
-@lru_cache(maxsize=4096)  # a template's check and every reload of the volume ask again for the same patterns
-def pattern_steps(pattern: str) -> int | None:
-    """At most how many steps ``search`` takes with ``pattern`` on a heading of HEADING_MAX_CHARS characters: the ways
-    the pattern can match at one position, times the positions it is tried at - one when it starts with ^. None when
-    an unbounded repeat (*, +, {n,}) repeats more than one character, as (a|aa)+ does: its ways have no small bound.
-
-    A sequence multiplies the ways of its parts and alternatives add theirs up. A repeat of one character has a way
-    for each length it can take, a bounded repeat of more the ways of each number of passes, a lookaround the ways of
-    its content and a back reference one way for each character it compares. The count is an upper bound; the
-    optimizations of the re module often make a pattern much faster than it says.
-
-    Measured 2026-09-29 (Python 3.13 on a laptop, best of five runs, three rounds): of 19 families of allowed patterns
-    built to backtrack - overlapping alternatives in a row, optional or repeated, adjacent and lazy repeats,
-    lookaheads, back references - the largest within PATTERN_STEPS_MAX took at most 0.77 ms on a heading of
-    HEADING_MAX_CHARS characters, at most about 100 ns per step; a template at TEMPLATE_PATTERN_STEPS_MAX took at most
-    2.6 ms per heading in HeadingLexicon.classify. Twelve .* in a row, which the check before this one let through,
-    took 21.5 s on 24 characters (audit 2026-09-29, A08).
-    """
-    parsed = _PARSER.parse(pattern)
-    try:
-        ways = _ways(parsed)
-    except _UnboundedGroupError:
-        return None
-    return min(ways * (1 if _anchored(parsed) else HEADING_MAX_CHARS + 1), _STEPS_CAP)
 
 
 def block_key(key: str) -> str:
@@ -387,7 +247,7 @@ class TemplateSlot(OneSpelling, KnownFields):
                     "etwa (ab){1,3}"
                 )
             if steps > PATTERN_STEPS_MAX:
-                amount = f"mehr als {_STEPS_CAP}" if steps >= _STEPS_CAP else f"bis zu {steps}"
+                amount = f"mehr als {STEPS_CAP}" if steps >= STEPS_CAP else f"bis zu {steps}"
                 raise ValueError(
                     f"zu aufwendig: {pattern!r} braucht auf einer Überschrift von {HEADING_MAX_CHARS} Zeichen {amount} "
                     f"Schritte, erlaubt sind {PATTERN_STEPS_MAX}. Weniger unbegrenzte Wiederholungen wie .* und "

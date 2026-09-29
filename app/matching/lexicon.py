@@ -8,7 +8,8 @@ from typing import Any
 
 import yaml
 
-from app.templates.schema import HEADING_MAX_CHARS, Template
+from app.templates.pattern_cost import HEADING_MAX_CHARS
+from app.templates.schema import Template
 
 
 def _compile(patterns: list[str]) -> list[re.Pattern[str]]:

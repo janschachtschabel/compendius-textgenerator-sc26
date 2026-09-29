@@ -16,6 +16,7 @@ import yaml
 from pydantic import ValidationError
 
 from app.templates.manager import TemplateManager
+from app.templates.pattern_cost import pattern_steps
 from app.templates.schema import (
     MAX_SLOTS,
     PATTERN_STEPS_MAX,
@@ -23,7 +24,6 @@ from app.templates.schema import (
     WEIGHT_MAX,
     Template,
     TemplateSlot,
-    pattern_steps,
 )
 from tests.conftest import ROOT
 
