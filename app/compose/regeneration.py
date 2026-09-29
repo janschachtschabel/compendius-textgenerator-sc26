@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 from app.domain.caller_values import listed
 from app.domain.models import Citation, SectionStatus
 from app.synthesis.citations import marker_numbers
+from app.synthesis.facets import parse_marker
 from app.synthesis.safe_markdown import unescape
 
 if TYPE_CHECKING:
@@ -84,7 +85,7 @@ def parse_document(markdown: str) -> dict[str, PreservedSection]:
             slot_id=match.group("slot"),
             status=status,
             text=text,
-            facets=_facets(match.group("facets") or ""),
+            facets=parse_marker(match.group("facets") or ""),
             citations=[rows[number] for number in marker_numbers(text) if number in rows],
         )
     return sections
@@ -128,13 +129,3 @@ def _status(value: str) -> SectionStatus:
         return SectionStatus(value)
     except ValueError:  # a status this version does not know: the block is kept, the status is what it was
         return SectionStatus.REVIEWED
-
-
-def _facets(marker: str) -> dict[str, list[str]]:
-    """The facets of a marker (``Name=Wert|Wert; Name=Wert``) as the writer holds them."""
-    facets: dict[str, list[str]] = {}
-    for part in marker.split("; "):
-        name, _, values = part.partition("=")
-        if name.strip() and values:
-            facets[name.strip()] = [value for value in values.split("|") if value]
-    return facets

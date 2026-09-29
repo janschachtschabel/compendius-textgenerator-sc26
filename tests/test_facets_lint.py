@@ -1,8 +1,16 @@
 from app.domain.models import Chunk, Section, SectionStatus, Source, SourceRole
-from app.synthesis.facets import FacetCatalog, annotate, bildungsstufe_facet, format_marker
+from app.synthesis.facets import (
+    FacetCatalog,
+    annotate,
+    bildungsstufe_facet,
+    format_marker,
+    format_visible,
+    parse_marker,
+)
 from app.synthesis.lint import lint_sections
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT
+from tests.markdown_safety import unsafe
 
 
 def _catalog() -> FacetCatalog:
@@ -113,6 +121,31 @@ def test_a_marker_value_cannot_add_a_pair_split_itself_or_end_the_comment() -> N
     """``;``, ``=`` and ``|`` are the marker's own separators and ``<!--``/``-->`` the ends of the HTML comment it
     stands in; inside a value they are percent-encoded."""
     assert format_marker({"Fach": ["a; b=c|d <!-- e -->"]}) == "Fach=a%3B b%3Dc%7Cd %3C!-- e --%3E"
+
+
+def test_a_marker_reads_back_every_value_it_wrote() -> None:
+    """A regeneration reads the facets of a kept block from its marker. "%" went in as typed and nothing was decoded,
+    so "A;B" came back as "A%3BB", and so did a value that read "A%3BB" in the first place (audit 2026-09-29, A12)."""
+    facets = {
+        "Zitat": ['Zitat "Optik"', "50 % der Fälle", "A;B", "A%3BB", "a=b|c", "<!-- -->", "Überblick – Sek I"],
+        "Bildungsstufe": ["Sek I"],
+    }
+
+    marker = format_marker(facets)
+
+    assert parse_marker(marker) == facets
+    assert format_marker({"F": ["A;B"]}) != format_marker({"F": ["A%3BB"]})
+    assert '"' not in marker, "the marker stands in a quoted attribute of the block marker"
+
+
+def test_a_facet_name_cannot_end_the_comment_it_stands_in() -> None:
+    """A template names its own facets (FacetSpec); a name went into the marker and the visible notation as typed,
+    so ``x --><img …>`` closed the comment and put a tag into the document (audit 2026-09-29, T10)."""
+    name = "x --><img src=x onerror=alert(1)><!-- y"
+
+    assert "<" not in format_marker({name: ["v"]}) and "-->" not in format_marker({name: ["v"]})
+    assert parse_marker(format_marker({name: ["v"]})) == {name: ["v"]}
+    assert unsafe(format_visible({name: ["v"]})) == [], "shown as typed, not as a tag"
 
 
 def test_a_facet_the_block_does_not_declare_is_reported() -> None:
