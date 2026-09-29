@@ -129,7 +129,7 @@ Der Fortschritt lässt sich auch am Dienst ablesen: `/health` antwortet sofort, 
 `missing_required` die Archive, auf die er noch wartet, und meldet erst danach `"ready": true`.
 
 ```bash
-curl -fsS http://127.0.0.1:8000/ready
+curl -sS http://127.0.0.1:8000/ready
 ```
 
 Parallel zieht der Lehrplan-Updater die Lehrpläne aus dem MEM-Endpunkt in den Zustand (`lehrplan.db`,

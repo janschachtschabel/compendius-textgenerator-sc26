@@ -1,6 +1,8 @@
 """CLI: ``compendium generate`` with the LLM switches on the offline sample archives (LLM off: everything falls back)."""
 
+import shlex
 from collections.abc import Iterator
+from itertools import pairwise
 from pathlib import Path
 
 import httpx
@@ -109,3 +111,30 @@ def test_generate_names_an_unknown_template_instead_of_a_traceback(
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
     assert main(["generate", "--topic", "Optik", "--template", "nope", *zim_args]) == 1
     assert "nope" in capsys.readouterr().err
+
+
+def test_the_readme_example_of_the_rule_mode_runs_without_an_llm(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The example is for a machine without an LLM, which the shipped default profile balanced needs: without a
+    profile of its own it ended with exit code 1 instead of a compendium (audit 2026-09-29, O8)."""
+    [line] = [
+        line
+        for line in (ROOT / "README.md").read_text(encoding="utf-8").splitlines()
+        if line.startswith("uv run compendium generate --topic")
+    ]
+    archives = iter(sample_zims.values())
+    out_file = tmp_path / "optik.md"
+    # The command after "uv run compendium", with the sample archives for its archives and a file of the test
+    args = [
+        str(next(archives)) if before == "--zim" else str(out_file) if before == "--out" else word
+        for before, word in pairwise(["", *shlex.split(line)[3:]])
+    ]
+    monkeypatch.setenv("STATE_DIR", str(tmp_path / "state"))
+    monkeypatch.setenv("CONFIG_DIR", str(ROOT / "config"))
+    get_settings.cache_clear()
+    try:
+        assert main(args) == 0
+    finally:
+        get_settings.cache_clear()
+    assert out_file.read_text(encoding="utf-8").strip()

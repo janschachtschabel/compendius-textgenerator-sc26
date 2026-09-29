@@ -80,7 +80,7 @@ git clone https://github.com/janschachtschabel/compendius-textgenerator-sc26.git
 cp .env.example .env          # läuft unverändert und ohne LLM; ZIM_PROFILE wählt die Archivgröße
 docker compose build
 docker compose up -d          # der Updater lädt die Archive des Profils (standard: rund 14,1 GB)
-curl -fsS http://127.0.0.1:8000/ready
+curl -sS http://127.0.0.1:8000/ready
 ```
 
 `/ready` meldet bis dahin 503 und nennt die Archive, auf die der Dienst noch wartet.
@@ -99,10 +99,11 @@ dazu die Tests mit Zweigabdeckung (`uv run pytest --cov`, Schwelle 90 %) und `pi
 Laufzeitpakete. Tests sehen keine Variablen aus der Shell (`tests/conftest.py`), auch nicht `B_API_KEY`.
 
 Ein Kompendium von der Kommandozeile (Teil 1 und, wenn der Lehrplan-Cache vorliegt, Teil 2;
-Regelmodus):
+Regelmodus mit dem Profil `llm-free`, denn ohne `--preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced`, und
+das braucht ein LLM):
 
 ```bash
-uv run compendium generate --topic Optik --zim /pfad/wikipedia_de_all_nopic_2026-01.zim --zim /pfad/klexikon_de_all_maxi_2026-08.zim --out optik.md
+uv run compendium generate --topic Optik --preset llm-free --zim /pfad/wikipedia_de_all_nopic_2026-01.zim --zim /pfad/klexikon_de_all_maxi_2026-08.zim --out optik.md
 ```
 
 API lokal:
@@ -397,8 +398,9 @@ wörtlichen Sätze von Teil 1, Quellenblock, Belegtabelle, Glossar, Akteure und 
 (Audit 2026-09-28, SE-16).
 
 Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
-Staging (`repository.staging.openeduhub.net`), die Produktion (`redaktion.openeduhub.net`) steht
-auskommentiert daneben. Die b-api folgt dem Repository: `B_API_BASE_URL` leer lassen heißt
+Staging (`repository.staging.openeduhub.net`); für die Produktion bekommt die Variable den Wert
+`https://redaktion.openeduhub.net/edu-sharing/rest`. Die b-api folgt dem Repository:
+`B_API_BASE_URL` leer lassen heißt
 `b-api.staging` zum Staging-Repository und `b-api.prod` zur Produktion. Ein eigener Wert wird befolgt,
 und wenn er nicht zum Repository passt, sagt es das Log beim Start. `GET /health` nennt beide Hosts
 (`components.edu_sharing.repository`, `components.llm.host`), damit sichtbar ist, womit der Dienst
@@ -409,7 +411,7 @@ stehen als `timed_out` im Audit.
 
 ```bash
 uv run compendium collection overview 9e7ae956-e9df-430f-bace-f3db4b910013 --out optik_teil3.md
-uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 --knowledge-collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 --zim … --out optik.md
+uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 --knowledge-collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 --preset llm-free --zim … --out optik.md
 ```
 
 ## LLM-Schicht (optional)
@@ -671,7 +673,7 @@ Sammlungen) und `EDU_SHARING_REPOSITORIES` (nur das konfigurierte Repository).
 
 ### Compose-Variablen
 
-Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen deshalb **nicht** in
+Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen deshalb **nicht** in
 `.env.example`, sondern werden beim Aufruf gesetzt oder in die `.env` geschrieben.
 
 | Variable | Vorgabe | Bedeutung |
