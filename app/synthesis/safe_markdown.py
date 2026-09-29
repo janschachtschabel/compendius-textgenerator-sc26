@@ -30,8 +30,9 @@ WEB_SCHEMES = ("https://", "http://")
 # underscores, asterisks, letters, blanks and punctuation rendered no emphasis with markdown-it and read back as typed.
 _ACTIVE = re.compile(r"[\\`\[\]*]|<(?=[A-Za-z/?])|(?<=<)!|&(?=#?[A-Za-z0-9]+;)|(?<!\w)_+(?=[^\s_])")
 # The first sign of a line that makes it a heading, quote, list, rule, fence or table row, and the dot or bracket
-# after the number of an ordered list
-_LINE_START = re.compile(r"^([ \t]*)(?:([#>+\-*=_~|])|(\d{1,9})([.)]))", re.M)
+# after the number of an ordered list. A delimiter row of a table may start with the colon of its alignment
+# (":--- | :---"), which made two lines of a description a table (audit 2026-09-29, T11).
+_LINE_START = re.compile(r"^([ \t]*)(?:([#>+\-*=_~|:])|(\d{1,9})([.)]))", re.M)
 # A backslash before ASCII punctuation, which CommonMark reads as that sign
 _ESCAPED = re.compile(r"\\([!-/:-@\[-`{-~])")
 # What defuse leaves: an escape, the service's own comments (section marker, facet marker, end of a facet block) and

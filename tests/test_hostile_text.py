@@ -62,6 +62,8 @@ FOREIGN = [
     "```",
     "---",
     "| a | b |",
+    # a delimiter row may start with its alignment colon (audit 2026-09-29, T11)
+    "Spalte A | Spalte B" + LF + ":--- | :---" + LF + "x | y",
     "Zeile eins" + CR + "# Überschrift nach CR",
     # emphasis: WLO descriptions gender with an asterisk, and CommonMark reads one inside a word (audit 2026-09-29, T2)
     "Für Lehrer*innen sowie Schüler*innen",
