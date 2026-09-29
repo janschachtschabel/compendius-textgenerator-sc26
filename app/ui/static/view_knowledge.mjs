@@ -2,7 +2,7 @@
 // saying how it was found, and below them what the article choice asked and decided.
 
 import { h, link } from './dom.mjs';
-import { facts, infoPart, resolutionFacts, technical } from './panels.mjs';
+import { facts, infoPart, nodeArticleFacts, resolutionFacts, technical } from './panels.mjs';
 import { formatNumber } from './stats.mjs';
 import { label, ORIGINS, PROJECTS, STEPS } from './texts.mjs';
 
@@ -19,7 +19,7 @@ export function renderKnowledge(answer, run) {
     'section',
     { class: 'info' },
     h('h2', {}, 'Wie kamen diese Artikel zustande?'),
-    infoPart('Thema und Artikel', facts(resolutionFacts(answer))),
+    infoPart('Thema und Artikel', facts([...resolutionFacts(answer), ...nodeArticleFacts(answer.node_article, answer, run.request.body)])),
     choice(answer.article_choice),
     technical(run),
   );

@@ -30,3 +30,10 @@ export function shown(name) {
   const { mode, run } = saved(name);
   return renderResults(mode, [run], { options: OPTIONS, announce() {}, suggest() {} });
 }
+
+/** The value of a row of the facts under a part of the info section whose title starts so, or null without it. */
+export function fact(element, part, name) {
+  const details = element.descendants().find((node) => node.tagName === 'DETAILS' && node.children[0]?.textContent.startsWith(part));
+  const row = details?.descendants().find((node) => node.tagName === 'DIV' && node.children[0]?.tagName === 'DT' && node.children[0].textContent === name);
+  return row ? row.children[1].textContent : null;
+}

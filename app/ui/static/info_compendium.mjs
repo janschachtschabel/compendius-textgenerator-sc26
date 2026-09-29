@@ -3,7 +3,7 @@
 // findings of the lint and the technical details - each part folded, so the text stays the first thing to read.
 
 import { h, link } from './dom.mjs';
-import { facts, infoPart, resolutionFacts, technical } from './panels.mjs';
+import { facts, infoPart, nodeArticleFacts, resolutionFacts, technical } from './panels.mjs';
 import { shares } from './provenance.mjs';
 import { stepsAccount } from './steps.mjs';
 import { formatDuration, formatNumber } from './stats.mjs';
@@ -17,7 +17,7 @@ export function compendiumInfo(answer, run, options) {
     'section',
     { class: 'info' },
     h('h2', {}, 'Wie entstand dieser Text?'),
-    topic(answer),
+    topic(answer, run),
     origins(answer),
     methods(answer, run, options),
     time(audit.timings_ms ?? {}, run.elapsedMs),
@@ -28,7 +28,7 @@ export function compendiumInfo(answer, run, options) {
   );
 }
 
-function topic(answer) {
+function topic(answer, run) {
   const node = answer.node;
   return infoPart(
     'Thema und Artikel',
@@ -36,7 +36,7 @@ function topic(answer) {
       ...resolutionFacts(answer),
       ['Fächer des Knotens', node?.subjects],
       ['Stufen des Knotens', node?.educational_contexts],
-      ['Artikel des Materials', answer.audit?.node_article?.title ?? null],
+      ...nodeArticleFacts(answer.audit?.node_article, answer, run.request.body),
       ['Wissens-Sammlung', knowledge(answer.audit?.knowledge)],
     ]),
   );

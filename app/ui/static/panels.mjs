@@ -75,6 +75,21 @@ export function resolutionFacts(answer) {
   ];
 }
 
+/** How the article of a material was found (D47), as facts(), from the block of app/knowledge/node_article.py that
+ * the audit of a compendium and the knowledge texts carry: the material's own article beside a topic sent along,
+ * else the one the model named, else the rules' - which, without a topic, is the article the text is built on -, who
+ * found it, whether it joined the sources and why the model did not decide. None without a material. */
+export function nodeArticleFacts(block, answer, sent) {
+  if (!block) return [];
+  const article = block.material ?? (block.way === 'llm' ? block.named || null : sent?.topic ? null : answer.resolution?.title);
+  return [
+    ['Artikel des Materials', article ?? 'keiner gefunden'],
+    ['Gefunden durch', block.way === 'llm' ? 'KI' : 'Regeln aus Titel und Beschreibung'],
+    ['Als weitere Quelle', block.material ? (block.added ? 'ja, mit dem Hauptartikel verlinkt' : 'nein, nicht mit dem Hauptartikel verlinkt') : null],
+    ['Warum die Regeln entschieden', block.fallback],
+  ];
+}
+
 /** What someone reporting a finding needs: the request as sent, the id the server logged it under, and more. */
 export function technical(run, extra = []) {
   const sent = run.request.body ?? run.request.query;
