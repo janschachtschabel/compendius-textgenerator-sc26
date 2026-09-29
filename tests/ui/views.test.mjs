@@ -10,6 +10,7 @@ import { errorBox, resolutionFacts } from '../../app/ui/static/panels.mjs';
 import { renderResults, stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
 import { renderEntities } from '../../app/ui/static/view_entities.mjs';
 import { renderKnowledge } from '../../app/ui/static/view_knowledge.mjs';
+import { renderQa } from '../../app/ui/static/view_qa.mjs';
 
 const PRESETS = ['llm-free', 'balanced', 'best-quality', 'best-quality-generated'];
 const OPTIONS = {
@@ -64,6 +65,16 @@ test('the colours of the entities in the text have their kinds in words beside t
 
   const [legend] = all(body, (node) => node.classList.contains('legend'));
   assert.deepEqual(legend.children.map((item) => [item.getAttribute('class'), item.textContent]), [['kind-PER', 'Person'], ['kind-LOC', 'Ort']]);
+});
+
+test('a method of the pairs the page does not know leaves the lead empty, also one named like a property of every object', () => {
+  installDocument();
+
+  for (const method of ['constructor', 'neu']) {
+    const { body } = renderQa({ method, pairs: [] }, run('api/v2/qa', { text: 'x' }));
+    const [lead] = all(body, (node) => node.classList.contains('lead-note'));
+    assert.equal(lead.textContent, '', method);
+  }
 });
 
 test('an error box is no alert: the status line says a run failed, and the box stays silent when its mode comes back', () => {

@@ -30,6 +30,18 @@ const compendium = {
 test('words count letters and digits, not markers and signs', () => {
   assert.equal(countWords('Die Optik [1] – ist <!-- f: x --> die Lehre vom Licht. [Modellwissen] 1905'), 8);
   assert.equal(countWords(''), 0);
+  assert.equal(countWords('a <!-- b'), 2, 'a comment that never closes stays text');
+});
+
+test('words count in time linear in the text, however many comments stay open', () => {
+  const text = `Licht ${'<!--'.repeat(50_000)} bricht`;
+
+  const start = performance.now();
+  const words = countWords(text);
+  const ms = performance.now() - start;
+
+  assert.equal(words, 2);
+  assert.ok(ms < 500, `${Math.round(ms)} ms for ${text.length} characters`);
 });
 
 test('a duration reads in seconds with one decimal, under a second in milliseconds', () => {

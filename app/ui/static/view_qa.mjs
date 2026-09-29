@@ -17,7 +17,7 @@ export function renderQa(answer, run) {
     'div',
     { class: 'document' },
     h('h2', {}, answer.topic ? `Fragen und Antworten zu „${answer.topic}“` : 'Fragen und Antworten zum Text'),
-    h('p', { class: 'lead-note' }, HOW[answer.method] ?? ''),
+    h('p', { class: 'lead-note' }, Object.hasOwn(HOW, answer.method) ? HOW[answer.method] : ''),
     answer.note ? h('p', { class: 'note' }, answer.note) : null,
     h(
       'ol',

@@ -53,6 +53,16 @@ test('the status of a block says how its text came about', () => {
   );
 });
 
+test('a status or grade named like a property of every object is one like any other the page does not know', () => {
+  assert.deepEqual(['constructor', 'toString', '__proto__', 'hasOwnProperty'].map(statusKind), ['unknown', 'unknown', 'unknown', 'unknown']);
+  const block = parseMarkdown('Satz. <!-- f: Evidenzgrad=constructor -->Also.<!-- /f --> <!-- f: Evidenzgrad=__proto__ -->So.<!-- /f -->').blocks[0];
+
+  assert.equal(
+    originCaption(blockOrigin(block, 'written', citations, sources)),
+    'Von der KI aus eigenem Wissen ergänzt · 1 Satz constructor, ohne Beleg · 1 Satz __proto__, ohne Beleg',
+  );
+});
+
 test('the citations of every block are known by their number', () => {
   assert.deepEqual([...citations.keys()], [1, 2, 3]);
   assert.equal(citations.get(3).source_title, 'Linse (Optik)');
@@ -64,7 +74,7 @@ test('an extracted paragraph names its article, its lexicon and its section', ()
   assert.deepEqual(origin, {
     kind: 'extract',
     sources: [{ title: 'Optik', url: OPTIK, heading: 'Einleitung', project: 'Wikipedia' }],
-    marks: {},
+    marks: new Map(),
   });
   assert.equal(originCaption(origin), 'Wörtlich aus „Optik“ (Wikipedia, Einleitung)');
 });
@@ -79,7 +89,7 @@ test('a written paragraph says what it is based on and what the model added', ()
   const block = parseMarkdown('Umformuliert. [3] <!-- f: Evidenzgrad=Modellwissen -->Ergänzt. [Modellwissen]<!-- /f -->').blocks[0];
   const origin = blockOrigin(block, 'written', citations, sources);
 
-  assert.deepEqual(origin.marks, { Modellwissen: 1 });
+  assert.deepEqual(origin.marks, new Map([['Modellwissen', 1]]));
   assert.equal(
     originCaption(origin),
     'Von der KI formuliert auf Basis von „Linse (Optik)“ (Wikipedia, Aufbau) · 1 Satz Modellwissen der KI, ohne Beleg',

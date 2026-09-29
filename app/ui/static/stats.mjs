@@ -6,7 +6,6 @@ import { ENTITY_METHODS, label, QA_METHODS, RESOLUTION } from './texts.mjs';
 
 const NUMBER = new Intl.NumberFormat('de-DE');
 const SECONDS = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const COMMENTS = /<!--[\s\S]*?-->/g;
 const SERVICE_MARKERS = /\[(?:\d{1,4}|Modellwissen)\]/g;
 const WORD = /[\p{L}\p{N}]+(?:[-'’.][\p{L}\p{N}]+)*/gu;
 const MODEL_KNOWLEDGE_OPEN = '<!-- f: Evidenzgrad=Modellwissen -->';
@@ -27,7 +26,21 @@ export function formatDuration(ms) {
 
 /** Words of a text as a reader counts them: without the comments, evidence numbers and labels of the service. */
 export function countWords(text) {
-  return (String(text ?? '').replace(COMMENTS, ' ').replace(SERVICE_MARKERS, ' ').match(WORD) ?? []).length;
+  return (withoutComments(String(text ?? '')).replace(SERVICE_MARKERS, ' ').match(WORD) ?? []).length;
+}
+
+// The text with a space for each comment, in one pass. A pattern tried the rest of the text again for every "<!--"
+// that never closes: 200,000 characters of them took 2.6 s. Such an opener stays text, as it did then
+function withoutComments(text) {
+  let out = '';
+  let at = 0;
+  for (let open = text.indexOf('<!--'); open >= 0; open = text.indexOf('<!--', at)) {
+    const close = text.indexOf('-->', open + 4);
+    if (close < 0) break; // no later opener can close either
+    out += `${text.slice(at, open)} `;
+    at = close + 3;
+  }
+  return out + text.slice(at);
 }
 
 /** The metrics of one answer of an endpoint, in the order a reader looks for them. */

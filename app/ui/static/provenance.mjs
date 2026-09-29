@@ -26,8 +26,9 @@ const WITHOUT_SOURCE = 'Von der KI aus eigenem Wissen ergänzt';
 // The grades of app/synthesis/citations.py: what the model knew, and what it concluded without the evidence saying so
 const GRADES = { Modellwissen: 'Modellwissen der KI', Schlussfolgerung: 'Schlussfolgerung der KI' };
 
+// A status the page does not know is unknown - also one named like a property every object has (constructor)
 export function statusKind(status) {
-  return KIND_OF_STATUS[status] ?? 'unknown';
+  return Object.hasOwn(KIND_OF_STATUS, status) ? KIND_OF_STATUS[status] : 'unknown';
 }
 
 /** Every citation of the answer by its number; the numbers run through the whole document. */
@@ -43,9 +44,10 @@ export function sourceIndex(compendium) {
   return new Map((compendium?.sources ?? []).map((source) => [source.source_id, source]));
 }
 
-/** How a block came about and which articles it cites, each article and section once; null with nothing to tell. */
+/** How a block came about and which articles it cites, each article and section once, and its sentences without
+ * evidence by grade (a Map: a grade is text of the answer); null with nothing to tell. */
 export function blockOrigin(block, kind, citations, sources) {
-  const found = { numbers: [], marks: {} };
+  const found = { numbers: [], marks: new Map() };
   for (const nodes of inlinesOf(block)) collect(nodes, found, false);
   const seen = new Set();
   const cited = [];
@@ -61,15 +63,15 @@ export function blockOrigin(block, kind, citations, sources) {
       project: projectOf(citation.source_id, sources),
     });
   }
-  if (!cited.length && !Object.keys(found.marks).length) return null;
+  if (!cited.length && !found.marks.size) return null;
   return { kind, sources: cited, marks: found.marks };
 }
 
 /** One line for a reader: how the block came about, from which articles, and what stands in it without a source. */
 export function originCaption(origin) {
   const parts = [origin.sources.length ? `${LEADS[origin.kind] ?? LEADS.unknown} ${origin.sources.map(describe).join(' · ')}` : WITHOUT_SOURCE];
-  for (const [grade, count] of Object.entries(origin.marks)) {
-    parts.push(`${count} ${count === 1 ? 'Satz' : 'Sätze'} ${GRADES[grade] ?? grade}, ohne Beleg`);
+  for (const [grade, count] of origin.marks) {
+    parts.push(`${count} ${count === 1 ? 'Satz' : 'Sätze'} ${label(GRADES, grade)}, ohne Beleg`);
   }
   return parts.join(' · ');
 }
@@ -118,10 +120,10 @@ function collect(nodes, found, insideMark) {
     if (node.type === 'cite') {
       found.numbers.push(node.number);
     } else if (node.type === 'mark') {
-      found.marks[node.grade] = (found.marks[node.grade] ?? 0) + 1;
+      found.marks.set(node.grade, (found.marks.get(node.grade) ?? 0) + 1);
       collect(node.children, found, true);
     } else if (node.type === 'label') {
-      if (!insideMark) found.marks[node.value] = (found.marks[node.value] ?? 0) + 1;
+      if (!insideMark) found.marks.set(node.value, (found.marks.get(node.value) ?? 0) + 1);
     } else {
       collect(node.children, found, insideMark);
     }

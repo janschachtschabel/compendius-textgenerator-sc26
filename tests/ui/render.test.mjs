@@ -62,6 +62,19 @@ test('a number with its evidence opens one box however often it occurs; one with
   assert.equal(host.descendants().filter((node) => node.classList.contains('cite-ref')).at(-1).textContent, '[2]');
 });
 
+test('a block whose status is named like a property of every object shows as one of unknown origin', () => {
+  for (const status of ['constructor', 'toString', '__proto__']) {
+    installDocument();
+    const answer = { markdown: `### 1 · X\n<!-- kompendium:section id=s1 status=${status} -->\nSatz.`, sections: [], sources: [] };
+
+    const { body } = renderCompendium(answer, 'k');
+
+    const [block] = body.descendants().filter((node) => node.tagName === 'SECTION');
+    assert.ok(block.classList.contains('kind-unknown'), status);
+    assert.match(block.textContent, /Herkunft nicht angegeben/, status);
+  }
+});
+
 test('a compendium shows each block with how it came about and each paragraph with where it comes from', () => {
   installDocument();
   const answer = {
