@@ -308,7 +308,7 @@ dl.facts dd { margin: 0; overflow-wrap: anywhere; }
 .share.kind-written { background: var(--written); }
 .share.kind-assembled, .share.kind-unknown { background: var(--assembled); }
 .share.kind-reviewed { background: var(--reviewed); }
-ul.legend { display: flex; flex-wrap: wrap; gap: 0.3rem 1.25rem; margin: 0.6rem 0 0; padding: 0; list-style: none; font-size: 0.875rem; }
+ul.legend { display: flex; flex-wrap: wrap; gap: 0.3rem 1.25rem; margin: 0.6rem 0 0; padding: 0; list-style: none; font: 0.875rem/1.5 var(--sans); }
 ul.legend li::before { content: ""; display: inline-block; width: 0.75rem; height: 0.75rem; margin-inline-end: 0.4rem; vertical-align: -1px; background: var(--k, var(--accent)); border-radius: 3px; }
 
 table.steps { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
