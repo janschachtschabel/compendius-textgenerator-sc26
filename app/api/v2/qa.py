@@ -35,6 +35,7 @@ from app.domain.models import Compendium, Resolution
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
+from app.llm.usage import Tokens, Usage
 from app.service import CompendiumService
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_knowledge import Knowledge, knowledge_of_compendium, knowledge_of_text
@@ -284,6 +285,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
       (``levels``); part 1 and the pairs share one deadline and one budget of 180,000 tokens per request
       (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59). While the b-api is away the rules ask, and ``note`` says why.
 
+    ``llm_tokens`` says what the LLM cost, part 1 and the pairs together; it is null when no LLM was called.
     A profile or ``method`` that needs an LLM on a server without one is a 503. The examples run from a topic
     alone over one per profile to one that sets every field but ``text``, which only goes alone.
     """
@@ -304,11 +306,14 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     topic: str | None = None
     resolution: Resolution | None = None
     node = None
+    part_one_tokens: dict[str, int] | None = None
+    usage = Usage()
     allowance = _allowance(request, payload, profile)
     if payload.topic or payload.node_id:
         service = get_service(request)  # a topic needs the archives; a plain text does not
         compendium = _part_one(service, payload, allowance, article_choice)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
+        part_one_tokens = compendium.audit.llm_tokens
         knowledge = knowledge_of_compendium(compendium)
     else:
         knowledge = knowledge_of_text(payload.text or "")
@@ -330,7 +335,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
             notes.append(f"Stufen aus dem Knoten: {', '.join(inherited)}")
     pairs: list[QaPair] | None = None
     if payload.method == "llm":
-        pairs, reason = from_llm(request, text, payload, node, allowance)
+        pairs, reason = from_llm(request, text, payload, node, allowance, usage)
         if pairs is None:
             log.info("QA fell back to the rules: %s", reason)
             notes.append(reason)
@@ -358,4 +363,18 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         chars=len(text),
         pairs=[Pair(question=pair.question, answer=pair.answer, level=pair.level_value) for pair in pairs],
         note="; ".join(notes) or None,
+        llm_tokens=_llm_tokens(part_one_tokens, usage),
     )
+
+
+def _llm_tokens(part_one: dict[str, int] | None, pairs: Tokens) -> dict[str, int] | None:
+    """What the LLM cost for the request - part 1 (its article choice) and the pairs - in the shape of a
+    compendium's audit.llm_tokens; ``None`` when no call was made."""
+    before = part_one or {}
+    tokens = {
+        "prompt": before.get("prompt", 0) + pairs.prompt_tokens,
+        "completion": before.get("completion", 0) + pairs.completion_tokens,
+        "total": before.get("total", 0) + pairs.total_tokens,
+        "calls": before.get("calls", 0) + pairs.calls,
+    }
+    return tokens if tokens["calls"] else None

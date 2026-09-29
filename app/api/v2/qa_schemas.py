@@ -151,3 +151,9 @@ class QaResponse(BaseModel):
         description="What a reader should know about how the pairs came about: why the LLM did not write them, "
         "or that the spaCy model for checking the question subjects is missing",
     )
+    llm_tokens: dict[str, int] | None = Field(
+        None,
+        description="What the LLM cost, as audit.llm_tokens of a compendium: prompt, completion and total tokens "
+        "and calls, of part 1 (the article choice) and the pairs together - a call whose answer held no pair "
+        "included; null when no LLM was called",
+    )

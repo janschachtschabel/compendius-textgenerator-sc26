@@ -20,6 +20,7 @@ from app.domain.models import NodeInput
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
+from app.llm.usage import Usage
 from app.synthesis.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair
 
@@ -38,12 +39,13 @@ def from_llm(
     payload: QaRequest,
     node: NodeInput | None = None,
     allowance: LlmAllowance | None = None,
+    usage: Usage | None = None,
 ) -> tuple[list[QaPair] | None, str]:
     """The model's pairs, or ``None`` and the reason the rules have to do it.
 
     A node's title and keywords point the model at what the material is about (D47). ``allowance`` is the budget
     and time the request has left after part 1; the endpoint hands it over whenever an LLM is configured, and a
-    caller without one gets a fresh allowance.
+    caller without one gets a fresh allowance. ``usage`` counts what the call cost.
     """
     service = request.app.state.service
     llm = service.llm if service is not None else None
@@ -65,6 +67,7 @@ def from_llm(
         focus_title=node.title if node is not None else None,
         focus_terms=node.keywords if node is not None else (),
         focus_kind=node.kind if node is not None else "material",
+        usage=usage,
     )
     if isinstance(answer, LlmSkipped):
         return None, f"LLM-Aufruf entfiel: {answer.reason}; Regelmodus verwendet"

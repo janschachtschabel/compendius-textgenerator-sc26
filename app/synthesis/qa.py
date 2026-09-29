@@ -22,6 +22,7 @@ from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.llm.usage import Usage
 from app.synthesis.citations import neutralize
 
 log = logging.getLogger(__name__)
@@ -146,9 +147,11 @@ class LlmQaWriter:
         focus_title: str | None = None,
         focus_terms: Sequence[str] = (),
         focus_kind: str = "material",
+        usage: Usage | None = None,
     ) -> list[QaPair] | LlmSkipped | None:
         """``focus_title`` and ``focus_terms`` name the node - a material or a collection (``focus_kind``) - and its
-        keywords (D47): the model asks about them first, as far as the text treats them."""
+        keywords (D47): the model asks about them first, as far as the text treats them. ``usage`` counts the call,
+        one whose answer holds no pair included: it was paid for all the same."""
         levels = list(level_values) if level_property and level_values else []
         prompt = get_prompt("qa_pairs")
         messages = prompt.render(
@@ -172,6 +175,8 @@ class LlmQaWriter:
             deadline=deadline,
             caller_text=text,
         )
+        if usage is not None:
+            usage.count(answer, prompt.tag)
         if isinstance(answer, LlmSkipped):
             log.warning("QA pairs from the LLM skipped: %s", answer.reason)
             return answer
