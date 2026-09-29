@@ -9,6 +9,7 @@ sub-collections 0.2 s, text content 0.1-2.3 s per node.
 from __future__ import annotations
 
 import dataclasses
+import http.cookiejar
 import logging
 import re
 from collections.abc import Callable, Collection
@@ -67,6 +68,15 @@ def render_url_for(rest_root: str, node_id: str) -> str:
     return f"{parts.scheme}://{parts.netloc}{prefix}/edu-sharing/components/render/{validate_node_id(node_id)}"
 
 
+def _no_cookies() -> http.cookiejar.CookieJar:
+    """A cookie jar that takes none: every request carries its own credentials, or none at all.
+
+    edu-sharing may answer a login with a session cookie. Kept, it rode along on the node reads that go without
+    credentials and showed them what the account may see (audit 2026-09-29, A02).
+    """
+    return http.cookiejar.CookieJar(policy=http.cookiejar.DefaultCookiePolicy(allowed_domains=[]))
+
+
 class EduSharingClient:
     def __init__(
         self,
@@ -80,16 +90,25 @@ class EduSharingClient:
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self._page_size = max(1, page_size)
-        self._client = httpx.Client(
-            base_url=self.base_url,
-            transport=transport,
-            timeout=timeout_s,
-            auth=httpx.BasicAuth(user, password) if user else None,
-            headers={"Accept": "application/json", "User-Agent": USER_AGENT},
-        )
+
+        def connection(auth: httpx.Auth | None) -> httpx.Client:
+            return httpx.Client(
+                base_url=self.base_url,
+                transport=transport,
+                timeout=timeout_s,
+                auth=auth,
+                cookies=_no_cookies(),
+                headers={"Accept": "application/json", "User-Agent": USER_AGENT},
+            )
+
+        self._client = connection(httpx.BasicAuth(user, password) if user else None)
+        # Nodes are read as the public sees them (D45): by a client that never held the credentials, since leaving
+        # them out of one request of a shared client still sent whatever state that client kept
+        self._public = connection(None)
 
     def close(self) -> None:
         self._client.close()
+        self._public.close()
 
     def render_url(self, node_id: str) -> str:
         """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
@@ -177,13 +196,13 @@ class EduSharingClient:
     ) -> dict[str, Any] | None:
         """Parsed JSON, ``None`` for a status in ``missing``; transport failures are retried once, other errors raised.
 
-        ``anonymous`` leaves the client's credentials out of this one request.
+        ``anonymous`` reads without the client's credentials, over the connection that never had them.
         """
-        auth = None if anonymous else httpx.USE_CLIENT_DEFAULT
+        client = self._public if anonymous else self._client
         last_error: Exception | None = None
         for _attempt in range(ATTEMPTS):
             try:
-                response = self._client.get(path, params=params, auth=auth)
+                response = client.get(path, params=params)
             except httpx.TransportError as exc:
                 last_error = exc
                 continue

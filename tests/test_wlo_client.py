@@ -2,6 +2,7 @@
 
 import base64
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import httpx
@@ -182,3 +183,37 @@ def test_the_public_url_of_a_node_is_built_from_the_repository_host() -> None:
     assert client.render_url(OPTIK) == f"https://repo.test/edu-sharing/components/render/{OPTIK}"
     with pytest.raises(ValueError):
         client.render_url("../secret")
+
+
+def test_the_anonymous_node_read_carries_no_session_of_the_account() -> None:
+    """edu-sharing may answer a login with a session cookie. Kept by the client, it rode along on the node reads that
+    go without credentials, and a node only the account may see became readable through the endpoints without a
+    login (audit 2026-09-29, A02) - also when reads with and without the account run side by side."""
+    seen: list[httpx.Request] = []
+
+    def repository(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        if request.url.path.endswith(f"/collections/-home-/{OPTIK}"):
+            session = {"Set-Cookie": "JSESSIONID=4711; Path=/edu-sharing; Secure; HttpOnly"}
+            return httpx.Response(200, json=_fixture("collection_optik.json"), headers=session)
+        return httpx.Response(200, json=_fixture("node_material.json"))
+
+    client = EduSharingClient(BASE, user="redaktion", password="geheim", transport=httpx.MockTransport(repository))
+    client.collection(OPTIK)
+    client.node(MATERIAL)
+    client.node(MATERIAL)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(lambda i: client.collection(OPTIK) if i % 2 else client.node(MATERIAL), range(40)))
+    nodes = [request for request in seen if request.url.path.endswith("/metadata")]
+    assert len(nodes) == 22
+    assert not [request.headers for request in nodes if {"authorization", "cookie"} & set(request.headers.keys())]
+    assert not [request.headers for request in seen if "cookie" in request.headers], "no client keeps a session"
+
+
+def test_closing_the_client_closes_the_connections_with_and_without_the_account() -> None:
+    client = _client(FakeRepository(), user="redaktion", password="geheim")
+    client.close()
+    with pytest.raises(RuntimeError, match="closed"):
+        client.collection(OPTIK)
+    with pytest.raises(RuntimeError, match="closed"):
+        client.node(MATERIAL)

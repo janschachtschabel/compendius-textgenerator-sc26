@@ -795,7 +795,7 @@ CC0, PDM, CC BY oder CC BY-SA steht.
 |---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`. Leer schaltet die Sammlungen ab |
 | `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten. Leer lässt nur das konfigurierte zu |
-| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter. Knoten (`node_id`) liest der Dienst immer ohne Zugangsdaten. Nur zusammen mit `API_KEYS` setzen; sonst warnt der Start |
+| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter. Knoten (`node_id`) liest der Dienst immer ohne Zugangsdaten, über eine eigene Verbindung ohne Sitzungscookie des Kontos. Nur zusammen mit `API_KEYS` setzen; sonst warnt der Start |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |
 | `COLLECTION_CACHE_TTL_S` | `3600` | Wie lange eine Sammlung im Cache gilt |
