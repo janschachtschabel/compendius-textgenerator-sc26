@@ -73,4 +73,21 @@ def test_a_long_request_id_is_cut_before_it_is_split() -> None:
             raise AssertionError("the whole header value was split")
 
     assert set_request_id(WholeHeader("a" * 1_000_000)) == "a" * MAX_REQUEST_ID_CHARS
-    assert set_request_id("  zwei\n\t Wörter ") == "zwei Wörter"
+    assert set_request_id("  abc-123\n\t ") == "abc-123"
+
+
+def test_an_id_keeps_only_the_signs_ids_are_written_with(client: TestClient) -> None:
+    """ESC, BEL and DEL of a caller's id reached every log line of its request and the header of the answer, which h11
+    lets through; a space and "|" forged the fields of a log line (audit 2026-09-29, S4)."""
+    response = client.get("/refused", headers={REQUEST_ID_HEADER: "abc\x1b[31mRED\x1b[0m\x07def\x7f"})
+    assert response.headers[REQUEST_ID_HEADER] == "abc31mRED0mdef"
+    assert set_request_id("abc\x9bdef") == "abcdef"  # 0x9b, as the header arrives in latin-1: a C1 terminal's CSI
+    assert set_request_id("rid | ERROR | forged") == "ridERRORforged"
+    uuid, traceparent, others = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "00-0af7651916cd-b7ad6b71-01",
+        "R=1-a/b+c_d.e:f@g",
+    )
+    assert [set_request_id(kept) for kept in (uuid, traceparent, others)] == [uuid, traceparent, others]
+    made = set_request_id("\x1b\x07 |")  # nothing of it is kept: a new id instead of an empty one
+    assert len(made) == 12 and made.isalnum()

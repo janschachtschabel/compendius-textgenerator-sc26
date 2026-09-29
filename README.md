@@ -852,7 +852,7 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | Endpunkt | Zweck |
 |---|---|
 | `GET /metrics` | Prometheus-Metriken (siehe „Überwachung“); optional nur mit `METRICS_TOKEN` |
-| Alle Antworten | tragen `X-Request-ID` (die des Aufrufers oder eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
+| Alle Antworten | tragen `X-Request-ID` (die des Aufrufers, davon nur Buchstaben, Ziffern und `._:@+/=-`, höchstens 64 Zeichen; sonst eine neue); jede Logzeile der Anfrage nennt sie, ein unerwarteter Fehler antwortet mit 500, `detail` und `request_id` |
 | Alle Fehlerantworten | nennen den Grund in `detail`: als deutschen Text; bei einer 422 der Prüfung als Liste mit Stelle (`loc`), Art (`type`) und Grund (`msg`) je Wert, ohne den Wert selbst; bei der 404 eines Themas, das die Archive nicht haben, als Objekt mit `message`, der Auflösung samt Alternativen und bei einem Material `node_article`. `/docs` nennt je Endpunkt die möglichen Fehler |
 | `GET /ui/` (mit `UI_ENABLED`) | Die Prüfansicht im Browser (siehe „Prüfansicht“); `GET /ui/options.json` liefert ihr Profile, Schalter, Grenzen und Beispiele aus den Modellen der Endpunkte. Ohne `UI_ENABLED`: 404 |
 | `GET /health`, `GET /ready` | Prozess lebt (mit LLM-Status unter `components.llm`); Pflichtarchive vorhanden (sonst 503) |
