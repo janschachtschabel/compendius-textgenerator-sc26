@@ -1,8 +1,9 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 28.09.2026 · neuer Dienst Release 2.2.2 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 29.09.2026 · neuer Dienst Release 2.4.2 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
-Entscheidungen“ und im Entwicklungsweg; die Releases 2.1.0 bis 2.2.2 enthalten alles bis zum 28.09.2026
+Entscheidungen“ und im Entwicklungsweg; die Releases 2.1.0 bis 2.4.2 enthalten alles bis zum 29.09.2026, die
+Messwerte gelten für Release 2.2.2 (M45)
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23. bis 28.09.2026 stehen mit Aufbau
@@ -52,6 +53,9 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
   Server mit `llm-free` 2,3 s und keine Tokens, mit dem Standard `balanced` rund 7 s und 580 Tokens, mit
   `best-quality` rund 26 s und 49.000, mit `best-quality-generated` rund 36 s und 60.000 (M45). Welche Methode in
   welchem Profil steckt, wie gut sie ist und warum: [Methoden, Messwerte und Profile](09-methoden-und-profile.md).
+- **Prüfen im Browser.** Seit 2.4.0 liefert der Dienst mit `UI_ENABLED` eine Prüfansicht: Menschen ohne Kenntnis
+  der API sehen jeden Absatz mit seiner Herkunft (wörtlich übernommen, von der KI ausgewählt oder formuliert),
+  Qualität, Zeit und Kosten je Profil und zwei Profile nebeneinander (D66).
 - **Der Preis:** Der Text liest sich wie eine geordnete Sammlung von Auszügen. Für KI und Weiterverarbeitung ist das
   ideal, für Menschen weniger; kleine Bausteine bleiben oft leer.
 
@@ -111,6 +115,7 @@ Vergleich](01-alt-und-neu.md).
 | Ab `balanced` nennt das LLM Übersicht und Teile jedes Themas; sie ersetzen die verlinkten Unterartikel und Volltexttreffer, die Übersicht den Hauptartikel, wo die Regeln das Thema verfehlen (D63) | Jan: `gpt-6-luna` stellt die Frage ab `balanced`, `llm-free` bleibt ohne LLM; 87 statt 45 % passende Absätze bei Sammelthemen und 93 statt 73 % bei gewöhnlichen, durch den Dienst nachgemessen (M37, M39); ohne großes LLM nicht erreichbar, auch nicht mit kleinen lokalen Modellen (M38, M40) | rund 3,6 s und 480 Tokens je Thema statt der Prüfung der Nebenartikel; das Gold der Zuordnung deckt den neuen Korpus nicht mehr ab |
 | Neue Installationen bauen den Wikidata-Index selbst: Sidecar `wikidata-updater`, neu nach einem jüngeren Wikipedia-Archiv, die API übernimmt ihn ohne Neustart (D64) | Jan: neue Installationen müssen die Daten bekommen; ohne Index fehlte jede Wikidata-Nummer, und das ZIM trägt sie nicht (14 von 188 Seiten, M41) | rund 420 MB Download und 6 min, wenn der Index fehlt oder ein neues Archiv kommt; ein vierter Container |
 | Kennungen wie empfohlen, lokal und in allen Profilen gleich: die GND ohne Normdaten-Block aus einem Index der DNB-Abzüge, die DBpedia-URI über den englischen Artikel (D65) | Jan: `de.dbpedia.org` antwortet nicht mehr, also `dbpedia.org`; die GND-Abzüge sind freigegeben. Im Dienst tragen 160 statt 139 der 188 richtigen Artikel eine richtige GND, und 96 % der Artikel von `balanced` bekommen eine DBpedia-URI, die antwortet (M42, M43) | ein fünfter Container; zusammen rund 815 MB Download (750 MB Wikipedia-Dumps, 65 MB GND), der Wikidata-Sync rund 10 min; ohne englischen Artikel bleibt die deutsche IRI, die ins Leere führt |
+| Prüfansicht als Seite der API, zugeschaltet mit `UI_ENABLED` (D66) | Jan: Die Texte müssen Menschen prüfen, auch ohne die API zu kennen. Eine Seite der API braucht kein weiteres Image, keinen Port und kein CORS; sie fragt die Endpunkte mit dem Schlüssel ihres Lesers und zeigt die Herkunft je Absatz aus dem, was die Antworten schon tragen | JavaScript ohne Build und Bibliothek, mit Node getestet; auf einem öffentlichen Server erst `API_KEYS`, dann `UI_ENABLED` |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
 | Teil 3 zur Anfragezeit aus edu-sharing | aktuell bis auf einen Zwischenspeicher von einer Stunde, kein eigener Datenbestand | hängt an der Erreichbarkeit des Repositorys |
@@ -165,6 +170,7 @@ sie neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und n
 | 26.09. | QA-Paare ohne LLM aus dem Parse jedes Satzes, Teil 1 von `/qa` immer ohne LLM (D55, M30); Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56, M31); der Standard fragt mit den Regeln, die Stufen `models` und `parse-based` samt Modellen und torch sind entfernt (D57); Lehrplanbezüge je Profil mit gebündelten Überschriften-Treffern, LLM-Prüfung in `best-quality` und Herkunft je Block (D58, M32); 180.000 Tokens je Anfrage für die `best-quality`-Profile, die Lehrplansuche mit Profilen und `/docs` je Endpunkt mit Beispielen bis zu allen Parametern (D59, M33); QA-Paare aufgefüllt und nachgeschärft, keine Fragen als Modellwissen (D60, M34); im Review davon präparierte Texte in linearer Zeit gelesen und vier kleinere Fehler behoben; ein Thema, das auf einen Abschnitt weiterleitet, führt zum Artikel, und die Prüfung sicherer Auflösungen ist am Gold gemessen (M35) und in den `best-quality`-Profilen eingeschaltet (D61); die Verfahren von `/entities` (M36) und Sammel- und Mischthemen wie „deutsche Dichter“ (M37) sind gemessen; `/entities` nimmt Profile, das LLM nennt die Entitäten in `balanced` und den `best-quality`-Profilen (D62); Sammelthemen: `llm-free` bleibt, die neue Frage kommt ab `balanced` (Jan), ohne großes LLM geht sie nicht, ein kleines Modell reicht bei Sammelthemen (M38) |
 | 27.09. | Die Frage N ab `balanced`: das LLM nennt Übersicht und Teile jedes Themas (D63), vorher an den Gold-Anfragen geprüft und danach durch den Dienst nachgemessen (M39); kleine lokale Modelle für `llm-free` gemessen, LFM2-700M, LFM2.5-1.2B und Qwen3-0.6B: kein Gewinn, 4,4 bis 6,3 s je Frage (M40), `llm-free` bleibt, wie es ist (Jan); die Kennungen von `/entities` je Profil gemessen (M41), der Wikidata-Index kommt über einen Sidecar in jede neue Installation (D64), GND-Lücke, DBpedia-URIs und DBpedia Spotlight gemessen (M42); der GND-Index und die DBpedia-URI über den englischen Artikel gebaut (D65), der Leser der GND-Abzüge am echten Abzug nachgebessert und alles im Dienst nachgemessen (M43), Methoden und Werte je Profil auf einer eigenen Seite |
 | 28.09. | Das Audit vom 27.09. mit 73 Befunden abgearbeitet, Releases 2.1.0 bis 2.2.2; Model2Vec wieder im Image; die Faktoren der Zuordnungsregeln gemessen (M44); alle vier Profile an allen Endpunkten mit Release 2.2.2 nachgemessen (M45); Seite 01 nach den drei Teilen neu gegliedert, Methoden, Messwerte und Profile auf einer eigenen Seite (09) |
+| 29.09. | Das Audit vom 28.09. abgearbeitet, Release 2.3.0; die Prüfansicht gebaut (D66), zweimal geprüft und als Releases 2.4.0 bis 2.4.2 veröffentlicht: Herkunft je Absatz, Profile im Vergleich, Markdown speichern, und `/qa` meldet seither, was das LLM kostete |
 
 ## Begriffe
 

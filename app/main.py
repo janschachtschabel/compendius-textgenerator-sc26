@@ -351,7 +351,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "schreibt zudem den Text. Ohne preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced). "
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "
-            "Status, nie als Text mit HTTP 200."
+            "Status, nie als Text mit HTTP 200. Mit UI_ENABLED zeigt der Server unter /ui/ eine Prüfansicht, auf der "
+            "Menschen die Antworten ohne Kenntnis der API prüfen."
         ),
         lifespan=lifespan,
         default_response_class=JsonResponse,

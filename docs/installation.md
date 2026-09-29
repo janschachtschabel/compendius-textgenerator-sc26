@@ -84,6 +84,7 @@ Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein B
 | `ZIM_BOOTSTRAP_DOWNLOAD` | in der Vorlage `true`: der Updater lädt beim ersten Start die fehlenden Pflichtarchive |
 | `ADMIN_TOKEN` | leer heißt: die Admin-Endpunkte sind abgeschaltet. Nur setzen, wenn sie gebraucht werden, dann mit mindestens 16 Zeichen, am besten erzeugt (`openssl rand -hex 32`) |
 | `API_KEYS`, `METRICS_TOKEN` | auf einem öffentlichen Server setzen, je mindestens 16 Zeichen: ohne sie antworten die Endpunkte mit einem Profil und `/metrics` jedem (Abschnitt 8) |
+| `UI_ENABLED` | in der Vorlage `false`; `true` liefert unter `/ui/` die Prüfansicht aus, in der Menschen die Texte im Browser prüfen (README, „Prüfansicht“). Sie fragt die Endpunkte mit dem Schlüssel, den der Leser dort einträgt: auf einem öffentlichen Server erst `API_KEYS` setzen |
 | `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` eintragen. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
 
@@ -150,6 +151,10 @@ Die Antwort enthält `markdown` mit dem Kompendium, `sections` mit den Bausteine
 und `parts_status` mit dem Ergebnis je Teil. Dauert eine Anfrage länger als erwartet: Jede Anfrage belegt einen Worker für ihre ganze Laufzeit,
 mehr gleichzeitige Anfragen brauchen also mehr Worker (`WEB_CONCURRENCY`) und entsprechend mehr RAM.
 
+Mit `UI_ENABLED=true` geht dieselbe Probe im Browser: `http://<host>:8000/ui/` öffnen, ein Beispiel laden und
+„Kompendium erzeugen“ drücken. Die Seite zeigt den Text mit der Herkunft jedes Absatzes, darüber Qualität, Zeit
+und Kosten.
+
 ## 7a. Kleine Maschinen: was auf 2 GB passiert
 
 Gemessen am 2026-09-21 im Image `compendious-text-fastapi:local`, Archive des Profils `standard`
@@ -213,8 +218,9 @@ in die Variablen des Hosting-Panels):
   verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`,
   `/lehrplan/search`, `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne
   Schlüssel kann jeder das gemeinsame LLM-Tagesbudget in Minuten aufbrauchen. `/health`, `/ready`, `/docs`, die
-  Templates und die Statusendpunkte bleiben offen. Ein eigener Schlüssel je aufrufender Anwendung lässt sich
-  einzeln zurückziehen.
+  Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht bleiben offen; deren Anfragen an
+  die Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener Schlüssel je aufrufender Anwendung
+  lässt sich einzeln zurückziehen.
 - `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`.
 
 `ADMIN_TOKEN`, `METRICS_TOKEN` und `API_KEYS` mit weniger als 16 Zeichen lehnt der Dienst beim Start ab; die

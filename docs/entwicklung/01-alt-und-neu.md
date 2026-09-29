@@ -1,6 +1,6 @@
 # Alter und neuer Dienst im Vergleich
 
-[Übersicht](README.md) · Stand 28.09.2026 · neuer Dienst: Release 2.2.2 · alter Dienst: v0.2.0
+[Übersicht](README.md) · Stand 29.09.2026 · neuer Dienst: Release 2.4.2, Messwerte mit 2.2.2 · alter Dienst: v0.2.0
 (`alterCode/compendious`) · Messungen: [Messprotokoll](05-messprotokoll.md), vor allem M1 bis M3, M17, M37 und M45 ·
 Methoden je Schritt: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -137,7 +137,7 @@ Die aktuellen Werte je Profil zeigen die Grafik oben und M45.
 
 ## Zusatzfunktionen des neuen Dienstes
 
-| Funktion | alter Dienst v0.2.0 | neuer Dienst 2.2.2 |
+| Funktion | alter Dienst v0.2.0 | neuer Dienst 2.4.2 |
 |---|---|---|
 | Profile (`preset`) | – | vier Profile; ein Schalter wählt die Methoden aller Schritte (D53) |
 | Ein Material als Eingang (`node_id`, `GET /api/v2/nodes/{id}`) | – | Titel, Beschreibung, Schlagwörter, Fach und Stufe eines Materials; eine eigene Artikelwahl dafür, mit Thema kombinierbar (D45, D47) |
@@ -150,6 +150,7 @@ Die aktuellen Werte je Profil zeigen die Grafik oben und M45.
 | Templates (`/api/v2/templates`) | 15 Aspekte im Prompt | SC26 und `standard`; eigene Templates mit Rollen je Baustein anlegen und löschen (Admin-Token) |
 | Geprüfte Bausteine behalten, Teile neu erzeugen | – | `existing_markdown`, `regenerate_sections` |
 | Archive und Indexe aktuell halten | – | Sidecars für ZIM-Archive, Lehrplan-Cache, Wikidata- und GND-Index; Archive wechseln atomar nach Prüfsumme |
+| Prüfansicht im Browser (`/ui/`, `UI_ENABLED`) | – | eine Seite der API, auf der Menschen ohne Kenntnis der API die Antworten aller fünf Endpunkte prüfen: Herkunft je Absatz mit Beleg, Qualität, Zeit und Kosten, zwei Profile im Vergleich, Markdown kopieren und speichern (D66) |
 | Betrieb | `/health` | `/health`, `/ready`, Prometheus-Metriken und Alarme, optionaler API-Schlüssel, Rate-Limit, `parts_status` je Teil, Request-ID in jeder Antwort |
 | Hilfsendpunkte für Textteilung, Synonyme, Übersetzung (`/api/v1/utils`) und die Kette `/api/v1/pipeline` | vorhanden | entfallen: Das Kompendium und `/qa` decken die Kette ab |
 

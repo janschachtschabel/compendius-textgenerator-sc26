@@ -66,6 +66,9 @@ Abschnittsmarker von Teil 1.
   je Befund steht am Ende des jeweiligen Berichts.
 - Überwachung: Prometheus-Endpunkt `/metrics` mit Zustand und Laufzeitmetriken, getestete Alarmregeln in
   `monitoring/`, Prometheus als Compose-Profil (D31).
+- Prüfansicht (D66, Releases 2.4.0 bis 2.4.2): Mit `UI_ENABLED` liefert der Dienst unter `/ui/` eine Seite, auf
+  der Menschen die Antworten aller Endpunkte im Browser prüfen: Herkunft je Absatz, Qualität, Zeit und Kosten,
+  zwei Profile im Vergleich, Markdown kopieren und speichern (siehe „Prüfansicht“).
 
 ## Installation
 
