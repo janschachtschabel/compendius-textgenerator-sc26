@@ -566,7 +566,9 @@ alles andere wird verworfen und im Audit gezählt (`dropped_sentences`, `unsuppo
 `<!-- f: Evidenzgrad=Schlussfolgerung -->` und `<!-- /f -->` (`marked_sentences`). HTML-Kommentare in der
 Modellantwort werden entfernt, damit sie keine Marker des Dokuments fälschen kann, ebenso Bilder, Linkziele,
 HTML-Tags und nackte Adressen: Die Belege enthalten fremden Text, und eine Anweisung darin könnte das Modell einen
-Link schreiben lassen, den keine Quelle enthält. Die Wörter eines Links bleiben stehen.
+Link schreiben lassen, den keine Quelle enthält. Die Wörter eines Links bleiben stehen. Was nur wie eine Marke des
+Dienstes aussieht, steht als Text da: eine Nummer, die die Prüfung nicht gelesen hat (`[1234]`, `[0012]`), und ein
+`[Modellwissen]`, das das Modell selbst schrieb, außerhalb eines so gekennzeichneten Satzes.
 
 Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte Sätze werden nicht verworfen,
 sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet und enden sichtbar mit

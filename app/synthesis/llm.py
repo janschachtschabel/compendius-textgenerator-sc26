@@ -149,7 +149,7 @@ class LlmSynthesizer:
             for chunk, source in (items[local - 1],)
         ]
         return LlmSection(
-            text=escape_model_text(renumber(text, mapping)),
+            text=escape_model_text(renumber(text, mapping), mapping.values()),
             citations=citations,
             prompt=prompt.tag,
             model=result.model,

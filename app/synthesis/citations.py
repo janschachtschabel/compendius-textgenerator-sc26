@@ -8,7 +8,7 @@ renumbering into the global citation sequence sees every marker.
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping
+from collections.abc import Collection, Mapping
 
 from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.matching.base import tokenize
@@ -75,7 +75,8 @@ _OPENERS = (CONCLUSION_OPEN, MODEL_KNOWLEDGE_OPEN)
 _MARKED_RE = re.compile(
     "(?:" + "|".join(re.escape(opener) for opener in _OPENERS) + ")" + r".*?" + re.escape(END_MARKER), re.DOTALL
 )
-# What stays markup in a block the model wrote: evidence numbers, the comments around a marked sentence, the label
+# What may stay markup in a block the model wrote - evidence numbers, the comments around a marked sentence, the
+# label - and escape_model_text decides whether it does
 _SERVICE_TOKEN_RE = re.compile(
     "|".join([r"\[\d{1,4}\]", *(re.escape(token) for token in (*_OPENERS, END_MARKER, MODEL_KNOWLEDGE_LABEL))])
 )
@@ -167,14 +168,26 @@ def neutralize(text: str) -> str:
     return collapse(_neutralized(" ".join(text.split())))
 
 
-def escape_model_text(text: str) -> str:
-    """A block the model wrote, as markdown that shows its words as typed: only the checked evidence numbers, the
-    comments that mark a sentence and the label of model knowledge stay markup (audit 2026-09-28, SE-17). What the
-    patterns above missed - nested or escaped brackets, a sign they do not know - shows as text."""
+def escape_model_text(text: str, numbers: Collection[int]) -> str:
+    """A block the model wrote, as markdown that shows its words as typed (audit 2026-09-28, SE-17): only the comments
+    that mark a sentence, the checked evidence ``numbers`` outside such a sentence and the label of model knowledge
+    inside one stay markup. What the patterns above missed - nested or escaped brackets, a sign they do not know -
+    shows as text, and so does what only looks like the service's own: a number of four digits the checks do not
+    read, "[0012]" beside a checked 12, the label on a cited sentence or with sources-only (audit 2026-09-29, T3)."""
+    own = {f"[{number}]" for number in numbers}
     pieces: list[str] = []
     position = 0
+    marked = ""  # the opener of the marked sentence a token stands in
     for token in _SERVICE_TOKEN_RE.finditer(text):
-        pieces.extend((escape_text(text[position : token.start()]), token.group(0)))
+        found = token.group(0)
+        if found in _OPENERS or found == END_MARKER:
+            marked = found if found in _OPENERS else ""
+        elif found == MODEL_KNOWLEDGE_LABEL:
+            if marked != MODEL_KNOWLEDGE_OPEN:
+                continue
+        elif marked or found not in own:
+            continue  # a marked sentence keeps no number (_as_marked)
+        pieces.extend((escape_text(text[position : token.start()]), found))
         position = token.end()
     pieces.append(escape_text(text[position:]))
     return "".join(pieces)

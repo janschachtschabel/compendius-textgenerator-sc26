@@ -9,6 +9,8 @@ instruction in a material text or in the keywords of a node is enough to make a 
 
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from app.llm.budget import TokenBudget
@@ -49,6 +51,38 @@ def test_a_block_the_model_wrote_carries_no_markup(answer: str, enrich: bool) ->
     document = result.text + LF + LF + "| Beleg |" + LF + "| :---: |" + LF + "| [5] |"
     assert unsafe(document) == []
     assert not {"a", "img", "h2", "script"} & set(tags(document))  # the model's link targets go, web ones too (SE-04)
+
+
+BS = chr(92)  # spelled out: tools on the way turn escapes in test text into other signs
+# An evidence number or the label of model knowledge as a reader of the markup takes it: not escaped
+OWN_TOKEN = re.compile("(?<!" + BS + BS + r")\[(?:\d+|Modellwissen)\]")
+FORGED = {
+    "four digits beside a checked number": ("Das Thema ist ein Gebiet der Physik [1] [1234].", ["[5]"], ["[5]"]),
+    "a checked number spelled with zeros": ("Das Thema ist ein Gebiet der Physik [1] [0005].", ["[5]"], ["[5]"]),
+    "the label on a cited sentence": ("Das Thema ist ein Gebiet der Physik [Modellwissen] [1].", ["[5]"], ["[5]"]),
+    "four digits in model knowledge": (
+        CITED + " Der Mond besteht vollständig aus grünem Käse und Schokolade [0012].",
+        ["[5]"],
+        ["[5]", "[Modellwissen]"],
+    ),
+}
+
+
+@pytest.mark.parametrize(("answer", "sources_only", "enriched"), FORGED.values(), ids=FORGED.keys())
+def test_only_the_checked_numbers_and_the_label_of_model_knowledge_stay_markup(
+    answer: str, sources_only: list[str], enriched: list[str]
+) -> None:
+    """A number of four digits is none the checks read: "[1234]" stood beside a checked one and "[0012]" in a
+    sentence of model knowledge, both as the service's markup, and the label stayed on a cited sentence, with
+    sources-only as well (audit 2026-09-29, T3). The words stay, as typed."""
+    for enrich, expected in ((False, sources_only), (True, enriched)):
+        budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+        result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
+            _slot(), SCORED, SOURCES, topic="Thema", citation_start=4, budget=budget, enrich=enrich
+        )
+
+        assert isinstance(result, LlmSection) and [citation.number for citation in result.citations] == [5]
+        assert OWN_TOKEN.findall(result.text) == expected, (enrich, result.text)
 
 
 def test_the_pairs_the_model_wrote_carry_no_markup() -> None:
