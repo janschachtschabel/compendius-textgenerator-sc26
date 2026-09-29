@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="982" height="436" viewBox="0 0 982 436" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Dauer je Anfrage bei gleichzeitigen Anfragen"><title>Dauer je Anfrage bei gleichzeitigen Anfragen</title><rect width="982" height="436" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Dauer je Anfrage, wenn mehrere gleichzeitig kommen</text>
+<text x="24.0" y="50.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">API mit 2 Workern, gemessen am 29.09.2026; jede Runde mit eigenen Themen</text>
+<rect x="324.0" y="62.0" width="26.0" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="356.0" y="71.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Spanne der Anfragen einer Runde</text>
+<circle cx="564.0" cy="67.0" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="575.0" y="71.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Median</text>
+<line x1="324.0" y1="96.0" x2="324.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="324.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">0 s</text>
+<line x1="416.0" y1="96.0" x2="416.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="416.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">10 s</text>
+<line x1="508.0" y1="96.0" x2="508.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="508.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">20 s</text>
+<line x1="600.0" y1="96.0" x2="600.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="600.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">30 s</text>
+<line x1="692.0" y1="96.0" x2="692.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="692.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">40 s</text>
+<line x1="784.0" y1="96.0" x2="784.0" y2="338.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="784.0" y="354.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">50 s</text>
+<text x="808.0" y="90.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens je Anfrage</text>
+<text x="312.0" y="113.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">1 Kompendium, llm-free</text>
+<rect x="382.6" y="104.0" width="8.0" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="386.6" cy="108.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="396.6" y="113.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">7 s</text>
+<text x="808.0" y="113.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">keine</text>
+<text x="312.0" y="143.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">3 Kompendien, llm-free</text>
+<rect x="451.6" y="134.0" width="80.7" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="497.9" cy="138.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="538.2" y="143.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">14 bis 22 s</text>
+<text x="808.0" y="143.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">keine</text>
+<text x="312.0" y="173.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">5 Kompendien, llm-free (5 Runden)</text>
+<rect x="400.0" y="164.0" width="164.4" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="474.0" cy="168.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="570.4" y="173.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">9 bis 26 s</text>
+<text x="808.0" y="173.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">keine</text>
+<text x="312.0" y="203.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">5 Kompendien, llm-free, Themen wiederholt</text>
+<rect x="348.5" y="194.0" width="42.0" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="358.0" cy="198.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="396.6" y="203.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">3 bis 7 s</text>
+<text x="808.0" y="203.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">keine</text>
+<text x="312.0" y="233.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">5 Kompendien, balanced</text>
+<rect x="412.9" y="224.0" width="91.7" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="483.2" cy="228.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="510.6" y="233.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">10 bis 19 s</text>
+<text x="808.0" y="233.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">454 bis 612</text>
+<text x="312.0" y="263.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">5 Kompendien, best-quality</text>
+<rect x="584.0" y="254.0" width="126.7" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="655.2" cy="258.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="716.7" y="263.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">29 bis 42 s</text>
+<text x="808.0" y="263.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">48.486 bis 83.733</text>
+<text x="312.0" y="293.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">5 × 10 QA-Paare, llm-free</text>
+<rect x="447.0" y="284.0" width="34.7" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="465.7" cy="288.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="487.6" y="293.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">14 bis 17 s</text>
+<text x="808.0" y="293.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">keine</text>
+<text x="312.0" y="323.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">3 × 10 QA-Paare, best-quality</text>
+<rect x="401.0" y="314.0" width="100.0" height="9.0" rx="4" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<circle cx="483.2" cy="318.5" r="5" fill="#2f6db5" stroke="#ffffff" stroke-width="2"/>
+<text x="507.0" y="323.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">9 bis 19 s</text>
+<text x="808.0" y="323.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">2.105 bis 2.576</text>
+<text x="24.0" y="384.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Frist je Anfrage (REQUEST_TIMEOUT_S) 120 s. llm-free: nur Regeln; balanced: das LLM wählt den Artikel; best-quality: dazu Zuordnung</text>
+<text x="24.0" y="400.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">und Lehrplanprüfung durch das LLM (gpt-6-luna über die Staging-b-api). Wiederholte Themen treffen die Caches der Worker.</text>
+<text x="24.0" y="416.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Daten: lasttest-2026-09-29.json; Aufbau und Einzelwerte dort.</text></svg>

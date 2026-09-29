@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="514" viewBox="0 0 1080 514" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Speicher des api-Containers über 47 Anfragen"><title>Speicher des api-Containers über 47 Anfragen</title><rect width="1080" height="514" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Speicher des api-Containers über 47 Anfragen</text>
+<text x="24.0" y="50.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Spitze je Runde, die Runden nacheinander ohne Neustart; 2 Worker, Grenze API_MEMORY=4g</text>
+<rect x="70.0" y="62.0" width="14.0" height="14.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="90.0" y="74.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Prozesse (RSS)</text>
+<rect x="210.0" y="62.0" width="14.0" height="14.0" rx="3" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="230.0" y="74.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">dazu Seiten-Cache der Archive, gibt der Kernel bei Bedarf frei</text>
+<line x1="70.0" y1="396.0" x2="884.0" y2="396.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="400.0" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">0 GiB</text>
+<line x1="70.0" y1="349.8" x2="884.0" y2="349.8" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="353.8" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">1 GiB</text>
+<line x1="70.0" y1="303.7" x2="884.0" y2="303.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="307.7" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">2 GiB</text>
+<line x1="70.0" y1="257.5" x2="884.0" y2="257.5" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="261.5" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">3 GiB</text>
+<line x1="70.0" y1="211.4" x2="884.0" y2="211.4" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="215.4" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">4 GiB</text>
+<line x1="70.0" y1="165.2" x2="884.0" y2="165.2" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="169.2" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">5 GiB</text>
+<line x1="70.0" y1="119.1" x2="884.0" y2="119.1" stroke="#dde2e8" stroke-width="1"/>
+<text x="62.0" y="123.1" font-size="10.5" fill="#52606d" text-anchor="end" font-weight="normal">6 GiB</text>
+<rect x="87.0" y="274.6" width="40.0" height="121.4" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="87.0" y="269.1" width="40.0" height="3.5" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="107.0" y="289.6" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">2,6</text>
+<text x="107.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">1×</text>
+<text x="107.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="161.0" y="265.8" width="40.0" height="130.2" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="161.0" y="256.2" width="40.0" height="7.7" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="181.0" y="280.8" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">2,8</text>
+<text x="181.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">3×</text>
+<text x="181.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="235.0" y="258.5" width="40.0" height="137.5" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="235.0" y="244.6" width="40.0" height="11.8" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="255.0" y="273.5" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,0</text>
+<text x="255.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="255.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="309.0" y="251.5" width="40.0" height="144.5" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="309.0" y="234.0" width="40.0" height="15.5" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="329.0" y="266.5" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,1</text>
+<text x="329.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="329.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">balanced</text>
+<rect x="383.0" y="246.5" width="40.0" height="149.5" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="383.0" y="226.2" width="40.0" height="18.3" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="403.0" y="261.5" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,2</text>
+<text x="403.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="403.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">best-q.</text>
+<rect x="457.0" y="240.9" width="40.0" height="155.1" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="457.0" y="218.3" width="40.0" height="20.6" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="477.0" y="255.9" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="477.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5× QA</text>
+<text x="477.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="531.0" y="240.0" width="40.0" height="156.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="531.0" y="215.1" width="40.0" height="22.9" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="551.0" y="255.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="551.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">3× QA</text>
+<text x="551.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">best-q.</text>
+<rect x="605.0" y="239.5" width="40.0" height="156.5" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="605.0" y="211.4" width="40.0" height="26.2" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="625.0" y="254.5" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="625.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="625.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="679.0" y="239.1" width="40.0" height="156.9" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="679.0" y="211.4" width="40.0" height="25.7" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="699.0" y="254.1" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="699.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="699.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="753.0" y="238.6" width="40.0" height="157.4" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="753.0" y="211.4" width="40.0" height="25.2" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="773.0" y="253.6" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="773.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="773.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<rect x="827.0" y="238.6" width="40.0" height="157.4" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<rect x="827.0" y="211.4" width="40.0" height="25.2" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
+<text x="847.0" y="253.6" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="600">3,4</text>
+<text x="847.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
+<text x="847.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
+<line x1="70.0" y1="211.4" x2="890.0" y2="211.4" stroke="#1f2933" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="896.0" y="215.4" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Grenze heute: API_MEMORY=4g</text>
+<line x1="70.0" y1="119.1" x2="890.0" y2="119.1" stroke="#1f2933" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="896.0" y="123.1" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">empfohlen: API_MEMORY=6g</text>
+<line x1="74.0" y1="436.0" x2="584.0" y2="436.0" stroke="#52606d" stroke-width="1"/>
+<text x="329.0" y="450.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Lastrunden: Kompendien und QA-Paare</text>
+<line x1="592.0" y1="436.0" x2="880.0" y2="436.0" stroke="#52606d" stroke-width="1"/>
+<text x="736.0" y="450.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">vier Runden, 20 neue Themen</text>
+<text x="24.0" y="478.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Die Prozesse wachsen beim Aufwärmen (Caches je Worker) und bleiben dann bei 3,4 GiB; der Seiten-Cache füllt die Grenze bis 4,0 GiB.</text>
+<text x="24.0" y="494.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Mit drei Workern: 4,3 GiB nach 15 Anfragen, 1,5 bis 1,6 GiB je Worker. Daten: lasttest-2026-09-29.json.</text></svg>

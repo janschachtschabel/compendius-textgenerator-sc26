@@ -1,0 +1,1488 @@
+{
+ "datum": "2026-09-29",
+ "dienst": {
+  "version": "2.5.0",
+  "revision": "b95a546",
+  "image": "compendious-text-fastapi:local"
+ },
+ "host": "Docker Desktop (WSL2, Kernel 5.15), 16 vCPU, 7,4 GiB für alle Container, NVMe-SSD; cgroup v1",
+ "archive": {
+  "wikipedia_de_all_nopic_2026-01.zim": 14578859275,
+  "klexikon_de_all_maxi_2026-08.zim": 135008418
+ },
+ "llm": "b-api Staging, gpt-6-luna",
+ "hinweise": [
+  "Gemessen ist nur der Container api; die vier Sidecars liefen in dieser Umgebung nicht.",
+  "rss: Speicher der Prozesse (cgroup total_rss); cache: Seiten-Cache der Archive, vom Kernel bei Bedarf freigegeben; usage: beides zusammen, das begrenzt API_MEMORY.",
+  "seconds: Dauer einer Anfrage beim Aufrufer; wall_s: bis die letzte der gleichzeitigen Anfragen fertig war.",
+  "Erzeugt mit lasttest.py (hier im Ordner); ein qa-Lauf fragt je Thema zehn Paare."
+ ],
+ "gruppen": [
+  {
+   "id": "last",
+   "aufbau": "Eine API mit 2 Workern und 4 GiB Grenze (API_MEMORY=4g), LLM an; die Runden nacheinander ohne Neustart, jede Runde mit eigenen Themen",
+   "runden": [
+    {
+     "scenario": "s1-free-1",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 1,
+     "wall_s": 6.8,
+     "idle_rss_gib": 2.54,
+     "peak_rss_gib": 2.63,
+     "peak_usage_gib": 2.75,
+     "peak_cache_gib": 0.1,
+     "cpu_seconds": 5.1,
+     "peak_cores": 1.22,
+     "mean_cores": 0.55,
+     "requests": [
+      {
+       "topic": "Photosynthese",
+       "status": 200,
+       "seconds": 6.8,
+       "size": 89357,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s2-free-3",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 3,
+     "wall_s": 22.2,
+     "idle_rss_gib": 2.63,
+     "peak_rss_gib": 2.82,
+     "peak_usage_gib": 3.03,
+     "peak_cache_gib": 0.18,
+     "cpu_seconds": 19.8,
+     "peak_cores": 2.08,
+     "mean_cores": 0.79,
+     "requests": [
+      {
+       "topic": "Bruchrechnung",
+       "status": 200,
+       "seconds": 18.9,
+       "size": 15260,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Französische Revolution",
+       "status": 200,
+       "seconds": 22.2,
+       "size": 41869,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Vulkan",
+       "status": 200,
+       "seconds": 14.3,
+       "size": 42283,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s3-free-5",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 25.7,
+     "idle_rss_gib": 2.83,
+     "peak_rss_gib": 2.98,
+     "peak_usage_gib": 3.28,
+     "peak_cache_gib": 0.3,
+     "cpu_seconds": 27.8,
+     "peak_cores": 1.91,
+     "mean_cores": 0.94,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 25.5,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 10.7,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 25.7,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 19.0,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 19.0,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s4-bal-5",
+     "endpoint": "compendium",
+     "preset": "balanced",
+     "concurrent": 5,
+     "wall_s": 19.2,
+     "idle_rss_gib": 2.96,
+     "peak_rss_gib": 3.13,
+     "peak_usage_gib": 3.51,
+     "peak_cache_gib": 0.36,
+     "cpu_seconds": 29.7,
+     "peak_cores": 4.14,
+     "mean_cores": 1.35,
+     "requests": [
+      {
+       "topic": "Evolution",
+       "status": 200,
+       "seconds": 18.2,
+       "size": 205639,
+       "tokens": 612,
+       "detail": ""
+      },
+      {
+       "topic": "Globalisierung",
+       "status": 200,
+       "seconds": 16.9,
+       "size": 185345,
+       "tokens": 483,
+       "detail": ""
+      },
+      {
+       "topic": "Mittelalter",
+       "status": 200,
+       "seconds": 19.2,
+       "size": 211436,
+       "tokens": 473,
+       "detail": ""
+      },
+      {
+       "topic": "Reformation",
+       "status": 200,
+       "seconds": 10.1,
+       "size": 95183,
+       "tokens": 481,
+       "detail": ""
+      },
+      {
+       "topic": "Sonnensystem",
+       "status": 200,
+       "seconds": 17.3,
+       "size": 207676,
+       "tokens": 454,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s5-best-5",
+     "endpoint": "compendium",
+     "preset": "best-quality",
+     "concurrent": 5,
+     "wall_s": 41.6,
+     "idle_rss_gib": 3.13,
+     "peak_rss_gib": 3.24,
+     "peak_usage_gib": 3.68,
+     "peak_cache_gib": 0.42,
+     "cpu_seconds": 29.9,
+     "peak_cores": 2.68,
+     "mean_cores": 0.64,
+     "requests": [
+      {
+       "topic": "Gravitation",
+       "status": 200,
+       "seconds": 36.0,
+       "size": 49700,
+       "tokens": 48486,
+       "detail": ""
+      },
+      {
+       "topic": "Industrialisierung",
+       "status": 200,
+       "seconds": 39.0,
+       "size": 83766,
+       "tokens": 74140,
+       "detail": ""
+      },
+      {
+       "topic": "Klimawandel",
+       "status": 200,
+       "seconds": 28.7,
+       "size": 90012,
+       "tokens": 83733,
+       "detail": ""
+      },
+      {
+       "topic": "Renaissance",
+       "status": 200,
+       "seconds": 41.6,
+       "size": 74359,
+       "tokens": 76166,
+       "detail": ""
+      },
+      {
+       "topic": "Säuren und Basen",
+       "status": 200,
+       "seconds": 34.4,
+       "size": 221609,
+       "tokens": 78831,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s6-qa-free-5",
+     "endpoint": "qa",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 16.7,
+     "idle_rss_gib": 3.24,
+     "peak_rss_gib": 3.36,
+     "peak_usage_gib": 3.85,
+     "peak_cache_gib": 0.48,
+     "cpu_seconds": 21.6,
+     "peak_cores": 2.3,
+     "mean_cores": 1.12,
+     "requests": [
+      {
+       "topic": "Kontinentaldrift",
+       "status": 200,
+       "seconds": 15.4,
+       "size": 10,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Nervensystem",
+       "status": 200,
+       "seconds": 13.8,
+       "size": 10,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Primzahl",
+       "status": 200,
+       "seconds": 13.9,
+       "size": 10,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Treibhauseffekt",
+       "status": 200,
+       "seconds": 16.3,
+       "size": 10,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Weimarer Republik",
+       "status": 200,
+       "seconds": 16.7,
+       "size": 10,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "s7-qa-best-3",
+     "endpoint": "qa",
+     "preset": "best-quality",
+     "concurrent": 3,
+     "wall_s": 18.8,
+     "idle_rss_gib": 3.36,
+     "peak_rss_gib": 3.38,
+     "peak_usage_gib": 3.92,
+     "peak_cache_gib": 0.52,
+     "cpu_seconds": 14.4,
+     "peak_cores": 2.36,
+     "mean_cores": 0.65,
+     "requests": [
+      {
+       "topic": "Aufklärung",
+       "status": 200,
+       "seconds": 18.8,
+       "size": 10,
+       "tokens": 2105,
+       "detail": ""
+      },
+      {
+       "topic": "Enzym",
+       "status": 200,
+       "seconds": 8.8,
+       "size": 10,
+       "tokens": 2576,
+       "detail": ""
+      },
+      {
+       "topic": "Kalter Krieg",
+       "status": 200,
+       "seconds": 17.3,
+       "size": 10,
+       "tokens": 2119,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "soak-a",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 18.4,
+     "idle_rss_gib": 3.38,
+     "peak_rss_gib": 3.39,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.59,
+     "cpu_seconds": 21.0,
+     "peak_cores": 1.87,
+     "mean_cores": 0.99,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 18.4,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 18.4,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 8.8,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Satz des Pythagoras",
+       "status": 200,
+       "seconds": 17.0,
+       "size": 39226,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 8.7,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "soak-b",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 16.3,
+     "idle_rss_gib": 3.39,
+     "peak_rss_gib": 3.4,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.58,
+     "cpu_seconds": 20.2,
+     "peak_cores": 3.3,
+     "mean_cores": 1.05,
+     "requests": [
+      {
+       "topic": "Bakterien",
+       "status": 200,
+       "seconds": 10.3,
+       "size": 101293,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Erdbeben",
+       "status": 200,
+       "seconds": 12.8,
+       "size": 89808,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Erster Weltkrieg",
+       "status": 200,
+       "seconds": 16.3,
+       "size": 42906,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 12.7,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wahrscheinlichkeitstheorie",
+       "status": 200,
+       "seconds": 12.8,
+       "size": 686104,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "soak-c",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 24.9,
+     "idle_rss_gib": 3.4,
+     "peak_rss_gib": 3.41,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.58,
+     "cpu_seconds": 24.5,
+     "peak_cores": 2.01,
+     "mean_cores": 0.87,
+     "requests": [
+      {
+       "topic": "Blut",
+       "status": 200,
+       "seconds": 20.1,
+       "size": 118189,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Europäische Union",
+       "status": 200,
+       "seconds": 24.9,
+       "size": 133841,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Genetik",
+       "status": 200,
+       "seconds": 20.1,
+       "size": 85417,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kernenergie",
+       "status": 200,
+       "seconds": 14.2,
+       "size": 67795,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Optik",
+       "status": 200,
+       "seconds": 9.2,
+       "size": 54168,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "soak-d",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 20.1,
+     "idle_rss_gib": 3.41,
+     "peak_rss_gib": 3.41,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.6,
+     "cpu_seconds": 23.3,
+     "peak_cores": 2.66,
+     "mean_cores": 1.01,
+     "requests": [
+      {
+       "topic": "Bundestag",
+       "status": 200,
+       "seconds": 20.1,
+       "size": 35060,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Dreißigjähriger Krieg",
+       "status": 200,
+       "seconds": 14.5,
+       "size": 31371,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kohlenstoffdioxid",
+       "status": 200,
+       "seconds": 15.4,
+       "size": 91607,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Mondfinsternis",
+       "status": 200,
+       "seconds": 13.8,
+       "size": 26232,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Romantik",
+       "status": 200,
+       "seconds": 17.3,
+       "size": 63151,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "worker",
+   "aufbau": "Dieselben fünf Themen wie s3-free-5, je zweimal hintereinander (der zweite Durchgang trifft die Caches): A dieselbe API wie oben (2 Worker, 4g), B frisch gestartet mit 2 Workern und 6g, C frisch mit 3 Workern und 6g; B und C nach einer Aufwärmrunde mit fünf anderen Themen",
+   "runden": [
+    {
+     "scenario": "wA-m1",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 13.7,
+     "idle_rss_gib": 3.37,
+     "peak_rss_gib": 3.37,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.62,
+     "cpu_seconds": 15.7,
+     "peak_cores": 2.33,
+     "mean_cores": 0.93,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 13.7,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 13.7,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 13.5,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 6.7,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 6.8,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wA-m2",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 6.8,
+     "idle_rss_gib": 3.35,
+     "peak_rss_gib": 3.36,
+     "peak_usage_gib": 4.0,
+     "peak_cache_gib": 0.62,
+     "cpu_seconds": 11.0,
+     "peak_cores": 2.16,
+     "mean_cores": 1.18,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 6.8,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 5.3,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 3.6,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 3.7,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 3.1,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wB-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 21.5,
+     "idle_rss_gib": 2.53,
+     "peak_rss_gib": 2.89,
+     "peak_usage_gib": 3.11,
+     "peak_cache_gib": 0.2,
+     "cpu_seconds": 17.5,
+     "peak_cores": 1.96,
+     "mean_cores": 0.72,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 21.5,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 21.0,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 4.7,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 21.0,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 21.1,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wB-m1",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 18.8,
+     "idle_rss_gib": 2.89,
+     "peak_rss_gib": 3.0,
+     "peak_usage_gib": 3.33,
+     "peak_cache_gib": 0.3,
+     "cpu_seconds": 17.4,
+     "peak_cores": 2.22,
+     "mean_cores": 0.81,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 17.9,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 16.7,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 18.8,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 15.0,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 15.0,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wB-m2",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 6.3,
+     "idle_rss_gib": 3.0,
+     "peak_rss_gib": 3.09,
+     "peak_usage_gib": 3.41,
+     "peak_cache_gib": 0.3,
+     "cpu_seconds": 8.4,
+     "peak_cores": 2.02,
+     "mean_cores": 0.89,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 6.3,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 5.1,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 5.3,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 1.9,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 1.9,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wC-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 25.2,
+     "idle_rss_gib": 3.79,
+     "peak_rss_gib": 4.12,
+     "peak_usage_gib": 4.31,
+     "peak_cache_gib": 0.17,
+     "cpu_seconds": 48.6,
+     "peak_cores": 3.24,
+     "mean_cores": 1.34,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 19.1,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 25.2,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 14.1,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 23.8,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 18.8,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wC-m1",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 12.6,
+     "idle_rss_gib": 4.12,
+     "peak_rss_gib": 4.22,
+     "peak_usage_gib": 4.5,
+     "peak_cache_gib": 0.26,
+     "cpu_seconds": 20.9,
+     "peak_cores": 2.93,
+     "mean_cores": 1.28,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 11.9,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 12.6,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 9.1,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 8.3,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 10.6,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "wC-m2",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 9.9,
+     "idle_rss_gib": 4.21,
+     "peak_rss_gib": 4.3,
+     "peak_usage_gib": 4.58,
+     "peak_cache_gib": 0.26,
+     "cpu_seconds": 17.0,
+     "peak_cores": 2.79,
+     "mean_cores": 1.29,
+     "requests": [
+      {
+       "topic": "Demokratie",
+       "status": 200,
+       "seconds": 3.8,
+       "size": 300917,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Elektrizität",
+       "status": 200,
+       "seconds": 8.3,
+       "size": 66392,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Römisches Reich",
+       "status": 200,
+       "seconds": 9.9,
+       "size": 53677,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wasserkreislauf",
+       "status": 200,
+       "seconds": 4.9,
+       "size": 31245,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Zellteilung",
+       "status": 200,
+       "seconds": 4.9,
+       "size": 33152,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cpu",
+   "aufbau": "Fünf neue Themen gleichzeitig (llm-free), je auf einer frisch gestarteten API (2 Worker, 6g) nach derselben Aufwärmrunde; cpu-prime lud die Themen einmal in den Seiten-Cache des Hosts, danach docker update --cpus 2 bzw. 4, cpu16 ohne Grenze",
+   "runden": [
+    {
+     "scenario": "cpu-prime-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 14.7,
+     "idle_rss_gib": 2.54,
+     "peak_rss_gib": 2.91,
+     "peak_usage_gib": 3.13,
+     "peak_cache_gib": 0.21,
+     "cpu_seconds": 14.6,
+     "peak_cores": 1.87,
+     "mean_cores": 0.82,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 14.7,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 14.6,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 14.5,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 7.8,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 6.5,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu-prime",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 15.8,
+     "idle_rss_gib": 2.91,
+     "peak_rss_gib": 3.01,
+     "peak_usage_gib": 3.35,
+     "peak_cache_gib": 0.32,
+     "cpu_seconds": 17.5,
+     "peak_cores": 2.04,
+     "mean_cores": 0.93,
+     "requests": [
+      {
+       "topic": "Barock",
+       "status": 200,
+       "seconds": 9.7,
+       "size": 97702,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Faschismus",
+       "status": 200,
+       "seconds": 15.8,
+       "size": 35055,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kohlenhydrate",
+       "status": 200,
+       "seconds": 12.6,
+       "size": 81955,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Säugetiere",
+       "status": 200,
+       "seconds": 14.7,
+       "size": 37798,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wolke",
+       "status": 200,
+       "seconds": 6.9,
+       "size": 47557,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu2-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 10.1,
+     "idle_rss_gib": 2.54,
+     "peak_rss_gib": 2.91,
+     "peak_usage_gib": 3.1,
+     "peak_cache_gib": 0.17,
+     "cpu_seconds": 13.8,
+     "peak_cores": 1.67,
+     "mean_cores": 1.04,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 10.0,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 10.1,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 9.2,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 9.8,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 9.9,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu2",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 13.2,
+     "idle_rss_gib": 2.91,
+     "peak_rss_gib": 3.0,
+     "peak_usage_gib": 3.29,
+     "peak_cache_gib": 0.28,
+     "cpu_seconds": 15.4,
+     "peak_cores": 1.73,
+     "mean_cores": 0.95,
+     "requests": [
+      {
+       "topic": "Barock",
+       "status": 200,
+       "seconds": 13.2,
+       "size": 97702,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Faschismus",
+       "status": 200,
+       "seconds": 12.1,
+       "size": 35055,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kohlenhydrate",
+       "status": 200,
+       "seconds": 10.0,
+       "size": 81955,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Säugetiere",
+       "status": 200,
+       "seconds": 9.0,
+       "size": 37798,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wolke",
+       "status": 200,
+       "seconds": 7.5,
+       "size": 47557,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu4-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 16.0,
+     "idle_rss_gib": 2.54,
+     "peak_rss_gib": 2.87,
+     "peak_usage_gib": 3.06,
+     "peak_cache_gib": 0.17,
+     "cpu_seconds": 14.1,
+     "peak_cores": 1.8,
+     "mean_cores": 0.76,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 16.0,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 15.5,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 16.0,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 15.5,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 2.7,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu4",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 11.5,
+     "idle_rss_gib": 2.87,
+     "peak_rss_gib": 3.1,
+     "peak_usage_gib": 3.4,
+     "peak_cache_gib": 0.28,
+     "cpu_seconds": 15.4,
+     "peak_cores": 2.14,
+     "mean_cores": 1.1,
+     "requests": [
+      {
+       "topic": "Barock",
+       "status": 200,
+       "seconds": 11.5,
+       "size": 97702,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Faschismus",
+       "status": 200,
+       "seconds": 11.0,
+       "size": 35055,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kohlenhydrate",
+       "status": 200,
+       "seconds": 7.3,
+       "size": 81955,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Säugetiere",
+       "status": 200,
+       "seconds": 8.7,
+       "size": 37798,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wolke",
+       "status": 200,
+       "seconds": 7.0,
+       "size": 47557,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu16-w",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 15.9,
+     "idle_rss_gib": 2.53,
+     "peak_rss_gib": 2.83,
+     "peak_usage_gib": 3.03,
+     "peak_cache_gib": 0.17,
+     "cpu_seconds": 13.5,
+     "peak_cores": 1.51,
+     "mean_cores": 0.73,
+     "requests": [
+      {
+       "topic": "Atom",
+       "status": 200,
+       "seconds": 15.9,
+       "size": 245495,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kreuzzug",
+       "status": 200,
+       "seconds": 15.4,
+       "size": 54083,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Lyrik",
+       "status": 200,
+       "seconds": 15.8,
+       "size": 271127,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Magnetismus",
+       "status": 200,
+       "seconds": 15.4,
+       "size": 76777,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Ökosystem",
+       "status": 200,
+       "seconds": 2.6,
+       "size": 137977,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    },
+    {
+     "scenario": "cpu16",
+     "endpoint": "compendium",
+     "preset": "llm-free",
+     "concurrent": 5,
+     "wall_s": 12.1,
+     "idle_rss_gib": 2.83,
+     "peak_rss_gib": 3.09,
+     "peak_usage_gib": 3.38,
+     "peak_cache_gib": 0.28,
+     "cpu_seconds": 15.0,
+     "peak_cores": 2.06,
+     "mean_cores": 1.02,
+     "requests": [
+      {
+       "topic": "Barock",
+       "status": 200,
+       "seconds": 8.3,
+       "size": 97702,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Faschismus",
+       "status": 200,
+       "seconds": 12.1,
+       "size": 35055,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Kohlenhydrate",
+       "status": 200,
+       "seconds": 6.1,
+       "size": 81955,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Säugetiere",
+       "status": 200,
+       "seconds": 12.1,
+       "size": 37798,
+       "tokens": null,
+       "detail": ""
+      },
+      {
+       "topic": "Wolke",
+       "status": 200,
+       "seconds": 8.3,
+       "size": 47557,
+       "tokens": null,
+       "detail": ""
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

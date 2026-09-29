@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Aufbau: fünf Container aus einem Image"><title>Aufbau: fünf Container aus einem Image</title><rect width="1000" height="560" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Aufbau: fünf Container aus einem Image</text>
+<text x="24.0" y="50.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Speicher gemessen am 29.09.2026 mit Release 2.5.0 und dem Archivprofil standard; Sidecars im Leerlauf</text>
+<rect x="24.0" y="64.0" width="14.0" height="14.0" rx="3" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="44.0" y="76.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Container</text>
+<rect x="144.0" y="64.0" width="14.0" height="14.0" rx="3" fill="#eceef1" stroke="#9aa5b1" stroke-width="1.2"/>
+<text x="164.0" y="76.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Volume</text>
+<rect x="264.0" y="64.0" width="14.0" height="14.0" rx="3" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="284.0" y="76.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">extern</text>
+<rect x="24.0" y="112.0" width="160.0" height="80.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="34.0" y="132.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Aufrufende Systeme</text>
+<text x="34.0" y="149.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">und Prüfansicht /ui/</text>
+<text x="34.0" y="166.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">HTTPS, X-API-Key</text>
+<rect x="214.0" y="92.0" width="556.0" height="120.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="224.0" y="112.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">api</text>
+<text x="224.0" y="129.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">FastAPI unter uvicorn, WEB_CONCURRENCY=2 Worker, Port 8000</text>
+<text x="224.0" y="146.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Speicher der Prozesse: 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen</text>
+<text x="224.0" y="163.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Grenze API_MEMORY: Vorgabe 4g, empfohlen 6g · CPU: 2 bis 6 CPU-Sekunden je Anfrage</text>
+<text x="224.0" y="180.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">liest Archive und Indexe; schreibt Tagesbudget, Sammlungs-Cache und eigene Templates</text>
+<rect x="800.0" y="92.0" width="176.0" height="56.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="810.0" y="112.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">b-api (LLM)</text>
+<text x="810.0" y="129.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">gpt-6-luna, ab balanced</text>
+<rect x="800.0" y="156.0" width="176.0" height="56.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="810.0" y="176.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">edu-sharing (WLO)</text>
+<text x="810.0" y="193.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Teil 3, Material, Knoten</text>
+<polyline points="184.0,152.0 208.0,152.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="214.0,152.0 207.1,156.0 207.1,148.0" fill="#52606d"/>
+<polyline points="770.0,120.0 794.0,120.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="800.0,120.0 793.1,124.0 793.1,116.0" fill="#52606d"/>
+<polyline points="770.0,184.0 794.0,184.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="800.0,184.0 793.1,188.0 793.1,180.0" fill="#52606d"/>
+<rect x="24.0" y="262.0" width="160.0" height="72.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="34.0" y="282.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">prometheus</text>
+<text x="34.0" y="299.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">optional, Profil</text>
+<text x="34.0" y="316.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">monitoring</text>
+<polyline points="184.0,298.0 199.0,298.0 199.0,198.0 208.0,198.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="214.0,198.0 207.1,202.0 207.1,194.0" fill="#52606d"/>
+<text x="28.0" y="352.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">fragt /metrics alle 30 s</text>
+<rect x="214.0" y="262.0" width="160.0" height="72.0" rx="6" fill="#eceef1" stroke="#9aa5b1" stroke-width="1.2"/>
+<text x="224.0" y="282.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Volume zim</text>
+<text x="224.0" y="299.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">14,7 GB Archive</text>
+<text x="224.0" y="316.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Update-Spitze ~30 GB</text>
+<rect x="394.0" y="262.0" width="376.0" height="72.0" rx="6" fill="#eceef1" stroke="#9aa5b1" stroke-width="1.2"/>
+<text x="404.0" y="282.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Volume state · 0,45 GB</text>
+<text x="404.0" y="299.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">lehrplan.db 277 MB, wikidata.db 139 MB, gnd.db 55 MB,</text>
+<text x="404.0" y="316.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget, Sammlungs-Cache, eigene Templates</text>
+<polyline points="294.0,212.0 294.0,256.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="294.0,262.0 290.0,255.1 298.0,255.1" fill="#52606d"/>
+<polyline points="582.0,212.0 582.0,256.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="582.0,262.0 578.0,255.1 586.0,255.1" fill="#52606d"/>
+<text x="300.0" y="242.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">liest</text>
+<text x="588.0" y="242.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">liest, schreibt</text>
+<rect x="214.0" y="384.0" width="160.0" height="66.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="222.0" y="403.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="600">zim-updater</text>
+<text x="222.0" y="420.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">~107 MiB RAM</text>
+<text x="222.0" y="437.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">prüft alle 30 Tage</text>
+<polyline points="294.0,384.0 294.0,340.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="294.0,334.0 298.0,340.9 290.0,340.9" fill="#52606d"/>
+<polyline points="294.0,488.0 294.0,456.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="294.0,450.0 298.0,456.9 290.0,456.9" fill="#52606d"/>
+<text x="294.0" y="502.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Kiwix-Katalog</text>
+<rect x="394.0" y="384.0" width="118.0" height="66.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="402.0" y="403.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="600">lehrplan-updater</text>
+<text x="402.0" y="420.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">~107 MiB RAM</text>
+<text x="402.0" y="437.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">prüft alle 7 Tage</text>
+<polyline points="453.0,384.0 453.0,340.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="453.0,334.0 457.0,340.9 449.0,340.9" fill="#52606d"/>
+<polyline points="453.0,488.0 453.0,456.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="453.0,450.0 457.0,456.9 449.0,456.9" fill="#52606d"/>
+<text x="453.0" y="502.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">MEM (SPARQL)</text>
+<rect x="523.0" y="384.0" width="118.0" height="66.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="531.0" y="403.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="600">wikidata-updater</text>
+<text x="531.0" y="420.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">~107 MiB RAM</text>
+<text x="531.0" y="437.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">prüft täglich</text>
+<polyline points="582.0,384.0 582.0,340.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="582.0,334.0 586.0,340.9 578.0,340.9" fill="#52606d"/>
+<polyline points="582.0,488.0 582.0,456.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="582.0,450.0 586.0,456.9 578.0,456.9" fill="#52606d"/>
+<text x="582.0" y="502.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Wikimedia-Dumps</text>
+<rect x="652.0" y="384.0" width="118.0" height="66.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="660.0" y="403.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="600">gnd-updater</text>
+<text x="660.0" y="420.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">~107 MiB RAM</text>
+<text x="660.0" y="437.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">prüft täglich</text>
+<polyline points="711.0,384.0 711.0,340.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="711.0,334.0 715.0,340.9 707.0,340.9" fill="#52606d"/>
+<polyline points="711.0,488.0 711.0,456.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="711.0,450.0 715.0,456.9 707.0,456.9" fill="#52606d"/>
+<text x="711.0" y="502.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">DNB-Abzüge</text>
+<text x="24.0" y="404.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">vier Sidecars aus</text>
+<text x="24.0" y="420.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">demselben Image laden</text>
+<text x="24.0" y="436.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">neue Daten, prüfen sie</text>
+<text x="24.0" y="452.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">und ersetzen die alten</text>
+<text x="24.0" y="536.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Summe: RAM 3,4 GiB (api) + 0,4 GiB (Sidecars) + System · Platte 16,5 GB im Betrieb, rund 32 GB beim Wikipedia-Update · Ausgehende Ziele: siehe Tabelle</text></svg>

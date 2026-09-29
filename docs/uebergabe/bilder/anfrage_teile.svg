@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="486" viewBox="0 0 1000 486" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Eine Kompendium-Anfrage: Eingaben, Teile, Antwort"><title>Eine Kompendium-Anfrage: Eingaben, Teile, Antwort</title><rect width="1000" height="486" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Eine Kompendium-Anfrage: Eingaben, Teile, Antwort</text>
+<text x="24.0" y="50.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">POST /api/v2/compendium; parts wählt die Teile, fehlende Felder nehmen die Vorgaben</text>
+<text x="24.0" y="84.0" font-size="12.5" fill="#52606d" text-anchor="start" font-weight="600">In der Anfrage</text>
+<text x="364.0" y="84.0" font-size="12.5" fill="#52606d" text-anchor="start" font-weight="600">Teil des Kompendiums</text>
+<text x="674.0" y="84.0" font-size="12.5" fill="#52606d" text-anchor="start" font-weight="600">In der Antwort</text>
+<rect x="24.0" y="96.0" width="300.0" height="104.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="34.0" y="116.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">topic</text>
+<text x="73.6" y="116.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Thema, z. B. Photosynthese</text>
+<text x="34.0" y="133.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">node_id</text>
+<text x="86.8" y="133.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">oder ein Material, eine Sammlung</text>
+<text x="34.0" y="150.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">knowledge_collection_id</text>
+<text x="34.0" y="167.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Materialien als weitere Quellen</text>
+<text x="34.0" y="184.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">preset</text>
+<text x="80.2" y="184.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Profil, target_length, template_id</text>
+<rect x="364.0" y="96.0" width="250.0" height="104.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="376.0" y="117.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Teil 1 · Weltwissen</text>
+<text x="376.0" y="135.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Wikipedia und Klexikon lokal,</text>
+<text x="376.0" y="152.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">dazu die Materialien</text>
+<text x="376.0" y="190.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal" font-family="Consolas, Menlo, monospace">parts: "world"</text>
+<rect x="674.0" y="96.0" width="302.0" height="104.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="684.0" y="116.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.sections[].title</text>
+<text x="802.8" y="116.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">die Bausteine</text>
+<text x="684.0" y="133.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.sections[].text</text>
+<text x="796.2" y="133.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">ihr Text mit Belegnummern</text>
+<text x="684.0" y="150.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.sources[]</text>
+<text x="756.6" y="150.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">die Belege je Nummer</text>
+<polyline points="324.0,148.0 358.0,148.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="364.0,148.0 357.1,152.0 357.1,144.0" fill="#52606d"/>
+<polyline points="614.0,148.0 668.0,148.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="674.0,148.0 667.1,152.0 667.1,144.0" fill="#52606d"/>
+<rect x="24.0" y="214.0" width="300.0" height="70.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="34.0" y="234.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">topic</text>
+<text x="73.6" y="234.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">liefert die Stichwörter</text>
+<text x="34.0" y="251.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">subject</text>
+<text x="86.8" y="251.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">grenzt auf ein Fach ein</text>
+<rect x="364.0" y="214.0" width="250.0" height="70.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="376.0" y="235.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Teil 2 · Lehrplanbezüge</text>
+<text x="376.0" y="253.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">MEM-Lehrpläne, lokal</text>
+<text x="376.0" y="274.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal" font-family="Consolas, Menlo, monospace">parts: "curricula"</text>
+<rect x="674.0" y="214.0" width="302.0" height="70.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="684.0" y="234.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.curricula.markdown</text>
+<text x="816.0" y="234.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Text von Teil 2</text>
+<text x="684.0" y="251.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.curricula.entries[]</text>
+<text x="822.6" y="251.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Treffer als Liste</text>
+<polyline points="324.0,249.0 358.0,249.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="364.0,249.0 357.1,253.0 357.1,245.0" fill="#52606d"/>
+<polyline points="614.0,249.0 668.0,249.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="674.0,249.0 667.1,253.0 667.1,245.0" fill="#52606d"/>
+<rect x="24.0" y="298.0" width="300.0" height="70.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="34.0" y="318.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">collection_id</text>
+<text x="126.4" y="318.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Sammlung in edu-sharing;</text>
+<text x="34.0" y="335.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">ihr Titel ist das Thema, fehlt topic</text>
+<rect x="364.0" y="298.0" width="250.0" height="70.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="376.0" y="319.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Teil 3 · Sammlungsüberblick</text>
+<text x="376.0" y="337.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Inhalte der Sammlung zur Anfragezeit</text>
+<text x="376.0" y="358.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal" font-family="Consolas, Menlo, monospace">parts: "collection"</text>
+<rect x="674.0" y="298.0" width="302.0" height="70.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="684.0" y="318.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.collection.markdown</text>
+<text x="822.6" y="318.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Text von Teil 3</text>
+<text x="684.0" y="335.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.collection.summary</text>
+<text x="816.0" y="335.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Zahlen zur Sammlung</text>
+<polyline points="324.0,333.0 358.0,333.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="364.0,333.0 357.1,337.0 357.1,329.0" fill="#52606d"/>
+<polyline points="614.0,333.0 668.0,333.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="674.0,333.0 667.1,337.0 667.1,329.0" fill="#52606d"/>
+<rect x="24.0" y="388.0" width="300.0" height="88.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="34.0" y="408.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">parts</text>
+<text x="73.6" y="408.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">welche Teile, Vorgabe alle drei;</text>
+<text x="34.0" y="425.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Teil 3 entfällt ohne collection_id</text>
+<text x="34.0" y="442.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">frontmatter_in_markdown</text>
+<text x="34.0" y="459.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">false: Text beginnt mit der Überschrift</text>
+<rect x="674.0" y="388.0" width="302.0" height="88.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
+<text x="684.0" y="408.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.markdown</text>
+<text x="750.0" y="408.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">das ganze Kompendium:</text>
+<text x="684.0" y="425.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Frontmatter, Teil 1, 2 und 3 in einem Text</text>
+<text x="684.0" y="442.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.parts_status</text>
+<text x="776.4" y="442.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">ok, empty, incomplete je Teil</text>
+<text x="684.0" y="459.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="600" font-family="Consolas, Menlo, monospace">.audit.llm_tokens</text>
+<text x="802.8" y="459.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tokens und LLM-Aufrufe</text>
+<polyline points="489.0,368.0 489.0,432.0 668.0,432.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
+<polygon points="674.0,432.0 667.1,436.0 667.1,428.0" fill="#52606d"/>
+<text x="497.0" y="424.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Teile in einem Text</text></svg>
