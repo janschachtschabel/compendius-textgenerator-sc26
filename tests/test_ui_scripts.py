@@ -26,7 +26,9 @@ ON_GITHUB = os.environ.get("GITHUB_ACTIONS") == "true"
 def test_every_module_of_the_page_with_logic_has_its_tests() -> None:
     tested = {path.name.removesuffix(".test.mjs") for path in TESTS}
 
-    assert {"markdown", "provenance", "forms", "stats", "steps"} <= tested
+    modules = {"markdown", "provenance", "forms", "fields", "stats", "steps", "api", "main"}
+    views = {"info_compendium", "view_lehrplan", "views"}
+    assert modules | views | {"answers"} <= tested, "answers: every view with the answers of tests/test_ui_answers.py"
 
 
 def test_gitlab_runs_the_scripts_of_the_page_in_a_job_of_its_own() -> None:

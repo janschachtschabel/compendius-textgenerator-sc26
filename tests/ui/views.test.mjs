@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { installDocument } from './dom_stub.mjs';
+import { fact, shown } from './saved_answers.mjs';
 import { buildForm } from '../../app/ui/static/fields.mjs';
 import { errorBox, resolutionFacts } from '../../app/ui/static/panels.mjs';
 import { renderResults, stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
@@ -65,6 +66,19 @@ test('the colours of the entities in the text have their kinds in words beside t
 
   const [legend] = all(body, (node) => node.classList.contains('legend'));
   assert.deepEqual(legend.children.map((item) => [item.getAttribute('class'), item.textContent]), [['kind-PER', 'Person'], ['kind-LOC', 'Ort']]);
+});
+
+test('the pairs of a topic stand in order with their level, and say which method was asked and which wrote them', () => {
+  const results = shown('qa_llm');
+
+  const pairs = all(results, (node) => node.tagName === 'OL' && node.classList.contains('qa-list'))[0].children;
+  assert.deepEqual(pairs.map((pair) => pair.children.map((line) => line.textContent)), [
+    ['Was untersucht die Optik?', 'Das Licht und seine Ausbreitung.', 'Stufe: Sek I'],
+    ['Was bricht Licht?', 'Eine Linse.', 'Stufe: Sek I'],
+  ]);
+  assert.equal(fact(results, 'Methode und Vorlage', 'Angefragt'), 'wie im Profil');
+  assert.equal(fact(results, 'Methode und Vorlage', 'Verwendet'), 'KI');
+  assert.match(all(results, (node) => node.classList.contains('lead-note'))[0].textContent, /^Die KI hat Fragen und Antworten/);
 });
 
 test('a method of the pairs the page does not know leaves the lead empty, also one named like a property of every object', () => {
