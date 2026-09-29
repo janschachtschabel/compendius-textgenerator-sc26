@@ -115,10 +115,14 @@ function field(spec, ctx, control, access, wrapperClass = 'field') {
   return h('div', { class: wrapperClass }, h('label', { for: control.id }, spec.label, optional), control, help, error);
 }
 
-function input(spec, ctx, attributes = {}) {
+function input(spec, ctx, attributes = {}, read = (control) => control.value) {
   const control = h('input', { id: uid(spec.name), name: spec.name, type: 'text', placeholder: spec.placeholder, autocomplete: 'off', ...attributes });
-  return field(spec, ctx, control, { read: () => control.value, write: (value) => (control.value = value ?? '') });
+  return field(spec, ctx, control, { read: () => read(control), write: (value) => (control.value = value ?? '') });
 }
+
+// A number field holds '' for text it cannot read and says so in validity.badInput; read as empty, it sent nothing and
+// the server took its default. It reads as no number instead, which the checks of forms.mjs refuse in plain words
+const numberOf = (control) => (control.validity?.badInput ? Number.NaN : control.value);
 
 const TYPES = {
   text: (spec, ctx) => input(spec, ctx),
@@ -134,7 +138,7 @@ const TYPES = {
   number(spec, ctx) {
     const { default: preset, min, max } = bounds(ctx.mode, spec.name, ctx.options);
     const placeholder = preset === null || preset === undefined ? 'Vorgabe des Servers' : `Vorgabe: ${formatNumber(preset)}`;
-    return input(spec, ctx, { type: 'number', inputmode: 'numeric', step: 1, min, max, placeholder });
+    return input(spec, ctx, { type: 'number', inputmode: 'numeric', step: 1, min, max, placeholder }, numberOf);
   },
   check(spec, ctx) {
     const control = h('input', { id: uid(spec.name), name: spec.name, type: 'checkbox' });

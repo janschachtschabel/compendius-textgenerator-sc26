@@ -1,7 +1,7 @@
 // A small stand-in for the browser's document, enough for the page's own builders (dom.mjs and what uses it) to run
 // under node:test (D66). It knows elements, text nodes, fragments, attributes, listeners, classes, style properties,
-// focus, clicks, downloads and the copy command - no layout, no markup parser: nothing here can turn text into
-// elements either.
+// the validity of a field, focus, clicks, downloads and the copy command - no layout, no markup parser: nothing here
+// can turn text into elements either.
 
 class FakeNode {
   constructor() {
@@ -68,6 +68,7 @@ class FakeElement extends FakeNode {
     this.listeners = {};
     this.style = { properties: {}, setProperty: (name, value) => (this.style.properties[name] = value) };
     this.value = '';
+    this.validity = { badInput: false }; // a field sets badInput for text it cannot read, its value then ''
     this.selected = false;
     this.ownerDocument = doc;
   }
