@@ -63,11 +63,13 @@ Update daher:
 | 2026-09-28 (Lebenszeichen) | ZIM- und Lehrplan-Updater schreiben beim Start und stündlich, solange sie warten, ein Lebenszeichen (`sync_alive` im Volume `zim`, `lehrplan_alive` im Volume `state`); die API meldet es als `kompendium_zim_sync_alive_timestamp_seconds` und `kompendium_lehrplan_harvest_alive_timestamp_seconds`. Neue Alarme `KompendiumZimSyncSilent` und `KompendiumLehrplanHarvestSilent` melden einen Updater, der seit drei Stunden schweigt oder nie lief; bisher fiel das erst nach 35 bzw. 40 Tagen auf. Wirkt, wenn beide Updater das neue Image haben |
 | 2026-09-28 (Wartezeit beim Update) | Wie lange Docker bei einem Update auf laufende Anfragen wartet, ist die Variable `API_STOP_GRACE_PERIOD` (Vorgabe `150s`, wie bisher fest). Wer `REQUEST_TIMEOUT_S` über 135 s gesetzt hat, setzt sie über `REQUEST_TIMEOUT_S` plus 15 s, etwa `330s` für 300 s; bisher beendete Docker solche Anfragen nach 150 s, und das Panel überschrieb eine geänderte Compose-Datei beim nächsten Update |
 | 2026-09-28 (Template-Grenzen) | Ein eigenes Template braucht Baustein-Kennungen und -Schlüssel aus Buchstaben, Ziffern, Unterstrich und Bindestrich, einzeilige Titel, höchstens 60 Bausteine, Texte und Listen in Grenzen weit über den eingebauten Templates und Suchmuster ohne verschachtelte unbegrenzte Wiederholungen. Ein gespeichertes Template, das sie verletzt, überspringt der Dienst beim Laden (Log „custom template … skipped“), Anfragen darauf antworten 404: nach dem Update das Log der API prüfen und das Template mit `PUT /api/v2/templates/{id}` berichtigt neu speichern |
+| 2026-09-29 (Prüfansicht, D66) | Neu: `UI_ENABLED` (Vorgabe `false`) schaltet die Prüfansicht unter `/ui/` frei (README, „Prüfansicht“); ohne Eintrag ändert sich nichts, `/ui/` antwortet 404. Die Seite fragt die Endpunkte mit dem Schlüssel, den ihr Leser einträgt: auf einem öffentlichen Server erst `API_KEYS` setzen, dann `UI_ENABLED=true`. `docker-compose.yml` bleibt, wie sie ist |
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`), die Zeile „2026-09-28 (`B_API_MODEL`
 leer)“ erst 2.2.1, die Zeile „2026-09-28 (Token-Länge)“ erst 2.2.2, die Zeilen von „2026-09-28 (Anfragegrenzen)“
-bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`).
+bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`), die Zeile „2026-09-29 (Prüfansicht, D66)“
+erst 2.4.0 (Image-Tag `2.4.0`).
 
 ## Zustand prüfen
 
