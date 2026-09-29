@@ -1,4 +1,7 @@
+import base64
+import hashlib
 import logging
+import re
 import threading
 from pathlib import Path
 from types import SimpleNamespace
@@ -292,6 +295,36 @@ def test_api_docs_can_be_switched_off(sample_zims: dict[str, Path], tmp_path: Pa
     with TestClient(create_app(settings)) as hidden:
         assert [hidden.get(path).status_code for path in ("/docs", "/redoc", "/openapi.json")] == [404, 404, 404]
         assert hidden.get("/health").status_code == 200
+
+
+@pytest.mark.parametrize(
+    ("path", "script", "root_path"),
+    [
+        ("/docs", "swagger-ui-dist@5/swagger-ui-bundle.js", ""),
+        ("/docs", "swagger-ui-dist@5/swagger-ui-bundle.js", "/kompendium"),  # behind a proxy with a prefix
+        ("/redoc", "redoc@2/bundles/redoc.standalone.js", ""),
+    ],
+)
+def test_the_api_docs_let_their_scripts_talk_to_this_service_only(
+    settings: Settings, path: str, script: str, root_path: str
+) -> None:
+    """Swagger UI and ReDoc come from cdn.jsdelivr.net without SRI and without a policy, on the origin of /ui/, whose
+    reader's API key is in the sessionStorage: a compromised package could send it anywhere (audit 2026-09-29,
+    S12). Scripts come from the one file and the page's own inline code, by its hash; requests go to the service."""
+    client = TestClient(create_app(settings), root_path=root_path)
+    page = client.get(path)
+
+    assert page.status_code == 200 and f"https://cdn.jsdelivr.net/npm/{script}" in page.text
+    policy = dict(part.strip().split(" ", 1) for part in page.headers["content-security-policy"].split(";"))
+    assert (policy["default-src"], policy["connect-src"], policy["img-src"]) == ("'none'", "'self'", "'self' data:")
+    assert policy["frame-ancestors"] == policy["base-uri"] == "'none'"
+    scripts = policy["script-src"].split()
+    inline = re.findall("<script>(.*?)</script>", page.text, flags=re.DOTALL)
+    hashes = [f"'sha256-{base64.b64encode(hashlib.sha256(code.encode()).digest()).decode()}'" for code in inline]
+    assert scripts == [f"https://cdn.jsdelivr.net/npm/{script}", *hashes]
+    assert f"{root_path}/openapi.json" in page.text
+    assert "fastapi.tiangolo.com" not in page.text and "fonts.googleapis.com" not in page.text  # no other hosts
+    assert client.get("/openapi.json").status_code == 200
 
 
 def test_shutdown_closes_the_outbound_http_clients(settings: Settings) -> None:

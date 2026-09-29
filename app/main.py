@@ -20,6 +20,7 @@ from starlette.types import Scope
 
 from app import __version__
 from app.api.body_limit import BodySizeLimit
+from app.api.docs import docs_router
 from app.api.domain_errors import DOMAIN_ERRORS
 from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
@@ -72,6 +73,8 @@ from app.templates.manager import TemplateManager
 from app.ui.routes import ui_router
 
 log = logging.getLogger(__name__)
+
+OPENAPI_PATH = "/openapi.json"
 
 # Up to this REQUEST_TIMEOUT_S the LLM gets hardly a call (audit 2026-09-29, S6): a call starts only while MIN_CALL_S
 # remain (app/llm/deadline.py) and has to be answered by the end of the request, so it must start in the request's
@@ -425,9 +428,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         lifespan=lifespan,
         default_response_class=JsonResponse,
         dependencies=[Depends(name_the_route)],
-        docs_url="/docs" if settings.api_docs_enabled else None,
-        redoc_url="/redoc" if settings.api_docs_enabled else None,
-        openapi_url="/openapi.json" if settings.api_docs_enabled else None,
+        docs_url=None,  # /docs and /redoc with a policy of their own below (audit 2026-09-29, S12)
+        redoc_url=None,
+        openapi_url=OPENAPI_PATH if settings.api_docs_enabled else None,
     )
     app.state.settings = settings
     listen_to_calls(record_llm_call)  # every LLM call, by route and outcome (BE-04)
@@ -462,6 +465,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(collections_router)
     if settings.metrics_enabled:
         app.include_router(metrics_router)
+    if settings.api_docs_enabled:
+        app.include_router(docs_router(OPENAPI_PATH, app.title))
     if settings.ui_enabled:
         app.include_router(ui_router())
         if not settings.api_key_list:
