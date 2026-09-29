@@ -1,10 +1,11 @@
+import json
 import os
 from pathlib import Path
 from typing import Any
 
 import pytest
 
-from app.templates.manager import TemplateManager, TemplateNotFoundError
+from app.templates.manager import BUILTIN_DIR, TemplateManager, TemplateNotFoundError
 from app.templates.schema import Template, TemplateSlot
 
 
@@ -106,6 +107,31 @@ def test_a_custom_file_without_a_json_object_is_skipped(
         assert "sc26" in {template.id for template in manager.list()}
         assert manager.get("sc26").builtin
     assert "kein_objekt.json" in caplog.text
+
+
+def test_a_stored_template_with_a_field_the_schema_does_not_know_still_loads(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """S10: a save refuses unknown fields; a file stored before that, or edited by hand, must not vanish for one."""
+    saved = TemplateManager(custom_dir=tmp_path).save(
+        Template(id="mein", name="Mein", slots=[TemplateSlot(id="a", slot="praxis", title="Praxis")])
+    )
+    path = tmp_path / "mein.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["kommentar"] = "von Hand"
+    data["slots"][0]["budget"]["wieght"] = 2
+    path.write_text(json.dumps(data), encoding="utf-8")
+
+    with caplog.at_level("WARNING"):
+        loaded = TemplateManager(custom_dir=tmp_path).get("mein")
+
+    assert (loaded.name, loaded.version) == ("Mein", saved.version)
+    assert "mein.json" in caplog.text and "kommentar" in caplog.text and "wieght" in caplog.text
+
+
+def test_the_built_in_files_hold_no_field_the_schema_does_not_know() -> None:
+    for path in sorted(BUILTIN_DIR.glob("*.json")):
+        assert Template.model_validate(json.loads(path.read_text(encoding="utf-8"))).builtin, path.name
 
 
 def test_a_custom_file_that_vanishes_while_listing_is_skipped(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

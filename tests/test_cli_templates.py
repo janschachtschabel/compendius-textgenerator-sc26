@@ -58,6 +58,13 @@ def test_saving_a_builtin_id_is_refused(cli_env: Path, capsys: pytest.CaptureFix
     assert "sc26" in capsys.readouterr().err
 
 
+def test_a_field_the_schema_does_not_know_is_refused(cli_env: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    """S10: a typo such as empty_slot_polcy was dropped without a word."""
+    path = write_template(cli_env, {**TEMPLATE, "empty_slot_polcy": "note"})
+    assert main(["templates", "save", str(path)]) == 1
+    assert "empty_slot_polcy" in capsys.readouterr().err
+
+
 def test_an_unreadable_file_is_reported_not_raised(cli_env: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["templates", "save", str(cli_env / "gibtesnicht.json")]) == 1
     assert "gibtesnicht.json" in capsys.readouterr().err

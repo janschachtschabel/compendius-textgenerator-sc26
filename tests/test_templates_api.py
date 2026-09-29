@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
@@ -129,6 +130,30 @@ def test_a_facet_name_with_markup_is_refused(client: TestClient) -> None:
     answer = client.put("/api/v2/templates/mein", json=marked, headers=AUTH)
     assert answer.status_code == 422 and "facets" in answer.text
     assert client.get("/api/v2/templates/mein").status_code == 404
+
+
+@pytest.mark.parametrize(
+    ("body", "field"),
+    [
+        ({**TEMPLATE, "empty_slot_polcy": "note"}, "empty_slot_polcy"),
+        ({**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "heading_pattern": ["^Praxis$"]}]}, "heading_pattern"),
+        ({**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "budget": {"wieght": 2}}]}, "wieght"),
+        ({**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "facets": {"requried": ["Zeitbezug"]}}]}, "requried"),
+    ],
+)
+def test_a_field_the_schema_does_not_know_is_refused(client: TestClient, body: dict[str, Any], field: str) -> None:
+    """S10: "empty_slot_polcy": "note" was dropped without a word, and the template was stored with omit."""
+    answer = client.put("/api/v2/templates/mein", json=body, headers=AUTH)
+    assert answer.status_code == 422 and field in answer.text
+    assert client.get("/api/v2/templates/mein").status_code == 404
+
+
+def test_many_unknown_fields_of_a_template_are_one_problem_that_names_three(client: TestClient) -> None:
+    """As for a request (audit 2026-09-28, SE-15): every unknown field a problem of its own held a worker."""
+    fields = {f"feld{number}": 1 for number in range(10_000)}
+    answer = client.put("/api/v2/templates/mein", json={**TEMPLATE, **fields}, headers=AUTH)
+    assert answer.status_code == 422 and len(answer.content) < 2_000
+    assert "feld0, feld1, feld2 und 9997 weitere" in answer.text
 
 
 def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:

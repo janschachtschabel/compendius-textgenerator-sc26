@@ -24,8 +24,9 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from app.domain.caller_values import listed
 from app.jobs.lock import LockHeldError, acquire_lock
-from app.templates.schema import TEMPLATE_ID_PATTERN, Template
+from app.templates.schema import STORED_UNKNOWN_FIELDS, TEMPLATE_ID_PATTERN, Template
 
 log = logging.getLogger(__name__)
 
@@ -49,10 +50,16 @@ class TemplateNotFoundError(KeyError):
 
 
 def _load(path: Path, *, builtin: bool) -> Template:
+    """The template stored at ``path``. A field the schema does not know is left out with a warning, not refused: the
+    file may come from before a field was renamed, or from an editor's hand (audit 2026-09-29, S10)."""
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError(f"expected a JSON object, got {type(data).__name__}")
-    return Template.model_validate({**data, "builtin": builtin})
+    unknown: list[str] = []
+    template = Template.model_validate({**data, "builtin": builtin}, context={STORED_UNKNOWN_FIELDS: unknown})
+    if unknown:
+        log.warning("template %s: fields the schema does not know left out: %s", path.name, listed(unknown))
+    return template
 
 
 def _signature(directory: Path) -> _Signature:

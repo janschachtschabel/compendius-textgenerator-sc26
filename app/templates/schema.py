@@ -12,8 +12,9 @@ import re
 from functools import lru_cache
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
+from app.domain.caller_values import NAMED, listed
 from app.domain.spelling import OneSpelling
 
 Generator = Literal["", "sources", "glossary", "actors"]
@@ -73,9 +74,41 @@ ROLE_KEYS: dict[str, Role] = {
     "gesellschaftlicher_kontext": "context",
 }
 ACTORS_KEY = "akteure"  # where the shared lexicon files the sections on persons: material of the actors block
+# The key of the validation context under which a template read back from the volume collects the fields its parts do
+# not know (app/templates/manager.py)
+STORED_UNKNOWN_FIELDS = "stored_unknown_fields"
 
 
-class FacetSpec(BaseModel):
+class KnownFields(BaseModel):
+    """A part of a template takes only the fields it declares: a PUT with "empty_slot_polcy": "note" was stored as
+    omit without a word (audit 2026-09-29, S10). Up to three unknown fields are one problem each, more are one problem
+    that names three, as in a request (app/domain/requests.py; audit 2026-09-28, SE-15).
+
+    A template read back from the volume is validated with a list under STORED_UNKNOWN_FIELDS in the context: its
+    unknown fields are left out and noted there instead, so that a file stored before a field was renamed, or edited
+    by hand, stays readable and its manager can warn about it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    @model_validator(mode="before")
+    @classmethod
+    def _unknown_fields(cls, data: Any, info: ValidationInfo) -> Any:
+        if not isinstance(data, dict):
+            return data
+        known = cls.model_fields
+        unknown = [str(key) for key in data if key not in known]
+        if not unknown:
+            return data
+        noted = info.context.get(STORED_UNKNOWN_FIELDS) if isinstance(info.context, dict) else None
+        if noted is not None:
+            noted.extend(f"{cls.__name__}.{key}" for key in unknown)
+            return {key: value for key, value in data.items() if key in known}
+        if len(unknown) > NAMED:
+            raise ValueError(f"Unbekannte Felder: {listed(unknown)}")
+        return data
+
+
+class FacetSpec(KnownFields):
     """Which facets a block carries, beyond the ones ``config/facets.yaml`` declares for its slot."""
 
     required: list[FacetName] = Field(
@@ -97,7 +130,7 @@ class FacetSpec(BaseModel):
     )
 
 
-class SlotBudget(BaseModel):
+class SlotBudget(KnownFields):
     """How much material a block gets. A steer, not a cap: excerpts end at a paragraph boundary."""
 
     min_chunks: int = Field(1, ge=0, description="Below this many passages the block keeps collecting")
@@ -258,7 +291,7 @@ def block_key(key: str) -> str:
     return key.strip().lower()
 
 
-class TemplateSlot(OneSpelling):
+class TemplateSlot(OneSpelling, KnownFields):
     """One building block of part 1; its text in one spelling, as the archives write theirs (app/domain/spelling.py)."""
 
     id: str = Field(
@@ -370,7 +403,7 @@ class TemplateSlot(OneSpelling):
         return block_key(value)
 
 
-class Template(OneSpelling):
+class Template(OneSpelling, KnownFields):
     """The building blocks of part 1, in the order they appear in the finished text."""
 
     id: str = Field(
