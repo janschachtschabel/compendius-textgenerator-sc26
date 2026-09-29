@@ -83,7 +83,7 @@ function methods(answer, run, options) {
     const values = STEPS[row.step].values;
     const used = row.applies
       ? [label(values, row.used), row.fellBack ? h('span', { class: 'flag' }, ' Rückfall auf die Regeln') : null]
-      : `– läuft nur mit ${label(PARTS, row.part)}`;
+      : `– läuft nur mit ${row.parts.map((part) => label(PARTS, part)).join(' oder ')}`;
     return h(
       'tr',
       { class: row.fellBack ? 'fell-back' : null },

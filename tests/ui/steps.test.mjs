@@ -80,6 +80,40 @@ test('a step the LLM was asked for and the rules did falls back', () => {
   assert.match(rows.curriculum_check.note, /Budget erschöpft/);
 });
 
+const balanced = { presets: [...options.presets, { id: 'balanced', switches: { ...options.presets[0].switches, article_choice: 'llm' } }] };
+const choiceRow = (block, parts = ['world'], note = undefined) =>
+  byStep(stepsAccount({ extraction: 'rule-based', generation: 'rule-based', enrichment: 'sources-only', audit: { llm: { article_choice: block, note } } }, { parts }, 'balanced', balanced)).article_choice;
+
+test('the article choice runs only for part 1 or 2, which need an article', () => {
+  const row = choiceRow({ requested: 'llm', used: 'rule-based', needed: false }, ['collection']);
+
+  assert.equal(row.applies, false);
+  assert.equal(row.fellBack, false);
+  assert.deepEqual(row.parts, ['world', 'curricula']);
+  assert.equal(choiceRow({ requested: 'llm', used: 'llm', needed: true }, ['curricula']).applies, true);
+});
+
+test('the article choice falls back only with a reason, and says it', () => {
+  const outage = choiceRow({ requested: 'llm', used: 'rule-based', needed: true, asked: false }, ['world'], 'b-api nicht erreichbar; Regelmodus verwendet');
+  const cut = choiceRow({ requested: 'llm', used: 'rule-based', needed: true, articles_fallback: 'Budget erschöpft' });
+
+  assert.equal(outage.fellBack, true);
+  assert.match(outage.note, /b-api nicht erreichbar/);
+  assert.equal(cut.fellBack, true);
+  assert.match(cut.note, /Budget erschöpft/);
+});
+
+test('rules that were sure, or a model that changed nothing, are no fallback', () => {
+  const sure = choiceRow({ requested: 'llm', used: 'rule-based', needed: false });
+  const agreed = choiceRow({ requested: 'llm', used: 'rule-based', needed: true, asked: true, offered: 3 });
+
+  assert.equal(sure.fellBack, false);
+  assert.equal(sure.note, 'die Regeln waren sicher');
+  assert.equal(agreed.fellBack, false);
+  assert.equal(agreed.note, 'die KI änderte nichts an der Wahl der Regeln');
+  assert.equal(choiceRow({ requested: 'llm', used: 'rule-based', needed: true }).note, 'die KI wurde nicht gefragt');
+});
+
 test('a switch the request set wins over its profile', () => {
   const answer = { extraction: 'llm', generation: 'rule-based', enrichment: 'sources-only', audit: { matcher: 'bm25', llm: { extraction: { requested: 'llm', used: 'llm' } } } };
   const rows = byStep(stepsAccount(answer, { parts: ['world'], matcher: 'bm25', extraction: 'llm' }, 'llm-free', options));
