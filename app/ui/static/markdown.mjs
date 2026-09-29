@@ -5,21 +5,27 @@
 // and the comments that mark blocks and facets - and it never produces markup. A tag in the text stays text, a
 // comment is dropped unless it is one of the service's markers, and a link only becomes one when its target is a web
 // address. The service escapes the text of its sources for CommonMark (app/synthesis/safe_markdown.py), so an escape
-// reads as the sign it stands for.
+// reads as the sign it stands for. Every pattern here reads a line in one pass, and quotes nested deeper than
+// MAX_DEPTH read as paragraphs: however badly a text is formed, it takes time in proportion to its length.
 
 import { parseInline } from './inline.mjs';
 
 const FRONTMATTER = /^---\n([\s\S]*?)\n---(?:\n|$)/;
-const HEADING = /^ {0,3}(#{1,6})[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$/;
+// The text of a line runs to its end, a line separator (U+2028) included, as CommonMark reads it; headingText()
+// drops the closing sequence of a heading
+const HEADING = /^ {0,3}(#{1,6})[ \t]+(.*)$/s;
 // A comment alone on its line; "-->" may not occur inside, or a line that only holds a marked sentence would read as one
 const COMMENT_LINE = /^[ \t]*<!--((?:(?!-->)[\s\S])*)-->[ \t]*$/;
-const SECTION = /^kompendium:section\s+(.*)$/;
-const ATTRIBUTE = /([a-z_]+)=(?:"([^"]*)"|(\S+))/g;
-const LIST_ITEM = /^([ \t]*)([-*+]|\d{1,9}[.)])[ \t]+(.*)$/;
+const SECTION = /^kompendium:section\s+(.*)$/s;
+// A name starts where a word does: tried inside one as well, a long word would be read once per letter
+const ATTRIBUTE = /(?<![a-z_])([a-z_]+)=(?:"([^"]*)"|(\S+))/g;
+const LIST_ITEM = /^([ \t]*)([-*+]|\d{1,9}[.)])[ \t]+(.*)$/s;
 const RULE = /^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$/;
 const FENCE = /^ {0,3}(`{3,}|~{3,})/;
-const QUOTE = /^ {0,3}>[ \t]?(.*)$/;
+const QUOTE = /^ {0,3}>[ \t]?(.*)$/s;
 const DELIMITER_CELL = /^[ \t]*:?-+:?[ \t]*$/;
+// Deeper than the service ever nests quotes (it nests none); a quote below it reads as a paragraph
+const MAX_DEPTH = 16;
 
 /** The frontmatter (YAML as text, or null) and the blocks of a document. */
 export function parseMarkdown(source) {
@@ -54,7 +60,7 @@ export function sectionize(blocks) {
   return out;
 }
 
-function parseBlocks(lines) {
+function parseBlocks(lines, depth = 0) {
   const blocks = [];
   let i = 0;
   while (i < lines.length) {
@@ -62,30 +68,45 @@ function parseBlocks(lines) {
       i += 1;
       continue;
     }
-    const [block, next] = readBlock(lines, i);
+    const [block, next] = readBlock(lines, i, depth);
     blocks.push(block);
     i = next;
   }
   return blocks;
 }
 
-function readBlock(lines, i) {
+function readBlock(lines, i, depth) {
   const line = lines[i];
   const comment = COMMENT_LINE.exec(line);
   if (comment) return [commentBlock(comment[1].trim()), i + 1];
   const heading = HEADING.exec(line);
-  if (heading) return [{ type: 'heading', level: heading[1].length, children: parseInline(heading[2]) }, i + 1];
+  if (heading) return [{ type: 'heading', level: heading[1].length, children: parseInline(headingText(heading[2])) }, i + 1];
   if (FENCE.test(line)) return readFence(lines, i);
   if (isTableStart(lines, i)) return readTable(lines, i);
   if (RULE.test(line)) return [{ type: 'rule' }, i + 1];
   if (LIST_ITEM.test(line)) return readList(lines, i);
-  if (QUOTE.test(line)) return readQuote(lines, i);
+  if (QUOTE.test(line) && depth < MAX_DEPTH) return readQuote(lines, i, depth);
   return readParagraph(lines, i);
 }
 
 function startsBlock(lines, i) {
   const line = lines[i];
   return [COMMENT_LINE, HEADING, FENCE, RULE, LIST_ITEM, QUOTE].some((pattern) => pattern.test(line)) || isTableStart(lines, i);
+}
+
+// A heading's text without its closing sequence: the hashes at its end that a space sets apart ("## Titel ##")
+function headingText(raw) {
+  const text = withoutTrailingBlanks(raw);
+  let hashes = text.length;
+  while (hashes > 0 && text[hashes - 1] === '#') hashes -= 1;
+  if (hashes === text.length || hashes === 0 || !' \t'.includes(text[hashes - 1])) return text;
+  return withoutTrailingBlanks(text.slice(0, hashes));
+}
+
+function withoutTrailingBlanks(text) {
+  let end = text.length;
+  while (end > 0 && (text[end - 1] === ' ' || text[end - 1] === '\t')) end -= 1;
+  return text.slice(0, end);
 }
 
 function commentBlock(text) {
@@ -117,14 +138,14 @@ function readFence(lines, i) {
   return [{ type: 'code', text: body.join('\n') }, Math.min(next + 1, lines.length)];
 }
 
-function readQuote(lines, i) {
+function readQuote(lines, i, depth) {
   const inner = [];
   let next = i;
   while (next < lines.length && QUOTE.test(lines[next])) {
     inner.push(QUOTE.exec(lines[next])[1]);
     next += 1;
   }
-  return [{ type: 'quote', blocks: parseBlocks(inner) }, next];
+  return [{ type: 'quote', blocks: parseBlocks(inner, depth + 1) }, next];
 }
 
 function isTableStart(lines, i) {
@@ -138,8 +159,13 @@ function readTable(lines, i) {
   const align = splitRow(lines[i + 1]).map(alignment);
   const rows = [];
   let next = i + 2;
+  // A short row gets the empty cells it lacks, as GFM reads it - but no more of them in all than the table has
+  // characters, or rows of one sign under a wide header would grow it with the square of its length
+  let room = lines[i].length + lines[i + 1].length;
   while (next < lines.length && lines[next].includes('|') && lines[next].trim()) {
     const cells = splitRow(lines[next]);
+    room += lines[next].length - Math.max(0, head.length - cells.length);
+    if (room < 0) break;
     rows.push(head.map((_, column) => parseInline(cells[column] ?? '')));
     next += 1;
   }

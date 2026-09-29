@@ -90,6 +90,14 @@ test('strong, emphasis and code spans', () => {
   ]);
 });
 
+test('a code span closes at the next run of backticks as long as the one that opens it', () => {
+  assert.deepEqual(parseInline('`a``b` und ``c`d``'), [{ type: 'code', value: 'a``b' }, text(' und '), { type: 'code', value: 'c`d' }]);
+});
+
+test('a run of backticks with no closer of its length stays text, all of it', () => {
+  assert.deepEqual(parseInline('``a` b'), [text('``a` b')]);
+});
+
 test('a lone asterisk between words is no emphasis', () => {
   assert.deepEqual(parseInline('5 * 3 * 2 = 30'), [text('5 * 3 * 2 = 30')]);
 });
@@ -228,6 +236,13 @@ test('a block runs from the heading before its marker to the next block or part'
 
 test('inlineText reads the words of a tree, citations as their numbers', () => {
   assert.equal(inlineText(parseInline('**A** und [B](https://b.example) [4]')), 'A und B [4]');
+});
+
+test('a line separator is text of its line, as CommonMark reads it', () => {
+  const { blocks } = parseMarkdown('# Titel\u2028zwei\n\n- Punkt\u2028zwei\n\n> Zitat\u2028zwei');
+
+  assert.deepEqual(blocks.map((block) => block.type), ['heading', 'list', 'quote']);
+  assert.equal(inlineText(blocks[0].children), 'Titel\u2028zwei');
 });
 
 test('windows line ends read as plain ones', () => {
