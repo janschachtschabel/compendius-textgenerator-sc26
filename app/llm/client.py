@@ -303,6 +303,10 @@ class BApiClient:
             limit = ends - self._clock()
             try:
                 response = self._send(method, url, json_body, limit)
+            except LlmError as exc:
+                # No free call slot in time: a full queue on our side, no outage, but the attempts before it may have
+                # reached the model and cost their prompts (audit 2026-09-29, A05)
+                raise LlmError(str(exc), reached=reached) from exc
             except httpx.TimeoutException as exc:
                 # A request that timed out once will not answer in time on a retry within a synchronous request.
                 reached += isinstance(exc, httpx.ReadTimeout | httpx.WriteTimeout)

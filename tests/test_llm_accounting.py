@@ -167,6 +167,35 @@ def test_the_usage_of_an_answer_that_cannot_be_used_keeps_prompt_and_completion_
     assert (answer.prompt_tokens, answer.completion_tokens, answer.total_tokens) == (PROMPT + 1000, 50, PROMPT + 1050)
 
 
+class TakenSlots:
+    """The call slots of a client, taken by other calls after the first attempt for longer than the call may wait."""
+
+    def __init__(self) -> None:
+        self.free = 1
+
+    def acquire(self, timeout: float | None = None) -> bool:
+        granted, self.free = self.free > 0, max(0, self.free - 1)
+        return granted
+
+    def release(self) -> None:
+        pass
+
+
+def test_a_retry_without_a_free_call_slot_still_charges_the_attempt_that_reached_the_model(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The error of a full queue carried no attempts, so the 504 before it cost nothing (audit 2026-09-29, A05)."""
+    fake = FakeBApi(statuses=[504, 200])
+    client, _ = make_client(fake)
+    monkeypatch.setattr(client, "_semaphore", TakenSlots())
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+
+    answer = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+
+    assert isinstance(answer, LlmSkipped) and "Platz" in answer.reason and len(fake.requests) == 1
+    assert answer.prompt_tokens == PROMPT and budget.used == PROMPT
+
+
 def test_a_usage_beyond_any_model_is_capped_and_the_day_goes_on(tmp_path: Path) -> None:
     client, _ = make_client(FakeBApi(raw=completion("OK", prompt_tokens=2**63, completion_tokens=2**64)))
     day = TokenBudget(per_request=10**9, daily=10**12, store=SqliteDailyStore(tmp_path / "llm_budget.db"))
