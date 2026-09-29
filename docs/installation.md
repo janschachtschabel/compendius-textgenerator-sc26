@@ -222,10 +222,10 @@ in die Variablen des Hosting-Panels):
 - `API_KEYS`: ein oder mehrere Schlüssel, kommagetrennt, je mindestens 16 Zeichen (`openssl rand -hex 32`). Dann
   verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`,
   `/lehrplan/search`, `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne
-  Schlüssel kann jeder das gemeinsame LLM-Tagesbudget in Minuten aufbrauchen. `/health`, `/ready`, `/docs`, die
-  Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht bleiben offen; deren Anfragen an
-  die Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener Schlüssel je aufrufender Anwendung
-  lässt sich einzeln zurückziehen.
+  Schlüssel kann jeder LLM-Tokens verbrauchen, und ohne `LLM_DAILY_TOKEN_BUDGET` gibt es dafür keine Tagesgrenze.
+  `/health`, `/ready`, `/docs`, die Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht
+  bleiben offen; deren Anfragen an die Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener
+  Schlüssel je aufrufender Anwendung lässt sich einzeln zurückziehen.
 - `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`. Prometheus aus dem
   Compose-Profil braucht dann dasselbe Token (Abschnitt 10).
 

@@ -418,6 +418,11 @@ tests:
         values: "1000x10"
       - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="frei"}'
         values: "2000000x10"
+      # Ohne Tagesbudget (0, Vorgabe seit D67): kein Anteil, kein Alarm, wie viel auch verbraucht ist
+      - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000", fall="aus"}'
+        values: "5000000x10"
+      - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="aus"}'
+        values: "0x10"
     alert_rule_test:
       - eval_time: 5m
         alertname: KompendiumLlmBudgetNearlySpent
@@ -472,6 +477,11 @@ tests:
         values: "1900000+10000x6 0+10000x17"
       - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="mitternacht"}'
         values: "2000000x24"
+      # Ohne Tagesbudget: so schnell wie "schnell", aber kein Alarm
+      - series: 'kompendium_llm_tokens_used_today{job="kompendium", instance="api:8000", fall="aus"}'
+        values: "0+50000x24"
+      - series: 'kompendium_llm_daily_budget_tokens{job="kompendium", instance="api:8000", fall="aus"}'
+        values: "0x24"
     alert_rule_test:
       - eval_time: 1h
         alertname: KompendiumLlmBudgetBurnsFast

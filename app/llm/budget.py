@@ -1,7 +1,8 @@
 """Token budget for the LLM layer (PLAN.md 7): a cap per compendium request and a daily cap for all workers.
 
-The daily counter lives in a ``DailyStore`` (llm_budget.db in STATE_DIR); only without it does each process count
-for itself.
+The daily cap is optional: a daily limit of 0 sets none (the default since D67), and the day's usage is counted all
+the same. The daily counter lives in a ``DailyStore`` (llm_budget.db in STATE_DIR); only without it does each process
+count for itself.
 
 Calls reserve their upper-bound estimate before they start and settle to the actual usage afterwards, so parallel
 drafts cannot overshoot a limit between the check and the call; a retry after an attempt that may have reached the
@@ -61,7 +62,7 @@ class DailyStore(Protocol):
 
 
 class TokenBudget:
-    """Daily token cap; resets at the UTC day boundary.
+    """Daily token cap, none with ``daily=0``; resets at the UTC day boundary.
 
     With a ``store`` the spent tokens and the reservations of calls in flight are shared by all API workers, and the
     spent tokens survive restarts; without one (tests), or while it fails, the process counts for itself.
@@ -116,18 +117,30 @@ class TokenBudget:
         return self._store.held_elsewhere(self._owner, self._clock()) or 0
 
     @property
-    def remaining_today(self) -> int:
+    def capped(self) -> bool:
+        """Whether a daily cap applies; ``daily=0`` sets none (D67)."""
+        return self.daily > 0
+
+    @property
+    def remaining_today(self) -> int | None:
+        """What the day has left for new calls; ``None`` without a daily cap."""
+        if not self.capped:
+            return None
         with self._lock:
             self._roll()
             return max(0, self.daily - self._spent() - self._reserved - self._elsewhere())
 
     @property
     def exhausted(self) -> bool:
-        return self.remaining_today <= 0
+        remaining = self.remaining_today
+        return remaining is not None and remaining <= 0
 
     def reserve(self, tokens: int) -> bool:
         with self._lock:
             self._roll()
+            if not self.capped:
+                self._reserved += tokens  # nothing to check; settle counts what the call spent
+                return True
             if self._store is not None:
                 # One step for all workers; what this process could not save yet counts against the day as well
                 limit = self.daily - self._unsaved

@@ -1847,6 +1847,12 @@ API.
   kostete (`llm_tokens`: Teil 1 mit seiner Artikelwahl und die Paare, ein Aufruf ohne verwertbares Paar
   eingeschlossen, in der Form von `audit.llm_tokens`), und die Seite zeigt die Tokens wie bei den anderen
   Endpunkten statt „nicht gemeldet“.
+- **D67 (2026-09-29)** Keine Tagesgrenze ohne Eintrag (Jan: „die api sollte keinen festen wert für das tagesbudget
+  haben wenn sie in produktion geht … da wir eventuelle eine größere anzahl von einträgen verarbeiten“, „standard
+  sollte off sein für das tagesbudget“). `LLM_DAILY_TOKEN_BUDGET` bleibt einstellbar; die Vorgabe ist `0`, keine
+  Grenze, wie bei `RATE_LIMIT`. Gezählt wird weiter (`/health`, `kompendium_llm_tokens_used_today`), die Grenze je
+  Anfrage bleibt, die beiden Budget-Alarme gelten nur mit gesetztem Budget. Ohne Budget und ohne `API_KEYS` kann
+  jeder, der den Dienst erreicht, Tokens ohne Grenze verbrauchen; der Start warnt dann.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -323,3 +323,31 @@ def test_the_estimate_stays_above_what_the_model_counts(text: str, characters_pe
     """Rates measured on 2026-09-27 with gpt-6-luna through the b-api, about 2,400 characters each. Three characters
     per token held for German, Russian and Arabic; Chinese needs more than twice that (audit 2026-09-27, SE-14)."""
     assert estimate_tokens(text) >= len(text) / characters_per_token
+
+
+def test_a_daily_budget_of_zero_caps_nothing_and_still_counts() -> None:
+    """LLM_DAILY_TOKEN_BUDGET=0, the default since D67: in operation the service may work through many entries a day,
+    so no daily cap turns a call away; the cap per request still does, and the day's usage is counted for /health and
+    /metrics."""
+    budget = TokenBudget(per_request=10_000, daily=0)
+
+    for _ in range(50):
+        request = budget.open_request()
+        assert request.reserve(9_000) is None
+        request.settle(9_000, 8_000)
+
+    assert budget.used_today == 400_000 and budget.remaining_today is None and not budget.exhausted
+    denial = budget.open_request().reserve(10_001)
+    assert denial is not None and "Anfrage" in denial
+
+
+def test_without_a_daily_cap_the_workers_still_share_their_count(tmp_path: Path) -> None:
+    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100), daily=0)
+
+    for worker in (worker_a, worker_b):
+        request = worker.open_request()
+        assert request.reserve(9_000) is None
+        request.settle(9_000, 3_000)
+
+    assert worker_a.used_today == worker_b.used_today == 6_000
+    assert worker_b.open_request().reserve(10_000) is None

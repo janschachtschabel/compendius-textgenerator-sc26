@@ -170,6 +170,11 @@ def warn_about_llm_settings(settings: Settings) -> None:
             MIN_CALL_S,
             Settings.model_fields["request_timeout_s"].default,
         )
+    if not settings.llm_daily_token_budget and not settings.api_key_list:
+        log.warning(
+            "LLM_DAILY_TOKEN_BUDGET=0 and API_KEYS empty: anyone who reaches the service spends b-api tokens without a "
+            "daily cap. Set API_KEYS, or a cap in LLM_DAILY_TOKEN_BUDGET (D67)"
+        )
     if not is_reasoning_model(settings.b_api_model):
         return  # a classic model is sent neither
     for name, value, known in (
@@ -482,7 +487,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # The page asks every endpoint for whoever opens it; a test server ran just so, in public
             log.warning(
                 "UI_ENABLED is set but API_KEYS is not: anyone who reaches /ui/ calls every endpoint through it, and "
-                "the profiles with an LLM spend the daily token budget of all callers (audit 2026-09-29, S2)"
+                "the profiles with an LLM spend b-api tokens for all callers (audit 2026-09-29, S2)"
             )
     app.add_exception_handler(HTTPException, http_error)
     app.add_exception_handler(RequestValidationError, validation_error)

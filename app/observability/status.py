@@ -250,5 +250,7 @@ class StatusCollector:
         budget = status["budget"]
         yield _gauge("kompendium_llm_tokens_used_today", "LLM tokens spent today, all workers", budget["used_today"])
         yield _gauge(
-            "kompendium_llm_daily_budget_tokens", "Daily LLM token budget (LLM_DAILY_TOKEN_BUDGET)", budget["daily"]
+            "kompendium_llm_daily_budget_tokens",
+            "Daily LLM token budget (LLM_DAILY_TOKEN_BUDGET); 0 = no daily cap",
+            budget["daily"],
         )

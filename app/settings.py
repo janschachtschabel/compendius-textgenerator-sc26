@@ -197,7 +197,10 @@ class Settings(BaseSettings):
         "both parts took 137,398 tokens in best-quality and 152,197 in best-quality-generated (M33)",
     )
     llm_daily_token_budget: int = Field(
-        2_000_000, ge=0, description="Daily token cap of all workers together (llm_budget.db in STATE_DIR)"
+        0,
+        ge=0,
+        description="Daily token cap of all workers together (llm_budget.db in STATE_DIR); 0, the default, sets none "
+        "- in operation the service may work through many entries a day (D67). The day's usage is counted either way",
     )
     llm_unsupported_sentences: Literal["drop", "mark"] = Field(
         "drop",

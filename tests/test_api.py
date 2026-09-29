@@ -140,7 +140,7 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     assert gateway.options.fast_sections == ("sc26_1",) and gateway.options.extraction_candidates == 5
     assert gateway.synthesizer.mark_unsupported is True
     assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
-    assert gateway.budget.per_request == 60_000 and gateway.budget.daily == 2_000_000
+    assert gateway.budget.per_request == 60_000 and gateway.budget.daily == 0  # no daily cap unless set (D67)
     assert (tmp_path / "llm_budget.db").exists(), "the daily counter is shared through STATE_DIR"
     assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
 
@@ -201,6 +201,20 @@ def test_a_reasoning_setting_the_models_do_not_know_is_named_at_start(
         build_llm(settings)
 
     assert (setting.upper() in caplog.text) is warned
+
+
+@pytest.mark.parametrize(("daily", "keys", "warned"), [(0, "", True), (0, "k" * 32, False), (2_000_000, "", False)])
+def test_an_llm_open_to_anyone_without_a_daily_cap_is_named_at_start(
+    tmp_path: Path, offline_b_api: FakeBApi, caplog: pytest.LogCaptureFixture, daily: int, keys: str, warned: bool
+) -> None:
+    """Without a daily cap (the default since D67) only API_KEYS keeps strangers from spending b-api tokens without
+    limit; a server open to all is named at start, as the review page without keys is (audit 2026-09-29, S2)."""
+    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", llm_daily_token_budget=daily, api_keys=keys)
+
+    with caplog.at_level(logging.WARNING):
+        build_llm(settings)
+
+    assert ("LLM_DAILY_TOKEN_BUDGET" in caplog.text) is warned
 
 
 def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

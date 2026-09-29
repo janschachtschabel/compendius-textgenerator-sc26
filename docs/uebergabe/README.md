@@ -23,7 +23,7 @@ Störungen, Überwachung), das [README](../../README.md) (alle Endpunkte und Par
   `zim-updater` (Wikipedia und Klexikon als ZIM-Archive von Kiwix), `lehrplan-updater` (Lehrpläne der MEM),
   `wikidata-updater` und `gnd-updater` (Indexe für die Kennungen der Entitäten). Jeder Sidecar lädt, prüft die
   Prüfsumme und ersetzt die Datei in einem Schritt; die API übernimmt neue Daten ohne Neustart.
-- **Zwei Volumes.** `zim` hält die Archive, `state` den Lehrplan-Cache, die beiden Indexe, das Tagesbudget der
+- **Zwei Volumes.** `zim` hält die Archive, `state` den Lehrplan-Cache, die beiden Indexe, den Tageszähler der
   LLM-Tokens, den Sammlungs-Cache und eigene Templates. Sichern muss man nur `state/templates/`, falls eigene
   Templates angelegt werden; alles andere bauen die Sidecars neu ([betrieb.md](../betrieb.md), Volumes).
 - **Zur Anfragezeit** spricht die API nur mit der b-api (LLM, ab Profil `balanced`) und mit edu-sharing (Teil 3,
@@ -76,8 +76,9 @@ liefen nicht. Rohdaten: [lasttest-2026-09-29.json](lasttest-2026-09-29.json), Sk
   weitgehend nacheinander: Lesen der Archive und Zuordnung halten die Interpreter-Sperre von Python. Ein Kompendium
   allein dauerte 6,8 s, fünf gleichzeitig je 9 bis 26 s.
 - **Die LLM-Profile warten vor allem auf die b-api.** `best-quality` brauchte kaum mehr CPU-Zeit als `llm-free`
-  (29,9 zu 27,8 s für fünf Kompendien), aber 48.000 bis 84.000 Tokens je Kompendium: Das Tagesbudget von 2 Mio. Tokens
-  (`LLM_DAILY_TOKEN_BUDGET`) reicht für 25 bis 40 davon. `balanced` kostet rund 500 Tokens.
+  (29,9 zu 27,8 s für fünf Kompendien), aber 48.000 bis 84.000 Tokens je Kompendium; 2 Mio. Tokens reichen für
+  25 bis 40 davon. `balanced` kostet rund 500 Tokens. Eine Tagesgrenze gibt es nur, wenn `LLM_DAILY_TOKEN_BUDGET`
+  sie setzt (Vorgabe `0`, keine Grenze).
 - **Bekannte Themen sind schneller.** Fünf Themen, die der Dienst schon erzeugt hatte, dauerten gleichzeitig 3,1 bis
   6,8 s statt 9 bis 26 s. Die Worker halten Gelesenes im Speicher, jeder für sich.
 
@@ -183,7 +184,9 @@ Für das neue GitLab zu klären und anzupassen:
 - **Prüfen:** `GET /health` nennt Version, Commit, Archive, Indexe, LLM und verbrauchte Tokens des Tages.
 - **Update:** neues Tag in `IMAGE`, dann `docker compose pull && docker compose up -d`. Laufende Anfragen bekommen bis
   zu 150 s (`API_STOP_GRACE_PERIOD`). Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
-- **Sicherheit:** `API_KEYS` setzen, sonst beantwortet der Dienst jeden und jeder verbraucht das Tagesbudget;
+- **Sicherheit:** `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht LLM-Tokens ohne
+  Tagesgrenze (Vorgabe von `LLM_DAILY_TOKEN_BUDGET`: keine);
   dazu `METRICS_TOKEN` und `ADMIN_TOKEN`, alle mit `openssl rand -hex 32` erzeugt.
 - **Überwachung:** `GET /metrics` für Prometheus; `monitoring/alerts.yml` meldet unter anderem ausgefallene
-  Sidecars, volles Volume, fehlende Indexe und ein schnell schwindendes Tagesbudget ([betrieb.md](../betrieb.md)).
+  Sidecars, volles Volume, fehlende Indexe und, wenn eines gesetzt ist, ein schnell schwindendes Tagesbudget
+  ([betrieb.md](../betrieb.md)).

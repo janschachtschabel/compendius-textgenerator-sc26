@@ -249,8 +249,9 @@ groups:
         annotations:
           summary: Kein LLM-Aufruf bekommt eine Antwort
           description: Seit 15 Minuten scheitert jeder Aufruf an die b-api, über alle Endpunkte; die Anfragen laufen im Regelmodus. Das Log der API nennt den Status - 401, 403 oder 404 setzen das LLM zehn Minuten aus, 429 und 5xx den Schutzschalter.
+      # Beide Budget-Alarme gelten nur mit einem Tagesbudget; ohne (0, die Vorgabe seit D67) schweigen sie
       - alert: KompendiumLlmBudgetNearlySpent
-        expr: kompendium_llm_tokens_used_today / kompendium_llm_daily_budget_tokens > 0.9
+        expr: kompendium_llm_tokens_used_today / (kompendium_llm_daily_budget_tokens > 0) > 0.9
         labels:
           severity: warning
         annotations:
@@ -260,7 +261,7 @@ groups:
         # Gleichmaessig verteilt braucht ein Tag rund 4 % des Budgets je Stunde; ein Viertel in einer Stunde leert es in
         # vier Stunden. So viel schafft ein einzelner Aufrufer mit best-quality-generated (Audit 2026-09-27, SE-03).
         # Ueber den Tageswechsel um Mitternacht (UTC) ist delta negativ und loest nichts aus.
-        expr: delta(kompendium_llm_tokens_used_today[1h]) > 0.25 * kompendium_llm_daily_budget_tokens
+        expr: delta(kompendium_llm_tokens_used_today[1h]) > 0.25 * (kompendium_llm_daily_budget_tokens > 0)
         labels:
           severity: warning
         annotations:

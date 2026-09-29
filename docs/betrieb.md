@@ -69,6 +69,7 @@ Update daher:
 | 2026-09-29 (Audit, Startwarnungen) | Das Log beim Start nennt Einstellungen, mit denen der Dienst schwächer oder offener läuft als gedacht; keine davon verhindert den Start. `UI_ENABLED` ohne `API_KEYS`: jeder kann über `/ui/` die Profile mit LLM und das Tagesbudget nutzen. Ein leerer Eintrag `MODEL2VEC_PATH=` oder `SPACY_MODEL=` überschreibt das Modell, das das Image setzt, und schaltet es ab (Zuordnung ohne Einbettungen, `/api/v2/entities` ohne `ner`, QA-Regeln mit vier Vorlagen) — das war schon so, die README sagte es falsch; wer das Modell behalten will, lässt die Zeile weg. Mit LLM: `REQUEST_TIMEOUT_S` bis 10 s, das dem LLM kaum einen Aufruf lässt, und ein Wert von `LLM_REASONING_EFFORT` oder `LLM_VERBOSITY`, den die Reasoning-Modelle nicht kennen (vermutlich 400 bei jedem Aufruf, während `/health` das LLM verfügbar nennt) |
 | 2026-09-29 (Audit, Anfragen) | `GET /api/v2/lehrplan/search` und `GET /api/v2/nodes/{node_id}` antworten auf einen Parameter, den sie nicht kennen, mit 422, statt ihn zu übergehen: ein Tippfehler wie `prest=best-quality` nahm bisher still das Profil des Servers. Ein Aufrufer, der eigene Parameter anhängt (etwa einen Cache-Brecher `_=`), muss sie weglassen. Ein Körper, der kein lesbares JSON ist (kein UTF-8, zu tief verschachtelt), ist ein 422 `json_invalid` statt eines 400 auf Englisch, und ein `topic` nur aus Leerraum ein 422 statt eines 404 |
 | 2026-09-29 (Speichergrenze) | Die API darf 6 GiB statt 4 GiB belegen (`API_MEMORY`, Vorgabe in `docker-compose.yml`): Nach dem Aufwärmen braucht sie mit zwei Workern 3,4 GiB, mit dem Seiten-Cache der Archive stand sie an der alten Grenze ([Lastmessung](uebergabe/README.md#lastmessung-vom-29092026)). Die Grenze ist eine Obergrenze, kein reservierter Speicher; ein gesetztes `API_MEMORY` bleibt, wie es ist. Wirkt, wenn die neue Compose-Datei übernommen ist |
+| 2026-09-29 (Tagesbudget, D67) | `LLM_DAILY_TOKEN_BUDGET` hat die Vorgabe `0`, keine Tagesgrenze (bisher 2.000.000): Im Betrieb können an einem Tag viele Einträge anfallen. Eine `.env` aus der alten Vorlage trägt noch `LLM_DAILY_TOKEN_BUDGET=2000000` und behält damit die Grenze; ohne Grenze den Wert auf `0` setzen oder die Zeile löschen (der Parameter bleibt einstellbar). Gezählt wird weiter (`/health`, `kompendium_llm_tokens_used_today`), die Grenze je Anfrage bleibt, und die Budget-Alarme melden sich nur mit gesetztem Budget. **Ohne Budget und ohne `API_KEYS` kann jeder, der den Dienst erreicht, Tokens ohne Grenze verbrauchen**; der Start warnt dann. Ein offener Server setzt vor dem Update eines von beiden |
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`), die Zeile „2026-09-28 (`B_API_MODEL`
@@ -76,7 +77,9 @@ leer)“ erst 2.2.1, die Zeile „2026-09-28 (Token-Länge)“ erst 2.2.2, die Z
 bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`), die Zeile „2026-09-29 (Prüfansicht, D66)“
 erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der Index-Sidecars)“ bis „2026-09-29
 (Audit, Anfragen)“ enthält erst 2.5.0 (Image-Tag `2.5.0`). Die Zeile „2026-09-29 (Speichergrenze)“ betrifft nur
-`docker-compose.yml` und wirkt mit jedem Image, sobald die neue Compose-Datei übernommen ist.
+`docker-compose.yml` und wirkt mit jedem Image, sobald die neue Compose-Datei übernommen ist. Die Zeile
+„2026-09-29 (Tagesbudget, D67)“ gilt für die Images ab dem Commit danach (`:latest` und `:main`); im Image
+2.5.0 ist die Vorgabe noch 2.000.000.
 
 ## Zustand prüfen
 
@@ -108,8 +111,8 @@ erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der 
 `KompendiumWikidataSyncStale`, `KompendiumGndSyncStale` (ein Sidecar hat drei Tage nicht geprüft),
 `KompendiumWikidataSyncSilent`, `KompendiumGndSyncSilent` (der Sidecar schweigt seit drei Stunden oder lief nie),
 `KompendiumLlmUnavailable`, `KompendiumLlmCallsFailing` (jeder LLM-Aufruf scheitert, über alle Endpunkte),
-`KompendiumLlmBudgetNearlySpent`, `KompendiumLlmBudgetBurnsFast` (ein Viertel des Tagesbudgets in einer Stunde) und
-`KompendiumLlmFallbacks`. Nach einer Änderung
+`KompendiumLlmBudgetNearlySpent`, `KompendiumLlmBudgetBurnsFast` (ein Viertel des Tagesbudgets in einer Stunde; beide
+nur mit gesetztem `LLM_DAILY_TOKEN_BUDGET`) und `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
 will, setzt `METRICS_TOKEN` und gibt es dem Scrape-Job: in der Datei `monitoring/metrics_token`, lesbar für `nobody`,
