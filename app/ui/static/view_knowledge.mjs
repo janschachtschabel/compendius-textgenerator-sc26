@@ -33,13 +33,14 @@ function card(article) {
     h(
       'summary',
       {},
-      h('span', { class: 'article-title' }, article.title),
+      h('h3', { class: 'article-title' }, article.title),
       h('span', { class: 'origin-badge' }, label(ORIGINS, article.origin)),
       h('span', { class: 'article-meta' }, `${label(PROJECTS, article.project)} · ${formatNumber(article.chars)} Zeichen`),
     ),
     h('p', { class: 'article-link' }, link(article.url, 'Artikel im Lexikon öffnen')),
     (article.sections ?? []).map((section) => [
-      section.heading ? h(`h${Math.min(section.level + 3, 6)}`, {}, section.heading) : null,
+      // Under the article's h3: a section of the second level (the first below the title) is an h4
+      section.heading ? h(`h${Math.min(Math.max(section.level, 2) + 2, 6)}`, {}, section.heading) : null,
       paragraphs(section.text),
     ]),
   );

@@ -100,7 +100,9 @@ function examples(mode, options, onExample) {
     h('option', { value: '' }, 'Beispiel wählen …'),
     list.map((example, index) => h('option', { value: String(index) }, example.label)),
   );
-  return h('div', { class: 'field examples' }, h('label', { for: id }, 'Beispiel laden'), select, h('p', { class: 'help' }, 'Füllt die Felder; erzeugt wird erst mit dem Knopf unten.'));
+  const help = h('p', { class: 'help', id: `${id}-hilfe` }, 'Füllt die Felder; erzeugt wird erst mit dem Knopf unten.');
+  select.setAttribute('aria-describedby', help.id);
+  return h('div', { class: 'field examples' }, h('label', { for: id }, 'Beispiel laden'), select, help);
 }
 
 // A control with its label, help and error slot; `access` reads and writes its value
@@ -200,7 +202,9 @@ function presetField(spec, ctx) {
   const first = choose('preset');
   const second = choose('preset_b');
   // Without an LLM only llm-free answers, and a profile has nothing to be compared with
-  const compare = h('input', { id: uid('vergleich'), type: 'checkbox', disabled: !options.llm_configured, on: { change: () => ctx.refresh() } });
+  const compareId = uid('vergleich');
+  const withoutLlm = options.llm_configured ? null : h('p', { class: 'help', id: `${compareId}-hilfe` }, 'Zum Vergleich braucht der Server eine KI.');
+  const compare = h('input', { id: compareId, type: 'checkbox', disabled: !options.llm_configured, 'aria-describedby': withoutLlm?.id, on: { change: () => ctx.refresh() } });
   ctx.controls.set('compare', { name: 'compare', read: () => compare.checked, write: (value) => (compare.checked = Boolean(value)), error: h('p', { hidden: true }), focus: compare });
   const secondBox = h('div', { class: 'field second-profile' }, h('label', { for: second.control.id }, 'Zweites Profil'), second.control, second.about, second.error);
   ctx.refreshers.push((values) => (secondBox.hidden = !values.compare));
@@ -209,13 +213,13 @@ function presetField(spec, ctx) {
     { class: 'profile' },
     h('div', { class: 'field' }, h('label', { for: first.control.id }, spec.label), first.control, first.about, first.error),
     h('div', { class: 'check' }, compare, h('label', { for: compare.id }, 'Mit einem zweiten Profil vergleichen')),
-    options.llm_configured ? null : h('p', { class: 'help' }, 'Zum Vergleich braucht der Server eine KI.'),
+    withoutLlm,
     secondBox,
   );
 }
 
 function stepsField(spec, ctx) {
-  const note = h('p', { class: 'help' }, 'Offen gelassen gilt die Methode des Profils.');
+  const note = h('p', { class: 'help', id: uid('methoden-hilfe') }, 'Offen gelassen gilt die Methode des Profils.');
   const rows = spec.steps.map((step) => {
     const first = h('option', { value: '' });
     const control = h('select', { id: uid(step), name: step }, first, (ctx.options.switches?.[step] ?? []).map((value) => h('option', { value }, label(STEPS[step].values, value))));
@@ -227,12 +231,12 @@ function stepsField(spec, ctx) {
     return h('div', { class: 'field' }, h('label', { for: control.id }, STEPS[step].name), control);
   });
   ctx.refreshers.push((values) => (note.textContent = values.compare ? 'Im Vergleich gelten die Methoden der beiden Profile.' : 'Offen gelassen gilt die Methode des Profils.'));
-  return h('fieldset', { class: 'steps' }, h('legend', {}, spec.label), note, rows);
+  return h('fieldset', { class: 'steps', 'aria-describedby': note.id }, h('legend', {}, spec.label), note, rows);
 }
 
 function methodsField(spec, ctx) {
   const boxes = (ctx.options.entities?.methods ?? []).map((method) => [method, h('input', { id: uid(method), type: 'checkbox', value: method })]);
-  const note = h('p', { class: 'help' });
+  const note = h('p', { class: 'help', id: uid('wege-hilfe') });
   ctx.controls.set(spec.name, {
     name: spec.name,
     read: () => boxes.filter(([, box]) => box.checked).map(([method]) => method),
@@ -244,7 +248,7 @@ function methodsField(spec, ctx) {
     note.textContent = `Keiner gewählt: wie im Profil (${profileDefault('methods', values.preset, ctx.options)}).`;
     boxes.forEach(([, box]) => (box.disabled = Boolean(values.compare)));
   });
-  return h('fieldset', { class: 'methods' }, h('legend', {}, spec.label), boxes.map(([method, box]) => h('div', { class: 'check' }, box, h('label', { for: box.id }, label(ENTITY_METHODS, method)))), note);
+  return h('fieldset', { class: 'methods', 'aria-describedby': note.id }, h('legend', {}, spec.label), boxes.map(([method, box]) => h('div', { class: 'check' }, box, h('label', { for: box.id }, label(ENTITY_METHODS, method)))), note);
 }
 
 // What a profile does in a step the reader left open, in the words of texts.mjs

@@ -68,6 +68,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+/* A focused citation or heading stays clear of the sticky display toolbar (WCAG 2.4.11) */
+html { scroll-padding-top: 5rem; }
 body { background: var(--ground); color: var(--ink); font: 1rem/1.5 var(--sans); }
 a { color: var(--accent); text-underline-offset: 2px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
@@ -190,6 +192,8 @@ details.contents > summary { cursor: pointer; font-weight: 650; padding-block: 0
 details.contents ol { margin: 0.4rem 0 0.4rem; padding-inline-start: 1.2rem; }
 details.contents .level-1 { list-style: none; margin-inline-start: -1.2rem; font-weight: 650; }
 details.contents .level-3 { margin-inline-start: 1rem; }
+/* Links a line apart need room between them: 24 px from middle to middle at least (WCAG 2.5.8) */
+details.contents li, ol.sources li { padding-block: 0.15rem; }
 
 /* ---- The document -------------------------------------------------------------------------------------------- */
 
@@ -231,10 +235,12 @@ details.contents .level-3 { margin-inline-start: 1rem; }
 
 .cite-ref { font: 600 0.72rem/1 var(--sans); vertical-align: super; }
 .hide-cites .cite-ref { display: none; }
+/* A table is no running text: the numbers of the table of evidence stay */
+.hide-cites :is(td, th) .cite-ref { display: inline; }
 button.cite { min-width: 1.4rem; padding: 0.12rem 0.32rem; font: inherit; color: var(--accent); background: var(--accent-soft); border: 0; border-radius: 4px; cursor: pointer; }
 button.cite:hover { text-decoration: underline; }
 
-.cite-popover { max-width: min(34rem, 92vw); padding: 1rem 1.25rem; font: 0.9375rem/1.5 var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 12px 32px rgb(0 0 0 / 0.2); }
+.cite-popover { max-width: min(34rem, 92vw); max-height: calc(100dvh - 2rem); overflow: auto; padding: 1rem 1.25rem; font: 0.9375rem/1.5 var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 12px 32px rgb(0 0 0 / 0.2); }
 .cite-popover::backdrop { background: rgb(0 0 0 / 0.12); }
 .cite-popover p { margin: 0 0 0.5rem; }
 .pop-head { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
@@ -251,7 +257,9 @@ button.cite:hover { text-decoration: underline; }
 
 .source-article { padding-block: 0.8rem; border-top: 1px solid var(--line); }
 .source-article > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 0.75rem; font-family: var(--sans); cursor: pointer; }
-.article-title { font-size: 1.05rem; font-weight: 700; }
+.source-article .article-title { margin: 0; padding: 0; font-size: 1.05rem; font-weight: 700; border: 0; }
+/* The sections of an article are headings below its title, and look as quiet as they did as h5 */
+.source-article :is(h4, h5, h6) { margin: 1.2rem 0 0.3rem; font-size: 0.95rem; color: var(--muted); }
 .origin-badge { padding: 0.05rem 0.5rem; font-size: 0.75rem; font-weight: 650; color: var(--accent); background: var(--accent-soft); border-radius: 999px; }
 .article-meta, .article-link { font: 0.8125rem/1.4 var(--sans); color: var(--muted); }
 
@@ -264,11 +272,12 @@ li.element { padding-block: 0.65rem; border-bottom: 1px solid var(--line); }
 .flag { color: var(--model); font-weight: 650; }
 
 .entity-text { font-size: 1.1rem; line-height: 1.95; }
-mark.entity { padding: 0.05rem 0.2rem; color: inherit; background: var(--accent-soft); border-bottom: 2px solid var(--accent); border-radius: 4px; }
-mark.entity.kind-PER { background: var(--written-soft); border-color: var(--written); }
-mark.entity.kind-LOC { background: var(--extract-soft); border-color: var(--extract); }
-mark.entity.kind-ORG { background: var(--selected-soft); border-color: var(--selected); }
-mark.entity.kind-MISC, mark.entity.kind-term { background: var(--model-soft); border-color: var(--model); }
+/* One colour per kind of entity, for its marks in the text and the legend under it */
+.kind-PER { --k: var(--written); --k-soft: var(--written-soft); }
+.kind-LOC { --k: var(--extract); --k-soft: var(--extract-soft); }
+.kind-ORG { --k: var(--selected); --k-soft: var(--selected-soft); }
+.kind-MISC, .kind-term { --k: var(--model); --k-soft: var(--model-soft); }
+mark.entity { padding: 0.05rem 0.2rem; color: inherit; background: var(--k-soft, var(--accent-soft)); border-bottom: 2px solid var(--k, var(--accent)); border-radius: 4px; }
 table.entities .lead { display: -webkit-box; max-width: 44ch; margin-top: 0.2rem; overflow: hidden; font-size: 0.8rem; color: var(--muted); -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; }
 ul.ids { display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; margin: 0; padding: 0; list-style: none; }
 
@@ -300,7 +309,7 @@ dl.facts dd { margin: 0; overflow-wrap: anywhere; }
 .share.kind-assembled, .share.kind-unknown { background: var(--assembled); }
 .share.kind-reviewed { background: var(--reviewed); }
 ul.legend { display: flex; flex-wrap: wrap; gap: 0.3rem 1.25rem; margin: 0.6rem 0 0; padding: 0; list-style: none; font-size: 0.875rem; }
-ul.legend li::before { content: ""; display: inline-block; width: 0.75rem; height: 0.75rem; margin-inline-end: 0.4rem; vertical-align: -1px; background: var(--k); border-radius: 3px; }
+ul.legend li::before { content: ""; display: inline-block; width: 0.75rem; height: 0.75rem; margin-inline-end: 0.4rem; vertical-align: -1px; background: var(--k, var(--accent)); border-radius: 3px; }
 
 table.steps { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 table.steps th, table.steps td { padding: 0.4rem 0.6rem; text-align: start; vertical-align: top; border-bottom: 1px solid var(--line); }

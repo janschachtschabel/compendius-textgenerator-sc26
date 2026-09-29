@@ -17,6 +17,7 @@ export function renderEntities(answer, run) {
     h('h2', {}, 'Entitäten im Text'),
     answer.note ? h('p', { class: 'note' }, answer.note) : null,
     h('p', { class: 'entity-text' }, marked(text, entities)),
+    legend(entities),
     entities.length ? table(entities) : h('p', {}, 'Keine Entitäten gefunden.'),
   );
   const llm = answer.llm;
@@ -64,6 +65,15 @@ function marked(text, entities) {
   return segments(text, entities).map((part) =>
     part.entity ? h('mark', { class: `entity kind-${part.entity.kind || 'term'}` }, part.text) : part.text,
   );
+}
+
+// What the colours of the marks stand for, for the kinds the text holds; the table below names each kind in words
+function legend(entities) {
+  const present = new Set(entities.map((entity) => entity.kind || 'term'));
+  const known = [...Object.keys(ENTITY_KINDS), 'term'];
+  const kinds = [...known.filter((kind) => present.has(kind)), ...[...present].filter((kind) => !known.includes(kind))];
+  if (!kinds.length) return null;
+  return h('ul', { class: 'legend', 'aria-label': 'Farben der Arten im Text' }, kinds.map((kind) => h('li', { class: `kind-${kind}` }, kind === 'term' ? 'Begriff' : label(ENTITY_KINDS, kind))));
 }
 
 function table(entities) {

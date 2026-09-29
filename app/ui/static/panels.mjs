@@ -91,7 +91,8 @@ export function technical(run, extra = []) {
 /** An error in plain words, with what the server said; a topic it did not find offers the alternatives it knows. */
 export function errorBox(error, onSuggestion) {
   const detail = error.detail;
-  const box = h('div', { class: 'error', role: 'alert' }, h('p', { class: 'error-title' }, error.message));
+  // No alert: the status line says a run failed, and an alert would speak again each time the mode comes back
+  const box = h('div', { class: 'error' }, h('p', { class: 'error-title' }, error.message));
   if (typeof detail === 'string') {
     box.append(h('p', {}, detail));
   } else if (Array.isArray(detail)) {
