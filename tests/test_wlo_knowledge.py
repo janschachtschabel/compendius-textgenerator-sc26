@@ -40,6 +40,8 @@ TEXT = (
 
 
 class FakeTexts:
+    scope = "https://repo.test:443/edu-sharing/rest|anonymous"  # whose texts they are, as EduSharingClient.scope
+
     def __init__(self, texts: dict[str, str], *, fail: set[str] = frozenset()) -> None:  # type: ignore[assignment]
         self.texts, self.fail, self.calls = texts, fail, []
 
@@ -83,7 +85,8 @@ def test_materials_not_started_before_the_deadline_are_skipped(tmp_path: Path) -
     refs = [_ref(node_id, "CC_BY", f"Material {node_id}") for node_id in ("a", "b", "c")]
     client = FakeTexts({"a": TEXT, "b": TEXT, "c": TEXT})
     cache = TtlCache(tmp_path / "c.db")
-    cache.set("text:c", TEXT, ttl_s=60)  # a cached text costs nothing and is used even after the deadline
+    material_sources(client, cache, refs[2:], options=KnowledgeOptions())  # a cached text costs nothing and is used
+    client.calls.clear()  # even after the deadline
     checks = iter([False, True, True])
     result = material_sources(
         client, cache, refs, options=KnowledgeOptions(concurrency=1), expired=lambda: next(checks)

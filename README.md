@@ -406,8 +406,10 @@ und wenn er nicht zum Repository passt, sagt es das Log beim Start. `GET /health
 (`components.edu_sharing.repository`, `components.llm.host`), damit sichtbar ist, womit der Dienst
 gerade spricht. Das Repository wird zur Inferenzzeit gelesen, Sammlungen 1 h und
 Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db`, abgelaufene Einträge räumt jeder Schreibvorgang
-weg). Materialtexte, die bis zum Ablauf von `REQUEST_TIMEOUT_S` nicht geholt sind, bleiben draußen und
-stehen als `timed_out` im Audit.
+weg). Ein Eintrag gilt nur für das Repository und den Zugang, mit dem er gelesen wurde (anonym oder das
+Konto aus `EDU_SHARING_USER`): Nach einem Wechsel von `EDU_SHARING_BASE_URL` oder des Kontos liest der
+Dienst neu, statt Daten des alten zu liefern. Materialtexte, die bis zum Ablauf von `REQUEST_TIMEOUT_S`
+nicht geholt sind, bleiben draußen und stehen als `timed_out` im Audit.
 
 ```bash
 uv run compendium collection overview 9e7ae956-e9df-430f-bace-f3db4b910013 --out optik_teil3.md

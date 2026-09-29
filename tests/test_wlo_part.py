@@ -1,6 +1,8 @@
 """CollectionBuilder: cached repository reads, part 3 with sub-collection contents, knowledge sources, topic derivation."""
 
 import dataclasses
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import httpx
@@ -104,3 +106,98 @@ def test_a_cached_record_without_newer_fields_gets_their_defaults(tmp_path: Path
     hydrated = _hydrate(MaterialRef, _without_attribution(ref))
     assert hydrated.authors == () and hydrated.license_version == ""
     assert hydrated.keywords == ref.keywords and isinstance(hydrated.keywords, tuple)  # lists come back as tuples
+
+
+SUB = "11111111-1111-4111-8111-111111111111"
+MATERIAL = "ac66224b-42b0-4676-a53d-71b058dc780b"
+
+
+def _repository(name: str) -> tuple[list[httpx.Request], httpx.MockTransport]:
+    """A repository whose collection OPTIK, its listings, the material in it and its text all carry ``name``."""
+    requests: list[httpx.Request] = []
+
+    def answer(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        path = request.url.path
+        named = {"cm:title": [name], "ccm:commonlicense_key": ["CC_BY"]}
+        if path.endswith("/children/references"):
+            return httpx.Response(200, json={"references": [{"ref": {"id": MATERIAL}, "properties": named}]})
+        if path.endswith("/children/collections"):
+            return httpx.Response(200, json={"collections": [{"ref": {"id": SUB}, "properties": named}]})
+        if path.endswith("/textContent"):
+            return httpx.Response(200, json={"text": f"Dieser Materialtext stammt aus dem Repository {name}."})
+        if path.endswith("/metadata"):
+            return httpx.Response(200, json={"node": {"ref": {"id": MATERIAL}, "properties": named}})
+        return httpx.Response(200, json={"collection": {"ref": {"id": OPTIK}, "properties": named}})
+
+    return requests, httpx.MockTransport(answer)
+
+
+def _reads(builder: CollectionBuilder) -> dict[str, object]:
+    """What each cached read of the builder gives for OPTIK and its material, by the name its repository wrote in."""
+    texts = [
+        paragraph.text
+        for source in builder.knowledge_sources(OPTIK).sources
+        for section in source.sections
+        for paragraph in section.paragraphs
+    ]
+    return {
+        "info": builder.info(OPTIK).title,
+        "references": [ref.title for ref in builder.references(OPTIK)],
+        "subcollections": [sub.title for sub in builder.subcollections(OPTIK)],
+        "node": builder.node(MATERIAL).title,
+        "text": [text.rsplit(" ", 1)[-1] for text in texts],
+    }
+
+
+def _expected(name: str) -> dict[str, object]:
+    return {"info": name, "references": [name], "subcollections": [name], "node": name, "text": [f"{name}."]}
+
+
+def test_the_same_ids_in_two_repositories_are_two_records_in_one_cache(tmp_path: Path) -> None:
+    """Staging and production share node ids where one holds a copy of the other; only the key of a node named the
+    host, so a collection, its listings and the texts of its materials read in one came back for the other - for an
+    hour, the texts for a week (audit 2026-09-29, A03)."""
+    cache = TtlCache(tmp_path / "wlo_cache.db")
+    for name in ("staging", "produktion"):
+        requests, transport = _repository(name)
+        client = EduSharingClient(f"https://{name}.test/edu-sharing/rest", transport=transport)
+        builder = CollectionBuilder(client=client, cache=cache)
+        assert _reads(builder) == _expected(name)
+        assert _reads(builder) == _expected(name) and len(requests) == 5, "the second round comes from the cache"
+
+
+def test_another_account_does_not_get_what_the_first_one_read(tmp_path: Path) -> None:
+    """Two accounts may see different things; a node is read without one (A02), so every account shares it."""
+    cache = TtlCache(tmp_path / "wlo_cache.db")
+    for user in ("", "redaktion", "lektorat"):
+        _, transport = _repository(user or "anonym")
+        client = EduSharingClient(BASE, user=user, password="geheim-4711", transport=transport)
+        builder = CollectionBuilder(client=client, cache=cache)
+        assert _reads(builder) == {**_expected(user or "anonym"), "node": "anonym"}
+    with closing(sqlite3.connect(tmp_path / "wlo_cache.db")) as connection:
+        keys = [row[0] for row in connection.execute("SELECT key FROM cache")]
+    assert len(keys) == 13, keys  # four records and a text per context, the node once
+    assert not [key for key in keys if "redaktion" in key or "lektorat" in key or "geheim" in key]
+
+
+@pytest.mark.parametrize(
+    ("other", "shared"),
+    [
+        ("https://repo.test/edu-sharing/rest/", True),
+        ("HTTPS://Repo.TEST/edu-sharing/rest", True),
+        ("https://repo.test:443/edu-sharing/rest", True),
+        ("https://repo.test:8443/edu-sharing/rest", False),
+        ("http://repo.test/edu-sharing/rest", False),
+        ("https://repo.test/Edu-Sharing/rest", False),
+    ],
+)
+def test_the_cache_knows_a_repository_by_its_rest_root_however_it_is_written(
+    tmp_path: Path, other: str, shared: bool
+) -> None:
+    cache = TtlCache(tmp_path / "wlo_cache.db")
+    _, first = _repository("repo")
+    CollectionBuilder(client=EduSharingClient(BASE, transport=first), cache=cache).info(OPTIK)
+    requests, second = _repository("other")
+    title = CollectionBuilder(client=EduSharingClient(other, transport=second), cache=cache).info(OPTIK).title
+    assert (title, len(requests)) == (("repo", 0) if shared else ("other", 1))

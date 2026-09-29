@@ -9,6 +9,7 @@ sub-collections 0.2 s, text content 0.1-2.3 s per node.
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import http.cookiejar
 import logging
 import re
@@ -44,6 +45,7 @@ MAX_PAGES = 200  # 20,000 references at the default page size; beyond that the l
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
 _NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 _BODY_EXCERPT = 200
+_DEFAULT_PORTS = {"http": 80, "https": 443}
 
 
 def validate_node_id(value: str) -> str:
@@ -61,6 +63,19 @@ def render_url_for(rest_root: str, node_id: str) -> str:
     parts = urlsplit(rest_root)
     prefix = parts.path.split("/edu-sharing", 1)[0]
     return f"{parts.scheme}://{parts.netloc}{prefix}/edu-sharing/components/render/{validate_node_id(node_id)}"
+
+
+def _scope(base_url: str, user: str) -> str:
+    """Whose answers a cache entry holds: the repository by its REST root however it is written - scheme and host in
+    lower case, the port spelled out, no slash at the end - and the account, by a hash of its name; never the name, a
+    password or a token. Staging and production share node ids where one holds a copy of the other, and two
+    accounts may see different things (audit 2026-09-29, A03).
+    """
+    parts = urlsplit(base_url)
+    scheme = parts.scheme.lower()
+    port = parts.port or _DEFAULT_PORTS.get(scheme)
+    account = "user-" + hashlib.sha256(user.encode()).hexdigest()[:16] if user else "anonymous"
+    return f"{scheme}://{parts.hostname or ''}:{port}{parts.path.rstrip('/')}|{account}"
 
 
 def _no_cookies() -> http.cookiejar.CookieJar:
@@ -100,6 +115,9 @@ class EduSharingClient:
         # Nodes are read as the public sees them (D45): by a client that never held the credentials, since leaving
         # them out of one request of a shared client still sent whatever state that client kept
         self._public = connection(None)
+        # What the cache keys name: the reads with the client's account, and those of node(), which go without one
+        self.scope = _scope(self.base_url, user)
+        self.public_scope = _scope(self.base_url, "")
 
     def close(self) -> None:
         self._client.close()

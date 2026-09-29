@@ -35,6 +35,8 @@ _CONSENT = re.compile(r"cookie|consent|store and/or access information|datenschu
 
 
 class TextClient(Protocol):
+    scope: str  # whose answers its texts are, the repository and the account (EduSharingClient.scope)
+
     def text_content(self, node_id: str) -> str: ...
 
 
@@ -116,7 +118,8 @@ def material_sources(
     result.considered = len(chosen)
 
     def fetch(ref: MaterialRef) -> tuple[MaterialRef, str | None, str | None]:
-        key = f"text:{ref.id}"
+        # the same id may name another text in another repository or for another account (audit 2026-09-29, A03)
+        key = f"text:{client.scope}:{ref.id}"
         cached = cache.get(key) if cache is not None else None
         if isinstance(cached, str):
             return ref, cached, None

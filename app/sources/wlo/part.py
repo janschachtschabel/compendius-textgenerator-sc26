@@ -12,7 +12,6 @@ import logging
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Any
-from urllib.parse import urlsplit
 
 from app.domain.models import CollectionPart, NodeInput
 from app.knowledge.topic import NormalizedTopic, normalize_topic
@@ -32,7 +31,9 @@ log = logging.getLogger(__name__)
 
 # Part of the cache keys of records: bump it when a cached record gains or changes a field, so entries written
 # by an earlier version are not read (they expire by their TTL). 2: MaterialRef with licence version and authors.
-CACHE_FORMAT = 2
+# 3: every key names the repository and the account it was read with (audit 2026-09-29, A03); the key of a material
+# text (knowledge.py) changed its shape with it, so no text of an earlier version is read either.
+CACHE_FORMAT = 3
 UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden: {error}*"
 
 
@@ -145,7 +146,7 @@ class CollectionBuilder:
     options: CollectionOptions = field(default_factory=CollectionOptions)
 
     def info(self, collection_id: str) -> CollectionInfo:
-        key = f"collection:v{CACHE_FORMAT}:{collection_id}"
+        key = self._key("collection", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(CollectionInfo, cached)
@@ -154,8 +155,9 @@ class CollectionBuilder:
         return info
 
     def node(self, node_id: str) -> NodeInfo:
-        """The metadata of a material or a collection, cached like a collection's; the key names the repository."""
-        key = f"node:v{CACHE_FORMAT}:{urlsplit(self.client.base_url).hostname}:{node_id}"
+        """The metadata of a material or a collection, cached like a collection's; read without the account (A02),
+        so the key names the repository without it."""
+        key = self._key("node", node_id, public=True)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(NodeInfo, cached)
@@ -164,7 +166,7 @@ class CollectionBuilder:
         return info
 
     def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
-        key = f"references:v{CACHE_FORMAT}:{collection_id}"
+        key = self._key("references", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(MaterialRef, item) for item in cached]
@@ -175,7 +177,7 @@ class CollectionBuilder:
         return refs
 
     def subcollections(self, collection_id: str) -> list[SubCollection]:
-        key = f"subcollections:v{CACHE_FORMAT}:{collection_id}"
+        key = self._key("subcollections", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(SubCollection, item) for item in cached]
@@ -226,6 +228,11 @@ class CollectionBuilder:
         ``material_sources``."""
         refs = self.references(collection_id, expired=expired)
         return material_sources(self.client, self.cache, refs, options=self.options.knowledge, expired=expired)
+
+    def _key(self, kind: str, node_id: str, *, public: bool = False) -> str:
+        """The cache key of a record: its kind and format, whose answer it is (``EduSharingClient.scope``), its id."""
+        scope = self.client.public_scope if public else self.client.scope
+        return f"{kind}:v{CACHE_FORMAT}:{scope}:{node_id}"
 
     def _remember(self, key: str, value: Any) -> None:
         if self.cache is not None:
