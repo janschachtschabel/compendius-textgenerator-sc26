@@ -7,6 +7,7 @@ uploaded files, in the render URL, and a collection member is a reference node w
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
@@ -14,6 +15,9 @@ from typing import Any
 from app.domain.spelling import readable
 from app.sources.wlo.errors import MalformedAnswerError
 from app.synthesis.safe_markdown import one_line
+
+# The id of a node as edu-sharing gives it; only such an id goes into a URL of the repository
+NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 
 # ccm:commonlicense_key values that allow verbatim (extractive) reuse in the compendium (PLAN.md 6.3).
 # COPYRIGHT_FREE means "freely accessible", not "free to reuse", and stays out.
@@ -254,7 +258,8 @@ def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
         title=_title(node, props),
         description=_first(props, "cclom:general_description", "cm:description"),
         url=url,
-        original_id=_node_id(node.get("originalId"), "originalId") or None,
+        # an originalId that is no node id cannot name the material; the reference's own id does (A09)
+        original_id=original if NODE_ID.match(original := _node_id(node.get("originalId"), "originalId")) else None,
         license_key=_first(props, "ccm:commonlicense_key"),
         mimetype=node.get("mimetype") or None,
         keywords=tuple(_values(props, "cclom:general_keyword")),

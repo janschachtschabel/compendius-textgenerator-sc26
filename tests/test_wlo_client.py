@@ -354,3 +354,31 @@ def test_a_sub_collection_without_an_id_is_left_out_as_a_reference_without_one_i
     listed = {"ref": {"id": OPTIK}, "properties": {"cm:title": ["Farben"]}}
     subs = _answering({"collections": [{"properties": {"cm:title": ["ohne Kennung"]}}, listed]}).subcollections(OPTIK)
     assert [sub.id for sub in subs] == [OPTIK]
+
+
+VALID = "44444444-4444-4444-8444-444444444444"
+
+
+def test_an_entry_whose_id_is_no_node_id_is_left_out() -> None:
+    """A listing entry whose id is text but no node id raised a ValueError where it became part of a URL - the
+    materials of a sub-collection, the text of a material - and the request a 500 (audit 2026-09-29, A09). It is left
+    out like an entry without an id; an originalId of that kind yields to the reference's own."""
+
+    def answer(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/children/references"):
+            nodes = [
+                {"ref": {"id": "keine-uuid"}, "properties": {}},
+                {"ref": {"id": VALID}, "originalId": "auch-keine", "properties": {}},
+            ]
+            return httpx.Response(200, json={"references": nodes, "pagination": {"total": 2}})
+        if request.url.path.endswith("/children/collections"):
+            return httpx.Response(200, json={"collections": [{"ref": {"id": "x"}}, {"ref": {"id": VALID}}]})
+        return httpx.Response(404, json={})
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(answer))
+
+    refs = client.references(OPTIK)
+    subs = client.subcollections(OPTIK)
+
+    assert [ref.id for ref in refs] == [VALID] and refs[0].node_id == VALID
+    assert [sub.id for sub in subs] == [VALID]

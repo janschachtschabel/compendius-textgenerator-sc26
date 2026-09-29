@@ -12,7 +12,6 @@ import dataclasses
 import hashlib
 import http.cookiejar
 import logging
-import re
 from collections.abc import Callable, Collection
 from typing import Any
 from urllib.parse import urlsplit
@@ -25,6 +24,7 @@ from app.sources.wlo.errors import EduSharingError as EduSharingError
 from app.sources.wlo.errors import MalformedAnswerError, TimeUpError
 from app.sources.wlo.errors import NodeNotFoundError as NodeNotFoundError
 from app.sources.wlo.models import (
+    NODE_ID,
     CollectionInfo,
     MaterialRef,
     NodeInfo,
@@ -43,7 +43,6 @@ USER_AGENT = "compendious-text-fastapi/2.0 (+https://wirlernenonline.de; Kompend
 DEFAULT_PAGE_SIZE = 100
 MAX_PAGES = 200  # 20,000 references at the default page size; beyond that the listing is cut
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
-_NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}
 # The seconds the caller's time budget has left (``Deadline.remaining``); spent at zero
@@ -57,7 +56,7 @@ def spent(remaining: Remaining | None) -> bool:
 
 def validate_node_id(value: str) -> str:
     """Return ``value`` when it is an edu-sharing node id (UUID); raise ``ValueError`` otherwise."""
-    if not _NODE_ID.match(value or ""):
+    if not NODE_ID.match(value or ""):
         raise ValueError(f"keine gültige Knoten-ID: {value!r}")
     return value
 
@@ -149,9 +148,9 @@ class EduSharingClient:
         if payload is None:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
         subs = [parse_subcollection(node) for node in json_list(payload.get("collections"), "collections")]
-        # its materials are read by its id, which an empty one failed with a ValueError; a reference without one is
-        # left out of a listing too
-        return [sub for sub in subs if sub.id]
+        # its materials are read by its id, which an empty one - or one that is no node id - failed with a
+        # ValueError and a 500; a reference without one is left out of a listing too (audit 2026-09-29, A09)
+        return [sub for sub in subs if NODE_ID.match(sub.id)]
 
     def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
         """All materials referenced by the collection, page by page until the reported total is reached.
@@ -181,7 +180,8 @@ class EduSharingClient:
             known = len(refs)
             for node in items:
                 ref = parse_reference(node)
-                if ref.id and ref.id not in seen:
+                # the text of a material is read by its id: one that is no node id raised a ValueError (A09)
+                if NODE_ID.match(ref.id) and ref.id not in seen:
                     seen.add(ref.id)
                     refs.append(ref)
             total = json_object(payload.get("pagination"), "pagination").get("total")
