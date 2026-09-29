@@ -136,6 +136,13 @@ LIMITS = {
 }
 
 
+def _notes_empty_blocks(settings: Settings, templates: TemplateManager) -> bool:
+    """Whether the default template keeps an empty block with a note: the page's box starts as a request without
+    ``empty_slot_policy`` would go, and from there sends the policy either way."""
+    default = next((template for template in templates.list() if template.id == settings.template_default), None)
+    return default is not None and default.empty_slot_policy == "note"
+
+
 def ui_options(
     settings: Settings, templates: TemplateManager, subjects: SubjectCatalog, *, llm: bool
 ) -> dict[str, Any]:
@@ -145,6 +152,7 @@ def ui_options(
         "keys_required": bool(settings.api_key_list),
         "llm_configured": llm,  # without an LLM every profile but llm-free is a 503 (D53)
         "facets_visible": settings.facets_visible,
+        "empty_note": _notes_empty_blocks(settings, templates),
         "presets": [{"id": preset, "switches": switches} for preset, switches in PRESETS.items()],
         "switches": SWITCHES,
         "parts": list(get_args(Part)),

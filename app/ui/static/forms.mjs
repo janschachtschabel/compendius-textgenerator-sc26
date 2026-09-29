@@ -114,7 +114,7 @@ export function defaults(mode, options) {
         knowledge_collection_id: '',
         parts: ['world', 'curricula'],
         facets_visible: Boolean(options.facets_visible), // FACETS_VISIBLE of the server, as a request without it
-        empty_note: false,
+        empty_note: Boolean(options.empty_note), // as the default template keeps empty blocks, as a request without it
         ...Object.fromEntries(COMPENDIUM_STEPS.map((step) => [step, ''])),
         target_length: '',
         max_articles: '',
@@ -177,7 +177,8 @@ const BUILDERS = {
     put(body, 'max_articles', number(v.max_articles));
     put(body, 'template_id', text(v.template_id));
     body.facets_visible = Boolean(v.facets_visible);
-    if (v.empty_note) body.empty_slot_policy = 'note';
+    // Either way: a template keeps empty blocks or leaves them out by its own policy, which the box would not show
+    body.empty_slot_policy = v.empty_note ? 'note' : 'omit';
     return { method: 'POST', path: 'api/v2/compendium', body };
   },
   knowledge(v, withSteps) {
@@ -250,7 +251,8 @@ const CHECKS = {
     const hasText = Boolean(v.text?.trim());
     if (hasText && text(v.node_id)) found.text = 'Entweder ein Text oder ein Material – nicht beides.';
     else if (!hasText && !text(v.node_id)) found.text = 'Bitte einen Text eingeben oder unter „Erweitert“ ein Material.';
-    if (v.link_check === 'llm' && !v.link) found.link_check = 'Die Prüfung durch die KI braucht das Nachschlagen der Artikel.';
+    // A comparison leaves the check to the profiles and sends none, whatever the locked field still holds
+    if (!v.compare && v.link_check === 'llm' && !v.link) found.link_check = 'Die Prüfung durch die KI braucht das Nachschlagen der Artikel.';
   },
   qa(v, found) {
     const hasText = Boolean(v.text?.trim());

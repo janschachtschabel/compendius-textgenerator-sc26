@@ -32,8 +32,16 @@ test('a topic alone asks for the compendium with the default parts and profile',
   assert.deepEqual(run.request, {
     method: 'POST',
     path: 'api/v2/compendium',
-    body: { topic: 'Optik', parts: ['world', 'curricula'], preset: 'balanced', facets_visible: false },
+    body: { topic: 'Optik', parts: ['world', 'curricula'], preset: 'balanced', facets_visible: false, empty_slot_policy: 'omit' },
   });
+});
+
+test('the box for empty blocks is sent either way, so a template cannot say otherwise, and starts as the default template', () => {
+  const [run] = buildRequests('compendium', form('compendium', { topic: 'Optik', template_id: 'standard' }), options);
+
+  assert.equal(run.request.body.empty_slot_policy, 'omit');
+  assert.equal(defaults('compendium', options).empty_note, false);
+  assert.equal(defaults('compendium', { ...options, empty_note: true }).empty_note, true);
 });
 
 test('every input of the form reaches the request, ids taken from links', () => {
@@ -136,6 +144,13 @@ test('entities of a text or of a node, never of both', () => {
   assert.ok(problems('entities', form('entities', { text: 'x', node_id: MATERIAL }), options).text);
   assert.ok(problems('entities', form('entities', {}), options).text);
   assert.ok(problems('entities', form('entities', { text: 'x', link: false, link_check: 'llm' }), options).link_check);
+});
+
+test('a comparison sends no check of links, so a check left in the locked field keeps nothing from being sent', () => {
+  const values = form('entities', { text: 'x', link: false, link_check: 'llm', compare: true, preset: 'llm-free', preset_b: 'balanced' });
+
+  assert.deepEqual(problems('entities', values, options), {});
+  assert.ok(buildRequests('entities', values, options).every((run) => !('link_check' in run.request.body)));
 });
 
 test('question pairs of a text, or of a topic with its levels', () => {

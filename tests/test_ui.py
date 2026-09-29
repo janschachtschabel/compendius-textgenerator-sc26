@@ -160,6 +160,15 @@ def test_the_options_name_the_profiles_and_their_switches_as_the_requests_define
     assert options["facets_visible"] is settings.facets_visible
 
 
+@pytest.mark.parametrize(("template", "note"), [("sc26", False), ("standard", True)])
+def test_the_box_for_empty_blocks_starts_as_the_default_template_keeps_them(
+    settings: Settings, template: str, note: bool
+) -> None:
+    served = TestClient(create_app(settings.model_copy(update={"ui_enabled": True, "template_default": template})))
+
+    assert served.get("/ui/options.json").json()["empty_note"] is note
+
+
 def test_the_options_offer_every_value_of_every_switch(options: dict[str, Any]) -> None:
     assert options["switches"] == {
         "article_choice": list(get_args(ArticleChoice)),
