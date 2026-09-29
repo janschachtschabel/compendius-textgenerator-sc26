@@ -1,8 +1,10 @@
 """Collection endpoints and collection input for the compendium: overview, validation, repository failures."""
 
+import json
 from pathlib import Path
 
 import httpx
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
@@ -79,6 +81,47 @@ class ListingFails(FakeRepository):
             self.requests.append(request)
             return httpx.Response(503, json={"error": "busy"})
         return super().__call__(request)
+
+
+class AnswersWith(FakeRepository):
+    """Answers one path with a body of another shape than edu-sharing's (``None`` as ``null``), the rest as before."""
+
+    def __init__(self, suffix: str, body: object) -> None:
+        super().__init__()
+        self.suffix, self.body = suffix, body
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith(self.suffix):
+            self.requests.append(request)
+            content = json.dumps(self.body).encode()
+            return httpx.Response(200, content=content, headers={"Content-Type": "application/json"})
+        return super().__call__(request)
+
+
+@pytest.mark.parametrize(
+    ("suffix", "body"),
+    [
+        ("/children/references", []),
+        ("/children/references", {"references": {}}),
+        ("/children/collections", {"collections": "Farben"}),
+        (f"/collections/-home-/{OPTIK}", {"collection": []}),
+        (f"/collections/-home-/{OPTIK}", None),
+    ],
+)
+def test_an_answer_of_another_shape_costs_part_three_not_the_compendium(
+    sample_zims: dict[str, Path], tmp_path: Path, suffix: str, body: object
+) -> None:
+    """Part 3 is optional: an answer the service cannot read becomes its hint, as an unreachable repository does,
+    instead of a 500 for the whole compendium (audit 2026-09-29, A09). On its own the overview is a 502."""
+    with _client(sample_zims, tmp_path, AnswersWith(suffix, body)) as client:
+        payload = {"topic": "Optik", "collection_id": OPTIK, "parts": ["world", "collection"]}
+        response = client.post("/api/v2/compendium", json=payload)
+        assert response.status_code == 200, response.text[:300]
+        part = response.json()["collection"]
+        assert not part["available"] and part["error"].startswith("edu-sharing antwortete")
+        assert part["error"] in part["markdown"]
+        overview = client.get(f"/api/v2/collections/{OPTIK}/overview")
+        assert overview.status_code == 502 and overview.json()["detail"].startswith("edu-sharing antwortete")
 
 
 def test_the_overview_endpoint_answers_502_when_the_listing_fails(sample_zims: dict[str, Path], tmp_path: Path) -> None:

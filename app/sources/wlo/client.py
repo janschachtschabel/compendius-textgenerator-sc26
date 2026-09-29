@@ -18,11 +18,18 @@ from urllib.parse import urlsplit
 
 import httpx
 
+# The errors live apart so that the parsers raise them too; the service imports them from here
+from app.sources.wlo.errors import CollectionNotFoundError as CollectionNotFoundError
+from app.sources.wlo.errors import EduSharingError as EduSharingError
+from app.sources.wlo.errors import MalformedAnswerError
+from app.sources.wlo.errors import NodeNotFoundError as NodeNotFoundError
 from app.sources.wlo.models import (
     CollectionInfo,
     MaterialRef,
     NodeInfo,
     SubCollection,
+    json_list,
+    json_object,
     parse_collection,
     parse_node,
     parse_reference,
@@ -37,18 +44,6 @@ MAX_PAGES = 200  # 20,000 references at the default page size; beyond that the l
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
 _NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 _BODY_EXCERPT = 200
-
-
-class EduSharingError(RuntimeError):
-    """The repository could not be reached or refused the request."""
-
-
-class CollectionNotFoundError(EduSharingError):
-    """No collection with this id (HTTP 404)."""
-
-
-class NodeNotFoundError(EduSharingError):
-    """No node with this id in the repository (HTTP 404), or none the public may read (HTTP 403)."""
 
 
 def validate_node_id(value: str) -> str:
@@ -118,14 +113,18 @@ class EduSharingClient:
         payload = self._get(f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}")
         if payload is None:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
-        return parse_collection(payload)
+        # the checked id, not the answer's, as for a node: part 3 links the collection by it
+        return dataclasses.replace(parse_collection(payload), id=collection_id)
 
     def subcollections(self, collection_id: str) -> list[SubCollection]:
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/collections"
         payload = self._get(path)
         if payload is None:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
-        return [parse_subcollection(node) for node in payload.get("collections") or []]
+        subs = [parse_subcollection(node) for node in json_list(payload.get("collections"), "collections")]
+        # its materials are read by its id, which an empty one failed with a ValueError; a reference without one is
+        # left out of a listing too
+        return [sub for sub in subs if sub.id]
 
     def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
         """All materials referenced by the collection, page by page until the reported total is reached.
@@ -146,14 +145,16 @@ class EduSharingClient:
             payload = self._get(path, params)
             if payload is None:
                 raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
-            items = payload.get("references") or payload.get("nodes") or []
+            items = json_list(payload.get("references", payload.get("nodes")), "references")
             known = len(refs)
             for node in items:
                 ref = parse_reference(node)
                 if ref.id and ref.id not in seen:
                     seen.add(ref.id)
                     refs.append(ref)
-            total = (payload.get("pagination") or {}).get("total")
+            total = json_object(payload.get("pagination"), "pagination").get("total")
+            if total is not None and not isinstance(total, int):
+                raise MalformedAnswerError("pagination.total")
             skip += len(items)
             if not items or len(items) < self._page_size or (total is not None and skip >= total):
                 return refs
@@ -194,7 +195,8 @@ class EduSharingClient:
         anonymous: bool = False,
         missing: Collection[int] = (404,),
     ) -> dict[str, Any] | None:
-        """Parsed JSON, ``None`` for a status in ``missing``; transport failures are retried once, other errors raised.
+        """The JSON object of the answer, ``None`` for a status in ``missing``; transport failures are retried once,
+        other errors raised, among them an answer that is JSON but no object (``null``, a list, a value).
 
         ``anonymous`` reads without the client's credentials, over the connection that never had them.
         """
@@ -214,10 +216,14 @@ class EduSharingClient:
                 )
                 raise EduSharingError(f"edu-sharing antwortete mit HTTP {response.status_code}")
             try:
-                data: dict[str, Any] = response.json()
+                data = response.json()
             except ValueError as exc:
                 log.warning("answer of %s%s is not JSON", self.base_url, path)
                 raise EduSharingError("edu-sharing antwortete nicht mit JSON") from exc
+            # ``null`` was taken for a missing node and a list failed at ``.get`` (audit 2026-09-29, A09)
+            if not isinstance(data, dict):
+                log.warning("answer of %s%s is JSON but no object: %s", self.base_url, path, type(data).__name__)
+                raise EduSharingError("edu-sharing antwortete nicht mit einem JSON-Objekt")
             return data
         log.warning("%s%s not reachable: %s", self.base_url, path, last_error)
         raise EduSharingError(f"edu-sharing nicht erreichbar ({type(last_error).__name__})") from last_error

@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from app.domain.spelling import readable
+from app.sources.wlo.errors import MalformedAnswerError
 from app.synthesis.safe_markdown import one_line
 
 # ccm:commonlicense_key values that allow verbatim (extractive) reuse in the compendium (PLAN.md 6.3).
@@ -119,6 +120,37 @@ class NodeInfo:
     url: str  # the material's own address (ccm:wwwurl); empty for a collection
 
 
+def json_object(value: Any, field: str, *, required: bool = False) -> Mapping[str, Any]:
+    """An object of an answer; ``null`` reads as empty unless ``required``, anything else is another shape (A09)."""
+    if value is None and not required:
+        return {}
+    if not isinstance(value, Mapping):
+        raise MalformedAnswerError(field)
+    return value
+
+
+def json_list(value: Any, field: str) -> list[Any]:
+    """A list of an answer; ``null`` reads as empty, anything else is another shape (A09)."""
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise MalformedAnswerError(field)
+    return value
+
+
+def _node_id(value: Any, field: str) -> str:
+    """A node id of an answer, a text; ``null`` reads as none. Where it becomes part of a URL, it is checked there."""
+    if value is None:
+        return ""
+    if not isinstance(value, str):
+        raise MalformedAnswerError(field)
+    return value
+
+
+def _ref_id(node: Mapping[str, Any]) -> str:
+    return _node_id(json_object(node.get("ref"), "ref").get("id"), "ref.id")
+
+
 def _values(props: Mapping[str, Any], key: str, *, verbatim: bool = False) -> list[str]:
     """The values of a property as a reader sees them, in one spelling (app/domain/spelling.py); ``verbatim`` keeps
     an address as the repository holds it, since composing it could change where it leads."""
@@ -165,10 +197,10 @@ def _title(node: Mapping[str, Any], props: Mapping[str, Any]) -> str:
 
 
 def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
-    node = payload.get("collection", payload)
-    props: Mapping[str, Any] = node.get("properties") or {}
+    node = json_object(payload.get("collection", payload), "collection", required=True)
+    props = json_object(node.get("properties"), "properties")
     return CollectionInfo(
-        id=str((node.get("ref") or {}).get("id") or ""),
+        id=_ref_id(node),
         title=_title(node, props),
         description=_first(props, "cm:description", "cclom:general_description"),
         keywords=tuple(_values(props, "cclom:general_keyword")),
@@ -183,11 +215,11 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
 
 def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
     """The answer of ``/node/v1/nodes/-home-/{id}/metadata``; materials and collections share the shape."""
-    node = payload.get("node", payload)
-    props: Mapping[str, Any] = node.get("properties") or {}
+    node = json_object(payload.get("node", payload), "node", required=True)
+    props = json_object(node.get("properties"), "properties")
     return NodeInfo(
-        node_id=str((node.get("ref") or {}).get("id") or ""),
-        kind="collection" if "ccm:collection" in (node.get("aspects") or []) else "material",
+        node_id=_ref_id(node),
+        kind="collection" if "ccm:collection" in json_list(node.get("aspects"), "aspects") else "material",
         title=_title(node, props),
         description=_first(props, "cclom:general_description", "cm:description"),
         keywords=_keywords(props),
@@ -213,14 +245,16 @@ def _authors(props: Mapping[str, Any]) -> tuple[str, ...]:
 
 
 def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
-    props: Mapping[str, Any] = node.get("properties") or {}
-    url = _first(props, "ccm:wwwurl", verbatim=True) or str((node.get("content") or {}).get("url") or "")
+    node = json_object(node, "references", required=True)
+    props = json_object(node.get("properties"), "properties")
+    content = json_object(node.get("content"), "content")
+    url = _first(props, "ccm:wwwurl", verbatim=True) or str(content.get("url") or "")
     return MaterialRef(
-        id=str((node.get("ref") or {}).get("id") or ""),
+        id=_ref_id(node),
         title=_title(node, props),
         description=_first(props, "cclom:general_description", "cm:description"),
         url=url,
-        original_id=node.get("originalId") or None,
+        original_id=_node_id(node.get("originalId"), "originalId") or None,
         license_key=_first(props, "ccm:commonlicense_key"),
         mimetype=node.get("mimetype") or None,
         keywords=tuple(_values(props, "cclom:general_keyword")),
@@ -234,9 +268,10 @@ def parse_reference(node: Mapping[str, Any]) -> MaterialRef:
 
 
 def parse_subcollection(node: Mapping[str, Any]) -> SubCollection:
-    props: Mapping[str, Any] = node.get("properties") or {}
+    node = json_object(node, "collections", required=True)
+    props = json_object(node.get("properties"), "properties")
     return SubCollection(
-        id=str((node.get("ref") or {}).get("id") or ""),
+        id=_ref_id(node),
         title=_title(node, props),
         description=_first(props, "cm:description", "cclom:general_description"),
     )

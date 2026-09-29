@@ -217,3 +217,94 @@ def test_closing_the_client_closes_the_connections_with_and_without_the_account(
         client.collection(OPTIK)
     with pytest.raises(RuntimeError, match="closed"):
         client.node(MATERIAL)
+
+
+def _answering(body: object) -> EduSharingClient:
+    """A client whose repository answers every request with ``body`` as JSON, ``None`` as ``null``."""
+
+    def answer(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+
+    return EduSharingClient(BASE, transport=httpx.MockTransport(answer))
+
+
+READS = {
+    "collection": lambda client: client.collection(OPTIK),
+    "subcollections": lambda client: client.subcollections(OPTIK),
+    "references": lambda client: client.references(OPTIK),
+    "node": lambda client: client.node(MATERIAL),
+    "text": lambda client: client.text_content(MATERIAL),
+}
+REFERENCE = {"ref": {"id": MATERIAL}, "properties": {}}
+
+
+@pytest.mark.parametrize("body", [[], None, "Optik", 16, [{"collection": {}}]])
+def test_an_answer_that_is_no_object_is_a_repository_error(body: object) -> None:
+    """``null`` was taken for a missing node (a 404), a list failed at ``.get`` (a 500) (audit 2026-09-29, A09)."""
+    for name, read in READS.items():
+        with pytest.raises(EduSharingError, match="nicht mit einem JSON-Objekt") as failure:
+            read(_answering(body))
+        assert type(failure.value) is EduSharingError, name
+
+
+@pytest.mark.parametrize(
+    ("read", "body"),
+    [
+        ("collection", {"collection": []}),
+        ("collection", {"collection": None}),
+        ("collection", {"collection": {"properties": ["cm:title"]}}),
+        ("collection", {"collection": {"ref": "x"}}),
+        ("collection", {"collection": {"ref": {"id": 16}}}),
+        ("references", {"references": {}}),
+        ("references", {"nodes": "x"}),
+        ("references", {"references": [MATERIAL]}),
+        ("references", {"references": [{**REFERENCE, "properties": []}]}),
+        ("references", {"references": [{**REFERENCE, "ref": [MATERIAL]}]}),
+        ("references", {"references": [{**REFERENCE, "ref": {"id": {"id": MATERIAL}}}]}),
+        ("references", {"references": [{**REFERENCE, "content": "x"}]}),
+        ("references", {"references": [{**REFERENCE, "originalId": {"id": MATERIAL}}]}),
+        ("references", {"references": [REFERENCE], "pagination": []}),
+        ("references", {"references": [REFERENCE], "pagination": {"total": "16"}}),
+        ("subcollections", {"collections": {}}),
+        ("subcollections", {"collections": ["Farben"]}),
+        ("subcollections", {"collections": [{"ref": {"id": OPTIK}, "properties": 5}]}),
+        ("node", {"node": "x"}),
+        ("node", {"node": {"properties": []}}),
+        ("node", {"node": {"aspects": 5, "properties": {}}}),
+    ],
+)
+def test_an_answer_of_another_shape_is_a_repository_error(read: str, body: object) -> None:
+    """An object where a list belongs, a list where an object does, a number where a text does: the repository's
+    failure (502, a hint in part 3), not an AttributeError or a TypeError of the service (500) (audit 2026-09-29, A09).
+    """
+    with pytest.raises(EduSharingError, match="edu-sharing antwortete"):
+        READS[read](_answering(body))
+
+
+@pytest.mark.parametrize(
+    ("read", "body", "expected"),
+    [
+        ("references", {}, []),
+        ("references", {"references": None}, []),
+        ("references", {"references": [], "pagination": {"total": 0}}, []),
+        ("subcollections", {}, []),
+        ("subcollections", {"collections": None}, []),
+        ("text", {}, ""),
+    ],
+)
+def test_empty_answers_stay_valid(read: str, body: object, expected: object) -> None:
+    assert READS[read](_answering(body)) == expected
+
+
+def test_a_collection_answer_without_its_id_keeps_the_id_asked_for() -> None:
+    """As a node does: the id of the request is checked, the answer's is not - without one, part 3 failed at the
+    link of the collection with a ValueError (a 500)."""
+    info = _answering({"collection": {"title": "Optik"}}).collection(OPTIK)
+    assert info.id == OPTIK and info.title == "Optik"
+
+
+def test_a_sub_collection_without_an_id_is_left_out_as_a_reference_without_one_is() -> None:
+    """Its materials are read by its id; an empty one failed there with a ValueError (a 500)."""
+    listed = {"ref": {"id": OPTIK}, "properties": {"cm:title": ["Farben"]}}
+    subs = _answering({"collections": [{"properties": {"cm:title": ["ohne Kennung"]}}, listed]}).subcollections(OPTIK)
+    assert [sub.id for sub in subs] == [OPTIK]
