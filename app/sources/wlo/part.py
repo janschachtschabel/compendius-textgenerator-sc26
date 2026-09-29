@@ -16,7 +16,7 @@ from typing import Any
 from app.domain.models import CollectionPart, NodeInput
 from app.knowledge.topic import NormalizedTopic, normalize_topic
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import EduSharingClient, EduSharingError, render_url_for
+from app.sources.wlo.client import EduSharingClient, EduSharingError, Remaining, render_url_for, spent
 from app.sources.wlo.knowledge import KnowledgeOptions, KnowledgeResult, material_sources
 from app.sources.wlo.models import CollectionInfo, MaterialRef, NodeInfo, SubCollection
 from app.sources.wlo.overview import (
@@ -145,12 +145,12 @@ class CollectionBuilder:
     cache: TtlCache | None
     options: CollectionOptions = field(default_factory=CollectionOptions)
 
-    def info(self, collection_id: str) -> CollectionInfo:
+    def info(self, collection_id: str, *, remaining: Remaining | None = None) -> CollectionInfo:
         key = self._key("collection", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(CollectionInfo, cached)
-        info = self.client.collection(collection_id)
+        info = self.client.collection(collection_id, remaining=remaining)
         self._remember(key, dataclasses.asdict(info))
         return info
 
@@ -165,37 +165,42 @@ class CollectionBuilder:
         self._remember(key, dataclasses.asdict(info))
         return info
 
-    def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
+    def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
         key = self._key("references", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(MaterialRef, item) for item in cached]
-        refs = self.client.references(collection_id, expired=expired)
-        if expired is not None and expired():  # possibly cut short: not kept for the next hour's requests
+        refs = self.client.references(collection_id, remaining=remaining)
+        if spent(remaining):  # possibly cut short: not kept for the next hour's requests
             return refs
         self._remember(key, [dataclasses.asdict(ref) for ref in refs])
         return refs
 
-    def subcollections(self, collection_id: str) -> list[SubCollection]:
+    def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
         key = self._key("subcollections", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, list):
             return [_hydrate(SubCollection, item) for item in cached]
-        subs = self.client.subcollections(collection_id)
+        subs = self.client.subcollections(collection_id, remaining=remaining)
         self._remember(key, [dataclasses.asdict(sub) for sub in subs])
         return subs
 
-    def overview(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> CollectionPart:
+    def overview(self, collection_id: str, *, remaining: Remaining | None = None) -> CollectionPart:
         """Part 3 for the collection; ``CollectionNotFoundError`` propagates, other failures become a hint.
 
-        ``expired`` tells whether the request's time budget is spent: a listing then ends after its current page,
-        further sub-collections are not listed, and the text says that the lists may be incomplete.
+        ``remaining`` gives the seconds left of the request's time budget; no repository request starts once it is
+        spent, and none waits longer (audit 2026-09-29, A06). What the cache holds still counts. Without the
+        collection itself by then, its ``TimeUpError`` propagates; without a page of its materials, part 3 is the
+        hint. A listing cut later ends after its last page, further sub-collections are not listed, and the text says
+        that the lists may be incomplete.
         """
-        info = self.info(collection_id)
+        info = self.info(collection_id, remaining=remaining)
         try:
-            refs = self.references(collection_id, expired=expired)
-            subs = self.subcollections(collection_id)
-        except EduSharingError as exc:
+            # The one request for the sub-collections before the pages of the materials: a budget that runs out in
+            # the listing leaves a part with what was listed
+            subs = self.subcollections(collection_id, remaining=remaining)
+            refs = self.references(collection_id, remaining=remaining)
+        except EduSharingError as exc:  # TimeUpError included
             log.warning("collection %s could not be listed: %s", collection_id, exc)
             markdown = f"{PART_HEADING}\n\n{UNAVAILABLE_TEXT.format(error=plain_label(str(exc)))}\n"
             return CollectionPart(
@@ -203,11 +208,12 @@ class CollectionBuilder:
             )
         contents: list[SubCollectionContents] = []
         for sub in subs:
-            if expired is not None and expired():
+            if spent(remaining):
                 contents.append(SubCollectionContents(info=sub))  # named, but its materials are not listed
                 continue
             try:
-                contents.append(SubCollectionContents(info=sub, refs=tuple(self.references(sub.id, expired=expired))))
+                listed = self.references(sub.id, remaining=remaining)
+                contents.append(SubCollectionContents(info=sub, refs=tuple(listed)))
             except EduSharingError as exc:  # one broken sub-collection must not hide the others
                 log.warning("sub-collection %s could not be listed: %s", sub.id, exc)
                 contents.append(SubCollectionContents(info=sub))
@@ -217,17 +223,17 @@ class CollectionBuilder:
             contents,
             render_url=self.client.render_url,
             options=self.options.overview,
-            incomplete=expired is not None and expired(),
+            incomplete=spent(remaining),
         )
         return CollectionPart(
             available=True, collection_id=collection_id, title=info.title, summary=summary, markdown=markdown
         )
 
-    def knowledge_sources(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> KnowledgeResult:
-        """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3); ``expired`` see
-        ``material_sources``."""
-        refs = self.references(collection_id, expired=expired)
-        return material_sources(self.client, self.cache, refs, options=self.options.knowledge, expired=expired)
+    def knowledge_sources(self, collection_id: str, *, remaining: Remaining | None = None) -> KnowledgeResult:
+        """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3); ``remaining`` see
+        ``material_sources``. Without a page of the listing in time, ``TimeUpError``."""
+        refs = self.references(collection_id, remaining=remaining)
+        return material_sources(self.client, self.cache, refs, options=self.options.knowledge, remaining=remaining)
 
     def _key(self, kind: str, node_id: str, *, public: bool = False) -> str:
         """The cache key of a record: its kind and format, whose answer it is (``EduSharingClient.scope``), its id."""

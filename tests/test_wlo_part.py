@@ -10,6 +10,7 @@ import pytest
 
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
+from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.models import MaterialRef
 from app.sources.wlo.part import CollectionBuilder, CollectionOptions, _hydrate, collection_topic
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
@@ -62,7 +63,10 @@ def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path
     def listings() -> int:
         return sum(request.url.path.endswith("/children/references") for request in repo.requests)
 
-    result = builder.knowledge_sources(OPTIK, expired=lambda: listings() >= 1)  # the budget ends after one page
+    def remaining() -> float:  # the budget ends after one page
+        return 0.0 if listings() >= 1 else 60.0
+
+    result = builder.knowledge_sources(OPTIK, remaining=remaining)
     assert listings() == 1  # a large collection could take 200 pages outside the request's time budget
     assert result.timed_out == result.considered  # no text is read after the time is up either
     builder.references(OPTIK)
@@ -76,7 +80,10 @@ def test_the_overview_stops_listing_when_the_time_is_up_and_says_so(tmp_path: Pa
     def listings() -> int:
         return sum(request.url.path.endswith("/children/references") for request in repo.requests)
 
-    part = builder.overview(OPTIK, expired=lambda: listings() >= 1)  # the budget ends after the first page
+    def remaining() -> float:  # the budget ends after the first page
+        return 0.0 if listings() >= 1 else 60.0
+
+    part = builder.overview(OPTIK, remaining=remaining)
     assert listings() == 1  # neither the second page nor the materials of the four sub-collections
     assert part.available and part.summary["incomplete"] is True and part.summary["subcollections"] == 4
     assert set(part.summary["subcollection_materials"].values()) == {0}
@@ -84,6 +91,36 @@ def test_the_overview_stops_listing_when_the_time_is_up_and_says_so(tmp_path: Pa
     (tmp_path / "b").mkdir()
     complete = _builder(FakeRepository(), tmp_path / "b").overview(OPTIK)
     assert complete.summary["incomplete"] is False and "unvollständig" not in complete.markdown
+
+
+def _spent() -> float:
+    return 0.0
+
+
+def test_a_spent_budget_asks_the_repository_nothing(tmp_path: Path) -> None:
+    """overview(…, expired=lambda: True) still read the collection, a page of its materials and its sub-collections,
+    each with the full client timeout (audit 2026-09-29, A06); what the cache holds still counts."""
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+    with pytest.raises(TimeUpError):
+        builder.overview(OPTIK, remaining=_spent)  # without the collection there is no part 3 to speak of
+    with pytest.raises(TimeUpError):
+        builder.knowledge_sources(OPTIK, remaining=_spent)  # an empty list would read as an empty collection
+    assert repo.requests == []
+    builder.info(OPTIK)  # as the service reads it at the start of a request, for the topic
+    part = builder.overview(OPTIK, remaining=_spent)
+    assert len(repo.requests) == 1
+    assert not part.available and part.title == "Optik" and part.error == "Zeitbudget der Anfrage erschöpft"
+    assert "Zeitbudget der Anfrage erschöpft" in part.markdown
+
+
+def test_no_request_of_part_three_or_the_knowledge_waits_longer_than_the_time_left(tmp_path: Path) -> None:
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+    assert builder.overview(OPTIK, remaining=lambda: 2.5).available
+    assert builder.knowledge_sources(OPTIK, remaining=lambda: 2.5).sources
+    timeouts = {value for request in repo.requests for value in request.extensions["timeout"].values()}
+    assert timeouts == {2.5} and any(request.url.path.endswith("/textContent") for request in repo.requests)
 
 
 def _without_attribution(ref: MaterialRef) -> dict[str, object]:

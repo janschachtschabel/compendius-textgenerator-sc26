@@ -8,6 +8,7 @@ from app.knowledge.segmentation import segment_source
 from app.matching.lexicon import HeadingLexicon
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
+from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.knowledge import KnowledgeOptions, material_sources
 from app.sources.wlo.models import MaterialRef
 from app.templates.manager import TemplateManager
@@ -42,13 +43,21 @@ TEXT = (
 class FakeTexts:
     scope = "https://repo.test:443/edu-sharing/rest|anonymous"  # whose texts they are, as EduSharingClient.scope
 
-    def __init__(self, texts: dict[str, str], *, fail: set[str] = frozenset()) -> None:  # type: ignore[assignment]
-        self.texts, self.fail, self.calls = texts, fail, []
+    def __init__(
+        self,
+        texts: dict[str, str],
+        *,
+        fail: set[str] = frozenset(),  # type: ignore[assignment]
+        late: set[str] = frozenset(),  # type: ignore[assignment]
+    ) -> None:
+        self.texts, self.fail, self.late, self.calls = texts, fail, late, []
 
-    def text_content(self, node_id: str) -> str:
+    def text_content(self, node_id: str, *, remaining: object = None) -> str:
         self.calls.append(node_id)
         if node_id in self.fail:
             raise EduSharingError("HTTP 500 von repo")
+        if node_id in self.late:  # the budget ran out while the text was on its way
+            raise TimeUpError()
         return self.texts.get(node_id, "")
 
 
@@ -87,12 +96,22 @@ def test_materials_not_started_before_the_deadline_are_skipped(tmp_path: Path) -
     cache = TtlCache(tmp_path / "c.db")
     material_sources(client, cache, refs[2:], options=KnowledgeOptions())  # a cached text costs nothing and is used
     client.calls.clear()  # even after the deadline
-    checks = iter([False, True, True])
+    left = iter([60.0, 0.0, 0.0])
     result = material_sources(
-        client, cache, refs, options=KnowledgeOptions(concurrency=1), expired=lambda: next(checks)
+        client, cache, refs, options=KnowledgeOptions(concurrency=1), remaining=lambda: next(left)
     )
     assert client.calls == ["a"]
     assert result.timed_out == 1 and [source.title for source in result.sources] == ["Material a", "Material c"]
+
+
+def test_a_text_the_budget_ends_on_its_way_counts_as_timed_out_not_as_failed(tmp_path: Path) -> None:
+    """A request waits at most the time left; a text it could not bring is the budget's doing (A06)."""
+    refs = [_ref(node_id, "CC_BY", f"Material {node_id}") for node_id in ("a", "b")]
+    client = FakeTexts({"a": TEXT, "b": TEXT}, late={"b"})
+    result = material_sources(
+        client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), remaining=lambda: 1.0
+    )
+    assert result.timed_out == 1 and result.failed == [] and [s.title for s in result.sources] == ["Material a"]
 
 
 def test_the_text_of_a_material_becomes_chunks_of_part_one(tmp_path: Path) -> None:

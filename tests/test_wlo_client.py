@@ -9,6 +9,7 @@ import httpx
 import pytest
 
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError, validate_node_id
+from app.sources.wlo.errors import TimeUpError
 
 FIX = Path(__file__).parent / "fixtures" / "wlo"
 BASE = "https://repo.test/edu-sharing/rest"
@@ -301,6 +302,51 @@ def test_a_collection_answer_without_its_id_keeps_the_id_asked_for() -> None:
     link of the collection with a ValueError (a 500)."""
     info = _answering({"collection": {"title": "Optik"}}).collection(OPTIK)
     assert info.id == OPTIK and info.title == "Optik"
+
+
+def test_no_request_starts_once_the_time_budget_is_spent() -> None:
+    repo = FakeRepository()
+    client = _client(repo)
+    for read in (client.collection, client.subcollections, client.references, client.text_content):
+        with pytest.raises(TimeUpError, match="Zeitbudget der Anfrage erschöpft"):
+            read(OPTIK, remaining=lambda: 0.0)
+    assert repo.requests == []
+
+
+def test_a_listing_ends_after_the_last_page_that_came_in_time() -> None:
+    repo = FakeRepository()
+    left = iter([60.0, 0.0])
+    refs = _client(repo).references(OPTIK, remaining=lambda: next(left))
+    assert len(refs) == 10 and len(repo.requests) == 1  # the first of two pages
+
+
+def test_a_request_waits_at_most_the_time_left_and_the_client_timeout() -> None:
+    repo = FakeRepository()
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(repo), timeout_s=30.0)
+    client.collection(OPTIK, remaining=lambda: 2.5)
+    client.collection(OPTIK, remaining=lambda: 90.0)
+    client.collection(OPTIK)
+    assert [request.extensions["timeout"] for request in repo.requests] == [
+        dict.fromkeys(("connect", "read", "write", "pool"), seconds) for seconds in (2.5, 30.0, 30.0)
+    ]
+
+
+def test_a_request_the_budget_ends_is_not_tried_again() -> None:
+    """A dropped connection is tried again (ATTEMPTS), but not once the budget is spent."""
+    requests: list[httpx.Request] = []
+
+    def slow(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        raise httpx.ReadTimeout("too slow for the time left", request=request)
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(slow))
+    left = iter([1.0, 0.0])
+    with pytest.raises(TimeUpError):
+        client.collection(OPTIK, remaining=lambda: next(left))
+    assert len(requests) == 1
+    with pytest.raises(EduSharingError, match="nicht erreichbar"):
+        client.collection(OPTIK, remaining=lambda: 60.0)
+    assert len(requests) == 3
 
 
 def test_a_sub_collection_without_an_id_is_left_out_as_a_reference_without_one_is() -> None:

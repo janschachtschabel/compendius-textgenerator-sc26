@@ -125,8 +125,8 @@ class RepositoryReading:
         to the audit, since the compendium stands without the materials.
         """
         try:
-            expired = (lambda: deadline.remaining() <= 0) if deadline is not None else None
-            result = self._collections_or_fail().knowledge_sources(collection_id, expired=expired)
+            remaining = deadline.remaining if deadline is not None else None
+            result = self._collections_or_fail().knowledge_sources(collection_id, remaining=remaining)
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
@@ -145,7 +145,7 @@ class RepositoryReading:
 
     def _collection_part(self, collection_id: str, deadline: Deadline) -> CollectionPart:
         try:
-            return self._collections_or_fail().overview(collection_id, expired=lambda: deadline.remaining() <= 0)
+            return self._collections_or_fail().overview(collection_id, remaining=deadline.remaining)
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:

@@ -204,7 +204,7 @@ class Settings(BaseSettings):
         120,
         ge=5,
         description="Time budget per request - a compendium, or part 1 and the pairs of /qa together - for LLM "
-        "calls and material reads of the knowledge collection",
+        "calls and the repository reads of part 3 and the knowledge collection",
     )
     rate_limit: int = Field(
         60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"

@@ -47,8 +47,10 @@ def collection_overview(
     holds, without an LLM in all four profiles (llm-free, balanced, best-quality, best-quality-generated).
 
     Unknown collection: 404. Repository unreachable: 502; none configured: 503. The endpoint keeps to
-    ``REQUEST_TIMEOUT_S``; if it runs out, ``summary.incomplete`` is set and the text says which lists stayed
-    short. The answer is cached, so a second call within the hour is free.
+    ``REQUEST_TIMEOUT_S``: no request to the repository starts after it, and none waits longer. If it runs out,
+    ``summary.incomplete`` is set and the text says which lists stayed short; before the collection and a page of
+    its contents came, the answer is a 502 naming the time budget. The answer is cached, so a second call within the
+    hour is free.
 
     **Example:** ``/api/v2/collections/9e7ae956-e9df-430f-bace-f3db4b910013/overview`` - the collection Optik of
     the WLO staging; the path is the whole request.
@@ -57,7 +59,7 @@ def collection_overview(
     if builder is None:
         raise HTTPException(status_code=503, detail="Kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL).")
     deadline = Deadline(request.app.state.settings.request_timeout_s)  # the same budget as a compendium's part 3
-    part = builder.overview(collection_id, expired=lambda: deadline.remaining() <= 0)
+    part = builder.overview(collection_id, remaining=deadline.remaining)
     if not part.available:  # read, but not listed: inside a compendium a hint, on its own a failed request
         raise HTTPException(status_code=502, detail=part.error or "Die Sammlung ließ sich nicht auflisten")
     return part.model_dump()

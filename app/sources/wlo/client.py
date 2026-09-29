@@ -22,7 +22,7 @@ import httpx
 # The errors live apart so that the parsers raise them too; the service imports them from here
 from app.sources.wlo.errors import CollectionNotFoundError as CollectionNotFoundError
 from app.sources.wlo.errors import EduSharingError as EduSharingError
-from app.sources.wlo.errors import MalformedAnswerError
+from app.sources.wlo.errors import MalformedAnswerError, TimeUpError
 from app.sources.wlo.errors import NodeNotFoundError as NodeNotFoundError
 from app.sources.wlo.models import (
     CollectionInfo,
@@ -46,6 +46,13 @@ ATTEMPTS = 2  # the repository occasionally drops a connection; the same request
 _NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}
+# The seconds the caller's time budget has left (``Deadline.remaining``); spent at zero
+Remaining = Callable[[], float]
+
+
+def spent(remaining: Remaining | None) -> bool:
+    """Whether the caller's time budget is spent; without one it never is."""
+    return remaining is not None and remaining() <= 0
 
 
 def validate_node_id(value: str) -> str:
@@ -100,6 +107,7 @@ class EduSharingClient:
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self._page_size = max(1, page_size)
+        self._timeout_s = timeout_s
 
         def connection(auth: httpx.Auth | None) -> httpx.Client:
             return httpx.Client(
@@ -127,16 +135,17 @@ class EduSharingClient:
         """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
         return render_url_for(self.base_url, node_id)
 
-    def collection(self, collection_id: str) -> CollectionInfo:
-        payload = self._get(f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}")
+    def collection(self, collection_id: str, *, remaining: Remaining | None = None) -> CollectionInfo:
+        path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}"
+        payload = self._get(path, remaining=remaining)
         if payload is None:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
         # the checked id, not the answer's, as for a node: part 3 links the collection by it
         return dataclasses.replace(parse_collection(payload), id=collection_id)
 
-    def subcollections(self, collection_id: str) -> list[SubCollection]:
+    def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/collections"
-        payload = self._get(path)
+        payload = self._get(path, remaining=remaining)
         if payload is None:
             raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
         subs = [parse_subcollection(node) for node in json_list(payload.get("collections"), "collections")]
@@ -144,23 +153,28 @@ class EduSharingClient:
         # left out of a listing too
         return [sub for sub in subs if sub.id]
 
-    def references(self, collection_id: str, *, expired: Callable[[], bool] | None = None) -> list[MaterialRef]:
+    def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
         """All materials referenced by the collection, page by page until the reported total is reached.
 
-        ``expired`` tells whether the caller's time budget is spent; the listing then ends after the current page.
+        ``remaining`` gives the seconds left of the caller's time budget: once it is spent, the listing ends after the
+        last page that came in time. When not one page came, ``TimeUpError``: an empty list would read as an empty
+        collection.
         """
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/references"
         refs: list[MaterialRef] = []
         seen: set[str] = set()
         skip = 0
         for _page in range(MAX_PAGES):
-            if refs and expired is not None and expired():
+            params = {"maxItems": self._page_size, "skipCount": skip, "propertyFilter": "-all-"}
+            try:
+                payload = self._get(path, params, remaining=remaining)
+            except TimeUpError:
+                if not refs:
+                    raise
                 log.warning(
                     "collection %s: listing cut after %d references, the time budget is spent", collection_id, len(refs)
                 )
                 return refs
-            params = {"maxItems": self._page_size, "skipCount": skip, "propertyFilter": "-all-"}
-            payload = self._get(path, params)
             if payload is None:
                 raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
             items = json_list(payload.get("references", payload.get("nodes")), "references")
@@ -198,9 +212,9 @@ class EduSharingClient:
             raise EduSharingError("edu-sharing antwortete ohne Knoten")
         return dataclasses.replace(parse_node(payload), node_id=node_id)  # the checked id, not the answer's
 
-    def text_content(self, node_id: str) -> str:
+    def text_content(self, node_id: str, *, remaining: Remaining | None = None) -> str:
         """Extracted plain text of a material, or an empty string when the node has none (404)."""
-        payload = self._get(f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/textContent")
+        payload = self._get(f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/textContent", remaining=remaining)
         if not payload:
             return ""
         return str(payload.get("text") or payload.get("raw") or "").strip()
@@ -212,17 +226,27 @@ class EduSharingClient:
         *,
         anonymous: bool = False,
         missing: Collection[int] = (404,),
+        remaining: Remaining | None = None,
     ) -> dict[str, Any] | None:
         """The JSON object of the answer, ``None`` for a status in ``missing``; transport failures are retried once,
         other errors raised, among them an answer that is JSON but no object (``null``, a list, a value).
 
-        ``anonymous`` reads without the client's credentials, over the connection that never had them.
+        ``anonymous`` reads without the client's credentials, over the connection that never had them. ``remaining``
+        bounds every attempt, a retry included: none starts once the caller's budget is spent (``TimeUpError``), and
+        none waits longer than it. Before, each waited up to the full client timeout (30 s by default), also after the
+        budget was gone (audit 2026-09-29, A06).
         """
         client = self._public if anonymous else self._client
         last_error: Exception | None = None
         for _attempt in range(ATTEMPTS):
+            timeout = self._timeout_s
+            if remaining is not None:
+                left = remaining()
+                if left <= 0:
+                    raise TimeUpError()
+                timeout = min(timeout, left)
             try:
-                response = client.get(path, params=params)
+                response = client.get(path, params=params, timeout=timeout)
             except httpx.TransportError as exc:
                 last_error = exc
                 continue

@@ -67,10 +67,38 @@ def test_repository_errors_say_what_failed_once(sample_zims: dict[str, Path], tm
 
 
 def test_the_overview_endpoint_keeps_to_the_request_time_budget(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    with _client(sample_zims, tmp_path, FakeRepository()) as client:
+    """A spent budget asks the repository nothing more: the endpoint still read the collection, a page of its
+    materials and its sub-collections, each with the full client timeout (audit 2026-09-29, A06)."""
+    repo = FakeRepository()
+    with _client(sample_zims, tmp_path, repo) as client:
         client.app.state.settings.request_timeout_s = 0  # type: ignore[attr-defined]  # spent at once
-        body = client.get(f"/api/v2/collections/{OPTIK}/overview").json()
-    assert body["available"] and body["summary"]["incomplete"] is True
+        response = client.get(f"/api/v2/collections/{OPTIK}/overview")
+    assert response.status_code == 502 and response.json()["detail"] == "Zeitbudget der Anfrage erschöpft"
+    assert repo.requests == []
+
+
+class Left:
+    """A deadline that always has ``LEFT_S`` left."""
+
+    LEFT_S = 2.5
+
+    def __init__(self, seconds: float) -> None:
+        self.seconds = seconds
+
+    def remaining(self) -> float:
+        return self.LEFT_S
+
+
+def test_no_repository_request_waits_longer_than_the_time_left(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Each request waited the client's full timeout (30 s), however little of the budget was left (A06)."""
+    monkeypatch.setattr("app.api.v2.collections.Deadline", Left)
+    repo = FakeRepository()
+    with _client(sample_zims, tmp_path, repo) as client:
+        assert client.get(f"/api/v2/collections/{OPTIK}/overview").status_code == 200
+    timeouts = {value for request in repo.requests for value in request.extensions["timeout"].values()}
+    assert len(repo.requests) > 3 and timeouts == {Left.LEFT_S}
 
 
 class ListingFails(FakeRepository):

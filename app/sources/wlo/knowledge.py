@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import logging
 import re
-from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -17,7 +16,8 @@ from app.concurrency import map_in_threads
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.domain.spelling import readable
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import EduSharingError
+from app.sources.wlo.client import EduSharingError, Remaining, spent
+from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.models import MaterialRef, is_extractive
 
 log = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ _CONSENT = re.compile(r"cookie|consent|store and/or access information|datenschu
 class TextClient(Protocol):
     scope: str  # whose answers its texts are, the repository and the account (EduSharingClient.scope)
 
-    def text_content(self, node_id: str) -> str: ...
+    def text_content(self, node_id: str, *, remaining: Remaining | None = None) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -104,12 +104,13 @@ def material_sources(
     refs: list[MaterialRef],
     *,
     options: KnowledgeOptions,
-    expired: Callable[[], bool] | None = None,
+    remaining: Remaining | None = None,
 ) -> KnowledgeResult:
     """Sources for the reusable materials of a collection, fetched in parallel within the budget.
 
-    ``expired`` tells whether the request's time budget is spent: texts not in the cache are then no longer
-    fetched, so a slow repository cannot hold the request for 30 materials times the client timeout.
+    ``remaining`` gives the seconds left of the request's time budget: texts not in the cache are no longer fetched
+    once it is spent, and none waits longer than it, so a slow repository cannot hold the request for 30 materials
+    times the client timeout. A text still on its way when the budget ends counts as not fetched in time.
     """
     result = KnowledgeResult()
     allowed = [ref for ref in refs if is_extractive(ref.license_key)]
@@ -123,10 +124,12 @@ def material_sources(
         cached = cache.get(key) if cache is not None else None
         if isinstance(cached, str):
             return ref, cached, None
-        if expired is not None and expired():
+        if spent(remaining):
             return ref, None, TIME_UP
         try:
-            text = client.text_content(ref.id)
+            text = client.text_content(ref.id, remaining=remaining)
+        except TimeUpError:
+            return ref, None, TIME_UP
         except EduSharingError as exc:
             return ref, None, str(exc)
         if cache is not None:

@@ -23,3 +23,11 @@ class MalformedAnswerError(EduSharingError):
 
     def __init__(self, field: str) -> None:
         super().__init__(f"edu-sharing antwortete mit unerwartetem Aufbau ({field})")
+
+
+class TimeUpError(EduSharingError):
+    """The request's time budget was spent before the repository answered: no request starts after that, and none
+    waits longer than the time left (audit 2026-09-29, A06)."""
+
+    def __init__(self) -> None:
+        super().__init__("Zeitbudget der Anfrage erschöpft")

@@ -137,9 +137,10 @@ def test_the_request_deadline_stops_material_fetches(
 
     monkeypatch.setattr("app.service.Deadline", Spent)
     result = with_collections.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"]))
-    knowledge = result.audit.knowledge
-    assert knowledge is not None
-    assert knowledge["timed_out"] == knowledge["considered"] > 0 and knowledge["sources"] == 0
+    # Not even a page of the listing after the deadline, which still cost a request with the full client timeout;
+    # with nothing listed the audit says why (audit 2026-09-29, A06)
+    error = "Zeitbudget der Anfrage erschöpft"
+    assert result.audit.knowledge == {"collection_id": OPTIK, "error": error, "sources": 0}
 
 
 def test_the_knowledge_collection_needs_part_one() -> None:
@@ -213,12 +214,20 @@ def test_an_unconfigured_part_two_does_not_make_part_three_need_an_article(
 
 
 def test_part_three_keeps_to_the_time_budget_of_the_request(
-    with_collections: CompendiumService, monkeypatch: pytest.MonkeyPatch
+    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(with_collections.settings, "request_timeout_s", 0)  # spent before part 3 starts
-    result = with_collections.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
-    assert result.collection is not None and result.collection.available
-    assert result.collection.summary["incomplete"] is True
+    """Spent before part 3 starts, the budget asks the repository nothing more: part 3 still read a page of the
+    materials and the sub-collections, each with the full client timeout (audit 2026-09-29, A06). It says why it
+    is missing, and the compendium stands."""
+    repo = FakeRepository()
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(repo), page_size=10)
+    builder = CollectionBuilder(client=client, cache=TtlCache(tmp_path / "wlo_cache.db"))
+    monkeypatch.setattr(service, "collections", builder)
+    monkeypatch.setattr(service.settings, "request_timeout_s", 0)  # spent before part 3 starts
+    result = service.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
+    assert [request.url.path.rsplit("/", 1)[-1] for request in repo.requests] == [OPTIK], "the topic's collection"
+    assert result.collection is not None and not result.collection.available
+    assert result.collection.error == "Zeitbudget der Anfrage erschöpft"
 
 
 def test_all_three_parts_land_in_one_markdown_in_order(with_collections: CompendiumService, settings: Settings) -> None:

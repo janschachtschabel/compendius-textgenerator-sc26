@@ -38,8 +38,20 @@ def test_a_part_without_its_source_says_unavailable(
 def test_a_listing_cut_short_by_the_time_budget_is_incomplete(
     service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+    repo = FakeRepository()
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(repo), page_size=10)
     monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=TtlCache(tmp_path / "c.db")))
-    monkeypatch.setattr(service.settings, "request_timeout_s", 0)
+
+    class OnePage:
+        """The request's budget ends with the first page of the listing; one spent from the start asks the
+        repository nothing more, and part 3 is unavailable (audit 2026-09-29, A06)."""
+
+        def __init__(self, seconds: float) -> None:
+            self.seconds = seconds
+
+        def remaining(self) -> float:
+            return 0.0 if any(request.url.path.endswith("/references") for request in repo.requests) else 60.0
+
+    monkeypatch.setattr("app.service.Deadline", OnePage)
     result = service.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
     assert result.parts_status == {"collection": "incomplete"}
