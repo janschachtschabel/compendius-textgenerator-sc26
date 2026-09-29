@@ -297,7 +297,12 @@ def describe_matching(settings: Settings) -> dict[str, Any]:
     check happens here, so the answer costs nothing per request and the model is loaded before the first one.
     """
     components = active_components(LOCAL_MATCHER, settings.model2vec_path)
-    if settings.model2vec_path and "model2vec" not in components:
+    if not settings.model2vec_path:  # empty is a choice; an entry emptied in a panel overrides the image's model (S5)
+        log.warning(
+            "MODEL2VEC_PATH is empty: hybrid_light matches without embeddings and finds less; an empty entry also "
+            "switches off the model the image brings - leave the line out to keep it"
+        )
+    elif "model2vec" not in components:
         log.error(
             "MODEL2VEC_PATH=%s holds no usable model; the matcher runs without embeddings and finds less",
             settings.model2vec_path,
@@ -317,7 +322,13 @@ def describe_entities(settings: Settings) -> dict[str, Any]:
     call instead (``app.api.health``): the sync builds or replaces it while the service runs (D64).
     """
     ready = load_spacy(settings.spacy_model) is not None
-    if settings.spacy_model and not ready:
+    if not settings.spacy_model:  # empty is a choice; an entry emptied in a panel overrides the image's model (S5)
+        log.warning(
+            "SPACY_MODEL is empty: /api/v2/entities finds only the terms of the archives (no ner), and the QA rules "
+            "fall back to four templates; an empty entry also switches off the model the image brings - leave the "
+            "line out to keep it"
+        )
+    elif not ready:
         log.error("SPACY_MODEL=%r is not usable; entity recognition runs without it", settings.spacy_model)
     return {"ner": ready, "model": settings.spacy_model}
 

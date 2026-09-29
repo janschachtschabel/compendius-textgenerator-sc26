@@ -38,13 +38,18 @@ MIN_SECRET_CHARS = 16
 
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"
-# The settings whose empty value is documented as a choice of its own: no collections, only the configured repository.
-# Every other setting left empty is its default (BE-13).
-EMPTY_IS_A_CHOICE = frozenset({"edu_sharing_base_url", "edu_sharing_repositories"})
+# The settings whose empty value is documented as a choice of its own: no collections, only the configured repository,
+# no embeddings, no spaCy model. Every other setting left empty is its default (BE-13). The image sets the two models;
+# an entry emptied in a panel overrides that and switches them off, which the start says (audit 2026-09-29, S5).
+EMPTY_IS_A_CHOICE = frozenset({"edu_sharing_base_url", "edu_sharing_repositories", "model2vec_path", "spacy_model"})
 
 
 def _split_csv(value: str) -> list[str]:
     return [part.strip() for part in value.split(",") if part.strip()]
+
+
+def _blank(value: Any) -> bool:
+    return isinstance(value, str) and not value.strip()
 
 
 class Settings(BaseSettings):
@@ -250,10 +255,11 @@ class Settings(BaseSettings):
         # compose empties for the sidecars would come back from there.
         if not isinstance(data, dict):
             return data
+        # Blanks entered for a choice are that choice: kept, "   " was a repository address or a model name
         return {
-            name: value
+            name: "" if _blank(value) else value
             for name, value in data.items()
-            if name in EMPTY_IS_A_CHOICE or not (isinstance(value, str) and not value.strip())
+            if name in EMPTY_IS_A_CHOICE or not _blank(value)
         }
 
     @property

@@ -677,8 +677,10 @@ Datei Zeile für Zeile und stolpern über Kommentare oder halten `# FOO=bar` fü
 Die angegebenen Werte sind die der Vorlage. Wer eine Zeile wegnimmt, bekommt die Vorgabe aus
 `app/settings.py` — bei den meisten ist das derselbe Wert. Ein leerer Eintrag `NAME=`, wie ihn ein Panel für ein leer
 gelassenes Feld schreibt, gilt wie keine Zeile; das gilt auch für `WEB_CONCURRENCY`, `FORWARDED_ALLOW_IPS` und
-`UVICORN_HTTP`. Nur zwei Einstellungen geben „leer“ eine eigene Bedeutung: `EDU_SHARING_BASE_URL` (keine
-Sammlungen) und `EDU_SHARING_REPOSITORIES` (nur das konfigurierte Repository).
+`UVICORN_HTTP`. Nur vier Einstellungen geben „leer“ eine eigene Bedeutung: `EDU_SHARING_BASE_URL` (keine
+Sammlungen), `EDU_SHARING_REPOSITORIES` (nur das konfigurierte Repository), `MODEL2VEC_PATH` (keine Einbettungen)
+und `SPACY_MODEL` (kein spaCy-Modell). Die beiden Modelle setzt das Image selbst; ein leerer Eintrag überschreibt
+das und schaltet sie ab, der Start warnt dann. Wer das Modell des Images behalten will, lässt die Zeile weg.
 
 ### Compose-Variablen
 
