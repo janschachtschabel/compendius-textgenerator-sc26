@@ -7,9 +7,13 @@ be limited to single archives.
 
 from __future__ import annotations
 
+import re
+
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api.v2.knowledge import KnowledgeRequest
+from app.domain.requests import PRESETS
 from app.main import create_app
 from app.settings import Settings
 from tests.test_article_choice import rating
@@ -121,3 +125,10 @@ def test_an_unknown_template_costs_no_llm_call(client: TestClient, monkeypatch: 
     body = {"topic": "Brechung", "template_id": "gibt-es-nicht", "article_choice": "llm"}
     assert client.post("/api/v2/knowledge", json=body).status_code == 404
     assert fake.bodies == []
+
+
+def test_the_help_of_preset_names_every_article_choice_a_profile_takes() -> None:
+    help_text = KnowledgeRequest.model_fields["preset"].description or ""
+
+    named = set(re.findall(r"(?<![\w-])(rule-based|llm-thorough|llm)(?![\w-])", help_text))
+    assert {switches["article_choice"] for switches in PRESETS.values()} <= named

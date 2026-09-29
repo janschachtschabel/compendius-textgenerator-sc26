@@ -87,10 +87,10 @@ class KnowledgeRequest(RequestModel):
     preset: Preset | None = Field(
         None,
         description="The profile of a compendium request (D53); here it sets article_choice and the token budget. "
-        "llm-free takes rule-based; balanced, best-quality and best-quality-generated take llm, and the two "
-        "best-quality profiles spend from 180,000 tokens per request instead of 60,000 (D59), which this endpoint "
-        "does not come near. Default: PRESET_DEFAULT, shipped balanced. An article_choice the request sets wins; "
-        "llm on a server without an LLM is a 503.",
+        "llm-free takes rule-based, balanced takes llm, best-quality and best-quality-generated take llm-thorough, and "
+        "the two best-quality profiles spend from 180,000 tokens per request instead of 60,000 (D59), which this "
+        "endpoint does not come near. Default: PRESET_DEFAULT, shipped balanced. An article_choice the request sets "
+        "wins; llm or llm-thorough on a server without an LLM is a 503.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
 
