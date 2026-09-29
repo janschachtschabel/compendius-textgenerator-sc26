@@ -2,6 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
+import { saved } from './saved_answers.mjs';
 import { countWords, formatDuration, metrics } from '../../app/ui/static/stats.mjs';
 
 const byKey = (items) => Object.fromEntries(items.map((item) => [item.key, item]));
@@ -103,6 +104,15 @@ test('a curriculum search counts what it found, showed and cut', () => {
   assert.equal(found.cut.value, 49629);
   assert.equal(found.noise.value, 3);
   assert.equal(found.tokens.value, 0);
+});
+
+test('a curriculum search counts the calls of the LLM it reports, as the other endpoints do', () => {
+  const { run } = saved('lehrplan_topic');
+
+  const found = byKey(metrics('lehrplan', run.data, 700));
+
+  assert.equal(found.tokens.value, 96);
+  assert.equal(found.calls.value, 4);
 });
 
 test('entities count by way and link, with what the LLM cost', () => {

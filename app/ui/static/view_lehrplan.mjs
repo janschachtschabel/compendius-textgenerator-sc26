@@ -4,6 +4,7 @@
 import { h, link } from './dom.mjs';
 import { facts, infoPart, technical } from './panels.mjs';
 import { formatNumber } from './stats.mjs';
+import { curriculumCheck } from './steps.mjs';
 import { label, MATCHED_IN, RATINGS, STEPS } from './texts.mjs';
 
 export function renderLehrplan(answer, run) {
@@ -20,6 +21,8 @@ export function renderLehrplan(answer, run) {
     [...byState].map(([state, elements]) => [h('h3', {}, state || 'ohne Land'), h('ul', { class: 'elements' }, elements.map(element))]),
   );
   const llm = answer.llm ?? {};
+  // Its note is the one of a compendium, about blocks and paragraphs this search has none of; the check says its own
+  const check = curriculumCheck(llm.curriculum_check, answer);
   const info = h(
     'section',
     { class: 'info' },
@@ -31,14 +34,19 @@ export function renderLehrplan(answer, run) {
         ['Stichwörter', answer.keywords],
         ['Fachwörter', answer.subject_terms],
         ['Profil', answer.preset],
-        ['Prüfung der Elemente', llm.curriculum_check ? label(STEPS.curriculum_check.values, llm.curriculum_check.used) : 'Stichwortregeln'],
-        ['Hinweis', llm.note],
+        ['Prüfung der Elemente', llm.curriculum_check ? method(llm.curriculum_check.used, check.fellBack) : 'Stichwortregeln'],
+        ['Hinweis', check.note],
         ['Tokens', answer.llm_tokens?.total ? formatNumber(answer.llm_tokens.total) : 'keine'],
       ]),
     ),
     technical(run),
   );
   return { body, info };
+}
+
+// The method that rated the elements, flagged as in the steps of a compendium where the rules stood in for the LLM
+function method(used, fellBack) {
+  return h('span', {}, label(STEPS.curriculum_check.values, used), fellBack ? h('span', { class: 'flag' }, ' Rückfall auf die Regeln') : null);
 }
 
 function summary(answer, shown) {

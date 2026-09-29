@@ -34,6 +34,17 @@ test('where the rules found the article of a material, it is the one the text is
   assert.equal(fact(section, 'Thema und Artikel', 'Warum die Regeln entschieden'), 'genannter Titel ist kein Artikel des Archivs');
 });
 
+test('a collection as a source counts its materials, those it could not read and those time left unread', () => {
+  const kept = info('compendium_topic');
+  const late = info('compendium_topic', (answer) => Object.assign(answer.audit.knowledge, { failed: ['a1', 'b2'], timed_out: 3 }));
+
+  assert.equal(fact(kept, 'Thema und Artikel', 'Wissens-Sammlung'), '4 von 8 Materialien als Quelle, 8 wegen der Lizenz ausgelassen, 4 ohne Text');
+  assert.equal(
+    fact(late, 'Thema und Artikel', 'Wissens-Sammlung'),
+    '4 von 8 Materialien als Quelle, 8 wegen der Lizenz ausgelassen, 4 ohne Text, 2 nicht lesbar, 3 aus Zeitmangel nicht gelesen',
+  );
+});
+
 test('a compendium without a material says nothing of one', () => {
   assert.equal(fact(info('compendium_topic'), 'Thema und Artikel', 'Artikel des Materials'), null);
 });

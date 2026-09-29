@@ -37,9 +37,10 @@ ANSWERS = Path(__file__).parent / "ui" / "answers"
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
 SMALL = {"max_articles": 1, "target_length": 2000}  # a compendium of fewer and shorter blocks, of the same form
 
-# Each answer by the request the page sends for it: from a topic with all three parts and no LLM; from a material, the
-# model naming its article and writing blocks (D47, D63); a topic whose curricula hold nothing to check (D58); the
-# article of a material beside a topic; a curriculum search with and without elements; entities and pairs of the model
+# Each answer by the request the page sends for it: from a topic with all three parts, a collection as a source and no
+# LLM; from a material, the model naming its article and writing blocks (D47, D63); a topic whose curricula hold
+# nothing to check (D58); the article of a material beside a topic; a curriculum search with and without elements;
+# entities and pairs of the model
 REQUESTS: dict[str, dict[str, Any]] = {
     "compendium_topic": {
         "method": "POST",
@@ -47,6 +48,7 @@ REQUESTS: dict[str, dict[str, Any]] = {
         "body": {
             "topic": "Optik",
             "collection_id": OPTIK,
+            "knowledge_collection_id": OPTIK,
             "parts": ["world", "curricula", "collection"],
             "preset": "llm-free",
             **SMALL,

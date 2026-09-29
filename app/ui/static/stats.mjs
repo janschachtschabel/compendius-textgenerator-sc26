@@ -114,7 +114,7 @@ const TIMES = {
 const COSTS = {
   compendium: (a) => llmCost(a.audit?.llm_tokens?.total, a.audit?.llm_tokens?.calls),
   knowledge: (a) => llmCost(a.article_choice?.tokens),
-  lehrplan: (a) => llmCost(a.llm_tokens?.total),
+  lehrplan: (a) => llmCost(a.llm_tokens?.total, a.llm_tokens?.calls),
   entities: (a) => llmCost(a.llm?.total_tokens, a.llm?.calls),
   qa: (a) => llmCost(a.llm_tokens?.total, a.llm_tokens?.calls),
 };
