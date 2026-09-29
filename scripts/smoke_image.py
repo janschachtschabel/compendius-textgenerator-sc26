@@ -65,12 +65,21 @@ SIDECARS = {
 }
 
 
-def run(*args: str) -> str:
-    """Run a docker command and return its output; a failure raises with the command's own message."""
-    result = subprocess.run([DOCKER, *args], capture_output=True, text=True, check=False)  # noqa: S603
+def run(*args: str, stderr: int = subprocess.PIPE) -> str:
+    """Run a docker command and return its output; a failure raises with the command's own message.
+
+    ``stderr=subprocess.STDOUT`` returns what the command writes to stderr as well, in the order it was written.
+    """
+    result = subprocess.run([DOCKER, *args], stdout=subprocess.PIPE, stderr=stderr, text=True, check=False)  # noqa: S603
     if result.returncode != 0:
-        raise SystemExit(f"docker {' '.join(args)} failed: {result.stderr.strip() or result.stdout.strip()}")
+        raise SystemExit(f"docker {' '.join(args)} failed: {(result.stderr or '').strip() or result.stdout.strip()}")
     return result.stdout.strip()
+
+
+def logs(container: str) -> str:
+    """The container's log, both streams: docker logs passes them on apart, and uvicorn writes its own lines to stderr,
+    among them "Child process [n] died" for a worker the parent process killed (audit 2026-09-29, O1)."""
+    return run("logs", container, stderr=subprocess.STDOUT)
 
 
 def build_archives(directory: Path) -> None:
@@ -87,7 +96,7 @@ def wait_until_ready(base_url: str, container: str) -> None:
         except httpx.HTTPError:
             pass  # the server is still starting; the deadline decides
         time.sleep(2)
-    raise SystemExit(f"/ready stayed red for {READY_TIMEOUT_S} s\n{run('logs', container)}")
+    raise SystemExit(f"/ready stayed red for {READY_TIMEOUT_S} s\n{logs(container)}")
 
 
 def ask_for_a_compendium(base_url: str, container: str) -> dict[str, object]:
@@ -96,7 +105,7 @@ def ask_for_a_compendium(base_url: str, container: str) -> dict[str, object]:
         response = httpx.post(f"{base_url}/api/v2/compendium", json=body, timeout=REQUEST_TIMEOUT_S)
     except httpx.HTTPError as exc:
         # This is how the killed worker showed itself: the connection ended without an answer
-        raise SystemExit(f"the request got no answer ({exc}):\n{run('logs', container)}") from exc
+        raise SystemExit(f"the request got no answer ({exc}):\n{logs(container)}") from exc
     if response.status_code != 200:
         raise SystemExit(f"POST /api/v2/compendium answered {response.status_code}: {response.text[:400]}")
     return dict(response.json())
@@ -108,7 +117,7 @@ def check_llm_profile_refused(base_url: str, container: str) -> str:
     try:
         response = httpx.post(f"{base_url}/api/v2/compendium", json=body, timeout=REQUEST_TIMEOUT_S)
     except httpx.HTTPError as exc:
-        raise SystemExit(f"the balanced request got no answer ({exc}):\n{run('logs', container)}") from exc
+        raise SystemExit(f"the balanced request got no answer ({exc}):\n{logs(container)}") from exc
     if response.status_code != 503 or "LLM_ENABLED" not in response.text:
         raise SystemExit(f"balanced without an LLM answered {response.status_code}: {response.text[:400]}")
     return "balanced without an LLM is a 503 that names LLM_ENABLED"
@@ -120,7 +129,7 @@ def ask_for_entities(base_url: str, container: str) -> dict[str, object]:
     try:
         response = httpx.post(f"{base_url}/api/v2/entities", json=body, timeout=REQUEST_TIMEOUT_S)
     except httpx.HTTPError as exc:
-        raise SystemExit(f"the entity request got no answer ({exc}):\n{run('logs', container)}") from exc
+        raise SystemExit(f"the entity request got no answer ({exc}):\n{logs(container)}") from exc
     if response.status_code != 200:
         raise SystemExit(f"POST /api/v2/entities answered {response.status_code}: {response.text[:400]}")
     return dict(response.json())
@@ -139,7 +148,7 @@ def ask_for_pairs(base_url: str, container: str) -> dict[str, object]:
     try:
         response = httpx.post(f"{base_url}/api/v2/qa", json=body, timeout=REQUEST_TIMEOUT_S)
     except httpx.HTTPError as exc:
-        raise SystemExit(f"the qa request got no answer ({exc}):\n{run('logs', container)}") from exc
+        raise SystemExit(f"the qa request got no answer ({exc}):\n{logs(container)}") from exc
     if response.status_code != 200:
         raise SystemExit(f"POST /api/v2/qa answered {response.status_code}: {response.text[:400]}")
     return dict(response.json())
@@ -306,7 +315,7 @@ def main() -> int:
             if args.embeddings:
                 print(f"the image matches: {check_embeddings(base_url)}")
             compendium = ask_for_a_compendium(base_url, container)
-            print(f"the image answers: {check(compendium, run('logs', args.name))}")
+            print(f"the image answers: {check(compendium, logs(args.name))}")
             print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
             print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
             print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
