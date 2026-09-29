@@ -64,6 +64,8 @@ def cmd_status(args: argparse.Namespace) -> int:
         print(f"Letzter Harvest-Lauf: {status.get('state')} ({status.get('updated_at')})")
         if status.get("error"):
             print(f"  Fehler: {status['error']}")
+        if status.get("check_error"):
+            print(f"  Letzte Prüfung gescheitert: {status['check_error']}")
         if status.get("state") == "running" and status.get("progress"):
             print(f"  Fortschritt: {status['progress']}")
     return 0

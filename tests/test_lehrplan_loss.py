@@ -22,7 +22,7 @@ import pytest
 
 from app.cli_lehrplan import loop_task
 from app.jobs.runner import run_periodically
-from app.sources.lehrplan.harvest import STATUS_FILE, HarvestRefusedError, read_status
+from app.sources.lehrplan.harvest import LOCK_FILE, STATUS_FILE, HarvestRefusedError, read_status
 from app.sources.lehrplan.sparql import SparqlError, SparqlRefusedError
 from app.sources.lehrplan.store import LehrplanStore
 from tests.test_lehrplan_harvest import BE, CLOSURES, LISTS, LP, SN, T0, FakeEndpoint, _harvest
@@ -235,6 +235,74 @@ def test_the_gauge_reads_the_last_finished_harvest(sample_zims: dict[str, Path],
 
     with _app(sample_zims, tmp_path) as client:
         assert value(scrape(client), "kompendium_lehrplan_harvest_failed") == 1
+
+
+class UnreachableEndpoint(FakeEndpoint):
+    """MEM out of reach: every query fails as the client reports it after its retries."""
+
+    def select(self, query: str) -> list[dict[str, str]]:
+        self.queries.append(query)
+        raise SparqlError("MEM-Endpunkt https://sparql.test/sparql/ nicht erreichbar: ConnectError")
+
+
+def test_a_failed_check_shows_until_a_check_succeeds(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Four weeks of an unreachable MEM left the status and the gauge untouched: the weekly check raised before any run
+    (audit 2026-09-29, Q3)."""
+    state = tmp_path / "state"
+    state.mkdir()
+    _harvest(state, FakeEndpoint()).run()
+    week = T0 + timedelta(days=7)
+
+    with pytest.raises(SparqlError):
+        _harvest(state, UnreachableEndpoint(), when=week).due(max_age=timedelta(days=30))
+
+    with _app(sample_zims, tmp_path) as client:
+        assert value(scrape(client), "kompendium_lehrplan_harvest_failed") == 1
+    status = read_status(state)
+    assert status is not None and "nicht erreichbar" in status["check_error"]
+    assert status["state"] == "idle" and status["last_run"]["nodes"] == 5  # the last harvest stays as it was
+    assert _harvest(state, FakeEndpoint(), when=week + timedelta(hours=1)).due(max_age=timedelta(days=30)) is False
+    status = read_status(state)
+    assert status is not None and status["check_error"] is None
+    with _app(sample_zims, tmp_path) as client:
+        assert value(scrape(client), "kompendium_lehrplan_harvest_failed") == 0
+
+
+def test_a_good_check_leaves_the_error_of_a_failed_run(tmp_path: Path) -> None:
+    # only a run that succeeds clears it: the next run would otherwise start with the gauge at 0 (audit BE-11)
+    _harvest(tmp_path, FakeEndpoint()).run()
+    with pytest.raises(HarvestRefusedError):
+        _harvest(tmp_path, FakeEndpoint(counts={BE.iri: 1}), when=T0 + timedelta(days=1)).run()
+
+    assert _harvest(tmp_path, FakeEndpoint(counts={BE.iri: 1}), when=T0 + timedelta(days=8)).due(
+        max_age=timedelta(days=30)
+    )
+
+    status = read_status(tmp_path)
+    assert status is not None and "HarvestRefusedError" in status["last_error"]
+
+
+def test_a_check_writes_nothing_while_a_harvest_runs(tmp_path: Path) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    before = (tmp_path / STATUS_FILE).read_text(encoding="utf-8")
+    (tmp_path / LOCK_FILE).write_text("pid 1\n", encoding="utf-8")  # the run writes its own outcome
+
+    with pytest.raises(SparqlError):
+        _harvest(tmp_path, UnreachableEndpoint(), when=T0 + timedelta(days=7)).due(max_age=timedelta(days=30))
+
+    assert (tmp_path / STATUS_FILE).read_text(encoding="utf-8") == before
+
+
+def test_a_check_it_cannot_record_still_ends_as_it_did(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+
+    def read_only(*args: Any, **kwargs: Any) -> Any:
+        raise PermissionError("read-only file system")
+
+    monkeypatch.setattr("app.sources.lehrplan.harvest.acquire_lock", read_only)
+
+    with pytest.raises(SparqlError, match="nicht erreichbar"):
+        _harvest(tmp_path, UnreachableEndpoint(), when=T0 + timedelta(days=7)).due(max_age=timedelta(days=30))
 
 
 def test_the_cache_is_on_disk_before_it_replaces_the_old_one(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

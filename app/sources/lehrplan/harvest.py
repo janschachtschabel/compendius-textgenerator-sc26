@@ -189,8 +189,34 @@ class LehrplanHarvest:
             return True
         if self._clock() - datetime.fromisoformat(harvested_at) >= max_age:
             return True
-        changed: bool = self.check()["changed"]
+        try:
+            changed: bool = self.check()["changed"]
+        except Exception as exc:
+            self._record_check(exc)
+            raise
+        self._record_check(None)
         return changed
+
+    def _record_check(self, error: Exception | None) -> None:
+        """A check that failed goes to the status as ``check_error``, which the gauge and its alert see as they see a
+        failed run - four weeks of an unreachable MEM wrote nothing (audit 2026-09-29, Q3); a good check clears it, as
+        those of the Wikidata and GND syncs do. A run's error stays for a run that succeeds, or the next run would start
+        with the gauge at 0 (BE-11). While a run holds the lock the check writes nothing: the run writes its outcome."""
+        failure = None if error is None else f"{type(error).__name__}: {error}"
+        try:
+            lock = self._acquire_lock()
+        except HarvestRunningError:
+            return
+        except OSError as exc:  # the check's own outcome goes on to the caller either way
+            log.warning("cannot record the check in %s: %s", STATUS_FILE, exc)
+            return
+        try:
+            previous = read_status(self._state_dir)
+            if (previous or {}).get("check_error") != failure:
+                update = {"updated_at": self._clock().isoformat(), "check_error": failure}
+                self._save_status({**(previous or {"state": "idle"}), **update})
+        finally:
+            lock.release()
 
     # --- the harvest -----------------------------------------------------------------------------
 
@@ -503,7 +529,11 @@ class LehrplanHarvest:
             else None
             if "last_run" in fields
             else previous.get("last_error"),
+            "check_error": previous.get("check_error"),  # only a check writes it (``_record_check``)
         }
+        self._save_status(payload)
+
+    def _save_status(self, payload: dict[str, Any]) -> None:
         try:
             atomic_write_text(self._state_dir / STATUS_FILE, json.dumps(payload, ensure_ascii=False, indent=2))
         except OSError as exc:

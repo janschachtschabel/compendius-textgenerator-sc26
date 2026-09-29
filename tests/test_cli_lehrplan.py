@@ -1,5 +1,6 @@
 """CLI: ``compendium lehrplan status`` and ``lehrplan search`` against a temporary state directory."""
 
+import json
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -36,6 +37,17 @@ def test_status_reports_missing_and_then_present_cache(state_dir: Path, capsys: 
     assert main(["lehrplan", "status"]) == 0
     out = capsys.readouterr().out
     assert "Stand 2026-09-17" in out and "SN: 1" in out
+
+
+def test_status_names_a_failed_check(state_dir: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    write_cache(state_dir)
+    failure = "SparqlError: MEM-Endpunkt https://sparql.test/sparql/ nicht erreichbar"
+    status = {"state": "idle", "check_error": failure}
+    (state_dir / "lehrplan_status.json").write_text(json.dumps(status), encoding="utf-8")
+
+    assert main(["lehrplan", "status"]) == 0
+
+    assert f"Letzte Prüfung gescheitert: {failure}" in capsys.readouterr().out
 
 
 def test_search_prints_matches_and_respects_the_subject(state_dir: Path, capsys: pytest.CaptureFixture[str]) -> None:

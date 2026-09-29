@@ -190,11 +190,11 @@ class StatusCollector:
         if status is None:
             return
         # the last finished run, also while the next one runs: the state alone was 1 for an hour after a failure and
-        # 0 again with the retry, and the alert missed a harvest that failed every hour (audit 2026-09-28, BE-11)
+        # 0 again with the retry, and the alert missed a harvest that failed every hour (audit 2026-09-28, BE-11);
+        # and the last check, which fails before any run when MEM is out of reach (audit 2026-09-29, Q3)
+        failed = status.get("state") == "error" or bool(status.get("last_error")) or bool(status.get("check_error"))
         yield _gauge(
-            "kompendium_lehrplan_harvest_failed",
-            "1 when the last curriculum harvest failed",
-            int(status.get("state") == "error" or bool(status.get("last_error"))),
+            "kompendium_lehrplan_harvest_failed", "1 when the last curriculum harvest or its check failed", int(failed)
         )
         finished = _timestamp(_last_run(status).get("finished_at"))
         if finished is not None:
