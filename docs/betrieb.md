@@ -74,8 +74,7 @@ Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`), die Ze
 leer)“ erst 2.2.1, die Zeile „2026-09-28 (Token-Länge)“ erst 2.2.2, die Zeilen von „2026-09-28 (Anfragegrenzen)“
 bis „2026-09-28 (Template-Grenzen)“ erst 2.3.0 (Image-Tag `2.3.0`), die Zeile „2026-09-29 (Prüfansicht, D66)“
 erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der Index-Sidecars)“ bis „2026-09-29
-(Audit, Anfragen)“ kamen nach 2.4.2: Noch enthält sie kein Release, wohl aber `:latest` - wer darüber
-aktualisiert, liest sie vorher.
+(Audit, Anfragen)“ enthält erst 2.5.0 (Image-Tag `2.5.0`).
 
 ## Zustand prüfen
 
