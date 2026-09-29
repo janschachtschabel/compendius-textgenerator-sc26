@@ -166,6 +166,26 @@ def test_text_falls_back_to_reasoning_when_content_is_empty() -> None:
     assert client.chat(MESSAGES, max_output_tokens=10).text == "aus dem Denkfeld"
 
 
+def thought_only(thought: str, finish_reason: str) -> dict[str, Any]:
+    """An answer with nothing but a thought, as some academiccloud models give it, and its usage."""
+    payload: dict[str, Any] = completion("", prompt_tokens=900, completion_tokens=1500)
+    payload["choices"][0]["message"] = {"role": "assistant", "content": None, "reasoning_content": thought}
+    payload["choices"][0]["finish_reason"] = finish_reason
+    return payload
+
+
+@pytest.mark.parametrize(("finish_reason", "text"), [("stop", "Die Antwort ist 3."), ("length", "")])
+def test_the_reasoning_field_is_the_answer_only_when_the_model_finished(finish_reason: str, text: str) -> None:
+    """Cut off at the output limit, the field holds a thought, not an answer: the article choice read {"wahl": 3} from
+    one and the synthesis printed thoughts as [Modellwissen] (audit 2026-09-29, L2)."""
+    client, _ = make_client(FakeBApi(raw=thought_only("Die Antwort ist 3.", finish_reason)))
+
+    result = client.chat(MESSAGES, max_output_tokens=10)
+
+    assert result.text == text and result.finish_reason == finish_reason
+    assert result.total_tokens == 2400, "the tokens of the thought count all the same"
+
+
 def test_retries_with_backoff_on_429_and_503() -> None:
     fake = FakeBApi(statuses=[429, 503, 200])
     client, sleeps = make_client(fake)

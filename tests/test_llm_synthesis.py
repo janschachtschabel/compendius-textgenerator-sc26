@@ -34,7 +34,7 @@ from app.synthesis.llm import (
     shift_citations,
 )
 from app.templates.manager import TemplateManager
-from tests.test_llm_client import BASE, KEY, FakeBApi
+from tests.test_llm_client import BASE, KEY, FakeBApi, thought_only
 
 SOURCE = Source(
     source_id="wikipedia:Test", project="wikipedia", role=SourceRole.LEITQUELLE, title="Test", url="u", is_primary=True
@@ -324,6 +324,19 @@ def test_write_section_reports_an_empty_answer_as_such() -> None:
     )
     assert isinstance(result, LlmSkipped) and "leere Antwort" in result.reason and "stop" in result.reason
     assert result.calls == 1 and result.total_tokens == 24
+
+
+def test_a_thought_cut_off_at_the_output_limit_is_no_block() -> None:
+    """A thinking model's field became the block, its sentences marked as model knowledge (audit 2026-09-29, L2)."""
+    thought = "Ich soll einen Baustein schreiben. Beleg [1] sagt, das Thema handelt vom Licht. Vielleicht sollte ich"
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+
+    result = LlmSynthesizer(_client(FakeBApi(raw=thought_only(thought, "length")))).write_section(
+        _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True
+    )
+
+    assert isinstance(result, LlmSkipped) and "leere Antwort" in result.reason and "length" in result.reason
+    assert result.total_tokens == 2400 and budget.used == 2400
 
 
 def test_html_comments_in_the_answer_never_reach_the_document() -> None:

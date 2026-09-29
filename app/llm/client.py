@@ -411,10 +411,13 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
         if content is not None and not isinstance(content, str):
             raise TypeError("content is neither text nor a list of parts")
         text = (content or "").strip()
-        if not text:  # some academiccloud models answer in the reasoning field only
+        finish_reason = str(choice.get("finish_reason") or "")
+        # Some academiccloud models answer in the reasoning field only. Cut off at the output limit it holds a thought,
+        # not an answer: the article choice read {"wahl": 3} from one, the synthesis printed thoughts as model
+        # knowledge (audit 2026-09-29, L2); the call then answered nothing, and its caller says so
+        if not text and finish_reason != "length":
             reasoning = message.get("reasoning") or message.get("reasoning_content")
             text = reasoning.strip() if isinstance(reasoning, str) else ""
-        finish_reason = str(choice.get("finish_reason") or "")
         answered_by = str(data.get("model") or model)
         usage = data.get("usage")
     except (KeyError, IndexError, TypeError, AttributeError) as exc:
