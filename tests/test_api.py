@@ -138,6 +138,34 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
 
 
+@pytest.fixture
+def offline_b_api(monkeypatch: pytest.MonkeyPatch) -> FakeBApi:
+    """build_llm with a b-api that answers in the process."""
+    fake = FakeBApi()
+
+    def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
+        return BApiClient(*args, transport=httpx.MockTransport(fake), **kwargs)
+
+    monkeypatch.setattr("app.main.BApiClient", offline_client)
+    return fake
+
+
+@pytest.mark.parametrize(
+    ("timeout_s", "llm", "warned"), [(5, True, True), (10, True, True), (11, True, False), (5, False, False)]
+)
+def test_a_deadline_too_short_for_an_llm_call_is_named_at_start(
+    tmp_path: Path, offline_b_api: FakeBApi, caplog: pytest.LogCaptureFixture, timeout_s: int, llm: bool, warned: bool
+) -> None:
+    """A call starts only while five seconds of the request remain: at REQUEST_TIMEOUT_S=5 none started, up to 10
+    hardly one, and every LLM step fell back to the rules without a word (audit 2026-09-29, S6)."""
+    settings = make_settings([], tmp_path, llm_enabled=llm, b_api_key="k", request_timeout_s=timeout_s)
+
+    with caplog.at_level(logging.WARNING):
+        build_llm(settings)
+
+    assert ("REQUEST_TIMEOUT_S" in caplog.text) is warned
+
+
 def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """With LLM_ENABLED and B_API_KEY in the shell the offline fixtures would build a gateway to the real b-api."""
     monkeypatch.setenv("LLM_ENABLED", "true")

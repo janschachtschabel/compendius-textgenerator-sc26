@@ -44,6 +44,7 @@ from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.call import listen_to_calls
 from app.llm.client import BApiClient
+from app.llm.deadline import MIN_CALL_S
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import LOCAL_MATCHER, active_components
@@ -70,6 +71,12 @@ from app.templates.manager import TemplateManager
 from app.ui.routes import ui_router
 
 log = logging.getLogger(__name__)
+
+# Up to this REQUEST_TIMEOUT_S the LLM gets hardly a call (audit 2026-09-29, S6): a call starts only while MIN_CALL_S
+# remain (app/llm/deadline.py) and has to be answered by the end of the request, so it must start in the request's
+# first seconds and be done within ten. The quickest LLM steps measured took about 4 s - the article choice 3.6 s
+# (M39), naming the entities 4 s (M36) -, a call of the matching or the writing longer.
+SHORTEST_LLM_TIMEOUT_S = 2 * MIN_CALL_S
 
 
 def build_registry(settings: Settings) -> ZimRegistry:
@@ -142,6 +149,20 @@ def resolve_b_api(settings: Settings) -> str:
     return settings.b_api_url
 
 
+def warn_about_llm_settings(settings: Settings) -> None:
+    """Settings the LLM can hardly work with, named at start; the service keeps them (a warning, not a refusal: a
+    stricter check stopped all containers on 2026-09-28, BE-13)."""
+    if settings.request_timeout_s <= SHORTEST_LLM_TIMEOUT_S:
+        log.warning(
+            "REQUEST_TIMEOUT_S=%d leaves the LLM hardly a call: one starts only while %g s of the request remain and "
+            "has to be answered by its end, and the quickest LLM steps take about 4 s, the matching and the writing "
+            "longer; the LLM steps fall back to the rules. The default is %d s (audit 2026-09-29, S6)",
+            settings.request_timeout_s,
+            MIN_CALL_S,
+            Settings.model_fields["request_timeout_s"].default,
+        )
+
+
 def build_llm(settings: Settings) -> LlmGateway | None:
     """The b-api gateway for the LLM switches (PLAN.md 7); off without LLM_ENABLED or without a key."""
     if not settings.llm_enabled:
@@ -153,6 +174,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     if not base_url:
         log.warning("LLM_ENABLED is set but no b-api address is known; LLM requests fall back to the rule-based path")
         return None
+    warn_about_llm_settings(settings)
     client = BApiClient(
         base_url,
         settings.b_api_key,
