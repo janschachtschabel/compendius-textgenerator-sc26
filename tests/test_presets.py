@@ -34,7 +34,7 @@ PART_2_SWITCHES = ("curriculum_check",)  # D58; its values per profile: tests/te
 
 def test_the_shipped_default_profile_is_balanced() -> None:
     # Jan, 2026-09-25: the profile that uses the LLM sparingly is the standard; the tests run on llm-free (conftest)
-    assert Settings(_env_file=None).preset_default == "balanced"  # type: ignore[call-arg]
+    assert Settings(_env_file=None).preset_default == "balanced"
 
 
 def test_an_unknown_default_profile_is_refused_with_the_settings(sample_zims: dict[str, Path], tmp_path: Path) -> None:
@@ -58,7 +58,7 @@ def test_the_presets_are_the_values_of_the_field() -> None:
     ],
 )
 def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, ...]) -> None:
-    request = GenerateRequest(topic="Optik", preset=preset)  # type: ignore[arg-type]
+    request = GenerateRequest(topic="Optik", preset=preset)
     assert tuple(getattr(request, name) for name in SWITCHES) == expected
 
 

@@ -215,7 +215,7 @@ def test_a_material_focuses_the_llm_on_its_title_and_keywords() -> None:
     )
     gateway.qa.pairs("Ein Text.", count=2, max_answer_length=100, budget=gateway.open_budget())
     asked, plain = (body["messages"][1]["content"] for body in fake.bodies)
-    assert focused is not None and focused[0].question == "Was ist die Netzhaut?"
+    assert isinstance(focused, list) and focused[0].question == "Was ist die Netzhaut?"
     focus = "Schwerpunkt: das Unterrichtsmaterial „Stationsarbeit zur Optik“ mit den Schlagwörtern Auge, Netzhaut."
     assert focus in asked
     assert "Stationenlernen" not in asked, "a format word names no subject to ask about"

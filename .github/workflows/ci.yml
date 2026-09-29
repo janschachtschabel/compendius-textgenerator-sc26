@@ -32,7 +32,7 @@ jobs:
           uv run ruff check app tests scripts
           uv run ruff format --check app tests scripts
       - name: Types
-        run: uv run mypy app
+        run: uv run mypy app scripts tests
       - name: Tests with coverage gate
         # Set on purpose: tests/conftest.py must keep shell configuration away from the tests (test_isolation.py)
         env:

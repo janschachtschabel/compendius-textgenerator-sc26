@@ -20,7 +20,7 @@ from tests.conftest import make_settings
 
 ADMIN_TOKEN = "s3cret" * 6  # the service refuses a token under 16 characters (audit 2026-09-27, SE-08)
 AUTH = {"X-Admin-Token": ADMIN_TOKEN}
-TEMPLATE = {
+TEMPLATE: dict[str, Any] = {
     "id": "mein",
     "name": "Mein Template",
     "slots": [{"id": "a", "slot": "praxis", "title": "Praxis"}],

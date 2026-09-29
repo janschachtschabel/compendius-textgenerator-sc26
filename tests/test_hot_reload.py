@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from app.domain.requests import GenerateRequest
 from app.main import build_service, create_app
 from app.sources.zim import refresh as refresh_module
-from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, ActiveWatcher, write_active
+from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, ActiveWatcher, read_active, write_active
 from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
@@ -142,7 +142,7 @@ def test_a_state_file_that_could_not_be_read_is_read_again(
     registry = ZimRegistry.from_active(tmp_path)
     refresher = RegistryRefresher(registry, tmp_path)
     write_active(tmp_path, _state(local, "wikipedia", "klexikon"))
-    read = refresh_module.read_active
+    read = read_active
 
     def failing(zim_dir: Path) -> ActiveState | None:
         raise OSError(5, "Input/output error")

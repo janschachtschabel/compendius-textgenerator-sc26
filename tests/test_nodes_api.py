@@ -271,7 +271,7 @@ def test_every_endpoint_names_the_failures_of_a_node_alike(
 
 
 # What each endpoint takes besides a node: a repository alone must be refused for its own reason
-REPOSITORY_ALONE = {
+REPOSITORY_ALONE: dict[str, dict[str, Any]] = {
     "/api/v2/compendium": {"topic": "Optik", "parts": ["world"]},
     "/api/v2/knowledge": {"topic": "Optik"},
     "/api/v2/qa": {"topic": "Optik"},

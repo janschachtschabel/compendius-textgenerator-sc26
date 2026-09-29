@@ -29,7 +29,7 @@ SIDECAR_SECRETS = ("B_API_KEY", "EDU_SHARING_USER", "EDU_SHARING_PASSWORD", "ADM
 def test_a_setting_left_empty_is_its_default(monkeypatch: pytest.MonkeyPatch, name: str, entered: str) -> None:
     monkeypatch.setenv(name.upper(), entered)
 
-    settings = Settings(_env_file=None)  # type: ignore[call-arg]
+    settings = Settings(_env_file=None)
 
     assert getattr(settings, name) == Settings.model_fields[name].default
 
@@ -41,7 +41,7 @@ def test_the_settings_whose_empty_means_something_keep_it(
 ) -> None:
     monkeypatch.setenv(name.upper(), entered)
 
-    settings = Settings(_env_file=None)  # type: ignore[call-arg]
+    settings = Settings(_env_file=None)
 
     assert getattr(settings, name) == ""
 
@@ -77,7 +77,7 @@ def test_an_emptied_secret_does_not_come_back_from_the_env_file(
     for name in SIDECAR_SECRETS:
         monkeypatch.setenv(name, "")
 
-    settings = Settings(_env_file=env_file)  # type: ignore[call-arg]
+    settings = Settings(_env_file=env_file)
 
     assert [getattr(settings, name.lower()) for name in SIDECAR_SECRETS] == [""] * len(SIDECAR_SECRETS)
 

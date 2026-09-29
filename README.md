@@ -91,7 +91,7 @@ curl -sS http://127.0.0.1:8000/ready
 uv sync --all-extras
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
-uv run mypy app
+uv run mypy app scripts tests
 ```
 
 Die CI (GitHub Actions `.github/workflows/ci.yml`, GitLab `.gitlab-ci.yml`) führt dieselben Prüfungen aus,

@@ -17,7 +17,7 @@ def _chunk(cid: str, heading: str, text: str, **kwargs: object) -> Chunk:
         heading_path=[heading] if heading != "Einleitung" else [],
         heading_level=2 if heading != "Einleitung" else 0,
         text=text,
-        **kwargs,  # type: ignore[arg-type]
+        **kwargs,
     )
 
 

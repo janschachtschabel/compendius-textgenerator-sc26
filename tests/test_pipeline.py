@@ -12,7 +12,7 @@ from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
-from app.sources.zim.html import ParsedArticle
+from app.sources.zim.html import ParsedArticle, parse_article
 from app.sources.zim.registry import ZimRegistry
 from app.sources.zim.topic_rules import TITLE_WEIGHT, context_score, listed_meanings
 
@@ -101,7 +101,7 @@ def test_parse_cache_evicts_the_least_recently_used_article(
     archive = ZimArchive(sample_zims["wikipedia"])  # own instance: the session registry's cache is shared state
     monkeypatch.setattr("app.sources.zim.archive.PARSE_CACHE_SIZE", 2)
     parsed: list[str] = []
-    original = archive_module.parse_article
+    original = parse_article
 
     def counting(html: str, title: str) -> Any:
         parsed.append(title)

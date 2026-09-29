@@ -32,6 +32,9 @@ class RecordedMorph:
 
 
 class RecordedToken:
+    text: str
+    whitespace_: str
+
     def __init__(self, doc: RecordedDoc, index: int, fields: list[Any]) -> None:
         text, whitespace, pos, tag, dep, head, lemma, morph = fields
         self.doc, self.i, self.text, self.whitespace_ = doc, index, text, whitespace

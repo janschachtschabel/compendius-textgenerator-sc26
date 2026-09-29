@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -21,8 +22,8 @@ STAGING_API = "https://b-api.staging.openeduhub.net"
 PROD_API = "https://b-api.prod.openeduhub.net"
 
 
-def settings(**overrides: object) -> Settings:
-    return Settings(_env_file=None, **overrides)  # type: ignore[call-arg]
+def settings(**overrides: Any) -> Settings:
+    return Settings(_env_file=None, **overrides)
 
 
 @pytest.mark.parametrize(("repository", "expected"), [(STAGING_REPO, STAGING_API), (PROD_REPO, PROD_API)])
@@ -75,7 +76,7 @@ def test_a_model_left_empty_in_the_env_file_is_the_default(monkeypatch: pytest.M
     monkeypatch.delenv("B_API_MODEL", raising=False)
     env_file = tmp_path / ".env"
     env_file.write_text("B_API_MODEL=\n", encoding="utf-8")
-    assert Settings(_env_file=env_file).b_api_model == "gpt-6-luna"  # type: ignore[call-arg]
+    assert Settings(_env_file=env_file).b_api_model == "gpt-6-luna"
 
 
 def test_a_model_entered_is_the_one_used(monkeypatch: pytest.MonkeyPatch) -> None:

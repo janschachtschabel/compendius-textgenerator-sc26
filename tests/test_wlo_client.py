@@ -2,6 +2,7 @@
 
 import base64
 import json
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -229,7 +230,7 @@ def _answering(body: object) -> EduSharingClient:
     return EduSharingClient(BASE, transport=httpx.MockTransport(answer))
 
 
-READS = {
+READS: dict[str, Callable[[EduSharingClient], object]] = {
     "collection": lambda client: client.collection(OPTIK),
     "subcollections": lambda client: client.subcollections(OPTIK),
     "references": lambda client: client.references(OPTIK),

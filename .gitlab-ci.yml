@@ -29,7 +29,7 @@ ruff:
 mypy:
   stage: lint
   script:
-    - uv run mypy app
+    - uv run mypy app scripts tests
 
 dependency-audit:
   stage: lint

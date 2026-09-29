@@ -185,7 +185,7 @@ def test_an_unusable_index_is_rebuilt(tmp_path: Path, dnb: FakeDnb) -> None:
 
 def test_the_sync_of_an_installation_reads_its_settings(tmp_path: Path) -> None:
     settings = Settings(
-        _env_file=None,  # type: ignore[call-arg]
+        _env_file=None,
         state_dir=tmp_path / "state",
         gnd_dumps_url="https://mirror.example/gnd",
     )

@@ -90,7 +90,8 @@ class FakeEndpoint:
     """Answers the harvest's five query shapes from canned rows and records what was asked."""
 
     def __init__(self, *, fail_closure: bool = False, counts: dict[str, int] | None = None) -> None:
-        self.fail_closure, self.queries = fail_closure, []
+        self.fail_closure = fail_closure
+        self.queries: list[str] = []
         self.counts = counts if counts is not None else {SN.iri: 1, BE.iri: 1}
         self.endpoint = "https://sparql.test/sparql/"
 
@@ -117,7 +118,7 @@ class FakeEndpoint:
 
 
 def _harvest(tmp_path: Path, endpoint: FakeEndpoint, when: datetime = T0) -> LehrplanHarvest:
-    return LehrplanHarvest(endpoint, tmp_path / "lehrplan.db", clock=lambda: when)  # type: ignore[arg-type]
+    return LehrplanHarvest(endpoint, tmp_path / "lehrplan.db", clock=lambda: when)
 
 
 def test_run_asks_every_state_and_fills_the_cache_with_roles_parents_and_meta(tmp_path: Path) -> None:

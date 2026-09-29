@@ -10,13 +10,18 @@ from app.sources.lehrplan.subjects import SubjectCatalog, UnknownSubjectError
 CONFIG = Path(__file__).resolve().parents[1] / "config" / "subjects.yaml"
 
 
+def label(catalog: SubjectCatalog, value: str) -> str | None:
+    subject = catalog.resolve(value)
+    return None if subject is None else subject.label
+
+
 def test_repository_catalog_resolves_ids_uris_labels_and_aliases() -> None:
     catalog = SubjectCatalog.load(CONFIG)
-    assert catalog.resolve("460").label == "Physik"
-    assert catalog.resolve("http://w3id.org/openeduhub/vocabs/discipline/460").label == "Physik"
-    assert catalog.resolve("physik").label == "Physik"
-    assert catalog.resolve("Mathe").label == "Mathematik"
-    assert catalog.resolve("Erdkunde").label == "Geografie"
+    assert label(catalog, "460") == "Physik"
+    assert label(catalog, "http://w3id.org/openeduhub/vocabs/discipline/460") == "Physik"
+    assert label(catalog, "physik") == "Physik"
+    assert label(catalog, "Mathe") == "Mathematik"
+    assert label(catalog, "Erdkunde") == "Geografie"
     assert catalog.resolve(None) is None
     assert catalog.resolve("Xyzzyplomb") is None
 

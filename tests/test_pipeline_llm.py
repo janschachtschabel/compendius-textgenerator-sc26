@@ -39,7 +39,7 @@ def answer_from_evidence(body: dict[str, Any]) -> str:
 
 def make_gateway(fake: FakeBApi, per_request: int = 20_000, **options: Any) -> LlmGateway:
     client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake))
-    settings = {
+    settings: dict[str, Any] = {
         "fast_sections": ("sc26_1", "sc26_11"),
         "concurrency": 2,
     }

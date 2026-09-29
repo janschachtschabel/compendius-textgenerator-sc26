@@ -7,7 +7,7 @@ existing habit is not broken by the two new verbs.
 from __future__ import annotations
 
 import json
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 
 import pytest
@@ -28,7 +28,7 @@ def cli_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[Path]:
     get_settings.cache_clear()
 
 
-def write_template(directory: Path, data: dict[str, object]) -> Path:
+def write_template(directory: Path, data: Mapping[str, object]) -> Path:
     path = directory / "vorlage.json"
     path.write_text(json.dumps(data), encoding="utf-8")
     return path

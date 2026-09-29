@@ -4,16 +4,18 @@ import json
 import re
 from dataclasses import replace
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from app.sources.wlo.client import validate_node_id
-from app.sources.wlo.models import one_line, parse_collection, parse_reference, parse_subcollection
+from app.sources.wlo.models import parse_collection, parse_reference, parse_subcollection
 from app.sources.wlo.overview import (
     OverviewOptions,
     SubCollectionContents,
     render_collection_overview,
 )
+from app.synthesis.safe_markdown import one_line
 
 FIX = Path(__file__).parent / "fixtures" / "wlo"
 
@@ -83,7 +85,7 @@ def _only_markers_open_comments(text: str) -> bool:
     return text.count("<!--") == sum(line.startswith("<!--") for line in text.splitlines())
 
 
-def _small_tree(info: dict[str, object], ref: dict[str, object], sub: dict[str, object]) -> str:
+def _small_tree(info: dict[str, Any], ref: dict[str, Any], sub: dict[str, Any]) -> str:
     """Every kind of node and block once: the collection, a content of its own, a sub-collection with a content."""
     contents = SubCollectionContents(info=replace(SUBS[0], **sub), refs=(REFS[1],))
     text, _ = render_collection_overview(
@@ -269,7 +271,7 @@ def test_an_empty_collection_says_so() -> None:
         "subject",
     ],
 )
-def test_no_value_of_a_material_can_split_its_line_or_forge_a_node(overrides: dict[str, object]) -> None:
+def test_no_value_of_a_material_can_split_its_line_or_forge_a_node(overrides: dict[str, Any]) -> None:
     """Every rendered value of a material comes from the repository, where an editor can type anything, and
     reaches part 3 in its line, in the key figures, or both. None may break the line in two or start a line that
     reads as another node, and the forged node id is never read back by the documented expression."""
@@ -308,7 +310,7 @@ def test_no_value_of_a_material_can_split_its_line_or_forge_a_node(overrides: di
     ],
 )
 def test_no_value_of_a_collection_can_forge_a_node(
-    info_overrides: dict[str, object], sub_overrides: dict[str, object]
+    info_overrides: dict[str, Any], sub_overrides: dict[str, Any]
 ) -> None:
     """The collection and its sub-collections are node lines too and are collapsed the same way, and so is every
     facet marker around them - a subject or an id stands in one. The collection's own description keeps its lines,

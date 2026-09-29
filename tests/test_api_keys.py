@@ -89,7 +89,7 @@ def test_the_key_and_the_rate_limit_guard_exactly_the_profile_endpoints(settings
     profile_seen = set()
     for number, (method, path, tags) in enumerate(operations(schema), start=1):
         client = TestClient(app, client=(f"10.0.0.{number}", 50000))  # a window of its own for every endpoint
-        body = {} if method in ("POST", "PUT") else None
+        body: dict[str, object] | None = {} if method in ("POST", "PUT") else None
         answers = (
             client.request(method, path, json=body).status_code,
             client.request(method, path, json=body).status_code,

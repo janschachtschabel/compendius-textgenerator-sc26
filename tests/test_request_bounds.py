@@ -145,7 +145,7 @@ def test_a_422_names_twenty_problems_and_counts_the_rest() -> None:
 
     answer = asyncio.run(validation_error(request, RequestValidationError(errors)))
 
-    problems = json.loads(answer.body)["detail"]
+    problems = json.loads(bytes(answer.body))["detail"]
     assert len(problems) == MAX_PROBLEMS + 1
     assert problems[-1] == {
         "type": "too_many_errors",
@@ -160,4 +160,4 @@ def test_an_answer_that_repeats_a_lone_surrogate_is_still_sent() -> None:
     # every identifier (a bounded field refuses the surrogate as string_unicode); the answer class still holds.
     answer = JsonResponse({"detail": "Template nicht gefunden: fehlt" + chr(0xD800)}, status_code=404)
 
-    assert json.loads(answer.body)["detail"] == "Template nicht gefunden: fehlt" + chr(0xD800)
+    assert json.loads(bytes(answer.body))["detail"] == "Template nicht gefunden: fehlt" + chr(0xD800)

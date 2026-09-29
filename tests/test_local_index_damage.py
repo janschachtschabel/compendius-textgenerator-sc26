@@ -14,7 +14,6 @@ from pathlib import Path
 
 import pytest
 
-from app.sources import local_index
 from app.sources.gnd.index import GndIndex, build_gnd_index
 from tests.test_gnd_index import write_dumps
 from tests.test_gnd_sync import FakeDnb, _sync
@@ -84,8 +83,8 @@ def test_the_new_index_reaches_the_disk_before_it_replaces_the_old(
         events.append("replace")
         real_replace(source, target)
 
-    monkeypatch.setattr(local_index.os, "fsync", fsync)
-    monkeypatch.setattr(local_index.os, "replace", replace)
+    monkeypatch.setattr("app.sources.local_index.os.fsync", fsync)
+    monkeypatch.setattr("app.sources.local_index.os.replace", replace)
 
     built(tmp_path)
 

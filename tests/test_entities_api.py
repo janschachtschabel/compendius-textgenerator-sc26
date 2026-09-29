@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
@@ -206,7 +207,7 @@ def with_wikidata(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPat
         yield client
 
 
-def by_text(body: dict) -> dict[str, dict]:
+def by_text(body: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {entity["text"]: entity for entity in body["entities"]}
 
 

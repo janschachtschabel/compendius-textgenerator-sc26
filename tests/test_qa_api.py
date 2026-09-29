@@ -242,10 +242,10 @@ def test_levels_are_also_said_out_loud_when_the_llm_falls_back(
 ) -> None:
     """Asking for llm and getting the templates loses the levels; the note has to name both reasons."""
     monkeypatch.setattr(
-        with_llm.app.state.service,
+        with_llm.app.state.service,  # type: ignore[attr-defined]
         "llm_unavailable",
         lambda: "LLM nicht verfügbar (b-api antwortet nicht); Regelmodus verwendet",
-    )  # type: ignore[attr-defined]
+    )
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "levels": ["Primar"]}).json()
     assert body["method"] == "rule-based"
     assert all(pair["level"] is None for pair in body["pairs"])
@@ -538,7 +538,12 @@ def test_part_1_and_the_pairs_spend_one_budget(with_llm: TestClient, monkeypatch
     gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
     opened: list[RequestBudget] = []
     real = gateway.open_budget
-    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: opened.append(real(limit)) or opened[-1])
+
+    def open_budget(limit: int | None = None) -> RequestBudget:
+        opened.append(real(limit))
+        return opened[-1]
+
+    monkeypatch.setattr(gateway, "open_budget", open_budget)
     body = with_llm.post("/api/v2/qa", json={"topic": "Optik", "method": "llm", "article_choice": "llm"}).json()
     assert body["method"] == "llm", body["note"]
     assert len(opened) == 1, "part 1 and the pairs share one budget"

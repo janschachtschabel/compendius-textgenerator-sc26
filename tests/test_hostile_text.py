@@ -139,7 +139,7 @@ def test_defuse_keeps_what_the_service_writes() -> None:
 
 def _source(**fields: object) -> Source:
     values: dict[str, object] = {"source_id": "wlo:1", "project": "wlo_material", "title": "Blatt", "url": ""}
-    return Source(**{**values, **fields})  # type: ignore[arg-type]
+    return Source(**{**values, **fields})
 
 
 def test_part_1_prints_foreign_sentences_lists_and_tables_as_typed() -> None:

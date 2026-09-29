@@ -4,6 +4,7 @@ import dataclasses
 import sqlite3
 from contextlib import closing
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
@@ -16,11 +17,11 @@ from app.sources.wlo.part import CollectionBuilder, CollectionOptions, _hydrate,
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
-def _builder(repo: FakeRepository, tmp_path: Path, **options: object) -> CollectionBuilder:
+def _builder(repo: FakeRepository, tmp_path: Path, **options: Any) -> CollectionBuilder:
     client = EduSharingClient(BASE, transport=httpx.MockTransport(repo), page_size=10)
     return CollectionBuilder(
         client=client, cache=TtlCache(tmp_path / "wlo_cache.db"), options=CollectionOptions(**options)
-    )  # type: ignore[arg-type]
+    )
 
 
 def test_overview_reads_collection_materials_and_subcollection_contents_once(tmp_path: Path) -> None:

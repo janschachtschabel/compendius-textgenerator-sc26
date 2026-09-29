@@ -101,7 +101,7 @@ def test_the_best_quality_profiles_check_a_sure_word_with_meanings(
 ) -> None:
     # "Optik" is an exact title of the test archive, and "Optik (Begriffsklärung)" lists it among its meanings
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(by_prompt({"wahl": 1})), per_request=100_000))
-    request = GenerateRequest(topic="Optik", parts=["world"], preset=preset, matcher="hybrid_light")  # type: ignore[arg-type]
+    request = GenerateRequest(topic="Optik", parts=["world"], preset=preset, matcher="hybrid_light")
     result = service.generate(request)
 
     choice = result.audit.llm["article_choice"] if result.audit.llm else {}

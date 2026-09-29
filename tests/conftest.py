@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures" / "zim_html"
 MANIFEST: dict[str, Any] = json.loads((FIXTURES / "MANIFEST.json").read_text(encoding="utf-8"))
 
-SAMPLE_META = {
+SAMPLE_META: dict[str, dict[str, Any]] = {
     "wikipedia": {
         "file": "wikipedia_de_sample_2026-01.zim",
         "Name": "wikipedia_de_sample",
@@ -88,7 +88,7 @@ def strings_in(value: Any) -> Iterator[str]:
             yield from strings_in(item)
 
 
-class HtmlItem(Item):
+class HtmlItem(Item):  # type: ignore[misc]  # libzim ships no type hints, so Item is Any
     def __init__(self, path: str, title: str, html: str) -> None:
         super().__init__()
         self._path = path
@@ -146,7 +146,7 @@ def make_settings(paths: Iterable[Path], state_dir: Path, **overrides: Any) -> S
     # The sample archives; a test of the production default sets it empty (tests/test_readiness_defaults.py)
     overrides.setdefault("zim_required", "wikipedia_de_sample,klexikon_de_sample")
     return Settings(
-        _env_file=None,  # type: ignore[call-arg]
+        _env_file=None,
         zim_paths=",".join(str(p) for p in paths),
         config_dir=ROOT / "config",
         state_dir=state_dir,

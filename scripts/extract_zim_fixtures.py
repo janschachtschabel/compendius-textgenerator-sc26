@@ -15,6 +15,7 @@ import json
 import pathlib
 import re
 import sys
+from typing import Any
 
 import libzim
 
@@ -35,14 +36,15 @@ def main() -> int:
     out_dir = pathlib.Path(args.out) / args.project
     out_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = pathlib.Path(args.out) / "MANIFEST.json"
-    manifest: dict[str, object] = {}
+    manifest: dict[str, Any] = {}
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    entries: list[dict[str, str]] = list(manifest.get("entries", []))  # type: ignore[arg-type]
+    entries: list[dict[str, str]] = list(manifest.get("entries", []))
 
     def meta(key: str) -> str:
         try:
-            return archive.get_metadata(key).decode("utf-8", "replace")
+            value: bytes = archive.get_metadata(key)
+            return value.decode("utf-8", "replace")
         except Exception:  # metadata is optional
             return ""
 

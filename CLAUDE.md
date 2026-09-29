@@ -8,7 +8,7 @@ mindestens einmal Zeit gekostet hat. Sie gelten für Menschen wie für Agenten.
 ```bash
 uv run pytest                                   # die ganze Suite
 uv run ruff check . && uv run ruff format --check .
-uv run mypy app
+uv run mypy app scripts tests
 ```
 
 Die Abdeckungsschwelle liegt bei 90 % (`uv run pytest --cov`). Ein Satz wie „müsste jetzt laufen" ist

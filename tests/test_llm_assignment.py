@@ -169,11 +169,11 @@ class CountingBudget(RequestBudget):
         self.batches = batches
         self.all_asked = threading.Event()
 
-    def reserve(self, tokens: int, **kwargs: Any) -> str | None:
+    def reserve(self, tokens: int, wait_s: float | None = 0.0) -> str | None:
         self.asked.append(tokens)
         if len(self.asked) >= self.batches:
             self.all_asked.set()
-        return super().reserve(tokens, **kwargs)
+        return super().reserve(tokens, wait_s)
 
 
 def test_batches_the_budget_cannot_hold_at_once_take_turns_instead_of_falling_back(

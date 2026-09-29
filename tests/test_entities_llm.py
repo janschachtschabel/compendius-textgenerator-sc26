@@ -156,7 +156,11 @@ def test_a_list_without_a_readable_entry_is_no_answer() -> None:
     """Names without titles, or other keys, are no empty result: the rules have to take over."""
     for answer in ({"entitaeten": ["Ernst Abbe", "Jena"]}, {"entitaeten": [{"wort": "Jena", "title": "Jena"}]}):
         report = EntitiesLlmReport()
-        fake = FakeBApi(lambda body, answer=answer: json.dumps(answer))
+
+        def respond(body: dict[str, Any], answer: object = answer) -> str:
+            return json.dumps(answer)
+
+        fake = FakeBApi(respond)
         assert named_mentions(job_for(fake), TEXT, report) is None, answer
         assert report.fallback == UNREADABLE
 

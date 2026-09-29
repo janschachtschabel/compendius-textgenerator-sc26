@@ -50,7 +50,8 @@ class FakeTexts:
         fail: set[str] = frozenset(),  # type: ignore[assignment]
         late: set[str] = frozenset(),  # type: ignore[assignment]
     ) -> None:
-        self.texts, self.fail, self.late, self.calls = texts, fail, late, []
+        self.texts, self.fail, self.late = texts, fail, late
+        self.calls: list[str] = []
 
     def text_content(self, node_id: str, *, remaining: object = None) -> str:
         self.calls.append(node_id)

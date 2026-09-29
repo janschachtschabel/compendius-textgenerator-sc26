@@ -189,7 +189,7 @@ def test_balanced_builds_the_corpus_from_the_articles_n_names(
         asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik", "Lichtmikroskop", "Gibt es nicht"]})
     )
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))
 
     assert result.resolution.title == "Optik" and result.resolution.method == "title", "the rules hit it: it stays"
     # the main article, its Klexikon twin and the two named articles of the archive (their origin: /knowledge below)
@@ -212,7 +212,7 @@ def test_n_replaces_the_main_article_where_the_rules_only_guess(
     assert rules.method in {"suggestion", "search"}, "the sample archive has no article of that name"
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik", "Technische Optik"]}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Geometrische", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Geometrische", preset="balanced", parts=["world"]))
 
     assert result.resolution.title == "Optik" and result.resolution.method == "llm"
     assert result.resolution.alternatives[0] == rules.title, "the rules' guess stays visible"
@@ -228,7 +228,7 @@ def test_the_paragraphs_of_a_named_article_need_not_name_the_topic(
     # A linked sub-article or a hit keeps only paragraphs that carry the topic's stem; a named one keeps all, as in M37
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Sinfonie"]}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))
     assert "Sinfonie" in [s.title for s in result.sources]
 
 
@@ -237,7 +237,7 @@ def test_an_unusable_answer_leaves_the_corpus_of_before(
 ) -> None:
     fake = FakeBApi(asking("kein JSON", notes={"Augenoptiker": 0}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))
 
     assert "Augenoptiker" not in [s.title for s in result.sources], "the hit check ran as before"
     assert len(fake.bodies) == 2
@@ -252,7 +252,7 @@ def test_an_unusable_answer_leaves_the_corpus_of_before(
 def test_llm_free_asks_nothing(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}))
     monkeypatch.setattr(service, "llm", make_gateway(fake))
-    result = service.generate(GenerateRequest(topic="Optik", preset="llm-free", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="llm-free", parts=["world"]))
     assert fake.bodies == [] and result.audit.llm is None
 
 
@@ -299,7 +299,7 @@ def test_n_hears_the_subject_of_the_request(sets: ZimRegistry) -> None:
 def test_a_compendium_passes_its_subject_to_n(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": []}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    request = GenerateRequest(topic="Optik", subject="Physik", preset="balanced", parts=["world"])  # type: ignore[arg-type]
+    request = GenerateRequest(topic="Optik", subject="Physik", preset="balanced", parts=["world"])
     service.generate(request)
     asked = [body for body in fake.bodies if body["messages"][0]["content"] == ARTICLES_PROMPT.system]
     assert asked[0]["messages"][1]["content"].splitlines()[0] == "Thema: Optik (Fach: Physik)"
@@ -311,7 +311,7 @@ def test_without_the_overview_in_the_archive_the_first_part_stands_in(
     # As measured in M37 and M39 ("Philosophen der Aufklärung" -> John Locke), and the audit says so
     fake = FakeBApi(asking({"uebersicht": "Geometrische Lehre", "artikel": ["Technische Optik", "Lichtmikroskop"]}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Geometrische", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Geometrische", preset="balanced", parts=["world"]))
 
     assert result.resolution.title == "Technische Optik" and result.resolution.method == "llm"
     assert result.audit.llm is not None
@@ -324,7 +324,7 @@ def test_n_without_a_part_of_the_archive_leaves_the_side_articles_of_before(
 ) -> None:
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Gibt es nicht"]}, notes={"Augenoptiker": 0}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))
 
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
@@ -381,7 +381,7 @@ def test_a_failing_b_api_leaves_the_corpus_of_before(
 ) -> None:
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}), statuses=[500, 500, 500])
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))  # type: ignore[arg-type]
+    result = service.generate(GenerateRequest(topic="Optik", preset="balanced", parts=["world"]))
 
     assert result.audit.llm is not None
     choice = result.audit.llm["article_choice"]
@@ -394,7 +394,7 @@ def test_best_quality_asks_n_and_checks_a_sure_word_with_meanings(
 ) -> None:
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Lichtmikroskop"]}, choice={"wahl": 1}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
-    request = GenerateRequest(topic="Optik", preset="best-quality", matcher="hybrid_light", parts=["world"])  # type: ignore[arg-type]
+    request = GenerateRequest(topic="Optik", preset="best-quality", matcher="hybrid_light", parts=["world"])
     result = service.generate(request)
 
     assert result.resolution.title == "Optik" and len(fake.bodies) == 2, "N, then the check of the sure word"

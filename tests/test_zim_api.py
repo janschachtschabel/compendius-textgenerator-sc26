@@ -70,7 +70,7 @@ def test_catalog_marks_subscribed_and_installed(zim_dir: Path, tmp_path: Path) -
         return httpx.Response(200, content=feed)
 
     with _client(zim_dir, tmp_path, admin_token=ADMIN_TOKEN) as client:
-        client.app.state.catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler)))
+        client.app.state.catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler)))  # type: ignore[attr-defined]
         entries = client.get("/api/v2/zim/catalog", headers=AUTH).json()
         by_id = {e["archive_id"]: e for e in entries}
         assert by_id["klexikon_de_all_maxi"]["subscribed"] is True  # config/zim_subscriptions.yaml
@@ -84,7 +84,7 @@ def test_catalog_failure_is_a_502(zim_dir: Path, tmp_path: Path) -> None:
         raise httpx.ConnectError("offline", request=request)
 
     with _client(zim_dir, tmp_path, admin_token=ADMIN_TOKEN) as client:
-        client.app.state.catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler)))
+        client.app.state.catalog = KiwixCatalog(client=httpx.Client(transport=httpx.MockTransport(handler)))  # type: ignore[attr-defined]
         assert client.get("/api/v2/zim/catalog", headers=AUTH).status_code == 502
 
 
@@ -117,7 +117,7 @@ def test_delete_refuses_active_and_removes_stray_files(
 def test_the_public_status_leaves_the_error_texts_of_the_sync_to_the_admin(zim_dir: Path, tmp_path: Path) -> None:
     part = zim_dir / "wikipedia_de_sample_2026-09.zim.part"
     errors = [f"wikipedia_de_sample: [Errno 28] No space left on device: '{part}'"]
-    last_run = {"profile": "compact", "started_at": "2026-09-18T03:00:00+00:00"}
+    last_run: dict[str, object] = {"profile": "compact", "started_at": "2026-09-18T03:00:00+00:00"}
     last_run |= {"finished_at": "2026-09-18T03:20:00+00:00", "downloaded": [], "errors": errors}
     status = {"state": "idle", "updated_at": "2026-09-18T03:20:00+00:00", "last_run": last_run, "download": None}
     (zim_dir / "sync_status.json").write_text(json.dumps(status), encoding="utf-8")

@@ -87,11 +87,27 @@ python_version = "3.13"
 strict = true
 warn_unreachable = true
 plugins = ["pydantic.mypy"]
-exclude = ["alterCode/", "scripts/"]
+# app, scripts and tests are checked (audit 2026-09-29, O2); scripts/ is no package, and a test imports
+# scripts.smoke_image, so the module names start at the project root
+explicit_package_bases = true
+exclude = ["alterCode/"]
 
 [[tool.mypy.overrides]]
 module = ["libzim.*", "sklearn.*", "model2vec.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# These tests assert a property, change the state behind it and assert it again. mypy keeps the narrowing of the
+# first assertion across the change and calls the second one unreachable
+module = [
+    "tests.test_lehrplan_store",
+    "tests.test_llm_budget",
+    "tests.test_llm_resilience",
+    "tests.test_local_index_damage",
+    "tests.test_pipeline_llm",
+    "tests.test_wikidata_index",
+]
+warn_unreachable = false
 
 [tool.coverage.run]
 branch = true

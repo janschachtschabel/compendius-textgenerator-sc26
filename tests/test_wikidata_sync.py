@@ -312,7 +312,7 @@ def test_the_sync_of_an_installation_reads_its_settings(tmp_path: Path) -> None:
     )
     write_active(tmp_path / "zim", ActiveState(archives={"wikipedia_de_all_nopic": wikipedia}))
     settings = Settings(
-        _env_file=None,  # type: ignore[call-arg]
+        _env_file=None,
         state_dir=tmp_path / "state",
         zim_dir=tmp_path / "zim",
         zim_paths="",

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
 from app.knowledge.node_article import (
@@ -24,7 +24,7 @@ from app.knowledge.node_article import (
 from app.llm.budget import estimate_tokens
 from app.llm.prompts import get_prompt
 from app.sources.wlo.models import NodeInfo
-from app.sources.zim.archive import ZimArticle
+from app.sources.zim.archive import ZimArchive, ZimArticle
 from app.sources.zim.registry import ZimRegistry
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
@@ -58,6 +58,11 @@ class FakeArchive:
 
     def parse(self, article: ZimArticle) -> Parsed:
         return Parsed(is_disambiguation=article.title in self.disambiguations)
+
+
+def archives(*fakes: FakeArchive) -> list[ZimArchive]:
+    """The fakes where the rules take archives: they answer what the rules ask of one, has, read and parse."""
+    return cast(list[ZimArchive], list(fakes))
 
 
 def material(**changes: Any) -> NodeInfo:
@@ -99,19 +104,19 @@ def test_the_terms_of_a_real_material_rank_title_first(registry: ZimRegistry) ->
 def test_a_keyword_lifts_a_term_of_the_description_above_one_mentioned_twice() -> None:
     archive = FakeArchive({"Zahnrad", "Riemen", "Getriebe"})
     ranked = ranked_entities(
-        [archive], "Versuch", "Getriebe und Riemen. Ein Getriebe hat Zahnrad und Riemen.", ["Riemen"]
+        archives(archive), "Versuch", "Getriebe und Riemen. Ein Getriebe hat Zahnrad und Riemen.", ["Riemen"]
     )
     assert ranked == ["Riemen", "Getriebe", "Zahnrad"]
 
 
 def test_format_words_and_disambiguation_pages_are_no_terms() -> None:
     archive = FakeArchive({"Experiment", "Zahnrad"}, disambiguations={"Riemen"})
-    assert ranked_entities([archive], "Zahnrad und Riemen - Experiment:", "", []) == ["Zahnrad"]
+    assert ranked_entities(archives(archive), "Zahnrad und Riemen - Experiment:", "", []) == ["Zahnrad"]
 
 
 def test_at_most_ten_terms_count() -> None:
     titles = [f"Begriff{number}" for number in range(15)]
-    ranked = ranked_entities([FakeArchive(set(titles))], "Material", " ".join(titles), [])
+    ranked = ranked_entities(archives(FakeArchive(set(titles))), "Material", " ".join(titles), [])
     assert ranked == titles[:MAX_ENTITIES]
 
 

@@ -25,7 +25,8 @@ ALIGNMENT = re.compile(r"^text-align:(?:left|right|center)$")
 
 
 def render(markdown: str) -> str:
-    return _RENDERER.render(markdown)
+    html: str = _RENDERER.render(markdown)
+    return html
 
 
 class _Inspector(HTMLParser):
