@@ -97,6 +97,14 @@ def test_a_level_the_rule_cannot_map_stays_empty_instead_of_becoming_the_first_o
     assert all(pair.level_property == "Bildungsstufe" for pair in pairs)
 
 
+def test_an_empty_level_field_names_no_level_and_a_part_of_a_word_matches_none() -> None:
+    """An empty third field is part of every level and became the first one offered; a letter matched the level
+    that holds it, and "Sek I" stands inside "Sek II" (audit 2026-09-29, T4)."""
+    answer = "Frage A;Antwort;\nFrage B;Antwort;r\nFrage C;Antwort;Sek II (Oberstufe)\nFrage D;Antwort; Sek I "
+    pairs = parse_pairs(answer, max_answer_length=300, level_property="Bildungsstufe", level_values=LEVELS)
+    assert [pair.level_value for pair in pairs] == [None, None, "Sek II", "Sek I"]
+
+
 def test_rule_based_pairs_stamp_the_level_property_they_were_given() -> None:
     pairs = rule_based_pairs(
         "Die Optik ist ein Teilgebiet der Physik und handelt vom Licht.",

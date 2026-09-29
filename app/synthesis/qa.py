@@ -225,12 +225,20 @@ def parse_pairs(
 
 
 def _level(value: str, level_values: Sequence[str]) -> str | None:
-    """The level the model named, mapped onto the levels the caller offered (exact, then contained)."""
+    """The level the model named, mapped onto the levels the caller offered: exact, then one inside the other as whole
+    words. An empty field names none: it is part of every level and became the first one offered, and a letter
+    matched the level holding it - "r" was "Primar", "Sek II (Oberstufe)" was "Sek I" (audit 2026-09-29, T4)."""
     lowered = value.strip().lower()
+    if not lowered:
+        return None
     for level in level_values:
         if level.lower() == lowered:
             return level
     for level in level_values:
-        if level.lower() in lowered or lowered in level.lower():
+        if _within(level.lower(), lowered) or _within(lowered, level.lower()):
             return level
     return None
+
+
+def _within(part: str, whole: str) -> bool:
+    return re.search(rf"(?<!\w){re.escape(part)}(?!\w)", whole) is not None
