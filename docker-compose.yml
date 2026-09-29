@@ -161,6 +161,8 @@ services:
   prometheus:
     image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
     profiles: ["monitoring"]
+    # Das Image laeuft als nobody und schreibt nur in sein Volume; Capabilities braucht es nicht (Audit 2026-09-29, O5)
+    <<: *hardening
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=30d
