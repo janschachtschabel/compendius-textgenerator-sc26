@@ -26,6 +26,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 import httpx
@@ -37,6 +38,9 @@ DOCKER = "docker"  # on PATH by intent: the script runs where the image was buil
 READY_TIMEOUT_S = 90
 REQUEST_TIMEOUT_S = 240
 MIN_CHARACTERS = 2000  # a compendium of the sample archives is far longer; this only catches an empty answer
+# The files of the review page: what its page links, and what its modules import from one another
+LINKED = re.compile(r'(?:src|href)="([a-z_]+\.(?:mjs|css))"')
+IMPORTED = re.compile(r"from '\./([a-z_]+\.mjs)'")
 # What docker-compose.yml sets for every service (x-hardening): the image must run under it
 HARDENING = (
     "--read-only",
@@ -211,13 +215,35 @@ def check_review_page(base_url: str) -> str:
     page = httpx.get(f"{base_url}/ui/", timeout=10)
     if page.status_code != 200 or httpx.get(f"{base_url}/ui/options.json", timeout=10).status_code != 200:
         raise SystemExit(f"/ui/ answered {page.status_code}; the page or its options are missing")
-    names = set(re.findall(r'(?:src|href)="([a-z_]+\.(?:mjs|css))"', page.text))
-    main = httpx.get(f"{base_url}/ui/main.mjs", timeout=10).text
-    names |= set(re.findall(r"from '\./([a-z_]+\.mjs)'", main))
-    missing = sorted(name for name in names if httpx.get(f"{base_url}/ui/{name}", timeout=10).status_code != 200)
-    if missing or "main.mjs" not in names:
+    found, missing = review_page_files(page.text, lambda name: _served(f"{base_url}/ui/{name}"))
+    if missing or "main.mjs" not in found:
         raise SystemExit(f"files of the review page missing from the image: {missing or ['main.mjs']}")
-    return f"the review page with {len(names)} files"
+    return f"the review page with {len(found)} files"
+
+
+def review_page_files(index: str, fetch: Callable[[str], str | None]) -> tuple[list[str], list[str]]:
+    """The files of the review page - what index.html links and what each module imports, followed from module to
+    module, since a module the wheel lacks breaks the page wherever it is imported - and those ``fetch`` does not
+    find (None)."""
+    found: list[str] = []
+    missing: list[str] = []
+    waiting = LINKED.findall(index)
+    while waiting:
+        name = waiting.pop()
+        if name in found or name in missing:
+            continue
+        text = fetch(name)
+        if text is None:
+            missing.append(name)
+        else:
+            found.append(name)
+            waiting.extend(IMPORTED.findall(text) if name.endswith(".mjs") else [])
+    return sorted(found), sorted(missing)
+
+
+def _served(url: str) -> str | None:
+    answer = httpx.get(url, timeout=10)
+    return answer.text if answer.status_code == 200 else None
 
 
 def check(compendium: dict[str, object], logs: str) -> str:

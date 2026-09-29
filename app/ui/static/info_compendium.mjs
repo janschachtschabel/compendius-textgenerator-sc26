@@ -3,13 +3,12 @@
 // findings of the lint and the technical details - each part folded, so the text stays the first thing to read.
 
 import { h, link } from './dom.mjs';
-import { facts, infoPart, technical } from './panels.mjs';
+import { facts, infoPart, resolutionFacts, technical } from './panels.mjs';
 import { shares } from './provenance.mjs';
 import { stepsAccount } from './steps.mjs';
 import { formatDuration, formatNumber } from './stats.mjs';
-import { KINDS, label, ORIGINS, PARTS, PROJECTS, RESOLUTION, STAGES, STEPS } from './texts.mjs';
+import { KINDS, label, ORIGINS, PART_STATUS, PARTS, PROJECTS, STAGES, STEPS } from './texts.mjs';
 
-const PART_STATUS = { ok: 'vollständig', empty: 'nichts gefunden', incomplete: 'unvollständig', unavailable: 'nicht verfügbar' };
 const PERCENT = new Intl.NumberFormat('de-DE', { style: 'percent', maximumFractionDigits: 0 });
 
 export function compendiumInfo(answer, run, options) {
@@ -30,18 +29,11 @@ export function compendiumInfo(answer, run, options) {
 }
 
 function topic(answer) {
-  const r = answer.resolution ?? {};
   const node = answer.node;
-  const way = r.method ? `${label(RESOLUTION, r.method)}, ${r.confident ? 'sicher' : 'unsicher'}` : null;
   return infoPart(
     'Thema und Artikel',
     facts([
-      ['Gesucht', r.query],
-      ['Gefunden', r.title ? `„${r.title}“ (${label(PROJECTS, r.project)})` : 'kein Artikel'],
-      ['Weg', way],
-      ['Kontextwörter', r.context],
-      ['Andere Kandidaten', r.alternatives],
-      ['Knoten', node ? link(node.render_url, `${node.title} (${node.kind === 'collection' ? 'Sammlung' : 'Material'})`) : null],
+      ...resolutionFacts(answer),
       ['Fächer des Knotens', node?.subjects],
       ['Stufen des Knotens', node?.educational_contexts],
       ['Artikel des Materials', answer.audit?.node_article?.title ?? null],

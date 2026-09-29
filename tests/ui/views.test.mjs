@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 
 import { installDocument } from './dom_stub.mjs';
 import { buildForm } from '../../app/ui/static/fields.mjs';
-import { errorBox } from '../../app/ui/static/panels.mjs';
+import { errorBox, resolutionFacts } from '../../app/ui/static/panels.mjs';
 import { stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
 import { renderEntities } from '../../app/ui/static/view_entities.mjs';
 import { renderKnowledge } from '../../app/ui/static/view_knowledge.mjs';
@@ -108,4 +108,30 @@ test('a stopped comparison keeps the answer that was done, and a run with none d
   assert.equal(stopped('qa', [], before, host), before);
   assert.match(stoppedSummary('qa', [done]), /^Abgebrochen; Fragen & Antworten fertig: llm-free/);
   assert.match(stoppedSummary('qa', []), /^Abgebrochen; die vorige Anzeige bleibt\./);
+});
+
+test('a template is named once with its count of blocks, which many names already hold', () => {
+  installDocument();
+  const templates = [
+    { id: 'sc26', name: 'SC26 (13 Bausteine)', slots: 13 },
+    { id: 'eigen', name: 'Eigene Vorlage', slots: 4 },
+  ];
+
+  const { element } = buildForm('compendium', { ...OPTIONS, templates }, { onSubmit() {}, onExample() {} });
+
+  const choices = element.descendants().filter((node) => node.tagName === 'OPTION' && ['sc26', 'eigen'].includes(node.getAttribute('value')));
+  assert.deepEqual(choices.map((node) => node.textContent), ['SC26 (13 Bausteine)', 'Eigene Vorlage (4 Bausteine)']);
+});
+
+test('how a topic was found reads alike in every view, with the words that decided and the kind of node', () => {
+  installDocument();
+  const answer = {
+    resolution: { query: 'Linse', title: 'Linse (Optik)', project: 'wikipedia', method: 'title', confident: false, context: ['Physik'] },
+    node: { title: 'Optik', kind: 'collection', render_url: 'https://repository.staging.openeduhub.net/x' },
+  };
+
+  const rows = Object.fromEntries(resolutionFacts(answer).map(([name, value]) => [name, value?.textContent ?? value]));
+
+  assert.deepEqual(rows['Kontextwörter'], ['Physik']);
+  assert.equal(rows['Knoten'], 'Optik (Sammlung)');
 });

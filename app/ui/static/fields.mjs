@@ -156,7 +156,9 @@ const TYPES = {
     return field(spec, ctx, control, { read: () => control.value, write: (value) => (control.value = value ?? '') });
   },
   template(spec, ctx) {
-    const choices = Object.fromEntries((ctx.options.templates ?? []).map((template) => [template.id, `${template.name} (${template.slots} Bausteine)`]));
+    // The count of blocks once: the built-in templates name it already ("SC26 (13 Bausteine)")
+    const named = (template) => (template.name.includes(`${template.slots} Bausteine`) ? template.name : `${template.name} (${template.slots} Bausteine)`);
+    const choices = Object.fromEntries((ctx.options.templates ?? []).map((template) => [template.id, named(template)]));
     const control = h('select', { id: uid(spec.name), name: spec.name }, h('option', { value: '' }, 'Vorgabe des Servers'), Object.entries(choices).map(([value, text]) => h('option', { value }, text)));
     return field(spec, ctx, control, { read: () => control.value, write: (value) => (control.value = value ?? '') });
   },

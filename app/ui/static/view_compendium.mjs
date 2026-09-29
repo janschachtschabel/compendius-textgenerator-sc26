@@ -17,13 +17,13 @@ export function renderCompendium(answer, idPrefix) {
   ctx.reasons = matchingReasons(answer);
   const { blocks } = parseMarkdown(answer.markdown);
   const sections = new Map((answer.sections ?? []).map((section) => [section.slot_id, section]));
-  const document = h('div', { class: 'document' });
+  const body = h('div', { class: 'document' });
   for (const item of sectionize(blocks)) {
     const node = item.type === 'section' ? block(item, sections.get(item.attrs.id), ctx) : renderBlock(item, ctx);
-    if (node) document.append(node);
+    if (node) body.append(node);
   }
-  document.append(ctx.popoverHost);
-  return { body: document, headings: ctx.headings };
+  body.append(ctx.popoverHost);
+  return { body, headings: ctx.headings };
 }
 
 function block(item, data, ctx) {

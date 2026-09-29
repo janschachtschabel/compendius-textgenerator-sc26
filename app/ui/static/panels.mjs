@@ -60,15 +60,17 @@ export function facts(pairs) {
   return rows.length ? h('dl', { class: 'facts' }, rows) : null;
 }
 
-/** How the topic of an answer was found, as facts(). */
+/** How the topic of an answer was found, as facts(): the same in every view, a compendium adds its own. */
 export function resolutionFacts(answer) {
   const r = answer.resolution ?? {};
+  const node = answer.node;
   return [
     ['Gesucht', r.query],
     ['Gefunden', r.title ? `„${r.title}“ (${label(PROJECTS, r.project)})` : 'kein Artikel'],
     ['Weg', r.method ? `${label(RESOLUTION, r.method)}, ${r.confident ? 'sicher' : 'unsicher'}` : null],
+    ['Kontextwörter', r.context],
     ['Andere Kandidaten', r.alternatives],
-    ['Knoten', answer.node ? link(answer.node.render_url, answer.node.title) : null],
+    ['Knoten', node ? link(node.render_url, `${node.title} (${node.kind === 'collection' ? 'Sammlung' : 'Material'})`) : null],
     ['Archive', answer.archives],
   ];
 }
