@@ -166,6 +166,36 @@ def test_a_deadline_too_short_for_an_llm_call_is_named_at_start(
     assert ("REQUEST_TIMEOUT_S" in caplog.text) is warned
 
 
+@pytest.mark.parametrize(
+    ("model", "setting", "value", "warned"),
+    [
+        ("gpt-6-luna", "llm_reasoning_effort", "lwo", True),
+        ("gpt-6-luna", "llm_verbosity", "Low", True),
+        ("gpt-6-luna", "llm_reasoning_effort", "minimal", False),
+        ("gpt-6-luna", "llm_verbosity", "high", False),
+        ("gpt-4.1-mini", "llm_reasoning_effort", "lwo", False),  # a classic model is sent neither
+    ],
+)
+def test_a_reasoning_setting_the_models_do_not_know_is_named_at_start(
+    tmp_path: Path,
+    offline_b_api: FakeBApi,
+    caplog: pytest.LogCaptureFixture,
+    model: str,
+    setting: str,
+    value: str,
+    warned: bool,
+) -> None:
+    """Both settings are sent to a reasoning model as they stand: a typo would likely fail every call with a 400 while
+    /health says available. The model may know values the service does not, so it is a warning (audit 2026-09-29,
+    S7)."""
+    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", b_api_model=model, **{setting: value})
+
+    with caplog.at_level(logging.WARNING):
+        build_llm(settings)
+
+    assert (setting.upper() in caplog.text) is warned
+
+
 def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """With LLM_ENABLED and B_API_KEY in the shell the offline fixtures would build a gateway to the real b-api."""
     monkeypatch.setenv("LLM_ENABLED", "true")

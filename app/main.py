@@ -43,7 +43,7 @@ from app.knowledge.recognise import load_spacy
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.call import listen_to_calls
-from app.llm.client import BApiClient
+from app.llm.client import BApiClient, is_reasoning_model
 from app.llm.deadline import MIN_CALL_S
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
@@ -77,6 +77,11 @@ log = logging.getLogger(__name__)
 # first seconds and be done within ten. The quickest LLM steps measured took about 4 s - the article choice 3.6 s
 # (M39), naming the entities 4 s (M36) -, a call of the matching or the writing longer.
 SHORTEST_LLM_TIMEOUT_S = 2 * MIN_CALL_S
+# The values OpenAI documents for its reasoning models, GPT-5 to GPT-5.2 (the audit's list and xhigh). A reasoning model
+# gets both settings as they stand, so a typo would likely fail every call with a 400 while /health says available; a
+# newer model may know more, so an unknown value is a warning (audit 2026-09-29, S7)
+REASONING_EFFORTS = ("none", "minimal", "low", "medium", "high", "xhigh")
+VERBOSITIES = ("low", "medium", "high")
 
 
 def build_registry(settings: Settings) -> ZimRegistry:
@@ -161,6 +166,21 @@ def warn_about_llm_settings(settings: Settings) -> None:
             MIN_CALL_S,
             Settings.model_fields["request_timeout_s"].default,
         )
+    if not is_reasoning_model(settings.b_api_model):
+        return  # a classic model is sent neither
+    for name, value, known in (
+        ("LLM_REASONING_EFFORT", settings.llm_reasoning_effort, REASONING_EFFORTS),
+        ("LLM_VERBOSITY", settings.llm_verbosity, VERBOSITIES),
+    ):
+        if value not in known:
+            log.warning(
+                "%s=%r is not one of %s: %s gets it as it stands and may refuse every call with a 400 while /health "
+                "says the LLM is available; a newer model may know the value (audit 2026-09-29, S7)",
+                name,
+                value,
+                ", ".join(known),
+                settings.b_api_model,
+            )
 
 
 def build_llm(settings: Settings) -> LlmGateway | None:

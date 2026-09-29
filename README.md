@@ -831,8 +831,8 @@ regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise 
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
 | `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm` |
-| `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie |
-| `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie |
+| `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
+| `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `low`, `medium` und `high`; bei einem anderen Wert warnt der Start |
 | `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; Reasoning-Modelle nutzen stattdessen die beiden Zeilen darüber |
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
 | `LLM_MAX_CONCURRENCY` | `10` | Gleichzeitige LLM-Aufrufe |
