@@ -92,13 +92,13 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.2.2 · Stand 28.09.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.4.2 · Stand 29.09.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens und welches der vier Profile welche
 nutzt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>c8a5bfa</code> · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>c881110</code> · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M45</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -109,7 +109,7 @@ nutzt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen P
 <section class="doc" id="seite-01" aria-labelledby="seite-01-titel">
 <div class="doc-head"><p class="doc-label">Seite 01 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-01-titel">Alter und neuer Dienst im Vergleich</h2>
-<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 28.09.2026 · neuer Dienst: Release 2.2.2 · alter Dienst: v0.2.0
+<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 29.09.2026 · neuer Dienst: Release 2.4.2, Messwerte mit 2.2.2 · alter Dienst: v0.2.0
 (<code>alterCode/compendious</code>) · Messungen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, vor allem M1 bis M3, M17, M37 und M45 ·
 Methoden je Schritt: <a href="#seite-09">Methoden, Messwerte und Profile</a></p>
 <p>Ein Kompendium hat nach dem neuen Soll drei Teile: Weltwissen, Lehrplanbezüge und einen Überblick über die
@@ -479,7 +479,7 @@ ohne Sprachmodell; das war damals der Standard und ist heute das Profil <code>ll
 <tr>
 <th>Funktion</th>
 <th>alter Dienst v0.2.0</th>
-<th>neuer Dienst 2.2.2</th>
+<th>neuer Dienst 2.4.2</th>
 </tr>
 </thead>
 <tbody>
@@ -537,6 +537,11 @@ ohne Sprachmodell; das war damals der Standard und ist heute das Profil <code>ll
 <td>Archive und Indexe aktuell halten</td>
 <td>–</td>
 <td>Sidecars für ZIM-Archive, Lehrplan-Cache, Wikidata- und GND-Index; Archive wechseln atomar nach Prüfsumme</td>
+</tr>
+<tr>
+<td>Prüfansicht im Browser (<code>/ui/</code>, <code>UI_ENABLED</code>)</td>
+<td>–</td>
+<td>eine Seite der API, auf der Menschen ohne Kenntnis der API die Antworten aller fünf Endpunkte prüfen: Herkunft je Absatz mit Beleg, Qualität, Zeit und Kosten, zwei Profile im Vergleich, Markdown kopieren und speichern (D66)</td>
 </tr>
 <tr>
 <td>Betrieb</td>
@@ -4150,7 +4155,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>c8a5bfa</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>c881110</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
