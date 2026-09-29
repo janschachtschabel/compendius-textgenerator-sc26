@@ -106,7 +106,10 @@ erst 2.4.0 (Image-Tag `2.4.0`).
 `KompendiumLlmFallbacks`. Nach einer Änderung
 an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
 Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
-will, setzt `METRICS_TOKEN` und trägt es im Scrape-Job ein (`authorization.credentials_file`). Die Regeln lösen in
+will, setzt `METRICS_TOKEN` und gibt es dem Scrape-Job: in der Datei `monitoring/metrics_token`, lesbar für `nobody`,
+unter dem Prometheus im Image läuft, und mit dem Block `authorization` in `monitoring/prometheus.yml`
+([installation.md](installation.md), Abschnitt 10). Sonst antwortet `/metrics` mit 401, und `KompendiumDown` steht
+dauerhaft. Die Regeln lösen in
 Prometheus aus; jemanden erreichen sie erst über einen Alertmanager, den das Repo nicht mitbringt (Eintrag `alerting`
 in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der Oberfläche von Prometheus.
 
@@ -125,6 +128,7 @@ in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der 
 | `KompendiumLehrplanHarvestFailed`, `lehrplan_status.json` nennt `check_error`, `compendium lehrplan status` „Letzte Prüfung gescheitert“ | Die Prüfung, ob MEM sich geändert hat, erreichte MEM nicht oder bekam einen Fehler; ein Harvest lief nicht, der alte Cache bleibt in Betrieb. Die Schleife prüft nach einer Stunde wieder, und eine gelungene Prüfung löscht den Fehler; bis 2.4.2 blieb eine gescheiterte Prüfung unsichtbar | `compendium lehrplan check` zeigt, ob MEM antwortet; `docker compose logs lehrplan-updater` |
 | 503 „Kein angefragter Teil ist erzeugbar“ | Die Anfrage verlangt nur Teile, die der Dienst nicht eingerichtet hat (etwa Teil 3 ohne `EDU_SHARING_BASE_URL`); das Log meldet `compendium request refused` mit dem Grund. Eine Wiederholung ändert nichts | Konfiguration ergänzen oder den Teil nicht anfragen |
 | 401 „verlangt einen gültigen API-Schlüssel“ | Der Server setzt `API_KEYS`, und die Anfrage trug keinen der Schlüssel im Header `X-API-Key` | Schlüssel im Header mitschicken; in `/docs` unter „Authorize“ eintragen |
+| `KompendiumDown`, obwohl die API antwortet (`GET /health` 200) | Der Server setzt `METRICS_TOKEN`, und der Scrape-Job schickt das Token nicht: Der Block `authorization` in `monitoring/prometheus.yml` ist noch auskommentiert, dann antwortet `/metrics` mit 401, oder Prometheus kann `monitoring/metrics_token` nicht lesen, dann scheitert schon die Abfrage. Prometheus läuft im Image als `nobody`; eine Datei mit den Rechten `600` bleibt ihm verschlossen. Beides hält er für einen Ausfall der API | `curl -s http://127.0.0.1:9090/api/v1/targets` nennt unter `lastError` den Grund; Token-Datei, Rechte und Block wie in installation.md, Abschnitt 10, danach `docker compose --profile monitoring restart prometheus` |
 | Nach einem Update starten die Container nicht, das Log nennt `ADMIN_TOKEN`, `METRICS_TOKEN` oder `API_KEYS` „braucht mindestens 16 Zeichen“ (bis 2.2.1: 32) | Seit dem 27.09.2026 lehnt der Dienst kürzere Token und Schlüssel beim Start ab. Mit einer alten Compose-Datei, die jedem Dienst die ganze `.env` gibt, scheitern auch die Sidecars; die aktuelle gibt ihnen die Token nicht (so am 28.09.2026 auf dem Server) | Neuen Wert erzeugen (`openssl rand -hex 32`), eintragen, neu starten; Prometheus und aufrufende Anwendungen bekommen ihn mit |
 | 429 mit `Retry-After` | `RATE_LIMIT` je Client und Minute überschritten | hinter einem Proxy `FORWARDED_ALLOW_IPS` setzen, sonst teilen sich alle Clients ein Fenster |
 | `/ready` bleibt 503 | Pflichtarchive fehlen oder `active.json` ist beschädigt (steht im Log). Der nächste Sync baut sie aus den Dateien neu und löst ältere Dumps eines Archivs dabei ab, die er nach `ZIM_RETENTION_HOURS` löscht; bis 2.4.2 blieben sie liegen | `compendium zim status`; Sync anstoßen (`POST /api/v2/zim/sync`, Admin) |

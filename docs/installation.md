@@ -221,7 +221,8 @@ in die Variablen des Hosting-Panels):
   Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht bleiben offen; deren Anfragen an
   die Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener Schlüssel je aufrufender Anwendung
   lässt sich einzeln zurückziehen.
-- `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`.
+- `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`. Prometheus aus dem
+  Compose-Profil braucht dann dasselbe Token (Abschnitt 10).
 
 `ADMIN_TOKEN`, `METRICS_TOKEN` und `API_KEYS` mit weniger als 16 Zeichen lehnt der Dienst beim Start ab; die
 Meldung nennt die Variable, nicht ihren Wert. 16 ist das Minimum: 16 zufällige Hex-Zeichen sind 64 Bit und unter
@@ -296,11 +297,39 @@ Compose benennt die Volumes nach dem Verzeichnis: aus `/srv/kompendium` wird `ko
 
 ## 10. Überwachung
 
-Prometheus liegt als Compose-Profil bei und schreibt in ein eigenes Volume:
+Prometheus liegt als Compose-Profil bei und schreibt in ein eigenes Volume. Ist `METRICS_TOKEN` gesetzt
+(Abschnitt 8), braucht der Scrape-Job dasselbe Token: Ohne es antwortet `/metrics` mit 401, Prometheus hält die
+API für ausgefallen, und `KompendiumDown` steht dauerhaft. Dann vor dem Start:
+
+1. Das Token aus der `.env` in die Datei `monitoring/metrics_token` schreiben; `.gitignore` hält sie aus dem
+   Repository:
+
+   ```bash
+   cd /srv/kompendium && sudo -u kompendium sh -c "umask 077 && sed -n 's/^METRICS_TOKEN=//p' .env | tr -d '\r\n' > monitoring/metrics_token"
+   ```
+
+2. Die Datei für Prometheus lesbar machen. Das Image läuft als `nobody` (UID und GID 65534) und liest sie durch das
+   eingehängte Verzeichnis `monitoring/`; mit den Rechten `600` bliebe sie ihm verschlossen, und der Alarm stünde
+   genauso. Lesen darf sie danach außer dem Konto `kompendium` nur die Gruppe 65534 (das gilt für Docker mit
+   root-Daemon; rootless Docker verschiebt die Nummern):
+
+   ```bash
+   sudo chgrp 65534 /srv/kompendium/monitoring/metrics_token && sudo chmod 640 /srv/kompendium/monitoring/metrics_token
+   ```
+
+3. In `monitoring/prometheus.yml` die beiden Zeilen `authorization:` und `credentials_file: …` im Scrape-Job
+   einkommentieren. Das ändert eine Datei des Repositorys: Bringt ein Update eine neue Fassung davon, verweigert
+   `git pull` den Abgleich. Dann die Änderung beiseitelegen und danach wieder anwenden:
+   `sudo -u kompendium git stash`, `sudo -u kompendium git pull`, `sudo -u kompendium git stash pop`.
 
 ```bash
 sudo -u kompendium docker compose --profile monitoring up -d prometheus
 ```
+
+Läuft Prometheus schon, übernimmt er die geänderte Konfiguration erst nach
+`sudo -u kompendium docker compose --profile monitoring restart prometheus`. Ob er die API erreicht, zeigt
+`curl -s http://127.0.0.1:9090/api/v1/targets`: Der Job `kompendium` steht auf `"health":"up"`, sonst nennt
+`lastError` den Grund.
 
 Die Alarmregeln stehen in `monitoring/`, die Metriken unter `/metrics` (mit `METRICS_TOKEN` nur gegen
 Bearer-Token). Was die einzelnen Alarme bedeuten, steht in [betrieb.md](betrieb.md).

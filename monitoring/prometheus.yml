@@ -20,6 +20,8 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets: ["api:8000"]
-    # Mit METRICS_TOKEN verlangt /metrics ein Bearer-Token; die Datei monitoring/metrics_token ist in .gitignore:
+    # Mit METRICS_TOKEN verlangt /metrics ein Bearer-Token: das Token in monitoring/metrics_token (in .gitignore),
+    # lesbar für nobody, unter dem Prometheus läuft, dann diese zwei Zeilen einkommentieren (docs/installation.md,
+    # Abschnitt 10). Ohne Token steht KompendiumDown dauerhaft:
     # authorization:
     #   credentials_file: /etc/prometheus/metrics_token
