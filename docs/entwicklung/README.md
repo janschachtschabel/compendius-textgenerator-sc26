@@ -1,8 +1,8 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 29.09.2026 · neuer Dienst Release 2.4.2 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 29.09.2026 · neuer Dienst Release 2.5.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
-Entscheidungen“ und im Entwicklungsweg; die Releases 2.1.0 bis 2.4.2 enthalten alles bis zum 29.09.2026, die
+Entscheidungen“ und im Entwicklungsweg; die Releases 2.1.0 bis 2.5.0 enthalten alles bis zum 29.09.2026, die
 Messwerte gelten für Release 2.2.2 (M45)
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
@@ -142,8 +142,10 @@ Vergleich](01-alt-und-neu.md).
 9. [Methoden, Messwerte und Profile](09-methoden-und-profile.md): die vier Profile mit ihren Methoden als Grafik und
    Tabelle; je Schritt (Artikelwahl, Korpus, Zuordnung, Text, Lehrplanschnipsel, QA-Paare, Entitäten) die gemessenen
    Methoden mit Güte, Zeit und Tokens und warum welches Profil welche nutzt; Kosten je Profil und Endpunkt (M45)
+10. [Architektur](10-architektur.md): drei interaktive Diagramme mit Belegen im Code - Systemübersicht, der Weg einer
+    Kompendium-Anfrage und die Sidecars mit ihren lokalen Daten; als HTML unter `architektur/`
 
-Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die neun übrigen darunter. Die
+Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die zehn übrigen darunter. Die
 Links zwischen ihnen zeigen auf die Markdown-Dateien und müssen nach dem Import auf die Confluence-Seiten umgestellt
 werden. Die Grafiken liegen als SVG unter `docs/entwicklung/bilder/` und kommen beim Import als Anhänge mit. Die
 Messskripte bleiben im Repository unter `docs/entwicklung/messung/`.

@@ -1,0 +1,1202 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Kompendium-Dienst: Systemübersicht",
+    "output": "docs/entwicklung/architektur/systemuebersicht.html",
+    "locale": "de",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
+      "revision": "b95a546ca8f8062c58d9b95051540c124a4d1a34"
+    },
+    "translations": {
+      "page.title": "{title} Diagramm",
+      "diagram.description.architecture": "Ein von Archify erstelltes Architekturdiagramm.",
+      "diagram.description.workflow": "Ein von Archify erstelltes Workflow-Diagramm.",
+      "diagram.description.sequence": "Ein von Archify erstelltes Sequenzdiagramm.",
+      "diagram.description.dataflow": "Ein von Archify erstelltes Datenfluss-Diagramm.",
+      "diagram.description.lifecycle": "Ein von Archify erstelltes Lifecycle-Diagramm.",
+      "node.focus": "{label} fokussieren",
+      "node.focus.detail": "{label} fokussieren, {detail}",
+      "node.context.architecture": "Architekturkomponente",
+      "node.context.workflow": "Workflow-Knoten",
+      "node.context.sequence": "Sequenzteilnehmer",
+      "node.context.dataflow": "Datenfluss-Knoten",
+      "node.context.lifecycle": "Lifecycle-Status",
+      "legend.title": "Legende",
+      "legend.architecture.frontend": "Frontend",
+      "legend.architecture.backend": "Backend",
+      "legend.architecture.database": "Datenbank",
+      "legend.architecture.cloud": "Cloud",
+      "legend.architecture.security": "Sicherheit",
+      "legend.architecture.messagebus": "Nachrichtenbus",
+      "legend.architecture.external": "Extern",
+      "legend.workflow.frontend": "Benutzeroberfläche",
+      "legend.workflow.backend": "Agentenlogik",
+      "legend.workflow.security": "Richtlinie",
+      "legend.workflow.messagebus": "Werkzeugaktion",
+      "legend.workflow.database": "Kontext / Trace",
+      "legend.workflow.cloud": "Cloud-Dienst",
+      "legend.workflow.external": "Externes System",
+      "legend.sequence.emphasis": "Hauptanfrage",
+      "legend.sequence.return": "Rückgabe",
+      "legend.sequence.security": "Sicherheit",
+      "legend.sequence.dashed": "asynchroner Trace",
+      "legend.sequence.default": "Nachricht",
+      "legend.dataflow.emphasis": "Primärdaten",
+      "legend.dataflow.security": "Richtlinie / PII",
+      "legend.dataflow.dashed": "asynchroner Batch",
+      "legend.dataflow.database": "Datenspeicher",
+      "legend.dataflow.default": "Datenfluss",
+      "legend.lifecycle.start": "Startzustand",
+      "legend.lifecycle.active": "aktiv",
+      "legend.lifecycle.waiting": "Wartend",
+      "legend.lifecycle.decision": "Entscheidung",
+      "legend.lifecycle.success": "Erfolg",
+      "legend.lifecycle.failure": "Fehler / Abbruch",
+      "legend.lifecycle.neutral": "neutral",
+      "legend.lifecycle.external": "extern",
+      "legend.lifecycle.final": "Endzustand",
+      "viewer.kind.frontend": "Frontend",
+      "viewer.kind.backend": "Backend",
+      "viewer.kind.database": "Datenbank",
+      "viewer.kind.cloud": "Cloud",
+      "viewer.kind.security": "Sicherheit",
+      "viewer.kind.messagebus": "Nachrichtenbus",
+      "viewer.kind.external": "Extern",
+      "viewer.kind.neutral": "Neutral",
+      "viewer.kind.node": "Knoten",
+      "viewer.kind.start": "Start",
+      "viewer.kind.active": "Aktiv",
+      "viewer.kind.waiting": "Wartend",
+      "viewer.kind.decision": "Entscheidung",
+      "viewer.kind.success": "Erfolg",
+      "viewer.kind.failure": "Fehler",
+      "viewer.toolbar.actions": "Diagrammaktionen",
+      "viewer.theme.toggle.title": "Design wechseln (T)",
+      "viewer.theme.toggle": "Farbdesign wechseln",
+      "viewer.theme.dark": "Dunkel",
+      "viewer.theme.light": "Hell",
+      "viewer.preset.choose.title": "Visuellen Stil wählen (S wechselt durch)",
+      "viewer.preset.choose": "Visuellen Stil wählen",
+      "viewer.preset.style": "Stil",
+      "viewer.preset.menu": "Visueller Stil",
+      "viewer.preset.identity": "Visuelle Identität",
+      "viewer.preset.cycles": "S wechselt durch",
+      "viewer.preset.classic": "Klassisch",
+      "viewer.preset.classic.short": "Klassisch",
+      "viewer.preset.classic.hint": "Stabiler technischer Standard",
+      "viewer.preset.flow": "Signalfluss",
+      "viewer.preset.flow.short": "Fluss",
+      "viewer.preset.flow.hint": "Bewegungsbetonte Präsentation",
+      "viewer.preset.blueprint": "Bauplan",
+      "viewer.preset.blueprint.hint": "Technisches Review",
+      "viewer.preset.editorial": "Editorial",
+      "viewer.preset.editorial.hint": "Für Veröffentlichungen und Launch-Notizen",
+      "viewer.preset.badge.signalFlow": "SIGNALFLUSS",
+      "viewer.preset.badge.blueprint": "BAUPLAN / REV. 01",
+      "viewer.preset.badge.editorial": "EDITORIAL / FELDNOTIZ",
+      "viewer.preset.badge.editorialPlate": "ARCHIFY / TAFEL 04",
+      "viewer.preset.current": "Visueller Stil: {style}. Visuellen Stil wählen",
+      "viewer.motion.live": "Live",
+      "viewer.motion.still": "Statisch",
+      "viewer.motion.pause": "Bewegung pausieren",
+      "viewer.motion.resume": "Bewegung fortsetzen",
+      "viewer.motion.reduced": "Bewegung wegen reduzierter Bewegungseinstellung pausiert",
+      "viewer.motion.hidden": "Bewegung pausiert, während diese Seite ausgeblendet ist",
+      "viewer.motion.yielding": "Bewegung pausieren; derzeit an {owner} abgegeben",
+      "viewer.motion.yielding.title": "Live-Vorschau aktiv · an {owner} abgegeben",
+      "viewer.owner.route": "Routensonde",
+      "viewer.owner.lens": "Semantische Linse",
+      "viewer.owner.relationship": "Beziehungsvorschau",
+      "viewer.owner.intent": "Intent Trace",
+      "viewer.owner.focus": "semantischer Fokus",
+      "viewer.owner.legend": "Legendenvorschau",
+      "viewer.owner.reader": "Leserinteraktion",
+      "viewer.present.enter": "Präsentationsmodus starten",
+      "viewer.present.enter.title": "Präsentationsmodus (F)",
+      "viewer.present.exit": "Präsentationsmodus beenden",
+      "viewer.present.exit.title": "Präsentationsmodus beenden (F oder Escape)",
+      "viewer.present.present": "Präsentieren",
+      "viewer.present.exit.label": "Beenden",
+      "viewer.export.button": "Exportieren",
+      "viewer.export.button.title": "Diagramm exportieren (E)",
+      "viewer.export.diagram": "Diagramm exportieren",
+      "viewer.export.menu": "Exportieren",
+      "viewer.export.subtitle": "Portable, saubere Ausgaben",
+      "viewer.export.share": "Teilen",
+      "viewer.export.shareCard": "Freigabekarte",
+      "viewer.export.routeShareCard": "Routen-Freigabekarte",
+      "viewer.export.reachShareCard": "Reichweiten-Freigabekarte",
+      "viewer.export.copyDiagram": "Diagramm kopieren",
+      "viewer.export.clipboardPng": "PNG in Zwischenablage",
+      "viewer.export.raster": "Rasterbilder",
+      "viewer.export.image": "Bild",
+      "viewer.export.lossless": "Verlustfreies Bild",
+      "viewer.export.compact": "Kompaktes Bild",
+      "viewer.export.modern": "Modernes Bild",
+      "viewer.export.vectorMotion": "Vektor und Bewegung",
+      "viewer.export.vectorMotion.heading": "Vektor & Bewegung",
+      "viewer.export.editable": "Editierbarer Vektor",
+      "viewer.export.motion6s": "6-Sekunden-Bewegung",
+      "viewer.export.unsupported": "Von diesem Browser nicht unterstützt",
+      "viewer.export.clipboardUnsupported": "Bild-Zwischenablage wird von diesem Browser nicht unterstützt",
+      "viewer.export.clipboardUnsupported.short": "Dieser Browser unterstützt keine Bild-Zwischenablage.",
+      "viewer.export.motionUnavailable": "Bewegungsaufnahme in diesem Browser nicht verfügbar",
+      "viewer.export.webmUnavailable": "WebM in diesem Browser nicht verfügbar",
+      "viewer.export.failed": "Export fehlgeschlagen: {message}",
+      "viewer.export.unknownVariant": "Unbekannter Freigabekarten-Typ: {variant}",
+      "viewer.export.routeRequired": "Route verfolgen, bevor eine Routen-Freigabekarte exportiert wird",
+      "viewer.export.reachRequired": "Verfasste Reichweite verfolgen, bevor eine Reichweiten-Freigabekarte exportiert wird",
+      "viewer.export.unknown": "unbekannt",
+      "viewer.export.routeFailed": "Export der Routen-Freigabekarte fehlgeschlagen: {message}",
+      "viewer.export.reachFailed": "Export der Reichweiten-Freigabekarte fehlgeschlagen: {message}",
+      "viewer.export.copyFailed": "Kopieren fehlgeschlagen: {message}",
+      "viewer.export.copiedPng": "PNG in Zwischenablage kopiert",
+      "viewer.export.downloadedRoute": "Routen-Freigabekarte heruntergeladen",
+      "viewer.export.downloadedReach": "Reichweiten-Freigabekarte heruntergeladen",
+      "viewer.export.downloadedWebm": "WebM heruntergeladen",
+      "viewer.export.recording": "6 Sekunden Bewegung werden aufgezeichnet …",
+      "viewer.export.card.routeSummary.one": "Route: {source} → {target} · {count} gerichteter Hop",
+      "viewer.export.card.routeSummary.other": "Route: {source} → {target} · {count} gerichtete Hops",
+      "viewer.export.card.reachSummary": "Verfasst {direction} von {origin} · {nodes} · {links} · max. {hops}",
+      "viewer.export.card.node.one": "{count} Knoten",
+      "viewer.export.card.node.other": "{count} Knoten",
+      "viewer.export.card.link.one": "{count} Verbindung",
+      "viewer.export.card.link.other": "{count} Verbindungen",
+      "viewer.export.card.hop.one": "{count} Hop",
+      "viewer.export.card.hop.other": "{count} Hops",
+      "viewer.export.card.routeBadge": "ARCHIFY · ROUTE · {hops}",
+      "viewer.export.card.reachBadge": "ARCHIFY · {direction} REICHWEITE",
+      "viewer.export.direction.upstream": "Vorgelagert",
+      "viewer.export.direction.downstream": "Nachgelagert",
+      "viewer.export.error.canvasUnavailable": "Canvas für {label} nicht verfügbar",
+      "viewer.export.error.contextUnavailable": "2D-Canvas-Kontext für {label} nicht verfügbar",
+      "viewer.export.error.toBlobUnavailable": "canvas.toBlob für {label} nicht verfügbar",
+      "viewer.export.error.toBlobNull": "canvas.toBlob lieferte keine Daten für {label}",
+      "viewer.export.error.variantsCombined": "Freigabekarten-Typen können nicht kombiniert werden",
+      "viewer.export.error.viewerState": "Beim Export der Freigabekarte konnte der temporäre Viewer-Zustand nicht entfernt werden",
+      "viewer.export.error.routeState": "Beim Export der Routenkarte konnte die aufgelöste Route nicht sicher erhalten werden",
+      "viewer.export.error.reachState": "Beim Export der Reichweitenkarte konnte die verfasste Reichweite nicht sicher erhalten werden",
+      "viewer.export.error.webmRequirements": "Der WebM-Bewegungsexport erfordert eine Trace-Animation und Browser-Unterstützung für MediaRecorder",
+      "viewer.export.error.mediaRecorder": "MediaRecorder fehlgeschlagen",
+      "viewer.export.error.emptyWebm": "MediaRecorder hat ein leeres WebM erzeugt",
+      "viewer.export.error.webmBackground": "SVG-Hintergrund konnte für den WebM-Export nicht geladen werden",
+      "viewer.guide.eyebrow": "Diagrammleitfaden",
+      "viewer.guide.close": "Diagrammleitfaden schließen",
+      "viewer.guide.inspecting": "Kompilierte Semantik wird geprüft",
+      "viewer.guide.actions": "Diagramm-Erkundungsaktionen",
+      "viewer.guide.find": "Beliebigen Knoten finden",
+      "viewer.guide.find.hint": "Labels, Zuständigkeiten, Arten und stabile IDs durchsuchen.",
+      "viewer.guide.route": "Eine Route verfolgen",
+      "viewer.guide.route.aria": "Eine gerichtete Route verfolgen",
+      "viewer.guide.route.hint": "Herausfinden, wie zwei semantische Knoten in verfasster Richtung verbunden sind.",
+      "viewer.guide.map": "Das gesamte System sehen",
+      "viewer.guide.map.hint": "Semantisches Radar mit Live-Ansicht und stabilen Knoten öffnen.",
+      "viewer.guide.lens": "Semantische Arten vergleichen",
+      "viewer.guide.lens.hint": "Rollen zählen, ihren Verkehr sichtbar machen und direkte verfasste Verbindungen vergleichen.",
+      "viewer.guide.present": "Präsentationsmodus starten",
+      "viewer.guide.present.hint": "Dem Live-Diagramm die gesamte Ansicht geben, ohne den Export zu verändern.",
+      "viewer.guide.shortcuts": "Weitere Tastenkombinationen",
+      "viewer.guide.shortcut.export": "Exportieren",
+      "viewer.guide.shortcut.theme": "Design",
+      "viewer.guide.shortcut.style": "Stil",
+      "viewer.guide.shortcut.reset": "Zurücksetzen",
+      "viewer.guide.shortcut.zoomIn": "Vergrößern",
+      "viewer.guide.shortcut.zoomOut": "Verkleinern",
+      "viewer.guide.shortcut.close": "Schließen",
+      "viewer.guide.facts": "{nodes} · {relationships}",
+      "viewer.guide.fact.node.one": "{count} semantischer Knoten",
+      "viewer.guide.fact.node.other": "{count} semantische Knoten",
+      "viewer.guide.fact.relationship.one": "{count} Beziehung",
+      "viewer.guide.fact.relationship.other": "{count} Beziehungen",
+      "viewer.guide.open": "Diagrammleitfaden öffnen",
+      "viewer.finder.title": "Knoten finden",
+      "viewer.finder.close": "Knotensuche schließen",
+      "viewer.finder.placeholder": "Labels oder IDs suchen",
+      "viewer.finder.search": "Diagrammknoten durchsuchen",
+      "viewer.finder.results": "Diagrammknoten",
+      "viewer.finder.empty": "Keine passenden Knoten",
+      "viewer.finder.result.focus": "{label} fokussieren",
+      "viewer.finder.result.routeStart": "{label} als Routenstart wählen",
+      "viewer.finder.result.routeTarget": "{label} als Routenziel wählen, {links}",
+      "viewer.finder.status.empty": "Keine passenden Knoten",
+      "viewer.finder.status.count.one": "{count} passender Knoten",
+      "viewer.finder.status.count.other": "{count} passende Knoten",
+      "viewer.finder.noun.nodes": "Knoten",
+      "viewer.finder.link.one": "{count} Verbindung",
+      "viewer.finder.link.other": "{count} Verbindungen",
+      "viewer.finder.result.focus.one": "{label} fokussieren, {count} zugehörige Verbindung",
+      "viewer.finder.result.focus.other": "{label} fokussieren, {count} zugehörige Verbindungen",
+      "viewer.finder.status.filtered": "{visible} von {available} {noun}",
+      "viewer.finder.status.all": "{available} {noun}",
+      "viewer.passport.eyebrow": "Semantischer Pass",
+      "viewer.passport.metadata": "Knoten-Metadaten",
+      "viewer.passport.evidence": "Verifizierter Quellnachweis",
+      "viewer.passport.verified": "Verifizierte Quelle",
+      "viewer.passport.verificationScope": "Verifiziert gegen lokales Git zur fixierten Revision. Remote-Zugriff wurde nicht geprüft.",
+      "viewer.passport.reach": "Verfasste Reichweite",
+      "viewer.passport.reach.trace": "Verfasste Erreichbarkeit verfolgen",
+      "viewer.passport.upstream": "Vorgelagert",
+      "viewer.passport.downstream": "Nachgelagert",
+      "viewer.passport.upstream.trace": "Vorgelagerte verfasste Erreichbarkeit verfolgen",
+      "viewer.passport.downstream.trace": "Nachgelagerte verfasste Erreichbarkeit verfolgen",
+      "viewer.passport.close": "Semantischen Pass schließen",
+      "viewer.passport.copy": "Link kopieren",
+      "viewer.passport.copy.focus": "Link zum fokussierten Knoten kopieren",
+      "viewer.passport.relations": "Beziehungen",
+      "viewer.passport.relations.show": "Verbundene Beziehungen anzeigen",
+      "viewer.passport.relations.hide": "Verbundene Beziehungen ausblenden",
+      "viewer.passport.relations.list": "Verbundene Beziehungen",
+      "viewer.passport.copyRelation": "Beziehung kopieren",
+      "viewer.passport.copyNode": "Knoten kopieren",
+      "viewer.passport.copyPinned": "Link zur angehefteten Beziehung kopieren",
+      "viewer.passport.copySource": "Link zum Quellknoten kopieren",
+      "viewer.passport.copy.focused.success": "Link des fokussierten Knotens kopiert",
+      "viewer.passport.copy.pinned.success": "Link der angehefteten Beziehung kopiert",
+      "viewer.passport.copy.focused.failed": "Link des fokussierten Knotens konnte nicht kopiert werden",
+      "viewer.passport.copy.pinned.failed": "Link der angehefteten Beziehung konnte nicht kopiert werden",
+      "viewer.passport.relationship.none": "Keine verbundenen Beziehungen",
+      "viewer.passport.relationship.count.one": "{count} Beziehung",
+      "viewer.passport.relationship.count.other": "{count} Beziehungen",
+      "viewer.passport.relationship.show.one": "{count} verbundene Beziehung anzeigen",
+      "viewer.passport.relationship.show.other": "{count} verbundene Beziehungen anzeigen",
+      "viewer.passport.relationship.summary": "{out} ausgehend · {in} eingehend{loops}",
+      "viewer.passport.relationship.loops": " · {count} Selbstschleife",
+      "viewer.passport.relationship.explorer": "Direkter Beziehungs-Explorer",
+      "viewer.passport.relationship.help": "Pfeiltasten zum Erkunden der Beziehungen verwenden. Enter oder Leertaste heftet Details an; Escape hebt die Auswahl auf.",
+      "viewer.passport.relationship.loopsBack": "schleift zurück",
+      "viewer.passport.relationship.connectsTo": "verbindet zu",
+      "viewer.passport.relationship.connectsFrom": "verbindet von",
+      "viewer.passport.relationship.pinned": "Angeheftete Beziehung · {from} → {to} · {label}",
+      "viewer.passport.relationship.inspect": "Beziehung {index} von {total} prüfen: {from} zu {to}, {label}. Enter für Details drücken.",
+      "viewer.passport.relationship.group.out": "Ausgehend",
+      "viewer.passport.relationship.group.in": "Eingehend",
+      "viewer.passport.relationship.group.loop": "Selbstschleifen",
+      "viewer.passport.relationship.row": "{group}: {relationship}, {neighbor}",
+      "viewer.passport.relationship.direction.out": "AUS →",
+      "viewer.passport.relationship.direction.in": "← EIN",
+      "viewer.passport.relationship.direction.loop": "SCHLEIFE",
+      "viewer.passport.sourceCount.one": "{count} verifizierte Quellenreferenz",
+      "viewer.passport.sourceCount.other": "{count} verifizierte Quellenreferenzen",
+      "viewer.passport.sourceMarker": "QUELLE",
+      "viewer.passport.beacon.one": "{count} verifizierte Quelle; diesen Knoten fokussieren, um sie zu prüfen",
+      "viewer.passport.beacon.other": "{count} verifizierte Quellen; diesen Knoten fokussieren, um sie zu prüfen",
+      "viewer.passport.repository.open": "Verifizierte Repository-Revision {revision} öffnen",
+      "viewer.passport.source.open": "Verifizierte Quelle {path} bei Revision {revision} öffnen",
+      "viewer.passport.source.openLink": "Öffnen ↗",
+      "viewer.passport.reach.upstream.one": "{count} vorgelagerten verfassten Knoten verfolgen",
+      "viewer.passport.reach.upstream.other": "{count} vorgelagerte verfasste Knoten verfolgen",
+      "viewer.passport.reach.downstream.one": "{count} nachgelagerten verfassten Knoten verfolgen",
+      "viewer.passport.reach.downstream.other": "{count} nachgelagerte verfasste Knoten verfolgen",
+      "viewer.passport.reach.noUpstream": "Keine vorgelagerten verfassten Knoten",
+      "viewer.passport.reach.noDownstream": "Keine nachgelagerten verfassten Knoten",
+      "viewer.passport.reach.status": "{direction} · {nodes} Knoten · {links} Verbindungen · max. {hops} Hops",
+      "viewer.route.eyebrow": "Routensonde",
+      "viewer.route.start": "Startknoten wählen",
+      "viewer.route.start.find": "Start finden",
+      "viewer.route.start.find.aria": "Einen Routenstart finden",
+      "viewer.route.copy": "Link kopieren",
+      "viewer.route.copy.aria": "Link zur verfolgten Route kopieren",
+      "viewer.route.clear": "Löschen",
+      "viewer.route.clear.aria": "Routensonde löschen",
+      "viewer.route.traced": "Verfolgte Route",
+      "viewer.route.pickTwo": "Zwei semantische Knoten im Diagramm auswählen",
+      "viewer.route.pickOne": "Einen semantischen Knoten im Diagramm auswählen",
+      "viewer.route.controls": "Routen-Verlaufssteuerung",
+      "viewer.route.previous": "Vorherige Routenposition",
+      "viewer.route.play": "Routenverlauf abspielen",
+      "viewer.route.pause": "Routenverlauf pausieren",
+      "viewer.route.replay": "Routenverlauf erneut abspielen",
+      "viewer.route.next": "Nächste Routenposition",
+      "viewer.route.journey": "Verlauf",
+      "viewer.route.pause.label": "Pausieren",
+      "viewer.route.replay.label": "Erneut abspielen",
+      "viewer.route.overview": "Übersicht",
+      "viewer.route.overview.aria": "Vollständige Routenübersicht anzeigen",
+      "viewer.route.instructions": "Quelle wählen, dann das Ziel. Die Richtung ist entscheidend.",
+      "viewer.route.destination": "Ziel ausgehend von {label} wählen",
+      "viewer.route.destination.find": "Ziel finden",
+      "viewer.route.destination.find.aria": "Ein erreichbares Routenziel finden",
+      "viewer.route.differentDestination": "Anderes Ziel wählen",
+      "viewer.route.distinct": "Eine Route benötigt zwei unterschiedliche semantische Knoten.",
+      "viewer.route.unreachable": "Keine gerichtete Route zu {label}",
+      "viewer.route.unreachable.detail": "{target} ist von {source} aus nicht erreichbar. Ein hervorgehobenes Ziel wählen.",
+      "viewer.route.start.instructions": "Quelle auswählen. Im nächsten Schritt werden nur gerichtete Ziele angezeigt.",
+      "viewer.route.copy.success": "Link zur verfolgten Route kopiert",
+      "viewer.route.copy.failed": "Link zur verfolgten Route konnte nicht kopiert werden",
+      "viewer.route.position": "Routenposition {index} von {total}: {label}",
+      "viewer.route.step": "Schritt {index} von {total} · {phase} · {label}",
+      "viewer.route.motionRequired": "Automatischer Verlauf erfordert Live-Bewegung",
+      "viewer.route.trigger.clear": "Verfolgte Route löschen",
+      "viewer.route.overview.status": "{nodes} · {hops} · kürzeste verfasste Route",
+      "viewer.route.overview.node.one": "{count} Knoten",
+      "viewer.route.overview.node.other": "{count} Knoten",
+      "viewer.route.overview.hop.one": "{count} gerichteter Hop",
+      "viewer.route.overview.hop.other": "{count} gerichtete Hops",
+      "viewer.route.phase.playing": "Läuft",
+      "viewer.route.phase.complete": "Abgeschlossen",
+      "viewer.route.phase.inspecting": "Wird geprüft",
+      "viewer.route.destination.count.one": "{count} gerichtetes Ziel verfügbar. Einen hervorgehobenen Knoten wählen.",
+      "viewer.route.destination.count.other": "{count} gerichtete Ziele verfügbar. Einen hervorgehobenen Knoten wählen.",
+      "viewer.route.noOutgoing": "Hier startet keine ausgehende Route. Löschen und eine andere Quelle wählen.",
+      "viewer.route.result.title": "{source} nach {target}",
+      "viewer.route.finder.source.title": "Routenstart wählen",
+      "viewer.route.finder.source.placeholder": "Routenquellen suchen",
+      "viewer.route.finder.source.empty": "Keine passenden Routenquellen",
+      "viewer.route.finder.source.results": "Knoten, die eine Route starten können",
+      "viewer.route.finder.source.noun": "Routenquellen",
+      "viewer.route.finder.source.badge": "Start",
+      "viewer.route.finder.target.title": "Ziel ausgehend von {label}",
+      "viewer.route.finder.target.placeholder": "Erreichbare Ziele suchen",
+      "viewer.route.finder.target.empty": "Keine passenden erreichbaren Ziele",
+      "viewer.route.finder.target.results": "Erreichbare Routenziele",
+      "viewer.route.finder.target.noun": "erreichbare Ziele",
+      "viewer.route.hop.one": "{count} Hop",
+      "viewer.route.hop.other": "{count} Hops",
+      "viewer.lens.eyebrow": "Semantische Linse",
+      "viewer.lens.title": "Systemrollen vergleichen",
+      "viewer.lens.close": "Semantische Linse schließen",
+      "viewer.lens.instruction": "Bis zu zwei semantische Arten wählen. Eine zeigt ihren echten Verkehr; zwei vergleichen nur direkte verfasste Beziehungen.",
+      "viewer.lens.kinds": "Semantische Arten",
+      "viewer.lens.choose": "Eine Art wählen, um ihre Knoten und berührenden Beziehungen zu prüfen.",
+      "viewer.lens.copy": "Link zur semantischen Linse kopieren",
+      "viewer.lens.clear": "Semantische Linse löschen",
+      "viewer.lens.open": "Semantische Linse öffnen",
+      "viewer.lens.openActive": "Aktive semantische Linse öffnen",
+      "viewer.lens.legend": "Semantische Legende",
+      "viewer.lens.legend.inspect.one": "{label} prüfen, {count} Knoten",
+      "viewer.lens.legend.inspect.other": "{label} prüfen, {count} Knoten",
+      "viewer.lens.kind.count.one": "{label}, {count} Knoten",
+      "viewer.lens.kind.count.other": "{label}, {count} Knoten",
+      "viewer.lens.compare.one": "{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direkte Beziehung",
+      "viewer.lens.compare.other": "{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direkte Beziehungen",
+      "viewer.lens.single": "{nodes} · {relationships} · verbundene Nachbarn bleiben sichtbar",
+      "viewer.lens.node.one": "{count} {label}-Knoten",
+      "viewer.lens.node.other": "{count} {label}-Knoten",
+      "viewer.lens.relationship.one": "{count} berührende Beziehung",
+      "viewer.lens.relationship.other": "{count} berührende Beziehungen",
+      "viewer.radar.title": "Semantisches Radar",
+      "viewer.radar.building": "Übersicht wird erstellt",
+      "viewer.radar.openFull": "Vollständiges semantisches Radar öffnen",
+      "viewer.radar.open": "Radar öffnen",
+      "viewer.radar.close": "Semantisches Radar schließen",
+      "viewer.radar.surface": "Diagrammübersicht. Auf einen Knoten klicken, um ihn zu fokussieren, oder mit den Pfeiltasten schwenken.",
+      "viewer.radar.click": "Knoten anklicken",
+      "viewer.radar.drag": "Ziehen zum Schwenken",
+      "viewer.radar.space": "Semantisches Radar benötigt mehr MAP-Platz.",
+      "viewer.radar.nodes": "Semantische Diagramm-Radarknoten",
+      "viewer.radar.focus": "{label} vom semantischen Radar fokussieren",
+      "viewer.radar.status": "{count} Knoten · {viewport}",
+      "viewer.radar.fullMap": "{count} Knoten · vollständige Karte",
+      "viewer.radar.compacted": "Radar verkleinert, um den semantischen Pass oder die MAP-Steuerung nicht zu verdecken.",
+      "viewer.radar.cancelWaiting": "Wartendes semantisches Radar auf mehr MAP-Platz abbrechen",
+      "viewer.radar.needsSpace": "Semantisches Radar benötigt mehr sichtbaren MAP-Platz",
+      "viewer.radar.viewport.full": "vollständige Karte",
+      "viewer.radar.viewport.width": "{percent}% Breite",
+      "viewer.radar.viewport.scale": "{percent}% Ansicht",
+      "viewer.nav.controls": "Diagrammansicht-Steuerung",
+      "viewer.nav.route": "Eine gerichtete Route verfolgen",
+      "viewer.nav.route.title": "Route verfolgen (R)",
+      "viewer.nav.route.short": "PFAD",
+      "viewer.nav.radar": "Semantisches Radar öffnen",
+      "viewer.nav.radar.title": "Semantisches Radar (M)",
+      "viewer.nav.radar.short": "KARTE",
+      "viewer.nav.lens": "Semantische Linse öffnen",
+      "viewer.nav.lens.title": "Semantische Linse (L)",
+      "viewer.nav.lens.short": "LINSE",
+      "viewer.nav.find": "Knoten finden",
+      "viewer.nav.find.title": "Knoten finden (/)",
+      "viewer.nav.guide": "Diagrammleitfaden öffnen",
+      "viewer.nav.guide.title": "Diagrammleitfaden (?)",
+      "viewer.nav.zoomOut": "Verkleinern",
+      "viewer.nav.zoomOut.title": "Verkleinern (-)",
+      "viewer.nav.reset": "Diagrammansicht zurücksetzen",
+      "viewer.nav.reset.title": "Ansicht zurücksetzen (0)",
+      "viewer.nav.read": "LESEN",
+      "viewer.nav.zoomIn": "Vergrößern",
+      "viewer.nav.zoomIn.title": "Vergrößern (+)",
+      "viewer.nav.camera": "{hint}. Diagrammansicht zurücksetzen",
+      "viewer.nav.camera.title": "{semantic}{hint} · Ansicht zurücksetzen (0)",
+      "viewer.nav.camera.semantic": "Semantische Kamera aktiv · ",
+      "viewer.nav.level.map": "KARTE",
+      "viewer.nav.level.read": "LESEN",
+      "viewer.nav.level.full": "VOLL",
+      "viewer.nav.level.auto": "AUTO",
+      "viewer.nav.detail.map": "Vergrößern, um Beziehungslabels und Knotenkontext anzuzeigen",
+      "viewer.nav.detail.read": "Erneut vergrößern, um Tags und Anmerkungen anzuzeigen",
+      "viewer.nav.detail.full": "Vollständige Diagrammdetails",
+      "viewer.intent.summary": "{label}. {out} ausgehend, {in} eingehend{loops}. {total} Verbindungen. Enter für Details drücken.",
+      "viewer.intent.loops": ", {count} Selbstschleife",
+      "viewer.common.copied": "Kopiert",
+      "viewer.common.copyFailed": "Kopieren fehlgeschlagen",
+      "viewer.common.copyLink": "Link kopieren",
+      "viewer.common.clear": "Löschen",
+      "viewer.common.close": "Schließen"
+    }
+  },
+  "components": [
+    {
+      "id": "aufrufer",
+      "type": "external",
+      "label": "Aufrufende Systeme",
+      "sublabel": "HTTPS, /api/v2",
+      "pos": [
+        40,
+        305
+      ],
+      "size": [
+        150,
+        70
+      ],
+      "sources": [
+        {
+          "path": "app/api/v2/routes.py",
+          "line": 37,
+          "end_line": 46,
+          "label": "POST /api/v2/compendium"
+        }
+      ]
+    },
+    {
+      "id": "pruefansicht",
+      "type": "frontend",
+      "label": "Prüfansicht",
+      "sublabel": "Browser, UI_ENABLED",
+      "pos": [
+        40,
+        460
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/ui/routes.py",
+          "line": 22,
+          "end_line": 30,
+          "label": "/ui/ aus statischen Dateien"
+        },
+        {
+          "path": "app/ui/static/api.mjs",
+          "line": 26,
+          "end_line": 36,
+          "label": "fetch mit X-API-Key"
+        }
+      ]
+    },
+    {
+      "id": "zugang",
+      "type": "security",
+      "label": "Zugangsprüfung",
+      "sublabel": "Schlüssel, Limit, Größe",
+      "pos": [
+        320,
+        305
+      ],
+      "size": [
+        160,
+        70
+      ],
+      "sources": [
+        {
+          "path": "app/api/gates.py",
+          "line": 35,
+          "end_line": 49,
+          "label": "Prüfung vor dem Körper"
+        },
+        {
+          "path": "app/api/keys.py",
+          "line": 28,
+          "end_line": 41,
+          "label": "API-Schlüssel, 401"
+        },
+        {
+          "path": "app/api/body_limit.py",
+          "line": 32,
+          "end_line": 70,
+          "label": "Körpergrenze, 413"
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API-Dienst",
+      "sublabel": "FastAPI + uvicorn",
+      "pos": [
+        600,
+        305
+      ],
+      "size": [
+        760,
+        70
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 38,
+          "end_line": 75,
+          "label": "Dienst api"
+        },
+        {
+          "path": "app/serve.py",
+          "line": 60,
+          "end_line": 63,
+          "label": "uvicorn app.main:create_app"
+        },
+        {
+          "path": "app/main.py",
+          "line": 462,
+          "end_line": 486,
+          "label": "Router von /api/v2"
+        }
+      ]
+    },
+    {
+      "id": "prometheus",
+      "type": "backend",
+      "label": "Prometheus",
+      "sublabel": "Profil monitoring",
+      "pos": [
+        800,
+        160
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 160,
+          "end_line": 175,
+          "label": "Dienst prometheus"
+        },
+        {
+          "path": "monitoring/prometheus.yml",
+          "line": 4,
+          "end_line": 22,
+          "label": "Job kompendium, /metrics"
+        }
+      ]
+    },
+    {
+      "id": "edusharing",
+      "type": "external",
+      "label": "edu-sharing",
+      "sublabel": "WLO-Repository (REST)",
+      "pos": [
+        1080,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/wlo/client.py",
+          "line": 137,
+          "end_line": 176,
+          "label": "Sammlungen, Referenzen"
+        },
+        {
+          "path": "app/sources/wlo/client.py",
+          "line": 201,
+          "end_line": 220,
+          "label": "Knoten, Textinhalt"
+        }
+      ]
+    },
+    {
+      "id": "llmgateway",
+      "type": "backend",
+      "label": "LLM-Gateway",
+      "sublabel": "Budget, Schutzschalter",
+      "pos": [
+        1480,
+        305
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "app/main.py",
+          "line": 190,
+          "end_line": 234,
+          "label": "nur mit LLM_ENABLED und Schlüssel"
+        },
+        {
+          "path": "app/llm/call.py",
+          "line": 87,
+          "end_line": 146,
+          "label": "reservieren, rufen, abrechnen"
+        },
+        {
+          "path": "app/llm/client.py",
+          "line": 31,
+          "end_line": 44,
+          "label": "Wiederholung, Schutzschalter"
+        }
+      ]
+    },
+    {
+      "id": "bapi",
+      "type": "external",
+      "label": "b-api",
+      "sublabel": "LLM über HTTPS",
+      "pos": [
+        1480,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/llm/client.py",
+          "line": 161,
+          "end_line": 163,
+          "label": "/api/v1/llm/{provider}"
+        },
+        {
+          "path": "app/settings.py",
+          "line": 23,
+          "end_line": 31,
+          "label": "Adresse aus B_API_BASE_URL"
+        }
+      ]
+    },
+    {
+      "id": "zimarchive",
+      "type": "database",
+      "label": "ZIM-Archive",
+      "sublabel": "Volume zim, active.json",
+      "pos": [
+        615,
+        480
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/zim/registry.py",
+          "line": 78,
+          "end_line": 86,
+          "label": "Start aus active.json"
+        },
+        {
+          "path": "app/sources/zim/refresh.py",
+          "line": 24,
+          "end_line": 52,
+          "label": "Wechsel ohne Neustart"
+        },
+        {
+          "path": "app/sources/zim/active.py",
+          "line": 59,
+          "end_line": 78,
+          "label": "active.json atomar schreiben"
+        }
+      ]
+    },
+    {
+      "id": "lehrplancache",
+      "type": "database",
+      "label": "Lehrplan-Cache",
+      "sublabel": "lehrplan.db (SQLite)",
+      "pos": [
+        825,
+        480
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/lehrplan/store.py",
+          "line": 355,
+          "end_line": 364,
+          "label": "neu bauen, dann tauschen"
+        },
+        {
+          "path": "app/sources/lehrplan/store.py",
+          "line": 159,
+          "end_line": 162,
+          "label": "Lesen je Aufruf"
+        },
+        {
+          "path": "app/sources/lehrplan/part.py",
+          "line": 81,
+          "end_line": 103,
+          "label": "Teil 2 aus dem Cache"
+        }
+      ]
+    },
+    {
+      "id": "indizes",
+      "type": "database",
+      "label": "Wikidata-/GND-Index",
+      "sublabel": "wikidata.db, gnd.db",
+      "pos": [
+        1035,
+        480
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/local_index.py",
+          "line": 30,
+          "end_line": 49,
+          "label": "atomar schreiben"
+        },
+        {
+          "path": "app/sources/local_index.py",
+          "line": 85,
+          "end_line": 126,
+          "label": "nur lesen, neu öffnen"
+        },
+        {
+          "path": "app/api/v2/entities.py",
+          "line": 324,
+          "end_line": 334,
+          "label": "/entities verknüpft"
+        }
+      ]
+    },
+    {
+      "id": "zustand",
+      "type": "database",
+      "label": "Zustand",
+      "sublabel": "Templates, Budget, Status",
+      "pos": [
+        1245,
+        480
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/templates/manager.py",
+          "line": 96,
+          "end_line": 107,
+          "label": "Templates speichern"
+        },
+        {
+          "path": "app/llm/budget_store.py",
+          "line": 33,
+          "end_line": 108,
+          "label": "Tokenbudget je Tag"
+        },
+        {
+          "path": "app/observability/status.py",
+          "line": 94,
+          "end_line": 130,
+          "label": "Status für /metrics"
+        }
+      ]
+    },
+    {
+      "id": "zimupdater",
+      "type": "backend",
+      "label": "zim-updater",
+      "sublabel": "zim sync --loop",
+      "pos": [
+        615,
+        640
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 77,
+          "end_line": 96,
+          "label": "Dienst zim-updater"
+        },
+        {
+          "path": "app/cli_zim.py",
+          "line": 92,
+          "end_line": 133,
+          "label": "Schleife, Lebenszeichen"
+        },
+        {
+          "path": "app/jobs/zim_sync.py",
+          "line": 199,
+          "end_line": 244,
+          "label": "übernehmen, laden, aktivieren"
+        }
+      ]
+    },
+    {
+      "id": "lehrplanupdater",
+      "type": "backend",
+      "label": "lehrplan-updater",
+      "sublabel": "lehrplan harvest --loop",
+      "pos": [
+        825,
+        640
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 98,
+          "end_line": 115,
+          "label": "Dienst lehrplan-updater"
+        },
+        {
+          "path": "app/cli_lehrplan.py",
+          "line": 84,
+          "end_line": 130,
+          "label": "Prüfung, Harvest wenn fällig"
+        },
+        {
+          "path": "app/sources/lehrplan/harvest.py",
+          "line": 249,
+          "end_line": 270,
+          "label": "Abzug aus MEM"
+        }
+      ]
+    },
+    {
+      "id": "indexupdater",
+      "type": "backend",
+      "label": "wikidata-/gnd-updater",
+      "sublabel": "sync --loop, täglich",
+      "pos": [
+        1035,
+        640
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "docker-compose.yml",
+          "line": 117,
+          "end_line": 158,
+          "label": "zwei Dienste"
+        },
+        {
+          "path": "app/cli_wikidata.py",
+          "line": 58,
+          "end_line": 80,
+          "label": "wikidata sync"
+        },
+        {
+          "path": "app/cli_gnd.py",
+          "line": 61,
+          "end_line": 83,
+          "label": "gnd sync"
+        }
+      ]
+    },
+    {
+      "id": "kiwix",
+      "type": "external",
+      "label": "Kiwix",
+      "sublabel": "OPDS-Katalog, ZIM",
+      "pos": [
+        615,
+        800
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/zim/catalog.py",
+          "line": 174,
+          "end_line": 215,
+          "label": "Katalog, Metalink"
+        },
+        {
+          "path": "app/sources/zim/downloader.py",
+          "line": 132,
+          "end_line": 209,
+          "label": "Download mit SHA-256"
+        }
+      ]
+    },
+    {
+      "id": "mem",
+      "type": "external",
+      "label": "MEM",
+      "sublabel": "SPARQL-Endpunkt",
+      "pos": [
+        825,
+        800
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/lehrplan/sparql.py",
+          "line": 86,
+          "end_line": 111,
+          "label": "POST query"
+        },
+        {
+          "path": "app/settings.py",
+          "line": 133,
+          "end_line": 135,
+          "label": "LEHRPLAN_ENDPOINT"
+        }
+      ]
+    },
+    {
+      "id": "dumps",
+      "type": "external",
+      "label": "Wikimedia, DNB",
+      "sublabel": "dewiki-Dumps, GND-Turtle",
+      "pos": [
+        1035,
+        800
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/sources/wikidata/sync.py",
+          "line": 37,
+          "end_line": 104,
+          "label": "dewiki-Dumps, SHA-1"
+        },
+        {
+          "path": "app/sources/gnd/sync.py",
+          "line": 30,
+          "end_line": 71,
+          "label": "DNB-Abzüge, SHA-256"
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Docker Compose",
+      "wraps": [
+        "zugang",
+        "api",
+        "llmgateway",
+        "prometheus",
+        "zimarchive",
+        "lehrplancache",
+        "indizes",
+        "zustand",
+        "zimupdater",
+        "lehrplanupdater",
+        "indexupdater"
+      ],
+      "pad": 22
+    },
+    {
+      "kind": "region",
+      "label": "Container api",
+      "wraps": [
+        "zugang",
+        "api",
+        "llmgateway"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Volume zim",
+      "wraps": [
+        "zimarchive"
+      ],
+      "pad": 10
+    },
+    {
+      "kind": "region",
+      "label": "Volume state",
+      "wraps": [
+        "lehrplancache",
+        "indizes",
+        "zustand"
+      ],
+      "pad": 10
+    }
+  ],
+  "connections": [
+    {
+      "id": "anfrage",
+      "from": "aufrufer",
+      "to": "zugang",
+      "label": "HTTPS /api/v2",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ui-anfrage",
+      "from": "pruefansicht",
+      "to": "zugang",
+      "label": "fetch, X-API-Key",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "zugelassen",
+      "from": "zugang",
+      "to": "api",
+      "label": "zugelassen",
+      "variant": "emphasis"
+    },
+    {
+      "id": "scrape",
+      "from": "prometheus",
+      "to": "api",
+      "label": "GET /metrics",
+      "variant": "dashed"
+    },
+    {
+      "id": "teil3",
+      "from": "api",
+      "to": "edusharing",
+      "label": "Teil 3, Knoten (REST)"
+    },
+    {
+      "id": "llm-schritte",
+      "from": "api",
+      "to": "llmgateway",
+      "label": "LLM-Schritte"
+    },
+    {
+      "id": "chat",
+      "from": "llmgateway",
+      "to": "bapi",
+      "label": "chat/completions"
+    },
+    {
+      "id": "teil1",
+      "from": "api",
+      "to": "zimarchive",
+      "label": "Teil 1: Artikel, Korpus",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "teil2",
+      "from": "api",
+      "to": "lehrplancache",
+      "label": "Teil 2: Suche",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "entitaeten",
+      "from": "api",
+      "to": "indizes",
+      "label": "/entities: QID, GND",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "zustand-rw",
+      "from": "api",
+      "to": "zustand",
+      "label": "Templates, Budget, Status",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "zim-schreiben",
+      "from": "zimupdater",
+      "to": "zimarchive",
+      "label": "schreibt .zim, active.json"
+    },
+    {
+      "id": "lehrplan-tausch",
+      "from": "lehrplanupdater",
+      "to": "lehrplancache",
+      "label": "tauscht lehrplan.db"
+    },
+    {
+      "id": "index-bau",
+      "from": "indexupdater",
+      "to": "indizes",
+      "label": "baut wikidata.db, gnd.db"
+    },
+    {
+      "id": "kiwix-laden",
+      "from": "zimupdater",
+      "to": "kiwix",
+      "label": "OPDS, Download"
+    },
+    {
+      "id": "mem-abfrage",
+      "from": "lehrplanupdater",
+      "to": "mem",
+      "label": "SPARQL"
+    },
+    {
+      "id": "dumps-laden",
+      "from": "indexupdater",
+      "to": "dumps",
+      "label": "Dumps laden"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Zugang",
+      "items": [
+        "API-Schlüssel, Rate-Limit und Körpergrenze greifen, bevor der Körper gelesen wird",
+        "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404",
+        "/metrics optional mit METRICS_TOKEN"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "LLM je Profil",
+      "items": [
+        "llm-free arbeitet nur mit Regeln; balanced wählt Artikel per LLM",
+        "best-quality lässt auch Zuordnung und Lehrplanprüfung vom LLM machen",
+        "Ist die b-api nicht erreichbar, übernehmen die Regeln"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Neue Daten ohne Neustart",
+      "items": [
+        "ZIM: jede Anfrage prüft active.json und liest eine feste Sicht",
+        "Lehrplan-Cache: eine neue Leseverbindung je Aufruf",
+        "Wikidata/GND: Index höchstens alle 60 s neu geprüft"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Status und Alarme",
+      "items": [
+        "Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien in das Volume state",
+        "/metrics liest sie bei jeder Abfrage",
+        "Prometheus-Alarme melden stumme oder gescheiterte Sidecars"
+      ]
+    }
+  ]
+}
