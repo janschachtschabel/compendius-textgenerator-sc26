@@ -227,6 +227,8 @@ def test_another_account_does_not_get_what_the_first_one_read(tmp_path: Path) ->
         ("https://repo.test:8443/edu-sharing/rest", False),
         ("http://repo.test/edu-sharing/rest", False),
         ("https://repo.test/Edu-Sharing/rest", False),
+        # a port httpx takes and only a real request refuses: reading it for the key must not stop the start
+        ("https://repo.test:99999/edu-sharing/rest", False),
     ],
 )
 def test_the_cache_knows_a_repository_by_its_rest_root_however_it_is_written(

@@ -76,13 +76,13 @@ def _scope(base_url: str, user: str) -> str:
     """Whose answers a cache entry holds: the repository by its REST root however it is written - scheme and host in
     lower case, the port spelled out, no slash at the end - and the account, by a hash of its name; never the name, a
     password or a token. Staging and production share node ids where one holds a copy of the other, and two
-    accounts may see different things (audit 2026-09-29, A03).
+    accounts may see different things (audit 2026-09-29, A03). The address is read as the client reads it: a port
+    ``urlsplit`` refuses but httpx takes would otherwise stop the start instead of failing part 3.
     """
-    parts = urlsplit(base_url)
-    scheme = parts.scheme.lower()
-    port = parts.port or _DEFAULT_PORTS.get(scheme)
+    url = httpx.URL(base_url)  # scheme and host in lower case, a default port as None
+    port = url.port or _DEFAULT_PORTS.get(url.scheme)
     account = "user-" + hashlib.sha256(user.encode()).hexdigest()[:16] if user else "anonymous"
-    return f"{scheme}://{parts.hostname or ''}:{port}{parts.path.rstrip('/')}|{account}"
+    return f"{url.scheme}://{url.host}:{port}{url.path.rstrip('/')}|{account}"
 
 
 def _no_cookies() -> http.cookiejar.CookieJar:
