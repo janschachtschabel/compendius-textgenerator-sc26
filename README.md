@@ -129,7 +129,8 @@ Welche Archive ein Profil braucht, steht in `config/zim_subscriptions.yaml` (`co
 Entwicklung und CI, `standard` für die Produktion, `extended` mit Wikibooks und Wikiversity).
 Die Archiv-ID ist Katalogname plus Flavour, zum Beispiel `wikipedia_de_all_nopic`.
 
-Der Sync-Job pflegt das Verzeichnis `ZIM_DIR`: Er übernimmt vorhandene Dateien, lädt
+Der Sync-Job pflegt das Verzeichnis `ZIM_DIR`: Er übernimmt vorhandene Dateien, von einem Archiv den
+neuesten Dump, und löst ältere Dumps dabei ab, auch wenn er eine verlorene `active.json` neu aufbaut; er lädt
 neue Dumps aus dem Kiwix-Katalog (Range-Resume in eine `.part`-Datei, SHA-256 aus dem
 Metalink), schaltet `active.json` atomar um und löscht abgelöste Dateien nach
 `ZIM_RETENTION_HOURS`: in einem Lauf, den er für das Ende der Frist ansetzt, und vor jedem Download.
@@ -137,7 +138,8 @@ Ein Download beginnt nur, wenn das Volume ihn und 1 GB darüber fasst. Nach eine
 `ZIM_PROFILE` löst er die Archive des alten Profils ab, sobald die Pflichtarchive des neuen aktiv sind.
 Ein geladenes, geprüftes Archiv, das libzim nicht öffnen kann, löscht er und lädt diesen Dump nicht
 noch einmal (`unreadable` in `active.json`), erst einen neueren. Die API-Prozesse prüfen `active.json`
-bei jeder Anfrage und öffnen neue Archive ohne Neustart; der Sync schreibt die Datei nur, wenn sich
+bei jeder Anfrage und öffnen neue Archive ohne Neustart, ohne die Datei von jedem Archiv im Verzeichnis den
+neuesten Dump; der Sync schreibt die Datei nur, wenn sich
 etwas ändert, denn dann öffnet jeder Worker alle Archive neu und verliert seine Caches. Zur
 Inferenzzeit wird nichts heruntergeladen.
 

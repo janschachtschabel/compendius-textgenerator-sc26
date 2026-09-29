@@ -256,7 +256,11 @@ class ZimSync:
         return state
 
     def _adopt(self, sub: Subscription, state: ActiveState, report: SyncReport) -> None:
-        """Register a local file that is not (or no longer) in the state; the newest dump wins."""
+        """Register a local file that is not (or no longer) in the state; the newest dump wins, older ones retire.
+
+        A state rebuilt after ``active.json`` was lost knows no retired dump, and the prune deletes only what the state
+        lists: a generation retired before stayed on the volume for good (audit 2026-09-29, Q2).
+        """
         current = state.archives.get(sub.id)
         if current is not None:
             if (self._zim_dir / current.file).exists():
@@ -271,6 +275,11 @@ class ZimSync:
             except Exception as exc:  # unreadable file: report it, try the next older one
                 report.errors.append(f"{sub.id}: cannot open {path.name}: {exc}")
                 continue
+            retired = {archive.file for archive in state.retired}
+            for older in sorted(candidates):  # a file without a dump date in its name is not the sync's to delete
+                if dump_date(older.name) and dump_date(older.name) < dump_date(path.name) and older.name not in retired:
+                    state.retired.append(RetiredArchive(file=older.name, retired_at=self._clock().isoformat()))
+                    report.retired.append(older.name)
             self._save(state)
             report.adopted.append(sub.id)
             return

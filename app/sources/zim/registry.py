@@ -11,7 +11,7 @@ from app.domain.models import Resolution, Source
 from app.knowledge.related import is_blacklisted, rank_related_candidates
 from app.knowledge.topic import TopicMention
 from app.sources.zim.active import read_active
-from app.sources.zim.archive import ZimArchive, ZimArticle
+from app.sources.zim.archive import ZimArchive, ZimArticle, archive_id, dump_date
 from app.sources.zim.topic_rules import (
     ASPECT_WORDS,
     LEADING_ARTICLE,
@@ -82,8 +82,15 @@ class ZimRegistry:
 
     @classmethod
     def discover(cls, directory: Path) -> ZimRegistry:
+        """The archives of ``directory``, of each archive only its newest dump: both generations of an archive opened,
+        and the older one led, as it sorts first (audit 2026-09-29, Q2)."""
         paths = sorted(p for p in Path(directory).glob("*.zim")) if Path(directory).exists() else []
-        return cls(paths)
+        newest: dict[str, Path] = {}
+        for path in paths:
+            known = newest.get(archive_id(path.name))
+            if known is None or dump_date(path.name) > dump_date(known.name):
+                newest[archive_id(path.name)] = path
+        return cls(sorted(newest.values()))
 
     @classmethod
     def from_active(cls, zim_dir: Path) -> ZimRegistry:

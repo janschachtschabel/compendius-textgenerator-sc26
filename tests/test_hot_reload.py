@@ -42,6 +42,21 @@ def test_from_active_prefers_active_json_over_discovery(sample_zims: dict[str, P
     assert [a.project for a in ZimRegistry.from_active(tmp_path).archives] == ["klexikon"]
 
 
+def test_discovery_opens_only_the_newest_dump_of_an_archive(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Without active.json both generations of an archive opened, and the older one led, as it sorts first (audit
+    2026-09-29, Q2)."""
+    for name in ("wikipedia_de_sample_2026-08.zim", "wikipedia_de_sample_2026-09.zim"):
+        shutil.copy(sample_zims["wikipedia"], tmp_path / name)
+    shutil.copy(sample_zims["klexikon"], tmp_path / sample_zims["klexikon"].name)
+
+    registry = ZimRegistry.from_active(tmp_path)
+
+    assert [a.file_name for a in registry.archives] == [
+        "wikipedia_de_sample_2026-09.zim",
+        "klexikon_de_sample_2026-08.zim",
+    ]
+
+
 def test_refresher_reopens_archives_on_change(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     registry = ZimRegistry.from_active(tmp_path)
     refresher = RegistryRefresher(registry, tmp_path)

@@ -416,6 +416,27 @@ def test_a_corrupt_state_is_rebuilt_from_the_local_files(
     assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-08.zim"
 
 
+def test_a_rebuilt_state_retires_the_older_dumps_it_finds(tmp_path: Path, sources: dict[str, Path]) -> None:
+    """A dump retired before active.json was lost stayed on the volume for good: the rebuilt state knew nothing of it,
+    and the prune only deletes what the state lists as retired (audit 2026-09-29, Q2)."""
+    _install(tmp_path, sources, "klexikon_de_sample_2026-01.zim")
+    _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    (tmp_path / ACTIVE_FILE).write_text("", encoding="utf-8")  # zero-length, as a crash right after the swap may leave
+    now = T0
+    sync = _sync(tmp_path, None, FakeDownloader(sources), clock=lambda: now, retention=timedelta(hours=24))
+
+    report = sync.run(COMPACT)
+
+    assert report.retired == ["klexikon_de_sample_2026-01.zim"]
+    state = read_active(tmp_path)
+    assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-08.zim"
+    assert [retired.file for retired in state.retired] == ["klexikon_de_sample_2026-01.zim"]
+    assert (tmp_path / "klexikon_de_sample_2026-01.zim").exists()  # the retention holds for it as for any other
+    now = T0 + timedelta(hours=25)
+    assert sync.run(COMPACT).pruned == ["klexikon_de_sample_2026-01.zim"]
+    assert not (tmp_path / "klexikon_de_sample_2026-01.zim").exists()
+
+
 def test_a_listed_file_gone_from_disk_gives_way_to_the_one_there(
     tmp_path: Path, sources: dict[str, Path], caplog: pytest.LogCaptureFixture
 ) -> None:
