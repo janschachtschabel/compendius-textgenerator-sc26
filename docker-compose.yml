@@ -69,9 +69,9 @@ services:
     # (Audit 2026-09-28, BE-17).
     stop_grace_period: ${API_STOP_GRACE_PERIOD:-150s}
     # Gemessen am 29.09.2026 2,5 GiB nach dem Start und 3,4 GiB nach dem Aufwaermen, rund 1,7 GiB je Worker
-    # (docs/uebergabe/README.md): 4 GiB tragen die zwei Worker des Images knapp, den Rest fuellt der Seiten-Cache;
-    # fuer den Betrieb 6g. Mit mehr Workern API_MEMORY heben, je Worker rund 1,7 GiB.
-    mem_limit: ${API_MEMORY:-4g}
+    # (docs/uebergabe/README.md). Die alte Grenze 4 GiB trug die zwei Worker des Images knapp, den Rest fuellte der
+    # Seiten-Cache; 6 GiB lassen Luft fuer Spitzen. Mit mehr Workern API_MEMORY heben, je Worker rund 1,7 GiB.
+    mem_limit: ${API_MEMORY:-6g}
     logging: *logging
     restart: unless-stopped
 

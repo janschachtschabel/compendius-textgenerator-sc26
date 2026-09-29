@@ -41,7 +41,7 @@ Archivprofil `standard` (vollständige deutsche Wikipedia ohne Bilder und Klexik
 |---|---|---|---|
 | CPU | 2 vCPU | 4 vCPU | Die API rechnet mit 2 Workern im Mittel auf rund einem Kern, in Spitzen auf bis zu vier: fünf gleichzeitige Kompendien dauerten mit 2, 4 und 16 vCPU gleich lang. Die übrigen Kerne sind für die Sidecars (der Neubau des Wikidata-Index dauert auf dem Server rund acht Minuten) und einen dritten Worker |
 | RAM | 6 GB | 8 GB | API nach dem Aufwärmen 3,4 GiB, höher stieg sie in 47 Anfragen nicht; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
-| Grenze `API_MEMORY` | `4g` | `6g` | 4 GiB trugen alle 47 Anfragen, waren aber mit Seiten-Cache voll; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage) |
+| Grenze `API_MEMORY` | `4g` | `6g`, die Vorgabe | 4 GiB trugen alle 47 Anfragen, waren aber mit Seiten-Cache voll; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
 | Platte | 45 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, rund 32 GB beim Update der Wikipedia (altes und neues Archiv 24 Stunden nebeneinander), dazu System und Docker |
 | Netz | – | – | eingehend nur der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS); ausgehend siehe [Netz](#netz) |
 

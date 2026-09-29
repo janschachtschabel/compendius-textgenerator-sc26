@@ -75,9 +75,9 @@
 <text x="847.0" y="412.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5×</text>
 <text x="847.0" y="426.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">llm-free</text>
 <line x1="70.0" y1="211.4" x2="890.0" y2="211.4" stroke="#1f2933" stroke-width="1.2" stroke-dasharray="5 4"/>
-<text x="896.0" y="215.4" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Grenze heute: API_MEMORY=4g</text>
+<text x="896.0" y="215.4" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Grenze in der Messung: 4g</text>
 <line x1="70.0" y1="119.1" x2="890.0" y2="119.1" stroke="#1f2933" stroke-width="1.2" stroke-dasharray="5 4"/>
-<text x="896.0" y="123.1" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">empfohlen: API_MEMORY=6g</text>
+<text x="896.0" y="123.1" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Vorgabe seit 29.09.: 6g</text>
 <line x1="74.0" y1="436.0" x2="584.0" y2="436.0" stroke="#52606d" stroke-width="1"/>
 <text x="329.0" y="450.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Lastrunden: Kompendien und QA-Paare</text>
 <line x1="592.0" y1="436.0" x2="880.0" y2="436.0" stroke="#52606d" stroke-width="1"/>

@@ -21,7 +21,6 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```dotenv
 # Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.5.0 baut :v2.5.0)
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:v2.5.0
-API_MEMORY=6g
 
 # LLM
 LLM_ENABLED=true
@@ -73,7 +72,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version, etwa `…/compendious-text-fastapi:v2.5.0`** | Compose: Image aller fünf Container |
-| `API_MEMORY` | `4g` | **`6g`** | Compose: Speichergrenze des api-Containers; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
+| `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `150s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
 | `REQUEST_TIMEOUT_S` | `120` | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM |

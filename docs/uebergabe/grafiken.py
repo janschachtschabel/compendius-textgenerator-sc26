@@ -185,7 +185,7 @@ def container() -> None:
             ("api", "title"),
             ("FastAPI unter uvicorn, WEB_CONCURRENCY=2 Worker, Port 8000", "text"),
             ("Speicher der Prozesse: 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen", "text"),
-            ("Grenze API_MEMORY: Vorgabe 4g, empfohlen 6g · CPU: 2 bis 6 CPU-Sekunden je Anfrage", "text"),
+            ("Grenze API_MEMORY: 6g (gemessen mit 4g) · CPU: 2 bis 6 CPU-Sekunden je Anfrage", "text"),
             ("liest Archive und Indexe; schreibt Tagesbudget, Sammlungs-Cache und eigene Templates", "note"),
         ],
         "container",
@@ -363,7 +363,7 @@ def speicher() -> None:
         svg.text(x + bar / 2, py(rss) + 15, de(rss, "0.1"), 10.5, PAPER, "middle", "600")
         svg.text(x + bar / 2, py(0) + 16, count, 10.5, INK, "middle")
         svg.text(x + bar / 2, py(0) + 30, kind, 10.5, MUTED, "middle")
-    for value, label in ((4, "Grenze heute: API_MEMORY=4g"), (6, "empfohlen: API_MEMORY=6g")):
+    for value, label in ((4, "Grenze in der Messung: 4g"), (6, "Vorgabe seit 29.09.: 6g")):
         svg.line(left, py(value), left + len(order) * slot + 6, py(value), INK, 1.2, "5 4")
         svg.text(left + len(order) * slot + 12, py(value) + 4, label, 11, INK, limit=180)
     first, last = left, left + 7 * slot
