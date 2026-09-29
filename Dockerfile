@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # Ein einziges Image (Entscheidung vom 2026-09-20; sie ersetzt das geplante zweite Profil "ml"): Python 3.13,
 # libzim, numpy, scikit-learn, das statische Embedding-Modell fuer den hybriden Matcher (D20) und spaCy fuer die
 # Entitaeten und die QA-Regeln. torch, transformers und die beiden QA-Modelle (U5b) sind mit D57 entfallen.
@@ -11,7 +10,9 @@ ARG SPACY_MODEL=de_core_news_md
 
 # Basis ist das offizielle Python-Image, per Digest gepinnt: ein Build morgen ergibt dasselbe Image, und Debian-
 # und CPython-Sicherheitskorrekturen kommen als neuer Digest, den Dependabot (.github/dependabot.yml) woechentlich
-# vorschlaegt. uv nur im Builder, in derselben Version wie CI und Lockfile.
+# vorschlaegt. uv nur im Builder, in derselben Version wie CI und Lockfile. Keine syntax-Zeile: Sie holte bei jedem
+# Bau das Frontend docker/dockerfile:1.7 ueber ein wanderndes Tag, und das Dockerfile braucht nichts, was das in
+# BuildKit eingebaute Frontend nicht kann (RUN --mount=type=cache; Audit 2026-09-29, O4).
 FROM ghcr.io/astral-sh/uv:0.12.19@sha256:04d046b13e60d6bcec73cbc5e1cad25d680dea90c8573340950a0ac2d1aef424 AS uv
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS builder

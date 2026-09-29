@@ -84,6 +84,11 @@ jobs:
         # The smoke test builds its sample archives with the helpers of the test suite
         run: uv sync --frozen --all-extras
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        with:
+          # The BuildKit that runs the Dockerfile, by digest like every other image of the build: the action's
+          # default is the moving tag buildx-stable-1 (audit 2026-09-29, O4). Dependabot does not follow this line;
+          # move it with `docker buildx imagetools inspect moby/buildkit:buildx-stable-1`.
+          driver-opts: image=moby/buildkit:buildx-stable-1@sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8
       - name: Build
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:

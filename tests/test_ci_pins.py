@@ -54,3 +54,20 @@ def test_every_image_a_pipeline_pulls_is_pinned_by_digest() -> None:
     # an image given by a variable ($DIND_IMAGE) is the runner's to pin
     assert not [name for name, image in images.items() if not image.startswith("$") and "@sha256:" not in image], images
     assert gitlab["alert-rules"]["image"]["name"] == compose["services"]["prometheus"]["image"]
+
+
+def test_the_build_fetches_no_tool_by_a_moving_tag() -> None:
+    """The syntax line of the Dockerfile fetched the frontend docker/dockerfile:1.7 at every build, and buildx its
+    BuildKit image by a moving tag, while the header of the Dockerfile promises that a build tomorrow gives the same
+    image (audit 2026-09-29, O4). The Dockerfile needs nothing the frontend built into BuildKit lacks."""
+    dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
+    ci = yaml.safe_load((ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8"))
+    buildx = [
+        step
+        for job in ci["jobs"].values()
+        for step in job.get("steps", [])
+        if str(step.get("uses", "")).startswith("docker/setup-buildx-action@")
+    ]
+
+    assert not re.search(r"^#\s*syntax\s*=", dockerfile, re.MULTILINE | re.IGNORECASE)
+    assert buildx and all("@sha256:" in step.get("with", {}).get("driver-opts", "") for step in buildx), buildx
