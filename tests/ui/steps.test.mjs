@@ -77,7 +77,32 @@ test('a step the LLM was asked for and the rules did falls back', () => {
       curriculum_check: ['rule-based', true],
     },
   );
-  assert.match(rows.curriculum_check.note, /Budget erschöpft/);
+  assert.equal(rows.curriculum_check.note, 'Budget erschöpft', 'the model was asked nothing, so there is nothing to count');
+});
+
+const checkRow = (check, curricula = { available: true, entries: [] }) =>
+  byStep(stepsAccount({ extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge', curricula, audit: { llm: { curriculum_check: check } } }, { parts: ['world', 'curricula'] }, 'best-quality-generated', options)).curriculum_check;
+
+test('a check of the curricula with no element to rate is no fallback: it had nothing to check', () => {
+  // The service asks the model only about elements the rules found (app/sources/lehrplan/part.py); without any, or
+  // without curricula, it asks nothing, and the audit says rule-based without a reason (app/compendium/llm_report.py)
+  const nothing = { requested: 'llm', used: 'rule-based', rated: 0, answered: 0, dropped: 0, fallbacks: {}, fallback: null };
+
+  assert.deepEqual([checkRow(nothing).fellBack, checkRow(nothing).note], [false, 'nichts zu prüfen: kein Lehrplanelement gefunden']);
+  assert.deepEqual([checkRow(nothing, { available: false }).fellBack, checkRow(nothing, { available: false }).note], [false, 'nichts zu prüfen: Lehrpläne nicht verfügbar']);
+});
+
+test('a check whose elements the model rated none of falls back, and says why', () => {
+  const row = checkRow({ requested: 'llm', used: 'rule-based', rated: 3, answered: 0, dropped: 0, fallbacks: { 'Token-Budget der Anfrage erschöpft': 3 }, fallback: null });
+
+  assert.equal(row.fellBack, true);
+  assert.equal(row.note, '0 von 3 bewertet, 0 entfernt; Token-Budget der Anfrage erschöpft');
+});
+
+test('a check the model did answers says how many elements it rated and dropped', () => {
+  const row = checkRow({ requested: 'llm', used: 'llm', rated: 4, answered: 3, dropped: 1, fallbacks: { 'nicht bewertet': 1 }, fallback: null });
+
+  assert.deepEqual([row.used, row.fellBack, row.note], ['llm', false, '3 von 4 bewertet, 1 entfernt; nicht bewertet']);
 });
 
 const balanced = { presets: [...options.presets, { id: 'balanced', switches: { ...options.presets[0].switches, article_choice: 'llm' } }] };

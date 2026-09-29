@@ -30,6 +30,7 @@ export function stepsAccount(answer, request, preset, options) {
     if (!applies) return { step, asked, used: null, applies, parts, fellBack: false, note: null };
     const used = USED[step](answer ?? {}, llm, asked);
     if (step === 'article_choice') return { step, asked, used, applies, parts, ...articleChoice(llm, asked, used) };
+    if (step === 'curriculum_check') return { step, asked, used, applies, parts, ...curriculumCheck(llm.curriculum_check, answer?.curricula, used) };
     const fellBack = Boolean(used && used !== asked && RULES.has(used) && !RULES.has(asked));
     return { step, asked, used, applies, parts, fellBack, note: NOTES[step](llm) };
   });
@@ -51,12 +52,21 @@ const NOTES = {
   extraction: () => null,
   generation: (llm) => (llm.generation?.sections?.length ? `${formatCount(llm.generation.sections.length, 'Baustein', 'Bausteine')} geschrieben, ${formatCount(llm.generation.dropped_sentences ?? 0, 'Satz', 'Sätze')} verworfen` : null),
   enrichment: (llm) => (llm.generation?.marked_sentences ? `${formatCount(llm.generation.marked_sentences, 'Satz', 'Sätze')} gekennzeichnet` : null),
-  curriculum_check(llm) {
-    const check = llm.curriculum_check;
-    if (check?.requested !== 'llm') return null;
-    return [`${formatNumber(check.rated ?? 0)} bewertet, ${formatNumber(check.dropped ?? 0)} entfernt`, check.fallback].filter(Boolean).join('; ');
-  },
 };
+
+// The rules deciding part 2 are a fallback only with a reason: the model was not asked (fallback: an unavailable
+// b-api), or elements it was offered stayed unrated (fallbacks, by reason: a spent budget). With no element to rate -
+// none found, or no curricula - the service asks it nothing (app/sources/lehrplan/part.py) and the audit says
+// rule-based all the same (app/compendium/llm_report.py): nothing to check is no fallback
+function curriculumCheck(check, curricula, used) {
+  if (check?.requested !== 'llm') return { fellBack: false, note: null };
+  if (!check.fallback && !check.rated) {
+    return { fellBack: false, note: curricula?.available === false ? 'nichts zu prüfen: Lehrpläne nicht verfügbar' : 'nichts zu prüfen: kein Lehrplanelement gefunden' };
+  }
+  const reasons = [check.fallback, ...Object.keys(check.fallbacks ?? {})].filter(Boolean);
+  const counts = check.rated ? `${formatNumber(check.answered ?? 0)} von ${formatNumber(check.rated)} bewertet, ${formatNumber(check.dropped ?? 0)} entfernt` : null;
+  return { fellBack: used !== 'llm' && reasons.length > 0, note: [counts, ...reasons].filter(Boolean).join('; ') };
+}
 
 // The rules keeping the article need not be a fallback: `used` stays rule-based where there was nothing to ask
 // (`needed` false) and where the model answered and changed nothing. It is one only with a reason - of the question

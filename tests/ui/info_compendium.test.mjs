@@ -38,6 +38,15 @@ test('a compendium without a material says nothing of one', () => {
   assert.equal(fact(info('compendium_topic'), 'Thema und Artikel', 'Artikel des Materials'), null);
 });
 
+test('the check of curricula that found no element is no fallback in the table of methods, it had nothing to check', () => {
+  const section = info('compendium_nothing_to_check');
+
+  const row = section.descendants().find((node) => node.tagName === 'TR' && node.children[0]?.textContent === 'Prüfung der Lehrplanelemente');
+  assert.equal(row.classList.contains('fell-back'), false);
+  assert.doesNotMatch(row.textContent, /Rückfall/);
+  assert.equal(row.children[3].textContent, 'nichts zu prüfen: kein Lehrplanelement gefunden');
+});
+
 test('the knowledge texts of a topic with a material name its own article and whether it joined the sources', () => {
   const results = shown('knowledge_material');
 
