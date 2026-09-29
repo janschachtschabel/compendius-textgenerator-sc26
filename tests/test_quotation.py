@@ -7,6 +7,8 @@ table never ran.
 
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from app.domain.models import Chunk, ChunkKind, ScoredChunk, SectionStatus, Source
@@ -14,6 +16,7 @@ from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.extractive import TABLE_ROWS_MAX, _render_table, synthesize, usable_sentences
 from app.synthesis.safe_markdown import unescape
+from tests.markdown_safety import render
 
 # The topics of the sample archives (tests/fixtures/zim_html)
 TOPICS = (
@@ -61,7 +64,9 @@ def test_every_rule_based_block_quotes_the_paragraphs_it_cites(service: Compendi
     for section in result.sections:
         if section.status is not SectionStatus.EXTRACTIVE:  # the generated blocks: sources, glossary, actors
             continue
-        for line, citation in zip(section.text.split("\n\n"), section.citations, strict=True):
+        # a table has its number in a paragraph of its own below it (T8): the two are one cited unit
+        units = re.split(r"\n\n(?!\[\d+\](?:\n|\Z))", section.text)
+        for line, citation in zip(units, section.citations, strict=True):
             body = unescape(line.rsplit(" [", 1)[0])  # the words as typed, without the escapes of the markdown
             if body.startswith(("- ", "| ")):  # a list or a table is taken whole
                 continue
@@ -82,6 +87,8 @@ def test_a_long_table_keeps_its_first_rows_and_text_without_cells_stays_as_it_is
 
 
 def test_a_table_paragraph_becomes_one_cited_table_in_its_block() -> None:
+    """Its number stands in a paragraph of its own under the table: after the last cell GFM took it for a cell the
+    header does not have and dropped it, and the table showed no source (audit 2026-09-29, T8)."""
     source = Source(source_id="wikipedia:Licht", project="wikipedia", title="Licht", url="https://de.wikipedia.org/")
     chunk = Chunk(
         chunk_id="wikipedia:Licht:c007",
@@ -95,5 +102,6 @@ def test_a_table_paragraph_becomes_one_cited_table_in_its_block() -> None:
     text, citations = synthesize(
         [ScoredChunk(chunk=chunk, score=1.0, matcher="policy")], {source.source_id: source}, 0, set()
     )
-    assert text == "| Farbe | Wellenlänge |\n| --- | --- |\n| Rot | 700 nm | [1]"
+    assert text == "| Farbe | Wellenlänge |\n| --- | --- |\n| Rot | 700 nm |\n\n[1]"
+    assert "<p>[1]</p>" in render(text)
     assert [(c.number, c.chunk_id) for c in citations] == [(1, chunk.chunk_id)]

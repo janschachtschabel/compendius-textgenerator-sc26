@@ -76,7 +76,9 @@ def synthesize(
     seen_sentences: set[str],
     all_sentences: bool = False,
 ) -> tuple[str, list[Citation]]:
-    """Build section text from assigned chunks; every paragraph ends with its citation number.
+    """Build section text from assigned chunks; every paragraph ends with its citation number, and a table has it in
+    a paragraph of its own below: after the last cell GFM took it for a cell the header lacks and dropped it, and on
+    the next line it became a row (audit 2026-09-29, T8).
 
     The rules take the first sentences of a paragraph; ``all_sentences`` keeps every usable one, for excerpts whose
     sentences the LLM already chose.
@@ -113,5 +115,5 @@ def synthesize(
                 snippet=unescape(body)[:220],
             )
         )
-        paragraphs.append(f"{body} [{number}]")
+        paragraphs.append(f"{body}\n\n[{number}]" if chunk.kind is ChunkKind.TABLE else f"{body} [{number}]")
     return "\n\n".join(paragraphs), citations

@@ -465,7 +465,7 @@ ihm bewirken, und seine Beispiele reichen von der kürzesten Anfrage bis zu eine
 | | `llm` (Profile `best-quality`, `best-quality-generated`) | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
 | `extraction` | `rule-based` (alle Profile) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
-| `generation` | `rule-based` (Profile bis `best-quality`) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer |
+| `generation` | `rule-based` (Profile bis `best-quality`) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer (unter einer Tabelle als eigener Absatz) |
 | | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11) aus ihren Belegen |
 | | `llm` (Profil `best-quality-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen |
 | `enrichment` | `sources-only` (Profile bis `best-quality`) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
