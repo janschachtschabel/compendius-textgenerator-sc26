@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { installDocument } from './dom_stub.mjs';
 import { OPTIONS } from './saved_answers.mjs';
 import { buildForm } from '../../app/ui/static/fields.mjs';
-import { buildRequests, defaults, problems } from '../../app/ui/static/forms.mjs';
+import { buildRequests, defaults, fromExample, problems } from '../../app/ui/static/forms.mjs';
 
 function compendiumForm() {
   installDocument();
@@ -35,4 +35,29 @@ test('an empty number field still leaves the value to the server, and a number g
   const [run] = buildRequests('compendium', values, OPTIONS);
   assert.equal(run.request.body.target_length, 8000);
   assert.ok(!('max_articles' in run.request.body));
+});
+
+test('an example changes its own fields and its input, and leaves profile, comparison, steps and the rest as set', () => {
+  // Loading an example set the whole form to its defaults first: a reader who had chosen best-quality and a
+  // comparison ran balanced alone (Jan, 2026-09-29, U11)
+  const { form } = compendiumForm();
+  const example = (ending) => OPTIONS.examples.compendium.find((each) => each.label.endsWith(ending));
+  form.write({ preset: 'best-quality', compare: true, preset_b: 'llm-free', matcher: 'llm', subject: 'Physik', max_articles: '7' });
+
+  form.write(fromExample('compendium', example('Ein Material als Eingang (Staging)')));
+  const material = form.read();
+  form.write(fromExample('compendium', example('ein Thema')));
+  const optik = form.read();
+
+  assert.equal(material.topic, '', 'a topic left over would win over the node of the material');
+  assert.ok(material.node_id);
+  assert.equal(optik.topic, 'Optik');
+  assert.deepEqual([optik.node_id, optik.repository], ['', '']);
+  assert.deepEqual(optik.parts, ['world', 'curricula']);
+  for (const values of [material, optik]) {
+    assert.deepEqual(
+      [values.preset, values.compare, values.preset_b, values.matcher, values.subject, values.max_articles],
+      ['best-quality', true, 'llm-free', 'llm', 'Physik', '7'],
+    );
+  }
 });

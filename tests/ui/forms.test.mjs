@@ -196,13 +196,28 @@ test('question pairs of a text, or of a topic with its levels', () => {
   assert.ok(problems('qa', form('qa', { text: 'Ein Satz.', subject: 'Physik' }), options).subject);
 });
 
-test('an example fills its fields and leaves the others at their defaults', () => {
-  const values = fromExample('compendium', { label: 'x', values: { topic: 'Linse', subject: 'Physik' } }, options);
+test('an example holds its own values, numbers as a number field holds them, and the rest of its input empty', () => {
+  const values = fromExample('compendium', { label: 'x', values: { topic: 'Linse', subject: 'Physik', max_articles: 5 } });
 
-  assert.equal(values.topic, 'Linse');
-  assert.equal(values.subject, 'Physik');
-  assert.deepEqual(values.parts, ['world', 'curricula']);
-  assert.equal(values.preset, 'balanced');
+  assert.deepEqual(values, {
+    topic: 'Linse',
+    subject: 'Physik',
+    max_articles: '5',
+    collection_id: '',
+    knowledge_collection_id: '',
+    node_id: '',
+    repository: '',
+  });
+});
+
+test('the input an example sets is the one of its mode', () => {
+  assert.deepEqual(fromExample('qa', { label: 'x', values: { text: 'Ein Satz.' } }), {
+    text: 'Ein Satz.',
+    topic: '',
+    node_id: '',
+    repository: '',
+  });
+  assert.deepEqual(fromExample('lehrplan', { label: 'x', values: { q: 'Optik', mode: 'topic' } }), { q: 'Optik', mode: 'topic' });
 });
 
 test('the facets start as the server shows them and are always sent as chosen', () => {

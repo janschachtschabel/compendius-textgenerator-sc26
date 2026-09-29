@@ -136,9 +136,21 @@ export function defaults(mode, options) {
   }
 }
 
-/** The values of an example over the defaults of its form; numbers as a number field holds them. */
-export function fromExample(mode, example, options) {
-  const values = defaults(mode, options);
+// What an example asks about. Loading one changes only the fields it holds, not profile, comparison, steps, subject
+// or numbers (Jan, 2026-09-29, U11) - with one exception: the input of its mode goes together. A topic left from an
+// earlier example would win over the node of a material, and /qa refuses a text next to a topic, so an example sets
+// all of its input, empty where it has none.
+const EXAMPLE_INPUT = {
+  compendium: ['topic', 'collection_id', 'knowledge_collection_id', 'node_id', 'repository'],
+  knowledge: ['topic', 'node_id', 'repository'],
+  lehrplan: ['q'],
+  entities: ['text', 'node_id', 'repository'],
+  qa: ['topic', 'text', 'node_id', 'repository'],
+};
+
+/** The fields an example sets: its values, numbers as a number field holds them, and the rest of its input empty. */
+export function fromExample(mode, example) {
+  const values = Object.fromEntries((EXAMPLE_INPUT[mode] ?? []).map((name) => [name, '']));
   for (const [name, value] of Object.entries(example.values)) values[name] = typeof value === 'number' ? String(value) : value;
   return values;
 }

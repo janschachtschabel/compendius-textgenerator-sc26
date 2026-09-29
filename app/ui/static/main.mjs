@@ -88,7 +88,7 @@ function showMode(mode) {
 
 function loadExample(mode, example) {
   const form = page.forms.get(mode);
-  form.write(fromExample(mode, example, page.options));
+  form.write(fromExample(mode, example));
   form.show({});
   announce(`Beispiel geladen: ${example.label}`);
 }
