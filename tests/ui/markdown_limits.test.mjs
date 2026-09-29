@@ -4,8 +4,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
+import { installDocument } from './dom_stub.mjs';
 import { inlineText, parseInline } from '../../app/ui/static/inline.mjs';
 import { parseMarkdown } from '../../app/ui/static/markdown.mjs';
+import { renderBlocks, renderContext } from '../../app/ui/static/render.mjs';
 
 const SIZE = 60_000;
 // A linear reading of 60 KB takes a few milliseconds; the readings these tests guard against took seconds
@@ -77,6 +79,24 @@ test('links nested thousands deep keep the stack flat and their words', () => {
 
   assert.ok(depth(nodes) <= 20, `nesting ${depth(nodes)}`);
   assert.match(inlineText(nodes), /Kern/);
+});
+
+test('lists nested thousands deep keep the stack flat, and every item its words', () => {
+  installDocument();
+  // One more column of indentation per line, a tab counting four: 2000 levels in half a megabyte
+  const indent = (width) => '\t'.repeat(Math.floor(width / 4)) + ' '.repeat(width % 4);
+  const doc = Array.from({ length: 2000 }, (_, level) => `${indent(level)}- Punkt${level}`).join('\n');
+
+  const { blocks } = parseMarkdown(doc);
+  const host = document.createElement('div');
+  host.append(renderBlocks(blocks, renderContext('t')));
+
+  let levels = 0;
+  for (let list = blocks[0]; list?.type === 'list'; list = list.items.at(-1).lists[0]) levels += 1;
+  assert.ok(levels <= 20, `nesting ${levels}`);
+  const items = host.descendants().filter((node) => node.tagName === 'LI');
+  assert.equal(items.length, 2000, 'every line stays an item');
+  assert.match(host.textContent, /Punkt0Punkt1.*Punkt1999$/);
 });
 
 test('quotes nested thousands deep keep the stack flat and their words', () => {

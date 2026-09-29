@@ -5,8 +5,9 @@
 // and the comments that mark blocks and facets - and it never produces markup. A tag in the text stays text, a
 // comment is dropped unless it is one of the service's markers, and a link only becomes one when its target is a web
 // address. The service escapes the text of its sources for CommonMark (app/synthesis/safe_markdown.py), so an escape
-// reads as the sign it stands for. Every pattern here reads a line in one pass, and quotes nested deeper than
-// MAX_DEPTH read as paragraphs: however badly a text is formed, it takes time in proportion to its length.
+// reads as the sign it stands for. Every pattern here reads a line in one pass, quotes nested deeper than MAX_DEPTH
+// read as paragraphs and list items as items of the deepest list: however badly a text is formed, it takes time in
+// proportion to its length, and its nesting cannot exhaust the stack.
 
 import { parseInline } from './inline.mjs';
 
@@ -24,7 +25,8 @@ const RULE = /^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$/;
 const FENCE = /^ {0,3}(`{3,}|~{3,})/;
 const QUOTE = /^ {0,3}>[ \t]?(.*)$/s;
 const DELIMITER_CELL = /^[ \t]*:?-+:?[ \t]*$/;
-// Deeper than the service ever nests quotes (it nests none); a quote below it reads as a paragraph
+// Far deeper than the service nests (lists two levels, quotes none); a quote below it reads as a paragraph, a list item
+// as an item of the list above. Without it 1,500 levels of lists broke the page's stack
 const MAX_DEPTH = 16;
 
 /** The frontmatter (YAML as text, or null) and the blocks of a document. */
@@ -84,7 +86,7 @@ function readBlock(lines, i, depth) {
   if (FENCE.test(line)) return readFence(lines, i);
   if (isTableStart(lines, i)) return readTable(lines, i);
   if (RULE.test(line)) return [{ type: 'rule' }, i + 1];
-  if (LIST_ITEM.test(line)) return readList(lines, i);
+  if (LIST_ITEM.test(line)) return readList(lines, i, depth);
   if (QUOTE.test(line) && depth < MAX_DEPTH) return readQuote(lines, i, depth);
   return readParagraph(lines, i);
 }
@@ -203,7 +205,7 @@ function alignment(cell) {
   return left ? 'left' : null;
 }
 
-function readList(lines, i) {
+function readList(lines, i, depth) {
   const first = LIST_ITEM.exec(lines[i]);
   const base = indentWidth(first[1]);
   const ordered = isOrdered(first[2]);
@@ -221,11 +223,11 @@ function readList(lines, i) {
     }
     const item = LIST_ITEM.exec(line);
     const indent = item ? indentWidth(item[1]) : 0;
-    if (item && indent === base && isOrdered(item[2]) === ordered) {
+    if (item && ((indent === base && isOrdered(item[2]) === ordered) || (indent > base && depth + 1 >= MAX_DEPTH))) {
       items.push({ lines: [item[3]], lists: [] });
       next += 1;
     } else if (item && indent > base && items.length) {
-      const [nested, after] = readList(lines, next);
+      const [nested, after] = readList(lines, next, depth + 1);
       items.at(-1).lists.push(nested);
       next = after;
     } else if (!item && items.length && !startsBlock(lines, next)) {
