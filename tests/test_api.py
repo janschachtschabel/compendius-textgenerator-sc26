@@ -304,9 +304,9 @@ def test_api_docs_can_be_switched_off(sample_zims: dict[str, Path], tmp_path: Pa
 @pytest.mark.parametrize(
     ("path", "script", "root_path"),
     [
-        ("/docs", "swagger-ui-dist@5/swagger-ui-bundle.js", ""),
-        ("/docs", "swagger-ui-dist@5/swagger-ui-bundle.js", "/kompendium"),  # behind a proxy with a prefix
-        ("/redoc", "redoc@2/bundles/redoc.standalone.js", ""),
+        ("/docs", "swagger-ui-dist@5.33.0/swagger-ui-bundle.js", ""),
+        ("/docs", "swagger-ui-dist@5.33.0/swagger-ui-bundle.js", "/kompendium"),  # behind a proxy with a prefix
+        ("/redoc", "redoc@2.5.4/bundles/redoc.standalone.js", ""),
     ],
 )
 def test_the_api_docs_let_their_scripts_talk_to_this_service_only(
@@ -329,6 +329,26 @@ def test_the_api_docs_let_their_scripts_talk_to_this_service_only(
     assert f"{root_path}/openapi.json" in page.text
     assert "fastapi.tiangolo.com" not in page.text and "fonts.googleapis.com" not in page.text  # no other hosts
     assert client.get("/openapi.json").status_code == 200
+
+
+# A file of the CDN with its SHA-384, as a browser checks it: 48 bytes are 64 signs of base64
+CHECKED = re.compile(
+    r'(?:src|href)="(https://cdn\.jsdelivr\.net/npm/[^"]+)" integrity="sha384-[A-Za-z0-9+/]{64}" '
+    r'crossorigin="anonymous"'
+)
+
+
+@pytest.mark.parametrize(("path", "files"), [("/docs", 2), ("/redoc", 1)])
+def test_the_api_docs_load_their_files_by_version_and_checksum(settings: Settings, path: str, files: int) -> None:
+    """The policy limits where a script may send, not what jsDelivr or npm serves: a changed file could still send the
+    page elsewhere with a key in its address. With a fixed version and its SHA-384 the browser runs no other content
+    (audit 2026-09-29, S12); a floating version such as @5 would change under its checksum."""
+    page = TestClient(create_app(settings)).get(path)
+
+    checked = CHECKED.findall(page.text)
+
+    assert len(checked) == files and page.text.count("cdn.jsdelivr.net") == files
+    assert all(re.search(r"@\d+\.\d+\.\d+/", url) for url in checked), checked
 
 
 def test_shutdown_closes_the_outbound_http_clients(settings: Settings) -> None:

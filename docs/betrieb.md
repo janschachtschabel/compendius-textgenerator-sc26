@@ -160,11 +160,12 @@ in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der 
   Endpunkte mit einem Profil und `METRICS_TOKEN` ein Token für `/metrics`; die Firewall des Hosts schützt einen
   veröffentlichten Docker-Port nicht (docs/installation.md, Abschnitt 8). Admin-Endpunkte sind nur mit
   `ADMIN_TOKEN` aktiv. Token und Schlüssel unter 16 Zeichen lehnt der Dienst beim Start ab.
-- `/docs` und `/redoc` laden Swagger UI und ReDoc von cdn.jsdelivr.net, ohne festgelegte Version mit Prüfsumme, auf
-  demselben Origin wie `/ui/`, das den Schlüssel seines Lesers im sessionStorage hält. Ihre Content-Security-Policy
-  lässt die Skripte nur mit dem Dienst selbst sprechen; ein kompromittiertes Paket könnte die Seite aber noch als
-  Ganzes auf einen fremden Host lenken. Auf einem öffentlichen Server, der `/docs` nicht braucht,
-  `API_DOCS_ENABLED=false` setzen; `/openapi.json` fällt dann mit weg.
+- `/docs` und `/redoc` laden Swagger UI und ReDoc von cdn.jsdelivr.net, auf demselben Origin wie `/ui/`, das den
+  Schlüssel seines Lesers im sessionStorage hält. Die Dateien kommen in fester Version mit ihrer SHA-384-Prüfsumme
+  (SRI): Der Browser führt eine veränderte Datei nicht aus, und die Content-Security-Policy lässt die Skripte nur mit
+  dem Dienst selbst sprechen. Eine Version auf jsDelivr ändert sich nie, die Prüfsummen gelten also auf jedem Server
+  und nach jedem Update. Auf einem öffentlichen Server, der `/docs` nicht braucht, oder wenn die Leser
+  cdn.jsdelivr.net nicht erreichen: `API_DOCS_ENABLED=false`; `/openapi.json` fällt dann mit weg.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
 - Zurück auf eine frühere Fassung: Jeder veröffentlichte Commit auf `main` liegt als Image mit seiner kurzen
   Commit-Sha in der Registry, jedes Versions-Tag `vX.Y.Z` als `X.Y.Z`. Veröffentlicht ist nicht jeder Commit mit

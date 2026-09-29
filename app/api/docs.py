@@ -9,9 +9,12 @@ code the page holds, by its hash (computed from the page as served, since the co
 no form anywhere, no frame around the page. Styles may be inline: ReDoc writes its own style elements. The icon is the
 review page's, not FastAPI's.
 
-What a policy cannot stop is a script that sends the whole page elsewhere. Versions pinned with SRI hashes would; they
-need the files to hash, which was not possible when this was built (no network) - so a public server that does not
-need the pages sets API_DOCS_ENABLED=false.
+What a policy cannot stop is a script that sends the whole page elsewhere. So the files come in fixed versions, each
+with its SHA-384, and the browser runs no other content (Subresource Integrity). A version on jsDelivr never changes:
+the checksums hold on every server whose readers reach the CDN, and no update of the service touches them. A newer
+Swagger UI or ReDoc is a new version and checksum below, taken of the file as served:
+``curl -s <address> | openssl dgst -sha384 -binary | openssl base64 -A``. A server whose readers cannot reach
+cdn.jsdelivr.net, or that does not need the pages, sets API_DOCS_ENABLED=false.
 """
 
 from __future__ import annotations
@@ -25,9 +28,16 @@ from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
 from fastapi.responses import HTMLResponse
 
 CDN = "https://cdn.jsdelivr.net/npm"
-SWAGGER_JS = f"{CDN}/swagger-ui-dist@5/swagger-ui-bundle.js"  # FastAPI's defaults, named so the policy can name them
-SWAGGER_CSS = f"{CDN}/swagger-ui-dist@5/swagger-ui.css"
-REDOC_JS = f"{CDN}/redoc@2/bundles/redoc.standalone.js"
+# FastAPI's defaults @5 and @2 as they resolved on 2026-09-29; each checksum was taken of the file jsDelivr served,
+# which matched the hash jsDelivr lists for it
+SWAGGER_JS = f"{CDN}/swagger-ui-dist@5.33.0/swagger-ui-bundle.js"
+SWAGGER_CSS = f"{CDN}/swagger-ui-dist@5.33.0/swagger-ui.css"
+REDOC_JS = f"{CDN}/redoc@2.5.4/bundles/redoc.standalone.js"
+CHECKSUMS = {
+    SWAGGER_JS: "sha384-YDALVcy8kj8yltLBVi1vBiBAUqdxvus673gM8XKwiy6aDUJFXivF/KCufekjYbVf",
+    SWAGGER_CSS: "sha384-Ov4/wv3j2bmct8cDc5X4ngJZohVPzEmc6uDPH8WeljUxO5vtoykvMEfbu9Vh6RaW",
+    REDOC_JS: "sha384-w447zOpYfw/1Tv/5AK9NfHTlQIqE3RVR6KY62jCyy9zNDgO64cMwGGP1Fj0zJVf5",
+}
 # The icon of the review page (app/ui/static/index.html): FastAPI's came from fastapi.tiangolo.com
 ICON = (
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' "
@@ -38,9 +48,21 @@ ICON = (
 INLINE_SCRIPT = re.compile("<script>(.*?)</script>", re.DOTALL)  # a script element without src: code in the page
 
 
+def _checked(html: str, urls: list[str]) -> str:
+    """``html`` with each of ``urls`` tagged with its checksum. FastAPI writes each address once, in quotes, as src or
+    href; a newer FastAPI that writes it otherwise fails here and in the tests, rather than serving it unchecked."""
+    for url in urls:
+        quoted = f'"{url}"'
+        if html.count(quoted) != 1:
+            raise RuntimeError(f"FastAPI's page names {url} {html.count(quoted)} times, not once")
+        html = html.replace(quoted, f'{quoted} integrity="{CHECKSUMS[url]}" crossorigin="anonymous"')
+    return html
+
+
 def _with_policy(page: HTMLResponse, script: str, style: str = "", *, workers: bool = False) -> HTMLResponse:
-    """``page`` with a policy that allows ``script``, the page's inline code by its hash and ``style``."""
-    html = bytes(page.body).decode("utf-8")
+    """``page`` with its files checked by their checksums and a policy that allows ``script``, the page's inline code
+    by its hash and ``style``."""
+    html = _checked(bytes(page.body).decode("utf-8"), [url for url in (script, style) if url])
     hashes = [
         f"'sha256-{base64.b64encode(hashlib.sha256(code.encode('utf-8')).digest()).decode('ascii')}'"
         for code in INLINE_SCRIPT.findall(html)
@@ -57,10 +79,12 @@ def _with_policy(page: HTMLResponse, script: str, style: str = "", *, workers: b
         "form-action 'none'",
         "frame-ancestors 'none'",
     ]
-    page.headers["Content-Security-Policy"] = "; ".join(directives)
-    page.headers["X-Content-Type-Options"] = "nosniff"
-    page.headers["Referrer-Policy"] = "no-referrer"  # the CDN need not learn where the pages are
-    return page
+    headers = {
+        "Content-Security-Policy": "; ".join(directives),
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",  # the CDN need not learn where the pages are
+    }
+    return HTMLResponse(html, status_code=page.status_code, headers=headers)
 
 
 def docs_router(openapi_url: str, title: str) -> APIRouter:
