@@ -3,19 +3,22 @@
 A gateway that passes an outage on as HTTP 500 was asked on every call: 500 neither was retried nor counted towards
 the breaker, and it reset the failures in a row. An attempt that reached the model before the answer that came was not
 paid for. A usage of 2^63 tokens raised out of the budget store and left the request's reservation standing. A model's
-number behind a control sign and a selection nested too deep turned a request into a 500.
+number behind a control sign and a selection nested too deep turned a request into a 500. The retry after an attempt
+that reached the model was paid without being reserved, past the caps of the request and the day (audit 2026-09-29, L1).
 """
 
 from __future__ import annotations
 
+import threading
 from pathlib import Path
 
+import httpx
 import pytest
 
 from app.knowledge.article_choice import read_number
 from app.llm.budget import TokenBudget, estimate_tokens
 from app.llm.budget_store import SqliteDailyStore
-from app.llm.call import budgeted_chat
+from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import ChatResult, LlmError
 from app.synthesis.selection import parse_selection
 from tests.test_llm_client import MESSAGES, FakeBApi, completion, make_client
@@ -53,6 +56,67 @@ def test_an_attempt_that_reached_the_model_before_the_answer_is_paid_too(statuse
 
     assert isinstance(answer, ChatResult) and answer.total_tokens == 24 + extra
     assert answer.prompt_tokens == 20 + extra and budget.used == 24 + extra
+
+
+def test_parallel_calls_retrying_after_504_keep_to_the_caps_of_the_request_and_the_day() -> None:
+    """Each call reserved its prompt once and was charged it again for every attempt that reached the model: five
+    parallel calls meeting 504, 504 and an answer spent 120,230 tokens of a request capped at 50,000 and of a day
+    capped at 60,000 (audit 2026-09-29, L1)."""
+    messages = [{"role": "system", "content": "x" * 24_000}, {"role": "user", "content": "Test"}]
+    prompt = estimate_tokens("".join(message["content"] for message in messages))
+    all_sent = threading.Barrier(5)  # every call holds its reservation before the first 504 comes back
+    attempts: dict[str, int] = {}
+    counting = threading.Lock()
+
+    def gateway(request: httpx.Request) -> httpx.Response:
+        call = threading.current_thread().name
+        with counting:
+            attempt = attempts[call] = attempts.get(call, 0) + 1
+        if attempt == 1:
+            all_sent.wait(10)
+        if attempt < 3:
+            return httpx.Response(504)
+        return httpx.Response(200, json=completion("OK", prompt_tokens=prompt, completion_tokens=40))
+
+    client = client_for(gateway, Clock(), timeout_s=60.0, max_concurrency=5)
+    day = TokenBudget(per_request=50_000, daily=60_000)
+    request = day.open_request()
+    options = {"max_output_tokens": 60, "budget": request, "what": "test"}
+    calls = [
+        threading.Thread(target=budgeted_chat, args=(client, messages), kwargs=options, name=f"call{number}")
+        for number in range(5)
+    ]
+    for call in calls:
+        call.start()
+    for call in calls:
+        call.join(10)
+
+    assert request.used <= 50_000 and day.used_today <= 60_000
+    assert request.remaining == 50_000 - request.used, "every reservation, the retries' too, is settled"
+
+
+def test_a_retry_the_budget_has_no_room_for_ends_the_call_charged_for_its_attempt() -> None:
+    fake = FakeBApi(statuses=[504, 200])
+    client, _ = make_client(fake)
+    room = PROMPT + client.completion_limit(100)  # one attempt fits, its retry does not
+    budget = TokenBudget(per_request=room, daily=2_000_000).open_request()
+
+    answer = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+
+    assert isinstance(answer, LlmSkipped) and "Budget der Anfrage" in answer.reason
+    assert len(fake.requests) == 1 and answer.prompt_tokens == PROMPT
+    assert budget.used == PROMPT and budget.remaining == room - PROMPT
+
+
+def test_the_reservations_of_retries_are_given_back_when_the_call_fails() -> None:
+    client, _ = make_client(FakeBApi(statuses=[504, 504, 504]))
+    day = TokenBudget(per_request=20_000, daily=2_000_000)
+    budget = day.open_request()
+
+    answer = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+
+    assert isinstance(answer, LlmSkipped) and answer.prompt_tokens == 3 * PROMPT
+    assert budget.remaining == 20_000 - 3 * PROMPT and day.remaining_today == 2_000_000 - 3 * PROMPT
 
 
 def test_a_usage_beyond_any_model_is_capped_and_the_day_goes_on(tmp_path: Path) -> None:

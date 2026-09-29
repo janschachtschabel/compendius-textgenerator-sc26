@@ -179,14 +179,23 @@ class BApiClient:
         return f"{self.base_url}/api/v1/llm/{self.provider}/models"
 
     def chat(
-        self, messages: Sequence[Message], *, max_output_tokens: int, timeout_s: float | None = None
+        self,
+        messages: Sequence[Message],
+        *,
+        max_output_tokens: int,
+        timeout_s: float | None = None,
+        before_retry: Callable[[], str | None] | None = None,
     ) -> ChatResult:
         """One chat completion; raises ``LlmError`` when the API fails or answers in an unexpected format.
 
-        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline.
+        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``before_retry`` is
+        asked before each retry after an attempt that may have reached the model; a reason instead of ``None`` ends
+        the call with the attempts made (the budget has no room for another prompt, audit 2026-09-29, L1).
         """
         body = self._body(messages, max_output_tokens)
-        data, reached = self._request("POST", self.chat_url, json_body=body, timeout_s=timeout_s)
+        data, reached = self._request(
+            "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry
+        )
         result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
         return replace(result, reached_before=reached) if reached else result
 
@@ -253,6 +262,7 @@ class BApiClient:
         *,
         attempts: int | None = None,
         timeout_s: float | None = None,
+        before_retry: Callable[[], str | None] | None = None,
     ) -> tuple[Any, int]:
         """One call: attempts until an answer, all of them within one deadline; with the answer, how many attempts
         before it may have reached the model. Every retry used to get the whole
@@ -261,14 +271,20 @@ class BApiClient:
         probe = self._admit()
         try:
             # After a break a single attempt decides whether the b-api is back
-            return self._attempts(method, url, json_body, 1 if probe else attempts or self.attempts, ends)
+            return self._attempts(method, url, json_body, 1 if probe else attempts or self.attempts, ends, before_retry)
         finally:
             if probe:
                 with self._state:
                     self._probing = False  # a probe that neither closed nor tripped the breaker lets the next one try
 
     def _attempts(
-        self, method: str, url: str, json_body: Mapping[str, Any] | None, attempts: int, ends: float
+        self,
+        method: str,
+        url: str,
+        json_body: Mapping[str, Any] | None,
+        attempts: int,
+        ends: float,
+        before_retry: Callable[[], str | None] | None,
     ) -> tuple[Any, int]:
         last_error = ""
         status: int | None = None
@@ -311,6 +327,11 @@ class BApiClient:
                 self._failures += 1
             if attempt + 1 >= attempts or ends - self._clock() - wait < MIN_CALL_S:
                 break
+            if before_retry is not None and status in REACHED_STATUSES:
+                refusal = before_retry()
+                if refusal is not None:
+                    last_error = f"{last_error}, keine Wiederholung: {refusal}"
+                    break
             self._sleep(wait)
         if self._failures >= self.attempts:
             self._trip()

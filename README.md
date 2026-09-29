@@ -599,7 +599,9 @@ für Teil 1 und die Paare zusammen; `LLM_DAILY_TOKEN_BUDGET` je Tag), den Text e
 nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen
 kamen bei `gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20).
 Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch
-ein Aufruf rechtzeitig starten kann (D39); das Tagesbudget weist dagegen sofort ab. Der Tageszähler liegt in
+ein Aufruf rechtzeitig starten kann (D39); das Tagesbudget weist dagegen sofort ab. Die Wiederholung nach einem Versuch,
+der das Modell erreicht haben kann, reserviert dessen Eingabe erneut und wartet nicht: Ist dafür kein Platz mehr, endet
+der Aufruf ohne sie (Audit 2026-09-29, L1). Der Tageszähler liegt in
 `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts; dort liegen auch die Reservierungen
 laufender Aufrufe, geprüft und geschrieben in einem Schritt, sodass zwei Worker nicht beide die letzten Tokens des Tages
 bekommen. Die Reservierung eines abgestürzten Workers zählt nach zehn Minuten nicht mehr. Die Schätzung vor einem

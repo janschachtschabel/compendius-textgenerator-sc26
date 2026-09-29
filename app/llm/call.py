@@ -79,6 +79,10 @@ def budgeted_chat(
     needs to think (``BApiClient.completion_limit``). Calls of one request run in parallel and reserve far more than
     they spend (M13): one the request budget turns away waits for the others to settle while it could still start in
     time (``Deadline.wait_s``; without a deadline while they are in flight).
+
+    An attempt that may have reached the model is charged its prompt, so the retry after it reserves the prompt again
+    and ends the call when there is no room: reserved once, five parallel calls meeting 504, 504 and an answer spent
+    120,230 tokens of a request capped at 50,000 and of a day capped at 60,000 (audit 2026-09-29, L1).
     """
     limit = client.completion_limit(max_output_tokens)
     prompt_tokens = estimate_tokens("".join(m["content"] for m in messages))
@@ -92,6 +96,17 @@ def budgeted_chat(
     if denial is not None:
         _heard("skipped")
         return LlmSkipped(denial)
+    held = needed
+
+    def reserve_retry() -> str | None:
+        nonlocal held
+        # Without waiting: a retry holds its call's reservation, and calls of the request waiting for each other's
+        # settling would wait until their deadlines, without one for ever
+        refusal = budget.reserve(prompt_tokens, wait_s=0.0)
+        if refusal is None:
+            held += prompt_tokens
+        return refusal
+
     spent = 0
     try:
         timeout_s: float | None = None
@@ -100,7 +115,7 @@ def budgeted_chat(
             if timeout_s is None:
                 _heard("skipped")
                 return LlmSkipped(TIME_UP)
-        answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s)
+        answer = client.chat(messages, max_output_tokens=limit, timeout_s=timeout_s, before_retry=reserve_retry)
         if answer.reached_before:
             # an attempt that reached the model before this answer may have cost its prompt too; only a call that
             # failed as a whole counted it (audit 2026-09-28, KO-27)
@@ -117,7 +132,7 @@ def budgeted_chat(
         _heard("failed", prompt_tokens=spent)
         return LlmSkipped(f"b-api: {exc}", calls=1, prompt_tokens=spent, total_tokens=spent)
     finally:
-        budget.settle(needed, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
+        budget.settle(held, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
     _heard("answered", prompt_tokens=answer.prompt_tokens, completion_tokens=answer.completion_tokens)
     return answer
 

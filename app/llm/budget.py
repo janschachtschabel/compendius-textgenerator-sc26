@@ -4,7 +4,8 @@ The daily counter lives in a ``DailyStore`` (llm_budget.db in STATE_DIR); only w
 for itself.
 
 Calls reserve their upper-bound estimate before they start and settle to the actual usage afterwards, so parallel
-drafts cannot overshoot a limit between the check and the call. The estimate is far above the spend (M13: a batch of
+drafts cannot overshoot a limit between the check and the call; a retry after an attempt that may have reached the
+model reserves its prompt again (audit 2026-09-29, L1). The estimate is far above the spend (M13: a batch of
 matcher=llm reserved about 13,000 tokens and spent about 8,000), so a call the request budget turns away while other
 calls of the request are in flight may wait for them to settle.
 """
