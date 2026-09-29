@@ -16,6 +16,7 @@ from app.compose.regeneration import (
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.citations import marker_numbers
+from tests.markdown_safety import render, unsafe
 
 SECTION_RE = re.compile(
     r"### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ ]+)(?P<rest>[^>]*)-->\n\n"
@@ -308,3 +309,38 @@ def test_a_kept_block_the_template_has_no_place_for_is_refused(service: Compendi
         )
 
     assert "sc26_3" in str(refused.value) and "standard" in str(refused.value)
+
+
+def test_a_kept_block_passes_the_net_of_every_writer(service: CompendiumService) -> None:
+    """An earlier compendium may come from a CMS other people edit. A kept block went out as sent: a tag or a link to
+    something other than a web address reached the reader, and a reference definition turned the citation markers of
+    every block into links to wherever it pointed (audit 2026-09-29, T6)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+    original = blocks(reviewed)["sc26_3"]
+    number = marker_numbers(original)[0]
+    hostile = LF.join(
+        [
+            "",
+            "",
+            '<img src=x onerror="alert(1)">',
+            "",
+            "[Klick](javascript:alert(1))",
+            "",
+            f"[{number}]: https://evil.example/",
+        ]
+    )
+
+    second = service.generate(
+        GenerateRequest(
+            topic="Optik",
+            parts=["world"],
+            target_length=2000,
+            existing_markdown=reviewed.replace(original, original + hostile, 1),
+        )
+    )
+
+    assert unsafe(second.markdown) == []
+    assert 'href="https://evil.example/"' not in render(second.markdown), "no marker became a link"
+    kept = next(section for section in second.sections if section.slot_id == "sc26_3")
+    assert kept.text.startswith(original), "what the service wrote itself stays word for word"

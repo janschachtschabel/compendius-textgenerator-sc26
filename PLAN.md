@@ -553,8 +553,9 @@ Link, Ursprungsort). Die Quellenlizenz CC BY-SA 4.0 (Wikipedia, Klexikon) macht 
 einem BY-SA-Werk — der Hinweis steht im Frontmatter und in Baustein 12.
 
 **Teil-Regeneration:** `POST /api/v2/compendium` akzeptiert `existing_markdown` und
-`regenerate_sections=[…]`. Abschnitte mit Marker `status=redaktionell-geprüft` bleiben byteweise
-erhalten, alle anderen werden neu erzeugt. Das ist der Mechanismus für „Kategorien später
+`regenerate_sections=[…]`. Abschnitte mit Marker `status=redaktionell-geprüft` bleiben wortgleich
+erhalten, alle anderen werden neu erzeugt; was das Netz aller Schreiber entschärft (Tags, Bilder, Links außer
+http(s), Referenzdefinitionen), wird auch in ihnen maskiert (Audit 2026-09-29, T6). Das ist der Mechanismus für „Kategorien später
 nachbearbeiten".
 
 ### 4.7 Synthese

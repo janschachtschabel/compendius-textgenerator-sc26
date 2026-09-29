@@ -31,7 +31,7 @@ from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
-from app.synthesis.safe_markdown import defuse
+from app.synthesis.safe_markdown import defuse, no_definitions
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
 
@@ -164,10 +164,14 @@ class SectionWriter:
             section.text = text
             section.facets = facets if text else {}
             section.status = SectionStatus.GENERATED if text else SectionStatus.EMPTY
-        # The net behind every writer of part 1 (audit 2026-09-28, SE-16): a kept block stays word for word
+        # The net behind every writer of part 1 (audit 2026-09-28, SE-16), kept blocks included: an earlier compendium
+        # may come from a CMS other people edit, and a tag or a link it held reached the reader as sent. What the
+        # service wrote itself passes the net unchanged, so a reviewed block stays word for word (audit 2026-09-29,
+        # T6)
         for section in sections:
-            if section.slot_id not in kept or _is_generated(template, section.slot_id):
-                section.text = defuse(section.text)
+            section.text = defuse(section.text)
+            if section.slot_id in kept and not _is_generated(template, section.slot_id):
+                section.text = no_definitions(section.text)
         return WrittenSections(sections=sections, citations=all_citations, llm=report)
 
     def _generate(

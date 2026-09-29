@@ -67,6 +67,17 @@ def unescape(text: str) -> str:
     return _ESCAPED.sub(r"\1", text)
 
 
+# Every reference definition, whatever its target, and the escapes it must not take apart
+_DEFINITION = re.compile(r"\\.|\](?=:[ \t]*\n?[ \t]*\S)")
+
+
+def no_definitions(markdown: str) -> str:
+    """``markdown`` without a reference definition: one in a kept block of an earlier compendium turned the citation
+    markers of every block into links, wherever it pointed (audit 2026-09-29, T6). ``defuse`` lets a definition to
+    a web address through; a writer of the service writes none."""
+    return _DEFINITION.sub(lambda match: match.group(0) if len(match.group(0)) == 2 else "\\]", markdown)
+
+
 def defuse(markdown: str) -> str:
     """``markdown`` with nothing left that runs, loads or leads anywhere but to a web address: every start of HTML
     except the service's own comments, every image and every link or reference target that is no web address is

@@ -884,9 +884,11 @@ Text; hat das Lesen einen gesendeten Text verändert, steht er unter `text` in d
 **Teilweise neu erzeugen.** `existing_markdown` nimmt ein früheres Kompendium entgegen. Bausteine, die dort
 als `redaktionell-geprüft` markiert sind, bleiben wortgleich stehen; mit `regenerate_sections` werden nur die
 genannten Bausteine neu gemacht und alle übrigen behalten. Sie heißen wie in den Markierungen des Dokuments
-(`sc26_3`). Ein behaltener Baustein behält seine Belegnummern,
-sein Text wird also gar nicht angefasst — die neuen Bausteine werden hinter der höchsten behaltenen Nummer
-weitergezählt, und der Quellen-Baustein führt beide auf. Ein Baustein reicht bis zur Überschrift des nächsten
+(`sc26_3`). Ein behaltener Baustein behält seine Belegnummern und seinen Wortlaut; nur was das Netz aller Schreiber
+entschärft — Tags, Bilder, Links außer http(s) und Referenzdefinitionen —, wird auch in ihm maskiert, denn ein
+früheres Kompendium kann aus einem CMS kommen, in dem andere schreiben. Die neuen Bausteine werden hinter der
+höchsten behaltenen Nummer weitergezählt, und der Quellen-Baustein führt beide auf. Ein Baustein reicht bis zur
+Überschrift des nächsten
 (einer `###`-Zeile mit Markierung darunter) oder bis zum nächsten Teil, eigene Zwischenüberschriften der Redaktion
 bleiben also in ihm; Zeilenenden mit CR (Windows, Textfelder) liest der Dienst wie LF. Eine Markierung, die er nicht
 lesen kann, ein Baustein, der zweimal vorkommt, ein Status, den er nicht kennt, und ein zu behaltender Baustein, für
