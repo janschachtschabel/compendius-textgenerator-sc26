@@ -23,6 +23,8 @@ from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import make_settings
 from tests.test_gnd_index import write_gnd
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 from tests.test_wikidata_index import write_dumps, write_langlinks
 
 TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik."
@@ -100,6 +102,36 @@ def test_one_way_can_be_asked_alone(client: TestClient, monkeypatch: pytest.Monk
     body = client.post("/api/v2/entities", json={"text": TEXT, "methods": ["ner"]}).json()
     assert body["methods"] == ["ner"]
     assert all(entity["source"] == "ner" for entity in body["entities"])
+
+
+@pytest.mark.parametrize(
+    ("archives", "methods", "lacking"),
+    [
+        (True, ["ner"], "für ner fehlt das spaCy-Modell"),
+        (False, ["dictionary"], "für dictionary fehlen die Archive"),
+        (False, ["ner", "dictionary"], "für ner fehlt das spaCy-Modell, für dictionary fehlen die Archive"),
+    ],
+)
+def test_without_a_way_the_503_names_what_the_asked_ways_lack(
+    client: TestClient, without_archives: TestClient, archives: bool, methods: list[str], lacking: str
+) -> None:
+    """The 503 blamed the archives for dictionary and llm whatever was asked and whatever was there: ner alone, on a
+    server with archives, was told the archives were missing (audit 2026-09-29, S11)."""
+    service = client if archives else without_archives
+    response = service.post("/api/v2/entities", json={"text": TEXT, "methods": methods, "preset": "llm-free"})
+    assert response.status_code == 503
+    assert response.json()["detail"] == f"Kein Verfahren verfügbar: {lacking}"
+
+
+def test_llm_without_archives_lacks_them_as_the_rules_that_stand_in_for_it(
+    without_archives: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(without_archives.app.state.service, "llm", make_gateway(FakeBApi()))  # type: ignore[attr-defined]
+    response = without_archives.post("/api/v2/entities", json={"text": TEXT, "methods": ["llm"], "preset": "balanced"})
+    assert response.status_code == 503
+    assert response.json()["detail"] == (
+        "Kein Verfahren verfügbar: für ner fehlt das spaCy-Modell, für dictionary und llm fehlen die Archive"
+    )
 
 
 def test_an_unknown_archive_is_refused(client: TestClient) -> None:

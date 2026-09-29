@@ -189,6 +189,17 @@ def _checked(
     return [e for e in entities if e.article is None or (e.article.archive, e.article.title) in kept], None
 
 
+def _nothing_ran(rules: list[Method], *, llm: bool) -> str:
+    """Why no way ran, for the ways this request tried; a fixed text blamed the archives for ways nobody had asked for
+    (audit 2026-09-29, S11). ``_recognise`` skips ner only without the model and the dictionary only without archives;
+    llm without a result had the rules stand in, so it lacked the archives the dictionary found missing."""
+    lacking = ["für ner fehlt das spaCy-Modell"] if "ner" in rules else []
+    without_archives = (["dictionary"] if "dictionary" in rules else []) + (["llm"] if llm else [])
+    if without_archives:
+        lacking.append(f"für {' und '.join(without_archives)} fehlen die Archive")
+    return f"Kein Verfahren verfügbar: {', '.join(lacking)}"
+
+
 def _unchecked(ran: list[Method]) -> str | None:
     """With link=false nobody can tell an article from a disambiguation page; say so for the ways that promise one."""
     ways = [method for method in ran if method in WITH_ARTICLE]
@@ -308,11 +319,7 @@ def entities(
         ran.append("llm")
         mentions.extend(named)
     if not ran:
-        raise HTTPException(
-            status_code=503,
-            detail="Kein Verfahren verfügbar: für ner fehlt das spaCy-Modell, für dictionary und llm fehlen die "
-            "Archive",
-        )
+        raise HTTPException(status_code=503, detail=_nothing_ran(rules, llm="llm" in methods))
     found = merge(mentions)[: payload.max_entities]
     wikidata = getattr(request.app.state, "wikidata", None)
     gnd = getattr(request.app.state, "gnd", None)
