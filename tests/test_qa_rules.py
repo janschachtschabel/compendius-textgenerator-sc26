@@ -372,6 +372,23 @@ def test_the_actors_ask_who_or_what_they_are_without_brackets_and_cut_summaries(
         ], visible
 
 
+def test_an_actor_whose_article_title_has_a_qualifier_is_asked_as_well() -> None:
+    """The link to "Thomas_Young_(Physiker)" goes in angle brackets (link_target), and the row pattern read a target
+    up to its first ")": /qa passed the actor by (audit 2026-09-29, T9)."""
+    young = "Thomas Young war ein englischer Augenarzt und Physiker."
+    actors = [
+        Actor(
+            "Thomas Young (Physiker)", "Person", young, "https://de.wikipedia.org/wiki/Thomas_Young_(Physiker)", [], ""
+        ),
+        Actor("Ernst Abbe", "Person", "Ernst Abbe war ein deutscher Physiker.", WIKI, [], ""),
+    ]
+    found = [(c.question, c.answer) for c in actor_candidates(build_actors_section(actors, False))]
+    assert found == [
+        ("Wer war Thomas Young?", young),
+        ("Wer war Ernst Abbe?", "Ernst Abbe war ein deutscher Physiker."),
+    ]
+
+
 def test_the_sources_block_is_no_actor_list_though_its_rows_look_alike() -> None:
     """Both list "- **[Titel](link)** — …"; only the actor list stands under headings of its kinds (D60). Read as
     actors, the sources would ask "Was versteht man unter Optik?" of a licence line."""

@@ -59,7 +59,9 @@ _NOT_A_SUBJECT_START = frozenset({"ADV", "ADP"})
 # The definition cell is taken whole and trimmed in code: blanks around a lazy cell backtracked cubically on a
 # run of blanks in a text the caller sends (review of D60)
 _GLOSSARY_ROW = re.compile(r"^\|\s*\*\*(?P<term>[^|*]+)\*\*\s*\|(?P<definition>[^|]+)\|\s*`(?P<relation>[^`]+)`")
-_ACTOR_ROW = re.compile(r"^- \*\*\[(?P<name>[^\]]+)\]\([^)]*\)\*\* — (?P<summary>.+)$")
+# The target of an actor's link as link_target writes it: in angle brackets when it holds parentheses, else up to
+# the closing one. Read up to its first ")", "Thomas_Young_(Physiker)" passed the actor by (audit 2026-09-29, T9).
+_ACTOR_ROW = re.compile(r"^- \*\*\[(?P<name>[^\]]+)\]\((?:<[^>\n]*>|[^)\s]*)\)\*\* — (?P<summary>.+)$")
 _KIND_HEADING = re.compile(r"^#### (?P<kind>\w+)")
 _RELATION_ORDER = {"skos:prefLabel": 0, "skos:narrower": 1, "skos:related": 2}
 _ASKED_FOR = re.compile(

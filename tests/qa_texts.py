@@ -90,6 +90,8 @@ def crafted_texts(length: int = MAX_TEXT_CHARS) -> dict[str, str]:
         "brackets in an actor name": compendium_markdown(
             PROSE, f"#### Person\n- **[A{brackets}](u)** — Er war ein deutscher Physiker und Optiker."
         ),
+        # a target in angle brackets is read to its ">" (audit 2026-09-29, T9): here none follows
+        "an open angle bracket in an actor's target": compendium_markdown(PROSE, f"#### Person\n- **[A](<{brackets}"),
         **crafted_markdown(length),
     }
 
