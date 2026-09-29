@@ -36,14 +36,37 @@ export function link(href, ...children) {
     : h('span', {}, ...children);
 }
 
-/** Copy text to the clipboard; false when the browser refuses (no secure context, no permission). */
+/** Copy text to the clipboard; false when the browser refuses both ways. The clipboard API exists only in a
+ * secure context (https, localhost): over plain http, as a server on a public address is often reached, the text is
+ * selected in a field of its own and copied with the browser's copy command, which a click still allows. */
 export async function copyText(value) {
-  try {
-    await navigator.clipboard.writeText(value);
-    return true;
-  } catch {
-    return false; // the caller says so; the text stays on the page to copy by hand
+  if (globalThis.navigator?.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      // refused (no permission): the copy command below may still be allowed
+    }
   }
+  return copyBySelection(value);
+}
+
+function copyBySelection(value) {
+  const before = document.activeElement;
+  const field = h('textarea', { class: 'copy-buffer', readonly: true, 'aria-hidden': 'true', tabindex: '-1' });
+  field.value = value;
+  document.body.append(field);
+  field.focus();
+  field.select();
+  let copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } catch {
+    copied = false; // a browser without the command: the caller says that copying did not work
+  }
+  field.remove();
+  before?.focus?.();
+  return copied;
 }
 
 /** Offer text as a file to save. */

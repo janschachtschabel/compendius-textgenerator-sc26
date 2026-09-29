@@ -98,7 +98,7 @@ function column(mode, one, host) {
 
 function actions(mode, one, view, host) {
   const copy = view.markdown
-    ? h('button', { type: 'button', class: 'quiet', on: { click: async () => host.announce((await copyText(view.markdown)) ? 'Markdown kopiert.' : 'Kopieren hat der Browser nicht erlaubt.') } }, 'Markdown kopieren')
+    ? h('button', { type: 'button', class: 'quiet', on: { click: async () => host.announce((await copyText(view.markdown)) ? 'Markdown kopiert.' : 'Kopieren ging in diesem Browser nicht. „Antwort speichern“ legt Anfrage und Antwort samt Markdown als Datei ab.') } }, 'Markdown kopieren')
     : null;
   const stamp = new Date().toISOString().slice(0, 19).replaceAll(':', '-');
   const save = h('button', { type: 'button', class: 'quiet', on: { click: () => download(`${mode}-${one.preset}-${stamp}.json`, JSON.stringify({ request: one.request, answer: one.data }, null, 2)) } }, 'Antwort speichern');
