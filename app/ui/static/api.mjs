@@ -3,6 +3,10 @@
 
 import { ERRORS } from './texts.mjs';
 
+// What a key may hold: printable ASCII, as `openssl rand -hex 32` gives it. A space or an invisible sign copied along
+// (U+200B) made fetch throw before sending, and the page said there was no connection
+const SENDABLE_KEY = /^[!-~]+$/;
+
 export class ApiError extends Error {
   constructor(status, detail, requestId) {
     super(ERRORS[status] ?? `Der Server antwortete mit dem Status ${status}.`);
@@ -12,8 +16,10 @@ export class ApiError extends Error {
   }
 }
 
-/** Send one request of forms.mjs; resolves to the answer, its time in ms and the id the server logged it under. */
+/** Send one request of forms.mjs; resolves to the answer, its time in ms and the id the server logged it under. A key
+ * no header can carry is an ApiError of status "key", and nothing is sent. */
 export async function send(request, key, signal) {
+  if (key && !SENDABLE_KEY.test(key)) throw new ApiError('key', null, null);
   const url = new URL(`../${request.path}`, document.baseURI); // the page lives at /ui/, the endpoints at /api/v2/
   for (const [name, value] of Object.entries(request.query ?? {})) url.searchParams.set(name, value);
   const headers = { Accept: 'application/json' };

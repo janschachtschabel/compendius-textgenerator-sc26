@@ -9,10 +9,12 @@ import { ApiError, send } from '../../app/ui/static/api.mjs';
 const KEY = 'k'.repeat(32);
 const signal = () => new AbortController().signal;
 
-/** fetch answered by `answer(url, init)`; the calls it got. */
+/** fetch answered by `answer(url, init)`; the calls it got. Its headers are checked as a browser checks them: a sign
+ * outside ISO-8859-1 throws before anything is sent. */
 function serve(answer) {
   const calls = [];
   globalThis.fetch = async (url, init) => {
+    new Headers(init.headers);
     calls.push({ url: String(url), init });
     return answer(url, init);
   };
@@ -71,6 +73,21 @@ test('a server out of reach is no connection, and a request stopped before its a
 
   serve(() => Promise.reject(new DOMException('The operation was aborted.', 'AbortError')));
   await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, KEY, signal()), { name: 'AbortError' });
+});
+
+test('a key no header can carry is named as the problem, and nothing is sent', async () => {
+  installDocument();
+  const calls = serve(() => json(200, {}));
+  const copied = [String.fromCharCode(0x200b), String.fromCharCode(0xa0), ' ', 'ä'].map((sign) => `${KEY.slice(0, 16)}${sign}${KEY.slice(16)}`);
+
+  for (const key of copied) {
+    await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, key, signal()), (error) => {
+      assert.ok(error instanceof ApiError);
+      assert.match(error.message, /^Der API-Schlüssel enthält ein Zeichen, das sich nicht senden lässt/);
+      return true;
+    });
+  }
+  assert.equal(calls.length, 0);
 });
 
 test('a request stopped while its answer is read stays a stop, not an answer without data', async () => {

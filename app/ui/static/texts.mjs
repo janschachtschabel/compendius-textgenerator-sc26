@@ -137,6 +137,7 @@ export const RATINGS = { 2: 'passt zum Thema', 1: 'streift das Thema', 0: 'passt
 
 export const ERRORS = {
   0: 'Keine Verbindung zum Server.',
+  key: 'Der API-Schlüssel enthält ein Zeichen, das sich nicht senden lässt – etwa ein Leerzeichen oder ein unsichtbares Zeichen aus dem Kopieren. Bitte links unten neu eintragen.',
   401: 'Der Server verlangt einen API-Schlüssel. Bitte links unten eintragen.',
   404: 'Nicht gefunden.',
   413: 'Die Anfrage ist zu groß.',
