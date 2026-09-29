@@ -127,10 +127,19 @@ def budgeted_chat(
     except LlmError as exc:
         log.warning("LLM call for %s failed: %s", what, exc)
         # An attempt that may have reached the model may have cost its prompt: a timeout or a 502/504 counted no
-        # token before, however often it happened (audit 2026-09-27, KO-06)
-        spent = prompt_tokens * exc.reached
-        _heard("failed", prompt_tokens=spent)
-        return LlmSkipped(f"b-api: {exc}", calls=1, prompt_tokens=spent, total_tokens=spent)
+        # token before, however often it happened (audit 2026-09-27, KO-06); an answer that could not be used costs
+        # what its usage reported (audit 2026-09-29, A05)
+        reported_prompt, completion_tokens, reported = exc.usage
+        prompt_spent = prompt_tokens * exc.reached + reported_prompt
+        spent = prompt_tokens * exc.reached + reported
+        _heard("failed", prompt_tokens=prompt_spent, completion_tokens=completion_tokens)
+        return LlmSkipped(
+            f"b-api: {exc}",
+            calls=1,
+            prompt_tokens=prompt_spent,
+            completion_tokens=completion_tokens,
+            total_tokens=spent,
+        )
     finally:
         budget.settle(held, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
     _heard("answered", prompt_tokens=answer.prompt_tokens, completion_tokens=answer.completion_tokens)

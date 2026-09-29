@@ -4,7 +4,8 @@ A gateway that passes an outage on as HTTP 500 was asked on every call: 500 neit
 the breaker, and it reset the failures in a row. An attempt that reached the model before the answer that came was not
 paid for. A usage of 2^63 tokens raised out of the budget store and left the request's reservation standing. A model's
 number behind a control sign and a selection nested too deep turned a request into a 500. The retry after an attempt
-that reached the model was paid without being reserved, past the caps of the request and the day (audit 2026-09-29, L1).
+that reached the model was paid without being reserved, past the caps of the request and the day (audit 2026-09-29, L1),
+and an answer that could not be read was charged nothing, not even the attempts before it (A05).
 """
 
 from __future__ import annotations
@@ -19,7 +20,7 @@ from app.knowledge.article_choice import read_number
 from app.llm.budget import TokenBudget, estimate_tokens
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.call import LlmSkipped, budgeted_chat
-from app.llm.client import ChatResult, LlmError
+from app.llm.client import MAX_USAGE, ChatResult, LlmError
 from app.synthesis.selection import parse_selection
 from tests.test_llm_client import MESSAGES, FakeBApi, completion, make_client
 from tests.test_llm_resilience import Clock, client_for
@@ -117,6 +118,53 @@ def test_the_reservations_of_retries_are_given_back_when_the_call_fails() -> Non
 
     assert isinstance(answer, LlmSkipped) and answer.prompt_tokens == 3 * PROMPT
     assert budget.remaining == 20_000 - 3 * PROMPT and day.remaining_today == 2_000_000 - 3 * PROMPT
+
+
+CUT_SHORT = b'{"choices": ['
+NO_CHOICES = b'{"choices": []}'
+WITH_USAGE = b'{"choices": [], "usage": {"prompt_tokens": 1000, "completion_tokens": 50, "total_tokens": 1050}}'
+TOTAL_ONLY = b'{"choices": [], "usage": {"total_tokens": 321}}'
+BEYOND_ANY_MODEL = b'{"choices": [], "usage": {"total_tokens": 9223372036854775808}}'
+
+
+@pytest.mark.parametrize(
+    ("before", "body", "charged"),
+    [
+        ([], CUT_SHORT, PROMPT),
+        ([504], CUT_SHORT, 2 * PROMPT),
+        ([], NO_CHOICES, PROMPT),
+        ([504, 504], NO_CHOICES, 3 * PROMPT),
+        ([504], WITH_USAGE, PROMPT + 1050),
+        ([], TOTAL_ONLY, 321),
+        ([], BEYOND_ANY_MODEL, MAX_USAGE),
+    ],
+    ids=["no json", "no json after 504", "no choices", "no choices after 504s", "usage", "total", "capped"],
+)
+def test_an_answer_that_cannot_be_used_is_charged_as_an_attempt_that_reached_the_model(
+    before: list[int], body: bytes, charged: int
+) -> None:
+    """A 200 without valid JSON or without choices charged nothing, the 504 before it neither, and a usage it
+    reported went unread (audit 2026-09-29, A05). The model answered: what its usage says, else its prompt."""
+    answers = [httpx.Response(status) for status in before] + [httpx.Response(200, content=body)]
+    client = client_for(lambda request: answers.pop(0), Clock())
+    day = TokenBudget(per_request=20_000, daily=2_000_000)
+    budget = day.open_request()
+
+    answer = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+
+    assert isinstance(answer, LlmSkipped) and answer.calls == 1 and answer.total_tokens == charged
+    assert budget.used == charged and day.used_today == charged
+
+
+def test_the_usage_of_an_answer_that_cannot_be_used_keeps_prompt_and_completion_apart() -> None:
+    answers = [httpx.Response(504), httpx.Response(200, content=WITH_USAGE)]
+    client = client_for(lambda request: answers.pop(0), Clock())
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+
+    answer = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+
+    assert isinstance(answer, LlmSkipped)
+    assert (answer.prompt_tokens, answer.completion_tokens, answer.total_tokens) == (PROMPT + 1000, 50, PROMPT + 1050)
 
 
 def test_a_usage_beyond_any_model_is_capped_and_the_day_goes_on(tmp_path: Path) -> None:

@@ -593,7 +593,8 @@ wiederholt, ein 501 nicht) setzt ein Schutzschalter die b-api 60 s aus, Anfragen
 danach probiert ein einzelner Aufruf, ob sie wieder antwortet. Ein 401, 403 oder 404 setzt sie zehn Minuten aus,
 `/health` nennt den Grund (Schlüssel, Berechtigung oder Modell). Ein Versuch, der das Modell erreicht haben kann
 (Timeout nach dem Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer
-Versuch antwortet. Jeder Aufruf reserviert sein Token-Budget vorab (je Anfrage das des Profils,
+Versuch antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet.
+Jeder Aufruf reserviert sein Token-Budget vorab (je Anfrage das des Profils,
 `LLM_MAX_TOKENS_PER_REQUEST` oder in den `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa`
 für Teil 1 und die Paare zusammen; `LLM_DAILY_TOKEN_BUDGET` je Tag), den Text eines Aufrufers (`/entities`, `/qa`)
 nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen

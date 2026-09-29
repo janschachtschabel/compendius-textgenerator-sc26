@@ -59,12 +59,16 @@ Message = Mapping[str, str]
 
 class LlmError(RuntimeError):
     """The b-api did not deliver a usable answer; ``status`` is the HTTP status when there was one, ``reached`` the
-    number of attempts that may have reached the model and so may have cost the prompt's tokens."""
+    number of attempts that may have reached the model and so may have cost the prompt's tokens, ``usage`` the prompt,
+    completion and total tokens an answer reported that could not be used (audit 2026-09-29, A05)."""
 
-    def __init__(self, message: str, status: int | None = None, reached: int = 0) -> None:
+    def __init__(
+        self, message: str, status: int | None = None, reached: int = 0, usage: tuple[int, int, int] = (0, 0, 0)
+    ) -> None:
         super().__init__(message)
         self.status = status
         self.reached = reached
+        self.usage = usage
 
 
 @dataclass(frozen=True)
@@ -196,7 +200,13 @@ class BApiClient:
         data, reached = self._request(
             "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry
         )
-        result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
+        try:
+            result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
+        except LlmError as exc:
+            # The model answered, so the attempt was paid: by what its usage reports, else like an attempt behind a
+            # 504, and the attempts before it too; both used to count nothing (audit 2026-09-29, A05)
+            usage = _usage(data.get("usage")) if isinstance(data, dict) else (0, 0, 0)
+            raise LlmError(str(exc), 200, reached=reached if usage[2] else reached + 1, usage=usage) from exc
         return replace(result, reached_before=reached) if reached else result
 
     def models(self) -> list[ModelInfo]:
@@ -310,7 +320,8 @@ class BApiClient:
                     try:
                         return response.json(), reached
                     except (ValueError, RecursionError) as exc:  # also a nesting too deep to read
-                        raise LlmError("b-api antwortete ohne gültiges JSON", status) from exc
+                        # the model answered: the attempt may have cost its prompt like one behind a 504 (A05)
+                        raise LlmError("b-api antwortete ohne gültiges JSON", status, reached=reached + 1) from exc
                 if status not in RETRY_STATUSES:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
