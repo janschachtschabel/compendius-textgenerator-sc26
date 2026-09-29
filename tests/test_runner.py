@@ -21,6 +21,15 @@ def test_parse_interval() -> None:
             parse_interval(bad)
 
 
+def test_an_interval_under_a_minute_is_refused_with_the_minimum() -> None:
+    """An interval of 0 ran a loop without a pause - 1000 runs in 0.0 s, and the GND sidecar asked data.dnb.de three
+    times a run (audit 2026-09-29, Q4)."""
+    for short in ("0s", "0d", "00h", " 0 m ", "59s"):
+        with pytest.raises(ValueError, match="at least 1m"):
+            parse_interval(short)
+    assert parse_interval("60s") == parse_interval("1m") == timedelta(minutes=1)
+
+
 class FakeClock:
     def __init__(self) -> None:
         self.now = 1000.0

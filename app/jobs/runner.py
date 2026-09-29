@@ -19,17 +19,24 @@ log = logging.getLogger(__name__)
 # every seven, and a check without a pull wrote nothing: a stopped sidecar showed only after weeks, and on
 # 2026-09-27 the sidecars were missing on the server unnoticed (audit 2026-09-28, BE-15).
 ALIVE_EVERY = timedelta(hours=1)
+# The shortest interval a setting may name: an interval of 0 ran a loop without a pause, 1000 runs in 0.0 s, and the
+# GND sidecar asked data.dnb.de three times a run (audit 2026-09-29, Q4). No setting or test used less than 90 s.
+MIN_INTERVAL = timedelta(minutes=1)
 
 _INTERVAL_RE = re.compile(r"^\s*(\d+)\s*([smhd])\s*$", re.IGNORECASE)
 _UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400}
 
 
 def parse_interval(text: str) -> timedelta:
-    """Parse ``30d``, ``12h``, ``45m`` or ``90s`` (case-insensitive); anything else raises ``ValueError``."""
+    """Parse ``30d``, ``12h``, ``45m`` or ``90s`` (case-insensitive), at least ``MIN_INTERVAL``; anything else raises
+    ``ValueError``."""
     match = _INTERVAL_RE.match(text or "")
     if not match:
         raise ValueError(f"invalid interval {text!r}; use <number><s|m|h|d>, e.g. 30d")
-    return timedelta(seconds=int(match.group(1)) * _UNITS[match.group(2).lower()])
+    interval = timedelta(seconds=int(match.group(1)) * _UNITS[match.group(2).lower()])
+    if interval < MIN_INTERVAL:
+        raise ValueError(f"interval {text!r} is too short; use at least 1m (60s), e.g. 30d")
+    return interval
 
 
 def mark_alive(path: Path) -> None:

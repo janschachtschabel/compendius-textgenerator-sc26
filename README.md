@@ -704,7 +704,7 @@ Diese drei liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `ZIM_PROFILE` | `standard` | Welches Archivbündel gilt: `compact`, `standard` oder `extended` (`config/zim_subscriptions.yaml`) |
 | `ZIM_REQUIRED` | leer | Pflichtarchive für `/ready`; leer leitet sie aus `config/zim_subscriptions.yaml` für `ZIM_PROFILE` ab |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | Lädt beim ersten Start die fehlenden Pflichtarchive des Profils — `compact` rund 1,4 GB, `standard` rund 14,1 GB, `extended` rund 18,1 GB. Erst danach meldet `/ready` den Dienst bereit. `false` lässt das Volume, wie es ist; dann müssen die Archive von Hand hinein |
-| `ZIM_SYNC_INTERVAL` | `30d` | Wie oft der Sync-Job (`compendium zim sync --loop` im Updater-Sidecar) den Katalog prüft |
+| `ZIM_SYNC_INTERVAL` | `30d` | Wie oft der Sync-Job (`compendium zim sync --loop` im Updater-Sidecar) den Katalog prüft. Mindestens `1m`; kürzer startet der Sidecar nicht, denn `0s` ließ ihn ohne Pause laufen |
 | `ZIM_RETENTION_HOURS` | `24` | Wie lange ein ersetztes Archiv nach dem Umschalten liegen bleibt, bevor es gelöscht wird; für das Ende der Frist setzt der Sync-Job einen Lauf an |
 | `ZIM_CATALOG_URL` | leer | OPDS-Katalog für den Sync-Job; leer nimmt den eingebauten Kiwix-Katalog (`https://opds.library.kiwix.org/catalog/v2/entries`) |
 | `ZIM_DOWNLOAD_HOSTS` | `download.kiwix.org,lb.download.kiwix.org,mirror.download.kiwix.org` | Von welchen Hosts der Sync-Job laden darf. Ein Katalogeintrag, der woanders hinzeigt, wird abgelehnt |
@@ -752,7 +752,7 @@ und wird neu gebaut.
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `WIKIDATA_DUMPS_URL` | `https://dumps.wikimedia.org` | Woher der Sync die Dumps lädt; ein Spiegel mit demselben Aufbau (`/dewiki/<Lauf>/dumpstatus.json`) geht auch. Laufliste und Prüfsummen kommen nur von diesem Host über https, ohne Umleitung |
-| `WIKIDATA_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder ein neueres Archiv einen neueren Dump braucht |
+| `WIKIDATA_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder ein neueres Archiv einen neueren Dump braucht. Mindestens `1m`; kürzer startet der Sidecar nicht, denn `0s` ließ ihn ohne Pause laufen |
 
 ### GND-Index (Kennungen von `/api/v2/entities`)
 
@@ -765,7 +765,7 @@ Dateinamen stehen in `001_Pruefsumme_Checksum.txt`. Ein Lauf lädt rund 65 MB, d
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `GND_DUMPS_URL` | `https://data.dnb.de/opendata` | Woher der Sync die Abzüge und ihre Prüfsummen lädt; Prüfsummen und Größen kommen nur von diesem Host über https, ohne Umleitung |
-| `GND_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder eine neuere Ausgabe da ist |
+| `GND_CHECK_INTERVAL` | `1d` | Wie oft der Sidecar prüft, ob der Index fehlt oder eine neuere Ausgabe da ist. Mindestens `1m`; kürzer startet der Sidecar nicht, denn `0s` ließ ihn ohne Pause laufen |
 
 ### Lehrpläne (Teil 2)
 
@@ -776,8 +776,8 @@ nach `LEHRPLAN_HARVEST_MAX_AGE` angestoßen — er dauert rund 25 Minuten und st
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LEHRPLAN_ENDPOINT` | `https://sparql.mem.edufeed.org/sparql/` | SPARQL-Endpunkt der MEM |
-| `LEHRPLAN_CHECK_INTERVAL` | `7d` | Wie oft die Zählung geprüft wird |
-| `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Spätestens nach dieser Zeit wird neu abgezogen, auch ohne erkannte Änderung |
+| `LEHRPLAN_CHECK_INTERVAL` | `7d` | Wie oft die Zählung geprüft wird. Mindestens `1m`; kürzer startet der Sidecar nicht, denn `0s` ließ ihn ohne Pause laufen |
+| `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Spätestens nach dieser Zeit wird neu abgezogen, auch ohne erkannte Änderung. Mindestens `1m`, wie die Intervalle; kürzer startet der Sidecar nicht |
 | `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen zwei Anfragen an die MEM |
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` | Optionale Kappung der Lernbereiche je Bundesland und Bildungsstufe; `0` heißt: alle Treffer, denn kompendiale Texte dürfen lang sein |
 
