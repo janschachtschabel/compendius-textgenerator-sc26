@@ -11,6 +11,8 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.settings import Settings
 
+NODE = "9e7ae956-e9df-430f-bace-f3db4b910013"
+
 
 @pytest.fixture(scope="module")
 def client(settings: Settings) -> TestClient:
@@ -51,6 +53,34 @@ def test_a_topic_of_blanks_is_a_422_not_a_topic_the_archives_lack(
     assert answer.status_code == 422, answer.text
     [problem] = answer.json()["detail"]
     assert problem["loc"][-1] in ("topic", "q") and problem["msg"] == "besteht nur aus Leerraum"
+
+
+@pytest.fixture(scope="module")
+def without_repository(settings: Settings) -> TestClient:
+    """No repository to ask: a node route that ran its handler would answer 503, not reach the network."""
+    return TestClient(
+        create_app(settings.model_copy(update={"edu_sharing_base_url": "", "edu_sharing_repositories": ""}))
+    )
+
+
+@pytest.mark.parametrize(
+    ("path", "params", "typo"),
+    [
+        ("/api/v2/lehrplan/search", {"q": "Optik", "prest": "best-quality"}, "prest"),
+        ("/api/v2/lehrplan/search", {"q": "Optik", "curriculumcheck": "llm"}, "curriculumcheck"),
+        (f"/api/v2/nodes/{NODE}", {"repositry": "https://redaktion.openeduhub.net/edu-sharing/rest"}, "repositry"),
+    ],
+)
+def test_an_unknown_query_parameter_is_a_422_that_names_it(
+    without_repository: TestClient, path: str, params: dict[str, str], typo: str
+) -> None:
+    """A typo such as prest=best-quality ran the default profile - maybe not the one meant, maybe with LLM costs -
+    and the answer looked right (audit 2026-09-29, S10)."""
+    answer = without_repository.get(path, params=params)
+    assert answer.status_code == 422, answer.text
+    [problem] = answer.json()["detail"]
+    assert (problem["type"], problem["loc"]) == ("extra_forbidden", ["query", typo])
+    assert "preset" in problem["msg"] or "repository" in problem["msg"], "it names the parameters the route takes"
 
 
 @pytest.mark.parametrize("path", ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"])

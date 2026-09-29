@@ -15,7 +15,7 @@ from fastapi import APIRouter, Depends, Query, Request
 from pydantic import AfterValidator, BeforeValidator
 
 from app.api.admin import require_admin
-from app.api.deps import get_service
+from app.api.deps import get_service, no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
@@ -178,7 +178,7 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
 
 @router.get(
     "/search",
-    dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key), Depends(no_unknown_query)],
     responses=refusals(401, 404, 422, 429, 503),  # no repository behind it: no 502
 )
 def lehrplan_search(

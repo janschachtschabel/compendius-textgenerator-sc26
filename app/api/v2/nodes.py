@@ -13,6 +13,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, Path, Query, Request
 from pydantic import Field
 
+from app.api.deps import no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
@@ -56,7 +57,7 @@ class NodePreview(NodeInput):
 @router.get(
     "/nodes/{node_id}",
     response_model=NodePreview,
-    dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key), Depends(no_unknown_query)],
     responses={**PROFILE_REFUSALS},
     summary="Knoten eines Repositorys lesen: Metadaten und abgeleitetes Thema",
 )
