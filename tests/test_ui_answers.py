@@ -189,18 +189,25 @@ def form(value: Any, path: str = "") -> set[str]:
 
 
 def compare(name: str, made: Any) -> None:
-    """The form of what the server gives now against the file of that name; ``UI_ANSWERS=write`` renews the file."""
+    """The form of what the server gives now, and the request it answers, against the file of that name.
+
+    ``UI_ANSWERS=write`` renews a file whose form or request differs; one that differs only in its times and ids
+    stays as it is.
+    """
     path = ANSWERS / f"{name}.json"
-    if os.environ.get("UI_ANSWERS") == "write":
-        ANSWERS.mkdir(exist_ok=True)
+    kept = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+    stale = kept is None or form(kept) != form(made) or kept.get("request") != made.get("request")
+    if stale and os.environ.get("UI_ANSWERS") == "write":
         path.write_text(json.dumps(made, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    kept = json.loads(path.read_text(encoding="utf-8"))
-    new, gone = sorted(form(made) - form(kept)), sorted(form(kept) - form(made))
-    assert not new and not gone, (
-        f"The answer of {name} changed its form - new: {new[:12]}, gone: {gone[:12]}. After a deliberate change "
-        "UI_ANSWERS=write pytest tests/test_ui_answers.py renews tests/ui/answers/, and node --test tests/ui/ shows "
-        "whether the page still reads it."
+        kept = made
+    renew = (
+        "After a deliberate change UI_ANSWERS=write pytest tests/test_ui_answers.py renews tests/ui/answers/, and "
+        "node --test tests/ui/ shows whether the page still reads it."
     )
+    assert kept is not None, f"No saved answer {name}. {renew}"
+    assert kept.get("request") == made.get("request"), f"The saved answer {name} is one to another request. {renew}"
+    new, gone = sorted(form(made) - form(kept)), sorted(form(kept) - form(made))
+    assert not new and not gone, f"The answer of {name} changed its form - new: {new[:12]}, gone: {gone[:12]}. {renew}"
 
 
 @pytest.mark.parametrize("name", sorted(REQUESTS))
