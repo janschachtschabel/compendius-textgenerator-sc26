@@ -15,6 +15,7 @@ from app.api.v2.entities_schemas import PROFILE_METHODS as ENTITY_METHODS
 from app.api.v2.entities_schemas import EntitiesRequest, LinkCheck
 from app.api.v2.entities_schemas import Method as EntityMethod
 from app.api.v2.knowledge import KnowledgeRequest
+from app.api.v2.lehrplan import LIMIT_DEFAULT, LIMIT_MAX, LIMIT_MIN, QUERY_MAX_CHARS, QUERY_MIN_CHARS, SearchMode
 from app.api.v2.nodes import STAGING_COLLECTION, STAGING_MATERIAL, STAGING_REPOSITORY
 from app.api.v2.qa_schemas import PROFILE_METHODS as QA_METHODS
 from app.api.v2.qa_schemas import Method as QaMethod
@@ -117,22 +118,26 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
 
 
 def _bounds(model: type[BaseModel], name: str) -> dict[str, Any]:
-    """Default, lowest and highest value of a number field, as its model declares them (Field ge and le)."""
+    """The default of a field and its bounds as its model declares them: the lowest and highest value of a number
+    (Field ge and le), the shortest and longest text (min_length and max_length)."""
     field = model.model_fields[name]
     bounds: dict[str, Any] = {"default": field.default}
     for rule in field.metadata:
-        if getattr(rule, "ge", None) is not None:
-            bounds["min"] = rule.ge
-        if getattr(rule, "le", None) is not None:
-            bounds["max"] = rule.le
+        for key, bound in (("min", "ge"), ("max", "le"), ("min_length", "min_length"), ("max_length", "max_length")):
+            if getattr(rule, bound, None) is not None:
+                bounds[key] = getattr(rule, bound)
     return bounds
 
 
 LIMITS = {
-    "compendium": {name: _bounds(GenerateRequest, name) for name in ("target_length", "max_articles")},
-    "knowledge": {name: _bounds(KnowledgeRequest, name) for name in ("max_articles", "max_chars")},
+    "compendium": {name: _bounds(GenerateRequest, name) for name in ("topic", "target_length", "max_articles")},
+    "knowledge": {name: _bounds(KnowledgeRequest, name) for name in ("topic", "max_articles", "max_chars")},
+    "lehrplan": {
+        "q": {"min_length": QUERY_MIN_CHARS, "max_length": QUERY_MAX_CHARS},
+        "limit": {"default": LIMIT_DEFAULT, "min": LIMIT_MIN, "max": LIMIT_MAX},
+    },
     "entities": {"max_entities": _bounds(EntitiesRequest, "max_entities")},
-    "qa": {name: _bounds(QaRequest, name) for name in ("count", "max_answer_length")},
+    "qa": {name: _bounds(QaRequest, name) for name in ("topic", "count", "max_answer_length")},
 }
 
 
@@ -161,9 +166,11 @@ def ui_options(
         "entities": {
             "methods": list(get_args(EntityMethod)),
             "link_checks": list(get_args(LinkCheck)),
+            "link_check_default": EntitiesRequest.model_fields["link_check"].default,  # no profile sets another
             "profiles": ENTITY_METHODS,
         },
         "qa": {"methods": list(get_args(QaMethod)), "profiles": QA_METHODS},
+        "lehrplan": {"modes": list(get_args(SearchMode))},
         "limits": LIMITS,
         "examples": EXAMPLES,
     }

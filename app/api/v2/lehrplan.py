@@ -38,6 +38,13 @@ from app.sources.lehrplan.store import LehrplanCacheError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"], route_class=GatedRoute)
+# What the search takes, which the review page offers as well (app/ui/options.py)
+SearchMode = Literal["keyword", "topic"]
+QUERY_MIN_CHARS = 3
+QUERY_MAX_CHARS = 200
+LIMIT_DEFAULT = 50
+LIMIT_MIN = 1
+LIMIT_MAX = 500
 HARVEST_FAILED = (
     "Der letzte Harvest ist gescheitert; den Grund nennen das Log des Harvest-Sidecars "
     "und `compendium lehrplan status`."
@@ -174,9 +181,10 @@ def lehrplan_search(
         str,
         BeforeValidator(readable_value),
         Query(
-            min_length=3,
-            max_length=200,
-            description="The keyword (mode keyword) or the topic (mode topic), 3 to 200 characters",
+            min_length=QUERY_MIN_CHARS,
+            max_length=QUERY_MAX_CHARS,
+            description=f"The keyword (mode keyword) or the topic (mode topic), {QUERY_MIN_CHARS} to {QUERY_MAX_CHARS} "
+            "characters",
         ),
     ],
     subject: Annotated[
@@ -189,19 +197,21 @@ def lehrplan_search(
         ),
     ] = None,
     limit: int = Query(
-        50,
-        ge=1,
-        le=500,
-        description="How many elements come back, the best first: 1 to 500, default 50. It bounds the answer, not the "
-        "search or the LLM check; total_hits says how many elements the search found. It ranks 20,000 of them at "
-        "most: cut_hits says how many lay beyond, and the ones of the strongest roles stay (Themenbereich, Kompetenz, "
-        "Inhalt)",
+        LIMIT_DEFAULT,
+        ge=LIMIT_MIN,
+        le=LIMIT_MAX,
+        description=f"How many elements come back, the best first: {LIMIT_MIN} to {LIMIT_MAX}, default "
+        f"{LIMIT_DEFAULT}. It bounds the answer, not the search or the LLM check; total_hits says how many elements "
+        "the search found. It ranks 20,000 of them at most: cut_hits says how many lay beyond, and the ones of the "
+        "strongest roles stay (Themenbereich, Kompetenz, Inhalt)",
     ),
-    mode: Literal["keyword", "topic"] = Query(
-        "keyword",
-        description="keyword: the words as sent; topic: what part 2 of a compendium on q searches for - the article "
-        "of the topic, its aliases and the sub-topics of its corpus, with the subjects of the topic",
-    ),
+    mode: Annotated[
+        SearchMode,
+        Query(
+            description="keyword: the words as sent; topic: what part 2 of a compendium on q searches for - the "
+            "article of the topic, its aliases and the sub-topics of its corpus, with the subjects of the topic",
+        ),
+    ] = "keyword",
     preset: Annotated[Preset | None, Query(description=SEARCH_PRESET_HELP)] = None,
     curriculum_check: Annotated[CurriculumCheck | None, Query(description=SEARCH_CHECK_HELP)] = None,
 ) -> dict[str, Any]:

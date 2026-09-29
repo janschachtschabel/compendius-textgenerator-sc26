@@ -129,6 +129,7 @@ export const ENTITY_KINDS = { PER: 'Person', ORG: 'Organisation', LOC: 'Ort', MI
 export const ENTITY_METHODS = { ner: 'Namenserkennung', dictionary: 'Wörterbuch', llm: 'KI' };
 export const QA_METHODS = { 'rule-based': 'Regeln aus dem Satzbau', llm: 'KI' };
 export const LEHRPLAN_MODES = { keyword: 'Stichwort, wie eingegeben', topic: 'Thema, wie Teil 2 eines Kompendiums' };
+export const LINK_CHECKS = { 'rule-based': 'Regeln', llm: 'KI prüft jede Verknüpfung' };
 export const MATCHED_IN = { label: 'Element nennt das Thema', parent: 'nur die Überschrift nennt das Thema' };
 // The notes of the LLM check of part 2 (app/knowledge/curriculum_check.py, D58); a 0 leaves the list
 export const RATINGS = { 2: 'passt zum Thema', 1: 'streift das Thema', 0: 'passt nicht' };

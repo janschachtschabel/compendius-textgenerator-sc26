@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { buildRequests, defaults, fromExample, nodeIdOf, problems } from '../../app/ui/static/forms.mjs';
+import { buildRequests, defaults, FORMS, fromExample, nodeIdOf, problems } from '../../app/ui/static/forms.mjs';
 
 const COLLECTION = '9e7ae956-e9df-430f-bace-f3db4b910013';
 const MATERIAL = 'ac66224b-42b0-4676-a53d-71b058dc780b';
@@ -10,11 +10,15 @@ const options = {
   preset_default: 'balanced',
   llm_configured: true,
   presets: [{ id: 'llm-free' }, { id: 'balanced' }, { id: 'best-quality' }, { id: 'best-quality-generated' }],
+  lehrplan: { modes: ['keyword', 'topic'] },
+  entities: { methods: ['ner', 'dictionary', 'llm'], link_checks: ['rule-based', 'llm'] },
+  qa: { methods: ['rule-based', 'llm'] },
   limits: {
-    compendium: { target_length: { default: 12000, min: 2000, max: 60000 }, max_articles: { default: null, min: 1, max: 50 } },
-    knowledge: { max_articles: { default: null, min: 1, max: 50 }, max_chars: { default: null, min: 100 } },
+    compendium: { topic: { max_length: 300 }, target_length: { default: 12000, min: 2000, max: 60000 }, max_articles: { default: null, min: 1, max: 50 } },
+    knowledge: { topic: { max_length: 300 }, max_articles: { default: null, min: 1, max: 50 }, max_chars: { default: null, min: 100 } },
+    lehrplan: { q: { min_length: 3, max_length: 200 }, limit: { default: 50, min: 1, max: 500 } },
     entities: { max_entities: { default: 50, min: 1, max: 200 } },
-    qa: { count: { default: 5, min: 1, max: 50 }, max_answer_length: { default: 300, min: 50, max: 2000 } },
+    qa: { topic: { max_length: 300 }, count: { default: 5, min: 1, max: 50 }, max_answer_length: { default: 300, min: 50, max: 2000 } },
   },
 };
 const form = (mode, values) => ({ ...defaults(mode, options), ...values });
@@ -122,8 +126,31 @@ test('knowledge texts for a topic or a node', () => {
 test('an empty number field leaves the value to the server', () => {
   const [run] = buildRequests('lehrplan', form('lehrplan', { q: 'Optik', limit: ' 20 ' }), options);
 
-  assert.equal(run.request.query.limit, '20');
+  assert.equal(run.request.query.limit, 20);
   assert.ok(!('max_entities' in buildRequests('entities', form('entities', { text: 'x' }), options)[0].request.body));
+});
+
+test('the lists of the forms come from the server, a value the page has no words for under its own name', () => {
+  const choices = (mode, name, served) => Object.keys(FORMS[mode].fields.find((field) => field.name === name).choices(served));
+  const more = { ...options, lehrplan: { modes: ['keyword', 'topic', 'fuzzy'] }, qa: { methods: ['llm'] } };
+
+  assert.deepEqual(choices('lehrplan', 'mode', options), ['keyword', 'topic']);
+  assert.deepEqual(choices('lehrplan', 'mode', more), ['keyword', 'topic', 'fuzzy']);
+  assert.equal(FORMS.lehrplan.fields.find((field) => field.name === 'mode').choices(more).fuzzy, 'fuzzy');
+  assert.deepEqual(choices('entities', 'link_check', options), ['rule-based', 'llm']);
+  assert.deepEqual(choices('qa', 'method', more), ['llm']);
+});
+
+test('the bounds of the forms come from the server, and a number goes as a number', () => {
+  const wider = { ...options, limits: { ...options.limits, qa: { ...options.limits.qa, topic: { max_length: 400 } }, lehrplan: { q: { min_length: 2 }, limit: { min: 1, max: 1000 } } } };
+  const long = 'x'.repeat(350);
+
+  assert.ok(problems('qa', form('qa', { topic: long }), options).topic);
+  assert.deepEqual(problems('qa', form('qa', { topic: long }), wider), {});
+  assert.ok(problems('lehrplan', form('lehrplan', { q: 'Optik', limit: '800' }), options).limit);
+  assert.deepEqual(problems('lehrplan', form('lehrplan', { q: 'ab', limit: '800' }), wider), {});
+  // "1e2" is an integer the page lets through; as text the query would be a 422 of the endpoint
+  assert.equal(buildRequests('lehrplan', form('lehrplan', { q: 'Optik', limit: '1e2' }), options)[0].request.query.limit, 100);
 });
 
 test('the curriculum search is a query of the address', () => {

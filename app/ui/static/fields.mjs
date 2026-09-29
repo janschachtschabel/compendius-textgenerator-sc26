@@ -5,7 +5,7 @@
 import { h } from './dom.mjs';
 import { bounds, FORMS } from './forms.mjs';
 import { formatNumber } from './stats.mjs';
-import { ENTITY_METHODS, label, PARTS, PROFILE_ABOUT, PROFILE_NAMES, QA_METHODS, STEPS } from './texts.mjs';
+import { ENTITY_METHODS, label, LINK_CHECKS, PARTS, PROFILE_ABOUT, PROFILE_NAMES, QA_METHODS, STEPS } from './texts.mjs';
 
 let ids = 0;
 const uid = (name) => `feld-${(ids += 1)}-${name}`;
@@ -143,7 +143,8 @@ const TYPES = {
   select(spec, ctx) {
     const control = h('select', { id: uid(spec.name), name: spec.name });
     const first = spec.profile ? h('option', { value: '' }) : null;
-    control.append(...[first, ...Object.entries(spec.choices).map(([value, text]) => h('option', { value }, text))].filter(Boolean));
+    const choices = typeof spec.choices === 'function' ? spec.choices(ctx.options) : spec.choices;
+    control.append(...[first, ...Object.entries(choices).map(([value, text]) => h('option', { value }, text))].filter(Boolean));
     if (spec.profile) {
       ctx.refreshers.push((values) => {
         first.textContent = `wie im Profil: ${profileDefault(spec.name, values.preset, ctx.options)}`;
@@ -250,7 +251,7 @@ function methodsField(spec, ctx) {
 function profileDefault(name, preset, options) {
   if (name === 'methods') return (options.entities?.profiles?.[preset] ?? []).map((method) => label(ENTITY_METHODS, method)).join(', ');
   if (name === 'method') return label(QA_METHODS, options.qa?.profiles?.[preset]);
-  if (name === 'link_check') return 'Regeln';
+  if (name === 'link_check') return label(LINK_CHECKS, options.entities?.link_check_default);
   const value = options.presets.find((profile) => profile.id === preset)?.switches?.[name];
   return label(STEPS[name]?.values, value);
 }

@@ -182,6 +182,7 @@ def test_the_options_offer_every_value_of_every_switch(options: dict[str, Any]) 
     assert options["entities"] == {
         "methods": list(get_args(EntityMethod)),
         "link_checks": list(get_args(LinkCheck)),
+        "link_check_default": "rule-based",
         "profiles": ENTITY_METHODS,
     }
     assert options["qa"] == {"methods": list(get_args(QaMethod)), "profiles": QA_METHODS}
@@ -195,6 +196,25 @@ def test_the_options_carry_the_bounds_of_the_number_fields(options: dict[str, An
     assert options["limits"]["compendium"]["target_length"]["max"] == 60_000
     assert options["limits"]["qa"]["count"] == {"default": 5, "min": 1, "max": 50}
     assert options["limits"]["entities"]["max_entities"] == {"default": 50, "min": 1, "max": 200}
+
+
+def test_the_curriculum_search_and_the_topic_fields_are_bounded_as_their_endpoints_are(
+    ui: TestClient, options: dict[str, Any]
+) -> None:
+    search = ui.get("/openapi.json").json()["paths"]["/api/v2/lehrplan/search"]["get"]
+    query = {parameter["name"]: parameter["schema"] for parameter in search["parameters"]}
+
+    assert options["lehrplan"] == {"modes": query["mode"]["enum"]}
+    limit = query["limit"]
+    assert options["limits"]["lehrplan"]["limit"] == {
+        "default": limit["default"],
+        "min": limit["minimum"],
+        "max": limit["maximum"],
+    }
+    assert options["limits"]["lehrplan"]["q"] == {"min_length": query["q"]["minLength"], "max_length": query["q"]["maxLength"]}
+    for mode in ("compendium", "knowledge", "qa"):
+        (text,) = [kind for kind in REQUESTS[mode].model_json_schema()["properties"]["topic"]["anyOf"] if "maxLength" in kind]
+        assert options["limits"][mode]["topic"]["max_length"] == text["maxLength"], mode
 
 
 def test_the_options_list_the_templates_and_the_school_subjects(options: dict[str, Any]) -> None:

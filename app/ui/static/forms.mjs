@@ -2,11 +2,9 @@
 // they refuse before sending. The endpoints check everything again; the checks here only say it in plain words and
 // before a request costs anything. fields.mjs turns the fields into controls.
 
-import { ENTITY_METHODS, LEHRPLAN_MODES, QA_METHODS } from './texts.mjs';
+import { label, LEHRPLAN_MODES, LINK_CHECKS, QA_METHODS } from './texts.mjs';
 
 const NODE_ID = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/;
-const TOPIC_MAX_CHARS = 300; // app/domain/requests.py
-const LEHRPLAN_LIMIT = { default: 50, min: 1, max: 500 }; // the query bounds of GET /api/v2/lehrplan/search
 export const COMPENDIUM_STEPS = ['article_choice', 'matcher', 'extraction', 'generation', 'enrichment', 'curriculum_check'];
 
 const ID_HELP = 'ID oder Link aus dem Repository, etwa 9e7ae956-e9df-430f-bace-f3db4b910013';
@@ -53,7 +51,7 @@ export const FORMS = {
     fields: [
       { name: 'q', type: 'text', label: 'Stichwort oder Thema', placeholder: 'z. B. Optik' },
       { ...SUBJECT, help: 'Grenzt die Suche auf die Lehrpläne eines Fachs ein.' },
-      { name: 'mode', type: 'select', label: 'Suche nach', choices: LEHRPLAN_MODES },
+      { name: 'mode', type: 'select', label: 'Suche nach', choices: (options) => labelled(options.lehrplan?.modes, LEHRPLAN_MODES) },
       PRESET,
       { name: 'steps', type: 'steps', label: 'Methode', advanced: true, steps: ['curriculum_check'] },
       { name: 'limit', type: 'number', label: 'Höchstens Elemente', advanced: true },
@@ -67,8 +65,8 @@ export const FORMS = {
       { name: 'link', type: 'check', label: 'Artikel in den Archiven nachschlagen', option: true },
       NODE,
       REPOSITORY,
-      { name: 'methods', type: 'methods', label: 'Wege der Erkennung', advanced: true, choices: ENTITY_METHODS },
-      { name: 'link_check', type: 'select', label: 'Prüfung der Artikel', advanced: true, profile: true, choices: { 'rule-based': 'Regeln', llm: 'KI prüft jede Verknüpfung' } },
+      { name: 'methods', type: 'methods', label: 'Wege der Erkennung', advanced: true },
+      { name: 'link_check', type: 'select', label: 'Prüfung der Artikel', advanced: true, profile: true, choices: (options) => labelled(options.entities?.link_checks, LINK_CHECKS) },
       { name: 'max_entities', type: 'number', label: 'Höchstens Entitäten', advanced: true },
     ],
   },
@@ -82,16 +80,21 @@ export const FORMS = {
       { name: 'count', type: 'number', label: 'Anzahl der Paare' },
       NODE,
       REPOSITORY,
-      { name: 'method', type: 'select', label: 'Methode', advanced: true, profile: true, choices: QA_METHODS },
+      { name: 'method', type: 'select', label: 'Methode', advanced: true, profile: true, choices: (options) => labelled(options.qa?.methods, QA_METHODS) },
       { name: 'levels', type: 'text', label: 'Bildungsstufen', advanced: true, placeholder: 'z. B. Sek I, Sek II', help: 'Durch Kommas getrennt; nur die KI ordnet Stufen zu.' },
       { name: 'max_answer_length', type: 'number', label: 'Höchstens Zeichen je Antwort', advanced: true },
     ],
   },
 };
 
-/** The bounds of a number field: the model's (options.limits), for the curriculum search the query's. */
+// The values the server offers (options.json), each in the page's words, or under its own name where it has none
+function labelled(values, words) {
+  return Object.fromEntries((values ?? []).map((value) => [value, label(words, value)]));
+}
+
+/** The bounds of a field as the endpoint declares them (options.limits): of a number, of the length of a text. */
 export function bounds(mode, name, options) {
-  return mode === 'lehrplan' && name === 'limit' ? LEHRPLAN_LIMIT : options.limits?.[mode]?.[name] ?? {};
+  return options.limits?.[mode]?.[name] ?? {};
 }
 
 /** The id in a value - a link that holds one works too - or the value as typed when it holds none. */
@@ -156,6 +159,7 @@ export function problems(mode, values, options) {
       found[field.name] = 'Das ist keine ID. Eine ID sieht so aus: 9e7ae956-e9df-430f-bace-f3db4b910013 – ein Link, der sie enthält, geht auch.';
     }
     if (field.type === 'number') numberProblem(values[field.name], bounds(mode, field.name, options), field.name, found);
+    if (field.type === 'text') lengthProblem(values[field.name], bounds(mode, field.name, options), field.name, found);
   }
   if (text(values.repository) && !text(values.node_id)) found.repository = 'Ein Repository gilt nur für ein Material oder eine Sammlung als Eingang.';
   if (values.compare && values.preset_b === values.preset) found.preset_b = 'Bitte ein anderes Profil als das erste wählen.';
@@ -196,7 +200,7 @@ const BUILDERS = {
     const query = { q: text(v.q) };
     put(query, 'subject', text(v.subject));
     query.mode = v.mode;
-    put(query, 'limit', text(v.limit));
+    put(query, 'limit', number(v.limit));
     query.preset = v.preset;
     if (withSteps) put(query, 'curriculum_check', v.curriculum_check);
     return { method: 'GET', path: 'api/v2/lehrplan/search', query };
@@ -233,7 +237,6 @@ const CHECKS = {
     if (!text(v.topic) && !text(v.collection_id) && !text(v.node_id)) {
       found.topic = 'Bitte ein Thema eingeben, eine Sammlung für Teil 3 oder unter „Erweitert“ ein Material.';
     }
-    topicLength(v, found);
     if (!v.parts?.length) found.parts = 'Bitte mindestens einen Teil wählen.';
     else if (v.parts.length === 1 && v.parts[0] === 'collection' && !text(v.collection_id)) found.collection_id = 'Teil 3 braucht eine Sammlung.';
     if (text(v.knowledge_collection_id) && !v.parts?.includes('world')) {
@@ -242,10 +245,9 @@ const CHECKS = {
   },
   knowledge(v, found) {
     if (!text(v.topic) && !text(v.node_id)) found.topic = 'Bitte ein Thema eingeben oder unter „Erweitert“ ein Material oder eine Sammlung.';
-    topicLength(v, found);
   },
   lehrplan(v, found) {
-    if (text(v.q).length < 3) found.q = 'Bitte mindestens drei Zeichen eingeben.';
+    if (!text(v.q)) found.q = 'Bitte ein Stichwort oder Thema eingeben.';
   },
   entities(v, found) {
     const hasText = Boolean(v.text?.trim());
@@ -260,12 +262,14 @@ const CHECKS = {
     if (hasText && hasTopic) found.text = 'Entweder ein eigener Text oder ein Thema bzw. Material – nicht beides.';
     else if (!hasText && !hasTopic) found.topic = 'Bitte ein Thema oder einen eigenen Text eingeben.';
     if (hasText && text(v.subject)) found.subject = 'Das Fach gilt nur für ein Thema; ein eigener Text wird so abgefragt, wie er ist.';
-    topicLength(v, found);
   },
 };
 
-function topicLength(v, found) {
-  if (text(v.topic).length > TOPIC_MAX_CHARS) found.topic = `Das Thema ist zu lang, höchstens ${TOPIC_MAX_CHARS} Zeichen.`;
+// A text the endpoint would refuse for its length; an empty one the checks of the form speak of
+function lengthProblem(value, { min_length: min, max_length: max }, name, found) {
+  const length = text(value).length;
+  if (max !== undefined && length > max) found[name] = `Bitte kürzen: höchstens ${formatWhole(max)} Zeichen, eingegeben sind ${formatWhole(length)}.`;
+  else if (length && min !== undefined && length < min) found[name] = `Bitte mindestens ${formatWhole(min)} Zeichen eingeben.`;
 }
 
 function numberProblem(value, { min, max }, name, found) {
@@ -273,9 +277,12 @@ function numberProblem(value, { min, max }, name, found) {
   if (!typed) return;
   const number = Number(typed);
   if (Number.isInteger(number) && (min === undefined || number >= min) && (max === undefined || number <= max)) return;
-  const format = (n) => new Intl.NumberFormat('de-DE').format(n);
-  const range = max === undefined ? `ab ${format(min)}` : `von ${format(min)} bis ${format(max)}`;
+  const range = max === undefined ? `ab ${formatWhole(min)}` : `von ${formatWhole(min)} bis ${formatWhole(max)}`;
   found[name] = `Bitte eine ganze Zahl ${range} eingeben.`;
+}
+
+function formatWhole(n) {
+  return new Intl.NumberFormat('de-DE').format(n);
 }
 
 function node(body, v) {
