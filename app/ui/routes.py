@@ -8,6 +8,7 @@ the page's own files.
 
 from __future__ import annotations
 
+import hashlib
 from functools import partial
 from pathlib import Path
 
@@ -29,11 +30,28 @@ HEADERS = {
 }
 
 
+class _File:
+    """A file of the page with the tag of its content. no-cache has the browser ask again on every visit; with the
+    tag it gets the file back only when it changed, else a 304 (audit 2026-09-29, S13)."""
+
+    def __init__(self, content: bytes, media_type: str) -> None:
+        self.content = content
+        self.media_type = media_type
+        self.headers = {**HEADERS, "ETag": f'"{hashlib.sha256(content).hexdigest()[:32]}"'}
+
+    def answer(self, request: Request) -> Response:
+        held = request.headers.get("if-none-match", "")
+        tags = {tag.strip().removeprefix("W/") for tag in held.split(",")}  # a comparison as weak as RFC 9110 allows
+        if "*" in tags or self.headers["ETag"] in tags:
+            return Response(status_code=304, headers=self.headers)
+        return Response(self.content, media_type=self.media_type, headers=self.headers)
+
+
 def ui_router(static_dir: Path = STATIC_DIR) -> APIRouter:
     """The routes of the page. Its files are read once here, so a request can only pick one of them by name."""
-    page = (static_dir / "index.html").read_bytes()
+    page = _File((static_dir / "index.html").read_bytes(), "text/html; charset=utf-8")
     assets = {
-        path.name: (path.read_bytes(), MEDIA_TYPES[path.suffix])
+        path.name: _File(path.read_bytes(), MEDIA_TYPES[path.suffix])
         for path in static_dir.iterdir()
         if path.suffix in MEDIA_TYPES
     }
@@ -47,8 +65,8 @@ def ui_router(static_dir: Path = STATIC_DIR) -> APIRouter:
         return RedirectResponse("ui/", headers=HEADERS)
 
     @router.get("/ui/")
-    async def the_page() -> Response:
-        return Response(page, media_type="text/html; charset=utf-8", headers=HEADERS)
+    async def the_page(request: Request) -> Response:
+        return page.answer(request)
 
     @router.get("/ui/options.json")
     async def the_options(request: Request) -> JsonResponse:
@@ -59,11 +77,10 @@ def ui_router(static_dir: Path = STATIC_DIR) -> APIRouter:
         return JsonResponse(await run_system(request, build), headers=HEADERS)
 
     @router.get("/ui/{name}")
-    async def an_asset(name: str) -> Response:
+    async def an_asset(name: str, request: Request) -> Response:
         found = assets.get(name)  # a file name, never a path: nothing but the page's own files can match
         if found is None:
             raise HTTPException(status_code=404, detail="Keine Datei der Prüfansicht")
-        content, media_type = found
-        return Response(content, media_type=media_type, headers=HEADERS)
+        return found.answer(request)
 
     return router

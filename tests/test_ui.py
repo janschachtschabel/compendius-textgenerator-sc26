@@ -8,9 +8,12 @@ its own files, and offer exactly the values the endpoints accept.
 from __future__ import annotations
 
 import re
+import shutil
+from pathlib import Path
 from typing import Any, get_args
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import BaseModel
 
@@ -34,7 +37,7 @@ from app.domain.requests import (
 )
 from app.main import create_app
 from app.settings import Settings
-from app.ui.routes import STATIC_DIR
+from app.ui.routes import STATIC_DIR, ui_router
 
 KEY = "k" * 32
 REQUESTS: dict[str, type[BaseModel]] = {
@@ -108,6 +111,43 @@ def test_the_stylesheet_is_served_as_css(ui: TestClient) -> None:
 
     assert answer.status_code == 200
     assert answer.headers["content-type"].startswith("text/css")
+
+
+@pytest.mark.parametrize("path", ["/ui/", "/ui/main.mjs", "/ui/ui.css"])
+def test_a_file_the_browser_holds_comes_back_as_not_modified(ui: TestClient, path: str) -> None:
+    """no-cache makes the browser ask again on every visit; with a tag it gets the 24 files back only when they
+    changed (audit 2026-09-29, S13)."""
+    first = ui.get(path)
+    tag = first.headers["etag"]
+
+    again = ui.get(path, headers={"If-None-Match": tag})
+    weak = ui.get(path, headers={"If-None-Match": f'"anders", W/{tag}'})
+    other = ui.get(path, headers={"If-None-Match": '"anders"'})
+
+    assert again.status_code == 304 and again.content == b""
+    assert again.headers["etag"] == tag
+    for name in ("content-security-policy", "x-content-type-options", "referrer-policy", "cache-control"):
+        assert again.headers[name] == first.headers[name], name
+    assert weak.status_code == 304
+    assert other.status_code == 200 and other.content == first.content
+
+
+def test_the_tag_of_a_file_follows_its_content(tmp_path: Path) -> None:
+    static = shutil.copytree(STATIC_DIR, tmp_path / "static")
+    before = TestClient(_serving(static)).get("/ui/main.mjs").headers["etag"]
+    (static / "main.mjs").write_bytes((static / "main.mjs").read_bytes() + b"\n// changed\n")
+
+    after = TestClient(_serving(static)).get("/ui/main.mjs").headers["etag"]
+    page = TestClient(_serving(static)).get("/ui/").headers["etag"]
+
+    assert after != before
+    assert page != after, "each file has a tag of its own"
+
+
+def _serving(static: Path) -> FastAPI:
+    app = FastAPI()
+    app.include_router(ui_router(static))
+    return app
 
 
 @pytest.mark.parametrize(
