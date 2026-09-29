@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import zlib
 from collections.abc import Callable, Iterator
+from contextlib import closing
 from datetime import timedelta
 from pathlib import Path
 from typing import Any
@@ -116,7 +117,8 @@ def test_sync_builds_a_missing_index_from_the_newest_run(
     assert main(["wikidata", "sync"]) == 0
     out = capsys.readouterr().out
     assert "kein Index vorhanden" in out and "Dump vom 2026-09-07" in out
-    assert WikidataIndex(state_dir / "wikidata.db").qid("Ernst Abbe") == "Q999001"
+    with closing(WikidataIndex(state_dir / "wikidata.db")) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
 
 
 def test_sync_leaves_a_current_index_and_force_rebuilds_it(
@@ -142,7 +144,8 @@ def test_a_failed_sync_keeps_the_old_index_and_says_why(
     _fake_sync(monkeypatch, site)
     assert main(["wikidata", "sync", "--force"]) == 1
     assert "nicht gebaut" in capsys.readouterr().err
-    assert WikidataIndex(state_dir / "wikidata.db").qid("Ernst Abbe") == "Q999001"
+    with closing(WikidataIndex(state_dir / "wikidata.db")) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
 
 
 def _loop_task(monkeypatch: pytest.MonkeyPatch) -> list[Callable[[], object]]:

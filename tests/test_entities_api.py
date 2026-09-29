@@ -7,6 +7,7 @@ which way produced what.
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -196,12 +197,13 @@ def test_without_linking_the_dictionary_cannot_check_and_says_so(client: TestCli
 
 
 @pytest.fixture(scope="module")
-def with_wikidata(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPathFactory) -> TestClient:
-    """A service whose state directory holds a Wikidata index built from two small dumps."""
+def with_wikidata(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPathFactory) -> Iterator[TestClient]:
+    """A service whose state directory holds a Wikidata index built from two small dumps; its shutdown closes it."""
     base = tmp_path_factory.mktemp("mit_wikidata")
     settings = make_settings(sample_zims.values(), base / "state")
     build_index(*write_dumps(base / "dumps"), settings.wikidata_db_path)
-    return TestClient(create_app(settings))
+    with TestClient(create_app(settings)) as client:
+        yield client
 
 
 def by_text(body: dict) -> dict[str, dict]:
@@ -271,13 +273,13 @@ def test_an_index_the_sync_builds_while_the_service_runs_is_used_without_a_resta
     app = create_app(settings)
     now = [0.0]
     app.state.wikidata = WikidataIndex(settings.wikidata_db_path, clock=lambda: now[0])
-    client = TestClient(app)
-    assert client.get("/health").json()["components"]["entities"]["wikidata"]["available"] is False
-    build_index(*write_dumps(tmp_path / "dumps"), settings.wikidata_db_path)
-    now[0] = RECHECK_S + 1
-    wikidata = client.get("/health").json()["components"]["entities"]["wikidata"]
+    with TestClient(app) as client:  # the shutdown closes the index it opens
+        assert client.get("/health").json()["components"]["entities"]["wikidata"]["available"] is False
+        build_index(*write_dumps(tmp_path / "dumps"), settings.wikidata_db_path)
+        now[0] = RECHECK_S + 1
+        wikidata = client.get("/health").json()["components"]["entities"]["wikidata"]
+        found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
     assert wikidata == {"available": True, "articles": 5, "dump": "2026-09-07"}
-    found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
     assert found["Ernst Abbe"]["article"]["ids"]["wikidata"] == "Q999001"
 
 
@@ -288,7 +290,8 @@ def test_the_dbpedia_uri_names_the_resource_of_the_english_article(
     settings = make_settings(sample_zims.values(), tmp_path / "state")
     dumps = tmp_path / "dumps"
     build_index(*write_dumps(dumps), settings.wikidata_db_path, langlinks=write_langlinks(dumps))
-    found = by_text(TestClient(create_app(settings)).post("/api/v2/entities", json={"text": TEXT}).json())
+    with TestClient(create_app(settings)) as client:
+        found = by_text(client.post("/api/v2/entities", json={"text": TEXT}).json())
     abbe = found["Ernst Abbe"]["article"]["ids"]
     assert abbe["dbpedia"] == "http://dbpedia.org/resource/Ernst_Abbe"
     assert abbe["same_as"][-1] == "http://dbpedia.org/resource/Ernst_Abbe"
@@ -304,14 +307,14 @@ def test_an_article_without_normdaten_gets_its_gnd_from_the_local_gnd_index(
     record = {"gnd": "4180001-2", "type": "SubjectHeadingSensoStricto", "names": ["Schutz vor optischer Strahlung"]}
     dump = write_gnd(tmp_path / "authorities-gnd-sachbegriff_lds_20260217.ttl.gz", [record])
     build_gnd_index([(dump, "Sachbegriff")], settings.gnd_db_path)
-    client = TestClient(create_app(settings))
     text = "Der Schutz vor optischer Strahlung beschäftigte Ernst Abbe."
-    found = by_text(client.post("/api/v2/entities", json={"text": text}).json())
+    with TestClient(create_app(settings)) as client:
+        found = by_text(client.post("/api/v2/entities", json={"text": text}).json())
+        gnd = client.get("/health").json()["components"]["entities"]["gnd"]
     schutz = found["Schutz vor optischer Strahlung"]["article"]["ids"]
     assert (schutz["gnd"], schutz["gnd_kind"], schutz["gnd_source"]) == ("4180001-2", "Sachbegriff", "name")
     abbe = found["Ernst Abbe"]["article"]["ids"]
     assert (abbe["gnd"], abbe["gnd_source"]) == ("118646419", "normdaten"), "the Normdaten block goes first"
-    gnd = client.get("/health").json()["components"]["entities"]["gnd"]
     assert gnd == {"available": True, "records": 1, "release": "2026-02-17"}
 
 

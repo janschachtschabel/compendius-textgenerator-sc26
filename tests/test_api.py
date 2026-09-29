@@ -17,10 +17,14 @@ import app.api.health as health_module
 from app.llm.client import BApiClient
 from app.main import build_llm, create_app
 from app.settings import Settings
+from app.sources.gnd.index import build_gnd_index
+from app.sources.wikidata.index import build_index
 from tests.conftest import make_settings
+from tests.test_gnd_index import write_dumps as write_gnd_dumps
 from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
+from tests.test_wikidata_index import write_dumps
 
 
 @pytest.fixture(scope="module")
@@ -344,6 +348,21 @@ def test_shutdown_closes_the_outbound_http_clients(settings: Settings) -> None:
     with TestClient(app):
         assert closed == []
     assert sorted(closed) == ["b-api", "edu-sharing", "kiwix"]
+
+
+def test_shutdown_closes_the_local_indexes(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """The Wikidata and the GND index hold a connection each for the life of a worker; the lifespan closed only the
+    HTTP clients, and the suite counted unclosed databases by the dozen (audit 2026-09-29, S1)."""
+    state = tmp_path / "state"
+    build_index(*write_dumps(tmp_path / "wikidata"), state / "wikidata.db")
+    build_gnd_index(write_gnd_dumps(tmp_path / "gnd"), state / "gnd.db")
+    app = create_app(make_settings(sample_zims.values(), state))
+    assert app.state.wikidata.available and app.state.gnd.available
+
+    with TestClient(app):
+        pass
+
+    assert not app.state.wikidata.available and not app.state.gnd.available
 
 
 def test_settings_that_no_longer_exist_are_named_at_start(

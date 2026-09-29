@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator
+from contextlib import closing
 from datetime import timedelta
 from pathlib import Path
 from typing import Any
@@ -59,7 +60,8 @@ def test_status_before_and_after_a_sync(
 def test_a_build_by_hand_from_the_dumps_on_disk(state_dir: Path, tmp_path: Path) -> None:
     (subjects, _), (places, _) = write_dumps(tmp_path / "dumps")
     assert main(["gnd", "build", "--sachbegriff", str(subjects), "--geografikum", str(places)]) == 0
-    hit = GndIndex(state_dir / "gnd.db").find("Berlin", qid="Q64")
+    with closing(GndIndex(state_dir / "gnd.db")) as index:
+        hit = index.find("Berlin", qid="Q64")
     assert hit is not None and hit.kind == "Geografikum"
 
 

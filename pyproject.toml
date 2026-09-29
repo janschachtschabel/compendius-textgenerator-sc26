@@ -114,4 +114,9 @@ addopts = ["--strict-markers", "-q"]
 filterwarnings = [
     "error::starlette.exceptions.StarletteDeprecationWarning",
     "error::fastapi.exceptions.FastAPIDeprecationWarning",
+    # An SQLite connection nobody closes fails the run: 57 were left open, the indexes of apps never shut down among
+    # them (audit 2026-09-29, S1). Python reports one when the collector frees it, so pytest names the test running
+    # then, or the end of the run; PYTHONTRACEMALLOC=25 names where it was opened. Other leaks stay Python's default
+    "error:unclosed database:ResourceWarning",
+    "error:Exception ignored in. .sqlite3.Connection:pytest.PytestUnraisableExceptionWarning",
 ]

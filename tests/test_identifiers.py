@@ -5,6 +5,8 @@ Nothing is looked up; the URI is constructed, and the endpoint says so in its sc
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -51,13 +53,14 @@ def _normdaten(kind: str, gnd: str | None) -> str:
 
 
 @pytest.fixture
-def indexes(tmp_path: Path) -> tuple[WikidataIndex, GndIndex]:
+def indexes(tmp_path: Path) -> Iterator[tuple[WikidataIndex, GndIndex]]:
     """Zahl is item Q11563 and a GND subject heading; Tetraethylblei has no item, but the GND knows the name."""
     pages = [(10, 0, "Zahl", 0), (11, 0, "Tetraethylblei", 0), (12, 0, "Windelwechsel", 0)]
     props = [(10, "wikibase_item", "Q11563"), (11, "wikibase_item", "Q424242"), (12, "wikibase_item", "Q515151")]
     build_index(*write_wikidata_dumps(tmp_path / "wd", pages=pages, props=props), tmp_path / "wikidata.db")
     build_gnd_index(write_gnd_dumps(tmp_path / "gnd"), tmp_path / "gnd.db")
-    return WikidataIndex(tmp_path / "wikidata.db"), GndIndex(tmp_path / "gnd.db")
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as wikidata, closing(GndIndex(tmp_path / "gnd.db")) as gnd:
+        yield wikidata, gnd
 
 
 def test_the_normdaten_block_goes_first_and_says_so(indexes: tuple[WikidataIndex, GndIndex]) -> None:

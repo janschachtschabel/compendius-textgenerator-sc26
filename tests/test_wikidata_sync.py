@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from contextlib import closing
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -129,8 +130,8 @@ def test_a_new_installation_gets_the_index_and_keeps_no_dump(tmp_path: Path, sit
     assert reason == "no index"
     meta = sync.run(reason)
     assert meta["dump"] == "2026-09-07" and meta["articles"] > 0
-    index = WikidataIndex(tmp_path / "state" / "wikidata.db")
-    assert index.qid("Ernst Abbe") == "Q999001" and index.english("Römisches Reich") == "Roman Empire"
+    with closing(WikidataIndex(tmp_path / "state" / "wikidata.db")) as index:
+        assert index.qid("Ernst Abbe") == "Q999001" and index.english("Römisches Reich") == "Roman Empire"
     assert list((tmp_path / "state" / DUMP_DIR).glob("*")) == []  # 750 MB of dumps do not stay behind
     status = read_status(tmp_path / "state")
     assert status is not None and status["last_run"]["ok"] is True
@@ -152,7 +153,8 @@ def test_a_newer_wikipedia_archive_brings_the_newer_run(tmp_path: Path, site: Fa
     sync = _sync(tmp_path / "state", site, archive=date(2026, 9, 15))
     assert sync.due() == "archive newer than the index"
     assert sync.run()["dump"] == "2026-09-07"
-    assert WikidataIndex(tmp_path / "state" / "wikidata.db").qid("Ernst Abbe") == "Q999101"
+    with closing(WikidataIndex(tmp_path / "state" / "wikidata.db")) as index:
+        assert index.qid("Ernst Abbe") == "Q999101"
 
 
 def test_a_newer_archive_without_a_newer_run_waits_instead_of_fetching_the_same_run(
@@ -185,8 +187,8 @@ def test_a_dump_with_the_wrong_checksum_keeps_the_index_there_is(tmp_path: Path,
     with pytest.raises(DownloadError, match="SHA-1 mismatch"):
         _sync(tmp_path / "state", site, archive=date(2026, 9, 15)).run()
     assert not (tmp_path / "state" / LOCK_FILE).exists()
-    index = WikidataIndex(tmp_path / "state" / "wikidata.db")
-    assert index.meta()["dump"] == "2026-08-04" and index.qid("Ernst Abbe") == "Q999001"
+    with closing(WikidataIndex(tmp_path / "state" / "wikidata.db")) as index:
+        assert index.meta()["dump"] == "2026-08-04" and index.qid("Ernst Abbe") == "Q999001"
     status = read_status(tmp_path / "state")
     assert status is not None and status["last_run"]["ok"] is False
     assert "SHA-1 mismatch" in status["last_run"]["error"]

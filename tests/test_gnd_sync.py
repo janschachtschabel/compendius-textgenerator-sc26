@@ -7,6 +7,7 @@ the size of each file on HEAD, and the files themselves, written like the DNB's 
 from __future__ import annotations
 
 import hashlib
+from contextlib import closing
 from datetime import date
 from pathlib import Path
 
@@ -105,7 +106,8 @@ def test_a_new_installation_gets_the_gnd_index_and_keeps_no_dump(tmp_path: Path,
     assert reason == "no index"
     meta = sync.run(reason)
     assert meta["release"] == "2026-02-17" and meta["records"] == 8
-    hit = GndIndex(tmp_path / "state" / "gnd.db").find("Zahl", qid=None)
+    with closing(GndIndex(tmp_path / "state" / "gnd.db")) as index:
+        hit = index.find("Zahl", qid=None)
     assert hit is not None and hit.number == "4067271-2"
     assert list((tmp_path / "state" / DUMP_DIR).glob("*")) == []
     status = read_status(tmp_path / "state")
@@ -135,7 +137,8 @@ def test_a_dump_with_the_wrong_checksum_keeps_the_index_there_is(tmp_path: Path,
     dnb.add("20260217", wrong=True)
     with pytest.raises(DownloadError, match="SHA-256 mismatch"):
         _sync(tmp_path / "state", dnb).run()
-    assert GndIndex(tmp_path / "state" / "gnd.db").meta()["release"] == "2025-09-01"
+    with closing(GndIndex(tmp_path / "state" / "gnd.db")) as index:
+        assert index.meta()["release"] == "2025-09-01"
     status = read_status(tmp_path / "state")
     assert status is not None and status["last_run"]["ok"] is False
     assert not (tmp_path / "state" / LOCK_FILE).exists()

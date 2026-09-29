@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -65,9 +66,8 @@ def test_the_check_of_the_sync_finds_a_damaged_page(tmp_path: Path, dnb: FakeDnb
 
 
 def test_an_intact_index_passes_the_check(tmp_path: Path) -> None:
-    index = GndIndex(built(tmp_path))
-
-    assert index.intact()
+    with closing(GndIndex(built(tmp_path))) as index:
+        assert index.intact()
 
 
 def test_the_new_index_reaches_the_disk_before_it_replaces_the_old(

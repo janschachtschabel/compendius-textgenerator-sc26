@@ -12,7 +12,8 @@ import gzip
 import re
 import sqlite3
 import sys
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -124,10 +125,11 @@ def write_dumps(
 
 
 @pytest.fixture
-def index(tmp_path: Path) -> WikidataIndex:
+def index(tmp_path: Path) -> Iterator[WikidataIndex]:
     page_props, page = write_dumps(tmp_path / "dumps")
     build_index(page_props, page, tmp_path / "wikidata.db")
-    return WikidataIndex(tmp_path / "wikidata.db")
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:  # closed with the test (audit 2026-09-29, S1)
+        yield index
 
 
 def test_an_article_title_leads_to_its_wikidata_number(index: WikidataIndex) -> None:
@@ -159,9 +161,9 @@ def test_the_columns_are_read_in_the_order_the_create_table_names_them(tmp_path:
     reordered = ("page_namespace", "page_title", "page_lang", "page_id", *PAGE_COLUMNS[3:11])
     page_props, page = write_dumps(tmp_path / "dumps", page_columns=reordered)
     build_index(page_props, page, tmp_path / "wikidata.db")
-    index = WikidataIndex(tmp_path / "wikidata.db")
-    assert index.qid("Ernst Abbe") == "Q999001"
-    assert index.qid("Physik") is None, "the namespace is still read from its own column"
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
+        assert index.qid("Physik") is None, "the namespace is still read from its own column"
 
 
 def test_meta_names_the_dump_date_and_the_number_of_articles(index: WikidataIndex) -> None:
@@ -195,7 +197,8 @@ def test_a_failed_build_keeps_the_index_that_was_there(tmp_path: Path) -> None:
     broken.write_bytes(b"not gzip at all")
     with pytest.raises(OSError):  # gzip.BadGzipFile
         build_index(page_props, broken, target)
-    assert WikidataIndex(target).qid("Ernst Abbe") == "Q999001"
+    with closing(WikidataIndex(target)) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
     assert not list(tmp_path.glob("wikidata.db.*")), "no half-built file is left behind"
 
 
@@ -203,7 +206,8 @@ def test_the_older_layout_with_all_tuples_on_one_line_reads_the_same(tmp_path: P
     page_props, page = write_dumps(tmp_path / "dumps", one_line=True)
     meta = build_index(page_props, page, tmp_path / "wikidata.db")
     assert meta["articles"] == 5
-    assert WikidataIndex(tmp_path / "wikidata.db").qid("O'Brien") == "Q999002"
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
+        assert index.qid("O'Brien") == "Q999002"
 
 
 def test_a_build_that_finds_no_article_fails_instead_of_writing_an_empty_index(tmp_path: Path) -> None:
@@ -248,8 +252,9 @@ def test_a_build_that_cannot_replace_the_index_in_use_keeps_both(
     monkeypatch.setattr("app.sources.local_index.os.replace", refuse)
     with pytest.raises(IndexInUseError, match=re.escape("wikidata.db.part")):
         build_index(page_props, page, target)
-    assert WikidataIndex(target).qid("Ernst Abbe") == "Q999001", "the index in use stays"
-    assert WikidataIndex(target.with_name("wikidata.db.part")).qid("Ernst Abbe") == "Q999001", "the new one waits"
+    with closing(WikidataIndex(target)) as used, closing(WikidataIndex(target.with_name("wikidata.db.part"))) as new:
+        assert used.qid("Ernst Abbe") == "Q999001", "the index in use stays"
+        assert new.qid("Ernst Abbe") == "Q999001", "the new one waits"
 
 
 def test_a_title_is_asked_as_written_before_its_capitalised_form(tmp_path: Path) -> None:
@@ -258,21 +263,22 @@ def test_a_title_is_asked_as_written_before_its_capitalised_form(tmp_path: Path)
     props = [(1, "wikibase_item", "Q1"), (2, "wikibase_item", "Q2"), (3, "wikibase_item", "Q3")]
     page_props, page = write_dumps(tmp_path / "dumps", pages=pages, props=props)
     build_index(page_props, page, tmp_path / "wikidata.db")
-    index = WikidataIndex(tmp_path / "wikidata.db")
-    assert index.qid("ß (Begriffsklärung)") == "Q1"
-    assert index.qid("ernst Abbe") == "Q3", "a lower-case first letter still finds the article"
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
+        assert index.qid("ß (Begriffsklärung)") == "Q1"
+        assert index.qid("ernst Abbe") == "Q3", "a lower-case first letter still finds the article"
 
 
 def test_an_index_built_after_the_start_is_opened_at_the_next_look(tmp_path: Path) -> None:
     now = [0.0]
-    index = WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])  # a new installation: no index yet
-    assert not index.available
-    page_props, page = write_dumps(tmp_path / "dumps")
-    build_index(page_props, page, tmp_path / "wikidata.db")
-    assert not index.available  # the file is looked at once a minute, not at every lookup
-    now[0] = RECHECK_S + 1
-    assert index.available and index.qid("Ernst Abbe") == "Q999001"
-    assert index.meta()["dump"] == "2026-09-07"
+    # a new installation: no index yet
+    with closing(WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])) as index:
+        assert not index.available
+        page_props, page = write_dumps(tmp_path / "dumps")
+        build_index(page_props, page, tmp_path / "wikidata.db")
+        assert not index.available  # the file is looked at once a minute, not at every lookup
+        now[0] = RECHECK_S + 1
+        assert index.available and index.qid("Ernst Abbe") == "Q999001"
+        assert index.meta()["dump"] == "2026-09-07"
 
 
 @pytest.mark.skipif(
@@ -281,16 +287,16 @@ def test_an_index_built_after_the_start_is_opened_at_the_next_look(tmp_path: Pat
 def test_a_running_service_takes_a_rebuilt_index_without_a_restart(tmp_path: Path) -> None:
     build_index(*write_dumps(tmp_path / "first"), tmp_path / "wikidata.db")
     now = [0.0]
-    index = WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])
-    assert index.qid("Ernst Abbe") == "Q999001"
-    later = [(1, "wikibase_item", "Q999101"), *PROPS[1:]]
-    build_index(
-        *write_dumps(tmp_path / "second", props=later, completed="2026-10-04 10:00:00"), tmp_path / "wikidata.db"
-    )
-    assert index.qid("Ernst Abbe") == "Q999001"  # not looked again yet
-    now[0] = RECHECK_S + 1
-    assert index.qid("Ernst Abbe") == "Q999101"
-    assert index.meta()["dump"] == "2026-10-04"
+    with closing(WikidataIndex(tmp_path / "wikidata.db", clock=lambda: now[0])) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
+        later = [(1, "wikibase_item", "Q999101"), *PROPS[1:]]
+        build_index(
+            *write_dumps(tmp_path / "second", props=later, completed="2026-10-04 10:00:00"), tmp_path / "wikidata.db"
+        )
+        assert index.qid("Ernst Abbe") == "Q999001"  # not looked again yet
+        now[0] = RECHECK_S + 1
+        assert index.qid("Ernst Abbe") == "Q999101"
+        assert index.meta()["dump"] == "2026-10-04"
 
 
 LANGLINK_COLUMNS = ("ll_from", "ll_lang", "ll_title")
@@ -318,14 +324,14 @@ def test_the_index_knows_the_english_article_of_a_title(tmp_path: Path) -> None:
     build_index(
         *write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db", langlinks=write_langlinks(tmp_path / "dumps")
     )
-    index = WikidataIndex(tmp_path / "wikidata.db")
-    assert index.english("Ernst Abbe") == "Ernst Abbe"
-    assert index.english("Römisches Reich") == "Roman Empire", "the English title, not the Italian or French"
-    assert index.english("ernst Abbe") == "Ernst Abbe", "asked like qid: as written, then capitalised"
-    assert index.english("Abbe") is None, "the redirect has an item of its own but no English article"
-    assert index.qid("Römisches Reich") == "Q999005"
-    assert index.meta()["english"] == 3
-    assert index.meta()["sources"][-1] == "dewiki-latest-langlinks.sql.gz"
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
+        assert index.english("Ernst Abbe") == "Ernst Abbe"
+        assert index.english("Römisches Reich") == "Roman Empire", "the English title, not the Italian or French"
+        assert index.english("ernst Abbe") == "Ernst Abbe", "asked like qid: as written, then capitalised"
+        assert index.english("Abbe") is None, "the redirect has an item of its own but no English article"
+        assert index.qid("Römisches Reich") == "Q999005"
+        assert index.meta()["english"] == 3
+        assert index.meta()["sources"][-1] == "dewiki-latest-langlinks.sql.gz"
 
 
 def test_without_langlinks_the_index_has_numbers_but_no_english_titles(index: WikidataIndex) -> None:
@@ -337,7 +343,7 @@ def test_without_langlinks_the_index_has_numbers_but_no_english_titles(index: Wi
 def test_an_index_of_the_first_schema_is_not_read(tmp_path: Path) -> None:
     """Schema 1 has no English titles; the sync sees it as unusable and builds schema 2 (D65)."""
     build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db")
-    with sqlite3.connect(tmp_path / "wikidata.db") as connection:
+    with closing(sqlite3.connect(tmp_path / "wikidata.db")) as connection, connection:  # the inner one commits
         connection.execute("UPDATE meta SET value = '1' WHERE key = 'schema'")
     assert not WikidataIndex(tmp_path / "wikidata.db").available
 
@@ -349,6 +355,6 @@ def test_rows_of_other_languages_are_passed_over_without_losing_the_end_of_a_sta
             (5, "it", "Impero romano")]  # fmt: skip
     langlinks = write_langlinks(tmp_path / "dumps", rows=rows, completed="2026-09-08 02:10:00")
     build_index(*write_dumps(tmp_path / "dumps"), tmp_path / "wikidata.db", langlinks=langlinks)
-    index = WikidataIndex(tmp_path / "wikidata.db")
-    assert index.english("Römisches Reich") == "Roman Empire" and index.meta()["english"] == 3
-    assert index.meta()["dump"] == "2026-09-08", "the langlinks dump is read last and gives the date"
+    with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
+        assert index.english("Römisches Reich") == "Roman Empire" and index.meta()["english"] == 3
+        assert index.meta()["dump"] == "2026-09-08", "the langlinks dump is read last and gives the date"

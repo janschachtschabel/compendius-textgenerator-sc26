@@ -302,10 +302,19 @@ def close_clients(app: FastAPI) -> None:
             client.close()
 
 
+def close_indexes(app: FastAPI) -> None:
+    """Close the Wikidata and the GND index, which hold a connection each for the life of the worker (audit
+    2026-09-29, S1: the lifespan closed only the HTTP clients)."""
+    for index in (getattr(app.state, "wikidata", None), getattr(app.state, "gnd", None)):
+        if index is not None:
+            index.close()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     yield
     close_clients(app)
+    close_indexes(app)
 
 
 # D33, D53 and D57 removed these; unknown names are ignored, so a stale value would change nothing without a word

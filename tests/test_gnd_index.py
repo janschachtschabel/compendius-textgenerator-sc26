@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import gzip
 import sqlite3
+from collections.abc import Iterator
+from contextlib import closing
 from pathlib import Path
 from typing import Any
 
@@ -85,9 +87,10 @@ def write_dumps(directory: Path, version: str = "20260217") -> list[tuple[Path, 
 
 
 @pytest.fixture
-def index(tmp_path: Path) -> GndIndex:
+def index(tmp_path: Path) -> Iterator[GndIndex]:
     build_gnd_index(write_dumps(tmp_path / "dumps"), tmp_path / "gnd.db")
-    return GndIndex(tmp_path / "gnd.db")
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:  # the connection goes with the test (audit 2026-09-29, S1)
+        yield index
 
 
 def test_the_wikidata_item_of_an_article_leads_to_the_record_that_names_it(index: GndIndex) -> None:
@@ -149,7 +152,7 @@ def test_a_build_that_reads_no_record_fails_instead_of_writing_an_empty_index(tm
 
 
 def test_the_index_is_read_only_and_holds_only_unambiguous_pairs(index: GndIndex, tmp_path: Path) -> None:
-    with sqlite3.connect(tmp_path / "gnd.db") as connection:
+    with closing(sqlite3.connect(tmp_path / "gnd.db")) as connection:  # "with" alone commits, it does not close
         names = dict(connection.execute("SELECT name, gnd FROM names").fetchall())
     assert "chat" not in names and names["zahlen"] == "4067271-2"
 
@@ -168,10 +171,10 @@ def test_names_and_links_the_dnb_wraps_onto_the_next_line_are_read(tmp_path: Pat
     with gzip.open(dump, "rt", encoding="utf-8") as handle:
         assert ',\n    "Müllentsorgung";' in handle.read(), "the dump wraps the list as the DNB does"
     build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
-    index = GndIndex(tmp_path / "gnd.db")
-    wrapped = index.find("Müllentsorgung", qid=None)
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:
+        wrapped = index.find("Müllentsorgung", qid=None)
+        linked = index.find("Irgendwas", qid="Q999555")
     assert wrapped is not None and wrapped.number == "4000009-6"
-    linked = index.find("Irgendwas", qid="Q999555")
     assert linked is not None and linked.source == "wikidata"
 
 
@@ -180,7 +183,8 @@ def test_lines_of_another_subject_are_no_part_of_the_record_before(tmp_path: Pat
     with gzip.open(dump, "at", encoding="utf-8") as handle:
         handle.write('\n_:b1 a gndo:SubjectHeading;\n  gndo:variantNameForTheSubjectHeading "Fremdname" .\n')
     build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
-    assert GndIndex(tmp_path / "gnd.db").find("Fremdname", qid=None) is None
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:
+        assert index.find("Fremdname", qid=None) is None
 
 
 def test_escapes_in_names_are_read_as_turtle_defines_them(tmp_path: Path) -> None:
@@ -195,10 +199,10 @@ def test_escapes_in_names_are_read_as_turtle_defines_them(tmp_path: Path) -> Non
     with gzip.open(dump, "wt", encoding="utf-8") as handle:
         handle.write(PREFIX + record)
     build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
-    index = GndIndex(tmp_path / "gnd.db")
-    assert index.find("Käse", qid=None) is not None
-    assert index.find("Tab" + chr(9) + "stopp", qid=None) is not None
-    assert index.find("X" + beyond, qid=None) is not None
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:
+        assert index.find("Käse", qid=None) is not None
+        assert index.find("Tab" + chr(9) + "stopp", qid=None) is not None
+        assert index.find("X" + beyond, qid=None) is not None
 
 
 def test_a_build_that_reads_records_but_no_name_fails(tmp_path: Path) -> None:
@@ -229,9 +233,9 @@ def test_a_blank_line_or_a_comment_does_not_break_a_record(tmp_path: Path) -> No
     with gzip.open(dump, "wt", encoding="utf-8") as handle:
         handle.write(PREFIX + record)
     build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
-    index = GndIndex(tmp_path / "gnd.db")
-    assert index.find("Drittname", qid=None) is not None, "the list goes on after the blank line and the comment"
-    assert index.find("Vorzugsname", qid=None) is not None, "a comment in column 0 does not end the record"
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:
+        assert index.find("Drittname", qid=None) is not None, "the list goes on after the blank line and the comment"
+        assert index.find("Vorzugsname", qid=None) is not None, "a comment in column 0 does not end the record"
 
 
 def test_a_wikidata_link_over_https_counts_too(tmp_path: Path) -> None:
@@ -241,7 +245,8 @@ def test_a_wikidata_link_over_https_counts_too(tmp_path: Path) -> None:
     with gzip.open(dump, "wt", encoding="utf-8") as handle:
         handle.write(text)
     build_gnd_index([(dump, "Sachbegriff")], tmp_path / "gnd.db")
-    hit = GndIndex(tmp_path / "gnd.db").find("", qid="Q11563")
+    with closing(GndIndex(tmp_path / "gnd.db")) as index:
+        hit = index.find("", qid="Q11563")
     assert hit is not None and hit.source == "wikidata"
 
 
