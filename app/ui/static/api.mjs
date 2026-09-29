@@ -28,7 +28,11 @@ export async function send(request, key, signal) {
     throw new ApiError(0, String(error.message ?? error), null);
   }
   const requestId = response.headers.get('X-Request-ID');
-  const data = await response.json().catch(() => null); // a proxy may answer an error with a page instead of JSON
+  const data = await response.json().catch((error) => {
+    // A stop while the body comes stays a stop, not an answer without data; a proxy may answer an error with a page
+    if (error.name === 'AbortError') throw error;
+    return null;
+  });
   const elapsedMs = performance.now() - started;
   if (!response.ok) throw new ApiError(response.status, data?.detail ?? null, requestId ?? data?.request_id ?? null);
   return { data, elapsedMs, requestId };

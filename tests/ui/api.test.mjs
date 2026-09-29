@@ -72,3 +72,20 @@ test('a server out of reach is no connection, and a request stopped before its a
   serve(() => Promise.reject(new DOMException('The operation was aborted.', 'AbortError')));
   await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, KEY, signal()), { name: 'AbortError' });
 });
+
+test('a request stopped while its answer is read stays a stop, not an answer without data', async () => {
+  installDocument();
+  const controller = new AbortController();
+  // The headers are there, the body is still coming when the reader presses "Abbrechen"
+  serve((url, init) => ({
+    ok: true,
+    status: 200,
+    headers: new Headers({ 'X-Request-ID': 'r-1' }),
+    json: () => new Promise((resolve, reject) => init.signal.addEventListener('abort', () => reject(new DOMException('The operation was aborted.', 'AbortError')))),
+  }));
+
+  const pending = send({ method: 'POST', path: 'api/v2/compendium', body: { topic: 'Optik' } }, KEY, controller.signal);
+  setTimeout(() => controller.abort(), 0);
+
+  await assert.rejects(pending, { name: 'AbortError' });
+});
