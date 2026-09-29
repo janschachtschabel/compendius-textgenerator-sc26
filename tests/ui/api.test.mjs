@@ -1,0 +1,74 @@
+// The requests of the review page (D66): to the server of the page, the key the reader entered only in their header,
+// and every way a request can end told apart - an answer, an error answer, no connection, a stop.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+
+import { installDocument } from './dom_stub.mjs';
+import { ApiError, send } from '../../app/ui/static/api.mjs';
+
+const KEY = 'k'.repeat(32);
+const signal = () => new AbortController().signal;
+
+/** fetch answered by `answer(url, init)`; the calls it got. */
+function serve(answer) {
+  const calls = [];
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url: String(url), init });
+    return answer(url, init);
+  };
+  return calls;
+}
+
+const json = (status, body, headers = {}) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...headers } });
+
+test('a request goes to the server of the page, with the key only in its header', async () => {
+  installDocument();
+  const calls = serve(() => json(200, { matches: [] }, { 'X-Request-ID': 'r-7' }));
+
+  const got = await send({ method: 'GET', path: 'api/v2/lehrplan/search', query: { q: 'Optik', limit: 5 } }, KEY, signal());
+  await send({ method: 'POST', path: 'api/v2/qa', body: { topic: 'Optik' } }, '', signal());
+
+  const [search, qa] = calls;
+  assert.equal(search.url, 'https://kompendium.test/api/v2/lehrplan/search?q=Optik&limit=5');
+  assert.deepEqual([search.init.method, search.init.headers, search.init.body], ['GET', { Accept: 'application/json', 'X-API-Key': KEY }, undefined]);
+  assert.equal(qa.url, 'https://kompendium.test/api/v2/qa');
+  assert.deepEqual(qa.init.headers, { Accept: 'application/json', 'Content-Type': 'application/json' }, 'no key, no header');
+  assert.equal(qa.init.body, '{"topic":"Optik"}');
+  assert.deepEqual([got.data, got.requestId], [{ matches: [] }, 'r-7']);
+});
+
+test('behind a proxy that puts a prefix in front, the endpoints resolve below it', async () => {
+  installDocument({ baseURI: 'https://schule.example/kompendium/ui/' });
+  const calls = serve(() => json(200, {}));
+
+  await send({ method: 'POST', path: 'api/v2/entities', body: { text: 'x' } }, KEY, signal());
+
+  assert.equal(calls[0].url, 'https://schule.example/kompendium/api/v2/entities');
+});
+
+test('an error answer keeps what the server said and the id it logged the request under', async () => {
+  installDocument();
+  serve(() => json(422, { detail: [{ loc: ['body', 'count'], msg: 'zu groß' }] }, { 'X-Request-ID': 'r-9' }));
+
+  await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: { count: 99 } }, KEY, signal()), (error) => {
+    assert.ok(error instanceof ApiError);
+    assert.deepEqual([error.status, error.message, error.requestId, error.detail[0].msg], [422, 'Die Eingaben passen nicht.', 'r-9', 'zu groß']);
+    return true;
+  });
+});
+
+test('an error page of a proxy instead of JSON is an error without details', async () => {
+  installDocument();
+  serve(() => new Response('<html>Bad Gateway</html>', { status: 502, headers: { 'Content-Type': 'text/html' } }));
+
+  await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, KEY, signal()), (error) => error.status === 502 && error.detail === null);
+});
+
+test('a server out of reach is no connection, and a request stopped before its answer stays a stop', async () => {
+  installDocument();
+  serve(() => Promise.reject(new TypeError('Failed to fetch')));
+  await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, KEY, signal()), (error) => error.status === 0 && error.message === 'Keine Verbindung zum Server.');
+
+  serve(() => Promise.reject(new DOMException('The operation was aborted.', 'AbortError')));
+  await assert.rejects(send({ method: 'POST', path: 'api/v2/qa', body: {} }, KEY, signal()), { name: 'AbortError' });
+});

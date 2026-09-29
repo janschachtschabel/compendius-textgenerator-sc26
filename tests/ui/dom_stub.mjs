@@ -136,8 +136,9 @@ class FakeElement extends FakeNode {
 }
 
 /** Put a fresh stand-in in place of document, Node and navigator; returns the document to look into. */
-export function installDocument({ clipboard } = {}) {
+export function installDocument({ clipboard, baseURI = 'https://kompendium.test/ui/' } = {}) {
   const doc = {
+    baseURI, // the address of the page, below which api.mjs finds the endpoints
     commands: [],
     downloads: [],
     copyResult: true,
