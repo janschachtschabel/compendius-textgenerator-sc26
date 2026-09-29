@@ -68,8 +68,9 @@ services:
     # API_STOP_GRACE_PERIOD ueber REQUEST_TIMEOUT_S plus 15 s: Das Panel uebernimmt diese Datei bei jedem Update
     # (Audit 2026-09-28, BE-17).
     stop_grace_period: ${API_STOP_GRACE_PERIOD:-150s}
-    # Gemessen rund 1,4 GiB je Worker im Ruhezustand und 1,5 GiB nach einer Anfrage (docs/installation.md): 4 GiB
-    # tragen die zwei Worker des Images. Mit mehr Workern API_MEMORY heben, je Worker rund 1,5 GiB.
+    # Gemessen am 29.09.2026 2,5 GiB nach dem Start und 3,4 GiB nach dem Aufwaermen, rund 1,7 GiB je Worker
+    # (docs/uebergabe/README.md): 4 GiB tragen die zwei Worker des Images knapp, den Rest fuellt der Seiten-Cache;
+    # fuer den Betrieb 6g. Mit mehr Workern API_MEMORY heben, je Worker rund 1,7 GiB.
     mem_limit: ${API_MEMORY:-4g}
     logging: *logging
     restart: unless-stopped
