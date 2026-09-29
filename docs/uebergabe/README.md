@@ -150,35 +150,48 @@ Volume `zim` legen und ohne Katalog übernehmen:
 
 ## CI im internen GitLab
 
-[`.gitlab-ci.yml`](../../.gitlab-ci.yml) folgt seit dem 29.09.2026 dem Muster der Plattform-Projekte: die Stufen
-`build`, `test`, `humanitec` und `deploy`, Pipelines für Branches (`workflow: rules`). Anders als im Muster laufen auch
-Git-Tags, damit ein Release sein Image bekommt; eingebundene Teil-Pipelines (`include: local`) braucht ein Repository
-mit einem einzigen Image nicht. Auf einem GitLab gelaufen ist diese Fassung noch nicht; geprüft sind ihr Aufbau
-(`tests/test_gitlab_ci.py`) und die Befehle, die sie aus der alten Fassung übernimmt. Daneben baut GitHub Actions
-(`.github/workflows/ci.yml`) das Image weiter nach `ghcr.io`, 6 bis 11 Minuten je Lauf.
+[`.gitlab-ci.yml`](../../.gitlab-ci.yml) folgt dem Muster der Plattform-Projekte: die Stufen `build`, `test`,
+`humanitec` und `deploy`, Pipelines für Branches (`workflow: rules`). Anders als im Muster laufen auch Git-Tags, damit
+ein Release sein Image bekommt; eingebundene Teil-Pipelines (`include: local`) braucht ein Repository mit einem
+einzigen Image nicht. Die Pipeline prüft und veröffentlicht wie die GitHub-CI (`.github/workflows/ci.yml` und
+`dependency-audit.yml`), die das Image weiter nach `ghcr.io` baut, 6 bis 11 Minuten je Lauf. Auf einem GitLab
+gelaufen ist sie noch nicht. Geprüft sind ihr Aufbau und die Namen der Tags (`tests/test_gitlab_ci.py`) und der
+Funktionstest: lokal über Volumes und mit Python 3.12 ohne die Umgebung des Projekts, so wie er in GitLab läuft.
 
 | Stufe | Jobs | was geschieht |
 |---|---|---|
-| build | `docker build`, nur für `main`, `develop` und Tags | Image bauen, Smoke-Probe (startet gehärtet, `/health` nennt den Commit, die vier Sidecar-Befehle laufen), pushen als `:<Commit>` |
+| build | `sample archives` und `docker build`, nur für `main`, `develop` und Tags | Beispielarchive bauen; das Image bauen (BuildKit mit Cache in der Registry, `:buildcache`) und prüfen wie auf GitHub mit `scripts/smoke_image.py`: gehärtet wie in Compose, `/health` nennt Commit und Model2Vec, ein Kompendium aus den Beispielarchiven, 503 für ein LLM-Profil ohne LLM, Entitäten, QA-Paare, Prüfansicht, die vier Sidecars. Erst dann pushen als `:<Commit>` |
 | test | `ruff`, `mypy`, `dependency-audit`, `alert-rules`, `pytest`, `ui-scripts` | in jeder Pipeline, gleichzeitig mit dem Bau (`needs: []`) |
 | humanitec | noch keiner | hier meldet ein Job das Image `:<Commit>` bei Humanitec an; er folgt, sobald die Angaben unten da sind |
-| deploy | `docker tag` | erst nach bestandenen Tests: `:main`, `:develop` oder `:v2.5.0` zeigen auf denselben Commit |
+| deploy | `docker tag` | erst nach bestandenen Tests, Namen wie auf GitHub: `main` wird `:main` und `:latest`, `v2.5.0` wird `:2.5.0` und `:2.5`, `develop` wird `:develop` |
+
+- **Wöchentlicher Audit:** Eine geplante Pipeline führt nur `dependency-audit` aus, wie `dependency-audit.yml` auf
+  GitHub. Dafür in GitLab unter *Build > Pipeline schedules* einen wöchentlichen Lauf auf `main` anlegen.
+- **Kein Überholen:** Ein neuer Commit auf einem Branch bricht dessen ältere Pipeline ab (GitLab-Einstellung
+  *Auto-cancel redundant pipelines*, ab Werk an). `docker tag` läuft zu Ende, wenn es einmal begonnen hat, und je
+  Branch oder Tag nur einmal zugleich (`resource_group`). So zeigen `:main` und `:latest` nie auf einen älteren Commit
+  zurück.
+- **Was GitHub mehr hat:** Dependabot (auf GitLab wäre das Renovate), die Prüfung, dass das Image ohne Anmeldung
+  ziehbar ist, und die Pages mit den Diagrammen; intern ist davon vermutlich nichts nötig.
 
 Für das neue GitLab zu klären:
 
 - **Runner:** Docker-Executor; `docker build` und `docker tag` brauchen Docker-in-Docker, also einen privilegierten
-  Runner. Der Bau nutzt BuildKit (`docker buildx build`).
+  Runner.
 - **Variablen** (CI/CD-Einstellungen, geheime maskiert): `DIND_IMAGE`, `DIND_HOST`, `DIND_DRIVER`, `DIND_TLS_CERTDIR`
-  wie in der alten Pipeline. Die Registry nennt `DOCKER_REGISTRY` mit `DOCKER_USERNAME` und `DOCKER_PASSWORD`, das Image
-  heißt dann `$DOCKER_REGISTRY/projects/wlo/compendious-text-fastapi`; ohne `DOCKER_REGISTRY` nimmt die Pipeline die
-  Registry des GitLab selbst (`$CI_REGISTRY_IMAGE`).
+  wie in der alten Pipeline; `DIND_IMAGE` ist ein Alpine-Image mit Docker (etwa `docker:dind`), denn der Funktionstest
+  holt sich dort `python3` und `py3-httpx`. Die Registry nennt `DOCKER_REGISTRY` mit `DOCKER_USERNAME` und
+  `DOCKER_PASSWORD`, das Image heißt dann `$DOCKER_REGISTRY/projects/wlo/compendious-text-fastapi`; ohne
+  `DOCKER_REGISTRY` nimmt die Pipeline die Registry des GitLab selbst (`$CI_REGISTRY_IMAGE`).
 - **Humanitec:** Organisation, Anwendung und Umgebungen, ein Token als maskierte Variable und wie die Plattform eine
   Workload beschreibt (etwa Score). Der Dienst sind fünf Container aus einem Image mit zwei gemeinsamen Volumes
   ([Aufbau](#aufbau)); Speicher und CPU je Container stehen unter [Ressourcen](#ressourcen). Am schnellsten hilft eine
   der eingebundenen Dateien eines Plattform-Projekts (etwa `gateway/.gitlab-ci.yml`) mit ihrem Humanitec-Job.
-- **Ausgehend vom Runner:** `ghcr.io` (uv), Docker Hub (Python, Node, Prometheus), `pypi.org` und
-  `files.pythonhosted.org` (Pakete), `huggingface.co` (Model2Vec) und `github.com` (spaCy-Modell) beim Bau des Images.
-- Die uv-Version steht im Dockerfile und in allen Pipelines gleich; `tests/test_ci_pins.py` prüft das.
+- **Ausgehend vom Runner:** `ghcr.io` (uv), Docker Hub (Python, Node, Prometheus, `moby/buildkit`), `pypi.org` und
+  `files.pythonhosted.org` (Pakete), `huggingface.co` (Model2Vec), `github.com` (spaCy-Modell) und das Paketarchiv
+  von Alpine (`python3`, `py3-httpx` für den Funktionstest).
+- Die uv-Version steht im Dockerfile und in allen Pipelines gleich, BuildKit in beiden CIs mit demselben Digest;
+  `tests/test_ci_pins.py` prüft beides.
 
 ## Betrieb in Kürze
 

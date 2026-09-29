@@ -71,3 +71,19 @@ def test_the_build_fetches_no_tool_by_a_moving_tag() -> None:
 
     assert not re.search(r"^#\s*syntax\s*=", dockerfile, re.MULTILINE | re.IGNORECASE)
     assert buildx and all("@sha256:" in step.get("with", {}).get("driver-opts", "") for step in buildx), buildx
+
+
+def test_gitlab_builds_with_the_buildkit_github_pins() -> None:
+    """The GitLab pipeline creates its BuildKit builder itself; it takes the image the GitHub CI pins, so that one
+    Dependabot-free line moves both (the comment at docker/setup-buildx-action in ci.yml)."""
+    ci = yaml.safe_load((ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8"))
+    gitlab = yaml.safe_load((ROOT / ".gitlab-ci.yml").read_text(encoding="utf-8"))
+    github = {
+        step["with"]["driver-opts"].removeprefix("image=")
+        for job in ci["jobs"].values()
+        for step in job.get("steps", [])
+        if str(step.get("uses", "")).startswith("docker/setup-buildx-action@")
+    }
+    created = re.findall(r"--driver-opt image=(\S+)", " ".join(gitlab["docker build"]["script"]))
+
+    assert len(github) == 1 and created == list(github), (github, created)

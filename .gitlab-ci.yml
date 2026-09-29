@@ -1,6 +1,7 @@
 # Pipeline fuer das interne GitLab, aufgebaut wie die der Plattform-Projekte (Muster vom 29.09.2026): die Stufen build,
 # test, humanitec und deploy, Pipelines fuer Branches. Anders als im Muster laufen auch Tags, damit ein Release (v2.5.0)
-# sein Image bekommt. Das Repository baut ein einziges Image, eingebundene Teil-Pipelines braucht es nicht.
+# sein Image bekommt. Das Repository baut ein einziges Image, eingebundene Teil-Pipelines braucht es nicht. Sie prueft
+# und veroeffentlicht wie .github/workflows/ci.yml und dependency-audit.yml.
 stages:
   - build
   - test
@@ -20,6 +21,9 @@ default:
   # Per Digest gepinnt wie die Basis-Images des Dockerfiles, mit derselben uv-Version wie Dockerfile und GitHub-CI
   # (tests/test_ci_pins.py); ab uv 0.12 gibt es das Image nur auf Debian 13 (Audit 2026-09-28, AB-06, BE-16)
   image: ghcr.io/astral-sh/uv:0.12.19-python3.13-trixie-slim@sha256:aba5f865793af9275ceaa06d30935dfc6db8b81969c9fb099b0ebca6396b189e
+  # Ein neuerer Commit desselben Branches bricht die aeltere Pipeline ab (GitLab: "Auto-cancel redundant pipelines");
+  # nur "docker tag" laeuft zu Ende, wenn es einmal begonnen hat
+  interruptible: true
   cache:
     - key:
         files:
@@ -28,6 +32,22 @@ default:
         - $UV_CACHE_DIR
   before_script:
     - uv sync --frozen --all-extras
+
+# Die Pruefungen: jede Pipeline ausser der woechentlichen des Audits, ohne auf das Image zu warten
+.checks:
+  stage: test
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
+
+# Das Image: nur main, develop und Tags, nie in der woechentlichen Pipeline
+.image-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_TAG
 
 # Docker-in-Docker fuer Bau und Tag des Images, Variablen wie in der alten Pipeline: $DIND_IMAGE, $DIND_HOST,
 # $DIND_DRIVER, $DIND_TLS_CERTDIR. Die Registry nennt $DOCKER_REGISTRY mit $DOCKER_USERNAME und $DOCKER_PASSWORD; ohne
@@ -53,42 +73,59 @@ default:
         IMAGE_NAME="$CI_REGISTRY_IMAGE"
       fi
     - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USERNAME" --password-stdin
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_TAG
 
 # --- build: das Image unter seinem Commit ----------------------------------------------------------------------------
-# Das Tag :<Commit> aendert sich nie; auf dieses Image kann die Stufe humanitec zeigen. Die Namen main, develop und
-# v<Version> bekommt es erst in deploy, wenn die Tests bestanden sind.
-docker build:
-  extends: .docker
+# Die Beispielarchive des Funktionstests baut libzim mit den Helfern der Testsuite; das Docker-in-Docker-Image hat die
+# Umgebung des Projekts nicht, darum ein eigener Job, dessen Archive "docker build" als Artefakt bekommt.
+sample archives:
+  extends: .image-rules
   stage: build
   script:
+    - uv run python scripts/smoke_image.py --write-archives smoke-zim
+  artifacts:
+    paths:
+      - smoke-zim/*.zim
+    expire_in: 1 day
+
+# Das Tag :<Commit> aendert sich nie; auf dieses Image kann die Stufe humanitec zeigen. Die Namen main, latest, develop
+# und die Version bekommt es erst in deploy, wenn die Tests bestanden sind.
+docker build:
+  extends: [.docker, .image-rules]
+  stage: build
+  needs: ["sample archives"]
+  script:
+    # BuildKit in einem eigenen Container, per Digest gepinnt wie in der GitHub-CI (tests/test_ci_pins.py), mit seinem
+    # Cache in der Registry (:buildcache): ohne ihn laedt jeder Bau Pakete und Modelle neu. Ein Cache, den die Registry
+    # nicht annimmt, laesst den Bau nicht scheitern (ignore-error).
+    - docker buildx create --name ci --driver docker-container --driver-opt image=moby/buildkit:buildx-stable-1@sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8 --use
     # Der Commit steht im Image, /health meldet ihn (Audit 2026-09-27, BE-01; auf GitLab 2026-09-28, BE-16)
-    - docker buildx build --build-arg GIT_REVISION=$CI_COMMIT_SHA --tag $IMAGE_NAME:$CI_COMMIT_SHA .
-    # Smoke-Probe vor dem Push (BE-16): Das Image startet gehaertet wie in docker-compose.yml und nennt in /health seinen
-    # Commit, und die Befehle der vier Sidecars laufen unter deren Haertung. Ohne Archive bleibt /ready 503; den
-    # Durchlauf mit den Beispielarchiven macht die GitHub-Pipeline (scripts/smoke_image.py).
-    - docker run -d --name smoke -p 8000:8000 --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges:true $IMAGE_NAME:$CI_COMMIT_SHA
-    - for attempt in $(seq 150); do wget -q -O health.json http://docker:8000/health && break; sleep 2; done
-    - grep -q "$CI_COMMIT_SHA" health.json || { docker logs smoke; exit 1; }
-    - for sidecar in zim lehrplan wikidata gnd; do docker run --rm --cap-drop ALL --security-opt no-new-privileges:true $IMAGE_NAME:$CI_COMMIT_SHA compendium $sidecar status || exit 1; done
-    - docker rm -f smoke
+    - >-
+      docker buildx build --load --build-arg GIT_REVISION=$CI_COMMIT_SHA --tag $IMAGE_NAME:$CI_COMMIT_SHA
+      --cache-from type=registry,ref=$IMAGE_NAME:buildcache
+      --cache-to type=registry,ref=$IMAGE_NAME:buildcache,mode=max,image-manifest=true,oci-mediatypes=true,ignore-error=true
+      .
+    # Funktionstest vor dem Push wie in der GitHub-CI: gehaertet wie in docker-compose.yml, /health nennt den Commit und
+    # das geladene Model2Vec-Modell, ein Kompendium aus den Beispielarchiven, 503 fuer ein LLM-Profil ohne LLM,
+    # Entitaeten, QA-Paare, die Pruefansicht und die Befehle der vier Sidecars. Er braucht nur Python und httpx; der
+    # Container laeuft im Dienst "docker", die Archive kommen per Volume hinein.
+    - apk add --no-cache python3 py3-httpx
+    - python3 scripts/smoke_image.py --archives smoke-zim --host docker --image $IMAGE_NAME:$CI_COMMIT_SHA --revision $CI_COMMIT_SHA --hardened --embeddings
     - docker image push $IMAGE_NAME:$CI_COMMIT_SHA
 
 # --- test: jede Pipeline, ohne auf das Image zu warten ---------------------------------------------------------------
 ruff:
-  stage: test
-  needs: []
+  extends: .checks
   script:
     - uv run ruff check app tests scripts
     - uv run ruff format --check app tests scripts
 
 mypy:
-  stage: test
-  needs: []
+  extends: .checks
   script:
     - uv run mypy app scripts tests
 
+# Laeuft auch in der woechentlichen Pipeline, als einziger Job: dafuer in GitLab unter Build > Pipeline schedules einen
+# woechentlichen Lauf auf main anlegen, wie ihn dependency-audit.yml auf GitHub hat (Audit 2026-09-27, AB-01)
 dependency-audit:
   stage: test
   needs: []
@@ -97,8 +134,7 @@ dependency-audit:
     - uvx pip-audit==2.10.1 --requirement requirements.txt --disable-pip --no-deps
 
 alert-rules:
-  stage: test
-  needs: []
+  extends: .checks
   image:
     # Dasselbe Image wie der Prometheus-Dienst in docker-compose.yml, per Digest gepinnt
     name: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
@@ -110,8 +146,7 @@ alert-rules:
     - promtool test rules monitoring/alerts_test.yml
 
 pytest:
-  stage: test
-  needs: []
+  extends: .checks
   # Set on purpose: tests/conftest.py must keep shell configuration away from the tests (test_isolation.py)
   variables:
     LLM_ENABLED: "true"
@@ -121,8 +156,7 @@ pytest:
     - uv run pytest --cov
 
 ui-scripts:
-  stage: test
-  needs: []
+  extends: .checks
   # Die Skripte der Prüfansicht (D66) testet Nodes eigener Runner. Das uv-Image hat kein Node, dort überspringt pytest
   # tests/test_ui_scripts.py (Review 2026-09-29, #16); per Digest gepinnt wie jedes Image der Pipeline
   image: node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c
@@ -136,18 +170,29 @@ ui-scripts:
 # Hier meldet ein Job das Image $IMAGE_NAME:$CI_COMMIT_SHA bei Humanitec an und stoesst das Deployment an. Er folgt,
 # sobald Organisation, Anwendung und Token der Plattform bekannt sind (docs/uebergabe/README.md, CI im GitLab).
 
-# --- deploy: der gepruefte Commit bekommt seinen Namen ---------------------------------------------------------------
+# --- deploy: der gepruefte Commit bekommt seine Namen ----------------------------------------------------------------
+# Wie in der GitHub-CI: main als :main und :latest, ein Tag v2.5.0 als :2.5.0 und :2.5 (eine Vorabversion wie
+# v2.6.0-rc.1 nur als :2.6.0-rc.1), develop als :develop. Einmal begonnen laeuft der Job zu Ende, und je Branch oder Tag
+# laeuft nur einer; eine aeltere Pipeline hat bis hierher ein neuerer Commit abgebrochen, darum zeigen :main und
+# :latest nie auf einen aelteren Commit zurueck.
 docker tag:
-  extends: .docker
+  extends: [.docker, .image-rules]
   stage: deploy
+  interruptible: false
+  resource_group: image-tags-$CI_COMMIT_REF_SLUG
   script:
+    - |
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        version="${CI_COMMIT_TAG#v}"
+        tags="$version"
+        case "$version" in
+          *-*) ;;
+          *.*.*) tags="$tags ${version%.*}" ;;
+        esac
+      elif [ "$CI_COMMIT_BRANCH" = main ]; then
+        tags="main latest"
+      else
+        tags="$CI_COMMIT_REF_SLUG"
+      fi
     - docker pull $IMAGE_NAME:$CI_COMMIT_SHA
-    - docker tag $IMAGE_NAME:$CI_COMMIT_SHA $IMAGE_NAME:$IMAGE_TAG
-    - docker image push $IMAGE_NAME:$IMAGE_TAG
-  rules:
-    - if: $CI_COMMIT_TAG
-      variables:
-        IMAGE_TAG: $CI_COMMIT_TAG
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
-      variables:
-        IMAGE_TAG: $CI_COMMIT_REF_SLUG
+    - for tag in $tags; do docker tag $IMAGE_NAME:$CI_COMMIT_SHA $IMAGE_NAME:$tag && docker image push $IMAGE_NAME:$tag || exit 1; done

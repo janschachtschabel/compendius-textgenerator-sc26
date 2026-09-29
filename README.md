@@ -97,7 +97,8 @@ uv run mypy app scripts tests
 
 Die CI (GitHub Actions `.github/workflows/ci.yml`, GitLab `.gitlab-ci.yml`) führt dieselben Prüfungen aus,
 dazu die Tests mit Zweigabdeckung (`uv run pytest --cov`, Schwelle 90 %) und `pip-audit` über die gelockten
-Laufzeitpakete. Tests sehen keine Variablen aus der Shell (`tests/conftest.py`), auch nicht `B_API_KEY`.
+Laufzeitpakete, jede Woche auch ohne Push. Beide bauen das Image, prüfen es mit `scripts/smoke_image.py` und
+veröffentlichen es erst danach, unter denselben Namen (`docs/uebergabe/README.md`, CI im GitLab). Tests sehen keine Variablen aus der Shell (`tests/conftest.py`), auch nicht `B_API_KEY`.
 
 Ein Kompendium von der Kommandozeile (Teil 1 und, wenn der Lehrplan-Cache vorliegt, Teil 2;
 Regelmodus mit dem Profil `llm-free`, denn ohne `--preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced`, und
