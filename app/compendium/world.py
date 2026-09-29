@@ -12,7 +12,7 @@ from collections.abc import Mapping, Sequence
 
 from app.compendium.llm_policy import LlmPolicy
 from app.compendium.prepared import Matched, PreparedTopic, Requested, Stopwatch, WorldPart
-from app.compose.regeneration import PreservedSection, parse_document, to_keep
+from app.compose.regeneration import PreservedSection, UnplacedSectionsError, parse_document, to_keep
 from app.domain.models import ScoredChunk
 from app.domain.requests import GenerateRequest
 from app.llm.budget import RequestBudget
@@ -218,6 +218,10 @@ class WorldBuilding(LlmPolicy):
         if not request.existing_markdown:
             return {}
         keep = to_keep(parse_document(request.existing_markdown), request.regenerate_sections)
+        ids = [slot.id for slot in template.slots]
+        unplaced = [f"{slot_id} ({section.status.value})" for slot_id, section in keep.items() if slot_id not in ids]
+        if unplaced:  # another template dropped them without a word (audit 2026-09-29, T5)
+            raise UnplacedSectionsError(unplaced, template.id, ids)
         content = {slot.id for slot in template.content_slots()}
         return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
 

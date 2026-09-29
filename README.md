@@ -889,7 +889,9 @@ sein Text wird also gar nicht angefasst — die neuen Bausteine werden hinter de
 weitergezählt, und der Quellen-Baustein führt beide auf. Ein Baustein reicht bis zur Überschrift des nächsten
 (einer `###`-Zeile mit Markierung darunter) oder bis zum nächsten Teil, eigene Zwischenüberschriften der Redaktion
 bleiben also in ihm; Zeilenenden mit CR (Windows, Textfelder) liest der Dienst wie LF. Eine Markierung, die er nicht
-lesen kann, und ein Baustein, der zweimal vorkommt, sind ein 422: Sonst würde der Baustein still neu erzeugt.
+lesen kann, ein Baustein, der zweimal vorkommt, ein Status, den er nicht kennt, und ein zu behaltender Baustein, für
+den das Template keinen Platz hat (ein anderes `template_id`), sind ein 422: Sonst würde der Baustein still neu
+erzeugt oder ein Baustein in Prüfung als geprüft ausgegeben.
 
 Admin-Endpunkte erwarten den Header `X-Admin-Token` mit dem Wert von `ADMIN_TOKEN`; ohne
 gesetztes Token sind sie deaktiviert. Dieselben Schreibwege gibt es in der CLI:

@@ -8,6 +8,7 @@ import pytest
 
 from app.compose.regeneration import (
     UnknownSectionsError,
+    UnplacedSectionsError,
     UnreadableDocumentError,
     _citation_rows,
     parse_document,
@@ -102,7 +103,7 @@ def document(rows: list[str]) -> str:
             "Der Merkur ist der sonnennächste Planet. [1] Licht wird an Linsen gebrochen. [2]",
             "",
             "### Quellen",
-            "<!-- kompendium:section id=sc26_12 status=generiert hash=0c2d -->",
+            "<!-- kompendium:section id=sc26_12 status=maschinell-generiert hash=0c2d -->",
             "",
             "| Beleg | Quelle | Abschnitt | Textauszug |",
             "| :---: | :--- | :--- | :--- |",
@@ -281,3 +282,29 @@ def test_a_broken_marker_refuses_the_whole_request(service: CompendiumService) -
 
     with pytest.raises(UnreadableDocumentError):
         service.generate(GenerateRequest(topic="Optik", parts=["world"], existing_markdown=broken))
+
+
+def test_a_status_the_service_does_not_know_is_refused() -> None:
+    """An unknown status was read as redaktionell-geprüft: a block "in-pruefung" came out as reviewed and passed the
+    default filter of the topic page (audit 2026-09-29, T5)."""
+    marker = "<!-- kompendium:section id=sc26_3 status=in-pruefung hash=0a1b -->"
+
+    with pytest.raises(UnreadableDocumentError) as refused:
+        parse_document(LF.join(["### Aufbau", marker, "", "Text in Prüfung."]))
+
+    assert "sc26_3 (in-pruefung)" in str(refused.value)
+    assert "redaktionell-geprüft" in str(refused.value), "the answer names the statuses the service knows"
+
+
+def test_a_kept_block_the_template_has_no_place_for_is_refused(service: CompendiumService) -> None:
+    """Another template (or another TEMPLATE_DEFAULT) dropped every reviewed block without a word (audit 2026-09-29,
+    T5)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+
+    with pytest.raises(UnplacedSectionsError) as refused:
+        service.generate(
+            GenerateRequest(topic="Optik", parts=["world"], template_id="standard", existing_markdown=reviewed)
+        )
+
+    assert "sc26_3" in str(refused.value) and "standard" in str(refused.value)

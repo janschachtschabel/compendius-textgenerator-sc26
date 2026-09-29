@@ -21,7 +21,7 @@ from app.compendium.errors import (
     RepositoryUnavailableError,
     TopicNotFoundError,
 )
-from app.compose.regeneration import UnknownSectionsError, UnreadableDocumentError
+from app.compose.regeneration import UnknownSectionsError, UnplacedSectionsError, UnreadableDocumentError
 from app.matching.registry import UnknownMatcherError
 from app.sources.lehrplan.subjects import UnknownSubjectError
 from app.sources.wlo.client import CollectionNotFoundError, EduSharingError, NodeNotFoundError
@@ -55,6 +55,7 @@ DOMAIN_ERRORS: dict[type[Exception], Handler] = {
     UnknownSubjectError: _answer(422),
     UnknownSectionsError: _answer(422),
     UnreadableDocumentError: _answer(422),
+    UnplacedSectionsError: _answer(422),
     UnknownMatcherError: _answer(422, lambda exc: f"Unbekannte Matching-Strategie: {exc}"),
     EduSharingError: _answer(502),
     LlmNotConfiguredError: _answer(503),

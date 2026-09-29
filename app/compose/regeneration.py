@@ -61,20 +61,42 @@ class UnknownSectionsError(ValueError):
         )
 
 
+class UnplacedSectionsError(ValueError):
+    """Blocks of an earlier compendium that should stay but have no place in the template of the request; the API
+    answers 422. Another template, or another TEMPLATE_DEFAULT, dropped every reviewed block without a word (audit
+    2026-09-29, T5)."""
+
+    def __init__(self, unplaced: Sequence[str], template_id: str, known: Sequence[str]) -> None:
+        self.unplaced, self.template_id, self.known = list(unplaced), template_id, list(known)
+        super().__init__(
+            f"Bausteine aus existing_markdown, die erhalten bleiben sollen, hat das Template {template_id} nicht: "
+            f"{listed(self.unplaced)}. Es kennt {listed(self.known)}; template_id des früheren Kompendiums angeben"
+        )
+
+
 class UnreadableDocumentError(ValueError):
     """An earlier compendium whose blocks cannot all be read safely; the API answers 422 and names what it met.
 
     A marker the parser could not read kept nothing of its block, and the block was made anew without a word - a
-    reviewed one as well (audit 2026-09-29, A01). Which of two blocks with one id should stay cannot be decided.
+    reviewed one as well (audit 2026-09-29, A01). Which of two blocks with one id should stay cannot be decided. A
+    status the service does not know was read as reviewed, so a block "in-pruefung" passed the default filter of
+    the topic page as reviewed; the service has only ever written its own statuses (T5).
     """
 
-    def __init__(self, unreadable: Sequence[str] = (), doubled: Sequence[str] = ()) -> None:
-        self.unreadable, self.doubled = list(unreadable), list(doubled)
+    def __init__(
+        self, unreadable: Sequence[str] = (), doubled: Sequence[str] = (), unknown: Sequence[str] = ()
+    ) -> None:
+        self.unreadable, self.doubled, self.unknown = list(unreadable), list(doubled), list(unknown)
         problems = []
         if self.unreadable:
             problems.append(f"nicht lesbare Markierungen: {listed(self.unreadable)}")
         if self.doubled:
             problems.append(f"mehrfach vorhandene Bausteine: {listed(self.doubled)}")
+        if self.unknown:
+            known = ", ".join(status.value for status in SectionStatus)
+            problems.append(
+                f"Bausteine mit einem Status, den der Dienst nicht kennt: {listed(self.unknown)} (er kennt {known})"
+            )
         super().__init__(
             "existing_markdown lässt sich nicht sicher lesen: "
             + "; ".join(problems)
@@ -114,22 +136,27 @@ def parse_document(markdown: str) -> dict[str, PreservedSection]:
     sections: dict[str, PreservedSection] = {}
     read: set[int] = set()
     doubled: list[str] = []
+    unknown: list[str] = []
     for match in SECTION_RE.finditer(markdown):
         slot_id = match.group("slot")
         if slot_id in sections:
             doubled.append(slot_id)
         read.add(match.start("marker"))
+        status = _status(match.group("status"))
+        if status is None:
+            unknown.append(f"{slot_id} ({match.group('status')})")
+            continue
         text = match.group("text").rstrip()
         sections[slot_id] = PreservedSection(
             slot_id=slot_id,
-            status=_status(match.group("status")),
+            status=status,
             text=text,
             facets=parse_marker(match.group("facets") or ""),
             citations=[rows[number] for number in marker_numbers(text) if number in rows],
         )
     unreadable = [line.group(0) for line in MARKER_LINE_RE.finditer(markdown) if line.start() not in read]
-    if unreadable or doubled:
-        raise UnreadableDocumentError(unreadable, doubled)
+    if unreadable or doubled or unknown:
+        raise UnreadableDocumentError(unreadable, doubled, unknown)
     return sections
 
 
@@ -166,8 +193,8 @@ def _citation_rows(markdown: str) -> dict[int, Citation]:
     return rows
 
 
-def _status(value: str) -> SectionStatus:
+def _status(value: str) -> SectionStatus | None:
     try:
         return SectionStatus(value)
-    except ValueError:  # a status this version does not know: the block is kept, the status is what it was
-        return SectionStatus.REVIEWED
+    except ValueError:
+        return None
