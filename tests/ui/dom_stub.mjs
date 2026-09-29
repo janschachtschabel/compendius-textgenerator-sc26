@@ -129,6 +129,11 @@ class FakeElement extends FakeNode {
     for (const listener of this.listeners.click ?? []) listener({ type: 'click', target: this, preventDefault() {} });
   }
 
+  contains(node) {
+    for (let at = node; at; at = at.parentNode) if (at === this) return true;
+    return false;
+  }
+
   /** Every element below this one, depth first. */
   descendants() {
     return this.children.flatMap((child) => [child, ...child.descendants()]);
@@ -145,6 +150,7 @@ export function installDocument({ clipboard, baseURI = 'https://kompendium.test/
     createElement: (tag) => new FakeElement(tag, doc),
     createTextNode: (text) => new FakeText(text),
     createDocumentFragment: () => new FakeFragment(),
+    getElementById: (id) => doc.body.descendants().find((node) => node.id === id) ?? null,
     execCommand(command) {
       const field = doc.activeElement;
       doc.commands.push({ command, text: field?.selected ? field.value : null });
