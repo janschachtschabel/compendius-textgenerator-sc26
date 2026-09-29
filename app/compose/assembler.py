@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import re
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import yaml
@@ -81,6 +81,10 @@ class Switches:
     switch or matcher=llm fell back to the rules, and ``matcher`` only when part 1 was generated. ``enrichment`` is the
     mode the request was granted, ``enriched_sentences`` what the text really carries: the disclosure follows the
     text, and a permission the model did not use must not be declared as model knowledge.
+
+    ``kept`` names the blocks a regeneration kept from an earlier compendium with their status, and
+    ``kept_model_knowledge`` the sentences of model knowledge those of them carry that no editor reviewed: the
+    disclosure follows the whole text, not only what this run wrote (audit 2026-09-29, A04).
     """
 
     extraction: str = "rule-based"
@@ -91,6 +95,8 @@ class Switches:
     extraction_requested: str | None = None
     generation_requested: str | None = None
     matcher_requested: str | None = None
+    kept: Mapping[str, SectionStatus] = field(default_factory=dict)
+    kept_model_knowledge: int = 0
 
 
 def build_frontmatter(
@@ -113,11 +119,18 @@ def build_frontmatter(
         switches.matcher,
     )
     enriched_sentences = switches.enriched_sentences
-    if generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences:
+    # A kept block counts with the status it carries; a reviewed one stands under editorial responsibility (Art. 50(4)
+    # EU AI Act), whoever wrote it first
+    kept = set(switches.kept.values())
+    if (generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences) or (
+        switches.kept_model_knowledge
+    ):
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
     elif generation != "rule-based":
         disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"
-    elif extraction == "llm" or matcher == "llm":
+    elif SectionStatus.LLM in kept:
+        disclosure, review = AI_DISCLOSURE["llm"], "ki-generiert"
+    elif extraction == "llm" or matcher == "llm" or SectionStatus.LLM_SELECTED in kept:
         disclosure, review = AI_SELECTED_DISCLOSURE, "ki-ausgewählt"
     else:
         disclosure, review = AI_DISCLOSURE["rule-based"], "maschinell-extraktiv"
@@ -136,6 +149,8 @@ def build_frontmatter(
         "review": {"status": review, "interval_months": 12},
         "sources_snapshot": [dict(s) for s in zim_snapshot],
     }
+    if switches.kept:  # blocks of an earlier compendium: the switches above say what this run did
+        frontmatter["kept_sections"] = {slot_id: status.value for slot_id, status in switches.kept.items()}
     if "world" in parts:  # the licence note speaks about part 1 only
         # the number of the template's sources block: 12 in sc26, 6 in standard (audit 2026-09-27, AR-04)
         number = next((n for n, slot in enumerate(template.slots, 1) if slot.generator == "sources"), None)

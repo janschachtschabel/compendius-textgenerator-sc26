@@ -6,6 +6,7 @@ import re
 
 import pytest
 
+from app.compose.assembler import AI_DISCLOSURE, AI_ENRICHED_DISCLOSURE
 from app.compose.regeneration import (
     UnknownSectionsError,
     UnplacedSectionsError,
@@ -15,7 +16,7 @@ from app.compose.regeneration import (
 )
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
-from app.synthesis.citations import marker_numbers
+from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN, marker_numbers
 from tests.markdown_safety import render, unsafe
 
 SECTION_RE = re.compile(
@@ -344,3 +345,49 @@ def test_a_kept_block_passes_the_net_of_every_writer(service: CompendiumService)
     assert 'href="https://evil.example/"' not in render(second.markdown), "no marker became a link"
     kept = next(section for section in second.sections if section.slot_id == "sc26_3")
     assert kept.text.startswith(original), "what the service wrote itself stays word for word"
+
+
+def with_status(markdown: str, slot_id: str, status: str, addition: str = "") -> str:
+    """The block of ``slot_id`` with another status and ``addition`` after its text, as a tool would leave it."""
+    marked = re.sub(rf"(<!-- kompendium:section id={slot_id} status=)[^ ]+", rf"\g<1>{status}", markdown, count=1)
+    text = blocks(marked)[slot_id]
+    return marked.replace(text, text + addition, 1)
+
+
+MODEL_SENTENCE = MODEL_KNOWLEDGE_OPEN + "Licht besteht aus Photonen. [Modellwissen]<!-- /f -->"
+
+
+def test_the_disclosure_follows_the_kept_blocks_as_well(service: CompendiumService) -> None:
+    """A block an LLM wrote, kept through a regeneration without an LLM, left the frontmatter saying "regelbasiert-
+    extraktiv", "sources-only" and review status "maschinell-extraktiv" - Art. 50 EU AI Act asks the disclosure to
+    follow the text (audit 2026-09-29, A04)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    earlier = with_status(first.markdown, "sc26_2", "ki-generiert", " " + MODEL_SENTENCE)
+
+    second = service.generate(
+        GenerateRequest(
+            topic="Optik",
+            parts=["world"],
+            target_length=2000,
+            existing_markdown=earlier,
+            regenerate_sections=["sc26_3"],
+        )
+    )
+
+    assert second.frontmatter["ai_disclosure"] == AI_ENRICHED_DISCLOSURE
+    assert second.frontmatter["review"]["status"] == "ki-generiert"
+    assert second.frontmatter["kept_sections"]["sc26_2"] == "ki-generiert"
+    assert second.frontmatter["generation"] == "rule-based", "what this run used stays what it used"
+
+
+def test_a_reviewed_block_needs_no_disclosure_of_its_own(service: CompendiumService) -> None:
+    """A reviewed block stands under editorial responsibility (Art. 50(4) EU AI Act), whoever wrote it first."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    earlier = with_status(first.markdown, "sc26_2", "redaktionell-geprüft", " " + MODEL_SENTENCE)
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=earlier)
+    )
+
+    assert second.frontmatter["ai_disclosure"] == AI_DISCLOSURE["rule-based"]
+    assert second.frontmatter["kept_sections"] == {"sc26_2": "redaktionell-geprüft"}

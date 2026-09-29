@@ -16,6 +16,7 @@ from app.domain.models import AuditReport, CollectionPart, Compendium, Curricula
 from app.domain.requests import GenerateRequest
 from app.knowledge.node_article import node_block
 from app.matching.registry import LLM_MATCHER
+from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections
 
@@ -50,6 +51,16 @@ def assemble(
     generation_used = world.generation if drafted and drafted.sections else "rule-based"
     # Enrichment only means something where the LLM actually wrote a block
     enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
+    # The blocks a regeneration kept from an earlier compendium: the disclosure follows them too (audit 2026-09-29, A04)
+    kept_ids = (
+        {slot.id for slot in template.content_slots()} - set(world.regenerated) if request.existing_markdown else set()
+    )
+    kept = {section.slot_id: section.status for section in sections if section.slot_id in kept_ids}
+    kept_model_knowledge = sum(
+        section.text.count(MODEL_KNOWLEDGE_OPEN)
+        for section in sections
+        if section.slot_id in kept_ids and section.status is not SectionStatus.REVIEWED
+    )
     node_report = prepared.node_article
     work = LlmWork(
         note=world.llm_note or made.choice_note,
@@ -93,6 +104,8 @@ def assemble(
             extraction_requested=requested.extraction,
             generation_requested=requested.generation,
             matcher_requested=world.matcher_requested,
+            kept=kept,
+            kept_model_knowledge=kept_model_knowledge,
         ),
         llm=llm_front,
         generated_at=generated_at,
