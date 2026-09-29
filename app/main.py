@@ -6,16 +6,17 @@ import logging
 import os
 import sqlite3
 import time
-from collections.abc import AsyncIterator, Awaitable, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
-from fastapi.routing import APIRoute
+from fastapi.routing import iter_route_contexts
 from starlette.exceptions import HTTPException
-from starlette.routing import Route
+from starlette.routing import BaseRoute, Match
+from starlette.types import Scope
 
 from app import __version__
 from app.api.body_limit import BodySizeLimit
@@ -375,6 +376,20 @@ def describe_entities(settings: Settings) -> dict[str, Any]:
     return {"ner": ready, "model": settings.spacy_model}
 
 
+def route_template(routes: Sequence[BaseRoute], scope: Scope) -> str:
+    """The template of the route a request was meant for, when it left none in its scope - the metric's label.
+
+    The 413 of BodySizeLimit answers a declared length before the router runs and counted as unmatched, beside the
+    404s (audit 2026-09-29, S8); /docs, /redoc and /openapi.json are plain Starlette routes, which never store one. The
+    templates are a fixed set, so the label values stay bounded; a path no route takes stays unmatched.
+    """
+    for context in iter_route_contexts(routes):  # the routes of the included routers as well (FastAPI 0.141)
+        match, _ = context.matches(scope)
+        if match is not Match.NONE:
+            return context.path or UNMATCHED_ROUTE
+    return UNMATCHED_ROUTE
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -474,10 +489,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             await run_system(request, refresher.refresh)
             return await call_next(request)
 
-    # /docs, /redoc and /openapi.json are plain Starlette routes, which leave no route in the scope; their paths
-    # are a fixed set, so they may serve as labels
-    plain_paths = frozenset(r.path for r in app.routes if isinstance(r, Route) and not isinstance(r, APIRoute))
-
     @app.middleware("http")
     async def record_http_metrics(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         # Added last, so it runs outermost and times the whole request; scrapes are not requests of the service.
@@ -491,9 +502,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return response
         finally:
             # FastAPI stores the matched route in the scope; its template keeps the label values bounded
-            route = getattr(request.scope.get("route"), "path", None)
-            if route is None:
-                route = request.url.path if request.url.path in plain_paths else UNMATCHED_ROUTE
+            route = getattr(request.scope.get("route"), "path", None) or route_template(app.routes, request.scope)
             observe_request(request.method, route, status, time.perf_counter() - started)
 
     @app.middleware("http")

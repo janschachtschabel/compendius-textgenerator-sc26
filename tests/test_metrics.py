@@ -17,6 +17,7 @@ from fastapi.testclient import TestClient
 from prometheus_client.parser import text_string_to_metric_families
 
 from app import __version__
+from app.api.body_limit import LARGE_BODY_BYTES
 from app.jobs.runner import mark_alive
 from app.jobs.zim_sync import ALIVE_FILE as ZIM_ALIVE_FILE
 from app.llm.prompts import get_prompt
@@ -348,6 +349,26 @@ def test_the_api_docs_are_counted_under_their_own_path(client: TestClient) -> No
 
     assert delta("kompendium_http_requests_total", method="GET", route="/openapi.json", status="200") == 1
     assert delta("kompendium_http_requests_total", method="GET", route="unmatched", status="200") == 0
+
+
+def test_a_body_refused_before_routing_is_counted_under_its_route(client: TestClient) -> None:
+    """BodySizeLimit answers a declared length over the bound before the router runs, so the 413 had no route in its
+    scope and counted as unmatched, beside the 404s (audit 2026-09-29, S8)."""
+    small = client.app.state.settings.request_body_max_bytes + 10  # type: ignore[attr-defined]
+    before = scrape(client)
+    assert client.post("/api/v2/qa", content=b"x" * small).status_code == 413
+    assert client.put("/api/v2/templates/eigen", content=b"x" * (LARGE_BODY_BYTES + 1)).status_code == 413
+    after = scrape(client)
+
+    def delta(route: str, method: str) -> float:
+        labels = {"method": method, "route": route, "status": "413"}
+        return value(after, "kompendium_http_requests_total", **labels) - value(
+            before, "kompendium_http_requests_total", **labels
+        )
+
+    assert delta("/api/v2/qa", "POST") == 1
+    assert delta("/api/v2/templates/{template_id}", "PUT") == 1
+    assert delta("unmatched", "POST") == delta("unmatched", "PUT") == 0
 
 
 def test_a_compendium_records_its_mode_phases_and_parts(client: TestClient) -> None:
