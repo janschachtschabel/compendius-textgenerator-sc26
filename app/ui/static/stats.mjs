@@ -30,10 +30,11 @@ export function countWords(text) {
   return (String(text ?? '').replace(COMMENTS, ' ').replace(SERVICE_MARKERS, ' ').match(WORD) ?? []).length;
 }
 
-/** The metrics of one answer of an endpoint, in the order a reader looks for them. */
-export function metrics(mode, answer, elapsedMs) {
+/** The metrics of one answer of an endpoint, in the order a reader looks for them. The request as sent and the
+ * server's options (the switches of its profiles) tell what the service may have spent where the answer is silent. */
+export function metrics(mode, answer, elapsedMs, { request = {}, options = {} } = {}) {
   const a = answer ?? {};
-  return [...MEASURES[mode](a), time('elapsed', 'Dauer', elapsedMs, true), ...(TIMES[mode]?.(a) ?? []), ...COSTS[mode](a)];
+  return [...MEASURES[mode](a), time('elapsed', 'Dauer', elapsedMs, true), ...(TIMES[mode]?.(a) ?? []), ...COSTS[mode](a, request, options)];
 }
 
 const MEASURES = {
@@ -103,9 +104,21 @@ const COSTS = {
   knowledge: (a) => llmCost(a.article_choice?.tokens),
   lehrplan: (a) => llmCost(a.llm_tokens?.total),
   entities: (a) => llmCost(a.llm?.total_tokens, a.llm?.calls),
-  // /qa reports no tokens: the rules need none, and what the LLM spent is not in the answer
-  qa: (a) => (a.method === 'llm' ? [cost('tokens', 'Tokens', null, true, 'nicht gemeldet')] : llmCost(0)),
+  // /qa reports no tokens: the rules need none, and what an LLM spent is not in the answer
+  qa: (a, request, options) => (qaAskedLlm(a, request, options) ? [cost('tokens', 'Tokens', null, true, 'nicht gemeldet')] : llmCost(0)),
 };
+
+// Whether /qa may have asked an LLM (app/api/v2/qa.py): for the pairs - they came from one, or the request or its
+// profile asked for one, which the rules stand in for when it fails - or for the article, which the request may
+// choose and else the profile does for a node; the article of a topic the rules choose in every profile (D55)
+function qaAskedLlm(a, request, options) {
+  const preset = request.preset ?? options.preset_default;
+  if (a.method === 'llm' || (request.method ?? options.qa?.profiles?.[preset]) === 'llm') return true;
+  if (!request.topic && !request.node_id) return false;
+  const switches = options.presets?.find((profile) => profile.id === preset)?.switches ?? {};
+  const choice = request.article_choice ?? (request.node_id ? switches.article_choice : 'rule-based');
+  return choice !== 'rule-based';
+}
 
 function llmCost(tokens, calls) {
   const items = [cost('tokens', 'Tokens', tokens ?? 0, true, tokens ? formatNumber(tokens) : 'keine')];

@@ -39,7 +39,7 @@ export function renderResults(mode, runs, host) {
   showDisplay(container);
   if (mode === 'compendium' && runs.some((one) => !one.error)) container.append(toolbar(container));
   if (runs.length > 1) {
-    const lists = runs.map((one) => (one.error ? [] : metrics(mode, one.data, one.elapsedMs)));
+    const lists = runs.map((one) => (one.error ? [] : metrics(mode, one.data, one.elapsedMs, asked(one, host))));
     container.append(
       compareTable(runs.map((one) => label(PROFILE_NAMES, one.preset)), lists),
       h('p', { class: 'help compare-note' }, 'Die Anfragen liefen nacheinander; jede Dauer gilt für ihr Profil allein.'),
@@ -92,8 +92,13 @@ function column(mode, one, host) {
     return frame;
   }
   head.append(actions(mode, one, view, host));
-  append(frame, [metricsBar(metrics(mode, one.data, one.elapsedMs)), unsure(mode, one.data.resolution, host), contents(view.headings), view.body, view.info]);
+  append(frame, [metricsBar(metrics(mode, one.data, one.elapsedMs, asked(one, host))), unsure(mode, one.data.resolution, host), contents(view.headings), view.body, view.info]);
   return frame;
+}
+
+// What a run asked for, as the metrics read it: the request as sent and the options of the server
+function asked(one, host) {
+  return { request: one.request?.body ?? one.request?.query ?? {}, options: host.options };
 }
 
 function actions(mode, one, view, host) {

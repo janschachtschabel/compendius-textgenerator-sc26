@@ -115,3 +115,28 @@ test('question pairs say that the service does not report the tokens of the LLM'
   assert.equal(llm.tokens.value, null);
   assert.equal(llm.tokens.display, 'nicht gemeldet');
 });
+
+test('question pairs say "keine" tokens only where the request asked no LLM for anything', () => {
+  const options = {
+    preset_default: 'balanced',
+    presets: [
+      { id: 'llm-free', switches: { article_choice: 'rule-based' } },
+      { id: 'balanced', switches: { article_choice: 'llm' } },
+      { id: 'best-quality', switches: { article_choice: 'llm-thorough' } },
+    ],
+    qa: { profiles: { 'llm-free': 'rule-based', balanced: 'rule-based', 'best-quality': 'llm' } },
+  };
+  const rules = { method: 'rule-based', pairs: [{}], chars: 900 };
+  const tokens = (request) => byKey(metrics('qa', rules, 2000, { request, options })).tokens.display;
+
+  // A node's article is the profile's to choose (app/api/v2/qa.py): balanced asks the LLM
+  assert.equal(tokens({ node_id: 'n1', preset: 'balanced' }), 'nicht gemeldet');
+  assert.equal(tokens({ node_id: 'n1', preset: 'llm-free' }), 'keine');
+  // The article of a topic the rules choose in every profile (D55)
+  assert.equal(tokens({ topic: 'Optik', preset: 'balanced' }), 'keine');
+  assert.equal(tokens({ text: 'Ein Satz.', preset: 'balanced' }), 'keine');
+  // Pairs the LLM was asked for and the rules made after all may still have cost tokens
+  assert.equal(tokens({ topic: 'Optik', preset: 'best-quality' }), 'nicht gemeldet');
+  assert.equal(tokens({ topic: 'Optik', preset: 'llm-free', method: 'llm' }), 'nicht gemeldet');
+  assert.equal(tokens({ topic: 'Optik', preset: 'best-quality', method: 'rule-based' }), 'keine');
+});
