@@ -16,6 +16,11 @@ export class ApiError extends Error {
   }
 }
 
+/** Whether the key the reader entered keeps a request back: the server refused it, or no header can carry it. */
+export function aboutKey(error) {
+  return error?.status === 401 || error?.status === 'key';
+}
+
 /** Send one request of forms.mjs; resolves to the answer, its time in ms and the id the server logged it under. A key
  * no header can carry is an ApiError of status "key", and nothing is sent. */
 export async function send(request, key, signal) {

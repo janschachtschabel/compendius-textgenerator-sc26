@@ -46,13 +46,21 @@ async function openPage({ options = OPTIONS, stacked = false } = {}) {
     form,
     requests,
     field: (name) => form().descendants().find((node) => node.getAttribute('name') === name),
+    // What holds the focus, by its id or else its tag: comparing elements, assert would print the whole document
+    focused: () => doc.activeElement.id || doc.activeElement.tagName,
     button: (text) => doc.body.descendants().find((node) => node.tagName === 'BUTTON' && node.textContent === text),
     async submit() {
       form().listeners.submit[0]({ preventDefault() {} });
       await settle();
     },
+    async switchTo(mode) {
+      byId(`modus-${mode}`).listeners.change[0]();
+      await settle();
+    },
   };
 }
+
+const REFUSED = { detail: 'Dieser Endpunkt verlangt einen gültigen API-Schlüssel im Header X-API-Key.' };
 
 const COMPENDIUM = saved('compendium_topic').run.data;
 
@@ -87,5 +95,79 @@ test('a stopped run leaves what the mode showed before, says so, and keeps the f
   assert.equal(page.requests[0].init.signal.aborted, true);
   assert.ok(page.byId('results').children[0].classList.contains('empty'), 'the introduction of the mode, as before the run');
   assert.match(page.byId('status').textContent, /^Abgebrochen; die vorige Anzeige bleibt\./);
-  assert.equal(page.doc.activeElement, page.byId('ergebnis'), 'the focus was on "Abbrechen", which is gone');
+  assert.equal(page.focused(), 'ergebnis', 'the focus was on "Abbrechen", which is gone');
+});
+
+test('a server that wants a key the page thought it did not shows the box of the key, which takes the focus', async () => {
+  const page = await openPage({ options: { ...OPTIONS, keys_required: false } });
+  assert.equal(page.byId('key-box').hidden, true);
+  page.field('topic').value = 'Optik';
+  page.button('Kompendium erzeugen').focus();
+  await page.submit();
+
+  page.requests[0].answer(401, REFUSED);
+  await settle();
+
+  assert.equal(page.byId('key-box').hidden, false);
+  assert.equal(page.focused(), 'api-key');
+});
+
+test('a key no header can carry shows its box and takes the focus as a refused one does', async () => {
+  const page = await openPage({ options: { ...OPTIONS, keys_required: true } });
+  page.byId('api-key').value = `${'k'.repeat(16)}${String.fromCharCode(0x200b)}${'k'.repeat(16)}`;
+  page.field('topic').value = 'Optik';
+  page.button('Kompendium erzeugen').focus();
+
+  await page.submit();
+
+  assert.equal(page.requests.length, 0, 'nothing was sent');
+  assert.equal(page.focused(), 'api-key');
+  assert.match(page.byId('results').textContent, /Der API-Schlüssel enthält ein Zeichen, das sich nicht senden lässt/);
+});
+
+test('a refused key takes no focus from a field the reader went on to type in', async () => {
+  const page = await openPage();
+  page.field('topic').value = 'Optik';
+  page.button('Kompendium erzeugen').focus();
+  await page.submit();
+  const topic = page.field('topic');
+  topic.focus(); // the next topic, typed while the first one runs
+
+  page.requests[0].answer(401, REFUSED);
+  await settle();
+
+  assert.equal(page.focused(), topic.id);
+  assert.equal(page.byId('key-box').hidden, false, 'the box shows all the same');
+});
+
+test('a run that ends while another mode is on screen moves no focus', async () => {
+  const page = await openPage();
+  page.field('topic').value = 'Optik';
+  await page.submit();
+  await page.switchTo('knowledge');
+  page.doc.activeElement = page.doc.body; // the focus nowhere, as after a click beside the controls
+
+  page.requests[0].answer(401, REFUSED);
+  await settle();
+
+  assert.equal(page.focused(), 'BODY');
+});
+
+test('stacked, the answer takes the focus from the button, but not from a field the reader went on to type in', async () => {
+  const page = await openPage({ stacked: true });
+  page.field('topic').value = 'Optik';
+  page.button('Kompendium erzeugen').focus();
+  await page.submit();
+  page.requests[0].answer(200, COMPENDIUM);
+  await settle();
+  assert.equal(page.focused(), 'ergebnis', 'stacked, the answer lies below the form');
+
+  page.button('Kompendium erzeugen').focus();
+  await page.submit();
+  const topic = page.field('topic');
+  topic.focus();
+  page.requests[1].answer(200, COMPENDIUM);
+  await settle();
+
+  assert.equal(page.focused(), topic.id);
 });

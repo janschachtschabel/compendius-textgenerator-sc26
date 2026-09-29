@@ -2,7 +2,7 @@
 // side by side with their metrics compared. Each mode keeps its form and its last answers while another is shown;
 // how an answer looks is results.mjs.
 
-import { send } from './api.mjs';
+import { aboutKey, send } from './api.mjs';
 import { h } from './dom.mjs';
 import { buildForm } from './fields.mjs';
 import { buildRequests, defaults, fromExample, problems } from './forms.mjs';
@@ -124,8 +124,11 @@ async function run(mode) {
   progress.stop();
   if (page.controllers.get(mode) !== controller) return; // a newer run of this mode took over the page and the form
   form.busy(false);
-  // A focus in the waiting panel - on "Abbrechen" - would fall to the top of the page with it
-  const waited = progress.panel.contains(document.activeElement);
+  // The focus moves only from where the run left it - the page, the button, the waiting panel, whose "Abbrechen" would
+  // fall to the top of the page with it -, never out of a field the reader went on to, and only while the mode shows
+  const focus = document.activeElement;
+  const waited = progress.panel.contains(focus);
+  const free = waited || !focus || focus === document.body || focus === form.submit;
   const host = { options: page.options, announce, suggest };
   if (controller.signal.aborted) {
     place(mode, stopped(mode, runs, before, host));
@@ -134,8 +137,12 @@ async function run(mode) {
     place(mode, renderResults(mode, runs, host));
     announce(summary(mode, runs));
   }
-  if (runs.some((one) => one.error?.status === 401)) byId('api-key').focus();
-  else if ((waited || STACKED.matches) && page.mode === mode) byId('ergebnis').focus(); // stacked, the answer lies below the form
+  // The server may want a key though it wanted none when the page loaded (keys_required), or the key cannot be sent
+  const keyWanted = runs.some((one) => aboutKey(one.error));
+  if (keyWanted) byId('key-box').hidden = false;
+  if (!free || page.mode !== mode) return;
+  if (keyWanted) byId('api-key').focus();
+  else if (waited || STACKED.matches) byId('ergebnis').focus(); // stacked, the answer lies below the form
 }
 
 // The answers of a mode are kept for it and shown when it is the one on screen

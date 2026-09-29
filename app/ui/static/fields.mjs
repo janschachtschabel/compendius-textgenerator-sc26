@@ -10,7 +10,8 @@ import { ENTITY_METHODS, label, LINK_CHECKS, PARTS, PROFILE_ABOUT, PROFILE_NAMES
 let ids = 0;
 const uid = (name) => `feld-${(ids += 1)}-${name}`;
 
-/** A form for one mode: its element, and functions to read and set its values and to show what keeps it back. */
+/** A form for one mode: its element and its submit button, and functions to read and set its values and to show
+ * what keeps it back. */
 export function buildForm(mode, options, { onSubmit, onExample }) {
   const ctx = { mode, options, controls: new Map(), refreshers: [], datalist: null };
   const basic = [];
@@ -49,6 +50,7 @@ export function buildForm(mode, options, { onSubmit, onExample }) {
   ctx.refresh = refresh;
   return {
     element,
+    submit,
     read,
     write(values) {
       for (const [name, value] of Object.entries(values)) ctx.controls.get(name)?.write(value);
