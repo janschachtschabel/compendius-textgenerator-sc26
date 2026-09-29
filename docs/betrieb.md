@@ -49,7 +49,7 @@ Update daher:
 |---|---|
 | 2026-09-24 (D44) | Vorgabe von `B_API_MODEL` ist `gpt-6-luna`. Eine `.env` aus der Vorlage davor trägt noch `B_API_MODEL=gpt-5.6-luna` und hält den Dienst beim alten Modell: den Wert auf `gpt-6-luna` setzen (der Parameter bleibt einstellbar). `components.llm.model` in `/health` zeigt das wirksame Modell |
 | 2026-09-27 (D64, D65) | Zwei neue Dienste in `docker-compose.yml`: `wikidata-updater` baut `wikidata.db` (rund 750 MB Download, dabei 1,5 GB frei im Volume `state`), `gnd-updater` baut `gnd.db` (rund 65 MB). Ohne sie tragen Entitäten keine Wikidata-Nummer und keine GND aus dem Index, und DBpedia-Adressen zeigen auf das stillgelegte `de.dbpedia.org` |
-| 2026-09-27 (Audit) | `ADMIN_TOKEN`, `METRICS_TOKEN` und das neue `API_KEYS` brauchen je mindestens 32 Zeichen (seit 2.2.2: 16), sonst startet kein Container. Auf einem öffentlichen Server `API_KEYS` und `METRICS_TOKEN` setzen (installation.md, Abschnitt 8). `:latest` entsteht erst nach grüner CI; jeder geprüfte Commit liegt zusätzlich als `:<sha>` bereit (Rückweg siehe Regeln) |
+| 2026-09-27 (Audit) | `ADMIN_TOKEN`, `METRICS_TOKEN` und das neue `API_KEYS` brauchen je mindestens 32 Zeichen (seit 2.2.2: 16), sonst startet kein Container. Auf einem öffentlichen Server `API_KEYS` und `METRICS_TOKEN` setzen (installation.md, Abschnitt 8). `:latest` entsteht erst nach grüner CI; jeder veröffentlichte Commit liegt zusätzlich als `:<sha>` bereit (Rückweg siehe Regeln) |
 | 2026-09-28 (Audit) | `docker-compose.yml` härtet die Dienste: keine Linux-Capabilities und keine neuen Rechte für alle fünf, bei der API zudem ein nur lesbares Dateisystem außer den Volumes und `/tmp`; Code und Modelle gehören im Image `root`. Jedes Protokoll rotiert bei 10 MB (fünf Dateien). Die API hat 4 GiB Speicher (`API_MEMORY`) und 150 s, um laufende Anfragen bei einem Update zu beenden; die Sidecars bekommen keine Geheimnisse der `.env` mehr. Wirkt erst, wenn das Panel die neue Compose-Datei übernimmt |
 | 2026-09-28 (Audit, Überwachung) | Neue Messwerte und Alarme: freier Platz der Volumes (`kompendium_volume_free_bytes`, `KompendiumVolumeFull`) und das Ende der letzten Prüfung der Index-Sidecars (`kompendium_{wikidata,gnd}_sync_last_run_timestamp_seconds`, `KompendiumWikidataSyncStale`, `KompendiumGndSyncStale`). Ein eigener Prometheus übernimmt die Alarme mit der neuen `monitoring/alerts.yml` |
 | 2026-09-28 (Audit, Templates) | Bausteine haben das Feld `role` (`definition`, `systematik`, `context`); eigene Templates ohne Rollen erhalten sie aus den bisherigen Schlüsseln und verhalten sich wie zuvor. Abgelehnt wird jetzt ein eigenes Template, dessen Bausteine sich einen Schlüssel teilen, auch nur in anderer Schreibweise: ein gespeichertes überspringt der Dienst beim Laden (Log „custom template … skipped“), Anfragen darauf antworten 404. `matcher: llm` versteht Schlüssel mit Großbuchstaben. Das Template `standard` nennt im Lizenzhinweis und im Lint seine eigenen Bausteine (Quellen in Baustein 6) |
@@ -153,8 +153,11 @@ in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der 
   veröffentlichten Docker-Port nicht (docs/installation.md, Abschnitt 8). Admin-Endpunkte sind nur mit
   `ADMIN_TOKEN` aktiv. Token und Schlüssel unter 16 Zeichen lehnt der Dienst beim Start ab.
 - `B_API_KEY` und `EDU_SHARING_PASSWORD` kommen nur aus der Umgebung und erscheinen in keiner Meldung.
-- Zurück auf eine frühere Fassung: Jeder Commit auf `main`, dessen Prüfungen grün waren, liegt als Image mit
-  seiner kurzen Commit-Sha in der Registry, jedes Versions-Tag `vX.Y.Z` als `X.Y.Z`. Also
+- Zurück auf eine frühere Fassung: Jeder veröffentlichte Commit auf `main` liegt als Image mit seiner kurzen
+  Commit-Sha in der Registry, jedes Versions-Tag `vX.Y.Z` als `X.Y.Z`. Veröffentlicht ist nicht jeder Commit mit
+  grünen Prüfungen: GitHub lässt je Ref einen Lauf des Jobs `publish` arbeiten und einen warten, ein weiterer Push
+  bricht den wartenden ab (der Lauf steht als abgebrochen da, nicht als rot). Fehlt einem Commit das Image, holt es
+  „Re-run all jobs“ an seinem Lauf nach; `latest` und `main` bleiben dabei beim neuesten Commit. Also
   `IMAGE=ghcr.io/janschachtschabel/compendius-textgenerator-sc26:<sha>` setzen (in der `.env` oder den Variablen
   des Hosting-Panels) und `docker compose up -d`; zurück auf den neuesten Stand geht es, indem man `IMAGE` wieder
   entfernt. Wer selbst baut: `git checkout <Commit>` und `docker compose build && docker compose up -d`. Die

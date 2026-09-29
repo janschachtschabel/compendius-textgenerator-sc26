@@ -165,9 +165,11 @@ docker compose up --build
 
 Ohne eigenen Bau zieht Compose das fertige Image aus der GitHub Container Registry; dorthin
 veröffentlicht es der Job `publish` in `.github/workflows/ci.yml`, und zwar erst, wenn die Prüfungen
-desselben Laufs grün sind und das fertige Image im Rauchtest ein Kompendium geliefert hat. Tags: die
-kurze Commit-Sha und `main` für jeden Push auf `main`, `latest` nur für den Commit, auf dem `main` gerade
-steht, und für ein Versions-Tag `vX.Y.Z` die Tags `X.Y.Z` und `X.Y`:
+desselben Laufs grün sind und das fertige Image im Rauchtest ein Kompendium geliefert hat. Nicht jeder
+Push kommt dorthin: GitHub lässt je Ref einen Lauf des Jobs arbeiten und einen warten, ein weiterer Push
+bricht den wartenden ab, und dessen Commit bekommt kein Image (sein Lauf steht als abgebrochen da, nicht als
+rot). Tags: die kurze Commit-Sha für jeden veröffentlichten Commit, `latest` und `main` nur für den Commit, auf
+dem `main` gerade steht, und für ein Versions-Tag `vX.Y.Z` die Tags `X.Y.Z` und `X.Y`:
 
 ```bash
 docker compose up -d

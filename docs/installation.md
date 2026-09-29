@@ -100,9 +100,9 @@ Der Bau holt die Abhängigkeiten und backt das Embedding-Modell für den Matcher
 nie den Hugging-Face-Hub braucht. Ohne Modell — kleineres Image, schwächeres Matching —
 geht auch `docker compose build --build-arg MODEL2VEC_ID=`.
 
-**Oder gar nicht bauen.** Der Job `publish` in `.github/workflows/ci.yml` veröffentlicht das fertige Image
-nach jedem Push auf `main`, dessen Prüfungen grün sind, in die GitHub Container Registry; dann genügt
-Schritt 6 ohne Schritt 5. Das Paket ist öffentlich (die Sichtbarkeit stellt man am Paket ein, nicht am
+**Oder gar nicht bauen.** Der Job `publish` in `.github/workflows/ci.yml` veröffentlicht den Stand von `main`
+nach grünen Prüfungen als fertiges Image in der GitHub Container Registry; dann genügt Schritt 6 ohne
+Schritt 5. Das Paket ist öffentlich (die Sichtbarkeit stellt man am Paket ein, nicht am
 Repository); bei einem privaten Fork meldet sich der Host einmalig an:
 
 ```bash
