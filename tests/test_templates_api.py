@@ -122,6 +122,15 @@ def test_a_weight_beyond_a_float_is_refused_and_the_stored_template_stays(client
     assert client.get("/api/v2/templates/mein").json()["version"] == 1
 
 
+def test_a_facet_name_with_markup_is_refused(client: TestClient) -> None:
+    """T10: the name stood in the block marker and the visible facet line of every compendium with the template."""
+    facets = {"allowed": ["x --><img src=x onerror=alert(1)><!-- y"]}
+    marked = {**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "facets": facets}]}
+    answer = client.put("/api/v2/templates/mein", json=marked, headers=AUTH)
+    assert answer.status_code == 422 and "facets" in answer.text
+    assert client.get("/api/v2/templates/mein").status_code == 404
+
+
 def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:
     from pydantic import ValidationError
 

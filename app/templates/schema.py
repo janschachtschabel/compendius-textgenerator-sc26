@@ -50,6 +50,15 @@ TEMPLATE_PATTERN_STEPS_MAX = 50_000
 # and the template could not be read again (audit 2026-09-29, A11).
 WEIGHT_MAX = 100.0
 Item = Annotated[str, Field(max_length=ITEM_MAX_CHARS)]
+# A facet's name and value stand in the marker and the visible facet line of every block that carries it; a template
+# named one "x --><img src=x onerror=alert(1)><!-- y" (audit 2026-09-29, T10). format_marker encodes both since then,
+# and a name is now words - letters, digits, underscore and hyphen, one space between - and a value one line. The
+# catalogue (config/facets.yaml) has names of up to 19 characters and values of up to 35.
+FACET_NAME_PATTERN = r"^[\w-]+(?: [\w-]+)*$"
+FACET_NAME_MAX_CHARS = 60
+FACET_VALUE_MAX_CHARS = 100
+FacetName = Annotated[str, Field(max_length=FACET_NAME_MAX_CHARS, pattern=FACET_NAME_PATTERN)]
+FacetValue = Annotated[str, Field(max_length=FACET_VALUE_MAX_CHARS, pattern=ONE_LINE)]
 # The standard library's own parser of patterns, private but in every CPython since 3.11 (tests/test_template_bounds.py
 # holds what it is used for); mypy has no stubs for it
 _PARSER: Any = importlib.import_module("re._parser")
@@ -69,20 +78,22 @@ ACTORS_KEY = "akteure"  # where the shared lexicon files the sections on persons
 class FacetSpec(BaseModel):
     """Which facets a block carries, beyond the ones ``config/facets.yaml`` declares for its slot."""
 
-    required: list[Item] = Field(
+    required: list[FacetName] = Field(
         default_factory=list,
         max_length=ITEMS_MAX,
-        description="Facet names the block has to carry; the lint reports a missing one",
+        description="Facet names the block has to carry; the lint reports a missing one. A name is words of letters, "
+        f"digits, underscore and hyphen with one space between, at most {FACET_NAME_MAX_CHARS} characters",
     )
-    allowed: list[Item] = Field(
+    allowed: list[FacetName] = Field(
         default_factory=list,
         max_length=ITEMS_MAX,
         description="Further facet names the block may carry, on top of the catalogue's",
     )
-    defaults: dict[Item, Item] = Field(
+    defaults: dict[FacetName, FacetValue] = Field(
         default_factory=dict,
         max_length=ITEMS_MAX,
-        description="Facet name to value, used when the block carries no value of its own and the facet is allowed",
+        description="Facet name to value, used when the block carries no value of its own and the facet is allowed; "
+        f"a value is one line of at most {FACET_VALUE_MAX_CHARS} characters",
     )
 
 

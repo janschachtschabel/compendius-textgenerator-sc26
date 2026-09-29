@@ -110,6 +110,34 @@ def test_a_weight_up_to_its_bound_stays_allowed() -> None:
     assert TemplateSlot(**slot(budget={"weight": WEIGHT_MAX})).budget.weight == WEIGHT_MAX
 
 
+@pytest.mark.parametrize(
+    "facets",
+    [
+        {"required": ["x --><img src=x onerror=alert(1)><!-- y"]},
+        {"allowed": ["Zeit" + chr(10) + "bezug"]},
+        {"allowed": [" "]},
+        {"allowed": ["N" * 61]},
+        {"defaults": {"<b>Zeitbezug</b>": "historisch"}},
+        {"defaults": {"Zeitbezug": "historisch" + chr(10) + "## Überschrift"}},
+        {"defaults": {"Zeitbezug": "v" * 101}},
+    ],
+)
+def test_a_facet_name_is_a_plain_name_and_a_default_value_one_line(facets: dict[str, Any]) -> None:
+    """T10: a template named a facet "x --><img ...>", and it stood in the block marker and the facet line of the text."""
+    with pytest.raises(ValidationError):
+        TemplateSlot(**slot(facets=facets))
+
+
+def test_facet_names_and_values_as_the_catalogue_writes_them_stay_allowed() -> None:
+    catalogue = yaml.safe_load((ROOT / "config" / "facets.yaml").read_text(encoding="utf-8"))["facets"]
+    names = [*catalogue, "Sek-Stufe 2", "Bildungs_stufe"]
+    values = [str(value) for spec in catalogue.values() for value in spec.get("values", [])]
+
+    assert TemplateSlot(**slot(facets={"allowed": names, "required": names[:2]})).facets.allowed == names
+    for value in values:
+        assert TemplateSlot(**slot(facets={"defaults": {names[0]: value}})).facets.defaults == {names[0]: value}
+
+
 def test_a_template_has_at_most_as_many_blocks_as_a_request_may_name() -> None:
     blocks = [slot(id=f"b{number}", slot=f"s{number}") for number in range(MAX_SLOTS + 1)]
 
