@@ -5,14 +5,16 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from datetime import timedelta
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
 
 from app.cli import main
+from app.jobs.runner import last_alive
 from app.settings import Settings, get_settings
 from app.sources.gnd.index import GndIndex
-from app.sources.gnd.sync import LOCK_FILE, GndSync
+from app.sources.gnd.sync import ALIVE_FILE, LOCK_FILE, GndSync
 from tests.conftest import ROOT
 from tests.test_gnd_index import write_dumps
 from tests.test_gnd_sync import DNB, FakeDnb
@@ -87,3 +89,14 @@ def test_the_sync_loop_checks_at_the_interval_of_the_settings(
     monkeypatch.setattr("app.cli_sync.stop_on_sigterm", lambda: None)
     assert main(["gnd", "sync", "--loop"]) == 0
     assert seen["interval"] == timedelta(days=1) and (state_dir / "gnd.db").exists()
+
+
+def test_the_sync_loop_signs_life_into_the_state_directory(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, Any] = {}
+    monkeypatch.setattr("app.cli_sync.stop_on_sigterm", lambda: None)
+    monkeypatch.setattr("app.cli_sync.run_periodically", lambda *args, **kwargs: seen.update(kwargs))
+    assert main(["gnd", "sync", "--loop"]) == 0
+
+    seen["alive"]()
+
+    assert last_alive(state_dir / ALIVE_FILE) is not None  # what the API reports (kompendium_gnd_sync_alive_...)

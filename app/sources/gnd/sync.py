@@ -32,6 +32,7 @@ CHECKSUM_FILE = "001_Pruefsumme_Checksum.txt"
 DUMP_DIR = "gnd_dumps"
 STATUS_FILE = "gnd_status.json"
 LOCK_FILE = "gnd_sync.lock"
+ALIVE_FILE = "gnd_alive"  # the sign of life of the sync loop (app/jobs/runner.py)
 KINDS = (("sachbegriff", "Sachbegriff"), ("geografikum", "Geografikum"))  # the file's name and the record's kind
 _LINE_RE = re.compile(r"^([0-9a-f]{64})\s+(authorities-gnd-(sachbegriff|geografikum)_lds_(\d{8})\.ttl\.gz)$")
 

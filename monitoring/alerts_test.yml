@@ -598,3 +598,58 @@ tests:
             exp_annotations:
               summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
               description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.
+      # ein von Hand gebauter Index ohne Sidecar: keine Serie für Stale, Failed und IndexMissing (Audit 2026-09-29, Q5)
+      - eval_time: 29m
+        alertname: KompendiumWikidataSyncSilent
+        exp_alerts: []
+      - eval_time: 35m
+        alertname: KompendiumWikidataSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Der Wikidata-Sidecar gibt kein Lebenszeichen
+              description: wikidata_alive ist älter als drei Stunden oder fehlt; der Dienst wikidata-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+      - eval_time: 35m
+        alertname: KompendiumGndSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning }
+            exp_annotations:
+              summary: Der GND-Sidecar gibt kein Lebenszeichen
+              description: gnd_alive ist älter als drei Stunden oder fehlt; der Dienst gnd-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+
+  - name: Lebenszeichen der Wikidata- und GND-Sidecars
+    interval: 1m
+    input_series:
+      - series: 'up{job="kompendium", instance="api:8000"}'
+        values: "1x300"
+      # steht: die Schleife schreibt nach dem Start kein Lebenszeichen mehr
+      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x300"
+      # wartet: eine wartende Schleife schreibt laufend ein neues
+      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+        values: "0+60x300"
+      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+        values: "0x300"
+      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+        values: "0+60x300"
+    alert_rule_test:
+      - eval_time: 3h
+        alertname: KompendiumWikidataSyncSilent
+        exp_alerts: []
+      - eval_time: 3h35m
+        alertname: KompendiumWikidataSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der Wikidata-Sidecar gibt kein Lebenszeichen
+              description: wikidata_alive ist älter als drei Stunden oder fehlt; der Dienst wikidata-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+      - eval_time: 3h
+        alertname: KompendiumGndSyncSilent
+        exp_alerts: []
+      - eval_time: 3h35m
+        alertname: KompendiumGndSyncSilent
+        exp_alerts:
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+            exp_annotations:
+              summary: Der GND-Sidecar gibt kein Lebenszeichen
+              description: gnd_alive ist älter als drei Stunden oder fehlt; der Dienst gnd-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.

@@ -39,6 +39,7 @@ WIKI = "dewiki"
 DUMP_DIR = "wikidata_dumps"
 STATUS_FILE = "wikidata_status.json"
 LOCK_FILE = "wikidata_sync.lock"
+ALIVE_FILE = "wikidata_alive"  # the sign of life of the sync loop (app/jobs/runner.py)
 RUNS_ASKED = 4  # the newest runs whose status is read; a run older than that is not worth an index
 _RUN_RE = re.compile(r'href="(\d{8})/"')
 _JOBS = (("page_props", "pagepropstable"), ("page", "pagetable"), ("langlinks", "langlinkstable"))

@@ -11,6 +11,7 @@ import time
 import zlib
 from collections.abc import Callable
 from datetime import timedelta
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +19,7 @@ import httpx
 
 from app.jobs.dump_sync import LOCK_STALE_S, ReleaseNotFoundError
 from app.jobs.lock import LockHeldError, acquire_lock
-from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
+from app.jobs.runner import mark_alive, parse_interval, run_periodically, stop_on_sigterm
 from app.sources.local_index import IndexInUseError
 from app.sources.zim.downloader import DownloadError, TransferError
 
@@ -39,11 +40,13 @@ def fails_again(exc: BaseException) -> bool:
     return isinstance(exc, (DownloadError, IndexInUseError, EOFError, zlib.error, ValueError, sqlite3.Error))
 
 
-def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str) -> int:
+def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, alive: Path) -> int:
     """Run ``task`` - check, and build when due - once (exit 1 on a failure) or as the sidecar's loop.
 
     ``name`` ("Wikidata-Index") heads the messages; in the loop a failure the same run would repeat waits for the
-    next check, any other is logged by the loop and tried again after RETRY_AFTER_FAILURE."""
+    next check, any other is logged by the loop and tried again after RETRY_AFTER_FAILURE. The loop writes its sign of
+    life into ``alive``, as the ZIM and curriculum loops do: without one, a sidecar that never ran had no series any
+    alert could fire on (audit 2026-09-29, Q5)."""
 
     def checked() -> None:
         try:
@@ -56,7 +59,13 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str) 
     if loop:
         stop_on_sigterm()
         try:
-            run_periodically(checked, parse_interval(interval), retry_after=RETRY_AFTER_FAILURE, poll_s=POLL_SECONDS)
+            run_periodically(
+                checked,
+                parse_interval(interval),
+                retry_after=RETRY_AFTER_FAILURE,
+                poll_s=POLL_SECONDS,
+                alive=partial(mark_alive, alive),
+            )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; a run has written its status
             print(f"{name}: Schleife beendet.")
         return 0

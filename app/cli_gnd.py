@@ -15,7 +15,7 @@ from typing import Any
 from app.cli_sync import run_build, run_sync
 from app.settings import get_settings
 from app.sources.gnd.index import GndIndex, build_gnd_index
-from app.sources.gnd.sync import KINDS, LOCK_FILE, build_gnd_sync
+from app.sources.gnd.sync import ALIVE_FILE, KINDS, LOCK_FILE, build_gnd_sync
 
 REASONS = {
     "no index": "kein Index vorhanden",
@@ -74,7 +74,13 @@ def cmd_sync(args: argparse.Namespace) -> int:
         meta = sync.run(reason)
         print(f"GND-Index {sync.index_path}: {_describe(meta)}")
 
-    return run_sync(task, loop=bool(args.loop), interval=settings.gnd_check_interval, name="GND-Index")
+    return run_sync(
+        task,
+        loop=bool(args.loop),
+        interval=settings.gnd_check_interval,
+        name="GND-Index",
+        alive=Path(settings.state_dir) / ALIVE_FILE,
+    )
 
 
 def add_gnd_commands(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:

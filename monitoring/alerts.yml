@@ -194,6 +194,32 @@ groups:
         annotations:
           summary: Der GND-Sidecar hat seit drei Tagen nicht geprüft
           description: Der Dienst gnd-updater läuft nicht oder hängt (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, eine neue Ausgabe der DNB kommt aber nicht an.
+      - alert: KompendiumWikidataSyncSilent
+        # Wie beim ZIM- und Lehrplan-Sidecar: Die Schleife schreibt beim Start und stündlich, solange sie wartet, ein
+        # Lebenszeichen. Ohne Sidecar hatten KompendiumWikidataSyncStale und KompendiumWikidataSyncFailed keine Serie,
+        # und ein von Hand gebauter Index hielt KompendiumWikidataIndexMissing still: kein Alarm meldete den fehlenden
+        # Sidecar (Audit 2026-09-29, Q5). Ein Lauf lädt und baut auf dem Server in rund acht Minuten; einer über drei
+        # Stunden hängt.
+        expr: >-
+          time() - kompendium_wikidata_sync_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_wikidata_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Sidecar gibt kein Lebenszeichen
+          description: wikidata_alive ist älter als drei Stunden oder fehlt; der Dienst wikidata-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+      - alert: KompendiumGndSyncSilent
+        # Wie beim Wikidata-Sidecar; ein Lauf lädt rund 65 MB und baut in einer halben Minute
+        expr: >-
+          time() - kompendium_gnd_sync_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_gnd_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Sidecar gibt kein Lebenszeichen
+          description: gnd_alive ist älter als drei Stunden oder fehlt; der Dienst gnd-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
 
   - name: kompendium-llm
     rules:

@@ -23,9 +23,11 @@ from app import __version__, revision
 from app.jobs.runner import last_alive
 from app.jobs.zim_sync import ALIVE_FILE as ZIM_ALIVE_FILE
 from app.jobs.zim_sync import read_status as read_zim_status
+from app.sources.gnd.sync import ALIVE_FILE as GND_ALIVE_FILE
 from app.sources.gnd.sync import read_status as read_gnd_status
 from app.sources.lehrplan.harvest import ALIVE_FILE as LEHRPLAN_ALIVE_FILE
 from app.sources.lehrplan.harvest import read_status as read_harvest_status
+from app.sources.wikidata.sync import ALIVE_FILE as WIKIDATA_ALIVE_FILE
 from app.sources.wikidata.sync import read_status as read_wikidata_status
 
 log = logging.getLogger(__name__)
@@ -203,10 +205,12 @@ class StatusCollector:
             )
 
     def _wikidata(self) -> Iterator[Metric]:
+        yield from _alive_gauge("wikidata_sync", Path(self._state.settings.state_dir) / WIKIDATA_ALIVE_FILE)
         status = read_wikidata_status(Path(self._state.settings.state_dir))
         yield from _index_gauges("wikidata", getattr(self._state, "wikidata", None), "dump", status)
 
     def _gnd(self) -> Iterator[Metric]:
+        yield from _alive_gauge("gnd_sync", Path(self._state.settings.state_dir) / GND_ALIVE_FILE)
         status = read_gnd_status(Path(self._state.settings.state_dir))
         yield from _index_gauges("gnd", getattr(self._state, "gnd", None), "release", status)
 

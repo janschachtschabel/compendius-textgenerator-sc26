@@ -15,7 +15,7 @@ from pathlib import Path
 from app.cli_sync import run_build, run_sync
 from app.settings import get_settings
 from app.sources.wikidata.index import WikidataIndex, build_index
-from app.sources.wikidata.sync import LOCK_FILE, build_sync
+from app.sources.wikidata.sync import ALIVE_FILE, LOCK_FILE, build_sync
 
 REASONS = {
     "no index": "kein Index vorhanden",
@@ -71,7 +71,13 @@ def cmd_sync(args: argparse.Namespace) -> int:
         meta = sync.run(reason)
         print(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
 
-    return run_sync(task, loop=bool(args.loop), interval=settings.wikidata_check_interval, name="Wikidata-Index")
+    return run_sync(
+        task,
+        loop=bool(args.loop),
+        interval=settings.wikidata_check_interval,
+        name="Wikidata-Index",
+        alive=Path(settings.state_dir) / ALIVE_FILE,
+    )
 
 
 def add_wikidata_commands(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:

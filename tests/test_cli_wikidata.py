@@ -6,14 +6,16 @@ import zlib
 from collections.abc import Callable, Iterator
 from datetime import timedelta
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
 
 from app.cli import main
+from app.jobs.runner import last_alive
 from app.settings import Settings, get_settings
 from app.sources.wikidata.index import WikidataIndex, build_index
-from app.sources.wikidata.sync import LOCK_FILE, WikidataSync, WikidataSyncError
+from app.sources.wikidata.sync import ALIVE_FILE, LOCK_FILE, WikidataSync, WikidataSyncError
 from tests.conftest import ROOT
 from tests.test_wikidata_index import write_dumps
 from tests.test_wikidata_sync import FakeDumps
@@ -202,3 +204,14 @@ def test_the_sync_loop_checks_at_the_interval_of_the_settings(
     assert main(["wikidata", "sync", "--loop"]) == 0
     assert seen["interval"] == timedelta(days=1) and seen["retry_after"] == timedelta(hours=1)
     assert (state_dir / "wikidata.db").exists()
+
+
+def test_the_sync_loop_signs_life_into_the_state_directory(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, Any] = {}
+    monkeypatch.setattr("app.cli_sync.stop_on_sigterm", lambda: None)
+    monkeypatch.setattr("app.cli_sync.run_periodically", lambda *args, **kwargs: seen.update(kwargs))
+    assert main(["wikidata", "sync", "--loop"]) == 0
+
+    seen["alive"]()
+
+    assert last_alive(state_dir / ALIVE_FILE) is not None  # what the API reports (kompendium_wikidata_sync_alive_...)

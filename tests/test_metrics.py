@@ -23,8 +23,10 @@ from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.settings import Settings
 from app.sources.gnd.index import build_gnd_index
+from app.sources.gnd.sync import ALIVE_FILE as GND_ALIVE_FILE
 from app.sources.lehrplan.harvest import ALIVE_FILE as LEHRPLAN_ALIVE_FILE
 from app.sources.wikidata.index import build_index
+from app.sources.wikidata.sync import ALIVE_FILE as WIKIDATA_ALIVE_FILE
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
@@ -74,6 +76,22 @@ def test_the_sync_and_harvest_loops_report_their_sign_of_life(sample_zims: dict[
     assert "kompendium_lehrplan_harvest_alive_timestamp_seconds" not in before
     assert value(samples, "kompendium_zim_sync_alive_timestamp_seconds") == epoch("2026-09-28T10:00:00+00:00")
     assert value(samples, "kompendium_lehrplan_harvest_alive_timestamp_seconds") == epoch("2026-09-28T11:00:00+00:00")
+
+
+def test_the_index_sync_loops_report_their_sign_of_life(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """The Wikidata and GND sidecars gave none: with an index built by hand and no sidecar ever started, no rule had a
+    series to fire on (audit 2026-09-29, Q5)."""
+    client = _app(sample_zims, tmp_path)
+    before = {name for name, _ in scrape(client)}
+    (tmp_path / "state" / WIKIDATA_ALIVE_FILE).write_text("2026-09-29T10:00:00+00:00", encoding="utf-8")
+    (tmp_path / "state" / GND_ALIVE_FILE).write_text("2026-09-29T11:00:00+00:00", encoding="utf-8")
+
+    samples = scrape(client)
+
+    assert "kompendium_wikidata_sync_alive_timestamp_seconds" not in before
+    assert "kompendium_gnd_sync_alive_timestamp_seconds" not in before
+    assert value(samples, "kompendium_wikidata_sync_alive_timestamp_seconds") == epoch("2026-09-29T10:00:00+00:00")
+    assert value(samples, "kompendium_gnd_sync_alive_timestamp_seconds") == epoch("2026-09-29T11:00:00+00:00")
 
 
 def _app(sample_zims: dict[str, Path], tmp_path: Path, **overrides: Any) -> TestClient:
@@ -494,6 +512,8 @@ def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Pat
     )
     mark_alive(tmp_path / "zim" / ZIM_ALIVE_FILE)
     mark_alive(tmp_path / "state" / LEHRPLAN_ALIVE_FILE)
+    mark_alive(tmp_path / "state" / WIKIDATA_ALIVE_FILE)
+    mark_alive(tmp_path / "state" / GND_ALIVE_FILE)
     with _app(sample_zims, tmp_path) as client:
         gateway = make_gateway(FakeBApi(answer_from_evidence))
         gateway.check_model()
