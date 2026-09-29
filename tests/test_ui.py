@@ -211,9 +211,14 @@ def test_the_curriculum_search_and_the_topic_fields_are_bounded_as_their_endpoin
         "min": limit["minimum"],
         "max": limit["maximum"],
     }
-    assert options["limits"]["lehrplan"]["q"] == {"min_length": query["q"]["minLength"], "max_length": query["q"]["maxLength"]}
+    assert options["limits"]["lehrplan"]["q"] == {
+        "min_length": query["q"]["minLength"],
+        "max_length": query["q"]["maxLength"],
+    }
     for mode in ("compendium", "knowledge", "qa"):
-        (text,) = [kind for kind in REQUESTS[mode].model_json_schema()["properties"]["topic"]["anyOf"] if "maxLength" in kind]
+        (text,) = [
+            kind for kind in REQUESTS[mode].model_json_schema()["properties"]["topic"]["anyOf"] if "maxLength" in kind
+        ]
         assert options["limits"][mode]["topic"]["max_length"] == text["maxLength"], mode
 
 
