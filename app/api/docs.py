@@ -49,6 +49,7 @@ def _with_policy(page: HTMLResponse, script: str, style: str = "", *, workers: b
         "default-src 'none'",
         " ".join(["script-src", script, *hashes]),
         " ".join(["style-src", *([style] if style else []), "'unsafe-inline'"]),
+        # ReDoc's logo from cdn.redoc.ly stays out, and the console says so: redoc.ly need not learn of every reader
         "img-src 'self' data:",
         "connect-src 'self'",
         *(["worker-src blob:"] if workers else []),  # ReDoc's search runs in a worker it makes from a blob
