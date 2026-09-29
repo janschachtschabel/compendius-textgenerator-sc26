@@ -160,3 +160,15 @@ def test_repository_credentials_without_keys_are_named_at_start(
         create_app(configured)
 
     assert ("EDU_SHARING_USER" in caplog.text and "API_KEYS" in caplog.text) is warned
+
+
+@pytest.mark.parametrize(("ui", "keys", "warned"), [(True, "", True), (True, KEY_A, False), (False, "", False)])
+def test_the_review_page_without_keys_is_named_at_start(
+    settings: Settings, caplog: pytest.LogCaptureFixture, ui: bool, keys: str, warned: bool
+) -> None:
+    """/ui/ calls every endpoint for whoever opens it; without API_KEYS that is anyone, and the profiles with an LLM
+    spend the daily budget of all - a test server ran just so, in public (audit 2026-09-29, S2)."""
+    with caplog.at_level("WARNING"):
+        create_app(settings.model_copy(update={"ui_enabled": ui, "api_keys": keys}))
+
+    assert ("UI_ENABLED" in caplog.text and "API_KEYS" in caplog.text) is warned

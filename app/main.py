@@ -396,6 +396,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.include_router(metrics_router)
     if settings.ui_enabled:
         app.include_router(ui_router())
+        if not settings.api_key_list:
+            # The page asks every endpoint for whoever opens it; a test server ran just so, in public
+            log.warning(
+                "UI_ENABLED is set but API_KEYS is not: anyone who reaches /ui/ calls every endpoint through it, and "
+                "the profiles with an LLM spend the daily token budget of all callers (audit 2026-09-29, S2)"
+            )
     app.add_exception_handler(HTTPException, http_error)
     app.add_exception_handler(RequestValidationError, validation_error)
     for error, answer in DOMAIN_ERRORS.items():
