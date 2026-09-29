@@ -7,6 +7,7 @@ template is the one the next compendium request gets.
 
 from __future__ import annotations
 
+import json
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -104,6 +105,21 @@ def test_a_heading_pattern_that_would_hold_a_worker_is_refused_with_its_reason(
     answer = client.put("/api/v2/templates/mein", json=slow, headers=AUTH)
     assert answer.status_code == 422 and reason in answer.text
     assert client.get("/api/v2/templates/mein").status_code == 404
+
+
+def test_a_weight_beyond_a_float_is_refused_and_the_stored_template_stays(client: TestClient, tmp_path: Path) -> None:
+    """A11: Python reads the JSON number 1e309 as infinity. It was stored as null: PUT answered 200, GET then 404."""
+    assert client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH).status_code == 200
+    stored = tmp_path / "templates" / "mein.json"
+    before = stored.read_bytes()
+    body = json.dumps(TEMPLATE).replace('"Praxis"}', '"Praxis", "budget": {"weight": 1e309}}')
+    assert "1e309" in body
+
+    answer = client.put("/api/v2/templates/mein", content=body, headers={**AUTH, "Content-Type": "application/json"})
+
+    assert answer.status_code == 422 and "weight" in answer.text
+    assert stored.read_bytes() == before
+    assert client.get("/api/v2/templates/mein").json()["version"] == 1
 
 
 def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:

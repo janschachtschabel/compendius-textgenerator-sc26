@@ -45,6 +45,10 @@ PATTERNS_MAX = 20
 HEADING_MAX_CHARS = 120
 PATTERN_STEPS_MAX = 20_000
 TEMPLATE_PATTERN_STEPS_MAX = 50_000
+# A block's share of the length is its weight over the sum of all; the built-in templates weigh 0.5 to 1.4, so 100
+# leaves a block any share a template may want. The JSON number 1e309 is infinity to Python: it was stored as null,
+# and the template could not be read again (audit 2026-09-29, A11).
+WEIGHT_MAX = 100.0
 Item = Annotated[str, Field(max_length=ITEM_MAX_CHARS)]
 # The standard library's own parser of patterns, private but in every CPython since 3.11 (tests/test_template_bounds.py
 # holds what it is used for); mypy has no stubs for it
@@ -96,7 +100,12 @@ class SlotBudget(BaseModel):
         "template weight is what steers a block's length, not this number",
     )
     weight: float = Field(
-        1.0, gt=0, description="This block's share when a request's target_length is distributed over the blocks"
+        1.0,
+        gt=0,
+        le=WEIGHT_MAX,
+        allow_inf_nan=False,
+        description="This block's share when a request's target_length is distributed over the blocks: its weight "
+        f"over the sum of all weights, a finite number above 0 and at most {WEIGHT_MAX:g}",
     )
 
 

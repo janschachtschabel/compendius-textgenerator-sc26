@@ -20,6 +20,7 @@ from app.templates.schema import (
     MAX_SLOTS,
     PATTERN_STEPS_MAX,
     TEMPLATE_PATTERN_STEPS_MAX,
+    WEIGHT_MAX,
     Template,
     TemplateSlot,
     pattern_steps,
@@ -96,6 +97,17 @@ def test_the_patterns_of_all_blocks_together_stay_within_a_bound() -> None:
     assert Template(id="t", name="t", slots=blocks[:3]).slots
     with pytest.raises(ValidationError, match="zusammen"):
         Template(id="t", name="t", slots=blocks)
+
+
+@pytest.mark.parametrize("weight", [float("inf"), float("-inf"), float("nan"), 1e6])
+def test_a_weight_is_a_finite_number_within_a_bound(weight: float) -> None:
+    """A11: infinity was stored as null, and the template could not be read again; its share would have been NaN."""
+    with pytest.raises(ValidationError):
+        TemplateSlot(**slot(budget={"weight": weight}))
+
+
+def test_a_weight_up_to_its_bound_stays_allowed() -> None:
+    assert TemplateSlot(**slot(budget={"weight": WEIGHT_MAX})).budget.weight == WEIGHT_MAX
 
 
 def test_a_template_has_at_most_as_many_blocks_as_a_request_may_name() -> None:
