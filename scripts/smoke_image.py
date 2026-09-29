@@ -2,7 +2,7 @@
 
 The test suite calls the service in the same process, so it never sees what the image does: the start command,
 the worker setup, the paths, the permissions of the unprivileged user. This script starts the image the way an
-operator does - two workers, a mounted archive directory - and checks that a compendium comes back. Like an operator
+operator does - two workers, an archive volume - and checks that a compendium comes back. Like an operator
 without an LLM it sets PRESET_DEFAULT=llm-free (D53), and it checks that a profile that needs an LLM is refused with a
 503 that names LLM_ENABLED instead of quietly running the rules.
 
@@ -12,9 +12,14 @@ against that bug is the unit test on the start command (tests/test_serve.py); th
 the packaged service answers at all.
 
 The archives are the small sample ZIMs of the test session, built from the checked-in HTML fixtures, so the
-script needs no dumps and no network.
+script needs no dumps and no network. They reach the container through a named volume, not a bind mount: with
+Docker-in-Docker (GitLab) the daemon runs in a container of its own and sees none of the job's directories. There the
+archives come from a job with the project's environment (--write-archives), and the probe itself needs only Python
+and httpx.
 
     python scripts/smoke_image.py --image compendious-text-fastapi:local
+    python scripts/smoke_image.py --write-archives smoke-zim        # GitLab, job with uv
+    python3 scripts/smoke_image.py --archives smoke-zim --host docker --image ...   # GitLab, Docker-in-Docker job
 """
 
 from __future__ import annotations
@@ -30,9 +35,6 @@ from collections.abc import Callable
 from pathlib import Path
 
 import httpx
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tests.conftest import SAMPLE_META, build_sample_zim
 
 DOCKER = "docker"  # on PATH by intent: the script runs where the image was built
 READY_TIMEOUT_S = 90
@@ -83,8 +85,38 @@ def logs(container: str) -> str:
 
 
 def build_archives(directory: Path) -> None:
+    """The sample archives of the test session; only this step needs the project's environment (libzim, the test
+    helpers), so the probe itself runs with a bare Python where the image is (GitLab)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from tests.conftest import SAMPLE_META, build_sample_zim
+
     for project, meta in SAMPLE_META.items():
         build_sample_zim(directory / str(meta["file"]), project)
+
+
+def publish_address(host: str) -> str:
+    """Where the container publishes its port: on the loopback when the probe runs next to the daemon, on every address
+    of the daemon when the probe reaches it by name - with Docker-in-Docker the daemon's network is the job's own."""
+    return "127.0.0.1" if host in ("127.0.0.1", "localhost") else "0.0.0.0"  # noqa: S104 - see the docstring
+
+
+def fill_volume(image: str, volume: str, archives: Path, name: str) -> None:
+    """Copy the sample archives into a new named volume, through a container of the image that never starts. Only the
+    archives: libzim's creator leaves its working index files beside them, and the index is in the archive."""
+    run("volume", "create", volume)
+    helper = f"{name}-copy"
+    run("create", "--name", helper, "-v", f"{volume}:/data/zim", image)
+    try:
+        for archive in sorted(archives.glob("*.zim")):
+            run("cp", str(archive), f"{helper}:/data/zim/{archive.name}")
+    finally:
+        run("rm", "-f", helper)
+
+
+def remove(containers: tuple[str, ...], volumes: tuple[str, ...]) -> None:
+    """Remove what a probe leaves, an interrupted one's too; what is not there is no error."""
+    subprocess.run([DOCKER, "rm", "-f", *containers], capture_output=True, check=False)  # noqa: S603
+    subprocess.run([DOCKER, "volume", "rm", "-f", *volumes], capture_output=True, check=False)  # noqa: S603
 
 
 def wait_until_ready(base_url: str, container: str) -> None:
@@ -200,14 +232,14 @@ def check_embeddings(base_url: str) -> str:
     return f"{matching['matcher']} with {', '.join(matching['components'])}"
 
 
-def check_sidecars(image: str, archives: Path, state: Path, *, hardened: bool) -> str:
+def check_sidecars(image: str, archive_volume: str, state_volume: str, *, hardened: bool) -> str:
     """The status command of each sidecar in the image, with the volumes and the hardening docker-compose.yml gives it;
     a failing one fails the probe with its own message."""
     for command, first_words in SIDECARS.items():
         answer = run(
             "run", "--rm",
-            "-v", f"{archives.as_posix()}:/data/zim:ro",
-            "-v", f"{state.as_posix()}:/data/state",
+            "-v", f"{archive_volume}:/data/zim:ro",
+            "-v", f"{state_volume}:/data/state",
             "-e", "ZIM_DIR=/data/zim",
             "-e", "STATE_DIR=/data/state",
             *(SIDECAR_HARDENING if hardened else ()),
@@ -284,44 +316,59 @@ def main() -> int:
         action="store_true",
         help="the image was built with its Model2Vec model (the published one is), and the matcher must use it",
     )
+    parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="where the published port answers: with Docker-in-Docker the name of the docker service (GitLab: docker)",
+    )
+    parser.add_argument(
+        "--archives", type=Path, help="sample archives built with --write-archives; default: built here"
+    )
+    parser.add_argument(
+        "--write-archives",
+        type=Path,
+        metavar="DIR",
+        help="only build the sample archives into DIR, with the project's environment, and stop",
+    )
     args = parser.parse_args()
+    if args.write_archives is not None:
+        args.write_archives.mkdir(parents=True, exist_ok=True)
+        build_archives(args.write_archives)
+        return 0
 
-    base_url = f"http://127.0.0.1:{args.port}"
-    with (
-        tempfile.TemporaryDirectory(prefix="smoke-zim-") as directory,
-        tempfile.TemporaryDirectory(prefix="smoke-state-") as state_directory,
-    ):
-        archives, state = Path(directory), Path(state_directory)
-        # tempfile keeps the directories to their owner (0700); the image runs as an unprivileged user of its own, and
-        # a sidecar writes into its state volume
-        archives.chmod(0o755)
-        state.chmod(0o777)
-        build_archives(archives)
-        print(f"the sidecars start: {check_sidecars(args.image, archives, state, hardened=args.hardened)}")
-        subprocess.run([DOCKER, "rm", "-f", args.name], capture_output=True, check=False)  # noqa: S603
+    base_url = f"http://{args.host}:{args.port}"
+    helper, archive_volume, state_volume = f"{args.name}-copy", f"{args.name}-zim", f"{args.name}-state"
+    remove((args.name, helper), (archive_volume, state_volume))
+    try:
+        with tempfile.TemporaryDirectory(prefix="smoke-zim-") as directory:
+            archives = args.archives or Path(directory)
+            if args.archives is None:
+                build_archives(archives)
+            fill_volume(args.image, archive_volume, archives, args.name)
+        run("volume", "create", state_volume)
+        print(f"the sidecars start: {check_sidecars(args.image, archive_volume, state_volume, hardened=args.hardened)}")
         container = run(
             "run", "-d", "--name", args.name,
-            "-p", f"127.0.0.1:{args.port}:8000",
-            "-v", f"{archives.as_posix()}:/data/zim:ro",
+            "-p", f"{publish_address(args.host)}:{args.port}:8000",
+            "-v", f"{archive_volume}:/data/zim:ro",
             "-e", "ZIM_REQUIRED=wikipedia_de_sample,klexikon_de_sample",
             "-e", "PRESET_DEFAULT=llm-free",
             "-e", "UI_ENABLED=true",
             *(HARDENING if args.hardened else ()),
             args.image,
         )  # fmt: skip
-        try:
-            wait_until_ready(base_url, container)
-            print(f"the image is: {check_revision(base_url, args.revision)}")
-            if args.embeddings:
-                print(f"the image matches: {check_embeddings(base_url)}")
-            compendium = ask_for_a_compendium(base_url, container)
-            print(f"the image answers: {check(compendium, logs(args.name))}")
-            print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
-            print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
-            print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
-            print(f"the image shows: {check_review_page(base_url)}")
-        finally:
-            run("rm", "-f", args.name)
+        wait_until_ready(base_url, container)
+        print(f"the image is: {check_revision(base_url, args.revision)}")
+        if args.embeddings:
+            print(f"the image matches: {check_embeddings(base_url)}")
+        compendium = ask_for_a_compendium(base_url, container)
+        print(f"the image answers: {check(compendium, logs(args.name))}")
+        print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")
+        print(f"the image recognises: {check_entities(ask_for_entities(base_url, container))}")
+        print(f"the image asks: {check_pairs(ask_for_pairs(base_url, container))}")
+        print(f"the image shows: {check_review_page(base_url)}")
+    finally:
+        remove((args.name, helper), (archive_volume, state_volume))
     return 0
 
 
