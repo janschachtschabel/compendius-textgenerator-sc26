@@ -384,8 +384,10 @@ gehört zur Untersammlung in der Zeile über seiner Gruppe.
 Jeder Wert kommt aus dem Repository, wo Redakteure frei tippen können. Deshalb wird jede Knotenzeile
 auf eine Zeile gebracht, ebenso die Kennzahlenzeile und jeder Facettenmarker, und jeder Wert steht so da, wie er
 getippt wurde: Ein Backslash maskiert `\`, Backticks, `[` und `]`, ein `<` vor einem Buchstaben, `/` oder `?`, ein
-`&` vor einer Entität und das erste Zeichen einer Zeile, das sie zur Überschrift, zum Zitat, zur Liste, zur Linie,
-zum Codeblock oder zur Tabellenzeile machte; `<!--` steht als `<\!--` da. CommonMark zeigt jedes davon als das
+`&` vor einer Entität, jedes `*` und jedes `_`, das eine Hervorhebung öffnen könnte (keines nach einem Buchstaben oder
+einer Ziffer oder vor einem Leerzeichen: `Brechung_(Physik)` bleibt, wie es ist), und das erste Zeichen einer Zeile,
+das sie zur Überschrift, zum Zitat, zur Liste, zur Linie, zum Codeblock oder zur Tabellenzeile machte; `<!--` steht
+als `<\!--` da. CommonMark zeigt jedes davon als das
 Zeichen, das es war; wer die Werte als Text braucht, entfernt den Backslash vor einem ASCII-Satzzeichen. Nur eine
 Webadresse wird ein Link, mit Leerzeichen oder Klammern in `<…>`. Die Beschreibung der Sammlung behält die Zeilen und
 Absätze der Redaktion, doch jeder Zeilenumbruch darin wird ein gewöhnlicher; eine Aufzählung in der Beschreibung liest

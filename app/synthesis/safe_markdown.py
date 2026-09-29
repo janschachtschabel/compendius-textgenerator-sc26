@@ -20,8 +20,15 @@ WEB_SCHEMES = ("https://", "http://")
 # Signs that start markdown or HTML inside a line. The backslash comes first, so an escape the source typed cannot
 # take over one of ours; backticks, since a code span would show our escapes as typed; brackets for links, images
 # and references; "<" before what opens a tag or an autolink, and the "!" after it, which keeps a comment, a declaration
-# or CDATA from opening and a parser that looks for "<!--" from finding one; "&" before an entity.
-_ACTIVE = re.compile(r"[\\`\[\]]|<(?=[A-Za-z/?])|(?<=<)!|&(?=#?[A-Za-z0-9]+;)")
+# or CDATA from opening and a parser that looks for "<!--" from finding one; "&" before an entity. Emphasis: every
+# asterisk, since one inside a word opens it as well ("Lehrer*innen sowie Schüler*innen"), and a run of underscores
+# that could open it - one after a letter or digit or before a blank cannot, and without an opener nothing is
+# emphasised. An address the sources block prints as text keeps its "Brechung_(Physik)": an autolink of GFM would
+# keep a backslash in it (audit 2026-09-29, T2). Measured on the eleven topics of the sample archives and part 3 of
+# the WLO samples: three asterisks gained a backslash (the birth sign in "(* 23. Januar 1840"), no underscore;
+# every underscore escaped would have put one into five addresses of the sources list. 200,000 random strings of
+# underscores, asterisks, letters, blanks and punctuation rendered no emphasis with markdown-it and read back as typed.
+_ACTIVE = re.compile(r"[\\`\[\]*]|<(?=[A-Za-z/?])|(?<=<)!|&(?=#?[A-Za-z0-9]+;)|(?<!\w)_+(?=[^\s_])")
 # The first sign of a line that makes it a heading, quote, list, rule, fence or table row, and the dot or bracket
 # after the number of an ordered list
 _LINE_START = re.compile(r"^([ \t]*)(?:([#>+\-*=_~|])|(\d{1,9})([.)]))", re.M)
@@ -50,10 +57,10 @@ def plain_label(text: str) -> str:
 
 def escape_text(text: str) -> str:
     """Text from a source as markdown that shows it as typed: nothing in it opens a tag, comment, link, image, code
-    span or entity, and no line of it reads as a heading, quote, list, rule, fence or table row. CommonMark also ends
-    a line at a lone CR, so every line end becomes an LF first."""
+    span, emphasis or entity, and no line of it reads as a heading, quote, list, rule, fence or table row. CommonMark
+    also ends a line at a lone CR, so every line end becomes an LF first."""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    text = _ACTIVE.sub(lambda match: "\\" + match.group(0), text)
+    text = _ACTIVE.sub(lambda match: "".join("\\" + sign for sign in match.group(0)), text)
     return _LINE_START.sub(_escaped_start, text)
 
 

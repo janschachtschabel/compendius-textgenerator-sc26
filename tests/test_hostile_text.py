@@ -63,6 +63,9 @@ FOREIGN = [
     "---",
     "| a | b |",
     "Zeile eins" + CR + "# Überschrift nach CR",
+    # emphasis: WLO descriptions gender with an asterisk, and CommonMark reads one inside a word (audit 2026-09-29, T2)
+    "Für Lehrer*innen sowie Schüler*innen",
+    "__init__ rechnet 5*3*2 und _kursiv_",
 ]
 FIX = Path(__file__).parent / "fixtures" / "wlo"
 
@@ -80,6 +83,17 @@ def test_escaped_text_shows_as_typed_and_nothing_else(text: str) -> None:
     assert tags(markdown) == ["p"]  # no heading, list, rule, code, table or link
     assert shown(markdown) == " ".join(text.split())
     assert unescape(markdown) == text.replace(CR, LF)
+
+
+def test_an_underscore_that_cannot_open_emphasis_stays_as_it_is() -> None:
+    """An underscore after a letter or digit, or before a blank, opens no emphasis in CommonMark, and an autolink of
+    GFM keeps the backslashes of an address: the addresses the sources block prints as text stay as they are (audit
+    2026-09-29, T2)."""
+    for address in ("https://de.wikipedia.org/wiki/Isaac_Newton", "https://de.wikipedia.org/wiki/Brechung_(Physik)"):
+        assert escape_text(address) == address
+    assert (
+        shown(escape_text("snake_case_name und Merkur_(Planet)_ und _")) == "snake_case_name und Merkur_(Planet)_ und _"
+    )
 
 
 @pytest.mark.parametrize("text", FOREIGN)
