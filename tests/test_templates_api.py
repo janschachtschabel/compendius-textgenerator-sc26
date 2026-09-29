@@ -95,6 +95,17 @@ def test_a_heading_pattern_that_is_no_regular_expression_is_refused(client: Test
     assert answer.status_code == 422 and "heading_patterns" in answer.text
 
 
+@pytest.mark.parametrize(("pattern", "reason"), [(".*" * 12 + "!", "Schritte"), ("^(a|aa)+$", "Zeichenklasse")])
+def test_a_heading_pattern_that_would_hold_a_worker_is_refused_with_its_reason(
+    client: TestClient, pattern: str, reason: str
+) -> None:
+    """A08: the lexicon runs every pattern over every heading; these took seconds on one and were stored."""
+    slow = {**TEMPLATE, "slots": [{**TEMPLATE["slots"][0], "heading_patterns": [pattern]}]}
+    answer = client.put("/api/v2/templates/mein", json=slow, headers=AUTH)
+    assert answer.status_code == 422 and reason in answer.text
+    assert client.get("/api/v2/templates/mein").status_code == 404
+
+
 def test_a_template_id_is_a_file_name_that_stays_in_its_directory() -> None:
     from pydantic import ValidationError
 

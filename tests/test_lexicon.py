@@ -1,6 +1,8 @@
+import re
+
 from app.matching.lexicon import HeadingLexicon
 from app.templates.manager import TemplateManager
-from app.templates.schema import Template, TemplateSlot
+from app.templates.schema import HEADING_MAX_CHARS, Template, TemplateSlot
 from tests.conftest import ROOT
 
 
@@ -36,6 +38,18 @@ def test_template_patterns_extend_lexicon() -> None:
     )
     assert lexicon.classify(["Gerätekunde"]) is None
     assert lexicon.with_template(template).classify(["Gerätekunde"]) == "praxis"
+
+
+def test_a_heading_is_read_up_to_its_bound() -> None:
+    """A08: the bound on the work of a template's patterns holds for headings of HEADING_MAX_CHARS characters."""
+    lexicon = HeadingLexicon(
+        slots={"praxis": [re.compile("x$")]}, exclude=[re.compile("y$")], relations=[re.compile("z$")]
+    )
+    heading = "a" * (HEADING_MAX_CHARS - 1)
+
+    assert lexicon.classify([heading + "x"]) == "praxis"
+    assert lexicon.classify([heading + "ax"]) is None
+    assert not lexicon.is_excluded([heading + "ay"]) and not lexicon.is_relation([heading + "az"])
 
 
 def test_lexicon_covers_all_sc26_content_slots() -> None:

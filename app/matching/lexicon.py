@@ -8,7 +8,7 @@ from typing import Any
 
 import yaml
 
-from app.templates.schema import Template
+from app.templates.schema import HEADING_MAX_CHARS, Template
 
 
 def _compile(patterns: list[str]) -> list[re.Pattern[str]]:
@@ -57,7 +57,8 @@ class HeadingLexicon:
 
     @staticmethod
     def _clean(heading: str) -> str:
-        return re.sub(r"\s+", " ", heading).strip(" :")
+        # The bound on the work of a template's patterns holds for headings this long (audit 2026-09-29, A08)
+        return re.sub(r"\s+", " ", heading).strip(" :")[:HEADING_MAX_CHARS]
 
     def classify(self, heading_path: list[str]) -> str | None:
         """Deepest heading first, then parents; first slot whose pattern matches wins."""
