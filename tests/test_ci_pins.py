@@ -45,6 +45,12 @@ def test_every_build_and_pipeline_runs_the_same_uv() -> None:
 def test_every_image_a_pipeline_pulls_is_pinned_by_digest() -> None:
     gitlab = yaml.safe_load((ROOT / ".gitlab-ci.yml").read_text(encoding="utf-8"))
     compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
+    images = {
+        name: job["image"] if isinstance(job["image"], str) else job["image"]["name"]
+        for name, job in gitlab.items()
+        if isinstance(job, dict) and "image" in job
+    }
 
-    assert "@sha256:" in gitlab["default"]["image"]
+    # an image given by a variable ($DIND_IMAGE) is the runner's to pin
+    assert not [name for name, image in images.items() if not image.startswith("$") and "@sha256:" not in image], images
     assert gitlab["alert-rules"]["image"]["name"] == compose["services"]["prometheus"]["image"]
