@@ -1129,9 +1129,10 @@ numpy, scikit-learn, Model2Vec mit eingebautem Modell (`JanSchachtschabel/m2v-gt
 (`compendium wikidata sync --loop`, D64) und `gnd-updater` (`compendium gnd sync --loop`, D65), alle aus demselben
 Image, Volumes `zim` (40 GB, Entscheidung D18) und
 `state` (mindestens 5 GB: rund 0,45 GB Daten und rund 1,5 GB mehr während eines Wikidata-Laufs, dazu die 2 GiB,
-unter denen `KompendiumVolumeFull` meldet). Ressourcen: 2 CPU und 4 GB RAM für die zwei Worker des Images;
-gemessen rund 1,4 GB je Worker, 2 GB
-tragen den Dienst nur mit einem (docs/installation.md, Abschnitt 7a). libzim nutzt mmap, der
+unter denen `KompendiumVolumeFull` meldet). Ressourcen: 2 CPU und 6 GB RAM für die zwei Worker des Images,
+empfohlen 4 CPU und 8 GB; gemessen rund 1,4 GB je Worker im Leerlauf und 1,7 GiB nach dem Aufwärmen (Lastmessung
+vom 29.09.2026, docs/uebergabe/README.md), 2 GB tragen den Dienst nur mit einem (docs/installation.md,
+Abschnitt 7a). libzim nutzt mmap, der
 Betriebssystem-Cache profitiert von zusätzlichem RAM.
 
 **Worker und Healthcheck (Fund vom 2026-09-20).** Der Elternprozess von uvicorn pingt jedes Kind und tötet
