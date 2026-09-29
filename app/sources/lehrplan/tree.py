@@ -56,6 +56,11 @@ class HarvestedNode:
     parent_label: str = ""
     depth: int = 0
 
+    @property
+    def matchable(self) -> bool:
+        """Whether a search can find the element: only a role the matcher weighs makes it a hit."""
+        return any(role in MATCHABLE_ROLES for role in self.rollen)
+
 
 def build_class_index(rows: Sequence[Mapping[str, str]]) -> dict[str, ClassInfo]:
     """Fold ``class_roles`` rows (one per function or super-class) into one entry per class."""

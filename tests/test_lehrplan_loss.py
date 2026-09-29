@@ -1,10 +1,12 @@
 """A harvest that would lose curricula or their elements keeps the cache and says so, without pulling MEM every hour
-(audit 2026-09-28, KO-20, BE-11 and DB-02).
+(audit 2026-09-28, KO-20, BE-11 and DB-02; audit 2026-09-29, Q1).
 
 KO-01 refused a harvest that lost a state, but only after the whole run - about 2,600 SPARQL queries in 25 minutes -
 and as an error the loop retried after an hour: while MEM listed less, the harvest pulled it 17 times a day, and the
 alert saw the error only in the second after it. Empty answers to the element queries went unseen and emptied the
 curricula they came for. A crash right after the swap could leave a cache with broken pages that no check noticed.
+Empty answers about the roles of the element classes or the head fields of the curricula were taken as well: the
+elements lost the roles a search looks for, the curricula their subjects, and the run replaced the cache.
 """
 
 from __future__ import annotations
@@ -23,12 +25,15 @@ from app.jobs.runner import run_periodically
 from app.sources.lehrplan.harvest import STATUS_FILE, HarvestRefusedError, read_status
 from app.sources.lehrplan.sparql import SparqlError, SparqlRefusedError
 from app.sources.lehrplan.store import LehrplanStore
-from tests.test_lehrplan_harvest import BE, T0, FakeEndpoint, _harvest
+from tests.test_lehrplan_harvest import BE, CLOSURES, LISTS, LP, SN, T0, FakeEndpoint, _harvest
 from tests.test_metrics import _app, scrape, value
 from tests.test_runner import FakeClock
 
 SAXONY = "https://lp-sachsen.org/resource/522"  # four elements in the fake endpoint, Berlin's curriculum one
 ELEMENTS = "SELECT DISTINCT ?n WHERE"
+ROLES = "VALUES ?type"  # the query about the element classes
+HEADS = "?field"  # the query about the head fields of a block of curricula
+SAXON_CLASS = f"<{LP}LP_0002115>"  # a Saxon element class; its roles come from the ontology alone
 
 
 def test_a_loss_the_counts_show_is_refused_before_anything_is_pulled(tmp_path: Path) -> None:
@@ -42,15 +47,15 @@ def test_a_loss_the_counts_show_is_refused_before_anything_is_pulled(tmp_path: P
 
 
 class ReloadingEndpoint(FakeEndpoint):
-    """Answers the element query of Saxony's curriculum with no rows the first ``empty`` times, as Virtuoso does while
-    it reloads a graph."""
+    """Answers the queries that hold every one of ``marks`` - the element query of Saxony's curriculum unless said
+    otherwise - with no rows the first ``empty`` times, as Virtuoso does while it reloads a graph."""
 
-    def __init__(self, empty: int) -> None:
+    def __init__(self, empty: int, marks: tuple[str, ...] = (ELEMENTS, f"<{SAXONY}>")) -> None:
         super().__init__()
-        self.empty = empty
+        self.empty, self.marks = empty, marks
 
     def select(self, query: str) -> list[dict[str, str]]:
-        if ELEMENTS in query and f"<{SAXONY}>" in query and self.empty > 0:
+        if all(mark in query for mark in self.marks) and self.empty > 0:
             self.queries.append(query)
             self.empty -= 1
             return []
@@ -80,6 +85,84 @@ def test_the_elements_per_state_are_kept_with_the_cache(tmp_path: Path) -> None:
     _harvest(tmp_path, FakeEndpoint()).run()
 
     assert json.loads(LehrplanStore(tmp_path / "lehrplan.db").meta()["nodes_per_state"]) == {"SN": 4, "BE": 1}
+
+
+def _findable(tmp_path: Path) -> dict[str, tuple[list[str], list[str]]]:
+    """Roles and subjects of the elements a search for "Optik" finds - only elements with a role the matcher weighs."""
+    hits = LehrplanStore(tmp_path / "lehrplan.db").search(["Optik"])
+    return {hit.iri: (hit.rollen, hit.lehrplan.schulfaecher) for hit in hits}
+
+
+@pytest.mark.parametrize("marks", [(ROLES, SAXON_CLASS), (HEADS, f"<{SAXONY}>")], ids=["roles", "heads"])
+def test_an_empty_answer_about_roles_or_heads_is_asked_again(tmp_path: Path, marks: tuple[str, ...]) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    before = _findable(tmp_path)
+    endpoint = ReloadingEndpoint(empty=1, marks=marks)
+
+    _harvest(tmp_path, endpoint, when=T0 + timedelta(days=1)).run()
+
+    assert len([query for query in endpoint.queries if all(mark in query for mark in marks)]) == 2
+    assert _findable(tmp_path) == before
+
+
+@pytest.mark.parametrize(
+    ("marks", "message"),
+    [((ROLES, SAXON_CLASS), "Rollen"), ((HEADS, f"<{SAXONY}>"), "Kopfdaten")],
+    ids=["roles", "heads"],
+)
+def test_a_run_whose_roles_or_heads_come_back_empty_twice_keeps_the_cache(
+    tmp_path: Path, marks: tuple[str, ...], message: str
+) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    before = _findable(tmp_path)
+
+    with pytest.raises(HarvestRefusedError, match=message):
+        _harvest(tmp_path, ReloadingEndpoint(empty=2, marks=marks), when=T0 + timedelta(days=1)).run()
+
+    assert before == {
+        "be:std": (["kompetenz"], ["Physik"]),
+        "sn:lb2": (["themenbereich"], ["Physik"]),
+        "sn:k1": (["kompetenz", "inhalt"], ["Physik"]),
+    }
+    assert _findable(tmp_path) == before
+
+
+def test_curricula_without_head_fields_in_the_cache_may_answer_none(tmp_path: Path) -> None:
+    endpoint = ReloadingEndpoint(empty=99, marks=(HEADS,))
+
+    report = _harvest(tmp_path, endpoint).run()
+
+    # a curriculum may name no head field with a label; nothing in a first run says these had one
+    assert report.nodes == 5
+    assert len([query for query in endpoint.queries if HEADS in query]) == 2  # one per state, none asked again
+
+
+def test_a_forced_run_takes_an_empty_answer_and_asks_for_those_classes_again(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    second = "https://lp-sachsen.org/resource/523"
+    monkeypatch.setitem(LISTS, SN.iri, [*LISTS[SN.iri], {"s": second, "label": "Gymnasium Physik 8"}])
+    element = {"n": "sn:k2", "label": "Optik im Alltag", "types": LP + "LP_0002115", "ancestors": ""}
+    monkeypatch.setitem(CLOSURES, second, [element])
+
+    _harvest(tmp_path, ReloadingEndpoint(empty=2, marks=(ROLES, SAXON_CLASS))).run(force=True)
+
+    # the first Saxon curriculum keeps its elements without roles; the second asks for its class again and has them
+    assert set(_findable(tmp_path)) == {"be:std", "sn:k2"}
+
+
+def test_a_run_that_leaves_a_state_less_than_half_its_findable_elements_keeps_the_cache(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _harvest(tmp_path, FakeEndpoint()).run()
+    before = _findable(tmp_path)
+    # while the ontology graph is gone, the class query still answers a row per class, but without any role
+    monkeypatch.setattr("tests.test_lehrplan_harvest.CLASS_ROLES", [])
+
+    with pytest.raises(HarvestRefusedError, match="SN 0 statt 2"):
+        _harvest(tmp_path, FakeEndpoint(), when=T0 + timedelta(days=1)).run()
+
+    assert _findable(tmp_path) == before
 
 
 @pytest.mark.parametrize(

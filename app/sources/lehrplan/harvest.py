@@ -198,7 +198,8 @@ class LehrplanHarvest:
         """Harvest all states into a fresh cache file; on any error the previous file stays.
 
         Only one harvest may run per state directory (``HarvestRunningError`` otherwise). A run that lists no
-        curriculum at all, or loses a state of the cache (``lost_states``), keeps the previous file and raises
+        curriculum at all, loses a state of the cache or most of its elements (``lost_states``), or twice gets no answer
+        about the roles of element classes or the head fields the cache holds, keeps the previous file and raises
         ``HarvestRefusedError``, unless it is forced.
         """
         self._lock = self._acquire_lock()
@@ -233,18 +234,20 @@ class LehrplanHarvest:
         self._write_status("running", started_at=started.isoformat(), progress={})
         writer: LehrplanWriter | None = None
         nodes_per_state: Counter[str] = Counter()
+        matchable_per_state: Counter[str] = Counter()
         emptied: list[str] = []
         try:
             if not force:
                 self._refuse_a_counted_loss()
             before = self.store.nodes_per_lehrplan()
+            had_heads = self.store.lehrplaene_with_heads()
             writer = LehrplanWriter(self._db_path)
             for land in self._states:
                 listed = self._list(land.iri)
                 if not listed:
                     continue
                 per_state[land.code] = len(listed)
-                heads = self._heads([iri for iri, _label in listed])
+                heads = self._heads([iri for iri, _label in listed], had_heads=had_heads, force=force)
                 for done, (iri, label) in enumerate(listed, start=1):
                     fields = heads.get(iri, {})
                     writer.add_lehrplan(
@@ -269,7 +272,7 @@ class LehrplanHarvest:
                     for row in rows:
                         if row.get("label"):
                             row["label"] = _tidy(row["label"])
-                    self._extend_class_index(rows, class_index, asked_types)
+                    self._extend_class_index(rows, class_index, asked_types, force=force)
                     nodes = build_nodes(rows, class_index)
                     for node in nodes:
                         node.jahrgangsstufen = _clean_labels("jahrgangsstufe", node.jahrgangsstufen)
@@ -282,6 +285,7 @@ class LehrplanHarvest:
                     writer.add_nodes(iri, nodes)
                     nodes_total += len(nodes)
                     nodes_per_state[land.code] += len(nodes)
+                    matchable_per_state[land.code] += sum(1 for node in nodes if node.matchable)
                     if done % PROGRESS_EVERY == 0:
                         self._write_status(
                             "running",
@@ -295,7 +299,7 @@ class LehrplanHarvest:
                         )
                 log.info("harvested %s: %d curricula, %d nodes so far", land.code, len(listed), nodes_total)
             if not force:
-                self._refuse_a_loss(per_state, dict(nodes_per_state), emptied)
+                self._refuse_a_loss(per_state, dict(nodes_per_state), dict(matchable_per_state), emptied)
             elif emptied:
                 log.warning("forced harvest takes %d curricula without their elements: %s", len(emptied), emptied)
             finished = self._clock()
@@ -347,7 +351,9 @@ class LehrplanHarvest:
                 "nichts wurde abgerufen (übernehmen: compendium lehrplan harvest --force)"
             )
 
-    def _refuse_a_loss(self, harvested: dict[str, int], nodes: dict[str, int], emptied: list[str]) -> None:
+    def _refuse_a_loss(
+        self, harvested: dict[str, int], nodes: dict[str, int], matchable: dict[str, int], emptied: list[str]
+    ) -> None:
         if not harvested:
             raise HarvestRefusedError(
                 "MEM listet keinen Lehrplan; der bisherige Cache bleibt "
@@ -368,6 +374,18 @@ class LehrplanHarvest:
             raise HarvestRefusedError(
                 f"MEM liefert deutlich weniger Lehrplanelemente als der Cache hält ({detail}); der bisherige Cache "
                 "bleibt (übernehmen: compendium lehrplan harvest --force)"
+            )
+        # Without the ontology graph - as while MEM reloads it - the class query still answers a row per class, only
+        # without roles: the elements stay, and a search no longer finds them (audit 2026-09-29, Q1)
+        before_matchable = self.store.matchable_per_state()
+        lost_matchable = lost_states(before_matchable, matchable)
+        if lost_matchable:
+            detail = ", ".join(
+                f"{code} {matchable.get(code, 0)} statt {before_matchable[code]}" for code in lost_matchable
+            )
+            raise HarvestRefusedError(
+                f"MEM liefert deutlich weniger auffindbare Lehrplanelemente (Themenbereich, Kompetenz, Inhalt) als der "
+                f"Cache hält ({detail}); der bisherige Cache bleibt (übernehmen: compendium lehrplan harvest --force)"
             )
         if len(emptied) > EMPTIED_TOLERATED:
             raise HarvestRefusedError(
@@ -404,16 +422,41 @@ class LehrplanHarvest:
                 return listed
             offset += PAGE_SIZE
 
-    def _heads(self, iris: Sequence[str]) -> dict[str, dict[str, list[str]]]:
+    def _heads(self, iris: Sequence[str], *, had_heads: set[str], force: bool) -> dict[str, dict[str, list[str]]]:
+        """Head field labels per curriculum, asked for in blocks of ``CHUNK_SIZE``.
+
+        A block may name no head field with a label, but not while the cache holds head fields for its curricula:
+        Virtuoso answers with no rows while it reloads a graph. Such an answer is asked for once more, and still empty
+        the run is refused unless forced (audit 2026-09-29, Q1).
+        """
         heads: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
         for start in range(0, len(iris), CHUNK_SIZE):
-            for row in self._select(queries.lehrplan_heads(iris[start : start + CHUNK_SIZE])):
+            chunk = iris[start : start + CHUNK_SIZE]
+            answer = self._select(queries.lehrplan_heads(chunk))
+            known = had_heads.intersection(chunk)
+            if not answer and known:
+                answer = self._select(queries.lehrplan_heads(chunk))
+                if not answer:
+                    self._refuse(
+                        "MEM liefert zweimal keine Kopfdaten (Fach, Schulart, Stufe) zu Lehrplänen, die der Cache "
+                        f"damit hält, etwa {min(known)}",
+                        force=force,
+                    )
+            for row in answer:
                 if row.get("s") and row.get("field") and row.get("label"):
                     heads[row["s"]][row["field"]].append(row["label"])
         return heads
 
-    def _extend_class_index(self, rows: Sequence[dict[str, str]], index: dict[str, ClassInfo], asked: set[str]) -> None:
-        """Ask the ontology about node classes not seen before (only its own namespace can carry roles)."""
+    def _extend_class_index(
+        self, rows: Sequence[dict[str, str]], index: dict[str, ClassInfo], asked: set[str], *, force: bool
+    ) -> None:
+        """Ask the ontology about node classes not seen before (only its own namespace can carry roles).
+
+        All but the VALUES block of ``class_roles`` are OPTIONAL, so every class asked for answers at least one row, and
+        an empty answer is Virtuoso reloading a graph: it is asked for once more, and still empty the run is refused
+        unless forced. Classes count as asked only after an answer with rows, so a forced run asks for them again with
+        the next curriculum that has them (audit 2026-09-29, Q1).
+        """
         fresh = sorted(
             {
                 iri
@@ -424,8 +467,25 @@ class LehrplanHarvest:
         )
         for start in range(0, len(fresh), CHUNK_SIZE):
             chunk = fresh[start : start + CHUNK_SIZE]
-            index.update(build_class_index(self._select(queries.class_roles(chunk))))
+            answer = self._select(queries.class_roles(chunk))
+            if not answer:
+                answer = self._select(queries.class_roles(chunk))
+            if not answer:
+                self._refuse(
+                    f"MEM nennt zweimal keine Rollen zu Klassen der Lehrplanelemente, etwa {chunk[0]}", force=force
+                )
+                continue
+            index.update(build_class_index(answer))
             asked.update(chunk)
+
+    @staticmethod
+    def _refuse(reason: str, *, force: bool) -> None:
+        """Refuse the run for ``reason``, the cache stays; a forced run goes on with what MEM answered."""
+        if not force:
+            raise HarvestRefusedError(
+                f"{reason}; der bisherige Cache bleibt (übernehmen: compendium lehrplan harvest --force)"
+            )
+        log.warning("forced harvest goes on: %s", reason)
 
     def _write_status(self, state: str, **fields: Any) -> None:
         previous = read_status(self._state_dir) or {}

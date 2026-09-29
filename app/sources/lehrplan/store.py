@@ -22,7 +22,6 @@ from pathlib import Path
 from typing import Any
 
 from app.sources.lehrplan.tree import HarvestedNode
-from app.sources.lehrplan.vocab import MATCHABLE_ROLES
 from app.sources.local_index import to_disk
 
 log = logging.getLogger(__name__)
@@ -189,6 +188,37 @@ class LehrplanStore:
             log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
             return {}
         return {row[0]: row[1] for row in rows}
+
+    def matchable_per_state(self) -> dict[str, int]:
+        """Elements a search can find per state code, for the harvest that replaces this cache."""
+        if not self.available:
+            return {}
+        try:
+            with closing(self._connect()) as connection:
+                rows = connection.execute(
+                    "SELECT lehrplan.bundesland_code, COUNT(*) FROM node"
+                    " JOIN lehrplan ON lehrplan.iri = node.lehrplan_iri"
+                    " WHERE node.matchable = 1 GROUP BY lehrplan.bundesland_code"
+                ).fetchall()
+        except sqlite3.Error as exc:
+            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            return {}
+        return {row[0]: row[1] for row in rows}
+
+    def lehrplaene_with_heads(self) -> set[str]:
+        """IRIs of the curricula with at least one head field, for the harvest that replaces this cache."""
+        if not self.available:
+            return set()
+        try:
+            with closing(self._connect()) as connection:
+                rows = connection.execute(
+                    "SELECT iri FROM lehrplan WHERE schularten != '[]' OR schulfaecher != '[]'"
+                    " OR jahrgangsstufen != '[]' OR schulstufen != '[]'"
+                ).fetchall()
+        except sqlite3.Error as exc:
+            log.warning("lehrplan cache %s cannot be read: %s", self.path, exc)
+            return set()
+        return {row[0] for row in rows}
 
     def meta(self) -> dict[str, str]:
         if not self.exists:
@@ -368,7 +398,7 @@ class LehrplanWriter:
                     node.parent_iri,
                     node.parent_label,
                     ",".join(node.rollen),
-                    int(any(role in MATCHABLE_ROLES for role in node.rollen)),
+                    int(node.matchable),
                     _dump(node.jahrgangsstufen),
                     node.depth,
                     node.position,

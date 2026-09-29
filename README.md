@@ -189,7 +189,9 @@ dreien Jahrgangs- und Schulstufe, seine Elemente keine Klasse (8 von 5.928 eine 
 geprüft am 28.09.2026); Teil 2 nennt für Berlin darum meist nur Land, Fach und Lehrplan. Der Cache liegt
 als SQLite mit FTS5-Trigram-Index vor, der Harvest tauscht die Datei atomar aus; ein Vollabzug dauert rund 25
 Minuten (2.514 Lehrpläne, 295.000 Knoten, 278 MB). Listet MEM gar keinen Lehrplan, fehlt ein Land des Caches
-oder behält eines weniger als die Hälfte seiner Lehrpläne, verwirft der Harvest sein Ergebnis und der alte
+oder behält eines weniger als die Hälfte seiner Lehrpläne oder seiner auffindbaren Elemente, oder nennt MEM auch auf
+Nachfrage keine Rollen zu den Klassen der Elemente oder keine Kopfdaten zu Lehrplänen, die der Cache damit hält,
+verwirft der Harvest sein Ergebnis und der alte
 Cache bleibt: MEM antwortet während eines Neuladens mit leeren Listen. `compendium lehrplan harvest --force`
 übernimmt ein solches Ergebnis trotzdem. Die API liest nur den Cache; ohne Cache enthält
 Teil 2 einen Hinweistext. Das Fach kommt aus der Anfrage (`subject`) oder

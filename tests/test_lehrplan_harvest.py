@@ -105,7 +105,10 @@ class FakeEndpoint:
         if "?field" in query:
             return [row for row in HEADS if f"<{row['s']}>" in query]
         if "VALUES ?type" in query:
-            return [row for row in CLASS_ROLES if f"<{row['type']}>" in query]
+            asked = [iri.strip("<>") for iri in query.split("VALUES ?type {", 1)[1].split("}", 1)[0].split()]
+            known = [row for row in CLASS_ROLES if row["type"] in asked]
+            # all but the VALUES block are OPTIONAL: a class the ontology says nothing about still answers one row
+            return known + [{"type": iri} for iri in asked if all(row["type"] != iri for row in known)]
         if "SELECT DISTINCT ?n WHERE" in query:
             if self.fail_closure:
                 raise SparqlError("HTTP 500 von https://sparql.test/sparql/: transitive temp memory")
