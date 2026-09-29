@@ -6,7 +6,7 @@ import { send } from './api.mjs';
 import { h } from './dom.mjs';
 import { buildForm } from './fields.mjs';
 import { buildRequests, defaults, fromExample, problems } from './forms.mjs';
-import { intro, renderResults, summary } from './results.mjs';
+import { intro, renderResults, stopped, stoppedSummary, summary } from './results.mjs';
 import { formatDuration } from './stats.mjs';
 import { label, MODES, PROFILE_NAMES } from './texts.mjs';
 
@@ -106,6 +106,8 @@ async function run(mode) {
   const planned = buildRequests(mode, values, page.options);
   const key = byId('api-key').value.trim();
   form.busy(true);
+  const shown = page.results.get(mode);
+  const before = shown?.classList.contains('waiting') ? null : shown; // not the panel of a run this one replaced
   const progress = waiting(mode, planned, controller);
   // One after the other: side by side the two requests shared the workers, the CPU and the LLM gateway, and each
   // time would have held some of the other's
@@ -122,15 +124,18 @@ async function run(mode) {
   progress.stop();
   if (page.controllers.get(mode) !== controller) return; // a newer run of this mode took over the page and the form
   form.busy(false);
+  // A focus in the waiting panel - on "Abbrechen" - would fall to the top of the page with it
+  const waited = progress.panel.contains(document.activeElement);
+  const host = { options: page.options, announce, suggest };
   if (controller.signal.aborted) {
-    place(mode, h('div', { class: 'empty' }, h('p', {}, 'Abgebrochen. Der Server rechnet eine begonnene Anfrage womöglich noch zu Ende.')));
-    announce('Abgebrochen.');
-    return;
+    place(mode, stopped(mode, runs, before, host));
+    announce(stoppedSummary(mode, runs));
+  } else {
+    place(mode, renderResults(mode, runs, host));
+    announce(summary(mode, runs));
   }
-  place(mode, renderResults(mode, runs, { options: page.options, announce, suggest }));
-  announce(summary(mode, runs));
   if (runs.some((one) => one.error?.status === 401)) byId('api-key').focus();
-  else if (STACKED.matches && page.mode === mode) byId('ergebnis').focus(); // the answer lies below the form there
+  else if ((waited || STACKED.matches) && page.mode === mode) byId('ergebnis').focus(); // stacked, the answer lies below the form
 }
 
 // The answers of a mode are kept for it and shown when it is the one on screen
@@ -145,21 +150,20 @@ function waiting(mode, planned, controller) {
   const clock = h('span', { class: 'clock' }, formatDuration(0));
   const now = h('span', {});
   const slow = planned.some((plan) => SLOW.test(plan.preset));
-  place(
-    mode,
-    h(
-      'div',
-      { class: 'waiting' },
-      h('div', { class: 'spinner', 'aria-hidden': 'true' }),
-      h('p', {}, now, ' ', clock),
-      planned.length > 1 ? h('p', { class: 'help' }, 'Die beiden Profile laufen nacheinander, damit jede Dauer für ihr Profil allein gilt.') : null,
-      slow ? h('p', { class: 'help' }, 'Die Profile best-quality fragen die KI bei vielen Schritten; das dauert oft eine halbe Minute.') : null,
-      h('button', { type: 'button', class: 'quiet', on: { click: () => controller.abort() } }, 'Abbrechen'),
-    ),
+  const panel = h(
+    'div',
+    { class: 'waiting' },
+    h('div', { class: 'spinner', 'aria-hidden': 'true' }),
+    h('p', {}, now, ' ', clock),
+    planned.length > 1 ? h('p', { class: 'help' }, 'Die beiden Profile laufen nacheinander, damit jede Dauer für ihr Profil allein gilt.') : null,
+    slow ? h('p', { class: 'help' }, 'Die Profile best-quality fragen die KI bei vielen Schritten; das dauert oft eine halbe Minute.') : null,
+    h('button', { type: 'button', class: 'quiet', on: { click: () => controller.abort() } }, 'Abbrechen'),
   );
+  place(mode, panel);
   announce(`${MODES[mode]}: wird erstellt …`);
   const timer = setInterval(() => (clock.textContent = formatDuration(performance.now() - started)), 250);
   return {
+    panel,
     at(index) {
       const name = label(PROFILE_NAMES, planned[index].preset);
       now.textContent = planned.length > 1 ? `Wird erstellt mit ${name} (${index + 1} von ${planned.length}) …` : `Wird erstellt mit ${name} …`;

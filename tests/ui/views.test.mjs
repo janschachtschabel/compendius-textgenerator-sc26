@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { installDocument } from './dom_stub.mjs';
 import { buildForm } from '../../app/ui/static/fields.mjs';
 import { errorBox } from '../../app/ui/static/panels.mjs';
+import { stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
 import { renderEntities } from '../../app/ui/static/view_entities.mjs';
 import { renderKnowledge } from '../../app/ui/static/view_knowledge.mjs';
 
@@ -87,3 +88,24 @@ for (const mode of ['compendium', 'knowledge', 'lehrplan', 'entities', 'qa']) {
     }
   });
 }
+
+test('a stopped comparison keeps the answer that was done, and a run with none done what the mode showed before', () => {
+  installDocument();
+  const host = { options: OPTIONS, announce() {}, suggest() {} };
+  const done = {
+    preset: 'llm-free',
+    request: { method: 'POST', path: 'api/v2/qa', body: { text: 'Das Licht bricht sich.', preset: 'llm-free' } },
+    data: { method: 'rule-based', pairs: [{ question: 'Was bricht sich?', answer: 'Das Licht.' }], chars: 22 },
+    elapsedMs: 800,
+    requestId: 'r1',
+  };
+  const before = document.createElement('div');
+
+  const kept = stopped('qa', [done], before, host);
+
+  assert.ok(kept.classList.contains('results'));
+  assert.match(kept.textContent, /Was bricht sich\?/);
+  assert.equal(stopped('qa', [], before, host), before);
+  assert.match(stoppedSummary('qa', [done]), /^Abgebrochen; Fragen & Antworten fertig: llm-free/);
+  assert.match(stoppedSummary('qa', []), /^Abgebrochen; die vorige Anzeige bleibt\./);
+});

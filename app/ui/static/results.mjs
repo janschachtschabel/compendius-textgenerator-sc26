@@ -142,6 +142,17 @@ export function summary(mode, runs) {
   return `${MODES[mode]} fertig: ${times.join(', ')}${failed.length ? `; ${failed.length} mit Fehler` : ''}.`;
 }
 
+/** What a stopped run leaves on the page: the answers that were done - the first profile of a comparison may be,
+ * and it may have cost a minute - else what the mode showed before the run. */
+export function stopped(mode, runs, before, host) {
+  return runs.length ? renderResults(mode, runs, host) : before ?? intro(mode);
+}
+
+export function stoppedSummary(mode, runs) {
+  const kept = runs.length ? summary(mode, runs) : 'die vorige Anzeige bleibt.';
+  return `Abgebrochen; ${kept} Der Server rechnet eine begonnene Anfrage womöglich noch zu Ende.`;
+}
+
 export function intro(mode) {
   return h(
     'div',
