@@ -625,7 +625,8 @@ gerendert:
   (Wikipedia, Einleitung)“). Sätze aus dem Modellwissen der KI sind hervorgehoben. Eine Belegnummer öffnet
   Artikel, Abschnitt, Textauszug und den Grund der Zuordnung.
 - **Qualität, Zeit, Kosten** in einer Zeile über jedem Ergebnis, beim Vergleich zweier Profile alle Kennzahlen
-  nebeneinander. Kosten sind Tokens und Aufrufe; `/api/v2/qa` meldet die Tokens des LLM nicht.
+  nebeneinander. Kosten sind Tokens und Aufrufe; `/api/v2/qa` meldet die Tokens des LLM nicht, dort steht
+  „nicht gemeldet“, sobald die Anfrage oder ihr Profil ein LLM gefragt haben kann.
 - **„Wie entstand dieser Text?“** unter dem Kompendium: Thema und Artikel, Anteile nach Herkunft, Methode je
   Schritt (angefragt und verwendet, mit Rückfällen), Zeit je Schritt, Kosten, Quellen, Hinweise der Prüfung
   und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Antwort speichern“ legt Anfrage und
@@ -636,8 +637,9 @@ Bibliothek — und schickt ihre Anfragen vom Browser an die Endpunkte desselben 
 Schlüssel, trägt man einen links unten ein; er bleibt nur im Tab. Sie setzt jeden Text der Antworten als Text,
 nie als Markup, und ihre Content-Security-Policy lässt nur die eigenen Dateien zu. Ohne LLM auf dem Server bietet
 sie nur `llm-free` an. Auswahllisten, Grenzen und Beispiele kommen aus `/ui/options.json`, also aus denselben
-Modellen wie die Endpunkte (`app/ui/options.py`); `tests/test_ui.py` prüft jedes Beispiel gegen sein Modell,
-`tests/ui/*.test.mjs` prüfen die Skripte mit dem Testläufer von Node, den `tests/test_ui_scripts.py` startet.
+Modellen wie die Endpunkte (`app/ui/options.py`); `tests/test_ui.py` prüft jedes Beispiel gegen sein Modell und
+Listen und Grenzen gegen `/openapi.json`, `tests/ui/*.test.mjs` prüfen die Skripte mit dem Testläufer von Node,
+den `tests/test_ui_scripts.py` startet (in GitLab ein eigener Job, `ui-scripts`).
 
 ## Konfiguration
 

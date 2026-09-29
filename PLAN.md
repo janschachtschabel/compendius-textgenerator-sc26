@@ -1824,6 +1824,20 @@ API.
   Vergleich stellt zwei Profile mit denselben Eingaben nebeneinander; die Methoden einzelner Schritte gelten dann
   nicht, damit sich die beiden Antworten nur im Profil unterscheiden. Kosten sind Tokens und Aufrufe, Preise kennt
   der Dienst nicht; `/api/v2/qa` meldet die Tokens des LLM nicht (offen).
+  Nach dem Review vom selben Tag (23 Befunde, 2.4.1): Der Leser ist dreigeteilt — `markdown.mjs` die Blöcke,
+  `inline.mjs` den Text im Block, `inline_ends.mjs` die Enden der Konstrukte — und braucht für jeden Text Zeit
+  proportional zu seiner Länge, weil der Dienst ein `*` mitten in der Zeile nicht maskiert und ein Modell eigenes
+  Markdown schreibt: Das Ende einer Hervorhebung oder eines Kommentars sucht er weiter, wo die letzte Suche derselben
+  Art stand, Klammerpaare und Linkziele liest er je Text einmal, ab 16 Ebenen Verschachtelung ist alles Text, und
+  eine Tabelle füllt nicht mehr leere Zellen auf, als sie Zeichen hat (60 KB „*a “ vorher 5,8 s, jetzt unter 60 ms).
+  Mit Absicht wie CommonMark: Ein Backtick-Lauf ohne gleich langen Schließer bleibt Text, U+2028 gehört zur Zeile.
+  „Markdown kopieren“ geht ohne sicheren Kontext (http auf öffentlicher Adresse) über eine Auswahl. Die Tokens von
+  `/qa` heißen „nicht gemeldet“, sobald ein LLM gefragt sein kann, auch für den Artikel eines Knotens, den das Profil
+  wählt. Das Kästchen für leere Bausteine sendet immer `note` oder `omit` und beginnt wie die Vorgabevorlage;
+  Lehrplan-Modi und -Grenzen, Themenlänge und Linkprüfung kommen jetzt wirklich aus `options.json`, und ein Test
+  vergleicht es mit `/openapi.json`. Abbrechen behält fertige Antworten, sonst die vorige Anzeige. Die
+  Darstellungsmodule prüft `node:test` mit einem Dokument-Ersatz (`tests/ui/dom_stub.mjs`), und GitLab führt die
+  Skript-Tests in einem eigenen Job aus (`ui-scripts`), weil sein uv-Image kein Node hat.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
