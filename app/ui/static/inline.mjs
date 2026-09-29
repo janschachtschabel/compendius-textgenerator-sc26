@@ -6,7 +6,7 @@
 // its own - so reading it stays linear in its length: inline_ends.mjs finds where a construct ends without reading a
 // stretch of the text twice, and text nested deeper than MAX_DEPTH reads as text.
 
-import { afterTarget, closingBracket, firstFrom, MARK_CLOSE, nextEnd, table } from './inline_ends.mjs';
+import { afterTarget, closingBracket, firstFrom, MARK_CLOSE, nextEnd, opens, table } from './inline_ends.mjs';
 import { webAddress } from './urls.mjs';
 
 const ESCAPABLE = /^[!-/:-@[-`{-~]$/;
@@ -147,12 +147,14 @@ function destination(text, start) {
   return { url: s.slice(begin, end).replace(/\\([!-/:-@[-`{-~])/g, '$1'), next };
 }
 
+// Emphasis opens and closes where CommonMark's flanking rules let a "*" do so, and an escaped one never does; it ends
+// at the first closer after its opener, where CommonMark's stack of delimiters may choose a later one
 function emphasis(text, i) {
   const { s } = text;
   const strong = s.startsWith('**', i);
   const mark = strong ? '**' : '*';
   const start = i + mark.length;
-  if (!s[start] || /\s/.test(s[start]) || s[start] === '*') return null;
+  if (!s[start] || /\s/.test(s[start]) || s[start] === '*' || !opens(text, i)) return null;
   const end = nextEnd(text, strong ? 'strong' : 'em', start);
   if (end < 0) return null;
   return { nodes: [{ type: strong ? 'strong' : 'em', children: read(s.slice(start, end), text.depth + 1) }], next: end + mark.length };

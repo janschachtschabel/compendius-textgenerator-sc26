@@ -47,10 +47,17 @@ function skipBlanks(s, k) {
   return at;
 }
 
-// A closing delimiter follows the words it ends; a single one that belongs to a double is none
-function closes(s, end, strong) {
-  if (/\s/.test(s[end - 1] ?? ' ')) return false;
-  return strong || (s[end - 1] !== '*' && s[end + 1] !== '*');
+/** Whether the "*" at i may open emphasis: its run of them is left-flanking, as CommonMark reads it. */
+export function opens(text, i) {
+  return Boolean(table(text, 'stars')[i] & OPENS);
+}
+
+// A closing delimiter: its run is right-flanking and no backslash escapes it; for emphasis a single "*", as one that
+// belongs to a double is none
+function closes(text, end, strong) {
+  const stars = table(text, 'stars');
+  if (!(stars[end] & CLOSES)) return false;
+  return strong || (!(stars[end - 1] & DELIMITER) && !(stars[end + 1] & DELIMITER));
 }
 
 // Where the next end of a kind lies at or after `from`, or -1. The reader moves only forward, and whether a place
@@ -59,16 +66,16 @@ function closes(s, end, strong) {
 export function nextEnd(text, kind, from) {
   const last = text.ends[kind];
   if (last && from >= last.from && (last.at < 0 || last.at >= from)) return last.at;
-  const at = FIND[kind](text.s, from);
+  const at = FIND[kind](text, from);
   text.ends[kind] = { from, at };
   return at;
 }
 
 const FIND = {
-  em: (s, from) => firstWhere(s, '*', from, (k) => closes(s, k, false)),
-  strong: (s, from) => firstWhere(s, '**', from, (k) => closes(s, k, true)),
-  comment: (s, from) => s.indexOf('-->', from),
-  mark: (s, from) => s.indexOf(MARK_CLOSE, from),
+  em: (text, from) => firstWhere(text.s, '*', from, (k) => closes(text, k, false)),
+  strong: (text, from) => firstWhere(text.s, '**', from, (k) => closes(text, k, true)),
+  comment: (text, from) => text.s.indexOf('-->', from),
+  mark: (text, from) => text.s.indexOf(MARK_CLOSE, from),
 };
 
 function firstWhere(s, sign, from, holds) {
@@ -85,7 +92,39 @@ export function table(text, name) {
   return text.tables[name];
 }
 
-const TABLES = { angleEnds, targetEnds, backticks: backtickRuns };
+const TABLES = { angleEnds, targetEnds, backticks: backtickRuns, stars: starRuns };
+
+// The runs of "*" as CommonMark reads them (flanking, backslash escapes); whitespace and signs as it counts them - the
+// ends of the text are whitespace - and a surrogate half as a letter, as markdown-it does
+const DELIMITER = 1;
+const OPENS = 2;
+const CLOSES = 4;
+const SPACE = /[\t\n\v\f\r\p{Zs}]/u;
+const SIGN = /[\p{P}\p{S}]/u;
+
+// For each "*" whether it is a delimiter - not escaped by an odd run of backslashes before it - and whether its run can
+// open (left-flanking) and close (right-flanking): "(*14. März" can open but not close, "5*(3" neither
+function starRuns(s) {
+  const stars = new Uint8Array(s.length);
+  let backslashes = 0;
+  for (let k = 0; k < s.length; ) {
+    if (s[k] !== '*' || backslashes % 2) {
+      backslashes = s[k] === '\\' ? backslashes + 1 : 0;
+      k += 1;
+      continue;
+    }
+    let end = k;
+    while (s[end] === '*') end += 1;
+    const before = s[k - 1] ?? ' ';
+    const after = s[end] ?? ' ';
+    const left = !SPACE.test(after) && (!SIGN.test(after) || SPACE.test(before) || SIGN.test(before));
+    const right = !SPACE.test(before) && (!SIGN.test(before) || SPACE.test(after) || SIGN.test(after));
+    stars.fill(DELIMITER | (left ? OPENS : 0) | (right ? CLOSES : 0), k, end);
+    backslashes = 0;
+    k = end;
+  }
+  return stars;
+}
 
 // For each start the first ">" at or after it, or -1
 function angleEnds(s) {

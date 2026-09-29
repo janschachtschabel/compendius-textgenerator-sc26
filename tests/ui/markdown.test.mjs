@@ -102,6 +102,34 @@ test('a lone asterisk between words is no emphasis', () => {
   assert.deepEqual(parseInline('5 * 3 * 2 = 30'), [text('5 * 3 * 2 = 30')]);
 });
 
+test('an asterisk between a sign and a word opens or closes nothing, as CommonMark reads it', () => {
+  for (const source of [
+    '(*14. März 1879 in Ulm; †18. April 1955 in Princeton) und (*19. Dezember 1875)',
+    'Rechne 5*(3+2)*2 aus.',
+    'Fußnote*) und Text*) hier',
+  ]) {
+    assert.deepEqual(parseInline(source), [text(source)], source);
+  }
+});
+
+test('emphasis beside signs and inside words still reads as CommonMark reads it', () => {
+  const em = (value) => ({ type: 'em', children: [text(value)] });
+
+  assert.deepEqual(parseInline('a*b*c'), [text('a'), em('b'), text('c')]);
+  assert.deepEqual(parseInline('*(a)*'), [em('(a)')]);
+  assert.deepEqual(parseInline('„*Zitat*“'), [text('„'), em('Zitat'), text('“')]);
+  assert.deepEqual(parseInline('**fett**: *kursiv*.'), [{ type: 'strong', children: [text('fett')] }, text(': '), em('kursiv'), text('.')]);
+});
+
+test('an escaped asterisk closes nothing, and a closer after an escaped one still closes', () => {
+  // The service escapes a star that starts a line of its sources (app/synthesis/safe_markdown.py)
+  const [paragraph] = parseMarkdown('Geboren *1879 in Ulm\n\\* laut Taufregister').blocks;
+
+  assert.deepEqual(paragraph.children, [text('Geboren *1879 in Ulm * laut Taufregister')]);
+  assert.deepEqual(parseInline('*a\\**'), [{ type: 'em', children: [text('a*')] }]);
+  assert.deepEqual(parseInline('*a\\\\*'), [{ type: 'em', children: [text('a\\')] }], 'an escaped backslash escapes no star');
+});
+
 test('a link may carry strong or emphasised words', () => {
   assert.deepEqual(parseInline('[**Optik**](https://example.org/optik)'), [
     { type: 'link', href: 'https://example.org/optik', children: [{ type: 'strong', children: [text('Optik')] }] },
