@@ -28,6 +28,45 @@ def test_audience_and_level_phrase() -> None:
     assert result.context == ["Grundschule"]
 
 
+@pytest.mark.parametrize(
+    "topic",
+    [
+        "Universität Heidelberg",
+        "Humboldt-Universität zu Berlin",
+        "Technische Universität München",
+        "Pädagogische Hochschule Schwyz",
+        "Hochschule für Musik und Theater",
+        "Geschichte der Universität",
+        "Gymnasium in der DDR",
+        "Studium generale",
+        "Kita-Alltag",
+        "Stufe 1 der Energiewende",
+        "Kinder, Küche, Kirche",  # a comma joins a list, it sets no addition off
+    ],
+)
+def test_a_qualifier_word_that_is_part_of_the_topic_stays(topic: str) -> None:
+    """A level or grade was stripped wherever it stood: "Universität Heidelberg" became "Heidelberg", "Geschichte der
+    Universität" "Geschichte der", "Kita-Alltag" "Alltag" (audit 2026-09-29, L3). D12 means an addition to a topic."""
+    result = normalize_topic(topic)
+    assert (result.topic, result.context) == (topic, [])
+
+
+@pytest.mark.parametrize(
+    ("query", "topic", "context"),
+    [
+        ("Bruchrechnung Klasse 6", "Bruchrechnung", ["Klasse 6"]),
+        ("Demokratie in der Sekundarstufe I", "Demokratie", ["Sekundarstufe I"]),
+        ("Plattentektonik (Oberstufe)", "Plattentektonik", ["Oberstufe"]),
+        ("Optik – Grundschule", "Optik", ["Grundschule"]),
+        ("Klasse 7: Optik", "Optik", ["Klasse 7"]),
+    ],
+)
+def test_a_qualifier_added_to_the_topic_becomes_context(query: str, topic: str, context: list[str]) -> None:
+    """With a lead-in, in parentheses, set off by a dash or a colon, or a grade after the topic."""
+    result = normalize_topic(query)
+    assert (result.topic, result.context) == (topic, context)
+
+
 def test_generic_prefix_is_dropped_without_subject() -> None:
     result = normalize_topic("Thema: Bruchrechnung")
     assert result.topic == "Bruchrechnung"

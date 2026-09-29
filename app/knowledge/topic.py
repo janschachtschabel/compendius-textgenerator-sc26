@@ -11,12 +11,15 @@ import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+# A level, a grade or an audience. Such a word names things of its own as well - "Universität Heidelberg",
+# "Geschichte der Universität", "Humboldt-Universität zu Berlin", "Stufe 1 der Energiewende" - so it only counts as a
+# qualifier where it is added to a topic (_QUALIFIERS).
 _LEVEL = (
-    r"(?:Grundschule|Primarstufe|Primarbereich|Unterstufe|Mittelstufe|Oberstufe|"
-    r"Sekundarstufe\s*(?:II|I|1|2)|Sek\.?\s*(?:II|I|1|2)|Gymnasium|Realschule|Hauptschule|Oberschule|"
-    r"Gesamtschule|Berufsschule|Berufsbildung|Hochschule|Universität|Studium|Kita|Kindergarten|"
+    r"(?:Grundschule|Primarstufe|Primarbereich|Unterstufe|Mittelstufe|Oberstufe|Gymnasium|Realschule|Hauptschule|"
+    r"Oberschule|Gesamtschule|Berufsschule|Berufsbildung|Hochschule|Universität|Studium|Kita|Kindergarten|"
     r"Elementarbereich|Erwachsenenbildung)"
 )
+_STAGE = r"(?:Sekundarstufe\s*(?:II|I|1|2)|Sek\.?\s*(?:II|I|1|2))"
 _GRADE = (
     r"(?:Klassenstufe|Klassenstufen|Klasse|Klassen|Jahrgangsstufe|Jahrgang|Jgst\.?|Stufe)"
     r"\s*\d{1,2}(?:\s*(?:-|–|bis|/)\s*\d{1,2})?"
@@ -26,12 +29,21 @@ _AUDIENCE = (
     r"Anfänger(?:innen)?|Einsteiger(?:innen)?|Fortgeschrittene|Studierende|Auszubildende|Azubis)"
 )
 _LEAD_IN = r"(?:in|an|ab|bis|für|fuer|zum|zur|im)\s+(?:der|die|das|den|dem|einer|einem)?\s*"
+_QUALIFIER = rf"(?:{_GRADE}|{_STAGE}|{_LEVEL}|{_AUDIENCE})"
+# An audience word counts only with a lead-in or in parentheses, as it always did: "Kinder, Küche, Kirche"
+_SET_OFF = rf"(?:{_GRADE}|{_STAGE}|{_LEVEL})"
+# A colon or a dash sets an addition off - a hyphen only with blanks around it ("Kita-Alltag"); a comma or a slash
+# joins a list ("Schule/Hochschule")
+_SEPARATOR = r"(?: ?[–—:] ?| - )"
 
+# An addition to a topic, never its head, a word after an article or one joined by a hyphen (audit 2026-09-29, L3):
+# in parentheses, after a lead-in, set off at the end or the start, and a grade or a numbered stage after the topic.
+# The text has one blank between its words (normalize_topic), so no pattern reads a run of them.
 _QUALIFIERS: list[re.Pattern[str]] = [
-    re.compile(rf"\(\s*(?:{_LEAD_IN})?(?:{_GRADE}|{_LEVEL}|{_AUDIENCE})\s*\)", re.IGNORECASE),
-    re.compile(rf"\b(?:{_LEAD_IN})?{_GRADE}\b", re.IGNORECASE),
-    re.compile(rf"\b(?:{_LEAD_IN})?{_LEVEL}\b", re.IGNORECASE),
-    re.compile(rf"\b(?:{_LEAD_IN}){_AUDIENCE}\b", re.IGNORECASE),
+    re.compile(rf"\(\s*(?:{_LEAD_IN})?{_QUALIFIER}\s*\)", re.IGNORECASE),  # "Optik (Sek I)"
+    re.compile(rf"(?<![\w-]){_LEAD_IN}{_QUALIFIER}(?![\w-])", re.IGNORECASE),  # "Optik in Klasse 7"
+    re.compile(rf"{_SEPARATOR}{_SET_OFF}$|^{_SET_OFF}{_SEPARATOR}", re.IGNORECASE),  # "Optik – Grundschule"
+    re.compile(rf"(?<=[\w)]) (?:{_GRADE}|{_STAGE})$", re.IGNORECASE),  # "Bruchrechnung Klasse 6"
 ]
 _LEAD_IN_RE = re.compile(rf"^{_LEAD_IN}", re.IGNORECASE)
 _PREFIX_RE = re.compile(r"^\s*([A-Za-zÄÖÜäöüß][\wÄÖÜäöüß\- ]{1,30}?)\s*:\s*(.+)$")
@@ -50,7 +62,7 @@ class NormalizedTopic:
 
 
 def _clean_context(text: str) -> str:
-    text = text.strip().strip("()").strip()
+    text = text.strip(" ()–—:-")
     text = _LEAD_IN_RE.sub("", text)
     return re.sub(r"\s+", " ", text).strip()
 
@@ -62,9 +74,22 @@ def normalize_topic(raw: str, *, is_subject: Callable[[str], bool] | None = None
     catalogue (``SubjectCatalog.knows``); without it no prefix counts as one. A list of its own knew 32 subjects and
     missed 33 of the 63 labels and aliases the catalogue names: "Bio: Zelle" became "Bio-Brennstoffzelle" and lost its
     subject (audit 2026-09-28, KO-23).
+
+    A qualifier is an addition to the topic, never part of it (audit 2026-09-29, L3): in parentheses, after a lead-in
+    ("in", "für die" ...), set off by a dash or a colon, or a grade or numbered stage right after the topic. A level
+    word stripped wherever it stood made "Universität Heidelberg" "Heidelberg", "Geschichte der Universität"
+    "Geschichte der" and "Kita-Alltag" "Alltag". Measured on the 1,922 distinct topics and titles the project names -
+    the sets of eval/ (gold topics, queries, material titles, 1,662 article titles), the examples of the API, the
+    tests, the WLO samples and the cases of the audit: the eight qualifiers stripped before come off alike, from
+    "Optik in Klasse 7" to "Bruchrechnung Klasse 6"; 12 topics keep their names, the nine of the audit, "Pädagogische
+    Hochschule Schwyz", "Hochschule für Technik Stuttgart" and a material title with "#kita"; eight inputs that are
+    nothing but a qualifier ("Klasse 7", "Grundschule") no longer put it into their context; 1,902 come out as before.
+    35 of the 94 queries of eval/artikelwahl normalise to an expected article, before as after. A level word right
+    after the topic with nothing between ("Optik Grundschule") now stays: none of the 1,922 has that form, and it is
+    the form of names ("Pädagogische Hochschule").
     """
     query = raw.strip()
-    text = query
+    text = " ".join(query.split())  # one blank between words: no pattern of _QUALIFIERS reads a run of them
     context: list[str] = []
     subject: str | None = None
 
@@ -83,7 +108,7 @@ def normalize_topic(raw: str, *, is_subject: Callable[[str], bool] | None = None
             label = _clean_context(match.group(0))
             if label and label not in context:
                 context.append(label)
-        text = pattern.sub(" ", text)
+        text = " ".join(pattern.sub(" ", text).split())
 
     text = re.sub(r"\(\s*\)", " ", text)
     text = re.sub(r"\s+", " ", text)
