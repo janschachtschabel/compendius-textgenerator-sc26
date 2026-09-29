@@ -1,0 +1,129 @@
+{
+ "request": {
+  "method": "POST",
+  "path": "api/v2/knowledge",
+  "body": {
+   "topic": "Geometrische Optik",
+   "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+   "preset": "balanced",
+   "max_chars": 4000
+  }
+ },
+ "answer": {
+  "topic": "Geometrische Optik",
+  "resolution": {
+   "query": "Geometrische Optik",
+   "normalized": "Geometrische Optik",
+   "context": [],
+   "title": "Geometrische Optik",
+   "path": "Geometrische_Optik",
+   "project": "wikipedia",
+   "alternatives": [],
+   "disambiguation": false,
+   "method": "title",
+   "confident": true
+  },
+  "archives": [
+   "wikipedia_de_sample",
+   "klexikon_de_sample"
+  ],
+  "articles": [
+   {
+    "source_id": "wikipedia:Geometrische_Optik",
+    "archive": "wikipedia_de_sample",
+    "project": "wikipedia",
+    "title": "Geometrische Optik",
+    "url": "https://de.wikipedia.org/wiki/Geometrische_Optik",
+    "origin": "primary",
+    "is_primary": true,
+    "chars": 3745,
+    "lead": "Die geometrische Optik oder Strahlenoptik bedient sich des Strahlenmodells des Lichtes und behandelt damit auf einfache, rein geometrische Weise den Weg des Lichtes auf Linien. Mit ihr lässt sich in der technischen Optik die optische Abbildung oft mit ausreichender Genauigkeit beschreiben.\n\nBeschränkt man die geometrische Optik auf Strahlen, die nahe der optischen Achse verlaufen und zu ihr parall",
+    "sections": [
+     {
+      "heading": "",
+      "level": 0,
+      "text": "Die geometrische Optik oder Strahlenoptik bedient sich des Strahlenmodells des Lichtes und behandelt damit auf einfache, rein geometrische Weise den Weg des Lichtes auf Linien. Mit ihr lässt sich in der technischen Optik die optische Abbildung oft mit ausreichender Genauigkeit beschreiben.\n\nBeschränkt man die geometrische Optik auf Strahlen, die nahe der optischen Achse verlaufen und zu ihr parallel sind oder sie sehr flach schneiden, liegt die sogenannte paraxiale Optik vor. Dafür lassen sich geschlossene mathematische Abbildungsgleichungen finden, mit denen man Lage und Größe des erzeugten Bildes sowie einige Kenngrößen des optischen Systems ermitteln kann: Brenn- und Schnittweite (objekt- und bildseitig), Lage der Haupt- und Knotenpunkte und der Ein- und Austrittspupille.\n\nDas Modell des Lichtstrahls, also eines auf eine Linie begrenzten Lichtbündels, ist eine physikalischen Idealisierung, die nur angenähert realisiert werden kann. Die geometrische Optik kann Phänomene wie Interferenz, Beugung und Polarisation nicht beschreiben, die untrennbar mit dem Wellencharakter des Lichts verknüpft sind. Sie lässt sich aber mathematisch als Grenzfall der Wellenoptik für verschwindend kleine Wellenlängen des Lichts auffassen. Doch auch in diesem Fall versagt sie, wenn die Verhältnisse für Strahlen mit hoher Energiedichte oder nahe an einer scharfen Schattengrenze untersucht werden sollen."
+     },
+     {
+      "heading": "Axiome der geometrischen Optik",
+      "level": 2,
+      "text": "Als allgemeinste Grundlage der Strahlenoptik lässt sich das Fermatsche Prinzip ansehen. Es führt auf die beiden ersten der folgenden Axiome.\n\n- 1. Axiom: In homogenem Material sind die Lichtstrahlen gerade.\n- 2. Axiom: An der Grenze zwischen zwei homogenen isotropen Materialien wird das Licht im Allgemeinen nach dem Reflexionsgesetz reflektiert und nach dem Brechungsgesetz gebrochen.\n- 3. Axiom: Der Strahlengang ist umkehrbar; bei Umkehrung der Richtung eines Strahls ändert sich sein Verlauf nicht.\n- 4. Axiom: Die Lichtstrahlen durchkreuzen einander, ohne sich gegenseitig zu beeinflussen."
+     },
+     {
+      "heading": "Anwendungen",
+      "level": 2,
+      "text": "Hauptanwendungsgebiet der Strahlenoptik ist die Behandlung der Abbildung durch optische Elemente, Geräte und Systeme, wie Linsen, Brillen, Objektive, Fernrohre und Mikroskope.\n\nAuch das Raytracing-Verfahren in der 3D-Computergrafik beruht auf den Gesetzen der geometrischen Optik.\n\nDie Luftspiegelungen durch eine heiße Luftschicht über sonnenbeschienenem Asphalt und andere Naturphänomene können auch durch Anwendung dieses Prinzips erklärt werden."
+     },
+     {
+      "heading": "Grenzen",
+      "level": 2,
+      "text": "Effekte, die von der geometrischen Optik nicht beschrieben werden können, sind unter anderem:\n\n- die Beugung, die ein schlankes Lichtbündel hinter einer kleinen Öffnung aufweitet und damit u. a. das Auflösungsvermögen optischer Instrumente begrenzt. Sie kann nur im Rahmen der Wellenlehre oder der Quantenmechanik verstanden werden.\n- die Interferenz, die ebenfalls durch die Wellenlehre erfassbar ist. Sie ist z. B. für die Wirkungsweise der Antireflexbeschichtung von wesentlicher Bedeutung.\n- die Polarisation, die quantenmechanisch mit dem Spin der Photonen zu tun hat, aber auch mit der Wellenlehre erklärbar ist. Sie ist im Zusammenhang mit der Doppelbrechung von Bedeutung und auch für die teilweise Reflexion an brechenden Flächen, wo sie die Quantität des reflektierten Lichts beeinflusst, siehe Fresnelsche Formeln oder Brewster-Winkel.\n- die Absorption und die Streuung des Lichts.\n\nEinige Methoden der geometrischen Optik, insbesondere die Matrizenoptik, können auf das Konzept der Gaußstrahlen angewendet werden, welches die Effekte der Wellenoptik teilweise mit berücksichtigt."
+     },
+     {
+      "heading": "Weiterführendes",
+      "level": 2,
+      "text": "Wikibooks: Formelsammlung Physik: Optik: Geometrische Optik – Lern- und Lehrmaterialien\n\n- Einführung in die Strahlenoptik Ausführliche Seite über Strahlenoptik mit vielen Beispielen, Bildern und Experimenten"
+     }
+    ]
+   }
+  ],
+  "chars": 3745,
+  "truncated": true,
+  "node": {
+   "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+   "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+   "kind": "material",
+   "title": "Stationsarbeit zur Optik",
+   "description": "An sechs Stationen untersuchen Lernende Aufbau und Funktion des Auges: Netzhaut, Pupille und Linse, dazu ein Vergleich mit der Lochkamera. (Synthetischer Testtext)",
+   "keywords": [
+    "Auge",
+    "Netzhaut",
+    "Pupille",
+    "Linse",
+    "Lochkamera",
+    "Stationenlernen",
+    "Stationenarbeit",
+    "Selbstlernstationen"
+   ],
+   "subjects": [
+    "Biologie",
+    "Physik"
+   ],
+   "educational_contexts": [
+    "Sekundarstufe I"
+   ],
+   "url": "https://www.tutory.de/entdecken/dokument/stationsarbeit-zur-optik-1",
+   "render_url": "https://repository.staging.openeduhub.net/edu-sharing/components/render/ac66224b-42b0-4676-a53d-71b058dc780b"
+  },
+  "node_article": {
+   "way": "llm",
+   "title_article": null,
+   "entities": [],
+   "named": "Geometrische Optik",
+   "material": "Optik",
+   "added": true,
+   "fallback": null,
+   "tokens": 24
+  },
+  "article_choice": {
+   "requested": "llm",
+   "used": "llm",
+   "needed": true,
+   "asked": false,
+   "offered": 0,
+   "chosen": null,
+   "named": null,
+   "fallback": null,
+   "hits_checked": 1,
+   "hits_dropped": [],
+   "hits_fallback": null,
+   "articles_asked": true,
+   "articles_found": [],
+   "articles_overview": null,
+   "articles_main": false,
+   "articles_fallback": "kein genannter Titel ist ein Artikel des Archivs",
+   "tokens": 72,
+   "note": null
+  }
+ }
+}

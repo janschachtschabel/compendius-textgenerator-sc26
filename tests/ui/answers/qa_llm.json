@@ -1,0 +1,51 @@
+{
+ "request": {
+  "method": "POST",
+  "path": "api/v2/qa",
+  "body": {
+   "topic": "Optik",
+   "preset": "best-quality",
+   "count": 2,
+   "levels": [
+    "Sek I"
+   ]
+  }
+ },
+ "answer": {
+  "method": "llm",
+  "topic": "Optik",
+  "resolution": {
+   "query": "Optik",
+   "normalized": "Optik",
+   "context": [],
+   "title": "Optik",
+   "path": "Optik",
+   "project": "wikipedia",
+   "alternatives": [],
+   "disambiguation": false,
+   "method": "title",
+   "confident": true
+  },
+  "node": null,
+  "chars": 6823,
+  "pairs": [
+   {
+    "question": "Was untersucht die Optik?",
+    "answer": "Das Licht und seine Ausbreitung.",
+    "level": "Sek I"
+   },
+   {
+    "question": "Was bricht Licht?",
+    "answer": "Eine Linse.",
+    "level": "Sek I"
+   }
+  ],
+  "note": null,
+  "llm_tokens": {
+   "prompt": 20,
+   "completion": 4,
+   "total": 24,
+   "calls": 1
+  }
+ }
+}

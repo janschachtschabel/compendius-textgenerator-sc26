@@ -1,0 +1,451 @@
+{
+ "preset_default": "llm-free",
+ "keys_required": false,
+ "llm_configured": true,
+ "facets_visible": false,
+ "empty_note": false,
+ "presets": [
+  {
+   "id": "llm-free",
+   "switches": {
+    "article_choice": "rule-based",
+    "matcher": "hybrid_light",
+    "curriculum_check": "rule-based",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only"
+   }
+  },
+  {
+   "id": "balanced",
+   "switches": {
+    "article_choice": "llm",
+    "matcher": "hybrid_light",
+    "curriculum_check": "rule-based",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only"
+   }
+  },
+  {
+   "id": "best-quality",
+   "switches": {
+    "article_choice": "llm-thorough",
+    "matcher": "llm",
+    "curriculum_check": "llm",
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only"
+   }
+  },
+  {
+   "id": "best-quality-generated",
+   "switches": {
+    "article_choice": "llm-thorough",
+    "matcher": "llm",
+    "curriculum_check": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge"
+   }
+  }
+ ],
+ "switches": {
+  "article_choice": [
+   "rule-based",
+   "llm",
+   "llm-thorough"
+  ],
+  "matcher": [
+   "hybrid_light",
+   "bm25",
+   "char_tfidf",
+   "lexicon_only",
+   "llm"
+  ],
+  "extraction": [
+   "rule-based",
+   "llm"
+  ],
+  "generation": [
+   "rule-based",
+   "llm-fast",
+   "llm"
+  ],
+  "enrichment": [
+   "sources-only",
+   "model-knowledge"
+  ],
+  "curriculum_check": [
+   "rule-based",
+   "llm"
+  ]
+ },
+ "parts": [
+  "world",
+  "curricula",
+  "collection"
+ ],
+ "templates": [
+  {
+   "id": "sc26",
+   "name": "SC26 (13 Bausteine)",
+   "slots": 13
+  },
+  {
+   "id": "standard",
+   "name": "Standard (Lehrbuch, 6 Bausteine)",
+   "slots": 6
+  }
+ ],
+ "subjects": [
+  "Allgemein",
+  "Alt-Griechisch",
+  "Agrarwirtschaft",
+  "Arbeit, Ernährung, Soziales",
+  "Arbeitslehre",
+  "Arbeitssicherheit",
+  "Astronomie",
+  "Bautechnik",
+  "Berufliche Bildung",
+  "Biologie",
+  "Chemie",
+  "Chinesisch",
+  "Darstellendes Spiel",
+  "Deutsch",
+  "Deutsch als Zweitsprache",
+  "Elektrotechnik",
+  "Ernährung und Hauswirtschaft",
+  "Englisch",
+  "Pädagogik",
+  "Esperanto",
+  "Ethik",
+  "Farbtechnik und Raumgestaltung",
+  "Französisch",
+  "Geografie",
+  "Geschichte",
+  "Gesellschaftskunde",
+  "Gesundheit",
+  "Hauswirtschaft",
+  "Holztechnik",
+  "Informatik",
+  "Interkulturelle Bildung",
+  "Italienisch",
+  "Kunst",
+  "Körperpflege",
+  "Latein",
+  "Mathematik",
+  "Mechatronik",
+  "Medienbildung",
+  "Mediendidaktik",
+  "Metalltechnik",
+  "MINT",
+  "Musik",
+  "Nachhaltigkeit",
+  "Niederdeutsch",
+  "Open Educational Resources",
+  "Philosophie",
+  "Physik",
+  "Politik",
+  "Psychologie",
+  "Religion",
+  "Russisch",
+  "Sachunterricht",
+  "Sexualerziehung",
+  "Sonderpädagogik",
+  "Sorbisch",
+  "Sozialpädagogik",
+  "Spanisch",
+  "Sport",
+  "Textiltechnik und Bekleidung",
+  "Türkisch",
+  "Wirtschaft und Verwaltung",
+  "Wirtschaftskunde",
+  "Umweltgefährdung, Umweltschutz",
+  "Verkehrserziehung",
+  "Weiterbildung",
+  "Werken",
+  "Zeitgemäße Bildung",
+  "Projektmanagement",
+  "Evidenzbasierte Medizin",
+  "Sonstiges"
+ ],
+ "entities": {
+  "methods": [
+   "ner",
+   "dictionary",
+   "llm"
+  ],
+  "link_checks": [
+   "rule-based",
+   "llm"
+  ],
+  "link_check_default": "rule-based",
+  "profiles": {
+   "llm-free": [
+    "ner",
+    "dictionary"
+   ],
+   "balanced": [
+    "llm"
+   ],
+   "best-quality": [
+    "llm"
+   ],
+   "best-quality-generated": [
+    "llm"
+   ]
+  }
+ },
+ "qa": {
+  "methods": [
+   "rule-based",
+   "llm"
+  ],
+  "profiles": {
+   "llm-free": "rule-based",
+   "balanced": "rule-based",
+   "best-quality": "llm",
+   "best-quality-generated": "llm"
+  }
+ },
+ "lehrplan": {
+  "modes": [
+   "keyword",
+   "topic"
+  ]
+ },
+ "limits": {
+  "compendium": {
+   "topic": {
+    "default": null,
+    "min_length": 1,
+    "max_length": 300
+   },
+   "target_length": {
+    "default": 12000,
+    "min": 2000,
+    "max": 60000
+   },
+   "max_articles": {
+    "default": null,
+    "min": 1,
+    "max": 50
+   }
+  },
+  "knowledge": {
+   "topic": {
+    "default": null,
+    "min_length": 1,
+    "max_length": 300
+   },
+   "max_articles": {
+    "default": null,
+    "min": 1,
+    "max": 50
+   },
+   "max_chars": {
+    "default": null,
+    "min": 100
+   }
+  },
+  "lehrplan": {
+   "q": {
+    "min_length": 3,
+    "max_length": 200
+   },
+   "limit": {
+    "default": 50,
+    "min": 1,
+    "max": 500
+   }
+  },
+  "entities": {
+   "max_entities": {
+    "default": 50,
+    "min": 1,
+    "max": 200
+   }
+  },
+  "qa": {
+   "topic": {
+    "default": null,
+    "min_length": 1,
+    "max_length": 300
+   },
+   "count": {
+    "default": 5,
+    "min": 1,
+    "max": 50
+   },
+   "max_answer_length": {
+    "default": 300,
+    "min": 50,
+    "max": 2000
+   }
+  }
+ },
+ "examples": {
+  "compendium": [
+   {
+    "label": "Optik – ein Thema",
+    "values": {
+     "topic": "Optik",
+     "parts": [
+      "world",
+      "curricula"
+     ]
+    }
+   },
+   {
+    "label": "Linse – ein Wort mit mehreren Bedeutungen",
+    "values": {
+     "topic": "Linse",
+     "subject": "Physik"
+    }
+   },
+   {
+    "label": "Klimawandel mit Fach Geografie",
+    "values": {
+     "topic": "Klimawandel",
+     "subject": "Geografie"
+    }
+   },
+   {
+    "label": "Sammelthema: deutsche Dichter",
+    "values": {
+     "topic": "deutsche Dichter",
+     "parts": [
+      "world"
+     ]
+    }
+   },
+   {
+    "label": "Optik mit ihrer Sammlung (Staging, alle drei Teile)",
+    "values": {
+     "topic": "Optik",
+     "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "parts": [
+      "world",
+      "curricula",
+      "collection"
+     ]
+    }
+   },
+   {
+    "label": "Optik mit der Sammlung als Quelle (Staging)",
+    "values": {
+     "topic": "Optik",
+     "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "parts": [
+      "world"
+     ]
+    }
+   },
+   {
+    "label": "Ein Material als Eingang (Staging)",
+    "values": {
+     "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+     "parts": [
+      "world",
+      "curricula"
+     ]
+    }
+   }
+  ],
+  "knowledge": [
+   {
+    "label": "Optik",
+    "values": {
+     "topic": "Optik"
+    }
+   },
+   {
+    "label": "Französische Revolution, höchstens fünf Artikel",
+    "values": {
+     "topic": "Französische Revolution",
+     "max_articles": 5
+    }
+   },
+   {
+    "label": "Thema aus der Sammlung Optik (Staging)",
+    "values": {
+     "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest"
+    }
+   }
+  ],
+  "lehrplan": [
+   {
+    "label": "Optik in Physik – wie Teil 2 eines Kompendiums",
+    "values": {
+     "q": "Optik",
+     "subject": "Physik",
+     "mode": "topic"
+    }
+   },
+   {
+    "label": "Stichwort Bruchrechnung",
+    "values": {
+     "q": "Bruchrechnung",
+     "mode": "keyword"
+    }
+   },
+   {
+    "label": "Stichwort Demokratie in Politik",
+    "values": {
+     "q": "Demokratie",
+     "subject": "Politik",
+     "mode": "keyword"
+    }
+   }
+  ],
+  "entities": [
+   {
+    "label": "Ein Satz mit Namen und Orten",
+    "values": {
+     "text": "Alexander von Humboldt reiste 1799 nach Südamerika und bestieg den Chimborazo."
+    }
+   },
+   {
+    "label": "Titel und Beschreibung eines Materials (Staging)",
+    "values": {
+     "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
+     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest"
+    }
+   }
+  ],
+  "qa": [
+   {
+    "label": "Optik, fünf Paare",
+    "values": {
+     "topic": "Optik",
+     "count": 5
+    }
+   },
+   {
+    "label": "Albert Einstein, zehn Paare",
+    "values": {
+     "topic": "Albert Einstein",
+     "count": 10
+    }
+   },
+   {
+    "label": "Thema aus der Sammlung Optik (Staging)",
+    "values": {
+     "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
+     "count": 5
+    }
+   },
+   {
+    "label": "Ein eigener kurzer Text",
+    "values": {
+     "text": "Die Sonne erwärmt das Wasser der Meere, Seen und Flüsse. Es verdunstet und steigt als Wasserdampf auf. In der Höhe kühlt der Dampf ab, bildet Wolken und fällt als Regen oder Schnee zurück auf die Erde.",
+     "count": 3
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,91 @@
+{
+ "request": {
+  "method": "GET",
+  "path": "api/v2/lehrplan/search",
+  "query": {
+   "q": "Optik",
+   "mode": "topic",
+   "preset": "best-quality"
+  }
+ },
+ "answer": {
+  "available": true,
+  "mode": "topic",
+  "topic": "Optik",
+  "preset": "best-quality",
+  "keywords": [
+   "Optik",
+   "Lehre vom Licht",
+   "Technische Optik",
+   "Geometrische Optik"
+  ],
+  "subject_terms": [],
+  "total_hits": 1,
+  "cut_hits": 0,
+  "excluded_noise": 0,
+  "matches": [
+   {
+    "iri": "https://lp-sachsen.org/resource/7053",
+    "label": "Lichtbrechung an Linsen",
+    "rollen": [
+     "kompetenz"
+    ],
+    "bereich": "Lernbereich 2: Optik",
+    "lehrplan": "Gymnasium Physik",
+    "lehrplan_iri": "https://lp-sachsen.org/resource/522",
+    "bundesland": "Sachsen",
+    "bundesland_code": "SN",
+    "schulart": "Gymnasium",
+    "schulfaecher": [
+     "Physik"
+    ],
+    "schulstufe": "Sekundarstufe I",
+    "schulstufe_quelle": "Daten (Lehrplan)",
+    "klassenstufe": "Klassenstufe 7",
+    "klassenstufe_quelle": "Daten (Knoten)",
+    "keyword": "Optik",
+    "score": 201,
+    "matched_in": "parent",
+    "note": 2
+   }
+  ],
+  "llm": {
+   "note": null,
+   "article_choice": {
+    "requested": "llm-thorough",
+    "used": "llm",
+    "needed": true,
+    "asked": true,
+    "offered": 1,
+    "chosen": "Optik",
+    "named": null,
+    "fallback": null,
+    "hits_checked": 6,
+    "hits_dropped": [],
+    "hits_fallback": null,
+    "articles_asked": true,
+    "articles_found": [
+     "Optik"
+    ],
+    "articles_overview": "Optik",
+    "articles_main": false,
+    "articles_fallback": "kein genannter Teil ist ein Artikel des Archivs; Nebenartikel wie ohne die Frage"
+   },
+   "curriculum_check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 1,
+    "answered": 1,
+    "dropped": 0,
+    "fallbacks": {},
+    "fallback": null
+   }
+  },
+  "llm_tokens": {
+   "prompt": 80,
+   "completion": 16,
+   "total": 96,
+   "calls": 4
+  }
+ }
+}

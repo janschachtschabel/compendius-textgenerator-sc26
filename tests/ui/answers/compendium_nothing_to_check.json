@@ -1,0 +1,533 @@
+{
+ "request": {
+  "method": "POST",
+  "path": "api/v2/compendium",
+  "body": {
+   "topic": "Photosynthese",
+   "parts": [
+    "world",
+    "curricula"
+   ],
+   "preset": "best-quality",
+   "facets_visible": false,
+   "empty_slot_policy": "omit"
+  }
+ },
+ "answer": {
+  "topic": "Photosynthese",
+  "resolution": {
+   "query": "Photosynthese",
+   "normalized": "Photosynthese",
+   "context": [],
+   "title": "Photosynthese",
+   "path": "Photosynthese",
+   "project": "klexikon",
+   "alternatives": [],
+   "disambiguation": false,
+   "method": "title",
+   "confident": true
+  },
+  "template_id": "sc26",
+  "template_version": 1,
+  "extraction": "rule-based",
+  "generation": "rule-based",
+  "enrichment": "sources-only",
+  "generated_at": "2026-09-29T11:39:09+00:00",
+  "frontmatter": {
+   "kompendium_version": 2,
+   "topic": "Photosynthese",
+   "topic_resolution": {
+    "query": "Photosynthese",
+    "normalized": "Photosynthese",
+    "context": [],
+    "title": "Photosynthese",
+    "path": "Photosynthese",
+    "project": "klexikon",
+    "alternatives": [],
+    "method": "title",
+    "confident": true
+   },
+   "template": {
+    "id": "sc26",
+    "version": 1
+   },
+   "parts": [
+    "world",
+    "curricula"
+   ],
+   "generated_at": "2026-09-29T11:39:09+00:00",
+   "extraction": "rule-based",
+   "generation": "rule-based",
+   "enrichment": "sources-only",
+   "matcher": "llm",
+   "ai_disclosure": "Maschinell erstellter Text aus wörtlichen Quellenauszügen, Auswahl KI-gestützt (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
+   "review": {
+    "status": "ki-ausgewählt",
+    "interval_months": 12
+   },
+   "sources_snapshot": [
+    {
+     "id": "wikipedia_de_sample",
+     "file": "wikipedia_de_sample_2026-01.zim",
+     "project": "wikipedia",
+     "date": "2026-01-15",
+     "uuid": "3462445c-9289-de1e-bd69-a723c2aab622",
+     "articles": 15,
+     "fulltext_index": true
+    },
+    {
+     "id": "klexikon_de_sample",
+     "file": "klexikon_de_sample_2026-08.zim",
+     "project": "klexikon",
+     "date": "2026-08-07",
+     "uuid": "3e95c004-653e-9cfe-ddc0-f8bf2b50f4f8",
+     "articles": 8,
+     "fulltext_index": true
+    }
+   ],
+   "license": "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0); TULLU je Quelle in Baustein 12",
+   "llm": {
+    "provider": "openai",
+    "model": "gpt-5.6-luna",
+    "prompts": [
+     "hit_check@v1",
+     "paragraph_assignment@v1",
+     "topic_articles@v1"
+    ],
+    "extraction": {
+     "sections": [],
+     "emptied": [],
+     "fallbacks": {}
+    },
+    "generation": {
+     "sections": [],
+     "fallbacks": {}
+    },
+    "matching": {
+     "paragraphs": 3,
+     "answered": 3,
+     "fallback_paragraphs": 0,
+     "fallbacks": {}
+    },
+    "curriculum_check": {
+     "rated": 0,
+     "dropped": 0,
+     "fallback": null
+    },
+    "article_choice": {
+     "offered": 0,
+     "chosen": null,
+     "fallback": null,
+     "hits_checked": 1,
+     "hits_dropped": [],
+     "hits_fallback": null,
+     "articles_found": [],
+     "articles_fallback": "kein genannter Titel ist ein Artikel des Archivs"
+    }
+   }
+  },
+  "sections": [
+   {
+    "slot_id": "sc26_1",
+    "slot_key": "themendefinition",
+    "title": "1 · Themendefinition",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_2",
+    "slot_key": "systematik",
+    "title": "2 · Gliederung & Systematik",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_3",
+    "slot_key": "fachinhalte",
+    "title": "3 · Fachinhalte",
+    "text": "Bei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus der Luft auf. Die Energie dazu liefert das Sonnenlicht. Das griechische Wort „Photo“ bedeutet Licht, das Wort „Synthese“ bedeutet „Zusammensetzung“. Da wird also etwas mit Hilfe von Licht zusammengesetzt. [1]\n\nFür uns Menschen ist die Photosynthese so wichtig, weil wir und alle Tiere beim Atmen genau das Umgekehrte tun wie die Pflanzen: Wir brauchen den Sauerstoff, den wir durch die Luft einatmen. Wenn wir ausatmen, gelangt wieder Kohlenstoffdioxid in die Luft. Dies ist ein Kreislauf in der Natur, der nie aufhört. [2]\n\nMenschen und Tiere nutzen aber auch den Zucker, der durch die Photosynthese entsteht. Daraus werden nämlich Gemüse, Obst, Getreide und viele weitere Nahrungsmittel. Aber auch Holz, Baumwolle und viele andere Dinge entstehen nur mithilfe der Photosynthese. [3]",
+    "citations": [
+     {
+      "number": 1,
+      "source_id": "klexikon:Photosynthese",
+      "chunk_id": "klexikon:Photosynthese:c000",
+      "source_title": "Photosynthese",
+      "source_url": "https://klexikon.zum.de/wiki/Photosynthese",
+      "section_heading": "Einleitung",
+      "snippet": "Bei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus der Luft auf. Die Energie dazu liefert das Sonnenlicht. Das griechische Wort „Phot"
+     },
+     {
+      "number": 2,
+      "source_id": "klexikon:Photosynthese",
+      "chunk_id": "klexikon:Photosynthese:c001",
+      "source_title": "Photosynthese",
+      "source_url": "https://klexikon.zum.de/wiki/Photosynthese",
+      "section_heading": "Einleitung",
+      "snippet": "Für uns Menschen ist die Photosynthese so wichtig, weil wir und alle Tiere beim Atmen genau das Umgekehrte tun wie die Pflanzen: Wir brauchen den Sauerstoff, den wir durch die Luft einatmen. Wenn wir ausatmen, gelangt wi"
+     },
+     {
+      "number": 3,
+      "source_id": "klexikon:Photosynthese",
+      "chunk_id": "klexikon:Photosynthese:c002",
+      "source_title": "Photosynthese",
+      "source_url": "https://klexikon.zum.de/wiki/Photosynthese",
+      "section_heading": "Einleitung",
+      "snippet": "Menschen und Tiere nutzen aber auch den Zucker, der durch die Photosynthese entsteht. Daraus werden nämlich Gemüse, Obst, Getreide und viele weitere Nahrungsmittel. Aber auch Holz, Baumwolle und viele andere Dinge entste"
+     }
+    ],
+    "facets": {
+     "Bildungsstufe": [
+      "Primar",
+      "Sek I"
+     ]
+    },
+    "chunk_ids": [
+     "klexikon:Photosynthese:c000",
+     "klexikon:Photosynthese:c001",
+     "klexikon:Photosynthese:c002"
+    ],
+    "status": "ki-ausgewählt",
+    "matching": {
+     "candidates": [
+      {
+       "chunk_id": "klexikon:Photosynthese:c000",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Photosynthese:c001",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Photosynthese:c002",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      }
+     ]
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_4",
+    "slot_key": "gesellschaftlicher_kontext",
+    "title": "4 · Gesellschaftlicher Kontext",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_5",
+    "slot_key": "entwicklung_ausblick",
+    "title": "5 · Entwicklung & Ausblick",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_6",
+    "slot_key": "akteure",
+    "title": "6 · Akteure",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {},
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_7",
+    "slot_key": "beruf_wirtschaft",
+    "title": "7 · Beruf & Wirtschaft",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_8",
+    "slot_key": "bildung",
+    "title": "8 · Bildung",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_9",
+    "slot_key": "regularien",
+    "title": "9 · Regularien & Rahmensetzung",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_10",
+    "slot_key": "praxis",
+    "title": "10 · Praxis",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_11",
+    "slot_key": "querschnitt",
+    "title": "11 · Querschnitt & Bezüge",
+    "text": "",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "leer",
+    "matching": {
+     "candidates": []
+    },
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_12",
+    "slot_key": "quellen",
+    "title": "12 · Quellen",
+    "text": "Die Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Photosynthese](https://klexikon.zum.de/wiki/Photosynthese)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Photosynthese“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Photosynthese · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Photosynthese`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Bei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus… |\n| [2] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Für uns Menschen ist die Photosynthese so wichtig, weil wir und alle Tiere beim Atmen genau das Umgekehrte tun wie die Pflanzen: Wir brau… |\n| [3] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Menschen und Tiere nutzen aber auch den Zucker, der durch die Photosynthese entsteht. Daraus werden nämlich Gemüse, Obst, Getreide und vi… |\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
+    "citations": [],
+    "facets": {
+     "Zugang": [
+      "frei"
+     ],
+     "Vertrauensgrad": [
+      "hoch"
+     ]
+    },
+    "chunk_ids": [],
+    "status": "maschinell-generiert",
+    "matching": {},
+    "llm": null
+   },
+   {
+    "slot_id": "sc26_13",
+    "slot_key": "glossar",
+    "title": "13 · Glossar",
+    "text": "Begriffe rund um **Photosynthese** mit der jeweils ersten Definitionsaussage aus dem Artikel. Das Glossar ist der einzige Ort für Definitionen im Kompendium.\n\n| Begriff | Definition | Relation | Beleg |\n| :--- | :--- | :--- | :--- |\n| **Photosynthese** | Sie sind grün, weil sie in ihren Zellen kleine grüne Farbstoffteile haben. | `skos:prefLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon sorgt für Medienkompetenz und Bildungsgerechtigkeit** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon wird gefördert** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon-Botschafter** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon.de ist die Wikipedia für Kinder** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |",
+    "citations": [],
+    "facets": {},
+    "chunk_ids": [],
+    "status": "maschinell-generiert",
+    "matching": {},
+    "llm": null
+   }
+  ],
+  "curricula": {
+   "available": true,
+   "keywords": [
+    "Photosynthese",
+    "Klexikon.de ist die Wikipedia für Kinder",
+    "Klexikon wird gefördert",
+    "Klexikon-Botschafter"
+   ],
+   "subject_terms": [],
+   "summary": {
+    "coverage": {
+     "states": [
+      "Sachsen"
+     ],
+     "harvested_at": "2026-09-17",
+     "lehrplaene_total": 1
+    },
+    "matches": 0,
+    "bundled": 0,
+    "total_hits": 0,
+    "cut_hits": 0,
+    "excluded_noise": 0,
+    "lehrplaene": 0,
+    "laender": 0,
+    "by_land": {},
+    "datenlage": {
+     "stufe": {},
+     "klasse": {}
+    },
+    "keywords": [
+     "Photosynthese",
+     "Klexikon.de ist die Wikipedia für Kinder",
+     "Klexikon wird gefördert",
+     "Klexikon-Botschafter"
+    ],
+    "subject_terms": []
+   },
+   "entries": [],
+   "markdown": "## Teil 2 · Lehrplanbezüge\n\nLehrplanbezüge liegen strukturiert für Sachsen vor (MEM-Triplestore der FWU, Stand 2026-09-17; 1 Lehrpläne). Die Abdeckung wächst mit den Veröffentlichungen von MEM.\n\n*Zu diesem Thema wurden in den vorliegenden Lehrplänen keine Lehrplanbezüge gefunden (Stichwörter: Photosynthese, Klexikon.de ist die Wikipedia für Kinder, Klexikon wird gefördert, Klexikon-Botschafter).*\n"
+  },
+  "collection": null,
+  "node": null,
+  "sources": [
+   {
+    "source_id": "klexikon:Photosynthese",
+    "project": "klexikon",
+    "role": "einfache_sprache",
+    "title": "Photosynthese",
+    "url": "https://klexikon.zum.de/wiki/Photosynthese",
+    "zim_file": "klexikon_de_sample_2026-08.zim",
+    "zim_date": "2026-08-07",
+    "license": "CC BY-SA 4.0",
+    "authors": [],
+    "authority_score": 0.85,
+    "is_primary": true,
+    "lead": "Bei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus der Luft auf. Die Energie dazu liefert das Sonnenlicht. Das griechische Wort „Photo“ bedeutet Licht, das Wort „Synthese“ bedeutet „Zusammensetzung“. Da wird also etwas mit Hilfe von Licht zusammengesetzt. Die Photosynthese geschieht in den grünen Teilen der Pfl…"
+   }
+  ],
+  "markdown": "---\nkompendium_version: 2\ntopic: Photosynthese\ntopic_resolution:\n  query: Photosynthese\n  normalized: Photosynthese\n  context: []\n  title: Photosynthese\n  path: Photosynthese\n  project: klexikon\n  alternatives: []\n  method: title\n  confident: true\ntemplate:\n  id: sc26\n  version: 1\nparts:\n- world\n- curricula\ngenerated_at: '2026-09-29T11:39:09+00:00'\nextraction: rule-based\ngeneration: rule-based\nenrichment: sources-only\nmatcher: llm\nai_disclosure: Maschinell erstellter Text aus wörtlichen Quellenauszügen, Auswahl\n  KI-gestützt (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act\nreview:\n  status: ki-ausgewählt\n  interval_months: 12\nsources_snapshot:\n- id: wikipedia_de_sample\n  file: wikipedia_de_sample_2026-01.zim\n  project: wikipedia\n  date: '2026-01-15'\n  uuid: 3462445c-9289-de1e-bd69-a723c2aab622\n  articles: 15\n  fulltext_index: true\n- id: klexikon_de_sample\n  file: klexikon_de_sample_2026-08.zim\n  project: klexikon\n  date: '2026-08-07'\n  uuid: 3e95c004-653e-9cfe-ddc0-f8bf2b50f4f8\n  articles: 8\n  fulltext_index: true\nlicense: Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA\n  4.0); TULLU je Quelle in Baustein 12\nllm:\n  provider: openai\n  model: gpt-5.6-luna\n  prompts:\n  - hit_check@v1\n  - paragraph_assignment@v1\n  - topic_articles@v1\n  extraction:\n    sections: []\n    emptied: []\n    fallbacks: {}\n  generation:\n    sections: []\n    fallbacks: {}\n  matching:\n    paragraphs: 3\n    answered: 3\n    fallback_paragraphs: 0\n    fallbacks: {}\n  curriculum_check:\n    rated: 0\n    dropped: 0\n    fallback: null\n  article_choice:\n    offered: 0\n    chosen: null\n    fallback: null\n    hits_checked: 1\n    hits_dropped: []\n    hits_fallback: null\n    articles_found: []\n    articles_fallback: kein genannter Titel ist ein Artikel des Archivs\n---\n\n# Kompendium: Photosynthese\n\n## Teil 1 · Weltwissen\n\n### 3 · Fachinhalte\n<!-- kompendium:section id=sc26_3 status=ki-ausgewählt facets=\"Bildungsstufe=Primar|Sek I\" hash=ba87941e5778 -->\n\nBei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus der Luft auf. Die Energie dazu liefert das Sonnenlicht. Das griechische Wort „Photo“ bedeutet Licht, das Wort „Synthese“ bedeutet „Zusammensetzung“. Da wird also etwas mit Hilfe von Licht zusammengesetzt. [1]\n\nFür uns Menschen ist die Photosynthese so wichtig, weil wir und alle Tiere beim Atmen genau das Umgekehrte tun wie die Pflanzen: Wir brauchen den Sauerstoff, den wir durch die Luft einatmen. Wenn wir ausatmen, gelangt wieder Kohlenstoffdioxid in die Luft. Dies ist ein Kreislauf in der Natur, der nie aufhört. [2]\n\nMenschen und Tiere nutzen aber auch den Zucker, der durch die Photosynthese entsteht. Daraus werden nämlich Gemüse, Obst, Getreide und viele weitere Nahrungsmittel. Aber auch Holz, Baumwolle und viele andere Dinge entstehen nur mithilfe der Photosynthese. [3]\n\n### 12 · Quellen\n<!-- kompendium:section id=sc26_12 status=maschinell-generiert facets=\"Zugang=frei; Vertrauensgrad=hoch\" hash=5a8bc98f41c9 -->\n\nDie Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Photosynthese](https://klexikon.zum.de/wiki/Photosynthese)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Photosynthese“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Photosynthese · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Photosynthese`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Bei der Photosynthese verwandeln Pflanzen einfaches Kohlenstoffdioxid in energiereiche Verbindungen. Das Kohlenstoffdioxid nehmen sie aus… |\n| [2] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Für uns Menschen ist die Photosynthese so wichtig, weil wir und alle Tiere beim Atmen genau das Umgekehrte tun wie die Pflanzen: Wir brau… |\n| [3] | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) | Einleitung | Menschen und Tiere nutzen aber auch den Zucker, der durch die Photosynthese entsteht. Daraus werden nämlich Gemüse, Obst, Getreide und vi… |\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.\n\n### 13 · Glossar\n<!-- kompendium:section id=sc26_13 status=maschinell-generiert hash=f3ed9f2905a2 -->\n\nBegriffe rund um **Photosynthese** mit der jeweils ersten Definitionsaussage aus dem Artikel. Das Glossar ist der einzige Ort für Definitionen im Kompendium.\n\n| Begriff | Definition | Relation | Beleg |\n| :--- | :--- | :--- | :--- |\n| **Photosynthese** | Sie sind grün, weil sie in ihren Zellen kleine grüne Farbstoffteile haben. | `skos:prefLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon sorgt für Medienkompetenz und Bildungsgerechtigkeit** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon wird gefördert** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon-Botschafter** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n| **Klexikon.de ist die Wikipedia für Kinder** | Alternativbezeichnung für Photosynthese. | `skos:altLabel` | [Photosynthese](https://klexikon.zum.de/wiki/Photosynthese) |\n\n\n## Teil 2 · Lehrplanbezüge\n\nLehrplanbezüge liegen strukturiert für Sachsen vor (MEM-Triplestore der FWU, Stand 2026-09-17; 1 Lehrpläne). Die Abdeckung wächst mit den Veröffentlichungen von MEM.\n\n*Zu diesem Thema wurden in den vorliegenden Lehrplänen keine Lehrplanbezüge gefunden (Stichwörter: Photosynthese, Klexikon.de ist die Wikipedia für Kinder, Klexikon wird gefördert, Klexikon-Botschafter).*\n",
+  "parts_status": {
+   "world": "ok",
+   "curricula": "ok"
+  },
+  "audit": {
+   "preset": "best-quality",
+   "matcher": "llm",
+   "timings_ms": {
+    "resolve": 5,
+    "corpus": 3,
+    "hit_check": 1,
+    "segment": 0,
+    "match": 36,
+    "synthesize": 5,
+    "curricula": 4,
+    "assemble": 5
+   },
+   "lint": [],
+   "chunks_total": 3,
+   "chunks_truncated": 0,
+   "chunks_assigned": 3,
+   "sections_filled": 3,
+   "sections_empty": 10,
+   "citations": 3,
+   "llm_tokens": {
+    "prompt": 60,
+    "completion": 12,
+    "total": 72,
+    "calls": 3
+   },
+   "llm": {
+    "note": null,
+    "article_choice": {
+     "requested": "llm-thorough",
+     "used": "llm",
+     "needed": true,
+     "asked": false,
+     "offered": 0,
+     "chosen": null,
+     "named": null,
+     "fallback": null,
+     "hits_checked": 1,
+     "hits_dropped": [],
+     "hits_fallback": null,
+     "articles_asked": true,
+     "articles_found": [],
+     "articles_overview": null,
+     "articles_main": false,
+     "articles_fallback": "kein genannter Titel ist ein Artikel des Archivs"
+    },
+    "matching": {
+     "requested": "llm",
+     "used": "llm",
+     "paragraphs": 3,
+     "answered": 3,
+     "fallback_paragraphs": 0,
+     "fallbacks": {},
+     "unknown_keys": 0
+    },
+    "extraction": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "emptied": [],
+     "fallbacks": {},
+     "offered": 0,
+     "sentences": 0,
+     "invalid_numbers": 0,
+     "deduped_sentences": 0,
+     "cut_sentences": 0
+    },
+    "generation": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "fallbacks": {},
+     "dropped_sentences": 0,
+     "unsupported_sentences": 0,
+     "marked_sentences": 0,
+     "enrichment": "sources-only",
+     "enrichment_requested": "sources-only"
+    },
+    "curriculum_check": {
+     "requested": "llm",
+     "used": "rule-based",
+     "rated": 0,
+     "answered": 0,
+     "dropped": 0,
+     "fallbacks": {},
+     "fallback": null
+    }
+   },
+   "knowledge": null,
+   "node_article": null,
+   "parts_status": {
+    "world": "ok",
+    "curricula": "ok"
+   },
+   "regenerated": []
+  }
+ }
+}

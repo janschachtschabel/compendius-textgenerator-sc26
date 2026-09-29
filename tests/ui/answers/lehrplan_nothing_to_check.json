@@ -1,0 +1,56 @@
+{
+ "request": {
+  "method": "GET",
+  "path": "api/v2/lehrplan/search",
+  "query": {
+   "q": "Bruchrechnung",
+   "mode": "keyword",
+   "preset": "best-quality"
+  }
+ },
+ "answer": {
+  "available": true,
+  "mode": "keyword",
+  "topic": null,
+  "preset": "best-quality",
+  "keywords": [
+   "Bruchrechnung"
+  ],
+  "subject_terms": [],
+  "total_hits": 0,
+  "cut_hits": 0,
+  "excluded_noise": 0,
+  "matches": [],
+  "llm": {
+   "note": "LLM hat keinen Artikel gewählt, keinen Absatz zugeordnet und keinen Baustein ausgewählt oder geschrieben; Regelmodus verwendet",
+   "article_choice": {
+    "requested": "rule-based",
+    "used": "rule-based",
+    "needed": false,
+    "asked": false,
+    "offered": 0,
+    "chosen": null,
+    "named": null,
+    "fallback": null,
+    "hits_checked": 0,
+    "hits_dropped": [],
+    "hits_fallback": null,
+    "articles_asked": false,
+    "articles_found": [],
+    "articles_overview": null,
+    "articles_main": false,
+    "articles_fallback": null
+   },
+   "curriculum_check": {
+    "requested": "llm",
+    "used": "rule-based",
+    "rated": 0,
+    "answered": 0,
+    "dropped": 0,
+    "fallbacks": {},
+    "fallback": null
+   }
+  },
+  "llm_tokens": null
+ }
+}

@@ -1,0 +1,94 @@
+{
+ "request": {
+  "method": "POST",
+  "path": "api/v2/entities",
+  "body": {
+   "text": "Ernst Abbe entwickelte in Jena das Lichtmikroskop und die Geometrische Optik.",
+   "preset": "best-quality",
+   "link": true
+  }
+ },
+ "answer": {
+  "methods": [
+   "llm"
+  ],
+  "archives": [
+   "wikipedia_de_sample",
+   "klexikon_de_sample"
+  ],
+  "entities": [
+   {
+    "text": "Ernst Abbe",
+    "start": 0,
+    "end": 10,
+    "kind": "",
+    "source": "llm",
+    "linked": true,
+    "article": {
+     "title": "Ernst Abbe",
+     "archive": "wikipedia_de_sample",
+     "project": "wikipedia",
+     "url": "https://de.wikipedia.org/wiki/Ernst_Abbe",
+     "lead": "Ernst Karl Abbe [ˈabə] (* 23. Januar 1840 in Eisenach, Sachsen-Weimar-Eisenach; † 14. Januar 1905 in Jena, Sachsen-Weimar-Eisenach; auch Ernst Carl Abbe) war ein deutscher Physiker, Statistiker, Optiker, Industrieller und Sozialreformer. Er schuf zusammen mit Carl Zeiß und Otto Schott die Grundlagen der modernen Optik und entwickelte viele optische Instrumente. Seit 1899 war er Alleininhaber der F",
+     "kind": "Person",
+     "ids": {
+      "gnd": "118646419",
+      "gnd_kind": "Person",
+      "gnd_source": "normdaten",
+      "viaf": "19744386",
+      "wikidata": null,
+      "dbpedia": "http://de.dbpedia.org/resource/Ernst_Abbe",
+      "same_as": [
+       "https://d-nb.info/gnd/118646419",
+       "https://viaf.org/viaf/19744386",
+       "http://de.dbpedia.org/resource/Ernst_Abbe"
+      ]
+     }
+    }
+   },
+   {
+    "text": "Lichtmikroskop",
+    "start": 35,
+    "end": 49,
+    "kind": "",
+    "source": "llm",
+    "linked": true,
+    "article": {
+     "title": "Lichtmikroskop",
+     "archive": "wikipedia_de_sample",
+     "project": "wikipedia",
+     "url": "https://de.wikipedia.org/wiki/Lichtmikroskop",
+     "lead": "Lichtmikroskope (von griechisch μικρόν micrón „klein“; σκοπεῖν skopein „betrachten“) sind Mikroskope, die stark vergrößerte Bilder von kleinen Strukturen oder Objekten mit Hilfe von Licht erzeugen. Die Vergrößerung erfolgt gemäß den Gesetzen der Optik unter Ausnutzung von Lichtbrechung an Glaslinsen.\n\nUm im erzeugten Bild Strukturen erkennen zu können, muss das Bild ausreichend Kontrast enthalten,",
+     "kind": null,
+     "ids": {
+      "gnd": "4039237-5",
+      "gnd_kind": "Sachbegriff",
+      "gnd_source": "normdaten",
+      "viaf": null,
+      "wikidata": null,
+      "dbpedia": "http://de.dbpedia.org/resource/Lichtmikroskop",
+      "same_as": [
+       "https://d-nb.info/gnd/4039237-5",
+       "http://de.dbpedia.org/resource/Lichtmikroskop"
+      ]
+     }
+    }
+   }
+  ],
+  "note": null,
+  "llm": {
+   "named": 2,
+   "checked": 0,
+   "dropped": [],
+   "calls": 1,
+   "total_tokens": 24,
+   "model": "gpt-5.6-luna",
+   "prompts": [
+    "entity_extraction@v1"
+   ],
+   "fallback": null
+  },
+  "node": null,
+  "text": null
+ }
+}
