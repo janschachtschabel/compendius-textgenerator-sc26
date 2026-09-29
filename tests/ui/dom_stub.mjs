@@ -1,6 +1,7 @@
 // A small stand-in for the browser's document, enough for the page's own builders (dom.mjs and what uses it) to run
 // under node:test (D66). It knows elements, text nodes, fragments, attributes, listeners, classes, style properties,
-// focus and the copy command - no layout, no markup parser: nothing here can turn text into elements either.
+// focus, clicks, downloads and the copy command - no layout, no markup parser: nothing here can turn text into
+// elements either.
 
 class FakeNode {
   constructor() {
@@ -121,6 +122,12 @@ class FakeElement extends FakeNode {
     this.selected = true;
   }
 
+  // A click runs the listeners; on a link with a download it saves the file, which the document records
+  click() {
+    if (this.tagName === 'A' && this.hasAttribute('download')) this.ownerDocument.downloads.push({ name: this.getAttribute('download'), href: this.getAttribute('href') });
+    for (const listener of this.listeners.click ?? []) listener({ type: 'click', target: this, preventDefault() {} });
+  }
+
   /** Every element below this one, depth first. */
   descendants() {
     return this.children.flatMap((child) => [child, ...child.descendants()]);
@@ -131,6 +138,7 @@ class FakeElement extends FakeNode {
 export function installDocument({ clipboard } = {}) {
   const doc = {
     commands: [],
+    downloads: [],
     copyResult: true,
     createElement: (tag) => new FakeElement(tag, doc),
     createTextNode: (text) => new FakeText(text),

@@ -1,12 +1,13 @@
 // The views and forms of the review page as elements, under the stand-in document (D66): headings keep their order,
 // the colours of a view have words beside them, an error box stays silent, and every help text belongs to its field.
+import { resolveObjectURL } from 'node:buffer';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { installDocument } from './dom_stub.mjs';
 import { buildForm } from '../../app/ui/static/fields.mjs';
 import { errorBox, resolutionFacts } from '../../app/ui/static/panels.mjs';
-import { stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
+import { renderResults, stopped, stoppedSummary } from '../../app/ui/static/results.mjs';
 import { renderEntities } from '../../app/ui/static/view_entities.mjs';
 import { renderKnowledge } from '../../app/ui/static/view_knowledge.mjs';
 
@@ -134,4 +135,33 @@ test('how a topic was found reads alike in every view, with the words that decid
 
   assert.deepEqual(rows['Kontextwörter'], ['Physik']);
   assert.equal(rows['Knoten'], 'Optik (Sammlung)');
+});
+
+test('a compendium saves its markdown as a file named for its topic and profile', async () => {
+  const doc = installDocument();
+  const markdown = ['---', 'topic: Optik', '---', '', '# Kompendium: Optik', '', 'Die Optik ist die Lehre vom Licht.', ''].join('\n');
+  const one = {
+    preset: 'balanced',
+    request: { method: 'POST', path: 'api/v2/compendium', body: { topic: 'Optik', preset: 'balanced' } },
+    data: { topic: 'Optik', markdown, sections: [], sources: [], audit: {} },
+    elapsedMs: 1200,
+    requestId: 'r1',
+  };
+
+  const results = renderResults('compendium', [one], { options: OPTIONS, announce() {}, suggest() {} });
+  const button = results.descendants().find((node) => node.tagName === 'BUTTON' && node.textContent === 'Markdown speichern');
+  button.click();
+
+  const [saved] = doc.downloads;
+  assert.match(saved.name, /^kompendium-optik-balanced-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.md$/);
+  const file = resolveObjectURL(saved.href);
+  assert.match(file.type, /^text\/markdown/);
+  assert.equal(await file.text(), markdown);
+
+  const other = { ...one, preset: 'llm-free', data: { ...one.data, topic: 'Grüne Gentechnik & Ethik?' } };
+  const button2 = renderResults('compendium', [other], { options: OPTIONS, announce() {}, suggest() {} })
+    .descendants()
+    .find((node) => node.tagName === 'BUTTON' && node.textContent === 'Markdown speichern');
+  button2.click();
+  assert.match(doc.downloads[1].name, /^kompendium-grüne-gentechnik-ethik-llm-free-.+\.md$/);
 });

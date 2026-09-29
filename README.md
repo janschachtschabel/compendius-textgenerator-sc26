@@ -629,8 +629,8 @@ gerendert:
   „nicht gemeldet“, sobald die Anfrage oder ihr Profil ein LLM gefragt haben kann.
 - **„Wie entstand dieser Text?“** unter dem Kompendium: Thema und Artikel, Anteile nach Herkunft, Methode je
   Schritt (angefragt und verwendet, mit Rückfällen), Zeit je Schritt, Kosten, Quellen, Hinweise der Prüfung
-  und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Antwort speichern“ legt Anfrage und
-  Antwort als JSON ab.
+  und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Markdown speichern“ legt das fertige
+  Kompendium als `.md`-Datei ab (beim Vergleich je Profil), „Antwort speichern“ Anfrage und Antwort als JSON.
 
 Die Seite ist statisch — HTML, CSS und JavaScript-Module in `app/ui/static`, ohne Build-Schritt und ohne fremde
 Bibliothek — und schickt ihre Anfragen vom Browser an die Endpunkte desselben Servers. Verlangt der Server

@@ -102,12 +102,21 @@ function asked(one, host) {
 }
 
 function actions(mode, one, view, host) {
-  const copy = view.markdown
-    ? h('button', { type: 'button', class: 'quiet', on: { click: async () => host.announce((await copyText(view.markdown)) ? 'Markdown kopiert.' : 'Kopieren ging in diesem Browser nicht. „Antwort speichern“ legt Anfrage und Antwort samt Markdown als Datei ab.') } }, 'Markdown kopieren')
-    : null;
   const stamp = new Date().toISOString().slice(0, 19).replaceAll(':', '-');
+  const copy = view.markdown
+    ? h('button', { type: 'button', class: 'quiet', on: { click: async () => host.announce((await copyText(view.markdown)) ? 'Markdown kopiert.' : 'Kopieren ging in diesem Browser nicht. „Markdown speichern“ legt den Text als Datei ab.') } }, 'Markdown kopieren')
+    : null;
+  // The finished text as the service wrote it, frontmatter and markers included, named for its topic and profile
+  const text = view.markdown
+    ? h('button', { type: 'button', class: 'quiet', on: { click: () => download(`kompendium-${nameOf(one.data.topic ?? one.request.body?.topic)}-${one.preset}-${stamp}.md`, view.markdown, 'text/markdown') } }, 'Markdown speichern')
+    : null;
   const save = h('button', { type: 'button', class: 'quiet', on: { click: () => download(`${mode}-${one.preset}-${stamp}.json`, JSON.stringify({ request: one.request, answer: one.data }, null, 2)) } }, 'Antwort speichern');
-  return h('div', { class: 'actions' }, copy, save);
+  return h('div', { class: 'actions' }, copy, text, save);
+}
+
+// A topic as part of a file name: its letters and digits, the rest a hyphen
+function nameOf(topic) {
+  return String(topic ?? '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'ohne-thema';
 }
 
 // A guess of the rules - a title suggestion, a full-text hit - is worth a look before the text: the other

@@ -1837,7 +1837,9 @@ API.
   Lehrplan-Modi und -Grenzen, Themenlänge und Linkprüfung kommen jetzt wirklich aus `options.json`, und ein Test
   vergleicht es mit `/openapi.json`. Abbrechen behält fertige Antworten, sonst die vorige Anzeige. Die
   Darstellungsmodule prüft `node:test` mit einem Dokument-Ersatz (`tests/ui/dom_stub.mjs`), und GitLab führt die
-  Skript-Tests in einem eigenen Job aus (`ui-scripts`), weil sein uv-Image kein Node hat.
+  Skript-Tests in einem eigenen Job aus (`ui-scripts`), weil sein uv-Image kein Node hat. Danach (Jan: „die fertigen
+  markdown texte der kompendien runter zu laden“): „Markdown speichern“ legt das Markdown der Antwort unverändert
+  als `kompendium-<thema>-<profil>-<zeit>.md` ab, im Vergleich je Spalte.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
