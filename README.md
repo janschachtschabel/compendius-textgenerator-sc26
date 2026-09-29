@@ -302,9 +302,9 @@ Sammlung wird der Titel zum Thema. Bei einem Material ist der Titel nur der Anfa
 Format nennt („Stationsarbeit zur Optik“): Ohne LLM nehmen die Regeln den Artikel des Titels, wenn die Begriffe aus
 Titel und Beschreibung ihn auch nennen, sonst den ersten Begriff, wenn der Titel ihn nennt, sonst keinen; dann
 antwortet der Dienst mit einem 404, der nach einem `topic` fragt. Mit `article_choice: llm` (oder `preset:
-balanced`) nennt das LLM den Artikel aus Titel, Fächern, Schlagwörtern und Beschreibung; ein genannter Titel zählt
-nur, wenn das Archiv ihn hat. `audit.node_article` (bei `/knowledge` `node_article`) sagt, wie der Artikel gefunden
-wurde.
+balanced`) nennt das LLM den Artikel aus Titel, Fächern, Schlagwörtern und Beschreibung (vom Titel die ersten 300
+Zeichen, von Schlagwörtern und Beschreibung je 1.500); ein genannter Titel zählt nur, wenn das Archiv ihn hat.
+`audit.node_article` (bei `/knowledge` `node_article`) sagt, wie der Artikel gefunden wurde.
 
 `topic` und `node_id` lassen sich kombinieren: Das Thema führt, das Material bringt Fächer, Stufen und Schlagwörter
 als Kontext mit, und sein eigener Artikel kommt als weitere Quelle (`origin: node`) dazu, wenn er ein anderer ist und

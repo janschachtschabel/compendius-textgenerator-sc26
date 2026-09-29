@@ -13,12 +13,15 @@ from typing import Any
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
 from app.knowledge.node_article import (
     MAX_ENTITIES,
+    OUTPUT_TOKENS,
     PROMPT_CHARS,
+    TITLE_CHARS,
     NodeArticleReport,
     ask_topic,
     ranked_entities,
     rule_article,
 )
+from app.llm.budget import estimate_tokens
 from app.llm.prompts import get_prompt
 from app.sources.wlo.models import NodeInfo
 from app.sources.zim.archive import ZimArticle
@@ -149,6 +152,36 @@ def test_missing_subjects_and_keywords_are_named_and_a_long_description_is_cut()
     user = fake.bodies[0]["messages"][1]["content"]
     assert "Fächer: keine\nSchlagwörter: keine\n" in user
     assert f"Beschreibung: {'x' * PROMPT_CHARS}\n\n" in user
+
+
+def test_a_long_title_and_long_keywords_are_cut_as_the_description_is() -> None:
+    """Title and keywords went into the prompt uncut, only the description was cut (audit 2026-09-29, L5)."""
+    fake = answering({"titel": "Getriebe"})
+    keywords = tuple(f"Schlagwort{number:05d}" for number in range(1_200))  # 20,398 characters
+
+    ask_topic(job_for(fake), material(title="T" * 1_000, keywords=keywords), NodeArticleReport())
+
+    user = fake.bodies[0]["messages"][1]["content"]
+    lines = dict(line.split(": ", 1) for line in user.splitlines() if ": " in line)
+    assert lines["Titel"] == "T" * TITLE_CHARS
+    assert lines["Schlagwörter"] == ", ".join(keywords)[:PROMPT_CHARS]
+
+
+def test_the_text_of_the_node_is_reserved_by_its_bytes() -> None:
+    """Whoever edits a node shapes its text: reserved by the estimate alone, combining marks cost up to 4.3 times the
+    tokens reserved for them (audit 2026-09-28, SE-20; 2026-09-29, L5)."""
+    shaped = "".join(chr(0x300 + n % 0x70) if n % 2 else "a" for n in range(1_000))
+    info = material(keywords=(shaped,))
+    fake = answering({"titel": "Getriebe"})
+    job = job_for(fake)
+    ask_topic(job, info, NodeArticleReport())
+    prompt = "".join(message["content"] for message in fake.bodies[0]["messages"])
+    by_estimate = estimate_tokens(prompt) + job.client.completion_limit(OUTPUT_TOKENS)
+
+    report = NodeArticleReport()
+    assert ask_topic(job_for(fake, per_request=by_estimate), info, report) is None
+
+    assert report.fallback is not None and "Budget" in report.fallback and len(fake.bodies) == 1
 
 
 def test_an_empty_title_says_the_material_has_no_subject_topic() -> None:

@@ -30,7 +30,8 @@ from app.sources.zim.archive import ZimArchive
 
 MAX_ENTITIES = 10  # the ranked terms that count; the ten terms per topic of the old service (M2)
 TEXT_CHARS = 2000  # of the description, for the terms
-PROMPT_CHARS = 1500  # of the description, for the model
+PROMPT_CHARS = 1500  # of the description, for the model; of the keywords together too
+TITLE_CHARS = 300  # of the title, for the model
 OUTPUT_TOKENS = 80  # one or two titles
 TITLE_SCORE, TEXT_SCORE, KEYWORD_BONUS = 3.0, 1.0, 2.0
 # Words that say what a material is, not what it is about; never a term of its own (M21)
@@ -114,14 +115,19 @@ def ask_topic(
     Without a topic the model hears title, subjects, keywords and description as measured (``node_topic``); with one
     it hears the teacher's topic first (``node_topic_with_topic``). ``None`` when it gave no usable answer; the report
     gets the cost and the reason.
+
+    Whoever edits a node shapes its text, so it is reserved by its bytes, and title and keywords are cut as the
+    description is: they went into the prompt whole (audit 2026-09-29, L5). The titles of the 80 materials of M21 and
+    M25 run to 171 characters.
     """
     prompt = get_prompt("node_topic_with_topic" if topic else "node_topic")
     fields = {
-        "title": info.title,
+        "title": info.title[:TITLE_CHARS],
         "subjects": ", ".join(info.subject_labels) or "keine",
-        "keywords": ", ".join(info.keywords) or "keine",
+        "keywords": ", ".join(info.keywords)[:PROMPT_CHARS] or "keine",
         "description": info.description[:PROMPT_CHARS],
     }
+    node_text = "\n".join(fields.values())
     if topic:
         fields["topic"] = topic
     report.way = "llm"
@@ -132,6 +138,7 @@ def ask_topic(
         budget=job.budget,
         what="Thema des Materials",
         deadline=job.deadline,
+        caller_text=node_text,
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
