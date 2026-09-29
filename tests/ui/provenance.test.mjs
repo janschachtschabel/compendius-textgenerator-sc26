@@ -2,7 +2,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { parseInline, parseMarkdown } from '../../app/ui/static/markdown.mjs';
+import { parseInline } from '../../app/ui/static/inline.mjs';
+import { parseMarkdown } from '../../app/ui/static/markdown.mjs';
 import {
   blockOrigin,
   citationIndex,

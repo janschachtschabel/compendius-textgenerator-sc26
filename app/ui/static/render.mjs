@@ -3,7 +3,7 @@
 // marked. Headings go one level down, so the page keeps its own h1, and are collected for a table of contents.
 
 import { h, link } from './dom.mjs';
-import { inlineText } from './markdown.mjs';
+import { inlineText } from './inline.mjs';
 import { label, PROJECTS } from './texts.mjs';
 
 const SCORE = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 });

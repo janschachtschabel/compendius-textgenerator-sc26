@@ -2,7 +2,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { inlineText, parseInline, parseMarkdown, sectionize, webAddress } from '../../app/ui/static/markdown.mjs';
+import { inlineText, parseInline } from '../../app/ui/static/inline.mjs';
+import { parseMarkdown, sectionize } from '../../app/ui/static/markdown.mjs';
+import { webAddress } from '../../app/ui/static/urls.mjs';
 
 const text = (value) => ({ type: 'text', value });
 

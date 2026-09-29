@@ -1,8 +1,8 @@
 // Building elements for the review page (D66). Text always goes in as text nodes and attributes through
 // setAttribute, never through innerHTML: the answers carry text of sources and callers, and none of it may become
-// markup. A link only leads to a web address: link() checks every target, as markdown.mjs does.
+// markup. A link only leads to a web address: link() checks every target, as the markdown reader does.
 
-import { webAddress } from './markdown.mjs';
+import { webAddress } from './urls.mjs';
 
 /** An element with attributes and children; a string child becomes a text node, null and false are skipped.
  * Attribute values of false or null leave the attribute out; `on` maps event names to listeners. */
