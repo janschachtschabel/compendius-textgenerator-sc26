@@ -105,7 +105,8 @@ class _Asker:
 
     def _ask(self, kind: str, text: str, focus: str = "") -> None:
         if self.pronoun:
-            text = re.sub(rf"\b{re.escape(self.pronoun)}\b", self.person, text, count=1, flags=re.IGNORECASE)
+            # a function, not a template: a backslash in the name was read as a group (audit 2026-09-29, T7)
+            text = re.sub(rf"\b{re.escape(self.pronoun)}\b", lambda _: self.person, text, count=1, flags=re.IGNORECASE)
         question = _question_text(text)
         if (
             len(question) <= MAX_QUESTION_CHARS

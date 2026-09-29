@@ -28,6 +28,7 @@ from app.synthesis.sources_section import build_sources_section
 from tests.recorded_spacy import RecordedNlp
 
 NLP = RecordedNlp()
+BS = chr(92)  # spelled out: tools on the way turn escapes in test text into other signs
 
 
 def asked(sentence: str, *, topic: str = "", person: str = "") -> set[tuple[str, str]]:
@@ -48,6 +49,15 @@ def test_a_time_in_front_becomes_wann_and_a_person_pronoun_the_name() -> None:
         ("Wann", "Wann erhielt Albert Einstein den Nobelpreis für Physik?")
     }
     assert asked(sentence) == set(), "without a person topic 'er' stays unresolved, and such a question is unclear"
+
+
+def test_the_name_of_a_person_goes_into_the_question_as_it_is_written() -> None:
+    """The topic of a person was the replacement template of re.sub: a backslash in it raised re.PatternError, a 500
+    of /qa for a compendium whose heading names such a topic, and a backslash before "g<0>" put the pronoun back
+    (audit 2026-09-29, T7)."""
+    sentence = "Im Jahr 1922 erhielt er den Nobelpreis für Physik."
+    for person in ("Albert " + BS + "Einstein", "Albert Einstein " + BS + "1", "Albert Einstein " + BS + "g<0>"):
+        assert asked(sentence, person=person) == {("Wann", f"Wann erhielt {person} den Nobelpreis für Physik?")}
 
 
 def test_a_time_and_an_agent_in_the_middle_are_moved_to_the_front() -> None:
