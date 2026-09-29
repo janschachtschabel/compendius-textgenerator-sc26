@@ -17,6 +17,7 @@ from annotated_types import MaxLen
 from app.api.v2.qa_schemas import MAX_TEXT_CHARS
 from app.compose.regeneration import parse_document
 from app.domain.requests import GenerateRequest
+from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN
 from app.synthesis.qa_knowledge import knowledge_of_text
 from app.synthesis.qa_rules import actor_candidates, glossary_candidates
 
@@ -78,6 +79,11 @@ def crafted_texts(length: int = MAX_TEXT_CHARS) -> dict[str, str]:
             PROSE, f"#### Person\n- **[A{run}(x](u)** — Er war ein deutscher Physiker und Optiker."
         ),
         "blanks in the prose": compendium_markdown(f"a{run}b", GLOSSARY_ROW),
+        # every comment of the prose goes, and a marked sentence with it (audit 2026-09-29, T1): none of them closes
+        "comment starts in the prose": compendium_markdown("<!--" * ((length - 500) // 4), GLOSSARY_ROW),
+        "open marked sentences in the prose": compendium_markdown(
+            MODEL_KNOWLEDGE_OPEN * ((length - 500) // len(MODEL_KNOWLEDGE_OPEN)), GLOSSARY_ROW
+        ),
         "brackets in a glossary term": compendium_markdown(
             PROSE, f"| **a{brackets}** | Die Optik ist ein Teilgebiet. | {related} |"
         ),

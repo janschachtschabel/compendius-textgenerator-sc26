@@ -13,12 +13,14 @@ from dataclasses import dataclass
 
 from app.compose.regeneration import parse_document
 from app.domain.models import Compendium, SectionStatus
-from app.synthesis.citations import without_markers
+from app.synthesis.citations import CONCLUSION_OPEN, MODEL_KNOWLEDGE_OPEN, without_markers
+from app.synthesis.facets import END_MARKER
 from app.synthesis.qa_rules import is_actor_block, is_glossary_block
 from app.synthesis.safe_markdown import unescape
 
 _TITLE = re.compile(r"^# Kompendium: (?P<topic>.+)$", re.MULTILINE)
 _NO_PROSE = frozenset({SectionStatus.GENERATED, SectionStatus.EMPTY})
+_UNSUPPORTED = frozenset({MODEL_KNOWLEDGE_OPEN, CONCLUSION_OPEN})
 
 
 @dataclass(frozen=True)
@@ -32,9 +34,34 @@ class Knowledge:
 
 
 def _prose(markdown: str) -> str:
-    """Block text as the pairs read it: without evidence numbers, and with the escapes that keep a source's words
-    from acting as markdown read back as the words (audit 2026-09-28, SE-16)."""
-    return unescape(without_markers(markdown))
+    """Block text as the pairs read it: without comments and the sentences no source supports, without evidence
+    numbers, and with the escapes that keep a source's words from acting as markdown read back as the words (audit
+    2026-09-28, SE-16)."""
+    return unescape(without_markers(_without_comments(markdown)))
+
+
+def _without_comments(markdown: str) -> str:
+    """``markdown`` without its comments, and a sentence of model knowledge or a conclusion gone with the block that
+    marks it: nothing supports it. Kept, it was asked as if a source said it, and its comments joined it to the
+    sentence before - split_sentences starts no sentence at "<" (audit 2026-09-29, T1).
+
+    Linear, as a caller sends the text: every search starts where the last one ended, an unclosed "<!--" leaves the
+    rest as text, and once no end of a block follows, no later block looks for one.
+    """
+    pieces: list[str] = []
+    position = 0
+    ends_follow = True
+    while (start := markdown.find("<!--", position)) >= 0 and (end := markdown.find("-->", start + 4)) >= 0:
+        pieces.extend((markdown[position:start], " "))
+        position = end + 3
+        if ends_follow and markdown[start:position] in _UNSUPPORTED:
+            close = markdown.find(END_MARKER, position)
+            if close < 0:
+                ends_follow = False  # the block marks nothing, as in citations._split_claims
+            else:
+                position = close + len(END_MARKER)
+    pieces.append(markdown[position:])
+    return "".join(pieces)
 
 
 def text_of_compendium(compendium: Compendium) -> str:

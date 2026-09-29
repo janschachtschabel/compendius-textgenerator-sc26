@@ -10,6 +10,8 @@ from __future__ import annotations
 from app.compose.assembler import EMPTY_SECTION_TEXT
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
+from app.synthesis.citations import CONCLUSION_OPEN, MODEL_KNOWLEDGE_LABEL, MODEL_KNOWLEDGE_OPEN
+from app.synthesis.facets import END_MARKER
 from app.synthesis.qa_knowledge import knowledge_of_compendium, knowledge_of_text
 from tests.qa_texts import GLOSSARY_ROW, PROSE, block, compendium_markdown
 
@@ -42,6 +44,22 @@ def test_a_compendium_without_prose_is_not_read_as_plain_text() -> None:
     text = "# Kompendium: Optik\n\n" + block("glossar", "maschinell-generiert", GLOSSARY_ROW)
     knowledge = knowledge_of_text(text)
     assert (knowledge.text, knowledge.glossary, knowledge.topic) == ("", GLOSSARY_ROW, "Optik")
+
+
+def test_sentences_of_model_knowledge_or_conclusions_and_comments_are_no_prose() -> None:
+    """A compendium an LLM wrote keeps a sentence beyond its evidence in a marked block: nothing supports it. Read as
+    prose, its comments stayed too, and the rules joined it to the sentence before: "Was geschah im Jahr 1905?" was
+    answered with Newton's sentence, the comment and Einstein's (audit 2026-09-29, T1)."""
+    prose = (
+        "Isaac Newton zerlegte weißes Licht mit einem Prisma in seine Farben [3]. "
+        f"{MODEL_KNOWLEDGE_OPEN}Im Jahr 1905 erklärte Albert Einstein den photoelektrischen Effekt mit Lichtquanten. "
+        f"{MODEL_KNOWLEDGE_LABEL}{END_MARKER} {CONCLUSION_OPEN}Also besteht Licht aus Teilchen.{END_MARKER}\n\n"
+        "Ein Prisma bricht blaues Licht<!-- Redaktion: prüfen --> stärker als rotes [4]."
+    )
+    assert knowledge_of_text(compendium_markdown(prose, GLOSSARY_ROW)).text == (
+        "Isaac Newton zerlegte weißes Licht mit einem Prisma in seine Farben.\n\n"
+        "Ein Prisma bricht blaues Licht stärker als rotes."
+    )
 
 
 def test_a_compendium_of_blank_blocks_is_no_plain_text() -> None:
