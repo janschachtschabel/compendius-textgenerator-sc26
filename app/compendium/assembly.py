@@ -112,7 +112,8 @@ def assemble(
         zim_snapshot=zim_snapshot,
         parts=parts,
     )
-    source_refs = [s.to_ref() for s in sources] if want_world else []  # the sources belong to part 1
+    # the sources belong to part 1, with those only its kept blocks cite (audit 2026-09-29, A04)
+    source_refs = [s.to_ref() for s in [*sources, *world.carried]] if want_world else []
     markdown = render_markdown(
         topic=topic,
         frontmatter=frontmatter,
@@ -145,6 +146,7 @@ def assemble(
         chunks_truncated=prepared.chunks_truncated,
         parts_status=status,
         regenerated=world.regenerated,
+        unattributed_citations=world.unattributed,
     )
     return Compendium(
         topic=topic,

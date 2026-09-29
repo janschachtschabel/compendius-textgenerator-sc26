@@ -391,3 +391,51 @@ def test_a_reviewed_block_needs_no_disclosure_of_its_own(service: CompendiumServ
 
     assert second.frontmatter["ai_disclosure"] == AI_DISCLOSURE["rule-based"]
     assert second.frontmatter["kept_sections"] == {"sc26_2": "redaktionell-geprüft"}
+
+
+def reviewed_with_side_sources(service: CompendiumService) -> tuple[str, str, list[str]]:
+    """An earlier compendium with one reviewed block that cites side articles, the block's id and those titles."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=12000))
+    primary = first.sources[0].title
+    chosen = next(
+        section
+        for section in first.sections
+        if section.status.value == "maschinell-extraktiv" and {c.source_title for c in section.citations} - {primary}
+    )
+    side = sorted({c.source_title for c in chosen.citations} - {primary})
+    return mark_reviewed(first.markdown, chosen.slot_id), chosen.slot_id, side
+
+
+def test_a_source_only_a_kept_block_cites_keeps_its_attribution(service: CompendiumService) -> None:
+    """A regeneration builds a new corpus; a side article a reviewed block cites may not be in it. Its row in the
+    citation table stayed, its TULLU line - authors and licence a CC BY-SA text must name - did not, and its
+    citations lost their source id (audit 2026-09-29, A04, C-02)."""
+    reviewed, slot_id, side = reviewed_with_side_sources(service)
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=12000, max_articles=1, existing_markdown=reviewed)
+    )
+
+    tullu = [line for line in second.markdown.splitlines() if line.lstrip().startswith("- TULLU:")]
+    listed = {source.title: source for source in second.sources}
+    kept = next(section for section in second.sections if section.slot_id == slot_id)
+    for title in side:
+        assert any(f"Titel „{title}“" in line for line in tullu), f"{title} has no TULLU line"
+        assert title in listed, f"{title} is missing in sources"
+        assert {c.source_id for c in kept.citations if c.source_title == title} == {listed[title].source_id}
+    assert second.audit.unattributed_citations == []
+
+
+def test_a_kept_citation_without_a_source_to_name_is_reported(service: CompendiumService) -> None:
+    """An earlier text without its sources list - a tool cut it - cannot give the attribution back: the audit says
+    which citations of kept blocks it concerns, so the import shows as incomplete (audit 2026-09-29, A04)."""
+    reviewed, slot_id, side = reviewed_with_side_sources(service)
+    cut = LF.join(line for line in reviewed.split(LF) if not line.lstrip().startswith("- TULLU:"))
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=12000, max_articles=1, existing_markdown=cut)
+    )
+
+    kept = next(section for section in second.sections if section.slot_id == slot_id)
+    expected = sorted({c.number for c in kept.citations if c.source_title in side})
+    assert expected and second.audit.unattributed_citations == expected

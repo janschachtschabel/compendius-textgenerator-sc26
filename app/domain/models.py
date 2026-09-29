@@ -260,6 +260,11 @@ class AuditReport(BaseModel):
     regenerated: list[str] = Field(
         default_factory=list, description="Blocks made anew although an earlier text was given (PLAN.md 4.6)"
     )
+    unattributed_citations: list[int] = Field(
+        default_factory=list,
+        description="Citations of kept blocks whose source neither the new corpus nor the sources list of the earlier "
+        "text names: their attribution could not be carried over",
+    )
 
 
 class CollectionPart(BaseModel):

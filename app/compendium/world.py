@@ -12,6 +12,7 @@ from collections.abc import Mapping, Sequence
 
 from app.compendium.llm_policy import LlmPolicy
 from app.compendium.prepared import Matched, PreparedTopic, Requested, Stopwatch, WorldPart
+from app.compose.kept_sources import attribute
 from app.compose.regeneration import PreservedSection, UnplacedSectionsError, parse_document, to_keep
 from app.domain.models import ScoredChunk
 from app.domain.requests import GenerateRequest
@@ -150,6 +151,7 @@ class WorldBuilding(LlmPolicy):
                 enrich=enrichment == "model-knowledge",
             )
         preserved = self._preserved(request, template)
+        attribution = attribute(preserved, request.existing_markdown or "", sources)
         ai_assigned = {  # blocks holding paragraphs the model assigned: marked as chosen by an AI
             slot_id
             for slot_id, items in matched.assignment.assigned.items()
@@ -166,7 +168,8 @@ class WorldBuilding(LlmPolicy):
             llm=llm_job,
             selected=selected,
             ai_assigned=ai_assigned,
-            preserved=preserved,
+            preserved=attribution.kept,
+            carried=attribution.carried,
         )
         lap("synthesize")
         return WorldPart(
@@ -180,6 +183,8 @@ class WorldBuilding(LlmPolicy):
             extracted=extracted,
             written=written,
             matching=matched.llm,
+            carried=attribution.carried,
+            unattributed=attribution.unattributed,
             regenerated=(
                 [slot.id for slot in template.content_slots() if slot.id not in preserved]
                 if request.existing_markdown

@@ -887,7 +887,11 @@ genannten Bausteine neu gemacht und alle übrigen behalten. Sie heißen wie in d
 (`sc26_3`). Ein behaltener Baustein behält seine Belegnummern und seinen Wortlaut; nur was das Netz aller Schreiber
 entschärft — Tags, Bilder, Links außer http(s) und Referenzdefinitionen —, wird auch in ihm maskiert, denn ein
 früheres Kompendium kann aus einem CMS kommen, in dem andere schreiben. Die neuen Bausteine werden hinter der
-höchsten behaltenen Nummer weitergezählt, und der Quellen-Baustein führt beide auf. Ein Baustein reicht bis zur
+höchsten behaltenen Nummer weitergezählt, und der Quellen-Baustein führt beide auf. Eine Quelle, die nur ein
+behaltener Baustein zitiert und die der neue Korpus nicht mehr hat (anderes `max_articles`, keine Wissens-Sammlung,
+neueres Archiv), behält ihren Eintrag mit Urheber und Lizenz aus dem Quellenverzeichnis des früheren Textes, steht
+auch unter `sources`, und ihre Belege tragen wieder eine `source_id`. Fehlt dieser Eintrag, nennt
+`audit.unattributed_citations` die betroffenen Belegnummern. Ein Baustein reicht bis zur
 Überschrift des nächsten
 (einer `###`-Zeile mit Markierung darunter) oder bis zum nächsten Teil, eigene Zwischenüberschriften der Redaktion
 bleiben also in ihm; Zeilenenden mit CR (Windows, Textfelder) liest der Dienst wie LF. Eine Markierung, die er nicht

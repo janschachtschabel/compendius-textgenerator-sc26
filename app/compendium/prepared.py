@@ -90,6 +90,8 @@ class WorldPart:
     regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text
     written: WrittenSections = field(default_factory=lambda: WrittenSections(sections=[], citations=[]))
     matching: LlmAssignmentReport | None = None  # matcher=llm: what the model decided
+    carried: list[Source] = field(default_factory=list)  # sources only kept blocks cite, from the earlier text
+    unattributed: list[int] = field(default_factory=list)  # citations of kept blocks no source could be found for
 
     @classmethod
     def skipped(cls) -> WorldPart:

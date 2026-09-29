@@ -87,6 +87,7 @@ class SectionWriter:
         selected: Collection[str] = frozenset(),
         ai_assigned: Collection[str] = frozenset(),
         preserved: Mapping[str, PreservedSection] | None = None,
+        carried: Sequence[Source] = (),
     ) -> WrittenSections:
         kept = dict(preserved or {})
         drafts = _draft_with_llm(template, assigned, sources_by_id, llm, skip=set(kept)) if llm is not None else {}
@@ -160,7 +161,9 @@ class SectionWriter:
             gen_slot = _slot(template, section.slot_id)
             if gen_slot is None or not gen_slot.is_generated:
                 continue
-            text, facets = self._generate(gen_slot, primary, sources, all_citations, facets_visible, lexicon)
+            text, facets = self._generate(
+                gen_slot, primary, sources, all_citations, facets_visible, lexicon, carried=carried
+            )
             section.text = text
             section.facets = facets if text else {}
             section.status = SectionStatus.GENERATED if text else SectionStatus.EMPTY
@@ -182,9 +185,11 @@ class SectionWriter:
         citations: Sequence[Citation],
         facets_visible: bool,
         lexicon: HeadingLexicon,
+        carried: Sequence[Source] = (),
     ) -> tuple[str, dict[str, list[str]]]:
         if slot.generator == "sources":
-            return build_sources_section(sources, citations, facets_visible), {
+            # the sources only kept blocks cite keep their entry, authors and licence (audit 2026-09-29, A04)
+            return build_sources_section([*sources, *carried], citations, facets_visible), {
                 "Zugang": ["frei"],
                 "Vertrauensgrad": ["hoch"],
             }
