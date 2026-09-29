@@ -6,7 +6,12 @@ import re
 
 import pytest
 
-from app.compose.regeneration import UnknownSectionsError, _citation_rows, parse_document
+from app.compose.regeneration import (
+    UnknownSectionsError,
+    UnreadableDocumentError,
+    _citation_rows,
+    parse_document,
+)
 from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.citations import marker_numbers
@@ -197,3 +202,82 @@ def test_new_blocks_count_on_past_every_marker_of_a_kept_block(service: Compendi
     new = {c.number for section in second.sections if section.slot_id != "sc26_3" for c in section.citations}
     assert kept and new
     assert min(new) > max(kept)
+
+
+LF, CR = chr(10), chr(13)  # spelled out: tools on the way turn escapes in test text into other signs
+
+
+def test_a_reviewed_block_sent_with_windows_line_ends_is_kept(service: CompendiumService) -> None:
+    """A text area sends CRLF; the markers were read with LF only, and every block was made anew, the reviewed one
+    as well, with its status gone (audit 2026-09-29, A01)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+
+    second = service.generate(
+        GenerateRequest(
+            topic="Optik", parts=["world"], target_length=2000, existing_markdown=reviewed.replace(LF, CR + LF)
+        )
+    )
+
+    kept = next(section for section in second.sections if section.slot_id == "sc26_3")
+    assert kept.status.value == "redaktionell-geprüft"
+    assert kept.text == blocks(reviewed)["sc26_3"]
+    assert "sc26_3" not in second.audit.regenerated
+
+
+def test_a_subheading_an_editor_added_stays_in_its_reviewed_block(service: CompendiumService) -> None:
+    """A block ended at the next "### " line: the text after an editor's own subheading was lost while the block
+    still counted as kept (audit 2026-09-29, A01)."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+    original = blocks(reviewed)["sc26_3"]
+    addition = LF.join(["", "", "### Ergänzung der Redaktion", "", "Ein Satz der Redaktion."])
+    edited = reviewed.replace(original, original + addition, 1)
+
+    second = service.generate(
+        GenerateRequest(topic="Optik", parts=["world"], target_length=2000, existing_markdown=edited)
+    )
+
+    kept = next(section for section in second.sections if section.slot_id == "sc26_3")
+    assert kept.text == original + addition
+    assert original + addition in second.markdown
+
+
+def test_an_earlier_marker_with_a_quote_in_a_facet_value_is_read() -> None:
+    """Markers written before 2026-09-29 held a quote of a value as typed (audit 2026-09-29, A01)."""
+    marker = '<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft facets="Zitat=Zitat "Optik"" hash=0a1b -->'
+
+    parsed = parse_document(LF.join(["### Aufbau", marker, "", "Geprüfter Text.", ""]))
+
+    assert parsed["sc26_3"].facets == {"Zitat": ['Zitat "Optik"']}
+    assert parsed["sc26_3"].text == "Geprüfter Text."
+
+
+def test_a_marker_the_parser_cannot_read_is_refused() -> None:
+    """A marker without its hash, or without the heading above it, kept nothing of its block, and the block was made
+    anew without a word; now the request is refused and names the marker (audit 2026-09-29, A01)."""
+    no_hash = "<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft -->"
+    headless = "<!-- kompendium:section id=sc26_4 status=redaktionell-geprüft hash=0a1b -->"
+    markdown = LF.join(["## Teil 1", "", "### Aufbau", no_hash, "", "Text.", "", headless, "", "Mehr."])
+
+    with pytest.raises(UnreadableDocumentError) as refused:
+        parse_document(markdown)
+
+    assert "id=sc26_3" in str(refused.value) and "id=sc26_4" in str(refused.value)
+
+
+def test_a_block_that_stands_twice_is_refused() -> None:
+    marker = "<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft hash=0a1b -->"
+    markdown = LF.join(["### Aufbau", marker, "", "Erste Fassung.", "", "### Aufbau", marker, "", "Zweite Fassung."])
+
+    with pytest.raises(UnreadableDocumentError) as refused:
+        parse_document(markdown)
+
+    assert "sc26_3" in str(refused.value)
+
+
+def test_a_broken_marker_refuses_the_whole_request(service: CompendiumService) -> None:
+    broken = LF.join(["### Aufbau", "<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft -->", "", "Text."])
+
+    with pytest.raises(UnreadableDocumentError):
+        service.generate(GenerateRequest(topic="Optik", parts=["world"], existing_markdown=broken))

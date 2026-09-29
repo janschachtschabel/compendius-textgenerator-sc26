@@ -886,7 +886,10 @@ als `redaktionell-geprüft` markiert sind, bleiben wortgleich stehen; mit `regen
 genannten Bausteine neu gemacht und alle übrigen behalten. Sie heißen wie in den Markierungen des Dokuments
 (`sc26_3`). Ein behaltener Baustein behält seine Belegnummern,
 sein Text wird also gar nicht angefasst — die neuen Bausteine werden hinter der höchsten behaltenen Nummer
-weitergezählt, und der Quellen-Baustein führt beide auf.
+weitergezählt, und der Quellen-Baustein führt beide auf. Ein Baustein reicht bis zur Überschrift des nächsten
+(einer `###`-Zeile mit Markierung darunter) oder bis zum nächsten Teil, eigene Zwischenüberschriften der Redaktion
+bleiben also in ihm; Zeilenenden mit CR (Windows, Textfelder) liest der Dienst wie LF. Eine Markierung, die er nicht
+lesen kann, und ein Baustein, der zweimal vorkommt, sind ein 422: Sonst würde der Baustein still neu erzeugt.
 
 Admin-Endpunkte erwarten den Header `X-Admin-Token` mit dem Wert von `ADMIN_TOKEN`; ohne
 gesetztes Token sind sie deaktiviert. Dieselben Schreibwege gibt es in der CLI:

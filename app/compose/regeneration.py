@@ -25,12 +25,18 @@ if TYPE_CHECKING:
     from app.templates.schema import Template
 
 # A heading starts a line and a marker or a row stays on its own: unanchored, "### " over and over, or a row without
-# its closing bracket, made every try read to the end of an earlier compendium sent along (review of D60)
+# its closing bracket, made every try read to the end of an earlier compendium sent along (review of D60). A block
+# runs to the heading of the next block - a "### " line with a marker under it - or to the next part: it ended at any
+# "### ", and the text after an editor's own subheading was lost while the block counted as kept. The facets are read
+# up to the hash, so a marker written before quotes were encoded still reads (audit 2026-09-29, A01).
 SECTION_RE = re.compile(
-    r"^### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ \n]+)"
-    r"(?: facets=\"(?P<facets>[^\"\n]*)\")? hash=(?P<hash>[0-9a-f]+) -->\n\n(?P<text>.*?)(?=\n### |\n## |\Z)",
+    r"^### (?P<title>[^\n]+)\n(?P<marker><!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ \n]+)"
+    r"(?: facets=\"(?P<facets>[^\n]*?)\")? hash=(?P<hash>[0-9a-f]+) -->)\n\n?(?P<text>.*?)"
+    r"(?=\n### [^\n]*\n<!-- kompendium:section |\n## |\Z)",
     re.DOTALL | re.MULTILINE,
 )
+# Every marker line, read or not: one the pattern above does not take would keep nothing of its block
+MARKER_LINE_RE = re.compile(r"^<!-- kompendium:section\b[^\n]*", re.MULTILINE)
 # A row of the citation table as the sources block writes it: the title escaped, as a link where the source had a web
 # address, else alone (audit 2026-09-28, SE-16). A link in angle brackets holds spaces or parentheses; a link without
 # them runs to the last closing parenthesis before its cell ends, as earlier documents wrote "Merkur (Planet)" (audit
@@ -55,6 +61,29 @@ class UnknownSectionsError(ValueError):
         )
 
 
+class UnreadableDocumentError(ValueError):
+    """An earlier compendium whose blocks cannot all be read safely; the API answers 422 and names what it met.
+
+    A marker the parser could not read kept nothing of its block, and the block was made anew without a word - a
+    reviewed one as well (audit 2026-09-29, A01). Which of two blocks with one id should stay cannot be decided.
+    """
+
+    def __init__(self, unreadable: Sequence[str] = (), doubled: Sequence[str] = ()) -> None:
+        self.unreadable, self.doubled = list(unreadable), list(doubled)
+        problems = []
+        if self.unreadable:
+            problems.append(f"nicht lesbare Markierungen: {listed(self.unreadable)}")
+        if self.doubled:
+            problems.append(f"mehrfach vorhandene Bausteine: {listed(self.doubled)}")
+        super().__init__(
+            "existing_markdown lässt sich nicht sicher lesen: "
+            + "; ".join(problems)
+            + ". Ein Baustein, dessen Markierung der Dienst nicht liest, würde sonst still neu erzeugt. Die "
+            "Markierung steht auf der Zeile unter der Überschrift ihres Bausteins: "
+            "<!-- kompendium:section id=… status=… hash=… -->"
+        )
+
+
 def check_names(regenerate_sections: Sequence[str] | None, template: Template) -> None:
     """Refuse a name that is no block id of the template: it used to change nothing without a word."""
     ids = {slot.id for slot in template.slots}
@@ -75,19 +104,32 @@ class PreservedSection:
 
 
 def parse_document(markdown: str) -> dict[str, PreservedSection]:
-    """Every block of an earlier compendium by slot id, with its status, facets and citations."""
+    """Every block of an earlier compendium by slot id, with its status, facets and citations.
+
+    A text area sends CRLF, and CommonMark ends a line at a lone CR: every line end is read as LF. A marker the
+    pattern cannot read, or a block id that stands twice, is an ``UnreadableDocumentError``.
+    """
+    markdown = markdown.replace("\r\n", "\n").replace("\r", "\n")
     rows = _citation_rows(markdown)
     sections: dict[str, PreservedSection] = {}
+    read: set[int] = set()
+    doubled: list[str] = []
     for match in SECTION_RE.finditer(markdown):
+        slot_id = match.group("slot")
+        if slot_id in sections:
+            doubled.append(slot_id)
+        read.add(match.start("marker"))
         text = match.group("text").rstrip()
-        status = _status(match.group("status"))
-        sections[match.group("slot")] = PreservedSection(
-            slot_id=match.group("slot"),
-            status=status,
+        sections[slot_id] = PreservedSection(
+            slot_id=slot_id,
+            status=_status(match.group("status")),
             text=text,
             facets=parse_marker(match.group("facets") or ""),
             citations=[rows[number] for number in marker_numbers(text) if number in rows],
         )
+    unreadable = [line.group(0) for line in MARKER_LINE_RE.finditer(markdown) if line.start() not in read]
+    if unreadable or doubled:
+        raise UnreadableDocumentError(unreadable, doubled)
     return sections
 
 

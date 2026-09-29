@@ -18,7 +18,7 @@ from app.compendium.errors import (
     RepositoryUnavailableError,
     TopicNotFoundError,
 )
-from app.compose.regeneration import UnknownSectionsError
+from app.compose.regeneration import UnknownSectionsError, UnreadableDocumentError
 from app.domain.models import Resolution
 from app.main import create_app
 from app.matching.registry import UnknownMatcherError
@@ -31,6 +31,7 @@ from app.templates.manager import TemplateNotFoundError
 MISSING = TopicNotFoundError(Resolution(query="Quxbar", normalized="Quxbar", alternatives=["Qux"]))
 SUBJECT = UnknownSubjectError("Quxkunde", ["Physik", "Chemie"])
 SECTIONS = UnknownSectionsError(["x"], ["intro", "quellen"])
+DOCUMENT = UnreadableDocumentError(["<!-- kompendium:section id=a -->"], ["b"])
 
 # What each error answers: its status and its detail, as the routers gave them before
 ANSWERS: dict[str, tuple[Exception, int, Any]] = {
@@ -38,6 +39,7 @@ ANSWERS: dict[str, tuple[Exception, int, Any]] = {
     "template": (TemplateNotFoundError("nope"), 404, "Template nicht gefunden: nope"),
     "subject": (SUBJECT, 422, str(SUBJECT)),
     "sections": (SECTIONS, 422, str(SECTIONS)),
+    "document": (DOCUMENT, 422, str(DOCUMENT)),
     "matcher": (UnknownMatcherError("quux"), 422, "Unbekannte Matching-Strategie: quux"),
     "llm": (LlmNotConfiguredError("LLM_ENABLED ist nicht aktiv"), 503, "LLM_ENABLED ist nicht aktiv"),
     "parts": (

@@ -107,7 +107,8 @@ def generate_compendium(
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
     collection or knowledge collection, or a node that is unknown or not public: 404. A ``subject`` outside the
     two subject vocabularies of edu-sharing (config/vocabs), a block in ``regenerate_sections`` the template does
-    not have, or a field the request does not know: 422. Repository unreachable: 502; a ``repository`` outside the
+    not have, an ``existing_markdown`` with a block marker that cannot be read or a block id that stands twice,
+    or a field the request does not know: 422. Repository unreachable: 502; a ``repository`` outside the
     allowlist: 422; a ``node_id`` with neither ``repository`` nor a configured one: 503. No requested part can be
     made at all - part 3 without ``EDU_SHARING_BASE_URL``, for instance: 503. A profile or a switch that needs
     an LLM on a server without one (LLM_ENABLED, B_API_KEY): 503.
