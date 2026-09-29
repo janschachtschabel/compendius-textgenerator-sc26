@@ -65,7 +65,11 @@ RESPONSES: dict[int, dict[str, Any]] = {
     },
     409: {"model": Refusal, "description": "In the way of what the request wants: a built-in template, an active file"},
     413: {"model": Refusal, "description": "The body is larger than the service reads"},
-    422: {"model": Invalid, "description": "A value the request may not have, or a combination it may not make"},
+    422: {
+        "model": Invalid,
+        "description": "A value the request may not have, or a combination it may not make; a body that is no "
+        "readable JSON (truncated, not UTF-8, nested too deep) is the problem json_invalid",
+    },
     429: {
         "model": Refusal,
         "description": "More than RATE_LIMIT requests of this client within a minute",

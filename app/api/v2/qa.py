@@ -286,7 +286,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
       (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59). While the b-api is away the rules ask, and ``note`` says why.
 
     ``llm_tokens`` says what the LLM cost, part 1 and the pairs together; it is null when no LLM was called.
-    A profile or ``method`` that needs an LLM on a server without one is a 503. The examples run from a topic
+    A profile or ``method`` that needs an LLM on a server without one is a 503. A ``text`` or ``topic`` of blanks is a
+    422; a text without prose to ask about - only headings, lists or sources - is a 404, as is a topic whose part 1
+    holds no text. The examples run from a topic
     alone over one per profile to one that sets every field but ``text``, which only goes alone.
     """
     if payload.levels:

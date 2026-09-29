@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, Query, Request
-from pydantic import BeforeValidator
+from pydantic import AfterValidator, BeforeValidator
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -22,7 +22,14 @@ from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
 from app.compendium.llm_policy import choice_audit, llm_switches
 from app.compendium.llm_report import LlmWork, build_llm_report
-from app.domain.requests import UNKNOWN_SUBJECT_HELP, CurriculumCheck, GenerateRequest, Preset, with_profile
+from app.domain.requests import (
+    UNKNOWN_SUBJECT_HELP,
+    CurriculumCheck,
+    GenerateRequest,
+    Preset,
+    not_blank,
+    with_profile,
+)
 from app.domain.spelling import readable_value
 from app.knowledge.article_choice import ChoiceAudit
 from app.knowledge.curriculum_check import CurriculumCheckReport
@@ -184,8 +191,9 @@ def lehrplan_search(
             min_length=QUERY_MIN_CHARS,
             max_length=QUERY_MAX_CHARS,
             description=f"The keyword (mode keyword) or the topic (mode topic), {QUERY_MIN_CHARS} to {QUERY_MAX_CHARS} "
-            "characters",
+            "characters; blanks alone are a 422",
         ),
+        AfterValidator(not_blank),  # it is the topic of the request as well (audit 2026-09-29, S9)
     ],
     subject: Annotated[
         str | None,

@@ -19,6 +19,7 @@ from app.settings import Settings
 # chr(92) so that no tool on the way turns the backslash into something else.
 LONE_SURROGATE = chr(92) + "ud800"
 JSON = {"content-type": "application/json"}
+UNREADABLE = "Der Anfragekörper ist kein lesbares JSON"
 
 
 @pytest.fixture(scope="module")
@@ -112,3 +113,27 @@ def test_a_lone_surrogate_in_a_template_id_is_refused_not_repeated(client: TestC
 
     assert response.status_code == 422
     assert [error["loc"] for error in json.loads(response.content)["detail"]] == [["body", "template_id"]]
+
+
+@pytest.mark.parametrize(
+    ("body", "reason"),
+    [
+        (b'{"text": "' + bytes([0xFF, 0xFE]) + b' abc"}', "kein gültiges UTF-8"),
+        (b"[" * 200_000, "zu tief verschachtelt"),
+        (b'{"text": "Die Opt', None),  # truncated: FastAPI's own 422, whose reason stays Python's
+    ],
+    ids=["not-utf-8", "too-deep", "truncated"],  # an id of 200,000 brackets is longer than Windows lets an env var be
+)
+def test_a_body_that_is_no_readable_json_is_a_422_in_german(
+    client: TestClient, body: bytes, reason: str | None
+) -> None:
+    """Not UTF-8, or nested deeper than Python's recursion limit, a body was FastAPI's 400 "There was an error parsing
+    the body" - in English and described nowhere -, while a truncated one was a 422 json_invalid (audit 2026-09-29,
+    S9)."""
+    response = client.post("/api/v2/qa", content=body, headers=JSON)
+
+    assert response.status_code == 422, response.text
+    [problem] = response.json()["detail"]
+    assert (problem["type"], problem["loc"][0], problem["msg"]) == ("json_invalid", "body", UNREADABLE)
+    if reason is not None:
+        assert problem["ctx"] == {"error": reason}

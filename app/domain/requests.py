@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Annotated, Any, Literal, get_args
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 from pydantic.json_schema import WithJsonSchema
 
 from app.domain.caller_values import NAMED, listed
@@ -214,6 +214,14 @@ def _default_parts() -> list[Part]:
     return ["world", "curricula", "collection"]
 
 
+def not_blank(value: str | None) -> str | None:
+    """A topic of blanks is none: min_length counted them, and " " went on to the archives and came back as a 404
+    "Thema in den Archiven nicht gefunden", where a text of blanks is a 422 (audit 2026-09-29, S9)."""
+    if value is not None and not value.strip():
+        raise ValueError("besteht nur aus Leerraum")
+    return value
+
+
 NODE_ID_HELP = (
     "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public. "
     "A collection's title becomes the topic. A material's title often names a format ('Stationsarbeit zur Optik'), "
@@ -254,6 +262,11 @@ class RequestModel(OneSpelling):
             if len(unknown) > NAMED:
                 raise ValueError(f"Unbekannte Felder: {listed(unknown)}")
         return data
+
+    @field_validator("topic", check_fields=False)  # the topic of a compendium, of /knowledge and of /qa
+    @classmethod
+    def _topic_not_blank(cls, value: str | None) -> str | None:
+        return not_blank(value)
 
 
 class GenerateRequest(RequestModel):

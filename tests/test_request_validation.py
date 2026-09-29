@@ -32,6 +32,27 @@ def test_an_unknown_field_is_a_422_that_names_it(client: TestClient, path: str, 
     assert [error["loc"] for error in answer.json()["detail"]] == [["body", "topik"]]
 
 
+@pytest.mark.parametrize(
+    ("method", "path", "sent"),
+    [
+        ("POST", "/api/v2/compendium", {"json": {"topic": " ", "parts": ["world"]}}),
+        ("POST", "/api/v2/knowledge", {"json": {"topic": " \t"}}),
+        ("POST", "/api/v2/qa", {"json": {"topic": "  "}}),
+        ("GET", "/api/v2/lehrplan/search", {"params": {"q": "   ", "mode": "topic"}}),
+        ("GET", "/api/v2/lehrplan/search", {"params": {"q": "    "}}),
+    ],
+)
+def test_a_topic_of_blanks_is_a_422_not_a_topic_the_archives_lack(
+    client: TestClient, method: str, path: str, sent: dict[str, Any]
+) -> None:
+    """min_length counted blanks, so " " went on to the archives and came back as a 404 "Thema in den Archiven nicht
+    gefunden", while a text of blanks at /qa was a 422 (audit 2026-09-29, S9)."""
+    answer = client.request(method, path, **sent)
+    assert answer.status_code == 422, answer.text
+    [problem] = answer.json()["detail"]
+    assert problem["loc"][-1] in ("topic", "q") and problem["msg"] == "besteht nur aus Leerraum"
+
+
 @pytest.mark.parametrize("path", ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"])
 def test_an_unknown_subject_is_a_422_that_lists_the_known_ones(client: TestClient, path: str) -> None:
     """Part 2 searched every subject and the article choice went on without one, and nothing said so."""

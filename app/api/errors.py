@@ -30,6 +30,12 @@ VALIDATION_KEYS = ("type", "loc", "msg", "ctx")
 # (audit 2026-09-27, AP-01): the reasons are German sentences of their own
 VALUE_ERROR_PREFIX = "Value error, "
 MAX_PROBLEMS = 20  # problems a 422 names; one more counts the rest
+# FastAPI answers a body it cannot decode - not UTF-8, JSON nested deeper than Python's recursion limit - with this 400,
+# in English and described nowhere, while a truncated body is its 422 json_invalid. All three are that 422 now, in
+# German, with the reason in ctx (audit 2026-09-29, S9)
+FASTAPI_UNPARSED_BODY = "There was an error parsing the body"
+UNREADABLE_BODY = "Der Anfragekörper ist kein lesbares JSON"
+UNREADABLE_BECAUSE = {UnicodeDecodeError: "kein gültiges UTF-8", RecursionError: "zu tief verschachtelt"}
 
 
 class JsonResponse(JSONResponse):
@@ -45,6 +51,8 @@ class JsonResponse(JSONResponse):
 async def http_error(request: Request, exc: Exception) -> Response:
     """FastAPI's handler for ``HTTPException``, answering with ``JsonResponse``."""
     error = cast(HTTPException, exc)  # registered for HTTPException only
+    if error.status_code == 400 and error.detail == FASTAPI_UNPARSED_BODY:
+        return _unreadable_body(error.__cause__)
     headers = getattr(error, "headers", None)
     if not is_body_allowed_for_status_code(error.status_code):
         return Response(status_code=error.status_code, headers=headers)
@@ -67,8 +75,17 @@ async def validation_error(request: Request, exc: Exception) -> Response:
     return JsonResponse({"detail": jsonable_encoder(kept)}, status_code=422)
 
 
+def _unreadable_body(cause: BaseException | None) -> Response:
+    """The 422 json_invalid of a body FastAPI could not decode, with why (the exception it raised from)."""
+    reason = next((text for kind, text in UNREADABLE_BECAUSE.items() if isinstance(cause, kind)), "nicht lesbar")
+    problem = {"type": "json_invalid", "loc": ["body"], "msg": UNREADABLE_BODY, "ctx": {"error": reason}}
+    return JsonResponse({"detail": [problem]}, status_code=422)
+
+
 def _problem(error: Mapping[str, Any]) -> dict[str, Any]:
     problem = {key: error[key] for key in VALIDATION_KEYS if key in error}
+    if problem.get("type") == "json_invalid":  # FastAPI's "JSON decode error"; ctx keeps the reason Python gave
+        problem["msg"] = UNREADABLE_BODY
     problem["loc"] = [cut(part) if isinstance(part, str) else part for part in problem.get("loc", ())]
     if problem.get("type") == "value_error":
         problem["msg"] = str(problem.get("msg", "")).removeprefix(VALUE_ERROR_PREFIX)
