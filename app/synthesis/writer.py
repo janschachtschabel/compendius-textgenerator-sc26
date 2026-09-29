@@ -88,6 +88,7 @@ class SectionWriter:
         ai_assigned: Collection[str] = frozenset(),
         preserved: Mapping[str, PreservedSection] | None = None,
         carried: Sequence[Source] = (),
+        lookup: Lookup | None = None,
     ) -> WrittenSections:
         kept = dict(preserved or {})
         drafts = _draft_with_llm(template, assigned, sources_by_id, llm, skip=set(kept)) if llm is not None else {}
@@ -162,7 +163,7 @@ class SectionWriter:
             if gen_slot is None or not gen_slot.is_generated:
                 continue
             text, facets = self._generate(
-                gen_slot, primary, sources, all_citations, facets_visible, lexicon, carried=carried
+                gen_slot, primary, sources, all_citations, facets_visible, lexicon, carried=carried, lookup=lookup
             )
             section.text = text
             section.facets = facets if text else {}
@@ -186,6 +187,7 @@ class SectionWriter:
         facets_visible: bool,
         lexicon: HeadingLexicon,
         carried: Sequence[Source] = (),
+        lookup: Lookup | None = None,
     ) -> tuple[str, dict[str, list[str]]]:
         if slot.generator == "sources":
             # the sources only kept blocks cite keep their entry, authors and licence (audit 2026-09-29, A04)
@@ -202,7 +204,7 @@ class SectionWriter:
             if primary is not None:
                 persons = {ACTORS_KEY, slot.slot}  # the shared lexicon's key and the template's own (AR-04)
                 preferred = {s.heading for s in primary.sections if lexicon.classify(s.path) in persons}
-            actors = collect_actors(primary, sources, self.lookup, preferred_headings=preferred)
+            actors = collect_actors(primary, sources, lookup or self.lookup, preferred_headings=preferred)
             functions = list(dict.fromkeys(f for a in actors for f in a.functions))
             facets = {"Akteursfunktion": functions} if functions else {}
             return build_actors_section(actors, facets_visible), facets

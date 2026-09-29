@@ -92,6 +92,15 @@ class ZimRegistry:
         view.archives = [archive for archive in self.archives if archive.id in wanted]
         return view
 
+    def view(self) -> ZimRegistry:
+        """The archives open now, as a registry of their own: a request reads and names the same archives from start
+        to end while a reload swaps them in the shared one, and they stay open as long as the view holds them. The
+        sources came from the archives at the start of a request and the snapshot of its frontmatter from those at
+        its end (audit 2026-09-29, A10)."""
+        view = ZimRegistry([])
+        view.archives = list(self.archives)
+        return view
+
     @classmethod
     def discover(cls, directory: Path) -> ZimRegistry:
         """The archives of ``directory``, of each archive only its newest dump (``newest_dumps``)."""

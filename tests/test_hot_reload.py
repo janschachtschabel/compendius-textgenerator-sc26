@@ -6,11 +6,13 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import create_app
+from app.domain.requests import GenerateRequest
+from app.main import build_service, create_app
 from app.sources.zim import refresh as refresh_module
 from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, ActiveWatcher, write_active
 from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
+from app.templates.manager import TemplateManager
 from tests.conftest import make_settings
 
 
@@ -167,3 +169,28 @@ def test_without_a_state_file_a_reload_opens_the_newest_dump_of_an_archive(
 
     assert refresher.refresh() is True
     assert sorted(a.file_name for a in registry.archives) == sorted([newer.name, local["klexikon"].name])
+
+
+def test_an_archive_swapped_during_a_request_leaves_its_sources_and_snapshot_alike(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The sources came from the archives at the start of a request, the snapshot of the frontmatter from those at
+    its end: a sync that switched archives in between left the answer naming files its sources were not read from
+    (audit 2026-09-29, A10)."""
+    local = _copy_samples(sample_zims, tmp_path)
+    newer = Path(shutil.copy(local["wikipedia"], tmp_path / "wikipedia_de_sample_2026-09.zim"))
+    settings = make_settings([local["wikipedia"], local["klexikon"]], tmp_path / "state")
+    service = build_service(settings, ZimRegistry(settings.zim_path_list), TemplateManager(settings.state_dir / "t"))
+    prepare = service.prepare
+
+    def prepare_then_switch(*args: object, **kwargs: object) -> object:
+        prepared = prepare(*args, **kwargs)  # type: ignore[arg-type]
+        service.registry.reload([newer, local["klexikon"]])  # the sync switches while the request runs
+        return prepared
+
+    monkeypatch.setattr(service, "prepare", prepare_then_switch)
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world"]))
+
+    read = {source.zim_file for source in result.sources if source.zim_file}
+    named = {entry["file"] for entry in result.frontmatter["sources_snapshot"]}
+    assert read and read <= named, (read, named)

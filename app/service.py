@@ -129,7 +129,9 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         if collection is not None:
             derived.append(collection_topic(collection))
         needs_corpus = self._needs_corpus(request)
-        registry = registry or self.registry
+        # One view of the archives for the whole request: a reload between its steps left sources and snapshot
+        # naming different files (audit 2026-09-29, A10)
+        registry = (registry or self.registry).view()
         chosen = choose_main_article(
             registry,
             self.subjects,
@@ -159,6 +161,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             node_article=chosen.node,
             material=chosen.material,
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
+            registry=registry,
         )
         if needs_corpus:
             self._add_corpus(prepared, request, deadline, choice, registry, segment)
@@ -263,7 +266,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             facets_visible=self._facets_visible(request),
             timings=timings,
         )
-        return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=self.registry.snapshot())
+        archives = prepared.registry or self.registry
+        return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=archives.snapshot())
 
     def _admit(self, request: GenerateRequest) -> tuple[GenerateRequest, str]:
         """The request with the switches of its profile (D41) and the profile; refuses before any work what this

@@ -170,6 +170,7 @@ class WorldBuilding(LlmPolicy):
             ai_assigned=ai_assigned,
             preserved=attribution.kept,
             carried=attribution.carried,
+            lookup=prepared.registry.lookup if prepared.registry is not None else None,
         )
         lap("synthesize")
         return WorldPart(

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, Resolution, Source, primary_of
 from app.domain.requests import GenerateRequest
@@ -20,6 +20,9 @@ from app.sources.wlo.models import CollectionInfo
 from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import WrittenSections
 from app.templates.schema import Template
+
+if TYPE_CHECKING:
+    from app.sources.zim.registry import ZimRegistry
 
 
 @dataclass
@@ -45,6 +48,8 @@ class PreparedTopic:
     side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
     node_article: NodeArticleReport | None = None  # how the article of a material was found (D47)
     material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
+    # the archives this request reads from start to end, whatever a reload does meanwhile (audit 2026-09-29, A10)
+    registry: ZimRegistry | None = None
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
