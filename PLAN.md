@@ -1823,7 +1823,7 @@ API.
   `/ui/options.json` aus den Modellen der Endpunkte, damit die Seite nie einen Wert anbietet, den sie ablehnen. Ein
   Vergleich stellt zwei Profile mit denselben Eingaben nebeneinander; die Methoden einzelner Schritte gelten dann
   nicht, damit sich die beiden Antworten nur im Profil unterscheiden. Kosten sind Tokens und Aufrufe, Preise kennt
-  der Dienst nicht; `/api/v2/qa` meldet die Tokens des LLM nicht (offen).
+  der Dienst nicht; `/api/v2/qa` meldete die Tokens des LLM anfangs nicht (siehe unten).
   Nach dem Review vom selben Tag (23 Befunde, 2.4.1): Der Leser ist dreigeteilt — `markdown.mjs` die Blöcke,
   `inline.mjs` den Text im Block, `inline_ends.mjs` die Enden der Konstrukte — und braucht für jeden Text Zeit
   proportional zu seiner Länge, weil der Dienst ein `*` mitten in der Zeile nicht maskiert und ein Modell eigenes
@@ -1839,7 +1839,10 @@ API.
   Darstellungsmodule prüft `node:test` mit einem Dokument-Ersatz (`tests/ui/dom_stub.mjs`), und GitLab führt die
   Skript-Tests in einem eigenen Job aus (`ui-scripts`), weil sein uv-Image kein Node hat. Danach (Jan: „die fertigen
   markdown texte der kompendien runter zu laden“): „Markdown speichern“ legt das Markdown der Antwort unverändert
-  als `kompendium-<thema>-<profil>-<zeit>.md` ab, im Vergleich je Spalte.
+  als `kompendium-<thema>-<profil>-<zeit>.md` ab, im Vergleich je Spalte. Danach meldet `/qa` selbst, was das LLM
+  kostete (`llm_tokens`: Teil 1 mit seiner Artikelwahl und die Paare, ein Aufruf ohne verwertbares Paar
+  eingeschlossen, in der Form von `audit.llm_tokens`), und die Seite zeigt die Tokens wie bei den anderen
+  Endpunkten statt „nicht gemeldet“.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

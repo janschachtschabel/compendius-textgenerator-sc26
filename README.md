@@ -625,8 +625,7 @@ gerendert:
   (Wikipedia, Einleitung)“). Sätze aus dem Modellwissen der KI sind hervorgehoben. Eine Belegnummer öffnet
   Artikel, Abschnitt, Textauszug und den Grund der Zuordnung.
 - **Qualität, Zeit, Kosten** in einer Zeile über jedem Ergebnis, beim Vergleich zweier Profile alle Kennzahlen
-  nebeneinander. Kosten sind Tokens und Aufrufe; `/api/v2/qa` meldet die Tokens des LLM nicht, dort steht
-  „nicht gemeldet“, sobald die Anfrage oder ihr Profil ein LLM gefragt haben kann.
+  nebeneinander. Kosten sind Tokens und Aufrufe, wie jeder Endpunkt sie meldet.
 - **„Wie entstand dieser Text?“** unter dem Kompendium: Thema und Artikel, Anteile nach Herkunft, Methode je
   Schritt (angefragt und verwendet, mit Rückfällen), Zeit je Schritt, Kosten, Quellen, Hinweise der Prüfung
   und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Markdown speichern“ legt das fertige
