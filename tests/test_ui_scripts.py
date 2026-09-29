@@ -37,7 +37,7 @@ def test_gitlab_runs_the_scripts_of_the_page_in_a_job_of_its_own() -> None:
 
     assert job["image"].startswith("node:"), job["image"]
     assert "node --test tests/ui/*.test.mjs" in job["script"]
-    assert job["rules"] == gitlab["pytest"]["rules"]
+    assert (job.get("rules"), job.get("needs")) == (gitlab["pytest"].get("rules"), gitlab["pytest"].get("needs"))
 
 
 @pytest.mark.skipif(NODE is None and not ON_GITHUB, reason="Node is not installed; tests/ui needs its test runner")

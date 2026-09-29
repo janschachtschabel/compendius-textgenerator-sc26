@@ -7,7 +7,7 @@ Seiten fassen zusammen, was der Betrieb braucht und wie andere Systeme den Diens
 
 | Seite | für wen | Inhalt |
 |---|---|---|
-| diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab, Betrieb in Kürze |
+| diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab nach dem Muster der Plattform, Betrieb in Kürze |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |
 
@@ -150,27 +150,32 @@ Volume `zim` legen und ohne Katalog übernehmen:
 
 ## CI im internen GitLab
 
-Die Pipeline liegt schon im Repository: [`.gitlab-ci.yml`](../../.gitlab-ci.yml), geschrieben für das alte GitLab und
-zuletzt am 29.09.2026 angepasst. Daneben baut heute GitHub Actions (`.github/workflows/ci.yml`) das Image nach
-`ghcr.io`, 6 bis 11 Minuten je Lauf.
+[`.gitlab-ci.yml`](../../.gitlab-ci.yml) folgt seit dem 29.09.2026 dem Muster der Plattform-Projekte: die Stufen
+`build`, `test`, `humanitec` und `deploy`, Pipelines für Branches (`workflow: rules`). Anders als im Muster laufen auch
+Git-Tags, damit ein Release sein Image bekommt; eingebundene Teil-Pipelines (`include: local`) braucht ein Repository
+mit einem einzigen Image nicht. Auf einem GitLab gelaufen ist diese Fassung noch nicht; geprüft sind ihr Aufbau
+(`tests/test_gitlab_ci.py`) und die Befehle, die sie aus der alten Fassung übernimmt. Daneben baut GitHub Actions
+(`.github/workflows/ci.yml`) das Image weiter nach `ghcr.io`, 6 bis 11 Minuten je Lauf.
 
-| Stufe | Jobs | Image des Jobs |
+| Stufe | Jobs | was geschieht |
 |---|---|---|
-| lint | `ruff`, `mypy`, `dependency-audit` (pip-audit), `alert-rules` (promtool) | uv 0.12.19 auf Debian 13, `prom/prometheus`, beide per Digest gepinnt |
-| test | `pytest` mit Abdeckung, `ui-scripts` (Node-Tests der Prüfansicht) | uv, `node:22-slim` |
-| deploy | `docker image (main, develop)` und `docker image (tag)`: bauen, Smoke-Probe, pushen | `$DIND_IMAGE` mit Docker-in-Docker |
+| build | `docker build`, nur für `main`, `develop` und Tags | Image bauen, Smoke-Probe (startet gehärtet, `/health` nennt den Commit, die vier Sidecar-Befehle laufen), pushen als `:<Commit>` |
+| test | `ruff`, `mypy`, `dependency-audit`, `alert-rules`, `pytest`, `ui-scripts` | in jeder Pipeline, gleichzeitig mit dem Bau (`needs: []`) |
+| humanitec | noch keiner | hier meldet ein Job das Image `:<Commit>` bei Humanitec an; er folgt, sobald die Angaben unten da sind |
+| deploy | `docker tag` | erst nach bestandenen Tests: `:main`, `:develop` oder `:v2.5.0` zeigen auf denselben Commit |
 
-Für das neue GitLab zu klären und anzupassen:
+Für das neue GitLab zu klären:
 
-- **Runner:** Docker-Executor; die Deploy-Jobs brauchen Docker-in-Docker, also einen privilegierten Runner. Der Bau
-  nutzt BuildKit (`docker buildx build`).
-- **Variablen** (CI/CD-Einstellungen, geheime maskiert): `DIND_IMAGE`, `DIND_HOST`, `DIND_DRIVER`, `DIND_TLS_CERTDIR`,
-  `DOCKER_REGISTRY`, `DOCKER_USERNAME`, `DOCKER_PASSWORD`.
-- **Registry:** `IMAGE_NAME` zeigt auf `$DOCKER_REGISTRY/projects/wlo/compendious-text-fastapi`, den Pfad der alten
-  Registry. Mit der Registry des GitLab selbst wird daraus `$CI_REGISTRY_IMAGE`, angemeldet mit `$CI_REGISTRY_USER`
-  und `$CI_REGISTRY_PASSWORD`.
-- **Tags:** Branches `main` und `develop` bauen ein Image mit ihrem Namen, ein Git-Tag eines mit dem Tag (`v2.5.0`).
-  Der Server zieht es über `IMAGE` in der `.env`.
+- **Runner:** Docker-Executor; `docker build` und `docker tag` brauchen Docker-in-Docker, also einen privilegierten
+  Runner. Der Bau nutzt BuildKit (`docker buildx build`).
+- **Variablen** (CI/CD-Einstellungen, geheime maskiert): `DIND_IMAGE`, `DIND_HOST`, `DIND_DRIVER`, `DIND_TLS_CERTDIR`
+  wie in der alten Pipeline. Die Registry nennt `DOCKER_REGISTRY` mit `DOCKER_USERNAME` und `DOCKER_PASSWORD`, das Image
+  heißt dann `$DOCKER_REGISTRY/projects/wlo/compendious-text-fastapi`; ohne `DOCKER_REGISTRY` nimmt die Pipeline die
+  Registry des GitLab selbst (`$CI_REGISTRY_IMAGE`).
+- **Humanitec:** Organisation, Anwendung und Umgebungen, ein Token als maskierte Variable und wie die Plattform eine
+  Workload beschreibt (etwa Score). Der Dienst sind fünf Container aus einem Image mit zwei gemeinsamen Volumes
+  ([Aufbau](#aufbau)); Speicher und CPU je Container stehen unter [Ressourcen](#ressourcen). Am schnellsten hilft eine
+  der eingebundenen Dateien eines Plattform-Projekts (etwa `gateway/.gitlab-ci.yml`) mit ihrem Humanitec-Job.
 - **Ausgehend vom Runner:** `ghcr.io` (uv), Docker Hub (Python, Node, Prometheus), `pypi.org` und
   `files.pythonhosted.org` (Pakete), `huggingface.co` (Model2Vec) und `github.com` (spaCy-Modell) beim Bau des Images.
 - Die uv-Version steht im Dockerfile und in allen Pipelines gleich; `tests/test_ci_pins.py` prüft das.
