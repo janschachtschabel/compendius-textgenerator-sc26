@@ -98,7 +98,11 @@ cd /srv/kompendium && sudo -u kompendium docker compose build
 
 Der Bau holt die Abhängigkeiten und backt das Embedding-Modell für den Matcher mit ein, damit die Laufzeit
 nie den Hugging-Face-Hub braucht. Ohne Modell — kleineres Image, schwächeres Matching —
-geht auch `docker compose build --build-arg MODEL2VEC_ID=`.
+geht auch `docker compose build --build-arg MODEL2VEC_ID=`. Das Image lässt `MODEL2VEC_PATH` dann leer, aber die
+`.env` aus der Vorlage setzt `MODEL2VEC_PATH=/models/m2v` und geht dem Image vor: dort `MODEL2VEC_PATH=` leer
+lassen, sonst meldet jeder Start einen Fehler für das fehlende Modell. Dasselbe gilt für `SPACY_MODEL`, wenn der Bau
+ein anderes spaCy-Modell einbackt (`--build-arg SPACY_MODEL=…` mit `SPACY_MODEL_VERSION` und
+`SPACY_MODEL_SHA256`, leer ohne Modell): in der `.env` denselben Namen eintragen, leer ohne Modell.
 
 **Oder gar nicht bauen.** Der Job `publish` in `.github/workflows/ci.yml` veröffentlicht den Stand von `main`
 nach grünen Prüfungen als fertiges Image in der GitHub Container Registry; dann genügt Schritt 6 ohne

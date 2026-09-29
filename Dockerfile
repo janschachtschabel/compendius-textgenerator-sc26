@@ -3,6 +3,12 @@
 # libzim, numpy, scikit-learn, das statische Embedding-Modell fuer den hybriden Matcher (D20) und spaCy fuer die
 # Entitaeten und die QA-Regeln. torch, transformers und die beiden QA-Modelle (U5b) sind mit D57 entfallen.
 
+# Die Modelle, die der Bau einbackt; ein leerer Wert baut ohne (Einzelheiten im Builder). Die Vorgaben stehen vor dem
+# ersten FROM, weil ein ARG mit seiner Stage endet: Builder und Laufzeit deklarieren sie ohne Wert neu und sehen so
+# denselben, und die Laufzeit nennt MODEL2VEC_PATH und SPACY_MODEL danach (Audit 2026-09-29, O9).
+ARG MODEL2VEC_ID=JanSchachtschabel/m2v-gte-256-edu
+ARG SPACY_MODEL=de_core_news_md
+
 # Basis ist das offizielle Python-Image, per Digest gepinnt: ein Build morgen ergibt dasselbe Image, und Debian-
 # und CPython-Sicherheitskorrekturen kommen als neuer Digest, den Dependabot (.github/dependabot.yml) woechentlich
 # vorschlaegt. uv nur im Builder, in derselben Version wie CI und Lockfile.
@@ -21,8 +27,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev --group build --extra embeddings --extra entities
 # Embedding-Modell zur Bauzeit laden, damit die Laufzeit den Hugging-Face-Hub nie anspricht. Die Revision ist
 # festgelegt, damit jeder Build dasselbe Modell enthaelt (neue Revision: Eval neu messen, dann hier eintragen).
-# MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF.
-ARG MODEL2VEC_ID=JanSchachtschabel/m2v-gte-256-edu
+# MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF, und MODEL2VEC_PATH bleibt leer.
+ARG MODEL2VEC_ID
 ARG MODEL2VEC_REVISION=4e332ba73cd6e3551541163139e3cfa189398a41
 RUN mkdir -p /models/m2v && if [ -n "$MODEL2VEC_ID" ]; then \
       /app/.venv/bin/python -c "import sys; from huggingface_hub import snapshot_download; from model2vec import StaticModel; StaticModel.from_pretrained(snapshot_download(sys.argv[1], revision=sys.argv[2])).save_pretrained('/models/m2v')" "$MODEL2VEC_ID" "$MODEL2VEC_REVISION"; \
@@ -38,7 +44,7 @@ RUN chmod -R a+rX /models
 # Der Projekt-Sync danach laeuft mit --inexact, sonst raeumt er das Modellrad wieder weg.
 # Das Rad kommt nicht aus dem Lockfile; seine Pruefsumme steht in den Release-Notes des Modells, und ein Rad mit
 # einer anderen wird nicht installiert (Audit 2026-09-27, SE-13). Eine neue Fassung aendert Version und Pruefsumme.
-ARG SPACY_MODEL=de_core_news_md
+ARG SPACY_MODEL
 ARG SPACY_MODEL_VERSION=3.8.0
 ARG SPACY_MODEL_SHA256=b903f59220f1e76dd672acdaa7fa454d6703fe056c5ccd6457820e70874116d0
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -68,13 +74,17 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
 WORKDIR /app
+# Die Modelle, die der Bau eingebacken hat: Ohne Model2Vec-Modell bleibt MODEL2VEC_PATH leer; fest /models/m2v meldete
+# jeder Start einen Fehler fuer ein Modell, das dem Image mit Absicht fehlt (Audit 2026-09-29, O9)
+ARG MODEL2VEC_ID
+ARG SPACY_MODEL
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     ZIM_DIR=/data/zim \
     STATE_DIR=/data/state \
     CONFIG_DIR=/app/config \
-    MODEL2VEC_PATH=/models/m2v \
-    SPACY_MODEL=de_core_news_md \
+    MODEL2VEC_PATH=${MODEL2VEC_ID:+/models/m2v} \
+    SPACY_MODEL=${SPACY_MODEL} \
     HF_HUB_OFFLINE=1
 RUN useradd --create-home --uid 10001 app \
     && mkdir -p /data/zim /data/state \
