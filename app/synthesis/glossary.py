@@ -7,7 +7,7 @@ from collections.abc import Sequence
 
 from app.domain.models import Source
 from app.knowledge.segmentation import split_sentences
-from app.synthesis.safe_markdown import plain_label, table_cell, web_link
+from app.synthesis.safe_markdown import cell_link, plain_label, table_cell
 
 MAX_ENTRIES = 20
 
@@ -43,7 +43,7 @@ def build_glossary(topic: str, primary: Source | None, sources: Sequence[Source]
         definition = _definition(primary)
         if definition:
             entries.append(
-                (primary.title, definition, "skos:prefLabel", web_link(table_cell(primary.title), primary.url))
+                (primary.title, definition, "skos:prefLabel", cell_link(table_cell(primary.title), primary.url))
             )
             seen.add(primary.title.lower())
         for alias in aliases:
@@ -53,7 +53,7 @@ def build_glossary(topic: str, primary: Source | None, sources: Sequence[Source]
                         alias,
                         f"Alternativbezeichnung für {primary.title}.",
                         "skos:altLabel",
-                        web_link(table_cell(primary.title), primary.url),
+                        cell_link(table_cell(primary.title), primary.url),
                     )
                 )
                 seen.add(alias.lower())
@@ -66,7 +66,7 @@ def build_glossary(topic: str, primary: Source | None, sources: Sequence[Source]
         if not definition:
             continue
         relation = "skos:narrower" if stem and stem in source.title.lower() else "skos:related"
-        entries.append((source.title, definition, relation, web_link(table_cell(source.title), source.url)))
+        entries.append((source.title, definition, relation, cell_link(table_cell(source.title), source.url)))
         seen.add(source.title.lower())
         if len(entries) >= MAX_ENTRIES:
             break

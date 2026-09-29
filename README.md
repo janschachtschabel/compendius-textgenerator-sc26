@@ -389,7 +389,8 @@ einer Ziffer oder vor einem Leerzeichen: `Brechung_(Physik)` bleibt, wie es ist)
 das sie zur Überschrift, zum Zitat, zur Liste, zur Linie, zum Codeblock oder zur Tabellenzeile machte; `<!--` steht
 als `<\!--` da. CommonMark zeigt jedes davon als das
 Zeichen, das es war; wer die Werte als Text braucht, entfernt den Backslash vor einem ASCII-Satzzeichen. Nur eine
-Webadresse wird ein Link, mit Leerzeichen oder Klammern in `<…>`. Die Beschreibung der Sammlung behält die Zeilen und
+Webadresse wird ein Link, mit Leerzeichen oder Klammern in `<…>`; steht er in einer Tabellenzelle (Belegtabelle,
+Glossar), wird ein `|` der Adresse zu `\|`, damit er die Zeile nicht teilt. Die Beschreibung der Sammlung behält die Zeilen und
 Absätze der Redaktion, doch jeder Zeilenumbruch darin wird ein gewöhnlicher; eine Aufzählung in der Beschreibung liest
 sich deshalb als Fließtext. So kann kein Wert aus dem Repository eine Zeile teilen, einen Knoten vortäuschen, ein
 Tag, einen Kommentar oder ein Bild einschleusen, auch nicht für einen Leser, der wie `str.splitlines()` an `\r`,

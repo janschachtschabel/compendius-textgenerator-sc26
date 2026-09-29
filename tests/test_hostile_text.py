@@ -20,6 +20,7 @@ import yaml
 from libzim.writer import Creator
 
 from app.compose.assembler import render_markdown
+from app.compose.regeneration import _citation_rows
 from app.domain.models import ArticleSection, Chunk, ChunkKind, Citation, Paragraph, ScoredChunk, Source
 from app.domain.requests import GenerateRequest
 from app.main import build_service
@@ -200,6 +201,34 @@ def test_the_sources_block_links_only_web_addresses_and_prints_the_rest_as_typed
 
     assert unsafe(markdown) == []
     assert "javascript:" not in "".join(re.findall(r'href="([^"]*)"', render(markdown)))
+
+
+def test_a_pipe_in_the_address_of_a_material_splits_no_row_and_reads_back_as_it_was() -> None:
+    """The link of a material stands in a cell of the citation table and of the glossary: a "|" in its address ended
+    the cell, the link lost its end and the row gained a cell (audit 2026-09-29, T12)."""
+    url = "https://example.org/suche?q=a|b"
+    lead = ArticleSection(
+        heading="",
+        path=[],
+        level=0,
+        paragraphs=[Paragraph(text="Ein Arbeitsblatt ist ein Blatt mit Aufgaben zum Üben.")],
+    )
+    material = _source(title="Arbeitsblatt", url=url, is_primary=True, sections=[lead])
+    citation = Citation(
+        number=3,
+        source_id=material.source_id,
+        chunk_id="c1",
+        source_title="Arbeitsblatt",
+        source_url=url,
+        section_heading="Text",
+        snippet="Ein Satz.",
+    )
+    table = build_sources_section([material], [citation], facets_visible=False)
+
+    for markdown in (table, build_glossary("Arbeitsblatt", material, [material], [])):
+        row = re.findall(r"<tr>(.*?)</tr>", render(markdown), re.S)[-1]
+        assert row.count("<td") == 4 and 'href="https://example.org/suche?q=a%7Cb"' in row, row
+    assert _citation_rows(table)[3].source_url == url  # a regeneration finds the source by its address
 
 
 def test_the_glossary_prints_titles_topic_and_definitions_as_typed() -> None:

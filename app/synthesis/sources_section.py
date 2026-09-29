@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 from app.domain.models import Citation, Source
-from app.synthesis.safe_markdown import code_span, plain_label, table_cell, web_link
+from app.synthesis.safe_markdown import cell_link, code_span, plain_label, table_cell, web_link
 
 PROJECT_LABELS = {
     "wikipedia": ("Wikipedia", "Nachschlagewerk", "Wikipedia-Autorinnen und -Autoren", "hoch"),
@@ -60,7 +60,7 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
             snippet = " ".join(cit.snippet.split())
             if len(snippet) > 140:
                 snippet = snippet[:137] + "…"  # cut before the escapes, so none is cut in half
-            source_link = web_link(table_cell(cit.source_title), cit.source_url)
+            source_link = cell_link(table_cell(cit.source_title), cit.source_url)
             lines.append(
                 f"| [{cit.number}] | {source_link} | {table_cell(cit.section_heading)} | {table_cell(snippet)} |"
             )

@@ -19,7 +19,7 @@ from app.domain.caller_values import listed
 from app.domain.models import Citation, SectionStatus
 from app.synthesis.citations import marker_numbers
 from app.synthesis.facets import parse_marker
-from app.synthesis.safe_markdown import unescape
+from app.synthesis.safe_markdown import ESCAPED_PIPE, unescape
 
 if TYPE_CHECKING:
     from app.templates.schema import Template
@@ -186,7 +186,8 @@ def _citation_rows(markdown: str) -> dict[int, Citation]:
             source_id="",
             chunk_id="",
             source_title=unescape(title.strip()),
-            source_url=(match.group("pointed") or match.group("url") or "").strip(),
+            # a pipe of the address stands escaped in its cell (cell_link, audit 2026-09-29, T12)
+            source_url=(match.group("pointed") or match.group("url") or "").strip().replace(ESCAPED_PIPE, "|"),
             section_heading=unescape(match.group("heading").strip()),
             snippet=unescape(match.group("snippet").strip()),
         )

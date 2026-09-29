@@ -17,6 +17,8 @@ from __future__ import annotations
 import re
 
 WEB_SCHEMES = ("https://", "http://")
+# A pipe in the link target of a table cell, escaped (cell_link); a reader of the row turns it back
+ESCAPED_PIPE = "\\|"
 # Signs that start markdown or HTML inside a line. The backslash comes first, so an escape the source typed cannot
 # take over one of ours; backticks, since a code span would show our escapes as typed; brackets for links, images
 # and references; "<" before what opens a tag or an autolink, and the "!" after it, which keeps a comment, a declaration
@@ -122,6 +124,15 @@ def web_link(label: str, url: str | None) -> str:
     """``label``, markdown already, as a link to ``url`` when that is a web address, else the label alone."""
     target = web_target(url)
     return f"[{label}]({target})" if target else label
+
+
+def cell_link(label: str, url: str | None) -> str:
+    """``web_link`` in a cell of a table. A pipe in the address ended the cell: the link lost its end and the row
+    gained a cell (audit 2026-09-29, T12). Escaped, GFM reads it as the sign in a cell and CommonMark in a link
+    target, and the address reads back as it was - percent-encoded it would not, and a regeneration finds the
+    source of a kept citation by its address (app/compose/kept_sources.py)."""
+    target = web_target(url)
+    return f"[{label}]({target.replace('|', ESCAPED_PIPE)})" if target else label
 
 
 def code_span(text: str) -> str:
