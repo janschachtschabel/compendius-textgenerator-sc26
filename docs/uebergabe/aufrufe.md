@@ -4,7 +4,7 @@
 
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text
-oder nur die QA-Paare holt. Jede Anfrage an den neuen Dienst auf dieser Seite ist am 29.09.2026 gelaufen; die
+oder nur die QA-Paare holt. Jede Anfrage an den neuen Dienst auf dieser Seite ist am 30.09.2026 gelaufen; die
 Aufrufe des alten Dienstes sind aus seinem Code abgeleitet (compendious 0.2.0), denn er läuft hier nicht mehr.
 Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 
@@ -25,8 +25,9 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 
 ## Profile
 
-Jede Anfrage wählt mit `preset` ein Profil; ohne gilt `PRESET_DEFAULT` des Servers, ausgeliefert `balanced`, und auf
-einem Server ohne LLM `llm-free`. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
+Eine Anfrage ohne `preset` läuft mit `PRESET_DEFAULT` des Servers, ausgeliefert `balanced`, und auf einem Server ohne
+LLM mit `llm-free`; ein anderes Profil wählt `preset` im Aufruf. Die Aufrufe auf dieser Seite nennen deshalb nur dann
+ein Profil, wenn sie ein anderes zeigen. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
 lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`.
 
 ![Güte, Zeit und Kosten des alten Dienstes und der vier Profile](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
@@ -48,46 +49,66 @@ schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die be
 ```bash
 export KOMPENDIUM=https://kompendium.example.org   # Adresse des Dienstes
 export API_KEY=...                                 # einer der Schlüssel aus API_KEYS
+export ALT=https://alt.example.org                 # der alte Dienst, nur für die Vergleiche
 ```
 
 Die Beispiele brauchen `curl` und `jq`. Ein Kompendium kann mit `best-quality` unter Last 40 s dauern; `--max-time 180`
 lässt genug Zeit. Unter Windows (Git Bash, PowerShell) schickt curl Umlaute aus `-d` nicht als UTF-8, der Dienst
 antwortet dann mit 422: dort den Körper aus einer UTF-8-Datei senden (`--data-binary @anfrage.json`).
 
-## Vorher: der alte Dienst
+## Alt und neu im Vergleich
+
+Der alte Dienst schrieb nur Teil 1, das Weltwissen; Lehrplanbezüge und Sammlung gab es nicht.
+
+**Kompendium mit Teil 1, 2 und 3**, Teil 3 aus der Sammlung mit der `collection_id`:
 
 ```bash
-# Kompendium zu einem Thema: ein LLM nennt Begriffe, dann schreibt ein LLM den Text (6.000 Zeichen)
+# alt: ein LLM nennt Begriffe, dann schreibt ein LLM das Weltwissen (6.000 Zeichen)
+curl -sS -X POST "$ALT/api/v1/pipeline-compendium-only" -H 'Content-Type: application/json' \
+  -d '{"text": "Optik"}' \
+  | jq -r '.compendium_output.markdown' > optik.md
+
+# neu: Weltwissen, Lehrplanbezüge und die Sammlung Optik der WLO-Staging
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"}' \
+  | jq -r '.markdown' > optik.md
+```
+
+**Kompendium mit Teil 1 und 2**, ohne Sammlung:
+
+```bash
+# alt: derselbe Aufruf
 curl -sS -X POST "$ALT/api/v1/pipeline-compendium-only" -H 'Content-Type: application/json' \
   -d '{"text": "Photosynthese"}' \
   | jq -r '.compendium_output.markdown' > photosynthese.md
 
-# QA-Paare zu diesem Text
-jq -Rs '{text: ., num_pairs: 15, max_answer_length: 400}' photosynthese.md \
-  | curl -sS -X POST "$ALT/api/v1/qa" -H 'Content-Type: application/json' --data-binary @- \
-  | jq '.qa'
-
-# beides in einem Aufruf
-curl -sS -X POST "$ALT/api/v1/pipeline" -H 'Content-Type: application/json' \
-  -d '{"text": "Photosynthese", "config": {"qa": {"num_pairs": 15}}}' \
-  | jq '{markdown: .compendium_output.markdown, qa: .qa_output.qa}'
+# neu: ohne collection_id entfällt Teil 3
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Photosynthese"}' \
+  | jq -r '.markdown' > photosynthese.md
 ```
 
-## Jetzt: ein Kompendium
+**QA-Paare** zu einem Thema:
 
 ```bash
-# Profil balanced: das ganze Kompendium als Markdown
-curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
-  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Photosynthese", "preset": "balanced"}' \
-  | jq -r '.markdown' > photosynthese.md
+# alt: Kompendium und Paare in einem Aufruf
+curl -sS -X POST "$ALT/api/v1/pipeline" -H 'Content-Type: application/json' \
+  -d '{"text": "Photosynthese", "config": {"qa": {"num_pairs": 10}}}' \
+  | jq '.qa_output.qa'
 
-# Profil best-quality: dasselbe, das LLM ordnet zu und prüft die Lehrplanbezüge
-curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+# neu: der Dienst erzeugt Teil 1 und fragt ihn ab
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Photosynthese", "preset": "best-quality"}' \
-  | jq -r '.markdown' > photosynthese-best.md
+  -d '{"topic": "Photosynthese", "count": 10}' \
+  | jq '.pairs'
 ```
+
+Ohne Profil schreiben mit `balanced` Regeln die Paare aus dem Satzbau, ohne Tokens; mit `"preset": "best-quality"`
+schreibt sie das LLM. Paare zu einem vorhandenen Text, alt und neu, stehen unter [QA-Paare](#qa-paare).
+
+## Die Antwort
 
 `.markdown` ist das fertige Kompendium: YAML-Frontmatter (Quellen, Stand der Archive, KI-Kennzeichnung nach
 Art. 50 AI Act), dann `# Kompendium: Photosynthese`, `## Teil 1 · Weltwissen`, `## Teil 2 · Lehrplanbezüge` und
@@ -104,10 +125,21 @@ Was die Antwort sonst trägt:
 | `jq -r '.collection.markdown'` | nur Teil 3 |
 | `jq '.parts_status'` | je Teil `ok`, `empty`, `incomplete` oder `unavailable` (ohne `collection_id` steht Teil 3 auf `unavailable`) |
 | `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage |
+| `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
 
 Ohne Frontmatter beginnt der Text mit der Überschrift: `"frontmatter_in_markdown": false` in der Anfrage. Die Daten des
 Frontmatters stehen dann weiter in `.frontmatter`.
+
+Ein anderes Profil als das des Servers wählt `preset` im Aufruf:
+
+```bash
+# best-quality: das LLM ordnet zusätzlich die Absätze zu und prüft die Lehrplanbezüge
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Photosynthese", "preset": "best-quality"}' \
+  | jq -r '.markdown' > photosynthese-best.md
+```
 
 ## Die drei Teile wählen
 
@@ -119,13 +151,13 @@ Frontmatters stehen dann weiter in `.frontmatter`.
 # Teil 1 und 2, ohne Teil 3 und ohne Frontmatter
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Photosynthese", "preset": "balanced", "parts": ["world", "curricula"], "frontmatter_in_markdown": false}' \
+  -d '{"topic": "Photosynthese", "parts": ["world", "curricula"], "frontmatter_in_markdown": false}' \
   | jq -r '.markdown' > photosynthese.md
 
 # nur Teil 1 (rund 26.000 Zeichen bei Photosynthese; Teil 2 bringt weitere 70.000)
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Photosynthese", "preset": "balanced", "parts": ["world"], "frontmatter_in_markdown": false}' \
+  -d '{"topic": "Photosynthese", "parts": ["world"], "frontmatter_in_markdown": false}' \
   | jq -r '.markdown' > photosynthese-teil1.md
 ```
 
@@ -139,7 +171,7 @@ Stufen, Fächer, Lizenzen), dann je Inhalt eine Zeile mit Link, Beschreibung, Sc
 # Kompendium zur Sammlung Optik der WLO-Staging, alle drei Teile
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "preset": "balanced"}' \
+  -d '{"collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"}' \
   > optik.json
 jq -r '.topic' optik.json                  # Optik, der Titel der Sammlung
 jq -r '.collection.markdown' optik.json    # nur Teil 3
@@ -159,7 +191,7 @@ ihre Absätze stehen im Text mit Belegnummer wie die der Wikipedia. Teil 1 muss 
 # Thema Optik, Materialien der Sammlung als Quellen, dieselbe Sammlung als Teil 3
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "preset": "balanced"}' \
+  -d '{"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"}' \
   > optik.json
 jq '.audit.knowledge | {considered, sources, skipped_license, empty, failed: (.failed | length)}' optik.json
 jq '.sources[] | select(.project == "wlo_material") | {title, license, url}' optik.json
@@ -177,23 +209,28 @@ gelesen, 6 als Quelle genutzt, 7 ohne Text, 17 ohne Zugangsdaten nicht lesbar. `
 ```bash
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"node_id": "ac66224b-42b0-4676-a53d-71b058dc780b", "preset": "balanced", "parts": ["world"]}' \
+  -d '{"node_id": "ac66224b-42b0-4676-a53d-71b058dc780b", "parts": ["world"]}' \
   | jq '{thema: .topic, material: .node.title}'
 ```
 
 ## QA-Paare
 
 ```bash
-# zu einem Thema: der Dienst erzeugt Teil 1 (ohne LLM) und fragt ihn ab; best-quality lässt das LLM die Paare schreiben
+# zu einem vorhandenen Text, etwa Teil 1 von oben; alt:
+jq -Rs '{text: ., num_pairs: 10}' photosynthese-teil1.md \
+  | curl -sS -X POST "$ALT/api/v1/qa" -H 'Content-Type: application/json' --data-binary @- \
+  | jq '.qa'
+
+# neu (höchstens 50.000 Zeichen):
+jq -Rs '{text: ., count: 10}' photosynthese-teil1.md \
+  | curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
+      -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' --data-binary @- \
+  | jq '.pairs'
+
+# zu einem Thema, die Paare vom LLM: best-quality (Teil 1 entsteht auch dann ohne LLM)
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
   -d '{"topic": "Photosynthese", "count": 10, "preset": "best-quality"}' \
-  | jq '.pairs'
-
-# zu einem vorhandenen Text, etwa Teil 1 von oben (höchstens 50.000 Zeichen)
-jq -Rs '{text: ., count: 10, preset: "balanced"}' photosynthese-teil1.md \
-  | curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
-      -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' --data-binary @- \
   | jq '.pairs'
 ```
 
@@ -209,7 +246,7 @@ jq -Rs '{text: ., count: 10, preset: "balanced"}' photosynthese-teil1.md \
 | Antwort `.qa[]` mit `question`, `answer`, `level_value` | Antwort `.pairs[]` mit `question`, `answer`, `level`, dazu `method`, `note`, `llm_tokens` |
 
 Gemessen am 29.09.2026: zehn Paare zu Photosynthese mit `best-quality` in 7 s für rund 2.000 Tokens, zu Teil 1 mit
-`balanced` (Regeln) in unter 1 s.
+`balanced` (Regeln) in unter 1 s; am 30.09. zum Thema ohne Profil (Regeln) in 3 s ohne Tokens.
 
 ## Weitere Funktionen
 
@@ -230,7 +267,7 @@ Gemessen am 29.09.2026: zehn Paare zu Photosynthese mit `best-quality` in 7 s f�
 # Entitäten in einem Text (unter Windows den Körper aus einer UTF-8-Datei senden)
 curl -sS -X POST "$KOMPENDIUM/api/v2/entities" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"text": "Albert Einstein entwickelte in Bern die spezielle Relativitätstheorie.", "preset": "balanced"}' \
+  -d '{"text": "Albert Einstein entwickelte in Bern die spezielle Relativitätstheorie."}' \
   | jq '.entities[] | {text, artikel: .article.title, wikidata: .article.ids.wikidata, gnd: .article.ids.gnd}'
 ```
 
@@ -255,6 +292,6 @@ In Skripten Fehler abfangen: `set -o pipefail` und `jq -e`, das mit Status 1 end
 set -o pipefail
 curl -sS --fail-with-body --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Photosynthese", "preset": "balanced"}' \
+  -d '{"topic": "Photosynthese"}' \
   | jq -er '.markdown' > photosynthese.md || echo "Kompendium fehlgeschlagen" >&2
 ```
