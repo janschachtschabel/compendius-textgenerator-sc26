@@ -141,6 +141,34 @@ def test_without_an_llm_a_request_without_a_profile_runs_llm_free(sample_zims: d
     assert knowledge.status_code == 200 and knowledge.json()["article_choice"] is None  # the rules chose, no LLM block
 
 
+def test_a_switch_without_a_profile_is_refused_for_the_missing_llm_not_for_preset_default(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """D68: without an LLM a request without a profile runs llm-free whatever PRESET_DEFAULT says, so the 503 for a
+    switch the request names blames the missing LLM. It said "Standardprofil llm-free (PRESET_DEFAULT)" while
+    PRESET_DEFAULT was balanced, and told the caller to choose llm-free, the profile it already had."""
+    with TestClient(create_app(make_settings(sample_zims.values(), tmp_path, preset_default="balanced"))) as client:
+        refused = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"], "extraction": "llm"})
+    detail = refused.json()["detail"]
+    assert refused.status_code == 503 and "extraction=llm" in detail and "LLM_ENABLED" in detail
+    assert "PRESET_DEFAULT" not in detail and "ohne LLM gilt llm-free" in detail
+    assert "Profil llm-free wählen" not in detail
+
+
+def test_the_refusal_names_the_part_of_the_llm_that_is_missing(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """LLM_ENABLED with an empty B_API_KEY leaves the service without an LLM as well; the 503 said LLM_ENABLED was
+    not active, the one setting that was right."""
+    keyless = service.settings.model_copy(update={"llm_enabled": True, "b_api_key": ""})
+    monkeypatch.setattr(service, "settings", keyless)
+    with pytest.raises(LlmNotConfiguredError) as refused:
+        service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="balanced"))
+    message = str(refused.value)
+    assert message.startswith("B_API_KEY ist leer") and "Profil balanced" in message
+    assert "LLM_ENABLED ist nicht aktiv" not in message
+
+
 def test_a_template_default_that_names_no_template_leaves_sc26(
     sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:

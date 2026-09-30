@@ -37,15 +37,25 @@ class LlmPolicy:
     def refuse_without_llm(self, needed: Sequence[str], profile: str, defaulted: bool) -> None:
         """Refuse what needs an LLM when none is configured (D53); one that is only unavailable for now falls back.
 
-        ``needed`` names the switches as name=value, ``profile`` the one in effect, ``defaulted`` whether it came from
-        PRESET_DEFAULT rather than from the request.
+        ``needed`` names the switches as name=value, ``profile`` the one in effect, ``defaulted`` whether the request
+        named none. Then it runs llm-free whatever PRESET_DEFAULT says (D68), and only its own switches can need the
+        LLM. The message names the setting that keeps the LLM away, as app.main.build_llm checks them.
         """
         if self.llm is not None or not needed:
             return
-        origin = f"Standardprofil {profile} (PRESET_DEFAULT)" if defaulted else f"Profil {profile}"
+        if not self.settings.llm_enabled:
+            missing = "LLM_ENABLED ist nicht aktiv"
+        elif not self.settings.b_api_key:
+            missing = "B_API_KEY ist leer"
+        else:
+            missing = "keine b-api-Adresse bekannt (B_API_BASE_URL, das Startlog nennt den Grund)"
+        if defaulted:
+            origin, advice = "Anfrage ohne Profil: ohne LLM gilt llm-free, D68", "Die Schalter auf rule-based setzen"
+        else:
+            origin, advice = f"Profil {profile}", "Profil llm-free wählen, die Schalter auf rule-based setzen"
         raise LlmNotConfiguredError(
-            f"LLM_ENABLED ist nicht aktiv, aber {', '.join(needed)} braucht ein LLM ({origin}). Profil llm-free "
-            "wählen, die Schalter auf rule-based setzen oder LLM_ENABLED und B_API_KEY setzen"
+            f"{missing}, aber {', '.join(needed)} braucht ein LLM ({origin}). {advice} oder LLM_ENABLED und "
+            "B_API_KEY setzen"
         )
 
     def curriculum_check(
