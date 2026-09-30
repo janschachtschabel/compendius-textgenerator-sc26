@@ -27,8 +27,11 @@ kompendium_version: 2 … parts: [world, curricula, collection]
 ## Teil 3 · Die Sammlung im Überblick   (je Knoten eine Zeile mit Art und nodeId)
 ```
 
-`parts` wählt aus; nicht angefragte Teile entfallen ersatzlos, die Reihenfolge der übrigen
-bleibt. Der Vorspann nennt unter `parts`, was wirklich drinsteht. `frontmatter_in_markdown: false`
+`parts` wählt aus, ohne das Feld sind alle drei angefragt; nicht angefragte Teile entfallen ersatzlos, die
+Reihenfolge der übrigen bleibt. Teil 3 entsteht nur mit `collection_id`: Ohne sie enthält das Kompendium Teil 1 und 2,
+auch wenn `node_id` eine Sammlung nennt oder `knowledge_collection_id` gesetzt ist (`parts_status` meldet Teil 3 als
+`unavailable`), und `parts: ["collection"]` allein ist dann ein 422. Der Vorspann nennt unter `parts`, was wirklich
+drinsteht. `frontmatter_in_markdown: false`
 lässt den Vorspann weg und beginnt bei der Überschrift — die Angaben stehen dann weiter im
 Antwortfeld `frontmatter`.
 
@@ -70,6 +73,10 @@ Abschnittsmarker von Teil 1.
 - Prüfansicht (D66, Releases 2.4.0 bis 2.4.2): Mit `UI_ENABLED` liefert der Dienst unter `/ui/` eine Seite, auf
   der Menschen die Antworten aller Endpunkte im Browser prüfen: Herkunft je Absatz, Qualität, Zeit und Kosten,
   zwei Profile im Vergleich, Markdown kopieren und speichern (siehe „Prüfansicht“).
+- Übergabe an das Technik-Team (29. und 30.09.2026, [docs/uebergabe](docs/uebergabe/README.md)): Lastmessung mit bis
+  zu fünf gleichzeitigen Anfragen, Speichergrenze der API 6 GiB, GitLab-Pipeline nach dem Muster der Plattform. Ohne
+  Eintrag gilt kein Tagesbudget (D67); eine Anfrage ohne Profil läuft mit `PRESET_DEFAULT` (ausgeliefert `balanced`),
+  solange ein LLM eingerichtet ist, sonst mit `llm-free` (D68).
 
 ## Installation
 
@@ -824,8 +831,10 @@ CC0, PDM, CC BY oder CC BY-SA steht.
 
 ### LLM-Schicht über die b-api
 
-Optional und standardmäßig aus. Ohne `LLM_ENABLED=true` **und** einen `B_API_KEY` laufen beide Schalter
-regelbasiert; das Frontmatter nennt dann `extraction_requested` beziehungsweise `generation_requested`.
+Optional und standardmäßig aus. Ohne `LLM_ENABLED=true` **und** einen `B_API_KEY` läuft eine Anfrage ohne Profil
+mit `llm-free` (D68); nennt sie ein anderes Profil oder einen Schalter, der ein LLM braucht, ist sie ein 503. Ist die
+b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt die angefragten Schalter
+(`extraction_requested`, `generation_requested`).
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|

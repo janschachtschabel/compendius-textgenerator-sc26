@@ -145,7 +145,9 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
 
 ![Welche Felder der Anfrage welchen Teil speisen und wo er in der Antwort steht](bilder/anfrage_teile.svg)
 
-`parts` nennt die Teile; ohne das Feld sind es alle drei, und Teil 3 entfällt, wenn keine `collection_id` dabei ist.
+`parts` nennt die Teile; ohne das Feld sind es alle drei. Teil 3 entsteht nur mit `collection_id`: Ohne sie enthält
+das Kompendium Teil 1 und 2, auch wenn `node_id` eine Sammlung nennt oder `knowledge_collection_id` gesetzt ist, und
+`parts_status` meldet Teil 3 als `unavailable`; `parts: ["collection"]` allein ist dann ein 422.
 
 ```bash
 # Teil 1 und 2, ohne Teil 3 und ohne Frontmatter

@@ -55,8 +55,9 @@ Grundbedarf, enthält aber nur die meistgelesenen Artikel der Wikipedia; gemesse
 ### Lastmessung vom 29.09.2026
 
 Aufbau: Entwicklungsrechner mit Docker Desktop (WSL2), 16 vCPU, 7,4 GiB für alle Container, NVMe-SSD. Die API lief mit
-Release 2.5.0 (`b95a546`), 2 Workern und der Grenze 4 GiB, mit Wikipedia de ohne Bilder (Stand 2026-01, 14,6 GB) und
-Klexikon (0,14 GB); LLM war gpt-6-luna über die Staging-b-api. Jede Runde schickt alle Anfragen gleichzeitig, jede
+Version 2.5.0 (Commit `b95a546`, zwei Korrekturen an `/docs` und der Prüfansicht nach dem Release), 2 Workern und der
+Grenze 4 GiB, mit Wikipedia de ohne Bilder (Stand 2026-01, 14,6 GB) und Klexikon (0,14 GB); LLM war gpt-6-luna über
+die Staging-b-api. Jede Runde schickt alle Anfragen gleichzeitig, jede
 Runde mit eigenen Themen, die Runden nacheinander ohne Neustart. Gemessen ist nur der Container `api`; die Sidecars
 liefen nicht. Rohdaten: [lasttest-2026-09-29.json](lasttest-2026-09-29.json), Skript: [lasttest.py](lasttest.py).
 
