@@ -513,8 +513,9 @@ Themas, das darunter bleibt. Wer `matcher: llm` einzeln in `llm-free` oder `bala
 `LLM_MAX_TOKENS_PER_REQUEST`.
 
 **Artikelwahl durch das LLM (`article_choice: llm`, D35).** Je Anfrage über `article_choice: llm` oder jedes Profil
-außer `llm-free`, also auch das ausgelieferte `balanced` (D53; bis dahin war `rule-based` die Vorgabe, D40). Ohne
-konfiguriertes LLM ist das ein 503. Die Regeln lösen jedes Thema zuerst selbst auf und
+außer `llm-free`, also auch das ausgelieferte `balanced` (D53; bis dahin war `rule-based` die Vorgabe, D40). Nennt
+eine Anfrage das eine oder ein solches Profil ohne konfiguriertes LLM, ist sie ein 503; ohne Profil läuft sie dann
+mit `llm-free` (D68). Die Regeln lösen jedes Thema zuerst selbst auf und
 halten fest, ob sie sich sicher sind (`topic_resolution.method` und `confident` im Vorspann). Unsicher sind sie bei
 einer Begriffsklärung, die das Fach nicht entscheidet, bei einem exakten Titel, dessen Text nichts vom Fach nennt,
 und bei Titelvorschlägen und Volltexttreffern. Nur dann bekommt das LLM Thema, Fach und die Kandidaten der Regeln
