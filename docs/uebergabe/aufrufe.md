@@ -110,10 +110,25 @@ schreibt sie das LLM. Paare zu einem vorhandenen Text, alt und neu, stehen unter
 
 ## Die Antwort
 
-`.markdown` ist das fertige Kompendium: YAML-Frontmatter (Quellen, Stand der Archive, KI-Kennzeichnung nach
-Art. 50 AI Act), dann `# Kompendium: Photosynthese`, `## Teil 1 · Weltwissen`, `## Teil 2 · Lehrplanbezüge` und
-`## Teil 3 · Die Sammlung im Überblick`, soweit angefordert. Unsichtbare Marken (`<!-- kompendium:section … -->`) kennzeichnen die Bausteine; sie
-braucht ein späterer Aufruf, der geprüfte Bausteine mit `existing_markdown` behält.
+Den fertigen Text trägt `.markdown`, im alten Dienst `.compendium_output.markdown`: YAML-Frontmatter (Quellen, Stand
+der Archive, KI-Kennzeichnung nach Art. 50 AI Act), dann `# Kompendium: Photosynthese`, `## Teil 1 · Weltwissen`,
+`## Teil 2 · Lehrplanbezüge` und `## Teil 3 · Die Sammlung im Überblick`, soweit angefordert. Die Antwort, gekürzt:
+
+```
+{
+  "topic": "Optik",
+  "markdown": "---\nkompendium_version: 2\n…\n---\n\n# Kompendium: Optik\n\n## Teil 1 · Weltwissen\n…",
+  "frontmatter": {"parts": ["world", "curricula", "collection"], "ai_disclosure": "Maschinell erstellter Text …", …},
+  "sections": [{"slot_id": "sc26_1", "title": "1 · Themendefinition", "text": "…", "status": "maschinell-extraktiv", …}, …],
+  "curricula": {"available": true, "summary": {…}, "entries": [{"label": "…", "lehrplan": "…", …}, …],
+                "markdown": "## Teil 2 · Lehrplanbezüge\n…"},
+  "collection": {"available": true, "summary": {"materials": 168, …}, "markdown": "## Teil 3 · Die Sammlung im Überblick\n…"},
+  "sources": [{"source_id": "wikipedia:Optik", "title": "Optik", "url": "…", "license": "CC BY-SA 4.0", …}, …],
+  "parts_status": {"world": "ok", "curricula": "ok", "collection": "ok"},
+  "audit": {"preset": "balanced", "llm_tokens": {"prompt": 206, "completion": 262, "total": 468, "calls": 1}, …},
+  …
+}
+```
 
 Was die Antwort sonst trägt:
 
@@ -127,6 +142,28 @@ Was die Antwort sonst trägt:
 | `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage |
 | `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
+| `jq '.frontmatter'` | die Angaben des Vorspanns als Objekt, auch wenn der Text ohne Vorspann kommt |
+| `jq '.curricula.entries[] \| {label, lehrplan, bundesland, klassenstufe}'` | Teil 2 als Liste, je Element Text, Lehrplan, Land und Klasse |
+
+Ein Baustein in `.sections[]` trägt `slot_id` (`sc26_1` bis `sc26_13` im Template `sc26`), `title`, `text` (Markdown mit
+Belegnummern) und `status`: `maschinell-extraktiv` (wörtlich aus den Quellen), `ki-ausgewählt` (wörtlich, die Auswahl
+traf das LLM), `ki-generiert` (vom LLM formuliert), `maschinell-generiert` (vom Dienst zusammengestellt: Akteure,
+Quellen, Glossar), `redaktionell-geprüft` (aus `existing_markdown` behalten) oder `leer`.
+
+**Marker im Text.** Das Markdown trägt unsichtbare HTML-Kommentare, jeden auf einer eigenen Zeile:
+`<!-- kompendium:section … -->` unter jeder Überschrift eines Bausteins und `<!-- f: … -->` … `<!-- /f -->` um die
+Blöcke von Teil 2 und 3 (Land, Stufe, Lehrplan, Sammlung) und um Sätze aus Modellwissen. Ein `<!--` aus fremdem Text
+steht maskiert als `<\!--` da, jedes echte ist also ein Marker. Gerendert sieht man sie nicht. Die Bausteinmarker braucht
+ein späterer Aufruf, der geprüfte Bausteine mit `existing_markdown` behält; wer ein Kompendium dafür aufhebt, speichert
+`.markdown` unverändert. Reinen Text ohne Marker liefert:
+
+```bash
+jq -r '.markdown | gsub("<!--[^>]*-->\n?"; "")' antwort.json > kompendium.md
+```
+
+Der Ausdruck trifft nur die Marker: Keiner enthält ein `>`, denn ihre Werte sind feste Wörter, Hashes oder
+prozentkodiert, und jeder steht allein auf seiner Zeile. In drei Antworten vom 30.09.2026 mit 80 bis 135 Markern blieb
+danach keiner übrig.
 
 Ohne Frontmatter beginnt der Text mit der Überschrift: `"frontmatter_in_markdown": false` in der Anfrage. Die Daten des
 Frontmatters stehen dann weiter in `.frontmatter`.
@@ -236,8 +273,27 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
   | jq '.pairs'
 ```
 
-`.pairs` ist eine Liste `[{"question": "…", "answer": "…", "level": null}, …]`. Nur die Paare als Text:
-`jq -r '.pairs[] | "F: \(.question)\nA: \(.answer)\n"'`; als Liste ohne `level`:
+Die Antwort, gekürzt (zu einem Thema; zu einem `text` sind `topic` und `resolution` leer):
+
+```
+{
+  "method": "rule-based",
+  "topic": "Photosynthese",
+  "resolution": {…},
+  "node": null,
+  "chars": 6347,
+  "pairs": [{"question": "Was ist die Photosynthese?", "answer": "Die Photosynthese ist ein physiologischer Prozess …",
+             "level": null}, …],
+  "note": null,
+  "llm_tokens": null
+}
+```
+
+Die Paare stehen in `.pairs[]`, im alten Dienst in `.qa` (`/api/v1/qa`) oder `.qa_output.qa` (`/api/v1/pipeline`), je
+mit `question`, `answer` und `level` (nur mit `levels` und dem LLM gesetzt, sonst `null`). `method` sagt, wer fragte
+(`rule-based` oder `llm`), `note`, warum es weniger Paare als verlangt sind oder die Regeln einsprangen, `llm_tokens`
+den Verbrauch (`null` ohne LLM-Aufruf) und `chars`, wie lang der Text war, aus dem die Paare entstanden. Nur die Paare
+als Text: `jq -r '.pairs[] | "F: \(.question)\nA: \(.answer)\n"'`; als Liste ohne `level`:
 `jq '[.pairs[] | {question, answer}]'`.
 
 | alter Dienst | neuer Dienst |
