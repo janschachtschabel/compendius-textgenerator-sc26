@@ -80,7 +80,8 @@ erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der 
 (Audit, Anfragen)“ enthält erst 2.5.0 (Image-Tag `2.5.0`). Die Zeile „2026-09-29 (Speichergrenze)“ betrifft nur
 `docker-compose.yml` und wirkt mit jedem Image, sobald die neue Compose-Datei übernommen ist. Die Zeile
 „2026-09-29 (Tagesbudget, D67)“ gilt für die Images ab dem Commit danach (`:latest` und `:main`); im Image
-2.5.0 ist die Vorgabe noch 2.000.000. Ebenso die Zeile „2026-09-30 (Standardprofil, D68)“.
+2.5.0 ist die Vorgabe noch 2.000.000, und ein gesetztes `0` heißt dort ein leeres Budget: kein LLM-Aufruf. Ebenso
+die Zeile „2026-09-30 (Standardprofil, D68)“.
 
 ## Zustand prüfen
 

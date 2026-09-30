@@ -1,6 +1,6 @@
 # Aufrufe: alter und neuer Dienst
 
-[Übergabe](README.md) · Stand 29.09.2026 · Release 2.5.0
+[Übergabe](README.md) · Stand 30.09.2026 · `main` nach Release 2.5.0
 
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text
@@ -247,7 +247,7 @@ Fehler kommen als HTTP-Status mit JSON in `detail`, etwa bei einem unbekannten T
 | 422 | ein Feld oder eine Kombination ist nicht erlaubt, etwa `knowledge_collection_id` ohne Teil 1; Körper kein UTF-8-JSON |
 | 429 | mehr als `RATE_LIMIT` Anfragen je Minute |
 | 502 | edu-sharing antwortet fehlerhaft |
-| 503 | auf diesem Server gerade nicht möglich: Archive noch nicht geladen, Profil braucht ein LLM und keins ist eingerichtet |
+| 503 | auf diesem Server gerade nicht möglich: Archive noch nicht geladen, oder ein Profil oder Schalter im Aufruf braucht ein LLM und keins ist eingerichtet (ohne Angabe läuft `llm-free`) |
 
 In Skripten Fehler abfangen: `set -o pipefail` und `jq -e`, das mit Status 1 endet, wenn `.markdown` fehlt:
 

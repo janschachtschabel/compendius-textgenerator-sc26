@@ -1,6 +1,6 @@
 # Konfiguration
 
-[Übergabe](README.md) · Stand 29.09.2026 · Release 2.5.0
+[Übergabe](README.md) · Stand 30.09.2026 · `main` nach Release 2.5.0
 
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
@@ -19,8 +19,9 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```
 
 ```dotenv
-# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.5.0 baut :2.5.0 und :2.5, wie auf GitHub)
-IMAGE=<registry>/<pfad>/compendious-text-fastapi:2.5.0
+# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.5.0 baut :2.5.0 und :2.5, wie auf GitHub).
+# Eine Version nach 2.5.0 nehmen: 2.5.0 liest LLM_DAILY_TOKEN_BUDGET=0 aus .env.example als leeres Tagesbudget.
+IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
 # LLM
 LLM_ENABLED=true
@@ -70,7 +71,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version, etwa `…/compendious-text-fastapi:2.5.0`** | Compose: Image aller fünf Container |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version nach 2.5.0, etwa `…/compendious-text-fastapi:<version>`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `150s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
@@ -83,7 +84,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `LLM_ENABLED` | `false` | **`true`** | Hauptschalter; ohne LLM ist jede Anfrage mit einem anderen Profil als `llm-free` ein 503 |
+| `LLM_ENABLED` | `false` | **`true`** | Hauptschalter; ohne LLM laufen Anfragen ohne Profil mit `llm-free`, und eine, die selbst ein anderes Profil nennt, ist ein 503 (D68) |
 | `B_API_KEY` | leer | **Schlüssel der b-api** | geheim, nur in der `.env` |
 | `B_API_BASE_URL` | leer | wie Vorgabe | leer: die b-api zum Repository (Staging oder Produktion); ein eigener Wert wird befolgt |
 | `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api |
@@ -96,7 +97,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_ATTEMPTS` | `3` | wie Vorgabe | Versuche je Aufruf |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den beiden `best-quality`-Profilen |
-| `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt |
+| `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt. Bis Release 2.5.0 hieß `0` ein leeres Budget: kein LLM-Aufruf, jeder Schritt fällt auf die Regeln zurück |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | wie Vorgabe | Sätze ohne deckenden Beleg: `drop` verwirft, `mark` kennzeichnet sie |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | wie Vorgabe | Absätze je Baustein, die `extraction=llm` angeboten bekommt |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | wie Vorgabe | Bausteine, die `generation=llm-fast` schreibt |

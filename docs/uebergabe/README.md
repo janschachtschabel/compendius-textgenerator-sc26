@@ -1,9 +1,12 @@
 # Übergabe an das Technik-Team
 
-Stand 29.09.2026 · Release 2.5.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 30.09.2026 · `main` nach Release 2.5.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei
-Seiten fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen.
+Seiten fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main`.
+Zwei Änderungen daraus stecken erst in einem Image nach Release 2.5.0 (`:latest`, `:main` oder das nächste Release):
+Ohne Eintrag gilt kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage `llm-free`, solange kein LLM
+eingerichtet ist (D68). Die Speichergrenze 6g steht in `docker-compose.yml` und gilt mit jedem Image.
 
 | Seite | für wen | Inhalt |
 |---|---|---|
