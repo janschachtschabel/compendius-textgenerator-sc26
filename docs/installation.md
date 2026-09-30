@@ -87,6 +87,7 @@ Die Vorlage läuft ohne Änderung und ohne LLM. Vor dem ersten Start lohnt ein B
 | `UI_ENABLED` | in der Vorlage `false`; `true` liefert unter `/ui/` die Prüfansicht aus, in der Menschen die Texte im Browser prüfen (README, „Prüfansicht“). Sie fragt die Endpunkte mit dem Schlüssel, den der Leser dort einträgt: auf einem öffentlichen Server erst `API_KEYS` setzen |
 | `EDU_SHARING_BASE_URL` | welches edu-sharing-Repository Teil 3 liest; Standard Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest` eintragen. Die b-api folgt dieser Zeile, solange `B_API_BASE_URL` leer bleibt |
 | `B_API_KEY` mit `LLM_ENABLED=true` | schaltet die optionale LLM-Schicht frei; ohne beides bleibt alles regelbasiert |
+| `PRESET_DEFAULT`, `TEMPLATE_DEFAULT` | Profil und Template einer Anfrage, die keins nennt; in der Vorlage `balanced` und `sc26`. `balanced` gilt, sobald das LLM eingerichtet ist, ohne LLM läuft eine solche Anfrage mit `llm-free` (D68). Ein Profil oder Template im Aufruf geht immer vor |
 
 `.env` enthält Zugangsdaten und gehört niemals ins Repository — `.gitignore` hält sie schon draußen.
 

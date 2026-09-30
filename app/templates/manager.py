@@ -26,6 +26,7 @@ from pydantic import ValidationError
 
 from app.domain.caller_values import listed
 from app.jobs.lock import LockHeldError, acquire_lock
+from app.settings import Settings
 from app.templates.schema import STORED_UNKNOWN_FIELDS, TEMPLATE_ID_PATTERN, Template
 
 log = logging.getLogger(__name__)
@@ -38,6 +39,8 @@ LOCK_FILE = ".templates.lock"
 LOCK_STALE_S = 10.0
 LOCK_WAIT_S = LOCK_STALE_S + 5.0
 LOCK_POLL_S = 0.01
+# What a request without template_id gets while TEMPLATE_DEFAULT names no template (D68): sc26
+SHIPPED_DEFAULT: str = Settings.model_fields["template_default"].default
 
 _Signature = tuple[tuple[str, int, int, int], ...]
 
@@ -158,6 +161,14 @@ class TemplateManager:
     def list(self) -> list[Template]:
         merged = {**self._builtin, **self._custom()}
         return list(merged.values())
+
+    def default(self, template_id: str) -> Template:
+        """The template of a request that names none: TEMPLATE_DEFAULT's, or the shipped one while no template has that
+        id (D68) - a custom template saved later takes over from then on."""
+        try:
+            return self.get(template_id)
+        except TemplateNotFoundError:
+            return self.get(SHIPPED_DEFAULT)
 
     def get(self, template_id: str) -> Template:
         custom = self._custom()

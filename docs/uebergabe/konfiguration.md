@@ -25,7 +25,6 @@ IMAGE=<registry>/<pfad>/compendious-text-fastapi:2.5.0
 # LLM
 LLM_ENABLED=true
 B_API_KEY=<Schlüssel der b-api>
-PRESET_DEFAULT=balanced
 
 # Zugang: je aufrufendem System ein eigener Schlüssel, kommagetrennt
 API_KEYS=<Schlüssel System A>,<Schlüssel System B>
@@ -106,8 +105,8 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `PRESET_DEFAULT` | `llm-free` | **`balanced`** | Profil einer Anfrage ohne `preset`; ohne Eintrag gilt `balanced`, die Vorlage setzt `llm-free` für Server ohne LLM |
-| `TEMPLATE_DEFAULT` | `sc26` | wie Vorgabe | Gliederung von Teil 1: `sc26` (13 Bausteine) oder `standard` (6) |
+| `PRESET_DEFAULT` | `balanced` | wie Vorgabe | Profil einer Anfrage ohne `preset`, solange ein LLM eingerichtet ist; ohne LLM läuft sie mit `llm-free` (D68). Ein Profil im Aufruf geht vor |
+| `TEMPLATE_DEFAULT` | `sc26` | wie Vorgabe | Gliederung von Teil 1: `sc26` (13 Bausteine) oder `standard` (6); nennt es kein vorhandenes Template, gilt `sc26` (D68). `template_id` im Aufruf geht vor |
 | `FACETS_LEVEL` | `minimal` | wie Vorgabe | Facetten im Frontmatter: `minimal` oder `full` |
 | `FACETS_VISIBLE` | `false` | wie Vorgabe | Facetten zusätzlich sichtbar im Text |
 | `MODEL2VEC_PATH` | `/models/m2v` | wie Vorgabe | Einbettungsmodell der lokalen Zuordnung, im Image; leer ordnet schlechter zu |

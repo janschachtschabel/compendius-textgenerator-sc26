@@ -114,7 +114,11 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         timings: dict[str, int] = {}
         lap = Stopwatch(timings).lap
 
-        template = self.templates.get(request.template_id or self.settings.template_default)
+        template = (
+            self.templates.get(request.template_id)
+            if request.template_id
+            else self.templates.default(self.settings.template_default)
+        )
         check_names(request.regenerate_sections, template)
         if request.empty_slot_policy:
             template = template.model_copy(update={"empty_slot_policy": request.empty_slot_policy})
@@ -273,7 +277,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         """The request with the switches of its profile (D41) and the profile; refuses before any work what this
         server cannot make: an unknown strategy, a switch that needs an LLM it lacks (D53), no makeable part."""
         defaulted = request.preset is None
-        profile = request.preset or self.settings.preset_default
+        profile = request.preset or self.default_preset
         request = with_profile(request, profile)
         if request.matcher:
             ensure_strategy(request.matcher)

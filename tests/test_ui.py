@@ -182,6 +182,14 @@ def test_the_ui_routes_stay_out_of_the_api_description(ui: TestClient) -> None:
     assert not [path for path in paths if path.startswith("/ui")]
 
 
+def test_the_page_starts_on_the_profile_a_request_without_one_gets(settings: Settings) -> None:
+    """D68: without an LLM the endpoints run a request without a profile llm-free, whatever PRESET_DEFAULT says, and
+    the page offers that profile first."""
+    app = create_app(settings.model_copy(update={"ui_enabled": True, "preset_default": "balanced"}))
+
+    assert TestClient(app).get("/ui/options.json").json()["preset_default"] == "llm-free"
+
+
 def test_the_page_opens_without_a_key_but_says_the_endpoints_want_one(settings: Settings) -> None:
     keyed = TestClient(create_app(settings.model_copy(update={"ui_enabled": True, "api_keys": KEY})))
 
@@ -194,7 +202,7 @@ def test_the_options_name_the_profiles_and_their_switches_as_the_requests_define
 ) -> None:
     assert [preset["id"] for preset in options["presets"]] == list(PRESETS)
     assert {preset["id"]: preset["switches"] for preset in options["presets"]} == PRESETS
-    assert options["preset_default"] == settings.preset_default
+    assert options["preset_default"] == "llm-free"  # without an LLM, whatever PRESET_DEFAULT says (D68)
     assert options["keys_required"] is False
     assert options["llm_configured"] is False
     assert options["facets_visible"] is settings.facets_visible

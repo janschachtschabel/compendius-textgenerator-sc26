@@ -25,8 +25,9 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 
 ## Profile
 
-Jede Anfrage wählt mit `preset` ein Profil; ohne gilt `PRESET_DEFAULT` des Servers (empfohlen `balanced`). Das Profil
-bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst lokal.
+Jede Anfrage wählt mit `preset` ein Profil; ohne gilt `PRESET_DEFAULT` des Servers, ausgeliefert `balanced`, und auf
+einem Server ohne LLM `llm-free`. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
+lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`.
 
 ![Güte, Zeit und Kosten des alten Dienstes und der vier Profile](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
 

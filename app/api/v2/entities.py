@@ -273,8 +273,8 @@ def entities(
     Unknown or not public node: 404, refused ``repository``: 422, failing repository: 502, none at all: 503.
 
     **What each profile does here** (D62). ``preset`` sets ``methods`` where the request leaves it open; without it
-    the server's profile applies (PRESET_DEFAULT, shipped balanced). Measured on the texts of 40 materials against
-    two blind raters, through this endpoint (M36, gpt-6-luna):
+    the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68).
+    Measured on the texts of 40 materials against two blind raters, through this endpoint (M36, gpt-6-luna):
 
     - ``llm-free``: ner and dictionary, no LLM. F1 0.38 at a precision of 0.29, about 0.25 s.
     - ``balanced``, ``best-quality`` and ``best-quality-generated``: the LLM names the entities (methods llm).
@@ -289,7 +289,7 @@ def entities(
     settings = request.app.state.settings
     service: CompendiumService = request.app.state.service
     registry = archives_for(request.app.state.registry, payload.archives)
-    profile = payload.preset or settings.preset_default
+    profile = payload.preset or service.default_preset
     methods = payload.methods or PROFILE_METHODS[profile]
     check = payload.link and payload.link_check == "llm"
     needed = (["methods=llm"] if "llm" in methods else []) + (["link_check=llm"] if check else [])

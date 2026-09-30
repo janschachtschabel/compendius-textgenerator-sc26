@@ -1,8 +1,8 @@
 # Lokaler Betrieb und Vorlage fuer das Deployment (PLAN.md 10): die API und vier Updater-Sidecars.
 # Das Image kommt aus der GitHub Container Registry; IMAGE ueberschreibt es, build: . baut es lokal.
-# Eine .env wird gelesen, wenn sie da ist; fehlt sie, gelten die Vorgaben aus app/settings.py. Deren
-# PRESET_DEFAULT=balanced braucht ein LLM: ohne eines ist dann jede Anfrage ohne preset ein 503, darum setzt
-# .env.example llm-free. Was ein Update am Betrieb aendert, steht in docs/betrieb.md unter "Updates".
+# Eine .env wird gelesen, wenn sie da ist; fehlt sie, gelten die Vorgaben aus app/settings.py. Eine Anfrage ohne
+# preset laeuft mit PRESET_DEFAULT (balanced), solange ein LLM eingerichtet ist, sonst mit llm-free (D68). Was
+# ein Update am Betrieb aendert, steht in docs/betrieb.md unter "Updates".
 # Das Volume "zim" ist fuer 40 GB geplant (Entscheidung D18). Docker begrenzt Volumes nicht;
 # in Kubernetes entspricht das einem PersistentVolumeClaim mit 40Gi.
 

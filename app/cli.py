@@ -185,7 +185,8 @@ def main(argv: list[str] | None = None) -> int:
         choices=list(PRESETS),
         help="Profil (D53): llm-free (ohne LLM), balanced (LLM findet den Artikel), best-quality (LLM ordnet auch "
         "zu), best-quality-generated (dazu schreibt das LLM den Text); ohne Angabe PRESET_DEFAULT, ausgeliefert "
-        "balanced. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED und B_API_KEY",
+        "balanced, ohne LLM llm-free. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED "
+        "und B_API_KEY",
     )
     gen.add_argument(
         "--matcher",

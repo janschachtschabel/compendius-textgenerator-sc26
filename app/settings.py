@@ -90,8 +90,8 @@ class Settings(BaseSettings):
     preset_default: Preset = Field(
         "balanced",
         description="Profile of a request that names none (D53): llm-free, balanced, best-quality or "
-        "best-quality-generated. Every profile but llm-free needs LLM_ENABLED and B_API_KEY; without them a request "
-        "on such a profile is a 503, so a server without an LLM sets llm-free",
+        "best-quality-generated. Every profile but llm-free needs LLM_ENABLED and B_API_KEY: without them a request "
+        "that names such a profile is a 503, and one that names none runs llm-free whatever this says (D68)",
     )
     policy_confident_score: float = Field(
         0.65,

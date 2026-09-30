@@ -17,7 +17,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "summary": "Profil llm-free: ohne Sprachmodell, für einen Dienst ohne LLM",
         "description": (
             "preset wählt eines der vier Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
-            "ausgeliefert balanced. llm-free: die "
+            "ausgeliefert balanced, auf einem Server ohne LLM llm-free. llm-free: die "
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 87 von 94 "
             "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27). Teil 2 findet und "
             "bewertet mit den Stichwortregeln; ein Element, dessen Überschrift allein das Thema nennt, zählt beim "

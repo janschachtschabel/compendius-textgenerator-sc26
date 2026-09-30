@@ -135,8 +135,9 @@ ENRICHMENT_HELP = (
 PRESET_HELP = (
     "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53, D58). It sets article_choice, matcher, "
     "extraction, generation, enrichment and curriculum_check; a switch the request sets itself wins. Without a preset "
-    "the server's profile applies (PRESET_DEFAULT, shipped balanced). Every profile but llm-free needs an LLM "
-    "(LLM_ENABLED, B_API_KEY); on a server without one such a request is a 503 that says so. Numbers: gold standard "
+    "the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68). Every "
+    "profile but llm-free needs an LLM (LLM_ENABLED, B_API_KEY); on a server without one a request that names such a "
+    "profile is a 503 that says so. Numbers: gold standard "
     "and measurements with gpt-6-luna (M19, M25, M27 to M35, M39); times for part 1 and 2 of one compendium on the "
     "development machine.\n\n"
     "- **llm-free**: the rules choose the articles, hybrid_light assigns the paragraphs, the text stays verbatim. "
@@ -203,6 +204,15 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
 }
 # Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
 BEST_QUALITY_PRESETS = frozenset({"best-quality", "best-quality-generated"})
+
+
+def default_preset(configured: Preset, llm_configured: bool) -> Preset:
+    """The profile of a request that names none (D68): PRESET_DEFAULT, shipped balanced, while an LLM is configured,
+    llm-free while none is - so that the service always answers at least with the rules. A profile the request names
+    itself is its wish either way, and one that needs the missing LLM is still refused."""
+    return configured if llm_configured else "llm-free"
+
+
 UNKNOWN_SUBJECT_HELP = (
     "; one outside the two subject vocabularies of edu-sharing (school subjects, Destatis university subjects; "
     "config/vocabs) is a 422 that lists the school subjects"

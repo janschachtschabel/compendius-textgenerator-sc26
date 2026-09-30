@@ -101,8 +101,8 @@ Laufzeitpakete, jede Woche auch ohne Push. Beide bauen das Image, prüfen es mit
 veröffentlichen es erst danach, unter denselben Namen (`docs/uebergabe/README.md`, CI im GitLab). Tests sehen keine Variablen aus der Shell (`tests/conftest.py`), auch nicht `B_API_KEY`.
 
 Ein Kompendium von der Kommandozeile (Teil 1 und, wenn der Lehrplan-Cache vorliegt, Teil 2;
-Regelmodus mit dem Profil `llm-free`, denn ohne `--preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced`, und
-das braucht ein LLM):
+Regelmodus mit dem Profil `llm-free`; ohne `--preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced`, und ohne
+LLM `llm-free`):
 
 ```bash
 uv run compendium generate --topic Optik --preset llm-free --zim /pfad/wikipedia_de_all_nopic_2026-01.zim --zim /pfad/klexikon_de_all_maxi_2026-08.zim --out optik.md
@@ -241,8 +241,7 @@ Materialien gegen zwei blinde Gutachter, durch den Endpunkt (M36): Regeln F1 0,3
 LLM F1 0,78 bei 0,70 - von 269 verknüpften Artikeln meinte einer etwas anderes -, rund 800 Tokens und 4 s. Auf
 Wunsch prüft das LLM zusätzlich jede Verknüpfung (`link_check: llm`, in keinem Profil voreingestellt): Präzision
 0,94, aber ein Drittel der passenden Entitäten fällt weg (F1 0,76), rund 820 Tokens und 2 s mehr. Ohne `preset` gilt
-`PRESET_DEFAULT`; auf einem Server ohne LLM, der die Vorgabe `balanced` behält, ist eine Anfrage ohne
-`preset: llm-free` deshalb ein 503.
+`PRESET_DEFAULT`, ausgeliefert `balanced`, auf einem Server ohne LLM `llm-free` (D68).
 
 Zu jedem verknüpften Wikipedia-Artikel nennt der Endpunkt GND, VIAF, Wikidata und DBpedia (D43). GND und VIAF stehen im Normdaten-Block des
 Archivs. Die DBpedia-URI ist die Ressource des englischen Artikels, `http://dbpedia.org/resource/<englischer Titel>`
@@ -426,9 +425,11 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 ## LLM-Schicht (optional)
 
 Der Dienst arbeitet in vier Profilen (`preset`, D41, D53). Ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert
-`balanced`. Jedes Profil außer `llm-free` braucht ein LLM (`LLM_ENABLED=true` und `B_API_KEY`); ohne LLM ist eine
-solche Anfrage ein 503, der sagt, welcher Schalter ein LLM braucht, und ein Dienst ohne LLM setzt
-`PRESET_DEFAULT=llm-free`. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und `audit.llm` sagt warum.
+`balanced`; ohne LLM läuft eine Anfrage ohne Profil mit `llm-free`, gleich was `PRESET_DEFAULT` sagt (D68). Jedes
+Profil außer `llm-free` braucht ein LLM (`LLM_ENABLED=true` und `B_API_KEY`); nennt eine Anfrage ohne LLM ein
+solches Profil, ist sie ein 503, der sagt, welcher Schalter ein LLM braucht. Das Template von Teil 1 wählt
+`template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`. Ist die b-api nur gerade nicht erreichbar, laufen die
+Regeln, und `audit.llm` sagt warum.
 Die LLM-Schritte einer Anfrage teilen sich ein Token-Budget: 60.000 in `llm-free` und `balanced`
 (`LLM_MAX_TOKENS_PER_REQUEST`), 180.000 in den beiden `best-quality`-Profilen
 (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, D59), weil dort zur Zuordnung die Prüfung der Lehrplanelemente kommt;
@@ -740,8 +741,8 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
-| `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt |
-| `PRESET_DEFAULT` | `llm-free` | Profil einer Anfrage, die keins nennt (D53). Ohne `.env` gilt die Vorgabe des Codes, `balanced`, die ein LLM braucht: Auf einem Server ohne LLM ist dann jede Anfrage ohne `preset` ein 503, darum setzt die Vorlage `llm-free`. Werte: `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Schalter der Anfrage geht vor. Jedes Profil außer `llm-free` braucht `LLM_ENABLED` und `B_API_KEY`, sonst ist die Anfrage ein 503; ein Dienst ohne LLM setzt `llm-free`. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
+| `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt (`template_id` geht vor). Nennt es ein Template, das es nicht gibt, nimmt eine solche Anfrage `sc26`, und der Start warnt; ein eigenes Template dieses Namens gilt, sobald es gespeichert ist (D68) |
+| `PRESET_DEFAULT` | `balanced` | Profil einer Anfrage, die keins nennt (D53), solange ein LLM eingerichtet ist (`LLM_ENABLED` und `B_API_KEY`). Ohne LLM läuft eine solche Anfrage mit `llm-free`, gleich was hier steht (D68): Der Dienst antwortet immer mindestens mit den Regeln. Werte: `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Profil oder Schalter der Anfrage geht vor. Nennt eine Anfrage selbst ein Profil außer `llm-free` oder einen Schalter, der ein LLM braucht, und ist keins eingerichtet, ist sie ein 503. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
 | `POLICY_CONFIDENT_SCORE` | `0.65` | Ab dieser fusionierten Trefferstärke gilt ein Ranker-Treffer als Beleg; darunter greift der Standardbaustein des Templates. Mit Glättung 0,5 auf `eval/gold` gemessen: 0,45 → 0,65 hebt macro-F1 von 0,430 auf 0,447 und senkt falsch gedruckte Absätze um ein Drittel |
 | `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score — Absätze unter einer Überschrift stützen sich gegenseitig; `0` schaltet es ab |
 | `FACETS_LEVEL` | `minimal` | Wie viele Facetten das Frontmatter trägt: `minimal` oder `full` |

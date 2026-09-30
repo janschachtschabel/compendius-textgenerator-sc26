@@ -167,14 +167,14 @@ def test_a_check_of_the_links_without_linking_is_refused(client: TestClient) -> 
     assert response.status_code == 422 and "prüft die Verknüpfungen" in response.text
 
 
-def test_without_a_preset_the_profile_of_the_server_decides(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    """Shipped, PRESET_DEFAULT is balanced: on a server without an LLM a bare request is a 503 that says what to do."""
+def test_without_a_preset_and_without_an_llm_the_rules_recognise(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Shipped, PRESET_DEFAULT is balanced, and balanced names the LLM; without one a bare request runs llm-free (D68).
+    A request that asks for the LLM itself is still refused, with what to do."""
     client = TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "state", preset_default="balanced")))
-    refused = client.post("/api/v2/entities", json={"text": TEXT})
-    assert refused.status_code == 503
-    assert "methods=llm" in refused.json()["detail"] and "Standardprofil balanced" in refused.json()["detail"]
-    assert client.post("/api/v2/entities", json={"text": TEXT, "preset": "llm-free"}).status_code == 200
-    assert client.post("/api/v2/entities", json={"text": TEXT, "methods": ["dictionary"]}).status_code == 200
+    bare = client.post("/api/v2/entities", json={"text": TEXT})
+    assert bare.status_code == 200 and bare.json()["methods"] and "llm" not in bare.json()["methods"]
+    refused = client.post("/api/v2/entities", json={"text": TEXT, "preset": "balanced"})
+    assert refused.status_code == 503 and "methods=llm" in refused.json()["detail"]
 
 
 # Found by the review of D62

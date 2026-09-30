@@ -1853,6 +1853,15 @@ API.
   Grenze, wie bei `RATE_LIMIT`. Gezählt wird weiter (`/health`, `kompendium_llm_tokens_used_today`), die Grenze je
   Anfrage bleibt, die beiden Budget-Alarme gelten nur mit gesetztem Budget. Ohne Budget und ohne `API_KEYS` kann
   jeder, der den Dienst erreicht, Tokens ohne Grenze verbrauchen; der Start warnt dann.
+- **D68 (2026-09-30)** Standardprofil nach dem LLM (Jan: „Wenn das LLM aus ist oder kein Profil angegeben ist -
+  dann llm free als default … wenn das llm eingeschaltet ist und kein profil vom user genannt wird sollte standard
+  balanced sein - außer ein anderes default ist via env parameter gesetzt“; für Templates ähnlich). Eine Anfrage
+  ohne `preset` nimmt `PRESET_DEFAULT` (ausgeliefert `balanced`), solange ein LLM eingerichtet ist, sonst
+  `llm-free`: Der Dienst antwortet immer mindestens mit den Regeln, statt eine Anfrage ohne Profil mit 503
+  abzuweisen (hebt diesen Teil von D53 auf). Ein Profil, das die Anfrage selbst nennt, bleibt ihr Wunsch und ist
+  ohne LLM weiter ein 503. `.env.example` setzt jetzt `balanced` statt `llm-free`; mit der alten Zeile hielt die
+  Vorlage einen Server mit LLM bei `llm-free`. Templates: `template_id`, sonst `TEMPLATE_DEFAULT` (`sc26`); nennt
+  `TEMPLATE_DEFAULT` kein vorhandenes Template, gilt `sc26`, und der Start warnt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

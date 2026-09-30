@@ -89,7 +89,8 @@ class KnowledgeRequest(RequestModel):
         description="The profile of a compendium request (D53); here it sets article_choice and the token budget. "
         "llm-free takes rule-based, balanced takes llm, best-quality and best-quality-generated take llm-thorough, and "
         "the two best-quality profiles spend from 180,000 tokens per request instead of 60,000 (D59), which this "
-        "endpoint does not come near. Default: PRESET_DEFAULT, shipped balanced. An article_choice the request sets "
+        "endpoint does not come near. Default: PRESET_DEFAULT, shipped balanced; llm-free on a server without an "
+        "LLM (D68). An article_choice the request sets "
         "wins; llm or llm-thorough on a server without an LLM is a 503.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
@@ -274,8 +275,8 @@ def knowledge(
     ambiguous topic, as in a compendium.
 
     **What each profile does here.** ``preset`` sets ``article_choice`` as the profile of a compendium would;
-    without it the server's profile applies (PRESET_DEFAULT, shipped balanced), and an ``article_choice`` of the
-    request wins.
+    without it the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM,
+    D68), and an ``article_choice`` of the request wins.
 
     - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
     - ``balanced``: the LLM names the overview and the parts of the topic and decides an unsure article (``llm``).
@@ -298,7 +299,7 @@ def knowledge(
     """
     service = get_service(request)
     service.subjects.check(payload.subject)
-    profile = payload.preset or service.settings.preset_default
+    profile = payload.preset or service.default_preset
     article_choice = payload.article_choice or PRESETS[profile]["article_choice"]
     needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
     service.refuse_without_llm(needed, profile, defaulted=not payload.preset)

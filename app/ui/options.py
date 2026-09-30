@@ -30,6 +30,7 @@ from app.domain.requests import (
     GenerateRequest,
     Generation,
     Part,
+    default_preset,
 )
 from app.settings import Settings
 from app.sources.lehrplan.subjects import SubjectCatalog
@@ -144,8 +145,7 @@ LIMITS = {
 def _notes_empty_blocks(settings: Settings, templates: TemplateManager) -> bool:
     """Whether the default template keeps an empty block with a note: the page's box starts as a request without
     ``empty_slot_policy`` would go, and from there sends the policy either way."""
-    default = next((template for template in templates.list() if template.id == settings.template_default), None)
-    return default is not None and default.empty_slot_policy == "note"
+    return templates.default(settings.template_default).empty_slot_policy == "note"
 
 
 def ui_options(
@@ -153,9 +153,9 @@ def ui_options(
 ) -> dict[str, Any]:
     """Everything the page needs to know of this server: the profiles and switches, what the server has, examples."""
     return {
-        "preset_default": settings.preset_default,
+        "preset_default": default_preset(settings.preset_default, llm),  # what a request without one gets (D68)
         "keys_required": bool(settings.api_key_list),
-        "llm_configured": llm,  # without an LLM every profile but llm-free is a 503 (D53)
+        "llm_configured": llm,  # without an LLM a request naming a profile other than llm-free is a 503 (D53)
         "facets_visible": settings.facets_visible,
         "empty_note": _notes_empty_blocks(settings, templates),
         "presets": [{"id": preset, "switches": switches} for preset, switches in PRESETS.items()],

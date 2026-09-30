@@ -45,6 +45,14 @@ def test_the_example_names_no_variable_the_service_reads_nowhere() -> None:
     assert not stale, f"no longer a setting: {sorted(stale)}"
 
 
+def test_the_example_ships_the_default_profile_and_template_of_the_code() -> None:
+    """Jan, 2026-09-30 (D68): the example carried llm-free, so a server that switched its LLM on still ran every request
+    without a profile without it. Without an LLM the service takes llm-free by itself."""
+    values = documented()
+    assert values["PRESET_DEFAULT"] == Settings.model_fields["preset_default"].default == "balanced"
+    assert values["TEMPLATE_DEFAULT"] == Settings.model_fields["template_default"].default == "sc26"
+
+
 def test_no_credential_carries_a_value() -> None:
     values = documented()
     filled = [name for name in SECRETS if values.get(name)]

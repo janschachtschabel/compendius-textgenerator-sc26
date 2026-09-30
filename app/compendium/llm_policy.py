@@ -12,7 +12,7 @@ from collections.abc import Callable, Sequence
 from app.compendium.errors import LlmNotConfiguredError
 from app.compendium.gateway import LlmGateway
 from app.compendium.prepared import PreparedTopic
-from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest
+from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest, Preset, default_preset
 from app.knowledge.article_choice import ArticleChoiceJob, ChoiceAudit, choice_used
 from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
 from app.llm.budget import RequestBudget
@@ -28,6 +28,11 @@ class LlmPolicy:
     llm: LlmGateway | None
     settings: Settings
     subjects: SubjectCatalog
+
+    @property
+    def default_preset(self) -> Preset:
+        """The profile of a request that names none: PRESET_DEFAULT with an LLM, llm-free without one (D68)."""
+        return default_preset(self.settings.preset_default, self.llm is not None)
 
     def refuse_without_llm(self, needed: Sequence[str], profile: str, defaulted: bool) -> None:
         """Refuse what needs an LLM when none is configured (D53); one that is only unavailable for now falls back.

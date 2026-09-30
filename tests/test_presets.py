@@ -18,7 +18,7 @@ from fastapi.testclient import TestClient
 from app.api.v2.knowledge import KnowledgeRequest
 from app.cli import main
 from app.compendium.errors import LlmNotConfiguredError
-from app.domain.requests import PRESETS, GenerateRequest, Preset
+from app.domain.requests import PRESETS, GenerateRequest, Preset, default_preset
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -98,14 +98,62 @@ def test_a_switch_that_needs_an_llm_is_refused_without_one_as_well(service: Comp
         service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="llm-free", generation="llm"))
 
 
-def test_the_default_profile_needs_an_llm_too_and_the_api_answers_503(
-    sample_zims: dict[str, Path], tmp_path: Path
+@pytest.mark.parametrize(
+    ("configured", "llm", "expected"),
+    [
+        ("balanced", True, "balanced"),
+        ("best-quality", True, "best-quality"),
+        ("llm-free", True, "llm-free"),
+        ("balanced", False, "llm-free"),
+        ("best-quality-generated", False, "llm-free"),
+        ("llm-free", False, "llm-free"),
+    ],
+)
+def test_the_default_profile_is_the_configured_one_while_an_llm_is(
+    configured: Preset, llm: bool, expected: str
 ) -> None:
+    """Jan, 2026-09-30 (D68): with an LLM a request without a profile takes PRESET_DEFAULT, shipped balanced; without
+    one llm-free, so that the service always answers at least with the rules."""
+    assert default_preset(configured, llm) == expected
+
+
+def test_the_service_takes_the_default_of_its_settings_while_it_has_an_llm(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(service.settings, "preset_default", "best-quality")
+    assert service.llm is None  # the test settings keep the b-api off
+    without = service.default_preset
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi()))
+
+    assert (without, service.default_preset) == ("llm-free", "best-quality")
+
+
+def test_without_an_llm_a_request_without_a_profile_runs_llm_free(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """D68: before, a server without an LLM refused every request without a profile, since PRESET_DEFAULT is balanced.
+    A profile the request names itself is its wish and still refused without the LLM."""
     with TestClient(create_app(make_settings(sample_zims.values(), tmp_path, preset_default="balanced"))) as client:
-        refused = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]})
-        free = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"], "preset": "llm-free"})
-    assert refused.status_code == 503 and "PRESET_DEFAULT" in refused.json()["detail"]
-    assert free.status_code == 200 and free.json()["audit"]["preset"] == "llm-free"
+        bare = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]})
+        named = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"], "preset": "balanced"})
+        knowledge = client.post("/api/v2/knowledge", json={"topic": "Optik"})
+    assert bare.status_code == 200 and bare.json()["audit"]["preset"] == "llm-free"
+    assert named.status_code == 503 and "Profil balanced" in named.json()["detail"]
+    assert knowledge.status_code == 200 and knowledge.json()["article_choice"] is None  # the rules chose, no LLM block
+
+
+def test_a_template_default_that_names_no_template_leaves_sc26(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """D68: a TEMPLATE_DEFAULT that names no template took every request without template_id down with a 404. Those
+    take sc26 now, and the start says so; a request that names the missing template is still its 404."""
+    with caplog.at_level("WARNING"):
+        app = create_app(make_settings(sample_zims.values(), tmp_path, template_default="missing"))
+    with TestClient(app) as client:
+        bare = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]})
+        named = client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"], "template_id": "missing"})
+    assert bare.status_code == 200 and bare.json()["template_id"] == "sc26"
+    assert named.status_code == 404
+    assert "TEMPLATE_DEFAULT" in caplog.text
 
 
 def test_the_knowledge_request_takes_the_article_choice_of_the_preset() -> None:

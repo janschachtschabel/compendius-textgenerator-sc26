@@ -32,7 +32,7 @@ from app.api.responses import PROFILE_REFUSALS, refusals
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
 from app.domain.models import Compendium, Resolution
-from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest
+from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest, Preset, default_preset
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens, Usage
@@ -65,6 +65,14 @@ def _allowance(request: Request, payload: QaRequest, profile: str) -> LlmAllowan
     if budget is None:
         return None
     return LlmAllowance(budget, Deadline(service.settings.request_timeout_s))
+
+
+def _default_profile(request: Request) -> Preset:
+    """PRESET_DEFAULT while an LLM is configured, llm-free without one (D68). Without the archives there is no service,
+    and the gateway the app built decides."""
+    service = request.app.state.service
+    llm = service.llm if service is not None else request.app.state.llm
+    return default_preset(request.app.state.settings.preset_default, llm is not None)
 
 
 def _refuse_llm_without_one(request: Request, needed: list[str], profile: str, *, defaulted: bool) -> None:
@@ -170,7 +178,8 @@ EXAMPLES = {
     "3 · Thema, Standardprofil balanced": {
         "summary": "Dieselben Regeln wie llm-free: schnell, ohne LLM und ohne zusätzliches Modell",
         "description": (
-            "Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced. Es fragt mit denselben Regeln wie llm-free "
+            "Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced, ohne LLM llm-free. Es fragt mit denselben "
+            "Regeln wie llm-free "
             "(D57): rund 0,3 s für die Paare, keine Tokens, kein zusätzliches Modell im Speicher. Teil 1 entsteht "
             "auch hier ohne LLM; nur den Artikel eines Material-Knotens wählt in balanced das LLM (D47)."
         ),
@@ -274,9 +283,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     more than the compendium ever shows.
 
     **What each profile does here.** ``preset`` picks the method of the pairs when the request names none;
-    without it the server's profile applies (PRESET_DEFAULT, shipped balanced), and ``method`` wins over it. Part 1
-    of a topic is made without an LLM in every profile (D55); only the article of a material node is the LLM's
-    choice in the profiles that have one (D47).
+    without it the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM,
+    D68), and ``method`` wins over it. Part 1 of a topic is made without an LLM in every profile (D55); only the
+    article of a material node is the LLM's choice in the profiles that have one (D47).
 
     - ``llm-free``: the rules ask from the spaCy parse of each sentence, then about the glossary and the actors;
       the answer is the whole sentence. No LLM, no tokens.
@@ -295,7 +304,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         # From here on only the project's own values travel, so the prompt and the pairs speak one
         # vocabulary and _level() can map the model's answer back onto it.
         payload = payload.model_copy(update={"levels": levels_from(request, payload.levels)})
-    profile = payload.preset or request.app.state.settings.preset_default
+    profile = payload.preset or _default_profile(request)
     if payload.method is None:
         payload = payload.model_copy(update={"method": PROFILE_METHODS[profile]})
     article_choice = _article_choice(payload, profile) if payload.topic or payload.node_id else None

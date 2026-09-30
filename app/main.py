@@ -69,7 +69,7 @@ from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from app.sources.zim.subscriptions import SubscriptionManifest, load_manifest
 from app.synthesis.facets import FacetCatalog
-from app.templates.manager import TemplateManager
+from app.templates.manager import SHIPPED_DEFAULT, TemplateManager, TemplateNotFoundError
 from app.ui.routes import ui_router
 
 log = logging.getLogger(__name__)
@@ -407,6 +407,27 @@ def route_template(routes: Sequence[BaseRoute], scope: Scope) -> str:
     return UNMATCHED_ROUTE
 
 
+def log_defaults(settings: Settings, service: CompendiumService, templates: TemplateManager) -> None:
+    """What a request that names no profile or template gets (D68): the profile follows the LLM, and a TEMPLATE_DEFAULT
+    that names no template leaves the shipped one until a template of that id exists."""
+    log.info(
+        "a request without preset runs %s, without template_id %s", service.default_preset, settings.template_default
+    )
+    if service.default_preset != settings.preset_default:
+        log.info(
+            "PRESET_DEFAULT=%s applies once an LLM is configured (LLM_ENABLED, B_API_KEY)", settings.preset_default
+        )
+    try:
+        templates.get(settings.template_default)
+    except TemplateNotFoundError:
+        log.warning(
+            "TEMPLATE_DEFAULT=%s names no template: a request without template_id takes %s until one of that id "
+            "exists (GET /api/v2/templates lists them)",
+            settings.template_default,
+            SHIPPED_DEFAULT,
+        )
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -423,6 +444,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
     else:
         log.info("archives loaded: %s", ", ".join(a.file_name for a in registry.archives))
+    log_defaults(settings, service, templates)
 
     app = FastAPI(
         title="Kompendium-API v2",
@@ -433,7 +455,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "(Übersicht und Teile, unsichere Artikel) und beim Erkennen von Entitäten, best-quality zusätzlich bei "
             "der Zuordnung der Absätze und der Prüfung der Lehrplanelemente "
             "und bei mehrdeutigen Wörtern, best-quality-generated "
-            "schreibt zudem den Text. Ohne preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced). "
+            "schreibt zudem den Text. Ohne preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced, "
+            "auf einem Server ohne LLM llm-free). "
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "
             "Status, nie als Text mit HTTP 200. Mit UI_ENABLED zeigt der Server unter /ui/ eine Prüfansicht, auf der "
