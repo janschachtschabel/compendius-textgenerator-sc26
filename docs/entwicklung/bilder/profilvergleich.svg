@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="386" viewBox="0 0 1080 386" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Fünf Profile an drei Arten von Themen (M48)"><title>Fünf Profile an drei Arten von Themen (M48)</title><rect width="1080" height="386" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Fünf Profile an drei Arten von Themen</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Note von 1 bis 5 (volle Spur = 5)</text>
+<rect x="315.2" y="68.0" width="12.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="333.2" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Aufwand: Zeit und Tokens, ab 0</text>
+<text x="224.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="224.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">einfach</text>
+<text x="324.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="324.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema</text>
+<text x="424.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="424.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">mit Aspekt</text>
+<text x="524.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Nutzen</text>
+<text x="524.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="624.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Vollständigkeit</text>
+<text x="624.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="724.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Lesbarkeit</text>
+<text x="724.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="824.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="824.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, Median</text>
+<text x="944.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="944.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Median</text>
+<rect x="20.0" y="124.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="144.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free</text>
+<rect x="224.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="133.0" width="33.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,2</text>
+<rect x="324.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="133.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="424.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="133.0" width="0.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,0</text>
+<rect x="524.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="133.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="624.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="133.0" width="2.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,2</text>
+<rect x="724.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="133.0" width="16.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,1</text>
+<rect x="824.0" y="133.0" width="2.7" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="831.7" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,6 s</text>
+<text x="949.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="24.0" y="178.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced</text>
+<rect x="224.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="167.0" width="46.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,0</text>
+<rect x="324.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="167.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="424.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="167.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="524.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="167.0" width="21.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,4</text>
+<rect x="624.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="167.0" width="6.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,4</text>
+<rect x="724.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="167.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="824.0" y="167.0" width="10.2" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="839.2" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">6,1 s</text>
+<rect x="944.0" y="167.0" width="2.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="949.4" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">580</text>
+<rect x="20.0" y="192.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="212.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality</text>
+<rect x="224.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="201.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="324.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="201.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="424.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="201.0" width="7.8" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,5</text>
+<rect x="524.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="201.0" width="25.9" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,7</text>
+<rect x="624.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="201.0" width="14.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,9</text>
+<rect x="724.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="201.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="824.0" y="201.0" width="30.6" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="859.6" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">18 s</text>
+<rect x="944.0" y="201.0" width="37.4" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="986.4" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">61.100</text>
+<text x="24.0" y="246.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality-generated</text>
+<rect x="224.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="235.0" width="59.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="324.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="235.0" width="31.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,0</text>
+<rect x="424.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="235.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="524.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="235.0" width="32.7" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,1</text>
+<rect x="624.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="235.0" width="25.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,6</text>
+<rect x="724.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="235.0" width="41.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,7</text>
+<rect x="824.0" y="235.0" width="48.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="877.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">29 s</text>
+<rect x="944.0" y="235.0" width="50.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="999.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">82.300</text>
+<rect x="20.0" y="260.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="280.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-coverage-generated</text>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="524.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="269.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="624.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="269.0" width="58.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="724.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="269.0" width="47.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,1</text>
+<rect x="824.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="891.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">37 s</text>
+<rect x="944.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="1011.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">101.200</text>
+<text x="24.0" y="316.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;</text>
+<text x="24.0" y="332.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,</text>
+<text x="24.0" y="348.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.</text>
+<text x="24.0" y="364.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026).</text></svg>

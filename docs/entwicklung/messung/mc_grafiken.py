@@ -4,7 +4,7 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
 text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), and
-profile_matrix.svg and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
+profile_matrix.svg, profilvergleich.svg (pages 07 and 09) and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
 switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
 05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
@@ -853,6 +853,66 @@ def verfahren_text() -> None:
         "keiner falsch (M31). Zeit des Schreibens M45; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md)."))
 
 
+FIVE = (*PROFILES, "best-coverage-generated")
+KIND_LABELS = {"einfach": "einfach", "Sammelthema": "Sammelthema", "Aspekt": "mit Aspekt"}
+
+
+def profilvergleich() -> None:
+    """The five profiles on three kinds of topic (M48, D70): fit per kind, use, completeness and readability over all
+    nine topics as bars from 1 to 5, time and tokens of part 1 as bars from 0; every column has a scale of its own and
+    names its values, the profile is the row. Colored by what a column measures, not by profile: the five profile
+    colors do not keep apart for every reader (validate_palette.js, 2026-10-01)."""
+    data = load("m48_profilvergleich.json")
+    grades, runs = data["grades"], data["runs"]["alle"]
+    label_w, col_w, cost_w, bar_w, row_h, top = 200, 100, 120, 62, 34, 128
+    grade_cols = [(("Passung", KIND_LABELS[kind]), kind, "passung") for kind in data["kinds"]]
+    grade_cols += [(("Nutzen", "alle Themen"), "alle", "nutzen"),
+                   (("Vollständigkeit", "alle Themen"), "alle", "vollstaendigkeit"),
+                   (("Lesbarkeit", "alle Themen"), "alle", "lesbarkeit")]
+    longest_s = max(runs[p]["seconds"] for p in FIVE)
+    longest_t = max(runs[p]["tokens"] for p in FIVE)
+    cost_cols = [(("Zeit", "Teil 1, Median"), "seconds", longest_s), (("Tokens", "Median"), "tokens", longest_t)]
+    cost_x = 24 + label_w + col_w * len(grade_cols)
+    width = cost_x + cost_w * len(cost_cols) + 16
+    notes = ("Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;",
+             "Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,",
+             "Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.",
+             "Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026).")
+    svg = Svg(width, top + len(FIVE) * row_h + 24 + 16 * len(notes), "Fünf Profile an drei Arten von Themen (M48)")
+    svg.text(24, 30, "Fünf Profile an drei Arten von Themen", 17, weight="600")
+    svg.text(24, 52, "Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5", 12, MUTED,
+             limit=width - 48)
+    svg.legend(24, 78, [(LOCAL, "Güte: Note von 1 bis 5 (volle Spur = 5)"), (MUTED, "Aufwand: Zeit und Tokens, ab 0")], 11.5)
+    heads = [(24 + label_w + index * col_w, head, col_w) for index, (head, _, _) in enumerate(grade_cols)]
+    heads += [(cost_x + index * cost_w, head, cost_w) for index, (head, _, _) in enumerate(cost_cols)]
+    for x, (first, second), room in heads:
+        svg.text(x, top - 26, first, 11, MUTED, weight="600", limit=room - 6)
+        svg.text(x, top - 12, second, 10.5, MUTED, limit=room - 6)
+    for number, profile in enumerate(FIVE):
+        y = top + number * row_h
+        if number % 2 == 0:
+            svg.rect(20, y - 4, width - 36, row_h, PANEL, 3)
+        svg.text(24, y + 16, profile, 12, INK, weight="600", limit=label_w - 12)
+        for index, (_, group, score) in enumerate(grade_cols):
+            x = 24 + label_w + index * col_w
+            value = grades[group][profile][score]
+            length = bar_w * (value - 1) / 4
+            svg.rect(x, y + 5, bar_w, 14, GRID, 2)  # the track from 1 to 5, so a 1 reads as a grade, not a gap
+            svg.rect(x, y + 5, length, 14, LOCAL, 2)
+            svg.text(x + bar_w + 5, y + 16, de(value, "0.1"), 11, INK, limit=col_w - bar_w - 6)
+        for index, (_, field, longest) in enumerate(cost_cols):
+            x = cost_x + index * cost_w
+            value = runs[profile][field]
+            length = bar_w * value / longest if longest else 0
+            if length:
+                svg.rect(x, y + 5, max(length, 2), 14, MUTED, 2)
+            text = f"{de(value, '0.1' if value < 10 else '1')} s" if field == "seconds" else tokens_text(value)
+            svg.text(x + length + 5, y + 16, text, 11, INK, limit=cost_w - length - 8)
+    for number, note in enumerate(notes):
+        svg.text(24, top + len(FIVE) * row_h + 18 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("profilvergleich.svg")
+
+
 def alt_neu_teile() -> None:
     """What the old and the new service deliver for the three parts of the compendium and beside it (01-alt-und-neu.md);
     the numbers as on that page, each with its measurement."""
@@ -891,5 +951,6 @@ def alt_neu_teile() -> None:
 
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
-              kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile):
+              kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
+              profilvergleich):
     chart()

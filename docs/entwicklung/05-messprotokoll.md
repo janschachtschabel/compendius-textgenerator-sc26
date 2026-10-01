@@ -2471,3 +2471,123 @@ dem Entwicklungsrechner; Teil 2 kostet wie in `best-quality` (M45).
 
 Rohdaten: `m47_abdeckung.json`: je Kompendium Phasen, Tokens mit `cached`, Zeichen, Bausteine, Belege und
 Modellwissen, die Zeitläufe, der Schlüssel der Bögen und die Urteile beider Gutachter ohne die Zitate; keine Texte.
+
+## M48 Fünf Profile an drei Arten von Themen (01.10.2026)
+
+**Aufbau:** Jan: „Wir wollen einfache und komplexe Fälle messen und vergleichen … ich brauche Qualität, Token / Kosten,
+Generierungszeit usw. belegt. Es muss gemessen werden ob die Themen wirklich eingehalten werden. Wir müssen wissen wann
+wir welches Profil einsetzen können.“ M48 schickt neun Themen durch alle fünf Profile im Ablauf des Dienstes (Stand
+D70, `8381c8a`), Teil 1 mit der Vorgabe von 30.000 Zeichen, je ein Lauf mit frischen Antworten der b-api (D70: kein
+Antwortspeicher, deshalb Zeit und Tokens aus denselben Läufen; `mc_kompendium_profil.py`). Drei Arten von Themen, je
+drei:
+
+- **einfach**, mit eigenem Wikipedia-Artikel: Optik, Photosynthese, Französische Revolution;
+- **Sammelthema**, eine Gruppe ohne eigenen Artikel (M37): Dichter aus dem Mittelalter, Komponisten der Klassik,
+  Philosophen der Aufklärung;
+- **mit Aspekt**, ein Thema, das die Artikelwahl auf einen Oberbegriff auflöst (M47): OER-Förderungen, Inklusion im
+  Sportunterricht, Künstliche Intelligenz im Unterricht.
+
+Zwei blinde Claude-Gutachter lasen je Art einen Bogen: die drei Themen mit je fünf Texten in zufälliger Reihenfolge,
+die Bausteine 1 bis 4 und 8 bis 10 ohne Belegnummern und Kennzeichnung (`mc_profilvergleich_boegen.py`, wie M47).
+Sie benoteten Passung zum angefragten Thema, Nutzen, Vollständigkeit und Lesbarkeit von 1 bis 5 und nannten Fehler mit
+ihrer Schwere; ein fehlender Baustein zählt wie ein leerer. Modell `gpt-6-luna`.
+
+**Güte**, Mittel beider Gutachter (je Art 6 Urteile je Profil):
+
+| Themen | Profil | Passung | Nutzen | Vollständigkeit | Lesbarkeit | schwere Fehler je Text | leichte Fehler je Text |
+|---|---|---|---|---|---|---|---|
+| einfach | `llm-free` | 3,17 | 2,33 | 1,50 | 2,33 | 0 | 0,67 |
+| | `balanced` | 4,00 | 2,83 | 1,83 | 2,00 | 0,17 | 0,50 |
+| | `best-quality` | 4,50 | 3,17 | 2,67 | 2,83 | 0 | 2,17 |
+| | `best-quality-generated` | 4,83 | 3,67 | 3,33 | 3,67 | 0 | 1,50 |
+| | `best-coverage-generated` | **5,00** | **5,00** | **5,00** | **4,00** | 0 | 1,00 |
+| Sammelthema | `llm-free` | 1,33 | 1,33 | 1,00 | 1,67 | 0 | 0,17 |
+| | `balanced` | 2,50 | 2,50 | 1,33 | 2,00 | 0 | 1,33 |
+| | `best-quality` | 2,00 | 2,67 | 1,67 | 2,33 | 0 | 1,00 |
+| | `best-quality-generated` | 3,00 | 3,33 | 2,50 | 3,50 | 0,33 | 0,83 |
+| | `best-coverage-generated` | **5,00** | **4,67** | **4,67** | **4,00** | 0 | 1,17 |
+| mit Aspekt | `llm-free` | 1,00 | 1,33 | 1,00 | 2,17 | 0 | 0,67 |
+| | `balanced` | 1,33 | 1,83 | 1,00 | 2,00 | 0 | 0,50 |
+| | `best-quality` | 1,50 | 2,17 | 1,50 | 2,33 | 0 | 0,33 |
+| | `best-quality-generated` | 1,67 | 2,33 | 2,00 | 3,83 | 0 | 0,67 |
+| | `best-coverage-generated` | **5,00** | **3,83** | **4,67** | **4,17** | 0 | 0,33 |
+| alle neun | `llm-free` | 1,83 | 1,67 | 1,17 | 2,06 | 0 | 0,50 |
+| | `balanced` | 2,61 | 2,39 | 1,39 | 2,00 | 0,06 | 0,78 |
+| | `best-quality` | 2,67 | 2,67 | 1,94 | 2,50 | 0 | 1,17 |
+| | `best-quality-generated` | 3,17 | 3,11 | 2,61 | 3,67 | 0,11 | 1,00 |
+| | `best-coverage-generated` | **5,00** | **4,50** | **4,78** | **4,06** | 0 | 0,83 |
+
+Die Gutachter gaben in 38 (Passung, Lesbarkeit) bis 39 (Nutzen, Vollständigkeit) von 45 Texten dieselbe Note, sonst
+eine um eins verschiedene.
+
+**Läufe**, Median über die neun Themen (Spanne):
+
+| Profil | Zeit, Teil 1 | Tokens | davon aus dem Prompt-Cache | Zeichen | Bausteine mit Text | Anteil Modellwissen | Belegnummern |
+|---|---|---|---|---|---|---|---|
+| `llm-free` | 1,6 s (1,0 bis 2,6) | 0 | – | 8.720 | 6 von 10 | 0 | 20 |
+| `balanced` | 6,1 s (4,7 bis 7,0) | 580 (475 bis 736) | 0 | 11.488 | 6 | 0 | 27 |
+| `best-quality` | 18,3 s (15,8 bis 20,9) | 61.060 (28.452 bis 71.089) | 13.816 | 13.408 | 8 | 0 | 32 |
+| `best-quality-generated` | 29,0 s (27,6 bis 32,3) | 82.335 (50.873 bis 87.718) | 37.262 | 19.987 | 8 | 28 % (19 bis 50 %) | 93 |
+| `best-coverage-generated` | 37,1 s (34,5 bis 41,2) | 101.150 (76.083 bis 111.081) | 50.936 | 57.378 | 10 | 84 % (79 bis 89 %) | 46 |
+
+Anteil Modellwissen: Zeichen der Sätze mit `[Modellwissen]` an allen Zeichen des Textes. Beim Schreiben fiel kein
+Baustein zurück. Bei der Zuordnung durch das LLM fiel in vier der 27 Läufe mit `matcher: llm` je ein Stapel von 50
+Absätzen auf die Regeln zurück, weil das Modell eine unlesbare Antwort gab (in `best-quality-generated` zu Photosynthese
+und zur Französischen Revolution, in `best-coverage-generated` zu den Dichtern aus dem Mittelalter und den Komponisten
+der Klassik); in zwei weiteren nannte es für 1 und 5 Absätze einen unbekannten Baustein. Eine unlesbare Antwort fragt
+der Dienst bisher nicht neu.
+
+**Thema eingehalten:** Bei den einfachen Themen fand jedes Profil den Artikel des Themas. Bei den anderen nennt die
+Tabelle den Hauptartikel; `best-coverage-generated` überschreibt das Kompendium mit dem angefragten Thema und schreibt
+darüber, der Artikel ist dann nur noch Quelle.
+
+| Thema | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| Dichter aus dem Mittelalter | Sangspruchdichtung | Walther von der Vogelweide | Walther von der Vogelweide | Deutsche Literatur im Mittelalter | das Thema (Artikel wie links) |
+| Komponisten der Klassik | Max Richter (Komponist) | Wiener Klassik | Wiener Klassik | Wiener Klassik | das Thema |
+| Philosophen der Aufklärung | Böse Philosophen | Immanuel Kant | Immanuel Kant | Aufklärung | das Thema |
+| OER-Förderungen | Open Educational Resources | ebenso | ebenso | ebenso | das Thema |
+| Inklusion im Sportunterricht | Sportdidaktik | Inklusive Pädagogik | ebenso | ebenso | das Thema |
+| Künstliche Intelligenz im Unterricht | Halluzination (Künstliche Intelligenz) | Künstliche Intelligenz | ebenso | ebenso | das Thema |
+
+`best-quality` und `best-quality-generated` stellen dieselbe Frage der Artikelwahl (`llm-thorough`) und wählten bei
+zwei der drei Sammelthemen verschiedene Hauptartikel: Mit frischen Antworten streut die Artikelwahl des LLM zwischen
+zwei Läufen.
+
+**Fehler:** Schwer nannten die Gutachter zwei Aussagen, beide in belegten Sätzen: in `balanced` zu Photosynthese ein
+wörtlich übernommener Absatz eines Nebenartikels über den Anbau von Ananas (ein Gutachter), in
+`best-quality-generated` zu den Philosophen der Aufklärung eine falsche Angabe zum Wahlrecht des US-Repräsentantenhauses
+(beide). In `best-coverage-generated` nannten die Gutachter acht verschiedene leichte Fehler, sieben davon beide;
+sechs stehen in Sätzen mit `[Modellwissen]`: ein vertauschtes Gremium (Nationalversammlung statt Nationalkonvent), eine
+Edition doppelt genannt, die Parteien eines Musikstreits verwechselt und drei Zeitangaben daneben (eine Eröffnung ein
+Jahr zu früh, eine Entstehungszeit zu spät, eine Ausgabe „nach“ statt vor dem Tod des Autors). Die übrigen zwei stehen
+in belegten Sätzen.
+
+**Ergebnis:**
+
+- **Thema:** Nur `best-coverage-generated` bleibt in jeder Art beim angefragten Thema (Passung 5,0 in allen 18
+  Urteilen). Bei einfachen Themen halten es alle Profile mit LLM (4,0 bis 5,0); `llm-free` kommt auf 3,17, weil sein
+  Korpus allgemeine Nebenartikel mitnimmt (zur Französischen Revolution Revolution, Bürger, Republik, Verfassung),
+  wo die Teile, die das LLM nennt, beim Thema bleiben. Sammelthemen landen ohne LLM auf falschen oder zu engen
+  Artikeln, mit LLM auf einem Vertreter oder dem Oberbegriff (2,0 bis 3,0); Themen mit Aspekt landen in allen anderen
+  Profilen beim Oberbegriff (1,0 bis 1,67).
+- **Nutzen und Vollständigkeit:** `best-coverage-generated` liegt in jeder Art vorn (4,5 und 4,78 über alle). Die
+  wörtlichen Profile füllen im Median 6 bis 8 der 10 Bausteine; ihre Vollständigkeit bleibt unter 2.
+- **Lesbarkeit:** Die geschriebenen Profile 3,67 und 4,06, die wörtlichen 2,0 bis 2,5, wie in M28.
+- **Fehler:** keiner schwer in `best-coverage-generated`; leichte 0,83 je Text, die meisten im Modellwissen. Die
+  beiden schweren Fehler stehen in belegten Sätzen anderer Profile.
+- **Kosten:** Die Tokens wachsen mit der Zuordnung durch das LLM, nicht mit dem Schreiben: `best-quality` braucht
+  61.060, das Schreiben legt in `best-quality-generated` rund 21.000 und in `best-coverage-generated` rund 40.000
+  dazu. Die Hälfte der Tokens von `best-coverage-generated` liest das Modell aus dem Prompt-Cache.
+- **Länge:** Die wörtlichen Profile bleiben unter der Vorgabe von 30.000 Zeichen (8.700 bis 13.400), weil sie nur
+  übernehmen, was die Quellen tragen; `best-quality-generated` schreibt rund 20.000, `best-coverage-generated` rund
+  57.000, denn dort ist die Ziellänge Untergrenze (D69).
+- **Modellwissen:** In `best-quality-generated` erlaubt Prompt v3 die Hälfte; genutzt hat das Modell im Median 28 %,
+  höchstens 50 %. In `best-coverage-generated` sind es 84 %.
+
+Grenzen: neun Themen, ein Lauf je Profil; die Gutachter sind Sprachmodelle und prüften nicht Satz für Satz gegen
+Quellen; die Zeit gilt für Teil 1 auf dem Entwicklungsrechner, Teil 2 kostet wie in M45.
+
+Rohdaten: `m48_profilvergleich.json`: Noten je Art und Profil, Übereinstimmung, Läufe je Art und Profil (Median und
+Spanne), jeder Lauf ohne Text (Zeit je Phase, Tokens mit `cached`, Hauptartikel, Überschrift, Quellen), der Schlüssel
+der Bögen und die Urteile beider Gutachter ohne die Zitate; keine Texte.

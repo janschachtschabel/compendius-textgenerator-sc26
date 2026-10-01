@@ -2,7 +2,8 @@
 tokens of the audit, those read from the prompt cache included.
 
 Variants: bcg = best-coverage-generated as shipped; bcg-hl = the same with matcher hybrid_light; bqg =
-best-quality-generated. The output keeps part 1 of every run for the blind gradings of M47
+best-quality-generated (M47); every profile under its own name as well (M48: llm-free, balanced, best-quality,
+best-quality-generated, best-coverage-generated). The output keeps part 1 of every run for the blind gradings of M47
 (mc_abdeckung_boegen.py); it stays outside the repository. A run already in the output is not asked again.
 
 The key comes from B_API_KEY. Per compendium 35,000 (bcg-hl) to 90,000 tokens (bcg).
@@ -25,7 +26,7 @@ os.environ.setdefault("HF_HUB_OFFLINE", "1")
 
 from app.cli_common import cli_service  # noqa: E402
 from app.domain.models import SectionStatus  # noqa: E402
-from app.domain.requests import GenerateRequest  # noqa: E402
+from app.domain.requests import PRESETS, GenerateRequest  # noqa: E402
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -36,9 +37,17 @@ REQUESTS = {
     "bcg": {"preset": "best-coverage-generated"},
     "bcg-hl": {"preset": "best-coverage-generated", "matcher": "hybrid_light"},
     "bqg": {"preset": "best-quality-generated"},
+    **{name: {"preset": name} for name in PRESETS},
 }
 CONTENT = (SectionStatus.LLM, SectionStatus.EXTRACTIVE, SectionStatus.LLM_SELECTED)
 MARK = re.compile(r"<!--[^>]*-->\n?")
+# A sentence ends at its punctuation, unless the label of model knowledge follows ("Satz. [Modellwissen]"), then there
+SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?!\[Modellwissen\])|(?<=\[Modellwissen\])\s+")
+
+
+def model_chars(text: str) -> int:
+    """Characters in sentences marked as model knowledge (M48: the share the model wrote from its own knowledge)."""
+    return sum(len(sentence) for sentence in SENTENCE_END.split(text) if "[Modellwissen]" in sentence)
 
 
 def main() -> None:
@@ -59,7 +68,8 @@ def main() -> None:
                 continue
             start = time.monotonic()
             try:
-                result = service.generate(GenerateRequest(topic=topic, parts=["world"], **REQUESTS[variant]))
+                request = GenerateRequest(topic=topic, parts=["world"], **REQUESTS[variant])
+                result = service.generate(request)
             except Exception as exc:  # noqa: BLE001 - a measurement records the failure and goes on
                 rows.append({"topic": topic, "variant": variant, "error": f"{type(exc).__name__}: {exc}"[:300]})
                 out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -67,14 +77,19 @@ def main() -> None:
             took = time.monotonic() - start
             content = [s for s in result.sections if s.text and s.status in CONTENT]
             text = "\n\n".join(f"### {s.title}\n\n{MARK.sub('', s.text)}" for s in content)
-            generation = (result.audit.llm or {}).get("generation") or {}
+            llm = result.audit.llm or {}
+            generation = llm.get("generation") or {}
             rows.append({
                 "topic": topic, "variant": variant, "s": round(took, 1), "timings": result.audit.timings_ms,
                 "heading": result.topic, "main": result.resolution.title, "method": result.resolution.method,
                 "tokens": result.audit.llm_tokens, "blocks": len(content),
                 "llm_blocks": sum(1 for s in content if s.status is SectionStatus.LLM), "chars": len(text),
-                "marked": text.count("[Modellwissen]"), "cited": len(re.findall(r"\[\d+(?:, ?\d+)*\]", text)),
+                "marked": text.count("[Modellwissen]"), "model_chars": model_chars(text),
+                "cited": len(re.findall(r"\[\d+(?:, ?\d+)*\]", text)),
+                "sources": [source.title for source in result.sources],
                 "fallbacks": generation.get("fallbacks"), "prompts": (result.frontmatter.get("llm") or {}).get("prompts"),
+                "note": llm.get("note"), "matching_fallbacks": (llm.get("matching") or {}).get("fallbacks"),
+                "target_length": request.target_length,
                 "text": text,
             })
             tokens = result.audit.llm_tokens or {}
