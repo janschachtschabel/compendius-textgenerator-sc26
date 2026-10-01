@@ -52,9 +52,11 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 - **Fünf Profile.** `preset` wählt die Methoden aller Schritte. Ein Kompendium mit Teil 1 und 2 braucht auf dem
   Server mit `llm-free` 2,3 s und keine Tokens, mit dem Standard `balanced` rund 7 s und 580 Tokens, mit
   `best-quality` rund 26 s und 49.000, mit `best-quality-generated` rund 36 s und 60.000 (M45);
-  `best-coverage-generated` schreibt jeden Baustein vollständig zum angefragten Thema, Teil 1 allein rund 28 s und
-  91.000 bis 99.000 Tokens, ein Drittel aus dem Prompt-Cache (M46, M47, D69). Welche Methode in
-  welchem Profil steckt, wie gut sie ist und warum: [Methoden, Messwerte und Profile](09-methoden-und-profile.md).
+  `best-coverage-generated` schreibt jeden Baustein vollständig zum angefragten Thema, Teil 1 allein rund 37 s und
+  101.000 Tokens bei 30.000 Zielzeichen, die Hälfte aus dem Prompt-Cache (M46 bis M48, D69, D70). An neun Themen
+  dreier Arten hält nur es Sammelthemen und Themen mit Aspekt („OER-Förderungen“): Passung 5,0 gegen höchstens 3,0
+  (M48). Welche Methode in welchem Profil steckt, wie gut sie ist, warum, und welches Profil wofür:
+  [Methoden, Messwerte und Profile](09-methoden-und-profile.md).
 - **Prüfen im Browser.** Seit 2.4.0 liefert der Dienst mit `UI_ENABLED` eine Prüfansicht: Menschen ohne Kenntnis
   der API sehen jeden Absatz mit seiner Herkunft (wörtlich übernommen, von der KI ausgewählt oder formuliert),
   Qualität, Zeit und Kosten je Profil und zwei Profile nebeneinander (D66).
@@ -80,7 +82,7 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Gliederung | 15 Aspekte als Hinweis im Prompt | Template SC26 mit 13 Bausteinen, maschinenlesbar markiert |
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
 | Dauer je Kompendium | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | Teil 1 und 2 auf dem Server: 2,3 s (`llm-free`), rund 6,9 s (`balanced`, Standard), 26 s (`best-quality`) und 36 s (`best-quality-generated`) (M45) |
-| Tokens je Kompendium | rund 7.900 | Median je Profil 0, 576, 49.019 und 60.357 (M45); `best-coverage-generated` Teil 1 allein 98.707 (M47) |
+| Tokens je Kompendium | rund 7.900 | Median je Profil 0, 576, 49.019 und 60.357 (M45); `best-coverage-generated` Teil 1 allein 101.150 bei 30.000 Zielzeichen (M48) |
 | Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 87 mit den Regeln (`llm-free`), 91 mit `article_choice=llm` (`balanced`), 93 mit `llm-thorough` (Profile ab `best-quality`, M35) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Sammel- und Mischthemen wie „deutsche Dichter“: gedruckte Absätze aus passenden Artikeln, 25 Themen, zwei Gutachter | mit den Entitäten des alten Linkers als Korpus 63 % (M37) | `llm-free` 43 %; `balanced` seit D63 87 %, das LLM nennt Übersicht und Teile; bei 20 gewöhnlichen Themen 71 und 93 % (M37, M39) |
@@ -177,6 +179,7 @@ sie neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und n
 | 28.09. | Das Audit vom 27.09. mit 73 Befunden abgearbeitet, Releases 2.1.0 bis 2.2.2; Model2Vec wieder im Image; die Faktoren der Zuordnungsregeln gemessen (M44); alle vier Profile an allen Endpunkten mit Release 2.2.2 nachgemessen (M45); Seite 01 nach den drei Teilen neu gegliedert, Methoden, Messwerte und Profile auf einer eigenen Seite (09) |
 | 29.09. | Das Audit vom 28.09. abgearbeitet, Release 2.3.0; die Prüfansicht gebaut (D66), zweimal geprüft und als Releases 2.4.0 bis 2.4.2 veröffentlicht: Herkunft je Absatz, Profile im Vergleich, Markdown speichern, und `/qa` meldet seither, was das LLM kostete |
 | 01.10. | Fünftes Profil `best-coverage-generated` für Themen mit Aspekt (D69, M47); der Prompt-Cache des Anbieters greift über die b-api nur für die System-Nachricht, Bausteinkatalog und -überblick stehen jetzt dort (M46); `cached` in Audit und Metrik |
+| 01.10. abends | D70: 30.000 Zeichen je Profil, eine eigene Kennung je LLM-Aufruf gegen den Antwortspeicher der b-api, `best-quality-generated` bis zur Hälfte Modellwissen, Wissens-Sammlung ohne Lizenzfilter mit Volltext-Schalter und Tiefe; M48 vergleicht alle fünf Profile an einfachen Themen, Sammelthemen und Themen mit Aspekt; Vorschlag für weitere KI-Stufen (07, Punkt 12) |
 
 ## Begriffe
 

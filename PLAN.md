@@ -1912,7 +1912,16 @@ API.
   geben reihum je ein Material ab, sonst füllte eine große Sammlung die 30 Plätze von `KNOWLEDGE_MAX_MATERIALS`
   allein (Staging Optik: 168 Inhalte, mit Tiefe 1 kam nichts dazu). Kompendiale Texte
   (`ccm:oeh_collection_compendium_text`) liest der Dienst nie. Das Audit nennt `depth`, `fulltext` und
-  `collections`; Prüfansicht und CLI haben beide Schalter.
+  `collections`; Prüfansicht und CLI haben beide Schalter. (5) Profilvergleich (M48, Jan: „wir wollen einfache und
+  komplexe Fälle messen und vergleichen … wann wir welches profil einsetzen können“): neun Themen in drei Arten,
+  zwei blinde Gutachter. Nur `best-coverage-generated` hält jedes Thema (Passung 5,0; die anderen bei Sammelthemen 1,3
+  bis 3,0, bei Themen mit Aspekt 1,0 bis 1,7), Nutzen 4,5, Vollständigkeit 4,8, keine schweren Fehler, 84 %
+  Modellwissen; Teil 1 im Median 1,6, 6,1, 18, 29 und 37 s und 0, 580, 61.060, 82.335 und 101.150 Tokens. Die Tokens
+  wachsen mit der Zuordnung durch das LLM, nicht mit dem Schreiben. Tabelle, Grafik `profilvergleich.svg` und „Welches
+  Profil wofür“ auf Seite 09. (6) Weitere KI-Stufen (Jan: „das neue profil kann nochmal ki nutzen“): Vorschlag in
+  07, Punkt 12, offen: Prüfung des Modellwissens, Themenplan, unlesbare Antworten der Zuordnung neu fragen,
+  Ausgleich über `hybrid_light`, Empfehlung des Profils in der Prüfung; die Länge in `best-coverage-generated`
+  (57.000 Zeichen bei 30.000 Zielzeichen) ist Punkt 13.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

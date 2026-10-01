@@ -1,8 +1,7 @@
 # Methoden, Messwerte und Profile
 
-[Übersicht](README.md) · Stand 01.10.2026 (D69) · Zahlen: [Messprotokoll](05-messprotokoll.md); Zeit und
-Tokens des aktuellen Stands aus M45, für `best-coverage-generated` aus M47, die Güte aus der jeweils letzten Messung
-einer Methode
+[Übersicht](README.md) · Stand 01.10.2026 (D70) · Zahlen: [Messprotokoll](05-messprotokoll.md); die fünf Profile
+im Vergleich aus M48, Zeit und Tokens mit Teil 2 aus M45, die Güte jeder Methode aus ihrer jeweils letzten Messung
 
 Diese Seite begründet die fünf Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
 und Tokens und sagt, welches Profil welche Methode nutzt und warum: Artikelwahl, Korpusbau, Zuordnung der Absätze,
@@ -23,14 +22,66 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.
 | Hauptartikel (`article_choice`) | Regeln (`rule-based`) | Regeln, das LLM entscheidet die unsicheren Fälle (`llm`) | das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (`llm-thorough`) | wie `best-quality` | wie `best-quality` | D35, D53, D61 |
 | Korpus | verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel | das LLM nennt Übersicht und Teile des Themas (N) | wie `balanced` | wie `balanced` | wie `balanced` | D48, D63 |
 | Zuordnung (`matcher`) | `hybrid_light` mit Model2Vec | wie `llm-free` | das LLM ordnet jeden Absatz zu (`llm`) | wie `best-quality` | wie `best-quality` | D38, D53 |
-| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
+| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein, Modellwissen für höchstens die Hälfte der Sätze, sichtbar markiert (D70) | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
 | Lehrplanschnipsel (`curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu prüft das LLM jedes Element (`llm`) | wie `best-quality` | wie `best-quality` | D58, D59 |
 | QA-Paare (`/qa`, `method`) | Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren | wie `llm-free` | das LLM schreibt die Paare (`llm`) | wie `best-quality` | wie `best-quality` | D55, D57, D60 |
 | Entitäten (`/entities`, `methods`) | spaCy und das Wörterbuch der Artikeltitel (`ner`, `dictionary`) | das LLM nennt sie mit dem Titel ihres Artikels (`llm`) | wie `balanced` | wie `balanced` | wie `balanced` | D62 |
 | Kennungen (Wikidata, GND, VIAF, DBpedia) | aus lokalen Indexen zum verknüpften Artikel | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | D43, D64, D65 |
 | Material als Eingang (`node_id` ohne `topic`) | Regeln über Titel und Beschreibung | das LLM nennt den Artikel | wie `balanced` | wie `balanced` | wie `balanced` | D45, D47 |
 | Teil 3: Sammlungsüberblick | edu-sharing zur Anfragezeit, kein LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | – |
+| Ziellänge von Teil 1 (`target_length`) | 30.000 Zeichen, eine Richtgröße: der wörtliche Text wird so lang, wie die Quellen tragen | wie `llm-free` | wie `llm-free` | 30.000 | 30.000 als Untergrenze | D69, D70 |
 | Budget je Anfrage (D59) | 60.000 Tokens | 60.000 | 180.000 | 180.000 | 180.000 | D59 |
+
+### Fünf Profile an drei Arten von Themen (M48)
+
+![Fünf Profile an drei Arten von Themen: Passung je Art, Nutzen, Vollständigkeit, Lesbarkeit, Zeit und Tokens](bilder/profilvergleich.svg)
+
+Teil 1 mit 30.000 Zielzeichen (D70), je drei Themen einer Art: einfach, mit eigenem Wikipedia-Artikel (Optik,
+Photosynthese, Französische Revolution); Sammelthema, eine Gruppe ohne eigenen Artikel (Dichter aus dem Mittelalter,
+Komponisten der Klassik, Philosophen der Aufklärung); mit Aspekt, den die Artikelwahl auf einen Oberbegriff auflöst
+(OER-Förderungen, Inklusion im Sportunterricht, Künstliche Intelligenz im Unterricht). Zwei blinde Gutachter, Noten von
+1 bis 5; Zeit und Tokens im Median auf dem Entwicklungsrechner, je ein Lauf mit frischen Antworten
+([M48](05-messprotokoll.md)).
+
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| Passung zum Thema, einfach | 3,2 | 4,0 | 4,5 | 4,8 | **5,0** |
+| Passung, Sammelthema | 1,3 | 2,5 | 2,0 | 3,0 | **5,0** |
+| Passung, mit Aspekt | 1,0 | 1,3 | 1,5 | 1,7 | **5,0** |
+| Nutzen, alle neun Themen | 1,7 | 2,4 | 2,7 | 3,1 | **4,5** |
+| Vollständigkeit | 1,2 | 1,4 | 1,9 | 2,6 | **4,8** |
+| Lesbarkeit | 2,1 | 2,0 | 2,5 | 3,7 | **4,1** |
+| schwere und leichte Fehler je Text | 0 und 0,5 | 0,06 und 0,8 | 0 und 1,2 | 0,11 und 1,0 | 0 und 0,8 |
+| Überschrift ist das angefragte Thema | 3 von 9 | 3 von 9 | 3 von 9 | 3 von 9 | 9 von 9 |
+| Zeit, Teil 1 | 1,6 s | 6,1 s | 18 s | 29 s | 37 s |
+| Tokens (davon aus dem Prompt-Cache) | 0 | 580 | 61.060 (13.816) | 82.335 (37.262) | 101.150 (50.936) |
+| Zeichen | 8.720 | 11.488 | 13.408 | 19.987 | 57.378 |
+| Anteil Modellwissen am Text | 0 | 0 | 0 | 28 % (bis 50 %) | 84 % |
+
+Die Tokens wachsen mit der Zuordnung durch das LLM, nicht mit dem Schreiben: `best-quality` braucht 61.060, das
+Schreiben legt in `best-quality-generated` rund 21.000 und in `best-coverage-generated` rund 40.000 dazu. Die
+wörtlichen Profile werden so lang, wie die Quellen tragen; in `best-coverage-generated` ist die Ziellänge Untergrenze,
+der Text wird fast doppelt so lang.
+
+### Welches Profil wofür
+
+- **Thema mit eigenem Artikel** (Optik): `balanced` liefert einen wörtlichen, durchgehend belegten Text (Passung 4,0,
+  6 s, 580 Tokens), etwa als Grundlage für Suche und KI-Assistenten. `best-quality-generated` schreibt einen lesbaren
+  Text, der überwiegend aus den Quellen kommt (Passung 4,8, Lesbarkeit 3,7, im Median 28 % Modellwissen).
+  `best-coverage-generated` schreibt den vollständigsten (Nutzen und Vollständigkeit 5,0), aber zu rund 80 % aus
+  Modellwissen.
+- **Sammelthema** (Dichter aus dem Mittelalter): `best-coverage-generated`. Die anderen Profile schreiben über einen
+  Vertreter oder den Oberbegriff, den die Artikelwahl findet (Passung höchstens 3,0); `llm-free` landet auf falschen
+  oder zu engen Artikeln.
+- **Thema mit Aspekt** (OER-Förderungen): nur `best-coverage-generated` (Passung 5,0, die anderen höchstens 1,7).
+- **Ohne Sprachmodell:** `llm-free` taugt nur für Themen mit eigenem Artikel (Passung 3,2, die meisten Bausteine
+  lückenhaft); Sammel- und Aspektthemen kann es nicht.
+- **`best-quality` in Teil 1:** Gegenüber `balanced` hebt es bei einfachen Themen Passung und Vollständigkeit um 0,5
+  und 0,8, für rund 61.000 statt 580 Tokens; der Text bleibt wörtlich. Seine Stärke ist die Zuordnung (macro-F1 0,70
+  statt 0,45, M27) und die Prüfung der Lehrplanelemente in Teil 2.
+- **Belege:** Wo jede Aussage belegt sein muss, etwa für die Weiterverarbeitung, bleiben die wörtlichen Profile.
+  `best-coverage-generated` kennzeichnet sein Modellwissen sichtbar, prüft es aber nicht gegen Quellen: Sechs der acht
+  leichten Fehler, die die Gutachter dort fanden, standen in Sätzen mit `[Modellwissen]`.
 
 ### Was ein Kompendium je Profil kostet
 
@@ -43,7 +94,7 @@ Schritte ohne LLM dort gemessen, dazu die Schritte, in denen das LLM des Profils
 | `balanced` | 6,9 s (5,6 bis 9,5 s) | 5,1 s: Artikelwahl und die Frage nach Übersicht und Teilen | 576 (495 bis 663) | rund 3.500 |
 | `best-quality` | 26 s (19 bis 29 s) | 24,3 s: Artikelwahl 4,7 s, Zuordnung 12,7 s, Prüfung der Lehrplanschnipsel 7,0 s | 49.019 (17.357 bis 65.116) | rund 41 |
 | `best-quality-generated` | 36 s (31 bis 46 s) | 32,8 s: dazu das Schreiben, 8,7 s | 60.357 (44.639 bis 134.766) | rund 33 |
-| `best-coverage-generated` | Teil 1 allein auf dem Entwicklungsrechner: 27,5 s (24 bis 32 s), M47 | Artikelwahl, Zuordnung und das Schreiben aller Bausteine | Teil 1 allein: 98.707 (62.999 bis 99.236), rund ein Drittel aus dem Prompt-Cache (M46) | rund 20 |
+| `best-coverage-generated` | Teil 1 allein auf dem Entwicklungsrechner mit 30.000 Zielzeichen: 37 s (35 bis 41 s), M48 | Artikelwahl, Zuordnung und das Schreiben aller Bausteine | Teil 1 allein: 101.150 (76.083 bis 111.081), die Hälfte aus dem Prompt-Cache (M48) | rund 20 |
 
 Gegenüber M27 (25.09.2026: 26.267 und 35.376 Tokens, 14 und 24 s) kosten die beiden `best-quality`-Profile heute rund
 das Doppelte: Seit D58 prüft das LLM die Lehrplanschnipsel (im Median rund 7 s und 5.000 bis 10.000 Tokens), und seit

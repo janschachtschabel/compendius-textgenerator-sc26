@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 01.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M47; Rohdaten und
+[Übersicht](README.md) · Stand 01.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M48; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
 [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
@@ -29,16 +29,23 @@ der QA-Paare (D54, D55, D57).
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen | nicht gemessen |
 | gedruckte Absätze aus passenden Artikeln, 25 Sammel- und 20 gewöhnliche Themen (M37, M39) | 43 % und 71 % | 87 % und 93 % seit D63 (vorher 45 und 73 %) | wie `balanced` (derselbe Korpus, nicht eigens gemessen) | wie `balanced` | wie `balanced` |
 | Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht mehr ab (M39) | 0,70 vor D63 | 0,70 vor D63 | 0,70 vor D63 |
-| Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen |
+| Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen; in M48 4,1 |
+| Passung zum angefragten Thema an neun Themen, zwei Gutachter (M48): einfach, Sammelthema, mit Aspekt | 3,2, 1,3, 1,0 | 4,0, 2,5, 1,3 | 4,5, 2,0, 1,5 | 4,8, 3,0, 1,7 | 5,0, 5,0, 5,0 |
+| Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M48) | 1,7, 1,2, 2,1 | 2,4, 1,4, 2,0 | 2,7, 1,9, 2,5 | 3,1, 2,6, 3,7 | 4,5, 4,8, 4,1; keine schweren Fehler, 0,8 leichte je Text |
+| Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M48) | 1,6 s, 0 Tokens, 8.720 Zeichen | 6,1 s, 580 Tokens, 11.488 Zeichen | 18 s, 61.060 Tokens, 13.408 Zeichen | 29 s, 82.335 Tokens, 19.987 Zeichen, 28 % Modellwissen | 37 s, 101.150 Tokens (die Hälfte aus dem Prompt-Cache), 57.378 Zeichen, 84 % Modellwissen |
 | Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5 | nicht gemessen | nicht gemessen | nicht gemessen | 1,81, 2,12, 1,69: der Text handelt vom Artikel | 4,81, 4,81, 5,00; keine schweren Fehler |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96); 0,52 s an rund 23.000 Zeichen (M45) | wie `llm-free` | 99 von 120; 6,3 s und 7.137 Tokens an rund 23.000 Zeichen (M45) | wie `best-quality` | wie `best-quality` |
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` | wie `best-quality` |
 | Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29; 1,0 s an 1.500 Zeichen (M45) | 0,78, Präzision 0,70; 6,8 s und 1.284 Tokens an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` | wie `balanced` |
-| Teil 1 und 2 je Kompendium auf dem Server (M45) | 2,3 s | rund 6,9 s | rund 26 s | rund 36 s | nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 27,5 s (M47) |
-| Tokens je Kompendium, Median (M45) | 0 | 576 | 49.019 | 60.357 | Teil 1 allein 98.707, davon rund 29.000 bis 36.000 aus dem Prompt-Cache (M47) |
+| Teil 1 und 2 je Kompendium auf dem Server (M45) | 2,3 s | rund 6,9 s | rund 26 s | rund 36 s | nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 37 s (M48) |
+| Tokens je Kompendium, Median (M45) | 0 | 576 | 49.019 | 60.357 | Teil 1 allein 101.150, die Hälfte aus dem Prompt-Cache (M48) |
 | Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 | 180.000 |
 | Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 3.500 | rund 41 | rund 33 | rund 20 (Teil 1 allein) |
 | so wählt man es | `preset: llm-free`, ohne LLM `PRESET_DEFAULT=llm-free` | Standard, `preset: balanced` | `preset: best-quality` | `preset: best-quality-generated` | `preset: best-coverage-generated` |
+
+![Fünf Profile an drei Arten von Themen (M48)](bilder/profilvergleich.svg)
+
+Welches Profil wofür, nach M48: [Methoden, Messwerte und Profile](09-methoden-und-profile.md#welches-profil-wofür).
 
 ![Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)](bilder/kombinationen.svg)
 
@@ -73,13 +80,18 @@ der QA-Paare (D54, D55, D57).
   5, Zusammenhang 4,0 statt 2,4), bei ähnlich vielen Fachfehlern, die meist schon in den Quellen stehen (M28). Mit dem
   ersten Prompt bestand das ergänzte Modellwissen zu zwei Dritteln aus Füllsätzen; der zweite verlangt eine prüfbare
   Sachaussage oder nichts: 50 statt 82 ergänzte Sätze, davon 13 statt 50 Füllsätze und 32 statt 27 fachliche, keiner
-  falsch nach beiden Gutachtern (M31). `/entities` wie in `balanced`.
+  falsch nach beiden Gutachtern (M31). `/entities` wie in `balanced`. Seit D70 darf das Modellwissen bis zur Hälfte
+  eines Bausteins füllen; genutzt hat es in M48 im Median 28 %. Ein Thema ohne eigenen Artikel behandelt das Profil
+  als den Artikel der Artikelwahl: Passung 3,0 bei Sammelthemen, 1,7 bei Themen mit Aspekt (M48).
 - **`best-coverage-generated`** (D69) schreibt wie `best-quality-generated`, aber jeden Baustein vollständig über das
   Thema, wie es angefragt ist: Belege, wo sie das Thema treffen, sonst gesichertes Modellwissen, sichtbar
   gekennzeichnet, auch für einen Baustein ohne Belege; die Ziellänge ist Untergrenze. Für Themen mit Aspekt wie
   „OER-Förderungen“, die die Artikelwahl auf einen Oberbegriff auflöst: Passung 4,81 statt 1,81, Nutzen 4,81 statt
   2,12, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens,
   rund ein Drittel aus dem Prompt-Cache (M46). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen.
+  M48 an allen drei Arten von Themen: Passung 5,0, Nutzen 4,5, Vollständigkeit 4,8, Lesbarkeit 4,1, keine schweren
+  Fehler, 0,8 leichte je Text, sechs der acht im Modellwissen; mit 30.000 Zielzeichen rund 37 s, 101.000 Tokens und
+  57.000 Zeichen, denn die Ziellänge ist hier Untergrenze (Punkt 13).
 
 Zeiten und Tokens: M45 (28.09.2026, Release 2.2.2, `gpt-6-luna`), Teil 1 und 2, jedes LLM-Profil auf sechs eigenen
 Themen; die Zeit auf dem Server ohne LLM gemessen, dazu die Schritte, in denen das LLM des Profils arbeitet. Die
@@ -789,6 +801,60 @@ Passung 4,56 und Nutzen 4,31.
     (Läufe und Tabellen der deutschen Wikipedia), databus.dbpedia.org und downloads.dbpedia.org (Releases, Modell von
     Spotlight), wikidata.org (Statistik der Namen und von P227), huggingface.co/NatLibFi (Annif-Modelle),
     liberquarterly.eu/article/view/19422 (Erschließungsmaschine der DNB).
+
+12. **KI-Stufen über `best-coverage-generated` hinaus** (Jan, 01.10.2026: „das neue profil kann nochmal ki nutzen -
+    wir brauchen da eine sinnvolle hochstufung der ki nutzung“): Vorschlag, offen.
+
+    Die Leiter heute, Teil 1 im Median an neun Themen (M48):
+
+    | Profil | was das LLM zusätzlich tut | Tokens | Zeit | Modellwissen im Text | Thema wie angefragt |
+    |---|---|---|---|---|---|
+    | `llm-free` | nichts | 0 | 1,6 s | 0 | nur mit eigenem Artikel |
+    | `balanced` | wählt unsichere Artikel, nennt Übersicht und Teile des Themas | 580 | 6,1 s | 0 | nur mit eigenem Artikel |
+    | `best-quality` | ordnet jeden Absatz zu, prüft auch sichere Artikelwahlen, prüft die Lehrplanelemente | 61.060 | 18 s | 0 | nur mit eigenem Artikel |
+    | `best-quality-generated` | schreibt jeden Baustein, bis zur Hälfte aus eigenem Wissen | 82.335 | 29 s | 28 % | nur mit eigenem Artikel |
+    | `best-coverage-generated` | schreibt jeden Baustein vollständig zum angefragten Thema | 101.150 | 37 s | 84 % | immer (Passung 5,0) |
+
+    Drei Befunde aus M48 sagen, wo eine weitere Stufe ansetzen sollte:
+
+    - In `best-coverage-generated` stammen 84 % des Textes aus Modellwissen, und dort stehen sechs der acht leichten
+      Fehler (Daten, Gremien, Zuschreibungen); schwere fanden die Gutachter keine. Gegen Quellen geprüft ist nur der
+      belegte Rest.
+    - Teuer ist die Zuordnung (61.060 Tokens, 12 s), nicht das Schreiben. In `best-coverage-generated` bedient sie nur
+      das Sechstel des Textes mit Belegen; mit `matcher: hybrid_light` blieb die Passung in M47 bei 4,56 statt 4,81,
+      der Nutzen bei 4,31 statt 4,81, für rund 56.000 Tokens und 11 s weniger.
+    - Die Zuordnung durch das LLM verlor in vier von 27 Läufen einen Stapel von 50 Absätzen an eine unlesbare Antwort,
+      und die Artikelwahl streut zwischen zwei Läufen: Zwei von drei Sammelthemen bekamen in `best-quality` und
+      `best-quality-generated` verschiedene Hauptartikel.
+
+    Vorschlag, in `best-coverage-generated` selbst (dasselbe Profil, mehr KI dort, wo der Text entsteht):
+
+    - (a) **Prüfung des Modellwissens:** Nach dem Schreiben prüft je Baustein ein zweiter Aufruf nur die Sätze mit
+      `[Modellwissen]` auf Daten, Namen, Gremien und Zuschreibungen und streicht oder berichtigt, was er für falsch
+      hält; die Kennzeichnung bleibt. Das zielt auf die Fehler, die M48 fand. Geschätzt 2.000 bis 3.500 Tokens je
+      Baustein, zusammen 20.000 bis 35.000, und 5 bis 10 s, weil die Bausteine parallel laufen. Messen: dieselben neun
+      Themen, Fehler je Text vorher und nachher.
+    - (b) **Themenplan vor dem Schreiben:** Ein Aufruf legt je Baustein die Kernpunkte des angefragten Themas fest, bei
+      Sammelthemen die Vertreter, bei Aspekten die Teilaspekte; alle Bausteine schreiben danach. Der Plan steht in der
+      System-Nachricht, für die übrigen Bausteine kommt er aus dem Prompt-Cache. Gegen Wiederholungen zwischen den
+      Bausteinen und für die Lesbarkeit (4,1). Geschätzt rund 20.000 Tokens und 5 bis 8 s.
+    - (c) **Unlesbare Antworten neu fragen:** Eine unlesbare Antwort der Zuordnung einmal neu stellen, statt 50 Absätze
+      den Regeln zu überlassen; seit D70 bekommt die zweite Frage eine frische Antwort. Rund 9.000 Tokens je Fall, in
+      allen Profilen mit `matcher: llm`.
+    - (d) **Kosten ausgleichen, zur Wahl:** `best-coverage-generated` ordnet mit `hybrid_light` zu und steckt die
+      gesparten rund 56.000 Tokens in (a) und (b), mit etwa so vielen Tokens wie heute. Oder es behält `matcher: llm`
+      (Jan: höchste Qualität) und kommt mit (a) und (b) auf rund 150.000 Tokens, unter dem Budget von 180.000.
+    - (e) **Profil empfehlen:** Löst die Artikelwahl ein Thema auf einen anderen Artikel auf, einen Oberbegriff oder
+      einen Vertreter, sagt das die Prüfung des Kompendiums und nennt `best-coverage-generated`, ohne zusätzliche
+      Tokens. In M48 betraf das sechs der neun Themen.
+
+    Empfehlung: (c) gleich, weil es einen Fehlerweg schließt; (a) als nächste Stufe, mit Messung; (e) als Hilfe bei der
+    Wahl des Profils; (b) und (d) nach den Zahlen von (a).
+13. **Länge in `best-coverage-generated`:** entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
+    dort Untergrenze ist, schreibt `best-coverage-generated` im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
+    das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen
+    will, gibt dem Profil 15.000 als Vorgabe (`PRESET_TARGET_LENGTH`); eine Anfrage kann es jederzeit mit
+    `target_length`. Offen: so lassen oder halbieren.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
