@@ -1921,7 +1921,11 @@ API.
   Profil wofür“ auf Seite 09. (6) Weitere KI-Stufen (Jan: „das neue profil kann nochmal ki nutzen“): Vorschlag in
   07, Punkt 12, offen: Prüfung des Modellwissens, Themenplan, unlesbare Antworten der Zuordnung neu fragen,
   Ausgleich über `hybrid_light`, Empfehlung des Profils in der Prüfung; die Länge in `best-coverage-generated`
-  (57.000 Zeichen bei 30.000 Zielzeichen) ist Punkt 13.
+  (57.000 Zeichen bei 30.000 Zielzeichen) ist Punkt 13. (7) Die anderen Profile an den Problemstellen von M48 (Jan,
+  02.10.2026: „vorschlagen, testen und empfehlen“): M49 misst vier Vorschläge an einem Prototyp auf dem lokalen Zweig
+  `m49-proben`; empfohlen sind der Hinweis auf das passende Profil in der Prüfung (V3), das Neufragen einer unlesbaren
+  Antwort der Zuordnung (V4) und die Suche einer Übersicht ohne Klammerzusatz (V1a); die Entscheidung steht in 07,
+  Punkt 14.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

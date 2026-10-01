@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 01.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M48; Rohdaten und
+[Übersicht](README.md) · Stand 02.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M49; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
 [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
@@ -856,6 +856,23 @@ Passung 4,56 und Nutzen 4,31.
     will, gibt dem Profil 15.000 als Vorgabe (`PRESET_TARGET_LENGTH`); eine Anfrage kann es jederzeit mit
     `target_length`. Offen: so lassen oder halbieren.
 
+14. **Die anderen Profile an den Problemstellen von M48** (Jan, 02.10.2026: „bitte vorschlagen, testen und
+    empfehlen“): gemessen in M49 am Prototyp, offen. Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
+    nennt, im Archiv, wird ein Vertreter der Gruppe Hauptartikel (Walther von der Vogelweide, Immanuel Kant).
+
+    | Vorschlag | Wirkung (M49) | Kosten | Empfehlung |
+    |---|---|---|---|
+    | V3: Hinweis in der Prüfung auf das passende Profil, wenn der Text einen anderen Artikel behandelt als das angefragte Thema | kein Hinweis bei 46 Themen mit eigenem Artikel (Frage N) und bei 35 Goldanfragen mit eigenem Artikel (Wortregel); alle 6 Themen mit Aspekt erkannt, Sammelthemen dort, wo die Übersicht die Gruppe nicht trägt (Frage N: 3 von 6; Wortregel: 3 von 3) | ab `balanced` rund 10 Tokens in der Frage N, in `llm-free` keine | übernehmen |
+    | V4: eine unlesbare Antwort der Zuordnung einmal neu fragen | schließt den Fehlerweg, der in M48 vier von 27 Läufen einen Stapel von 50 Absätzen kostete | nur im Fall, rund 9.000 Tokens | übernehmen |
+    | V1a: eine Übersicht auch ohne Klammerzusatz suchen („Aufklärung (Philosophie)“ → „Aufklärung“) | derselbe Artikel statt eines Vertreters | keine | übernehmen |
+    | V1b: drei Übersichtstitel in Rangfolge | jede Übersicht gefunden (50 statt 38 von 50 Sammelthemen), aber breitere: nach den Noten von M37 gehört der Vertreter eher zum Thema als die Ersatz-Übersicht (2 statt 1) | rund 210 Tokens je Frage N | nicht ohne Textmessung |
+    | V2: `best-quality-generated` schreibt über das angefragte Thema, höchstens die Hälfte Modellwissen | Passung bei Sammelthemen 3,33 statt 2,83, bei Aspekten 2,17 statt 1,50; `best-coverage-generated` 4,83 | gleich | wahlweise: hebt das Profil wenig, ändert aber, wovon es handelt |
+
+    Kurz: Für Sammelthemen und Themen mit Aspekt bleibt `best-coverage-generated` das Profil (Passung 4,8 bis 5,0); V3
+    sagt das dem Nutzer im Kompendium selbst. V4 und V1a sind kleine Fehlerbehebungen ohne Nebenwirkung. V2 ist eine
+    Frage der Ausrichtung: Soll `best-quality-generated` über den gefundenen Artikel schreiben (überwiegend aus
+    Quellen) oder über das angefragte Thema (mit weniger Quellenstoff)? Der Prototyp liegt auf dem lokalen Zweig
+    `m49-proben`; nach Jans Entscheidung kommen die gewählten Teile mit ihren Tests auf `main`.
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
 `best-quality`-Profilen (`curriculum_check=llm`); `llm-free` und `balanced` bleiben bei den Regeln mit gebündelten

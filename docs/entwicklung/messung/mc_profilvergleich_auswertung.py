@@ -3,6 +3,7 @@ the figures of the runs of mc_kompendium_profil.py beside them. Writes the resul
 quotes of the errors.
 
 Usage: python mc_profilvergleich_auswertung.py <runs.json> <schluessel.json> <out.json> <rater.json> [<rater.json> ...]
+  [--variants=a,b,c] [--note=...]: the variants of the sheets (default the five profiles of M48) and the note of the result
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ KIND_OF = {topic: kind for kind, topics in KINDS.items() for topic in topics}
 GROUPS = (*KINDS, "alle")
 
 
-def grades(key: dict, raters: list[dict]) -> dict[str, dict[str, dict[str, float]]]:
+def grades(key: dict, raters: list[dict], variants: tuple[str, ...] = PROFILES) -> dict[str, dict[str, dict[str, float]]]:
     """Mean of every score of both raters, per kind of topic and profile, and over all topics."""
     collected: dict[tuple[str, str], dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
     for topic, letters in key.items():
@@ -37,7 +38,7 @@ def grades(key: dict, raters: list[dict]) -> dict[str, dict[str, dict[str, float
     table: dict[str, dict[str, dict[str, float]]] = defaultdict(dict)
     for (group, profile), values in collected.items():
         table[group][profile] = {name: round(mean(found), 2) for name, found in values.items()}
-    return {group: {profile: table[group][profile] for profile in PROFILES} for group in GROUPS}
+    return {group: {profile: table[group][profile] for profile in variants if profile in table[group]} for group in GROUPS}
 
 
 def agreement(key: dict, raters: list[dict]) -> dict[str, dict[str, int]]:
@@ -59,11 +60,11 @@ def share(run: dict) -> float:
     return run["model_chars"] / run["chars"] if run["chars"] else 0.0
 
 
-def runs_table(runs: list[dict]) -> dict[str, dict[str, dict]]:
+def runs_table(runs: list[dict], variants: tuple[str, ...] = PROFILES) -> dict[str, dict[str, dict]]:
     """Median and span of the figures of the runs, per kind of topic and profile, and over all topics."""
     table: dict[str, dict[str, dict]] = defaultdict(dict)
     for group in GROUPS:
-        for profile in PROFILES:
+        for profile in variants:
             own = [r for r in runs if r["variant"] == profile and group in ("alle", KIND_OF[r["topic"]])]
             if not own:
                 continue
@@ -104,26 +105,32 @@ def without_quotes(rater: dict) -> dict:
 
 
 def main() -> None:
-    every = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    options = dict(a[2:].split("=", 1) for a in sys.argv[1:] if a.startswith("--"))
+    variants = tuple(options["variants"].split(",")) if "variants" in options else PROFILES
+    every = json.loads(Path(args[0]).read_text(encoding="utf-8"))
     runs = [r for r in every if "text" in r]
-    key = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
-    raters = [json.loads(Path(path).read_text(encoding="utf-8")) for path in sys.argv[4:]]
+    key = json.loads(Path(args[1]).read_text(encoding="utf-8"))
+    raters = [json.loads(Path(path).read_text(encoding="utf-8")) for path in args[3:]]
     result = {
         "kinds": {kind: list(topics) for kind, topics in KINDS.items()},
-        "grades": grades(key, raters),
+        "grades": grades(key, raters, variants),
         "agreement": agreement(key, raters),
-        "runs": runs_table(runs),
+        "runs": runs_table(runs, variants),
         "failed": [{"topic": r["topic"], "variant": r["variant"], "error": r["error"]} for r in every if "error" in r],
         "run_rows": run_rows(runs),
         "key": key,
         "raters": [without_quotes(rater) for rater in raters],
-        "note": "M48 (D70): five profiles, part 1, nine topics in three kinds, one run each with fresh answers of the "
-        "b-api (B_API_RESPONSE_CACHE=false), two blind Claude raters; no texts, no quotes of the errors.",
+        "note": options.get(
+            "note",
+            "M48 (D70): five profiles, part 1, nine topics in three kinds, one run each with fresh answers of the "
+            "b-api (B_API_RESPONSE_CACHE=false), two blind Claude raters; no texts, no quotes of the errors.",
+        ),
     }
-    Path(sys.argv[3]).write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+    Path(args[2]).write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
     for group in GROUPS:
         print(f"== {group}")
-        for profile in PROFILES:
+        for profile in variants:
             g, r = result["grades"][group][profile], result["runs"][group].get(profile, {})
             print(f"  {profile:24s} passung {g['passung']:.2f} nutzen {g['nutzen']:.2f} vollst. "
                   f"{g['vollstaendigkeit']:.2f} lesb. {g['lesbarkeit']:.2f} schwer {g['schwere_fehler']:.2f} "

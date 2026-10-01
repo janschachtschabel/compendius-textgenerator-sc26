@@ -1,4 +1,4 @@
-# Messprotokoll (23.09. bis 01.10.2026)
+# Messprotokoll (23.09. bis 02.10.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -2591,3 +2591,106 @@ Quellen; die Zeit gilt für Teil 1 auf dem Entwicklungsrechner, Teil 2 kostet wi
 Rohdaten: `m48_profilvergleich.json`: Noten je Art und Profil, Übereinstimmung, Läufe je Art und Profil (Median und
 Spanne), jeder Lauf ohne Text (Zeit je Phase, Tokens mit `cached`, Hauptartikel, Überschrift, Quellen), der Schlüssel
 der Bögen und die Urteile beider Gutachter ohne die Zitate; keine Texte.
+
+## M49 Verbesserungen für die anderen Profile (02.10.2026)
+
+**Aufbau:** Jan: „falls dir noch lösungen einfallen um auch die anderen profile in den problemstellen besser zu machen -
+siehe unsere messung. bitte vorschlagen, testen und empfehlen.“ Die Problemstellen aus M48: Sammelthemen in
+`balanced` bis `best-quality-generated` (Passung 2,0 bis 3,0), Themen mit Aspekt (1,0 bis 1,7), `llm-free` bei
+einfachen Themen (3,2) und die Zuordnung, die in vier von 27 Läufen einen Stapel an eine unlesbare Antwort verlor. Eine
+Probe der Frage N (30 Fragen) fand die Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM nennt, im
+Archiv („Literatur des Mittelalters“, „Aufklärung (Philosophie)“), wird der erste genannte Teil Hauptartikel, ein
+Vertreter der Gruppe (D63). Die Vorschläge stehen als Prototyp auf einem lokalen Zweig (`m49-proben`, Stand
+`b01357c`, nicht auf `main`):
+
+- **V1** Übersicht robuster finden: N nennt drei Übersichtstitel in Rangfolge (Prompt `topic_articles` v2), und eine
+  Übersicht wird auch ohne Klammerzusatz gesucht.
+- **V2** `best-quality-generated` schreibt über das angefragte Thema wie `best-coverage-generated`, behält aber die
+  Grenze von höchstens der Hälfte Modellwissen.
+- **V3** Hinweis in der Prüfung des Kompendiums (`topic-scope`), wenn der Text einen anderen Artikel behandelt als das
+  angefragte Thema, mit dem Profil, das genau dazu schreibt: ab `balanced` sagt N dafür, ob seine Übersicht das Thema
+  ganz abdeckt (`deckt_ab`, rund zehn Tokens); in `llm-free` entscheidet ein Wortvergleich des normalisierten Themas
+  mit dem Artikeltitel, ohne Tokens.
+- **V4** Eine unlesbare Antwort der Zuordnung wird einmal neu gefragt, bevor die Regeln den Stapel übernehmen; seit D70
+  bekommt die zweite Frage eine frische Antwort.
+
+**V1 und V3, Frage N:** 54 Themen (die neun aus M48, die 25 Sammel- und Mischthemen aus M37, die 20 gewöhnlichen aus
+M39), je zwei Runden, mit Prompt v1 (`main`), v2 („bis zu drei“ Übersichten) und v2b („genau drei“):
+
+| Themen | Übersicht im Archiv gefunden: v1 | v2 | v2b | `deckt_ab` true (v2b) |
+|---|---|---|---|---|
+| M48, einfach | 6 von 6 | 6 | 6 | 6 von 6 |
+| M48, Sammelthema | 5 von 6 | 6 | 6 | 3 von 6 |
+| M48, mit Aspekt | 6 von 6 (der Oberbegriff) | 6 | 6 | 0 von 6 |
+| M37, Sammel- und Mischthemen | 38 von 50 | 41 | **50** | 21 von 50 |
+| M39, gewöhnliche Themen | 40 von 40 | 40 | 40 | 40 von 40 |
+| Tokens je Frage N | 562 | 694 | 774 | |
+
+Mit „bis zu drei“ nannte das Modell meist doch nur einen Titel; erst „genau drei“ brachte Alternativen. Bei den
+gewöhnlichen Themen blieb die Übersicht in 36 von 40 Fällen das Thema selbst, wie mit v1. Aber: Wo v1 die Übersicht
+nicht fand, war der Vertreter, der nachrückte, nach den blinden Artikelnoten von M37 meist ein Artikel, der zum Thema
+gehört (Augustus, Ätna, Waschmittel, Hildegard von Bingen: Note 2), die Ersatz-Übersicht von v2b ein breiterer
+(Römisches Reich, Vulkanismus, Chemie, Frauengeschichte: Note 1). `deckt_ab` trennt sauber: keiner der 46 Themen mit
+eigenem Artikel bekam „deckt nicht ab“, alle 6 Themen mit Aspekt bekamen es.
+
+**V3, Wortregel ohne N** (`llm-free`), auf den 94 Goldanfragen der Artikelwahl und den neun Themen aus M48 mit der
+Auflösung der Regeln:
+
+| Anfragen | mit Hinweis |
+|---|---|
+| gewöhnlich | 0 von 24 |
+| mit Stufen- oder Fachzusatz | 0 von 8 |
+| mehrdeutig, ohne Kontext | 0 von 3 |
+| mehrdeutig, mit Fach | 4 von 38: wo die Regeln einen falschen Artikel wählten („Informatik: Maus“ → Kleinsäuger, „Bus“ → Omnibus) oder einen übergeordneten („Ableitung“ → Differentialrechnung) |
+| andere Schreibung | 1 von 12: „Lichtlehre“, die die Regeln einer Person zuordneten |
+| ohne eigenen Artikel | 7 von 9: Aspekte wie „Ursachen des Ersten Weltkriegs“, „Aufbau der Zelle“; ein Fehlalarm („Kreislauf des Kohlenstoffs“ → Kohlenstoffzyklus) |
+| M48, einfach / Sammelthema / mit Aspekt | 0 von 3 / 3 von 3 / 3 von 3 |
+
+Ein Stufenzusatz („Optik in Klasse 7“) gilt nicht als Aspekt: Die Regel vergleicht das normalisierte Thema.
+
+**V2, Textläufe:** `best-quality-generated` zum angefragten Thema an den neun Themen aus M48; zwei blinde
+Claude-Gutachter lasen je Thema drei Texte: `best-quality-generated` aus M48, den Prototyp und
+`best-coverage-generated` aus M48 als Anker (`mc_profilvergleich_boegen.py --variants=bqg,bqg-thema,bcg --seed=49`).
+Gleiche Note bei der Passung in 21 von 27 Texten, sonst eine um eins verschieden.
+
+| Themen | Variante | Passung | Nutzen | Vollständigkeit | Lesbarkeit | Tokens | Zeit, Teil 1 |
+|---|---|---|---|---|---|---|---|
+| einfach | `best-quality-generated` | 4,67 | 3,17 | 2,50 | 3,17 | 82.141 | 28,7 s |
+| | zum angefragten Thema (V2) | 4,17 | 3,33 | 2,33 | 3,17 | 85.143 | 28,5 s |
+| | `best-coverage-generated` | 5,00 | 5,00 | 4,67 | 4,00 | 85.732 | 37,1 s |
+| Sammelthema | `best-quality-generated` | 2,83 | 3,17 | 2,17 | 3,00 | 84.183 | 29,0 s |
+| | zum angefragten Thema (V2) | **3,33** | 3,33 | 2,00 | 3,17 | 84.803 | 33,3 s |
+| | `best-coverage-generated` | 4,83 | 4,67 | 4,50 | 4,00 | 106.695 | 34,8 s |
+| mit Aspekt | `best-quality-generated` | 1,50 | 2,17 | 1,33 | 3,00 | 82.335 | 29,8 s |
+| | zum angefragten Thema (V2) | **2,17** | 2,33 | 2,00 | 3,00 | 78.626 | 29,7 s |
+| | `best-coverage-generated` | 4,83 | 4,50 | 4,83 | 4,33 | 101.150 | 37,1 s |
+
+Bei einfachen Themen ist das angefragte Thema der Artikel; der Unterschied dort ist die Streuung zweier Läufe
+desselben Ablaufs. Der Anteil Modellwissen blieb mit V2 bei 26 % (bis 45 %), die Überschrift nannte in allen neun
+Läufen das angefragte Thema.
+
+**V4:** In den neun Läufen von V2 war keine Antwort der Zuordnung unlesbar; belegt ist V4 durch zwei Tests (eine
+lesbare zweite Antwort entscheidet, nach einer zweiten unlesbaren übernehmen die Regeln ohne dritte Frage).
+
+**Nicht verfolgt:** In `llm-free` den Oberbegriff eines mehrteiligen Themas aus dem Korpus nehmen („Revolution“ zu
+„Französische Revolution“). Das Korpus-Gold (M8) nennt solche Artikel „verwandt“ (Note 1), nicht unpassend; je Thema
+träfe die Regel höchstens einen Artikel.
+
+**Ergebnis:**
+
+- V3 bringt den Nutzer zum richtigen Profil, ohne Fehlalarme bei Themen mit eigenem Artikel, für rund zehn Tokens ab
+  `balanced` und ohne Tokens in `llm-free`.
+- V4 schließt einen Fehlerweg der Zuordnung, der in M48 vier von 27 Läufen traf, und kostet nur, wenn er greift (rund
+  9.000 Tokens je Stapel).
+- V1 findet jede Übersicht, aber eine breitere: ob ein Text über „Römisches Reich“ zu „römische Kaiser“ besser passt
+  als einer über Augustus, ist nicht gemessen. Den Klammerzusatz wegzulassen findet dagegen denselben Artikel
+  („Aufklärung (Philosophie)“ → „Aufklärung“).
+- V2 hebt `best-quality-generated` bei Sammelthemen und Aspekten um 0,5 und 0,7 Noten zum gleichen Preis, bleibt aber
+  weit unter `best-coverage-generated` (4,83): Mit höchstens der Hälfte Modellwissen und Quellen über den Oberbegriff
+  lässt sich ein Aspekt nicht ganz schreiben.
+
+Grenzen: neun Themen für V2, ein Lauf je Variante; die Gutachter sind Sprachmodelle; die Probe der Frage N misst die
+Fundquote, nicht die Güte des Textes.
+
+Rohdaten: `m49_profilverbesserungen.json`: die Proben der Frage N je Art, die Wortregel je Goldanfrage, Noten,
+Übereinstimmung und Läufe von V2, die Urteile ohne Zitate; keine Texte.

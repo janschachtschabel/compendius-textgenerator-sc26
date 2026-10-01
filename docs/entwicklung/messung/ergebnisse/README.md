@@ -1,6 +1,6 @@
-# Ergebnisse der Messungen M1 bis M48
+# Ergebnisse der Messungen M1 bis M49
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 01.10.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 02.10.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
 [Entscheidungsvorlage](../../07-entscheidungsvorlage.md), von [Alt und neu](../../01-alt-und-neu.md) und von
@@ -62,6 +62,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M46 | Was hält der Prompt-Cache des Anbieters, den die b-api durchreicht, und wie nutzt ihn der Dienst? | nur eine geteilte System-Nachricht, ein geteilter Anfang der User-Nachricht nie; seit D69 trägt die System-Nachricht den Bausteinkatalog und den Überblick der Bausteine: in `best-coverage-generated` rund 32.000 bis 36.000 Eingabe-Tokens je Kompendium aus dem Cache, die Zuordnung am Gold gleich gut | – | `m46_cache_probe.json`, `m46_zuordnung_ablauf.json`, `m46_zuordnung_gold.json`, `m46_kompendium.json` |
 | M47 | Trifft `best-coverage-generated` Themen mit Aspekt („OER-Förderungen“)? | ja: Passung 4,81 statt 1,81 von 5, Nutzen 4,81 statt 2,12, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler; Teil 1 rund 28 s und 91.000 Tokens | – | `m47_abdeckung.json` |
 | M48 | Welches Profil für welche Art von Thema: einfach, Sammelthema, mit Aspekt? | nur `best-coverage-generated` hält jedes Thema (Passung 5,0; die anderen bei Sammelthemen 1,3 bis 3,0, bei Aspekten 1,0 bis 1,7), Nutzen 4,5, keine schweren Fehler, 84 % Modellwissen; Teil 1 im Median 1,6 s / 6,1 s / 18 s / 29 s / 37 s und 0 / 580 / 61.060 / 82.335 / 101.150 Tokens | – | `m48_profilvergleich.json` |
+| M49 | Was hilft den Profilen unter `best-coverage-generated` an den Problemstellen von M48? | ein Hinweis auf das passende Profil (V3) ohne Fehlalarm bei Themen mit eigenem Artikel; eine unlesbare Antwort der Zuordnung neu fragen (V4); drei Übersichten finden jede Übersicht, aber breitere (V1); `best-quality-generated` zum angefragten Thema hebt die Passung bei Sammelthemen und Aspekten um 0,5 und 0,7 (V2), bleibt weit unter `best-coverage-generated` | – | `m49_profilverbesserungen.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

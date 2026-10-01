@@ -3,7 +3,8 @@ mc_kompendium_profil.py as A to E in a seeded random order, without citation num
 to the blocks 1-4 and 8-10 of sc26 as in M47. One sheet per kind of topic (simple, group, aspect); the sheets, the key
 and the instructions go into one folder outside the repository; the instructions are those below.
 
-Usage: python mc_profilvergleich_boegen.py <runs.json> <folder>
+Usage: python mc_profilvergleich_boegen.py <runs.json> <folder> [--variants=a,b,c] [--seed=48]
+  --variants: the variants of the runs to compare, in their order (M49: three); default the five profiles of M48
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ KINDS = {
 }
 KEPT = ("1 · ", "2 · ", "3 · ", "4 · ", "8 · ", "9 · ", "10 · ")
 LETTERS = "ABCDE"
+COUNT_WORDS = {2: "zwei", 3: "drei", 4: "vier", 5: "fünf"}
 NO_TEXT = "*(Kein Text: Das Verfahren lieferte zu diesem Thema nichts.)*"
 INSTRUCTIONS = """Du bist Fachgutachterin oder Fachgutachter für Unterrichtsmaterial. Die Datei, deren Pfad du bekommst, enthält zu
 drei Themen je fünf Texte (A bis E). Jeder Text ist ein Auszug aus einem Kompendium für Lehrkräfte: die Bausteine 1
@@ -67,26 +69,36 @@ def excerpt(text: str) -> str:
     return "\n\n".join("#### " + b for b in blocks if b.startswith(KEPT))
 
 
+def instructions(count: int) -> str:
+    """The instructions for ``count`` texts per topic; for five the words of M48."""
+    letters = LETTERS[:count]
+    text = INSTRUCTIONS.replace("je fünf Texte (A bis E)", f"je {COUNT_WORDS[count]} Texte (A bis {letters[-1]})")
+    return text.replace('"B": {…}, "C": {…}, "D": {…}, "E": {…}}', ", ".join(f'"{x}": {{…}}' for x in letters[1:]) + "}")
+
+
 def main() -> None:
-    runs = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-    folder = Path(sys.argv[2])
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    options = dict(a[2:].split("=", 1) for a in sys.argv[1:] if a.startswith("--"))
+    variants = tuple(options["variants"].split(",")) if "variants" in options else PROFILES
+    runs = json.loads(Path(args[0]).read_text(encoding="utf-8"))
+    folder = Path(args[1])
     folder.mkdir(parents=True, exist_ok=True)
     found = {(r["topic"], r["variant"]): r for r in runs}
-    rng = random.Random(48)
+    rng = random.Random(int(options.get("seed", 48)))
     key: dict[str, dict[str, str]] = {}
     for number, (kind, topics) in enumerate(KINDS.items(), start=1):
         parts: list[str] = []
         for topic in topics:
-            order = list(PROFILES)
+            order = list(variants)
             rng.shuffle(order)
-            key[topic] = dict(zip(LETTERS, order, strict=True))
+            key[topic] = dict(zip(LETTERS[: len(variants)], order, strict=True))
             parts.append(f"## Thema: {topic}\n")
             for letter, profile in key[topic].items():
                 run = found.get((topic, profile), {})  # a profile that found no topic wrote nothing: graded as such
                 parts.append(f"### Text {letter}\n\n{excerpt(run['text']) if 'text' in run else NO_TEXT}\n")
         (folder / f"bogen_{number}_{kind}.md").write_text("\n".join(parts), encoding="utf-8")
     (folder / "schluessel.json").write_text(json.dumps(key, ensure_ascii=False, indent=1), encoding="utf-8")
-    (folder / "anleitung.md").write_text(INSTRUCTIONS, encoding="utf-8")
+    (folder / "anleitung.md").write_text(instructions(len(variants)), encoding="utf-8")
     print(f"{len(key)} Themen, {sum(len(v) for v in key.values())} Texte, {len(KINDS)} Bögen")
 
 

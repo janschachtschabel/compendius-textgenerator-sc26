@@ -89,6 +89,7 @@ def main() -> None:
                 "sources": [source.title for source in result.sources],
                 "fallbacks": generation.get("fallbacks"), "prompts": (result.frontmatter.get("llm") or {}).get("prompts"),
                 "note": llm.get("note"), "matching_fallbacks": (llm.get("matching") or {}).get("fallbacks"),
+                "matching_asked_again": (llm.get("matching") or {}).get("asked_again"),
                 "target_length": request.target_length,
                 "text": text,
             })

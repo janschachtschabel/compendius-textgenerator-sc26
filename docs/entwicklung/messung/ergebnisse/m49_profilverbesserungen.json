@@ -1,0 +1,2254 @@
+{
+ "note": "M49 (02.10.2026): proposals for the profiles below best-coverage-generated, measured on the prototype branch m49-proben (local, b01357c). V1/V3: question N with prompt v1 (main), v2 (up to three overviews, deckt_ab) and v2b (exactly three), 54 topics x 2 rounds; V3 word rule on the 94 gold queries of the article choice and the nine topics of M48 with the rules' resolution; V2: blind comparison of best-quality-generated (M48), the prototype writing about the topic as asked, and best-coverage-generated (M48), two Claude raters; V4: unit tests and the batches asked again in the V2 runs. No texts, no quotes of the errors.",
+ "n_probe": {
+  "m49_n_v1.json": {
+   "tokens_per_call": 562,
+   "kinds": {
+    "M48 einfach": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 0,
+     "covers_known": 0
+    },
+    "M48 Sammelthema": {
+     "found": 5,
+     "n": 6,
+     "covers_true": 0,
+     "covers_known": 0
+    },
+    "M48 Aspekt": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 0,
+     "covers_known": 0
+    },
+    "M37 Sammel- und Mischthema": {
+     "found": 38,
+     "n": 50,
+     "covers_true": 0,
+     "covers_known": 0
+    },
+    "gewöhnlich (M39)": {
+     "found": 40,
+     "n": 40,
+     "covers_true": 0,
+     "covers_known": 0
+    }
+   }
+  },
+  "m49_n_v2.json": {
+   "tokens_per_call": 694,
+   "kinds": {
+    "M48 einfach": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 6,
+     "covers_known": 6
+    },
+    "M48 Sammelthema": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 4,
+     "covers_known": 6
+    },
+    "M48 Aspekt": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 0,
+     "covers_known": 6
+    },
+    "M37 Sammel- und Mischthema": {
+     "found": 41,
+     "n": 50,
+     "covers_true": 31,
+     "covers_known": 50
+    },
+    "gewöhnlich (M39)": {
+     "found": 40,
+     "n": 40,
+     "covers_true": 40,
+     "covers_known": 40
+    }
+   }
+  },
+  "m49_n_v2b.json": {
+   "tokens_per_call": 774,
+   "kinds": {
+    "M48 einfach": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 6,
+     "covers_known": 6
+    },
+    "M48 Sammelthema": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 3,
+     "covers_known": 6
+    },
+    "M48 Aspekt": {
+     "found": 6,
+     "n": 6,
+     "covers_true": 0,
+     "covers_known": 6
+    },
+    "M37 Sammel- und Mischthema": {
+     "found": 50,
+     "n": 50,
+     "covers_true": 21,
+     "covers_known": 50
+    },
+    "gewöhnlich (M39)": {
+     "found": 40,
+     "n": 40,
+     "covers_true": 40,
+     "covers_known": 40
+    }
+   }
+  }
+ },
+ "v3_word_rule": {
+  "per_kind": {
+   "normal": {
+    "hint": 0,
+    "queries": 24
+   },
+   "zusatz": {
+    "hint": 0,
+    "queries": 8
+   },
+   "mehrdeutig_mit_fach": {
+    "hint": 4,
+    "queries": 38
+   },
+   "mehrdeutig_ohne_kontext": {
+    "hint": 0,
+    "queries": 3
+   },
+   "variante": {
+    "hint": 1,
+    "queries": 12
+   },
+   "ohne_eigenen_artikel": {
+    "hint": 7,
+    "queries": 9
+   },
+   "M48 einfach": {
+    "hint": 0,
+    "queries": 3
+   },
+   "M48 Sammelthema": {
+    "hint": 3,
+    "queries": 3
+   },
+   "M48 Aspekt": {
+    "hint": 3,
+    "queries": 3
+   }
+  },
+  "rows": [
+   {
+    "kind": "normal",
+    "query": "Barockliteratur",
+    "title": "Barockliteratur",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Bruchrechnung",
+    "title": "Bruchrechnung",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Demokratie",
+    "title": "Demokratie",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Französische Revolution",
+    "title": "Französische Revolution",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Klimawandel",
+    "title": "Klimawandel",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Optik",
+    "title": "Optik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Photosynthese",
+    "title": "Photosynthese",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Programmiersprache",
+    "title": "Programmiersprache",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Säure-Base-Konzepte",
+    "title": "Säure-Base-Konzepte",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Sinfonie",
+    "title": "Sinfonie",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Plattentektonik",
+    "title": "Plattentektonik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Ökosystem",
+    "title": "Ökosystem",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Atommodell",
+    "title": "Liste der Atommodelle",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Industrielle Revolution",
+    "title": "Industrielle Revolution",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Elektrischer Strom",
+    "title": "Elektrischer Strom",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Wasserkreislauf",
+    "title": "Wasserkreislauf",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Römisches Reich",
+    "title": "Römisches Reich",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Lineare Funktion",
+    "title": "Lineare Funktion",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Zelle (Biologie)",
+    "title": "Zelle (Biologie)",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Gedicht",
+    "title": "Lyrik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Optik in Klasse 7",
+    "title": "Optik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Physik: Optik (Sek I)",
+    "title": "Optik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Photosynthese für die Grundschule",
+    "title": "Photosynthese",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Bruchrechnung Klasse 6",
+    "title": "Bruchrechnung",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Demokratie in der Sekundarstufe I",
+    "title": "Demokratie",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Thema: Klimawandel",
+    "title": "Klimawandel",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Geschichte: Französische Revolution",
+    "title": "Französische Revolution",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "zusatz",
+    "query": "Plattentektonik (Oberstufe)",
+    "title": "Plattentektonik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Welle",
+    "title": "Welle",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Leiter",
+    "title": "Leiter (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Strom",
+    "title": "Strom (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Leistung",
+    "title": "Leistung (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Arbeit",
+    "title": "Arbeit (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Biologie: Zelle",
+    "title": "Zelle (Biologie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Chemie: Bindung",
+    "title": "Chemische Bindung",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Mathematik: Funktion",
+    "title": "Funktion (Mathematik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Mathematik: Satz",
+    "title": "Satz (Mathematik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Deutsch: Satz",
+    "title": "Münzsatz",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Musik: Takt",
+    "title": "Takt (Musik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Baum",
+    "title": "Baum",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Maus",
+    "title": "Kleinsäuger",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Virus",
+    "title": "Viren",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Erdkunde: Strom",
+    "title": "Elektrischer Strom",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Geschichte: Wende",
+    "title": "Wende (Einheit)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_ohne_kontext",
+    "query": "Strom",
+    "title": "Elektrischer Strom",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_ohne_kontext",
+    "query": "Zelle",
+    "title": "Zelle (Biologie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_ohne_kontext",
+    "query": "Welle",
+    "title": "Welle",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Fotosynthese",
+    "title": "Photosynthese",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "photosynthese",
+    "title": "Photosynthese",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Lichtlehre",
+    "title": "Ernst Adalbert Voretzsch",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "variante",
+    "query": "Klimaerwärmung",
+    "title": "Globale Erwärmung",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "DNA",
+    "title": "Desoxyribonukleinsäure",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "EU",
+    "title": "Europäische Union",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Bruchrechnen",
+    "title": "Bruchrechnung",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Lineare Funktionen",
+    "title": "Lineare Funktion",
+    "method": "variant",
+    "hint": false
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Gewaltenteilung in Deutschland",
+    "title": "Gewaltenteilung",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Die Französische Revolution",
+    "title": "Französische Revolution",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Photosynthese bei Pflanzen",
+    "title": "Photosynthese",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Kreislauf des Wassers",
+    "title": "Wasserkreislauf",
+    "method": "variant",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Feld",
+    "title": "Feld (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Masse",
+    "title": "Masse (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Druck",
+    "title": "Druck (Physik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Chemie: Lösung",
+    "title": "Lösung (Chemie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Chemie: Base",
+    "title": "Basen (Chemie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Mathematik: Menge",
+    "title": "Menge (Mathematik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Schleife",
+    "title": "Induktionsschleife",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Bus",
+    "title": "Omnibus",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Musik: Note",
+    "title": "Note (Musik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Musik: Satz",
+    "title": "Satz (Musikstück)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Deutsch: Fall",
+    "title": "Fall Blau",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Biologie: Art",
+    "title": "Art (Biologie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Geschichte: Restauration",
+    "title": "Restauration (Geschichte)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Treibhauseffekt",
+    "title": "Treibhauseffekt",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Weimarer Republik",
+    "title": "Weimarer Republik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Satz des Pythagoras",
+    "title": "Satz des Pythagoras",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "normal",
+    "query": "Physik: Energie",
+    "title": "Energie",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Säure",
+    "title": "Säuren",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Klimawandels",
+    "title": "Klimawandel",
+    "method": "variant",
+    "hint": false
+   },
+   {
+    "kind": "variante",
+    "query": "Evolutionstheorie",
+    "title": "Evolutionstheorie",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Aufbau der Atome",
+    "title": "Atom",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Ursachen der Französischen Revolution",
+    "title": "Französische Revolution",
+    "method": "variant",
+    "hint": true
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Kreislauf des Kohlenstoffs",
+    "title": "Kohlenstoffzyklus",
+    "method": "variant",
+    "hint": true
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Spannung",
+    "title": "Elektrische Spannung",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Physik: Linse",
+    "title": "Linse (Botanik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Chemie: Element",
+    "title": "Chemisches Element",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Musik: Intervall",
+    "title": "Intervall (Musik)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Deutsch: Artikel",
+    "title": "Artikel (Wortart)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Erdkunde: Delta",
+    "title": "Delta",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Biologie: Stamm",
+    "title": "Stamm (Biologie)",
+    "method": "disambiguation",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Informatik: Netzwerk",
+    "title": "Netzwerk",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "mehrdeutig_mit_fach",
+    "query": "Mathematik: Ableitung",
+    "title": "Differentialrechnung",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "variante",
+    "query": "Vulkane",
+    "title": "Vulkan",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Ursachen des Ersten Weltkriegs",
+    "title": "Erster Weltkrieg",
+    "method": "suggestion",
+    "hint": true
+   },
+   {
+    "kind": "ohne_eigenen_artikel",
+    "query": "Aufbau der Zelle",
+    "title": "Zelle (Biologie)",
+    "method": "disambiguation",
+    "hint": true
+   },
+   {
+    "kind": "M48 einfach",
+    "query": "Optik",
+    "title": "Optik",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "M48 einfach",
+    "query": "Photosynthese",
+    "title": "Photosynthese",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "M48 einfach",
+    "query": "Französische Revolution",
+    "title": "Französische Revolution",
+    "method": "title",
+    "hint": false
+   },
+   {
+    "kind": "M48 Sammelthema",
+    "query": "Dichter aus dem Mittelalter",
+    "title": "Sangspruchdichtung",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "M48 Sammelthema",
+    "query": "Komponisten der Klassik",
+    "title": "Max Richter (Komponist)",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "M48 Sammelthema",
+    "query": "Philosophen der Aufklärung",
+    "title": "Böse Philosophen",
+    "method": "suggestion",
+    "hint": true
+   },
+   {
+    "kind": "M48 Aspekt",
+    "query": "OER-Förderungen",
+    "title": "Open Educational Resources",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "M48 Aspekt",
+    "query": "Inklusion im Sportunterricht",
+    "title": "Sportdidaktik",
+    "method": "search",
+    "hint": true
+   },
+   {
+    "kind": "M48 Aspekt",
+    "query": "Künstliche Intelligenz im Unterricht",
+    "title": "Halluzination (Künstliche Intelligenz)",
+    "method": "search",
+    "hint": true
+   }
+  ]
+ },
+ "v2": {
+  "grades": {
+   "einfach": {
+    "bqg": {
+     "passung": 4.67,
+     "nutzen": 3.17,
+     "vollstaendigkeit": 2.5,
+     "lesbarkeit": 3.17,
+     "schwere_fehler": 0,
+     "leichte_fehler": 1.67
+    },
+    "bqg-thema": {
+     "passung": 4.17,
+     "nutzen": 3.33,
+     "vollstaendigkeit": 2.33,
+     "lesbarkeit": 3.17,
+     "schwere_fehler": 0.17,
+     "leichte_fehler": 1.5
+    },
+    "bcg": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 4.67,
+     "lesbarkeit": 4,
+     "schwere_fehler": 0,
+     "leichte_fehler": 1
+    }
+   },
+   "Sammelthema": {
+    "bqg": {
+     "passung": 2.83,
+     "nutzen": 3.17,
+     "vollstaendigkeit": 2.17,
+     "lesbarkeit": 3,
+     "schwere_fehler": 0.33,
+     "leichte_fehler": 0.83
+    },
+    "bqg-thema": {
+     "passung": 3.33,
+     "nutzen": 3.33,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 3.17,
+     "schwere_fehler": 0.17,
+     "leichte_fehler": 0.83
+    },
+    "bcg": {
+     "passung": 4.83,
+     "nutzen": 4.67,
+     "vollstaendigkeit": 4.5,
+     "lesbarkeit": 4,
+     "schwere_fehler": 0,
+     "leichte_fehler": 1.17
+    }
+   },
+   "Aspekt": {
+    "bqg": {
+     "passung": 1.5,
+     "nutzen": 2.17,
+     "vollstaendigkeit": 1.33,
+     "lesbarkeit": 3,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.67
+    },
+    "bqg-thema": {
+     "passung": 2.17,
+     "nutzen": 2.33,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 3,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.83
+    },
+    "bcg": {
+     "passung": 4.83,
+     "nutzen": 4.5,
+     "vollstaendigkeit": 4.83,
+     "lesbarkeit": 4.33,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.33
+    }
+   },
+   "alle": {
+    "bqg": {
+     "passung": 3,
+     "nutzen": 2.83,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 3.06,
+     "schwere_fehler": 0.11,
+     "leichte_fehler": 1.06
+    },
+    "bqg-thema": {
+     "passung": 3.22,
+     "nutzen": 3,
+     "vollstaendigkeit": 2.11,
+     "lesbarkeit": 3.11,
+     "schwere_fehler": 0.11,
+     "leichte_fehler": 1.06
+    },
+    "bcg": {
+     "passung": 4.89,
+     "nutzen": 4.72,
+     "vollstaendigkeit": 4.67,
+     "lesbarkeit": 4.11,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.83
+    }
+   }
+  },
+  "agreement": {
+   "passung": {
+    "same": 21,
+    "one_apart": 6,
+    "two_or_more": 0,
+    "pairs": 27
+   },
+   "nutzen": {
+    "same": 19,
+    "one_apart": 8,
+    "two_or_more": 0,
+    "pairs": 27
+   },
+   "vollstaendigkeit": {
+    "same": 21,
+    "one_apart": 6,
+    "two_or_more": 0,
+    "pairs": 27
+   },
+   "lesbarkeit": {
+    "same": 20,
+    "one_apart": 7,
+    "two_or_more": 0,
+    "pairs": 27
+   }
+  },
+  "runs": {
+   "einfach": {
+    "bqg": {
+     "runs": 3,
+     "seconds": 28.7,
+     "seconds_span": [
+      27.6,
+      32.3
+     ],
+     "tokens": 82141,
+     "tokens_span": [
+      51541,
+      87677
+     ],
+     "cached": 37262,
+     "chars": 19572,
+     "blocks": 8,
+     "llm_blocks": 8,
+     "marked": 49,
+     "model_share": 0.363,
+     "model_share_span": [
+      0.217,
+      0.42
+     ],
+     "cited": 89,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    },
+    "bqg-thema": {
+     "runs": 3,
+     "seconds": 28.5,
+     "seconds_span": [
+      27.3,
+      31.3
+     ],
+     "tokens": 85143,
+     "tokens_span": [
+      36095,
+      87208
+     ],
+     "cached": 13816,
+     "chars": 18457,
+     "blocks": 7,
+     "llm_blocks": 7,
+     "marked": 35,
+     "model_share": 0.277,
+     "model_share_span": [
+      0.23,
+      0.45
+     ],
+     "cited": 84,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    },
+    "bcg": {
+     "runs": 3,
+     "seconds": 37.1,
+     "seconds_span": [
+      36.0,
+      37.2
+     ],
+     "tokens": 85732,
+     "tokens_span": [
+      76083,
+      111081
+     ],
+     "cached": 50936,
+     "chars": 55527,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 261,
+     "model_share": 0.796,
+     "model_share_span": [
+      0.794,
+      0.837
+     ],
+     "cited": 56,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    }
+   },
+   "Sammelthema": {
+    "bqg": {
+     "runs": 3,
+     "seconds": 29.0,
+     "seconds_span": [
+      28.7,
+      29.6
+     ],
+     "tokens": 84183,
+     "tokens_span": [
+      57731,
+      87718
+     ],
+     "cached": 13816,
+     "chars": 18693,
+     "blocks": 8,
+     "llm_blocks": 8,
+     "marked": 32,
+     "model_share": 0.239,
+     "model_share_span": [
+      0.19,
+      0.244
+     ],
+     "cited": 100,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 0
+    },
+    "bqg-thema": {
+     "runs": 3,
+     "seconds": 33.3,
+     "seconds_span": [
+      25.3,
+      37.4
+     ],
+     "tokens": 84803,
+     "tokens_span": [
+      51771,
+      87165
+     ],
+     "cached": 13816,
+     "chars": 18394,
+     "blocks": 7,
+     "llm_blocks": 7,
+     "marked": 26,
+     "model_share": 0.221,
+     "model_share_span": [
+      0.185,
+      0.258
+     ],
+     "cited": 98,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    },
+    "bcg": {
+     "runs": 3,
+     "seconds": 34.8,
+     "seconds_span": [
+      34.5,
+      41.2
+     ],
+     "tokens": 106695,
+     "tokens_span": [
+      87712,
+      109566
+     ],
+     "cached": 52621,
+     "chars": 55686,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 283,
+     "model_share": 0.875,
+     "model_share_span": [
+      0.825,
+      0.894
+     ],
+     "cited": 38,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    }
+   },
+   "Aspekt": {
+    "bqg": {
+     "runs": 3,
+     "seconds": 29.8,
+     "seconds_span": [
+      28.8,
+      30.0
+     ],
+     "tokens": 82335,
+     "tokens_span": [
+      50873,
+      83330
+     ],
+     "cached": 44421,
+     "chars": 26337,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 54,
+     "model_share": 0.304,
+     "model_share_span": [
+      0.275,
+      0.503
+     ],
+     "cited": 103,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 0
+    },
+    "bqg-thema": {
+     "runs": 3,
+     "seconds": 29.7,
+     "seconds_span": [
+      29.0,
+      30.6
+     ],
+     "tokens": 78626,
+     "tokens_span": [
+      46942,
+      81402
+     ],
+     "cached": 13816,
+     "chars": 24658,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 55,
+     "model_share": 0.362,
+     "model_share_span": [
+      0.252,
+      0.398
+     ],
+     "cited": 112,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    },
+    "bcg": {
+     "runs": 3,
+     "seconds": 37.1,
+     "seconds_span": [
+      36.5,
+      39.7
+     ],
+     "tokens": 101150,
+     "tokens_span": [
+      91063,
+      104602
+     ],
+     "cached": 50077,
+     "chars": 61737,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 287,
+     "model_share": 0.845,
+     "model_share_span": [
+      0.816,
+      0.878
+     ],
+     "cited": 45,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    }
+   },
+   "alle": {
+    "bqg": {
+     "runs": 9,
+     "seconds": 29.0,
+     "seconds_span": [
+      27.6,
+      32.3
+     ],
+     "tokens": 82335,
+     "tokens_span": [
+      50873,
+      87718
+     ],
+     "cached": 37262,
+     "chars": 19987,
+     "blocks": 8,
+     "llm_blocks": 8,
+     "marked": 43,
+     "model_share": 0.275,
+     "model_share_span": [
+      0.19,
+      0.503
+     ],
+     "cited": 93,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 3
+    },
+    "bqg-thema": {
+     "runs": 9,
+     "seconds": 29.7,
+     "seconds_span": [
+      25.3,
+      37.4
+     ],
+     "tokens": 81402,
+     "tokens_span": [
+      36095,
+      87208
+     ],
+     "cached": 13816,
+     "chars": 18985,
+     "blocks": 8,
+     "llm_blocks": 8,
+     "marked": 35,
+     "model_share": 0.258,
+     "model_share_span": [
+      0.185,
+      0.45
+     ],
+     "cited": 103,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 9
+    },
+    "bcg": {
+     "runs": 9,
+     "seconds": 37.1,
+     "seconds_span": [
+      34.5,
+      41.2
+     ],
+     "tokens": 101150,
+     "tokens_span": [
+      76083,
+      111081
+     ],
+     "cached": 50936,
+     "chars": 57378,
+     "blocks": 10,
+     "llm_blocks": 10,
+     "marked": 267,
+     "model_share": 0.837,
+     "model_share_span": [
+      0.794,
+      0.894
+     ],
+     "cited": 46,
+     "generation_fallbacks": 0,
+     "heading_as_asked": 9
+    }
+   }
+  },
+  "key": {
+   "Optik": {
+    "A": "bcg",
+    "B": "bqg-thema",
+    "C": "bqg"
+   },
+   "Photosynthese": {
+    "A": "bcg",
+    "B": "bqg",
+    "C": "bqg-thema"
+   },
+   "Französische Revolution": {
+    "A": "bcg",
+    "B": "bqg",
+    "C": "bqg-thema"
+   },
+   "Dichter aus dem Mittelalter": {
+    "A": "bqg-thema",
+    "B": "bqg",
+    "C": "bcg"
+   },
+   "Komponisten der Klassik": {
+    "A": "bqg",
+    "B": "bqg-thema",
+    "C": "bcg"
+   },
+   "Philosophen der Aufklärung": {
+    "A": "bcg",
+    "B": "bqg-thema",
+    "C": "bqg"
+   },
+   "OER-Förderungen": {
+    "A": "bqg-thema",
+    "B": "bqg",
+    "C": "bcg"
+   },
+   "Inklusion im Sportunterricht": {
+    "A": "bqg-thema",
+    "B": "bqg",
+    "C": "bcg"
+   },
+   "Künstliche Intelligenz im Unterricht": {
+    "A": "bqg",
+    "B": "bqg-thema",
+    "C": "bcg"
+   }
+  },
+  "raters": [
+   {
+    "Optik": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Mikrooptik umfasst Bauteile und Strukturen im Mikrometer- bis Millimeterbereich, meist größer als oder vergleichbar mit der Wellenlänge; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 5,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Mikrooptik umfasst Bauteile und Strukturen im Mikrometer- bis Millimeterbereich, meist größer als oder vergleichbar mit der Wellenlänge; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Mikrooptik umfasst Bauteile und Strukturen im Mikrometer- bis Millimeterbereich, meist größer als oder vergleichbar mit der Wellenlänge; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Diesen Begriff gibt es nicht; gemeint ist der natürliche Tag-Nacht- bzw. Hell-Dunkel-Rhythmus.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Photosynthese": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": []
+     },
+     "B": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Dual-Use meint die Verwendbarkeit für zivile und militärische bzw. nützliche und missbräuchliche Zwecke; die Nutzung von Biomasse für Nahrung oder Energie ist kein Dual-Use.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Im Absorptionsspektrometer wird die durchgelassene (transmittierte) Lichtmenge gemessen, keine Emission; rotes und blaues Licht wird vom Chlorophyll absorbiert.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Erstes stabiles Fixierungsprodukt ist 3-Phosphoglycerat; G3P steht üblicherweise für Glycerinaldehyd-3-phosphat, das erst nach der Reduktion entsteht (widerspricht auch Abschnitt 3 des Textes).",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "δ13C ist die Abweichung des 13C/12C-Verhältnisses einer Probe von einem Referenzstandard (VPDB) in Promille, nicht das Isotopenverhältnis selbst.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Französische Revolution": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Die Monarchie schaffte der neu zusammengetretene Nationalkonvent ab, nicht die Nationalversammlung; der Text unterscheidet beide Institutionen selbst.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die École normale wurde im Oktober 1794 per Dekret gegründet, aber erst im Januar 1795 eröffnet (Kurse bis Mai 1795).",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 5,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Die Abschaffung der Sklaverei am 4. Februar 1794 beschloss der Nationalkonvent, nicht die Nationalversammlung.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Am 9. Thermidor (27. Juli 1794) wurde Robespierre gestürzt; das Prairial-Gesetz wurde erst am 14. Thermidor (1. August 1794) aufgehoben.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Massenertränkungen (Noyades) sind vor allem für Nantes belegt; in Lyon und Toulon wurden die Verurteilten überwiegend erschossen oder guillotiniert.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Dichter aus dem Mittelalter": {
+     "A": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 4,
+      "fehler": []
+     },
+     "B": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Walther ist auch außerhalb seiner Gedichte belegt: Reiserechnung Bischof Wolfgers von Passau (1203, Geld für einen Pelzrock); zudem nennen ihn Zeitgenossen wie Gottfried und Wolfram.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "„Des Minnesangs Frühling“ (kurz MF) ist eine einzige Edition; der Text macht daraus zwei verschiedene Ausgaben.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Komponisten der Klassik": {
+     "A": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Die Durparallele ersetzt in Moll nur die Dominante als Ziel der Exposition; auch ein Mollsatz schließt in der Tonika. Die Verknüpfung mit dem Satzschluss ist missverständlich.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Liest sich, als ende ein Mollsatz in der Durparallele; diese ersetzt nur die Dominante als Ziel der Exposition, der Schluss steht in der Tonika.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Im Pariser Buffonistenstreit (1752–1754) standen die französische Tragédie lyrique (Lully, Rameau) und die italienische Opera buffa gegeneinander, nicht die italienische Opera seria.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Die Opera buffa entstand schon im frühen 18. Jahrhundert in Neapel; der Text nennt selbst Pergolesis La serva padrona von 1733.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Im Buffonistenstreit ging es um die französische Tragédie lyrique gegen die italienische Opera buffa, nicht um die Opera seria.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Philosophen der Aufklärung": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Kant starb erst am 12. Februar 1804; Rinks Ausgabe „Über Pädagogik“ erschien 1803 noch zu Kants Lebzeiten.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "1766 fiel in die schwedische Freiheitszeit (1719–1772) mit schwacher Krone und Vorrang der Stände; die Königsmacht stärkte erst Gustav III. ab 1772 wieder.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 2,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Das US-Repräsentantenhaus wird in Einerwahlkreisen nach Mehrheitswahl gewählt; nur die Verteilung der Sitze auf die Staaten richtet sich nach der Einwohnerzahl.",
+        "schwere": "schwer"
+       },
+       {
+        "grund": "Kant führte den Empirismus nicht fort, sondern verband und begrenzte Rationalismus und Empirismus in seiner Transzendentalphilosophie; Lockes Empirismus führten Berkeley und Hume weiter.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "OER-Förderungen": {
+     "A": {
+      "passung": 1,
+      "nutzen": 2,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "B": {
+      "passung": 1,
+      "nutzen": 2,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 4,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": []
+     }
+    },
+    "Inklusion im Sportunterricht": {
+     "A": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "B": {
+      "passung": 1,
+      "nutzen": 2,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": []
+     }
+    },
+    "Künstliche Intelligenz im Unterricht": {
+     "A": {
+      "passung": 2,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Im Amtsblatt veröffentlicht wurde die Verordnung am 12. Juli 2024 (unterzeichnet am 13. Juni, in Kraft seit 1. August 2024).",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die IEA verglich den gesamten Verbrauch der Rechenzentren 2026 (über 1.000 TWh) mit Japan; den Zuwachs bezifferte sie mit etwa Schweden bis Deutschland.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 2,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Erlassen am 13. Juni 2024, im Amtsblatt veröffentlicht aber erst am 12. Juli 2024.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die EU-Konformitätserklärung (Art. 47) verlangt die Verordnung nur für Hochrisiko-KI-Systeme, nicht für KI-Systeme allgemein.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Laut der Time-Recherche beendete Sama die Arbeit für OpenAI im Februar 2022 vorzeitig, nicht OpenAI.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    }
+   },
+   {
+    "Optik": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Mikrooptik bezeichnet Bauteile im Mikrometerbereich, die meist größer als die Wellenlänge oder mit ihr vergleichbar sind; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Mikrooptik bezeichnet Bauteile im Mikrometerbereich, die meist größer als die Wellenlänge oder mit ihr vergleichbar sind; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 4,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Mikrooptik bezeichnet Bauteile im Mikrometerbereich, die meist größer als die Wellenlänge oder mit ihr vergleichbar sind; Strukturen weit unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Photosynthese": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": []
+     },
+     "B": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Dual-Use meint die Doppelverwendbarkeit für zivile und militärische bzw. missbräuchliche Zwecke; die Wahl zwischen Nahrungs- und Energienutzung von Biomasse ist kein Dual-Use.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Im Absorptionsversuch misst der Detektor das durchgelassene Licht (Transmission), keine Emission der Probe.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Erstes stabiles Produkt der CO₂-Fixierung bei C₃-Pflanzen ist 3-Phosphoglycerat; G3P entsteht erst durch dessen Reduktion (der Text nennt in Baustein 3 selbst 3-Phosphoglycerat).",
+        "schwere": "schwer"
+       },
+       {
+        "grund": "δ13C ist die Abweichung des 13C/12C-Verhältnisses einer Probe von einem Standard (VPDB) in Promille, nicht das Isotopenverhältnis selbst.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Französische Revolution": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Die Monarchie schaffte der am 20./21. September 1792 zusammengetretene Nationalkonvent ab, nicht die Nationalversammlung.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die École normale wurde im Oktober 1794 per Dekret gegründet, ihr Unterricht begann aber erst im Januar 1795.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 5,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Das Fest wurde nicht durchgehend gefeiert; erst 1880 erklärte die Dritte Republik den 14. Juli zum Nationalfeiertag.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die Abschaffung der Sklaverei am 4. Februar 1794 beschloss der Nationalkonvent, nicht die Nationalversammlung.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Am 9. Thermidor (27. Juli 1794) wurde Robespierre gestürzt; das Prairial-Gesetz wurde erst am 14. Thermidor (1. August 1794) aufgehoben.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Massenertränkungen (Noyades) gab es vor allem in Nantes; in Lyon und Toulon wurde überwiegend erschossen oder guillotiniert.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Dichter aus dem Mittelalter": {
+     "A": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "B": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Es gibt ein urkundliches Zeugnis außerhalb der Gedichte, die Reiserechnung Bischof Wolfgers von Erla von 1203; die Aussage ist überzogen.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 4,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Derselbe Titel (Des Minnesangs Frühling, verkürzt Minnesangs Frühling) wird als zwei verschiedene Editionen ausgegeben.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Komponisten der Klassik": {
+     "A": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "B": {
+      "passung": 4,
+      "nutzen": 4,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Die Tonikaparallele ersetzt in Moll die Dominante als Zieltonart der Exposition; ein Mollsatz endet nicht in der Paralleltonart.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Im Buffonistenstreit (1752–1754) standen die französische Tragédie lyrique und die italienische Opera buffa gegeneinander, nicht die Opera seria.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Im Buffonistenstreit (1752–1754) standen die französische Tragédie lyrique und die italienische Opera buffa gegeneinander, nicht die Opera seria.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "Philosophen der Aufklärung": {
+     "A": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Kant starb erst im Februar 1804; Rinks Ausgabe „Über Pädagogik“ erschien 1803 noch zu seinen Lebzeiten.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "1766 lag in der schwedischen Freiheitszeit (1719–1772) mit Vorherrschaft des Reichstags und schwacher Krone; eine absolute Monarchie bestand nicht.",
+        "schwere": "schwer"
+       }
+      ]
+     },
+     "C": {
+      "passung": 2,
+      "nutzen": 3,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Das US-Repräsentantenhaus wird per Mehrheitswahl in Einerwahlkreisen gewählt; nur die Verteilung der Sitze auf die Staaten richtet sich nach der Bevölkerungszahl.",
+        "schwere": "schwer"
+       },
+       {
+        "grund": "Kant führte keinen Empirismus fort, sondern vermittelte kritisch zwischen Rationalismus und Empirismus, angestoßen vor allem durch Hume.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    },
+    "OER-Förderungen": {
+     "A": {
+      "passung": 2,
+      "nutzen": 1,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "B": {
+      "passung": 2,
+      "nutzen": 2,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 2,
+      "fehler": []
+     },
+     "C": {
+      "passung": 4,
+      "nutzen": 3,
+      "vollstaendigkeit": 4,
+      "lesbarkeit": 4,
+      "fehler": []
+     }
+    },
+    "Inklusion im Sportunterricht": {
+     "A": {
+      "passung": 3,
+      "nutzen": 3,
+      "vollstaendigkeit": 3,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Die Entscheidung von 1997 (BVerfGE 96, 288; 1 BvR 9/97) ist ein Beschluss des Ersten Senats, kein Urteil.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 1,
+      "nutzen": 2,
+      "vollstaendigkeit": 1,
+      "lesbarkeit": 3,
+      "fehler": []
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 5,
+      "fehler": []
+     }
+    },
+    "Künstliche Intelligenz im Unterricht": {
+     "A": {
+      "passung": 2,
+      "nutzen": 2,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 4,
+      "fehler": [
+       {
+        "grund": "Die KI-Verordnung ist vom 13. Juni 2024 und wurde erst am 12. Juli 2024 im Amtsblatt veröffentlicht (in Kraft seit 1. August 2024).",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Laut IEA (Electricity 2024) entspricht der Gesamtverbrauch 2026 von über 1.000 TWh etwa dem Japans; der Zuwachs (160 bis 590 TWh) entspricht Schweden bis Deutschland.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "B": {
+      "passung": 2,
+      "nutzen": 2,
+      "vollstaendigkeit": 2,
+      "lesbarkeit": 3,
+      "fehler": [
+       {
+        "grund": "Erlassen am 13. Juni 2024, im Amtsblatt aber erst am 12. Juli 2024 veröffentlicht.",
+        "schwere": "leicht"
+       },
+       {
+        "grund": "Die EU-Konformitätserklärung (Art. 47 KI-Verordnung) ist nur für Hochrisiko-KI-Systeme vorgeschrieben, nicht für KI-Systeme allgemein.",
+        "schwere": "leicht"
+       }
+      ]
+     },
+     "C": {
+      "passung": 5,
+      "nutzen": 5,
+      "vollstaendigkeit": 5,
+      "lesbarkeit": 5,
+      "fehler": [
+       {
+        "grund": "Laut TIME-Recherche (Januar 2023) beendete Sama die Arbeit für OpenAI im Februar 2022 vorzeitig, nicht OpenAI.",
+        "schwere": "leicht"
+       }
+      ]
+     }
+    }
+   }
+  ]
+ },
+ "v2_run_rows": [
+  {
+   "topic": "Optik",
+   "s": 27.3,
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 26968,
+    "completion": 9127,
+    "total": 36095,
+    "calls": 12,
+    "cached": 3454
+   },
+   "chars": 15520,
+   "blocks": 7,
+   "model_chars": 4301,
+   "cited": 84,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Photosynthese",
+   "s": 28.5,
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 71669,
+    "completion": 15539,
+    "total": 87208,
+    "calls": 17,
+    "cached": 13816
+   },
+   "chars": 18457,
+   "blocks": 8,
+   "model_chars": 8311,
+   "cited": 71,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Französische Revolution",
+   "s": 31.3,
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 69849,
+    "completion": 15294,
+    "total": 85143,
+    "calls": 17,
+    "cached": 13816
+   },
+   "chars": 18985,
+   "blocks": 7,
+   "model_chars": 4365,
+   "cited": 110,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "s": 25.3,
+   "heading": "Dichter aus dem Mittelalter",
+   "main": "Deutsche Literatur im Mittelalter",
+   "method": "llm",
+   "tokens": {
+    "prompt": 42899,
+    "completion": 8872,
+    "total": 51771,
+    "calls": 10,
+    "cached": 6908
+   },
+   "chars": 12017,
+   "blocks": 4,
+   "model_chars": 2660,
+   "cited": 58,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "s": 37.4,
+   "heading": "Komponisten der Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 71702,
+    "completion": 15463,
+    "total": 87165,
+    "calls": 16,
+    "cached": 13816
+   },
+   "chars": 19109,
+   "blocks": 7,
+   "model_chars": 4939,
+   "cited": 98,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "s": 33.3,
+   "heading": "Philosophen der Aufklärung",
+   "main": "Aufklärung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 68457,
+    "completion": 16346,
+    "total": 84803,
+    "calls": 17,
+    "cached": 13816
+   },
+   "chars": 18394,
+   "blocks": 8,
+   "model_chars": 3401,
+   "cited": 105,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "OER-Förderungen",
+   "s": 29.0,
+   "heading": "OER-Förderungen",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 34784,
+    "completion": 12158,
+    "total": 46942,
+    "calls": 15,
+    "cached": 6908
+   },
+   "chars": 22708,
+   "blocks": 10,
+   "model_chars": 5724,
+   "cited": 118,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "s": 30.6,
+   "heading": "Inklusion im Sportunterricht",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 62624,
+    "completion": 16002,
+    "total": 78626,
+    "calls": 18,
+    "cached": 13816
+   },
+   "chars": 24658,
+   "blocks": 9,
+   "model_chars": 8927,
+   "cited": 103,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "s": 29.7,
+   "heading": "Künstliche Intelligenz im Unterricht",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 64458,
+    "completion": 16944,
+    "total": 81402,
+    "calls": 19,
+    "cached": 13816
+   },
+   "chars": 27651,
+   "blocks": 10,
+   "model_chars": 11006,
+   "cited": 112,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "matching_asked_again": 0
+  }
+ ],
+ "v4_asked_again_in_v2_runs": 0
+}
