@@ -94,7 +94,7 @@ def test_balanced_lets_the_llm_name_the_entities_with_their_article(with_llm: tu
     assert len(fake.bodies) == 1, "balanced does not check"
 
 
-@pytest.mark.parametrize("preset", ["best-quality", "best-quality-generated"])
+@pytest.mark.parametrize("preset", ["best-quality", "best-quality-generated", "best-coverage-generated"])
 def test_the_best_quality_profiles_name_as_balanced_does(with_llm: tuple[TestClient, FakeBApi], preset: str) -> None:
     client, fake = with_llm
     body = post(client, preset=preset)

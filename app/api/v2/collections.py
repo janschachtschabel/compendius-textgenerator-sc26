@@ -44,7 +44,8 @@ def collection_overview(
     another system can read the tree back from the markdown and look every node up in the repository.
 
     **Profiles.** No profile changes this endpoint, so it takes no ``preset``: part 3 lists what the repository
-    holds, without an LLM in all four profiles (llm-free, balanced, best-quality, best-quality-generated).
+    holds, without an LLM in all five profiles (llm-free, balanced, best-quality, best-quality-generated,
+    best-coverage-generated).
 
     Unknown collection: 404. Repository unreachable: 502; none configured: 503. The endpoint keeps to
     ``REQUEST_TIMEOUT_S``: no request to the repository starts after it, and none waits longer. If it runs out,

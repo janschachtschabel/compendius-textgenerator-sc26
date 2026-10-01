@@ -48,6 +48,17 @@
     "generation": "llm",
     "enrichment": "model-knowledge"
    }
+  },
+  {
+   "id": "best-coverage-generated",
+   "switches": {
+    "article_choice": "llm-thorough",
+    "matcher": "llm",
+    "curriculum_check": "llm",
+    "extraction": "rule-based",
+    "generation": "llm",
+    "enrichment": "model-knowledge-full"
+   }
   }
  ],
  "switches": {
@@ -74,7 +85,8 @@
   ],
   "enrichment": [
    "sources-only",
-   "model-knowledge"
+   "model-knowledge",
+   "model-knowledge-full"
   ],
   "curriculum_check": [
    "rule-based",
@@ -194,6 +206,9 @@
    ],
    "best-quality-generated": [
     "llm"
+   ],
+   "best-coverage-generated": [
+    "llm"
    ]
   }
  },
@@ -206,7 +221,8 @@
    "llm-free": "rule-based",
    "balanced": "rule-based",
    "best-quality": "llm",
-   "best-quality-generated": "llm"
+   "best-quality-generated": "llm",
+   "best-coverage-generated": "llm"
   }
  },
  "lehrplan": {

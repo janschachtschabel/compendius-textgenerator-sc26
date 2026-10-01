@@ -91,7 +91,8 @@ def test_the_llm_writes_the_pairs_when_it_is_asked_and_available(with_llm: TestC
 
 def test_the_llm_method_without_a_configured_llm_is_a_503(client: TestClient) -> None:
     """D53: no b-api is configured in the tests; asking for it is refused instead of answered by the templates."""
-    for asked in ({"method": "llm"}, {"preset": "best-quality"}, {"preset": "best-quality-generated"}):
+    profiles = ("best-quality", "best-quality-generated", "best-coverage-generated")
+    for asked in ({"method": "llm"}, *({"preset": preset} for preset in profiles)):
         answer = client.post("/api/v2/qa", json={"text": TEXT, **asked})
         assert answer.status_code == 503 and "method=llm" in answer.json()["detail"], asked
 

@@ -290,9 +290,10 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     - ``llm-free``: the rules ask from the spaCy parse of each sentence, then about the glossary and the actors;
       the answer is the whole sentence. No LLM, no tokens.
     - ``balanced``: the same rules (D57); the LLM only names the article of a material node.
-    - ``best-quality`` and ``best-quality-generated``: the LLM writes the pairs and can assign educational levels
-      (``levels``); part 1 and the pairs share one deadline and one budget of 180,000 tokens per request
-      (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59). While the b-api is away the rules ask, and ``note`` says why.
+    - ``best-quality``, ``best-quality-generated`` and ``best-coverage-generated``: the LLM writes the pairs and can
+      assign educational levels (``levels``); part 1 and the pairs share one deadline and one budget of 180,000
+      tokens per request (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59). While the b-api is away the rules ask, and
+      ``note`` says why.
 
     ``llm_tokens`` says what the LLM cost, part 1 and the pairs together; it is null when no LLM was called.
     A profile or ``method`` that needs an LLM on a server without one is a 503. A ``text`` or ``topic`` of blanks is a

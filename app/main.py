@@ -450,13 +450,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title="Kompendium-API v2",
         version=__version__,
         description=(
-            "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. Vier Profile (preset) "
+            "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. Fünf Profile (preset) "
             "legen fest, wo ein LLM mitarbeitet: llm-free nie, balanced bei der Wahl der Artikel eines Themas "
             "(Übersicht und Teile, unsichere Artikel) und beim Erkennen von Entitäten, best-quality zusätzlich bei "
             "der Zuordnung der Absätze und der Prüfung der Lehrplanelemente "
             "und bei mehrdeutigen Wörtern, best-quality-generated "
-            "schreibt zudem den Text. Ohne preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced, "
-            "auf einem Server ohne LLM llm-free). "
+            "schreibt zudem den Text, best-coverage-generated schreibt jeden Baustein vollständig zum angefragten "
+            "Thema, wo die Quellen nichts dazu sagen aus Modellwissen. Ohne preset gilt das Profil des Servers "
+            "(PRESET_DEFAULT, ausgeliefert balanced, auf einem Server ohne LLM llm-free). "
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "
             "Status, nie als Text mit HTTP 200. Mit UI_ENABLED zeigt der Server unter /ui/ eine Prüfansicht, auf der "

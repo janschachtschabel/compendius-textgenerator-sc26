@@ -30,6 +30,7 @@ PROFILE_METHODS: dict[str, Method] = {
     "balanced": "rule-based",
     "best-quality": "llm",
     "best-quality-generated": "llm",
+    "best-coverage-generated": "llm",
 }
 LEVEL_PROPERTY = "Bildungsstufe"  # the one level vocabulary the project owns (config/facets.yaml)
 # A level as a caller may write it; the concept URIs of the OpenEduHub vocabularies have under 70 characters
@@ -65,9 +66,9 @@ class QaRequest(RequestModel):
     preset: Preset | None = Field(
         None,
         description="The profile (D55, D57): it picks the method of the pairs when the request names none - llm-free "
-        "and balanced rule-based, best-quality and best-quality-generated llm. It does not change the part 1 of a "
-        "topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped balanced; llm-free on a "
-        "server without an LLM (D68)",
+        "and balanced rule-based, best-quality, best-quality-generated and best-coverage-generated llm. It does not "
+        "change the part 1 of a topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped "
+        "balanced; llm-free on a server without an LLM (D68)",
     )
     article_choice: ArticleChoice | None = Field(
         None,
@@ -75,19 +76,21 @@ class QaRequest(RequestModel):
         "b-api where the rules are unsure, as in a compendium request, and for a material without a topic it names "
         "the article (D47); llm-thorough: as llm, and it also checks a sure choice of a word with several meanings "
         "(D61). Default: rule-based for a topic whatever the profile (D55); for a node the profile's - llm in "
-        "balanced, llm-thorough in best-quality and best-quality-generated, since the rules find the article of a "
-        "material in only about half of the cases. llm and llm-thorough need LLM_ENABLED, else the request is a 503",
+        "balanced, llm-thorough in best-quality, best-quality-generated and best-coverage-generated, since the rules "
+        "find the article of a material in only about half of the cases. llm and llm-thorough need LLM_ENABLED, else "
+        "the request is a 503",
     )
     method: Method | None = Field(
         None,
         description="Default: the profile's (preset, else PRESET_DEFAULT): llm-free and balanced rule-based, "
-        "best-quality and best-quality-generated llm (D57). rule-based needs no model beyond the spaCy parse the "
+        "best-quality, best-quality-generated and best-coverage-generated llm (D57). rule-based needs no model beyond "
+        "the spaCy parse the "
         "image carries: it asks Wann, Wo, Wer, Was, Worauf, Wie viele, Warum and for definitions from the parse of "
         "each sentence, every sentence once; when the text runs out, the glossary and the actors of a compendium "
         "fill up before a sentence is asked a second time (D60), and the answer is the whole sentence; "
         "without the spaCy model it falls back to four templates. llm lets the b-api write the pairs; with a topic "
         "or node, part 1 and the pairs share one token budget and one deadline (the profile's: "
-        "LLM_MAX_TOKENS_PER_REQUEST, in the two best-quality profiles LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59; "
+        "LLM_MAX_TOKENS_PER_REQUEST, in the three best-* profiles LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59; "
         "REQUEST_TIMEOUT_S). llm without a configured LLM is a 503; while the b-api is not available it falls back "
         "to rule-based, and note says why. Over six topics with 20 pairs asked each, two judges found 58 of 95 "
         "rule-based pairs flawless since D60 (M34; 48 of 96 before) and 99 of 120 llm pairs (M30). The stages models "

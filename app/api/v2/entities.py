@@ -277,8 +277,8 @@ def entities(
     Measured on the texts of 40 materials against two blind raters, through this endpoint (M36, gpt-6-luna):
 
     - ``llm-free``: ner and dictionary, no LLM. F1 0.38 at a precision of 0.29, about 0.25 s.
-    - ``balanced``, ``best-quality`` and ``best-quality-generated``: the LLM names the entities (methods llm).
-      F1 0.78 at a precision of 0.70, about 800 tokens and 4 s.
+    - ``balanced``, ``best-quality``, ``best-quality-generated`` and ``best-coverage-generated``: the LLM names the
+      entities (methods llm). F1 0.78 at a precision of 0.70, about 800 tokens and 4 s.
 
     No profile sets ``link_check: llm``: the check raised the precision to 0.94 but dropped a third of the fitting
     entities (F1 0.76), for about 820 tokens and 2 s more; a request that wants a short, sure list sets it. A profile

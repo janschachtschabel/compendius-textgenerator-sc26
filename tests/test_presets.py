@@ -2,9 +2,11 @@
 
 Jan, 2026-09-25: four profiles. llm-free uses no LLM; balanced lets it find the article of the topic while the rules
 assign the paragraphs; best-quality lets it assign them as well; best-quality-generated does everything with it and
-completes the text from the model's own knowledge, marked as such, and rewrites it to read well. balanced is the
-default (PRESET_DEFAULT). A switch the request sets wins over the profile. What needs an LLM on a server without one
-(LLM_ENABLED, B_API_KEY) is refused with a 503 that says so, instead of quietly running the rules.
+completes the text from the model's own knowledge, marked as such, and rewrites it to read well. Jan, 2026-10-01
+(D69): a fifth, best-coverage-generated, writes every block about the topic as asked, from the model's own knowledge
+where the sources say nothing. balanced is the default (PRESET_DEFAULT). A switch the request sets wins over the
+profile. What needs an LLM on a server without one (LLM_ENABLED, B_API_KEY) is refused with a 503 that says so,
+instead of quietly running the rules.
 """
 
 from __future__ import annotations
@@ -44,7 +46,13 @@ def test_an_unknown_default_profile_is_refused_with_the_settings(sample_zims: di
 
 def test_the_presets_are_the_values_of_the_field() -> None:
     assert list(PRESETS) == list(get_args(Preset))
-    assert list(PRESETS) == ["llm-free", "balanced", "best-quality", "best-quality-generated"]
+    assert list(PRESETS) == [
+        "llm-free",
+        "balanced",
+        "best-quality",
+        "best-quality-generated",
+        "best-coverage-generated",
+    ]
     assert all(set(values) == {*SWITCHES, *PART_2_SWITCHES} for values in PRESETS.values())
 
 
@@ -55,6 +63,7 @@ def test_the_presets_are_the_values_of_the_field() -> None:
         ("balanced", ("llm", "hybrid_light", "rule-based", "rule-based", "sources-only")),
         ("best-quality", ("llm-thorough", "llm", "rule-based", "rule-based", "sources-only")),
         ("best-quality-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge")),
+        ("best-coverage-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge-full")),
     ],
 )
 def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, ...]) -> None:

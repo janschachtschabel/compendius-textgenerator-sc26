@@ -30,7 +30,7 @@ BlockId = Annotated[str, Field(max_length=SLOT_ID_MAX_CHARS)]
 # One help text for every endpoint that chooses articles (compendium, knowledge); numbers: docs/entwicklung, M9-M13
 ARTICLE_CHOICE_HELP = (
     "Who chooses the articles of the topic. Default: the profile's (preset, else PRESET_DEFAULT): llm-free takes "
-    "rule-based, balanced llm, the best-quality profiles llm-thorough.\n\n"
+    "rule-based, balanced llm, best-quality, best-quality-generated and best-coverage-generated llm-thorough.\n\n"
     "- **rule-based**: the rules alone - exact title, the disambiguation page decided by the words of the subject, "
     "inflected forms and genitive phrases, then title suggestions and full-text hits. They say how sure they are "
     "(resolution.method, resolution.confident). No tokens, no extra time.\n"
@@ -66,7 +66,7 @@ ARTICLE_CHOICE_HELP = (
 )
 MATCHER_HELP = (
     "How the paragraphs find their block of the template. Default: the profile's: llm-free and balanced take "
-    "hybrid_light, best-quality and best-quality-generated llm. Quality is the "
+    "hybrid_light, best-quality, best-quality-generated and best-coverage-generated llm. Quality is the "
     "macro-F1 over the ten content blocks at the gold standard (eval/gold); times are for part 1 of one compendium, "
     "measured on 2026-09-24.\n\n"
     "- **hybrid_light** (default): heading lexicon, BM25 and character TF-IDF together, plus Model2Vec vectors when "
@@ -80,32 +80,34 @@ MATCHER_HELP = (
     "12.0 and 22.7 s instead of 1.2 and 1.8 s in the median of two measurements, the b-api answering at different "
     "speeds. Where the model gives no answer, or the b-api is not available for now, hybrid_light decides; "
     "without a configured LLM the request is a 503. At LLM_MAX_TOKENS_PER_REQUEST 60 000 four batches run at "
-    "once and the others wait for them, so topics of more than 200 paragraphs take a second round; the "
-    "best-quality profiles, which choose llm, spend from 180,000 (D59) and leave room for about three times as many. "
+    "once and the others wait for them, so topics of more than 200 paragraphs take a second round; the three "
+    "best-* profiles, which choose llm, spend from 180,000 (D59) and leave room for about three times as many. "
     "These numbers are gpt-5.6-luna's; the default gpt-6-luna "
     "(D44) reached 0.70 and takes a quarter to three quarters longer per call (M19).\n\n"
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
 EXTRACTION_HELP = (
-    "Who picks the passages of part 1. Default: the profile's, rule-based in all four.\n\n"
+    "Who picks the passages of part 1. Default: the profile's, rule-based in all five.\n\n"
     "- **rule-based**: the paragraphs the matching assigned, their first sentences.\n"
     "- **llm**: the LLM chooses sentences by number among the best candidates of every block; the wording stays the "
     "source's. Measured for one topic (Optik) on 2026-09-19: 10 calls, about 16 500 tokens and 11 s.\n\n"
     "llm without a configured LLM is a 503; when the b-api is not available for now it falls back to rule-based."
 )
 GENERATION_HELP = (
-    "Who writes the blocks of part 1. Default: the profile's: llm in best-quality-generated, rule-based in the "
-    "others.\n\n"
+    "Who writes the blocks of part 1. Default: the profile's: llm in best-quality-generated and "
+    "best-coverage-generated, rule-based in the others.\n\n"
     "- **rule-based**: verbatim excerpts, every paragraph with its citation number.\n"
     "- **llm-fast**: the LLM writes the blocks of LLM_FAST_SECTIONS from their evidence; measured on 2026-09-18 for "
     "four topics: 2 to 3 calls, 2 300 to 4 000 tokens, 9 to 15 s.\n"
     "- **llm**: the LLM writes every content block; 8 to 10 calls, 10 500 to 14 500 tokens, 16 to 20 s.\n\n"
-    "Every written sentence needs a valid citation. llm-fast and llm without a configured LLM are a 503; when the "
+    "Every written sentence needs a valid citation, unless enrichment lets the model add knowledge of its own, marked "
+    "[Modellwissen]. llm-fast and llm without a configured LLM are a 503; when the "
     "b-api is not available for now it falls back to rule-based."
 )
 CURRICULUM_CHECK_HELP = (
     "Who judges the curriculum elements part 2 found (D58). Default: the profile's: rule-based in llm-free and "
-    "balanced, llm in best-quality and best-quality-generated. Acts only when parts holds curricula.\n\n"
+    "balanced, llm in best-quality, best-quality-generated and best-coverage-generated. Acts only when parts holds "
+    "curricula.\n\n"
     "- **rule-based**: the keyword rules alone (M22). An element that names the topic only in its heading is counted "
     "with its area instead of being listed. No tokens. Over the 20 topics of M22, 70 to 81 % of the listed elements "
     "fit and 5 to 9 % do not; a quarter of the fitting ones stand only in a bundle line (M32).\n"
@@ -113,7 +115,7 @@ CURRICULUM_CHECK_HELP = (
     "fits, touches the topic, does not fit. What does not fit leaves part 2; an element only its heading names stands "
     "on its own when the model rates it fitting. 74 to 79 % of the listed elements fit, 5 to 9 % do not, and no "
     "element two raters called fitting was dropped (M32). About 75 to 80 tokens per element: in the median 7,800 to "
-    "9,600 tokens and 6 s more per compendium. It spends from the budget of the request: in the best-quality "
+    "9,600 tokens and 6 s more per compendium. It spends from the budget of the request: in the three best-* "
     "profiles 180,000 tokens (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59): on the widest topic of M32, "
     "Demokratie without a subject, all 819 elements next to matcher llm on its 382 paragraphs and next to the "
     "writing of best-quality-generated (M33); set on its own in llm-free or balanced it spends from 60,000 "
@@ -124,7 +126,8 @@ CURRICULUM_CHECK_HELP = (
 )
 ENRICHMENT_HELP = (
     "Whether the writing LLM may add knowledge of its own beyond the sources. Default: the profile's: "
-    "model-knowledge in best-quality-generated, sources-only in the others.\n\n"
+    "model-knowledge in best-quality-generated, model-knowledge-full in best-coverage-generated, sources-only in the "
+    "others.\n\n"
     "- **sources-only**: every sentence has to be covered by its evidence; anything else is dropped.\n"
     "- **model-knowledge**: the model may add knowledge of its own - a checkable fact or nothing (prompt "
     "section_enrichment v2, D56); such sentences carry no citation number, end with the visible label "
@@ -137,7 +140,7 @@ ENRICHMENT_HELP = (
     "sources-only."
 )
 PRESET_HELP = (
-    "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53, D58). It sets article_choice, matcher, "
+    "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53, D58, D69). It sets article_choice, matcher, "
     "extraction, generation, enrichment and curriculum_check; a switch the request sets itself wins. Without a preset "
     "the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68). Every "
     "profile but llm-free needs an LLM (LLM_ENABLED, B_API_KEY); on a server without one a request that names such a "
@@ -174,7 +177,13 @@ PRESET_HELP = (
     "For text people read directly; about 24 s and 35 000 tokens. Two blind judges preferred its text in 11 of 12 "
     "ratings (readability 4.0 instead of 2.5 of 5); under the first prompt two thirds of the added model knowledge "
     "were filler sentences (M28); the second asks for a checkable fact or nothing (D56) and added 50 instead of 82 "
-    "such sentences over six topics, 13 instead of 50 of them fillers (M31). /qa and part 2 as best-quality.\n\n"
+    "such sentences over six topics, 13 instead of 50 of them fillers (M31). /qa and part 2 as best-quality.\n"
+    "- **best-coverage-generated** (D69): best-quality-generated, but the LLM writes every content block about the "
+    "topic as asked, qualifiers included ('OER-Förderungen', not the article 'Open Educational Resources' it resolves "
+    "to), and fills it completely: evidence where it meets the topic, knowledge of its own for the rest and for a "
+    "block the sources have nothing for, marked [Modellwissen] (enrichment model-knowledge-full). target_length is a "
+    "floor here, not a ceiling. For topics with an aspect, or where the archives hold little; of all profiles its "
+    "text carries the most model knowledge no source covers. /qa and part 2 as best-quality.\n\n"
     "When the b-api is not available for now, the LLM steps fall back to the rules and audit.llm says why."
 )
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
@@ -184,7 +193,8 @@ Enrichment = Literal["sources-only", "model-knowledge", "model-knowledge-full"]
 ArticleChoice = Literal["rule-based", "llm", "llm-thorough"]  # who decides an unsure article choice (D35, D61)
 LLM_ARTICLE_CHOICES = frozenset({"llm", "llm-thorough"})
 CurriculumCheck = Literal["rule-based", "llm"]  # who judges the curriculum elements of part 2 (D58)
-Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated"]  # the four profiles (D41, D53)
+# the five profiles (D41, D53, D69)
+Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated", "best-coverage-generated"]
 _VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
 PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the order of Preset
     "llm-free": {
@@ -205,9 +215,19 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         "generation": "llm",
         "enrichment": "model-knowledge",
     },
+    # Jan, 2026-10-01 (D69): as best-quality-generated, but every block about the topic as asked and filled completely,
+    # from the model's own knowledge where the sources say nothing - for topics with an aspect ("OER-Förderungen")
+    "best-coverage-generated": {
+        "article_choice": "llm-thorough",
+        "matcher": "llm",
+        "curriculum_check": "llm",
+        "extraction": "rule-based",
+        "generation": "llm",
+        "enrichment": "model-knowledge-full",
+    },
 }
 # Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
-BEST_QUALITY_PRESETS = frozenset({"best-quality", "best-quality-generated"})
+BEST_QUALITY_PRESETS = frozenset({"best-quality", "best-quality-generated", "best-coverage-generated"})
 
 
 def default_preset(configured: Preset, llm_configured: bool) -> Preset:

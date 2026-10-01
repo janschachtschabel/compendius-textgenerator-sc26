@@ -184,7 +184,9 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         choices=list(PRESETS),
         help="Profil (D53): llm-free (ohne LLM), balanced (LLM findet den Artikel), best-quality (LLM ordnet auch "
-        "zu), best-quality-generated (dazu schreibt das LLM den Text); ohne Angabe PRESET_DEFAULT, ausgeliefert "
+        "zu), best-quality-generated (dazu schreibt das LLM den Text), best-coverage-generated (das LLM schreibt jeden "
+        "Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen); ohne Angabe "
+        "PRESET_DEFAULT, ausgeliefert "
         "balanced, ohne LLM llm-free. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED "
         "und B_API_KEY",
     )

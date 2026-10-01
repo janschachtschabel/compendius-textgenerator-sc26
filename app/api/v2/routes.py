@@ -53,7 +53,7 @@ def generate_compendium(
     ``topic``, ``node_id`` or ``collection_id`` names what it is about, and a topic sent along leads. ``subject``
     helps choose an ambiguous article and narrows part 2 to the curricula of that subject.
 
-    **What each profile does.** ``preset`` picks one of the four profiles of the decision paper (D53, D58, D59);
+    **What each profile does.** ``preset`` picks one of the five profiles of the decision paper (D53, D58, D59, D69);
     without it the server's applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68),
     and a switch the request sets itself wins over the profile's. Quality, time and tokens per profile are in the help
     text of ``preset``.
@@ -69,12 +69,15 @@ def generate_compendium(
       verbatim.
     - ``best-quality-generated``: best-quality, and the LLM writes every block from its evidence (``generation
       llm``) and may add knowledge of its own, marked ``[Modellwissen]`` (``enrichment model-knowledge``).
+    - ``best-coverage-generated``: best-quality-generated, but the LLM writes every block about the topic as asked
+      and fills it completely: from its evidence where that meets the topic, else from its own knowledge, marked
+      ``[Modellwissen]`` (``enrichment model-knowledge-full``, D69); ``target_length`` is a floor here.
 
     The LLM steps of a request spend from one token budget and one deadline: LLM_MAX_TOKENS_PER_REQUEST (60,000)
-    in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the two best-quality profiles
+    in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the three best-* profiles
     (D59), and REQUEST_TIMEOUT_S. What the budget, the time or an unavailable b-api leaves undone the rules do, and
     ``audit.llm`` says what really ran. Without ``world`` there is no part 1, no matching and no writing: only the
-    article choice and, in the best-quality profiles, the check of part 2 can call on the LLM.
+    article choice and, in the three best-* profiles, the check of part 2 can call on the LLM.
 
     **The switches**, each defaulting to the profile's:
 

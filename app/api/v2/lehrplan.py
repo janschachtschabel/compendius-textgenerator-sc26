@@ -73,13 +73,14 @@ SEARCH_PRESET_HELP = (
     "- **best-quality**: balanced, and the LLM rates every element the rules found and drops what does not fit "
     "(curriculum_check llm); with mode=topic it also checks a sure article choice of a word with several meanings "
     "(D61). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
-    "- **best-quality-generated**: here the same as best-quality; the two differ only in part 1 of a compendium.\n\n"
-    "A profile that needs the LLM for this search - best-quality and best-quality-generated always, balanced with "
-    "mode=topic - is a 503 on a server without one (LLM_ENABLED, B_API_KEY)."
+    "- **best-quality-generated** and **best-coverage-generated**: here the same as best-quality; they differ only in "
+    "part 1 of a compendium.\n\n"
+    "A profile that needs the LLM for this search - the three best-* profiles always, balanced with mode=topic - is a "
+    "503 on a server without one (LLM_ENABLED, B_API_KEY)."
 )
 SEARCH_CHECK_HELP = (
     "Who judges the elements the rules found (D58); default: the profile's - rule-based in llm-free and balanced, "
-    "llm in best-quality and best-quality-generated.\n\n"
+    "llm in best-quality, best-quality-generated and best-coverage-generated.\n\n"
     "- **rule-based**: the keyword rules alone. An element that names the topic only in its heading comes back with "
     "matched_in parent; part 2 of a compendium counts those with their area. Over the 20 topics of M22, 70 to 81 % "
     "of what part 2 lists fits (M32).\n"
@@ -227,7 +228,7 @@ def lehrplan_search(
     curriculum_check: Annotated[CurriculumCheck | None, Query(description=SEARCH_CHECK_HELP)] = None,
 ) -> dict[str, Any]:
     """Curriculum elements for a keyword or a topic, out of the local cache: the ones part 2 of a compendium lists,
-    found by the same rules and, in the best-quality profiles, judged by the same LLM check. MEM is never asked.
+    found by the same rules and, in the three best-* profiles, judged by the same LLM check. MEM is never asked.
 
     **What it searches.** ``q`` is the keyword, ``subject`` narrows it to the curricula of one subject and ``limit``
     bounds the answer. By default (``mode=keyword``) it searches the words as sent; ``mode=topic`` resolves ``q`` as
@@ -249,7 +250,8 @@ def lehrplan_search(
       element, from 180,000 tokens per request (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) - Demokratie without a
       subject, 819 hits, took 75,016 tokens (M33). What the budget or the time leaves unrated keeps the rules'
       decision.
-    - ``best-quality-generated``: here the same as best-quality; the two differ only in part 1 of a compendium.
+    - ``best-quality-generated`` and ``best-coverage-generated``: here the same as best-quality; they differ only in
+      part 1 of a compendium.
 
     **What comes back.** Every element with its curriculum and where it stands: federal state, school type, school
     level and grade, the last two with their source (``schulstufe_quelle``, ``klassenstufe_quelle``), the keyword

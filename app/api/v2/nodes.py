@@ -96,8 +96,8 @@ def read_node(
 
     **Profiles.** No profile changes this preview, so it takes no ``preset``: it always shows what the rules derive.
     A request with the node is where the profile acts - in llm-free the rules find a material's article as shown
-    here, while in balanced, best-quality and best-quality-generated the LLM names it from title, subjects,
-    keywords and description (30 instead of 15 of 31 right, D47), so ``topic`` can differ there.
+    here, while in balanced, best-quality, best-quality-generated and best-coverage-generated the LLM names it from
+    title, subjects, keywords and description (30 instead of 15 of 31 right, D47), so ``topic`` can differ there.
 
     **Examples** of ``GET``, from the shortest to every parameter:
 

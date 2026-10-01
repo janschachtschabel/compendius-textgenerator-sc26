@@ -28,6 +28,7 @@ PROFILE_METHODS: dict[str, list[Method]] = {
     "balanced": ["llm"],
     "best-quality": ["llm"],
     "best-quality-generated": ["llm"],
+    "best-coverage-generated": ["llm"],
 }
 MAX_TEXT_CHARS = 50_000  # a request body is caller input; recognition is linear in the text length
 EXAMPLES = {
@@ -90,7 +91,7 @@ EXAMPLES = {
 }
 METHODS_HELP = (
     "The ways that recognise entities, alone or together. Default: the profile's (preset, else PRESET_DEFAULT): "
-    "llm-free takes ner and dictionary, balanced and the best-quality profiles llm. Measured on 2026-09-26 on the "
+    "llm-free takes ner and dictionary, balanced and the three best-* profiles llm. Measured on 2026-09-26 on the "
     "texts of 40 materials against two blind raters, as prototypes (M36, gpt-6-luna) and again through this endpoint "
     "(D62) with the same result.\n\n"
     "- **ner**: the spaCy model finds names of persons, places, organisations and others (PER, LOC, ORG, MISC); needs "
@@ -131,7 +132,8 @@ PRESET_HELP = (
     "- **balanced** (default): the LLM names the entities (methods llm); F1 0.78, about 800 tokens and 4 s.\n"
     "- **best-quality**: as balanced. The LLM's check of the links (link_check llm) raised the precision but lowered "
     "F1, so it stays a switch of its own.\n"
-    "- **best-quality-generated**: as balanced; what it adds - the LLM writing a compendium - does not act here."
+    "- **best-quality-generated** and **best-coverage-generated**: as balanced; what they add - the LLM writing a "
+    "compendium - does not act here."
 )
 
 

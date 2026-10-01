@@ -16,7 +16,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
     "Profil llm-free": {
         "summary": "Profil llm-free: ohne Sprachmodell, für einen Dienst ohne LLM",
         "description": (
-            "preset wählt eines der vier Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
+            "preset wählt eines der fünf Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
             "ausgeliefert balanced, auf einem Server ohne LLM llm-free. llm-free: die "
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 87 von 94 "
             "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27). Teil 2 findet und "
@@ -58,6 +58,18 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Teil 2 und Budget wie best-quality. Einzeln gesetzte Schalter gehen dem preset vor."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "best-quality-generated"},
+    },
+    "Profil best-coverage-generated": {
+        "summary": "Profil best-coverage-generated: jeder Baustein genau zum angefragten Thema, vollständig gefüllt",
+        "description": (
+            "Wie best-quality-generated, aber das LLM schreibt jeden Baustein über das Thema, wie es angefragt ist, "
+            "mit seinem Aspekt: hier über Förderungen offener Bildungsmaterialien, nicht über den Artikel Open "
+            "Educational Resources, auf den sich das Thema auflöst. Belege nutzt es, wo sie das Thema treffen; sonst "
+            "und für Bausteine ohne Belege schreibt es aus eigenem Wissen, sichtbar gekennzeichnet mit [Modellwissen] "
+            "(enrichment model-knowledge-full, D69). target_length ist hier eine Untergrenze, keine Obergrenze; die "
+            "Überschrift nennt das angefragte Thema. Teil 2 und Budget wie best-quality."
+        ),
+        "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
     },
     "Lehrplanbezüge mit best-quality": {
         "summary": "Nur Teil 2: die Regeln finden die Lehrplanelemente, das LLM bewertet jedes",

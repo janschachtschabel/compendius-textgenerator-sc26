@@ -14,6 +14,7 @@ export const PROFILE_NAMES = {
   balanced: 'balanced · ausgewogen',
   'best-quality': 'best-quality · beste Qualität',
   'best-quality-generated': 'best-quality-generated · von der KI formuliert',
+  'best-coverage-generated': 'best-coverage-generated · von der KI vollständig zum Thema geschrieben',
 };
 
 // What a profile does at each endpoint, in the words of the decision paper (D53, D55, D57, D58, D62, D63)
@@ -25,30 +26,37 @@ export const PROFILE_ABOUT = {
       'bleibt wörtlich. Langsamer, viele Tokens.',
     'best-quality-generated': 'Wie best-quality; dazu schreibt die KI jeden Baustein neu und darf eigenes Wissen ' +
       'ergänzen, das als [Modellwissen] gekennzeichnet ist. Am langsamsten, die meisten Tokens.',
+    'best-coverage-generated': 'Wie best-quality-generated, aber die KI schreibt jeden Baustein genau zum angefragten ' +
+      'Thema und füllt ihn vollständig: aus den Quellen, wo sie das Thema treffen, sonst aus eigenem Wissen ' +
+      '([Modellwissen]). Für Themen mit einem Aspekt; die längsten Texte, die meisten Tokens.',
   },
   knowledge: {
     'llm-free': 'Regeln wählen die Artikel. Keine Tokens.',
     balanced: 'Die KI nennt Übersichtsartikel und Teile des Themas und entscheidet, wo die Regeln unsicher sind.',
     'best-quality': 'Wie balanced; die KI prüft auch sichere Entscheidungen bei mehrdeutigen Wörtern.',
     'best-quality-generated': 'Hier wie best-quality.',
+    'best-coverage-generated': 'Hier wie best-quality.',
   },
   lehrplan: {
     'llm-free': 'Stichwortregeln finden und bewerten die Elemente. Keine Tokens.',
     balanced: 'Wie llm-free; beim Suchen nach einem Thema nennt die KI seine Teile.',
     'best-quality': 'Die KI bewertet jedes gefundene Element und lässt weg, was nicht passt.',
     'best-quality-generated': 'Hier wie best-quality.',
+    'best-coverage-generated': 'Hier wie best-quality.',
   },
   entities: {
     'llm-free': 'Namenserkennung (spaCy) und das Wörterbuch der Artikeltitel. Keine Tokens.',
     balanced: 'Die KI nennt die Entitäten des Textes.',
     'best-quality': 'Die KI nennt die Entitäten des Textes.',
     'best-quality-generated': 'Die KI nennt die Entitäten des Textes.',
+    'best-coverage-generated': 'Die KI nennt die Entitäten des Textes.',
   },
   qa: {
     'llm-free': 'Regeln bilden Fragen aus dem Satzbau. Keine Tokens.',
     balanced: 'Regeln bilden Fragen aus dem Satzbau. Keine Tokens.',
     'best-quality': 'Die KI schreibt die Paare und kann Bildungsstufen zuordnen.',
     'best-quality-generated': 'Die KI schreibt die Paare und kann Bildungsstufen zuordnen.',
+    'best-coverage-generated': 'Die KI schreibt die Paare und kann Bildungsstufen zuordnen.',
   },
 };
 

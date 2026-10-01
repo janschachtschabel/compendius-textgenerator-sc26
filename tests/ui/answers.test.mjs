@@ -3,7 +3,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { MODES, NAMES, shown } from './saved_answers.mjs';
+import { MODES, NAMES, OPTIONS, shown } from './saved_answers.mjs';
+import { PROFILE_ABOUT, PROFILE_NAMES } from '../../app/ui/static/texts.mjs';
+
+test('every profile of the server has a name, and words for what it does at every endpoint', () => {
+  for (const { id } of OPTIONS.presets) {
+    assert.ok(PROFILE_NAMES[id], `the name of ${id}`);
+    for (const mode of MODES) assert.ok(PROFILE_ABOUT[mode]?.[id], `${id} at ${mode}`);
+  }
+});
 
 test('there is a saved answer of every endpoint', () => {
   const modes = new Set(NAMES.map((name) => MODES.find((mode) => name.startsWith(`${mode}_`))));

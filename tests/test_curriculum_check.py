@@ -81,10 +81,11 @@ def test_nothing_to_check_asks_nothing() -> None:
 
 
 def test_the_profiles_that_pay_for_an_llm_check_the_curriculum_elements() -> None:
-    """D58 (Jan): the rules in llm-free and balanced, the LLM check in the two best-quality profiles."""
+    """D58 (Jan): the rules in llm-free and balanced, the LLM check in the three best profiles (D69)."""
     assert {name: preset["curriculum_check"] for name, preset in PRESETS.items()} == {
         "llm-free": "rule-based",
         "balanced": "rule-based",
         "best-quality": "llm",
         "best-quality-generated": "llm",
+        "best-coverage-generated": "llm",
     }

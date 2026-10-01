@@ -89,9 +89,10 @@ class Settings(BaseSettings):
     template_default: str = Field("sc26", description="Default template id")
     preset_default: Preset = Field(
         "balanced",
-        description="Profile of a request that names none (D53): llm-free, balanced, best-quality or "
-        "best-quality-generated. Every profile but llm-free needs LLM_ENABLED and B_API_KEY: without them a request "
-        "that names such a profile is a 503, and one that names none runs llm-free whatever this says (D68)",
+        description="Profile of a request that names none (D53): llm-free, balanced, best-quality, "
+        "best-quality-generated or best-coverage-generated (D69). Every profile but llm-free needs LLM_ENABLED and "
+        "B_API_KEY: without them a request that names such a profile is a 503, and one that names none runs llm-free "
+        "whatever this says (D68)",
     )
     policy_confident_score: float = Field(
         0.65,
@@ -191,7 +192,8 @@ class Settings(BaseSettings):
     llm_max_tokens_per_request_best_quality: int = Field(
         180_000,
         ge=100,
-        description="Budget guard per request in the profiles best-quality and best-quality-generated (D59): next to "
+        description="Budget guard per request in the profiles best-quality, best-quality-generated and "
+        "best-coverage-generated (D59, D69): next to "
         "matcher llm their LLM checks the curriculum elements of part 2, 80 to 90 tokens each; 60,000 covered about "
         "400 of them (M32). On the widest topic, Demokratie with 382 paragraphs and 819 elements, a compendium with "
         "both parts took 137,398 tokens in best-quality and 152,197 in best-quality-generated (M33)",

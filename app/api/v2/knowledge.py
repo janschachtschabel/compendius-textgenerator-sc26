@@ -87,8 +87,9 @@ class KnowledgeRequest(RequestModel):
     preset: Preset | None = Field(
         None,
         description="The profile of a compendium request (D53); here it sets article_choice and the token budget. "
-        "llm-free takes rule-based, balanced takes llm, best-quality and best-quality-generated take llm-thorough, and "
-        "the two best-quality profiles spend from 180,000 tokens per request instead of 60,000 (D59), which this "
+        "llm-free takes rule-based, balanced takes llm, best-quality, best-quality-generated and "
+        "best-coverage-generated take llm-thorough, and these three spend from 180,000 tokens per request instead of "
+        "60,000 (D59), which this "
         "endpoint does not come near. Default: PRESET_DEFAULT, shipped balanced; llm-free on a server without an "
         "LLM (D68). An article_choice the request sets "
         "wins; llm or llm-thorough on a server without an LLM is a 503.",
@@ -280,10 +281,10 @@ def knowledge(
 
     - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
     - ``balanced``: the LLM names the overview and the parts of the topic and decides an unsure article (``llm``).
-    - ``best-quality`` and ``best-quality-generated``: balanced, and the LLM also checks a sure choice of a word
-      with several meanings (``llm-thorough``, D61), from the larger budget of these profiles
-      (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so nothing else of
-      theirs applies.
+    - ``best-quality``, ``best-quality-generated`` and ``best-coverage-generated``: balanced, and the LLM also
+      checks a sure choice of a word with several meanings (``llm-thorough``, D61), from the larger budget of these
+      profiles (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59); this endpoint neither assigns nor writes, so nothing
+      else of theirs applies.
 
     ``llm`` or ``llm-thorough`` on a server without an LLM is a 503. The examples run from a topic alone to one
     that sets every field.
