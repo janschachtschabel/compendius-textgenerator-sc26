@@ -85,7 +85,8 @@ def slot_prompt_fields(slot: TemplateSlot) -> dict[str, object]:
 @dataclass(frozen=True)
 class Coverage:
     """enrichment=model-knowledge-full (D69): what every block of a compendium is written against - the article the
-    evidence comes from, and the overview of all blocks, which goes into the system message the b-api caches."""
+    evidence comes from, and the overview of all blocks, which goes into the system message, the part the provider's
+    prompt cache keeps."""
 
     article: str
     blocks: str

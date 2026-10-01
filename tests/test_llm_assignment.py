@@ -228,7 +228,7 @@ def test_the_prompt_offers_the_blocks_the_rules_and_each_paragraph(prepared: Pre
     system, user = (message["content"] for message in render_messages(prepared.template, "Optik", chunks, sources))
     other_topic = render_messages(prepared.template, "Akustik", chunks, sources)[0]["content"]
 
-    # D69: the blocks and the rules stand in the system message, the one part the b-api caches, alike for every topic
+    # D69: the blocks and the rules stand in the system message, the one part the provider's prompt cache keeps
     assert system.startswith(get_prompt("paragraph_assignment").system) and system == other_topic
     assert user.startswith("Thema des Kompendiums: Optik\n\nAbsätze:\n")
     for slot in prepared.template.content_slots():

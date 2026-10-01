@@ -157,6 +157,15 @@ def offline_b_api(monkeypatch: pytest.MonkeyPatch) -> FakeBApi:
     return fake
 
 
+@pytest.mark.parametrize(("setting", "allowed"), [({}, False), ({"b_api_response_cache": True}, True)])
+def test_the_response_cache_of_the_b_api_stays_off_unless_allowed(
+    tmp_path: Path, offline_b_api: FakeBApi, setting: dict[str, Any], allowed: bool
+) -> None:
+    """D70 (Jan: answers come fresh): without B_API_RESPONSE_CACHE every call names itself anew."""
+    gateway = build_llm(make_settings([], tmp_path, llm_enabled=True, b_api_key="k", **setting))
+    assert gateway is not None and gateway.client.response_cache is allowed
+
+
 @pytest.mark.parametrize(
     ("timeout_s", "llm", "warned"), [(5, True, True), (10, True, True), (11, True, False), (5, False, False)]
 )

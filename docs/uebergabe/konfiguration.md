@@ -89,6 +89,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `B_API_BASE_URL` | leer | wie Vorgabe | leer: die b-api zum Repository (Staging oder Produktion); ein eigener Wert wird befolgt |
 | `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api |
 | `B_API_MODEL` | `gpt-6-luna` | wie Vorgabe | Modell; `/health` meldet, ob die b-api es führt |
+| `B_API_RESPONSE_CACHE` | `false` | wie Vorgabe | aus: jeder LLM-Aufruf wird neu beantwortet, statt dass die b-api eine wortgleiche Anfrage aus ihrem Speicher wiederholt (D70); das Prompt-Caching des Anbieters bleibt |
 | `LLM_REASONING_EFFORT` | `low` | wie Vorgabe | Denkaufwand von Reasoning-Modellen |
 | `LLM_VERBOSITY` | `low` | wie Vorgabe | Ausführlichkeit von Reasoning-Modellen |
 | `LLM_TEMPERATURE` | `0.2` | wie Vorgabe | nur klassische Modelle |

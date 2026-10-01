@@ -215,6 +215,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         reasoning_effort=settings.llm_reasoning_effort,
         verbosity=settings.llm_verbosity,
         temperature=settings.llm_temperature,
+        response_cache=settings.b_api_response_cache,
     )
     store: DailyStore | None = None
     try:

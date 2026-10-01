@@ -175,6 +175,11 @@ class Settings(BaseSettings):
     b_api_model: str = Field(
         DEFAULT_B_API_MODEL, description="Model id at the selected provider (D44); empty takes the default"
     )
+    b_api_response_cache: bool = Field(
+        False,
+        description="Let the b-api answer a request it has seen word for word from its store (D70). Off: every call "
+        "carries a safety_identifier of its own, so the answer is new; the provider's prompt cache stays in use",
+    )
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
     llm_max_concurrency: int = Field(10, ge=1, le=26, description="Parallel LLM requests")
     llm_attempts: int = Field(

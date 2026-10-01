@@ -2354,7 +2354,7 @@ je LLM-Profil, die Antwortzeit der b-api an einem Tag, das Kompendium auf dem Se
 Rohdaten: `m45_profile_endpunkte.json` (Entwicklungscontainer) und `m45_server_llm_free.json` (Server, nur
 `llm-free`): je Anfrage Sekunden, Tokens, Aufrufe, Phasen, Hauptartikel und Zählungen; keine Texte.
 
-## M46 Prompt-Cache der b-api (01.10.2026)
+## M46 Prompt-Cache des Anbieters über die b-api (01.10.2026)
 
 **Aufbau:** Seit D69 meldet der Dienst unter `cached` in `audit.llm_tokens` (und als Typ `cached` von
 `kompendium_llm_tokens_total`), wie viele Eingabe-Tokens das Modell aus seinem Prompt-Cache las; die b-api reicht dafür
@@ -2404,7 +2404,8 @@ System-Nachricht: `paragraph_assignment` v2 den Bausteinkatalog mit den Zuordnun
 | v2, 01.10.2026 | v2 | 0,637 | 0,780 | 117 von 518 | 106.240 |
 | `v2s`, 01.10.2026 | v2 | 0,715 | 0,823 | 92 von 513 | 105.911 |
 
-**Ergebnis:** Die b-api speichert nur die System-Nachricht zwischen, und eine kurze nicht: Was dort steht, lesen alle
+**Ergebnis:** Der Prompt-Cache des Anbieters, den die b-api durchreicht, hielt nur die System-Nachricht, und eine
+kurze nicht: Was dort steht, lesen alle
 weiteren Aufrufe, auch gleichzeitig gesendete; was in die Nachricht des Nutzers weiterläuft, liest keiner. Nach dem
 Umbau kamen in `best-coverage-generated` rund 32.000 Eingabe-Tokens je Kompendium aus dem Cache. Die Gesamtzahl stieg
 um rund 15.000, weil jeder Schreibaufruf den Überblick der Bausteine trägt; die Tokens ohne Cache fielen im Mittel von

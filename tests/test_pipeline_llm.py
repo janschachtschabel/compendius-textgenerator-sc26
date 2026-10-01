@@ -408,9 +408,9 @@ def test_full_enrichment_keeps_the_article_as_heading_when_the_llm_wrote_nothing
 def test_the_writing_calls_of_full_enrichment_share_a_system_message_with_every_block_in_it(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """D69, prompt caching: the b-api caches the system message and nothing after it, so every writing call carries
-    the same one - the instructions and the overview of all blocks, alike for every topic - and its user message
-    names the topic and the block to write."""
+    """D69, prompt caching: the provider's prompt cache keeps the system message and nothing after it, so every
+    writing call carries the same one - the instructions and the overview of all blocks, alike for every topic - and
+    its user message names the topic and the block to write."""
     fake = FakeBApi(lambda body: "Ein gesicherter Satz zum Thema.")
     monkeypatch.setattr(service, "llm", make_gateway(fake))
     request = GenerateRequest(

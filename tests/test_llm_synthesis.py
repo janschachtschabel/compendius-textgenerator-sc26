@@ -97,8 +97,9 @@ def test_prompt_registry_has_versioned_prompts() -> None:
 
 
 def test_what_the_calls_of_a_kind_share_goes_into_the_system_message() -> None:
-    """D69: the b-api caches the system message and nothing after it - measured on 2026-10-01, an opening the calls
-    shared in their user message was never read from the cache - so the long part they share belongs there."""
+    """D69: the provider's prompt cache keeps the system message and nothing after it - measured on 2026-10-01, an
+    opening the calls shared in their user message was never read from the cache - so the long part they share
+    belongs there."""
     prompt = get_prompt("section_coverage")
     fields = {"topic": "T", "article": "A", "title": "B", "target_chars": 500, "evidence": "E"}
     shared = prompt.sharing("Die Bausteine")

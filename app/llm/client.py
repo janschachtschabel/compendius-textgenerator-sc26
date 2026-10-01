@@ -15,6 +15,7 @@ import random
 import re
 import threading
 import time
+import uuid
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from typing import Any
@@ -132,6 +133,7 @@ class BApiClient:
         reasoning_effort: str = "low",
         verbosity: str = "low",
         temperature: float = 0.2,
+        response_cache: bool = False,
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
@@ -159,6 +161,7 @@ class BApiClient:
         self.reasoning_effort = reasoning_effort
         self.verbosity = verbosity
         self.temperature = temperature
+        self.response_cache = response_cache  # B_API_RESPONSE_CACHE (D70)
         self._sleep = sleep
         self._semaphore = threading.BoundedSemaphore(max(1, max_concurrency))
         self._client = httpx.Client(
@@ -265,6 +268,11 @@ class BApiClient:
             body["temperature"] = self.temperature
             if needs_thinking_off(self.model):
                 body["chat_template_kwargs"] = {"enable_thinking": False}
+        if not self.response_cache:
+            # The b-api answers a request it has seen word for word from a store (same id, 0.4 instead of 3.8 s,
+            # measured 2026-10-01, D70); an identifier of its own makes every call new. Not ``user``: that one also
+            # scattered the provider's prompt cache, this one left it whole. Both providers accept it.
+            body["safety_identifier"] = uuid.uuid4().hex
         return body
 
     def _request(

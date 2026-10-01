@@ -4,9 +4,9 @@ Prompts are German because the compendia are (D15). Only the user part is a form
 part is used verbatim, so JSON examples there need no escaped braces.
 
 What all calls of one kind share at length - the blocks of the template - follows the instructions in the system
-message (``Prompt.sharing``): the b-api caches the system message and nothing after it. Measured on 2026-10-01
-(D69): calls whose shared opening ran on into the user message were never read from the cache, calls with it in the
-system message were, even when they were sent at the same moment.
+message (``Prompt.sharing``): the provider's prompt cache, which the b-api passes on, kept a shared system message
+and nothing after it. Measured on 2026-10-01 (D69): calls whose shared opening ran on into the user message were
+never read from the cache, calls with it in the system message were, even when they were sent at the same moment.
 """
 
 from __future__ import annotations
@@ -161,7 +161,7 @@ PASSAGE_SELECTION = Prompt(
 
 # matcher=llm (D34): the prompt measured against the gold standard on 2026-09-23 (docs/entwicklung/03-matching.md);
 # v2 (2026-10-01, D69): the same words, the blocks and the rules now after the instructions in the system message,
-# which the b-api caches for every batch of every topic
+# which the provider's prompt cache keeps for every batch of every topic
 PARAGRAPH_ASSIGNMENT = Prompt(
     id="paragraph_assignment",
     version=2,

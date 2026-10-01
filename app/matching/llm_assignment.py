@@ -80,8 +80,8 @@ def render_messages(
         for number, chunk in enumerate(chunks, start=1)
     )
     rules = f"\n\n{template.assignment_rules}" if template.assignment_rules else ""
-    # the blocks and the rules are the same for every batch of every topic: in the system message the b-api caches
-    # them (D69)
+    # the blocks and the rules are the same for every batch of every topic: in the system message the provider's
+    # prompt cache keeps them (D69)
     shared = f"Bausteine:\n{blocks}{rules}"
     return get_prompt("paragraph_assignment").sharing(shared).render(topic=topic, paragraphs=paragraphs)
 

@@ -155,6 +155,26 @@ def test_gpt6_models_get_the_same_reasoning_request_as_gpt5() -> None:
     assert client.completion_limit(100) > 100, "its thinking counts in the same limit"
 
 
+def test_every_call_names_itself_anew_so_the_b_api_answers_it_anew() -> None:
+    """D70: the b-api answers a request it has seen word for word from a store - the same id, the same text, 0.4
+    instead of 3.8 s (measured 2026-10-01). A safety_identifier of its own makes every call new; ``user`` would do so
+    too, but it also scattered the provider's prompt cache (0 instead of 3,600 cached tokens)."""
+    fake = FakeBApi()
+    client, _ = make_client(fake)
+    client.chat(MESSAGES, max_output_tokens=50)
+    client.chat(MESSAGES, max_output_tokens=50)
+    first, second = (body["safety_identifier"] for body in fake.bodies)
+    assert first and second and first != second
+    assert all("user" not in body for body in fake.bodies)
+
+
+def test_with_the_response_cache_allowed_a_call_carries_no_identifier() -> None:
+    fake = FakeBApi()
+    client, _ = make_client(fake, response_cache=True)
+    client.chat(MESSAGES, max_output_tokens=50)
+    assert "safety_identifier" not in fake.bodies[0]
+
+
 def test_classic_models_get_max_tokens_and_temperature_qwen3_without_thinking() -> None:
     fake = FakeBApi(models=ACADEMIC_MODELS)
     client, _ = make_client(fake, provider="academiccloud", model="qwen3-30b-a3b-instruct-2507", temperature=0.3)

@@ -1880,8 +1880,9 @@ API.
   Aspektthemen, zwei blinde Gutachter): Passung 4,81 statt 1,81, Nutzen 4,81 statt 2,12, Vollständigkeit 5,0 statt
   1,7, keine schweren Fehler; Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, rund 30.000 Zeichen; den größten Teil
   schreibt das Modell aus eigenem Wissen. Mit `matcher: hybrid_light` 4,56 und 4,31 für rund 35.000 Tokens und 16 s.
-  Prompt-Caching (Jan: „prüfe ob sich kostenoptimierungen umsetzen lassen durch promptcaching“): Die b-api speichert
-  nur die System-Nachricht zwischen, auch für gleichzeitige Aufrufe (M46). `Prompt.sharing` stellt deshalb, was alle
+  Prompt-Caching (Jan: „prüfe ob sich kostenoptimierungen umsetzen lassen durch promptcaching“): Der Prompt-Cache
+  des Anbieters, den die b-api durchreicht, hält nur die System-Nachricht, auch für gleichzeitige Aufrufe (M46).
+  `Prompt.sharing` stellt deshalb, was alle
   Aufrufe einer Art teilen, hinter die Anweisungen dorthin: `paragraph_assignment` v2 den Bausteinkatalog,
   `section_coverage` v2 den Überblick aller Bausteine. `audit.llm_tokens.cached` und
   `kompendium_llm_tokens_total{type="cached"}` melden den Anteil: in `best-coverage-generated` rund 32.000 bis
