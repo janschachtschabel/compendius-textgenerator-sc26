@@ -1889,6 +1889,30 @@ API.
   36.000 Eingabe-Tokens je Kompendium, in den anderen Profilen mit `matcher: llm` 8.600 bis 13.800; die Zuordnung
   blieb am Gold gleich gut. Sammlungen (Jan: Untersammlungen, ihre kompendialen Texte, rekursiv?): geprüft, nicht
   gebaut; die Wissens-Sammlung liest weiter nur die Materialien der Sammlung selbst.
+- **D70 (2026-10-01)** Lange Texte, frische Antworten, mehr Modellwissen in `best-quality-generated`, eine
+  Wissens-Sammlung ohne Lizenzfilter. (1) Länge (Jan: „generell können kompendiale texte etwas länger sein … aktuell
+  aber alle auf 30000“, überschreibbar durch den Aufruf oder eine Profilvorgabe): `PRESET_TARGET_LENGTH` gibt jedem
+  Profil 30.000 Zeichen, bis dahin 12.000; ein `target_length` der Anfrage geht vor, auch beim Profil des Servers.
+  Kurztest an zwei Themen je Profil mit frischen Antworten: keine Rückfälle, längste Anfrage 37 s
+  (`best-coverage-generated`, 100.000 bis 109.000 Tokens), deshalb nicht 20.000. `eval_runner` misst weiter mit
+  12.000, vergleichbar mit dem Gold. (2) Antwort-Cache der b-api (Jan: „das caching sollte ausgeschaltet werden damit
+  die antworten sauber kommen“): Die b-api beantwortete eine wortgleiche Anfrage aus einem eigenen Speicher, mit
+  derselben Antwort-ID und Zeit, in 0,4 statt 3,8 s; `Cache-Control: no-cache` wirkt nicht, ein Feld `cache` lehnt
+  OpenAI mit 400 ab. Ein eigenes `safety_identifier` je Aufruf macht jede Anfrage neu und lässt den Prompt-Cache des
+  Anbieters bestehen; ein eigenes `user` hätte ihn zerstreut. `B_API_RESPONSE_CACHE` (Vorgabe `false`) erlaubt den
+  Speicher wieder. Der Prompt-Cache von D69 ist der des Anbieters, den die b-api durchreicht. (3) Modellwissen in
+  `best-quality-generated` (Jan: „der zulässige anteil könnte auch in diesem profil auf bis 50% erhöht werden“):
+  `section_enrichment` v3 erlaubt es für höchstens die Hälfte der Sätze eines Bausteins, v2 für jeden dritten.
+  (4) Wissens-Sammlung (Jan: „lizenzen generell nicht berücksichtigen … die api wird für redaktionen mit eigenen
+  inhalten gebaut. kompendiale texte nicht einbeziehen … aber die volltexte der inhalte sollten wir mit einem
+  schalter einbeziehbar machen“; „knowledge_depth ist ok“): Jedes Material zählt, gleich unter welcher Lizenz;
+  `skipped_license` fällt aus Audit und Metrik. Ohne Schalter bringt ein Material seine Beschreibung mit,
+  `knowledge_fulltext` holt den Volltext dazu; bis dahin las der Dienst immer die Volltexte, aber nur unter freien
+  Lizenzen. `knowledge_depth` (0 bis 5) liest die Untersammlungen bis zu dieser Tiefe, jede einmal; die Sammlungen
+  geben reihum je ein Material ab, sonst füllte eine große Sammlung die 30 Plätze von `KNOWLEDGE_MAX_MATERIALS`
+  allein (Staging Optik: 168 Inhalte, mit Tiefe 1 kam nichts dazu). Kompendiale Texte
+  (`ccm:oeh_collection_compendium_text`) liest der Dienst nie. Das Audit nennt `depth`, `fulltext` und
+  `collections`; Prüfansicht und CLI haben beide Schalter.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
