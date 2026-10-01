@@ -101,10 +101,11 @@ def generate_compendium(
     the profile's length applies, 30 000 characters in every profile (D70).
 
     **What else.** ``template_id`` picks the template (``GET /api/v2/templates``), ``max_articles`` the size of
-    the corpus, and ``knowledge_collection_id`` adds the reusable materials of a collection to the sources of part
-    1. ``facets_visible`` and ``empty_slot_policy`` override the settings and the template. ``existing_markdown``
-    with ``regenerate_sections`` makes only the named blocks anew and keeps the rest word for word.
-    ``frontmatter_in_markdown: false`` starts the text at the heading instead of the YAML block - the same data
+    the corpus, and ``knowledge_collection_id`` adds the materials of a collection to the sources of part 1 -
+    their descriptions, with ``knowledge_fulltext`` their texts, with ``knowledge_depth`` those of its
+    sub-collections as well. ``facets_visible`` and ``empty_slot_policy`` override the settings and the template.
+    ``existing_markdown`` with ``regenerate_sections`` makes only the named blocks anew and keeps the rest word for
+    word. ``frontmatter_in_markdown: false`` starts the text at the heading instead of the YAML block - the same data
     stays in the ``frontmatter`` field. ``language`` is ``de``, the only one so far.
 
     **What comes back.** ``markdown`` is the whole document: every requested part joined in reading

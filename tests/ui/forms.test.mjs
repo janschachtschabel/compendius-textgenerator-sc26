@@ -14,7 +14,7 @@ const options = {
   entities: { methods: ['ner', 'dictionary', 'llm'], link_checks: ['rule-based', 'llm'] },
   qa: { methods: ['rule-based', 'llm'] },
   limits: {
-    compendium: { topic: { max_length: 300 }, target_length: { default: 12000, min: 2000, max: 60000 }, max_articles: { default: null, min: 1, max: 50 } },
+    compendium: { topic: { max_length: 300 }, target_length: { default: 30000, min: 2000, max: 60000 }, max_articles: { default: null, min: 1, max: 50 }, knowledge_depth: { default: 0, min: 0, max: 5 } },
     knowledge: { topic: { max_length: 300 }, max_articles: { default: null, min: 1, max: 50 }, max_chars: { default: null, min: 100 } },
     lehrplan: { q: { min_length: 3, max_length: 200 }, limit: { default: 50, min: 1, max: 500 } },
     entities: { max_entities: { default: 50, min: 1, max: 200 } },
@@ -56,6 +56,8 @@ test('every input of the form reaches the request, ids taken from links', () => 
       subject: 'Physik',
       collection_id: `https://example.org/x?id=${COLLECTION}`,
       knowledge_collection_id: COLLECTION,
+      knowledge_depth: '2',
+      knowledge_fulltext: true,
       node_id: MATERIAL,
       repository: 'https://repository.staging.openeduhub.net/edu-sharing/rest',
       parts: ['world', 'curricula', 'collection'],
@@ -76,6 +78,8 @@ test('every input of the form reaches the request, ids taken from links', () => 
     subject: 'Physik',
     collection_id: COLLECTION,
     knowledge_collection_id: COLLECTION,
+    knowledge_depth: 2,
+    knowledge_fulltext: true,
     node_id: MATERIAL,
     repository: 'https://repository.staging.openeduhub.net/edu-sharing/rest',
     parts: ['world', 'curricula', 'collection'],
@@ -104,6 +108,10 @@ test('the compendium form refuses what the endpoint would refuse, in words a rea
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: [] }), options).parts);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['collection'] }), options).collection_id);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['curricula'], knowledge_collection_id: COLLECTION }), options).knowledge_collection_id);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_depth: '2' }), options).knowledge_depth);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_fulltext: true }), options).knowledge_fulltext);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_collection_id: COLLECTION, knowledge_depth: '6' }), options).knowledge_depth);
+  assert.deepEqual(problems('compendium', form('compendium', { topic: 'Optik', knowledge_depth: '0' }), options), {});
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', repository: 'https://x.example/rest' }), options).repository);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', compare: true, preset: 'balanced', preset_b: 'balanced' }), options).preset_b);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', target_length: '100' }), options).target_length);
@@ -205,6 +213,8 @@ test('an example holds its own values, numbers as a number field holds them, and
     max_articles: '5',
     collection_id: '',
     knowledge_collection_id: '',
+    knowledge_depth: '',
+    knowledge_fulltext: '',
     node_id: '',
     repository: '',
   });

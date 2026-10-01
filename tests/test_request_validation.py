@@ -107,6 +107,20 @@ def test_a_knowledge_collection_without_part_1_is_a_422(client: TestClient) -> N
     assert answer.status_code == 422 and "knowledge_collection_id" in answer.text
 
 
+@pytest.mark.parametrize("switch", [{"knowledge_depth": 1}, {"knowledge_fulltext": True}])
+def test_the_knowledge_switches_without_a_knowledge_collection_are_a_422(
+    client: TestClient, switch: dict[str, object]
+) -> None:
+    """D70: they only steer what the knowledge collection brings; without one they would go unread."""
+    answer = client.post("/api/v2/compendium", json={"topic": "Optik", **switch})
+    assert answer.status_code == 422 and "knowledge_collection_id" in answer.text
+
+
+def test_the_depth_of_the_knowledge_collection_has_a_bound(client: TestClient) -> None:
+    body = {"topic": "Optik", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_depth": 6}
+    assert client.post("/api/v2/compendium", json=body).status_code == 422
+
+
 @pytest.mark.parametrize(
     "subject", ["Agrarwirtschaft", "http://w3id.org/openeduhub/vocabs/hochschulfaechersystematik/n5"]
 )

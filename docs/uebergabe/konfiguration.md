@@ -130,9 +130,9 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `COLLECTION_CACHE_TTL_S` | `3600` | wie Vorgabe | wie lange eine gelesene Sammlung gilt, in Sekunden |
 | `COLLECTION_MAX_ITEMS` | `0` | wie Vorgabe | Kappung der Inhalte je Sammlung; `0` listet alle |
 | `MATERIAL_TEXT_CACHE_TTL_S` | `604800` | wie Vorgabe | wie lange ein geholter Materialtext gilt (sieben Tage) |
-| `KNOWLEDGE_MAX_MATERIALS` | `30` | wie Vorgabe | Materialien, die `knowledge_collection_id` höchstens liest |
-| `KNOWLEDGE_MAX_CHARS` | `20000` | wie Vorgabe | Zeichen je Materialtext |
-| `KNOWLEDGE_CONCURRENCY` | `4` | wie Vorgabe | Materialtexte, die gleichzeitig geholt werden |
+| `KNOWLEDGE_MAX_MATERIALS` | `30` | wie Vorgabe | Materialien, die `knowledge_collection_id` höchstens liest; mit `knowledge_depth` über alle Sammlungen zusammen, die reihum je eines abgeben |
+| `KNOWLEDGE_MAX_CHARS` | `20000` | wie Vorgabe | Zeichen je Materialtext (mit `knowledge_fulltext`) |
+| `KNOWLEDGE_CONCURRENCY` | `4` | wie Vorgabe | Materialtexte, die gleichzeitig geholt werden (mit `knowledge_fulltext`) |
 
 ### Archive: zim-updater
 

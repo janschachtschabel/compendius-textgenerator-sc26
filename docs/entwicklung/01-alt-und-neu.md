@@ -134,7 +134,7 @@ Die aktuellen Werte je Profil zeigen die Grafik oben und M45.
   - Je Inhalt eine Zeile mit Titel, Art, Stufe, Lizenz und nodeId, die ein regulärer Ausdruck auslesen kann.
   - Die Untersammlungen eine Ebene tief.
 - **Zeit:** Aus dem Zwischenspeicher dauert Teil 3 höchstens 0,16 s, beim ersten Abruf bis 3,5 s.
-- **Teil 1 aus Material:** Optional liefert eine zweite Sammlung Material als Quelle für Teil 1. Wörtlich übernommen wird es nur unter freien Lizenzen.
+- **Teil 1 aus Material:** Optional liefert eine zweite Sammlung Material als Quelle für Teil 1, gleich unter welcher Lizenz, auf Wunsch mit Volltexten und Untersammlungen (D70).
 - **Einzeln:** Teil 3 allein gibt es als `GET /api/v2/collections/{id}/overview`.
 
 ## Zusatzfunktionen des neuen Dienstes

@@ -19,10 +19,6 @@ from app.synthesis.safe_markdown import one_line
 # The id of a node as edu-sharing gives it; only such an id goes into a URL of the repository
 NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 
-# ccm:commonlicense_key values that allow verbatim (extractive) reuse in the compendium (PLAN.md 6.3).
-# COPYRIGHT_FREE means "freely accessible", not "free to reuse", and stays out.
-EXTRACTIVE_LICENSES = frozenset({"CC_0", "PDM", "CC_BY", "CC_BY_SA"})
-
 LICENSE_LABELS = {
     "CC_0": "CC0 1.0",
     "PDM": "Public Domain Mark",
@@ -39,10 +35,6 @@ LICENSE_LABELS = {
     "UNTERRICHTS_UND_LEHRMEDIEN": "Unterrichts- und Lehrmedien (§ 60b UrhG)",
     "": "ohne Lizenzangabe",
 }
-
-
-def is_extractive(license_key: str) -> bool:
-    return license_key in EXTRACTIVE_LICENSES
 
 
 def license_label(license_key: str, version: str = "") -> str:

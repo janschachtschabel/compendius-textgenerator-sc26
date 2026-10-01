@@ -10,9 +10,10 @@ import httpx
 import pytest
 
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, Remaining
 from app.sources.wlo.errors import TimeUpError
-from app.sources.wlo.models import MaterialRef
+from app.sources.wlo.knowledge import KnowledgeOptions
+from app.sources.wlo.models import MaterialRef, SubCollection
 from app.sources.wlo.part import CollectionBuilder, CollectionOptions, _hydrate, collection_topic
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
@@ -47,14 +48,77 @@ def test_unknown_collection_raises_and_topic_is_derived_from_the_collection(tmp_
     assert topic.context == ["Sekundarstufe I"]
 
 
-def test_knowledge_sources_follow_the_licence_policy_and_report_gaps(tmp_path: Path) -> None:
-    result = _builder(FakeRepository(), tmp_path).knowledge_sources(OPTIK)
-    # 16 materials: 8 under CC0/CC BY/CC BY-SA, of which the fixture has text for a few
-    assert result.considered == 8 and result.skipped_license == 8
-    assert result.failed == []
+def test_knowledge_sources_take_every_material_and_report_gaps(tmp_path: Path) -> None:
+    """D70: no licence keeps a material out; with the full texts asked for, each is read."""
+    result = _builder(FakeRepository(), tmp_path).knowledge_sources(OPTIK, fulltext=True)
+    assert result.considered == 16 and result.failed == []  # all 16 materials, whatever their licence
     assert all(source.project == "wlo_material" for source in result.sources)
     assert {source.title for source in result.sources} >= {"Unterrichtsreihe zum Licht"}
     assert result.empty == result.considered - len(result.sources)
+
+
+def test_knowledge_depth_reads_the_subcollections_once_each(tmp_path: Path) -> None:
+    """D70 (Jan: by default the collection's own contents, with knowledge_depth those of its sub-collections, down to
+    that depth). The fake gives every collection the same four sub-collections: each is read once, a material once."""
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+
+    def listed() -> set[str]:
+        return {r.url.path.split("/")[-3] for r in repo.requests if r.url.path.endswith("/children/references")}
+
+    alone = builder.knowledge_sources(OPTIK)
+    assert listed() == {OPTIK} and alone.collections == 1
+    deep = builder.knowledge_sources(OPTIK, depth=2)
+    subs = {sub.id for sub in builder.subcollections(OPTIK)}
+    assert listed() == {OPTIK, *subs} and deep.collections == 5
+    assert len({source.source_id for source in deep.sources}) == len(deep.sources)
+
+
+_TREE_MATERIALS = {"root": 10, "a": 3, "b": 3}
+
+
+class _Tree(CollectionBuilder):
+    """A root with many materials of its own and two sub-collections with a few each."""
+
+    def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
+        return [_material(f"{collection_id}-{n}") for n in range(_TREE_MATERIALS[collection_id])]
+
+    def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
+        subs = ["a", "b"] if collection_id == "root" else []
+        return [SubCollection(id=sub, title=sub, description="") for sub in subs]
+
+
+def _material(material_id: str) -> MaterialRef:
+    description = f"Beschreibung des Materials {material_id}, lang genug für eine Quelle."
+    return MaterialRef(
+        id=material_id,
+        title=material_id,
+        description=description,
+        url="",
+        original_id=None,
+        license_key="",
+        mimetype=None,
+        keywords=(),
+        resource_types=(),
+        educational_contexts=(),
+        subjects=(),
+        subject_uris=(),
+    )
+
+
+def test_knowledge_depth_takes_the_collections_in_turn_so_the_cap_leaves_none_out() -> None:
+    """D70: a large collection filled KNOWLEDGE_MAX_MATERIALS before a sub-collection came (staging Optik: 168
+    materials, the cap 30, depth 1 added nothing); taken in turn, every collection read brings materials."""
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
+    options = CollectionOptions(knowledge=KnowledgeOptions(max_materials=6))
+    tree = _Tree(client=client, cache=None, options=options)
+
+    alone = tree.knowledge_sources("root")
+    deep = tree.knowledge_sources("root", depth=1)
+
+    assert [source.title for source in alone.sources] == [f"root-{n}" for n in range(6)]
+    assert [source.title for source in deep.sources] == ["root-0", "a-0", "b-0", "root-1", "a-1", "b-1"]
+    assert deep.collections == 3
 
 
 def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path: Path) -> None:
@@ -67,7 +131,7 @@ def test_the_knowledge_listing_ends_when_the_time_is_up_and_is_not_kept(tmp_path
     def remaining() -> float:  # the budget ends after one page
         return 0.0 if listings() >= 1 else 60.0
 
-    result = builder.knowledge_sources(OPTIK, remaining=remaining)
+    result = builder.knowledge_sources(OPTIK, remaining=remaining, fulltext=True)
     assert listings() == 1  # a large collection could take 200 pages outside the request's time budget
     assert result.timed_out == result.considered  # no text is read after the time is up either
     builder.references(OPTIK)
@@ -119,7 +183,7 @@ def test_no_request_of_part_three_or_the_knowledge_waits_longer_than_the_time_le
     repo = FakeRepository()
     builder = _builder(repo, tmp_path)
     assert builder.overview(OPTIK, remaining=lambda: 2.5).available
-    assert builder.knowledge_sources(OPTIK, remaining=lambda: 2.5).sources
+    assert builder.knowledge_sources(OPTIK, remaining=lambda: 2.5, fulltext=True).sources
     timeouts = {value for request in repo.requests for value in request.extensions["timeout"].values()}
     assert timeouts == {2.5} and any(request.url.path.endswith("/textContent") for request in repo.requests)
 
@@ -175,7 +239,7 @@ def _reads(builder: CollectionBuilder) -> dict[str, object]:
     """What each cached read of the builder gives for OPTIK and its material, by the name its repository wrote in."""
     texts = [
         paragraph.text
-        for source in builder.knowledge_sources(OPTIK).sources
+        for source in builder.knowledge_sources(OPTIK, fulltext=True).sources
         for section in source.sections
         for paragraph in section.paragraphs
     ]

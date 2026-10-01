@@ -154,7 +154,6 @@ def _record_knowledge(knowledge: dict[str, object]) -> None:
         ("used", "sources"),
         ("timed_out", "timed_out"),
         ("empty", "empty"),
-        ("skipped_license", "skipped_license"),
     ):
         value = knowledge.get(key)
         if isinstance(value, int):

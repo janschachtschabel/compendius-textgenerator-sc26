@@ -131,7 +131,9 @@ def _bounds(model: type[BaseModel], name: str) -> dict[str, Any]:
 
 
 LIMITS = {
-    "compendium": {name: _bounds(GenerateRequest, name) for name in ("topic", "target_length", "max_articles")},
+    "compendium": {
+        name: _bounds(GenerateRequest, name) for name in ("topic", "target_length", "max_articles", "knowledge_depth")
+    },
     "knowledge": {name: _bounds(KnowledgeRequest, name) for name in ("topic", "max_articles", "max_chars")},
     "lehrplan": {
         "q": {"min_length": QUERY_MIN_CHARS, "max_length": QUERY_MAX_CHARS},

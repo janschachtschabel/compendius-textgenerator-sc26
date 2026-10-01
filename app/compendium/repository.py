@@ -118,15 +118,26 @@ class RepositoryReading:
             return {"collection_id": collection_id, "error": str(exc), "sources": 0}
         return None
 
-    def _knowledge(self, collection_id: str, sources: list[Source], deadline: Deadline | None) -> dict[str, Any]:
-        """Add the reusable materials of the knowledge collection to the corpus.
+    def _knowledge(
+        self,
+        collection_id: str,
+        sources: list[Source],
+        deadline: Deadline | None,
+        *,
+        depth: int = 0,
+        fulltext: bool = False,
+    ) -> dict[str, Any]:
+        """Add the materials of the knowledge collection to the corpus, with ``depth`` those of its sub-collections,
+        with ``fulltext`` their texts (D70).
 
         An unknown collection is refused as an unknown ``collection_id`` is (404); a repository that fails only goes
         to the audit, since the compendium stands without the materials.
         """
         try:
             remaining = deadline.remaining if deadline is not None else None
-            result = self._collections_or_fail().knowledge_sources(collection_id, remaining=remaining)
+            result = self._collections_or_fail().knowledge_sources(
+                collection_id, remaining=remaining, depth=depth, fulltext=fulltext
+            )
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
@@ -137,10 +148,12 @@ class RepositoryReading:
             "collection_id": collection_id,
             "considered": result.considered,
             "sources": len(result.sources),
-            "skipped_license": result.skipped_license,
             "empty": result.empty,
             "failed": result.failed,
             "timed_out": result.timed_out,
+            "depth": depth,
+            "fulltext": fulltext,
+            "collections": result.collections,
         }
 
     def _collection_part(self, collection_id: str, deadline: Deadline) -> CollectionPart:

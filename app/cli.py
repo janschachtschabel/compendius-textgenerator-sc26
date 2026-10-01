@@ -39,6 +39,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
             topic=args.topic,
             collection_id=args.collection_id,
             knowledge_collection_id=args.knowledge_collection_id,
+            knowledge_depth=args.knowledge_depth,
+            knowledge_fulltext=args.knowledge_fulltext,
             node_id=args.node_id,
             repository=args.repository,
             template_id=args.template,
@@ -176,7 +178,22 @@ def main(argv: list[str] | None = None) -> int:
         "--repository", default=None, help="REST-Adresse des Repositorys von --node-id; ohne Angabe das konfigurierte"
     )
     gen.add_argument("--collection-id", default=None, help="nodeId der Sammlung (Thema, Fach, Teil 3)")
-    gen.add_argument("--knowledge-collection-id", default=None, help="Sammlung, deren OER-Materialien Teil 1 speisen")
+    gen.add_argument(
+        "--knowledge-collection-id",
+        default=None,
+        help="Sammlung, deren Materialien Teil 1 speisen: ihre Beschreibungen, mit --knowledge-fulltext ihre Volltexte",
+    )
+    gen.add_argument(
+        "--knowledge-depth",
+        type=int,
+        default=0,
+        help="Untersammlungen von --knowledge-collection-id bis zu dieser Tiefe mitlesen (0-5, D70); 0: nur sie selbst",
+    )
+    gen.add_argument(
+        "--knowledge-fulltext",
+        action="store_true",
+        help="Volltexte der Materialien von --knowledge-collection-id lesen, nicht nur ihre Beschreibungen (D70)",
+    )
     gen.add_argument("--zim", action="append", help="ZIM-Archiv (mehrfach möglich); sonst ZIM_PATHS/ZIM_DIR")
     gen.add_argument("--template", default=None)
     gen.add_argument(

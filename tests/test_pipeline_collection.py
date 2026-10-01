@@ -60,14 +60,35 @@ def test_an_explicit_topic_wins_over_the_collection_title(with_collections: Comp
     assert result.collection is not None and result.collection.title == "Optik"
 
 
-def test_knowledge_collection_adds_reusable_material_sources(with_collections: CompendiumService) -> None:
+def test_knowledge_collection_adds_the_materials_of_the_collection(with_collections: CompendiumService) -> None:
+    """D70: every material whatever its licence; by default what its metadata says, its full text and the
+    sub-collections on request."""
     request = GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"])
     result = with_collections.generate(request)
     materials = [source for source in result.sources if source.project == "wlo_material"]
-    assert materials
-    assert all(source.license in {"CC0 1.0", "CC BY 4.0", "CC BY-SA 4.0"} for source in materials)
-    assert result.audit.knowledge is not None
-    assert result.audit.knowledge["sources"] == len(materials) and result.audit.knowledge["skipped_license"] == 8
+    knowledge = result.audit.knowledge
+    assert knowledge is not None and "skipped_license" not in knowledge
+    # the answer lists what gave paragraphs: one description is a reference line ("Arbeitsblatt - ... - tutory.de")
+    assert 0 < len(materials) <= knowledge["sources"] and knowledge["considered"] == 16
+    assert (knowledge["fulltext"], knowledge["depth"], knowledge["collections"]) == (False, 0, 1)
+    assert not _texts_of_materials(with_collections, request)
+    deep_request = request.model_copy(update={"knowledge_fulltext": True, "knowledge_depth": 1})
+    deep = with_collections.generate(deep_request)
+    assert deep.audit.knowledge is not None
+    assert (deep.audit.knowledge["fulltext"], deep.audit.knowledge["collections"]) == (True, 5)
+    assert _texts_of_materials(with_collections, deep_request), "with the full text a material brings it as well"
+
+
+def _texts_of_materials(service: CompendiumService, request: GenerateRequest) -> list[str]:
+    prepared = service.prepare(request)
+    return [
+        paragraph.text
+        for source in prepared.sources
+        if source.project == "wlo_material"
+        for section in source.sections
+        if section.heading == "Materialtext"
+        for paragraph in section.paragraphs
+    ]
 
 
 def test_unknown_collection_is_reported(with_collections: CompendiumService) -> None:

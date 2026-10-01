@@ -42,15 +42,17 @@ function topic(answer, run) {
   );
 }
 
-// The account of app/compendium/repository.py: materials considered, taken as sources, and why others were not -
-// failed lists the ids of those that could not be read, timed_out counts those the time of the request left unread
+// The account of app/compendium/repository.py: materials considered, taken as sources, from how many collections and
+// whether with their full texts (D70), and why others were not - failed lists the ids of those that could not be read,
+// timed_out counts those the time of the request left unread
 function knowledge(block) {
   if (!block) return null;
   if (block.error) return `nicht lesbar: ${block.error}`;
   return [
     `${block.sources ?? 0} von ${block.considered ?? 0} Materialien als Quelle`,
-    block.skipped_license ? `${block.skipped_license} wegen der Lizenz ausgelassen` : null,
-    block.empty ? `${block.empty} ohne Text` : null,
+    block.collections > 1 ? `aus ${block.collections} Sammlungen` : null,
+    block.fulltext ? 'mit Volltext' : 'nur Beschreibungen',
+    block.empty ? `${block.empty} ohne verwertbaren Text` : null,
     block.failed?.length ? `${block.failed.length} nicht lesbar` : null,
     block.timed_out ? `${block.timed_out} aus Zeitmangel nicht gelesen` : null,
   ]

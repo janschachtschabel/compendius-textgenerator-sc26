@@ -337,9 +337,25 @@ class GenerateRequest(RequestModel):
     knowledge_collection_id: str | None = Field(
         None,
         pattern=NODE_ID_PATTERN,
-        description="Collection whose reusable materials feed part 1 as sources, so parts has to hold world (else a "
-        "422); an unknown one is a 404, as for collection_id, while a failing repository only shows in "
-        "audit.knowledge",
+        description="Collection whose materials feed part 1 as sources, whatever their licence (D70), so parts has to "
+        "hold world (else a 422); an unknown one is a 404, as for collection_id, while a failing repository only shows "
+        "in audit.knowledge. By default a material brings its description; its full text comes with "
+        "knowledge_fulltext, the materials of the sub-collections with knowledge_depth. The collection's own "
+        "compendium text is never read: this service writes it",
+    )
+    knowledge_depth: int = Field(
+        0,
+        ge=0,
+        le=5,
+        description="How deep the sub-collections of knowledge_collection_id feed part 1 as well (D70): 0 only the "
+        "collection's own materials, 1 those of its sub-collections too, and so on; each collection is read once, "
+        "each material counts once, KNOWLEDGE_MAX_MATERIALS bounds them all. Needs knowledge_collection_id",
+    )
+    knowledge_fulltext: bool = Field(
+        False,
+        description="Read the full text of each material of knowledge_collection_id as well, not only its "
+        "description (D70): more knowledge for part 1, and a repository request per material, a few at a time "
+        "within the request's time budget. Needs knowledge_collection_id",
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
@@ -452,6 +468,11 @@ class GenerateRequest(RequestModel):
             raise ValueError("regenerate_sections gilt für existing_markdown; ohne den früheren Text bleibt nichts")
         if self.knowledge_collection_id and "world" not in self.parts:
             raise ValueError("knowledge_collection_id speist Teil 1; ohne world in parts bliebe sie ungelesen")
+        if (self.knowledge_depth or self.knowledge_fulltext) and not self.knowledge_collection_id:
+            raise ValueError(
+                "knowledge_depth und knowledge_fulltext gelten für knowledge_collection_id; ohne sie ist "
+                "nichts zu lesen"
+            )
         # Without a collection part 3 drops out (as with the default parts); it must not be the only part
         if not self.collection_id and not {"world", "curricula"} & set(self.parts):
             raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")

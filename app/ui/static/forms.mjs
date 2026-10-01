@@ -30,6 +30,8 @@ export const FORMS = {
       { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: COMPENDIUM_STEPS },
       { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true },
       { name: 'max_articles', type: 'number', label: 'Höchstens Artikel', advanced: true },
+      { name: 'knowledge_depth', type: 'number', label: 'Untersammlungen der Sammlung als Quelle', advanced: true, help: 'Wie viele Ebenen darunter mitgelesen werden; 0 nur die Sammlung selbst.' },
+      { name: 'knowledge_fulltext', type: 'check', label: 'Volltexte der Materialien lesen, nicht nur ihre Beschreibungen', advanced: true },
       { name: 'template_id', type: 'template', label: 'Vorlage', advanced: true },
     ],
   },
@@ -115,6 +117,8 @@ export function defaults(mode, options) {
         topic: '',
         collection_id: '',
         knowledge_collection_id: '',
+        knowledge_depth: '',
+        knowledge_fulltext: false,
         parts: ['world', 'curricula'],
         facets_visible: Boolean(options.facets_visible), // FACETS_VISIBLE of the server, as a request without it
         empty_note: Boolean(options.empty_note), // as the default template keeps empty blocks, as a request without it
@@ -139,9 +143,10 @@ export function defaults(mode, options) {
 // What an example asks about. Loading one changes only the fields it holds, not profile, comparison, steps, subject
 // or numbers (Jan, 2026-09-29, U11) - with one exception: the input of its mode goes together. A topic left from an
 // earlier example would win over the node of a material, and /qa refuses a text next to a topic, so an example sets
-// all of its input, empty where it has none.
+// all of its input, empty where it has none. The depth and the full texts of a collection as a source go with it:
+// left over from an earlier one, they would hold back an example without that collection.
 const EXAMPLE_INPUT = {
-  compendium: ['topic', 'collection_id', 'knowledge_collection_id', 'node_id', 'repository'],
+  compendium: ['topic', 'collection_id', 'knowledge_collection_id', 'knowledge_depth', 'knowledge_fulltext', 'node_id', 'repository'],
   knowledge: ['topic', 'node_id', 'repository'],
   lehrplan: ['q'],
   entities: ['text', 'node_id', 'repository'],
@@ -185,6 +190,8 @@ const BUILDERS = {
     put(body, 'subject', text(v.subject));
     put(body, 'collection_id', id(v.collection_id));
     put(body, 'knowledge_collection_id', id(v.knowledge_collection_id));
+    put(body, 'knowledge_depth', number(v.knowledge_depth));
+    if (v.knowledge_fulltext) body.knowledge_fulltext = true;
     node(body, v);
     body.parts = [...v.parts];
     body.preset = v.preset;
@@ -253,6 +260,11 @@ const CHECKS = {
     else if (v.parts.length === 1 && v.parts[0] === 'collection' && !text(v.collection_id)) found.collection_id = 'Teil 3 braucht eine Sammlung.';
     if (text(v.knowledge_collection_id) && !v.parts?.includes('world')) {
       found.knowledge_collection_id = 'Eine Sammlung als Quelle speist Teil 1 – bitte Teil 1 wählen.';
+    }
+    if (!text(v.knowledge_collection_id)) {
+      const without = 'gilt für eine Sammlung als Quelle – bitte oben eine angeben.';
+      if (number(v.knowledge_depth)) found.knowledge_depth = `Die Tiefe ${without}`;
+      if (v.knowledge_fulltext) found.knowledge_fulltext = `Das Lesen der Volltexte ${without}`;
     }
   },
   knowledge(v, found) {

@@ -216,7 +216,13 @@ class CompendiumService(RepositoryReading, WorldBuilding):
                 knowledge_id = request.knowledge_collection_id
                 prepared.knowledge = {"collection_id": knowledge_id, "error": NO_REPOSITORY, "sources": 0}
             else:
-                prepared.knowledge = self._knowledge(request.knowledge_collection_id, sources, deadline)
+                prepared.knowledge = self._knowledge(
+                    request.knowledge_collection_id,
+                    sources,
+                    deadline,
+                    depth=request.knowledge_depth,
+                    fulltext=request.knowledge_fulltext,
+                )
                 lap("knowledge")
 
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.

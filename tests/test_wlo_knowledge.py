@@ -1,4 +1,5 @@
-"""Knowledge collection (PLAN.md 6.3): licence policy, text fetch with budget and tolerance, sources for part 1."""
+"""Knowledge collection (PLAN.md 6.3, D70): every material, its text on request with budget and tolerance, sources
+for part 1."""
 
 import dataclasses
 from pathlib import Path
@@ -62,14 +63,15 @@ class FakeTexts:
         return self.texts.get(node_id, "")
 
 
-def test_only_reusable_licences_become_sources_with_cleaned_paragraphs(tmp_path: Path) -> None:
+def test_every_material_counts_whatever_its_licence(tmp_path: Path) -> None:
+    """Jan, 2026-10-01 (D70): the service is built for editorial teams with content of their own, so no licence keeps a
+    material out; with the full text asked for, every one is read."""
     licensed = dataclasses.replace(_ref("a", "CC_BY_SA", "Brechung"), license_version="3.0", authors=("Dieter Welz",))
     refs = [licensed, _ref("b", "CC_BY_NC_SA", "Gesperrt"), _ref("c", "CC_0", "Leer")]
     client = FakeTexts({"a": TEXT, "c": ""})
-    result = material_sources(client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions())
-    assert result.skipped_license == 1 and result.empty == 1 and result.failed == []
-    assert sorted(client.calls) == ["a", "c"]  # the NC material is never fetched
-    assert [source.title for source in result.sources] == ["Brechung"]
+    result = material_sources(client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), fulltext=True)
+    assert sorted(client.calls) == ["a", "b", "c"] and result.empty == 0 and result.failed == []
+    assert [source.title for source in result.sources] == ["Brechung", "Gesperrt", "Leer"]
     source = result.sources[0]
     assert source.project == "wlo_material" and source.role is SourceRole.MATERIAL and source.origin == "material"
     assert source.license == "CC BY-SA 3.0" and source.authors == ["Dieter Welz"]
@@ -78,16 +80,33 @@ def test_only_reusable_licences_become_sources_with_cleaned_paragraphs(tmp_path:
     assert texts[0].startswith("Ein Arbeitsblatt")  # the description opens the lead section
     assert any(t.startswith("Trifft Licht") for t in texts) and any(t.startswith("Konstruiere") for t in texts)
     assert not any("cookies" in t for t in texts)  # consent banners are not knowledge
+    # a material without a text still brings its description
+    assert [p.text[:15] for section in result.sources[2].sections for p in section.paragraphs] == ["Ein Arbeitsblat"]
+
+
+def test_without_the_full_text_a_material_brings_its_description_and_nothing_is_fetched(tmp_path: Path) -> None:
+    """D70: the full texts of the materials come in with a switch (knowledge_fulltext); without it a material is
+    what its metadata says, and one whose description is too short for a sentence brings nothing."""
+    short = dataclasses.replace(_ref("b", "CC_BY", "Kurz"), description="Arbeitsblatt Optik")
+    client = FakeTexts({"a": TEXT, "b": TEXT})
+    result = material_sources(
+        client, TtlCache(tmp_path / "c.db"), [_ref("a", "CC_BY"), short], options=KnowledgeOptions()
+    )
+    assert client.calls == [] and result.empty == 1 and result.considered == 2
+    (source,) = result.sources
+    assert [p.text[:15] for section in source.sections for p in section.paragraphs] == ["Ein Arbeitsblat"]
 
 
 def test_budget_failures_and_cache(tmp_path: Path) -> None:
     refs = [_ref(f"n{i}", "CC_BY") for i in range(5)]
     client = FakeTexts({f"n{i}": TEXT for i in range(5)}, fail={"n1"})
     cache = TtlCache(tmp_path / "c.db")
-    result = material_sources(client, cache, refs, options=KnowledgeOptions(max_materials=3, max_chars=120))
+    result = material_sources(
+        client, cache, refs, options=KnowledgeOptions(max_materials=3, max_chars=120), fulltext=True
+    )
     assert result.considered == 3 and result.failed == ["n1"] and len(result.sources) == 2
     assert all(sum(len(p.text) for s in src.sections for p in s.paragraphs) <= 120 + 200 for src in result.sources)
-    again = material_sources(client, cache, refs[:1], options=KnowledgeOptions())
+    again = material_sources(client, cache, refs[:1], options=KnowledgeOptions(), fulltext=True)
     assert len(again.sources) == 1 and client.calls.count("n0") == 1  # second run served from the cache
 
 
@@ -95,11 +114,11 @@ def test_materials_not_started_before_the_deadline_are_skipped(tmp_path: Path) -
     refs = [_ref(node_id, "CC_BY", f"Material {node_id}") for node_id in ("a", "b", "c")]
     client = FakeTexts({"a": TEXT, "b": TEXT, "c": TEXT})
     cache = TtlCache(tmp_path / "c.db")
-    material_sources(client, cache, refs[2:], options=KnowledgeOptions())  # a cached text costs nothing and is used
+    material_sources(client, cache, refs[2:], options=KnowledgeOptions(), fulltext=True)  # a cached text is used
     client.calls.clear()  # even after the deadline
     left = iter([60.0, 0.0, 0.0])
     result = material_sources(
-        client, cache, refs, options=KnowledgeOptions(concurrency=1), remaining=lambda: next(left)
+        client, cache, refs, options=KnowledgeOptions(concurrency=1), remaining=lambda: next(left), fulltext=True
     )
     assert client.calls == ["a"]
     assert result.timed_out == 1 and [source.title for source in result.sources] == ["Material a", "Material c"]
@@ -110,7 +129,7 @@ def test_a_text_the_budget_ends_on_its_way_counts_as_timed_out_not_as_failed(tmp
     refs = [_ref(node_id, "CC_BY", f"Material {node_id}") for node_id in ("a", "b")]
     client = FakeTexts({"a": TEXT, "b": TEXT}, late={"b"})
     result = material_sources(
-        client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), remaining=lambda: 1.0
+        client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), remaining=lambda: 1.0, fulltext=True
     )
     assert result.timed_out == 1 and result.failed == [] and [s.title for s in result.sources] == ["Material a"]
 
@@ -119,7 +138,9 @@ def test_the_text_of_a_material_becomes_chunks_of_part_one(tmp_path: Path) -> No
     """Segmented with the real lexicon, as the service does it: the text is knowledge, not a list of references."""
     lexicon = HeadingLexicon.load(ROOT / "config" / "heading_lexicon.yaml").with_template(TemplateManager().get("sc26"))
     client = FakeTexts({"a": TEXT})
-    result = material_sources(client, TtlCache(tmp_path / "c.db"), [_ref("a", "CC_BY")], options=KnowledgeOptions())
+    result = material_sources(
+        client, TtlCache(tmp_path / "c.db"), [_ref("a", "CC_BY")], options=KnowledgeOptions(), fulltext=True
+    )
     material = result.sources[0]
     chunks = segment_source(material, lexicon)
     assert [chunk.text[:12] for chunk in chunks] == ["Ein Arbeitsb", "Trifft Licht", "Konstruiere "]

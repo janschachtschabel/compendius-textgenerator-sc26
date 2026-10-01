@@ -228,7 +228,7 @@ Aus dem Hauptartikel wird der Korpus: höchstens 12 Artikel und 400 Absätze, im
 | verlinkte Unterartikel | Links des Hauptartikels, gereiht nach Themenwort im Titel, Treffern in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder, Maßeinheiten und Listen sind gesperrt; mindestens 350 Zeichen Text |
 | Volltexttreffer je Baustein | drei Plätze sind reserviert: je Baustein eine Suche nach Titel und drei Suchbegriffen des Bausteins, bis zu vier Treffer, die das Thema in Titel oder Einleitung nennen und mit dem Hauptartikel verlinkt sein müssen (D48) |
 | Artikel eines Materials | mit `topic` und `node_id` zusammen: wenn er ein anderer ist als der Hauptartikel und mit ihm verlinkt, als eigene Quelle ohne Themenfilter (D47) |
-| Materialien einer Sammlung (optional) | `knowledge_collection_id`: bis zu 30 Materialien mit je 20.000 Zeichen, wörtlich nur unter CC0, Public Domain, CC BY oder CC BY-SA; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen. |
+| Materialien einer Sammlung (optional) | `knowledge_collection_id`: bis zu 30 Materialien gleich unter welcher Lizenz (D70), je ihre Beschreibung, mit `knowledge_fulltext` ihr Volltext bis 20.000 Zeichen, mit `knowledge_depth` auch aus den Untersammlungen; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen. |
 
 Artikel ohne das Themenwort im Titel geben nur die Absätze ab, die das Thema nennen. Mit `article_choice=llm` nennt
 das LLM seit D63 zuerst den Übersichtsartikel des Themas und bis zu acht Artikel zu seinen Teilen; die davon im Archiv
@@ -243,6 +243,8 @@ gefragt.
 | Umgebung: `CORPUS_MAX_CHUNKS` | 20 bis 5.000 Absätze | 400 |
 | Umgebung: `ZIM_PROFILE` | `compact` (Top-Artikel, 1,4 GB), `standard` (ganze Wikipedia und Klexikon), `extended` (dazu Wikibooks und Wikiversity) | `standard` |
 | Anfrage: `knowledge_collection_id` | nodeId einer Sammlung | keine |
+| Anfrage: `knowledge_fulltext` | `true`, `false` | `false`: nur die Beschreibungen |
+| Anfrage: `knowledge_depth` | 0 bis 5 Ebenen Untersammlungen | 0: nur die Sammlung |
 | Übersicht und Teile vom LLM, sonst Prüfung der Nebenartikel | über `article_choice` | an, wo `article_choice` `llm` oder `llm-thorough` gilt (D63) |
 
 | 20 Themen (M25, gpt-6-luna) | gedruckt aus passenden, verwandten, unpassenden Artikeln | gefüllte Inhaltsbausteine | LLM-Aufrufe, Tokens je Thema |

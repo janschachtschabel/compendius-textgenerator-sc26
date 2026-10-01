@@ -38,11 +38,17 @@ test('a collection as a source counts its materials, those it could not read and
   const kept = info('compendium_topic');
   const late = info('compendium_topic', (answer) => Object.assign(answer.audit.knowledge, { failed: ['a1', 'b2'], timed_out: 3 }));
 
-  assert.equal(fact(kept, 'Thema und Artikel', 'Wissens-Sammlung'), '4 von 8 Materialien als Quelle, 8 wegen der Lizenz ausgelassen, 4 ohne Text');
+  assert.equal(fact(kept, 'Thema und Artikel', 'Wissens-Sammlung'), '15 von 16 Materialien als Quelle, nur Beschreibungen, 1 ohne verwertbaren Text');
   assert.equal(
     fact(late, 'Thema und Artikel', 'Wissens-Sammlung'),
-    '4 von 8 Materialien als Quelle, 8 wegen der Lizenz ausgelassen, 4 ohne Text, 2 nicht lesbar, 3 aus Zeitmangel nicht gelesen',
+    '15 von 16 Materialien als Quelle, nur Beschreibungen, 1 ohne verwertbaren Text, 2 nicht lesbar, 3 aus Zeitmangel nicht gelesen',
   );
+});
+
+test('a collection read with its full texts and its sub-collections says so (D70)', () => {
+  const deep = info('compendium_topic', (answer) => Object.assign(answer.audit.knowledge, { fulltext: true, depth: 2, collections: 5 }));
+
+  assert.equal(fact(deep, 'Thema und Artikel', 'Wissens-Sammlung'), '15 von 16 Materialien als Quelle, aus 5 Sammlungen, mit Volltext, 1 ohne verwertbaren Text');
 });
 
 test('a compendium without a material says nothing of one', () => {

@@ -181,7 +181,9 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "description": (
             "Ein topic mit einem Material (node_id, repository), dessen Artikel als weitere Quelle dazukommt, wenn er "
             "mit dem Hauptartikel verlinkt ist; alle drei Teile, Teil 3 aus collection_id, dieselbe Sammlung als "
-            "Wissensquelle für Teil 1 (knowledge_collection_id); subject entscheidet die Artikelwahl mit und grenzt "
+            "Wissensquelle für Teil 1 (knowledge_collection_id), mit ihren Untersammlungen eine Ebene tief "
+            "(knowledge_depth) und den Volltexten der Materialien (knowledge_fulltext); subject entscheidet die "
+            "Artikelwahl mit und grenzt "
             "Teil 2 ein. preset setzt die Schalter, jeder hier gesetzte geht ihm vor. existing_markdown ist ein "
             "früheres Kompendium, hier gekürzt auf einen redaktionell geprüften Baustein; mit regenerate_sections "
             "entstehen nur die genannten Bausteine neu, alle anderen bleiben wortgleich. Die Knoten stammen aus der "
@@ -193,6 +195,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
             "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
             "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "knowledge_depth": 1,
+            "knowledge_fulltext": True,
             "parts": ["world", "curricula", "collection"],
             "subject": "Physik",
             "language": "de",

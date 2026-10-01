@@ -569,7 +569,7 @@ def test_part_three_and_the_knowledge_collection_are_counted(
     assert delta("kompendium_parts_total", part="knowledge", available="true") == 1
     assert knowledge["sources"] > 0
     assert delta("kompendium_knowledge_materials_total", outcome="used") == knowledge["sources"]
-    assert delta("kompendium_knowledge_materials_total", outcome="skipped_license") == knowledge["skipped_license"]
+    assert delta("kompendium_knowledge_materials_total", outcome="empty") == knowledge["empty"]
 
 
 def test_a_request_that_fails_inside_the_app_is_counted_as_500(

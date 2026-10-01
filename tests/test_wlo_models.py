@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 from app.sources.wlo.models import (
-    is_extractive,
     license_label,
     parse_collection,
     parse_node,
@@ -61,6 +60,20 @@ def test_reference_parsing_prefers_display_names_and_the_material_url() -> None:
     assert ref.description == "Faszinierende Phänomene aus der Optik" and "Spiegel" in ref.keywords
 
 
+def test_the_compendium_text_of_a_material_never_becomes_part_of_it() -> None:
+    """D70 (Jan: compendium texts are what the service is to write, not a source). A material may carry one in
+    ccm:oeh_collection_compendium_text; its record takes the description, never that text, even without one."""
+    node = _load("references_optik_page1.json")["references"][0]
+    node["properties"]["ccm:oeh_collection_compendium_text"] = ["# Kompendialer Text zur Optik"]
+    node["properties"].pop("cclom:general_description", None)
+    node["properties"].pop("cm:description", None)
+
+    ref = parse_reference(node)
+
+    assert ref.description == ""
+    assert "Kompendialer Text" not in repr(ref)
+
+
 def test_reference_without_www_url_falls_back_to_the_render_url() -> None:
     node = _load("references_optik_page1.json")["references"][0]
     node["properties"].pop("ccm:wwwurl")
@@ -73,9 +86,8 @@ def test_subcollections_from_the_payload() -> None:
     assert all(len(sub.id) == 36 for sub in subs)
 
 
-def test_license_policy_allows_only_verbatim_reuse_licenses() -> None:
-    assert is_extractive("CC_0") and is_extractive("PDM") and is_extractive("CC_BY") and is_extractive("CC_BY_SA")
-    assert not is_extractive("CC_BY_NC_SA") and not is_extractive("COPYRIGHT_FREE") and not is_extractive("")
+def test_license_labels_name_the_licence_and_its_version() -> None:
+    # no licence keeps a material out of part 1 any more (D70); its label still goes into the sources block
     assert license_label("CC_BY_SA", "3.0") == "CC BY-SA 3.0" and license_label("CC_0") == "CC0 1.0"
     assert license_label("CC_BY_SA") == "CC BY-SA"  # no version recorded, none invented
     assert license_label("COPYRIGHT_FREE") == "frei zugänglich (keine OER-Lizenz)"

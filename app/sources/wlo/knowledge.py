@@ -1,8 +1,9 @@
 """Knowledge collection (PLAN.md 6.3): the materials of a collection become sources for part 1.
 
-Only materials under a licence that allows verbatim reuse are fetched (``EXTRACTIVE_LICENSES``); the
-extracted text of each is cached for a week, fetched a few at a time, and a failing material never
-fails the compendium: it is listed in the result so the audit can say what is missing.
+Every material counts, whatever its licence (Jan, 2026-10-01, D70: the service is built for editorial teams with
+content of their own). By default a material brings what its metadata says, its description; with ``fulltext`` its
+extracted text as well, cached for a week, fetched a few at a time. A failing material never fails the compendium:
+it is listed in the result so the audit can say what is missing.
 """
 
 from __future__ import annotations
@@ -18,7 +19,7 @@ from app.domain.spelling import readable
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError, Remaining, spent
 from app.sources.wlo.errors import TimeUpError
-from app.sources.wlo.models import MaterialRef, is_extractive
+from app.sources.wlo.models import MaterialRef
 
 log = logging.getLogger(__name__)
 
@@ -52,10 +53,10 @@ class KnowledgeOptions:
 class KnowledgeResult:
     sources: list[Source] = field(default_factory=list)
     considered: int = 0
-    skipped_license: int = 0
-    empty: int = 0
+    empty: int = 0  # brought no paragraph: no description long enough, and no text or none asked for
     failed: list[str] = field(default_factory=list)
     timed_out: int = 0  # not fetched because the request's time budget was spent
+    collections: int = 1  # the collection and the sub-collections read with it (knowledge_depth)
 
 
 def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
@@ -78,11 +79,12 @@ def _source(ref: MaterialRef, paragraphs: list[str]) -> Source:
     sections: list[ArticleSection] = []
     if len(ref.description) >= MIN_PARAGRAPH_CHARS:
         sections.append(ArticleSection(heading="", path=[], level=0, paragraphs=[Paragraph(text=ref.description)]))
-    sections.append(
-        ArticleSection(
-            heading=TEXT_HEADING, path=[TEXT_HEADING], level=2, paragraphs=[Paragraph(text=p) for p in paragraphs]
+    if paragraphs:
+        sections.append(
+            ArticleSection(
+                heading=TEXT_HEADING, path=[TEXT_HEADING], level=2, paragraphs=[Paragraph(text=p) for p in paragraphs]
+            )
         )
-    )
     return Source(
         source_id=f"wlo:{ref.id}",
         project=PROJECT,
@@ -105,18 +107,25 @@ def material_sources(
     *,
     options: KnowledgeOptions,
     remaining: Remaining | None = None,
+    fulltext: bool = False,
 ) -> KnowledgeResult:
-    """Sources for the reusable materials of a collection, fetched in parallel within the budget.
+    """Sources for the materials of a collection: their descriptions, with ``fulltext`` their texts as well, fetched
+    in parallel within the budget.
 
     ``remaining`` gives the seconds left of the request's time budget: texts not in the cache are no longer fetched
     once it is spent, and none waits longer than it, so a slow repository cannot hold the request for 30 materials
     times the client timeout. A text still on its way when the budget ends counts as not fetched in time.
     """
     result = KnowledgeResult()
-    allowed = [ref for ref in refs if is_extractive(ref.license_key)]
-    result.skipped_license = len(refs) - len(allowed)
-    chosen = allowed[: options.max_materials]
+    chosen = refs[: options.max_materials]
     result.considered = len(chosen)
+    if not fulltext:  # what the listing already says: no request for any text
+        for ref in chosen:
+            if len(ref.description) >= MIN_PARAGRAPH_CHARS:
+                result.sources.append(_source(ref, []))
+            else:
+                result.empty += 1
+        return result
 
     def fetch(ref: MaterialRef) -> tuple[MaterialRef, str | None, str | None]:
         # the same id may name another text in another repository or for another account (audit 2026-09-29, A03)
@@ -146,7 +155,7 @@ def material_sources(
             result.failed.append(ref.id)
             continue
         paragraphs = paragraphs_from_text(text or "", options.max_chars)
-        if not paragraphs:
+        if not paragraphs and len(ref.description) < MIN_PARAGRAPH_CHARS:
             result.empty += 1
             continue
         result.sources.append(_source(ref, paragraphs))

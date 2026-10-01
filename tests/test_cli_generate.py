@@ -1,5 +1,6 @@
 """CLI: ``compendium generate`` with the LLM switches on the offline sample archives (LLM off: everything falls back)."""
 
+import json
 import shlex
 from collections.abc import Iterator
 from itertools import pairwise
@@ -138,3 +139,22 @@ def test_the_readme_example_of_the_rule_mode_runs_without_an_llm(
     finally:
         get_settings.cache_clear()
     assert out_file.read_text(encoding="utf-8").strip()
+
+
+def test_generate_reads_the_knowledge_collection_as_deep_and_as_full_as_asked(
+    cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D70: --knowledge-depth and --knowledge-fulltext work as knowledge_depth and knowledge_fulltext of the API."""
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
+    builder = CollectionBuilder(client=client, cache=None)
+    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    out_file, json_file = cli_env / "optik.md", cli_env / "optik.json"
+    deep = ["--knowledge-collection-id", OPTIK, "--knowledge-depth", "1", "--knowledge-fulltext"]
+    args = ["generate", "--topic", "Optik", *deep, "--out", str(out_file), "--json", str(json_file), *zim_args]
+
+    assert main(args) == 0
+    knowledge = json.loads(json_file.read_text(encoding="utf-8"))["audit"]["knowledge"]
+    assert (knowledge["depth"], knowledge["fulltext"], knowledge["collections"]) == (1, True, 5)
+    assert main(["generate", "--topic", "Optik", "--knowledge-depth", "1", *zim_args]) == 1
+    assert "knowledge_depth" in capsys.readouterr().err

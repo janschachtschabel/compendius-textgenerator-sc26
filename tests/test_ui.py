@@ -242,6 +242,7 @@ def test_the_options_carry_the_bounds_of_the_number_fields(options: dict[str, An
     assert options["limits"]["compendium"]["target_length"]["default"] == length.default
     assert options["limits"]["compendium"]["target_length"]["min"] == 2_000
     assert options["limits"]["compendium"]["target_length"]["max"] == 60_000
+    assert options["limits"]["compendium"]["knowledge_depth"] == {"default": 0, "min": 0, "max": 5}
     assert options["limits"]["qa"]["count"] == {"default": 5, "min": 1, "max": 50}
     assert options["limits"]["entities"]["max_entities"] == {"default": 50, "min": 1, "max": 200}
 

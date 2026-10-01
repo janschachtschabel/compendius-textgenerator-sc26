@@ -233,22 +233,40 @@ dieses Konto lesen darf. Eine Sammlung liest er höchstens alle `COLLECTION_CACH
 ### Eine Sammlung als Quelle für Teil 1
 
 `knowledge_collection_id` nennt eine Sammlung, deren Materialien Teil 1 als weitere Quellen nutzt, neben Wikipedia und
-Klexikon. Der Dienst liest bis zu 30 Materialien (`KNOWLEDGE_MAX_MATERIALS`) mit offener Lizenz und lesbarem Text;
-ihre Absätze stehen im Text mit Belegnummer wie die der Wikipedia. Teil 1 muss dabei sein, sonst 422.
+Klexikon, gleich unter welcher Lizenz (D70). Der Dienst nimmt bis zu 30 Materialien (`KNOWLEDGE_MAX_MATERIALS`); ihre
+Absätze stehen im Text mit Belegnummer wie die der Wikipedia. Teil 1 muss dabei sein, sonst 422. Zwei Schalter, beide
+nur mit `knowledge_collection_id` (sonst 422):
+
+| Feld | Vorgabe | Wirkung |
+|---|---|---|
+| `knowledge_fulltext` | `false` | `false`: je Material seine Beschreibung aus den Metadaten (ab 40 Zeichen), kein Text wird geholt. `true`: dazu sein Volltext (`textContent`, bis `KNOWLEDGE_MAX_CHARS` Zeichen, eine Woche gecacht) |
+| `knowledge_depth` | `0` | `0`: nur die Materialien der Sammlung selbst. `1` bis `5`: dazu die ihrer Untersammlungen bis zu dieser Tiefe; die Sammlungen geben reihum je ein Material ab, bis die 30 erreicht sind, ein Material in mehreren zählt einmal |
+
+Kompendiale Texte (`ccm:oeh_collection_compendium_text`) liest der Dienst nie, auch nicht die von Untersammlungen: Sie
+sollen aus ihm erst entstehen.
 
 ```bash
-# Thema Optik, Materialien der Sammlung als Quellen, dieselbe Sammlung als Teil 3
+# Thema Optik, Materialien der Sammlung und ihrer Untersammlungen mit Volltext als Quellen, dieselbe Sammlung als Teil 3
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"}' \
+  -d '{"topic": "Optik", "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013", "knowledge_depth": 1, "knowledge_fulltext": true}' \
   > optik.json
-jq '.audit.knowledge | {considered, sources, skipped_license, empty, failed: (.failed | length)}' optik.json
+jq '.audit.knowledge | {considered, sources, empty, failed: (.failed | length), collections, depth, fulltext}' optik.json
 jq '.sources[] | select(.project == "wlo_material") | {title, license, url}' optik.json
 ```
 
-Bei der Sammlung Optik der Staging (anonym gelesen): 131 von 168 Inhalten ohne offene Lizenz übersprungen, 30
-gelesen, 6 als Quelle genutzt, 7 ohne Text, 17 ohne Zugangsdaten nicht lesbar. `collection_id` und
-`knowledge_collection_id` können auch verschiedene Sammlungen sein.
+Bei der Sammlung Optik der Staging (anonym gelesen, 168 Inhalte, sechs Untersammlungen, 01.10.2026):
+
+| Aufruf | Sammlungen | Quellen von 30 | ohne Text | nicht lesbar | Zeichen | Absätze |
+|---|---|---|---|---|---|---|
+| nur Beschreibungen (Vorgabe) | 1 | 25 | 5 | 0 | rund 15.500 | 25 |
+| `knowledge_fulltext: true` | 1 | 22 | 1 | 7 | rund 41.000 | 181 |
+| `knowledge_depth: 1` | 7, Quellen aus 5 | 20 | 10 | 0 | rund 6.500 | 20 |
+| `knowledge_depth: 1` und Volltext | 7, Quellen aus 5 | 21 | 1 | 8 | rund 41.800 | 209 |
+
+Viele Materialien der Untersammlungen haben keine Beschreibung; mit Tiefe lohnt deshalb der Volltext. Nicht lesbar
+heißt: Das Repository gibt den Text anonym nicht heraus (mit `EDU_SHARING_USER` liest der Dienst, was das Konto lesen
+darf). `collection_id` und `knowledge_collection_id` können auch verschiedene Sammlungen sein.
 
 ### Ein Material oder eine Sammlung als Eingang
 

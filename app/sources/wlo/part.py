@@ -11,6 +11,7 @@ import dataclasses
 import logging
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
+from itertools import zip_longest
 from typing import Any
 
 from app.domain.models import CollectionPart, NodeInput
@@ -229,11 +230,62 @@ class CollectionBuilder:
             available=True, collection_id=collection_id, title=info.title, summary=summary, markdown=markdown
         )
 
-    def knowledge_sources(self, collection_id: str, *, remaining: Remaining | None = None) -> KnowledgeResult:
-        """Sources for part 1 from the reusable materials of a collection (PLAN.md 6.3); ``remaining`` see
-        ``material_sources``. Without a page of the listing in time, ``TimeUpError``."""
-        refs = self.references(collection_id, remaining=remaining)
-        return material_sources(self.client, self.cache, refs, options=self.options.knowledge, remaining=remaining)
+    def knowledge_sources(
+        self, collection_id: str, *, remaining: Remaining | None = None, depth: int = 0, fulltext: bool = False
+    ) -> KnowledgeResult:
+        """Sources for part 1 from the materials of a collection (PLAN.md 6.3) and, with ``depth``, of its
+        sub-collections down to that depth (D70); ``remaining`` and ``fulltext`` see ``material_sources``.
+
+        The collections take turns, one material each, so the cap of ``KNOWLEDGE_MAX_MATERIALS`` leaves none out:
+        one after the other, a large collection filled it before a sub-collection came (staging Optik, 168
+        materials and the cap 30: depth 1 added nothing)."""
+        listings = self._knowledge_listings(collection_id, depth=depth, remaining=remaining)
+        unique: dict[str, MaterialRef] = {}
+        for turn in zip_longest(*listings):
+            for ref in turn:
+                if ref is not None:
+                    unique.setdefault(ref.id, ref)  # a material in several collections counts once, where it came first
+        result = material_sources(
+            self.client,
+            self.cache,
+            list(unique.values()),
+            options=self.options.knowledge,
+            remaining=remaining,
+            fulltext=fulltext,
+        )
+        result.collections = len(listings)
+        return result
+
+    def _knowledge_listings(
+        self, collection_id: str, *, depth: int, remaining: Remaining | None
+    ) -> list[list[MaterialRef]]:
+        """The materials of the collection and of its sub-collections down to ``depth``, one listing per collection,
+        each collection once. Without a page of the collection's own listing in time, ``TimeUpError``; a
+        sub-collection that cannot be read is left out, and once the time is up no deeper one is read."""
+        listings = [self.references(collection_id, remaining=remaining)]
+        seen, level = {collection_id}, [collection_id]
+        for _ in range(depth):
+            below: list[str] = []
+            for parent in level:
+                if spent(remaining):
+                    break
+                try:
+                    subs = self.subcollections(parent, remaining=remaining)
+                except EduSharingError as exc:  # TimeUpError included
+                    log.warning("sub-collections of %s not readable for the knowledge collection: %s", parent, exc)
+                    continue
+                for sub in subs:
+                    if sub.id in seen or spent(remaining):
+                        continue
+                    try:
+                        listings.append(self.references(sub.id, remaining=remaining))
+                    except EduSharingError as exc:  # TimeUpError included
+                        log.warning("materials of sub-collection %s not readable: %s", sub.id, exc)
+                        continue
+                    seen.add(sub.id)
+                    below.append(sub.id)
+            level = below
+        return listings
 
     def _key(self, kind: str, node_id: str, *, public: bool = False) -> str:
         """The cache key of a record: its kind and format, whose answer it is (``EduSharingClient.scope``), its id."""
