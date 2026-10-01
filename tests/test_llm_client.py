@@ -33,8 +33,16 @@ ACADEMIC_MODELS = {
 }
 
 
-def completion(text: str, *, reasoning: str | None = None, prompt_tokens: int = 20, completion_tokens: int = 4) -> dict:  # type: ignore[type-arg]
-    """A chat completion as b-api returned it on 2026-09-17 (OpenAI shape with usage)."""
+def completion(
+    text: str,
+    *,
+    reasoning: str | None = None,
+    prompt_tokens: int = 20,
+    completion_tokens: int = 4,
+    cached_tokens: int = 0,
+) -> dict:  # type: ignore[type-arg]
+    """A chat completion as b-api returned it on 2026-09-17 (OpenAI shape with usage); ``cached_tokens`` the part of
+    the prompt read from the prompt cache, as it reported on 2026-10-01."""
     message: dict[str, Any] = {"role": "assistant", "content": text}
     if reasoning is not None:
         message["reasoning"] = reasoning
@@ -47,6 +55,7 @@ def completion(text: str, *, reasoning: str | None = None, prompt_tokens: int = 
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
             "total_tokens": prompt_tokens + completion_tokens,
+            **({"prompt_tokens_details": {"cached_tokens": cached_tokens}} if cached_tokens else {}),
         },
     }
 
@@ -64,6 +73,7 @@ class FakeBApi:
         reasoning_only: bool = False,
         transport_error: Exception | None = None,
         raw: Any = None,
+        cached_tokens: int = 0,
     ) -> None:
         self.responder = responder or (lambda body: "OK")
         self.statuses = list(statuses or [])
@@ -72,6 +82,7 @@ class FakeBApi:
         self.reasoning_only = reasoning_only
         self.transport_error = transport_error or httpx.ConnectError("boom")
         self.raw = raw  # a complete 200 payload that replaces the well-formed completion
+        self.cached_tokens = cached_tokens  # reported as read from the prompt cache
         self.requests: list[httpx.Request] = []
         self.bodies: list[dict[str, Any]] = []
 
@@ -92,8 +103,8 @@ class FakeBApi:
             return httpx.Response(200, json=self.raw)
         text = self.responder(body)
         if self.reasoning_only:
-            return httpx.Response(200, json=completion("", reasoning=text))
-        return httpx.Response(200, json=completion(text))
+            return httpx.Response(200, json=completion("", reasoning=text, cached_tokens=self.cached_tokens))
+        return httpx.Response(200, json=completion(text, cached_tokens=self.cached_tokens))
 
 
 def make_client(fake: FakeBApi, **kwargs: Any) -> tuple[BApiClient, list[float]]:
@@ -251,6 +262,26 @@ def test_missing_or_broken_usage_is_estimated_so_the_budget_keeps_counting(usage
     assert result.text.startswith("Eine brauchbare Antwort")
     assert result.prompt_tokens > 0 and result.completion_tokens > 0
     assert result.total_tokens == result.prompt_tokens + result.completion_tokens
+
+
+@pytest.mark.parametrize(
+    ("details", "cached"),
+    [
+        ({"cached_tokens": 3481}, 3481),
+        ({"cached_tokens": 99_999}, 3507),
+        ({"cached_tokens": "viele"}, 0),
+        ({}, 0),
+        (None, 0),
+    ],
+)
+def test_the_prompt_tokens_the_b_api_read_from_its_cache_are_reported(details: Any, cached: int) -> None:
+    """The b-api passes the prompt cache of the model through: on 2026-10-01 a second call with the same opening of
+    3,507 tokens read 3,481 of them from it. More than the prompt is no cache read, and a malformed count none."""
+    payload = completion("Eine Antwort.", prompt_tokens=3507, completion_tokens=88)
+    if details is not None:
+        payload["usage"]["prompt_tokens_details"] = details
+    client, _ = make_client(FakeBApi(raw=payload))
+    assert client.chat(MESSAGES, max_output_tokens=10).cached_tokens == cached
 
 
 def test_decoding_errors_are_llm_errors_and_timeouts_are_not_retried() -> None:

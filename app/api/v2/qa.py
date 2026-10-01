@@ -374,11 +374,19 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         chars=len(text),
         pairs=[Pair(question=pair.question, answer=pair.answer, level=pair.level_value) for pair in pairs],
         note="; ".join(notes) or None,
-        llm_tokens=_llm_tokens(part_one_tokens, usage),
+        llm_tokens=_llm_tokens(part_one_tokens, usage, _cached(part_one_tokens, allowance)),
     )
 
 
-def _llm_tokens(part_one: dict[str, int] | None, pairs: Tokens) -> dict[str, int] | None:
+def _cached(part_one: dict[str, int] | None, allowance: LlmAllowance | None) -> int:
+    """The prompt tokens read from the prompt cache: the shared budget counted part 1 and the pairs alike; without
+    one, the pairs asked no model and part 1 reports its own."""
+    if allowance is not None:
+        return allowance.budget.cached_tokens
+    return (part_one or {}).get("cached", 0)
+
+
+def _llm_tokens(part_one: dict[str, int] | None, pairs: Tokens, cached: int) -> dict[str, int] | None:
     """What the LLM cost for the request - part 1 (its article choice) and the pairs - in the shape of a
     compendium's audit.llm_tokens; ``None`` when no call was made."""
     before = part_one or {}
@@ -387,5 +395,6 @@ def _llm_tokens(part_one: dict[str, int] | None, pairs: Tokens) -> dict[str, int
         "completion": before.get("completion", 0) + pairs.completion_tokens,
         "total": before.get("total", 0) + pairs.total_tokens,
         "calls": before.get("calls", 0) + pairs.calls,
+        "cached": cached,
     }
     return tokens if tokens["calls"] else None

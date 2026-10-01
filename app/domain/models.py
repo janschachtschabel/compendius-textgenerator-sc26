@@ -239,7 +239,11 @@ class AuditReport(BaseModel):
     sections_filled: int = 0
     sections_empty: int = 0
     citations: int = 0
-    llm_tokens: dict[str, int] | None = Field(None, description="prompt, completion, total, calls (LLM switches)")
+    llm_tokens: dict[str, int] | None = Field(
+        None,
+        description="prompt, completion, total, calls (LLM switches); cached: the part of the prompt tokens the model "
+        "read from its prompt cache, which the provider bills lower (D69)",
+    )
     llm: dict[str, Any] | None = Field(
         None,
         description="LLM switches: extraction and generation (requested, used, blocks, fallbacks), note",

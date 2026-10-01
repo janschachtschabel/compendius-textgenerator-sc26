@@ -54,6 +54,7 @@ class LlmWork:
     curriculum_requested: str = "rule-based"
     curriculum: CurriculumCheckReport | None = None
     curriculum_fallback: str | None = None
+    cached_tokens: int = 0  # of the prompt tokens, those read from the prompt cache (D69)
 
 
 def build_llm_report(
@@ -96,6 +97,7 @@ def build_llm_report(
             "completion": sum(r.completion_tokens for r in reports),
             "total": sum(r.total_tokens for r in reports),
             "calls": calls,
+            "cached": work.cached_tokens,
         }
     used = (work.extraction_used, work.generation_used, work.matching_used, choice_audit.used, curriculum_used)
     note = work.note

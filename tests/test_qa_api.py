@@ -608,13 +608,13 @@ def test_the_answer_says_what_the_llm_cost_for_the_pairs(with_llm: TestClient, m
     """Every other endpoint says what its LLM cost; /qa said nothing, and the review page could only say that it did
     not know (D66). A call whose answer held no pair was paid for all the same."""
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "count": 2}).json()
-    assert body["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1}
+    assert body["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1, "cached": 0}
 
     service: CompendiumService = with_llm.app.state.service  # type: ignore[attr-defined]
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "ohne Trennzeichen, also kein Paar")))
     fell_back = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
     assert fell_back["method"] == "rule-based"
-    assert fell_back["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1}
+    assert fell_back["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1, "cached": 0}
 
 
 def test_rules_that_asked_no_model_cost_nothing(client: TestClient) -> None:
@@ -632,5 +632,15 @@ def test_what_part_one_cost_counts_with_the_pairs(with_llm: TestClient, monkeypa
     rules = with_llm.post("/api/v2/qa", json={"topic": "Optik", "article_choice": "llm", "method": "rule-based"})
     both = with_llm.post("/api/v2/qa", json={"topic": "Optik", "article_choice": "llm", "method": "llm"})
 
-    assert rules.json()["llm_tokens"] == chosen
-    assert both.json()["llm_tokens"] == {"prompt": 120, "completion": 14, "total": 134, "calls": 3}
+    assert rules.json()["llm_tokens"] == {**chosen, "cached": 0}
+    assert both.json()["llm_tokens"] == {"prompt": 120, "completion": 14, "total": 134, "calls": 3, "cached": 0}
+
+
+def test_the_pairs_say_how_much_of_their_prompt_came_from_the_cache(
+    with_llm: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Cached prompt tokens cost less; /qa reports them as a compendium does (D69)."""
+    service: CompendiumService = with_llm.app.state.service  # type: ignore[attr-defined]
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: PAIRS, cached_tokens=12)))
+    body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "count": 2}).json()
+    assert body["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1, "cached": 12}

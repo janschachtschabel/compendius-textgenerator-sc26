@@ -80,13 +80,15 @@ def set_llm_endpoint(route: str) -> None:
     _llm_endpoint.set(route)
 
 
-def record_llm_call(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0) -> None:
+def record_llm_call(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0, cached_tokens: int = 0) -> None:
     endpoint = _llm_endpoint.get()
     LLM_CALLS.labels(endpoint, outcome).inc()
     if prompt_tokens:
         LLM_TOKENS.labels(endpoint, "prompt").inc(prompt_tokens)
     if completion_tokens:
         LLM_TOKENS.labels(endpoint, "completion").inc(completion_tokens)
+    if cached_tokens:  # part of the prompt tokens, read from the prompt cache (D69)
+        LLM_TOKENS.labels(endpoint, "cached").inc(cached_tokens)
 
 
 def observe_request(method: str, route: str, status: int, seconds: float) -> None:

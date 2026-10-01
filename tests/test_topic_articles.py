@@ -202,7 +202,7 @@ def test_balanced_builds_the_corpus_from_the_articles_n_names(
     assert not choice["articles_main"] and choice["articles_fallback"] is None and choice["hits_checked"] == 0
     assert choice["articles_overview"] == "Optik", "the overview the model named, as the archive has it"
     assert ARTICLES_PROMPT.tag in result.frontmatter["llm"]["prompts"]
-    assert result.audit.llm_tokens == {"prompt": 20, "completion": 4, "total": 24, "calls": 1}
+    assert result.audit.llm_tokens == {"prompt": 20, "completion": 4, "total": 24, "calls": 1, "cached": 0}
 
 
 def test_n_replaces_the_main_article_where_the_rules_only_guess(

@@ -269,6 +269,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             collection=collection,
             facets_visible=self._facets_visible(request),
             timings=timings,
+            cached_tokens=budget.cached_tokens if budget is not None else 0,
         )
         archives = prepared.registry or self.registry
         return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=archives.snapshot())

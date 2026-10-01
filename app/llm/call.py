@@ -18,10 +18,10 @@ from app.llm.deadline import Deadline
 log = logging.getLogger(__name__)
 
 TIME_UP = "Zeitbudget der Anfrage erschöpft (REQUEST_TIMEOUT_S)"
-# Who hears of every call - outcome, prompt and completion tokens: the API counts them for its metrics
+# Who hears of every call - outcome, prompt, completion and cached prompt tokens: the API counts them for its metrics
 # (create_app wires app.observability.metrics in). The sidecars and the CLI import this module without them: the
 # metrics open files in a directory only the API's command creates (audit 2026-09-27, BE-04).
-CallListener = Callable[[str, int, int], None]
+CallListener = Callable[[str, int, int, int], None]
 _listeners: list[CallListener] = []
 
 
@@ -31,9 +31,9 @@ def listen_to_calls(listener: CallListener) -> None:
         _listeners.append(listener)
 
 
-def _heard(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0) -> None:
+def _heard(outcome: str, prompt_tokens: int = 0, completion_tokens: int = 0, cached_tokens: int = 0) -> None:
     for listener in _listeners:
-        listener(outcome, prompt_tokens, completion_tokens)
+        listener(outcome, prompt_tokens, completion_tokens, cached_tokens)
 
 
 @dataclass(frozen=True)
@@ -142,7 +142,13 @@ def budgeted_chat(
         )
     finally:
         budget.settle(held, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
-    _heard("answered", prompt_tokens=answer.prompt_tokens, completion_tokens=answer.completion_tokens)
+    budget.count_cached(answer.cached_tokens)
+    _heard(
+        "answered",
+        prompt_tokens=answer.prompt_tokens,
+        completion_tokens=answer.completion_tokens,
+        cached_tokens=answer.cached_tokens,
+    )
     return answer
 
 

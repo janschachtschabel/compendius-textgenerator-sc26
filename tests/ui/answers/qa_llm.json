@@ -45,7 +45,8 @@
    "prompt": 20,
    "completion": 4,
    "total": 24,
-   "calls": 1
+   "calls": 1,
+   "cached": 0
   }
  }
 }

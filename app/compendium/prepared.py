@@ -152,6 +152,7 @@ class Made:
     collection: CollectionPart | None
     facets_visible: bool
     timings: dict[str, int]
+    cached_tokens: int = 0  # prompt tokens of the request's LLM calls read from the prompt cache (D69)
 
 
 class Stopwatch:

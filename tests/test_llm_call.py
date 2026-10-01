@@ -26,6 +26,14 @@ def test_a_granted_call_returns_the_answer_and_settles_its_real_cost() -> None:
     assert budget.remaining == 20_000 - 24  # the reservation was replaced by the usage
 
 
+def test_the_request_budget_counts_the_prompt_tokens_read_from_the_cache() -> None:
+    client, _ = make_client(FakeBApi(lambda body: "Antwort", cached_tokens=15))
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    for _ in range(2):
+        budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
+    assert budget.cached_tokens == 30
+
+
 def test_no_call_starts_when_the_request_has_no_time_left() -> None:
     fake = FakeBApi()
     client, _ = make_client(fake)

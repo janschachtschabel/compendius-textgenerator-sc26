@@ -79,6 +79,7 @@ def assemble(
         curriculum_requested=made.curricula.requested if curricula is not None else "rule-based",
         curriculum=made.curricula.report,
         curriculum_fallback=made.curricula.fallback,
+        cached_tokens=made.cached_tokens,
     )
     llm_audit, llm_tokens, llm_front = build_llm_report(llm, work)
     frontmatter = build_frontmatter(

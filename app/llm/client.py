@@ -81,6 +81,9 @@ class ChatResult:
     finish_reason: str
     # attempts before the answer that may have reached the model: a 502 or 504 (audit 2026-09-28, KO-27)
     reached_before: int = 0
+    # prompt tokens the model read from its prompt cache, part of prompt_tokens (D69): the b-api passes the cache
+    # through, a second call with the same opening of 3,507 tokens read 3,481 of them (2026-10-01)
+    cached_tokens: int = 0
 
 
 @dataclass(frozen=True)
@@ -438,6 +441,7 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
         total_tokens=total_tokens,
         model=answered_by,
         finish_reason=finish_reason,
+        cached_tokens=_cached(usage, prompt_tokens),
     )
 
 
@@ -449,6 +453,14 @@ def _whole(value: Any) -> int | None:
     if isinstance(value, float) and not math.isfinite(value):
         return None
     return int(value)
+
+
+def _cached(usage: Any, prompt_tokens: int) -> int:
+    """The prompt tokens read from the prompt cache (``prompt_tokens_details.cached_tokens``); never more than the
+    prompt, zero when the field is missing or malformed."""
+    details = usage.get("prompt_tokens_details") if isinstance(usage, dict) else None
+    value = _whole(details.get("cached_tokens")) if isinstance(details, dict) else None
+    return min(value, prompt_tokens) if value is not None and value > 0 else 0
 
 
 def _usage(usage: Any) -> tuple[int, int, int]:

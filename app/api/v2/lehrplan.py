@@ -137,14 +137,17 @@ def _llm_answer(
     search: _Search,
     reports: list[CurriculumCheckReport],
     fallback: str | None,
+    cached_tokens: int,
 ) -> tuple[dict[str, Any] | None, dict[str, int] | None]:
-    """What the LLM did for the search and what it cost, from the audit of a compendium; ``None`` when not asked."""
+    """What the LLM did for the search and what it cost, from the audit of a compendium; ``None`` when not asked.
+    ``cached_tokens`` are the prompt tokens of its calls read from the prompt cache (D69)."""
     work = LlmWork(
         note=search.note,
         choice=search.choice,
         curriculum_requested=asked.curriculum_check or "rule-based",
         curriculum=reports[0] if reports else None,
         curriculum_fallback=fallback,
+        cached_tokens=cached_tokens,
     )
     audit, tokens, _ = build_llm_report(service.llm, work)
     if audit is None:
@@ -303,7 +306,7 @@ def lehrplan_search(
             check, fallback = service.curriculum_check(search.topic or q, search.subjects, budget, deadline, reports)
             if check is not None:
                 matches = check(matches)
-    llm, tokens = _llm_answer(service, asked, search, reports, fallback)
+    llm, tokens = _llm_answer(service, asked, search, reports, fallback, budget.cached_tokens if budget else 0)
     if result is None:
         return {
             "available": False,

@@ -388,7 +388,7 @@ def test_a_compendium_records_its_mode_phases_and_parts(client: TestClient) -> N
 
 
 def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
-    gateway = make_gateway(FakeBApi(first_sentences))
+    gateway = make_gateway(FakeBApi(first_sentences, cached_tokens=10))
     monkeypatch.setattr(client.app.state.service, "llm", gateway)  # type: ignore[attr-defined]
     before = scrape(client)
     payload = {"topic": "Optik", "extraction": "llm", "generation": "llm-fast", "parts": ["world"]}
@@ -405,6 +405,9 @@ def test_llm_usage_of_a_compendium_is_counted(client: TestClient, monkeypatch: p
     assert delta("kompendium_llm_tokens_total", endpoint=route, type="prompt") == audit["llm_tokens"]["prompt"]
     assert delta("kompendium_llm_tokens_total", endpoint=route, type="completion") == audit["llm_tokens"]["completion"]
     assert delta("kompendium_llm_calls_total", endpoint=route, outcome="answered") == audit["llm_tokens"]["calls"]
+    # every answer of the fake read 10 prompt tokens from the cache
+    assert audit["llm_tokens"]["cached"] == 10 * audit["llm_tokens"]["calls"]
+    assert delta("kompendium_llm_tokens_total", endpoint=route, type="cached") == audit["llm_tokens"]["cached"]
     generation, extraction = audit["llm"]["generation"], audit["llm"]["extraction"]
     chosen = len(extraction["sections"]) - len(extraction["emptied"])
     assert chosen > 0 and delta("kompendium_llm_selections_total", outcome="chosen") == chosen

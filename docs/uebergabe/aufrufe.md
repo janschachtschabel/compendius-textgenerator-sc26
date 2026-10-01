@@ -139,7 +139,7 @@ Was die Antwort sonst trägt:
 | `jq -r '.curricula.markdown'` | nur Teil 2 |
 | `jq -r '.collection.markdown'` | nur Teil 3 |
 | `jq '.parts_status'` | je Teil `ok`, `empty`, `incomplete` oder `unavailable` (ohne `collection_id` steht Teil 3 auf `unavailable`) |
-| `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage |
+| `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage; `cached` ist der Teil der Eingabe aus dem Prompt-Cache, den der Anbieter niedriger abrechnet |
 | `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
 | `jq '.frontmatter'` | die Angaben des Vorspanns als Objekt, auch wenn der Text ohne Vorspann kommt |

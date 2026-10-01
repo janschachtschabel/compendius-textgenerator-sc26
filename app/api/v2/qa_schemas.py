@@ -156,5 +156,6 @@ class QaResponse(BaseModel):
         None,
         description="What the LLM cost, as audit.llm_tokens of a compendium: prompt, completion and total tokens "
         "and calls, of part 1 (the article choice) and the pairs together - a call whose answer held no pair "
-        "included; null when no LLM was called",
+        "included - and cached, the part of the prompt tokens read from the prompt cache (D69); null when no LLM "
+        "was called",
     )

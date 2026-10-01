@@ -85,7 +85,8 @@
    "prompt": 80,
    "completion": 16,
    "total": 96,
-   "calls": 4
+   "calls": 4,
+   "cached": 0
   }
  }
 }

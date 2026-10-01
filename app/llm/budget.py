@@ -176,12 +176,18 @@ class RequestBudget:
         self.budget = budget
         self.limit = limit
         self.used = 0
+        self.cached_tokens = 0  # of the used prompt tokens, those the model read from its prompt cache (D69)
         self._reserved = 0
         self._settled = threading.Condition()
 
     @property
     def remaining(self) -> int:
         return max(0, self.limit - self.used - self._reserved)
+
+    def count_cached(self, tokens: int) -> None:
+        """Count prompt tokens an answer read from the prompt cache; parallel calls of the request add up."""
+        with self._settled:
+            self.cached_tokens += tokens
 
     def reserve(self, tokens: int, wait_s: float | None = 0.0) -> str | None:
         """Reserve ``tokens`` for one call; ``None`` when granted, else the reason for the audit.
