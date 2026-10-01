@@ -599,7 +599,7 @@ def test_the_enrichment_prompt_asks_for_facts_and_forbids_the_fillers_of_m28() -
     """D56: two judges called two thirds of the model knowledge of v1 fillers (M28) - sentences about the block,
     the compendium or the lesson, and transfer phrases. v2 asks for a checkable fact or nothing."""
     prompt = get_prompt("section_enrichment")
-    assert prompt.version == 2
+    assert prompt.version >= 2
     for rule in (
         "überprüfbare Sachaussage",
         "Baustein, das Kompendium, den Unterricht",
@@ -607,6 +607,14 @@ def test_the_enrichment_prompt_asks_for_facts_and_forbids_the_fillers_of_m28() -
         "ergänze nichts",
     ):
         assert rule in prompt.system, rule
+
+
+def test_the_enrichment_prompt_lets_model_knowledge_fill_up_to_half_a_block() -> None:
+    """D70 (Jan, 2026-10-01): best-quality-generated spent nearly the tokens of best-coverage-generated for a sparing
+    share of model knowledge; up to half of a block's sentences may now come from the model, instead of one in three."""
+    prompt = get_prompt("section_enrichment")
+    assert prompt.version == 3
+    assert "höchstens die Hälfte der Sätze" in prompt.system and "einen von drei" not in prompt.system
 
 
 def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> None:

@@ -67,7 +67,9 @@ SECTION_ENRICHMENT = Prompt(
     # v1 (2026-09-20): the model may add its own knowledge, but only without an evidence number.
     # v2 (2026-09-26, D56): only a checkable fact or nothing - two blind judges called two thirds of the model
     # knowledge of v1 fillers, sentences about the block or the lesson and transfer phrases (M28).
-    version=2,
+    # v3 (2026-10-01, D70): up to half of the sentences from the model's own knowledge instead of one in three (Jan:
+    # the profile spent nearly the tokens of best-coverage-generated for a sparing share).
+    version=3,
     system=(
         "Du formulierst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Grundlage sind die "
         "nummerierten Belege aus der Anfrage. Jeder Satz, der aus einem Beleg stammt, endet vor dem Satzzeichen mit "
@@ -80,8 +82,9 @@ SECTION_ENRICHMENT = Prompt(
         "oder Bewertungsfloskeln (etwa „Als Transferprinzip lässt sich ableiten …“, „Das zeigt, wie wichtig …“) und "
         "keine Zusammenfassungen oder Überleitungen. Fällt dir keine solche Sachaussage ein, ergänze nichts: Ein "
         "Baustein ohne Modellwissen ist ein guter Baustein. Setze niemals eine Nummer an einen Satz, den der Beleg "
-        "nicht hergibt, und ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt überwiegend belegt: "
-        "Ergänze höchstens einen von drei Sätzen aus eigenem Wissen. Nenne nur Nummern, die in den Belegen vorkommen. "
+        "nicht hergibt, und ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt mindestens zur Hälfte "
+        "belegt: Schreibe höchstens die Hälfte der Sätze aus eigenem Wissen. Nenne nur Nummern, die in den Belegen "
+        "vorkommen. "
         "Schreibe zusammenhängende Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine "
         "Einleitungs- oder Schlussfloskeln, keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. "
         "Die Angaben zu Aufgabe, Inhalt und Abgrenzung des Bausteins steuern nur deine Auswahl: Gib sie nicht wieder "
@@ -91,11 +94,12 @@ SECTION_ENRICHMENT = Prompt(
 )
 
 # enrichment=model-knowledge-full (D69): the topic as asked, every content block filled, the evidence only where it
-# meets the topic and the model's own knowledge without the one-in-three cap. Its forerunner, a prototype tried on ten
-# topics on 2026-10-01, raised the fit on topics with an aspect such as "OER-Förderungen" from 1.38 to 4.25 of 5 for
-# two blind judges (best-quality-generated against it); this version also asks for complete, unshortened blocks.
-# v2 (2026-10-01): the overview of all blocks follows the instructions in the system message, which the b-api caches
-# for every block of every topic (D69); each call names its block
+# meets the topic and the model's own knowledge without the cap of section_enrichment. Its forerunner, a prototype
+# tried on ten topics on 2026-10-01, raised the fit on topics with an aspect such as "OER-Förderungen" from 1.38 to
+# 4.25 of 5 for two blind judges (best-quality-generated against it); this version also asks for complete,
+# unshortened blocks.
+# v2 (2026-10-01): the overview of all blocks follows the instructions in the system message, which the provider's
+# prompt cache keeps for every block of every topic (D69); each call names its block
 SECTION_COVERAGE = Prompt(
     id="section_coverage",
     version=2,

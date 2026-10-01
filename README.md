@@ -589,7 +589,8 @@ Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte S�
 sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet und enden sichtbar mit
 `[Modellwissen]` — der Kommentar allein verschwindet, sobald das Markdown gerendert ist (D56). Es schreibt dann
 ein anderer Prompt (`section_enrichment`, im Frontmatter unter `llm.prompts` nachlesbar), der eigenes Fachwissen
-erlaubt, aber ohne Belegnummer verlangt und höchstens jeden dritten Satz. Seit Version 2 nur als prüfbare
+erlaubt, aber ohne Belegnummer verlangt, seit Version 3 für höchstens die Hälfte der Sätze (D70, bis dahin jeden
+dritten). Seit Version 2 nur als prüfbare
 Sachaussage — ein Fakt, ein Zusammenhang, ein Beispiel, eine Zahl — oder gar nicht: Unter Version 1 nannten zwei
 Gutachter zwei Drittel des Modellwissens Füllsätze, Aussagen über den Baustein oder den Unterricht und
 Transferfloskeln (M28). Mit Version 2 sank das Modellwissen an sechs Themen von 82 auf 50 Sätze, die Füllsätze
