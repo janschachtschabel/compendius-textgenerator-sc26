@@ -28,6 +28,7 @@ from app.synthesis.citations import (
 from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
     MAX_EVIDENCE_CHARS,
+    Coverage,
     LlmSection,
     LlmSynthesizer,
     evidence_block,
@@ -54,6 +55,7 @@ def _chunk(cid: str, heading: str, text: str) -> Chunk:
     )
 
 
+COVERAGE = Coverage(article="Optik", blocks="- 1 · Themendefinition: Was das Thema ist")
 SCORED = [
     ScoredChunk(
         chunk=_chunk("c0", "Einleitung", "Das Thema ist ein Gebiet der Physik und handelt vom Licht."), score=1.0
@@ -92,6 +94,17 @@ def test_prompt_registry_has_versioned_prompts() -> None:
     )
     assert [m["role"] for m in messages] == ["system", "user"]
     assert "Thema" in messages[1]["content"] and "[1] (Test › Einleitung) Text" in messages[1]["content"]
+
+
+def test_what_the_calls_of_a_kind_share_goes_into_the_system_message() -> None:
+    """D69: the b-api caches the system message and nothing after it - measured on 2026-10-01, an opening the calls
+    shared in their user message was never read from the cache - so the long part they share belongs there."""
+    prompt = get_prompt("section_coverage")
+    fields = {"topic": "T", "article": "A", "title": "B", "target_chars": 500, "evidence": "E"}
+    shared = prompt.sharing("Die Bausteine")
+    system, user = shared.render(**fields)
+    assert system["content"] == f"{prompt.system}\n\nDie Bausteine" and "Die Bausteine" not in user["content"]
+    assert shared.tag == prompt.tag and prompt.render(**fields)[0]["content"] == prompt.system
 
 
 def test_evidence_block_numbers_chunks_with_source_and_heading() -> None:
@@ -479,8 +492,7 @@ def test_full_enrichment_writes_a_block_without_evidence_from_model_knowledge() 
         topic="OER-Förderungen",
         citation_start=0,
         budget=budget,
-        full=True,
-        article="Open Educational Resources",
+        coverage=Coverage(article="Open Educational Resources", blocks="1. Themendefinition"),
     )
     assert isinstance(result, LlmSection)
     assert result.citations == [] and result.marked_sentences == 2
@@ -496,7 +508,7 @@ def test_full_enrichment_keeps_the_cited_sentences_and_marks_the_rest() -> None:
     )
     budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
     result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
-        _slot(), SCORED, SOURCES, topic="Optik im Alltag", citation_start=0, budget=budget, full=True, article="Optik"
+        _slot(), SCORED, SOURCES, topic="Optik im Alltag", citation_start=0, budget=budget, coverage=COVERAGE
     )
     assert isinstance(result, LlmSection)
     assert [c.number for c in result.citations] == [1] and result.marked_sentences == 1
@@ -509,7 +521,7 @@ def test_full_enrichment_gives_a_block_room_beyond_its_target_length() -> None:
     synthesizer = LlmSynthesizer(_client(fake))
     synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True)
     synthesizer.write_section(
-        _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, full=True, article="Optik"
+        _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, coverage=COVERAGE
     )
     enriched, full = (body["max_completion_tokens"] for body in fake.bodies)
     assert full > enriched

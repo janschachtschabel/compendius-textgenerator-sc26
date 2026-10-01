@@ -2,11 +2,16 @@
 
 Prompts are German because the compendia are (D15). Only the user part is a format template; the system
 part is used verbatim, so JSON examples there need no escaped braces.
+
+What all calls of one kind share at length - the blocks of the template - follows the instructions in the system
+message (``Prompt.sharing``): the b-api caches the system message and nothing after it. Measured on 2026-10-01
+(D69): calls whose shared opening ran on into the user message were never read from the cache, calls with it in the
+system message were, even when they were sent at the same moment.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 
 @dataclass(frozen=True)
@@ -22,6 +27,10 @@ class Prompt:
 
     def render(self, **fields: object) -> list[dict[str, str]]:
         return [{"role": "system", "content": self.system}, {"role": "user", "content": self.user.format(**fields)}]
+
+    def sharing(self, shared: str) -> Prompt:
+        """This prompt with ``shared`` after its instructions in the system message, as is; id and version stay."""
+        return replace(self, system=f"{self.system}\n\n{shared}")
 
 
 SECTION_SYNTHESIS = Prompt(
@@ -85,9 +94,11 @@ SECTION_ENRICHMENT = Prompt(
 # meets the topic and the model's own knowledge without the one-in-three cap. Its forerunner, a prototype tried on ten
 # topics on 2026-10-01, raised the fit on topics with an aspect such as "OER-Förderungen" from 1.38 to 4.25 of 5 for
 # two blind judges (best-quality-generated against it); this version also asks for complete, unshortened blocks.
+# v2 (2026-10-01): the overview of all blocks follows the instructions in the system message, which the b-api caches
+# for every block of every topic (D69); each call names its block
 SECTION_COVERAGE = Prompt(
     id="section_coverage",
-    version=1,
+    version=2,
     system=(
         "Du schreibst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Das Thema steht in der "
         "Anfrage und ist genau so gemeint, wie es dort steht, mit seinem Aspekt: „Ernährung im Leistungssport“ meint "
@@ -107,21 +118,18 @@ SECTION_COVERAGE = Prompt(
         "Baustein, das Kompendium, den Unterricht oder die Lehrkräfte, keine Transfer-, Bedeutungs- oder "
         "Bewertungsfloskeln, keine Fragen, keine Zusammenfassungen oder Überleitungen. Schreibe zusammenhängende "
         "Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine Einleitungs- oder Schlussfloskeln, "
-        "keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. Die Angaben zu Aufgabe, Inhalt und "
-        "Abgrenzung des Bausteins steuern deine Auswahl: Gib sie nicht wieder und schreibe nicht, was nicht in den "
+        "keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. Unten stehen alle Bausteine des "
+        "Kompendiums mit ihren Aufgaben; du schreibst nur den, den die Anfrage nennt. Seine Angaben zu Aufgabe, "
+        "Inhalt und Abgrenzung steuern deine Auswahl: Gib sie nicht wieder und schreibe nicht, was in einen anderen "
         "Baustein gehört. Lass den Baustein nur leer, wenn es zu seiner Aufgabe beim Thema nichts Gesichertes gibt."
     ),
     user=(
         "Thema: {topic}\n"
         "Artikel, aus dem die Belege vor allem stammen: {article}\n"
-        "Baustein: {title}\n"
-        "Aufgabe des Bausteins: {description}\n"
-        "Gehört hinein: {inclusions}\n"
-        "Gehört nicht hinein: {exclusions}\n"
-        "Unterpunkte:\n{sub_items}\n"
+        "Zu schreiben ist der Baustein „{title}“.\n"
         "Ziellänge: mindestens etwa {target_chars} Zeichen; länger, wenn das Thema mehr hergibt.\n\n"
         "Belege:\n{evidence}\n\n"
-        "Schreibe jetzt den Baustein."
+        "Schreibe jetzt den Baustein „{title}“."
     ),
 )
 
@@ -151,23 +159,19 @@ PASSAGE_SELECTION = Prompt(
     ),
 )
 
-# matcher=llm (D34): the prompt measured against the gold standard on 2026-09-23 (docs/entwicklung/03-matching.md)
+# matcher=llm (D34): the prompt measured against the gold standard on 2026-09-23 (docs/entwicklung/03-matching.md);
+# v2 (2026-10-01, D69): the same words, the blocks and the rules now after the instructions in the system message,
+# which the b-api caches for every batch of every topic
 PARAGRAPH_ASSIGNMENT = Prompt(
     id="paragraph_assignment",
-    version=1,
+    version=2,
     system=(
         "Du ordnest Absätze aus Lexikonartikeln den Bausteinen eines Kompendiums für Lehrkräfte zu "
         "(WirLernenOnline). Jeder Absatz gehört in genau einen Baustein oder in keinen. Antworte ausschließlich mit "
         'einem JSON-Objekt, das jede Absatz-ID auf [Baustein-Schlüssel oder "keiner", Sicherheit von 0 bis 1] '
         'abbildet, zum Beispiel {"p1": ["fachinhalte", 0.8], "p2": ["keiner", 0.9]}.'
     ),
-    user=(
-        "Thema des Kompendiums: {topic}\n\n"
-        "Bausteine:\n{blocks}\n\n"
-        "{rules}"
-        "Absätze:\n{paragraphs}\n\n"
-        "Gib das JSON-Objekt zurück."
-    ),
+    user="Thema des Kompendiums: {topic}\n\nAbsätze:\n{paragraphs}\n\nGib das JSON-Objekt zurück.",
 )
 
 # article_choice=llm (D35): the prompt measured against the gold of eval/artikelwahl on 2026-09-23 (M8)

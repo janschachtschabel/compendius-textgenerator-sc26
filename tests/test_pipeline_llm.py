@@ -405,6 +405,29 @@ def test_full_enrichment_keeps_the_article_as_heading_when_the_llm_wrote_nothing
     assert "# Kompendium: Optik\n" in result.markdown
 
 
+def test_the_writing_calls_of_full_enrichment_share_a_system_message_with_every_block_in_it(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D69, prompt caching: the b-api caches the system message and nothing after it, so every writing call carries
+    the same one - the instructions and the overview of all blocks, alike for every topic - and its user message
+    names the topic and the block to write."""
+    fake = FakeBApi(lambda body: "Ein gesicherter Satz zum Thema.")
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    request = GenerateRequest(
+        topic="Optik in Klasse 7", generation="llm", enrichment="model-knowledge-full", parts=["world"]
+    )
+    service.generate(request)
+    slots = TemplateManager().get("sc26").content_slots()
+    systems = {body["messages"][0]["content"] for body in fake.bodies}
+    users = [body["messages"][1]["content"] for body in fake.bodies]
+    assert len(systems) == 1 and len(users) == len(slots)
+    (system,) = systems
+    assert all(slot.title in system for slot in slots) and "Optik in Klasse 7" not in system
+    assert all(user.startswith("Thema: Optik in Klasse 7\n") for user in users)
+    named = [slot.title for user in users for slot in slots if f"„{slot.title}“" in user]
+    assert sorted(named) == sorted(slot.title for slot in slots)
+
+
 def test_without_the_switch_nothing_changes(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_with_model_knowledge)))
     result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))

@@ -79,8 +79,11 @@ def render_messages(
         f"{' '.join(chunk.text.split())[:TEXT_CHARS]}"
         for number, chunk in enumerate(chunks, start=1)
     )
-    rules = f"{template.assignment_rules}\n\n" if template.assignment_rules else ""
-    return get_prompt("paragraph_assignment").render(topic=topic, blocks=blocks, rules=rules, paragraphs=paragraphs)
+    rules = f"\n\n{template.assignment_rules}" if template.assignment_rules else ""
+    # the blocks and the rules are the same for every batch of every topic: in the system message the b-api caches
+    # them (D69)
+    shared = f"Bausteine:\n{blocks}{rules}"
+    return get_prompt("paragraph_assignment").sharing(shared).render(topic=topic, paragraphs=paragraphs)
 
 
 def _title(chunk: Chunk, sources: Mapping[str, Source]) -> str:

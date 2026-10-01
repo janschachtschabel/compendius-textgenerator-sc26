@@ -27,7 +27,7 @@ from app.synthesis.citations import (
     renumber,
     verify_citations,
 )
-from app.templates.schema import TemplateSlot
+from app.templates.schema import Template, TemplateSlot
 
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block
 MIN_OUTPUT_TOKENS = 200
@@ -82,6 +82,25 @@ def slot_prompt_fields(slot: TemplateSlot) -> dict[str, object]:
     }
 
 
+@dataclass(frozen=True)
+class Coverage:
+    """enrichment=model-knowledge-full (D69): what every block of a compendium is written against - the article the
+    evidence comes from, and the overview of all blocks, which goes into the system message the b-api caches."""
+
+    article: str
+    blocks: str
+
+
+def blocks_overview(template: Template) -> str:
+    """The content blocks of ``template`` with their tasks, alike for every topic and every target length."""
+    lines = [
+        f"- {slot.title}: {slot.description or '–'} Gehört hinein: {slot.inclusions or '–'} Gehört nicht hinein: "
+        f"{slot.exclusions or '–'} Unterpunkte: {'; '.join(slot.sub_items) or '–'}"
+        for slot in template.content_slots()
+    ]
+    return "Die Bausteine des Kompendiums:\n" + "\n".join(lines)
+
+
 def shift_citations(section: LlmSection, offset: int) -> LlmSection:
     """Move a section written with local numbers into the global citation sequence (parallel drafts)."""
     if offset == 0:
@@ -107,8 +126,7 @@ class LlmSynthesizer:
         budget: RequestBudget,
         deadline: Deadline | None = None,
         enrich: bool = False,
-        full: bool = False,
-        article: str = "",
+        coverage: Coverage | None = None,
     ) -> LlmSection | LlmSkipped:
         """Write one block from its assigned chunks; ``LlmSkipped`` means: use the extractive text.
 
@@ -116,23 +134,28 @@ class LlmSynthesizer:
         the other prompt asks for it, and an uncovered sentence is kept marked as Modellwissen instead of
         being dropped. One sentence from the sources stays required - a block of pure model knowledge is none.
 
-        With ``full`` (enrichment=model-knowledge-full, D69) the block is about ``topic`` as asked whatever the
+        With ``coverage`` (enrichment=model-knowledge-full, D69) the block is about ``topic`` as asked whatever the
         evidence holds: evidence where it meets the topic, model knowledge for the rest, marked sentence by
-        sentence, and a block without evidence is written all the same. ``article`` names the article the evidence
-        comes from; the target length is a floor, not a ceiling.
+        sentence, and a block without evidence is written all the same. The target length is a floor, not a ceiling.
         """
+        full = coverage is not None
         evidence, items = evidence_block(scored, sources)
         if not items and not full:
             return LlmSkipped("keine Belege für den Baustein")
-        if full:
+        if coverage is not None:
             prompt = get_prompt("section_coverage")
-            fields = {"article": article or topic, "evidence": evidence or "(keine)"}
+            messages = prompt.sharing(coverage.blocks).render(
+                topic=topic,
+                article=coverage.article or topic,
+                title=slot.title,
+                target_chars=slot.budget.target_chars,
+                evidence=evidence or "(keine)",
+            )
             max_output = min(MAX_FULL_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars))
         else:
             prompt = get_prompt("section_enrichment" if enrich else "section_synthesis")
-            fields = {"evidence": evidence}
+            messages = prompt.render(topic=topic, evidence=evidence, **slot_prompt_fields(slot))
             max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
-        messages = prompt.render(topic=topic, **fields, **slot_prompt_fields(slot))
         result = budgeted_chat(
             self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline
         )

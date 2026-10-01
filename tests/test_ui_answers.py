@@ -127,7 +127,9 @@ PROMPTS = {
 
 def answering(body: dict[str, Any]) -> str:
     """A b-api that answers every prompt of the service in its format, as the tests of each stage answer it."""
-    prompt = PROMPTS.get(body["messages"][0]["content"])
+    # a prompt may carry what its calls share after its instructions (D69), so the opening names it
+    system = body["messages"][0]["content"]
+    prompt = next((name for text, name in PROMPTS.items() if system.startswith(text)), None)
     user = body["messages"][1]["content"]
     if prompt == "topic_articles":
         return json.dumps({"uebersicht": user.splitlines()[0].removeprefix("Thema: "), "artikel": []})

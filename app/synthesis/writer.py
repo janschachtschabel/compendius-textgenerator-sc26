@@ -30,7 +30,7 @@ from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE, marker_numbers
 from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
-from app.synthesis.llm import LlmSection, LlmSynthesizer, shift_citations
+from app.synthesis.llm import Coverage, LlmSection, LlmSynthesizer, blocks_overview, shift_citations
 from app.synthesis.safe_markdown import defuse, no_definitions
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
@@ -244,6 +244,7 @@ def _draft_with_llm(
     ]
     if not slots:
         return {}
+    coverage = Coverage(article=job.article, blocks=blocks_overview(template)) if job.full else None
 
     def draft(slot: TemplateSlot) -> LlmSection | LlmSkipped:
         return job.synthesizer.write_section(
@@ -255,8 +256,7 @@ def _draft_with_llm(
             budget=job.budget,
             deadline=job.deadline,
             enrich=job.enrich,
-            full=job.full,
-            article=job.article,
+            coverage=coverage,
         )
 
     # An unexpected error writes that block extractively

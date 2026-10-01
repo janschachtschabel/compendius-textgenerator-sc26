@@ -226,16 +226,18 @@ def test_the_prompt_offers_the_blocks_the_rules_and_each_paragraph(prepared: Pre
     long_one = max(prepared.chunks, key=lambda chunk: len(chunk.text))
     chunks = [primary, twin, long_one]
     system, user = (message["content"] for message in render_messages(prepared.template, "Optik", chunks, sources))
+    other_topic = render_messages(prepared.template, "Akustik", chunks, sources)[0]["content"]
 
-    assert system == get_prompt("paragraph_assignment").system
-    assert user.startswith("Thema des Kompendiums: Optik\n\nBausteine:\n")
+    # D69: the blocks and the rules stand in the system message, the one part the b-api caches, alike for every topic
+    assert system.startswith(get_prompt("paragraph_assignment").system) and system == other_topic
+    assert user.startswith("Thema des Kompendiums: Optik\n\nAbsätze:\n")
     for slot in prepared.template.content_slots():
-        assert f"- {slot.slot} ({slot.title}): {slot.description}" in user
-        assert f"Gehört nicht hinein: {slot.exclusions}" in user
+        assert f"- {slot.slot} ({slot.title}): {slot.description}" in system
+        assert f"Gehört nicht hinein: {slot.exclusions}" in system
     for slot in prepared.template.slots:
         if slot.is_generated:
-            assert f"- {slot.slot} (" not in user
-    assert prepared.template.assignment_rules and prepared.template.assignment_rules in user
+            assert f"- {slot.slot} (" not in system
+    assert prepared.template.assignment_rules and prepared.template.assignment_rules in system
     offered = {alias: (title, role) for alias, title, role, _ in PARAGRAPH_RE.findall(user)}
     assert offered["p1"] == (sources[primary.source_id].title, "Hauptartikel")
     assert offered["p2"] == (sources[twin.source_id].title, f"dasselbe Thema aus {sources[twin.source_id].project}")
