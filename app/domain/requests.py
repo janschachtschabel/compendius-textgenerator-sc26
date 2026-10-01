@@ -183,7 +183,10 @@ PRESET_HELP = (
     "to), and fills it completely: evidence where it meets the topic, knowledge of its own for the rest and for a "
     "block the sources have nothing for, marked [Modellwissen] (enrichment model-knowledge-full). target_length is a "
     "floor here, not a ceiling. For topics with an aspect, or where the archives hold little; of all profiles its "
-    "text carries the most model knowledge no source covers. /qa and part 2 as best-quality.\n\n"
+    "text carries the most model knowledge no source covers. On eight topics with an aspect two blind judges rated the "
+    "fit to the topic 4.8 instead of 1.8 of 5 for best-quality-generated and the completeness 5.0 instead of 1.7, with "
+    "no serious error (M47); part 1 took about 28 s and 91,000 to 99,000 tokens, a third of them read from the prompt "
+    "cache (M46), and some 30,000 instead of 12,000 characters. /qa and part 2 as best-quality.\n\n"
     "When the b-api is not available for now, the LLM steps fall back to the rules and audit.llm says why."
 )
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)

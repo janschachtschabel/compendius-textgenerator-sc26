@@ -67,7 +67,10 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Educational Resources, auf den sich das Thema auflöst. Belege nutzt es, wo sie das Thema treffen; sonst "
             "und für Bausteine ohne Belege schreibt es aus eigenem Wissen, sichtbar gekennzeichnet mit [Modellwissen] "
             "(enrichment model-knowledge-full, D69). target_length ist hier eine Untergrenze, keine Obergrenze; die "
-            "Überschrift nennt das angefragte Thema. Teil 2 und Budget wie best-quality."
+            "Überschrift nennt das angefragte Thema. An acht solchen Themen bewerteten zwei blinde Gutachter die "
+            "Passung mit 4,8 statt 1,8 von 5 (best-quality-generated) und die Vollständigkeit mit 5,0 statt 1,7, ohne "
+            "schwere Fehler (M47); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, ein Drittel aus dem Prompt-Cache. "
+            "Teil 2 und Budget wie best-quality."
         ),
         "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
     },
