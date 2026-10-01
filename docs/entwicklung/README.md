@@ -49,9 +49,11 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 - **Sprachmodell optional.** Schalter lassen ein LLM Sätze auswählen oder Bausteine umformulieren, auf Wunsch auch
   mit eigenem, sichtbar markiertem Wissen; jeder Satz wird gegen seine Quelle geprüft, und ohne LLM läuft der
   Regelmodus weiter.
-- **Vier Profile.** `preset` wählt die Methoden aller Schritte. Ein Kompendium mit Teil 1 und 2 braucht auf dem
+- **Fünf Profile.** `preset` wählt die Methoden aller Schritte. Ein Kompendium mit Teil 1 und 2 braucht auf dem
   Server mit `llm-free` 2,3 s und keine Tokens, mit dem Standard `balanced` rund 7 s und 580 Tokens, mit
-  `best-quality` rund 26 s und 49.000, mit `best-quality-generated` rund 36 s und 60.000 (M45). Welche Methode in
+  `best-quality` rund 26 s und 49.000, mit `best-quality-generated` rund 36 s und 60.000 (M45);
+  `best-coverage-generated` schreibt jeden Baustein vollständig zum angefragten Thema, Teil 1 allein rund 28 s und
+  91.000 bis 99.000 Tokens, ein Drittel aus dem Prompt-Cache (M46, M47, D69). Welche Methode in
   welchem Profil steckt, wie gut sie ist und warum: [Methoden, Messwerte und Profile](09-methoden-und-profile.md).
 - **Prüfen im Browser.** Seit 2.4.0 liefert der Dienst mit `UI_ENABLED` eine Prüfansicht: Menschen ohne Kenntnis
   der API sehen jeden Absatz mit seiner Herkunft (wörtlich übernommen, von der KI ausgewählt oder formuliert),
@@ -78,8 +80,8 @@ und Rohdaten im [Messprotokoll](05-messprotokoll.md); ältere Messwerte tragen D
 | Gliederung | 15 Aspekte als Hinweis im Prompt | Template SC26 mit 13 Bausteinen, maschinenlesbar markiert |
 | Belege | 24 % der Sätze mit Quellenangabe, 21 % gestützt | jeder Absatz belegt; jeder Satz steht wörtlich im zitierten Absatz |
 | Dauer je Kompendium | 35 s (bester Fall) bis 374 s (Wikipedia weist ab) | Teil 1 und 2 auf dem Server: 2,3 s (`llm-free`), rund 6,9 s (`balanced`, Standard), 26 s (`best-quality`) und 36 s (`best-quality-generated`) (M45) |
-| Tokens je Kompendium | rund 7.900 | Median je Profil 0, 576, 49.019 und 60.357 (M45) |
-| Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 87 mit den Regeln (`llm-free`), 91 mit `article_choice=llm` (`balanced`), 93 mit `llm-thorough` (`best-quality`-Profile, M35) |
+| Tokens je Kompendium | rund 7.900 | Median je Profil 0, 576, 49.019 und 60.357 (M45); `best-coverage-generated` Teil 1 allein 98.707 (M47) |
+| Hauptartikel richtig | 9 von 10 Themen hatten ihn unter den Quellen (M2) | 10 von 10 (M3); an 94 schwierigeren Goldanfragen 87 mit den Regeln (`llm-free`), 91 mit `article_choice=llm` (`balanced`), 93 mit `llm-thorough` (Profile ab `best-quality`, M35) |
 | unpassende Artikel unter den Quellen (blind bewertet, M8) | 14 % | 6 % |
 | Sammel- und Mischthemen wie „deutsche Dichter“: gedruckte Absätze aus passenden Artikeln, 25 Themen, zwei Gutachter | mit den Entitäten des alten Linkers als Korpus 63 % (M37) | `llm-free` 43 %; `balanced` seit D63 87 %, das LLM nennt Übersicht und Teile; bei 20 gewöhnlichen Themen 71 und 93 % (M37, M39) |
 | Zuordnung zu den Bausteinen, macro-F1 am Goldstandard | – (keine Bausteine) | 0,45 mit `hybrid_light` in 0,3 s je Thema (`llm-free`, und `balanced` vor D63, M27); 0,70 mit `matcher=llm` (`best-quality`, M19), rund 11 s |
@@ -105,6 +107,7 @@ Vergleich](01-alt-und-neu.md).
 | Vier Profile statt Einzelvorgaben, Standard `balanced` (D53, D54) | ein Schalter wählt alle Verfahren, auch das der QA-Paare; das LLM arbeitet dort, wo es am meisten bringt, und ohne konfiguriertes LLM sagt ein 503, was fehlt | der Server braucht ein LLM, sonst `PRESET_DEFAULT=llm-free` |
 | QA-Paare ohne LLM aus dem Parse, Teil 1 von `/qa` immer ohne LLM (D55) | die vier Vorlagen fragten zu 82 % nach einer Zeit und hielten `count` nicht ein; die Regeln fragen nach Zeit, Ort, Person, Sache, Anzahl, Grund und Definition und liefern die Hälfte ihrer Paare mangelfrei, in 0,3 s und ohne Tokens (M30) | ein kurzer Text gibt weniger Paare her als verlangt, `note` sagt es; jedes zweite Paar hat noch einen Mangel, meist eine Frage, die ohne den Text unklar ist |
 | Modellwissen sichtbar gekennzeichnet und nur als Sachaussage (D56) | der Kommentar allein verschwand beim Rendern; der schärfere Prompt ergänzt 50 statt 82 Sätze, davon 13 statt 50 Füllsätze (M31) | rund 3 % mehr Tokens; einige Füllsätze bleiben |
+| Fünftes Profil `best-coverage-generated`: jeder Baustein vollständig zum angefragten Thema (D69) | Themen mit Aspekt verfehlte `best-quality-generated`: Passung 4,81 statt 1,81, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47) | der Text besteht zum größten Teil aus Modellwissen; Teil 1 rund 28 s und 91.000 bis 99.000 Tokens |
 | Der Standard fragt mit den Regeln, die zwei QA-Modelle sind entfernt (D57) | in M30 waren die Modelle die schwächste und langsamste Stufe (25 von 120 mangelfrei, rund 25 s je Text, 1,3 GB je Worker); der Standard soll schnell und sparsam fragen (Jan) | im Standard 48 von 96 mangelfrei statt 99 von 120 mit dem LLM; wer mehr will, nimmt `best-quality` |
 | Lehrplanbezüge je Profil: Überschriften-Treffer gebündelt, LLM-Prüfung in `best-quality`, Herkunft je Block (D58) | B hebt den Anteil passender Elemente ohne Kosten von 62 bis 67 auf 70 bis 81 %; die LLM-Prüfung hält ihn ohne ein passendes Element zu verlieren (M32) | ein Viertel der passenden steht mit B nur gebündelt; die Prüfung kostet rund 8.000 bis 10.000 Tokens und 6 s je Anfrage |
 | Budget je Anfrage nach Profil, 180.000 Tokens für die `best-quality`-Profile; Lehrplansuche mit Profilen; `/docs` je Endpunkt (D59) | die LLM-Prüfung braucht 80 bis 90 Tokens je Lehrplanelement; mit 180.000 prüft sie beim breitesten Thema alle 819 Elemente, auch neben Zuordnung und Schreiben (M33) | eine Anfrage darf bis 180.000 Tokens kosten; Demokratie mit Teil 1 und 2 kostete 137.398 und 152.197 |
@@ -136,10 +139,10 @@ Vergleich](01-alt-und-neu.md).
 6. [Daten für später: Protokoll, Training, Paket](06-daten-und-training.md): woher Trainingsdaten für ein lokales
    Modell kommen könnten, was ein Paket wäre, Empfehlung
 7. [Entscheidungsvorlage: Verfahren und Schalter von Teil 1](07-entscheidungsvorlage.md): je Schritt die Verfahren,
-   ihre Schalter und Standardwerte, Güte, Zeit und Tokens mit Grafiken, die vier Profile und ihre Werte je Endpunkt
+   ihre Schalter und Standardwerte, Güte, Zeit und Tokens mit Grafiken, die fünf Profile und ihre Werte je Endpunkt
 8. [Entitäten und Kennungen](08-entitaeten-und-kennungen.md): wie `/entities` erkennt, verknüpft und GND, VIAF,
    Wikidata und DBpedia liest, Methoden und Werte je Profil, die Daten im Container und was nicht gebaut ist
-9. [Methoden, Messwerte und Profile](09-methoden-und-profile.md): die vier Profile mit ihren Methoden als Grafik und
+9. [Methoden, Messwerte und Profile](09-methoden-und-profile.md): die fünf Profile mit ihren Methoden als Grafik und
    Tabelle; je Schritt (Artikelwahl, Korpus, Zuordnung, Text, Lehrplanschnipsel, QA-Paare, Entitäten) die gemessenen
    Methoden mit Güte, Zeit und Tokens und warum welches Profil welche nutzt; Kosten je Profil und Endpunkt (M45)
 10. [Architektur](10-architektur.md): drei interaktive Diagramme mit Belegen im Code - Systemübersicht, der Weg einer
@@ -173,6 +176,7 @@ sie neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und n
 | 27.09. | Die Frage N ab `balanced`: das LLM nennt Übersicht und Teile jedes Themas (D63), vorher an den Gold-Anfragen geprüft und danach durch den Dienst nachgemessen (M39); kleine lokale Modelle für `llm-free` gemessen, LFM2-700M, LFM2.5-1.2B und Qwen3-0.6B: kein Gewinn, 4,4 bis 6,3 s je Frage (M40), `llm-free` bleibt, wie es ist (Jan); die Kennungen von `/entities` je Profil gemessen (M41), der Wikidata-Index kommt über einen Sidecar in jede neue Installation (D64), GND-Lücke, DBpedia-URIs und DBpedia Spotlight gemessen (M42); der GND-Index und die DBpedia-URI über den englischen Artikel gebaut (D65), der Leser der GND-Abzüge am echten Abzug nachgebessert und alles im Dienst nachgemessen (M43), Methoden und Werte je Profil auf einer eigenen Seite |
 | 28.09. | Das Audit vom 27.09. mit 73 Befunden abgearbeitet, Releases 2.1.0 bis 2.2.2; Model2Vec wieder im Image; die Faktoren der Zuordnungsregeln gemessen (M44); alle vier Profile an allen Endpunkten mit Release 2.2.2 nachgemessen (M45); Seite 01 nach den drei Teilen neu gegliedert, Methoden, Messwerte und Profile auf einer eigenen Seite (09) |
 | 29.09. | Das Audit vom 28.09. abgearbeitet, Release 2.3.0; die Prüfansicht gebaut (D66), zweimal geprüft und als Releases 2.4.0 bis 2.4.2 veröffentlicht: Herkunft je Absatz, Profile im Vergleich, Markdown speichern, und `/qa` meldet seither, was das LLM kostete |
+| 01.10. | Fünftes Profil `best-coverage-generated` für Themen mit Aspekt (D69, M47); der Prompt-Cache der b-api gilt nur für die System-Nachricht, Bausteinkatalog und -überblick stehen jetzt dort (M46); `cached` in Audit und Metrik |
 
 ## Begriffe
 

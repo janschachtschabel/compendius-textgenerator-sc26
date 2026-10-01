@@ -1,0 +1,294 @@
+{
+ "note": "Gold pool of the matcher (10 topics), mc_llm_dienst.py; the layout v2 as in the service, then mc_zuordnung_aufbau.py v1s and v2s past the response cache of the b-api. M19 (v1, 2026-09-24): macro-F1 0.703, micro-F1 0.814, 98 of 519 misassigned, 108,266 tokens.",
+ "v2": {
+  "summary": {
+   "topics": 10,
+   "tokens": 106240,
+   "calls": 17,
+   "macro_f1": 0.6374838872090417,
+   "micro_f1": 0.7801556420233463,
+   "assigned": 518,
+   "misassigned": 117,
+   "top2_judged": 101,
+   "top2_correct": 75,
+   "same_as_first_run": 484,
+   "compared_with_first_run": 585
+  },
+  "topics": {
+   "Barockliteratur": {
+    "paragraphs": 23,
+    "answered": 23,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 4909,
+    "wall_seconds": 10.64
+   },
+   "Bruchrechnung": {
+    "paragraphs": 44,
+    "answered": 44,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 6484,
+    "wall_seconds": 8.8
+   },
+   "Demokratie": {
+    "paragraphs": 80,
+    "answered": 80,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 14110,
+    "wall_seconds": 10.53
+   },
+   "Französische Revolution": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 13474,
+    "wall_seconds": 8.65
+   },
+   "Klimawandel": {
+    "paragraphs": 52,
+    "answered": 52,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11233,
+    "wall_seconds": 11.67
+   },
+   "Optik": {
+    "paragraphs": 96,
+    "answered": 96,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 14569,
+    "wall_seconds": 11.34
+   },
+   "Photosynthese": {
+    "paragraphs": 60,
+    "answered": 60,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12119,
+    "wall_seconds": 11.8
+   },
+   "Programmiersprache": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12235,
+    "wall_seconds": 10.14
+   },
+   "Säure-Base-Konzepte": {
+    "paragraphs": 33,
+    "answered": 33,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 5532,
+    "wall_seconds": 9.24
+   },
+   "Sinfonie": {
+    "paragraphs": 55,
+    "answered": 55,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11575,
+    "wall_seconds": 13.57
+   }
+  }
+ },
+ "v1s": {
+  "summary": {
+   "topics": 10,
+   "tokens": 106159,
+   "calls": 17,
+   "macro_f1": 0.6784358046667481,
+   "micro_f1": 0.7804878048780487,
+   "assigned": 515,
+   "misassigned": 115,
+   "top2_judged": 105,
+   "top2_correct": 84,
+   "same_as_first_run": 476,
+   "compared_with_first_run": 585
+  },
+  "topics": {
+   "Barockliteratur": {
+    "paragraphs": 23,
+    "answered": 23,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 4895,
+    "wall_seconds": 11.82
+   },
+   "Bruchrechnung": {
+    "paragraphs": 44,
+    "answered": 44,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 6379,
+    "wall_seconds": 8.92
+   },
+   "Demokratie": {
+    "paragraphs": 80,
+    "answered": 80,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 13914,
+    "wall_seconds": 11.8
+   },
+   "Französische Revolution": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 13673,
+    "wall_seconds": 10.79
+   },
+   "Klimawandel": {
+    "paragraphs": 52,
+    "answered": 52,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11141,
+    "wall_seconds": 11.78
+   },
+   "Optik": {
+    "paragraphs": 96,
+    "answered": 96,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 15174,
+    "wall_seconds": 12.86
+   },
+   "Photosynthese": {
+    "paragraphs": 60,
+    "answered": 60,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12112,
+    "wall_seconds": 10.1
+   },
+   "Programmiersprache": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12012,
+    "wall_seconds": 10.28
+   },
+   "Säure-Base-Konzepte": {
+    "paragraphs": 33,
+    "answered": 33,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 5509,
+    "wall_seconds": 9.38
+   },
+   "Sinfonie": {
+    "paragraphs": 55,
+    "answered": 55,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11350,
+    "wall_seconds": 13.7
+   }
+  }
+ },
+ "v2s": {
+  "summary": {
+   "topics": 10,
+   "tokens": 105911,
+   "calls": 17,
+   "macro_f1": 0.7154395871210629,
+   "micro_f1": 0.823069403714565,
+   "assigned": 513,
+   "misassigned": 92,
+   "top2_judged": 106,
+   "top2_correct": 82,
+   "same_as_first_run": 464,
+   "compared_with_first_run": 585
+  },
+  "topics": {
+   "Barockliteratur": {
+    "paragraphs": 23,
+    "answered": 23,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 4917,
+    "wall_seconds": 10.21
+   },
+   "Bruchrechnung": {
+    "paragraphs": 44,
+    "answered": 44,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 6027,
+    "wall_seconds": 5.07
+   },
+   "Demokratie": {
+    "paragraphs": 80,
+    "answered": 80,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 14061,
+    "wall_seconds": 11.23
+   },
+   "Französische Revolution": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 13370,
+    "wall_seconds": 8.09
+   },
+   "Klimawandel": {
+    "paragraphs": 52,
+    "answered": 52,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11381,
+    "wall_seconds": 12.33
+   },
+   "Optik": {
+    "paragraphs": 96,
+    "answered": 96,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 15074,
+    "wall_seconds": 10.96
+   },
+   "Photosynthese": {
+    "paragraphs": 60,
+    "answered": 60,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12136,
+    "wall_seconds": 10.9
+   },
+   "Programmiersprache": {
+    "paragraphs": 70,
+    "answered": 70,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 12166,
+    "wall_seconds": 10.78
+   },
+   "Säure-Base-Konzepte": {
+    "paragraphs": 33,
+    "answered": 33,
+    "fallback": 0,
+    "calls": 1,
+    "tokens": 5621,
+    "wall_seconds": 9.8
+   },
+   "Sinfonie": {
+    "paragraphs": 55,
+    "answered": 55,
+    "fallback": 0,
+    "calls": 2,
+    "tokens": 11158,
+    "wall_seconds": 11.0
+   }
+  }
+ }
+}

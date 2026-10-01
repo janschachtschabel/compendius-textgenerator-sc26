@@ -206,7 +206,7 @@ Model2Vec kostet seine 1,0 GB schon beim Start. Eine eigene Matching-Strategie d
 Eine andere Strategie in der Anfrage spart deshalb nichts, das Modell ist dann schon geladen. Sparen laesst es sich
 nur mit leerem `MODEL2VEC_PATH`; `hybrid_light` rechnet dann ohne Einbettungen und ordnet schlechter zu
 (Goldstandard macro-F1 0,39 statt 0,45, `eval/reports/d33_rules_printed.json` gegen `d33_rules_printed_m2v.json`).
-Alle vier Profile nutzen `hybrid_light`, `best-quality` und `best-quality-generated` als Rueckfall der LLM-Zuordnung
+Alle fuenf Profile nutzen `hybrid_light`, die drei ab `best-quality` als Rueckfall der LLM-Zuordnung
 (D53); das Modell wird also in jedem Profil gebraucht.
 
 ## 8. Von außen erreichbar machen

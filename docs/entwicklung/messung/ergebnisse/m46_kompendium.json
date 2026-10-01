@@ -1,0 +1,211 @@
+{
+ "note": "best-coverage-generated, part 1, three topics; before: stand c59afdb (paragraph_assignment v1, section_coverage v1), after: stand 6753e4d (v2, the shared opening in the system message). The article choice of the second run came from the response cache of the b-api (resolve 0.2 s instead of 5 s).",
+ "before": [
+  {
+   "topic": "Ernährung im Leistungssport",
+   "variant": "bcg",
+   "s": 29.3,
+   "timings": {
+    "resolve": 5748,
+    "corpus": 5,
+    "segment": 11,
+    "match": 11884,
+    "synthesize": 11598,
+    "assemble": 4
+   },
+   "heading": "Ernährung im Leistungssport",
+   "main": "Sporternährung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 57780,
+    "completion": 15429,
+    "total": 73209,
+    "calls": 18,
+    "cached": 0
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 32750,
+   "marked": 153,
+   "cited": 16,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v1",
+    "section_coverage@v1",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Gewaltprävention an Grundschulen",
+   "variant": "bcg",
+   "s": 33.9,
+   "timings": {
+    "resolve": 4957,
+    "corpus": 3,
+    "segment": 9,
+    "match": 13631,
+    "synthesize": 15317,
+    "assemble": 4
+   },
+   "heading": "Gewaltprävention an Grundschulen",
+   "main": "Gewaltprävention",
+   "method": "llm",
+   "tokens": {
+    "prompt": 49952,
+    "completion": 15640,
+    "total": 65592,
+    "calls": 17,
+    "cached": 0
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 35250,
+   "marked": 165,
+   "cited": 19,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v1",
+    "section_coverage@v1",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Medienkompetenz in der Sekundarstufe",
+   "variant": "bcg",
+   "s": 35.5,
+   "timings": {
+    "resolve": 4861,
+    "corpus": 5,
+    "segment": 13,
+    "match": 13891,
+    "synthesize": 16701,
+    "assemble": 4
+   },
+   "heading": "Medienkompetenz in der Sekundarstufe",
+   "main": "Medienkompetenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 51367,
+    "completion": 16541,
+    "total": 67908,
+    "calls": 17,
+    "cached": 0
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 36563,
+   "marked": 158,
+   "cited": 30,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v1",
+    "section_coverage@v1",
+    "topic_articles@v1"
+   ]
+  }
+ ],
+ "after": [
+  {
+   "topic": "Ernährung im Leistungssport",
+   "variant": "bcg",
+   "s": 22.6,
+   "timings": {
+    "resolve": 219,
+    "corpus": 5,
+    "segment": 13,
+    "match": 11832,
+    "synthesize": 10499,
+    "assemble": 5
+   },
+   "heading": "Ernährung im Leistungssport",
+   "main": "Sporternährung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 72964,
+    "completion": 14375,
+    "total": 87339,
+    "calls": 18,
+    "cached": 31880
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 32150,
+   "marked": 151,
+   "cited": 16,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Gewaltprävention an Grundschulen",
+   "variant": "bcg",
+   "s": 24.5,
+   "timings": {
+    "resolve": 179,
+    "corpus": 4,
+    "segment": 9,
+    "match": 13640,
+    "synthesize": 10670,
+    "assemble": 5
+   },
+   "heading": "Gewaltprävention an Grundschulen",
+   "main": "Gewaltprävention",
+   "method": "llm",
+   "tokens": {
+    "prompt": 65704,
+    "completion": 13921,
+    "total": 79625,
+    "calls": 17,
+    "cached": 32352
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29532,
+   "marked": 126,
+   "cited": 27,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Medienkompetenz in der Sekundarstufe",
+   "variant": "bcg",
+   "s": 23.0,
+   "timings": {
+    "resolve": 184,
+    "corpus": 5,
+    "segment": 12,
+    "match": 11999,
+    "synthesize": 10747,
+    "assemble": 8
+   },
+   "heading": "Medienkompetenz in der Sekundarstufe",
+   "main": "Medienkompetenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 66527,
+    "completion": 14535,
+    "total": 81062,
+    "calls": 17,
+    "cached": 32352
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29584,
+   "marked": 116,
+   "cited": 32,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  }
+ ]
+}

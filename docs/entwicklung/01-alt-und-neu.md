@@ -22,7 +22,7 @@ Profil es vorsieht.
 
 ## Güte, Zeit und Kosten
 
-![Güte, Zeit und Kosten: alter Dienst und die vier Profile](bilder/qualitaet_zeit_kosten.svg)
+![Güte, Zeit und Kosten: alter Dienst und die vier Profile vor D69 (M45; das fünfte steht unten)](bilder/qualitaet_zeit_kosten.svg)
 
 - **Alter Dienst:**
   - Im besten Fall, also wenn Wikipedia antwortete, brauchte er je Kompendium 35 s und rund 7.900 Tokens.
@@ -32,11 +32,12 @@ Profil es vorsieht.
 - **`balanced` (Standard):** fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.
 - **`best-quality`:** lässt das LLM zusätzlich die Absätze zuordnen und die Lehrplanschnipsel prüfen. Die Zuordnung steigt auf macro-F1 0,70 statt 0,45, für 26 s und rund 49.000 Tokens.
 - **`best-quality-generated`:** lässt das LLM auch den Text schreiben. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
+- **`best-coverage-generated`:** lässt das LLM jeden Baustein vollständig zum angefragten Thema schreiben, wo die Quellen nichts dazu sagen aus eigenem, markiertem Wissen. Bei Themen mit Aspekt wie „OER-Förderungen“ trifft es das Thema (Passung 4,8 statt 1,8 von 5) und füllt jeden Baustein; Teil 1 allein dauert rund 28 s und kostet 91.000 bis 99.000 Tokens, ein Drittel davon aus dem Prompt-Cache (M46, M47).
 
 **Was man bekommt:**
 - `llm-free` ist schnell und kostet nichts.
 - Der Standard verdoppelt etwa die Zeit, für den deutlich besseren Korpus und die treffsicherere Artikelwahl.
-- Die beiden `best-quality`-Profile sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40 beziehungsweise 33 Kompendien.
+- Die drei Profile ab `best-quality` sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40, 33 und 20 Kompendien.
 
 ## Teil 1: Weltwissen
 
@@ -73,6 +74,7 @@ Teil 1 entsteht in fünf Schritten; die Methoden und ihre Messwerte stehen auf
 4. **Text:**
    - Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.
    - In `best-quality-generated` schreibt das LLM jeden Baustein und markiert Modellwissen sichtbar.
+   - In `best-coverage-generated` schreibt es jeden Baustein vollständig über das angefragte Thema, auch ohne Belege.
 5. **Neu erzeugen, auf Wunsch:**
    - Mit `existing_markdown` bleiben redaktionell geprüfte Bausteine wörtlich stehen.
    - Mit `regenerate_sections` entstehen nur die genannten Bausteine neu.
@@ -139,7 +141,7 @@ Die aktuellen Werte je Profil zeigen die Grafik oben und M45.
 
 | Funktion | alter Dienst v0.2.0 | neuer Dienst 2.4.2 |
 |---|---|---|
-| Profile (`preset`) | – | vier Profile; ein Schalter wählt die Methoden aller Schritte (D53) |
+| Profile (`preset`) | – | fünf Profile; ein Schalter wählt die Methoden aller Schritte (D53, D69) |
 | Ein Material als Eingang (`node_id`, `GET /api/v2/nodes/{id}`) | – | Titel, Beschreibung, Schlagwörter, Fach und Stufe eines Materials; eine eigene Artikelwahl dafür, mit Thema kombinierbar (D45, D47) |
 | Wissenstexte ohne Template (`POST /api/v2/knowledge`) | – | die Artikel des Korpus mit ihren Abschnitten, gewählt wie für das Kompendium |
 | Entitäten in einem Text (`POST /api/v2/entities`) | `/api/v1/linker`: ein LLM nennt Begriffe, jeder live bei Wikipedia nachgeschlagen | je Profil die Regeln (spaCy und die Artikeltitel des Archivs) oder das LLM, das die Entitäten mit ihrem Artikel nennt: F1 0,38 und 0,78 (M36); ohne Live-Abfrage |

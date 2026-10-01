@@ -1862,6 +1862,32 @@ API.
   ohne LLM weiter ein 503. `.env.example` setzt jetzt `balanced` statt `llm-free`; mit der alten Zeile hielt die
   Vorlage einen Server mit LLM bei `llm-free`. Templates: `template_id`, sonst `TEMPLATE_DEFAULT` (`sc26`); nennt
   `TEMPLATE_DEFAULT` kein vorhandenes Template, gilt `sc26`, und der Start warnt.
+- **D69 (2026-10-01)** Fünftes Profil `best-coverage-generated` für Themen mit Aspekt (Jan: „ziel für das profil ist
+  max. abdeckung der kategorien und max. nähe zum thema“, „im gegensatz zum max-quality-generated profil - wo ki die
+  texte teils stark kürzt und zusammenfasst soll sie den kompendialen text möglichst nicht zu stark kürzen“). Anlass:
+  Ein Praxistext zu „OER-Förderungen“ handelte von *Open Educational Resources*, dem Artikel der Artikelwahl. Alle
+  LLM-Schritte und die Überschrift sprachen vom Artikel; `section_enrichment` erlaubt Modellwissen nur für jeden
+  dritten Satz und verlangt einen belegten Satz je Baustein. Neu ist der Schalterwert `enrichment:
+  model-knowledge-full` (Prompt `section_coverage`): Das LLM schreibt jeden Inhaltsbaustein über das Thema, wie es
+  angefragt ist (`topic_as_asked`: nur ein allgemeines Präfix oder ein Fach vor dem Doppelpunkt fällt weg; die
+  Normalisierung von D12 bleibt für Suche und Artikelwahl), Belege nur, wo sie das Thema treffen, sonst gesichertes
+  Modellwissen, gekennzeichnet wie bisher, auch für einen Baustein ohne Belege. Die Ziellänge ist Untergrenze
+  (Ausgabelimit rund ein Token je Zielzeichen, höchstens 4.000); Überschrift und `topic` nennen das angefragte
+  Thema, sobald das LLM so geschrieben hat; die KI-Kennzeichnung sagt „zum angefragten Thema aus belegten Quellen und
+  aus Modellwissen“. Das Profil ist `best-quality-generated` mit diesem Wert: Artikelwahl `llm-thorough` (Jan: „die
+  artikelwahl von maxquality … für höchste qualität“), `matcher: llm`, `curriculum_check: llm`, 180.000 Tokens je
+  Anfrage; `/entities`, `/qa` und die Lehrplansuche behandeln es wie `best-quality-generated`. Gemessen (M47, acht
+  Aspektthemen, zwei blinde Gutachter): Passung 4,81 statt 1,81, Nutzen 4,81 statt 2,12, Vollständigkeit 5,0 statt
+  1,7, keine schweren Fehler; Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, rund 30.000 Zeichen; den größten Teil
+  schreibt das Modell aus eigenem Wissen. Mit `matcher: hybrid_light` 4,56 und 4,31 für rund 35.000 Tokens und 16 s.
+  Prompt-Caching (Jan: „prüfe ob sich kostenoptimierungen umsetzen lassen durch promptcaching“): Die b-api speichert
+  nur die System-Nachricht zwischen, auch für gleichzeitige Aufrufe (M46). `Prompt.sharing` stellt deshalb, was alle
+  Aufrufe einer Art teilen, hinter die Anweisungen dorthin: `paragraph_assignment` v2 den Bausteinkatalog,
+  `section_coverage` v2 den Überblick aller Bausteine. `audit.llm_tokens.cached` und
+  `kompendium_llm_tokens_total{type="cached"}` melden den Anteil: in `best-coverage-generated` rund 32.000 bis
+  36.000 Eingabe-Tokens je Kompendium, in den anderen Profilen mit `matcher: llm` 8.600 bis 13.800; die Zuordnung
+  blieb am Gold gleich gut. Sammlungen (Jan: Untersammlungen, ihre kompendialen Texte, rekursiv?): geprüft, nicht
+  gebaut; die Wissens-Sammlung liest weiter nur die Materialien der Sammlung selbst.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

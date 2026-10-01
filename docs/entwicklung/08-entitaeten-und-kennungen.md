@@ -20,18 +20,18 @@ Anfragezeit fragt der Dienst nichts online außer der b-api für das LLM.
 
 ## Die Profile auf einen Blick
 
-| | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` |
-|---|---|---|---|---|
-| Erkennen (`methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt die Entitäten mit dem Titel ihres Artikels | wie `balanced` | wie `balanced` |
-| Prüfen (`link_check`) | aus | aus, `llm` wählbar | aus, `llm` wählbar | aus, `llm` wählbar |
-| Verknüpfen und Kennungen | Titel zum Artikel; Kennungen aus lokalen Daten | wie `llm-free` | wie `llm-free` | wie `llm-free` |
-| Entitäten: Präzision / Recall / F1 (M36, D62) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` |
-| Wikidata-Nummer: Präzision / Recall / F1 (M43) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` |
-| GND: Präzision / Recall / F1 (M43) | 0,31 / 0,57 / 0,40 | 0,70 / 0,88 / 0,78 | wie `balanced` | wie `balanced` |
-| DBpedia-URI über den englischen Artikel (M43) | 348 von 394 Artikeln (88 %) | 259 von 269 (96 %) | wie `balanced` | wie `balanced` |
-| Tokens und Zeit je Text | keine; rund 0,25 s an den Materialtexten (M36), 1,0 s an 1.500 Zeichen Kompendiumtext auf dem Server (M45) | rund 800 Tokens und 4 s an den Materialtexten (M36); 1.284 Tokens und 6,8 s an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` |
+| | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| Erkennen (`methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt die Entitäten mit dem Titel ihres Artikels | wie `balanced` | wie `balanced` | wie `balanced` |
+| Prüfen (`link_check`) | aus | aus, `llm` wählbar | aus, `llm` wählbar | aus, `llm` wählbar | aus, `llm` wählbar |
+| Verknüpfen und Kennungen | Titel zum Artikel; Kennungen aus lokalen Daten | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
+| Entitäten: Präzision / Recall / F1 (M36, D62) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
+| Wikidata-Nummer: Präzision / Recall / F1 (M43) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
+| GND: Präzision / Recall / F1 (M43) | 0,31 / 0,57 / 0,40 | 0,70 / 0,88 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
+| DBpedia-URI über den englischen Artikel (M43) | 348 von 394 Artikeln (88 %) | 259 von 269 (96 %) | wie `balanced` | wie `balanced` | wie `balanced` |
+| Tokens und Zeit je Text | keine; rund 0,25 s an den Materialtexten (M36), 1,0 s an 1.500 Zeichen Kompendiumtext auf dem Server (M45) | rund 800 Tokens und 4 s an den Materialtexten (M36); 1.284 Tokens und 6,8 s an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` | wie `balanced` |
 
-`best-quality` und `best-quality-generated` erkennen wie `balanced`. Sie unterscheiden sich nur in Teil 1 des
+Die drei Profile ab `best-quality` erkennen wie `balanced`. Sie unterscheiden sich nur in Teil 1 des
 Kompendiums, nicht in `/entities`. Die Werte gelten für die Texte von 40 echten Materialien (M36), benotet von zwei
 Gutachtern. Mit `link_check: llm` prüft das LLM jede Verknüpfung, und nur die mit Note 2 bleiben: Die Präzision
 steigt auf 0,94, aber ein Drittel der passenden Entitäten fällt weg (F1 0,76). Das kostet rund 820 Tokens und 2 s

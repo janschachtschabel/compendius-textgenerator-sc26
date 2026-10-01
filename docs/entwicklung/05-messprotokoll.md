@@ -1,4 +1,4 @@
-# Messprotokoll (23. bis 28.09.2026)
+# Messprotokoll (23.09. bis 01.10.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -2353,3 +2353,120 @@ je LLM-Profil, die Antwortzeit der b-api an einem Tag, das Kompendium auf dem Se
 
 Rohdaten: `m45_profile_endpunkte.json` (Entwicklungscontainer) und `m45_server_llm_free.json` (Server, nur
 `llm-free`): je Anfrage Sekunden, Tokens, Aufrufe, Phasen, Hauptartikel und Zählungen; keine Texte.
+
+## M46 Prompt-Cache der b-api (01.10.2026)
+
+**Aufbau:** Seit D69 meldet der Dienst unter `cached` in `audit.llm_tokens` (und als Typ `cached` von
+`kompendium_llm_tokens_total`), wie viele Eingabe-Tokens das Modell aus seinem Prompt-Cache las; die b-api reicht dafür
+`usage.prompt_tokens_details.cached_tokens` durch. Ein erster Lauf von `best-coverage-generated` an drei neuen Themen
+meldete 0 von 50.000 bis 58.000 Eingabe-Tokens, obwohl die LLM-Zuordnung je Kompendium mehrere Stapel mit demselben
+Bausteinkatalog schickt (rund 1.700 Tokens) und die zehn Schreibaufrufe dieselbe System-Nachricht. Drei
+Proben klärten, warum:
+
+1. **Wo der gemeinsame Text stehen muss** (`mc_cache_probe.py`, je Aufbau ein eigener Text von rund 3.600 Tokens, zwei
+   Aufrufe nacheinander): Als System-Nachricht las der zweite Aufruf 3.600 Tokens aus dem Cache. Als Anfang der
+   Nachricht des Nutzers hinter einer kurzen System-Nachricht las keiner etwas; beide schrieben den ganzen Prompt neu
+   (je 3.637 Tokens unter `cache_write_tokens`).
+2. **Ob ein Aufruf vorausgehen muss** (dieselbe Probe, ein Aufruf und drei weitere 0, 1 und 2 s nach ihm): nein. Auch
+   gleichzeitig gesendet schrieb genau einer den Cache, die drei anderen lasen 3.599 oder 3.600 Tokens.
+3. **Ob eine andere Reihenfolge der Zuordnung allein hilft** (`mc_cache_zuordnung_ablauf.py`, Stand `c59afdb` mit dem
+   Katalog in der Nachricht des Nutzers, `best-quality`, je Ablauf zwei eigene Themen): nein.
+
+| Ablauf der Zuordnung | Thema | Zuordnung | Eingabe-Tokens | aus dem Cache |
+|---|---|---|---|---|
+| alle Stapel zugleich (wie ausgeliefert) | Vulkanismus | 14,7 s | 37.285 | 0 |
+| | Kalter Krieg | 13,2 s | 61.255 | 0 |
+| erster Stapel ganz voraus | Romantik | 24,8 s | 56.422 | 0 |
+| | Elektromagnetismus | 26,3 s | 52.555 | 0 |
+| erster Stapel 2 s voraus | Ökosystem | 14,7 s | 34.787 | 0 |
+| | Industrielle Revolution | 17,5 s | 56.456 | 0 |
+
+**Umbau (D69):** `Prompt.sharing` stellt, was alle Aufrufe einer Art teilen, hinter die Anweisungen in die
+System-Nachricht: `paragraph_assignment` v2 den Bausteinkatalog mit den Zuordnungsregeln, `section_coverage` v2 den
+Überblick aller Bausteine. Beides hängt nicht vom Thema ab, der Cache wirkt also auch über Anfragen hinweg.
+
+**Vorher und nachher** (`mc_kompendium_profil.py`, `best-coverage-generated`, Teil 1; vorher Stand `c59afdb`, nachher
+`6753e4d`; die Artikelwahl des zweiten Laufs kam aus dem Antwortspeicher der b-api):
+
+| Thema | Eingabe-Tokens vorher | nachher | davon aus dem Cache | ohne Cache | Schreiben vorher, nachher |
+|---|---|---|---|---|---|
+| Ernährung im Leistungssport | 57.780 | 72.964 | 31.880 | 41.084 | 11,6 s, 10,5 s |
+| Gewaltprävention an Grundschulen | 49.952 | 65.704 | 32.352 | 33.352 | 15,3 s, 10,7 s |
+| Medienkompetenz in der Sekundarstufe | 51.367 | 66.527 | 32.352 | 34.175 | 16,7 s, 10,7 s |
+
+**Güte der Zuordnung** (Goldpool, zehn Themen, 653 Absätze; `mc_llm_dienst.py` im Aufbau des Dienstes, dazu
+`mc_zuordnung_aufbau.py` mit einem Leerzeichen am Ende, damit die b-api nicht aus ihrem Antwortspeicher antwortet):
+
+| Lauf | Aufbau | macro-F1 | micro-F1 | falsch zugeordnet | Tokens |
+|---|---|---|---|---|---|
+| M19, 24.09.2026 | v1 | 0,703 | 0,814 | 98 von 519 | 108.266 |
+| `v1s`, 01.10.2026 | v1 | 0,678 | 0,780 | 115 von 515 | 106.159 |
+| v2, 01.10.2026 | v2 | 0,637 | 0,780 | 117 von 518 | 106.240 |
+| `v2s`, 01.10.2026 | v2 | 0,715 | 0,823 | 92 von 513 | 105.911 |
+
+**Ergebnis:** Die b-api speichert nur die System-Nachricht zwischen, und eine kurze nicht: Was dort steht, lesen alle
+weiteren Aufrufe, auch gleichzeitig gesendete; was in die Nachricht des Nutzers weiterläuft, liest keiner. Nach dem
+Umbau kamen in `best-coverage-generated` rund 32.000 Eingabe-Tokens je Kompendium aus dem Cache. Die Gesamtzahl stieg
+um rund 15.000, weil jeder Schreibaufruf den Überblick der Bausteine trägt; die Tokens ohne Cache fielen im Mittel von
+53.000 auf 36.000. Was das an Geld spart, hängt vom Preis gecachter Tokens ab, den die Messung nicht kennt; bei einem
+Zehntel des Normalpreises wäre es rund ein Viertel der Eingabekosten. In `best-quality` und `best-quality-generated`
+gilt der Umbau für die Zuordnung: In M47 kamen dort 8.600 bis 13.800 Tokens je Kompendium aus dem Cache. Die Zuordnung
+streut zwischen zwei Läufen desselben Aufbaus am selben Tag um 0,08 macro-F1; im Mittel liegen v1 (0,69) und v2
+(0,68) gleichauf, micro-F1 je 0,80. Grenzen: drei Themen vorher und nachher, die Zeiten des zweiten Laufs ohne die
+Artikelwahl vergleichbar; die übrigen Prompts sind für den Cache zu kurz und bleiben, wie sie waren.
+
+Rohdaten: `m46_cache_probe.json` (Proben 1 und 2), `m46_zuordnung_ablauf.json`, `m46_kompendium.json` und
+`m46_zuordnung_gold.json`: je Aufruf oder Lauf Sekunden, Tokens, `cached` und Zählungen; keine Texte.
+
+## M47 Profil `best-coverage-generated` (01.10.2026)
+
+**Aufbau:** Ein erster Praxistext zeigte, dass `best-quality-generated` Themen mit einem Aspekt verfehlt:
+„OER-Förderungen“ ergab einen Text über *Open Educational Resources*, den Artikel, auf den die Artikelwahl auflöst.
+Ein Prototyp hob am selben Tag die Passung zum angefragten Thema an acht solchen Themen von 1,38 auf 4,25 von 5. M47
+misst das gebaute Profil (D69, Stand `6753e4d`) im Ablauf des Dienstes, Teil 1, an den acht Aspektthemen des
+Prototyps und zwei Kontrollthemen (Photosynthese, Französische Revolution), je in drei Varianten:
+`best-coverage-generated` wie ausgeliefert, dasselbe mit `matcher: hybrid_light` (ob die LLM-Zuordnung hier ihren
+Preis wert ist) und `best-quality-generated` (`mc_kompendium_profil.py`). Zwei blinde Claude-Gutachter lasen je Thema
+die drei Texte in zufälliger Reihenfolge, die Bausteine 1 bis 4 und 8 bis 10 ohne Belegnummern und Kennzeichnung
+(`mc_abdeckung_boegen.py`), benoteten Passung zum angefragten Thema, Nutzen und Vollständigkeit von 1 bis 5 und
+nannten Fehler mit ihrer Schwere. Weil die b-api gleiche Anfragen aus ihrem Antwortspeicher beantwortet und
+Artikelwahl und Zuordnung in zwei Varianten gleich sind, misst M47 die Zeit getrennt: jede Variante an drei eigenen
+neuen Themen.
+
+**Güte**, Mittel beider Gutachter:
+
+| Themen | Variante | Passung | Nutzen | Vollständigkeit | schwere Fehler je Text | leichte Fehler je Text |
+|---|---|---|---|---|---|---|
+| acht mit Aspekt | `best-quality-generated` | 1,81 | 2,12 | 1,69 | 0 | 0,38 |
+| | `best-coverage-generated` | **4,81** | **4,81** | **5,00** | 0 | 0,25 |
+| | dasselbe mit `hybrid_light` | 4,56 | 4,31 | 4,69 | 0 | 0,44 |
+| zwei Kontrollthemen | `best-quality-generated` | 5,00 | 2,50 | 1,50 | 0 | 1,00 |
+| | `best-coverage-generated` | 5,00 | 4,75 | 5,00 | 0 | 2,25 |
+| | dasselbe mit `hybrid_light` | 5,00 | 5,00 | 5,00 | 0 | 1,25 |
+
+Bei der Passung waren sich die Gutachter in 27 von 30 Texten einig, in drei um eine Note verschieden.
+
+**Läufe**, Median; die Zeit an je drei eigenen Themen, die übrigen Werte an den zehn Themen:
+
+| Variante | Zeit, Teil 1 | Tokens | davon aus dem Cache | Zeichen | Bausteine mit Text | Belegnummern | Sätze Modellwissen |
+|---|---|---|---|---|---|---|---|
+| `best-coverage-generated` | 27,5 s (24,3 bis 32,2) | 90.907 | 34.943 | 29.912 | 10 von 10 | 34 | 123 |
+| dasselbe mit `hybrid_light` | 16,0 s (14,7 bis 16,9) | 34.904 | 21.990 | 30.051 | 10 von 10 | 20 | 139 |
+| `best-quality-generated` | 24,3 s (23,6 bis 24,4) | 72.180 | 12.953 | 12.167 | 9 (7 bis 10) | 67 | 12 |
+
+**Ergebnis:** Auf Themen mit Aspekt verfehlt `best-quality-generated` das Thema (Passung 1,81: der Text handelt vom
+Artikel), `best-coverage-generated` trifft es (4,81) und füllt jeden Baustein (Vollständigkeit 5,0 statt 1,7) mit
+zweieinhalbmal so viel Text. Schwere Fehler fand keiner der Gutachter in einem der 60 Urteile; leichte (ungenaue Daten,
+veraltete Werte, ein falscher Fachbegriff) 0,25 je Text gegen 0,38. Auf den Kontrollthemen bleiben beide Profile beim
+Thema; `best-coverage-generated` ist nützlicher und vollständiger (4,75 und 5,0 statt 2,5 und 1,5), trägt aber mehr
+leichte Fehler (2,25 statt 1,0 je Text), vier der neun wie bei `best-quality-generated` schon aus den Quellen
+(Mn₄CaO₅-Cluster, Verfassung von 1791). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen: im Median
+123 gekennzeichnete Sätze gegen 34 Belegnummern. Die Gutachter suchten Fehler, prüften aber nicht Satz für Satz gegen
+Quellen. Die LLM-Zuordnung hebt Passung und Nutzen um 0,25 und 0,5 Noten für rund 56.000 Tokens und 11 s mehr; das
+Profil behält sie (Jan: höchste Qualität), `matcher: hybrid_light` in der Anfrage spart sie. Mit dem Prototyp lässt
+sich das nur grob vergleichen (andere Gutachter, dort nur die Bausteine 1 bis 4): Passung 4,81 statt 4,25, Nutzen
+4,81 statt 3,56. Grenzen: zehn Themen, ein Lauf je Variante, Gutachter sind Sprachmodelle, die Zeit nur für Teil 1 auf
+dem Entwicklungsrechner; Teil 2 kostet wie in `best-quality` (M45).
+
+Rohdaten: `m47_abdeckung.json`: je Kompendium Phasen, Tokens mit `cached`, Zeichen, Bausteine, Belege und
+Modellwissen, die Zeitläufe, der Schlüssel der Bögen und die Urteile beider Gutachter ohne die Zitate; keine Texte.

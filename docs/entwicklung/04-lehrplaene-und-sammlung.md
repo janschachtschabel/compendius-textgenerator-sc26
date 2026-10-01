@@ -43,7 +43,7 @@ zu acht Ebenen tief.
    Bindestrich-Teile kommen nur aus dem Thema selbst; andere Bedeutungen kurzer Stichwörter („Solarzelle“) bleiben.
 4. **Stufen:** Schulstufe und Klassenstufe kommen aus den Daten; fehlen sie, leitet der Dienst sie aus der
    Jahrgangsstufe oder dem Titel ab und kennzeichnet sie als abgeleitet.
-5. **Prüfung durch das LLM (nur `best-quality` und `best-quality-generated`, D58):** Mit `curriculum_check=llm`
+5. **Prüfung durch das LLM (nur in den drei Profilen ab `best-quality`, D58):** Mit `curriculum_check=llm`
    liest das LLM jedes gefundene Element mit seinem Bereich und seinem Lehrplan und bewertet es nach den Noten von
    M22: passt, berührt das Thema, passt nicht. Was nicht passt, fällt heraus; ein Element, das nur seine
    Überschrift zum Thema macht, steht einzeln da, wenn das LLM es passend nennt. Die Elemente gehen in Stapeln zu

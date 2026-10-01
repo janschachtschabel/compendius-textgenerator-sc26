@@ -1,0 +1,141 @@
+{
+ "model": "gpt-6-luna",
+ "layouts": {
+  "S": [
+   {
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3620,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3617
+   },
+   {
+    "status": 200,
+    "seconds": 2.0,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3600,
+    "cache_write_tokens": 17
+   }
+  ],
+  "U": [
+   {
+    "status": 200,
+    "seconds": 2.3,
+    "prompt_tokens": 3640,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3637
+   },
+   {
+    "status": 200,
+    "seconds": 1.6,
+    "prompt_tokens": 3640,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3637
+   }
+  ]
+ },
+ "head_starts": {
+  "0s": [
+   {
+    "call": "after_1",
+    "status": 200,
+    "seconds": 1.8,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "after_2",
+    "status": 200,
+    "seconds": 7.4,
+    "prompt_tokens": 3620,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3617
+   },
+   {
+    "call": "after_3",
+    "status": 200,
+    "seconds": 1.9,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "first",
+    "status": 200,
+    "seconds": 1.7,
+    "prompt_tokens": 3616,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 14
+   }
+  ],
+  "1s": [
+   {
+    "call": "after_1",
+    "status": 200,
+    "seconds": 1.9,
+    "prompt_tokens": 3621,
+    "cached_tokens": 3600,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "after_2",
+    "status": 200,
+    "seconds": 1.7,
+    "prompt_tokens": 3621,
+    "cached_tokens": 3600,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "after_3",
+    "status": 200,
+    "seconds": 1.8,
+    "prompt_tokens": 3621,
+    "cached_tokens": 3600,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "first",
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3617,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3614
+   }
+  ],
+  "2s": [
+   {
+    "call": "after_1",
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "after_2",
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "after_3",
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3620,
+    "cached_tokens": 3599,
+    "cache_write_tokens": 18
+   },
+   {
+    "call": "first",
+    "status": 200,
+    "seconds": 1.5,
+    "prompt_tokens": 3616,
+    "cached_tokens": 0,
+    "cache_write_tokens": 3613
+   }
+  ]
+ }
+}

@@ -1,33 +1,36 @@
 # Methoden, Messwerte und Profile
 
-[Übersicht](README.md) · Stand 28.09.2026, Release 2.2.2 · Zahlen: [Messprotokoll](05-messprotokoll.md); Zeit und
-Tokens des aktuellen Stands aus M45, die Güte aus der jeweils letzten Messung einer Methode
+[Übersicht](README.md) · Stand 01.10.2026 (D69) · Zahlen: [Messprotokoll](05-messprotokoll.md); Zeit und
+Tokens des aktuellen Stands aus M45, für `best-coverage-generated` aus M47, die Güte aus der jeweils letzten Messung
+einer Methode
 
-Diese Seite begründet die vier Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
+Diese Seite begründet die fünf Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
 und Tokens und sagt, welches Profil welche Methode nutzt und warum: Artikelwahl, Korpusbau, Zuordnung der Absätze,
 Text, Lehrplanschnipsel, QA-Paare und Entitäten. Die Profile legen fest, wo ein Sprachmodell (LLM) arbeitet:
 `llm-free` nirgends; `balanced`, der Standard, dort, wo es wenig kostet und viel bringt; `best-quality` überall, wo es
-die Güte messbar hebt; `best-quality-generated` lässt es zusätzlich den Text schreiben. Gewählt wird ein Profil mit
+die Güte messbar hebt; `best-quality-generated` lässt es zusätzlich den Text schreiben, `best-coverage-generated`
+jeden Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (D69). Gewählt
+wird ein Profil mit
 `preset`; ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert `balanced` (D53). Jedes Profil außer `llm-free` braucht ein
 konfiguriertes LLM, sonst ist die Anfrage ein 503.
 
-## Die vier Profile und ihre Methoden
+## Die fünf Profile und ihre Methoden
 
-![Die vier Profile je Verfahren und Endpunkt](bilder/profile_matrix.svg)
+![Die vier Profile vor D69 je Verfahren und Endpunkt (das fünfte steht in der Tabelle)](bilder/profile_matrix.svg)
 
-| Schritt | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` | Entscheidung |
-|---|---|---|---|---|---|
-| Hauptartikel (`article_choice`) | Regeln (`rule-based`) | Regeln, das LLM entscheidet die unsicheren Fälle (`llm`) | das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (`llm-thorough`) | wie `best-quality` | D35, D53, D61 |
-| Korpus | verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel | das LLM nennt Übersicht und Teile des Themas (N) | wie `balanced` | wie `balanced` | D48, D63 |
-| Zuordnung (`matcher`) | `hybrid_light` mit Model2Vec | wie `llm-free` | das LLM ordnet jeden Absatz zu (`llm`) | wie `best-quality` | D38, D53 |
-| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert | D53, D56 |
-| Lehrplanschnipsel (`curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu prüft das LLM jedes Element (`llm`) | wie `best-quality` | D58, D59 |
-| QA-Paare (`/qa`, `method`) | Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren | wie `llm-free` | das LLM schreibt die Paare (`llm`) | wie `best-quality` | D55, D57, D60 |
-| Entitäten (`/entities`, `methods`) | spaCy und das Wörterbuch der Artikeltitel (`ner`, `dictionary`) | das LLM nennt sie mit dem Titel ihres Artikels (`llm`) | wie `balanced` | wie `balanced` | D62 |
-| Kennungen (Wikidata, GND, VIAF, DBpedia) | aus lokalen Indexen zum verknüpften Artikel | wie `llm-free` | wie `llm-free` | wie `llm-free` | D43, D64, D65 |
-| Material als Eingang (`node_id` ohne `topic`) | Regeln über Titel und Beschreibung | das LLM nennt den Artikel | wie `balanced` | wie `balanced` | D45, D47 |
-| Teil 3: Sammlungsüberblick | edu-sharing zur Anfragezeit, kein LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` | – |
-| Budget je Anfrage (D59) | 60.000 Tokens | 60.000 | 180.000 | 180.000 | D59 |
+| Schritt | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` | `best-coverage-generated` | Entscheidung |
+|---|---|---|---|---|---|---|
+| Hauptartikel (`article_choice`) | Regeln (`rule-based`) | Regeln, das LLM entscheidet die unsicheren Fälle (`llm`) | das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (`llm-thorough`) | wie `best-quality` | wie `best-quality` | D35, D53, D61 |
+| Korpus | verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel | das LLM nennt Übersicht und Teile des Themas (N) | wie `balanced` | wie `balanced` | wie `balanced` | D48, D63 |
+| Zuordnung (`matcher`) | `hybrid_light` mit Model2Vec | wie `llm-free` | das LLM ordnet jeden Absatz zu (`llm`) | wie `best-quality` | wie `best-quality` | D38, D53 |
+| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
+| Lehrplanschnipsel (`curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu prüft das LLM jedes Element (`llm`) | wie `best-quality` | wie `best-quality` | D58, D59 |
+| QA-Paare (`/qa`, `method`) | Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren | wie `llm-free` | das LLM schreibt die Paare (`llm`) | wie `best-quality` | wie `best-quality` | D55, D57, D60 |
+| Entitäten (`/entities`, `methods`) | spaCy und das Wörterbuch der Artikeltitel (`ner`, `dictionary`) | das LLM nennt sie mit dem Titel ihres Artikels (`llm`) | wie `balanced` | wie `balanced` | wie `balanced` | D62 |
+| Kennungen (Wikidata, GND, VIAF, DBpedia) | aus lokalen Indexen zum verknüpften Artikel | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | D43, D64, D65 |
+| Material als Eingang (`node_id` ohne `topic`) | Regeln über Titel und Beschreibung | das LLM nennt den Artikel | wie `balanced` | wie `balanced` | wie `balanced` | D45, D47 |
+| Teil 3: Sammlungsüberblick | edu-sharing zur Anfragezeit, kein LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | – |
+| Budget je Anfrage (D59) | 60.000 Tokens | 60.000 | 180.000 | 180.000 | 180.000 | D59 |
 
 ### Was ein Kompendium je Profil kostet
 
@@ -40,6 +43,7 @@ Schritte ohne LLM dort gemessen, dazu die Schritte, in denen das LLM des Profils
 | `balanced` | 6,9 s (5,6 bis 9,5 s) | 5,1 s: Artikelwahl und die Frage nach Übersicht und Teilen | 576 (495 bis 663) | rund 3.500 |
 | `best-quality` | 26 s (19 bis 29 s) | 24,3 s: Artikelwahl 4,7 s, Zuordnung 12,7 s, Prüfung der Lehrplanschnipsel 7,0 s | 49.019 (17.357 bis 65.116) | rund 41 |
 | `best-quality-generated` | 36 s (31 bis 46 s) | 32,8 s: dazu das Schreiben, 8,7 s | 60.357 (44.639 bis 134.766) | rund 33 |
+| `best-coverage-generated` | Teil 1 allein auf dem Entwicklungsrechner: 27,5 s (24 bis 32 s), M47 | Artikelwahl, Zuordnung und das Schreiben aller Bausteine | Teil 1 allein: 98.707 (62.999 bis 99.236), rund ein Drittel aus dem Prompt-Cache (M46) | rund 20 |
 
 Gegenüber M27 (25.09.2026: 26.267 und 35.376 Tokens, 14 und 24 s) kosten die beiden `best-quality`-Profile heute rund
 das Doppelte: Seit D58 prüft das LLM die Lehrplanschnipsel (im Median rund 7 s und 5.000 bis 10.000 Tokens), und seit
@@ -70,7 +74,7 @@ das auf dem Server dieselbe b-api anspricht.
 | **Regeln** mit den Kontextwörtern des Fachs, Wortanfängen und Genitivregeln | **87** | rund 0,03 s | 0 | `llm-free` | M9, M35 |
 | Regeln und laya, ein lokales Entscheidungsmodell | 81 | +0,45 s, 1,7 GB je Worker | 0 | nicht eingebaut (D42) | M16 |
 | **Regeln, das LLM entscheidet unsichere Fälle** (`llm`) | **91** | +1 s je Frage, gefragt bei 18 von 94 | rund 800 je Frage | `balanced` | M9, M35 |
-| **das LLM prüft auch sichere Auflösungen** (`llm-thorough`) | **93** | +1 s je Frage, gefragt bei 64 von 94 | rund 800 je Frage | `best-quality`, `best-quality-generated` | M35 |
+| **das LLM prüft auch sichere Auflösungen** (`llm-thorough`) | **93** | +1 s je Frage, gefragt bei 64 von 94 | rund 800 je Frage | `best-quality`, `best-quality-generated`, `best-coverage-generated` | M35 |
 
 **Warum so:**
 
@@ -99,7 +103,7 @@ zwei Gutachtern: bei 25 Sammel- und Mischthemen wie „deutsche Dichter“ und b
 | **Regeln:** verlinkte Unterartikel und Volltexttreffer, nur mit Link zum Hauptartikel | **43 % / 71 %** | lokal | 0 | `llm-free` | M37, M39 |
 | dazu prüft das LLM die Nebenartikel | 45 % / 73 % | +1,4 bis 2 s | 750 bis 1.400 | `balanced` bis D63; heute der Rückfall, wenn N nicht antwortet | M25, M37, M39 |
 | kleine lokale Modelle (LFM2, Qwen3 0.6B) stellen die Frage N | kein Gewinn gegenüber den Regeln | 4,4 bis 6,3 s je Frage | 0 | nicht eingebaut | M40 |
-| **das LLM nennt Übersicht und Teile des Themas (N)** | **87 % / 93 %** | +5 s | rund 500 | `balanced`, `best-quality`, `best-quality-generated` | M37, M39, M45 |
+| **das LLM nennt Übersicht und Teile des Themas (N)** | **87 % / 93 %** | +5 s | rund 500 | `balanced`, `best-quality`, `best-quality-generated`, `best-coverage-generated` | M37, M39, M45 |
 
 **Warum so:**
 
@@ -128,7 +132,7 @@ am Goldstandard (zehn Themen, gelabelte Absätze).
 | `hybrid_light` ohne Model2Vec | 0,38 | 0,3 s | 0 | Rückfall ohne Modell | M15, M44 |
 | **`hybrid_light` mit Model2Vec** | **0,45** | 0,3 s | 0 | `llm-free`, `balanced` | M27, M44 |
 | das LLM nur für unsichere Absätze | 0,54 | halbe LLM-Zeit | halbe Tokens | verworfen | M12 |
-| **das LLM ordnet jeden Absatz zu** (`llm`) | **0,70** | +12,7 s | rund 170 je Absatz | `best-quality`, `best-quality-generated` | M19, M27, M45 |
+| **das LLM ordnet jeden Absatz zu** (`llm`) | **0,70** | +12,7 s | rund 170 je Absatz | `best-quality`, `best-quality-generated`, `best-coverage-generated` | M19, M27, M45 |
 
 **Warum so:**
 
@@ -152,11 +156,16 @@ am Goldstandard (zehn Themen, gelabelte Absätze).
 | **wörtlich:** die zugeordneten Absätze, jeder Satz mit Belegnummer | jeder Satz steht wörtlich im zitierten Absatz; Lesbarkeit 2,5 von 5 | lokal | 0 | `llm-free`, `balanced`, `best-quality` | M3, M28 |
 | das LLM wählt die Sätze aus (`extraction=llm`) | am Goldstandard kein Gewinn | +11 s | 14.000 bis 22.400 | in keinem Profil | 02-weltwissen.md |
 | **das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert** | Lesbarkeit 4,0 von 5, 11 von 12 Urteilen vorgezogen; Modellwissen 50 Sätze in sechs Themen, 13 davon Füllsätze, keiner falsch | +8,7 s | rund 4.300 bis 11.600 mehr | `best-quality-generated` | M28, M31, M45 |
+| **das LLM schreibt jeden Baustein vollständig zum angefragten Thema** (`model-knowledge-full`): Belege, wo sie das Thema treffen, sonst Modellwissen, auch ohne Belege | Themen mit Aspekt: Passung 4,81 statt 1,81, Nutzen 4,81 statt 2,12, Vollständigkeit 5,0 statt 1,7 von 5, keine schweren Fehler; rund 30.000 statt 12.000 Zeichen, den größten Teil aus Modellwissen | Teil 1 rund 28 s statt 24 s | 91.000 bis 99.000 statt rund 70.000 für Teil 1, ein Drittel aus dem Prompt-Cache | `best-coverage-generated` | M46, M47 |
 
 **Warum so:** Der wörtliche Text ist nachprüfbar und bleibt deshalb der Standard bis `best-quality`; für KI und
 Weiterverarbeitung ist das richtig. Für Menschen, die den Text direkt lesen, ist die geschriebene Fassung klar besser;
 sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen steht sichtbar als `[Modellwissen]` da, nur als
-prüfbare Sachaussage (D56).
+prüfbare Sachaussage (D56). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
+Text über den Artikel, auf den die Artikelwahl das Thema auflöst; `best-coverage-generated` schreibt jeden Baustein
+über das angefragte Thema und füllt ihn, wo die Quellen nichts dazu sagen, aus Modellwissen (Jan, 01.10.2026: „max.
+abdeckung der kategorien und max. nähe zum thema“, D69). Der Preis ist ein Text, der zum größten Teil aus
+Modellwissen besteht; die Gutachter fanden darin keine schweren Fehler (M47).
 
 ## 5. Lehrplanschnipsel auswählen (Teil 2)
 
@@ -169,7 +178,7 @@ gezeigten Elemente, die zum Thema passen, bei 20 Themen ohne und mit Fach, benot
 |---|---|---|---|---|---|---|
 | jeder Treffer einzeln | 62 bis 64 % / 64 bis 67 % | 11 bis 17 % | 0,1 bis 0,7 s | 0 | abgelöst (D58) | M22, M32 |
 | **Überschriften-Treffer gebündelt** | **70 bis 72 % / 77 bis 81 %** | 5 bis 9 % | 0,1 bis 0,7 s, Suche auf dem Server 0,05 s | 0 | `llm-free`, `balanced` | M32, M45 |
-| **dazu prüft das LLM jedes Element** | **74 bis 77 % / 76 bis 79 %** | 5 bis 9 % | +6 bis 8 s | 5.100 bis 9.600 | `best-quality`, `best-quality-generated` | M32, M33, M45 |
+| **dazu prüft das LLM jedes Element** | **74 bis 77 % / 76 bis 79 %** | 5 bis 9 % | +6 bis 8 s | 5.100 bis 9.600 | `best-quality`, `best-quality-generated`, `best-coverage-generated` | M32, M33, M45 |
 
 **Warum so:**
 
@@ -192,7 +201,7 @@ ohne den Text verständlich, Antwort passt, nicht doppelt, nicht trivial, kein S
 | Satzanalyse (`parse-based`) | 36 % (16 von 44) | 0,17 s | 0 | entfernt (D57) | M30 |
 | zwei kleine Modelle im Image | 21 % (25 von 120) | 25 s | 0; 1,3 GB je Worker | entfernt (D57) | M30 |
 | **Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren** | **61 % (58 von 95)** | 0,52 s | 0 | `llm-free`, `balanced` | M30, M34, M45 |
-| **das LLM schreibt die Paare** | **83 % (99 von 120)** | 6,3 s | rund 2.400 bei 5.000 bis 12.000 Zeichen, 7.137 bei rund 23.000 | `best-quality`, `best-quality-generated` | M30, M45 |
+| **das LLM schreibt die Paare** | **83 % (99 von 120)** | 6,3 s | rund 2.400 bei 5.000 bis 12.000 Zeichen, 7.137 bei rund 23.000 | `best-quality`, `best-quality-generated`, `best-coverage-generated` | M30, M45 |
 
 **Warum so:**
 
@@ -215,7 +224,7 @@ F1 der verknüpften Artikel an den Texten von 40 Materialien, benotet von zwei G
 | spaCy allein (`ner`) | 0,30 (0,41 / 0,23) | lokal | 0 | Teil von `llm-free` | M36 |
 | das Wörterbuch der Artikeltitel allein (`dictionary`) | 0,35 (0,25 / 0,58) | lokal | 0 | Teil von `llm-free` | M36 |
 | **spaCy und Wörterbuch** | **0,38 (0,29 / 0,55)** | 1,0 s | 0 | `llm-free` | M36, M45 |
-| **das LLM nennt die Entitäten mit ihrem Artikeltitel** | **0,78 (0,70 / 0,89)** | 6,8 s | rund 1.300 | `balanced`, `best-quality`, `best-quality-generated` | M36, M45 |
+| **das LLM nennt die Entitäten mit ihrem Artikeltitel** | **0,78 (0,70 / 0,89)** | 6,8 s | rund 1.300 | `balanced`, `best-quality`, `best-quality-generated`, `best-coverage-generated` | M36, M45 |
 | dazu prüft das LLM jede Verknüpfung (`link_check: llm`) | 0,76 (0,94 / 0,64) | +2 s | +820 | Schalter, in keinem Profil | M36 |
 
 Die Kennungen folgen dem verknüpften Artikel und kommen in allen Profilen aus denselben lokalen Indexen (M43):

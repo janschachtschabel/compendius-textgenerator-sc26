@@ -1,0 +1,2052 @@
+{
+ "grades": {
+  "Aspekt": {
+   "bqg": {
+    "passung": 1.81,
+    "nutzen": 2.12,
+    "vollstaendigkeit": 1.69,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.38
+   },
+   "bcg": {
+    "passung": 4.81,
+    "nutzen": 4.81,
+    "vollstaendigkeit": 5,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.25
+   },
+   "bcg-hl": {
+    "passung": 4.56,
+    "nutzen": 4.31,
+    "vollstaendigkeit": 4.69,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.44
+   }
+  },
+  "Kontrolle": {
+   "bcg-hl": {
+    "passung": 5,
+    "nutzen": 5,
+    "vollstaendigkeit": 5,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1.25
+   },
+   "bcg": {
+    "passung": 5,
+    "nutzen": 4.75,
+    "vollstaendigkeit": 5,
+    "schwere_fehler": 0,
+    "leichte_fehler": 2.25
+   },
+   "bqg": {
+    "passung": 5,
+    "nutzen": 2.5,
+    "vollstaendigkeit": 1.5,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1
+   }
+  }
+ },
+ "runs": {
+  "bcg": {
+   "seconds": 22.799999999999997,
+   "tokens": 90907.0,
+   "cached": 34942.5,
+   "chars": 29911.5,
+   "llm_blocks": 10.0,
+   "cited": 34.0,
+   "marked": 123.0
+  },
+  "bcg-hl": {
+   "seconds": 10.75,
+   "tokens": 34904.0,
+   "cached": 21990.0,
+   "chars": 30050.5,
+   "llm_blocks": 10.0,
+   "cited": 20.0,
+   "marked": 138.5
+  },
+  "bqg": {
+   "seconds": 8.649999999999999,
+   "tokens": 72180.0,
+   "cached": 12952.5,
+   "chars": 12166.5,
+   "llm_blocks": 9.0,
+   "cited": 66.5,
+   "marked": 12.0
+  }
+ },
+ "passung_agreement": {
+  "same": 27,
+  "one_apart": 3,
+  "two_or_more": 0,
+  "pairs": 30
+ },
+ "key": {
+  "OER-Förderungen": {
+   "A": "bqg",
+   "B": "bcg",
+   "C": "bcg-hl"
+  },
+  "Projektmanagement von agilen Projekten": {
+   "A": "bcg",
+   "B": "bqg",
+   "C": "bcg-hl"
+  },
+  "Künstliche Intelligenz im Unterricht": {
+   "A": "bcg",
+   "B": "bcg-hl",
+   "C": "bqg"
+  },
+  "Digitale Bildung in der Grundschule": {
+   "A": "bcg",
+   "B": "bqg",
+   "C": "bcg-hl"
+  },
+  "Klimawandel in der Landwirtschaft": {
+   "A": "bqg",
+   "B": "bcg",
+   "C": "bcg-hl"
+  },
+  "Inklusion im Sportunterricht": {
+   "A": "bqg",
+   "B": "bcg",
+   "C": "bcg-hl"
+  },
+  "Datenschutz an Schulen": {
+   "A": "bcg-hl",
+   "B": "bqg",
+   "C": "bcg"
+  },
+  "Nachhaltigkeit im Schulalltag": {
+   "A": "bcg",
+   "B": "bqg",
+   "C": "bcg-hl"
+  },
+  "Photosynthese": {
+   "A": "bcg-hl",
+   "B": "bcg",
+   "C": "bqg"
+  },
+  "Französische Revolution": {
+   "A": "bcg",
+   "B": "bqg",
+   "C": "bcg-hl"
+  }
+ },
+ "raters": [
+  {
+   "OER-Förderungen": {
+    "A": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": []
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "fehler": []
+    }
+   },
+   "Projektmanagement von agilen Projekten": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Der Product Owner verantwortet Produktziele und Prioritäten (das Was); über die Arbeitsweise (das Wie) entscheidet das selbstorganisierte Team.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Künstliche Intelligenz im Unterricht": {
+    "A": {
+     "passung": 4,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung (EU) 2024/1689 wurde am 13. Juni 2024 unterzeichnet und am 12. Juli 2024 im Amtsblatt der EU veröffentlicht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung (EU) 2024/1689 wurde am 13. Juni 2024 unterzeichnet und am 12. Juli 2024 im Amtsblatt der EU veröffentlicht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": []
+    }
+   },
+   "Digitale Bildung in der Grundschule": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die Annahme, Lernangebote müssten zu Lerntypen passen, ist empirisch nicht belegt und gilt als verbreiteter Neuromythos.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "fehler": []
+    }
+   },
+   "Klimawandel in der Landwirtschaft": {
+    "A": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": [
+      {
+       "grund": "Das Pariser Abkommen nennt deutlich unter 2 °C und zugleich Anstrengungen für 1,5 °C; ein „zunächst“ angestrebtes, dann aufgegebenes 1,5-°C-Ziel gibt es nicht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Veralteter Wert ohne Jahresangabe: 43 % entspricht dem NOAA-Treibhausgasindex um 2018, neuere Werte liegen bei rund 50 %.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "A": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Das Gesundheitsangebot von Special Olympics (Healthy Athletes) heißt „Health Promotion“, nicht „Healthy Promotion“.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    }
+   },
+   "Datenschutz an Schulen": {
+    "A": {
+     "passung": 4,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    }
+   },
+   "Nachhaltigkeit im Schulalltag": {
+    "A": {
+     "passung": 4,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "fehler": []
+    }
+   },
+   "Photosynthese": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Wird als häufige Fehlvorstellung ausgegeben, trifft unter natürlichen Bedingungen aber zu: Photosynthese einschließlich Calvin-Zyklus ist lichtabhängig und ruht nachts (nur CAM-Pflanzen fixieren nachts CO₂ vor); die Aussage kann die Fehlvorstellung einer nächtlichen Dunkelreaktion fördern.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Die Richtlinie 2009/41/EG gilt nur für genetisch veränderte Mikroorganismen, nicht für gentechnisch veränderte Pflanzen oder Organismen allgemein, wie der Zusammenhang nahelegt.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Falscher Fachbegriff; richtig ist die Oxygenase-Aktivität der Rubisco.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Veraltet: Die Struktur des Mn4CaO5-Clusters ist seit 2011 hochaufgelöst und seit 2015 mit Freie-Elektronen-Röntgenlasern ohne Strahlenschäden bestimmt; zudem fehlt das Calcium des Clusters.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Wird als häufige Fehlvorstellung ausgegeben, trifft unter natürlichen Bedingungen aber zu: Photosynthese einschließlich Calvin-Zyklus ist lichtabhängig und ruht nachts (nur CAM-Pflanzen fixieren nachts CO₂ vor); die Aussage kann die Fehlvorstellung einer nächtlichen Dunkelreaktion fördern.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Die Richtlinie 2009/41/EG gilt nur für genetisch veränderte Mikroorganismen, nicht für gentechnisch veränderte Pflanzen oder Organismen allgemein.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Veraltet und unvollständig: Es handelt sich um einen Mn4CaO5-Cluster mit Calcium, dessen Struktur seit 2011/2015 kristallographisch und spektroskopisch weitgehend aufgeklärt ist.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Französische Revolution": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Nach Titel VII der Verfassung von 1791 mussten drei aufeinanderfolgende Legislaturen den Änderungswunsch äußern; erst die vierte, um 249 Mitglieder erweitert, bildete die Revisionsversammlung.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": [
+      {
+       "grund": "Nach Titel VII der Verfassung von 1791 mussten drei aufeinanderfolgende Legislaturen den Änderungswunsch äußern; erst die vierte, um 249 Mitglieder erweitert, bildete die Revisionsversammlung.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Rechnerisch unstimmig: Bei rund 28 Millionen Einwohnern entsprechen 300.000 bis 800.000 Menschen etwa 1 bis 3 Prozent, nicht bis zu 4 Prozent.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "OER-Förderungen": {
+    "A": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": []
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Anachronistisch: Den Begriff OER gibt es erst seit 2002, Creative-Commons-Lizenzen ebenfalls erst seit 2002; Lehrer-Online bot 1998 kostenfreie, aber keine offen lizenzierten Materialien.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Projektmanagement von agilen Projekten": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 3,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Der Product Owner ist eine Scrum- und keine klassische XP-Rolle (XP: Kunde, Entwickler, Coach, Tracker); zudem verantwortet er Produktziele und Prioritäten, nicht die Arbeitsweise, über die das Team entscheidet.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Künstliche Intelligenz im Unterricht": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung (EU) 2024/1689 datiert vom 13. Juni 2024 und wurde am 12. Juli 2024 im Amtsblatt veröffentlicht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung (EU) 2024/1689 datiert vom 13. Juni 2024 und wurde am 12. Juli 2024 im Amtsblatt veröffentlicht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Im höherdimensionalen Raum trennt die SVM linear mit einer Hyperebene; nichtlinear ist die Grenze erst im ursprünglichen Raum. Der Satz widerspricht auch dem unmittelbar folgenden.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Digitale Bildung in der Grundschule": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "fehler": []
+    }
+   },
+   "Klimawandel in der Landwirtschaft": {
+    "A": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": [
+      {
+       "grund": "Das Pariser Abkommen legt zugleich deutlich unter 2 °C und Anstrengungen für 1,5 °C fest; 1,5 °C war kein zunächst verfolgtes und später ersetztes Ziel.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Veralteter Wert ohne Bezugsjahr (NOAA-Treibhausgasindex AGGI um 2018); inzwischen liegt der Anstieg seit 1990 bei rund 50 Prozent und darüber.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "A": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Das Healthy-Athletes-Programm von Special Olympics heißt Health Promotion; der Programmname ist verfälscht.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Paragraf ohne Angabe der Vorschrift; eine einzelne landesrechtliche Zeugnisregelung wird wie eine allgemein geltende Regel dargestellt und ist für Lehrkräfte nicht nachvollziehbar.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    }
+   },
+   "Datenschutz an Schulen": {
+    "A": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Schulrecht und Datenschutz öffentlicher Schulen sind Landessache; maßgeblich ist öffentliche oder private Trägerschaft (Privatschulen fallen als nichtöffentliche Stellen unter DSGVO/BDSG), nicht eine Zuordnung zum Bund.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Nachhaltigkeit im Schulalltag": {
+    "A": {
+     "passung": 4,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "fehler": []
+    }
+   },
+   "Photosynthese": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Wird als Fehlvorstellung ausgegeben, obwohl Photosynthese lichtabhängig ist und unter natürlichen Bedingungen nur am Tag abläuft; verbreitete Fehlvorstellungen sind eher, Pflanzen atmeten nur nachts oder die lichtunabhängigen Reaktionen liefen nachts ab.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Südafrika und Australien sind weder typische tropische Anbaugebiete noch Hauptproduzenten; wichtige Erzeuger sind etwa Costa Rica, die Philippinen, Brasilien und Indonesien.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Wird als Fehlvorstellung ausgegeben, obwohl Photosynthese lichtabhängig ist und unter natürlichen Bedingungen nur am Tag abläuft; verbreitete Fehlvorstellungen sind eher, Pflanzen atmeten nur nachts oder die lichtunabhängigen Reaktionen liefen nachts ab.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Der Fachbegriff lautet Oxygenase-Aktivität; Sauerstoffase ist kein Fachterminus.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Veraltet: Der Mn4CaO5-Cluster ist seit 2011 hochaufgelöst und seit 2015 mit strahlenschadenfreier Femtosekunden-Röntgenkristallographie (XFEL) bestimmt; zudem fehlt das Calcium in der Beschreibung.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "fehler": [
+      {
+       "grund": "Veraltet: Die Struktur des Mn4CaO5-Clusters ist seit 2011/2015 (u. a. strahlenschadenfreie XFEL-Strukturen) weitgehend aufgeklärt; offen sind vor allem Zwischenzustände des Katalysezyklus.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Französische Revolution": {
+    "A": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "fehler": [
+      {
+       "grund": "Nach Titel VII der Verfassung von 1791 mussten drei aufeinanderfolgende Legislaturen den Änderungswunsch äußern; erst die vierte, um 249 Mitglieder erweitert, bildete die Revisionsversammlung.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "fehler": [
+      {
+       "grund": "Nach Titel VII der Verfassung von 1791 mussten drei aufeinanderfolgende Legislaturen den Änderungswunsch äußern; erst die vierte, um 249 Mitglieder erweitert, bildete die Revisionsversammlung.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "fehler": []
+    }
+   }
+  }
+ ],
+ "run_rows": [
+  {
+   "topic": "OER-Förderungen",
+   "variant": "bcg",
+   "s": 21.9,
+   "timings": {
+    "resolve": 227,
+    "corpus": 3,
+    "segment": 9,
+    "match": 11285,
+    "synthesize": 10339,
+    "assemble": 4
+   },
+   "heading": "OER-Förderungen",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 55075,
+    "completion": 12147,
+    "total": 67222,
+    "calls": 16,
+    "cached": 30625
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28247,
+   "marked": 123,
+   "cited": 22,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "bcg-hl",
+   "s": 10.5,
+   "timings": {
+    "resolve": 86,
+    "corpus": 3,
+    "segment": 8,
+    "match": 245,
+    "synthesize": 10174,
+    "assemble": 4
+   },
+   "heading": "OER-Förderungen",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 26643,
+    "completion": 7855,
+    "total": 34498,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28959,
+   "marked": 140,
+   "cited": 17,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "bqg",
+   "s": 7.5,
+   "timings": {
+    "resolve": 85,
+    "corpus": 2,
+    "segment": 9,
+    "match": 339,
+    "synthesize": 7044,
+    "assemble": 5
+   },
+   "heading": "Open Educational Resources",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 38047,
+    "completion": 9186,
+    "total": 47233,
+    "calls": 15,
+    "cached": 8635
+   },
+   "blocks": 9,
+   "llm_blocks": 9,
+   "chars": 11178,
+   "marked": 14,
+   "cited": 61,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Projektmanagement von agilen Projekten",
+   "variant": "bcg",
+   "s": 22.4,
+   "timings": {
+    "resolve": 178,
+    "corpus": 2,
+    "segment": 8,
+    "match": 11271,
+    "synthesize": 10906,
+    "assemble": 5
+   },
+   "heading": "Projektmanagement von agilen Projekten",
+   "main": "Agile Softwareentwicklung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 60706,
+    "completion": 14046,
+    "total": 74752,
+    "calls": 17,
+    "cached": 32352
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31158,
+   "marked": 127,
+   "cited": 34,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Projektmanagement von agilen Projekten",
+   "variant": "bcg-hl",
+   "s": 10.2,
+   "timings": {
+    "resolve": 82,
+    "corpus": 2,
+    "segment": 9,
+    "match": 198,
+    "synthesize": 9860,
+    "assemble": 4
+   },
+   "heading": "Projektmanagement von agilen Projekten",
+   "main": "Agile Softwareentwicklung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 25904,
+    "completion": 7469,
+    "total": 33373,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 30840,
+   "marked": 131,
+   "cited": 30,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Projektmanagement von agilen Projekten",
+   "variant": "bqg",
+   "s": 7.6,
+   "timings": {
+    "resolve": 79,
+    "corpus": 3,
+    "segment": 9,
+    "match": 338,
+    "synthesize": 7122,
+    "assemble": 5
+   },
+   "heading": "Agile Softwareentwicklung",
+   "main": "Agile Softwareentwicklung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 43681,
+    "completion": 10943,
+    "total": 54624,
+    "calls": 16,
+    "cached": 10362
+   },
+   "blocks": 9,
+   "llm_blocks": 9,
+   "chars": 11275,
+   "marked": 13,
+   "cited": 63,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "bcg",
+   "s": 22.7,
+   "timings": {
+    "resolve": 264,
+    "corpus": 17,
+    "segment": 16,
+    "match": 12461,
+    "synthesize": 9979,
+    "assemble": 4
+   },
+   "heading": "Künstliche Intelligenz im Unterricht",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 79829,
+    "completion": 16542,
+    "total": 96371,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 30995,
+   "marked": 123,
+   "cited": 41,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "bcg-hl",
+   "s": 10.3,
+   "timings": {
+    "resolve": 92,
+    "corpus": 9,
+    "segment": 15,
+    "match": 308,
+    "synthesize": 9876,
+    "assemble": 4
+   },
+   "heading": "Künstliche Intelligenz im Unterricht",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 26352,
+    "completion": 8500,
+    "total": 34852,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31241,
+   "marked": 145,
+   "cited": 24,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "bqg",
+   "s": 9.5,
+   "timings": {
+    "resolve": 96,
+    "corpus": 8,
+    "segment": 14,
+    "match": 561,
+    "synthesize": 8789,
+    "assemble": 4
+   },
+   "heading": "Künstliche Intelligenz",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 63425,
+    "completion": 14569,
+    "total": 77994,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 14961,
+   "marked": 10,
+   "cited": 89,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Digitale Bildung in der Grundschule",
+   "variant": "bcg",
+   "s": 23.8,
+   "timings": {
+    "resolve": 218,
+    "corpus": 4,
+    "segment": 10,
+    "match": 13069,
+    "synthesize": 10481,
+    "assemble": 5
+   },
+   "heading": "Digitale Bildung in der Grundschule",
+   "main": "E-Learning",
+   "method": "llm",
+   "tokens": {
+    "prompt": 69613,
+    "completion": 15778,
+    "total": 85391,
+    "calls": 18,
+    "cached": 34079
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 33128,
+   "marked": 132,
+   "cited": 38,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Digitale Bildung in der Grundschule",
+   "variant": "bcg-hl",
+   "s": 11.0,
+   "timings": {
+    "resolve": 92,
+    "corpus": 3,
+    "segment": 10,
+    "match": 302,
+    "synthesize": 10587,
+    "assemble": 5
+   },
+   "heading": "Digitale Bildung in der Grundschule",
+   "main": "E-Learning",
+   "method": "llm",
+   "tokens": {
+    "prompt": 27232,
+    "completion": 7810,
+    "total": 35042,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 30593,
+   "marked": 138,
+   "cited": 21,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Digitale Bildung in der Grundschule",
+   "variant": "bqg",
+   "s": 10.0,
+   "timings": {
+    "resolve": 94,
+    "corpus": 4,
+    "segment": 9,
+    "match": 449,
+    "synthesize": 9464,
+    "assemble": 4
+   },
+   "heading": "E-Learning",
+   "main": "E-Learning",
+   "method": "llm",
+   "tokens": {
+    "prompt": 53219,
+    "completion": 13147,
+    "total": 66366,
+    "calls": 18,
+    "cached": 12089
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 14266,
+   "marked": 12,
+   "cited": 77,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Klimawandel in der Landwirtschaft",
+   "variant": "bcg",
+   "s": 24.3,
+   "timings": {
+    "resolve": 493,
+    "corpus": 14,
+    "segment": 22,
+    "match": 11908,
+    "synthesize": 11875,
+    "assemble": 6
+   },
+   "heading": "Klimawandel in der Landwirtschaft",
+   "main": "Klimawandel",
+   "method": "llm",
+   "tokens": {
+    "prompt": 86999,
+    "completion": 16560,
+    "total": 103559,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28845,
+   "marked": 123,
+   "cited": 18,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Klimawandel in der Landwirtschaft",
+   "variant": "bcg-hl",
+   "s": 10.7,
+   "timings": {
+    "resolve": 344,
+    "corpus": 12,
+    "segment": 19,
+    "match": 444,
+    "synthesize": 9867,
+    "assemble": 4
+   },
+   "heading": "Klimawandel in der Landwirtschaft",
+   "main": "Klimawandel",
+   "method": "llm",
+   "tokens": {
+    "prompt": 26465,
+    "completion": 8491,
+    "total": 34956,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31481,
+   "marked": 139,
+   "cited": 20,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Klimawandel in der Landwirtschaft",
+   "variant": "bqg",
+   "s": 6.8,
+   "timings": {
+    "resolve": 90,
+    "corpus": 9,
+    "segment": 18,
+    "match": 634,
+    "synthesize": 6083,
+    "assemble": 3
+   },
+   "heading": "Klimawandel",
+   "main": "Klimawandel",
+   "method": "llm",
+   "tokens": {
+    "prompt": 69961,
+    "completion": 14381,
+    "total": 84342,
+    "calls": 18,
+    "cached": 13816
+   },
+   "blocks": 9,
+   "llm_blocks": 9,
+   "chars": 13058,
+   "marked": 12,
+   "cited": 69,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "bcg",
+   "s": 22.9,
+   "timings": {
+    "resolve": 250,
+    "corpus": 4,
+    "segment": 12,
+    "match": 11238,
+    "synthesize": 11364,
+    "assemble": 4
+   },
+   "heading": "Inklusion im Sportunterricht",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 81515,
+    "completion": 16180,
+    "total": 97695,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28623,
+   "marked": 111,
+   "cited": 36,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "bcg-hl",
+   "s": 11.9,
+   "timings": {
+    "resolve": 89,
+    "corpus": 4,
+    "segment": 13,
+    "match": 334,
+    "synthesize": 11492,
+    "assemble": 7
+   },
+   "heading": "Inklusion im Sportunterricht",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 27426,
+    "completion": 8210,
+    "total": 35636,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29508,
+   "marked": 133,
+   "cited": 16,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "bqg",
+   "s": 8.9,
+   "timings": {
+    "resolve": 99,
+    "corpus": 6,
+    "segment": 25,
+    "match": 535,
+    "synthesize": 8238,
+    "assemble": 4
+   },
+   "heading": "Inklusive Pädagogik",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 65111,
+    "completion": 14414,
+    "total": 79525,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 14619,
+   "marked": 8,
+   "cited": 75,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Datenschutz an Schulen",
+   "variant": "bcg",
+   "s": 20.7,
+   "timings": {
+    "resolve": 294,
+    "corpus": 10,
+    "segment": 13,
+    "match": 9735,
+    "synthesize": 10621,
+    "assemble": 5
+   },
+   "heading": "Datenschutz an Schulen",
+   "main": "Datenschutz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 70658,
+    "completion": 14785,
+    "total": 85443,
+    "calls": 18,
+    "cached": 34079
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31188,
+   "marked": 136,
+   "cited": 27,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Datenschutz an Schulen",
+   "variant": "bcg-hl",
+   "s": 10.8,
+   "timings": {
+    "resolve": 103,
+    "corpus": 8,
+    "segment": 11,
+    "match": 325,
+    "synthesize": 10362,
+    "assemble": 4
+   },
+   "heading": "Datenschutz an Schulen",
+   "main": "Datenschutz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 27108,
+    "completion": 8465,
+    "total": 35573,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31814,
+   "marked": 153,
+   "cited": 13,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Datenschutz an Schulen",
+   "variant": "bqg",
+   "s": 8.3,
+   "timings": {
+    "resolve": 93,
+    "corpus": 8,
+    "segment": 11,
+    "match": 444,
+    "synthesize": 7784,
+    "assemble": 3
+   },
+   "heading": "Datenschutz",
+   "main": "Datenschutz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 53023,
+    "completion": 11725,
+    "total": 64748,
+    "calls": 16,
+    "cached": 12089
+   },
+   "blocks": 8,
+   "llm_blocks": 8,
+   "chars": 10623,
+   "marked": 24,
+   "cited": 50,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Nachhaltigkeit im Schulalltag",
+   "variant": "bcg",
+   "s": 23.2,
+   "timings": {
+    "resolve": 295,
+    "corpus": 14,
+    "segment": 17,
+    "match": 12761,
+    "synthesize": 10120,
+    "assemble": 6
+   },
+   "heading": "Nachhaltigkeit im Schulalltag",
+   "main": "Nachhaltigkeit",
+   "method": "llm",
+   "tokens": {
+    "prompt": 84723,
+    "completion": 18674,
+    "total": 103397,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 30978,
+   "marked": 131,
+   "cited": 34,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Nachhaltigkeit im Schulalltag",
+   "variant": "bcg-hl",
+   "s": 10.9,
+   "timings": {
+    "resolve": 89,
+    "corpus": 10,
+    "segment": 19,
+    "match": 561,
+    "synthesize": 10168,
+    "assemble": 4
+   },
+   "heading": "Nachhaltigkeit im Schulalltag",
+   "main": "Nachhaltigkeit",
+   "method": "llm",
+   "tokens": {
+    "prompt": 26802,
+    "completion": 7880,
+    "total": 34682,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29486,
+   "marked": 129,
+   "cited": 20,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Nachhaltigkeit im Schulalltag",
+   "variant": "bqg",
+   "s": 12.2,
+   "timings": {
+    "resolve": 179,
+    "corpus": 7,
+    "segment": 16,
+    "match": 612,
+    "synthesize": 11349,
+    "assemble": 7
+   },
+   "heading": "Nachhaltigkeit",
+   "main": "Nachhaltigkeit",
+   "method": "llm",
+   "tokens": {
+    "prompt": 68339,
+    "completion": 16036,
+    "total": 84375,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 15862,
+   "marked": 10,
+   "cited": 85,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "bcg",
+   "s": 22.2,
+   "timings": {
+    "resolve": 289,
+    "corpus": 10,
+    "segment": 13,
+    "match": 9989,
+    "synthesize": 11909,
+    "assemble": 5
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 88221,
+    "completion": 16357,
+    "total": 104578,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28284,
+   "marked": 123,
+   "cited": 33,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "bcg-hl",
+   "s": 12.7,
+   "timings": {
+    "resolve": 83,
+    "corpus": 10,
+    "segment": 18,
+    "match": 400,
+    "synthesize": 12196,
+    "assemble": 4
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 27108,
+    "completion": 7927,
+    "total": 35035,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27355,
+   "marked": 128,
+   "cited": 27,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "bqg",
+   "s": 8.7,
+   "timings": {
+    "resolve": 82,
+    "corpus": 11,
+    "segment": 16,
+    "match": 621,
+    "synthesize": 7923,
+    "assemble": 3
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 70627,
+    "completion": 12778,
+    "total": 83405,
+    "calls": 17,
+    "cached": 13816
+   },
+   "blocks": 8,
+   "llm_blocks": 8,
+   "chars": 10012,
+   "marked": 10,
+   "cited": 64,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "bcg",
+   "s": 27.8,
+   "timings": {
+    "resolve": 1303,
+    "corpus": 12,
+    "segment": 11,
+    "match": 15196,
+    "synthesize": 11291,
+    "assemble": 4
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 69433,
+    "completion": 14158,
+    "total": 83591,
+    "calls": 18,
+    "cached": 32352
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 26361,
+   "marked": 114,
+   "cited": 36,
+   "fallbacks": {},
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "bcg-hl",
+   "s": 10.5,
+   "timings": {
+    "resolve": 155,
+    "corpus": 8,
+    "segment": 9,
+    "match": 311,
+    "synthesize": 9994,
+    "assemble": 4
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 25622,
+    "completion": 7876,
+    "total": 33498,
+    "calls": 12,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28879,
+   "marked": 142,
+   "cited": 17,
+   "fallbacks": {},
+   "prompts": [
+    "article_choice@v1",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "bqg",
+   "s": 8.6,
+   "timings": {
+    "resolve": 159,
+    "corpus": 10,
+    "segment": 9,
+    "match": 453,
+    "synthesize": 7966,
+    "assemble": 3
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 51153,
+    "completion": 10945,
+    "total": 62098,
+    "calls": 15,
+    "cached": 10362
+   },
+   "blocks": 7,
+   "llm_blocks": 7,
+   "chars": 8414,
+   "marked": 14,
+   "cited": 48,
+   "fallbacks": {},
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  }
+ ],
+ "timing_runs": [
+  {
+   "topic": "Lärmschutz an Schulen",
+   "variant": "bcg",
+   "s": 24.3,
+   "timings": {
+    "resolve": 4700,
+    "corpus": 4,
+    "segment": 6,
+    "match": 9664,
+    "synthesize": 9900,
+    "assemble": 5
+   },
+   "heading": "Lärmschutz an Schulen",
+   "main": "Lärmschutz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 51702,
+    "completion": 11297,
+    "total": 62999,
+    "calls": 15,
+    "cached": 28898
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 25956,
+   "marked": 118,
+   "cited": 31,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Ernährung von Kleinkindern",
+   "variant": "bcg",
+   "s": 32.2,
+   "timings": {
+    "resolve": 8047,
+    "corpus": 15,
+    "segment": 17,
+    "match": 11992,
+    "synthesize": 12100,
+    "assemble": 10
+   },
+   "heading": "Ernährung von Kleinkindern",
+   "main": "Ernährung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 82033,
+    "completion": 16674,
+    "total": 98707,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27207,
+   "marked": 134,
+   "cited": 21,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Erste Hilfe im Sportunterricht",
+   "variant": "bcg",
+   "s": 27.5,
+   "timings": {
+    "resolve": 4155,
+    "corpus": 8,
+    "segment": 15,
+    "match": 10913,
+    "synthesize": 12442,
+    "assemble": 6
+   },
+   "heading": "Erste Hilfe im Sportunterricht",
+   "main": "Erste Hilfe",
+   "method": "llm",
+   "tokens": {
+    "prompt": 82741,
+    "completion": 16495,
+    "total": 99236,
+    "calls": 19,
+    "cached": 35806
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29255,
+   "marked": 128,
+   "cited": 24,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Mobbing in sozialen Netzwerken",
+   "variant": "bcg-hl",
+   "s": 16.9,
+   "timings": {
+    "resolve": 4671,
+    "corpus": 5,
+    "segment": 13,
+    "match": 348,
+    "synthesize": 11809,
+    "assemble": 4
+   },
+   "heading": "Mobbing in sozialen Netzwerken",
+   "main": "Cyber-Mobbing",
+   "method": "llm",
+   "tokens": {
+    "prompt": 27963,
+    "completion": 7156,
+    "total": 35119,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27858,
+   "marked": 127,
+   "cited": 31,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Energiesparen im Haushalt",
+   "variant": "bcg-hl",
+   "s": 16.0,
+   "timings": {
+    "resolve": 4924,
+    "corpus": 12,
+    "segment": 10,
+    "match": 291,
+    "synthesize": 10779,
+    "assemble": 4
+   },
+   "heading": "Energiesparen im Haushalt",
+   "main": "Energieeinsparung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 27598,
+    "completion": 7766,
+    "total": 35364,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28552,
+   "marked": 127,
+   "cited": 24,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Wasserqualität in Flüssen",
+   "variant": "bcg-hl",
+   "s": 14.7,
+   "timings": {
+    "resolve": 4199,
+    "corpus": 3,
+    "segment": 5,
+    "match": 162,
+    "synthesize": 10318,
+    "assemble": 5
+   },
+   "heading": "Wasserqualität in Flüssen",
+   "main": "Wasserqualität",
+   "method": "llm",
+   "tokens": {
+    "prompt": 25623,
+    "completion": 7817,
+    "total": 33440,
+    "calls": 11,
+    "cached": 21990
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29302,
+   "marked": 151,
+   "cited": 13,
+   "fallbacks": {},
+   "prompts": [
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Verkehrserziehung in der Grundschule",
+   "variant": "bqg",
+   "s": 23.6,
+   "timings": {
+    "resolve": 4382,
+    "corpus": 4,
+    "segment": 10,
+    "match": 10596,
+    "synthesize": 8628,
+    "assemble": 4
+   },
+   "heading": "Verkehrserziehung",
+   "main": "Verkehrserziehung",
+   "method": "title",
+   "tokens": {
+    "prompt": 48553,
+    "completion": 11154,
+    "total": 59707,
+    "calls": 16,
+    "cached": 10362
+   },
+   "blocks": 9,
+   "llm_blocks": 9,
+   "chars": 13410,
+   "marked": 7,
+   "cited": 84,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Bienensterben in Europa",
+   "variant": "bqg",
+   "s": 24.3,
+   "timings": {
+    "resolve": 4300,
+    "corpus": 6,
+    "segment": 12,
+    "match": 11392,
+    "synthesize": 8583,
+    "assemble": 4
+   },
+   "heading": "Bienensterben",
+   "main": "Bienensterben",
+   "method": "llm",
+   "tokens": {
+    "prompt": 66658,
+    "completion": 13000,
+    "total": 79658,
+    "calls": 16,
+    "cached": 13816
+   },
+   "blocks": 7,
+   "llm_blocks": 7,
+   "chars": 11313,
+   "marked": 6,
+   "cited": 63,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  },
+  {
+   "topic": "Gesunde Ernährung im Alter",
+   "variant": "bqg",
+   "s": 24.4,
+   "timings": {
+    "resolve": 4787,
+    "corpus": 11,
+    "segment": 11,
+    "match": 11913,
+    "synthesize": 7630,
+    "assemble": 4
+   },
+   "heading": "Ernährung",
+   "main": "Ernährung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 57544,
+    "completion": 12515,
+    "total": 70059,
+    "calls": 17,
+    "cached": 12089
+   },
+   "blocks": 9,
+   "llm_blocks": 9,
+   "chars": 11059,
+   "marked": 8,
+   "cited": 68,
+   "fallbacks": {},
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v2",
+    "topic_articles@v1"
+   ]
+  }
+ ],
+ "timing": {
+  "bcg": {
+   "seconds": 27.5,
+   "tokens": 98707,
+   "cached": 35806,
+   "chars": 27207
+  },
+  "bcg-hl": {
+   "seconds": 16.0,
+   "tokens": 35119,
+   "cached": 21990,
+   "chars": 28552
+  },
+  "bqg": {
+   "seconds": 24.3,
+   "tokens": 70059,
+   "cached": 12089,
+   "chars": 11313
+  }
+ },
+ "note": "M47: 10 topics (8 with an aspect, 2 controls) in best-coverage-generated (bcg), the same with matcher hybrid_light (bcg-hl) and best-quality-generated (bqg), stand 6753e4d; part 1; two blind Claude judges on the blocks 1-4 and 8-10. The times of run_rows came partly from the response cache of the b-api; timing_runs are each variant on three fresh topics of its own."
+}

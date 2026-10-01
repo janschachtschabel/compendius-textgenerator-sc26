@@ -71,6 +71,7 @@ Update daher:
 | 2026-09-29 (Speichergrenze) | Die API darf 6 GiB statt 4 GiB belegen (`API_MEMORY`, Vorgabe in `docker-compose.yml`): Nach dem Aufwärmen braucht sie mit zwei Workern 3,4 GiB, mit dem Seiten-Cache der Archive stand sie an der alten Grenze ([Lastmessung](uebergabe/README.md#lastmessung-vom-29092026)). Die Grenze ist eine Obergrenze, kein reservierter Speicher; ein gesetztes `API_MEMORY` bleibt, wie es ist. Wirkt, wenn die neue Compose-Datei übernommen ist |
 | 2026-09-29 (Tagesbudget, D67) | `LLM_DAILY_TOKEN_BUDGET` hat die Vorgabe `0`, keine Tagesgrenze (bisher 2.000.000): Im Betrieb können an einem Tag viele Einträge anfallen. Eine `.env` aus der alten Vorlage trägt noch `LLM_DAILY_TOKEN_BUDGET=2000000` und behält damit die Grenze; ohne Grenze den Wert auf `0` setzen oder die Zeile löschen (der Parameter bleibt einstellbar). Gezählt wird weiter (`/health`, `kompendium_llm_tokens_used_today`), die Grenze je Anfrage bleibt, und die Budget-Alarme melden sich nur mit gesetztem Budget. **Ohne Budget und ohne `API_KEYS` kann jeder, der den Dienst erreicht, Tokens ohne Grenze verbrauchen**; der Start warnt dann. Ein offener Server setzt vor dem Update eines von beiden |
 | 2026-09-30 (Standardprofil, D68) | Eine Anfrage ohne `preset` läuft auf einem Server ohne LLM mit `llm-free`, statt mit 503 abgewiesen zu werden; mit LLM gilt weiter `PRESET_DEFAULT`, ausgeliefert `balanced`. `.env.example` setzt jetzt `PRESET_DEFAULT=balanced` statt `llm-free`: Eine `.env` aus der alten Vorlage hält einen Server mit LLM bei `llm-free` - dort den Wert auf `balanced` setzen oder die Zeile löschen (der Parameter bleibt einstellbar). Ein `TEMPLATE_DEFAULT`, das kein Template nennt, lässt Anfragen ohne `template_id` bei `sc26` statt bei 404; der Start warnt |
+| 2026-10-01 (fünftes Profil und Prompt-Cache, D69) | Neues Profil `best-coverage-generated`: wie `best-quality-generated`, aber das LLM schreibt jeden Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (`enrichment: model-knowledge-full`). Es rechnet wie die anderen Profile ab `best-quality` mit `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` und taugt auch als `PRESET_DEFAULT`. Die Prompts `paragraph_assignment` und `section_coverage` tragen in Version 2 ihren gemeinsamen Teil in der System-Nachricht, die die b-api zwischenspeichert: `audit.llm_tokens.cached` und `kompendium_llm_tokens_total{type="cached"}` zeigen, wie viele Eingabe-Tokens aus dem Cache kamen. `cached` ist ein Teil von `prompt`; wer die Typen summiert, lässt ihn weg |
 
 Alle Zeilen der Tabelle bis „2026-09-27 (Audit)“ kamen nach 2.0.0; das Release 2.1.0 (Image-Tag `2.1.0`) enthält sie.
 Die Zeilen vom 28.09.2026 enthält das Release 2.2.0 (Image-Tag `2.2.0`), die Zeile „2026-09-28 (`B_API_MODEL`
@@ -81,7 +82,8 @@ erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der 
 `docker-compose.yml` und wirkt mit jedem Image, sobald die neue Compose-Datei übernommen ist. Die Zeile
 „2026-09-29 (Tagesbudget, D67)“ gilt für die Images ab dem Commit danach (`:latest` und `:main`); im Image
 2.5.0 ist die Vorgabe noch 2.000.000, und ein gesetztes `0` heißt dort ein leeres Budget: kein LLM-Aufruf. Ebenso
-die Zeile „2026-09-30 (Standardprofil, D68)“.
+die Zeile „2026-09-30 (Standardprofil, D68)“. Die Zeile „2026-10-01 (fünftes Profil und Prompt-Cache, D69)“
+gilt für die Images ab den Commits vom 01.10.2026; in einem Release ist sie noch nicht.
 
 ## Zustand prüfen
 

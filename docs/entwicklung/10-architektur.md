@@ -34,7 +34,7 @@ https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/ar
 - Der Endpunkt prüft Zugang und Profil. Braucht das Profil ein LLM und ist keins konfiguriert, antwortet er mit 503.
 - Der Service wählt den Artikel (ab `balanced` per LLM), liest Hauptartikel und Korpus aus einer festen Sicht der
   Archive (404, wenn es das Thema nicht gibt) und baut Teil 1: die Zuordnung ab `best-quality` per LLM, den Text
-  schreibt das LLM nur in `best-quality-generated`.
+  schreibt das LLM nur in `best-quality-generated` und `best-coverage-generated`.
 - Teil 2 sucht im Lehrplan-Cache, ab `best-quality` prüft das LLM die Treffer. Teil 3 liest die Sammlung aus
   edu-sharing, nur mit `collection_id` und nur bis zur Frist (`REQUEST_TIMEOUT_S`).
 - Jeder LLM-Aufruf reserviert Tokens und rechnet danach ab. Ohne Restzeit, Budget oder erreichbare b-api übernehmen

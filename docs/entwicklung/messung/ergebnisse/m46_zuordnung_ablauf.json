@@ -1,0 +1,119 @@
+{
+ "note": "matcher=llm in best-quality with the layout of paragraph_assignment v1 (stand c59afdb): a all batches at once, b the first batch ahead of the others, c the first batch two seconds ahead; each schedule on topics of its own.",
+ "runs": [
+  {
+   "schedule": "a",
+   "topic": "Vulkanismus",
+   "s": 19.8,
+   "match_ms": 14654,
+   "tokens": {
+    "prompt": 37285,
+    "completion": 5719,
+    "total": 43004,
+    "calls": 7,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 253,
+    "tokens": null,
+    "fallback": null
+   }
+  },
+  {
+   "schedule": "a",
+   "topic": "Kalter Krieg",
+   "s": 14.7,
+   "match_ms": 13184,
+   "tokens": {
+    "prompt": 61255,
+    "completion": 8676,
+    "total": 69931,
+    "calls": 9,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 400,
+    "tokens": null,
+    "fallback": null
+   }
+  },
+  {
+   "schedule": "b",
+   "topic": "Romantik",
+   "s": 32.8,
+   "match_ms": 24776,
+   "tokens": {
+    "prompt": 56422,
+    "completion": 9051,
+    "total": 65473,
+    "calls": 9,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 400,
+    "tokens": null,
+    "fallback": null
+   }
+  },
+  {
+   "schedule": "b",
+   "topic": "Elektromagnetismus",
+   "s": 31.4,
+   "match_ms": 26332,
+   "tokens": {
+    "prompt": 52555,
+    "completion": 8440,
+    "total": 60995,
+    "calls": 9,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 400,
+    "tokens": null,
+    "fallback": null
+   }
+  },
+  {
+   "schedule": "c",
+   "topic": "Ökosystem",
+   "s": 15.5,
+   "match_ms": 14747,
+   "tokens": {
+    "prompt": 34787,
+    "completion": 5563,
+    "total": 40350,
+    "calls": 6,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 248,
+    "tokens": null,
+    "fallback": null
+   }
+  },
+  {
+   "schedule": "c",
+   "topic": "Industrielle Revolution",
+   "s": 18.5,
+   "match_ms": 17454,
+   "tokens": {
+    "prompt": 56456,
+    "completion": 9667,
+    "total": 66123,
+    "calls": 9,
+    "cached": 0
+   },
+   "matching": {
+    "calls": null,
+    "paragraphs": 399,
+    "tokens": null,
+    "fallback": null
+   }
+  }
+ ]
+}

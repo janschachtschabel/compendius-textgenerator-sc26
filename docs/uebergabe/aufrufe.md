@@ -30,7 +30,7 @@ LLM mit `llm-free`; ein anderes Profil wählt `preset` im Aufruf. Die Aufrufe au
 ein Profil, wenn sie ein anderes zeigen. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
 lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`.
 
-![Güte, Zeit und Kosten des alten Dienstes und der vier Profile](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
+![Güte, Zeit und Kosten des alten Dienstes und der vier Profile vor D69 (M45; das fünfte steht in der Tabelle)](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
 
 | Profil | Was das LLM tut | Kompendium allein | Tokens | wofür |
 |---|---|---|---|---|
@@ -38,11 +38,13 @@ lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, 
 | `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 6,9 s | rund 580 | **Standard** |
 | `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 26 s | rund 49.000, je nach Thema bis 87.000 | Vorbereitung durch die Redaktion |
 | `best-quality-generated` | dazu: schreibt den Text neu, Modellwissen sichtbar markiert | 36 s | rund 60.000 | lesbarer Fließtext |
+| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (markiert) | rund 28 s, nur Teil 1 | rund 91.000 bis 99.000, ein Drittel aus dem Prompt-Cache | Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
 
 Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
-[01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens.
+[01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
+Entwicklungsrechner (M47, D69); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens.
 Gleichzeitig mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa`
-schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die beiden `best-quality`-Profile mit dem LLM.
+schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
 
 ## Vorbereitung
 
@@ -141,6 +143,7 @@ Was die Antwort sonst trägt:
 | `jq '.parts_status'` | je Teil `ok`, `empty`, `incomplete` oder `unavailable` (ohne `collection_id` steht Teil 3 auf `unavailable`) |
 | `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage; `cached` ist der Teil der Eingabe aus dem Prompt-Cache, den der Anbieter niedriger abrechnet |
 | `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
+| `jq -r '.topic, .resolution.title'` | das Thema der Überschrift und den Artikel, auf den es sich auflöste; beide sind der Artikel, nur in `best-coverage-generated` ist `.topic` das angefragte Thema („Inklusion im Sportunterricht“ statt „Inklusive Pädagogik“), weil der Text davon handelt |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
 | `jq '.frontmatter'` | die Angaben des Vorspanns als Objekt, auch wenn der Text ohne Vorspann kommt |
 | `jq '.curricula.entries[] \| {label, lehrplan, bundesland, klassenstufe}'` | Teil 2 als Liste, je Element Text, Lehrplan, Land und Klasse |
@@ -176,6 +179,13 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
   -d '{"topic": "Photosynthese", "preset": "best-quality"}' \
   | jq -r '.markdown' > photosynthese-best.md
+
+# best-coverage-generated: jeder Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus
+# Modellwissen (markiert mit [Modellwissen])
+curl -sS --max-time 240 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Inklusion im Sportunterricht", "parts": ["world"], "preset": "best-coverage-generated"}' \
+  | jq -r '.markdown' > inklusion-sport.md
 ```
 
 ## Die drei Teile wählen

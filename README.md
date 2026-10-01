@@ -431,24 +431,26 @@ uv run compendium generate --collection-id 9e7ae956-e9df-430f-bace-f3db4b910013 
 
 ## LLM-Schicht (optional)
 
-Der Dienst arbeitet in vier Profilen (`preset`, D41, D53). Ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert
+Der Dienst arbeitet in fünf Profilen (`preset`, D41, D53, D69). Ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert
 `balanced`; ohne LLM läuft eine Anfrage ohne Profil mit `llm-free`, gleich was `PRESET_DEFAULT` sagt (D68). Jedes
 Profil außer `llm-free` braucht ein LLM (`LLM_ENABLED=true` und `B_API_KEY`); nennt eine Anfrage ohne LLM ein
 solches Profil, ist sie ein 503, der sagt, welcher Schalter ein LLM braucht. Das Template von Teil 1 wählt
 `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`. Ist die b-api nur gerade nicht erreichbar, laufen die
 Regeln, und `audit.llm` sagt warum.
 Die LLM-Schritte einer Anfrage teilen sich ein Token-Budget: 60.000 in `llm-free` und `balanced`
-(`LLM_MAX_TOKENS_PER_REQUEST`), 180.000 in den beiden `best-quality`-Profilen
-(`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, D59), weil dort zur Zuordnung die Prüfung der Lehrplanelemente kommt;
+(`LLM_MAX_TOKENS_PER_REQUEST`), 180.000 in den drei Profilen ab `best-quality` (`best-quality`,
+`best-quality-generated`, `best-coverage-generated`; `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, D59), weil dort zur
+Zuordnung die Prüfung der Lehrplanelemente kommt;
 das reicht auch beim breitesten Thema von M32 für alle Elemente (M33).
 Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`):
 
-| `preset` | setzt | Güte und Kosten je Kompendium (M25, M27 bis M31, `gpt-6-luna`) |
+| `preset` | setzt | Güte und Kosten je Kompendium (M25, M27 bis M31, M47, `gpt-6-luna`) |
 |---|---|---|
 | `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich, `curriculum_check: rule-based` | 87 von 94 Hauptartikeln richtig (M35), macro-F1 0,45, Teil 1 und 2 rund 1,6 s, keine Tokens; QA-Paare aus den Regeln über den spaCy-Parse (D55), Glossar und Akteure füllen auf (D60): 95 von 120 verlangten, 58 davon mangelfrei (M34; vorher 48 von 96, M30), 0,3 s je Text; Lehrplanelemente aus den Regeln, Überschriften-Treffer gebündelt, 70 bis 81 % der einzeln gezeigten passend (M32) |
 | `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm`: das LLM nennt Übersicht und Teile jedes Themas (D63) und entscheidet unsichere Artikel | 91 von 94; aus passenden Artikeln gedruckt 87 statt 43 % bei 25 Sammelthemen, 93 statt 71 % bei 20 gewöhnlichen Themen (M39); rund 4,2 s und 480 Tokens; das Gold der Zuordnung deckt den neuen Korpus nicht mehr ab (vorher macro-F1 0,45 wie `llm-free`); QA-Paare aus denselben Regeln wie `llm-free` (D57) |
 | `best-quality` | `article_choice: llm-thorough` (Übersicht und Teile wie `balanced`), `matcher: llm`, Text wörtlich, `curriculum_check: llm`; 180.000 Tokens je Anfrage (D59) | 93 von 94 (M35, D61; mit D63 unverändert, M39), macro-F1 0,70 vor D63, rund 14 s und 26.000 Tokens, rund 170 je Absatz; QA-Paare vom LLM, 99 von 120 mangelfrei, rund 2.400 Tokens je Text (M30); Lehrplanelemente vom LLM geprüft, 74 bis 79 % passend, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr mit Teil 2 (M32) |
 | `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein und darf eigenes Wissen ergänzen, sichtbar gekennzeichnet mit `[Modellwissen]` | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; unter dem ersten Prompt waren zwei Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts (D56): 50 statt 82 Sätze Modellwissen, 13 statt 50 Füllsätze (M31); eine Frage ohne Beleg fällt seit D60 weg, drei dieser Füllsätze |
+| `best-coverage-generated` | wie `best-quality-generated`, aber `enrichment: model-knowledge-full`: das LLM schreibt jeden Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen, sichtbar gekennzeichnet (D69) | an acht Themen mit Aspekt („OER-Förderungen“) Passung zum angefragten Thema 4,8 statt 1,8 von 5, Nutzen 4,8 statt 2,1, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47, zwei blinde Gutachter); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, rund ein Drittel davon aus dem Prompt-Cache (M46), rund 30.000 Zeichen statt 12.000; den größten Teil schreibt das Modell aus eigenem Wissen (im Median 123 gekennzeichnete Sätze, 34 Belegnummern) |
 
 Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M31, M39; Zeiten für Teil 1 und 2 auf dem
 Entwicklungsrechner). Die Tabelle der Schalter unten nennt noch Messungen mit `gpt-5.6-luna`; mit `gpt-6-luna` ist die
@@ -462,25 +464,26 @@ Artikelwahl über `article_choice`, die Zuordnung der Absätze über `matcher`, 
 das Schreiben über `generation`. Ein weiterer Schalter,
 `enrichment`, entscheidet, ob das schreibende Modell über die Quellen hinausgehen darf, und `curriculum_check`, ob
 das LLM die Lehrplanelemente von Teil 2 prüft (D58). `/docs` zeigt zu jedem
-Schalter die erlaubten Werte, was sie tun und was sie kosten; jeder Endpunkt sagt dort, was die vier Profile bei
+Schalter die erlaubten Werte, was sie tun und was sie kosten; jeder Endpunkt sagt dort, was die fünf Profile bei
 ihm bewirken, und seine Beispiele reichen von der kürzesten Anfrage bis zu einer mit allen Parametern.
 
 | Schalter | Wert | Was das LLM tut |
 |---|---|---|
 | `article_choice` | `rule-based` (Profil `llm-free`) | nichts: die Regeln wählen die Artikel und sagen, wie sicher sie sind |
 | | `llm` (Profil `balanced`) | nennt Übersicht und Teile jedes Themas, die statt der verlinkten Unterartikel und Volltexttreffer in den Korpus kommen; die Übersicht ersetzt den Artikel der Regeln, wo diese das Thema verfehlen (D63); entscheidet, wo die Regeln sonst unsicher sind; im Median rund 480 Tokens und 3,6 s für die Frage (M39) |
-| | `llm-thorough` (Profile `best-quality`, `best-quality-generated`) | wie `llm`, und es prüft auch eine sichere Wahl eines mehrdeutigen Wortes (D61); je geprüftem Wort rund 800 Tokens und 1 s mehr |
+| | `llm-thorough` (Profile `best-quality`, `best-quality-generated`, `best-coverage-generated`) | wie `llm`, und es prüft auch eine sichere Wahl eines mehrdeutigen Wortes (D61); je geprüftem Wort rund 800 Tokens und 1 s mehr |
 | `curriculum_check` | `rule-based` (Profile `llm-free`, `balanced`) | nichts: die Stichwortregeln finden die Elemente von Teil 2; eines, das nur seine Überschrift zum Thema macht, steht gebündelt bei seinem Bereich |
-| | `llm` (Profile `best-quality`, `best-quality-generated`) | bewertet jedes gefundene Element mit Bereich und Lehrplan und verwirft, was nicht passt; im Median rund 6 s und 8.000 bis 10.000 Tokens je Kompendium mit Teil 2, rund 75 bis 80 Tokens je Element (M32) |
+| | `llm` (Profile `best-quality`, `best-quality-generated`, `best-coverage-generated`) | bewertet jedes gefundene Element mit Bereich und Lehrplan und verwirft, was nicht passt; im Median rund 6 s und 8.000 bis 10.000 Tokens je Kompendium mit Teil 2, rund 75 bis 80 Tokens je Element (M32) |
 | `matcher` | `hybrid_light` (Profile `llm-free`, `balanced`), `bm25`, `char_tfidf`, `lexicon_only` | nichts: lokale Ranker und die Policy ordnen die Absätze zu, in unter 0,3 s |
-| | `llm` (Profile `best-quality`, `best-quality-generated`) | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
+| | `llm` (Profile `best-quality`, `best-quality-generated`, `best-coverage-generated`) | ordnet jeden Absatz einem Baustein zu oder keinem; rund 34.500 Tokens je Kompendium, Teil 1 im Median 12 bis 23 statt 1,2 bis 1,8 s, je nachdem, wie schnell die b-api antwortet |
 | `extraction` | `rule-based` (alle Profile) | nichts: die Policy ordnet ganze Absätze zu, der Baustein nimmt ihre ersten Sätze |
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
 | `generation` | `rule-based` (Profile bis `best-quality`) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer (unter einer Tabelle als eigener Absatz) |
 | | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11) aus ihren Belegen |
-| | `llm` (Profil `best-quality-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen |
+| | `llm` (Profile `best-quality-generated`, `best-coverage-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen |
 | `enrichment` | `sources-only` (Profile bis `best-quality`) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
 | | `model-knowledge` (Profil `best-quality-generated`) | ergänzt gesichertes eigenes Fachwissen; solche Sätze tragen keine Belegnummer und werden im Text gekennzeichnet, eine Frage ohne Beleg fällt weg (D60; braucht `generation` `llm` oder `llm-fast`) |
+| | `model-knowledge-full` (Profil `best-coverage-generated`) | schreibt jeden Inhaltsbaustein zum angefragten Thema mit seinem Aspekt, vollständig und ohne zu kürzen: Belege, wo sie das Thema treffen, sonst gesichertes eigenes Fachwissen, gekennzeichnet wie bei `model-knowledge`; auch ein Baustein ohne Belege wird geschrieben, die Ziellänge ist eine Untergrenze (D69) |
 
 Gemessen für „Optik“ mit `gpt-5.6-luna` am 2026-09-19: `extraction=llm` 10 Aufrufe, rund 16.500 Tokens und 11 s;
 beide Schalter auf `llm` 20 Aufrufe, rund 27.200 Tokens und 18 s. Das Schreiben allein (Messung vom 2026-09-18,
@@ -493,7 +496,7 @@ wörtliche Quellenauszüge mit KI-gestützter Auswahl. Passt kein angebotener Ab
 Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`).
 
 **Zuordnung durch das LLM (`matcher: llm`, D34).** Statt der Policy kann das LLM jeden Absatz einem Baustein
-zuordnen oder keinem, über `matcher` oder die Profile `best-quality` und `best-quality-generated`. Es sieht die Bausteine mit
+zuordnen oder keinem, über `matcher` oder die drei Profile ab `best-quality`. Es sieht die Bausteine mit
 Beschreibung, „gehört hinein“ und „gehört nicht hinein“, die Zuordnungsregeln des Templates (`assignment_rules`)
 und je Absatz Artikel, Rolle, Überschriftenpfad und Text (bis 400 Zeichen), 50 Absätze je Aufruf. Die
 Standard-Strategie läuft vorher und bleibt der Rückfall: Absätze, für die das LLM nicht entscheidet (b-api, Budget,
@@ -511,8 +514,8 @@ geben, brachte 0,54. Jeder Stapel reserviert vorab rund 13.000 Tokens und verbra
 Absätze (M13); seither entschied das LLM in fünf neuen Themen alle 1.005 Absätze, für im Mittel 34.500 Tokens je
 Kompendium (18.800 bis 45.900, M14). Teil 1 dauerte mit `matcher=llm` im Median 12,0 s (M13) und 22,7 s (M14) statt
 1,2 und 1,8 s: In M14 antwortete die b-api langsamer, und Themen ab fünf Stapeln (rund 200 Absätze) brauchen eine
-zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf. Die Profile
-`best-quality` und `best-quality-generated`, die `matcher: llm` setzen, rechnen seit D59 mit 180.000 Tokens je
+zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf. Die drei Profile
+ab `best-quality`, die `matcher: llm` setzen, rechnen seit D59 mit 180.000 Tokens je
 Anfrage (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`): Das lässt rund dreimal so vielen Stapeln zugleich Platz, spart
 großen Themen die zweite Runde und lässt Raum für die Prüfung der Lehrplanelemente und das Schreiben; bei 60.000
 blieben neben einem großen Thema nur rund 14.000 Tokens. Die Grenze hebt den Rahmen, nicht den Verbrauch eines
@@ -532,7 +535,7 @@ einem Material ohne `topic` nennt das LLM den Artikel selbst (D47, siehe „Knot
 Scheitert der Aufruf oder nennt die Antwort nichts Brauchbares, bleibt der Artikel der Regeln
 (`audit.llm.article_choice`). Gemessen an den drei Goldsätzen in `eval/artikelwahl` am 2026-09-23: 57 statt 55 von
 59, 23 statt 22 von 23 und 11 statt 9 von 12 Hauptartikeln richtig, rund 950 Tokens je Aufruf bei 18 von 94
-Anfragen. Mit `article_choice: llm-thorough` (D61, die beiden `best-quality`-Profile) prüft das LLM auch eine
+Anfragen. Mit `article_choice: llm-thorough` (D61, die drei Profile ab `best-quality`) prüft das LLM auch eine
 sichere Wahl eines Wortes mit mehreren Bedeutungen: eine Bedeutung, die die Regeln einer Begriffsklärung entnahmen,
 oder einen exakten Titel, zu dem es eine Seite „(Begriffsklärung)“ gibt. Am Gold (M35, gpt-6-luna): 93 statt 91
 von 94, keine der 44 richtigen sicheren Wahlen, die es zusätzlich sah, wurde falsch; gefragt wird bei 64 statt 18
@@ -599,6 +602,24 @@ richtet sich nach dem Text, nicht nach der Erlaubnis: Nur wenn wirklich etwas er
 Kennzeichnung und der erklärende Hinweis im Frontmatter entfällt. Ohne schreibendes LLM
 (`generation: rule-based` oder b-api nicht verfügbar) meldet die Antwort `sources-only` — der Schalter kann
 dann nichts bewirken.
+
+Mit `enrichment: model-knowledge-full` (Profil `best-coverage-generated`, D69) schreibt das LLM jeden Inhaltsbaustein
+über das Thema, wie es angefragt ist: bei „Ernährung im Leistungssport“ über die Ernährung von Leistungssportlern,
+nicht über den Artikel *Sporternährung*, auf den die Artikelwahl das Thema auflöst. Nur ein allgemeines Präfix oder
+ein Fach vor einem Doppelpunkt fällt weg („Physik: Optik in Klasse 7“ wird „Optik in Klasse 7“); bei einem Material
+ohne `topic` bleibt es beim Artikel. Der Prompt `section_coverage` nutzt Belege nur, wo sie das Thema treffen, und
+füllt den Rest aus gesichertem eigenem Fachwissen, ohne die Drittel-Grenze von `section_enrichment` und auch für einen
+Baustein, zu dem die Archive nichts haben; er soll vollständig schreiben und nicht kürzen. Die Ziellänge eines
+Bausteins (`target_length`, nach Gewicht verteilt) ist hier eine Untergrenze, sein Ausgabelimit rund ein Token je
+Zielzeichen, höchstens 4.000. Gekennzeichnet wird wie bei `model-knowledge`. Überschrift und `topic` der Antwort
+nennen das angefragte Thema, sobald das LLM einen Baustein so geschrieben hat; `resolution.title` bleibt der Artikel.
+Die KI-Kennzeichnung lautet dann „KI-generierter Text zum angefragten Thema aus belegten Quellen und aus Modellwissen
+ohne Quellenbeleg“. Ein Baustein ohne Belege trägt keine Facetten, weil sie aus den Quellen stammen; das Lint im
+Audit meldet dort fehlende Pflichtfacetten.
+Gemessen an acht Themen mit Aspekt und zwei Kontrollthemen (M47, zwei blinde Gutachter): Passung zum angefragten
+Thema 4,81 statt 1,81 von 5 für `best-quality-generated`, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler;
+auf den Kontrollthemen bleiben beide beim Thema, mit 2,25 statt 1,0 leichten Fehlern je Text, vier von neun
+schon aus den Quellen.
 Quellen, Belegtabelle, Glossar, Akteure und alle Marker bleiben deterministisch. LLM-Bausteine tragen
 den Status `ki-generiert`, Prompt-ID und Version stehen im Frontmatter (`llm.prompts`).
 
@@ -607,7 +628,15 @@ nichts Brauchbares, bleibt der Baustein regelbasiert. Das Frontmatter nennt die 
 Schalter (`extraction`, `generation`) und, wenn sie abweichen, die angeforderten (`extraction_requested`,
 `generation_requested`); `audit.llm` nennt je Schalter Bausteine und Gründe, `audit.llm_tokens` den
 Verbrauch, unter `cached` den Teil der Eingabe-Tokens, den das Modell aus seinem Prompt-Cache las (D69): Die b-api
-reicht den Cache des Anbieters durch, und solche Tokens rechnet er niedriger ab. `GET /health` zeigt unter `components.llm`
+reicht den Cache des Anbieters durch, und solche Tokens rechnet er niedriger ab. Zwischengespeichert wird nur die
+System-Nachricht, und eine kurze nicht: Gemeinsamer Text, der in die Nachricht des Nutzers weiterläuft, kam in M46
+nie aus dem Cache, die zehn Schreibaufrufe mit gleicher System-Nachricht von rund 600 Tokens ebenso wenig; gleichzeitig
+gesendete Aufrufe mit langer gemeinsamer System-Nachricht lasen sie dagegen alle bis auf den ersten. Seit D69 steht
+deshalb dort, was alle Aufrufe einer Art teilen: der Bausteinkatalog der LLM-Zuordnung (`paragraph_assignment` v2)
+und der Überblick aller Bausteine beim Schreiben von `model-knowledge-full` (`section_coverage` v2), beides für jedes
+Thema gleich. In `best-coverage-generated` kamen so an drei Themen rund 32.000 von 66.000 bis 73.000 Eingabe-Tokens
+eines Kompendiums aus dem Cache; die übrigen fielen im Mittel von 53.000 auf 36.000. Die Zuordnung blieb am Gold
+gleich gut (macro-F1 0,64 und 0,72 mit, 0,68 und 0,70 ohne den Umbau, M46). `GET /health` zeigt unter `components.llm`
 Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-6-luna` beim Provider `openai`
 mit `reasoning_effort=low` und `verbosity=low` (D44: gleiche Güte wie `gpt-5.6-luna` zum halben Preis je Token,
 aber je Aufruf ein Viertel bis drei Viertel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück); ein Wechsel
@@ -751,7 +780,7 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `TEMPLATE_DEFAULT` | `sc26` | Template, wenn die Anfrage keines nennt (`template_id` geht vor). Nennt es ein Template, das es nicht gibt, nimmt eine solche Anfrage `sc26`, und der Start warnt; ein eigenes Template dieses Namens gilt, sobald es gespeichert ist (D68) |
-| `PRESET_DEFAULT` | `balanced` | Profil einer Anfrage, die keins nennt (D53), solange ein LLM eingerichtet ist (`LLM_ENABLED` und `B_API_KEY`). Ohne LLM läuft eine solche Anfrage mit `llm-free`, gleich was hier steht (D68): Der Dienst antwortet immer mindestens mit den Regeln. Werte: `llm-free`, `balanced`, `best-quality` oder `best-quality-generated`. Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Profil oder Schalter der Anfrage geht vor. Nennt eine Anfrage selbst ein Profil außer `llm-free` oder einen Schalter, der ein LLM braucht, und ist keins eingerichtet, ist sie ein 503. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
+| `PRESET_DEFAULT` | `balanced` | Profil einer Anfrage, die keins nennt (D53), solange ein LLM eingerichtet ist (`LLM_ENABLED` und `B_API_KEY`). Ohne LLM läuft eine solche Anfrage mit `llm-free`, gleich was hier steht (D68): Der Dienst antwortet immer mindestens mit den Regeln. Werte: `llm-free`, `balanced`, `best-quality`, `best-quality-generated` oder `best-coverage-generated` (D69). Es setzt `article_choice`, `matcher`, `extraction`, `generation` und `enrichment`; ein Profil oder Schalter der Anfrage geht vor. Nennt eine Anfrage selbst ein Profil außer `llm-free` oder einen Schalter, der ein LLM braucht, und ist keins eingerichtet, ist sie ein 503. Die lokale Zuordnung der Profile ist `hybrid_light` (Überschriften-Lexikon, BM25 und Zeichen-TF-IDF zusammen, dazu Model2Vec-Einbettungen, wenn `MODEL2VEC_PATH` gesetzt ist); `matcher` nimmt je Anfrage auch `bm25`, `char_tfidf` und `lexicon_only`, eine unbekannte Strategie ist ein 422. Ersetzt `MATCHER_DEFAULT` und `LLM_ARTICLE_CHOICE_DEFAULT`, `LLM_EXTRACTION_DEFAULT`, `LLM_GENERATION_DEFAULT` und `LLM_ENRICHMENT_DEFAULT`, die der Start nur noch als veraltet meldet |
 | `POLICY_CONFIDENT_SCORE` | `0.65` | Ab dieser fusionierten Trefferstärke gilt ein Ranker-Treffer als Beleg; darunter greift der Standardbaustein des Templates. Mit Glättung 0,5 auf `eval/gold` gemessen: 0,45 → 0,65 hebt macro-F1 von 0,430 auf 0,447 und senkt falsch gedruckte Absätze um ein Drittel |
 | `POLICY_SECTION_SMOOTHING` | `0.5` | Anteil des Abschnittsmittels an jedem Score — Absätze unter einer Überschrift stützen sich gegenseitig; `0` schaltet es ab |
 | `FACETS_LEVEL` | `minimal` | Wie viele Facetten das Frontmatter trägt: `minimal` oder `full` |
@@ -854,7 +883,7 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_MAX_CONCURRENCY` | `10` | Gleichzeitige LLM-Aufrufe |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
-| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality` und `best-quality-generated` (D59): Neben der Zuordnung durch das LLM (im Median rund 26.000 Tokens) prüft das LLM dort jedes Lehrplanelement von Teil 2, 80 bis 90 Tokens je Element; 60.000 reichten für rund 400 Elemente (M32). Das breiteste Thema, Demokratie ohne Fach mit 382 Absätzen und 819 Elementen, brauchte mit Teil 1 und 2 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
+| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69): Neben der Zuordnung durch das LLM (im Median rund 26.000 Tokens) prüft das LLM dort jedes Lehrplanelement von Teil 2, 80 bis 90 Tokens je Element; 60.000 reichten für rund 400 Elemente (M32). Das breiteste Thema, Demokratie ohne Fach mit 382 Absätzen und 819 Elementen, brauchte mit Teil 1 und 2 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
 | `LLM_DAILY_TOKEN_BUDGET` | `0` | Tokens je Tag für alle Worker zusammen. `0`, die Vorgabe seit D67, setzt keine Grenze: Im Betrieb können an einem Tag viele Einträge anfallen. Eine Zahl kappt den Tag; der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt samt den Reservierungen laufender Aufrufe für alle Worker gemeinsam und übersteht Neustarts. Gezählt wird auch ohne Grenze (`/health`, `kompendium_llm_tokens_used_today`). Mit Grenze melden `KompendiumLlmBudgetNearlySpent` 90 % und `KompendiumLlmBudgetBurnsFast` ein Viertel in einer Stunde. Ohne Grenze und ohne `API_KEYS` warnt der Start: Dann kann jeder Tokens ohne Grenze verbrauchen |
 
 ### Metriken
