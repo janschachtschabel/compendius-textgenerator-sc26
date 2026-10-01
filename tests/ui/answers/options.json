@@ -239,7 +239,7 @@
     "max_length": 300
    },
    "target_length": {
-    "default": 12000,
+    "default": 30000,
     "min": 2000,
     "max": 60000
    },

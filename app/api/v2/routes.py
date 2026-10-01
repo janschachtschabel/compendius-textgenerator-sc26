@@ -97,7 +97,8 @@ def generate_compendium(
     - ``curriculum_check``: who judges the elements of part 2 - ``rule-based`` the keyword rules, ``llm`` the model.
 
     **How long it gets.** ``target_length`` is shared over the blocks by weight and steers upwards until
-    the sources run out. It is a steer, not a cap: a block is never shorter than its first paragraph.
+    the sources run out. It is a steer, not a cap: a block is never shorter than its first paragraph. Without it
+    the profile's length applies, 30 000 characters in every profile (D70).
 
     **What else.** ``template_id`` picks the template (``GET /api/v2/templates``), ``max_articles`` the size of
     the corpus, and ``knowledge_collection_id`` adds the reusable materials of a collection to the sources of part

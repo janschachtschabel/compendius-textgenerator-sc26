@@ -18,7 +18,7 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 | QA-Paare zu einem Text | `POST /api/v1/qa` | `POST /api/v2/qa` mit `text` |
 | QA-Paare zu einem Thema | `POST /api/v1/pipeline` (Kompendium und Paare in einem Aufruf) | `POST /api/v2/qa` mit `topic`: erzeugt Teil 1 selbst und fragt ihn ab |
 | Begriffe mit Wikipedia-Artikel | `POST /api/v1/linker` (live bei Wikipedia) | `POST /api/v2/entities` (lokal, mit Wikidata- und GND-Nummer) |
-| Länge | `config.length`, Vorgabe 6.000 Zeichen | `target_length`, Vorgabe 12.000; eine Richtgröße, der Text wird so lang, wie die Quellen tragen |
+| Länge | `config.length`, Vorgabe 6.000 Zeichen | `target_length`, Vorgabe des Profils, in allen 30.000 (D70, bis dahin 12.000); eine Richtgröße, der Text wird so lang, wie die Quellen tragen |
 | Zugang | ohne Schlüssel | Header `X-API-Key`, sobald `API_KEYS` gesetzt ist |
 | Grenze | 60 Anfragen je Minute und IP | 60 je Minute und Aufrufer, je Worker (`RATE_LIMIT`) |
 | Fehler | HTTP 200 mit „# Fehler bei der Generierung“ als Text | HTTP-Status mit JSON (siehe [Fehler](#fehler)) |

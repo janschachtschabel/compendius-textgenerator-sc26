@@ -49,8 +49,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
             extraction=args.extraction,
             generation=args.generation,
             enrichment=args.enrichment,
-            target_length=args.length,
             facets_visible=args.facets_visible or None,
+            **({"target_length": args.length} if args.length is not None else {}),
         )
     except ValidationError as exc:
         print(f"Ungültige Anfrage: {exc.errors()[0]['msg']}", file=sys.stderr)
@@ -233,7 +233,7 @@ def main(argv: list[str] | None = None) -> int:
         "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast; model-knowledge-full "
         "schreibt jeden Baustein zum angefragten Thema, ohne passende Belege aus Modellwissen (D69)",
     )
-    gen.add_argument("--length", type=int, default=12_000)
+    gen.add_argument("--length", type=int, default=None, help="Ziellänge von Teil 1; ohne Angabe die des Profils")
     gen.add_argument("--facets-visible", action="store_true")
     gen.add_argument("--out", default=None, help="Markdown-Datei")
     gen.add_argument("--json", default=None, help="JSON-Datei mit dem vollständigen Ergebnis")

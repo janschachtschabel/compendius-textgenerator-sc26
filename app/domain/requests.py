@@ -232,6 +232,15 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
 }
 # Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
 BEST_QUALITY_PRESETS = frozenset({"best-quality", "best-quality-generated", "best-coverage-generated"})
+# The length of part 1 a profile asks for when the request names none (Jan, 2026-10-01, D70: compendium texts may be
+# long and complete); for now the same in every profile
+PRESET_TARGET_LENGTH: dict[str, int] = {
+    "llm-free": 30_000,
+    "balanced": 30_000,
+    "best-quality": 30_000,
+    "best-quality-generated": 30_000,
+    "best-coverage-generated": 30_000,
+}
 
 
 def default_preset(configured: Preset, llm_configured: bool) -> Preset:
@@ -365,13 +374,15 @@ class GenerateRequest(RequestModel):
     generation: Generation | None = Field(None, description=GENERATION_HELP)
     enrichment: Enrichment | None = Field(None, description=ENRICHMENT_HELP)
     target_length: int = Field(
-        12_000,
+        30_000,
         ge=2_000,
         le=60_000,
         description="Steers the length of part 1: the value is shared over the content blocks by "
         "weight, and a block stops at a paragraph boundary once it holds one and a half times its "
         "share. It is a steer, not a cap - a block is never shorter than its first paragraph, so a "
-        "small value does not make a small compendium. Measured for one topic on 2026-09-21: 2 000 "
+        "small value does not make a small compendium. Default: the profile's, 30 000 in every profile (D70, "
+        "until then 12 000); the writing LLM takes its share as the length to aim at, in "
+        "best-coverage-generated as the length to reach at least. Measured for one topic on 2026-09-21: 2 000 "
         "gave 25 784 characters, 12 000 gave 32 523, and from 20 000 on nothing grew because the "
         "sources were exhausted - more sources raise that ceiling",
     )
@@ -422,11 +433,13 @@ class GenerateRequest(RequestModel):
 
     @model_validator(mode="after")
     def _preset_fills_the_open_switches(self) -> GenerateRequest:
-        # A switch the request sets wins; the preset only fills what it left open (D41)
+        # A switch the request sets wins; the preset only fills what it left open (D41), the length as well (D70)
         if self.preset:
             for name, value in PRESETS[self.preset].items():
                 if getattr(self, name) is None:
                     setattr(self, name, value)
+            if "target_length" not in self.model_fields_set:
+                self.target_length = PRESET_TARGET_LENGTH[self.preset]
         return self
 
     @model_validator(mode="after")
@@ -450,5 +463,9 @@ def with_profile(request: GenerateRequest, default: Preset) -> GenerateRequest:
     profile (PRESET_DEFAULT, D53); a switch the request set itself stays."""
     if request.preset is not None:
         return request
-    filled = {name: value for name, value in PRESETS[default].items() if getattr(request, name) is None}
+    filled: dict[str, object] = {
+        name: value for name, value in PRESETS[default].items() if getattr(request, name) is None
+    }
+    if "target_length" not in request.model_fields_set:
+        filled["target_length"] = PRESET_TARGET_LENGTH[default]
     return request.model_copy(update={"preset": default, **filled})

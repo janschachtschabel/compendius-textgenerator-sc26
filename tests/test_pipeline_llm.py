@@ -290,7 +290,10 @@ def test_parallel_drafts_take_turns_when_the_budget_holds_one_at_a_time(
 
     fake = FakeBApi(slow_answer)
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=3_000, concurrency=4))
-    result = service.generate(GenerateRequest(topic="Optik", generation="llm", parts=["world"]))
+    # the reservations are sized for the blocks of a 12,000 target, the default until D70: at 30,000 a draft
+    # reserves more than the whole budget, and none would ever be written
+    request = GenerateRequest(topic="Optik", generation="llm", parts=["world"], target_length=12_000)
+    result = service.generate(request)
     assert result.audit.llm is not None
     written, fallbacks = result.audit.llm["generation"]["sections"], result.audit.llm["generation"]["fallbacks"]
     assert peak == 1, "every draft reserves more than half of the 3,000 tokens: they take turns"

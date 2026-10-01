@@ -20,7 +20,7 @@ from fastapi.testclient import TestClient
 from app.api.v2.knowledge import KnowledgeRequest
 from app.cli import main
 from app.compendium.errors import LlmNotConfiguredError
-from app.domain.requests import PRESETS, GenerateRequest, Preset, default_preset
+from app.domain.requests import PRESET_TARGET_LENGTH, PRESETS, GenerateRequest, Preset, default_preset, with_profile
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -69,6 +69,23 @@ def test_the_presets_are_the_values_of_the_field() -> None:
 def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, ...]) -> None:
     request = GenerateRequest(topic="Optik", preset=preset)
     assert tuple(getattr(request, name) for name in SWITCHES) == expected
+
+
+@pytest.mark.parametrize("preset", list(PRESETS))
+def test_every_profile_asks_for_30000_characters_unless_the_request_names_a_length(preset: str) -> None:
+    """Jan, 2026-10-01 (D70): compendium texts may be long and complete - 30,000 characters in every profile for now,
+    a profile may set its own, and a request that names a length keeps it."""
+    assert GenerateRequest(topic="Optik", preset=preset).target_length == 30_000
+    assert GenerateRequest(topic="Optik", preset=preset, target_length=8_000).target_length == 8_000
+
+
+def test_the_length_of_a_profile_fills_in_for_its_own_and_for_the_servers_default(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setitem(PRESET_TARGET_LENGTH, "balanced", 20_000)
+    assert GenerateRequest(topic="Optik", preset="balanced").target_length == 20_000
+    assert with_profile(GenerateRequest(topic="Optik"), "balanced").target_length == 20_000
+    assert with_profile(GenerateRequest(topic="Optik", target_length=9_000), "balanced").target_length == 9_000
 
 
 def test_a_switch_the_request_sets_wins_over_the_preset() -> None:
