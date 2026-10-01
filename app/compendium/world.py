@@ -16,6 +16,7 @@ from app.compose.kept_sources import attribute
 from app.compose.regeneration import PreservedSection, UnplacedSectionsError, parse_document, to_keep
 from app.domain.models import ScoredChunk
 from app.domain.requests import GenerateRequest
+from app.knowledge.topic import topic_as_asked
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.matching.fusion import smooth_sections
@@ -128,7 +129,11 @@ class WorldBuilding(LlmPolicy):
 
         # The scaled budgets carry ``target_length`` into the LLM prompts (target characters, output limit).
         template = scale_budgets(prepared.template, request.target_length)
-        topic = prepared.title
+        # D69: in full mode the text is about the topic as asked, its qualifiers included, not about the article it
+        # resolved to; a material without a topic has no topic but its article (D47)
+        full = enrichment == "model-knowledge-full"
+        asked = full and not (prepared.node_article is not None and not request.topic)
+        topic = topic_as_asked(prepared.normalized) if asked else prepared.title
         assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
         selected: set[str] = set()
         extracted: ExtractionReport | None = None
@@ -148,7 +153,9 @@ class WorldBuilding(LlmPolicy):
                 topic=topic,
                 concurrency=llm.options.concurrency,
                 deadline=deadline,
-                enrich=enrichment == "model-knowledge",
+                enrich=enrichment in ("model-knowledge", "model-knowledge-full"),
+                full=full,
+                article=prepared.title,
             )
         preserved = self._preserved(request, template)
         attribution = attribute(preserved, request.existing_markdown or "", sources)
@@ -180,6 +187,7 @@ class WorldBuilding(LlmPolicy):
             generation=generation,
             enrichment=enrichment,
             llm_note=llm_note,
+            topic=topic if asked else "",
             chunks_assigned=sum(len(v) for v in assigned.values()),
             extracted=extracted,
             written=written,

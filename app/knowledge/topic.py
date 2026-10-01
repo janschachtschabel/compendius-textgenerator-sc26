@@ -118,6 +118,20 @@ def normalize_topic(raw: str, *, is_subject: Callable[[str], bool] | None = None
     return NormalizedTopic(query=query, topic=text, context=context, subject=subject)
 
 
+def topic_as_asked(normalized: NormalizedTopic) -> str:
+    """The topic in the words of the request, its qualifiers kept: "Digitale Bildung in der Grundschule" where the
+    archives are searched for "Digitale Bildung" (D12). Only a generic or a subject prefix goes ("Physik: Optik"):
+    the subject reaches the prompts on its own. The writer of enrichment=model-knowledge-full writes about this
+    (D69), since a text about the archives' topic alone missed requests like "OER-Förderungen"."""
+    query = " ".join(normalized.query.split())
+    prefix_match = _PREFIX_RE.match(query)
+    if prefix_match:
+        prefix, rest = prefix_match.group(1).strip(), prefix_match.group(2).strip()
+        if prefix.lower() in _GENERIC_PREFIXES or prefix == normalized.subject:
+            return rest
+    return query or normalized.topic
+
+
 # An article that opens a title is no stem: "die" from "Die Zauberflöte" is in nearly every German paragraph, and the
 # checks that a side article's paragraph is about the topic let everything through (audit 2026-09-27, KO-11)
 _LEADING_ARTICLES = frozenset({"der", "die", "das", "des", "dem", "den", "ein", "eine", "einer", "eines", "einem"})

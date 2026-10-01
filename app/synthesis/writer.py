@@ -49,6 +49,10 @@ class LlmJob:
     concurrency: int = 10  # the service passes LlmOptions.concurrency; this is only the bare default
     deadline: Deadline | None = None
     enrich: bool = False  # enrichment=model-knowledge: the model may add its own knowledge (docs/umbau.md U4)
+    # enrichment=model-knowledge-full (D69): every slot is written, also one without chunks; ``article`` names the
+    # article the evidence comes from when ``topic`` is the topic as asked
+    full: bool = False
+    article: str = ""
 
 
 @dataclass
@@ -231,11 +235,12 @@ def _draft_with_llm(
     job: LlmJob,
     skip: set[str],
 ) -> dict[str, LlmSection | LlmSkipped]:
-    """Drafts for every LLM slot with assigned chunks, in parallel, numbered locally from 1."""
+    """Drafts for every LLM slot with assigned chunks (in full mode for every LLM slot), in parallel, numbered
+    locally from 1."""
     slots = [
         slot
         for slot in template.content_slots()
-        if slot.id in job.slots and assigned.get(slot.id) and slot.id not in skip
+        if slot.id in job.slots and (job.full or assigned.get(slot.id)) and slot.id not in skip
     ]
     if not slots:
         return {}
@@ -243,13 +248,15 @@ def _draft_with_llm(
     def draft(slot: TemplateSlot) -> LlmSection | LlmSkipped:
         return job.synthesizer.write_section(
             slot,
-            assigned[slot.id],
+            assigned.get(slot.id, []),
             sources_by_id,
             topic=job.topic,
             citation_start=0,
             budget=job.budget,
             deadline=job.deadline,
             enrich=job.enrich,
+            full=job.full,
+            article=job.article,
         )
 
     # An unexpected error writes that block extractively

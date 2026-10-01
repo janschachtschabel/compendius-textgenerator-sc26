@@ -465,6 +465,56 @@ def test_enrichment_marks_model_knowledge_instead_of_dropping_it() -> None:
     assert result.marked_sentences == 1 and result.prompt == get_prompt("section_enrichment").tag
 
 
+def test_full_enrichment_writes_a_block_without_evidence_from_model_knowledge() -> None:
+    """D69: a block the archives have nothing for is written all the same, about the topic as asked, every sentence
+    marked as model knowledge; the prompt names the article the evidence comes from."""
+    fake = FakeBApi(
+        lambda body: "Förderprogramme unterstützen offene Materialien. Sie werden öffentlich ausgeschrieben."
+    )
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    result = LlmSynthesizer(_client(fake)).write_section(
+        _slot(),
+        [],
+        SOURCES,
+        topic="OER-Förderungen",
+        citation_start=0,
+        budget=budget,
+        full=True,
+        article="Open Educational Resources",
+    )
+    assert isinstance(result, LlmSection)
+    assert result.citations == [] and result.marked_sentences == 2
+    assert result.prompt == get_prompt("section_coverage").tag
+    user = fake.bodies[0]["messages"][1]["content"]
+    assert "Thema: OER-Förderungen" in user and "Open Educational Resources" in user
+
+
+def test_full_enrichment_keeps_the_cited_sentences_and_marks_the_rest() -> None:
+    answer = (
+        "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
+        "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
+    )
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
+        _slot(), SCORED, SOURCES, topic="Optik im Alltag", citation_start=0, budget=budget, full=True, article="Optik"
+    )
+    assert isinstance(result, LlmSection)
+    assert [c.number for c in result.citations] == [1] and result.marked_sentences == 1
+
+
+def test_full_enrichment_gives_a_block_room_beyond_its_target_length() -> None:
+    """Jan, 2026-10-01: the text may be long and complete; in this mode the target length is no ceiling."""
+    fake = FakeBApi(lambda body: "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1].")
+    budget = TokenBudget(per_request=50_000, daily=2_000_000).open_request()
+    synthesizer = LlmSynthesizer(_client(fake))
+    synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True)
+    synthesizer.write_section(
+        _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, full=True, article="Optik"
+    )
+    enriched, full = (body["max_completion_tokens"] for body in fake.bodies)
+    assert full > enriched
+
+
 def test_a_question_without_evidence_is_dropped_not_kept_as_model_knowledge() -> None:
     """Decision paper, point 3 (D60): model knowledge is a checkable fact or nothing (D56), and a question is no
     fact. In M31 three of the 50 model-knowledge sentences were questions, fillers for both judges."""

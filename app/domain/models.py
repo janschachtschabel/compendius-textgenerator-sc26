@@ -319,8 +319,10 @@ class Compendium(BaseModel):
     generation: str = Field(description="Generation switch actually used: rule-based, llm-fast or llm")
     enrichment: str = Field(
         "sources-only",
-        description="Enrichment actually in effect: sources-only, or model-knowledge when the LLM was allowed "
-        "to add knowledge of its own (marked in the text, counted per block)",
+        description="Enrichment actually in effect: sources-only; model-knowledge when the LLM was allowed "
+        "to add knowledge of its own; model-knowledge-full when it wrote every block about the topic as asked, from "
+        "its own knowledge where the sources say nothing (D69). Model knowledge is marked in the text and counted per "
+        "block",
     )
     generated_at: str
     frontmatter: dict[str, Any] = Field(default_factory=dict)

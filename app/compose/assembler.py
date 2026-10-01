@@ -25,6 +25,11 @@ AI_ENRICHED_DISCLOSURE = (
     "KI-generierter Text auf Basis belegter Quellen, ergänzt um Modellwissen ohne Quellenbeleg "
     "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
 )
+# enrichment=model-knowledge-full (D69): whole blocks may come from model knowledge, which then is no supplement
+AI_FULL_DISCLOSURE = (
+    "KI-generierter Text zum angefragten Thema aus belegten Quellen und aus Modellwissen ohne Quellenbeleg "
+    "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
+)
 # Rule-based writing from sentences or paragraphs an LLM chose (extraction=llm, matcher=llm): the wording is the
 # sources', the choice is not
 AI_SELECTED_DISCLOSURE = (
@@ -122,7 +127,9 @@ def build_frontmatter(
     # A kept block counts with the status it carries; a reviewed one stands under editorial responsibility (Art. 50(4)
     # EU AI Act), whoever wrote it first
     kept = set(switches.kept.values())
-    if (generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences) or (
+    if generation != "rule-based" and enrichment == "model-knowledge-full" and enriched_sentences:
+        disclosure, review = AI_FULL_DISCLOSURE, "ki-generiert"
+    elif (generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences) or (
         switches.kept_model_knowledge
     ):
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"

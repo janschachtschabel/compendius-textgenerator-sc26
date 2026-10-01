@@ -90,6 +90,7 @@ class WorldPart:
     generation: str
     enrichment: str  # sources-only unless an LLM actually writes blocks and the request allowed more
     llm_note: str | None
+    topic: str = ""  # the topic as asked when part 1 was written about it, not its article (model-knowledge-full, D69)
     chunks_assigned: int = 0
     extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
     regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text

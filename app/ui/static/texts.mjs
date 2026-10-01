@@ -73,7 +73,14 @@ export const STEPS = {
     name: 'Formulierung',
     values: { 'rule-based': 'wörtlich aus den Quellen', 'llm-fast': 'KI formuliert die Hauptbausteine', llm: 'KI formuliert jeden Baustein' },
   },
-  enrichment: { name: 'Eigenes Wissen der KI', values: { 'sources-only': 'nein, nur Quellen', 'model-knowledge': 'ja, gekennzeichnet' } },
+  enrichment: {
+    name: 'Eigenes Wissen der KI',
+    values: {
+      'sources-only': 'nein, nur Quellen',
+      'model-knowledge': 'ja, gekennzeichnet',
+      'model-knowledge-full': 'ja, füllt jeden Baustein zum angefragten Thema',
+    },
+  },
   curriculum_check: { name: 'Prüfung der Lehrplanelemente', values: { 'rule-based': 'Stichwortregeln', llm: 'KI bewertet jedes Element' } },
 };
 

@@ -128,7 +128,11 @@ ENRICHMENT_HELP = (
     "- **sources-only**: every sentence has to be covered by its evidence; anything else is dropped.\n"
     "- **model-knowledge**: the model may add knowledge of its own - a checkable fact or nothing (prompt "
     "section_enrichment v2, D56); such sentences carry no citation number, end with the visible label "
-    "[Modellwissen] (Evidenzgrad=Modellwissen in the markup) and are counted per block.\n\n"
+    "[Modellwissen] (Evidenzgrad=Modellwissen in the markup) and are counted per block.\n"
+    "- **model-knowledge-full**: every content block is written about the topic as asked, qualifiers included "
+    "('Ernährung im Leistungssport', not its article 'Ernährung'): evidence where it meets the topic, model knowledge "
+    "for the rest, a block without evidence as well (prompt section_coverage, D69). Marked like model-knowledge; the "
+    "target length is a floor, not a ceiling, and the heading names the topic as asked.\n\n"
     "Needs generation llm or llm-fast; with rule-based generation, or without a usable b-api, the answer reports "
     "sources-only."
 )
@@ -176,7 +180,7 @@ PRESET_HELP = (
 Extraction = Literal["rule-based", "llm"]  # who picks the sentences of part 1 (PLAN.md 4.7, D33)
 Generation = Literal["rule-based", "llm-fast", "llm"]  # who writes the blocks of part 1 (PLAN.md 4.7, D33)
 # Whether the writing LLM may go beyond the sources (docs/umbau.md U4); without an LLM writing, it cannot
-Enrichment = Literal["sources-only", "model-knowledge"]
+Enrichment = Literal["sources-only", "model-knowledge", "model-knowledge-full"]
 ArticleChoice = Literal["rule-based", "llm", "llm-thorough"]  # who decides an unsure article choice (D35, D61)
 LLM_ARTICLE_CHOICES = frozenset({"llm", "llm-thorough"})
 CurriculumCheck = Literal["rule-based", "llm"]  # who judges the curriculum elements of part 2 (D58)

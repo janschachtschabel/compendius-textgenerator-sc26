@@ -226,9 +226,10 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument(
         "--enrichment",
         default=None,
-        choices=["sources-only", "model-knowledge"],
+        choices=["sources-only", "model-knowledge", "model-knowledge-full"],
         help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze "
-        "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast",
+        "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast; model-knowledge-full "
+        "schreibt jeden Baustein zum angefragten Thema, ohne passende Belege aus Modellwissen (D69)",
     )
     gen.add_argument("--length", type=int, default=12_000)
     gen.add_argument("--facets-visible", action="store_true")

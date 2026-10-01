@@ -88,7 +88,9 @@ def generate_compendium(
       best candidates; the wording stays the source's.
     - ``generation``: who writes the blocks - ``rule-based`` verbatim excerpts, ``llm-fast`` the model the main
       ones, ``llm`` every one; every sentence carries its citation.
-    - ``enrichment``: ``sources-only``, or ``model-knowledge`` - the writing model may add knowledge of its own.
+    - ``enrichment``: ``sources-only``; ``model-knowledge`` - the writing model may add knowledge of its own;
+      ``model-knowledge-full`` - it writes every block about the topic as asked, from its own knowledge where the
+      sources say nothing (D69).
     - ``curriculum_check``: who judges the elements of part 2 - ``rule-based`` the keyword rules, ``llm`` the model.
 
     **How long it gets.** ``target_length`` is shared over the blocks by weight and steers upwards until

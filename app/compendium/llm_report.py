@@ -28,7 +28,8 @@ MODEL_KNOWLEDGE_NOTE = (
 @dataclass(frozen=True)
 class LlmWork:
     """What the LLM layer of one request was asked for and did: each switch as requested and as used (``llm`` or
-    ``rule-based``; enrichment ``sources-only`` or ``model-knowledge``), and the report of each stage that ran.
+    ``rule-based``; enrichment ``sources-only``, ``model-knowledge`` or ``model-knowledge-full``), and the report of
+    each stage that ran.
     build_llm_report took these as 24 parameters, the article choice spread in from a dict (audit 2026-09-28, WA-06).
 
     ``matching_*`` describe matcher=llm (D34) and ``choice`` the article choice (D35, D47, D63): the model is asked
@@ -187,7 +188,7 @@ def build_llm_report(
             "articles_fallback",
         )
         front["article_choice"] = {key: article_choice[key] for key in keys}
-    if work.enrichment_used == "model-knowledge":
+    if work.enrichment_used in ("model-knowledge", "model-knowledge-full"):
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.
         marked = generation_block["marked_sentences"]

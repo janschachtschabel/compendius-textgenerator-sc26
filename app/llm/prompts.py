@@ -81,6 +81,50 @@ SECTION_ENRICHMENT = Prompt(
     user=SECTION_SYNTHESIS.user,
 )
 
+# enrichment=model-knowledge-full (D69): the topic as asked, every content block filled, the evidence only where it
+# meets the topic and the model's own knowledge without the one-in-three cap. Its forerunner, a prototype tried on ten
+# topics on 2026-10-01, raised the fit on topics with an aspect such as "OER-Förderungen" from 1.38 to 4.25 of 5 for
+# two blind judges (best-quality-generated against it); this version also asks for complete, unshortened blocks.
+SECTION_COVERAGE = Prompt(
+    id="section_coverage",
+    version=1,
+    system=(
+        "Du schreibst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Das Thema steht in der "
+        "Anfrage und ist genau so gemeint, wie es dort steht, mit seinem Aspekt: „Ernährung im Leistungssport“ meint "
+        "die Ernährung von Leistungssportlern, nicht Ernährung oder Sport allgemein. Schreibe ausschließlich über "
+        "dieses Thema, nicht allgemein über einen Oberbegriff. Fülle den Baustein vollständig: Er soll alles "
+        "Wesentliche enthalten, was zu seiner Aufgabe beim Thema gehört; fasse nicht knapp zusammen und kürze nicht. "
+        "Die nummerierten Belege stammen aus Lexikonartikeln und treffen das Thema oft nur teilweise: Nutze einen "
+        "Beleg nur für Aussagen, die das Thema treffen, und gib seinen Gehalt dann vollständig wieder. Ein Satz aus "
+        "einem Beleg endet vor dem Satzzeichen mit seiner Belegnummer in eckigen Klammern, zum Beispiel: Licht "
+        "breitet sich geradlinig aus [2]. Was die Belege zum Thema nicht hergeben, ergänzt du aus gesichertem eigenem "
+        "Fachwissen; passt kein Beleg, schreibst du den ganzen Baustein aus eigenem Wissen. Solche Sätze schreibst du "
+        "ohne Belegnummer, sie werden als Modellwissen gekennzeichnet. Werde konkret, wo du sicher bist: Nenne "
+        "bekannte Programme, Einrichtungen, Gesetze, Beispiele, Jahre oder Zahlen, wenn sie allgemein belegt sind und "
+        "du sie sicher kennst. Erfinde nichts: keine Namen, Programme, Zahlen, Daten oder Fundstellen, die du nicht "
+        "sicher kennst; im Zweifel bleib allgemein und sachlich richtig. Setze niemals eine Nummer an einen Satz, den "
+        "der Beleg nicht hergibt, und nenne nur Nummern, die in den Belegen vorkommen. Keine Sätze über den Text, den "
+        "Baustein, das Kompendium, den Unterricht oder die Lehrkräfte, keine Transfer-, Bedeutungs- oder "
+        "Bewertungsfloskeln, keine Fragen, keine Zusammenfassungen oder Überleitungen. Schreibe zusammenhängende "
+        "Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine Einleitungs- oder Schlussfloskeln, "
+        "keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. Die Angaben zu Aufgabe, Inhalt und "
+        "Abgrenzung des Bausteins steuern deine Auswahl: Gib sie nicht wieder und schreibe nicht, was nicht in den "
+        "Baustein gehört. Lass den Baustein nur leer, wenn es zu seiner Aufgabe beim Thema nichts Gesichertes gibt."
+    ),
+    user=(
+        "Thema: {topic}\n"
+        "Artikel, aus dem die Belege vor allem stammen: {article}\n"
+        "Baustein: {title}\n"
+        "Aufgabe des Bausteins: {description}\n"
+        "Gehört hinein: {inclusions}\n"
+        "Gehört nicht hinein: {exclusions}\n"
+        "Unterpunkte:\n{sub_items}\n"
+        "Ziellänge: mindestens etwa {target_chars} Zeichen; länger, wenn das Thema mehr hergibt.\n\n"
+        "Belege:\n{evidence}\n\n"
+        "Schreibe jetzt den Baustein."
+    ),
+)
+
 PASSAGE_SELECTION = Prompt(
     id="passage_selection",
     version=1,
@@ -293,6 +337,7 @@ PROMPTS: dict[str, Prompt] = {
     for p in (
         SECTION_SYNTHESIS,
         SECTION_ENRICHMENT,
+        SECTION_COVERAGE,
         PASSAGE_SELECTION,
         PARAGRAPH_ASSIGNMENT,
         ARTICLE_CHOICE,

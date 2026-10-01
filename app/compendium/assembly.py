@@ -33,7 +33,7 @@ def assemble(
     """Put the parts together; ``lap`` records the time of the assembly before the audit is written."""
     prepared, world, requested = made.prepared, made.world, made.requested
     template, sources, chunks = prepared.template, prepared.sources, prepared.chunks
-    resolution, topic = prepared.resolution, prepared.title
+    resolution = prepared.resolution
     sections, citations, matcher_name = world.written.sections, world.written.citations, world.matcher
     curricula, collection_part = made.curricula.part, made.collection
     want_world = "world" in request.parts
@@ -51,6 +51,8 @@ def assemble(
     generation_used = world.generation if drafted and drafted.sections else "rule-based"
     # Enrichment only means something where the LLM actually wrote a block
     enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
+    # A text the LLM wrote about the topic as asked carries it as its heading; the others are about their article (D69)
+    topic = world.topic if world.topic and enrichment_used == "model-knowledge-full" else prepared.title
     # The blocks a regeneration kept from an earlier compendium: the disclosure follows them too (audit 2026-09-29, A04)
     kept_ids = (
         {slot.id for slot in template.content_slots()} - set(world.regenerated) if request.existing_markdown else set()

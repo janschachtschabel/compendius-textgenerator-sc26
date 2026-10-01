@@ -1,11 +1,29 @@
 import pytest
 
-from app.knowledge.topic import normalize_topic, topic_stem
+from app.knowledge.topic import normalize_topic, topic_as_asked, topic_stem
 from app.sources.lehrplan.subjects import SubjectCatalog
 from tests.conftest import ROOT
 
 # the catalogue the service loads: what counts as a subject in "Physik: Optik"
 SUBJECTS = SubjectCatalog.load(ROOT / "config" / "subjects.yaml")
+
+
+@pytest.mark.parametrize(
+    ("raw", "asked"),
+    [
+        ("Digitale Bildung in der Grundschule", "Digitale Bildung in der Grundschule"),
+        ("Physik: Optik in Klasse 7", "Optik in Klasse 7"),
+        ("Thema: OER-Förderungen", "OER-Förderungen"),
+        ("  OER-Förderungen  ", "OER-Förderungen"),
+        ("Agile Methoden:  Scrum", "Agile Methoden: Scrum"),  # no subject: the prefix is part of the topic
+        ("Projektmanagement: agile Projekte", "agile Projekte"),  # a subject of the Destatis vocabulary
+    ],
+)
+def test_the_topic_as_asked_keeps_its_qualifiers_and_loses_only_a_prefix(raw: str, asked: str) -> None:
+    """D69: the writer of model-knowledge-full writes about the topic in the words of the request. The archives are
+    searched for "Digitale Bildung" (D12), but a text about it alone missed the request; a subject prefix goes, it
+    reaches the prompts as the subject."""
+    assert topic_as_asked(normalize_topic(raw, is_subject=SUBJECTS.knows)) == asked
 
 
 def test_grade_qualifier_becomes_context() -> None:

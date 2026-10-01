@@ -32,6 +32,9 @@ from app.templates.schema import TemplateSlot
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block
 MIN_OUTPUT_TOKENS = 200
 MAX_OUTPUT_TOKENS = 1500
+# enrichment=model-knowledge-full (D69): the target length is a floor, so a block gets about one token per target
+# character (some three characters of German each) up to this ceiling
+MAX_FULL_OUTPUT_TOKENS = 4000
 SNIPPET_CHARS = 220
 
 
@@ -104,19 +107,32 @@ class LlmSynthesizer:
         budget: RequestBudget,
         deadline: Deadline | None = None,
         enrich: bool = False,
+        full: bool = False,
+        article: str = "",
     ) -> LlmSection | LlmSkipped:
         """Write one block from its assigned chunks; ``LlmSkipped`` means: use the extractive text.
 
         With ``enrich`` the model may go beyond the evidence (enrichment=model-knowledge, docs/umbau.md U4):
         the other prompt asks for it, and an uncovered sentence is kept marked as Modellwissen instead of
         being dropped. One sentence from the sources stays required - a block of pure model knowledge is none.
+
+        With ``full`` (enrichment=model-knowledge-full, D69) the block is about ``topic`` as asked whatever the
+        evidence holds: evidence where it meets the topic, model knowledge for the rest, marked sentence by
+        sentence, and a block without evidence is written all the same. ``article`` names the article the evidence
+        comes from; the target length is a floor, not a ceiling.
         """
         evidence, items = evidence_block(scored, sources)
-        if not items:
+        if not items and not full:
             return LlmSkipped("keine Belege für den Baustein")
-        prompt = get_prompt("section_enrichment" if enrich else "section_synthesis")
-        messages = prompt.render(topic=topic, evidence=evidence, **slot_prompt_fields(slot))
-        max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
+        if full:
+            prompt = get_prompt("section_coverage")
+            fields = {"article": article or topic, "evidence": evidence or "(keine)"}
+            max_output = min(MAX_FULL_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars))
+        else:
+            prompt = get_prompt("section_enrichment" if enrich else "section_synthesis")
+            fields = {"evidence": evidence}
+            max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
+        messages = prompt.render(topic=topic, **fields, **slot_prompt_fields(slot))
         result = budgeted_chat(
             self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline
         )
@@ -126,11 +142,12 @@ class LlmSynthesizer:
             # Measured: the model answers with nothing when the evidence does not fit the block.
             reason = f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})"
             return LlmSkipped.after(reason, result)
-        mark = MODEL_KNOWLEDGE if enrich else (CONCLUSION if self.mark_unsupported else "")
+        mark = MODEL_KNOWLEDGE if enrich or full else (CONCLUSION if self.mark_unsupported else "")
         text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
-        if not marker_numbers(text):  # conclusion blocks alone are no evidence-based section
+        # conclusion blocks alone are no evidence-based section; in full mode marked model knowledge is a block
+        if not marker_numbers(text) and not (full and text.strip()):
             reason = f"kein belegter Satz in der Antwort ({dropped} ohne Beleg, {unsupported} ohne Deckung im Beleg)"
             return LlmSkipped.after(reason, result)
         used = marker_numbers(text)

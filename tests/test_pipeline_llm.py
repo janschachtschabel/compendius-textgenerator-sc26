@@ -20,6 +20,7 @@ from app.llm.client import BApiClient, LlmError
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
+from app.templates.manager import TemplateManager
 from tests.test_llm_client import BASE, KEY, FakeBApi
 
 EVIDENCE_RE = re.compile(r"^\[(\d+)\] \((.+?) › (.+?)\) (.+)$", re.MULTILINE)
@@ -367,6 +368,41 @@ def test_the_enrichment_prompt_is_the_one_that_allows_model_knowledge(
         GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
     )
     assert result.frontmatter["llm"]["prompts"] == [get_prompt("section_enrichment").tag]
+
+
+def test_full_enrichment_writes_every_content_block_about_the_topic_as_asked(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D69: the text and its heading are about the topic as asked, not the article it resolved to, and every
+    content block is written, also one the matching left without a paragraph."""
+    fake = FakeBApi(lambda body: "Ein gesicherter Satz zum Thema.")
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    request = GenerateRequest(
+        topic="Optik in Klasse 7", generation="llm", enrichment="model-knowledge-full", parts=["world"]
+    )
+    result = service.generate(request)
+    assert (result.topic, result.resolution.title) == ("Optik in Klasse 7", "Optik")
+    assert "# Kompendium: Optik in Klasse 7" in result.markdown
+    content = {slot.id for slot in TemplateManager().get("sc26").content_slots()}
+    assert {s.slot_id for s in result.sections if s.status is SectionStatus.LLM} == content
+    assert all(body["messages"][1]["content"].startswith("Thema: Optik in Klasse 7") for body in fake.bodies)
+    assert result.enrichment == "model-knowledge-full"
+    assert result.frontmatter["llm"]["prompts"] == [get_prompt("section_coverage").tag]
+    assert "Modellwissen" in result.frontmatter["ai_disclosure"]
+
+
+def test_full_enrichment_keeps_the_article_as_heading_when_the_llm_wrote_nothing(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D69: the heading names the topic as asked only above a text written about it; the extractive fallback is
+    about its article."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "")))
+    request = GenerateRequest(
+        topic="Optik in Klasse 7", generation="llm", enrichment="model-knowledge-full", parts=["world"]
+    )
+    result = service.generate(request)
+    assert (result.topic, result.enrichment) == ("Optik", "sources-only")
+    assert "# Kompendium: Optik\n" in result.markdown
 
 
 def test_without_the_switch_nothing_changes(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:
