@@ -253,8 +253,9 @@ main = f"""<main>
 <p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release {version} · Stand {day}.{month}.{year}</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
-Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens und welches der vier Profile welche
-nutzt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen Punkten.</p>
+Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
+nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
+Punkten.</p>
 <p class="meta">Quelle: <a href="{GITHUB}README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
 <code>compendius-textgenerator-sc26</code>, {commit} · Zahlen:
 <a href="{GITHUB}05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M{last_measurement}</p>
