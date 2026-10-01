@@ -120,6 +120,8 @@ function cost(tokens, llm) {
     facts([
       ['Tokens gesamt', formatNumber(tokens.total)],
       ['davon Eingabe', formatNumber(tokens.prompt)],
+      // part of the input the provider's prompt cache held (D69), counted in it, not beside it
+      ['davon aus dem Prompt-Cache', tokens.cached ? formatNumber(tokens.cached) : null],
       ['davon Ausgabe', formatNumber(tokens.completion)],
       ['Aufrufe der KI', formatNumber(tokens.calls)],
       ['Modell', llm?.model],

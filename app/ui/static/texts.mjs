@@ -20,15 +20,19 @@ export const PROFILE_NAMES = {
 // What a profile does at each endpoint, in the words of the decision paper (D53, D55, D57, D58, D62, D63)
 export const PROFILE_ABOUT = {
   compendium: {
-    'llm-free': 'Regeln wählen die Artikel und ordnen die Absätze zu; der Text bleibt wörtlich. Schnell, keine Tokens.',
-    balanced: 'Die KI nennt die passenden Artikel eines Themas; der Text bleibt wörtlich. Schnell, wenige Tokens.',
+    'llm-free': 'Regeln wählen die Artikel und ordnen die Absätze zu; der Text bleibt wörtlich. Schnell, keine Tokens. ' +
+      'Nur für Themen mit eigenem Artikel.',
+    balanced: 'Die KI nennt die passenden Artikel eines Themas; der Text bleibt wörtlich. Schnell, wenige Tokens. ' +
+      'Für Themen mit eigenem Artikel.',
     'best-quality': 'Die KI wählt die Artikel, ordnet jeden Absatz zu und prüft die Lehrplanelemente; der Text ' +
       'bleibt wörtlich. Langsamer, viele Tokens.',
     'best-quality-generated': 'Wie best-quality; dazu schreibt die KI jeden Baustein neu und darf eigenes Wissen ' +
-      'ergänzen, das als [Modellwissen] gekennzeichnet ist. Am langsamsten, die meisten Tokens.',
+      'ergänzen, höchstens für die Hälfte der Sätze, gekennzeichnet als [Modellwissen]. Gut lesbar; für Themen mit ' +
+      'eigenem Artikel.',
     'best-coverage-generated': 'Wie best-quality-generated, aber die KI schreibt jeden Baustein genau zum angefragten ' +
       'Thema und füllt ihn vollständig: aus den Quellen, wo sie das Thema treffen, sonst aus eigenem Wissen ' +
-      '([Modellwissen]). Für Themen mit einem Aspekt; die längsten Texte, die meisten Tokens.',
+      '([Modellwissen]). Für Sammelthemen („Dichter aus dem Mittelalter“) und Themen mit Aspekt („OER-Förderungen“): ' +
+      'nur dieses Profil bleibt dort beim angefragten Thema. Die längsten Texte, die meisten Tokens.',
   },
   knowledge: {
     'llm-free': 'Regeln wählen die Artikel. Keine Tokens.',

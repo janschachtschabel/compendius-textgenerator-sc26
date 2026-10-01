@@ -79,6 +79,14 @@ test('a compendium counts its quality, its time and its cost', () => {
   );
 });
 
+test('a compendium counts the tokens its model read from the prompt cache, where there were any (D69)', () => {
+  const tokens = { prompt: 90000, completion: 11150, total: 101150, calls: 24, cached: 50936 };
+  const found = byKey(metrics('compendium', { ...compendium, audit: { ...compendium.audit, llm_tokens: tokens } }, 37000));
+
+  assert.deepEqual([found.cached.dimension, found.cached.value, found.cached.display, found.cached.headline], ['cost', 50936, '50.936', false]);
+  assert.equal(byKey(metrics('compendium', compendium, 1000)).cached, undefined);
+});
+
 test('a compendium without an LLM costs no tokens', () => {
   const found = byKey(metrics('compendium', { ...compendium, audit: { ...compendium.audit, llm_tokens: null } }, 1000));
 

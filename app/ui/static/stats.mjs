@@ -112,16 +112,17 @@ const TIMES = {
 };
 
 const COSTS = {
-  compendium: (a) => llmCost(a.audit?.llm_tokens?.total, a.audit?.llm_tokens?.calls),
+  compendium: (a) => llmCost(a.audit?.llm_tokens?.total, a.audit?.llm_tokens?.calls, a.audit?.llm_tokens?.cached),
   knowledge: (a) => llmCost(a.article_choice?.tokens),
   lehrplan: (a) => llmCost(a.llm_tokens?.total, a.llm_tokens?.calls),
   entities: (a) => llmCost(a.llm?.total_tokens, a.llm?.calls),
   qa: (a) => llmCost(a.llm_tokens?.total, a.llm_tokens?.calls),
 };
 
-function llmCost(tokens, calls) {
+function llmCost(tokens, calls, cached) {
   const items = [cost('tokens', 'Tokens', tokens ?? 0, true, tokens ? formatNumber(tokens) : 'keine')];
   if (calls) items.push(cost('calls', 'KI-Aufrufe', calls, false));
+  if (cached) items.push(cost('cached', 'davon aus dem Prompt-Cache', cached, false));
   return items;
 }
 

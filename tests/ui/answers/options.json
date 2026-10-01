@@ -333,9 +333,18 @@
     }
    },
    {
-    "label": "Sammelthema: deutsche Dichter",
+    "label": "Sammelthema: Dichter aus dem Mittelalter – am besten mit best-coverage-generated",
     "values": {
-     "topic": "deutsche Dichter",
+     "topic": "Dichter aus dem Mittelalter",
+     "parts": [
+      "world"
+     ]
+    }
+   },
+   {
+    "label": "Thema mit Aspekt: OER-Förderungen – am besten mit best-coverage-generated",
+    "values": {
+     "topic": "OER-Förderungen",
      "parts": [
       "world"
      ]
@@ -358,6 +367,18 @@
     "values": {
      "topic": "Optik",
      "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "parts": [
+      "world"
+     ]
+    }
+   },
+   {
+    "label": "Optik mit der Sammlung, ihren Untersammlungen und Volltexten als Quelle (Staging)",
+    "values": {
+     "topic": "Optik",
+     "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+     "knowledge_depth": 1,
+     "knowledge_fulltext": true,
      "parts": [
       "world"
      ]

@@ -51,7 +51,14 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
         {"label": "Optik – ein Thema", "values": {"topic": "Optik", "parts": ["world", "curricula"]}},
         {"label": "Linse – ein Wort mit mehreren Bedeutungen", "values": {"topic": "Linse", "subject": "Physik"}},
         {"label": "Klimawandel mit Fach Geografie", "values": {"topic": "Klimawandel", "subject": "Geografie"}},
-        {"label": "Sammelthema: deutsche Dichter", "values": {"topic": "deutsche Dichter", "parts": ["world"]}},
+        {
+            "label": "Sammelthema: Dichter aus dem Mittelalter – am besten mit best-coverage-generated",
+            "values": {"topic": "Dichter aus dem Mittelalter", "parts": ["world"]},
+        },
+        {
+            "label": "Thema mit Aspekt: OER-Förderungen – am besten mit best-coverage-generated",
+            "values": {"topic": "OER-Förderungen", "parts": ["world"]},
+        },
         {
             "label": "Optik mit ihrer Sammlung (Staging, alle drei Teile)",
             "values": {
@@ -63,6 +70,16 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
         {
             "label": "Optik mit der Sammlung als Quelle (Staging)",
             "values": {"topic": "Optik", "knowledge_collection_id": STAGING_COLLECTION, "parts": ["world"]},
+        },
+        {
+            "label": "Optik mit der Sammlung, ihren Untersammlungen und Volltexten als Quelle (Staging)",
+            "values": {
+                "topic": "Optik",
+                "knowledge_collection_id": STAGING_COLLECTION,
+                "knowledge_depth": 1,
+                "knowledge_fulltext": True,
+                "parts": ["world"],
+            },
         },
         {
             "label": "Ein Material als Eingang (Staging)",

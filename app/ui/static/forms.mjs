@@ -28,7 +28,7 @@ export const FORMS = {
       NODE,
       REPOSITORY,
       { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: COMPENDIUM_STEPS },
-      { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true },
+      { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true, help: 'Eine Richtgröße: Wörtliche Texte werden so lang, wie die Quellen tragen; in best-coverage-generated ist sie eine Untergrenze.' },
       { name: 'max_articles', type: 'number', label: 'Höchstens Artikel', advanced: true },
       { name: 'knowledge_depth', type: 'number', label: 'Untersammlungen der Sammlung als Quelle', advanced: true, help: 'Wie viele Ebenen darunter mitgelesen werden; 0 nur die Sammlung selbst.' },
       { name: 'knowledge_fulltext', type: 'check', label: 'Volltexte der Materialien lesen, nicht nur ihre Beschreibungen', advanced: true },

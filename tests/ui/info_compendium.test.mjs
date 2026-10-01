@@ -71,3 +71,15 @@ test('the knowledge texts of a topic with a material name its own article and wh
   assert.equal(fact(results, 'Thema und Artikel', 'Gefunden durch'), 'KI');
   assert.equal(fact(results, 'Thema und Artikel', 'Als weitere Quelle'), 'ja, mit dem Hauptartikel verlinkt');
 });
+
+test('the cost names the tokens the model read from the prompt cache, and none where there were none (D69)', () => {
+  const cached = info('compendium_topic', (answer) => {
+    answer.audit.llm_tokens = { prompt: 90000, completion: 11150, total: 101150, calls: 24, cached: 50936 };
+  });
+  const uncached = info('compendium_topic', (answer) => {
+    answer.audit.llm_tokens = { prompt: 500, completion: 80, total: 580, calls: 2, cached: 0 };
+  });
+
+  assert.equal(fact(cached, 'Kosten', 'davon aus dem Prompt-Cache'), '50.936');
+  assert.equal(fact(uncached, 'Kosten', 'davon aus dem Prompt-Cache'), null);
+});
