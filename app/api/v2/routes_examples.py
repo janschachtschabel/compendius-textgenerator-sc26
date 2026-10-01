@@ -10,8 +10,13 @@ from typing import Any
 
 EXAMPLES: dict[str, dict[str, Any]] = {
     "kuerzeste Anfrage": {
-        "summary": "Das Nötigste: ein Thema, zwei Teile, eine Ziellänge",
-        "value": {"topic": "Optik", "parts": ["world", "curricula"], "target_length": 8000},
+        "summary": "Das Nötigste: ein Thema",
+        "description": (
+            "Ohne weitere Angaben: Teil 1 und 2, das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced; ohne "
+            "LLM llm-free) und seine Ziellänge, in jedem Profil 30.000 Zeichen (D70). Wörtliche Texte werden so lang, "
+            "wie die Quellen tragen; target_length in der Anfrage geht der Vorgabe vor."
+        ),
+        "value": {"topic": "Optik"},
     },
     "Profil llm-free": {
         "summary": "Profil llm-free: ohne Sprachmodell, für einen Dienst ohne LLM",
@@ -21,25 +26,28 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 87 von 94 "
             "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27). Teil 2 findet und "
             "bewertet mit den Stichwortregeln; ein Element, dessen Überschrift allein das Thema nennt, zählt beim "
-            "Bereich mit (M32)."
+            "Bereich mit (M32). An neun Themen (M48) bewerteten zwei Gutachter die Passung zum Thema mit 3,2 von 5 bei "
+            "Themen mit eigenem Artikel, 1,3 bei Sammelthemen und 1,0 bei Themen mit Aspekt; Teil 1 1,6 s."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
     },
     "Profil balanced": {
         "summary": "Profil balanced (Standard): das LLM wählt die Artikel, alles andere bleibt lokal",
         "description": (
-            "Wie llm-free, aber das LLM entscheidet, wo die Regeln beim Artikel unsicher sind - hier das "
-            "mehrdeutige Wort Linse -, und verwirft unpassende Nebenartikel. 91 von 94 Hauptartikeln richtig, "
-            "rund 3,4 s und 900 Tokens je Kompendium (M27). Teil 2 wie llm-free. Ohne konfiguriertes LLM ist die "
-            "Anfrage ein 503."
+            "Wie llm-free, aber das LLM nennt Übersicht und Teile des Themas, die zu seinen Nebenartikeln werden "
+            "(D63), und entscheidet, wo die Regeln beim Artikel unsicher sind - hier das mehrdeutige Wort Linse. 91 "
+            "von 94 Hauptartikeln richtig (M35). Passung zum Thema 4,0 bei Themen mit eigenem Artikel, 2,5 bei "
+            "Sammelthemen, 1,3 bei Themen mit Aspekt; Teil 1 6,1 s und 580 Tokens (M48). Teil 2 wie llm-free. Ohne "
+            "konfiguriertes LLM ist die Anfrage ein 503."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
     },
     "Profil best-quality": {
         "summary": "Profil best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
         "description": (
-            "Wie balanced, dazu matcher llm: macro-F1 0,70 statt 0,45, rund 14 s und 26.000 Tokens je "
-            "Kompendium (M19, M27). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
+            "Wie balanced, dazu matcher llm: macro-F1 0,70 statt 0,45 (M19, M27). Passung zum Thema 4,5 bei Themen "
+            "mit eigenem Artikel, 2,0 bei Sammelthemen, 1,5 bei Themen mit Aspekt; Teil 1 18 s und 61.060 Tokens, die "
+            "meisten für die Zuordnung (M48). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
             "best-quality-generated. Mit curricula in parts bewertet das LLM auch jedes Lehrplanelement "
             "(curriculum_check llm, M32). Budget je Anfrage: 180.000 Tokens statt 60.000 "
             "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59)."
@@ -50,8 +58,10 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "summary": "Profil best-quality-generated: alles mit dem LLM, der Text ergänzt und lesbar formuliert",
         "description": (
             "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
-            "ergänzen (enrichment model-knowledge); solche Sätze tragen keine Belegnummer und enden sichtbar mit "
-            "[Modellwissen]. Für Texte, die Menschen direkt lesen; rund 24 s und 35.000 Tokens (M27). Zwei "
+            "ergänzen, höchstens für die Hälfte der Sätze (enrichment model-knowledge, D70); solche Sätze tragen keine "
+            "Belegnummer und enden sichtbar mit [Modellwissen]. Für Texte, die Menschen direkt lesen. Es schreibt über "
+            "den Artikel der Artikelwahl: Passung 4,8 bei Themen mit eigenem Artikel, 3,0 bei Sammelthemen, 1,7 bei "
+            "Themen mit Aspekt; Teil 1 29 s und 82.335 Tokens, im Median 28 % Modellwissen (M48). Zwei "
             "Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; unter dem ersten Prompt waren zwei "
             "Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts "
             "(D56) und ergänzte an sechs Themen 50 statt 82 solche Sätze, 13 statt 50 davon Füllsätze (M31). "
@@ -69,10 +79,22 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "(enrichment model-knowledge-full, D69). target_length ist hier eine Untergrenze, keine Obergrenze; die "
             "Überschrift nennt das angefragte Thema. An acht solchen Themen bewerteten zwei blinde Gutachter die "
             "Passung mit 4,8 statt 1,8 von 5 (best-quality-generated) und die Vollständigkeit mit 5,0 statt 1,7, ohne "
-            "schwere Fehler (M47); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, ein Drittel aus dem Prompt-Cache. "
+            "schwere Fehler (M47). An neun Themen dreier Arten hielt nur dieses Profil jedes Thema: Passung 5,0 bei "
+            "Themen mit eigenem Artikel, Sammelthemen und Themen mit Aspekt, Nutzen 4,5, Vollständigkeit 4,8; Teil 1 "
+            "37 s und 101.150 Tokens, die Hälfte aus dem Prompt-Cache, rund 57.000 Zeichen, 84 % Modellwissen (M48). "
             "Teil 2 und Budget wie best-quality."
         ),
         "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
+    },
+    "Sammelthema mit best-coverage-generated": {
+        "summary": "Sammelthema: eine Gruppe ohne eigenen Artikel, vollständig über die Gruppe geschrieben",
+        "description": (
+            "Zu Dichter aus dem Mittelalter gibt es keinen eigenen Artikel; die Artikelwahl findet einen Vertreter "
+            "oder den Oberbegriff (Walther von der Vogelweide, Deutsche Literatur im Mittelalter), und die anderen "
+            "Profile schreiben über ihn. best-coverage-generated schreibt über die Gruppe: Passung 5,0 statt höchstens "
+            "3,0 an drei Sammelthemen (M48). Den Großteil schreibt es aus Modellwissen, sichtbar gekennzeichnet."
+        ),
+        "value": {"topic": "Dichter aus dem Mittelalter", "parts": ["world"], "preset": "best-coverage-generated"},
     },
     "Lehrplanbezüge mit best-quality": {
         "summary": "Nur Teil 2: die Regeln finden die Lehrplanelemente, das LLM bewertet jedes",
@@ -124,7 +146,6 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "parts": ["world"],
             "article_choice": "llm",
             "matcher": "llm",
-            "target_length": 12000,
         },
     },
     "mit einer Sammlung (Teil 3)": {
@@ -140,7 +161,25 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "topic": "Optik",
             "parts": ["world", "curricula", "collection"],
             "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
-            "target_length": 12000,
+        },
+    },
+    "Wissens-Sammlung als Quelle für Teil 1": {
+        "summary": "Die Materialien einer Sammlung und ihrer Untersammlungen als weitere Quellen, mit Volltexten",
+        "description": (
+            "knowledge_collection_id nennt die Sammlung; jedes Material zählt, gleich unter welcher Lizenz (D70). Ohne "
+            "knowledge_fulltext bringt es seine Beschreibung mit, mit true auch seinen Volltext. knowledge_depth 1 "
+            "liest die Untersammlungen eine Ebene tief mit; die Sammlungen geben reihum je ein Material ab, bis "
+            "KNOWLEDGE_MAX_MATERIALS (30) erreicht ist, ein Material in mehreren zählt einmal. Kompendiale Texte liest "
+            "der Dienst nie. An der Sammlung Optik der Staging mit Tiefe 1 und Volltext: 21 von 30 Materialien als "
+            "Quelle aus fünf Sammlungen, rund 42.000 Zeichen. Beide Schalter brauchen knowledge_collection_id, sonst "
+            "422; Teil 1 muss dabei sein."
+        ),
+        "value": {
+            "topic": "Optik",
+            "parts": ["world"],
+            "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+            "knowledge_depth": 1,
+            "knowledge_fulltext": True,
         },
     },
     "aus einem Knoten des Repositorys": {

@@ -132,8 +132,9 @@ class SlotBudget(KnownFields):
         ge=100,
         description="Characters aimed at: collecting stops at a paragraph boundary once one and a half times this "
         "is reached, and the LLM prompts name it as the target length. For a content block the request sets it: "
-        "its target_length (12,000 unless it names another) is shared over the content blocks by weight, so in a "
-        "template weight is what steers a block's length, not this number",
+        "its target_length (the profile's, 30,000 in every profile since D70, unless it names another) is "
+        "shared over the content blocks by weight, so in a template weight is what steers a block's length, not "
+        "this number",
     )
     weight: float = Field(
         1.0,

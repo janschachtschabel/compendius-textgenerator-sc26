@@ -15,7 +15,7 @@ from typing import Any, get_args
 import pytest
 from fastapi.testclient import TestClient
 
-from app.domain.requests import Preset
+from app.domain.requests import PRESET_HELP, PRESETS, Preset
 from app.main import create_app
 from app.settings import Settings
 from app.templates.schema import Template
@@ -153,3 +153,13 @@ def test_every_path_parameter_of_a_public_endpoint_offers_an_example(spec: dict[
             continue
         bare = [p["name"] for p in parameters if p["in"] == "path" and not p.get("examples")]
         assert not bare, f"{name}: Swagger offers no example for {bare}"
+
+
+def test_the_profile_help_says_for_every_profile_how_it_kept_each_kind_of_topic() -> None:
+    """D71: the measured fit to a topic with an article of its own, a group and an aspect (M48) is what a caller
+    chooses a profile by, so the help of preset names it for every profile."""
+    for profile in PRESETS:
+        start = PRESET_HELP.index(f"- **{profile}**")
+        end = PRESET_HELP.find("\n- **", start + 1)
+        bullet = PRESET_HELP[start : end if end != -1 else None]
+        assert "M48" in bullet and "group" in bullet and "aspect" in bullet, profile

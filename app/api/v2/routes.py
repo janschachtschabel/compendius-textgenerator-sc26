@@ -61,17 +61,26 @@ def generate_compendium(
     - ``llm-free``: no LLM anywhere. The rules choose the articles, ``hybrid_light`` assigns the paragraphs, the
       text stays verbatim with its citations, and part 2 lists what the keyword rules find - an element only its
       heading names is counted with its area. No tokens.
-    - ``balanced``: as llm-free, but the LLM decides where the rules are unsure about the article and drops the
-      side articles that do not fit (``article_choice llm``). Part 2 as in llm-free.
+    - ``balanced``: as llm-free, but the LLM names the overview and the parts of the topic, which become its side
+      articles (D63), and decides where the rules are unsure about the article (``article_choice llm``). Part 2 as
+      in llm-free.
     - ``best-quality``: balanced, and the LLM also checks a sure choice of a word with several meanings
       (``article_choice llm-thorough``), assigns every paragraph to its block (``matcher llm``) and rates every
       curriculum element of part 2, dropping what does not fit (``curriculum_check llm``). The text stays
       verbatim.
     - ``best-quality-generated``: best-quality, and the LLM writes every block from its evidence (``generation
-      llm``) and may add knowledge of its own, marked ``[Modellwissen]`` (``enrichment model-knowledge``).
+      llm``) and may add knowledge of its own for up to half of a block's sentences, marked ``[Modellwissen]``
+      (``enrichment model-knowledge``, D70).
     - ``best-coverage-generated``: best-quality-generated, but the LLM writes every block about the topic as asked
       and fills it completely: from its evidence where that meets the topic, else from its own knowledge, marked
       ``[Modellwissen]`` (``enrichment model-knowledge-full``, D69); ``target_length`` is a floor here.
+
+    **Which profile for which topic** (M48, nine topics, two blind judges). A topic with an article of its own
+    (Optik): ``balanced`` gives a verbatim text with a citation for every sentence (fit 4.0 of 5, 6 s and 580 tokens
+    for part 1), ``best-quality-generated`` a readable one that mostly keeps to the sources (fit 4.8). A group
+    without an article of its own (Dichter aus dem Mittelalter) or a topic with an aspect (OER-Förderungen):
+    ``best-coverage-generated``, fit 5.0 where the others reach at most 3.0 and 1.7, as they write about one member
+    or the umbrella term the article choice finds; most of its text is model knowledge.
 
     The LLM steps of a request spend from one token budget and one deadline: LLM_MAX_TOKENS_PER_REQUEST (60,000)
     in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the three best-* profiles
