@@ -95,11 +95,12 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.5.0 · Stand 01.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
-Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens und welches der vier Profile welche
-nutzt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen Punkten.</p>
+Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
+nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
+Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>8d49a7c</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M47</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>529525c</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M48</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
 <div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
@@ -472,7 +473,7 @@ ohne Sprachmodell; das war damals der Standard und ist heute das Profil <code>ll
 </ul>
 </li>
 <li><strong>Zeit:</strong> Aus dem Zwischenspeicher dauert Teil 3 höchstens 0,16 s, beim ersten Abruf bis 3,5 s.</li>
-<li><strong>Teil 1 aus Material:</strong> Optional liefert eine zweite Sammlung Material als Quelle für Teil 1. Wörtlich übernommen wird es nur unter freien Lizenzen.</li>
+<li><strong>Teil 1 aus Material:</strong> Optional liefert eine zweite Sammlung Material als Quelle für Teil 1, gleich unter welcher Lizenz, auf Wunsch mit Volltexten und Untersammlungen (D70).</li>
 <li><strong>Einzeln:</strong> Teil 3 allein gibt es als <code>GET /api/v2/collections/{id}/overview</code>.</li>
 </ul>
 <h3 id="zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</h3>
@@ -630,9 +631,8 @@ Model2Vec, die extraktive Synthese und die Idee, jeden Satz gegen seine Quelle z
 <section class="doc" id="seite-09" aria-labelledby="seite-09-titel">
 <div class="doc-head"><p class="doc-label">Seite 09 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-09-titel">Methoden, Messwerte und Profile</h2>
-<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 (D69) · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>; Zeit und
-Tokens des aktuellen Stands aus M45, für <code>best-coverage-generated</code> aus M47, die Güte aus der jeweils letzten Messung
-einer Methode</p>
+<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 (D70) · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>; die fünf Profile
+im Vergleich aus M48, Zeit und Tokens mit Teil 2 aus M45, die Güte jeder Methode aus ihrer jeweils letzten Messung</p>
 <p>Diese Seite begründet die fünf Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
 und Tokens und sagt, welches Profil welche Methode nutzt und warum: Artikelwahl, Korpusbau, Zuordnung der Absätze,
 Text, Lehrplanschnipsel, QA-Paare und Entitäten. Die Profile legen fest, wo ein Sprachmodell (LLM) arbeitet:
@@ -863,7 +863,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>wörtlich, jeder Satz belegt</td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
-<td>das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert</td>
+<td>das LLM schreibt jeden Baustein, Modellwissen für höchstens die Hälfte der Sätze, sichtbar markiert (D70)</td>
 <td>das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (<code>model-knowledge-full</code>)</td>
 <td>D53, D56, D69</td>
 </tr>
@@ -922,6 +922,15 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>–</td>
 </tr>
 <tr>
+<td>Ziellänge von Teil 1 (<code>target_length</code>)</td>
+<td>30.000 Zeichen, eine Richtgröße: der wörtliche Text wird so lang, wie die Quellen tragen</td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>30.000</td>
+<td>30.000 als Untergrenze</td>
+<td>D69, D70</td>
+</tr>
+<tr>
 <td>Budget je Anfrage (D59)</td>
 <td>60.000 Tokens</td>
 <td>60.000</td>
@@ -932,6 +941,291 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 </tr>
 </tbody>
 </table></div>
+<h4>Fünf Profile an drei Arten von Themen (M48)</h4>
+<figure class="chart" role="group" aria-label="Fünf Profile an drei Arten von Themen: Passung je Art, Nutzen, Vollständigkeit, Lesbarkeit, Zeit und Tokens"><svg xmlns="http://www.w3.org/2000/svg" width="1080" height="386" viewBox="0 0 1080 386" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Fünf Profile an drei Arten von Themen (M48)"><title>Fünf Profile an drei Arten von Themen (M48)</title><rect width="1080" height="386" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Fünf Profile an drei Arten von Themen</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Note von 1 bis 5 (volle Spur = 5)</text>
+<rect x="315.2" y="68.0" width="12.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="333.2" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Aufwand: Zeit und Tokens, ab 0</text>
+<text x="224.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="224.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">einfach</text>
+<text x="324.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="324.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema</text>
+<text x="424.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="424.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">mit Aspekt</text>
+<text x="524.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Nutzen</text>
+<text x="524.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="624.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Vollständigkeit</text>
+<text x="624.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="724.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Lesbarkeit</text>
+<text x="724.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="824.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="824.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, Median</text>
+<text x="944.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="944.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Median</text>
+<rect x="20.0" y="124.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="144.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free</text>
+<rect x="224.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="133.0" width="33.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,2</text>
+<rect x="324.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="133.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="424.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="133.0" width="0.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,0</text>
+<rect x="524.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="133.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="624.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="133.0" width="2.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,2</text>
+<rect x="724.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="133.0" width="16.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,1</text>
+<rect x="824.0" y="133.0" width="2.7" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="831.7" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,6 s</text>
+<text x="949.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="24.0" y="178.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced</text>
+<rect x="224.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="167.0" width="46.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,0</text>
+<rect x="324.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="167.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="424.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="167.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="524.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="167.0" width="21.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,4</text>
+<rect x="624.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="167.0" width="6.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,4</text>
+<rect x="724.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="167.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="824.0" y="167.0" width="10.2" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="839.2" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">6,1 s</text>
+<rect x="944.0" y="167.0" width="2.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="949.4" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">580</text>
+<rect x="20.0" y="192.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="212.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality</text>
+<rect x="224.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="201.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="324.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="201.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="424.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="201.0" width="7.8" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,5</text>
+<rect x="524.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="201.0" width="25.9" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,7</text>
+<rect x="624.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="201.0" width="14.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,9</text>
+<rect x="724.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="201.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="824.0" y="201.0" width="30.6" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="859.6" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">18 s</text>
+<rect x="944.0" y="201.0" width="37.4" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="986.4" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">61.100</text>
+<text x="24.0" y="246.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality-generated</text>
+<rect x="224.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="235.0" width="59.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="324.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="235.0" width="31.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,0</text>
+<rect x="424.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="235.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="524.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="235.0" width="32.7" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,1</text>
+<rect x="624.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="235.0" width="25.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,6</text>
+<rect x="724.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="235.0" width="41.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,7</text>
+<rect x="824.0" y="235.0" width="48.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="877.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">29 s</text>
+<rect x="944.0" y="235.0" width="50.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="999.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">82.300</text>
+<rect x="20.0" y="260.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="280.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-coverage-generated</text>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="524.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="269.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="624.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="269.0" width="58.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="724.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="269.0" width="47.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,1</text>
+<rect x="824.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="891.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">37 s</text>
+<rect x="944.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="1011.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">101.200</text>
+<text x="24.0" y="316.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;</text>
+<text x="24.0" y="332.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,</text>
+<text x="24.0" y="348.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.</text>
+<text x="24.0" y="364.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026).</text></svg><figcaption>Fünf Profile an drei Arten von Themen: Passung je Art, Nutzen, Vollständigkeit, Lesbarkeit, Zeit und Tokens</figcaption></figure>
+<p>Teil 1 mit 30.000 Zielzeichen (D70), je drei Themen einer Art: einfach, mit eigenem Wikipedia-Artikel (Optik,
+Photosynthese, Französische Revolution); Sammelthema, eine Gruppe ohne eigenen Artikel (Dichter aus dem Mittelalter,
+Komponisten der Klassik, Philosophen der Aufklärung); mit Aspekt, den die Artikelwahl auf einen Oberbegriff auflöst
+(OER-Förderungen, Inklusion im Sportunterricht, Künstliche Intelligenz im Unterricht). Zwei blinde Gutachter, Noten von
+1 bis 5; Zeit und Tokens im Median auf dem Entwicklungsrechner, je ein Lauf mit frischen Antworten
+(<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">M48</a>).</p>
+<div class="table-wrap"><table class="profiles" style="min-width: 900px">
+<thead>
+<tr>
+<th></th>
+<th class="p-free"><code>llm-free</code></th>
+<th class="p-balanced"><code>balanced</code></th>
+<th class="p-best"><code>best-quality</code></th>
+<th class="p-gen"><code>best-quality-generated</code></th>
+<th><code>best-coverage-generated</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Passung zum Thema, einfach</td>
+<td>3,2</td>
+<td>4,0</td>
+<td>4,5</td>
+<td>4,8</td>
+<td><strong>5,0</strong></td>
+</tr>
+<tr>
+<td>Passung, Sammelthema</td>
+<td>1,3</td>
+<td>2,5</td>
+<td>2,0</td>
+<td>3,0</td>
+<td><strong>5,0</strong></td>
+</tr>
+<tr>
+<td>Passung, mit Aspekt</td>
+<td>1,0</td>
+<td>1,3</td>
+<td>1,5</td>
+<td>1,7</td>
+<td><strong>5,0</strong></td>
+</tr>
+<tr>
+<td>Nutzen, alle neun Themen</td>
+<td>1,7</td>
+<td>2,4</td>
+<td>2,7</td>
+<td>3,1</td>
+<td><strong>4,5</strong></td>
+</tr>
+<tr>
+<td>Vollständigkeit</td>
+<td>1,2</td>
+<td>1,4</td>
+<td>1,9</td>
+<td>2,6</td>
+<td><strong>4,8</strong></td>
+</tr>
+<tr>
+<td>Lesbarkeit</td>
+<td>2,1</td>
+<td>2,0</td>
+<td>2,5</td>
+<td>3,7</td>
+<td><strong>4,1</strong></td>
+</tr>
+<tr>
+<td>schwere und leichte Fehler je Text</td>
+<td>0 und 0,5</td>
+<td>0,06 und 0,8</td>
+<td>0 und 1,2</td>
+<td>0,11 und 1,0</td>
+<td>0 und 0,8</td>
+</tr>
+<tr>
+<td>Überschrift ist das angefragte Thema</td>
+<td>3 von 9</td>
+<td>3 von 9</td>
+<td>3 von 9</td>
+<td>3 von 9</td>
+<td>9 von 9</td>
+</tr>
+<tr>
+<td>Zeit, Teil 1</td>
+<td>1,6 s</td>
+<td>6,1 s</td>
+<td>18 s</td>
+<td>29 s</td>
+<td>37 s</td>
+</tr>
+<tr>
+<td>Tokens (davon aus dem Prompt-Cache)</td>
+<td>0</td>
+<td>580</td>
+<td>61.060 (13.816)</td>
+<td>82.335 (37.262)</td>
+<td>101.150 (50.936)</td>
+</tr>
+<tr>
+<td>Zeichen</td>
+<td>8.720</td>
+<td>11.488</td>
+<td>13.408</td>
+<td>19.987</td>
+<td>57.378</td>
+</tr>
+<tr>
+<td>Anteil Modellwissen am Text</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>28 % (bis 50 %)</td>
+<td>84 %</td>
+</tr>
+</tbody>
+</table></div>
+<p>Die Tokens wachsen mit der Zuordnung durch das LLM, nicht mit dem Schreiben: <code>best-quality</code> braucht 61.060, das
+Schreiben legt in <code>best-quality-generated</code> rund 21.000 und in <code>best-coverage-generated</code> rund 40.000 dazu. Die
+wörtlichen Profile werden so lang, wie die Quellen tragen; in <code>best-coverage-generated</code> ist die Ziellänge Untergrenze,
+der Text wird fast doppelt so lang.</p>
+<h4>Welches Profil wofür</h4>
+<ul>
+<li><strong>Thema mit eigenem Artikel</strong> (Optik): <code>balanced</code> liefert einen wörtlichen, durchgehend belegten Text (Passung 4,0,
+6 s, 580 Tokens), etwa als Grundlage für Suche und KI-Assistenten. <code>best-quality-generated</code> schreibt einen lesbaren
+Text, der überwiegend aus den Quellen kommt (Passung 4,8, Lesbarkeit 3,7, im Median 28 % Modellwissen).
+<code>best-coverage-generated</code> schreibt den vollständigsten (Nutzen und Vollständigkeit 5,0), aber zu rund 80 % aus
+Modellwissen.</li>
+<li><strong>Sammelthema</strong> (Dichter aus dem Mittelalter): <code>best-coverage-generated</code>. Die anderen Profile schreiben über einen
+Vertreter oder den Oberbegriff, den die Artikelwahl findet (Passung höchstens 3,0); <code>llm-free</code> landet auf falschen
+oder zu engen Artikeln.</li>
+<li><strong>Thema mit Aspekt</strong> (OER-Förderungen): nur <code>best-coverage-generated</code> (Passung 5,0, die anderen höchstens 1,7).</li>
+<li><strong>Ohne Sprachmodell:</strong> <code>llm-free</code> taugt nur für Themen mit eigenem Artikel (Passung 3,2, die meisten Bausteine
+lückenhaft); Sammel- und Aspektthemen kann es nicht.</li>
+<li><strong><code>best-quality</code> in Teil 1:</strong> Gegenüber <code>balanced</code> hebt es bei einfachen Themen Passung und Vollständigkeit um 0,5
+und 0,8, für rund 61.000 statt 580 Tokens; der Text bleibt wörtlich. Seine Stärke ist die Zuordnung (macro-F1 0,70
+statt 0,45, M27) und die Prüfung der Lehrplanelemente in Teil 2.</li>
+<li><strong>Belege:</strong> Wo jede Aussage belegt sein muss, etwa für die Weiterverarbeitung, bleiben die wörtlichen Profile.
+<code>best-coverage-generated</code> kennzeichnet sein Modellwissen sichtbar, prüft es aber nicht gegen Quellen: Sechs der acht
+leichten Fehler, die die Gutachter dort fanden, standen in Sätzen mit <code>[Modellwissen]</code>.</li>
+</ul>
 <h4>Was ein Kompendium je Profil kostet</h4>
 <p>Teil 1 und 2, gemessen am 28.09.2026 mit Release 2.2.2 und <code>gpt-6-luna</code> (M45). Die Zeit gilt für den Server: die
 Schritte ohne LLM dort gemessen, dazu die Schritte, in denen das LLM des Profils arbeitet.</p>
@@ -976,9 +1270,9 @@ Schritte ohne LLM dort gemessen, dazu die Schritte, in denen das LLM des Profils
 </tr>
 <tr>
 <td><code>best-coverage-generated</code></td>
-<td>Teil 1 allein auf dem Entwicklungsrechner: 27,5 s (24 bis 32 s), M47</td>
+<td>Teil 1 allein auf dem Entwicklungsrechner mit 30.000 Zielzeichen: 37 s (35 bis 41 s), M48</td>
 <td>Artikelwahl, Zuordnung und das Schreiben aller Bausteine</td>
-<td>Teil 1 allein: 98.707 (62.999 bis 99.236), rund ein Drittel aus dem Prompt-Cache (M46)</td>
+<td>Teil 1 allein: 101.150 (76.083 bis 111.081), die Hälfte aus dem Prompt-Cache (M48)</td>
 <td>rund 20</td>
 </tr>
 </tbody>
@@ -1932,7 +2226,7 @@ wesentlich; die Zuordnung ist danach nachgemessen und gleich (M44).</li>
 <section class="doc" id="seite-07" aria-labelledby="seite-07-titel">
 <div class="doc-head"><p class="doc-label">Seite 07 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-07-titel">Entscheidungsvorlage: Verfahren und Schalter von Teil 1</h2>
-<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M47; Rohdaten und
+<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M48; Rohdaten und
 Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von <code>/entities</code>:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/08-entitaeten-und-kennungen.md" target="_blank" rel="noopener">Entitäten und Kennungen</a>; alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: <a href="#seite-09">Methoden, Messwerte und Profile</a></p>
@@ -2065,7 +2359,31 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wörtlich wie <code>best-quality</code></td>
 <td>2,5</td>
 <td>4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31)</td>
-<td>nicht gemessen</td>
+<td>nicht gemessen; in M48 4,1</td>
+</tr>
+<tr>
+<td>Passung zum angefragten Thema an neun Themen, zwei Gutachter (M48): einfach, Sammelthema, mit Aspekt</td>
+<td>3,2, 1,3, 1,0</td>
+<td>4,0, 2,5, 1,3</td>
+<td>4,5, 2,0, 1,5</td>
+<td>4,8, 3,0, 1,7</td>
+<td>5,0, 5,0, 5,0</td>
+</tr>
+<tr>
+<td>Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M48)</td>
+<td>1,7, 1,2, 2,1</td>
+<td>2,4, 1,4, 2,0</td>
+<td>2,7, 1,9, 2,5</td>
+<td>3,1, 2,6, 3,7</td>
+<td>4,5, 4,8, 4,1; keine schweren Fehler, 0,8 leichte je Text</td>
+</tr>
+<tr>
+<td>Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M48)</td>
+<td>1,6 s, 0 Tokens, 8.720 Zeichen</td>
+<td>6,1 s, 580 Tokens, 11.488 Zeichen</td>
+<td>18 s, 61.060 Tokens, 13.408 Zeichen</td>
+<td>29 s, 82.335 Tokens, 19.987 Zeichen, 28 % Modellwissen</td>
+<td>37 s, 101.150 Tokens (die Hälfte aus dem Prompt-Cache), 57.378 Zeichen, 84 % Modellwissen</td>
 </tr>
 <tr>
 <td>Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5</td>
@@ -2105,7 +2423,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td>rund 6,9 s</td>
 <td>rund 26 s</td>
 <td>rund 36 s</td>
-<td>nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 27,5 s (M47)</td>
+<td>nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 37 s (M48)</td>
 </tr>
 <tr>
 <td>Tokens je Kompendium, Median (M45)</td>
@@ -2113,7 +2431,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td>576</td>
 <td>49.019</td>
 <td>60.357</td>
-<td>Teil 1 allein 98.707, davon rund 29.000 bis 36.000 aus dem Prompt-Cache (M47)</td>
+<td>Teil 1 allein 101.150, die Hälfte aus dem Prompt-Cache (M48)</td>
 </tr>
 <tr>
 <td>Budget je Anfrage (D59)</td>
@@ -2141,6 +2459,151 @@ der QA-Paare (D54, D55, D57).</p>
 </tr>
 </tbody>
 </table></div>
+<figure class="chart" role="group" aria-label="Fünf Profile an drei Arten von Themen (M48)"><svg xmlns="http://www.w3.org/2000/svg" width="1080" height="386" viewBox="0 0 1080 386" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Fünf Profile an drei Arten von Themen (M48)"><title>Fünf Profile an drei Arten von Themen (M48)</title><rect width="1080" height="386" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Fünf Profile an drei Arten von Themen</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Note von 1 bis 5 (volle Spur = 5)</text>
+<rect x="315.2" y="68.0" width="12.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="333.2" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Aufwand: Zeit und Tokens, ab 0</text>
+<text x="224.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="224.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">einfach</text>
+<text x="324.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="324.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema</text>
+<text x="424.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Passung</text>
+<text x="424.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">mit Aspekt</text>
+<text x="524.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Nutzen</text>
+<text x="524.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="624.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Vollständigkeit</text>
+<text x="624.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="724.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Lesbarkeit</text>
+<text x="724.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">alle Themen</text>
+<text x="824.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Zeit</text>
+<text x="824.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1, Median</text>
+<text x="944.0" y="102.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="600">Tokens</text>
+<text x="944.0" y="116.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Median</text>
+<rect x="20.0" y="124.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="144.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free</text>
+<rect x="224.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="133.0" width="33.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,2</text>
+<rect x="324.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="133.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="424.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="133.0" width="0.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,0</text>
+<rect x="524.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="133.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="624.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="133.0" width="2.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,2</text>
+<rect x="724.0" y="133.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="133.0" width="16.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,1</text>
+<rect x="824.0" y="133.0" width="2.7" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="831.7" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,6 s</text>
+<text x="949.0" y="144.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="24.0" y="178.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced</text>
+<rect x="224.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="167.0" width="46.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,0</text>
+<rect x="324.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="167.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="424.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="167.0" width="5.1" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,3</text>
+<rect x="524.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="167.0" width="21.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,4</text>
+<rect x="624.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="167.0" width="6.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,4</text>
+<rect x="724.0" y="167.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="167.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="824.0" y="167.0" width="10.2" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="839.2" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">6,1 s</text>
+<rect x="944.0" y="167.0" width="2.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="949.4" y="178.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">580</text>
+<rect x="20.0" y="192.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="212.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality</text>
+<rect x="224.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="201.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="324.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="201.0" width="15.5" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,0</text>
+<rect x="424.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="201.0" width="7.8" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,5</text>
+<rect x="524.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="201.0" width="25.9" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,7</text>
+<rect x="624.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="201.0" width="14.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,9</text>
+<rect x="724.0" y="201.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="201.0" width="23.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,5</text>
+<rect x="824.0" y="201.0" width="30.6" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="859.6" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">18 s</text>
+<rect x="944.0" y="201.0" width="37.4" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="986.4" y="212.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">61.100</text>
+<text x="24.0" y="246.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality-generated</text>
+<rect x="224.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="235.0" width="59.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="324.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="235.0" width="31.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,0</text>
+<rect x="424.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="235.0" width="10.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,7</text>
+<rect x="524.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="235.0" width="32.7" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,1</text>
+<rect x="624.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="235.0" width="25.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,6</text>
+<rect x="724.0" y="235.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="235.0" width="41.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,7</text>
+<rect x="824.0" y="235.0" width="48.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="877.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">29 s</text>
+<rect x="944.0" y="235.0" width="50.5" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="999.5" y="246.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">82.300</text>
+<rect x="20.0" y="260.0" width="1044.0" height="34.0" rx="3" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="280.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-coverage-generated</text>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="224.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="291.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="324.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="391.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="424.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="491.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,0</text>
+<rect x="524.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="524.0" y="269.0" width="54.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="591.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,5</text>
+<rect x="624.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="624.0" y="269.0" width="58.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="691.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,8</text>
+<rect x="724.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<rect x="724.0" y="269.0" width="47.4" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="791.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,1</text>
+<rect x="824.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="891.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">37 s</text>
+<rect x="944.0" y="269.0" width="62.0" height="14.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="1011.0" y="280.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">101.200</text>
+<text x="24.0" y="316.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;</text>
+<text x="24.0" y="332.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,</text>
+<text x="24.0" y="348.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.</text>
+<text x="24.0" y="364.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026).</text></svg><figcaption>Fünf Profile an drei Arten von Themen (M48)</figcaption></figure>
+<p>Welches Profil wofür, nach M48: <a href="#seite-09">Methoden, Messwerte und Profile</a>.</p>
 <figure class="chart" role="group" aria-label="Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)"><svg xmlns="http://www.w3.org/2000/svg" width="780" height="462" viewBox="0 0 780 462" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile"><title>Die vier Profile</title><rect width="780" height="462" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die vier Profile im Vergleich</text>
 <text x="200.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1 und 2 je Kompendium</text>
@@ -2221,13 +2684,18 @@ blinde Gutachter zogen den geschriebenen Text in 11 von 12 Urteilen dem wörtlic
 5, Zusammenhang 4,0 statt 2,4), bei ähnlich vielen Fachfehlern, die meist schon in den Quellen stehen (M28). Mit dem
 ersten Prompt bestand das ergänzte Modellwissen zu zwei Dritteln aus Füllsätzen; der zweite verlangt eine prüfbare
 Sachaussage oder nichts: 50 statt 82 ergänzte Sätze, davon 13 statt 50 Füllsätze und 32 statt 27 fachliche, keiner
-falsch nach beiden Gutachtern (M31). <code>/entities</code> wie in <code>balanced</code>.</li>
+falsch nach beiden Gutachtern (M31). <code>/entities</code> wie in <code>balanced</code>. Seit D70 darf das Modellwissen bis zur Hälfte
+eines Bausteins füllen; genutzt hat es in M48 im Median 28 %. Ein Thema ohne eigenen Artikel behandelt das Profil
+als den Artikel der Artikelwahl: Passung 3,0 bei Sammelthemen, 1,7 bei Themen mit Aspekt (M48).</li>
 <li><strong><code>best-coverage-generated</code></strong> (D69) schreibt wie <code>best-quality-generated</code>, aber jeden Baustein vollständig über das
 Thema, wie es angefragt ist: Belege, wo sie das Thema treffen, sonst gesichertes Modellwissen, sichtbar
 gekennzeichnet, auch für einen Baustein ohne Belege; die Ziellänge ist Untergrenze. Für Themen mit Aspekt wie
 „OER-Förderungen“, die die Artikelwahl auf einen Oberbegriff auflöst: Passung 4,81 statt 1,81, Nutzen 4,81 statt
 2,12, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens,
-rund ein Drittel aus dem Prompt-Cache (M46). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen.</li>
+rund ein Drittel aus dem Prompt-Cache (M46). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen.
+M48 an allen drei Arten von Themen: Passung 5,0, Nutzen 4,5, Vollständigkeit 4,8, Lesbarkeit 4,1, keine schweren
+Fehler, 0,8 leichte je Text, sechs der acht im Modellwissen; mit 30.000 Zielzeichen rund 37 s, 101.000 Tokens und
+57.000 Zeichen, denn die Ziellänge ist hier Untergrenze (Punkt 13).</li>
 </ul>
 <p>Zeiten und Tokens: M45 (28.09.2026, Release 2.2.2, <code>gpt-6-luna</code>), Teil 1 und 2, jedes LLM-Profil auf sechs eigenen
 Themen; die Zeit auf dem Server ohne LLM gemessen, dazu die Schritte, in denen das LLM des Profils arbeitet. Die
@@ -2901,7 +3369,7 @@ und mit <code>llm</code> hört eine Frage beides. Zahlen unter 6.</p>
 </tr>
 <tr>
 <td>Materialien einer Sammlung (optional)</td>
-<td><code>knowledge_collection_id</code>: bis zu 30 Materialien mit je 20.000 Zeichen, wörtlich nur unter CC0, Public Domain, CC BY oder CC BY-SA; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen.</td>
+<td><code>knowledge_collection_id</code>: bis zu 30 Materialien gleich unter welcher Lizenz (D70), je ihre Beschreibung, mit <code>knowledge_fulltext</code> ihr Volltext bis 20.000 Zeichen, mit <code>knowledge_depth</code> auch aus den Untersammlungen; Bildung und Praxis bevorzugen sie. Am Goldstandard nicht gemessen.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2939,6 +3407,16 @@ gefragt.</p>
 <td>Anfrage: <code>knowledge_collection_id</code></td>
 <td>nodeId einer Sammlung</td>
 <td>keine</td>
+</tr>
+<tr>
+<td>Anfrage: <code>knowledge_fulltext</code></td>
+<td><code>true</code>, <code>false</code></td>
+<td><code>false</code>: nur die Beschreibungen</td>
+</tr>
+<tr>
+<td>Anfrage: <code>knowledge_depth</code></td>
+<td>0 bis 5 Ebenen Untersammlungen</td>
+<td>0: nur die Sammlung</td>
 </tr>
 <tr>
 <td>Übersicht und Teile vom LLM, sonst Prüfung der Nebenartikel</td>
@@ -4163,6 +4641,107 @@ Die Kennungen folgen der Verknüpfung. Der Wikidata-Sync braucht mit einem Vorfi
 Spotlight), wikidata.org (Statistik der Namen und von P227), huggingface.co/NatLibFi (Annif-Modelle),
 liberquarterly.eu/article/view/19422 (Erschließungsmaschine der DNB).</p>
 </li>
+<li>
+<p><strong>KI-Stufen über <code>best-coverage-generated</code> hinaus</strong> (Jan, 01.10.2026: „das neue profil kann nochmal ki nutzen -
+wir brauchen da eine sinnvolle hochstufung der ki nutzung“): Vorschlag, offen.</p>
+<p>Die Leiter heute, Teil 1 im Median an neun Themen (M48):</p>
+<div class="table-wrap"><table style="min-width: 900px">
+<thead>
+<tr>
+<th>Profil</th>
+<th>was das LLM zusätzlich tut</th>
+<th>Tokens</th>
+<th>Zeit</th>
+<th>Modellwissen im Text</th>
+<th>Thema wie angefragt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm-free</code></td>
+<td>nichts</td>
+<td>0</td>
+<td>1,6 s</td>
+<td>0</td>
+<td>nur mit eigenem Artikel</td>
+</tr>
+<tr>
+<td><code>balanced</code></td>
+<td>wählt unsichere Artikel, nennt Übersicht und Teile des Themas</td>
+<td>580</td>
+<td>6,1 s</td>
+<td>0</td>
+<td>nur mit eigenem Artikel</td>
+</tr>
+<tr>
+<td><code>best-quality</code></td>
+<td>ordnet jeden Absatz zu, prüft auch sichere Artikelwahlen, prüft die Lehrplanelemente</td>
+<td>61.060</td>
+<td>18 s</td>
+<td>0</td>
+<td>nur mit eigenem Artikel</td>
+</tr>
+<tr>
+<td><code>best-quality-generated</code></td>
+<td>schreibt jeden Baustein, bis zur Hälfte aus eigenem Wissen</td>
+<td>82.335</td>
+<td>29 s</td>
+<td>28 %</td>
+<td>nur mit eigenem Artikel</td>
+</tr>
+<tr>
+<td><code>best-coverage-generated</code></td>
+<td>schreibt jeden Baustein vollständig zum angefragten Thema</td>
+<td>101.150</td>
+<td>37 s</td>
+<td>84 %</td>
+<td>immer (Passung 5,0)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Drei Befunde aus M48 sagen, wo eine weitere Stufe ansetzen sollte:</p>
+<ul>
+<li>In <code>best-coverage-generated</code> stammen 84 % des Textes aus Modellwissen, und dort stehen sechs der acht leichten
+Fehler (Daten, Gremien, Zuschreibungen); schwere fanden die Gutachter keine. Gegen Quellen geprüft ist nur der
+belegte Rest.</li>
+<li>Teuer ist die Zuordnung (61.060 Tokens, 12 s), nicht das Schreiben. In <code>best-coverage-generated</code> bedient sie nur
+das Sechstel des Textes mit Belegen; mit <code>matcher: hybrid_light</code> blieb die Passung in M47 bei 4,56 statt 4,81,
+der Nutzen bei 4,31 statt 4,81, für rund 56.000 Tokens und 11 s weniger.</li>
+<li>Die Zuordnung durch das LLM verlor in vier von 27 Läufen einen Stapel von 50 Absätzen an eine unlesbare Antwort,
+und die Artikelwahl streut zwischen zwei Läufen: Zwei von drei Sammelthemen bekamen in <code>best-quality</code> und
+<code>best-quality-generated</code> verschiedene Hauptartikel.</li>
+</ul>
+<p>Vorschlag, in <code>best-coverage-generated</code> selbst (dasselbe Profil, mehr KI dort, wo der Text entsteht):</p>
+<ul>
+<li>(a) <strong>Prüfung des Modellwissens:</strong> Nach dem Schreiben prüft je Baustein ein zweiter Aufruf nur die Sätze mit
+<code>[Modellwissen]</code> auf Daten, Namen, Gremien und Zuschreibungen und streicht oder berichtigt, was er für falsch
+hält; die Kennzeichnung bleibt. Das zielt auf die Fehler, die M48 fand. Geschätzt 2.000 bis 3.500 Tokens je
+Baustein, zusammen 20.000 bis 35.000, und 5 bis 10 s, weil die Bausteine parallel laufen. Messen: dieselben neun
+Themen, Fehler je Text vorher und nachher.</li>
+<li>(b) <strong>Themenplan vor dem Schreiben:</strong> Ein Aufruf legt je Baustein die Kernpunkte des angefragten Themas fest, bei
+Sammelthemen die Vertreter, bei Aspekten die Teilaspekte; alle Bausteine schreiben danach. Der Plan steht in der
+System-Nachricht, für die übrigen Bausteine kommt er aus dem Prompt-Cache. Gegen Wiederholungen zwischen den
+Bausteinen und für die Lesbarkeit (4,1). Geschätzt rund 20.000 Tokens und 5 bis 8 s.</li>
+<li>(c) <strong>Unlesbare Antworten neu fragen:</strong> Eine unlesbare Antwort der Zuordnung einmal neu stellen, statt 50 Absätze
+den Regeln zu überlassen; seit D70 bekommt die zweite Frage eine frische Antwort. Rund 9.000 Tokens je Fall, in
+allen Profilen mit <code>matcher: llm</code>.</li>
+<li>(d) <strong>Kosten ausgleichen, zur Wahl:</strong> <code>best-coverage-generated</code> ordnet mit <code>hybrid_light</code> zu und steckt die
+gesparten rund 56.000 Tokens in (a) und (b), mit etwa so vielen Tokens wie heute. Oder es behält <code>matcher: llm</code>
+(Jan: höchste Qualität) und kommt mit (a) und (b) auf rund 150.000 Tokens, unter dem Budget von 180.000.</li>
+<li>(e) <strong>Profil empfehlen:</strong> Löst die Artikelwahl ein Thema auf einen anderen Artikel auf, einen Oberbegriff oder
+einen Vertreter, sagt das die Prüfung des Kompendiums und nennt <code>best-coverage-generated</code>, ohne zusätzliche
+Tokens. In M48 betraf das sechs der neun Themen.</li>
+</ul>
+<p>Empfehlung: (c) gleich, weil es einen Fehlerweg schließt; (a) als nächste Stufe, mit Messung; (e) als Hilfe bei der
+Wahl des Profils; (b) und (d) nach den Zahlen von (a).</p>
+</li>
+<li>
+<p><strong>Länge in <code>best-coverage-generated</code>:</strong> entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
+dort Untergrenze ist, schreibt <code>best-coverage-generated</code> im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
+das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen
+will, gibt dem Profil 15.000 als Vorgabe (<code>PRESET_TARGET_LENGTH</code>); eine Anfrage kann es jederzeit mit
+<code>target_length</code>. Offen: so lassen oder halbieren.</p>
+</li>
 </ol>
 <p>Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
@@ -4267,7 +4846,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>8d49a7c</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>529525c</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
