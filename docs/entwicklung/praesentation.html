@@ -92,18 +92,18 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.4.2 · Stand 29.09.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.5.0 · Stand 01.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens und welches der vier Profile welche
 nutzt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>c881110</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M45</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>8d49a7c</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M47</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
-<div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-vier-profile-und-ihre-methoden">Die vier Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
-<div class="toc-group"><p class="toc-head"><a href="#seite-07"><span class="num">07</span>Entscheidungsvorlage: Verfahren und Schalter von Teil 1</a></p><ol><li><a href="#die-vier-profile-auf-einen-blick">Die vier Profile auf einen Blick</a></li><li><a href="#die-profile-preset">Die Profile: preset</a></li><li><a href="#die-profile-je-endpunkt">Die Profile je Endpunkt</a></li><li><a href="#der-ablauf">Der Ablauf</a></li><li><a href="#schritt-1-hauptartikel-finden">Schritt 1: Hauptartikel finden</a></li><li><a href="#schritt-2-korpus-bauen">Schritt 2: Korpus bauen</a></li><li><a href="#schritt-3-absaetze-zuordnen">Schritt 3: Absätze zuordnen</a></li><li><a href="#schritt-4-text-bauen-und-optional-umformulieren">Schritt 4: Text bauen und optional umformulieren</a></li><li><a href="#kosten-und-kapazitaet">Kosten und Kapazität</a></li><li><a href="#die-empfehlungen-im-einzelnen">Die Empfehlungen im Einzelnen</a></li><li><a href="#was-die-zahlen-nicht-sagen">Was die Zahlen nicht sagen</a></li><li><a href="#zu-entscheiden">Zu entscheiden</a></li><li><a href="#ausserhalb-von-teil-1-knoten-eingang-und-lehrplanbezuege">Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge</a></li></ol></div>
+<div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
+<div class="toc-group"><p class="toc-head"><a href="#seite-07"><span class="num">07</span>Entscheidungsvorlage: Verfahren und Schalter von Teil 1</a></p><ol><li><a href="#die-fuenf-profile-auf-einen-blick">Die fünf Profile auf einen Blick</a></li><li><a href="#die-profile-preset">Die Profile: preset</a></li><li><a href="#die-profile-je-endpunkt">Die Profile je Endpunkt</a></li><li><a href="#der-ablauf">Der Ablauf</a></li><li><a href="#schritt-1-hauptartikel-finden">Schritt 1: Hauptartikel finden</a></li><li><a href="#schritt-2-korpus-bauen">Schritt 2: Korpus bauen</a></li><li><a href="#schritt-3-absaetze-zuordnen">Schritt 3: Absätze zuordnen</a></li><li><a href="#schritt-4-text-bauen-und-optional-umformulieren">Schritt 4: Text bauen und optional umformulieren</a></li><li><a href="#kosten-und-kapazitaet">Kosten und Kapazität</a></li><li><a href="#die-empfehlungen-im-einzelnen">Die Empfehlungen im Einzelnen</a></li><li><a href="#was-die-zahlen-nicht-sagen">Was die Zahlen nicht sagen</a></li><li><a href="#zu-entscheiden">Zu entscheiden</a></li><li><a href="#ausserhalb-von-teil-1-knoten-eingang-und-lehrplanbezuege">Außerhalb von Teil 1: Knoten-Eingang und Lehrplanbezüge</a></li></ol></div>
 </nav>
 </header>
 <section class="doc" id="seite-01" aria-labelledby="seite-01-titel">
@@ -181,7 +181,7 @@ Profil es vorsieht.</p>
 </tbody>
 </table></div>
 <h3 id="guete-zeit-und-kosten">Güte, Zeit und Kosten</h3>
-<figure class="chart" role="group" aria-label="Güte, Zeit und Kosten: alter Dienst und die vier Profile"><svg xmlns="http://www.w3.org/2000/svg" width="996" height="520" viewBox="0 0 996 520" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Güte, Zeit und Kosten: alter Dienst und Profile"><title>Güte, Zeit und Kosten: alter Dienst und Profile</title><rect width="996" height="520" fill="#ffffff"/>
+<figure class="chart" role="group" aria-label="Güte, Zeit und Kosten: alter Dienst und die vier Profile vor D69 (M45; das fünfte steht unten)"><svg xmlns="http://www.w3.org/2000/svg" width="996" height="520" viewBox="0 0 996 520" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Güte, Zeit und Kosten: alter Dienst und Profile"><title>Güte, Zeit und Kosten: alter Dienst und Profile</title><rect width="996" height="520" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Güte, Zeit und Kosten: alter Dienst und die vier Profile</text>
 <text x="24.0" y="50.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">je Kompendium; ein längerer Balken ist bei Zeit und Tokens teurer, bei der Güte besser</text>
 <rect x="206.0" y="66.0" width="250.0" height="154.0" rx="4" fill="#f3f6fa" stroke="none" stroke-width="1"/>
@@ -267,7 +267,7 @@ Profil es vorsieht.</p>
 <text x="24.0" y="450.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Hauptartikel: M17 (alter Weg: der Artikel des ersten Begriffs) und M35. Zuordnung am Goldpool: M27, M19;</text>
 <text x="24.0" y="466.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">² nur auf den Absätzen mit Label, das Gold deckt den Korpus mit N zu zwei Dritteln (M39).</text>
 <text x="24.0" y="482.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gestützt: M2 und M3; im wörtlichen Text steht jeder Satz im zitierten Absatz. Lesbarkeit: M28, zwei Claude-Gutachter;</text>
-<text x="24.0" y="498.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">¹ der wörtliche Text wie bei best-quality, nicht eigens benotet.</text></svg><figcaption>Güte, Zeit und Kosten: alter Dienst und die vier Profile</figcaption></figure>
+<text x="24.0" y="498.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">¹ der wörtliche Text wie bei best-quality, nicht eigens benotet.</text></svg><figcaption>Güte, Zeit und Kosten: alter Dienst und die vier Profile vor D69 (M45; das fünfte steht unten)</figcaption></figure>
 <ul>
 <li><strong>Alter Dienst:</strong>
 <ul>
@@ -280,12 +280,13 @@ Profil es vorsieht.</p>
 <li><strong><code>balanced</code> (Standard):</strong> fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.</li>
 <li><strong><code>best-quality</code>:</strong> lässt das LLM zusätzlich die Absätze zuordnen und die Lehrplanschnipsel prüfen. Die Zuordnung steigt auf macro-F1 0,70 statt 0,45, für 26 s und rund 49.000 Tokens.</li>
 <li><strong><code>best-quality-generated</code>:</strong> lässt das LLM auch den Text schreiben. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.</li>
+<li><strong><code>best-coverage-generated</code>:</strong> lässt das LLM jeden Baustein vollständig zum angefragten Thema schreiben, wo die Quellen nichts dazu sagen aus eigenem, markiertem Wissen. Bei Themen mit Aspekt wie „OER-Förderungen“ trifft es das Thema (Passung 4,8 statt 1,8 von 5) und füllt jeden Baustein; Teil 1 allein dauert rund 28 s und kostet 91.000 bis 99.000 Tokens, ein Drittel davon aus dem Prompt-Cache (M46, M47).</li>
 </ul>
 <p><strong>Was man bekommt:</strong></p>
 <ul>
 <li><code>llm-free</code> ist schnell und kostet nichts.</li>
 <li>Der Standard verdoppelt etwa die Zeit, für den deutlich besseren Korpus und die treffsicherere Artikelwahl.</li>
-<li>Die beiden <code>best-quality</code>-Profile sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40 beziehungsweise 33 Kompendien.</li>
+<li>Die drei Profile ab <code>best-quality</code> sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40, 33 und 20 Kompendien.</li>
 </ul>
 <h3 id="teil-1-weltwissen">Teil 1: Weltwissen</h3>
 <h4>Der alte Dienst</h4>
@@ -337,6 +338,7 @@ Profil es vorsieht.</p>
 <ul>
 <li>Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.</li>
 <li>In <code>best-quality-generated</code> schreibt das LLM jeden Baustein und markiert Modellwissen sichtbar.</li>
+<li>In <code>best-coverage-generated</code> schreibt es jeden Baustein vollständig über das angefragte Thema, auch ohne Belege.</li>
 </ul>
 </li>
 <li><strong>Neu erzeugen, auf Wunsch:</strong>
@@ -486,7 +488,7 @@ ohne Sprachmodell; das war damals der Standard und ist heute das Profil <code>ll
 <tr>
 <td>Profile (<code>preset</code>)</td>
 <td>–</td>
-<td>vier Profile; ein Schalter wählt die Methoden aller Schritte (D53)</td>
+<td>fünf Profile; ein Schalter wählt die Methoden aller Schritte (D53, D69)</td>
 </tr>
 <tr>
 <td>Ein Material als Eingang (<code>node_id</code>, <code>GET /api/v2/nodes/{id}</code>)</td>
@@ -628,17 +630,20 @@ Model2Vec, die extraktive Synthese und die Idee, jeden Satz gegen seine Quelle z
 <section class="doc" id="seite-09" aria-labelledby="seite-09-titel">
 <div class="doc-head"><p class="doc-label">Seite 09 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-09-titel">Methoden, Messwerte und Profile</h2>
-<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 28.09.2026, Release 2.2.2 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>; Zeit und
-Tokens des aktuellen Stands aus M45, die Güte aus der jeweils letzten Messung einer Methode</p>
-<p>Diese Seite begründet die vier Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
+<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 (D69) · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>; Zeit und
+Tokens des aktuellen Stands aus M45, für <code>best-coverage-generated</code> aus M47, die Güte aus der jeweils letzten Messung
+einer Methode</p>
+<p>Diese Seite begründet die fünf Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
 und Tokens und sagt, welches Profil welche Methode nutzt und warum: Artikelwahl, Korpusbau, Zuordnung der Absätze,
 Text, Lehrplanschnipsel, QA-Paare und Entitäten. Die Profile legen fest, wo ein Sprachmodell (LLM) arbeitet:
 <code>llm-free</code> nirgends; <code>balanced</code>, der Standard, dort, wo es wenig kostet und viel bringt; <code>best-quality</code> überall, wo es
-die Güte messbar hebt; <code>best-quality-generated</code> lässt es zusätzlich den Text schreiben. Gewählt wird ein Profil mit
+die Güte messbar hebt; <code>best-quality-generated</code> lässt es zusätzlich den Text schreiben, <code>best-coverage-generated</code>
+jeden Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (D69). Gewählt
+wird ein Profil mit
 <code>preset</code>; ohne Angabe gilt <code>PRESET_DEFAULT</code>, ausgeliefert <code>balanced</code> (D53). Jedes Profil außer <code>llm-free</code> braucht ein
 konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
-<h3 id="die-vier-profile-und-ihre-methoden">Die vier Profile und ihre Methoden</h3>
-<figure class="chart" role="group" aria-label="Die vier Profile je Verfahren und Endpunkt"><svg xmlns="http://www.w3.org/2000/svg" width="1094" height="708" viewBox="0 0 1094 708" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile je Verfahren und Endpunkt"><title>Die vier Profile je Verfahren und Endpunkt</title><rect width="1094" height="708" fill="#ffffff"/>
+<h3 id="die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</h3>
+<figure class="chart" role="group" aria-label="Die vier Profile vor D69 je Verfahren und Endpunkt (das fünfte steht in der Tabelle)"><svg xmlns="http://www.w3.org/2000/svg" width="1094" height="708" viewBox="0 0 1094 708" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile je Verfahren und Endpunkt"><title>Die vier Profile je Verfahren und Endpunkt</title><rect width="1094" height="708" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die vier Profile je Verfahren und Endpunkt</text>
 <rect x="24.0" y="46.0" width="12.0" height="12.0" rx="2" fill="#9dbde6" stroke="none" stroke-width="1"/>
 <text x="42.0" y="56.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Regeln, ohne LLM</text>
@@ -812,7 +817,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <text x="865.0" y="593.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">wie balanced</text>
 <text x="24.0" y="640.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens: M45, Median je Anfrage; ohne LLM auf dem Server gemessen, mit LLM im Entwicklungscontainer (das LLM überwiegt), das Kompendium als Server plus LLM-Schritte.</text>
 <text x="24.0" y="656.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Güte: Hauptartikel M35, Korpus M37/M39 (Sammel- / gewöhnliche Themen), Zuordnung M27/M39/M19, Lesbarkeit M28, Teil 2 M32,</text>
-<text x="24.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Entitäten M36, Kennungen M43, QA M34/M30, Material M25. Teil 3: M1 und Server. Einzelheiten: Seite 09.</text></svg><figcaption>Die vier Profile je Verfahren und Endpunkt</figcaption></figure>
+<text x="24.0" y="672.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Entitäten M36, Kennungen M43, QA M34/M30, Material M25. Teil 3: M1 und Server. Einzelheiten: Seite 09.</text></svg><figcaption>Die vier Profile vor D69 je Verfahren und Endpunkt (das fünfte steht in der Tabelle)</figcaption></figure>
 <div class="table-wrap"><table class="profiles" style="min-width: 900px">
 <thead>
 <tr>
@@ -821,6 +826,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <th class="p-balanced"><code>balanced</code> (Standard)</th>
 <th class="p-best"><code>best-quality</code></th>
 <th class="p-gen"><code>best-quality-generated</code></th>
+<th><code>best-coverage-generated</code></th>
 <th>Entscheidung</th>
 </tr>
 </thead>
@@ -831,12 +837,14 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>Regeln, das LLM entscheidet die unsicheren Fälle (<code>llm</code>)</td>
 <td>das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (<code>llm-thorough</code>)</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 <td>D35, D53, D61</td>
 </tr>
 <tr>
 <td>Korpus</td>
 <td>verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel</td>
 <td>das LLM nennt Übersicht und Teile des Themas (N)</td>
+<td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 <td>D48, D63</td>
@@ -847,6 +855,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>wie <code>llm-free</code></td>
 <td>das LLM ordnet jeden Absatz zu (<code>llm</code>)</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 <td>D38, D53</td>
 </tr>
 <tr>
@@ -855,13 +864,15 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>das LLM schreibt jeden Baustein, Modellwissen sichtbar markiert</td>
-<td>D53, D56</td>
+<td>das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (<code>model-knowledge-full</code>)</td>
+<td>D53, D56, D69</td>
 </tr>
 <tr>
 <td>Lehrplanschnipsel (<code>curriculum_check</code>)</td>
 <td>Regeln, Überschriften-Treffer gebündelt</td>
 <td>wie <code>llm-free</code></td>
 <td>dazu prüft das LLM jedes Element (<code>llm</code>)</td>
+<td>wie <code>best-quality</code></td>
 <td>wie <code>best-quality</code></td>
 <td>D58, D59</td>
 </tr>
@@ -871,6 +882,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>wie <code>llm-free</code></td>
 <td>das LLM schreibt die Paare (<code>llm</code>)</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 <td>D55, D57, D60</td>
 </tr>
 <tr>
@@ -879,11 +891,13 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>das LLM nennt sie mit dem Titel ihres Artikels (<code>llm</code>)</td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 <td>D62</td>
 </tr>
 <tr>
 <td>Kennungen (Wikidata, GND, VIAF, DBpedia)</td>
 <td>aus lokalen Indexen zum verknüpften Artikel</td>
+<td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
@@ -895,11 +909,13 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>das LLM nennt den Artikel</td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 <td>D45, D47</td>
 </tr>
 <tr>
 <td>Teil 3: Sammlungsüberblick</td>
 <td>edu-sharing zur Anfragezeit, kein LLM</td>
+<td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
@@ -909,6 +925,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>Budget je Anfrage (D59)</td>
 <td>60.000 Tokens</td>
 <td>60.000</td>
+<td>180.000</td>
 <td>180.000</td>
 <td>180.000</td>
 <td>D59</td>
@@ -956,6 +973,13 @@ Schritte ohne LLM dort gemessen, dazu die Schritte, in denen das LLM des Profils
 <td>32,8 s: dazu das Schreiben, 8,7 s</td>
 <td>60.357 (44.639 bis 134.766)</td>
 <td>rund 33</td>
+</tr>
+<tr>
+<td><code>best-coverage-generated</code></td>
+<td>Teil 1 allein auf dem Entwicklungsrechner: 27,5 s (24 bis 32 s), M47</td>
+<td>Artikelwahl, Zuordnung und das Schreiben aller Bausteine</td>
+<td>Teil 1 allein: 98.707 (62.999 bis 99.236), rund ein Drittel aus dem Prompt-Cache (M46)</td>
+<td>rund 20</td>
 </tr>
 </tbody>
 </table></div>
@@ -1120,7 +1144,7 @@ das auf dem Server dieselbe b-api anspricht.</p>
 <td><strong>93</strong></td>
 <td>+1 s je Frage, gefragt bei 64 von 94</td>
 <td>rund 800 je Frage</td>
-<td><code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M35</td>
 </tr>
 </tbody>
@@ -1245,7 +1269,7 @@ zwei Gutachtern: bei 25 Sammel- und Mischthemen wie „deutsche Dichter“ und b
 <td><strong>87 % / 93 %</strong></td>
 <td>+5 s</td>
 <td>rund 500</td>
-<td><code>balanced</code>, <code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>balanced</code>, <code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M37, M39, M45</td>
 </tr>
 </tbody>
@@ -1411,7 +1435,7 @@ am Goldstandard (zehn Themen, gelabelte Absätze).</p>
 <td><strong>0,70</strong></td>
 <td>+12,7 s</td>
 <td>rund 170 je Absatz</td>
-<td><code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M19, M27, M45</td>
 </tr>
 </tbody>
@@ -1507,12 +1531,24 @@ auf dem Gold nicht, der Abschlag für Ausschlusswörter kostet leicht. Die Werte
 <td><code>best-quality-generated</code></td>
 <td>M28, M31, M45</td>
 </tr>
+<tr>
+<td><strong>das LLM schreibt jeden Baustein vollständig zum angefragten Thema</strong> (<code>model-knowledge-full</code>): Belege, wo sie das Thema treffen, sonst Modellwissen, auch ohne Belege</td>
+<td>Themen mit Aspekt: Passung 4,81 statt 1,81, Nutzen 4,81 statt 2,12, Vollständigkeit 5,0 statt 1,7 von 5, keine schweren Fehler; rund 30.000 statt 12.000 Zeichen, den größten Teil aus Modellwissen</td>
+<td>Teil 1 rund 28 s statt 24 s</td>
+<td>91.000 bis 99.000 statt rund 70.000 für Teil 1, ein Drittel aus dem Prompt-Cache</td>
+<td><code>best-coverage-generated</code></td>
+<td>M46, M47</td>
+</tr>
 </tbody>
 </table></div>
 <p><strong>Warum so:</strong> Der wörtliche Text ist nachprüfbar und bleibt deshalb der Standard bis <code>best-quality</code>; für KI und
 Weiterverarbeitung ist das richtig. Für Menschen, die den Text direkt lesen, ist die geschriebene Fassung klar besser;
 sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen steht sichtbar als <code>[Modellwissen]</code> da, nur als
-prüfbare Sachaussage (D56).</p>
+prüfbare Sachaussage (D56). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
+Text über den Artikel, auf den die Artikelwahl das Thema auflöst; <code>best-coverage-generated</code> schreibt jeden Baustein
+über das angefragte Thema und füllt ihn, wo die Quellen nichts dazu sagen, aus Modellwissen (Jan, 01.10.2026: „max.
+abdeckung der kategorien und max. nähe zum thema“, D69). Der Preis ist ein Text, der zum größten Teil aus
+Modellwissen besteht; die Gutachter fanden darin keine schweren Fehler (M47).</p>
 <h3 id="5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</h3>
 <figure class="chart" role="group" aria-label="Lehrplanschnipsel: Methoden und Profile"><svg xmlns="http://www.w3.org/2000/svg" width="1110" height="240" viewBox="0 0 1110 240" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Lehrplanschnipsel auswählen (Teil 2)"><title>Lehrplanschnipsel auswählen (Teil 2)</title><rect width="1110" height="240" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Lehrplanschnipsel auswählen (Teil 2)</text>
@@ -1595,7 +1631,7 @@ gezeigten Elemente, die zum Thema passen, bei 20 Themen ohne und mit Fach, benot
 <td>5 bis 9 %</td>
 <td>+6 bis 8 s</td>
 <td>5.100 bis 9.600</td>
-<td><code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M32, M33, M45</td>
 </tr>
 </tbody>
@@ -1714,7 +1750,7 @@ ohne den Text verständlich, Antwort passt, nicht doppelt, nicht trivial, kein S
 <td><strong>83 % (99 von 120)</strong></td>
 <td>6,3 s</td>
 <td>rund 2.400 bei 5.000 bis 12.000 Zeichen, 7.137 bei rund 23.000</td>
-<td><code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M30, M45</td>
 </tr>
 </tbody>
@@ -1827,7 +1863,7 @@ Texten ein (D55); aufgefüllt aus Glossar und Akteuren sind 58 statt 46 von 95 P
 <td><strong>0,78 (0,70 / 0,89)</strong></td>
 <td>6,8 s</td>
 <td>rund 1.300</td>
-<td><code>balanced</code>, <code>best-quality</code>, <code>best-quality-generated</code></td>
+<td><code>balanced</code>, <code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>M36, M45</td>
 </tr>
 <tr>
@@ -1896,17 +1932,17 @@ wesentlich; die Zuordnung ist danach nachgemessen und gleich (M44).</li>
 <section class="doc" id="seite-07" aria-labelledby="seite-07-titel">
 <div class="doc-head"><p class="doc-label">Seite 07 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-07-titel">Entscheidungsvorlage: Verfahren und Schalter von Teil 1</h2>
-<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 28.09.2026 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M45; Rohdaten und
+<p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 01.10.2026 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M47; Rohdaten und
 Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von <code>/entities</code>:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/08-entitaeten-und-kennungen.md" target="_blank" rel="noopener">Entitäten und Kennungen</a>; alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: <a href="#seite-09">Methoden, Messwerte und Profile</a></p>
 <p>Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
 zuschalten. Diese Vorlage zeigt je Schritt, welche Verfahren es gibt, wie man sie im Dienst wählt, was sie leisten und
-was sie an Zeit und Tokens kosten. Vier Profile bündeln sie (D53); der Schalter <code>preset</code> wählt eines. „Standard“
+was sie an Zeit und Tokens kosten. Fünf Profile bündeln sie (D53, D69); der Schalter <code>preset</code> wählt eines. „Standard“
 heißt: Das gilt, wenn die Anfrage nichts anderes verlangt. Standard ist das Profil <code>balanced</code> (<code>PRESET_DEFAULT</code>);
 jedes Profil außer <code>llm-free</code> braucht ein LLM, sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren
 der QA-Paare (D54, D55, D57).</p>
-<h3 id="die-vier-profile-auf-einen-blick">Die vier Profile auf einen Blick</h3>
+<h3 id="die-fuenf-profile-auf-einen-blick">Die fünf Profile auf einen Blick</h3>
 <div class="table-wrap"><table class="profiles" style="min-width: 900px">
 <thead>
 <tr>
@@ -1915,6 +1951,7 @@ der QA-Paare (D54, D55, D57).</p>
 <th class="p-balanced"><code>balanced</code> (Standard)</th>
 <th class="p-best"><code>best-quality</code></th>
 <th class="p-gen"><code>best-quality-generated</code></th>
+<th><code>best-coverage-generated</code></th>
 </tr>
 </thead>
 <tbody>
@@ -1924,11 +1961,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td><code>llm</code></td>
 <td><code>llm-thorough</code></td>
 <td><code>llm-thorough</code></td>
+<td><code>llm-thorough</code></td>
 </tr>
 <tr>
 <td>Korpus</td>
 <td>12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel</td>
 <td>statt verlinkter Unterartikel und Volltexttreffer die Artikel, die das LLM als Übersicht und Teile nennt (D63); ohne Antwort wie <code>llm-free</code> mit Prüfung der Nebenartikel</td>
+<td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 </tr>
@@ -1938,6 +1977,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td><code>hybrid_light</code></td>
 <td><code>llm</code></td>
 <td><code>llm</code></td>
+<td><code>llm</code></td>
 </tr>
 <tr>
 <td>Text (<code>generation</code>, <code>enrichment</code>)</td>
@@ -1945,11 +1985,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wörtlich</td>
 <td>wörtlich</td>
 <td>vom LLM geschrieben, ergänzt um Modellwissen</td>
+<td>vom LLM vollständig zum angefragten Thema geschrieben, ohne passende Belege aus Modellwissen (D69)</td>
 </tr>
 <tr>
 <td>QA-Paare (<code>/qa</code>, <code>method</code>)</td>
 <td><code>rule-based</code></td>
 <td><code>rule-based</code></td>
+<td><code>llm</code></td>
 <td><code>llm</code></td>
 <td><code>llm</code></td>
 </tr>
@@ -1959,11 +2001,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wie <code>llm-free</code></td>
 <td>dazu LLM-Prüfung jedes Elements</td>
 <td>dazu LLM-Prüfung jedes Elements</td>
+<td>dazu LLM-Prüfung jedes Elements</td>
 </tr>
 <tr>
 <td>Entitäten (<code>/entities</code>, <code>methods</code>)</td>
 <td><code>ner</code> (spaCy) und <code>dictionary</code> (Artikeltitel)</td>
 <td><code>llm</code>: das LLM nennt sie mit Artikeltitel</td>
+<td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 </tr>
@@ -1973,11 +2017,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>ebenso, auf den Artikeln des LLM: Wikidata 0,70 und 0,89; GND 0,70 und 0,88; englischer Artikel bei 96 %</td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 </tr>
 <tr>
 <td>Hauptartikel richtig, 94 Goldanfragen (M35)</td>
 <td>87</td>
 <td>91</td>
+<td>93</td>
 <td>93</td>
 <td>93</td>
 </tr>
@@ -1987,11 +2033,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>0,98 und 0,88</td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 </tr>
 <tr>
 <td>gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25)</td>
 <td>12 von 352</td>
 <td>5 von 346 vor D63</td>
+<td>nicht gemessen</td>
 <td>nicht gemessen</td>
 <td>nicht gemessen</td>
 </tr>
@@ -2001,11 +2049,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>87 % und 93 % seit D63 (vorher 45 und 73 %)</td>
 <td>wie <code>balanced</code> (derselbe Korpus, nicht eigens gemessen)</td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 </tr>
 <tr>
 <td>Zuordnung, macro-F1 der gelabelten Absätze (M27, M19)</td>
 <td>0,45</td>
 <td>0,45 vor D63; den Korpus mit N deckt das Gold nicht mehr ab (M39)</td>
+<td>0,70 vor D63</td>
 <td>0,70 vor D63</td>
 <td>0,70 vor D63</td>
 </tr>
@@ -2015,12 +2065,22 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wörtlich wie <code>best-quality</code></td>
 <td>2,5</td>
 <td>4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31)</td>
+<td>nicht gemessen</td>
+</tr>
+<tr>
+<td>Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5</td>
+<td>nicht gemessen</td>
+<td>nicht gemessen</td>
+<td>nicht gemessen</td>
+<td>1,81, 2,12, 1,69: der Text handelt vom Artikel</td>
+<td>4,81, 4,81, 5,00; keine schweren Fehler</td>
 </tr>
 <tr>
 <td>QA-Paare mangelfrei bei beiden Gutachtern (M30, M34)</td>
 <td>58 von 95 seit D60 (vorher 48 von 96); 0,52 s an rund 23.000 Zeichen (M45)</td>
 <td>wie <code>llm-free</code></td>
 <td>99 von 120; 6,3 s und 7.137 Tokens an rund 23.000 Zeichen (M45)</td>
+<td>wie <code>best-quality</code></td>
 <td>wie <code>best-quality</code></td>
 </tr>
 <tr>
@@ -2029,11 +2089,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wie <code>llm-free</code></td>
 <td>74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 </tr>
 <tr>
 <td>Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62)</td>
 <td>0,38, Präzision 0,29; 1,0 s an 1.500 Zeichen (M45)</td>
 <td>0,78, Präzision 0,70; 6,8 s und 1.284 Tokens an 1.500 Zeichen (M45)</td>
+<td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
 </tr>
@@ -2043,6 +2105,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td>rund 6,9 s</td>
 <td>rund 26 s</td>
 <td>rund 36 s</td>
+<td>nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 27,5 s (M47)</td>
 </tr>
 <tr>
 <td>Tokens je Kompendium, Median (M45)</td>
@@ -2050,11 +2113,13 @@ der QA-Paare (D54, D55, D57).</p>
 <td>576</td>
 <td>49.019</td>
 <td>60.357</td>
+<td>Teil 1 allein 98.707, davon rund 29.000 bis 36.000 aus dem Prompt-Cache (M47)</td>
 </tr>
 <tr>
 <td>Budget je Anfrage (D59)</td>
 <td>60.000</td>
 <td>60.000</td>
+<td>180.000</td>
 <td>180.000</td>
 <td>180.000</td>
 </tr>
@@ -2064,6 +2129,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td>rund 3.500</td>
 <td>rund 41</td>
 <td>rund 33</td>
+<td>rund 20 (Teil 1 allein)</td>
 </tr>
 <tr>
 <td>so wählt man es</td>
@@ -2071,10 +2137,11 @@ der QA-Paare (D54, D55, D57).</p>
 <td>Standard, <code>preset: balanced</code></td>
 <td><code>preset: best-quality</code></td>
 <td><code>preset: best-quality-generated</code></td>
+<td><code>preset: best-coverage-generated</code></td>
 </tr>
 </tbody>
 </table></div>
-<figure class="chart" role="group" aria-label="Die vier Profile im Vergleich"><svg xmlns="http://www.w3.org/2000/svg" width="780" height="462" viewBox="0 0 780 462" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile"><title>Die vier Profile</title><rect width="780" height="462" fill="#ffffff"/>
+<figure class="chart" role="group" aria-label="Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)"><svg xmlns="http://www.w3.org/2000/svg" width="780" height="462" viewBox="0 0 780 462" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die vier Profile"><title>Die vier Profile</title><rect width="780" height="462" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die vier Profile im Vergleich</text>
 <text x="200.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Teil 1 und 2 je Kompendium</text>
 <text x="420.0" y="64.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Tokens je Kompendium</text>
@@ -2121,7 +2188,7 @@ der QA-Paare (D54, D55, D57).</p>
 <text x="640.0" y="337.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Text: vom LLM geschrieben</text>
 <text x="24.0" y="380.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Zeit: Teil 1 und 2 auf dem Server (M45): ohne LLM gemessen, dazu die LLM-Schritte des Profils, gpt-6-luna.</text>
 <text x="24.0" y="396.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tokens: Median, je LLM-Profil sechs eigene Themen (M45). Zuordnung: macro-F1 der gelabelten Absätze,</text>
-<text x="24.0" y="412.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">llm-free M27, balanced M39 (² das Gold deckt den Korpus mit N zu zwei Dritteln), die LLM-Zuordnung M19.</text></svg><figcaption>Die vier Profile im Vergleich</figcaption></figure>
+<text x="24.0" y="412.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">llm-free M27, balanced M39 (² das Gold deckt den Korpus mit N zu zwei Dritteln), die LLM-Zuordnung M19.</text></svg><figcaption>Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)</figcaption></figure>
 <ul>
 <li><strong><code>llm-free</code></strong> ist das Beste, was ohne Sprachmodell geht: die geschärften Regeln der Artikelwahl, für ein Material
 ohne <code>topic</code> die Regeln über Titel und Beschreibung (D47), Volltexttreffer nur mit Link zum Hauptartikel (D48),
@@ -2155,14 +2222,20 @@ blinde Gutachter zogen den geschriebenen Text in 11 von 12 Urteilen dem wörtlic
 ersten Prompt bestand das ergänzte Modellwissen zu zwei Dritteln aus Füllsätzen; der zweite verlangt eine prüfbare
 Sachaussage oder nichts: 50 statt 82 ergänzte Sätze, davon 13 statt 50 Füllsätze und 32 statt 27 fachliche, keiner
 falsch nach beiden Gutachtern (M31). <code>/entities</code> wie in <code>balanced</code>.</li>
+<li><strong><code>best-coverage-generated</code></strong> (D69) schreibt wie <code>best-quality-generated</code>, aber jeden Baustein vollständig über das
+Thema, wie es angefragt ist: Belege, wo sie das Thema treffen, sonst gesichertes Modellwissen, sichtbar
+gekennzeichnet, auch für einen Baustein ohne Belege; die Ziellänge ist Untergrenze. Für Themen mit Aspekt wie
+„OER-Förderungen“, die die Artikelwahl auf einen Oberbegriff auflöst: Passung 4,81 statt 1,81, Nutzen 4,81 statt
+2,12, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens,
+rund ein Drittel aus dem Prompt-Cache (M46). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen.</li>
 </ul>
 <p>Zeiten und Tokens: M45 (28.09.2026, Release 2.2.2, <code>gpt-6-luna</code>), Teil 1 und 2, jedes LLM-Profil auf sechs eigenen
 Themen; die Zeit auf dem Server ohne LLM gemessen, dazu die Schritte, in denen das LLM des Profils arbeitet. Die
 Werte vor D58 und D63 stehen in M27; seither kosten die <code>best-quality</code>-Profile rund das Doppelte, weil das LLM die
 Lehrplanelemente prüft und der Korpus mit N größer ist (<a href="#seite-09">Methoden, Messwerte und Profile</a>).</p>
 <h3 id="die-profile-preset">Die Profile: <code>preset</code></h3>
-<p><code>preset</code> setzt alle Schalter von Teil 1 und die Lehrplanprüfung von Teil 2 auf eines der vier Profile (D41, D53,
-D58). Einen Schalter, den die Anfrage selbst
+<p><code>preset</code> setzt alle Schalter von Teil 1 und die Lehrplanprüfung von Teil 2 auf eines der fünf Profile (D41, D53,
+D58, D69). Einen Schalter, den die Anfrage selbst
 setzt, lässt es stehen. Ohne <code>preset</code> gilt <code>PRESET_DEFAULT</code>, ausgeliefert <code>balanced</code> (D53; bis dahin war <code>llm-free</code>
 die Vorgabe, D40); es ersetzt die Vorgaben der Einzelschalter (<code>MATCHER_DEFAULT</code>, <code>LLM_ARTICLE_CHOICE_DEFAULT</code> und
 die übrigen). Jedes Profil außer <code>llm-free</code> braucht ein LLM: Ohne <code>LLM_ENABLED</code> und <code>B_API_KEY</code> ist eine solche
@@ -2216,14 +2289,24 @@ Anfrage ein 503, der die Schalter nennt, die ein LLM brauchen; ein Dienst ohne L
 <td><code>model-knowledge</code></td>
 <td><code>llm</code></td>
 </tr>
+<tr>
+<td><code>best-coverage-generated</code></td>
+<td><code>llm-thorough</code></td>
+<td><code>llm</code></td>
+<td><code>rule-based</code></td>
+<td><code>llm</code></td>
+<td><code>model-knowledge-full</code></td>
+<td><code>llm</code></td>
+</tr>
 </tbody>
 </table></div>
 <p>Wo man es findet: in <code>/docs</code> am Feld <code>preset</code> von <code>POST /api/v2/compendium</code> (mit Güte, Zeit und Tokens je Profil) und in
-vier Beispielen, eines je Profil; <code>POST /api/v2/knowledge</code> und <code>POST /api/v2/qa</code> nehmen <code>preset</code> ebenfalls an
+fünf Beispielen, eines je Profil; <code>POST /api/v2/knowledge</code> und <code>POST /api/v2/qa</code> nehmen <code>preset</code> ebenfalls an
 (<code>/knowledge</code> übernimmt daraus nur <code>article_choice</code>, <code>/qa</code> nur das Verfahren der Paare, D55); auf der Kommandozeile
 <code>compendium generate --preset balanced</code>. Die Antwort nennt das wirksame Profil in <code>audit.preset</code>, was tatsächlich lief
 in <code>audit.llm</code>. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und <code>audit.llm</code> sagt warum.
-<code>best-quality-generated</code> schaltet als einziges Profil <code>generation</code> und <code>enrichment</code> ein (Jan, 25.09.2026): Das LLM
+<code>best-quality-generated</code> schaltet <code>generation</code> und <code>enrichment</code> ein (Jan, 25.09.2026), ebenso <code>best-coverage-generated</code>
+mit <code>enrichment: model-knowledge-full</code> (D69, siehe die Empfehlung unten): Das LLM
 schreibt jeden Baustein und darf eigenes Wissen ergänzen, ohne Belegnummer und sichtbar gekennzeichnet mit
 <code>[Modellwissen]</code> (D56); <code>extraction</code> bleibt regelbasiert, weil es am Goldstandard nichts gewann (Schritt 4). Gemessen in
 M27, M28, M31 und M45: rund 36 s und 60.000 Tokens je Kompendium (M45); zwei blinde Gutachter zogen den geschriebenen Text in 11
@@ -2240,6 +2323,7 @@ Gutachtern falsch (M31).</p>
 <th class="p-balanced"><code>balanced</code></th>
 <th class="p-best"><code>best-quality</code></th>
 <th class="p-gen"><code>best-quality-generated</code></th>
+<th><code>best-coverage-generated</code></th>
 </tr>
 </thead>
 <tbody>
@@ -2249,12 +2333,14 @@ Gutachtern falsch (M31).</p>
 <td>das LLM nennt Übersicht und Teile des Themas (D63) und entscheidet unsichere Artikel; rund 6,9 s, 576 Tokens</td>
 <td>dazu LLM-Zuordnung und die Prüfung der Lehrplanelemente; rund 26 s, 49.019 Tokens</td>
 <td>dazu Text vom LLM; rund 36 s, 60.357 Tokens</td>
+<td>dazu schreibt das LLM jeden Baustein vollständig zum angefragten Thema; Teil 1 allein rund 27,5 s, 98.707 Tokens (M47)</td>
 </tr>
 <tr>
 <td><code>POST /api/v2/knowledge</code></td>
 <td>Regeln; 0,33 s</td>
 <td>dieselben Artikel wie das Kompendium: Übersicht und Teile vom LLM (D63); 4,6 s, 494 Tokens</td>
 <td>dazu prüft das LLM auch sichere Artikel; 5,7 s, 903 Tokens</td>
+<td>wie <code>best-quality</code></td>
 <td>wie <code>best-quality</code></td>
 </tr>
 <tr>
@@ -2263,6 +2349,7 @@ Gutachtern falsch (M31).</p>
 <td>wie <code>llm-free</code> (D57)</td>
 <td><code>llm</code>: 6,3 s und 7.137 Tokens für 20 Paare an rund 23.000 Zeichen (M45; an 5.000 bis 12.000 Zeichen rund 2.400, M30), 99 von 120 mangelfrei</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 </tr>
 <tr>
 <td><code>POST /api/v2/qa</code> mit <code>topic</code> oder <code>node_id</code></td>
@@ -2270,6 +2357,7 @@ Gutachtern falsch (M31).</p>
 <td>ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47)</td>
 <td>ebenso</td>
 <td>ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab</td>
+<td>ebenso</td>
 </tr>
 <tr>
 <td><code>GET /api/v2/lehrplan/search</code></td>
@@ -2277,10 +2365,12 @@ Gutachtern falsch (M31).</p>
 <td>wie <code>llm-free</code>; mit <code>mode=topic</code> wählt das LLM den Artikel wie in Teil 2</td>
 <td>dazu bewertet das LLM jedes gefundene Element (D59): 8,3 s und 5.085 Tokens bei 13 bis 50 Treffern (M45); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33)</td>
 <td>wie <code>best-quality</code></td>
+<td>wie <code>best-quality</code></td>
 </tr>
 <tr>
 <td><code>GET /api/v2/nodes/{id}</code></td>
 <td>Regeln, in allen Profilen gleich: zeigt, was ein Knoten mitbringt</td>
+<td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
@@ -2291,10 +2381,12 @@ Gutachtern falsch (M31).</p>
 <td>das LLM nennt die Entitäten mit ihrem Artikeltitel; F1 0,78; 6,8 s und 1.284 Tokens an 1.500 Zeichen (M45, D62)</td>
 <td>wie <code>balanced</code></td>
 <td>wie <code>balanced</code></td>
+<td>wie <code>balanced</code></td>
 </tr>
 <tr>
 <td><code>GET /api/v2/collections/{id}/overview</code></td>
 <td>Teil 3, ohne LLM</td>
+<td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
 <td>wie <code>llm-free</code></td>
@@ -2304,7 +2396,7 @@ Gutachtern falsch (M31).</p>
 <p><code>/knowledge</code>, <code>/qa</code>, <code>/lehrplan/search</code> und seit D62 <code>/entities</code> nehmen <code>preset</code> wie das Kompendium; ohne es gilt
 <code>PRESET_DEFAULT</code>. Bei <code>/qa</code> wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55);
 bei <code>/entities</code> die Wege der Erkennung (<code>methods</code>). <code>/nodes</code> und der Sammlungsüberblick kennen kein LLM und kein
-Profil. Die beiden <code>best-quality</code>-Profile rechnen in jedem Endpunkt mit 180.000 Tokens je Anfrage, die anderen mit
+Profil. Die drei Profile ab <code>best-quality</code> rechnen in jedem Endpunkt mit 180.000 Tokens je Anfrage, die anderen mit
 60.000 (D59). Zeiten und Tokens: M45, ohne LLM auf dem Server, mit LLM im Entwicklungscontainer, das Kompendium als
 Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.</p>
 <h3 id="der-ablauf">Der Ablauf</h3>
@@ -2615,8 +2707,8 @@ sucht dann den Artikel, um den sich der Korpus dreht.</p>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Profile:</strong> <code>llm-free</code> nimmt <code>rule-based</code>, der Standard <code>balanced</code> <code>llm</code> (D53), die beiden <code>best-quality</code>-Profile
-<code>llm-thorough</code> (D61).</p>
+<p><strong>Profile:</strong> <code>llm-free</code> nimmt <code>rule-based</code>, der Standard <code>balanced</code> <code>llm</code> (D53), die drei Profile ab <code>best-quality</code>
+<code>llm-thorough</code> (D61, D69).</p>
 <div class="table-wrap"><table style="min-width: 600px">
 <thead>
 <tr>
@@ -2638,7 +2730,7 @@ sucht dann den Artikel, um den sich der Korpus dreht.</p>
 </tr>
 <tr>
 <td>Umgebung: <code>PRESET_DEFAULT</code></td>
-<td>die vier Profile</td>
+<td>die fünf Profile</td>
 <td><code>balanced</code> (D53); ein Dienst ohne LLM setzt <code>llm-free</code></td>
 </tr>
 </tbody>
@@ -3346,14 +3438,14 @@ drei Schalter auf.</p>
 <tr>
 <td><code>generation</code></td>
 <td><code>rule-based</code>, <code>llm-fast</code>, <code>llm</code></td>
-<td><code>llm</code> in <code>best-quality-generated</code>, sonst <code>rule-based</code></td>
+<td><code>llm</code> in <code>best-quality-generated</code> und <code>best-coverage-generated</code>, sonst <code>rule-based</code></td>
 <td><code>llm-fast</code>: Das LLM schreibt Themendefinition und Querschnitt &amp; Bezüge neu (<code>LLM_FAST_SECTIONS</code>); <code>llm</code>: alle Inhaltsbausteine.</td>
 </tr>
 <tr>
 <td><code>enrichment</code></td>
-<td><code>sources-only</code>, <code>model-knowledge</code></td>
-<td><code>model-knowledge</code> in <code>best-quality-generated</code>, sonst <code>sources-only</code></td>
-<td><code>model-knowledge</code>: Das schreibende LLM darf eigenes Wissen ergänzen, ohne Belegnummer und sichtbar gekennzeichnet mit <code>[Modellwissen]</code> (D56); nur mit <code>generation</code> <code>llm</code> oder <code>llm-fast</code>.</td>
+<td><code>sources-only</code>, <code>model-knowledge</code>, <code>model-knowledge-full</code></td>
+<td><code>model-knowledge</code> in <code>best-quality-generated</code>, <code>model-knowledge-full</code> in <code>best-coverage-generated</code>, sonst <code>sources-only</code></td>
+<td><code>model-knowledge</code>: Das schreibende LLM darf eigenes Wissen ergänzen, ohne Belegnummer und sichtbar gekennzeichnet mit <code>[Modellwissen]</code> (D56); nur mit <code>generation</code> <code>llm</code> oder <code>llm-fast</code>. <code>model-knowledge-full</code> (D69): Das LLM schreibt jeden Inhaltsbaustein vollständig über das angefragte Thema, Belege nur, wo sie es treffen, sonst Modellwissen, auch ohne Belege; die Ziellänge ist Untergrenze.</td>
 </tr>
 <tr>
 <td><code>target_length</code></td>
@@ -3508,6 +3600,11 @@ Thema (M31).</li>
 <td>60.357 (44.639 bis 134.766)</td>
 <td>rund 33</td>
 </tr>
+<tr>
+<td><code>best-coverage-generated</code></td>
+<td>Teil 1 allein 98.707 (62.999 bis 99.236), M47</td>
+<td>rund 20</td>
+</tr>
 </tbody>
 </table></div>
 <p>M45 maß jedes LLM-Profil auf sechs eigenen Themen; die Zeile mit <code>llm-fast</code> ist addiert. Große Themen kosten mehr:
@@ -3571,6 +3668,20 @@ rund 3 % mehr (M31). Zwei blinde Gutachter zogen den geschriebenen Text in 11 vo
 Quellen stehen (M28). Mit dem zweiten Prompt (D56) sind 13 von 50 ergänzten Sätzen Füllsätze statt 50 von 82, 32 statt
 27 fachlich und keiner nach beiden Gutachtern falsch; im Mittel bleiben 5 Füllsätze je Thema statt 12, und v2 wurde in 8
 von 12 Urteilen vorgezogen (M31). Wer den geschriebenen Text ohne Modellwissen will, setzt <code>&quot;enrichment&quot;: &quot;sources-only&quot;</code>; dann bleibt jeder Satz belegt. <code>/entities</code> wie <code>balanced</code>.</p>
+<h4><code>best-coverage-generated</code></h4>
+<p>Anfrage: <code>{&quot;topic&quot;: &quot;OER-Förderungen&quot;, &quot;preset&quot;: &quot;best-coverage-generated&quot;}</code>, mit LLM und Budget wie bei
+<code>best-quality</code>.</p>
+<p>Ergebnis: wie <code>best-quality-generated</code>, aber das LLM schreibt jeden Inhaltsbaustein über das Thema, wie es angefragt
+ist, mit seinem Aspekt (<code>enrichment: model-knowledge-full</code>, D69): Belege nur, wo sie das Thema treffen, sonst
+gesichertes Modellwissen, sichtbar gekennzeichnet, auch für einen Baustein ohne Belege; die Ziellänge ist Untergrenze,
+und Überschrift und <code>topic</code> nennen das angefragte Thema. An acht Themen mit Aspekt bewerteten zwei blinde Gutachter
+die Passung mit 4,81 statt 1,81, den Nutzen mit 4,81 statt 2,12 und die Vollständigkeit mit 5,0 statt 1,7 von 5,
+ohne schwere Fehler; auf zwei Kontrollthemen blieb es beim Thema und war nützlicher, mit 2,25 statt 1,0 leichten
+Fehlern je Text, vier von neun schon aus den Quellen (M47). Teil 1 kostet rund 28 s und 91.000 bis 99.000 Tokens,
+rund ein Drittel davon aus dem Prompt-Cache (M46), und wird mit rund 30.000 Zeichen zweieinhalbmal so lang. Den
+größten Teil schreibt das Modell aus eigenem Wissen (im Median 123 gekennzeichnete Sätze gegen 34 Belegnummern);
+für Texte, die die Redaktion prüft. Mit <code>&quot;matcher&quot;: &quot;hybrid_light&quot;</code> kostet es rund 35.000 Tokens und 16 s, bei
+Passung 4,56 und Nutzen 4,31.</p>
 <h3 id="was-die-zahlen-nicht-sagen">Was die Zahlen nicht sagen</h3>
 <ul>
 <li>Die Goldlabels hat ein Sprachmodell vorgeschlagen (Claude), eine Redaktion hat sie nicht geprüft. Ein LLM als
@@ -3635,7 +3746,8 @@ nicht zu verstehen sind („Wo befinden sich die Kurszentren?“), und Nachbar-P
 nennen („Wer war Immanuel Kant?“ zu Ernst Abbe).</p>
 </li>
 <li>
-<p><strong>Budget je Anfrage für <code>best-quality</code>:</strong> entschieden (D59, Jan): Die beiden <code>best-quality</code>-Profile rechnen mit
+<p><strong>Budget je Anfrage für <code>best-quality</code>:</strong> entschieden (D59, Jan): Die beiden <code>best-quality</code>-Profile (seit D69 auch
+<code>best-coverage-generated</code>) rechnen mit
 180.000 Tokens je Anfrage (<code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>), in jedem Endpunkt, auch in der
 Lehrplansuche, die seither die Profile nimmt; <code>llm-free</code> und <code>balanced</code> bleiben bei 60.000. Jan wollte zuerst
 120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
@@ -4155,7 +4267,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>c881110</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>8d49a7c</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
