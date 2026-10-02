@@ -25,8 +25,9 @@ Profil es vorsieht.
 ![Die fünf Profile: Güte, Zeit und Kosten (M52)](bilder/profiluebersicht.svg)
 
 Die fünf Profile im Stand D72 an neun Themen in drei Arten (M52, Tabelle auf
-[Seite 09](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52)): Die Güte steigt mit
-jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
+[Seite 09](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52)): Passung, Nutzen und
+Vollständigkeit steigen mit jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5, die Lesbarkeit erst mit dem
+Schreiben. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
 die Tokens von 0 auf 103.300, und die schreibenden Profile bestehen zu 62 und 83 % aus gekennzeichnetem
 Modellwissen.
 
@@ -85,7 +86,8 @@ Teil 1 entsteht in fünf Schritten; die Methoden und ihre Messwerte stehen auf
    - Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.
    - In `best-quality-generated` schreibt das LLM jeden Baustein zum angefragten Thema, aus den Belegen und mit Modellwissen für höchstens die Hälfte der Sätze, einen Baustein ohne Belege ganz aus Modellwissen (D72); Modellwissen ist sichtbar markiert.
    - In `best-coverage-generated` schreibt es jeden Baustein vollständig über das angefragte Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen.
-   - In beiden formuliert das LLM das Thema zuerst, wenn es ein Text ist oder ein Knoten ohne Thema kommt (D72).
+   - In beiden formuliert das LLM das Thema zuerst, wenn es ein Text ist oder ein Knoten oder eine Sammlung ohne Thema
+     kommt (D72).
 5. **Neu erzeugen, auf Wunsch:**
    - Mit `existing_markdown` bleiben redaktionell geprüfte Bausteine wörtlich stehen.
    - Mit `regenerate_sections` entstehen nur die genannten Bausteine neu.

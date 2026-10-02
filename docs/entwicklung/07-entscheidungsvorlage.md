@@ -19,7 +19,7 @@ der QA-Paare (D54, D55, D57).
 | Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm-thorough` | `llm-thorough` | `llm-thorough` |
 | Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | statt verlinkter Unterartikel und Volltexttreffer die Artikel, die das LLM als Übersicht und Teile nennt (D63); ohne Antwort wie `llm-free` mit Prüfung der Nebenartikel | wie `balanced` | wie `balanced` | wie `balanced` |
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` | `llm` |
-| Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
+| Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM zum angefragten Thema geschrieben, ergänzt um Modellwissen (höchstens die Hälfte), ein Baustein ohne Belege aus Modellwissen (D72) | vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69) |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |

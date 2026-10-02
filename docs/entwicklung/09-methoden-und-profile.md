@@ -24,7 +24,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.
 | Korpus | verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel | das LLM nennt Übersicht und Teile des Themas (N) | wie `balanced` | wie `balanced` | wie `balanced` | D48, D63 |
 | Zuordnung (`matcher`) | `hybrid_light` mit Model2Vec | wie `llm-free` | das LLM ordnet jeden Absatz zu (`llm`) | wie `best-quality` | wie `best-quality` | D38, D53 |
 | Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein zum angefragten Thema, Modellwissen für höchstens die Hälfte der Sätze, einen Baustein ohne Belege ganz aus Modellwissen, sichtbar markiert (D70, D72) | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, aus den Belegen, wo sie es treffen, sonst aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
-| Thema in den Prompts | – | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst (`topic_wording`) | wie `best-quality-generated` | D72 |
+| Thema in den Prompts | – | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst (`topic_wording`) | wie `best-quality-generated` | D72 |
 | Lehrplanschnipsel (`curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu prüft das LLM jedes Element (`llm`) | wie `best-quality` | wie `best-quality` | D58, D59 |
 | QA-Paare (`/qa`, `method`) | Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren | wie `llm-free` | das LLM schreibt die Paare (`llm`) | wie `best-quality` | wie `best-quality` | D55, D57, D60 |
 | Entitäten (`/entities`, `methods`) | spaCy und das Wörterbuch der Artikeltitel (`ner`, `dictionary`) | das LLM nennt sie mit dem Titel ihres Artikels (`llm`) | wie `balanced` | wie `balanced` | wie `balanced` | D62 |
@@ -65,7 +65,8 @@ eine um eins verschiedene ([M52](05-messprotokoll.md)). Fett: die beste Note der
 | Bausteine mit Text, von 10 | 6 | 6 | 7 | 10 | 10 |
 | Modellwissen am Text, Median | 0 % | 0 % | 0 % | 62 % | 83 % |
 
-- **Güte:** Sie steigt mit jedem LLM-Schritt, am stärksten mit dem Schreiben. Die Vollständigkeit wächst von 1,0
+- **Güte:** Passung, Nutzen und Vollständigkeit steigen mit jedem LLM-Schritt, am stärksten mit dem Schreiben; die
+  Lesbarkeit erst mit dem Schreiben (1,9 bis 2,1 wörtlich, 3,9 und 4,2 geschrieben). Die Vollständigkeit wächst von 1,0
   (`llm-free`) auf 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
   4,2 und 5,0.
 - **Zeit:** 1,7 s ohne LLM, 5 s mit der Artikelwahl, 16 s mit der Zuordnung, 30 und 38 s mit dem Schreiben.

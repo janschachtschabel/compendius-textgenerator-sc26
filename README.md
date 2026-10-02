@@ -478,8 +478,9 @@ Seit D72 hört in jedem Profil jeder Prompt das angefragte Thema, nicht den gefu
 Nebenartikel, die Zuordnung, die Satzauswahl, das Schreiben und die Prüfung der Lehrplanelemente. Die Suchen in den
 Archiven und Lehrplänen bleiben beim Artikel, und ein wörtlicher Text behält ihn als Überschrift. In den beiden
 schreibenden Profilen formuliert das LLM das Thema zuerst, wenn `topic` ein Text ist (mehr als sechs Wörter oder 60
-Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`, Material oder Sammlung) ohne Thema kommt, aus dessen Titel,
-Fächern, Schlagwörtern und Beschreibung; ein Knoten neben einem Thema zeigt, wie es gemeint ist.
+Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`, Material oder Sammlung) oder die Sammlung für Teil 3
+(`collection_id`) ohne Thema kommt, aus deren Titel, Fächern, Schlagwörtern und Beschreibung; ein Knoten oder eine
+Sammlung neben einem Thema zeigt, wie es gemeint ist.
 
 Die Werte der Profile stammen von `gpt-6-luna` (M25, M27 bis M31, M39; Zeiten für Teil 1 und 2 auf dem
 Entwicklungsrechner). Die Tabelle der Schalter unten nennt noch Messungen mit `gpt-5.6-luna`; mit `gpt-6-luna` ist die
@@ -509,7 +510,7 @@ ihm bewirken, und seine Beispiele reichen von der kürzesten Anfrage bis zu eine
 | | `llm` | wählt je Baustein die passenden Sätze unter den Kandidaten (Absätze der Policy, dann die nächstbesten nach ihrem Score, `LLM_EXTRACTION_CANDIDATES`, Standard 8); es nennt nur Satznummern, der Wortlaut bleibt der der Quelle |
 | `generation` | `rule-based` (Profile bis `best-quality`) | nichts: der Baustein besteht aus den gewählten Sätzen, je Absatz mit Belegnummer (unter einer Tabelle als eigener Absatz) |
 | | `llm-fast` | formuliert die Bausteine aus `LLM_FAST_SECTIONS` (Standard 1 und 11) aus ihren Belegen |
-| | `llm` (Profile `best-quality-generated`, `best-coverage-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen, zum angefragten Thema; ist das Thema ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten ohne Thema, formuliert das LLM das Thema zuerst daraus (D72, Prompt `topic_wording`, `audit.llm.topic_wording`) |
+| | `llm` (Profile `best-quality-generated`, `best-coverage-generated`) | formuliert jeden Inhaltsbaustein aus seinen Belegen, zum angefragten Thema; ist das Thema ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten (`node_id`) oder eine Sammlung (`collection_id`) ohne Thema, formuliert das LLM das Thema zuerst daraus (D72, Prompt `topic_wording`, `audit.llm.topic_wording`) |
 | `enrichment` | `sources-only` (Profile bis `best-quality`) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
 | | `model-knowledge` (Profil `best-quality-generated`) | ergänzt gesichertes eigenes Fachwissen, höchstens für die Hälfte der Sätze eines Bausteins mit Belegen; einen Baustein ohne Belege schreibt es ganz daraus (D72); solche Sätze tragen keine Belegnummer und werden im Text gekennzeichnet, eine Frage ohne Beleg fällt weg (D60; braucht `generation` `llm` oder `llm-fast`) |
 | | `model-knowledge-full` (Profil `best-coverage-generated`) | schreibt jeden Inhaltsbaustein zum angefragten Thema mit seinem Aspekt, vollständig und ohne zu kürzen: Belege, wo sie das Thema treffen, sonst gesichertes eigenes Fachwissen, gekennzeichnet wie bei `model-knowledge`; auch ein Baustein ohne Belege wird geschrieben, die Ziellänge ist eine Untergrenze (D69) |
@@ -623,12 +624,15 @@ dritten). Seit Version 2 nur als prüfbare
 Sachaussage — ein Fakt, ein Zusammenhang, ein Beispiel, eine Zahl — oder gar nicht: Unter Version 1 nannten zwei
 Gutachter zwei Drittel des Modellwissens Füllsätze, Aussagen über den Baustein oder den Unterricht und
 Transferfloskeln (M28). Mit Version 2 sank das Modellwissen an sechs Themen von 82 auf 50 Sätze, die Füllsätze
-darunter von 50 auf 13, falsch war nach beiden Gutachtern keiner (M31). Ein Baustein braucht weiterhin mindestens
-einen belegten Satz, sonst bleibt er regelbasiert. Die Antwort sagt es an drei Stellen: `enrichment` im
+darunter von 50 auf 13, falsch war nach beiden Gutachtern keiner (M31). Ein Baustein mit Belegen braucht weiterhin
+mindestens einen belegten Satz, sonst bleibt er regelbasiert; einen Baustein ohne Belege schreibt das Modell seit D72
+ganz aus eigenem Wissen, jeden Satz gekennzeichnet. Die Antwort sagt es an drei Stellen: `enrichment` im
 Kompendium und im Frontmatter, `frontmatter.llm.enrichment` mit Satzzahl und Hinweis, `audit.llm.generation`
 mit `enrichment` und `marked_sentences`, je Baustein `sections[].llm.marked_sentences`. Die KI-Kennzeichnung
-richtet sich nach dem Text, nicht nach der Erlaubnis: Nur wenn wirklich etwas ergänzt wurde, nennt sie
-„ergänzt um Modellwissen ohne Quellenbeleg“ — bleibt das Modell in den Quellen, steht dort die gewohnte
+richtet sich nach dem Text, nicht nach der Erlaubnis: Nur wenn der Text wirklich Modellwissen trägt, nennt sie
+„KI-generierter Text zum angefragten Thema aus belegten Quellen und aus Modellwissen ohne Quellenbeleg“ (seit D72;
+vorher „ergänzt um Modellwissen“, doch ein Baustein ganz aus Modellwissen ist keine Ergänzung) — bleibt das Modell
+in den Quellen, steht dort die gewohnte
 Kennzeichnung und der erklärende Hinweis im Frontmatter entfällt. Ohne schreibendes LLM
 (`generation: rule-based` oder b-api nicht verfügbar) meldet die Antwort `sources-only` — der Schalter kann
 dann nichts bewirken.

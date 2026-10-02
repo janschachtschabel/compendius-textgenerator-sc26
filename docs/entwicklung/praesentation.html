@@ -99,7 +99,7 @@ Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Toke
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>eba9172</code> und ungesicherte Änderungen · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>9814a5b</code> und ungesicherte Änderungen · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M52</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -352,8 +352,9 @@ Profil es vorsieht.</p>
 <text x="24.0" y="394.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit, Tokens und Modellwissen: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen, gpt-6-luna</text>
 <text x="24.0" y="410.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">(M52, 02.10.2026). Tokens aus dem Prompt-Cache zahlt der Anbieter günstiger. Teil 2 (Lehrpläne) kommt dazu: M45.</text></svg><figcaption>Die fünf Profile: Güte, Zeit und Kosten (M52)</figcaption></figure>
 <p>Die fünf Profile im Stand D72 an neun Themen in drei Arten (M52, Tabelle auf
-<a href="#seite-09">Seite 09</a>): Die Güte steigt mit
-jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
+<a href="#seite-09">Seite 09</a>): Passung, Nutzen und
+Vollständigkeit steigen mit jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5, die Lesbarkeit erst mit dem
+Schreiben. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
 die Tokens von 0 auf 103.300, und die schreibenden Profile bestehen zu 62 und 83 % aus gekennzeichnetem
 Modellwissen.</p>
 <p>Der alte Dienst neben den vier Profilen vor D69, auf dem Server gemessen (M45):</p>
@@ -515,7 +516,8 @@ Modellwissen.</p>
 <li>Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.</li>
 <li>In <code>best-quality-generated</code> schreibt das LLM jeden Baustein zum angefragten Thema, aus den Belegen und mit Modellwissen für höchstens die Hälfte der Sätze, einen Baustein ohne Belege ganz aus Modellwissen (D72); Modellwissen ist sichtbar markiert.</li>
 <li>In <code>best-coverage-generated</code> schreibt es jeden Baustein vollständig über das angefragte Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen.</li>
-<li>In beiden formuliert das LLM das Thema zuerst, wenn es ein Text ist oder ein Knoten ohne Thema kommt (D72).</li>
+<li>In beiden formuliert das LLM das Thema zuerst, wenn es ein Text ist oder ein Knoten oder eine Sammlung ohne Thema
+kommt (D72).</li>
 </ul>
 </li>
 <li><strong>Neu erzeugen, auf Wunsch:</strong>
@@ -1049,7 +1051,7 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>–</td>
 <td>das angefragte Thema</td>
 <td>das angefragte Thema</td>
-<td>das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst (<code>topic_wording</code>)</td>
+<td>das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst (<code>topic_wording</code>)</td>
 <td>wie <code>best-quality-generated</code></td>
 <td>D72</td>
 </tr>
@@ -1468,7 +1470,8 @@ eine um eins verschiedene (<a href="https://github.com/janschachtschabel/compend
 </tbody>
 </table></div>
 <ul>
-<li><strong>Güte:</strong> Sie steigt mit jedem LLM-Schritt, am stärksten mit dem Schreiben. Die Vollständigkeit wächst von 1,0
+<li><strong>Güte:</strong> Passung, Nutzen und Vollständigkeit steigen mit jedem LLM-Schritt, am stärksten mit dem Schreiben; die
+Lesbarkeit erst mit dem Schreiben (1,9 bis 2,1 wörtlich, 3,9 und 4,2 geschrieben). Die Vollständigkeit wächst von 1,0
 (<code>llm-free</code>) auf 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
 4,2 und 5,0.</li>
 <li><strong>Zeit:</strong> 1,7 s ohne LLM, 5 s mit der Artikelwahl, 16 s mit der Zuordnung, 30 und 38 s mit dem Schreiben.</li>
@@ -2821,7 +2824,7 @@ der QA-Paare (D54, D55, D57).</p>
 <td>keine Prompts</td>
 <td>das angefragte Thema</td>
 <td>das angefragte Thema</td>
-<td>das angefragte Thema; ist es ein Text oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst</td>
+<td>das angefragte Thema; ist es ein Text oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst</td>
 <td>wie <code>best-quality-generated</code></td>
 </tr>
 <tr>
@@ -5632,7 +5635,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>eba9172</code> und ungesicherte Änderungen; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>9814a5b</code> und ungesicherte Änderungen; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>

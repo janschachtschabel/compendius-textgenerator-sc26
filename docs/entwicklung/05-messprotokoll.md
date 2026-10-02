@@ -2955,8 +2955,9 @@ der Zeile:
 Übereinstimmung: gleiche Note bei der Passung in 38 von 45 Texten, sonst eine um eins verschieden (Nutzen 40,
 Vollständigkeit 39, Lesbarkeit 41).
 
-- Die Güte steigt mit jedem LLM-Schritt, am stärksten mit dem Schreiben: Vollständigkeit 1,0, 1,3, 1,9, 4,2 und 4,9;
-  bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden 4,2 und 5,0.
+- Passung, Nutzen und Vollständigkeit steigen mit jedem LLM-Schritt, am stärksten mit dem Schreiben: Vollständigkeit
+  1,0, 1,3, 1,9, 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
+  4,2 und 5,0. Die Lesbarkeit steigt erst mit dem Schreiben: 2,1, 1,9, 1,9, 3,9 und 4,2.
 - Die Zuordnung durch das LLM kostet rund 60.000 Tokens, das Schreiben legt rund 24.000 und 43.000 dazu;
   `best-coverage-generated` las 60.200 Tokens aus dem Prompt-Cache.
 - Gegen M48: `best-coverage-generated` blieb bei Zeit und Tokens (37,8 statt 37,1 s, 103.271 statt 101.150).

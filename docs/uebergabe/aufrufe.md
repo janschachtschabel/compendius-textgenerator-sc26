@@ -44,7 +44,8 @@ Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
 [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
 Entwicklungsrechner (M47, D69); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
 jeder Prompt das angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn
-`topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten ohne Thema kommt.
+`topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`) oder
+eine Sammlung (`collection_id`) ohne Thema kommt.
 Gleichzeitig mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa`
 schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
 
