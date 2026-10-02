@@ -640,13 +640,24 @@ def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> 
     assert result.prompt == get_prompt("section_synthesis").tag
 
 
-def test_enrichment_still_needs_one_sentence_from_the_sources() -> None:
-    """A block made only of model knowledge is no compendium block; the extractive text takes over."""
+def test_enrichment_keeps_a_written_block_that_cites_nothing_as_model_knowledge() -> None:
+    """Until 2026-10-02 a block with evidence needed one cited sentence, else the extractive text took over (docs/
+    umbau.md U4): a text of best-quality-generated then switched to verbatim paragraphs in one block. Jan, D72: "ki
+    sollte ergänzen und texte glätten" - such a block stays written, every sentence marked, as one without evidence."""
     budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: "Alles nur aus dem Modellwissen geschöpft.")))
     result = synthesizer.write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
     )
+    assert isinstance(result, LlmSection)
+    assert result.citations == [] and result.marked_sentences == 1 and MODEL_KNOWLEDGE_OPEN in result.text
+
+
+def test_without_enrichment_a_block_that_cites_nothing_stays_with_the_rules() -> None:
+    """sources-only: every sentence needs its evidence; an answer without any leaves the extractive text."""
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: "Alles nur aus dem Modellwissen geschöpft.")))
+    result = synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget)
     assert isinstance(result, LlmSkipped) and "belegt" in result.reason
 
 

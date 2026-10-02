@@ -624,9 +624,10 @@ dritten). Seit Version 2 nur als prüfbare
 Sachaussage — ein Fakt, ein Zusammenhang, ein Beispiel, eine Zahl — oder gar nicht: Unter Version 1 nannten zwei
 Gutachter zwei Drittel des Modellwissens Füllsätze, Aussagen über den Baustein oder den Unterricht und
 Transferfloskeln (M28). Mit Version 2 sank das Modellwissen an sechs Themen von 82 auf 50 Sätze, die Füllsätze
-darunter von 50 auf 13, falsch war nach beiden Gutachtern keiner (M31). Ein Baustein mit Belegen braucht weiterhin
-mindestens einen belegten Satz, sonst bleibt er regelbasiert; einen Baustein ohne Belege schreibt das Modell seit D72
-ganz aus eigenem Wissen, jeden Satz gekennzeichnet. Die Antwort sagt es an drei Stellen: `enrichment` im
+darunter von 50 auf 13, falsch war nach beiden Gutachtern keiner (M31). Einen Baustein ohne Belege schreibt das
+Modell seit D72 ganz aus eigenem Wissen, jeden Satz gekennzeichnet, und seit dem 02.10.2026 bleibt auch ein Baustein
+geschrieben, dessen Text keinen seiner Belege zitiert; bis dahin fiel er auf wörtliche Absätze zurück, mitten in einem
+geschriebenen Text. Die Antwort sagt es an drei Stellen: `enrichment` im
 Kompendium und im Frontmatter, `frontmatter.llm.enrichment` mit Satzzahl und Hinweis, `audit.llm.generation`
 mit `enrichment` und `marked_sentences`, je Baustein `sections[].llm.marked_sentences`. Die KI-Kennzeichnung
 richtet sich nach dem Text, nicht nach der Erlaubnis: Nur wenn der Text wirklich Modellwissen trägt, nennt sie

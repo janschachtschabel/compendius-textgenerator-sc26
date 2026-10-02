@@ -1,8 +1,9 @@
 """LLM generation (PLAN.md 4.7, 7): the LLM writes a block from its evidence; only cited sentences survive.
 
 The evidence block numbers the assigned chunks locally ([1] … [k]). After the call every sentence must carry
-at least one valid marker; the rest is dropped and counted. Surviving markers are renumbered into the global
-citation sequence of the compendium, so the sources table stays deterministic.
+at least one valid marker; the rest is dropped and counted - or, where the request allows model knowledge, kept and
+marked as such. Surviving markers are renumbered into the global citation sequence of the compendium, so the sources
+table stays deterministic.
 """
 
 from __future__ import annotations
@@ -133,8 +134,8 @@ class LlmSynthesizer:
 
         With ``enrich`` the model may go beyond the evidence (enrichment=model-knowledge, docs/umbau.md U4):
         the other prompt asks for it, and an uncovered sentence is kept marked as Modellwissen instead of
-        being dropped. A block with evidence keeps a sentence from it at least; one without any is written from the
-        model's knowledge, every sentence marked (Jan: "leere bausteine aus modellwissen", D72).
+        being dropped. A block without evidence, or whose answer cites none of it, is written from the model's
+        knowledge, every sentence marked (Jan: "leere bausteine aus modellwissen", D72).
 
         With ``coverage`` (enrichment=model-knowledge-full, D69) the block is about ``topic`` as asked whatever the
         evidence holds: evidence where it meets the topic, model knowledge for the rest, marked sentence by
@@ -171,9 +172,9 @@ class LlmSynthesizer:
         text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
-        # conclusion blocks alone are no evidence-based section; marked model knowledge is a block in full mode and
-        # where there was no evidence to cite (D72)
-        if not marker_numbers(text) and not ((full or not items) and text.strip()):
+        # conclusion blocks alone are no evidence-based section; marked model knowledge is a block wherever the request
+        # allows it, with or without evidence to cite (D72; Jan, 2026-10-02: no verbatim block inside a written text)
+        if not marker_numbers(text) and not ((full or enrich) and text.strip()):
             reason = f"kein belegter Satz in der Antwort ({dropped} ohne Beleg, {unsupported} ohne Deckung im Beleg)"
             return LlmSkipped.after(reason, result)
         used = marker_numbers(text)
