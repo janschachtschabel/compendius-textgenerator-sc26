@@ -13,6 +13,15 @@ test('every profile of the server has a name, and words for what it does at ever
   }
 });
 
+test('both writing profiles are offered for groups and topics with an aspect (M52)', () => {
+  // Review 2026-10-02: since D72 best-quality-generated writes about the topic as asked too - fit 4.7 for a group and
+  // 4.2 for an aspect - but the page sent it to topics with an article of their own and called the other the only one
+  const { compendium } = PROFILE_ABOUT;
+  assert.match(compendium['best-quality-generated'], /Sammelthemen/);
+  assert.doesNotMatch(compendium['best-quality-generated'], /für Themen mit eigenem Artikel/);
+  assert.doesNotMatch(compendium['best-coverage-generated'], /nur dieses Profil/);
+});
+
 test('there is a saved answer of every endpoint', () => {
   const modes = new Set(NAMES.map((name) => MODES.find((mode) => name.startsWith(`${mode}_`))));
 

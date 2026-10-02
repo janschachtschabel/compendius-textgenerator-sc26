@@ -156,10 +156,20 @@ def test_every_path_parameter_of_a_public_endpoint_offers_an_example(spec: dict[
 
 
 def test_the_profile_help_says_for_every_profile_how_it_kept_each_kind_of_topic() -> None:
-    """D71: the measured fit to a topic with an article of its own, a group and an aspect (M48) is what a caller
-    chooses a profile by, so the help of preset names it for every profile."""
+    """D71: the measured fit to a topic with an article of its own, a group and an aspect is what a caller chooses a
+    profile by, so the help of preset names it for every profile - as the profiles run since D72 (M52)."""
     for profile in PRESETS:
         start = PRESET_HELP.index(f"- **{profile}**")
         end = PRESET_HELP.find("\n- **", start + 1)
         bullet = PRESET_HELP[start : end if end != -1 else None]
-        assert "M48" in bullet and "group" in bullet and "aspect" in bullet, profile
+        assert "M52" in bullet and "group" in bullet and "aspect" in bullet, profile
+
+
+def test_the_profile_help_recommends_both_writing_profiles_for_groups_and_aspects() -> None:
+    """Review 2026-10-02: since D72 best-quality-generated writes about the topic as asked too (M52: fit 4.7 for a
+    group, 4.2 for an aspect), but the help still said only best-coverage-generated kept such topics."""
+    choose = PRESET_HELP[PRESET_HELP.index("Which to choose") :]
+    groups = choose[choose.index("a group or a topic with an aspect") :]
+    assert choose.startswith("Which to choose (M52)")
+    assert "best-coverage-generated" in groups and "best-quality-generated" in groups
+    assert "alone kept every kind of topic" not in PRESET_HELP

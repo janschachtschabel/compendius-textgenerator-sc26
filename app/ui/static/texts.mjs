@@ -28,13 +28,14 @@ export const PROFILE_ABOUT = {
       'bleibt wörtlich. Langsamer, viele Tokens.',
     'best-quality-generated': 'Wie best-quality; dazu schreibt die KI jeden Baustein zum angefragten Thema neu und ' +
       'darf eigenes Wissen ergänzen, höchstens für die Hälfte der Sätze, gekennzeichnet als [Modellwissen]; einen ' +
-      'Baustein ohne Quellen schreibt sie ganz aus eigenem Wissen. Ein langes Thema, eine Frage oder ein Knoten ohne ' +
-      'Thema wird zuerst von der KI als Thema formuliert. Gut lesbar; für Themen mit eigenem Artikel.',
+      'Baustein ohne Quellen schreibt sie ganz aus eigenem Wissen. Ein langes Thema, eine Frage sowie ein Material ' +
+      'oder eine Sammlung ohne Thema formuliert die KI zuerst als Thema. Gut lesbar; trifft auch Sammelthemen und ' +
+      'Themen mit Aspekt, mit weniger Modellwissen als best-coverage-generated.',
     'best-coverage-generated': 'Wie best-quality-generated, aber die KI schreibt jeden Baustein genau zum angefragten ' +
       'Thema und füllt ihn vollständig: aus den Quellen, wo sie das Thema treffen, sonst aus eigenem Wissen ' +
-      '([Modellwissen]). Für Sammelthemen („Dichter aus dem Mittelalter“) und Themen mit Aspekt („OER-Förderungen“): ' +
-      'nur dieses Profil schreibt dort das angefragte Thema vollständig. Ein langes Thema, eine Frage oder ein ' +
-      'Knoten ohne Thema wird zuerst von der KI als Thema formuliert. Die längsten Texte, die meisten Tokens.',
+      '([Modellwissen]). Für Sammelthemen („Dichter aus dem Mittelalter“) und Themen mit Aspekt („OER-Förderungen“) ' +
+      'am treffendsten und vollständigsten. Ein langes Thema, eine Frage sowie ein Material oder eine Sammlung ohne ' +
+      'Thema formuliert die KI zuerst als Thema. Die längsten Texte, die meisten Tokens.',
   },
   knowledge: {
     'llm-free': 'Regeln wählen die Artikel. Keine Tokens.',
