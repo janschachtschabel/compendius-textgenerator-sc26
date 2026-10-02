@@ -505,3 +505,18 @@ def test_a_text_written_about_the_topic_as_asked_gets_no_hint(
 
     assert result.topic == "Optik im Alltag"
     assert "topic-scope" not in [finding.rule for finding in result.audit.lint]
+
+
+@pytest.mark.parametrize("topic", ["Optik in Klasse 7", "Optiken"])
+def test_n_judges_its_own_overview_not_the_article_the_rules_kept(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch, topic: str
+) -> None:
+    """Review 2026-10-02: N named an overview the archive lacks, a part stood in (covers false), but the rules' article
+    stayed - the topic's own, without its level or in another form - and the hint said the text missed the topic."""
+    answer = {"uebersicht": "Gibt es nicht", "artikel": ["Geometrische Optik"], "deckt_ab": True}
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(asking(answer)), per_request=100_000))
+    result = service.generate(GenerateRequest(topic=topic, preset="balanced", parts=["world"]))
+
+    assert result.resolution.title == "Optik"
+    assert result.audit.llm is not None and result.audit.llm["article_choice"]["articles_covers"] is False
+    assert "topic-scope" not in [finding.rule for finding in result.audit.lint]

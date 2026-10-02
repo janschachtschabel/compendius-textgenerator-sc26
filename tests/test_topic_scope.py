@@ -48,6 +48,7 @@ def test_a_topic_wider_or_narrower_than_its_article_names_the_profiles_that_writ
         ("Art", "Art (Biologie)", None, "disambiguation", False),  # a short word is the same word
         ("Kreislauf des Wassers", "Wasserkreislauf", None, "variant", False),  # the words of a compound
         ("Optik in Klasse 7", "Optik", None, "title", False),  # a level is no aspect: the topic without it decides
+        ("Optik in Klasse 7", "Optik", False, "title", False),  # whatever N said of its overview (review 2026-10-02)
         ("OER-Förderungen", "Open Educational Resources", False, "llm", True),  # the LLM wrote about the topic as asked
         ("OER-Förderungen", None, None, None, False),  # no article, nothing to compare
     ],

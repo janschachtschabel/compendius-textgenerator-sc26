@@ -55,12 +55,15 @@ def assemble(
     # D72)
     topic = world.topic if world.topic and generation_used != "rule-based" else prepared.title
     # A text about another article than the topic as asked keeps the article as its heading (D12) and names the topic
-    # and the profiles that write about it in its check (V3; Jan, 2026-10-02)
+    # and the profiles that write about it in its check (V3; Jan, 2026-10-02). N's word on its overview counts only
+    # where that overview is the article; where the rules' article stayed, the words of the topic decide
+    articles = prepared.articles
+    covers = articles.covers if articles is not None and articles.found[:1] == [resolution.title] else None
     scope = topic_scope_finding(
         prepared.prompt_topic,
         resolution.title,
         normalized=prepared.normalized.topic,
-        covers=prepared.articles.covers if prepared.articles else None,
+        covers=covers,
         method=resolution.method,
         about_topic=enrichment_used in ("model-knowledge", "model-knowledge-full"),
     )

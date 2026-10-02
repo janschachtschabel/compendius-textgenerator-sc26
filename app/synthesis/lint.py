@@ -104,8 +104,8 @@ def topic_scope_finding(
     the same topic for the archive, an article of the very name of the topic as asked is the topic, and a text the
     LLM wrote about the topic as asked (``about_topic``) needs no hint. Measured on the 94 gold queries of the
     article choice and the nine topics of M48 (M49)."""
-    if article is None or about_topic or asked.casefold() == article.casefold():
-        return None
+    if article is None or about_topic or article.casefold() in (asked.casefold(), normalized.casefold()):
+        return None  # the article of the topic's very name, also once a level or subject went (D12)
     if method == "title" and normalized.casefold() != article.casefold():  # a redirect
         return None
     wider = not covers if covers is not None else bool(_words_missing(normalized, article))
