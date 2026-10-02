@@ -20,12 +20,15 @@ AI_DISCLOSURE = {  # by the generation switch actually used
     "llm-fast": "Maschinell erstellter Text, Teile KI-generiert (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
     "llm": "KI-generierter Text auf Basis belegter Quellen (Kennzeichnung je Abschnitt) nach Art. 50 EU AI Act",
 }
-# enrichment=model-knowledge: the text carries sentences no source covers, so the disclosure has to say so
+# Blocks with model knowledge kept from an earlier text, without the LLM writing now: the text carries sentences no
+# source covers, so the disclosure has to say so - and those blocks may be model knowledge from end to end (D69, D72),
+# so it no longer calls it a supplement
 AI_ENRICHED_DISCLOSURE = (
-    "KI-generierter Text auf Basis belegter Quellen, ergänzt um Modellwissen ohne Quellenbeleg "
+    "KI-generierter Text aus belegten Quellen und aus Modellwissen ohne Quellenbeleg "
     "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
 )
-# enrichment=model-knowledge-full (D69): whole blocks may come from model knowledge, which then is no supplement
+# enrichment=model-knowledge-full (D69) and, since D72, model-knowledge: the LLM writes about the topic as asked, and
+# whole blocks may come from model knowledge, which then is no supplement
 AI_FULL_DISCLOSURE = (
     "KI-generierter Text zum angefragten Thema aus belegten Quellen und aus Modellwissen ohne Quellenbeleg "
     "(Kennzeichnung je Abschnitt und je Satz) nach Art. 50 EU AI Act"
@@ -127,11 +130,10 @@ def build_frontmatter(
     # A kept block counts with the status it carries; a reviewed one stands under editorial responsibility (Art. 50(4)
     # EU AI Act), whoever wrote it first
     kept = set(switches.kept.values())
-    if generation != "rule-based" and enrichment == "model-knowledge-full" and enriched_sentences:
+    model_knowledge = enrichment in ("model-knowledge", "model-knowledge-full")
+    if generation != "rule-based" and model_knowledge and enriched_sentences:
         disclosure, review = AI_FULL_DISCLOSURE, "ki-generiert"
-    elif (generation != "rule-based" and enrichment == "model-knowledge" and enriched_sentences) or (
-        switches.kept_model_knowledge
-    ):
+    elif switches.kept_model_knowledge:
         disclosure, review = AI_ENRICHED_DISCLOSURE, "ki-generiert"
     elif generation != "rule-based":
         disclosure, review = AI_DISCLOSURE.get(generation, AI_DISCLOSURE["llm"]), "ki-generiert"

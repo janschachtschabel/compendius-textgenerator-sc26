@@ -20,6 +20,7 @@ from typing import Any
 import pytest
 
 import app.service as service_module
+from app.compose.assembler import AI_ENRICHED_DISCLOSURE, AI_FULL_DISCLOSURE
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceJob
@@ -69,6 +70,28 @@ def test_the_enrichment_profile_writes_every_block_about_the_topic_as_asked(
     assert {s.slot_id for s in result.sections if s.status is SectionStatus.LLM} == content
     assert all(user.startswith(f"Thema: {ASKED}\n") for user in users(fake, "Du formulierst einen Baustein"))
     assert result.frontmatter["llm"]["prompts"] == [get_prompt("section_enrichment").tag]
+
+
+def test_a_text_with_blocks_of_pure_model_knowledge_says_so_in_its_disclosure(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Review 2026-10-02: since D72 best-quality-generated writes about the topic as asked and whole blocks from the
+    model's knowledge; its disclosure (Art. 50 EU AI Act) still read "auf Basis belegter Quellen, ergänzt um
+    Modellwissen" - the claim D69 gave best-coverage-generated a disclosure of its own against."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_with_model_knowledge), per_request=200_000))
+
+    result = service.generate(
+        GenerateRequest(topic=ASKED, generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+
+    pure = [s for s in result.sections if s.status is SectionStatus.LLM and not s.citations]
+    assert pure, "the test needs a block the sources have nothing for"
+    assert result.frontmatter["ai_disclosure"] == AI_FULL_DISCLOSURE
+
+
+def test_no_disclosure_calls_model_knowledge_a_supplement() -> None:
+    """Kept blocks of an earlier text may be model knowledge from end to end as well (D69, D72)."""
+    assert all("ergänzt" not in text for text in (AI_ENRICHED_DISCLOSURE, AI_FULL_DISCLOSURE))
 
 
 def test_a_block_without_evidence_is_written_from_the_models_knowledge() -> None:
