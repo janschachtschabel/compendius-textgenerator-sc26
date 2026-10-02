@@ -326,11 +326,13 @@ ENTITY_CHECK = Prompt(
     ),
 )
 
-# The question N of M37 word for word (docs/entwicklung/messung/mc_sammelthemen.py, D63): the model names the
-# overview article of a topic and the articles on its most important members, parts or aspects
+# The question N of M37 (docs/entwicklung/messung/mc_sammelthemen.py, D63): the model names the overview article of a
+# topic and the articles on its most important members, parts or aspects.
+# v2 (M49, V3): and whether the overview covers the topic as asked, for the hint on the profiles that write about it
+# (lint topic-scope); the rest of v1 word for word
 TOPIC_ARTICLES = Prompt(
     id="topic_articles",
-    version=1,
+    version=2,
     system=(
         "Du hilfst, für ein Unterrichtsthema die Artikel der deutschsprachigen Wikipedia auszuwählen, aus denen ein "
         "Kompendium entsteht. Antworte nur mit JSON."
@@ -342,8 +344,10 @@ TOPIC_ARTICLES = Prompt(
         "- zuerst den Übersichtsartikel, der das Thema als Ganzes behandelt - bei einer Gruppe die Epoche, Gattung "
         "oder den Oberbegriff, keine Liste;\n"
         "- dann bis zu {count} Artikel zu den wichtigsten Vertretern, Teilen oder Aspekten des Themas.\n"
-        "Nenne nur Titel, die es in der deutschsprachigen Wikipedia gibt, in ihrer genauen Schreibweise.\n"
-        'Antworte so: {{"uebersicht": "<Titel>", "artikel": ["<Titel>", ...]}}'
+        "Nenne nur Titel, die es in der deutschsprachigen Wikipedia gibt, in ihrer genauen Schreibweise. Sag auch, ob "
+        "der Übersichtsartikel das Thema, wie es gefragt ist, als Ganzes behandelt (deckt_ab: true) oder nur einen "
+        "Oberbegriff, einen Vertreter oder einen Teil davon (false).\n"
+        'Antworte so: {{"uebersicht": "<Titel>", "artikel": ["<Titel>", ...], "deckt_ab": true}}'
     ),
 )
 

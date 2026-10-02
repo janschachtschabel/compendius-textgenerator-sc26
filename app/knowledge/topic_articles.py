@@ -48,6 +48,9 @@ class TopicArticlesReport(Usage):
     found: list[str] = field(default_factory=list)  # the archive's titles, the overview (when found) first
     overview_title: str | None = None  # the overview as the archive has it; None when it does not
     main: bool = False  # the first title found replaced the main article of the rules (registry.misses_topic)
+    # The model: its overview covers the topic as asked (prompt v2, V3); False where a part stood in for it, None
+    # without a word on it or without an article found
+    covers: bool | None = None
     parts: int = 0  # named articles the corpus took (``settle``)
     fallback: str | None = None  # why the question left the corpus of before
 
@@ -89,6 +92,11 @@ def ask_topic_articles(
             report.found.append(title)
     if not report.found:
         report.fallback = NONE_FOUND
+        return report
+    covers = data.get("deckt_ab")
+    # The model judged the overview it named; a part standing in for it covers a group in part at most (M48: Walther
+    # von der Vogelweide for "Dichter aus dem Mittelalter")
+    report.covers = (covers if isinstance(covers, bool) else None) if report.overview_title else False
     return report
 
 

@@ -123,6 +123,7 @@
    ],
    "articles_overview": "Geometrische Optik",
    "articles_main": false,
+   "articles_covers": null,
    "articles_fallback": "kein genannter Teil ist ein Artikel des Archivs; Nebenartikel wie ohne die Frage",
    "tokens": 72,
    "note": null

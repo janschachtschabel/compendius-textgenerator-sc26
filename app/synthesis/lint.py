@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 from collections.abc import Sequence
 
@@ -80,3 +81,60 @@ def lint_sections(template: Template, sections: Sequence[Section], catalog: Face
                 )
             )
     return findings
+
+
+TOPIC_SCOPE = "topic-scope"
+# Words of a topic that name no subject of their own: "Dichter aus dem Mittelalter" asks for poets and the Middle Ages
+_FILLERS = frozenset(
+    {"aus", "dem", "den", "der", "des", "die", "das", "im", "in", "ins", "am", "an", "auf", "bei", "für", "mit", "und"}
+)
+_WORD_RE = re.compile(r"[^\W\d_]+")
+
+
+def topic_scope_finding(
+    asked: str, article: str | None, *, normalized: str, covers: bool | None, method: str | None, about_topic: bool
+) -> LintFinding | None:
+    """A hint when the compendium treats another article than the topic as asked - a group without an article of
+    its own or a topic with an aspect -, naming the profiles that write about the topic (M52: fit 4.2 to 5.0 for
+    groups and aspects against at most 3.8). The heading stays the article the text prints (D12; Jan, 2026-10-02).
+
+    ``covers`` is the question N's word on whether its overview covers the topic (prompt topic_articles v2); without it
+    (llm-free) the words of the ``normalized`` topic decide, one the article's title lacks - a level such as "in
+    Klasse 7" is gone there, it is no aspect. A redirect (``method`` title to another title than ``normalized``) is
+    the same topic for the archive, an article of the very name of the topic as asked is the topic, and a text the
+    LLM wrote about the topic as asked (``about_topic``) needs no hint. Measured on the 94 gold queries of the
+    article choice and the nine topics of M48 (M49)."""
+    if article is None or about_topic or asked.casefold() == article.casefold():
+        return None
+    if method == "title" and normalized.casefold() != article.casefold():  # a redirect
+        return None
+    wider = not covers if covers is not None else bool(_words_missing(normalized, article))
+    if not wider:
+        return None
+    return LintFinding(
+        rule=TOPIC_SCOPE,
+        severity="info",
+        message=(
+            f"Das Kompendium behandelt den Artikel „{article}“, nicht genau das angefragte Thema „{asked}“. Ist es "
+            "eine Gruppe oder ein Aspekt, schreiben die Profile best-coverage-generated und best-quality-generated "
+            "zum angefragten Thema (M52)."
+        ),
+    )
+
+
+def _words_missing(topic: str, article: str) -> list[str]:
+    """The topic's words the article's title lacks, an inflected form counting as the word ("Edelgase", "Edelgas")."""
+    title = [word.lower() for word in _WORD_RE.findall(article)]
+    return [
+        word
+        for word in (w.lower() for w in _WORD_RE.findall(topic))
+        if len(word) > 2 and word not in _FILLERS and not any(_same_stem(word, other) for other in title)
+    ]
+
+
+def _same_stem(a: str, b: str) -> bool:
+    """One word, inflected ("Edelgase", "Edelgas") or part of a compound ("Kreislauf", "Wasserkreislauf")."""
+    if a == b or (min(len(a), len(b)) >= 4 and (a in b or b in a)):
+        return True
+    shared = len(os.path.commonprefix([a, b]))
+    return shared >= 4 and shared >= min(len(a), len(b)) - 2

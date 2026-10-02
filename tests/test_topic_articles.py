@@ -36,7 +36,7 @@ from tests.test_article_choice import by_prompt
 from tests.test_article_choice_thorough import LIST, refuse
 from tests.test_llm_client import FakeBApi
 from tests.test_main_article import STATIONS
-from tests.test_pipeline_llm import make_gateway
+from tests.test_pipeline_llm import answer_with_model_knowledge, make_gateway
 
 ARTICLES_PROMPT = get_prompt("topic_articles")
 SET = {
@@ -433,3 +433,75 @@ def test_knowledge_names_the_corpus_of_the_compendium(client: TestClient, monkey
     _, _, job = service.article_choice_job("llm", None)
     prepared = service.prepare(GenerateRequest(topic="Optik", parts=["world"], article_choice="llm"), None, job)
     assert [(a["title"], a["origin"]) for a in body["articles"]] == [(s.title, s.origin) for s in prepared.sources]
+
+
+# -- V3: the hint on the profiles that write about the topic as asked (M49; 07, points 12e and 14) -------------------
+
+
+@pytest.mark.parametrize(("said", "covers"), [(True, True), (False, False), ("ja", None)])
+def test_n_says_whether_its_overview_covers_the_topic_as_asked(
+    sets: ZimRegistry, said: Any, covers: bool | None
+) -> None:
+    fake = FakeBApi(asking({"uebersicht": "Deutschsprachige Literatur", "artikel": [], "deckt_ab": said}))
+    archive = sets.primary_archive
+    assert archive is not None
+    report = ask_topic_articles(job_for(fake), archive, "deutsche Dichter")
+
+    assert report.covers is covers
+    assert ARTICLES_PROMPT.version == 2 and '"deckt_ab"' in fake.bodies[0]["messages"][1]["content"]
+
+
+def test_a_part_standing_in_for_a_missing_overview_does_not_cover_the_topic(sets: ZimRegistry) -> None:
+    """The model judged the overview it named; a member standing in for it covers a group in part at most (M48:
+    Walther von der Vogelweide for "Dichter aus dem Mittelalter")."""
+    answer = {"uebersicht": "Gibt es nicht", "artikel": ["Goethe"], "deckt_ab": True}
+    archive = sets.primary_archive
+    assert archive is not None
+    report = ask_topic_articles(job_for(FakeBApi(asking(answer))), archive, "deutsche Dichter")
+
+    assert report.overview_title is None and report.found == ["Johann Wolfgang von Goethe"] and report.covers is False
+
+
+@pytest.mark.parametrize(("covers", "hinted"), [(False, True), (True, False)])
+def test_a_topic_its_overview_covers_only_in_part_gets_a_hint_on_the_writing_profiles(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch, covers: bool, hinted: bool
+) -> None:
+    """N says whether its overview covers the topic as asked; where it does not, the check of a verbatim compendium
+    names the topic and the profiles that write about it, at no further token. The heading stays the article (D12;
+    Jan, 2026-10-02)."""
+    answer = {"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": covers}
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(asking(answer)), per_request=100_000))
+    result = service.generate(GenerateRequest(topic="Optik im Alltag", preset="balanced", parts=["world"]))
+
+    assert result.audit.llm is not None and result.audit.llm["article_choice"]["articles_covers"] is covers
+    assert result.topic == "Optik" and "# Kompendium: Optik\n" in result.markdown
+    scope = [finding for finding in result.audit.lint if finding.rule == "topic-scope"]
+    assert bool(scope) is hinted
+    assert not scope or ("Optik im Alltag" in scope[0].message and "best-coverage-generated" in scope[0].message)
+
+
+def test_without_an_llm_the_words_of_the_topic_decide_the_hint(service: CompendiumService) -> None:
+    result = service.generate(GenerateRequest(topic="Optik in der Medizin", preset="llm-free", parts=["world"]))
+
+    assert (result.resolution.title, result.resolution.method) == ("Optik", "search")
+    scope = [finding for finding in result.audit.lint if finding.rule == "topic-scope"]
+    assert len(scope) == 1 and "„Optik in der Medizin“" in scope[0].message
+
+
+def test_a_text_written_about_the_topic_as_asked_gets_no_hint(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    n = asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
+
+    def answer(body: dict[str, Any]) -> str:
+        writing = body["messages"][0]["content"].startswith("Du formulierst einen Baustein")
+        return answer_with_model_knowledge(body) if writing else n(body)
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer), per_request=200_000))
+    request = GenerateRequest(
+        topic="Optik im Alltag", article_choice="llm", generation="llm", enrichment="model-knowledge", parts=["world"]
+    )
+    result = service.generate(request)
+
+    assert result.topic == "Optik im Alltag"
+    assert "topic-scope" not in [finding.rule for finding in result.audit.lint]

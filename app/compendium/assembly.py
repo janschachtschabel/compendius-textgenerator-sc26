@@ -18,7 +18,7 @@ from app.knowledge.node_article import node_block
 from app.matching.registry import LLM_MATCHER
 from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN
 from app.synthesis.facets import FacetCatalog
-from app.synthesis.lint import lint_sections
+from app.synthesis.lint import lint_sections, topic_scope_finding
 
 
 def assemble(
@@ -54,6 +54,18 @@ def assemble(
     # A text the LLM wrote carries the topic it wrote about as its heading; the others are about their article (D69,
     # D72)
     topic = world.topic if world.topic and generation_used != "rule-based" else prepared.title
+    # A text about another article than the topic as asked keeps the article as its heading (D12) and names the topic
+    # and the profiles that write about it in its check (V3; Jan, 2026-10-02)
+    scope = topic_scope_finding(
+        prepared.prompt_topic,
+        resolution.title,
+        normalized=prepared.normalized.topic,
+        covers=prepared.articles.covers if prepared.articles else None,
+        method=resolution.method,
+        about_topic=enrichment_used in ("model-knowledge", "model-knowledge-full"),
+    )
+    if scope is not None and want_world:
+        findings.append(scope)
     # The blocks a regeneration kept from an earlier compendium: the disclosure follows them too (audit 2026-09-29, A04)
     kept_ids = (
         {slot.id for slot in template.content_slots()} - set(world.regenerated) if request.existing_markdown else set()

@@ -246,6 +246,7 @@ def choice_block(audit: ChoiceAudit) -> dict[str, Any]:
         "articles_found": list(articles.found) if articles else [],  # the overview (when found) first
         "articles_overview": articles.overview_title if articles else None,  # None: a part stood in for it
         "articles_main": bool(articles and articles.main),  # the overview replaced the rules' article
+        "articles_covers": articles.covers if articles else None,  # the overview covers the topic as asked (V3)
         "articles_fallback": articles.fallback if articles else None,
     }
 

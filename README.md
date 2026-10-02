@@ -467,7 +467,12 @@ Welches Profil wofür (M48, `docs/entwicklung/09-methoden-und-profile.md`): ein 
 und belegt mit `balanced`, lesbar mit `best-quality-generated`; Sammelthemen („Dichter aus dem Mittelalter“) und
 Themen mit Aspekt („OER-Förderungen“) am besten mit `best-coverage-generated`; seit D72 schreibt auch
 `best-quality-generated` dort zum Thema (Passung 4,7 und 4,2, M52), die wörtlichen Profile drucken einen Vertreter
-oder den Oberbegriff.
+oder den Oberbegriff. Dann bleibt der gedruckte Artikel die Überschrift (D12, Jan 02.10.2026), und die Prüfung des
+Kompendiums sagt es: `audit.lint` mit der Regel `topic-scope` (in der Prüfansicht unter „Hinweise der Prüfung“)
+nennt das angefragte Thema und die beiden schreibenden Profile (V3, D73). Ab `balanced` entscheidet die Frage N, ob
+ihre Übersicht das Thema deckt (`articles_covers`), ohne LLM die Wörter des Themas, die dem Artikeltitel fehlen; ein
+Stufen- oder Fachzusatz („Optik in Klasse 7“) zählt nicht. Ein Text, den das LLM mit Modellwissen zum Thema schrieb,
+bekommt keinen Hinweis.
 
 ![Die fünf Profile: Güte, Zeit und Kosten (M52)](docs/entwicklung/bilder/profiluebersicht.svg)
 
@@ -586,8 +591,8 @@ Die Regeln selbst kosten gegenüber v2.0.0 keine Zeit (Teil 1 im Median 1,35 sta
 **Übersicht und Teile eines Themas (D63).** Mit `article_choice: llm` oder `llm-thorough` fragt der Dienst bei jedem
 Thema zuerst nach seinen Artikeln: Das LLM nennt den Übersichtsartikel - bei einer Gruppe wie „deutsche Dichter“ die
 Epoche, Gattung oder den Oberbegriff, keine Liste - und bis zu acht Artikel zu den wichtigsten Vertretern, Teilen oder
-Aspekten (Prompt `topic_articles@v1`, wortgleich der Frage N aus M37); ein Fach der Anfrage hört es mit („Baum (Fach:
-Informatik)“). Was davon ein Artikel des Archivs ist (eine Weiterleitung gilt als ihr Ziel, eine Begriffsklärung
+Aspekten (Prompt `topic_articles@v2`: die Frage N aus M37 wortgleich, dazu seit V3 die Angabe, ob die Übersicht das
+Thema, wie es gefragt ist, als Ganzes behandelt); ein Fach der Anfrage hört es mit („Baum (Fach: Informatik)“). Was davon ein Artikel des Archivs ist (eine Weiterleitung gilt als ihr Ziel, eine Begriffsklärung
 entfällt), kommt nach Hauptartikel und Klexikon-Zwilling in den Korpus (`origin: named`), an die Stelle der verlinkten
 Unterartikel und Volltexttreffer; die Prüfung der Nebenartikel entfällt dann. Die Übersicht ersetzt den Artikel der
 Regeln nur, wo diese das Thema verfehlen: bei einem Titelvorschlag, einem Volltexttreffer, einer Listenseite oder ohne
@@ -598,7 +603,8 @@ Fälle wie oben. Ohne
 brauchbare Antwort oder ohne einen Teil, den das Archiv hat, bleibt der Korpus wie vorher, samt Prüfung der
 Nebenartikel; `audit.llm.article_choice` nennt die gefundenen Titel (`articles_found`), die Übersicht, wie das Archiv
 sie führt (`articles_overview`, leer, wenn ein Teil einsprang), ob der erste davon Hauptartikel wurde
-(`articles_main`) und warum der Korpus blieb (`articles_fallback`). Ein Material ohne `topic` behält seinen Weg (D47);
+(`articles_main`), ob die Übersicht das Thema deckt (`articles_covers`; `false`, wo ein Teil einsprang, leer ohne
+Angabe) und warum der Korpus blieb (`articles_fallback`). Ein Material ohne `topic` behält seinen Weg (D47);
 mit `topic` und Material nennt die Frage zu beiden den Artikel und N die Teile.
 Gemessen mit `gpt-6-luna` (M37, durch den Dienst nachgemessen in M39): Bei 25 Sammel- und Mischthemen stammen 87 statt
 45 % der gedruckten Absätze aus passenden Artikeln (21 statt 10 brauchbare Kompendien), bei 20 gewöhnlichen Themen 93

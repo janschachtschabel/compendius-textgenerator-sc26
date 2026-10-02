@@ -39,6 +39,7 @@
     "articles_found": [],
     "articles_overview": null,
     "articles_main": false,
+    "articles_covers": null,
     "articles_fallback": null
    },
    "curriculum_check": {
