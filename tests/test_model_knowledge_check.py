@@ -100,7 +100,9 @@ def test_an_answer_that_decides_nothing_leaves_the_block_as_written(answer: Any)
 
 def test_an_unreadable_answer_says_why_and_counts_its_tokens() -> None:
     _, outcome, _ = run("Kann ich nicht prüfen.", section(*KNOWN))
-    assert outcome.fallback == UNREADABLE and outcome.calls == 1 and outcome.total_tokens == 24
+    """M53: one of 90 blocks stayed unchecked on an unreadable answer; the reason says how the answer ended."""
+    assert outcome.fallback is not None and outcome.fallback.startswith(UNREADABLE)
+    assert "finish_reason=" in outcome.fallback and outcome.calls == 1 and outcome.total_tokens == 24
 
 
 def test_without_budget_the_block_stays_unchecked_without_a_call() -> None:

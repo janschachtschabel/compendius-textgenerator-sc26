@@ -113,7 +113,7 @@ def check_section(
         return section, outcome
     verdicts = read_object(answer.text)
     if verdicts is None:
-        outcome.fallback = UNREADABLE
+        outcome.fallback = f"{UNREADABLE} (finish_reason={answer.finish_reason or 'unbekannt'})"
         return section, outcome
     outcome.checked = len(spans)
     pieces: list[str] = []
