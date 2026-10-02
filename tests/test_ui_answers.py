@@ -110,6 +110,7 @@ PROMPTS = {
     get_prompt(name).system: name
     for name in (
         "topic_articles",
+        "topic_wording",
         "article_choice",
         "hit_check",
         "paragraph_assignment",
@@ -133,6 +134,8 @@ def answering(body: dict[str, Any]) -> str:
     user = body["messages"][1]["content"]
     if prompt == "topic_articles":
         return json.dumps({"uebersicht": user.splitlines()[0].removeprefix("Thema: "), "artikel": []})
+    if prompt == "topic_wording":  # a material without a topic in a writing profile (D72)
+        return json.dumps({"thema": "Optik"})
     if prompt == "article_choice":
         return '{"wahl": 1}'
     if prompt == "hit_check":

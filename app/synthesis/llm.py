@@ -133,7 +133,8 @@ class LlmSynthesizer:
 
         With ``enrich`` the model may go beyond the evidence (enrichment=model-knowledge, docs/umbau.md U4):
         the other prompt asks for it, and an uncovered sentence is kept marked as Modellwissen instead of
-        being dropped. One sentence from the sources stays required - a block of pure model knowledge is none.
+        being dropped. A block with evidence keeps a sentence from it at least; one without any is written from the
+        model's knowledge, every sentence marked (Jan: "leere bausteine aus modellwissen", D72).
 
         With ``coverage`` (enrichment=model-knowledge-full, D69) the block is about ``topic`` as asked whatever the
         evidence holds: evidence where it meets the topic, model knowledge for the rest, marked sentence by
@@ -141,7 +142,7 @@ class LlmSynthesizer:
         """
         full = coverage is not None
         evidence, items = evidence_block(scored, sources)
-        if not items and not full:
+        if not items and not (full or enrich):
             return LlmSkipped("keine Belege für den Baustein")
         if coverage is not None:
             prompt = get_prompt("section_coverage")
@@ -155,7 +156,7 @@ class LlmSynthesizer:
             max_output = min(MAX_FULL_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars))
         else:
             prompt = get_prompt("section_enrichment" if enrich else "section_synthesis")
-            messages = prompt.render(topic=topic, evidence=evidence, **slot_prompt_fields(slot))
+            messages = prompt.render(topic=topic, evidence=evidence or "(keine)", **slot_prompt_fields(slot))
             max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
         result = budgeted_chat(
             self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline
@@ -170,8 +171,9 @@ class LlmSynthesizer:
         text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
-        # conclusion blocks alone are no evidence-based section; in full mode marked model knowledge is a block
-        if not marker_numbers(text) and not (full and text.strip()):
+        # conclusion blocks alone are no evidence-based section; marked model knowledge is a block in full mode and
+        # where there was no evidence to cite (D72)
+        if not marker_numbers(text) and not ((full or not items) and text.strip()):
             reason = f"kein belegter Satz in der Antwort ({dropped} ohne Beleg, {unsupported} ohne Deckung im Beleg)"
             return LlmSkipped.after(reason, result)
         used = marker_numbers(text)

@@ -34,12 +34,22 @@ function topic(answer, run) {
     'Thema und Artikel',
     facts([
       ...resolutionFacts(answer),
+      ['Thema des Textes', answer.topic],
+      ['Thema von der KI formuliert', wording(answer.audit?.llm?.topic_wording)],
       ['Fächer des Knotens', node?.subjects],
       ['Stufen des Knotens', node?.educational_contexts],
       ...nodeArticleFacts(answer.audit?.node_article, answer, run.request.body),
       ['Wissens-Sammlung', knowledge(answer.audit?.knowledge)],
     ]),
   );
+}
+
+// D72: a writing profile let the model word the topic of a text - a long topic, a question, a node without a topic -
+// from the block of app/compendium/llm_report.py; without its answer the topic stayed as asked
+export function wording(block) {
+  if (!block) return null;
+  const from = `aus ${block.source}, ${block.reason}`;
+  return block.topic ? `„${block.topic}“ (${from})` : `nein, Thema wie angefragt (${from}; ${block.fallback})`;
 }
 
 // The account of app/compendium/repository.py: materials considered, taken as sources, from how many collections and

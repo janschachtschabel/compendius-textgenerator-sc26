@@ -51,8 +51,9 @@ def assemble(
     generation_used = world.generation if drafted and drafted.sections else "rule-based"
     # Enrichment only means something where the LLM actually wrote a block
     enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-    # A text the LLM wrote about the topic as asked carries it as its heading; the others are about their article (D69)
-    topic = world.topic if world.topic and enrichment_used == "model-knowledge-full" else prepared.title
+    # A text the LLM wrote carries the topic it wrote about as its heading; the others are about their article (D69,
+    # D72)
+    topic = world.topic if world.topic and generation_used != "rule-based" else prepared.title
     # The blocks a regeneration kept from an earlier compendium: the disclosure follows them too (audit 2026-09-29, A04)
     kept_ids = (
         {slot.id for slot in template.content_slots()} - set(world.regenerated) if request.existing_markdown else set()
@@ -82,6 +83,7 @@ def assemble(
         curriculum=made.curricula.report,
         curriculum_fallback=made.curricula.fallback,
         cached_tokens=made.cached_tokens,
+        wording=prepared.wording,
     )
     llm_audit, llm_tokens, llm_front = build_llm_report(llm, work)
     frontmatter = build_frontmatter(

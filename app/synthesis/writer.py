@@ -48,7 +48,9 @@ class LlmJob:
     topic: str
     concurrency: int = 10  # the service passes LlmOptions.concurrency; this is only the bare default
     deadline: Deadline | None = None
-    enrich: bool = False  # enrichment=model-knowledge: the model may add its own knowledge (docs/umbau.md U4)
+    # enrichment=model-knowledge: the model may add its own knowledge (docs/umbau.md U4) and writes a slot without
+    # chunks from it (D72)
+    enrich: bool = False
     # enrichment=model-knowledge-full (D69): every slot is written, also one without chunks; ``article`` names the
     # article the evidence comes from when ``topic`` is the topic as asked
     full: bool = False
@@ -235,12 +237,12 @@ def _draft_with_llm(
     job: LlmJob,
     skip: set[str],
 ) -> dict[str, LlmSection | LlmSkipped]:
-    """Drafts for every LLM slot with assigned chunks (in full mode for every LLM slot), in parallel, numbered
-    locally from 1."""
+    """Drafts for every LLM slot with assigned chunks - with the model's own knowledge for every LLM slot (D69,
+    D72) -, in parallel, numbered locally from 1."""
     slots = [
         slot
         for slot in template.content_slots()
-        if slot.id in job.slots and (job.full or assigned.get(slot.id)) and slot.id not in skip
+        if slot.id in job.slots and (job.full or job.enrich or assigned.get(slot.id)) and slot.id not in skip
     ]
     if not slots:
         return {}

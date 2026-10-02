@@ -69,9 +69,14 @@ SECTION_ENRICHMENT = Prompt(
     # knowledge of v1 fillers, sentences about the block or the lesson and transfer phrases (M28).
     # v3 (2026-10-01, D70): up to half of the sentences from the model's own knowledge instead of one in three (Jan:
     # the profile spent nearly the tokens of best-coverage-generated for a sparing share).
-    version=3,
+    # v4 (2026-10-02, D72): the topic as asked, not the article it resolved to (Jan: "eine verfälschung des themas ist
+    # generell nicht gut"), and a block without evidence written from the model's own knowledge (Jan: "leere
+    # bausteine aus modellwissen ... ki sollte ergänzen und texte glätten").
+    version=4,
     system=(
-        "Du formulierst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Grundlage sind die "
+        "Du formulierst einen Baustein eines kompendialen Textes für Lehrkräfte auf Deutsch. Das Thema steht in der "
+        "Anfrage und ist genau so gemeint, wie es dort steht, mit seinem Aspekt: Schreibe über dieses Thema, nicht "
+        "allgemein über einen Oberbegriff, und nimm aus den Belegen, was dazu gehört. Grundlage sind die "
         "nummerierten Belege aus der Anfrage. Jeder Satz, der aus einem Beleg stammt, endet vor dem Satzzeichen mit "
         "mindestens einer Belegnummer in eckigen Klammern, zum Beispiel: Licht breitet sich geradlinig aus [2]. "
         "Du darfst darüber hinaus gesichertes eigenes Fachwissen ergänzen, aber nur als konkrete, überprüfbare "
@@ -84,7 +89,9 @@ SECTION_ENRICHMENT = Prompt(
         "Baustein ohne Modellwissen ist ein guter Baustein. Setze niemals eine Nummer an einen Satz, den der Beleg "
         "nicht hergibt, und ergänze nichts, dessen du dir nicht sicher bist. Der Baustein bleibt mindestens zur Hälfte "
         "belegt: Schreibe höchstens die Hälfte der Sätze aus eigenem Wissen. Nenne nur Nummern, die in den Belegen "
-        "vorkommen. "
+        "vorkommen. Stehen in der Anfrage keine Belege, schreibst du den Baustein ganz aus gesichertem eigenem "
+        "Fachwissen zum Thema, ohne Belegnummern; dann gilt die Grenze der Hälfte nicht. Lass ihn nur leer, wenn es "
+        "zu seiner Aufgabe beim Thema nichts Gesichertes gibt. "
         "Schreibe zusammenhängende Absätze in sachlichem Ton: keine Überschriften, keine Aufzählungen, keine "
         "Einleitungs- oder Schlussfloskeln, keine Wiederholung des Bausteintitels, keine Definitionen in Fettdruck. "
         "Die Angaben zu Aufgabe, Inhalt und Abgrenzung des Bausteins steuern nur deine Auswahl: Gib sie nicht wieder "
@@ -340,6 +347,29 @@ TOPIC_ARTICLES = Prompt(
     ),
 )
 
+# The writing profiles (D72): a text in place of a topic - one longer than a topic, a sentence, a question, or the
+# metadata of a node without a topic - gets a topic the model words from it, close to its words and with its aspect;
+# a topic sent along with a node leads, the node shows how it is meant
+TOPIC_WORDING = Prompt(
+    id="topic_wording",
+    version=1,
+    system=(
+        "Du nennst das Thema eines kompendialen Textes für Lehrkräfte. Die Anfrage nennt kein knappes Thema, sondern "
+        "einen längeren Text, einen Satz, eine Frage oder die Angaben zu einem Unterrichtsmaterial oder einer "
+        "Sammlung. Nenne das fachliche Thema, um das es ihr geht, als knappen Titel auf Deutsch: ein Ausdruck mit "
+        "höchstens acht Wörtern, kein Satz, kein Nebensatz, keine Frage („Entstehung von Gewittern“, nicht „Wie "
+        "entstehen Gewitter?“). Bleib möglichst in ihren Worten und so eng oder so weit, wie sie es meint, mit seinem "
+        "Aspekt („Ernährung im Leistungssport“, nicht „Ernährung“). Bei einem Material nenne den Gegenstand, nicht "
+        "die Tätigkeit oder Aufgabe („Hebelgesetz“, nicht „Wir untersuchen den Hebel“). Nennt die Anfrage ein Thema "
+        "der Lehrkraft und dazu ein Material oder eine Sammlung, hat das Thema der Lehrkraft Vorrang; die Angaben "
+        "zeigen nur, wie es gemeint ist. Lass weg, was nur sagt, für wen oder in welcher Form etwas gedacht ist: "
+        "Klasse, Zielgruppe, Materialart wie Arbeitsblatt, Video oder Experiment, das Fach als Vorsatz. Gehört eine "
+        "Schulform oder ein Ort zum Thema selbst („Inklusion im Sportunterricht“), bleibt er. Keine "
+        'Anführungszeichen. Antworte ausschließlich mit einem JSON-Objekt wie {"thema": "..."}.'
+    ),
+    user="{input}\n\nGib das JSON-Objekt zurück.",
+)
+
 PROMPTS: dict[str, Prompt] = {
     p.id: p
     for p in (
@@ -351,6 +381,7 @@ PROMPTS: dict[str, Prompt] = {
         ARTICLE_CHOICE,
         HIT_CHECK,
         TOPIC_ARTICLES,
+        TOPIC_WORDING,
         NODE_TOPIC,
         NODE_TOPIC_WITH_TOPIC,
         QA_PAIRS,

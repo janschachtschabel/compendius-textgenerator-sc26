@@ -613,8 +613,17 @@ def test_the_enrichment_prompt_lets_model_knowledge_fill_up_to_half_a_block() ->
     """D70 (Jan, 2026-10-01): best-quality-generated spent nearly the tokens of best-coverage-generated for a sparing
     share of model knowledge; up to half of a block's sentences may now come from the model, instead of one in three."""
     prompt = get_prompt("section_enrichment")
-    assert prompt.version == 3
+    assert prompt.version == 4
     assert "höchstens die Hälfte der Sätze" in prompt.system and "einen von drei" not in prompt.system
+
+
+def test_the_enrichment_prompt_writes_about_the_topic_as_asked_and_fills_a_block_without_evidence() -> None:
+    """D72 (Jan, 2026-10-02): "das thema im prompt sollte bei best-quality generated auch das angefragte thema und
+    nicht der gefundene artikel sein" and "bei best quality generated sollten auch leere bausteine aus modellwissen
+    geschrieben werden"."""
+    system = get_prompt("section_enrichment").system
+    assert "Das Thema steht in der Anfrage und ist genau so gemeint" in system
+    assert "Stehen in der Anfrage keine Belege, schreibst du den Baustein ganz aus gesichertem eigenem" in system
 
 
 def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> None:

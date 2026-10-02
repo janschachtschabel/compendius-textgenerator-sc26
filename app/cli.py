@@ -201,8 +201,9 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         choices=list(PRESETS),
         help="Profil (D53): llm-free (ohne LLM), balanced (LLM findet den Artikel), best-quality (LLM ordnet auch "
-        "zu), best-quality-generated (dazu schreibt das LLM den Text), best-coverage-generated (das LLM schreibt jeden "
-        "Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen); ohne Angabe "
+        "zu), best-quality-generated (dazu schreibt das LLM den Text zum angefragten Thema, Bausteine ohne Belege aus "
+        "Modellwissen), best-coverage-generated (das LLM schreibt jeden Baustein vollständig zum angefragten Thema: "
+        "aus den Belegen, wo sie es treffen, sonst aus Modellwissen); ohne Angabe "
         "PRESET_DEFAULT, ausgeliefert "
         "balanced, ohne LLM llm-free. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED "
         "und B_API_KEY",
@@ -248,7 +249,8 @@ def main(argv: list[str] | None = None) -> int:
         choices=["sources-only", "model-knowledge", "model-knowledge-full"],
         help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze "
         "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast; model-knowledge-full "
-        "schreibt jeden Baustein zum angefragten Thema, ohne passende Belege aus Modellwissen (D69)",
+        "schreibt jeden Baustein zum angefragten Thema: aus den Belegen, wo sie es treffen, sonst aus Modellwissen "
+        "(D69)",
     )
     gen.add_argument("--length", type=int, default=None, help="Ziellänge von Teil 1; ohne Angabe die des Profils")
     gen.add_argument("--facets-visible", action="store_true")

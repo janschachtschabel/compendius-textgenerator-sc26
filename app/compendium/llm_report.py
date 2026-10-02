@@ -10,6 +10,7 @@ from app.knowledge.article_choice import ArticleChoiceReport, ChoiceAudit, HitCh
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic_articles import TopicArticlesReport
+from app.knowledge.topic_wording import TopicWordingReport
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.synthesis.extraction import ExtractionReport
@@ -36,7 +37,7 @@ class LlmWork:
     only when ``choice.needed``, so only then is its absence a fallback; the question about a material (``choice.node``)
     counts its tokens and prompt here, its answer and why it did not decide are in audit.node_article.
     ``curriculum_*`` describe curriculum_check=llm (D58): what the model rated in part 2, and why the rules decided
-    when it was not asked.
+    when it was not asked. ``wording``: a writing profile let the model word the topic of a text (D72).
     """
 
     note: str | None = None
@@ -56,6 +57,7 @@ class LlmWork:
     curriculum: CurriculumCheckReport | None = None
     curriculum_fallback: str | None = None
     cached_tokens: int = 0  # of the prompt tokens, those read from the prompt cache (D69)
+    wording: TopicWordingReport | None = None
 
 
 def build_llm_report(
@@ -64,6 +66,7 @@ def build_llm_report(
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it."""
     choice_audit = work.choice
     extraction, generation, matching, curriculum = work.extraction, work.generation, work.matching, work.curriculum
+    wording = work.wording
     choice, hit_check, node, articles = (
         choice_audit.report,
         choice_audit.hit_check,
@@ -87,8 +90,13 @@ def build_llm_report(
         | HitCheckReport
         | NodeArticleReport
         | TopicArticlesReport
+        | TopicWordingReport
         | CurriculumCheckReport
-    ] = [r for r in (node, articles, choice, hit_check, matching, extraction, generation, curriculum) if r is not None]
+    ] = [
+        r
+        for r in (wording, node, articles, choice, hit_check, matching, extraction, generation, curriculum)
+        if r is not None
+    ]
     curriculum_used = "llm" if curriculum is not None and curriculum.answered else "rule-based"
     calls = sum(r.calls for r in reports)
     tokens: dict[str, int] | None = None
@@ -153,12 +161,17 @@ def build_llm_report(
         "extraction": extraction_block,
         "generation": generation_block,
         "curriculum_check": curriculum_block,
+        "topic_wording": (
+            {"source": wording.source, "reason": wording.reason, "topic": wording.topic, "fallback": wording.fallback}
+            if wording is not None
+            else None
+        ),
     }
     front: dict[str, Any] = {}
     if gateway is not None:
         models = [
             r.model
-            for r in (generation, extraction, matching, choice, hit_check, node, articles, curriculum)
+            for r in (generation, extraction, matching, choice, hit_check, node, articles, curriculum, wording)
             if r is not None and r.model
         ]
         front["provider"] = gateway.client.provider
@@ -188,6 +201,8 @@ def build_llm_report(
             "articles_fallback",
         )
         front["article_choice"] = {key: article_choice[key] for key in keys}
+    if wording is not None:
+        front["topic_wording"] = {"topic": wording.topic, "reason": wording.reason, "fallback": wording.fallback}
     if work.enrichment_used in ("model-knowledge", "model-knowledge-full"):
         # The reader has to be able to see this without reading the audit block (docs/umbau.md U4). The note
         # explains marked sentences, so it only appears where there are any - the model may stay in the sources.

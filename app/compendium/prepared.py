@@ -13,6 +13,7 @@ from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic import NormalizedTopic
 from app.knowledge.topic_articles import TopicArticlesReport
+from app.knowledge.topic_wording import TopicWordingReport
 from app.matching.lexicon import HeadingLexicon
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.matching.policy import AssignmentResult
@@ -50,6 +51,8 @@ class PreparedTopic:
     material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
     # the archives this request reads from start to end, whatever a reload does meanwhile (audit 2026-09-29, A10)
     registry: ZimRegistry | None = None
+    asked_topic: str = ""  # the topic every prompt hears (D72), set by CompendiumService.prepare
+    wording: TopicWordingReport | None = None  # a writing profile: the model worded the topic of a text (D72)
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
@@ -59,6 +62,13 @@ class PreparedTopic:
     def title(self) -> str:
         """The article the topic resolved to, or the normalized topic where none was needed (part 3 alone)."""
         return self.resolution.title or self.normalized.topic
+
+    @property
+    def prompt_topic(self) -> str:
+        """The topic the prompts hear and a text the LLM writes is about (D72): the topic as asked, or the model's
+        wording of a text in its place; the article only for a material without a topic (D47). Searches in the
+        archives and the curricula keep the article (``title``)."""
+        return self.asked_topic or self.title
 
     @property
     def primary(self) -> Source | None:
@@ -90,7 +100,7 @@ class WorldPart:
     generation: str
     enrichment: str  # sources-only unless an LLM actually writes blocks and the request allowed more
     llm_note: str | None
-    topic: str = ""  # the topic as asked when part 1 was written about it, not its article (model-knowledge-full, D69)
+    topic: str = ""  # the topic the LLM wrote part 1 about, not its article (D69, D72); "" when it wrote nothing
     chunks_assigned: int = 0
     extracted: ExtractionReport | None = None  # extraction=llm: what the LLM chose, per block
     regenerated: list[str] = field(default_factory=list)  # content blocks made anew despite an earlier text

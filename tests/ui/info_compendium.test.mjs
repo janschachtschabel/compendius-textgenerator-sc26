@@ -55,6 +55,29 @@ test('a compendium without a material says nothing of one', () => {
   assert.equal(fact(info('compendium_topic'), 'Thema und Artikel', 'Artikel des Materials'), null);
 });
 
+test('the topic of the text is named, and one the model worded from a text says what it came from (D72)', () => {
+  const section = info('compendium_material', (answer) => {
+    answer.topic = 'Spiegelung und Brechung des Lichts';
+    answer.audit.llm.topic_wording = { source: 'Material', reason: 'Metadaten eines Knotens ohne Thema', topic: 'Spiegelung und Brechung des Lichts', fallback: null };
+  });
+
+  assert.equal(fact(section, 'Thema und Artikel', 'Thema des Textes'), 'Spiegelung und Brechung des Lichts');
+  assert.equal(fact(section, 'Thema und Artikel', 'Thema von der KI formuliert'), '„Spiegelung und Brechung des Lichts“ (aus Material, Metadaten eines Knotens ohne Thema)');
+});
+
+test('a wording without an answer keeps the topic as asked and says why (D72)', () => {
+  const section = info('compendium_material', (answer) => {
+    answer.audit.llm.topic_wording = { source: 'Thema', reason: 'ein Satz oder eine Frage', topic: null, fallback: 'Antwort nicht lesbar' };
+  });
+
+  assert.equal(fact(section, 'Thema und Artikel', 'Thema von der KI formuliert'), 'nein, Thema wie angefragt (aus Thema, ein Satz oder eine Frage; Antwort nicht lesbar)');
+});
+
+test('a topic that needed no wording says nothing of one', () => {
+  assert.equal(fact(info('compendium_topic'), 'Thema und Artikel', 'Thema von der KI formuliert'), null);
+  assert.equal(fact(info('compendium_topic'), 'Thema und Artikel', 'Thema des Textes'), 'Optik');
+});
+
 test('the check of curricula that found no element is no fallback in the table of methods, it had nothing to check', () => {
   const section = info('compendium_nothing_to_check');
 

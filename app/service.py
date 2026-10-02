@@ -37,7 +37,9 @@ from app.knowledge.article_choice import (
 )
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.main_article import choose_main_article
+from app.knowledge.topic import topic_as_asked
 from app.knowledge.topic_articles import settle
+from app.knowledge.topic_wording import TopicWordingReport, word_topic, wording_request
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.matching.lexicon import HeadingLexicon
@@ -45,6 +47,7 @@ from app.matching.registry import ensure_strategy
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
+from app.sources.wlo.models import CollectionInfo, NodeInfo
 from app.sources.wlo.part import (
     CollectionBuilder,
     CollectionTopic,
@@ -100,6 +103,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         *,
         registry: ZimRegistry | None = None,
         segment: bool = True,
+        wording: ArticleChoiceJob | None = None,
     ) -> PreparedTopic:
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
 
@@ -108,7 +112,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
         ``registry`` narrows the archives (/knowledge asks some of them); ``segment=False`` keeps the articles whole,
         as /knowledge returns them - the one way to a topic's corpus for a compendium, the curriculum search and
-        /knowledge (audit 2026-09-27, AR-02).
+        /knowledge (audit 2026-09-27, AR-02). With ``wording`` - a writing profile - the model words the topic of a
+        text in place of a topic (D72).
         """
         self.subjects.check(request.subject)  # before any reading: a typo would otherwise count for nothing
         timings: dict[str, int] = {}
@@ -167,9 +172,33 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
             registry=registry,
         )
+        self._ask_topic(prepared, request, node_info or collection, wording)
         if needs_corpus:
             self._add_corpus(prepared, request, deadline, choice, registry, segment)
         return prepared
+
+    def _ask_topic(
+        self,
+        prepared: PreparedTopic,
+        request: GenerateRequest,
+        beside: NodeInfo | CollectionInfo | None,
+        wording: ArticleChoiceJob | None,
+    ) -> None:
+        """The topic every prompt hears (D72; Jan: "eine verfälschung des themas ist generell nicht gut"): the topic as
+        asked, for a material without a topic its article (D47), for a collection its title. A writing profile lets
+        the model word the topic of a text in its place, of a node's metadata without a topic among them
+        (``wording_request``); without its answer the topic stays."""
+        if request.topic or prepared.node_article is None:
+            prepared.asked_topic = topic_as_asked(prepared.normalized)
+        else:
+            prepared.asked_topic = prepared.title
+        wanted = wording_request(request.topic, beside) if wording is not None else None
+        if wanted is None or wording is None:
+            return
+        prepared.wording = TopicWordingReport(source=wanted.source, reason=wanted.reason)
+        worded = word_topic(wording, wanted.text, prepared.wording)
+        if worded:
+            prepared.asked_topic = worded
 
     def _needs_corpus(self, request: GenerateRequest) -> bool:
         """Part 1 and part 2 build on the corpus; part 3 alone, or with an unconfigured part 2, does not, and needs
@@ -206,7 +235,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         lap("corpus")
         prepared.side_articles = sum(1 for s in sources if s.origin in CHECKED_ORIGINS)
         if choice is not None and prepared.side_articles:
-            gone, prepared.hit_check = check_hits(choice, prepared.title, sources)
+            gone, prepared.hit_check = check_hits(choice, prepared.prompt_topic, sources)
             sources = [s for s in sources if s.source_id not in gone]
             lap("hit_check")
         # The materials are sources of part 1 only (the request refuses them without it); a failed probe already
@@ -250,7 +279,10 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             budget = self.open_budget(profile)
         choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
         budget = choice.budget if choice is not None else budget
-        prepared = self.prepare(request, deadline, choice)
+        # the topic a writing profile words is the one of part 1; without it nothing is written about it (D72)
+        writing = request.generation if "world" in request.parts else None
+        wording = self.wording_job(writing, choice, deadline, budget)
+        prepared = self.prepare(request, deadline, choice, wording=wording)
         requested = Requested.of(request)
         timings = dict(prepared.timings)
         if "world" in request.parts:
@@ -305,7 +337,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
         check, fallback = None, None
         if requested == "llm":
-            check, fallback = self.curriculum_check(prepared.title, prepared.subjects, budget, deadline, checked)
+            check, fallback = self.curriculum_check(prepared.prompt_topic, prepared.subjects, budget, deadline, checked)
         part = self.curricula.build(
             title=prepared.title,
             aliases=prepared.aliases,

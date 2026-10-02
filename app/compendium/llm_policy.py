@@ -111,6 +111,23 @@ class LlmPolicy:
         opened = budget if budget is not None else self.llm.open_budget()
         return wanted, None, ArticleChoiceJob(self.llm.client, opened, deadline, thorough=wanted == "llm-thorough")
 
+    def wording_job(
+        self,
+        generation: str | None,
+        choice: ArticleChoiceJob | None,
+        deadline: Deadline | None,
+        budget: RequestBudget | None,
+    ) -> ArticleChoiceJob | None:
+        """The job that words the topic of a text for a writing profile (D72): the article choice's where it runs,
+        else one of its own on the request's budget; ``None`` where the request writes nothing or no LLM is usable."""
+        if generation in (None, "rule-based"):
+            return None
+        if choice is not None:
+            return choice
+        if self.llm is None or self.llm_unavailable() is not None:
+            return None
+        return ArticleChoiceJob(self.llm.client, budget if budget is not None else self.llm.open_budget(), deadline)
+
     def open_budget(self, profile: str) -> RequestBudget | None:
         """The token budget of one request in ``profile``; ``None`` without a configured LLM.
 
