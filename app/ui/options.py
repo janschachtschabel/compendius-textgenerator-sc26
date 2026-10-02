@@ -59,6 +59,10 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
             "label": "Thema mit Aspekt: OER-Förderungen – am besten mit best-coverage-generated",
             "values": {"topic": "OER-Förderungen", "parts": ["world"]},
         },
+        {  # D72: in a writing profile the model words the topic of a question
+            "label": "Eine Frage als Thema: die KI formuliert daraus das Thema (best-quality-generated)",
+            "values": {"topic": "Warum ist der Himmel blau?", "preset": "best-quality-generated", "parts": ["world"]},
+        },
         {
             "label": "Optik mit ihrer Sammlung (Staging, alle drei Teile)",
             "values": {
