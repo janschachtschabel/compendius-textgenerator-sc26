@@ -151,7 +151,8 @@ class KnowledgeResponse(BaseModel):
         None,
         description="What article_choice=llm asked and decided: the articles the LLM named for the topic "
         "(articles_found, the overview as the archive has it in articles_overview, articles_main when the first of "
-        "them replaced the rules' article, articles_fallback why the side articles of before stayed; D63), the "
+        "them replaced the rules' article, articles_covers whether the overview covers the topic as asked, "
+        "articles_fallback why the side articles of before stayed; D63, D73), the "
         "article the LLM chose (chosen) or why the rules' one stayed (fallback, note), the side articles it dropped "
         "(hits_dropped: full-text hits and linked sub-articles) and the tokens; null when the rules chose alone",
     )

@@ -94,7 +94,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Modellwissen mit dem Baustein als Zusammenhang, streicht, was er für falsch oder erfunden hält, und "
             "berichtigt eine falsche Angabe, die er sicher kennt - Jahreszahlen, Namen, Gremien, Zuschreibungen. Die "
             "Kennzeichnung bleibt; ein Baustein nur aus Modellwissen, der jeden Satz verliert, fällt auf die Regeln "
-            "zurück. audit.llm.model_knowledge_check zählt, was gelesen, gestrichen und berichtigt wurde. Wirkt nur, "
+            "zurück, auf wörtliche Absätze, wo er Belege hat. audit.llm.model_knowledge_check zählt, was gelesen, "
+            "gestrichen und berichtigt wurde. Wirkt nur, "
             "wo das LLM mit Modellwissen schreibt."
         ),
         "value": {
@@ -266,6 +267,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "extraction": "rule-based",
             "generation": "llm-fast",
             "enrichment": "sources-only",
+            "model_knowledge_check": "rule-based",
             "target_length": 12000,
             "empty_slot_policy": "note",
             "existing_markdown": (

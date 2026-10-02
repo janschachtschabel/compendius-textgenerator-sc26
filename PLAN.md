@@ -1972,7 +1972,8 @@ API.
   30.000 Zielzeichen bleiben Untergrenze. (7) Prüfung des Modellwissens (Punkt 12a; Jan: „bauen und messen“): Schalter
   `model_knowledge_check` (`rule-based`, `llm`), Prompt `model_knowledge_check` v1; nach dem Schreiben streicht oder
   berichtigt ein zweiter Aufruf je Baustein Sätze aus Modellwissen, die Kennzeichnung bleibt, ein Baustein nur aus
-  Modellwissen, der jeden Satz verliert, fällt auf die Regeln zurück; `audit.llm.model_knowledge_check` zählt
+  Modellwissen, der jeden Satz verliert, fällt auf die Regeln zurück (wörtliche Absätze, wo er Belege hat, sonst
+  leer); `audit.llm.model_knowledge_check` zählt
   Gelesenes, Gestrichenes und Berichtigtes. Alle Profile stehen auf `rule-based`, bis M53 entscheidet.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
