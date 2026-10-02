@@ -1,12 +1,13 @@
 # Übergabe an das Technik-Team
 
-Stand 02.10.2026 · Release 2.7.1 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 02.10.2026 · Release 2.8.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei
 Seiten fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main`
-und damit Release 2.7.1. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft
+und damit Release 2.8.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft
 eine Anfrage `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch
-mit `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76). Was sich je Stand für den Betrieb ändert, steht in
+mit `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76), und seit 2.8.0 bekommt eine Sammlung in
+`node_id` Teil 3 wie mit `collection_id` (D77). Was sich je Stand für den Betrieb ändert, steht in
 [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht in `docker-compose.yml` und gilt mit
 jedem Image.
 
