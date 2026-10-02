@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 02.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M49; Rohdaten und
+[Übersicht](README.md) · Stand 02.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M51; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
 [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
@@ -19,7 +19,8 @@ der QA-Paare (D54, D55, D57).
 | Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm-thorough` | `llm-thorough` | `llm-thorough` |
 | Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | statt verlinkter Unterartikel und Volltexttreffer die Artikel, die das LLM als Übersicht und Teile nennt (D63); ohne Antwort wie `llm-free` mit Prüfung der Nebenartikel | wie `balanced` | wie `balanced` | wie `balanced` |
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` | `llm` |
-| Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM geschrieben, ergänzt um Modellwissen | vom LLM vollständig zum angefragten Thema geschrieben, ohne passende Belege aus Modellwissen (D69) |
+| Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
+| Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM zum angefragten Thema geschrieben, ergänzt um Modellwissen (höchstens die Hälfte), ein Baustein ohne Belege aus Modellwissen (D72) | vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69) |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` | wie `balanced` |
@@ -813,6 +814,7 @@ Passung 4,56 und Nutzen 4,31.
     | `balanced` | wählt unsichere Artikel, nennt Übersicht und Teile des Themas | 580 | 6,1 s | 0 | nur mit eigenem Artikel |
     | `best-quality` | ordnet jeden Absatz zu, prüft auch sichere Artikelwahlen, prüft die Lehrplanelemente | 61.060 | 18 s | 0 | nur mit eigenem Artikel |
     | `best-quality-generated` | schreibt jeden Baustein, bis zur Hälfte aus eigenem Wissen | 82.335 | 29 s | 28 % | nur mit eigenem Artikel |
+    | `best-quality-generated` seit D72 (M51) | schreibt jeden Baustein zum angefragten Thema, einen Baustein ohne Belege ganz aus eigenem Wissen | 84.016 | 30 s | 62 % | Passung 4,8, 3,8 und 4,0 |
     | `best-coverage-generated` | schreibt jeden Baustein vollständig zum angefragten Thema | 101.150 | 37 s | 84 % | immer (Passung 5,0) |
 
     Drei Befunde aus M48 sagen, wo eine weitere Stufe ansetzen sollte:
@@ -857,7 +859,7 @@ Passung 4,56 und Nutzen 4,31.
     `target_length`. Offen: so lassen oder halbieren.
 
 14. **Die anderen Profile an den Problemstellen von M48** (Jan, 02.10.2026: „bitte vorschlagen, testen und
-    empfehlen“): gemessen in M49 am Prototyp, offen. Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
+    empfehlen“): gemessen in M49 am Prototyp; V2 entschieden und erweitert (D72), V1, V3 und V4 offen. Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
     nennt, im Archiv, wird ein Vertreter der Gruppe Hauptartikel (Walther von der Vogelweide, Immanuel Kant).
 
     | Vorschlag | Wirkung (M49) | Kosten | Empfehlung |
@@ -873,6 +875,19 @@ Passung 4,56 und Nutzen 4,31.
     Frage der Ausrichtung: Soll `best-quality-generated` über den gefundenen Artikel schreiben (überwiegend aus
     Quellen) oder über das angefragte Thema (mit weniger Quellenstoff)? Der Prototyp liegt auf dem lokalen Zweig
     `m49-proben`; nach Jans Entscheidung kommen die gewählten Teile mit ihren Tests auf `main`.
+
+    **Entschieden (D72, Jan, 02.10.2026):** „das thema im prompt sollte bei best-quality generated auch das
+    angefragte thema und nicht der gefundene artikel sein - das sollte eigentlich für alle profile gelten“ und „bei
+    best quality generated sollten auch leere bausteine aus modellwissen geschrieben werden“. Gebaut auf `main`:
+    Jeder Prompt aller Profile hört das angefragte Thema; `best-quality-generated` schreibt darüber, nennt es als
+    Überschrift und füllt einen Baustein ohne Belege aus Modellwissen. Dazu (Jan: „wenn das thema zu lang ist oder
+    eine texteingabe war sollte in den beiden profilen die ki das thema passend zum input formulieren“; ein Knoten
+    kann das Thema ersetzen oder begleiten): In den beiden schreibenden Profilen formuliert das LLM das Thema aus
+    einem Text oder den Metadaten eines Knotens. Gemessen in M51 (zwei blinde Gutachter, neun Themen): Passung bei
+    Themen mit Aspekt 4,00 statt 1,50, bei Sammelthemen 3,83 statt 2,83, bei einfachen 4,83 statt 4,67; Nutzen,
+    Vollständigkeit und Lesbarkeit steigen um 0,7 bis 1,5 Noten, zum gleichen Preis (84.016 Tokens, 30 s). Das
+    Modellwissen steigt auf 62 statt 27 %, vor allem aus den Bausteinen ohne Belege. Die Zuordnung lässt bei einem
+    Aspekt Absätze über den Oberbegriff weg; der wörtliche Text von `best-quality` wird dort kürzer.
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
 `best-quality`-Profilen (`curriculum_check=llm`); `llm-free` und `balanced` bleiben bei den Regeln mit gebündelten

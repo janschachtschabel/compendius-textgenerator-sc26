@@ -37,12 +37,14 @@ lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, 
 | `llm-free` | nichts | 2,3 s | 0 | Massenabrufe, Server ohne LLM |
 | `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 6,9 s | rund 580 | **Standard** |
 | `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 26 s | rund 49.000, je nach Thema bis 87.000 | Vorbereitung durch die Redaktion |
-| `best-quality-generated` | dazu: schreibt den Text neu, Modellwissen sichtbar markiert | 36 s | rund 60.000 | lesbarer Fließtext |
-| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (markiert) | rund 28 s, nur Teil 1 | rund 91.000 bis 99.000, ein Drittel aus dem Prompt-Cache | Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
+| `best-quality-generated` | dazu: schreibt den Text neu zum angefragten Thema, Bausteine ohne Belege aus Modellwissen (seit D72), Modellwissen sichtbar markiert | 36 s | rund 60.000 | lesbarer Fließtext |
+| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 28 s, nur Teil 1 | rund 91.000 bis 99.000, ein Drittel aus dem Prompt-Cache | Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
 
 Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
 [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
-Entwicklungsrechner (M47, D69); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens.
+Entwicklungsrechner (M47, D69); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
+jeder Prompt das angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn
+`topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten ohne Thema kommt.
 Gleichzeitig mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa`
 schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
 
@@ -180,8 +182,8 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -d '{"topic": "Photosynthese", "preset": "best-quality"}' \
   | jq -r '.markdown' > photosynthese-best.md
 
-# best-coverage-generated: jeder Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus
-# Modellwissen (markiert mit [Modellwissen])
+# best-coverage-generated: jeder Baustein vollständig zum angefragten Thema, aus den Belegen, wo sie es treffen, sonst
+# aus Modellwissen (markiert mit [Modellwissen])
 curl -sS --max-time 240 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
   -d '{"topic": "Inklusion im Sportunterricht", "parts": ["world"], "preset": "best-coverage-generated"}' \

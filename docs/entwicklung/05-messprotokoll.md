@@ -2777,3 +2777,141 @@ Grenzen:
 
 Rohdaten: `m50_wortlaut.json`: je Lauf und Satzklasse Zeichen, Sätze und Anteile; die Messwerte der Läufe des alten
 Dienstes, ohne Sätze; die Größe der Regel-Bausteine je Thema. Keine Texte.
+
+## M51 Das angefragte Thema in jedem Prompt (D72, 02.10.2026)
+
+**Aufbau:** Jan: „das thema im prompt sollte bei best-quality generated auch das angefragte thema und nicht der
+gefundene artikel sein - das sollte eigentlich für alle profile gelten“, „bei best quality generated sollten auch leere
+bausteine aus modellwissen geschrieben werden“ und „wenn das thema zu lang ist oder eine texteingabe war sollte in den
+beiden profilen die ki das thema passend zum input formulieren“. Zwei Messungen:
+
+- **Thema aus Text oder Metadaten** (`mc_themenformulierung.py`): acht Eingaben einer Lehrkraft statt eines Themas
+  (Fragen, Sätze, zu lange Themen), drei davon noch einmal mit einem Material daneben, die zwölf Materialien von M21
+  mit erkennbarem Thema aus der WLO-Produktion ohne Thema und drei Sammlungen der Staging-Umgebung, je ein Aufruf des
+  Prompts `topic_wording` über die b-api.
+- **`best-quality-generated` nach D72** an den neun Themen von M48, blind gegen `best-quality-generated` und
+  `best-coverage-generated` aus M48, zwei Claude-Gutachter wie in M48 und M49
+  (`mc_profilvergleich_boegen.py --variants=bqg,bqg-d72,bcg --seed=51`), dazu das Modellwissen je Baustein
+  (`mc_bausteinanteile.py`).
+- **Gegenprobe `best-quality`**, wörtlich, an denselben neun Themen gegen M48: Zuordnung und Prüfung der
+  Nebenartikel hören jetzt das angefragte Thema.
+
+**Thema aus Text oder Metadaten:** 26 Eingaben, jede bekam ein Thema, keine fiel zurück; im Median 432 Tokens
+(342 bis 949) und 1,0 s (0,7 bis 3,4) je Aufruf.
+
+| Eingabe | Thema |
+|---|---|
+| Wie funktioniert die Photosynthese bei Pflanzen? | Photosynthese bei Pflanzen |
+| Warum ist der Himmel blau? | Blaue Farbe des Himmels |
+| Ich möchte mit meiner 8. Klasse über die Ursachen des Ersten Weltkriegs sprechen. | Ursachen des Ersten Weltkriegs |
+| Die Schülerinnen und Schüler sollen verstehen, wie eine repräsentative Demokratie funktioniert und welche Rolle Wahlen spielen. | Repräsentative Demokratie und Wahlen |
+| Material zur Lichtbrechung an Linsen für den Physikunterricht der Sekundarstufe I mit Experimenten | Lichtbrechung an Linsen |
+| Förderprogramme für offene Bildungsmaterialien in Deutschland und Europa seit 2015 | OER-Förderprogramme in Deutschland und Europa seit 2015 |
+| Was müssen Lehrkräfte über Künstliche Intelligenz im Unterricht wissen? | Künstliche Intelligenz im Unterricht |
+| Inklusion im Sportunterricht: Wie gelingt gemeinsames Bewegen von Kindern mit und ohne Behinderung? | Inklusion im Sportunterricht |
+
+Klasse, Materialart und Fach fallen weg, der Aspekt bleibt. Mit einem fremden Material daneben (Zahnrad und Riemen
+neben der Photosynthese und zwei weitere Paare) blieb das Thema der Lehrkraft in allen drei Fällen vorn. Die drei
+Sammlungen behielten ihren Titel (Optik, Photosynthese, Geometrische Optik).
+
+Die zwölf Materialien ohne Thema, neben dem Begriff, den M21 vor jedem Lauf als Eingabe einer Lehrkraft festlegte:
+
+| Titel des Materials | Begriff (M21) | Thema |
+|---|---|---|
+| Zahnrad und Riemen - Experiment: | Zahnrad | Zahnräder und Riemen |
+| Bestimmung des Planckschen Wirkungsquantums h (Variante 1) - Experiment | Plancksches Wirkungsquantum | Bestimmung des Planckschen Wirkungsquantums |
+| Funktionsweise eines Galvanometer - Experiment | Galvanometer | Funktionsweise eines Galvanometers |
+| Mond durch mein Teleskop - Moon through my telescope (Skywatcher 200/1000) | Mond | Mondbeobachtung mit dem Teleskop |
+| Eine Batterie "bauen" | Batterie | Bau einer Zitronenbatterie |
+| "Blitzeis" mit Wasser und Windeln | Superabsorber | Superabsorber in Windeln |
+| Sonnenuntergang im Zeitraffer | Sonnenuntergang | Sonnenuntergang im Zeitraffer |
+| Organometallic Reagents and Carbanions: Crash Course Organic Chemistry #28 | Metallorganische Chemie | Organometallische Verbindungen und Carbanionen |
+| Determining SN1, SN2, E1, and E2 Reactions: Crash Course Organic Chemistry #23 | Nukleophile Substitution | Unterscheidung von SN1-, SN2-, E1- und E2-Reaktionen |
+| Alkene Addition Reactions: Crash Course Organic Chemistry #16 | Elektrophile Addition | Additionsreaktionen von Alkenen |
+| Acidity: Crash Course Organic Chemistry #11 | Säurestärke | Vorhersage der Säurestärke in der organischen Chemie |
+| Schritte des Dreisatzes | Dreisatz | Dreisatz |
+
+Die Themen bleiben nah am Material und deutsch, auch bei englischen Titeln. Vier von zwölf nennen noch die Aufgabe
+des Materials („Bestimmung des …“, „Bau einer …“, „Unterscheidung von …“, „Vorhersage der …“), wo der Begriff von
+M21 den Gegenstand nennt. Ein erster Entwurf des Prompts ohne die Vorgabe „den Gegenstand, nicht die Tätigkeit“ und
+ohne „kein Nebensatz“ schrieb „Warum der Himmel blau ist“, „Den Mond durch ein Teleskop beobachten“, „Batterie
+selber bauen“ und „Schritte des Dreisatzes“; ausgeliefert ist die geschärfte Fassung.
+
+**`best-quality-generated` nach D72**, je ein Lauf an den neun Themen von M48 (`mc_kompendium_profil.py`), gegen die
+Läufe von M48:
+
+| Thema | Bausteine mit Text (mit Belegen), M48 → D72 | Zeichen | Modellwissen | Überschrift D72 |
+|---|---|---|---|---|
+| Optik | 8 (8) → 10 (7) | 19.572 → 27.631 | 42 → 67 % | Optik |
+| Photosynthese | 8 (8) → 10 (7) | 20.335 → 28.605 | 36 → 61 % | Photosynthese |
+| Französische Revolution | 6 (6) → 10 (6) | 14.724 → 28.108 | 22 → 70 % | Französische Revolution |
+| Dichter aus dem Mittelalter | 4 (4) → 10 (5) | 12.756 → 27.809 | 24 → 71 % | Dichter aus dem Mittelalter (M48: Deutsche Literatur im Mittelalter) |
+| Komponisten der Klassik | 8 (8) → 10 (6) | 18.693 → 28.861 | 19 → 62 % | Komponisten der Klassik (M48: Wiener Klassik) |
+| Philosophen der Aufklärung | 8 (8) → 10 (7) | 19.987 → 22.815 | 24 → 50 % | Philosophen der Aufklärung (M48: Aufklärung) |
+| OER-Förderungen | 10 (10) → 10 (1) | 26.337 → 35.518 | 30 → 95 % | OER-Förderungen (M48: Open Educational Resources) |
+| Inklusion im Sportunterricht | 9 (9) → 10 (10) | 24.460 → 23.851 | 27 → 33 % | Inklusion im Sportunterricht (M48: Inklusive Pädagogik) |
+| Künstliche Intelligenz im Unterricht | 10 (10) → 10 (10) | 28.996 → 26.268 | 50 → 32 % | Künstliche Intelligenz im Unterricht (M48: Künstliche Intelligenz) |
+| **Median** | 8 (8) → 10 (7) | 19.987 → 27.809 | 27 → 62 % | 9 von 9 wie angefragt (M48: 3 von 9) |
+
+Tokens 82.335 → 84.016 (davon aus dem Prompt-Cache 37.262 → 13.816), Zeit Teil 1 29,0 → 30,3 s, Belegnummern 93 → 67.
+Das Modellwissen je Baustein (`mc_bausteinanteile.py`): 31 der 90 Bausteine hatten keine Belege und sind ganz
+Modellwissen; in den 59 mit Belegen sind es 37 % der Sätze (M48: 30 %), 11 davon über der Hälfte (M48: 12 von 71).
+Der Anstieg kommt also aus den gefüllten Bausteinen ohne Belege, nicht aus den belegten.
+
+Die Zuordnung hört jetzt das angefragte Thema. Bei „OER-Förderungen“ ließ sie fast alle Absätze des Artikels Open
+Educational Resources weg, die die Förderung nicht behandeln: Nur ein Baustein bekam Belege, der Text ist zu 95 %
+Modellwissen. Bei „Inklusion im Sportunterricht“ und „Künstliche Intelligenz im Unterricht“ fand sie für alle zehn
+Bausteine passende Absätze.
+
+**Gegenprobe `best-quality`** (wörtlich; die Zuordnung durch das LLM und die Prüfung der Nebenartikel hören jetzt das
+angefragte Thema), dieselben neun Themen gegen M48: im Median 7 statt 8 Bausteine mit Text, 11.703 statt 13.408
+Zeichen, 59.940 statt 61.060 Tokens, 16,4 statt 18,3 s; die Überschrift bleibt der Artikel. Je Thema schwankt die
+Länge in beide Richtungen (Optik 14.186 → 9.927, Photosynthese 12.597 → 16.050, Inklusion im Sportunterricht 16.425 →
+20.200); am deutlichsten verliert „OER-Förderungen“: 17.529 → 9.668 Zeichen bei weiter neun Bausteinen. Dort zeigt
+sich die Streuung der Zuordnung, die das Aspektthema hört: Im Lauf von `best-quality` hielt sie Absätze über OER
+allgemein in neun Bausteinen für passend, im Lauf von `best-quality-generated` nur in einem; keiner der beiden Läufe
+verlor einen Stapel an eine unlesbare Antwort.
+
+**Blinde Noten** (zwei Claude-Gutachter, die Bausteine 1 bis 4 und 8 bis 10 ohne Belegnummern und Kennzeichnung,
+Mittel beider, `mc_profilvergleich_auswertung.py`); `best-quality-generated` M48 und D72, `best-coverage-generated` M48:
+
+| Themen | Variante | Passung | Nutzen | Vollständigkeit | Lesbarkeit | Fehler je Text, schwer / leicht |
+|---|---|---|---|---|---|---|
+| einfach | bqg M48 | 4,67 | 3,00 | 2,33 | 3,00 | 0 / 1,50 |
+| | bqg D72 | 4,83 | 4,00 | 3,67 | 3,67 | 0 / 0,83 |
+| | bcg M48 | 5,00 | 5,00 | 4,67 | 4,00 | 0 / 1,17 |
+| Sammelthema | bqg M48 | 2,83 | 3,17 | 2,50 | 3,00 | 0,33 / 0,83 |
+| | bqg D72 | **3,83** | 3,83 | 3,67 | 3,83 | 0 / 1,00 |
+| | bcg M48 | 4,67 | 4,33 | 4,67 | 4,00 | 0 / 1,17 |
+| mit Aspekt | bqg M48 | 1,50 | 2,00 | 1,33 | 3,00 | 0 / 0,67 |
+| | bqg D72 | **4,00** | 3,17 | 3,33 | 3,67 | 0 / 0,83 |
+| | bcg M48 | 4,67 | 4,33 | 4,67 | 4,33 | 0 / 0,33 |
+| alle neun | bqg M48 | 3,00 | 2,72 | 2,06 | 3,00 | 0,11 / 1,00 |
+| | bqg D72 | 4,22 | 3,67 | 3,56 | 3,72 | 0 / 0,89 |
+| | bcg M48 | 4,78 | 4,56 | 4,67 | 4,11 | 0 / 0,89 |
+
+Gleiche Note bei der Passung in 23 von 27 Texten, sonst eine um eins verschieden (Nutzen und Vollständigkeit 24,
+Lesbarkeit 22). `best-coverage-generated` bekam etwas andere Noten als in M48 (Passung 4,78 statt 5,0): andere
+Gutachter, andere Texte daneben.
+
+**Ergebnis:**
+
+- Mit dem angefragten Thema trifft `best-quality-generated` alle drei Arten von Themen: Passung bei Themen mit Aspekt
+  4,00 statt 1,50, bei Sammelthemen 3,83 statt 2,83, bei einfachen 4,83 statt 4,67. Nutzen, Vollständigkeit und
+  Lesbarkeit steigen um 0,7 bis 1,5 Noten, kein schwerer Fehler, zum gleichen Preis (84.016 Tokens, 30 s). Es bleibt
+  unter `best-coverage-generated` (Passung 4,78, Vollständigkeit 4,67) mit halb so viel Text.
+- Der Preis ist das Modellwissen: 62 statt 27 % des Textes, vor allem aus den 31 von 90 Bausteinen ohne Belege; in den
+  belegten Bausteinen bleibt es bei gut einem Drittel der Sätze.
+- Die Zuordnung, die das angefragte Thema hört, lässt bei einem Aspekt Absätze über den Oberbegriff weg, und das
+  streut zwischen Läufen (OER-Förderungen: Absätze für einen oder für neun Bausteine). Der wörtliche Text von
+  `best-quality` wird dort halb so lang; über die neun Themen 11.703 statt 13.408 Zeichen.
+- Die Formulierung gibt knappe Themen in den Worten der Eingabe, für 432 Tokens und 1 s; Materialtitel werden deutsch
+  und verlieren die Materialart, ein Drittel nennt noch die Aufgabe des Materials.
+
+Grenzen: neun Themen, ein Lauf je Variante; die Gutachter sind Sprachmodelle und lasen sieben der zehn
+Inhaltsbausteine; `best-quality` nur in Zahlen, ohne Noten; die Formulierung ohne Gutachter, nur neben den Begriffen
+von M21.
+
+Rohdaten: `m51_thema.json`: die Formulierungsprobe mit Eingaben und Themen in beiden Fassungen des Prompts, die Läufe
+von `best-quality-generated` und `best-quality` ohne Texte, das Modellwissen je Baustein, Noten, Übereinstimmung und
+Schlüssel der Bögen, die Urteile ohne Zitate.

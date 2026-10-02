@@ -31,8 +31,8 @@ Profil es vorsieht.
 - **`llm-free`:** ist auf dem Server in 2,3 s fertig und braucht keine Tokens. Den Hauptartikel trifft es bei 87 von 94, und jeder Satz steht wörtlich im zitierten Absatz.
 - **`balanced` (Standard):** fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.
 - **`best-quality`:** lässt das LLM zusätzlich die Absätze zuordnen und die Lehrplanschnipsel prüfen. Die Zuordnung steigt auf macro-F1 0,70 statt 0,45, für 26 s und rund 49.000 Tokens.
-- **`best-quality-generated`:** lässt das LLM auch den Text schreiben. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
-- **`best-coverage-generated`:** lässt das LLM jeden Baustein vollständig zum angefragten Thema schreiben, wo die Quellen nichts dazu sagen aus eigenem, markiertem Wissen. Bei Themen mit Aspekt wie „OER-Förderungen“ trifft es das Thema (Passung 4,8 statt 1,8 von 5) und füllt jeden Baustein; Teil 1 allein dauert rund 28 s und kostet 91.000 bis 99.000 Tokens, ein Drittel davon aus dem Prompt-Cache (M46, M47).
+- **`best-quality-generated`:** lässt das LLM auch den Text schreiben, seit D72 zum angefragten Thema und auch für Bausteine ohne Belege. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
+- **`best-coverage-generated`:** lässt das LLM jeden Baustein vollständig zum angefragten Thema schreiben, aus den Belegen, wo sie das Thema treffen, sonst aus eigenem, markiertem Wissen. Bei Themen mit Aspekt wie „OER-Förderungen“ trifft es das Thema (Passung 4,8 statt 1,8 von 5) und füllt jeden Baustein; Teil 1 allein dauert rund 28 s und kostet 91.000 bis 99.000 Tokens, ein Drittel davon aus dem Prompt-Cache (M46, M47).
 
 **Was man bekommt:**
 - `llm-free` ist schnell und kostet nichts.
@@ -73,8 +73,9 @@ Teil 1 entsteht in fünf Schritten; die Methoden und ihre Messwerte stehen auf
    - Die Regel-Policy mit Model2Vec ordnet zu, in `best-quality` das LLM.
 4. **Text:**
    - Die zugeordneten Absätze werden wörtlich übernommen, jeder Satz mit Belegnummer.
-   - In `best-quality-generated` schreibt das LLM jeden Baustein und markiert Modellwissen sichtbar.
-   - In `best-coverage-generated` schreibt es jeden Baustein vollständig über das angefragte Thema, auch ohne Belege.
+   - In `best-quality-generated` schreibt das LLM jeden Baustein zum angefragten Thema, aus den Belegen und mit Modellwissen für höchstens die Hälfte der Sätze, einen Baustein ohne Belege ganz aus Modellwissen (D72); Modellwissen ist sichtbar markiert.
+   - In `best-coverage-generated` schreibt es jeden Baustein vollständig über das angefragte Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen.
+   - In beiden formuliert das LLM das Thema zuerst, wenn es ein Text ist oder ein Knoten ohne Thema kommt (D72).
 5. **Neu erzeugen, auf Wunsch:**
    - Mit `existing_markdown` bleiben redaktionell geprüfte Bausteine wörtlich stehen.
    - Mit `regenerate_sections` entstehen nur die genannten Bausteine neu.

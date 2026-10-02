@@ -1926,6 +1926,38 @@ API.
   `m49-proben`; empfohlen sind der Hinweis auf das passende Profil in der Prüfung (V3), das Neufragen einer unlesbaren
   Antwort der Zuordnung (V4) und die Suche einer Übersicht ohne Klammerzusatz (V1a); die Entscheidung steht in 07,
   Punkt 14.
+- **D72 (2026-10-02)** Das angefragte Thema in jedem Prompt, leere Bausteine in `best-quality-generated` aus
+  Modellwissen, ein Thema aus Text oder Metadaten. (1) Thema (Jan: „das thema im prompt sollte bei best-quality
+  generated auch das angefragte thema und nicht der gefundene artikel sein - das sollte eigentlich für alle profile
+  gelten. eine verfälschung des themas ist generell nicht gut.“): Die Prüfung der Nebenartikel, die Zuordnung
+  (`matcher: llm`), die Satzauswahl (`extraction: llm`), das Schreiben in `best-quality-generated` und die
+  Lehrplanprüfung in Teil 2 hörten den gefundenen Artikel („Wiener Klassik“ statt „Komponisten der Klassik“), nur
+  Artikelwahl, Frage N und `best-coverage-generated` das angefragte Thema. Jetzt hört jeder Prompt
+  `PreparedTopic.prompt_topic`: das Thema, wie angefragt (`topic_as_asked`), für ein Material ohne Thema dessen
+  Artikel (D47), für eine Sammlung ihren Titel. Die Suchen in Archiven und Lehrplänen bleiben beim Artikel. Die
+  Überschrift nennt das Thema, über das das LLM geschrieben hat; ein Text der Regeln behält seinen Artikel. (2) Leere
+  Bausteine (Jan: „bei best quality generated sollten auch leere bausteine aus modellwissen geschrieben werden -
+  genau so war es mal gedacht gewesen - ki sollte ergänzen und texte glätten“): `section_enrichment` v4 schreibt über
+  das angefragte Thema und einen Baustein ohne Belege ganz aus gesichertem Modellwissen, jeden Satz gekennzeichnet; die
+  Grenze der Hälfte gilt für Bausteine mit Belegen. Damit ist V2 aus M49 entschieden und erweitert (07, Punkt 14).
+  (3) Thema aus Text oder Metadaten (Jan: „wenn das thema zu lang ist oder eine texteingabe war sollte in den beiden
+  profilen die ki das thema passend zum input formulieren“; „statt des inputs des themas … ist auch ein input über
+  metadata via nodeid der sammlung möglich … ersatzweise zum thema oder gemeinsam mit dem thema“, so schon in Fassung
+  v2 dieses Plans): In den schreibenden Profilen formuliert das LLM das Thema (Prompt `topic_wording`), wenn `topic`
+  mehr als sechs Wörter oder 60 Zeichen hat oder ein Satz oder eine Frage ist, und wenn ein Knoten (Material oder
+  Sammlung) oder die Sammlung von Teil 3 ohne Thema kommt, aus Titel, Fächern, Schlagwörtern und Beschreibung; neben
+  einem Text als Thema zeigt ein Knoten, wie es gemeint ist, ein knappes Thema bleibt, wie angefragt. Die 123 Themen
+  des Projekts (Goldanfragen, M37, M48) haben höchstens fünf Wörter und 37 Zeichen. Nur mit Teil 1; ohne brauchbare
+  Antwort bleibt das Thema wie zuvor; `audit.llm.topic_wording`, die Kopfdaten und die Prüfansicht nennen Herkunft,
+  Grund und Ergebnis. (4) Die Token-Zahl des alten Dienstes (Jan: „der tokenverbrauch von 7000 im alten dienst kann
+  eigentlich nicht stimmen“) stimmt: Die API meldet je Aufruf ihren Verbrauch; ein Aufruf schreibt den ganzen Text aus
+  rund zehn Einleitungen (2.400 bis 4.700 Tokens hinein, 2.500 bis 2.950 heraus), dazu die Begriffsfrage (rund 880)
+  und Synonymfragen (rund 85 je Begriff); `gpt-4.1-mini` denkt nicht mit (M50). Gemessen in M51 (neun Themen, zwei
+  blinde Gutachter): `best-quality-generated` Passung 4,83, 3,83 und 4,00 statt 4,67, 2,83 und 1,50 (einfach,
+  Sammelthema, Aspekt), Nutzen 3,67 statt 2,72, Vollständigkeit 3,56 statt 2,06, Lesbarkeit 3,72 statt 3,00, keine
+  schweren Fehler, 84.016 Tokens und 30 s wie zuvor, 62 statt 27 % Modellwissen (31 von 90 Bausteinen ohne Belege).
+  Die Zuordnung, die das Thema hört, lässt bei Aspekten Absätze über den Oberbegriff weg (streut zwischen Läufen);
+  `best-quality` druckt dort weniger. Die Formulierung: 26 Eingaben, jede ein knappes Thema, 432 Tokens und 1 s.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

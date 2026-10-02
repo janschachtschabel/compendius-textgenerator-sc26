@@ -8,7 +8,8 @@ und Tokens und sagt, welches Profil welche Methode nutzt und warum: Artikelwahl,
 Text, Lehrplanschnipsel, QA-Paare und Entitäten. Die Profile legen fest, wo ein Sprachmodell (LLM) arbeitet:
 `llm-free` nirgends; `balanced`, der Standard, dort, wo es wenig kostet und viel bringt; `best-quality` überall, wo es
 die Güte messbar hebt; `best-quality-generated` lässt es zusätzlich den Text schreiben, `best-coverage-generated`
-jeden Baustein vollständig zum angefragten Thema, wo die Quellen nichts dazu sagen aus Modellwissen (D69). Gewählt
+jeden Baustein vollständig zum angefragten Thema, aus den Belegen, wo sie es treffen, sonst aus Modellwissen (D69).
+In jedem Profil hört jeder Prompt das angefragte Thema, nicht den gefundenen Artikel (D72). Gewählt
 wird ein Profil mit
 `preset`; ohne Angabe gilt `PRESET_DEFAULT`, ausgeliefert `balanced` (D53). Jedes Profil außer `llm-free` braucht ein
 konfiguriertes LLM, sonst ist die Anfrage ein 503.
@@ -22,7 +23,8 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.
 | Hauptartikel (`article_choice`) | Regeln (`rule-based`) | Regeln, das LLM entscheidet die unsicheren Fälle (`llm`) | das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (`llm-thorough`) | wie `best-quality` | wie `best-quality` | D35, D53, D61 |
 | Korpus | verlinkte Unterartikel und Volltexttreffer mit Link zum Hauptartikel | das LLM nennt Übersicht und Teile des Themas (N) | wie `balanced` | wie `balanced` | wie `balanced` | D48, D63 |
 | Zuordnung (`matcher`) | `hybrid_light` mit Model2Vec | wie `llm-free` | das LLM ordnet jeden Absatz zu (`llm`) | wie `best-quality` | wie `best-quality` | D38, D53 |
-| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein, Modellwissen für höchstens die Hälfte der Sätze, sichtbar markiert (D70) | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, ohne passende Belege aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
+| Text (`generation`, `enrichment`) | wörtlich, jeder Satz belegt | wie `llm-free` | wie `llm-free` | das LLM schreibt jeden Baustein zum angefragten Thema, Modellwissen für höchstens die Hälfte der Sätze, einen Baustein ohne Belege ganz aus Modellwissen, sichtbar markiert (D70, D72) | das LLM schreibt jeden Baustein vollständig zum angefragten Thema, aus den Belegen, wo sie es treffen, sonst aus Modellwissen, sichtbar markiert (`model-knowledge-full`) | D53, D56, D69 |
+| Thema in den Prompts | – | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten ohne Thema, formuliert das LLM es zuerst (`topic_wording`) | wie `best-quality-generated` | D72 |
 | Lehrplanschnipsel (`curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu prüft das LLM jedes Element (`llm`) | wie `best-quality` | wie `best-quality` | D58, D59 |
 | QA-Paare (`/qa`, `method`) | Regeln aus dem spaCy-Parse, aufgefüllt mit Glossar und Akteuren | wie `llm-free` | das LLM schreibt die Paare (`llm`) | wie `best-quality` | wie `best-quality` | D55, D57, D60 |
 | Entitäten (`/entities`, `methods`) | spaCy und das Wörterbuch der Artikeltitel (`ner`, `dictionary`) | das LLM nennt sie mit dem Titel ihres Artikels (`llm`) | wie `balanced` | wie `balanced` | wie `balanced` | D62 |
@@ -63,17 +65,26 @@ Schreiben legt in `best-quality-generated` rund 21.000 und in `best-coverage-gen
 wörtlichen Profile werden so lang, wie die Quellen tragen; in `best-coverage-generated` ist die Ziellänge Untergrenze,
 der Text wird fast doppelt so lang.
 
+Seit D72 schreibt `best-quality-generated` über das angefragte Thema und füllt auch Bausteine ohne Belege aus
+Modellwissen. An denselben neun Themen ([M51](05-messprotokoll.md), zwei neue blinde Gutachter): Passung 4,8 bei
+einfachen Themen, 3,8 bei Sammelthemen, 4,0 bei Themen mit Aspekt (vorher 4,7, 2,8 und 1,5); Nutzen 3,7,
+Vollständigkeit 3,6, Lesbarkeit 3,7, keine schweren Fehler; 27.809 Zeichen, 62 % Modellwissen, 84.016 Tokens,
+30 s; die Überschrift ist immer das angefragte Thema. `best-coverage-generated` bekam dort Passung 4,8, Nutzen 4,6,
+Vollständigkeit 4,7.
+
 ### Welches Profil wofür
 
 - **Thema mit eigenem Artikel** (Optik): `balanced` liefert einen wörtlichen, durchgehend belegten Text (Passung 4,0,
   6 s, 580 Tokens), etwa als Grundlage für Suche und KI-Assistenten. `best-quality-generated` schreibt einen lesbaren
-  Text, der überwiegend aus den Quellen kommt (Passung 4,8, Lesbarkeit 3,7, im Median 28 % Modellwissen).
+  Text aus den Quellen und Modellwissen (Passung 4,8; seit D72 alle Bausteine, 62 % Modellwissen, M51).
   `best-coverage-generated` schreibt den vollständigsten (Nutzen und Vollständigkeit 5,0), aber zu rund 80 % aus
   Modellwissen.
-- **Sammelthema** (Dichter aus dem Mittelalter): `best-coverage-generated`. Die anderen Profile schreiben über einen
-  Vertreter oder den Oberbegriff, den die Artikelwahl findet (Passung höchstens 3,0); `llm-free` landet auf falschen
-  oder zu engen Artikeln.
-- **Thema mit Aspekt** (OER-Förderungen): nur `best-coverage-generated` (Passung 5,0, die anderen höchstens 1,7).
+- **Sammelthema** (Dichter aus dem Mittelalter): `best-coverage-generated`. Die wörtlichen Profile drucken einen
+  Vertreter oder den Oberbegriff, den die Artikelwahl findet (Passung höchstens 2,5); `llm-free` landet auf falschen
+  oder zu engen Artikeln. `best-quality-generated` schreibt seit D72 zum Thema (Passung 3,8 statt 2,8, M51).
+- **Thema mit Aspekt** (OER-Förderungen): `best-coverage-generated` (Passung 5,0); seit D72 auch
+  `best-quality-generated` (4,0 statt 1,5, M51), mit kürzerem Text. Die wörtlichen Profile bleiben beim Oberbegriff
+  (höchstens 1,5).
 - **Ohne Sprachmodell:** `llm-free` taugt nur für Themen mit eigenem Artikel (Passung 3,2, die meisten Bausteine
   lückenhaft); Sammel- und Aspektthemen kann es nicht.
 - **`best-quality` in Teil 1:** Gegenüber `balanced` hebt es bei einfachen Themen Passung und Vollständigkeit um 0,5
