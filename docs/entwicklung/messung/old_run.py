@@ -3,7 +3,8 @@
 The service code is not touched. Two library calls are wrapped for measurement only: every chat completion
 (duration, usage, parameters) and every HTTP request aiohttp sends (URL, looked-up titles, status, duration).
 Run with the old service's venv and cwd = alterCode/compendious; all topics share one event loop because the old
-Wikipedia client keeps its aiohttp session between calls.
+Wikipedia client keeps its aiohttp session between calls. Every chat completion carries an identifier of its own, so
+the b-api answers it anew instead of from its store of word-for-word repeated requests (D70, M50).
 
 Env: B_API_KEY (inherited, never written out), B_API_BASE_URL, B_API_MODEL.
 Usage: python old_run.py <out_dir> <topic> [<topic> ...]
@@ -16,6 +17,7 @@ import json
 import os
 import sys
 import time
+import uuid
 from pathlib import Path
 
 import aiohttp
@@ -53,6 +55,7 @@ def create(self, *args, **kwargs):  # type: ignore[no-untyped-def]
         "purpose": purpose(kwargs.get("messages")),
         "prompt_chars": sum(len(str(m.get("content", ""))) for m in kwargs.get("messages") or []),
     }
+    kwargs["extra_body"] = {**(kwargs.get("extra_body") or {}), "safety_identifier": uuid.uuid4().hex}
     started = time.perf_counter()
     try:
         response = _create(self, *args, **kwargs)

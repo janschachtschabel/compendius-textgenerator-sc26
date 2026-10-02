@@ -1,0 +1,2815 @@
+{
+ "note": "M50 (02.10.2026): Wortlaut und Herkunft des Textes. summary/rows: mc_wortlaut.py auf den Läufen von M48 und den Läufen des alten Dienstes (old_run.py, bester Fall, gpt-4.1-mini); taken = Anteil der Wörter in Folgen von mindestens acht Wörtern, die so in einem Quellartikel stehen; whole = Anteil der Zeichen in Sätzen, die zu neun Zehnteln so stehen; free = Anteil der Zeichen in Sätzen ohne eine solche Folge; Klassen: cited mit Belegnummer bzw. (n), model mit [Modellwissen], plain ohne beides (im neuen Dienst Bruchstücke an Ordnungszahlen). old_service: old_analyze.py auf denselben Läufen, ohne die Sätze. rule_blocks: mc_regelbausteine.py, Zeichen je Baustein in balanced. Keine Texte.",
+ "run_words": 8,
+ "whole_share": 0.9,
+ "summary": {
+  "llm-free": {
+   "runs": 9,
+   "all": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 0.033
+   },
+   "plain": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 1.0
+   }
+  },
+  "balanced": {
+   "runs": 9,
+   "all": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 0.035
+   },
+   "plain": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 0.971
+   }
+  },
+  "best-quality": {
+   "runs": 9,
+   "all": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 0.052
+   },
+   "plain": {
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0,
+    "span_taken": [
+     1.0,
+     1.0
+    ],
+    "share_of_text": 1.0
+   }
+  },
+  "best-quality-generated": {
+   "runs": 9,
+   "all": {
+    "taken": 0.037,
+    "whole": 0.004,
+    "free": 0.926,
+    "span_taken": [
+     0.024,
+     0.052
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 0.048,
+    "whole": 0.0,
+    "free": 0.902,
+    "span_taken": [
+     0.031,
+     0.062
+    ],
+    "share_of_text": 0.725
+   },
+   "model": {
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0,
+    "span_taken": [
+     0.0,
+     0.027
+    ],
+    "share_of_text": 0.264
+   },
+   "plain": {
+    "taken": 0.108,
+    "whole": 0.029,
+    "free": 0.929,
+    "span_taken": [
+     0.0,
+     0.342
+    ],
+    "share_of_text": 0.013
+   }
+  },
+  "best-coverage-generated": {
+   "runs": 9,
+   "all": {
+    "taken": 0.013,
+    "whole": 0.001,
+    "free": 0.969,
+    "span_taken": [
+     0.008,
+     0.021
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 0.055,
+    "whole": 0.0,
+    "free": 0.875,
+    "span_taken": [
+     0.018,
+     0.089
+    ],
+    "share_of_text": 0.159
+   },
+   "model": {
+    "taken": 0.002,
+    "whole": 0.0,
+    "free": 0.995,
+    "span_taken": [
+     0.0,
+     0.013
+    ],
+    "share_of_text": 0.834
+   },
+   "plain": {
+    "taken": 0.153,
+    "whole": 0.062,
+    "free": 0.845,
+    "span_taken": [
+     0.042,
+     0.522
+    ],
+    "share_of_text": 0.012
+   }
+  },
+  "alter Dienst": {
+   "runs": 9,
+   "all": {
+    "taken": 0.011,
+    "whole": 0.001,
+    "free": 0.994,
+    "span_taken": [
+     0.003,
+     0.024
+    ],
+    "share_of_text": 1.0
+   },
+   "cited": {
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0,
+    "span_taken": [
+     0.0,
+     0.063
+    ],
+    "share_of_text": 0.336
+   },
+   "plain": {
+    "taken": 0.008,
+    "whole": 0.002,
+    "free": 0.998,
+    "span_taken": [
+     0.0,
+     0.025
+    ],
+    "share_of_text": 0.664
+   }
+  }
+ },
+ "rows": [
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "llm-free",
+   "articles": 20,
+   "missing": [],
+   "plain": {
+    "sentences": 68,
+    "chars": 8271,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 69,
+    "chars": 8339,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 68,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "balanced",
+   "articles": 20,
+   "missing": [],
+   "plain": {
+    "sentences": 73,
+    "chars": 7924,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 74,
+    "chars": 7992,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 68,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "best-quality",
+   "articles": 20,
+   "missing": [],
+   "plain": {
+    "sentences": 107,
+    "chars": 13648,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 107,
+    "chars": 13648,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "best-quality-generated",
+   "articles": 20,
+   "missing": [],
+   "cited": {
+    "sentences": 81,
+    "chars": 10480,
+    "taken": 0.046,
+    "whole": 0.009,
+    "free": 0.933
+   },
+   "all": {
+    "sentences": 141,
+    "chars": 18063,
+    "taken": 0.032,
+    "whole": 0.008,
+    "free": 0.958
+   },
+   "model": {
+    "sentences": 56,
+    "chars": 7382,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 4,
+    "chars": 201,
+    "taken": 0.314,
+    "whole": 0.284,
+    "free": 0.716
+   }
+  },
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "best-coverage-generated",
+   "articles": 20,
+   "missing": [],
+   "cited": {
+    "sentences": 62,
+    "chars": 10165,
+    "taken": 0.033,
+    "whole": 0.007,
+    "free": 0.95
+   },
+   "all": {
+    "sentences": 316,
+    "chars": 49071,
+    "taken": 0.009,
+    "whole": 0.002,
+    "free": 0.987
+   },
+   "model": {
+    "sentences": 248,
+    "chars": 38766,
+    "taken": 0.002,
+    "whole": 0.0,
+    "free": 0.998
+   },
+   "plain": {
+    "sentences": 6,
+    "chars": 140,
+    "taken": 0.143,
+    "whole": 0.086,
+    "free": 0.914
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "llm-free",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 64,
+    "chars": 9072,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 64,
+    "chars": 9072,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "balanced",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 98,
+    "chars": 12472,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 98,
+    "chars": 12472,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "best-quality",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 103,
+    "chars": 12080,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 103,
+    "chars": 12080,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "best-quality-generated",
+   "articles": 19,
+   "missing": [],
+   "cited": {
+    "sentences": 88,
+    "chars": 11810,
+    "taken": 0.031,
+    "whole": 0.005,
+    "free": 0.946
+   },
+   "all": {
+    "sentences": 144,
+    "chars": 18924,
+    "taken": 0.024,
+    "whole": 0.004,
+    "free": 0.96
+   },
+   "model": {
+    "sentences": 49,
+    "chars": 6606,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 7,
+    "chars": 508,
+    "taken": 0.139,
+    "whole": 0.014,
+    "free": 0.742
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "best-coverage-generated",
+   "articles": 19,
+   "missing": [],
+   "cited": {
+    "sentences": 49,
+    "chars": 7831,
+    "taken": 0.018,
+    "whole": 0.0,
+    "free": 0.953
+   },
+   "all": {
+    "sentences": 328,
+    "chars": 52831,
+    "taken": 0.008,
+    "whole": 0.001,
+    "free": 0.986
+   },
+   "model": {
+    "sentences": 266,
+    "chars": 44054,
+    "taken": 0.002,
+    "whole": 0.0,
+    "free": 0.997
+   },
+   "plain": {
+    "sentences": 13,
+    "chars": 946,
+    "taken": 0.164,
+    "whole": 0.072,
+    "free": 0.765
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "llm-free",
+   "articles": 30,
+   "missing": [],
+   "plain": {
+    "sentences": 65,
+    "chars": 11224,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 68,
+    "chars": 11891,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 3,
+    "chars": 667,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "balanced",
+   "articles": 30,
+   "missing": [],
+   "plain": {
+    "sentences": 58,
+    "chars": 7651,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 59,
+    "chars": 7929,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 278,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "best-quality",
+   "articles": 30,
+   "missing": [],
+   "plain": {
+    "sentences": 93,
+    "chars": 11355,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 93,
+    "chars": 11355,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "best-quality-generated",
+   "articles": 30,
+   "missing": [],
+   "cited": {
+    "sentences": 75,
+    "chars": 10794,
+    "taken": 0.045,
+    "whole": 0.0,
+    "free": 0.924
+   },
+   "all": {
+    "sentences": 105,
+    "chars": 13824,
+    "taken": 0.048,
+    "whole": 0.004,
+    "free": 0.923
+   },
+   "model": {
+    "sentences": 22,
+    "chars": 2853,
+    "taken": 0.027,
+    "whole": 0.0,
+    "free": 0.93
+   },
+   "plain": {
+    "sentences": 8,
+    "chars": 177,
+    "taken": 0.342,
+    "whole": 0.288,
+    "free": 0.712
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "best-coverage-generated",
+   "articles": 30,
+   "missing": [],
+   "cited": {
+    "sentences": 55,
+    "chars": 9613,
+    "taken": 0.055,
+    "whole": 0.012,
+    "free": 0.908
+   },
+   "all": {
+    "sentences": 347,
+    "chars": 51024,
+    "taken": 0.021,
+    "whole": 0.008,
+    "free": 0.969
+   },
+   "model": {
+    "sentences": 261,
+    "chars": 40233,
+    "taken": 0.01,
+    "whole": 0.005,
+    "free": 0.985
+   },
+   "plain": {
+    "sentences": 31,
+    "chars": 1178,
+    "taken": 0.091,
+    "whole": 0.065,
+    "free": 0.935
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "llm-free",
+   "articles": 16,
+   "missing": [],
+   "plain": {
+    "sentences": 44,
+    "chars": 4929,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 44,
+    "chars": 4929,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "balanced",
+   "articles": 16,
+   "missing": [],
+   "plain": {
+    "sentences": 54,
+    "chars": 7314,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 55,
+    "chars": 7664,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 350,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "best-quality",
+   "articles": 16,
+   "missing": [],
+   "plain": {
+    "sentences": 52,
+    "chars": 6919,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 52,
+    "chars": 6919,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "best-quality-generated",
+   "articles": 16,
+   "missing": [],
+   "cited": {
+    "sentences": 59,
+    "chars": 8875,
+    "taken": 0.044,
+    "whole": 0.0,
+    "free": 0.899
+   },
+   "all": {
+    "sentences": 92,
+    "chars": 11988,
+    "taken": 0.041,
+    "whole": 0.005,
+    "free": 0.92
+   },
+   "model": {
+    "sentences": 23,
+    "chars": 2643,
+    "taken": 0.003,
+    "whole": 0.005,
+    "free": 0.995
+   },
+   "plain": {
+    "sentences": 10,
+    "chars": 470,
+    "taken": 0.153,
+    "whole": 0.1,
+    "free": 0.9
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "best-coverage-generated",
+   "articles": 16,
+   "missing": [],
+   "model": {
+    "sentences": 291,
+    "chars": 45436,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "all": {
+    "sentences": 331,
+    "chars": 50891,
+    "taken": 0.008,
+    "whole": 0.002,
+    "free": 0.986
+   },
+   "cited": {
+    "sentences": 28,
+    "chars": 4962,
+    "taken": 0.045,
+    "whole": 0.0,
+    "free": 0.875
+   },
+   "plain": {
+    "sentences": 12,
+    "chars": 493,
+    "taken": 0.274,
+    "whole": 0.225,
+    "free": 0.775
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "llm-free",
+   "articles": 15,
+   "missing": [],
+   "plain": {
+    "sentences": 52,
+    "chars": 6181,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 53,
+    "chars": 6238,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 57,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "balanced",
+   "articles": 15,
+   "missing": [],
+   "plain": {
+    "sentences": 84,
+    "chars": 10366,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 86,
+    "chars": 11104,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 2,
+    "chars": 738,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "best-quality",
+   "articles": 15,
+   "missing": [],
+   "plain": {
+    "sentences": 84,
+    "chars": 12986,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 84,
+    "chars": 12986,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "best-quality-generated",
+   "articles": 15,
+   "missing": [],
+   "cited": {
+    "sentences": 101,
+    "chars": 13969,
+    "taken": 0.058,
+    "whole": 0.01,
+    "free": 0.894
+   },
+   "all": {
+    "sentences": 138,
+    "chars": 17439,
+    "taken": 0.052,
+    "whole": 0.008,
+    "free": 0.906
+   },
+   "model": {
+    "sentences": 28,
+    "chars": 3088,
+    "taken": 0.023,
+    "whole": 0.0,
+    "free": 0.954
+   },
+   "plain": {
+    "sentences": 9,
+    "chars": 382,
+    "taken": 0.065,
+    "whole": 0.029,
+    "free": 0.971
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "best-coverage-generated",
+   "articles": 15,
+   "missing": [],
+   "cited": {
+    "sentences": 46,
+    "chars": 7870,
+    "taken": 0.033,
+    "whole": 0.0,
+    "free": 0.889
+   },
+   "all": {
+    "sentences": 307,
+    "chars": 48521,
+    "taken": 0.02,
+    "whole": 0.001,
+    "free": 0.953
+   },
+   "plain": {
+    "sentences": 13,
+    "chars": 795,
+    "taken": 0.176,
+    "whole": 0.059,
+    "free": 0.654
+   },
+   "model": {
+    "sentences": 248,
+    "chars": 39856,
+    "taken": 0.013,
+    "whole": 0.0,
+    "free": 0.971
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "llm-free",
+   "articles": 12,
+   "missing": [],
+   "plain": {
+    "sentences": 14,
+    "chars": 2214,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 16,
+    "chars": 2767,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 2,
+    "chars": 553,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "balanced",
+   "articles": 12,
+   "missing": [],
+   "plain": {
+    "sentences": 51,
+    "chars": 5849,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 56,
+    "chars": 6742,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 5,
+    "chars": 893,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "best-quality",
+   "articles": 12,
+   "missing": [],
+   "plain": {
+    "sentences": 72,
+    "chars": 10241,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 73,
+    "chars": 10775,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 534,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "best-quality-generated",
+   "articles": 12,
+   "missing": [],
+   "cited": {
+    "sentences": 96,
+    "chars": 13942,
+    "taken": 0.055,
+    "whole": 0.0,
+    "free": 0.902
+   },
+   "all": {
+    "sentences": 138,
+    "chars": 18781,
+    "taken": 0.044,
+    "whole": 0.002,
+    "free": 0.926
+   },
+   "model": {
+    "sentences": 32,
+    "chars": 4347,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 10,
+    "chars": 492,
+    "taken": 0.108,
+    "whole": 0.071,
+    "free": 0.929
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "best-coverage-generated",
+   "articles": 12,
+   "missing": [],
+   "model": {
+    "sentences": 283,
+    "chars": 48085,
+    "taken": 0.004,
+    "whole": 0.0,
+    "free": 0.99
+   },
+   "all": {
+    "sentences": 331,
+    "chars": 54985,
+    "taken": 0.013,
+    "whole": 0.001,
+    "free": 0.969
+   },
+   "cited": {
+    "sentences": 38,
+    "chars": 6133,
+    "taken": 0.079,
+    "whole": 0.005,
+    "free": 0.801
+   },
+   "plain": {
+    "sentences": 10,
+    "chars": 767,
+    "taken": 0.054,
+    "whole": 0.025,
+    "free": 0.975
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "llm-free",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 115,
+    "chars": 15944,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 115,
+    "chars": 15944,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "balanced",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 112,
+    "chars": 16444,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 112,
+    "chars": 16444,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "best-quality",
+   "articles": 19,
+   "missing": [],
+   "plain": {
+    "sentences": 124,
+    "chars": 16873,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 125,
+    "chars": 16968,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 1,
+    "chars": 95,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "best-quality-generated",
+   "articles": 19,
+   "missing": [],
+   "cited": {
+    "sentences": 128,
+    "chars": 17300,
+    "taken": 0.048,
+    "whole": 0.005,
+    "free": 0.912
+   },
+   "all": {
+    "sentences": 183,
+    "chars": 24583,
+    "taken": 0.034,
+    "whole": 0.004,
+    "free": 0.938
+   },
+   "model": {
+    "sentences": 54,
+    "chars": 7210,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 1,
+    "chars": 73,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "best-coverage-generated",
+   "articles": 19,
+   "missing": [],
+   "model": {
+    "sentences": 267,
+    "chars": 46969,
+    "taken": 0.004,
+    "whole": 0.0,
+    "free": 0.995
+   },
+   "all": {
+    "sentences": 311,
+    "chars": 55846,
+    "taken": 0.019,
+    "whole": 0.0,
+    "free": 0.952
+   },
+   "cited": {
+    "sentences": 44,
+    "chars": 8877,
+    "taken": 0.089,
+    "whole": 0.0,
+    "free": 0.724
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "llm-free",
+   "articles": 18,
+   "missing": [],
+   "plain": {
+    "sentences": 40,
+    "chars": 8840,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 40,
+    "chars": 8840,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "balanced",
+   "articles": 18,
+   "missing": [],
+   "plain": {
+    "sentences": 90,
+    "chars": 15972,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 92,
+    "chars": 16456,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 2,
+    "chars": 484,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "best-quality",
+   "articles": 18,
+   "missing": [],
+   "plain": {
+    "sentences": 73,
+    "chars": 14315,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 80,
+    "chars": 15864,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 7,
+    "chars": 1549,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "best-quality-generated",
+   "articles": 18,
+   "missing": [],
+   "cited": {
+    "sentences": 100,
+    "chars": 16709,
+    "taken": 0.051,
+    "whole": 0.0,
+    "free": 0.856
+   },
+   "all": {
+    "sentences": 147,
+    "chars": 23062,
+    "taken": 0.037,
+    "whole": 0.0,
+    "free": 0.896
+   },
+   "model": {
+    "sentences": 43,
+    "chars": 6088,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 4,
+    "chars": 265,
+    "taken": 0.054,
+    "whole": 0.026,
+    "free": 0.974
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "best-coverage-generated",
+   "articles": 18,
+   "missing": [],
+   "model": {
+    "sentences": 287,
+    "chars": 49941,
+    "taken": 0.002,
+    "whole": 0.0,
+    "free": 0.997
+   },
+   "all": {
+    "sentences": 323,
+    "chars": 56989,
+    "taken": 0.012,
+    "whole": 0.0,
+    "free": 0.974
+   },
+   "cited": {
+    "sentences": 33,
+    "chars": 6893,
+    "taken": 0.069,
+    "whole": 0.0,
+    "free": 0.825
+   },
+   "plain": {
+    "sentences": 3,
+    "chars": 155,
+    "taken": 0.522,
+    "whole": 0.045,
+    "free": 0.135
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "llm-free",
+   "articles": 11,
+   "missing": [],
+   "plain": {
+    "sentences": 39,
+    "chars": 5793,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 39,
+    "chars": 5793,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "balanced",
+   "articles": 11,
+   "missing": [],
+   "plain": {
+    "sentences": 97,
+    "chars": 12827,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 99,
+    "chars": 13004,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 2,
+    "chars": 177,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "best-quality",
+   "articles": 11,
+   "missing": [],
+   "plain": {
+    "sentences": 118,
+    "chars": 14164,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "all": {
+    "sentences": 122,
+    "chars": 14970,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   },
+   "cited": {
+    "sentences": 4,
+    "chars": 806,
+    "taken": 1.0,
+    "whole": 1.0,
+    "free": 0.0
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "best-quality-generated",
+   "articles": 11,
+   "missing": [],
+   "cited": {
+    "sentences": 86,
+    "chars": 13434,
+    "taken": 0.062,
+    "whole": 0.0,
+    "free": 0.882
+   },
+   "all": {
+    "sentences": 178,
+    "chars": 26810,
+    "taken": 0.033,
+    "whole": 0.0,
+    "free": 0.941
+   },
+   "model": {
+    "sentences": 88,
+    "chars": 13111,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "plain": {
+    "sentences": 4,
+    "chars": 265,
+    "taken": 0.047,
+    "whole": 0.023,
+    "free": 0.977
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "best-coverage-generated",
+   "articles": 11,
+   "missing": [],
+   "model": {
+    "sentences": 288,
+    "chars": 47703,
+    "taken": 0.001,
+    "whole": 0.0,
+    "free": 0.995
+   },
+   "all": {
+    "sentences": 345,
+    "chars": 58859,
+    "taken": 0.017,
+    "whole": 0.0,
+    "free": 0.954
+   },
+   "cited": {
+    "sentences": 52,
+    "chars": 10854,
+    "taken": 0.084,
+    "whole": 0.0,
+    "free": 0.773
+   },
+   "plain": {
+    "sentences": 5,
+    "chars": 302,
+    "taken": 0.042,
+    "whole": 0.02,
+    "free": 0.98
+   }
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "kind": "Sammelthema",
+   "variant": "alter Dienst",
+   "articles": 10,
+   "extracts": 9,
+   "missing": [],
+   "plain": {
+    "sentences": 44,
+    "chars": 4155,
+    "taken": 0.025,
+    "whole": 0.01,
+    "free": 0.99
+   },
+   "all": {
+    "sentences": 69,
+    "chars": 7697,
+    "taken": 0.014,
+    "whole": 0.006,
+    "free": 0.994
+   },
+   "cited": {
+    "sentences": 25,
+    "chars": 3542,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "einfach",
+   "variant": "alter Dienst",
+   "articles": 14,
+   "extracts": 10,
+   "missing": [],
+   "plain": {
+    "sentences": 51,
+    "chars": 6150,
+    "taken": 0.004,
+    "whole": 0.001,
+    "free": 0.999
+   },
+   "all": {
+    "sentences": 69,
+    "chars": 8687,
+    "taken": 0.003,
+    "whole": 0.001,
+    "free": 0.999
+   },
+   "cited": {
+    "sentences": 18,
+    "chars": 2537,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "Aspekt",
+   "variant": "alter Dienst",
+   "articles": 9,
+   "extracts": 8,
+   "missing": [],
+   "plain": {
+    "sentences": 42,
+    "chars": 5246,
+    "taken": 0.008,
+    "whole": 0.002,
+    "free": 0.998
+   },
+   "all": {
+    "sentences": 61,
+    "chars": 8844,
+    "taken": 0.024,
+    "whole": 0.001,
+    "free": 0.942
+   },
+   "cited": {
+    "sentences": 19,
+    "chars": 3598,
+    "taken": 0.048,
+    "whole": 0.0,
+    "free": 0.86
+   }
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "Sammelthema",
+   "variant": "alter Dienst",
+   "articles": 13,
+   "extracts": 10,
+   "missing": [
+    "Konzert"
+   ],
+   "plain": {
+    "sentences": 67,
+    "chars": 9205,
+    "taken": 0.01,
+    "whole": 0.002,
+    "free": 0.979
+   },
+   "all": {
+    "sentences": 75,
+    "chars": 10386,
+    "taken": 0.016,
+    "whole": 0.002,
+    "free": 0.963
+   },
+   "cited": {
+    "sentences": 8,
+    "chars": 1181,
+    "taken": 0.063,
+    "whole": 0.0,
+    "free": 0.845
+   }
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "Aspekt",
+   "variant": "alter Dienst",
+   "articles": 12,
+   "extracts": 10,
+   "missing": [],
+   "plain": {
+    "sentences": 50,
+    "chars": 6416,
+    "taken": 0.008,
+    "whole": 0.002,
+    "free": 0.998
+   },
+   "all": {
+    "sentences": 62,
+    "chars": 8675,
+    "taken": 0.006,
+    "whole": 0.001,
+    "free": 0.999
+   },
+   "cited": {
+    "sentences": 12,
+    "chars": 2259,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "Aspekt",
+   "variant": "alter Dienst",
+   "articles": 8,
+   "extracts": 8,
+   "missing": [],
+   "cited": {
+    "sentences": 19,
+    "chars": 3041,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   },
+   "all": {
+    "sentences": 63,
+    "chars": 8456,
+    "taken": 0.006,
+    "whole": 0.001,
+    "free": 0.999
+   },
+   "plain": {
+    "sentences": 44,
+    "chars": 5415,
+    "taken": 0.009,
+    "whole": 0.002,
+    "free": 0.998
+   }
+  },
+  {
+   "topic": "Optik",
+   "kind": "einfach",
+   "variant": "alter Dienst",
+   "articles": 6,
+   "extracts": 9,
+   "missing": [
+    "Refraktion",
+    "Beugung",
+    "Reflektor",
+    "Ausrichtung"
+   ],
+   "plain": {
+    "sentences": 54,
+    "chars": 6256,
+    "taken": 0.006,
+    "whole": 0.004,
+    "free": 0.996
+   },
+   "all": {
+    "sentences": 66,
+    "chars": 7955,
+    "taken": 0.005,
+    "whole": 0.003,
+    "free": 0.997
+   },
+   "cited": {
+    "sentences": 12,
+    "chars": 1699,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "Sammelthema",
+   "variant": "alter Dienst",
+   "articles": 13,
+   "extracts": 10,
+   "missing": [],
+   "plain": {
+    "sentences": 43,
+    "chars": 5366,
+    "taken": 0.003,
+    "whole": 0.001,
+    "free": 0.999
+   },
+   "all": {
+    "sentences": 60,
+    "chars": 8076,
+    "taken": 0.013,
+    "whole": 0.001,
+    "free": 0.971
+   },
+   "cited": {
+    "sentences": 17,
+    "chars": 2710,
+    "taken": 0.033,
+    "whole": 0.0,
+    "free": 0.917
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "einfach",
+   "variant": "alter Dienst",
+   "articles": 12,
+   "extracts": 8,
+   "missing": [],
+   "cited": {
+    "sentences": 22,
+    "chars": 3674,
+    "taken": 0.02,
+    "whole": 0.0,
+    "free": 0.928
+   },
+   "all": {
+    "sentences": 44,
+    "chars": 6531,
+    "taken": 0.011,
+    "whole": 0.0,
+    "free": 0.959
+   },
+   "plain": {
+    "sentences": 22,
+    "chars": 2857,
+    "taken": 0.0,
+    "whole": 0.0,
+    "free": 1.0
+   }
+  }
+ ],
+ "old_service": {
+  "model": "gpt-4.1-mini",
+  "endpoint": "b-api staging, openai",
+  "median": {
+   "seconds": {
+    "median": 28.84,
+    "span": [
+     24.38,
+     43.33
+    ]
+   },
+   "llm_calls": {
+    "median": 3,
+    "span": [
+     2,
+     7
+    ]
+   },
+   "llm_tokens": {
+    "median": 7038,
+    "span": [
+     6143,
+     8556
+    ]
+   },
+   "markdown_chars": {
+    "median": 13022,
+    "span": [
+     10748,
+     14375
+    ]
+   },
+   "extract_chars": {
+    "median": 9632,
+    "span": [
+     6144,
+     16412
+    ]
+   },
+   "aspects_as_headings": {
+    "median": 14,
+    "span": [
+     10,
+     15
+    ]
+   }
+  },
+  "sentences": 735,
+  "cited": 166,
+  "supported": 134,
+  "runs": [
+   {
+    "topic": "Dichter aus dem Mittelalter",
+    "dir": "m50_alt",
+    "seconds": 27.73,
+    "error": null,
+    "llm_calls": 3,
+    "llm_tokens": 6878,
+    "llm_seconds": 23.9,
+    "wiki_requests": 15,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 3.8,
+    "entities": 10,
+    "found": 9,
+    "main_article": "Sangspruchdichtung",
+    "main_article_used": false,
+    "title_differs": [
+     "Parzival (Roman) -> Artusroman",
+     "Minnesänger -> Minnesang"
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 9066,
+    "markdown_chars": 12133,
+    "headings": 16,
+    "aspects_as_headings": 14,
+    "sentences": 80,
+    "cited": 27,
+    "uncited": 53,
+    "supported": 19,
+    "unsupported": 8,
+    "too_short": 0,
+    "coverage_median": 0.4
+   },
+   {
+    "topic": "Französische Revolution",
+    "dir": "m50_alt",
+    "seconds": 33.72,
+    "error": null,
+    "llm_calls": 3,
+    "llm_tokens": 7663,
+    "llm_seconds": 30.8,
+    "wiki_requests": 13,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 2.9,
+    "entities": 10,
+    "found": 10,
+    "main_article": "Französische Revolution",
+    "main_article_used": true,
+    "title_differs": [
+     "Ständeordnung -> Stand (Gesellschaft)",
+     "Nationalversammlung (Frankreich 1789) -> Verfassunggebende Versammlung",
+     "Louis XVI. -> Ludwig XVI."
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 12342,
+    "markdown_chars": 13559,
+    "headings": 13,
+    "aspects_as_headings": 12,
+    "sentences": 88,
+    "cited": 19,
+    "uncited": 69,
+    "supported": 18,
+    "unsupported": 1,
+    "too_short": 0,
+    "coverage_median": 0.54
+   },
+   {
+    "topic": "Inklusion im Sportunterricht",
+    "dir": "m50_alt",
+    "seconds": 28.84,
+    "error": null,
+    "llm_calls": 3,
+    "llm_tokens": 6143,
+    "llm_seconds": 25.6,
+    "wiki_requests": 15,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 3.2,
+    "entities": 10,
+    "found": 8,
+    "main_article": "Sportdidaktik",
+    "main_article_used": false,
+    "title_differs": [
+     "Inklusion (Pädagogik) -> Inklusive Pädagogik",
+     "Inklusionspädagogik -> Inklusive Pädagogik"
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 6144,
+    "markdown_chars": 13022,
+    "headings": 16,
+    "aspects_as_headings": 15,
+    "sentences": 82,
+    "cited": 20,
+    "uncited": 62,
+    "supported": 15,
+    "unsupported": 5,
+    "too_short": 0,
+    "coverage_median": 0.3
+   },
+   {
+    "topic": "Komponisten der Klassik",
+    "dir": "m50_alt",
+    "seconds": 24.38,
+    "error": null,
+    "llm_calls": 2,
+    "llm_tokens": 7578,
+    "llm_seconds": 21.9,
+    "wiki_requests": 10,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 2.4,
+    "entities": 10,
+    "found": 10,
+    "main_article": "Max Richter (Komponist)",
+    "main_article_used": false,
+    "title_differs": [
+     "Klassik (Musik) -> Wiener Klassik"
+    ],
+    "disambiguation_pages": [
+     "Konzert"
+    ],
+    "extract_chars": 12693,
+    "markdown_chars": 12206,
+    "headings": 14,
+    "aspects_as_headings": 10,
+    "sentences": 74,
+    "cited": 8,
+    "uncited": 66,
+    "supported": 6,
+    "unsupported": 2,
+    "too_short": 0,
+    "coverage_median": 0.35
+   },
+   {
+    "topic": "Künstliche Intelligenz im Unterricht",
+    "dir": "m50_alt",
+    "seconds": 43.33,
+    "error": null,
+    "llm_calls": 3,
+    "llm_tokens": 6795,
+    "llm_seconds": 40.3,
+    "wiki_requests": 13,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 3.0,
+    "entities": 10,
+    "found": 10,
+    "main_article": "Halluzination (Künstliche Intelligenz)",
+    "main_article_used": false,
+    "title_differs": [
+     "Digitale Bildung -> E-Learning",
+     "Bildungstechnologie -> Lehrtechnologie",
+     "Neuronales Netzwerk -> Neuronales Netz",
+     "Bildungswesen -> Bildungssystem"
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 9632,
+    "markdown_chars": 14375,
+    "headings": 17,
+    "aspects_as_headings": 15,
+    "sentences": 92,
+    "cited": 12,
+    "uncited": 80,
+    "supported": 7,
+    "unsupported": 5,
+    "too_short": 0,
+    "coverage_median": 0.28
+   },
+   {
+    "topic": "OER-Förderungen",
+    "dir": "m50_alt",
+    "seconds": 28.89,
+    "error": null,
+    "llm_calls": 5,
+    "llm_tokens": 6610,
+    "llm_seconds": 23.0,
+    "wiki_requests": 24,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 5.9,
+    "entities": 10,
+    "found": 8,
+    "main_article": "Open Educational Resources",
+    "main_article_used": true,
+    "title_differs": [
+     "Creative-Commons-Lizenz -> Creative Commons",
+     "Bildungspolitik -> Bildungspolitik in Deutschland",
+     "Bildungsministerium (Deutschland) -> Kultusministerium",
+     "Lehrmittel -> Unterrichtsmittel"
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 8366,
+    "markdown_chars": 13358,
+    "headings": 18,
+    "aspects_as_headings": 15,
+    "sentences": 90,
+    "cited": 25,
+    "uncited": 65,
+    "supported": 22,
+    "unsupported": 3,
+    "too_short": 0,
+    "coverage_median": 0.42
+   },
+   {
+    "topic": "Optik",
+    "dir": "m50_alt",
+    "seconds": 33.83,
+    "error": null,
+    "llm_calls": 7,
+    "llm_tokens": 7038,
+    "llm_seconds": 27.2,
+    "wiki_requests": 29,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 6.2,
+    "entities": 10,
+    "found": 9,
+    "main_article": "Optik",
+    "main_article_used": false,
+    "title_differs": [
+     "Brechung (Optik) -> Refraktion",
+     "Linsen (Optik) -> Sammellinse",
+     "Spiegel (Optik) -> Reflektor",
+     "Polarisation (Welle) -> Ausrichtung"
+    ],
+    "disambiguation_pages": [
+     "Refraktion",
+     "Beugung",
+     "Reflektor",
+     "Ausrichtung"
+    ],
+    "extract_chars": 9020,
+    "markdown_chars": 11303,
+    "headings": 16,
+    "aspects_as_headings": 14,
+    "sentences": 77,
+    "cited": 13,
+    "uncited": 64,
+    "supported": 11,
+    "unsupported": 2,
+    "too_short": 0,
+    "coverage_median": 0.62
+   },
+   {
+    "topic": "Philosophen der Aufklärung",
+    "dir": "m50_alt",
+    "seconds": 25.52,
+    "error": null,
+    "llm_calls": 2,
+    "llm_tokens": 8556,
+    "llm_seconds": 22.8,
+    "wiki_requests": 10,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 2.7,
+    "entities": 10,
+    "found": 10,
+    "main_article": "Böse Philosophen",
+    "main_article_used": false,
+    "title_differs": [],
+    "disambiguation_pages": [],
+    "extract_chars": 16412,
+    "markdown_chars": 13532,
+    "headings": 15,
+    "aspects_as_headings": 14,
+    "sentences": 87,
+    "cited": 20,
+    "uncited": 67,
+    "supported": 18,
+    "unsupported": 2,
+    "too_short": 0,
+    "coverage_median": 0.4
+   },
+   {
+    "topic": "Photosynthese",
+    "dir": "m50_alt",
+    "seconds": 26.15,
+    "error": null,
+    "llm_calls": 2,
+    "llm_tokens": 8022,
+    "llm_seconds": 23.0,
+    "wiki_requests": 10,
+    "wiki_not_ok": 0,
+    "wiki_seconds": 2.8,
+    "entities": 10,
+    "found": 8,
+    "main_article": "Photosynthese",
+    "main_article_used": true,
+    "title_differs": [
+     "Chlorophyll -> Chlorophylle",
+     "Glukose -> Glucose",
+     "Lichtreaktion -> Photosynthese",
+     "Photophosphorylierung -> Photosynthese"
+    ],
+    "disambiguation_pages": [],
+    "extract_chars": 11493,
+    "markdown_chars": 10748,
+    "headings": 16,
+    "aspects_as_headings": 15,
+    "sentences": 65,
+    "cited": 22,
+    "uncited": 43,
+    "supported": 18,
+    "unsupported": 4,
+    "too_short": 0,
+    "coverage_median": 0.38
+   }
+  ]
+ },
+ "rule_blocks": {
+  "profile": "balanced",
+  "chars": {
+   "Akteure": {
+    "median": 1727,
+    "span": [
+     0,
+     6362
+    ]
+   },
+   "Quellen": {
+    "median": 11571,
+    "span": [
+     8050,
+     17790
+    ]
+   },
+   "Glossar": {
+    "median": 2404,
+    "span": [
+     1172,
+     3275
+    ]
+   },
+   "Inhaltsbausteine": {
+    "median": 11329,
+    "span": [
+     7412,
+     16270
+    ]
+   },
+   "Akteure und Glossar": {
+    "median": 3649,
+    "span": [
+     2468,
+     8275
+    ]
+   }
+  },
+  "runs": [
+   {
+    "topic": "Optik",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1211
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "maschinell-extraktiv",
+      "chars": 1305
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 1804
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 466
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 1696
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 5724
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 1501
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 10971
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2551
+     }
+    ]
+   },
+   {
+    "topic": "Photosynthese",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1773
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "maschinell-extraktiv",
+      "chars": 1646
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 1716
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 1813
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 2526
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 2083
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "maschinell-extraktiv",
+      "chars": 1663
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 13596
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2468
+     }
+    ]
+   },
+   {
+    "topic": "Französische Revolution",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1059
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 2341
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 1852
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 2384
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 1151
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 11084
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2307
+     }
+    ]
+   },
+   {
+    "topic": "Dichter aus dem Mittelalter",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 471
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 1268
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 2916
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 1648
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 1039
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "maschinell-extraktiv",
+      "chars": 1109
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 11571
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2404
+     }
+    ]
+   },
+   {
+    "topic": "Komponisten der Klassik",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1040
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 2412
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 2527
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 2167
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 6362
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "maschinell-extraktiv",
+      "chars": 1782
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 1401
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 11316
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 1536
+     }
+    ]
+   },
+   {
+    "topic": "Philosophen der Aufklärung",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1717
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 2398
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 2052
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 1840
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 1887
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 8050
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 1172
+     }
+    ]
+   },
+   {
+    "topic": "OER-Förderungen",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1079
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "maschinell-extraktiv",
+      "chars": 1659
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 2292
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 2510
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 3152
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 4557
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "maschinell-extraktiv",
+      "chars": 1230
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "maschinell-extraktiv",
+      "chars": 671
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "maschinell-extraktiv",
+      "chars": 705
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 2972
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 17790
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 3275
+     }
+    ]
+   },
+   {
+    "topic": "Inklusion im Sportunterricht",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 302
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "maschinell-extraktiv",
+      "chars": 1309
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 2730
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 1417
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 2903
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 1727
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "maschinell-extraktiv",
+      "chars": 1489
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "maschinell-extraktiv",
+      "chars": 1879
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "maschinell-extraktiv",
+      "chars": 712
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 2632
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "maschinell-extraktiv",
+      "chars": 708
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 15741
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2222
+     }
+    ]
+   },
+   {
+    "topic": "Künstliche Intelligenz im Unterricht",
+    "sections": [
+     {
+      "title": "1 · Themendefinition",
+      "status": "maschinell-extraktiv",
+      "chars": 1298
+     },
+     {
+      "title": "2 · Gliederung & Systematik",
+      "status": "maschinell-extraktiv",
+      "chars": 911
+     },
+     {
+      "title": "3 · Fachinhalte",
+      "status": "maschinell-extraktiv",
+      "chars": 1205
+     },
+     {
+      "title": "4 · Gesellschaftlicher Kontext",
+      "status": "maschinell-extraktiv",
+      "chars": 1628
+     },
+     {
+      "title": "5 · Entwicklung & Ausblick",
+      "status": "maschinell-extraktiv",
+      "chars": 2245
+     },
+     {
+      "title": "6 · Akteure",
+      "status": "maschinell-generiert",
+      "chars": 1197
+     },
+     {
+      "title": "7 · Beruf & Wirtschaft",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "8 · Bildung",
+      "status": "maschinell-extraktiv",
+      "chars": 1694
+     },
+     {
+      "title": "9 · Regularien & Rahmensetzung",
+      "status": "maschinell-extraktiv",
+      "chars": 2316
+     },
+     {
+      "title": "10 · Praxis",
+      "status": "maschinell-extraktiv",
+      "chars": 1654
+     },
+     {
+      "title": "11 · Querschnitt & Bezüge",
+      "status": "leer",
+      "chars": 0
+     },
+     {
+      "title": "12 · Quellen",
+      "status": "maschinell-generiert",
+      "chars": 13336
+     },
+     {
+      "title": "13 · Glossar",
+      "status": "maschinell-generiert",
+      "chars": 2452
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -2694,3 +2694,86 @@ Fundquote, nicht die Güte des Textes.
 
 Rohdaten: `m49_profilverbesserungen.json`: die Proben der Frage N je Art, die Wortregel je Goldanfrage, Noten,
 Übereinstimmung und Läufe von V2, die Urteile ohne Zitate; keine Texte.
+
+## M50 Wortlaut und Herkunft des Textes: generierende Profile und alter Dienst (02.10.2026)
+
+**Aufbau:** Jan: „werden bei best-quality-generated und best-coverage-generated noch artikel 1 zu 1 zitiert
+(anteilig) oder werden die texte zu den kategorien komplett ki geschrieben auf basis des quellwissens? … der alte
+dienst hätte (wenn er richtig gelaufen wäre) das wissen aufgenommen und dann ki generiert alle absätze mit ki gebaut -
+ich will das mi dem neuen dienst vergleichen“. Gezählt wurden die Texte der fünf Profile aus M48 und der alte Dienst
+im besten Fall an denselben neun Themen. Dieser lief wie in M2 mit `old_run.py`: Code v0.2.0 unverändert,
+Kontaktadresse im User-Agent, `gpt-4.1-mini`, denn der alte Code schickt `max_tokens`, und `gpt-6-luna` lehnt das mit
+400 ab. Jeder Aufruf trug eine eigene Kennung, damit die b-api neu antwortet.
+
+Ein Wort gilt als wörtlich übernommen, wenn es in einer Folge von mindestens acht Wörtern steht, die genau so in einem
+Quellartikel steht (Kleinschreibung, nur Wörter; Belegnummern, Kennzeichnung und Markdown entfernt). Ein Satz gilt als
+ganz übernommen, wenn neun Zehntel seiner Wörter es sind (`mc_wortlaut.py`).
+
+- Quellartikel im neuen Dienst: jeder Artikel, den ein Lauf von M48 in einem der Profile als Quelle nannte, aus den
+  Archiven des Dienstes.
+- Quellartikel im alten Dienst: die Einleitungen, die er live bekam, und die Artikel derselben Titel im Archiv.
+- Gezählt: im neuen Dienst die Inhaltsbausteine, im alten der Fließtext ohne Überschriften und Literaturverzeichnis.
+
+**Wörtlich übernommen**, Median der neun Themen; „Text“ meint Zeichen:
+
+| Variante | Wörter in wörtlichen Folgen | Text in ganz übernommenen Sätzen | Text in Sätzen ohne wörtliche Folge | Sätze mit Beleg: Anteil am Text, davon Wörter wörtlich | Sätze mit `[Modellwissen]`: Anteil, davon Wörter wörtlich |
+|---|---|---|---|---|---|
+| `llm-free`, `balanced`, `best-quality` | 100 % | 100 % | 0 | – | – |
+| `best-quality-generated` | 3,7 % (2,4 bis 5,2) | 0,4 % | 93 % | 72 %, 4,8 % | 26 %, 0 |
+| `best-coverage-generated` | 1,3 % (0,8 bis 2,1) | 0,1 % | 97 % | 16 %, 5,5 % | 83 %, 0,2 % |
+| alter Dienst | 1,1 % (0,3 bis 2,4) | 0,1 % | 99 % | 34 % mit „(n)“, 0 | nicht gekennzeichnet |
+
+Die extraktiven Profile stehen ganz wörtlich in den Quellartikeln, das ist die Gegenprobe der Zählung. Die beiden
+generierenden Profile schreiben jeden Satz neu: Belegte Sätze geben den Inhalt ihres Absatzes in eigenen Worten
+wieder, Sätze mit `[Modellwissen]` enthalten nichts Wörtliches aus den Quellen. In M48 schrieb das LLM jeden gefüllten
+Baustein; keiner fiel auf extrahierten Text zurück. Diesen Rückfall gibt es: Scheitert der Aufruf für einen Baustein,
+druckt der Dienst dort die zugeordneten Absätze. Rund 1 % des Textes sind Bruchstücke an Ordnungszahlen („Im 17.“),
+deren Rest zum nächsten Satz zählt.
+
+**Alter Dienst und die generierenden Profile**, Median der neun Themen:
+
+| | alter Dienst, bester Fall | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|
+| Wissen im Prompt | die Einleitungen von bis zu zehn Artikeln, live von Wikipedia (9.632 Zeichen) | je Baustein die ihm zugeordneten Absätze aus den Artikeln des Korpus | ebenso |
+| Schreiben | ein Aufruf für den ganzen Text, Ziel 6.000 Zeichen, die 15 Aspekte als Überschriften im Prompt | ein Aufruf je Baustein, über den gefundenen Artikel | ein Aufruf je Baustein, über das angefragte Thema |
+| Länge | 13.022 Zeichen Markdown | 19.987 Zeichen | 57.378 Zeichen |
+| Text in Sätzen mit Quellenangabe | 34 %; 23 % der Sätze, von ihnen stützt die Einleitung 81 % | 72 %, jeder Satz vom Dienst gegen seinen Absatz geprüft | 16 %, ebenso |
+| Text ohne Quellenangabe | 66 %, nicht gekennzeichnet | 26 %, als `[Modellwissen]` gekennzeichnet | 83 %, ebenso |
+| Wörter wörtlich aus den Quellen | 1,1 % | 3,7 % | 1,3 % |
+| Zeit, Tokens | 28,8 s, 7.038 (`gpt-4.1-mini`, 3 Aufrufe) | 29,0 s, 82.335 (`gpt-6-luna`) | 37,1 s, 101.150 |
+
+Der alte Dienst schrieb an den neun Themen 735 Sätze, davon 166 mit Quellenangabe (23 %), 134 von ihrer Einleitung
+gestützt (18 %), wie in M2 (24 und 21 %); die 15 Aspekte standen im Median 14-mal als Überschrift. Alle 139
+Wikipedia-Anfragen wurden beantwortet. Die Zeiten des neuen Dienstes stammen aus M48 (Teil 1 auf dem
+Entwicklungsrechner), die des alten von heute, mit den Anfragen an Wikipedia.
+
+**Bausteine nach Regeln:** In jedem Profil baut der Dienst drei Bausteine ohne LLM:
+- Akteure: Name und erster Satz des Artikels, wörtlich.
+- Glossar: Begriff und Definitionssatz vom Anfang eines Artikels, wörtlich ohne Klammern.
+- Quellen: Verzeichnis mit Titel, Urheber und Lizenz.
+
+In `balanced` an den neun Themen (`mc_regelbausteine.py`) haben Akteure und Glossar zusammen 3.649 Zeichen (2.468 bis
+8.275), Quellen 11.571 (8.050 bis 17.790) und die Inhaltsbausteine 11.329.
+
+**Ergebnis:**
+
+- In `best-quality-generated` und `best-coverage-generated` schreibt das LLM jeden Satz der Inhaltsbausteine. Aus den
+  Artikeln übernimmt es den Inhalt, nicht den Wortlaut: unter 4 % der Wörter in wörtlichen Folgen, fast kein Satz
+  ganz (0,4 und 0,1 % des Textes). Wörtlich bleiben in jedem Profil Akteure und Glossar, rund 3.600 Zeichen.
+- Der alte Dienst arbeitet im besten Fall nach demselben Prinzip wie `best-coverage-generated`: Wissen holen, dann
+  schreibt das LLM alles. Er formuliert ebenso frei (1,1 gegen 1,3 % wörtlich). Er bekommt aber nur Einleitungen und
+  schreibt in einem Aufruf. Zwei Drittel seines Textes stehen ohne Quellenangabe und ohne Kennzeichnung; von den Sätzen
+  mit Angabe stützt die Einleitung 81 %.
+- `best-coverage-generated` kennzeichnet jeden Satz ohne Beleg und prüft jeden belegten. `best-quality-generated`
+  stützt drei Viertel seines Textes auf geprüfte Belege.
+- Nicht gemessen ist die Güte des alten Dienstes an diesen Themen (Passung, Nutzen, Fehler): Die Gutachter von M48
+  sahen seine Texte nicht.
+
+Grenzen:
+- neun Themen, ein Lauf je Variante;
+- der alte Dienst mit `gpt-4.1-mini`, der neue mit `gpt-6-luna`;
+- die Zählung findet wörtliche Folgen, keine engen Umschreibungen;
+- als Quellartikel zählen die genannten Quellen aller Profile, nicht der ganze Korpus eines Laufs.
+
+Rohdaten: `m50_wortlaut.json`: je Lauf und Satzklasse Zeichen, Sätze und Anteile; die Messwerte der Läufe des alten
+Dienstes, ohne Sätze; die Größe der Regel-Bausteine je Thema. Keine Texte.
