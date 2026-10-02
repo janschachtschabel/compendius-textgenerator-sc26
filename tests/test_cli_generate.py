@@ -106,6 +106,16 @@ def test_generate_rejects_an_unknown_enrichment(cli_env: Path) -> None:
         main(["generate", "--topic", "Optik", "--enrichment", "alles-erfinden"])
 
 
+def test_generate_takes_the_check_of_model_knowledge(cli_env: Path, sample_zims: dict[str, Path]) -> None:
+    """Review 2026-10-02: every switch of a compendium has an option of the CLI, the check of model knowledge too."""
+    out_json = cli_env / "optik.json"
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    switches = ["--preset", "llm-free", "--model-knowledge-check", "rule-based"]
+    assert main(["generate", "--topic", "Optik", *switches, "--json", str(out_json), *zim_args]) == 0
+    with pytest.raises(SystemExit):
+        main(["generate", "--topic", "Optik", "--model-knowledge-check", "alles-glauben"])
+
+
 def test_generate_names_an_unknown_template_instead_of_a_traceback(
     cli_env: Path, sample_zims: dict[str, Path], capsys: pytest.CaptureFixture[str]
 ) -> None:

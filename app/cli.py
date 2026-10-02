@@ -51,6 +51,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             extraction=args.extraction,
             generation=args.generation,
             enrichment=args.enrichment,
+            model_knowledge_check=args.model_knowledge_check,
             facets_visible=args.facets_visible or None,
             **({"target_length": args.length} if args.length is not None else {}),
         )
@@ -251,6 +252,13 @@ def main(argv: list[str] | None = None) -> int:
         "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast; model-knowledge-full "
         "schreibt jeden Baustein zum angefragten Thema: aus den Belegen, wo sie es treffen, sonst aus Modellwissen "
         "(D69)",
+    )
+    gen.add_argument(
+        "--model-knowledge-check",
+        default=None,
+        choices=["rule-based", "llm"],
+        help="Ob ein zweiter Aufruf je Baustein die Sätze aus Modellwissen prüft und streicht oder berichtigt, was "
+        "er für falsch hält; ohne Angabe die des Profils (07, Punkt 12a)",
     )
     gen.add_argument("--length", type=int, default=None, help="Ziellänge von Teil 1; ohne Angabe die des Profils")
     gen.add_argument("--facets-visible", action="store_true")
