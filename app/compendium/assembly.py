@@ -51,12 +51,14 @@ def assemble(
     generation_used = world.generation if drafted and drafted.sections else "rule-based"
     # Enrichment only means something where the LLM actually wrote a block
     enrichment_used = world.enrichment if generation_used != "rule-based" else "sources-only"
-    # A text the LLM wrote carries the topic it wrote about as its heading; the others are about their article (D69,
-    # D72)
-    topic = world.topic if world.topic and generation_used != "rule-based" else prepared.title
-    # A text about another article than the topic as asked keeps the article as its heading (D12) and names the topic
-    # and the profiles that write about it in its check (V3; Jan, 2026-10-02). N's word on its overview counts only
-    # where that overview is the article; where the rules' article stayed, the words of the topic decide
+    # Every profile shows the topic as asked (D75; Jan, 2026-10-02: "ich hatte vorher kommuniziert das dies in allen
+    # profilen ein problem wäre, wenn das thema verfälscht wird"): the model's wording of a text in its place (D72), for
+    # a material without a topic its article (D47), for a collection its title. The article the text was built from
+    # stays in resolution.title
+    topic = prepared.prompt_topic
+    # A verbatim text about another article than the topic as asked says so in its check and names the profiles that
+    # write about the topic (V3). N's word on its overview counts only where that overview is the article; where the
+    # rules' article stayed, the words of the topic decide
     articles = prepared.articles
     covers = articles.covers if articles is not None and articles.found[:1] == [resolution.title] else None
     scope = topic_scope_finding(

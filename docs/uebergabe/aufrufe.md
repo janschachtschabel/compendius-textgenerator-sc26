@@ -146,7 +146,7 @@ Was die Antwort sonst trägt:
 | `jq '.parts_status'` | je Teil `ok`, `empty`, `incomplete` oder `unavailable` (ohne `collection_id` steht Teil 3 auf `unavailable`) |
 | `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage; `cached` ist der Teil der Eingabe aus dem Prompt-Cache, den der Anbieter niedriger abrechnet |
 | `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
-| `jq -r '.topic, .resolution.title'` | das Thema der Überschrift und den Artikel, auf den es sich auflöste; in den wörtlichen Profilen beide der Artikel, in den beiden schreibenden ist `.topic` das angefragte Thema („Inklusion im Sportunterricht“ statt „Inklusive Pädagogik“), weil der Text davon handelt (D72) |
+| `jq -r '.topic, .resolution.title'` | das Thema der Überschrift und den Artikel, auf den es sich auflöste: `.topic` ist in jedem Profil das angefragte Thema („Inklusion im Sportunterricht“), `.resolution.title` der Artikel („Inklusive Pädagogik“, D75) |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
 | `jq '.frontmatter'` | die Angaben des Vorspanns als Objekt, auch wenn der Text ohne Vorspann kommt |
 | `jq '.curricula.entries[] \| {label, lehrplan, bundesland, klassenstufe}'` | Teil 2 als Liste, je Element Text, Lehrplan, Land und Klasse |

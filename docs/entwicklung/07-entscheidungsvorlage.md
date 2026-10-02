@@ -911,7 +911,10 @@ Passung 4,56 und Nutzen 4,31.
 
     **Entschieden (D73, Jan, 02.10.2026):** V1a, V3 und V4 wie empfohlen übernommen, V1b nicht. Ein wörtlicher Text
     behält den gedruckten Artikel als Überschrift (D12); der Hinweis V3 nennt das angefragte Thema und die beiden
-    schreibenden Profile (Jan: „Artikel + Hinweis“). Die Frage N fragt dafür in Version 2 nur nach `deckt_ab`, nicht nach
+    schreibenden Profile (Jan: „Artikel + Hinweis“; revidiert mit D75: Die Überschrift nennt in jedem Profil das
+    angefragte Thema, Jan: „ich hatte vorher kommuniziert das dies in allen profilen ein problem wäre, wenn das thema
+    verfälscht wird“; der Hinweis bleibt und sagt, welcher Artikel darunter steht). Die Frage N fragt dafür in Version 2
+    nur nach `deckt_ab`, nicht nach
     drei Übersichten; nachgemessen in M53: kein Hinweis bei 46 Themen mit eigenem Artikel, alle 6 Themen mit Aspekt
     erkannt, von den M48-Sammelthemen 1 von 6 (mit drei Übersichten 3 von 6), weil das Modell eine Epoche wie *Wiener
     Klassik* für deckend hält. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in

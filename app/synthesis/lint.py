@@ -96,7 +96,8 @@ def topic_scope_finding(
 ) -> LintFinding | None:
     """A hint when the compendium treats another article than the topic as asked - a group without an article of
     its own or a topic with an aspect -, naming the profiles that write about the topic (M52: fit 4.2 to 5.0 for
-    groups and aspects against at most 3.8). The heading stays the article the text prints (D12; Jan, 2026-10-02).
+    groups and aspects against at most 3.8). The heading names the topic as asked in every profile (D75); the hint
+    says what a verbatim text prints under it.
 
     ``covers`` is the question N's word on whether its overview covers the topic (prompt topic_articles v2); without it
     (llm-free) the words of the ``normalized`` topic decide, one the article's title lacks - a level such as "in

@@ -72,6 +72,8 @@ eine um eins verschiedene ([M52](05-messprotokoll.md)). Fett: die beste Note der
   (`llm-free`) auf 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
   4,2 und 5,0.
 - **Zeit:** 1,7 s ohne LLM, 5 s mit der Artikelwahl, 16 s mit der Zuordnung, 30 und 38 s mit dem Schreiben.
+- **Überschrift:** In M52 nannten die wörtlichen Profile ihren Artikel; seit D75 nennt jedes Profil das angefragte
+  Thema, und der Artikel steht in `resolution.title`.
 - **Kosten:** Die Zuordnung durch das LLM kostet rund 60.000 Tokens, das Schreiben legt rund 24.000
   (`best-quality-generated`) und 43.000 (`best-coverage-generated`) dazu. `best-coverage-generated` liest 60.200
   davon aus dem Prompt-Cache, den der Anbieter günstiger abrechnet.

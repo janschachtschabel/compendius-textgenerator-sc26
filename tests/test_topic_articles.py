@@ -474,7 +474,7 @@ def test_a_topic_its_overview_covers_only_in_part_gets_a_hint_on_the_writing_pro
     result = service.generate(GenerateRequest(topic="Optik im Alltag", preset="balanced", parts=["world"]))
 
     assert result.audit.llm is not None and result.audit.llm["article_choice"]["articles_covers"] is covers
-    assert result.topic == "Optik" and "# Kompendium: Optik\n" in result.markdown
+    assert (result.topic, result.resolution.title) == ("Optik im Alltag", "Optik")  # the heading as asked (D75)
     scope = [finding for finding in result.audit.lint if finding.rule == "topic-scope"]
     assert bool(scope) is hinted
     assert not scope or ("Optik im Alltag" in scope[0].message and "best-coverage-generated" in scope[0].message)
@@ -484,6 +484,7 @@ def test_without_an_llm_the_words_of_the_topic_decide_the_hint(service: Compendi
     result = service.generate(GenerateRequest(topic="Optik in der Medizin", preset="llm-free", parts=["world"]))
 
     assert (result.resolution.title, result.resolution.method) == ("Optik", "search")
+    assert result.topic == "Optik in der Medizin" and "# Kompendium: Optik in der Medizin\n" in result.markdown
     scope = [finding for finding in result.audit.lint if finding.rule == "topic-scope"]
     assert len(scope) == 1 and "„Optik in der Medizin“" in scope[0].message
 

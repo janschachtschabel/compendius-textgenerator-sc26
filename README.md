@@ -473,9 +473,10 @@ Welches Profil wofür (M52, `docs/entwicklung/09-methoden-und-profile.md`): ein 
 und belegt mit `balanced`, lesbar mit `best-quality-generated`; Sammelthemen („Dichter aus dem Mittelalter“) und
 Themen mit Aspekt („OER-Förderungen“) am besten mit `best-coverage-generated`; seit D72 schreibt auch
 `best-quality-generated` dort zum Thema (Passung 4,7 und 4,2, M52), die wörtlichen Profile drucken einen Vertreter
-oder den Oberbegriff. Dann bleibt der gedruckte Artikel die Überschrift (D12, Jan 02.10.2026), und die Prüfung des
-Kompendiums sagt es: `audit.lint` mit der Regel `topic-scope` (in der Prüfansicht unter „Hinweise der Prüfung“)
-nennt das angefragte Thema und die beiden schreibenden Profile (V3, D73). Ab `balanced` entscheidet die Frage N, ob
+oder den Oberbegriff. Die Überschrift nennt auch dann das angefragte Thema (D75, Jan 02.10.2026: keine Verfälschung
+des Themas in irgendeinem Profil), und die Prüfung des Kompendiums sagt, was darunter steht: `audit.lint` mit der
+Regel `topic-scope` (in der Prüfansicht unter „Hinweise der Prüfung“) nennt den gedruckten Artikel und die beiden
+schreibenden Profile (V3, D73). Ab `balanced` entscheidet die Frage N, ob
 ihre Übersicht das Thema deckt (`articles_covers`), ohne LLM die Wörter des Themas, die dem Artikeltitel fehlen; ein
 Stufen- oder Fachzusatz („Optik in Klasse 7“) zählt nicht. Ein Text, den das LLM mit Modellwissen zum Thema schrieb,
 bekommt keinen Hinweis.
@@ -487,7 +488,8 @@ Güte, Zeit und Kosten aller fünf Profile im Stand D72 (M52, neun Themen, zwei 
 
 Seit D72 hört in jedem Profil jeder Prompt das angefragte Thema, nicht den gefundenen Artikel: die Prüfung der
 Nebenartikel, die Zuordnung, die Satzauswahl, das Schreiben und die Prüfung der Lehrplanelemente. Die Suchen in den
-Archiven und Lehrplänen bleiben beim Artikel, und ein wörtlicher Text behält ihn als Überschrift. In den beiden
+Archiven und Lehrplänen bleiben beim Artikel (`resolution.title`); Überschrift und `topic` nennen in jedem Profil das
+angefragte Thema (D75). In den beiden
 schreibenden Profilen formuliert das LLM das Thema zuerst, wenn `topic` ein Text ist (mehr als sechs Wörter oder 60
 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`, Material oder Sammlung) oder die Sammlung für Teil 3
 (`collection_id`) ohne Thema kommt, aus deren Titel, Fächern, Schlagwörtern und Beschreibung; ein Knoten oder eine

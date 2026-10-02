@@ -1982,6 +1982,13 @@ API.
   Fehler je Text von 1,6 auf 1,1, ließ den schweren stehen, strich meist richtige oder unklare Sätze und kostete rund
   27.000 Tokens und 5 s je Text. `best-coverage-generated` steht wieder auf `rule-based`; der Schalter
   `model_knowledge_check` bleibt für Anfragen, die ihn setzen. Keine weitere Arbeit daran.
+- **D75 (2026-10-02)** Die Überschrift nennt in jedem Profil das angefragte Thema (Jan: „ich hatte vorher kommuniziert
+  das dies in allen profilen ein problem wäre, wenn das thema verfälscht wird“, zu „OER-Förderungen“ mit `balanced`
+  unter der Überschrift *Open Educational Resources*). Bis dahin behielt ein wörtlicher Text den gedruckten Artikel als
+  Überschrift (D69, D72, D73 Punkt 5). Jetzt sind Überschrift, `topic` und `frontmatter.topic` in jedem Profil das
+  Thema, das die Prompts hören (`PreparedTopic.prompt_topic`: wie angefragt, für ein Material ohne Thema sein Artikel,
+  für eine Sammlung ihr Titel); der Artikel steht in `resolution.title`. Die Normalisierung von D12 bleibt für Suche und
+  Artikelwahl. Der Hinweis `topic-scope` (V3) bleibt und sagt, welcher Artikel unter der Überschrift steht.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

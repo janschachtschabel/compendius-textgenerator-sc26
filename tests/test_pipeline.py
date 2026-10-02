@@ -44,7 +44,8 @@ def test_unknown_topic_is_reported(service: CompendiumService) -> None:
 
 def test_generate_optik(service: CompendiumService) -> None:
     result = service.generate(GenerateRequest(topic="Optik in Klasse 7"))
-    assert result.topic == "Optik"
+    # shown as asked (D75); the search took the topic without its level (D12)
+    assert result.topic == "Optik in Klasse 7"
     assert result.resolution.normalized == "Optik"
     assert result.resolution.context == ["Klasse 7"]
     projects = {s.project for s in result.sources}

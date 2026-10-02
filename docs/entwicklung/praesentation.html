@@ -92,14 +92,14 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.6.0 · Stand 02.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.6.1 · Stand 02.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>0c8cb01</code> und ungesicherte Änderungen · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>13fe913</code> und ungesicherte Änderungen · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M53</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -1493,6 +1493,8 @@ Lesbarkeit erst mit dem Schreiben (1,9 bis 2,1 wörtlich, 3,9 und 4,2 geschriebe
 (<code>llm-free</code>) auf 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
 4,2 und 5,0.</li>
 <li><strong>Zeit:</strong> 1,7 s ohne LLM, 5 s mit der Artikelwahl, 16 s mit der Zuordnung, 30 und 38 s mit dem Schreiben.</li>
+<li><strong>Überschrift:</strong> In M52 nannten die wörtlichen Profile ihren Artikel; seit D75 nennt jedes Profil das angefragte
+Thema, und der Artikel steht in <code>resolution.title</code>.</li>
 <li><strong>Kosten:</strong> Die Zuordnung durch das LLM kostet rund 60.000 Tokens, das Schreiben legt rund 24.000
 (<code>best-quality-generated</code>) und 43.000 (<code>best-coverage-generated</code>) dazu. <code>best-coverage-generated</code> liest 60.200
 davon aus dem Prompt-Cache, den der Anbieter günstiger abrechnet.</li>
@@ -5580,7 +5582,10 @@ Modellwissen steigt auf 62 statt 27 %, vor allem aus den Bausteinen ohne Belege.
 Aspekt Absätze über den Oberbegriff weg; der wörtliche Text von <code>best-quality</code> wird dort kürzer.</p>
 <p><strong>Entschieden (D73, Jan, 02.10.2026):</strong> V1a, V3 und V4 wie empfohlen übernommen, V1b nicht. Ein wörtlicher Text
 behält den gedruckten Artikel als Überschrift (D12); der Hinweis V3 nennt das angefragte Thema und die beiden
-schreibenden Profile (Jan: „Artikel + Hinweis“). Die Frage N fragt dafür in Version 2 nur nach <code>deckt_ab</code>, nicht nach
+schreibenden Profile (Jan: „Artikel + Hinweis“; revidiert mit D75: Die Überschrift nennt in jedem Profil das
+angefragte Thema, Jan: „ich hatte vorher kommuniziert das dies in allen profilen ein problem wäre, wenn das thema
+verfälscht wird“; der Hinweis bleibt und sagt, welcher Artikel darunter steht). Die Frage N fragt dafür in Version 2
+nur nach <code>deckt_ab</code>, nicht nach
 drei Übersichten; nachgemessen in M53: kein Hinweis bei 46 Themen mit eigenem Artikel, alle 6 Themen mit Aspekt
 erkannt, von den M48-Sammelthemen 1 von 6 (mit drei Übersichten 3 von 6), weil das Modell eine Epoche wie <em>Wiener
 Klassik</em> für deckend hält. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
@@ -5691,7 +5696,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>0c8cb01</code> und ungesicherte Änderungen; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>13fe913</code> und ungesicherte Änderungen; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>

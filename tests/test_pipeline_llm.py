@@ -394,18 +394,18 @@ def test_full_enrichment_writes_every_content_block_about_the_topic_as_asked(
     assert "Modellwissen" in result.frontmatter["ai_disclosure"]
 
 
-def test_full_enrichment_keeps_the_article_as_heading_when_the_llm_wrote_nothing(
+def test_the_heading_names_the_topic_as_asked_also_when_the_llm_wrote_nothing(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """D69: the heading names the topic as asked only above a text written about it; the extractive fallback is
-    about its article."""
+    """Until 2026-10-02 the extractive fallback carried its article as heading (D69). Jan: "ich hatte vorher
+    kommuniziert das dies in allen profilen ein problem wäre, wenn das thema verfälscht wird" (D75)."""
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "")))
     request = GenerateRequest(
         topic="Optik in Klasse 7", generation="llm", enrichment="model-knowledge-full", parts=["world"]
     )
     result = service.generate(request)
-    assert (result.topic, result.enrichment) == ("Optik", "sources-only")
-    assert "# Kompendium: Optik\n" in result.markdown
+    assert (result.topic, result.enrichment, result.resolution.title) == ("Optik in Klasse 7", "sources-only", "Optik")
+    assert "# Kompendium: Optik in Klasse 7\n" in result.markdown
 
 
 def test_the_writing_calls_of_full_enrichment_share_a_system_message_with_every_block_in_it(

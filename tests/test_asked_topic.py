@@ -124,7 +124,7 @@ def test_without_enrichment_a_block_without_evidence_stays_with_the_rules() -> N
     assert isinstance(section, LlmSkipped) and fake.bodies == []
 
 
-def test_the_matching_hears_the_topic_as_asked_and_the_rules_text_keeps_its_article(
+def test_the_matching_hears_the_topic_as_asked_and_the_rules_text_is_headed_by_it(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     fake = FakeBApi(lambda body: "{}")
@@ -135,7 +135,9 @@ def test_the_matching_hears_the_topic_as_asked_and_the_rules_text_keeps_its_arti
     assert users(fake, ASSIGNMENT) and all(
         user.startswith(f"Thema des Kompendiums: {ASKED}\n") for user in users(fake, ASSIGNMENT)
     )
-    assert result.topic == "Optik", "a text the rules printed is about its article"
+    # Jan, 2026-10-02 (D75): no profile shows another topic than the one asked for; the article stays in resolution
+    assert (result.topic, result.resolution.title) == (ASKED, "Optik")
+    assert f"# Kompendium: {ASKED}\n" in result.markdown and result.frontmatter["topic"] == ASKED
 
 
 def test_the_hit_check_hears_the_topic_as_asked(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -> None:

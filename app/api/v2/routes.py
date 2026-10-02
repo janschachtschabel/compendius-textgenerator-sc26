@@ -81,8 +81,9 @@ def generate_compendium(
     for part 1), ``best-quality-generated`` a readable one (fit 4.8). A group without an article of its own (Dichter
     aus dem Mittelalter) or a topic with an aspect (OER-Förderungen): ``best-coverage-generated`` (fit 5.0, 83 % of
     its text model knowledge) or, shorter, ``best-quality-generated`` (4.7 and 4.2, 62 %); the verbatim profiles
-    print one member or the umbrella term the article choice finds (at most 3.8 and 1.7), keep that article as the
-    heading, and the check of the compendium names the writing profiles (``audit.lint``, ``topic-scope``).
+    print one member or the umbrella term the article choice finds (at most 3.8 and 1.7) under the heading of the
+    topic as asked (D75), and the check of the compendium says so and names the writing profiles (``audit.lint``,
+    ``topic-scope``).
 
     The LLM steps of a request spend from one token budget and one deadline: LLM_MAX_TOKENS_PER_REQUEST (60,000)
     in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the three best-* profiles
