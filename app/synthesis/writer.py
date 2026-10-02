@@ -156,8 +156,10 @@ class SectionWriter:
                     "unsupported_sentences": draft.unsupported_sentences,
                     "marked_sentences": draft.marked_sentences,
                 }
+                # the facets come from what the block cites; one of model knowledge alone cites nothing and claims no
+                # evidence, like a block without any (review 2026-10-02)
                 cited = {c.chunk_id for c in draft.citations}
-                chunks = [c for c in chunks if c.chunk_id in cited] or chunks
+                chunks = [c for c in chunks if c.chunk_id in cited]
                 _account(report, slot.id, draft)
             else:
                 if isinstance(draft, LlmSkipped) and report is not None:

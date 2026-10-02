@@ -467,3 +467,19 @@ def test_the_disclosure_claims_model_knowledge_only_when_there_is_some(
     assert result.audit.llm is not None and result.audit.llm["generation"]["marked_sentences"] == 0
     assert "Modellwissen" not in result.frontmatter["ai_disclosure"]
     assert "Modellwissen" not in result.markdown
+
+
+def test_a_written_block_that_cites_nothing_claims_no_evidence_in_its_facets(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Review 2026-10-02: a block of model knowledge alone took its facets from the evidence it did not cite - among
+    them Evidenzgrad=belegt - since D73 also in best-quality-generated. Like a block without evidence (D72) it has
+    none of them."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: "Alles nur aus dem Modellwissen.")))
+    result = service.generate(
+        GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+
+    written = [s for s in result.sections if s.status is SectionStatus.LLM]
+    assert written and all(not s.citations for s in written)
+    assert all("belegt" not in s.facets.get("Evidenzgrad", []) for s in written)
