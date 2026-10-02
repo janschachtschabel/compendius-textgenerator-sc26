@@ -2915,3 +2915,58 @@ von M21.
 Rohdaten: `m51_thema.json`: die Formulierungsprobe mit Eingaben und Themen in beiden Fassungen des Prompts, die Läufe
 von `best-quality-generated` und `best-quality` ohne Texte, das Modellwissen je Baustein, Noten, Übereinstimmung und
 Schlüssel der Bögen, die Urteile ohne Zitate.
+
+## M52 Die fünf Profile im Stand D72: Güte, Zeit und Kosten (02.10.2026)
+
+**Aufbau:** Jan: „mach mir eine neue übersichtstabelle mit alle 5 profilen des dienst und den messwerten zu qualität,
+zeit, und kosten und bitte auch als grafik“. M48 maß die fünf Profile vor D72; seither hört jeder Prompt das
+angefragte Thema, und `best-quality-generated` schreibt anders. Deshalb eine neue Runde mit dem Code von D72 an den
+neun Themen von M48, je ein Lauf (`mc_kompendium_profil.py`): `llm-free`, `balanced` und `best-coverage-generated`
+neu, `best-quality` und `best-quality-generated` aus M51 (derselbe Code, am selben Tag). Zwei neue blinde
+Claude-Gutachter lasen alle fünf Texte je Thema (`mc_laeufe_zusammen.py`, `mc_profilvergleich_boegen.py --seed=52`,
+`mc_profilvergleich_auswertung.py`); Tabelle und Grafik entstehen aus dem Ergebnis (`mc_profiltabelle.py`,
+`mc_grafiken.py`).
+
+**Ergebnis**, Noten im Mittel beider Gutachter, Zeit, Tokens und Text im Median der neun Läufe; fett die beste Note
+der Zeile:
+
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| **Güte**, Noten von 1 bis 5 |  |  |  |  |  |
+| Passung, Thema mit eigenem Artikel | 3,0 | 3,7 | 4,2 | 4,8 | **5,0** |
+| Passung, Sammelthema | 1,5 | 2,8 | 3,8 | 4,7 | **5,0** |
+| Passung, Thema mit Aspekt | 1,0 | 1,2 | 1,7 | 4,2 | **5,0** |
+| Nutzen | 1,5 | 2,3 | 2,7 | 4,1 | **4,8** |
+| Vollständigkeit | 1,0 | 1,3 | 1,9 | 4,2 | **4,9** |
+| Lesbarkeit | 2,1 | 1,9 | 1,9 | 3,9 | **4,2** |
+| Fehler je Text, schwer und leicht | 0,00 und 0,44 | 0,17 und 0,50 | 0,06 und 0,61 | 0,00 und 0,61 | 0,11 und 0,78 |
+| Überschrift ist das angefragte Thema | 3 von 9 | 3 von 9 | 3 von 9 | 9 von 9 | 9 von 9 |
+| Hauptartikel richtig, 94 Goldanfragen (M35) | 87 von 94 | 91 von 94 | 93 von 94 | 93 von 94 | 93 von 94 |
+| **Zeit** |  |  |  |  |  |
+| Teil 1, Median (Spanne) | 1,7 s (1,0 bis 2,7 s) | 5,0 s (3,5 bis 6,3 s) | 16,4 s (15,0 bis 20,4 s) | 30,3 s (26,8 bis 34,9 s) | 37,8 s (35,3 bis 40,7 s) |
+| **Kosten** |  |  |  |  |  |
+| Tokens, Median | 0 | 530 | 59.900 | 84.000 | 103.300 |
+| davon aus dem Prompt-Cache | – | 0 | 26.600 | 13.800 | 60.200 |
+| **Text** |  |  |  |  |  |
+| Zeichen, Median | 8.720 | 11.426 | 11.703 | 27.809 | 58.917 |
+| Bausteine mit Text, von 10 | 6 | 6 | 7 | 10 | 10 |
+| Modellwissen am Text, Median | 0 % | 0 % | 0 % | 62 % | 83 % |
+
+Übereinstimmung: gleiche Note bei der Passung in 38 von 45 Texten, sonst eine um eins verschieden (Nutzen 40,
+Vollständigkeit 39, Lesbarkeit 41).
+
+- Die Güte steigt mit jedem LLM-Schritt, am stärksten mit dem Schreiben: Vollständigkeit 1,0, 1,3, 1,9, 4,2 und 4,9;
+  bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden 4,2 und 5,0.
+- Die Zuordnung durch das LLM kostet rund 60.000 Tokens, das Schreiben legt rund 24.000 und 43.000 dazu;
+  `best-coverage-generated` las 60.200 Tokens aus dem Prompt-Cache.
+- Gegen M48: `best-coverage-generated` blieb bei Zeit und Tokens (37,8 statt 37,1 s, 103.271 statt 101.150).
+  `best-quality` bekam bei Sammelthemen 3,8 statt 2,0; seit D72 hört seine Zuordnung das angefragte Thema, doch Noten
+  zweier Runden mit anderen Gutachtern sind nur bedingt vergleichbar. Ebenso `best-quality-generated`: Passung 4,6 hier,
+  4,2 in M51, wo es neben seiner alten Fassung und `best-coverage-generated` stand.
+
+Grenzen: neun Themen, ein Lauf je Profil; `best-quality` und `best-quality-generated` aus M51 (derselbe Code, am selben
+Tag); die Gutachter sind Sprachmodelle und lasen sieben der zehn Inhaltsbausteine; Zeit auf dem Entwicklungsrechner,
+Teil 1 ohne Teil 2 (dazu M45).
+
+Rohdaten: `m52_profiluebersicht.json`: Noten je Art und Profil, Übereinstimmung, Läufe je Art und Profil (Median und
+Spanne), jeder Lauf ohne Text, Schlüssel der Bögen, die Urteile ohne Zitate.

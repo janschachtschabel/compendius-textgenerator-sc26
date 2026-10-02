@@ -34,7 +34,50 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.
 | Ziellänge von Teil 1 (`target_length`) | 30.000 Zeichen, eine Richtgröße: der wörtliche Text wird so lang, wie die Quellen tragen | wie `llm-free` | wie `llm-free` | 30.000 | 30.000 als Untergrenze | D69, D70 |
 | Budget je Anfrage (D59) | 60.000 Tokens | 60.000 | 180.000 | 180.000 | 180.000 | D59 |
 
-### Fünf Profile an drei Arten von Themen (M48)
+### Die fünf Profile im Überblick: Güte, Zeit und Kosten (M52)
+
+![Die fünf Profile: Güte, Zeit und Kosten - Passung je Art von Thema, Nutzen, Vollständigkeit, Lesbarkeit, Zeit, Tokens und Modellwissen (M52)](bilder/profiluebersicht.svg)
+
+Stand D72: Jeder Prompt hört das angefragte Thema, `best-quality-generated` schreibt darüber und füllt leere
+Bausteine. Teil 1 mit 30.000 Zielzeichen an denselben neun Themen wie M48, je ein Lauf mit `gpt-6-luna`; zwei neue
+blinde Gutachter lasen alle fünf Texte je Thema und gaben bei der Passung in 38 von 45 Fällen dieselbe Note, sonst
+eine um eins verschiedene ([M52](05-messprotokoll.md)). Fett: die beste Note der Zeile.
+
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| **Güte**, Noten von 1 bis 5 |  |  |  |  |  |
+| Passung, Thema mit eigenem Artikel | 3,0 | 3,7 | 4,2 | 4,8 | **5,0** |
+| Passung, Sammelthema | 1,5 | 2,8 | 3,8 | 4,7 | **5,0** |
+| Passung, Thema mit Aspekt | 1,0 | 1,2 | 1,7 | 4,2 | **5,0** |
+| Nutzen | 1,5 | 2,3 | 2,7 | 4,1 | **4,8** |
+| Vollständigkeit | 1,0 | 1,3 | 1,9 | 4,2 | **4,9** |
+| Lesbarkeit | 2,1 | 1,9 | 1,9 | 3,9 | **4,2** |
+| Fehler je Text, schwer und leicht | 0,00 und 0,44 | 0,17 und 0,50 | 0,06 und 0,61 | 0,00 und 0,61 | 0,11 und 0,78 |
+| Überschrift ist das angefragte Thema | 3 von 9 | 3 von 9 | 3 von 9 | 9 von 9 | 9 von 9 |
+| Hauptartikel richtig, 94 Goldanfragen (M35) | 87 von 94 | 91 von 94 | 93 von 94 | 93 von 94 | 93 von 94 |
+| **Zeit** |  |  |  |  |  |
+| Teil 1, Median (Spanne) | 1,7 s (1,0 bis 2,7 s) | 5,0 s (3,5 bis 6,3 s) | 16,4 s (15,0 bis 20,4 s) | 30,3 s (26,8 bis 34,9 s) | 37,8 s (35,3 bis 40,7 s) |
+| **Kosten** |  |  |  |  |  |
+| Tokens, Median | 0 | 530 | 59.900 | 84.000 | 103.300 |
+| davon aus dem Prompt-Cache | – | 0 | 26.600 | 13.800 | 60.200 |
+| **Text** |  |  |  |  |  |
+| Zeichen, Median | 8.720 | 11.426 | 11.703 | 27.809 | 58.917 |
+| Bausteine mit Text, von 10 | 6 | 6 | 7 | 10 | 10 |
+| Modellwissen am Text, Median | 0 % | 0 % | 0 % | 62 % | 83 % |
+
+- **Güte:** Sie steigt mit jedem LLM-Schritt, am stärksten mit dem Schreiben. Die Vollständigkeit wächst von 1,0
+  (`llm-free`) auf 4,2 und 4,9; bei Themen mit Aspekt erreichen die wörtlichen Profile höchstens 1,7, die schreibenden
+  4,2 und 5,0.
+- **Zeit:** 1,7 s ohne LLM, 5 s mit der Artikelwahl, 16 s mit der Zuordnung, 30 und 38 s mit dem Schreiben.
+- **Kosten:** Die Zuordnung durch das LLM kostet rund 60.000 Tokens, das Schreiben legt rund 24.000
+  (`best-quality-generated`) und 43.000 (`best-coverage-generated`) dazu. `best-coverage-generated` liest 60.200
+  davon aus dem Prompt-Cache, den der Anbieter günstiger abrechnet.
+- **Preis der Güte:** Die schreibenden Profile bestehen zu 62 und 83 % aus gekennzeichnetem Modellwissen; der Text
+  der wörtlichen Profile steht ganz in den Quellen.
+- Die Noten gelten innerhalb dieser Runde: Neben schwächeren Texten fielen sie für `best-quality-generated` höher
+  aus als in M51 (Passung 4,6 statt 4,2), wo es neben seiner alten Fassung und `best-coverage-generated` stand.
+
+### Vor D72: fünf Profile an drei Arten von Themen (M48)
 
 ![Fünf Profile an drei Arten von Themen: Passung je Art, Nutzen, Vollständigkeit, Lesbarkeit, Zeit und Tokens](bilder/profilvergleich.svg)
 
@@ -65,34 +108,31 @@ Schreiben legt in `best-quality-generated` rund 21.000 und in `best-coverage-gen
 wörtlichen Profile werden so lang, wie die Quellen tragen; in `best-coverage-generated` ist die Ziellänge Untergrenze,
 der Text wird fast doppelt so lang.
 
-Seit D72 schreibt `best-quality-generated` über das angefragte Thema und füllt auch Bausteine ohne Belege aus
-Modellwissen. An denselben neun Themen ([M51](05-messprotokoll.md), zwei neue blinde Gutachter): Passung 4,8 bei
-einfachen Themen, 3,8 bei Sammelthemen, 4,0 bei Themen mit Aspekt (vorher 4,7, 2,8 und 1,5); Nutzen 3,7,
-Vollständigkeit 3,6, Lesbarkeit 3,7, keine schweren Fehler; 27.809 Zeichen, 62 % Modellwissen, 84.016 Tokens,
-30 s; die Überschrift ist immer das angefragte Thema. `best-coverage-generated` bekam dort Passung 4,8, Nutzen 4,6,
-Vollständigkeit 4,7.
+Seit D72 gilt die Übersicht oben (M52). [M51](05-messprotokoll.md) stellte `best-quality-generated` vor und nach
+D72 nebeneinander: Passung bei Sammelthemen 3,8 statt 2,8, bei Themen mit Aspekt 4,0 statt 1,5.
 
 ### Welches Profil wofür
 
-- **Thema mit eigenem Artikel** (Optik): `balanced` liefert einen wörtlichen, durchgehend belegten Text (Passung 4,0,
-  6 s, 580 Tokens), etwa als Grundlage für Suche und KI-Assistenten. `best-quality-generated` schreibt einen lesbaren
-  Text aus den Quellen und Modellwissen (Passung 4,8; seit D72 alle Bausteine, 62 % Modellwissen, M51).
-  `best-coverage-generated` schreibt den vollständigsten (Nutzen und Vollständigkeit 5,0), aber zu rund 80 % aus
-  Modellwissen.
-- **Sammelthema** (Dichter aus dem Mittelalter): `best-coverage-generated`. Die wörtlichen Profile drucken einen
-  Vertreter oder den Oberbegriff, den die Artikelwahl findet (Passung höchstens 2,5); `llm-free` landet auf falschen
-  oder zu engen Artikeln. `best-quality-generated` schreibt seit D72 zum Thema (Passung 3,8 statt 2,8, M51).
-- **Thema mit Aspekt** (OER-Förderungen): `best-coverage-generated` (Passung 5,0); seit D72 auch
-  `best-quality-generated` (4,0 statt 1,5, M51), mit kürzerem Text. Die wörtlichen Profile bleiben beim Oberbegriff
-  (höchstens 1,5).
-- **Ohne Sprachmodell:** `llm-free` taugt nur für Themen mit eigenem Artikel (Passung 3,2, die meisten Bausteine
+Nach M52, Stand D72:
+
+- **Thema mit eigenem Artikel** (Optik): `balanced` liefert einen wörtlichen, durchgehend belegten Text (Passung 3,7,
+  5 s, 530 Tokens), etwa als Grundlage für Suche und KI-Assistenten. `best-quality-generated` schreibt einen lesbaren
+  Text aus den Quellen und Modellwissen (Passung 4,8, Nutzen 4,5, Vollständigkeit 4,3, rund zwei Drittel
+  Modellwissen). `best-coverage-generated` schreibt den vollständigsten (Passung, Nutzen und Vollständigkeit 5,0),
+  zu rund 80 % aus Modellwissen.
+- **Sammelthema** (Dichter aus dem Mittelalter): `best-coverage-generated` (Passung 5,0) oder `best-quality-generated`
+  (4,7); beide schreiben über die Gruppe. Die wörtlichen Profile drucken einen Vertreter oder den Oberbegriff, den die
+  Artikelwahl findet (Passung höchstens 3,8); `llm-free` landet auf falschen oder zu engen Artikeln (1,5).
+- **Thema mit Aspekt** (OER-Förderungen): `best-coverage-generated` (Passung 5,0) oder `best-quality-generated` (4,2),
+  das kürzer schreibt. Die wörtlichen Profile bleiben beim Oberbegriff (höchstens 1,7).
+- **Ohne Sprachmodell:** `llm-free` taugt nur für Themen mit eigenem Artikel (Passung 3,0, die meisten Bausteine
   lückenhaft); Sammel- und Aspektthemen kann es nicht.
 - **`best-quality` in Teil 1:** Gegenüber `balanced` hebt es bei einfachen Themen Passung und Vollständigkeit um 0,5
-  und 0,8, für rund 61.000 statt 580 Tokens; der Text bleibt wörtlich. Seine Stärke ist die Zuordnung (macro-F1 0,70
+  und 0,7, für rund 60.000 statt 530 Tokens; der Text bleibt wörtlich. Seine Stärke ist die Zuordnung (macro-F1 0,70
   statt 0,45, M27) und die Prüfung der Lehrplanelemente in Teil 2.
-- **Belege:** Wo jede Aussage belegt sein muss, etwa für die Weiterverarbeitung, bleiben die wörtlichen Profile.
-  `best-coverage-generated` kennzeichnet sein Modellwissen sichtbar, prüft es aber nicht gegen Quellen: Sechs der acht
-  leichten Fehler, die die Gutachter dort fanden, standen in Sätzen mit `[Modellwissen]`.
+- **Belege:** Wo jede Aussage belegt sein muss, etwa für die Weiterverarbeitung, bleiben die wörtlichen Profile. Die
+  schreibenden kennzeichnen ihr Modellwissen sichtbar, prüfen es aber nicht gegen Quellen: In M48 standen sechs der acht
+  leichten Fehler von `best-coverage-generated` in Sätzen mit `[Modellwissen]`.
 
 ### Was ein Kompendium je Profil kostet
 

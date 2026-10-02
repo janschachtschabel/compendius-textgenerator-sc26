@@ -1,0 +1,3830 @@
+{
+ "kinds": {
+  "einfach": [
+   "Optik",
+   "Photosynthese",
+   "Französische Revolution"
+  ],
+  "Sammelthema": [
+   "Dichter aus dem Mittelalter",
+   "Komponisten der Klassik",
+   "Philosophen der Aufklärung"
+  ],
+  "Aspekt": [
+   "OER-Förderungen",
+   "Inklusion im Sportunterricht",
+   "Künstliche Intelligenz im Unterricht"
+  ]
+ },
+ "grades": {
+  "einfach": {
+   "llm-free": {
+    "passung": 3,
+    "nutzen": 2,
+    "vollstaendigkeit": 1,
+    "lesbarkeit": 2.17,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.67
+   },
+   "balanced": {
+    "passung": 3.67,
+    "nutzen": 2.5,
+    "vollstaendigkeit": 1.33,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0.17,
+    "leichte_fehler": 0.5
+   },
+   "best-quality": {
+    "passung": 4.17,
+    "nutzen": 2.83,
+    "vollstaendigkeit": 2,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0.17,
+    "leichte_fehler": 0.83
+   },
+   "best-quality-generated": {
+    "passung": 4.83,
+    "nutzen": 4.5,
+    "vollstaendigkeit": 4.33,
+    "lesbarkeit": 3.67,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.17
+   },
+   "best-coverage-generated": {
+    "passung": 5,
+    "nutzen": 5,
+    "vollstaendigkeit": 5,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.17
+   }
+  },
+  "Sammelthema": {
+   "llm-free": {
+    "passung": 1.5,
+    "nutzen": 1.33,
+    "vollstaendigkeit": 1,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.17
+   },
+   "balanced": {
+    "passung": 2.83,
+    "nutzen": 2.67,
+    "vollstaendigkeit": 1.67,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0.33,
+    "leichte_fehler": 0.17
+   },
+   "best-quality": {
+    "passung": 3.83,
+    "nutzen": 3.33,
+    "vollstaendigkeit": 2.33,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.17
+   },
+   "best-quality-generated": {
+    "passung": 4.67,
+    "nutzen": 4,
+    "vollstaendigkeit": 4.33,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.67
+   },
+   "best-coverage-generated": {
+    "passung": 5,
+    "nutzen": 4.33,
+    "vollstaendigkeit": 4.67,
+    "lesbarkeit": 4.33,
+    "schwere_fehler": 0.33,
+    "leichte_fehler": 1
+   }
+  },
+  "Aspekt": {
+   "llm-free": {
+    "passung": 1,
+    "nutzen": 1.17,
+    "vollstaendigkeit": 1,
+    "lesbarkeit": 2,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.5
+   },
+   "balanced": {
+    "passung": 1.17,
+    "nutzen": 1.67,
+    "vollstaendigkeit": 1,
+    "lesbarkeit": 1.67,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.83
+   },
+   "best-quality": {
+    "passung": 1.67,
+    "nutzen": 2,
+    "vollstaendigkeit": 1.33,
+    "lesbarkeit": 1.83,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.83
+   },
+   "best-quality-generated": {
+    "passung": 4.17,
+    "nutzen": 3.83,
+    "vollstaendigkeit": 4,
+    "lesbarkeit": 4.17,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1
+   },
+   "best-coverage-generated": {
+    "passung": 5,
+    "nutzen": 5,
+    "vollstaendigkeit": 5,
+    "lesbarkeit": 4.17,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1.17
+   }
+  },
+  "alle": {
+   "llm-free": {
+    "passung": 1.83,
+    "nutzen": 1.5,
+    "vollstaendigkeit": 1,
+    "lesbarkeit": 2.06,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.44
+   },
+   "balanced": {
+    "passung": 2.56,
+    "nutzen": 2.28,
+    "vollstaendigkeit": 1.33,
+    "lesbarkeit": 1.89,
+    "schwere_fehler": 0.17,
+    "leichte_fehler": 0.5
+   },
+   "best-quality": {
+    "passung": 3.22,
+    "nutzen": 2.72,
+    "vollstaendigkeit": 1.89,
+    "lesbarkeit": 1.94,
+    "schwere_fehler": 0.06,
+    "leichte_fehler": 0.61
+   },
+   "best-quality-generated": {
+    "passung": 4.56,
+    "nutzen": 4.11,
+    "vollstaendigkeit": 4.22,
+    "lesbarkeit": 3.94,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.61
+   },
+   "best-coverage-generated": {
+    "passung": 5,
+    "nutzen": 4.78,
+    "vollstaendigkeit": 4.89,
+    "lesbarkeit": 4.17,
+    "schwere_fehler": 0.11,
+    "leichte_fehler": 0.78
+   }
+  }
+ },
+ "agreement": {
+  "passung": {
+   "same": 38,
+   "one_apart": 7,
+   "two_or_more": 0,
+   "pairs": 45
+  },
+  "nutzen": {
+   "same": 40,
+   "one_apart": 5,
+   "two_or_more": 0,
+   "pairs": 45
+  },
+  "vollstaendigkeit": {
+   "same": 39,
+   "one_apart": 6,
+   "two_or_more": 0,
+   "pairs": 45
+  },
+  "lesbarkeit": {
+   "same": 41,
+   "one_apart": 4,
+   "two_or_more": 0,
+   "pairs": 45
+  }
+ },
+ "runs": {
+  "einfach": {
+   "llm-free": {
+    "runs": 3,
+    "seconds": 1.8,
+    "seconds_span": [
+     1.2,
+     2.3
+    ],
+    "tokens": 0,
+    "tokens_span": [
+     0,
+     0
+    ],
+    "cached": 0,
+    "chars": 9389,
+    "blocks": 6,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 23,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "balanced": {
+    "runs": 3,
+    "seconds": 4.7,
+    "seconds_span": [
+     3.5,
+     5.8
+    ],
+    "tokens": 487,
+    "tokens_span": [
+     472,
+     682
+    ],
+    "cached": 0,
+    "chars": 8363,
+    "blocks": 6,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 24,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-quality": {
+    "runs": 3,
+    "seconds": 16.4,
+    "seconds_span": [
+     15.8,
+     20.4
+    ],
+    "tokens": 64486,
+    "tokens_span": [
+     26332,
+     67881
+    ],
+    "cached": 26555,
+    "chars": 11703,
+    "blocks": 7,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 29,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-quality-generated": {
+    "runs": 3,
+    "seconds": 30.3,
+    "seconds_span": [
+     28.9,
+     34.9
+    ],
+    "tokens": 83332,
+    "tokens_span": [
+     47934,
+     90921
+    ],
+    "cached": 13816,
+    "chars": 28108,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 121,
+    "model_share": 0.666,
+    "model_share_span": [
+     0.615,
+     0.703
+    ],
+    "cited": 69,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-coverage-generated": {
+    "runs": 3,
+    "seconds": 37.8,
+    "seconds_span": [
+     35.8,
+     37.9
+    ],
+    "tokens": 91916,
+    "tokens_span": [
+     75272,
+     113751
+    ],
+    "cached": 50936,
+    "chars": 58917,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 273,
+    "model_share": 0.809,
+    "model_share_span": [
+     0.801,
+     0.818
+    ],
+    "cited": 64,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   }
+  },
+  "Sammelthema": {
+   "llm-free": {
+    "runs": 3,
+    "seconds": 1.7,
+    "seconds_span": [
+     1.0,
+     2.5
+    ],
+    "tokens": 0,
+    "tokens_span": [
+     0,
+     0
+    ],
+    "cached": 0,
+    "chars": 5123,
+    "blocks": 4,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 13,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "balanced": {
+    "runs": 3,
+    "seconds": 5.1,
+    "seconds_span": [
+     5.0,
+     5.6
+    ],
+    "tokens": 545,
+    "tokens_span": [
+     523,
+     560
+    ],
+    "cached": 0,
+    "chars": 9033,
+    "blocks": 5,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 20,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "best-quality": {
+    "runs": 3,
+    "seconds": 17.1,
+    "seconds_span": [
+     16.2,
+     19.9
+    ],
+    "tokens": 66822,
+    "tokens_span": [
+     40134,
+     71665
+    ],
+    "cached": 20464,
+    "chars": 9185,
+    "blocks": 5,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 24,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "best-quality-generated": {
+    "runs": 3,
+    "seconds": 32.0,
+    "seconds_span": [
+     29.8,
+     34.5
+    ],
+    "tokens": 87432,
+    "tokens_span": [
+     59317,
+     90913
+    ],
+    "cached": 13816,
+    "chars": 27809,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 111,
+    "model_share": 0.617,
+    "model_share_span": [
+     0.496,
+     0.707
+    ],
+    "cited": 66,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-coverage-generated": {
+    "runs": 3,
+    "seconds": 37.5,
+    "seconds_span": [
+     36.5,
+     40.7
+    ],
+    "tokens": 107512,
+    "tokens_span": [
+     80016,
+     111093
+    ],
+    "cached": 80188,
+    "chars": 55257,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 266,
+    "model_share": 0.851,
+    "model_share_span": [
+     0.785,
+     0.859
+    ],
+    "cited": 40,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   }
+  },
+  "Aspekt": {
+   "llm-free": {
+    "runs": 3,
+    "seconds": 1.1,
+    "seconds_span": [
+     1.1,
+     2.7
+    ],
+    "tokens": 0,
+    "tokens_span": [
+     0,
+     0
+    ],
+    "cached": 0,
+    "chars": 9124,
+    "blocks": 6,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 15,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "balanced": {
+    "runs": 3,
+    "seconds": 4.8,
+    "seconds_span": [
+     4.2,
+     6.3
+    ],
+    "tokens": 526,
+    "tokens_span": [
+     473,
+     592
+    ],
+    "cached": 0,
+    "chars": 11863,
+    "blocks": 8,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 32,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "best-quality": {
+    "runs": 3,
+    "seconds": 16.3,
+    "seconds_span": [
+     15.0,
+     18.0
+    ],
+    "tokens": 55552,
+    "tokens_span": [
+     29450,
+     59940
+    ],
+    "cached": 32943,
+    "chars": 16831,
+    "blocks": 10,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 43,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 0
+   },
+   "best-quality-generated": {
+    "runs": 3,
+    "seconds": 28.8,
+    "seconds_span": [
+     26.8,
+     31.0
+    ],
+    "tokens": 84016,
+    "tokens_span": [
+     48132,
+     84407
+    ],
+    "cached": 13816,
+    "chars": 26268,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 58,
+    "model_share": 0.326,
+    "model_share_span": [
+     0.323,
+     0.946
+    ],
+    "cited": 90,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-coverage-generated": {
+    "runs": 3,
+    "seconds": 38.9,
+    "seconds_span": [
+     35.3,
+     39.6
+    ],
+    "tokens": 103271,
+    "tokens_span": [
+     86312,
+     105893
+    ],
+    "cached": 62010,
+    "chars": 62608,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 300,
+    "model_share": 0.848,
+    "model_share_span": [
+     0.83,
+     0.856
+    ],
+    "cited": 45,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   }
+  },
+  "alle": {
+   "llm-free": {
+    "runs": 9,
+    "seconds": 1.7,
+    "seconds_span": [
+     1.0,
+     2.7
+    ],
+    "tokens": 0,
+    "tokens_span": [
+     0,
+     0
+    ],
+    "cached": 0,
+    "chars": 8720,
+    "blocks": 6,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 20,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "balanced": {
+    "runs": 9,
+    "seconds": 5.0,
+    "seconds_span": [
+     3.5,
+     6.3
+    ],
+    "tokens": 526,
+    "tokens_span": [
+     472,
+     682
+    ],
+    "cached": 0,
+    "chars": 11426,
+    "blocks": 6,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 27,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-quality": {
+    "runs": 9,
+    "seconds": 16.4,
+    "seconds_span": [
+     15.0,
+     20.4
+    ],
+    "tokens": 59940,
+    "tokens_span": [
+     26332,
+     71665
+    ],
+    "cached": 26555,
+    "chars": 11703,
+    "blocks": 7,
+    "llm_blocks": 0,
+    "marked": 0,
+    "model_share": 0.0,
+    "model_share_span": [
+     0.0,
+     0.0
+    ],
+    "cited": 26,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 3
+   },
+   "best-quality-generated": {
+    "runs": 9,
+    "seconds": 30.3,
+    "seconds_span": [
+     26.8,
+     34.9
+    ],
+    "tokens": 84016,
+    "tokens_span": [
+     47934,
+     90921
+    ],
+    "cached": 13816,
+    "chars": 27809,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 111,
+    "model_share": 0.617,
+    "model_share_span": [
+     0.323,
+     0.946
+    ],
+    "cited": 67,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 9
+   },
+   "best-coverage-generated": {
+    "runs": 9,
+    "seconds": 37.8,
+    "seconds_span": [
+     35.3,
+     40.7
+    ],
+    "tokens": 103271,
+    "tokens_span": [
+     75272,
+     113751
+    ],
+    "cached": 60236,
+    "chars": 58917,
+    "blocks": 10,
+    "llm_blocks": 10,
+    "marked": 269,
+    "model_share": 0.83,
+    "model_share_span": [
+     0.785,
+     0.859
+    ],
+    "cited": 47,
+    "generation_fallbacks": 0,
+    "heading_as_asked": 9
+   }
+  }
+ },
+ "failed": [],
+ "run_rows": [
+  {
+   "topic": "Optik",
+   "variant": "llm-free",
+   "s": 1.2,
+   "timings": {
+    "resolve": 18,
+    "corpus": 443,
+    "segment": 7,
+    "match": 102,
+    "synthesize": 622,
+    "assemble": 3
+   },
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "title",
+   "tokens": null,
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 8720,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 25,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "einfach",
+   "sources": [
+    "Optik",
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "balanced",
+   "s": 4.7,
+   "timings": {
+    "resolve": 4375,
+    "corpus": 7,
+    "segment": 8,
+    "match": 202,
+    "synthesize": 117,
+    "assemble": 3
+   },
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "title",
+   "tokens": {
+    "prompt": 200,
+    "completion": 287,
+    "total": 487,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 8363,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 24,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Optik",
+    "Optik",
+    "Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-coverage-generated",
+   "s": 35.8,
+   "timings": {
+    "resolve": 4695,
+    "corpus": 7,
+    "segment": 8,
+    "match": 11387,
+    "synthesize": 19645,
+    "assemble": 12
+   },
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 58010,
+    "completion": 17262,
+    "total": 75272,
+    "calls": 17,
+    "cached": 28426
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 53323,
+   "marked": 246,
+   "model_chars": 43137,
+   "cited": 65,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Optik",
+    "Optik",
+    "Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "llm-free",
+   "s": 1.8,
+   "timings": {
+    "resolve": 55,
+    "corpus": 820,
+    "segment": 20,
+    "match": 135,
+    "synthesize": 718,
+    "assemble": 4
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": null,
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 9389,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 22,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "einfach",
+   "sources": [
+    "Photosynthese",
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "balanced",
+   "s": 3.5,
+   "timings": {
+    "resolve": 3031,
+    "corpus": 8,
+    "segment": 14,
+    "match": 357,
+    "synthesize": 107,
+    "assemble": 3
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 201,
+    "completion": 271,
+    "total": 472,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 14384,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 34,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Photosynthese",
+    "Photosynthese",
+    "Chloroplast",
+    "Chlorophylle",
+    "Calvin-Zyklus",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel",
+    "Cyanobakterien"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "best-coverage-generated",
+   "s": 37.9,
+   "timings": {
+    "resolve": 4192,
+    "corpus": 7,
+    "segment": 12,
+    "match": 12274,
+    "synthesize": 21423,
+    "assemble": 6
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 89931,
+    "completion": 23820,
+    "total": 113751,
+    "calls": 19,
+    "cached": 60236
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 58917,
+   "marked": 273,
+   "model_chars": 47177,
+   "cited": 64,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Photosynthese",
+    "Photosynthese",
+    "Calvin-Zyklus",
+    "Photosystem",
+    "Chlorophylle",
+    "Chloroplast",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel",
+    "Photorespiration"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "llm-free",
+   "s": 2.3,
+   "timings": {
+    "resolve": 37,
+    "corpus": 883,
+    "segment": 17,
+    "match": 252,
+    "synthesize": 1066,
+    "assemble": 3
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "title",
+   "tokens": null,
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 12248,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 23,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "einfach",
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Bürger",
+    "Republik",
+    "Verfassung",
+    "Liberalismus",
+    "Revolutionskult"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "balanced",
+   "s": 5.8,
+   "timings": {
+    "resolve": 5338,
+    "corpus": 7,
+    "segment": 10,
+    "match": 337,
+    "synthesize": 119,
+    "assemble": 3
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "title",
+   "tokens": {
+    "prompt": 201,
+    "completion": 481,
+    "total": 682,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 4,
+   "llm_blocks": 0,
+   "chars": 7478,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 18,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalversammlung (Frankreich)",
+    "Ludwig XVI.",
+    "Maximilien de Robespierre",
+    "Terrorherrschaft"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-coverage-generated",
+   "s": 37.8,
+   "timings": {
+    "resolve": 4713,
+    "corpus": 6,
+    "segment": 11,
+    "match": 12006,
+    "synthesize": 21073,
+    "assemble": 6
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 71348,
+    "completion": 20568,
+    "total": 91916,
+    "calls": 18,
+    "cached": 50936
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 61105,
+   "marked": 293,
+   "model_chars": 49994,
+   "cited": 54,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalversammlung (Frankreich)",
+    "Nationalkonvent",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "variant": "llm-free",
+   "s": 1.0,
+   "timings": {
+    "resolve": 179,
+    "corpus": 213,
+    "segment": 9,
+    "match": 48,
+    "synthesize": 577,
+    "assemble": 3
+   },
+   "heading": "Sangspruchdichtung",
+   "main": "Sangspruchdichtung",
+   "method": "search",
+   "tokens": null,
+   "blocks": 3,
+   "llm_blocks": 0,
+   "chars": 5123,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 13,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Sammelthema",
+   "sources": [
+    "Sangspruchdichtung",
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ]
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "variant": "balanced",
+   "s": 5.0,
+   "timings": {
+    "resolve": 4292,
+    "corpus": 6,
+    "segment": 9,
+    "match": 296,
+    "synthesize": 365,
+    "assemble": 3
+   },
+   "heading": "Deutsche Literatur im Mittelalter",
+   "main": "Deutsche Literatur im Mittelalter",
+   "method": "llm",
+   "tokens": {
+    "prompt": 204,
+    "completion": 356,
+    "total": 560,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 9033,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 20,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Deutsche Literatur im Mittelalter",
+    "Walther von der Vogelweide",
+    "Wolfram von Eschenbach",
+    "Hartmann von Aue",
+    "Gottfried von Straßburg",
+    "Heinrich von Veldeke",
+    "Neidhart",
+    "Oswald von Wolkenstein",
+    "Frauenlob"
+   ]
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "variant": "best-coverage-generated",
+   "s": 36.5,
+   "timings": {
+    "resolve": 4953,
+    "corpus": 3,
+    "segment": 9,
+    "match": 12980,
+    "synthesize": 18542,
+    "assemble": 7
+   },
+   "heading": "Dichter aus dem Mittelalter",
+   "main": "Deutsche Literatur im Mittelalter",
+   "method": "llm",
+   "tokens": {
+    "prompt": 61453,
+    "completion": 18563,
+    "total": 80016,
+    "calls": 16,
+    "cached": 30625
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 55257,
+   "marked": 266,
+   "model_chars": 47491,
+   "cited": 37,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Deutsche Literatur im Mittelalter",
+    "Walther von der Vogelweide",
+    "Wolfram von Eschenbach",
+    "Hartmann von Aue",
+    "Gottfried von Straßburg",
+    "Neidhart",
+    "Oswald von Wolkenstein",
+    "Frauenlob",
+    "Heinrich von Morungen"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "llm-free",
+   "s": 2.5,
+   "timings": {
+    "resolve": 101,
+    "corpus": 1324,
+    "segment": 10,
+    "match": 37,
+    "synthesize": 996,
+    "assemble": 2
+   },
+   "heading": "Max Richter (Komponist)",
+   "main": "Max Richter (Komponist)",
+   "method": "search",
+   "tokens": null,
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 6611,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 20,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Sammelthema",
+   "sources": [
+    "Max Richter (Komponist)",
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "balanced",
+   "s": 5.6,
+   "timings": {
+    "resolve": 4467,
+    "corpus": 15,
+    "segment": 22,
+    "match": 496,
+    "synthesize": 570,
+    "assemble": 4
+   },
+   "heading": "Wiener Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 204,
+    "completion": 341,
+    "total": 545,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 11488,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 27,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Wiener Klassik",
+    "Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-coverage-generated",
+   "s": 40.7,
+   "timings": {
+    "resolve": 4706,
+    "corpus": 11,
+    "segment": 23,
+    "match": 14342,
+    "synthesize": 21607,
+    "assemble": 6
+   },
+   "heading": "Komponisten der Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 89570,
+    "completion": 21523,
+    "total": 111093,
+    "calls": 19,
+    "cached": 84099
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 54736,
+   "marked": 251,
+   "model_chars": 42985,
+   "cited": 62,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Wiener Klassik",
+    "Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "variant": "llm-free",
+   "s": 1.7,
+   "timings": {
+    "resolve": 48,
+    "corpus": 671,
+    "segment": 33,
+    "match": 34,
+    "synthesize": 896,
+    "assemble": 2
+   },
+   "heading": "Böse Philosophen",
+   "main": "Böse Philosophen",
+   "method": "suggestion",
+   "tokens": null,
+   "blocks": 4,
+   "llm_blocks": 0,
+   "chars": 2934,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 8,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Sammelthema",
+   "sources": [
+    "Böse Philosophen",
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "variant": "balanced",
+   "s": 5.1,
+   "timings": {
+    "resolve": 3739,
+    "corpus": 23,
+    "segment": 35,
+    "match": 488,
+    "synthesize": 766,
+    "assemble": 2
+   },
+   "heading": "Aufklärung",
+   "main": "Aufklärung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 203,
+    "completion": 320,
+    "total": 523,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 4,
+   "llm_blocks": 0,
+   "chars": 8128,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 20,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Aufklärung",
+    "Aufklärung",
+    "Immanuel Kant"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "variant": "best-coverage-generated",
+   "s": 37.5,
+   "timings": {
+    "resolve": 3206,
+    "corpus": 12,
+    "segment": 40,
+    "match": 14402,
+    "synthesize": 19823,
+    "assemble": 7
+   },
+   "heading": "Philosophen der Aufklärung",
+   "main": "Aufklärung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 85730,
+    "completion": 21782,
+    "total": 107512,
+    "calls": 19,
+    "cached": 80188
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 55554,
+   "marked": 266,
+   "model_chars": 47283,
+   "cited": 40,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Aufklärung",
+    "Aufklärung",
+    "Immanuel Kant"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "llm-free",
+   "s": 2.7,
+   "timings": {
+    "resolve": 176,
+    "corpus": 1208,
+    "segment": 11,
+    "match": 434,
+    "synthesize": 820,
+    "assemble": 5
+   },
+   "heading": "Open Educational Resources",
+   "main": "Open Educational Resources",
+   "method": "search",
+   "tokens": null,
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 16532,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 39,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Aspekt",
+   "sources": [
+    "Open Educational Resources",
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "balanced",
+   "s": 6.3,
+   "timings": {
+    "resolve": 6056,
+    "corpus": 3,
+    "segment": 7,
+    "match": 170,
+    "synthesize": 107,
+    "assemble": 3
+   },
+   "heading": "Open Educational Resources",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 203,
+    "completion": 389,
+    "total": 592,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 8,
+   "llm_blocks": 0,
+   "chars": 11863,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 30,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Open Educational Resources",
+    "Creative Commons",
+    "Freie Inhalte",
+    "Wikimedia Deutschland",
+    "Bundesministerium für Forschung, Technologie und Raumfahrt",
+    "Deutsche UNESCO-Kommission"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "best-coverage-generated",
+   "s": 35.3,
+   "timings": {
+    "resolve": 4441,
+    "corpus": 4,
+    "segment": 10,
+    "match": 9947,
+    "synthesize": 20842,
+    "assemble": 6
+   },
+   "heading": "OER-Förderungen",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 65831,
+    "completion": 20481,
+    "total": 86312,
+    "calls": 17,
+    "cached": 42306
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 60544,
+   "marked": 269,
+   "model_chars": 50255,
+   "cited": 47,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Open Educational Resources",
+    "Creative Commons",
+    "Freie Inhalte",
+    "UNESCO",
+    "Bundesministerium für Forschung, Technologie und Raumfahrt",
+    "Digitalpakt",
+    "Wikimedia Deutschland",
+    "Open Access"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "llm-free",
+   "s": 1.1,
+   "timings": {
+    "resolve": 29,
+    "corpus": 217,
+    "segment": 8,
+    "match": 75,
+    "synthesize": 804,
+    "assemble": 2
+   },
+   "heading": "Sportdidaktik",
+   "main": "Sportdidaktik",
+   "method": "search",
+   "tokens": null,
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 9124,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 15,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Aspekt",
+   "sources": [
+    "Sportdidaktik",
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "balanced",
+   "s": 4.8,
+   "timings": {
+    "resolve": 3793,
+    "corpus": 4,
+    "segment": 10,
+    "match": 294,
+    "synthesize": 681,
+    "assemble": 7
+   },
+   "heading": "Inklusive Pädagogik",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 206,
+    "completion": 320,
+    "total": 526,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 10,
+   "llm_blocks": 0,
+   "chars": 17130,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 38,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Schulsport",
+    "Sportpädagogik",
+    "Behindertensport",
+    "Paralympische Spiele",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-coverage-generated",
+   "s": 39.6,
+   "timings": {
+    "resolve": 4189,
+    "corpus": 5,
+    "segment": 13,
+    "match": 11471,
+    "synthesize": 23874,
+    "assemble": 5
+   },
+   "heading": "Inklusion im Sportunterricht",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 82415,
+    "completion": 23478,
+    "total": 105893,
+    "calls": 19,
+    "cached": 62010
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 62608,
+   "marked": 300,
+   "model_chars": 53599,
+   "cited": 38,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Schulsport",
+    "Sportpädagogik",
+    "Behindertensport",
+    "Sonderpädagogik",
+    "Paralympische Spiele",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "llm-free",
+   "s": 1.1,
+   "timings": {
+    "resolve": 81,
+    "corpus": 512,
+    "segment": 11,
+    "match": 44,
+    "synthesize": 402,
+    "assemble": 2
+   },
+   "heading": "Halluzination (Künstliche Intelligenz)",
+   "main": "Halluzination (Künstliche Intelligenz)",
+   "method": "search",
+   "tokens": null,
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 6070,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 14,
+   "fallbacks": null,
+   "matching_fallbacks": null,
+   "note": null,
+   "target_length": 30000,
+   "prompts": null,
+   "kind": "Aspekt",
+   "sources": [
+    "Halluzination (Künstliche Intelligenz)",
+    "Halluzination",
+    "ChatGPT"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "balanced",
+   "s": 4.2,
+   "timings": {
+    "resolve": 3167,
+    "corpus": 18,
+    "segment": 18,
+    "match": 316,
+    "synthesize": 705,
+    "assemble": 3
+   },
+   "heading": "Künstliche Intelligenz",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 206,
+    "completion": 267,
+    "total": 473,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 11426,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 32,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Künstliche Intelligenz",
+    "Künstliche Intelligenz",
+    "ChatGPT",
+    "Maschinelles Lernen",
+    "E-Learning"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "best-coverage-generated",
+   "s": 38.9,
+   "timings": {
+    "resolve": 5173,
+    "corpus": 7,
+    "segment": 11,
+    "match": 13160,
+    "synthesize": 20494,
+    "assemble": 6
+   },
+   "heading": "Künstliche Intelligenz im Unterricht",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 80740,
+    "completion": 22531,
+    "total": 103271,
+    "calls": 19,
+    "cached": 64612
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 64417,
+   "marked": 301,
+   "model_chars": 54637,
+   "cited": 45,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_coverage@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Künstliche Intelligenz",
+    "Künstliche Intelligenz",
+    "ChatGPT",
+    "E-Learning",
+    "Intelligentes tutorielles System",
+    "Lernplattform",
+    "Lehrtechnologie"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality",
+   "s": 16.4,
+   "timings": {
+    "resolve": 3620,
+    "corpus": 9,
+    "segment": 6,
+    "match": 12248,
+    "synthesize": 460,
+    "assemble": 5
+   },
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 22604,
+    "completion": 3728,
+    "total": 26332,
+    "calls": 6,
+    "cached": 16520
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 9927,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 29,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "best-quality",
+   "s": 15.8,
+   "timings": {
+    "resolve": 2879,
+    "corpus": 8,
+    "segment": 12,
+    "match": 12347,
+    "synthesize": 524,
+    "assemble": 3
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 59636,
+    "completion": 8245,
+    "total": 67881,
+    "calls": 9,
+    "cached": 31170
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 16050,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 38,
+   "fallbacks": {},
+   "matching_fallbacks": {
+    "unlesbare Antwort des Modells (finish_reason=stop)": 50
+   },
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Photosynthese",
+    "Photosynthese",
+    "Chloroplast",
+    "Chlorophylle",
+    "Photosystem",
+    "Calvin-Zyklus",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality",
+   "s": 20.4,
+   "timings": {
+    "resolve": 7509,
+    "corpus": 47,
+    "segment": 16,
+    "match": 11808,
+    "synthesize": 961,
+    "assemble": 6
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 56432,
+    "completion": 8054,
+    "total": 64486,
+    "calls": 10,
+    "cached": 26555
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 11703,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 26,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Ancien Régime",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalversammlung (Frankreich)",
+    "Jakobiner",
+    "Wohlfahrtsausschuss",
+    "Direktorium (Frankreich)",
+    "Napoleon Bonaparte"
+   ]
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "variant": "best-quality",
+   "s": 16.2,
+   "timings": {
+    "resolve": 3866,
+    "corpus": 3,
+    "segment": 10,
+    "match": 11794,
+    "synthesize": 533,
+    "assemble": 3
+   },
+   "heading": "Walther von der Vogelweide",
+   "main": "Walther von der Vogelweide",
+   "method": "llm",
+   "tokens": {
+    "prompt": 34768,
+    "completion": 5366,
+    "total": 40134,
+    "calls": 6,
+    "cached": 20464
+   },
+   "blocks": 4,
+   "llm_blocks": 0,
+   "chars": 8667,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 21,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Walther von der Vogelweide",
+    "Wolfram von Eschenbach",
+    "Hartmann von Aue",
+    "Gottfried von Straßburg",
+    "Neidhart",
+    "Heinrich von Morungen",
+    "Oswald von Wolkenstein",
+    "Frauenlob"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality",
+   "s": 19.9,
+   "timings": {
+    "resolve": 4445,
+    "corpus": 10,
+    "segment": 24,
+    "match": 14883,
+    "synthesize": 479,
+    "assemble": 5
+   },
+   "heading": "Wiener Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 62337,
+    "completion": 9328,
+    "total": 71665,
+    "calls": 9,
+    "cached": 62109
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 14163,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 26,
+   "fallbacks": {},
+   "matching_fallbacks": {
+    "unlesbare Antwort des Modells (finish_reason=stop)": 50
+   },
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Wiener Klassik",
+    "Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "variant": "best-quality",
+   "s": 17.1,
+   "timings": {
+    "resolve": 4384,
+    "corpus": 22,
+    "segment": 30,
+    "match": 11504,
+    "synthesize": 1184,
+    "assemble": 3
+   },
+   "heading": "Immanuel Kant",
+   "main": "Immanuel Kant",
+   "method": "llm",
+   "tokens": {
+    "prompt": 58363,
+    "completion": 8459,
+    "total": 66822,
+    "calls": 9,
+    "cached": 13816
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 9185,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 24,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Immanuel Kant",
+    "Immanuel Kant",
+    "John Locke",
+    "Voltaire",
+    "Jean-Jacques Rousseau",
+    "David Hume"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "best-quality",
+   "s": 15.0,
+   "timings": {
+    "resolve": 4721,
+    "corpus": 3,
+    "segment": 12,
+    "match": 9609,
+    "synthesize": 637,
+    "assemble": 3
+   },
+   "heading": "Open Educational Resources",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 25904,
+    "completion": 3546,
+    "total": 29450,
+    "calls": 5,
+    "cached": 11886
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 9668,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 21,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Open Educational Resources",
+    "Creative Commons",
+    "Freie Inhalte",
+    "Open Access",
+    "Bundesministerium für Forschung, Technologie und Raumfahrt"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality",
+   "s": 16.3,
+   "timings": {
+    "resolve": 4201,
+    "corpus": 5,
+    "segment": 11,
+    "match": 11577,
+    "synthesize": 519,
+    "assemble": 5
+   },
+   "heading": "Inklusive Pädagogik",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 47955,
+    "completion": 7597,
+    "total": 55552,
+    "calls": 8,
+    "cached": 33619
+   },
+   "blocks": 10,
+   "llm_blocks": 0,
+   "chars": 20200,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 43,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Schulsport",
+    "Sportpädagogik",
+    "Behindertensport",
+    "Sonderpädagogik",
+    "Integrative Pädagogik",
+    "Übereinkommen über die Rechte von Menschen mit Behinderungen"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "best-quality",
+   "s": 18.0,
+   "timings": {
+    "resolve": 4154,
+    "corpus": 13,
+    "segment": 18,
+    "match": 13059,
+    "synthesize": 707,
+    "assemble": 6
+   },
+   "heading": "Künstliche Intelligenz",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 51726,
+    "completion": 8214,
+    "total": 59940,
+    "calls": 9,
+    "cached": 32943
+   },
+   "blocks": 10,
+   "llm_blocks": 0,
+   "chars": 16831,
+   "marked": 0,
+   "model_chars": 0,
+   "cited": 46,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Künstliche Intelligenz",
+    "Künstliche Intelligenz",
+    "ChatGPT",
+    "Maschinelles Lernen",
+    "Deep Learning",
+    "Sprachmodell",
+    "E-Learning"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality-generated",
+   "s": 28.9,
+   "timings": {
+    "resolve": 4640,
+    "corpus": 18,
+    "segment": 10,
+    "match": 11933,
+    "synthesize": 12334,
+    "assemble": 4
+   },
+   "heading": "Optik",
+   "main": "Optik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 35701,
+    "completion": 12233,
+    "total": 47934,
+    "calls": 16,
+    "cached": 5181
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27631,
+   "marked": 121,
+   "model_chars": 18411,
+   "cited": 69,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "variant": "best-quality-generated",
+   "s": 30.3,
+   "timings": {
+    "resolve": 3665,
+    "corpus": 13,
+    "segment": 12,
+    "match": 12629,
+    "synthesize": 14002,
+    "assemble": 4
+   },
+   "heading": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "tokens": {
+    "prompt": 73350,
+    "completion": 17571,
+    "total": 90921,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28605,
+   "marked": 105,
+   "model_chars": 17585,
+   "cited": 77,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Photosynthese",
+    "Photosynthese",
+    "Chloroplast",
+    "Calvin-Zyklus",
+    "Photosystem",
+    "Photorespiration",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality-generated",
+   "s": 34.9,
+   "timings": {
+    "resolve": 5983,
+    "corpus": 13,
+    "segment": 13,
+    "match": 13259,
+    "synthesize": 15582,
+    "assemble": 5
+   },
+   "heading": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "llm",
+   "tokens": {
+    "prompt": 67216,
+    "completion": 16116,
+    "total": 83332,
+    "calls": 20,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28108,
+   "marked": 121,
+   "model_chars": 19770,
+   "cited": 54,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "article_choice@v1",
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "einfach",
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Jakobiner",
+    "Maximilien de Robespierre",
+    "Nationalkonvent",
+    "Direktorium (Frankreich)",
+    "Napoleon Bonaparte"
+   ]
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "variant": "best-quality-generated",
+   "s": 29.8,
+   "timings": {
+    "resolve": 4604,
+    "corpus": 4,
+    "segment": 9,
+    "match": 11535,
+    "synthesize": 13669,
+    "assemble": 4
+   },
+   "heading": "Dichter aus dem Mittelalter",
+   "main": "Walther von der Vogelweide",
+   "method": "llm",
+   "tokens": {
+    "prompt": 45219,
+    "completion": 14098,
+    "total": 59317,
+    "calls": 16,
+    "cached": 8635
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27809,
+   "marked": 126,
+   "model_chars": 19671,
+   "cited": 58,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Walther von der Vogelweide",
+    "Wolfram von Eschenbach",
+    "Hartmann von Aue",
+    "Gottfried von Straßburg",
+    "Heinrich von Veldeke",
+    "Neidhart",
+    "Oswald von Wolkenstein",
+    "Frauenlob"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality-generated",
+   "s": 32.0,
+   "timings": {
+    "resolve": 4693,
+    "corpus": 37,
+    "segment": 32,
+    "match": 13961,
+    "synthesize": 13258,
+    "assemble": 5
+   },
+   "heading": "Komponisten der Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 73584,
+    "completion": 17329,
+    "total": 90913,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28861,
+   "marked": 111,
+   "model_chars": 17812,
+   "cited": 67,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Wiener Klassik",
+    "Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "variant": "best-quality-generated",
+   "s": 34.5,
+   "timings": {
+    "resolve": 4429,
+    "corpus": 17,
+    "segment": 34,
+    "match": 14550,
+    "synthesize": 15469,
+    "assemble": 5
+   },
+   "heading": "Philosophen der Aufklärung",
+   "main": "Aufklärung",
+   "method": "llm",
+   "tokens": {
+    "prompt": 70920,
+    "completion": 16512,
+    "total": 87432,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 22815,
+   "marked": 70,
+   "model_chars": 11309,
+   "cited": 66,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Sammelthema",
+   "sources": [
+    "Aufklärung",
+    "Aufklärung",
+    "Immanuel Kant"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "variant": "best-quality-generated",
+   "s": 26.8,
+   "timings": {
+    "resolve": 4932,
+    "corpus": 4,
+    "segment": 8,
+    "match": 9708,
+    "synthesize": 12165,
+    "assemble": 5
+   },
+   "heading": "OER-Förderungen",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "tokens": {
+    "prompt": 35371,
+    "completion": 12761,
+    "total": 48132,
+    "calls": 15,
+    "cached": 6908
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 35518,
+   "marked": 199,
+   "model_chars": 33594,
+   "cited": 9,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Open Educational Resources",
+    "Creative Commons",
+    "Open Access",
+    "Bundesministerium für Forschung, Technologie und Raumfahrt",
+    "Bildungspolitik in Deutschland",
+    "Digitalpakt"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality-generated",
+   "s": 28.8,
+   "timings": {
+    "resolve": 4627,
+    "corpus": 8,
+    "segment": 14,
+    "match": 12423,
+    "synthesize": 11695,
+    "assemble": 4
+   },
+   "heading": "Inklusion im Sportunterricht",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "tokens": {
+    "prompt": 68507,
+    "completion": 15900,
+    "total": 84407,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 23851,
+   "marked": 46,
+   "model_chars": 7765,
+   "cited": 90,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Schulsport",
+    "Behindertensport",
+    "Übereinkommen über die Rechte von Menschen mit Behinderungen",
+    "Paralympische Spiele",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "variant": "best-quality-generated",
+   "s": 31.0,
+   "timings": {
+    "resolve": 5431,
+    "corpus": 19,
+    "segment": 14,
+    "match": 12961,
+    "synthesize": 12596,
+    "assemble": 4
+   },
+   "heading": "Künstliche Intelligenz im Unterricht",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "tokens": {
+    "prompt": 66755,
+    "completion": 17261,
+    "total": 84016,
+    "calls": 19,
+    "cached": 13816
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 26268,
+   "marked": 58,
+   "model_chars": 8473,
+   "cited": 114,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "target_length": 30000,
+   "prompts": [
+    "paragraph_assignment@v2",
+    "section_enrichment@v4",
+    "topic_articles@v1"
+   ],
+   "kind": "Aspekt",
+   "sources": [
+    "Künstliche Intelligenz",
+    "Künstliche Intelligenz",
+    "ChatGPT",
+    "E-Learning",
+    "Lehrtechnologie",
+    "Intelligentes tutorielles System",
+    "Lernplattform"
+   ]
+  }
+ ],
+ "key": {
+  "Optik": {
+   "A": "best-quality-generated",
+   "B": "balanced",
+   "C": "best-coverage-generated",
+   "D": "llm-free",
+   "E": "best-quality"
+  },
+  "Photosynthese": {
+   "A": "balanced",
+   "B": "best-coverage-generated",
+   "C": "llm-free",
+   "D": "best-quality-generated",
+   "E": "best-quality"
+  },
+  "Französische Revolution": {
+   "A": "best-quality",
+   "B": "best-coverage-generated",
+   "C": "llm-free",
+   "D": "best-quality-generated",
+   "E": "balanced"
+  },
+  "Dichter aus dem Mittelalter": {
+   "A": "best-quality",
+   "B": "balanced",
+   "C": "best-coverage-generated",
+   "D": "llm-free",
+   "E": "best-quality-generated"
+  },
+  "Komponisten der Klassik": {
+   "A": "balanced",
+   "B": "best-quality",
+   "C": "best-coverage-generated",
+   "D": "llm-free",
+   "E": "best-quality-generated"
+  },
+  "Philosophen der Aufklärung": {
+   "A": "best-quality",
+   "B": "llm-free",
+   "C": "best-quality-generated",
+   "D": "best-coverage-generated",
+   "E": "balanced"
+  },
+  "OER-Förderungen": {
+   "A": "llm-free",
+   "B": "best-coverage-generated",
+   "C": "balanced",
+   "D": "best-quality-generated",
+   "E": "best-quality"
+  },
+  "Inklusion im Sportunterricht": {
+   "A": "best-quality-generated",
+   "B": "balanced",
+   "C": "best-quality",
+   "D": "best-coverage-generated",
+   "E": "llm-free"
+  },
+  "Künstliche Intelligenz im Unterricht": {
+   "A": "best-coverage-generated",
+   "B": "balanced",
+   "C": "best-quality",
+   "D": "best-quality-generated",
+   "E": "llm-free"
+  }
+ },
+ "raters": [
+  {
+   "Optik": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Mikrooptik behandelt Bauteile im Mikrometer- bis Millimeterbereich, meist größer als die Lichtwellenlänge; Strukturen deutlich unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Mikrooptik behandelt Bauteile im Mikrometer- bis Millimeterbereich, meist größer als die Lichtwellenlänge; Strukturen deutlich unterhalb der Wellenlänge gehören zur Nano- bzw. Subwellenlängenoptik.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 3,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Radioaktive bzw. atomare Strahlung wie Alpha- und Betastrahlung ist Teilchenstrahlung der Kernphysik und gehört nicht zur Optik.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Photosynthese": {
+    "A": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Südafrika und Australien liegen überwiegend außerhalb der Tropen und sind keine Hauptanbauländer; die größten Erzeuger sind u. a. Philippinen, Costa Rica, Brasilien und Indonesien.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "E": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Pflanzen betreiben ebenfalls Zellatmung; die Gegenüberstellung bestärkt die verbreitete Fehlvorstellung, Pflanzen nähmen nur CO2 auf und gäben nur Sauerstoff ab.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Französische Revolution": {
+    "A": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "De Sade war bereits am 4. Juli 1789 nach Charenton verlegt worden; der siebte Gefangene war der Comte de Solages.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Gestürzt wurde Jakob II.; mit Maria II. und Anne regierten Stuarts bis 1714 weiter.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Naturrecht und positives Recht unterscheiden sich nach ihrer Geltungsgrundlage (Natur bzw. Vernunft statt menschlicher Setzung); die Aussage verwechselt dies mit negativen Freiheitsrechten.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 3,
+     "fehler": []
+    },
+    "E": {
+     "passung": 4,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Beschreibt die heutige Assemblée nationale der Fünften Republik (Wahlalter 18), nicht die Revolutionszeit mit Zensus- bzw. Männerwahlrecht; im Baustein Fachinhalte falsch zugeordnet.",
+       "schwere": "schwer"
+      }
+     ]
+    }
+   },
+   "Dichter aus dem Mittelalter": {
+    "A": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "B": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Begriffe vertauscht: Der Aufgesang der Kanzonenstrophe besteht aus zwei gleich gebauten Stollen; der einzelne Stollen ist nicht zweiteilig.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 3,
+     "fehler": []
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Die Papstkritik mit Bezug auf 1201 steht im dritten Reichsspruch („Ich sach mit mînen ougen“); der zweite („Ich hôrte diu wazzer diezen“) fordert die Krönung Philipps.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Komponisten der Klassik": {
+    "A": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Das frühe 18. Jahrhundert gehört zum Barock (Bach, Händel, Vivaldi); die Klassik wird meist ab etwa 1730/1750 (Vorklassik) bzw. 1770/80 (Wiener Klassik) angesetzt, der Text nennt später selbst 1730 bis 1830.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 3,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Das frühe 18. Jahrhundert gehört zum Barock (Bach, Händel, Vivaldi); die Klassik wird meist ab etwa 1730/1750 (Vorklassik) bzw. 1770/80 (Wiener Klassik) angesetzt.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Im Buffonistenstreit (1752–1754) standen die französische Tragédie lyrique (Lully, Rameau) und die italienische Opera buffa gegeneinander, nicht die italienische Opera seria.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Beide genannten Filmmusiken stammen von Max Steiner; die Klammer ordnet „Der Schatz der Sierra Madre“ Bernard Herrmann zu, der ihn nicht vertont hat.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Das frühe 18. Jahrhundert gehört zum Barock (Bach, Händel, Vivaldi); die Klassik wird meist ab etwa 1730/1750 (Vorklassik) bzw. 1770/80 (Wiener Klassik) angesetzt.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Philosophen der Aufklärung": {
+    "A": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 1,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 5,
+     "fehler": [
+      {
+       "grund": "Kant selbst schloss von der Hautfarbe auf geistige Fähigkeiten (z. B. 1764 in den „Beobachtungen“); seine Antwort an Forster erschien erst 1788 und betraf die gemeinsame Abstammung, nicht diese Frage.",
+       "schwere": "schwer"
+      },
+      {
+       "grund": "Das Repräsentantenhaus wird per Mehrheitswahl in Einerwahlkreisen gewählt; nur die Verteilung der Sitze auf die Staaten richtet sich nach der Bevölkerungszahl.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Als Denker, die das Zeitalter eingeleitet hätten, falsch: Kant (Hauptwerke ab 1781) steht für die Spätphase der deutschen Aufklärung, eingeleitet haben sie u. a. Thomasius, Leibniz und Wolff; Descartes (gest. 1650) gilt nur als Wegbereiter.",
+       "schwere": "schwer"
+      }
+     ]
+    }
+   },
+   "OER-Förderungen": {
+    "A": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Anachronismus: 2014 hieß das Ressort Bundesministerium des Innern; den Zusatz „für Bau und Heimat“ trug es erst von 2018 bis 2021.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Veraltet und missverständlich: Umbenannt wurde das OpenCourseWare-Konsortium, nicht das MIT-Programm; seit 2020 heißt es Open Education Global.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Name ungenau: Die Stiftung heißt William and Flora Hewlett Foundation.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Eine Lizenz „CC BY-SA-NC“ gibt es nicht; die Inhalte der Khan Academy stehen unter CC BY-NC-SA.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 1,
+     "fehler": [
+      {
+       "grund": "Auf das BMFTR bezogen falsch: Seit der Ressortneuordnung 2025 liegen berufliche Bildung und Weiterbildung beim BMBFSFJ; der Text überträgt Zuständigkeiten des früheren BMBF.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Name ungenau: Die Stiftung heißt William and Flora Hewlett Foundation.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die über 110 Mio. $ stammen allein von der William and Flora Hewlett Foundation (im Text verkürzt „Flora Hewlett Foundation“), nicht von mehreren Organisationen.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "A": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Boßeln ist ein traditioneller Volkssport, keine eigens für Menschen mit Behinderungen entwickelte Sportart; gemeint ist vermutlich Boccia.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 1,
+     "fehler": []
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "E": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    }
+   },
+   "Künstliche Intelligenz im Unterricht": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung trägt das Datum 13. Juni 2024, im Amtsblatt veröffentlicht wurde sie am 12. Juli 2024.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Zu allgemein: Die EU-Konformitätserklärung (Art. 47) ist nur für Hochrisiko-KI-Systeme vorgeschrieben.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Falsches Datum: Die Verordnung vom 13. Juni 2024 wurde am 12. Juli 2024 im Amtsblatt veröffentlicht; eine Veröffentlichung am 12. Juni ist schon wegen ihres Datums unmöglich.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Die KI-Verordnung ist eine Verordnung, keine Richtlinie; die Abkürzung „KI-RL“ ist irreführend.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Falsches Datum: Die Verordnung vom 13. Juni 2024 wurde am 12. Juli 2024 im Amtsblatt veröffentlicht.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Die KI-Verordnung ist eine Verordnung, keine Richtlinie; die Abkürzung „KI-RL“ ist irreführend.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 3,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Laut IEA (Januar 2024) entspricht der für 2026 erwartete Gesamtverbrauch der Rechenzentren (über 1.000 TWh) etwa dem Japans, nicht der Zuwachs.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    }
+   }
+  },
+  {
+   "Optik": {
+    "A": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "B": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "D": {
+     "passung": 3,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Radioaktive („atomare“) Strahlung ist Gegenstand der Atom- und Kernphysik, nicht der Optik; die Aussage ordnet sie falsch zu.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Photosynthese": {
+    "A": {
+     "passung": 3,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die Anbaugebiete in Südafrika und Australien liegen überwiegend außerhalb der Tropen und gehören nicht zu den Hauptanbaugebieten (etwa Costa Rica, Philippinen, Brasilien).",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 3,
+     "fehler": []
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "E": {
+     "passung": 3,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    }
+   },
+   "Französische Revolution": {
+    "A": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "De Sade war bereits Anfang Juli 1789 aus der Bastille nach Charenton verlegt worden; der siebte Gefangene am 14. Juli war der Graf de Solages.",
+       "schwere": "schwer"
+      },
+      {
+       "grund": "Der Code civil wurde am 21. März 1804 (30. Ventôse XII) verkündet.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Falsches Unterscheidungsmerkmal: Naturrecht gilt als vorstaatlich bzw. vernunftbegründet, positives Recht als gesetztes Recht; vermengt mit der Unterscheidung negativer und positiver Rechte.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Abgesetzt wurde nur Jakob II.; mit Maria II. und Anne regierten Stuarts bis 1714.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 3,
+     "fehler": []
+    },
+    "E": {
+     "passung": 4,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Beschreibt das heutige Wahlrecht der Fünften Republik (Wahlalter 18), nicht die Nationalversammlung der Revolution; im Revolutionskontext eine falsche Zuordnung.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Dichter aus dem Mittelalter": {
+    "A": {
+     "passung": 4,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "B": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Begriffe vertauscht: Der Aufgesang besteht aus zwei gleich gebauten Stollen; ein einzelner Stollen ist nicht zweiteilig.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 3,
+     "fehler": []
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Es gibt außer den Gedichten ein urkundliches Zeugnis (Reiserechnung Bischof Wolfgers von Erla, 1203) sowie Erwähnungen bei Gottfried und Wolfram.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Komponisten der Klassik": {
+    "A": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "B": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 3,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Im Buffonistenstreit (1752–1754) standen französische Tragédie lyrique (Lully, Rameau) und italienische Opera buffa gegeneinander, nicht Opera seria und Opera buffa.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "E": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": []
+    }
+   },
+   "Philosophen der Aufklärung": {
+    "A": {
+     "passung": 3,
+     "nutzen": 3,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "B": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 1,
+     "fehler": []
+    },
+    "C": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Missverständliche Datierung: Bis 1717 wurde die Schulpflicht vielerorts eingeführt (Preußen 1717); die Alphabetisierung wuchs vor allem danach, nicht nur bis 1717.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 5,
+     "fehler": [
+      {
+       "grund": "Verdreht: Kant schloss selbst von der Hautfarbe auf Fähigkeiten (etwa 1764 in den „Beobachtungen“), Kritik kam von Zeitgenossen; Kants Antwort an Forster erschien 1788, nicht 1786.",
+       "schwere": "schwer"
+      },
+      {
+       "grund": "Das Repräsentantenhaus wird per Mehrheitswahl in Einerwahlkreisen gewählt; nur die Verteilung der Sitze auf die Staaten folgt der Bevölkerungszahl.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Als Einleiter der Aufklärung falsch: Kant ist Spätaufklärer (Hauptwerke ab 1781), die deutsche Aufklärung begann um 1700 mit Thomasius, Leibniz und Wolff; Descartes gilt allenfalls als Vorläufer.",
+       "schwere": "schwer"
+      }
+     ]
+    }
+   },
+   "OER-Förderungen": {
+    "A": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Anachronismus: 2014 hieß das Ressort Bundesministerium des Innern; den Zusatz „für Bau und Heimat“ trug es erst ab 2018.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Die Stiftung heißt William and Flora Hewlett Foundation; der Name ist verstümmelt.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 1,
+     "fehler": [
+      {
+       "grund": "Bezogen auf das BMFTR: Der Satz überträgt die Zuständigkeiten des früheren BMBF; berufliche Bildung und Weiterbildung liegen seit der Ressortneuordnung 2025 beim BMBFSFJ.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 4,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die Stiftung heißt William and Flora Hewlett Foundation; der Name ist verstümmelt.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die Stiftung heißt William and Flora Hewlett Foundation; der Name ist verstümmelt.",
+       "schwere": "leicht"
+      }
+     ]
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "A": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Boßeln ist ein allgemeiner norddeutscher Traditions- und Wurfsport, keine eigens für Menschen mit Behinderung entwickelte Sportart (gemeint ist wohl Boccia).",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "C": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    },
+    "D": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 4,
+     "fehler": []
+    },
+    "E": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    }
+   },
+   "Künstliche Intelligenz im Unterricht": {
+    "A": {
+     "passung": 5,
+     "nutzen": 5,
+     "vollstaendigkeit": 5,
+     "lesbarkeit": 5,
+     "fehler": [
+      {
+       "grund": "Die KI-Verordnung wurde am 13. Juni 2024 unterzeichnet, im Amtsblatt der EU aber erst am 12. Juli 2024 veröffentlicht.",
+       "schwere": "leicht"
+      },
+      {
+       "grund": "Eine EU-Konformitätserklärung verlangt die Verordnung nur für Hochrisiko-KI-Systeme, nicht für KI-Systeme allgemein.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "B": {
+     "passung": 1,
+     "nutzen": 2,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die Verordnung vom 13. Juni 2024 wurde am 12. Juli 2024 im Amtsblatt veröffentlicht; der 12. Juni liegt sogar vor dem Datum im eigenen Titel.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "C": {
+     "passung": 2,
+     "nutzen": 2,
+     "vollstaendigkeit": 2,
+     "lesbarkeit": 2,
+     "fehler": [
+      {
+       "grund": "Die Verordnung vom 13. Juni 2024 wurde am 12. Juli 2024 im Amtsblatt veröffentlicht; der 12. Juni liegt sogar vor dem Datum im eigenen Titel.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "D": {
+     "passung": 4,
+     "nutzen": 4,
+     "vollstaendigkeit": 4,
+     "lesbarkeit": 4,
+     "fehler": [
+      {
+       "grund": "Laut IEA entspricht der gesamte Stromverbrauch der Rechenzentren 2026 (über 1.000 TWh) etwa dem Japans, nicht der Zuwachs.",
+       "schwere": "leicht"
+      }
+     ]
+    },
+    "E": {
+     "passung": 1,
+     "nutzen": 1,
+     "vollstaendigkeit": 1,
+     "lesbarkeit": 2,
+     "fehler": []
+    }
+   }
+  }
+ ],
+ "note": "M52 (02.10.2026): die fünf Profile im Stand D72 an den neun Themen von M48; llm-free, balanced und best-coverage-generated neu gelaufen, best-quality und best-quality-generated aus M51; zwei blinde Claude-Gutachter"
+}

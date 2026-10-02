@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M51
+# Ergebnisse der Messungen M1 bis M52
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 02.10.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -65,6 +65,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M49 | Was hilft den Profilen unter `best-coverage-generated` an den Problemstellen von M48? | ein Hinweis auf das passende Profil (V3) ohne Fehlalarm bei Themen mit eigenem Artikel; eine unlesbare Antwort der Zuordnung neu fragen (V4); drei Übersichten finden jede Übersicht, aber breitere (V1); `best-quality-generated` zum angefragten Thema hebt die Passung bei Sammelthemen und Aspekten um 0,5 und 0,7 (V2), bleibt weit unter `best-coverage-generated` | – | `m49_profilverbesserungen.json` |
 | M50 | Schreibt das LLM die Texte der generierenden Profile ganz selbst, und wie verhält sich das zum alten Dienst? | ja: in `best-quality-generated` stehen 3,7 %, in `best-coverage-generated` 1,3 % der Wörter in wörtlichen Folgen aus den Quellen, fast kein Satz ganz; wörtlich bleiben in jedem Profil Akteure und Glossar (rund 3.600 Zeichen). Der alte Dienst im besten Fall schreibt ebenso frei (1,1 %), zwei Drittel seines Textes ohne Quellenangabe und ohne Kennzeichnung | – | `m50_wortlaut.json` |
 | M51 | Was bringt das angefragte Thema in jedem Prompt (D72), mit leeren Bausteinen aus Modellwissen in `best-quality-generated` und der Formulierung eines Themas aus Text oder Metadaten? | `best-quality-generated` trifft alle Arten von Themen: Passung bei Aspekten 4,00 statt 1,50, bei Sammelthemen 3,83 statt 2,83, Nutzen, Vollständigkeit und Lesbarkeit +0,7 bis +1,5, gleicher Preis, 62 statt 27 % Modellwissen; die Zuordnung lässt bei Aspekten Absätze über den Oberbegriff weg, `best-quality` wird dort kürzer; 26 Eingaben bekamen ein knappes Thema, 432 Tokens je Aufruf | – | `m51_thema.json` |
+| M52 | Güte, Zeit und Kosten der fünf Profile im Stand D72 | Passung über alle neun Themen 1,8, 2,6, 3,2, 4,6 und 5,0, Vollständigkeit 1,0 bis 4,9; Teil 1 1,7 bis 38 s, 0 bis 103.300 Tokens; Modellwissen 0, 0, 0, 62 und 83 % | – | `m52_profiluebersicht.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

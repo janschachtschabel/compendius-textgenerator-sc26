@@ -22,7 +22,17 @@ Profil es vorsieht.
 
 ## Güte, Zeit und Kosten
 
-![Güte, Zeit und Kosten: alter Dienst und die vier Profile vor D69 (M45; das fünfte steht unten)](bilder/qualitaet_zeit_kosten.svg)
+![Die fünf Profile: Güte, Zeit und Kosten (M52)](bilder/profiluebersicht.svg)
+
+Die fünf Profile im Stand D72 an neun Themen in drei Arten (M52, Tabelle auf
+[Seite 09](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52)): Die Güte steigt mit
+jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
+die Tokens von 0 auf 103.300, und die schreibenden Profile bestehen zu 62 und 83 % aus gekennzeichnetem
+Modellwissen.
+
+Der alte Dienst neben den vier Profilen vor D69, auf dem Server gemessen (M45):
+
+![Güte, Zeit und Kosten: alter Dienst und die vier Profile vor D69 (M45; das fünfte steht oben)](bilder/qualitaet_zeit_kosten.svg)
 
 - **Alter Dienst:**
   - Im besten Fall, also wenn Wikipedia antwortete, brauchte er je Kompendium 35 s und rund 7.900 Tokens.

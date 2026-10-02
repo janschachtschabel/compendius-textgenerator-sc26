@@ -46,7 +46,11 @@ der QA-Paare (D54, D55, D57).
 
 ![Fünf Profile an drei Arten von Themen (M48)](bilder/profilvergleich.svg)
 
-Welches Profil wofür, nach M48: [Methoden, Messwerte und Profile](09-methoden-und-profile.md#welches-profil-wofür).
+Güte, Zeit und Kosten aller fünf Profile im Stand D72 (M52), Tabelle und Lesart auf
+[Methoden, Messwerte und Profile](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52),
+dort auch [welches Profil wofür](09-methoden-und-profile.md#welches-profil-wofür):
+
+![Die fünf Profile: Güte, Zeit und Kosten (M52)](bilder/profiluebersicht.svg)
 
 ![Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)](bilder/kombinationen.svg)
 
@@ -806,16 +810,15 @@ Passung 4,56 und Nutzen 4,31.
 12. **KI-Stufen über `best-coverage-generated` hinaus** (Jan, 01.10.2026: „das neue profil kann nochmal ki nutzen -
     wir brauchen da eine sinnvolle hochstufung der ki nutzung“): Vorschlag, offen.
 
-    Die Leiter heute, Teil 1 im Median an neun Themen (M48):
+    Die Leiter heute, Teil 1 im Median an neun Themen (M52, Stand D72):
 
-    | Profil | was das LLM zusätzlich tut | Tokens | Zeit | Modellwissen im Text | Thema wie angefragt |
+    | Profil | was das LLM zusätzlich tut | Tokens | Zeit | Modellwissen im Text | Passung: einfach, Sammelthema, Aspekt |
     |---|---|---|---|---|---|
-    | `llm-free` | nichts | 0 | 1,6 s | 0 | nur mit eigenem Artikel |
-    | `balanced` | wählt unsichere Artikel, nennt Übersicht und Teile des Themas | 580 | 6,1 s | 0 | nur mit eigenem Artikel |
-    | `best-quality` | ordnet jeden Absatz zu, prüft auch sichere Artikelwahlen, prüft die Lehrplanelemente | 61.060 | 18 s | 0 | nur mit eigenem Artikel |
-    | `best-quality-generated` | schreibt jeden Baustein, bis zur Hälfte aus eigenem Wissen | 82.335 | 29 s | 28 % | nur mit eigenem Artikel |
-    | `best-quality-generated` seit D72 (M51) | schreibt jeden Baustein zum angefragten Thema, einen Baustein ohne Belege ganz aus eigenem Wissen | 84.016 | 30 s | 62 % | Passung 4,8, 3,8 und 4,0 |
-    | `best-coverage-generated` | schreibt jeden Baustein vollständig zum angefragten Thema | 101.150 | 37 s | 84 % | immer (Passung 5,0) |
+    | `llm-free` | nichts | 0 | 1,7 s | 0 | 3,0, 1,5, 1,0 |
+    | `balanced` | wählt unsichere Artikel, nennt Übersicht und Teile des Themas | 530 | 5,0 s | 0 | 3,7, 2,8, 1,2 |
+    | `best-quality` | ordnet jeden Absatz zu, prüft auch sichere Artikelwahlen, prüft die Lehrplanelemente | 59.900 | 16 s | 0 | 4,2, 3,8, 1,7 |
+    | `best-quality-generated` | schreibt jeden Baustein zum angefragten Thema, einen ohne Belege ganz aus eigenem Wissen | 84.000 | 30 s | 62 % | 4,8, 4,7, 4,2 |
+    | `best-coverage-generated` | schreibt jeden Baustein vollständig zum angefragten Thema | 103.300 | 38 s | 83 % | 5,0, 5,0, 5,0 |
 
     Drei Befunde aus M48 sagen, wo eine weitere Stufe ansetzen sollte:
 

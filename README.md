@@ -466,8 +466,13 @@ Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.
 Welches Profil wofür (M48, `docs/entwicklung/09-methoden-und-profile.md`): ein Thema mit eigenem Artikel wörtlich
 und belegt mit `balanced`, lesbar mit `best-quality-generated`; Sammelthemen („Dichter aus dem Mittelalter“) und
 Themen mit Aspekt („OER-Förderungen“) am besten mit `best-coverage-generated`; seit D72 schreibt auch
-`best-quality-generated` dort zum Thema (Passung 3,8 und 4,0 statt 2,8 und 1,5, M51), die wörtlichen Profile drucken
-einen Vertreter oder den Oberbegriff.
+`best-quality-generated` dort zum Thema (Passung 4,7 und 4,2, M52), die wörtlichen Profile drucken einen Vertreter
+oder den Oberbegriff.
+
+![Die fünf Profile: Güte, Zeit und Kosten (M52)](docs/entwicklung/bilder/profiluebersicht.svg)
+
+Güte, Zeit und Kosten aller fünf Profile im Stand D72 (M52, neun Themen, zwei blinde Gutachter), als Tabelle auf
+[Methoden, Messwerte und Profile](docs/entwicklung/09-methoden-und-profile.md).
 
 Seit D72 hört in jedem Profil jeder Prompt das angefragte Thema, nicht den gefundenen Artikel: die Prüfung der
 Nebenartikel, die Zuordnung, die Satzauswahl, das Schreiben und die Prüfung der Lehrplanelemente. Die Suchen in den

@@ -4,7 +4,7 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
 text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), and
-profile_matrix.svg, profilvergleich.svg (pages 07 and 09) and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
+profile_matrix.svg, profilvergleich.svg, profiluebersicht.svg (pages 07 and 09) and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
 switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
 05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
@@ -857,14 +857,16 @@ FIVE = (*PROFILES, "best-coverage-generated")
 KIND_LABELS = {"einfach": "einfach", "Sammelthema": "Sammelthema", "Aspekt": "mit Aspekt"}
 
 
-def profilvergleich() -> None:
-    """The five profiles on three kinds of topic (M48, D70): fit per kind, use, completeness and readability over all
-    nine topics as bars from 1 to 5, time and tokens of part 1 as bars from 0; every column has a scale of its own and
-    names its values, the profile is the row. Colored by what a column measures, not by profile: the five profile
-    colors do not keep apart for every reader (validate_palette.js, 2026-10-01)."""
-    data = load("m48_profilvergleich.json")
+def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tuple[str, ...], label: str,
+                   overview: bool = False) -> None:
+    """The five profiles on three kinds of topic: fit per kind, use, completeness and readability over all nine topics
+    as bars from 1 to 5, time and tokens of part 1 as bars from 0; every column has a scale of its own and names its
+    values, the profile is the row. Colored by what a column measures, not by profile: the five profile colors do not
+    keep apart for every reader (validate_palette.js, 2026-10-01). ``overview`` (M52) shows the share of the tokens
+    read from the prompt cache as the lighter part of their bar and adds the share of model knowledge in the text."""
     grades, runs = data["grades"], data["runs"]["alle"]
-    label_w, col_w, cost_w, bar_w, row_h, top = 200, 100, 120, 62, 34, 128
+    label_w, col_w, cost_w, bar_w, top = 200, 100, 120, 62, 128
+    row_h = 40 if overview else 34  # the overview names the cached tokens on a second line
     grade_cols = [(("Passung", KIND_LABELS[kind]), kind, "passung") for kind in data["kinds"]]
     grade_cols += [(("Nutzen", "alle Themen"), "alle", "nutzen"),
                    (("Vollständigkeit", "alle Themen"), "alle", "vollstaendigkeit"),
@@ -872,17 +874,17 @@ def profilvergleich() -> None:
     longest_s = max(runs[p]["seconds"] for p in FIVE)
     longest_t = max(runs[p]["tokens"] for p in FIVE)
     cost_cols = [(("Zeit", "Teil 1, Median"), "seconds", longest_s), (("Tokens", "Median"), "tokens", longest_t)]
+    if overview:
+        cost_cols.append((("Modellwissen", "am Text, Median"), "model_share", 1.0))
     cost_x = 24 + label_w + col_w * len(grade_cols)
     width = cost_x + cost_w * len(cost_cols) + 16
-    notes = ("Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;",
-             "Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,",
-             "Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.",
-             "Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026).")
-    svg = Svg(width, top + len(FIVE) * row_h + 24 + 16 * len(notes), "Fünf Profile an drei Arten von Themen (M48)")
-    svg.text(24, 30, "Fünf Profile an drei Arten von Themen", 17, weight="600")
-    svg.text(24, 52, "Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5", 12, MUTED,
-             limit=width - 48)
-    svg.legend(24, 78, [(LOCAL, "Güte: Note von 1 bis 5 (volle Spur = 5)"), (MUTED, "Aufwand: Zeit und Tokens, ab 0")], 11.5)
+    svg = Svg(width, top + len(FIVE) * row_h + 24 + 16 * len(notes), label)
+    svg.text(24, 30, heading, 17, weight="600")
+    svg.text(24, 52, subtitle, 12, MUTED, limit=width - 48)
+    legend = [(LOCAL, "Güte: Note von 1 bis 5 (volle Spur = 5)"), (MUTED, "Aufwand: Zeit und Tokens, ab 0")]
+    if overview:
+        legend += [(OLD, "davon aus dem Prompt-Cache"), (LLM, "Modellwissen, ab 0 %")]
+    svg.legend(24, 78, legend, 11.5)
     heads = [(24 + label_w + index * col_w, head, col_w) for index, (head, _, _) in enumerate(grade_cols)]
     heads += [(cost_x + index * cost_w, head, cost_w) for index, (head, _, _) in enumerate(cost_cols)]
     for x, (first, second), room in heads:
@@ -904,13 +906,59 @@ def profilvergleich() -> None:
             x = cost_x + index * cost_w
             value = runs[profile][field]
             length = bar_w * value / longest if longest else 0
+            if field == "model_share":
+                svg.rect(x, y + 5, bar_w, 14, GRID, 2)  # the track to 100 %
+                if length:
+                    svg.rect(x, y + 5, max(length, 2), 14, LLM, 2)
+                svg.text(x + bar_w + 5, y + 16, f"{de(value * 100, '1')} %", 11, INK, limit=cost_w - bar_w - 6)
+                continue
+            cached = runs[profile].get("cached", 0) if overview and field == "tokens" else 0
             if length:
                 svg.rect(x, y + 5, max(length, 2), 14, MUTED, 2)
+                if cached:  # the part read from the prompt cache, from the left of the bar, its amount named below
+                    svg.rect(x, y + 5, bar_w * cached / longest, 14, OLD, 2)
             text = f"{de(value, '0.1' if value < 10 else '1')} s" if field == "seconds" else tokens_text(value)
             svg.text(x + length + 5, y + 16, text, 11, INK, limit=cost_w - length - 8)
+            if cached:
+                svg.text(x, y + 32, f"davon Cache {tokens_text(cached)}", 9.5, MUTED, limit=cost_w - 8)
     for number, note in enumerate(notes):
         svg.text(24, top + len(FIVE) * row_h + 18 + 16 * number, note, 10.5, MUTED, limit=width - 48)
-    svg.save("profilvergleich.svg")
+    svg.save(name)
+
+
+TOPIC_NOTES = (
+    "Passung: genau beim angefragten Thema, je Art drei Themen (einfach: Optik, Photosynthese, Französische Revolution;",
+    "Sammelthema: Dichter aus dem Mittelalter, Komponisten der Klassik, Philosophen der Aufklärung; mit Aspekt: OER-Förderungen,",
+    "Inklusion im Sportunterricht, KI im Unterricht). Nutzen, Vollständigkeit, Lesbarkeit: Mittel über alle neun Themen.",
+)
+
+
+def profilvergleich() -> None:
+    """The five profiles on three kinds of topic as M48 measured them (D70), before D72."""
+    profile_grades(
+        load("m48_profilvergleich.json"),
+        "profilvergleich.svg",
+        "Fünf Profile an drei Arten von Themen",
+        "Teil 1, neun Themen, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5",
+        (*TOPIC_NOTES,
+         "Zeit und Tokens: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen (M48, 01.10.2026)."),
+        "Fünf Profile an drei Arten von Themen (M48)",
+    )
+
+
+def profiluebersicht() -> None:
+    """The five profiles as the service runs them since D72 (M52): the overview of quality, time and cost."""
+    profile_grades(
+        load("m52_profiluebersicht.json"),
+        "profiluebersicht.svg",
+        "Die fünf Profile: Güte, Zeit und Kosten",
+        "Stand D72; Teil 1, neun Themen in drei Arten, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5 (M52)",
+        (*TOPIC_NOTES,
+         "Zeit, Tokens und Modellwissen: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen, gpt-6-luna",
+         "(M52, 02.10.2026). Tokens aus dem Prompt-Cache zahlt der Anbieter günstiger. Teil 2 (Lehrpläne) kommt dazu: M45."),
+        "Die fünf Profile: Güte, Zeit und Kosten (M52)",
+        overview=True,
+    )
 
 
 def alt_neu_teile() -> None:
@@ -952,5 +1000,5 @@ def alt_neu_teile() -> None:
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
-              profilvergleich):
+              profilvergleich, profiluebersicht):
     chart()
