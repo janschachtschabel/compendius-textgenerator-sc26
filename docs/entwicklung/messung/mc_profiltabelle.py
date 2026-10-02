@@ -8,8 +8,10 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Callable
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
+from typing import Any
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -37,8 +39,8 @@ def main() -> None:
         best = max(values)
         return [f"**{de(v)}**" if v == best else de(v) for v in values]
 
-    def run(field: str, render: object) -> list[str]:
-        return [render(runs["alle"][p]) for p in PROFILES]  # type: ignore[operator]
+    def run(render: Callable[[dict[str, Any]], str]) -> list[str]:
+        return [render(runs["alle"][p]) for p in PROFILES]
 
     rows = [
         ("**Güte**, Noten von 1 bis 5", None),
@@ -51,18 +53,18 @@ def main() -> None:
         ("Fehler je Text, schwer und leicht",
          [f"{de(grades['alle'][p]['schwere_fehler'], '0.01')} und {de(grades['alle'][p]['leichte_fehler'], '0.01')}"
           for p in PROFILES]),
-        ("Überschrift ist das angefragte Thema", run("heading", lambda r: f"{r['heading_as_asked']} von {r['runs']}")),
+        ("Überschrift ist das angefragte Thema", run(lambda r: f"{r['heading_as_asked']} von {r['runs']}")),
         ("Hauptartikel richtig, 94 Goldanfragen (M35)", [f"{MAIN_ARTICLE[p]} von 94" for p in PROFILES]),
         ("**Zeit**", None),
-        ("Teil 1, Median (Spanne)", run("seconds", lambda r: f"{de(r['seconds'])} s ({de(r['seconds_span'][0])} bis "
-                                                              f"{de(r['seconds_span'][1])} s)")),
+        ("Teil 1, Median (Spanne)", run(lambda r: f"{de(r['seconds'])} s ({de(r['seconds_span'][0])} bis "
+                                                  f"{de(r['seconds_span'][1])} s)")),
         ("**Kosten**", None),
-        ("Tokens, Median", run("tokens", lambda r: tokens(r["tokens"]))),
-        ("davon aus dem Prompt-Cache", run("cached", lambda r: tokens(r["cached"]) if r["tokens"] else "–")),
+        ("Tokens, Median", run(lambda r: tokens(r["tokens"]))),
+        ("davon aus dem Prompt-Cache", run(lambda r: tokens(r["cached"]) if r["tokens"] else "–")),
         ("**Text**", None),
-        ("Zeichen, Median", run("chars", lambda r: de(r["chars"], "1"))),
-        ("Bausteine mit Text, von 10", run("blocks", lambda r: de(r["blocks"], "1"))),
-        ("Modellwissen am Text, Median", run("model_share", lambda r: f"{de(r['model_share'] * 100, '1')} %")),
+        ("Zeichen, Median", run(lambda r: de(r["chars"], "1"))),
+        ("Bausteine mit Text, von 10", run(lambda r: de(r["blocks"], "1"))),
+        ("Modellwissen am Text, Median", run(lambda r: f"{de(r['model_share'] * 100, '1')} %")),
     ]
     print("| | " + " | ".join(f"`{p}`" for p in PROFILES) + " |")
     print("|---|" + "---|" * len(PROFILES))
