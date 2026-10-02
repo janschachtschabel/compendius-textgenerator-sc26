@@ -188,6 +188,43 @@ def test_a_second_unreadable_answer_leaves_the_batch_to_the_rules_without_a_thir
     assert report.answered == 0 and assignment is rule_based
 
 
+def test_with_the_response_cache_of_the_b_api_an_unreadable_answer_is_not_asked_again(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    """Review 2026-10-02: with B_API_RESPONSE_CACHE the same question gets the stored answer again (D70)."""
+    fake = FakeBApi(lambda body: "Das kann ich nicht sagen.")
+    job = make_job(fake)
+    job = replace(
+        job,
+        client=BApiClient(
+            BASE, KEY, provider="openai", model="gpt-5.6-luna", response_cache=True, transport=httpx.MockTransport(fake)
+        ),
+    )
+    assignment, report = run(prepared, rule_based, job)
+
+    assert len(fake.bodies) == math.ceil(len(offered) / BATCH_SIZE) and report.asked_again == 0
+    assert assignment is rule_based
+
+
+def test_a_second_question_the_budget_turns_away_is_not_counted_and_the_first_call_is(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Review 2026-10-02: asked_again counted a second question the budget refused before any call, and the report
+    lost the prompt and the model of the first call, which was made."""
+    monkeypatch.setattr("app.matching.llm_assignment.BATCH_SIZE", len(offered))  # one batch
+    fake = FakeBApi(lambda body: "Das kann ich nicht sagen.")
+    job = make_job(fake)
+    messages = render_messages(prepared.template, job.topic, offered, prepared.sources_by_id)
+    reserved = estimate_tokens("".join(m["content"] for m in messages)) + job.client.completion_limit(
+        OUTPUT_TOKENS_PER_PARAGRAPH * len(offered)
+    )
+    # room for the first question; the 24 tokens it spends leave too little for the second
+    assignment, report = run(prepared, rule_based, make_job(fake, per_request=reserved + 10))
+
+    assert len(fake.bodies) == 1 and report.asked_again == 0 and assignment is rule_based
+    assert report.prompts == {get_prompt("paragraph_assignment").tag} and report.model == "gpt-5.6-luna"
+
+
 def test_a_spent_budget_stops_before_any_call(prepared: PreparedTopic, rule_based: AssignmentResult) -> None:
     fake = FakeBApi(answer_with("praxis"))
     assignment, report = run(prepared, rule_based, make_job(fake, per_request=10))

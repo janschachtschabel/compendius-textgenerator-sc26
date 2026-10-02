@@ -15,7 +15,8 @@ to settle (``budgeted_chat``, D39): each reserves about 13,000 tokens and spends
 The rule-based assignment runs first and stays the fallback: a paragraph whose batch fails (b-api, budget, time,
 unreadable answer) or that the answer leaves out or gives an unknown block keeps the policy's decision, and the
 reason goes to the audit. An unreadable answer is asked once more first (M49, V4): in M48 four of 27 runs lost a
-batch of 50 paragraphs to one, and since D70 the second question gets a fresh answer. The blocks are cut to their
+batch of 50 paragraphs to one, and since D70 the second question gets a fresh answer - unless the b-api answers
+from its store (B_API_RESPONSE_CACHE), then it is not asked. The blocks are cut to their
 budgets like the policy's, ordered by the model's confidence.
 """
 
@@ -156,9 +157,10 @@ def assign_with_llm(
 
     def ask(batch: Sequence[Chunk]) -> list[ChatResult | LlmSkipped]:
         first = ask_once(batch)
-        if isinstance(first, LlmSkipped) or parse_assignment(first.text) is not None:
+        # an unreadable answer once more (V4), unless the b-api's store would give it again (B_API_RESPONSE_CACHE)
+        if isinstance(first, LlmSkipped) or parse_assignment(first.text) is not None or job.client.response_cache:
             return [first]
-        return [first, ask_once(batch)]  # an unreadable answer once more (V4)
+        return [first, ask_once(batch)]
 
     # An unexpected error keeps the policy's decision for that batch
     answers = map_in_threads(skipped_on_error(ask, lambda batch: "LLM assignment of a batch"), batches, job.concurrency)
@@ -170,13 +172,15 @@ def assign_with_llm(
         tried = attempts if isinstance(attempts, list) else [attempts]  # an unexpected error is one LlmSkipped
         for attempt in tried:
             _account(report, attempt)
-        report.asked_again += len(tried) - 1
+            if isinstance(attempt, ChatResult):  # a call that answered, even unreadably, names prompt and model
+                report.prompts.add(get_prompt("paragraph_assignment").tag)
+                report.model = attempt.model
+        # a second question the budget or the time turned away before any call is none
+        report.asked_again += sum(1 for again in tried[1:] if not isinstance(again, LlmSkipped) or again.calls)
         answer = tried[-1]
         if isinstance(answer, LlmSkipped):
             fallbacks[answer.reason] += len(batch)
             continue
-        report.prompts.add(get_prompt("paragraph_assignment").tag)
-        report.model = answer.model
         parsed = parse_assignment(answer.text)
         if parsed is None:
             reason = f"unlesbare Antwort des Modells (finish_reason={answer.finish_reason or 'unbekannt'})"
