@@ -17,6 +17,7 @@ import json
 from dataclasses import replace
 from typing import Any
 
+import httpx
 import pytest
 
 import app.service as service_module
@@ -30,12 +31,15 @@ from app.llm.call import LlmSkipped
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.settings import Settings
+from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.models import NodeInfo
+from app.sources.wlo.part import CollectionBuilder
 from app.synthesis.llm import LlmSection, LlmSynthesizer
 from app.templates.manager import TemplateManager
 from tests.test_lehrplan_api import write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import answer_with_model_knowledge, make_gateway
+from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 ASKED = "Optik in Klasse 7"
 WORDING = get_prompt("topic_wording").system
@@ -272,6 +276,27 @@ def test_a_material_without_a_topic_is_worded_from_its_metadata_in_a_writing_pro
     assert prepared.prompt_topic == "Spiegelung und Brechung des Lichts"
     assert prepared.wording is not None and (prepared.wording.source, prepared.wording.reason) == ("Material", METADATA)
     assert users(fake, WORDING)[0].startswith("Titel des Materials: Stationsarbeit zur Optik\nFächer: Physik\n")
+
+
+def test_a_collection_without_a_topic_is_worded_from_its_metadata_in_a_writing_profile(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The collection of part 3 stands in for a missing topic as a node does (D72); review 2026-10-02: no test went
+    that way."""
+    repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
+    monkeypatch.setattr(service, "collections", CollectionBuilder(client=repository, cache=None))
+    fake = wording_then(answer_with_model_knowledge, "Licht und Linsen")
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=200_000))
+
+    result = service.generate(
+        GenerateRequest(collection_id=OPTIK, generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+
+    assert result.topic == "Licht und Linsen"
+    assert users(fake, WORDING)[0].startswith("Titel der Sammlung: Optik\nFächer: Physik\nSchlagwörter: Die Lehre")
+    audit = result.audit.llm
+    assert audit is not None and audit["topic_wording"]["source"] == "Sammlung"
+    assert audit["topic_wording"]["reason"] == METADATA
 
 
 def test_a_short_topic_sent_with_a_node_leads_without_a_wording(service: CompendiumService) -> None:
