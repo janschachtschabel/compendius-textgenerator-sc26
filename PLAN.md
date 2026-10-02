@@ -2003,6 +2003,22 @@ API.
   Vermerk entfernt eine einfache Ersetzung vor dem schließenden Kommentar, linear auch auf fremdem Text. Jans
   Alternative, Absätze mit Markdown-Rollen zu markieren, hängt vom Renderer ab; die Kommentare reichen für jetzt.
 
+- **D77 (2026-10-02)** Eine Sammlung, ein Feld (Jan: „Theoretisch sind es max. 2 verschiedene node id … für teil 3
+  und für das thema muss es direkt die eigentliche sammlung sein … vielleicht reicht ein feld für die nodeid der
+  sammlung dann optionsfelder zum wählen wie diese verwendet werden soll“; per Rückfrage entschieden: node_id gilt wie
+  collection_id, die Prüfansicht bietet nur dieselbe Sammlung als Quelle, alle Bereiche mit Knoten). API: Steht eine
+  Sammlung des eingestellten Repositorys in `node_id`, `collection_id` ist leer und Teil 3 angefragt, nimmt der Dienst
+  sie zugleich als `collection_id` (`RepositoryReading.collection_from_node`, in `_admit` vor der Prüfung der Teile);
+  bis dahin gab sie nur Teil 1 und 2, Teil 3 stand auf `unavailable`. Ein Material oder ein Knoten eines anderen
+  Repositorys bleibt ein Knoten (Teil 3 liest nur das eingestellte), `parts: ["collection"]` mit einem Knoten prüft
+  erst der Dienst (Material: 503). Prüfansicht: ein Feld „Sammlung oder Material“ statt „Sammlung für Teil 3“,
+  „Sammlung als weitere Quelle“ und „Material oder Sammlung als Eingang“; die Seite liest den Knoten
+  (`GET /api/v2/nodes/{id}`), nennt ihn und sagt darunter, wie er verwendet wird (`node_use.mjs`: Thema mit oder ohne
+  `topic`, Stufe und Fach, Teil 3, Quelle). Eine gelesene Sammlung geht als `collection_id`, ihre Materialien als Quelle
+  mit dem Kästchen als `knowledge_collection_id` (mit Volltexten und Untersammlungen), alles andere als `node_id`.
+  `/ui/options.json` nennt den Host des eingestellten Repositorys (`repository`), damit die Seite einen Knoten eines
+  anderen erkennt. Die Felder der API bleiben; eine andere Sammlung als Quelle geht weiter über
+  `knowledge_collection_id`.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

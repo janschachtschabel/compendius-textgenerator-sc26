@@ -11,6 +11,7 @@ import re
 import shutil
 from pathlib import Path
 from typing import Any, get_args
+from urllib.parse import urlsplit
 
 import pytest
 from fastapi import FastAPI
@@ -210,6 +211,10 @@ def test_the_options_name_the_profiles_and_their_switches_as_the_requests_define
     assert options["keys_required"] is False
     assert options["llm_configured"] is False
     assert options["facets_visible"] is settings.facets_visible
+    # The page sends a collection of this repository as collection_id, one of another as node_id (D77)
+    assert (
+        options["repository"] == urlsplit(settings.edu_sharing_base_url).hostname == "repository.staging.openeduhub.net"
+    )
 
 
 UNREACHABLE = "b-api nicht erreichbar: b-api nach 1 Versuchen nicht erreichbar (HTTP 502)"

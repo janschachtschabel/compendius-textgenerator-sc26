@@ -50,9 +50,9 @@ test('an example changes its own fields and its input, and leaves profile, compa
   const optik = form.read();
 
   assert.equal(material.topic, '', 'a topic left over would win over the node of the material');
-  assert.ok(material.node_id);
+  assert.ok(material.node);
   assert.equal(optik.topic, 'Optik');
-  assert.deepEqual([optik.node_id, optik.repository], ['', '']);
+  assert.deepEqual([optik.node, optik.repository], ['', '']);
   assert.deepEqual(optik.parts, ['world', 'curricula']);
   for (const values of [material, optik]) {
     assert.deepEqual(

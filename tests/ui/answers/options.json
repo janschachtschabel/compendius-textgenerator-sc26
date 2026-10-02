@@ -4,6 +4,7 @@
  "llm_configured": true,
  "llm_available": true,
  "llm_unavailable_reason": null,
+ "repository": "repository.staging.openeduhub.net",
  "facets_visible": false,
  "empty_note": false,
  "presets": [

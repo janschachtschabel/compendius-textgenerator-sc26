@@ -28,9 +28,10 @@ kompendium_version: 2 … parts: [world, curricula, collection]
 ```
 
 `parts` wählt aus, ohne das Feld sind alle drei angefragt; nicht angefragte Teile entfallen ersatzlos, die
-Reihenfolge der übrigen bleibt. Teil 3 entsteht nur mit `collection_id`: Ohne sie enthält das Kompendium Teil 1 und 2,
-auch wenn `node_id` eine Sammlung nennt oder `knowledge_collection_id` gesetzt ist (`parts_status` meldet Teil 3 als
-`unavailable`), und `parts: ["collection"]` allein ist dann ein 422. Der Vorspann nennt unter `parts`, was wirklich
+Reihenfolge der übrigen bleibt. Teil 3 beschreibt eine Sammlung: die aus `collection_id` oder, wenn das Feld leer ist,
+eine Sammlung des eingestellten Repositorys in `node_id` (D77). Ohne Sammlung enthält das Kompendium Teil 1 und 2, auch
+wenn `knowledge_collection_id` gesetzt ist (`parts_status` meldet Teil 3 als `unavailable`); `parts: ["collection"]`
+allein ist dann ein 422, mit einem Material in `node_id` ein 503. Der Vorspann nennt unter `parts`, was wirklich
 drinsteht. `frontmatter_in_markdown: false`
 lässt den Vorspann weg und beginnt bei der Überschrift — die Angaben stehen dann weiter im
 Antwortfeld `frontmatter`. Sätze aus Modellwissen kennzeichnet nur das Markup; `model_knowledge_label: true` setzt
@@ -88,6 +89,9 @@ Abschnittsmarker von Teil 1.
 - Vermerk `[Modellwissen]` nur auf Wunsch (D76, Release 2.7.0): Ein fertiger Text geht ohne den sichtbaren Vermerk an
   Endkunden; das Markup kennzeichnet die Sätze aus Modellwissen weiter. `model_knowledge_label: true`, die
   CLI-Option `--model-knowledge-label` und der Schalter der Prüfansicht holen ihn zurück.
+- Eine Sammlung, ein Feld (D77, Release 2.8.0): Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit
+  `collection_id`. Die Prüfansicht hat in allen Bereichen ein Feld „Sammlung oder Material“, liest den Knoten und sagt,
+  was er ist und wie er verwendet wird; bei einer Sammlung lassen sich ihre Materialien als Quelle zuschalten.
 
 ## Installation
 
@@ -341,7 +345,8 @@ Fächer, Teil 2 sucht in jedem. Ein `subject` dazu geht vor, ebenso ein Fach, da
 `/entities` liest statt eines `text` Titel, Beschreibung und Schlagwörter als Text. `/qa` übernimmt mit der Stufe
 `llm` die Bildungsstufen des Knotens, wenn keine gesendet sind, und fragt bevorzugt nach Titel und Schlagwörtern.
 Die Antworten nennen den Knoten unter `node`, und `GET /api/v2/nodes/{node_id}` zeigt vorab Thema, Fächer
-(`topic_subjects`) und Kontextwörter, wie eine Anfrage sie ohne LLM ableitet.
+(`topic_subjects`) und Kontextwörter, wie eine Anfrage sie ohne LLM ableitet. Im Kompendium gilt eine Sammlung des
+eingestellten Repositorys in `node_id` zugleich als `collection_id`, wenn das leer ist: Sie bekommt Teil 3 (D77).
 
 `repository` ist die REST-Adresse, etwa `https://repository.staging.openeduhub.net/edu-sharing/rest`; der Host allein
 oder `…/edu-sharing` geht auch. Ohne Angabe gilt `EDU_SHARING_BASE_URL`. Erlaubt sind nur https-Adressen der Hosts aus
@@ -360,6 +365,14 @@ passt), mit dem Thema vom LLM bei 17. Ohne LLM hilft auch eine Embedding-Suche �
 höchstens 0,03).
 
 ## Sammlungen (Teil 3 und Wissens-Sammlung)
+
+Eine Sammlung kann im Kompendium drei Rollen haben; meist ist es dieselbe ID (D77):
+
+| Rolle | Feld | Was geschieht |
+|---|---|---|
+| Thema und Kontext | `collection_id` oder `node_id` | ohne `topic` ist ihr Titel das Thema (die schreibenden Profile formulieren es aus Titel, Fächern, Schlagwörtern und Beschreibung, D72); mit `topic` führt das Thema. Ihre Stufen werden Kontextwörter, ihre Fächer gelten, solange kein `subject` gesetzt ist |
+| Teil 3 | `collection_id` oder `node_id` | beschreibt die Sammlung, wenn `parts` Teil 3 enthält (ohne das Feld: alle drei Teile) |
+| Quelle für Teil 1 | `knowledge_collection_id` (dieselbe ID oder eine andere) | ihre Materialien sind Quellen, mit `knowledge_fulltext` und `knowledge_depth` |
 
 `collection_id` (nodeId einer WLO-Sammlung) liefert Thema, Fächer und Bildungsstufen für Teil 1
 und 2 sowie Teil 3: Zweck, Kennzahlen (Materialtypen, Bildungsstufen, Fächer, Lizenzen), alle
@@ -745,8 +758,12 @@ LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --gen
 
 Menschen ohne Kenntnis der API prüfen die Texte im Browser (D66): `UI_ENABLED=true` setzen, dann steht unter
 `http://<host>:8000/ui/` eine Seite bereit. Links wählt man, was geprüft wird — Kompendium, Wissenstexte,
-Lehrplan, Entitäten oder Fragen und Antworten —, gibt Thema, Sammlung, Sammlung als Quelle oder ein Material ein
-oder lädt ein Beispiel (Staging), wählt Teile und Profil und auf Wunsch ein zweites Profil zum Vergleich. Unter
+Lehrplan, Entitäten oder Fragen und Antworten —, gibt ein Thema ein, eine Sammlung oder ein Material oder beides,
+oder lädt ein Beispiel (Staging), wählt Teile und Profil und auf Wunsch ein zweites Profil zum Vergleich. Für
+Sammlung und Material gibt es ein Feld (D77): Die Seite liest den Knoten (`GET /api/v2/nodes/{id}`), nennt darunter, was
+er ist („Sammlung „Optik“ · Physik · Sekundarstufe I“), und sagt, wie er verwendet wird — als Thema oder neben dem
+Thema, für Teil 3, mit Stufe und Fach. Bei einer Sammlung lassen sich ihre Materialien als Quelle für Teil 1
+zuschalten, mit Volltexten und Untersammlungen; eine andere Sammlung als Quelle geht nur über die API. Unter
 „Erweitert“ lassen sich die Methoden einzelner Schritte setzen, die sonst das Profil wählt. Rechts steht der Text
 gerendert:
 

@@ -181,3 +181,20 @@ test('the note on the server says whether its LLM answered its last check, not o
   assert.match(await note({ llm_available: true, llm_unavailable_reason: null }), /^KI verfügbar · Vorgabe des Servers: /);
   assert.match(await note({ llm_available: null, llm_unavailable_reason: null }), /^KI eingerichtet · Vorgabe des Servers: /);
 });
+
+test('the field of a collection reads the node through its endpoint, with the key, and tells what it is (D77)', async () => {
+  const page = await openPage();
+  const id = '9e7ae956-e9df-430f-bace-f3db4b910013';
+  page.field('node').value = `https://repository.staging.openeduhub.net/edu-sharing/components/collections?id=${id}`;
+  page.form().listeners.input[0]();
+  await settle();
+
+  const reading = page.requests.find((one) => one.url.includes('/api/v2/nodes/'));
+  assert.ok(reading.url.endsWith(`/api/v2/nodes/${id}`), reading.url);
+  assert.equal(reading.init.method, 'GET');
+  reading.answer(200, { node_id: id, kind: 'collection', title: 'Optik', subjects: ['Physik'], educational_contexts: ['Sekundarstufe I'], topic: 'Optik' });
+  await settle();
+
+  const status = page.form().descendants().find((node) => node.classList.contains('node-status'));
+  assert.equal(status.textContent, 'Sammlung „Optik“ · Physik · Sekundarstufe I');
+});

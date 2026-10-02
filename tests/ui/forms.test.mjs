@@ -9,6 +9,7 @@ const MATERIAL = 'ac66224b-42b0-4676-a53d-71b058dc780b';
 const options = {
   preset_default: 'balanced',
   llm_configured: true,
+  repository: 'repository.staging.openeduhub.net',
   presets: [{ id: 'llm-free' }, { id: 'balanced' }, { id: 'best-quality' }, { id: 'best-quality-generated' }],
   lehrplan: { modes: ['keyword', 'topic'] },
   entities: { methods: ['ner', 'dictionary', 'llm'], link_checks: ['rule-based', 'llm'] },
@@ -54,12 +55,11 @@ test('every input of the form reaches the request, ids taken from links', () => 
     form('compendium', {
       topic: 'Optik',
       subject: 'Physik',
-      collection_id: `https://example.org/x?id=${COLLECTION}`,
-      knowledge_collection_id: COLLECTION,
+      node: `https://example.org/x?id=${COLLECTION}`,
+      node_kind: 'collection',
+      knowledge_source: true,
       knowledge_depth: '2',
       knowledge_fulltext: true,
-      node_id: MATERIAL,
-      repository: 'https://repository.staging.openeduhub.net/edu-sharing/rest',
       parts: ['world', 'curricula', 'collection'],
       preset: 'best-quality',
       matcher: 'bm25',
@@ -81,8 +81,6 @@ test('every input of the form reaches the request, ids taken from links', () => 
     knowledge_collection_id: COLLECTION,
     knowledge_depth: 2,
     knowledge_fulltext: true,
-    node_id: MATERIAL,
-    repository: 'https://repository.staging.openeduhub.net/edu-sharing/rest',
     parts: ['world', 'curricula', 'collection'],
     preset: 'best-quality',
     matcher: 'bm25',
@@ -115,20 +113,21 @@ test('a comparison asks twice, once per profile, and leaves the steps to the pro
 
 test('the compendium form refuses what the endpoint would refuse, in words a reader understands', () => {
   assert.ok(problems('compendium', form('compendium', {}), options).topic);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', collection_id: 'keine-id' }), options).collection_id);
+  const collection = { node: COLLECTION, node_kind: 'collection' };
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', node: 'keine-id' }), options).node);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: [] }), options).parts);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['collection'] }), options).collection_id);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['curricula'], knowledge_collection_id: COLLECTION }), options).knowledge_collection_id);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_depth: '2' }), options).knowledge_depth);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_fulltext: true }), options).knowledge_fulltext);
-  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', knowledge_collection_id: COLLECTION, knowledge_depth: '6' }), options).knowledge_depth);
-  assert.deepEqual(problems('compendium', form('compendium', { topic: 'Optik', knowledge_depth: '0' }), options), {});
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['collection'] }), options).node);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['collection'], node: MATERIAL, node_kind: 'material' }), options).node);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', parts: ['curricula'], ...collection, knowledge_source: true }), options).knowledge_source);
+  assert.ok(problems('compendium', form('compendium', { topic: 'Optik', ...collection, knowledge_source: true, knowledge_depth: '6' }), options).knowledge_depth);
+  // Without the source they are not sent, and their fields do not show
+  assert.deepEqual(problems('compendium', form('compendium', { topic: 'Optik', knowledge_depth: '6', knowledge_fulltext: true }), options), {});
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', repository: 'https://x.example/rest' }), options).repository);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', compare: true, preset: 'balanced', preset_b: 'balanced' }), options).preset_b);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', target_length: '100' }), options).target_length);
   assert.ok(problems('compendium', form('compendium', { topic: 'Optik', max_articles: 'viele' }), options).max_articles);
   assert.deepEqual(problems('compendium', form('compendium', { topic: 'Optik' }), options), {});
-  assert.deepEqual(problems('compendium', form('compendium', { collection_id: COLLECTION }), options), {});
+  assert.deepEqual(problems('compendium', form('compendium', { node: COLLECTION }), options), {});
 });
 
 test('knowledge texts for a topic or a node', () => {
@@ -187,7 +186,7 @@ test('entities of a text or of a node, never of both', () => {
   const [run] = buildRequests('entities', form('entities', { text: 'Humboldt reiste nach Quito.', methods: ['ner', 'llm'] }), options);
 
   assert.deepEqual(run.request.body, { text: 'Humboldt reiste nach Quito.', preset: 'balanced', link: true, methods: ['ner', 'llm'] });
-  assert.ok(problems('entities', form('entities', { text: 'x', node_id: MATERIAL }), options).text);
+  assert.ok(problems('entities', form('entities', { text: 'x', node: MATERIAL }), options).text);
   assert.ok(problems('entities', form('entities', {}), options).text);
   assert.ok(problems('entities', form('entities', { text: 'x', link: false, link_check: 'llm' }), options).link_check);
 });
@@ -222,20 +221,50 @@ test('an example holds its own values, numbers as a number field holds them, and
     topic: 'Linse',
     subject: 'Physik',
     max_articles: '5',
-    collection_id: '',
-    knowledge_collection_id: '',
+    node: '',
+    node_kind: '',
+    knowledge_source: '',
     knowledge_depth: '',
     knowledge_fulltext: '',
-    node_id: '',
     repository: '',
   });
+});
+
+test('an example in the words of the API fills the one field: a collection with its source, or a material (D77)', () => {
+  const STAGING = 'https://repository.staging.openeduhub.net/edu-sharing/rest';
+  const both = fromExample('compendium', { label: 'x', values: { topic: 'Optik', collection_id: COLLECTION, knowledge_collection_id: COLLECTION, knowledge_depth: 1, knowledge_fulltext: true } });
+  const source = fromExample('compendium', { label: 'x', values: { topic: 'Optik', knowledge_collection_id: COLLECTION } });
+  const material = fromExample('compendium', { label: 'x', values: { node_id: MATERIAL, repository: STAGING } });
+
+  assert.deepEqual([both.node, both.node_kind, both.knowledge_source, both.knowledge_depth, both.knowledge_fulltext], [COLLECTION, 'collection', true, '1', true]);
+  assert.deepEqual([source.node, source.node_kind, source.knowledge_source], [COLLECTION, 'collection', true]);
+  assert.deepEqual([material.node, material.node_kind, material.repository], [MATERIAL, '', STAGING]);
+  assert.ok(!('collection_id' in both) && !('knowledge_collection_id' in source) && !('node_id' in material));
+});
+
+test('one field for a collection or a material: a collection is collection_id, a material or a node not read yet node_id (D77)', () => {
+  const body = (values) => buildRequests('compendium', form('compendium', { topic: 'Optik', ...values }), options)[0].request.body;
+  const read = body({ node: COLLECTION, node_kind: 'collection' });
+  assert.deepEqual([read.collection_id, read.node_id], [COLLECTION, undefined]);
+  assert.equal(body({ node: MATERIAL, node_kind: 'material' }).node_id, MATERIAL);
+  assert.equal(body({ node: COLLECTION, node_kind: '' }).node_id, COLLECTION, 'the service takes a collection there as collection_id');
+  // The materials as a source come only from a collection read as one, their depth only with them
+  assert.ok(!('knowledge_collection_id' in body({ node: MATERIAL, node_kind: 'material', knowledge_source: true })));
+  assert.ok(!('knowledge_depth' in body({ node: COLLECTION, node_kind: 'collection', knowledge_depth: '2' })));
+  // Another repository: the node is an input only; the server's own named: the collection stays collection_id
+  const PRODUCTION = 'https://redaktion.openeduhub.net/edu-sharing/rest';
+  const foreign = body({ node: COLLECTION, node_kind: 'collection', repository: PRODUCTION, knowledge_source: true });
+  assert.deepEqual([foreign.node_id, foreign.repository, foreign.collection_id, foreign.knowledge_collection_id], [COLLECTION, PRODUCTION, undefined, undefined]);
+  const own = body({ node: COLLECTION, node_kind: 'collection', repository: 'https://repository.staging.openeduhub.net/edu-sharing/rest' });
+  assert.deepEqual([own.collection_id, own.node_id, own.repository], [COLLECTION, undefined, undefined]);
 });
 
 test('the input an example sets is the one of its mode', () => {
   assert.deepEqual(fromExample('qa', { label: 'x', values: { text: 'Ein Satz.' } }), {
     text: 'Ein Satz.',
     topic: '',
-    node_id: '',
+    node: '',
+    node_kind: '',
     repository: '',
   });
   assert.deepEqual(fromExample('lehrplan', { label: 'x', values: { q: 'Optik', mode: 'topic' } }), { q: 'Optik', mode: 'topic' });

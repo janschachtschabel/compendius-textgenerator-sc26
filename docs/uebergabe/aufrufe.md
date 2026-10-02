@@ -197,9 +197,18 @@ curl -sS --max-time 240 -X POST "$KOMPENDIUM/api/v2/compendium" \
 
 ![Welche Felder der Anfrage welchen Teil speisen und wo er in der Antwort steht](bilder/anfrage_teile.svg)
 
-`parts` nennt die Teile; ohne das Feld sind es alle drei. Teil 3 entsteht nur mit `collection_id`: Ohne sie enthält
-das Kompendium Teil 1 und 2, auch wenn `node_id` eine Sammlung nennt oder `knowledge_collection_id` gesetzt ist, und
-`parts_status` meldet Teil 3 als `unavailable`; `parts: ["collection"]` allein ist dann ein 422.
+`parts` nennt die Teile; ohne das Feld sind es alle drei. Teil 3 beschreibt eine Sammlung: die aus `collection_id` oder,
+wenn das Feld leer ist, eine Sammlung des eingestellten Repositorys in `node_id` (D77). Ohne Sammlung enthält das
+Kompendium Teil 1 und 2, auch wenn `knowledge_collection_id` gesetzt ist, und `parts_status` meldet Teil 3 als
+`unavailable`; `parts: ["collection"]` allein ist dann ein 422, mit einem Material in `node_id` ein 503.
+
+Eine Sammlung kann drei Rollen haben, meist mit derselben ID:
+
+| Rolle | Feld | Was geschieht |
+|---|---|---|
+| Thema und Kontext | `collection_id` oder `node_id` | ohne `topic` ist ihr Titel das Thema, mit `topic` führt das Thema; ihre Stufen und Fächer kommen dazu |
+| Teil 3 | `collection_id` oder `node_id` | beschreibt die Sammlung, wenn `parts` Teil 3 enthält |
+| Quelle für Teil 1 | `knowledge_collection_id` | ihre Materialien sind Quellen (siehe unten) |
 
 ```bash
 # Teil 1 und 2, ohne Teil 3 und ohne Frontmatter

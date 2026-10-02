@@ -345,8 +345,12 @@ NODE_ID_HELP = (
     "article_choice llm one question hears topic and material together and may overrule the topic. The subjects "
     "count all alike - subjects and levels are multi-valued fields, and no value weighs more for coming first - and "
     "levels and keywords become context words; a subject sent along wins, and so does one the title names "
-    "('Physik: Optik'). GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404."
+    "('Physik: Optik'). GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404. "
+    "In a compendium a collection of the configured repository counts as collection_id as well, where that is empty: "
+    "it gets part 3 (D77)."
 )
+# D77: a collection in node_id stands for collection_id, so either field gives part 3 its collection
+PART_3_NEEDS_A_COLLECTION = "Teil 3 braucht eine Sammlung: collection_id oder eine Sammlung als node_id"
 REPOSITORY_HELP = (
     "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
     "configured one (EDU_SHARING_BASE_URL), and without one a 503. Only allowed hosts over https "
@@ -396,7 +400,8 @@ class GenerateRequest(RequestModel):
         None,
         pattern=NODE_ID_PATTERN,
         description="edu-sharing collection for part 3; its title is the topic without topic and node_id, its levels "
-        "add context words, its subjects count, all alike, where no other is given",
+        "add context words, its subjects count, all alike, where no other is given. A collection given as node_id "
+        "counts as collection_id as well, where this field is empty (D77)",
     )
     knowledge_collection_id: str | None = Field(
         None,
@@ -428,8 +433,8 @@ class GenerateRequest(RequestModel):
         min_length=1,
         max_length=len(get_args(Part)),
         description="Parts to generate, default all three: world (part 1, the compendium text), curricula (part 2, "
-        "the curriculum elements), collection (part 3, the materials of collection_id; without collection_id it "
-        "drops out, and as the only part it is then a 422)",
+        "the curriculum elements), collection (part 3, the materials of collection_id, or of a collection given as "
+        "node_id (D77); without a collection it drops out, and as the only part it is then refused)",
     )
     subject: str | None = Field(
         None,
@@ -546,9 +551,10 @@ class GenerateRequest(RequestModel):
                 "knowledge_depth und knowledge_fulltext gelten für knowledge_collection_id; ohne sie ist "
                 "nichts zu lesen"
             )
-        # Without a collection part 3 drops out (as with the default parts); it must not be the only part
-        if not self.collection_id and not {"world", "curricula"} & set(self.parts):
-            raise ValueError("parts enthält nur collection; Teil 3 braucht collection_id")
+        # Without a collection part 3 drops out (as with the default parts); it must not be the only part. A node may
+        # be the collection (D77): only reading it tells, so the service decides that one
+        if not self.collection_id and not self.node_id and not {"world", "curricula"} & set(self.parts):
+            raise ValueError(f"parts enthält nur collection; {PART_3_NEEDS_A_COLLECTION}")
         return self
 
 

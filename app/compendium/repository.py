@@ -63,6 +63,19 @@ class RepositoryReading:
         info = builder.node(node_id)
         return info, node_input(info, root)
 
+    def collection_from_node(self, request: GenerateRequest) -> GenerateRequest:
+        """The request with a collection named as node_id standing for collection_id as well, so it gets part 3 (D77;
+        Jan, 2026-10-02: one id for a collection, whichever field carries it). Only where part 3 is asked for and
+        collection_id is empty, and only for a node of the configured repository, the one part 3 reads: a material,
+        or a node of another repository, stays a node. The node is read once; ``read_node`` finds it cached."""
+        node_id = request.node_id
+        if not node_id or request.collection_id or "collection" not in request.parts or self.collections is None:
+            return request
+        _, builder = self._node_repository(request.repository)
+        if builder is not self.collections or builder.node(node_id).kind != "collection":
+            return request
+        return request.model_copy(update={"collection_id": node_id})
+
     def _node_repository(self, repository: str | None) -> tuple[str, CollectionBuilder]:
         """The REST root and the reader of a repository: the configured one, or one without credentials for any other.
 

@@ -149,6 +149,39 @@ def test_a_material_the_rules_find_no_article_for_asks_for_a_topic(client: TestC
     assert with_topic.status_code == 200 and with_topic.json()["topic"] == "Optik", "a topic sent along helps"
 
 
+def test_a_collection_as_node_gets_part_3_as_collection_id_does(client: TestClient) -> None:
+    """D77 (Jan, 2026-10-02): one id for a collection, whichever field carries it. Until then a collection in
+    node_id gave parts 1 and 2 only, and part 3 stood "unavailable" for want of collection_id."""
+    response = client.post("/api/v2/compendium", json={"node_id": OPTIK, "parts": ["world", "collection"]})
+
+    assert response.status_code == 200, response.text[:300]
+    body = response.json()
+    assert body["parts_status"] == {"world": "ok", "collection": "ok"}
+    assert body["collection"]["markdown"] and body["node"]["kind"] == "collection"
+    alone = client.post("/api/v2/compendium", json={"node_id": OPTIK, "parts": ["collection"]})
+    assert alone.status_code == 200 and alone.json()["parts_status"] == {"collection": "ok"}
+
+
+def test_a_material_as_node_gets_no_part_3(client: TestClient) -> None:
+    body = {"node_id": MATERIAL, "topic": "Optik", "parts": ["world", "collection"]}
+    assert client.post("/api/v2/compendium", json=body).json()["parts_status"]["collection"] == "unavailable"
+
+    alone = client.post("/api/v2/compendium", json={"node_id": MATERIAL, "parts": ["collection"]})
+    assert alone.status_code == 503 and "Sammlung" in alone.text, alone.text[:300]
+
+
+def test_a_collection_of_another_repository_gets_no_part_3(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Part 3 reads the configured repository; a node of another one stays a node, as before (D45, D77)."""
+    app = with_fake_repository(create_app(make_settings(sample_zims.values(), tmp_path / "state")))
+    app.state.service.repository_transport = httpx.MockTransport(FakeRepository())
+    body = {"node_id": OPTIK, "repository": PRODUCTION, "parts": ["world", "collection"]}
+
+    response = TestClient(app).post("/api/v2/compendium", json=body)
+
+    assert response.status_code == 200, response.text[:300]
+    assert response.json()["parts_status"]["collection"] == "unavailable"
+
+
 def test_a_compendium_needs_a_topic_a_collection_or_a_node(client: TestClient) -> None:
     response = client.post("/api/v2/compendium", json={"parts": ["world"]})
     assert response.status_code == 422 and "node_id" in response.text

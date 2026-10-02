@@ -8,6 +8,7 @@ against the model of its endpoint.
 from __future__ import annotations
 
 from typing import Any, get_args
+from urllib.parse import urlsplit
 
 from pydantic import BaseModel
 
@@ -192,6 +193,8 @@ def ui_options(
         "llm_configured": llm,  # without an LLM a request naming a profile other than llm-free is a 503 (D53)
         "llm_available": available,  # a profile with the LLM falls back to the rules while it is not
         "llm_unavailable_reason": reason,
+        # A collection of this repository goes as collection_id, a node named with another as node_id (D77)
+        "repository": urlsplit(settings.edu_sharing_base_url).hostname,
         "facets_visible": settings.facets_visible,
         "empty_note": _notes_empty_blocks(settings, templates),
         "presets": [{"id": preset, "switches": switches} for preset, switches in PRESETS.items()],

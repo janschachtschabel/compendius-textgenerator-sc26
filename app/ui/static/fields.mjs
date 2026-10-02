@@ -4,6 +4,7 @@
 
 import { h } from './dom.mjs';
 import { bounds, FORMS } from './forms.mjs';
+import { nodeField } from './node_field.mjs';
 import { formatNumber } from './stats.mjs';
 import { ENTITY_METHODS, label, LINK_CHECKS, PARTS, PROFILE_ABOUT, PROFILE_NAMES, QA_METHODS, STEPS } from './texts.mjs';
 
@@ -11,14 +12,16 @@ let ids = 0;
 const uid = (name) => `feld-${(ids += 1)}-${name}`;
 
 /** A form for one mode: its element and its submit button, and functions to read and set its values and to show
- * what keeps it back. */
-export function buildForm(mode, options, { onSubmit, onExample }) {
-  const ctx = { mode, options, controls: new Map(), refreshers: [], datalist: null };
+ * what keeps it back. `lookup(id, repository, signal)` reads a node for the field of a collection or a material. */
+export function buildForm(mode, options, { onSubmit, onExample, lookup }) {
+  const ctx = { mode, options, controls: new Map(), refreshers: [], datalist: null, lookup };
   const basic = [];
   const small = [];
   const advanced = [];
   for (const field of FORMS[mode].fields) {
     const node = TYPES[field.type](field, ctx);
+    // A field that applies only to some input shows only then: the source of a collection read as one (D77)
+    if (field.when) ctx.refreshers.push((values) => (node.hidden = !field.when(values, ctx.options)));
     (field.advanced ? advanced : field.option ? small : basic).push(node);
   }
   const submit = h('button', { type: 'submit', class: 'primary' }, FORMS[mode].submit);
@@ -33,6 +36,9 @@ export function buildForm(mode, options, { onSubmit, onExample }) {
           event.preventDefault(); // the page sends the request itself; the form has nowhere to go
           onSubmit();
         },
+        // What a node does depends on the topic, the parts and the profile beside it, so every input retells it
+        input: () => refresh(),
+        change: () => refresh(),
       },
     },
     examples(mode, options, onExample),
@@ -129,6 +135,7 @@ const numberOf = (control) => (control.validity?.badInput ? Number.NaN : control
 const TYPES = {
   text: (spec, ctx) => input(spec, ctx),
   id: (spec, ctx) => input(spec, ctx, { spellcheck: 'false', placeholder: 'ID oder Link' }),
+  node: (spec, ctx) => nodeField(spec, ctx, TYPES.id(spec, ctx)),
   subject(spec, ctx) {
     ctx.datalist ??= h('datalist', { id: uid('faecher') }, (ctx.options.subjects ?? []).map((subject) => h('option', { value: subject })));
     return input(spec, ctx, { list: ctx.datalist.id, placeholder: 'z. B. Physik' });

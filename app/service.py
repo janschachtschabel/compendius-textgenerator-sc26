@@ -29,7 +29,7 @@ from app.domain.models import (
     Compendium,
     primary_of,
 )
-from app.domain.requests import GenerateRequest, with_profile
+from app.domain.requests import PART_3_NEEDS_A_COLLECTION, GenerateRequest, with_profile
 from app.knowledge.article_choice import (
     CHECKED_ORIGINS,
     ArticleChoiceJob,
@@ -317,7 +317,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         server cannot make: an unknown strategy, a switch that needs an LLM it lacks (D53), no makeable part."""
         defaulted = request.preset is None
         profile = request.preset or self.default_preset
-        request = with_profile(request, profile)
+        request = self.collection_from_node(with_profile(request, profile))
         if request.matcher:
             ensure_strategy(request.matcher)
         self.refuse_without_llm(llm_switches(request, corpus=self._needs_corpus(request)), profile, defaulted)
@@ -364,5 +364,5 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         if "collection" in request.parts and self.collections is None:
             reasons["collection"] = "Teil 3 braucht ein edu-sharing-Repository (EDU_SHARING_BASE_URL)"
         elif "collection" in request.parts and not request.collection_id:
-            reasons["collection"] = "Teil 3 braucht collection_id"
+            reasons["collection"] = PART_3_NEEDS_A_COLLECTION
         return reasons

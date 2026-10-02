@@ -52,6 +52,13 @@ function describeServer() {
   byId('server-note').textContent = note;
 }
 
+// What the field of a collection or a material says it is and does: the node as the service reads it (D77), with the
+// key the reader entered
+function readNode(id, repository, signal) {
+  const query = repository ? { repository } : {};
+  return send({ method: 'GET', path: `api/v2/nodes/${id}`, query }, byId('api-key').value.trim(), signal);
+}
+
 function setUpKey() {
   byId('key-box').hidden = !page.options.keys_required;
   const input = byId('api-key');
@@ -81,7 +88,7 @@ function setUpModes() {
 function showMode(mode) {
   page.mode = mode;
   if (!page.forms.has(mode)) {
-    const form = buildForm(mode, page.options, { onSubmit: () => run(mode), onExample: (example) => loadExample(mode, example) });
+    const form = buildForm(mode, page.options, { onSubmit: () => run(mode), onExample: (example) => loadExample(mode, example), lookup: readNode });
     form.write(defaults(mode, page.options));
     page.forms.set(mode, form);
   }
