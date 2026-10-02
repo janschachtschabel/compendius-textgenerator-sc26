@@ -151,7 +151,7 @@ ENRICHMENT_HELP = (
 )
 MODEL_KNOWLEDGE_CHECK_HELP = (
     "Whether the LLM checks the sentences of model knowledge it wrote (07, point 12a, D73). Default: the profile's: "
-    "rule-based in every profile.\n\n"
+    "llm in best-coverage-generated, rule-based in the others.\n\n"
     "- **rule-based**: no check; the sentences stay as written, marked [Modellwissen].\n"
     "- **llm**: after a block is written, a second call reads its sentences marked [Modellwissen], with the block "
     "around them, and strikes what it holds for wrong or invented or corrects it where it knows the right fact for "
@@ -159,7 +159,12 @@ MODEL_KNOWLEDGE_CHECK_HELP = (
     "errors of best-coverage-generated (prompt model_knowledge_check). A corrected sentence keeps its mark; a block "
     "of model knowledge alone that loses every sentence falls back to the rules: verbatim paragraphs where it has "
     "evidence, else it stays empty. audit.llm.model_knowledge_check "
-    "counts what the check read, struck and corrected. One call per block with model knowledge, in parallel.\n\n"
+    "counts what the check read, struck and corrected. One call per block with model knowledge, in parallel. "
+    "Measured in best-coverage-generated on nine topics, the same runs before and after the check, two blind judges "
+    "(M53): light errors per text 1.1 instead of 1.6, fit, use and completeness unchanged, readability 3.9 instead "
+    "of 4.0, the one serious error kept; of 2,419 sentences 17 struck and 14 corrected, every correction right "
+    "afterwards, but most struck sentences were right or unclear to the judges; about 27,000 tokens and 5 s more "
+    "per text.\n\n"
     "Acts only where the LLM writes with enrichment model-knowledge or model-knowledge-full; without a usable b-api "
     "the sentences stay unchecked and the audit says why."
 )
@@ -230,8 +235,10 @@ PRESET_HELP = (
     "no serious error (M47). Fit 5.0 for a topic with an article of its own, a group and an aspect, use 4.8, "
     "completeness 4.9, readability 4.2, 0.11 serious errors per text, 83 % of the text model knowledge; part 1 38 s "
     "and 103,300 tokens, 60,200 of them read from the prompt cache, and about 59,000 characters, as the target is a "
-    "floor (M52). /qa and part 2 as best-quality. A topic that is a text, or a node_id or collection_id without a "
-    "topic, is worded by the model first (D72).\n\n"
+    "floor (M52). Since D73 a second call checks its model knowledge (model_knowledge_check llm): light errors per "
+    "text 1.1 instead of 1.6 at the same fit, use and completeness, about 27,000 tokens and 5 s more (M53). /qa "
+    "and part 2 as best-quality. A topic that is a text, or a node_id or collection_id without a topic, is worded "
+    "by the model first (D72).\n\n"
     "Which to choose (M52): a topic with an article of its own - balanced for a verbatim text with a citation for "
     "every sentence, best-quality-generated for a readable one; a group or a topic with an aspect - "
     "best-coverage-generated (fit 5.0) or, shorter and with less model knowledge, best-quality-generated (4.7 and "
@@ -284,7 +291,8 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         "extraction": "rule-based",
         "generation": "llm",
         "enrichment": "model-knowledge-full",
-        "model_knowledge_check": "rule-based",
+        # M53: light errors per text 1.1 instead of 1.6 at the same fit, use and completeness (Jan's rule, D73)
+        "model_knowledge_check": "llm",
     },
 }
 # Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
