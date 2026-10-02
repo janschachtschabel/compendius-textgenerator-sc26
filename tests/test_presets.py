@@ -30,7 +30,7 @@ from tests.test_cli_generate import cli_env  # noqa: F401 - the fixture of the C
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 
-SWITCHES = ("article_choice", "matcher", "extraction", "generation", "enrichment")
+SWITCHES = ("article_choice", "matcher", "extraction", "generation", "enrichment", "model_knowledge_check")
 PART_2_SWITCHES = ("curriculum_check",)  # D58; its values per profile: tests/test_curriculum_check.py
 
 
@@ -59,11 +59,14 @@ def test_the_presets_are_the_values_of_the_field() -> None:
 @pytest.mark.parametrize(
     ("preset", "expected"),
     [
-        ("llm-free", ("rule-based", "hybrid_light", "rule-based", "rule-based", "sources-only")),
-        ("balanced", ("llm", "hybrid_light", "rule-based", "rule-based", "sources-only")),
-        ("best-quality", ("llm-thorough", "llm", "rule-based", "rule-based", "sources-only")),
-        ("best-quality-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge")),
-        ("best-coverage-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge-full")),
+        ("llm-free", ("rule-based", "hybrid_light", "rule-based", "rule-based", "sources-only", "rule-based")),
+        ("balanced", ("llm", "hybrid_light", "rule-based", "rule-based", "sources-only", "rule-based")),
+        ("best-quality", ("llm-thorough", "llm", "rule-based", "rule-based", "sources-only", "rule-based")),
+        ("best-quality-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge", "rule-based")),
+        (
+            "best-coverage-generated",
+            ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge-full", "rule-based"),
+        ),
     ],
 )
 def test_a_preset_sets_every_switch_of_part_1(preset: str, expected: tuple[str, ...]) -> None:

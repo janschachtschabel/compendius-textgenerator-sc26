@@ -149,6 +149,19 @@ ENRICHMENT_HELP = (
     "Needs generation llm or llm-fast; with rule-based generation, or without a usable b-api, the answer reports "
     "sources-only."
 )
+MODEL_KNOWLEDGE_CHECK_HELP = (
+    "Whether the LLM checks the sentences of model knowledge it wrote (07, point 12a, D74). Default: the profile's: "
+    "rule-based in every profile.\n\n"
+    "- **rule-based**: no check; the sentences stay as written, marked [Modellwissen].\n"
+    "- **llm**: after a block is written, a second call reads its sentences marked [Modellwissen], with the block "
+    "around them, and strikes what it holds for wrong or invented or corrects it where it knows the right fact for "
+    "sure - dates, numbers, names, places, bodies, laws and attributions, where M48 found six of the eight light "
+    "errors of best-coverage-generated (prompt model_knowledge_check). A corrected sentence keeps its mark; a block "
+    "of model knowledge alone that loses every sentence falls back to the rules. audit.llm.model_knowledge_check "
+    "counts what the check read, struck and corrected. One call per block with model knowledge, in parallel.\n\n"
+    "Acts only where the LLM writes with enrichment model-knowledge or model-knowledge-full; without a usable b-api "
+    "the sentences stay unchecked and the audit says why."
+)
 PRESET_HELP = (
     "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53, D58, D69). It sets article_choice, matcher, "
     "extraction, generation, enrichment and curriculum_check; a switch the request sets itself wins. Without a preset "
@@ -230,9 +243,16 @@ Enrichment = Literal["sources-only", "model-knowledge", "model-knowledge-full"]
 ArticleChoice = Literal["rule-based", "llm", "llm-thorough"]  # who decides an unsure article choice (D35, D61)
 LLM_ARTICLE_CHOICES = frozenset({"llm", "llm-thorough"})
 CurriculumCheck = Literal["rule-based", "llm"]  # who judges the curriculum elements of part 2 (D58)
+# who checks the sentences of model knowledge a writing LLM added (07, point 12a, D74)
+ModelKnowledgeCheck = Literal["rule-based", "llm"]
 # the five profiles (D41, D53, D69)
 Preset = Literal["llm-free", "balanced", "best-quality", "best-quality-generated", "best-coverage-generated"]
-_VERBATIM = {"extraction": "rule-based", "generation": "rule-based", "enrichment": "sources-only"}
+_VERBATIM = {
+    "extraction": "rule-based",
+    "generation": "rule-based",
+    "enrichment": "sources-only",
+    "model_knowledge_check": "rule-based",
+}
 PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the order of Preset
     "llm-free": {
         "article_choice": "rule-based",
@@ -251,6 +271,7 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         "extraction": "rule-based",
         "generation": "llm",
         "enrichment": "model-knowledge",
+        "model_knowledge_check": "rule-based",
     },
     # Jan, 2026-10-01 (D69): as best-quality-generated, but every block about the topic as asked and filled completely,
     # from the model's own knowledge where the sources say nothing - for topics with an aspect ("OER-Förderungen")
@@ -261,6 +282,7 @@ PRESETS: dict[str, dict[str, str]] = {  # the switches each preset sets, in the 
         "extraction": "rule-based",
         "generation": "llm",
         "enrichment": "model-knowledge-full",
+        "model_knowledge_check": "rule-based",
     },
 }
 # Their requests spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY instead of LLM_MAX_TOKENS_PER_REQUEST (D59)
@@ -422,6 +444,7 @@ class GenerateRequest(RequestModel):
     extraction: Extraction | None = Field(None, description=EXTRACTION_HELP)
     generation: Generation | None = Field(None, description=GENERATION_HELP)
     enrichment: Enrichment | None = Field(None, description=ENRICHMENT_HELP)
+    model_knowledge_check: ModelKnowledgeCheck | None = Field(None, description=MODEL_KNOWLEDGE_CHECK_HELP)
     target_length: int = Field(
         30_000,
         ge=2_000,

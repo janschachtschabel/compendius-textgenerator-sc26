@@ -14,6 +14,7 @@ from app.knowledge.topic_wording import TopicWordingReport
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.synthesis.extraction import ExtractionReport
+from app.synthesis.model_knowledge_check import ModelKnowledgeCheckReport
 from app.synthesis.writer import LlmReport
 
 NOTHING_CONTRIBUTED = (
@@ -58,6 +59,8 @@ class LlmWork:
     curriculum_fallback: str | None = None
     cached_tokens: int = 0  # of the prompt tokens, those read from the prompt cache (D69)
     wording: TopicWordingReport | None = None
+    check_requested: str = "rule-based"  # model_knowledge_check (07, point 12a)
+    check: ModelKnowledgeCheckReport | None = None
 
 
 def build_llm_report(
@@ -66,7 +69,7 @@ def build_llm_report(
     """Audit block, token counts and frontmatter block of the LLM layer; all ``None`` when nothing asked for it."""
     choice_audit = work.choice
     extraction, generation, matching, curriculum = work.extraction, work.generation, work.matching, work.curriculum
-    wording = work.wording
+    wording, check = work.wording, work.check
     choice, hit_check, node, articles = (
         choice_audit.report,
         choice_audit.hit_check,
@@ -79,6 +82,7 @@ def build_llm_report(
         work.matching_requested,
         choice_audit.requested,
         work.curriculum_requested,
+        work.check_requested,
     )
     if all(switch == "rule-based" for switch in requested):
         return None, None, None
@@ -92,9 +96,10 @@ def build_llm_report(
         | TopicArticlesReport
         | TopicWordingReport
         | CurriculumCheckReport
+        | ModelKnowledgeCheckReport
     ] = [
         r
-        for r in (wording, node, articles, choice, hit_check, matching, extraction, generation, curriculum)
+        for r in (wording, node, articles, choice, hit_check, matching, extraction, generation, check, curriculum)
         if r is not None
     ]
     curriculum_used = "llm" if curriculum is not None and curriculum.answered else "rule-based"
@@ -162,6 +167,15 @@ def build_llm_report(
         "extraction": extraction_block,
         "generation": generation_block,
         "curriculum_check": curriculum_block,
+        "model_knowledge_check": {
+            "requested": work.check_requested,
+            "used": "llm" if check is not None and check.sections else "rule-based",
+            "sections": list(check.sections) if check else [],
+            "checked": check.checked if check else 0,
+            "struck": check.struck if check else 0,
+            "corrected": check.corrected if check else 0,
+            "fallbacks": dict(check.fallbacks) if check else {},
+        },
         "topic_wording": (
             {"source": wording.source, "reason": wording.reason, "topic": wording.topic, "fallback": wording.fallback}
             if wording is not None
@@ -172,7 +186,7 @@ def build_llm_report(
     if gateway is not None:
         models = [
             r.model
-            for r in (generation, extraction, matching, choice, hit_check, node, articles, curriculum, wording)
+            for r in (generation, extraction, matching, choice, hit_check, node, articles, curriculum, wording, check)
             if r is not None and r.model
         ]
         front["provider"] = gateway.client.provider
@@ -190,6 +204,9 @@ def build_llm_report(
         }
     if work.curriculum_requested == "llm":
         front["curriculum_check"] = {key: curriculum_block[key] for key in ("rated", "dropped", "fallback")}
+    if work.check_requested == "llm":
+        checked = audit["model_knowledge_check"]
+        front["model_knowledge_check"] = {key: checked[key] for key in ("checked", "struck", "corrected")}
     if article_choice["asked"] or article_choice["hits_checked"] or article_choice["articles_asked"]:
         keys = (
             "offered",

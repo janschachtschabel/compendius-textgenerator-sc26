@@ -31,6 +31,7 @@ from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import Coverage, LlmSection, LlmSynthesizer, blocks_overview, shift_citations
+from app.synthesis.model_knowledge_check import ALL_STRUCK, CheckOutcome, ModelKnowledgeCheckReport, check_section
 from app.synthesis.safe_markdown import defuse, no_definitions
 from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
@@ -55,6 +56,8 @@ class LlmJob:
     # article the evidence comes from when ``topic`` is the topic as asked
     full: bool = False
     article: str = ""
+    # model_knowledge_check=llm (07, point 12a): a second call per block checks its sentences of model knowledge
+    check: bool = False
 
 
 @dataclass
@@ -72,6 +75,7 @@ class WrittenSections:
     sections: list[Section]
     citations: list[Citation]
     llm: LlmReport | None = None
+    check: ModelKnowledgeCheckReport | None = None  # model_knowledge_check=llm: what the check of the blocks did
 
 
 class SectionWriter:
@@ -97,8 +101,11 @@ class SectionWriter:
         lookup: Lookup | None = None,
     ) -> WrittenSections:
         kept = dict(preserved or {})
-        drafts = _draft_with_llm(template, assigned, sources_by_id, llm, skip=set(kept)) if llm is not None else {}
+        drafts, checks = (
+            _draft_with_llm(template, assigned, sources_by_id, llm, skip=set(kept)) if llm is not None else ({}, {})
+        )
         report = LlmReport() if llm is not None else None
+        check_report = ModelKnowledgeCheckReport() if llm is not None and llm.check else None
         sections: list[Section] = []
         all_citations: list[Citation] = [c for block in kept.values() for c in block.citations]
         # The new blocks count on from the highest number a kept block cites, read from its markers: a row the
@@ -128,6 +135,16 @@ class SectionWriter:
                 },
             )
             draft = drafts.get(slot.id)
+            if check_report is not None and slot.id in checks:
+                check_report.take(slot.id, checks[slot.id])
+            if isinstance(draft, LlmSection) and not draft.text:  # model knowledge alone, every sentence struck
+                draft = LlmSkipped(
+                    ALL_STRUCK,
+                    calls=1,
+                    prompt_tokens=draft.prompt_tokens,
+                    completion_tokens=draft.completion_tokens,
+                    total_tokens=draft.total_tokens,
+                )
             if isinstance(draft, LlmSection) and report is not None:
                 draft = shift_citations(draft, highest)
                 section.text, section.citations, section.status = draft.text, draft.citations, SectionStatus.LLM
@@ -182,7 +199,7 @@ class SectionWriter:
             section.text = defuse(section.text)
             if section.slot_id in kept and not _is_generated(template, section.slot_id):
                 section.text = no_definitions(section.text)
-        return WrittenSections(sections=sections, citations=all_citations, llm=report)
+        return WrittenSections(sections=sections, citations=all_citations, llm=report, check=check_report)
 
     def _generate(
         self,
@@ -236,20 +253,22 @@ def _draft_with_llm(
     sources_by_id: Mapping[str, Source],
     job: LlmJob,
     skip: set[str],
-) -> dict[str, LlmSection | LlmSkipped]:
+) -> tuple[dict[str, LlmSection | LlmSkipped], dict[str, CheckOutcome]]:
     """Drafts for every LLM slot with assigned chunks - with the model's own knowledge for every LLM slot (D69,
-    D72) -, in parallel, numbered locally from 1."""
+    D72) -, in parallel, numbered locally from 1; with ``job.check`` each checked right after it is written, and
+    what the check did per slot."""
     slots = [
         slot
         for slot in template.content_slots()
         if slot.id in job.slots and (job.full or job.enrich or assigned.get(slot.id)) and slot.id not in skip
     ]
     if not slots:
-        return {}
+        return {}, {}
     coverage = Coverage(article=job.article, blocks=blocks_overview(template)) if job.full else None
+    checks: dict[str, CheckOutcome] = {}  # one key per slot, each written by its own thread
 
     def draft(slot: TemplateSlot) -> LlmSection | LlmSkipped:
-        return job.synthesizer.write_section(
+        written = job.synthesizer.write_section(
             slot,
             assigned.get(slot.id, []),
             sources_by_id,
@@ -260,10 +279,30 @@ def _draft_with_llm(
             enrich=job.enrich,
             coverage=coverage,
         )
+        if job.check and isinstance(written, LlmSection) and written.marked_sentences:
+            written, checks[slot.id] = _checked(job, slot, written)
+        return written
 
     # An unexpected error writes that block extractively
     results = map_in_threads(skipped_on_error(draft, lambda slot: f"LLM draft for {slot.id}"), slots, job.concurrency)
-    return {slot.id: result for slot, result in zip(slots, results, strict=True)}
+    return {slot.id: result for slot, result in zip(slots, results, strict=True)}, checks
+
+
+def _checked(job: LlmJob, slot: TemplateSlot, written: LlmSection) -> tuple[LlmSection, CheckOutcome]:
+    """``written`` with its model knowledge checked (07, point 12a); an unexpected error leaves it as written."""
+
+    def check(section: LlmSection) -> tuple[LlmSection, CheckOutcome]:
+        return check_section(
+            job.synthesizer.client,
+            section,
+            topic=job.topic,
+            title=slot.title,
+            budget=job.budget,
+            deadline=job.deadline,
+        )
+
+    result = skipped_on_error(check, lambda section: f"model knowledge check of {slot.id}")(written)
+    return (written, CheckOutcome(fallback=result.reason)) if isinstance(result, LlmSkipped) else result
 
 
 def _account(report: LlmReport, slot_id: str, draft: LlmSection) -> None:

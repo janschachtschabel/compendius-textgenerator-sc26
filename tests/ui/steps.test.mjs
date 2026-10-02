@@ -7,8 +7,8 @@ import { formatCount } from '../../app/ui/static/stats.mjs';
 
 const options = {
   presets: [
-    { id: 'llm-free', switches: { article_choice: 'rule-based', matcher: 'hybrid_light', extraction: 'rule-based', generation: 'rule-based', enrichment: 'sources-only', curriculum_check: 'rule-based' } },
-    { id: 'best-quality-generated', switches: { article_choice: 'llm-thorough', matcher: 'llm', extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge', curriculum_check: 'llm' } },
+    { id: 'llm-free', switches: { article_choice: 'rule-based', matcher: 'hybrid_light', extraction: 'rule-based', generation: 'rule-based', enrichment: 'sources-only', model_knowledge_check: 'rule-based', curriculum_check: 'rule-based' } },
+    { id: 'best-quality-generated', switches: { article_choice: 'llm-thorough', matcher: 'llm', extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge', model_knowledge_check: 'rule-based', curriculum_check: 'llm' } },
   ],
 };
 const byStep = (rows) => Object.fromEntries(rows.map((row) => [row.step, row]));
@@ -74,6 +74,7 @@ test('a step the LLM was asked for and the rules did falls back', () => {
       extraction: ['rule-based', false],
       generation: ['rule-based', true],
       enrichment: ['sources-only', true],
+      model_knowledge_check: ['rule-based', false],
       curriculum_check: ['rule-based', true],
     },
   );
@@ -147,4 +148,26 @@ test('a switch the request set wins over its profile', () => {
   assert.equal(rows.matcher.used, 'bm25');
   assert.equal(rows.extraction.asked, 'llm');
   assert.equal(rows.extraction.fellBack, false);
+});
+
+// The check of model knowledge (07, point 12a): what it read, struck and corrected; nothing to check is no fallback
+const knowledgeRow = (block) =>
+  byStep(stepsAccount({ extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge-full', audit: { llm: { model_knowledge_check: block } } }, { parts: ['world'], model_knowledge_check: 'llm' }, 'best-quality-generated', options)).model_knowledge_check;
+
+test('a check of the model knowledge says what it read, struck and corrected', () => {
+  const row = knowledgeRow({ requested: 'llm', used: 'llm', sections: ['sc26_1'], checked: 40, struck: 3, corrected: 2, fallbacks: {} });
+
+  assert.deepEqual([row.used, row.fellBack, row.note], ['llm', false, '40 Sätze geprüft, 3 gestrichen, 2 berichtigt']);
+});
+
+test('a check of the model knowledge with no such sentence had nothing to check, which is no fallback', () => {
+  const row = knowledgeRow({ requested: 'llm', used: 'rule-based', sections: [], checked: 0, struck: 0, corrected: 0, fallbacks: {} });
+
+  assert.deepEqual([row.fellBack, row.note], [false, 'nichts zu prüfen: kein Satz aus Modellwissen']);
+});
+
+test('a check of the model knowledge the model could not do falls back, and says why', () => {
+  const row = knowledgeRow({ requested: 'llm', used: 'rule-based', sections: [], checked: 0, struck: 0, corrected: 0, fallbacks: { sc26_1: 'Antwort nicht lesbar' } });
+
+  assert.deepEqual([row.fellBack, row.note], [true, 'Antwort nicht lesbar']);
 });

@@ -96,6 +96,8 @@ def assemble(
         curriculum_fallback=made.curricula.fallback,
         cached_tokens=made.cached_tokens,
         wording=prepared.wording,
+        check_requested=requested.model_knowledge_check,
+        check=world.written.check,
     )
     llm_audit, llm_tokens, llm_front = build_llm_report(llm, work)
     frontmatter = build_frontmatter(

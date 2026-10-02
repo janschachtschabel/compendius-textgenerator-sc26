@@ -253,6 +253,12 @@ def _as_marked(sentence: str, grade: str) -> str:
     return f"{opening_marker(grade)}{plain}{label}{END_MARKER}"
 
 
+def marked_sentence(sentence: str, grade: str = MODEL_KNOWLEDGE) -> str:
+    """``sentence`` as a written block carries a marked one: without numbers, labelled when it is model knowledge, and
+    its words shown as typed - model text never becomes the service's markup (audit 2026-09-28, SE-17)."""
+    return escape_model_text(_as_marked(sentence, grade), ())
+
+
 def _split_claims(text: str) -> list[str]:
     """Sentences of a text; already marked sentences stay whole."""
     claims: list[str] = []

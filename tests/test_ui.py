@@ -33,6 +33,7 @@ from app.domain.requests import (
     Extraction,
     GenerateRequest,
     Generation,
+    ModelKnowledgeCheck,
     Part,
 )
 from app.main import create_app
@@ -224,6 +225,7 @@ def test_the_options_offer_every_value_of_every_switch(options: dict[str, Any]) 
         "extraction": list(get_args(Extraction)),
         "generation": list(get_args(Generation)),
         "enrichment": list(get_args(Enrichment)),
+        "model_knowledge_check": list(get_args(ModelKnowledgeCheck)),
         "curriculum_check": list(get_args(CurriculumCheck)),
     }
     assert options["parts"] == list(get_args(Part))

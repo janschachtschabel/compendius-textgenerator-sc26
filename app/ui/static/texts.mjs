@@ -96,6 +96,7 @@ export const STEPS = {
       'model-knowledge-full': 'ja, füllt jeden Baustein zum angefragten Thema',
     },
   },
+  model_knowledge_check: { name: 'Prüfung des Modellwissens', values: { 'rule-based': 'keine', llm: 'KI prüft jeden Satz aus Modellwissen' } },
   curriculum_check: { name: 'Prüfung der Lehrplanelemente', values: { 'rule-based': 'Stichwortregeln', llm: 'KI bewertet jedes Element' } },
 };
 

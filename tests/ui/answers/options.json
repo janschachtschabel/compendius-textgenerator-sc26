@@ -13,7 +13,8 @@
     "curriculum_check": "rule-based",
     "extraction": "rule-based",
     "generation": "rule-based",
-    "enrichment": "sources-only"
+    "enrichment": "sources-only",
+    "model_knowledge_check": "rule-based"
    }
   },
   {
@@ -24,7 +25,8 @@
     "curriculum_check": "rule-based",
     "extraction": "rule-based",
     "generation": "rule-based",
-    "enrichment": "sources-only"
+    "enrichment": "sources-only",
+    "model_knowledge_check": "rule-based"
    }
   },
   {
@@ -35,7 +37,8 @@
     "curriculum_check": "llm",
     "extraction": "rule-based",
     "generation": "rule-based",
-    "enrichment": "sources-only"
+    "enrichment": "sources-only",
+    "model_knowledge_check": "rule-based"
    }
   },
   {
@@ -46,7 +49,8 @@
     "curriculum_check": "llm",
     "extraction": "rule-based",
     "generation": "llm",
-    "enrichment": "model-knowledge"
+    "enrichment": "model-knowledge",
+    "model_knowledge_check": "rule-based"
    }
   },
   {
@@ -57,7 +61,8 @@
     "curriculum_check": "llm",
     "extraction": "rule-based",
     "generation": "llm",
-    "enrichment": "model-knowledge-full"
+    "enrichment": "model-knowledge-full",
+    "model_knowledge_check": "rule-based"
    }
   }
  ],
@@ -87,6 +92,10 @@
    "sources-only",
    "model-knowledge",
    "model-knowledge-full"
+  ],
+  "model_knowledge_check": [
+   "rule-based",
+   "llm"
   ],
   "curriculum_check": [
    "rule-based",

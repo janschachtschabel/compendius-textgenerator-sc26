@@ -154,6 +154,7 @@ class WorldBuilding(LlmPolicy):
                 enrich=enrichment in ("model-knowledge", "model-knowledge-full"),
                 full=full,
                 article=prepared.title,
+                check=requested.model_knowledge_check == "llm",
             )
         preserved = self._preserved(request, template)
         attribution = attribute(preserved, request.existing_markdown or "", sources)

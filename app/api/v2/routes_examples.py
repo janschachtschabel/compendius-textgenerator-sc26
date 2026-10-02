@@ -86,6 +86,23 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         ),
         "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
     },
+    "Modellwissen prüfen": {
+        "summary": "Nach dem Schreiben prüft das LLM jeden Satz mit [Modellwissen] und streicht oder berichtigt ihn",
+        "description": (
+            "model_knowledge_check llm (07, Punkt 12a): Ein zweiter Aufruf je Baustein liest die Sätze aus "
+            "Modellwissen mit dem Baustein als Zusammenhang, streicht, was er für falsch oder erfunden hält, und "
+            "berichtigt eine falsche Angabe, die er sicher kennt - Jahreszahlen, Namen, Gremien, Zuschreibungen. Die "
+            "Kennzeichnung bleibt; ein Baustein nur aus Modellwissen, der jeden Satz verliert, fällt auf die Regeln "
+            "zurück. audit.llm.model_knowledge_check zählt, was gelesen, gestrichen und berichtigt wurde. Wirkt nur, "
+            "wo das LLM mit Modellwissen schreibt."
+        ),
+        "value": {
+            "topic": "OER-Förderungen",
+            "parts": ["world"],
+            "preset": "best-coverage-generated",
+            "model_knowledge_check": "llm",
+        },
+    },
     "Sammelthema mit best-coverage-generated": {
         "summary": "Sammelthema: eine Gruppe ohne eigenen Artikel, vollständig über die Gruppe geschrieben",
         "description": (

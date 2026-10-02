@@ -129,6 +129,7 @@ class Requested:
     extraction: str
     generation: str
     enrichment: str
+    model_knowledge_check: str = "rule-based"  # 07, point 12a (D74)
 
     @classmethod
     def of(cls, request: GenerateRequest) -> Requested:
@@ -136,7 +137,10 @@ class Requested:
         if "world" not in request.parts:
             return cls("rule-based", "rule-based", "sources-only")
         return cls(
-            request.extraction or "rule-based", request.generation or "rule-based", request.enrichment or "sources-only"
+            request.extraction or "rule-based",
+            request.generation or "rule-based",
+            request.enrichment or "sources-only",
+            request.model_knowledge_check or "rule-based",
         )
 
 

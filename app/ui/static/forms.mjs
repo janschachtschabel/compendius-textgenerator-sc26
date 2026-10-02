@@ -5,7 +5,7 @@
 import { label, LEHRPLAN_MODES, LINK_CHECKS, QA_METHODS } from './texts.mjs';
 
 const NODE_ID = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/;
-export const COMPENDIUM_STEPS = ['article_choice', 'matcher', 'extraction', 'generation', 'enrichment', 'curriculum_check'];
+export const COMPENDIUM_STEPS = ['article_choice', 'matcher', 'extraction', 'generation', 'enrichment', 'model_knowledge_check', 'curriculum_check'];
 
 const ID_HELP = 'ID oder Link aus dem Repository, etwa 9e7ae956-e9df-430f-bace-f3db4b910013';
 const NODE = { name: 'node_id', type: 'id', label: 'Material oder Sammlung als Eingang', advanced: true, help: 'Thema, Fach und Stufen kommen dann aus seinen Metadaten. ' + ID_HELP };

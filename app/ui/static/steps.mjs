@@ -15,6 +15,7 @@ const PARTS_OF = {
   extraction: ['world'],
   generation: ['world'],
   enrichment: ['world'],
+  model_knowledge_check: ['world'],
   curriculum_check: ['curricula'],
 };
 
@@ -31,6 +32,7 @@ export function stepsAccount(answer, request, preset, options) {
     const used = USED[step](answer ?? {}, llm, asked);
     if (step === 'article_choice') return { step, asked, used, applies, parts, ...articleChoice(llm, asked, used) };
     if (step === 'curriculum_check') return { step, asked, used, applies, parts, ...curriculumCheck(llm.curriculum_check, answer?.curricula) };
+    if (step === 'model_knowledge_check') return { step, asked, used, applies, parts, ...knowledgeCheck(llm.model_knowledge_check) };
     const fellBack = Boolean(used && used !== asked && RULES.has(used) && !RULES.has(asked));
     return { step, asked, used, applies, parts, fellBack, note: NOTES[step](llm) };
   });
@@ -44,6 +46,7 @@ const USED = {
   extraction: (answer) => answer.extraction,
   generation: (answer) => answer.generation,
   enrichment: (answer) => answer.enrichment,
+  model_knowledge_check: (answer, llm, asked) => (llm.model_knowledge_check?.requested === 'llm' ? llm.model_knowledge_check.used : asked),
   curriculum_check: (answer, llm, asked) => (llm.curriculum_check?.requested === 'llm' ? llm.curriculum_check.used : asked),
 };
 
@@ -68,6 +71,17 @@ export function curriculumCheck(check, curricula) {
   }
   const reasons = [check.fallback, ...Object.keys(check.fallbacks ?? {})].filter(Boolean);
   const counts = check.rated ? `${formatNumber(check.answered ?? 0)} von ${formatNumber(check.rated)} bewertet, ${formatNumber(check.dropped ?? 0)} entfernt` : null;
+  return { fellBack: check.used !== 'llm' && reasons.length > 0, note: [counts, ...reasons].filter(Boolean).join('; ') };
+}
+
+/** Whether the check of model knowledge (07, point 12a) fell back, and a note of what it did, from its block in the
+ * audit. It reads only sentences marked [Modellwissen]: a text without any had nothing to check, which is no
+ * fallback; one is a block whose sentences stayed unchecked, with the reason (fallbacks, by block). */
+export function knowledgeCheck(check) {
+  if (check?.requested !== 'llm') return { fellBack: false, note: null };
+  const reasons = [...new Set(Object.values(check.fallbacks ?? {}))];
+  if (!check.checked && !reasons.length) return { fellBack: false, note: 'nichts zu prüfen: kein Satz aus Modellwissen' };
+  const counts = check.checked ? `${formatCount(check.checked, 'Satz', 'Sätze')} geprüft, ${formatNumber(check.struck ?? 0)} gestrichen, ${formatNumber(check.corrected ?? 0)} berichtigt` : null;
   return { fellBack: check.used !== 'llm' && reasons.length > 0, note: [counts, ...reasons].filter(Boolean).join('; ') };
 }
 

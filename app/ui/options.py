@@ -29,6 +29,7 @@ from app.domain.requests import (
     Extraction,
     GenerateRequest,
     Generation,
+    ModelKnowledgeCheck,
     Part,
     default_preset,
 )
@@ -43,6 +44,7 @@ SWITCHES: dict[str, list[str]] = {
     "extraction": list(get_args(Extraction)),
     "generation": list(get_args(Generation)),
     "enrichment": list(get_args(Enrichment)),
+    "model_knowledge_check": list(get_args(ModelKnowledgeCheck)),
     "curriculum_check": list(get_args(CurriculumCheck)),
 }
 _STAGING_NODE = {"repository": STAGING_REPOSITORY}

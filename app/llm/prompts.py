@@ -374,12 +374,39 @@ TOPIC_WORDING = Prompt(
     user="{input}\n\nGib das JSON-Objekt zurück.",
 )
 
+# The check of model knowledge (07, point 12a): after a block is written, the model reads its sentences of model
+# knowledge again and strikes or corrects what is wrong; in M48 six of the eight light errors of
+# best-coverage-generated stood in such sentences - dates, bodies, attributions
+MODEL_KNOWLEDGE_CHECK = Prompt(
+    id="model_knowledge_check",
+    version=1,
+    system=(
+        "Du prüfst Sätze, die ein Sprachmodell aus eigenem Wissen ohne Quellenbeleg in ein Kompendium für Lehrkräfte "
+        "geschrieben hat. Antworte nur mit JSON."
+    ),
+    user=(
+        "Thema: {topic}\n"
+        "Baustein: {title}\n\n"
+        "Der Baustein im Zusammenhang:\n{block}\n\n"
+        "Diese Sätze darin stammen aus Modellwissen:\n{sentences}\n\n"
+        "Prüfe jeden dieser Sätze auf sachliche Fehler, besonders bei Jahreszahlen, Daten, Zahlen, Namen, Orten, "
+        "Gremien, Gesetzen und Zuschreibungen (wer was wann entdeckte, schrieb, gründete oder beschloss).\n"
+        '- Stimmt der Satz, antworte "ok".\n'
+        "- Ist eine Angabe falsch und kennst du die richtige sicher, gib den ganzen Satz berichtigt zurück; ändere "
+        "nur die falsche Angabe, nicht Stil oder Länge.\n"
+        "- Ist der Satz falsch oder enthält er eine Angabe, die du für erfunden hältst, und kannst du ihn nicht "
+        'sicher berichtigen, antworte "streichen".\n'
+        'Antworte so: {{"1": "ok", "2": "streichen", "3": "<berichtigter Satz>"}}'
+    ),
+)
+
 PROMPTS: dict[str, Prompt] = {
     p.id: p
     for p in (
         SECTION_SYNTHESIS,
         SECTION_ENRICHMENT,
         SECTION_COVERAGE,
+        MODEL_KNOWLEDGE_CHECK,
         PASSAGE_SELECTION,
         PARAGRAPH_ASSIGNMENT,
         ARTICLE_CHOICE,
