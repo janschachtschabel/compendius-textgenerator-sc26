@@ -3,7 +3,7 @@
 // profile does there; while two profiles are compared the steps are theirs alone.
 
 import { h } from './dom.mjs';
-import { bounds, FORMS } from './forms.mjs';
+import { asCollection, bounds, FORMS } from './forms.mjs';
 import { nodeField } from './node_field.mjs';
 import { formatNumber } from './stats.mjs';
 import { ENTITY_METHODS, label, LINK_CHECKS, PARTS, PROFILE_ABOUT, PROFILE_NAMES, QA_METHODS, STEPS } from './texts.mjs';
@@ -178,13 +178,24 @@ const TYPES = {
   parts(spec, ctx) {
     const boxes = (ctx.options.parts ?? []).map((part) => [part, h('input', { id: uid(part), type: 'checkbox', value: part })]);
     const error = h('p', { class: 'field-error', id: uid('teile-fehler'), hidden: true });
-    const group = h('fieldset', { class: 'parts', 'aria-describedby': error.id }, h('legend', {}, spec.label), boxes.map(([part, box]) => h('div', { class: 'check' }, box, h('label', { for: box.id }, label(PARTS, part)))), error);
+    // Part 3 describes a collection: until one of the server's repository is read it is locked and not asked for, and
+    // a tick set before comes back with it (Jan, 2026-10-02: without a collection there is no part 3; ticked anyway it
+    // stayed empty without a word). Decided when the values are read, so request and explanation agree
+    const note = h('span', { class: 'needs-collection' }, ' – braucht eine Sammlung');
+    const value = (name) => ctx.controls.get(name)?.read();
+    const locked = () => !asCollection({ node_kind: value('node_kind'), repository: value('repository') }, ctx.options);
+    const group = h('fieldset', { class: 'parts', 'aria-describedby': error.id }, h('legend', {}, spec.label), boxes.map(([part, box]) => h('div', { class: 'check' }, box, h('label', { for: box.id }, label(PARTS, part), part === 'collection' ? note : null))), error);
     ctx.controls.set(spec.name, {
       name: spec.name,
-      read: () => boxes.filter(([, box]) => box.checked).map(([part]) => part),
+      read: () => boxes.filter(([part, box]) => box.checked && !(part === 'collection' && locked())).map(([part]) => part),
       write: (value) => boxes.forEach(([part, box]) => (box.checked = (value ?? []).includes(part))),
       error,
       focus: boxes[0][1],
+    });
+    ctx.refreshers.push(() => {
+      const closed = locked();
+      for (const [part, box] of boxes) if (part === 'collection') box.disabled = closed;
+      note.hidden = !closed;
     });
     return group;
   },

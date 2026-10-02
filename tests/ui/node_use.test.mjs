@@ -44,11 +44,10 @@ test('the materials of the collection as a source say how much of them part 1 re
   assert.equal(plain.at(-1), 'Quelle für Teil 1: die Materialien der Sammlung, ihre Beschreibungen.');
 });
 
-test('a material gives the article of its title and description, and no part 3', () => {
+test('a material gives the article of its title and description; part 3 its locked box speaks of', () => {
   assert.deepEqual(nodeUses('compendium', compendium({ preset: 'llm-free' }), STATION), [
     'Thema: der Artikel aus Titel und Beschreibung des Materials, nach den Regeln „Optik“.',
     'Dazu kommt das Fach Physik.',
-    'Teil 3 fällt weg: Es braucht eine Sammlung.',
   ]);
   const unknown = nodeUses('compendium', compendium({ preset: 'llm-free' }), { ...STATION, topic: null });
   assert.equal(unknown[0], 'Thema: Die Regeln finden in Titel und Beschreibung keinen Artikel – bitte ein Thema eingeben.');

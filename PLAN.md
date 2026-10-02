@@ -2019,6 +2019,11 @@ API.
   `/ui/options.json` nennt den Host des eingestellten Repositorys (`repository`), damit die Seite einen Knoten eines
   anderen erkennt. Die Felder der API bleiben; eine andere Sammlung als Quelle geht weiter über
   `knowledge_collection_id`.
+  Nachtrag (02.10., Jan: „prüfe ob das passt“, dann „ok dann folge ich deiner empfehlung“): Teil 3 unter „Teile“ ist
+  gesperrt und geht nicht in die Anfrage, bis eine Sammlung des Server-Repositorys erkannt ist. Der Titel der Sammlung
+  bleibt bei eingegebenem Thema außen vor: „Photosynthese“ mit der Optik-Sammlung als Quelle zöge er zur Optik und
+  verfälschte das Thema; Stufe und Fach der Sammlung zählen weiter, ein Satz oder eine Frage als Thema wird in den
+  schreibenden Profilen ohnehin mit ihren Angaben formuliert (D72).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

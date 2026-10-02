@@ -763,7 +763,8 @@ oder lädt ein Beispiel (Staging), wählt Teile und Profil und auf Wunsch ein zw
 Sammlung und Material gibt es ein Feld (D77): Die Seite liest den Knoten (`GET /api/v2/nodes/{id}`), nennt darunter, was
 er ist („Sammlung „Optik“ · Physik · Sekundarstufe I“), und sagt, wie er verwendet wird — als Thema oder neben dem
 Thema, für Teil 3, mit Stufe und Fach. Bei einer Sammlung lassen sich ihre Materialien als Quelle für Teil 1
-zuschalten, mit Volltexten und Untersammlungen; eine andere Sammlung als Quelle geht nur über die API. Unter
+zuschalten, mit Volltexten und Untersammlungen; eine andere Sammlung als Quelle geht nur über die API. Teil 3 unter
+„Teile“ ist gesperrt („braucht eine Sammlung“), bis eine Sammlung des Server-Repositorys erkannt ist. Unter
 „Erweitert“ lassen sich die Methoden einzelner Schritte setzen, die sonst das Profil wählt. Rechts steht der Text
 gerendert:
 

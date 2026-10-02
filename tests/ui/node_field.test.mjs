@@ -104,3 +104,55 @@ test('an example of a collection counts as one before reading it, so its source 
   assert.equal(form.read().knowledge_source, true);
   assert.equal(shows('knowledge_source'), true);
 });
+
+// The box of part 3 under "Teile" and the note beside it
+function partThree(form) {
+  const label = form.element.descendants().find((node) => node.tagName === 'LABEL' && node.textContent.startsWith('Teil 3'));
+  const box = form.element.descendants().find((node) => node.id === label.getAttribute('for'));
+  const note = label.descendants().find((node) => node.classList.contains('needs-collection'));
+  return { box, note };
+}
+
+test('part 3 stays locked and unsent until a collection of the server is read, then comes back as it was ticked', async () => {
+  // Jan, 2026-10-02: without a collection there is no part 3; ticked anyway it stayed empty without a word
+  const { form, asked } = compendiumForm();
+  form.write({ parts: ['world', 'collection'] });
+  const { box, note } = partThree(form);
+
+  assert.equal(box.disabled, true);
+  assert.equal(note.hidden, false);
+  assert.equal(note.textContent, ' – braucht eine Sammlung');
+  assert.deepEqual(form.read().parts, ['world'], 'a locked part 3 is not asked for');
+
+  form.write({ node: COLLECTION });
+  asked[0].answer(OPTIK);
+  await settle();
+
+  assert.equal(box.disabled, false);
+  assert.equal(note.hidden, true);
+  assert.deepEqual(form.read().parts, ['world', 'collection']);
+});
+
+test('a material, or a collection of another repository, keeps part 3 locked', async () => {
+  const { form, asked } = compendiumForm();
+  form.write({ node: MATERIAL, parts: ['world', 'collection'] });
+  asked[0].answer(STATION);
+  await settle();
+  assert.equal(partThree(form).box.disabled, true);
+
+  form.write({ node: COLLECTION, repository: 'https://redaktion.openeduhub.net/edu-sharing/rest' });
+  asked[1].answer(OPTIK);
+  await settle();
+  assert.equal(partThree(form).box.disabled, true);
+  assert.deepEqual(form.read().parts, ['world']);
+});
+
+test('an example with its collection opens part 3 at once', () => {
+  const { form } = compendiumForm();
+  const example = OPTIONS.examples.compendium.find((each) => each.values.collection_id && each.values.parts?.includes('collection'));
+
+  form.write(fromExample('compendium', example));
+
+  assert.equal(partThree(form).box.disabled, false);
+  assert.deepEqual(form.read().parts, ['world', 'curricula', 'collection']);
+});

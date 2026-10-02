@@ -60,10 +60,10 @@ function contextLine(values, node) {
   return `Dazu ${plural ? 'kommen' : 'kommt'} ${items.join(' und ')}${chosen}.`;
 }
 
+// Without a collection the box of part 3 is locked and says why itself (fields.mjs)
 function partLine(values, node) {
-  const asked = (values.parts ?? []).includes('collection');
-  if (node.kind !== 'collection') return asked ? 'Teil 3 fällt weg: Es braucht eine Sammlung.' : null;
-  return asked ? 'Teil 3 beschreibt die Sammlung.' : 'Teil 3 entsteht nur, wenn unter „Teile“ die Sammlung angehakt ist.';
+  if (node.kind !== 'collection') return null;
+  return (values.parts ?? []).includes('collection') ? 'Teil 3 beschreibt die Sammlung.' : 'Teil 3 entsteht nur, wenn unter „Teile“ die Sammlung angehakt ist.';
 }
 
 function sourceLine(values, node) {
