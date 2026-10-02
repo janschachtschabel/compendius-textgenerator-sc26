@@ -118,10 +118,12 @@
    "hits_dropped": [],
    "hits_fallback": null,
    "articles_asked": true,
-   "articles_found": [],
-   "articles_overview": null,
+   "articles_found": [
+    "Geometrische Optik"
+   ],
+   "articles_overview": "Geometrische Optik",
    "articles_main": false,
-   "articles_fallback": "kein genannter Titel ist ein Artikel des Archivs",
+   "articles_fallback": "kein genannter Teil ist ein Artikel des Archivs; Nebenartikel wie ohne die Frage",
    "tokens": 72,
    "note": null
   }

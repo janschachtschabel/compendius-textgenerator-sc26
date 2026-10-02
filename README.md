@@ -591,8 +591,10 @@ Informatik)“). Was davon ein Artikel des Archivs ist (eine Weiterleitung gilt 
 entfällt), kommt nach Hauptartikel und Klexikon-Zwilling in den Korpus (`origin: named`), an die Stelle der verlinkten
 Unterartikel und Volltexttreffer; die Prüfung der Nebenartikel entfällt dann. Die Übersicht ersetzt den Artikel der
 Regeln nur, wo diese das Thema verfehlen: bei einem Titelvorschlag, einem Volltexttreffer, einer Listenseite oder ohne
-jeden Treffer. Fehlt die Übersicht im Archiv, steht wie gemessen der erste gefundene Teil für sie ein („Philosophen der
-Aufklärung“: *John Locke*). Sonst bleibt der Artikel der Regeln, und das LLM entscheidet unsichere Fälle wie oben. Ohne
+jeden Treffer. Fehlt die Übersicht im Archiv, sucht der Dienst sie auch ohne Klammerzusatz („Aufklärung
+(Philosophie)“ → *Aufklärung*, V1a, M49); fehlt sie dann noch, steht wie gemessen der erste gefundene Teil für sie ein
+(„Philosophen der Aufklärung“: *John Locke*). Sonst bleibt der Artikel der Regeln, und das LLM entscheidet unsichere
+Fälle wie oben. Ohne
 brauchbare Antwort oder ohne einen Teil, den das Archiv hat, bleibt der Korpus wie vorher, samt Prüfung der
 Nebenartikel; `audit.llm.article_choice` nennt die gefundenen Titel (`articles_found`), die Übersicht, wie das Archiv
 sie führt (`articles_overview`, leer, wenn ein Teil einsprang), ob der erste davon Hauptartikel wurde

@@ -9,13 +9,14 @@ ones, at about 500 tokens and 3.5 s. Without an LLM neither spaCy's entities nor
 that (M38).
 
 The titles are looked up as measured: as the archive has them (a redirect counts as its target), else in the old
-service's spelling variants; a disambiguation page, a title the archive lacks and a repeat drop out. Whatever keeps the
-model from naming an article of the archive - b-api, budget, time, an unreadable answer - leaves the corpus of before,
-and the reason goes to the audit.
+service's spelling variants; a disambiguation page, a title the archive lacks and a repeat drop out. The overview is
+also looked up without a qualifier in brackets (M49, V1a). Whatever keeps the model from naming an article of the
+archive - b-api, budget, time, an unreadable answer - leaves the corpus of before, and the reason goes to the audit.
 """
 
 from __future__ import annotations
 
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 
@@ -31,6 +32,7 @@ MAX_NAMED = 8  # articles on the parts, besides the overview (M37)
 OUTPUT_TOKENS = 600  # as measured; the reasoning room of the model comes on top (budgeted_chat)
 NONE_FOUND = "kein genannter Titel ist ein Artikel des Archivs"
 NO_PARTS = "kein genannter Teil ist ein Artikel des Archivs; Nebenartikel wie ohne die Frage"
+QUALIFIER = re.compile(r"\s*\([^()]*\)\s*$")  # "Aufklärung (Philosophie)"
 
 
 @dataclass
@@ -80,8 +82,8 @@ def ask_topic_articles(
     report.overview = str(data.get("uebersicht") or "").strip() or None
     parts = data.get("artikel")
     report.named = [str(t).strip() for t in parts if str(t).strip()][:MAX_NAMED] if isinstance(parts, list) else []
-    report.overview_title = _look_up(archive, report.overview) if report.overview else None
-    for label in [report.overview, *report.named] if report.overview else report.named:
+    report.overview_title = _overview(archive, report.overview) if report.overview else None
+    for label in [report.overview_title or report.overview, *report.named] if report.overview else report.named:
         title = _look_up(archive, label)
         if title is not None and title not in report.found:
             report.found.append(title)
@@ -95,6 +97,15 @@ def settle(report: TopicArticlesReport, sources: Sequence[Source]) -> None:
     report.parts = sum(1 for source in sources if source.origin == NAMED_ORIGIN)
     if report.found and not report.parts and report.fallback is None:
         report.fallback = NO_PARTS
+
+
+def _overview(archive: ZimArchive, label: str) -> str | None:
+    """The overview as the archive has it, else without its qualifier: M48 lost "Aufklärung (Philosophie)" to a member
+    of the group standing in for it (M49, V1a). Only for the overview, where the general article is the right one; a
+    part could land on another meaning that way ("Merkur (Planet)" -> the god)."""
+    found = _look_up(archive, label)
+    bare = QUALIFIER.sub("", label).strip()
+    return found if found is not None or not bare or bare == label else _look_up(archive, bare)
 
 
 def _look_up(archive: ZimArchive, label: str) -> str | None:

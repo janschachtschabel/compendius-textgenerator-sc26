@@ -136,6 +136,27 @@ def test_n_names_the_overview_first_and_keeps_only_articles_of_the_archive(sets:
     assert question.startswith("Thema: deutsche Dichter\n") and "bis zu 8 Artikel" in question, "M37 word for word"
 
 
+def test_an_overview_with_a_qualifier_the_archive_lacks_is_looked_up_without_it(sets: ZimRegistry) -> None:
+    """M49 (V1a, 07 point 14): "Aufklärung (Philosophie)" is no article, "Aufklärung" is; a named overview the archive
+    lacked let a member of the group stand in for it (M48: Immanuel Kant). Without the qualifier it is found."""
+    archive = sets.primary_archive
+    assert archive is not None
+    found = ask_topic_articles(
+        job_for(FakeBApi(asking({"uebersicht": "Deutschsprachige Literatur (Gesamtheit)", "artikel": ["Goethe"]}))),
+        archive,
+        "deutsche Dichter",
+    )
+    missing = ask_topic_articles(
+        job_for(FakeBApi(asking({"uebersicht": "Gibt es nicht (Literatur)", "artikel": []}))),
+        archive,
+        "deutsche Dichter",
+    )
+
+    assert found.overview_title == "Deutschsprachige Literatur"
+    assert found.found == ["Deutschsprachige Literatur", "Johann Wolfgang von Goethe"]
+    assert missing.overview_title is None and missing.fallback == NONE_FOUND
+
+
 @pytest.mark.parametrize(
     ("answer", "reason"),
     [
