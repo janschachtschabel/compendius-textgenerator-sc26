@@ -261,11 +261,13 @@ def test_without_the_switch_nothing_is_checked(service: CompendiumService, monke
     assert result.audit.llm is not None and result.audit.llm["model_knowledge_check"]["used"] == "rule-based"
 
 
-def test_best_coverage_generated_checks_its_model_knowledge_and_no_other_profile_does() -> None:
-    """M53: in best-coverage-generated the check lowered the light errors per text from 1.6 to 1.1 at the same fit,
-    use and completeness - the rule agreed with Jan on 2026-10-02 for switching it on there."""
-    checks = {profile: switches["model_knowledge_check"] for profile, switches in PRESETS.items()}
-    assert checks == {**dict.fromkeys(PRESETS, "rule-based"), "best-coverage-generated": "llm"}
+def test_no_profile_checks_its_model_knowledge_the_switch_does() -> None:
+    """M53: the check lowered the light errors per text of best-coverage-generated from 1.6 to 1.1 for about 27,000
+    tokens and 5 s more, struck mostly sentences that were right, and kept the one serious error. Jan, 2026-10-02:
+    "die prüfung scheint nicht viel zu bringen" - no profile runs it (D74); a request can still ask for it."""
+    assert {profile: switches["model_knowledge_check"] for profile, switches in PRESETS.items()} == dict.fromkeys(
+        PRESETS, "rule-based"
+    )
 
 
 def test_the_check_alone_asks_nothing_of_an_llm(service: CompendiumService) -> None:

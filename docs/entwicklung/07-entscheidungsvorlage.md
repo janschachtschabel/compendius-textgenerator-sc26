@@ -22,7 +22,7 @@ der QA-Paare (D54, D55, D57).
 | Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM zum angefragten Thema geschrieben, ergänzt um Modellwissen (höchstens die Hälfte), ein Baustein ohne Belege aus Modellwissen (D72) | vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69) |
 | Hinweis in der Prüfung (`audit.lint`, `topic-scope`; V3, D73), wenn der Text einen anderen Artikel behandelt als das angefragte Thema | ja; die Wörter des Themas entscheiden | ja; die Frage N sagt, ob ihre Übersicht das Thema deckt | wie `balanced` | nein: der Text handelt vom angefragten Thema | wie `best-quality-generated` |
-| Prüfung des Modellwissens (`model_knowledge_check`, Punkt 12a, D73) | – | – | – | `rule-based` (Schalter `llm`: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen) | `llm`: leichte Fehler je Text 1,1 statt 1,6, Passung und Nutzen gleich, rund 27.000 Tokens und 5 s mehr (M53) |
+| Prüfung des Modellwissens (`model_knowledge_check`, Punkt 12a, D73) | – | – | – | `rule-based` (Schalter `llm`: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen) | wie `best-quality-generated`; in M53 brachte `llm` leichte Fehler je Text 1,1 statt 1,6 für rund 27.000 Tokens und 5 s mehr (D74: aus) |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` | wie `balanced` |
@@ -867,9 +867,10 @@ Passung 4,56 und Nutzen 4,31.
     Satz verliert, fällt auf die Regeln zurück. Gemessen in M53 an den neun Themen, dieselben Läufe vor und nach der
     Prüfung: leichte Fehler je Text 1,1 statt 1,6, Passung, Nutzen und Vollständigkeit gleich, Lesbarkeit 3,9 statt
     4,0, der einzige schwere Fehler blieb; jede Berichtigung stimmte danach, gestrichene Sätze waren aber meist richtig
-    oder unklar; rund 27.000 Tokens und 5 s mehr je Text. Nach der vereinbarten Regel steht die Prüfung in
-    `best-coverage-generated` auf `llm`, sonst auf `rule-based`. (b) und (d) sind offen: Die Prüfung kostet etwa so
-    viel, wie (d) mit `hybrid_light` sparen würde.
+    oder unklar; rund 27.000 Tokens und 5 s mehr je Text. Nach der vereinbarten Regel kam die Prüfung in
+    `best-coverage-generated` auf `llm` (2.6.0). **Revidiert (D74, Jan, 02.10.2026):** „die prüfung scheint nicht viel
+    zu bringen … wahrscheinlich sollten wir da erstmal keine ressourcen weiter rein stecken“ - kein Profil prüft, der
+    Schalter bleibt für Anfragen, die es wollen. (b) und (d) sind offen.
 13. **Länge in `best-coverage-generated`:** entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
     dort Untergrenze ist, schreibt `best-coverage-generated` im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
     das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen

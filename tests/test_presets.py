@@ -65,7 +65,7 @@ def test_the_presets_are_the_values_of_the_field() -> None:
         ("best-quality-generated", ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge", "rule-based")),
         (
             "best-coverage-generated",
-            ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge-full", "llm"),
+            ("llm-thorough", "llm", "rule-based", "llm", "model-knowledge-full", "rule-based"),
         ),
     ],
 )

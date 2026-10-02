@@ -38,11 +38,11 @@ lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, 
 | `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 6,9 s | rund 580 | **Standard** |
 | `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 26 s | rund 49.000, je nach Thema bis 87.000 | Vorbereitung durch die Redaktion |
 | `best-quality-generated` | dazu: schreibt den Text neu zum angefragten Thema, Bausteine ohne Belege aus Modellwissen (seit D72), Modellwissen sichtbar markiert | 36 s | rund 60.000 | lesbarer Fließtext |
-| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 43 s, nur Teil 1, mit Prüfung des Modellwissens | rund 129.000, ein Teil aus dem Prompt-Cache | Sammelthemen und Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt, Modellwissen geprüft |
+| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 38 s, nur Teil 1 | rund 103.000, davon rund 60.000 aus dem Prompt-Cache | Sammelthemen und Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
 
 Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
 [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
-Entwicklungsrechner, mit der Prüfung seines Modellwissens (M53, D73); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
+Entwicklungsrechner (M52); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
 jeder Prompt das angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn
 `topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`) oder
 eine Sammlung (`collection_id`) ohne Thema kommt.

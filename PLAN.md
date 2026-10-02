@@ -1977,6 +1977,11 @@ API.
   Gelesenes, Gestrichenes und Berichtigtes. Gemessen in M53 (neun Themen, dieselben Läufe vor und nach der Prüfung,
   zwei blinde Gutachter): leichte Fehler je Text 1,1 statt 1,6, Passung, Nutzen und Vollständigkeit gleich, rund
   27.000 Tokens und 5 s mehr; nach der vereinbarten Regel in `best-coverage-generated` an, sonst `rule-based`.
+- **D74 (2026-10-02)** Die Prüfung des Modellwissens in keinem Profil (Jan: „die prüfung scheint nicht viel zu
+  bringen … wahrscheinlich sollten wir da erstmal keine ressourcen weiter rein stecken“). M53 senkte die leichten
+  Fehler je Text von 1,6 auf 1,1, ließ den schweren stehen, strich meist richtige oder unklare Sätze und kostete rund
+  27.000 Tokens und 5 s je Text. `best-coverage-generated` steht wieder auf `rule-based`; der Schalter
+  `model_knowledge_check` bleibt für Anfragen, die ihn setzen. Keine weitere Arbeit daran.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

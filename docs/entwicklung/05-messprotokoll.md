@@ -3020,7 +3020,8 @@ Gleiches Urteil über „vorher falsch“ bei 28 von 31 Änderungen.
 - Die Lesbarkeit eines Aspektthemas sank bei beiden Gutachtern um eine Note.
 
 **Entscheidung** nach der mit Jan vereinbarten Regel (D73): in `best-coverage-generated` an
-(`model_knowledge_check: llm`), sonst `rule-based`; `best-quality-generated` ist nicht gemessen.
+(`model_knowledge_check: llm`), sonst `rule-based`; `best-quality-generated` ist nicht gemessen. Revidiert (D74):
+Jan sieht zu wenig Nutzen für die Kosten; kein Profil prüft, der Schalter bleibt.
 
 **Frage N mit dem ausgelieferten Prompt (V3):** M49 maß `deckt_ab` mit drei Übersichten (v2b); ausgeliefert ist v2,
 die Frage N von v1 mit nur `deckt_ab` dazu. Nachgemessen an denselben 54 Themen, zwei Runden (`mc_frage_n_probe.py`):

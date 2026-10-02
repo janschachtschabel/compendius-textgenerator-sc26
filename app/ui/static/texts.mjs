@@ -35,8 +35,7 @@ export const PROFILE_ABOUT = {
       'Thema und füllt ihn vollständig: aus den Quellen, wo sie das Thema treffen, sonst aus eigenem Wissen ' +
       '([Modellwissen]). Für Sammelthemen („Dichter aus dem Mittelalter“) und Themen mit Aspekt („OER-Förderungen“) ' +
       'am treffendsten und vollständigsten. Ein langes Thema, eine Frage sowie ein Material oder eine Sammlung ohne ' +
-      'Thema formuliert die KI zuerst als Thema; danach prüft sie ihre Sätze aus Modellwissen und streicht oder ' +
-      'berichtigt, was sie für falsch hält. Die längsten Texte, die meisten Tokens.',
+      'Thema formuliert die KI zuerst als Thema. Die längsten Texte, die meisten Tokens.',
   },
   knowledge: {
     'llm-free': 'Regeln wählen die Artikel. Keine Tokens.',
