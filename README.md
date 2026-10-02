@@ -77,6 +77,12 @@ Abschnittsmarker von Teil 1.
   zu fünf gleichzeitigen Anfragen, Speichergrenze der API 6 GiB, GitLab-Pipeline nach dem Muster der Plattform. Ohne
   Eintrag gilt kein Tagesbudget (D67); eine Anfrage ohne Profil läuft mit `PRESET_DEFAULT` (ausgeliefert `balanced`),
   solange ein LLM eingerichtet ist, sonst mit `llm-free` (D68).
+- Profile und Thema (D69 bis D74, Releases 2.6.0 und 2.6.1): fünftes Profil `best-coverage-generated` (D69), 30.000
+  Zielzeichen in allen Profilen (D70); jeder Prompt hört das angefragte Thema, `best-quality-generated` füllt leere
+  Bausteine aus Modellwissen, ein langes Thema, eine Frage oder ein Knoten ohne Thema wird zuerst als Thema formuliert
+  (D72); ein wörtlicher Text, der einen anderen Artikel behandelt, nennt in der Prüfung die schreibenden Profile, eine
+  unlesbare Antwort der Zuordnung wird neu gefragt (D73); die Prüfung des Modellwissens ist ein Schalter, in keinem
+  Profil voreingestellt (M53, D74). Güte, Zeit und Kosten aller fünf Profile: M52, Seite 09.
 
 ## Installation
 

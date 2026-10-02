@@ -1,6 +1,6 @@
 # Konfiguration
 
-[Übergabe](README.md) · Stand 30.09.2026 · `main` nach Release 2.5.0
+[Übergabe](README.md) · Stand 02.10.2026 · Release 2.6.1
 
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
@@ -19,8 +19,8 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```
 
 ```dotenv
-# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.5.0 baut :2.5.0 und :2.5, wie auf GitHub).
-# Eine Version nach 2.5.0 nehmen: 2.5.0 liest LLM_DAILY_TOKEN_BUDGET=0 aus .env.example als leeres Tagesbudget.
+# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.6.1 baut :2.6.1 und :2.6, wie auf GitHub).
+# Mindestens 2.6.0 nehmen: 2.5.0 liest LLM_DAILY_TOKEN_BUDGET=0 aus .env.example als leeres Tagesbudget.
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
 # LLM
@@ -71,7 +71,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version nach 2.5.0, etwa `…/compendious-text-fastapi:<version>`** | Compose: Image aller fünf Container |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.6.1`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `150s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
