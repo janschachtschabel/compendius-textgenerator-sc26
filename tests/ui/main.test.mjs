@@ -171,3 +171,13 @@ test('stacked, the answer takes the focus from the button, but not from a field 
 
   assert.equal(page.focused(), topic.id);
 });
+
+test('the note on the server says whether its LLM answered its last check, not only whether one is configured', async () => {
+  // Jan, 2026-10-02: "KI verfügbar" stood there while the b-api answered 502 - the page read only llm_configured
+  const reason = 'b-api nicht erreichbar: b-api nach 1 Versuchen nicht erreichbar (HTTP 502)';
+  const note = async (state) => (await openPage({ options: { ...OPTIONS, llm_configured: true, ...state } })).byId('server-note').textContent;
+
+  assert.match(await note({ llm_available: false, llm_unavailable_reason: reason }), /^KI nicht erreichbar \(b-api nicht erreichbar: .*HTTP 502\)\): Profile mit KI liefern Texte nach den Regeln · Vorgabe des Servers: /);
+  assert.match(await note({ llm_available: true, llm_unavailable_reason: null }), /^KI verfügbar · Vorgabe des Servers: /);
+  assert.match(await note({ llm_available: null, llm_unavailable_reason: null }), /^KI eingerichtet · Vorgabe des Servers: /);
+});

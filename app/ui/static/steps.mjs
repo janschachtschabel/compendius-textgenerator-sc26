@@ -38,6 +38,21 @@ export function stepsAccount(answer, request, preset, options) {
   });
 }
 
+// A method of the LLM: llm, llm-fast, llm-thorough, and the enrichments, which only an LLM writing the blocks adds
+const asksLlm = (method) => typeof method === 'string' && (method.startsWith('llm') || method.startsWith('model-knowledge'));
+
+/** How much of what a compendium asked of the LLM the rules did instead (Jan, 2026-10-02: with the b-api answering
+ * 502 the page called a verbatim text "von der KI vollständig zum Thema geschrieben"). `full`: the LLM was asked and
+ * spent no token, and the service said why (audit.llm.note); `partial`: steps fell back while it did the others;
+ * `none` otherwise, also where nothing was asked of it. `steps` names the steps, `reason` is the service's note. */
+export function fallbackOf(answer, request, preset, options) {
+  const asked = stepsAccount(answer, request, preset, options).filter((row) => row.applies && asksLlm(row.asked));
+  const reason = answer?.audit?.llm?.note ?? null;
+  if (asked.length && !answer?.audit?.llm_tokens?.total && reason) return { kind: 'full', steps: asked.map((row) => row.step), reason };
+  const fell = asked.filter((row) => row.fellBack).map((row) => row.step);
+  return fell.length ? { kind: 'partial', steps: fell, reason } : { kind: 'none', steps: [], reason: null };
+}
+
 const USED = {
   // The audit says llm or rule-based; llm is whichever of the LLM's ways the request asked for
   article_choice: (answer, llm, asked) => (llm.article_choice?.used === 'rule-based' ? 'rule-based' : asked),

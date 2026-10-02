@@ -757,6 +757,11 @@ gerendert:
   Artikel, Abschnitt, Textauszug und den Grund der Zuordnung.
 - **Qualität, Zeit, Kosten** in einer Zeile über jedem Ergebnis, beim Vergleich zweier Profile alle Kennzahlen
   nebeneinander. Kosten sind Tokens und Aufrufe, wie jeder Endpunkt sie meldet.
+- **Rückfall auf die Regeln** sichtbar: Hat die KI an einem Kompendium nicht mitgearbeitet, obwohl das Profil sie
+  verlangt (etwa weil die b-api mit 502 antwortet), heißt das Ergebnis „<Profil> · ohne KI“, ein Kasten über dem Text
+  nennt den Grund des Dienstes, und die Statuszeile sagt es; fielen nur einzelne Schritte zurück, „teils ohne KI“
+  mit ihren Namen. Links steht der letzte Prüfstand der KI wie in `/health` („KI verfügbar“, „KI nicht erreichbar
+  (Grund)“ oder „KI eingerichtet“, solange keine Prüfung lief), nicht nur, ob eine eingerichtet ist.
 - **„Wie entstand dieser Text?“** unter dem Kompendium: Thema und Artikel, Anteile nach Herkunft, Methode je
   Schritt (angefragt und verwendet, mit Rückfällen), Zeit je Schritt, Kosten, Quellen, Hinweise der Prüfung
   und die gesendete Anfrage mit ihrer Anfrage-ID für eine Rückmeldung. „Markdown speichern“ legt das fertige

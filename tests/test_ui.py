@@ -36,9 +36,12 @@ from app.domain.requests import (
     ModelKnowledgeCheck,
     Part,
 )
+from app.llm.client import ModelCheck
 from app.main import create_app
 from app.settings import Settings
 from app.ui.routes import STATIC_DIR, ui_router
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import make_gateway
 
 KEY = "k" * 32
 REQUESTS: dict[str, type[BaseModel]] = {
@@ -207,6 +210,41 @@ def test_the_options_name_the_profiles_and_their_switches_as_the_requests_define
     assert options["keys_required"] is False
     assert options["llm_configured"] is False
     assert options["facets_visible"] is settings.facets_visible
+
+
+UNREACHABLE = "b-api nicht erreichbar: b-api nach 1 Versuchen nicht erreichbar (HTTP 502)"
+
+
+@pytest.mark.parametrize(
+    ("check", "available", "reason"),
+    [
+        (None, None, None),
+        (
+            ModelCheck(ok=True, model="gpt-6-luna", found=True, status=None, demand=None, message="verfügbar"),
+            True,
+            None,
+        ),
+        (
+            ModelCheck(ok=False, model="gpt-6-luna", found=False, status=None, demand=None, message=UNREACHABLE),
+            False,
+            UNREACHABLE,
+        ),
+    ],
+)
+def test_the_options_say_whether_the_llm_answered_its_last_check(
+    settings: Settings, check: ModelCheck | None, available: bool | None, reason: str | None
+) -> None:
+    """Jan, 2026-10-02: the page said "KI verfügbar" while the b-api answered 502 - it read only whether an LLM is
+    configured. The options carry the last check as /health does, without asking the b-api; None while none ran."""
+    app = create_app(settings.model_copy(update={"ui_enabled": True}))
+    gateway = make_gateway(FakeBApi(lambda body: "nichts"))
+    gateway.check = check
+    app.state.llm = gateway
+
+    options = TestClient(app).get("/ui/options.json").json()
+
+    assert options["llm_configured"] is True
+    assert (options["llm_available"], options["llm_unavailable_reason"]) == (available, reason)
 
 
 @pytest.mark.parametrize(("template", "note"), [("sc26", False), ("standard", True)])

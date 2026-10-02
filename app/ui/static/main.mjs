@@ -41,11 +41,15 @@ async function start() {
   showMode(page.mode);
 }
 
+// The last check of the server's LLM, as /health tells it: configured is not available (Jan, 2026-10-02, a b-api
+// answering 502 under "KI verfügbar"); null while no check ran
 function describeServer() {
-  const { llm_configured: llm, preset_default: preset } = page.options;
-  byId('server-note').textContent = llm
-    ? `KI verfügbar · Vorgabe des Servers: ${label(PROFILE_NAMES, preset)}`
-    : 'Dieser Server hat keine KI: nur das Profil llm-free antwortet.';
+  const { llm_configured: llm, llm_available: available, llm_unavailable_reason: reason, preset_default: preset } = page.options;
+  const profile = `Vorgabe des Servers: ${label(PROFILE_NAMES, preset)}`;
+  let note = 'Dieser Server hat keine KI: nur das Profil llm-free antwortet.';
+  if (llm && available === false) note = `KI nicht erreichbar${reason ? ` (${reason})` : ''}: Profile mit KI liefern Texte nach den Regeln · ${profile}`;
+  else if (llm) note = `${available ? 'KI verfügbar' : 'KI eingerichtet'} · ${profile}`;
+  byId('server-note').textContent = note;
 }
 
 function setUpKey() {
@@ -135,7 +139,7 @@ async function run(mode) {
     announce(stoppedSummary(mode, runs));
   } else {
     place(mode, renderResults(mode, runs, host));
-    announce(summary(mode, runs));
+    announce(summary(mode, runs, page.options));
   }
   // The server may want a key though it wanted none when the page loaded (keys_required), or the key cannot be sent
   const keyWanted = runs.some((one) => aboutKey(one.error));

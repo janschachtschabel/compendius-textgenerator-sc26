@@ -2,6 +2,8 @@
  "preset_default": "llm-free",
  "keys_required": false,
  "llm_configured": true,
+ "llm_available": true,
+ "llm_unavailable_reason": null,
  "facets_visible": false,
  "empty_note": false,
  "presets": [

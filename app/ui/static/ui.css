@@ -332,6 +332,10 @@ pre.json { max-height: 22rem; margin: 0; padding: 0.75rem; overflow: auto; font-
 .error { padding: 1rem 1.25rem; background: var(--error-soft); border: 1px solid var(--error); border-radius: var(--radius); }
 .error p { margin: 0.35rem 0; }
 .error-title { margin-top: 0 !important; font-weight: 700; color: var(--error); }
+/* A text the rules wrote although the LLM was asked: no error, but nothing the profile promised either */
+.fallback { margin-bottom: 1rem; padding: 0.7rem 1rem; font-size: 0.9rem; background: var(--error-soft); border: 1px solid var(--error); border-radius: var(--radius); }
+.fallback p { margin: 0.25rem 0; }
+.fallback-title { margin-top: 0 !important; font-weight: 700; color: var(--error); }
 .error-id { font-size: 0.8125rem; color: var(--muted); }
 .suggestions { margin: 0.25rem 0; padding-inline-start: 1.2rem; }
 .link-button { padding: 0.15rem 0; font: inherit; color: var(--accent); text-decoration: underline; background: none; border: 0; cursor: pointer; }

@@ -7,7 +7,8 @@ import { append, copyText, download, h } from './dom.mjs';
 import { compendiumInfo } from './info_compendium.mjs';
 import { compareTable, errorBox, metricsBar } from './panels.mjs';
 import { formatDuration, metrics } from './stats.mjs';
-import { label, MODES, PROFILE_NAMES } from './texts.mjs';
+import { fallbackOf } from './steps.mjs';
+import { label, MODES, PROFILE_NAMES, STEPS } from './texts.mjs';
 import { renderCompendium } from './view_compendium.mjs';
 import { renderEntities } from './view_entities.mjs';
 import { renderKnowledge } from './view_knowledge.mjs';
@@ -41,7 +42,7 @@ export function renderResults(mode, runs, host) {
   if (runs.length > 1) {
     const lists = runs.map((one) => (one.error ? [] : metrics(mode, one.data, one.elapsedMs)));
     container.append(
-      compareTable(runs.map((one) => label(PROFILE_NAMES, one.preset)), lists),
+      compareTable(runs.map((one) => profileName(one, fallbackFor(mode, one, host.options))), lists),
       h('p', { class: 'help compare-note' }, 'Die Anfragen liefen nacheinander; jede Dauer gilt für ihr Profil allein.'),
     );
   }
@@ -74,8 +75,47 @@ function showDisplay(container) {
   container.classList.toggle('hide-cites', !display.cites);
 }
 
-function column(mode, one, host) {
+// What the rules did of what a compendium asked of the LLM (fallbackOf); the other modes tell it in their info
+function fallbackFor(mode, one, options) {
+  return mode === 'compendium' && !one.error && one.data
+    ? fallbackOf(one.data, one.request?.body, one.preset, options)
+    : { kind: 'none', steps: [], reason: null };
+}
+
+/** The profile of a run as its head and the status line name it: what the profile promises, unless the rules did
+ * what it asked of the LLM - a text they wrote alone is no longer "von der KI vollständig zum Thema geschrieben". */
+function profileName(one, found) {
+  if (found.kind === 'full') return `${one.preset} · ohne KI`;
   const name = label(PROFILE_NAMES, one.preset);
+  return found.kind === 'partial' ? `${name} · teils ohne KI` : name;
+}
+
+/** The box above a text the rules wrote instead of the LLM, with the reason the service gave; null for none. */
+function fallbackBox(found, preset) {
+  if (found.kind === 'full') {
+    return h(
+      'div',
+      { class: 'fallback' },
+      h('p', { class: 'fallback-title' }, 'Ohne KI erzeugt'),
+      h('p', {}, `Angefragt war ${preset}, aber die KI hat an diesem Text nicht mitgearbeitet. Grund: ${found.reason}.`),
+      h('p', {}, 'Jeder Schritt lief nach den Regeln: Der Text steht wörtlich aus den Quellen da, wie bei llm-free.'),
+    );
+  }
+  if (found.kind === 'partial') {
+    const names = found.steps.map((step) => STEPS[step]?.name ?? step).join(', ');
+    return h(
+      'div',
+      { class: 'fallback' },
+      h('p', { class: 'fallback-title' }, 'Teilweise ohne KI'),
+      h('p', {}, `Nach den Regeln statt mit der KI: ${names}. Die Gründe stehen unter „Methoden je Schritt“.`),
+    );
+  }
+  return null;
+}
+
+function column(mode, one, host) {
+  const found = fallbackFor(mode, one, host.options);
+  const name = profileName(one, found);
   const head = h('div', { class: 'column-head' }, h('p', { class: 'profile-name' }, name));
   const frame = h('article', { class: 'column', 'aria-label': `Ergebnis mit ${name}` }, head);
   if (one.error) {
@@ -92,7 +132,7 @@ function column(mode, one, host) {
     return frame;
   }
   head.append(actions(mode, one, view, host));
-  append(frame, [metricsBar(metrics(mode, one.data, one.elapsedMs)), unsure(mode, one.data.resolution, host), contents(view.headings), view.body, view.info]);
+  append(frame, [fallbackBox(found, one.preset), metricsBar(metrics(mode, one.data, one.elapsedMs)), unsure(mode, one.data.resolution, host), contents(view.headings), view.body, view.info]);
   return frame;
 }
 
@@ -139,10 +179,10 @@ function contents(headings) {
   );
 }
 
-export function summary(mode, runs) {
+export function summary(mode, runs, options) {
   const failed = runs.filter((one) => one.error);
   if (failed.length === runs.length) return `Fehler: ${failed[0].error.message}`;
-  const times = runs.filter((one) => !one.error).map((one) => `${label(PROFILE_NAMES, one.preset)} ${formatDuration(one.elapsedMs)}`);
+  const times = runs.filter((one) => !one.error).map((one) => `${profileName(one, fallbackFor(mode, one, options))} ${formatDuration(one.elapsedMs)}`);
   return `${MODES[mode]} fertig: ${times.join(', ')}${failed.length ? `; ${failed.length} mit Fehler` : ''}.`;
 }
 

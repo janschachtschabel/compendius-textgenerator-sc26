@@ -174,13 +174,24 @@ def _notes_empty_blocks(settings: Settings, templates: TemplateManager) -> bool:
 
 
 def ui_options(
-    settings: Settings, templates: TemplateManager, subjects: SubjectCatalog, *, llm: bool
+    settings: Settings,
+    templates: TemplateManager,
+    subjects: SubjectCatalog,
+    *,
+    llm: bool,
+    llm_check: tuple[bool | None, str | None] = (False, None),
 ) -> dict[str, Any]:
-    """Everything the page needs to know of this server: the profiles and switches, what the server has, examples."""
+    """Everything the page needs to know of this server: the profiles and switches, what the server has, examples.
+
+    ``llm_check`` is the last check of a configured LLM (LlmGateway.last_check): available or not and why, ``None``
+    while none ran."""
+    available, reason = llm_check
     return {
         "preset_default": default_preset(settings.preset_default, llm),  # what a request without one gets (D68)
         "keys_required": bool(settings.api_key_list),
         "llm_configured": llm,  # without an LLM a request naming a profile other than llm-free is a 503 (D53)
+        "llm_available": available,  # a profile with the LLM falls back to the rules while it is not
+        "llm_unavailable_reason": reason,
         "facets_visible": settings.facets_visible,
         "empty_note": _notes_empty_blocks(settings, templates),
         "presets": [{"id": preset, "switches": switches} for preset, switches in PRESETS.items()],

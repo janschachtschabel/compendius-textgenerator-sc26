@@ -80,6 +80,16 @@ class LlmGateway:
             return self.client.suspension_reason
         return "Modellprüfung steht aus"
 
+    def last_check(self) -> tuple[bool | None, str | None]:
+        """Whether the LLM answered its last check and why not, as /health tells it, never a call to the b-api;
+        ``None`` while no check ran. The review page shows it instead of reading a configured LLM as an available one
+        (Jan, 2026-10-02: "KI verfügbar" while the b-api answered 502)."""
+        if self.client.suspended:
+            return False, self.client.suspension_reason
+        if self.check is None:
+            return None, None
+        return (True, None) if self.check.ok else (False, self.check.message)
+
     def generation_slots(self, generation: str, content_slot_ids: Iterable[str]) -> set[str]:
         """Slot ids the LLM writes under the given generation switch (D10, D33)."""
         ids = set(content_slot_ids)

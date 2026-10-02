@@ -73,7 +73,15 @@ def ui_router(static_dir: Path = STATIC_DIR) -> APIRouter:
         # The custom templates are read from disk, so off the event loop - but in the threads of the monitoring
         # path, which compendium requests cannot fill (app/api/system_threads.py)
         state = request.app.state
-        build = partial(ui_options, state.settings, state.templates, state.service.subjects, llm=state.llm is not None)
+        llm_check = state.llm.last_check() if state.llm is not None else (False, None)
+        build = partial(
+            ui_options,
+            state.settings,
+            state.templates,
+            state.service.subjects,
+            llm=state.llm is not None,
+            llm_check=llm_check,
+        )
         return JsonResponse(await run_system(request, build), headers=HEADERS)
 
     @router.get("/ui/{name}")
