@@ -129,7 +129,7 @@ class Requested:
     extraction: str
     generation: str
     enrichment: str
-    model_knowledge_check: str = "rule-based"  # 07, point 12a (D74)
+    model_knowledge_check: str = "rule-based"  # 07, point 12a (D73)
 
     @classmethod
     def of(cls, request: GenerateRequest) -> Requested:

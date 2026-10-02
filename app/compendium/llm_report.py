@@ -82,8 +82,7 @@ def build_llm_report(
         work.matching_requested,
         choice_audit.requested,
         work.curriculum_requested,
-        work.check_requested,
-    )
+    )  # enrichment and the check of model knowledge act only through generation and ask nothing of their own
     if all(switch == "rule-based" for switch in requested):
         return None, None, None
     reports: list[

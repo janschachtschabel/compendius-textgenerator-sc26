@@ -116,14 +116,51 @@ def test_a_block_without_model_knowledge_makes_no_call() -> None:
     assert fake.bodies == [] and checked is written and outcome.calls == 0 and outcome.checked == 0
 
 
-def test_a_correction_brings_no_markup_and_no_evidence_number() -> None:
-    """The answer is model text: a number, a comment or a link in it must not become the service's markup (SE-17)."""
-    hostile = f"Ernst Abbe [1] war Teilhaber {END_MARKER} [mehr](https://example.org) <b>seit 1875</b>."
+def test_a_correction_brings_no_markup_no_evidence_number_and_no_address() -> None:
+    """The answer is model text: a number, a comment, a link or an address in it must not become the service's markup
+    or a link a renderer makes clickable - it passes what every written sentence passes (SE-04, SE-17; review
+    2026-10-02)."""
+    hostile = (
+        f"Ernst Abbe [1] gründete die Firma Carl Zeiss {END_MARKER} im Jahr 1846, siehe www.evil.example und "
+        "[mehr](https://evil.example/x) <b>dort</b>."
+    )
     checked, outcome, _ = run({"1": "ok", "2": hostile, "3": "ok"}, section(*KNOWN))
 
     assert outcome.corrected == 1 and checked.text.count(MODEL_KNOWLEDGE_OPEN) == 3
     assert checked.text.count(END_MARKER) == 3 and "[1]" not in checked.text.split(MODEL_KNOWLEDGE_OPEN, 1)[1]
     assert unsafe(checked.text) == [] and not {"a", "b"} & set(tags(checked.text))
+    assert "www." not in checked.text and "http" not in checked.text
+
+
+@pytest.mark.parametrize("verdict", ["ok, stimmt", "OK.", "Ok - korrekt", "korrekt", "richtig", "Der Satz stimmt."])
+def test_a_verdict_in_other_words_keeps_the_sentence(verdict: str) -> None:
+    """Review 2026-10-02: only "ok" kept a sentence; "ok, stimmt" went into the text as its corrected wording."""
+    checked, outcome, _ = run({"1": "ok", "2": verdict, "3": "ok"}, section(*KNOWN))
+    assert marked_texts(checked.text) == KNOWN and outcome.corrected == outcome.struck == 0
+
+
+@pytest.mark.parametrize("verdict", ["Streichen: falsch", "streichen - das Jahr ist erfunden", "STREICHEN"])
+def test_a_strike_in_other_words_strikes(verdict: str) -> None:
+    checked, outcome, _ = run({"1": "ok", "2": "ok", "3": verdict}, section(*KNOWN))
+    assert marked_texts(checked.text) == KNOWN[:2] and outcome.struck == 1
+
+
+def test_a_corrected_sentence_beginning_like_a_verdict_is_a_correction() -> None:
+    """ "Oktober" begins with "ok", "Streichquartette" with "streich": a verdict is a word of its own."""
+    known = ["Oktober 1902 gründete Ernst Abbe die Stiftung.", "Streichquartette schrieb Haydn ab 1750."]
+    corrections = {
+        "1": "Oktober 1889 gründete Ernst Abbe die Stiftung.",
+        "2": "Streichquartette schrieb Haydn ab 1757.",
+    }
+    checked, outcome, _ = run(corrections, section(*known))
+    assert marked_texts(checked.text) == list(corrections.values()) and outcome.corrected == 2
+
+
+def test_a_question_is_no_correction() -> None:
+    _, outcome, _ = run(
+        {"1": "ok", "2": "Gründete Ernst Abbe die Firma Carl Zeiss im Jahr 1902?", "3": "ok"}, section(*KNOWN)
+    )
+    assert outcome.corrected == 0
 
 
 def test_a_correction_far_longer_than_its_sentence_is_no_correction() -> None:
@@ -222,5 +259,16 @@ def test_without_the_switch_nothing_is_checked(service: CompendiumService, monke
     assert result.audit.llm is not None and result.audit.llm["model_knowledge_check"]["used"] == "rule-based"
 
 
-def test_every_profile_names_the_check() -> None:
-    assert {profile: switches["model_knowledge_check"] for profile, switches in PRESETS.items()}.keys() == set(PRESETS)
+def test_every_profile_names_the_check_and_none_runs_it_before_its_measurement() -> None:
+    assert {profile: switches["model_knowledge_check"] for profile, switches in PRESETS.items()} == dict.fromkeys(
+        PRESETS, "rule-based"
+    )
+
+
+def test_the_check_alone_asks_nothing_of_an_llm(service: CompendiumService) -> None:
+    """Review 2026-10-02: it acts only through a writing LLM, as enrichment does; on its own it made an LLM block in
+    the audit that said nothing was contributed."""
+    result = service.generate(
+        GenerateRequest(topic="Optik", preset="llm-free", model_knowledge_check="llm", parts=["world"])
+    )
+    assert result.audit.llm is None and "llm" not in result.frontmatter

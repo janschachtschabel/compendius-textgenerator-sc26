@@ -11,6 +11,7 @@ reason goes to the audit.
 
 from __future__ import annotations
 
+import difflib
 import re
 from dataclasses import dataclass, field, replace
 
@@ -33,14 +34,17 @@ from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import LlmSection
 from app.synthesis.safe_markdown import unescape
 
-KEEP = "ok"
-STRIKE = "streichen"
+# A verdict is a word of its own: "ok, stimmt" keeps, "Streichen: falsch" strikes, "Oktober 1889 …" is a sentence
+_KEEP_RE = re.compile(r"^ok\b", re.IGNORECASE)
+_STRIKE_RE = re.compile(r"^streichen\b", re.IGNORECASE)
 ALL_STRUCK = "die Prüfung des Modellwissens strich jeden Satz"
 MIN_OUTPUT_TOKENS = 200
 OUTPUT_TOKENS_PER_SENTENCE = 80  # room for a corrected sentence; "ok" takes a few
 MAX_OUTPUT_TOKENS = 4000
-# A correction may be twice as long as its sentence and this much more at most: it mends a date or a name
+# A correction mends a date or a name: twice as long as its sentence and this much more at most, and like it - the
+# corrections of M53 were 0.66 to 1.0 alike their sentences, a verdict in other words ("korrekt") 0.25 at most
 LONGER, LONGER_CHARS = 2, 100
+MIN_SIMILARITY = 0.5
 _SPAN_RE = re.compile(re.escape(MODEL_KNOWLEDGE_OPEN) + r"(.*?)" + re.escape(END_MARKER), re.DOTALL)
 
 
@@ -118,7 +122,7 @@ def check_section(
         pieces.append(section.text[position : span.start()])
         position = span.end()
         verdict = verdicts.get(str(number))
-        if isinstance(verdict, str) and verdict.strip().rstrip(".!").lower() == STRIKE:
+        if isinstance(verdict, str) and _STRIKE_RE.match(verdict.strip()):
             outcome.struck += 1
             continue
         corrected = _correction(verdict, sentence)
@@ -132,13 +136,17 @@ def check_section(
 
 
 def _correction(verdict: object, sentence: str) -> str | None:
-    """The sentence as the check corrected it, or ``None``: "ok", no text, the sentence again, or one far longer."""
+    """The sentence as the check corrected it, without links, tags and addresses as every written sentence - or
+    ``None``: "ok" or a verdict in other words, no text, the sentence again, a question (D60), or one far longer or
+    too unlike it."""
     if not isinstance(verdict, str):
         return None
-    corrected = collapse(verdict)
-    if not corrected or corrected.rstrip(".!").lower() == KEEP or corrected == sentence:
+    corrected = neutralize(verdict)
+    if not corrected or _KEEP_RE.match(corrected) or corrected == sentence or corrected.rstrip(" )").endswith("?"):
         return None
-    return None if len(corrected) > LONGER * len(sentence) + LONGER_CHARS else corrected
+    if len(corrected) > LONGER * len(sentence) + LONGER_CHARS:
+        return None
+    return corrected if difflib.SequenceMatcher(None, sentence, corrected).ratio() >= MIN_SIMILARITY else None
 
 
 def _plain(marked: str) -> str:
