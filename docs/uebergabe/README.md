@@ -1,10 +1,10 @@
 # Übergabe an das Technik-Team
 
-Stand 02.10.2026 · Release 2.6.1 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 02.10.2026 · Release 2.6.2 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei
 Seiten fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main`
-und damit Release 2.6.1. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft
+und damit Release 2.6.2. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft
 eine Anfrage `llm-free`, solange kein LLM eingerichtet ist (D68); was sich je Stand für den Betrieb ändert, steht in
 [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht in `docker-compose.yml` und gilt mit
 jedem Image.
