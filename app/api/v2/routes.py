@@ -69,12 +69,16 @@ def generate_compendium(
       curriculum element of part 2, dropping what does not fit (``curriculum_check llm``). The text stays
       verbatim.
     - ``best-quality-generated``: best-quality, and the LLM writes every block about the topic as asked (``generation
-      llm``, D72) and may add knowledge of its own for up to half of a block's sentences, marked ``[Modellwissen]``
+      llm``, D72) and may add knowledge of its own for up to half of a block's sentences, marked as model knowledge
       (``enrichment model-knowledge``, D70); a block without evidence, or whose text cites none of it, it writes
       from its own knowledge.
     - ``best-coverage-generated``: best-quality-generated, but the LLM writes every block about the topic as asked
       and fills it completely: from its evidence where that meets the topic, else from its own knowledge, marked
-      ``[Modellwissen]`` (``enrichment model-knowledge-full``, D69); ``target_length`` is a floor here.
+      as model knowledge (``enrichment model-knowledge-full``, D69); ``target_length`` is a floor here.
+
+    A sentence of model knowledge is marked in the markup (``Evidenzgrad=Modellwissen``); the visible label
+    ``[Modellwissen]`` behind it comes only with ``model_knowledge_label``, since a finished text goes to end
+    customers without it (D76).
 
     **Which profile for which topic** (M52, nine topics, two blind judges). A topic with an article of its own
     (Optik): ``balanced`` gives a verbatim text with a citation for every sentence (fit 3.7 of 5, 5 s and 530 tokens

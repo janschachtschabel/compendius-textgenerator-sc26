@@ -69,6 +69,7 @@ test('every input of the form reaches the request, ids taken from links', () => 
       template_id: 'standard',
       facets_visible: true,
       empty_note: true,
+      model_knowledge_label: true,
     }),
     options,
   );
@@ -91,7 +92,17 @@ test('every input of the form reaches the request, ids taken from links', () => 
     template_id: 'standard',
     facets_visible: true,
     empty_slot_policy: 'note',
+    model_knowledge_label: true,
   });
+});
+
+test('the label of model knowledge starts off and goes out only when the box is ticked (D76)', () => {
+  assert.equal(defaults('compendium', options).model_knowledge_label, false);
+  const [plain] = buildRequests('compendium', form('compendium', { topic: 'Optik' }), options);
+  const [labelled] = buildRequests('compendium', form('compendium', { topic: 'Optik', model_knowledge_label: true }), options);
+
+  assert.equal('model_knowledge_label' in plain.request.body, false);
+  assert.equal(labelled.request.body.model_knowledge_label, true);
 });
 
 test('a comparison asks twice, once per profile, and leaves the steps to the profiles', () => {

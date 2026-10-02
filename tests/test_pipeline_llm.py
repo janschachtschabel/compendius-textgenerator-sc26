@@ -348,8 +348,11 @@ def test_enrichment_marks_model_knowledge_in_the_text_and_reports_it(
     )
     assert result.enrichment == "model-knowledge"
     assert "<!-- f: Evidenzgrad=Modellwissen -->" in result.markdown
-    assert MODEL_KNOWLEDGE_LABEL in result.markdown, "D56: visible in the rendered text, not only in a comment"
-    assert MODEL_KNOWLEDGE_LABEL in result.frontmatter["llm"]["enrichment"]["hinweis"]
+    # D76 (Jan, 2026-10-02): a finished text goes to end customers without the label D56 showed behind each sentence
+    assert MODEL_KNOWLEDGE_LABEL not in result.markdown
+    assert not any(MODEL_KNOWLEDGE_LABEL in s.text for s in result.sections)
+    assert "Evidenzgrad=Modellwissen" in result.frontmatter["llm"]["enrichment"]["hinweis"]
+    assert MODEL_KNOWLEDGE_LABEL not in result.frontmatter["llm"]["enrichment"]["hinweis"]
     assert "Evidenzgrad=Schlussfolgerung" not in result.markdown
     llm_sections = [s for s in result.sections if s.status is SectionStatus.LLM]
     assert llm_sections and all(s.llm is not None and s.llm["marked_sentences"] >= 1 for s in llm_sections)
@@ -360,6 +363,27 @@ def test_enrichment_marks_model_knowledge_in_the_text_and_reports_it(
     assert "Modellwissen" in result.frontmatter["ai_disclosure"]
     numbers = [c.number for s in result.sections for c in s.citations]
     assert numbers == list(range(1, len(numbers) + 1)), "the citation sequence stays intact"
+
+
+def test_the_label_of_model_knowledge_comes_back_on_request(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D56 put [Modellwissen] behind every sentence of model knowledge, for a reader of the rendered text; since D76
+    a request asks for it with model_knowledge_label. The sentences and their markup are the same either way."""
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_with_model_knowledge)))
+    bare = service.generate(
+        GenerateRequest(topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"])
+    )
+    labelled = service.generate(
+        GenerateRequest(
+            topic="Optik", generation="llm", enrichment="model-knowledge", parts=["world"], model_knowledge_label=True
+        )
+    )
+
+    marked = labelled.markdown.count("<!-- f: Evidenzgrad=Modellwissen -->")
+    assert marked >= 1 and bare.markdown.count("<!-- f: Evidenzgrad=Modellwissen -->") == marked
+    assert labelled.markdown.count(MODEL_KNOWLEDGE_LABEL) == marked, "one label behind each marked sentence"
+    assert bare.markdown.count(MODEL_KNOWLEDGE_LABEL) == 0
 
 
 def test_the_enrichment_prompt_is_the_one_that_allows_model_knowledge(

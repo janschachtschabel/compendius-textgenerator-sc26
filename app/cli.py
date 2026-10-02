@@ -52,6 +52,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             generation=args.generation,
             enrichment=args.enrichment,
             model_knowledge_check=args.model_knowledge_check,
+            model_knowledge_label=args.model_knowledge_label,
             facets_visible=args.facets_visible or None,
             **({"target_length": args.length} if args.length is not None else {}),
         )
@@ -248,8 +249,9 @@ def main(argv: list[str] | None = None) -> int:
         "--enrichment",
         default=None,
         choices=["sources-only", "model-knowledge", "model-knowledge-full"],
-        help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze "
-        "enden sichtbar mit [Modellwissen] und brauchen --generation llm oder llm-fast; model-knowledge-full "
+        help="Ob das Modell eigenes Wissen ergänzen darf; ohne Angabe die des Profils. Ergänzte Sätze sind "
+        "im Markup gekennzeichnet (Evidenzgrad=Modellwissen), mit --model-knowledge-label auch sichtbar mit "
+        "[Modellwissen], und brauchen --generation llm oder llm-fast; model-knowledge-full "
         "schreibt jeden Baustein zum angefragten Thema: aus den Belegen, wo sie es treffen, sonst aus Modellwissen "
         "(D69)",
     )
@@ -259,6 +261,12 @@ def main(argv: list[str] | None = None) -> int:
         choices=["rule-based", "llm"],
         help="Ob ein zweiter Aufruf je Baustein die Sätze aus Modellwissen prüft und streicht oder berichtigt, was "
         "er für falsch hält; ohne Angabe die des Profils (07, Punkt 12a)",
+    )
+    gen.add_argument(
+        "--model-knowledge-label",
+        action="store_true",
+        help="Jeder Satz aus Modellwissen endet sichtbar mit [Modellwissen]; ohne die Option kennzeichnet ihn nur das "
+        "Markup (Evidenzgrad=Modellwissen, D76)",
     )
     gen.add_argument("--length", type=int, default=None, help="Ziellänge von Teil 1; ohne Angabe die des Profils")
     gen.add_argument("--facets-visible", action="store_true")

@@ -59,7 +59,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "description": (
             "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
             "ergänzen, höchstens für die Hälfte der Sätze (enrichment model-knowledge, D70); solche Sätze tragen keine "
-            "Belegnummer und enden sichtbar mit [Modellwissen]. Für Texte, die Menschen direkt lesen. Seit D72 "
+            "Belegnummer und sind im Markup gekennzeichnet (Evidenzgrad=Modellwissen), mit model_knowledge_label "
+            "auch sichtbar mit [Modellwissen] (D76). Für Texte, die Menschen direkt lesen. Seit D72 "
             "schreibt es über das angefragte Thema, nicht über den Artikel der Artikelwahl, und einen Baustein "
             "ohne Belege aus Modellwissen: Passung 4,8 bei Themen mit eigenem Artikel, 4,7 bei Sammelthemen, 4,2 "
             "bei Themen mit Aspekt, Lesbarkeit 3,9; Teil 1 30 s und 84.000 Tokens, 62 % Modellwissen (M52). Zwei "
@@ -76,7 +77,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Wie best-quality-generated, aber das LLM schreibt jeden Baustein über das Thema, wie es angefragt ist, "
             "mit seinem Aspekt: hier über Förderungen offener Bildungsmaterialien, nicht über den Artikel Open "
             "Educational Resources, auf den sich das Thema auflöst. Belege nutzt es, wo sie das Thema treffen; sonst "
-            "und für Bausteine ohne Belege schreibt es aus eigenem Wissen, sichtbar gekennzeichnet mit [Modellwissen] "
+            "und für Bausteine ohne Belege schreibt es aus eigenem Wissen, im Markup als Modellwissen gekennzeichnet "
             "(enrichment model-knowledge-full, D69). target_length ist hier eine Untergrenze, keine Obergrenze; die "
             "Überschrift nennt das angefragte Thema. An acht solchen Themen bewerteten zwei blinde Gutachter die "
             "Passung mit 4,8 statt 1,8 von 5 (best-quality-generated) und die Vollständigkeit mit 5,0 statt 1,7, ohne "
@@ -88,7 +89,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
     },
     "Modellwissen prüfen": {
-        "summary": "Nach dem Schreiben prüft das LLM jeden Satz mit [Modellwissen] und streicht oder berichtigt ihn",
+        "summary": "Nach dem Schreiben prüft das LLM jeden Satz aus Modellwissen und streicht oder berichtigt ihn",
         "description": (
             "model_knowledge_check llm (07, Punkt 12a): Ein zweiter Aufruf je Baustein liest die Sätze aus "
             "Modellwissen mit dem Baustein als Zusammenhang, streicht, was er für falsch oder erfunden hält, und "
@@ -103,6 +104,21 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "parts": ["world"],
             "preset": "best-coverage-generated",
             "model_knowledge_check": "llm",
+        },
+    },
+    "Vermerk [Modellwissen] im Text": {
+        "summary": "Jeder Satz aus Modellwissen endet sichtbar mit [Modellwissen]",
+        "description": (
+            "model_knowledge_label true (D76): Hinter jedem Satz, den das LLM aus eigenem Wissen geschrieben hat, "
+            "steht im Text [Modellwissen], im Markdown und im Text jedes Bausteins, wie bis Release 2.6.2 immer. Ohne "
+            "die Option fehlt der Vermerk, so geht ein fertiger Text an Endkunden; das Markup kennzeichnet diese Sätze "
+            "in beiden Fällen (Evidenzgrad=Modellwissen)."
+        ),
+        "value": {
+            "topic": "OER-Förderungen",
+            "parts": ["world"],
+            "preset": "best-coverage-generated",
+            "model_knowledge_label": True,
         },
     },
     "Sammelthema mit best-coverage-generated": {

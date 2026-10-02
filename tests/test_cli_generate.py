@@ -5,11 +5,13 @@ import shlex
 from collections.abc import Iterator
 from itertools import pairwise
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
 
 from app.cli import main
+from app.domain.requests import GenerateRequest
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
@@ -149,6 +151,26 @@ def test_the_readme_example_of_the_rule_mode_runs_without_an_llm(
     finally:
         get_settings.cache_clear()
     assert out_file.read_text(encoding="utf-8").strip()
+
+
+def test_generate_takes_the_label_of_model_knowledge(
+    cli_env: Path, sample_zims: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D76: --model-knowledge-label works as model_knowledge_label of the API, off without the option."""
+    asked: list[GenerateRequest] = []
+
+    def recording(**fields: Any) -> GenerateRequest:
+        asked.append(GenerateRequest(**fields))
+        return asked[-1]
+
+    monkeypatch.setattr("app.cli.GenerateRequest", recording)
+    zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
+    out_json = cli_env / "optik.json"
+    for option in ([], ["--model-knowledge-label"]):
+        args = ["generate", "--topic", "Optik", "--preset", "llm-free", *option, "--json", str(out_json), *zim_args]
+        assert main(args) == 0
+
+    assert [request.model_knowledge_label for request in asked] == [False, True]
 
 
 def test_generate_reads_the_knowledge_collection_as_deep_and_as_full_as_asked(

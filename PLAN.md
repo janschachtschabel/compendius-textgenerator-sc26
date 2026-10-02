@@ -1633,7 +1633,8 @@ API.
   rund 25 s, 25 mangelfrei; das LLM 120 mit rund 2.400 Tokens, 99 mangelfrei; `parse-based` 44, 16 mangelfrei.
   `balanced` hat damit die schwächste Stufe; die Entscheidungsvorlage legt die Frage Jan vor.
 - **D56 (2026-09-26)** Modellwissen sichtbar und nur als Sachaussage (Jan: sichtbare Kennzeichnung, „falls dies möglich
-  ist ja“; Schärfung des Prompts freigegeben). Ein Satz mit Modellwissen endet im Text sichtbar mit `[Modellwissen]`,
+  ist ja“; Schärfung des Prompts freigegeben). Ein Satz mit Modellwissen endet im Text sichtbar mit `[Modellwissen]`
+  (seit D76 nur mit `model_knowledge_label`),
   innerhalb des Blocks `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->`, damit wer die Blöcke liest Satz und
   Kennzeichen zusammen bekommt; der Hinweis im Frontmatter nennt den Zusatz, und `without_markers` (etwa für `/qa`)
   nimmt ihn wie die Belegnummern heraus. Eine Schlussfolgerung (`LLM_UNSUPPORTED_SENTENCES=mark`) bleibt unsichtbar
@@ -1989,6 +1990,18 @@ API.
   Thema, das die Prompts hören (`PreparedTopic.prompt_topic`: wie angefragt, für ein Material ohne Thema sein Artikel,
   für eine Sammlung ihr Titel); der Artikel steht in `resolution.title`. Die Normalisierung von D12 bleibt für Suche und
   Artikelwahl. Der Hinweis `topic-scope` (V3) bleibt und sagt, welcher Artikel unter der Überschrift steht.
+- **D76 (2026-10-02)** Der sichtbare Vermerk `[Modellwissen]` kommt nur auf Wunsch (Jan, zu einem Text „OER-Förderungen“
+  aus der Prüfansicht: „die fertigen komendialen texte für endkunden sollten ohne die im text geschriebenen vermerke
+  ‚modellwissen‘ ausgeliefert werden“, und „standardmäßig sollte es ausgschaltet sein und nur durch option im aufruf
+  sichbar werden - das ui braucht dann einen schalter zum ein- und ausschalten der option“). Neues Anfragefeld
+  `model_knowledge_label` (Vorgabe `false`), CLI-Option `--model-knowledge-label`, Kontrollkästchen „Vermerk
+  [Modellwissen] im Text zeigen“ in der Prüfansicht.
+  Ohne den Schalter nimmt der Zusammenbau den Vermerk aus dem Markdown und aus dem Text jedes Bausteins, auch aus
+  Bausteinen aus `existing_markdown`. Die Kommentare `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` bleiben,
+  Zählung, Offenlegung (`ai_disclosure`) und die Prüfung des Modellwissens sind unverändert, und die Prüfansicht hebt
+  die Sätze mit „Herkunft je Absatz“ hervor. Der Hinweis im Frontmatter nennt jetzt das Markup statt des Vermerks. Den
+  Vermerk entfernt eine einfache Ersetzung vor dem schließenden Kommentar, linear auch auf fremdem Text. Jans
+  Alternative, Absätze mit Markdown-Rollen zu markieren, hängt vom Renderer ab; die Kommentare reichen für jetzt.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

@@ -24,6 +24,7 @@ from app.synthesis.citations import (
     renumber,
     verify_citations,
     without_markers,
+    without_model_knowledge_label,
 )
 from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
@@ -593,6 +594,20 @@ def test_a_sentence_the_model_labels_itself_keeps_one_label() -> None:
     assert (
         f"{MODEL_KNOWLEDGE_OPEN}Linsen bündeln Licht an ihren Grenzflächen. {MODEL_KNOWLEDGE_LABEL}{END_MARKER}" in text
     )
+
+
+def test_without_its_label_a_sentence_of_model_knowledge_keeps_its_mark() -> None:
+    """D76 (Jan, 2026-10-02): a text for end customers shows no [Modellwissen]. The comments around the sentence
+    stay, so the markup still tells what the model added, and a conclusion keeps its mark as well."""
+    answer = "Licht breitet sich geradlinig aus [1]. Linsen bündeln Licht an ihren Grenzflächen."
+    text, _ = verify_citations(answer, {1}, mark=MODEL_KNOWLEDGE)
+    concluded = f"{CONCLUSION_OPEN}Also bricht jede Linse Licht.{END_MARKER}"
+
+    bare = without_model_knowledge_label(f"{text}\n\n{concluded}")
+
+    assert MODEL_KNOWLEDGE_LABEL not in bare
+    assert f"{MODEL_KNOWLEDGE_OPEN}Linsen bündeln Licht an ihren Grenzflächen.{END_MARKER}" in bare
+    assert bare.startswith("Licht breitet sich geradlinig aus [1].") and bare.endswith(concluded)
 
 
 def test_the_enrichment_prompt_asks_for_facts_and_forbids_the_fillers_of_m28() -> None:

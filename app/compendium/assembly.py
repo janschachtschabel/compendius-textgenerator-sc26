@@ -16,7 +16,7 @@ from app.domain.models import AuditReport, CollectionPart, Compendium, Curricula
 from app.domain.requests import GenerateRequest
 from app.knowledge.node_article import node_block
 from app.matching.registry import LLM_MATCHER
-from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN
+from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN, without_model_knowledge_label
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.lint import lint_sections, topic_scope_finding
 
@@ -138,6 +138,9 @@ def assemble(
     )
     # the sources belong to part 1, with those only its kept blocks cite (audit 2026-09-29, A04)
     source_refs = [s.to_ref() for s in [*sources, *world.carried]] if want_world else []
+    if not request.model_knowledge_label:
+        # D76: a finished text goes to end customers without [Modellwissen]; the markup keeps the sentences apart
+        sections = [s.model_copy(update={"text": without_model_knowledge_label(s.text)}) for s in sections]
     markdown = render_markdown(
         topic=topic,
         frontmatter=frontmatter,

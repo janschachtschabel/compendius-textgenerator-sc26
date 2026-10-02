@@ -104,6 +104,14 @@ def without_markers(text: str) -> str:
     return re.sub(r"[ \t]+($|\n)", r"\1", text).strip()
 
 
+def without_model_knowledge_label(text: str) -> str:
+    """``text`` without the label behind its sentences of model knowledge: a finished text goes to end customers
+    without it (D76, Jan, 2026-10-02). The comments around each sentence stay, so the markup still tells what the
+    model added. The label stands where _as_marked puts it, right before the closing comment; a plain replacement
+    stays linear on any text, a block kept from existing_markdown included."""
+    return text.replace(f" {MODEL_KNOWLEDGE_LABEL}{END_MARKER}", END_MARKER)
+
+
 def marker_numbers(text: str) -> list[int]:
     """Evidence numbers in order of first appearance."""
     return list(dict.fromkeys(int(m) for m in _MARKER_RE.findall(text)))

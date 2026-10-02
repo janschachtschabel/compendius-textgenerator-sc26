@@ -101,8 +101,8 @@ GENERATION_HELP = (
     "four topics: 2 to 3 calls, 2 300 to 4 000 tokens, 9 to 15 s.\n"
     "- **llm**: the LLM writes every content block; 8 to 10 calls, 10 500 to 14 500 tokens, 16 to 20 s.\n\n"
     "Every written sentence needs a valid citation, unless enrichment lets the model add knowledge of its own, marked "
-    "[Modellwissen]. The LLM writes about the topic as asked, not about the article it resolved to, and the heading "
-    "names that topic (D72). Where the topic is a text - more than six words or 60 characters, a sentence or a "
+    "as model knowledge. The LLM writes about the topic as asked, not about the article it resolved to, and the "
+    "heading names that topic (D72). Where the topic is a text - more than six words or 60 characters, a sentence or a "
     "question - or a node_id or collection_id without a topic stands in for it, the model first words the topic "
     "from it (prompt topic_wording, audit.llm.topic_wording): close to its words and with its aspect, a node or "
     "collection sent along with a topic showing how the topic is meant; without a usable answer the topic stays as "
@@ -137,8 +137,8 @@ ENRICHMENT_HELP = (
     "- **sources-only**: every sentence has to be covered by its evidence; anything else is dropped.\n"
     "- **model-knowledge**: the model may add knowledge of its own - a checkable fact or nothing (prompt "
     "section_enrichment v4, D56; up to half of a block's sentences since D70); such sentences carry no citation "
-    "number, end with the visible label "
-    "[Modellwissen] (Evidenzgrad=Modellwissen in the markup) and are counted per block. Since D72 a block the "
+    "number, are marked Evidenzgrad=Modellwissen in the markup - with model_knowledge_label they also end with the "
+    "visible label [Modellwissen] (D76) - and are counted per block. Since D72 a block the "
     "sources have nothing for is written from the model's knowledge as well, every sentence marked, and since "
     "2026-10-02 so is one whose written text cites none of its evidence, instead of falling back to verbatim "
     "paragraphs.\n"
@@ -152,8 +152,8 @@ ENRICHMENT_HELP = (
 MODEL_KNOWLEDGE_CHECK_HELP = (
     "Whether the LLM checks the sentences of model knowledge it wrote (07, point 12a, D73). Default: the profile's: "
     "rule-based in every profile (D74).\n\n"
-    "- **rule-based**: no check; the sentences stay as written, marked [Modellwissen].\n"
-    "- **llm**: after a block is written, a second call reads its sentences marked [Modellwissen], with the block "
+    "- **rule-based**: no check; the sentences stay as written, marked as model knowledge.\n"
+    "- **llm**: after a block is written, a second call reads its sentences marked as model knowledge, with the block "
     "around them, and strikes what it holds for wrong or invented or corrects it where it knows the right fact for "
     "sure - dates, numbers, names, places, bodies, laws and attributions, where M48 found six of the eight light "
     "errors of best-coverage-generated (prompt model_knowledge_check). A corrected sentence keeps its mark; a block "
@@ -213,7 +213,7 @@ PRESET_HELP = (
     "Fit 4.2 for a topic with an article of its own, 3.8 for a group, 1.7 for an aspect; part 1 16 s and 59,900 "
     "tokens, most of them for the matching (M52).\n"
     "- **best-quality-generated**: best-quality plus the LLM writing every block (generation llm), which may add "
-    "knowledge of its own for up to half of a block's sentences (D70), labelled [Modellwissen] and without a "
+    "knowledge of its own for up to half of a block's sentences (D70), marked as model knowledge and without a "
     "citation number (enrichment model-knowledge). For text people read directly. Two blind judges preferred its "
     "text in 11 of 12 "
     "ratings (readability 4.0 instead of 2.5 of 5); under the first prompt two thirds of the added model knowledge "
@@ -228,8 +228,8 @@ PRESET_HELP = (
     "- **best-coverage-generated** (D69): best-quality-generated, but the LLM writes every content block about the "
     "topic as asked, qualifiers included ('OER-Förderungen', not the article 'Open Educational Resources' it resolves "
     "to), and fills it completely: evidence where it meets the topic, knowledge of its own for the rest and for a "
-    "block the sources have nothing for, marked [Modellwissen] (enrichment model-knowledge-full). target_length is a "
-    "floor here, not a ceiling. For topics with an aspect, or where the archives hold little; of all profiles its "
+    "block the sources have nothing for, marked as model knowledge (enrichment model-knowledge-full). target_length is "
+    "a floor here, not a ceiling. For topics with an aspect, or where the archives hold little; of all profiles its "
     "text carries the most model knowledge no source covers. On eight topics with an aspect two blind judges rated the "
     "fit to the topic 4.8 instead of 1.8 of 5 for best-quality-generated and the completeness 5.0 instead of 1.7, with "
     "no serious error (M47). Fit 5.0 for a topic with an article of its own, a group and an aspect, use 4.8, "
@@ -496,6 +496,14 @@ class GenerateRequest(RequestModel):
         "disclosure, the review status and the snapshot of the archives, so a document meant to stand "
         "on its own keeps it. Off starts the text at the heading; the frontmatter field of the answer "
         "holds the same data either way",
+    )
+    model_knowledge_label: bool = Field(
+        False,
+        description="Whether every sentence of model knowledge ends with the visible label [Modellwissen] (D56). Off "
+        "by default since D76 (Jan, 2026-10-02: a finished text goes to end customers without it), in the markdown "
+        "and in the text of each section, blocks kept from existing_markdown included. The comments around such a "
+        "sentence (Evidenzgrad=Modellwissen) stay either way, so the markup still tells it, and the review page shows "
+        "it with 'Herkunft je Absatz'",
     )
     max_articles: int | None = Field(
         None,

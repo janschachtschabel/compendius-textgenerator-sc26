@@ -267,8 +267,8 @@ am Goldstandard (zehn Themen, gelabelte Absätze).
 
 **Warum so:** Der wörtliche Text ist nachprüfbar und bleibt deshalb der Standard bis `best-quality`; für KI und
 Weiterverarbeitung ist das richtig. Für Menschen, die den Text direkt lesen, ist die geschriebene Fassung klar besser;
-sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen steht sichtbar als `[Modellwissen]` da, nur als
-prüfbare Sachaussage (D56). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
+sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen ist gekennzeichnet, nur als prüfbare Sachaussage
+(D56): im Markup, sichtbar als `[Modellwissen]` nur auf Wunsch (`model_knowledge_label`, D76). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
 Text über den Artikel, auf den die Artikelwahl das Thema auflöst; `best-coverage-generated` schreibt jeden Baustein
 über das angefragte Thema und füllt ihn, wo die Quellen nichts dazu sagen, aus Modellwissen (Jan, 01.10.2026: „max.
 abdeckung der kategorien und max. nähe zum thema“, D69). Der Preis ist ein Text, der zum größten Teil aus

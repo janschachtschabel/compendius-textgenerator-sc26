@@ -33,7 +33,8 @@ auch wenn `node_id` eine Sammlung nennt oder `knowledge_collection_id` gesetzt i
 `unavailable`), und `parts: ["collection"]` allein ist dann ein 422. Der Vorspann nennt unter `parts`, was wirklich
 drinsteht. `frontmatter_in_markdown: false`
 lässt den Vorspann weg und beginnt bei der Überschrift — die Angaben stehen dann weiter im
-Antwortfeld `frontmatter`.
+Antwortfeld `frontmatter`. Sätze aus Modellwissen kennzeichnet nur das Markup; `model_knowledge_label: true` setzt
+hinter jeden sichtbar `[Modellwissen]` (D76).
 
 Facettenmarker haben die Form `<!-- f: Name=Wert|Wert; Name=Wert -->` und stehen immer auf einer
 Zeile; ein Block reicht vom Marker bis zum nächsten `<!-- /f -->`. In einem Wert sind `;`, `=`, `|`,
@@ -84,6 +85,9 @@ Abschnittsmarker von Teil 1.
   unlesbare Antwort der Zuordnung wird neu gefragt (D73); die Prüfung des Modellwissens ist ein Schalter, in keinem
   Profil voreingestellt (M53, D74); Überschrift und `topic` nennen in jedem Profil das angefragte Thema (D75). Güte,
   Zeit und Kosten aller fünf Profile: M52, Seite 09.
+- Vermerk `[Modellwissen]` nur auf Wunsch (D76, Release 2.7.0): Ein fertiger Text geht ohne den sichtbaren Vermerk an
+  Endkunden; das Markup kennzeichnet die Sätze aus Modellwissen weiter. `model_knowledge_label: true`, die
+  CLI-Option `--model-knowledge-label` und der Schalter der Prüfansicht holen ihn zurück.
 
 ## Installation
 
@@ -467,7 +471,7 @@ Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.
 | `llm-free` (für einen Dienst ohne LLM) | `article_choice: rule-based`, `matcher: hybrid_light`, Text wörtlich, `curriculum_check: rule-based` | 87 von 94 Hauptartikeln richtig (M35), macro-F1 0,45, Teil 1 und 2 rund 1,6 s, keine Tokens; QA-Paare aus den Regeln über den spaCy-Parse (D55), Glossar und Akteure füllen auf (D60): 95 von 120 verlangten, 58 davon mangelfrei (M34; vorher 48 von 96, M30), 0,3 s je Text; Lehrplanelemente aus den Regeln, Überschriften-Treffer gebündelt, 70 bis 81 % der einzeln gezeigten passend (M32); M52: Passung zum Thema 3,0 bei einfachen Themen, 1,5 bei Sammelthemen, 1,0 bei Themen mit Aspekt, Teil 1 1,7 s |
 | `balanced` (ausgeliefert) | wie `llm-free`, aber `article_choice: llm`: das LLM nennt Übersicht und Teile jedes Themas (D63) und entscheidet unsichere Artikel | 91 von 94; aus passenden Artikeln gedruckt 87 statt 43 % bei 25 Sammelthemen, 93 statt 71 % bei 20 gewöhnlichen Themen (M39); rund 4,2 s und 480 Tokens; das Gold der Zuordnung deckt den neuen Korpus nicht mehr ab (vorher macro-F1 0,45 wie `llm-free`); QA-Paare aus denselben Regeln wie `llm-free` (D57); M52: Passung 3,7, 2,8 und 1,2, Teil 1 5,0 s und 530 Tokens |
 | `best-quality` | `article_choice: llm-thorough` (Übersicht und Teile wie `balanced`), `matcher: llm`, Text wörtlich, `curriculum_check: llm`; 180.000 Tokens je Anfrage (D59) | 93 von 94 (M35, D61; mit D63 unverändert, M39), macro-F1 0,70 vor D63, rund 14 s und 26.000 Tokens, rund 170 je Absatz; QA-Paare vom LLM, 99 von 120 mangelfrei, rund 2.400 Tokens je Text (M30); Lehrplanelemente vom LLM geprüft, 74 bis 79 % passend, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr mit Teil 2 (M32); M52: Passung 4,2, 3,8 und 1,7, Teil 1 16 s und 59.900 Tokens |
-| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein zum angefragten Thema und darf eigenes Wissen ergänzen, seit D70 bis zur Hälfte eines Bausteins, sichtbar gekennzeichnet mit `[Modellwissen]`; einen Baustein ohne Belege schreibt es seit D72 ganz aus eigenem Wissen | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; unter dem ersten Prompt waren zwei Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts (D56): 50 statt 82 Sätze Modellwissen, 13 statt 50 Füllsätze (M31); eine Frage ohne Beleg fällt seit D60 weg, drei dieser Füllsätze; M52 (seit D72): Passung 4,8, 4,7 und 4,2, Nutzen 4,1, Vollständigkeit 4,2, Lesbarkeit 3,9, keine schweren Fehler, 62 % Modellwissen, Teil 1 30 s und 84.000 Tokens; vor D72, über den gefundenen Artikel, Passung bei Sammelthemen 3,0 und bei Themen mit Aspekt 1,7 (M48) |
+| `best-quality-generated` | wie `best-quality`, dazu `generation: llm` und `enrichment: model-knowledge`: das LLM schreibt jeden Baustein zum angefragten Thema und darf eigenes Wissen ergänzen, seit D70 bis zur Hälfte eines Bausteins, gekennzeichnet im Markup (mit `model_knowledge_label` auch sichtbar als `[Modellwissen]`, D76); einen Baustein ohne Belege schreibt es seit D72 ganz aus eigenem Wissen | rund 24 s und 35.000 Tokens; Lesbarkeit 4,0 statt 2,5 von 5, in 11 von 12 Urteilen vorgezogen; unter dem ersten Prompt waren zwei Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts (D56): 50 statt 82 Sätze Modellwissen, 13 statt 50 Füllsätze (M31); eine Frage ohne Beleg fällt seit D60 weg, drei dieser Füllsätze; M52 (seit D72): Passung 4,8, 4,7 und 4,2, Nutzen 4,1, Vollständigkeit 4,2, Lesbarkeit 3,9, keine schweren Fehler, 62 % Modellwissen, Teil 1 30 s und 84.000 Tokens; vor D72, über den gefundenen Artikel, Passung bei Sammelthemen 3,0 und bei Themen mit Aspekt 1,7 (M48) |
 | `best-coverage-generated` | wie `best-quality-generated`, aber `enrichment: model-knowledge-full`: das LLM schreibt jeden Baustein vollständig zum angefragten Thema, aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen, sichtbar gekennzeichnet (D69) | an acht Themen mit Aspekt („OER-Förderungen“) Passung zum angefragten Thema 4,8 statt 1,8 von 5, Nutzen 4,8 statt 2,1, Vollständigkeit 5,0 statt 1,7, keine schweren Fehler (M47, zwei blinde Gutachter); Teil 1 rund 28 s und 91.000 bis 99.000 Tokens, rund ein Drittel davon aus dem Prompt-Cache (M46), rund 30.000 Zeichen bei 12.000 Zielzeichen; den größten Teil schreibt das Modell aus eigenem Wissen (im Median 123 gekennzeichnete Sätze, 34 Belegnummern); M52: Passung 5,0 bei allen drei Arten von Themen, Nutzen 4,8, Vollständigkeit 4,9, Lesbarkeit 4,2, 0,11 schwere Fehler je Text, 83 % Modellwissen, Teil 1 mit 30.000 Zielzeichen 38 s, 103.300 Tokens (60.200 aus dem Prompt-Cache) und rund 59.000 Zeichen |
 
 Welches Profil wofür (M52, `docs/entwicklung/09-methoden-und-profile.md`): ein Thema mit eigenem Artikel wörtlich
@@ -528,7 +532,7 @@ ihm bewirken, und seine Beispiele reichen von der kürzesten Anfrage bis zu eine
 | `enrichment` | `sources-only` (Profile bis `best-quality`) | nichts: jeder Satz muss aus den Belegen gedeckt sein, alles andere wird verworfen |
 | | `model-knowledge` (Profil `best-quality-generated`) | ergänzt gesichertes eigenes Fachwissen, höchstens für die Hälfte der Sätze eines Bausteins mit Belegen; einen Baustein ohne Belege schreibt es ganz daraus (D72); solche Sätze tragen keine Belegnummer und werden im Text gekennzeichnet, eine Frage ohne Beleg fällt weg (D60; braucht `generation` `llm` oder `llm-fast`) |
 | | `model-knowledge-full` (Profil `best-coverage-generated`) | schreibt jeden Inhaltsbaustein zum angefragten Thema mit seinem Aspekt, vollständig und ohne zu kürzen: Belege, wo sie das Thema treffen, sonst gesichertes eigenes Fachwissen, gekennzeichnet wie bei `model-knowledge`; auch ein Baustein ohne Belege wird geschrieben, die Ziellänge ist eine Untergrenze (D69) |
-| `model_knowledge_check` | `rule-based` (alle Profile) | nichts: die Sätze mit `[Modellwissen]` bleiben, wie das schreibende LLM sie schrieb |
+| `model_knowledge_check` | `rule-based` (alle Profile) | nichts: die Sätze aus Modellwissen bleiben, wie das schreibende LLM sie schrieb |
 | | `llm` (in keinem Profil voreingestellt, D74) | ein zweiter Aufruf je Baustein liest dessen Sätze aus Modellwissen mit dem Baustein als Zusammenhang und streicht, was er für falsch oder erfunden hält, oder berichtigt eine falsche Angabe, die er sicher kennt (Jahreszahlen, Namen, Gremien, Zuschreibungen); die Kennzeichnung bleibt, ein Baustein nur aus Modellwissen, der jeden Satz verliert, fällt auf die Regeln zurück: wörtliche Absätze, wo er Belege hat, sonst bleibt er leer (07, Punkt 12a; `audit.llm.model_knowledge_check`); in M53 sanken die leichten Fehler je Text von 1,6 auf 1,1 bei gleicher Passung, gleichem Nutzen und gleicher Vollständigkeit, für rund 27.000 Tokens und 5 s mehr; gestrichene Sätze waren meist richtig, den schweren Fehler ließ sie stehen |
 
 Gemessen für „Optik“ mit `gpt-5.6-luna` am 2026-09-19: `extraction=llm` 10 Aufrufe, rund 16.500 Tokens und 11 s;
@@ -637,8 +641,12 @@ Dienstes aussieht, steht als Text da: eine Nummer, die die Prüfung nicht gelese
 `[Modellwissen]`, das das Modell selbst schrieb, außerhalb eines so gekennzeichneten Satzes.
 
 Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte Sätze werden nicht verworfen,
-sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet und enden sichtbar mit
-`[Modellwissen]` — der Kommentar allein verschwindet, sobald das Markdown gerendert ist (D56). Es schreibt dann
+sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet. Der Kommentar allein
+verschwindet, sobald das Markdown gerendert ist; mit `model_knowledge_label: true` endet deshalb jeder solche Satz
+sichtbar mit `[Modellwissen]` (D56). Ohne den Schalter fehlt der Vermerk, so geht ein fertiger Text an Endkunden
+(D76, Jan, 02.10.2026): im Markdown und im Text jedes Bausteins, auch in Bausteinen aus `existing_markdown`. Das
+Markup kennzeichnet die Sätze in beiden Fällen, und die Prüfansicht zeigt sie mit „Herkunft je Absatz“. Es schreibt
+dann
 ein anderer Prompt (`section_enrichment`, im Frontmatter unter `llm.prompts` nachlesbar), der eigenes Fachwissen
 erlaubt, aber ohne Belegnummer verlangt, seit Version 3 für höchstens die Hälfte der Sätze (D70, bis dahin jeden
 dritten). Seit Version 2 nur als prüfbare

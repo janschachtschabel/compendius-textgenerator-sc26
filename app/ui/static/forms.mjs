@@ -25,6 +25,7 @@ export const FORMS = {
       PRESET,
       { name: 'facets_visible', type: 'check', label: 'Facetten im Text zeigen', option: true },
       { name: 'empty_note', type: 'check', label: 'Leere Bausteine mit Hinweis zeigen', option: true },
+      { name: 'model_knowledge_label', type: 'check', label: 'Vermerk [Modellwissen] im Text zeigen', option: true },
       NODE,
       REPOSITORY,
       { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: COMPENDIUM_STEPS },
@@ -122,6 +123,7 @@ export function defaults(mode, options) {
         parts: ['world', 'curricula'],
         facets_visible: Boolean(options.facets_visible), // FACETS_VISIBLE of the server, as a request without it
         empty_note: Boolean(options.empty_note), // as the default template keeps empty blocks, as a request without it
+        model_knowledge_label: false, // the default of the API since D76
         ...Object.fromEntries(COMPENDIUM_STEPS.map((step) => [step, ''])),
         target_length: '',
         max_articles: '',
@@ -202,6 +204,7 @@ const BUILDERS = {
     body.facets_visible = Boolean(v.facets_visible);
     // Either way: a template keeps empty blocks or leaves them out by its own policy, which the box would not show
     body.empty_slot_policy = v.empty_note ? 'note' : 'omit';
+    if (v.model_knowledge_label) body.model_knowledge_label = true;
     return { method: 'POST', path: 'api/v2/compendium', body };
   },
   knowledge(v, withSteps) {

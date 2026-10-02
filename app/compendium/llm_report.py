@@ -12,7 +12,6 @@ from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic_articles import TopicArticlesReport
 from app.knowledge.topic_wording import TopicWordingReport
 from app.matching.llm_assignment import LlmAssignmentReport
-from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.synthesis.extraction import ExtractionReport
 from app.synthesis.model_knowledge_check import ModelKnowledgeCheckReport
 from app.synthesis.writer import LlmReport
@@ -21,9 +20,10 @@ NOTHING_CONTRIBUTED = (
     "LLM hat keinen Artikel gewählt, keinen Absatz zugeordnet und keinen Baustein ausgewählt oder geschrieben; "
     "Regelmodus verwendet"
 )
+# True with and without the visible label, which a request asks for since D76 (model_knowledge_label)
 MODEL_KNOWLEDGE_NOTE = (
-    f"Sätze mit dem Zusatz {MODEL_KNOWLEDGE_LABEL} (im Markup Evidenzgrad=Modellwissen) stammen aus dem Wissen des "
-    "Sprachmodells, nicht aus den aufgeführten Quellen, und sind nicht belegt."
+    "Sätze, die im Markup Evidenzgrad=Modellwissen tragen, stammen aus dem Wissen des Sprachmodells, nicht aus den "
+    "aufgeführten Quellen, und sind nicht belegt."
 )
 
 

@@ -393,6 +393,28 @@ def test_a_reviewed_block_needs_no_disclosure_of_its_own(service: CompendiumServ
     assert second.frontmatter["kept_sections"] == {"sc26_2": "redaktionell-geprüft"}
 
 
+def test_a_kept_block_shows_the_label_of_model_knowledge_only_on_request(service: CompendiumService) -> None:
+    """D76: the label goes everywhere unless a request asks for it, from a block an earlier text kept as well; the
+    comments that mark the sentence stay."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    earlier = with_status(first.markdown, "sc26_2", "redaktionell-geprüft", " " + MODEL_SENTENCE)
+
+    for labelled in (False, True):
+        second = service.generate(
+            GenerateRequest(
+                topic="Optik",
+                parts=["world"],
+                target_length=2000,
+                existing_markdown=earlier,
+                model_knowledge_label=labelled,
+            )
+        )
+
+        kept = blocks(second.markdown)["sc26_2"]
+        assert MODEL_KNOWLEDGE_OPEN + "Licht besteht aus Photonen." in kept
+        assert ("[Modellwissen]" in kept) is labelled, kept
+
+
 def reviewed_with_side_sources(service: CompendiumService) -> tuple[str, str, list[str]]:
     """An earlier compendium with one reviewed block that cites side articles, the block's id and those titles."""
     first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=12000))
