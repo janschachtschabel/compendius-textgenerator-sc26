@@ -22,7 +22,7 @@ der QA-Paare (D54, D55, D57).
 | Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM zum angefragten Thema geschrieben, ergänzt um Modellwissen (höchstens die Hälfte), ein Baustein ohne Belege aus Modellwissen (D72) | vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69) |
 | Hinweis in der Prüfung (`audit.lint`, `topic-scope`; V3, D73), wenn der Text einen anderen Artikel behandelt als das angefragte Thema | ja; die Wörter des Themas entscheiden | ja; die Frage N sagt, ob ihre Übersicht das Thema deckt | wie `balanced` | nein: der Text handelt vom angefragten Thema | wie `best-quality-generated` |
-| Prüfung des Modellwissens (`model_knowledge_check`, Punkt 12a, D73) | – | – | – | `rule-based` (Schalter `llm`: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen) | wie `best-quality-generated` |
+| Prüfung des Modellwissens (`model_knowledge_check`, Punkt 12a, D73) | – | – | – | `rule-based` (Schalter `llm`: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen) | `llm`: leichte Fehler je Text 1,1 statt 1,6, Passung und Nutzen gleich, rund 27.000 Tokens und 5 s mehr (M53) |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` | wie `balanced` |
@@ -864,8 +864,12 @@ Passung 4,56 und Nutzen 4,31.
     Prompt `model_knowledge_check` v1): Nach dem Schreiben liest ein zweiter Aufruf je Baustein dessen Sätze aus
     Modellwissen mit dem Baustein als Zusammenhang und streicht, was er für falsch oder erfunden hält, oder berichtigt
     eine falsche Angabe, die er sicher kennt; die Kennzeichnung bleibt, und ein Baustein nur aus Modellwissen, der jeden
-    Satz verliert, fällt auf die Regeln zurück. Alle Profile stehen auf `rule-based`, bis M53 zeigt, ob die Prüfung in
-    `best-coverage-generated` Fehler senkt, ohne Passung oder Nutzen zu kosten. (b) und (d) folgen den Zahlen von M53.
+    Satz verliert, fällt auf die Regeln zurück. Gemessen in M53 an den neun Themen, dieselben Läufe vor und nach der
+    Prüfung: leichte Fehler je Text 1,1 statt 1,6, Passung, Nutzen und Vollständigkeit gleich, Lesbarkeit 3,9 statt
+    4,0, der einzige schwere Fehler blieb; jede Berichtigung stimmte danach, gestrichene Sätze waren aber meist richtig
+    oder unklar; rund 27.000 Tokens und 5 s mehr je Text. Nach der vereinbarten Regel steht die Prüfung in
+    `best-coverage-generated` auf `llm`, sonst auf `rule-based`. (b) und (d) sind offen: Die Prüfung kostet etwa so
+    viel, wie (d) mit `hybrid_light` sparen würde.
 13. **Länge in `best-coverage-generated`:** entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
     dort Untergrenze ist, schreibt `best-coverage-generated` im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
     das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen
@@ -907,7 +911,9 @@ Passung 4,56 und Nutzen 4,31.
     **Entschieden (D73, Jan, 02.10.2026):** V1a, V3 und V4 wie empfohlen übernommen, V1b nicht. Ein wörtlicher Text
     behält den gedruckten Artikel als Überschrift (D12); der Hinweis V3 nennt das angefragte Thema und die beiden
     schreibenden Profile (Jan: „Artikel + Hinweis“). Die Frage N fragt dafür in Version 2 nur nach `deckt_ab`, nicht nach
-    drei Übersichten. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
+    drei Übersichten; nachgemessen in M53: kein Hinweis bei 46 Themen mit eigenem Artikel, alle 6 Themen mit Aspekt
+    erkannt, von den M48-Sammelthemen 1 von 6 (mit drei Übersichten 3 von 6), weil das Modell eine Epoche wie *Wiener
+    Klassik* für deckend hält. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
     `best-quality-generated` auf wörtliche Absätze zurück, mitten in einem geschriebenen Text; er bleibt jetzt
     geschrieben, jeder Satz gekennzeichnet.
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne

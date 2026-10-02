@@ -1,0 +1,297 @@
+{
+ "note": "M53 (02.10.2026): best-coverage-generated mit Prüfung des Modellwissens an den neun Themen von M48/M52; dieselben Läufe vor (bcg) und nach der Prüfung (bcg-pruefung), zwei blinde Claude-Gutachter; dazu die Urteile zu jeder Änderung und die Nachmessung der Frage N mit dem ausgelieferten Prompt topic_articles v2",
+ "grades": {
+  "einfach": {
+   "bcg": {
+    "passung": 4.67,
+    "nutzen": 5,
+    "vollstaendigkeit": 4.5,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1.83
+   },
+   "bcg-pruefung": {
+    "passung": 4.67,
+    "nutzen": 5,
+    "vollstaendigkeit": 4.5,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0,
+    "leichte_fehler": 0.83
+   }
+  },
+  "Sammelthema": {
+   "bcg": {
+    "passung": 4.33,
+    "nutzen": 4,
+    "vollstaendigkeit": 4.17,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0.33,
+    "leichte_fehler": 1.17
+   },
+   "bcg-pruefung": {
+    "passung": 4.33,
+    "nutzen": 4,
+    "vollstaendigkeit": 4.17,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0.33,
+    "leichte_fehler": 0.83
+   }
+  },
+  "Aspekt": {
+   "bcg": {
+    "passung": 4.17,
+    "nutzen": 3.83,
+    "vollstaendigkeit": 4,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1.83
+   },
+   "bcg-pruefung": {
+    "passung": 4.17,
+    "nutzen": 3.83,
+    "vollstaendigkeit": 4,
+    "lesbarkeit": 3.67,
+    "schwere_fehler": 0,
+    "leichte_fehler": 1.67
+   }
+  },
+  "alle": {
+   "bcg": {
+    "passung": 4.39,
+    "nutzen": 4.28,
+    "vollstaendigkeit": 4.22,
+    "lesbarkeit": 4,
+    "schwere_fehler": 0.11,
+    "leichte_fehler": 1.61
+   },
+   "bcg-pruefung": {
+    "passung": 4.39,
+    "nutzen": 4.28,
+    "vollstaendigkeit": 4.22,
+    "lesbarkeit": 3.89,
+    "schwere_fehler": 0.11,
+    "leichte_fehler": 1.11
+   }
+  }
+ },
+ "agreement": {
+  "passung": {
+   "same": 8,
+   "one_apart": 10,
+   "two_or_more": 0,
+   "pairs": 18
+  },
+  "nutzen": {
+   "same": 12,
+   "one_apart": 6,
+   "two_or_more": 0,
+   "pairs": 18
+  },
+  "vollstaendigkeit": {
+   "same": 10,
+   "one_apart": 8,
+   "two_or_more": 0,
+   "pairs": 18
+  },
+  "lesbarkeit": {
+   "same": 18,
+   "one_apart": 0,
+   "two_or_more": 0,
+   "pairs": 18
+  }
+ },
+ "changes": {
+  "runs": 9,
+  "checked": 2419,
+  "struck": 17,
+  "corrected": 14,
+  "fallbacks": [
+   {
+    "sc26_3": "Antwort nicht lesbar"
+   }
+  ],
+  "check_tokens_median": 26946,
+  "check_seconds_max_median": 8.8,
+  "seconds_median": 43.2,
+  "tokens_median": 128608,
+  "verdicts": {
+   "gestrichen": {
+    "änderungen": 17,
+    "vorher_falsch=nein": 13,
+    "vorher_falsch=unklar": 16,
+    "vorher_falsch=ja": 5
+   },
+   "berichtigt": {
+    "änderungen": 14,
+    "vorher_falsch=nein": 14,
+    "nachher_richtig=ja": 26,
+    "vorher_falsch=ja": 9,
+    "vorher_falsch=unklar": 5,
+    "nachher_richtig=unklar": 2
+   },
+   "geändert": {
+    "änderungen": 0
+   }
+  },
+  "agreement_vorher_falsch": "28 von 31",
+  "raters": 2
+ },
+ "runs": [
+  {
+   "topic": "Optik",
+   "s": 46.9,
+   "tokens": 100511,
+   "cached": 24500,
+   "check_tokens": 26278,
+   "check_calls": 10,
+   "check_seconds_max": 10.7,
+   "checked": 203,
+   "struck": 1,
+   "corrected": 1,
+   "fallbacks": {
+    "sc26_3": "Antwort nicht lesbar"
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "s": 41.6,
+   "tokens": 138540,
+   "cached": 35806,
+   "check_tokens": 27890,
+   "check_calls": 10,
+   "check_seconds_max": 9.0,
+   "checked": 264,
+   "struck": 1,
+   "corrected": 3,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Französische Revolution",
+   "s": 45.6,
+   "tokens": 124637,
+   "cached": 34079,
+   "check_tokens": 26878,
+   "check_calls": 10,
+   "check_seconds_max": 9.8,
+   "checked": 265,
+   "struck": 2,
+   "corrected": 4,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "s": 42.4,
+   "tokens": 117268,
+   "cached": 32352,
+   "check_tokens": 27214,
+   "check_calls": 10,
+   "check_seconds_max": 8.8,
+   "checked": 281,
+   "struck": 1,
+   "corrected": 1,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "s": 45.2,
+   "tokens": 139032,
+   "cached": 35806,
+   "check_tokens": 25946,
+   "check_calls": 10,
+   "check_seconds_max": 9.1,
+   "checked": 257,
+   "struck": 5,
+   "corrected": 0,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "s": 43.2,
+   "tokens": 135188,
+   "cached": 35806,
+   "check_tokens": 27652,
+   "check_calls": 10,
+   "check_seconds_max": 6.8,
+   "checked": 278,
+   "struck": 4,
+   "corrected": 2,
+   "fallbacks": {}
+  },
+  {
+   "topic": "OER-Förderungen",
+   "s": 41.2,
+   "tokens": 94995,
+   "cached": 28898,
+   "check_tokens": 26946,
+   "check_calls": 10,
+   "check_seconds_max": 4.2,
+   "checked": 312,
+   "struck": 0,
+   "corrected": 0,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "s": 39.0,
+   "tokens": 128608,
+   "cached": 35806,
+   "check_tokens": 26469,
+   "check_calls": 10,
+   "check_seconds_max": 6.0,
+   "checked": 268,
+   "struck": 2,
+   "corrected": 3,
+   "fallbacks": {}
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "s": 48.4,
+   "tokens": 139563,
+   "cached": 42216,
+   "check_tokens": 27656,
+   "check_calls": 10,
+   "check_seconds_max": 8.1,
+   "checked": 291,
+   "struck": 1,
+   "corrected": 0,
+   "fallbacks": {}
+  }
+ ],
+ "frage_n_v2": {
+  "M48 einfach": {
+   "fragen": 6,
+   "uebersicht_gefunden": 6,
+   "deckt_ab_true": 6,
+   "deckt_ab_false": 0,
+   "tokens_median": 575.5
+  },
+  "M48 Sammelthema": {
+   "fragen": 6,
+   "uebersicht_gefunden": 5,
+   "deckt_ab_true": 5,
+   "deckt_ab_false": 1,
+   "tokens_median": 715.5
+  },
+  "M48 Aspekt": {
+   "fragen": 6,
+   "uebersicht_gefunden": 6,
+   "deckt_ab_true": 0,
+   "deckt_ab_false": 6,
+   "tokens_median": 652.0
+  },
+  "M37 Sammel- und Mischthema": {
+   "fragen": 50,
+   "uebersicht_gefunden": 39,
+   "deckt_ab_true": 21,
+   "deckt_ab_false": 29,
+   "tokens_median": 651.0
+  },
+  "gewöhnlich (M39)": {
+   "fragen": 40,
+   "uebersicht_gefunden": 40,
+   "deckt_ab_true": 40,
+   "deckt_ab_false": 0,
+   "tokens_median": 590.5
+  }
+ }
+}

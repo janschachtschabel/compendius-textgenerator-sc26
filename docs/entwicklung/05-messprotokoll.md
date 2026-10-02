@@ -2971,3 +2971,77 @@ Teil 1 ohne Teil 2 (dazu M45).
 
 Rohdaten: `m52_profiluebersicht.json`: Noten je Art und Profil, Übereinstimmung, Läufe je Art und Profil (Median und
 Spanne), jeder Lauf ohne Text, Schlüssel der Bögen, die Urteile ohne Zitate.
+
+## M53 Prüfung des Modellwissens in `best-coverage-generated` (02.10.2026)
+
+**Aufbau:** Jan (02.10.2026) zu Punkt 12a der Entscheidungsvorlage: „bauen und messen“, in
+`best-coverage-generated` einschalten, wenn die Fehler sinken, ohne dass Passung oder Nutzen leiden. Gebaut ist der
+Schalter `model_knowledge_check` (D73, Prompt `model_knowledge_check` v1). Gemessen an den neun Themen von M48 und M52,
+je ein Lauf `best-coverage-generated` mit der Prüfung (`mc_modellwissen_pruefung.py`). Ein Mitschnitt hält je Baustein
+den Text vor und nach der Prüfung fest; die beiden Fassungen eines Themas stammen also aus demselben Lauf und
+unterscheiden sich nur, wo die Prüfung strich oder berichtigte. Zwei blinde Claude-Gutachter lasen je Thema beide
+Fassungen nach den Bögen von M48 (`mc_profilvergleich_boegen.py --variants=bcg,bcg-pruefung --seed=53`); zwei weitere
+beurteilten jede Änderung für sich: War der Satz vorher falsch, ist er nachher richtig?
+
+**Ergebnis**, blind, Mittel beider Gutachter:
+
+| | ohne Prüfung | mit Prüfung |
+|---|---|---|
+| Passung: einfach, Sammelthema, Aspekt | 4,67, 4,33, 4,17 | 4,67, 4,33, 4,17 |
+| Nutzen | 4,28 | 4,28 |
+| Vollständigkeit | 4,22 | 4,22 |
+| Lesbarkeit | 4,00 | 3,89 |
+| schwere Fehler je Text | 0,11 | 0,11 |
+| leichte Fehler je Text | 1,61 | **1,11** |
+| leichte Fehler je Text: einfach, Sammelthema, Aspekt | 1,83, 1,17, 1,83 | 0,83, 0,83, 1,67 |
+
+Übereinstimmung: gleiche Note bei der Passung in 8 von 18 Texten, sonst eine um eins verschieden (Nutzen 12,
+Vollständigkeit 10, Lesbarkeit 18).
+
+**Die Änderungen:** 2.419 Sätze aus Modellwissen geprüft, 17 gestrichen, 14 berichtigt; zwei Gutachter:
+
+| | vorher falsch: ja, nein, unklar | nachher richtig: ja, unklar |
+|---|---|---|
+| 17 gestrichene Sätze, 34 Urteile | 5, 13, 16 | – |
+| 14 berichtigte Sätze, 28 Urteile | 9, 14, 5 | 26, 2 |
+
+Gleiches Urteil über „vorher falsch“ bei 28 von 31 Änderungen.
+
+**Kosten:** Die Prüfung brauchte im Median 26.946 Tokens je Text (zehn Aufrufe, parallel), ihr längster Aufruf je Text
+8,8 s; Teil 1 kam auf 43,2 s und 128.608 Tokens (M52 ohne Prüfung, andere Läufe: 37,8 s und 103.271). Ein Baustein von
+90 blieb ungeprüft (unlesbare Antwort; seither nennt das Audit den `finish_reason`).
+
+- Die Prüfung senkt die leichten Fehler um ein Drittel, von 1,6 auf 1,1 je Text, und ändert Passung, Nutzen und
+  Vollständigkeit nicht. Was sie berichtigt, stimmt danach; in 9 von 28 Urteilen war der Satz vorher falsch
+  (Ende des Direktoriums, Jahr von Kants königlicher Ermahnung, Geltung der Richtlinie 2009/41/EG).
+- Sie streicht wenig und eher Unsicheres als Falsches: 5 von 34 Urteilen nannten einen gestrichenen Satz falsch.
+- Den einzigen schweren Fehler („Anders als Kant nimmt Locke keine angeborenen Ideen an“) und viele leichte (Tag der
+  Veröffentlichung der KI-Verordnung, Name der Hewlett Foundation) ließ sie stehen.
+- Die Lesbarkeit eines Aspektthemas sank bei beiden Gutachtern um eine Note.
+
+**Entscheidung** nach der mit Jan vereinbarten Regel (D73): in `best-coverage-generated` an
+(`model_knowledge_check: llm`), sonst `rule-based`; `best-quality-generated` ist nicht gemessen.
+
+**Frage N mit dem ausgelieferten Prompt (V3):** M49 maß `deckt_ab` mit drei Übersichten (v2b); ausgeliefert ist v2,
+die Frage N von v1 mit nur `deckt_ab` dazu. Nachgemessen an denselben 54 Themen, zwei Runden (`mc_frage_n_probe.py`):
+
+| Themen | Übersicht im Archiv gefunden | `deckt_ab` true, false |
+|---|---|---|
+| M48, einfach | 6 von 6 | 6, 0 |
+| M48, Sammelthema | 5 von 6 | 5, 1 |
+| M48, mit Aspekt | 6 von 6 | 0, 6 |
+| M37, Sammel- und Mischthemen | 39 von 50 | 21, 29 |
+| M39, gewöhnliche Themen | 40 von 40 | 40, 0 |
+
+Kein Fehlalarm bei den 46 Themen mit eigenem Artikel, alle Themen mit Aspekt erkannt, wie in M49; rund 580 bis 720
+Tokens je Frage. Die Übersichten der M48-Sammelthemen hält das Modell meist für deckend (*Wiener Klassik* für
+Komponisten der Klassik, *Aufklärung* für Philosophen der Aufklärung): Hinweis bei 1 von 6 statt 3 von 6. Eine strengere
+Frage oder die Wortregel daneben brächte mehr Hinweise bei Sammelthemen, die Wortregel aber auch Fehlalarme bei
+Synonymen („Lichtlehre“ → *Optik*); nicht gebaut. Die Übersicht ohne Klammerzusatz (V1a) fand in beiden Runden
+*Aufklärung* für „Aufklärung (Philosophie)“, wo M48 *Immanuel Kant* druckte.
+
+Grenzen: neun Themen, ein Lauf; die Gutachter sind Sprachmodelle und lasen sieben der zehn Inhaltsbausteine; die
+Urteile über Änderungen sahen den Satz ohne seinen Baustein.
+
+Rohdaten: `m53_modellwissen_pruefung.json`: Noten je Art und Fassung, Übereinstimmung, die Urteile über die Änderungen
+gezählt, jeder Lauf ohne Text, die Proben der Frage N gezählt.

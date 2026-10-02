@@ -38,11 +38,11 @@ lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, 
 | `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 6,9 s | rund 580 | **Standard** |
 | `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 26 s | rund 49.000, je nach Thema bis 87.000 | Vorbereitung durch die Redaktion |
 | `best-quality-generated` | dazu: schreibt den Text neu zum angefragten Thema, Bausteine ohne Belege aus Modellwissen (seit D72), Modellwissen sichtbar markiert | 36 s | rund 60.000 | lesbarer Fließtext |
-| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 28 s, nur Teil 1 | rund 91.000 bis 99.000, ein Drittel aus dem Prompt-Cache | Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
+| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 43 s, nur Teil 1, mit Prüfung des Modellwissens | rund 129.000, ein Teil aus dem Prompt-Cache | Sammelthemen und Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt, Modellwissen geprüft |
 
 Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
 [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
-Entwicklungsrechner (M47, D69); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
+Entwicklungsrechner, mit der Prüfung seines Modellwissens (M53, D73); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
 jeder Prompt das angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn
 `topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`) oder
 eine Sammlung (`collection_id`) ohne Thema kommt.
@@ -146,7 +146,7 @@ Was die Antwort sonst trägt:
 | `jq '.parts_status'` | je Teil `ok`, `empty`, `incomplete` oder `unavailable` (ohne `collection_id` steht Teil 3 auf `unavailable`) |
 | `jq '.audit.llm_tokens'` | Tokens und LLM-Aufrufe dieser Anfrage; `cached` ist der Teil der Eingabe aus dem Prompt-Cache, den der Anbieter niedriger abrechnet |
 | `jq -r '.audit.preset'` | das Profil, mit dem die Anfrage lief |
-| `jq -r '.topic, .resolution.title'` | das Thema der Überschrift und den Artikel, auf den es sich auflöste; beide sind der Artikel, nur in `best-coverage-generated` ist `.topic` das angefragte Thema („Inklusion im Sportunterricht“ statt „Inklusive Pädagogik“), weil der Text davon handelt |
+| `jq -r '.topic, .resolution.title'` | das Thema der Überschrift und den Artikel, auf den es sich auflöste; in den wörtlichen Profilen beide der Artikel, in den beiden schreibenden ist `.topic` das angefragte Thema („Inklusion im Sportunterricht“ statt „Inklusive Pädagogik“), weil der Text davon handelt (D72) |
 | `jq '.sources[] \| {title, url, license}'` | die Belege hinter den Nummern im Text |
 | `jq '.frontmatter'` | die Angaben des Vorspanns als Objekt, auch wenn der Text ohne Vorspann kommt |
 | `jq '.curricula.entries[] \| {label, lehrplan, bundesland, klassenstufe}'` | Teil 2 als Liste, je Element Text, Lehrplan, Land und Klasse |

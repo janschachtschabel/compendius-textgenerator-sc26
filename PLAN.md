@@ -1974,7 +1974,9 @@ API.
   berichtigt ein zweiter Aufruf je Baustein Sätze aus Modellwissen, die Kennzeichnung bleibt, ein Baustein nur aus
   Modellwissen, der jeden Satz verliert, fällt auf die Regeln zurück (wörtliche Absätze, wo er Belege hat, sonst
   leer); `audit.llm.model_knowledge_check` zählt
-  Gelesenes, Gestrichenes und Berichtigtes. Alle Profile stehen auf `rule-based`, bis M53 entscheidet.
+  Gelesenes, Gestrichenes und Berichtigtes. Gemessen in M53 (neun Themen, dieselben Läufe vor und nach der Prüfung,
+  zwei blinde Gutachter): leichte Fehler je Text 1,1 statt 1,6, Passung, Nutzen und Vollständigkeit gleich, rund
+  27.000 Tokens und 5 s mehr; nach der vereinbarten Regel in `best-coverage-generated` an, sonst `rule-based`.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
