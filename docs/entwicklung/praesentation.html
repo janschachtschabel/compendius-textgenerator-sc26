@@ -92,14 +92,14 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.6.1 · Stand 02.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.7.0 · Stand 02.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>13fe913</code> und ungesicherte Änderungen · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>7230053</code> · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M53</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -2403,8 +2403,8 @@ auf dem Gold nicht, der Abschlag für Ausschlusswörter kostet leicht. Die Werte
 </table></div>
 <p><strong>Warum so:</strong> Der wörtliche Text ist nachprüfbar und bleibt deshalb der Standard bis <code>best-quality</code>; für KI und
 Weiterverarbeitung ist das richtig. Für Menschen, die den Text direkt lesen, ist die geschriebene Fassung klar besser;
-sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen steht sichtbar als <code>[Modellwissen]</code> da, nur als
-prüfbare Sachaussage (D56). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
+sie ist ein eigenes Profil (Jan, 25.09.2026), und ihr Modellwissen ist gekennzeichnet, nur als prüfbare Sachaussage
+(D56): im Markup, sichtbar als <code>[Modellwissen]</code> nur auf Wunsch (<code>model_knowledge_label</code>, D76). Wer ein Thema mit Aspekt anfragt („OER-Förderungen“, „Inklusion im Sportunterricht“), bekommt dort aber einen
 Text über den Artikel, auf den die Artikelwahl das Thema auflöst; <code>best-coverage-generated</code> schreibt jeden Baustein
 über das angefragte Thema und füllt ihn, wo die Quellen nichts dazu sagen, aus Modellwissen (Jan, 01.10.2026: „max.
 abdeckung der kategorien und max. nähe zum thema“, D69). Der Preis ist ein Text, der zum größten Teil aus
@@ -4684,7 +4684,7 @@ drei Schalter auf.</p>
 <td><code>enrichment</code></td>
 <td><code>sources-only</code>, <code>model-knowledge</code>, <code>model-knowledge-full</code></td>
 <td><code>model-knowledge</code> in <code>best-quality-generated</code>, <code>model-knowledge-full</code> in <code>best-coverage-generated</code>, sonst <code>sources-only</code></td>
-<td><code>model-knowledge</code>: Das schreibende LLM darf eigenes Wissen ergänzen, ohne Belegnummer und sichtbar gekennzeichnet mit <code>[Modellwissen]</code> (D56); nur mit <code>generation</code> <code>llm</code> oder <code>llm-fast</code>. <code>model-knowledge-full</code> (D69): Das LLM schreibt jeden Inhaltsbaustein vollständig über das angefragte Thema, Belege nur, wo sie es treffen, sonst Modellwissen, auch ohne Belege; die Ziellänge ist Untergrenze.</td>
+<td><code>model-knowledge</code>: Das schreibende LLM darf eigenes Wissen ergänzen, ohne Belegnummer und im Markup gekennzeichnet, sichtbar als <code>[Modellwissen]</code> nur mit <code>model_knowledge_label</code> (D56, D76); nur mit <code>generation</code> <code>llm</code> oder <code>llm-fast</code>. <code>model-knowledge-full</code> (D69): Das LLM schreibt jeden Inhaltsbaustein vollständig über das angefragte Thema, Belege nur, wo sie es treffen, sonst Modellwissen, auch ohne Belege; die Ziellänge ist Untergrenze.</td>
 </tr>
 <tr>
 <td><code>target_length</code></td>
@@ -5696,7 +5696,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>13fe913</code> und ungesicherte Änderungen; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>7230053</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
