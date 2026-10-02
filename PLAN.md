@@ -1958,6 +1958,22 @@ API.
   schweren Fehler, 84.016 Tokens und 30 s wie zuvor, 62 statt 27 % Modellwissen (31 von 90 Bausteinen ohne Belege).
   Die Zuordnung, die das Thema hört, lässt bei Aspekten Absätze über den Oberbegriff weg (streut zwischen Läufen);
   `best-quality` druckt dort weniger. Die Formulierung: 26 Eingaben, jede ein knappes Thema, 432 Tokens und 1 s.
+- **D73 (2026-10-02)** Die offenen Punkte nach dem Review von D72 (Jan: „die offenen punkten beheben“; Überschrift,
+  Länge, Punkt 12a und Release erfragt). (1) Rückfall: Ein Baustein mit Belegen, dessen Antwort keinen davon zitierte,
+  fiel in `best-quality-generated` auf wörtliche Absätze zurück (U4: ein Baustein braucht einen belegten Satz) - ein
+  wörtlicher Baustein mitten im geschriebenen Text; er bleibt jetzt geschrieben, jeder Satz gekennzeichnet, wie seit
+  D72 einer ohne Belege. (2) V4 (07, Punkte 12c und 14): Eine unlesbare Antwort der Zuordnung wird einmal neu gefragt
+  (`audit.llm.matching.asked_again`). (3) V1a: Die Übersicht der Frage N wird auch ohne Klammerzusatz gesucht; V1b
+  (drei Übersichten) nicht. (4) V3 (Punkte 12e und 14): Behandelt ein wörtlicher Text einen anderen Artikel als das
+  angefragte Thema, nennt die Prüfung (`audit.lint`, Regel `topic-scope`) das Thema und die beiden schreibenden
+  Profile; ab `balanced` sagt die Frage N in Version 2 dafür `deckt_ab` (`articles_covers`), ohne LLM entscheiden die
+  Wörter des Themas, die dem Titel des Artikels fehlen. (5) Überschrift (Jan: „Artikel + Hinweis“): Ein wörtlicher
+  Text behält den gedruckten Artikel (D12). (6) Länge in `best-coverage-generated` (Punkt 13; Jan: „so lassen“): die
+  30.000 Zielzeichen bleiben Untergrenze. (7) Prüfung des Modellwissens (Punkt 12a; Jan: „bauen und messen“): Schalter
+  `model_knowledge_check` (`rule-based`, `llm`), Prompt `model_knowledge_check` v1; nach dem Schreiben streicht oder
+  berichtigt ein zweiter Aufruf je Baustein Sätze aus Modellwissen, die Kennzeichnung bleibt, ein Baustein nur aus
+  Modellwissen, der jeden Satz verliert, fällt auf die Regeln zurück; `audit.llm.model_knowledge_check` zählt
+  Gelesenes, Gestrichenes und Berichtigtes. Alle Profile stehen auf `rule-based`, bis M53 entscheidet.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

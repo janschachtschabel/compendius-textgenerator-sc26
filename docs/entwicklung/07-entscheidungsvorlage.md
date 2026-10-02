@@ -21,6 +21,8 @@ der QA-Paare (D54, D55, D57).
 | Zuordnung (`matcher`) | `hybrid_light` | `hybrid_light` | `llm` | `llm` | `llm` |
 | Thema in den Prompts (D72) | keine Prompts | das angefragte Thema | das angefragte Thema | das angefragte Thema; ist es ein Text oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst | wie `best-quality-generated` |
 | Text (`generation`, `enrichment`) | wörtlich | wörtlich | wörtlich | vom LLM zum angefragten Thema geschrieben, ergänzt um Modellwissen (höchstens die Hälfte), ein Baustein ohne Belege aus Modellwissen (D72) | vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69) |
+| Hinweis in der Prüfung (`audit.lint`, `topic-scope`; V3, D73), wenn der Text einen anderen Artikel behandelt als das angefragte Thema | ja; die Wörter des Themas entscheiden | ja; die Frage N sagt, ob ihre Übersicht das Thema deckt | wie `balanced` | nein: der Text handelt vom angefragten Thema | wie `best-quality-generated` |
+| Prüfung des Modellwissens (`model_knowledge_check`, Punkt 12a, D73) | – | – | – | `rule-based` (Schalter `llm`: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen) | wie `best-quality-generated` |
 | QA-Paare (`/qa`, `method`) | `rule-based` | `rule-based` | `llm` | `llm` | `llm` |
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` | wie `balanced` |
@@ -30,10 +32,10 @@ der QA-Paare (D54, D55, D57).
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen | nicht gemessen |
 | gedruckte Absätze aus passenden Artikeln, 25 Sammel- und 20 gewöhnliche Themen (M37, M39) | 43 % und 71 % | 87 % und 93 % seit D63 (vorher 45 und 73 %) | wie `balanced` (derselbe Korpus, nicht eigens gemessen) | wie `balanced` | wie `balanced` |
 | Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht mehr ab (M39) | 0,70 vor D63 | 0,70 vor D63 | 0,70 vor D63 |
-| Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen; in M48 4,1 |
-| Passung zum angefragten Thema an neun Themen, zwei Gutachter (M48): einfach, Sammelthema, mit Aspekt | 3,2, 1,3, 1,0 | 4,0, 2,5, 1,3 | 4,5, 2,0, 1,5 | 4,8, 3,0, 1,7 | 5,0, 5,0, 5,0 |
-| Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M48) | 1,7, 1,2, 2,1 | 2,4, 1,4, 2,0 | 2,7, 1,9, 2,5 | 3,1, 2,6, 3,7 | 4,5, 4,8, 4,1; keine schweren Fehler, 0,8 leichte je Text |
-| Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M48) | 1,6 s, 0 Tokens, 8.720 Zeichen | 6,1 s, 580 Tokens, 11.488 Zeichen | 18 s, 61.060 Tokens, 13.408 Zeichen | 29 s, 82.335 Tokens, 19.987 Zeichen, 28 % Modellwissen | 37 s, 101.150 Tokens (die Hälfte aus dem Prompt-Cache), 57.378 Zeichen, 84 % Modellwissen |
+| Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen; in M52 4,2 |
+| Passung zum angefragten Thema an neun Themen, zwei Gutachter (M52, Stand D72): einfach, Sammelthema, mit Aspekt | 3,0, 1,5, 1,0 | 3,7, 2,8, 1,2 | 4,2, 3,8, 1,7 | 4,8, 4,7, 4,2 | 5,0, 5,0, 5,0 |
+| Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M52) | 1,5, 1,0, 2,1 | 2,3, 1,3, 1,9 | 2,7, 1,9, 1,9 | 4,1, 4,2, 3,9; keine schweren Fehler, 0,6 leichte je Text | 4,8, 4,9, 4,2; 0,1 schwere und 0,8 leichte Fehler je Text |
+| Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M52) | 1,7 s, 0 Tokens, 8.720 Zeichen | 5,0 s, 530 Tokens, 11.426 Zeichen | 16 s, 59.900 Tokens, 11.703 Zeichen | 30 s, 84.000 Tokens, 27.809 Zeichen, 62 % Modellwissen | 38 s, 103.300 Tokens (60.200 aus dem Prompt-Cache), 58.917 Zeichen, 83 % Modellwissen |
 | Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5 | nicht gemessen | nicht gemessen | nicht gemessen | 1,81, 2,12, 1,69: der Text handelt vom Artikel | 4,81, 4,81, 5,00; keine schweren Fehler |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96); 0,52 s an rund 23.000 Zeichen (M45) | wie `llm-free` | 99 von 120; 6,3 s und 7.137 Tokens an rund 23.000 Zeichen (M45) | wie `best-quality` | wie `best-quality` |
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` | wie `best-quality` |
@@ -808,7 +810,8 @@ Passung 4,56 und Nutzen 4,31.
     liberquarterly.eu/article/view/19422 (Erschließungsmaschine der DNB).
 
 12. **KI-Stufen über `best-coverage-generated` hinaus** (Jan, 01.10.2026: „das neue profil kann nochmal ki nutzen -
-    wir brauchen da eine sinnvolle hochstufung der ki nutzung“): Vorschlag, offen.
+    wir brauchen da eine sinnvolle hochstufung der ki nutzung“): (c) und (e) umgesetzt, (a) gebaut und in M53 gemessen
+    (D73), (b) und (d) offen.
 
     Die Leiter heute, Teil 1 im Median an neun Themen (M52, Stand D72):
 
@@ -855,14 +858,23 @@ Passung 4,56 und Nutzen 4,31.
 
     Empfehlung: (c) gleich, weil es einen Fehlerweg schließt; (a) als nächste Stufe, mit Messung; (e) als Hilfe bei der
     Wahl des Profils; (b) und (d) nach den Zahlen von (a).
+
+    **Entschieden (D73, Jan, 02.10.2026: „die offenen punkte beheben“, zu (a) „bauen und messen“):** (c) ist V4 und (e)
+    ist V3 aus Punkt 14, beide umgesetzt. (a) ist gebaut als Schalter `model_knowledge_check` (`rule-based`, `llm`;
+    Prompt `model_knowledge_check` v1): Nach dem Schreiben liest ein zweiter Aufruf je Baustein dessen Sätze aus
+    Modellwissen mit dem Baustein als Zusammenhang und streicht, was er für falsch oder erfunden hält, oder berichtigt
+    eine falsche Angabe, die er sicher kennt; die Kennzeichnung bleibt, und ein Baustein nur aus Modellwissen, der jeden
+    Satz verliert, fällt auf die Regeln zurück. Alle Profile stehen auf `rule-based`, bis M53 zeigt, ob die Prüfung in
+    `best-coverage-generated` Fehler senkt, ohne Passung oder Nutzen zu kosten. (b) und (d) folgen den Zahlen von M53.
 13. **Länge in `best-coverage-generated`:** entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
     dort Untergrenze ist, schreibt `best-coverage-generated` im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
     das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen
     will, gibt dem Profil 15.000 als Vorgabe (`PRESET_TARGET_LENGTH`); eine Anfrage kann es jederzeit mit
-    `target_length`. Offen: so lassen oder halbieren.
+    `target_length`. Entschieden (Jan, 02.10.2026): so lassen; wer rund 30.000 Zeichen will, setzt `target_length`.
 
 14. **Die anderen Profile an den Problemstellen von M48** (Jan, 02.10.2026: „bitte vorschlagen, testen und
-    empfehlen“): gemessen in M49 am Prototyp; V2 entschieden und erweitert (D72), V1, V3 und V4 offen. Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
+    empfehlen“): gemessen in M49 am Prototyp; V2 entschieden und erweitert (D72), V1a, V3 und V4 übernommen, V1b nicht
+    (D73). Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
     nennt, im Archiv, wird ein Vertreter der Gruppe Hauptartikel (Walther von der Vogelweide, Immanuel Kant).
 
     | Vorschlag | Wirkung (M49) | Kosten | Empfehlung |
@@ -891,6 +903,13 @@ Passung 4,56 und Nutzen 4,31.
     Vollständigkeit und Lesbarkeit steigen um 0,7 bis 1,5 Noten, zum gleichen Preis (84.016 Tokens, 30 s). Das
     Modellwissen steigt auf 62 statt 27 %, vor allem aus den Bausteinen ohne Belege. Die Zuordnung lässt bei einem
     Aspekt Absätze über den Oberbegriff weg; der wörtliche Text von `best-quality` wird dort kürzer.
+
+    **Entschieden (D73, Jan, 02.10.2026):** V1a, V3 und V4 wie empfohlen übernommen, V1b nicht. Ein wörtlicher Text
+    behält den gedruckten Artikel als Überschrift (D12); der Hinweis V3 nennt das angefragte Thema und die beiden
+    schreibenden Profile (Jan: „Artikel + Hinweis“). Die Frage N fragt dafür in Version 2 nur nach `deckt_ab`, nicht nach
+    drei Übersichten. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
+    `best-quality-generated` auf wörtliche Absätze zurück, mitten in einem geschriebenen Text; er bleibt jetzt
+    geschrieben, jeder Satz gekennzeichnet.
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
 `best-quality`-Profilen (`curriculum_check=llm`); `llm-free` und `balanced` bleiben bei den Regeln mit gebündelten

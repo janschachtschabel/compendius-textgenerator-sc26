@@ -99,7 +99,7 @@ Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Toke
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>9814a5b</code> und ungesicherte Änderungen · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>517825a</code> und ungesicherte Änderungen · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M52</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -1054,6 +1054,24 @@ konfiguriertes LLM, sonst ist die Anfrage ein 503.</p>
 <td>das angefragte Thema; ist es ein Text (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder kommt ein Knoten oder eine Sammlung ohne Thema, formuliert das LLM es zuerst (<code>topic_wording</code>)</td>
 <td>wie <code>best-quality-generated</code></td>
 <td>D72</td>
+</tr>
+<tr>
+<td>Prüfung des Modellwissens (<code>model_knowledge_check</code>)</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>keine (<code>rule-based</code>); mit <code>llm</code> streicht oder berichtigt ein zweiter Aufruf je Baustein Sätze aus Modellwissen</td>
+<td>wie <code>best-quality-generated</code></td>
+<td>D73</td>
+</tr>
+<tr>
+<td>Hinweis aufs passende Profil (<code>audit.lint</code>, <code>topic-scope</code>)</td>
+<td>wenn Wörter des Themas im Titel des Artikels fehlen</td>
+<td>wenn die Frage N sagt, dass ihre Übersicht das Thema nicht deckt</td>
+<td>wie <code>balanced</code></td>
+<td>– (der Text handelt vom angefragten Thema)</td>
+<td>wie <code>best-quality-generated</code></td>
+<td>D73</td>
 </tr>
 <tr>
 <td>Lehrplanschnipsel (<code>curriculum_check</code>)</td>
@@ -2836,6 +2854,22 @@ der QA-Paare (D54, D55, D57).</p>
 <td>vom LLM vollständig zum angefragten Thema geschrieben: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (D69)</td>
 </tr>
 <tr>
+<td>Hinweis in der Prüfung (<code>audit.lint</code>, <code>topic-scope</code>; V3, D73), wenn der Text einen anderen Artikel behandelt als das angefragte Thema</td>
+<td>ja; die Wörter des Themas entscheiden</td>
+<td>ja; die Frage N sagt, ob ihre Übersicht das Thema deckt</td>
+<td>wie <code>balanced</code></td>
+<td>nein: der Text handelt vom angefragten Thema</td>
+<td>wie <code>best-quality-generated</code></td>
+</tr>
+<tr>
+<td>Prüfung des Modellwissens (<code>model_knowledge_check</code>, Punkt 12a, D73)</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td><code>rule-based</code> (Schalter <code>llm</code>: ein zweiter Aufruf je Baustein streicht oder berichtigt Sätze aus Modellwissen)</td>
+<td>wie <code>best-quality-generated</code></td>
+</tr>
+<tr>
 <td>QA-Paare (<code>/qa</code>, <code>method</code>)</td>
 <td><code>rule-based</code></td>
 <td><code>rule-based</code></td>
@@ -2913,31 +2947,31 @@ der QA-Paare (D54, D55, D57).</p>
 <td>wörtlich wie <code>best-quality</code></td>
 <td>2,5</td>
 <td>4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31)</td>
-<td>nicht gemessen; in M48 4,1</td>
+<td>nicht gemessen; in M52 4,2</td>
 </tr>
 <tr>
-<td>Passung zum angefragten Thema an neun Themen, zwei Gutachter (M48): einfach, Sammelthema, mit Aspekt</td>
-<td>3,2, 1,3, 1,0</td>
-<td>4,0, 2,5, 1,3</td>
-<td>4,5, 2,0, 1,5</td>
-<td>4,8, 3,0, 1,7</td>
+<td>Passung zum angefragten Thema an neun Themen, zwei Gutachter (M52, Stand D72): einfach, Sammelthema, mit Aspekt</td>
+<td>3,0, 1,5, 1,0</td>
+<td>3,7, 2,8, 1,2</td>
+<td>4,2, 3,8, 1,7</td>
+<td>4,8, 4,7, 4,2</td>
 <td>5,0, 5,0, 5,0</td>
 </tr>
 <tr>
-<td>Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M48)</td>
-<td>1,7, 1,2, 2,1</td>
-<td>2,4, 1,4, 2,0</td>
-<td>2,7, 1,9, 2,5</td>
-<td>3,1, 2,6, 3,7</td>
-<td>4,5, 4,8, 4,1; keine schweren Fehler, 0,8 leichte je Text</td>
+<td>Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M52)</td>
+<td>1,5, 1,0, 2,1</td>
+<td>2,3, 1,3, 1,9</td>
+<td>2,7, 1,9, 1,9</td>
+<td>4,1, 4,2, 3,9; keine schweren Fehler, 0,6 leichte je Text</td>
+<td>4,8, 4,9, 4,2; 0,1 schwere und 0,8 leichte Fehler je Text</td>
 </tr>
 <tr>
-<td>Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M48)</td>
-<td>1,6 s, 0 Tokens, 8.720 Zeichen</td>
-<td>6,1 s, 580 Tokens, 11.488 Zeichen</td>
-<td>18 s, 61.060 Tokens, 13.408 Zeichen</td>
-<td>29 s, 82.335 Tokens, 19.987 Zeichen, 28 % Modellwissen</td>
-<td>37 s, 101.150 Tokens (die Hälfte aus dem Prompt-Cache), 57.378 Zeichen, 84 % Modellwissen</td>
+<td>Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M52)</td>
+<td>1,7 s, 0 Tokens, 8.720 Zeichen</td>
+<td>5,0 s, 530 Tokens, 11.426 Zeichen</td>
+<td>16 s, 59.900 Tokens, 11.703 Zeichen</td>
+<td>30 s, 84.000 Tokens, 27.809 Zeichen, 62 % Modellwissen</td>
+<td>38 s, 103.300 Tokens (60.200 aus dem Prompt-Cache), 58.917 Zeichen, 83 % Modellwissen</td>
 </tr>
 <tr>
 <td>Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5</td>
@@ -5368,7 +5402,8 @@ liberquarterly.eu/article/view/19422 (Erschließungsmaschine der DNB).</p>
 </li>
 <li>
 <p><strong>KI-Stufen über <code>best-coverage-generated</code> hinaus</strong> (Jan, 01.10.2026: „das neue profil kann nochmal ki nutzen -
-wir brauchen da eine sinnvolle hochstufung der ki nutzung“): Vorschlag, offen.</p>
+wir brauchen da eine sinnvolle hochstufung der ki nutzung“): (c) und (e) umgesetzt, (a) gebaut und in M53 gemessen
+(D73), (b) und (d) offen.</p>
 <p>Die Leiter heute, Teil 1 im Median an neun Themen (M52, Stand D72):</p>
 <div class="table-wrap"><table style="min-width: 900px">
 <thead>
@@ -5459,17 +5494,25 @@ Tokens. In M48 betraf das sechs der neun Themen.</li>
 </ul>
 <p>Empfehlung: (c) gleich, weil es einen Fehlerweg schließt; (a) als nächste Stufe, mit Messung; (e) als Hilfe bei der
 Wahl des Profils; (b) und (d) nach den Zahlen von (a).</p>
+<p><strong>Entschieden (D73, Jan, 02.10.2026: „die offenen punkte beheben“, zu (a) „bauen und messen“):</strong> (c) ist V4 und (e)
+ist V3 aus Punkt 14, beide umgesetzt. (a) ist gebaut als Schalter <code>model_knowledge_check</code> (<code>rule-based</code>, <code>llm</code>;
+Prompt <code>model_knowledge_check</code> v1): Nach dem Schreiben liest ein zweiter Aufruf je Baustein dessen Sätze aus
+Modellwissen mit dem Baustein als Zusammenhang und streicht, was er für falsch oder erfunden hält, oder berichtigt
+eine falsche Angabe, die er sicher kennt; die Kennzeichnung bleibt, und ein Baustein nur aus Modellwissen, der jeden
+Satz verliert, fällt auf die Regeln zurück. Alle Profile stehen auf <code>rule-based</code>, bis M53 zeigt, ob die Prüfung in
+<code>best-coverage-generated</code> Fehler senkt, ohne Passung oder Nutzen zu kosten. (b) und (d) folgen den Zahlen von M53.</p>
 </li>
 <li>
 <p><strong>Länge in <code>best-coverage-generated</code>:</strong> entschieden (D70) sind 30.000 Zeichen in allen Profilen. Weil die Ziellänge
 dort Untergrenze ist, schreibt <code>best-coverage-generated</code> im Median 57.378 Zeichen (53.000 bis 64.000, M48), fast
 das Doppelte; Zeit und Tokens blieben im Rahmen (37 s, 101.150 Tokens, keine Rückfälle). Wer rund 30.000 Zeichen
 will, gibt dem Profil 15.000 als Vorgabe (<code>PRESET_TARGET_LENGTH</code>); eine Anfrage kann es jederzeit mit
-<code>target_length</code>. Offen: so lassen oder halbieren.</p>
+<code>target_length</code>. Entschieden (Jan, 02.10.2026): so lassen; wer rund 30.000 Zeichen will, setzt <code>target_length</code>.</p>
 </li>
 <li>
 <p><strong>Die anderen Profile an den Problemstellen von M48</strong> (Jan, 02.10.2026: „bitte vorschlagen, testen und
-empfehlen“): gemessen in M49 am Prototyp; V2 entschieden und erweitert (D72), V1, V3 und V4 offen. Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
+empfehlen“): gemessen in M49 am Prototyp; V2 entschieden und erweitert (D72), V1a, V3 und V4 übernommen, V1b nicht
+(D73). Ursache bei den Sammelthemen: Fehlt die Übersicht, die das LLM
 nennt, im Archiv, wird ein Vertreter der Gruppe Hauptartikel (Walther von der Vogelweide, Immanuel Kant).</p>
 <div class="table-wrap"><table style="min-width: 750px">
 <thead>
@@ -5529,7 +5572,13 @@ einem Text oder den Metadaten eines Knotens. Gemessen in M51 (zwei blinde Gutach
 Themen mit Aspekt 4,00 statt 1,50, bei Sammelthemen 3,83 statt 2,83, bei einfachen 4,83 statt 4,67; Nutzen,
 Vollständigkeit und Lesbarkeit steigen um 0,7 bis 1,5 Noten, zum gleichen Preis (84.016 Tokens, 30 s). Das
 Modellwissen steigt auf 62 statt 27 %, vor allem aus den Bausteinen ohne Belege. Die Zuordnung lässt bei einem
-Aspekt Absätze über den Oberbegriff weg; der wörtliche Text von <code>best-quality</code> wird dort kürzer.
+Aspekt Absätze über den Oberbegriff weg; der wörtliche Text von <code>best-quality</code> wird dort kürzer.</p>
+<p><strong>Entschieden (D73, Jan, 02.10.2026):</strong> V1a, V3 und V4 wie empfohlen übernommen, V1b nicht. Ein wörtlicher Text
+behält den gedruckten Artikel als Überschrift (D12); der Hinweis V3 nennt das angefragte Thema und die beiden
+schreibenden Profile (Jan: „Artikel + Hinweis“). Die Frage N fragt dafür in Version 2 nur nach <code>deckt_ab</code>, nicht nach
+drei Übersichten. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
+<code>best-quality-generated</code> auf wörtliche Absätze zurück, mitten in einem geschriebenen Text; er bleibt jetzt
+geschrieben, jeder Satz gekennzeichnet.
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
 <code>best-quality</code>-Profilen (<code>curriculum_check=llm</code>); <code>llm-free</code> und <code>balanced</code> bleiben bei den Regeln mit gebündelten
@@ -5635,7 +5684,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>9814a5b</code> und ungesicherte Änderungen; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>517825a</code> und ungesicherte Änderungen; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
