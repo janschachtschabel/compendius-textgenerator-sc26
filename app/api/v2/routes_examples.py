@@ -26,8 +26,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 87 von 94 "
             "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27). Teil 2 findet und "
             "bewertet mit den Stichwortregeln; ein Element, dessen Überschrift allein das Thema nennt, zählt beim "
-            "Bereich mit (M32). An neun Themen (M48) bewerteten zwei Gutachter die Passung zum Thema mit 3,2 von 5 bei "
-            "Themen mit eigenem Artikel, 1,3 bei Sammelthemen und 1,0 bei Themen mit Aspekt; Teil 1 1,6 s."
+            "Bereich mit (M32). An neun Themen (M52) bewerteten zwei Gutachter die Passung zum Thema mit 3,0 von 5 bei "
+            "Themen mit eigenem Artikel, 1,5 bei Sammelthemen und 1,0 bei Themen mit Aspekt; Teil 1 1,7 s."
         ),
         "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
     },
@@ -36,8 +36,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "description": (
             "Wie llm-free, aber das LLM nennt Übersicht und Teile des Themas, die zu seinen Nebenartikeln werden "
             "(D63), und entscheidet, wo die Regeln beim Artikel unsicher sind - hier das mehrdeutige Wort Linse. 91 "
-            "von 94 Hauptartikeln richtig (M35). Passung zum Thema 4,0 bei Themen mit eigenem Artikel, 2,5 bei "
-            "Sammelthemen, 1,3 bei Themen mit Aspekt; Teil 1 6,1 s und 580 Tokens (M48). Teil 2 wie llm-free. Ohne "
+            "von 94 Hauptartikeln richtig (M35). Passung zum Thema 3,7 bei Themen mit eigenem Artikel, 2,8 bei "
+            "Sammelthemen, 1,2 bei Themen mit Aspekt; Teil 1 5,0 s und 530 Tokens (M52). Teil 2 wie llm-free. Ohne "
             "konfiguriertes LLM ist die Anfrage ein 503."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "balanced"},
@@ -45,9 +45,9 @@ EXAMPLES: dict[str, dict[str, Any]] = {
     "Profil best-quality": {
         "summary": "Profil best-quality: das LLM wählt die Artikel und ordnet die Absätze zu",
         "description": (
-            "Wie balanced, dazu matcher llm: macro-F1 0,70 statt 0,45 (M19, M27). Passung zum Thema 4,5 bei Themen "
-            "mit eigenem Artikel, 2,0 bei Sammelthemen, 1,5 bei Themen mit Aspekt; Teil 1 18 s und 61.060 Tokens, die "
-            "meisten für die Zuordnung (M48). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
+            "Wie balanced, dazu matcher llm: macro-F1 0,70 statt 0,45 (M19, M27). Passung zum Thema 4,2 bei Themen "
+            "mit eigenem Artikel, 3,8 bei Sammelthemen, 1,7 bei Themen mit Aspekt; Teil 1 16 s und 59.900 Tokens, die "
+            "meisten für die Zuordnung (M52). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
             "best-quality-generated. Mit curricula in parts bewertet das LLM auch jedes Lehrplanelement "
             "(curriculum_check llm, M32). Budget je Anfrage: 180.000 Tokens statt 60.000 "
             "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59)."
@@ -59,9 +59,10 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "description": (
             "Wie best-quality, dazu schreibt das LLM jeden Baustein neu (generation llm) und darf eigenes Wissen "
             "ergänzen, höchstens für die Hälfte der Sätze (enrichment model-knowledge, D70); solche Sätze tragen keine "
-            "Belegnummer und enden sichtbar mit [Modellwissen]. Für Texte, die Menschen direkt lesen. Es schreibt über "
-            "den Artikel der Artikelwahl: Passung 4,8 bei Themen mit eigenem Artikel, 3,0 bei Sammelthemen, 1,7 bei "
-            "Themen mit Aspekt; Teil 1 29 s und 82.335 Tokens, im Median 28 % Modellwissen (M48). Zwei "
+            "Belegnummer und enden sichtbar mit [Modellwissen]. Für Texte, die Menschen direkt lesen. Seit D72 "
+            "schreibt es über das angefragte Thema, nicht über den Artikel der Artikelwahl, und einen Baustein "
+            "ohne Belege aus Modellwissen: Passung 4,8 bei Themen mit eigenem Artikel, 4,7 bei Sammelthemen, 4,2 "
+            "bei Themen mit Aspekt, Lesbarkeit 3,9; Teil 1 30 s und 84.000 Tokens, 62 % Modellwissen (M52). Zwei "
             "Gutachter zogen den Text in 11 von 12 Urteilen dem wörtlichen vor; unter dem ersten Prompt waren zwei "
             "Drittel des Modellwissens Füllsätze (M28), der zweite verlangt eine prüfbare Sachaussage oder nichts "
             "(D56) und ergänzte an sechs Themen 50 statt 82 solche Sätze, 13 statt 50 davon Füllsätze (M31). "
@@ -79,9 +80,9 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "(enrichment model-knowledge-full, D69). target_length ist hier eine Untergrenze, keine Obergrenze; die "
             "Überschrift nennt das angefragte Thema. An acht solchen Themen bewerteten zwei blinde Gutachter die "
             "Passung mit 4,8 statt 1,8 von 5 (best-quality-generated) und die Vollständigkeit mit 5,0 statt 1,7, ohne "
-            "schwere Fehler (M47). An neun Themen dreier Arten hielt nur dieses Profil jedes Thema: Passung 5,0 bei "
-            "Themen mit eigenem Artikel, Sammelthemen und Themen mit Aspekt, Nutzen 4,5, Vollständigkeit 4,8; Teil 1 "
-            "37 s und 101.150 Tokens, die Hälfte aus dem Prompt-Cache, rund 57.000 Zeichen, 84 % Modellwissen (M48). "
+            "schwere Fehler (M47). An neun Themen dreier Arten: Passung 5,0 bei Themen mit eigenem Artikel, "
+            "Sammelthemen und Themen mit Aspekt, Nutzen 4,8, Vollständigkeit 4,9, Lesbarkeit 4,2; Teil 1 38 s und "
+            "103.300 Tokens, 60.200 davon aus dem Prompt-Cache, rund 59.000 Zeichen, 83 % Modellwissen (M52). "
             "Teil 2 und Budget wie best-quality."
         ),
         "value": {"topic": "OER-Förderungen", "parts": ["world"], "preset": "best-coverage-generated"},
@@ -107,9 +108,10 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "summary": "Sammelthema: eine Gruppe ohne eigenen Artikel, vollständig über die Gruppe geschrieben",
         "description": (
             "Zu Dichter aus dem Mittelalter gibt es keinen eigenen Artikel; die Artikelwahl findet einen Vertreter "
-            "oder den Oberbegriff (Walther von der Vogelweide, Deutsche Literatur im Mittelalter), und die anderen "
-            "Profile schreiben über ihn. best-coverage-generated schreibt über die Gruppe: Passung 5,0 statt höchstens "
-            "3,0 an drei Sammelthemen (M48). Den Großteil schreibt es aus Modellwissen, sichtbar gekennzeichnet."
+            "oder den Oberbegriff (Walther von der Vogelweide, Deutsche Literatur im Mittelalter), und die wörtlichen "
+            "Profile drucken ihn: Passung höchstens 3,8 an drei Sammelthemen (M52). best-coverage-generated schreibt "
+            "über die Gruppe (5,0), seit D72 auch best-quality-generated (4,7). Den Großteil schreibt es aus "
+            "Modellwissen, sichtbar gekennzeichnet."
         ),
         "value": {"topic": "Dichter aus dem Mittelalter", "parts": ["world"], "preset": "best-coverage-generated"},
     },

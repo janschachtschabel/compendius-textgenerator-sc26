@@ -68,19 +68,21 @@ def generate_compendium(
       (``article_choice llm-thorough``), assigns every paragraph to its block (``matcher llm``) and rates every
       curriculum element of part 2, dropping what does not fit (``curriculum_check llm``). The text stays
       verbatim.
-    - ``best-quality-generated``: best-quality, and the LLM writes every block from its evidence (``generation
-      llm``) and may add knowledge of its own for up to half of a block's sentences, marked ``[Modellwissen]``
-      (``enrichment model-knowledge``, D70).
+    - ``best-quality-generated``: best-quality, and the LLM writes every block about the topic as asked (``generation
+      llm``, D72) and may add knowledge of its own for up to half of a block's sentences, marked ``[Modellwissen]``
+      (``enrichment model-knowledge``, D70); a block without evidence, or whose text cites none of it, it writes
+      from its own knowledge.
     - ``best-coverage-generated``: best-quality-generated, but the LLM writes every block about the topic as asked
       and fills it completely: from its evidence where that meets the topic, else from its own knowledge, marked
       ``[Modellwissen]`` (``enrichment model-knowledge-full``, D69); ``target_length`` is a floor here.
 
-    **Which profile for which topic** (M48, nine topics, two blind judges). A topic with an article of its own
-    (Optik): ``balanced`` gives a verbatim text with a citation for every sentence (fit 4.0 of 5, 6 s and 580 tokens
-    for part 1), ``best-quality-generated`` a readable one that mostly keeps to the sources (fit 4.8). A group
-    without an article of its own (Dichter aus dem Mittelalter) or a topic with an aspect (OER-Förderungen):
-    ``best-coverage-generated``, fit 5.0 where the others reach at most 3.0 and 1.7, as they write about one member
-    or the umbrella term the article choice finds; most of its text is model knowledge.
+    **Which profile for which topic** (M52, nine topics, two blind judges). A topic with an article of its own
+    (Optik): ``balanced`` gives a verbatim text with a citation for every sentence (fit 3.7 of 5, 5 s and 530 tokens
+    for part 1), ``best-quality-generated`` a readable one (fit 4.8). A group without an article of its own (Dichter
+    aus dem Mittelalter) or a topic with an aspect (OER-Förderungen): ``best-coverage-generated`` (fit 5.0, 83 % of
+    its text model knowledge) or, shorter, ``best-quality-generated`` (4.7 and 4.2, 62 %); the verbatim profiles
+    print one member or the umbrella term the article choice finds (at most 3.8 and 1.7), keep that article as the
+    heading, and the check of the compendium names the writing profiles (``audit.lint``, ``topic-scope``).
 
     The LLM steps of a request spend from one token budget and one deadline: LLM_MAX_TOKENS_PER_REQUEST (60,000)
     in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the three best-* profiles
@@ -103,6 +105,8 @@ def generate_compendium(
     - ``enrichment``: ``sources-only``; ``model-knowledge`` - the writing model may add knowledge of its own;
       ``model-knowledge-full`` - it writes every block about the topic as asked, from its own knowledge where the
       sources say nothing (D69).
+    - ``model_knowledge_check``: ``rule-based`` leaves the sentences of model knowledge as written, ``llm`` lets a
+      second call per block strike or correct what it holds for wrong (07, point 12a).
     - ``curriculum_check``: who judges the elements of part 2 - ``rule-based`` the keyword rules, ``llm`` the model.
 
     **How long it gets.** ``target_length`` is shared over the blocks by weight and steers upwards until
