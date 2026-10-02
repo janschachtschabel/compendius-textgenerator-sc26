@@ -14,7 +14,9 @@ to settle (``budgeted_chat``, D39): each reserves about 13,000 tokens and spends
 
 The rule-based assignment runs first and stays the fallback: a paragraph whose batch fails (b-api, budget, time,
 unreadable answer) or that the answer leaves out or gives an unknown block keeps the policy's decision, and the
-reason goes to the audit. The blocks are cut to their budgets like the policy's, ordered by the model's confidence.
+reason goes to the audit. An unreadable answer is asked once more first (M49, V4): in M48 four of 27 runs lost a
+batch of 50 paragraphs to one, and since D70 the second question gets a fresh answer. The blocks are cut to their
+budgets like the policy's, ordered by the model's confidence.
 """
 
 from __future__ import annotations
@@ -62,6 +64,7 @@ class LlmAssignmentReport(Tokens):
     fallback: int = 0  # of those: the rule-based decision stays
     fallbacks: dict[str, int] = field(default_factory=dict)  # reason -> paragraphs
     unknown_keys: int = 0  # answers naming a block the template does not have
+    asked_again: int = 0  # batches asked once more after an unreadable answer (V4)
     prompts: set[str] = field(default_factory=set)
 
 
@@ -141,7 +144,7 @@ def assign_with_llm(
     if not batches:
         return rule_based, report
 
-    def ask(batch: Sequence[Chunk]) -> ChatResult | LlmSkipped:
+    def ask_once(batch: Sequence[Chunk]) -> ChatResult | LlmSkipped:
         return budgeted_chat(
             job.client,
             render_messages(template, job.topic, batch, sources),
@@ -151,18 +154,27 @@ def assign_with_llm(
             deadline=job.deadline,
         )
 
+    def ask(batch: Sequence[Chunk]) -> list[ChatResult | LlmSkipped]:
+        first = ask_once(batch)
+        if isinstance(first, LlmSkipped) or parse_assignment(first.text) is not None:
+            return [first]
+        return [first, ask_once(batch)]  # an unreadable answer once more (V4)
+
     # An unexpected error keeps the policy's decision for that batch
     answers = map_in_threads(skipped_on_error(ask, lambda batch: "LLM assignment of a batch"), batches, job.concurrency)
 
     key_to_id = {block_key(slot.slot): slot.id for slot in template.content_slots()}
     decided: dict[str, tuple[str | None, float]] = {}  # chunk id -> (slot id or None for "keiner", confidence)
     fallbacks: Counter[str] = Counter()
-    for batch, answer in zip(batches, answers, strict=True):
+    for batch, attempts in zip(batches, answers, strict=True):
+        tried = attempts if isinstance(attempts, list) else [attempts]  # an unexpected error is one LlmSkipped
+        for attempt in tried:
+            _account(report, attempt)
+        report.asked_again += len(tried) - 1
+        answer = tried[-1]
         if isinstance(answer, LlmSkipped):
-            _account(report, answer)
             fallbacks[answer.reason] += len(batch)
             continue
-        _account(report, answer)
         report.prompts.add(get_prompt("paragraph_assignment").tag)
         report.model = answer.model
         parsed = parse_assignment(answer.text)

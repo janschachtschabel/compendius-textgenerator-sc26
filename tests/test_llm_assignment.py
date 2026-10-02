@@ -153,6 +153,41 @@ def test_an_unreadable_answer_leaves_the_rule_based_assignment(
     assert assignment is rule_based
 
 
+def test_an_unreadable_answer_is_asked_once_more_and_a_readable_second_one_decides(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    """M48: four of 27 runs with matcher llm lost a batch of 50 paragraphs to one unreadable answer. Since D70 every
+    call gets a fresh answer, so the batch is asked once more before the rules take it (M49, V4; 07 point 12c)."""
+    readable = answer_with("praxis", 0.9)
+    seen: dict[str, int] = {}
+
+    def first_unreadable(body: dict[str, Any]) -> str:
+        batch = body["messages"][1]["content"]
+        seen[batch] = seen.get(batch, 0) + 1
+        return "Das kann ich nicht sagen." if seen[batch] == 1 else readable(body)
+
+    fake = FakeBApi(first_unreadable)
+    assignment, report = run(prepared, rule_based, make_job(fake))
+
+    batches = math.ceil(len(offered) / BATCH_SIZE)
+    praxis = prepared.template.slot_by_key("praxis")
+    assert praxis is not None
+    assert report.answered == report.paragraphs == len(offered) and report.fallback == 0
+    assert assignment.classified == {chunk.chunk_id: praxis.id for chunk in offered}
+    assert len(fake.bodies) == 2 * batches and report.asked_again == batches and report.calls == 2 * batches
+
+
+def test_a_second_unreadable_answer_leaves_the_batch_to_the_rules_without_a_third_question(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    fake = FakeBApi(lambda body: "Das kann ich nicht sagen.")
+    assignment, report = run(prepared, rule_based, make_job(fake))
+
+    batches = math.ceil(len(offered) / BATCH_SIZE)
+    assert len(fake.bodies) == 2 * batches and report.asked_again == batches
+    assert report.answered == 0 and assignment is rule_based
+
+
 def test_a_spent_budget_stops_before_any_call(prepared: PreparedTopic, rule_based: AssignmentResult) -> None:
     fake = FakeBApi(answer_with("praxis"))
     assignment, report = run(prepared, rule_based, make_job(fake, per_request=10))

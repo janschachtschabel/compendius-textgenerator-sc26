@@ -144,6 +144,7 @@ def build_llm_report(
         "fallback_paragraphs": matching.fallback if matching else 0,
         "fallbacks": dict(matching.fallbacks) if matching else {},
         "unknown_keys": matching.unknown_keys if matching else 0,
+        "asked_again": matching.asked_again if matching else 0,  # batches asked once more (V4)
     }
     curriculum_block: dict[str, Any] = {
         "requested": work.curriculum_requested,

@@ -64,6 +64,27 @@ def test_matcher_llm_writes_the_compendium_from_the_models_assignment(
     assert tokens is not None and tokens["calls"] == len(fake.bodies) and tokens["total"] == 24 * tokens["calls"]
 
 
+def test_the_audit_counts_the_batches_asked_again_after_an_unreadable_answer(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """V4 (07, point 12c): an unreadable answer of the assignment is asked once more, and the audit says how often."""
+    seen: set[str] = set()
+
+    def first_unreadable(body: dict[str, Any]) -> str:
+        batch = body["messages"][1]["content"]
+        if batch in seen:
+            return leads_define_the_rest_is_content(body)
+        seen.add(batch)
+        return "Das kann ich nicht sagen."
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(first_unreadable), per_request=1_000_000))
+    result = service.generate(GenerateRequest(topic="Optik", matcher="llm", parts=["world"]))
+
+    assert result.audit.llm is not None
+    matching = result.audit.llm["matching"]
+    assert matching["asked_again"] == len(seen) > 0 and matching["fallback_paragraphs"] == 0
+
+
 def test_matcher_llm_without_a_configured_llm_is_refused(service: CompendiumService) -> None:
     assert service.llm is None  # the test settings keep the b-api off
     with pytest.raises(LlmNotConfiguredError, match="matcher=llm"):

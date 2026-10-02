@@ -530,7 +530,9 @@ zuordnen oder keinem, über `matcher` oder die drei Profile ab `best-quality`. E
 Beschreibung, „gehört hinein“ und „gehört nicht hinein“, die Zuordnungsregeln des Templates (`assignment_rules`)
 und je Absatz Artikel, Rolle, Überschriftenpfad und Text (bis 400 Zeichen), 50 Absätze je Aufruf. Die
 Standard-Strategie läuft vorher und bleibt der Rückfall: Absätze, für die das LLM nicht entscheidet (b-api, Budget,
-Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`audit.llm.matching`); ist die b-api
+Zeit, unlesbare Antwort, unbekannter Baustein), behalten ihre Regelzuordnung (`audit.llm.matching`). Eine unlesbare
+Antwort fragt der Dienst zuvor einmal neu (V4, `asked_again`): In M48 verlor sie in vier von 27 Läufen einen Stapel
+von 50 Absätzen, und seit D70 bekommt die zweite Frage eine frische Antwort. Ist die b-api
 gerade nicht erreichbar, gilt `hybrid_light` ganz, und der Vorspann nennt `matcher_requested: llm`. Ohne
 konfiguriertes LLM ist die Anfrage ein 503. Bausteine mit Absätzen, die
 das LLM zugeordnet hat, tragen den Status `ki-ausgewählt`. Gemessen am Goldstandard am 2026-09-23: macro-F1 0,66
