@@ -117,6 +117,8 @@ Abschnittsmarker von Teil 1.
   und weitere Lehrplan-Suchwörter (M64). Aus den Audits: eine Regel für Themenstämme (KO-11), drei Faktoren der
   Zuordnungsregeln gestrichen (WA-02), Themenauflösung und Korpusbau in `app/knowledge` (AR-03, WA-01). Die
   Beispiele der Prüfansicht setzen nur, was ihr Titel nennt (U11).
+- Nachtrag Artikelwahl (D85, Release 2.12.1): Nennt die KI statt eines Kandidaten einen Titel, den das Archiv nicht
+  als Artikel hat, gelten die Kandidaten ebenso als verworfen (live bei „Funktion“).
 
 ## Installation
 

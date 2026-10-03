@@ -79,7 +79,7 @@ class ArticleChoiceJob:
 class ArticleChoiceReport(Usage):
     offered: int = 0  # candidates shown to the model; 0 when the rules were sure and it was not asked
     named: str | None = None  # a title the model named instead of choosing a candidate
-    rejected: bool = False  # the model found that no candidate fits: the rules' article went as well (A01)
+    rejected: bool = False  # the model found that no candidate fits: the rules' article went as well (D85, A01)
     fallback: str | None = None  # why the model's answer did not decide
 
 
@@ -138,11 +138,11 @@ class LlmArticleChooser:
         if number is not None and 1 <= number <= len(candidates):
             return number - 1, None
         named = str(data.get("titel") or "").strip()
+        report.rejected = number == 0  # the verdict that no candidate fits, a title named or not (D85)
         if named:
             report.named = named
             return None, named
         if number == 0:
-            report.rejected = True
             return NONE_FITS, None
         report.fallback = INVALID_NUMBER
         return None, None

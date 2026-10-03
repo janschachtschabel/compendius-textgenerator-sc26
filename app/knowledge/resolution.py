@@ -185,6 +185,9 @@ class _Resolver:
             source = self.primary_archive
             found = source.read_article(named)
             chosen = found if found is not None and not source.parse(found).is_disambiguation else None
+            if chosen is None:  # a title comes with the verdict that no candidate fits: it stands without one (D85)
+                self._reject(resolution, overview)
+                return
         if chosen is None:
             return
         if chosen.title != resolution.title:

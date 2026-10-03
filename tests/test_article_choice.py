@@ -105,7 +105,8 @@ def test_several_subjects_are_named_alike() -> None:
 def test_the_model_may_name_a_title_instead() -> None:
     chooser = chooser_for(FakeBApi(answering({"wahl": 0, "titel": "Geometrische Optik"})))
     assert chooser(CANDIDATES) == (None, "Geometrische Optik")
-    assert chooser.report.fallback is None
+    # a title comes with "wahl": 0, the verdict that none of the candidates fits (D85)
+    assert chooser.report.fallback is None and chooser.report.rejected
 
 
 @pytest.mark.parametrize("answer", ["keine Ahnung", {"wahl": 5}, {"wahl": True}])
@@ -219,8 +220,18 @@ def test_an_unsure_resolution_is_decided_by_the_chooser(service: CompendiumServi
 def test_a_title_the_chooser_names_counts_when_the_archive_has_it(service: CompendiumService) -> None:
     named = resolve_topic(service.registry, "Geometrische", chooser=lambda candidates: (None, "Lichtlehre"))
     assert named.title == "Optik" and named.method == "llm"  # the redirect is followed
+    # A title the archive lacks still rejects the candidates (D85): "Funktion" named the disambiguation page live, and
+    # the rules' first meaning "Funktion (Objekt)" stayed; now the overview of question N or nothing takes the place
     unknown = resolve_topic(service.registry, "Geometrische", chooser=lambda candidates: (None, "Gibt es nicht"))
-    assert unknown.title == "Geometrische Optik" and unknown.method == "suggestion"
+    assert unknown.title is None and unknown.method == "llm" and unknown.alternatives[0] == "Geometrische Optik"
+    overview = resolve_topic(
+        service.registry,
+        "Optik",
+        chooser=lambda candidates: (None, "Gibt es nicht"),
+        thorough=True,  # a sure title with meanings: the chooser is asked, not the overview first
+        overview="Geometrische Optik",
+    )
+    assert overview.title == "Geometrische Optik" and overview.method == "llm" and overview.alternatives[0] == "Optik"
 
 
 def test_when_no_candidate_fits_the_overview_of_question_n_or_nothing_takes_the_rules_place(

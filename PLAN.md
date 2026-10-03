@@ -2128,6 +2128,10 @@ API.
   „Kreditinstitut“); sonst hat das Thema keinen Artikel, und die 404 sagt, dass nach dem LLM keiner passt, rät zu einem
   Fach oder einem genaueren Thema und nennt die verworfenen Artikel unter `resolution.alternatives`. Der Bericht der
   Artikelwahl hat dafür `rejected`. Keine Gold-Anfrage bekam das Urteil (91 und 92 von 94 richtig wie zuvor).
+  Nachtrag (Release 2.12.1): Dasselbe gilt, wenn das LLM statt eines Kandidaten einen Titel nennt, den das Archiv
+  nicht als Artikel hat; der Prompt verlangt einen Titel nur zusammen mit „wahl“: 0. Live über die b-api nannte es
+  bei „Funktion“ den Namen der Begriffsklärung, und *Funktion (Objekt)* blieb; jetzt nimmt *Funktion (Mathematik)*,
+  die Übersicht der Frage N, den Platz.
 - **D86 (2026-10-03)** Der KI-Zuordner denkt weiter (Jan: „ki zuordner wäre ein großer zeitgewinn - aber wir sollten
   den qualitätsverlust nochmal genauer prüfen“). Ohne Denken liegt er am Gold in jedem von vier Läufen unter jedem mit
   (micro-F1 0,745 statt 0,788, Intervall der Differenz −7,8 bis −1,5 Punkte), legt mehr Absätze als „keiner“ ab und
