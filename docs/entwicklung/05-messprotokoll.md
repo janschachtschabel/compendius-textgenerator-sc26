@@ -3114,3 +3114,46 @@ und Seitenreste („Um die Lizenzinformationen zu sehen, klicken Sie …“), ke
 `topic-scope` nennt das, das Kompendium entsteht trotzdem. Das gehört zu A01 und ist nicht entschieden.
 
 **Entscheidung:** nicht gebaut (D79). Rohdaten: `m56_ohne_hauptartikel.json`.
+
+## M57 Teil 2 in allen Profilen (03.10.2026)
+
+Jan: „die qualität der gesuchten lehrplan auszüge in allen profilen - ob diese passt oder verbessert werden muss“.
+Teil 2 kennt drei Wege: `llm-free` (Artikel und Treffer nach Regeln), `balanced` (Artikel über die Frage N, Treffer
+nach Regeln) und `best-quality` (gründliche Artikelwahl, jedes Element prüft das LLM, D58); die beiden schreibenden
+Profile haben den Teil 2 von `best-quality`. `mc_lehrplan_profile.py` fährt 57 Themen (20 gewöhnliche aus M22, 26
+Gruppen- und Mischthemen aus M37 und M48, 11 Aspektthemen, wie Lehrkräfte sie eingeben) in allen drei Wegen durch den
+Dienst, ohne Fach, `gpt-6-luna` über OpenAI direkt. Je Thema und Weg zog eine Stichprobe bis zu sechs einzeln gezeigte
+und zwei nur in der Bündelzeile genannte Elemente (Saat 57); 48 Paare hatten Noten aus M22, 681 benoteten zwei
+Claude-Subagenten blind auf der Skala von M22, zum Thema wie angefragt (gleiche Note bei 670 von 729).
+
+| Einzeln gezeigt: passend / berührt / unpassend | gewöhnlich | Gruppe | Aspekt |
+|---|---|---|---|
+| `llm-free` | 72 / 25 / 4 % | 27 / 36 / 36 % | 6 / 56 / 38 % |
+| `balanced` | 69 / 28 / 3 % | 42 / 38 / 21 % | 23 / 51 / 26 % |
+| `best-quality` | 73 / 25 / 2 % | 49 / 43 / 8 % | 10 / 81 / 10 % |
+
+Noten von Gutachter 1; Gutachter 2 weicht höchstens um sechs Punkte ab, nur bei Aspekten mehr (passend 16, 37 und 32 %).
+
+| Themen ohne passendes Element (Stichprobe) | Gruppe (26) | Aspekt (11) |
+|---|---|---|
+| `llm-free`: gar keins gezeigt + keins passend | 16 + 5 | 5 + 4 |
+| `balanced` | 9 + 4 | 3 + 5 |
+| `best-quality` | 9 + 3 | 3 + 7 |
+
+Elemente je Thema (Median, gezeigt): gewöhnlich 65, 95 und 127; die LLM-Prüfung zeigt mehr einzeln, weil sie
+Überschriften-Treffer bestätigt. In der Bündelzeile passen nach den Regeln 26 bis 27 % der Elemente, nach der
+LLM-Prüfung 3 %. Die Noten 2 der LLM-Prüfung trafen 123 passende, 48 berührende und ein unpassendes Element. Tokens je
+Anfrage (nur Teil 2, Median): 0, rund 650, 13.270 bei gewöhnlichen Themen; Sekunden 4, 5, 15.
+
+Ursachen, aus den Läufen: Teil 2 sucht mit dem Titel des gefundenen Artikels, seinen Aliassen und Untertiteln, nie mit
+dem angefragten Thema. Ist der Artikel eine Liste (*Liste der römischen Kaiser der Antike*), ein Mitglied (*Ätna*,
+*Augustus*) oder ein Zufallstreffer der Volltextsuche (*Max Richter* zu „Komponisten der Klassik“, *Karlheinz Schüffler* zu
+„Mathematik in der Musik“), findet er nichts oder Fremdes. Allgemeine Nebenwörter fluten ihn (*Musik* 3.978 Treffer zu
+„Musik der Romantik“, *Gruppe* zu „Edelgase“, *Teile* aus *Teile-und-herrsche-Verfahren* 6.840 zu „Algorithmen im
+Alltag“); Treffer über den Titel passen zu 53 bis 56 %, über andere Wörter zu 33 bis 48 %. Und die Schreibweise
+entscheidet: Im Cache stehen *Fotosynthese* 111-mal und *Photosynthese* 36-mal, *Brüche* 170-mal und *Bruchrechnung*
+6-mal, *Barock* 93-mal und *Barockliteratur* einmal.
+
+**Ergebnis:** Für gewöhnliche Themen passt Teil 2 in allen Profilen (rund 70 % passend, höchstens 4 % unpassend). Für
+Gruppen findet er oft nichts, für Aspekte fast nie das Angefragte, meist nur den Oberbegriff. Vorschläge in der Antwort
+an Jan, nichts gebaut. Rohdaten: `m57_lehrplan_profile.json`.
