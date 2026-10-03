@@ -3229,5 +3229,16 @@ Punkte), bei Gruppen von 50 auf 67 % (+9 bis +27), bei Aspekten von 21 auf 26 % 
 0 bis 8 %. In die Bündelzeile rückten 6 % der passenden Elemente gewöhnlicher Themen und 12 % bei Gruppen, bei Aspekten
 keins.
 
+**Häufigkeitsfilter (Jans Punkt 2 zu M57, offline):** Welches Suchwort allgemein ist, zeigt der Lehrplan-Cache selbst:
+„Verfahren“ trifft 4.296 Elemente, „Musik“ 3.978, „Teile“ 2.567, „Gruppe“ 2.291, danach folgen „Demokratie“ mit 800 und
+„Strom“ mit 740 (`mc_lehrplan_wortfilter.py`, 269 Suchwörter von M57). Streicht Teil 2 jedes Element, das ein Wort mit
+über 1.000 Treffern fand, außer dem Titel des Artikels, betrifft das in M57 drei Themen: „Edelgase“ über „Gruppe“ in
+allen Profilen, „Musik der Romantik“ über „Musik“ und „Algorithmen im Alltag“ über „Teile“ und „Verfahren“ aus dem
+falschen Artikel *Teile-und-herrsche-Verfahren*, beide in `llm-free`. Gepoolt sinkt das Unpassende bei Gruppen von 35
+auf 19 % (`llm-free`), von 18 auf 14 % (`balanced`) und von 9 auf 5 % (`best-quality`), bei Aspekten in `llm-free` von
+37 auf 27 %; kein passendes Element fällt weg. Ein bis zwei Themen bleiben ohne Element, und in ein bis zwei Läufen
+rückten ungeprüfte Elemente hinter der Grenze von 200 nach. Mit der Schwelle 500 fielen bei gewöhnlichen Themen 17 bis
+22 % der passenden Elemente weg („Säure“ aus *Säure-Base-Konzepte*, „Strom“ zu *Elektrischer Strom*).
+
 **Ergebnis:** Nichts gebaut, Vorschläge an Jan. Rohdaten: `m58_lehrplan_suchbegriffe.json`, gepoolt
-`m57_m58_gepoolt.json`.
+`m57_m58_gepoolt.json`, Wortzählung `m58_wortfrequenzen.json`.
