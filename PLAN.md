@@ -2057,6 +2057,21 @@ API.
   unerreichbar; `LLM_DAILY_TOKEN_BUDGET` bleibt abschaltbar, Vorgabe aus), die Abrechnung der Modelle läuft in der
   b-api und nicht in der App, der Testserver ist bewusst offen. Offen bleibt A01 mit dem Nebenbefund von M56: In
   `llm-free` landete die Volltextsuche bei 8 von 30 Themen auf einem fremden Artikel.
+- **D80 (2026-10-03)** Teil 2 zeigt nach der KI-Prüfung nur einzeln, was passt, und sucht nicht mit zu allgemeinen
+  Nebenwörtern (Jan zu den Vorschlägen aus M57/M58: „lehrpläne mit ki note 2, häufigkeit mit schwelle … usw.“).
+  (1) Mit `curriculum_check=llm` (die `best-quality`-Profile) steht nur einzeln, was die Prüfung mit 2 bewertet; was
+  sie mit 1 bewertet, berührt das Thema nur am Rand und zählt in der Bündelzeile seines Bereichs („das Thema wird dort
+  nur am Rand berührt“; ohne Bewertung bleibt die Regel von D58). Gepoolt über M57/M58 steigt der passende Anteil der
+  einzeln gezeigten Elemente bei gewöhnlichen Themen von 76 auf 88 %, bei Gruppen von 50 auf 67 %, bei Aspekten von 21
+  auf 26 %; in die Bündelzeile rücken 6 bzw. 12 % der passenden. (2) Ein Suchwort aus Alias, Untertitel oder
+  Bindestrich-Teil des Artikels, das im ganzen Lehrplan-Cache mehr als `LEHRPLAN_GENERIC_WORD_HITS` Elemente trifft
+  (Vorgabe 1.000; „Verfahren“ 4.296, „Musik“ 3.978, „Teile“ 2.567, „Gruppe“ 2.291), sucht Teil 2 nicht; der Titel
+  selbst bleibt immer, `0` sucht jedes Wort. Offline an M57 senkte das das Unpassende bei Gruppen von 35 auf 19 %
+  (`llm-free`), 18 auf 14 % (`balanced`) und 9 auf 5 % (`best-quality`), ohne ein passendes Element zu verlieren; mit
+  500 fielen „Säure“ und „Strom“ und 17 bis 22 % der passenden Elemente gewöhnlicher Themen weg. Teil 2 und die
+  Lehrplan-Suche im Themenmodus nennen solche Wörter unter `generic_keywords`; Wörter, die ein Aufrufer im Modus
+  `keyword` schickt, sucht sie wie gesendet. Kosten im echten Cache: im Median 7 ms je Anfrage (eine Zählung je
+  Nebenwort); ein allgemeines Wort 0,1 bis 0,4 s, die die eigentliche Suche danach nicht mehr für es ausgibt.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

@@ -55,6 +55,12 @@ class CurriculaBuilder:
     store: LehrplanStore
     subjects: SubjectCatalog
     options: RenderOptions = field(default_factory=RenderOptions)
+    generic_hits: int = 0  # LEHRPLAN_GENERIC_WORD_HITS: side words of a topic above it are left out (M58)
+
+    def matcher(self, *, topic: bool) -> LehrplanMatcher:
+        """The matcher for the words of a topic's article (``topic``), which leaves out the too general ones, or for
+        words a caller sent, which it searches as they are."""
+        return LehrplanMatcher(self.store, generic_hits=self.generic_hits if topic else 0)
 
     def search_terms(
         self, title: str, aliases: Sequence[str], subtopics: Sequence[str], subjects: Sequence[str]
@@ -89,7 +95,7 @@ class CurriculaBuilder:
                 markdown=render_missing_cache() if state == "missing" else render_unreadable_cache(),
             )
         try:
-            result = LehrplanMatcher(self.store).match(keywords, subject_terms=subject_terms)
+            result = self.matcher(topic=True).match(keywords, subject_terms=subject_terms)
         except LehrplanCacheError as exc:  # part 2 degrades to the hint; parts 1 and 3 are not lost
             log.error("%s", exc)
             return CurriculaPart(

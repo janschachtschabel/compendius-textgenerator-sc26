@@ -79,6 +79,7 @@ class MatchResult:
     total_hits: int = 0  # every element the search found, also past its limit
     cut_hits: int = 0  # of them past the limit and not ranked: the elements of the strongest roles stay
     excluded_noise: int = 0
+    generic_keywords: list[str] = field(default_factory=list)  # side words left out as too general (M58)
 
 
 def build_keywords(
@@ -150,14 +151,16 @@ def _score(hit: NodeHit, schulstufe: Resolved, klassenstufe: Resolved) -> int:
 
 
 class LehrplanMatcher:
-    def __init__(self, store: LehrplanStore, *, limit: int = DEFAULT_LIMIT) -> None:
+    def __init__(self, store: LehrplanStore, *, limit: int = DEFAULT_LIMIT, generic_hits: int = 0) -> None:
+        """``generic_hits`` above 0 leaves out every word but the first that hits more elements of the whole cache."""
         self._store = store
         self._limit = limit
+        self._generic_hits = generic_hits
 
     def match(self, keywords: Sequence[str], *, subject_terms: Sequence[str] = ()) -> MatchResult:
         """Ranked curriculum elements for ``keywords``; ``subject_terms`` narrow the curricula."""
-        words = [word.strip() for word in keywords if word.strip()]
-        result = MatchResult(keywords=words, subject_terms=list(subject_terms))
+        words, generic = self._without_generic([word.strip() for word in keywords if word.strip()])
+        result = MatchResult(keywords=words, subject_terms=list(subject_terms), generic_keywords=generic)
         if not words:
             return result
         hits = self._store.search(words, subject_terms=subject_terms, limit=self._limit, role_order=ROLE_ORDER)
@@ -192,3 +195,29 @@ class LehrplanMatcher:
             key=lambda match: (-match.score, match.hit.lehrplan.bundesland, match.hit.lehrplan.label, match.hit.label)
         )
         return result
+
+    def _without_generic(self, words: list[str]) -> tuple[list[str], list[str]]:
+        """``words`` without the side words that are too general to search for, and those left out.
+
+        Side words such as "Verfahren" (4,296 elements of the cache), "Musik" (3,978), "Teile" (2,567) or "Gruppe"
+        (2,291) flooded part 2 with foreign elements; leaving out those above 1,000 lost no fitting element on the
+        topics of M57 (M58). The first word is the topic's title and always stays.
+        """
+        if self._generic_hits <= 0 or len(words) < 2:
+            return words, []
+        kept, generic = words[:1], list[str]()
+        for word in words[1:]:
+            (generic if self._too_frequent(word) else kept).append(word)
+        return kept, generic
+
+    def _too_frequent(self, word: str) -> bool:
+        """Whether ``word`` stands in more than ``generic_hits`` elements of the whole cache, as the search counts a
+        hit: at a word boundary of the element or its heading. The cache's count of substrings bounds that from
+        above, so most words cost one count and no search."""
+        if self._store.count([word]) <= self._generic_hits:
+            return False
+        hits = self._store.search([word], limit=self._limit)
+        standing = sum(
+            1 for hit in hits if boundary_keyword(hit.label, [word]) or boundary_keyword(hit.parent_label, [word])
+        )
+        return standing > self._generic_hits

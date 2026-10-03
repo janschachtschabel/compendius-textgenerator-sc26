@@ -157,6 +157,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | wie Vorgabe | spätestens nach dieser Zeit neu abziehen |
 | `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | wie Vorgabe | Pause zwischen zwei Anfragen an die MEM |
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` | wie Vorgabe | Kappung der Lernbereiche je Land und Stufe; `0` nimmt alle |
+| `LEHRPLAN_GENERIC_WORD_HITS` | `1000` | wie Vorgabe | Nebenwörter eines Themas mit mehr Treffern im Cache sucht Teil 2 nicht (D80); `0` sucht jedes |
 
 ### Kennungen: wikidata-updater und gnd-updater
 

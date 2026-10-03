@@ -289,6 +289,7 @@ def build_curricula(settings: Settings) -> CurriculaBuilder:
         store=LehrplanStore(settings.lehrplan_db_path),
         subjects=subjects,
         options=RenderOptions(max_groups_per_land=settings.lehrplan_max_groups_per_land or None),
+        generic_hits=settings.lehrplan_generic_word_hits,
     )
 
 

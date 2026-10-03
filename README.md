@@ -235,7 +235,12 @@ Teil 2 einen Hinweistext. Das Fach kommt aus der Anfrage (`subject`) oder
 aus einem Präfix wie „Physik: Optik“ und wird über `config/subjects.yaml` auf MEM-Schulfächer
 abgebildet; ohne Fach wird über alle Fächer gesucht. Teil 2 enthält alle Treffer (Kompendialtexte
 dürfen lang sein); ein Element, das nur seine Überschrift zum Thema macht, steht gebündelt bei seinem
-Bereich, als eine Zeile mit der Zahl und einem Link (D58). Jede Gruppe nennt in ihrer ersten Zeile
+Bereich, als eine Zeile mit der Zahl und einem Link (D58). Hat die KI jedes Element gelesen (`curriculum_check=llm`,
+die `best-quality`-Profile), steht nur einzeln, was sie mit 2 bewertet; was sie mit 1 bewertet, berührt das Thema
+nur am Rand und zählt in derselben Zeile (D80: bei gewöhnlichen Themen 88 statt 76 % passend, bei Gruppen 67 statt
+50 %). Ein Suchwort aus Alias oder Untertitel des Artikels, das im ganzen Lehrplan-Cache mehr als
+`LEHRPLAN_GENERIC_WORD_HITS` Elemente trifft (Vorgabe 1.000; etwa „Gruppe“, „Musik“, „Teile“), ist zu allgemein und
+wird nicht gesucht; der Titel selbst immer. Die Antwort nennt solche Wörter unter `generic_keywords` (D80). Jede Gruppe nennt in ihrer ersten Zeile
 Lehrplan mit Link, Land, Bildungsstufe, Schulart und Klasse und steht zwischen `<!-- f: Bundesland=…;
 Bildungsstufe=…; Klassenstufe=…; Schulart=…; Lehrplan=<IRI>; Lehrplantitel=… -->` und `<!-- /f -->`,
 lässt sich also samt Herkunft herausparsen; die JSON-Einträge tragen dieselben Angaben je Element. Bezeichnungen
@@ -942,6 +947,7 @@ nach `LEHRPLAN_HARVEST_MAX_AGE` angestoßen — er dauert rund 25 Minuten und st
 | `LEHRPLAN_HARVEST_MAX_AGE` | `30d` | Spätestens nach dieser Zeit wird neu abgezogen, auch ohne erkannte Änderung. Mindestens `1m`, wie die Intervalle; kürzer startet der Sidecar nicht |
 | `LEHRPLAN_REQUEST_PAUSE_S` | `0.5` | Pause zwischen zwei Anfragen an die MEM |
 | `LEHRPLAN_MAX_GROUPS_PER_LAND` | `0` | Optionale Kappung der Lernbereiche je Bundesland und Bildungsstufe; `0` heißt: alle Treffer, denn kompendiale Texte dürfen lang sein |
+| `LEHRPLAN_GENERIC_WORD_HITS` | `1000` | Teil 2 sucht ein Wort aus Alias oder Untertitel des Artikels nicht, wenn es im ganzen Cache mehr Elemente trifft: zu allgemein (D80); der Titel bleibt immer, `0` sucht jedes Wort |
 
 ### Sammlungen (Teil 3) und Wissens-Sammlung
 

@@ -195,6 +195,44 @@ def test_a_heading_only_element_the_llm_rated_fitting_stands_on_its_own() -> Non
     assert summary["bundled"] == 1
 
 
+def test_an_element_the_llm_rated_touching_counts_with_its_area() -> None:
+    """M58: shown on their own, the elements the LLM check rated 1 fitted the topic as asked less often than those it
+    rated 2 (best-quality 76 against 88 % for ordinary topics); they count with their area like a heading-only hit."""
+    bereich = "Lernbereich 2: Optik"
+    result = _result(
+        _match("sn:k1", "Lichtbrechung an Linsen", ["kompetenz"], SN, bereich, ["Klassenstufe 7"], note=2),
+        _match("sn:k2", "Messen mit dem Lineal", ["inhalt"], SN, bereich, ["Klassenstufe 7"], note=1),
+        _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True, note=1),
+    )
+    text, summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert "„Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](https://lp.test/sn:k1)" in text
+    assert "Messen mit dem Lineal" not in text and "Protokoll führen" not in text
+    assert "- *2 weitere Elemente dieses Bereichs; das Thema wird dort nur am Rand berührt* · " in text
+    assert summary["matches"] == 3 and summary["bundled"] == 2
+
+
+def test_a_bundle_of_rated_and_unrated_elements_names_both_reasons() -> None:
+    """An element the check could not rate (budget, time) keeps the rule of the heading next to rated ones."""
+    bereich = "Lernbereich 2: Optik"
+    result = _result(
+        _match("sn:k2", "Messen mit dem Lineal", ["inhalt"], SN, bereich, ["Klassenstufe 7"], note=1),
+        _match("sn:k3", "Protokoll führen", ["inhalt"], SN, bereich, ["Klassenstufe 7"], heading_only=True),
+    )
+    text, _summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert (
+        "- *2 Elemente dieses Bereichs; das Thema steht nur in der Überschrift oder wird nur am Rand berührt*" in text
+    )
+
+
+def test_the_summary_names_the_side_words_left_out_as_too_general() -> None:
+    result = replace(
+        _result(_match("sn:k1", "Lichtbrechung", ["inhalt"], SN, "Lernbereich 2")), generic_keywords=["Gruppe"]
+    )
+    text, summary = render_curricula(result, meta=META, options=RenderOptions())
+    assert summary["keywords"] == ["Optik", "Licht"] and summary["generic_keywords"] == ["Gruppe"]
+    assert "Stichwörter: Optik, Licht; Fach: physik." in text and "Gruppe" not in text
+
+
 def test_every_block_names_curriculum_state_level_and_grade() -> None:
     """Jan, 2026-09-26: a snippet has to show which curriculum, state, school level and grade it comes from."""
     result = _result(

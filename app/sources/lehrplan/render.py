@@ -158,12 +158,16 @@ def _item_line(match: CurriculumMatch) -> str:
 
 
 def _bundled(match: CurriculumMatch) -> bool:
-    """Found only through its heading and not confirmed by the LLM check: counted with its area, not listed (B, M22).
+    """Counted with its area, not listed: an element the LLM check rated 1, or one without a rating that was found
+    only through its heading (B, M22, D58, M58).
 
-    In M22 such elements fitted less often (46 % against 55 %) and made most of the misses of a request with a
-    subject. A heading-only element the LLM check rated 2 has been read for itself and stands on its own (D58).
+    In M22 heading-only elements fitted less often (46 % against 55 %) and made most of the misses of a request with a
+    subject. The LLM check reads every element for itself: a 2 stands on its own, a 1 only touches the topic - shown on
+    their own, the elements of best-quality fitted the topic of an ordinary request 76 % of the time, its 2s 88 % (M58).
     """
-    return match.hit.matched_in == "parent" and match.note != 2
+    if match.note is not None:
+        return match.note != 2
+    return match.hit.matched_in == "parent"
 
 
 def _bundle_line(bundled: list[CurriculumMatch], *, after_others: bool) -> str:
@@ -172,7 +176,14 @@ def _bundle_line(bundled: list[CurriculumMatch], *, after_others: bool) -> str:
         noun = "weiteres Element" if count == 1 else "weitere Elemente"
     else:
         noun = "Element" if count == 1 else "Elemente"
-    line = f"- *{count} {noun} dieses Bereichs; das Thema steht nur in der Überschrift*"
+    rated = sum(1 for match in bundled if match.note is not None)
+    if not rated:
+        reason = "das Thema steht nur in der Überschrift"
+    elif rated == count:
+        reason = "das Thema wird dort nur am Rand berührt"
+    else:
+        reason = "das Thema steht nur in der Überschrift oder wird nur am Rand berührt"
+    line = f"- *{count} {noun} dieses Bereichs; {reason}*"
     area = next((target for match in bundled if (target := web_target(match.hit.parent_iri))), None)
     return f"{line} · [Bereich im Lehrplan]({area})" if area else line
 
@@ -233,6 +244,7 @@ def render_curricula(
             "klasse": dict(Counter(match.klassenstufe.source for match in result.matches)),
         },
         "keywords": list(result.keywords),
+        "generic_keywords": list(result.generic_keywords),
         "subject_terms": list(result.subject_terms),
     }
 

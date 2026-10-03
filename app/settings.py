@@ -140,6 +140,12 @@ class Settings(BaseSettings):
     lehrplan_max_groups_per_land: int = Field(
         0, ge=0, description="Optional cap of part 2: Lernbereiche per state and level; 0 renders every match (D23)"
     )
+    lehrplan_generic_word_hits: int = Field(
+        1000,
+        ge=0,
+        description="Part 2 leaves out a search word of a topic other than its title that stands in more curriculum "
+        "elements of the whole cache: too general (M58); 0 searches every word",
+    )
 
     # --- Collections: edu-sharing repository for part 3 and the knowledge collection (PLAN.md 6) ---
     edu_sharing_base_url: str = Field(

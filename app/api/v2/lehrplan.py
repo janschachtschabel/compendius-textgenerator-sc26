@@ -38,7 +38,7 @@ from app.llm.deadline import Deadline
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
-from app.sources.lehrplan.matcher import CurriculumMatch, LehrplanMatcher, build_keywords
+from app.sources.lehrplan.matcher import CurriculumMatch, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
@@ -234,7 +234,9 @@ def lehrplan_search(
     bounds the answer. By default (``mode=keyword``) it searches the words as sent; ``mode=topic`` resolves ``q`` as
     part 2 of a compendium does - the article of the topic, its aliases and the sub-topics of its corpus, with the
     subjects of the topic -, names the article in ``topic`` and answers 404 for a topic the archives do not have.
-    The ranking is the one part 2 uses.
+    There a side word of the article that stands in more elements of the cache than LEHRPLAN_GENERIC_WORD_HITS
+    (1,000; "Gruppe", "Musik") is too general and not searched, as in part 2; ``generic_keywords`` names it (D80).
+    The words of ``mode=keyword`` are searched as sent. The ranking is the one part 2 uses.
 
     **What each profile does here.** ``preset`` picks it as for a compendium; without it the server's applies
     (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68), and a ``curriculum_check`` of the
@@ -256,9 +258,9 @@ def lehrplan_search(
     **What comes back.** Every element with its curriculum and where it stands: federal state, school type, school
     level and grade, the last two with their source (``schulstufe_quelle``, ``klassenstufe_quelle``), the keyword
     that found it and ``matched_in`` - ``label`` when the element names the topic, ``parent`` when only its heading
-    does; part 2 counts those with their area unless the LLM rates them fitting. ``preset`` names the profile in
-    effect, ``llm`` what the LLM did (article choice, check) and ``llm_tokens`` what it cost; both are ``null`` when
-    no LLM was asked.
+    does; part 2 counts those with their area unless the LLM rates them fitting, and after the LLM check every
+    element it rates 1 as well (D80). ``preset`` names the profile in effect, ``llm`` what the LLM did (article
+    choice, check) and ``llm_tokens`` what it cost; both are ``null`` when no LLM was asked.
 
     **When it refuses.** A profile or ``curriculum_check`` that needs an LLM on a server without one: 503. A subject
     outside the two subject vocabularies of edu-sharing: 422 that lists the school subjects; only the 37 subjects of
@@ -299,7 +301,9 @@ def lehrplan_search(
     result = None
     if builder.store.available:
         try:
-            result = LehrplanMatcher(builder.store).match(search.keywords, subject_terms=search.subject_terms)
+            # the words of a topic's article lose the too general ones, as in part 2; words sent stay as they are
+            matcher = builder.matcher(topic=mode == "topic")
+            result = matcher.match(search.keywords, subject_terms=search.subject_terms)
         except LehrplanCacheError as exc:
             log.error("%s", exc)
     if result is not None and result.matches:
@@ -323,6 +327,7 @@ def lehrplan_search(
         "available": True,
         **asked_for,
         "keywords": result.keywords,
+        "generic_keywords": result.generic_keywords,
         "subject_terms": result.subject_terms,
         "total_hits": result.total_hits,
         "cut_hits": result.cut_hits,

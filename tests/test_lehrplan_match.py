@@ -143,3 +143,79 @@ def test_a_keyword_counts_at_the_start_of_a_word_or_as_the_end_of_a_compound() -
     assert boundary_keyword("nicht lineare Funktionen", ["Lineare Funktion"]) is None
     assert boundary_keyword("Lineare Funktionen zeichnen", ["Lineare Funktion"]) == "Lineare Funktion"
     assert boundary_keyword("Wahl\xadpflicht\xadbereich", ["Licht"]) is None, "a soft hyphen does not end a word"
+
+
+def _store_with_a_frequent_word(tmp_path: Path, word: str, elements: int, buried: int = 0) -> LehrplanStore:
+    """Sachsen's optics area plus ``elements`` elements that name ``word`` and ``buried`` that only bury it."""
+    writer = LehrplanWriter(tmp_path / "lehrplan.db")
+    writer.add_lehrplan(SN)
+    nodes = [
+        _node("sn:lb", "Lernbereich 2: Optik", ["themenbereich"], "Gymnasium Physik"),
+        _node("sn:k1", "Lichtbrechung an Linsen", ["kompetenz"], "Lernbereich 2: Optik"),
+    ]
+    nodes += [_node(f"sn:w{i}", f"{word} im Alltag {i}", ["inhalt"], "Lernbereich 5") for i in range(elements)]
+    nodes += [
+        _node(f"sn:b{i}", f"Ver{word.lower()}n der Aufgaben {i}", ["inhalt"], "Lernbereich 6") for i in range(buried)
+    ]
+    writer.add_nodes(SN.iri, nodes)
+    writer.set_meta({"harvested_at": "2026-09-17T10:00:00+00:00"})
+    writer.commit()
+    return LehrplanStore(tmp_path / "lehrplan.db")
+
+
+def test_a_side_word_that_hits_more_elements_than_the_limit_is_left_out(tmp_path: Path) -> None:
+    """M58: side words like "Gruppe", "Musik" or "Teile" hit thousands of elements of the cache and flood part 2."""
+    store = _store_with_a_frequent_word(tmp_path, "Gruppe", 6)
+
+    result = LehrplanMatcher(store, generic_hits=5).match(["Optik", "Gruppe", "Lichtbrechung"])
+
+    assert result.keywords == ["Optik", "Lichtbrechung"] and result.generic_keywords == ["Gruppe"]
+    assert {match.hit.iri for match in result.matches} == {"sn:lb", "sn:k1"}
+
+
+def test_the_title_stays_however_many_elements_it_hits(tmp_path: Path) -> None:
+    store = _store_with_a_frequent_word(tmp_path, "Gruppe", 6)
+
+    result = LehrplanMatcher(store, generic_hits=5).match(["Gruppe", "Optik"])
+
+    assert result.keywords == ["Gruppe", "Optik"] and result.generic_keywords == []
+
+
+def test_a_side_word_at_the_limit_stays_and_zero_switches_the_filter_off(tmp_path: Path) -> None:
+    store = _store_with_a_frequent_word(tmp_path, "Gruppe", 6)
+
+    assert LehrplanMatcher(store, generic_hits=6).match(["Optik", "Gruppe"]).generic_keywords == []
+    assert LehrplanMatcher(store, generic_hits=0).match(["Optik", "Gruppe"]).keywords == ["Optik", "Gruppe"]
+    assert LehrplanMatcher(store).match(["Optik", "Gruppe"]).generic_keywords == []
+
+
+def test_only_hits_at_a_word_boundary_count_toward_the_limit(tmp_path: Path) -> None:
+    """The cache answers substrings; "Teile" buried in "Verteilen" is no hit of the word, as in the search itself."""
+    store = _store_with_a_frequent_word(tmp_path, "Teile", 2, buried=6)
+
+    result = LehrplanMatcher(store, generic_hits=5).match(["Optik", "Teile"])
+
+    assert result.keywords == ["Optik", "Teile"] and result.generic_keywords == []
+
+
+def test_part_2_of_a_topic_leaves_out_the_side_words_its_builder_finds_too_general(tmp_path: Path) -> None:
+    """The words of part 2 come from the topic's article; a too general alias is left out and named in the summary."""
+    from app.sources.lehrplan.part import CurriculaBuilder
+    from app.sources.lehrplan.subjects import SubjectCatalog
+
+    store = _store_with_a_frequent_word(tmp_path, "Gruppe", 6)
+    builder = CurriculaBuilder(store=store, subjects=SubjectCatalog.empty(), generic_hits=5)
+
+    part = builder.build(title="Optik", aliases=["Gruppe"], subtopics=[], subjects=[], facets_visible=False)
+
+    assert part.keywords == ["Optik"] and part.summary["generic_keywords"] == ["Gruppe"]
+    assert builder.matcher(topic=True).match(["Optik", "Gruppe"]).generic_keywords == ["Gruppe"]
+    assert builder.matcher(topic=False).match(["Optik", "Gruppe"]).generic_keywords == []  # words sent as they are
+
+
+def test_the_service_takes_the_limit_from_the_settings(tmp_path: Path) -> None:
+    from app.main import build_curricula
+    from tests.conftest import make_settings
+
+    assert build_curricula(make_settings([], tmp_path / "state")).generic_hits == 1000
+    assert build_curricula(make_settings([], tmp_path / "state", lehrplan_generic_word_hits=0)).generic_hits == 0
