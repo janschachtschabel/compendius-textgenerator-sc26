@@ -323,15 +323,11 @@
    {
     "label": "Optik – ein Thema",
     "values": {
-     "topic": "Optik",
-     "parts": [
-      "world",
-      "curricula"
-     ]
+     "topic": "Optik"
     }
    },
    {
-    "label": "Linse – ein Wort mit mehreren Bedeutungen",
+    "label": "Linse in Physik – ein Wort mit mehreren Bedeutungen",
     "values": {
      "topic": "Linse",
      "subject": "Physik"
@@ -347,29 +343,19 @@
    {
     "label": "Sammelthema: Dichter aus dem Mittelalter – am besten mit best-coverage-generated",
     "values": {
-     "topic": "Dichter aus dem Mittelalter",
-     "parts": [
-      "world"
-     ]
+     "topic": "Dichter aus dem Mittelalter"
     }
    },
    {
     "label": "Thema mit Aspekt: OER-Förderungen – am besten mit best-coverage-generated",
     "values": {
-     "topic": "OER-Förderungen",
-     "parts": [
-      "world"
-     ]
+     "topic": "OER-Förderungen"
     }
    },
    {
-    "label": "Eine Frage als Thema: die KI formuliert daraus das Thema (best-quality-generated)",
+    "label": "Eine Frage als Thema: die KI formuliert daraus das Thema (in best-quality-generated und best-coverage-generated)",
     "values": {
-     "topic": "Warum ist der Himmel blau?",
-     "preset": "best-quality-generated",
-     "parts": [
-      "world"
-     ]
+     "topic": "Warum ist der Himmel blau?"
     }
    },
    {
@@ -388,10 +374,7 @@
     "label": "Optik mit der Sammlung als Quelle (Staging)",
     "values": {
      "topic": "Optik",
-     "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
-     "parts": [
-      "world"
-     ]
+     "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013"
     }
    },
    {
@@ -400,21 +383,14 @@
      "topic": "Optik",
      "knowledge_collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
      "knowledge_depth": 1,
-     "knowledge_fulltext": true,
-     "parts": [
-      "world"
-     ]
+     "knowledge_fulltext": true
     }
    },
    {
     "label": "Ein Material als Eingang (Staging)",
     "values": {
      "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
-     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
-     "parts": [
-      "world",
-      "curricula"
-     ]
+     "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest"
     }
    }
   ],
@@ -496,7 +472,7 @@
     }
    },
    {
-    "label": "Thema aus der Sammlung Optik (Staging)",
+    "label": "Thema aus der Sammlung Optik (Staging), fünf Paare",
     "values": {
      "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
      "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
@@ -504,7 +480,7 @@
     }
    },
    {
-    "label": "Ein eigener kurzer Text",
+    "label": "Ein eigener kurzer Text, drei Paare",
     "values": {
      "text": "Die Sonne erwärmt das Wasser der Meere, Seen und Flüsse. Es verdunstet und steigt als Wasserdampf auf. In der Höhe kühlt der Dampf ab, bildet Wolken und fällt als Regen oder Schnee zurück auf die Erde.",
      "count": 3

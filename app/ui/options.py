@@ -51,20 +51,24 @@ SWITCHES: dict[str, list[str]] = {
 _STAGING_NODE = {"repository": STAGING_REPOSITORY}
 EXAMPLES: dict[str, list[dict[str, Any]]] = {
     "compendium": [
-        {"label": "Optik – ein Thema", "values": {"topic": "Optik", "parts": ["world", "curricula"]}},
-        {"label": "Linse – ein Wort mit mehreren Bedeutungen", "values": {"topic": "Linse", "subject": "Physik"}},
+        {"label": "Optik – ein Thema", "values": {"topic": "Optik"}},
+        {
+            "label": "Linse in Physik – ein Wort mit mehreren Bedeutungen",
+            "values": {"topic": "Linse", "subject": "Physik"},
+        },
         {"label": "Klimawandel mit Fach Geografie", "values": {"topic": "Klimawandel", "subject": "Geografie"}},
         {
             "label": "Sammelthema: Dichter aus dem Mittelalter – am besten mit best-coverage-generated",
-            "values": {"topic": "Dichter aus dem Mittelalter", "parts": ["world"]},
+            "values": {"topic": "Dichter aus dem Mittelalter"},
         },
         {
             "label": "Thema mit Aspekt: OER-Förderungen – am besten mit best-coverage-generated",
-            "values": {"topic": "OER-Förderungen", "parts": ["world"]},
+            "values": {"topic": "OER-Förderungen"},
         },
         {  # D72: in a writing profile the model words the topic of a question
-            "label": "Eine Frage als Thema: die KI formuliert daraus das Thema (best-quality-generated)",
-            "values": {"topic": "Warum ist der Himmel blau?", "preset": "best-quality-generated", "parts": ["world"]},
+            "label": "Eine Frage als Thema: die KI formuliert daraus das Thema (in best-quality-generated und "
+            "best-coverage-generated)",
+            "values": {"topic": "Warum ist der Himmel blau?"},
         },
         {
             "label": "Optik mit ihrer Sammlung (Staging, alle drei Teile)",
@@ -76,7 +80,7 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
         },
         {
             "label": "Optik mit der Sammlung als Quelle (Staging)",
-            "values": {"topic": "Optik", "knowledge_collection_id": STAGING_COLLECTION, "parts": ["world"]},
+            "values": {"topic": "Optik", "knowledge_collection_id": STAGING_COLLECTION},
         },
         {
             "label": "Optik mit der Sammlung, ihren Untersammlungen und Volltexten als Quelle (Staging)",
@@ -85,12 +89,11 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
                 "knowledge_collection_id": STAGING_COLLECTION,
                 "knowledge_depth": 1,
                 "knowledge_fulltext": True,
-                "parts": ["world"],
             },
         },
         {
             "label": "Ein Material als Eingang (Staging)",
-            "values": {"node_id": STAGING_MATERIAL, **_STAGING_NODE, "parts": ["world", "curricula"]},
+            "values": {"node_id": STAGING_MATERIAL, **_STAGING_NODE},
         },
     ],
     "knowledge": [
@@ -126,11 +129,11 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
         {"label": "Optik, fünf Paare", "values": {"topic": "Optik", "count": 5}},
         {"label": "Albert Einstein, zehn Paare", "values": {"topic": "Albert Einstein", "count": 10}},
         {
-            "label": "Thema aus der Sammlung Optik (Staging)",
+            "label": "Thema aus der Sammlung Optik (Staging), fünf Paare",
             "values": {"node_id": STAGING_COLLECTION, **_STAGING_NODE, "count": 5},
         },
         {
-            "label": "Ein eigener kurzer Text",
+            "label": "Ein eigener kurzer Text, drei Paare",
             "values": {
                 "text": "Die Sonne erwärmt das Wasser der Meere, Seen und Flüsse. Es verdunstet und steigt als "
                 "Wasserdampf auf. In der Höhe kühlt der Dampf ab, bildet Wolken und fällt als Regen oder Schnee zurück "

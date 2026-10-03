@@ -40,6 +40,7 @@ from app.domain.requests import (
 from app.llm.client import ModelCheck
 from app.main import create_app
 from app.settings import Settings
+from app.ui.options import SWITCHES
 from app.ui.routes import STATIC_DIR, ui_router
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
@@ -331,6 +332,20 @@ def test_every_example_is_a_request_its_endpoint_takes(options: dict[str, Any], 
         REQUESTS[mode].model_validate(example["values"])  # a stale example raises here, as the endpoint's 422 would
         # The service checks the subject itself (a 422 as well); the page offers the school subjects
         assert example["values"].get("subject", "Physik") in options["subjects"]
+
+
+def test_an_example_holds_no_profile_and_no_step_and_parts_or_a_subject_only_where_its_label_names_them(
+    options: dict[str, Any],
+) -> None:
+    # Loading an example changes the fields it holds and nothing else (U11; Jan, 2026-10-03: "nur die dinge … die
+    # relativ als info drin stecken und nicht noch andere variablen"): a profile, a comparison or a step in an example
+    # would overwrite what the reader chose, and parts or a subject would do so without the label saying it
+    for examples in options["examples"].values():
+        for example in examples:
+            values, label = example["values"], example["label"]
+            assert not {"preset", "compare", "preset_b", *SWITCHES} & set(values), label
+            assert "parts" not in values or "Teile" in label, label
+            assert "subject" not in values or values["subject"] in label, label
 
 
 def test_every_curriculum_example_is_a_search_the_endpoint_takes(ui: TestClient, options: dict[str, Any]) -> None:

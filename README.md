@@ -825,8 +825,9 @@ Bibliothek — und schickt ihre Anfragen vom Browser an die Endpunkte desselben 
 Schlüssel, trägt man einen links unten ein; er bleibt nur im Tab. Sie setzt jeden Text der Antworten als Text,
 nie als Markup, und ihre Content-Security-Policy lässt nur die eigenen Dateien zu. Ohne LLM auf dem Server bietet
 sie nur `llm-free` an. Ein Beispiel ändert nur die Felder, die es enthält, und leert die übrige Eingabe seines Modus
-(Thema, Text, Knoten, Sammlungen); Profil, Vergleich, Schritte, Fach und Zahlen bleiben, wie sie gesetzt sind.
-Auswahllisten, Grenzen und Beispiele kommen aus `/ui/options.json`, also aus denselben
+(Thema, Text, Knoten, Sammlungen); Profil, Vergleich, Schritte, Fach und Zahlen bleiben, wie sie gesetzt sind. Es
+enthält nur, was sein Titel nennt: nie ein Profil oder einen Schritt, die Teile oder ein Fach nur, wo der Titel sie
+nennt (U11). Auswahllisten, Grenzen und Beispiele kommen aus `/ui/options.json`, also aus denselben
 Modellen wie die Endpunkte (`app/ui/options.py`); `tests/test_ui.py` prüft jedes Beispiel gegen sein Modell und
 Listen und Grenzen gegen `/openapi.json`, `tests/ui/*.test.mjs` prüfen die Skripte mit dem Testläufer von Node,
 den `tests/test_ui_scripts.py` startet (in GitLab ein eigener Job, `ui-scripts`).
