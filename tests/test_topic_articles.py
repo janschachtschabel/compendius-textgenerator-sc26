@@ -20,7 +20,7 @@ import pytest
 from fastapi.testclient import TestClient
 from libzim.writer import Creator, Hint
 
-from app.domain.models import Resolution
+from app.domain.models import Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
 from app.knowledge.main_article import choose_main_article
@@ -506,6 +506,34 @@ def test_a_text_written_about_the_topic_as_asked_gets_no_hint(
 
     assert result.topic == "Optik im Alltag"
     assert "topic-scope" not in [finding.rule for finding in result.audit.lint]
+
+
+def test_blocks_whose_writing_fell_back_get_the_hint_of_the_article_they_print(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Audit 2026-10-02, A10: the blocks with evidence fail and keep the article's paragraphs, those without are
+    written from model knowledge; once one block was written, the check said nothing of the verbatim ones."""
+    n = asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
+    gateway = make_gateway(FakeBApi(n), per_request=200_000)
+    write = gateway.synthesizer.write_section
+
+    def failing_with_evidence(slot: Any, scored: Any, *args: Any, **kwargs: Any) -> Any:
+        if scored:
+            raise RuntimeError("kaputt")
+        return write(slot, scored, *args, **kwargs)
+
+    monkeypatch.setattr(gateway.synthesizer, "write_section", failing_with_evidence)
+    monkeypatch.setattr(service, "llm", gateway)
+    request = GenerateRequest(
+        topic="Optik im Alltag", article_choice="llm", generation="llm", enrichment="model-knowledge", parts=["world"]
+    )
+    result = service.generate(request)
+
+    assert result.enrichment == "model-knowledge"  # the LLM wrote blocks
+    verbatim = [s for s in result.sections if s.text and s.status is SectionStatus.EXTRACTIVE]
+    scope = [finding for finding in result.audit.lint if finding.rule == "topic-scope"]
+    assert verbatim and len(scope) == 1
+    assert scope[0].message.startswith(f"{len(verbatim)} Bausteine geben den Artikel „Optik“ wörtlich wieder")
 
 
 @pytest.mark.parametrize("topic", ["Optik in Klasse 7", "Optiken"])

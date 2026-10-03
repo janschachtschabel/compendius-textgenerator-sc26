@@ -92,7 +92,7 @@ _WORD_RE = re.compile(r"[^\W\d_]+")
 
 
 def topic_scope_finding(
-    asked: str, article: str | None, *, normalized: str, covers: bool | None, method: str | None, about_topic: bool
+    asked: str, article: str | None, *, normalized: str, covers: bool | None, method: str | None, verbatim: int | None
 ) -> LintFinding | None:
     """A hint when the compendium treats another article than the topic as asked - a group without an article of
     its own or a topic with an aspect -, naming the profiles that write about the topic (M52: fit 4.2 to 5.0 for
@@ -102,25 +102,33 @@ def topic_scope_finding(
     ``covers`` is the question N's word on whether its overview covers the topic (prompt topic_articles v2); without it
     (llm-free) the words of the ``normalized`` topic decide, one the article's title lacks - a level such as "in
     Klasse 7" is gone there, it is no aspect. A redirect (``method`` title to another title than ``normalized``) is
-    the same topic for the archive, an article of the very name of the topic as asked is the topic, and a text the
-    LLM wrote about the topic as asked (``about_topic``) needs no hint. Measured on the 94 gold queries of the
-    article choice and the nine topics of M48 (M49)."""
-    if article is None or about_topic or article.casefold() in (asked.casefold(), normalized.casefold()):
+    the same topic for the archive, and an article of the very name of the topic as asked is the topic. Measured on
+    the 94 gold queries of the article choice and the nine topics of M48 (M49).
+
+    ``verbatim`` counts the blocks that print the article's words: ``None`` for a text that does so throughout (a
+    profile that does not write), else the blocks a writing profile left verbatim, its fallbacks. A text the LLM
+    wrote about the topic as asked in every block (0) needs no hint; one it wrote in part names the blocks it did
+    not, which a hint for the whole text hid once one block was written (audit 2026-10-02, A10)."""
+    if article is None or verbatim == 0 or article.casefold() in (asked.casefold(), normalized.casefold()):
         return None  # the article of the topic's very name, also once a level or subject went (D12)
     if method == "title" and normalized.casefold() != article.casefold():  # a redirect
         return None
     wider = not covers if covers is not None else bool(_words_missing(normalized, article))
     if not wider:
         return None
-    return LintFinding(
-        rule=TOPIC_SCOPE,
-        severity="info",
-        message=(
+    if verbatim is None:
+        message = (
             f"Das Kompendium behandelt den Artikel „{article}“, nicht genau das angefragte Thema „{asked}“. Ist es "
             "eine Gruppe oder ein Aspekt, schreiben die Profile best-coverage-generated und best-quality-generated "
             "zum angefragten Thema (M52)."
-        ),
-    )
+        )
+    else:
+        blocks, them = ("Ein Baustein gibt", "ihn") if verbatim == 1 else (f"{verbatim} Bausteine geben", "sie")
+        message = (
+            f"{blocks} den Artikel „{article}“ wörtlich wieder, nicht genau das angefragte Thema „{asked}“: Die KI "
+            f"hat {them} nicht zum Thema geschrieben."
+        )
+    return LintFinding(rule=TOPIC_SCOPE, severity="info", message=message)
 
 
 def _words_missing(topic: str, article: str) -> list[str]:

@@ -28,7 +28,7 @@ from app.synthesis.lint import TOPIC_SCOPE, topic_scope_finding
 def test_a_topic_wider_or_narrower_than_its_article_names_the_profiles_that_write_about_it(
     asked: str, article: str, covers: bool | None, method: str
 ) -> None:
-    finding = topic_scope_finding(asked, article, normalized=asked, covers=covers, method=method, about_topic=False)
+    finding = topic_scope_finding(asked, article, normalized=asked, covers=covers, method=method, verbatim=None)
 
     assert finding is not None and finding.rule == TOPIC_SCOPE and finding.section_id is None
     assert finding.severity == "info"
@@ -37,27 +37,49 @@ def test_a_topic_wider_or_narrower_than_its_article_names_the_profiles_that_writ
 
 
 @pytest.mark.parametrize(
-    ("asked", "article", "covers", "method", "about_topic"),
+    ("asked", "article", "covers", "method", "verbatim"),
     [
-        ("Optik", "Optik", None, "title", False),  # the archive has an article of that very name
-        ("Lichtlehre", "Optik", None, "title", False),  # a redirect: the same topic for the archive
-        ("Optik", "Optik", False, "title", False),  # an article of that very name, whatever N says
-        ("Lichtlehre", "Optik", True, "llm", False),  # N: the overview covers the topic as asked
-        ("Edelgase", "Edelgas", None, "variant", False),  # an inflected form is the same topic
-        ("Linse", "Linse (Optik)", None, "disambiguation", False),  # a meaning of the word
-        ("Art", "Art (Biologie)", None, "disambiguation", False),  # a short word is the same word
-        ("Kreislauf des Wassers", "Wasserkreislauf", None, "variant", False),  # the words of a compound
-        ("Optik in Klasse 7", "Optik", None, "title", False),  # a level is no aspect: the topic without it decides
-        ("Optik in Klasse 7", "Optik", False, "title", False),  # whatever N said of its overview (review 2026-10-02)
-        ("OER-Förderungen", "Open Educational Resources", False, "llm", True),  # the LLM wrote about the topic as asked
-        ("OER-Förderungen", None, None, None, False),  # no article, nothing to compare
+        ("Optik", "Optik", None, "title", None),  # the archive has an article of that very name
+        ("Lichtlehre", "Optik", None, "title", None),  # a redirect: the same topic for the archive
+        ("Optik", "Optik", False, "title", None),  # an article of that very name, whatever N says
+        ("Lichtlehre", "Optik", True, "llm", None),  # N: the overview covers the topic as asked
+        ("Edelgase", "Edelgas", None, "variant", None),  # an inflected form is the same topic
+        ("Linse", "Linse (Optik)", None, "disambiguation", None),  # a meaning of the word
+        ("Art", "Art (Biologie)", None, "disambiguation", None),  # a short word is the same word
+        ("Kreislauf des Wassers", "Wasserkreislauf", None, "variant", None),  # the words of a compound
+        ("Optik in Klasse 7", "Optik", None, "title", None),  # a level is no aspect: the topic without it decides
+        ("Optik in Klasse 7", "Optik", False, "title", None),  # whatever N said of its overview (review 2026-10-02)
+        ("OER-Förderungen", "Open Educational Resources", False, "llm", 0),  # the LLM wrote every block about it
+        ("OER-Förderungen", None, None, None, None),  # no article, nothing to compare
     ],
 )
 def test_a_topic_its_article_covers_or_a_text_written_about_the_topic_gets_no_hint(
-    asked: str, article: str | None, covers: bool | None, method: str | None, about_topic: bool
+    asked: str, article: str | None, covers: bool | None, method: str | None, verbatim: int | None
 ) -> None:
     normalized = "Optik" if asked == "Optik in Klasse 7" else asked
     finding = topic_scope_finding(
-        asked, article, normalized=normalized, covers=covers, method=method, about_topic=about_topic
+        asked, article, normalized=normalized, covers=covers, method=method, verbatim=verbatim
     )
     assert finding is None
+
+
+@pytest.mark.parametrize(("verbatim", "counted"), [(1, "Ein Baustein gibt"), (3, "3 Bausteine geben")])
+def test_blocks_a_writing_profile_left_verbatim_say_which_article_they_print(verbatim: int, counted: str) -> None:
+    """Audit 2026-10-02, A10: once the LLM wrote one block, the hint was gone, although the blocks whose writing fell
+    back print the article's words under the topic as asked. They get a hint of their own; the profile already writes
+    about the topic, so it names no profile."""
+    finding = topic_scope_finding(
+        "OER-Förderungen",
+        "Open Educational Resources",
+        normalized="OER-Förderungen",
+        covers=False,
+        method="llm",
+        verbatim=verbatim,
+    )
+
+    assert finding is not None and finding.rule == TOPIC_SCOPE and finding.severity == "info"
+    assert finding.message.startswith(f"{counted} den Artikel „Open Educational Resources“ wörtlich wieder")
+    assert "„OER-Förderungen“" in finding.message and "best-coverage-generated" not in finding.message
+    assert finding.message.endswith(
+        "hat ihn nicht zum Thema geschrieben." if verbatim == 1 else "hat sie nicht zum Thema geschrieben."
+    )

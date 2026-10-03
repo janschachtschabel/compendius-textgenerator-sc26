@@ -501,7 +501,8 @@ Regel `topic-scope` (in der Prüfansicht unter „Hinweise der Prüfung“) nenn
 schreibenden Profile (V3, D73). Ab `balanced` entscheidet die Frage N, ob
 ihre Übersicht das Thema deckt (`articles_covers`), ohne LLM die Wörter des Themas, die dem Artikeltitel fehlen; ein
 Stufen- oder Fachzusatz („Optik in Klasse 7“) zählt nicht. Ein Text, den das LLM mit Modellwissen zum Thema schrieb,
-bekommt keinen Hinweis.
+bekommt keinen Hinweis; fiel das Schreiben in einzelnen Bausteinen auf die Regeln zurück, nennt der Hinweis, wie
+viele Bausteine den Artikel wörtlich wiedergeben (Audit 2026-10-02, A10).
 
 ![Die fünf Profile: Güte, Zeit und Kosten (M52)](docs/entwicklung/bilder/profiluebersicht.svg)
 

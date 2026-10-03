@@ -12,7 +12,7 @@ from app.compendium.llm_policy import choice_audit
 from app.compendium.llm_report import LlmWork, build_llm_report
 from app.compendium.prepared import Made
 from app.compose.assembler import Switches, build_frontmatter, render_markdown
-from app.domain.models import AuditReport, CollectionPart, Compendium, CurriculaPart, SectionStatus
+from app.domain.models import AuditReport, CollectionPart, Compendium, CurriculaPart, Section, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.node_article import node_block
 from app.matching.registry import LLM_MATCHER
@@ -57,8 +57,8 @@ def assemble(
     # stays in resolution.title
     topic = prepared.prompt_topic
     # A verbatim text about another article than the topic as asked says so in its check and names the profiles that
-    # write about the topic (V3). N's word on its overview counts only where that overview is the article; where the
-    # rules' article stayed, the words of the topic decide
+    # write about the topic (V3), a writing profile names the blocks it left verbatim (A10). N's word on its overview
+    # counts only where that overview is the article; where the rules' article stayed, the words of the topic decide
     articles = prepared.articles
     covers = articles.covers if articles is not None and articles.found[:1] == [resolution.title] else None
     scope = topic_scope_finding(
@@ -67,7 +67,7 @@ def assemble(
         normalized=prepared.normalized.topic,
         covers=covers,
         method=resolution.method,
-        about_topic=enrichment_used in ("model-knowledge", "model-knowledge-full"),
+        verbatim=_verbatim(sections) if enrichment_used in ("model-knowledge", "model-knowledge-full") else None,
     )
     if scope is not None and want_world:
         findings.append(scope)
@@ -195,6 +195,15 @@ def assemble(
         parts_status=status,
         audit=audit,
     )
+
+
+# The paragraphs of the corpus printed as they stand: what a block keeps when the LLM did not write it
+VERBATIM = frozenset({SectionStatus.EXTRACTIVE, SectionStatus.LLM_SELECTED})
+
+
+def _verbatim(sections: Sequence[Section]) -> int:
+    """The blocks with text that print the paragraphs of the corpus word for word."""
+    return sum(1 for section in sections if section.text and section.status in VERBATIM)
 
 
 def parts_status(
