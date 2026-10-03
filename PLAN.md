@@ -2024,6 +2024,25 @@ API.
   bleibt bei eingegebenem Thema außen vor: „Photosynthese“ mit der Optik-Sammlung als Quelle zöge er zur Optik und
   verfälschte das Thema; Stufe und Fach der Sammlung zählen weiter, ein Satz oder eine Frage als Thema wird in den
   schreibenden Profilen ohnehin mit ihren Angaben formuliert (D72).
+- **D78 (2026-10-03)** Audit vom 02.10.2026 (Jan: „Prüfe diese und behebe Sie falls zutreffend“; elf Befunde A01–A11,
+  alle elf Proben auf 7203100 nachgestellt). Behoben, je mit Test zuerst: A03 ein belegter Satz braucht jede Zahl, die
+  er in Ziffern nennt, auch im zitierten Absatz (Schreibweisen gleichgesetzt; an 30 Bausteinen von
+  `best-quality-generated` zu drei Themen nannten 72 belegte Sätze Zahlen, keiner eine fehlende, die Prüfung ändert dort
+  nichts); Verneinungen prüft der Dienst nicht, eine Regel dafür träfe Umschreibungen wie „nicht nur … sondern auch“.
+  A04 die Quellen einer Stufe von `ORIGIN_PRIORITY` teilen sich, was `CORPUS_MAX_CHUNKS` lässt (gemessen: bei
+  Deutschland, Vereinigte Staaten und Zweiter Weltkrieg 9 statt 3 oder 4 Quellen); der Hauptartikel behält den Vorrang,
+  auch über 400 Absätze (R04), denn er ist das Thema selbst. A07 ein Materialtext hält `KNOWLEDGE_MAX_CHARS` auch im ersten
+  Absatz, Zeilen über 2.000 Zeichen (etwa p97 der Archivabsätze) werden an Satzenden geteilt. A08 die ersten
+  Lesezugriffe aufs Repository bekommen die Restzeit. A09 Quellen ohne freie Lizenz (frei: gemeinfrei, CC BY, CC BY-SA)
+  machen Teil 1 nicht mehr zu „freien Wissensbeständen“ unter CC BY-SA 4.0; der Hinweis nennt sie, Eintrag und Baustein
+  tragen keine Facette `Zugang`, die der Dienst nicht kennt, und der Lint meldet sie. A10 ein schreibendes Profil mit
+  Rückfall in einzelnen Bausteinen nennt sie im Hinweis `topic-scope`. A11 ein unlesbarer Cache-Eintrag ist ein
+  Fehltreffer. Offen und Jans Entscheidung, weil sie Profile verändern und Messungen brauchen: A01 (ausdrückliches „kein
+  Kandidat passt“ der Artikelwahl lässt bisher den Artikel der Regeln stehen, wie im Modul beschrieben), A02 (die
+  Artikel der Frage N gehen ohne Trefferprüfung in den Korpus, D63, gemessen in M37/M39), A05 (ohne Hauptartikel kein
+  Kompendium, auch nicht aus der Wissens-Sammlung) und A06 (Teil 2 sucht mit Artikeltitel und Untertiteln, die seinen
+  Stamm tragen, nicht mit den Gruppenmitgliedern). Die Betriebshinweise O01–O03 beschreiben bewusste Vorgaben (D67,
+  `API_KEYS`) und Grenzen je Worker; keine Änderung.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

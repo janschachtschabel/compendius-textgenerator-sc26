@@ -92,6 +92,11 @@ Abschnittsmarker von Teil 1.
 - Eine Sammlung, ein Feld (D77, Release 2.8.0): Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit
   `collection_id`. Die Prüfansicht hat in allen Bereichen ein Feld „Sammlung oder Material“, liest den Knoten und sagt,
   was er ist und wie er verwendet wird; bei einer Sammlung lassen sich ihre Materialien als Quelle zuschalten.
+- Audit vom 02.10.2026 (D78, Release 2.9.0): Ein belegter Satz braucht seine Zahlen im Beleg; Quellen ohne freie
+  Lizenz machen Teil 1 nicht mehr pauschal zu freien Inhalten unter CC BY-SA 4.0; die Nebenartikel einer Stufe
+  teilen sich, was `CORPUS_MAX_CHUNKS` lässt; ein schreibendes Profil mit Rückfall in einzelnen Bausteinen nennt
+  sie im Hinweis `topic-scope`; Materialtexte halten `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz; die ersten
+  Lesezugriffe aufs Repository halten `REQUEST_TIMEOUT_S`; ein unlesbarer Cache-Eintrag ist ein Fehltreffer.
 
 ## Installation
 
