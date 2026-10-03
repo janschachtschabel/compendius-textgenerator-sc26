@@ -32,8 +32,9 @@ def segment_corpus(
     """Segment all sources and apply the chunk cap; return chunks, the sources that kept a chunk, and the cut count.
 
     Articles pulled in by search or by a link that does not carry the topic in its title contribute only paragraphs
-    that mention the topic. The cap is filled in ``ORIGIN_PRIORITY`` order while chunks keep the corpus order; a
-    source left without chunks is not listed (the primary article always is).
+    that mention the topic. The cap is filled in ``ORIGIN_PRIORITY`` order, and the sources of one rank share what
+    the higher ranks left (``_share``) while chunks keep the corpus order; a source left without chunks is not listed
+    (the primary article always is).
     """
     primary = primary_of(sources)
     topic = TopicMention.of(primary.title if primary else "")
@@ -47,12 +48,13 @@ def segment_corpus(
 
     allowed = [0] * len(sources)
     budget = max_chunks
-    by_priority = sorted(
-        range(len(sources)), key=lambda i: (ORIGIN_PRIORITY.get(sources[i].origin, len(ORIGIN_PRIORITY)), i)
-    )
-    for index in by_priority:
-        allowed[index] = min(len(segmented[index]), budget)
-        budget -= allowed[index]
+    ranks: dict[int, list[int]] = {}
+    for index, source in enumerate(sources):
+        ranks.setdefault(ORIGIN_PRIORITY.get(source.origin, len(ORIGIN_PRIORITY)), []).append(index)
+    for rank in sorted(ranks):
+        for index, take in _share(ranks[rank], [len(segmented[i]) for i in ranks[rank]], budget).items():
+            allowed[index] = take
+            budget -= take
 
     chunks: list[Chunk] = []
     kept: list[Source] = []
@@ -65,6 +67,18 @@ def segment_corpus(
     if truncated:
         log.info("corpus capped at %d chunks; %d left out", max_chunks, truncated)
     return chunks, kept, truncated
+
+
+def _share(indexes: list[int], needs: list[int], budget: int) -> dict[int, int]:
+    """What each source of one rank keeps of ``budget``: an equal part, and a source that needs less leaves the rest
+    to the others. The first side article took all that the higher ranks left before (audit 2026-10-02, A04: for
+    "Deutschland" "Geschichte Deutschlands" kept 100 paragraphs, the six other linked articles none)."""
+    shares: dict[int, int] = {}
+    by_need = sorted(zip(indexes, needs, strict=True), key=lambda pair: pair[1])  # stable: ties in corpus order
+    for position, (index, need) in enumerate(by_need):
+        shares[index] = min(need, budget // (len(by_need) - position))
+        budget -= shares[index]
+    return shares
 
 
 def subtopics(sources: list[Source], primary: Source | None) -> list[str]:
