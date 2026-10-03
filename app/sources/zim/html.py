@@ -11,11 +11,13 @@ Class checks are token exact: the ``<html>`` element itself carries classes such
 from __future__ import annotations
 
 import re
+import string
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from urllib.parse import unquote
 
 from app.domain.models import ArticleSection, ChunkKind, Paragraph
+from app.synthesis.formulas import plain_latex
 
 # Every HTML5 element without an end tag (keygen, param obsolete); one missing stayed on the stack of skipped tags
 # inside a skipped video or figure, and the rest of the article was lost (audit 2026-09-27, KO-15)
@@ -66,7 +68,7 @@ _SKIP_CLASSES = frozenset(
         "catlinks",
         "rellink",
         "noexcerpt",
-        "mwe-math-element",
+        "mwe-math-element",  # read as formulas before these classes are checked (D84, _is_formula)
         "mwe-math-fallback-image-inline",
         "mw-kartographer-container",
         "mw-halign-right",
@@ -99,6 +101,7 @@ _NAMESPACES = (
     "Bild:",
 )
 _HEADINGS = {"h2": 2, "h3": 3, "h4": 4, "h5": 4, "h6": 4}
+_PUNCTUATION = ".,;:" + chr(0xA0) + string.whitespace  # what may stand around a formula on its own line (D84)
 _BLOCK_TAGS = frozenset({"p", "blockquote", "dd", "dt", "div", "pre", "section", "article"})
 _ALIAS_PATTERNS = [
     re.compile(r"\bauch\s+([A-ZÄÖÜ][^,.;()]{2,60}?)\s+genannt\b"),
@@ -130,6 +133,9 @@ class _ArticleParser(HTMLParser):
         self.list_links: list[str] = []
         self.bold_terms: list[str] = []
         self._skip: list[str] = []
+        self._formula: str | None = None  # within a formula: its alttext, "" until read (D84)
+        self._formula_seen = self._prose_seen = False  # what the block being read holds (D84)
+        self._ends_in_formula = False  # the last paragraph ends with a formula of its own line (D84)
         self._heading_level: int | None = None
         self._heading_text: list[str] = []
         self._text: list[str] = []
@@ -154,11 +160,21 @@ class _ArticleParser(HTMLParser):
     def _current(self) -> ArticleSection:
         return self.sections[-1]
 
-    def _flush_paragraph(self) -> None:
+    def _flush_paragraph(self, *, join: bool = False) -> None:
+        """The text read so far as a paragraph; with ``join`` appended to the paragraph before it when that is text."""
         text = self._normalize("".join(self._text))
         self._text = []
-        if text:
-            self._current.paragraphs.append(Paragraph(kind=ChunkKind.TEXT, text=text))
+        self._formula_seen = self._prose_seen = False
+        if not text:
+            return
+        paragraphs = self._current.paragraphs
+        if join and paragraphs and paragraphs[-1].kind is ChunkKind.TEXT:
+            between = "; " if self._ends_in_formula else " "  # formulas one after the other stand apart
+            paragraphs[-1] = Paragraph(kind=ChunkKind.TEXT, text=f"{paragraphs[-1].text}{between}{text}")
+            self._ends_in_formula = True
+            return
+        paragraphs.append(Paragraph(kind=ChunkKind.TEXT, text=text))
+        self._ends_in_formula = False
 
     def _flush_list(self) -> None:
         items = [self._normalize(i) for i in self._list_items]
@@ -192,6 +208,13 @@ class _ArticleParser(HTMLParser):
         if self._bold_depth:
             self._bold_text.append(data)
 
+    def _emit_formula(self, latex: str) -> None:
+        """A formula as text; one the converter does not know stays out, as every formula did before D84."""
+        text = plain_latex(latex) if latex else None
+        if text:
+            self._emit(text)
+            self._formula_seen = True
+
     @staticmethod
     def _should_skip(tag: str, attrs: dict[str, str | None]) -> bool:
         if tag in _NEVER_SKIP:
@@ -211,10 +234,18 @@ class _ArticleParser(HTMLParser):
     def handle_starttag(self, tag: str, attrs_list: list[tuple[str, str | None]]) -> None:
         attrs = dict(attrs_list)
         if self._skip:
+            if self._formula == "" and tag in ("math", "img"):  # the alttext of the formula being read
+                self._formula = attrs.get("alttext" if tag == "math" else "alt") or ""
             if tag not in _VOID:
                 self._skip.append(tag)
             return
-        if tag == "math":  # MathML and its LaTeX alttext are not prose; drop them
+        if _is_formula(tag, attrs):
+            # D84: MathML is not prose, but its LaTeX alttext reads as text (M61); the element is skipped, and its
+            # end writes the formula. An image of a formula stands alone, by its alt text.
+            if tag == "img":
+                self._emit_formula(attrs.get("alt") or "")
+                return
+            self._formula = attrs.get("alttext") or ""
             self._skip.append(tag)
             return
         if self._should_skip(tag, attrs):
@@ -267,6 +298,9 @@ class _ArticleParser(HTMLParser):
         if self._skip:
             if tag == self._skip[-1]:
                 self._skip.pop()
+                if not self._skip and self._formula is not None:
+                    latex, self._formula = self._formula, None
+                    self._emit_formula(latex)
             return
         if tag in _HEADINGS and self._heading_level is not None:
             heading = self._normalize("".join(self._heading_text))
@@ -303,11 +337,15 @@ class _ArticleParser(HTMLParser):
             self._flush_table()
             return
         if tag in _BLOCK_TAGS and not self._in_item and not self._in_cell:
-            self._flush_paragraph()
+            # D84: a formula on an indented line of its own continues the paragraph that leads to it ("Das Gesetz
+            # lautet: …"); alone, both were too short or a mere lead-in for the corpus (segmentation)
+            self._flush_paragraph(join=tag == "dd" and self._formula_seen and not self._prose_seen)
 
     def handle_data(self, data: str) -> None:
         if self._skip:
             return
+        if data.strip(_PUNCTUATION):
+            self._prose_seen = True
         self._emit(data)
 
     # -- structure ------------------------------------------------------------------------------
@@ -350,6 +388,14 @@ class _ArticleParser(HTMLParser):
         self.links.append(title)
         if self._list_depth:
             self.list_links.append(title)
+
+
+def _is_formula(tag: str, attrs: dict[str, str | None]) -> bool:
+    """MathML, the element mwoffliner wraps around it, or the image of a formula that stands for it."""
+    tokens = (attrs.get("class") or "").split()
+    if tag == "img":
+        return any(token.startswith("mwe-math-fallback-image") for token in tokens)
+    return tag == "math" or "mwe-math-element" in tokens
 
 
 def parse_article(html: str, title: str) -> ParsedArticle:

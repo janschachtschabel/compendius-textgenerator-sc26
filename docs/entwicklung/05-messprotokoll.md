@@ -3323,3 +3323,28 @@ MathML samt LaTeX-Alternativtext. `mc_formeln.py` liest die 36 Schreibläufe von
   „∇²u − (1/v²)∂²u/∂t² = 0“, „6 CO₂ + 6 H₂O + Lichtenergie → C₆H₁₂O₆ + 6 O₂“, „1,22λ/D“.
 
 **Ergebnis:** gebaut (D83). Rohdaten: `m60_formeln.json`.
+
+## M61 Formeln aus dem Wikipedia-Archiv (03.10.2026)
+
+Jan: „formeln aus wikipedia sollten erhalten bleiben - bitte integrieren“. Das Archiv (Wikipedia 2026-01) hält jede
+Formel als MathML mit ihrem LaTeX als alttext, dazu ein Bild mit demselben Text; der Parser übersprang beides.
+`mc_formeln_archiv.py` liest 82 Schulartikel aus Mathematik, Physik und Chemie und die Goldthemen (80 im Archiv), im
+Image vor D84, und wertet mit dem neuen Code aus:
+
+- 10.006 Formeln in 70 der 80 Artikel, 2.106 davon auf eigener eingerückter Zeile; *Satz des Pythagoras* hat 284,
+  *Quadratische Gleichung* 284, *Snelliussches Brechungsgesetz* 150, *Bruchrechnung* 117; *Optik* und *Klimawandel*
+  keine.
+- Der Leser von D83 kannte vieles nicht, was die Artikel schreiben (`mathbb`, `overline`, `tfrac`, `begin{aligned}`,
+  `ce`, …). Erweitert (D84) schreibt `plain_latex` 9.961 (99,6 %) als Text, etwa „R = U/I = const.“, „Eₖᵢₙ = ½mv²“,
+  „D = ℝ ∖ {3}“, „a = √(c² − b²); b = √(c² − a²)“, „K₂ = 1000 € · (1 + 2 · 0,05) = 1100 €“, „cos(α + k · 360°) = cos
+  α“. 45 bleiben draußen (`underbrace` 19, `overset` 13, `atop` 9, nicht abgebildete Zahlbereiche, leere alttexte).
+- Absätze vorher und nachher: Löcher (ein Leerzeichen vor einem Satzzeichen, leere Klammern, doppelte Leerzeichen)
+  1.593 → 124; „Übliches Formelzeichen ist .“ wird „… ist V.“, „Für das Endkapital nach Jahren mit je Zinsperioden“
+  wird „Für das Endkapital K_(n, k) nach n Jahren mit je m Zinsperioden“, die Tabelle der Körper bei *Volumen* hat
+  wieder ihre Formeln („Würfel | V = a³“, „senkrechter Kreiskegel | V = ⅓πr²h“).
+- Korpus: Eine Formel allein auf ihrer Zeile war für die Segmentierung zu kurz (unter 40 Zeichen) und die
+  Einleitung davor ein Fragment („Das ohmsche Gesetz lautet:“). Mit der Formel am Absatz davor stehen 3.331 von 3.847
+  verschiedenen Gleichungen in Absätzen, die in den Korpus kommen, und diese 80 Artikel geben 5.770 statt 4.624
+  Absätze in den Korpus.
+
+**Ergebnis:** gebaut (D84). Rohdaten: `m61_formeln_archiv.json` (ohne das HTML der Artikel).

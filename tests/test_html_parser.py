@@ -1,8 +1,11 @@
 import time
+from html import escape
 from pathlib import Path
 
 from app.sources.zim.html import parse_article
 from tests.conftest import FIXTURES
+
+BACKSLASH = chr(92)
 
 
 def _read(project: str, name: str) -> str:
@@ -131,3 +134,69 @@ def test_a_void_element_inside_a_skipped_part_does_not_swallow_the_rest() -> Non
     )
     texts = [paragraph.text for section in parse_article(html, "Licht").sections for paragraph in section.paragraphs]
     assert texts == ["Vorher.", "Nach dem Video.", "Nach der Abbildung."]
+
+
+def _formula(latex: str) -> str:
+    """A formula as mwoffliner writes it: MathML with the LaTeX as alttext, hidden, and an image with it as alt."""
+    alt = escape(latex, quote=True)
+    return (
+        '<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline '
+        f'mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{alt}">'
+        f'<semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">{alt}</annotation></semantics>'
+        f'</math></span><img src="./_assets_/f.svg" class="mwe-math-fallback-image-inline" alt="{alt}"></span>'
+    )
+
+
+SNELL = BACKSLASH.join(["{", "displaystyle n_{1}", "sin ", "delta _{1}=n_{2}", "sin ", "delta _{2}}"])
+
+
+def test_a_formula_of_the_archive_stands_as_text_where_the_article_has_it() -> None:
+    """D84: the parser dropped every formula and left holes ("Darin sind  und  die Brechungsindizes"); the alttext
+    now stands as text (M61). A formula on a line of its own joins the paragraph that leads to it: alone it was too
+    short for the corpus, and so was a lead in ending with a colon (segmentation drops both)."""
+    first, second = (BACKSLASH.join(["{", f"displaystyle n_{{{n}}}}}"]) for n in (1, 2))
+    html = (
+        f"<p>Das Gesetz lautet:</p><dl><dd>{_formula(SNELL)}.</dd></dl>"
+        f"<p>Darin sind {_formula(first)} und {_formula(second)} die Brechungsindizes.</p>"
+    )
+    texts = [paragraph.text for section in parse_article(html, "Brechung").sections for paragraph in section.paragraphs]
+    assert texts == ["Das Gesetz lautet: n₁ sin δ₁ = n₂ sin δ₂.", "Darin sind n₁ und n₂ die Brechungsindizes."]
+
+
+def test_an_indented_line_with_more_than_a_formula_and_a_formula_after_a_heading_stand_alone() -> None:
+    html = (
+        "<p>Vorher.</p><dl><dd>Ein eingerückter Satz ohne Formel.</dd></dl>"
+        f"<h2>Gesetz</h2><dl><dd>{_formula(SNELL)}</dd></dl><ul><li>Punkt</li></ul><dl><dd>{_formula(SNELL)}</dd></dl>"
+    )
+    texts = [paragraph.text for section in parse_article(html, "X").sections for paragraph in section.paragraphs]
+    assert texts == [
+        "Vorher.",
+        "Ein eingerückter Satz ohne Formel.",
+        "n₁ sin δ₁ = n₂ sin δ₂",
+        "- Punkt",
+        "n₁ sin δ₁ = n₂ sin δ₂",
+    ]
+
+
+def test_a_formula_with_a_command_the_converter_does_not_know_stays_out_as_before() -> None:
+    unknown = BACKSLASH.join(["{", "displaystyle ", "underbrace {1-1} _{x}}"])
+    html = f"<p>Es gilt {_formula(unknown)} immer.</p>"
+    texts = [paragraph.text for section in parse_article(html, "X").sections for paragraph in section.paragraphs]
+    assert texts == ["Es gilt immer."]
+
+
+def test_a_formula_in_a_skipped_part_stays_out_and_a_lone_fallback_image_counts() -> None:
+    """A formula in an image caption or an infobox goes with them; an image of a formula without its MathML, as older
+    archives have it, stands by its alt text."""
+    html = (
+        f'<div class="thumb"><p>Bild: {_formula(SNELL)}</p></div>'
+        f'<p>Allein: <img class="mwe-math-fallback-image-inline" alt="{escape(SNELL, quote=True)}" src="f.svg">.</p>'
+    )
+    texts = [paragraph.text for section in parse_article(html, "X").sections for paragraph in section.paragraphs]
+    assert texts == ["Allein: n₁ sin δ₁ = n₂ sin δ₂."]
+
+
+def test_formulas_on_lines_of_their_own_one_after_the_other_stand_apart() -> None:
+    html = f"<p>Es gilt</p><dl><dd>{_formula(SNELL)}</dd></dl><dl><dd>{_formula(SNELL)}</dd></dl>"
+    texts = [paragraph.text for section in parse_article(html, "X").sections for paragraph in section.paragraphs]
+    assert texts == ["Es gilt n₁ sin δ₁ = n₂ sin δ₂; n₁ sin δ₁ = n₂ sin δ₂"]

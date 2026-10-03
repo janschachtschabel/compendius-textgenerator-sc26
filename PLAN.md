@@ -2104,6 +2104,20 @@ API.
   im JSON ohne Formelsatz. Geprüft an den 36 Texten von M59 (M60): 48 Formeln in vier Texten zu Optik und
   Photosynthese, alle ohne LaTeX-Rest. Eckige Klammern um Text („[ababbcbc]“) bleiben Text; Dollarzeichen werden nicht
   als Formel gelesen. Formeln aus Wikipedia nimmt der Dienst weiter nicht in den Korpus (MathML wird verworfen).
+- **D84 (2026-10-03)** Formeln aus Wikipedia stehen als Text im Korpus (Jan: „formeln aus wikipedia sollten erhalten
+  bleiben - bitte integrieren“). Das Archiv hält jede Formel als MathML mit ihrem LaTeX als alttext; der Parser verwarf
+  beides, und im Text blieben Löcher („Übliches Formelzeichen ist .“, eine leere Formelspalte in der Tabelle der
+  Körper bei *Volumen*). `plain_latex` (`app/synthesis/formulas.py`) schreibt den alttext mit dem Leser von D83 als
+  Text und kennt dafür mehr: Umgebungen (ausgerichtete Gleichungen, Matrizen, Fallunterscheidungen) als eine Zeile mit
+  Semikolons, die Zahlbereiche (ℝ, ℕ), Akzente (v̄, M̅X̅), die Chemie von mhchem, „over“ und „choose“ und die Zeichen
+  der Artikel. Eine Formel mit einem Befehl, den er nicht kennt, bleibt wie bisher draußen, statt einen Namen ohne
+  Backslash zu drucken: 45 von 10.006 Formeln aus 80 Schulartikeln (M61), meist mit Anmerkungsklammern
+  (`underbrace`, `overset`). Der Parser (`app/sources/zim/html.py`) setzt die Formel dort ein, wo der Artikel sie hat;
+  eine Formel auf eigener eingerückter Zeile hängt er an den Absatz davor („Das Gesetz lautet: …“), denn allein war sie
+  für die Segmentierung zu kurz und die Einleitung mit Doppelpunkt ein Fragment; mehrere solche Zeilen trennt ein
+  Semikolon. In den 80 Artikeln fallen die Löcher von 1.593 auf 124, 3.331 von 3.847 Gleichungen stehen in Absätzen,
+  die in den Korpus kommen (vorher keine), und diese Artikel geben 5.770 statt 4.624 Absätze in den Korpus, weil ihre
+  Einleitungen jetzt ganze Sätze sind.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

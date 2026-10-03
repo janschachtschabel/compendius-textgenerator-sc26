@@ -1,0 +1,1363 @@
+{
+ "note": "M61 (03.10.2026): die Formeln der Schulartikel im Wikipedia-Archiv (2026-01), wie plain_latex (D84) sie schreibt, und die Absätze des Parsers vor und nach D84 (mc_formeln_archiv.py)",
+ "artikel": 80,
+ "artikel_mit_formeln": 70,
+ "formeln": 10006,
+ "geschrieben": 9961,
+ "draussen": 45,
+ "warum_draussen": [
+  [
+   "underbrace",
+   19
+  ],
+  [
+   "overset",
+   13
+  ],
+  [
+   "atop",
+   9
+  ],
+  [
+   "mathbb",
+   4
+  ],
+  [
+   "leer",
+   4
+  ],
+  [
+   "overbrace",
+   1
+  ],
+  [
+   "underset",
+   1
+  ],
+  [
+   "stackrel",
+   1
+  ]
+ ],
+ "abgesetzt": 2106,
+ "geaenderte_absaetze": 2286,
+ "neue_absaetze": -193,
+ "loecher": {
+  "vorher": 1593,
+  "nachher": 124
+ },
+ "korpus": {
+  "gleichungen": 3847,
+  "im_korpus": 3331,
+  "absaetze_im_korpus_vorher": 4624,
+  "absaetze_im_korpus_nachher": 5770
+ },
+ "je_artikel": {
+  "Snelliussches Brechungsgesetz": {
+   "formeln": 150,
+   "abgesetzt": 28,
+   "absaetze": 64,
+   "loecher": {
+    "vorher": 20,
+    "nachher": 1
+   }
+  },
+  "Satz des Pythagoras": {
+   "formeln": 284,
+   "abgesetzt": 35,
+   "absaetze": 130,
+   "loecher": {
+    "vorher": 50,
+    "nachher": 1
+   }
+  },
+  "Ohmsches Gesetz": {
+   "formeln": 68,
+   "abgesetzt": 10,
+   "absaetze": 35,
+   "loecher": {
+    "vorher": 10,
+    "nachher": 0
+   }
+  },
+  "Kinetische Energie": {
+   "formeln": 101,
+   "abgesetzt": 25,
+   "absaetze": 57,
+   "loecher": {
+    "vorher": 19,
+    "nachher": 0
+   }
+  },
+  "Photosynthese": {
+   "formeln": 34,
+   "abgesetzt": 27,
+   "absaetze": 174,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Bruchrechnung": {
+   "formeln": 117,
+   "abgesetzt": 24,
+   "absaetze": 101,
+   "loecher": {
+    "vorher": 23,
+    "nachher": 0
+   }
+  },
+  "Quadratische Gleichung": {
+   "formeln": 284,
+   "abgesetzt": 63,
+   "absaetze": 144,
+   "loecher": {
+    "vorher": 38,
+    "nachher": 5
+   }
+  },
+  "Lineare Funktion": {
+   "formeln": 93,
+   "abgesetzt": 16,
+   "absaetze": 43,
+   "loecher": {
+    "vorher": 11,
+    "nachher": 0
+   }
+  },
+  "Prozentrechnung": {
+   "formeln": 59,
+   "abgesetzt": 15,
+   "absaetze": 79,
+   "loecher": {
+    "vorher": 11,
+    "nachher": 1
+   }
+  },
+  "Dreisatz": {
+   "formeln": 56,
+   "abgesetzt": 1,
+   "absaetze": 38,
+   "loecher": {
+    "vorher": 6,
+    "nachher": 2
+   }
+  },
+  "Wahrscheinlichkeit": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 37,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 1
+   }
+  },
+  "Kreis": {
+   "formeln": 392,
+   "abgesetzt": 68,
+   "absaetze": 214,
+   "loecher": {
+    "vorher": 65,
+    "nachher": 0
+   }
+  },
+  "Dreieck": {
+   "formeln": 128,
+   "abgesetzt": 9,
+   "absaetze": 84,
+   "loecher": {
+    "vorher": 26,
+    "nachher": 0
+   }
+  },
+  "Exponentialfunktion": {
+   "formeln": 281,
+   "abgesetzt": 90,
+   "absaetze": 143,
+   "loecher": {
+    "vorher": 46,
+    "nachher": 5
+   }
+  },
+  "Logarithmus": {
+   "formeln": 348,
+   "abgesetzt": 79,
+   "absaetze": 193,
+   "loecher": {
+    "vorher": 50,
+    "nachher": 2
+   }
+  },
+  "Differentialrechnung": {
+   "formeln": 886,
+   "abgesetzt": 132,
+   "absaetze": 315,
+   "loecher": {
+    "vorher": 115,
+    "nachher": 3
+   }
+  },
+  "Integralrechnung": {
+   "formeln": 349,
+   "abgesetzt": 74,
+   "absaetze": 200,
+   "loecher": {
+    "vorher": 55,
+    "nachher": 2
+   }
+  },
+  "Gleichförmige Bewegung": {
+   "formeln": 16,
+   "abgesetzt": 7,
+   "absaetze": 23,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Beschleunigung": {
+   "formeln": 60,
+   "abgesetzt": 18,
+   "absaetze": 57,
+   "loecher": {
+    "vorher": 14,
+    "nachher": 0
+   }
+  },
+  "Geschwindigkeit": {
+   "formeln": 93,
+   "abgesetzt": 16,
+   "absaetze": 90,
+   "loecher": {
+    "vorher": 19,
+    "nachher": 0
+   }
+  },
+  "Newtonsche Gesetze": {
+   "formeln": 58,
+   "abgesetzt": 10,
+   "absaetze": 56,
+   "loecher": {
+    "vorher": 14,
+    "nachher": 0
+   }
+  },
+  "Arbeit (Physik)": {
+   "formeln": 181,
+   "abgesetzt": 22,
+   "absaetze": 79,
+   "loecher": {
+    "vorher": 41,
+    "nachher": 0
+   }
+  },
+  "Leistung (Physik)": {
+   "formeln": 46,
+   "abgesetzt": 12,
+   "absaetze": 43,
+   "loecher": {
+    "vorher": 8,
+    "nachher": 0
+   }
+  },
+  "Elektrische Spannung": {
+   "formeln": 118,
+   "abgesetzt": 34,
+   "absaetze": 104,
+   "loecher": {
+    "vorher": 21,
+    "nachher": 6
+   }
+  },
+  "Elektrischer Widerstand": {
+   "formeln": 117,
+   "abgesetzt": 43,
+   "absaetze": 106,
+   "loecher": {
+    "vorher": 13,
+    "nachher": 4
+   }
+  },
+  "Dichte": {
+   "formeln": 50,
+   "abgesetzt": 13,
+   "absaetze": 39,
+   "loecher": {
+    "vorher": 4,
+    "nachher": 0
+   }
+  },
+  "Druck (Physik)": {
+   "formeln": 82,
+   "abgesetzt": 28,
+   "absaetze": 90,
+   "loecher": {
+    "vorher": 5,
+    "nachher": 0
+   }
+  },
+  "Statischer Auftrieb": {
+   "formeln": 19,
+   "abgesetzt": 5,
+   "absaetze": 39,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Hebel (Physik)": {
+   "formeln": 23,
+   "abgesetzt": 5,
+   "absaetze": 25,
+   "loecher": {
+    "vorher": 2,
+    "nachher": 0
+   }
+  },
+  "Schwingung": {
+   "formeln": 69,
+   "abgesetzt": 28,
+   "absaetze": 87,
+   "loecher": {
+    "vorher": 8,
+    "nachher": 0
+   }
+  },
+  "Brechung (Physik)": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 17,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Reflexion (Physik)": {
+   "formeln": 48,
+   "abgesetzt": 11,
+   "absaetze": 84,
+   "loecher": {
+    "vorher": 7,
+    "nachher": 0
+   }
+  },
+  "Linse (Optik)": {
+   "formeln": 50,
+   "abgesetzt": 12,
+   "absaetze": 89,
+   "loecher": {
+    "vorher": 12,
+    "nachher": 14
+   }
+  },
+  "Stöchiometrie": {
+   "formeln": 15,
+   "abgesetzt": 11,
+   "absaetze": 33,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Stoffmengenkonzentration": {
+   "formeln": 25,
+   "abgesetzt": 9,
+   "absaetze": 27,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "PH-Wert": {
+   "formeln": 41,
+   "abgesetzt": 14,
+   "absaetze": 87,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Ideales Gas": {
+   "formeln": 114,
+   "abgesetzt": 27,
+   "absaetze": 85,
+   "loecher": {
+    "vorher": 16,
+    "nachher": 2
+   }
+  },
+  "Radioaktivität": {
+   "formeln": 31,
+   "abgesetzt": 28,
+   "absaetze": 167,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Halbwertszeit": {
+   "formeln": 54,
+   "abgesetzt": 11,
+   "absaetze": 43,
+   "loecher": {
+    "vorher": 15,
+    "nachher": 0
+   }
+  },
+  "Zinsrechnung": {
+   "formeln": 98,
+   "abgesetzt": 41,
+   "absaetze": 85,
+   "loecher": {
+    "vorher": 12,
+    "nachher": 0
+   }
+  },
+  "Mittelwert": {
+   "formeln": 130,
+   "abgesetzt": 37,
+   "absaetze": 99,
+   "loecher": {
+    "vorher": 16,
+    "nachher": 0
+   }
+  },
+  "Binomische Formeln": {
+   "formeln": 608,
+   "abgesetzt": 139,
+   "absaetze": 277,
+   "loecher": {
+    "vorher": 7,
+    "nachher": 0
+   }
+  },
+  "Kreiszahl": {
+   "formeln": 647,
+   "abgesetzt": 75,
+   "absaetze": 222,
+   "loecher": {
+    "vorher": 155,
+    "nachher": 36
+   }
+  },
+  "Volumen": {
+   "formeln": 21,
+   "abgesetzt": 0,
+   "absaetze": 25,
+   "loecher": {
+    "vorher": 13,
+    "nachher": 0
+   }
+  },
+  "Flächeninhalt": {
+   "formeln": 82,
+   "abgesetzt": 7,
+   "absaetze": 41,
+   "loecher": {
+    "vorher": 26,
+    "nachher": 0
+   }
+  },
+  "Trigonometrie": {
+   "formeln": 94,
+   "abgesetzt": 29,
+   "absaetze": 38,
+   "loecher": {
+    "vorher": 54,
+    "nachher": 0
+   }
+  },
+  "Sinus und Kosinus": {
+   "formeln": 461,
+   "abgesetzt": 112,
+   "absaetze": 179,
+   "loecher": {
+    "vorher": 99,
+    "nachher": 26
+   }
+  },
+  "Vektor": {
+   "formeln": 263,
+   "abgesetzt": 45,
+   "absaetze": 129,
+   "loecher": {
+    "vorher": 43,
+    "nachher": 0
+   }
+  },
+  "Lineares Gleichungssystem": {
+   "formeln": 147,
+   "abgesetzt": 31,
+   "absaetze": 92,
+   "loecher": {
+    "vorher": 28,
+    "nachher": 0
+   }
+  },
+  "Potenz (Mathematik)": {
+   "formeln": 337,
+   "abgesetzt": 33,
+   "absaetze": 107,
+   "loecher": {
+    "vorher": 55,
+    "nachher": 1
+   }
+  },
+  "Wurzel (Mathematik)": {
+   "formeln": 221,
+   "abgesetzt": 30,
+   "absaetze": 86,
+   "loecher": {
+    "vorher": 31,
+    "nachher": 3
+   }
+  },
+  "Primzahl": {
+   "formeln": 219,
+   "abgesetzt": 35,
+   "absaetze": 142,
+   "loecher": {
+    "vorher": 36,
+    "nachher": 0
+   }
+  },
+  "Kombinatorik": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 17,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Normalverteilung": {
+   "formeln": 322,
+   "abgesetzt": 51,
+   "absaetze": 168,
+   "loecher": {
+    "vorher": 64,
+    "nachher": 0
+   }
+  },
+  "Energieerhaltungssatz": {
+   "formeln": 37,
+   "abgesetzt": 13,
+   "absaetze": 42,
+   "loecher": {
+    "vorher": 5,
+    "nachher": 0
+   }
+  },
+  "Impuls": {
+   "formeln": 68,
+   "abgesetzt": 20,
+   "absaetze": 56,
+   "loecher": {
+    "vorher": 7,
+    "nachher": 0
+   }
+  },
+  "Gravitation": {
+   "formeln": 20,
+   "abgesetzt": 3,
+   "absaetze": 63,
+   "loecher": {
+    "vorher": 2,
+    "nachher": 0
+   }
+  },
+  "Freier Fall": {
+   "formeln": 16,
+   "abgesetzt": 4,
+   "absaetze": 24,
+   "loecher": {
+    "vorher": 3,
+    "nachher": 0
+   }
+  },
+  "Coulombsches Gesetz": {
+   "formeln": 62,
+   "abgesetzt": 11,
+   "absaetze": 36,
+   "loecher": {
+    "vorher": 9,
+    "nachher": 0
+   }
+  },
+  "Elektrische Leistung": {
+   "formeln": 30,
+   "abgesetzt": 6,
+   "absaetze": 29,
+   "loecher": {
+    "vorher": 5,
+    "nachher": 0
+   }
+  },
+  "Kondensator (Elektrotechnik)": {
+   "formeln": 194,
+   "abgesetzt": 58,
+   "absaetze": 283,
+   "loecher": {
+    "vorher": 24,
+    "nachher": 3
+   }
+  },
+  "Elektromagnetische Induktion": {
+   "formeln": 257,
+   "abgesetzt": 47,
+   "absaetze": 159,
+   "loecher": {
+    "vorher": 55,
+    "nachher": 1
+   }
+  },
+  "Photoelektrischer Effekt": {
+   "formeln": 34,
+   "abgesetzt": 5,
+   "absaetze": 51,
+   "loecher": {
+    "vorher": 8,
+    "nachher": 0
+   }
+  },
+  "Massenwirkungsgesetz": {
+   "formeln": 285,
+   "abgesetzt": 60,
+   "absaetze": 81,
+   "loecher": {
+    "vorher": 33,
+    "nachher": 1
+   }
+  },
+  "Redoxreaktion": {
+   "formeln": 28,
+   "abgesetzt": 20,
+   "absaetze": 93,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Neutralisation (Chemie)": {
+   "formeln": 2,
+   "abgesetzt": 2,
+   "absaetze": 12,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Optik": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 40,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Säure-Base-Konzepte": {
+   "formeln": 27,
+   "abgesetzt": 26,
+   "absaetze": 64,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Klimawandel": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 99,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Programmiersprache": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 72,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Sinfonie": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 23,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Demokratie": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 203,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Französische Revolution": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 143,
+   "loecher": {
+    "vorher": 0,
+    "nachher": 0
+   }
+  },
+  "Barockliteratur": {
+   "formeln": 0,
+   "abgesetzt": 0,
+   "absaetze": 34,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 1
+   }
+  },
+  "Fotosynthese": {
+   "formeln": 34,
+   "abgesetzt": 27,
+   "absaetze": 174,
+   "loecher": {
+    "vorher": 1,
+    "nachher": 0
+   }
+  },
+  "Zellatmung": {
+   "formeln": 9,
+   "abgesetzt": 5,
+   "absaetze": 29,
+   "loecher": {
+    "vorher": 3,
+    "nachher": 3
+   }
+  },
+  "Magnetismus": {
+   "formeln": 51,
+   "abgesetzt": 8,
+   "absaetze": 94,
+   "loecher": {
+    "vorher": 9,
+    "nachher": 0
+   }
+  },
+  "Thermodynamik": {
+   "formeln": 80,
+   "abgesetzt": 17,
+   "absaetze": 130,
+   "loecher": {
+    "vorher": 12,
+    "nachher": 0
+   }
+  },
+  "Wärmekapazität": {
+   "formeln": 39,
+   "abgesetzt": 8,
+   "absaetze": 22,
+   "loecher": {
+    "vorher": 7,
+    "nachher": 0
+   }
+  },
+  "Spezifische Wärmekapazität": {
+   "formeln": 143,
+   "abgesetzt": 41,
+   "absaetze": 91,
+   "loecher": {
+    "vorher": 17,
+    "nachher": 0
+   }
+  }
+ },
+ "formel_stichprobe": [
+  {
+   "artikel": "Primzahl",
+   "latex": "{\\displaystyle p}",
+   "text": "p"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f''}",
+   "text": "f''"
+  },
+  {
+   "artikel": "Elektromagnetische Induktion",
+   "latex": "{\\displaystyle {\\vec {E}}=-{\\vec {v}}\\times {\\vec {B}}.}",
+   "text": "E⃗ = −v⃗ × B⃗."
+  },
+  {
+   "artikel": "Integralrechnung",
+   "latex": "{\\displaystyle \\mathbb {R} }",
+   "text": "ℝ"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle 3^{2}=9=1+3+5}",
+   "text": "3² = 9 = 1 + 3 + 5"
+  },
+  {
+   "artikel": "Ideales Gas",
+   "latex": "{\\displaystyle Z(T,V,N)=\\sum _{r}e^{-\\beta E_{r}},\\quad \\beta ={\\frac {1}{k_{\\mathrm {B} }T}}.}",
+   "text": "Z(T, V, N) = ∑ᵣe^(−βEᵣ), β = 1/(k_BT)."
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle n=1}",
+   "text": "n = 1"
+  },
+  {
+   "artikel": "Ohmsches Gesetz",
+   "latex": "{\\displaystyle {\\vec {J}}=\\sigma \\,{\\vec {E}}}",
+   "text": "J⃗ = σ E⃗"
+  },
+  {
+   "artikel": "Wurzel (Mathematik)",
+   "latex": "{\\displaystyle \\scriptstyle \\mathrm {e} ^{\\pm {\\frac {\\pi }{2}}\\mathrm {i} }=\\pm \\mathrm {i} }",
+   "text": "e^(±π/2i) = ±i"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle {\\tfrac {m_{20}}{n_{20}}}}",
+   "text": "(m₂₀)/(n₂₀)"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle \\pi }",
+   "text": "π"
+  },
+  {
+   "artikel": "Lineare Funktion",
+   "latex": "{\\displaystyle f(x)=mx+n}",
+   "text": "f(x) = mx + n"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle \\cos(\\alpha +k\\cdot 360^{\\circ })=\\cos \\alpha }",
+   "text": "cos(α + k · 360°) = cos α"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle a>0,b>0}",
+   "text": "a > 0, b > 0"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle 2ab}",
+   "text": "2ab"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f(x+h)-f(x)}",
+   "text": "f(x + h) − f(x)"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle {\\frac {f(x_{0}+h)-f(x_{0})}{h}}={\\frac {2x_{0}h+h^{2}}{h}}={\\frac {h\\cdot (2x_{0}+h)}{h}}=2x_{0}+h.}",
+   "text": "(f(x₀ + h) − f(x₀))/h = (2x₀h + h²)/h = (h · (2x₀ + h))/h = 2x₀ + h."
+  },
+  {
+   "artikel": "Snelliussches Brechungsgesetz",
+   "latex": "{\\displaystyle d}",
+   "text": "d"
+  },
+  {
+   "artikel": "Normalverteilung",
+   "latex": "{\\displaystyle \\sigma ^{2}>0}",
+   "text": "σ² > 0"
+  },
+  {
+   "artikel": "Kreis",
+   "latex": "{\\displaystyle R^{2}=r^{2}+r^{2}=2r^{2}}",
+   "text": "R² = r² + r² = 2r²"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle \\cot x}",
+   "text": "cot x"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle a^{2}-n=b^{2}.}",
+   "text": "a² − n = b²."
+  },
+  {
+   "artikel": "Satz des Pythagoras",
+   "latex": "{\\displaystyle t}",
+   "text": "t"
+  },
+  {
+   "artikel": "Vektor",
+   "latex": "{\\displaystyle \\left({\\begin{smallmatrix}3\\\\-2\\\\4\\end{smallmatrix}}\\right)}",
+   "text": "(3; −2; 4)"
+  },
+  {
+   "artikel": "Logarithmus",
+   "latex": "{\\displaystyle 0}",
+   "text": "0"
+  },
+  {
+   "artikel": "Logarithmus",
+   "latex": "{\\displaystyle a}",
+   "text": "a"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle \\cos \\alpha =\\sin(90^{\\circ }\\!-\\!\\alpha )=\\sin \\beta }",
+   "text": "cos α = sin(90° − α) = sin β"
+  },
+  {
+   "artikel": "Radioaktivität",
+   "latex": "{\\displaystyle {}_{Z}^{A}\\mathrm {X} +\\mathrm {e} ^{-}\\to {}_{Z-1}^{A}\\mathrm {Y} +\\nu _{\\mathrm {e} }}",
+   "text": "_Z^(A)X + e⁻ → _(Z − 1)^(A)Y + νₑ"
+  },
+  {
+   "artikel": "Ideales Gas",
+   "latex": "{\\displaystyle p_{1}=p_{2}}",
+   "text": "p₁ = p₂"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle i}",
+   "text": "i"
+  },
+  {
+   "artikel": "Vektor",
+   "latex": "{\\displaystyle c={\\vec {a}}\\cdot {\\vec {b}}={\\begin{pmatrix}a_{1}\\\\a_{2}\\\\a_{3}\\end{pmatrix}}\\cdot {\\begin{pmatrix}b_{1}\\\\b_{2}\\\\b_{3}\\end{pmatrix}}=a_{1}b_{1}+a_{2}b_{2}+a_{3}b_{3}}",
+   "text": "c = a⃗ · b⃗ = (a₁; a₂; a₃) · (b₁; b₂; b₃) = a₁b₁ + a₂b₂ + a₃b₃"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle a^{2}}",
+   "text": "a²"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle 1/n}",
+   "text": "1/n"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle n}",
+   "text": "n"
+  },
+  {
+   "artikel": "Elektrischer Widerstand",
+   "latex": "{\\displaystyle {\\frac {\\underline {u}}{\\underline {i}}}=\\mathrm {j} \\omega L=\\mathrm {j} X\\ .}",
+   "text": "(u̲)/(i̲) = jωL = jX."
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle \\cos 45^{\\circ }=\\sin 45^{\\circ }={\\tfrac {1}{2}}{\\sqrt {2}}}",
+   "text": "cos 45° = sin 45° = ½√2"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle \\cos x={\\frac {1}{2}}\\left(\\mathrm {e} ^{\\mathrm {i} x}+\\mathrm {e} ^{-\\mathrm {i} x}\\right)}",
+   "text": "cos x = ½(e^(ix) + e^(−ix))"
+  },
+  {
+   "artikel": "Newtonsche Gesetze",
+   "latex": "{\\displaystyle F(t)=ma(t)=-Dx(t)}",
+   "text": "F(t) = ma(t) = −Dx(t)"
+  },
+  {
+   "artikel": "Logarithmus",
+   "latex": "{\\displaystyle L}",
+   "text": "L"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f(x)=\\sum _{n=0}^{\\infty }{\\frac {f^{(n)}(a)}{n!}}(x-a)^{n}}",
+   "text": "f(x) = ∑_(n = 0)^(∞)(f⁽ⁿ⁾(a))/(n!)(x − a)ⁿ"
+  },
+  {
+   "artikel": "Quadratische Gleichung",
+   "latex": "{\\displaystyle x_{1}=-2}",
+   "text": "x₁ = −2"
+  },
+  {
+   "artikel": "Kondensator (Elektrotechnik)",
+   "latex": "{\\displaystyle i(t)=I_{\\mathrm {S} }(-\\sin(\\omega t+\\varphi _{u}))=I_{\\mathrm {S} }\\cos(\\omega t+\\varphi _{u}+90^{\\circ })\\,}",
+   "text": "i(t) = I_S(− sin(ωt + φᵤ)) = I_S cos(ωt + φᵤ + 90°)"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle 0{,}7071067811\\ldots }",
+   "text": "0,7071067811…"
+  },
+  {
+   "artikel": "Wurzel (Mathematik)",
+   "latex": "{\\displaystyle {\\sqrt[{n}]{x}}=x^{1/n}=\\exp \\left({\\frac {\\ln(x)}{n}}\\right)}",
+   "text": "ⁿ√x = x^(1/n) = exp((ln(x))/n)"
+  },
+  {
+   "artikel": "Satz des Pythagoras",
+   "latex": "{\\displaystyle |AB|=|AM|}",
+   "text": "|AB| = |AM|"
+  },
+  {
+   "artikel": "Kondensator (Elektrotechnik)",
+   "latex": "{\\displaystyle C}",
+   "text": "C"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle \\approx 2{,}54\\cdot 10^{-2}}",
+   "text": "≈ 2,54 · 10⁻²"
+  },
+  {
+   "artikel": "Kreis",
+   "latex": "{\\displaystyle r=R\\cdot \\left(2{\\sqrt {3}}-3\\right)}",
+   "text": "r = R · (2√3 − 3)"
+  },
+  {
+   "artikel": "Mittelwert",
+   "latex": "{\\displaystyle \\min(x_{1},\\dotsc ,x_{n})\\leq {\\bar {x}}_{\\text{geom}}\\leq {\\bar {x}}_{\\text{arithm}}\\leq \\max(x_{1},\\dotsc ,x_{n}).}",
+   "text": "min(x₁, …, xₙ) ≤ x̄_geom ≤ x̄ₐᵣᵢₜₕₘ ≤ max(x₁, …, xₙ)."
+  },
+  {
+   "artikel": "Snelliussches Brechungsgesetz",
+   "latex": "{\\displaystyle \\delta _{1}={\\textstyle {\\frac {1}{2}}}\\pi -\\psi }",
+   "text": "δ₁ = ½π − ψ"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle {\\begin{aligned}\\sin \\colon [-90^{\\circ },90^{\\circ }]&\\to [-1,1]\\\\\\cos \\colon [0^{\\circ },180^{\\circ }]&\\to [-1,1]\\end{aligned}}}",
+   "text": "sin :[ − 90°, 90°] → [ − 1,1]; cos :[0°, 180°] → [ − 1,1]"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle {\\tfrac {\\mathrm {d} }{\\mathrm {d} x}}}",
+   "text": "d/(dx)"
+  },
+  {
+   "artikel": "Exponentialfunktion",
+   "latex": "{\\displaystyle x\\mapsto \\exp(x)}",
+   "text": "x ↦ exp(x)"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle n}",
+   "text": "n"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle (x+y)^{2}}",
+   "text": "(x + y)²"
+  },
+  {
+   "artikel": "Lineare Funktion",
+   "latex": "{\\displaystyle n,}",
+   "text": "n,"
+  },
+  {
+   "artikel": "Flächeninhalt",
+   "latex": "{\\displaystyle A={\\sqrt {3}}\\,a^{2}}",
+   "text": "A = √3 a²"
+  },
+  {
+   "artikel": "Integralrechnung",
+   "latex": "{\\displaystyle x\\in \\Omega }",
+   "text": "x ∈ Ω"
+  },
+  {
+   "artikel": "Exponentialfunktion",
+   "latex": "{\\displaystyle a^{x+y}=a^{x}a^{y}}",
+   "text": "a^(x + y) = a^(x)a^(y)"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle \\pi =3{,}0323\\;2214\\;3033\\;4324\\;1124\\;1224\\;0414\\;0231\\;4211\\;1430\\;2031\\;0022\\;0034\\;4413\\;2211\\;0104\\;0332\\;1344\\;0043\\;2444\\;0144\\;1042\\;3341\\;3301\\dots }",
+   "text": "π = 3,0323 2214 3033 4324 1124 1224 0414 0231 4211 1430 2031 0022 0034 4413 2211 0104 0332 1344 0043 2444 0144 1042 3341 3301…"
+  }
+ ],
+ "draussen_beispiele": [
+  {
+   "artikel": "Quadratische Gleichung",
+   "latex": "{\\displaystyle x^{2}+2x=24\\iff x^{2}+2x\\,\\,+\\underbrace {1-1} _{{\\text{keine}} \\atop {\\text{Veränderung}}}=24\\iff (x^{2}+2x+1)-1=24\\iff (x+1)^{2}-1=24{\\overset {|\\,+1}{\\iff }}(x+1)^{2}=25.}"
+  },
+  {
+   "artikel": "Quadratische Gleichung",
+   "latex": "{\\displaystyle \\mathbb {F} _{2^{n}}\\cong \\mathbb {F} _{2}(\\varrho )}"
+  },
+  {
+   "artikel": "Quadratische Gleichung",
+   "latex": "{\\displaystyle \\mathbb {F} _{2}}"
+  },
+  {
+   "artikel": "Prozentrechnung",
+   "latex": "{\\displaystyle \\underbrace {7{.}350\\,\\overbrace {\\text{Einwohner}} ^{\\text{Einheit}}} _{\\text{Prozentwert}}{\\text{ sind }}\\underbrace {\\overbrace {\\underbrace {49} _{\\text{Prozentfuß}}\\,{\\text{Prozent}}} ^{{\\frac {49}{100}}=0{,}49}} _{\\text{Prozentsatz}}{\\text{ }}\\underbrace {\\text{von}} _{\\text{mal"
+  },
+  {
+   "artikel": "Logarithmus",
+   "latex": "{\\displaystyle n\\!\\odot \\!u:=\\underbrace {u\\oplus u\\oplus \\dotsb \\oplus u} _{n{\\text{-mal}}}=\\bigoplus _{\\nu =1}^{n}u}"
+  },
+  {
+   "artikel": "Logarithmus",
+   "latex": "{\\displaystyle a^{n}=\\underbrace {a\\circ a\\circ \\dotsb \\circ a} _{n{\\text{-mal}}}=b}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle \\left({x \\atop y}\\right)\\mapsto \\left({x^{2}+y^{2} \\atop x^{2}-2y}\\right)}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f(x,y):=\\left({x^{2}+y^{2} \\atop x^{2}-2y}\\right)\\approx \\left({m_{1}(x-x_{0})+m_{2}(y-y_{0})+c_{1} \\atop m_{3}(x-x_{0})+m_{4}(y-y_{0})+c_{2}}\\right)}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f(x,y)=\\left({x^{2}+y^{2} \\atop x^{2}-2y}\\right)\\approx \\left({2x-1 \\atop 2x-2y-1}\\right).}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle f(1{,}003;0{,}002)=\\left({1{,}006013 \\atop 1{,}002009}\\right)}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle \\left({2\\cdot 1{,}003-1 \\atop 2\\cdot 1{,}003-2\\cdot 0{,}002-1}\\right)=\\left({1{,}006 \\atop 1{,}002}\\right).}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle hg_{n}(x,h){\\overset {h\\to 0}{\\longrightarrow }}0}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle {\\ddot {x}}(t)={\\frac {\\mathrm {d} ^{2}x}{\\mathrm {d} t^{2}}},\\quad {\\overset {...}{x}}(t)={\\frac {\\mathrm {d} ^{3}x}{\\mathrm {d} t^{3}}}.}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle C^{n}(U)\\,\\,\\,\\,{\\overset {\\tfrac {\\mathrm {d} }{\\mathrm {d} x}}{\\longrightarrow }}\\,\\,\\,\\,C^{n-1}(U)\\,\\,\\,\\,{\\overset {\\tfrac {\\mathrm {d} }{\\mathrm {d} x}}{\\longrightarrow }}\\,\\,\\,\\,C^{n-2}(U)\\,\\,\\,\\,{\\overset {\\tfrac {\\mathrm {d} }{\\mathrm {d} x}}{\\longrightarrow }}\\,\\,\\,\\,\\cdots \\"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle C^{n}(U)\\,\\,\\,\\,{\\overset {\\tfrac {\\mathrm {d} ^{k}}{\\mathrm {d} x^{k}}}{\\longrightarrow }}\\,\\,\\,\\,C^{n-k}(U).}"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "latex": "{\\displaystyle \\underbrace {\\mathbb {R} ^{n}\\times \\cdots \\times \\mathbb {R} ^{n}} _{\\ell -\\mathrm {mal} }}"
+  },
+  {
+   "artikel": "Beschleunigung",
+   "latex": "{\\displaystyle {\\frac {\\mathrm {d} {\\hat {t}}}{\\mathrm {d} t}}=\\underbrace {\\frac {\\mathrm {d} {\\hat {t}}}{\\mathrm {d} s}} _{{\\hat {n}}/\\rho }\\underbrace {\\frac {\\mathrm {d} s}{\\mathrm {d} t}} _{v}={\\frac {v}{\\rho }}{\\hat {n}}}"
+  },
+  {
+   "artikel": "Elektrische Spannung",
+   "latex": "{\\displaystyle {\\underset {{}^{\\lor }}{\\overset {{}_{\\land }}{\\!u}}}=u_{\\mathrm {max} }-u_{\\mathrm {min} }}"
+  },
+  {
+   "artikel": "PH-Wert",
+   "latex": "{\\displaystyle \\mathrm {PhOH\\,{\\stackrel {K\\gg }{\\longrightarrow }}\\,PhO^{-}+H^{+}} }"
+  },
+  {
+   "artikel": "Ideales Gas",
+   "latex": "{\\displaystyle Z(T,V,N)={\\frac {1}{N!}}\\left({\\frac {V}{h^{3}}}\\right)^{N}{\\Bigg (}\\underbrace {\\int _{-\\infty }^{\\infty }\\!\\mathrm {d} p\\,e^{-p^{2}\\beta /2m}} _{={\\sqrt {2m\\pi /\\beta }}=:h/\\lambda }{\\Bigg )}^{3N}.}"
+  },
+  {
+   "artikel": "Ideales Gas",
+   "latex": "{\\displaystyle {\\begin{aligned}S(T,V,N)&=-\\left({\\frac {\\partial F}{\\partial T}}\\right)_{V,N}=-k_{\\mathrm {B} }\\left(\\ln N!-N\\ln V+3N\\ln \\lambda \\right)-3Nk_{\\mathrm {B} }T\\underbrace {{\\frac {\\partial }{\\partial T}}\\ln \\lambda } _{={\\frac {-1}{(2T)}}}\\\\&=-k_{\\mathrm {B} }\\left(\\ln N!-N\\ln V+3N\\ln \\"
+  },
+  {
+   "artikel": "Mittelwert",
+   "latex": "{\\displaystyle \\underbrace {\\frac {2ab}{a+b}} _{{\\text{harm. }}=f(-3)}\\leq \\underbrace {\\sqrt {ab}} _{{\\text{geom. }}=f\\left(-{\\frac {3}{2}}\\right)}\\leq \\underbrace {\\frac {b-a}{\\ln b-\\ln a}} _{{\\text{log. }}=f(-1)}\\leq \\underbrace {\\frac {a+{\\sqrt {ab}}+b}{3}} _{{\\text{heron. }}=f\\left(-{\\frac {1}{"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle {\\frac {2}{{\\sqrt {5}}+{\\sqrt {2}}}}{\\overset {{\\text{Erweitern mit}} \\atop {\\sqrt {5}}-{\\sqrt {2}}}{=}}{\\frac {2({\\sqrt {5}}-{\\sqrt {2}})}{({\\sqrt {5}}+{\\sqrt {2}})({\\sqrt {5}}-{\\sqrt {2}})}}{\\overset {{\\text{3. binomische}} \\atop {\\text{Formel}}}{=}}{\\frac {2({\\sqrt {5}}-{\\sqrt {2}}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle x^{2}+2x=24\\iff x^{2}+2x\\,\\,+\\underbrace {1-1} _{{\\text{keine}} \\atop {\\text{Veränderung}}}=24\\iff (x^{2}+2x+1)-1=24\\iff (x+1)^{2}-1=24{\\overset {|\\,+1}{\\iff }}(x+1)^{2}=25.}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle 1=1\\cdot 1=\\underbrace {(a+b)} _{\\text{1. Gen}}\\cdot \\underbrace {(a+b)} _{\\text{2. Gen}}=a^{2}+2ab+b^{2}.}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle {\\frac {{\\sqrt {x+h}}-{\\sqrt {x}}}{h}}={\\frac {({\\sqrt {x+h}}-{\\sqrt {x}})({\\sqrt {x+h}}+{\\sqrt {x}})}{h({\\sqrt {x+h}}+{\\sqrt {x}})}}={\\frac {x+h-x}{h({\\sqrt {x+h}}+{\\sqrt {x}})}}={\\frac {1}{{\\sqrt {x+h}}+{\\sqrt {x}}}}{\\overset {h\\to 0}{\\longrightarrow }}{\\frac {1}{2{\\sqrt {x}}}},}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle {\\begin{aligned}(2q-p)^{2}&\\,\\,\\,=4q^{2}-4qp+p^{2}\\\\&\\,\\,\\,=2q^{2}+2q^{2}-4pq+p^{2}\\\\&{\\overset {2q^{2}=p^{2}}{=}}p^{2}+2q^{2}-4pq+p^{2}\\\\&\\,\\,\\,=2(p^{2}-2qp+q^{2})\\\\&\\,\\,\\,=2(p-q)^{2}.\\end{aligned}}}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle a^{2}-2|ab|+b^{2}=(|a|-|b|)^{2}\\geq 0\\quad {\\overset {|+2|ab|}{\\implies }}\\quad a^{2}+b^{2}\\geq 2|ab|.}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle 1=e^{0}=e^{i\\varphi -i\\varphi }=e^{i\\varphi }e^{-i\\varphi }\\,\\,\\,{\\overset {\\sin(-\\varphi )=-\\sin(\\varphi )}{=}}\\,\\,\\,(\\cos(\\varphi )+i\\sin(\\varphi ))(\\cos(\\varphi )-i\\sin(\\varphi ))=\\cos(\\varphi )^{2}+\\sin(\\varphi )^{2}.}"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle \\qquad }"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle \\qquad }"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle \\qquad }"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "latex": "{\\displaystyle (x_{1}+x_{2}+\\dotsb +x_{n})^{k}=\\sum _{k_{1}+\\dotsb +k_{n}=k \\atop k_{1},\\dotsc ,k_{n}\\geq 0}{k \\choose k_{1},\\dotsc ,k_{n}}\\cdot x_{1}^{k_{1}}\\cdot x_{2}^{k_{2}}\\dotsm x_{n}^{k_{n}}.}"
+  },
+  {
+   "artikel": "Kreiszahl",
+   "latex": "{\\displaystyle \\lim _{n\\to \\infty }\\,10^{n+2}\\sin \\!{\\Big (}{\\frac {\\;1^{\\circ }}{\\underbrace {55\\dots 5} _{n-{\\text{mal}}}}}{\\Big )}=\\lim _{n\\to \\infty }\\,10^{n+2}\\sin \\!{\\Bigg (}{\\frac {{\\tfrac {\\pi }{180}}\\,\\mathrm {rad} }{{\\big \\lfloor }{\\tfrac {5}{9}}\\cdot 10^{n}{\\big \\rfloor }}}{\\Bigg )}=\\pi ."
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "latex": "{\\displaystyle {\\begin{aligned}\\mathrm {e} ^{\\mathrm {i} x}&=\\sum _{k=0}^{\\infty }{\\frac {(\\mathrm {i} x)^{k}}{k!}}=\\sum _{l=0}^{\\infty }{\\frac {(\\mathrm {i} x)^{2l}}{(2l)!}}+\\sum _{l=0}^{\\infty }{\\frac {(\\mathrm {i} x)^{2l+1}}{(2l+1)!}}\\\\&=\\underbrace {\\sum _{l=0}^{\\infty }(-1)^{l}{\\frac {x^{2l}}{("
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle a^{n}:=\\underbrace {a\\cdot a\\cdot a\\dotsm a} _{n{\\text{ Faktoren}}}}"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle a^{n}=1\\cdot \\underbrace {a\\cdot a\\cdot a\\dotsm a} _{n{\\text{ Faktoren}}}}"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle a^{-n}=1:\\underbrace {a:a:a:\\dotsb :a} _{n{\\text{ Divisoren}}}=(\\dotsb ((1:a):a):a:\\dotsb ):a}"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "latex": "{\\displaystyle \\qquad }"
+  },
+  {
+   "artikel": "Normalverteilung",
+   "latex": "{\\displaystyle \\mathbb {E} \\left[\\mathrm {e} ^{\\mathrm {i} tX}\\right]=\\mathrm {e} ^{\\mathrm {i} t\\mu -{\\frac {1}{2}}\\sigma ^{2}t^{2}},\\quad t\\in \\mathbb {R} \\;.}"
+  },
+  {
+   "artikel": "Normalverteilung",
+   "latex": "{\\displaystyle {\\begin{array}{rrcl}\\varphi :&\\mathbb {C} &\\rightarrow &\\mathbb {C} \\\\&z&\\mapsto &\\displaystyle \\varphi (z)={\\frac {1}{\\sqrt {2\\pi }}}\\cdot e^{-{\\frac {z^{2}}{2}}}={\\frac {1}{\\sqrt {2\\pi }}}\\cdot \\underbrace {\\sum _{n=0}^{\\infty }{\\frac {(-1)^{n}}{n!\\cdot 2^{n}}}\\cdot z^{2n}} _{=e^{-{"
+  },
+  {
+   "artikel": "Normalverteilung",
+   "latex": "{\\displaystyle {\\begin{aligned}P(x_{1}\\leq X\\leq x_{2})&=\\underbrace {\\sum _{k=x_{1}}^{x_{2}}{n \\choose k}\\cdot p^{k}\\cdot (1-p)^{n-k}} _{\\mathrm {BV} }\\\\&\\approx \\underbrace {\\Phi \\left({\\frac {x_{2}+0{,}5-\\mu }{\\sigma }}\\right)-\\Phi \\left({\\frac {x_{1}-0{,}5-\\mu }{\\sigma }}\\right)} _{\\mathrm {NV} "
+  },
+  {
+   "artikel": "Normalverteilung",
+   "latex": "{\\displaystyle Y={\\sqrt {2}}\\cdot \\mathbb {erf} ^{-1}\\left(X\\right)}"
+  },
+  {
+   "artikel": "Elektromagnetische Induktion",
+   "latex": "{\\displaystyle \\Phi =B_{0}\\cdot A=B_{0}\\cdot \\underbrace {L\\cdot x} _{=A}}"
+  },
+  {
+   "artikel": "Redoxreaktion",
+   "latex": "{\\displaystyle \\mathrm {{\\overset {-3}{N}}{\\overset {+1}{H_{3}}}} }"
+  }
+ ],
+ "absatz_stichprobe": [
+  {
+   "artikel": "Binomische Formeln",
+   "vorher": "für ganze Zahlen so gilt die Faktorisierung",
+   "nachher": "für ganze Zahlen a, b, so gilt die Faktorisierung n = (a + b) (a − b)."
+  },
+  {
+   "artikel": "Bruchrechnung",
+   "vorher": "So steht meist für und nicht für .",
+   "nachher": "So steht 2⅓ meist für 2 + ⅓ = 7/3 und nicht für 2 · ⅓ = ⅔."
+  },
+  {
+   "artikel": "Kondensator (Elektrotechnik)",
+   "vorher": "Man sieht, dass für den (idealen) Kondensator der Wirkwiderstand gleich 0 ist und der Blindwiderstand automatisch das negative Vorzeichen bekommt.",
+   "nachher": "Man sieht, dass für den (idealen) Kondensator der Wirkwiderstand R_C gleich 0 ist und der Blindwiderstand X_C automatisch das negative Vorzeichen bekommt."
+  },
+  {
+   "artikel": "PH-Wert",
+   "vorher": "Einige Beispiele für amphiprotische Lösungsmittel\nwasserfreie Ameisensäure | 2 HCOOH HCOOH2+ + HCOO−\nwasserfreies Ammoniak | 2 NH3 NH2− + NH4+\nwasserfreie Essigsäure | 2 CH3COOH CH3COO− + CH3COOH2+\nwasserfreies Ethanol | 2 C2H5OH C2H5OH2+ + C2H5O−",
+   "nachher": "Einige Beispiele für amphiprotische Lösungsmittel\nwasserfreie Ameisensäure | 2 HCOOH ⇋ HCOOH2+ + HCOO−\nwasserfreies Ammoniak | 2 NH3 ⇋ NH2− + NH4+\nwasserfreie Essigsäure | 2 CH3COOH ⇋ CH3COO− + CH3COOH2+\nwasserfreies Ethanol | 2 C2H5OH ⇋ C2H5OH2+ + C2H5O−"
+  },
+  {
+   "artikel": "Potenz (Mathematik)",
+   "vorher": "Zum Beispiel gilt:",
+   "nachher": "Zum Beispiel gilt: 2^(3,1) = 2^(31/10) = ¹⁰√(2³¹) = (¹⁰√2)³¹"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "vorher": "darstellen, wobei die Funktionenfolge in der L2-Norm gegen konvergiert.",
+   "nachher": "darstellen, wobei die Funktionenfolge Sₙ(x) in der L2-Norm gegen f(x) konvergiert."
+  },
+  {
+   "artikel": "Beschleunigung",
+   "vorher": "Bezüglich eines mitrotierenden (und daher beschleunigten) Bezugssystems wird ein Objekt vom Mittelpunkt weg nach außen beschleunigt, dann wird die Bezeichnung Zentrifugalbeschleunigung verwendet. Eine Zentrifuge nutzt diesen Effekt, um Dinge einer konstanten Beschleunigung auszusetzen. Der Krümmungsradius entspricht dabei, da es sich um eine Kreisbewegung handelt, dem Abstand des Zentrifugiergutes",
+   "nachher": "Bezüglich eines mitrotierenden (und daher beschleunigten) Bezugssystems wird ein Objekt vom Mittelpunkt weg nach außen beschleunigt, dann wird die Bezeichnung Zentrifugalbeschleunigung verwendet. Eine Zentrifuge nutzt diesen Effekt, um Dinge einer konstanten Beschleunigung auszusetzen. Der Krümmungsradius entspricht dabei, da es sich um eine Kreisbewegung handelt, dem Abstand r des Zentrifugiergut"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "vorher": "Für ist dieser Bruch unbestimmt. Aber für (dann und nur dann!) können Zähler und Nenner durch dividiert werden.",
+   "nachher": "Für h = 0 ist dieser Bruch unbestimmt. Aber für h ≠ 0 (dann und nur dann!) können Zähler und Nenner durch h dividiert werden. (Δf)/(Δx) = 2x + h"
+  },
+  {
+   "artikel": "Kreis",
+   "vorher": "Für den Einheitskreis ergibt sich dann:",
+   "nachher": "Für den Einheitskreis ergibt sich dann: x = (1 − t²)/(1 + t²); y = (2t)/(1 + t²)"
+  },
+  {
+   "artikel": "Sinus und Kosinus",
+   "vorher": "Die folgenden Multiplikationsformeln gelten für alle und komplexen Argumente :",
+   "nachher": "Die folgenden Multiplikationsformeln gelten für alle n ∈ ℕ und komplexen Argumente z: sin z = 2^(n − 1)∏_(k = 0)^(n − 1) sin(z + k π)/n; cos z = 2^(n − 1)∏_(k = 0)^(n − 1) cos(z + (k − (n − 1)/2) π)/n"
+  },
+  {
+   "artikel": "Elektromagnetische Induktion",
+   "vorher": "Zum großen Erstaunen Faradays weist ein solcher Unipolargenerator jedoch unerwartete Eigenschaften auf, die in der Literatur noch lange nach Faradays Entdeckung diskutiert wurden und zu einer lange anhaltenden Kontroverse um die Frage führte, ob man dem Magnetfeld gleichsam wie einem materiellen Objekt eine Geschwindigkeit zuordnen könne und konkret, ob sich das Magnetfeld mit dem Magneten mitdreh",
+   "nachher": "Zum großen Erstaunen Faradays weist ein solcher Unipolargenerator jedoch unerwartete Eigenschaften auf, die in der Literatur noch lange nach Faradays Entdeckung diskutiert wurden und zu einer lange anhaltenden Kontroverse um die Frage führte, ob man dem Magnetfeld gleichsam wie einem materiellen Objekt eine Geschwindigkeit zuordnen könne und konkret, ob sich das Magnetfeld mit dem Magneten mitdreh"
+  },
+  {
+   "artikel": "Exponentialfunktion",
+   "vorher": "oder",
+   "nachher": "e^(x) = 2^(k) · e^(x − k · ln(2)) oder e^(x) = 2^(k) · 3^(l) · 5^(m)e^(x − k · ln(2) − l · ln(3) − m · ln(5))"
+  },
+  {
+   "artikel": "Binomische Formeln",
+   "vorher": "Im zweiten Bild ist das blau umrahmte Quadrat (großes Quadrat, also, trotz gleicher Bezeichnung wie in der ersten binomischen Formel, ein anderes Quadrat!). Soll daraus ein Quadrat der Seitenlänge erzeugt werden, wird zuerst die rot umrahmte Fläche (das Rechteck) abgezogen (auch wieder, trotz gleicher Bezeichnung wie in der ersten binomischen Formel, ein anderes Rechteck). Danach wird die ebenso g",
+   "nachher": "Im zweiten Bild ist a² das blau umrahmte Quadrat (großes Quadrat, also, trotz gleicher Bezeichnung wie in der ersten binomischen Formel, ein anderes Quadrat!). Soll daraus ein Quadrat der Seitenlänge (a − b) erzeugt werden, wird zuerst die rot umrahmte Fläche (das Rechteck) a · b abgezogen (auch wieder, trotz gleicher Bezeichnung wie in der ersten binomischen Formel, ein anderes Rechteck). Danach "
+  },
+  {
+   "artikel": "Kondensator (Elektrotechnik)",
+   "vorher": "Der Scheinwiderstand ist dementsprechend der Betrag der geometrischen (komplexen) Addition der Wirk- und der Blindwiderstände:",
+   "nachher": "Der Scheinwiderstand ist dementsprechend der Betrag der geometrischen (komplexen) Addition der Wirk- und der Blindwiderstände: Z = √(R_ESR² + (X_L + X_C)²)"
+  },
+  {
+   "artikel": "Lineares Gleichungssystem",
+   "vorher": "Allgemein lässt sich ein lineares Gleichungssystem mit Gleichungen und Unbekannten immer in die folgende Form bringen:",
+   "nachher": "Allgemein lässt sich ein lineares Gleichungssystem mit m Gleichungen und n Unbekannten immer in die folgende Form bringen: a_(1,1)x₁ + a_(1,2)x₂ + … + a_(1, n)xₙ = b₁; a_(2,1)x₁ + a_(2,2)x₂ + … + a_(2, n)xₙ = b₂; ⋮; a_(m, 1)x₁ + a_(m, 2)x₂ + … + a_(m, n)xₙ = bₘ"
+  },
+  {
+   "artikel": "Bruchrechnung",
+   "vorher": "Zähler und Nenner eines Bruches sind ganze Zahlen. Dabei darf der Nenner nicht null sein, da eine Division durch Null nicht definiert ist.",
+   "nachher": "Zähler und Nenner eines Bruches sind ganze Zahlen. Dabei darf der Nenner N nicht null sein, da eine Division durch Null nicht definiert ist."
+  },
+  {
+   "artikel": "Kreiszahl",
+   "vorher": "Dabei ist die Gaußklammer. Dies entspricht letztlich der Konvergenz .",
+   "nachher": "Dabei ist ⌊ · ⌋ die Gaußklammer. Dies entspricht letztlich der Konvergenz lim_(x → ∞) x · sin π/x = lim_(x → ∞) x · π/x = π."
+  },
+  {
+   "artikel": "Newtonsche Gesetze",
+   "vorher": "Die Darstellung wird auch als Impulssatz bezeichnet, vor allem in Literatur zur Technischen Mechanik und zur Strömungslehre. In Worten ausgedrückt bedeutet sie, dass die zeitliche Änderung des Impulses eines Körpers der resultierenden äußeren Kraft entspricht, die auf diesen Körper wirkt. Diese Darstellung ist allgemeiner als die darunter genannte Form von Euler, da sie auch Bewegungen von Körpern",
+   "nachher": "Die Darstellung F⃗ = ṗ⃗̇ wird auch als Impulssatz bezeichnet, vor allem in Literatur zur Technischen Mechanik und zur Strömungslehre. In Worten ausgedrückt bedeutet sie, dass die zeitliche Änderung des Impulses eines Körpers der resultierenden äußeren Kraft entspricht, die auf diesen Körper wirkt. Diese Darstellung ist allgemeiner als die darunter genannte Form von Euler, da sie auch Bewegungen v"
+  },
+  {
+   "artikel": "Flächeninhalt",
+   "vorher": "Die Integralrechnung wurde unter anderem zur Ermittlung von Flächeninhalten unter Kurven, das heißt unter Funktionsgraphen, entwickelt. Die Idee besteht darin, die Fläche zwischen Kurve und -Achse durch eine Reihe schmaler Rechtecke zu approximieren und dann die Breite dieser Rechtecke in einem Grenzprozess gegen 0 gehen zu lassen. Die Konvergenz dieses Grenzübergangs hängt von der verwendeten Kur",
+   "nachher": "Die Integralrechnung wurde unter anderem zur Ermittlung von Flächeninhalten unter Kurven, das heißt unter Funktionsgraphen, entwickelt. Die Idee besteht darin, die Fläche zwischen Kurve und x-Achse durch eine Reihe schmaler Rechtecke zu approximieren und dann die Breite dieser Rechtecke in einem Grenzprozess gegen 0 gehen zu lassen. Die Konvergenz dieses Grenzübergangs hängt von der verwendeten Ku"
+  },
+  {
+   "artikel": "Differentialrechnung",
+   "vorher": "Die Abbildung zeigt den Verlauf der Graphen von , und .",
+   "nachher": "Die Abbildung zeigt den Verlauf der Graphen von f, f' und f''."
+  }
+ ]
+}
