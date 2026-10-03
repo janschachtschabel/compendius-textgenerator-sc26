@@ -2088,6 +2088,12 @@ API.
   je Aufruf) ist der KI-Zuordner von D34 schon; er bekommt 250 statt 400 Zeichen je Absatz: gleiche Güte mit `low`
   (micro-F1 0,796 statt 0,794) bei 13 % weniger Tokens, und ohne Denken stabiler (macro-F1 0,676 statt 0,609).
   `paragraph_assignment=none` in `LLM_REASONING_EFFORTS` halbiert seine Zeit für 4 Punkte micro-F1.
+- **D82 (2026-10-03)** `best-quality-generated` ist das Standardprofil (Jan: „im ui und den muster env bitte das profil
+  best-quality-generated zum standard machen“). Die Prüfansicht wählt vor, was der Server ohne Profil nimmt
+  (`PRESET_DEFAULT`), also gelten Code-Vorgabe und `.env.example` gemeinsam (D68: Muster und Code bleiben gleich); ohne
+  LLM läuft eine Anfrage ohne Profil weiter mit `llm-free`. Eine Anfrage ohne Profil schreibt damit jeden Baustein mit
+  dem LLM und braucht in M59 rund 37 s und 77.000 Tokens statt 4 s und 600 Tokens (`balanced`); wer das nicht will,
+  setzt `PRESET_DEFAULT=balanced`. Die Profilbeschreibungen der API markieren `best-quality-generated` als Vorgabe.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

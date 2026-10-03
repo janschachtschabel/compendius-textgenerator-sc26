@@ -476,7 +476,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "und bei mehrdeutigen Wörtern, best-quality-generated "
             "schreibt zudem den Text, best-coverage-generated schreibt jeden Baustein vollständig zum angefragten "
             "Thema, wo die Quellen nichts dazu sagen aus Modellwissen. Ohne preset gilt das Profil des Servers "
-            "(PRESET_DEFAULT, ausgeliefert balanced, auf einem Server ohne LLM llm-free). "
+            "(PRESET_DEFAULT, ausgeliefert best-quality-generated, auf einem Server ohne LLM llm-free). "
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "
             "Status, nie als Text mit HTTP 200. Mit UI_ENABLED zeigt der Server unter /ui/ eine Prüfansicht, auf der "

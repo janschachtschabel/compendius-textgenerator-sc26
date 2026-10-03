@@ -25,7 +25,7 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 
 ## Profile
 
-Eine Anfrage ohne `preset` läuft mit `PRESET_DEFAULT` des Servers, ausgeliefert `balanced`, und auf einem Server ohne
+Eine Anfrage ohne `preset` läuft mit `PRESET_DEFAULT` des Servers, ausgeliefert `best-quality-generated`, und auf einem Server ohne
 LLM mit `llm-free`; ein anderes Profil wählt `preset` im Aufruf. Die Aufrufe auf dieser Seite nennen deshalb nur dann
 ein Profil, wenn sie ein anderes zeigen. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
 lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`.

@@ -65,7 +65,7 @@ admin = APIRouter(
 )
 SEARCH_PRESET_HELP = (
     "The profile, as for part 2 of a compendium (D53, D58, D59). Without it the server's applies (PRESET_DEFAULT, "
-    "shipped balanced; llm-free on a server without an LLM, D68).\n\n"
+    "shipped best-quality-generated; llm-free on a server without an LLM, D68).\n\n"
     "- **llm-free**: the keyword rules find and judge the elements; no LLM, no tokens.\n"
     "- **balanced**: the same for the words as sent; with mode=topic the LLM names the overview and the parts of the "
     "topic and decides an unsure article, as in a balanced compendium (D63), so both search for the same sub-topics; "
@@ -239,8 +239,8 @@ def lehrplan_search(
     The words of ``mode=keyword`` are searched as sent. The ranking is the one part 2 uses.
 
     **What each profile does here.** ``preset`` picks it as for a compendium; without it the server's applies
-    (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68), and a ``curriculum_check`` of the
-    request wins over the profile's.
+    (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an LLM, D68), and a
+    ``curriculum_check`` of the request wins over the profile's.
 
     - ``llm-free``: the rules find and judge; no LLM, no tokens.
     - ``balanced``: the same for the words as sent; with ``mode=topic`` the LLM names the overview and the parts of

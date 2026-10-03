@@ -54,9 +54,9 @@ def generate_compendium(
     helps choose an ambiguous article and narrows part 2 to the curricula of that subject.
 
     **What each profile does.** ``preset`` picks one of the five profiles of the decision paper (D53, D58, D59, D69);
-    without it the server's applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68),
-    and a switch the request sets itself wins over the profile's. Quality, time and tokens per profile are in the help
-    text of ``preset``.
+    without it the server's applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an
+    LLM, D68), and a switch the request sets itself wins over the profile's. Quality, time and tokens per profile are
+    in the help text of ``preset``.
 
     - ``llm-free``: no LLM anywhere. The rules choose the articles, ``hybrid_light`` assigns the paragraphs, the
       text stays verbatim with its citations, and part 2 lists what the keyword rules find - an element only its

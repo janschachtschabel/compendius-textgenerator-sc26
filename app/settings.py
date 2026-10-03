@@ -107,8 +107,8 @@ class Settings(BaseSettings):
     config_dir: Path = Field(Path("config"), description="facets.yaml, heading_lexicon.yaml, ...")
     template_default: str = Field("sc26", description="Default template id")
     preset_default: Preset = Field(
-        "balanced",
-        description="Profile of a request that names none (D53): llm-free, balanced, best-quality, "
+        "best-quality-generated",
+        description="Profile of a request that names none (D53, D82): llm-free, balanced, best-quality, "
         "best-quality-generated or best-coverage-generated (D69). Every profile but llm-free needs LLM_ENABLED and "
         "B_API_KEY: without them a request that names such a profile is a 503, and one that names none runs llm-free "
         "whatever this says (D68)",

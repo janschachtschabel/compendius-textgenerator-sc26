@@ -273,7 +273,8 @@ def entities(
     Unknown or not public node: 404, refused ``repository``: 422, failing repository: 502, none at all: 503.
 
     **What each profile does here** (D62). ``preset`` sets ``methods`` where the request leaves it open; without it
-    the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68).
+    the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an
+    LLM, D68).
     Measured on the texts of 40 materials against two blind raters, through this endpoint (M36, gpt-6-luna):
 
     - ``llm-free``: ner and dictionary, no LLM. F1 0.38 at a precision of 0.29, about 0.25 s.

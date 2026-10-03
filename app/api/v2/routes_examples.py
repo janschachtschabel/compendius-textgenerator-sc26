@@ -12,9 +12,9 @@ EXAMPLES: dict[str, dict[str, Any]] = {
     "kuerzeste Anfrage": {
         "summary": "Das Nötigste: ein Thema",
         "description": (
-            "Ohne weitere Angaben: Teil 1 und 2, das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced; ohne "
-            "LLM llm-free) und seine Ziellänge, in jedem Profil 30.000 Zeichen (D70). Wörtliche Texte werden so lang, "
-            "wie die Quellen tragen; target_length in der Anfrage geht der Vorgabe vor."
+            "Ohne weitere Angaben: Teil 1 und 2, das Profil des Servers (PRESET_DEFAULT, ausgeliefert "
+            "best-quality-generated; ohne LLM llm-free) und seine Ziellänge, in jedem Profil 30.000 Zeichen (D70). "
+            "Wörtliche Texte werden so lang, wie die Quellen tragen; target_length in der Anfrage geht der Vorgabe vor."
         ),
         "value": {"topic": "Optik"},
     },
@@ -22,7 +22,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "summary": "Profil llm-free: ohne Sprachmodell, für einen Dienst ohne LLM",
         "description": (
             "preset wählt eines der fünf Profile der Entscheidungsvorlage; ohne preset gilt PRESET_DEFAULT, "
-            "ausgeliefert balanced, auf einem Server ohne LLM llm-free. llm-free: die "
+            "ausgeliefert best-quality-generated, auf einem Server ohne LLM llm-free. llm-free: die "
             "Regeln wählen die Artikel, hybrid_light ordnet die Absätze zu, der Text bleibt wörtlich. 87 von 94 "
             "Hauptartikeln richtig, macro-F1 0,45, Teil 1 und 2 in rund 1,6 s, keine Tokens (M27). Teil 2 findet und "
             "bewertet mit den Stichwortregeln; ein Element, dessen Überschrift allein das Thema nennt, zählt beim "
@@ -32,7 +32,7 @@ EXAMPLES: dict[str, dict[str, Any]] = {
         "value": {"topic": "Optik", "parts": ["world"], "preset": "llm-free"},
     },
     "Profil balanced": {
-        "summary": "Profil balanced (Standard): das LLM wählt die Artikel, alles andere bleibt lokal",
+        "summary": "Profil balanced: das LLM wählt die Artikel, alles andere bleibt lokal",
         "description": (
             "Wie llm-free, aber das LLM nennt Übersicht und Teile des Themas, die zu seinen Nebenartikeln werden "
             "(D63), und entscheidet, wo die Regeln beim Artikel unsicher sind - hier das mehrdeutige Wort Linse. 91 "

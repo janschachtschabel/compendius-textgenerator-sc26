@@ -108,7 +108,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `PRESET_DEFAULT` | `balanced` | wie Vorgabe | Profil einer Anfrage ohne `preset`, solange ein LLM eingerichtet ist; ohne LLM läuft sie mit `llm-free` (D68). Werte: `llm-free`, `balanced`, `best-quality`, `best-quality-generated`, `best-coverage-generated` (D69). Ein Profil im Aufruf geht vor |
+| `PRESET_DEFAULT` | `best-quality-generated` | wie Vorgabe | Profil einer Anfrage ohne `preset`, solange ein LLM eingerichtet ist; ohne LLM läuft sie mit `llm-free` (D68). Werte: `llm-free`, `balanced`, `best-quality`, `best-quality-generated`, `best-coverage-generated` (D69). Ein Profil im Aufruf geht vor |
 | `TEMPLATE_DEFAULT` | `sc26` | wie Vorgabe | Gliederung von Teil 1: `sc26` (13 Bausteine) oder `standard` (6); nennt es kein vorhandenes Template, gilt `sc26` (D68). `template_id` im Aufruf geht vor |
 | `FACETS_LEVEL` | `minimal` | wie Vorgabe | Facetten im Frontmatter: `minimal` oder `full` |
 | `FACETS_VISIBLE` | `false` | wie Vorgabe | Facetten zusätzlich sichtbar im Text |

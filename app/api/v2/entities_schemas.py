@@ -51,7 +51,8 @@ EXAMPLES = {
         "summary": "Die Regeln allein: spaCy-Modell und die Artikeltitel der Archive",
         "description": (
             "ner und dictionary, kein LLM, keine Tokens: am Gold F1 0,38 bei einer Präzision von 0,29 (M36). Ohne "
-            "preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert balanced; ohne LLM llm-free)."
+            "preset gilt das Profil des Servers (PRESET_DEFAULT, ausgeliefert best-quality-generated; ohne LLM "
+            "llm-free)."
         ),
         "value": {"text": "Alexander von Humboldt reiste 1799 nach Südamerika.", "preset": "llm-free"},
     },
@@ -125,15 +126,15 @@ LINK_CHECK_HELP = (
 )
 PRESET_HELP = (
     "The profile (D41, D53, D62); here it sets methods, and a switch the request sets itself wins. "
-    "Without a preset the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an "
-    "LLM, D68). Every profile but llm-free needs an LLM (LLM_ENABLED, B_API_KEY); on a server without one a request "
-    "that names such a profile is a 503 that says so.\n\n"
+    "Without a preset the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a "
+    "server without an LLM, D68). Every profile but llm-free needs an LLM (LLM_ENABLED, B_API_KEY); on a server "
+    "without one a request that names such a profile is a 503 that says so.\n\n"
     "- **llm-free**: ner and dictionary; F1 0.38, no tokens.\n"
-    "- **balanced** (default): the LLM names the entities (methods llm); F1 0.78, about 800 tokens and 4 s.\n"
+    "- **balanced**: the LLM names the entities (methods llm); F1 0.78, about 800 tokens and 4 s.\n"
     "- **best-quality**: as balanced. The LLM's check of the links (link_check llm) raised the precision but lowered "
     "F1, so it stays a switch of its own.\n"
-    "- **best-quality-generated** and **best-coverage-generated**: as balanced; what they add - the LLM writing a "
-    "compendium - does not act here."
+    "- **best-quality-generated** (default) and **best-coverage-generated**: as balanced; what they add - the LLM "
+    "writing a compendium - does not act here."
 )
 
 

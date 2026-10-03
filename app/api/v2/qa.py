@@ -178,7 +178,8 @@ EXAMPLES = {
     "3 · Thema, Standardprofil balanced": {
         "summary": "Dieselben Regeln wie llm-free: schnell, ohne LLM und ohne zusätzliches Modell",
         "description": (
-            "Ohne preset gilt PRESET_DEFAULT, ausgeliefert balanced, ohne LLM llm-free. Es fragt mit denselben "
+            "Ohne preset gilt PRESET_DEFAULT, ausgeliefert best-quality-generated, ohne LLM llm-free. Es fragt mit "
+            "denselben "
             "Regeln wie llm-free "
             "(D57): rund 0,3 s für die Paare, keine Tokens, kein zusätzliches Modell im Speicher. Teil 1 entsteht "
             "auch hier ohne LLM; nur den Artikel eines Material-Knotens wählt in balanced das LLM (D47)."
@@ -283,9 +284,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     more than the compendium ever shows.
 
     **What each profile does here.** ``preset`` picks the method of the pairs when the request names none;
-    without it the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM,
-    D68), and ``method`` wins over it. Part 1 of a topic is made without an LLM in every profile (D55); only the
-    article of a material node is the LLM's choice in the profiles that have one (D47).
+    without it the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server
+    without an LLM, D68), and ``method`` wins over it. Part 1 of a topic is made without an LLM in every profile
+    (D55); only the article of a material node is the LLM's choice in the profiles that have one (D47).
 
     - ``llm-free``: the rules ask from the spaCy parse of each sentence, then about the glossary and the actors;
       the answer is the whole sentence. No LLM, no tokens.

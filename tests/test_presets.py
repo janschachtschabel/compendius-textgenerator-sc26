@@ -34,9 +34,10 @@ SWITCHES = ("article_choice", "matcher", "extraction", "generation", "enrichment
 PART_2_SWITCHES = ("curriculum_check",)  # D58; its values per profile: tests/test_curriculum_check.py
 
 
-def test_the_shipped_default_profile_is_balanced() -> None:
-    # Jan, 2026-09-25: the profile that uses the LLM sparingly is the standard; the tests run on llm-free (conftest)
-    assert Settings(_env_file=None).preset_default == "balanced"
+def test_the_shipped_default_profile_is_best_quality_generated() -> None:
+    # Jan, 2026-10-03 (D82): best-quality-generated is the standard, in the review page as in the example env; it was
+    # balanced since 2026-09-25 (D53). The tests run on llm-free (conftest)
+    assert Settings(_env_file=None).preset_default == "best-quality-generated"
 
 
 def test_an_unknown_default_profile_is_refused_with_the_settings(sample_zims: dict[str, Path], tmp_path: Path) -> None:

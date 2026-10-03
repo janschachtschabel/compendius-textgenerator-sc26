@@ -172,7 +172,8 @@ PRESET_HELP = (
     "The profile of docs/entwicklung/07-entscheidungsvorlage.md (D41, D53, D58, D69). It sets article_choice, matcher, "
     "extraction, generation, enrichment, model_knowledge_check and curriculum_check; a switch the request sets itself "
     "wins. Without a preset "
-    "the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM, D68). Every "
+    "the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an "
+    "LLM, D68). Every "
     "profile but llm-free needs an LLM (LLM_ENABLED, B_API_KEY); on a server without one a request that names such a "
     "profile is a 503 that says so. Numbers: gold standard "
     "and measurements with gpt-6-luna (M19, M25, M27 to M35, M39, M52); times for part 1 and 2 of one compendium on "
@@ -191,7 +192,7 @@ PRESET_HELP = (
     "text. Part 2 by the keyword rules, an element only its heading names counted "
     "with its area: 70 to 81 % of the listed elements fit (M32). Fit 3.0 for a topic with an article of its own, "
     "1.5 for a group, 1.0 for an aspect; part 1 1.7 s (M52).\n"
-    "- **balanced** (default): as llm-free, but the LLM names the overview article and the parts of every topic, "
+    "- **balanced**: as llm-free, but the LLM names the overview article and the parts of every topic, "
     "which become its side articles, and decides where the rules are unsure about the article (article_choice llm, "
     "D63). Of the printed paragraphs 87 instead of 43 % came from fitting articles on 25 set-like topics such as "
     "'deutsche Dichter', 93 instead of 71 % on 20 ordinary ones (M39). 91 of 94 main articles right as before "
@@ -212,8 +213,8 @@ PRESET_HELP = (
     "(curriculum_check llm): 74 to 79 % fit, none fitting dropped, about 6 s and 8,000 to 10,000 tokens more (M32). "
     "Fit 4.2 for a topic with an article of its own, 3.8 for a group, 1.7 for an aspect; part 1 16 s and 59,900 "
     "tokens, most of them for the matching (M52).\n"
-    "- **best-quality-generated**: best-quality plus the LLM writing every block (generation llm), which may add "
-    "knowledge of its own for up to half of a block's sentences (D70), marked as model knowledge and without a "
+    "- **best-quality-generated** (default): best-quality plus the LLM writing every block (generation llm), which "
+    "may add knowledge of its own for up to half of a block's sentences (D70), marked as model knowledge and without a "
     "citation number (enrichment model-knowledge). For text people read directly. Two blind judges preferred its "
     "text in 11 of 12 "
     "ratings (readability 4.0 instead of 2.5 of 5); under the first prompt two thirds of the added model knowledge "
@@ -308,9 +309,9 @@ PRESET_TARGET_LENGTH: dict[str, int] = {
 
 
 def default_preset(configured: Preset, llm_configured: bool) -> Preset:
-    """The profile of a request that names none (D68): PRESET_DEFAULT, shipped balanced, while an LLM is configured,
-    llm-free while none is - so that the service always answers at least with the rules. A profile the request names
-    itself is its wish either way, and one that needs the missing LLM is still refused."""
+    """The profile of a request that names none (D68): PRESET_DEFAULT, shipped best-quality-generated (D82), while an
+    LLM is configured, llm-free while none is - so that the service always answers at least with the rules. A profile
+    the request names itself is its wish either way, and one that needs the missing LLM is still refused."""
     return configured if llm_configured else "llm-free"
 
 

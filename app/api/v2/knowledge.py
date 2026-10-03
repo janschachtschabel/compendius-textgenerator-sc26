@@ -90,8 +90,8 @@ class KnowledgeRequest(RequestModel):
         "llm-free takes rule-based, balanced takes llm, best-quality, best-quality-generated and "
         "best-coverage-generated take llm-thorough, and these three spend from 180,000 tokens per request instead of "
         "60,000 (D59), which this "
-        "endpoint does not come near. Default: PRESET_DEFAULT, shipped balanced; llm-free on a server without an "
-        "LLM (D68). An article_choice the request sets "
+        "endpoint does not come near. Default: PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server "
+        "without an LLM (D68). An article_choice the request sets "
         "wins; llm or llm-thorough on a server without an LLM is a 503.",
     )
     article_choice: ArticleChoice | None = Field(None, description=ARTICLE_CHOICE_HELP)
@@ -277,8 +277,8 @@ def knowledge(
     ambiguous topic, as in a compendium.
 
     **What each profile does here.** ``preset`` sets ``article_choice`` as the profile of a compendium would;
-    without it the server's profile applies (PRESET_DEFAULT, shipped balanced; llm-free on a server without an LLM,
-    D68), and an ``article_choice`` of the request wins.
+    without it the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server
+    without an LLM, D68), and an ``article_choice`` of the request wins.
 
     - ``llm-free``: the rules choose the article and keep every side article they found. No tokens.
     - ``balanced``: the LLM names the overview and the parts of the topic and decides an unsure article (``llm``).
