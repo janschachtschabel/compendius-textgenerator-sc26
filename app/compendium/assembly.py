@@ -135,6 +135,7 @@ def assemble(
         generated_at=generated_at,
         zim_snapshot=zim_snapshot,
         parts=parts,
+        licences=[source.license for source in [*sources, *world.carried]],
     )
     # the sources belong to part 1, with those only its kept blocks cite (audit 2026-09-29, A04)
     source_refs = [s.to_ref() for s in [*sources, *world.carried]] if want_world else []

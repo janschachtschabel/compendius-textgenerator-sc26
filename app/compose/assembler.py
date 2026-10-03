@@ -13,6 +13,7 @@ import yaml
 from app.domain.models import Section, SectionStatus, SourceRef
 from app.synthesis.facets import format_marker, format_visible
 from app.synthesis.safe_markdown import plain_label
+from app.synthesis.sources_section import is_free
 from app.templates.schema import Template
 
 AI_DISCLOSURE = {  # by the generation switch actually used
@@ -117,9 +118,11 @@ def build_frontmatter(
     zim_snapshot: Sequence[Mapping[str, Any]],
     parts: Sequence[str],
     llm: Mapping[str, Any] | None = None,
+    licences: Sequence[str] = (),
 ) -> dict[str, Any]:
     """The YAML frontmatter of a compendium: topic and its resolution, template, parts, how part 1 came about
-    (``switches``) with its disclosure, the archives it read and what the LLM did (``llm``)."""
+    (``switches``) with its disclosure, the archives it read and what the LLM did (``llm``); ``licences`` are those
+    of the sources of part 1."""
     extraction, generation, enrichment, matcher = (
         switches.extraction,
         switches.generation,
@@ -164,8 +167,10 @@ def build_frontmatter(
         # the number of the template's sources block: 12 in sc26, 6 in standard (audit 2026-09-27, AR-04)
         number = next((n for n, slot in enumerate(template.slots, 1) if slot.generator == "sources"), None)
         per_source = f"; TULLU je Quelle in Baustein {number}" if number is not None else ""
+        # a knowledge collection brings materials of any licence (D70; audit 2026-10-02, A09)
+        others = " und aus Quellen ohne freie Lizenz" if not all(map(is_free, licences)) else ""
         frontmatter["license"] = (
-            "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0)" + per_source
+            "Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA 4.0)" + others + per_source
         )
     if switches.extraction_requested is not None and switches.extraction_requested != extraction:
         frontmatter["extraction_requested"] = switches.extraction_requested

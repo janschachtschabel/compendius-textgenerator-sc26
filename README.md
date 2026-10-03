@@ -390,7 +390,11 @@ Kompendiale Texte, die eine Sammlung oder ein Material im Feld `ccm:oeh_collecti
 trägt, liest der Dienst nie: Sie sollen aus ihm erst entstehen. Die Quellenliste nennt je Material
 Urheber und Lizenz mit der Version, die das Repository führt (`ccm:commonlicense_cc_version`; ohne
 Angabe keine Version, ohne Urheber „nicht angegeben“), der Lizenzhinweis die tatsächlich verwendeten
-Lizenzen. An der Sammlung Optik der Staging (anonym, 168 Inhalte, sechs Untersammlungen, 01.10.2026):
+Lizenzen. Trägt eine Quelle keine freie Lizenz (frei sind gemeinfreie Werke, CC BY und CC BY-SA), heißen
+die Quellen nicht mehr „freie Wissensbestände“, der Hinweis nennt sie und sagt, dass für ihre Absätze die
+Bedingungen der Quelle gelten und nur für den übrigen Text CC BY-SA 4.0; ihr Eintrag trägt keine Facette
+`Zugang`, der Baustein ebenfalls nicht, und das Frontmatter nennt „Quellen ohne freie Lizenz“ (Audit
+2026-10-02, A09). An der Sammlung Optik der Staging (anonym, 168 Inhalte, sechs Untersammlungen, 01.10.2026):
 nur Beschreibungen 25 von 30 Materialien als Quelle, rund 15.000 Zeichen; mit Volltexten 22, rund
 41.000 Zeichen in 181 Absätzen (7 Texte anonym nicht lesbar); mit `knowledge_depth: 1` lieferten fünf
 der sieben Sammlungen Quellen statt nur einer (20 der 30 Materialien mit Beschreibung).

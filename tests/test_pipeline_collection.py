@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from app.compendium.errors import PartsUnavailableError
+from app.domain.models import Compendium, Section
 from app.domain.requests import GenerateRequest
 from app.llm.deadline import Deadline
 from app.main import create_app
@@ -190,6 +191,25 @@ def test_the_first_reads_of_the_repository_keep_to_the_time_budget(
 
     assert waits == [5.0]
     assert result.collection is not None and result.collection.error == "Zeitbudget der Anfrage erschöpft"
+
+
+def test_materials_without_a_free_licence_change_what_the_compendium_says_about_its_rights(
+    with_collections: CompendiumService,
+) -> None:
+    """The collection holds NC, ND and custom licences; part 1 still called its sources free, their access free and
+    itself CC BY-SA 4.0 (audit 2026-10-02, A09)."""
+    plain = with_collections.generate(GenerateRequest(topic="Optik", parts=["world"]))
+    mixed = with_collections.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"]))
+
+    def block(result: Compendium) -> Section:
+        return next(section for section in result.sections if section.slot_key == "quellen")
+
+    assert "aus folgenden freien Wissensbeständen:" in block(plain).text
+    assert block(plain).facets["Zugang"] == ["frei"]
+    assert "aus folgenden Quellen:" in block(mixed).text and "keine freie Lizenz" in block(mixed).text
+    assert "Zugang" not in block(mixed).facets  # unknown; the lint names the missing facet
+    assert "Quellen ohne freie Lizenz" in mixed.frontmatter["license"]
+    assert "ohne freie Lizenz" not in plain.frontmatter["license"]
 
 
 def test_the_knowledge_collection_needs_part_one() -> None:

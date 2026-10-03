@@ -7,6 +7,7 @@ snippets are the sources' words: each goes in through ``plain_label``, and only 
 
 from __future__ import annotations
 
+import re
 from collections.abc import Sequence
 
 from app.domain.models import Citation, Source
@@ -21,6 +22,17 @@ PROJECT_LABELS = {
 }
 
 
+# The licences of texts part 1 may pass on under CC BY-SA 4.0: the public domain, CC BY and CC BY-SA. A knowledge
+# collection brings materials of any licence since D70; the block called them all free (audit 2026-10-02, A09)
+MAX_NAMED_RESTRICTED = 5  # sources without a free licence the note names; the list above has them all
+_FREE_LICENCE = re.compile(r"CC0 1\.0|Public Domain Mark|CC BY(-SA)?( \d(\.\d)?)?")
+
+
+def is_free(licence: str) -> bool:
+    """Whether a licence, as ``Source.license`` names it, lets part 1 pass the text on under CC BY-SA 4.0."""
+    return _FREE_LICENCE.fullmatch(licence.strip()) is not None
+
+
 def _enumerate(items: Sequence[str]) -> str:
     """German enumeration: ``A``, ``A und B``, ``A, B und C``."""
     if len(items) <= 1:
@@ -29,7 +41,9 @@ def _enumerate(items: Sequence[str]) -> str:
 
 
 def build_sources_section(sources: Sequence[Source], citations: Sequence[Citation], facets_visible: bool) -> str:
-    lines: list[str] = ["Die Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:", ""]
+    restricted = [source for source in sources if not is_free(source.license)]
+    stock = "folgenden Quellen" if restricted else "folgenden freien Wissensbeständen"
+    lines: list[str] = [f"Die Inhalte von Teil 1 stammen aus {stock}:", ""]
     for source in sources:
         label, form, authors, trust = PROJECT_LABELS.get(
             source.project, (source.project, "Quelle", "unbekannt", "mittel")
@@ -38,7 +52,9 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
             authors = ", ".join(plain_label(author) for author in source.authors)
         title = plain_label(source.title)
         stand = f", Stand des Archivs {plain_label(source.zim_date)}" if source.zim_date else ""
-        facet = f" [Zugang: frei] [Vertrauensgrad: {trust}]" if facets_visible else ""
+        # the archives are free to read, a material with a free licence as well; of another nothing says it
+        access = "[Zugang: frei] " if is_free(source.license) else ""
+        facet = f" {access}[Vertrauensgrad: {trust}]" if facets_visible else ""
         lines.append(f"- **{web_link(title, source.url)}** — {label}, {form}{stand}{facet}")
         lines.append(
             f"  - TULLU: Titel „{title}“ · Urheber {authors} · Lizenz {plain_label(source.license)} · "
@@ -77,6 +93,20 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
         "",
         f"> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen{licences}; "
         "Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu "
-        "gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
+        f"gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. {_rights(restricted)}",
     ]
     return "\n".join(lines)
+
+
+def _rights(restricted: Sequence[Source]) -> str:
+    """Under which licence part 1 stands: CC BY-SA 4.0, except for the paragraphs of sources without a free licence."""
+    if not restricted:
+        return "Teil 1 steht unter CC BY-SA 4.0."
+    named = [f"„{plain_label(source.title)}“ ({plain_label(source.license)})" for source in restricted]
+    if len(named) > MAX_NAMED_RESTRICTED:
+        named = [*named[:MAX_NAMED_RESTRICTED], f"{len(named) - MAX_NAMED_RESTRICTED} weitere Quellen"]
+    verb = "trägt" if len(restricted) == 1 else "tragen"
+    return (
+        f"{_enumerate(named)} {verb} keine freie Lizenz: Für Absätze daraus gelten die Bedingungen der Quelle, für den "
+        "übrigen Text von Teil 1 CC BY-SA 4.0."
+    )
