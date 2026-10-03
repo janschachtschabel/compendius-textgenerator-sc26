@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Collection, Mapping
+from decimal import Decimal
 
 from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.matching.base import tokenize
@@ -21,6 +22,27 @@ from app.synthesis.safe_markdown import escape_text
 MIN_SUPPORT = 0.2
 MIN_CONTENT_STEMS = 3  # shorter sentences carry too little signal to judge
 STEM_CHARS = 6
+# A number of a cited sentence its evidence does not name is no evidence: shared words and a valid marker let
+# 1,000,000 Euro pass for evidence of 10,000 (audit 2026-10-02, A03). A value counts in any of its spellings,
+# 10.000 as 10000, 4,6 Milliarden as 4.600.000.000. Of 72 cited sentences with numbers best-quality-generated wrote
+# on three topics (2026-10-03) none named a number its evidence lacked; the small ones were values and dates (7°,
+# 3. Januar), so they count as well; digits grouped by a point or any space are one number (15 372)
+_SCALES = {
+    "tausend": 10**3,
+    "mio": 10**6,
+    "million": 10**6,
+    "millionen": 10**6,
+    "mrd": 10**9,
+    "milliarde": 10**9,
+    "milliarden": 10**9,
+}
+# the word of scale right after a number: matched from its end, since a pattern of number and word tried from every
+# digit of a run and went back over the rest of it, 38 s for 20,000 digits
+_SCALE_RE = re.compile(r"\s*(tausend|millionen|million|mio|milliarden|milliarde|mrd)\b", re.IGNORECASE)
+_NUMBER_RE = re.compile(r"\d{1,3}(?:[. \u00a0\u2009\u202f]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?")
+_GROUP_RE = re.compile(r"[. \u00a0\u2009\u202f](?=\d{3})")
+# a number in brackets refers, it claims no quantity: a forged marker such as [1234] beside a checked one
+_REFERENCE_RE = re.compile(r"\\?\[\d+\\?\]")
 
 _MARKER_RE = re.compile(r"\[(\d{1,3})\]")
 # "[1, 2]", "[1; 2]", "[1 und 2]", "[1-3]": forms the model uses although the prompt asks for single markers
@@ -345,13 +367,27 @@ def _stems(text: str) -> set[str]:
     return {token[:STEM_CHARS] for token in tokenize(text) if len(token) >= 4}
 
 
+def _numbers(text: str) -> set[str]:
+    """The values of the numbers ``text`` writes in digits, one spelling each: ``10.000``, ``10000`` and ``10
+    Tausend`` alike, ``4,6 Milliarden`` as ``4.600.000.000``. Exact and of any length, as ``Decimal`` counts: a float
+    overflowed on a long run of digits."""
+    values: set[str] = set()
+    for match in _NUMBER_RE.finditer(text):
+        scale = _SCALE_RE.match(text, match.end())
+        value = Decimal(_GROUP_RE.sub("", match.group()).replace(",", "."))
+        values.add(str((value * (_SCALES[scale.group(1).lower()] if scale else 1)).normalize()))
+    return values
+
+
 def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: str = "") -> tuple[str, int]:
-    """Drop sentences whose content words barely occur in the chunks they cite; a marker alone proves nothing.
+    """Drop sentences whose content words barely occur in the chunks they cite, or that name a number none of them
+    does; a marker alone proves nothing.
 
     ``mark`` names the Evidenzgrad such a sentence is kept under instead; empty drops it, and so does a question.
     Returns the text and the number that failed.
     """
     stems_by_number = {number: _stems(chunk_text) for number, chunk_text in evidence.items()}
+    numbers_by_number = {number: _numbers(chunk_text) for number, chunk_text in evidence.items()}
     unsupported = 0
     paragraphs: list[str] = []
     for paragraph in text.split("\n\n"):
@@ -360,11 +396,16 @@ def drop_unsupported(text: str, evidence: Mapping[int, str], *, mark: str = "") 
             if sentence.startswith(_OPENERS):
                 kept.append(sentence)
                 continue
-            own = _stems(_MARKER_RE.sub("", sentence))
+            claim = _MARKER_RE.sub("", sentence)
+            own = _stems(claim)
+            markers = [int(number) for number in _MARKER_RE.findall(sentence)]
             cited: set[str] = set()
-            for number in _MARKER_RE.findall(sentence):
-                cited |= stems_by_number.get(int(number), set())
-            if len(own) >= MIN_CONTENT_STEMS and len(own & cited) / len(own) < MIN_SUPPORT:
+            values: set[str] = set()
+            for number in markers:
+                cited |= stems_by_number.get(number, set())
+                values |= numbers_by_number.get(number, set())
+            words_missing = len(own) >= MIN_CONTENT_STEMS and len(own & cited) / len(own) < MIN_SUPPORT
+            if words_missing or (markers and not _numbers(_REFERENCE_RE.sub("", claim)) <= values):
                 unsupported += 1
                 if mark and not _is_question(sentence):
                     kept.append(_as_marked(sentence, mark))

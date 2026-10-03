@@ -648,7 +648,9 @@ Weltkriegs“ *Julikrise*). Die Frage kostet im Median 3,6 s und 480 Tokens; ein
 
 Schreibt das LLM, sieht es nur den nummerierten Evidenzblock des Bausteins, mit `extraction=llm` nur die
 ausgewählten Sätze. Nach dem Aufruf bleibt ein Satz nur
-stehen, wenn er eine gültige Belegnummer trägt und seine Inhaltswörter im zitierten Absatz vorkommen;
+stehen, wenn er eine gültige Belegnummer trägt, seine Inhaltswörter im zitierten Absatz vorkommen und jede Zahl,
+die er in Ziffern nennt, dort ebenfalls steht (in beliebiger Schreibweise: 10.000, 10000 und 10 Tausend gelten
+gleich; Audit 2026-10-02, A03; Verneinungen prüft der Dienst nicht);
 alles andere wird verworfen und im Audit gezählt (`dropped_sentences`, `unsupported_sentences`). Mit
 `LLM_UNSUPPORTED_SENTENCES=mark` bleiben solche Sätze ohne Nummer stehen, eingefasst in
 `<!-- f: Evidenzgrad=Schlussfolgerung -->` und `<!-- /f -->` (`marked_sentences`). HTML-Kommentare in der

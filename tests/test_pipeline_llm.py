@@ -28,12 +28,17 @@ MARKER_RE = re.compile(r"\[(\d+)\]")
 SECTION_PROMPT = get_prompt("section_synthesis").tag
 
 
+def first_words(text: str) -> str:
+    """The first sentence of an evidence item, at most 160 characters, cut between words: cut inside a number it
+    claimed another one ("im Jahr 15" for 1590), which a model staying inside its evidence does not."""
+    sentence = text.split(". ")[0].rstrip(".")
+    return sentence if len(sentence) <= 160 else sentence[:160].rsplit(" ", 1)[0]
+
+
 def answer_from_evidence(body: dict[str, Any]) -> str:
     """Paraphrases every evidence item with its marker and adds one uncited claim (which must be dropped)."""
     user = body["messages"][1]["content"]
-    sentences = [
-        f"{text.split('. ')[0].rstrip('.')[:160]} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user)
-    ]
+    sentences = [f"{first_words(text)} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user)]
     sentences.append("Dieser Satz behauptet etwas ohne jeden Beleg.")
     return " ".join(sentences)
 
@@ -474,9 +479,7 @@ def test_enrichment_without_llm_generation_is_reported_as_sources_only(service: 
 def only_cited_sentences(body: dict[str, Any]) -> str:
     """Stays inside the evidence: the permission to enrich is given, but the model does not use it."""
     user = body["messages"][1]["content"]
-    return " ".join(
-        f"{text.split('. ')[0].rstrip('.')[:160]} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user)
-    )
+    return " ".join(f"{first_words(text)} [{number}]." for number, _, _, text in EVIDENCE_RE.findall(user))
 
 
 def test_the_disclosure_claims_model_knowledge_only_when_there_is_some(

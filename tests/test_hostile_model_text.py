@@ -30,7 +30,9 @@ MODEL_TEXT = [
     "Das [Blatt [1]](javascript:alert(document.cookie)) ist ein Gebiet der Physik [1].",
     CITED + LF + LF + '[1]: //evil.example/x "Titel"',
     "## Eine Überschrift des Modells" + LF + LF + CITED,
-    "<script>alert(5)</script> " + CITED,
+    # the payload names no number: a digit in it is a number the evidence lacks, and the sentence would lose its
+    # citation (audit 2026-10-02, A03) before the markup this checks is reached
+    "<script>alert(document.domain)</script> " + CITED,
     CITED + " Mehr steht auf [dieser Seite](https://evil.example/phish) [1].",
     CITED + " <!-- versteckt",
 ]

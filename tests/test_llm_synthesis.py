@@ -184,6 +184,53 @@ def test_drop_unsupported_removes_emptied_paragraphs() -> None:
     assert drop_unsupported(text, EVIDENCE) == ("Licht wird gebrochen [1].", 1)
 
 
+def test_a_number_the_cited_evidence_does_not_name_is_no_evidence() -> None:
+    """Audit 2026-10-02, A03: shared words and a valid marker let 1,000,000 Euro pass for evidence of 10,000."""
+    evidence = {1: "Das Programm fördert Projekte mit 10.000 Euro für offene Bildungsressourcen."}
+    claim = "Das Programm fördert Projekte mit 1.000.000 Euro für offene Bildungsressourcen [1]."
+
+    assert drop_unsupported(claim, evidence) == ("", 1)
+    kept, failed = drop_unsupported(claim, evidence, mark=MODEL_KNOWLEDGE)
+    assert failed == 1 and "[1]" not in kept  # kept as model knowledge, no longer cited
+
+
+@pytest.mark.parametrize(
+    ("claim", "source"),
+    [
+        ("Das Programm fördert Projekte mit 10000 Euro [1].", "Gefördert werden Projekte mit 10.000 Euro."),
+        ("Die Erde entstand vor etwa 4,6 Milliarden Jahren [1].", "Die Erde entstand vor 4.600.000.000 Jahren."),
+        ("Der Krieg dauerte von 1939 bis 1945 [1].", "Der Zweite Weltkrieg (1939–1945) war der größte Krieg."),
+        ("Am 1. September 1939 begann der Krieg [1].", "Er begann am 1.9.1939 mit dem Überfall auf Polen."),
+        ("Die Ebene ist um etwa 7° geneigt [1].", "Die Ekliptik ist um 7° gegen den Sonnenäquator geneigt."),
+        (
+            "Es warnten 15 372 Wissenschaftler aus 184 Ländern [1].",
+            "Die Warnung trugen 15.372 Wissenschaftler aus 184 Ländern.",
+        ),
+        ("In der Stadt leben 1,5 Millionen Menschen [1].", "In der Stadt leben 1.500.000 Menschen."),
+        ("Gefördert wurden 10 Tausend Projekte [1].", "Gefördert wurden 10.000 Projekte."),
+        ("Drei Arten des Lichts kennt die Optik [1].", "Die Optik unterscheidet drei Arten des Lichts."),
+    ],
+)
+def test_numbers_in_another_spelling_of_the_same_value_stay_evidence(claim: str, source: str) -> None:
+    # As measured on 72 cited sentences with numbers of best-quality-generated (2026-10-03): none named a number
+    # its evidence lacked
+    assert drop_unsupported(claim, {1: source}) == (claim, 0)
+
+
+def test_a_long_run_of_digits_costs_no_time_and_no_overflow() -> None:
+    """A pattern of number and word of scale tried from every digit of a run: 38 s for 20,000 digits; with the word
+    after them, a float of them overflowed."""
+    digits = "1" * 20_000
+    started = time.perf_counter()
+
+    kept, failed = drop_unsupported(
+        f"Die Zahl {digits} Millionen gilt [1]. Und {digits} gilt [2].", {1: digits, 2: digits}
+    )
+
+    assert time.perf_counter() - started < 1.0
+    assert failed == 1 and "[2]" in kept
+
+
 def test_multi_number_markers_are_expanded_into_single_markers() -> None:
     """``[1, 2]`` left as text would survive the renumbering and point at another section's sources."""
     answer = "Licht breitet sich aus [1, 2]. Linsen bündeln es [1-2]. Spiegel lenken es um [1; 2]. Prismen zerlegen es [1–2]."
