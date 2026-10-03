@@ -100,6 +100,12 @@ Abschnittsmarker von Teil 1.
 - Audit-Nachgang (D79, Release 2.9.1): Die Facette `Zugang` steht bei jeder CC-Lizenz, gemeinfreien Werken und
   „frei zugänglich“; gemessen und nicht gebaut, weil keine Verbesserung: ein Link-Filter für die Artikel der Frage N
   (M54), die Teile von N als Suchwörter für Teil 2 (M55), ein Teil 1 ohne Hauptartikel aus der Wissens-Sammlung (M56).
+- Teil 2 und Denkaufwand (D80, D81, Release 2.10.0): Nach der KI-Prüfung steht in Teil 2 nur einzeln, was sie mit 2
+  bewertet; was sie mit 1 bewertet, zählt in der Bündelzeile seines Bereichs. Zu allgemeine Nebenwörter eines Themas
+  (mehr als `LEHRPLAN_GENERIC_WORD_HITS` Treffer im Cache) sucht Teil 2 nicht mehr. Fünf KI-Fragen stellt der Dienst
+  ohne das Denken des Modells (`LLM_REASONING_EFFORTS`): Frage N, Artikelwahl, Lehrplanprüfung, Themenformulierung
+  und QA-Paare antworteten so gleich gut in etwa der halben Zeit; Schreiben, Zuordnung, `/entities` und die
+  Artikelwahl eines Materials denken weiter (M59). Die KI-Zuordnung liest 250 statt 400 Zeichen je Absatz.
 
 ## Installation
 
