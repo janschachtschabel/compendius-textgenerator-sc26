@@ -50,8 +50,9 @@ def collection_overview(
     Unknown collection: 404. Repository unreachable: 502; none configured: 503. The endpoint keeps to
     ``REQUEST_TIMEOUT_S``: no request to the repository starts after it, and none waits longer. If it runs out,
     ``summary.incomplete`` is set and the text says which lists stayed short; before the collection and a page of
-    its contents came, the answer is a 502 naming the time budget. The answer is cached, so a second call within the
-    hour is free.
+    its contents came, the answer is a 502 naming the time budget. A listing longer than 20,000 materials, a
+    repository that sends a page twice and a sub-collection that cannot be listed leave the lists short as well;
+    the hint names the reason. The answer is cached, so a second call within the hour is free.
 
     **Example:** ``/api/v2/collections/9e7ae956-e9df-430f-bace-f3db4b910013/overview`` - the collection Optik of
     the WLO staging; the path is the whole request.

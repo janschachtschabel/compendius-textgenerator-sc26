@@ -9,7 +9,14 @@ from pathlib import Path
 import httpx
 import pytest
 
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError, validate_node_id
+from app.sources.wlo.client import (
+    CUT_PAGES,
+    CUT_REPEATED,
+    CollectionNotFoundError,
+    EduSharingClient,
+    EduSharingError,
+    validate_node_id,
+)
 from app.sources.wlo.errors import TimeUpError
 
 FIX = Path(__file__).parent / "fixtures" / "wlo"
@@ -152,6 +159,28 @@ def test_a_repository_that_ignores_the_offset_is_not_paged_to_the_cap() -> None:
     client = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2)
     assert len(client.references(OPTIK)) == 2
     assert len(requests) == 2  # the second page brought nothing new; MAX_PAGES pages took about 80 s before
+
+
+def test_a_listing_says_why_it_ended_before_the_last_page(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Audit 2026-10-03, F07: cut at MAX_PAGES or at a repeated page, the listing came back as a whole one."""
+
+    def endless(request: httpx.Request) -> httpx.Response:
+        skip = int(request.url.params["skipCount"])
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{skip + i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes})
+
+    def same_page(request: httpx.Request) -> httpx.Response:
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes, "pagination": {"total": 5000}})
+
+    monkeypatch.setattr("app.sources.wlo.client.MAX_PAGES", 3)
+    capped = EduSharingClient(BASE, transport=httpx.MockTransport(endless), page_size=2).listing(OPTIK)
+    repeated = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2).listing(OPTIK)
+    whole = _client(FakeRepository()).listing(OPTIK)
+
+    assert len(capped.refs) == 6 and capped.cut == CUT_PAGES.format(count=6)
+    assert len(repeated.refs) == 2 and repeated.cut == CUT_REPEATED
+    assert len(whole.refs) == 16 and whole.cut is None
 
 
 def test_overlapping_pages_keep_the_listing_going() -> None:

@@ -42,9 +42,23 @@ log = logging.getLogger(__name__)
 USER_AGENT = "compendious-text-fastapi/2.0 (+https://wirlernenonline.de; Kompendium-Sammlungsueberblick)"
 DEFAULT_PAGE_SIZE = 100
 MAX_PAGES = 200  # 20,000 references at the default page size; beyond that the listing is cut
+# Why a listing ended before the repository's last page, as part 3 says it (audit 2026-10-03, F07)
+CUT_TIME = "das Zeitbudget der Anfrage war erschöpft"
+CUT_PAGES = "eine Liste endet nach {count} Materialien, der Obergrenze des Dienstes"
+CUT_REPEATED = "das Repository lieferte eine Seite einer Liste ein zweites Mal"
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}
+
+
+@dataclasses.dataclass(frozen=True)
+class ReferenceListing:
+    """The materials of a collection as listed, and why the listing ended before the repository's last page."""
+
+    refs: list[MaterialRef]
+    cut: str | None = None  # CUT_TIME, CUT_PAGES or CUT_REPEATED; None when the listing is whole
+
+
 # The seconds the caller's time budget has left (``Deadline.remaining``); spent at zero
 Remaining = Callable[[], float]
 
@@ -153,7 +167,12 @@ class EduSharingClient:
         return [sub for sub in subs if NODE_ID.match(sub.id)]
 
     def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
-        """All materials referenced by the collection, page by page until the reported total is reached.
+        """All materials referenced by the collection; see ``listing``."""
+        return self.listing(collection_id, remaining=remaining).refs
+
+    def listing(self, collection_id: str, *, remaining: Remaining | None = None) -> ReferenceListing:
+        """The materials referenced by the collection, page by page until the reported total is reached, and why the
+        listing ended before it if it did (``ReferenceListing.cut``).
 
         ``remaining`` gives the seconds left of the caller's time budget: once it is spent, the listing ends after the
         last page that came in time. When not one page came, ``TimeUpError``: an empty list would read as an empty
@@ -173,7 +192,7 @@ class EduSharingClient:
                 log.warning(
                     "collection %s: listing cut after %d references, the time budget is spent", collection_id, len(refs)
                 )
-                return refs
+                return ReferenceListing(refs, CUT_TIME)
             if payload is None:
                 raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
             items = json_list(payload.get("references", payload.get("nodes")), "references")
@@ -189,14 +208,14 @@ class EduSharingClient:
                 raise MalformedAnswerError("pagination.total")
             skip += len(items)
             if not items or len(items) < self._page_size or (total is not None and skip >= total):
-                return refs
+                return ReferenceListing(refs)
             if len(refs) == known:  # a full page without a new id: the repository ignores skipCount
                 log.warning(
                     "collection %s: the page at offset %d repeats earlier references", collection_id, skip - len(items)
                 )
-                return refs
+                return ReferenceListing(refs, CUT_REPEATED)
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
-        return refs
+        return ReferenceListing(refs, CUT_PAGES.format(count=len(refs)))
 
     def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
         """Title, description, keywords, subject and level of a material or a collection (D45).

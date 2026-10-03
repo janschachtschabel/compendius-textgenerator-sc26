@@ -24,9 +24,7 @@ from app.synthesis.safe_markdown import defuse, escape_text, one_line, plain_lab
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
 NO_DESCRIPTION = "*Für diese Sammlung ist keine Beschreibung hinterlegt.*"
 NO_ITEMS = "*Keine Inhalte gelistet.*"
-INCOMPLETE_TEXT = (
-    "*Das Zeitbudget der Anfrage war erschöpft; die Listen dieses Überblicks sind möglicherweise unvollständig.*"
-)
+INCOMPLETE_TEXT = "*Die Listen dieses Überblicks sind möglicherweise unvollständig: {reasons}.*"
 COLLECTION_TYPES = {
     "EDITORIAL": "redaktionelle Sammlung",
     "EDITORIAL_GROUP": "redaktionelle Gruppensammlung",
@@ -158,9 +156,10 @@ def render_collection_overview(
     *,
     render_url: Callable[[str], str],
     options: OverviewOptions,
-    incomplete: bool = False,
+    incomplete: Sequence[str] = (),
 ) -> tuple[str, dict[str, Any]]:
-    """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` adds a visible hint."""
+    """Markdown for part 3 plus a summary for the JSON answer and the audit; ``incomplete`` names why lists may be cut
+    short, and the hint says it."""
     facets = _collection_facets(info)
     head = []
     if info.subject_labels:
@@ -202,10 +201,10 @@ def render_collection_overview(
                 ]
             )
     if incomplete:
-        lines.extend([INCOMPLETE_TEXT, ""])
+        lines.extend([INCOMPLETE_TEXT.format(reasons="; ".join(incomplete)), ""])
     summary.update(
         {
-            "incomplete": incomplete,
+            "incomplete": bool(incomplete),
             "collection_id": info.id,
             "title": info.title,
             "materials": len(refs),

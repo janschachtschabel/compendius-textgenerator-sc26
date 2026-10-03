@@ -17,7 +17,16 @@ from typing import Any
 from app.domain.models import CollectionPart, NodeInput
 from app.knowledge.topic import NormalizedTopic, normalize_topic
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import EduSharingClient, EduSharingError, Remaining, render_url_for, spent
+from app.sources.wlo.client import (
+    CUT_TIME,
+    EduSharingClient,
+    EduSharingError,
+    ReferenceListing,
+    Remaining,
+    render_url_for,
+    spent,
+)
+from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.knowledge import KnowledgeOptions, KnowledgeResult, material_sources
 from app.sources.wlo.models import CollectionInfo, MaterialRef, NodeInfo, SubCollection
 from app.sources.wlo.overview import (
@@ -36,6 +45,7 @@ log = logging.getLogger(__name__)
 # text (knowledge.py) changed its shape with it, so no text of an earlier version is read either.
 CACHE_FORMAT = 3
 UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden: {error}*"
+SUB_UNREADABLE = "eine Untersammlung war nicht lesbar"
 
 
 @dataclass(frozen=True)
@@ -167,15 +177,23 @@ class CollectionBuilder:
         return info
 
     def references(self, collection_id: str, *, remaining: Remaining | None = None) -> list[MaterialRef]:
-        key = self._key("references", collection_id)
+        return self.listing(collection_id, remaining=remaining).refs
+
+    def listing(self, collection_id: str, *, remaining: Remaining | None = None) -> ReferenceListing:
+        """The materials of a collection, cached with the reason a listing ended early: the page cap and a repeated
+        page cut it the same way on every read, a spent time budget does not and is not kept."""
+        key = self._key("listing", collection_id)
         cached = self.cache.get(key) if self.cache is not None else None
-        if isinstance(cached, list):
-            return [_hydrate(MaterialRef, item) for item in cached]
-        refs = self.client.references(collection_id, remaining=remaining)
+        if isinstance(cached, dict) and isinstance(cached.get("refs"), list):
+            cut = cached.get("cut")
+            return ReferenceListing(
+                [_hydrate(MaterialRef, item) for item in cached["refs"]], cut if isinstance(cut, str) else None
+            )
+        listing = self.client.listing(collection_id, remaining=remaining)
         if spent(remaining):  # possibly cut short: not kept for the next hour's requests
-            return refs
-        self._remember(key, [dataclasses.asdict(ref) for ref in refs])
-        return refs
+            return listing
+        self._remember(key, {"refs": [dataclasses.asdict(ref) for ref in listing.refs], "cut": listing.cut})
+        return listing
 
     def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
         key = self._key("subcollections", collection_id)
@@ -200,31 +218,39 @@ class CollectionBuilder:
             # The one request for the sub-collections before the pages of the materials: a budget that runs out in
             # the listing leaves a part with what was listed
             subs = self.subcollections(collection_id, remaining=remaining)
-            refs = self.references(collection_id, remaining=remaining)
+            listing = self.listing(collection_id, remaining=remaining)
         except EduSharingError as exc:  # TimeUpError included
             log.warning("collection %s could not be listed: %s", collection_id, exc)
             markdown = f"{PART_HEADING}\n\n{UNAVAILABLE_TEXT.format(error=plain_label(str(exc)))}\n"
             return CollectionPart(
                 available=False, collection_id=collection_id, title=info.title, markdown=markdown, error=str(exc)
             )
+        # Why a list may be short: a listing cut early, a sub-collection that could not be listed, the time budget
+        cuts = [listing.cut] if listing.cut else []
         contents: list[SubCollectionContents] = []
         for sub in subs:
             if spent(remaining):
                 contents.append(SubCollectionContents(info=sub))  # named, but its materials are not listed
                 continue
             try:
-                listed = self.references(sub.id, remaining=remaining)
-                contents.append(SubCollectionContents(info=sub, refs=tuple(listed)))
+                listed = self.listing(sub.id, remaining=remaining)
+                contents.append(SubCollectionContents(info=sub, refs=tuple(listed.refs)))
+                cuts += [listed.cut] if listed.cut else []
+            except TimeUpError:  # the budget ran out on its first page; the hint says so below
+                contents.append(SubCollectionContents(info=sub))
             except EduSharingError as exc:  # one broken sub-collection must not hide the others
                 log.warning("sub-collection %s could not be listed: %s", sub.id, exc)
                 contents.append(SubCollectionContents(info=sub))
+                cuts.append(SUB_UNREADABLE)
+        if spent(remaining):
+            cuts.append(CUT_TIME)
         markdown, summary = render_collection_overview(
             info,
-            refs,
+            listing.refs,
             contents,
             render_url=self.client.render_url,
             options=self.options.overview,
-            incomplete=spent(remaining),
+            incomplete=list(dict.fromkeys(cuts)),
         )
         return CollectionPart(
             available=True, collection_id=collection_id, title=info.title, summary=summary, markdown=markdown

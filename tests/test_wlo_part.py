@@ -10,11 +10,11 @@ import httpx
 import pytest
 
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, Remaining
+from app.sources.wlo.client import CUT_PAGES, CollectionNotFoundError, EduSharingClient, Remaining
 from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.knowledge import KnowledgeOptions
 from app.sources.wlo.models import MaterialRef, SubCollection
-from app.sources.wlo.part import CollectionBuilder, CollectionOptions, _hydrate, collection_topic
+from app.sources.wlo.part import SUB_UNREADABLE, CollectionBuilder, CollectionOptions, _hydrate, collection_topic
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
@@ -156,6 +156,43 @@ def test_the_overview_stops_listing_when_the_time_is_up_and_says_so(tmp_path: Pa
     (tmp_path / "b").mkdir()
     complete = _builder(FakeRepository(), tmp_path / "b").overview(OPTIK)
     assert complete.summary["incomplete"] is False and "unvollständig" not in complete.markdown
+
+
+def test_an_overview_cut_at_the_page_cap_says_so_from_the_cache_as_well(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Audit 2026-10-03, F07: a listing cut at MAX_PAGES was kept for an hour as a whole one, and part 3 said
+    nothing; the cut is the same on every read, so the listing is kept with its reason."""
+    monkeypatch.setattr("app.sources.wlo.client.MAX_PAGES", 1)
+    repo = FakeRepository()
+    builder = _builder(repo, tmp_path)
+
+    first = builder.overview(OPTIK)
+    asked = len(repo.requests)
+    again = builder.overview(OPTIK)
+
+    assert len(repo.requests) == asked  # from the cache
+    for part in (first, again):
+        assert part.summary["incomplete"] is True and part.summary["materials"] == 10
+        assert CUT_PAGES.format(count=10) in part.markdown and "Zeitbudget" not in part.markdown
+
+
+class _BrokenSub(FakeRepository):
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if BROKEN_SUB in request.url.path and request.url.path.endswith("/children/references"):
+            self.requests.append(request)
+            return httpx.Response(500, text="Internal Server Error")
+        return super().__call__(request)
+
+
+BROKEN_SUB = "95f2002f-1745-4b47-889d-8376af38fe41"
+
+
+def test_a_sub_collection_that_cannot_be_listed_leaves_the_overview_incomplete(tmp_path: Path) -> None:
+    part = _builder(_BrokenSub(), tmp_path).overview(OPTIK)
+
+    assert part.available and part.summary["incomplete"] is True
+    assert SUB_UNREADABLE in part.markdown and "möglicherweise unvollständig" in part.markdown
 
 
 def _spent() -> float:
