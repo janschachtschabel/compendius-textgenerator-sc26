@@ -33,6 +33,18 @@ def is_free(licence: str) -> bool:
     return _FREE_LICENCE.fullmatch(licence.strip()) is not None
 
 
+# Access is not the licence: a CC licence with NC or ND publishes the text openly and restricts its use, and the
+# repository says "frei zugänglich (keine OER-Lizenz)" outright (app/sources/wlo/models.py). In the Optik collection
+# of the staging 12 of 13 materials without a free licence were one of them, the thirteenth names no licence
+# (2026-10-03); only there access is unknown and the lint names the missing facet.
+FREELY_ACCESSIBLE = ("CC", "Public Domain Mark", "frei zugänglich")
+
+
+def freely_accessible(licence: str) -> bool:
+    """Whether anyone may read a source with this licence, as ``Source.license`` names it."""
+    return licence.strip().startswith(FREELY_ACCESSIBLE)
+
+
 def _enumerate(items: Sequence[str]) -> str:
     """German enumeration: ``A``, ``A und B``, ``A, B und C``."""
     if len(items) <= 1:
@@ -53,7 +65,7 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
         title = plain_label(source.title)
         stand = f", Stand des Archivs {plain_label(source.zim_date)}" if source.zim_date else ""
         # the archives are free to read, a material with a free licence as well; of another nothing says it
-        access = "[Zugang: frei] " if is_free(source.license) else ""
+        access = "[Zugang: frei] " if freely_accessible(source.license) else ""
         facet = f" {access}[Vertrauensgrad: {trust}]" if facets_visible else ""
         lines.append(f"- **{web_link(title, source.url)}** — {label}, {form}{stand}{facet}")
         lines.append(

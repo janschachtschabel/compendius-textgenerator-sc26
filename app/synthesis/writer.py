@@ -33,7 +33,7 @@ from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import Coverage, LlmSection, LlmSynthesizer, blocks_overview, shift_citations
 from app.synthesis.model_knowledge_check import ALL_STRUCK, CheckOutcome, ModelKnowledgeCheckReport, check_section
 from app.synthesis.safe_markdown import defuse, no_definitions
-from app.synthesis.sources_section import build_sources_section, is_free
+from app.synthesis.sources_section import build_sources_section, freely_accessible
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
 
 Lookup = Callable[[str], Source | None]
@@ -219,7 +219,7 @@ class SectionWriter:
             listed = [*sources, *carried]
             # free access only where every source has a free licence; of another nothing tells it, and the lint names
             # the missing facet rather than the block inventing it (audit 2026-10-02, A09)
-            free = all(is_free(source.license) for source in listed)
+            free = all(freely_accessible(source.license) for source in listed)
             access = {"Zugang": ["frei"]} if free else {}
             return build_sources_section(listed, citations, facets_visible), {**access, "Vertrauensgrad": ["hoch"]}
         if slot.generator == "glossary":

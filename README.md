@@ -397,9 +397,11 @@ Urheber und Lizenz mit der Version, die das Repository führt (`ccm:commonlicens
 Angabe keine Version, ohne Urheber „nicht angegeben“), der Lizenzhinweis die tatsächlich verwendeten
 Lizenzen. Trägt eine Quelle keine freie Lizenz (frei sind gemeinfreie Werke, CC BY und CC BY-SA), heißen
 die Quellen nicht mehr „freie Wissensbestände“, der Hinweis nennt sie und sagt, dass für ihre Absätze die
-Bedingungen der Quelle gelten und nur für den übrigen Text CC BY-SA 4.0; ihr Eintrag trägt keine Facette
-`Zugang`, der Baustein ebenfalls nicht, und das Frontmatter nennt „Quellen ohne freie Lizenz“ (Audit
-2026-10-02, A09). An der Sammlung Optik der Staging (anonym, 168 Inhalte, sechs Untersammlungen, 01.10.2026):
+Bedingungen der Quelle gelten und nur für den übrigen Text CC BY-SA 4.0, und das Frontmatter nennt „Quellen
+ohne freie Lizenz“ (Audit 2026-10-02, A09). Zugang und Lizenz sind zweierlei: Frei zugänglich ist jede
+CC-Lizenz, auch mit NC oder ND, ein gemeinfreies Werk und ein Material „frei zugänglich (keine OER-Lizenz)“;
+nur ohne Lizenzangabe, urheberrechtlich geschützt oder mit eigenen Bedingungen ist der Zugang unbekannt, dann
+fehlt die Facette `Zugang` am Eintrag und am Baustein, und die Prüfung meldet sie. An der Sammlung Optik der Staging (anonym, 168 Inhalte, sechs Untersammlungen, 01.10.2026):
 nur Beschreibungen 25 von 30 Materialien als Quelle, rund 15.000 Zeichen; mit Volltexten 22, rund
 41.000 Zeichen in 181 Absätzen (7 Texte anonym nicht lesbar); mit `knowledge_depth: 1` lieferten fünf
 der sieben Sammlungen Quellen statt nur einer (20 der 30 Materialien mit Beschreibung).
