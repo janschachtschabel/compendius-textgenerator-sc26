@@ -3046,3 +3046,71 @@ Urteile über Änderungen sahen den Satz ohne seinen Baustein.
 
 Rohdaten: `m53_modellwissen_pruefung.json`: Noten je Art und Fassung, Übereinstimmung, die Urteile über die Änderungen
 gezählt, jeder Lauf ohne Text, die Proben der Frage N gezählt.
+
+## M54 Die Artikel der Frage N und ihre Verlinkung mit dem Hauptartikel (Audit A02, 03.10.2026)
+
+Das Audit vom 02.10. (A02) zeigte mit einer erfundenen Antwort („Optik“ mit „Sinfonie“), dass die Artikel der Frage N
+ohne Prüfung in den Korpus gehen. Vorschlag aus der Antwort: Ein genannter Artikel muss mit dem Hauptartikel verlinkt
+sein, wie das Material eines Knotens (D47, M24). Jan: „A02 ja“, erst messen. `mc_genannte_teile.py` fährt die 25
+Sammel- und Mischthemen von M37 und die 20 gewöhnlichen Themen von M39 durch den Ablauf des Dienstes bis zum Korpus
+(`balanced`, Frage N mit dem ausgelieferten Prompt, `gpt-6-luna` über OpenAI direkt) und prüft je genanntem Teil
+`LinkedTo` mit dem Hauptartikel. Die Noten stammen aus `eval/sammelthemen/`; 110 Paare ohne Note benoteten zwei
+Claude-Subagenten blind wie in M37 (gleiche Note bei 105 von 110).
+
+| Themen | genannte Teile | verlinkt: 2/1/0 | ohne Link: 2/1/0 |
+|---|---|---|---|
+| 25 Sammel- und Mischthemen | 176 | 141/3/0 | 26/5/1 |
+| 20 gewöhnliche Themen | 126 | 105/11/0 | 7/3/0 |
+
+Ein Link-Filter nähme 42 Teile heraus: 33 passende, 8 verwandte, einen unpassenden. Ohne Link sind vor allem
+Mitglieder einer Gruppe, deren Übersicht nicht auf sie verweist („Säugetiere des Waldes“: Reh, Wildschwein unter
+*Wald*; „Mathematik in der Musik“: alle fünf Teile unter *Musiktheorie*). Unpassend war einer von 302 genannten Teilen.
+
+**Entscheidung:** nicht gebaut (D79). Rohdaten: `m54_genannte_teile.json`.
+
+## M55 Teil 2 mit den Teilen der Frage N (Audit A06, 03.10.2026)
+
+A06: Teil 2 sucht mit dem Titel des Hauptartikels, seinen Aliassen und den Untertiteln, die seinen Stamm tragen; die
+Mitglieder einer Gruppe fehlen dort. Jan: „A06 umsetzen mit Prüfungen ob dies Verbesserungen bringt“.
+`mc_lehrplan_teile.py` baut Teil 2 für dieselben 45 Themen zweimal, mit den Untertiteln von heute und zusätzlich mit den
+Titeln der von N genannten Teile (`balanced`, ohne die LLM-Prüfung der Lehrplanstellen). Von den Treffern, die dazukamen,
+und denen, die dabei wegfielen, zog eine Stichprobe je Thema bis zu fünf und bis zu drei (Saat 55); zwei
+Claude-Subagenten benoteten sie blind auf der Skala von M22, zum Thema wie angefragt (gleiche Note bei 226 von 230).
+
+| | Treffer | Note 2 | Note 1 | Note 0 |
+|---|---|---|---|---|
+| hinzugekommen (Stichprobe) | 173 | 27 % | 27 % | 46 % |
+| verdrängt (Stichprobe) | 57 | 44 % | 26 % | 30 % |
+
+Über alle 45 Themen kamen 2.558 Treffer dazu und 1.096 fielen weg, weil die Suche bei 200 Treffern endet: Kurze Titel
+treffen andere Wörter an einer Wortgrenze („Hera“ 200-mal bei „griechische Götter“, „Oder“ 177-mal bei „deutsche
+Flüsse“, „Ode“ 182-mal bei „Gedicht“). Nach Stichwort: bis fünf Zeichen 8 % passend und 71 % unpassend, ein längeres
+Wort 30 und 41 %, mehrere Wörter 42 und 21 %. Passende Gewinne gibt es (Vesuv bei „Vulkane Europas“, Hadrian und
+Trajan bei „römische Kaiser“, Wasserkraft bei „erneuerbare Energien“), aber auch die beste Klasse erreicht nur das
+Niveau dessen, was sie verdrängt.
+
+**Entscheidung:** nicht gebaut (D79). Rohdaten: `m55_lehrplan_teile.json`.
+
+## M56 Ein Kompendium ohne Hauptartikel (Audit A05, 03.10.2026)
+
+A05: Ohne Artikel im Archiv antwortet der Dienst 404, auch wenn die Anfrage eine Wissens-Sammlung nennt; bei Gruppen
+ohne Übersicht wird ein Mitglied zum Anker. Jan: „A05 umsetzen mit Prüfungen ob dies Verbesserungen bringt“.
+
+**Wie oft:** 30 realistische Themen in `llm-free`: 404 einmal, für eine lange Wortgruppe; lange, satzartige Themen zur
+Optik: 4 von 8. Mit `balanced` fand die Frage N für alle vier einen passenden Artikel (*Optische Täuschung*, *Linse
+(Optik)*, *Reflexion (Physik)*, *Open Educational Resources*): Ohne Hauptartikel bleibt nur `llm-free`. Ein Mitglied als
+Anker gab es in 3 der 25 Sammelthemen (*Augustus*, *Ätna*, *Hildegard von Bingen*); die Regeln allein fänden dort meist
+Schlechteres (*Marsili (Vulkan)*, *American Farm Bureau Federation*, einen Mathematiker), und der Hinweis `topic-scope`
+nennt den Artikel schon (D73).
+
+**Prototyp** (`mc_ohne_hauptartikel.py`, nicht eingebaut): Mit Wissens-Sammlung läuft ein Thema ohne Artikel weiter,
+Teil 1 nur aus den Materialien. Vier Themen ohne Artikel, Sammlung Optik der Staging, `llm-free`: Alle vier bekamen
+dasselbe Kompendium, denn ohne Hauptartikel wählt nichts mehr nach dem Thema aus. Gedruckt wurden Einstiegssätze von
+Seiten („Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden“), Werbung einer Hochschule
+und Seitenreste („Um die Lizenzinformationen zu sehen, klicken Sie …“), keine Themendefinition.
+
+**Nebenbefund:** In `llm-free` landete die Volltextsuche bei 8 der 30 Themen auf einem fremden Artikel („OER-Förderprogramme“
+→ *Legden*, „Escape Room im Unterricht“ → *Pete Trewavas*, „Klimaanpassung in Städten“ → *Katja Aufermann*); der Hinweis
+`topic-scope` nennt das, das Kompendium entsteht trotzdem. Das gehört zu A01 und ist nicht entschieden.
+
+**Entscheidung:** nicht gebaut (D79). Rohdaten: `m56_ohne_hauptartikel.json`.

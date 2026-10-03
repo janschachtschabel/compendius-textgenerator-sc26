@@ -1,0 +1,325 @@
+{
+ "note": "M56 (03.10.2026, Audit A05): Prototyp ohne Hauptartikel (Teil 1 nur aus der Wissens-Sammlung Optik, Staging, llm-free, mit Volltexten) für vier Themen, die heute 404 geben; nicht eingebaut.",
+ "prototyp": [
+  {
+   "topic": "Bildentstehung an Sammellinsen und Zerstreuungslinsen im Unterricht",
+   "resolution": null,
+   "parts_status": {
+    "world": "ok"
+   },
+   "sources": 23,
+   "chunks": 146,
+   "knowledge": {
+    "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+    "considered": 30,
+    "sources": 23,
+    "empty": 5,
+    "failed": [
+     "2d8afbc3-cfa5-4764-8afb-c3cfa5076418",
+     "d84d54c4-f473-4e4b-8d54-c4f4738e4b87"
+    ],
+    "timed_out": 0,
+    "depth": 0,
+    "fulltext": true,
+    "collections": 1
+   },
+   "lint": [
+    "facet-required"
+   ],
+   "blocks": [
+    {
+     "titel": "2 · Gliederung & Systematik",
+     "status": "maschinell-extraktiv",
+     "text": "Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden. [1]",
+     "quellen": [
+      "Unterrichtsreihe zum Licht"
+     ]
+    },
+    {
+     "titel": "4 · Gesellschaftlicher Kontext",
+     "status": "maschinell-extraktiv",
+     "text": "In diesem umfangreichen Kurs lernst du die Grundlagen der Strahlen- und Wellenoptik. Damit kannst du das Verhalten des Lichts aus unserem Alltag beschreiben. [2]",
+     "quellen": [
+      "Kurs Grundlagen der Optik"
+     ]
+    },
+    {
+     "titel": "6 · Akteure",
+     "status": "maschinell-generiert",
+     "text": "Akteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Organisation\n\n- **[Studium und Forschung an der Zeppelin Universität in Friedrichshafen](https://www.zu.de/)** — Die Zeppelin Universität in Friedrichshafen, Baden-Württemberg, ist eine Hochschule, die Studierenden vielfältige akademische Angebote bietet.\n- **[Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg](https://www.hs-mannheim.de/)** — Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet.\n- **[Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg](https://www.thu.de/)** — Die Technische Hochschule Ulm ist eine Universität in Baden-Württemberg mit dem Schwerpunkt auf praxisorientierter Lehre und Forschung.",
+     "quellen": []
+    },
+    {
+     "titel": "8 · Bildung",
+     "status": "maschinell-extraktiv",
+     "text": "Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet. Sie richtet sich an Studierende, die eine technische und gestalterische Ausbildung anstreben. Die Hochschule verfügt über eingeschränkte Barrierefreiheit und bietet vielfältige Möglichkeiten zur akademischen Weiterbildung. [3]\n\nWissenswertes und Aktuelles rund um Ihr Studium und die Einrichtungen der Hochschule. Sowie alles zur Organisation Ihres Studiums [4]\n\nGut gerüstet für die Zukunft – die Hochschule bietet moderne, auf die Lernziele abgestimmte Formate. Mit interdisziplinären Angeboten wie Design Thinking oder Future Skills wie Entrepreneurship, entwickeln Sie aktiv Ihre Kompetenzen. [5]\n\nDie Technische Hochschule Ulm (THU) ist eine Hochschule für angewandte Wissenschaften. Wir bieten ein technikorientiertes Portfolio. Dieses umfasst zukunftsweisende Studiengänge, Weiterbildungen sowie Forschungs- und Transferprojekte. [6]",
+     "quellen": [
+      "Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg",
+      "Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg"
+     ]
+    },
+    {
+     "titel": "10 · Praxis",
+     "status": "maschinell-extraktiv",
+     "text": "\\- Stationsarbeit zur Optik - anonym - 15.09.2020 - Physik - 5, 6 Um die Lizenzinformationen zu sehen, klicken Sie bitte den gewünschten Inhalt an. Name: Stationsarbeit zur Optik 27.07.2020 Station 4 - Wie kann man Schatten verändern? Hinweis Wie ein Schatten entsteht hast du in Station 3 bereits gelernt. [7]\n\nIn diesem Kapitel zur Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [8]\n\nIn der Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [9]\n\nEin Aufgabenbuch mit 223 Aufgaben und Lösungen für Physiklehrer und Physikschüler der Sekundarstufe I. [10]\n\nEnergie in Form von elektrischem Strom ist im Leben kaum wegzudenken. Der Lichtschalter, bei dessen Betätigung die Lampen anfangen zu leuchten, die Elektrogeräte, die für den Unterricht im Schulgebäude benötigt werden, Computer, Mobiltelefone, Tablets und vieles mehr. Alles verbraucht Strom in unterschiedlichem Maße. [11]\n\nIm Science Center Spectrum im Deutschen Technikmuseum laden 150 Experimente aus Naturwissenschaft und Technik zum Ausprobieren ein. Was können Schülerinnen und Schüler im Deutschen Technikmuseum entdecken? Diese Führung nimmt Schulklassen mit auf einen Rundgang durch die vielfältigen Ausstellungen und präsentiert besondere Objekte. [12]",
+     "quellen": [
+      "Die Geschichte der Leuchtmittel",
+      "Optik — Grundwissen Physik",
+      "Science Center Spectrum | Deutsches Technikmuseum",
+      "Stationsarbeit zur Optik",
+      "Steinphysik - Physik-Geschichten aus Bad Einstein"
+     ]
+    }
+   ]
+  },
+  {
+   "topic": "Optische Täuschungen und Wahrnehmung im Physikunterricht",
+   "resolution": null,
+   "parts_status": {
+    "world": "ok"
+   },
+   "sources": 23,
+   "chunks": 146,
+   "knowledge": {
+    "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+    "considered": 30,
+    "sources": 23,
+    "empty": 5,
+    "failed": [
+     "2d8afbc3-cfa5-4764-8afb-c3cfa5076418",
+     "d84d54c4-f473-4e4b-8d54-c4f4738e4b87"
+    ],
+    "timed_out": 0,
+    "depth": 0,
+    "fulltext": true,
+    "collections": 1
+   },
+   "lint": [
+    "facet-required"
+   ],
+   "blocks": [
+    {
+     "titel": "2 · Gliederung & Systematik",
+     "status": "maschinell-extraktiv",
+     "text": "Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden. [1]",
+     "quellen": [
+      "Unterrichtsreihe zum Licht"
+     ]
+    },
+    {
+     "titel": "4 · Gesellschaftlicher Kontext",
+     "status": "maschinell-extraktiv",
+     "text": "In diesem umfangreichen Kurs lernst du die Grundlagen der Strahlen- und Wellenoptik. Damit kannst du das Verhalten des Lichts aus unserem Alltag beschreiben. [2]",
+     "quellen": [
+      "Kurs Grundlagen der Optik"
+     ]
+    },
+    {
+     "titel": "6 · Akteure",
+     "status": "maschinell-generiert",
+     "text": "Akteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Organisation\n\n- **[Studium und Forschung an der Zeppelin Universität in Friedrichshafen](https://www.zu.de/)** — Die Zeppelin Universität in Friedrichshafen, Baden-Württemberg, ist eine Hochschule, die Studierenden vielfältige akademische Angebote bietet.\n- **[Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg](https://www.hs-mannheim.de/)** — Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet.\n- **[Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg](https://www.thu.de/)** — Die Technische Hochschule Ulm ist eine Universität in Baden-Württemberg mit dem Schwerpunkt auf praxisorientierter Lehre und Forschung.",
+     "quellen": []
+    },
+    {
+     "titel": "8 · Bildung",
+     "status": "maschinell-extraktiv",
+     "text": "Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet. Sie richtet sich an Studierende, die eine technische und gestalterische Ausbildung anstreben. Die Hochschule verfügt über eingeschränkte Barrierefreiheit und bietet vielfältige Möglichkeiten zur akademischen Weiterbildung. [3]\n\nWissenswertes und Aktuelles rund um Ihr Studium und die Einrichtungen der Hochschule. Sowie alles zur Organisation Ihres Studiums [4]\n\nGut gerüstet für die Zukunft – die Hochschule bietet moderne, auf die Lernziele abgestimmte Formate. Mit interdisziplinären Angeboten wie Design Thinking oder Future Skills wie Entrepreneurship, entwickeln Sie aktiv Ihre Kompetenzen. [5]\n\nDie Technische Hochschule Ulm (THU) ist eine Hochschule für angewandte Wissenschaften. Wir bieten ein technikorientiertes Portfolio. Dieses umfasst zukunftsweisende Studiengänge, Weiterbildungen sowie Forschungs- und Transferprojekte. [6]",
+     "quellen": [
+      "Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg",
+      "Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg"
+     ]
+    },
+    {
+     "titel": "10 · Praxis",
+     "status": "maschinell-extraktiv",
+     "text": "\\- Stationsarbeit zur Optik - anonym - 15.09.2020 - Physik - 5, 6 Um die Lizenzinformationen zu sehen, klicken Sie bitte den gewünschten Inhalt an. Name: Stationsarbeit zur Optik 27.07.2020 Station 4 - Wie kann man Schatten verändern? Hinweis Wie ein Schatten entsteht hast du in Station 3 bereits gelernt. [7]\n\nIn diesem Kapitel zur Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [8]\n\nIn der Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [9]\n\nEin Aufgabenbuch mit 223 Aufgaben und Lösungen für Physiklehrer und Physikschüler der Sekundarstufe I. [10]\n\nEnergie in Form von elektrischem Strom ist im Leben kaum wegzudenken. Der Lichtschalter, bei dessen Betätigung die Lampen anfangen zu leuchten, die Elektrogeräte, die für den Unterricht im Schulgebäude benötigt werden, Computer, Mobiltelefone, Tablets und vieles mehr. Alles verbraucht Strom in unterschiedlichem Maße. [11]\n\nIm Science Center Spectrum im Deutschen Technikmuseum laden 150 Experimente aus Naturwissenschaft und Technik zum Ausprobieren ein. Was können Schülerinnen und Schüler im Deutschen Technikmuseum entdecken? Diese Führung nimmt Schulklassen mit auf einen Rundgang durch die vielfältigen Ausstellungen und präsentiert besondere Objekte. [12]",
+     "quellen": [
+      "Die Geschichte der Leuchtmittel",
+      "Optik — Grundwissen Physik",
+      "Science Center Spectrum | Deutsches Technikmuseum",
+      "Stationsarbeit zur Optik",
+      "Steinphysik - Physik-Geschichten aus Bad Einstein"
+     ]
+    }
+   ]
+  },
+  {
+   "topic": "Spiegelbilder und Reflexionsgesetz anschaulich erklärt",
+   "resolution": null,
+   "parts_status": {
+    "world": "ok"
+   },
+   "sources": 23,
+   "chunks": 146,
+   "knowledge": {
+    "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+    "considered": 30,
+    "sources": 23,
+    "empty": 5,
+    "failed": [
+     "2d8afbc3-cfa5-4764-8afb-c3cfa5076418",
+     "d84d54c4-f473-4e4b-8d54-c4f4738e4b87"
+    ],
+    "timed_out": 0,
+    "depth": 0,
+    "fulltext": true,
+    "collections": 1
+   },
+   "lint": [
+    "facet-required"
+   ],
+   "blocks": [
+    {
+     "titel": "2 · Gliederung & Systematik",
+     "status": "maschinell-extraktiv",
+     "text": "Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden. [1]",
+     "quellen": [
+      "Unterrichtsreihe zum Licht"
+     ]
+    },
+    {
+     "titel": "4 · Gesellschaftlicher Kontext",
+     "status": "maschinell-extraktiv",
+     "text": "In diesem umfangreichen Kurs lernst du die Grundlagen der Strahlen- und Wellenoptik. Damit kannst du das Verhalten des Lichts aus unserem Alltag beschreiben. [2]",
+     "quellen": [
+      "Kurs Grundlagen der Optik"
+     ]
+    },
+    {
+     "titel": "6 · Akteure",
+     "status": "maschinell-generiert",
+     "text": "Akteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Organisation\n\n- **[Studium und Forschung an der Zeppelin Universität in Friedrichshafen](https://www.zu.de/)** — Die Zeppelin Universität in Friedrichshafen, Baden-Württemberg, ist eine Hochschule, die Studierenden vielfältige akademische Angebote bietet.\n- **[Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg](https://www.hs-mannheim.de/)** — Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet.\n- **[Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg](https://www.thu.de/)** — Die Technische Hochschule Ulm ist eine Universität in Baden-Württemberg mit dem Schwerpunkt auf praxisorientierter Lehre und Forschung.",
+     "quellen": []
+    },
+    {
+     "titel": "8 · Bildung",
+     "status": "maschinell-extraktiv",
+     "text": "Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet. Sie richtet sich an Studierende, die eine technische und gestalterische Ausbildung anstreben. Die Hochschule verfügt über eingeschränkte Barrierefreiheit und bietet vielfältige Möglichkeiten zur akademischen Weiterbildung. [3]\n\nWissenswertes und Aktuelles rund um Ihr Studium und die Einrichtungen der Hochschule. Sowie alles zur Organisation Ihres Studiums [4]\n\nGut gerüstet für die Zukunft – die Hochschule bietet moderne, auf die Lernziele abgestimmte Formate. Mit interdisziplinären Angeboten wie Design Thinking oder Future Skills wie Entrepreneurship, entwickeln Sie aktiv Ihre Kompetenzen. [5]\n\nDie Technische Hochschule Ulm (THU) ist eine Hochschule für angewandte Wissenschaften. Wir bieten ein technikorientiertes Portfolio. Dieses umfasst zukunftsweisende Studiengänge, Weiterbildungen sowie Forschungs- und Transferprojekte. [6]",
+     "quellen": [
+      "Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg",
+      "Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg"
+     ]
+    },
+    {
+     "titel": "10 · Praxis",
+     "status": "maschinell-extraktiv",
+     "text": "\\- Stationsarbeit zur Optik - anonym - 15.09.2020 - Physik - 5, 6 Um die Lizenzinformationen zu sehen, klicken Sie bitte den gewünschten Inhalt an. Name: Stationsarbeit zur Optik 27.07.2020 Station 4 - Wie kann man Schatten verändern? Hinweis Wie ein Schatten entsteht hast du in Station 3 bereits gelernt. [7]\n\nIn diesem Kapitel zur Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [8]\n\nIn der Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [9]\n\nEin Aufgabenbuch mit 223 Aufgaben und Lösungen für Physiklehrer und Physikschüler der Sekundarstufe I. [10]\n\nEnergie in Form von elektrischem Strom ist im Leben kaum wegzudenken. Der Lichtschalter, bei dessen Betätigung die Lampen anfangen zu leuchten, die Elektrogeräte, die für den Unterricht im Schulgebäude benötigt werden, Computer, Mobiltelefone, Tablets und vieles mehr. Alles verbraucht Strom in unterschiedlichem Maße. [11]\n\nIm Science Center Spectrum im Deutschen Technikmuseum laden 150 Experimente aus Naturwissenschaft und Technik zum Ausprobieren ein. Was können Schülerinnen und Schüler im Deutschen Technikmuseum entdecken? Diese Führung nimmt Schulklassen mit auf einen Rundgang durch die vielfältigen Ausstellungen und präsentiert besondere Objekte. [12]",
+     "quellen": [
+      "Die Geschichte der Leuchtmittel",
+      "Optik — Grundwissen Physik",
+      "Science Center Spectrum | Deutsches Technikmuseum",
+      "Stationsarbeit zur Optik",
+      "Steinphysik - Physik-Geschichten aus Bad Einstein"
+     ]
+    }
+   ]
+  },
+  {
+   "topic": "Unterrichtsmaterialien zur geometrischen Optik in der Sekundarstufe",
+   "resolution": null,
+   "parts_status": {
+    "world": "ok"
+   },
+   "sources": 23,
+   "chunks": 146,
+   "knowledge": {
+    "collection_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
+    "considered": 30,
+    "sources": 23,
+    "empty": 5,
+    "failed": [
+     "2d8afbc3-cfa5-4764-8afb-c3cfa5076418",
+     "d84d54c4-f473-4e4b-8d54-c4f4738e4b87"
+    ],
+    "timed_out": 0,
+    "depth": 0,
+    "fulltext": true,
+    "collections": 1
+   },
+   "lint": [
+    "facet-required"
+   ],
+   "blocks": [
+    {
+     "titel": "2 · Gliederung & Systematik",
+     "status": "maschinell-extraktiv",
+     "text": "Diese Seite kann als Einstieg in eine Unterrichtsreihe zur Optik genutzt werden. [1]",
+     "quellen": [
+      "Unterrichtsreihe zum Licht"
+     ]
+    },
+    {
+     "titel": "4 · Gesellschaftlicher Kontext",
+     "status": "maschinell-extraktiv",
+     "text": "In diesem umfangreichen Kurs lernst du die Grundlagen der Strahlen- und Wellenoptik. Damit kannst du das Verhalten des Lichts aus unserem Alltag beschreiben. [2]",
+     "quellen": [
+      "Kurs Grundlagen der Optik"
+     ]
+    },
+    {
+     "titel": "6 · Akteure",
+     "status": "maschinell-generiert",
+     "text": "Akteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Organisation\n\n- **[Studium und Forschung an der Zeppelin Universität in Friedrichshafen](https://www.zu.de/)** — Die Zeppelin Universität in Friedrichshafen, Baden-Württemberg, ist eine Hochschule, die Studierenden vielfältige akademische Angebote bietet.\n- **[Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg](https://www.hs-mannheim.de/)** — Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet.\n- **[Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg](https://www.thu.de/)** — Die Technische Hochschule Ulm ist eine Universität in Baden-Württemberg mit dem Schwerpunkt auf praxisorientierter Lehre und Forschung.",
+     "quellen": []
+    },
+    {
+     "titel": "8 · Bildung",
+     "status": "maschinell-extraktiv",
+     "text": "Die Technische Hochschule Mannheim ist eine Universität in Baden-Württemberg, die praxisorientierte Studiengänge anbietet. Sie richtet sich an Studierende, die eine technische und gestalterische Ausbildung anstreben. Die Hochschule verfügt über eingeschränkte Barrierefreiheit und bietet vielfältige Möglichkeiten zur akademischen Weiterbildung. [3]\n\nWissenswertes und Aktuelles rund um Ihr Studium und die Einrichtungen der Hochschule. Sowie alles zur Organisation Ihres Studiums [4]\n\nGut gerüstet für die Zukunft – die Hochschule bietet moderne, auf die Lernziele abgestimmte Formate. Mit interdisziplinären Angeboten wie Design Thinking oder Future Skills wie Entrepreneurship, entwickeln Sie aktiv Ihre Kompetenzen. [5]\n\nDie Technische Hochschule Ulm (THU) ist eine Hochschule für angewandte Wissenschaften. Wir bieten ein technikorientiertes Portfolio. Dieses umfasst zukunftsweisende Studiengänge, Weiterbildungen sowie Forschungs- und Transferprojekte. [6]",
+     "quellen": [
+      "Technische Hochschule Mannheim – Innovative angewandte Wissenschaften in Baden-Württemberg",
+      "Technische Hochschule Ulm – Campus Prittwitzstraße in Baden-Württemberg"
+     ]
+    },
+    {
+     "titel": "10 · Praxis",
+     "status": "maschinell-extraktiv",
+     "text": "\\- Stationsarbeit zur Optik - anonym - 15.09.2020 - Physik - 5, 6 Um die Lizenzinformationen zu sehen, klicken Sie bitte den gewünschten Inhalt an. Name: Stationsarbeit zur Optik 27.07.2020 Station 4 - Wie kann man Schatten verändern? Hinweis Wie ein Schatten entsteht hast du in Station 3 bereits gelernt. [7]\n\nIn diesem Kapitel zur Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [8]\n\nIn der Optik werden die vielfältigen Erscheinungen des Lichts und ihr Nutzen in optischen Hilfsmitteln untersucht. [9]\n\nEin Aufgabenbuch mit 223 Aufgaben und Lösungen für Physiklehrer und Physikschüler der Sekundarstufe I. [10]\n\nEnergie in Form von elektrischem Strom ist im Leben kaum wegzudenken. Der Lichtschalter, bei dessen Betätigung die Lampen anfangen zu leuchten, die Elektrogeräte, die für den Unterricht im Schulgebäude benötigt werden, Computer, Mobiltelefone, Tablets und vieles mehr. Alles verbraucht Strom in unterschiedlichem Maße. [11]\n\nIm Science Center Spectrum im Deutschen Technikmuseum laden 150 Experimente aus Naturwissenschaft und Technik zum Ausprobieren ein. Was können Schülerinnen und Schüler im Deutschen Technikmuseum entdecken? Diese Führung nimmt Schulklassen mit auf einen Rundgang durch die vielfältigen Ausstellungen und präsentiert besondere Objekte. [12]",
+     "quellen": [
+      "Die Geschichte der Leuchtmittel",
+      "Optik — Grundwissen Physik",
+      "Science Center Spectrum | Deutsches Technikmuseum",
+      "Stationsarbeit zur Optik",
+      "Steinphysik - Physik-Geschichten aus Bad Einstein"
+     ]
+    }
+   ]
+  }
+ ],
+ "llm_free_aufloesung": {
+  "note": "30 realistische Themen, llm-free, 03.10.2026: Methode und Artikel, oder 404",
+  "404": [
+   "Förderprogramme für offene Bildungsmaterialien in Deutschland"
+  ],
+  "suche_auf_fremdem_artikel": {
+   "OER-Förderprogramme": "Legden",
+   "Escape Room im Unterricht": "Pete Trewavas",
+   "Nachhaltigkeit im Chemieunterricht": "Johannes Huwer",
+   "Klimaanpassung in Städten": "Katja Aufermann",
+   "Lernlandkarte": "Inselwissen",
+   "Bruchrechnen mit Pizza": "Liste von Merksprüchen",
+   "Algorithmen im Alltag": "Teile-und-herrsche-Verfahren",
+   "Biodiversität im Schulumfeld": "Hertzhaimer-Naturgarten"
+  }
+ },
+ "lange_themen_llm_free": {
+  "404": [
+   "Bildentstehung an Sammellinsen und Zerstreuungslinsen im Unterricht",
+   "Optische Täuschungen und Wahrnehmung im Physikunterricht",
+   "Spiegelbilder und Reflexionsgesetz anschaulich erklärt",
+   "Unterrichtsmaterialien zur geometrischen Optik in der Sekundarstufe"
+  ],
+  "gefunden": {
+   "Experimente mit Licht und Schatten für die Grundschule": "Lichtkunst (search)",
+   "Wie entsteht ein Regenbogen nach einem Gewitter am Himmel": "Wolke (search)",
+   "Lichtbrechung an Grenzflächen verschiedener optischer Medien": "Dioptrischer Apparat (search)",
+   "Lochkamera bauen und Abbildungen untersuchen": "Camera obscura (search)"
+  }
+ },
+ "balanced_mit_n": {
+  "Optische Täuschungen und Wahrnehmung im Physikunterricht": "Optische Täuschung",
+  "Bildentstehung an Sammellinsen und Zerstreuungslinsen im Unterricht": "Linse (Optik)",
+  "Spiegelbilder und Reflexionsgesetz anschaulich erklärt": "Reflexion (Physik)",
+  "Förderprogramme für offene Bildungsmaterialien in Deutschland": "Open Educational Resources"
+ }
+}

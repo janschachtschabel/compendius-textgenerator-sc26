@@ -97,6 +97,9 @@ Abschnittsmarker von Teil 1.
   teilen sich, was `CORPUS_MAX_CHUNKS` lässt; ein schreibendes Profil mit Rückfall in einzelnen Bausteinen nennt
   sie im Hinweis `topic-scope`; Materialtexte halten `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz; die ersten
   Lesezugriffe aufs Repository halten `REQUEST_TIMEOUT_S`; ein unlesbarer Cache-Eintrag ist ein Fehltreffer.
+- Audit-Nachgang (D79, Release 2.9.1): Die Facette `Zugang` steht bei jeder CC-Lizenz, gemeinfreien Werken und
+  „frei zugänglich“; gemessen und nicht gebaut, weil keine Verbesserung: ein Link-Filter für die Artikel der Frage N
+  (M54), die Teile von N als Suchwörter für Teil 2 (M55), ein Teil 1 ohne Hauptartikel aus der Wissens-Sammlung (M56).
 
 ## Installation
 

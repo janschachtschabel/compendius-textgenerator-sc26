@@ -2043,6 +2043,20 @@ API.
   Kompendium, auch nicht aus der Wissens-Sammlung) und A06 (Teil 2 sucht mit Artikeltitel und Untertiteln, die seinen
   Stamm tragen, nicht mit den Gruppenmitgliedern). Die Betriebshinweise O01–O03 beschreiben bewusste Vorgaben (D67,
   `API_KEYS`) und Grenzen je Worker; keine Änderung.
+- **D79 (2026-10-03)** Audit-Nachgang (Jan: „A02 ja, A05 und A06 umsetzen mit Prüfungen ob dies Verbesserungen
+  bringt. Generell bei Funktionsänderungen prüfen bevor wir was einbauen.“). Gemessen im Ablauf des Dienstes, LLM über
+  OpenAI direkt mit `gpt-6-luna` (Jan: gleiches Verhalten wie über die b-api, andere Abrechnung; das Messskript leitet die
+  Anfragen um, der Dienst bleibt unverändert). Keine der drei Änderungen bringt eine Verbesserung, keine ist gebaut:
+  A02 ein Link-Filter für die Artikel der Frage N nähme 33 passende Teile, um einen unpassenden zu entfernen (M54); A06
+  die Teile von N als Suchwörter für Teil 2 brächten zu 27 % passende Treffer und verdrängten zu 44 % passende (M55);
+  A05 ein Teil 1 nur aus der Wissens-Sammlung druckte für vier verschiedene Themen dasselbe, darunter Werbung und
+  Seitenreste, und ohne Hauptartikel bleibt ohnehin nur `llm-free`, die LLM-Profile finden über N einen Artikel (M56).
+  Gebaut: Die Facette `Zugang` gilt für jede CC-Lizenz, ein gemeinfreies Werk und „frei zugänglich (keine OER-Lizenz)“;
+  der Lizenzhinweis bleibt (D78), die Warnung der fehlenden Facette nur bei unbekanntem Zugang (Jan folgt der
+  Empfehlung). Ebenfalls von Jan: kein Tagesbudget als Schutz empfehlen (bei starker Nutzung wäre der Dienst
+  unerreichbar; `LLM_DAILY_TOKEN_BUDGET` bleibt abschaltbar, Vorgabe aus), die Abrechnung der Modelle läuft in der
+  b-api und nicht in der App, der Testserver ist bewusst offen. Offen bleibt A01 mit dem Nebenbefund von M56: In
+  `llm-free` landete die Volltextsuche bei 8 von 30 Themen auf einem fremden Artikel.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

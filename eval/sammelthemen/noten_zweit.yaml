@@ -14,6 +14,8 @@
 # Dazu seit M40 (docs/entwicklung/messung/mc_sammelthemen_lokal.py): 27 Paare, die erst die Frage N an kleine
 # lokale Modelle druckte (LFM2-700M, LFM2.5-1.2B, Qwen3-0.6B über llama.cpp), benotet am 27.09.2026 von einem
 # weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 40).
+# Dazu seit M54 (docs/entwicklung/messung/mc_genannte_teile.py, Audit A02): 72 Paare, die die Frage N am 03.10.2026
+# nannte und die noch keine Note hatten, benotet von einem zweiten weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 41).
 version: 1
 noten:
 - thema: deutsche Dichter
@@ -1330,3 +1332,219 @@ noten:
 - thema: Musik der Romantik
   artikel: Deutsche Romantik
   note: 1
+- thema: 'Chemie im Alltag'
+  artikel: 'Essig'
+  note: 2
+- thema: 'Chemie im Alltag'
+  artikel: 'Arzneimittel'
+  note: 1
+- thema: 'Chemie im Alltag'
+  artikel: 'Backpulver'
+  note: 2
+- thema: 'Dichter der Romantik'
+  artikel: 'Karoline von Günderrode'
+  note: 2
+- thema: 'Dichter der Romantik'
+  artikel: 'Achim von Arnim'
+  note: 2
+- thema: 'Dichter der Romantik'
+  artikel: 'Friedrich Schlegel'
+  note: 2
+- thema: 'Dichter der Romantik'
+  artikel: 'Joseph von Eichendorff'
+  note: 2
+- thema: 'Dichter der Romantik'
+  artikel: 'Ludwig Tieck'
+  note: 2
+- thema: 'Entdecker der Neuzeit'
+  artikel: 'Abel Tasman'
+  note: 2
+- thema: 'Entdecker der Neuzeit'
+  artikel: 'David Livingstone'
+  note: 2
+- thema: 'Entdecker der Neuzeit'
+  artikel: 'Christoph Kolumbus'
+  note: 2
+- thema: 'Entdecker der Neuzeit'
+  artikel: 'Ferdinand Magellan'
+  note: 2
+- thema: 'Erfindungen der Industrialisierung'
+  artikel: 'Spinning Jenny'
+  note: 2
+- thema: 'Erfindungen der Industrialisierung'
+  artikel: 'Bessemer-Verfahren'
+  note: 2
+- thema: 'Erfindungen der Industrialisierung'
+  artikel: 'Webstuhl'
+  note: 1
+- thema: 'Erfindungen der Industrialisierung'
+  artikel: 'Dampfmaschine'
+  note: 2
+- thema: 'Frauen im Mittelalter'
+  artikel: 'Anna Komnena'
+  note: 2
+- thema: 'Frauen im Mittelalter'
+  artikel: 'Christine de Pizan'
+  note: 2
+- thema: 'Frauen im Mittelalter'
+  artikel: 'Mathilde von Canossa'
+  note: 2
+- thema: 'Frauen in der Wissenschaft'
+  artikel: 'Matilda-Effekt'
+  note: 2
+- thema: 'Frauen in der Wissenschaft'
+  artikel: 'Marie Curie'
+  note: 2
+- thema: 'Frauen in der Wissenschaft'
+  artikel: 'Lise Meitner'
+  note: 2
+- thema: 'Klimawandel und Landwirtschaft'
+  artikel: 'Bewässerung'
+  note: 1
+- thema: 'Komponisten der Klassik'
+  artikel: 'Carl Philipp Emanuel Bach'
+  note: 2
+- thema: 'Komponisten der Klassik'
+  artikel: 'Christoph Willibald Gluck'
+  note: 2
+- thema: 'Komponisten der Klassik'
+  artikel: 'Luigi Boccherini'
+  note: 2
+- thema: 'Komponisten der Klassik'
+  artikel: 'Muzio Clementi'
+  note: 2
+- thema: 'Komponisten der Klassik'
+  artikel: 'Wolfgang Amadeus Mozart'
+  note: 2
+- thema: 'Maler des Impressionismus'
+  artikel: 'Mary Cassatt'
+  note: 2
+- thema: 'Maler des Impressionismus'
+  artikel: 'Camille Pissarro'
+  note: 2
+- thema: 'Maler des Impressionismus'
+  artikel: 'Alfred Sisley'
+  note: 2
+- thema: 'Maler des Impressionismus'
+  artikel: 'Berthe Morisot'
+  note: 2
+- thema: 'Mathematik in der Musik'
+  artikel: 'Gleichstufige Stimmung'
+  note: 2
+- thema: 'Mathematik in der Musik'
+  artikel: 'Oberton'
+  note: 1
+- thema: 'Mathematik in der Musik'
+  artikel: 'Pythagoreisches Komma'
+  note: 2
+- thema: 'Musik der Romantik'
+  artikel: 'Hector Berlioz'
+  note: 2
+- thema: 'Musik der Romantik'
+  artikel: 'Johannes Brahms'
+  note: 2
+- thema: 'Musik der Romantik'
+  artikel: 'Franz Liszt'
+  note: 2
+- thema: 'Märchen der Brüder Grimm'
+  artikel: 'Rapunzel'
+  note: 2
+- thema: 'Märchen der Brüder Grimm'
+  artikel: 'Hänsel und Gretel'
+  note: 2
+- thema: 'Märchen der Brüder Grimm'
+  artikel: 'Schneewittchen'
+  note: 2
+- thema: 'Märchen der Brüder Grimm'
+  artikel: 'Aschenputtel'
+  note: 2
+- thema: 'Nobelpreisträger für Physik'
+  artikel: 'Wilhelm Conrad Röntgen'
+  note: 2
+- thema: 'Nobelpreisträger für Physik'
+  artikel: 'Marie Curie'
+  note: 2
+- thema: 'Nobelpreisträger für Physik'
+  artikel: 'Abdus Salam'
+  note: 2
+- thema: 'Nobelpreisträger für Physik'
+  artikel: 'Peter Higgs'
+  note: 2
+- thema: 'Philosophen der Aufklärung'
+  artikel: 'David Hume'
+  note: 2
+- thema: 'Philosophen der Aufklärung'
+  artikel: 'Gottfried Wilhelm Leibniz'
+  note: 2
+- thema: 'Philosophen der Aufklärung'
+  artikel: 'Denis Diderot'
+  note: 2
+- thema: 'Säugetiere des Waldes'
+  artikel: 'Wildkatze'
+  note: 2
+- thema: 'Säugetiere des Waldes'
+  artikel: 'Europäischer Dachs'
+  note: 2
+- thema: 'Säugetiere des Waldes'
+  artikel: 'Rotfuchs'
+  note: 2
+- thema: 'Säugetiere des Waldes'
+  artikel: 'Wildschwein'
+  note: 2
+- thema: 'Vulkane Europas'
+  artikel: 'Teide'
+  note: 2
+- thema: 'Vulkane Europas'
+  artikel: 'Laacher See'
+  note: 2
+- thema: 'Weltreligionen'
+  artikel: 'Sikhismus'
+  note: 1
+- thema: 'Weltreligionen'
+  artikel: 'Bahaitum'
+  note: 1
+- thema: 'deutsche Bundeskanzler'
+  artikel: 'Helmut Kohl'
+  note: 2
+- thema: 'deutsche Bundeskanzler'
+  artikel: 'Gerhard Schröder'
+  note: 2
+- thema: 'deutsche Bundeskanzler'
+  artikel: 'Olaf Scholz'
+  note: 2
+- thema: 'deutsche Dichter'
+  artikel: 'Rainer Maria Rilke'
+  note: 2
+- thema: 'deutsche Dichter'
+  artikel: 'Theodor Fontane'
+  note: 2
+- thema: 'deutsche Dichter'
+  artikel: 'Bertolt Brecht'
+  note: 2
+- thema: 'deutsche Dichter'
+  artikel: 'Annette von Droste-Hülshoff'
+  note: 2
+- thema: 'deutsche Flüsse'
+  artikel: 'Mosel'
+  note: 2
+- thema: 'deutsche Flüsse'
+  artikel: 'Weser'
+  note: 2
+- thema: 'deutsche Flüsse'
+  artikel: 'Main'
+  note: 2
+- thema: 'deutsche Flüsse'
+  artikel: 'Oder'
+  note: 2
+- thema: 'deutsche Flüsse'
+  artikel: 'Neckar'
+  note: 2
+- thema: 'erneuerbare Energien'
+  artikel: 'Meeresenergie'
+  note: 2
+- thema: 'römische Kaiser'
+  artikel: 'Diokletian'
+  note: 2
+- thema: 'römische Kaiser'
+  artikel: 'Trajan'
+  note: 2

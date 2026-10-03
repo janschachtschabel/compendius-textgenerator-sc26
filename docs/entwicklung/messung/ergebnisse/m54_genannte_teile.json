@@ -1,0 +1,2915 @@
+{
+ "note": "M54 (03.10.2026, Audit A02): Frage N im Ablauf des Dienstes (balanced, prepare), gpt-6-luna über OpenAI direkt; je genanntem Teil LinkedTo mit dem Hauptartikel und die Note (2/1/0) aus eval/sammelthemen, neue Paare von zwei Claude-Subagenten blind benotet (Übereinstimmung 105/110).",
+ "tabelle": {
+  "kontrolle|ohne_link|1": 3,
+  "kontrolle|ohne_link|2": 7,
+  "kontrolle|verlinkt|1": 11,
+  "kontrolle|verlinkt|2": 105,
+  "sammel|ohne_link|0": 1,
+  "sammel|ohne_link|1": 5,
+  "sammel|ohne_link|2": 26,
+  "sammel|verlinkt|1": 3,
+  "sammel|verlinkt|2": 141
+ },
+ "themen": [
+  {
+   "kind": "sammel",
+   "topic": "deutsche Dichter",
+   "main": "Deutschsprachige Literatur",
+   "method": "llm",
+   "overview": "Deutsche Literatur",
+   "found": [
+    "Deutschsprachige Literatur",
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Friedrich Hölderlin",
+    "Rainer Maria Rilke",
+    "Annette von Droste-Hülshoff",
+    "Bertolt Brecht",
+    "Theodor Fontane"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Johann Wolfgang von Goethe",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Friedrich Schiller",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Heinrich Heine",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Friedrich Hölderlin",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rainer Maria Rilke",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Annette von Droste-Hülshoff",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Bertolt Brecht",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Theodor Fontane",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Dichter der Romantik",
+   "main": "Romantik",
+   "method": "llm",
+   "overview": "Romantik",
+   "found": [
+    "Romantik",
+    "Novalis",
+    "Joseph von Eichendorff",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "E. T. A. Hoffmann",
+    "Friedrich Schlegel",
+    "Ludwig Tieck",
+    "Karoline von Günderrode"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Novalis",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Joseph von Eichendorff",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Clemens Brentano",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Achim von Arnim",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "E. T. A. Hoffmann",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Friedrich Schlegel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Ludwig Tieck",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Karoline von Günderrode",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Komponisten der Klassik",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "overview": "Wiener Klassik",
+   "found": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Luigi Boccherini",
+    "Muzio Clementi",
+    "Carl Philipp Emanuel Bach",
+    "Johann Christian Bach"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Joseph Haydn",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wolfgang Amadeus Mozart",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Ludwig van Beethoven",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Christoph Willibald Gluck",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Luigi Boccherini",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Muzio Clementi",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Carl Philipp Emanuel Bach",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Johann Christian Bach",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Philosophen der Aufklärung",
+   "main": "Aufklärung",
+   "method": "llm",
+   "overview": "Aufklärung (Philosophie)",
+   "found": [
+    "Aufklärung",
+    "Immanuel Kant",
+    "John Locke",
+    "David Hume",
+    "Voltaire",
+    "Jean-Jacques Rousseau",
+    "Charles de Secondat, Baron de Montesquieu",
+    "Denis Diderot",
+    "Gottfried Wilhelm Leibniz"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Immanuel Kant",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "John Locke",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "David Hume",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Voltaire",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Jean-Jacques Rousseau",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Charles de Secondat, Baron de Montesquieu",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Denis Diderot",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Gottfried Wilhelm Leibniz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Maler des Impressionismus",
+   "main": "Impressionismus",
+   "method": "llm",
+   "overview": "Impressionismus",
+   "found": [
+    "Impressionismus",
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Mary Cassatt",
+    "Gustave Caillebotte"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Claude Monet",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Pierre-Auguste Renoir",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Edgar Degas",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Camille Pissarro",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Alfred Sisley",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Berthe Morisot",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Mary Cassatt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Gustave Caillebotte",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "römische Kaiser",
+   "main": "Augustus",
+   "method": "llm",
+   "overview": "Römischer Kaiser",
+   "found": [
+    "Augustus",
+    "Tiberius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Mark Aurel",
+    "Diokletian",
+    "Konstantin der Große"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Tiberius",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Nero",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Trajan",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Hadrian",
+     "linked": false,
+     "note": 0,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Mark Aurel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Diokletian",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Konstantin der Große",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "deutsche Bundeskanzler",
+   "main": "Bundeskanzler (Deutschland)",
+   "method": "llm",
+   "overview": "Bundeskanzler (Deutschland)",
+   "found": [
+    "Bundeskanzler (Deutschland)",
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder",
+    "Angela Merkel",
+    "Olaf Scholz"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Konrad Adenauer",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ludwig Erhard",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Willy Brandt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Helmut Schmidt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Helmut Kohl",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Gerhard Schröder",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Angela Merkel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Olaf Scholz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "griechische Götter",
+   "main": "Griechische Mythologie",
+   "method": "title",
+   "overview": "Griechische Mythologie",
+   "found": [
+    "Griechische Mythologie",
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis",
+    "Aphrodite",
+    "Ares"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Zeus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hera",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Poseidon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Athene",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Apollon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Artemis",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Aphrodite",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ares",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Planeten des Sonnensystems",
+   "main": "Planet",
+   "method": "llm",
+   "overview": "Planet",
+   "found": [
+    "Planet",
+    "Erde"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Erde",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Edelgase",
+   "main": "Edelgase",
+   "method": "title",
+   "overview": "Edelgas",
+   "found": [
+    "Edelgase",
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson",
+    "Edelgasverbindungen"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Helium",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Neon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Argon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Krypton",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Xenon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Radon",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Oganesson",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Edelgasverbindungen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Weltreligionen",
+   "main": "Weltreligion",
+   "method": "title",
+   "overview": "Weltreligion",
+   "found": [
+    "Weltreligion",
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Christentum",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Islam",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hinduismus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Buddhismus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Judentum",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Sikhismus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    },
+    {
+     "title": "Bahaitum",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "erneuerbare Energien",
+   "main": "Erneuerbare Energien",
+   "method": "title",
+   "overview": "Erneuerbare Energie",
+   "found": [
+    "Erneuerbare Energien",
+    "Sonnenenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Meeresenergie"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Sonnenenergie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Windenergie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wasserkraft",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Bioenergie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Geothermie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Meeresenergie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Erfindungen der Industrialisierung",
+   "main": "Industrielle Revolution",
+   "method": "llm",
+   "overview": "Industrielle Revolution",
+   "found": [
+    "Industrielle Revolution",
+    "Dampfmaschine",
+    "Spinning Jenny",
+    "Webstuhl",
+    "Eisenbahn",
+    "Dampfschiff",
+    "Telegrafie",
+    "Bessemer-Verfahren",
+    "Verbrennungsmotor"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Dampfmaschine",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Spinning Jenny",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Webstuhl",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    },
+    {
+     "title": "Eisenbahn",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Dampfschiff",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Telegrafie",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Bessemer-Verfahren",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Verbrennungsmotor",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Nobelpreisträger für Physik",
+   "main": "Nobelpreis für Physik",
+   "method": "llm",
+   "overview": "Nobelpreis für Physik",
+   "found": [
+    "Nobelpreis für Physik",
+    "Wilhelm Conrad Röntgen",
+    "Marie Curie",
+    "Albert Einstein",
+    "Niels Bohr",
+    "Werner Heisenberg",
+    "Richard Feynman",
+    "Abdus Salam",
+    "Peter Higgs"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Wilhelm Conrad Röntgen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Marie Curie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Albert Einstein",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Niels Bohr",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Werner Heisenberg",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Richard Feynman",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Abdus Salam",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Peter Higgs",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Frauen in der Wissenschaft",
+   "main": "Frauen in der Wissenschaft",
+   "method": "title",
+   "overview": "Frauen in der Wissenschaft",
+   "found": [
+    "Frauen in der Wissenschaft",
+    "Frauenstudium im deutschen Sprachraum",
+    "Matilda-Effekt",
+    "Marie Curie",
+    "Lise Meitner",
+    "Emmy Noether",
+    "Hypatia",
+    "Rosalind Franklin"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Frauenstudium im deutschen Sprachraum",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Matilda-Effekt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Marie Curie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Lise Meitner",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Emmy Noether",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hypatia",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rosalind Franklin",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Märchen der Brüder Grimm",
+   "main": "Grimms Märchen",
+   "method": "llm",
+   "overview": "Kinder- und Hausmärchen",
+   "found": [
+    "Grimms Märchen",
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Schneewittchen",
+    "Hänsel und Gretel",
+    "Aschenputtel",
+    "Dornröschen",
+    "Rapunzel",
+    "Die Bremer Stadtmusikanten"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Brüder Grimm",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rotkäppchen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Schneewittchen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Hänsel und Gretel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Aschenputtel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Dornröschen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rapunzel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Die Bremer Stadtmusikanten",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "deutsche Flüsse",
+   "main": "Fluss",
+   "method": "llm",
+   "overview": "Fluss",
+   "found": [
+    "Fluss",
+    "Rhein",
+    "Elbe",
+    "Donau",
+    "Main",
+    "Weser",
+    "Oder",
+    "Mosel",
+    "Neckar"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Rhein",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Elbe",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Donau",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Main",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Weser",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Oder",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Mosel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Neckar",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Säugetiere des Waldes",
+   "main": "Wald",
+   "method": "llm",
+   "overview": "Wald",
+   "found": [
+    "Wald",
+    "Reh",
+    "Rothirsch",
+    "Wildschwein",
+    "Rotfuchs",
+    "Europäischer Dachs",
+    "Eichhörnchen",
+    "Wildkatze"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Reh",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rothirsch",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wildschwein",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Rotfuchs",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Europäischer Dachs",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Eichhörnchen",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wildkatze",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Vulkane Europas",
+   "main": "Ätna",
+   "method": "llm",
+   "overview": "Vulkanismus in Europa",
+   "found": [
+    "Ätna",
+    "Vesuv",
+    "Stromboli",
+    "Hekla",
+    "Eyjafjallajökull",
+    "Santorin",
+    "Teide",
+    "Laacher See"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Vesuv",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Stromboli",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hekla",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Eyjafjallajökull",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Santorin",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Teide",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Laacher See",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Entdecker der Neuzeit",
+   "main": "Zeitalter der Entdeckungen",
+   "method": "llm",
+   "overview": "Zeitalter der Entdeckungen",
+   "found": [
+    "Zeitalter der Entdeckungen",
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "Bartolomeu Dias",
+    "James Cook",
+    "Abel Tasman",
+    "David Livingstone"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Christoph Kolumbus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Vasco da Gama",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ferdinand Magellan",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Amerigo Vespucci",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Bartolomeu Dias",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "James Cook",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Abel Tasman",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "David Livingstone",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Klimawandel und Landwirtschaft",
+   "main": "Klimawandel",
+   "method": "llm",
+   "overview": "Klimawandel und Landwirtschaft",
+   "found": [
+    "Klimawandel",
+    "Landwirtschaft",
+    "Ernährungssicherung",
+    "Treibhausgas",
+    "Bewässerung"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Landwirtschaft",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ernährungssicherung",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Treibhausgas",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Bewässerung",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Mathematik in der Musik",
+   "main": "Musiktheorie",
+   "method": "llm",
+   "overview": "Mathematik und Musik",
+   "found": [
+    "Musiktheorie",
+    "Pythagoreisches Komma",
+    "Gleichstufige Stimmung",
+    "Oberton",
+    "Goldener Schnitt",
+    "Fourier-Transformation"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Pythagoreisches Komma",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Gleichstufige Stimmung",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Oberton",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    },
+    {
+     "title": "Goldener Schnitt",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Fourier-Transformation",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Chemie im Alltag",
+   "main": "Chemie",
+   "method": "llm",
+   "overview": "Chemie",
+   "found": [
+    "Chemie",
+    "Lebensmittelchemie",
+    "Waschmittel",
+    "Seife",
+    "Kosmetik",
+    "Kunststoff",
+    "Arzneimittel",
+    "Essig",
+    "Backpulver"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Lebensmittelchemie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Waschmittel",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Seife",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Kosmetik",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Kunststoff",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Arzneimittel",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    },
+    {
+     "title": "Essig",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Backpulver",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Frauen im Mittelalter",
+   "main": "Hildegard von Bingen",
+   "method": "llm",
+   "overview": "Frau im Mittelalter",
+   "found": [
+    "Hildegard von Bingen",
+    "Eleonore von Aquitanien",
+    "Mathilde von Canossa",
+    "Christine de Pizan",
+    "Jeanne d’Arc",
+    "Anna Komnena"
+   ],
+   "covers": false,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Eleonore von Aquitanien",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Mathilde von Canossa",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Christine de Pizan",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Jeanne d’Arc",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Anna Komnena",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "sammel",
+   "topic": "Musik der Romantik",
+   "main": "Musik der Romantik",
+   "method": "title",
+   "overview": "Romantik (Musik)",
+   "found": [
+    "Musik der Romantik",
+    "Franz Schubert",
+    "Robert Schumann",
+    "Frédéric Chopin",
+    "Felix Mendelssohn Bartholdy",
+    "Hector Berlioz",
+    "Franz Liszt",
+    "Richard Wagner",
+    "Johannes Brahms"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Franz Schubert",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Robert Schumann",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Frédéric Chopin",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Felix Mendelssohn Bartholdy",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hector Berlioz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Franz Liszt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Richard Wagner",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Johannes Brahms",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Barockliteratur",
+   "main": "Barockliteratur",
+   "method": "title",
+   "overview": "Barock (Literatur)",
+   "found": [
+    "Barockliteratur",
+    "Martin Opitz",
+    "Andreas Gryphius",
+    "Hans Jakob Christoffel von Grimmelshausen",
+    "Paul Fleming",
+    "Angelus Silesius",
+    "Christian Hoffmann von Hoffmannswaldau",
+    "Johann Rist",
+    "Catharina Regina von Greiffenberg"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Martin Opitz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Andreas Gryphius",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Hans Jakob Christoffel von Grimmelshausen",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Paul Fleming",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Angelus Silesius",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Christian Hoffmann von Hoffmannswaldau",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Johann Rist",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Catharina Regina von Greiffenberg",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Bruchrechnung",
+   "main": "Bruchrechnung",
+   "method": "title",
+   "overview": "Bruchrechnung",
+   "found": [
+    "Bruchrechnung",
+    "Rationale Zahl",
+    "Dezimalbruch",
+    "Stammbruch",
+    "Doppelbruch",
+    "Bruchgleichung"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Rationale Zahl",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Dezimalbruch",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Stammbruch",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Doppelbruch",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Bruchgleichung",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Demokratie",
+   "main": "Demokratie",
+   "method": "title",
+   "overview": "Demokratie",
+   "found": [
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Liberale Demokratie",
+    "Demokratietheorie",
+    "Demokratisierung",
+    "Volkssouveränität",
+    "Demokratiemessung"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Direkte Demokratie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Repräsentative Demokratie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Liberale Demokratie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Demokratietheorie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Demokratisierung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Volkssouveränität",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Demokratiemessung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Französische Revolution",
+   "main": "Französische Revolution",
+   "method": "title",
+   "overview": "Französische Revolution",
+   "found": [
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalversammlung (Frankreich)",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Nationalkonvent",
+    "Napoleon Bonaparte"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Sturm auf die Bastille",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Erklärung der Menschen- und Bürgerrechte",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Nationalversammlung (Frankreich)",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Jakobiner",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Terrorherrschaft",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Nationalkonvent",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Napoleon Bonaparte",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Klimawandel",
+   "main": "Klimawandel",
+   "method": "title",
+   "overview": "Klimawandel",
+   "found": [
+    "Klimawandel",
+    "Globale Erwärmung",
+    "Folgen der globalen Erwärmung",
+    "Treibhauseffekt",
+    "Klimaschutz",
+    "Klimapolitik",
+    "Klimatologie"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Globale Erwärmung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Folgen der globalen Erwärmung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Treibhauseffekt",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Klimaschutz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Klimapolitik",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Klimatologie",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Optik",
+   "main": "Optik",
+   "method": "title",
+   "overview": "Optik",
+   "found": [
+    "Optik",
+    "Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Interferenz (Physik)"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Licht",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Geometrische Optik",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wellenoptik",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Quantenoptik",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Reflexion (Physik)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Brechung (Physik)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Beugung (Physik)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Interferenz (Physik)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Photosynthese",
+   "main": "Photosynthese",
+   "method": "title",
+   "overview": "Photosynthese",
+   "found": [
+    "Photosynthese",
+    "Chloroplast",
+    "Photosystem",
+    "Calvin-Zyklus",
+    "Photorespiration",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Chloroplast",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Photosystem",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Calvin-Zyklus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Photorespiration",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "C4-Pflanze",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Crassulaceen-Säurestoffwechsel",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Programmiersprache",
+   "main": "Programmiersprache",
+   "method": "title",
+   "overview": "Programmiersprache",
+   "found": [
+    "Programmiersprache",
+    "Compiler",
+    "C (Programmiersprache)",
+    "Java (Programmiersprache)",
+    "Python (Programmiersprache)"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Compiler",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "C (Programmiersprache)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Java (Programmiersprache)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Python (Programmiersprache)",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Säure-Base-Konzepte",
+   "main": "Säure-Base-Konzepte",
+   "method": "title",
+   "overview": "Säure-Base-Konzepte",
+   "found": [
+    "Säure-Base-Konzepte",
+    "Säure-Base-Reaktion",
+    "Säuren",
+    "Basen (Chemie)",
+    "Lewis-Säure-Base-Konzept",
+    "HSAB-Konzept"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Säure-Base-Reaktion",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Säuren",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Basen (Chemie)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Lewis-Säure-Base-Konzept",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "HSAB-Konzept",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Sinfonie",
+   "main": "Sinfonie",
+   "method": "title",
+   "overview": "Sinfonie",
+   "found": [
+    "Sinfonie",
+    "Orchester",
+    "Symphonie fantastique"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Orchester",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Symphonie fantastique",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Plattentektonik",
+   "main": "Plattentektonik",
+   "method": "title",
+   "overview": "Plattentektonik",
+   "found": [
+    "Plattentektonik",
+    "Lithosphäre",
+    "Kontinentaldrift",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Ozeanbodenspreizung",
+    "Wilson-Zyklus",
+    "Hotspot (Geologie)"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Lithosphäre",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Kontinentaldrift",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Subduktion",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Mittelozeanischer Rücken",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Transformstörung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ozeanbodenspreizung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Wilson-Zyklus",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Hotspot (Geologie)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Ökosystem",
+   "main": "Ökosystem",
+   "method": "title",
+   "overview": "Ökosystem",
+   "found": [
+    "Ökosystem",
+    "Biotop",
+    "Biozönose",
+    "Nahrungskette",
+    "Stoffkreislauf",
+    "Ökologische Nische",
+    "Ökosystemleistung"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Biotop",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Biozönose",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Nahrungskette",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Stoffkreislauf",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ökologische Nische",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ökosystemleistung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Atommodell",
+   "main": "Liste der Atommodelle",
+   "method": "llm",
+   "overview": "Atommodell",
+   "found": [
+    "Liste der Atommodelle",
+    "Thomsonsches Atommodell",
+    "Rutherfordsches Atommodell",
+    "Bohrsches Atommodell",
+    "Bohr-sommerfeldsches Atommodell",
+    "Schalenmodell (Atomphysik)",
+    "Atomorbital"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Thomsonsches Atommodell",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Rutherfordsches Atommodell",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Bohrsches Atommodell",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Bohr-sommerfeldsches Atommodell",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Schalenmodell (Atomphysik)",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Atomorbital",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Industrielle Revolution",
+   "main": "Industrielle Revolution",
+   "method": "title",
+   "overview": "Industrielle Revolution",
+   "found": [
+    "Industrielle Revolution",
+    "Industrialisierung",
+    "Dampfmaschine",
+    "Eisenbahn",
+    "Soziale Frage",
+    "Zweite industrielle Revolution",
+    "Urbanisierung"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Industrialisierung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Dampfmaschine",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Eisenbahn",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Soziale Frage",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Zweite industrielle Revolution",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Urbanisierung",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Elektrischer Strom",
+   "main": "Elektrischer Strom",
+   "method": "title",
+   "overview": "Elektrischer Strom",
+   "found": [
+    "Elektrischer Strom",
+    "Elektrische Stromstärke",
+    "Elektrische Ladung",
+    "Elektrische Spannung",
+    "Elektrischer Widerstand",
+    "Gleichstrom",
+    "Wechselstrom",
+    "Leiter (Physik)",
+    "Ohmsches Gesetz"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Elektrische Stromstärke",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Elektrische Ladung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Elektrische Spannung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Elektrischer Widerstand",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Gleichstrom",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Wechselstrom",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Leiter (Physik)",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Ohmsches Gesetz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Wasserkreislauf",
+   "main": "Wasserkreislauf",
+   "method": "title",
+   "overview": "Wasserkreislauf",
+   "found": [
+    "Wasserkreislauf",
+    "Verdunstung",
+    "Kondensation",
+    "Niederschlag",
+    "Evapotranspiration",
+    "Transpiration",
+    "Grundwasser"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Verdunstung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Kondensation",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Niederschlag",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Evapotranspiration",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Transpiration",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Grundwasser",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Römisches Reich",
+   "main": "Römisches Reich",
+   "method": "title",
+   "overview": "Römisches Reich",
+   "found": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Kaiserzeit",
+    "Prinzipat",
+    "Spätantike",
+    "Römische Provinz",
+    "Römische Legion",
+    "Liste der römischen Kaiser der Antike",
+    "Weströmisches Reich"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Römische Republik",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Römische Kaiserzeit",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Prinzipat",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Spätantike",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Römische Provinz",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Römische Legion",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Liste der römischen Kaiser der Antike",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Weströmisches Reich",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Lineare Funktion",
+   "main": "Lineare Funktion",
+   "method": "title",
+   "overview": "Lineare Funktion",
+   "found": [
+    "Lineare Funktion",
+    "Lineare Abbildung",
+    "Lineare Gleichung",
+    "Proportionalität",
+    "Gerade",
+    "Funktionsgraph",
+    "Koordinatensystem"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Lineare Abbildung",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Lineare Gleichung",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Proportionalität",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Gerade",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Funktionsgraph",
+     "linked": true,
+     "note": 1,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Koordinatensystem",
+     "linked": false,
+     "note": 1,
+     "note_quelle": "M54",
+     "note_zweit": 1
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Zelle (Biologie)",
+   "main": "Zelle (Biologie)",
+   "method": "title",
+   "overview": "Zelle (Biologie)",
+   "found": [
+    "Zelle (Biologie)",
+    "Zelltheorie",
+    "Zellmembran",
+    "Zellkern",
+    "Cytoplasma",
+    "Organell",
+    "Zellteilung",
+    "Prokaryoten",
+    "Eukaryoten"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Zelltheorie",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Zellmembran",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Zellkern",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Cytoplasma",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Organell",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Zellteilung",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Prokaryoten",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Eukaryoten",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    }
+   ],
+   "tokens": null
+  },
+  {
+   "kind": "kontrolle",
+   "topic": "Gedicht",
+   "main": "Lyrik",
+   "method": "title",
+   "overview": "Gedicht",
+   "found": [
+    "Lyrik",
+    "Reim",
+    "Strophe",
+    "Sonett",
+    "Ode",
+    "Haiku",
+    "Epigramm"
+   ],
+   "covers": true,
+   "fallback": null,
+   "named": [
+    {
+     "title": "Reim",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Strophe",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Sonett",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M37/M38/M40"
+    },
+    {
+     "title": "Ode",
+     "linked": false,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Haiku",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    },
+    {
+     "title": "Epigramm",
+     "linked": true,
+     "note": 2,
+     "note_quelle": "M54",
+     "note_zweit": 2
+    }
+   ],
+   "tokens": null
+  }
+ ]
+}

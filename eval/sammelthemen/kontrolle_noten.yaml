@@ -14,6 +14,8 @@
 # Dazu seit M40 (docs/entwicklung/messung/mc_sammelthemen_lokal.py): 19 Paare, die erst die Frage N an kleine
 # lokale Modelle druckte (LFM2-700M, LFM2.5-1.2B, Qwen3-0.6B über llama.cpp), benotet am 27.09.2026 von einem
 # weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 40).
+# Dazu seit M54 (docs/entwicklung/messung/mc_genannte_teile.py, Audit A02): 38 Paare, die die Frage N am 03.10.2026
+# nannte und die noch keine Note hatten, benotet von einem weiteren Claude-Subagenten, ebenso blind, mit derselben Skala, je Thema gemischt (Saat 41).
 version: 1
 noten:
 - thema: Barockliteratur
@@ -949,3 +951,117 @@ noten:
 - thema: Zelle (Biologie)
   artikel: Transport (Biologie)
   note: 1
+- thema: 'Atommodell'
+  artikel: 'Rutherfordsches Atommodell'
+  note: 2
+- thema: 'Atommodell'
+  artikel: 'Bohr-sommerfeldsches Atommodell'
+  note: 2
+- thema: 'Barockliteratur'
+  artikel: 'Paul Fleming'
+  note: 2
+- thema: 'Barockliteratur'
+  artikel: 'Angelus Silesius'
+  note: 2
+- thema: 'Bruchrechnung'
+  artikel: 'Doppelbruch'
+  note: 2
+- thema: 'Bruchrechnung'
+  artikel: 'Stammbruch'
+  note: 2
+- thema: 'Demokratie'
+  artikel: 'Demokratiemessung'
+  note: 2
+- thema: 'Elektrischer Strom'
+  artikel: 'Gleichstrom'
+  note: 2
+- thema: 'Elektrischer Strom'
+  artikel: 'Leiter (Physik)'
+  note: 1
+- thema: 'Französische Revolution'
+  artikel: 'Nationalkonvent'
+  note: 2
+- thema: 'Französische Revolution'
+  artikel: 'Jakobiner'
+  note: 2
+- thema: 'Französische Revolution'
+  artikel: 'Napoleon Bonaparte'
+  note: 1
+- thema: 'Gedicht'
+  artikel: 'Ode'
+  note: 2
+- thema: 'Gedicht'
+  artikel: 'Epigramm'
+  note: 2
+- thema: 'Gedicht'
+  artikel: 'Haiku'
+  note: 2
+- thema: 'Klimawandel'
+  artikel: 'Klimapolitik'
+  note: 2
+- thema: 'Klimawandel'
+  artikel: 'Klimatologie'
+  note: 1
+- thema: 'Lineare Funktion'
+  artikel: 'Koordinatensystem'
+  note: 1
+- thema: 'Photosynthese'
+  artikel: 'Calvin-Zyklus'
+  note: 2
+- thema: 'Plattentektonik'
+  artikel: 'Mittelozeanischer Rücken'
+  note: 2
+- thema: 'Plattentektonik'
+  artikel: 'Hotspot (Geologie)'
+  note: 2
+- thema: 'Plattentektonik'
+  artikel: 'Wilson-Zyklus'
+  note: 2
+- thema: 'Programmiersprache'
+  artikel: 'C (Programmiersprache)'
+  note: 2
+- thema: 'Programmiersprache'
+  artikel: 'Java (Programmiersprache)'
+  note: 2
+- thema: 'Römisches Reich'
+  artikel: 'Liste der römischen Kaiser der Antike'
+  note: 2
+- thema: 'Römisches Reich'
+  artikel: 'Römische Provinz'
+  note: 2
+- thema: 'Römisches Reich'
+  artikel: 'Weströmisches Reich'
+  note: 2
+- thema: 'Römisches Reich'
+  artikel: 'Prinzipat'
+  note: 2
+- thema: 'Sinfonie'
+  artikel: 'Symphonie fantastique'
+  note: 2
+- thema: 'Säure-Base-Konzepte'
+  artikel: 'Säure-Base-Reaktion'
+  note: 2
+- thema: 'Wasserkreislauf'
+  artikel: 'Evapotranspiration'
+  note: 2
+- thema: 'Wasserkreislauf'
+  artikel: 'Transpiration'
+  note: 2
+- thema: 'Zelle (Biologie)'
+  artikel: 'Zelltheorie'
+  note: 2
+- thema: 'Zelle (Biologie)'
+  artikel: 'Prokaryoten'
+  note: 2
+- thema: 'Zelle (Biologie)'
+  artikel: 'Cytoplasma'
+  note: 2
+- thema: 'Zelle (Biologie)'
+  artikel: 'Organell'
+  note: 2
+- thema: 'Ökosystem'
+  artikel: 'Nahrungskette'
+  note: 2
+- thema: 'Ökosystem'
+  artikel: 'Biozönose'
+  note: 2

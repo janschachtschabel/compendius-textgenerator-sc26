@@ -1,0 +1,3804 @@
+{
+ "note": "M55 (03.10.2026, Audit A06): Teil 2 im Ablauf des Dienstes mit den Untertiteln von heute und zusätzlich den von N genannten Teilen; Stichprobe je Thema bis 5 hinzugekommene und bis 3 verdrängte Treffer (Saat 55), von zwei Claude-Subagenten blind auf der Skala von M22 benotet (Übereinstimmung 226/230).",
+ "themen": [
+  {
+   "art": "sammel",
+   "thema": "deutsche Dichter",
+   "artikel": "Deutschsprachige Literatur",
+   "genannt": [
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Rainer Maria Rilke",
+    "Bertolt Brecht",
+    "Annette von Droste-Hülshoff",
+    "Friedrich Hölderlin",
+    "Theodor Fontane"
+   ],
+   "stichwoerter_heute": [
+    "Deutschsprachige Literatur",
+    "deutsche Literatur",
+    "Essays"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Deutschsprachige Literatur",
+    "deutsche Literatur",
+    "Essays",
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Rainer Maria Rilke",
+    "Bertolt Brecht",
+    "Annette von Droste-Hülshoff",
+    "Friedrich Hölderlin",
+    "Theodor Fontane"
+   ],
+   "treffer_heute": 18,
+   "treffer_mit_teilen": 21,
+   "dazu": 3,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Dichter der Romantik",
+   "artikel": "Romantik",
+   "genannt": [
+    "Novalis",
+    "Joseph von Eichendorff",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "Ludwig Tieck",
+    "E. T. A. Hoffmann",
+    "Friedrich Schlegel",
+    "Adelbert von Chamisso"
+   ],
+   "stichwoerter_heute": [
+    "Romantik"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Romantik",
+    "Novalis",
+    "Joseph von Eichendorff",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "Ludwig Tieck",
+    "E. T. A. Hoffmann",
+    "Friedrich Schlegel",
+    "Adelbert von Chamisso"
+   ],
+   "treffer_heute": 64,
+   "treffer_mit_teilen": 64,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Komponisten der Klassik",
+   "artikel": "Wiener Klassik",
+   "genannt": [
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Luigi Boccherini",
+    "Muzio Clementi",
+    "Carl Philipp Emanuel Bach",
+    "Antonio Salieri"
+   ],
+   "stichwoerter_heute": [
+    "Wiener Klassik",
+    "Klassik"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Wiener Klassik",
+    "Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Luigi Boccherini",
+    "Muzio Clementi",
+    "Carl Philipp Emanuel Bach",
+    "Antonio Salieri"
+   ],
+   "treffer_heute": 88,
+   "treffer_mit_teilen": 90,
+   "dazu": 2,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Philosophen der Aufklärung",
+   "artikel": "Aufklärung",
+   "genannt": [
+    "Immanuel Kant",
+    "Voltaire",
+    "Jean-Jacques Rousseau",
+    "John Locke",
+    "David Hume",
+    "Charles de Secondat, Baron de Montesquieu",
+    "Denis Diderot",
+    "Gotthold Ephraim Lessing"
+   ],
+   "stichwoerter_heute": [
+    "Aufklärung",
+    "Zeitalter der Aufklärung",
+    "Aufklärungszeitalter",
+    "Aufklärungszeit"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Aufklärung",
+    "Zeitalter der Aufklärung",
+    "Aufklärungszeitalter",
+    "Aufklärungszeit",
+    "Immanuel Kant",
+    "Voltaire",
+    "Jean-Jacques Rousseau",
+    "John Locke",
+    "David Hume",
+    "Denis Diderot",
+    "Gotthold Ephraim Lessing"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 4,
+   "weg": 4
+  },
+  {
+   "art": "sammel",
+   "thema": "Maler des Impressionismus",
+   "artikel": "Impressionismus",
+   "genannt": [
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Édouard Manet",
+    "Mary Cassatt"
+   ],
+   "stichwoerter_heute": [
+    "Impressionismus"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Impressionismus",
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Édouard Manet",
+    "Mary Cassatt"
+   ],
+   "treffer_heute": 17,
+   "treffer_mit_teilen": 18,
+   "dazu": 1,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "römische Kaiser",
+   "artikel": "Augustus",
+   "genannt": [
+    "Tiberius",
+    "Caligula",
+    "Claudius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Konstantin der Große"
+   ],
+   "stichwoerter_heute": [
+    "Augustus"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Augustus",
+    "Tiberius",
+    "Caligula",
+    "Claudius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Konstantin der Große"
+   ],
+   "treffer_heute": 26,
+   "treffer_mit_teilen": 33,
+   "dazu": 7,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "deutsche Bundeskanzler",
+   "artikel": "Bundeskanzler (Deutschland)",
+   "genannt": [
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder",
+    "Angela Merkel",
+    "Friedrich Merz"
+   ],
+   "stichwoerter_heute": [
+    "Bundeskanzler"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Bundeskanzler",
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder",
+    "Angela Merkel",
+    "Friedrich Merz"
+   ],
+   "treffer_heute": 8,
+   "treffer_mit_teilen": 8,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "griechische Götter",
+   "artikel": "Griechische Mythologie",
+   "genannt": [
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis",
+    "Aphrodite",
+    "Hades"
+   ],
+   "stichwoerter_heute": [
+    "Griechische Mythologie"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Griechische Mythologie",
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis",
+    "Aphrodite",
+    "Hades"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 200,
+   "dazu": 200,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Planeten des Sonnensystems",
+   "artikel": "Planet",
+   "genannt": [
+    "Erde"
+   ],
+   "stichwoerter_heute": [
+    "Planet"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Planet",
+    "Erde"
+   ],
+   "treffer_heute": 142,
+   "treffer_mit_teilen": 200,
+   "dazu": 170,
+   "weg": 112
+  },
+  {
+   "art": "sammel",
+   "thema": "Edelgase",
+   "artikel": "Edelgase",
+   "genannt": [
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson",
+    "Edelgasverbindungen"
+   ],
+   "stichwoerter_heute": [
+    "Edelgase",
+    "Gruppe",
+    "Hauptgruppe",
+    "Periode",
+    "Edelgasverbindungen"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Edelgase",
+    "Gruppe",
+    "Hauptgruppe",
+    "Periode",
+    "Edelgasverbindungen",
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Weltreligionen",
+   "artikel": "Weltreligion",
+   "genannt": [
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum",
+    "Daoismus"
+   ],
+   "stichwoerter_heute": [
+    "Weltreligion",
+    "Weltreligionen"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Weltreligion",
+    "Weltreligionen",
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum",
+    "Daoismus"
+   ],
+   "treffer_heute": 158,
+   "treffer_mit_teilen": 200,
+   "dazu": 179,
+   "weg": 137
+  },
+  {
+   "art": "sammel",
+   "thema": "erneuerbare Energien",
+   "artikel": "Erneuerbare Energien",
+   "genannt": [
+    "Sonnenenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Meeresenergie",
+    "Photovoltaik"
+   ],
+   "stichwoerter_heute": [
+    "Erneuerbare Energien",
+    "regenerative Energien",
+    "alternative Energien"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Erneuerbare Energien",
+    "regenerative Energien",
+    "alternative Energien",
+    "Sonnenenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Meeresenergie",
+    "Photovoltaik"
+   ],
+   "treffer_heute": 92,
+   "treffer_mit_teilen": 119,
+   "dazu": 27,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Erfindungen der Industrialisierung",
+   "artikel": "Industrielle Revolution",
+   "genannt": [
+    "Dampfmaschine",
+    "Spinning Jenny",
+    "Power Loom",
+    "Dampflokomotive",
+    "Eisenbahn",
+    "Telegrafie",
+    "Bessemer-Verfahren"
+   ],
+   "stichwoerter_heute": [
+    "Industrielle Revolution"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Industrielle Revolution",
+    "Dampfmaschine",
+    "Spinning Jenny",
+    "Power Loom",
+    "Dampflokomotive",
+    "Eisenbahn",
+    "Telegrafie",
+    "Bessemer-Verfahren"
+   ],
+   "treffer_heute": 13,
+   "treffer_mit_teilen": 66,
+   "dazu": 53,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Nobelpreisträger für Physik",
+   "artikel": "Nobelpreis für Physik",
+   "genannt": [
+    "Albert Einstein",
+    "Marie Curie",
+    "Niels Bohr",
+    "Max Planck",
+    "Richard Feynman",
+    "Peter Higgs",
+    "Wilhelm Conrad Röntgen",
+    "Enrico Fermi"
+   ],
+   "stichwoerter_heute": [
+    "Nobelpreis für Physik"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Nobelpreis für Physik",
+    "Albert Einstein",
+    "Marie Curie",
+    "Niels Bohr",
+    "Max Planck",
+    "Richard Feynman",
+    "Peter Higgs",
+    "Wilhelm Conrad Röntgen",
+    "Enrico Fermi"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 0,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Frauen in der Wissenschaft",
+   "artikel": "Frauen in der Wissenschaft",
+   "genannt": [
+    "Frauenstudium im deutschen Sprachraum",
+    "Matilda-Effekt",
+    "Marie Curie",
+    "Emmy Noether",
+    "Lise Meitner",
+    "Rosalind Franklin",
+    "Ada Lovelace"
+   ],
+   "stichwoerter_heute": [
+    "Frauen in der Wissenschaft",
+    "Frauenstudium im deutschen Sprachraum"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Frauen in der Wissenschaft",
+    "Frauenstudium im deutschen Sprachraum",
+    "Matilda-Effekt",
+    "Marie Curie",
+    "Emmy Noether",
+    "Lise Meitner",
+    "Rosalind Franklin",
+    "Ada Lovelace"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 2,
+   "dazu": 2,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Märchen der Brüder Grimm",
+   "artikel": "Grimms Märchen",
+   "genannt": [
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Aschenputtel",
+    "Hänsel und Gretel",
+    "Schneewittchen",
+    "Dornröschen",
+    "Der Froschkönig oder der eiserne Heinrich",
+    "Rumpelstilzchen"
+   ],
+   "stichwoerter_heute": [
+    "Grimms Märchen",
+    "Kinder- und Hausmärchen",
+    "Brüder Grimm"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Grimms Märchen",
+    "Kinder- und Hausmärchen",
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Aschenputtel",
+    "Hänsel und Gretel",
+    "Schneewittchen",
+    "Dornröschen",
+    "Rumpelstilzchen"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 0,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "deutsche Flüsse",
+   "artikel": "Fluss",
+   "genannt": [
+    "Rhein",
+    "Donau",
+    "Elbe",
+    "Oder",
+    "Weser",
+    "Mosel",
+    "Main",
+    "Neckar"
+   ],
+   "stichwoerter_heute": [
+    "Fluss"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Fluss",
+    "Rhein",
+    "Donau",
+    "Elbe",
+    "Oder",
+    "Weser",
+    "Mosel",
+    "Main",
+    "Neckar"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 186,
+   "weg": 186
+  },
+  {
+   "art": "sammel",
+   "thema": "Säugetiere des Waldes",
+   "artikel": "Säugetiere",
+   "genannt": [
+    "Rothirsch",
+    "Reh",
+    "Wildschwein",
+    "Rotfuchs",
+    "Europäischer Dachs",
+    "Eichhörnchen",
+    "Wolf"
+   ],
+   "stichwoerter_heute": [
+    "Säugetiere"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Säugetiere",
+    "Rothirsch",
+    "Reh",
+    "Wildschwein",
+    "Rotfuchs",
+    "Europäischer Dachs",
+    "Eichhörnchen",
+    "Wolf"
+   ],
+   "treffer_heute": 44,
+   "treffer_mit_teilen": 200,
+   "dazu": 159,
+   "weg": 3
+  },
+  {
+   "art": "sammel",
+   "thema": "Vulkane Europas",
+   "artikel": "Ätna",
+   "genannt": [
+    "Vesuv",
+    "Stromboli",
+    "Santorin",
+    "Hekla",
+    "Eyjafjallajökull",
+    "Teide",
+    "Grímsvötn"
+   ],
+   "stichwoerter_heute": [
+    "Ätna"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Ätna",
+    "Vesuv",
+    "Stromboli",
+    "Santorin",
+    "Hekla",
+    "Eyjafjallajökull",
+    "Teide",
+    "Grímsvötn"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 9,
+   "dazu": 9,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Entdecker der Neuzeit",
+   "artikel": "Zeitalter der Entdeckungen",
+   "genannt": [
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "James Cook",
+    "Alexander von Humboldt",
+    "David Livingstone",
+    "Roald Amundsen"
+   ],
+   "stichwoerter_heute": [
+    "Zeitalter der Entdeckungen"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Zeitalter der Entdeckungen",
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "James Cook",
+    "Alexander von Humboldt",
+    "David Livingstone",
+    "Roald Amundsen"
+   ],
+   "treffer_heute": 1,
+   "treffer_mit_teilen": 6,
+   "dazu": 5,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Klimawandel und Landwirtschaft",
+   "artikel": "Klimawandel",
+   "genannt": [
+    "Landwirtschaft",
+    "Globale Erwärmung",
+    "Ernährungssicherung",
+    "Dürre",
+    "Bodenerosion",
+    "Bewässerung",
+    "Treibhausgas"
+   ],
+   "stichwoerter_heute": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel",
+    "Landwirtschaft",
+    "Globale Erwärmung",
+    "Ernährungssicherung",
+    "Dürre",
+    "Bodenerosion",
+    "Bewässerung",
+    "Treibhausgas"
+   ],
+   "treffer_heute": 158,
+   "treffer_mit_teilen": 200,
+   "dazu": 133,
+   "weg": 91
+  },
+  {
+   "art": "sammel",
+   "thema": "Mathematik in der Musik",
+   "artikel": "Musiktheorie",
+   "genannt": [
+    "Tonsystem",
+    "Pythagoreisches Komma",
+    "Wohltemperierte Stimmung",
+    "Zwölftontechnik",
+    "Goldener Schnitt",
+    "Akustik",
+    "Algorithmische Komposition"
+   ],
+   "stichwoerter_heute": [
+    "Musiktheorie"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Musiktheorie",
+    "Tonsystem",
+    "Pythagoreisches Komma",
+    "Wohltemperierte Stimmung",
+    "Zwölftontechnik",
+    "Goldener Schnitt",
+    "Akustik",
+    "Algorithmische Komposition"
+   ],
+   "treffer_heute": 0,
+   "treffer_mit_teilen": 129,
+   "dazu": 129,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Chemie im Alltag",
+   "artikel": "Chemie",
+   "genannt": [
+    "Lebensmittelchemie",
+    "Waschmittel",
+    "Seife",
+    "Kosmetik",
+    "Kunststoff",
+    "Arzneimittel",
+    "Reinigungsmittel",
+    "Lebensmittelzusatzstoff"
+   ],
+   "stichwoerter_heute": [
+    "Chemie",
+    "Lebensmittelchemie"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Chemie",
+    "Lebensmittelchemie",
+    "Waschmittel",
+    "Seife",
+    "Kosmetik",
+    "Kunststoff",
+    "Arzneimittel",
+    "Reinigungsmittel",
+    "Lebensmittelzusatzstoff"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 60,
+   "weg": 60
+  },
+  {
+   "art": "sammel",
+   "thema": "Frauen im Mittelalter",
+   "artikel": "Hildegard von Bingen",
+   "genannt": [
+    "Eleonore von Aquitanien",
+    "Christine de Pizan",
+    "Jeanne d’Arc",
+    "Frauenarbeit"
+   ],
+   "stichwoerter_heute": [
+    "Hildegard von Bingen"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Hildegard von Bingen",
+    "Eleonore von Aquitanien",
+    "Christine de Pizan",
+    "Jeanne d’Arc",
+    "Frauenarbeit"
+   ],
+   "treffer_heute": 19,
+   "treffer_mit_teilen": 19,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "sammel",
+   "thema": "Musik der Romantik",
+   "artikel": "Musik der Romantik",
+   "genannt": [
+    "Ludwig van Beethoven",
+    "Franz Schubert",
+    "Robert Schumann",
+    "Frédéric Chopin",
+    "Franz Liszt",
+    "Richard Wagner",
+    "Johannes Brahms",
+    "Hector Berlioz"
+   ],
+   "stichwoerter_heute": [
+    "Musik der Romantik"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Musik der Romantik",
+    "Ludwig van Beethoven",
+    "Franz Schubert",
+    "Robert Schumann",
+    "Frédéric Chopin",
+    "Franz Liszt",
+    "Richard Wagner",
+    "Johannes Brahms",
+    "Hector Berlioz"
+   ],
+   "treffer_heute": 5,
+   "treffer_mit_teilen": 9,
+   "dazu": 4,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Barockliteratur",
+   "artikel": "Barockliteratur",
+   "genannt": [
+    "Martin Opitz",
+    "Andreas Gryphius",
+    "Paul Fleming",
+    "Hans Jakob Christoffel von Grimmelshausen",
+    "Angelus Silesius",
+    "Catharina Regina von Greiffenberg",
+    "Christian Hoffmann von Hoffmannswaldau",
+    "Johann Rist"
+   ],
+   "stichwoerter_heute": [
+    "Barockliteratur",
+    "Literatur des Barocks"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Barockliteratur",
+    "Literatur des Barocks",
+    "Martin Opitz",
+    "Andreas Gryphius",
+    "Paul Fleming",
+    "Angelus Silesius",
+    "Catharina Regina von Greiffenberg",
+    "Christian Hoffmann von Hoffmannswaldau",
+    "Johann Rist"
+   ],
+   "treffer_heute": 1,
+   "treffer_mit_teilen": 1,
+   "dazu": 0,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Bruchrechnung",
+   "artikel": "Bruchrechnung",
+   "genannt": [
+    "Rationale Zahl",
+    "Dezimalbruch",
+    "Prozent"
+   ],
+   "stichwoerter_heute": [
+    "Bruchrechnung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Bruchrechnung",
+    "Rationale Zahl",
+    "Dezimalbruch",
+    "Prozent"
+   ],
+   "treffer_heute": 5,
+   "treffer_mit_teilen": 200,
+   "dazu": 198,
+   "weg": 3
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Demokratie",
+   "artikel": "Demokratie",
+   "genannt": [
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Volkssouveränität",
+    "Wahlsystem",
+    "Demokratiemessung"
+   ],
+   "stichwoerter_heute": [
+    "Demokratie",
+    "Volksherrschaft",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Demokratiemessung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Demokratie",
+    "Volksherrschaft",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Demokratiemessung",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Volkssouveränität",
+    "Wahlsystem"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 13,
+   "weg": 13
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Französische Revolution",
+   "artikel": "Französische Revolution",
+   "genannt": [
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Direktorium (Frankreich)",
+    "Napoleon Bonaparte"
+   ],
+   "stichwoerter_heute": [
+    "Französische Revolution",
+    "Französische Verfassung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Französische Revolution",
+    "Französische Verfassung",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Direktorium",
+    "Napoleon Bonaparte"
+   ],
+   "treffer_heute": 40,
+   "treffer_mit_teilen": 42,
+   "dazu": 2,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Klimawandel",
+   "artikel": "Klimawandel",
+   "genannt": [
+    "Globale Erwärmung",
+    "Treibhauseffekt",
+    "Klimaschutz",
+    "Klimapolitik",
+    "Klimawandelleugnung",
+    "Klimakrise",
+    "Klimatologie"
+   ],
+   "stichwoerter_heute": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel",
+    "Klimawandelleugnung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Klimawandel",
+    "Klimaveränderung",
+    "Klimaänderung",
+    "Klimawechsel",
+    "Klimawandelleugnung",
+    "Globale Erwärmung",
+    "Treibhauseffekt",
+    "Klimaschutz",
+    "Klimapolitik",
+    "Klimakrise",
+    "Klimatologie"
+   ],
+   "treffer_heute": 158,
+   "treffer_mit_teilen": 200,
+   "dazu": 59,
+   "weg": 17
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Optik",
+   "artikel": "Optik",
+   "genannt": [
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Interferenz (Physik)"
+   ],
+   "stichwoerter_heute": [
+    "Optik",
+    "Lehre vom Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Optik",
+    "Lehre vom Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Reflexion",
+    "Brechung",
+    "Interferenz"
+   ],
+   "treffer_heute": 145,
+   "treffer_mit_teilen": 200,
+   "dazu": 156,
+   "weg": 101
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Photosynthese",
+   "artikel": "Photosynthese",
+   "genannt": [
+    "Chloroplast",
+    "Chlorophylle",
+    "Photosystem",
+    "Calvin-Zyklus",
+    "Photorespiration",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ],
+   "stichwoerter_heute": [
+    "Photosynthese",
+    "Fotosynthese",
+    "photosynthetische Effizienz"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Photosynthese",
+    "Fotosynthese",
+    "photosynthetische Effizienz",
+    "Chloroplast",
+    "Chlorophylle",
+    "Photosystem",
+    "Calvin-Zyklus",
+    "Photorespiration",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 16,
+   "weg": 16
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Programmiersprache",
+   "artikel": "Programmiersprache",
+   "genannt": [
+    "Compiler",
+    "Interpreter",
+    "C (Programmiersprache)",
+    "Java (Programmiersprache)",
+    "Python (Programmiersprache)",
+    "JavaScript",
+    "SQL"
+   ],
+   "stichwoerter_heute": [
+    "Programmiersprache",
+    "Java",
+    "Python"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Programmiersprache",
+    "Java",
+    "Python",
+    "Compiler",
+    "Interpreter",
+    "JavaScript",
+    "SQL"
+   ],
+   "treffer_heute": 135,
+   "treffer_mit_teilen": 157,
+   "dazu": 22,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Säure-Base-Konzepte",
+   "artikel": "Säure-Base-Konzepte",
+   "genannt": [
+    "Säure-Base-Reaktion",
+    "Säuren",
+    "Basen (Chemie)",
+    "Lewis-Säure-Base-Konzept",
+    "PH-Wert"
+   ],
+   "stichwoerter_heute": [
+    "Säure-Base-Konzepte",
+    "Säure",
+    "Base",
+    "Lewis-Säure-Base-Konzept"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Säure-Base-Konzepte",
+    "Säure",
+    "Base",
+    "Lewis-Säure-Base-Konzept",
+    "Säure-Base-Reaktion",
+    "Säuren",
+    "Basen",
+    "PH-Wert"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 50,
+   "weg": 50
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Sinfonie",
+   "artikel": "Sinfonie",
+   "genannt": [
+    "Orchester",
+    "5. Sinfonie (Beethoven)",
+    "6. Sinfonie (Beethoven)",
+    "9. Sinfonie (Beethoven)",
+    "40. Sinfonie (Mozart)",
+    "Liste der Sinfonien Franz Schuberts",
+    "9. Sinfonie (Dvořák)",
+    "2. Sinfonie (Mahler)"
+   ],
+   "stichwoerter_heute": [
+    "Sinfonie",
+    "Symphonie",
+    "5. Sinfonie",
+    "6. Sinfonie",
+    "9. Sinfonie",
+    "40. Sinfonie",
+    "Liste der Sinfonien Franz Schuberts",
+    "2. Sinfonie"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Sinfonie",
+    "Symphonie",
+    "5. Sinfonie",
+    "6. Sinfonie",
+    "9. Sinfonie",
+    "40. Sinfonie",
+    "Liste der Sinfonien Franz Schuberts",
+    "2. Sinfonie",
+    "Orchester"
+   ],
+   "treffer_heute": 25,
+   "treffer_mit_teilen": 47,
+   "dazu": 22,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Plattentektonik",
+   "artikel": "Plattentektonik",
+   "genannt": [
+    "Kontinentaldrift",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Lithosphäre",
+    "Wilson-Zyklus",
+    "Vulkanismus",
+    "Erdbeben"
+   ],
+   "stichwoerter_heute": [
+    "Plattentektonik",
+    "Kontinentalplatten",
+    "Erdplatten"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Plattentektonik",
+    "Kontinentalplatten",
+    "Erdplatten",
+    "Kontinentaldrift",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Lithosphäre",
+    "Wilson-Zyklus",
+    "Vulkanismus",
+    "Erdbeben"
+   ],
+   "treffer_heute": 32,
+   "treffer_mit_teilen": 53,
+   "dazu": 21,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Ökosystem",
+   "artikel": "Ökosystem",
+   "genannt": [
+    "Biotop",
+    "Biozönose",
+    "Nahrungskette",
+    "Stoffkreislauf",
+    "Ökologische Nische",
+    "Biodiversität",
+    "Ökosystemleistung"
+   ],
+   "stichwoerter_heute": [
+    "Ökosystem",
+    "Ökosystemleistung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Biotop",
+    "Biozönose",
+    "Nahrungskette",
+    "Stoffkreislauf",
+    "Ökologische Nische",
+    "Biodiversität"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 72,
+   "weg": 72
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Atommodell",
+   "artikel": "Liste der Atommodelle",
+   "genannt": [
+    "Thomsonsches Atommodell",
+    "Rutherfordsches Atommodell",
+    "Bohrsches Atommodell",
+    "Bohr-sommerfeldsches Atommodell",
+    "Atomorbital"
+   ],
+   "stichwoerter_heute": [
+    "Liste der Atommodelle",
+    "Atommodell",
+    "Atomhypothese",
+    "Atomtheorie"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Liste der Atommodelle",
+    "Atommodell",
+    "Atomhypothese",
+    "Atomtheorie",
+    "Thomsonsches Atommodell",
+    "Rutherfordsches Atommodell",
+    "Bohrsches Atommodell",
+    "Bohr-sommerfeldsches Atommodell",
+    "Atomorbital"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 8,
+   "weg": 8
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Industrielle Revolution",
+   "artikel": "Industrielle Revolution",
+   "genannt": [
+    "Industrialisierung",
+    "Dampfmaschine",
+    "Spinning Jenny",
+    "Soziale Frage",
+    "Urbanisierung",
+    "Manchesterkapitalismus",
+    "James Watt",
+    "Eisenbahn"
+   ],
+   "stichwoerter_heute": [
+    "Industrielle Revolution"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Industrielle Revolution",
+    "Industrialisierung",
+    "Dampfmaschine",
+    "Spinning Jenny",
+    "Soziale Frage",
+    "Urbanisierung",
+    "Manchesterkapitalismus",
+    "James Watt",
+    "Eisenbahn"
+   ],
+   "treffer_heute": 13,
+   "treffer_mit_teilen": 200,
+   "dazu": 187,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Elektrischer Strom",
+   "artikel": "Elektrischer Strom",
+   "genannt": [
+    "Elektrische Stromstärke",
+    "Elektrische Spannung",
+    "Elektrischer Widerstand",
+    "Gleichstrom",
+    "Wechselstrom",
+    "Stromkreis",
+    "Elektrische Leistung",
+    "Elektrische Ladung"
+   ],
+   "stichwoerter_heute": [
+    "Elektrischer Strom",
+    "elektrische Strom",
+    "Strom",
+    "Elektrische Stromstärke",
+    "Elektrische Spannung",
+    "Elektrischer Widerstand",
+    "Elektrische Leistung",
+    "Elektrische Ladung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Elektrischer Strom",
+    "elektrische Strom",
+    "Strom",
+    "Elektrische Stromstärke",
+    "Elektrische Spannung",
+    "Elektrischer Widerstand",
+    "Elektrische Leistung",
+    "Elektrische Ladung",
+    "Gleichstrom",
+    "Wechselstrom",
+    "Stromkreis"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 12,
+   "weg": 12
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Wasserkreislauf",
+   "artikel": "Wasserkreislauf",
+   "genannt": [
+    "Verdunstung",
+    "Kondensation",
+    "Niederschlag",
+    "Transpiration",
+    "Grundwasser"
+   ],
+   "stichwoerter_heute": [
+    "Wasserkreislauf"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Wasserkreislauf",
+    "Verdunstung",
+    "Kondensation",
+    "Niederschlag",
+    "Transpiration",
+    "Grundwasser"
+   ],
+   "treffer_heute": 19,
+   "treffer_mit_teilen": 178,
+   "dazu": 159,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Römisches Reich",
+   "artikel": "Römisches Reich",
+   "genannt": [
+    "Römische Kaiserzeit",
+    "Spätantike",
+    "Römische Provinz",
+    "Römische Legion",
+    "Römisches Recht",
+    "Römische Religion",
+    "Romanisierung",
+    "Byzantinisches Reich"
+   ],
+   "stichwoerter_heute": [
+    "Römisches Reich",
+    "Römische Reich",
+    "Imperium Romanum",
+    "Römische Kaiserzeit",
+    "Römische Provinz",
+    "Römische Legion",
+    "Römisches Recht",
+    "Römische Religion"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Römisches Reich",
+    "Römische Reich",
+    "Imperium Romanum",
+    "Römische Kaiserzeit",
+    "Römische Provinz",
+    "Römische Legion",
+    "Römisches Recht",
+    "Römische Religion",
+    "Spätantike",
+    "Romanisierung",
+    "Byzantinisches Reich"
+   ],
+   "treffer_heute": 78,
+   "treffer_mit_teilen": 95,
+   "dazu": 17,
+   "weg": 0
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Lineare Funktion",
+   "artikel": "Lineare Funktion",
+   "genannt": [
+    "Lineare Abbildung",
+    "Lineare Gleichung",
+    "Geradengleichung"
+   ],
+   "stichwoerter_heute": [
+    "Lineare Funktion",
+    "linearen Funktion",
+    "affin-linearen Funktion",
+    "Lineare Abbildung",
+    "Lineare Gleichung"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Lineare Funktion",
+    "linearen Funktion",
+    "affin-linearen Funktion",
+    "Lineare Abbildung",
+    "Lineare Gleichung",
+    "Geradengleichung"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 5,
+   "weg": 5
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Zelle (Biologie)",
+   "artikel": "Zelle (Biologie)",
+   "genannt": [
+    "Zellbiologie",
+    "Zellkern",
+    "Zellmembran",
+    "Cytoplasma",
+    "Organell",
+    "Prokaryoten",
+    "Eukaryoten",
+    "Mitose"
+   ],
+   "stichwoerter_heute": [
+    "Zelle",
+    "Zellbiologie",
+    "Zellkern",
+    "Zellmembran"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Zelle",
+    "Zellbiologie",
+    "Zellkern",
+    "Zellmembran",
+    "Cytoplasma",
+    "Organell",
+    "Prokaryoten",
+    "Eukaryoten",
+    "Mitose"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 22,
+   "weg": 22
+  },
+  {
+   "art": "kontrolle",
+   "thema": "Gedicht",
+   "artikel": "Lyrik",
+   "genannt": [
+    "Strophe",
+    "Reim",
+    "Sonett",
+    "Ode"
+   ],
+   "stichwoerter_heute": [
+    "Lyrik",
+    "Gedichte"
+   ],
+   "stichwoerter_mit_teilen": [
+    "Lyrik",
+    "Gedichte",
+    "Strophe",
+    "Reim",
+    "Sonett",
+    "Ode"
+   ],
+   "treffer_heute": 200,
+   "treffer_mit_teilen": 200,
+   "dazu": 184,
+   "weg": 184
+  }
+ ],
+ "stichprobe": [
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/ceae6f3a-d9fc-451d-bd4e-053f515fe668",
+   "art": "dazu",
+   "stichwort": "Atomorbital",
+   "element": "beschreiben die Hybridisierung als Näherungsverfahren zur Linearkombination von Atomorbitalen am selben Atom und nutzen Hybridorbitale zur modellhaften Vorhersage der Bindungsverhältnisse in einfachen organischen Molekülen.",
+   "nr": 1,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/1d4644fd-47ff-44a6-999f-1ddd2c9bed87",
+   "art": "dazu",
+   "stichwort": "Atomorbital",
+   "element": "erläutern das Zustandekommen der Energieniveauschemata für einfache zweiatomige Element-Moleküle durch Linearkombination von Atomorbitalen vergleichbarer Energie und Symmetrie.",
+   "nr": 2,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/e38b60bd-1c4f-4154-b118-15c7e1bd5d68",
+   "art": "weg",
+   "stichwort": "Atommodell",
+   "element": "Energieübertrag durch Stoßanregung, Franck‑Hertz-Versuch",
+   "nr": 3,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/b1b1574b-439d-4423-ae78-1bd600d8b301",
+   "art": "dazu",
+   "stichwort": "Atomorbital",
+   "element": "Molekülorbitale durch Linearkombination von Atomorbitalen (LCAO-Modell); Orbitalerhalt; bindende und antibindende Molekülorbitale",
+   "nr": 4,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/682c66a9-c283-4705-afd2-f44eed80ff93",
+   "art": "dazu",
+   "stichwort": "Atomorbital",
+   "element": "Bildung von σ-Molekülorbitalen u. a. durch end-on-Überlagerung von Atomorbitalen; Bildung von π-Molekülorbitalen durch side-on-Überlagerung von p-Atomorbitalen; Bindungsverhältnisse in zweiatomigen Element-Molekülen (z. B. H<sub>2</sub>, F<sub>2</sub>, N<sub>2</sub>, O<sub>2</sub>)",
+   "nr": 5,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/f8e9b3d6-f87c-4781-bf81-f4297ad1aa4f",
+   "art": "weg",
+   "stichwort": "Atommodell",
+   "element": "Eindimensionaler Potentialtopf mit unendlich hohen Wänden: stationäre Schrödinger-Gleichung, eindimensionale stehende Wellen, diskrete Energiewerte, Wellenfunktionen und Nachweiswahrscheinlichkeiten für das Elektron",
+   "nr": 6,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/0bf265be-97ac-499e-a0bc-15bfac32ed61",
+   "art": "dazu",
+   "stichwort": "Atomorbital",
+   "element": "Bildung von σ-Molekülorbitalen u. a. durch end-on-Überlagerung von Atomorbitalen; Bildung von π-Molekülorbitalen durch side-on-Überlagerung von p-Atomorbitalen; Bindungsverhältnisse in zweiatomigen Element-Molekülen (z. B. H<sub>2</sub>, F<sub>2</sub>, N<sub>2</sub>, O<sub>2</sub>)",
+   "nr": 7,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Atommodell",
+   "iri": "https://lp-bavaria.org/17dec917-225c-41af-b54e-bcdc9da26e2f",
+   "art": "weg",
+   "stichwort": "Atommodell",
+   "element": "Energiewerte für Wasserstoff und wasserstoffähnliche Systeme",
+   "nr": 8,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/d70fa793-43ca-43d8-b2db-d2c6e9c8c03f",
+   "art": "dazu",
+   "stichwort": "Prozent",
+   "element": "entnehmen Zahlenangaben aus Situationen zur Promillerechnung mit lebenspraktischem Bezug (z. B. Versicherung, Alkoholgehalt im Blut, Wirkstoffe in Medikamenten), ordnen diesen die Begriffe der Promillerechnung (Grundwert, Promillewert, Promillesatz) zu und nutzen die Grundaufgaben der Prozentrechnung (Prozentsätze als Hundertstel) für die Lösung der Aufgaben zur Promillerechnung (Promillesätze als Tausendstel).",
+   "nr": 9,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-159941-1",
+   "art": "weg",
+   "stichwort": "Bruchrechnung",
+   "element": "berufsbezogene Bruchrechnung",
+   "nr": 10,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-37715-1",
+   "art": "weg",
+   "stichwort": "Bruchrechnung",
+   "element": "Verwenden der Fachbegriffe der Bruchrechnung",
+   "nr": 11,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/95d7c25b-7125-4efc-a8fb-38421419599c",
+   "art": "dazu",
+   "stichwort": "Prozent",
+   "element": "lösen lineare Gleichungssysteme mit dem Gauß'schen Eliminationsverfahren, indem sie die Gleichungssysteme mithilfe von Matrizen darstellen und diese mittels geeigneter Zeilenumformungen auf Dreiecksmatrizen überführen, um z. B. die prozentualen Anteile mehrerer Stoffe in einem Gemenge zu bestimmen.",
+   "nr": 12,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-rlp.org/resource/kompetenz-12859-1",
+   "art": "weg",
+   "stichwort": "Bruchrechnung",
+   "element": "Grundaufgaben der Bruchrechnung lösen K3: In dem jeweiligen mathematischen Modell arbeiten",
+   "nr": 13,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/4e0dcb57-60a5-4f09-b23e-bce13497ad9c",
+   "art": "dazu",
+   "stichwort": "Prozent",
+   "element": "werten Informationen sinnvoll aus (z. B. Darstellung in Prozent), um die Informationen anschaulich darzustellen.",
+   "nr": 14,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/20b85e50-0c2b-4e1f-94ec-5a84ffe4c48d",
+   "art": "dazu",
+   "stichwort": "Prozent",
+   "element": "verwenden, wenn sie mit Punktschrift arbeiten, automatisiert die Zeichen der Mathematikschrift, die in der Marburger Systematik festgelegt sind (Schreibweise von Zahlen, Brüchen, Prozentangaben und Größen, Maßzahl und Maßeinheit mit Betonungszeichen, Bruchschreibweise mit tief gestelltem Nenner, Flächenmaßeinheiten mit Betonungs- und Exponentenzeichen), bzw. LaTEX, soweit sie mit einem Computer arbeiten. Sie achten bei den schriftlichen Rechenverfahren auf eine normgerechte Darstellung nach Braille- Mathematikschrift, um Rechenfehler zu vermeiden.",
+   "nr": 15,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Bruchrechnung",
+   "iri": "https://lp-bavaria.org/818d1336-401a-4921-ae29-1f5cd9b53813",
+   "art": "dazu",
+   "stichwort": "Prozent",
+   "element": "ordnen die Begriffe der Zinsrechnung (Kapital, Zinsen, Zinssatz und Zeit) in Kontexten sachgemäß zu. Sie übertragen die Grundaufgaben der Prozentrechnung auf die Zinsrechnung und nutzen so die Verfahren der Prozentrechnung für Berechnungen bei Jahreszinsen, dabei rechnen sie mit Faktoren. Sie lösen Aufgaben zur Berechnung von Zinseszinsen iterativ (durch Zerlegung in Einzelschritte) sowie durch Potenzieren und benutzen den Zinsfaktor.",
+   "nr": 16,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.100308.de",
+   "art": "weg",
+   "stichwort": "Chemie",
+   "element": "Stoffe mit delokalisierten Elektronensystemen",
+   "nr": 17,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.442720.de",
+   "art": "dazu",
+   "stichwort": "Kunststoff",
+   "element": "Konstruktion und Produktion: Holztechnik – Metalltechnik – Kunststofftechnik (Referenz)",
+   "nr": 18,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.187655.de",
+   "art": "dazu",
+   "stichwort": "Kunststoff",
+   "element": "Konstruktion und Produktion: Holztechnik – Metalltechnik – Kunststofftechnik (Referenz)",
+   "nr": 19,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.261681.de",
+   "art": "dazu",
+   "stichwort": "Kunststoff",
+   "element": "Konstruktion und Produktion: Holztechnik – Metalltechnik – Kunststofftechnik (Referenz)",
+   "nr": 20,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.165635.de",
+   "art": "dazu",
+   "stichwort": "Kunststoff",
+   "element": "Konstruktion und Produktion: Holztechnik – Metalltechnik – Kunststofftechnik (Referenz)",
+   "nr": 21,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.64731.de",
+   "art": "dazu",
+   "stichwort": "Kunststoff",
+   "element": "Arbeiten mit dem Werkstoff Kunststoff",
+   "nr": 22,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.61781.de",
+   "art": "weg",
+   "stichwort": "Chemie",
+   "element": "Chemische Reaktion",
+   "nr": 23,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.328774.de",
+   "art": "weg",
+   "stichwort": "Chemie",
+   "element": "Redoxgleichgewichte – Energetik und technische Anwendung",
+   "nr": 24,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/e9c94355-c1c3-4c22-a66f-468a47d2e380",
+   "art": "dazu",
+   "stichwort": "Rechtsstaat",
+   "element": "bewerten vor dem Hintergrund demokratischer Prinzipien Maßnahmen der Nationalsozialisten zu Machtausbau und Systemstabilisierung. Dabei begreifen sie den Weg zum totalitären Staat als schrittweise Aushöhlung der freiheitlichen Ordnung eines demokratischen Rechtsstaates.",
+   "nr": 25,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/69dc8098-38ca-4fae-b4a0-97eb3e77e9d7",
+   "art": "dazu",
+   "stichwort": "Gewaltenteilung",
+   "element": "wenden passende Grundlegende Daten, wie z. B. //1776 Amerikanische Unabhängigkeitserklärung; 1789 Französische Revolution; 1871 Reichsgründung\\\\, und Grundlegende Begriffe, wie z. B. //Antike, Aristokratie, Monarchie, Verfassung, Mittelalter, Grundherrschaft, Bürger, Aufklärung, Menschenrechte, Gewaltenteilung, Parlament, Bürgertum, Liberalismus,\\\\ bei der Beschreibung der historischen Zusammenhänge sicher an.",
+   "nr": 26,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/9332b726-8c9f-4bdc-9d76-cc5ece4a79bc",
+   "art": "dazu",
+   "stichwort": "Gewaltenteilung",
+   "element": "werten mithilfe eines vorgegebenen erweiterten Kriterienkatalogs ein Verfassungsschaubild aus, um wesentliche Merkmale der //Gewaltenteilung\\\\ und einer //konstitutionellen Monarchie\\\\ im Unterschied zum //Absolutismus\\\\ zu erklären. Sie präsentieren ihre Ergebnisse in einer eigenständigen Darstellung.",
+   "nr": 27,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/f5b2fa2b-1489-4cbb-bbdf-9612e8368850",
+   "art": "weg",
+   "stichwort": "Demokratie",
+   "element": "nutzen den Vergleich zwischen absolutistischer und demokratischer Regierungsform, um den Wert der politischen Mitbestimmungsmöglichkeiten in einer Demokratie (z. B. der Bundesrepublik Deutschland) beurteilen zu können.",
+   "nr": 28,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-2539-1",
+   "art": "dazu",
+   "stichwort": "Rechtsstaat",
+   "element": "Inhalte",
+   "nr": 29,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/f1536bc3-fe98-407b-82b0-80746cd2349b",
+   "art": "weg",
+   "stichwort": "Demokratie",
+   "element": "bewerten die Rolle der Revolution von 1848 im Hinblick auf die weitere Entwicklung der Demokratie in Deutschland.",
+   "nr": 30,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/c844f784-2c3c-464e-b57b-8d39bd519416",
+   "art": "weg",
+   "stichwort": "Demokratie",
+   "element": "beurteilen auf der Basis des Vergleichs von Absolutismus und unserer heutigen Demokratie in Deutschland die Partizipationsmöglichkeiten der Bürgerinnen und Bürger und die Notwendigkeit der Gewaltenteilung.",
+   "nr": 31,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Demokratie",
+   "iri": "https://lp-bavaria.org/e9ba3648-6dac-425f-80e8-d2dc4f5a7c5b",
+   "art": "dazu",
+   "stichwort": "Parlamentarismus",
+   "element": "erkennen, dass in der Zeit der //Aufklärung\\\\ mit dem Streben der nordamerikanischen Siedler nach Unabhängigkeit von England und mit der //Französischen Revolution\\\\ wichtige Grundlagen der Moderne geschaffen wurden, wie etwa freiheitlich-demokratische Wertvorstellungen, Parlamentarismus und moderne bürgerliche Gesellschaften. Sie nutzen diese Erkenntnis, um z. B. die Errungenschaften von Rechtsstaatlichkeit und politischer Mitbestimmung wertzuschätzen.",
+   "nr": 32,
+   "note": 1,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-7082-1",
+   "art": "dazu",
+   "stichwort": "Wechselstrom",
+   "element": "Wechselstromkreise",
+   "nr": 33,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenz-30737-1",
+   "art": "weg",
+   "stichwort": "Strom",
+   "element": "Entropieerzeugung und Entropiestrom",
+   "nr": 34,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-5176-1",
+   "art": "dazu",
+   "stichwort": "Gleichstrom",
+   "element": "Lernbereich 4: Gleichstromnetzwerke analysieren und berechnen",
+   "nr": 35,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenz-31033-1",
+   "art": "weg",
+   "stichwort": "Strom",
+   "element": "Entropieerzeugung und Entropiestrom",
+   "nr": 36,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-6410-1",
+   "art": "dazu",
+   "stichwort": "Wechselstrom",
+   "element": "Wechselstromkreise Wahlpflichtbaustein",
+   "nr": 37,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenz-19408-1",
+   "art": "weg",
+   "stichwort": "Strom",
+   "element": "Entropie als Energieträger; Entropieerzeugung und Entropiestrom",
+   "nr": 38,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-7163-1",
+   "art": "dazu",
+   "stichwort": "Wechselstrom",
+   "element": "Wechselstromkreise",
+   "nr": 39,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-5178-1",
+   "art": "dazu",
+   "stichwort": "Wechselstrom",
+   "element": "Wahlpflichtlernbereich 5b*: Wechselstromnetzwerke untersuchen und nachrichtentechnische Anwendungen dimensionieren",
+   "nr": 40,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "iri": "https://lp-bavaria.org/cfa6bcf8-2908-4d68-bc1b-62a7d80f9dee",
+   "art": "dazu",
+   "stichwort": "Christoph Kolumbus",
+   "element": "vollziehen die „Entdeckung“ Amerikas durch Christoph Kolumbus 1492 nach und beschreiben deren Auswirkung auf das bestehende Menschen- und Weltbild, indem sie <ul><li>Weltkarten von vor und nach der Entdeckung des amerikanischen Kontinents vergleichen. </li> <li>das Leben der süd- und nordamerikanischen Kulturen vor der Ankunft der Europäer beschreiben. </li> <li>die Eroberungen des amerikanischen Kontinents aus Sicht der amerikanischen Ureinwohner und aus Sicht der Europäer betrachten und diese Perspektiven vergleichen. </li></ul>",
+   "nr": 41,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "iri": "https://lp-bavaria.org/cf18185f-2fa6-4f2a-9a64-1a51568e5909",
+   "art": "dazu",
+   "stichwort": "Amerigo Vespucci",
+   "element": "übersetzen (ggf. adaptierte) Originaltexte in einer Auswahl aus einem oder mehreren der folgenden Autoren bzw. Werke zu folgenden Themenbereichen in angemessenes Deutsch:<br /> <ul> <li>Fabelhaftes, Fiktionales, Spannendes: Phaedrus, Fabeln; Hygin, //Fabulae\\\\; Gellius, //Noctes Atticae\\\\; //Gesta Romanorum\\\\; //Historia Apollonii regis Tyri\\\\; Amerigo Vespucci, //Mundus novus\\\\; weitere geeignete Prosatexte von der Antike bis zur Neuzeit;</li> <li>Das Buch der Bücher: //Vulgata\\\\, z. B. Joseph und seine Brüder, biblische Gleichnisse.</li> </ul>",
+   "nr": 42,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "iri": "https://lp-bavaria.org/bb0f9fd9-a846-4353-bad8-2494dcfdf0a6",
+   "art": "dazu",
+   "stichwort": "Christoph Kolumbus",
+   "element": "Entdeckungsfahrten und ihre Folgen, u. a. Entdeckung Amerikas durch Christoph Kolumbus",
+   "nr": 43,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "iri": "https://lp-bavaria.org/efe8a181-8323-492c-909a-3251008ec61d",
+   "art": "dazu",
+   "stichwort": "Christoph Kolumbus",
+   "element": "Voraussetzungen, Verlauf und Folgen der Entdeckungsfahrten (u. a. //„Entdeckung“ Amerikas\\\\ durch Christoph Kolumbus)",
+   "nr": 44,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "iri": "https://lp-bavaria.org/9cbf76a4-ceea-422a-afa4-3bafe3502901",
+   "art": "dazu",
+   "stichwort": "Christoph Kolumbus",
+   "element": "vollziehen die „Entdeckung“ Amerikas durch Christoph Kolumbus 1492 nach und beschreiben deren Auswirkung auf das bestehende Menschen- und Weltbild, indem sie <ul><li>Weltkarten von vor und nach der Entdeckung des amerikanischen Kontinents vergleichen. </li> <li>das Leben der süd- und nordamerikanischen Kulturen vor der Ankunft der Europäer beschreiben. </li> <li>die Eroberungen des amerikanischen Kontinents aus Sicht der amerikanischen Ureinwohner und aus Sicht der Europäer betrachten und diese Perspektiven vergleichen. </li></ul>",
+   "nr": 45,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-195129-1",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Verordnung über die innerstaat­liche und grenzüberschreitende Beförderung gefährlicher Güter auf der Straße, mit Eisenbahnen und auf Binnengewässern (GGVSEB)",
+   "nr": 46,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-142576-2",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Präsentationsmaterial zur Auswahl der Eisenbahnfahrzeuge gegenüber dem Vertrieb erstellen",
+   "nr": 47,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-173206-1",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Mitarbeiter Eisenbahninfrastrukturunternehmen – Fahrdienstleiter, Notfallmanager",
+   "nr": 48,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "iri": "https://lp-bavaria.org/ceaabd40-68e8-492b-b8c9-c63076858765",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Geographie Russlands:<br /> z. B. Klima, Landschafts- und Zeitzonen; Sibirien: z. B. wichtigste Städte, Transsibirische Eisenbahn, Tourismus; ggf. eine weitere russische Region; eine russische Metropole: Städtegeographie, wirtschaftliche Entwicklung, Verkehrspolitik, Zukunftsperspektiven",
+   "nr": 49,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-142577-2",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Präsentation der Auswahl der Eisenbahnfahrzeuge vornehmen",
+   "nr": 50,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/732bee53-aa3d-4244-b6df-74291a408233",
+   "art": "dazu",
+   "stichwort": "Terrorherrschaft",
+   "element": "bestimmen Möglichkeiten und Grenzen des Widerstandes an anschaulichen Beispielen. Dabei würdigen sie Mut und Opferbereitschaft jener Menschen, die während der nationalsozialistischen Terrorherrschaft Widerstand leisteten und sich für eine freiheitliche Gesellschaft einsetzten, als Vorbild für ihr eigenes bürgerschaftliches Engagement.",
+   "nr": 51,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Französische Revolution",
+   "iri": "https://lp-bavaria.org/563d5634-e841-4a90-83b4-42a68c91e0b8",
+   "art": "dazu",
+   "stichwort": "Erklärung der Menschen- und Bürgerrechte",
+   "element": "Überwindung der Ständegesellschaft in der Anfangsphase der Revolution und Grenzen der sozialen Neuordnung im revolutionären Prozess: u. a. Erklärung der Menschen- und Bürgerrechte, Möglichkeiten politischer Partizipation des Einzelnen im Verfassungsstaat, politische Radikalisierung in der Zeit der Terreur, Wahrnehmung der Revolution durch die Zeitgenossen",
+   "nr": 52,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "iri": "https://lp-bavaria.org/6350ab15-9bf0-41b5-8a30-febdde8db006",
+   "art": "dazu",
+   "stichwort": "Lise Meitner",
+   "element": "Kernspaltung von Uran‑235; Otto Hahn, Lise Meitner, Fritz Strassmann",
+   "nr": 53,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "iri": "https://lp-bavaria.org/2a8a23e4-d1e5-46cf-9807-a75f40f774c2",
+   "art": "dazu",
+   "stichwort": "Lise Meitner",
+   "element": "Kernspaltung von Uran‑235; Otto Hahn, Lise Meitner, Fritz Strassmann",
+   "nr": 54,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.197067.de",
+   "art": "dazu",
+   "stichwort": "Ode",
+   "element": "Zu anderen sprechen und/oder gebärden",
+   "nr": 55,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.199747.de",
+   "art": "dazu",
+   "stichwort": "Ode",
+   "element": "Auditiv und/oder visuell Wahrnehmen und Kommunizieren",
+   "nr": 56,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/ba1577ec-5ac8-41fc-814d-f65d722e55bd",
+   "art": "weg",
+   "stichwort": "Gedichte",
+   "element": "übersetzen Originaltexte zum Thema des Lernbereichs aus <br /> Catull, //Carmina\\\\ (satirische Gedichte) und <br /> Petron, //Satyrica\\\\ (v. a. aus der Cena Trimalchionis) <br /> in angemessenes Deutsch.",
+   "nr": 57,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.110692.de",
+   "art": "dazu",
+   "stichwort": "Ode",
+   "element": "Immunologie (optional)",
+   "nr": 58,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.233111.de",
+   "art": "dazu",
+   "stichwort": "Ode",
+   "element": "Rückschlagspiele (Gruppe C): Badminton oder Tennis oder Tischtennis",
+   "nr": 59,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/32ff0d15-c538-4a99-a94f-c358ef0925ff",
+   "art": "weg",
+   "stichwort": "Gedichte",
+   "element": "verwenden körpersprachliche Ausdrucksmittel, um Gesagtes (z. B. beim Vortragen von Gedichten, Reimen, Versen, kleinen Vorträgen zu Sachthemen) adressatenorientiert zu veranschaulichen, indem sie Blickkontakt aufbauen, eine zugewandte, freundliche Mimik zeigen und Gesten einsetzen.",
+   "nr": 60,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-bavaria.org/5207d4a4-3616-4d55-bb12-68afe0f6f2e4",
+   "art": "weg",
+   "stichwort": "Gedichte",
+   "element": "achten beim Sprechen auf Lautstärke, Tempo und Satzmelodie und verwenden verständnisunterstützende Gesten, z. B. bei kleinen Vorträgen, Gedichten, Erzählungen.",
+   "nr": 61,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Gedicht",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-4091-1",
+   "art": "dazu",
+   "stichwort": "Ode",
+   "element": "Lernbereich 2: Selbstständiges Erarbeiten geschriebener Texte aus dem eigenen Interessen- oder Fachgebiet unter Einsatz von Hilfsmitteln Schwerpunkt: Rezeption (Leseverstehen)",
+   "nr": 62,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-142567-1",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Sich über die Vorbedingungen zum Einsatz von Eisenbahnfahrzeugen informieren",
+   "nr": 63,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-142573-2",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Transport von Gütern",
+   "nr": 64,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/93bff063-30c9-4aa5-83da-d84ec8489dd1",
+   "art": "dazu",
+   "stichwort": "Eisenbahn",
+   "element": "Ausbau der bayerischen Verkehrswege (z. B. Ludwig-Donau-Main-Kanal oder Eisenbahn Nürnberg-Fürth)",
+   "nr": 65,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/7232aeb0-6988-4411-80b6-8af498a6dd22",
+   "art": "dazu",
+   "stichwort": "Soziale Frage",
+   "element": "verwenden die Grundlegenden Begriffe, wie z. B. //Migration, Judentum, Stadtrecht, Absolutismus, Soziale Frage, Flucht und Vertreibung, „Gastarbeiter“\\\\, bei der Beschreibung historischer Zusammenhänge.",
+   "nr": 66,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "iri": "https://lp-bavaria.org/8dde567b-13d2-4f54-8129-fb17a216ad6f",
+   "art": "dazu",
+   "stichwort": "Urbanisierung",
+   "element": "Romanisierung weiter Teile Europas/Deutschlands: Übernahme von römischen Sitten und Gebräuchen, Urbanisierung, Anpassung/Übernahme der Sprache (Verbreitung des Lateinischen, Herausbildung der romanischen Sprachen Italienisch, Französisch, Rätoromanisch [Schweiz, Italien], Spanisch, Portugiesisch und Rumänisch), etc.",
+   "nr": 67,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/d5061e86-e2f9-432e-b30b-4633688dcad6",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "Monsunklima und seine agrarökonomischen sowie sozialen Folgen am Raumbeispiel Indiens oder an einem anderen, geeigneten Raumbeispiel; Auswirkungen der Temperatur- und Druckgegensätze",
+   "nr": 68,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/ce420c44-0781-4bde-a186-127ceb651eb6",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "atmosphärische Zirkulation: Drei-Zellen-Modell, Polarfrontjetstream",
+   "nr": 69,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/42752e1f-d477-4262-b71c-b6c47ded4c76",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "Struktur und Zusammensetzung der unteren Atmosphäre",
+   "nr": 70,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/fc7ddcaf-4c12-4bb8-a088-1e98c24ab870",
+   "art": "dazu",
+   "stichwort": "Treibhauseffekt",
+   "element": "Erdöl, Erdgas und Kohle, nachwachsende Rohstoffe, Power-to-Gas-Technologie: Grundstofflieferanten und Energieträger, Treibhauseffekt",
+   "nr": 71,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-132900-1",
+   "art": "dazu",
+   "stichwort": "Treibhauseffekt",
+   "element": "Folgen des anthropogen bedingten Treibhauseffekts",
+   "nr": 72,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-rlp.org/resource/kompetenz-21977-1",
+   "art": "dazu",
+   "stichwort": "Klimaschutz",
+   "element": "Komplexe Störungen durch Luftschadstoffe beschreiben und auf die Ursachen zurückführen.",
+   "nr": 73,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/c9f3d998-7348-48f9-b699-70dbe2e68971",
+   "art": "dazu",
+   "stichwort": "Treibhauseffekt",
+   "element": "Kohlendioxidproblem und anthropogener Treibhauseffekt, Ziele der Bundesregierung zur Energieversorgung, Dekarbonisierung der Weltwirtschaft",
+   "nr": 74,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Klimawandel",
+   "iri": "https://lp-bavaria.org/81490b72-efec-4e59-ba88-03bdca788208",
+   "art": "dazu",
+   "stichwort": "Treibhauseffekt",
+   "element": "Erdöl, Erdgas und Kohle, nachwachsende Rohstoffe, Power-to-Gas-Technologie: Grundstofflieferanten und Energieträger, Treibhauseffekt",
+   "nr": 75,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-bavaria.org/eedd3fd9-64a8-4c8a-bd88-32895d3be58f",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "Klimawandel, Schädlinge, Nutzungskonflikte, nachhaltige Forstwirtschaft",
+   "nr": 76,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-26998-1",
+   "art": "dazu",
+   "stichwort": "Landwirtschaft",
+   "element": "Begriffe aus der Landwirtschaft",
+   "nr": 77,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-143979-1",
+   "art": "dazu",
+   "stichwort": "Landwirtschaft",
+   "element": "Differenzial- und Integralrechnung an weiteren Funktionen",
+   "nr": 78,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-rlp.org/resource/kompetenz-17617-1",
+   "art": "dazu",
+   "stichwort": "Landwirtschaft",
+   "element": "Den Hunger beenden, Ernährungssicherheit und eine bessere Ernährung erreichen und eine nachhaltige Landwirtschaft fördern",
+   "nr": 79,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-168464-1",
+   "art": "dazu",
+   "stichwort": "Bewässerung",
+   "element": "Bevorzugte Lösung für die elektri­sche Bewässerung begründet aus­wählen",
+   "nr": 80,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-bavaria.org/33b5513c-7d37-4561-8a98-f57a140b4ba8",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "Folgen gesellschaftlichen Wandels, z. B. Interkulturalität, Individualisierung, Pluralisierung, Säkularisierung, Urbanisierung, Klimawandel, Überalterung (bezogen auf einen ausgewählten gesellschaftlichen Teilbereich siehe oben)",
+   "nr": 81,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-bavaria.org/abe08bae-5efa-46aa-bc0f-cce6b5b8c236",
+   "art": "weg",
+   "stichwort": "Klimawandel",
+   "element": "Geographie und Umwelt:<br /> Belgien (u. a. [lang=fr]Bruxelles[/lang]), auch als Sitzland zahlreicher europäischer Institutionen<br /> Einblicke in Umweltprobleme und mögliche Lösungswege, z. B. Klimawandel, Verkehr, Nachhaltigkeit",
+   "nr": 82,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-4134-1",
+   "art": "dazu",
+   "stichwort": "Landwirtschaft",
+   "element": "konventionelle Landwirtschaft/ökologischer Landbau",
+   "nr": 83,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "iri": "https://lp-bavaria.org/fcaca18a-bb31-4a5c-8d9b-0319d174a47a",
+   "art": "dazu",
+   "stichwort": "Ludwig van Beethoven",
+   "element": "erkennen charakteristische Elemente musikalischer Werke in anderen Zusammenhängen wieder, z. B. Ludwig van Beethoven: 9. Sinfonie – Europahymne.",
+   "nr": 84,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "iri": "https://lp-bavaria.org/f76820c5-5e13-42b6-a83a-e825fd8db32d",
+   "art": "dazu",
+   "stichwort": "Ludwig van Beethoven",
+   "element": "erkennen charakteristische Elemente musikalischer Werke in anderen Zusammenhängen wieder (z. B. Ludwig van Beethoven: 9. Sinfonie – Europahymne).",
+   "nr": 85,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-68939-1",
+   "art": "weg",
+   "stichwort": "Lineare Gleichung",
+   "element": "mehrstufige wirtschaftliche Prozesse und Kostenrechnung bei linearen Verflechtungen ohne Parameter",
+   "nr": 86,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-65410-1",
+   "art": "dazu",
+   "stichwort": "Geradengleichung",
+   "element": "Ermitteln von Geradengleichungen aus gegebenen Bedingungen",
+   "nr": 87,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-66648-1",
+   "art": "dazu",
+   "stichwort": "Geradengleichung",
+   "element": "Aufstellen von Geradengleichungen",
+   "nr": 88,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-143423-1",
+   "art": "dazu",
+   "stichwort": "Geradengleichung",
+   "element": "Aufstellen von Geradengleichungen",
+   "nr": 89,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-68939-2",
+   "art": "weg",
+   "stichwort": "Lineare Gleichung",
+   "element": "mehrstufige wirtschaftliche Prozesse und Kostenrechnung bei linearen Verflechtungen ohne Parameter",
+   "nr": 90,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-145385-1",
+   "art": "dazu",
+   "stichwort": "Geradengleichung",
+   "element": "Ermitteln von Geradengleichungen aus gegebenen Bedingungen",
+   "nr": 91,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-69184-2",
+   "art": "weg",
+   "stichwort": "Lineare Gleichung",
+   "element": "mehrstufige wirtschaftliche Prozesse und Kostenrechnung bei linearen Verflechtungen ohne Parameter",
+   "nr": 92,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Lineare Funktion",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-142649-1",
+   "art": "dazu",
+   "stichwort": "Geradengleichung",
+   "element": "Ermitteln von Geradengleichungen aus gegebenen Bedingungen",
+   "nr": 93,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "iri": "https://lp-bavaria.org/a1dade02-5163-4535-a49e-2f713a1d2601",
+   "art": "dazu",
+   "stichwort": "Edgar Degas",
+   "element": "Gegenstand: <br /> Kunst der alten Hochkulturen (z. B. ägyptische Wandmalerei, Statuen und Reliefs) und der Antike (z. B. römische Wandmalereien, Mosaike, Skulpturen; Motive aus der antiken Mythologie), Bildwerke der Bildenden Kunst bis zur Gegenwart (z. B. Albrecht Dürer, [lang=fr]Edgar Degas[lang=fr], [lang=fr]Henri Rousseau[lang=fr], Vincent van Gogh, [lang=fr]Niki de St. Phalle[lang=fr])",
+   "nr": 94,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-29313-1",
+   "art": "dazu",
+   "stichwort": "Akustik",
+   "element": "Einblick gewinnen in die Akustik",
+   "nr": 95,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-100880-1",
+   "art": "dazu",
+   "stichwort": "Akustik",
+   "element": "Raumakustik",
+   "nr": 96,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27622-1",
+   "art": "dazu",
+   "stichwort": "Akustik",
+   "element": "Überlagerung: Schwebung, stehende Wellen, Resonanz (z. B. bei Musikinstrumenten, Kundt‘sches Rohr, Chladni‘sche Klangfiguren)",
+   "nr": 97,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-159166-1",
+   "art": "dazu",
+   "stichwort": "Akustik",
+   "element": "Ziele",
+   "nr": 98,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "iri": "https://lp-rlp.org/resource/kompetenz-30688-1",
+   "art": "dazu",
+   "stichwort": "Akustik",
+   "element": "Schallwahrnehmung: Schallfeldgrößen (Schalldruck, Schallschnelle)",
+   "nr": 99,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Musik der Romantik",
+   "iri": "https://lp-rlp.org/resource/kompetenz-30845-1",
+   "art": "dazu",
+   "stichwort": "Richard Wagner",
+   "element": "3. Richard Wagners Konzept des Musikdramas mit der allgemeinen Entwicklung des Musiktheaters vergleichen",
+   "nr": 100,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Musik der Romantik",
+   "iri": "https://lp-bavaria.org/fcaca18a-bb31-4a5c-8d9b-0319d174a47a",
+   "art": "dazu",
+   "stichwort": "Ludwig van Beethoven",
+   "element": "erkennen charakteristische Elemente musikalischer Werke in anderen Zusammenhängen wieder, z. B. Ludwig van Beethoven: 9. Sinfonie – Europahymne.",
+   "nr": 101,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Musik der Romantik",
+   "iri": "https://lp-bavaria.org/ff67e1db-0a4f-4eae-9c4a-4deabc28efd7",
+   "art": "dazu",
+   "stichwort": "Frédéric Chopin",
+   "element": "Landeskunde: Szenen aus dem polnischen Alltagsleben: Familie, Schule, Berufsleben, Freizeit und Sport, schulischer Alltag, Reisen, Ausflüge, Feste und Feiern (z. B. Namenstag, Geburtstag, Weihnachten); Warschau – die Hauptstadt Polens: <br /> Warschau und berühmte Persönlichkeiten (z. B. [lang=pl]Frédéric Chopin, Henryk Sienkiewicz, Maria Skłodowska-Curie[/lang])",
+   "nr": 102,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Musik der Romantik",
+   "iri": "https://lp-bavaria.org/f76820c5-5e13-42b6-a83a-e825fd8db32d",
+   "art": "dazu",
+   "stichwort": "Ludwig van Beethoven",
+   "element": "erkennen charakteristische Elemente musikalischer Werke in anderen Zusammenhängen wieder (z. B. Ludwig van Beethoven: 9. Sinfonie – Europahymne).",
+   "nr": 103,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/0868e5c2-d28d-48cf-83b2-db9a2fb19405",
+   "art": "weg",
+   "stichwort": "Optik",
+   "element": "Brechungsgesetz, Totalreflexion",
+   "nr": 104,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/74e29b37-b0b3-482c-950c-77dfd49f8604",
+   "art": "dazu",
+   "stichwort": "Reflexion",
+   "element": "nehmen eigene Stärken und Schwächen bei der Arbeit allein und im Team bewusst wahr. Sie nützen Selbsteinschätzung und Reflexion, um sich beruflich zu orientieren.",
+   "nr": 105,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/fdf5f4d5-515d-4946-9e4c-14c5573df472",
+   "art": "dazu",
+   "stichwort": "Interferenz",
+   "element": "erläutern experimentelle Befunde zur Interferenz von Schallwellen mithilfe des Superpositionsprinzips, unterscheiden mit digitalen Werkzeugen gewonnene Frequenzspektren von Tönen und Klängen und stellen Zusammenhänge mit den zugehörigen Schwingungsdiagrammen her.",
+   "nr": 106,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/dc2f867c-bf94-404d-9bae-8d6d9712ff9d",
+   "art": "dazu",
+   "stichwort": "Reflexion",
+   "element": "äußern sich bei Analyse, Deutung und Reflexion von Werken weitgehend frei in Satzstruktur und Wortwahl.",
+   "nr": 107,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/fb0aa83e-68e9-4357-a526-1acb9c3f24ec",
+   "art": "dazu",
+   "stichwort": "Interferenz",
+   "element": "kennen die russisch-kyrillische Druckschrift und beherrschen die russisch-kyrillische Schreibschrift, lesen und schreiben die russisch-kyrillischen Buchstaben korrekt: russisch-kyrillisches Alphabet; Zuordnung von Buchstaben zu Lauten; Interferenzen mit dem deutschen Zeichensystem.",
+   "nr": 108,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-bavaria.org/7123f624-e0a3-4b4f-ab4c-2201082830c0",
+   "art": "dazu",
+   "stichwort": "Reflexion",
+   "element": "erläutern die Erzeugung von Röntgenstrahlung in einer Röntgenröhre, erklären mithilfe geeigneter Modellvorstellungen den kontinuierlichen und den charakteristischen Anteil des Emissionsspektrums und beurteilen den Einfluss der Beschleunigungsspannung der Röntgenröhre und des Anodenmaterials auf das Gesamtspektrum. Sie ziehen Rückschlüsse auf das verwendete Material in der Röntgenröhre und bewerten den medizintechnischen Einsatz von Röntgenstrahlung unter gesundheitlichen Gesichtspunkten. Für Strukturanalysen sowie zur Berechnung von Wellenlängen wenden sie die Gesetzmäßigkeiten der [lang=en]Bragg[/lang]-Reflexion an.",
+   "nr": 109,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-63884-1",
+   "art": "weg",
+   "stichwort": "Optik",
+   "element": "Anwenden der Kenntnisse über grundlegende Zusammenhänge der Optik in experimentellen Untersuchungen",
+   "nr": 110,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Optik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-48957-1",
+   "art": "weg",
+   "stichwort": "Optik",
+   "element": "Anwenden der Kenntnisse zur Optik beim Bau einer Lochkamera",
+   "nr": 111,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/8c502277-efa4-4013-a422-58d0af3a330c",
+   "art": "dazu",
+   "stichwort": "Voltaire",
+   "element": "internationaler Austausch, z. B. [lang=fr]Brigitte-Sauzay[/lang]-Programm, [lang=fr]Voltaire[/lang]-Programm",
+   "nr": 112,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/e6d351c9-1ab5-4184-ad1d-12b43ff6f5ce",
+   "art": "dazu",
+   "stichwort": "Voltaire",
+   "element": "Anbahnung und Planung eines Austausches, z. [lang=fr]B. Brigitte-Sauzay-[/lang]Programm, [Lang=fr]Voltaire-[/lang]Programm",
+   "nr": 113,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/b7a09481-5238-4bbb-b261-a890b36871d6",
+   "art": "weg",
+   "stichwort": "Aufklärung",
+   "element": "Französische Revolution: wichtige Beweggründe, grober Verlauf einzelner Phasen, z. B. Napoleonische Ära",
+   "nr": 114,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/9a6348ba-7528-484d-b361-b4ee5fb1a4b3",
+   "art": "weg",
+   "stichwort": "Aufklärung",
+   "element": "Gesellschaftsaufbau im absolutistischen Frankreich (z. B. Stände: Adel, Klerus, Bürger und Bauern) und Partizipationsmöglichkeiten",
+   "nr": 115,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/7d48991c-698d-4e76-a2ff-816d711659cd",
+   "art": "weg",
+   "stichwort": "Aufklärung",
+   "element": "kulturelle Errungenschaften der aufgeklärten Gesellschaft, z. B. Verlags-, Zeitschriftenwesen, Theater, Architektur (ggf. am regionalen Beispiel)",
+   "nr": 116,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/9b769559-dced-45c1-b7f0-02806a7620d7",
+   "art": "dazu",
+   "stichwort": "Voltaire",
+   "element": "internationaler Austausch, z. B. [lang=fr]Brigitte-Sauzay-[/lang]Programm, [lang=fr]Voltaire-[/lang]Programm",
+   "nr": 117,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "iri": "https://lp-bavaria.org/48047d48-7daa-4538-878d-4ec7d40a3dc9",
+   "art": "dazu",
+   "stichwort": "Voltaire",
+   "element": "Literatur:<br/ > ein Werk des 17., 18. oder 19. Jahrhunderts in Verbindung mit einer Theateraufführung oder einer Verfilmung, z. B. Molière, Voltaire, Balzac, Maupassant oder Zola<br/ > ein Roman des 20. oder 21. Jahrhunderts als Ganzschrift<br/ > Kurzgeschichten des 20. oder 21. Jahrhunderts<br/ > ein Drama aus dem 20. oder 21. Jahrhundert in Auszügen oder als Ganzschrift<br/ > Lyrik des 19. bis 21. Jahrhunderts",
+   "nr": 118,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/0f06be44-fa1f-40a0-903d-d2a50e9cb221",
+   "art": "weg",
+   "stichwort": "Photosynthese",
+   "element": "Übersicht über die Bedeutung des Photosyntheseprodukts Glucose für die Pflanze, als Nährstoff für heterotrophe Lebewesen und für den enzymkatalysierten Umbau in körpereigene Reserve- und Baustoffe (u. a. Kohlenhydrate, Fette, Aminosäuren); nachwachsende Rohstoffe",
+   "nr": 119,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-132860-1",
+   "art": "dazu",
+   "stichwort": "Chloroplast",
+   "element": "Absorptionsspektrum von Chlorophyll",
+   "nr": 120,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/bda495c4-f15c-479d-859f-820d13f38b59",
+   "art": "dazu",
+   "stichwort": "C4-Pflanze",
+   "element": "vergleichen C3- und C4-Pflanzen im Hinblick auf anatomische Besonderheiten und biochemische Prozesse, um daraus abzuleiten, dass Stoffwechselwege von Pflanzen eine Angepasstheit an unterschiedliche Standorte sind.",
+   "nr": 121,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/7e2657d1-e2c5-4097-9c43-ca713785228f",
+   "art": "weg",
+   "stichwort": "Fotosynthese",
+   "element": "Fotosynthese",
+   "nr": 122,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-132859-1",
+   "art": "dazu",
+   "stichwort": "Chloroplast",
+   "element": "Blattfarbstoffe",
+   "nr": 123,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/347e440f-479e-440c-b2c1-3119d5551213",
+   "art": "dazu",
+   "stichwort": "Calvin-Zyklus",
+   "element": "charakterisieren den Calvin-Zyklus als Schlüsselstelle für den Aufbau von energiereichen organischen Verbindungen unter Verwendung von NADPH und ATP aus den lichtabhängigen Reaktionen.",
+   "nr": 124,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/46bc3d5e-9b3d-48df-b575-af861f9cb35b",
+   "art": "weg",
+   "stichwort": "Photosynthese",
+   "element": "Vergleich Photosynthese und Zellatmung: Feinbau von Chloroplast und Mitochondrium (Kompartimentierung, Oberflächenvergrößerung, Membransystem); biochemische Prinzipien (Prinzip einer Elektronentransportkette, Protonengradient, Enzymkatalyse, Prinzip des zyklischen Prozesses, Zerlegung in Teilschritte, ggf. weitere); Zusammenhang von auf- und abbauendem Stoffwechsel",
+   "nr": 125,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Photosynthese",
+   "iri": "https://lp-bavaria.org/7fc3ae6c-418d-4fa9-9675-770664f4038a",
+   "art": "dazu",
+   "stichwort": "Calvin-Zyklus",
+   "element": "charakterisieren den Calvin-Zyklus als Schlüsselstelle für den Aufbau von energiereichen organischen Verbindungen unter Verwendung von NADPH und ATP aus den lichtabhängigen Reaktionen.",
+   "nr": 126,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-30404-1",
+   "art": "weg",
+   "stichwort": "Planet",
+   "element": "Aufsuchen von Objekten mit der drehbaren Sternkarte und Planetariumssoftware",
+   "nr": 127,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-rlp.org/resource/kompetenz-10323-1",
+   "art": "weg",
+   "stichwort": "Planet",
+   "element": "Urteilskompetenz: Sie wertschätzen das Potenzial des Planeten Erde und erkennen die Störungen natürlicher Gleichgewichte durch den Menschen [U2].",
+   "nr": 128,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-30029-1",
+   "art": "dazu",
+   "stichwort": "Erde",
+   "element": "Raumfahrt für die Erde",
+   "nr": 129,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.221758.de",
+   "art": "dazu",
+   "stichwort": "Erde",
+   "element": "Das System Erde: Grundlagen der Geologie",
+   "nr": 130,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-bavaria.org/8ac83f35-cde6-4ce6-a7d4-38fa02cadb84",
+   "art": "dazu",
+   "stichwort": "Erde",
+   "element": "erläutern an einem ausgewählten Land oder Raum der Erde das gegenwärtige politische System und stellen dessen Entwicklungsstand (z. B. Staatsform, politische Teilhabe) dar, indem sie historische Ereignisse berücksichtigen, die darauf Einfluss genommen haben, und bewerten die Verfassungswirklichkeit.",
+   "nr": 131,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-bavaria.org/6446c767-3b72-4130-81e6-5916a96f1313",
+   "art": "dazu",
+   "stichwort": "Erde",
+   "element": "zeigen Neugierde am gesellschaftlichen und kulturellen Leben (z. B. Weihnachten, Sportveranstaltungen) in Großbritannien und den USA, um die spezifischen Lebensgewohnheiten der Menschen dort zu verstehen und um Abweichungen von Normen im eigenen Land tolerant zu begegnen.",
+   "nr": 132,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-rlp.org/resource/kompetenz-11427-1",
+   "art": "weg",
+   "stichwort": "Planet",
+   "element": "...erläutern Möglichkeiten, Grenzen und Folgen menschlichen Handelns (8)",
+   "nr": 133,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "iri": "https://lp-bavaria.org/e0ae4b6d-af51-4d55-bd49-d598ab87762a",
+   "art": "dazu",
+   "stichwort": "Erde",
+   "element": "geben einen Überblick über die räumliche Anordnung der Klima- und Vegetationszonen der Erde.",
+   "nr": 134,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/080e6758-eb1e-4f20-9b78-36ab50c16c48",
+   "art": "dazu",
+   "stichwort": "Vulkanismus",
+   "element": "geomorphologische Phänomene des Doppelkontinents Amerika: z. B. Faltengebirge, Erdbeben, Vulkanismus (z. B. Hawaii)",
+   "nr": 135,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/2972f67b-dd13-410e-8333-9bf021e03816",
+   "art": "dazu",
+   "stichwort": "Vulkanismus",
+   "element": "Vulkanismus und Erdbeben: Vorkommen und Ursachen; Monitoring, z. B. Daten aktueller Erdbeben und Vulkanaktivitäten",
+   "nr": 136,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/de10d5c7-cd4a-4b72-a6a4-2783822331f7",
+   "art": "dazu",
+   "stichwort": "Lithosphäre",
+   "element": "Interaktion von Lithosphäre, Hydrosphäre, Pedosphäre sowie Atmosphäre, z. B. Vulkaneruption",
+   "nr": 137,
+   "note": 1,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-bavaria.org/8fce0d55-b48c-4b29-ba8b-aaace87fc2aa",
+   "art": "dazu",
+   "stichwort": "Vulkanismus",
+   "element": "lokalisieren geologische Besonderheiten, z. B. Vulkanismus in Bayern, Deutschland und Europa.",
+   "nr": 138,
+   "note": 1,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Plattentektonik",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-3833-1",
+   "art": "dazu",
+   "stichwort": "Vulkanismus",
+   "element": "Kennen der Erscheinungen von Vulkanismus und Erdbeben sowie deren Auswirkungen auf das Leben der Menschen",
+   "nr": 139,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-rlp.org/resource/kompetenz-21930-1",
+   "art": "dazu",
+   "stichwort": "JavaScript",
+   "element": "Inhaltliche OrientierungJavaScript (EventHandler, Popup-Fenster, Bildergalerie, dynamische Seitenbereiche, Formularvalidierung) PHP/MySQL Lokaler Webserver Dateneingabe und Datenabfrage per Formular Seitenaufbau aus Datenbankinhalten Benutzerregistrierung",
+   "nr": 140,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-129465-1",
+   "art": "dazu",
+   "stichwort": "SQL",
+   "element": "Funktionen in SQL",
+   "nr": 141,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-156712-1",
+   "art": "dazu",
+   "stichwort": "SQL",
+   "element": "Auswertung verknüpfter Daten mit SQL",
+   "nr": 142,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-206491-1",
+   "art": "dazu",
+   "stichwort": "Compiler",
+   "element": "Compiler und Interpreter",
+   "nr": 143,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Programmiersprache",
+   "iri": "https://lp-bavaria.org/1ef756bb-40cc-424a-8dba-e9a9b0fb3e9b",
+   "art": "dazu",
+   "stichwort": "SQL",
+   "element": "Abfragen (z. B. nach dem SQL-Standard) über mehrere Tabellen: Selektion, Projektion, Join",
+   "nr": 144,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/e321675d-d35f-4e4c-8871-ef7edd78d702",
+   "art": "dazu",
+   "stichwort": "Romanisierung",
+   "element": "Einblick in wichtige Etappen der spanischen Geschichte bis Anfang des 20. Jahrhunderts: Romanisierung, kulturelle Blüte während der maurischen Herrschaft ([lang=es]//convivencia de las tres culturas\\\\[/lang]) und [lang=es]//Reconquista\\\\[/lang], [lang=es]//la España del Siglo de Oro\\\\[/lang], Kolonialreich",
+   "nr": 145,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/d687cd7f-f5a1-4b48-b888-e70b61214ccf",
+   "art": "dazu",
+   "stichwort": "Romanisierung",
+   "element": "verstehen den Prozess der Romanisierung und sind in der Lage, dessen Einfluss auch noch in Merkmalen unserer heutigen Kultur und Sprache zu erkennen.",
+   "nr": 146,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/6bb287d0-0f93-417a-83af-6cf7921cb02f",
+   "art": "dazu",
+   "stichwort": "Spätantike",
+   "element": "charakterisieren die gesellschaftlichen Verhältnisse im spätantiken Mekka.",
+   "nr": 147,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-bavaria.org/f5d1fc70-01d2-4d4a-96ba-0d7afa550793",
+   "art": "dazu",
+   "stichwort": "Spätantike",
+   "element": "Gesellschaft im spätantiken Mekka: Stammesgesellschaft, Sklaven (Rechtlose) und Sklavenhandel, profitgierige Herrscherfamilie, Pilger, Händler, Karawanen, Mekka als Markt und Pilgerort, praktizierter Mehrgottglaube (Polytheismus) an der Kaaba",
+   "nr": 148,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Römisches Reich",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-21950-1",
+   "art": "dazu",
+   "stichwort": "Romanisierung",
+   "element": "Transfer italienischer, französischer oder spanischer Lexikkenntnisse auf das Lateinische zum Zwecke der Bedeutungserschließung",
+   "nr": 149,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/6346f7e5-d107-4ffc-9fcd-63c97cdb0d22",
+   "art": "dazu",
+   "stichwort": "Orchester",
+   "element": "Instrumentenkunde: Instrumente des Orchesters, moderne Bandinstrumente, Mischformen",
+   "nr": 150,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/d52cc16b-7424-4a92-b274-3ba812c418bf",
+   "art": "dazu",
+   "stichwort": "Orchester",
+   "element": "benennen und unterscheiden Instrumente, indem sie <ul><li>sie nach ihrem Klang und Aussehen unterscheiden und sie mit ihren Fachbezeichnungen benennen. </li> <li>einzelne Instrumente eines Orchesters ihren Instrumentenfamilien (Streichinstrumente, Blasinstrumente, Schlaginstrumente und z. T. Tasteninstrumente und Zupfinstrumente) zuordnen. </li> <li>typische Einsatzmöglichkeiten ausgewählter Instrumente (z. B. E-Gitarre in Rockmusik, Orgel in Kirchenmusik, Saxofon im Jazz) analysieren. </li> <li>ein einzelnes Instrument in einem Hörbeispiel erkennen oder in einer Gruppe von Instrumenten benennen. </li> <li>Instrumente verschiedener Kulturen (z. B. Didjeridoo, Panflöte oder [lang=en]Ocean Drum[/lang]) benennen und ihre Einsatzmöglichkeiten beschreiben. </li></ul>",
+   "nr": 151,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/cbe71b69-9d69-486e-9f40-056dc5df8546",
+   "art": "dazu",
+   "stichwort": "Orchester",
+   "element": "Begriffe: Ganze Note, Halbe Note, Viertelnote, Achtelnote; Ganze Pause, Halbe Pause, Viertelpause, Achtelpause; 2/4-Takt, 3/4-Takt, 4/4-Takt; Instrumentenfamilie, Streichinstrument, Tasteninstrument; Orchester, Chor; einstimmig, mehrstimmig; lauter/leiser werden, schneller/langsamer werden, höher/tiefer werden; Wiederholung, Kanon, Rondo",
+   "nr": 152,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/f8d4b540-0bb4-4702-bb3d-33ae33cc29af",
+   "art": "dazu",
+   "stichwort": "Orchester",
+   "element": "Musik in der Romantik:<br /> - Klaviermusik im Spannungsfeld zwischen Hausmusik und Virtuosentum; das Charakterstück, z. B. von F. Mendelssohn Bartholdy, R. Schumann, F. Chopin oder F. Liszt<br /> - Orchestermusik: Programmatik und absolute Musik; Differenzierung des Klangs; Leitmotivtechnik z. B. bei H. Berlioz, R. Wagner, J. Brahms, G. Mahler oder R. Strauss<br /> - Übernahme von Gestaltungsmitteln der Romantik in das Genre Filmmusik",
+   "nr": 153,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Sinfonie",
+   "iri": "https://lp-bavaria.org/a6812b60-8467-4870-99c4-09d88e5ba029",
+   "art": "dazu",
+   "stichwort": "Orchester",
+   "element": "nehmen Orchesterinstrumente einzeln und im Zusammenklang wahr und beschreiben ihre Höreindrücke detailliert.",
+   "nr": 154,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-bavaria.org/c5425a53-226e-4ec0-85f5-3e7efec21871",
+   "art": "weg",
+   "stichwort": "Säugetiere",
+   "element": "Wirbeltierklassen: Fische, Amphibien, Reptilien, Vögel, Säugetiere",
+   "nr": 155,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-146706-1",
+   "art": "dazu",
+   "stichwort": "Reh",
+   "element": "Aufgaben der Berufsgenossenschaften",
+   "nr": 156,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-bavaria.org/7bffc523-d13a-463f-9132-ebc75a85f8ef",
+   "art": "dazu",
+   "stichwort": "Reh",
+   "element": "beschreiben unterschiedliche Präventions‑, Therapie‑ und Rehabilitationsansätze und ‑maßnahmen bei Erkrankungen und Verletzungen des Muskel‑Skelett‑Systems und diskutieren davon ausgehend deren Eignung in Abhängigkeit der individuellen Lebensumstände.",
+   "nr": 157,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-148822-1",
+   "art": "dazu",
+   "stichwort": "Reh",
+   "element": "Einrichtungen der Rehabilitation und deren Aufgaben",
+   "nr": 158,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-bavaria.org/b25ea19f-2f82-4014-b420-031bec74094d",
+   "art": "weg",
+   "stichwort": "Säugetiere",
+   "element": "Wirbeltierklassen: Fische, Amphibien, Reptilien, Vögel, Säugetiere",
+   "nr": 159,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-148827-1",
+   "art": "dazu",
+   "stichwort": "Reh",
+   "element": "schulische Rehabilitation",
+   "nr": 160,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-148877-1",
+   "art": "dazu",
+   "stichwort": "Reh",
+   "element": "Berufsanpassung",
+   "nr": 161,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "iri": "https://lp-bavaria.org/77697b06-a9bb-4cce-beb0-2ad4b7475f30",
+   "art": "weg",
+   "stichwort": "Säugetiere",
+   "element": "wild lebende Säugetiere: Monografien einheimischer Vertreter; Zusammenhang von Lebensweise und Lebensraum, ggf. Schutzmaßnahmen, Interessenskonflikte",
+   "nr": 162,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/2202f649-5bca-456e-aa3c-37cfb8efe5e4",
+   "art": "weg",
+   "stichwort": "Säure",
+   "element": "stellen Wort- und Formelgleichungen für Neutralisationsreaktionen auf und leiten daraus den Aufbau von Salzen aus Metallanteil und Säurerest ab.",
+   "nr": 163,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/93a7e405-886e-4b92-9f72-579851f9510d",
+   "art": "dazu",
+   "stichwort": "Säuren",
+   "element": "planen die Durchführung einer elektrophoretischen Trennung von Aminocarbonsäuren und werten die Versuchsergebnisse von Elektrophoresen aus.",
+   "nr": 164,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/d460056b-e9c6-42ab-b188-15d82f4c241d",
+   "art": "dazu",
+   "stichwort": "Säuren",
+   "element": "leiten aus experimentellen Beobachtungen die Bildung von Estern aus Alkoholen und Carbonsäuren ab und begründen die Stoffeigenschaften ausgewählter Ester mithilfe zwischenmolekularer Wechselwirkungen.",
+   "nr": 165,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/364c0f45-b9d3-4335-9922-ca8fc9b642ed",
+   "art": "dazu",
+   "stichwort": "Säuren",
+   "element": "leiten aus experimentellen Beobachtungen die Bildung von Estern aus Alkoholen und Carbonsäuren ab und begründen Stoffeigenschaften ausgewählter Ester mithilfe zwischenmolekularer Wechselwirkungen.",
+   "nr": 166,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-55967-1",
+   "art": "weg",
+   "stichwort": "Säure",
+   "element": "Beherrschen der Namen und Formeln ausgewählter Carbonsäuren und ihrer Säurerestionen",
+   "nr": 167,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.61804.de",
+   "art": "dazu",
+   "stichwort": "Säuren",
+   "element": "Aminosäuren und Proteine",
+   "nr": 168,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-bavaria.org/5f3ea003-7ca5-4bd0-8cef-d424cf98895a",
+   "art": "dazu",
+   "stichwort": "PH-Wert",
+   "element": "begründen mit dem Ionenprodukt des Wassers den pH-Wert und pOH-Wert einer neutralen Lösung und berechnen pH-Werte saurer und basischer Lösungen.",
+   "nr": 169,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-57957-1",
+   "art": "weg",
+   "stichwort": "Säure",
+   "element": "Zusammensetzung, Indikation und Wirkungsweise von Aspirin® (Acetylsalicylsäure, ASS) und ACC® (Acetylcystein)",
+   "nr": 170,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Vulkane Europas",
+   "iri": "https://lp-bavaria.org/602e8b7d-8206-4ad2-bdd2-480ba831efb5",
+   "art": "dazu",
+   "stichwort": "Vesuv",
+   "element": "erkennen und benennen in der Topografie des antiken Italiens bedeutende Stätten (u. a. Pompeji, Herkuláneum, Vesuv) und Regionen (u. a. //Magna Graecia\\\\) und geben die Lage anderer in der Antike wichtiger Orte des Mittelmeerraumes (u. a. Athen, Karthago) an.",
+   "nr": 171,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Vulkane Europas",
+   "iri": "https://lp-bavaria.org/0e9ebb9f-4e4f-44fc-bc32-cab0eaa4ee49",
+   "art": "dazu",
+   "stichwort": "Vesuv",
+   "element": "beschreiben die Ereignisse beim Vesuvausbruch des Jahres 79 n. Chr. und erläutern deren Bedeutung für die Erforschung der römischen Kultur.",
+   "nr": 172,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Vulkane Europas",
+   "iri": "https://lp-bavaria.org/3c6620c1-42f6-415d-8696-cab7565eae91",
+   "art": "dazu",
+   "stichwort": "Vesuv",
+   "element": "erkennen in Plinius d. J. eine bedeutende literarische Quelle zum Vesuvausbruch 79 n. Chr.",
+   "nr": 173,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Vulkane Europas",
+   "iri": "https://lp-bavaria.org/84e5e72e-a6bd-49e8-80ba-4d533eef7fc8",
+   "art": "dazu",
+   "stichwort": "Vesuv",
+   "element": "beschreiben die Ereignisse beim Vesuvausbruch des Jahres 79 n. Chr. und erläutern deren Bedeutung für die Erforschung der römischen Kultur.",
+   "nr": 174,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Vulkane Europas",
+   "iri": "https://lp-bavaria.org/adc1a6d2-39f8-4b49-b30b-c1087728bb10",
+   "art": "dazu",
+   "stichwort": "Vesuv",
+   "element": "erkennen in Plinius d. J. eine bedeutende literarische Quelle zum Vesuvausbruch 79 n. Chr.",
+   "nr": 175,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/b74e7b4d-0f1e-46bf-9699-c51dc7c69b0e",
+   "art": "dazu",
+   "stichwort": "Grundwasser",
+   "element": "­Folgen, z. B. abnehmende Bodenfruchtbarkeit, Eutrophierung, Hochwasser, Grundwasserbelastung, Kulturflächenverlust",
+   "nr": 176,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/8a3ae1f1-c332-489d-983f-31a2a3a22337",
+   "art": "dazu",
+   "stichwort": "Kondensation",
+   "element": "wenden die Reaktionstypen der Polykondensation und der radikalischen Polymerisation an, um die Bildung von Polymeren mithilfe von Strukturformeln zu beschreiben und aus Polymeren die Monomere zu identifizieren.",
+   "nr": 177,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/15bc78f9-6c04-4e18-8b2e-592c45cd3af8",
+   "art": "dazu",
+   "stichwort": "Verdunstung",
+   "element": "Angepasstheit der Pflanzen an unterschiedliche Standorte: Licht- und Schattenblätter, C<sub>3</sub>-, C<sub>4</sub>- und CAM-Pflanzen (Vorfixierung von Kohlenstoffdioxid im C<sub>4</sub>-Zyklus), Verdunstungsschutz",
+   "nr": 178,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/5a0e8f63-2511-40d3-ba84-45fa1ca0371c",
+   "art": "dazu",
+   "stichwort": "Kondensation",
+   "element": "symbolhafte Darstellung von Lipiden: Entstehung durch Kondensationsreaktion zwischen Glycerin und Fettsäuren, Einteilung in gesättigte und ungesättigte Fettsäuren; physiologische Aufgaben der Lipide, Phospholipide",
+   "nr": 179,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "iri": "https://lp-bavaria.org/2ce0807a-e339-4011-8007-3e056e2908a4",
+   "art": "dazu",
+   "stichwort": "Kondensation",
+   "element": "wenden das Konzept der Nukleophil-Elektrophil-Reaktion auf die Polykondensation und Polyaddition an, um den Aufbau entsprechender Polymere abzuleiten und die Reaktionsgleichungen aufzustellen.",
+   "nr": 180,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-8656-1",
+   "art": "dazu",
+   "stichwort": "Christentum",
+   "element": "Gegenstandsbereich „andere Religionen“ Um die jüdischen Wurzeln des Christentums wissen und Gemeinsamkeiten beider Religionen benennen",
+   "nr": 181,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-72884-1",
+   "art": "weg",
+   "stichwort": "Weltreligion",
+   "element": "Kennen des Glaubens an die Offenbarung als Merkmal der monotheistischen Weltreligionen",
+   "nr": 182,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.323368.de",
+   "art": "dazu",
+   "stichwort": "Islam",
+   "element": "Glaubenslehre des Islams – Göttliche Begleitung verstehen",
+   "nr": 183,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-bavaria.org/c44ade76-9b44-4e55-b9eb-fc8515636364",
+   "art": "weg",
+   "stichwort": "Weltreligion",
+   "element": "zentrale ethische Aussagen der Weltreligionen, z. B. die Zehn Gebote, Thron des Gerichts (Talmud, Schabbat 31a); Bergpredigt; die Eröffnung zu Mekka (Sure 1, 1-7), islamischer Pflichtenkodex (Sure 17, 22-38); Vier Edle Wahrheiten, Achtfacher Pfad, Veden (Auszüge)",
+   "nr": 184,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.15486.de",
+   "art": "dazu",
+   "stichwort": "Buddhismus",
+   "element": "Buddhismus – eine fernöstliche Religion",
+   "nr": 185,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-2653-1",
+   "art": "dazu",
+   "stichwort": "Islam",
+   "element": "Feste bei uns und anderen - Islam -",
+   "nr": 186,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.324408.de",
+   "art": "dazu",
+   "stichwort": "Islam",
+   "element": "Propheten – Frauen als Vorbilder verstehen",
+   "nr": 187,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Weltreligionen",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-34870-1",
+   "art": "weg",
+   "stichwort": "Weltreligion",
+   "element": "Goldene Regel als gemeinsames Gut der Weltreligionen",
+   "nr": 188,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-57415-1",
+   "art": "dazu",
+   "stichwort": "Prokaryoten",
+   "element": "Kennen von Struktur und Realisierung genetischer Informationen bei Prokaryoten",
+   "nr": 189,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/6f2596d6-65a8-42d5-98f1-39169cd79003",
+   "art": "dazu",
+   "stichwort": "Mitose",
+   "element": "erläutern den Bau und die Funktion von Chromosomen und ordnen deren verschiedenen Zustandsformen die Mitosephasen sowie die Interphase zu.",
+   "nr": 190,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7291-1",
+   "art": "weg",
+   "stichwort": "Zellkern",
+   "element": "Zellkern – Erbgutspeicher, Zellsteuerung",
+   "nr": 191,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27486-1",
+   "art": "dazu",
+   "stichwort": "Eukaryoten",
+   "element": "Regulation der Genaktivität Regulationsmechanismen bei Eukaryoten Histonmodifikation RNA-Interferenz",
+   "nr": 192,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-69273-1",
+   "art": "dazu",
+   "stichwort": "Mitose",
+   "element": "Verlauf von Mitose und Meiose und ihre Bedeutung für Wachstum und Vererbung",
+   "nr": 193,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7290-1",
+   "art": "weg",
+   "stichwort": "Zellmembran",
+   "element": "Zellwand, Zellmembran – Stoffaustausch, Abgrenzung",
+   "nr": 194,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-bavaria.org/152e3948-7a09-48a3-b8a3-8222f208a3e1",
+   "art": "dazu",
+   "stichwort": "Mitose",
+   "element": "veranschaulichen (z. B. anhand von Originalen, Abbildungen oder Modellen) den Ablauf der Mitose und begründen deren Bedeutung für die Wachstums- und Reparaturvorgänge.",
+   "nr": 195,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-61452-1",
+   "art": "weg",
+   "stichwort": "Zelle",
+   "element": "Vergleich von pflanzlicher und tierischer Zelle",
+   "nr": 196,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "deutsche Dichter",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-44371-1",
+   "art": "dazu",
+   "stichwort": "Heinrich Heine",
+   "element": "Inhalte",
+   "nr": 197,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "deutsche Dichter",
+   "iri": "https://lp-sachsen.org/resource/lernbereich-31971-1",
+   "art": "dazu",
+   "stichwort": "Heinrich Heine",
+   "element": "Heinrich Heine",
+   "nr": 198,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "deutsche Dichter",
+   "iri": "https://lp-bavaria.org/81d446ef-676a-48ec-a81a-c0e4beb47a92",
+   "art": "dazu",
+   "stichwort": "Johann Wolfgang von Goethe",
+   "element": "beschreiben die Ideale der literarischen Aufklärung (Toleranz und verantwortliches Handeln) in ausgewählten Texten sowie das Spannungsfeld zwischen Vernunft und Gefühl, insbesondere in Texten aus dem Sturm und Drang und der deutschen Klassik (u. a. von Johann Wolfgang von Goethe), um daraus – ggf. auch im Abgleich mit Texten der Gegenwart – Rückschlüsse für das eigene Handeln (z. B. Umgang mit Freiheit und Verantwortung) zu ziehen.",
+   "nr": 199,
+   "note": 2,
+   "note_zweit": 1
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/bfed456d-9d14-491f-9695-7e9478040360",
+   "art": "weg",
+   "stichwort": "Fluss",
+   "element": "untersuchen und reflektieren ausgewählte Probleme der Gegenwartssprache, indem sie sich z. B. mit der Vielfalt von Sprachvarietäten, Sprachwandel, aktuellen Entwicklungstendenzen des Deutschen und dem Einfluss digitaler Medien auseinandersetzen. Sie nutzen die Kenntnis sprachphilosophischer Positionen zur differenzierten Auseinandersetzung mit sprachkritischen Fragestellungen, z. B. Möglichkeiten und Grenzen der kognitiven Funktion von Sprache.",
+   "nr": 200,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.441135.de",
+   "art": "dazu",
+   "stichwort": "Oder",
+   "element": "Angewandte Ethik: Medizinethik oder Medienethik (Referenz)",
+   "nr": 201,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.210368.de",
+   "art": "dazu",
+   "stichwort": "Oder",
+   "element": "Auditiv und/oder visuell Wahrnehmen und Kommunizieren",
+   "nr": 202,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/5c78a613-af97-4f4e-8874-1fe9613831c1",
+   "art": "weg",
+   "stichwort": "Fluss",
+   "element": "nehmen den Einfluss religiöser und säkularer Naturvorstellungen auf das Alltagsleben wahr und stellen einen Bezug zum eigenen Leben her.",
+   "nr": 203,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.441697.de",
+   "art": "dazu",
+   "stichwort": "Oder",
+   "element": "Religiöse Gemeinschaften – lebensbejahend oder lebensfeindlich (Referenz)",
+   "nr": 204,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-2484-1",
+   "art": "dazu",
+   "stichwort": "Oder",
+   "element": "Schreiben - Informieren Zweck schreiben gestalten oder Formulare ausfüllen oder interessengeleitet schreiben (z.B. empfehlen, werben, auffordern, Auskunft einholen, sich entschuldigen, protestieren) Sie sollen dabei...",
+   "nr": 205,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/150870f6-6a61-4a8b-9410-87cffc6750a9",
+   "art": "weg",
+   "stichwort": "Fluss",
+   "element": "beschreiben Wechselwirkungen und Prozesse (z. B. im menschlichen Organismus, zur Suchtentstehung, zum Einfluss des Menschen auf Ökosysteme) mithilfe von Modellen und schätzen die Grenzen von Modellen ab.",
+   "nr": 206,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.204736.de",
+   "art": "dazu",
+   "stichwort": "Oder",
+   "element": "Zu und vor anderen sprechen und/oder gebärden",
+   "nr": 207,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-161966-1",
+   "art": "dazu",
+   "stichwort": "Photovoltaik",
+   "element": "Photovoltaikanlage",
+   "nr": 208,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "iri": "https://lp-bavaria.org/6f297f05-ad2b-4e69-bac5-488db03ccfef",
+   "art": "dazu",
+   "stichwort": "Photovoltaik",
+   "element": "Beitrag photovoltaischer Anlagen zur häuslichen und globalen Energieversorgung",
+   "nr": 209,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "iri": "https://lp-rlp.org/resource/kompetenz-22012-1",
+   "art": "dazu",
+   "stichwort": "Wasserkraft",
+   "element": "Inhaltliche OrientierungWärmepumpe, Wasserkraft etc. Gasgesetze, Carnot-Prozess (qualitativ), Rankine-Prozess Hydrostatisches Grundgesetz, Bernoulli‘sche Gleichung, Kontinuitätsgleichung Arbeit, Wärme und thermische Energie Optimierung, Wechselwirkung",
+   "nr": 210,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "iri": "https://lp-rlp.org/resource/kompetenz-15101-1",
+   "art": "dazu",
+   "stichwort": "Wasserkraft",
+   "element": "Energiequelle Natur kennen lernen (z.B.Wasserkraft, Windrad ...)",
+   "nr": 211,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.299638.de",
+   "art": "dazu",
+   "stichwort": "Photovoltaik",
+   "element": "Photovoltaik in Anwendungen",
+   "nr": 212,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "griechische Götter",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-6142-1",
+   "art": "dazu",
+   "stichwort": "Hera",
+   "element": "Moderne Kriege und die Herausforderungen für die internationale Staatengemeinschaft Die Lernenden erwerben …",
+   "nr": 213,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "griechische Götter",
+   "iri": "https://lp-bavaria.org/bc1494a9-8def-4304-a716-13edfeffbda9",
+   "art": "dazu",
+   "stichwort": "Hera",
+   "element": "arbeiten aus ausgewählten Theorien und Reden (auch in Auszügen) Prinzipien der Rhetorik (z. B. Aufbau, Stil, Wirkungsabsicht, Stimmmodulation, Gestik) heraus. Sie reflektieren dabei Möglichkeiten der Beeinflussung durch Rhetorik.",
+   "nr": 214,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "griechische Götter",
+   "iri": "https://lp-rlp.org/resource/kompetenzbereich-6138-1",
+   "art": "dazu",
+   "stichwort": "Hera",
+   "element": "Nachhaltiger Umgang mit den eigenen Lebensgrundlagen als Herausforderung für Individuum, Gesellschaft und Politik Die Lernenden erwerben …",
+   "nr": 215,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "griechische Götter",
+   "iri": "https://lp-bavaria.org/c59fba3f-4ded-430d-b57b-3aab21e96713",
+   "art": "dazu",
+   "stichwort": "Hera",
+   "element": "deuten altersgemäße, dem Sprachverständnis angepasste Texte, indem sie die zentralen Aussagen und Intentionen der Texte mithilfe analytischer und produktiver Methoden erschließen, z. B. die Charakteristik der Figuren und ihrer Beziehungen herausarbeiten, grafisch darstellen, Deutungen mit Zitaten belegen.",
+   "nr": 216,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "griechische Götter",
+   "iri": "https://lp-bavaria.org/lis_live_isb.c.163776.de",
+   "art": "dazu",
+   "stichwort": "Hera",
+   "element": "Sich Herausforderungen im Zusammenleben stellen (Referenz)",
+   "nr": 217,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "römische Kaiser",
+   "iri": "https://lp-bavaria.org/925cc3f9-eaba-4957-b071-f362242b6b17",
+   "art": "dazu",
+   "stichwort": "Hadrian",
+   "element": "Ursachen des Zerfalls des Römischen Imperiums: Überdehnung der Grenzen des Imperiums (z. B. Rätischer Limes, Rheingrenze oder der Hadrianswall in Großbritannien), zunehmender Invasionsdruck durch Germanen und Slawen in der Völkerwanderungszeit, innere Schwächung des Imperiums durch wirtschaftliche Krisen, Epidemien und politischen Wirren (z. B. Zeit der Soldatenkaiser, Gegenkaiser, Herrschaftsstreitigkeiten)",
+   "nr": 218,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "römische Kaiser",
+   "iri": "https://lp-bavaria.org/3d26f176-0e91-43a5-80ed-77430d07a3b8",
+   "art": "dazu",
+   "stichwort": "Nero",
+   "element": "häusliche Rituale am Schabbat: Hadlakat Nerot (Kerzenanzünden), Birkat haBanim (Segnen der Kinder), Kiddusch am Freitagabend (Heiligung des Tages), Netilat Jadajim (Händewaschen), haMozi (Brotsegen), Eschet Chajil (Loblied über die Frau), Kiddusch am Samstagmittag, Hawdala (Verabschiedung vom Schabbat)",
+   "nr": 219,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "römische Kaiser",
+   "iri": "https://lp-bavaria.org/6722bce8-7ded-4375-8290-3393c5bb5d32",
+   "art": "dazu",
+   "stichwort": "Hadrian",
+   "element": "Einblick in einige wichtige Ereignisse der englischen Geschichte: Kelten und Römer in Britannien ([lang=en]//Hadrian’s Wall\\\\, Bath[/lang], Ortsnamen, Straßen); 1066 ([lang=en]//Normans and Saxons\\\\[/lang]; Einfluss auf Sprache)",
+   "nr": 220,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "römische Kaiser",
+   "iri": "https://lp-bavaria.org/b5802a68-e7a1-4c67-8038-aa814d8921f7",
+   "art": "dazu",
+   "stichwort": "Hadrian",
+   "element": "Kelten und Römer in Britannien: [lang=en]//Hadrian’s Wall\\\\, Bath[/lang], Ortsnamen, Straßen",
+   "nr": 221,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "römische Kaiser",
+   "iri": "https://lp-bavaria.org/bf2a370f-bc5a-4198-bc6b-8c20262c65d2",
+   "art": "dazu",
+   "stichwort": "Nero",
+   "element": "häusliche Rituale am Schabbat: Hadlakat Nerot (Kerzenanzünden), Birkat haBanim (Segnen der Kinder), Kiddusch am Freitagabend (Heiligung des Tages), Netilat Jadajim (Händewaschen), haMozi (Brotsegen), Eschet Chajil (Loblied über die Frau), Kiddusch am Samstagmittag, Hawdala (Verabschiedung vom Schabbat)",
+   "nr": 222,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/57c26917-b123-4c1f-9caa-38a5e423ff2c",
+   "art": "dazu",
+   "stichwort": "Biodiversität",
+   "element": "legen die Bedeutung der Immerfeuchten Tropen für das Weltklima und die Biodiversität dar.",
+   "nr": 223,
+   "note": 1,
+   "note_zweit": 1
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-7767-1",
+   "art": "weg",
+   "stichwort": "Ökosystem",
+   "element": "Beurteilen von Maßnahmen zum Schutz naturnaher Ökosysteme",
+   "nr": 224,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/5b6e37c0-54be-4503-9060-3620a33aa8af",
+   "art": "dazu",
+   "stichwort": "Biotop",
+   "element": "ordnen einzelne Aussagen nach beschreibendem oder bewertendem Inhalt (Fakten vs. Bewertungen) und erkennen so Unterschiede zwischen Entscheidungen ausschließlich pragmatisch-technischer Natur (z. B. Wie entscheidet man, zu welcher Wirbeltierklasse ein Lurch gehört?) und Entscheidungen, die ethisch-moralische Überlegungen erfordern (z. B. Wie entscheidet man, ab wann man sich für den Erhalt einer Art einsetzt? – Beispielsweise für Lurche: Erhalt von Biotopen, Krötenwanderungen).",
+   "nr": 225,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-rlp.org/resource/kompetenz-27984-1",
+   "art": "dazu",
+   "stichwort": "Stoffkreislauf",
+   "element": "Stoff- und Energiefluss Stickstoffkreislauf",
+   "nr": 226,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/eae2ba85-b551-47d2-bc9f-f9be850465f6",
+   "art": "dazu",
+   "stichwort": "Nahrungskette",
+   "element": "stellen Nahrungsketten einer Lebensgemeinschaft im Gewässer grafisch dar und unterscheiden dabei zwischen Modellvorstellung und Wirklichkeit.",
+   "nr": 227,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-bavaria.org/f69f6fa7-aeff-4aa2-889c-d354360ebb17",
+   "art": "dazu",
+   "stichwort": "Stoffkreislauf",
+   "element": "beschreiben den Wertstoffkreislauf eines ausgewählten Kunststoffgegenstandes, wobei sie Möglichkeiten und Grenzen des Recyclings erläutern.",
+   "nr": 228,
+   "note": 0,
+   "note_zweit": 0
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-64955-1",
+   "art": "weg",
+   "stichwort": "Ökosystem",
+   "element": "Vergleich mit dem Ökosystem Wald",
+   "nr": 229,
+   "note": 2,
+   "note_zweit": 2
+  },
+  {
+   "thema": "Ökosystem",
+   "iri": "https://lp-sachsen.org/resource/lernziel-lerninhalt-64965-1",
+   "art": "weg",
+   "stichwort": "Ökosystem",
+   "element": "Gefährdung von Ökosystemen durch Neobiota",
+   "nr": 230,
+   "note": 2,
+   "note_zweit": 2
+  }
+ ]
+}
